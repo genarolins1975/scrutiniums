@@ -1,0 +1,71 @@
+[PDF, página 18]
+Figura 8- Produção das Usinas do MRE
+
+O descolamento entre a sazonalidade da produção hidrelétrica e da GF faz com o
+GSF seja inflado no período úmido (muita geração e baixa GF sazonalizada) e
+reduzido no período seco (pouca geração e alta GF sazonalizada), provocando
+oscilações artificiais do GSF e elevando o risco das hidrelétricas. Esse descolamento
+entre a GF sazonalizada e a curva de produção hidrelétrica tende a se acentuar com
+a entrada das usinas na bacia amazônica, cuja sazonalidade da produção é mais
+acentuada do que nas usinas nas demais bacias.
+Há riscos no MRE associados aos próprios participantes do mecanismo, como é o
+caso das Pequenas Centrais Hidrelétricas – PCHs, que tiveram a possibilidade de
+participação no mecanismo estabelecida pelo Decreto nº 3.653, de 7 de novembro de
+2000, que modificou a redação do art. 20 do Decreto nº 2.655, retirando a restrição
+de que só poderiam participar hidrelétricas despachadas centralizadamente.
+As PCHs são usinas a fio d’água e não participam do despacho centralizado. A
+extensão do MRE às PCHs permite a elas mitigar o respectivo risco hidrológico e,
+portanto, melhorar sua competitividade.
+Um aspecto controverso da participação das PCHs no MRE é a possibilidade de
+escolha que elas possuem para aderir ou não ao mecanismo. Isso permite a elas um
+comportamento estratégico que pode prejudicar os demais participantes que não tem
+esta faculdade.
+Outro ponto de risco está associado à entrada de usinas de fontes renováveis e não
+controláveis. A geração hidrelétrica, apesar de ser a maior em participação no SIN, é
+a que fecha o balanço eletro-energético, sendo, portanto, marginal na operação. A
+geração hidrelétrica é precedida pelas fontes não controláveis e pelas térmicas com
+CVU menor do que o CMO. Por outro lado, para um dado nível de demanda, o
+aumento da capacidade não hidrelétrica reduz o custo futuro e, portanto, o valor da
+
+[PDF, página 22]
+Figura 14- GH, GF sazonalizada e PLD SE – 2018
+
+Nesta seção da NT são abordadas as seguintes questões:
+ Mudança estrutural do padrão hidrológico das principais bacias do SIN;
+ Sobre estimativa das garantias físicas publicadas;
+O primeiro aspecto a ser explorado nesta seção é a dúvida sobre uma possível
+mudança no padrão de vazões das bacias do SIN, a partir de um conjunto de registros
+históricos desde o início do mecanismo (2001) até o último ano completo de análise
+(2018) e traçar correlações, testar hipóteses e, ao final, identificar relações de causaefeito que ajudem a compreender o resultado do MRE frente a diversas condições.
+A Tabela 1 apresenta cada variável com a respectiva fonte de informação e o
+tratamento aplicado:
+Variável
+Geração hidrelétrica
+verificada
+Garantias físicas históricas
+“GSF” verificado (GSF)
+
+Energia Natural Afluente
+verificada
+
+3
+
+Fonte e/ou Tratamento
+AP 08/2019 ANEEL3
+AP 08/2019 ANEEL
+Razão entre a geração verificada (mensal) e as
+garantias físicas históricas. Neste estudo não
+será considerado procedimento da
+sazonalização das garantias físicas para o
+MRE.
+Montante de energia decorrente das vazões
+naturais afluentes às usinas hidrelétricas,
+obtidos nos Resultados da Operação – Histórico
+da Operação, disponibilizado pelo ONS4.
+
+A Audiência Pública (AP) 08/2019, promovida pela ANEEL tem como objetivo obter subsídios para o
+aprimoramento da proposta de revisão das faixas de acionamento e dos adicionais das Bandeiras Tarifárias, a
+vigorar de maio de 2019 a abril de 2020. Dentre os dados disponibilizados na AP constam estimativas de GSF
+de 2001 a 2018.
+4
+http://www.ons.org.br/paginas/resultados-da-operacao/historico-da-operacao

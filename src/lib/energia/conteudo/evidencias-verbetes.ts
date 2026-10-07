@@ -40,6 +40,20 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     painel: { rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" },
     leitura: "O fator de ajuste do MRE no último mês: geração das usinas do mecanismo dividida pela garantia física modulada e ajustada pelo fator de disponibilidade.",
   },
+  gsf: {
+    arquivo: "gold/mercado.json",
+    caminho: ["mre_gsf", "kpis", "gsf_ultimo_mes", "evidencia"],
+    natureza: "CALCULADO",
+    painel: { rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" },
+    leitura: "O GSF do último mês publicado: geração das usinas do MRE dividida pela garantia física modulada e ajustada pelo fator de disponibilidade, nos conjuntos abertos da CCEE.",
+  },
+  "constrained-off": {
+    arquivo: "gold/geracao_detalhe.json",
+    caminho: ["evidencias", "restricao_eolica_12m_energia"],
+    natureza: "ESTIMADO",
+    painel: { rotulo: "Geração: renováveis restringidas", href: "/setor-eletrico/geracao/restricoes#p023" },
+    leitura: "Energia que as usinas eólicas deixaram de gerar por limitação do ONS nos 12 meses completos, estimada como a geração de referência menos a verificada.",
+  },
   ess: {
     arquivo: "gold/mercado.json",
     caminho: ["encargos", "kpis", "ess_12m", "evidencia"],

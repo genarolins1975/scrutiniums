@@ -44,8 +44,10 @@ export default {
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible", timeout: 10000 });
       const h1 = N(await p.getByRole("heading", { level: 1 }).first().innerText());
       const texto = N(await p.locator("main").innerText());
-      const conferidos = texto.match(/(\d+) de (\d+) verbetes estão conferidos na fonte primária/);
-      j.afirmar(conferidos, "a página não diz quantos verbetes estão conferidos");
+      const parcial = texto.match(/(\d+) de (\d+) verbetes estão conferidos na fonte primária/);
+      const todos = texto.match(/Os (\d+) verbetes estão conferidos na fonte primária/);
+      j.afirmar(parcial || todos, "a página não diz quantos verbetes estão conferidos");
+      const conferidos = parcial ?? [null, todos[1], todos[1]];
       const earLink = await p.locator('main a[href="/setor-eletrico/aprenda/ear"]').count();
       const pldLink = await p.locator('main a[href="/setor-eletrico/aprenda/pld"]').count();
       const trilha = await p.locator('main a[href="/setor-eletrico/aprenda/trilhas/agua-operacao-preco"]').count();

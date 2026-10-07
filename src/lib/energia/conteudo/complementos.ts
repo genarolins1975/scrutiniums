@@ -27,6 +27,8 @@ export const UNIDADE: Record<string, string> = {
   acr: "MW médios (consumo contabilizado pela CCEE) ou MWh (consumo cativo na rede, EPE)",
   ess: "R$, por mês de competência",
   "garantia-fisica": "MW médios",
+  gsf: "percentual, por mês (geração em MWmédios dividida pela garantia física em MWmédios)",
+  "constrained-off": "GWh de energia não gerada estimada, % da geração possível estimada (taxa) e MW de corte simultâneo",
   imerg: "mm de precipitação por dia",
   "merra-2": "°C (temperatura do ar a 2 metros)",
   "curva-de-carga": "MWmed, por hora e subsistema",
@@ -180,6 +182,42 @@ export const CONTRASTES: Contraste[] = [
     a: "garantia-fisica",
     b: "geracao-centralizada",
     texto: "Garantia física não é geração: a usina pode gerar mais ou menos que ela em cada mês.",
+  },
+  {
+    a: "gsf",
+    b: "garantia-fisica",
+    texto:
+      "A garantia física é o teto de energia de cada empreendimento; o GSF é a razão entre o que as usinas do MRE geraram no mês e a garantia física delas, no conjunto. Um GSF de 80,51% não diz que a garantia física caiu: diz que a geração do mês ficou abaixo dela.",
+  },
+  {
+    a: "mre",
+    b: "gsf",
+    texto:
+      "O MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico; o GSF é o número mensal que compara a geração delas com a garantia física. Falar em MRE é falar das regras do mecanismo, falar em GSF é falar da razão do mês.",
+  },
+  {
+    a: "ree",
+    b: "ear",
+    texto:
+      "A EAR é a energia associada à água armazenada; o REE é um dos recortes em que o ONS a publica, ao lado do subsistema, da bacia e do reservatório. Cada recorte tem o próprio perímetro e a própria EAR máxima.",
+  },
+  {
+    a: "ree",
+    b: { rotulo: "subsistema" },
+    texto:
+      "A topologia descrita pela EPE tem 4 subsistemas interligados e 12 REE: são recortes diferentes, e o REE agrega as usinas hidrelétricas de acordo com a bacia hidrográfica.",
+  },
+  {
+    a: "constrained-off",
+    b: "geracao-centralizada",
+    texto:
+      "A geração verificada é o que as usinas entregaram no balanço do ONS; o constrained-off é a energia que a usina deixou de gerar por comando do ONS, estimada contra uma geração de referência, só nas meias horas em que a usina foi limitada. É energia que a geração verificada não contém.",
+  },
+  {
+    a: "constrained-off",
+    b: { rotulo: "falta de vento" },
+    texto:
+      "O evento decorre de comando do ONS e se origina fora das instalações da usina. Um dia sem vento reduz a geração sem comando do ONS e não é constrained-off.",
   },
   {
     a: "imerg",

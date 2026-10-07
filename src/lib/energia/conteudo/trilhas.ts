@@ -73,9 +73,9 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
       {
         id: "armazenamento",
         titulo: "A água guardada",
-        conceitos: ["ear", "armazenamento"],
+        conceitos: ["ear", "armazenamento", "ree"],
         texto:
-          "A EAR é a energia associada ao volume de água nos reservatórios que pode virar geração na própria usina e nas que ficam a jusante. Em percentual da EAR máxima, diz quanto do armazenamento possível está ocupado.",
+          "A EAR é a energia associada ao volume de água nos reservatórios que pode virar geração na própria usina e nas que ficam a jusante. Em percentual da EAR máxima, diz quanto do armazenamento possível está ocupado. O ONS a publica também por reservatório equivalente de energia (REE), a agregação por bacia que os modelos de planejamento usam.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/agua_detalhe.json",
@@ -92,9 +92,9 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
       {
         id: "operacao",
         titulo: "A operação decide quem gera",
-        conceitos: ["geracao-centralizada", "cvu"],
+        conceitos: ["geracao-centralizada", "cvu", "constrained-off"],
         texto:
-          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o CVU de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa.",
+          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o CVU de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa. A geração eólica também pode ser reduzida por comando do ONS, por motivo externo à usina: é o constrained-off.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/geracao_detalhe.json",
@@ -134,9 +134,9 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
       {
         id: "mercado",
         titulo: "Onde o preço vira resultado",
-        conceitos: ["mcp", "mre", "garantia-fisica"],
+        conceitos: ["mcp", "mre", "gsf", "garantia-fisica"],
         texto:
-          "No MCP, a CCEE define o balanço de energia e o resultado de cada perfil de agente por submercado e hora. As hidrelétricas do MRE compartilham o risco hidrológico: quando, juntas, geram menos que a garantia física, o fator de ajuste do MRE fica abaixo de 100%.",
+          "No MCP, a CCEE define o balanço de energia e o resultado de cada perfil de agente por submercado e hora. As hidrelétricas do MRE compartilham o risco hidrológico: quando, juntas, geram menos que a garantia física, o fator de ajuste do MRE (GSF) fica abaixo de 100%.",
         prova: { tipo: "verbete", slug: "mre" },
       },
     ],

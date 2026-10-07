@@ -1,0 +1,44 @@
+[PDF, página 11]
+➢ Mês de Penalização do VminOp/VMINP: novembro.
+➢ Sazonalidade do VminOp/VMINP nos Períodos Pré e Pós Estudo: considerar.
+➢ Penalidade do VminOp/VMINP: [(1+taxadescontoanual) ^ (11/12)] x MAXCVU.
+Onde MAXCVU é o maior custo variável unitário considerando todo o horizonte
+de planejamento do NEWAVE.
+➢ Volumes Mínimos Operativos (VminOp) de forma constante em cada REE, em função
+da Energia Armazenável máxima:
+o REEs Sudeste, Paraná e Paranapanema: 20%
+o REEs Sul e Iguaçu: 30%
+o REE Nordeste: 23,3%
+o REE Norte: 28%
+➢ Sazonalidade de VMINT, VMAXT, CMONT e CFUGA nos Períodos Pré e Pós Estudo:
+considerar.
+➢ Metodologia para Geração de Cenários Hidrológicos do Modelo GEVAZP: PAR(p)-A.
+•
+
+Topologia:
+➢ Topologia de subsistemas: 4 subsistemas interligados – Sudeste – SE, Sul - S, Nordeste
+- NE, Norte – N.
+➢ Topologia de Reservatórios Equivalentes de Energia (REE): topologia G (12 REEs),
+considerada a partir do PMO de 01/2018, juntamente com a versão 24 do modelo
+NEWAVE, conforme Despacho nº 4.166, de 11 de dezembro de 2017, ilustrada na
+Figura 1.
+Figura 1 – Topologia de REE para o SIN – Topologia G
+
+•
+
+Usinas não despachadas centralizadamente não são simuladas individualmente nos
+modelos computacionais utilizados no cálculo de garantia física. Representa-se, apenas no
+modelo NEWAVE, uma expectativa de geração agregada por subsistema, por mês e por
+fonte. Essa estimativa de geração é obtida conforme Resolução Normativa ANEEL nº 1.032,
+de 26 de julho de 2022. A referência para a configuração de usinas não despachadas
+centralizadamente será o PMO de setembro de 2025. Esse montante é descontado do
+mercado a ser atendido.
+
+•
+
+A micro e minigeração distribuída (MMGD) não é simulada individualmente nos modelos
+computacionais utilizados no cálculo de garantia física de energia. É representada, apenas
+no modelo NEWAVE, uma expectativa de geração agregada por subsistema e por mês para
+o ano de 2030 do Plano Decenal de Expansão de Energia 2034 (PDE 2034).
+11
+EPE-DEE-099/2025–r0

@@ -41,14 +41,24 @@ function rotaExiste(href: string): boolean {
 }
 
 describe("P065: fontes primárias versionadas", () => {
-  const dir = readdirSync(join(raiz, "pipeline/energia/seed/documentos_aprenda")).sort().at(-1)!;
-  const base = join("pipeline/energia/seed/documentos_aprenda", dir);
-  const manifesto = JSON.parse(ler(join(base, "MANIFESTO.json"))) as { arquivos: { arquivo: string; url: string; sha256: string; capturado_em: string }[] };
+  // cada pasta vAAAAMMDDTHHMMSSZ é uma coleta com o próprio MANIFESTO.json; as coletas se somam
+  const versoes = readdirSync(join(raiz, "pipeline/energia/seed/documentos_aprenda"))
+    .filter((d) => /^v\d{8}T\d{6}Z$/.test(d))
+    .sort();
+  const manifesto = {
+    arquivos: versoes.flatMap((dir) => {
+      const base = join("pipeline/energia/seed/documentos_aprenda", dir);
+      const m = JSON.parse(ler(join(base, "MANIFESTO.json"))) as { arquivos: { arquivo: string; url: string; sha256: string; capturado_em: string }[] };
+      return m.arquivos.map((a) => ({ ...a, base }));
+    }),
+  };
 
-  it("cada captura confere com o sha256 do manifesto", () => {
+  it("há mais de uma coleta e cada captura confere com o sha256 do manifesto", () => {
+    expect(versoes.length).toBeGreaterThanOrEqual(2);
     for (const a of manifesto.arquivos) {
-      const h = createHash("sha256").update(readFileSync(join(raiz, base, a.arquivo))).digest("hex");
+      const h = createHash("sha256").update(readFileSync(join(raiz, a.base, a.arquivo))).digest("hex");
       expect(h, a.arquivo).toBe(a.sha256);
+      expect(a.capturado_em, a.arquivo).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
     }
   });
 
@@ -58,13 +68,42 @@ describe("P065: fontes primárias versionadas", () => {
       for (const f of c.fontes) {
         const cap = manifesto.arquivos.find((a) => a.url === f.url);
         if (!cap || !f.trecho) continue;
-        const texto = espacos(ler(join(base, cap.arquivo)));
+        const texto = espacos(ler(join(cap.base, cap.arquivo)));
         for (const parte of f.trecho.split("[...]").map(espacos).filter(Boolean)) expect(texto, `${c.slug}: ${parte.slice(0, 60)}`).toContain(parte);
         conferidosNaCaptura++;
       }
     }
-    // MRE (InfoMercado) e ACR, ACL, garantia física (três parágrafos) e ESS (dois) no Decreto nº 5.163/2004
-    expect(conferidosNaCaptura).toBeGreaterThanOrEqual(5);
+    // MRE (InfoMercado), ACR, ACL, garantia física (três) e ESS (dois) no Decreto nº 5.163/2004; GSF (quatro),
+    // REE (seis) e constrained-off (quatro) nas capturas de 07/10/2026
+    expect(conferidosNaCaptura).toBeGreaterThanOrEqual(22);
+  });
+
+  it("GSF, REE e constrained-off citam só trechos que estão nas capturas, e toda fonte sem captura é dado do ONS que o verbete não usa como definição", () => {
+    for (const slug of ["gsf", "ree", "constrained-off"]) {
+      const c = conceito(slug)!;
+      expect(c.estado, slug).toBe("CONFERIDO");
+      expect(c.conferidoEm, slug).toBe("2026-10-07");
+      expect(c.fontes.length, slug).toBeGreaterThanOrEqual(3);
+      for (const f of c.fontes) {
+        expect(f.trecho, `${slug}: ${f.documento}`).toBeTruthy();
+        expect(manifesto.arquivos.some((a) => a.url === f.url), `${slug}: ${f.url}`).toBe(true);
+      }
+    }
+  });
+
+  it("a conta do boletim do MME fecha: 42.500 MWmédios sobre 52.788 MWmédios dá o GSF de 80,51% que o verbete cita", () => {
+    const t = conceito("gsf")!.fontes.map((f) => f.trecho ?? "").join(" ");
+    const m = t.match(/geraram, juntas, ([\d.]+) MWmédios, ante a garantia física sazonalizada de ([\d.]+) MWmédios, o que representou um GSF mensal de ([\d,]+)%/);
+    expect(m).not.toBeNull();
+    const gera = Number(m![1].replace(".", ""));
+    const gf = Number(m![2].replace(".", ""));
+    expect(((gera / gf) * 100).toFixed(2).replace(".", ",")).toBe(m![3]);
+  });
+
+  it("as fontes de GSF e de constrained-off com a nota de 2022 e a REN ANEEL declaram o que não foi lido no original", () => {
+    expect(conceito("gsf")!.limitacoes!.join(" ")).toMatch(/403/);
+    expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/não foi lida no original/);
+    expect(conceito("ree")!.limitacoes!.join(" ")).toMatch(/Procedimentos de Rede/);
   });
 });
 
@@ -85,8 +124,8 @@ describe("P065: glossário completo", () => {
     }
   });
 
-  it("os três pendentes não publicam definição, contraste, unidade nem exemplo, e dizem o que já foi consultado", () => {
-    expect(pendentes.map((c) => c.slug).sort()).toEqual(["constrained-off", "gsf", "ree"]);
+  it("nenhum verbete está em preparação; se algum voltar a estar, não publica definição, contraste, unidade nem exemplo e diz o que já foi consultado", () => {
+    expect(pendentes.map((c) => c.slug)).toEqual([]);
     for (const c of pendentes) {
       expect(c.emUmaFrase, c.slug).toBeUndefined();
       expect(contrastesDe(c.slug), c.slug).toEqual([]);
@@ -281,7 +320,7 @@ describe("links do Aprenda no site construído", () => {
       }
     }
     expect(Array.from(new Set(falhas))).toEqual([]);
-  });
+  }, 30000);
 });
 
 describe("P066: volta do painel ao contexto", () => {
@@ -301,7 +340,8 @@ describe("P066: volta do painel ao contexto", () => {
       texto: "Voltar à trilha Água, operação e preço, passo 4",
     });
     expect(destinoDaVolta("trilha:agua-operacao-preco:xyz", r)?.href).toBe("/setor-eletrico/aprenda/trilhas/agua-operacao-preco");
-    expect(destinoDaVolta("verbete:gsf", r)).toBeNull();
+    expect(destinoDaVolta("verbete:gsf", r)).toEqual({ href: "/setor-eletrico/aprenda/gsf#exemplo", texto: "Voltar ao verbete GSF" });
+    expect(destinoDaVolta("verbete:inexistente", r)).toBeNull();
     expect(destinoDaVolta("https://exemplo.com", r)).toBeNull();
     expect(destinoDaVolta("trilha:outra:x", r)).toBeNull();
   });

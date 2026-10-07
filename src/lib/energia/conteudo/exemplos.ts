@@ -10,6 +10,7 @@ import { gold, integra, lerGold } from "../gold";
 import { dataBR, mesAno, num, pct, reais } from "../formato";
 import { linhasRegulatorio } from "../perdas";
 import type { Natureza } from "../tipos";
+import type { AguaDetalheGold } from "../tipos-agua";
 import type { GoldGeracaoDetalhe } from "../tipos-geracao";
 import type { MercadoGold } from "../tipos-mercado";
 import type { PerdasGold } from "../tipos-perdas";
@@ -213,6 +214,23 @@ export function exemploDe(slug: string): Exemplo {
           ),
         ],
         href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf",
+      };
+    }
+    case "ree": {
+      const todos = lerGold<AguaDetalheGold>("agua_detalhe.json")?.armazenamento?.ree;
+      const armazenam = todos?.filter((r) => !r.sem_armazenamento && r.ear_pct !== null).sort((a, b) => a.ear_pct! - b.ear_pct!);
+      if (!todos || !armazenam || armazenam.length < 2) return null;
+      const menor = armazenam[0];
+      const maior = armazenam[armazenam.length - 1];
+      return {
+        partes: [
+          t(`Em ${dataBR(menor.dia)}, o ONS publicou a energia armazenada de `),
+          t(`${num(todos.length, 0)} REE`, "CALCULADO"),
+          t(`. Entre os ${num(armazenam.length, 0)} que têm armazenamento, a EAR ia de `),
+          t(`${pct(menor.ear_pct, 1)} da EAR máxima no REE ${menor.nome} a ${pct(maior.ear_pct, 1)} no REE ${maior.nome}`, "OBSERVADO"),
+          t(": cada REE tem o próprio perímetro e a própria EAR máxima."),
+        ],
+        href: "/setor-eletrico/agua-e-clima?rec=ree#p017",
       };
     }
     case "perdas-tecnicas": {

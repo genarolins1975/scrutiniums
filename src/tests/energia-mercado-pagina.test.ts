@@ -192,7 +192,7 @@ describe("mercado: navegação e glossário", () => {
     expect(h).not.toContain("ModuloEmIntegracao");
   });
 
-  it("MRE conferido com o glossário do InfoMercado; ACR, ACL, garantia física e ESS no Decreto nº 5.163/2004; GSF segue pendente e sem definição", () => {
+  it("MRE conferido com o glossário do InfoMercado; ACR, ACL, garantia física e ESS no Decreto nº 5.163/2004; GSF no boletim e no relatório do MME", () => {
     const mre = conceito("mre")!;
     expect(mre.estado).toBe("CONFERIDO");
     expect(mre.conferidoEm).toBe("2026-10-06");
@@ -205,9 +205,12 @@ describe("mercado: navegação e glossário", () => {
       expect(c.fontes[0].url, s).toBe("https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5163.htm");
     }
     const gsf = conceito("gsf")!;
-    expect(gsf.estado).toBe("PENDENTE");
-    expect(gsf.emUmaFrase).toBeUndefined();
-    expect(gsf.fontePlanejada).toContain("Regras de Comercialização da CCEE");
+    expect(gsf.estado).toBe("CONFERIDO");
+    expect(gsf.conferidoEm).toBe("2026-10-07");
+    expect(gsf.fontes.map((f) => f.orgao)).toEqual(expect.arrayContaining(["MME"]));
+    expect(gsf.fontes.some((f) => f.trecho?.includes("GSF mensal de 80,51%"))).toBe(true);
+    // a definição regulatória (Regras de Comercialização da CCEE) continua não acessada, e o verbete diz isso
+    expect(gsf.limitacoes!.join(" ")).toContain("Regras de Comercialização da CCEE");
     for (const s of ["acl", "acr", "gsf", "ess"]) expect(conceito(s)!.vejaNoPortal.every((v) => !v.rotulo.includes("em integração")), s).toBe(true);
   });
 });

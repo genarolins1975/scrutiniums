@@ -448,7 +448,7 @@ describe("páginas P067 a P070", () => {
     expect(t).not.toContain("fontes primárias (CCEE, legislação) não foram acessadas");
     expect(t).toContain("autorizada pelo responsável em 06/10/2026");
     expect(t).toContain("painel de limites da Regulação");
-    expect(t).toMatch(/\d+ verbetes do Aprenda aparecem em preparação/);
+    expect(t).toContain("Todos os verbetes do Aprenda têm a definição conferida em fonte primária.");
   });
 
   it("copia nova sem travessão nem hífen usado como pontuação", () => {

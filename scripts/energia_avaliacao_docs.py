@@ -145,7 +145,7 @@ def escreve_aceite(a, docs, caminho):
         ("O mapa de perdas funciona com geografia, indicadores e referências corretos.",
          "parcial", f"Interações do mapa exercitadas por roteiro ({jr('J6')}; {jr('J7')}); a geografia e as referências não foram reconferidas contra a fonte nesta avaliação."),
         ("Os conceitos pendentes foram tratados e as fontes conferidas.",
-         "parcial", "Verbetes do Aprenda conferidos na fonte primária: ver a nota de Correção de cada verbete; GSF, REE e energia restringida seguem pendentes de fonte primária e declarados como tal."),
+         "parcial", "Os 48 verbetes do Aprenda estão conferidos na fonte primária (GSF, REE e constrained-off em 07/10/2026, em documentos do MME, da EPE e do ONS); a definição regulatória do GSF, o texto original da REN ANEEL nº 1.030/2022 e os Procedimentos de Rede do ONS não foram acessados, e cada verbete declara isso."),
         ("Não há números de demonstração no caminho de produção.", "nao_verificado", "Não foi objeto desta avaliação; os testes de governança e de contrato das golds cobrem parte do requisito."),
         ("As comparações não misturam datas, universos ou denominadores incompatíveis.", "nao_verificado", "Não foi objeto desta avaliação além da nota de Correção por gold; a revisão adversarial das interfaces publicadas segue pendente."),
         ("Gráfico, tabela, texto e exportação derivam da mesma consulta e versão.", "parcial", f"{jr('J4')}: o agregado exibido foi recalculado a partir do CSV exportado."),

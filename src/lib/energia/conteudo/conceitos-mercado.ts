@@ -13,10 +13,14 @@ import type { Conceito, FonteOficial } from "./conceitos";
  * - ACR, ACL, garantia física e ESS: Decreto nº 5.163/2004, texto compilado do Planalto
  *   acessado em 06/10/2026 às 18h28 de Brasília, na redação vigente (art. 1º, § 2º; art. 2º,
  *   §§ 1º a 3º; art. 59).
- * Os trechos são literais; a paráfrase não acrescenta nada que eles não digam. GSF continua
- * pendente: nenhum desses documentos define o fator, e as Regras de Comercialização da CCEE
- * não foram acessadas. As definições operacionais do módulo (gold mercado.json, bloco
- * "definicoes") são método do observatório, não documento primário.
+ * - GSF: Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro de janeiro de 2021 e
+ *   Relatório do GT Aprimoramento do MRE de julho de 2019, ambos do MME, conferidos em
+ *   07/10/2026 e versionados em v20261007T211054Z (sha256 de cada original no MANIFESTO.json).
+ * Os trechos são literais; a paráfrase não acrescenta nada que eles não digam. Nenhum desses
+ * documentos é a definição regulatória do fator: as Regras de Comercialização da CCEE e a
+ * regulamentação da ANEEL não foram acessadas, e o verbete GSF diz isso. As definições
+ * operacionais do módulo (gold mercado.json, bloco "definicoes") são método do observatório,
+ * não documento primário.
  */
 
 const URL_IM_229 = "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a";
@@ -27,6 +31,26 @@ const d5163 = (dispositivo: string, trecho: string, parafrase?: string): FonteOf
   orgao: "Presidência da República",
   documento: `Decreto nº 5.163, de 30 de julho de 2004, ${dispositivo} (texto compilado, redação vigente em 06/10/2026)`,
   url: URL_D5163,
+  trecho,
+  parafrase,
+});
+
+const URL_BOLETIM_MME = "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2021/boletim-de-monitoramento-do-sistema-eletrico-jan-2021.pdf";
+
+const URL_GT_MRE = "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-executiva/modernizacao-do-setor-eletrico/arquivos/pasta-geral-publicada/mre.pdf";
+
+const boletimMme = (secao: string, trecho: string, parafrase?: string): FonteOficial => ({
+  orgao: "MME",
+  documento: `Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro, janeiro de 2021, ${secao}`,
+  url: URL_BOLETIM_MME,
+  trecho,
+  parafrase,
+});
+
+const gtMre = (secao: string, trecho: string, parafrase?: string): FonteOficial => ({
+  orgao: "MME, GT Modernização do Setor Elétrico",
+  documento: `Relatório do Grupo Temático Aprimoramento do MRE, julho de 2019, ${secao}`,
+  url: URL_GT_MRE,
   trecho,
   parafrase,
 });
@@ -178,5 +202,44 @@ export const CONCEITOS: Conceito[] = [
       "Valor de competência não é valor pago no mês: o pagamento sai depois, na liquidação, e passa pelo alívio com recursos do próprio mercado.",
     ],
     vejaNoPortal: [{ rotulo: "Mercado: encargos e liquidação", href: "/setor-eletrico/mercado/encargos" }],
+  },
+  {
+    slug: "gsf",
+    sigla: "GSF",
+    nome: "Generation Scaling Factor",
+    grupo: "Mercado",
+    estado: "CONFERIDO",
+    conferidoEm: "2026-10-07",
+    emUmaFrase:
+      "Razão, em percentual, entre a geração verificada das usinas do MRE no mês e a garantia física dessas usinas; abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física.",
+    porQueImporta:
+      "Resume, mês a mês, o resultado das hidrelétricas do MRE diante da garantia física. O relatório do GT de Aprimoramento do MRE registra que o descolamento entre a sazonalidade da produção e a da garantia física sazonalizada infla o GSF no período úmido e o reduz no período seco, o que provoca oscilações artificiais e eleva o risco das hidrelétricas.",
+    comoEMedido:
+      "Em percentual, por mês. No boletim do MME, a geração hidráulica do mês, referenciada ao centro de gravidade, é comparada com a garantia física sazonalizada, as duas em MWmédios. No observatório, a geração das usinas do MRE é dividida pela garantia física modulada e ajustada pelo fator de disponibilidade, com os conjuntos abertos da CCEE, e o resultado é conferido com o fator mensal publicado no InfoMercado.",
+    relacoes: ["mre", "garantia-fisica"],
+    fontes: [
+      boletimMme(
+        "seção 8.5, Mecanismo de Realocação de Energia, página 28",
+        "Em dezembro de 2020, as usinas participantes do MRE geraram, juntas, 42.500 MWmédios, ante a garantia física sazonalizada de 52.788 MWmédios, o que representou um GSF mensal de 80,51%.",
+        "Em outras palavras: dividindo o que as usinas do MRE geraram juntas, 42.500 MWmédios, pela garantia física sazonalizada, 52.788 MWmédios, o resultado é 80,51%, e esse é o GSF do mês.",
+      ),
+      boletimMme("lista de siglas", "GSF - Generation Scaling Factor"),
+      gtMre(
+        "Tabela 1, variáveis avaliadas",
+        "Razão entre a geração verificada (mensal) e as garantias físicas históricas. Neste estudo não será considerado procedimento da sazonalização das garantias físicas para o MRE.",
+        "Em outras palavras: neste estudo o GSF é a geração mensal verificada dividida pelas garantias físicas históricas, sem aplicar a sazonalização das garantias físicas.",
+      ),
+      gtMre(
+        "seção sobre a produção das usinas do MRE (figura 8)",
+        "O descolamento entre a sazonalidade da produção hidrelétrica e da GF [...] seja inflado no período úmido (muita geração e baixa GF sazonalizada) e reduzido no período seco (pouca geração e alta GF sazonalizada), provocando oscilações artificiais do GSF e elevando o risco das hidrelétricas.",
+        "Em outras palavras: como a produção das hidrelétricas e a garantia física sazonalizada não variam juntas ao longo do ano, o GSF fica artificialmente alto no período úmido, quando se gera muito e a garantia física sazonalizada é baixa, e artificialmente baixo no período seco.",
+      ),
+    ],
+    limitacoes: [
+      "As fontes não usam o mesmo denominador: o boletim do MME usa a garantia física sazonalizada, o estudo do GT de 2019 usa as garantias físicas históricas sem sazonalização, e o observatório usa a garantia física modulada e ajustada pelo fator de disponibilidade. Valores de fontes diferentes só se comparam depois de conferir o denominador.",
+      "A definição regulatória do fator de ajuste do MRE, nas Regras de Comercialização da CCEE e na regulamentação da ANEEL, não foi acessada nesta fase: o repositório de normas da ANEEL respondeu 403. O verbete descreve o GSF como os documentos do MME o usam.",
+      "O GSF é o resultado do conjunto das usinas do mecanismo, que o boletim descreve como as usinas do MRE geraram \"juntas\"; não é o desempenho de uma usina.",
+    ],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" }],
   },
 ];
