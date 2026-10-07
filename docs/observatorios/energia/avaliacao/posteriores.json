@@ -1,3 +1,4 @@
 [
-  "Tabelas interativas: a coluna fixa da primeira coluna passa a ter largura máxima (11 rem no celular e 20 rem em tela larga) e o texto quebra, porque, ordenada pelo título, ela ocupava a janela inteira em 390 px e cobria o cabeçalho das demais colunas, que ficavam sem como ser tocadas (achado ao exercitar os controles). A correção entrou no código depois da medição da rodada 2 e será medida na rodada seguinte."
+ "Tabelas interativas: a coluna fixa do nome da linha passa a ter largura mínima (7 rem no celular e 9 rem em tela larga), porque, com muitas colunas, ela era espremida e quebrava palavras no meio (Paraíb a, Tocantin s, mai/2 023). Foi o defeito de leitura mais citado pelos nove revisores da rodada 3. Conferido em captura de duas tabelas, ainda não medido nem revisado.",
+ "Barra de abas do módulo no celular: o alinhamento da aba atual é refeito depois do carregamento das fontes, porque a largura dos rótulos mudava e deixava o começo da aba atual cortado (LIDADE DO SERVIÇO). A posição final foi conferida no navegador, ainda não medida na rodada."
 ]

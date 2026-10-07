@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-07T12:22:55Z",
+ "gerado_em": "2026-10-07T14:48:21Z",
  "vitest": {
   "admin": {
    "total": 11,
@@ -150,7 +150,7 @@
    "falhas": 0
   },
   "energia-comp-grafico-linhas": {
-   "total": 23,
+   "total": 26,
    "falhas": 0
   },
   "energia-comp-grafico-pontos": {
@@ -198,7 +198,7 @@
    "falhas": 0
   },
   "energia-dados-interface": {
-   "total": 35,
+   "total": 38,
    "falhas": 0
   },
   "energia-empresas": {
@@ -274,7 +274,7 @@
    "falhas": 0
   },
   "energia-visao": {
-   "total": 31,
+   "total": 32,
    "falhas": 0
   },
   "epae-data": {
@@ -571,7 +571,7 @@
    "ignorados": 0
   },
   "test_energia_avaliacao": {
-   "total": 49,
+   "total": 52,
    "falhas": 0,
    "ignorados": 0
   },
@@ -720,6 +720,6 @@
   "ok": true,
   "saida": "✔ No ESLint warnings or errors"
  },
- "resumo_regressao": "Vitest: 2638 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1356 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
- "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2638 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1356 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+ "resumo_regressao": "Vitest: 2645 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2645 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
 }

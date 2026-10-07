@@ -192,9 +192,9 @@ Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma r
 | Rubrica, agregação, defeitos, rodadas e gold | `scripts/energia_avaliacao.py` |
 | Testes do repositório por módulo, com falha simulada | `scripts/energia_avaliacao_testes.py` |
 | Documentos gerados | `scripts/energia_avaliacao_docs.py` grava `AVALIACAO_PAGINAS.md` e `EVIDENCIAS_ACEITE.md` |
-| Evidência bruta condensada, versionada | `docs/observatorios/energia/avaliacao/` (`inspecao.json`, `jornadas.json`, `atritos.json`, `revisao_visual.json`, `posteriores.json`, `rodadas.json`, `testes.json`, `rotas.txt`, `capturas/`) |
+| Evidência bruta condensada, versionada | `docs/observatorios/energia/avaliacao/` (`inspecao.json`, `jornadas.json`, `atritos.json`, `revisao_visual.json`, `posteriores.json`, `ajustes_do_metodo.json`, `rodadas.json`, `testes.json`, `rotas.txt`, `capturas/`) |
 | Gold e página | `public/energia/gold/avaliacao.json`; `/setor-eletrico/metodologia/avaliacao` (`AvaliacaoPaginas.tsx`, `AvaliacaoPartes.tsx`, `AvaliacaoJornada.tsx`; derivações em `src/lib/energia/avaliacao.ts`) |
-| Testes | `pipeline/tests/test_energia_avaliacao.py` (49) e `src/tests/energia-avaliacao.test.ts` (27) |
+| Testes | `pipeline/tests/test_energia_avaliacao.py` (52) e `src/tests/energia-avaliacao.test.ts` (28) |
 
 ### 8.1 Rubrica
 
@@ -206,32 +206,55 @@ Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma r
 
 ### 8.2 Rodadas e resultado
 
-Fonte: `public/energia/gold/avaliacao.json`, rodada `2026-10-07-r2`, inspeção de 07/10/2026; dados de referência das golds de 01/10/2026.
+Fonte: `public/energia/gold/avaliacao.json`; três rodadas em 07/10/2026 (`2026-10-07-r1`, `r2` e `r3`); dados de referência das golds de 01/10/2026. A r3 é a rodada atual, medida depois da rodada de correção do código.
 
 | Rodada | Páginas | Dimensões com nota | Nota ponderada média | Atendem a meta | Defeitos crítico / alto / médio / baixo | Jornadas cumpridas |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-10-07-r1 (base, sem revisão visual e didática) | 89 | 8 de 10 | 8,3 | 0 | 0 / 12 / 86 / 12 | 8 de 10 |
-| 2026-10-07-r2 (final) | 94 | 10 de 10 | 7,9 | 0 | 0 / 9 / 73 / 12 | 10 de 10 |
+| r1 (base, sem revisão visual e didática) | 89 | 8 de 10 | 8,4 | 0 | 0 / 12 / 85 / 12 | 8 de 10 |
+| r2 (primeira com as dez dimensões) | 94 | 10 de 10 | 8,0 | 0 | 0 / 9 / 72 / 12 | 10 de 10 |
+| r3 (depois da rodada de correção) | 94 | 10 de 10 | 8,2 | 0 | 0 / 4 / 34 / 12 | 10 de 10 |
 
-* A média caiu de 8,3 para 7,9 porque a rodada final inclui didatismo (média 6,8) e qualidade visual (6,9), que a base não podia avaliar. A comparação válida é por dimensão, nas oito avaliadas nas duas rodadas: navegação 9,1 para 9,2, interatividade 9,5 para 9,4, acessibilidade 7,6 para 7,7, completude 7,8 para 7,9, correção 7,8 para 7,8, rastreabilidade 9,0 para 9,0, atualidade 7,8 para 7,9, desempenho 8,7 para 8,7. A evolução é pequena e não alcança as metas.
-* Entre as rodadas foram corrigidos 21 defeitos medidos na base (entre eles: dois defeitos axe em tabelas e links, texto espremido no celular em Minha região, sinal de percentual repetido nos cartões de perdas, ficha de conjunto atrasado sem atualidade, HTML acima da meta de peso em duas páginas).
-* Nenhuma das 94 páginas atende a meta de produto. Nenhum defeito crítico. Dez jornadas cumpridas por roteiro, com os atritos de cada uma em `atritos.json`.
-* Defeitos abertos de maior alcance (número de páginas): anatomia do painel incompleta em 86 páginas, a maior parte pela falta de pergunta como título (45 páginas, 9 delas também sem gráfico ou mapa); rolagem horizontal da página (23) e a 360 px (19); alvos de toque abaixo de 24 px em 390 px (67 páginas); 12 páginas sem data de referência ou de conferência; três CSV com checagem reprovada em `publicacao.json`; 6 páginas dependentes do conjunto atrasado da ANEEL (SCS, 367 dias); 5 páginas sem ficha de evidência com teste registrado.
-* Módulos de menor nota ponderada: Dados (7,4), Rede (7,6), Carga, PLD e Perdas (7,7). Maiores: Qualidade e Mercado (8,5); Visão geral, Aprenda, Território e Expansão (8,3).
+Média das páginas por dimensão (rubrica 1.0; n.av.: dimensão não avaliada na rodada):
+
+| Dimensão | r1 | r2 | r3 | Meta |
+| --- | --- | --- | --- | --- |
+| Didatismo | n.av. | 6,8 | 7,0 | 9,5 |
+| Qualidade visual | n.av. | 6,9 | 7,2 | 9,5 |
+| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,0 |
+| Interatividade | 9,5 | 9,4 | 9,9 | 9,0 |
+| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 |
+| Completude | 8,4 | 8,5 | 8,6 | 9,0 |
+| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 9,0 |
+| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,0 |
+| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 9,0 |
+| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 9,0 |
+
+* **O que evoluiu e o que não evoluiu.** Defeitos abertos de 94 (r2) para 50 (r3): 54 corrigidos entre as rodadas. Rolagem horizontal da página: de 23 páginas para nenhuma (360 e 390 px em Entender, 390 px em Auditar). Alvos de toque abaixo de 24 px: de 67 páginas para nenhuma. Violações axe: nenhuma nas duas rodadas. Acessibilidade subiu de 7,7 para 9,0, que é o teto da rubrica sem leitor de tela real. Didatismo (6,8 para 7,0) e qualidade visual (6,9 para 7,2) mexeram pouco: nenhuma das 94 páginas atinge 9,5 e a pior nota de didatismo subiu de 4,0 para 5,0.
+* **Defeitos altos que sobram (4):** conjunto atrasado da ANEEL, SCS, 367 dias além do prazo (6 páginas); nenhuma ficha de evidência com teste registrado nas páginas do PLD (5); painel numérico sem Comprove este número nas fichas de modelos e na linha do tempo da Regulação (5); uma página sem fonte declarada.
+* **Medidas mudaram entre rodadas.** A comparação de uma dimensão só vale se o instrumento mediu o mesmo. As mudanças do instrumento e da regra estão em `avaliacao/ajustes_do_metodo.json` e na página, e são cinco: o título em forma de pergunta passou a ser medido; link no meio de frase passou pela exceção do WCAG 2.5.8 em mais tipos de bloco; tentativas de clique no botão de copiar link e na ficha de prova; rótulos Fontes e datas de referência reconhecidos; vocabulário de engenharia no texto do leitor registrado como evidência. Parte do ganho de acessibilidade vem do código (caixas e opções de 24 px, termo do glossário de 24 px) e parte da exceção de link em frase; dos 924 alvos pequenos da r2, 793 eram caixas e opções de 13 a 16 px e 119 eram termos do glossário de 23 px, e os dois grupos foram corrigidos no código.
+* **Módulos de menor nota ponderada na r3:** Dados (7,7), Carga (7,9), Perdas (8,1), Rede, PLD, Inclusão energética e Regulação (8,2). Maiores: página inicial (9,0), Qualidade (8,7), Território e Mercado (8,6).
+
+#### Correção de um erro da r2
+
+A r2 foi publicada contando como ausente o título em forma de pergunta em todos os painéis, e o resumo da r2 dizia que 45 painéis não tinham pergunta como título. Estava errado: o instrumento media o título, mas o campo não era copiado para o relatório, e a rubrica tratava "não medido" como zero. Medido de fato num levantamento feito antes da correção, 101 de 110 títulos de painel eram perguntas. Dos 9 que não eram (subpainéis de Perdas, PLD, Regulação, Empresas e Visão geral), 8 viraram pergunta; o nono é o cartão da etapa selecionada do diagrama de formação do PLD, que é uma definição e não um painel. A regra passou a tirar do cálculo o item não medido, e a r1 e a r2 foram recalculadas com ela (r1 de 8,3 para 8,4; r2 de 7,9 para 8,0; completude da r2 de 7,9 para 8,5). As duas rodadas aparecem na página e nos documentos com a marca de recalculada e o motivo.
 
 ### 8.3 Revisão visual e didática
 
-Nove revisores em contexto limpo (agentes de IA, sem acesso ao código) leram o texto de cada uma das 94 páginas e abriram as capturas em 1440 e 390 px. As notas e as observações estão em `revisao_visual.json`; os problemas entre páginas (jargão interno exposto em Entender, rodapé com data de processamento de execução anterior, subnavegação cortada a 390 px, gráficos com rótulos repetidos ou truncados, datas cruas) vêm transcritos na página, sem edição. Isto é revisão por agente: **não é teste com pessoas e não substitui um**.
+Nove revisores em contexto limpo (agentes de IA, sem acesso ao código e sem ver as notas anteriores) leram o texto de cada uma das 94 páginas e abriram as capturas em 1440 e 390 px, com o mesmo roteiro da r2. Na r3: didatismo de 5,0 a 8,5 (média 7,0), qualidade visual de 6,0 a 8,5 (média 7,2). As notas e as observações estão em `revisao_visual.json`, com o sha256 de cada captura aberta; os problemas entre páginas ficam na página, sem edição. Isto é revisão por agente: **não é teste com pessoas e não substitui um**. Os revisores da r3 são outras instâncias, e a diferença de rigor entre instâncias não foi calibrada, de modo que décimos entre r2 e r3 não são uma evolução comprovada.
+
+Problemas que mais se repetiram na r3 (por revisor): tabelas com a primeira coluna estreita quebrando palavras no meio (corrigido depois da medição, ver 8.4); jargão de engenharia e siglas sem expansão no Entender; resposta curta que chega tarde e Entender com tabelas e parágrafos longos; gráficos que mostram só uma ponta de rankings longos, o que contradiz a manchete (reajustes: 87 de 102 acima do IPCA, mas as barras visíveis são as 11 menores); verbete GSF vazio e títulos duplicados (DESSEM DESSEM); fichas de conjuntos de dados com descrição em parede de texto e uma tabela de capturas que diz estar vazia enquanto a ficha informa registros integrados; datas de processamento e contagens que divergem entre páginas.
 
 ### 8.4 Limitações
 
 * Didatismo e qualidade visual dependem de revisores que são agentes; as notas são comparáveis entre páginas da mesma rodada, não calibradas contra leitores reais.
 * As jornadas são roteiro por script: provam que o caminho existe e funciona, não que alguém o encontraria sozinho.
-* Sem leitor de tela real (NVDA, JAWS, VoiceOver) e sem auditoria manual de todos os critérios WCAG; desempenho medido em laboratório, sem dado de campo.
+* Sem leitor de tela real (NVDA, JAWS, VoiceOver) e sem auditoria manual de todos os critérios WCAG; desempenho medido em laboratório, sem dado de campo. Acessibilidade e desempenho têm teto de 9,0.
 * Famílias dinâmicas amostradas (seis páginas por família: verbetes do Aprenda, fichas de conjuntos de Dados, fichas de empresas); a nota da família vale para a amostra. 94 de 368 rotas construídas foram medidas.
-* A página de avaliação não está entre as 94 medidas; entra na próxima rodada.
-* A correção da coluna fixa das tabelas interativas entrou depois da medição da rodada final (`posteriores.json`) e aparece como "corrigida depois da medição".
-* As capturas ficam em `capturas/` como WebP (188 imagens da primeira dobra, 3,9 MB); a pasta bruta do instrumento (relatório de 1,7 MB e capturas em PNG de todas as larguras, 186 MB na rodada final) não é versionada, só a condensação (`inspecao.json`, 0,8 MB).
+* A página de avaliação não está entre as 94 medidas.
+* Corrigido depois da medição da r3, sem medir: largura mínima da primeira coluna das tabelas interativas e alinhamento da aba atual no celular (`posteriores.json`). Entram na r4.
+* Três defeitos de data crua seguem abertos (1900-01-03 e duas datas de DFP em textos de Expansão e Empresas) e o teste `energia-reauditoria` ainda acusa datas no HTML de 12 páginas de Auditar.
+* O caso de CEMIG-D (clique do navegador no botão de copiar link expirou, o clique por script funcionou) ficou registrado na evidência e não como defeito do botão; a causa do clique expirado não foi achada.
+* A pasta bruta do instrumento (relatório e capturas em PNG, 186 MB na r2) não é versionada, só a condensação (`inspecao.json`) e as 188 capturas da primeira dobra em WebP (4,5 MB na r3).
 
 ### 8.5 Como repetir uma rodada
 

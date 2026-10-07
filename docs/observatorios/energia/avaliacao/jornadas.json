@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-07T10:40:48.214Z",
+ "gerado_em": "2026-10-07T14:24:10.136Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6609,
+   "duracao_ms": 6415,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11431,
+   "duracao_ms": 11232,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 4,
-   "duracao_ms": 3816,
+   "duracao_ms": 3763,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 11,
-   "duracao_ms": 5496,
+   "duracao_ms": 5500,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6398,
+   "duracao_ms": 6379,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24608,
+   "duracao_ms": 24707,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -416,7 +416,7 @@
     {
      "descricao": "Toca em BA na tabela de UFs para comparar e lê a ficha da Bahia",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 33 por 44 px; a ficha da Bahia ficou a -1726 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 33 por 44 px; a ficha da Bahia ficou a -1766 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
     },
     {
      "descricao": "Compara as duas fichas: municípios, capacidade e submercado de cada UF",
@@ -426,7 +426,7 @@
     {
      "descricao": "Toca em Limpar a escolha e confere que o modo e a posição na página continuam",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5269 px antes e 5269 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5285 px antes e 5285 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
     },
     {
      "descricao": "Usa o botão voltar do navegador e confere que a escolha da Bahia volta",
@@ -461,7 +461,7 @@
     {
      "descricao": "Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição",
      "resultado": "ok",
-     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7062 para 7062 px"
+     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7095 para 7095 px"
     },
     {
      "descricao": "Usa o botão voltar e confere que o filtro de UF = MG volta",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 165,
-   "duracao_ms": 33916,
+   "duracao_ms": 34128,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -567,7 +567,7 @@
     {
      "descricao": "Escolhe a mesma distribuidora com clique na tabela e compara a ficha com a do teclado",
      "resultado": "ok",
-     "observado": "d=06981180000116 nas duas formas; ficha idêntica (802 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
+     "observado": "d=06981180000116 nas duas formas; ficha idêntica (824 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
     },
     {
      "descricao": "Abre Comprove este número com Enter, confere onde cai o foco e fecha com Esc",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 33959,
+   "duracao_ms": 35603,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 25,
-   "duracao_ms": 24416,
+   "duracao_ms": 25690,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -723,7 +723,7 @@
     {
      "descricao": "Compara a data de referência com as datas de captura e de processamento mostradas na página",
      "resultado": "ok",
-     "observado": "referência 01/10/2026; gold processada 01/10/2026, 08:22; última captura registrada 01/10/2026, 04:37; captura do conjunto atrasado 30/09/2026 22:30 (antes da gold, na ordem esperada); o último período dele é 06/2025, 487 dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz \"Dados processados em 29/09/2026, 23:20\", anterior à última captura registrada no cabeçalho"
+     "observado": "referência 01/10/2026; gold processada 01/10/2026, 08:22; última captura registrada 01/10/2026, 04:37; captura do conjunto atrasado 30/09/2026 22:30 (antes da gold, na ordem esperada); o último período dele é 06/2025, 487 dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz \"Catálogo e manifesto publicados em 01/10/2026, 08:22\", a mesma data do cabeçalho"
     },
     {
      "descricao": "Em Perdas, mostra a tabela inteira e confere sem dado na tela contra célula vazia no CSV",
@@ -748,12 +748,12 @@
     {
      "descricao": "Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/aneel-scs; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília)\"; última tentativa de coleta direta \"não registrada nesta publicação\"; menciona atraso: sim"
+     "observado": "/setor-eletrico/dados/aneel-scs; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília) DATA DE REFERÊNCIA último período disponível 06/2025\"; última tentativa de coleta direta \"não registrada nesta publicação\"; menciona atraso: sim"
     },
     {
      "descricao": "Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/ibge-pof-6715; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Snapshot \"–\"; Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
+     "observado": "/setor-eletrico/dados/ibge-pof-6715; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Snapshot \"sem snapshot\"; Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
     },
     {
      "descricao": "Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13513,
+   "duracao_ms": 13494,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

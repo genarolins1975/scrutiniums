@@ -2,10 +2,12 @@
  "rodadas": [
   {
    "id": "2026-10-07-r1",
+   "reprocessada": "o instrumento ainda não registrava se o título do painel é uma pergunta, e a rubrica contava esse item como ausente em todos os painéis. A rodada foi recalculada com o item fora do cálculo, que é como a regra passou a tratar item não medido. As demais notas não mudaram.",
+   "ajustes_do_metodo": [],
    "data": "2026-10-07",
-   "versao_codigo": "fef2e698e6a8+alterado",
+   "versao_codigo": "ff8e24c4df47+alterado",
    "paginas": 89,
-   "nota_ponderada_media": 8.3,
+   "nota_ponderada_media": 8.4,
    "atendem_meta": 0,
    "defeitos": [
     {
@@ -93,13 +95,6 @@
      "n_paginas": 1
     },
     {
-     "chave": "5b7a51193f",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título",
-     "n_paginas": 36
-    },
-    {
      "chave": "0cf72c78c8",
      "severidade": "medio",
      "dimensao": "correcao",
@@ -114,10 +109,10 @@
      "n_paginas": 10
     },
     {
-     "chave": "976d53bff9",
+     "chave": "3cb32d2298",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa",
      "n_paginas": 9
     },
     {
@@ -184,10 +179,10 @@
      "n_paginas": 4
     },
     {
-     "chave": "77264c7cde",
+     "chave": "6384809e9b",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta",
      "n_paginas": 4
     },
     {
@@ -212,31 +207,31 @@
      "n_paginas": 3
     },
     {
-     "chave": "8de20e1228",
+     "chave": "c9e37973e9",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; Comprove este número",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número",
      "n_paginas": 3
     },
     {
-     "chave": "e02058a83f",
+     "chave": "18ebdf11a2",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
      "n_paginas": 3
     },
     {
-     "chave": "fc28af2a6f",
+     "chave": "98986f827c",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa",
      "n_paginas": 3
     },
     {
-     "chave": "4e4f2527a4",
+     "chave": "5b94dc0e48",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; período, universo e unidade; download e link compartilhável",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável",
      "n_paginas": 3
     },
     {
@@ -289,17 +284,17 @@
      "n_paginas": 2
     },
     {
+     "chave": "e20f0b29c3",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local; Comprove este número",
+     "n_paginas": 2
+    },
+    {
      "chave": "075da881b3",
      "severidade": "medio",
      "dimensao": "completude",
      "descricao": "itens ausentes da anatomia do painel: h1 único com abertura; limite de leitura declarado; caminho seguinte",
-     "n_paginas": 2
-    },
-    {
-     "chave": "c913d053fa",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; tabela equivalente; interação local; Comprove este número",
      "n_paginas": 2
     },
     {
@@ -527,6 +522,13 @@
      "n_paginas": 1
     },
     {
+     "chave": "79d0d0f892",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; interação local",
+     "n_paginas": 1
+    },
+    {
      "chave": "f8baad3cce",
      "severidade": "medio",
      "dimensao": "completude",
@@ -555,24 +557,17 @@
      "n_paginas": 1
     },
     {
-     "chave": "869c7a1a5b",
+     "chave": "8275b70867",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; interação local",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
      "n_paginas": 1
     },
     {
-     "chave": "5cb2667de4",
+     "chave": "64d040073a",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
-     "n_paginas": 1
-    },
-    {
-     "chave": "665e2c4862",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
      "n_paginas": 1
     },
     {
@@ -782,7 +777,7 @@
    "defeitos_por_severidade": {
     "critico": 0,
     "alto": 12,
-    "medio": 86,
+    "medio": 85,
     "baixo": 12
    },
    "medias_por_dimensao": {
@@ -791,7 +786,7 @@
     "navegacao": 9.1,
     "interatividade": 9.5,
     "acessibilidade": 7.6,
-    "completude": 7.8,
+    "completude": 8.4,
     "correcao": 7.8,
     "rastreabilidade": 9.0,
     "atualidade": 7.8,
@@ -801,10 +796,12 @@
   },
   {
    "id": "2026-10-07-r2",
+   "reprocessada": "o instrumento ainda não registrava se o título do painel é uma pergunta, e a rubrica contava esse item como ausente em todos os painéis. A rodada foi recalculada com o item fora do cálculo, que é como a regra passou a tratar item não medido. As demais notas não mudaram.",
+   "ajustes_do_metodo": [],
    "data": "2026-10-07",
-   "versao_codigo": "fef2e698e6a8+alterado",
+   "versao_codigo": "ff8e24c4df47+alterado",
    "paginas": 94,
-   "nota_ponderada_media": 7.9,
+   "nota_ponderada_media": 8.0,
    "atendem_meta": 0,
    "defeitos": [
     {
@@ -871,13 +868,6 @@
      "n_paginas": 1
     },
     {
-     "chave": "5b7a51193f",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título",
-     "n_paginas": 36
-    },
-    {
      "chave": "0cf72c78c8",
      "severidade": "medio",
      "dimensao": "correcao",
@@ -899,10 +889,10 @@
      "n_paginas": 9
     },
     {
-     "chave": "976d53bff9",
+     "chave": "3cb32d2298",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa",
      "n_paginas": 9
     },
     {
@@ -955,10 +945,10 @@
      "n_paginas": 4
     },
     {
-     "chave": "77264c7cde",
+     "chave": "6384809e9b",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta",
      "n_paginas": 4
     },
     {
@@ -983,6 +973,13 @@
      "n_paginas": 3
     },
     {
+     "chave": "c9e37973e9",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número",
+     "n_paginas": 3
+    },
+    {
      "chave": "f8baad3cce",
      "severidade": "medio",
      "dimensao": "completude",
@@ -997,31 +994,24 @@
      "n_paginas": 3
     },
     {
-     "chave": "8de20e1228",
+     "chave": "18ebdf11a2",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; Comprove este número",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
      "n_paginas": 3
     },
     {
-     "chave": "e02058a83f",
+     "chave": "98986f827c",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa",
      "n_paginas": 3
     },
     {
-     "chave": "fc28af2a6f",
+     "chave": "5b94dc0e48",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa",
-     "n_paginas": 3
-    },
-    {
-     "chave": "4e4f2527a4",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; período, universo e unidade; download e link compartilhável",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável",
      "n_paginas": 3
     },
     {
@@ -1067,10 +1057,10 @@
      "n_paginas": 2
     },
     {
-     "chave": "c913d053fa",
+     "chave": "e20f0b29c3",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; tabela equivalente; interação local; Comprove este número",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local; Comprove este número",
      "n_paginas": 2
     },
     {
@@ -1284,6 +1274,13 @@
      "n_paginas": 1
     },
     {
+     "chave": "79d0d0f892",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; interação local",
+     "n_paginas": 1
+    },
+    {
      "chave": "3ce228fbbe",
      "severidade": "medio",
      "dimensao": "completude",
@@ -1305,24 +1302,17 @@
      "n_paginas": 1
     },
     {
-     "chave": "869c7a1a5b",
+     "chave": "8275b70867",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; gráfico ou mapa; interação local",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
      "n_paginas": 1
     },
     {
-     "chave": "5cb2667de4",
+     "chave": "64d040073a",
      "severidade": "medio",
      "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
-     "n_paginas": 1
-    },
-    {
-     "chave": "665e2c4862",
-     "severidade": "medio",
-     "dimensao": "completude",
-     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
      "n_paginas": 1
     },
     {
@@ -1469,7 +1459,7 @@
    "defeitos_por_severidade": {
     "critico": 0,
     "alto": 9,
-    "medio": 73,
+    "medio": 72,
     "baixo": 12
    },
    "medias_por_dimensao": {
@@ -1478,9 +1468,396 @@
     "navegacao": 9.2,
     "interatividade": 9.4,
     "acessibilidade": 7.7,
-    "completude": 7.9,
+    "completude": 8.5,
     "correcao": 7.8,
     "rastreabilidade": 9.0,
+    "atualidade": 7.9,
+    "desempenho": 8.7
+   },
+   "jornadas_cumpridas": 10
+  },
+  {
+   "id": "2026-10-07-r3",
+   "reprocessada": null,
+   "ajustes_do_metodo": [
+    "o título em forma de pergunta passou a ser medido (antes o instrumento não o registrava) e o texto do título é lido também nos painéis com título de nível 4; o item só entra no cálculo quando medido",
+    "o link no meio de uma frase, mesmo dentro de bloco sem parágrafo, e o glossário marcado dentro de uma frase passam pela exceção de alvo de toque do WCAG 2.5.8 (a r2 só aceitava parágrafo, item de lista e célula)",
+    "o botão Copiar link e a ficha Comprove têm até três tentativas, porque o primeiro toque pode chegar antes de o componente estar ativo; o resultado registra quando o clique do navegador expirou e só o clique por script funcionou (a página de CEMIG-D, a única em que isso ocorreu, foi medida de novo com o instrumento final e substituiu a medição anterior da rodada)",
+    "o rodapé do observatório e a linha de referência dos módulos passam a usar os rótulos Fontes e datas de referência, que o instrumento reconhece como declaração de fonte e de data",
+    "vocabulário de engenharia no texto do leitor em Entender passou a ser registrado como evidência de didatismo, sem dedução de nota"
+   ],
+   "data": "2026-10-07",
+   "versao_codigo": "1e1980f7e845+alterado",
+   "paginas": 94,
+   "nota_ponderada_media": 8.2,
+   "atendem_meta": 0,
+   "defeitos": [
+    {
+     "chave": "3f7cd6230f",
+     "severidade": "alto",
+     "dimensao": "atualidade",
+     "descricao": "conjunto atrasado: aneel_social/aneel_scs (367 dias)",
+     "n_paginas": 6
+    },
+    {
+     "chave": "7daf9fa541",
+     "severidade": "alto",
+     "dimensao": "correcao",
+     "descricao": "nenhuma gold da página tem ficha de evidência com teste registrado",
+     "n_paginas": 5
+    },
+    {
+     "chave": "d8b838b731",
+     "severidade": "alto",
+     "dimensao": "rastreabilidade",
+     "descricao": "painel numérico sem Comprove este número",
+     "n_paginas": 5
+    },
+    {
+     "chave": "4315c03cc7",
+     "severidade": "alto",
+     "dimensao": "rastreabilidade",
+     "descricao": "página sem fonte declarada",
+     "n_paginas": 1
+    },
+    {
+     "chave": "0cf72c78c8",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "3 arquivo(s) CSV com checagem reprovada em publicacao.json (arquivos.csv_com_problema)",
+     "n_paginas": 12
+    },
+    {
+     "chave": "3cb32d2298",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa",
+     "n_paginas": 9
+    },
+    {
+     "chave": "b8a5326574",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado; caminho seguinte",
+     "n_paginas": 5
+    },
+    {
+     "chave": "6d70733d91",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura; equivalente textual para as figuras",
+     "n_paginas": 4
+    },
+    {
+     "chave": "c9e37973e9",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número",
+     "n_paginas": 3
+    },
+    {
+     "chave": "f8baad3cce",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura",
+     "n_paginas": 3
+    },
+    {
+     "chave": "075da881b3",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura; limite de leitura declarado; caminho seguinte",
+     "n_paginas": 3
+    },
+    {
+     "chave": "18ebdf11a2",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "6384809e9b",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "98986f827c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa",
+     "n_paginas": 3
+    },
+    {
+     "chave": "5b94dc0e48",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável",
+     "n_paginas": 3
+    },
+    {
+     "chave": "5d686b57a0",
+     "severidade": "medio",
+     "dimensao": "navegacao",
+     "descricao": "link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado",
+     "n_paginas": 3
+    },
+    {
+     "chave": "e20f0b29c3",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local; Comprove este número",
+     "n_paginas": 2
+    },
+    {
+     "chave": "e6a2e8b20a",
+     "severidade": "medio",
+     "dimensao": "atualidade",
+     "descricao": "frase com número e a palavra hoje, sem data de referência: Cada regra é reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados):",
+     "n_paginas": 1
+    },
+    {
+     "chave": "43bc5cea62",
+     "severidade": "medio",
+     "dimensao": "atualidade",
+     "descricao": "frase com número e a palavra hoje, sem data de referência: MMGD estimada pela API de carga verificada, como publicada hoje, é 3",
+     "n_paginas": 1
+    },
+    {
+     "chave": "a5168cf6e4",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "data em formato cru no texto: 1900-01-03",
+     "n_paginas": 1
+    },
+    {
+     "chave": "67bb0dcc0e",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "data em formato cru no texto: 2011-12-31 | 2023-12-31",
+     "n_paginas": 1
+    },
+    {
+     "chave": "7020013603",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "data em formato cru no texto: 2021-12-31",
+     "n_paginas": 1
+    },
+    {
+     "chave": "aac136fd0c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: evidência ou fonte oficial",
+     "n_paginas": 1
+    },
+    {
+     "chave": "b1292ec5a6",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: fonte ou data declarada; limite de leitura declarado; equivalente textual para as figuras",
+     "n_paginas": 1
+    },
+    {
+     "chave": "79d0d0f892",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; interação local",
+     "n_paginas": 1
+    },
+    {
+     "chave": "3ce228fbbe",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura; limite de leitura declarado; evidência ou fonte oficial",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c104b53ebf",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado; equivalente textual para as figuras",
+     "n_paginas": 1
+    },
+    {
+     "chave": "3fb9b7fc6f",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado; evidência ou fonte oficial",
+     "n_paginas": 1
+    },
+    {
+     "chave": "77264c7cde",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "8275b70867",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "64d040073a",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c1dcce287a",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências",
+     "n_paginas": 1
+    },
+    {
+     "chave": "a2c77d513c",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha",
+     "n_paginas": 1
+    },
+    {
+     "chave": "de3d01f5bd",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "controle sem efeito observável: |Brasil inteiro",
+     "n_paginas": 1
+    },
+    {
+     "chave": "dba9cf3d31",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas",
+     "n_paginas": 1
+    },
+    {
+     "chave": "9dc774dfee",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS",
+     "n_paginas": 1
+    },
+    {
+     "chave": "7d23188fc3",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "painel sem download",
+     "n_paginas": 1
+    },
+    {
+     "chave": "2e6dda33a2",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "página sem data de referência ou de conferência",
+     "n_paginas": 1
+    },
+    {
+     "chave": "66da74a49f",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 1.006 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "733d15c66c",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 623 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "be15d34c2f",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 637 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "ed10e07e80",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 645 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "ed0caef80b",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 654 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "4179ec1495",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 665 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "70f0901d5e",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 676 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "956553ccf7",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 713 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "505e3596f8",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 821 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "e985b5fe86",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 876 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c4111b121d",
+     "severidade": "baixo",
+     "dimensao": "navegacao",
+     "descricao": "Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade",
+     "n_paginas": 1
+    },
+    {
+     "chave": "5a211d31a0",
+     "severidade": "baixo",
+     "dimensao": "rastreabilidade",
+     "descricao": "ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12%",
+     "n_paginas": 1
+    }
+   ],
+   "defeitos_por_severidade": {
+    "critico": 0,
+    "alto": 4,
+    "medio": 34,
+    "baixo": 12
+   },
+   "medias_por_dimensao": {
+    "didatismo": 7.0,
+    "visual": 7.2,
+    "navegacao": 9.2,
+    "interatividade": 9.9,
+    "acessibilidade": 9.0,
+    "completude": 8.6,
+    "correcao": 7.9,
+    "rastreabilidade": 9.3,
     "atualidade": 7.9,
     "desempenho": 8.7
    },

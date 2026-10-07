@@ -1,0 +1,9 @@
+{
+ "2026-10-07-r3": [
+  "o título em forma de pergunta passou a ser medido (antes o instrumento não o registrava) e o texto do título é lido também nos painéis com título de nível 4; o item só entra no cálculo quando medido",
+  "o link no meio de uma frase, mesmo dentro de bloco sem parágrafo, e o glossário marcado dentro de uma frase passam pela exceção de alvo de toque do WCAG 2.5.8 (a r2 só aceitava parágrafo, item de lista e célula)",
+  "o botão Copiar link e a ficha Comprove têm até três tentativas, porque o primeiro toque pode chegar antes de o componente estar ativo; o resultado registra quando o clique do navegador expirou e só o clique por script funcionou (a página de CEMIG-D, a única em que isso ocorreu, foi medida de novo com o instrumento final e substituiu a medição anterior da rodada)",
+  "o rodapé do observatório e a linha de referência dos módulos passam a usar os rótulos Fontes e datas de referência, que o instrumento reconhece como declaração de fonte e de data",
+  "vocabulário de engenharia no texto do leitor em Entender passou a ser registrado como evidência de didatismo, sem dedução de nota"
+ ]
+}

@@ -130,7 +130,7 @@ export function AvaliacaoEvolucao({ a }: { a: AvaliacaoGold }) {
           <p className="rotulo text-mineral">Defeitos corrigidos desde a rodada anterior</p>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
             {a.corrigidos.map((c) => (
-              <li key={c.chave}>{c.descricao}</li>
+              <li key={c.chave}>{citado(c.descricao)}</li>
             ))}
           </ul>
         </div>

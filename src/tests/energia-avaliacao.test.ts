@@ -289,6 +289,14 @@ describe.skipIf(!a)("página /setor-eletrico/metodologia/avaliacao", () => {
     expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(600 * 1024);
   });
 
+  it("a evolução diz o que mudou no método e quais rodadas foram recalculadas", () => {
+    const t = textoDe(html).replace(/\s+/g, " ");
+    expect(a.rodadas.length).toBeGreaterThanOrEqual(3);
+    expect(t).toContain("O que mudou no método entre as rodadas");
+    for (const r of a.rodadas.filter((x) => x.reprocessada)) expect(t, r.id).toContain(`Rodada ${r.id} recalculada`);
+    for (const r of a.rodadas) for (const aj of r.ajustes_do_metodo ?? []) expect(t, aj.slice(0, 40)).toContain(aj.slice(0, 40));
+  });
+
   it("os números de destaque saem do resumo da gold", () => {
     const t = textoDe(html).replace(/\s+/g, " ");
     expect(t).toContain(`${a.resumo.paginas.toLocaleString("pt-BR")} páginas`);

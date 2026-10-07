@@ -15482,10 +15482,10 @@
   "caminho_previsto": "public/energia/gold/avaliacao.json",
   "existe": true,
   "rodada": {
-   "id": "2026-10-07-r2",
+   "id": "2026-10-07-r3",
    "data_inspecao": "2026-10-07",
    "paginas": 94,
-   "nota_ponderada_media": 7.9
+   "nota_ponderada_media": 8.2
   },
   "nota": "Avaliação publicada: nota só com medição, teste ou revisão registrada; dimensão sem teste aparece como não avaliada. A página /setor-eletrico/metodologia/avaliacao mostra a evidência de cada nota."
  },
