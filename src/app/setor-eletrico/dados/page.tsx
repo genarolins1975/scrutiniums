@@ -91,8 +91,8 @@ export default function DadosCatalogoPage() {
               }
               oQueMudou={
                 <>
-                  Listagens colhidas em {nomesPortais.map(([o, p]) => `${o}, ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}. A coleta da CCEE usa o mesmo cliente do pipeline do PLD horário. O catálogo se atualiza a cada execução do
-                  pipeline, e esta página mostra a execução de {carimbo(cat.gerado_em)}.
+                  Listagens colhidas em {nomesPortais.map(([o, p]) => `${o}, ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}. O catálogo se atualiza a cada coleta automática, e esta página mostra a de {carimbo(cat.gerado_em)}.
+                  <span data-nivel="analisar"> A coleta da CCEE usa o mesmo cliente do PLD horário.</span>
                 </>
               }
               comoInterpretar={

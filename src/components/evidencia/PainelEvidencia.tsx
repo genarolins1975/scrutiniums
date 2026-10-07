@@ -1,3 +1,4 @@
+import { fonteLegivel } from "@/lib/energia/bastidor";
 import type { ReactNode } from "react";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -86,8 +87,8 @@ export function PainelEvidencia({
       <footer className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-linha px-5 py-3 md:px-8">
         <p className="text-xs leading-relaxed text-mineral">
           {fontes.length === 1
-            ? `Fonte: ${fontes[0].nome}. Referência até ${fim(fontes[0].ate)}. `
-            : `Fontes: ${fontes.map((f) => `${f.nome} (referência até ${fim(f.ate)})`).join("; ")}. `}
+            ? `Fonte: ${fonteLegivel(fontes[0].nome)}. Referência até ${fim(fontes[0].ate)}. `
+            : `Fontes: ${fontes.map((f) => `${fonteLegivel(f.nome)} (referência até ${fim(f.ate)})`).join("; ")}. `}
           {extraFonte}
         </p>
         <div className="flex flex-wrap items-center gap-4">

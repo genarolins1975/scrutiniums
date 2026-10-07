@@ -957,7 +957,7 @@ export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string
   });
   const acima = d7AcimaDe1(fichas).filter((x) => x.segmento === seg);
   const g23 = acima.length
-    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo, o padrão do achado G23-R1.`
+    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`
     : " Nenhum coeficiente da média dos 7 dias menos B0 passa de 1 neste segmento.";
   return `No ajuste de ${dataBR(linhas[0].origem_ajuste)} para ${h}, ${NOME_SM[sm] ?? sm}: ${frases.join("; ")}.${g23}`;
 }

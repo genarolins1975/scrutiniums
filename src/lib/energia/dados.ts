@@ -961,6 +961,15 @@ export function instantesLegiveis(texto: string): string {
   return texto.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?Z/g, (iso) => carimbo(iso));
 }
 
+/** Cada etapa da escada do catálogo em palavras do leitor; a definição técnica do catálogo fica em Analisar. */
+export const DEFINICAO_ETAPA_LEITOR: Record<string, string> = {
+  CATALOGADO: "O conjunto aparece na listagem oficial do portal da fonte, ou no registro do observatório, com endereço e licença. Entrada cadastrada à mão fica aqui, com os dados de cadastro ainda não conferidos.",
+  "RECURSO VERIFICADO": "O observatório abriu pelo menos um arquivo do conjunto e conferiu o formato e o cabeçalho, mas ainda não guarda o histórico dos dados.",
+  INTEGRADO: "O observatório coleta o conjunto automaticamente, guarda o arquivo original de cada coleta e extrai os dados para o histórico. Documentos ficam guardados para citação.",
+  VALIDADO: "Integrado e com conferências automáticas registradas nesta publicação, nenhuma reprovada: arquivo original conferido, datas dentro do esperado e formato igual ao da fonte.",
+  PUBLICADO: "Validado e alimentando uma base publicada do observatório, usada em alguma página, sem reprovação no contrato de fonte, links e formato.",
+};
+
 /** Situação dos dados de um conjunto em uma frase de leitor, com a causa quando a fonte está atrasada. */
 export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { alerta: boolean; titulo: string; texto: string } {
   const a = c.atualidade;

@@ -163,7 +163,7 @@ export default function GeracaoPage() {
                 </>
               }
               proveniencia={g.proveniencia.matriz!}
-              complementares={g.proveniencia.a11 ? [{ rotulo: "Quebra de 29/04/2023 (achado A11)", p: g.proveniencia.a11 }] : []}
+              complementares={g.proveniencia.a11 ? [{ rotulo: "Quebra de 29/04/2023", p: g.proveniencia.a11 }] : []}
             >
               <div className="space-y-6">
                 {atual.defasada && <GeracaoAviso tipo="alerta">{atual.texto}</GeracaoAviso>}
@@ -306,7 +306,7 @@ export default function GeracaoPage() {
                   />
                 </GeracaoAnalise>
 
-                <GeracaoAnalise id="a11" titulo="A quebra de 29/04/2023: MMGD estimada dentro da solar (achado A11)">
+                <GeracaoAnalise id="a11" titulo="A quebra de 29/04/2023: MMGD estimada dentro da solar">
                   <p className="text-sm leading-relaxed text-carvao">{a11.conclusao}</p>
                   <p className="text-sm text-carvao-muted">{textoA11(a11)}</p>
                   <GeracaoDocumentos documentos={a11.evidencias_documentais} />

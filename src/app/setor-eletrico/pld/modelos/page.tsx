@@ -253,7 +253,7 @@ export default function ModelosPage() {
                     <>
                       Não permite dizer qual modelo acerta mais, nem que um peso seja estável: os coeficientes são do último ajuste e mudam a cada domingo.{" "}
                       {acima.length
-                        ? `No último ajuste, ${plural(acima.length, "segmento passa", "segmentos passam")} de 1 na média dos 7 dias (${acima.map((a) => `${a.modelo} ${a.segmento}`).join(", ")}), o padrão do achado G23-R1.`
+                        ? `No último ajuste, ${plural(acima.length, "segmento passa", "segmentos passam")} de 1 na média dos 7 dias (${acima.map((a) => `${a.modelo} ${a.segmento}`).join(", ")}), um sinal de que a correção amplia o desvio recente em vez de reduzi-lo.`
                         : "No último ajuste, nenhum segmento passa de 1 na média dos 7 dias."}
                     </>
                   }

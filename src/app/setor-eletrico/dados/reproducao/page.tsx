@@ -87,7 +87,7 @@ export default function DadosReproducaoPage() {
               }
               oQueMudou={
                 <>
-                  O manifesto desta publicação é de {carimbo(m.gerado_em)}, tem {num(m.totais.arquivos, 0)} arquivos e {m.completo ? "inclui todos os arquivos publicados" : "ainda não inclui os arquivos reescritos depois do módulo Dados"}. Uma nova execução do pipeline gera outro manifesto, com outro id.
+                  O manifesto desta publicação é de {carimbo(m.gerado_em)}, tem {num(m.totais.arquivos, 0)} arquivos e {m.completo ? "inclui todos os arquivos publicados" : "ainda não inclui os arquivos reescritos depois do módulo Dados"}. Cada atualização gera outro manifesto, com outro id.
                 </>
               }
               comoInterpretar={
@@ -98,7 +98,7 @@ export default function DadosReproducaoPage() {
               }
               naoConcluir={
                 <>
-                  Que um arquivo com sha256 diferente seja errado: pode ser de outra publicação. Que o histórico das capturas (vintages) esteja aqui: o silver com as vintages não é publicado no repositório, só o resultado de cada execução. Que reproduzir o arquivo reproduza a coleta: a coleta
+                  Que um arquivo com sha256 diferente seja errado: pode ser de outra publicação. Que o histórico completo das capturas esteja aqui: ele não é publicado no repositório, só o resultado de cada atualização. Que reproduzir o arquivo reproduza a coleta: a coleta
                   depende da fonte estar no ar.
                 </>
               }
@@ -111,7 +111,7 @@ export default function DadosReproducaoPage() {
               </DadosResposta>
 
               <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <Numero rotulo="Arquivos no manifesto" natureza="CALCULADO" valor={m.totais.arquivos} casas={0} unidade="arquivos" tamanho="medio" periodo={dataBR(m.gerado_em.slice(0, 10))} nota={<>{m.totais.golds} golds, {m.totais.series} séries, {m.totais.parquets} Parquet e {m.totais.geometrias} geometrias</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
+                <Numero rotulo="Arquivos no manifesto" natureza="CALCULADO" valor={m.totais.arquivos} casas={0} unidade="arquivos" tamanho="medio" periodo={dataBR(m.gerado_em.slice(0, 10))} nota={<>{m.totais.golds} bases, {m.totais.series} séries, {m.totais.parquets} Parquet e {m.totais.geometrias} geometrias</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
                 <Numero
                   rotulo="Parquet equivalentes ao CSV"
                   natureza="CALCULADO"
@@ -139,7 +139,7 @@ export default function DadosReproducaoPage() {
               </div>
               <DadosRecorte
                 periodo={<>publicação de {dataBR(m.gerado_em.slice(0, 10))} (id {m.id_publicacao.slice(0, 12)}); pacote por consulta, na data do download</>}
-                universo={`${num(m.totais.arquivos, 0)} arquivos de /energia/ (golds, séries, Parquet e geometrias)`}
+                universo={`${num(m.totais.arquivos, 0)} arquivos de /energia/ (bases, séries, Parquet e geometrias)`}
                 unidade="bytes e KB; linhas e colunas de cada CSV"
               />
 
@@ -148,7 +148,7 @@ export default function DadosReproducaoPage() {
                   ["1. Filtre e baixe", "Em qualquer tabela de painel, filtre e use Baixar CSV ou XLSX: a planilha leva fonte, versão, filtros e dicionário."],
                   ["2. Comprove o número", "Em Comprove este número, veja a fórmula, o numerador e o denominador, o arquivo e o sha256 de origem e como refazer a conta."],
                   ["3. Pegue o arquivo completo", "Aqui, baixe o arquivo de origem (CSV, ou Parquet nas séries maiores) e confira o sha256 com a ferramenta abaixo."],
-                  ["4. Cite a versão", "Use o id da publicação e o link permanente do GitHub: o conteúdo de um commit não muda."],
+                  ["4. Cite a versão", "Use o id da publicação e o link permanente do GitHub: o conteúdo de uma versão registrada não muda."],
                 ].map(([t, d]) => (
                   <li key={t} className="bg-superficie p-4">
                     <p className="rotulo text-mineral">{t}</p>
@@ -280,7 +280,7 @@ export default function DadosReproducaoPage() {
                 )}
               </dl>
               <div>
-                <p className="rotulo text-mineral">Dicionário das golds de operação</p>
+                <p className="rotulo text-mineral">Dicionário das bases de operação</p>
                 <dl className="mt-2 space-y-2 text-sm" data-lista="dicionario-operacao">
                   {Object.entries(pub.dicionario_operacao).map(([k, v]) => (
                     <div key={k}>

@@ -42,3 +42,12 @@ export function recusaEmLinguagemSimples(texto: string): string {
 export function semCaminhosDeArquivo(texto: string): string {
   return texto.replace(/\s*\((?:[\w.-]+\/)+[\w.-]+\.(?:json|jsonl|py|csv|parquet)\)/g, "");
 }
+
+/** Nome de fonte como o leitor o lê: sem "pipeline", "silver" e "gold" e sem caminho de arquivo. */
+export function fonteLegivel(nome: string): string {
+  return semCaminhosDeArquivo(nome)
+    .replace(/\(pipeline do observatório\)/g, "(observatório)")
+    .replace(/Silvers e golds do domínio/g, "Bases do domínio")
+    .replace(/Silvers do domínio/g, "Histórico de capturas do domínio")
+    .replace(/silvers do pipeline/g, "histórico de capturas do observatório");
+}

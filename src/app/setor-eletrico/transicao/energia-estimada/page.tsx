@@ -230,7 +230,7 @@ export default function EnergiaEstimadaPage() {
                 id="a11"
                 nivel="analisar"
                 pergunta={PERGUNTA_A11}
-                subtitulo="Achado A11 · Balanço de Energia do SIN e MMGD estimada, MWmed por dia"
+                subtitulo="Balanço de Energia do SIN e MMGD estimada, MWmed por dia"
                 natureza="CALCULADO"
                 porQueImporta={
                   <>

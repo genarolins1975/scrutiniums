@@ -627,7 +627,7 @@ export const COLUNAS_MMGD_API: ColunaTabela[] = [
 
 /** Resumo do achado A11 lido da gold (dias conciliados, primeira hora, documentos). */
 export function textoA11(a: A11): string {
-  if (a.estado !== "confirmado") return `Achado A11 pendente: ${a.conclusao ?? "sem conclusão publicada"}.`;
+  if (a.estado !== "confirmado") return `Verificação da quebra de 29/04/2023 pendente: ${a.conclusao ?? "sem conclusão publicada"}.`;
   const prim = a.primeira_hora_mmgd ? horaLocal(a.primeira_hora_mmgd) : a.primeiro_dia_mmgd ? dataBR(a.primeiro_dia_mmgd) : "sem data";
   return `A MMGD estimada pelo ONS aparece na Geração por Usina a partir de ${prim}. ${a.janela_da_quebra_conciliada ? "Na janela da quebra, a solar do Balanço é igual à soma das usinas fotovoltaicas com a MMGD dia a dia." : "Na janela da quebra, a solar do Balanço não fecha com a soma das usinas."} Em todo o histórico, ${num(a.dias_conciliados, 0)} de ${num(a.dias_conferidos, 0)} dias conciliam dentro da tolerância.`;
 }

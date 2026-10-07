@@ -47,7 +47,7 @@ export function DadosCalendario({ calendario, hoje, janela }: { calendario: DiaC
         unidade={m.unidade}
         casas={0}
         periodo={`${dataBR(c.janela.inicio)} a ${dataBR(c.janela.fim)}`}
-        nota="Dia (UTC) com a contagem de eventos que o pipeline registrou. Falha de coleta nunca troca a data do dado: a captura anterior continua guardada."
+        nota="Dia (UTC) com a contagem de eventos de coleta registrados. Falha de coleta nunca troca a data do dado: a captura anterior continua guardada."
       />
     </div>
   );
@@ -61,7 +61,7 @@ export function DadosSaudeTabela({ linhas, versao }: { linhas: LinhaTabela[]; ve
       linhas={linhas}
       chaveLinha="id"
       colunaRotulo="titulo"
-      fonte="Scrutiniums, publicacao.json (silvers do pipeline: capturas, coletas, grão, completude e revisões de cada conjunto integrado)"
+      fonte="Scrutiniums, publicacao.json (histórico de capturas do observatório: capturas, coletas, recorte, completude e revisões de cada conjunto integrado)"
       versao={versao}
       nomeArquivo="dados-saude-conjuntos"
       chaveUrl="sau"

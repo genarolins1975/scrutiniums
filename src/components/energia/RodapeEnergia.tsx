@@ -29,8 +29,11 @@ export function RodapeEnergia() {
           {meta && (
             <p className="mt-3 text-xs text-mineral">
               {pub ? "Catálogo e manifesto publicados em " : "Dados processados em "}
-              {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
-              {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""}. Cada painel traz a data de referência dos próprios dados.
+              {carimbo(meta.gerado_em)}. Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em{" "}
+              <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
+                Download e reprodução
+              </Link>
+              .
             </p>
           )}
         </div>

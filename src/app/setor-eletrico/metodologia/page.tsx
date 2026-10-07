@@ -427,8 +427,12 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
         <S id="limitacoes" titulo="Limitações gerais desta fase">
           <ul className="list-disc space-y-2 pl-5">
             <li>
-              O portal de dados abertos da CCEE recusa requisições feitas com curl (HTTP 403, página de acesso bloqueado) e responde ao cliente do pipeline, com o User-Agent do projeto e sem disfarce de navegador. A coleta com esse cliente foi autorizada pelo responsável em 06/10/2026 para o
-              PLD horário, os conjuntos abertos do Mercado e o InfoMercado; ela é tentada em cada execução agendada da atualização. O histórico do PLD de 2021 a 2025 vem das capturas primárias de 27/09/2026, versionadas com sha256.{" "}
+              O portal de dados abertos da CCEE recusa consultas automáticas comuns. O observatório usa um cliente próprio, com coleta autorizada pelo responsável em 06/10/2026 para o PLD horário, os conjuntos abertos do Mercado e o InfoMercado, e tenta a
+              coleta em cada atualização agendada. O histórico do PLD de 2021 a 2025 vem das capturas primárias de 27/09/2026.
+              <span data-nivel="analisar">
+                {" "}
+                Detalhe técnico: a recusa é um HTTP 403 com página de acesso bloqueado para o curl; o cliente do pipeline segue com o User-Agent do projeto e sem disfarce de navegador, e as capturas são versionadas com sha256.
+              </span>{" "}
               {meta?.fontes?.ccee_pld_horario?.ultima_tentativa
                 ? `Última tentativa do PLD horário: ${carimbo(meta.fontes.ccee_pld_horario.ultima_tentativa.tentado_em)}, ${meta.fontes.ccee_pld_horario.ultima_tentativa.ok ? "bem-sucedida" : "sem sucesso"}.`
                 : "Nenhuma tentativa registrada nesta publicação."}

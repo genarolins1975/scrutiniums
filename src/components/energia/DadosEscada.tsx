@@ -1,9 +1,9 @@
 import { num } from "@/lib/energia/formato";
-import { ESTADOS_ESCADA, ROTULO_ESTADO_DADOS, type ResumoCatalogo } from "@/lib/energia/dados";
+import { DEFINICAO_ETAPA_LEITOR, ESTADOS_ESCADA, ROTULO_ESTADO_DADOS, type ResumoCatalogo } from "@/lib/energia/dados";
 import type { CatalogoDados } from "@/lib/energia/tipos-dados";
 
 /**
- * A escada do catálogo (P067): as cinco etapas, da listagem oficial à gold publicada, cada uma
+ * A escada do catálogo (P067): as cinco etapas, da listagem oficial à base publicada, cada uma
  * com a contagem de conjuntos que a alcançaram (cumulativa, porque cada etapa exige as
  * anteriores), a contagem dos que pararam nela, a definição e o critério. A barra é só
  * redundância visual: os números e as definições estão em texto. Servidor, sem estado.
@@ -32,8 +32,10 @@ export function DadosEscada({ cat, resumo }: { cat: CatalogoDados; resumo: Resum
               <div aria-hidden="true" className="h-2 w-full bg-papel">
                 <div className="h-full" style={{ width: `${(100 * cum) / total}%`, background: `var(--escala-seq-${i + 1})` }} />
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-carvao">{cat.definicoes_estado[s]}</p>
-              <p className="mt-1 text-xs leading-relaxed text-carvao-muted">Critério verificado: {cat.criterios_estado[s]}.</p>
+              <p className="mt-2 text-sm leading-relaxed text-carvao">{DEFINICAO_ETAPA_LEITOR[s] ?? cat.definicoes_estado[s]}</p>
+              <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                Definição técnica: {cat.definicoes_estado[s]} Critério verificado: {cat.criterios_estado[s]}.
+              </p>
             </div>
           </li>
         );

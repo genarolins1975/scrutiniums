@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { fraseDeRecusa, partirBastidor, recusaEmLinguagemSimples, semCaminhosDeArquivo, semCodigosDePergunta } from "@/lib/energia/bastidor";
+import { fonteLegivel, fraseDeRecusa, partirBastidor, recusaEmLinguagemSimples, semCaminhosDeArquivo, semCodigosDePergunta } from "@/lib/energia/bastidor";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 
 /**
@@ -71,5 +71,13 @@ describe("caminho de arquivo entre parênteses", () => {
       "A composição está no arquivo de configuração da pesquisa, que não foi publicado.",
     );
     expect(semCaminhosDeArquivo("Preço de Liquidação das Diferenças (PLD)")).toBe("Preço de Liquidação das Diferenças (PLD)");
+  });
+});
+
+describe("fonteLegivel", () => {
+  it("tira pipeline, silver, gold e caminho do nome da fonte", () => {
+    expect(fonteLegivel("Scrutiniums (pipeline do observatório), Silvers e golds do domínio Energia")).toBe("Scrutiniums (observatório), Bases do domínio Energia");
+    expect(fonteLegivel("Scrutiniums (pipeline do observatório), Validador genérico (pipeline/energia/validacoes.py)")).toBe("Scrutiniums (observatório), Validador genérico");
+    expect(fonteLegivel("ONS, Carga de Energia Diária")).toBe("ONS, Carga de Energia Diária");
   });
 });

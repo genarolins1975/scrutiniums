@@ -96,7 +96,7 @@ export default function RedeBalancoPage() {
               }
               oQueMudou={
                 <>
-                  {atual.texto} Estado do achado A05: {a.status}.
+                  {atual.texto}<span data-nivel="analisar"> Estado da verificação do balanço: {a.status}.</span>
                 </>
               }
               comoInterpretar={

@@ -107,7 +107,7 @@ export function PldCmo({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">R$/MWh nominais (a média semanal do DECOMP aparece como R$/MW no dicionário do ONS; achado A03)</dd>
+          <dd className="mt-0.5">R$/MWh nominais (a média semanal do DECOMP aparece como R$/MW no dicionário do ONS)</dd>
         </div>
       </dl>
 
