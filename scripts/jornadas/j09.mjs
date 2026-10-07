@@ -178,14 +178,14 @@ export default {
       await abrir(`${ORIGEM}/dados/saude`);
       await analisar();
       const texto = normaliza(await p.locator("main").innerText());
-      const m = texto.match(/\((\d\d\/\d\d\/\d{4})\), dos (\d+) conjuntos integrados, (\d+) estavam em dia, (\d+) atrasados?, (\d+) sem SLA.*? e (\d+) sem dado/);
+      const m = texto.match(/\((\d\d\/\d\d\/\d{4})\), das (\d+) integrações de conjuntos, (\d+) estavam em dia, (\d+) atrasadas?, (\d+) sem SLA.*? e (\d+) sem dado/);
       j.afirmar(m, "não achei a frase com as contagens por situação");
       const [, ref, total, emDia, atrasado, semSla, semDado] = m;
       j.afirmar(+emDia + +atrasado + +semSla + +semDado === +total, `as situações somam ${+emDia + +atrasado + +semSla + +semDado}, não ${total}`);
       guardado.ref = ref;
       guardado.atrasados = +atrasado;
       guardado.semDado = +semDado;
-      return `data de referência ${ref}; ${total} conjuntos integrados: ${emDia} em dia, ${atrasado} atrasado, ${semSla} sem SLA, ${semDado} sem dado (soma confere)`;
+      return `data de referência ${ref}; ${total} integrações de conjuntos: ${emDia} em dia, ${atrasado} atrasada, ${semSla} sem SLA, ${semDado} sem dado (soma confere)`;
     });
 
     await j.passo("Filtra a tabela por Situação = Atrasado e refaz a conta do atraso com as datas da própria linha", async () => {

@@ -302,7 +302,7 @@ export function respostaCatalogo(r: ResumoCatalogo): string {
   const c = r.cumulativo;
   const partes = [
     `${num(r.total, 0)} conjuntos catalogados em ${plural(r.orgaos, "órgão", "órgãos")}.`,
-    `${num(c["RECURSO VERIFICADO"], 0)} tiveram ao menos um arquivo acessado pelo pipeline, ${num(c.INTEGRADO, 0)} foram integrados, ${num(c.VALIDADO, 0)} passaram na validação sem checagem reprovada e ${num(c.PUBLICADO, 0)} alimentam uma gold íntegra publicada.`,
+    `${num(c["RECURSO VERIFICADO"], 0)} tiveram ao menos um arquivo acessado pela coleta automática, ${num(c.INTEGRADO, 0)} foram integrados, ${num(c.VALIDADO, 0)} passaram na validação sem checagem reprovada e ${num(c.PUBLICADO, 0)} alimentam uma base publicada e íntegra. A página Saúde conta integrações, e não conjuntos: um mesmo conjunto pode ser integrado por mais de um módulo.`,
   ];
   if (r.usadasAbaixo.length)
     partes.push(
@@ -509,7 +509,7 @@ export function resumoSaude(pub: PublicacaoGold): ResumoSaude {
 export function respostaSaude(r: ResumoSaude): string {
   const s = r.porSituacao;
   const partes = [
-    `Na data de referência desta publicação (${dataBR(r.hoje)}), dos ${num(r.integracoes, 0)} conjuntos integrados, ${num(s["EM DIA"] ?? 0, 0)} estavam em dia, ${num(s.ATRASADO ?? 0, 0)} atrasado${(s.ATRASADO ?? 0) === 1 ? "" : "s"}, ${num(s["SEM SLA"] ?? 0, 0)} sem SLA (a fonte não declara frequência) e ${num(s["SEM DADO"] ?? 0, 0)} sem dado para medir.`,
+    `Na data de referência desta publicação (${dataBR(r.hoje)}), das ${num(r.integracoes, 0)} integrações de conjuntos, ${num(s["EM DIA"] ?? 0, 0)} estavam em dia, ${num(s.ATRASADO ?? 0, 0)} atrasada${(s.ATRASADO ?? 0) === 1 ? "" : "s"}, ${num(s["SEM SLA"] ?? 0, 0)} sem SLA (a fonte não declara frequência) e ${num(s["SEM DADO"] ?? 0, 0)} sem dado para medir.`,
   ];
   if (r.atrasados.length)
     partes.push(

@@ -21,7 +21,7 @@ export function RodapeEnergia() {
           <p className="rotulo text-mineral">Fontes deste observatório</p>
           <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
             {orgaos.length > 0
-              ? `Dados abertos de ${listaEmPortugues(orgaos.map((o) => o.orgao))}, em ${pub!.conjuntos.length} conjuntos integrados. `
+              ? `Dados abertos de ${listaEmPortugues(orgaos.map((o) => o.orgao))}, em ${pub!.conjuntos.length} integrações de conjuntos. `
               : "Dados abertos da CCEE, do ONS e da ANEEL. "}
             Licença, frequência e estado de cada conjunto estão no catálogo; cada número tem natureza, fonte, período e
             limitações no painel &quot;Sobre este dado&quot;.

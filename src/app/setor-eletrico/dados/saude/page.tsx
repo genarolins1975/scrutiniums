@@ -74,7 +74,7 @@ export default function DadosSaudePage() {
             <PainelEvidencia
               id="painel-saude"
               pergunta="O que atrasou ou mudou?"
-              subtitulo={`${num(r.integracoes, 0)} conjuntos integrados · situação em ${dataBR(r.hoje)} · calendário dos últimos ${janela} dias`}
+              subtitulo={`${num(r.integracoes, 0)} integrações de conjuntos · situação em ${dataBR(r.hoje)} · calendário dos últimos ${janela} dias`}
               proveniencia={prov}
               complementares={[{ rotulo: "Revisões entre capturas", p: provRev }]}
               porQueImporta={
@@ -155,7 +155,7 @@ export default function DadosSaudePage() {
               </div>
               <DadosRecorte
                 periodo={<>situação em {dataBR(r.hoje)}; calendário de {dataBR(jan.inicio)} a {dataBR(jan.fim)} ({janela} dias)</>}
-                universo={`${num(r.integracoes, 0)} conjuntos integrados pelos módulos (um conjunto do catálogo pode ter mais de uma integração)`}
+                universo={`${num(r.integracoes, 0)} integrações de conjuntos feitas pelos módulos (o catálogo conta conjuntos, e um conjunto pode ter mais de uma integração)`}
                 unidade="dias de atraso; % de períodos e de séries; contagem de capturas, falhas e observações"
               />
               <GraficoBarras

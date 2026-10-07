@@ -40,7 +40,11 @@ const MODOS = (args.modos || "entender,auditar").split(",");
 const PARALELO = Number(args.paralelo || 3);
 const CAPTURAS = args.capturas !== "0";
 // --so-capturas 1: só a primeira dobra em 1440 e 390 px (sem medir), já no topo da página, para guardar a evidência visual
-const SO_CAPTURAS = args["so-capturas"] === "1";
+// --limpas 1: capturas de leitura (dobra, página inteira e texto) feitas logo depois do carregamento e de uma rolagem de leitor,
+// sem teste de teclado nem clique antes. O Tab leva o foco ao fim das tabelas largas e deixa a rolagem lateral ali, e a captura
+// feita depois da medição mostrava tabelas "abertas já rolada até o fim" que um leitor não vê ao chegar na página.
+const LIMPAS = args.limpas === "1";
+const SO_CAPTURAS = args["so-capturas"] === "1" || LIMPAS;
 const CHROMIUM = process.env.CHROMIUM || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PW_CORE || "playwright-core");
@@ -495,9 +499,29 @@ async function medirRota(rota, navegador) {
       await p.waitForTimeout(modo === "auditar" ? 900 : 450);
       const m = { rota, largura: w, modo, status: resp?.status?.() ?? null, carga_ms, erros_console: erros.slice(), falhas_rede: falhas.slice(), bytes: { ...bytes } };
       if (SO_CAPTURAS) {
+        if (LIMPAS) {
+          // rola como quem lê, para o conteúdo carregado sob demanda aparecer, e volta ao topo com todas as tabelas no início
+          await p.evaluate(async () => {
+            const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+            for (let y = 0; y < document.documentElement.scrollHeight; y += 700) {
+              window.scrollTo({ top: y, left: 0, behavior: "instant" });
+              await espera(140);
+            }
+          });
+          await p.waitForTimeout(700);
+          await p.evaluate(() => {
+            for (const el of document.querySelectorAll("*")) if (el.scrollLeft) el.scrollLeft = 0;
+            document.activeElement?.blur?.();
+          });
+        }
         await p.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
         await p.waitForTimeout(350);
-        await p.screenshot({ path: join(SAIDA, "capturas", `${slug(rota)}__${w}_dobra.png`) });
+        const base = join(SAIDA, "capturas", `${slug(rota)}__${w}`);
+        await p.screenshot({ path: `${base}_dobra.png` });
+        if (LIMPAS) {
+          await p.screenshot({ path: `${base}_inteira.png`, fullPage: true });
+          if (w === 1440) await writeFile(join(SAIDA, "capturas", `${slug(rota)}__texto.txt`), await p.evaluate(() => document.body.innerText));
+        }
         reg.medicoes.push(m);
         await ctx.close();
         continue;
