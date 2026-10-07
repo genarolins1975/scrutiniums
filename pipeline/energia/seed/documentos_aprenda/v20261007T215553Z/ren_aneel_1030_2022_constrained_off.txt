@@ -1,0 +1,288 @@
+[PDF, página 10]
+TÍTULO II
+DAS RESTRIÇÕES DE OPERAÇÃO POR CONSTRAINED-OFF
+DAS RESTRIÇÕES DE OPERAÇÃO POR CONSTRAINED-OFF DE USINAS EOLIOELÉTRICA
+(Redação dada pela REN ANEEL 1.073, de 12.09.2023)
+CAPÍTULO I
+DO CONSTRAINED-OFF DE USINAS EOLIOELÉTRICAS
+Art. 13. Para efeitos deste Título, eventos de restrição de operação por Constrained-off são
+definidos como a redução da produção de energia por usinas eolioelétricas despachadas
+centralizadamente ou usinas/conjuntos de usinas eolioelétricas considerados na programação,
+decorrente de comando do ONS, que tenham sido originados externamente às instalações das
+respectivas usinas.
+§ 1º Considera-se instalações externas às respectivas usinas ou conjuntos de usinas, as
+instalações de transmissão classificadas como Rede Básica e Demais Instalações de Transmissão – DITs
+no âmbito da distribuição.
+§ 2º Não se considera instalações externas às respectivas usinas ou conjuntos de usinas
+aquelas de uso exclusivo ou compartilhado do gerador, sob sua gestão ou de terceiros.
+Art. 14. O ONS deverá classificar os eventos de restrição de operação por Constrained-off
+de usinas ou conjuntos de usinas eolioelétricas de acordo com sua motivação em:
+I - Razão de indisponibilidade externa: motivados por indisponibilidades em instalações
+externas às respectivas usinas ou conjuntos de usinas conforme definições do art. 13.
+II - Razão de atendimento a requisitos de confiabilidade elétrica: motivados por razões de
+confiabilidade elétrica dos equipamentos pertencentes a instalações externas às respectivas usinas ou
+conjuntos de usinas conforme definições do art. 13 e que não tenham origem em indisponibilidades dos
+respectivos equipamentos.
+III - Razão energética: motivados pela impossibilidade de alocação de geração de energia na
+carga.
+Art. 15. O ONS deverá calcular a referência de geração de energia decorrente de evento de
+restrição de operação por Constrained-off das usinas ou conjuntos de usinas eolioelétricas, classificado
+como razão de indisponibilidade externa, conforme inciso I do art. 14, a partir da curva de produtividade
+da usina eolioelétrica, que relaciona a potência de saída da usina e a velocidade do vento.
+§ 1º O ONS deverá elaborar a curva de produtividade, de acordo com os critérios técnicos
+estabelecidos nos Procedimentos de Rede, a partir de dados medidos de geração e velocidade do vento
+pelo período de um ano, sendo revisada anualmente.
+§ 2º Nos casos em que não há histórico de um ano de operação da usina a partir da entrada
+em operação comercial, a curva de produtividade será atualizada a cada mês até completar um ano.
+
+[PDF, página 11]
+§ 3º Enquanto detiver outorga vigente, o agente de geração deverá disponibilizar ao ONS,
+em tempo real, os registros das medições anemométricas e as disponibilidades de potência nominal dos
+aerogeradores desde a data de entrada em operação comercial, em conformidade com critérios técnicos
+estabelecidos nos Procedimentos de Rede.
+§ 4º Os Procedimentos de Rede deverão estabelecer a forma da elaboração da curva de
+produtividade, do cálculo da referência da frustração de geração de energia e da obtenção automática
+dos dados anemométricos pelo ONS.
+§ 5º Até a elaboração da curva de produtividade, será considerado como referência da
+frustração de geração de energia das usinas ou conjuntos de usinas eolioelétricas o segundo menor valor
+de energia gerada nos 10 (dez) períodos imediatamente anteriores coincidentes com o horário da
+restrição de operação em análise.
+§ 6º Para fins de aplicação desse dispositivo, considera-se como períodos imediatamente
+anteriores coincidentes com o horário da restrição de operação o lapso temporal correspondente ao
+evento de restrição de operação por Constrained-off das usinas ou conjunto de usinas eolioelétricas.
+§ 7º Caso os 10 (dez) períodos de que trata o parágrafo anterior incorporem data anterior à
+entrada em operação comercial da usina, a garantia física da usina eolioelétrica será adotada para
+completar o período.
+§ 8º O ONS deverá desconsiderar, da geração de referência, as reduções de geração
+associadas às restrições indicadas no parecer de acesso das usinas ou dos conjuntos de usinas
+eolioelétricas.
+§ 9º No caso de conjuntos de usinas eolioelétricas, o ONS deverá considerar o rateio da
+referência da frustração de geração de energia proporcionalmente à capacidade instalada de cada usina
+eolioelétrica integrante do conjunto.
+§ 10 Todas as informações utilizadas para calcular a referência da frustração de geração de
+energia devem ser disponibilizadas pelo ONS em plataforma de acesso público.
+Art. 16. Os pagamentos dos montantes financeiros relativos aos eventos de restrição de
+operação por Constrained-off das usinas ou conjunto de usinas eolioelétricas, classificados como razão
+de indisponibilidade externa, conforme inciso I do art. 14, serão realizados por meio de Encargo de
+Serviço de Sistema – ESS pela CCEE de acordo com os seguintes critérios:
+I - na parcela da garantia física vinculada a Contrato de Comercialização de Energia no
+Ambiente Regulado – CCEAR por Disponibilidade, o pagamento deverá ser efetuado às distribuidoras de
+energia compradoras dos respectivos contratos;
+II - na parcela da garantia física vinculada a Contrato de Energia de Reserva – CER, o
+pagamento deverá ser efetuado à Conta de Energia de Reserva – CONER; e
+
+[PDF, página 12]
+III - na parcela da garantia física não contratada conforme os incisos anteriores, o pagamento
+deverá ser efetuado ao agente gerador.
+§ 1º O pagamento do ESS deverá ser proporcionalizado pelo consumo de energia do perfil
+consumo dos agentes e deverá observar a abrangência da restrição, se local ou sistêmica.
+§ 2º O pagamento de ESS é devido somente nas situações em que a soma dos tempos,
+acumulados desde o início do ano civil, de restrição de operação por Constrained-off da respectiva usina
+ou conjunto de usinas eolioelétricas, classificada como razão de indisponibilidade externa, conforme
+inciso I do art. 14, superar 78h (setenta e oito horas).
+§ 3º Fica autorizado o ONS a atualizar o valor de 78h (setenta e oito horas), constante do
+§2º, considerando a indisponibilidade média apurada, em uma média móvel dos últimos cinco anos civis,
+das Funções de Transmissão, com nível de tensão entre 230 kV e 500 kV.
+§ 4º O montante energético para apuração dos ESS será dado pela seguinte formulação:
+Frustração de geração = mín(Ganem;Econt) - Gver
+Onde:
+Ganem: geração estimada em função da velocidade do vento medido no anemômetro;
+Econt: montante de energia vendida em contratos associados à respectiva usina eolioelétrica,
+no caso de CCEAR, CER e Programa de Incentivo às Fontes Alternativas de Energia – PROINFA; e garantia
+física, no caso de usinas não contratadas dessa forma.
+GVer: energia gerada.
+§ 3º Fica autorizado o ONS a atualizar e divulgar o valor de 78h (setenta e oito horas), constante do
+§2º, considerando a indisponibilidade média apurada, em uma média móvel dos últimos cinco anos civis, das
+Funções de Transmissão, com nível de tensão entre 230 kV e 500 kV. (Redação dada pela REN ANEEL 1.109, de
+10.12.2024)
+§ 4º O montante energético para apuração dos ESS será dado pela seguinte formulação: (Redação
+dada pela REN ANEEL 1.109, de 10.12.2024)
+𝐺𝐸𝑆𝑆 = 𝑚í𝑛[𝑚á𝑥(𝐸𝑐𝑜𝑛𝑡 − 𝐺𝑣𝑒𝑟; 0); 𝐺𝑓𝑟𝑢𝑠𝑡]
+Onde: GESS: montante energético para apuração dos ESS;
+Econt: montante de energia vendida em contratos associados à respectiva usina eolioelétrica,
+no caso de CCEAR, CER e Programa de Incentivo às Fontes Alternativas de Energia – PROINFA; e
+garantia física, no caso de usinas não contratadas dessa forma;
+Gver: energia gerada; e
+
+[PDF, página 13]
+Gfrust: frustração de geração da usina eolioelétrica obtida pelo rateio da frustração de geração do
+conjunto (caso aplicável), estimada em função da velocidade do vento medido nos anemômetros e da energia
+gerada do conjunto. (Redação dada pela REN ANEEL 1.109, de 10.12.2024)
+
+§ 5º A valoração do ESS deverá se dar pelo Preço de Liquidação das Diferenças – PLD do
+submercado da usina ou do conjunto de usinas eolioelétricas no respectivo período de comercialização.
+§ 6º As usinas eolioelétricas inadimplentes com a obrigação de encaminhamento das
+informações de que trata de que trata o § 3º do art. 15 não são elegíveis ao recebimento dos montantes
+financeiros de que trata o caput.
+Art. 17. As Regras de Comercialização deverão prever a compensação, sobre as obrigações
+internas aos CCEAR por Disponibilidade e CER, dos eventos de restrição de operação por Constrainedoff das usinas eolioelétricas, classificado como razão de indisponibilidade externa, conforme inciso I do
+art. 14, apurados conforme o Título II desta Resolução.
+
+CAPÍTULO II
+DISPOSIÇÕES GERAIS
+Art. 18. Somente eventos de restrição de operação por Constrained-off das usinas ou
+conjuntos de usinas eolioelétricas classificados como razão de indisponibilidade externa, conforme
+inciso I do art. 14, ocorridos a partir de 1º de outubro de 2021, estarão sujeitos ao tratamento
+estabelecido nos arts. 13 a 17 desta Resolução.
+Parágrafo único. O disposto no caput terá efeitos econômicos a partir do marco temporal
+nele estabelecido e efeitos financeiros a partir da implantação dos dispositivos do Título XII desta
+Resolução no CliqCCEE.
+Art. 19. Os eventos de restrição de operação por Constrained-off das usinas ou conjuntos
+de usinas eolioelétricas, relativos ao Ambiente de Contratação Regulada – ACR, ocorridos antes de 1o de
+outubro de 2021 serão tratados nos termos de Regra de Comercialização que estabelece metodologia
+específica, a ser aprovada pela Superintendência de Regulação da Geração – SRG, da ANEEL, que
+considere as seguintes diretrizes:
+I - limitado aos Contratos de Energia de Reserva - CER e Contratos de Comercialização de
+Energia no Ambiente Regulados – CCEAR;
+II - são passíveis de apuração dos montantes de energia não fornecida somente os eventos
+provocados por restrições elétricas em instalações externas às respectivas usinas eolioelétricas;
+III - o período do evento e quais usinas eolioelétricas foram atingidas pelas restrições
+deverão ser informados pelo ONS;
+
+[PDF, página 14]
+IV - os valores de energia não fornecida não podem superar o montante mínimo para tornar
+nulo o montante de ressarcimento previsto nos contratos;
+V - os valores de energia não fornecida devem ser apurados proporcionalmente ao fator de
+operação comercial das usinas eolioelétricas e ao fator de comprometimento com o contrato; e
+VI - os valores de energia não fornecida devem também ser aplicados aos processos de
+reconciliação contratual.
+§ 1º O tratamento a que se refere o caput, relativo a eventos de Constrained-off de usinas
+ou conjuntos de usinas eolioelétricas ocorridos anteriormente à 23 de março de 2021, se aplica somente
+às situações para as quais há documentos protocolizados na ANEEL com os pedidos de reconhecimento
+de Constrained-off, incluindo aqueles cuja apuração dos ressarcimentos foi suspensa pelo Despacho
+ANEEL nº 2.303, de 20 de agosto de 2019.
+§ 2º O tratamento a que se refere o caput, relativo a eventos de Constrained-off de usinas
+ou conjuntos de usinas eolioelétricas ocorridos entre 23 de março de 2021 e 30 de setembro de 2021,
+independe de pedido de reconhecimento de Constrained-off pelo agente de geração.
+Art. 20. O Título II desta Resolução entra em vigor no dia 1º de abril de 2021, com exceção
+dos arts. 14, 15, 16 e 17, que passam a vigorar a partir do sétimo mês civil posterior à data de 23 de
+março de 2021.
+TÍTULO II-A
+DAS RESTRIÇÕES DE OPERAÇÃO POR CONSTRAINED-OFF DE CENTRAIS GERADORAS FOTOVOLTAICAS
+(Incluído pela REN ANEEL 1.073, de 12.09.2023)
+CAPÍTULO I
+DO CONSTRAINED-OFF DE CENTRAIS GERADORAS FOTOVOLTAICAS
+(Incluído pela REN ANEEL 1.073, de 12.09.2023)
+Art. 20-A Para efeitos deste Título, eventos de restrição de operação por constrained-off são
+definidos como a redução da produção de energia por Centrais Geradoras Fotovoltaicas despachadas
+centralizadamente ou conjuntos de Centrais Geradoras Fotovoltaicas considerados na programação,
+decorrente de comando do Operador Nacional do Sistema Elétrico – ONS, que tenham sido originados
+externamente às instalações das respectivas Centrais Geradoras Fotovoltaicas. (Incluído pela REN ANEEL
+1.073, de 12.09.2023)
+§ 1º Considera-se instalações externas às respectivas Centrais Geradoras Fotovoltaicas ou
+conjuntos de Centrais Geradoras Fotovoltaicas as instalações de transmissão classificadas como Rede
+Básica e Demais Instalações de Transmissão – DITs no âmbito da distribuição. (Incluído pela REN ANEEL
+1.073, de 12.09.2023)
+§ 2º Não se considera instalações externas às respectivas Centrais Geradoras Fotovoltaicas
+ou conjuntos de Centrais Geradoras Fotovoltaicas aquelas de uso exclusivo ou compartilhado do
+gerador, sob sua gestão ou de terceiros. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+
+[PDF, página 15]
+Art. 20-B O ONS deverá classificar os eventos de restrição de operação por constrained-off
+de Centrais Geradoras Fotovoltaicas ou conjuntos de Centrais Geradoras Fotovoltaicas de acordo com
+sua motivação em: (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+I - Razão de indisponibilidade externa: motivados por indisponibilidades em instalações
+externas às respectivas Centrais Geradoras Fotovoltaicas ou conjuntos de Centrais Geradoras
+Fotovoltaicas conforme definições do art. 20-A. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+II - Razão de atendimento a requisitos de confiabilidade elétrica: motivados por razões de
+confiabilidade elétrica dos equipamentos pertencentes a instalações externas às respectivas Centrais
+Geradoras Fotovoltaicas ou conjuntos de Centrais Geradoras Fotovoltaicas conforme definições do art.
+20-A e que não tenham origem em indisponibilidades dos respectivos equipamentos. (Incluído pela REN
+ANEEL 1.073, de 12.09.2023)
+III - Razão energética: motivados pela impossibilidade de alocação de geração de energia na
+carga. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+Art. 20-C O ONS deverá calcular a referência da frustração de geração de energia decorrente
+de evento de restrição de operação por constrained-off das Centrais Geradoras Fotovoltaicas ou
+conjuntos de Centrais Geradoras Fotovoltaicas, classificado como razão de indisponibilidade externa,
+conforme inciso I do art. 20-B, a partir da função de produtividade da Central Geradora Fotovoltaica, de
+acordo com os critérios técnicos estabelecidos pelo ONS. (Incluído pela REN ANEEL 1.073, de
+12.09.2023)
+§ 1º O ONS deverá elaborar a função de produtividade, de acordo com os critérios técnicos
+estabelecidos pelo próprio ONS, a partir das medições de geração e das variáveis meteorológicas para
+fins solarimétricos, sendo revisada anualmente. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 2º Nos casos em que não há histórico de um ano de operação da Central Geradora
+Fotovoltaica a partir da entrada em operação comercial, a função de produtividade será atualizada a
+cada mês até completar um ano. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 3º Enquanto detiver outorga vigente, o agente de geração deverá disponibilizar acesso ao
+ONS, em tempo real, dos registros das medições de geração e das variáveis meteorológicas para fins
+solarimétricos e apresentar as disponibilidades das unidades geradoras da Central Geradora
+Fotovoltaica desde a data de entrada em operação comercial, em conformidade com critérios técnicos
+estabelecidos nos Procedimentos de Rede. (Incluído pela REN 1.073, de 12.09.2023)
+§ 4º O ONS deverá estabelecer a forma da elaboração da função de produtividade, do cálculo
+da referência da frustração de geração de energia e da obtenção automática das medições de geração
+e das variáveis meteorológicas para fins solarimétricos pelo ONS. (Incluído pela REN ANEEL 1.073, de
+12.09.2023)
+§ 5º Até a elaboração da função de produtividade, será considerada como referência da
+frustração de geração de energia das Centrais Geradoras Fotovoltaicas ou conjuntos de Centrais
+
+[PDF, página 16]
+Geradoras Fotovoltaicas solares fotovoltaicas a média aritmética entre os quinto e sexto valores
+ordenados de energia gerada nos 10 (dez) períodos imediatamente anteriores coincidentes com o
+horário da restrição de operação em análise. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 6º Para fins de aplicação desse dispositivo, considera-se como períodos imediatamente
+anteriores coincidentes com o horário da restrição de operação o lapso temporal correspondente ao
+evento de restrição de operação por constrained-off das Centrais Geradoras Fotovoltaicas ou conjunto
+de Centrais Geradoras Fotovoltaicas. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 7º Caso os 10 (dez) períodos de que trata o parágrafo anterior incorporem data anterior à
+entrada em operação comercial da Central Geradora Fotovoltaica, a garantia física da Central Geradora
+Fotovoltaica será adotada para completar o período. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 8º O ONS deverá desconsiderar o montante de geração frustrada associado às restrições
+indicadas no parecer de acesso das Centrais Geradoras Fotovoltaicas ou dos conjuntos de Centrais
+Geradoras Fotovoltaicas. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 9º No caso de conjuntos de Centrais Geradoras Fotovoltaicas, o ONS deverá considerar o
+rateio da referência da frustração de geração de energia proporcionalmente à capacidade instalada de
+cada Central Geradora Fotovoltaica integrante do conjunto. (Incluído pela REN ANEEL 1.073, de
+12.09.2023)
+§ 10. As informações utilizadas para calcular a referência da frustração de geração de energia
+devem ser disponibilizadas pelo ONS em plataforma de acesso público. (Incluído pela REN ANEEL 1.073,
+de 12.09.2023)
+Art. 20-D Os pagamentos dos montantes financeiros relativos aos eventos de restrição de
+operação por constrained-off das Centrais Geradoras Fotovoltaicas ou conjunto de Centrais Geradoras
+Fotovoltaicas, classificados como razão de indisponibilidade externa, conforme o inciso I do art. 20-B,
+serão realizados por meio de Encargo de Serviço do Sistema – ESS pela CCEE de acordo com os seguintes
+critérios: (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+I - na parcela da garantia física vinculada a Contrato de Comercialização de Energia no
+Ambiente Regulado – CCEAR por Disponibilidade, o pagamento deverá ser efetuado às distribuidoras de
+energia compradoras dos respectivos contratos; (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+II - na parcela da garantia física vinculada a Contrato de Energia de Reserva – CER, o
+pagamento deverá ser efetuado à Conta de Energia de Reserva – CONER; e (Incluído pela REN ANEEL
+1.073, de 12.09.2023)
+III - na parcela da garantia física não contratada conforme os incisos anteriores, o pagamento
+deverá ser efetuado ao agente gerador. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 1º O pagamento do ESS deverá ser proporcionalizado pelo consumo de energia do perfil
+consumo dos agentes e deverá observar a abrangência da restrição, se local ou sistêmica. (Incluído pela
+REN ANEEL 1.073, de 12.09.2023)
+
+[PDF, página 17]
+§ 2º O pagamento de ESS é devido somente nas situações em que a soma dos tempos,
+acumulados desde o início do ano civil, de restrição de operação por constrained-off da respectiva
+Central Geradora Fotovoltaica ou conjunto de Centrais Geradoras Fotovoltaicas, classificada como razão
+de indisponibilidade externa, conforme o inciso I do art. 20-B, superar 30 horas e 30 minutos. (Incluído
+pela REN ANEEL 1.073, de 12.09.2023)
+§ 3º Fica autorizado o ONS a atualizar e divulgar, o limite temporal regulatório constante do
+§ 2º, considerando a metade do valor da indisponibilidade média apurada, em uma média móvel dos
+últimos cinco anos civis, das Funções de Transmissão, com nível de tensão entre 230 kV e 500 kV.
+(Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 4º O montante energético para apuração dos ESS será dado pela seguinte formulação:
+(Incluído pela REN ANEEL 1.073, de 12.09.2023)
+𝐺𝐸𝑆𝑆 = 𝑚í𝑛[𝑚á𝑥(𝐸𝑐𝑜𝑛𝑡 − 𝐺𝑣𝑒𝑟; 0); 𝐺𝑓𝑟𝑢𝑠𝑡]
+Onde:
+GESS: montante energético para apuração dos ESS;
+Econt: montante de energia vendida em contratos associados à respectiva Central Geradora
+Fotovoltaica, no caso de CCEAR e CER; e garantia física, no caso de Centrais Geradoras Fotovoltaicas não
+contratadas dessa forma;
+Gver: energia gerada; e
+Gfrust: frustração de geração da Central Geradora Fotovoltaica obtida pelo rateio da
+frustração de geração do conjunto (caso aplicável), estimada em função das variáveis meteorológicas
+para fins solarimétricos e da energia gerada do conjunto.
+§ 5º A valoração do ESS deverá se dar pelo Preço de Liquidação das Diferenças – PLD do
+submercado da Central Geradora Fotovoltaica ou conjunto de Centrais Geradoras Fotovoltaicas no
+respectivo período de comercialização. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 6º As Centrais Geradoras Fotovoltaicas inadimplentes com a obrigação de
+encaminhamento das medições de geração e das variáveis meteorológicas para fins solarimétricos de
+que trata o §3° do art. 20-C não são elegíveis ao recebimento dos montantes financeiros de que trata o
+caput. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+Art. 20-E As Regras de Comercialização deverão prever a compensação, sobre as obrigações
+internas aos CCEAR por Disponibilidade e CER, dos eventos de restrição de operação por constrainedoff das Centrais Geradoras Fotovoltaicas, classificado como razão de indisponibilidade externa,
+conforme inciso I do art. 20-B, apurados conforme o Título II-A desta Resolução. (Incluído pela REN
+ANEEL 1.073, de 12.09.2023)

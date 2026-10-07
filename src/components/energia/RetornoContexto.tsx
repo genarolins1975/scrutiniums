@@ -53,7 +53,7 @@ export function RetornoContexto({ rotulos }: { rotulos: RotulosRetorno }) {
     setDestino(null);
   };
   return (
-    <nav aria-label="Voltar ao Aprenda" className="fixed bottom-4 left-4 right-4 z-40 flex items-stretch border border-energia bg-superficie shadow-lg sm:right-auto">
+    <nav aria-label="Voltar ao Aprenda" data-retorno="true" className="fixed bottom-4 left-4 right-4 z-40 flex items-stretch border border-energia bg-superficie shadow-lg print:hidden sm:right-auto">
       <Link href={destino.href} className="flex min-h-[44px] flex-1 items-center gap-2 px-4 text-sm text-energia-dark underline-offset-4 hover:underline" onClick={fechar}>
         <span aria-hidden="true">←</span>
         {destino.texto}

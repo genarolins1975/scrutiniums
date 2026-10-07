@@ -102,8 +102,29 @@ describe("P065: fontes primárias versionadas", () => {
 
   it("as fontes de GSF e de constrained-off com a nota de 2022 e a REN ANEEL declaram o que não foi lido no original", () => {
     expect(conceito("gsf")!.limitacoes!.join(" ")).toMatch(/403/);
-    expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/não foi lida no original/);
+    expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/Internet Archive de 08\/01\/2025/);
+    expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/403/);
     expect(conceito("ree")!.limitacoes!.join(" ")).toMatch(/Procedimentos de Rede/);
+  });
+});
+
+describe("P065: ressalva no selo e o que cada verbete diz do que não leu", () => {
+  it("GSF e REE são conferidos com ressalva declarada; os demais não têm; a ressalva não existe sem limitação que a explique", () => {
+    expect(conferidos.filter((c) => c.ressalva).map((c) => c.slug).sort()).toEqual(["gsf", "ree"]);
+    for (const c of conferidos.filter((x) => x.ressalva)) expect(c.limitacoes?.length ?? 0, c.slug).toBeGreaterThan(0);
+    // constrained-off foi lido na norma (REN ANEEL nº 1.030/2022), então não carrega ressalva de fonte
+    expect(conceito("constrained-off")!.ressalva).toBeUndefined();
+  });
+
+  it("a REN 1.030/2022 e a REN 957/2021 estão nas capturas com a cópia pública e o sha256 do original", () => {
+    const pasta = join(raiz, "pipeline/energia/seed/documentos_aprenda");
+    const manifestos = readdirSync(pasta).filter((d) => /^v\d{8}T\d{6}Z$/.test(d)).flatMap((d) => (JSON.parse(ler(join("pipeline/energia/seed/documentos_aprenda", d, "MANIFESTO.json"))) as { arquivos: Record<string, string>[] }).arquivos);
+    for (const arq of ["ren_aneel_1030_2022_constrained_off.txt", "ren_aneel_957_2021_mcp.txt"]) {
+      const a = manifestos.find((m) => m.arquivo === arq)!;
+      expect(a, arq).toBeTruthy();
+      expect(a.url_copia, arq).toMatch(/^https:\/\/web\.archive\.org\/web\/\d{14}id_\/https:\/\/www2\.aneel\.gov\.br\/cedoc\//);
+      expect(a.sha256_original, arq).toMatch(/^[0-9a-f]{64}$/);
+    }
   });
 });
 
@@ -198,6 +219,30 @@ describe("P065: páginas dos verbetes", () => {
       expect(h, c.slug).not.toContain("data-prova");
       expect(h, c.slug).not.toContain(">Unidade<");
     }
+  });
+
+  it("selo com ressalva, siglas do texto expandidas, trecho literal recolhível e exemplo com os termos da conta", () => {
+    for (const s of ["gsf", "ree"]) {
+      expect(paginas[s], s).toContain('data-ressalva="true"');
+      expect(paginas[s], s).toContain("◐ com ressalva:");
+    }
+    expect(paginas["constrained-off"]).not.toContain('data-ressalva="true"');
+    for (const s of ["gsf", "ree", "constrained-off"]) {
+      expect(paginas[s], s).toContain('data-siglas="true"');
+      expect(paginas[s], s).toContain("Trecho literal do documento");
+    }
+    // as siglas do texto principal ganham nome por extenso; a que o texto já expande (ONS) não se repete na legenda
+    const legenda = (h: string) => (/data-siglas="true">(.*?)<\/p>/.exec(h)?.[1] ?? "").replace(/<[^>]+>/g, "");
+    expect(legenda(paginas["constrained-off"])).toContain("PLD, Preço de Liquidação das Diferenças");
+    expect(legenda(paginas["constrained-off"])).not.toContain("ONS, Operador");
+    expect(legenda(paginas.ree)).toContain("ONS, Operador Nacional do Sistema Elétrico");
+    // o GSF mostra a conta lida da gold, com as duas garantias físicas
+    expect(paginas.gsf).toMatch(/Os termos da conta, em MWmed: [\d.]+ de geração das usinas do MRE divididos por [\d.]+ de garantia física modulada e ajustada/);
+    expect(paginas.gsf).toMatch(/Com a garantia física sazonalizada \([\d.]+\) no lugar dela, a mesma geração daria [\d,]+%/);
+    // a decomposição por razão do constrained-off soma o que o painel publica
+    expect(paginas["constrained-off"]).toMatch(/Nos mesmos 12 meses, a taxa de restrição foi de [\d,]+% da geração possível estimada/);
+    // o exemplo do REE abre o painel no REE escolhido
+    expect(paginas.ree).toContain("ent=ree%3A");
   });
 
   it("verbete revisado mostra as duas datas; trilhas listadas no verbete", () => {

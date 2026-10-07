@@ -35,7 +35,7 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
           <span key={i}>
             {pt.texto}
             {pt.natureza && (
-              <span className="mx-1 align-middle">
+              <span className="ml-1 align-middle">
                 <SeloNatureza natureza={pt.natureza} />
               </span>
             )}
@@ -46,7 +46,7 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
         </Link>
       </p>
     );
-  const { evidencia: ev, painel, natureza, leitura } = prova.dado;
+  const { evidencia: ev, painel, natureza, leitura, complemento } = prova.dado;
   const base = baseDoValor(ev);
   return (
     <figure data-prova="evidencia" className="border border-linha bg-superficie p-4 sm:p-5">
@@ -62,6 +62,11 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
         {textoPeriodo(ev.periodo)} · {ev.entidade}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-carvao">{leitura}</p>
+      {complemento && (
+        <p className="mt-2 text-sm leading-relaxed text-carvao" data-complemento="true">
+          {complemento}
+        </p>
+      )}
       <div className="mt-2 flex flex-wrap items-center gap-x-5">
         <Link href={comVolta(painel.href, volta)} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
           Ver no painel: {painel.rotulo}

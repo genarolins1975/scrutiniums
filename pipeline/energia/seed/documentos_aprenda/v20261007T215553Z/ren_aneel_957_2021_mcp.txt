@@ -1,0 +1,65 @@
+[PDF, página 3]
+IX – Garantias Financeiras: meios executáveis extrajudicialmente, com que se assegura o
+cumprimento de obrigações de pagamento;
+X – Garantias avulsas: valor, em reais, de garantia financeira a ser adicionada ao limite
+operacional;
+XI – Limite operacional: valor, em reais, de garantia financeira contratada para cada Agente
+da CCEE com o Agente garantidor, destinado ao adimplemento das obrigações contraídas pelo agente
+contratante no âmbito da liquidação financeira, nos termos desta Resolução;
+XII – Liquidação Financeira: processo de pagamento de débitos e recebimento de créditos
+apurados no âmbito da contabilização promovida pela CCEE;
+XIII – Mercado de Curto Prazo – MCP: denominação do processo em que se procede à
+contabilização e liquidação financeira das diferenças apuradas entre os montantes de energia elétrica
+seguintes:
+a) contratados, registrados e validados pelos agentes da CCEE, cujo registro tenha sido
+efetivado pela Câmara; e
+b) de geração ou de consumo efetivamente verificados e atribuídos aos respectivos agentes
+da CCEE;
+XIV – Processo de contabilização e liquidação financeira: conjunto de operações envolvendo
+a medição, o registro de todos os contratos de compra e venda de energia elétrica, os montantes objeto
+da contabilização, a liquidação financeira, incluindo o gerenciamento das transferências financeiras entre
+os agentes da CCEE e o universo de programas e métodos utilizados;
+XV – Processo de registro, validação e efetivação: procedimento em que um Agente da CCEE
+lança a registro nos sistemas da CCEE montante de energia elétrica contratado, sua contraparte valida tal
+registro e a CCEE, quando atendidos os requisitos normativos pertinentes, procede à respectiva
+efetivação;
+XVI – Registro: cadastro obrigatório de dados ou documentos em livro ou banco de dados
+mantidos por órgãos ou entidades competentes, cuja efetivação lhe confere eficácia para todos os fins,
+salvo constatação posterior de vício material ou formal;
+XVII – Sistema de Coleta de Dados de Energia – SCDE: sistema computacional que realiza a
+coleta e tratamento dos dados de medição que serão utilizados na contabilização, para a formação do
+Preço de Liquidação de Diferenças – PLD, na gestão dos encargos de transmissão, entre outros;
+
+[PDF, página 6]
+§ 4º As operações realizadas no MCP serão contabilizadas pela CCEE de acordo com as Regras
+e Procedimentos de Comercialização, inclusive as relativas ao intercâmbio internacional de energia
+elétrica e Energia de Reserva, definidas por regulamentação específica, devendo as exposições dos
+agentes da CCEE serem valoradas ao PLD.
+Art. 6º O não cumprimento pela CCEE das etapas definidas nos cronogramas relativos aos
+processos previstos no art. 3º desta Convenção, motivado por ação ou por omissão de agente, implicará
+a aplicação, ao infrator, das penalidades previstas em regulamentação específica da ANEEL.
+Parágrafo único. Caso o atraso das etapas dos cronogramas referidos no caput seja de
+responsabilidade exclusiva da CCEE, esta estará sujeita à aplicação das penalidades impostas pela ANEEL.
+Art. 7º Os Agentes da CCEE, conforme condições estabelecidas no Decreto nº 5.163, de 2004,
+e demais condições estabelecidas pelo Poder Concedente ou pela ANEEL, deverão:
+I – na condição de vendedor, comprovar lastro para venda de energia elétrica; ou
+II – na condição de comprador, comprovar suficiência de cobertura contratual de consumo de
+energia elétrica.
+Parágrafo único. O não cumprimento pelos agentes da CCEE do disposto no caput e
+respectivos incisos implicará a aplicação, aos infratores, das penalidades calculadas conforme Regras e
+Procedimentos de Comercialização específicos.
+§ 1º O não cumprimento pelos agentes da CCEE do disposto no caput e respectivos incisos
+implicará a aplicação, aos infratores, das penalidades calculadas conforme Regras e Procedimentos de
+Comercialização específicos. (Redação dada pela REN ANEEL 1.090, de 14.05.2024)
+§ 2º O valor da penalidade por insuficiência de lastro ou de cobertura contratual será
+determinado pelo Valor Anual de Referência – VR vigente. (Incluído pela REN ANEEL 1.090, de 14.05.2024)
+Art. 8º Todos os contratos de compra e venda de energia elétrica e respectivas alterações
+deverão ser registrados na CCEE, independentemente da data de início de suprimento, inclusive para fins
+de Contabilização e Liquidação Financeira, segundo as condições e prazos previstos em Procedimentos de
+Comercialização específicos, sem prejuízo de seu registro, aprovação ou homologação pela ANEEL.
+§ 1º Os contratos registrados na CCEE não implicam, necessariamente, compromisso de
+entrega física de energia elétrica por parte dos agentes vendedores, podendo a energia ser entregue por
+outro agente da CCEE, ressalvando-se, para todos os efeitos, que a responsabilidade contratual pela
+entrega da energia continua sendo do agente vendedor referido no contrato.
+§ 2º A CCEE poderá exigir a comprovação da existência e validade dos contratos de que trata
+o caput.

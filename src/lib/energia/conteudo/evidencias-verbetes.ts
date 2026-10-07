@@ -12,6 +12,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Evidencia } from "../evidencia";
+import { num, pct } from "../formato";
 import type { Natureza } from "../tipos";
 
 export type FonteExemplo = {
@@ -210,7 +211,11 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
   },
 };
 
-export type ExemploComEvidencia = FonteExemplo & { evidencia: Evidencia };
+export type ExemploComEvidencia = FonteExemplo & {
+  evidencia: Evidencia;
+  /** Frase que completa o número com os termos da conta ou com a decomposição, lida da gold no build; ausente sem dado. */
+  complemento?: string | null;
+};
 
 const RAIZ = join(process.cwd(), "public", "energia");
 const cache = new Map<string, unknown>();
@@ -245,10 +250,36 @@ export function evidenciaPublicada(arquivo: string, caminho: string[]): Evidenci
   return ehEvidencia(ev) && ev.valor_calculo !== null ? ev : null;
 }
 
+type Linha = Record<string, number | string | null>;
+
+/**
+ * Complemento do exemplo de alguns verbetes: os termos da conta (GSF) ou a decomposição do número
+ * (constrained-off), lidos da mesma gold do painel e do mesmo mês ou período da ficha. Nunca escrito à mão.
+ */
+const COMPLEMENTO_EXEMPLO: Record<string, () => string | null> = {
+  gsf: () => {
+    const mes = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "kpis", "gsf_ultimo_mes", "mes"]);
+    const linhas = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "mensal"]);
+    const u = Array.isArray(linhas) ? (linhas as Linha[]).find((x) => x.mes === mes) : undefined;
+    const ger = Number(u?.geracao_mre_mwmed);
+    const modulada = Number(u?.gf_modulada_fdisp_mwmed);
+    const sazonalizada = Number(u?.gf_sazonalizada_mwmed);
+    if (![ger, modulada, sazonalizada].every((x) => Number.isFinite(x) && x > 0)) return null;
+    return `Os termos da conta, em MWmed: ${num(ger, 0)} de geração das usinas do MRE divididos por ${num(modulada, 0)} de garantia física modulada e ajustada pelo fator de disponibilidade. Com a garantia física sazonalizada (${num(sazonalizada, 0)}) no lugar dela, a mesma geração daria ${pct((ger / sazonalizada) * 100, 1)}.`;
+  },
+  "constrained-off": () => {
+    const u = noCaminho(lerPublicado("gold/geracao_detalhe.json"), ["restricoes", "eolica", "ultimos_12m"]) as { taxa_pct?: number; por_razao?: { razao: string; pct: number }[] } | undefined;
+    const p = (r: string) => u?.por_razao?.find((x) => x.razao === r)?.pct;
+    const [rel, cnf, ene] = [p("REL"), p("CNF"), p("ENE")];
+    if (!u || typeof u.taxa_pct !== "number" || [rel, cnf, ene].some((x) => typeof x !== "number")) return null;
+    return `Nos mesmos 12 meses, a taxa de restrição foi de ${pct(u.taxa_pct, 1)} da geração possível estimada (verificada mais não gerada). Por razão, a energia não gerada se divide em ${pct(rel, 1)} de indisponibilidade externa, ${pct(cnf, 1)} de confiabilidade elétrica e ${pct(ene, 1)} de razão energética. Segundo a REN, só a primeira razão dá direito ao pagamento por ESS, e só depois de um limite de horas acumuladas no ano.`;
+  },
+};
+
 /** Evidência publicada para o exemplo do verbete; null sem mapeamento, sem gold ou sem valor. */
 export function exemploComEvidencia(slug: string): ExemploComEvidencia | null {
   const f = EXEMPLO_EVIDENCIA[slug];
   if (!f) return null;
   const ev = evidenciaPublicada(f.arquivo, f.caminho);
-  return ev ? { ...f, evidencia: ev } : null;
+  return ev ? { ...f, evidencia: ev, complemento: COMPLEMENTO_EXEMPLO[slug]?.() ?? null } : null;
 }

@@ -7,6 +7,7 @@
  * (evidencias-verbetes.ts); estes textos cobrem os verbetes sem ficha.
  */
 import { gold, integra, lerGold } from "../gold";
+import { idRecorte, rotuloRecorte } from "../agua";
 import { dataBR, mesAno, num, pct, reais } from "../formato";
 import { linhasRegulatorio } from "../perdas";
 import type { Natureza } from "../tipos";
@@ -227,10 +228,10 @@ export function exemploDe(slug: string): Exemplo {
           t(`Em ${dataBR(menor.dia)}, o ONS publicou a energia armazenada de `),
           t(`${num(todos.length, 0)} REE`, "CALCULADO"),
           t(`. Entre os ${num(armazenam.length, 0)} que têm armazenamento, a EAR ia de `),
-          t(`${pct(menor.ear_pct, 1)} da EAR máxima no REE ${menor.nome} a ${pct(maior.ear_pct, 1)} no REE ${maior.nome}`, "OBSERVADO"),
-          t(": cada REE tem o próprio perímetro e a própria EAR máxima."),
+          t(`${pct(menor.ear_pct, 1)} da EAR máxima no ${rotuloRecorte("ree", menor.nome)} a ${pct(maior.ear_pct, 1)} no ${rotuloRecorte("ree", maior.nome)}`, "OBSERVADO"),
+          t(": cada REE tem o próprio perímetro e a própria EAR máxima. O link abre o painel no REE de menor EAR."),
         ],
-        href: "/setor-eletrico/agua-e-clima?rec=ree#p017",
+        href: `/setor-eletrico/agua-e-clima?rec=ree&ent=${encodeURIComponent(idRecorte("ree", menor.nome))}#p017`,
       };
     }
     case "perdas-tecnicas": {

@@ -291,16 +291,18 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
       <Secao n={4} titulo="Observações de origem">
         <p>{resumoChaves(ev)}</p>
         {ev.chaves_origem.length > 0 && (
-          <ul
-            className="mt-2 max-h-48 space-y-0.5 overflow-y-auto border border-linha bg-papel px-3 py-2 font-mono text-xs text-carvao [overflow-wrap:anywhere]"
+          <div
+            className="mt-2 max-h-48 overflow-y-auto border border-linha bg-papel px-3 py-2 font-mono text-xs text-carvao [overflow-wrap:anywhere]"
             tabIndex={0}
             role="region"
             aria-label="Chaves das observações de origem"
           >
-            {ev.chaves_origem.map((c, i) => (
-              <li key={`${c}-${i}`}>{c}</li>
-            ))}
-          </ul>
+            <ul className="space-y-0.5">
+              {ev.chaves_origem.map((c, i) => (
+                <li key={`${c}-${i}`}>{c}</li>
+              ))}
+            </ul>
+          </div>
         )}
         {ev.consulta && (
           <>

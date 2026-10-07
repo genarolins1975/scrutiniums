@@ -27,7 +27,7 @@ export const UNIDADE: Record<string, string> = {
   acr: "MW médios (consumo contabilizado pela CCEE) ou MWh (consumo cativo na rede, EPE)",
   ess: "R$, por mês de competência",
   "garantia-fisica": "MW médios",
-  gsf: "percentual, por mês (geração em MWmédios dividida pela garantia física em MWmédios)",
+  gsf: "percentual, por mês (geração em MWmed dividida pela garantia física em MWmed)",
   "constrained-off": "GWh de energia não gerada estimada, % da geração possível estimada (taxa) e MW de corte simultâneo",
   imerg: "mm de precipitação por dia",
   "merra-2": "°C (temperatura do ar a 2 metros)",
@@ -176,7 +176,7 @@ export const CONTRASTES: Contraste[] = [
     a: "mre",
     b: "garantia-fisica",
     texto:
-      "A garantia física é a quantidade máxima de energia de cada empreendimento que pode lastrear contratos; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico. No observatório, a geração das usinas do MRE dividida pela garantia física modulada é o GSF.",
+      "A garantia física é a quantidade máxima de energia de cada empreendimento que pode lastrear contratos; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico. No observatório, a geração das usinas do MRE dividida pela garantia física modulada e ajustada pelo fator de disponibilidade é o GSF.",
   },
   {
     a: "garantia-fisica",
@@ -187,13 +187,13 @@ export const CONTRASTES: Contraste[] = [
     a: "gsf",
     b: "garantia-fisica",
     texto:
-      "A garantia física é o teto de energia de cada empreendimento; o GSF é a razão entre o que as usinas do MRE geraram no mês e a garantia física delas, no conjunto. Um GSF de 80,51% não diz que a garantia física caiu: diz que a geração do mês ficou abaixo dela.",
+      "A garantia física é a quantidade máxima de energia que um empreendimento pode usar para comprovar atendimento de carga ou vender em contratos; o GSF é a razão entre o que as usinas do MRE geraram no mês e a garantia física delas, no conjunto. Um GSF de 80,51% (dezembro de 2020, no boletim do MME, com a garantia física sazonalizada) não diz que a garantia física caiu: diz que a geração do mês ficou abaixo dela. Um GSF acima de 100% diz que ficou acima.",
   },
   {
     a: "mre",
     b: "gsf",
     texto:
-      "O MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico; o GSF é o número mensal que compara a geração delas com a garantia física. Falar em MRE é falar das regras do mecanismo, falar em GSF é falar da razão do mês.",
+      "O MRE é o mecanismo de compartilhamento do risco hidrológico; o GSF, também chamado de fator de ajuste do MRE, é o número mensal que compara a geração das usinas com a garantia física. Falar em MRE é falar do mecanismo, falar em GSF é falar da razão do mês.",
   },
   {
     a: "ree",
@@ -217,7 +217,7 @@ export const CONTRASTES: Contraste[] = [
     a: "constrained-off",
     b: { rotulo: "falta de vento" },
     texto:
-      "O evento decorre de comando do ONS e se origina fora das instalações da usina. Um dia sem vento reduz a geração sem comando do ONS e não é constrained-off.",
+      "Pela definição da REN, o evento decorre de comando do ONS e se origina fora das instalações da usina. Um dia sem vento reduz a geração sem comando do ONS e, portanto, não é constrained-off.",
   },
   {
     a: "imerg",

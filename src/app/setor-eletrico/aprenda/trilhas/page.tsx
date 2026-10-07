@@ -11,7 +11,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Trilhas do Aprenda: dos conceitos aos números",
   description:
-    "Dois percursos que ligam conceitos a números publicados: água, operação e preço; custo, tarifa e orçamento. Cada passo traz o verbete, o número com a ficha Comprove e o tipo de ligação com o passo seguinte.",
+    "Dois percursos que ligam conceitos a números publicados: água, operação e preço; custo, tarifa e orçamento. Cada passo traz o verbete, um número do observatório com o link ao painel (e a ficha Comprove, quando o painel a publica) e o tipo de ligação com o passo seguinte.",
   alternates: { canonical: "/setor-eletrico/aprenda/trilhas" },
 };
 
@@ -27,8 +27,8 @@ export default function TrilhasPage() {
           </Link>
         </nav>
         <CabecalhoModulo siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números">
-          Cada trilha percorre verbetes conferidos na ordem em que um afeta o outro. Em cada passo há um número publicado pelo observatório, com a ficha Comprove e o
-          link ao painel, e o tipo da ligação com o passo seguinte. Do painel, um botão traz o leitor de volta ao passo. No fim, um exemplo sintético, com valores
+          Cada trilha percorre verbetes conferidos na ordem em que um afeta o outro. Em cada passo há um número publicado pelo observatório, com o link ao painel e a
+          ficha Comprove quando o painel a publica, e o tipo da ligação com o passo seguinte. Do painel, um botão traz o leitor de volta ao passo. No fim, um exemplo sintético, com valores
           hipotéticos, mostra a conta que liga os conceitos.
         </CabecalhoModulo>
         <ul className="grid gap-4 md:grid-cols-2">

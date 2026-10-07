@@ -134,7 +134,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
               </li>
             ))}
           </ol>
-          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs text-carvao-muted" aria-label="Tipos de ligação nesta trilha">
+          <div role="group" className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs text-carvao-muted" aria-label="Tipos de ligação nesta trilha">
             {tipos.map((x) => (
               <span key={x} className="inline-flex items-center gap-2">
                 <Amostra tipo={x} />

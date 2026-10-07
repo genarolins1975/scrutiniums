@@ -1,0 +1,30 @@
+{
+ "descricao": "Texto da REN ANEEL nº 1.030/2022 (texto compilado) nos dispositivos sobre constrained-off, base do verbete constrained-off do Aprenda (P065), conferido em 07/10/2026. Cada trecho citado por um verbete aparece literalmente neste arquivo, a menos de espaços (teste em src/tests/energia-aprenda.test.ts, que reúne os manifestos de todas as versões desta pasta).",
+ "arquivos": [
+  {
+   "arquivo": "ren_aneel_1030_2022_constrained_off.txt",
+   "documento": "ANEEL, Resolução Normativa nº 1.030, de 26 de julho de 2022, texto compilado até a REN ANEEL 1.109, de 10/12/2024 (cópia do Internet Archive de 08/01/2025): Título II (constrained-off de usinas eolioelétricas) e Título II-A (centrais geradoras fotovoltaicas)",
+   "url": "https://www2.aneel.gov.br/cedoc/ren20221030.pdf",
+   "url_copia": "https://web.archive.org/web/20250108232902id_/https://www2.aneel.gov.br/cedoc/ren20221030.pdf",
+   "capturado_em": "2026-10-07T21:55:53Z",
+   "copia_publica_em": "2025-01-08T23:29:02Z",
+   "sha256_original": "a1d25fd000c7e995e1143bcb1c30f110a1364384f331e7424c5beb9192b2e638",
+   "bytes_original": 490627,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam (arts. 13 a 16 e 18; 20-A a 20-D): PDF páginas 10, 11, 12, 13, 14, 15, 16, 17. Alterações posteriores a 08/01/2025 não estão cobertas.",
+   "sha256": "aa85e2451ac92e9da2c9a6ce0e2fda291be95172c3634085a15a44b95b31a5d1"
+  },
+  {
+   "arquivo": "ren_aneel_957_2021_mcp.txt",
+   "documento": "ANEEL, Resolução Normativa nº 957, de 7 de dezembro de 2021, Convenção de Comercialização de Energia Elétrica, texto compilado (cópia do Internet Archive de 01/06/2025): art. 2º, definições, e art. 5º, § 4º",
+   "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+   "url_copia": "https://web.archive.org/web/20250601132442id_/https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+   "capturado_em": "2026-10-07T22:05:58Z",
+   "copia_publica_em": "2025-06-01T13:24:42Z",
+   "sha256_original": "472d18da11b487082e7abb9be992b67126f5b92f0929bc3785009d5807023e00",
+   "bytes_original": 709924,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 3, 6. Alterações posteriores a 01/06/2025 não estão cobertas.",
+   "sha256": "7e3011bf13e28547cddfa06f4f3b3174ecea5d5ab86dc0e9c24297fde171e350"
+  }
+ ],
+ "canal": "O endereço oficial (www2.aneel.gov.br/cedoc) responde 403 com desafio de navegador do Cloudflare a requisições automatizadas e não foi contornado. O texto vem da cópia pública do Internet Archive no modo id_ (bytes originais), o mesmo canal que o módulo Regulação usa para as normas da ANEEL (modulos/regulacao.md, seção 5), com o sha256 do original registrado aqui."
+}

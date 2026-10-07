@@ -214,3 +214,18 @@ body {
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
 }
+
+/* A barra fixa de volta ao Aprenda não pode cobrir o elemento que recebe o foco (WCAG 2.4.11): enquanto existe,
+   a rolagem por foco e por âncora deixa folga embaixo, e o fim da página ganha o mesmo espaço. */
+html:has(nav[data-retorno]) { scroll-padding-bottom: 6rem; }
+body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
+
+/* Impressão: só o conteúdo; endereços dos links externos por extenso e blocos de prova sem quebra no meio. */
+@media print {
+  html { background: #fff; scroll-behavior: auto; }
+  /* cromo do site: cabeçalho, rodapé do observatório e rodapé institucional (por seletor, para não pesar o HTML de cada página) */
+  header.border-b.bg-superficie, aside[aria-label^="Observatório Brasileiro"], footer.bg-carvao { display: none !important; }
+  main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }
+  main figure, main blockquote, main li { break-inside: avoid; }
+  main h1, main h2 { break-after: avoid; }
+}

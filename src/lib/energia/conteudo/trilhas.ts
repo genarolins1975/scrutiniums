@@ -49,7 +49,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
     titulo: "Água, operação e preço",
     pergunta: "Como a água que chega aos reservatórios aparece no preço de curto prazo?",
     resumo:
-      "Da afluência ao resultado no mercado de curto prazo, em seis passos. Entre a água e o preço há decisões de operação e regras de mercado: nenhum passo determina sozinho o seguinte.",
+      "Resposta curta: a água chega ao preço por etapas que o observatório mostra em seis passos. A afluência e o armazenamento alimentam os modelos com que o ONS planeja a operação, que estimam o CMO; a CCEE parte do CMO para calcular o PLD, e é ao PLD que o mercado valora as diferenças entre a energia contratada e a verificada. Entre a água e o preço há decisões de operação e regras de mercado: nenhum passo determina sozinho o seguinte.",
     passos: [
       {
         id: "afluencia",
@@ -75,7 +75,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         titulo: "A água guardada",
         conceitos: ["ear", "armazenamento", "ree"],
         texto:
-          "A EAR é a energia associada ao volume de água nos reservatórios que pode virar geração na própria usina e nas que ficam a jusante. Em percentual da EAR máxima, diz quanto do armazenamento possível está ocupado. O ONS a publica também por reservatório equivalente de energia (REE), a agregação por bacia que os modelos de planejamento usam.",
+          "A EAR é a energia associada ao volume de água nos reservatórios que pode virar geração na própria usina e nas que ficam a jusante. Em percentual da EAR máxima, diz quanto do armazenamento possível está ocupado. O ONS a publica também por reservatório equivalente de energia (REE), o agrupamento das usinas hidrelétricas por bacia que os modelos de planejamento usam, um recorte diferente do das bacias que o ONS também publica.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/agua_detalhe.json",
@@ -143,7 +143,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
     naoConclua: [
       "Chuva não determina diretamente o preço: entre uma e outra há operação, modelos e regras de mercado.",
       "O PLD não é tarifa: é o preço das diferenças liquidadas no mercado de curto prazo.",
-      "O fator de ajuste do MRE não diz quanto cada usina ganhou ou perdeu nem como o resultado é liquidado: as Regras de Comercialização da CCEE não foram conferidas nesta fase.",
+      "O fator de ajuste do MRE não diz quanto cada usina ganhou ou perdeu nem como o resultado é liquidado: as Regras de Comercialização da CCEE não foram lidas.",
     ],
     simulacao: "liquidacao",
   },

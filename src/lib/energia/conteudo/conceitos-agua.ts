@@ -93,8 +93,9 @@ export const CONCEITOS: Conceito[] = [
     conferidoEm: "2026-10-07",
     emUmaFrase:
       "Representação agregada das usinas hidrelétricas nos modelos oficiais de planejamento da operação, organizada de acordo com as bacias hidrográficas em que as usinas estão localizadas.",
+    ressalva: "sem definição formal nas fontes consultadas",
     porQueImporta:
-      "O ONS publica a energia armazenada (EAR) e a energia natural afluente (ENA) por REE. O MME registra que o número de REE nos modelos passou de 4 para 12 e que as afluências passaram a ter correlação espacial mensal entre os REE, para capturar a diversidade hidrológica entre as bacias.",
+      "O ONS publica a energia armazenada (EAR) e a energia natural afluente (ENA) por REE. O relatório do GT Mecanismos de Formação de Preços (coordenado pela CCEE, com MME, ANEEL, EPE e ONS) registra que o número de REE nos modelos subiu de 4 para 12 e, entre os aprimoramentos em desenvolvimento em 2019, a correlação espacial mensal das afluências entre os REE, para capturar a diversidade hidrológica entre as bacias; se essa correlação já está em uso não foi conferido.",
     comoEMedido:
       "Não é uma grandeza: é a unidade em que o ONS publica a EAR e a ENA diárias. A EAR é a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas a jusante na cascata. No observatório, a EAR por REE aparece em MWmês e em percentual da EAR máxima, cada REE com o próprio perímetro e a própria EAR máxima.",
     relacoes: ["ear", "ena", "newave"],
@@ -118,20 +119,20 @@ export const CONCEITOS: Conceito[] = [
           "Em outras palavras: a topologia usada tem 4 subsistemas e, dentro dela, 12 REE, a chamada topologia G, em uso desde o PMO de janeiro de 2018, com a versão 24 do NEWAVE.",
       },
       {
-        orgao: "MME, GT Modernização do Setor Elétrico",
+        orgao: "MME, GT Modernização do Setor Elétrico (coordenação da CCEE)",
         documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 5, propostas de aprimoramentos",
         url: URL_GT_PRECOS,
         trecho: "o aumento do número de Reservatórios Equivalentes em Energia (REEs), passando de 4 REEs para 12 REEs",
         parafrase: "Em outras palavras: o número de reservatórios equivalentes nos modelos subiu de 4 para 12.",
       },
       {
-        orgao: "MME, GT Modernização do Setor Elétrico",
+        orgao: "MME, GT Modernização do Setor Elétrico (coordenação da CCEE)",
         documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 2.2.1, aprimoramentos em desenvolvimento dos modelos atuais",
         url: URL_GT_PRECOS,
         trecho:
           "A utilização de correlação espacial de ENAs, nos modelos NEWAVE e GEVAZP, entre os reservatórios equivalentes de energia (REE), em base mensal, em substituição à anual. Essa representação é mais aderente à realidade, capturando a diversidade hidrológica entre as diferentes bacias.",
         parafrase:
-          "Em outras palavras: os modelos passaram a relacionar, mês a mês, as afluências dos diferentes REE, em vez de uma relação anual, e isso representa melhor a diferença de comportamento entre as bacias.",
+          "Em outras palavras: entre os aprimoramentos dos modelos em desenvolvimento em 2019, o relatório lista relacionar, mês a mês, as afluências dos diferentes REE, em vez de uma relação anual, o que representaria melhor a diferença de comportamento entre as bacias.",
       },
       {
         orgao: "ONS",
@@ -148,8 +149,8 @@ export const CONCEITOS: Conceito[] = [
       },
     ],
     limitacoes: [
-      "Nenhum dos documentos consultados traz uma definição formal de REE: a descrição acima é a da EPE, e a composição de cada um dos 12 REE em usinas não está neste verbete. Os Procedimentos de Rede e o glossário do ONS não foram acessados nesta fase, e o dicionário de dados do conjunto EAR Diário por REE usa o termo sem defini-lo.",
-      "O perímetro de alguns REE mudou na reconfiguração do fim de 2017, que o painel detecta nos arquivos do ONS; a EPE registra a topologia G, de 12 REE, em uso desde o PMO de janeiro de 2018. Séries por REE anteriores a essa mudança não são comparáveis no mesmo perímetro.",
+      "Nenhum dos documentos consultados traz uma definição formal de REE: a descrição acima é a da EPE, e a composição de cada um dos 12 REE em usinas não está neste verbete. O Submódulo 2.4 dos Procedimentos de Rede, lido para o módulo PLD, não contém o termo; os demais submódulos e o glossário do ONS não foram lidos, e o dicionário de dados do conjunto EAR Diário por REE usa o termo sem defini-lo.",
+      "O relatório do GT descreve o aumento de 4 para 12 REE sem datá-lo. Nos arquivos do ONS, o painel detecta a reconfiguração de 29 e 30/12/2017, de 9 para 12 REE, que mudou o perímetro de alguns deles, e a EPE registra a topologia G, de 12 REE, em uso desde o Programa Mensal da Operação de janeiro de 2018. Séries por REE anteriores a essa mudança não são comparáveis no mesmo perímetro.",
     ],
     vejaNoPortal: [{ rotulo: "Água e clima: EAR por REE", href: "/setor-eletrico/agua-e-clima?rec=ree#p017" }],
   },

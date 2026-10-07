@@ -12,14 +12,14 @@
    "sha256": "6a6a068405faa599a55529c6117dc4029fc940001b63e4bcbf8f020051fda321"
   },
   {
-   "arquivo": "gt_mre_tabela1.txt",
-   "documento": "MME, GT Modernização do Setor Elétrico, Relatório do Grupo Temático Aprimoramento do MRE, julho de 2019: figura 8 e Tabela 1 (variáveis avaliadas)",
+   "arquivo": "gt_mre_gsf.txt",
+   "documento": "MME, GT Modernização do Setor Elétrico, Relatório do Grupo Temático Aprimoramento do MRE, julho de 2019: seções sobre a contabilização do MRE, a crise do MRE e o balanço operativo, figura 8 e Tabela 1",
    "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-executiva/modernizacao-do-setor-eletrico/arquivos/pasta-geral-publicada/mre.pdf",
    "capturado_em": "2026-10-07T21:10:58Z",
    "sha256_original": "bcc149b5eafb5c72e05b2e783748d5fae7ec7b4fbe55942bbf75c99d7bdc9674",
    "bytes_original": 3325268,
-   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 18 (parágrafo sobre o descolamento entre a sazonalidade da produção e a da garantia física) e 22 (Tabela 1).",
-   "sha256": "242c5a7f2a82c4cd133226bed1ff501a4c71976b898dabfb1759bd23d865b8cb"
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 3, 17, 18, 21, 22, 38 (neste relatório a página do PDF coincide com a impressa).",
+   "sha256": "4639306ac75212d73c1010320503d8ebf5234413f086a9d94683f51168d9f0c6"
   },
   {
    "arquivo": "gt_formacao_ree.txt",

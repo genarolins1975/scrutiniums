@@ -145,7 +145,7 @@ export const CONCEITOS: Conceito[] = [
     relacoes: ["tarifa-te-tusd"],
     fontes: [GERACAO_DISTRIBUIDA, TARIFA_SOCIAL],
     limitacoes: [
-      "A norma de origem (REN nº 1.000/2021) não pôde ser lida nesta fase: o acervo da ANEEL bloqueou o acesso automatizado. O detalhe por número de condutores e a regra para a Tarifa Social acima de 80 kWh não foram conferidos no texto da norma.",
+      "A norma de origem (REN nº 1.000/2021) não pôde ser lida: o acervo da ANEEL bloqueou o acesso automatizado. O detalhe por número de condutores e a regra para a Tarifa Social acima de 80 kWh não foram conferidos no texto da norma.",
     ],
     vejaNoPortal: [{ rotulo: "Simulador da conta", href: "/setor-eletrico/conta-de-luz#simulador" }],
   },

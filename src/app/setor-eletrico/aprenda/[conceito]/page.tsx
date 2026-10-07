@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { AprendaProva } from "@/components/energia/AprendaProva";
 import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { EXEMPLO_SINTETICO, UNIDADE, contrastesDe } from "@/lib/energia/conteudo/complementos";
 import { provaDoVerbete } from "@/lib/energia/conteudo/provas";
 import { hrefPasso, passosComVerbete } from "@/lib/energia/conteudo/trilhas";
 import { dataBR } from "@/lib/energia/formato";
+import { siglasNoTexto } from "@/lib/energia/siglas";
 import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -49,12 +52,17 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   const contrastes = conferido ? contrastesDe(c.slug) : [];
   const nasTrilhas = conferido ? passosComVerbete(c.slug) : [];
   const unidade = conferido ? UNIDADE[c.slug] : undefined;
+  // siglas do texto principal (sem as da fonte citada, que o leitor abre se quiser) que o texto não expande
+  const siglas = conferido
+    ? siglasNoTexto([c.emUmaFrase, c.porQueImporta, c.comoEMedido, unidade, ...(c.limitacoes ?? [])].filter(Boolean).join(" "), 8).filter((x) => x !== c.sigla)
+    : [];
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
+      <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
+        <nav aria-label="Localização" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Aprenda</Link> · {c.grupo}
         </nav>
         <header className="pb-6 pt-4">
@@ -73,11 +81,13 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               <>
                 <span className="rotulo text-sucesso">● conferido na fonte primária em {dataBR(c.conferidoEm)}</span>
                 {c.revisadoEm && c.revisadoEm !== c.conferidoEm && <span className="rotulo">revisado em {dataBR(c.revisadoEm)}</span>}
+                {c.ressalva && <span className="rotulo text-aviso" data-ressalva="true">◐ com ressalva: {c.ressalva}</span>}
               </>
             ) : (
               <span className="rotulo text-aviso">○ verbete em preparação</span>
             )}
           </p>
+          <LegendaDeSiglas siglas={siglas} />
         </header>
 
         {c.estado === "PENDENTE" ? (
@@ -104,7 +114,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
             <Campo rotulo="Como é medido">{c.comoEMedido}</Campo>
             {unidade && <Campo rotulo="Unidade">{unidade}</Campo>}
-            <Campo rotulo="Exemplo real" id="exemplo">
+            <Campo rotulo={sintetico ? "Exemplo sintético" : "Exemplo real"} id="exemplo">
               {prova ? (
                 <AprendaProva prova={prova} volta={`verbete:${c.slug}`} />
               ) : sintetico ? (
@@ -179,8 +189,13 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                       {f.documento} <span aria-hidden="true">↗</span>
                     </a>
                   </p>
-                  {f.trecho && <blockquote className="mt-2 border-l-2 border-linha pl-4 text-sm text-carvao-muted">“{f.trecho}”</blockquote>}
                   {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}
+                  {f.trecho && (
+                    <details className="mt-1 pl-4 text-sm">
+                      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">Trecho literal do documento</summary>
+                      <blockquote className="border-l-2 border-linha pl-4 text-carvao-muted">“{f.trecho}”</blockquote>
+                    </details>
+                  )}
                 </li>
               ))}
             </ul>
@@ -205,7 +220,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           <ul className="space-y-1">
             {c.vejaNoPortal.map((v) => (
               <li key={v.href}>
-                <Link href={v.href} className="text-energia-dark underline underline-offset-4">{v.rotulo}</Link>
+                <Link href={v.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{v.rotulo}</Link>
               </li>
             ))}
           </ul>
