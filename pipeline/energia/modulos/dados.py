@@ -1564,7 +1564,7 @@ def proveniencias(con, lista, cat, hoje, agora):
 def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
     """Fichas 'Comprove este número' dos números principais da página. Cada teste
     confere o número por um caminho diferente do que o calculou (relatório de
-    checagens, golds publicadas, vintages do silver), não repete a fórmula."""
+    checagens, bases publicadas, vintages do silver), não repete a fórmula."""
     fichas = {}
     golds_res = golds_res or {}
     vint = _fonte_catalogo(con)

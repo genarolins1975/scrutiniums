@@ -55,7 +55,7 @@ export default function AprendaPage() {
                       <span className="font-serif text-lg text-carvao">{c.sigla ?? c.nome}</span>
                       {c.estado === "PENDENTE" && <span className="rotulo !text-[0.62rem] text-aviso">em preparação</span>}
                     </span>
-                    {c.sigla && <span className="text-sm text-mineral">{c.nome}</span>}
+                    {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-mineral">{c.nome}</span>}
                     <span className="mt-2 text-sm leading-relaxed text-carvao-muted">
                       {c.estado === "CONFERIDO" ? c.emUmaFrase : `Fonte primária a conferir: ${c.fontePlanejada}`}
                     </span>

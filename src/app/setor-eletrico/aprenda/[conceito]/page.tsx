@@ -21,7 +21,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { conceito: string } }): Metadata {
   const c = conceito(params.conceito);
   if (!c) return {};
-  const nome = c.sigla ? `${c.sigla}: ${c.nome}` : c.nome;
+  const nome = c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla}: ${c.nome}` : c.nome;
   return {
     title: `${nome} · Aprenda`,
     description: c.estado === "CONFERIDO" ? c.emUmaFrase : `Verbete em preparação: ${c.nome}. Fonte primária a conferir.`,
@@ -59,12 +59,14 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
         </nav>
         <header className="pb-6 pt-4">
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
-            {c.sigla && (
+            {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? (
               <>
                 <span className="mr-3">{c.sigla}</span>{" "}
+                <span className="text-carvao-muted">{c.nome}</span>
               </>
+            ) : (
+              <span>{c.nome}</span>
             )}
-            <span className={c.sigla ? "text-carvao-muted" : ""}>{c.nome}</span>
           </h1>
           <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-mineral">
             {c.estado === "CONFERIDO" ? (

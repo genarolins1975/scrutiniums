@@ -3,7 +3,7 @@
 A Visão geral não coleta fonte própria: ela lê as golds que os outros módulos acabaram de
 construir (ctx["golds"], ordem 98, depois de todos) e a série de origem no silver
 principal, e publica `sintese.json`, o mesmo nome que a página já lia. Por que um módulo
-e não mais um builder do run.py: a síntese precisa das golds dos módulos temáticos (conta,
+e não mais um builder do run.py: a síntese precisa das bases publicadas dos módulos temáticos (conta,
 qualidade, perdas, inclusão, PLD detalhado, regulação, geração detalhada, dados), que só
 existem depois do laço de módulos.
 
@@ -19,7 +19,7 @@ O que publica:
   regras em alerta (duração mínima atingida), da mais rara para a mais frequente no
   histórico.
 * P005, determinantes em pequenos múltiplos: preço, água, geração, carga e rede, com os
-  mesmos números das golds de origem copiados sem recálculo, alinhados pelo calendário dos
+  mesmos números das bases publicadas de origem copiados sem recálculo, alinhados pelo calendário dos
   últimos 90 dias e com a data de referência de cada painel explícita (as séries terminam
   em dias diferentes; o eixo comum não sugere simultaneidade). A rede mostra fluxo
   verificado, sem alegação de congestionamento.
@@ -72,7 +72,7 @@ U = {
     "multiplos": "/energia/series/sintese_multiplos.csv",
     "revisoes": "/energia/series/sintese_revisoes.csv",
 }
-REPRODUCAO = "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)"
+REPRODUCAO = "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as bases publicadas e o silver principal)"
 
 REGISTRO = {
     "id": "visao",
@@ -364,7 +364,7 @@ def _serie(con, ds, serie):
 def _serie_janela(con, ds, serie, ini, fim):
     """{ref: valor} vigente de uma série só entre `ini` e `fim` (refs ISO, inclusive; refs
     horárias "AAAA-MM-DDTHH:MM" entram pelo prefixo do dia). Leitura direta do silver
-    principal, sem passar pela gold de origem: é o caminho independente das reconciliações."""
+    principal, sem passar pela base publicada de origem: é o caminho independente das reconciliações."""
     rows = con.execute(
         """SELECT o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id = o.vintage_id
            WHERE o.dataset=? AND o.serie=? AND o.ref >= ? AND o.ref <= ? ORDER BY v.capturado_em, o.rowid""",
@@ -442,7 +442,7 @@ def _por_dia(xs, chave="d"):
 
 def multiplos(golds, hoje):
     """Determinantes alinhados pelo calendário dos últimos 90 dias, com os valores
-    copiados das golds de origem (sem recálculo) e a data de referência de cada painel."""
+    copiados das bases publicadas de origem (sem recálculo) e a data de referência de cada painel."""
     pld, hid, ger, carga, rede = (golds.get(k) for k in ("pld.json", "hidrologia.json", "geracao.json", "carga.json", "rede.json"))
     paineis, refs = [], {}
     if _ok(pld):
@@ -583,13 +583,13 @@ def multiplos(golds, hoje):
     return {"janela": {"inicio": inicio, "fim": fim, "dias": JANELA_MULTIPLOS}, "chave_x": "d",
             "datas_referencia": {p["id"]: p["data_referencia"] for p in paineis}, "aviso_datas": aviso,
             "paineis": paineis, "dados": [linhas[k] for k in dias],
-            "regra": ("Valores copiados das golds de origem, sem recálculo nem preenchimento: dia sem valor na origem fica sem "
+            "regra": ("Valores copiados das bases publicadas de origem, sem recálculo nem preenchimento: dia sem valor na origem fica sem "
                       "valor aqui. Escala vertical própria de cada painel (unidades diferentes)."),
             "download": [{"rotulo": "Determinantes alinhados, últimos 90 dias (CSV)", "url": U["multiplos"]}]}
 
 
 def confere_multiplos(m, golds):
-    """Cada célula de P005 igual à célula da gold de origem (P005: mesmos números)."""
+    """Cada célula de P005 igual à célula da base publicada de origem (P005: mesmos números)."""
     origem = {
         "preco_": ("pld.json", "diario"), "agua_SIN": ("hidrologia.json", "serie_ear"),
         "geracao_termica_7d": ("geracao.json", "serie_termica_7d"), "carga_SIN": ("carga.json", "serie"),
@@ -809,7 +809,7 @@ def _limites_linhas(linhas):
 
 
 def condicoes_das_regras(golds, con_p, entradas):
-    """{regra: série de condições com detalhe}, controles contra as golds de origem,
+    """{regra: série de condições com detalhe}, controles contra as bases publicadas de origem,
     alternativas avaliadas ({regra: [(id, descrição, série)]}) e os insumos do silver usados
     pelas evidências (EAR e ENA por subsistema)."""
     out, controles, alternativas, insumos = {}, [], {}, {}
@@ -935,7 +935,7 @@ def _contexto_faixa_usual(hid, chave):
 
 def _texto_regra(rid, golds, ult):
     """Texto de evidência do dia, com os números que a própria regra avaliou (e, como
-    contexto rotulado, a faixa usual publicada pela gold de origem)."""
+    contexto rotulado, a faixa usual publicada pela base publicada de origem)."""
     hid, ger = golds.get("hidrologia.json"), golds.get("geracao.json")
     det = ult[2] if ult else {}
     dia = ult[0] if ult else None
@@ -1391,7 +1391,7 @@ def _resolve_caminho(golds, caminho):
 
 
 def confere_valores_frase(f, golds):
-    """Relê cada valor da frase na gold de origem pelo caminho publicado. Caminhos com
+    """Relê cada valor da frase na base publicada de origem pelo caminho publicado. Caminhos com
     anotação têm conferência própria: '(módulo)' compara o valor absoluto; o sentido da rede
     é conferido pelo sinal da média; o início da janela da rede, pela data de referência
     menos 29 dias; a amplitude do PLD, pelo campo amplitude_dia. Devolve (resultado, detalhe)."""
@@ -1424,7 +1424,7 @@ def confere_valores_frase(f, golds):
         else:
             falhas.append(f"{k}: publicado {v}, lido {'nada' if not achou else 'outro valor'} em {cam}")
     resultado = "aprovado" if not falhas and ok else "reprovado"
-    return resultado, (f"{ok} de {len(f['valores'])} valores relidos na gold de origem e iguais ao publicado"
+    return resultado, (f"{ok} de {len(f['valores'])} valores relidos na base publicada de origem e iguais ao publicado"
                        + (f"; divergências: {'; '.join(falhas)}" if falhas else "") + (f" ({'; '.join(notas)})" if notas else ""))[:900]
 
 
@@ -1436,7 +1436,7 @@ def _soma_sm(con, ds, prefixo, dias):
 
 def calculo_frase(fid, f, golds, con_p):
     """Número da frase antes do arredondamento, com numerador e denominador, relido do silver
-    principal por um caminho que não passa pela gold de origem, e a reconciliação com o valor
+    principal por um caminho que não passa pela base publicada de origem, e a reconciliação com o valor
     exibido. None sem silver ou sem todas as referências."""
     if con_p is None:
         return None
@@ -1531,13 +1531,13 @@ def _evidencia_frase(f, golds, con_p):
     res_val, det_val = confere_valores_frase(f, golds)
     testes = [ev.teste("frase refeita a partir dos valores publicados", "aprovado" if trechos_ok else "reprovado",
                        f"MODELOS['{f['id']}'](valores) reproduz o texto exibido: {'sim' if trechos_ok else 'não'}"),
-              ev.teste("valores relidos na gold de origem pelos caminhos publicados", res_val, det_val)]
+              ev.teste("valores relidos na base publicada de origem pelos caminhos publicados", res_val, det_val)]
     numeros = [(k, v) for k, v in f["valores"].items() if isinstance(v["valor"], (int, float)) and not isinstance(v["valor"], bool)]
     k0, v0 = numeros[0]
     if calc:
         igual = c.r(calc["valor"], calc["casas"]) == c.r(calc["exibido"], calc["casas"])
         rec = ev.reconciliacao(
-            f"Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): {c.r(calc['valor'], 4)}; "
+            f"Valor refeito do silver principal (observações vigentes, sem passar pela base publicada de origem): {c.r(calc['valor'], 4)}; "
             f"exibido {calc['exibido']}", "aprovado" if igual else "reprovado", calc["tolerancia"])
         valor_calculo, num, den, chaves, formula = calc["valor"], calc["numerador"], calc["denominador"], calc["chaves"], calc["formula"]
     else:
@@ -1555,7 +1555,7 @@ def _evidencia_frase(f, golds, con_p):
         entidade="SIN" if f["id"] != "pld" else "Sudeste/Centro-Oeste", universo=prov["indicador"],
         fonte=fonte, chaves_origem=chaves, consulta=consulta, formula=formula,
         cobertura=f"Cobertura da série de origem: {prov['cobertura_historica']['inicio']} a {prov['cobertura_historica']['fim']}.",
-        tratamento_ausencia="Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
+        tratamento_ausencia="Sem o valor na base publicada de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
         revisoes=f["qualidade"]["revisoes"]["texto"], testes=testes, reconciliacao=rec,
         download=[{"rotulo": d["rotulo"], "url": d["url"]} for d in g.get("downloads") or []] or [{"rotulo": "Gold de origem", "url": f"/energia/gold/{f['versoes']['gold']}"}],
         reproducao=REPRODUCAO)
@@ -1576,7 +1576,7 @@ def valor_exibido_painel(p):
 
 def calculo_painel(p, golds, con_p):
     """Valor atual de cada determinante (P005) refeito do silver principal, por um caminho que
-    não passa pela gold de origem. Preço, água e geração usam a mesma conta das frases (o número
+    não passa pela base publicada de origem. Preço, água e geração usam a mesma conta das frases (o número
     é o mesmo); carga e rede somam ou fazem a média das observações vigentes do dia. None sem
     silver ou sem todas as observações do dia."""
     va = p["valor_atual"]
@@ -1614,7 +1614,7 @@ def calculo_painel(p, golds, con_p):
 
 def _evidencia_painel(p, golds, con_p, dados):
     """'Comprove este número' do valor atual de um determinante (P005): o número refeito do silver,
-    o valor relido na gold de origem pelo caminho publicado e a célula do dia no recorte alinhado."""
+    o valor relido na base publicada de origem pelo caminho publicado e a célula do dia no recorte alinhado."""
     g = golds[p["gold"]]
     prov = g["proveniencia"][p["proveniencia"].split("#proveniencia.", 1)[1]]
     va = p["valor_atual"]
@@ -1628,9 +1628,9 @@ def _evidencia_painel(p, golds, con_p, dados):
     calc = calculo_painel(p, golds, con_p)
     achou, lido = _resolve_caminho(golds, va["caminho"]) if va.get("caminho") else (False, None)
     igual = achou and isinstance(lido, (int, float)) and lido == va["valor"]
-    testes = [ev.teste("valor relido na gold de origem pelo caminho publicado", "aprovado" if igual else "reprovado",
+    testes = [ev.teste("valor relido na base publicada de origem pelo caminho publicado", "aprovado" if igual else "reprovado",
                        f"{va['caminho']}: lido {lido if achou else 'nada'}, publicado {va['valor']}")]
-    # a célula do dia no recorte alinhado vem da série da gold de origem, com mais casas que o cartão:
+    # a célula do dia no recorte alinhado vem da série da base publicada de origem, com mais casas que o cartão:
     # as duas têm de coincidir na casa exibida (meia unidade)
     linha = next((x for x in dados if x["d"] == dia), None)
     col = {"preco": "preco_SE", "agua": "agua_SIN", "geracao": "geracao_termica_7d", "carga": "carga_SIN"}.get(p["id"])
@@ -1648,7 +1648,7 @@ def _evidencia_painel(p, golds, con_p, dados):
         iguais = c.r(calc["valor"], calc["casas"]) == c.r(calc["exibido"], calc["casas"])
         parc = calc.get("parcelas")
         rec = ev.reconciliacao(
-            f"Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): {c.r(calc['valor'], 4)}; exibido {calc['exibido']}"
+            f"Valor refeito do silver principal (observações vigentes, sem passar pela base publicada de origem): {c.r(calc['valor'], 4)}; exibido {calc['exibido']}"
             + (f"; parcelas {', '.join(f'{sm} {x}' for sm, x in parc.items())}" if parc else ""),
             "aprovado" if iguais else "reprovado", calc["tolerancia"])
         valor_calculo, num, den, chaves, formula = calc["valor"], calc["numerador"], calc["denominador"], calc["chaves"], calc["formula"]
@@ -1666,7 +1666,7 @@ def _evidencia_painel(p, golds, con_p, dados):
         consulta=f"silver energia.db: observacoes do dataset {ds} em {periodo['inicio']} a {periodo['fim']} (valor da captura mais recente)",
         formula=formula,
         cobertura=f"Cobertura da série de origem: {prov['cobertura_historica']['inicio']} a {prov['cobertura_historica']['fim']}.",
-        tratamento_ausencia="Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+        tratamento_ausencia="Sem o valor na base publicada de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
         revisoes=prov.get("revisoes_conhecidas"), testes=testes, reconciliacao=rec,
         download=[{"rotulo": d["rotulo"], "url": d["url"]} for d in p.get("download") or []] or [{"rotulo": "Gold de origem", "url": f"/energia/gold/{p['gold']}"}],
         reproducao=REPRODUCAO)
@@ -2003,7 +2003,7 @@ def construir(con, ctx):
     mult = multiplos(golds, hoje)
     conferidas, erros_mult = confere_multiplos(mult, golds) if mult else (0, ["sem painéis"])
     if erros_mult:
-        return c.stub(GOLD, "pequenos múltiplos divergem das golds de origem: " + "; ".join(erros_mult[:5]))
+        return c.stub(GOLD, "pequenos múltiplos divergem das bases publicadas de origem: " + "; ".join(erros_mult[:5]))
     soc = sociedade(golds, conjuntos, hoje)
 
     # P007: estado e histórico de cada regra; a regra de atualidade avalia os conjuntos que
@@ -2043,7 +2043,7 @@ def construir(con, ctx):
         v = linha.get("carga_SIN")
         if v is not None and v <= 0:
             return c.stub(GOLD, f"carga não positiva em {linha['d']}")
-    validacao.append({"nome": "P005: cada célula igual à gold de origem", "resultado": "aprovado", "detalhe": f"{conferidas} células conferidas"})
+    validacao.append({"nome": "P005: cada célula igual à base publicada de origem", "resultado": "aprovado", "detalhe": f"{conferidas} células conferidas"})
 
     # downloads (depois das validações que viram stub: arquivo e gold andam juntos)
     _csv_regras(linhas_csv)
@@ -2173,7 +2173,7 @@ def construir(con, ctx):
         "frases": fr,
         "frases_ausentes": ausentes_frases,
         "destaques": dest,
-        "fatos_e_hipoteses": ("Frases e destaques são fatos: cada número vem de uma gold de origem com caminho e versão. Hipóteses "
+        "fatos_e_hipoteses": ("Frases e destaques são fatos: cada número vem de uma base publicada de origem com caminho e versão. Hipóteses "
                               "aparecem só nos destaques, rotuladas, como lista fixa por regra, sem teste nesta página; o link indica "
                               "onde os dados para verificá-las estão."),
         "multiplos": mult,
@@ -2204,7 +2204,7 @@ def construir(con, ctx):
                       {"rotulo": "Determinantes alinhados, últimos 90 dias (CSV)", "url": U["multiplos"]},
                       {"rotulo": "Revisões entre capturas das séries da Visão geral (CSV)", "url": U["revisoes"]}],
         "limitacoes": [
-            "A síntese reutiliza os números das golds de origem; limitações de cada fonte valem aqui e estão na proveniência de cada painel de origem.",
+            "A síntese reutiliza os números das bases publicadas de origem; limitações de cada fonte valem aqui e estão na proveniência de cada painel de origem.",
             "O histórico das regras usa os dados de hoje, já revisados; não reproduz o que um leitor via em cada data passada.",
             "Cada regra tem o próprio histórico avaliável (primeiro_dia_avaliado e dias_avaliados): a carga extrema só é avaliada com os 364 dias anteriores no mesmo regime do ONS (de 01/01 a 28/02/2021, de 28/02/2022 a 28/04/2023 e desde 27/04/2024); a térmica, a restrição eólica e a fotovoltaica começam depois de 2021 por exigirem 365 janelas anteriores no mesmo regime ou universo.",
             "As revisões entre capturas só existem a partir das capturas versionadas (silver principal desde 27/09/2026); antes disso não há como medi-las.",

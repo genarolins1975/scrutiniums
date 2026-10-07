@@ -120,6 +120,7 @@ export function GraficoPontos({
 }: GraficoPontosProps) {
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
+  const [todas, setTodas] = useState(false);
   const [ordemInterna, setOrdemInterna] = useState<OrdemPontos>(ordemInicial);
   const [ativo, setAtivo] = useState<string | null>(null);
   const [focoVisivel, setFocoVisivel] = useState<string | null>(null);
@@ -428,7 +429,7 @@ export function GraficoPontos({
           Diferença
         </text>
       </svg>
-      <div className="overflow-y-auto overflow-x-hidden" style={{ maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima ? "sim" : "nao"}>
+      <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima && !todas ? "sim" : "nao"}>
         <div className="relative">
           <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} role="group" aria-labelledby={`${uid}-t`} aria-describedby={`${uid}-i`} className="block overflow-visible">
             <title id={`${uid}-t`}>{titulo}</title>
@@ -445,8 +446,16 @@ export function GraficoPontos({
         </div>
       </div>
       {h > alturaMaxima && (
-        <p className="mt-1 text-xs text-mineral" data-aviso-rolagem="true">
-          Mostrando as primeiras {Math.floor(alturaMaxima / hc)} de {n.toLocaleString("pt-BR")} entidades: role dentro do gráfico para ver as demais, ou abra os dados em tabela.
+        <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
+          <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} entidades.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} entidades, na ordem escolhida.`}</span>
+          <button
+            type="button"
+            aria-expanded={todas}
+            onClick={() => setTodas((t) => !t)}
+            className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
+          >
+            {todas ? "Mostrar só o início" : `Mostrar todas as ${n.toLocaleString("pt-BR")}`}
+          </button>
         </p>
       )}
       <p className="sr-only" aria-live="polite">

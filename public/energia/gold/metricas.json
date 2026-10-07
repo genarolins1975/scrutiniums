@@ -2420,7 +2420,7 @@
     "aneel_polimero",
     "cvm_cad_cia_aberta"
    ],
-   "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
+   "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na base publicada de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
    "regra_agregacao": "Nenhuma: um valor por distribuidora, o mesmo da página de origem.",
    "versao_formula": "1",
    "natureza_fonte": "CALCULADO",
@@ -2442,15 +2442,15 @@
     "Pares: mesma classificação (concessionária ou permissionária) e mesmo porte do ranking de continuidade.",
     "Anos de referência podem diferir entre módulos; cada bloco traz o seu."
    ],
-   "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a gold de origem não tem o dado.",
+   "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a base publicada de origem não tem o dado.",
    "politica_ausencia": "Módulo sem dado para a distribuidora = bloco nulo (nunca zero).",
    "validacoes": [
     "Slug único por distribuidora; aliases só sem colisão.",
-    "Valores iguais aos da gold de origem (teste por CNPJ)."
+    "Valores iguais aos da base publicada de origem (teste por CNPJ)."
    ],
    "limitacoes": [
     "Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis.",
-    "O índice traz um ano de referência por módulo; a evolução própria vem das séries das golds de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."
+    "O índice traz um ano de referência por módulo; a evolução própria vem das séries das bases publicadas de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -10619,7 +10619,7 @@
    "regra_cobertura": "Municípios da malha do IBGE.",
    "politica_ausencia": "Município sem vínculo válido fora da contagem.",
    "validacoes": [
-    "Igual à contagem publicada na gold de Perdas (mapa.municipios_compartilhados)."
+    "Igual à contagem publicada na base publicada de Perdas (mapa.municipios_compartilhados)."
    ],
    "limitacoes": [
     "Compartilhar o município não diz que parte de cada distribuidora atende."
@@ -10863,7 +10863,7 @@
    "politica_ausencia": "Município sem vínculo fica com lista vazia e é listado; nunca recebe a distribuidora de um vizinho nem a de um cadastro de MMGD abaixo dos limiares.",
    "validacoes": [
     "Contagens de municípios compartilhados, vínculos e vínculos sem confirmação iguais às publicadas pelo módulo Perdas.",
-    "Municípios por distribuidora (confirmados e só MMGD) iguais aos da gold de Perdas.",
+    "Municípios por distribuidora (confirmados e só MMGD) iguais aos da base publicada de Perdas.",
     "Distribuidoras por município comparadas com os conjuntos do módulo Qualidade (diferenças listadas)."
    ],
    "limitacoes": [
@@ -11278,7 +11278,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11318,7 +11318,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11357,7 +11357,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11396,7 +11396,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11471,7 +11471,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem",
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem",
     "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
    ],
    "limitacoes": [
@@ -11511,7 +11511,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem",
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem",
     "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
    ],
    "limitacoes": [
@@ -11552,7 +11552,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11598,7 +11598,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",
@@ -11645,7 +11645,7 @@
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
     "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
-    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+    "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
     "Alerta descreve condição medida; não implica causa nem é previsão.",

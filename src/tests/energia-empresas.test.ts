@@ -524,6 +524,17 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     expect(respostaFicha(ceb)).toContain("não tem perdas no ano de referência");
   });
 
+  it("ficha: perda total negativa é dita como tal, sem causa afirmada", () => {
+    const d = structuredClone(G.distribuidoras.indice.find((x) => x.slug === "cemig-d")!);
+    d.perdas!.taxa_total_pct = -17.31;
+    const r = respostaFicha(d);
+    expect(r).toContain("registrou perda total negativa, de \u221217,31%");
+    expect(r).toContain("a energia fornecida superou a injetada");
+    expect(r).not.toContain("perdeu \u2212");
+    d.perdas!.taxa_total_pct = 8.4;
+    expect(respostaFicha(d)).toContain("perdeu 8,40%");
+  });
+
   it("P038: universo, períodos e revisões vêm da gold", () => {
     const r = respostaFinancas(G.financas);
     expect(r).toContain(`${num(G.financas.universo.companhias, 0)} companhias`);

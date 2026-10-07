@@ -1,6 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { crc32 as crcZlib } from "node:zlib";
 import {
   CHAVE_SEM_DADO,
@@ -441,6 +443,30 @@ const html = (p: Partial<TabelaInterativaProps> = {}) =>
   );
 const texto = (h: string) => h.replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 const corpo = (h: string) => h.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1] ?? "";
+
+describe("TabelaInterativa: recolher em Entender", () => {
+  const muitas = Array.from({ length: 13 }, (_, i) => ({ id: `l${i}`, nome: `Linha ${i}`, uf: "SP", perda: i, pct: i, ref: "2025-12-31" }));
+
+  it("tabela com mais de 12 linhas traz o botão que a abre e começa fechada", () => {
+    const h = html({ linhas: muitas });
+    expect(h).toMatch(/<button type="button" aria-expanded="false" aria-controls="[^"]+-conteudo" class="tabela-recolher-btn">Ver a tabela completa \(13 linhas\)<\/button>/);
+    expect(h).toContain('data-recolhivel="fechada"');
+  });
+
+  it("tabela curta, ou com recolher desligado, fica sempre aberta e sem o botão", () => {
+    expect(html()).not.toContain("tabela-recolher-btn");
+    expect(html()).not.toContain("data-recolhivel");
+    expect(html({ linhas: muitas, recolher: false })).not.toContain("tabela-recolher-btn");
+    expect(html({ recolher: true })).toContain('data-recolhivel="fechada"');
+  });
+
+  it("a barra só aparece em Entender; nos outros modos a tabela completa segue à vista", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+    expect(css).toMatch(/\.tabela-recolher\s*\{[^}]*display:\s*none/);
+    expect(css).toMatch(/\.modo-profundidade\[data-modo="entender"\]\s+\.tabela-recolher\s*\{[^}]*display:\s*block/);
+    expect(css).toMatch(/\.modo-profundidade\[data-modo="entender"\]\s+\[data-recolhivel="fechada"\]\s*\{[^}]*display:\s*none/);
+  });
+});
 
 describe("TabelaInterativa no servidor", () => {
   it("tabela dentro de região rolável com foco, legenda e cabeçalhos de coluna", () => {

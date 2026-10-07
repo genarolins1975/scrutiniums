@@ -73,6 +73,13 @@ export default {
       await j.clicar(p.getByRole("radio", { name: /analisar/i }));
       await j.esperar(600);
     };
+    /** a ficha do conjunto guarda coleta, snapshot e capturas num bloco fechado; abre para ler */
+    const abreDetalhesTecnicos = async () => {
+      const resumo = p.locator("details[data-detalhes-tecnicos] > summary");
+      await resumo.scrollIntoViewIfNeeded();
+      await j.clicar(resumo);
+      await j.esperar(300);
+    };
     /** rola até a tabela com o cabeçalho pedido aparecer (as tabelas carregam sob demanda) */
     const acharTabela = async (rotuloCabecalho) => {
       const tab = p.locator("main table").filter({ has: p.locator("th", { hasText: rotuloCabecalho }) }).first();
@@ -335,11 +342,12 @@ export default {
       await p.waitForLoadState("networkidle");
       await j.esperar(600);
       j.afirmar(/\/dados\/aneel-scs$/.test(p.url()), `URL inesperada: ${j.url()}`);
+      await abreDetalhesTecnicos();
       const t = normaliza(await p.locator("main").innerText());
       const pega = (re) => (t.match(re) || [])[1];
       fichaScs = {
         titulo: (await p.locator("h1").first().innerText()).trim(),
-        captura: pega(/ÚLTIMA CAPTURA (.*?) (?:ATUALIDADE E COLETA|SNAPSHOT)/i),
+        captura: pega(/ÚLTIMA CAPTURA (.*?) ÚLTIMA MODIFICAÇÃO/i),
         tentativa: pega(/ÚLTIMA TENTATIVA DE COLETA DIRETA (.*?) (?:Mudanças|Capturas)/i),
         atraso: /atrasad|além do prazo|defasad/i.test(t),
         texto: t,
@@ -357,17 +365,20 @@ export default {
       await p.waitForLoadState("networkidle");
       await j.esperar(600);
       j.afirmar(/\/dados\/ibge-pof-6715$/.test(p.url()), `URL inesperada: ${j.url()}`);
+      await abreDetalhesTecnicos();
       const t = normaliza(await p.locator("main").innerText());
       // a última captura vem das integrações de publicacao.json (o conjunto tem captura, só não tem SLA mensurável);
-      // os campos que a fonte não informa continuam com marca explícita de ausência
-      const cap = t.match(/ÚLTIMA CAPTURA (.*?) (?:ATUALIDADE E COLETA|SNAPSHOT)/i);
+      // os campos que a fonte não informa continuam com marca explícita de ausência; o snapshot, quando
+      // não existe, não ganha linha própria nos detalhes técnicos, e o que aparece nunca é zero
+      const cap = t.match(/ÚLTIMA CAPTURA (.*?) ÚLTIMA MODIFICAÇÃO/i);
       j.afirmar(cap && /\d\d\/\d\d\/\d{4}/.test(cap[1]), `a última captura não é uma data: ${cap && cap[1]}`);
       j.afirmar(/sem dado para medir/i.test(t), "a ficha do conjunto sem dado não diz que a atualidade não pode ser medida");
       const campos = {
-        Snapshot: /SNAPSHOT (.*?) SHA256 DO SNAPSHOT/i,
-        "Última modificação na fonte": /ÚLTIMA MODIFICAÇÃO DE METADADOS NA FONTE (.*?) FORMATOS/i,
+        "Última modificação na fonte": /ÚLTIMA MODIFICAÇÃO DE METADADOS NA FONTE (.*?)(?= Observação sobre a licença| Mudanças metodológicas| Detalhes técnicos|$)/i,
         Formatos: /FORMATOS PUBLICADOS (.*?) USADO NAS PÁGINAS/i,
       };
+      const snap = t.match(/SNAPSHOT (.*?) SHA256 DO SNAPSHOT/i);
+      j.afirmar(!snap || !/^0([.,]0+)?$/.test(snap[1].trim()), `o campo Snapshot mostra ${snap && snap[1]}, um zero no lugar de ausência`);
       const lidos = {};
       for (const [nome, re] of Object.entries(campos)) {
         const m = t.match(re);

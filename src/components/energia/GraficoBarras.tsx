@@ -114,6 +114,7 @@ export function GraficoBarras({
 }: GraficoBarrasProps) {
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
+  const [todas, setTodas] = useState(false);
   const [ativo, setAtivo] = useState<number | null>(null);
   const [focoVisivel, setFocoVisivel] = useState<number | null>(null);
   const [cursor, setCursor] = useState(0);
@@ -670,15 +671,23 @@ export function GraficoBarras({
               <line key={`${k}-${r.rotulo}`} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             ))}
           </svg>
-          <div className="overflow-y-auto overflow-x-hidden" style={{ maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima ? "sim" : "nao"}>
+          <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima && !todas ? "sim" : "nao"}>
             <div className="relative">
               {svgBarras}
               {dica}
             </div>
           </div>
           {h > alturaMaxima && (
-            <p className="mt-1 text-xs text-mineral" data-aviso-rolagem="true">
-              Mostrando as primeiras {Math.floor(alturaMaxima / (h / n))} de {n.toLocaleString("pt-BR")} categorias: role dentro do gráfico para ver as demais, ou abra os dados em tabela.
+            <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
+              <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} categorias.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} categorias, na ordem escolhida.`}</span>
+              <button
+                type="button"
+                aria-expanded={todas}
+                onClick={() => setTodas((t) => !t)}
+                className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
+              >
+                {todas ? "Mostrar só o início" : `Mostrar todas as ${n.toLocaleString("pt-BR")}`}
+              </button>
             </p>
           )}
         </>

@@ -688,7 +688,15 @@ export function respostaFicha(d: Distribuidora): string {
   const partes: string[] = [];
   const p = d.perdas;
   if (p && temValor(p.taxa_total_pct) && p.ano) {
-    partes.push(`Em ${p.ano}, a ${d.sigla} perdeu ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${p.completo === false ? " (ano incompleto no SAMP)" : ""}.`);
+    const incompleto = p.completo === false ? " (ano incompleto no SAMP)" : "";
+    if (p.taxa_total_pct < 0) {
+      // perda negativa: a energia fornecida superou a injetada; o valor é o publicado, sem causa afirmada
+      partes.push(
+        `Em ${p.ano}, a ${d.sigla} registrou perda total negativa, de ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${incompleto}: a energia fornecida superou a injetada. O valor é o que consta no SAMP e a página não o corrige nem explica a causa.`,
+      );
+    } else {
+      partes.push(`Em ${p.ano}, a ${d.sigla} perdeu ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${incompleto}.`);
+    }
   } else if (p) {
     partes.push(`A ${d.sigla} não tem perdas no ano de referência do SAMP; o último mês com registro é ${p.ultima_competencia ? dataBR(p.ultima_competencia) : SEM_DADO}.`);
   } else {

@@ -79,6 +79,12 @@ export type TabelaInterativaProps = {
   semLinhas?: ReactNode;
   /** Nota extra no rodapé (limitação que muda a leitura). */
   nota?: ReactNode;
+  /**
+   * Em Entender, a tabela longa fica atrás do botão "Ver a tabela completa": o essencial da página é a resposta,
+   * e a tabela serve a quem quer conferir. Padrão: tabelas com mais de 12 linhas. Em Analisar e Auditar, e fora de
+   * uma página com níveis de profundidade, a tabela aparece sempre aberta.
+   */
+  recolher?: boolean;
 };
 
 const TAMANHOS = [25, 50, 100, 200] as const;
@@ -145,6 +151,7 @@ export function TabelaInterativa({
   dicaBusca,
   semLinhas,
   nota,
+  recolher,
 }: TabelaInterativaProps) {
   const uid = useId();
   const buscaRef = useRef<HTMLInputElement>(null);
@@ -202,6 +209,13 @@ export function TabelaInterativa({
   const itensFiltro = recorte.filter((r) => r.tipo !== "ordem");
   const [anuncio, setAnuncio] = useState("");
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
+  const recolhivel = recolher ?? linhas.length > 12;
+  const [aberta, setAberta] = useState(false);
+  const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || !!selecionado;
+  // quem chega por um link com busca, filtro, página ou linha escolhida precisa ver a tabela
+  useEffect(() => {
+    if (comRecorte) setAberta(true);
+  }, [comRecorte]);
 
   // seleção vinda de fora (mapa, gráfico): leva à página da linha; paginar depois não devolve a ela
   useEffect(() => {
@@ -295,6 +309,20 @@ export function TabelaInterativa({
 
   return (
     <div className="min-w-0 max-w-full" data-componente="tabela-interativa">
+      {recolhivel && (
+        <div className="tabela-recolher">
+          <button
+            type="button"
+            aria-expanded={aberta}
+            aria-controls={`${uid}-conteudo`}
+            onClick={() => setAberta((a) => !a)}
+            className="tabela-recolher-btn"
+          >
+            {aberta ? "Ocultar a tabela" : `Ver a tabela completa (${plural(linhas.length, "linha", "linhas")})`}
+          </button>
+        </div>
+      )}
+      <div id={`${uid}-conteudo`} data-recolhivel={recolhivel ? (aberta ? "aberta" : "fechada") : undefined}>
       <div>
         <label htmlFor={`${uid}-busca`} className="rotulo block text-mineral">
           Buscar na tabela
@@ -559,6 +587,7 @@ export function TabelaInterativa({
       <p className="sr-only" aria-live="polite">
         {anuncio}
       </p>
+      </div>
     </div>
   );
 }

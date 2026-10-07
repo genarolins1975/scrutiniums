@@ -1,4 +1,4 @@
-import { dataBR, num, plural } from "./formato";
+import { carimbo, dataBR, num, plural } from "./formato";
 import { NAO_SE_APLICA } from "./escalas";
 import { textoData, type ColunaTabela, type LinhaTabela } from "./tabela";
 import type {
@@ -910,4 +910,52 @@ export function orgaosDasFontes(pub: Pick<PublicacaoGold, "conjuntos"> | null): 
 export function listaEmPortugues(itens: string[]): string {
   if (itens.length <= 1) return itens.join("");
   return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+
+/* ---------------------------------------------------------------- ficha do conjunto, em linguagem de leitor */
+
+/**
+ * Descrição da fonte sem o corte do catálogo compacto: a frase interrompida em reticências não é mostrada.
+ * Devolve só o que foi escrito por inteiro (até o último ponto final) e diz se houve corte.
+ */
+export function descricaoLegivel(d: string | null | undefined): { texto: string | null; cortada: boolean } {
+  const t = (d ?? "").trim();
+  if (!t) return { texto: null, cortada: false };
+  if (!t.endsWith("…")) return { texto: t, cortada: false };
+  const base = t.slice(0, -1);
+  const i = Math.max(base.lastIndexOf(". "), base.lastIndexOf(".\n"), base.endsWith(".") ? base.length - 1 : -1);
+  return i > 20 ? { texto: base.slice(0, i + 1), cortada: true } : { texto: null, cortada: true };
+}
+
+/** Licença em duas partes: o que vale para o leitor e a observação de coleta que o catálogo anexa ao texto. */
+export function partirLicenca(l: string): { curta: string; nota: string | null } {
+  const m = /\.\s+(?=(A página|O portal|O site|Nota|Observação|Não foi|Em pesquisa))/.exec(l);
+  if (m) return { curta: l.slice(0, m.index + 1), nota: l.slice(m.index + m[0].length) };
+  if (l.length > 200) {
+    const i = l.indexOf("; ", 60);
+    if (i > 0) return { curta: l.slice(0, i), nota: l.slice(i + 2) };
+  }
+  return { curta: l, nota: null };
+}
+
+/** Instantes ISO em UTC escritos pelo pipeline dentro de frases ficam no horário de Brasília, como o resto da página. */
+export function instantesLegiveis(texto: string): string {
+  return texto.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?Z/g, (iso) => carimbo(iso));
+}
+
+/** Situação dos dados de um conjunto em uma frase de leitor, com a causa quando a fonte está atrasada. */
+export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { alerta: boolean; titulo: string; texto: string } {
+  const a = c.atualidade;
+  const periodo = a.ultimo_periodo ? `O último período disponível é ${refLegivel(a.ultimo_periodo)}.` : "";
+  if (a.situacao === "ATRASADO") {
+    return {
+      alerta: true,
+      titulo: `Dado atrasado${a.dias_atraso ? `: ${plural(a.dias_atraso, "dia", "dias")} além do prazo` : ""}`,
+      texto: `${periodo} ${instantesLegiveis(a.causa ?? "A fonte não publicou período mais recente.")}`.trim(),
+    };
+  }
+  if (a.situacao === "EM DIA") return { alerta: false, titulo: "Dado em dia", texto: periodo };
+  if (a.situacao === "SEM SLA") return { alerta: false, titulo: "Sem prazo de atualização declarado", texto: `${periodo} A fonte não declara a frequência, e por isso o atraso não é medido.`.trim() };
+  return { alerta: false, titulo: "Atraso não medido", texto: a.motivo_sem_sla ?? "Sem série regular de referência e sem data de publicação da fonte." };
 }

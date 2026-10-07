@@ -2,7 +2,7 @@
 public/energia/gold/sintese.json. As regras rodam em pipeline/energia/gold/sintese.py
 (funções puras) e pipeline/energia/modulos/visao.py; a interface só lê o resultado.
 
-A Visão geral reutiliza números das golds de origem. Quando a medida já tem definição no
+A Visão geral reutiliza números das bases publicadas de origem. Quando a medida já tem definição no
 catálogo (EAR do SIN, tarifa B1, DEC, perdas, Tarifa Social, horas no piso), o painel
 aponta para ela e nada é redefinido aqui. As medidas abaixo são as que a Visão geral
 publica com regra própria (as condições do "o que observar", a frequência de disparo, a
@@ -31,7 +31,7 @@ def _m(**kw):
     return base
 
 
-# Componentes que não são medição, como as golds de origem os declaram (seção 11.3: um
+# Componentes que não são medição, como as bases publicadas de origem os declaram (seção 11.3: um
 # agregado oficial com MMGD estimada preserva essa informação).
 COMP_CARGA = [{"natureza": "PREVISTO", "desde": "2021-03-01", "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte",
                "fonte": "carga.json#proveniencia.sin.natureza_por_regime"},
@@ -54,7 +54,7 @@ def _regra(id, titulo, pergunta, definicao, fontes, formula, unidade, grao_geo, 
               natureza_fonte=natureza_fonte, natureza_transformacao="CALCULADO", dimensoes=["dia", "regra"], **extra,
               regras_comparabilidade=list(comparabilidade), regra_cobertura=cobertura,
               politica_ausencia="Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
-              validacoes=[_HIST, "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem", *validacoes],
+              validacoes=[_HIST, "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem", *validacoes],
               limitacoes=[_NAO_CAUSA, *limitacoes])
 
 

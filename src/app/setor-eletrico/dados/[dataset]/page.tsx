@@ -5,7 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
-import { linhasIntegracao, refLegivel } from "@/lib/energia/dados";
+import { descricaoLegivel, linhasIntegracao, partirLicenca, refLegivel, situacaoDoConjunto } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -49,6 +49,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   // último período que o conjunto cobre, segundo a atualidade medida na publicação; sem integração, o motivo
   const periodos = integr.map((c) => c.atualidade.ultimo_periodo).filter((x): x is string => !!x).sort();
   const referenciaDoConjunto = periodos.length ? `último período disponível ${refLegivel(periodos[periodos.length - 1])}` : integr.length ? "sem período registrado para este conjunto" : "conjunto sem integração: sem período medido";
+  const situacao = integr.length ? situacaoDoConjunto(integr[0]) : null;
+  const desc = descricaoLegivel(e.descricao);
+  const licencaBruta = e.licenca ?? (cat?.portais[e.orgao] as { licenca?: string | null } | undefined)?.licenca ?? "não informada";
+  const licenca = partirLicenca(licencaBruta);
+  const frequencia = integr.map((c) => c.frequencia?.declarada).find((x): x is string => !!x) ?? null;
   const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   return (
     <>
@@ -60,22 +65,40 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         </nav>
         <header className="pb-6 pt-4">
           <p className="rotulo text-mineral">{e.orgao} · {e.estado}</p>
-          <h1 className="mt-2 font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-tight text-carvao">{e.titulo}</h1>
-          <p className="mt-3 max-w-prose2 whitespace-pre-line text-sm leading-relaxed text-carvao-muted">{e.descricao}</p>
+          <h1 className="mt-2 font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-tight text-carvao [overflow-wrap:anywhere]">{e.titulo}</h1>
+          <p className="mt-3 max-w-prose2 text-base leading-relaxed text-carvao">
+            Conjunto de dados abertos publicado pela {e.orgao}
+            {frequencia ? `, com atualização ${frequencia.toLowerCase()}` : ""}. O observatório o usa em: {d.paginas.map((p) => p.rotulo).join(", ")}.
+          </p>
+          {desc.texto && <p className="mt-3 max-w-prose2 whitespace-pre-line text-sm leading-relaxed text-carvao-muted">{desc.texto}</p>}
+          {desc.cortada && (
+            <p className="mt-2 text-xs text-mineral" data-descricao-cortada="true">
+              O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto, abaixo.
+            </p>
+          )}
         </header>
+
+        {situacao && (
+          <aside
+            aria-label="Situação dos dados"
+            data-alerta={situacao.alerta ? "true" : undefined}
+            className={`mb-6 border p-4 ${situacao.alerta ? "border-aviso bg-superficie" : "border-linha bg-superficie"}`}
+          >
+            <p className={`rotulo ${situacao.alerta ? "text-aviso" : "text-mineral"}`}>Situação dos dados</p>
+            <p className="mt-1 font-serif text-lg text-carvao">{situacao.titulo}</p>
+            {situacao.texto && <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{situacao.texto}</p>}
+          </aside>
+        )}
+
         <dl className="grid gap-px border border-linha bg-linha md:grid-cols-2">
           {[
             ["Página oficial do conjunto", <a key="u" href={urlDoConjunto(e) ?? undefined} target="_blank" rel="noopener noreferrer" className="break-all text-energia-dark underline underline-offset-4">{urlDoConjunto(e)} ↗</a>],
-            ["Licença", e.licenca ?? (cat?.portais[e.orgao] as { licenca?: string | null } | undefined)?.licenca ?? "não informada"],
-            ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
+            ["Licença", licenca.curta],
             ["Formatos publicados", (e.formatos ?? []).join(", ") || "não informado"],
             ["Usado nas páginas", d.paginas.map((p) => p.rotulo).join(", ") + ((e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : "")],
-            ["Última captura", ultimaCaptura ? carimbo(ultimaCaptura) : "sem captura"],
             ["Data de referência", referenciaDoConjunto],
-            ...(integr.length ? [["Atualidade e coleta (publicação de " + dataBR(pub!.referencia.hoje) + ")", <span key="a">{integr.map((c) => linhasIntegracao(c).join(" ")).join(" ")}</span>] as [string, React.ReactNode]] : []),
-            ["Snapshot", f?.snapshot ?? "sem snapshot"],
-            ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "sem sha256"}</span>],
-            ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}` : "não registrada nesta publicação"],
+            ["Última captura", ultimaCaptura ? carimbo(ultimaCaptura) : "sem captura"],
+            ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
           ].map(([k, v], i, lista) => (
             <div key={String(k)} className={`min-w-0 bg-superficie p-4 ${lista.length % 2 === 1 && i === lista.length - 1 ? "md:col-span-2" : ""}`}>
               <dt className="rotulo text-mineral">{k}</dt>
@@ -83,6 +106,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             </div>
           ))}
         </dl>
+        {licenca.nota && <p className="mt-2 text-xs leading-relaxed text-mineral">Observação sobre a licença: {licenca.nota}</p>}
 
         {e.quebras.length > 0 && (
           <section className="mt-8 border border-linha bg-superficie p-6">
@@ -103,12 +127,28 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
           </section>
         )}
 
-        <section className="mt-8 border border-linha bg-superficie p-6">
-          <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
-          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é uma vintage imutável; download idêntico a uma vintage existente não gera linha nova. A tabela lista todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo. Os valores das vintages ficam no histórico do processamento (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data, e não são publicados no portal.</p>
+        <details className="mt-8 border border-linha bg-superficie p-6" data-detalhes-tecnicos="true">
+          <summary className="cursor-pointer font-serif text-xl text-carvao">Detalhes técnicos da coleta e das capturas</summary>
+          <dl className="mt-4 grid gap-px border border-linha bg-linha md:grid-cols-2">
+            {[
+              ...(integr.length ? [["Atualidade e coleta (publicação de " + dataBR(pub!.referencia.hoje) + ")", <span key="a">{integr.map((c) => linhasIntegracao(c).join(" ")).join(" ")}</span>] as [string, React.ReactNode]] : []),
+              ...(f?.snapshot ? [["Snapshot", f.snapshot] as [string, React.ReactNode]] : []),
+              ...(f?.snapshot_sha256 ? [["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f.snapshot_sha256}</span>] as [string, React.ReactNode]] : []),
+              ...(f?.ultima_tentativa ? [["Última tentativa de coleta direta", `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}`] as [string, React.ReactNode]] : []),
+            ].map(([k, v]) => (
+              <div key={String(k)} className="min-w-0 bg-superficie p-4 md:col-span-2">
+                <dt className="rotulo text-mineral">{k}</dt>
+                <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <h2 className="mt-6 font-serif text-lg text-carvao">Capturas guardadas</h2>
+          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é guardado sem alteração; um download idêntico a um já guardado não cria registro novo. A tabela lista todas as capturas, inclusive as que uma captura posterior do mesmo arquivo substituiu.</p>
           {capturas.length === 0 ? (
             <p className="mt-4 border border-linha bg-papel p-3 text-sm text-carvao" data-sem-capturas="true">
-              Nenhuma captura integrada deste conjunto está registrada: o arquivo ainda não foi baixado com conteúdo, ou o conjunto é consultado no portal da fonte sem cópia local. O estado e as etapas cumpridas estão na ficha acima.
+              {ultimaCaptura
+                ? `A lista de capturas arquivo a arquivo deste conjunto não é publicada nesta página. O catálogo registra a última captura em ${carimbo(ultimaCaptura)}.`
+                : "Este conjunto ainda não tem captura registrada: o arquivo não foi baixado com conteúdo, ou o conjunto é consultado no portal da fonte sem cópia local."}
             </p>
           ) : (
             <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
@@ -143,7 +183,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                 : `${f.recapturas_sem_mudanca} ${f.recapturas_sem_mudanca === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a vintages já integradas (log de coletas); por isso não aparecem como linhas novas.`}
             </p>
           )}
-        </section>
+        </details>
 
         <section className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-2">
           <div className="min-w-0 border border-linha bg-superficie p-6 [overflow-wrap:anywhere]">
@@ -152,7 +192,12 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
               {d.downloads.map((u) => (
                 <li key={u}>
                   <a href={u} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{u.split("/").pop()}</a>
-                  {COLUNAS_ARQUIVO[u] && <span className="block text-xs leading-relaxed text-carvao-muted">{COLUNAS_ARQUIVO[u]}</span>}
+                  {COLUNAS_ARQUIVO[u] && (
+                    <details className="text-xs leading-relaxed text-carvao-muted">
+                      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Colunas do arquivo</summary>
+                      <span className="block pb-2">{COLUNAS_ARQUIVO[u]}</span>
+                    </details>
+                  )}
                 </li>
               ))}
               {d.paginas.map((p) => (
@@ -164,9 +209,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
           <div className="min-w-0 border border-linha bg-superficie p-6 [overflow-wrap:anywhere]">
             <h2 className="font-serif text-xl text-carvao">Como citar</h2>
             <p className="mt-3 text-sm leading-relaxed text-carvao">
-              {e.orgao}. <em>{e.titulo}</em>. Dados abertos, licença {e.licenca ?? "informada na fonte"}. Integrado e processado por Scrutiniums,
-              Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? dataBR(ultimaCaptura.slice(0, 10)) : "data não informada"}, snapshot{" "}
-              {f?.snapshot ?? "não informado"}. Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].
+              {e.orgao}. <em>{e.titulo}</em>. Dados abertos, {/^licen/i.test(licenca.curta) ? "" : "licença "}{licenca.curta === "não informada" ? "informada na fonte" : licenca.curta.replace(/\.$/, "")}. Integrado e processado por Scrutiniums,
+              Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? dataBR(ultimaCaptura.slice(0, 10)) : "data não informada"}, {f?.snapshot ? <>, snapshot {f.snapshot}</> : null}. Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].
             </p>
           </div>
         </section>

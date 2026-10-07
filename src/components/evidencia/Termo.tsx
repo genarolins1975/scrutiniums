@@ -13,7 +13,7 @@ export function Termo({ slug, children, alvo = false }: { slug: string; children
   if (!c) return <>{children}</>;
   const dica = c.estado === "CONFERIDO" && c.emUmaFrase ? c.emUmaFrase : "Verbete em preparação: fonte primária ainda não conferida.";
   return (
-    <TermoDica href={`/setor-eletrico/aprenda/${c.slug}`} rotulo={`${c.sigla ? `${c.sigla} · ` : ""}${c.nome}`} dica={dica} alvo={alvo}>
+    <TermoDica href={`/setor-eletrico/aprenda/${c.slug}`} rotulo={`${c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla} · ` : ""}${c.nome}`} dica={dica} alvo={alvo}>
       {children}
     </TermoDica>
   );
