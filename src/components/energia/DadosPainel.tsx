@@ -45,7 +45,7 @@ export function DadosNavegacao({ atual }: { atual: IdPaginaDados }) {
 export function ReferenciaDados({ geradoEm, referencia, extra }: { geradoEm: string; referencia?: string; extra?: ReactNode }) {
   return (
     <>
-      {referencia ? <>Data de referência da publicação: {referencia}. </> : null}Gold processada em {carimbo(geradoEm)}. {extra}
+      {referencia ? <>Data de referência da publicação: {referencia}. </> : null}Publicação processada em {carimbo(geradoEm)}. {extra}
     </>
   );
 }

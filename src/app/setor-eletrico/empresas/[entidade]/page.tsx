@@ -165,6 +165,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
           · {d.sigla}
         </nav>
         <CabecalhoModulo
+          siglas={["SAMP", "DEC", "FEC", "TE", "TUSD"]}
           rotulo="Perfil da distribuidora"
           titulo={`${d.sigla}: ${d.nome ?? "razão social sem registro"}`}
           referencia={

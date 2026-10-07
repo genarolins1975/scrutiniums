@@ -108,7 +108,7 @@ export default function TransicaoPage() {
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SIN", "MWmed"]}
           rotulo="Transição e ambiente"
           titulo="Como a transformação do setor se distribui e afeta as emissões?"
           referencia={

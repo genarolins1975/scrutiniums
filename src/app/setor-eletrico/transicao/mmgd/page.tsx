@@ -110,7 +110,7 @@ export default function MmgdPage() {
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-mmgd" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SIN", "MWmed"]}
           rotulo="Transição e ambiente"
           titulo="Micro e minigeração distribuída no território"
           referencia={

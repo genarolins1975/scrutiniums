@@ -37,7 +37,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Minha região: submercado, distribuidora, município e usinas no mapa",
   description:
-    "Mapa geográfico transversal do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora pela relação oficial da ANEEL, indicadores publicados por município e usinas do SIGA, cada número no seu próprio grão e com a fonte de origem.",
+    "Mapa geográfico do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora (relação oficial da ANEEL), indicadores por município e usinas do SIGA, cada número no seu recorte e com a fonte.",
   alternates: { canonical: "/setor-eletrico/territorio" },
 };
 
@@ -93,7 +93,7 @@ export default function TerritorioPage() {
       <CabecalhoEnergia atual="territorio" />
       <MarcaVisita secao="energia:territorio" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["DEC", "FEC"]}
           rotulo="Minha região"
           titulo={g.pergunta}
           referencia={
@@ -102,9 +102,8 @@ export default function TerritorioPage() {
             </>
           }
         >
-          Escolha o seu município, a sua distribuidora, a sua UF ou o seu submercado e veja o que cada fonte oficial publica para ele. Os números não trocam de grão: o preço é do
-          submercado, a tarifa e as perdas são da distribuidora inteira, o DEC é do conjunto elétrico, e só o que a fonte publica por município aparece como do município. Este mapa
-          complementa o mapa do observatório na página inicial.
+          Escolha o município, a distribuidora, a UF ou o submercado e veja o que cada fonte oficial publica. Os números não mudam de recorte: o preço é do submercado, a tarifa e as perdas são
+          da distribuidora inteira, o DEC é do conjunto elétrico, e só o publicado por município aparece como do município.
         </CabecalhoModulo>
 
         <ModoProfundidade>
@@ -374,8 +373,7 @@ export default function TerritorioPage() {
                     linhas={g.insumos.map((x) => [x.modulo, <span key={x.chave} className="break-all">{x.url}</span>, carimbo(x.gerado_em), curto(x.sha256)])}
                   />
                   <p className="text-xs text-carvao-muted">
-                    Geometria: {g.geometria.fonte ?? "sem fonte registrada"}, capturada em {carimbo(g.geometria.capturado_em)}, sha256 {curto(g.geometria.sha256)}. Reprodução:{" "}
-                    <code>python3 pipeline/energia/executar_modulo.py territorio --sem-coleta</code>. Processamento da gold: {num(g.processamento_s, 1)} s.
+                    Geometria: {g.geometria.fonte ?? "sem fonte registrada"}, capturada em {carimbo(g.geometria.capturado_em)}, sha256 {curto(g.geometria.sha256)}.
                   </p>
                 </TerritorioAuditoria>
 

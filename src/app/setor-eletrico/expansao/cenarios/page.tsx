@@ -61,7 +61,7 @@ export default function CenariosPage() {
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao-cenarios" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["RALIE", "SIN", "CDE"]}
           rotulo="Expansão"
           titulo="Cenários oficiais de expansão"
           referencia={

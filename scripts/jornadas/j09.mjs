@@ -250,7 +250,7 @@ export default {
 
     await j.passo("Compara a data de referência com as datas de captura e de processamento mostradas na página", async () => {
       const texto = normaliza(await p.locator("main").innerText());
-      const cab = texto.match(/Data de referência da publicação: (\d\d\/\d\d\/\d{4})\. Gold processada em ([^()]+) \(Brasília\)\. Última captura registrada: ([^()]+) \(Brasília\)/);
+      const cab = texto.match(/Data de referência da publicação: (\d\d\/\d\d\/\d{4})\. Publicação processada em ([^()]+) \(Brasília\)\. Última captura registrada: ([^()]+) \(Brasília\)/);
       j.afirmar(cab, "não achei a linha de datas do cabeçalho");
       const rodape = normaliza(await p.getByText(/Catálogo e manifesto publicados em/).first().innerText()).match(/Catálogo e manifesto publicados em ([^()]+) \(Brasília\)/);
       j.afirmar(rodape, "não achei a data de publicação do rodapé");

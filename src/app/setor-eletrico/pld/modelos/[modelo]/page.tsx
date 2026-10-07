@@ -108,6 +108,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
           · {f.codigo}
         </nav>
         <CabecalhoModulo
+          siglas={f.codigo === "C2-H" ? ["PLD", "EAR", "ENA", "MLT"] : ["PLD"]}
           rotulo={`Ficha do modelo · versão ${f.versao}`}
           titulo={`${f.codigo} · ${f.nome}`}
           referencia={<>Registro de modelos na execução de {carimbo(g.gerado_em)}.<span data-nivel="analisar"> Configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</span></>}

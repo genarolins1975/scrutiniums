@@ -43,7 +43,7 @@ export default function PldRegionalPage() {
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho
+        <PldCabecalho siglas={["CMO", "MWmed"]}
           titulo="Diferenças regionais"
           referencia={
             <>

@@ -612,6 +612,10 @@ export function GraficoBarras({
 
   return (
     <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={orientacao}>
+      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+        {titulo}
+        <span className="font-normal text-mineral">, em {unidade}</span>
+      </p>
       {/* hachura de ausência definida uma vez e usada pelo gráfico e pela legenda */}
       <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
         <defs>

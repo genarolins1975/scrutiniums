@@ -80,7 +80,7 @@ export default function PaginaP039() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-controle" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["HHI", "CR4", "CR10"]}
           rotulo="Empresas"
           titulo={painel("p039").pergunta}
           referencia={

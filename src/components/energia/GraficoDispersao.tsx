@@ -192,6 +192,9 @@ export function GraficoDispersao({
 
   return (
     <div ref={ref} className="relative w-full">
+      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+        {titulo}
+      </p>
       <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
         <li className="flex items-center gap-1.5">
           <svg width="12" height="12" aria-hidden="true">

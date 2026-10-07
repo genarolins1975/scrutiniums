@@ -75,7 +75,7 @@ export default function MercadoMreGsfPage() {
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado:mre-gsf" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
+        <CabecalhoModulo siglas={["PLD", "SAMP", "SIN"]} rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
           As hidrelétricas do <Termo slug="mre">MRE</Termo> dividem entre si o risco de gerar menos que a garantia física, porque quem decide quanto cada uma gera é o despacho centralizado. O{" "}
           <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, a diferença fica exposta ao mercado de curto prazo. Parte desse risco
           recai sobre o consumidor cativo e aparece na Conta Bandeira.

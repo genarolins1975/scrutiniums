@@ -83,7 +83,7 @@ export default function PerfilHorarioPage() {
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["MWmed", "SIN"]}
           rotulo="Carga"
           titulo="MMGD e perfil horário"
           referencia={

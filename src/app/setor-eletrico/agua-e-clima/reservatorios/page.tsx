@@ -58,7 +58,7 @@ export default function ReservatoriosPage() {
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["EAR", "ENA", "MWmed"]}
           rotulo="Água e clima"
           titulo="Reservatórios e balanço"
           referencia={

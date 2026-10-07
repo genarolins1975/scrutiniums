@@ -127,7 +127,7 @@ export default function ModelosPage() {
           </Link>{" "}
           · Previsões e modelos · Registro de modelos e desempenho
         </nav>
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["PLD", "EAR", "ENA", "MLT"]}
           rotulo="Previsões e modelos do PLD"
           titulo="Como cada previsão é calculada, e se ela supera as referências simples"
           referencia={

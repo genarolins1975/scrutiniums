@@ -1,3 +1,4 @@
+import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -117,6 +118,9 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           <h1 className="mt-2 font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">{t.titulo}</h1>
           <p className="mt-3 max-w-prose2 font-serif text-xl leading-relaxed text-carvao">{t.pergunta}</p>
           <p className="mt-3 max-w-prose2 leading-relaxed text-carvao-muted">{t.resumo}</p>
+          <LegendaDeSiglas
+            siglas={params.trilha === "agua-operacao-preco" ? ["ENA", "EAR", "MWmed", "CMO", "PLD"] : ["CDE", "TUSD", "TE", "SIN", "BPC"]}
+          />
         </header>
 
         <nav aria-label="Passos da trilha" className="border-y border-linha py-4">

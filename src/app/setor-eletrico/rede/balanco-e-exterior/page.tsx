@@ -67,7 +67,7 @@ export default function RedeBalancoPage() {
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SIN", "MWmed", "MMGD"]}
           rotulo="Rede · Balanço e exterior"
           titulo={perguntaPainel("p029")}
           referencia={

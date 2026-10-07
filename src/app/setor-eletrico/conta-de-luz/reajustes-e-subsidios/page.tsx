@@ -137,7 +137,7 @@ export default function ContaReajustesPage() {
           </ContaLinkFiltros>{" "}
           <span aria-hidden="true">›</span> Reajustes, bandeiras e subsídios
         </nav>
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["REH", "PLD", "SIN", "TUSD"]}
           rotulo="Conta de luz"
           titulo="O que mudou e quem financia os benefícios?"
           referencia={

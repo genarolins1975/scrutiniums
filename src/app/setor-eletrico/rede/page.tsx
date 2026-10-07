@@ -87,7 +87,7 @@ export default function RedePage() {
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["MWmed", "PLD"]}
           rotulo="Rede"
           titulo={PERGUNTA_MODULO_REDE}
           referencia={

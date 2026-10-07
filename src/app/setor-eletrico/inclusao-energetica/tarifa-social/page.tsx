@@ -127,7 +127,7 @@ export default function TarifaSocialPage() {
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-tarifa-social" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["UC"]}
           rotulo="Inclusão energética"
           titulo="Tarifa Social de Energia Elétrica"
           referencia={

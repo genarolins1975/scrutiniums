@@ -143,7 +143,7 @@ function medirPagina() {
       copiar_link: Array.from(principal.querySelectorAll("button")).filter((b) => /copiar link/i.test(b.textContent || "")).length,
       proxima: contar(/Próxima pergunta/g),
       fonte: contar(/\bFontes?( e datas? de referência)?: /g),
-      referencia: contar(/(Data de referência|Referência até|referência até|Gold processada|datas? de referência:)/g),
+      referencia: contar(/(Data de referência|Referência até|referência até|Gold processada|Publicação processada|datas? de referência:)/g),
       tabelas: principal.querySelectorAll("table").length,
       figuras: principal.querySelectorAll("svg[role=img], img, canvas, figure").length,
       glossario: principal.querySelectorAll('a[href*="/setor-eletrico/aprenda/"]').length,

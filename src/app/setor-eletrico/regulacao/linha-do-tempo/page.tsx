@@ -77,7 +77,7 @@ export default function LinhaDoTempoPage() {
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["DOU", "PLD", "REN", "REH", "PRODIST"]}
           rotulo="Regulação"
           titulo="Linha do tempo das regras"
           referencia={

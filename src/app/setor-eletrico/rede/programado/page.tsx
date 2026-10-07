@@ -44,7 +44,7 @@ export default function RedeProgramadoPage() {
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["MWmed", "PDO"]}
           rotulo="Rede · Programado e verificado"
           titulo={perguntaPainel("p031")}
           referencia={

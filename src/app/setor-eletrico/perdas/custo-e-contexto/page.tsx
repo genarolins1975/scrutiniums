@@ -55,7 +55,7 @@ export default function PerdasCustoContextoPage() {
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas:custo" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SAMP", "TUSD", "TE"]}
           rotulo="Perdas de energia · custo e contexto"
           titulo="Qual é a dimensão econômica e territorial das perdas?"
           referencia={<ReferenciaPerdas g={g} />}

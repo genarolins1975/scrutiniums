@@ -96,7 +96,7 @@ export default function AguaPage() {
       <MarcaVisita secao="energia:agua-e-clima" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_AFLUENCIA} destino={rotaPainel("p018")} />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["ENA", "MLT", "SIN", "REE"]}
           rotulo="Água e clima"
           titulo="Quanta energia está guardada nos reservatórios, e quanta água está chegando?"
           referencia={

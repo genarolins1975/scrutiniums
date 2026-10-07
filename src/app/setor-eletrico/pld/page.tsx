@@ -1,3 +1,4 @@
+import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { fraseDeRecusa } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -172,6 +173,7 @@ export default function PldPage() {
               </a>
             ))}
           </nav>
+          <LegendaDeSiglas siglas={["REN", "SIN", "ENA"]} />
         </header>
         <PldNavegacao atual="p008" />
 

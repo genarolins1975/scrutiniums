@@ -45,7 +45,7 @@ export default function CoberturaPage() {
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-cobertura" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["CDE", "UC", "BPC"]}
           rotulo="Inclusão energética"
           titulo="Cobertura potencial da Tarifa Social"
           referencia={

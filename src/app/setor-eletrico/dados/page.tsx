@@ -63,7 +63,7 @@ export default function DadosCatalogoPage() {
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["PLD"]}
           rotulo="Dados e metodologia"
           titulo="Quais dados estão de fato validados?"
           referencia={<ReferenciaDados geradoEm={cat.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Listagens oficiais colhidas em {nomesPortais.map(([o, p]) => `${o} ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}.</>} />}
