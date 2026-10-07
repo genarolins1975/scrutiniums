@@ -164,3 +164,25 @@ export function normaLegivel(id: string): string {
   const m = /^LEI-(\d+)-(\d{4})-(\d{2})-(\d{2})$/.exec(id);
   return m ? `Lei ${Number(m[1]).toLocaleString("pt-BR")}, de ${m[4]}/${m[3]}/${m[2]}` : id;
 }
+
+/**
+ * Datas ISO soltas num texto do pipeline (AAAA-MM-DD, AAAA-MM ou AAAA-MM-DDTHH:MM com Z opcional) na
+ * forma da página (dd/mm/aaaa, mês/ano ou dd/mm/aaaa hh:mm, com UTC quando o texto traz Z);
+ * identificadores com "@" ou "_" coladas ficam como estão.
+ */
+export function datasLegiveis(texto: string): string {
+  // ano de quatro dígitos sem zero à esquerda, mês 01 a 12, dia 01 a 31: o "0001-86" de um CNPJ, "2024-99" ou "2025-13" não são datas
+  const A = "[1-9]\\d{3}";
+  const M = "(?:0[1-9]|1[0-2])";
+  const D = "(?:0[1-9]|[12]\\d|3[01])";
+  const FORA = "[^\\w@_/.-]";
+  return texto
+    .replace(
+      new RegExp(`(^|${FORA})(${A})-(${M})-(${D})T([01]\\d|2[0-3]):([0-5]\\d)(?::[0-5]\\d(?:\\.\\d+)?)?(Z?)(?![\\w@_/-])`, "g"),
+      (_, antes: string, a: string, m: string, d: string, h: string, mi: string, z: string) => `${antes}${d}/${m}/${a} ${h}:${mi}${z ? " UTC" : ""}`,
+    )
+    .replace(
+      new RegExp(`(^|${FORA})(${A})-(${M})(?:-(${D}))?(?![\\w@_/-]|\\d)`, "g"),
+      (_, antes: string, a: string, m: string, d?: string) => `${antes}${d ? `${d}/${m}/${a}` : mesAno(`${a}-${m}`)}`,
+    );
+}

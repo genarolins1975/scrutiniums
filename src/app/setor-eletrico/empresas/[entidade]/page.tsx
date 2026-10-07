@@ -54,7 +54,7 @@ import {
   textoPares,
 } from "@/lib/energia/empresas";
 import { arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, evolucaoDistribuidora, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -431,7 +431,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       <p className="text-sm text-carvao-muted">Sem série anual no escopo {rotuloEscopo(escopo)} para esta companhia.</p>
                     )}
                     {fin?.[companhia.cnpj]?.escala_corrigida?.length ? (
-                      <p className="text-xs text-carvao-muted">Escala convertida pelo observatório (natureza estimada): {fin[companhia.cnpj].escala_corrigida!.join("; ")}.</p>
+                      <p className="text-xs text-carvao-muted">Escala convertida pelo observatório (natureza estimada): {datasLegiveis(fin[companhia.cnpj].escala_corrigida!.join("; "))}.</p>
                     ) : null}
                     <p className="text-sm">
                       <Link href={`${rotaPainel("p038")}?fin.sel=${companhia.cnpj}#p038`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">

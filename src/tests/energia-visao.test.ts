@@ -261,6 +261,11 @@ describe("leitura sob demanda da gold e datas legíveis", () => {
     expect(datasLegiveis("último período 2025-06, 367 dias")).toBe("último período jun/2025, 367 dias");
     expect(datasLegiveis("snapshot ear_subsistema_di@2026-09-30T02:19:44Z")).toBe("snapshot ear_subsistema_di@2026-09-30T02:19:44Z");
     expect(datasLegiveis("PREVISÃO emitida em 2026-09-30T00:00Z (inicialização do modelo)")).toBe("PREVISÃO emitida em 30/09/2026 00:00 UTC (inicialização do modelo)");
+    // só data válida vira data: o "0001-86" de um CNPJ e meses ou dias impossíveis ficam como vieram
+    expect(datasLegiveis("33.541.368/0001-86")).toBe("33.541.368/0001-86");
+    expect(datasLegiveis("2025-13 e 2024-00 e 20241-05")).toBe("2025-13 e 2024-00 e 20241-05");
+    // identificador com data (ato, chave de escala) sai legível, sem perder o prefixo
+    expect(datasLegiveis("DSP-RET 2016-11-24; DFP 2019-12-31 individual: x1000")).toBe("DSP-RET 24/11/2016; DFP 31/12/2019 individual: x1000");
     expect(datasLegiveis("das 2026-09-30T02:20 às 2026-10-01T06:40:15")).toBe("das 30/09/2026 02:20 às 01/10/2026 06:40");
     expect(datasLegiveis("arquivo ear_2026-09-30.csv")).toBe("arquivo ear_2026-09-30.csv");
     expect(datasLegiveis("sem data aqui")).toBe("sem data aqui");

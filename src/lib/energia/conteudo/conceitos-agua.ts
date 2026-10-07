@@ -149,7 +149,7 @@ export const CONCEITOS: Conceito[] = [
       },
     ],
     limitacoes: [
-      "Nenhum dos documentos consultados traz uma definição formal de REE: a descrição acima é a da EPE, e a composição de cada um dos 12 REE em usinas não está neste verbete. O Submódulo 2.4 dos Procedimentos de Rede, lido para o módulo PLD, não contém o termo; os demais submódulos e o glossário do ONS não foram lidos, e o dicionário de dados do conjunto EAR Diário por REE usa o termo sem defini-lo.",
+      "Nenhum dos documentos consultados traz uma definição formal de REE: a descrição acima é a da EPE, e a composição de cada um dos 12 REE em usinas não está neste verbete. Os Submódulos 2.4, 4.3 e 4.5 dos Procedimentos de Rede, lidos para o módulo PLD, não contêm o termo; os demais submódulos e o glossário do ONS não foram lidos, e o dicionário de dados do conjunto EAR Diário por REE usa o termo sem defini-lo.",
       "O relatório do GT descreve o aumento de 4 para 12 REE sem datá-lo. Nos arquivos do ONS, o painel detecta a reconfiguração de 29 e 30/12/2017, de 9 para 12 REE, que mudou o perímetro de alguns deles, e a EPE registra a topologia G, de 12 REE, em uso desde o Programa Mensal da Operação de janeiro de 2018. Séries por REE anteriores a essa mudança não são comparáveis no mesmo perímetro.",
     ],
     vejaNoPortal: [{ rotulo: "Água e clima: EAR por REE", href: "/setor-eletrico/agua-e-clima?rec=ree#p017" }],

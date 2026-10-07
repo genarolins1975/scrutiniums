@@ -6,7 +6,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { ExpansaoLinkPainel } from "@/components/energia/ExpansaoLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { PAINEIS_EXPANSAO, ROTA_EXPANSAO, painel, proximoPainel, rotaPainel, type PainelExpansao } from "@/lib/energia/expansao";
-import { num } from "@/lib/energia/formato";
+import { datasLegiveis, num } from "@/lib/energia/formato";
 import type { Download } from "@/lib/energia/tipos";
 
 /**
@@ -178,7 +178,7 @@ export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
   return (
     <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
       {itens.map((x) => (
-        <li key={x}>{x}</li>
+        <li key={x}>{datasLegiveis(x)}</li>
       ))}
     </ul>
   );

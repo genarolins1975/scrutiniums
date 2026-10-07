@@ -325,7 +325,7 @@ export default function EmissoesPage() {
                     titulo="Mesmo período com valor diferente na página vigente e no site anterior do MCTI (vale a vigente)"
                     colunas={["Série", "Período", "Página vigente", "Site anterior"]}
                     numericas={[2, 3]}
-                    linhas={e.divergencias_entre_publicacoes.map((x) => [x.rotulo, x.periodo, fator(x.valor_vigente), fator(x.valor_site_anterior)])}
+                    linhas={e.divergencias_entre_publicacoes.map((x) => [x.rotulo, datasLegiveis(x.periodo), fator(x.valor_vigente), fator(x.valor_site_anterior)])}
                   />
                   {e.conflitos_entre_arquivos.length > 0 ? (
                     <TransicaoTabela

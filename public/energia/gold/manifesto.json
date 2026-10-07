@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-07T22:23:43Z",
+ "gerado_em": "2026-10-07T23:25:53Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5e71cffc802+alterado",
+ "versao_codigo": "7b153a32874c+alterado",
  "disponivel": true,
- "id_publicacao": "b25c1e403e79c5933a95b0ec2d327998a5c6392c75b8db0a2ac5dea56ae5883c",
+ "id_publicacao": "13980edf0dcf5803cd61b9f52093b350238b54f2f0d522c6c7d1083a4e81b4db",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
@@ -43,7 +43,7 @@
    "caminho": "/energia/gold/arquivos.json",
    "tipo": "gold",
    "bytes": 125458,
-   "sha256": "b14be4eef7c18cdd00e640b43f59c70b5cb00d5bc42afdcf414d82f756605d7e",
+   "sha256": "bb145dd8c4d0445bcd0cd70cc24a24fa9e45f030e5fd450b0da4b3cd39d8edc3",
    "gerado_em": "2026-10-06T20:02:52Z",
    "disponivel": true
   },
@@ -51,8 +51,8 @@
    "caminho": "/energia/gold/avaliacao.json",
    "tipo": "gold",
    "bytes": 908853,
-   "sha256": "9f03701e8b4b2b28067e994e5771c2231afcdca74a4e859d82b2622b1244e6dc",
-   "gerado_em": "2026-10-07T22:23:42Z",
+   "sha256": "66b1f5249a7ffa68ebba968f420ea85fbf1a547a094151e043c7c68f1618303c",
+   "gerado_em": "2026-10-07T23:25:52Z",
    "disponivel": true
   },
   {

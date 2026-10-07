@@ -286,3 +286,40 @@ Art. 20-E As Regras de Comercialização deverão prever a compensação, sobre 
 internas aos CCEAR por Disponibilidade e CER, dos eventos de restrição de operação por constrainedoff das Centrais Geradoras Fotovoltaicas, classificado como razão de indisponibilidade externa,
 conforme inciso I do art. 20-B, apurados conforme o Título II-A desta Resolução. (Incluído pela REN
 ANEEL 1.073, de 12.09.2023)
+
+[PDF, página 18]
+CAPÍTULO II
+DISPOSIÇÕES GERAIS
+Art. 20-F Somente eventos de restrição de operação por constrained-off das Centrais
+Geradoras Fotovoltaicas ou conjuntos de Centrais Geradoras Fotovoltaicas classificados como razão de
+indisponibilidade externa, conforme inciso I do art. 20-B, ocorridos a partir de 1º de abril de 2024,
+estarão sujeitos ao tratamento estabelecido nos arts. 20-A a 20-E deste normativo. (Incluído pela REN
+ANEEL 1.073, de 12.09.2023)
+Parágrafo único. O disposto no caput terá efeitos econômicos a partir do marco temporal
+nele estabelecido e efeitos financeiros a partir da aprovação dos Procedimentos de Rede atinentes e da
+implantação dos dispositivos do Título II-A desta Resolução no CliqCCEE. (Incluído pela REN ANEEL 1.073,
+de 12.09.2023)
+Art. 20-G Os eventos de restrição de operação por constrained-off das Centrais Geradoras
+Fotovoltaicas ou conjuntos de Centrais Geradoras Fotovoltaicas, relativos ao Ambiente de Contratação
+Regulada – ACR, ocorridos antes do marco temporal estabelecido no art. 20-F serão tratados nos termos
+de Regra de Comercialização que estabelece metodologia específica, a ser aprovada pela
+Superintendência de Regulação dos Serviços de Geração e do Mercado de Energia Elétrica – SGM, da
+ANEEL, que considere as seguintes diretrizes: (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+I – limitado aos Contratos de Energia de Reserva – CER e Contratos de Comercialização de
+Energia no Ambiente Regulados – CCEAR; (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+II – são passíveis de apuração dos montantes de energia não fornecida somente os eventos
+provocados por razão de indisponibilidade externa e razão de atendimento a requisitos de
+confiabilidade elétrica, conforme art. 20-B, em instalações externas às respectivas Centrais Geradoras
+Fotovoltaicas; (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+III – o período do evento e quais Centrais Geradoras Fotovoltaicas foram atingidas pelas
+restrições deverão ser informados pelo ONS; (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+IV – os valores de energia não fornecida não podem superar o montante mínimo para tornar
+nulo o montante de ressarcimento previsto nos contratos; e (Incluído pela REN ANEEL 1.073, de
+12.09.2023)
+V – os valores de energia não fornecida devem ser apurados proporcionalmente ao fator de
+operação comercial das Centrais Geradoras Fotovoltaicas e ao fator de comprometimento com o
+contrato. (Incluído pela REN ANEEL 1.073, de 12.09.2023)
+§ 1º O tratamento a que se refere o caput, relativo a eventos de constrained-off de Centrais
+Geradoras Fotovoltaicas ou conjuntos de Centrais Geradoras Fotovoltaicas ocorridos anteriormente a
+julho de 2022, se aplica somente às situações para as quais houver documentos protocolizados na ANEEL
+com os pedidos de reconhecimento de constrained-off. (Incluído pela REN ANEEL 1.073, de 12.09.2023)

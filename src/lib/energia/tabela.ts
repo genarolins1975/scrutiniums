@@ -22,7 +22,7 @@
  * undefined, NaN, texto vazio) e texto. Coluna numérica só aceita número:
  * texto numa coluna numérica é tratado como ausência, não convertido às cegas.
  */
-import { dataBR, num } from "@/lib/energia/formato";
+import { datasLegiveis, dataBR, num } from "@/lib/energia/formato";
 import { ordenarComNulos, valido, type Direcao } from "@/lib/energia/escalas";
 
 export type TipoColuna = "texto" | "numero" | "percentual" | "data";
@@ -83,6 +83,8 @@ export function textoCelula(v: string | number | null, c: ColunaTabela): string 
   if (c.tipo === "data") return textoData(v);
   // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
   if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v);
+  // data ISO dentro de um texto (um ato "DSP-RET 2016-11-24", uma nota) também sai no formato do site
+  if (c.tipo === "texto") return datasLegiveis(v);
   return v;
 }
 

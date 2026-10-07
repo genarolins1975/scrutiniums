@@ -30,19 +30,8 @@ export const ROTA_VISAO = "/setor-eletrico/visao-geral";
 /** A própria gold, lida no navegador sob demanda (fichas de prova e tabelas de auditoria), nunca nas props. */
 export const URL_GOLD_VISAO = "/energia/gold/sintese.json";
 
-/**
- * Datas ISO soltas num texto do pipeline (AAAA-MM-DD, AAAA-MM ou AAAA-MM-DDTHH:MM com Z opcional) na
- * forma da página (dd/mm/aaaa, mês/ano ou dd/mm/aaaa hh:mm, com UTC quando o texto traz Z);
- * identificadores com "@" ou "_" coladas ficam como estão.
- */
-export function datasLegiveis(texto: string): string {
-  return texto
-    .replace(
-      /(^|[^\w@_-])(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::\d\d(?:\.\d+)?)?(Z?)(?![\w@_-])/g,
-      (_, antes: string, a: string, m: string, d: string, h: string, mi: string, z: string) => `${antes}${d}/${m}/${a} ${h}:${mi}${z ? " UTC" : ""}`,
-    )
-    .replace(/(^|[^\w@_-])(\d{4})-(\d\d)(?:-(\d\d))?(?![\w@_-])/g, (_, antes: string, a: string, m: string, d?: string) => `${antes}${d ? `${d}/${m}/${a}` : mesAno(`${a}-${m}`)}`);
-}
+/** Datas ISO soltas num texto: a conversão fica em formato.ts, para a tabela interativa usá-la sem puxar este módulo. */
+export { datasLegiveis } from "./formato";
 
 /**
  * Identificador de snapshot ("ccee_pld_horario@2026-09-30T02:20:14Z") com a captura escrita como na página:

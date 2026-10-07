@@ -272,7 +272,7 @@ const COMPLEMENTO_EXEMPLO: Record<string, () => string | null> = {
     const p = (r: string) => u?.por_razao?.find((x) => x.razao === r)?.pct;
     const [rel, cnf, ene] = [p("REL"), p("CNF"), p("ENE")];
     if (!u || typeof u.taxa_pct !== "number" || [rel, cnf, ene].some((x) => typeof x !== "number")) return null;
-    return `Nos mesmos 12 meses, a taxa de restrição foi de ${pct(u.taxa_pct, 1)} da geração possível estimada (verificada mais não gerada). Por razão, a energia não gerada se divide em ${pct(rel, 1)} de indisponibilidade externa, ${pct(cnf, 1)} de confiabilidade elétrica e ${pct(ene, 1)} de razão energética. Segundo a REN, só a primeira razão dá direito ao pagamento por ESS, e só depois de um limite de horas acumuladas no ano.`;
+    return `Nos mesmos 12 meses, a taxa de restrição foi de ${pct(u.taxa_pct, 1)} da geração possível estimada (verificada mais não gerada). Por razão, a energia não gerada se divide em ${pct(rel, 1)} de indisponibilidade externa, ${pct(cnf, 1)} de confiabilidade elétrica e ${pct(ene, 1)} de razão energética. Segundo a REN, nos eventos posteriores aos marcos de vigência (1º/10/2021 nas eólicas, 1º/04/2024 nas fotovoltaicas), só a primeira razão dá direito ao pagamento por ESS, e só depois de um limite de horas acumuladas no ano.`;
   },
 };
 

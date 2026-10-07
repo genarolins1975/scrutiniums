@@ -10,8 +10,8 @@
    "copia_publica_em": "2025-01-08T23:29:02Z",
    "sha256_original": "a1d25fd000c7e995e1143bcb1c30f110a1364384f331e7424c5beb9192b2e638",
    "bytes_original": 490627,
-   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam (arts. 13 a 16 e 18; 20-A a 20-D): PDF páginas 10, 11, 12, 13, 14, 15, 16, 17. Alterações posteriores a 08/01/2025 não estão cobertas.",
-   "sha256": "aa85e2451ac92e9da2c9a6ce0e2fda291be95172c3634085a15a44b95b31a5d1"
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas contíguas que cobrem os arts. 13 a 20 (constrained-off de usinas eolioelétricas) e 20-A a 20-F (centrais geradoras fotovoltaicas): PDF páginas 10, 11, 12, 13, 14, 15, 16, 17, 18. Alterações posteriores a 08/01/2025 não estão cobertas.",
+   "sha256": "2962ec69ab592e9ae149c4ba0e825016cc2a493e42e3ac225e5e7fa098806c9a"
   },
   {
    "arquivo": "ren_aneel_957_2021_mcp.txt",

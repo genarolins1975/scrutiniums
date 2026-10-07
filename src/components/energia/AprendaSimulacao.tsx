@@ -72,11 +72,11 @@ function Controle({
 
 function Resultado({ rotulo, valor, detalhe }: { rotulo: string; valor: string; detalhe?: string }) {
   return (
-    <div className="border border-linha bg-superficie p-3" data-resultado-sintetico="true">
+    <div className="border border-linha bg-superficie p-3" data-resultado-sintetico="true" aria-live="polite" aria-atomic="true">
       <p className="rotulo text-mineral">
         {rotulo} <span className="text-carvao-muted">· sintético</span>
       </p>
-      <p className="mt-1 font-serif text-2xl tabular-nums text-carvao" aria-live="polite">
+      <p className="mt-1 font-serif text-2xl tabular-nums text-carvao">
         {valor}
       </p>
       {detalhe && <p className="mt-1 text-xs leading-relaxed text-carvao-muted">{detalhe}</p>}

@@ -1,5 +1,6 @@
 "use client";
 
+import { datasLegiveis } from "@/lib/energia/formato";
 import { useEffect, useMemo, useState } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -243,7 +244,7 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
             />
             {escalaCorrigida.length > 0 && (
               <p className="text-xs text-carvao-muted">
-                Escala convertida pelo observatório (natureza estimada; regra no modo Auditar): {escalaCorrigida.join("; ")}.
+                Escala convertida pelo observatório (natureza estimada; regra no modo Auditar): {datasLegiveis(escalaCorrigida.join("; "))}.
               </p>
             )}
           </>

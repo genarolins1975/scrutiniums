@@ -201,7 +201,7 @@ export default function PaginaP038() {
                   </p>
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.escala.regra} {inteiro(f.exclusoes.escala.documentos_corrigidos)} documentos de {inteiro(f.exclusoes.escala.companhias)} companhias, {inteiro(f.exclusoes.escala.valores_corrigidos)}{" "}
-                    valores: {f.exclusoes.escala.por_companhia.join("; ")}.
+                    valores: {datasLegiveis(f.exclusoes.escala.por_companhia.join("; "))}.
                   </p>
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.regra_inicio} {inteiro(f.exclusoes.inicio_inconsistente.length)} exercícios aceitos com nota; {inteiro(f.exclusoes.exercicios_irregulares.valores)} valores de exercícios curtos

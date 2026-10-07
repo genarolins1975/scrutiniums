@@ -391,6 +391,11 @@ export type LinhaDistribuidora = LinhaTabela & {
 
 const motivo = (b: Bloco<object>): string | null => (b.disponivel ? null : b.motivo);
 
+/** Motivo de ausência com a competência AAAA-MM como mm/aaaa (mesmo tamanho: esta página está no limite de peso). */
+export function motivoLegivel(m: string | null): string | null {
+  return m ? m.replace(/(^|[^\w@_/.-])([1-9]\d{3})-(0[1-9]|1[0-2])(?![\w@_/-]|\d)/g, "$1$3/$2") : m;
+}
+
 export function linhaDistribuidora(d: DistribuidoraTerritorio): LinhaDistribuidora {
   const { perdas: p, qualidade: q, tarifa: t, mmgd: m, tsee: s } = d.indicadores;
   return {

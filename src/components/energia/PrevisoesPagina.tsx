@@ -1,3 +1,4 @@
+import { datasLegiveis } from "@/lib/energia/formato";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -146,7 +147,7 @@ export function PrevisoesSeguir({
             {downloads.map((d) => (
               <li key={d.url}>
                 <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere] hover:text-carvao">
-                  {d.rotulo}
+                  {datasLegiveis(d.rotulo)}
                 </a>
               </li>
             ))}

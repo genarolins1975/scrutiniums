@@ -5,7 +5,7 @@ import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { datasLegiveis, dataBR } from "@/lib/energia/formato";
 import { ROTULO_BASE, type BaseData } from "@/lib/energia/linha-do-tempo";
 import {
   COLUNAS_LINHA_TEMPO,
@@ -249,7 +249,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                   <div className="mt-2 space-y-1.5 text-sm leading-relaxed">
                     <p className="text-carvao-muted">
                       <span className="rotulo mr-1.5 text-mineral">Resumo do observatório</span>
-                      {e.resumo}
+                      {datasLegiveis(e.resumo)}
                     </p>
                     <p className="text-carvao">
                       <span className="rotulo mr-1.5 text-mineral">Efeito declarado pelo ato</span>
@@ -278,7 +278,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                       </p>
                       {e.trecho && (
                         <p>
-                          <span className="text-carvao">Trecho:</span> <q>{e.trecho}</q>
+                          <span className="text-carvao">Trecho:</span> <q><code className="font-sans">{e.trecho}</code></q>
                         </p>
                       )}
                       {e.deliberacao && (

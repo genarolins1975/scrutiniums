@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { dataBR, num } from "@/lib/energia/formato";
 import {
+  motivoLegivel,
   NOME_SUBMERCADO,
   ROTULO_ESTADO_SM,
   ROTULO_VINCULO,
@@ -83,7 +84,7 @@ function Ausente({ motivo }: { motivo: string | null }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-carvao-muted">
       <span aria-hidden="true" className="inline-block h-3 w-3 border border-mineral" style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }} />
-      sem dado{motivo ? `: ${motivo}` : ""}
+      sem dado{motivo ? `: ${motivoLegivel(motivo)}` : ""}
     </span>
   );
 }

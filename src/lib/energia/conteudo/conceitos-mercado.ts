@@ -115,9 +115,14 @@ export const CONCEITOS: Conceito[] = [
         "I - Ambiente de Contratação Regulada - ACR o segmento do mercado no qual se realizam as operações de compra e venda de energia elétrica entre agentes vendedores e agentes de distribuição, precedidas de licitação, ressalvados os casos previstos em lei, conforme regras e procedimentos de comercialização específicos;",
         "Em outras palavras: no ACR, quem vende energia e as distribuidoras negociam por licitação, salvo as exceções previstas em lei.",
       ),
+      d5163(
+        "art. 2º, inciso II",
+        "II - os agentes de distribuição deverão garantir o atendimento a cem por cento de seus mercados de energia por intermédio de contratos registrados na Câmara de Comercialização de Energia Elétrica - CCEE e, quando for o caso, aprovados, homologados ou registrados pela ANEEL;",
+        "Em outras palavras: a distribuidora precisa ter contratos registrados na CCEE para cem por cento do mercado que atende.",
+      ),
     ],
     limitacoes: [
-      "O consumo contabilizado pela CCEE é medido no centro de gravidade do submercado: não é o consumo faturado pelas distribuidoras nem o consumo cativo da EPE, que têm outros perímetros.",
+      "O consumo contabilizado pela CCEE, segundo a descrição do conjunto de dados da própria CCEE, é referido ao centro de gravidade do submercado: não é o consumo faturado pelas distribuidoras nem o consumo cativo da EPE, que têm outros perímetros.",
     ],
     vejaNoPortal: VEJA_LIVRE,
   },
@@ -160,6 +165,11 @@ export const CONCEITOS: Conceito[] = [
       "No observatório, a garantia física das usinas do MRE aparece em MW médios nos conjuntos da CCEE, modulada e ajustada pelo fator de disponibilidade, como denominador do GSF; a de cada usina não é publicada aqui.",
     relacoes: ["mre", "gsf", "acr", "acl"],
     fontes: [
+      d5163(
+        "art. 2º, inciso I",
+        "I - os agentes vendedores deverão apresentar lastro para a venda de energia para garantir cem por cento de seus contratos;",
+        "Em outras palavras: quem vende energia precisa ter lastro para cem por cento dos contratos.",
+      ),
       d5163(
         "art. 2º, § 1º",
         "§ 1 º O lastro para a venda de que trata o inciso I do caput será constituído pela garantia física proporcionada por empreendimento de geração própria ou de terceiros, neste caso, mediante contratos de compra de energia.",

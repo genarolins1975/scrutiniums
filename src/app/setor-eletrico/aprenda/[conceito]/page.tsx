@@ -186,7 +186,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                   <p className="text-sm">
                     <strong className="font-medium">{f.orgao}</strong>
                     <a href={f.url} target="_blank" rel="noopener noreferrer" className="block py-3 leading-snug text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                      {f.documento} <span aria-hidden="true">↗</span>
+                      {f.documento}&nbsp;<span aria-hidden="true">↗</span>
                     </a>
                   </p>
                   {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}

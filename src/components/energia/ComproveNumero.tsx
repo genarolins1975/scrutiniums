@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
 import {
   MENSAGEM_COPIA,
@@ -393,7 +393,7 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
             {ev.download.map((d) => (
               <li key={d.url}>
                 <a href={d.url} download={baixavel(d.url) || undefined} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
+                  {datasLegiveis(d.rotulo)}
                 </a>
               </li>
             ))}

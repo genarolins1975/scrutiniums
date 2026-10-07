@@ -179,8 +179,10 @@ describe("auditoria final: regressões", () => {
     varre(dir);
     if (existsSync(join(raiz, ".next", "server", "app", "setor-eletrico.html"))) htmls.push(join(raiz, ".next", "server", "app", "setor-eletrico.html"));
     for (const h of htmls) {
-      const texto = readFileSync(h, "utf-8").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
-      expect(texto, h).not.toMatch(/\bundefined\b|\bNaN\b/);
+      // trecho literal de linha da fonte (<code>, <pre>) é citação de dado, não prosa: fica de fora da busca por data crua
+      const html = readFileSync(h, "utf-8").replace(/<script[\s\S]*?<\/script>/g, "");
+      const texto = html.replace(/<(code|pre)\b[\s\S]*?<\/\1>/g, " ").replace(/<[^>]+>/g, " ");
+      expect(html.replace(/<[^>]+>/g, " "), h).not.toMatch(/\bundefined\b|\bNaN\b/);
       // data crua (AAAA-MM, AAAA-MM-DD ou instante ISO) solta no texto; identificadores com "@" ou "_" ficam de fora
       expect(texto, h).not.toMatch(/(^|[\s(])20\d\d[-/]\d\d([-/]\d\d)?(T[\d:]+Z?)?(?=[\s).,;]|$)/);
     }

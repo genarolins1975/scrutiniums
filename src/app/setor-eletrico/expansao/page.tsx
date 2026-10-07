@@ -7,7 +7,7 @@ import { ExpansaoIndisponivel, ExpansaoNavegacao, ExpansaoNota } from "@/compone
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   PAINEIS_EXPANSAO,
@@ -276,7 +276,7 @@ export default function ExpansaoPage() {
               <h3 className="rotulo text-mineral">Ressalvas da validação desta publicação</h3>
               <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                 {g.ressalvas.map((x) => (
-                  <li key={x}>{x}</li>
+                  <li key={x}>{datasLegiveis(x)}</li>
                 ))}
               </ul>
             </div>

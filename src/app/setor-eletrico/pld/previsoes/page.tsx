@@ -22,7 +22,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { CURTO_SM, carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { CURTO_SM, carimbo, dataBR, datasLegiveis, num, plural } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_REVISOES,
@@ -417,7 +417,7 @@ export default function PrevisoesPage() {
                       {particoes.map((p) => (
                         <li key={p.url}>
                           <a href={p.url} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                            {p.rotulo}
+                            {datasLegiveis(p.rotulo)}
                           </a>
                         </li>
                       ))}

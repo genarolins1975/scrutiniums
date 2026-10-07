@@ -18,6 +18,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { lerGold } from "@/lib/energia/gold";
 import {
+  motivoLegivel,
   ID_PAINEL,
   NOME_SUBMERCADO,
   dadosExplorador,
@@ -229,7 +230,7 @@ export default function TerritorioPage() {
                       d.sigla,
                       d.cnpj_formatado ?? d.cnpj,
                       d.ativa === null ? "sem dado" : d.ativa ? "sim" : "não",
-                      d.indicadores.perdas.disponivel ? `${numTexto(d.indicadores.perdas.taxa_total_pct, 2)}%` : d.indicadores.perdas.motivo,
+                      d.indicadores.perdas.disponivel ? `${numTexto(d.indicadores.perdas.taxa_total_pct, 2)}%` : motivoLegivel(d.indicadores.perdas.motivo),
                       d.indicadores.tarifa.disponivel ? `R$ ${numTexto(d.indicadores.tarifa.total_rs_mwh, 2)}/MWh` : d.indicadores.tarifa.motivo,
                     ])}
                   />

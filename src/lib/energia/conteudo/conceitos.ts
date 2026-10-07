@@ -98,9 +98,9 @@ const CCEE_MCP: FonteOficial = {
     "Portal de dados abertos, conjuntos PLD_HORARIO_SUBMERCADO e SUMARIO_BE_HORARIO_SUBMERCADO (descrição dos recursos), capturados em 28/09/2026",
   url: "https://dadosabertos.ccee.org.br/dataset/sumario_be_horario_submercado",
   trecho:
-    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
+    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”. [...]",
   parafrase:
-    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. A CCEE define, para cada perfil de agente, submercado e hora, o balanço de energia (positivo ou negativo) e o resultado nesse mercado; o conjunto publica esses valores somados por submercado e hora.",
+    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. A CCEE define, para cada perfil de agente, submercado e hora, o balanço de energia (positivo ou negativo) e o resultado nesse mercado; o conjunto publica esses valores por submercado e hora.",
 };
 
 const CCEE_MCP_MENSAL: FonteOficial = {
