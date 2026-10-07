@@ -51,12 +51,23 @@ def python():
     por = defaultdict(Counter)
     nomes_falha = defaultdict(int)
     falhas = []
-    for linha in (r.stderr + r.stdout).splitlines():
-        m = re.match(r"^(test\w*) \((pipeline\.tests\.(\w+)\.[\w.]+)\)(?:.*?)\.\.\. (ok|FAIL|ERROR|skipped.*)$", linha)
+    cabecalho = re.compile(r"^(test\w*) \((pipeline\.tests\.(\w+)\.[\w.]+)\)(.*)$")
+    resultado = re.compile(r"\.\.\. (ok|FAIL|ERROR|skipped.*)$")
+    linhas = (r.stderr + r.stdout).splitlines()
+    for i, linha in enumerate(linhas):
+        m = cabecalho.match(linha)
         if not m:
             continue
-        nome, _, modulo, res = m.groups()
-        res = res.split()[0]
+        nome, _, modulo, resto = m.groups()
+        # teste com docstring: o resultado vem na linha seguinte (ou depois de saída impressa pelo teste)
+        res = resultado.search(resto)
+        k = i + 1
+        while not res and k < min(i + 8, len(linhas)) and not cabecalho.match(linhas[k]):
+            res = resultado.search(linhas[k])
+            k += 1
+        if not res:
+            continue
+        res = res.group(1).split()[0]
         por[modulo][res] += 1
         if res in ("FAIL", "ERROR"):
             falhas.append(f"{modulo}: {nome}")

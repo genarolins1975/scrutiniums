@@ -5,6 +5,8 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
+import { linhasIntegracao } from "@/lib/energia/dados";
+import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
@@ -39,6 +41,10 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const e = cat?.entradas.find((x) => x.id === d?.catalogoId);
   if (!d || !e) notFound();
   const f = meta?.fontes[d.interno];
+  // a gold meta.json cobre só parte das fontes; as integrações de publicacao.json trazem a captura e a atualidade de cada conjunto
+  const pub = publicacaoDados();
+  const integr = (pub?.conjuntos ?? []).filter((c) => c.id.endsWith(`/${d.interno}`));
+  const ultimaCaptura = f?.ultima_captura ?? integr.map((c) => c.capturas.ultima).filter((x): x is string => !!x).sort().at(-1) ?? null;
   // todas as vintages, inclusive as substituídas; publicações antigas da gold só trazem as vigentes
   const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   return (
@@ -61,7 +67,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
             ["Formatos publicados", (e.formatos ?? []).join(", ") || "não informado"],
             ["Usado nas páginas", d.paginas.map((p) => p.rotulo).join(", ") + ((e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : "")],
-            ["Última captura", f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura"],
+            ["Última captura", ultimaCaptura ? carimbo(ultimaCaptura) : "sem captura"],
+            ...(integr.length ? [["Atualidade e coleta (publicação de " + dataBR(pub!.referencia.hoje) + ")", <span key="a">{integr.map((c) => linhasIntegracao(c).join(" ")).join(" ")}</span>] as [string, React.ReactNode]] : []),
             ["Snapshot", f?.snapshot ?? "–"],
             ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "–"}</span>],
             ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}` : "não registrada nesta publicação"],

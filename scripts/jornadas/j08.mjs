@@ -118,10 +118,17 @@ export default {
 
     const vazio = (v) => v === null || (Array.isArray(v) && v.length === 0);
     const descreve = (r) => {
-      const voltou = r.iguais.filter((k) => !r.vazias.includes(k)).map(nome);
+      const voltou = r.iguais.filter((x) => !r.vazias.includes(x)).map(nome);
+      const curto = (t) => String(t).slice(0, 42);
       const nao = r.diferentes.map((d) => {
-        const cortar = (v) => JSON.stringify(v).slice(0, 55);
-        return `${nome(d.faceta)} (origem ${cortar(d.origem)}; link ${cortar(d.link)})`;
+        if (d.faceta === "selecionados") {
+          const soLink = d.link.filter((x) => !d.origem.includes(x)).map(curto);
+          const soOrigem = d.origem.filter((x) => !d.link.includes(x)).map(curto);
+          return `${nome(d.faceta)} (ligada só no link: ${soLink.join(", ") || "nenhuma"}; só na origem: ${soOrigem.join(", ") || "nenhuma"})`;
+        }
+        if (d.faceta === "desligados") return `${nome(d.faceta)} (desligada na origem: ${d.origem.map(curto).join(", ") || "nenhuma"}; no link: ${d.link.map(curto).join(", ") || "nenhuma"})`;
+        if (d.faceta === "zoomMapa") return `${nome(d.faceta)} (a origem estava aproximada; o link abre o mapa inteiro)`;
+        return nome(d.faceta);
       });
       return `voltaram: ${voltou.join(", ") || "nenhuma"}; não voltaram: ${nao.join("; ") || "nenhuma"}`;
     };

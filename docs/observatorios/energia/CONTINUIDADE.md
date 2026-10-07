@@ -85,7 +85,7 @@ Para retomar a Fase 2:
 
 1. Ler `FASE_1.md` (o que ficou de fora e as duas decisões pendentes com o responsável: coleta da CCEE e revisão das interfaces de PLD e Previsões).
 2. Fluxos de módulos: o script está em `~/.claude/projects/.../workflows/scripts/modulos-energia-wf_d8ec3241-4c4.js` da sessão original; numa sessão nova, refazer a partir dos documentos de cada módulo em `modulos/*.md`, que registram fontes, método, estado e pedidos ao integrador.
-3. Pendências conhecidas: P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070), avaliação (P071), 120 datas cruas em textos de módulos, páginas acima de 600 KB sem compressão (Geração, Território, Qualidade).
+3. Pendências conhecidas: P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070; entregue em 07/10/2026), avaliação (P071; entregue em 07/10/2026), 120 datas cruas em textos de módulos, páginas acima de 600 KB sem compressão (Geração, Território, Qualidade).
 
 ## 06/10/2026: Fase 2, Visão geral nova em produção
 
@@ -138,11 +138,24 @@ Para retomar a Fase 2:
 * Verificação: build sem erro; 32 combinações de página, largura (360, 390, 768, 1440 px) e modo (Entender e Auditar) sem violação axe e sem rolagem horizontal; ficha do catálogo, tabela da CCEE sob demanda, filtros na URL, calendário, conferência de arquivo (arquivo publicado, o mesmo alterado em um byte e um arquivo qualquer) e ficha de regra conferidos em navegador; `src/tests/energia-dados-interface.test.ts` (35). Vitest com a única falha pré-existente (datas cruas em Água e clima, chuva e temperatura); testes Python com a única falha pré-existente do bronze parcial da Carga.
 * Estado: P067 a P070 concluídos com limitação declarada; revisão adversarial da interface pendente. Método e interface em `modulos/dados.md`, seção 7.
 
+### Entregue: Avaliação dos painéis (P071)
+
+* **Instrumento** (`scripts/energia-avaliacao.mjs`): abre cada rota em Chromium nas larguras de 360, 390, 768 e 1440 px, nos modos Entender (todas as larguras) e Auditar (390 e 1440 px), e mede resposta, console, rede, axe-core (WCAG 2.0, 2.1 e 2.2, A e AA), rolagem horizontal (por `clientWidth`, porque a emulação de celular esconde o estouro em `innerWidth`), teclado, alvos de toque, controles exercitados (rádios, abas, ordenação, filtros), ficha de prova, link copiável, links e âncoras, peso e anatomia do painel. Capturas de tela com hash; 188 capturas da primeira dobra (WebP, 3,9 MB) versionadas.
+* **Dez jornadas** da seção 15.2 (`scripts/energia-jornadas.mjs`, `scripts/jornadas/j01.mjs` a `j10.mjs`): roteiro por script, cada passo verifica um fato observável. É execução de roteiro, não teste com pessoas.
+* **Revisão de didatismo e qualidade visual**: nove revisores em contexto limpo (agentes de IA, sem acesso ao código) sobre as 94 páginas, com texto e capturas. Também não é teste com pessoas.
+* **Rubrica e gold** (`scripts/energia_avaliacao.py` e `energia_avaliacao_testes.py`): nota da dimensão = menor teto menos deduções, truncada em uma casa; "não avaliada" não satisfaz o aceite e "não aplicável" sai da média. A gold `avaliacao.json` entra em `publicacao.json` e no manifesto (270 arquivos). Documentos `AVALIACAO_PAGINAS.md` e `EVIDENCIAS_ACEITE.md` são gerados, nunca editados à mão.
+* **Página** `/setor-eletrico/metodologia/avaliacao` (Entender, Analisar e Auditar): nota de cada página com a evidência, defeitos agrupados, jornadas (passos lidos sob demanda), revisão, evolução entre rodadas, rubrica e método. HTML de 579 KB; axe sem violação e sem rolagem horizontal em 12 combinações (360, 390, 768 e 1440 px; os três modos).
+* **Resultado** (rodada `2026-10-07-r2`, inspeção de 07/10/2026, dados de referência de 01/10/2026): 94 páginas, nota ponderada média 7,9, **nenhuma página na meta de produto**, nenhum defeito crítico (9 altos, 73 médios, 12 baixos), dez jornadas cumpridas. Didatismo 6,8 e qualidade visual 6,9, contra metas de 9,5. Na rodada de base (r1, sem revisão visual e didática, 89 páginas) a média era 8,3; nas oito dimensões comuns a evolução é de décimos. Foram corrigidos 21 defeitos entre as rodadas.
+* **Defeitos encontrados e corrigidos durante a avaliação**: coluna fixa das tabelas interativas cobrindo o cabeçalho das demais colunas em 390 px (corrigida depois da medição, ver `posteriores.json`), sinal de percentual repetido nos cartões de perdas (`unidadeDestaque`), faixa do Território que estourava a largura no celular, ficha completa de conjunto atrasado sem a atualidade, favicon ausente, link de Perdas, Qualidade e Conta de luz da ficha da distribuidora só em Auditar, texto espremido em Minha região no celular e datas ISO na ficha de prova (`PainelEvidencia`).
+* **Verificação**: `next build` sem erro; tsc e `next lint` sem aviso; Vitest com 2.638 testes (138 arquivos) e uma falha pré-existente (`energia-reauditoria`, datas cruas em 19 páginas construídas: a última a aparecer é `carga/clima-e-calendario`); Python com 1.356 testes (mais 4 ignorados) e uma falha pré-existente (`test_energia_carga`, bronze parcial local).
+* Estado: P071 concluído com limitação declarada. Método e comandos em `modulos/dados.md`, seção 8.
+
 ### Próximos passos da Fase 2
 
-1. Avaliação dos painéis (P071).
-2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral, o Mercado, a Geração P023 e P024, o Aprenda e Dados e metodologia), quando autorizada.
-3. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
-4. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração P021 com 1 MB e P022 com 623 KB, Território, Qualidade).
-5. Mercado: verbete GSF com as Regras de Comercialização da CCEE (fora do escopo autorizado de coleta); planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023. Aprenda: REE e constrained-off com os Procedimentos de Rede e a regulamentação da ANEEL.
-
+1. **Rodada de correção da avaliação** (maior retorno em nota): pergunta como título nos 45 painéis sem ela; rolagem horizontal em 23 páginas (19 a 360 px); alvos de toque menores que 24 px em 67 páginas a 390 px; tabelas cortadas sem indício de rolagem; jargão interno exposto em Entender; rodapé "Dados processados em 29/09/2026" lido de `meta.json` de execução anterior e texto de fontes que cita só CCEE e ONS; subnavegação cortada a 390 px; rótulos repetidos ou truncados em gráficos; 12 páginas sem data de referência; três CSV com checagem reprovada em `publicacao.json`; atritos de jornada em `avaliacao/atritos.json`. Depois, rodada `r3` com o mesmo instrumento e comparação por dimensão.
+2. **Revisão com pessoas**: a revisão atual é de agentes e as jornadas são roteiro; sem teste com pessoas e sem leitor de tela real, acessibilidade e desempenho têm teto de 9,0.
+3. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral, o Mercado, a Geração P023 e P024, o Aprenda e Dados e metodologia), quando autorizada.
+4. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
+5. Datas cruas nos textos dos módulos (19 páginas construídas ainda com data ISO no HTML estático) e páginas acima de 600 KB (Geração P021 com 1 MB e P022 com 623 KB, Território, Qualidade).
+6. Colocar a própria página de avaliação entre as páginas medidas na próxima rodada.
+7. Mercado: verbete GSF com as Regras de Comercialização da CCEE (fora do escopo autorizado de coleta); planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023. Aprenda: REE e constrained-off com os Procedimentos de Rede e a regulamentação da ANEEL.

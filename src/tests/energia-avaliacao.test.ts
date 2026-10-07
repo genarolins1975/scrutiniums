@@ -201,6 +201,15 @@ describe.skipIf(!a)("gold avaliacao.json", () => {
     expect(r).toContain(a.rodada.id);
   });
 
+  it("a revisão publica o método, os nove revisores e os problemas transversais; a correção posterior fica declarada", () => {
+    expect(a.revisao.revisores.length).toBeGreaterThan(0);
+    expect(a.revisao.revisores.reduce((s, r) => s + r.paginas, 0)).toBeGreaterThanOrEqual(a.paginas.filter((p) => p.dimensoes.didatismo.estado === "avaliada").length);
+    for (const r of a.revisao.revisores) expect(a.revisao.problemas_entre_paginas[r.id]?.length, r.id).toBeGreaterThan(0);
+    expect(a.revisao.metodo).toMatch(/não é teste com pessoas/);
+    expect(Array.isArray(a.rodada.corrigido_depois_da_medicao)).toBe(true);
+    expect(JSON.stringify(a.revisao)).not.toMatch(TRAVESSAO);
+  });
+
   it("a rodada anterior fica resumida e a evolução só é afirmada quando existe rodada anterior", () => {
     expect(a.rodadas.length).toBeGreaterThan(0);
     expect(a.rodadas[a.rodadas.length - 1].id).toBe(a.rodada.id);
@@ -272,7 +281,11 @@ describe.skipIf(!a)("página /setor-eletrico/metodologia/avaliacao", () => {
     const t = textoDe(html);
     expect(t).not.toMatch(DATA_CRUA);
     expect(t).not.toMatch(TRAVESSAO);
-    expect(t).not.toMatch(/\bhoje\b/i);
+    // "hoje" é vetado na fala da própria página (resposta, destaques, dimensões e páginas). Defeitos, jornadas e rubrica citam o texto
+    // observado ou nomeiam a regra ("frase com número e a palavra hoje"), e por isso ficam fora desta conferência.
+    const corte = html.indexOf('id="defeitos"');
+    expect(corte).toBeGreaterThan(0);
+    expect(textoDe(html.slice(0, corte))).not.toMatch(/\bhoje\b/i);
     expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(600 * 1024);
   });
 
@@ -280,6 +293,13 @@ describe.skipIf(!a)("página /setor-eletrico/metodologia/avaliacao", () => {
     const t = textoDe(html).replace(/\s+/g, " ");
     expect(t).toContain(`${a.resumo.paginas.toLocaleString("pt-BR")} páginas`);
     expect(t).toContain(String(a.resumo.defeitos.abertos));
+  });
+
+  it("a página mostra os problemas dos revisores e o que foi corrigido depois da medição", () => {
+    const t = textoDe(html);
+    expect(t).toContain("Problemas que os revisores viram em várias páginas");
+    expect(html).toContain('data-lista="revisao"');
+    for (const c of a.rodada.corrigido_depois_da_medicao) expect(t.replace(/\s+/g, " ")).toContain(c.slice(0, 60));
   });
 
   it("a rubrica completa está no modo Auditar", () => {

@@ -156,7 +156,7 @@ export default {
       j.afirmar(Number(m[1]) === g.total, `a página diz ${g.total} registros em cima e ${m[1]} no painel`);
       g.arq = { total: Number(m[1]), rodadas: Number(m[2]), atraso27: m[3], motivo27: m[4], transcrita: m[5], atraso30: m[6], numeros30: Number(m[7]), primeira: m[8], termina: m[9] };
       const sub = normaliza(await p.getByText(/Arquivo imutável de emissões/).first().innerText());
-      return `painel #p015 a ${topo} px do topo; ${m[1]} registros de ${m[2]} rodadas; rodada de 27/09: sem número, motivo "${m[4]}", emitida ${m[3]} min depois do prazo, transcrita em ${m[5]}; rodada de 30/09: ${m[7]} números, emitida ${m[6]} min depois do prazo; nenhuma entrega terminou, a primeira (${m[8]}) termina em ${m[9]}; subtítulo "${sub.slice(0, 60)}"`;
+      return `painel #p015 a ${topo} px do topo; ${m[1]} registros de ${m[2]} rodadas; rodada de 27/09: sem número, motivo "${m[4]}", emitida ${m[3]} min depois do prazo, transcrita em ${m[5]}; rodada de 30/09: ${m[7]} números, emitida ${m[6]} min depois do prazo; nenhuma entrega terminou, a primeira (${m[8]}) termina em ${m[9]}; subtítulo "${sub.slice(0, 50)}"`;
     });
 
     await j.passo("Escolhe a rodada de 27/09/2026 no gráfico e lê as linhas: sem número, motivo e sem realizado", async () => {
@@ -198,7 +198,7 @@ export default {
       j.afirmar(/CORREÇÃO registro original \(não substitui outro\)/.test(t), "a ficha não diz que é registro original");
       const sha = (t.match(/SHA256 ([0-9a-f]{64})/) || [])[1];
       j.afirmar(sha, "sha256 não lido na ficha");
-      return `${j.url().replace(/^.*\?/, "?")}; ficha "Registro W1 SE/CO da rodada de 27/09/2026": PREVISÃO "sem número: nenhum PLD do período exigido havia sido capturado até o corte"; REALIZADO "ainda sem realizado (a entrega não terminou)"; INCLUSÃO "28/09/2026; transcrito depois da emissão: sim"; CORREÇÃO "registro original (não substitui outro)"; sha256 ${sha.slice(0, 12)}...`;
+      return `reg=...:W1:SE na URL; ficha "Registro W1 SE/CO da rodada de 27/09/2026": PREVISÃO "sem número: nenhum PLD do período exigido havia sido capturado até o corte"; REALIZADO "ainda sem realizado (a entrega não terminou)"; INCLUSÃO "28/09/2026; transcrito depois da emissão: sim"; CORREÇÃO "registro original (não substitui outro)"; sha256 ${sha.slice(0, 12)}...`;
     });
 
     await j.passo("Escolhe a rodada de 30/09/2026 no gráfico e lê as linhas: com número, sem faixa e sem realizado", async () => {

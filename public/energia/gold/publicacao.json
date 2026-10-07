@@ -15478,10 +15478,16 @@
   "limitacao_natureza": "A seção 11.3 separa 'estimado pela fonte' de 'estimado pelo observatório'. O contrato de proveniência compartilhado (pipeline/energia/gold/comum.py, NATUREZAS) tem uma só categoria ESTIMADO, e nenhuma proveniência diz qual dos dois é: o eixo publica ESTIMADO sem a separação, e a mudança está pedida ao integrador (pedido 8 do documento do módulo)."
  },
  "avaliacao": {
-  "arquivo": null,
+  "arquivo": "/energia/gold/avaliacao.json",
   "caminho_previsto": "public/energia/gold/avaliacao.json",
-  "existe": false,
-  "nota": "A avaliação dos painéis (P071) só existe depois da inspeção final; enquanto o arquivo não existir, a página declara a ausência e não exibe nota."
+  "existe": true,
+  "rodada": {
+   "id": "2026-10-07-r2",
+   "data_inspecao": "2026-10-07",
+   "paginas": 94,
+   "nota_ponderada_media": 7.9
+  },
+  "nota": "Avaliação publicada: nota só com medição, teste ou revisão registrada; dimensão sem teste aparece como não avaliada. A página /setor-eletrico/metodologia/avaliacao mostra a evidência de cada nota."
  },
  "reproducao": {
   "repositorio": "https://github.com/genarolins1975/scrutiniums",

@@ -1,4 +1,5 @@
 import { dataBR, num, plural } from "./formato";
+import { datasLegiveis } from "./visao";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type {
   AvaliacaoGold,
@@ -22,6 +23,9 @@ import type {
  * Linguagem: a revisão visual e didática é de revisores em contexto limpo (agentes), e as
  * jornadas são roteiros executados por script. Nada aqui chama isso de teste com usuários.
  */
+
+/** Texto observado da interface citado numa observação: data legível, e o traço usado como célula vazia vira a palavra. */
+export const textoCitado = (t: string): string => datasLegiveis(t).replace(/[\u2013\u2014]/g, "traço");
 
 export const URL_AVALIACAO = "/energia/gold/avaliacao.json";
 
@@ -198,7 +202,7 @@ export function linhasDefeitos(defeitos: DefeitoAvaliacao[]): LinhaTabela[] {
     id: d.id,
     severidade: ROTULO_SEVERIDADE[d.severidade],
     dimensao: ROTULO_DIMENSAO_DEFEITO[d.dimensao] ?? d.dimensao,
-    descricao: d.descricao,
+    descricao: datasLegiveis(d.descricao),
     n_paginas: d.n_paginas,
     exemplo: d.paginas[0] ?? "",
   }));

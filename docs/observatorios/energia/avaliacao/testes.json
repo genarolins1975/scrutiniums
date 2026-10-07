@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-07T10:19:18Z",
+ "gerado_em": "2026-10-07T12:22:55Z",
  "vitest": {
   "admin": {
    "total": 11,
@@ -110,7 +110,7 @@
    "falhas": 0
   },
   "energia-avaliacao": {
-   "total": 25,
+   "total": 27,
    "falhas": 0
   },
   "energia-carga": {
@@ -162,8 +162,8 @@
    "falhas": 0
   },
   "energia-comp-integracao": {
-   "total": 307,
-   "falhas": 1
+   "total": 309,
+   "falhas": 0
   },
   "energia-comp-linha-do-tempo": {
    "total": 14,
@@ -566,14 +566,14 @@
    "ignorados": 0
   },
   "test_energia_agua": {
-   "total": 75,
+   "total": 83,
    "falhas": 0,
    "ignorados": 0
   },
   "test_energia_avaliacao": {
-   "total": 37,
+   "total": 49,
    "falhas": 0,
-   "ignorados": 9
+   "ignorados": 0
   },
   "test_energia_carga": {
    "total": 58,
@@ -591,9 +591,9 @@
    "ignorados": 0
   },
   "test_energia_empresas": {
-   "total": 72,
+   "total": 74,
    "falhas": 0,
-   "ignorados": 0
+   "ignorados": 1
   },
   "test_energia_evidencia": {
    "total": 20,
@@ -601,7 +601,7 @@
    "ignorados": 0
   },
   "test_energia_expansao": {
-   "total": 45,
+   "total": 46,
    "falhas": 0,
    "ignorados": 0
   },
@@ -626,7 +626,7 @@
    "ignorados": 0
   },
   "test_energia_mercado": {
-   "total": 52,
+   "total": 65,
    "falhas": 0,
    "ignorados": 0
   },
@@ -636,14 +636,14 @@
    "ignorados": 0
   },
   "test_energia_pld": {
-   "total": 48,
+   "total": 86,
    "falhas": 0,
    "ignorados": 0
   },
   "test_energia_previsoes": {
-   "total": 44,
+   "total": 59,
    "falhas": 0,
-   "ignorados": 2
+   "ignorados": 3
   },
   "test_energia_qualidade": {
    "total": 66,
@@ -666,12 +666,12 @@
    "ignorados": 0
   },
   "test_energia_transicao": {
-   "total": 42,
+   "total": 74,
    "falhas": 0,
    "ignorados": 0
   },
   "test_energia_visao": {
-   "total": 67,
+   "total": 68,
    "falhas": 0,
    "ignorados": 0
   },
@@ -692,14 +692,14 @@
   "agua-e-clima": 2,
   "carga": 3,
   "rede": 0,
-  "pld": 7,
+  "pld": 10,
   "geracao": 1,
-  "mercado": 1,
+  "mercado": 2,
   "conta-de-luz": 1,
   "perdas": 0,
   "qualidade": 2,
   "inclusao-energetica": 1,
-  "transicao": 2,
+  "transicao": 4,
   "empresas": 1,
   "expansao": 1,
   "regulacao": 3,
@@ -708,7 +708,6 @@
   "dados": 7
  },
  "vitest_falhas": [
-  "energia-comp-integracao: módulos 'use client' exportam só componentes, hooks e tipos AvaliacaoPaginas.tsx",
   "energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)"
  ],
  "python_falhas": [
@@ -721,6 +720,6 @@
   "ok": true,
   "saida": "✔ No ESLint warnings or errors"
  },
- "resumo_regressao": "Vitest: 2634 testes em 138 arquivos, 2 falhas (energia-comp-integracao: módulos 'use client' exportam só componentes, hooks e tipos AvaliacaoPaginas.tsx; energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1234 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
- "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; build não executado nesta rodada. Vitest: 2634 testes em 138 arquivos, 2 falhas (energia-comp-integracao: módulos 'use client' exportam só componentes, hooks e tipos AvaliacaoPaginas.tsx; energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1234 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+ "resumo_regressao": "Vitest: 2638 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1356 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2638 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1356 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
 }

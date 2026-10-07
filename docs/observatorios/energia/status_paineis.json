@@ -299,7 +299,8 @@
   },
   "P071": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Avaliação dos painéis publicada em 07/10/2026: rubrica de dez dimensões com peso (seção 15.1), instrumento de inspeção em Chromium (360, 390, 768 e 1440 px; Entender e Auditar; axe, rolagem, teclado, alvos de toque, controles, ficha de prova, links, peso e anatomia), dez jornadas da seção 15.2 por roteiro, revisão de didatismo e qualidade visual por nove revisores em contexto limpo, duas rodadas medidas sobre 94 de 368 rotas (r1 de base com 89 páginas, r2 final com 94). Resultado da r2 (inspeção de 07/10/2026, dados de referência de 01/10/2026): nota ponderada média 7,9, nenhuma página na meta de produto, nenhum defeito crítico (9 altos, 73 médios, 12 baixos), dez jornadas cumpridas, didatismo 6,8 e qualidade visual 6,9; 21 defeitos corrigidos desde a base. gold avaliacao.json integrada ao publicacao.json e ao manifesto; página /setor-eletrico/metodologia/avaliacao (HTML de 579 KB; axe sem violações e sem rolagem horizontal em 12 combinações); AVALIACAO_PAGINAS.md e EVIDENCIAS_ACEITE.md gerados; testes em pipeline/tests/test_energia_avaliacao.py (49) e src/tests/energia-avaliacao.test.ts (27). Limitação declarada: revisão e jornadas não são teste com pessoas; sem leitor de tela real nem dado de campo (teto de 9,0 em acessibilidade e desempenho); famílias dinâmicas amostradas; a própria página de avaliação não está entre as medidas; a correção da coluna fixa das tabelas entrou depois da medição."
   }
  }
 }

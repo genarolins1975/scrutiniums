@@ -12,8 +12,7 @@ Entra na Fase 1 a página que (1) tem gold publicada com proveniência, (2) comp
 | --- | --- | --- |
 | Ciclo completo (dados, verificação adversarial, correção, interface e revisão) | P017 a P020, P025 a P027, P044 a P046, P047 a P050, P051 a P054, P055 a P058, P059 a P062 | 26 |
 | Publicado na Fase 1, revisão adversarial da interface pendente | P001, P002, P003, P008 a P016, P021, P022, P028 a P031, P036 a P039, P040 a P043, P063, P064 | 28 |
-| Publicado na Fase 2 entre 06 e 07/10/2026, revisão adversarial da interface pendente | P004 a P007, P023, P024, P032 a P035, P065 a P070 | 16 |
-| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P071 | 1 |
+| Publicado na Fase 2 entre 06 e 07/10/2026, revisão adversarial da interface pendente | P004 a P007, P023, P024, P032 a P035, P065 a P071 | 17 |
 
 Dentro do ciclo completo, três painéis têm limitação declarada na própria página: P050 (efeito médio dos reajustes: documentos da ANEEL atrás de desafio anti-robô), P057 (referência regulatória das perdas não técnicas) e P058 (custo total das perdas).
 
@@ -35,7 +34,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 | Aprenda (P065, P066) | **publicados em 06/10/2026**: 48 verbetes (45 conferidos; ACR, ACL, garantia física e ESS conferidos no Decreto nº 5.163/2004) com unidade, exemplo ligado ao painel, "não confundir com" e datas; duas trilhas (água → operação → preço e custo → tarifa → orçamento) com relações tipificadas, número real por passo, exemplo sintético rotulado e volta do painel ao contexto; ambos concluídos com limitação (GSF, REE e constrained-off em preparação) | `src/app/setor-eletrico/aprenda/`; método em `modulos/aprenda.md`; estado em `CONTINUIDADE.md` |
 | Dados e metodologia (P067 a P070) | **publicados em 07/10/2026**: catálogo com a escada do catalogado ao publicado e o recurso a recurso da CCEE; saúde das fontes com calendário e revisões; manifesto com sha256 de cada arquivo e conferência no navegador; regras por indicador (276) e afirmações conferidas com o catálogo. Sobre as golds de 01/10/2026; os quatro concluídos com limitação | `src/app/setor-eletrico/dados/` e `metodologia/`; método e interface em `modulos/dados.md`, seção 7; estado em `CONTINUIDADE.md` |
 | Dados e metodologia novos (P067 a P070) | `publicacao.json`, catálogo e manifesto prontos; interface nova interrompida | páginas de produção com ajustes mínimos |
-| Avaliação dos painéis (P071) | não iniciada | |
+| Avaliação dos painéis (P071) | **publicada em 07/10/2026**: rubrica de dez dimensões, duas rodadas medidas sobre 94 páginas (de 368 rotas; famílias dinâmicas amostradas), dez jornadas por roteiro, revisão de didatismo e visual por nove revisores em contexto limpo, `avaliacao.json`, página `/setor-eletrico/metodologia/avaliacao` e os documentos `AVALIACAO_PAGINAS.md` e `EVIDENCIAS_ACEITE.md`. Resultado: nota ponderada média 7,9, nenhuma página na meta, nenhum defeito crítico; concluído com limitação | `modulos/dados.md`, seção 8; instrumento em `scripts/energia-avaliacao.mjs` e `scripts/energia-jornadas.mjs`; estado em `CONTINUIDADE.md` |
 | Revisão adversarial das interfaces de PLD e Previsões | não autorizada nesta sessão (permissão negada) | pendente de autorização |
 | Datas cruas no texto (AAAA-MM-DD) | 120 ocorrências em 23 páginas, em textos gerados pelos módulos (Regulação, Finanças, Território, Carga, PLD) e rótulos de planilha da fonte; formatação, não dado errado. O teste `energia-reauditoria` ("páginas pré-renderizadas…") acusa isso quando há build local; o CI não constrói e não o executa | correção nos geradores de cada módulo |
 

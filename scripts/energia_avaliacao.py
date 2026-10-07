@@ -69,7 +69,7 @@ DIMENSOES = [
     {"id": "interatividade", "nome": "Interatividade", "peso": 8, "fonte_da_nota": "medicao",
      "evidencia": "Controles funcionais e coerência das seleções",
      "regras": ["Parte do teto aplicável (10 sem teto) sobre os controles visíveis acionados em 390 e 1440 px (até 18 por largura): rádios, abas, botões de estado, resumos, caixas, seletores e cabeçalhos de ordenação, mais a ficha Comprove este número, o link copiável e o seletor de profundidade.",
-                "Controle que não aciona tira 1,5 (até 6,0); controle sem efeito observável (URL, conteúdo ou resumo aberto) tira 0,5 (até 2,0); erro de console depois da ação tira 3,0 por controle (até 6,0); rolagem horizontal depois da ação tira 1,0 por controle (até 2,0).",
+                "Controle que não aciona tira 1,5 (até 6,0); controle intermitente (aciona com a página recarregada, mas não depois da sequência de ações) tira 0,5 (até 2,0); controle sem efeito observável (URL, conteúdo ou resumo aberto) tira 0,5 (até 2,0); erro de console depois da ação tira 3,0 por controle (até 6,0); rolagem horizontal depois da ação tira 1,0 por controle (até 2,0).",
                 "Ficha Comprove que não abre, não traz sha256, fonte e reprodução, ou não fecha com Esc tira 2,0 por falha (até 4,0); link copiável sem mensagem nem campo tira 2,0; seletor de profundidade incoerente tira 2,0.",
                 "Página sem nenhum controle acionável fica não aplicável nesta dimensão e sai do cálculo ponderado."],
      "tetos": []},
@@ -82,7 +82,7 @@ DIMENSOES = [
     {"id": "completude", "nome": "Completude", "peso": 12, "fonte_da_nota": "medicao",
      "evidencia": "Todos os itens e recortes obrigatórios com conteúdo válido",
      "regras": ["Painéis numéricos (seção 7.2): nota igual a 10 vezes a média de dez itens, cada um de 0 a 1: pergunta como título, resposta curta, período e universo e unidade, gráfico ou mapa, tabela equivalente, interação local, como ler e o que não permite concluir, Comprove este número, download e link compartilhável, próxima pergunta.",
-                "Páginas editoriais, fichas e navegação (a seção 7.2 manda não aplicar o molde): nota igual a 10 vezes a média de sete itens: h1 único com abertura, fonte ou data declarada, limite de leitura declarado, caminho seguinte, evidência ou fonte oficial, conteúdo sem NaN nem data crua nem marcador de obra, equivalente textual para figuras.",
+                "Páginas editoriais, fichas e navegação (a seção 7.2 manda não aplicar o molde): nota igual a 10 vezes a média de sete itens: h1 único com abertura, fonte ou data declarada, limite de leitura declarado, caminho seguinte, evidência ou fonte oficial, conteúdo sem valor de reserva nem data crua nem marcador de obra, equivalente textual para figuras.",
                 "A presença é medida no modo com mais conteúdo (Auditar, 1440 px) e no Entender."],
      "tetos": []},
     {"id": "correcao", "nome": "Correção técnica e metodológica", "peso": 15, "fonte_da_nota": "evidencia_gold",
@@ -362,8 +362,6 @@ def d_didatismo_visual(chave, ctx):
     if chave == "visual" and any(m.get("rolagem_horizontal") for m in ctx["medicoes"]):
         n.teto(6.0, "rolagem horizontal da página em alguma largura medida")
         n.defeito("rolagem_horizontal", "alto", "rolagem horizontal da página")
-    for d in rev.get("defeitos", []):
-        n.defeito("revisao", "medio", d)
     r = n.resultado()
     r["revisor"] = rev.get("revisor")
     return r
@@ -435,6 +433,7 @@ def d_interatividade(ctx):
         return nao_avaliada("controles não medidos")
     n = Nota()
     falhas = Counter()
+    intermitentes = Counter()
     sem_efeito = Counter()
     erros = Counter()
     rolagem = Counter()
@@ -446,6 +445,8 @@ def d_interatividade(ctx):
             chave = f"{d.get('grupo') or ''}|{d.get('rotulo') or ''}"
             if not d.get("ok"):
                 falhas[chave] += 1
+            elif d.get("intermitente"):
+                intermitentes[chave] += 1
             elif not d.get("mudou_url") and not d.get("mudou_dom"):
                 sem_efeito[chave] += 1
             if d.get("ok") and d.get("erros_depois"):
@@ -458,8 +459,11 @@ def d_interatividade(ctx):
     total = len(cl) + len(cp) + len(md) + exercitados
     if total == 0:
         return nao_aplicavel("a página não tem controle acionável além da navegação")
-    n.evid(f"{exercitados} acionamentos de controles do conteúdo em {len(ms)} medições; {len(falhas)} controles que não acionaram, {len(sem_efeito)} sem efeito observável, {len(erros)} com erro de console depois")
+    n.evid(f"{exercitados} acionamentos de controles do conteúdo em {len(ms)} medições; {len(falhas)} controles que não acionaram, {len(intermitentes)} intermitentes, {len(sem_efeito)} sem efeito observável, {len(erros)} com erro de console depois")
     deduz_limitado(n, 1.5, len(falhas), f"{len(falhas)} controle(s) que não aciona(m)", 6.0)
+    deduz_limitado(n, 0.5, len(intermitentes), f"{len(intermitentes)} controle(s) que só aciona(m) com a página recarregada (intermitente)", 2.0)
+    for k in list(intermitentes)[:5]:
+        n.defeito("controle_intermitente", "baixo", f"controle aciona sozinho, mas não depois de uma sequência de ações: {k}")
     deduz_limitado(n, 0.5, len(sem_efeito), f"{len(sem_efeito)} controle(s) sem efeito observável", 2.0)
     deduz_limitado(n, 3.0, len(erros), f"{len(erros)} controle(s) com erro de console depois da ação", 6.0)
     deduz_limitado(n, 1.0, len(rolagem), f"{len(rolagem)} controle(s) que causam rolagem horizontal", 2.0)
@@ -543,7 +547,7 @@ ITENS_PAINEL = [
 ]
 ITENS_EDITORIAL = [
     ("h1", "h1 único com abertura"), ("fonte", "fonte ou data declarada"), ("limite", "limite de leitura declarado"),
-    ("seguinte", "caminho seguinte"), ("evidencia", "evidência ou fonte oficial"), ("conteudo", "conteúdo sem NaN, data crua ou marcador de obra"),
+    ("seguinte", "caminho seguinte"), ("evidencia", "evidência ou fonte oficial"), ("conteudo", "conteúdo sem valor de reserva, data crua ou marcador de obra"),
     ("equivalente", "equivalente textual para as figuras"),
 ]
 
@@ -555,7 +559,7 @@ def d_completude(ctx):
     comp = [m for m in ms if m.get("marcadores")]
     mx = lambda f: maximo(comp, f)
     n = Nota()
-    for chave, sev, texto in (("datas_cruas", "medio", "data em formato cru no texto"), ("nan_undefined", "alto", "valor de reserva (NaN, undefined) no texto"),
+    for chave, sev, texto in (("datas_cruas", "medio", "data em formato cru no texto"), ("nan_undefined", "alto", "valor de reserva (número inválido ou a palavra undefined) no texto"),
                               ("marcador_de_obra", "medio", "marcador de obra no texto"), ("unidade_duplicada", "medio", "unidade repetida no texto")):
         achados = sorted({x for m in comp if m.get("anomalias") for x in m["anomalias"].get(chave, [])})
         if achados:
@@ -697,7 +701,10 @@ def d_rastreabilidade(ctx):
         if not mx(lambda m: m["marcadores"]["baixar"]):
             n.deduz(1.0, "painel sem download")
             n.defeito("sem_download", "medio", "painel sem download")
-    cp = [m["comprove"] for m in ms if m.get("comprove", {}).get("botoes")]
+    cp_todos = [m["comprove"] for m in ms if m.get("comprove", {}).get("botoes")]
+    cp = [x for x in cp_todos if x.get("aberta")]
+    if cp_todos and not cp:
+        n.evid("a ficha Comprove não abriu em nenhuma medição, e por isso seu conteúdo não foi avaliado (ver Interatividade)")
     if cp:
         sem_sha = sum(1 for x in cp if not x.get("sha256"))
         sem_fonte = sum(1 for x in cp if not x.get("fonte"))
@@ -846,10 +853,11 @@ def resumo_golds(g, golds):
     return r
 
 
-def conjuntos_da_pagina(g, golds):
+def conjuntos_da_pagina(g, golds, slug_conjunto=None):
     out = []
     for c in g["conjuntos"]:
-        if set(c["golds"]) & set(golds):
+        casa = (c.get("slug") == slug_conjunto) if slug_conjunto else bool(set(c["golds"]) & set(golds))
+        if casa:
             at = c.get("atualidade", {})
             out.append({"id": c["id"], "situacao": at.get("situacao") or "SEM SLA", "dias_atraso": at.get("dias_atraso") or 0,
                         "falha_recente": (c.get("coleta", {}).get("falhas_consecutivas") or 0) > 0,
@@ -880,6 +888,11 @@ def monta(args):
         j["atritos"] = c.get("atritos", [])
         j["defeitos"] = c.get("defeitos", [])
     revisao = lj(os.path.join(ENT, "revisao_visual.json"), {"paginas": {}})
+    posteriores = lj(os.path.join(ENT, "posteriores.json"), [])
+    if getattr(args, "sem_revisao", False):
+        # a rodada de base (antes das correções) não teve revisão visual e didática: as dimensões ficam não avaliadas
+        revisao = {"paginas": {}, "revisores": [], "problemas_entre_paginas": {}}
+        posteriores = []
     testes = lj(os.path.join(ENT, "testes.json"), {"vitest": {}, "python": {}})
     historico = lj(os.path.join(ENT, "rodadas.json"), {"rodadas": []})
     g = carrega_evidencia_golds()
@@ -908,7 +921,8 @@ def monta(args):
             "titulo": titulo_doc, "titulo_repetido": bool(titulo_doc) and titulos[titulo_doc] > 1,
             "revisao": (revisao.get("paginas", {}).get(rota) or {}),
             "jornadas_pagina": [{"id": j["id"], "resultado": j["resultado"]} for j in jorn if rota in j.get("paginas_visitadas", [])],
-            "evidencia_golds": resumo_golds(g, golds), "manifesto": g["manifesto"], "conjuntos": conjuntos_da_pagina(g, golds),
+            "evidencia_golds": resumo_golds(g, golds), "manifesto": g["manifesto"],
+            "conjuntos": conjuntos_da_pagina(g, golds, rota.rsplit("/", 1)[-1] if (tipo == "ficha" and rota.startswith(f"{PREFIXO}/dados/")) else None),
             "testes_modulo": testes_do_modulo(modulo, testes), "testes_falha": testes.get("falha_simulada", {}).get(modulo or "", 0),
             "doc_modulo": bool(MODULOS.get(modulo or "", {}).get("doc")) and os.path.exists(os.path.join(DOCS, "modulos", f"{MODULOS[modulo]['doc']}.md")),
             "verbete_conferido": ((max((m["marcadores"].get("conferido_fonte_primaria", 0) for m in ms if m.get("marcadores")), default=0) > 0) if any(m.get("marcadores") for m in ms) else None) if tipo == "verbete" else None,
@@ -929,7 +943,7 @@ def monta(args):
             "atualidade": d_atualidade(ctx), "desempenho": d_desempenho(ctx),
         }
         paginas.append({"rota": rota, "modulo": modulo, "tipo": tipo, "ctx": ctx, "dimensoes": dims})
-    return insp, jornadas, revisao, testes, historico, g, paginas
+    return insp, jornadas, revisao, testes, historico, g, paginas, posteriores
 
 
 def agrega(paginas):
@@ -1040,14 +1054,23 @@ def limites_da_avaliacao(insp):
         "As famílias dinâmicas (verbetes do Aprenda, fichas de conjuntos de Dados e fichas de empresas) foram amostradas (seis páginas de cada); a nota da família vale para a amostra, não para as demais páginas.",
         "Os limiares de desempenho e de alvo de toque e os pontos de cada dedução são decisão de revisão registrada na rubrica, não norma externa.",
         "A avaliação mede a página como publicada na rodada indicada; a data de referência dos dados é a da publicação das golds (01/10/2026).",
+        "A página de avaliação não está entre as 94 páginas medidas: ela nasce desta rodada e entra na próxima. O teto de correção por testes usa a execução do repositório de 07/10/2026 nas duas rodadas, de modo que a diferença de correção entre elas vem das medições e não de uma mudança no resultado dos testes.",
+        "Correções feitas depois da medição de uma rodada ficam em posteriores.json e na página como corrigidas depois da medição: valem como mudança de código, não como nota nova.",
     ]
 
 
 def monta_saida(args):
-    insp, jornadas, revisao, testes, historico, g, paginas = monta(args)
+    insp, jornadas, revisao, testes, historico, g, paginas, posteriores = monta(args)
     paginas = agrega(paginas)
     jorn = jornadas["jornadas"]
-    defeitos, corrigidos = agrega_defeitos(paginas, jorn, historico)
+    # a rodada anterior é a que vem antes da atual no histórico (a atual pode já estar registrada)
+    rodada_id_atual = args.rodada or (historico["rodadas"][-1]["id"] if historico["rodadas"] else None)
+    antes = []
+    for r_ in historico["rodadas"]:
+        if r_["id"] == rodada_id_atual:
+            break
+        antes.append(r_)
+    defeitos, corrigidos = agrega_defeitos(paginas, jorn, {"rodadas": antes})
     por_rota = defaultdict(list)
     for d in defeitos:
         for r in d["paginas"]:
@@ -1078,7 +1101,8 @@ def monta_saida(args):
         "rodada": {"id": rodada_id, "data_inspecao": data, "inspecao_gerada_em": insp.get("gerado_em"), "base": insp.get("base"),
                    "navegador": insp.get("navegador"), "larguras": insp.get("larguras"), "modos": insp.get("modos"),
                    "rotas_medidas": len(insp["rotas"]), "rotas_construidas": universo.get("total"),
-                   "familias": universo.get("familias"), "referencia_dos_dados": g["pub"]["referencia"].get("hoje")},
+                   "familias": universo.get("familias"), "referencia_dos_dados": g["pub"]["referencia"].get("hoje"),
+                   "corrigido_depois_da_medicao": posteriores},
         "metodo": {
             "resumo": "Cada página foi aberta em Chromium nas larguras de 360, 390, 768 e 1440 px nos modos Entender e Auditar (390 e 1440 px em Auditar). Foram medidos resposta, console, rede, axe-core, rolagem, teclado, alvos de toque, controles, ficha de prova, link copiável, links e âncoras, peso e anatomia. Dez jornadas de usuário foram executadas por roteiro. Revisores em contexto limpo leram o texto e abriram as capturas para dar nota de didatismo e de qualidade visual. A correção, a rastreabilidade e a atualidade usam as validações publicadas nas golds e os testes do repositório.",
             "scripts": ["scripts/energia-avaliacao.mjs", "scripts/energia-jornadas.mjs", "scripts/energia_avaliacao.py"],
@@ -1101,7 +1125,8 @@ def monta_saida(args):
         "jornadas": [{k: j.get(k) for k in ("id", "titulo", "perfil", "largura", "movel", "resultado", "passos_ok", "passos_total", "cliques", "duracao_ms", "erros_console", "paginas_visitadas", "passos", "atritos", "limite")} for j in jorn],
         "defeitos": [{k: d[k] for k in ("id", "severidade", "dimensao", "descricao", "n_paginas", "paginas", "estado", "chave")} for d in defeitos],
         "corrigidos": corrigidos,
-        "rodadas": historico["rodadas"],
+        "revisao": {"metodo": revisao.get("metodo"), "revisores": revisao.get("revisores", []), "problemas_entre_paginas": revisao.get("problemas_entre_paginas", {})},
+        "rodadas": antes + [r_ for r_ in historico["rodadas"] if r_["id"] == rodada_id_atual],
         "limites": limites_da_avaliacao(insp),
     }
     saida["proveniencia"] = {"avaliacao": proveniencia_avaliacao(saida)}
@@ -1176,6 +1201,15 @@ def evidencias_avaliacao(a):
         return sum(vs) / len(vs) if vs else None
 
     exata = media_exata(paginas)
+    publicadas = [Fraction(str(p["nota_ponderada"])) for p in paginas if p["nota_ponderada"] is not None]
+    media_publicadas = sum(publicadas) / len(publicadas) if publicadas else None
+    divergentes = 0
+    for p in paginas:
+        aval = [(PESOS[d], x["nota"]) for d, x in p["dimensoes"].items() if x["estado"] == "avaliada"]
+        if aval:
+            refeita = Fraction(sum(Fraction(w) * Fraction(str(n)) for w, n in aval), sum(w for w, _ in aval))
+            if math.floor(float(refeita) * 10 + 1e-9) / 10 != p["nota_ponderada"]:
+                divergentes += 1
     pub = a["resumo"]["nota_ponderada_media"]
     sem_evid = sum(1 for p in paginas for x in p["dimensoes"].values() if x["estado"] == "avaliada" and not x["evidencias"])
     acima_teto = sum(1 for p in paginas for x in p["dimensoes"].values() if x["estado"] == "avaliada" and x["tetos"] and x["nota"] > min(t["valor"] for t in x["tetos"]) + 1e-9)
@@ -1187,8 +1221,10 @@ def evidencias_avaliacao(a):
         formula="média das notas ponderadas de cada página; pesos da seção 15.1 (didatismo 15, qualidade visual 12, navegação 10, interatividade 8, acessibilidade 7, completude 12, correção 15, rastreabilidade 10, atualidade 6, desempenho 5)",
         cobertura=f"{len(paginas)} páginas; dimensão não avaliada ou não aplicável sai do denominador da página",
         tratamento_ausencia="dimensão sem teste ou revisão fica como não avaliada e não entra como zero",
-        testes=[ev.teste("média refeita com frações exatas", "aprovado" if exata is not None and math.floor(float(exata) * 10) / 10 == pub else "reprovado",
-                         f"média exata {float(exata):.4f} sobre as notas por dimensão publicadas; publicada {pt(pub)}" if exata is not None else "sem notas"),
+        testes=[ev.teste("média das notas das páginas refeita com frações exatas", "aprovado" if media_publicadas is not None and math.floor(float(media_publicadas) * 10 + 1e-9) / 10 == pub else "reprovado",
+                         f"média exata {float(media_publicadas):.4f} sobre as {len(publicadas)} notas ponderadas publicadas; publicada {pt(pub)}" if media_publicadas is not None else "sem notas"),
+                ev.teste("nota ponderada de cada página refeita das notas por dimensão", "aprovado" if divergentes == 0 else "reprovado",
+                         f"{divergentes} de {len(paginas)} páginas com nota ponderada diferente da refeita com frações exatas e os pesos da seção 15.1"),
                 ev.teste("toda nota avaliada tem evidência escrita", "aprovado" if sem_evid == 0 else "reprovado", f"{sem_evid} notas avaliadas sem evidência"),
                 ev.teste("nenhuma nota acima do seu teto", "aprovado" if acima_teto == 0 else "reprovado", f"{acima_teto} notas acima do teto aplicado")],
         download=dl, reproducao=repro, versao=versao, revisoes="Rodada nova substitui a anterior; a anterior fica resumida em rodadas.")
@@ -1253,6 +1289,7 @@ def main():
     ap.add_argument("--rotas-construidas")
     ap.add_argument("--registrar-rodada", action="store_true")
     ap.add_argument("--sem-publicacao", action="store_true", help="não atualiza publicacao.json nem o manifesto")
+    ap.add_argument("--sem-revisao", action="store_true", help="ignora a revisão visual e didática (rodada de base)")
     args = ap.parse_args()
     os.makedirs(ENT, exist_ok=True)
     if args.relatorio:

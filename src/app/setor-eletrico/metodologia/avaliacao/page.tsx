@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AvaliacaoPaginas } from "@/components/energia/AvaliacaoPaginas";
-import { AvaliacaoEvolucao, AvaliacaoJornadas, AvaliacaoMatriz, AvaliacaoMetodo, AvaliacaoRubrica } from "@/components/energia/AvaliacaoPartes";
+import { AvaliacaoEvolucao, AvaliacaoJornadas, AvaliacaoMatriz, AvaliacaoMetodo, AvaliacaoRevisao, AvaliacaoRubrica } from "@/components/energia/AvaliacaoPartes";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
@@ -144,6 +144,11 @@ export default function AvaliacaoPage() {
                   : "Nenhuma dimensão aplicável ficou sem avaliação nesta rodada. "}
                 A revisão de didatismo e de qualidade visual foi feita por revisores em contexto limpo sobre capturas abertas e o texto da página; não é teste com pessoas.
               </DadosAviso>
+              {a.rodada.corrigido_depois_da_medicao.length > 0 && (
+                <DadosAviso>
+                  Corrigido depois da medição e ainda não medido: {a.rodada.corrigido_depois_da_medicao.join(" ")}
+                </DadosAviso>
+              )}
               <DadosLimitacoes itens={a.limites} />
               <DadosSeguir
                 ancora="painel-avaliacao"
@@ -205,6 +210,12 @@ export default function AvaliacaoPage() {
           <Bloco id="jornadas">
             <DadosAnalise titulo="Jornadas de usuário executadas" id="jornadas-analise">
               <AvaliacaoJornadas a={a} />
+            </DadosAnalise>
+          </Bloco>
+
+          <Bloco id="revisao">
+            <DadosAnalise titulo="Problemas que os revisores viram em várias páginas" id="revisao-analise">
+              <AvaliacaoRevisao a={a} />
             </DadosAnalise>
           </Bloco>
 

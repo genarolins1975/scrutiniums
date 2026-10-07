@@ -5,10 +5,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | Estado | Painéis |
 | --- | ---: |
 | Concluído | 2 |
-| Concluído com limitação declarada | 13 |
+| Concluído com limitação declarada | 14 |
 | Parcial | 1 |
 | Bloqueado (externo, com evidência) | 0 |
-| Pendente | 55 |
+| Pendente | 54 |
 | **Total** | **71** |
 
 
@@ -181,4 +181,4 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | ID | Painel | Pergunta | Prioridade | Rota | Fontes integradas | Estado inicial | Estado | Critério de aceite | Evidência |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P070 | Regras e limites | Quais interpretações são permitidas? | P0 |  | D0, S3, S5, S8 | parcial | Concluído com limitação declarada | Cada afirmação de fonte integrada corresponde a recurso realmente verificado. | Página /setor-eletrico/metodologia ligada às golds metricas.json e publicacao.json em 07/10/2026: regras dos 276 indicadores em 18 módulos (definição, fórmula, unidade, recortes, agregação, cobertura, ausência, validações, limitações e código), lidas sob demanda e todas completas segundo o teste; 8 afirmações sobre fontes integradas conferidas com o catálogo (a de limites de intercâmbio com a afirmação anterior e a correção); matriz natureza e validação; regras do pipeline; limitações gerais atualizadas (saíram três afirmações que deixaram de ser verdade). Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: 142 de 154 fichas de evidência sem natureza vinculada e natureza estimada sem separar fonte de observatório (pedidos 4 e 8 do documento do módulo). |
-| P071 | Avaliação dos painéis | Como demonstrar que a qualidade evoluiu? | P1 |  | D0 | inexistente | Pendente | Notas só após inspeção e testes; não atribuir nota estética com base apenas em descrição. |  |
+| P071 | Avaliação dos painéis | Como demonstrar que a qualidade evoluiu? | P1 |  | D0 | inexistente | Concluído com limitação declarada | Notas só após inspeção e testes; não atribuir nota estética com base apenas em descrição. | Avaliação dos painéis publicada em 07/10/2026: rubrica de dez dimensões com peso (seção 15.1), instrumento de inspeção em Chromium (360, 390, 768 e 1440 px; Entender e Auditar; axe, rolagem, teclado, alvos de toque, controles, ficha de prova, links, peso e anatomia), dez jornadas da seção 15.2 por roteiro, revisão de didatismo e qualidade visual por nove revisores em contexto limpo, duas rodadas medidas sobre 94 de 368 rotas (r1 de base com 89 páginas, r2 final com 94). Resultado da r2 (inspeção de 07/10/2026, dados de referência de 01/10/2026): nota ponderada média 7,9, nenhuma página na meta de produto, nenhum defeito crítico (9 altos, 73 médios, 12 baixos), dez jornadas cumpridas, didatismo 6,8 e qualidade visual 6,9; 21 defeitos corrigidos desde a base. gold avaliacao.json integrada ao publicacao.json e ao manifesto; página /setor-eletrico/metodologia/avaliacao (HTML de 579 KB; axe sem violações e sem rolagem horizontal em 12 combinações); AVALIACAO_PAGINAS.md e EVIDENCIAS_ACEITE.md gerados; testes em pipeline/tests/test_energia_avaliacao.py (49) e src/tests/energia-avaliacao.test.ts (27). Limitação declarada: revisão e jornadas não são teste com pessoas; sem leitor de tela real nem dado de campo (teto de 9,0 em acessibilidade e desempenho); famílias dinâmicas amostradas; a própria página de avaliação não está entre as medidas; a correção da coluna fixa das tabelas entrou depois da medição. |

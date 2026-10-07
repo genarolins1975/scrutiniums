@@ -1,0 +1,95 @@
+{
+  "J1": {
+    "atritos": [
+      "A busca por PLD mostra 8 dos 15 resultados e nenhum é de tarifa: o verbete de tarifa só é alcançado dentro do verbete PLD, em Não confundir com.",
+      "PLD e tarifa aparecem em unidades diferentes (R$/MWh e R$/kWh). O único CSV visível na página PLD em Entender é o horário, com cabeçalho sem unidade e decimal com ponto; o diário existe, mas fica oculto em Entender."
+    ],
+    "defeitos": []
+  },
+  "J2": {
+    "atritos": [
+      "Os links da ficha da distribuidora para Perdas, Qualidade e Conta de luz só apareciam em Auditar (corrigido nesta rodada: ficam visíveis em todos os modos).",
+      "O cartão de perdas da ficha escrevia 12,12% % da energia injetada, com o sinal de percentual repetido (corrigido nesta rodada em todas as páginas). O botão Comprove do mesmo cartão ainda diz 12,1%, enquanto o cartão e a página Perdas dizem 12,12%.",
+      "Três noções de posição sem ponte entre elas: a ficha diz 32 de 51 (perdas) e 17 de 33 (DEC), a tabela da Qualidade mostra posição no ranking 31 sem o total, e Perdas não escreve posição. A tabela da Qualidade tem 1.812 px de largura num contêiner de 1.118 px, e duas colunas ficam fora da área visível a 1440 px."
+    ],
+    "defeitos": [
+      {"codigo": "comprove_arredondamento", "dimensao": "rastreabilidade", "severidade": "baixo", "descricao": "ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12%", "paginas": ["/setor-eletrico/empresas/cemig-d"]}
+    ]
+  },
+  "J3": {
+    "atritos": [
+      "A linha de destaques mostra ago/2026, enquanto o texto de abertura e a média diária falam de set/2026 e 30/09. A média temporal, base da variação de set contra ago, não tem período escrito nem ficha Comprove, ao contrário das duas ponderadas.",
+      "Em set/2026 a tabela diz Mês parcial: não (30 dias), mas as ponderadas usam 672 das 720 horas. O aviso está no texto de abertura, longe dos destaques, e fala de mês em curso.",
+      "A ficha de prova tem dez seções e avisa que o código foi publicado com alterações fora do commit, o que pode impedir a reprodução pelo primeiro passo (git checkout)."
+    ],
+    "defeitos": [
+      {"codigo": "media_temporal_sem_comprove", "dimensao": "rastreabilidade", "severidade": "medio", "descricao": "histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas", "paginas": ["/setor-eletrico/pld/historico"]}
+    ]
+  },
+  "J4": {
+    "atritos": [
+      "O arquivo exportado difere da tela: mês 2026-08 contra 08/2026, decimal com ponto contra vírgula, separador ponto e vírgula com BOM. Compará-los exige conversão.",
+      "O filtro Mês parcial só tem a opção não, e não filtra nada nesta base."
+    ],
+    "defeitos": [
+      {"codigo": "ponderada_sem_arquivo", "dimensao": "rastreabilidade", "severidade": "medio", "descricao": "histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS", "paginas": ["/setor-eletrico/pld/historico"]}
+    ]
+  },
+  "J5": {
+    "atritos": [
+      "O verbete EAR dá 56,9% (Sudeste/Centro-Oeste, 28/09/2026), o painel de Água e clima abre em 29/09/2026 com 56,65% e a trilha usa 61,5% do SIN. São datas e escopos diferentes, todos escritos, mas o professor encontra três números de EAR para o mesmo conceito.",
+      "Ao chegar ao PLD vindo da trilha, o gráfico horário não está à vista, e o botão fixo Voltar à trilha cobre as abas de período.",
+      "O painel só oferece Baixar CSV e Sobre este dado: nenhum controle leva o gráfico como imagem, e a tabela equivalente vem fechada."
+    ],
+    "defeitos": []
+  },
+  "J6": {
+    "atritos": [
+      "Em Minha região, o parágrafo sobre municípios fora do SIN media 11 px de largura por 2.780 px de altura a 390 px, um caractere por linha (corrigido nesta rodada).",
+      "O efeito do toque fica fora da vista: no mapa a ficha vem 2.909 px abaixo, e na tabela, 1.726 px acima. O único retorno visível é o contorno e o balão no mapa.",
+      "Em Perdas, com ano 2024 e indicador Perdas técnicas, a ficha da CEMIG-D diz que em 2025 as perdas totais foram de 12,12% e o comparador traz a taxa de perdas totais de 2003 a 2025, sem respeitar o ano e o indicador escolhidos.",
+      "No mapa, 7 das 27 UFs têm o menor lado abaixo de 24 px (DF 7 por 4 px, AL 23 por 13 px, entre outras); a alternativa em tabela tem alvos de 44 px."
+    ],
+    "defeitos": [
+      {"codigo": "contexto_perdas", "dimensao": "interatividade", "severidade": "medio", "descricao": "Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha", "paginas": ["/setor-eletrico/perdas"]}
+    ]
+  },
+  "J7": {
+    "atritos": [
+      "Distância em Tabs: 19 até o campo em Minha região (5 com o atalho de pular), 30 em Perdas, mais 24 do campo até a tabela, e 24 até o seletor em Diferenças regionais.",
+      "O mapa não tem elemento focável: a saída por teclado é o campo e a tabela, como o aviso diz. Depois de escolher, o foco fica no campo e a ficha muda sem região de leitura automática (não verificado com leitor de tela).",
+      "Visto na exploração, fora do roteiro: Enter ou Espaço numa célula da matriz de pares não muda nada visível, e nada avisa que a célula não é selecionável."
+    ],
+    "defeitos": []
+  },
+  "J8": {
+    "atritos": [
+      "O que não volta no link compartilhado: a série desligada em Histórico do PLD, a seção Dados do gráfico em tabela aberta e o zoom do mapa (Perdas e Minha região abrem o mapa inteiro).",
+      "Em Perdas, Copiar link deste painel é um link âncora que só mostra a mensagem, sem o campo com o endereço que o Histórico mostra."
+    ],
+    "defeitos": [
+      {"codigo": "estado_nao_restaurado", "dimensao": "navegacao", "severidade": "medio", "descricao": "link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado", "paginas": ["/setor-eletrico/pld/historico", "/setor-eletrico/perdas", "/setor-eletrico/territorio"]}
+    ]
+  },
+  "J9": {
+    "atritos": [
+      "A ficha completa do conjunto atrasado dizia sem captura e não mencionava o atraso, enquanto a saúde dava captura em 30/09/2026 e 367 dias de atraso (corrigido nesta rodada: a ficha lê as integrações de publicacao.json e escreve atualidade e coleta).",
+      "Duas datas de processamento na mesma página: o cabeçalho da saúde diz Gold processada em 01/10/2026, 08:22 e o rodapé diz Dados processados em 29/09/2026, 23:20, porque o rodapé lê a gold meta.json, de execução anterior do pipeline.",
+      "Em Restrições de geração, a linha Parecer de acesso mostra dois sem dado ao lado de Total 0,0 e Parcela 0,00, e a página não diz se é zero medido ou soma de ausências. Nas tabelas de saúde e de catálogo o nome do conjunto não tem link para a ficha."
+    ],
+    "defeitos": [
+      {"codigo": "zero_ao_lado_de_ausencia", "dimensao": "correcao", "severidade": "medio", "descricao": "Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências", "paginas": ["/setor-eletrico/geracao/restricoes"]},
+      {"codigo": "datas_de_processamento", "dimensao": "atualidade", "severidade": "baixo", "descricao": "Saúde dos dados: o cabeçalho diz gold processada em 01/10/2026 e o rodapé diz dados processados em 29/09/2026, porque o rodapé lê a gold meta.json de execução anterior", "paginas": ["/setor-eletrico/dados/saude"]}
+    ]
+  },
+  "J10": {
+    "atritos": [
+      "Até 10/10/2026 não há resultado para ver: a coluna Realizado é sem dado nas 56 linhas e a ficha diz ainda sem realizado, de modo que a comparação entre previsão e resultado não pôde ser verificada.",
+      "O arquivo e a ficha mostram 124,0911 e Previsão atual mostra 124,09 para o mesmo número.",
+      "O link P016 Desempenho e calibração, seguido a partir de Auditar, abre em Entender, sem o modo na URL. As rodadas se escolhem clicando nas barras do gráfico, sem lista separada."
+    ],
+    "defeitos": [
+      {"codigo": "modo_perdido_no_link", "dimensao": "navegacao", "severidade": "baixo", "descricao": "Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade", "paginas": ["/setor-eletrico/pld/previsoes"]}
+    ]
+  }
+}

@@ -217,6 +217,14 @@ class Dimensoes(unittest.TestCase):
         r = ea.d_rastreabilidade(contexto(medicoes=[m]))
         self.assertEqual(r["nota"], 8.0)  # teto 9,5 menos 1,5
 
+    def test_ficha_que_nao_abriu_nao_pune_a_rastreabilidade_por_falta_de_hash(self):
+        m = medicao(comprove={"botoes": 1, "aberta": False, "fecha_com_esc": True})
+        r = ea.d_rastreabilidade(contexto(medicoes=[m]))
+        self.assertEqual(r["nota"], 9.5)
+        self.assertTrue(any("não abriu" in e for e in r["evidencias"]))
+        # e a Interatividade registra a falha de abrir
+        self.assertLess(ea.d_interatividade(contexto(medicoes=[m]))["nota"], 10.0)
+
     def test_gold_fora_do_manifesto_pesa_tres(self):
         r = ea.d_rastreabilidade(contexto(manifesto=set()))
         self.assertEqual(r["nota"], 6.5)
@@ -226,6 +234,18 @@ class Dimensoes(unittest.TestCase):
         self.assertEqual(ea.d_desempenho(contexto(medicoes=[m]))["nota"], 7.0)
         m2 = medicao(bytes={"html": 1100 * 1024, "js": 400_000, "css": 1, "dados": 0, "outros": 0})
         self.assertEqual(ea.d_desempenho(contexto(medicoes=[m2]))["nota"], 5.0)
+
+
+class Conjuntos(unittest.TestCase):
+    def test_ficha_de_conjunto_usa_so_a_integracao_do_proprio_conjunto(self):
+        g = {"conjuntos": [
+            {"id": "a/aneel_scs", "slug": "aneel-scs", "golds": ["publicacao.json"], "atualidade": {"situacao": "ATRASADO", "dias_atraso": 367}, "coleta": {}, "capturas": {}},
+            {"id": "b/ibge", "slug": "ibge-pof-6715", "golds": ["publicacao.json"], "atualidade": {"situacao": "SEM DADO"}, "coleta": {}, "capturas": {}}]}
+        so_scs = ea.conjuntos_da_pagina(g, ["publicacao.json"], "aneel-scs")
+        self.assertEqual([c["id"] for c in so_scs], ["a/aneel_scs"])
+        self.assertEqual(so_scs[0]["dias_atraso"], 367)
+        todos = ea.conjuntos_da_pagina(g, ["publicacao.json"])
+        self.assertEqual(len(todos), 2)
 
 
 class Agregacao(unittest.TestCase):
@@ -319,7 +339,8 @@ class Rotas(unittest.TestCase):
 class GoldPublicada(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.a = json.load(open(GOLD, encoding="utf-8"))
+        with open(GOLD, encoding="utf-8") as f:
+            cls.a = json.load(f)
 
     def test_nenhuma_nota_sem_evidencia_ou_acima_do_teto(self):
         for p in self.a["paginas"]:
@@ -342,7 +363,11 @@ class GoldPublicada(unittest.TestCase):
                     self.assertLess(x["nota"], 10.0, f"{p['rota']} {d}")
 
     def test_didatismo_e_visual_so_existem_com_revisao_registrada(self):
-        rev = json.load(open(os.path.join(ENT, "revisao_visual.json"), encoding="utf-8")) if os.path.exists(os.path.join(ENT, "revisao_visual.json")) else {"paginas": {}}
+        caminho_rev = os.path.join(ENT, "revisao_visual.json")
+        rev = {"paginas": {}}
+        if os.path.exists(caminho_rev):
+            with open(caminho_rev, encoding="utf-8") as f:
+                rev = json.load(f)
         for p in self.a["paginas"]:
             for d, k in (("didatismo", "didatismo"), ("visual", "visual")):
                 x = p["dimensoes"][d]

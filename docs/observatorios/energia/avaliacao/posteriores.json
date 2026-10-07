@@ -1,0 +1,3 @@
+[
+  "Tabelas interativas: a coluna fixa da primeira coluna passa a ter largura máxima (11 rem no celular e 20 rem em tela larga) e o texto quebra, porque, ordenada pelo título, ela ocupava a janela inteira em 390 px e cobria o cabeçalho das demais colunas, que ficavam sem como ser tocadas (achado ao exercitar os controles). A correção entrou no código depois da medição da rodada 2 e será medida na rodada seguinte."
+]

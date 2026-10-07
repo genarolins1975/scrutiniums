@@ -225,7 +225,7 @@ export default {
       const r = await paridadeComCsv(tabSaude);
       exigirParidade(r, "Saúde");
       j.afirmar(r.linhasCsv === guardado.semDado, `o CSV tem ${r.linhasCsv} linhas e a tela ${guardado.semDado}`);
-      return `${r.arquivo}: ${r.linhasCsv} linhas, ${r.celulas} células comparadas, ${r.semDado} com "sem dado" na tela, ${r.vazias} vazias no arquivo e nenhuma 0${textoRotulos(r)}`;
+      return `CSV com ${r.linhasCsv} linhas, ${r.celulas} células comparadas, ${r.semDado} com "sem dado" na tela, ${r.vazias} vazias no arquivo e nenhuma 0${textoRotulos(r)}`;
     });
 
     await j.passo("Lê como a página explica sem dado, sem SLA e atrasado, e a regra do CSV", async () => {
@@ -272,7 +272,7 @@ export default {
       j.afirmar(/sem separação publicada/.test(linha[iDec]), `motivo da ausência: ${linha[iDec]}`);
       const texto = normaliza(await p.locator("main").innerText());
       j.afirmar(/“sem dado” indica ausência na fonte, nunca zero/.test(texto), "a nota sobre sem dado não está na página");
-      return `${r.arquivo}: ${r.linhasCsv} linhas no arquivo e ${r.linhasPagina} na tela; ${r.celulas} células comparadas, ${r.semDado} com "sem dado", ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}; exemplo ${linha[iL].split(" · ")[0]}: Técnicas "${linha[iT]}", Decomposição "${linha[iDec]}" (motivo na mesma linha)`;
+      return `CSV com ${r.linhasCsv} linhas e ${r.linhasPagina} na tela; ${r.celulas} células comparadas, ${r.semDado} com "sem dado", ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}; exemplo ${linha[iL].split(" · ")[0]}: Técnicas "${linha[iT]}", Decomposição "${linha[iDec]}" (motivo na mesma linha)`;
     });
 
     await j.passo("Em Restrições de geração, confere a tabela por razão: sem dado na tela, célula vazia no CSV, e o total", async () => {
@@ -285,7 +285,7 @@ export default {
       const par = r.pagina.linhas.find((l) => /Parecer de acesso/.test(l[0]));
       j.afirmar(par, "linha Parecer de acesso não achada");
       const dic = Object.fromEntries(cab.map((c, i) => [c, par[i]]));
-      return `${r.arquivo}: ${r.linhasCsv} linhas, ${r.celulas} células, ${r.semDado} "sem dado" na tela, ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}. Linha "Parecer de acesso": origem local "${dic["Origem local (GWh)"]}", origem sistêmica "${dic["Origem sistêmica (GWh)"]}", mas Total "${dic["Total (GWh)"]}" e Parcela "${dic["Parcela da energia não gerada (%)"]}": o total é um número, a página não diz se é zero medido ou soma de ausências`;
+      return `CSV com ${r.linhasCsv} linhas, ${r.celulas} células, ${r.semDado} "sem dado" na tela, ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}. Linha "Parecer de acesso": origem local "${dic["Origem local (GWh)"]}", origem sistêmica "${dic["Origem sistêmica (GWh)"]}", mas Total "${dic["Total (GWh)"]}" e Parcela "${dic["Parcela da energia não gerada (%)"]}": o total é um número, a página não diz se é zero medido ou soma de ausências`;
     });
 
     await j.passo("No Histórico do PLD, confere o mês sem moeda constante: sem dado na tela, vazio no CSV e o motivo escrito", async () => {
@@ -304,7 +304,7 @@ export default {
       const motivo = texto.match(/Moeda constante só existe até o último mês com IPCA publicado\./);
       j.afirmar(motivo, "a página não explica por que a moeda constante falta");
       const ipca = texto.match(/IBGE \(IPCA até ([a-z]{3}\/\d{4})\)/);
-      return `${r.arquivo}: ${r.linhasCsv} linhas, ${r.celulas} células (linhas pareadas por ${r.pareamento}, pois o mês é 09/2026 na tela e 2026-09 no arquivo), ${r.semDado} "sem dado" na tela, ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}. Em 09/2026 a média em moeda constante é "sem dado" e em 08/2026 é ${ago[iC]}; motivo escrito: "${motivo[0]}"${ipca ? ` (cabeçalho: IPCA até ${ipca[1]})` : ""}`;
+      return `CSV com ${r.linhasCsv} linhas, ${r.celulas} células (pareadas por ${r.pareamento}: o mês é 09/2026 na tela e 2026-09 no arquivo), ${r.semDado} "sem dado" na tela, ${r.vazias} vazias no CSV e nenhuma 0${textoRotulos(r)}. Em 09/2026 a média em moeda constante é "sem dado" e em 08/2026 é ${ago[iC]}; motivo escrito: "${motivo[0]}"${ipca ? ` (cabeçalho: IPCA até ${ipca[1]})` : ""}`;
     });
 
     // ---------- Catálogo e fichas ----------
@@ -339,7 +339,7 @@ export default {
       const pega = (re) => (t.match(re) || [])[1];
       fichaScs = {
         titulo: (await p.locator("h1").first().innerText()).trim(),
-        captura: pega(/ÚLTIMA CAPTURA (.*?) SNAPSHOT/i),
+        captura: pega(/ÚLTIMA CAPTURA (.*?) (?:ATUALIDADE E COLETA|SNAPSHOT)/i),
         tentativa: pega(/ÚLTIMA TENTATIVA DE COLETA DIRETA (.*?) (?:Mudanças|Capturas)/i),
         atraso: /atrasad|além do prazo|defasad/i.test(t),
         texto: t,
@@ -358,8 +358,12 @@ export default {
       await j.esperar(600);
       j.afirmar(/\/dados\/ibge-pof-6715$/.test(p.url()), `URL inesperada: ${j.url()}`);
       const t = normaliza(await p.locator("main").innerText());
+      // a última captura vem das integrações de publicacao.json (o conjunto tem captura, só não tem SLA mensurável);
+      // os campos que a fonte não informa continuam com marca explícita de ausência
+      const cap = t.match(/ÚLTIMA CAPTURA (.*?) (?:ATUALIDADE E COLETA|SNAPSHOT)/i);
+      j.afirmar(cap && /\d\d\/\d\d\/\d{4}/.test(cap[1]), `a última captura não é uma data: ${cap && cap[1]}`);
+      j.afirmar(/sem dado para medir/i.test(t), "a ficha do conjunto sem dado não diz que a atualidade não pode ser medida");
       const campos = {
-        "Última captura": /ÚLTIMA CAPTURA (.*?) SNAPSHOT/i,
         Snapshot: /SNAPSHOT (.*?) SHA256 DO SNAPSHOT/i,
         "Última modificação na fonte": /ÚLTIMA MODIFICAÇÃO DE METADADOS NA FONTE (.*?) FORMATOS/i,
         Formatos: /FORMATOS PUBLICADOS (.*?) USADO NAS PÁGINAS/i,
@@ -373,7 +377,7 @@ export default {
         j.afirmar(/^(–|sem captura|não informad[oa]|não declarad[oa])$/i.test(lidos[nome]), `o campo ${nome} mostra "${lidos[nome]}", não uma marca explícita de ausência`);
       }
       j.afirmar(/campo vazio significa ausência, nunca zero/.test(t), "a ficha não traz a regra do campo vazio");
-      return `${j.url()}; campos sem valor: ${Object.entries(lidos).map(([k, v]) => `${k} "${v}"`).join("; ")}; a ficha traz "campo vazio significa ausência, nunca zero"`;
+      return `${j.url()}; última captura ${cap[1].slice(0, 12)}; atualidade "sem dado para medir"; campos sem valor: ${Object.entries(lidos).map(([k, v]) => `${k} "${v}"`).join("; ")}; a ficha traz "campo vazio significa ausência, nunca zero"`;
     });
 
     await j.passo("Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura", async () => {

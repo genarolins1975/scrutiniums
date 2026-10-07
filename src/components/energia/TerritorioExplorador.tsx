@@ -929,7 +929,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           )}
           {cam === "submercado" && !(geoMun && municipios) && cMalha.estado !== "carregando" && (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3 text-sm text-carvao-muted">
-              <p className="min-w-0 flex-1">
+              <p className="min-w-0 flex-[1_1_16rem]">
                 {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada: a cor da UF
                 não vale para os primeiros. Para vê-los no mapa, a malha municipal (1,3 MB) e o índice (1,1 MB) são baixados.
               </p>
@@ -941,7 +941,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           {corr.texto && (
             <div role="status" className="flex flex-wrap items-start gap-x-3 gap-y-1 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-relaxed text-carvao" data-correspondencia={corr.valida ? (corr.aviso ? "aviso" : "valida") : "nao-passa"}>
               <span className="rotulo shrink-0">{corr.valida ? (corr.aviso ? "Nesta camada, com ressalva" : "Nesta camada") : "A escolha não passa para esta camada"}</span>
-              <span className="min-w-0 flex-1">{corr.texto}</span>
+              <span className="min-w-0 flex-[1_1_16rem]">{corr.texto}</span>
             </div>
           )}
           {corr.candidatas.length > 0 && (
@@ -1133,7 +1133,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} />
           ) : (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
-              <p className="min-w-0 flex-1 text-sm text-carvao-muted">A comparação lê o índice municipal (1,1 MB), baixado só quando pedido.</p>
+              <p className="min-w-0 flex-[1_1_16rem] text-sm text-carvao-muted">A comparação lê o índice municipal (1,1 MB), baixado só quando pedido.</p>
               <button type="button" onClick={() => setPedidoIndice(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-sm text-carvao hover:bg-energia-fundo">
                 {cIndice.estado === "carregando" ? "Carregando…" : "Carregar os municípios"}
               </button>

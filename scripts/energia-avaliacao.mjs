@@ -39,6 +39,8 @@ const LARGURAS = (args.larguras || "360,390,768,1440").split(",").map(Number);
 const MODOS = (args.modos || "entender,auditar").split(",");
 const PARALELO = Number(args.paralelo || 3);
 const CAPTURAS = args.capturas !== "0";
+// --so-capturas 1: só a primeira dobra em 1440 e 390 px (sem medir), já no topo da página, para guardar a evidência visual
+const SO_CAPTURAS = args["so-capturas"] === "1";
 const CHROMIUM = process.env.CHROMIUM || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PW_CORE || "playwright-core");
@@ -86,7 +88,7 @@ function medirPagina() {
   const grandes = Array.from(document.querySelectorAll("body *"))
     .filter((el) => {
       const r = el.getBoundingClientRect();
-      return r.right > window.innerWidth + 1 && getComputedStyle(el).position !== "fixed" && !el.closest(".tabela-scroll, [data-rolagem-contida], .overflow-x-auto, .overflow-auto");
+      return r.right > document.documentElement.clientWidth + 1 && getComputedStyle(el).position !== "fixed" && !el.closest(".tabela-scroll, [data-rolagem-contida], .overflow-x-auto, .overflow-auto");
     })
     .slice(0, 5)
     .map((el) => `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 80)}`);
@@ -108,7 +110,8 @@ function medirPagina() {
     dom_nos: document.getElementsByTagName("*").length,
     altura: document.documentElement.scrollHeight,
     scroll_width: document.documentElement.scrollWidth,
-    inner_width: window.innerWidth,
+    // em emulação de celular o innerWidth cresce até a largura do conteúdo e esconderia a rolagem horizontal: vale a largura do documento na janela
+    inner_width: document.documentElement.clientWidth,
     transbordo: grandes,
     anomalias: {
       datas_cruas: amostra(/\b\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?\b/g),
@@ -269,11 +272,12 @@ async function exercitarControles(p, errosRef) {
     'main [role=tab][aria-selected=false]:visible',
     'main button[aria-pressed=false]:visible',
     'main button[aria-expanded]:visible',
+    // cabeçalhos de ordenação antes dos filtros: um filtro aberto cobre o cabeçalho da tabela, e quem usa fecha o filtro antes de ordenar
+    'main th button:visible',
+    'main select:visible',
     'main summary:visible',
     'main input[type=checkbox]:visible',
     'main input[type=radio]:not(:checked):visible',
-    'main select:visible',
-    'main th button:visible',
   ];
   let total = 0;
   for (const sel of seletores) {
@@ -301,7 +305,7 @@ async function exercitarControles(p, errosRef) {
             abertos: document.querySelectorAll("details[open]").length,
             ordem: Array.from(document.querySelectorAll("main [aria-sort]")).map((e) => e.getAttribute("aria-sort")).join(","),
             pressionados: Array.from(document.querySelectorAll("main [aria-pressed=true],main [aria-checked=true],main [aria-selected=true]")).length,
-            rolagem: document.documentElement.scrollWidth > window.innerWidth + 1,
+            rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
           };
         });
       const antes = await estado();
@@ -331,7 +335,27 @@ async function exercitarControles(p, errosRef) {
           });
         }
       } catch (e) {
-        feitos.push({ ...info, ok: false, motivo: String(e.message).split("\n")[0].slice(0, 90) });
+        // segunda chance com a página recarregada: o controle que aciona sozinho, mas não depois da sequência de ações, é intermitente
+        // (o defeito depende do estado anterior), diferente do que nunca aciona
+        const motivo = String(e.message).split("\n")[0].slice(0, 90);
+        let intermitente = false;
+        try {
+          await p.reload({ waitUntil: "networkidle", timeout: 30000 });
+          await p.waitForTimeout(700);
+          const de_novo = p.locator(sel).filter({ hasText: info.rotulo.replace(/[↕▲▼▴▾▸]+/g, "").trim().slice(0, 18) }).first();
+          if (info.tag === "select") throw e;
+          await de_novo.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {});
+          await de_novo.click({ timeout: 5000 });
+          intermitente = true;
+        } catch {
+          /* continua sem acionar */
+        }
+        if (!intermitente) {
+          feitos.push({ ...info, ok: false, motivo });
+          continue;
+        }
+        await p.waitForTimeout(250);
+        feitos.push({ ...info, acao, ok: true, intermitente: true, motivo, mudou_url: false, mudou_dom: true, erros_depois: 0, rolagem_horizontal_depois: false });
         continue;
       }
       await p.waitForTimeout(250);
@@ -347,7 +371,7 @@ async function exercitarControles(p, errosRef) {
       });
     }
   }
-  return { encontrados: total, exercitados: feitos.filter((f) => f.ok).length, falhas: feitos.filter((f) => !f.ok).length, sem_efeito: feitos.filter((f) => f.ok && !f.mudou_url && !f.mudou_dom).length, com_erro_depois: feitos.filter((f) => f.ok && f.erros_depois > 0).length, rolagem_depois: feitos.filter((f) => f.rolagem_horizontal_depois).length, detalhe: feitos };
+  return { encontrados: total, exercitados: feitos.filter((f) => f.ok).length, intermitentes: feitos.filter((f) => f.intermitente).length, falhas: feitos.filter((f) => !f.ok).length, sem_efeito: feitos.filter((f) => f.ok && !f.mudou_url && !f.mudou_dom).length, com_erro_depois: feitos.filter((f) => f.ok && f.erros_depois > 0).length, rolagem_depois: feitos.filter((f) => f.rolagem_horizontal_depois).length, detalhe: feitos };
 }
 
 /* ---------- verificação de links e âncoras ---------- */
@@ -434,12 +458,24 @@ async function medirRota(rota, navegador) {
           /* corpo indisponível (redirecionamento, preflight) */
         }
       });
+      if (SO_CAPTURAS && (modo !== "entender" || (w !== 1440 && w !== 390))) {
+        await ctx.close();
+        continue;
+      }
       const url = BASE + rota + (modo === "auditar" ? "?modo=auditar" : "");
       const t0 = Date.now();
       const resp = await p.goto(url, { waitUntil: "networkidle", timeout: 90000 }).catch((e) => ({ status: () => `erro: ${String(e.message).slice(0, 80)}` }));
       const carga_ms = Date.now() - t0;
       await p.waitForTimeout(modo === "auditar" ? 900 : 450);
       const m = { rota, largura: w, modo, status: resp?.status?.() ?? null, carga_ms, erros_console: erros.slice(), falhas_rede: falhas.slice(), bytes: { ...bytes } };
+      if (SO_CAPTURAS) {
+        await p.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
+        await p.waitForTimeout(350);
+        await p.screenshot({ path: join(SAIDA, "capturas", `${slug(rota)}__${w}_dobra.png`) });
+        reg.medicoes.push(m);
+        await ctx.close();
+        continue;
+      }
       if (m.status === 200) {
         const pg = await p.evaluate(medirPagina);
         await p.addScriptTag({ content: AXE });
@@ -464,6 +500,8 @@ async function medirRota(rota, navegador) {
         }
         if (CAPTURAS && modo === "entender" && (w === 1440 || w === 390)) {
           const base = join(SAIDA, "capturas", `${slug(rota)}__${w}`);
+          await p.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
+          await p.waitForTimeout(350);
           const dobra = await p.screenshot({ path: `${base}_dobra.png` });
           const inteira = await p.screenshot({ path: `${base}_inteira.png`, fullPage: true });
           m.capturas = { dobra: { sha256: sha(dobra), bytes: dobra.length }, inteira: { sha256: sha(inteira), bytes: inteira.length } };

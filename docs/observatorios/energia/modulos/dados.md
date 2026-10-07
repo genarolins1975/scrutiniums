@@ -179,3 +179,65 @@ Quatro páginas com a anatomia da seção 7.2 (resposta curta, recorte, números
 * O catálogo mede etapa e uso; não mede se o dado está certo: a validação é a das checagens automáticas.
 * A primeira captura registrada é de 27/09/2026; revisões anteriores a essa data não são visíveis ao pipeline.
 * O HTML do catálogo (564 KB) está perto da meta de 600 KB.
+
+
+## 8. Avaliação dos painéis (P071, 07/10/2026)
+
+Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma rubrica de dez dimensões com peso, uma matriz de aceite com evidência por item e duas rodadas medidas sobre o mesmo conjunto de páginas, comparadas só nas dimensões avaliadas nas duas. Nenhuma nota foi atribuída por descrição: toda nota aponta a medição, o teste ou a revisão que a sustenta, e o que não foi medido aparece como "não avaliada".
+
+| Camada | Caminho |
+| --- | --- |
+| Instrumento de inspeção (Chromium, axe-core, 360, 390, 768 e 1440 px, Entender e Auditar) | `scripts/energia-avaliacao.mjs` |
+| Dez jornadas da seção 15.2, uma por módulo | `scripts/energia-jornadas.mjs` e `scripts/jornadas/j01.mjs` a `j10.mjs` |
+| Rubrica, agregação, defeitos, rodadas e gold | `scripts/energia_avaliacao.py` |
+| Testes do repositório por módulo, com falha simulada | `scripts/energia_avaliacao_testes.py` |
+| Documentos gerados | `scripts/energia_avaliacao_docs.py` grava `AVALIACAO_PAGINAS.md` e `EVIDENCIAS_ACEITE.md` |
+| Evidência bruta condensada, versionada | `docs/observatorios/energia/avaliacao/` (`inspecao.json`, `jornadas.json`, `atritos.json`, `revisao_visual.json`, `posteriores.json`, `rodadas.json`, `testes.json`, `rotas.txt`, `capturas/`) |
+| Gold e página | `public/energia/gold/avaliacao.json`; `/setor-eletrico/metodologia/avaliacao` (`AvaliacaoPaginas.tsx`, `AvaliacaoPartes.tsx`, `AvaliacaoJornada.tsx`; derivações em `src/lib/energia/avaliacao.ts`) |
+| Testes | `pipeline/tests/test_energia_avaliacao.py` (49) e `src/tests/energia-avaliacao.test.ts` (27) |
+
+### 8.1 Rubrica
+
+* Dez dimensões e pesos da seção 15.1: didatismo 15%, qualidade visual 12%, navegação 10%, interatividade 8%, acessibilidade 7%, completude 12%, correção técnica e metodológica 15%, rastreabilidade 10%, atualidade e confiabilidade operacional 6%, desempenho e manutenção 5%. Metas: 9,0 por dimensão e 9,5 em didatismo e qualidade visual.
+* Nota da dimensão = menor teto aplicável (10 quando não há) menos as deduções, truncada em uma casa decimal; nunca arredonda para cima. Cada dedução e cada teto trazem o motivo e a medição que o gerou, visíveis na página.
+* Estados: **avaliada**; **não avaliada** (sem medição nem revisão, não satisfaz o aceite); **não aplicável** (por exemplo, atualidade em página sem dado em série; sai da média ponderada).
+* Uma página atende a meta de produto só com todas as dimensões aplicáveis avaliadas, todas nas metas e nenhum defeito crítico.
+* Tetos fixos por limite do método: acessibilidade e desempenho têm teto de 9,0 enquanto não houver leitor de tela real nem dado de campo.
+
+### 8.2 Rodadas e resultado
+
+Fonte: `public/energia/gold/avaliacao.json`, rodada `2026-10-07-r2`, inspeção de 07/10/2026; dados de referência das golds de 01/10/2026.
+
+| Rodada | Páginas | Dimensões com nota | Nota ponderada média | Atendem a meta | Defeitos crítico / alto / médio / baixo | Jornadas cumpridas |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-07-r1 (base, sem revisão visual e didática) | 89 | 8 de 10 | 8,3 | 0 | 0 / 12 / 86 / 12 | 8 de 10 |
+| 2026-10-07-r2 (final) | 94 | 10 de 10 | 7,9 | 0 | 0 / 9 / 73 / 12 | 10 de 10 |
+
+* A média caiu de 8,3 para 7,9 porque a rodada final inclui didatismo (média 6,8) e qualidade visual (6,9), que a base não podia avaliar. A comparação válida é por dimensão, nas oito avaliadas nas duas rodadas: navegação 9,1 para 9,2, interatividade 9,5 para 9,4, acessibilidade 7,6 para 7,7, completude 7,8 para 7,9, correção 7,8 para 7,8, rastreabilidade 9,0 para 9,0, atualidade 7,8 para 7,9, desempenho 8,7 para 8,7. A evolução é pequena e não alcança as metas.
+* Entre as rodadas foram corrigidos 21 defeitos medidos na base (entre eles: dois defeitos axe em tabelas e links, texto espremido no celular em Minha região, sinal de percentual repetido nos cartões de perdas, ficha de conjunto atrasado sem atualidade, HTML acima da meta de peso em duas páginas).
+* Nenhuma das 94 páginas atende a meta de produto. Nenhum defeito crítico. Dez jornadas cumpridas por roteiro, com os atritos de cada uma em `atritos.json`.
+* Defeitos abertos de maior alcance (número de páginas): anatomia do painel incompleta em 86 páginas, a maior parte pela falta de pergunta como título (45 páginas, 9 delas também sem gráfico ou mapa); rolagem horizontal da página (23) e a 360 px (19); alvos de toque abaixo de 24 px em 390 px (67 páginas); 12 páginas sem data de referência ou de conferência; três CSV com checagem reprovada em `publicacao.json`; 6 páginas dependentes do conjunto atrasado da ANEEL (SCS, 367 dias); 5 páginas sem ficha de evidência com teste registrado.
+* Módulos de menor nota ponderada: Dados (7,4), Rede (7,6), Carga, PLD e Perdas (7,7). Maiores: Qualidade e Mercado (8,5); Visão geral, Aprenda, Território e Expansão (8,3).
+
+### 8.3 Revisão visual e didática
+
+Nove revisores em contexto limpo (agentes de IA, sem acesso ao código) leram o texto de cada uma das 94 páginas e abriram as capturas em 1440 e 390 px. As notas e as observações estão em `revisao_visual.json`; os problemas entre páginas (jargão interno exposto em Entender, rodapé com data de processamento de execução anterior, subnavegação cortada a 390 px, gráficos com rótulos repetidos ou truncados, datas cruas) vêm transcritos na página, sem edição. Isto é revisão por agente: **não é teste com pessoas e não substitui um**.
+
+### 8.4 Limitações
+
+* Didatismo e qualidade visual dependem de revisores que são agentes; as notas são comparáveis entre páginas da mesma rodada, não calibradas contra leitores reais.
+* As jornadas são roteiro por script: provam que o caminho existe e funciona, não que alguém o encontraria sozinho.
+* Sem leitor de tela real (NVDA, JAWS, VoiceOver) e sem auditoria manual de todos os critérios WCAG; desempenho medido em laboratório, sem dado de campo.
+* Famílias dinâmicas amostradas (seis páginas por família: verbetes do Aprenda, fichas de conjuntos de Dados, fichas de empresas); a nota da família vale para a amostra. 94 de 368 rotas construídas foram medidas.
+* A página de avaliação não está entre as 94 medidas; entra na próxima rodada.
+* A correção da coluna fixa das tabelas interativas entrou depois da medição da rodada final (`posteriores.json`) e aparece como "corrigida depois da medição".
+* As capturas ficam em `capturas/` como WebP (188 imagens da primeira dobra, 3,9 MB); a pasta bruta do instrumento (relatório de 1,7 MB e capturas em PNG de todas as larguras, 186 MB na rodada final) não é versionada, só a condensação (`inspecao.json`, 0,8 MB).
+
+### 8.5 Como repetir uma rodada
+
+1. `npx next build` e `npx next start -p 3100`.
+2. `PW_CORE=<playwright-core> node scripts/energia-avaliacao.mjs --base http://localhost:3100 --rotas docs/observatorios/energia/avaliacao/rotas.txt --saida <pasta> --paralelo 3 --capturas 1`.
+3. `PW_CORE=<playwright-core> node scripts/energia-jornadas.mjs --base http://localhost:3100 --saida <pasta de jornadas>`.
+4. Revisão visual e didática por revisores em contexto limpo, registrada em `revisao_visual.json` com o roteiro de `revisao.metodo`.
+5. `python3 scripts/energia_avaliacao_testes.py --build-ok "<resultado do build>"`.
+6. `python3 scripts/energia_avaliacao.py --relatorio <pasta>/relatorio.json --jornadas <pasta de jornadas>/jornadas.json --rotas-construidas <lista das rotas do build> --rodada AAAA-MM-DD-rN --registrar-rodada`. Grava a gold, atualiza `publicacao.json` e o manifesto, e regenera os dois documentos. Não editar `AVALIACAO_PAGINAS.md` nem `EVIDENCIAS_ACEITE.md` à mão.

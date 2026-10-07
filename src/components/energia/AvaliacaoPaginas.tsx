@@ -7,6 +7,7 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { num } from "@/lib/energia/formato";
+import { datasLegiveis } from "@/lib/energia/visao";
 import { COLUNAS_PAGINAS, ORDEM_DIMENSOES, ROTULO_SEVERIDADE, ROTULO_TIPO, URL_AVALIACAO, dimensaoPorId, metaDaDimensao, textoDeducao, textoNota, textoTeto } from "@/lib/energia/avaliacao";
 import type { LinhaTabela } from "@/lib/energia/tabela";
 import type { AvaliacaoGold, IdDimensao, PaginaAvaliada } from "@/lib/energia/tipos-avaliacao";
@@ -57,7 +58,7 @@ function CartaoDimensao({ a, p, id }: { a: AvaliacaoGold; p: PaginaAvaliada; id:
       {x.evidencias.length > 0 && (
         <ul className="mt-2 list-disc space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
           {x.evidencias.map((e) => (
-            <li key={e}>{e}</li>
+            <li key={e}>{datasLegiveis(e)}</li>
           ))}
         </ul>
       )}
@@ -67,7 +68,7 @@ function CartaoDimensao({ a, p, id }: { a: AvaliacaoGold; p: PaginaAvaliada; id:
           <p className="rotulo text-mineral">Deduções</p>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
             {x.deducoes.map((e) => (
-              <li key={e.motivo}>{textoDeducao(e)}</li>
+              <li key={e.motivo}>{datasLegiveis(textoDeducao(e))}</li>
             ))}
           </ul>
         </div>
@@ -123,7 +124,7 @@ function Ficha({ a, rota }: { a: AvaliacaoGold; rota: string }) {
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
             {defeitos.map((d) => (
               <li key={d.id}>
-                {d.id}, {ROTULO_SEVERIDADE[d.severidade].toLowerCase()}: {d.descricao}
+                {d.id}, {ROTULO_SEVERIDADE[d.severidade].toLowerCase()}: {datasLegiveis(d.descricao)}
               </li>
             ))}
           </ul>

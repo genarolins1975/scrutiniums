@@ -1,6 +1,7 @@
 """Documentos gerados a partir de public/energia/gold/avaliacao.json (ver scripts/energia_avaliacao.py):
 AVALIACAO_PAGINAS.md e EVIDENCIAS_ACEITE.md. Não editar à mão: o conteúdo muda a cada rodada."""
 import json
+import re
 import os
 
 PREF = "/setor-eletrico"
@@ -24,6 +25,11 @@ def tabela(cab, linhas):
     for l in linhas:
         out.append("| " + " | ".join(str(c).replace("|", "/").replace("\n", " ") for c in l) + " |")
     return out
+
+
+def sem_travessao(texto):
+    """O traço usado como célula vazia na interface, citado numa observação, vira a palavra."""
+    return re.sub("[\u2013\u2014]", "traço", texto)
 
 
 def escreve_documentos(a, docs):
@@ -59,7 +65,7 @@ def escreve_paginas(a, caminho):
         for x in a["rodadas"]:
             sev = x["defeitos_por_severidade"]
             nd = sum(1 for i in ids_ if x["medias_por_dimensao"].get(i) is not None)
-            linhas.append([x["id"], x["data"], x["paginas"], f"{nd} de 10", pt(x["nota_ponderada_media"]), x["atendem_meta"], f"{sev['critico']}/{sev['alto']}/{sev['medio']}/{sev['baixo']}", x["jornadas_cumpridas"]])
+            linhas.append([x["id"], f"{x['data'][8:10]}/{x['data'][5:7]}/{x['data'][:4]}", x["paginas"], f"{nd} de 10", pt(x["nota_ponderada_media"]), x["atendem_meta"], f"{sev['critico']}/{sev['alto']}/{sev['medio']}/{sev['baixo']}", x["jornadas_cumpridas"]])
         L += tabela(["Rodada", "Data", "Páginas", "Dimensões com nota", "Nota ponderada média das dimensões avaliadas", "Atendem a meta", "Defeitos crítico/alto/médio/baixo", "Jornadas cumpridas"], linhas) + [""]
         linhas = [[x["id"]] + [pt(x["medias_por_dimensao"].get(i)) for i in ids_] for x in a["rodadas"]]
         L += tabela(["Rodada"] + [NOMES[i] for i in ids_], linhas) + [""]
@@ -100,7 +106,7 @@ def escreve_paginas(a, caminho):
         L.append("")
     L += ["## Limites desta avaliação", ""] + [f"- {x}" for x in a["limites"]] + [""]
     with open(caminho, "w", encoding="utf-8") as f:
-        f.write("\n".join(L))
+        f.write(sem_travessao("\n".join(L)))
 
 
 def escreve_aceite(a, docs, caminho):
@@ -161,4 +167,4 @@ def escreve_aceite(a, docs, caminho):
           "- Medição por navegador (condensada): `docs/observatorios/energia/avaliacao/inspecao.json`; jornadas: `jornadas.json`; revisão visual e didática: `revisao_visual.json`; testes: `testes.json`; rodadas: `rodadas.json`.",
           "- Reprodução: `PW_CORE=... node scripts/energia-avaliacao.mjs --base http://localhost:3100 --rotas rotas.txt --saida saida`, `node scripts/energia-jornadas.mjs ...` e `python3 scripts/energia_avaliacao.py --relatorio saida/relatorio.json --jornadas jornadas/jornadas.json`.", ""]
     with open(caminho, "w", encoding="utf-8") as f:
-        f.write("\n".join(L))
+        f.write(sem_travessao("\n".join(L)))

@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { num } from "@/lib/energia/formato";
-import { ESCALA_AVALIACAO, ORDEM_DIMENSOES, ROTULO_CURTO, ROTULO_RESULTADO_JORNADA, evolucao } from "@/lib/energia/avaliacao";
+import { datasLegiveis } from "@/lib/energia/visao";
+import { ESCALA_AVALIACAO, ORDEM_DIMENSOES, ROTULO_CURTO, ROTULO_RESULTADO_JORNADA, evolucao, textoCitado as citado } from "@/lib/energia/avaliacao";
+import { JornadaDetalhe } from "@/components/energia/AvaliacaoJornada";
 import type { AvaliacaoGold } from "@/lib/energia/tipos-avaliacao";
 
 /** Peças de servidor da página de avaliação (P071): jornadas, rubrica, método e evolução entre rodadas. */
@@ -18,33 +20,28 @@ export function AvaliacaoJornadas({ a }: { a: AvaliacaoGold }) {
       <ul className="space-y-3">
         {a.jornadas.map((j) => (
           <li key={j.id} className="border border-linha bg-superficie p-3" data-jornada={j.id} data-resultado={j.resultado}>
-            <details>
-              <summary className="cursor-pointer text-sm text-carvao">
-                <span className="rotulo mr-2 text-mineral">{j.id}</span>
-                {j.perfil}: <strong className="font-medium">{ROTULO_RESULTADO_JORNADA[j.resultado].toLowerCase()}</strong>, {j.passos_ok} de {j.passos_total} passos, {j.cliques} interações{j.movel ? ", em celular (390 px)" : ""}
-              </summary>
-              <p className="mt-2 text-sm text-carvao">{j.titulo}</p>
-              <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
-                {j.passos.map((s, i) => (
-                  <li key={`${i}-${s.descricao}`}>
-                    {s.resultado === "ok" ? "" : s.resultado === "falhou" ? "Falhou: " : "Não executado: "}
-                    {s.descricao}
-                    {s.observado ? ` (${s.observado})` : ""}
-                  </li>
-                ))}
-              </ol>
+            <JornadaDetalhe
+              id={j.id}
+              resumo={
+                <>
+                  <span className="rotulo mr-2 text-mineral">{j.id}</span>
+                  {j.perfil}: <strong className="font-medium">{ROTULO_RESULTADO_JORNADA[j.resultado].toLowerCase()}</strong>, {j.passos_ok} de {j.passos_total} passos, {j.cliques} interações{j.movel ? ", em celular (390 px)" : ""}
+                </>
+              }
+            >
+              <p className="mt-2 text-sm text-carvao">{citado(j.titulo)}</p>
               {(j.atritos ?? []).length > 0 && (
                 <div className="mt-2">
                   <p className="rotulo text-mineral">Atritos encontrados</p>
                   <ul className="mt-1 list-disc space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
                     {(j.atritos ?? []).map((t) => (
-                      <li key={t}>{t}</li>
+                      <li key={t}>{citado(t)}</li>
                     ))}
                   </ul>
                 </div>
               )}
               {j.limite && <p className="mt-2 text-xs leading-relaxed text-carvao-muted">Limite: {j.limite}</p>}
-            </details>
+            </JornadaDetalhe>
           </li>
         ))}
       </ul>
@@ -179,7 +176,7 @@ export function AvaliacaoMetodo({ a, children }: { a: AvaliacaoGold; children?: 
         <div>
           <dt className="rotulo text-mineral">Rodada</dt>
           <dd className="mt-0.5">
-            {rod.id}; inspeção gerada em {rod.inspecao_gerada_em ?? "data não registrada"}; código {a.versao_codigo ?? "não informado"}
+            {rod.id}; inspeção gerada em {rod.inspecao_gerada_em ? datasLegiveis(rod.inspecao_gerada_em) : "data não registrada"}; código {a.versao_codigo ?? "não informado"}
           </dd>
         </div>
         <div>
@@ -291,5 +288,33 @@ export function AvaliacaoMatriz({ a }: { a: AvaliacaoGold }) {
         <span>n.av.: não avaliada; n.ap.: não se aplica</span>
       </p>
     </figure>
+  );
+}
+
+/** Problemas que cada revisor viu se repetirem em várias páginas do seu grupo (texto dos revisores, sem contagem). */
+export function AvaliacaoRevisao({ a }: { a: AvaliacaoGold }) {
+  const r = a.revisao;
+  return (
+    <div className="space-y-3" data-lista="revisao">
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{r.metodo}</p>
+      <ul className="space-y-3">
+        {r.revisores.map((x) => (
+          <li key={x.id} className="border border-linha bg-superficie p-3" data-revisor={x.id}>
+            <p className="text-sm text-carvao">
+              <span className="rotulo mr-2 text-mineral">{x.id}</span>
+              {x.escopo}, {x.paginas} páginas
+            </p>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
+              {(r.problemas_entre_paginas[x.id] ?? []).map((t) => (
+                <li key={t}>{citado(t)}</li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+        Cada revisor viu só o seu grupo de páginas, e os problemas aparecem como ele os escreveu: a contagem de páginas afetadas não é calculada. O que cada nota de didatismo e de qualidade visual teve de observação e de defeito está na ficha da página.
+      </p>
+    </div>
   );
 }

@@ -142,6 +142,8 @@ export type AvaliacaoGold = Cabecalho & {
     rotas_construidas: number | null;
     familias: Record<string, number> | null;
     referencia_dos_dados: string | null;
+    /** Correções que entraram no código depois da medição desta rodada e ainda não foram medidas. */
+    corrigido_depois_da_medicao: string[];
   };
   metodo: { resumo: string; scripts: string[]; entradas: string };
   rubrica: {
@@ -165,6 +167,8 @@ export type AvaliacaoGold = Cabecalho & {
   jornadas: JornadaExecutada[];
   defeitos: DefeitoAvaliacao[];
   corrigidos: RodadaRegistro["defeitos"];
+  /** Revisão visual e didática: método, revisores e os problemas que cada um viu em várias páginas. */
+  revisao: { metodo: string | null; revisores: { id: string; escopo: string; paginas: number }[]; problemas_entre_paginas: Record<string, string[]> };
   rodadas: RodadaRegistro[];
   limites: string[];
   proveniencia: { avaliacao: Proveniencia };

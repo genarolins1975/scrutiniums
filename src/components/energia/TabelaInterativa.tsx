@@ -396,7 +396,7 @@ export function TabelaInterativa({
                     aria-sort={ativa && ordem ? (ordem.direcao === "asc" ? "ascending" : "descending") : undefined}
                     className={`border-b-2 border-linha bg-superficie px-2 align-bottom font-medium ${numerica ? "min-w-[7rem] text-right" : "text-left"} ${
                       ativa ? "text-carvao" : "text-mineral"
-                    } ${fixa ? "sticky left-0 z-20" : ""}`}
+                    } ${fixa ? "sticky left-0 z-20 max-w-[11rem] sm:max-w-[20rem]" : ""}`}
                   >
                     {c.ordenavel !== false ? (
                       <button
@@ -455,7 +455,7 @@ export function TabelaInterativa({
                           <th
                             key={c.id}
                             scope="row"
-                            className={`sticky left-0 z-10 bg-inherit px-2 font-normal text-carvao ${numerica ? "text-right" : "text-left"} ${
+                            className={`sticky left-0 z-10 max-w-[11rem] whitespace-normal bg-inherit px-2 font-normal text-carvao [overflow-wrap:anywhere] sm:max-w-[20rem] ${numerica ? "text-right" : "text-left"} ${
                               sel ? "shadow-[inset_4px_0_0_var(--cor-energia)]" : ""
                             }`}
                           >
