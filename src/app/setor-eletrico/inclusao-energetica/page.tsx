@@ -185,7 +185,7 @@ export default function InclusaoEnergeticaPage() {
               />
             }
             recorte={<p>{o.referencia}; Brasil e grandes regiões por classe de rendimento, UF só no total; nada municipal.</p>}
-            limite={`o peso da conta hoje: a pesquisa é a ${nomePof(o)} e nenhuma atualização modelada é publicada.`}
+            limite={`o peso da conta depois do período da pesquisa: a pesquisa é a ${nomePof(o)} e nenhuma atualização modelada é publicada.`}
           />
           <Cartao
             id="p062"

@@ -187,7 +187,7 @@ export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
 /** Tabela simples de servidor (poucas linhas, sem interação), com cabeçalhos e unidade. */
 export function ExpansaoTabelaSimples({ titulo, cabecalho, linhas }: { titulo: string; cabecalho: string[]; linhas: ReactNode[][] }) {
   return (
-    <div className="tabela-scroll">
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
       <table className="w-full border-collapse text-sm tabular-nums">
         <caption className="pb-2 text-left text-sm font-medium text-carvao">{titulo}</caption>
         <thead>

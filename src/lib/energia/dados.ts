@@ -37,6 +37,7 @@ export const PAGINAS_DADOS = [
   { id: "saude", href: "/setor-eletrico/dados/saude", rotulo: "Saúde e revisões", painel: "P068", pergunta: "O que atrasou ou mudou?" },
   { id: "reproducao", href: "/setor-eletrico/dados/reproducao", rotulo: "Download e reprodução", painel: "P069", pergunta: "Consigo reproduzir este gráfico?" },
   { id: "regras", href: "/setor-eletrico/metodologia", rotulo: "Metodologia", painel: "P070", pergunta: "Quais interpretações são permitidas?" },
+  { id: "avaliacao", href: "/setor-eletrico/metodologia/avaliacao", rotulo: "Avaliação dos painéis", painel: "P071", pergunta: "Como demonstrar que a qualidade evoluiu?" },
 ] as const;
 
 export type IdPaginaDados = (typeof PAGINAS_DADOS)[number]["id"];

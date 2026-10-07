@@ -474,6 +474,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
       { texto: "Unidades e como lê-las", href: "/setor-eletrico/metodologia#unidades" },
       { texto: "Linhagem: do arquivo da fonte à página", href: "/setor-eletrico/metodologia#linhagem" },
       { texto: "Limitações conhecidas", href: "/setor-eletrico/metodologia#limitacoes" },
+      { texto: "Avaliação dos painéis: nota de cada página por dimensão, com a evidência e os defeitos abertos", href: "/setor-eletrico/metodologia/avaliacao#avaliacao" },
     ],
     recorte: "Indicador e regra.",
   },

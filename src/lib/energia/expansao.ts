@@ -1262,7 +1262,7 @@ export function filtraRede<T extends readonly [string, string | null, number | n
  * da ANEEL, a de maior capacidade em 2035 no cenário, com o realizado e a carteira lado a
  * lado, sem diferença calculada.
  */
-export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias">): string {
+export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias" | "referencias">): string {
   const c = g.cenarios;
   // as referências da Figura 3-25 (ponto de partida e fim do horizonte) vêm da própria figura
   const refs = (c.figuras.fig_3_25?.linhas ?? []).map((l) => l.ref).sort();
@@ -1279,7 +1279,7 @@ export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias"
   const maior = [...diretas].sort((a, b) => (b.pde_dez2035_gw ?? 0) - (a.pde_dez2035_gw ?? 0))[0];
   if (maior) {
     partes.push(
-      `Entre as categorias com correspondência direta no cadastro da ANEEL, a maior em ${mesTexto(fim)} é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE hoje.`,
+      `Entre as categorias com correspondência direta no cadastro da ANEEL, a maior em ${mesTexto(fim)} é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA de ${dataBR(g.referencias.siga)} e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE de ${dataBR(g.referencias.ralie)}.`,
     );
   }
   return partes.join(" ");

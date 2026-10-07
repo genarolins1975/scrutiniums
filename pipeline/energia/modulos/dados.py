@@ -976,6 +976,27 @@ def calendario(lista, hoje):
     return agregado, linhas
 
 
+def bloco_avaliacao():
+    """Ponteiro da avaliação dos painéis (P071) em publicacao.json. O arquivo avaliacao.json é gerado por
+    scripts/energia_avaliacao.py a partir da inspeção, das jornadas e da revisão; sem ele, a página declara
+    a ausência e não mostra nota."""
+    caminho = os.path.join(base.GOLD, "avaliacao.json")
+    existe = os.path.exists(caminho)
+    r = {"arquivo": "/energia/gold/avaliacao.json" if existe else None, "caminho_previsto": "public/energia/gold/avaliacao.json", "existe": existe}
+    if not existe:
+        r["rodada"] = None
+        r["nota"] = ("A avaliação dos painéis (P071) só existe depois da inspeção final; enquanto o arquivo não existir, "
+                     "a página declara a ausência e não exibe nota.")
+        return r
+    a = base.le_gold("avaliacao.json") or {}
+    res, rod = a.get("resumo", {}), a.get("rodada", {})
+    r["rodada"] = {"id": rod.get("id"), "data_inspecao": rod.get("data_inspecao"), "paginas": res.get("paginas"),
+                   "nota_ponderada_media": res.get("nota_ponderada_media")}
+    r["nota"] = ("Avaliação publicada: nota só com medição, teste ou revisão registrada; dimensão sem teste aparece como não avaliada. "
+                 "A página /setor-eletrico/metodologia/avaliacao mostra a evidência de cada nota.")
+    return r
+
+
 def _eh_proveniencia(o):
     return isinstance(o, dict) and "natureza" in o and "fonte" in o and "limitacoes" in o
 
@@ -2030,11 +2051,7 @@ def construir(con, ctx):
         "calendario": cal_agregado,
         "silver_nao_declarados": nao_declarados,
         "eixos": eix,
-        "avaliacao": {"arquivo": "/energia/gold/avaliacao.json" if os.path.exists(os.path.join(base.GOLD, "avaliacao.json")) else None,
-                      "caminho_previsto": "public/energia/gold/avaliacao.json",
-                      "existe": os.path.exists(os.path.join(base.GOLD, "avaliacao.json")),
-                      "nota": ("A avaliação dos painéis (P071) só existe depois da inspeção final; enquanto o arquivo não existir, "
-                               "a página declara a ausência e não exibe nota.")},
+        "avaliacao": bloco_avaliacao(),
         "reproducao": {
             "repositorio": pub.REPOSITORIO,
             "url_versao_modelo": pub.REPOSITORIO + "/blob/{commit}/public{caminho}",
