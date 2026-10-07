@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-07T19:56:32.646Z",
+ "gerado_em": "2026-10-07T23:33:09.563Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6321,
+   "duracao_ms": 6731,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -36,7 +36,7 @@
     {
      "descricao": "Abre o conceito PLD pelo resultado da busca",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/aprenda/pld; h1 \"PLD Preço de Liquidação das Diferenças\"; em uma frase: \"Preço do Mercado de Curto Prazo, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Ma...\""
+     "observado": "URL /setor-eletrico/aprenda/pld; h1 \"PLD Preço de Liquidação das Diferenças\"; em uma frase: \"Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efeti...\""
     },
     {
      "descricao": "Lê \"Não confundir com\" e confere o contraste entre PLD e tarifa (TE e TUSD)",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11390,
+   "duracao_ms": 11021,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4135,
+   "duracao_ms": 3998,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 12,
-   "duracao_ms": 5965,
+   "duracao_ms": 5612,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6408,
+   "duracao_ms": 6306,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -311,7 +311,7 @@
     {
      "descricao": "Abre a página Aprenda e localiza os verbetes de água e de preço",
      "resultado": "ok",
-     "observado": "h1 \"Como funciona o sistema elétrico brasileiro, conceito a conceito\"; 45 de 48 verbetes conferidos na fonte primária; 48 cartões de verbete; cartões EAR, PLD e a trilha \"Água, operação e preço\" presentes"
+     "observado": "h1 \"Como funciona o sistema elétrico brasileiro, conceito a conceito\"; 48 de 48 verbetes conferidos na fonte primária; 48 cartões de verbete; cartões EAR, PLD e a trilha \"Água, operação e preço\" presentes"
     },
     {
      "descricao": "Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado",
@@ -346,7 +346,7 @@
     {
      "descricao": "Segue \"ver no painel\" do passo 5 até o PLD e confere que o painel mostra os mesmos números",
      "resultado": "ok",
-     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; cartão Sudeste/Centro-Oeste: média R$ 135,25 em 30/09/2026, faixa horária R$ 57,31 a R$ 577,20, iguais ao texto da trilha. Ao chegar (rolagem 4987 px): gráfico horário não está à vista; abas de período cobertas pelo botão fixo: Dia 30/09, 7 dias, 30 dias, 12 meses"
+     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; cartão Sudeste/Centro-Oeste: média R$ 135,25 em 30/09/2026, faixa horária R$ 57,31 a R$ 577,20, iguais ao texto da trilha. Ao chegar (rolagem 5006 px): gráfico horário não está à vista; abas de período cobertas pelo botão fixo: Dia 30/09, 7 dias, 30 dias, 12 meses"
     },
     {
      "descricao": "Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com o pico do exemplo",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24702,
+   "duracao_ms": 24295,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -461,7 +461,7 @@
     {
      "descricao": "Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição",
      "resultado": "ok",
-     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7269 para 7269 px"
+     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7288 para 7288 px"
     },
     {
      "descricao": "Usa o botão voltar e confere que o filtro de UF = MG volta",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 168,
-   "duracao_ms": 35303,
+   "duracao_ms": 34019,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -567,7 +567,7 @@
     {
      "descricao": "Escolhe a mesma distribuidora com clique na tabela e compara a ficha com a do teclado",
      "resultado": "ok",
-     "observado": "d=06981180000116 nas duas formas; ficha idêntica (871 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
+     "observado": "d=06981180000116 nas duas formas; ficha idêntica (865 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
     },
     {
      "descricao": "Abre Comprove este número com Enter, confere onde cai o foco e fecha com Esc",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 35297,
+   "duracao_ms": 33460,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -628,7 +628,7 @@
     {
      "descricao": "Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição",
      "resultado": "ok",
-     "observado": "âncora #p011 (O preço está alto para esta época?) a 112 px do topo da janela, rolagem 552 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
+     "observado": "âncora #p011 (O preço está alto para esta época?) a 112 px do topo da janela, rolagem 571 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
     },
     {
      "descricao": "Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação",
@@ -643,7 +643,7 @@
     {
      "descricao": "Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação",
      "resultado": "ok",
-     "observado": "âncora #mapa: elemento existe no destino, topo 112 px, rolagem 1389 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #mapa: elemento existe no destino, topo 112 px, rolagem 1409 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Confere em Perdas que o painel certo ficou à vista ao abrir o link (âncora do link copiado)",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 25030,
+   "duracao_ms": 24612,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13497,
+   "duracao_ms": 13170,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

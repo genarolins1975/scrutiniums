@@ -307,9 +307,9 @@
    },
    "achados_total": 26,
    "por_estado": {
-    "corrigido": 19,
+    "corrigido": 21,
     "parcial": 3,
-    "aberto": 4
+    "aberto": 2
    },
    "achados": [
     {
@@ -471,14 +471,14 @@
      "severidade": "baixa",
      "pagina": "/setor-eletrico/aprenda/garantia-fisica, /setor-eletrico/aprenda/acr",
      "categoria": "apoio do \"por que importa\" fora dos trechos exibidos",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "F24",
      "severidade": "baixa",
      "pagina": "/setor-eletrico/aprenda/pld, /setor-eletrico/aprenda/mcp",
      "categoria": "trecho truncado, paráfrase com \"somados\" e canal da captura",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "F25",
@@ -516,8 +516,8 @@
    },
    "achados_total": 20,
    "por_estado": {
-    "corrigido": 10,
-    "aberto": 10
+    "corrigido": 12,
+    "aberto": 8
    },
    "achados": [
     {
@@ -616,7 +616,7 @@
      "severidade": "baixa",
      "pagina": "/setor-eletrico/aprenda/gsf (Fonte oficial, 1º item) e outros",
      "categoria": "Quebra de linha: seta ↗ órfã",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "F15",
@@ -630,7 +630,7 @@
      "severidade": "baixa",
      "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento (simuladores)",
      "categoria": "Simulador: anúncio ao leitor de tela e faixas",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "F17",
@@ -666,16 +666,16 @@
  "resumo": {
   "achados_total": 84,
   "por_estado": {
-   "corrigido": 43,
+   "corrigido": 47,
    "parcial": 5,
-   "aberto": 36
+   "aberto": 32
   },
   "nenhum_bloqueante": true,
   "nota": "As notas são de revisores agentes, não de leitores reais, e valem como instrumento de comparação entre rodadas, não como medida absoluta. Dos achados de severidade alta, 2 seguem parciais (leitor L-06, leitor L-26); os demais abertos são de severidade média ou baixa, em sua maioria de desenho global (rodapé do observatório, selo de natureza, posição do exemplo, título do índice, que vem do mapa do setor) ou fora do Aprenda (painel de Mercado, versão do código nas fichas). Ficam como pendência declarada em CONTINUIDADE.md.",
   "abertos_ou_parciais_por_severidade": {
    "alta": 2,
    "media": 14,
-   "baixa": 25
+   "baixa": 21
   }
  }
 }
