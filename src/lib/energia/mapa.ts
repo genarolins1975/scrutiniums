@@ -42,7 +42,7 @@ export const PAGINAS_MAPA = {
   qualidade: { rotulo: "Qualidade", href: "/setor-eletrico/qualidade", pergunta: "Com que frequência e por quanto tempo falta energia?", estado: "integrado" },
   "inclusao-energetica": { rotulo: "Inclusão energética", href: "/setor-eletrico/inclusao-energetica", pergunta: "Quem tem acesso adequado e para quem a energia pesa mais?", estado: "integrado" },
   transicao: { rotulo: "Transição e ambiente", href: "/setor-eletrico/transicao", pergunta: "Como a transformação do setor se distribui e afeta as emissões?", estado: "integrado" },
-  aprenda: { rotulo: "Aprenda", href: "/setor-eletrico/aprenda", pergunta: "Como funciona o sistema elétrico brasileiro, conceito a conceito?", estado: "referencia" },
+  aprenda: { rotulo: "Aprenda", href: "/setor-eletrico/aprenda", pergunta: "O que significam os conceitos e como se ligam aos números?", estado: "referencia" },
   dados: { rotulo: "Dados e catálogo", href: "/setor-eletrico/dados", pergunta: "O que é público sobre o setor elétrico, e o que já está integrado?", estado: "referencia" },
   metodologia: { rotulo: "Metodologia", href: "/setor-eletrico/metodologia", pergunta: "Como os números são produzidos, e o que eles não dizem?", estado: "referencia" },
 } satisfies Record<string, PaginaMapa>;

@@ -148,7 +148,7 @@
      "severidade": "media",
      "pagina": "/gsf, /ree, /constrained-off, /pld",
      "categoria": "ordem e leveza",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "L-19",
@@ -211,7 +211,7 @@
      "severidade": "media",
      "pagina": "/ (índice)",
      "categoria": "promessa do titulo",
-     "estado": "aberto"
+     "estado": "corrigido"
     },
     {
      "id": "L-28",
@@ -666,15 +666,15 @@
  "resumo": {
   "achados_total": 84,
   "por_estado": {
-   "corrigido": 47,
+   "corrigido": 49,
    "parcial": 5,
-   "aberto": 32
+   "aberto": 30
   },
   "nenhum_bloqueante": true,
-  "nota": "As notas são de revisores agentes, não de leitores reais, e valem como instrumento de comparação entre rodadas, não como medida absoluta. Dos achados de severidade alta, 2 seguem parciais (leitor L-06, leitor L-26); os demais abertos são de severidade média ou baixa, em sua maioria de desenho global (rodapé do observatório, selo de natureza, posição do exemplo, título do índice, que vem do mapa do setor) ou fora do Aprenda (painel de Mercado, versão do código nas fichas). Ficam como pendência declarada em CONTINUIDADE.md.",
+  "nota": "As notas são de revisores agentes, não de leitores reais, e valem como instrumento de comparação entre rodadas, não como medida absoluta. Dos achados de severidade alta, 2 seguem parciais (leitor L-06, leitor L-26); os demais abertos são de severidade média ou baixa, em sua maioria de desenho global (rodapé do observatório, selo de natureza) ou fora do Aprenda (painel de Mercado, versão do código nas fichas). Ficam como pendência declarada em CONTINUIDADE.md. A posição do exemplo (L-18) e o título do índice (L-27) foram corrigidos depois da entrega da revisão; a avaliação r5 mediu o layout e o título anteriores e não foi remedida.",
   "abertos_ou_parciais_por_severidade": {
    "alta": 2,
-   "media": 14,
+   "media": 12,
    "baixa": 21
   }
  }

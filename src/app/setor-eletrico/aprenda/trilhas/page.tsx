@@ -26,7 +26,7 @@ export default function TrilhasPage() {
             Aprenda
           </Link>
         </nav>
-        <CabecalhoModulo siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números">
+        <CabecalhoModulo siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números?">
           Cada trilha percorre verbetes conferidos na ordem em que um afeta o outro. Em cada passo há um número publicado pelo observatório, com o link ao painel e a
           ficha Comprove quando o painel a publica, e o tipo da ligação com o passo seguinte. Do painel, um botão traz o leitor de volta ao passo. No fim, um exemplo sintético, com valores
           hipotéticos, mostra a conta que liga os conceitos.

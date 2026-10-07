@@ -111,9 +111,6 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             <Campo rotulo="Em uma frase">
               <p className="font-serif text-xl leading-relaxed">{c.emUmaFrase}</p>
             </Campo>
-            <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
-            <Campo rotulo="Como é medido">{c.comoEMedido}</Campo>
-            {unidade && <Campo rotulo="Unidade">{unidade}</Campo>}
             <Campo rotulo={sintetico ? "Exemplo sintético" : "Exemplo real"} id="exemplo">
               {prova ? (
                 <AprendaProva prova={prova} volta={`verbete:${c.slug}`} />
@@ -129,6 +126,9 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                 <p className="text-carvao-muted">Exemplo com dado integrado ainda não disponível para este conceito.</p>
               )}
             </Campo>
+            <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
+            <Campo rotulo="Como é medido">{c.comoEMedido}</Campo>
+            {unidade && <Campo rotulo="Unidade">{unidade}</Campo>}
             {contrastes.length > 0 && (
               <Campo rotulo="Não confundir com" id="nao-confundir">
                 <ul className="space-y-4">

@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-07T23:33:09.563Z",
+ "gerado_em": "2026-10-07T23:55:05.660Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6731,
+   "duracao_ms": 6355,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11021,
+   "duracao_ms": 11139,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 3998,
+   "duracao_ms": 4069,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 12,
-   "duracao_ms": 5612,
+   "duracao_ms": 5732,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6306,
+   "duracao_ms": 6269,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -311,7 +311,7 @@
     {
      "descricao": "Abre a página Aprenda e localiza os verbetes de água e de preço",
      "resultado": "ok",
-     "observado": "h1 \"Como funciona o sistema elétrico brasileiro, conceito a conceito\"; 48 de 48 verbetes conferidos na fonte primária; 48 cartões de verbete; cartões EAR, PLD e a trilha \"Água, operação e preço\" presentes"
+     "observado": "h1 \"O que significam os conceitos e como se ligam aos números?\"; 48 de 48 verbetes conferidos na fonte primária; 48 cartões de verbete; cartões EAR, PLD e a trilha \"Água, operação e preço\" presentes"
     },
     {
      "descricao": "Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24295,
+   "duracao_ms": 24285,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 168,
-   "duracao_ms": 34019,
+   "duracao_ms": 34317,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 33460,
+   "duracao_ms": 34682,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 24612,
+   "duracao_ms": 24564,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13170,
+   "duracao_ms": 13376,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

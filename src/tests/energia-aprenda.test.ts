@@ -15,7 +15,8 @@ import { exemploDe } from "@/lib/energia/conteudo/exemplos";
 import { provaDoPasso, provaDoVerbete } from "@/lib/energia/conteudo/provas";
 import { TRILHAS_APRENDA, comVolta, passosComVerbete } from "@/lib/energia/conteudo/trilhas";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
-import { TIPOS_LIGACAO } from "@/lib/energia/mapa";
+import { PAGINAS_MAPA, TIPOS_LIGACAO } from "@/lib/energia/mapa";
+import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { destinoDaVolta } from "@/lib/energia/retorno";
 import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 import { VIEW_SECTIONS } from "@/lib/telemetry";
@@ -221,6 +222,19 @@ describe("P065: páginas dos verbetes", () => {
     }
   });
 
+  it("o exemplo vem logo depois da definição, antes de por que importa e de como é medido", () => {
+    for (const c of conferidos) {
+      const h = paginas[c.slug];
+      const pos = (rotulo: string) => h.indexOf(`>${rotulo}<`);
+      const exemplo = Math.max(pos("Exemplo real"), pos("Exemplo sintético"));
+      expect(pos("Em uma frase"), c.slug).toBeGreaterThan(-1);
+      expect(exemplo, c.slug).toBeGreaterThan(pos("Em uma frase"));
+      expect(exemplo, c.slug).toBeLessThan(pos("Por que importa"));
+      expect(pos("Por que importa"), c.slug).toBeLessThan(pos("Como é medido"));
+      expect(h.indexOf('id="exemplo"'), c.slug).toBeLessThan(pos("Por que importa"));
+    }
+  });
+
   it("selo com ressalva, siglas do texto expandidas, trecho literal recolhível e exemplo com os termos da conta", () => {
     for (const s of ["gsf", "ree"]) {
       expect(paginas[s], s).toContain('data-ressalva="true"');
@@ -330,6 +344,18 @@ describe("P066: trilhas", () => {
   it("o simulador não grava na URL, não usa a gold e não manda telemetria", () => {
     const t = ler("src/components/energia/AprendaSimulacao.tsx");
     expect(t).not.toMatch(/useEstadoUrl|lerGold|carregaJson|fetch\(|sendBeacon|MarcaVisita/);
+  });
+
+  it("o título do índice e o das trilhas são perguntas, iguais às do mapa e do menu, e o índice declara o escopo dos verbetes", () => {
+    const h1 = (h: string) => (/<h1[^>]*>(.*?)<\/h1>/.exec(h)?.[1] ?? "").replace(/<[^>]+>/g, "");
+    const t = h1(aprenda);
+    expect(t).toMatch(/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ].{10,}\?$/);
+    expect(t).not.toMatch(/[–—]/);
+    expect(t).not.toContain("sistema elétrico brasileiro");
+    expect(t).toBe(PAGINAS_MAPA.aprenda.pergunta);
+    expect(t).toBe(DESTINOS_NAVEGACAO.find((d) => d.slug === "aprenda")?.pergunta);
+    expect(h1(indice)).toMatch(/\?$/);
+    expect(aprenda).toContain("não todo o vocabulário do setor");
   });
 
   it("índice das trilhas, Aprenda com as trilhas e telemetria própria", () => {

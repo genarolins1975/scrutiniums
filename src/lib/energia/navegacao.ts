@@ -184,7 +184,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
 
   // 6. Conhecimento e evidência
   { ...doModulo("regulacao"), rotulo: "Regulação", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "Quais regras mudaram e desde quando valem?" },
-  { ...doModulo("aprenda"), rotulo: "Aprenda", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "Como entender os conceitos e ligar uma coisa à outra?" },
+  { ...doModulo("aprenda"), rotulo: "Aprenda", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "O que significam os conceitos e como se ligam aos números?" },
   { ...doModulo("dados"), rotulo: "Dados", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "De onde vêm os números e como reutilizá-los?" },
   {
     slug: "metodologia",

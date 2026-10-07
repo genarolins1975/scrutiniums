@@ -30,10 +30,10 @@ export default function AprendaPage() {
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo siglas={["MWmed", "DIC", "FIC", "CCEE", "ONS", "ANEEL"]} rotulo="Aprenda" titulo="Como funciona o sistema elétrico brasileiro, conceito a conceito">
-          Cada verbete diz, em uma frase, o que é; por que importa; como é medido; um exemplo do sistema, ligado ao painel onde o número aparece; com o
-          que não confundir; as relações com outros conceitos e a fonte oficial com a data de conferência. Quando se aplicam, trazem também a unidade e o
-          que não se pode concluir.{" "}
+        <CabecalhoModulo siglas={["MWmed", "DIC", "FIC", "CCEE", "ONS", "ANEEL"]} rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
+          Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Cada um diz, em uma frase, o que é; mostra
+          um exemplo do sistema, ligado ao painel onde o número aparece; e explica por que importa e como é medido. Quando se aplicam, trazem também a unidade, com
+          o que não confundir, as relações com outros conceitos, a fonte oficial com a data de conferência e o que não se pode concluir.{" "}
           {conferidos === CONCEITOS.length
             ? `Os ${CONCEITOS.length} verbetes estão conferidos na fonte primária${comRessalva ? `; ${comRessalva} deles trazem uma ressalva declarada no próprio verbete, porque a fonte que define o termo não foi lida ou não o define` : ""}.`
             : `${conferidos} de ${CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem definição, com o que já foi consultado e o que falta.`}
