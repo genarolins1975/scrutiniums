@@ -1,3 +1,5 @@
+import { fraseDeRecusa } from "@/lib/energia/bastidor";
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -136,7 +138,7 @@ export default function PaginaP038() {
                 {bloqueioP038.map((b) => (
                   <EmpresasAviso key={b.id} rotulo="Bloqueio documentado">
                     <p>
-                      {b.descricao} {b.evidencia}
+                      {b.descricao} {fraseDeRecusa(b.evidencia, "da ANEEL")} <TextoDoLeitor texto={b.evidencia} />
                     </p>
                     <p className="mt-1">O que se entrega no lugar: {b.alternativa}</p>
                   </EmpresasAviso>

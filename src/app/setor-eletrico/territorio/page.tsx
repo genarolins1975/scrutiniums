@@ -192,7 +192,7 @@ export default function TerritorioPage() {
 
                 <TerritorioAnalise titulo="Quando a escolha passa de uma camada para outra?" id="territorio-compatibilidade">
                   <TerritorioTabela
-                    titulo="Correspondências entre grãos declaradas na gold"
+                    titulo="Correspondências entre recortes declaradas na base"
                     colunas={["De", "Para", "Passa", "Regra", "Condição"]}
                     linhas={g.compatibilidade.map((c) => [c.de, c.para, c.valida ? "sim" : "não", c.regra, c.condicao ?? "sem condição"])}
                   />

@@ -20,6 +20,8 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
+import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
+import type { ModelosGold } from "@/lib/energia/tipos";
 import {
   GOLD_PREVISOES,
   ROTA_MODELOS,
@@ -78,12 +80,14 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
   if (!f) notFound();
 
   const versao = g.gerado_em.slice(0, 10);
-  const fonte = "Observatório, registro de modelos de previsão do PLD (pipeline/energia/previsoes)";
+  const fonte = "Observatório, registro de modelos de previsão do PLD";
   const coef = linhasCoeficientes([f]);
   const variaveis = f.coeficientes_ultimo_ajuste?.variaveis ?? [];
   const reexec = f.aprovacao.referencia_experimental ? linhasReexecucao(g) : [];
   const ehB0 = f.aprovacao.referencia_experimental;
   const ancora = `ficha-${slugModelo(f.codigo)}`;
+  const registro = lerGold<ModelosGold>("modelos.json");
+  const resumoModelo = integra(registro) ? registro.modelos.find((x) => x.codigo === f.codigo) : undefined;
   const downloads = g.downloads.filter((d) => (coef.length ? /previsoes_ajustes_c2|previsoes_emissoes/ : /previsoes_emissoes/).test(d.url));
   const proveniencia = ehB0 && "proveniencia" in g.previsao_atual && g.previsao_atual.proveniencia ? g.previsao_atual.proveniencia : g.proveniencia;
   const impl = f.implementacao as { codigo?: string; versao?: string; mesma_definicao_da_pesquisa?: boolean; diferencas?: string[]; restricao_preco?: string } | null;
@@ -106,7 +110,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
         <CabecalhoModulo
           rotulo={`Ficha do modelo · versão ${f.versao}`}
           titulo={`${f.codigo} · ${f.nome}`}
-          referencia={<>Registro de modelos na execução de {carimbo(g.gerado_em)}; configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</>}
+          referencia={<>Registro de modelos na execução de {carimbo(g.gerado_em)}.<span data-nivel="analisar"> Configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</span></>}
         >
           <span className="inline-flex flex-wrap items-center gap-2">
             <EstadoModelo estado={f.estado} comTexto />
@@ -134,7 +138,12 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                   {f.aprovacao.promovido_em ? `, promovido em ${dataBR(f.aprovacao.promovido_em)}` : ", nunca promovido"}.
                 </>
               }
-              comoInterpretar={<>{f.formula ?? f.motivo_sem_implementacao ?? "Sem fórmula publicada."}</>}
+              comoInterpretar={
+                <>
+                  {resumoModelo?.resumo ?? "Sem resumo publicado para este modelo."} {resumoModelo?.limitacao_principal ?? ""}
+                  {f.formula && <span data-nivel="analisar"> Fórmula: {f.formula}</span>}
+                </>
+              }
               naoConcluir={
                 <>
                   A ficha não diz se o modelo acerta: o desempenho está no painel de desempenho. {f.limitacoes?.[0] ?? ""}
@@ -143,7 +152,10 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
               proveniencia={proveniencia}
             >
               <div className="space-y-6">
-                <PrevisoesResposta id="p014">{respostaFicha(f, g)}</PrevisoesResposta>
+                <PrevisoesResposta id="p014">
+                  {resumoModelo?.resumo ? `${resumoModelo.resumo} ` : ""}
+                  {respostaFicha(f, g)}
+                </PrevisoesResposta>
                 <PrevisoesRecorte
                   periodo={
                     f.coeficientes_ultimo_ajuste?.segmentos[0]
@@ -155,8 +167,8 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                 />
                 {!f.implementado_no_repositorio && (
                   <PrevisoesAviso tipo="alerta">
-                    Sem implementação no repositório: {minusculaInicial(f.motivo_sem_implementacao ?? "motivo não registrado")}
-                    {f.pesos_c1_motivo && f.pesos_c1_motivo !== f.motivo_sem_implementacao ? ` ${f.pesos_c1_motivo}` : ""}
+                    Sem implementação no repositório: {minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "motivo não registrado"))}
+                    {f.pesos_c1_motivo && f.pesos_c1_motivo !== f.motivo_sem_implementacao ? ` ${semCaminhosDeArquivo(f.pesos_c1_motivo)}` : ""}
                   </PrevisoesAviso>
                 )}
 

@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/carga" },
 };
 
-const FONTE = "ONS, Carga de Energia Diária (validada no pipeline)";
+const FONTE = "ONS, Carga de Energia Diária (validada pelo observatório)";
 
 const COLUNAS_CAPTURAS: ColunaTabela[] = [
   { id: "captura", rotulo: "Captura", tipo: "texto", categorica: true },

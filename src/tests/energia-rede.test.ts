@@ -470,7 +470,7 @@ describe("páginas renderizadas no servidor", () => {
   it("P029 e P030: frases do A05, bloqueio dos limites e documentos conferidos visíveis", () => {
     expect(html.p029).toContain('data-textos="a05"');
     expect(html.p029).toContain(escapa(R.frasesA05(G.achados.A05)[0].slice(0, 40)));
-    expect(html.p030).toContain("bloqueio documentado (achado A06)");
+    expect(html.p030).toContain("Limites operativos de intercâmbio: sem fonte aberta");
     expect(html.p030).toContain(escapa(G.restricoes.limites.conclusao.slice(0, 60)));
     for (const b of G.restricoes.limites.busca) expect(html.p030).toContain(escapa(b.resultado.slice(0, 40)));
   });

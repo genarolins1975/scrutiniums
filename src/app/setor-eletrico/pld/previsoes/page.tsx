@@ -85,7 +85,7 @@ export default function PrevisoesPage() {
   );
   const versao = g.gerado_em.slice(0, 10);
   const fonteGrade = "Observatório, rodada de previsão do PLD (referência B0 sobre o PLD horário da CCEE)";
-  const fonteArquivo = "Observatório, arquivo imutável de emissões (pipeline/energia/previsoes)";
+  const fonteArquivo = "Observatório, arquivo imutável de emissões de previsão";
   const ref = g.governanca.referencia_experimental;
   const reex = g.prospectivo.reexecucao;
   const particoes = particoesCitadas(g);

@@ -1,3 +1,4 @@
+import { fraseDeRecusa, semCodigosDePergunta } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -98,10 +99,16 @@ export default function PerdasRegulatorioPage() {
                 <div className="mb-5 border border-erro bg-papel px-4 py-3 text-sm text-carvao" data-bloqueio="regulatorio">
                   <p className="rotulo text-erro">Bloqueado em parte: comparação do realizado com a referência regulatória</p>
                   <p className="mt-1 leading-relaxed">
-                    {bloqueioRegulatorio.item}. Evidência: {bloqueioRegulatorio.evidencia}
+                    {semCodigosDePergunta(bloqueioRegulatorio.item)}. {fraseDeRecusa(bloqueioRegulatorio.evidencia, "da ANEEL")} O relatório da ANEEL traz esses valores só em figuras, sem tabela; por isso esta
+                    comparação não é feita aqui.
                   </p>
-                  <p className="mt-1 leading-relaxed">Dependência: {bloqueioRegulatorio.dependencia}</p>
-                  <details className="mt-1">
+                  <p className="mt-1 leading-relaxed" data-nivel="analisar">
+                    Evidência: {bloqueioRegulatorio.evidencia}
+                  </p>
+                  <p className="mt-1 leading-relaxed" data-nivel="analisar">
+                    Dependência: {bloqueioRegulatorio.dependencia}
+                  </p>
+                  <details className="mt-1" data-nivel="analisar">
                     <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">
                       Endereços tentados ({bloqueioRegulatorio.tentativas.length})
                     </summary>

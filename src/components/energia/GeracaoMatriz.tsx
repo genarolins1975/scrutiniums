@@ -190,7 +190,7 @@ export function GeracaoMatriz({
         chaveUrl="mx"
         selecionado={sel}
         onSelecionar={selecionar}
-        nota="Categoria sem linha no período fica vazia (ausência), distinta de zero. As participações vêm da gold, sem novo arredondamento; somam 100% dentro de 0,05 ponto em cada janela (controle publicado)."
+        nota="Categoria sem linha no período fica vazia (ausência), distinta de zero. As participações vêm da base publicada, sem novo arredondamento; somam 100% dentro de 0,05 ponto em cada janela (controle publicado)."
       />
 
       <div className="space-y-4 border-t border-linha pt-5" id="historico-mensal">

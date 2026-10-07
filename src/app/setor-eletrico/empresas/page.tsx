@@ -116,7 +116,7 @@ export default function EmpresasPage() {
           referencia={
             <>
               SIGA de {dataTexto(datas.siga)}; SIGET de {dataTexto(t?.data)}; cadastro de agentes de {dataTexto(datas.cadastro_agentes)}; composição societária declarada à ANEEL de {janela}; CVM com
-              DFP até {f.periodos.ultimo_exercicio ?? "sem dado"} e ITR até {dataTexto(f.periodos.ultimo_trimestre)}; números das distribuidoras copiados das golds de Perdas, Qualidade e Conta de luz.
+              DFP até {f.periodos.ultimo_exercicio ?? "sem dado"} e ITR até {dataTexto(f.periodos.ultimo_trimestre)}; números das distribuidoras copiados das bases publicadas de Perdas, Qualidade e Conta de luz.
               Processado em {carimbo(g.gerado_em)}.
             </>
           }

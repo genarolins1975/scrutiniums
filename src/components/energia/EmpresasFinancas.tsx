@@ -181,7 +181,7 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
                       ? ROTULO_ALERTA.fluxos_nao_preenchidos
                       : r?.exercicio
                         ? faltaFicha
-                          ? "Carregando a ficha de prova."
+                          ? "Carregando a ficha Comprove."
                           : "Receita do último exercício sem ficha publicada."
                         : "Sem demonstração anual (DFP) no período lido."
                   }

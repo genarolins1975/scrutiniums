@@ -85,7 +85,7 @@ export function PerdasContexto({ pontos, linhas, ids, rotulos, ano, anoRelacao, 
           avisoCausalidade: "Associação entre áreas não é causalidade nem descreve cada família; perdas não técnicas não são atribuídas à população da área.",
           nota:
             r !== null
-              ? `ρ de Spearman = ${num(r, 3)} com ${plural(n, "concessionária", "concessionárias")}, calculado no pipeline sobre os valores sem arredondamento.`
+              ? `ρ de Spearman = ${num(r, 3)} com ${plural(n, "concessionária", "concessionárias")}, calculado pelo observatório sobre os valores sem arredondamento.`
               : "Sem pares suficientes para a correlação.",
         }}
         entidade={{ singular: "concessionária", plural: "concessionárias" }}

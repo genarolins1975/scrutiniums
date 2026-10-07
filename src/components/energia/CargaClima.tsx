@@ -259,7 +259,7 @@ export function CargaClima({
               versao={d.origem_modelo}
               nomeArquivo={`carga-decomposicao-a07-${sm}-${variante}-${tipo}`}
               chaveUrl="dec"
-              nota={`As quatro partes do modelo somam a diferença prevista (${num(d.previsto_log100, 2)}); com o resíduo (${num(d.residuo_log100, 2)}), a diferença real (${num(d.real_log100, 2)}). Valores da gold, com duas casas.`}
+              nota={`As quatro partes do modelo somam a diferença prevista (${num(d.previsto_log100, 2)}); com o resíduo (${num(d.residuo_log100, 2)}), a diferença real (${num(d.real_log100, 2)}). Valores publicados, com duas casas.`}
             />
           </>
         ) : (

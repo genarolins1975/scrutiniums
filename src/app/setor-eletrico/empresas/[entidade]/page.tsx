@@ -245,7 +245,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       <p className="rotulo text-mineral">Perdas totais</p>
                       <p className="mt-3 font-serif text-2xl text-carvao">{p && p.taxa_total_pct !== null ? pctTexto(p.taxa_total_pct, 2) : "sem dado"}</p>
                       <p className="mt-2 text-xs">
-                        {p && p.ano ? `${p.ano}. ` : ""}O módulo Perdas não publica a ficha de prova deste CNPJ{p && !p.ano ? `; último mês no SAMP: ${dataTexto(p.ultima_competencia)}` : ""}.
+                        {p && p.ano ? `${p.ano}. ` : ""}O módulo Perdas não publica a ficha Comprove deste CNPJ{p && !p.ano ? `; último mês no SAMP: ${dataTexto(p.ultima_competencia)}` : ""}.
                       </p>
                     </div>
                   )}
@@ -268,7 +268,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   </div>
                 </div>
                 <p className="text-xs text-carvao-muted">
-                  DEC, FEC e tarifa são cópias das bases publicadas de Qualidade e de Conta de luz, que não publicam ficha de prova por distribuidora; a proveniência de cada um está nos selos abaixo, e o
+                  DEC, FEC e tarifa são cópias das bases publicadas de Qualidade e de Conta de luz, que não publicam ficha Comprove por distribuidora; a proveniência de cada um está nos selos abaixo, e o
                   número pode ser conferido na página de origem com a mesma distribuidora escolhida.
                 </p>
 
@@ -389,7 +389,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                         unidade="R$ milhões"
                         evidencia={evReceita}
                         tamanho="medio"
-                        motivoAusencia="A receita do último exercício não tem valor publicado ou ficha de prova."
+                        motivoAusencia="A receita do último exercício não tem valor publicado ou ficha Comprove."
                         endereco={`${rotaEntidade(d.slug)}#ficha`}
                       />
                     </div>

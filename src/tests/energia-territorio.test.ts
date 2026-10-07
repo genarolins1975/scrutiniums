@@ -570,7 +570,7 @@ describe("página renderizada no servidor", () => {
     expect(h).toContain("Submercado de cada UF (as UFs que o mapa pinta)");
     expect(h).toContain("Distribuidoras: área e indicadores da área inteira");
     expect(h).toContain("Submercados: preço, armazenamento e MMGD estimada");
-    expect(h).toContain("Correspondências entre grãos declaradas na gold");
+    expect(h).toContain("Correspondências entre recortes declaradas na base");
     expect(h).toContain("Fechamento por submercado nos dias conferidos");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(8);
     // o mapa ainda não tem malha no servidor: estado de carga com altura fixa, nunca "em breve"

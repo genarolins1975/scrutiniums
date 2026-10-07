@@ -98,9 +98,10 @@ export default function RedeRestricoesPage() {
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
                 <div className="space-y-3 border border-dashed border-linha p-4">
-                  <p className="rotulo text-mineral">Limites operativos de intercâmbio: bloqueio documentado (achado A06)</p>
+                  <p className="rotulo text-mineral">Limites operativos de intercâmbio: sem fonte aberta</p>
                   <p className="text-sm leading-relaxed text-carvao">{r.limites.conclusao}</p>
-                  <p className="text-sm text-carvao-muted">Estado do achado: {a6.status}.</p>
+                  <p className="text-sm text-carvao-muted" data-nivel="analisar">Estado da verificação: {a6.status}.</p>
+                  <div data-nivel="analisar">
                   <TabelaInterativa
                     titulo="Onde os limites foram procurados e o que se encontrou"
                     colunas={COLUNAS_BUSCA}
@@ -112,6 +113,7 @@ export default function RedeRestricoesPage() {
                     nomeArquivo="rede-busca-limites"
                     chaveUrl="bl"
                   />
+                  </div>
                 </div>
 
                 <RedeRestricoes

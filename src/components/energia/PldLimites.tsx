@@ -154,7 +154,7 @@ export function PldLimites({
           tamanho="medio"
           cor={COR_SM[sm]}
           endereco={endereco}
-          nota={ficha ? undefined : "A ficha de prova é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário."}
+          nota={ficha ? undefined : "A ficha Comprove é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário."}
         />
         <Numero
           rotulo="Horas no teto horário"

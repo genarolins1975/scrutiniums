@@ -100,7 +100,7 @@ export function RegulacaoConsultas({
       </p>
       {hoje !== consultas.data_referencia && (
         <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted" data-recalculo="">
-          Situação recalculada para {dataBR(hoje)} pela mesma regra do pipeline. O número com ficha de prova acima se refere a {dataBR(consultas.data_referencia)}, a data de
+          Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório. O número com a ficha Comprove acima se refere a {dataBR(consultas.data_referencia)}, a data de
           referência da publicação.
         </p>
       )}

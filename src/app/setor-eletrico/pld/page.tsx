@@ -1,3 +1,4 @@
+import { fraseDeRecusa } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -221,7 +222,14 @@ export default function PldPage() {
                 </p>
                 <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
                   Regras de Comercialização: <Conferido ok={false} />{" "}
-                  {bloqueioCcee ? `${bloqueioCcee.evidencia.replace(/\.$/, "")}. ${bloqueioCcee.consequencia}` : "documento não conferido nesta publicação."}
+                  {bloqueioCcee ? (
+                    <>
+                      {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")} {bloqueioCcee.consequencia}
+                      <span data-nivel="analisar"> Evidência: {bloqueioCcee.evidencia.replace(/\.$/, "")}.</span>
+                    </>
+                  ) : (
+                    "documento não conferido nesta publicação."
+                  )}
                 </p>
                 <div className="mt-8 border-l-2 border-energia pl-5">
                   <p className="rotulo text-mineral">A ideia central</p>

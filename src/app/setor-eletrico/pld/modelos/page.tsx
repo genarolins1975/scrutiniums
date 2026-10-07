@@ -1,3 +1,4 @@
+import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -87,7 +88,7 @@ export default function ModelosPage() {
     entradas: f.entradas,
     formula: f.formula,
     reexecucao: textoReexecucao(f),
-    limitacao: f.limitacoes?.[0] ?? f.motivo_sem_implementacao,
+    limitacao: f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : f.motivo_sem_implementacao),
     href: rotaModelo(f.codigo),
   }));
   const coef = linhasCoeficientes(fichas);
@@ -101,7 +102,7 @@ export default function ModelosPage() {
   const prospectivo = linhasProspectivo(g);
   const minimo = minimoCalibracao(g.definicoes.calibracao);
   const versao = g.gerado_em.slice(0, 10);
-  const fonte = "Observatório, registro de modelos de previsão do PLD (pipeline/energia/previsoes)";
+  const fonte = "Observatório, registro de modelos de previsão do PLD";
   const pubDes = g.publicacao_desempenho;
   const decisoes = g.governanca.decisao_revisavel.map((d, i) => ({
     id: `d${i}`,
@@ -131,8 +132,8 @@ export default function ModelosPage() {
           titulo="Como cada previsão é calculada, e se ela supera as referências simples"
           referencia={
             <>
-              {plural(fichas.length, "modelo registrado", "modelos registrados")}; configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}; teste retrospectivo com{" "}
-              {g.dados.origens.n.toLocaleString("pt-BR")} origens; processado em {carimbo(g.gerado_em)}.
+              {plural(fichas.length, "modelo registrado", "modelos registrados")}; teste retrospectivo com {g.dados.origens.n.toLocaleString("pt-BR")} origens; processado em{" "}
+              {carimbo(g.gerado_em)}.<span data-nivel="analisar"> Configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</span>
             </>
           }
         >
@@ -481,7 +482,7 @@ export default function ModelosPage() {
                     <PrevisoesFichaLinha rotulo="Fronteira entre períodos">{g.definicoes.periodos.fronteira}</PrevisoesFichaLinha>
                     {naoAvaliados.map((m) => (
                       <PrevisoesFichaLinha key={m.codigo} rotulo={`${m.codigo} sem avaliação`}>
-                        {m.motivo_sem_avaliacao}
+                        {semCaminhosDeArquivo(m.motivo_sem_avaliacao ?? "motivo não registrado")}
                       </PrevisoesFichaLinha>
                     ))}
                   </dl>

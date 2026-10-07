@@ -244,7 +244,7 @@ export default function TarifaSocialPage() {
 
                 <InclusaoSubtitulo>Depois do SCS: o que os arquivos da CDE mostram mês a mês?</InclusaoSubtitulo>
                 <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                  Desconto médio por fatura (desconto das faturas ÷ faturas, calculado no pipeline). Meses abaixo da cobertura mínima da regra do mês do mapa (modo Auditar) ficam tracejados; os
+                  Desconto médio por fatura (desconto das faturas ÷ faturas, calculado pelo observatório). Meses abaixo da cobertura mínima da regra do mês do mapa (modo Auditar) ficam tracejados; os
                   arquivos sondados sem o original guardado aparecem só na tabela, com a cobertura.
                 </p>
                 <GraficoLinhas
@@ -370,7 +370,7 @@ export default function TarifaSocialPage() {
                   )}
                   {custeio && <p className="max-w-prose2 text-sm text-carvao-muted">{textoCusteioTarifaSocial(custeio)}</p>}
                   <TabelaInterativa
-                    titulo="Série mensal nacional do SCS, todos os meses publicados na gold"
+                    titulo="Série mensal nacional do SCS, todos os meses publicados"
                     colunas={COLUNAS_SERIE_TSEE}
                     linhas={linhasTabelaSerieTsee(serie)}
                     chaveLinha="id"

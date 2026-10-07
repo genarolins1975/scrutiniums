@@ -10,6 +10,7 @@
  * módulo também é importado por componentes cliente (a leitura do CSV no build
  * fica em previsoes-arquivos.ts).
  */
+import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
@@ -102,7 +103,7 @@ const TIPOS: Record<string, string> = {
 };
 export const rotuloTipo = (s: string) => TIPOS[s] ?? s;
 
-/** Motivos de célula sem número gravados pela rodada (pipeline/energia/previsoes/emissao.py). */
+/** Motivos de célula sem número gravados pela rodada de previsão (emissao.py, no módulo de previsões). */
 export const MOTIVOS: Record<string, string> = {
   SEM_PLD_CAPTURADO_ATE_O_CORTE: "nenhum PLD do período exigido havia sido capturado até o corte",
   SEM_PERIODO_ELEGIVEL_CAPTURADO_ATE_O_CORTE: "nenhum período elegível do PLD estava capturado até o corte",
@@ -116,8 +117,8 @@ export const textoMotivo = (m: string | null | undefined) => (m ? MOTIVOS[m] ?? 
 
 export const ALERTAS: Record<string, string> = {
   ATRASADO_APOS_08H: "emitida depois do prazo das 08h00",
-  EXECUCAO_MANUAL: "execução manual, fora do agendamento",
-  CODIGO_NAO_COMMITADO: "código com alterações fora de commit",
+  EXECUCAO_MANUAL: "rodada manual, fora do horário agendado",
+  CODIGO_NAO_COMMITADO: "emitida com uma versão do código ainda não registrada",
   LIMITE_PROVISORIO: "faixa de preço provisória (sem ato do ano da entrega)",
   AJUSTADA_AO_LIMITE: "previsão ajustada ao limite de preço",
   ENTREGA_COM_HORAS_JA_PUBLICADAS: "entrega com horas já publicadas no corte",
@@ -834,10 +835,9 @@ export function respostaFicha(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previs
   const estado = `${f.codigo} (${f.nome}, versão ${f.versao}) está em ${rotuloEstadoModelo(f.estado)}`;
   const emite = emissaoDoModelo(f, g);
   if (!f.implementado_no_repositorio)
-    return `${estado} e não emite número: ${minusculaInicial(f.motivo_sem_implementacao ?? "a implementação não está no repositório")}`.replace(/\.?$/, ".");
+    return `${estado} e não emite número: ${minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "a implementação não está no repositório"))}`.replace(/\.?$/, ".");
   const entradas = f.entradas?.length ? ` Usa ${plural(f.entradas.length, "entrada", "entradas")}: ${f.entradas.join("; ")}.` : "";
-  const formula = f.formula ? ` Fórmula: ${f.formula}.` : "";
-  return `${estado}; ${emite}.${entradas}${formula} Reexecução: ${textoReexecucao(f)}.`;
+  return `${estado}; ${emite}.${entradas} Reexecução: ${textoReexecucao(f)}.`;
 }
 
 /* ---------- coeficientes do último ajuste (C2-P e C2-H) */

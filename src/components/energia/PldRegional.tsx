@@ -188,7 +188,7 @@ export function PldRegional({
           motivoAusencia="Sem horas com os dois preços no período."
           tamanho="medio"
           endereco={endereco}
-          nota={ficha ? undefined : "A ficha de prova é publicada para os últimos 12 meses; os demais períodos estão na tabela e no CSV diário."}
+          nota={ficha ? undefined : "A ficha Comprove é publicada para os últimos 12 meses; os demais períodos estão na tabela e no CSV diário."}
         />
       </div>
 

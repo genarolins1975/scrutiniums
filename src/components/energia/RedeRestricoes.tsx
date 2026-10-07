@@ -169,7 +169,7 @@ export function RedeRestricoes({
               nota={
                 [
                   escolhido.ativo ? "" : `Fluxo encerrado: último mês publicado ${escolhido.fim ? mesAno(escolhido.fim) : "sem dado"}; a janela é a dos seus 12 últimos meses.`,
-                  ev ? "" : "Sem ficha de prova nesta publicação (a gold prova só os fluxos publicados no último mês); o valor é a soma das linhas mensais do arquivo do ATLS para download.",
+                  ev ? "" : "Sem ficha Comprove nesta publicação (a ficha comprova só os fluxos publicados no último mês); o valor é a soma das linhas mensais do arquivo do ATLS para download.",
                 ]
                   .filter(Boolean)
                   .join(" ") || undefined

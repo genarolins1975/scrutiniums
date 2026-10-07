@@ -1,3 +1,4 @@
+import { recusaEmLinguagemSimples } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -246,7 +247,7 @@ export default function ContaReajustesPage() {
                   <ContaReajustes janelas={reaj.comparacao_inflacao?.janelas ?? []} ultimos={reaj.ultimos} dataReferencia={ref} fonte={FONTE_TARIFAS} />
                   <div className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
                     <p className="rotulo text-mineral">Efeito médio do processo tarifário: não publicado</p>
-                    <p className="mt-1 leading-relaxed">{reaj.efeito_medio.motivo}</p>
+                    <p className="mt-1 leading-relaxed">{recusaEmLinguagemSimples(reaj.efeito_medio.motivo)}</p>
                   </div>
                   <Auditoria titulo="Incorporações e conferência do IPCA">
                     <ul className="space-y-2 text-sm text-carvao-muted">
