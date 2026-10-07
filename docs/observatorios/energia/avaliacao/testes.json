@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-07T20:23:27Z",
+ "gerado_em": "2026-10-07T22:23:34Z",
  "vitest": {
   "admin": {
    "total": 11,
@@ -106,7 +106,7 @@
    "falhas": 0
   },
   "energia-aprenda": {
-   "total": 20,
+   "total": 26,
    "falhas": 0
   },
   "energia-avaliacao": {
@@ -166,7 +166,7 @@
    "falhas": 0
   },
   "energia-comp-integracao": {
-   "total": 310,
+   "total": 312,
    "falhas": 0
   },
   "energia-comp-linha-do-tempo": {
@@ -732,6 +732,6 @@
   "ok": true,
   "saida": "✔ No ESLint warnings or errors"
  },
- "resumo_regressao": "Vitest: 2682 testes em 141 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
- "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2682 testes em 141 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+ "resumo_regressao": "Vitest: 2690 testes em 141 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2690 testes em 141 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
 }
