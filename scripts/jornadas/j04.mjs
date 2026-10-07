@@ -80,6 +80,12 @@ export default {
     await j.passo("Abre o histórico do PLD, localiza a tabela mensal e lê o KPI de ago/2026", async () => {
       await ir(j.BASE + "/setor-eletrico/pld/historico");
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible", timeout: 10000 });
+      // em Entender a tabela longa vem recolhida: o leitor abre o botão que a mostra
+      const fechada = p.locator("main [data-recolhivel='fechada']").filter({ has: p.locator("th", { hasText: "Dias completos" }) }).first();
+      if (await fechada.count()) {
+        await clicar(p.locator(`main button[aria-controls="${await fechada.getAttribute("id")}"]`));
+        await j.esperar(300);
+      }
       tabela = p.locator("table:visible", { hasText: "Dias completos" }).first();
       raiz = tabela.locator("xpath=ancestor::*[.//input[@type='search']][1]");
       await raiz.locator("input[type=search]").scrollIntoViewIfNeeded();

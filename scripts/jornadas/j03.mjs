@@ -84,11 +84,20 @@ export default {
       return [l("dia"), l("temporal"), l("balanco"), l("semMmgd")].join(" || ");
     });
 
+    /** em Entender a tabela longa vem recolhida; o leitor que quer conferir os números abre o botão que a mostra */
+    const abreTabela = async (cabecalho) => {
+      const alvo = p.locator("main [data-recolhivel='fechada']").filter({ has: p.locator("th", { hasText: cabecalho }) }).first();
+      if (!(await alvo.count())) return;
+      await clicar(p.locator(`main button[aria-controls="${await alvo.getAttribute("id")}"]`));
+      await j.esperar(300);
+    };
+
     await j.passo("Identifica a variação entre set/2026 e ago/2026 e confere na tabela mensal", async () => {
       const texto = N(await p.locator("main").innerText());
       const setLead = texto.match(new RegExp(`set/2026: média temporal de R\\$ ${D}/MWh`))?.[1];
       j.afirmar(setLead, "o texto de abertura não traz a média temporal de set/2026");
       const ago = kpis.temporal.valor;
+      await abreTabela("Dias completos");
       const busca = p.locator("input[type=search]").first();
       await busca.scrollIntoViewIfNeeded();
       const linha = await lerTabela();

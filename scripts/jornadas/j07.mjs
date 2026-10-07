@@ -94,6 +94,13 @@ export default {
       await pg.goto(j.BASE + caminho, { waitUntil: "networkidle" });
       await pg.waitForTimeout(900);
     };
+    /** em Entender a tabela longa vem recolhida; quem quer escolher pela tabela abre o botão que a mostra */
+    const abreTabelas = async (pg) => {
+      for (const b of await pg.locator("main button.tabela-recolher-btn[aria-expanded=false]").all()) {
+        if (await b.isVisible()) await b.click();
+      }
+      await pg.waitForTimeout(300);
+    };
     /** abre uma segunda página do mesmo contexto para repetir a escolha com clique (referência, não conta) */
     const comReferencia = async (fn) => {
       const ref = await j.ctx.newPage();
@@ -175,6 +182,7 @@ export default {
     await j.passo("Repete a escolha de Minas Gerais com clique na tabela e compara URL e texto da ficha com a do teclado", async () => {
       return comReferencia(async (ref) => {
         await abrir(ref, `${ORIGEM}/territorio`);
+        await abreTabelas(ref);
         const botao = ref.locator("main button[aria-pressed]", { hasText: /^MG$/ }).first();
         await botao.scrollIntoViewIfNeeded();
         await botao.click();
@@ -245,6 +253,11 @@ export default {
 
     await j.passo("Segue até o filtro de submercado da tabela, abre com Enter, marca uma caixa com Espaço e fecha com Esc", async () => {
       const ini = paradas.length;
+      // em Entender a tabela vem recolhida: o teclado primeiro alcança o botão que a mostra e o abre com Enter
+      await ateParar("o botão que mostra a tabela completa", (s) => s.tag === "button" && /ver a tabela completa/i.test(s.rotulo));
+      await tecla("Enter");
+      await j.esperar(400);
+      j.afirmar(await p.evaluate(() => document.activeElement.getAttribute("aria-expanded") === "true"), "Enter não abriu a tabela");
       const { n } = await ateParar("o filtro Submercado da tabela", (s) => s.tag === "summary" && /submercado \(cor no mapa\)/i.test(s.rotulo));
       exigirOrdemEIndicador(paradas.slice(ini), "filtro da tabela");
       const antes = new URL(p.url()).searchParams;
@@ -271,6 +284,7 @@ export default {
       // mesma escolha com clique, para comparar o parâmetro e a contagem
       const igual = await comReferencia(async (ref) => {
         await abrir(ref, `${ORIGEM}/territorio`);
+        await abreTabelas(ref);
         const resumo = ref.locator("main summary").filter({ hasText: /submercado \(cor no mapa\)/i }).first();
         await resumo.scrollIntoViewIfNeeded();
         await resumo.click();
