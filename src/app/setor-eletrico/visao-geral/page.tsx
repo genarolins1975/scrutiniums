@@ -1,3 +1,4 @@
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -360,12 +361,15 @@ export default function VisaoGeralEnergia() {
             <p className="rotulo text-mineral">Limitações desta publicação</p>
             <ul className="mt-1 list-disc space-y-1 pl-5">
               {g.limitacoes.map((l) => (
-                <li key={l}>{l}</li>
+                <li key={l}>
+                  <TextoDoLeitor texto={l} />
+                </li>
               ))}
             </ul>
           </div>
           <p>
-            Gold {g.gold}, versão {g.versao_pipeline} (código {g.versao_codigo}), gerada em {carimbo(g.gerado_em)}.{" "}
+            Síntese publicada em {carimbo(g.gerado_em)}.
+            <span data-nivel="analisar"> Base {g.gold}, versão {g.versao_pipeline} (código {g.versao_codigo}).</span>{" "}
             <Link href="/setor-eletrico/metodologia#sintese" className="text-energia-dark underline underline-offset-4">Regras das frases e dos alertas</Link>
             {" · "}
             <Link href="/setor-eletrico/dados" className="text-energia-dark underline underline-offset-4">Dados e catálogo</Link>

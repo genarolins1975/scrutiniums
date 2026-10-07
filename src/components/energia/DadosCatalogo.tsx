@@ -1,5 +1,6 @@
 "use client";
 
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -135,7 +136,9 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
           <p className="rotulo text-aviso">Ressalva declarada</p>
           <ul className="mt-1 list-disc pl-5">
             {(e.ressalvas ?? []).map((r) => (
-              <li key={r}>{r}</li>
+              <li key={r}>
+                <TextoDoLeitor texto={r} />
+              </li>
             ))}
           </ul>
         </div>
@@ -181,7 +184,7 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
                 {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""}
               </>
             ) : (
-              "nenhum: o conjunto está catalogado, mas não alimenta nenhuma gold"
+              "nenhum: o conjunto está catalogado, mas não alimenta nenhuma base publicada"
             )}
           </dd>
         </div>

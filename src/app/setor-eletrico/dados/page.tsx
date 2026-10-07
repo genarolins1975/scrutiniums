@@ -1,3 +1,5 @@
+import { leitor } from "@/lib/energia/bastidor";
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -69,7 +71,7 @@ export default function DadosCatalogoPage() {
           referencia={<ReferenciaDados geradoEm={cat.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Listagens oficiais colhidas em {nomesPortais.map(([o, p]) => `${o} ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}.</>} />}
         >
           Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Verificar o recurso é acessar um arquivo. Integrar é coletá-lo e guardar a cópia original com impressão digital (sha256). Validar é conferir a captura sem checagem
-          reprovada. Publicar é alimentar uma gold íntegra. Cada conjunto mostra até onde chegou, com a evidência de cada etapa, e o uso que o observatório faz dele fica à parte.{" "}
+          reprovada. Publicar é alimentar uma base publicada e íntegra. Cada conjunto mostra até onde chegou, com a evidência de cada etapa, e o uso que o observatório faz dele fica à parte.{" "}
           <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">
             Metodologia
           </Link>
@@ -153,13 +155,13 @@ export default function DadosCatalogoPage() {
                 <DadosAviso id="em-uso-abaixo">
                   <p className="rotulo text-mineral">Em uso, mas abaixo de publicado</p>
                   <p className="mt-1">
-                    {r.usadasAbaixo.length === 1 ? "Este conjunto alimenta" : `Estes ${r.usadasAbaixo.length} conjuntos alimentam`} uma gold, mas o estado calculado pelo pipeline não passou de recurso verificado. A ressalva é a do próprio catálogo; o que a etapa de
+                    {r.usadasAbaixo.length === 1 ? "Este conjunto alimenta" : `Estes ${r.usadasAbaixo.length} conjuntos alimentam`} uma base publicada, mas o estado calculado pelo observatório não passou de recurso verificado. A ressalva é a do próprio catálogo; o que a etapa de
                     integração exige está nos critérios da escada, acima.
                   </p>
                   <ul className="mt-2 space-y-1.5" data-lista="em-uso-abaixo">
                     {r.usadasAbaixo.map((e) => (
                       <li key={e.id} className="leading-relaxed">
-                        <strong className="font-medium text-carvao">{e.titulo}</strong> ({e.orgao}, {ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}): {(e.ressalvas ?? []).join(" ") || `usado em ${e.usado_em.join(", ")}`}
+                        <strong className="font-medium text-carvao">{e.titulo}</strong> ({e.orgao}, {ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}): {leitor((e.ressalvas ?? []).join(" ")) || `usado em ${e.usado_em.join(", ")}`}
                       </li>
                     ))}
                   </ul>
@@ -176,7 +178,7 @@ export default function DadosCatalogoPage() {
                   <>
                     O estado de recurso, a escada e as datas valem para a execução de {carimbo(cat.gerado_em)}. Conjuntos integrados depois dessa execução só aparecem aqui na próxima.
                   </>,
-                  ...prov.limitacoes,
+                  ...prov.limitacoes.map((l) => <TextoDoLeitor key={l} texto={l} />),
                 ]}
               />
               <DadosSeguir

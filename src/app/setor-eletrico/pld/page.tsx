@@ -1,5 +1,5 @@
 import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
-import { fraseDeRecusa } from "@/lib/energia/bastidor";
+import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -737,7 +737,7 @@ export default function PldPage() {
                       )
                     }
                     faltante={prev.atual.informacao_faltante}
-                    estado={prev.atual.estado_pipeline}
+                    estado={semCaminhosDeArquivo(prev.atual.estado_pipeline ?? "").replace(/ no workflow [\w.-]+\.yml/, "")}
                   >
                     <p className="mt-5 flex flex-wrap gap-4 text-sm">
                       <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>

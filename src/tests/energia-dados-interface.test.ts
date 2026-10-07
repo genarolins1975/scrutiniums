@@ -143,7 +143,7 @@ describe("P067: catálogo e escada de estados", () => {
     expect(evf[1].situacao).toBe("falhou");
     expect(evf[1].detalhe).toContain("sem êxito");
     expect(evf[2].situacao).toBe("nao");
-    expect(evf[4].detalhe).toContain("não alimenta nenhuma gold");
+    expect(evf[4].detalhe).toContain("não alimenta nenhuma base publicada");
   });
 
   it("recurso a recurso da CCEE: o CSV publicado fecha com a contagem do catálogo, estado por estado", () => {

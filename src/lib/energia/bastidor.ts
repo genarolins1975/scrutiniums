@@ -5,7 +5,7 @@
  * leitor e ficam disponíveis em Analisar e Auditar, na mesma ordem.
  */
 const TECNICA =
-  /HTTP \d{3}|cf-mitigated|Cloudflare|CloudFront|\bcurl\b|firewall|User-Agent|Acesso bloqueado|desafio de navegador|\bchallenge\b|package_(?:search|show)|\bsha256\b|\bsilver\b|\bvintages?\b|\bpipeline\b/i;
+  /HTTP \d{3}|cf-mitigated|Cloudflare|CloudFront|\bcurl\b|firewall|User-Agent|Acesso bloqueado|desafio de navegador|\bchallenge\b|package_(?:search|show)|\bsha256\b|\bsilver\b|\bvintages?\b|\bpipeline\b|\b[\w-]+\.(?:json|py|yml)\b|\bworkflow\b/i;
 
 /** Códigos internos de pergunta ("P057, P058") entre parênteses, que o leitor não tem como consultar. */
 export function semCodigosDePergunta(texto: string): string {
@@ -50,4 +50,20 @@ export function fonteLegivel(nome: string): string {
     .replace(/Silvers e golds do domínio/g, "Bases do domínio")
     .replace(/Silvers do domínio/g, "Histórico de capturas do domínio")
     .replace(/silvers do pipeline/g, "histórico de capturas do observatório");
+}
+
+/**
+ * Vocabulário de engenharia que a gold e os módulos usam entre si (gold, silver, vintage, pipeline) trocado pelo que o leitor
+ * entende. Só para frases escritas para o leitor; a evidência técnica mantém a palavra original em Analisar e Auditar.
+ */
+export function leitor(texto: string): string {
+  return texto
+    .replace(/\buma gold\b/g, "uma base publicada")
+    .replace(/\bgolds\b/g, "bases publicadas")
+    .replace(/\bgold\b/g, "base publicada")
+    .replace(/\bsilvers\b/g, "históricos de capturas")
+    .replace(/\bsilver\b/g, "histórico de capturas")
+    .replace(/\bvintages\b/g, "versões")
+    .replace(/\bvintage\b/g, "versão")
+    .replace(/\bpipeline\b/g, "observatório");
 }

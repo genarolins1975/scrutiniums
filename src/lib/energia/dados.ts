@@ -263,10 +263,10 @@ export function evidenciaEtapas(e: EntradaDados): EvidenciaEtapa[] {
   out.push({ id: "validado", rotulo: "Validado", situacao: sit.validado, detalhe: dval });
 
   const pub = et?.publicado;
-  let dp = "não alimenta nenhuma gold íntegra publicada.";
+  let dp = "não alimenta nenhuma base publicada e íntegra.";
   if (sit.publicado === "sim") {
     const golds = pub?.golds ?? e.usado_em;
-    dp = golds.length ? `alimenta ${golds.join(", ")}.` : "alimenta as golds do módulo dono do conjunto.";
+    dp = golds.length ? `alimenta ${golds.join(", ")}.` : "alimenta as bases do módulo dono do conjunto.";
     if (pub?.citado_por?.length) dp += ` Citado no snapshot de ${pub.citado_por.join(", ")}.`;
   }
   out.push({ id: "publicado", rotulo: "Publicado", situacao: sit.publicado, detalhe: dp });

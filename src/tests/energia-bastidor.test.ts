@@ -81,3 +81,12 @@ describe("fonteLegivel", () => {
     expect(fonteLegivel("ONS, Carga de Energia Diária")).toBe("ONS, Carga de Energia Diária");
   });
 });
+
+describe("frases com nome de arquivo e de rotina vão para Analisar", () => {
+  it("pld.json, .py e workflow contam como bastidor", () => {
+    const r = partirBastidor("A tentativa está registrada em pld.json. A previsão principal segue sem número. A rodada roda no workflow diário.");
+    expect(r.leitor).toBe("A previsão principal segue sem número.");
+    expect(r.tecnico).toContain("pld.json");
+    expect(r.tecnico).toContain("workflow");
+  });
+});

@@ -1,4 +1,4 @@
-import { partirBastidor } from "@/lib/energia/bastidor";
+import { leitor as paraLeitor, partirBastidor } from "@/lib/energia/bastidor";
 
 /**
  * Texto da gold com as frases de bastidor (HTTP, Cloudflare, curl, sha256) fora de Entender: elas aparecem em
@@ -6,7 +6,7 @@ import { partirBastidor } from "@/lib/energia/bastidor";
  */
 export function TextoDoLeitor({ texto, padrao }: { texto: string; padrao?: string }) {
   const { leitor, tecnico } = partirBastidor(texto);
-  const frente = leitor || padrao || "";
+  const frente = paraLeitor(leitor) || padrao || "";
   return (
     <>
       {frente}

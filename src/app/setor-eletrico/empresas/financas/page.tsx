@@ -136,7 +136,7 @@ export default function PaginaP038() {
                   unidade="R$ nominais (R$ milhões nas tabelas e nos gráficos)"
                 />
                 {bloqueioP038.map((b) => (
-                  <EmpresasAviso key={b.id} rotulo="Bloqueio documentado">
+                  <EmpresasAviso key={b.id} rotulo="Fonte indisponível">
                     <p>
                       {b.descricao} {fraseDeRecusa(b.evidencia, "da ANEEL")} <TextoDoLeitor texto={b.evidencia} />
                     </p>

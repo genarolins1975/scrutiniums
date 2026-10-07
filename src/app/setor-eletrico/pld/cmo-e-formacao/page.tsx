@@ -159,7 +159,7 @@ export default function PldCmoPage() {
                   versao={versao}
                 />
                 <PldAviso>
-                  O gráfico tem as últimas {num(n, 0)} semanas; o CSV semanal tem as {num(c.semanal_recorte.semanas_no_csv, 0)} desde 2021, conferido célula a célula contra a gold
+                  O gráfico tem as últimas {num(n, 0)} semanas; o CSV semanal tem as {num(c.semanal_recorte.semanas_no_csv, 0)} desde 2021, conferido célula a célula contra a base publicada
                   ({num(c.equivalencia_csv.celulas, 0)} células, {num(c.equivalencia_csv.divergentes, 0)} divergentes).
                 </PldAviso>
 

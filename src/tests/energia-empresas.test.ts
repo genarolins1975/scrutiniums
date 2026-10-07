@@ -637,7 +637,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(html.p037).toContain("Distribuidoras comparadas (até 4)");
     expect(html.p037).toContain("DEC apurado diante do limite");
     expect(html.p038).toContain("Companhias abertas do setor elétrico na CVM");
-    expect(html.p038).toContain("Bloqueio documentado");
+    expect(html.p038).toContain("Fonte indisponível");
     expect(html.p038).toContain("Decisão de método");
     expect(html.p038).toContain("Valores do gráfico (tabela equivalente)");
     expect(html.p039).toContain("árvore societária declarada à ANEEL");
