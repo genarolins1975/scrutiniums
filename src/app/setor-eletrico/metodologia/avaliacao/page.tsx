@@ -22,7 +22,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { COLUNAS_DEFEITOS, URL_AVALIACAO, dadosPorDimensao, linhasDefeitos, linhasPaginas, respostaAvaliacao } from "@/lib/energia/avaliacao";
+import { COLUNAS_DEFEITOS, URL_AVALIACAO, compararRodadas, dadosPorDimensao, linhasDefeitos, linhasPaginas, respostaAvaliacao } from "@/lib/energia/avaliacao";
 import { avaliacaoPublicada, provenienciaAvaliacao } from "@/lib/energia/avaliacao-servidor";
 import { dataBR, num, plural } from "@/lib/energia/formato";
 
@@ -52,7 +52,7 @@ export default function AvaliacaoPage() {
   const dims = dadosPorDimensao(a);
   const linhas = linhasPaginas(a);
   const defeitos = linhasDefeitos(a.defeitos);
-  const ant = a.rodadas.length > 1 ? a.rodadas[a.rodadas.length - 2] : null;
+  const cmp = compararRodadas(a);
   const versao = a.gerado_em;
   const semNota = Object.values(r.por_dimensao).reduce((s, d) => s + d.nao_avaliadas, 0);
 
@@ -91,9 +91,9 @@ export default function AvaliacaoPage() {
                 </>
               }
               oQueMudou={
-                ant ? (
+                cmp ? (
                   <>
-                    Rodada anterior ({ant.id}): nota média {num(ant.nota_ponderada_media, 1)} e {plural(ant.atendem_meta, "página dentro", "páginas dentro")} da meta. {plural(r.defeitos.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")} desde então.
+                    Rodada anterior ({cmp.anterior.id}): {plural(cmp.anterior.atendem_meta, "página dentro", "páginas dentro")} da meta e {plural(Object.values(cmp.anterior.defeitos_por_severidade).reduce((s, v) => s + v, 0), "defeito aberto", "defeitos abertos")}. Nas {cmp.comuns.length} dimensões avaliadas nas duas rodadas a média foi de {num(cmp.mediaAnterior, 1)} para {num(cmp.mediaAtual, 1)}; {plural(r.defeitos.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")} desde então.
                   </>
                 ) : (
                   <>Primeira rodada registrada: ainda não há rodada anterior, e a evolução começa a ser medida a partir desta.</>

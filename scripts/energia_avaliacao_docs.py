@@ -52,12 +52,17 @@ def escreve_paginas(a, caminho):
         linhas.append([d["nome"], f"{d['peso']}%", pt(x["meta"]), x["avaliadas"], x["nao_avaliadas"], x["nao_aplicaveis"], pt(x["media"]), pt(x["minimo"]), f"{x['atendem_meta']} de {x['avaliadas']}"])
     L += tabela(["Dimensão", "Peso", "Meta", "Avaliadas", "Não avaliadas", "Não aplicáveis", "Média", "Mínimo", "Atendem a meta"], linhas) + [""]
     if len(a["rodadas"]) > 1:
-        L += ["## Evolução entre rodadas", ""]
+        L += ["## Evolução entre rodadas", "",
+              "A comparação só vale para dimensões avaliadas nas duas rodadas: uma média que inclui a revisão visual não se compara com outra que não a inclui.", ""]
+        ids_ = [d["id"] for d in a["rubrica"]["dimensoes"]]
         linhas = []
         for x in a["rodadas"]:
             sev = x["defeitos_por_severidade"]
-            linhas.append([x["id"], x["data"], x["paginas"], pt(x["nota_ponderada_media"]), x["atendem_meta"], f"{sev['critico']}/{sev['alto']}/{sev['medio']}/{sev['baixo']}", x["jornadas_cumpridas"]])
-        L += tabela(["Rodada", "Data", "Páginas", "Nota ponderada média", "Atendem a meta", "Defeitos crítico/alto/médio/baixo", "Jornadas cumpridas"], linhas) + [""]
+            nd = sum(1 for i in ids_ if x["medias_por_dimensao"].get(i) is not None)
+            linhas.append([x["id"], x["data"], x["paginas"], f"{nd} de 10", pt(x["nota_ponderada_media"]), x["atendem_meta"], f"{sev['critico']}/{sev['alto']}/{sev['medio']}/{sev['baixo']}", x["jornadas_cumpridas"]])
+        L += tabela(["Rodada", "Data", "Páginas", "Dimensões com nota", "Nota ponderada média das dimensões avaliadas", "Atendem a meta", "Defeitos crítico/alto/médio/baixo", "Jornadas cumpridas"], linhas) + [""]
+        linhas = [[x["id"]] + [pt(x["medias_por_dimensao"].get(i)) for i in ids_] for x in a["rodadas"]]
+        L += tabela(["Rodada"] + [NOMES[i] for i in ids_], linhas) + [""]
         L += ["Defeitos corrigidos desde a rodada anterior:", ""] + [f"- ({c['severidade']}) {c['descricao']}" for c in a["corrigidos"]] + [""]
     L += ["## Por entrega (média das páginas de cada módulo)", ""]
     ids = [d["id"] for d in a["rubrica"]["dimensoes"]]

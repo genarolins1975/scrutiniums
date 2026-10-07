@@ -8,6 +8,7 @@ import {
   COLUNAS_DEFEITOS,
   COLUNAS_PAGINAS,
   ESCALA_AVALIACAO,
+  compararRodadas,
   ORDEM_DIMENSOES,
   dadosPorDimensao,
   linhasDefeitos,
@@ -204,7 +205,15 @@ describe.skipIf(!a)("gold avaliacao.json", () => {
     expect(a.rodadas.length).toBeGreaterThan(0);
     expect(a.rodadas[a.rodadas.length - 1].id).toBe(a.rodada.id);
     if (a.rodadas.length === 1) expect(respostaAvaliacao(a)).toMatch(/primeira rodada registrada/);
-    else expect(respostaAvaliacao(a)).toMatch(/Em relação à rodada/);
+    else {
+      expect(respostaAvaliacao(a)).toMatch(/Em relação à rodada/);
+      const c = compararRodadas(a);
+      // a comparação usa só dimensões avaliadas nas duas rodadas
+      for (const i of c?.comuns ?? []) {
+        expect(c!.anterior.medias_por_dimensao[i], i).not.toBeNull();
+        expect(a.resumo.por_dimensao[i].media, i).not.toBeNull();
+      }
+    }
   });
 });
 

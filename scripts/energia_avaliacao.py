@@ -874,6 +874,11 @@ def monta(args):
     if insp is None:
         sys.exit("falta docs/observatorios/energia/avaliacao/inspecao.json: rode scripts/energia-avaliacao.mjs e passe --relatorio")
     jornadas = lj(os.path.join(ENT, "jornadas.json"), {"jornadas": []})
+    curadoria = lj(os.path.join(ENT, "atritos.json"), {})
+    for j in jornadas["jornadas"]:
+        c = curadoria.get(j["id"], {})
+        j["atritos"] = c.get("atritos", [])
+        j["defeitos"] = c.get("defeitos", [])
     revisao = lj(os.path.join(ENT, "revisao_visual.json"), {"paginas": {}})
     testes = lj(os.path.join(ENT, "testes.json"), {"vitest": {}, "python": {}})
     historico = lj(os.path.join(ENT, "rodadas.json"), {"rodadas": []})
@@ -968,7 +973,11 @@ def agrega_defeitos(paginas, jornadas, historico):
         for dim, x in p["dimensoes"].items():
             for d in x["defeitos"]:
                 add(dim, d["codigo"], d["severidade"], d["descricao"], p["rota"])
+    medidas = {p["rota"] for p in paginas}
     for j in jornadas:
+        for d in j.get("defeitos") or []:
+            for rota in [r for r in d.get("paginas", []) if r in medidas]:
+                add(d["dimensao"], f"jornada:{j['id']}:{d['codigo']}", d["severidade"], d["descricao"], rota)
         if j["resultado"] != "cumprida":
             falhou = next((s for s in j["passos"] if s["resultado"] == "falhou"), {})
             rota = (j.get("paginas_visitadas") or [PREFIXO])[-1]

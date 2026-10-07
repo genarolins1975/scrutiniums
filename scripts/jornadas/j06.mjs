@@ -133,6 +133,19 @@ export default {
       return `URL ${j.url()}; região tocada com ${a.w} por ${a.h} px; a ficha começa ${distanciaFicha} px abaixo do fim do mapa (topo da ficha a ${pos.fichaTopo} px do topo da janela de ${pos.janela} px), ${pos.fichaTopo > pos.janela ? "fora da tela" : "na tela"}`;
     });
 
+    await j.passo("Mede o tamanho de toque de cada UF no mapa (só medição, sem tocar): quantas regiões ficam abaixo de 24 px", async () => {
+      const UF = { 11: "RO", 12: "AC", 13: "AM", 14: "RR", 15: "PA", 16: "AP", 17: "TO", 21: "MA", 22: "PI", 23: "CE", 24: "RN", 25: "PB", 26: "PE", 27: "AL", 28: "SE", 29: "BA", 31: "MG", 32: "ES", 33: "RJ", 35: "SP", 41: "PR", 42: "SC", 43: "RS", 50: "MS", 51: "MT", 52: "GO", 53: "DF" };
+      const medidas = await p.evaluate(() =>
+        [...document.querySelectorAll("main svg[role=img] path[data-id]")].map((e) => {
+          const b = e.getBoundingClientRect();
+          return { id: e.getAttribute("data-id"), w: Math.round(b.width), h: Math.round(b.height) };
+        }),
+      );
+      j.afirmar(medidas.length === 27, `esperava 27 regiões no mapa, vieram ${medidas.length}`);
+      const pequenas = medidas.filter((m) => Math.min(m.w, m.h) < 24).sort((a, b) => Math.min(a.w, a.h) - Math.min(b.w, b.h));
+      return `${pequenas.length} de ${medidas.length} UFs têm o menor lado do contorno abaixo de 24 px no mapa a 390 px: ${pequenas.map((m) => `${UF[m.id]} ${m.w} por ${m.h}`).join(", ")}; o botão + do mapa aproxima na seleção. As tocadas (MG ${medidas.find((m) => m.id === "31").w} por ${medidas.find((m) => m.id === "31").h} px) ficam acima de 24 px`;
+    });
+
     await j.passo("Rola até a ficha e lê Minas Gerais: submercado, municípios, capacidade e PLD do dia", async () => {
       await ficha().scrollIntoViewIfNeeded();
       await j.esperar(300);

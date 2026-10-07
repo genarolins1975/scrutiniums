@@ -61,7 +61,7 @@ export function AvaliacaoEvolucao({ a }: { a: AvaliacaoGold }) {
           <caption className="pb-2 text-left text-sm font-medium text-carvao">Rodadas de avaliação registradas</caption>
           <thead>
             <tr className="border-b border-linha text-left text-xs text-mineral">
-              {["Rodada", "Data", "Páginas", "Nota ponderada média", "Atendem a meta", "Defeitos: crítico / alto / médio / baixo", "Jornadas cumpridas"].map((c) => (
+              {["Rodada", "Data", "Páginas", "Dimensões com nota", "Nota ponderada média das dimensões avaliadas", "Atendem a meta", "Defeitos: crítico / alto / médio / baixo", "Jornadas cumpridas"].map((c) => (
                 <th key={c} scope="col" className="px-2 py-1.5 font-medium">
                   {c}
                 </th>
@@ -76,10 +76,42 @@ export function AvaliacaoEvolucao({ a }: { a: AvaliacaoGold }) {
                 </th>
                 <td className="px-2 py-1.5">{l.data}</td>
                 <td className="px-2 py-1.5">{l.paginas}</td>
+                <td className="px-2 py-1.5">{l.dimensoes} de 10</td>
                 <td className="px-2 py-1.5">{l.nota}</td>
                 <td className="px-2 py-1.5">{l.atendem}</td>
                 <td className="px-2 py-1.5">{l.defeitos}</td>
                 <td className="px-2 py-1.5">{l.jornadas}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Média por dimensão em cada rodada (tabela rolável)">
+        <table className="w-full border-collapse text-sm tabular-nums">
+          <caption className="pb-2 text-left text-sm font-medium text-carvao">Média das páginas em cada dimensão, por rodada (n.av.: dimensão não avaliada na rodada)</caption>
+          <thead>
+            <tr className="border-b border-linha text-left text-xs text-mineral">
+              <th scope="col" className="px-2 py-1.5 font-medium">
+                Rodada
+              </th>
+              {ORDEM_DIMENSOES.map((i) => (
+                <th key={i} scope="col" className="px-2 py-1.5 font-medium">
+                  {ROTULO_CURTO[i]}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {linhas.map((l) => (
+              <tr key={l.id} className="border-b border-linha text-carvao">
+                <th scope="row" className="px-2 py-1.5 text-left font-normal">
+                  {l.id}
+                </th>
+                {l.medias.map((v, k) => (
+                  <td key={ORDEM_DIMENSOES[k]} className="px-2 py-1.5">
+                    {v === null ? "n.av." : num(v, 1)}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>

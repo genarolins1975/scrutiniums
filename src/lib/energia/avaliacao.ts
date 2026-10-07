@@ -8,6 +8,7 @@ import type {
   ModuloAvaliado,
   NotaDimensao,
   PaginaAvaliada,
+  RodadaRegistro,
   Severidade,
   TipoPagina,
 } from "./tipos-avaliacao";
@@ -97,16 +98,40 @@ export function respostaAvaliacao(a: AvaliacaoGold): string {
   partes.push(
     `${plural(d.abertos, "defeito está aberto", "defeitos estão abertos")} (${d.por_severidade.critico} crítico${d.por_severidade.critico === 1 ? "" : "s"}, ${d.por_severidade.alto} alto${d.por_severidade.alto === 1 ? "" : "s"}, ${d.por_severidade.medio} médio${d.por_severidade.medio === 1 ? "" : "s"}, ${d.por_severidade.baixo} baixo${d.por_severidade.baixo === 1 ? "" : "s"}).`,
   );
-  const ant = a.rodadas.length > 1 ? a.rodadas[a.rodadas.length - 2] : null;
-  if (ant && ant.nota_ponderada_media !== null && r.nota_ponderada_media !== null) {
-    const dif = Math.round((r.nota_ponderada_media - ant.nota_ponderada_media) * 10) / 10;
+  const cmp = compararRodadas(a);
+  if (cmp) {
+    const dif = Math.round((cmp.mediaAtual - cmp.mediaAnterior) * 10) / 10;
+    const naoComuns = ORDEM_DIMENSOES.length - cmp.comuns.length;
     partes.push(
-      `Em relação à rodada ${ant.id}, a nota média ${dif === 0 ? "não mudou" : `${dif > 0 ? "subiu" : "caiu"} ${num(Math.abs(dif), 1)}`} e ${plural(d.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")}.`,
+      `Em relação à rodada ${cmp.anterior.id}, nas ${cmp.comuns.length} dimensões avaliadas nas duas rodadas a média ponderada das médias ${dif === 0 ? `não mudou (${num(cmp.mediaAtual, 1)})` : `${dif > 0 ? "subiu" : "caiu"} de ${num(cmp.mediaAnterior, 1)} para ${num(cmp.mediaAtual, 1)}`} e ${plural(d.corrigidos_desde_a_rodada_anterior, "defeito foi corrigido", "defeitos foram corrigidos")}.${naoComuns > 0 ? ` ${plural(naoComuns, "dimensão não foi avaliada", "dimensões não foram avaliadas")} em uma das rodadas e fica fora da comparação.` : ""}`,
     );
   } else {
     partes.push("Esta é a primeira rodada registrada: ainda não há rodada anterior para mostrar evolução.");
   }
   return partes.join(" ");
+}
+
+export type ComparacaoRodadas = { anterior: RodadaRegistro; comuns: IdDimensao[]; mediaAnterior: number; mediaAtual: number };
+
+/**
+ * Compara a rodada atual com a anterior só nas dimensões que têm média nas duas (média ponderada
+ * pelos pesos da rubrica). Dimensão avaliada só numa das rodadas fica de fora: comparar uma média
+ * que inclui a revisão visual com outra que não inclui contaria a mudança de método como evolução.
+ */
+export function compararRodadas(a: AvaliacaoGold): ComparacaoRodadas | null {
+  if (a.rodadas.length < 2) return null;
+  const anterior = a.rodadas[a.rodadas.length - 2];
+  const comuns = ORDEM_DIMENSOES.filter((i) => anterior.medias_por_dimensao[i] !== null && anterior.medias_por_dimensao[i] !== undefined && a.resumo.por_dimensao[i].media !== null);
+  if (!comuns.length) return null;
+  const peso = Object.fromEntries(a.rubrica.dimensoes.map((d) => [d.id, d.peso]));
+  const total = comuns.reduce((s, i) => s + peso[i], 0);
+  const media = (f: (i: IdDimensao) => number) => comuns.reduce((s, i) => s + peso[i] * f(i), 0) / total;
+  return {
+    anterior,
+    comuns,
+    mediaAnterior: media((i) => anterior.medias_por_dimensao[i] as number),
+    mediaAtual: media((i) => a.resumo.por_dimensao[i].media as number),
+  };
 }
 
 /* ------------------------------------------------------------------ matriz */
@@ -194,11 +219,13 @@ export const textoTeto = (t: { valor: number; motivo: string }) => `teto ${num(t
 /** Módulo da página, para o rótulo da ficha. */
 export const moduloDaPagina = (a: AvaliacaoGold, p: PaginaAvaliada): ModuloAvaliado | undefined => a.modulos.find((m) => m.id === p.modulo);
 
-export function evolucao(a: AvaliacaoGold): { id: string; data: string; paginas: number; nota: string; atendem: number; defeitos: string; jornadas: number }[] {
+export function evolucao(a: AvaliacaoGold): { id: string; data: string; paginas: number; dimensoes: number; nota: string; atendem: number; defeitos: string; jornadas: number; medias: (number | null)[] }[] {
   return a.rodadas.map((r) => ({
     id: r.id,
     data: dataBR(r.data),
     paginas: r.paginas,
+    dimensoes: ORDEM_DIMENSOES.filter((i) => r.medias_por_dimensao[i] !== null && r.medias_por_dimensao[i] !== undefined).length,
+    medias: ORDEM_DIMENSOES.map((i) => r.medias_por_dimensao[i] ?? null),
     nota: num(r.nota_ponderada_media, 1),
     atendem: r.atendem_meta,
     defeitos: `${r.defeitos_por_severidade.critico} / ${r.defeitos_por_severidade.alto} / ${r.defeitos_por_severidade.medio} / ${r.defeitos_por_severidade.baixo}`,
