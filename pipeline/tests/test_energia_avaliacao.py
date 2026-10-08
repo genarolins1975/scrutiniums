@@ -234,6 +234,58 @@ class Dimensoes(unittest.TestCase):
         # e a Interatividade registra a falha de abrir
         self.assertLess(ea.d_interatividade(contexto(medicoes=[m]))["nota"], 10.0)
 
+    def test_regra_do_modelo_sem_numero_vale_da_r6_em_diante(self):
+        self.assertFalse(ea.regra_modelo_sem_numero_ativa("2026-10-07-r5"))
+        self.assertFalse(ea.regra_modelo_sem_numero_ativa(None))
+        self.assertTrue(ea.regra_modelo_sem_numero_ativa("2026-10-08-r6"))
+        self.assertTrue(ea.regra_modelo_sem_numero_ativa("2026-11-02-r7"))
+
+    def test_modelo_sem_numero_vem_do_registro_e_nao_do_texto_da_pagina(self):
+        def ficha(cod, estado, ref):
+            return {"codigo": cod, "aprovacao": {"estado": estado, "referencia_experimental": ref}}
+        fichas = [ficha("B0", "PESQUISA", True), ficha("C1", "PESQUISA", False), ficha("C2-P", "PESQUISA", False), ficha("X", "PRODUCAO", False)]
+        r = lambda s: f"/setor-eletrico/pld/modelos/{s}"
+        self.assertTrue(ea.modelo_sem_numero(r("c1"), fichas))
+        self.assertTrue(ea.modelo_sem_numero(r("c2-p"), fichas))
+        self.assertFalse(ea.modelo_sem_numero(r("b0"), fichas))      # referência experimental publicada emite número
+        self.assertFalse(ea.modelo_sem_numero(r("x"), fichas))       # em produção emite a previsão principal
+        self.assertFalse(ea.modelo_sem_numero(r("nao-existe"), fichas))  # fora do registro segue cobrado
+        self.assertFalse(ea.modelo_sem_numero("/setor-eletrico/pld", fichas))
+        self.assertFalse(ea.modelo_sem_numero(r("c1"), []))
+        self.assertFalse(ea.modelo_sem_numero(r("c1"), [{"codigo": "C1"}]))  # sem aprovação declarada, cobrado
+
+    def test_gold_publicada_marca_c1_c2_e_s0_sem_numero_e_b0_com_numero(self):
+        with open(os.path.join(RAIZ, "public", "energia", "gold", "previsoes_desempenho.json"), encoding="utf-8") as f:
+            fichas = json.load(f)["fichas"]
+        for s in ("c1", "c2-h", "c2-p", "s0"):
+            self.assertTrue(ea.modelo_sem_numero(f"/setor-eletrico/pld/modelos/{s}", fichas), s)
+        self.assertFalse(ea.modelo_sem_numero("/setor-eletrico/pld/modelos/b0", fichas))
+
+    def test_modelo_sem_numero_nao_perde_nota_por_falta_de_comprove_mas_painel_com_numero_perde(self):
+        m = medicao()
+        m["marcadores"]["comprove"] = 0
+        sem = contexto(medicoes=[m], sem_numero_a_comprovar=True)
+        com = contexto(medicoes=[m], sem_numero_a_comprovar=False)
+        a, b = ea.d_rastreabilidade(sem), ea.d_rastreabilidade(com)
+        self.assertEqual(a["nota"], 9.5)
+        self.assertEqual(b["nota"], 7.5)
+        self.assertFalse(any(d["codigo"] == "sem_comprove" for d in a["defeitos"]))
+        self.assertTrue(any(d["codigo"] == "sem_comprove" for d in b["defeitos"]))
+        self.assertTrue(any("não há número a comprovar" in e for e in a["evidencias"]))
+        # a completude também tira o item da conta, em vez de contá-lo como ausente
+        ca, cb = ea.d_completude(sem), ea.d_completude(com)
+        self.assertNotIn("comprove", ca["itens"])
+        self.assertEqual(cb["itens"]["comprove"], 0.0)
+        self.assertGreater(ca["nota"], cb["nota"])
+        self.assertFalse(any("Comprove este número" in d["descricao"] for d in ca["defeitos"]))
+
+    def test_download_continua_cobrado_na_ficha_de_modelo_sem_numero(self):
+        m = medicao()
+        m["marcadores"]["comprove"] = 0
+        m["marcadores"]["baixar"] = 0
+        r = ea.d_rastreabilidade(contexto(medicoes=[m], sem_numero_a_comprovar=True))
+        self.assertTrue(any(d["codigo"] == "sem_download" for d in r["defeitos"]))
+
     def test_gold_fora_do_manifesto_pesa_tres(self):
         r = ea.d_rastreabilidade(contexto(manifesto=set()))
         self.assertEqual(r["nota"], 6.5)

@@ -38,6 +38,9 @@ ENT = os.path.join(DOCS, "avaliacao")
 SAIDA_JSON = os.path.join(GOLD_DIR, "avaliacao.json")
 VERSAO_RUBRICA = "1.0"
 PREFIXO = "/setor-eletrico"
+# Primeira rodada em que a ficha de modelo que o registro de modelos declara sem número emitido deixa de ser cobrada
+# por Comprove este número. As rodadas anteriores ficam como foram medidas.
+RODADA_MODELO_SEM_NUMERO = "2026-10-08-r6"
 
 # ---------------------------------------------------------------------------
 # Rubrica
@@ -96,7 +99,7 @@ DIMENSOES = [
                {"valor": 9.5, "motivo": "teto de acurácia: 8,5 mais 1,0 vezes a fração de fichas com reconciliação independente aprovada"}]},
     {"id": "rastreabilidade", "nome": "Rastreabilidade", "peso": 10, "fonte_da_nota": "medicao",
      "evidencia": "Fonte, transformação, versão e reprodução do número",
-     "regras": ["Parte do teto aplicável (10 sem teto). Sem fonte declarada na página tira 3,0; sem data de referência ou de conferência tira 2,0; painel numérico sem Comprove este número tira 2,0; painel sem download tira 1,0.",
+     "regras": ["Parte do teto aplicável (10 sem teto). Sem fonte declarada na página tira 3,0; sem data de referência ou de conferência tira 2,0; painel numérico sem Comprove este número tira 2,0; painel sem download tira 1,0. Desde a rodada 2026-10-08-r6, a ficha de modelo do PLD que o registro de modelos declara sem número emitido (nem previsão principal nem referência experimental) não é cobrada por Comprove este número, porque não há número a comprovar.",
                 "Ficha Comprove aberta sem sha256, sem fonte ou sem passos de reprodução tira 1,5 por ausência (até 3,0); gold da página fora do manifesto da publicação tira 3,0 por gold."],
      "tetos": [{"valor": 9.5, "motivo": "reprodução por terceiros, fora do ambiente do observatório, não foi exercitada"}]},
     {"id": "atualidade", "nome": "Atualidade e confiabilidade operacional", "peso": 6, "fonte_da_nota": "evidencia_gold",
@@ -165,6 +168,28 @@ GOLDS_POR_PREFIXO = [
 ]
 GOLDS_DE_CONTROLE = {"dados": ["publicacao.json", "catalogo.json"], "metodologia": ["publicacao.json", "metricas.json"]}
 ROTAS_EDITORIAIS = {f"{PREFIXO}/aprenda", f"{PREFIXO}/aprenda/trilhas"}
+
+
+def regra_modelo_sem_numero_ativa(rodada_id):
+    """A regra vale da rodada RODADA_MODELO_SEM_NUMERO em diante; ids no formato AAAA-MM-DD-rN comparam como texto."""
+    return bool(rodada_id) and str(rodada_id) >= RODADA_MODELO_SEM_NUMERO
+
+
+def modelo_sem_numero(rota, fichas):
+    """Ficha de modelo do PLD cujo registro declara que não emite número: nem previsão principal (estado PRODUCAO)
+    nem referência experimental publicada. É a mesma regra de emissaoDoModelo em src/lib/energia/previsoes.ts.
+    Rota que não é ficha de modelo, ou modelo fora do registro, segue cobrada."""
+    prefixo = f"{PREFIXO}/pld/modelos/"
+    if not rota.startswith(prefixo):
+        return False
+    slug = rota[len(prefixo):]
+    for f in fichas or []:
+        if isinstance(f, dict) and str(f.get("codigo", "")).lower() == slug:
+            ap = f.get("aprovacao")
+            if not isinstance(ap, dict):
+                return False
+            return ap.get("estado") != "PRODUCAO" and not ap.get("referencia_experimental")
+    return False
 
 
 def modulo_da_rota(rota):
@@ -591,6 +616,10 @@ def d_completude(ctx):
             itens.pop("pergunta")
             lista = [x for x in ITENS_PAINEL if x[0] != "pergunta"]
             n.evid("o título em forma de pergunta não foi medido nesta rodada e fica fora do cálculo da completude")
+        if ctx.get("sem_numero_a_comprovar"):
+            itens.pop("comprove")
+            lista = [x for x in lista if x[0] != "comprove"]
+            n.evid("o Comprove este número fica fora do cálculo da completude: o registro de modelos declara que o modelo não emite número")
     else:
         anom = [m["anomalias"] for m in comp if m.get("anomalias")]
         limpo = not any(a["datas_cruas"] or a["nan_undefined"] or a["marcador_de_obra"] or a.get("unidade_duplicada") for a in anom)
@@ -704,7 +733,9 @@ def d_rastreabilidade(ctx):
     if ctx["tipo"] == "painel":
         com = mx(lambda m: m["marcadores"]["comprove"])
         n.evid(f"botões Comprove este número: {com}; downloads: {mx(lambda m: m['marcadores']['baixar'])}")
-        if not com:
+        if not com and ctx.get("sem_numero_a_comprovar"):
+            n.evid("ficha de modelo que o registro de modelos declara sem número emitido (nem previsão principal nem referência experimental): não há número a comprovar, e o Comprove não é cobrado")
+        elif not com:
             n.deduz(2.0, "painel numérico sem Comprove este número")
             n.defeito("sem_comprove", "alto", "painel numérico sem Comprove este número")
         if not mx(lambda m: m["marcadores"]["baixar"]):
@@ -918,6 +949,9 @@ def monta(args):
     for m, mod in MODULOS.items():
         n_falha_pipeline[m] = 0
     dimensoes_ids = [d["id"] for d in DIMENSOES]
+    rodada_corrente = args.rodada or (historico["rodadas"][-1]["id"] if historico["rodadas"] else None)
+    regra_modelo = regra_modelo_sem_numero_ativa(rodada_corrente)
+    modelos_fichas = (lj(os.path.join(GOLD_DIR, "previsoes_desempenho.json"), {}) or {}).get("fichas", []) if regra_modelo else []
     for r in insp["rotas"]:
         rota = r["rota"]
         ms = r["medicoes"]
@@ -936,6 +970,7 @@ def monta(args):
             "doc_modulo": bool(MODULOS.get(modulo or "", {}).get("doc")) and os.path.exists(os.path.join(DOCS, "modulos", f"{MODULOS[modulo]['doc']}.md")),
             "verbete_conferido": ((max((m["marcadores"].get("conferido_fonte_primaria", 0) for m in ms if m.get("marcadores")), default=0) > 0) if any(m.get("marcadores") for m in ms) else None) if tipo == "verbete" else None,
             "perguntas": "", "fracao_pergunta": 0.0, "paineis_ids": [],
+            "sem_numero_a_comprovar": regra_modelo and modelo_sem_numero(rota, modelos_fichas),
         }
         # perguntas como título (medido em texto: heading do painel termina em interrogação)
         tit = [p.get("titulo", "") for m in ms for p in m.get("paineis", [])]

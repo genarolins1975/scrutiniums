@@ -542,7 +542,7 @@ Evidência exigida: Fórmulas, universos, unidades, reconciliações e limites d
 
 Evidência exigida: Fonte, transformação, versão e reprodução do número.
 
-- Parte do teto aplicável (10 sem teto). Sem fonte declarada na página tira 3,0; sem data de referência ou de conferência tira 2,0; painel numérico sem Comprove este número tira 2,0; painel sem download tira 1,0.
+- Parte do teto aplicável (10 sem teto). Sem fonte declarada na página tira 3,0; sem data de referência ou de conferência tira 2,0; painel numérico sem Comprove este número tira 2,0; painel sem download tira 1,0. Desde a rodada 2026-10-08-r6, a ficha de modelo do PLD que o registro de modelos declara sem número emitido (nem previsão principal nem referência experimental) não é cobrada por Comprove este número, porque não há número a comprovar.
 - Ficha Comprove aberta sem sha256, sem fonte ou sem passos de reprodução tira 1,5 por ausência (até 3,0); gold da página fora do manifesto da publicação tira 3,0 por gold.
 - Teto 9,5: reprodução por terceiros, fora do ambiente do observatório, não foi exercitada.
 

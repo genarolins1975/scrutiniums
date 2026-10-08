@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-08T00:11:55Z",
+ "gerado_em": "2026-10-08T00:46:27Z",
  "vitest": {
   "admin": {
    "total": 11,
@@ -583,7 +583,7 @@
    "ignorados": 0
   },
   "test_energia_avaliacao": {
-   "total": 52,
+   "total": 57,
    "falhas": 0,
    "ignorados": 0
   },
@@ -730,6 +730,6 @@
   "ok": true,
   "saida": "✔ No ESLint warnings or errors"
  },
- "resumo_regressao": "Vitest: 2693 testes em 141 arquivos, 0 falhas. Python: 1361 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
- "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 2693 testes em 141 arquivos, 0 falhas. Python: 1361 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+ "resumo_regressao": "Vitest: 2693 testes em 141 arquivos, 0 falhas. Python: 1366 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 2693 testes em 141 arquivos, 0 falhas. Python: 1366 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
 }
