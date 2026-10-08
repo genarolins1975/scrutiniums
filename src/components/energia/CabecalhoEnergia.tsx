@@ -149,6 +149,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                     <li key={d.slug} className="shrink-0">
                       <Link
                         href={d.href}
+                        prefetch={false}
                         aria-current={ativo ? "page" : undefined}
                         className={`rotulo inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 whitespace-nowrap border-b-2 px-2 ${
                           ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"

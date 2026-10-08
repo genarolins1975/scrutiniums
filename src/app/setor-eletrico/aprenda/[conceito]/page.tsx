@@ -37,8 +37,8 @@ export function generateMetadata({ params }: { params: { conceito: string } }): 
 function Campo({ rotulo, id, children }: { rotulo: string; id?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-4 border-t border-linha py-6 md:grid md:grid-cols-[12rem_1fr] md:gap-8">
-      <h2 className="rotulo text-mineral">{rotulo}</h2>
-      <div className="mt-2 leading-relaxed text-carvao md:mt-0">{children}</div>
+      <h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>
+      <div className="mt-2 max-w-prose2 leading-relaxed text-carvao md:mt-0">{children}</div>
     </section>
   );
 }
@@ -52,6 +52,9 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   const contrastes = conferido ? contrastesDe(c.slug) : [];
   const nasTrilhas = conferido ? passosComVerbete(c.slug) : [];
   const unidade = conferido ? UNIDADE[c.slug] : undefined;
+  // o exemplo já leva ao painel (e a "Ver no painel" aparece nele): o mesmo destino não é oferecido de novo no fim da página
+  const destinoDoExemplo = prova ? (prova.tipo === "evidencia" ? prova.dado.painel.href : prova.href) : null;
+  const outrosPaineis = c.vejaNoPortal.filter((v) => v.href !== destinoDoExemplo);
   // siglas do texto principal (sem as da fonte citada, que o leitor abre se quiser) que o texto não expande
   const siglas = conferido
     ? siglasNoTexto([c.emUmaFrase, c.porQueImporta, c.comoEMedido, unidade, ...(c.limitacoes ?? [])].filter(Boolean).join(" "), 8).filter((x) => x !== c.sigla)
@@ -76,7 +79,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               <span>{c.nome}</span>
             )}
           </h1>
-          <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-mineral">
+          <p className="mt-3 flex flex-wrap items-center gap-3 text-sm text-mineral">
             {c.estado === "CONFERIDO" ? (
               <>
                 <span className="rotulo text-sucesso">● conferido na fonte primária em {dataBR(c.conferidoEm)}</span>
@@ -109,7 +112,16 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
         ) : (
           <>
             <Campo rotulo="Em uma frase">
-              <p className="font-serif text-xl leading-relaxed">{c.emUmaFrase}</p>
+              {c.emPalavrasSimples ? (
+                <>
+                  <p className="rotulo text-mineral">Em palavras simples</p>
+                  <p className="mt-1 font-serif text-xl leading-relaxed" data-palavras-simples="true">{c.emPalavrasSimples}</p>
+                  <p className="rotulo mt-4 text-mineral">Texto da fonte</p>
+                  <p className="mt-1 text-base leading-relaxed text-carvao-muted">{c.emUmaFrase}</p>
+                </>
+              ) : (
+                <p className="font-serif text-xl leading-relaxed">{c.emUmaFrase}</p>
+              )}
             </Campo>
             <Campo rotulo={sintetico ? "Exemplo sintético" : "Exemplo real"} id="exemplo">
               {prova ? (
@@ -127,8 +139,27 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               )}
             </Campo>
             <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
-            <Campo rotulo="Como é medido">{c.comoEMedido}</Campo>
-            {unidade && <Campo rotulo="Unidade">{unidade}</Campo>}
+            <Campo rotulo="Como é medido">
+              {c.comoEMedidoResumo ? (
+                <>
+                  <p>{c.comoEMedidoResumo}</p>
+                  <details className="mt-2">
+                    <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">Detalhe técnico: a norma, as fontes e o cálculo do observatório</summary>
+                    <div className="mt-1 space-y-3 text-sm text-carvao-muted">
+                      {c.comoEMedido?.split("\n\n").map((par) => <p key={par.slice(0, 40)}>{par}</p>)}
+                    </div>
+                  </details>
+                </>
+              ) : (
+                c.comoEMedido?.split("\n\n").map((par) => <p key={par.slice(0, 40)} className="mb-3 last:mb-0">{par}</p>)
+              )}
+              {unidade && (
+                <p className="mt-3 text-sm text-carvao-muted" data-unidade="true">
+                  <span className="rotulo text-mineral">Unidade: </span>
+                  {unidade}
+                </p>
+              )}
+            </Campo>
             {contrastes.length > 0 && (
               <Campo rotulo="Não confundir com" id="nao-confundir">
                 <ul className="space-y-4">
@@ -140,10 +171,10 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                             {x.rotulo}
                           </Link>
                         ) : (
-                          x.rotulo
+                          <span className="inline-flex min-h-[44px] items-center">{x.rotulo.charAt(0).toUpperCase() + x.rotulo.slice(1)}</span>
                         )}
                       </p>
-                      <p className="text-sm leading-relaxed">{x.texto}</p>
+                      <p className="text-base leading-relaxed">{x.texto}</p>
                     </li>
                   ))}
                 </ul>
@@ -152,14 +183,16 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           </>
         )}
         <Campo rotulo="Relações">
-          <ul className="flex flex-wrap gap-2">
+          <ul className={c.relacoesNotas ? "space-y-2" : "flex flex-wrap gap-2"}>
             {c.relacoes.map((r) => {
               const rc = conceito(r);
+              const nota = c.relacoesNotas?.[r];
               return rc ? (
-                <li key={r}>
+                <li key={r} className={nota ? "flex flex-wrap items-center gap-x-3 gap-y-1" : undefined}>
                   <Link href={`/setor-eletrico/aprenda/${r}`} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
                     {rc.sigla ?? rc.nome}
                   </Link>
+                  {nota && <span className="min-w-0 flex-1 basis-64 text-sm leading-relaxed text-carvao-muted">{nota}</span>}
                 </li>
               ) : null;
             })}
@@ -200,7 +233,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               ))}
             </ul>
             {conferido && (
-              <p className="mt-4 text-xs text-mineral">
+              <p className="mt-4 text-sm text-mineral">
                 Documentos acessados e texto conferido em {dataBR(c.conferidoEm)}
                 {c.revisadoEm && c.revisadoEm !== c.conferidoEm ? `; texto revisado em ${dataBR(c.revisadoEm)}` : ""}.
               </p>
@@ -216,15 +249,17 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             </ul>
           </Campo>
         )}
-        <Campo rotulo="Veja no portal">
-          <ul className="space-y-1">
-            {c.vejaNoPortal.map((v) => (
-              <li key={v.href}>
-                <Link href={v.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{v.rotulo}</Link>
-              </li>
-            ))}
-          </ul>
-        </Campo>
+        {outrosPaineis.length > 0 && (
+          <Campo rotulo="Veja no painel">
+            <ul className="space-y-1">
+              {outrosPaineis.map((v) => (
+                <li key={v.href}>
+                  <Link href={v.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{v.rotulo}</Link>
+                </li>
+              ))}
+            </ul>
+          </Campo>
+        )}
       </main>
     </>
   );

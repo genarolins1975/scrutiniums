@@ -41,6 +41,8 @@ export type TrilhaConceitual = {
   passos: PassoTrilha[];
   naoConclua: string[];
   simulacao: "liquidacao" | "conta";
+  /** Passo depois do qual o exemplo sintético aparece (o exemplo fica junto do conceito que ele explica). */
+  simulacaoApos: string;
 };
 
 export const TRILHAS_APRENDA: TrilhaConceitual[] = [
@@ -56,7 +58,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         titulo: "A água que chega",
         conceitos: ["ena", "mlt"],
         texto:
-          "A ENA é a energia que as vazões naturais que chegam aos reservatórios permitiriam produzir, calculada pelo ONS com as produtividades das usinas a 65% dos volumes úteis. O ONS a publica também em percentual da MLT, a média de longo termo.",
+          "A ENA é a energia que as vazões naturais que chegam aos reservatórios permitiriam produzir, calculada pelo ONS com as produtividades das usinas a 65% dos volumes úteis. O ONS a publica também em percentual da MLT, a média de longo termo: 100% é o valor da própria MLT, e acima de 100% a afluência passou da média.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/agua_detalhe.json",
@@ -94,7 +96,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         titulo: "A operação decide quem gera",
         conceitos: ["geracao-centralizada", "cvu", "constrained-off"],
         texto:
-          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o CVU de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa. A geração eólica também pode ser reduzida por comando do ONS, por motivo externo à usina: é o constrained-off.",
+          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o CVU de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa. A geração eólica também pode ser reduzida por comando do ONS, por motivo externo à usina: é o constrained-off. O número abaixo é uma média de potência em 12 meses, em MWmed, e não o total de energia; o peso da fonte no total está no painel.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/geracao_detalhe.json",
@@ -124,7 +126,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         titulo: "O preço de curto prazo",
         conceitos: ["pld", "limites-do-pld", "submercado"],
         texto:
-          "O PLD é o preço do Mercado de Curto Prazo, calculado por hora e por submercado. O cálculo aplica um piso e dois tetos que a ANEEL fixa a cada ano; por isso o PLD pode diferir do CMO da mesma hora.",
+          "O PLD é o preço do Mercado de Curto Prazo, calculado por hora e por submercado. O cálculo aplica um piso e dois tetos que a ANEEL fixa a cada ano; por isso o PLD pode diferir do CMO da mesma hora. O número abaixo é o PLD médio do Sudeste/Centro-Oeste na mesma semana operativa do CMO do passo anterior, para os dois ficarem lado a lado.",
         prova: { tipo: "verbete", slug: "pld" },
         ligacao: {
           tipo: "mercado",
@@ -146,6 +148,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
       "O fator de ajuste do MRE não diz quanto cada usina ganhou ou perdeu nem como o resultado é liquidado: as Regras de Comercialização da CCEE não foram lidas.",
     ],
     simulacao: "liquidacao",
+    simulacaoApos: "pld",
   },
   {
     id: "custo-tarifa-orcamento",
@@ -229,6 +232,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
       "O peso no orçamento vem da POF 2017-2018 e não mede o efeito das regras atuais da Tarifa Social nem das tarifas vigentes.",
     ],
     simulacao: "conta",
+    simulacaoApos: "orcamento",
   },
 ];
 

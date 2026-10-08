@@ -203,7 +203,7 @@ describe("P065: páginas dos verbetes", () => {
       expect(h, c.slug).toContain("Não confundir com");
       expect(h, c.slug).toContain("conferido na fonte primária em");
       expect(h, c.slug).toContain("Documentos acessados e texto conferido em");
-      if (UNIDADE[c.slug]) expect(h, c.slug).toContain(">Unidade<");
+      if (UNIDADE[c.slug]) expect(h, c.slug).toContain('data-unidade="true"');
       if (EXEMPLO_SINTETICO[c.slug]) {
         expect(h, c.slug).toContain('data-sintetico="true"');
         expect(h, c.slug).toContain(ROTULO_SINTETICO);
@@ -218,7 +218,7 @@ describe("P065: páginas dos verbetes", () => {
       expect(h, c.slug).toContain("verbete em preparação");
       expect(h, c.slug).not.toContain("Não confundir com");
       expect(h, c.slug).not.toContain("data-prova");
-      expect(h, c.slug).not.toContain(">Unidade<");
+      expect(h, c.slug).not.toContain('data-unidade="true"');
     }
   });
 

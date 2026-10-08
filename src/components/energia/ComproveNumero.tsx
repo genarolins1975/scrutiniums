@@ -346,7 +346,7 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
           <Linha rotulo="Código">
             {ev.versao.codigo ? <span className="font-mono text-[0.8rem]">{ev.versao.codigo}</span> : "não registrado"}
             {ev.versao.codigo?.endsWith("+alterado") && (
-              <span className="mt-1 block text-carvao-muted">Publicado com alterações fora do commit: a reprodução pode diferir.</span>
+              <span className="mt-1 block text-carvao-muted">O código desta execução tinha alterações locais ainda não confirmadas em commit (sufixo +alterado). O sha256 dos arquivos de entrada e o comando de reprodução valem, mas o código exato não se reconstitui a partir do commit: a reprodução pode diferir.</span>
             )}
           </Linha>
           <Linha rotulo="Publicado em">{quando(ev.versao.publicacao, "não registrado")}</Linha>

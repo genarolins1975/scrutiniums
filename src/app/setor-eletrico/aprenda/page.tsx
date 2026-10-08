@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
+import { AprendaIndice, type GrupoIndice } from "@/components/energia/AprendaIndice";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CONCEITOS, GRUPOS } from "@/lib/energia/conteudo/conceitos";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
@@ -23,20 +25,27 @@ const idGrupo = (g: string) =>
     .replace(/[^a-z0-9]+/g, "-");
 
 export default function AprendaPage() {
+  const grupos: GrupoIndice[] = GRUPOS.map((g) => ({
+    id: `g-${idGrupo(g)}`,
+    nome: g,
+    itens: CONCEITOS.filter((c) => c.grupo === g).map((c) => ({
+      slug: c.slug,
+      titulo: c.sigla ?? c.nome,
+      subtitulo: c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? c.nome : undefined,
+      texto: c.estado === "CONFERIDO" ? (c.emPalavrasSimples ?? c.emUmaFrase ?? "") : `Fonte primária a conferir: ${c.fontePlanejada}`,
+      selo: c.estado === "PENDENTE" ? ("em preparação" as const) : c.ressalva ? ("com ressalva" as const) : undefined,
+    })),
+  }));
   const conferidos = CONCEITOS.filter((c) => c.estado === "CONFERIDO").length;
   const comRessalva = CONCEITOS.filter((c) => c.estado === "CONFERIDO" && c.ressalva).length;
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
+      <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo siglas={["MWmed", "DIC", "FIC", "CCEE", "ONS", "ANEEL"]} rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
-          Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Cada um diz, em uma frase, o que é; mostra
-          um exemplo do sistema, ligado ao painel onde o número aparece; e explica por que importa e como é medido. Quando se aplicam, trazem também a unidade, com
-          o que não confundir, as relações com outros conceitos, a fonte oficial com a data de conferência e o que não se pode concluir.{" "}
-          {conferidos === CONCEITOS.length
-            ? `Os ${CONCEITOS.length} verbetes estão conferidos na fonte primária${comRessalva ? `; ${comRessalva} deles trazem uma ressalva declarada no próprio verbete, porque a fonte que define o termo não foi lida ou não o define` : ""}.`
-            : `${conferidos} de ${CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem definição, com o que já foi consultado e o que falta.`}
+          Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Comece por uma trilha, que liga os conceitos aos números, ou procure um termo.
         </CabecalhoModulo>
         <section aria-labelledby="trilhas" className="border-t border-linha py-8">
           <h2 id="trilhas" className="rotulo text-mineral">
@@ -55,40 +64,19 @@ export default function AprendaPage() {
             ))}
           </ul>
         </section>
-        <nav aria-label="Grupos de verbetes" className="border-t border-linha py-6">
-          <p className="rotulo text-mineral">Ir para o grupo</p>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {GRUPOS.map((g) => (
-              <li key={g}>
-                <a href={`#g-${idGrupo(g)}`} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-                  {g}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        {GRUPOS.map((g) => (
-          <section key={g} aria-labelledby={`g-${idGrupo(g)}`} className="scroll-mt-4 border-t border-linha py-8">
-            <h2 id={`g-${idGrupo(g)}`} className="rotulo text-mineral">{g}</h2>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {CONCEITOS.filter((c) => c.grupo === g).map((c) => (
-                <li key={c.slug}>
-                  <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="group flex h-full flex-col border border-linha bg-superficie p-5 transition-colors hover:border-energia">
-                    <span className="flex items-baseline justify-between gap-3">
-                      <span className="font-serif text-lg text-carvao">{c.sigla ?? c.nome}</span>
-                      {c.estado === "PENDENTE" && <span className="rotulo !text-[0.62rem] text-aviso">em preparação</span>}
-                      {c.estado === "CONFERIDO" && c.ressalva && <span className="rotulo !text-[0.62rem] text-aviso">com ressalva</span>}
-                    </span>
-                    {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-mineral">{c.nome}</span>}
-                    <span className="mt-2 text-sm leading-relaxed text-carvao-muted">
-                      {c.estado === "CONFERIDO" ? c.emUmaFrase : `Fonte primária a conferir: ${c.fontePlanejada}`}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+        <AprendaIndice grupos={grupos} />
+        <section aria-labelledby="como-ler" className="border-t border-linha py-8">
+          <h2 id="como-ler" className="rotulo text-mineral">
+            Como ler um verbete
+          </h2>
+          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+            Cada verbete diz, em uma frase, o que é; mostra um exemplo do sistema, ligado ao painel onde o número aparece; e explica por que importa e como é medido.
+            Quando se aplicam, traz também a unidade, o que não confundir, as relações com outros conceitos, a fonte oficial com a data de conferência e o que não se pode concluir.{" "}
+            {conferidos === CONCEITOS.length
+              ? `Os ${CONCEITOS.length} verbetes estão conferidos na fonte primária${comRessalva ? `; ${comRessalva} deles trazem uma ressalva declarada no próprio verbete, porque a fonte que define o termo não foi lida ou não o define` : ""}.`
+              : `${conferidos} de ${CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem definição, com o que já foi consultado e o que falta.`}
+          </p>
+        </section>
       </main>
     </>
   );

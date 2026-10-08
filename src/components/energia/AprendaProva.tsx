@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import type { Natureza } from "@/lib/energia/tipos";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataRef, diaBrasilia, textoPeriodo } from "@/lib/energia/evidencia";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -18,6 +19,21 @@ function baseDoValor(ev: Evidencia): string | null {
   return /\d$/.test(v) ? u : null;
 }
 
+/** Legenda visível dos selos de natureza do exemplo (a explicação não pode morar só no atributo title, que o toque não mostra). */
+function LegendaNatureza({ naturezas }: { naturezas: Natureza[] }) {
+  if (!naturezas.length) return null;
+  return (
+    <p className="mt-2 text-xs leading-relaxed text-mineral" data-legenda-natureza="true">
+      {naturezas.map((n, i) => (
+        <span key={n}>
+          {i > 0 && " "}
+          <span aria-hidden="true">{NATUREZAS[n].glifo}</span> {NATUREZAS[n].rotulo}: {NATUREZAS[n].definicao}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 /**
  * Número real que ilustra um verbete ou um passo de trilha. Com ficha publicada, mostra o
  * valor exatamente como o painel o exibe, o recorte, a natureza, a ficha de prova e o
@@ -28,24 +44,33 @@ function baseDoValor(ev: Evidencia): string | null {
 export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: string }) {
   if (!prova)
     return <p className="text-carvao-muted">Exemplo com dado integrado indisponível nesta publicação: a gold do módulo não trouxe o número.</p>;
-  if (prova.tipo === "texto")
+  if (prova.tipo === "texto") {
+    const naturezas = Array.from(new Set(prova.partes.map((pt) => pt.natureza).filter((n): n is Natureza => !!n)));
     return (
-      <p data-prova="texto">
-        {prova.partes.map((pt, i) => (
-          <span key={i}>
-            {pt.texto}
-            {pt.natureza && (
-              <span className="ml-1 align-middle">
-                <SeloNatureza natureza={pt.natureza} />
-              </span>
-            )}
-          </span>
-        ))}{" "}
-        <Link href={comVolta(prova.href, volta)} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
-          ver no painel
-        </Link>
-      </p>
+      <figure data-prova="texto" className="border border-linha bg-superficie p-4 sm:p-5">
+        <figcaption className="rotulo text-mineral">Número lido da base publicada</figcaption>
+        <p className="mt-2 leading-relaxed">
+          {prova.partes.map((pt, i) => (
+            <span key={i}>
+              {pt.texto}
+              {pt.natureza && (
+                <span className="ml-1 align-middle">
+                  <SeloNatureza natureza={pt.natureza} />
+                </span>
+              )}
+            </span>
+          ))}
+        </p>
+        <p className="mt-2 text-xs text-mineral">Sem ficha Comprove própria neste exemplo: o número vem da base publicada do painel, que traz a fonte e a data de referência.</p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-5">
+          <Link href={comVolta(prova.href, volta)} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+            Ver no painel
+          </Link>
+        </div>
+        <LegendaNatureza naturezas={naturezas} />
+      </figure>
     );
+  }
   const { evidencia: ev, painel, natureza, leitura, complemento } = prova.dado;
   const base = baseDoValor(ev);
   const fimRef = dataRef(ev.periodo.fim ?? ev.periodo.inicio);
@@ -79,6 +104,7 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
         </Link>
         <ComproveNumero evidencia={ev} endereco={painel.href} />
       </div>
+      <LegendaNatureza naturezas={[natureza]} />
     </figure>
   );
 }

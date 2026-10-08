@@ -27,7 +27,8 @@ export type GrupoConceito =
   | "Empresas"
   | "Expansão"
   | "Regulação"
-  | "Transição";
+  | "Transição"
+  | "Fontes de dados";
 
 export type FonteOficial = {
   orgao: string;
@@ -62,6 +63,18 @@ export type Conceito = {
    * de conferência, para o selo não dizer mais do que o verbete prova.
    */
   ressalva?: string;
+  /**
+   * Leitura em linguagem direta do que o texto da fonte já diz, mostrada antes dele quando a definição literal é jurídica ou
+   * técnica demais para abrir o verbete. Só usa o que os trechos literais do verbete sustentam; não é definição nova.
+   */
+  emPalavrasSimples?: string;
+  /**
+   * Resumo de duas linhas de "Como é medido", mostrado aberto; o texto completo (a norma, a curva, o cálculo do observatório)
+   * fica logo abaixo, recolhido, sob "Detalhe técnico". Parágrafos de `comoEMedido` separam-se por linha em branco.
+   */
+  comoEMedidoResumo?: string;
+  /** Uma frase por relação, escrita só com o que os trechos literais do verbete dizem (relações sem frase seguem como atalho). */
+  relacoesNotas?: Record<string, string>;
 };
 
 const ONS = (id: string, titulo: string, trecho?: string): FonteOficial => ({
@@ -611,4 +624,5 @@ export const GRUPOS: GrupoConceito[] = [
   "Expansão",
   "Transição",
   "Regulação",
+  "Fontes de dados",
 ].filter((g) => CONCEITOS.some((c) => c.grupo === g)) as GrupoConceito[];

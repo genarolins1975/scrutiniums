@@ -86,7 +86,7 @@ export const CONCEITOS: Conceito[] = [
         "Em outras palavras: as usinas dividem entre si o risco ligado à água, no contexto de uma operação do sistema interligado otimizada e despachada de forma centralizada.",
       ),
       gtMre(
-        "seção sobre as PCHs no mecanismo, página 18",
+        "seção sobre as PCHs no mecanismo, p. 18 do documento e do PDF",
         "As PCHs são usinas a fio d’água e não participam do despacho centralizado. A extensão do MRE às PCHs permite a elas mitigar o respectivo risco hidrológico e, portanto, melhorar sua competitividade.",
         "Em outras palavras: as pequenas centrais hidrelétricas podem participar do MRE mesmo sem fazer parte do despacho centralizado, e isso as ajuda a reduzir o risco hidrológico.",
       ),
@@ -228,41 +228,47 @@ export const CONCEITOS: Conceito[] = [
     conferidoEm: "2026-10-07",
     ressalva: "definição regulatória não lida (Regras de Comercialização da CCEE)",
     emUmaFrase:
-      "Razão, em percentual, entre a geração verificada das usinas do Mecanismo de Realocação de Energia (MRE) no mês e a garantia física dessas usinas; abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física.",
+      "Razão, em percentual, entre a geração verificada das usinas do Mecanismo de Realocação de Energia (MRE) no mês e a garantia física dessas usinas (no boletim do MME, a garantia física sazonalizada); abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física.",
     porQueImporta:
       "A garantia física é a quantidade máxima de energia de um empreendimento que pode comprovar atendimento de carga ou lastrear contratos (ver Garantia física); o GSF mostra, mês a mês, quanto dela as hidrelétricas do MRE entregaram juntas. O relatório do GT de Aprimoramento do MRE (julho de 2019) registra que, desde 2014, o GSF tem ficado abaixo de 90%, o que expôs negativamente muitos agentes hidrelétricos a valores elevados de PLD, e que o descolamento entre a sazonalidade da produção e a da garantia física sazonalizada infla o GSF no período úmido e o reduz no período seco, com oscilações artificiais que elevam o risco das hidrelétricas.",
+    comoEMedidoResumo:
+      "O GSF é a geração das usinas do MRE no mês dividida pela garantia física delas, em percentual. O que muda de uma fonte para outra é qual garantia física entra no denominador; o observatório usa a modulada e ajustada pelo fator de disponibilidade.",
     comoEMedido:
-      "Em percentual, por mês: geração das usinas do MRE dividida pela garantia física, que entra em formas diferentes conforme a fonte. Segundo o relatório do GT, o MRE usa a garantia física sazonalizada e modulada: a sazonalização segue a estratégia comercial de cada agente, e a modulação segue as regras de comercialização e o perfil de geração das usinas do MRE. O boletim do MME compara a geração hidráulica, referenciada ao centro de gravidade, com a garantia física sazonalizada. No observatório, o denominador é a garantia física modulada e ajustada pelo fator de disponibilidade, nos conjuntos abertos da CCEE, e o resultado foi conferido com o fator mensal do InfoMercado em alguns meses da série, listados no painel.",
+      "Nos documentos do MME. O boletim compara a geração hidráulica, rotulada \"(centro de gravidade)\", com a garantia física sazonalizada. Segundo o relatório do GT, o MRE usa a garantia física sazonalizada e modulada: a sazonalização segue a estratégia comercial de cada agente, e a modulação segue as regras de comercialização e o perfil de geração das usinas do MRE.\n\nNo observatório. O denominador é a garantia física modulada e ajustada pelo fator de disponibilidade, nos conjuntos abertos da CCEE, em percentual, por mês, e o resultado foi conferido com o fator mensal do InfoMercado em alguns meses da série, listados no painel.",
+    relacoesNotas: {
+      mre: "O relatório do GT trata o fator de ajuste do MRE e o GSF como o mesmo número: o GSF é o resultado mensal do mecanismo.",
+      "garantia-fisica": "É o denominador da razão, e as fontes não usam a mesma garantia física (ver o que não se pode concluir).",
+    },
     relacoes: ["mre", "garantia-fisica"],
     fontes: [
       boletimMme(
-        "seção 8.5, Mecanismo de Realocação de Energia, página 28",
+        "seção 8.5, Mecanismo de Realocação de Energia, p. 28 do documento (p. 33 do PDF)",
         "Em dezembro de 2020, as usinas participantes do MRE geraram, juntas, 42.500 MWmédios, ante a garantia física sazonalizada de 52.788 MWmédios, o que representou um GSF mensal de 80,51%.",
         "Em outras palavras: dividindo o que as usinas do MRE geraram juntas, 42.500 MWmédios, pela garantia física sazonalizada, 52.788 MWmédios, o resultado é 80,51%, e esse é o GSF do mês.",
       ),
-      boletimMme("lista de siglas", "GSF - Generation Scaling Factor"),
+      boletimMme("lista de siglas, p. 40 do documento (p. 45 do PDF)", "GSF - Generation Scaling Factor"),
       gtMre(
-        "seção sobre o balanço operativo, página 38",
+        "seção sobre o balanço operativo, p. 38 do documento e do PDF",
         "Com base no comportamento da geração hidrelétrica é possível avaliar o comportamento do fator de ajuste do MRE, conhecido como GSF.",
         "Em outras palavras: o relatório trata o fator de ajuste do MRE e o GSF como o mesmo número.",
       ),
       gtMre(
-        "Tabela 1, variáveis avaliadas, página 22",
+        "Tabela 1, variáveis avaliadas, p. 22 do documento e do PDF",
         "Razão entre a geração verificada (mensal) e as garantias físicas históricas. Neste estudo não será considerado procedimento da sazonalização das garantias físicas para o MRE.",
         "Em outras palavras: neste estudo o GSF é a geração mensal verificada dividida pelas garantias físicas históricas, sem aplicar a sazonalização das garantias físicas.",
       ),
       gtMre(
-        "seção sobre a contabilização do MRE, página 17",
+        "seção sobre a contabilização do MRE, p. 17 do documento e do PDF",
         "e utiliza a GF sazonalizada e modulada. A sazonalização da GF é realizada em função da estratégia comercial de cada agente, enquanto que a modulação é realizada pelas regras de comercialização e segue o perfil de geração das usinas do MRE.",
         "Em outras palavras: a garantia física que entra na contabilização do MRE passa por duas etapas, a sazonalização, que depende da estratégia de cada agente, e a modulação, que segue as regras de comercialização e o perfil de geração das usinas.",
       ),
       gtMre(
-        "seção sobre a recente crise do MRE, página 21",
+        "seção sobre a recente crise do MRE, p. 21 do documento e do PDF",
         "Os últimos anos foram os mais desafiadores para o MRE desde sua implantação em 2001, especialmente a partir do ano de 2014, período em que o GSF tem apresentado valores abaixo de 90%, o que tem exposto negativamente muitos agentes hidrelétricos a valores elevados de PLD.",
         "Em outras palavras: desde 2014 o GSF vinha abaixo de 90%, e isso deixou muitos agentes hidrelétricos expostos a preços de curto prazo elevados.",
       ),
       gtMre(
-        "seção sobre a produção das usinas do MRE (figura 8), página 18",
+        "seção sobre a produção das usinas do MRE (figura 8), p. 18 do documento e do PDF",
         "O descolamento entre a sazonalidade da produção hidrelétrica e da GF faz com o GSF seja inflado no período úmido (muita geração e baixa GF sazonalizada) e reduzido no período seco (pouca geração e alta GF sazonalizada), provocando oscilações artificiais do GSF e elevando o risco das hidrelétricas.",
         "Em outras palavras (o original traz \"faz com o GSF seja inflado\"): como a produção das hidrelétricas e a garantia física sazonalizada não variam juntas ao longo do ano, o GSF calculado com a garantia física sazonalizada fica artificialmente alto no período úmido, quando se gera muito e a garantia física sazonalizada é baixa, e artificialmente baixo no período seco.",
       ),

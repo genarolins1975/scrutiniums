@@ -99,6 +99,10 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
   if (!t) notFound();
   const tipos = Array.from(new Set(t.passos.flatMap((p) => (p.ligacao ? [p.ligacao.tipo] : []))));
   const outra = TRILHAS_APRENDA.find((x) => x.id !== t.id);
+  // o exemplo sintético fica logo depois do passo que ele explica; os passos seguintes continuam a numeração
+  const idxSimulacao = Math.max(0, t.passos.findIndex((p) => p.id === t.simulacaoApos));
+  const antes = t.passos.slice(0, idxSimulacao + 1);
+  const depois = t.passos.slice(idxSimulacao + 1);
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
@@ -146,21 +150,29 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           </div>
         </nav>
 
-        <ol className="mt-8 max-w-4xl" aria-label={`Passos: ${t.titulo}`}>
-          {t.passos.map((p, i) => (
+        <ol className="mt-8 max-w-4xl" aria-label={`Passos 1 a ${idxSimulacao + 1}: ${t.titulo}`}>
+          {antes.map((p, i) => (
             <Passo key={p.id} trilhaId={t.id} passo={p} ordem={i + 1} total={t.passos.length} />
           ))}
         </ol>
 
-        <section aria-labelledby="sintetico" className="mt-12 max-w-4xl">
-          <h2 id="sintetico" className="rotulo mb-3 text-mineral">
+        <section aria-labelledby="sintetico" className="my-8 max-w-4xl" data-simulacao-apos={t.simulacaoApos}>
+          <h2 id="sintetico" className="font-serif text-2xl text-carvao">
             Experimente com valores hipotéticos
           </h2>
-          {t.simulacao === "liquidacao" ? <SimulacaoLiquidacao /> : <SimulacaoConta />}
+          <div className="mt-3">{t.simulacao === "liquidacao" ? <SimulacaoLiquidacao /> : <SimulacaoConta />}</div>
         </section>
 
+        {depois.length > 0 && (
+          <ol className="max-w-4xl" start={idxSimulacao + 2} aria-label={`Passos ${idxSimulacao + 2} a ${t.passos.length}: ${t.titulo}`}>
+            {depois.map((p, i) => (
+              <Passo key={p.id} trilhaId={t.id} passo={p} ordem={idxSimulacao + 2 + i} total={t.passos.length} />
+            ))}
+          </ol>
+        )}
+
         <section aria-labelledby="nao-conclua" className="mt-10 max-w-4xl border-l-2 border-energia pl-4">
-          <h2 id="nao-conclua" className="rotulo text-mineral">
+          <h2 id="nao-conclua" className="font-serif text-2xl text-carvao">
             O que esta trilha não permite concluir
           </h2>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao">

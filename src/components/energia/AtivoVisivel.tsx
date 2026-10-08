@@ -8,8 +8,9 @@ import { useEffect } from "react";
  * dos dois lados; alinhado ao início, só a borda direita termina cortada, o que sinaliza
  * que há mais itens. O alinhamento usa as posições medidas na tela e é refeito quando as
  * fontes terminam de carregar, porque a largura dos rótulos muda e deixava o módulo atual
- * com o começo cortado. Nas bordas em que ainda há itens fora da vista, um esmaecimento
- * mostra que o corte é rolagem, e não um rótulo quebrado.
+ * com o começo cortado. O módulo atual fica rente à borda esquerda, de modo que o anterior sai
+ * inteiro da vista (uma lasca de rótulo, como "LAÇÃO" no lugar de "REGULAÇÃO", parecia erro). Nas
+ * bordas em que ainda há itens fora da vista, um esmaecimento mostra que o corte é rolagem.
  */
 export function AtivoVisivel({ alvo }: { alvo: string }) {
   useEffect(() => {
@@ -38,7 +39,9 @@ function acompanhaFaixa(lista: HTMLElement, soSeCortada: boolean): () => void {
     const a = ativo.getBoundingClientRect();
     const l = lista.getBoundingClientRect();
     if (soSeCortada && a.left >= l.left + 8 && a.right <= l.right - 8) return;
-    lista.scrollLeft = Math.max(0, lista.scrollLeft + (a.left - l.left - (soSeCortada ? 24 : 8)));
+    // faixa de seções: folga de 24 px (o início do item ainda aparece dentro do esmaecimento); faixa de módulos: rente à borda, para o
+    // item anterior sair inteiro da vista em vez de sobrar uma lasca de rótulo cortado
+    lista.scrollLeft = Math.max(0, lista.scrollLeft + (a.left - l.left - (soSeCortada ? 24 : 0)));
   };
   const bordas = () => {
     const maximo = lista.scrollWidth - lista.clientWidth;

@@ -56,6 +56,11 @@ export type Contraste = {
   /** Outro verbete (slug) ou um termo que não é verbete, pelo rótulo. */
   b: string | { rotulo: string };
   texto: string;
+  /**
+   * O mesmo contraste visto do verbete `b`, quando o texto de `a` seria repetido palavra por palavra em dois verbetes vizinhos:
+   * no verbete `b` entra esta versão curta, que aponta para `a`.
+   */
+  textoB?: string;
 };
 
 export const CONTRASTES: Contraste[] = [
@@ -177,6 +182,8 @@ export const CONTRASTES: Contraste[] = [
     b: "garantia-fisica",
     texto:
       "A garantia física é a quantidade máxima de energia de cada empreendimento que pode lastrear contratos; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico. No observatório, a geração das usinas do MRE dividida pela garantia física modulada e ajustada pelo fator de disponibilidade é o GSF.",
+    textoB:
+      "A garantia física é um limite de energia de cada empreendimento; o MRE é o mecanismo pelo qual as hidrelétricas compartilham o risco hidrológico, e não define a garantia física de ninguém (ver MRE).",
   },
   {
     a: "garantia-fisica",
@@ -188,18 +195,24 @@ export const CONTRASTES: Contraste[] = [
     b: "garantia-fisica",
     texto:
       "A garantia física é a quantidade máxima de energia que um empreendimento pode usar para comprovar atendimento de carga ou vender em contratos; o GSF é a razão entre o que as usinas do MRE geraram no mês e a garantia física delas, no conjunto. Um GSF de 80,51% (dezembro de 2020, no boletim do MME, com a garantia física sazonalizada) não diz que a garantia física caiu: diz que a geração do mês ficou abaixo dela. Um GSF acima de 100% diz que ficou acima.",
+    textoB:
+      "O GSF compara, mês a mês, a geração das usinas do MRE com a garantia física delas. Um GSF abaixo de 100% diz que a geração ficou abaixo da garantia física, não que a garantia física caiu (ver GSF).",
   },
   {
     a: "mre",
     b: "gsf",
     texto:
       "O MRE é o mecanismo de compartilhamento do risco hidrológico; o GSF, também chamado de fator de ajuste do MRE, é o número mensal que compara a geração das usinas com a garantia física. Falar em MRE é falar do mecanismo, falar em GSF é falar da razão do mês.",
+    textoB:
+      "O GSF não é o mecanismo: é o número mensal que compara a geração das usinas do MRE com a garantia física delas. O mecanismo está no verbete MRE.",
   },
   {
     a: "ree",
     b: "ear",
     texto:
       "A EAR é a energia associada à água armazenada; o REE é um dos recortes em que o ONS a publica, ao lado do subsistema, da bacia e do reservatório. Cada recorte tem o próprio perímetro e a própria EAR máxima.",
+    textoB:
+      "O REE é um dos recortes em que o ONS publica a EAR, ao lado do subsistema, da bacia e do reservatório; cada recorte tem o próprio perímetro e a própria EAR máxima.",
   },
   {
     a: "ree",
@@ -319,7 +332,7 @@ export function contrastesDe(slug: string): ContrasteDoVerbete[] {
     if (typeof outro === "string") {
       const v = conceito(outro);
       if (!v) continue;
-      out.push({ com: outro, rotulo: v.sigla ? `${v.sigla} (${v.nome})` : v.nome, href: `/setor-eletrico/aprenda/${outro}`, texto: c.texto });
+      out.push({ com: outro, rotulo: v.sigla ? `${v.sigla} (${v.nome})` : v.nome, href: `/setor-eletrico/aprenda/${outro}`, texto: c.b === slug && c.textoB ? c.textoB : c.texto });
     } else {
       out.push({ com: outro.rotulo, rotulo: outro.rotulo, href: null, texto: c.texto });
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { num, pct, reais } from "@/lib/energia/formato";
 import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 
@@ -11,6 +11,13 @@ import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
  * valores não vêm da gold, não usam selo de natureza, não vão para a URL nem para a
  * telemetria e não alimentam nenhum indicador do observatório.
  */
+
+/** Falso até a hidratação: sem JavaScript os controles ficam desligados em vez de parecerem funcionar. */
+function usePronto(): boolean {
+  const [pronto, setPronto] = useState(false);
+  useEffect(() => setPronto(true), []);
+  return pronto;
+}
 
 function Quadro({ titulo, simplificacao, children }: { titulo: string; simplificacao: string; children: ReactNode }) {
   return (
@@ -24,6 +31,9 @@ function Quadro({ titulo, simplificacao, children }: { titulo: string; simplific
       </p>
       <div className="space-y-4 p-4 sm:p-5">
         <h3 className="font-serif text-xl text-carvao">{titulo}</h3>
+        <noscript>
+          <p className="border border-dashed border-mineral p-3 text-sm text-carvao">Este exemplo precisa de JavaScript para recalcular os resultados; sem ele, os controles ficam desligados e os valores abaixo são os iniciais.</p>
+        </noscript>
         {children}
         <p className="text-xs leading-relaxed text-carvao-muted">{simplificacao}</p>
       </div>
@@ -39,6 +49,7 @@ function Controle({
   passo,
   formato,
   definir,
+  pronto,
 }: {
   rotulo: string;
   valor: number;
@@ -47,6 +58,7 @@ function Controle({
   passo: number;
   formato: (v: number) => string;
   definir: (v: number) => void;
+  pronto: boolean;
 }) {
   const id = useId();
   return (
@@ -62,6 +74,7 @@ function Controle({
         max={max}
         step={passo}
         value={valor}
+        disabled={!pronto}
         aria-valuetext={formato(valor)}
         onChange={(e) => definir(Number(e.target.value))}
         className="min-h-[44px] w-full accent-energia"
@@ -95,6 +108,7 @@ export function SimulacaoLiquidacao() {
   const [cmo, setCmo] = useState(250);
   const [contratado, setContratado] = useState(100);
   const [verificado, setVerificado] = useState(110);
+  const pronto = usePronto();
   const preco = Math.min(Math.max(cmo, PISO), TETO);
   const limitado = preco !== cmo;
   const dif = verificado - contratado;
@@ -104,10 +118,13 @@ export function SimulacaoLiquidacao() {
       titulo="Do CMO ao PLD e à liquidação da diferença"
       simplificacao={`Simplificação pedagógica. O piso (${RMWH(PISO)}) e o teto horário (${RMWH(TETO)}) são hipotéticos; o teto estrutural, que limita a média do dia, fica de fora. O balanço real de cada perfil de agente segue as Regras de Comercialização da CCEE, não conferidas nesta fase: aqui aparece só a ideia de liquidar a diferença entre o contratado e o verificado ao preço da hora.`}
     >
+      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-enunciado="true">
+        Um agente contratou {MWH(contratado)} para uma hora e consumiu {MWH(verificado)}. A diferença, {MWH(Math.abs(dif))}, é liquidada ao preço da hora, que parte do CMO e respeita o piso e o teto. Mova o CMO acima de {RMWH(TETO)} ou abaixo de {RMWH(PISO)} para ver o preço deixar de acompanhá-lo.
+      </p>
       <div className="grid gap-4 md:grid-cols-3">
-        <Controle rotulo="CMO hipotético da hora" valor={cmo} min={0} max={2400} passo={10} formato={RMWH} definir={setCmo} />
-        <Controle rotulo="Energia contratada na hora" valor={contratado} min={0} max={200} passo={5} formato={MWH} definir={setContratado} />
-        <Controle rotulo="Energia consumida na hora" valor={verificado} min={0} max={200} passo={5} formato={MWH} definir={setVerificado} />
+        <Controle pronto={pronto} rotulo="CMO hipotético da hora" valor={cmo} min={0} max={2400} passo={10} formato={RMWH} definir={setCmo} />
+        <Controle pronto={pronto} rotulo="Energia contratada na hora" valor={contratado} min={0} max={200} passo={5} formato={MWH} definir={setContratado} />
+        <Controle pronto={pronto} rotulo="Energia consumida na hora" valor={verificado} min={0} max={200} passo={5} formato={MWH} definir={setVerificado} />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <Resultado
@@ -132,9 +149,9 @@ export function SimulacaoLiquidacao() {
 const KWH = (v: number) => `${num(v, 0)} kWh`;
 const RKWH = (v: number) => `${reais(v, 2)}/kWh`;
 const BANDEIRAS = [
-  { id: "verde", rotulo: "Verde, sem acréscimo", acrescimo: 0 },
-  { id: "a", rotulo: "Acréscimo hipotético de R$ 0,02/kWh", acrescimo: 0.02 },
-  { id: "b", rotulo: "Acréscimo hipotético de R$ 0,05/kWh", acrescimo: 0.05 },
+  { id: "verde", rotulo: "Verde (sem acréscimo)", acrescimo: 0 },
+  { id: "a", rotulo: "Amarela hipotética: +R$ 0,02/kWh", acrescimo: 0.02 },
+  { id: "b", rotulo: "Vermelha hipotética: +R$ 0,05/kWh", acrescimo: 0.05 },
 ] as const;
 
 export function SimulacaoConta() {
@@ -142,6 +159,7 @@ export function SimulacaoConta() {
   const [tarifa, setTarifa] = useState(0.8);
   const [band, setBand] = useState<(typeof BANDEIRAS)[number]["id"]>("verde");
   const [renda, setRenda] = useState(1500);
+  const pronto = usePronto();
   const nome = useId();
   const acrescimo = BANDEIRAS.find((b) => b.id === band)!.acrescimo;
   const parteTarifa = kwh * tarifa;
@@ -154,17 +172,17 @@ export function SimulacaoConta() {
       titulo="Da tarifa à conta e ao peso no orçamento"
       simplificacao="Simplificação pedagógica. A tarifa e os acréscimos de bandeira são hipotéticos. A conta fica sem tributos (PIS/Cofins, ICMS e contribuição de iluminação pública entram além da tarifa), sem custo de disponibilidade e sem desconto da Tarifa Social. O peso no orçamento divide a conta sintética pela renda escolhida; no observatório, o peso medido vem da POF, não desta conta."
     >
-      <div className="grid gap-4 md:grid-cols-3">
-        <Controle rotulo="Consumo no mês" valor={kwh} min={0} max={500} passo={10} formato={KWH} definir={setKwh} />
-        <Controle rotulo="Tarifa hipotética (TE + TUSD)" valor={tarifa} min={0.5} max={1.2} passo={0.01} formato={RKWH} definir={setTarifa} />
-        <Controle rotulo="Renda mensal hipotética" valor={renda} min={500} max={10000} passo={100} formato={(v) => reais(v, 0)} definir={setRenda} />
+      <div className="grid items-start gap-4 md:grid-cols-3">
+        <Controle pronto={pronto} rotulo="Consumo no mês" valor={kwh} min={0} max={500} passo={10} formato={KWH} definir={setKwh} />
+        <Controle pronto={pronto} rotulo="Tarifa (TE + TUSD)" valor={tarifa} min={0.5} max={1.2} passo={0.01} formato={RKWH} definir={setTarifa} />
+        <Controle pronto={pronto} rotulo="Renda mensal" valor={renda} min={500} max={10000} passo={100} formato={(v) => reais(v, 0)} definir={setRenda} />
       </div>
       <fieldset className="text-sm">
         <legend className="rotulo text-mineral">Bandeira do mês</legend>
         <div className="mt-1 flex flex-wrap gap-x-5">
           {BANDEIRAS.map((b) => (
             <label key={b.id} className="inline-flex min-h-[44px] items-center gap-2 text-carvao">
-              <input type="radio" name={nome} value={b.id} checked={band === b.id} onChange={() => setBand(b.id)} className="accent-energia" />
+              <input type="radio" name={nome} value={b.id} checked={band === b.id} disabled={!pronto} onChange={() => setBand(b.id)} className="accent-energia" />
               {b.rotulo}
             </label>
           ))}
@@ -176,7 +194,7 @@ export function SimulacaoConta() {
           valor={reais(total)}
           detalhe={`${KWH(kwh)} × ${RKWH(tarifa)}${acrescimo ? ` + ${KWH(kwh)} × ${RKWH(acrescimo)} da bandeira` : ""}.`}
         />
-        <Resultado rotulo="Peso no orçamento" valor={peso === null ? "sem renda" : pct(peso, 1)} detalhe={`${reais(total)} ÷ ${reais(renda, 0)}.`} />
+        <Resultado rotulo="Peso no orçamento" valor={peso === null ? "sem renda" : pct(peso, 1)} detalhe={`${reais(total)} ÷ ${reais(renda, 0)}. Não compare com o peso medido pela POF: aqui a renda, a tarifa e a bandeira são hipotéticas.`} />
       </div>
       <div aria-hidden="true" className="flex h-3 w-full overflow-hidden border border-linha">
         <span className="h-full bg-energia" style={{ width: `${100 * (1 - fracBandeira)}%` }} />

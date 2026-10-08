@@ -5,7 +5,6 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
-import { TIPOS_LIGACAO } from "@/lib/energia/mapa";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -47,30 +46,13 @@ export default function TrilhasPage() {
             </li>
           ))}
         </ul>
-        <section aria-labelledby="tipos" className="mt-10 border-t border-linha pt-6">
-          <h2 id="tipos" className="rotulo text-mineral">
-            Tipos de ligação
-          </h2>
-          <ul className="mt-3 grid gap-2 text-sm text-carvao-muted md:grid-cols-2">
-            {(Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]).map((x) => (
-              <li key={x} className="flex items-center gap-3">
-                <svg aria-hidden="true" width="44" height="10" viewBox="0 0 44 10" className="shrink-0">
-                  <line x1="0" y1="5" x2="44" y2="5" stroke="var(--cor-energia)" strokeWidth="2" strokeDasharray={TIPOS_LIGACAO[x].traco || undefined} />
-                </svg>
-                <span>
-                  <strong className="font-medium text-carvao">{TIPOS_LIGACAO[x].rotulo}</strong>: {TIPOS_LIGACAO[x].definicao}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 text-sm text-carvao-muted">
-            As mesmas ligações aparecem no{" "}
-            <Link href="/setor-eletrico#mapa-conceitual" className="text-energia-dark underline underline-offset-4">
-              mapa conceitual do setor
-            </Link>
-            .
-          </p>
-        </section>
+        <p className="mt-10 border-t border-linha pt-6 text-sm leading-relaxed text-carvao-muted">
+          O tipo de cada ligação entre os passos (fluxo físico, decisão de operação, regra de mercado, componente de custo ou associação analítica) vem explicado na página de cada trilha, só com os tipos que ela usa. As mesmas ligações aparecem no{" "}
+          <Link href="/setor-eletrico#mapa-conceitual" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+            mapa conceitual do setor
+          </Link>
+          .
+        </p>
       </main>
     </>
   );

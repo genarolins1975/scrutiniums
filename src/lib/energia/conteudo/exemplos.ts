@@ -30,20 +30,6 @@ export function exemploDe(slug: string): Exemplo {
   const rede = gold.rede();
   const cmo = gold.cmo();
   switch (slug) {
-    case "pld": {
-      if (!integra(pld)) return null;
-      const se = pld.cartoes.find((c) => c.sm === "SE")!;
-      return {
-        partes: [
-          t(`Em ${dataBR(pld.dia_referencia)}, o PLD horário do Sudeste/Centro-Oeste variou de `),
-          t(`${reais(se.min_hora)} a ${reais(se.max_hora)}/MWh`, "OBSERVADO"),
-          t(" ao longo do dia; a média simples das 24 horas foi "),
-          t(`${reais(se.media_dia)}/MWh`, "CALCULADO"),
-          t("."),
-        ],
-        href: "/setor-eletrico/pld#hoje",
-      };
-    }
     case "mcp": {
       if (!integra(pld)) return null;
       const se = pld.cartoes.find((c) => c.sm === "SE" && c.max_hora !== null);
@@ -92,21 +78,6 @@ export function exemploDe(slug: string): Exemplo {
           t("."),
         ],
         href: "/setor-eletrico/pld#cmo",
-      };
-    }
-    case "ear":
-    case "armazenamento": {
-      if (!integra(hid)) return null;
-      const s = hid.subsistemas.find((x) => x.sm === "SE")!;
-      return {
-        partes: [
-          t(`Em ${dataBR(s.ear.dia)}, os reservatórios do Sudeste/Centro-Oeste estavam com `),
-          t(`${pct(s.ear.valor)} da EAR máxima`, "OBSERVADO"),
-          t("; a mediana para a data, nos anos completos desde 2001, é "),
-          t(pct(s.ear.mediana_historica), "CALCULADO"),
-          t("."),
-        ],
-        href: "/setor-eletrico/agua-e-clima#ear",
       };
     }
     case "ena":
@@ -217,17 +188,34 @@ export function exemploDe(slug: string): Exemplo {
         href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf",
       };
     }
+    case "mre": {
+      const mensal = lerGold<MercadoGold>("mercado.json")?.mre_gsf?.mensal;
+      const u = Array.isArray(mensal) ? mensal[mensal.length - 1] : undefined;
+      if (!u || !Number.isFinite(u.geracao_mre_mwmed) || !Number.isFinite(u.gf_modulada_fdisp_mwmed)) return null;
+      return {
+        partes: [
+          t(`Em ${mesAno(u.mes)}, as usinas do MRE geraram, juntas, `),
+          t(`${num(u.geracao_mre_mwmed, 0)} MWmed`, "CALCULADO"),
+          t(", contra "),
+          t(`${num(u.gf_modulada_fdisp_mwmed, 0)} MWmed`, "CALCULADO"),
+          t(" de garantia física modulada e ajustada pelo fator de disponibilidade. O mecanismo é esse conjunto que compartilha o risco da água; a razão entre os dois números é o GSF (ver o verbete GSF)."),
+        ],
+        href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf",
+      };
+    }
     case "ree": {
       const todos = lerGold<AguaDetalheGold>("agua_detalhe.json")?.armazenamento?.ree;
       const armazenam = todos?.filter((r) => !r.sem_armazenamento && r.ear_pct !== null).sort((a, b) => a.ear_pct! - b.ear_pct!);
       if (!todos || !armazenam || armazenam.length < 2) return null;
       const menor = armazenam[0];
       const maior = armazenam[armazenam.length - 1];
+      const semArmazenamento = todos.filter((r) => r.sem_armazenamento).map((r) => rotuloRecorte("ree", r.nome));
+      const nota = semArmazenamento.length ? ` (${semArmazenamento.length === 1 ? `o ${semArmazenamento[0]} não tem` : `${semArmazenamento.join(" e ")} não têm`} armazenamento, e por isso não tem percentual)` : "";
       return {
         partes: [
           t(`Em ${dataBR(menor.dia)}, o ONS publicou a energia armazenada de `),
           t(`${num(todos.length, 0)} REE`, "CALCULADO"),
-          t(`. Entre os ${num(armazenam.length, 0)} que têm armazenamento, a EAR ia de `),
+          t(`. Entre os ${num(armazenam.length, 0)} que têm armazenamento${nota}, a EAR variou de `),
           t(`${pct(menor.ear_pct, 1)} da EAR máxima no ${rotuloRecorte("ree", menor.nome)} a ${pct(maior.ear_pct, 1)} no ${rotuloRecorte("ree", maior.nome)}`, "OBSERVADO"),
           t(": cada REE tem o próprio perímetro e a própria EAR máxima. O link abre o painel no REE de menor EAR."),
         ],

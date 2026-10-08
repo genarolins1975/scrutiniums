@@ -27,7 +27,7 @@ export const CONCEITOS: Conceito[] = [
     slug: "imerg",
     sigla: "IMERG",
     nome: "Precipitação estimada por satélite (IMERG)",
-    grupo: "Água",
+    grupo: "Fontes de dados",
     estado: "CONFERIDO",
     conferidoEm: "2026-10-01",
     emUmaFrase:
@@ -58,7 +58,7 @@ export const CONCEITOS: Conceito[] = [
     slug: "merra-2",
     sigla: "MERRA-2",
     nome: "Reanálise MERRA-2 (temperatura estimada)",
-    grupo: "Água",
+    grupo: "Fontes de dados",
     estado: "CONFERIDO",
     conferidoEm: "2026-10-01",
     emUmaFrase:
@@ -94,15 +94,22 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Representação agregada das usinas hidrelétricas nos modelos oficiais de planejamento da operação, organizada de acordo com as bacias hidrográficas em que as usinas estão localizadas.",
     ressalva: "sem definição formal nas fontes consultadas",
+    emPalavrasSimples:
+      "Nos modelos oficiais de planejamento da operação, as usinas hidrelétricas não aparecem uma a uma: as de cada conjunto de bacias hidrográficas são agrupadas num único reservatório equivalente de energia. A topologia que a EPE descreve tem 12 REE, em uso desde o Programa Mensal da Operação de janeiro de 2018.",
+    relacoesNotas: {
+      ear: "O ONS publica a energia armazenada por REE, cada um com o próprio perímetro e a própria EAR máxima.",
+      ena: "O ONS publica a energia natural afluente por REE.",
+      newave: "A EPE registra a topologia de 12 REE junto com a versão 24 do modelo NEWAVE, a partir do PMO de janeiro de 2018.",
+    },
     porQueImporta:
-      "O ONS publica a energia armazenada (EAR) e a energia natural afluente (ENA) por REE. O relatório do GT Mecanismos de Formação de Preços (coordenado pela CCEE, com MME, ANEEL, EPE e ONS) registra que o número de REE nos modelos subiu de 4 para 12 e, entre os aprimoramentos em desenvolvimento em 2019, a correlação espacial mensal das afluências entre os REE, para capturar a diversidade hidrológica entre as bacias; se essa correlação já está em uso não foi conferido.",
+      "Com os REE, o ONS publica quanta energia há armazenada e quanta chega de afluência em cada conjunto de bacias, e não só no total do subsistema. O ONS publica a energia armazenada (EAR) e a energia natural afluente (ENA) por REE. O relatório do GT Mecanismos de Formação de Preços (coordenado pela CCEE, com MME, ANEEL, EPE e ONS) registra que o número de REE nos modelos subiu de 4 para 12 e, entre os aprimoramentos em desenvolvimento em 2019, a correlação espacial mensal das afluências entre os REE, para capturar a diversidade hidrológica entre as bacias; se essa correlação já está em uso não foi conferido.",
     comoEMedido:
       "Não é uma grandeza: é a unidade em que o ONS publica a EAR e a ENA diárias. A EAR é a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas a jusante na cascata. No observatório, a EAR por REE aparece em MWmês e em percentual da EAR máxima, cada REE com o próprio perímetro e a própria EAR máxima.",
     relacoes: ["ear", "ena", "newave"],
     fontes: [
       {
         orgao: "EPE",
-        documento: "Plano Decenal de Expansão de Energia 2031, Estudos Complementares: Sensibilidades what if (Nota Técnica EPE-DEE-RE-037/2022, emissão original em 12/07/2022), seção 2, página 4",
+        documento: "Plano Decenal de Expansão de Energia 2031, Estudos Complementares: Sensibilidades what if (Nota Técnica EPE-DEE-RE-037/2022, emissão original em 12/07/2022), seção 2, p. 4 do documento (p. 7 do PDF)",
         url: URL_PDE_COMPLEMENTAR,
         trecho:
           "devido à relevância das UHEs em termos de capacidade instalada total do SIN e também sua representação agregada nos modelos oficiais de planejamento da operação, isto é, através dos reservatórios equivalentes de energia de acordo com as bacias hidrográficas onde estas usinas hidrelétricas estão localizadas.",
@@ -120,14 +127,14 @@ export const CONCEITOS: Conceito[] = [
       },
       {
         orgao: "MME, GT Modernização do Setor Elétrico (coordenação da CCEE)",
-        documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 5, propostas de aprimoramentos",
+        documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 5, propostas de aprimoramentos, p. 38 do documento (p. 41 do PDF)",
         url: URL_GT_PRECOS,
         trecho: "o aumento do número de Reservatórios Equivalentes em Energia (REEs), passando de 4 REEs para 12 REEs",
         parafrase: "Em outras palavras: o número de reservatórios equivalentes nos modelos subiu de 4 para 12.",
       },
       {
         orgao: "MME, GT Modernização do Setor Elétrico (coordenação da CCEE)",
-        documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 2.2.1, aprimoramentos em desenvolvimento dos modelos atuais",
+        documento: "Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019, seção 2.2.1, aprimoramentos em desenvolvimento dos modelos atuais, p. 9 do documento (p. 12 do PDF)",
         url: URL_GT_PRECOS,
         trecho:
           "A utilização de correlação espacial de ENAs, nos modelos NEWAVE e GEVAZP, entre os reservatórios equivalentes de energia (REE), em base mensal, em substituição à anual. Essa representação é mais aderente à realidade, capturando a diversidade hidrológica entre as diferentes bacias.",

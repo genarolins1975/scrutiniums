@@ -51,7 +51,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Mercado de energia: MRE e GSF",
   description:
-    "Como foi o ajuste da garantia física das hidrelétricas do MRE: GSF mês a mês, geração e garantia física em colunas separadas, risco hidrológico que recai sobre o consumidor cativo e a conferência com o InfoMercado da CCEE.",
+    "Como foi o ajuste da garantia física das hidrelétricas do MRE: GSF mês a mês, geração e garantia física em colunas separadas, risco hidrológico alocado às distribuidoras na Conta Bandeira e a conferência com o InfoMercado da CCEE.",
   alternates: { canonical: "/setor-eletrico/mercado/mre-e-gsf" },
 };
 
@@ -85,8 +85,8 @@ export default function MercadoMreGsfPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo siglas={["MRE", "GSF", "EPE", "CCEE", "SAMP", "ANEEL", "ACR", "SIN", "MWmed", "ACL"]} rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
           As hidrelétricas do <Termo slug="mre">MRE</Termo> dividem entre si o risco de gerar menos que a garantia física, porque quem decide quanto cada uma gera é o despacho centralizado. O{" "}
-          <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, a diferença fica exposta ao mercado de curto prazo. Parte desse risco
-          recai sobre o consumidor cativo e aparece na Conta Bandeira.
+          <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física, e os documentos do MME registram que isso expôs agentes
+          hidrelétricos a valores elevados de PLD. A base da ANEEL com a Conta Bandeira traz o risco hidrológico alocado às distribuidoras, mostrado mais abaixo; a norma que define esse repasse não foi lida.
         </CabecalhoModulo>
         <MercadoNavegacao atual="mre-gsf" />
 
@@ -101,8 +101,9 @@ export default function MercadoMreGsfPage() {
               complementares={[{ rotulo: "Risco hidrológico do ACR (Conta Bandeira)", p: prov.risco_hidrologico_acr }]}
               porQueImporta={
                 <>
-                  Quando o GSF fica abaixo de 100%, as hidrelétricas do MRE precisam comprar no mercado de curto prazo a diferença entre o que venderam e o que geraram. Nas usinas em regime de cotas,
-                  nas repactuadas e em Itaipu, esse custo é repassado ao consumidor cativo pela tarifa.
+                  Quando o GSF fica abaixo de 100%, as hidrelétricas do MRE geram, juntas, menos que a garantia física, e os documentos do MME registram a exposição a PLD elevado. Os valores da
+                  Conta Bandeira, mais abaixo, são o risco hidrológico que a ANEEL publica como alocado às distribuidoras (cotas, repactuadas e Itaipu); o painel não verificou em norma como esse custo
+                  chega à tarifa, e por isso não o afirma.
                 </>
               }
               oQueMudou={
@@ -228,7 +229,7 @@ export default function MercadoMreGsfPage() {
                 casas={[null, 0, 2, null]}
               />
 
-              <MercadoAnalise titulo="Submercados e risco hidrológico do consumidor cativo" id="mre-analise">
+              <MercadoAnalise titulo="Submercados e risco hidrológico alocado às distribuidoras" id="mre-analise">
                 {m.submercados_ultimo_mes.mes && (
                   <GraficoBarras
                     titulo={`Geração do MRE e garantia física sazonalizada por submercado, ${mesAno(m.submercados_ultimo_mes.mes)}`}
@@ -330,6 +331,10 @@ export default function MercadoMreGsfPage() {
                   {m.reconciliacao_infomercado.filter((c) => c.resultado === "aprovado").length} {ROTULO_RESULTADO.aprovado} e{" "}
                   {m.reconciliacao_infomercado.filter((c) => c.resultado !== "aprovado").length} {ROTULO_RESULTADO.ressalva}. Risco hidrológico do ACR em 12 meses:{" "}
                   {reaisCurto(k.risco_hidrologico_acr_12m?.valor_rs)}.
+                </p>
+                <p className="text-sm leading-relaxed text-carvao-muted" data-definicoes-operacionais="true">
+                  As três definições abaixo são operacionais: o observatório as escreveu para ler este painel. Não são a definição regulatória nem foram conferidas em norma (as Leis nº 12.783/2013 e nº 13.203/2015 e as
+                  Regras de Comercialização da CCEE não foram lidas). A leitura conferida de MRE e de GSF, com o trecho literal das fontes e o que não foi lido, está nos verbetes do Aprenda.
                 </p>
                 <MercadoDefinicoes g={g} chaves={["mre", "gsf", "risco_hidrologico_acr"]} />
               </MercadoAuditoria>

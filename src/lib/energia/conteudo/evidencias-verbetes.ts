@@ -34,13 +34,6 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     painel: { rotulo: "Mercado: livre e regulado", href: "/setor-eletrico/mercado#livre-regulado" },
     leitura: "Parcela do consumo contabilizado pela CCEE que está nas classes de agente do ACL, como razão de somas em energia nos 12 meses.",
   },
-  mre: {
-    arquivo: "gold/mercado.json",
-    caminho: ["mre_gsf", "kpis", "gsf_ultimo_mes", "evidencia"],
-    natureza: "CALCULADO",
-    painel: { rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" },
-    leitura: "O fator de ajuste do MRE no último mês: geração das usinas do mecanismo dividida pela garantia física modulada e ajustada pelo fator de disponibilidade.",
-  },
   gsf: {
     arquivo: "gold/mercado.json",
     caminho: ["mre_gsf", "kpis", "gsf_ultimo_mes", "evidencia"],
@@ -194,6 +187,27 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     natureza: "OBSERVADO",
     painel: { rotulo: "Regulação: limites do PLD", href: "/setor-eletrico/regulacao#p044" },
     leitura: "O teto horário vigente, como escrito no ato da ANEEL.",
+  },
+  pld: {
+    arquivo: "series/pld_evidencias.json",
+    caminho: ["evidencias", "pld_semana_SE"],
+    natureza: "CALCULADO",
+    painel: { rotulo: "PLD: CMO e formação do preço", href: "/setor-eletrico/pld/cmo-e-formacao#p009" },
+    leitura: "Média, nas horas da semana operativa, do PLD do Sudeste/Centro-Oeste: o preço que a CCEE calcula para cada hora a partir do CMO, aplicando o piso e os tetos. O CMO do DESSEM da mesma semana está no verbete DESSEM.",
+  },
+  ear: {
+    arquivo: "gold/agua_detalhe.json",
+    caminho: ["evidencias", "ear_sin"],
+    natureza: "CALCULADO",
+    painel: { rotulo: "Água e clima: reservatórios", href: "/setor-eletrico/agua-e-clima#p017" },
+    leitura: "Quanto da capacidade de armazenamento dos reservatórios do SIN estava ocupada no último dia publicado: soma das EAR dos subsistemas dividida pela soma das EAR máximas.",
+  },
+  armazenamento: {
+    arquivo: "gold/agua_detalhe.json",
+    caminho: ["evidencias", "ear_sin"],
+    natureza: "CALCULADO",
+    painel: { rotulo: "Água e clima: reservatórios", href: "/setor-eletrico/agua-e-clima#p017" },
+    leitura: "A EAR do SIN em relação à EAR máxima, a capacidade de armazenamento com todos os reservatórios cheios.",
   },
   dessem: {
     arquivo: "series/pld_evidencias.json",
