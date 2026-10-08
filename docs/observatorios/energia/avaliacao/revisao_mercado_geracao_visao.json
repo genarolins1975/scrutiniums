@@ -661,8 +661,8 @@
    "lente": "interface e acessibilidade",
    "achados_total": 19,
    "por_estado": {
-    "corrigido": 13,
-    "aberto": 2,
+    "corrigido": 14,
+    "aberto": 1,
     "parcial": 4
    },
    "achados": [
@@ -775,8 +775,8 @@
      "severidade": "media",
      "pagina": "/setor-eletrico/geracao (também /setor-eletrico/geracao/termica)",
      "categoria": "Reduzir o HTML de /geracao (carregar tabelas sob demanda como em Mercado), evitar o prefet",
-     "estado": "aberto",
-     "nota": "HTML de 1.045,6 kB em Geração e 646,3 kB na Térmica; hidratação de 5,9 s com CPU 4x e 1,6 Mbps em emulação; carregar as tabelas sob demanda fica para rodada própria"
+     "estado": "corrigido",
+     "nota": "as 20 tabelas de Analisar e Auditar de Geração e da Térmica passaram a ser lidas sob demanda: HTML de 1.045,6 kB para 590,1 kB em Geração e de 646,3 kB para 529,2 kB na Térmica; hidratação de 3,9 s com CPU 4x e 1,6 Mbps em emulação (era 5,9 s no roteiro do revisor); o restante do peso de Geração são os gráficos e as tabelas de Entender, com folga de 9,9 kB sob os 600 kB"
     },
     {
      "id": "I15",
@@ -838,9 +838,9 @@
  "resumo": {
   "achados_total": 101,
   "por_estado": {
-   "corrigido": 34,
+   "corrigido": 35,
    "parcial": 13,
-   "aberto": 54
+   "aberto": 53
   },
   "nenhum_bloqueante": true,
   "nota": "As notas dos revisores são de agentes, não de leitores reais, e valem como instrumento de comparação, não como medida absoluta. Achados abertos de severidade baixa são, em sua maioria, polimento de redação ou de desenho; os de severidade média abertos estão listados em CONTINUIDADE.md. O leitor extraiu texto oculto como se fosse visível em alguns achados de bastidor: a visibilidade foi medida em Entender antes de corrigir."

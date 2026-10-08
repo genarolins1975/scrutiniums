@@ -14,29 +14,22 @@ import {
 import { GeracaoTermica } from "@/components/energia/GeracaoTermica";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { GeracaoTabelaSobDemanda } from "@/components/energia/GeracaoTabelasSobDemanda";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
-  COLUNAS_CVU_COMBUSTIVEL,
-  COLUNAS_CVU_USINAS,
-  COLUNAS_UNIVERSO_TERMICA,
   COR_COMBUSTIVEL,
   CURTO_COMBUSTIVEL,
   ROTULO_ORIGEM_COMBUSTIVEL,
   ROTULO_REGRA,
   combustiveisCvu,
   downloadsDoPainel,
-  linhasCvuCombustivel,
   linhasCvuMensal,
-  linhasCvuUsinas,
   inflexibilidadeSemNuclear,
-  linhasUniversoTermica,
   painelPublicado,
-  paraTabela,
   perguntaPainel,
   rotaPainel,
   situacaoMensal,
@@ -193,18 +186,7 @@ export default function GeracaoTermicaPage() {
                 {cvuDados && (
                   <GeracaoAnalise id="cvu" titulo="Custo Variável Unitário declarado para a semana operativa vigente">
                     <p className="text-sm text-carvao-muted">{textoCvu(cvuDados)}</p>
-                    <TabelaInterativa
-                      titulo="CVU por combustível na semana vigente: mínimo, quartis e máximo das parcelas"
-                      colunas={COLUNAS_CVU_COMBUSTIVEL}
-                      linhas={paraTabela(linhasCvuCombustivel(cvuDados))}
-                      chaveLinha="id"
-                      colunaRotulo="combustivel"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-combustivel"
-                      chaveUrl="cvc"
-                      nota="Custo declarado considerado no Programa Mensal da Operação, não custo realizado nem preço. Uma usina com várias parcelas tem um CVU por parcela."
-                    />
+                    <GeracaoTabelaSobDemanda tabela="cvu-combustivel" versao={versao} />
                     <GraficoLinhas
                       chaveUrl="cvu"
                       titulo="Mediana mensal do CVU por combustível"
@@ -218,49 +200,14 @@ export default function GeracaoTermicaPage() {
                       legendaInterativa
                       zoom
                     />
-                    <TabelaInterativa
-                      titulo="Tabela equivalente: mediana mensal do CVU por combustível"
-                      colunas={[{ id: "m", rotulo: "Mês", tipo: "texto" }, ...combustiveisCvu(cvuDados).map((c) => ({ id: c, rotulo: CURTO_COMBUSTIVEL[c], tipo: "numero" as const, unidade: "R$/MWh", casas: 2 }))]}
-                      linhas={paraTabela(cvuMensal)}
-                      chaveLinha="id"
-                      colunaRotulo="m"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-mediana-mensal"
-                      chaveUrl="cvm"
-                      ordemInicial={{ coluna: "m", direcao: "desc" }}
-                      nota="Mediana das parcelas com CVU em cada mês (moeda corrente, sem correção). Mês sem parcela do combustível fica vazio."
-                    />
-                    <TabelaInterativa
-                      titulo={`CVU de cada usina na semana de ${dataBR(cvuDados.semana.inicio)} a ${dataBR(cvuDados.semana.fim)}`}
-                      colunas={COLUNAS_CVU_USINAS}
-                      linhas={paraTabela(linhasCvuUsinas(cvuDados))}
-                      chaveLinha="id"
-                      colunaRotulo="nome"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-usinas-semana"
-                      chaveUrl="cvu"
-                      ordemInicial={{ coluna: "cvu", direcao: "desc" }}
-                      dicaBusca="Nome ou código do ONS"
-                      nota={`Código do ONS ligado à usina da térmica por motivo pela união dos códigos de todas as suas parcelas; código ligado a mais de uma usina fica sem par (${cvuDados.cobertura.codigos_ambiguos.length} nesta semana). Linhas repetidas idênticas na fonte: ${num(cvuDados.controles.linhas_repetidas_identicas, 0)}, contadas uma vez.`}
-                    />
+                    <GeracaoTabelaSobDemanda tabela="cvu-mensal" versao={versao} />
+                    <GeracaoTabelaSobDemanda tabela="cvu-usinas" versao={versao} />
                   </GeracaoAnalise>
                 )}
 
                 <GeracaoAuditoria id="universo-termica" titulo="Universo: a térmica por motivo contra a Geração por Usina">
                   <p className="text-sm text-carvao-muted">{universo.regra}</p>
-                  <TabelaInterativa
-                    titulo="Mês a mês, as mesmas usinas nos dois conjuntos do ONS"
-                    colunas={COLUNAS_UNIVERSO_TERMICA}
-                    linhas={paraTabela(linhasUniversoTermica({ universo }))}
-                    chaveLinha="id"
-                    colunaRotulo="mes"
-                    fonte="ONS, Geração Térmica por Motivo de Despacho e Geração por Usina"
-                    versao={versao}
-                    nomeArquivo="geracao-termica-universo"
-                    chaveUrl="ut"
-                  />
+                  <GeracaoTabelaSobDemanda tabela="universo-termica" versao={versao} />
                   <p className="text-sm text-carvao-muted">
                     Combustível de {num(mapa.usinas, 0)} usinas, pela autoridade publicada:{" "}
                     {Object.entries(mapa.por_origem)

@@ -17,25 +17,14 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
 import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { GeracaoTabelaSobDemanda } from "@/components/energia/GeracaoTabelasSobDemanda";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import {
-  COLUNAS_A11,
-  COLUNAS_CONTROLES,
-  COLUNAS_DIVERGENCIAS,
-  COLUNAS_FONTES,
-  COLUNAS_MMGD_API,
-  COLUNAS_NATUREZA_MENSAL,
-  COLUNAS_OUTROS_CEG,
-  COLUNAS_QUEBRAS,
-  COLUNAS_RECONCILIACAO_FONTE,
-  COLUNAS_RECONCILIACAO_MENSAL,
-  COLUNAS_ROTULOS,
   COR_CATEGORIA,
   COR_NATUREZA,
   CURTO_CATEGORIA,
@@ -43,29 +32,13 @@ import {
   NATUREZAS,
   PERGUNTA_MODULO_GERACAO,
   ROTULO_REGRA,
-  colunasAnuais,
-  colunasDozeMeses,
-  colunasLacuna,
-  colunasRecentes,
   downloadsDoPainel,
-  linhasA11,
-  linhasAnuais,
-  linhasControles,
-  linhasDivergencias,
   linhasDozeMeses,
-  linhasFontes,
-  linhasLacuna,
   linhasMmgdApi,
   linhasNaturezaMensal,
-  linhasOutrosPorCeg,
-  linhasQuebras,
-  linhasReconciliacaoFonte,
-  linhasReconciliacaoMensal,
   linhasRecentes,
-  linhasRotulos,
   marcosMensais,
   nomesCategorias,
-  paraTabela,
   perguntaPainel,
   rotaPainel,
   situacaoAtualidade,
@@ -99,7 +72,6 @@ export default function GeracaoPage() {
   const diario = linhasRecentes(m.diario_sin_recente.dias, m.diario_sin_recente);
   const horario = linhasRecentes(m.horario_sin_recente.horas, m.horario_sin_recente);
   const natureza = linhasNaturezaMensal(m.natureza_mensal_sin);
-  const anuais = linhasAnuais(m.anual_sin);
   const a11 = g.a11;
   const mmgdApi = linhasMmgdApi(a11);
   const marcos = marcosMensais(g.quebras, m.mensal_sin.meses);
@@ -198,18 +170,7 @@ export default function GeracaoPage() {
                       ordemInicial={{ por: "valor", direcao: "desc" }}
                       chaveUrl="dzg"
                     />
-                    <TabelaInterativa
-                      titulo="Tabela equivalente: 365 dias contra os 365 anteriores, com a variação publicada"
-                      colunas={colunasDozeMeses(m.comparacao_12m)}
-                      linhas={paraTabela(doze)}
-                      chaveLinha="id"
-                      colunaRotulo="rotulo"
-                      fonte={FONTE}
-                      versao={versao}
-                      nomeArquivo="geracao-365-dias"
-                      chaveUrl="dz"
-                      nota="Categorias com variação suprimida ficam fora do gráfico de pontos: o número de usinas com dado na fonte mudou dentro das janelas, e a diferença não mede mudança na geração."
-                    />
+                    <GeracaoTabelaSobDemanda tabela="doze" versao={versao} />
                   </GeracaoAnalise>
                 )}
 
@@ -226,18 +187,7 @@ export default function GeracaoPage() {
                     zeroNoEixo
                     legendaInterativa
                   />
-                  <TabelaInterativa
-                    titulo="Tabela equivalente: geração diária por categoria, últimos 60 dias"
-                    colunas={colunasRecentes(m.diario_sin_recente.categorias, "Dia", "data")}
-                    linhas={paraTabela(diario)}
-                    chaveLinha="id"
-                    colunaRotulo="x"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-diaria-60-dias"
-                    chaveUrl="dd"
-                    ordemInicial={{ coluna: "x", direcao: "desc" }}
-                  />
+                  <GeracaoTabelaSobDemanda tabela="diaria" versao={versao} />
                   <GraficoLinhas
                     chaveUrl="hor"
                     titulo={`Geração horária do SIN por categoria, de ${dataBR(m.horario_sin_recente.horas[0])} a ${dataBR(m.horario_sin_recente.horas[m.horario_sin_recente.horas.length - 1])}`}
@@ -250,19 +200,7 @@ export default function GeracaoPage() {
                     zeroNoEixo
                     legendaInterativa
                   />
-                  <TabelaInterativa
-                    titulo="Tabela equivalente: geração horária por categoria, últimas 72 horas"
-                    colunas={colunasRecentes(m.horario_sin_recente.categorias, "Hora (início do intervalo)", "texto")}
-                    linhas={paraTabela(horario)}
-                    chaveLinha="id"
-                    colunaRotulo="x"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-horaria-72-horas"
-                    chaveUrl="hh"
-                    ordemInicial={{ coluna: "x", direcao: "desc" }}
-                    nota="Horário de Brasília; cada hora é o início do intervalo. A solar fica em zero à noite, um valor publicado, não ausência. Os últimos 366 dias horários estão no arquivo para download."
-                  />
+                  <GeracaoTabelaSobDemanda tabela="horaria" versao={versao} />
                 </GeracaoAnalise>
 
                 <GeracaoAnalise id="natureza" titulo="Quanto da energia é medição, previsão ou estimativa, mês a mês">
@@ -281,32 +219,11 @@ export default function GeracaoPage() {
                     zeroNoEixo
                     marcos={marcos}
                   />
-                  <TabelaInterativa
-                    titulo="Tabela equivalente: parcela da geração por natureza, mês a mês"
-                    colunas={COLUNAS_NATUREZA_MENSAL}
-                    linhas={paraTabela(natureza)}
-                    chaveLinha="id"
-                    colunaRotulo="mes"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-natureza-mensal"
-                    chaveUrl="nt"
-                  />
+                  <GeracaoTabelaSobDemanda tabela="natureza" versao={versao} />
                 </GeracaoAnalise>
 
                 <GeracaoAnalise id="anos" titulo="Participação por ano, no perímetro sem MMGD">
-                  <TabelaInterativa
-                    titulo="Participação anual do SIN por categoria (sem MMGD) e a MMGD estimada à parte"
-                    colunas={colunasAnuais(m.anual_sin)}
-                    linhas={paraTabela(anuais)}
-                    chaveLinha="id"
-                    colunaRotulo="ano"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-anual"
-                    chaveUrl="an"
-                    nota="O ano em curso é parcial e não se compara com anos completos sem esse aviso. A MMGD não entra na participação anual porque só existe a partir de 29/04/2023; ela aparece em MWmed, na coluna própria."
-                  />
+                  <GeracaoTabelaSobDemanda tabela="anual" versao={versao} />
                 </GeracaoAnalise>
 
                 <GeracaoAnalise id="a11" titulo="A quebra de 29/04/2023: MMGD estimada dentro da solar">
@@ -315,18 +232,7 @@ export default function GeracaoPage() {
                   <GeracaoDocumentos documentos={a11.evidencias_documentais} />
                   <p className="rotulo text-mineral">Tratamento aplicado</p>
                   <GeracaoFrases itens={a11.tratamento} />
-                  <TabelaInterativa
-                    titulo="Solar do Balanço e soma das usinas fotovoltaicas, dia a dia, na janela da quebra"
-                    colunas={COLUNAS_A11}
-                    linhas={paraTabela(linhasA11(a11))}
-                    chaveLinha="id"
-                    colunaRotulo="d"
-                    fonte="ONS, Balanço de Energia nos Subsistemas e Geração por Usina em Base Horária"
-                    versao={versao}
-                    nomeArquivo="geracao-a11-janela"
-                    chaveUrl="a11"
-                    nota="Antes de 29/04/2023 a coluna da MMGD fica vazia: a modalidade não existia na fonte (ausência, não zero)."
-                  />
+                  <GeracaoTabelaSobDemanda tabela="a11" versao={versao} />
                   <GraficoLinhas
                     titulo="MMGD estimada pelo ONS: na Geração por Usina e na carga verificada (API), por mês"
                     dados={mmgdApi}
@@ -340,22 +246,7 @@ export default function GeracaoPage() {
                     casas={0}
                     zeroNoEixo
                   />
-                  <TabelaInterativa
-                    titulo="Tabela equivalente: MMGD nas duas publicações do ONS, por mês"
-                    colunas={COLUNAS_MMGD_API}
-                    linhas={paraTabela(mmgdApi)}
-                    chaveLinha="id"
-                    colunaRotulo="mes"
-                    fonte="ONS, Geração por Usina e API de carga verificada (como publicado pelo módulo Transição)"
-                    versao={versao}
-                    nomeArquivo="geracao-mmgd-duas-publicacoes"
-                    chaveUrl="api"
-                    nota={
-                      a11.razao_usina_api
-                        ? `As duas são estimativas de processos diferentes do ONS: a razão mensal vai de ${num(a11.razao_usina_api.min, 2)} a ${num(a11.razao_usina_api.max, 2)} (mediana ${num(a11.razao_usina_api.p50, 2)}) em ${num(a11.razao_usina_api.n, 0)} meses. Nenhuma mede a energia das unidades cadastradas na ANEEL.`
-                        : "Sem meses em comum entre as duas publicações."
-                    }
-                  />
+                  <GeracaoTabelaSobDemanda tabela="mmgd-api" versao={versao} />
                 </GeracaoAnalise>
 
                 <GeracaoAuditoria id="reconciliacao" titulo="Reconciliação com o Balanço de Energia nos Subsistemas">
@@ -364,130 +255,34 @@ export default function GeracaoPage() {
                     {num(rec.tolerancia_mwh_por_subsistema_dia, 0)} MWh por subsistema e dia. Nada é corrigido: o painel mostra os dois. {rec.roraima.regra} Último dia com a
                     térmica de Roraima fora do Balanço: {dataBR(rec.roraima.ultimo_dia_excluida)} ({num(rec.roraima.dias_balanco_exclui, 0)} dias).
                   </p>
-                  <TabelaInterativa
-                    titulo="Dias conciliados por fonte, em todo o histórico"
-                    colunas={COLUNAS_RECONCILIACAO_FONTE}
-                    linhas={paraTabela(linhasReconciliacaoFonte(rec))}
-                    chaveLinha="id"
-                    colunaRotulo="fonte"
-                    fonte="ONS, Balanço de Energia e Geração por Usina"
-                    versao={versao}
-                    nomeArquivo="geracao-reconciliacao-fontes"
-                    chaveUrl="rf"
-                  />
-                  <TabelaInterativa
-                    titulo="Os últimos 6 meses, por fonte"
-                    colunas={COLUNAS_RECONCILIACAO_MENSAL}
-                    linhas={paraTabela(linhasReconciliacaoMensal(rec))}
-                    chaveLinha="id"
-                    colunaRotulo="mes"
-                    fonte="ONS, Balanço de Energia e Geração por Usina"
-                    versao={versao}
-                    nomeArquivo="geracao-reconciliacao-mensal"
-                    chaveUrl="rm"
-                  />
-                  <TabelaInterativa
-                    titulo="As maiores divergências por subsistema e dia"
-                    colunas={COLUNAS_DIVERGENCIAS}
-                    linhas={paraTabela(linhasDivergencias(rec))}
-                    chaveLinha="id"
-                    colunaRotulo="d"
-                    fonte="ONS, Balanço de Energia e Geração por Usina"
-                    versao={versao}
-                    nomeArquivo="geracao-maiores-divergencias"
-                    chaveUrl="dv"
-                    nota="Divergência entre duas publicações do ONS, sem causa atribuída; parte delas é diferença de alocação entre subsistemas que some no SIN."
-                  />
+                  <GeracaoTabelaSobDemanda tabela="rec-fonte" versao={versao} />
+                  <GeracaoTabelaSobDemanda tabela="rec-mensal" versao={versao} />
+                  <GeracaoTabelaSobDemanda tabela="divergencias" versao={versao} />
                 </GeracaoAuditoria>
 
                 <GeracaoAuditoria id="universo" titulo="Universo da fonte: usinas com dado, saltos e mudanças de rótulo">
                   <p className="text-sm text-carvao-muted">{m.universo.regra}</p>
                   <p className="text-sm text-carvao-muted">{m.universo.regra_ressalvas}</p>
                   {lac && (
-                    <TabelaInterativa
-                      titulo={`Usinas sem dado em ${mesAno(lac.mes)}, por categoria`}
-                      colunas={colunasLacuna(m.universo)}
-                      linhas={paraTabela(linhasLacuna(m.universo))}
-                      chaveLinha="id"
-                      colunaRotulo="categoria"
-                      fonte={FONTE}
-                      versao={versao}
-                      nomeArquivo="geracao-universo-lacuna"
-                      chaveUrl="lc"
-                      nota={lac.nota}
-                    />
+                    <GeracaoTabelaSobDemanda tabela="lacuna" versao={versao} />
                   )}
-                  <TabelaInterativa
-                    titulo="Mudanças de universo e de rótulo na fonte"
-                    colunas={COLUNAS_QUEBRAS}
-                    linhas={paraTabela(linhasQuebras(g.quebras))}
-                    chaveLinha="id"
-                    colunaRotulo="data"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-quebras"
-                    chaveUrl="qb"
-                    ordemInicial={{ coluna: "data", direcao: "desc" }}
-                  />
+                  <GeracaoTabelaSobDemanda tabela="quebras" versao={versao} />
                   <p className="text-sm text-carvao-muted">
                     {m.universo.regra_sequencias_zero} {num(seq.n, 0)} identificadores com zero exato por 6 meses ou mais depois de produção positiva (
                     {num(seq.continuam_no_ultimo_mes, 0)} até o último mês). Nada é excluído: térmica sem despacho e usina parada também produzem zero.
                   </p>
-                  <TabelaInterativa
-                    titulo="Rótulos da fonte (tipo, combustível e modalidade) e a categoria de cada um"
-                    colunas={COLUNAS_ROTULOS}
-                    linhas={paraTabela(linhasRotulos(m.rotulos))}
-                    chaveLinha="id"
-                    colunaRotulo="combustivel"
-                    fonte={FONTE}
-                    versao={versao}
-                    nomeArquivo="geracao-rotulos-fonte"
-                    chaveUrl="rt"
-                    ordemInicial={{ coluna: "gwh_12m", direcao: "desc" }}
-                    nota={`${m.nao_mapeadas.length === 0 ? "Nenhum rótulo sem categoria nesta publicação." : `${m.nao_mapeadas.length} rótulos sem categoria, visíveis como não mapeados.`} Energia em 12 meses vazia: rótulo sem linha no período.`}
-                  />
+                  <GeracaoTabelaSobDemanda tabela="rotulos" versao={versao} />
                   {m.outros_por_ceg && (
-                    <TabelaInterativa
-                      titulo={`Outras térmicas decompostas pelo código de combustível do CEG, ${mesAno(m.outros_por_ceg.inicio)} a ${mesAno(m.outros_por_ceg.fim)}`}
-                      colunas={COLUNAS_OUTROS_CEG}
-                      linhas={paraTabela(linhasOutrosPorCeg(m.outros_por_ceg))}
-                      chaveLinha="id"
-                      colunaRotulo="codigo"
-                      fonte={FONTE}
-                      versao={versao}
-                      nomeArquivo="geracao-outros-por-ceg"
-                      chaveUrl="oc"
-                      nota={m.outros_por_ceg.regra}
-                    />
+                    <GeracaoTabelaSobDemanda tabela="outros-ceg" versao={versao} />
                   )}
                 </GeracaoAuditoria>
 
                 <GeracaoAuditoria id="controles" titulo="Controles, regras, limitações e fontes">
-                  <TabelaInterativa
-                    titulo="Controles executados antes da publicação"
-                    colunas={COLUNAS_CONTROLES}
-                    linhas={paraTabela(linhasControles(g.controles))}
-                    chaveLinha="id"
-                    colunaRotulo="nome"
-                    fonte="Controles do observatório sobre os conjuntos do ONS"
-                    versao={versao}
-                    nomeArquivo="geracao-controles"
-                    chaveUrl="ct"
-                  />
+                  <GeracaoTabelaSobDemanda tabela="controles" versao={versao} />
                   <GeracaoRegras regras={Object.entries(g.regras).map(([k, t]) => ({ rotulo: ROTULO_REGRA[k] ?? k, texto: t }))} />
                   <p className="rotulo text-mineral">Limitações da matriz</p>
                   <GeracaoFrases itens={g.proveniencia.matriz?.limitacoes ?? []} />
-                  <TabelaInterativa
-                    titulo="Conjuntos integrados neste módulo"
-                    colunas={COLUNAS_FONTES}
-                    linhas={paraTabela(linhasFontes(g.fontes))}
-                    chaveLinha="id"
-                    colunaRotulo="conjunto"
-                    fonte="Portal de dados abertos do ONS e da ANEEL"
-                    versao={versao}
-                    nomeArquivo="geracao-fontes"
-                    chaveUrl="ft"
-                  />
+                  <GeracaoTabelaSobDemanda tabela="fontes" versao={versao} />
                 </GeracaoAuditoria>
 
                 <GeracaoSeguir ancora="p021" proximo={{ href: `${rotaPainel("p022")}#p022`, pergunta: perguntaPainel("p022") }} downloads={downloadsDoPainel(g.downloads, "p021")} />
