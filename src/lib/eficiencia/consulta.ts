@@ -4,8 +4,8 @@
  * contábil acontece aqui: os valores vêm prontos da gold. Esta camada só
  * seleciona, ordena, delimita pares e monta as linhas exibidas e exportadas.
  */
-import type { EtapaId, FichaIndicador, IndicadorId, StatusDado } from "./tipos";
-import { decimal, inteiro, percentual, reaisCompleto, reaisCurto, reaisExtenso } from "./formato";
+import type { EtapaId, FichaIndicador, IndicadorId, InternacionalGrupo, StatusDado } from "./tipos";
+import { decimal, inteiro, percentual, reaisCompleto, reaisCurto, reaisExtenso, reaisInteiro } from "./formato";
 
 /* ------------------------------------------------------------------ payload compacto */
 
@@ -17,6 +17,20 @@ import { decimal, inteiro, percentual, reaisCompleto, reaisCurto, reaisExtenso }
 export type ObsCompacta = [number, number, number, number, number, number | null, number, number, number | null, 0 | 1, 0 | 1, number, number, 0 | 1];
 
 export type CapitalPainel = { id: string; cod: number; nome: string; uf: string; regiao: string };
+
+/**
+ * Estatística do grupo, compacta:
+ * [indicador, componente, etapa, ano, grupo (0 = todas; 1 a 5 = regiões N, NE, SE, S, CO), capitais no grupo, com valor, na comparação,
+ *  média, mediana, mínimo, máximo, q1, q3, quartis exibidos, soma dos numeradores, soma dos denominadores, razão agregada,
+ *  capitais do mínimo, capitais do máximo]. Índices -1 = ausente; capitais por índice em `capitais`.
+ */
+export type RefCompacta = [number, number, number, number, number, number, number, number, number | null, number | null, number | null, number | null, number | null, number | null, 0 | 1, number | null, number | null, number | null, number[], number[]];
+
+/** Referência externa do painel: [indicador, componente, etapa, ano, tipo (0 = mesmo universo, 1 = outro universo), valor, descritor]. */
+export type ExternaCompacta = [number, number, number, number, 0 | 1, number, number];
+export type DescritorExterno = { rotulo: string; unidade: string; unidade_diferenca: string | null; escopo: string };
+
+export const GRUPOS_REF = ["todas", "N", "NE", "SE", "S", "CO"] as const;
 
 export type DadosPainel = {
   capitais: CapitalPainel[];
@@ -32,6 +46,12 @@ export type DadosPainel = {
   obs: ObsCompacta[];
   situacoes: string[];
   rotulosSituacao: Record<string, string>;
+  refs: RefCompacta[];
+  externas: ExternaCompacta[];
+  descritores: DescritorExterno[];
+  internacionais: Omit<InternacionalGrupo, "fonte" | "agregados_na_fonte">[];
+  populacao: Record<string, { tipo: string | null; referencia: string | null }>;
+  limiarQuartis: number;
   fontes: Record<string, { instituicao: string; conjunto: string; pagina: string; capturado_em: string }>;
   meta: {
     gerado_em: string;
@@ -74,9 +94,35 @@ const SEM_OBS: Ponto = {
   quebraSerie: false,
 };
 
+export type RefGrupo = {
+  noGrupo: number;
+  comValor: number;
+  n: number;
+  media: number | null;
+  mediana: number | null;
+  minimo: number | null;
+  maximo: number | null;
+  q1: number | null;
+  q3: number | null;
+  quartisExibicao: boolean;
+  somaNumerador: number | null;
+  somaDenominador: number | null;
+  razaoAgregada: number | null;
+  capitaisMinimo: CapitalPainel[];
+  capitaisMaximo: CapitalPainel[];
+};
+
 export class Indice {
   private mapa = new Map<string, Ponto>();
+  private refs = new Map<string, RefGrupo>();
   constructor(readonly d: DadosPainel) {
+    for (const r of d.refs) {
+      const [i, k, e, a, g, noGrupo, comValor, n, media, mediana, minimo, maximo, q1, q3, qe, sn, sd, razao, cmin, cmax] = r;
+      this.refs.set(Indice.chaveRef(d.indicadores[i], k < 0 ? null : d.componentes[k], e < 0 ? null : d.etapas[e].id, a, GRUPOS_REF[g]), {
+        noGrupo, comValor, n, media, mediana, minimo, maximo, q1, q3, quartisExibicao: qe === 1, somaNumerador: sn, somaDenominador: sd, razaoAgregada: razao,
+        capitaisMinimo: cmin.map((c) => d.capitais[c]), capitaisMaximo: cmax.map((c) => d.capitais[c]),
+      });
+    }
     for (const o of d.obs) {
       const [i, c, a, e, k, v, s, n, p, eleg, mat, sit, mot, qb] = o;
       const chave = Indice.chave(d.indicadores[i], d.capitais[c].cod, a, e < 0 ? null : d.etapas[e].id, k < 0 ? null : d.componentes[k]);
@@ -93,6 +139,13 @@ export class Indice {
       });
     }
   }
+  static chaveRef(ind: IndicadorId, comp: string | null, etapa: EtapaId | null, ano: number, grupo: string) {
+    return `${ind}|${comp ?? ""}|${etapa ?? ""}|${ano}|${grupo}`;
+  }
+  /** Estatística do grupo calculada pelo pipeline (referencias.py); null quando nenhuma capital do grupo tem valor. */
+  referencia(ind: IndicadorId, comp: string | null, etapa: EtapaId | null, ano: number, grupo: string): RefGrupo | null {
+    return this.refs.get(Indice.chaveRef(ind, comp, etapa, ano, grupo)) ?? null;
+  }
   static chave(ind: IndicadorId, cod: number, ano: number, etapa: EtapaId | null, comp: string | null) {
     return `${ind}|${cod}|${ano}|${etapa ?? ""}|${comp ?? ""}`;
   }
@@ -106,8 +159,11 @@ export class Indice {
 
 /* ------------------------------------------------------------------ medidas selecionáveis */
 
-export type MedidaId = "despesa" | "matriculas" | "conveniadas" | "atu" | "aprovacao" | "ideb" | "saeb";
-export const MEDIDAS: MedidaId[] = ["despesa", "matriculas", "conveniadas", "atu", "aprovacao", "ideb", "saeb"];
+export type MedidaId = "despesa" | "despesa_hab" | "despesa_mat" | "matriculas" | "conveniadas" | "atu" | "aprovacao" | "ideb" | "saeb";
+export const MEDIDAS: MedidaId[] = ["despesa", "despesa_hab", "despesa_mat", "matriculas", "conveniadas", "atu", "aprovacao", "ideb", "saeb"];
+/** As três escalas da despesa: volume, por habitante e por matrícula. Nenhuma substitui as outras. */
+export const ESCALAS_DESPESA: MedidaId[] = ["despesa", "despesa_hab", "despesa_mat"];
+export const ehDespesa = (m: MedidaId) => ESCALAS_DESPESA.includes(m);
 
 export type Medida = {
   id: MedidaId;
@@ -121,7 +177,9 @@ export type Medida = {
 const ETAPAS_MATRICULA: EtapaId[] = ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"];
 
 export const MEDIDA: Record<MedidaId, Medida> = {
-  despesa: { id: "despesa", indicador: "edu.despesa.funcao_educacao", rotulo: "Despesa liquidada na função Educação", familia: "recursos", anos: "financeiros", etapas: null },
+  despesa: { id: "despesa", indicador: "edu.despesa.funcao_educacao", rotulo: "Despesa liquidada na função Educação, total", familia: "recursos", anos: "financeiros", etapas: null },
+  despesa_hab: { id: "despesa_hab", indicador: "edu.despesa.por_habitante", rotulo: "Despesa liquidada em Educação por habitante", familia: "recursos", anos: "financeiros", etapas: null },
+  despesa_mat: { id: "despesa_mat", indicador: "edu.despesa.por_matricula_rede_propria", rotulo: "Despesa de aplicação direta por matrícula da rede municipal", familia: "recursos", anos: "financeiros", etapas: null },
   matriculas: { id: "matriculas", indicador: "edu.matriculas.rede_municipal", rotulo: "Matrículas na rede municipal", familia: "atendimento", anos: "censo", etapas: ETAPAS_MATRICULA },
   conveniadas: { id: "conveniadas", indicador: "edu.matriculas.conveniadas_municipais", rotulo: "Matrículas em escolas privadas conveniadas com o município", familia: "atendimento", anos: "censo", etapas: ETAPAS_MATRICULA },
   atu: { id: "atu", indicador: "edu.atu.rede_municipal", rotulo: "Média de alunos por turma na rede municipal", familia: "atendimento", anos: "censo", etapas: ["creche", "pre_escola", "anos_iniciais", "anos_finais"] },
@@ -134,7 +192,7 @@ export type Moeda = "nominal" | "real";
 export type Disciplina = "matematica" | "portugues";
 
 export function componente(m: MedidaId, moeda: Moeda, disc: Disciplina): string | null {
-  if (m === "despesa") return moeda === "real" ? "real_2025" : "nominal";
+  if (ehDespesa(m)) return moeda === "real" ? "real_2025" : "nominal";
   if (m === "ideb") return "ideb";
   if (m === "saeb") return disc;
   return null;
@@ -155,6 +213,10 @@ export function unidade(m: MedidaId, moeda: Moeda): string {
   switch (m) {
     case "despesa":
       return moeda === "real" ? "R$ de 2025 (IPCA)" : "R$ correntes";
+    case "despesa_hab":
+      return moeda === "real" ? "R$ de 2025 (IPCA) por habitante por ano" : "R$ correntes por habitante por ano";
+    case "despesa_mat":
+      return moeda === "real" ? "R$ de 2025 (IPCA) por matrícula por ano" : "R$ correntes por matrícula por ano";
     case "matriculas":
     case "conveniadas":
       return "matrículas";
@@ -174,6 +236,9 @@ export function formata(m: MedidaId, v: number, curto = false): string {
   switch (m) {
     case "despesa":
       return curto ? reaisCurto(v) : reaisExtenso(v);
+    case "despesa_hab":
+    case "despesa_mat":
+      return reaisInteiro(v);
     case "matriculas":
     case "conveniadas":
       return inteiro(v);
@@ -191,6 +256,7 @@ export function formata(m: MedidaId, v: number, curto = false): string {
 /** Rótulo de eixo: inteiro quando o tique é inteiro, uma casa decimal quando não é. */
 export function formataEixo(m: MedidaId, v: number): string {
   if (m === "despesa") return reaisCurto(v);
+  if (m === "despesa_hab" || m === "despesa_mat") return reaisInteiro(v);
   if (m === "matriculas" || m === "conveniadas") return inteiro(v);
   const t = Number.isInteger(v) ? inteiro(v) : decimal(v, 1);
   return m === "aprovacao" ? `${t}%` : t;
@@ -198,7 +264,8 @@ export function formataEixo(m: MedidaId, v: number): string {
 
 /** Valor completo, na precisão publicada, para tabela e exportação. */
 export function formataCompleto(ind: IndicadorId, v: number): string {
-  if (ind === "edu.despesa.funcao_educacao" || ind === "edu.despesa.subfuncao") return reaisCompleto(v);
+  if (ind === "ctx.populacao.residente") return inteiro(v);
+  if (ind.startsWith("edu.despesa")) return reaisCompleto(v);
   if (ind.startsWith("edu.matriculas")) return inteiro(v);
   if (ind === "edu.saeb.rede_municipal") return decimal(v, 2);
   if (ind === "edu.ideb.rede_municipal") return String(v).replace(".", ",");
@@ -242,6 +309,8 @@ export type Comparacao = {
   comValor: number;
   incluidas: ItemComparacao[];
   excluidas: ExcluidoComparacao[];
+  /** Estatísticas do grupo (pipeline): a mesma regra do gráfico, da tabela e do download. */
+  ref: RefGrupo | null;
   mediana: number | null;
 };
 
@@ -258,7 +327,7 @@ export function ficha(d: DadosPainel, ind: IndicadorId): FichaIndicador {
 
 export function rotuloPeriodoMedida(m: MedidaId, ano: number): string {
   const md = MEDIDA[m];
-  if (md.anos === "financeiros") return `exercício ${ano}`;
+  if (md.anos === "financeiros") return m === "despesa_mat" ? `exercício ${ano} (despesa) e Censo Escolar ${ano} (matrículas)` : m === "despesa_hab" ? `exercício ${ano} (despesa) e população de ${ano}` : `exercício ${ano}`;
   if (md.anos === "ideb") return `edição ${ano}`;
   return m === "aprovacao" ? `ano letivo ${ano}` : `Censo Escolar ${ano}`;
 }
@@ -302,12 +371,13 @@ export function comparar(
   const f = ficha(d, MEDIDA[m].indicador);
   const regiao = d.regioes[capSel.regiao];
   const recorte = [rotuloPeriodoMedida(m, ano), e ? nomeEtapa(d, e).toLowerCase() : null, m === "saeb" ? (disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
-    m === "despesa" ? (moeda === "real" ? "reais de 2025" : "reais correntes") : null].filter(Boolean).join(", ");
+    ehDespesa(m) ? (moeda === "real" ? "reais de 2025" : "reais correntes") : null].filter(Boolean).join(", ");
   const criterio =
     `${grupo === "regiao" ? `Capitais da região ${regiao}` : "Todas as capitais estaduais"}; ${recorte}. ` +
     "Entram as capitais com valor observado e elegível para comparação" +
-    (m === "despesa" ? " pela política de conferência da despesa" : "") + ".";
-  return { criterio, universoIndicador: f.universo_curto, universo, comValor, incluidas, excluidas, mediana: mediana(incluidas.map((i) => i.valor)) };
+    (ehDespesa(m) ? " pela política de conferência da despesa" : "") + ".";
+  const ref = ix.referencia(MEDIDA[m].indicador, k, e, ano, grupo === "regiao" ? capSel.regiao : "todas");
+  return { criterio, universoIndicador: f.universo_curto, universo, comValor, incluidas, excluidas, ref, mediana: ref?.mediana ?? null };
 }
 
 /** Variação entre dois períodos, só quando os dois valores são elegíveis. */
@@ -390,6 +460,14 @@ export type LinhaTabela = {
 const ROTULO_COMPONENTE: Record<string, string> = {
   nominal: "Valor nominal",
   real_2025: "Valor em reais de 2025 (IPCA)",
+  rede_propria: "Aplicação direta na rede própria (numerador)",
+  inativos: "Aposentadorias, pensões e outros benefícios previdenciários",
+  ensino_superior: "Ensino superior (subfunção 364)",
+  transf_privadas: "Transferências a instituições privadas",
+  transf_outras: "Transferências a outros entes e demais modalidades",
+  sem_natureza: "Linhas da MSC sem natureza da despesa",
+  diferenca_dca_msc: "Diferença entre a DCA e a MSC (sem intraorçamentárias)",
+  dca_total: "Total da função Educação na DCA",
   ideb: "Ideb",
   p_rendimento: "Indicador de rendimento (P)",
   n_nota_padronizada: "Nota média padronizada (N)",
@@ -416,6 +494,7 @@ export const ROTULO_STATUS: Record<StatusDado, string> = {
 };
 
 function rotuloPeriodo(ind: IndicadorId, ano: number): string {
+  if (ind === "ctx.populacao.residente") return `População de ${ano}`;
   if (ind.startsWith("edu.despesa")) return `Exercício ${ano}`;
   if (ind === "edu.ideb.rede_municipal" || ind === "edu.saeb.rede_municipal") return `Edição ${ano}`;
   if (ind === "edu.aprovacao.rede_municipal") return `Ano letivo ${ano}`;
@@ -466,6 +545,10 @@ export function linhasTabela(ix: Indice, cod: number, ano: number): LinhaTabela[
 }
 
 export function fonteLegivel(d: DadosPainel, ind: IndicadorId, ano: number): string {
+  if (ind === "ctx.populacao.residente") return ano === 2022 ? "IBGE, Censo Demográfico 2022 (SIDRA, tabela 4714)" : `IBGE, estimativas da população ${ano} (SIDRA, tabela 6579)`;
+  if (ind === "edu.despesa.por_habitante") return `Siconfi, DCA ${ano}, Anexo I\u2011E; IBGE, população ${ano}`;
+  if (ind === "edu.despesa.por_matricula_rede_propria") return `Siconfi, MSC de dezembro de ${ano} e DCA ${ano}; INEP, Censo Escolar ${ano}`;
+  if (ind === "edu.despesa.ponte_matricula") return `Siconfi, MSC de dezembro de ${ano}, função 12, e DCA ${ano}`;
   if (ind.startsWith("edu.despesa")) return `Siconfi, DCA ${ano}, Anexo I\u2011E`;
   if (ind.startsWith("edu.matriculas")) return `INEP, microdados do Censo Escolar ${ano}`;
   if (ind === "edu.atu.rede_municipal") return `INEP, Média de Alunos por Turma ${ano}`;
@@ -510,6 +593,8 @@ export const CABECALHO_CSV_COMPARACAO = [
   "codigo_ibge", "capital", "uf", "valor_numerico", "valor_exibido", "unidade", "estado_do_dado", "elegivel_comparacao",
   "incluida_na_comparacao", "conferencia", "motivo_exclusao", "nota", "mediana_das_incluidas", "capitais_no_grupo",
   "capitais_com_valor", "capitais_incluidas", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
+  "media_simples_das_incluidas", "minimo_das_incluidas", "maximo_das_incluidas", "primeiro_quartil", "terceiro_quartil", "quartis_exibidos",
+  "razao_agregada_do_grupo", "politica_de_referencias",
 ];
 
 export function linhasCsvComparacao(
@@ -522,7 +607,10 @@ export function linhasCsvComparacao(
   const comum = (cap: CapitalPainel) => [md.indicador, f.nome, f.universo_curto, comp.criterio, rotuloPeriodoMedida(m, ano),
     e ? nomeEtapa(d, e) : "Não se aplica", rotuloComponente(d, md.indicador, k), String(cap.cod), cap.nome, cap.uf];
   const cauda = [comp.mediana === null ? "" : String(comp.mediana), String(comp.universo.length), String(comp.comValor),
-    String(comp.incluidas.length), f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, ano)];
+    String(comp.incluidas.length), f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, ano),
+    ...[comp.ref?.media, comp.ref?.minimo, comp.ref?.maximo, comp.ref?.q1, comp.ref?.q3].map((v) => (v == null ? "" : String(v))),
+    comp.ref?.quartisExibicao ? "sim" : "nao", comp.ref?.razaoAgregada == null ? "" : String(comp.ref.razaoAgregada),
+    "média simples (peso igual por capital), mediana, quartis de tipo 7 (exibidos com 8 ou mais valores) e razão agregada dos mesmos pares; ver politica_referencias na gold"];
   const sit = (p: Ponto) => (p.situacao ? d.rotulosSituacao[p.situacao] ?? p.situacao : "");
   const linhas = [
     ...comp.incluidas.map((i) => [...comum(i.cap), String(i.valor), formata(m, i.valor), unidade(m, moeda), ROTULO_STATUS.OBSERVADO,
@@ -533,4 +621,319 @@ export function linhasCsvComparacao(
   ];
   const ordem = new Map(d.capitais.map((c, i) => [String(c.cod), i]));
   return linhas.sort((a, b) => (ordem.get(a[7]) ?? 0) - (ordem.get(b[7]) ?? 0));
+}
+
+/* ------------------------------------------------------------------ diferença para a referência */
+
+export type Diferenca = {
+  /** diferença na escala da medida: reais, alunos por turma, pontos percentuais, pontos ou matrículas */
+  abs: number;
+  /** diferença relativa em %, só em escala de razão e com base diferente de zero; null quando bloqueada */
+  pct: number | null;
+  unidade: string;
+  /** "acima da", "abaixo da" ou "igual à" */
+  sentido: "acima da" | "abaixo da" | "igual à";
+  texto: string;
+};
+
+/**
+ * Diferença descritiva entre um valor e uma referência, respeitando a escala: R$ e porcentagem para despesas e contagens;
+ * alunos por turma em valor absoluto; pontos percentuais para taxas; pontos para Ideb e Saeb. Diferença relativa com base
+ * zero é bloqueada. Linguagem descritiva: nunca "melhor" ou "pior".
+ */
+export function diferenca(m: MedidaId, valor: number, referencia: number | null, nomeRef = "mediana"): Diferenca | null {
+  if (referencia === null) return null;
+  const abs = valor - referencia;
+  const igual = Math.abs(abs) < 1e-9;
+  const sentido: Diferenca["sentido"] = igual ? "igual à" : abs > 0 ? "acima da" : "abaixo da";
+  const sinalTxt = abs >= 0 ? "+" : "−";
+  const a = Math.abs(abs);
+  let txt: string;
+  let pct: number | null = null;
+  let unidadeD: string;
+  if (ehDespesa(m)) {
+    pct = referencia !== 0 ? (abs / referencia) * 100 : null;
+    unidadeD = "R$";
+    txt = `${sinalTxt}${m === "despesa" ? reaisExtenso(a) : reaisInteiro(a)}${pct !== null ? ` (${sinalTxt}${decimal(Math.abs(pct), 1)}%)` : ""}`;
+  } else if (m === "matriculas" || m === "conveniadas") {
+    pct = referencia !== 0 ? (abs / referencia) * 100 : null;
+    unidadeD = "matrículas";
+    txt = `${sinalTxt}${inteiro(a)} matrículas${pct !== null ? ` (${sinalTxt}${decimal(Math.abs(pct), 1)}%)` : ""}`;
+  } else if (m === "atu") {
+    unidadeD = "alunos por turma";
+    txt = `${sinalTxt}${decimal(a, 1)} aluno${a >= 1.05 ? "s" : ""} por turma`;
+  } else if (m === "aprovacao") {
+    unidadeD = "pontos percentuais";
+    txt = `${sinalTxt}${decimal(a, 1)} ${a >= 1.05 ? "pontos percentuais" : "ponto percentual"}`;
+  } else {
+    unidadeD = "pontos";
+    txt = `${sinalTxt}${decimal(a, m === "saeb" ? 2 : 1)} ponto${a >= 1.05 ? "s" : ""}`;
+  }
+  return { abs, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
+}
+
+/* ------------------------------------------------------------------ referências externas */
+
+export type NivelExterno = {
+  id: string;
+  indicador: IndicadorId;
+  componente: string | null;
+  etapa: EtapaId | null;
+  ano: number;
+  tipo: "nacional_mesmo_universo" | "nacional_outro_universo";
+  valor: number;
+  rotulo: string;
+  unidade: string;
+  unidade_diferenca: string | null;
+  escopoTexto: string;
+};
+
+/**
+ * Referência oficial externa de uma medida, para o período e a etapa em exibição: nacional do mesmo universo (INEP, rede municipal
+ * do Brasil), nacional de outro universo (INEP, todas as redes públicas, só 2021). Internacional fica em `internacionaisDa`.
+ */
+export function referenciasExternas(d: DadosPainel, m: MedidaId, ano: number, etapa: EtapaId, comp: string | null): NivelExterno[] {
+  const md = MEDIDA[m];
+  const e: EtapaId | null = m === "despesa_mat" ? "total" : etapaDaMedida(m, etapa);
+  const alvoComp = m === "despesa_mat" ? null : comp;
+  const out: NivelExterno[] = [];
+  for (const [i, k, et, a, tipo, valor, desc] of d.externas) {
+    if (d.indicadores[i] !== md.indicador || a !== ano) continue;
+    if ((et < 0 ? null : d.etapas[et].id) !== e) continue;
+    if ((k < 0 ? null : d.componentes[k]) !== alvoComp) continue;
+    const ds = d.descritores[desc];
+    out.push({ id: `${d.indicadores[i]}.${a}.${e ?? ""}.${alvoComp ?? ""}.${tipo}`, indicador: d.indicadores[i], componente: alvoComp, etapa: e, ano: a, tipo: tipo === 0 ? "nacional_mesmo_universo" : "nacional_outro_universo", valor, rotulo: ds.rotulo, unidade: ds.unidade, unidade_diferenca: ds.unidade_diferenca, escopoTexto: ds.escopo });
+  }
+  return out;
+}
+
+export type ContextoInternacional = Omit<InternacionalGrupo, "fonte" | "agregados_na_fonte">;
+
+/** Conjuntos internacionais de contexto pertinentes à medida e à etapa. Nunca entram na distribuição das capitais. */
+export function internacionaisDa(d: DadosPainel, m: MedidaId, etapa: EtapaId): ContextoInternacional[] {
+  const candidatos =
+    m === "atu"
+      ? d.internacionais.filter((g) => g.conjunto === "ocde_tamanho_turma" && g.etapa === etapa && g.instituicoes === "publicas")
+      : m === "despesa_mat"
+        ? d.internacionais.filter((g) => g.conjunto === "ocde_despesa_por_estudante")
+        : [];
+  // só o ano mais recente de cada nível; o ano da OCDE é dito junto do dado, porque difere do ano em exibição no painel
+  const recente = new Map<string, ContextoInternacional>();
+  for (const g of candidatos) {
+    const k = `${g.conjunto}|${g.nivel}|${g.instituicoes}`;
+    if (!recente.has(k) || recente.get(k)!.ano < g.ano) recente.set(k, g);
+  }
+  return Array.from(recente.values());
+}
+
+/* ------------------------------------------------------------------ tabela comparativa completa */
+
+export type ColunaId =
+  | "despesa"
+  | "populacao"
+  | "despesa_hab"
+  | "matriculas"
+  | "despesa_mat"
+  | "conveniadas_pct"
+  | "atu"
+  | "aprovacao"
+  | "ideb"
+  | "saeb";
+
+export type ColunaDef = {
+  id: ColunaId;
+  rotulo: string;
+  grupo: "recursos" | "atendimento" | "resultado";
+  /** medida que serve de referência quando a coluna é a medida selecionada */
+  medida: MedidaId | null;
+  /** coluna que depende da etapa em exibição */
+  porEtapa: boolean;
+  /** medida central: fica visível em tela estreita na visão "Todas" */
+  central: boolean;
+};
+
+export const COLUNAS: ColunaDef[] = [
+  { id: "despesa", rotulo: "Despesa total na função Educação", grupo: "recursos", medida: "despesa", porEtapa: false, central: true },
+  { id: "populacao", rotulo: "População residente", grupo: "recursos", medida: null, porEtapa: false, central: false },
+  { id: "despesa_hab", rotulo: "Despesa por habitante", grupo: "recursos", medida: "despesa_hab", porEtapa: false, central: true },
+  { id: "matriculas", rotulo: "Matrículas na rede municipal", grupo: "recursos", medida: "matriculas", porEtapa: false, central: true },
+  { id: "despesa_mat", rotulo: "Despesa por matrícula", grupo: "recursos", medida: "despesa_mat", porEtapa: false, central: true },
+  { id: "conveniadas_pct", rotulo: "Conveniadas ÷ rede municipal", grupo: "atendimento", medida: null, porEtapa: false, central: false },
+  { id: "atu", rotulo: "Alunos por turma", grupo: "atendimento", medida: "atu", porEtapa: true, central: false },
+  { id: "aprovacao", rotulo: "Taxa de aprovação", grupo: "resultado", medida: "aprovacao", porEtapa: true, central: false },
+  { id: "ideb", rotulo: "Ideb", grupo: "resultado", medida: "ideb", porEtapa: true, central: false },
+  { id: "saeb", rotulo: "Saeb", grupo: "resultado", medida: "saeb", porEtapa: true, central: false },
+];
+
+export type Celula = { valor: number | null; texto: string; ponto: Ponto; elegivel: boolean; foraDoEscopo: boolean };
+
+export type LinhaComparativa = {
+  cap: CapitalPainel;
+  celulas: Record<ColunaId, Celula>;
+  /** diferença para a mediana do grupo na medida selecionada, quando a capital está na comparação */
+  diferenca: Diferenca | null;
+  ressalvas: { coluna: string; texto: string; material: boolean }[];
+};
+
+export type ResumoColuna = { n: number; media: number | null; mediana: number | null; minimo: number | null; maximo: number | null; noGrupo: number; comValor: number };
+
+const SEM_ESCOPO: Ponto = { ...SEM_OBS, status: "NAO_APLICAVEL", nota: "Fora do escopo desta etapa", notaMaterial: false };
+
+/**
+ * Tabela comparativa: uma linha por capital do grupo, com despesa total, população, despesa por habitante, matrículas, despesa por
+ * matrícula, participação das conveniadas e os resultados da etapa em exibição. As colunas de recursos valem para todas as etapas
+ * da rede; só as de atendimento por etapa e de resultado seguem a etapa escolhida.
+ */
+export function tabelaComparativa(
+  ix: Indice, ano: number, etapa: EtapaId, moeda: Moeda, disc: Disciplina, grupo: Grupo, capSel: CapitalPainel, medida: MedidaId,
+): { linhas: LinhaComparativa[]; resumo: Record<ColunaId, ResumoColuna | null>; edicao: number; edicaoExata: boolean } {
+  const d = ix.d;
+  const universo = grupo === "regiao" ? d.capitais.filter((c) => c.regiao === capSel.regiao) : d.capitais;
+  const { edicao, exata } = edicaoIdeb(ano);
+  const comp = (m: MedidaId) => componente(m, moeda, disc);
+  const grp = grupo === "regiao" ? capSel.regiao : "todas";
+  const linhas: LinhaComparativa[] = universo.map((cap) => {
+    const get = (m: MedidaId, a = ano, et: EtapaId | null = etapaDaMedida(m, etapa)) => ix.ponto(MEDIDA[m].indicador, cap.cod, a, et, comp(m));
+    const bruto: Record<ColunaId, Ponto> = {
+      despesa: get("despesa"),
+      populacao: ix.ponto("ctx.populacao.residente", cap.cod, ano, null, null),
+      despesa_hab: get("despesa_hab"),
+      matriculas: ix.ponto("edu.matriculas.rede_municipal", cap.cod, ano, "total", null),
+      despesa_mat: get("despesa_mat"),
+      conveniadas_pct: { ...SEM_OBS },
+      atu: etapaValida("atu", etapa) ? get("atu") : SEM_ESCOPO,
+      aprovacao: etapaValida("aprovacao", etapa) ? get("aprovacao") : SEM_ESCOPO,
+      ideb: etapaValida("ideb", etapa) && exata ? get("ideb") : SEM_ESCOPO,
+      saeb: etapaValida("saeb", etapa) && exata ? get("saeb") : SEM_ESCOPO,
+    };
+    const conv = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, ano, "total", null);
+    const mt = bruto.matriculas;
+    bruto.conveniadas_pct =
+      conv.status === "OBSERVADO" && mt.status === "OBSERVADO" && conv.valor !== null && mt.valor ? { ...conv, valor: (100 * conv.valor) / mt.valor, nota: null, notaMaterial: false } : { ...SEM_OBS, nota: "Sem matrículas observadas na rede ou nas conveniadas" };
+    const celulas = {} as Record<ColunaId, Celula>;
+    for (const c of COLUNAS) {
+      const p = bruto[c.id];
+      const fora = p === SEM_ESCOPO;
+      const medidaCol = c.medida;
+      const txt =
+        p.valor === null ? "" : c.id === "populacao" ? inteiro(p.valor) : c.id === "conveniadas_pct" ? percentual(p.valor, 1) : medidaCol ? formata(medidaCol, p.valor) : String(p.valor);
+      celulas[c.id] = { valor: p.valor, texto: txt, ponto: p, elegivel: p.elegivel, foraDoEscopo: fora };
+    }
+    const ressalvas: LinhaComparativa["ressalvas"] = [];
+    for (const c of COLUNAS) {
+      const p = bruto[c.id];
+      if (p === SEM_ESCOPO) continue;
+      if (p.status === "OBSERVADO") {
+        const texto = !p.elegivel ? p.motivo ?? p.nota : p.nota;
+        if (texto) ressalvas.push({ coluna: c.rotulo, texto, material: p.notaMaterial || !p.elegivel });
+      } else if (p.nota) ressalvas.push({ coluna: c.rotulo, texto: `${ROTULO_STATUS[p.status]}. ${p.nota}`, material: true });
+    }
+    return { cap, celulas, diferenca: null, ressalvas };
+  });
+  const colSel = COLUNAS.find((c) => c.medida === medida);
+  const e = etapaDaMedida(medida, etapa);
+  const refSel = ix.referencia(MEDIDA[medida].indicador, comp(medida), e, ano, grp);
+  if (colSel && refSel) {
+    for (const l of linhas) {
+      const c = l.celulas[colSel.id];
+      l.diferenca = c.valor !== null && c.elegivel && !c.foraDoEscopo ? diferenca(medida, c.valor, refSel.mediana) : null;
+    }
+  }
+  const resumo = {} as Record<ColunaId, ResumoColuna | null>;
+  for (const c of COLUNAS) {
+    if (!c.medida) {
+      resumo[c.id] = null;
+      continue;
+    }
+    const ok = !c.porEtapa || (etapaValida(c.medida, etapa) && (MEDIDA[c.medida].anos !== "ideb" || exata));
+    const r = ok ? ix.referencia(MEDIDA[c.medida].indicador, comp(c.medida), etapaDaMedida(c.medida, etapa), ano, grp) : null;
+    resumo[c.id] = r ? { n: r.n, media: r.media, mediana: r.mediana, minimo: r.minimo, maximo: r.maximo, noGrupo: r.noGrupo, comValor: r.comValor } : null;
+  }
+  // matrículas na tabela são sempre o total da rede (etapa total): a estatística correspondente é a do total
+  const rm = ix.referencia("edu.matriculas.rede_municipal", null, "total", ano, grp);
+  resumo.matriculas = rm ? { n: rm.n, media: rm.media, mediana: rm.mediana, minimo: rm.minimo, maximo: rm.maximo, noGrupo: rm.noGrupo, comValor: rm.comValor } : null;
+  const rp = ix.referencia("ctx.populacao.residente", null, null, ano, grp);
+  resumo.populacao = rp ? { n: rp.n, media: rp.media, mediana: rp.mediana, minimo: rp.minimo, maximo: rp.maximo, noGrupo: rp.noGrupo, comValor: rp.comValor } : null;
+  return { linhas, resumo, edicao, edicaoExata: exata };
+}
+
+/** Ordenação da tabela: ausentes e fora das comparações não recebem posição numérica e ficam depois, em ordem alfabética. */
+export function ordenaTabela(linhas: LinhaComparativa[], coluna: ColunaId | "alfabetica", decrescente: boolean): LinhaComparativa[] {
+  const nome = (a: LinhaComparativa, b: LinhaComparativa) => a.cap.nome.localeCompare(b.cap.nome, "pt-BR");
+  if (coluna === "alfabetica") return [...linhas].sort(nome);
+  const num = (l: LinhaComparativa) => {
+    const c = l.celulas[coluna];
+    return c.valor !== null && c.ponto.status === "OBSERVADO" && (c.elegivel || coluna === "populacao" || coluna === "conveniadas_pct") && !c.foraDoEscopo ? c.valor : null;
+  };
+  return [...linhas].sort((a, b) => {
+    const x = num(a);
+    const y = num(b);
+    if (x === null && y === null) return nome(a, b);
+    if (x === null) return 1;
+    if (y === null) return -1;
+    return (decrescente ? y - x : x - y) || nome(a, b);
+  });
+}
+
+export const CABECALHO_CSV_TABELA_COMPARATIVA = [
+  "capital", "codigo_ibge", "uf", "ano", "etapa_dos_resultados", "grupo_de_comparacao", "coluna", "valor_numerico", "valor_exibido", "unidade",
+  "estado_do_dado", "elegivel_comparacao", "nota_ou_ressalva", "medida_de_referencia", "mediana_do_grupo", "media_do_grupo", "capitais_na_referencia",
+  "diferenca_para_a_mediana", "versao_metodologica", "dados_gerados_em", "hash_dados",
+];
+
+const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
+  despesa: (m) => unidade("despesa", m),
+  populacao: () => "habitantes",
+  despesa_hab: (m) => unidade("despesa_hab", m),
+  matriculas: () => "matrículas",
+  despesa_mat: (m) => unidade("despesa_mat", m),
+  conveniadas_pct: () => "% das matrículas da rede municipal",
+  atu: () => "alunos por turma",
+  aprovacao: () => "%",
+  ideb: () => "índice de 0 a 10",
+  saeb: () => "pontos na escala Saeb",
+};
+
+export function linhasCsvTabelaComparativa(
+  d: DadosPainel, t: ReturnType<typeof tabelaComparativa>, ano: number, etapa: EtapaId, moeda: Moeda, grupo: Grupo, capSel: CapitalPainel, medida: MedidaId, ix: Indice, disc: Disciplina,
+): string[][] {
+  const grp = grupo === "regiao" ? `Capitais da região ${d.regioes[capSel.regiao]}` : "Todas as capitais estaduais";
+  const refSel = ix.referencia(MEDIDA[medida].indicador, componente(medida, moeda, disc), etapaDaMedida(medida, etapa), ano, grupo === "regiao" ? capSel.regiao : "todas");
+  const colSel = COLUNAS.find((c) => c.medida === medida)?.id;
+  const out: string[][] = [];
+  for (const l of t.linhas) {
+    for (const c of COLUNAS) {
+      const cel = l.celulas[c.id];
+      out.push([
+        l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, c.rotulo,
+        cel.valor === null ? "" : String(cel.valor), cel.texto, UNIDADE_COLUNA[c.id](moeda),
+        cel.foraDoEscopo ? "Fora do escopo da etapa" : ROTULO_STATUS[cel.ponto.status],
+        cel.ponto.status !== "OBSERVADO" || cel.foraDoEscopo ? "" : cel.elegivel ? "sim" : "nao",
+        (cel.ponto.status === "OBSERVADO" ? (!cel.elegivel ? cel.ponto.motivo ?? cel.ponto.nota : cel.ponto.nota) : cel.ponto.nota) ?? "",
+        MEDIDA[medida].rotulo, refSel?.mediana == null ? "" : String(refSel.mediana), refSel?.media == null ? "" : String(refSel.media), refSel ? String(refSel.n) : "",
+        c.id === colSel && l.diferenca ? l.diferenca.texto : "", "1.2", d.meta.gerado_em, d.meta.hash_dados,
+      ]);
+    }
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ população e ponte da despesa por matrícula */
+
+export type LinhaPonte = { componente: string; rotulo: string; valor: number; participacao: number | null; dentro: boolean };
+
+/** Ponte do total da DCA ao numerador por matrícula, na ordem de leitura. Vazio quando a MSC não reconcilia ou não existe. */
+export function ponteMatricula(ix: Indice, cod: number, ano: number): { linhas: LinhaPonte[]; total: number | null; reconcilia: boolean } {
+  const ordem = ["dca_total", "transf_privadas", "transf_outras", "ensino_superior", "inativos", "sem_natureza", "diferenca_dca_msc", "rede_propria"];
+  const total = ix.ponto("edu.despesa.ponte_matricula", cod, ano, null, "dca_total");
+  if (total.valor === null) return { linhas: [], total: null, reconcilia: false };
+  const linhas: LinhaPonte[] = [];
+  for (const k of ordem) {
+    if (!ix.tem("edu.despesa.ponte_matricula", cod, ano, null, k)) continue;
+    const p = ix.ponto("edu.despesa.ponte_matricula", cod, ano, null, k);
+    if (p.valor === null) continue;
+    if ((k === "sem_natureza" || k === "diferenca_dca_msc") && Math.abs(p.valor) < 0.005) continue;
+    linhas.push({ componente: k, rotulo: ROTULO_COMPONENTE[k] ?? k, valor: p.valor, participacao: total.valor ? (100 * p.valor) / total.valor : null, dentro: k === "rede_propria" });
+  }
+  return { linhas, total: total.valor, reconcilia: total.elegivel };
 }

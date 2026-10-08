@@ -41,6 +41,9 @@ const COR = {
 
 export type Anotacao = { ano: number; texto: string };
 
+/** Mediana do grupo em cada ano, com o número de capitais na comparação: o grupo pode mudar de um ano para outro. */
+export type ReferenciaAnual = { ano: number; valor: number | null; n: number };
+
 export function MiniSerie({
   titulo,
   pontos,
@@ -48,6 +51,8 @@ export function MiniSerie({
   formataEixo,
   zero,
   anotacoes = [],
+  referencia,
+  rotuloReferencia = "Mediana das capitais",
 }: {
   titulo: string;
   pontos: PontoSerie[];
@@ -55,6 +60,8 @@ export function MiniSerie({
   formataEixo: (v: number) => string;
   zero: boolean;
   anotacoes?: Anotacao[];
+  referencia?: ReferenciaAnual[];
+  rotuloReferencia?: string;
 }) {
   const [ref, w] = useLargura<HTMLDivElement>(320);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -62,7 +69,9 @@ export function MiniSerie({
   const m = { t: 14, r: 14, b: 30, l: 62 };
   const valores = pontos.map((p) => p.valor);
   const temValor = valores.some((v) => v !== null);
-  const dom = dominioBonito(valores, { zero, n: 4 });
+  const refPorAno = new Map((referencia ?? []).map((r) => [r.ano, r]));
+  const refValores = pontos.map((p) => refPorAno.get(p.ano)?.valor ?? null);
+  const dom = dominioBonito([...valores, ...refValores], { zero, n: 4 });
   const y = escalaLinear([dom.min, dom.max], [H - m.b, m.t]);
   const passoX = pontos.length > 1 ? (w - m.l - m.r) / (pontos.length - 1) : 0;
   const x = (i: number) => (pontos.length > 1 ? m.l + i * passoX : (m.l + w - m.r) / 2);
@@ -77,6 +86,17 @@ export function MiniSerie({
     } else atual.push(`${atual.length ? "L" : "M"}${x(i).toFixed(1)},${y(p.valor).toFixed(1)}`);
   });
   if (atual.length > 1) segs.push(atual.join(" "));
+  // referência: linha tracejada só entre anos consecutivos que têm mediana
+  const segsRef: string[] = [];
+  let atualRef: string[] = [];
+  pontos.forEach((p, i) => {
+    const v = refPorAno.get(p.ano)?.valor ?? null;
+    if (v === null) {
+      if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
+      atualRef = [];
+    } else atualRef.push(`${atualRef.length ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+  });
+  if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
   const mostrarRotulo = (i: number) => pontos.length <= 6 || i === 0 || i === pontos.length - 1 || i % 2 === 0;
   const anot = new Map(anotacoes.map((a, i) => [a.ano, i + 1]));
   const ultimo = [...pontos].reverse().find((p) => p.valor !== null);
@@ -130,6 +150,13 @@ export function MiniSerie({
               )}
             </g>
           ))}
+          {segsRef.map((d) => (
+            <path key={`r${d}`} d={d} fill="none" stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="5 4" strokeLinecap="round" />
+          ))}
+          {pontos.map((p, i) => {
+            const r = refPorAno.get(p.ano);
+            return r && r.valor !== null ? <circle key={`rp${p.ano}`} cx={x(i)} cy={y(r.valor)} r={2.5} fill={COR.superficie} stroke={COR.referencia} strokeWidth={1.4} /> : null;
+          })}
           {segs.map((d) => (
             <path key={d} d={d} fill="none" stroke={COR.selecao} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
           ))}
@@ -196,13 +223,25 @@ export function MiniSerie({
                 {pa.nota ? `: ${pa.nota}` : ""}
               </p>
             )}
+            {refPorAno.get(pa.ano)?.valor != null && (
+              <p className="mt-1 text-carvao-muted">
+                {rotuloReferencia}: {formata(refPorAno.get(pa.ano)!.valor as number)} ({refPorAno.get(pa.ano)!.n} capitais)
+              </p>
+            )}
             {pa.valor !== null && !pa.elegivel && <p className="mt-1 font-semibold text-obee-tinta">Fora das comparações: {pa.motivo ?? pa.nota}</p>}
             {pa.valor !== null && pa.elegivel && pa.nota && pa.notaMaterial && <p className="mt-1 text-carvao-muted">{pa.nota}</p>}
           </div>
         )}
       </div>
-      {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0) && (
+      {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0 || segsRef.length > 0) && (
         <ul className="mt-1 space-y-0.5 text-xs leading-snug text-carvao-muted">
+          {segsRef.length > 0 && (
+            <li>
+              <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano. O número de capitais na comparação pode mudar de um ano para outro (de{" "}
+              {Math.min(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))} a {Math.max(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))}); a variação da linha
+              não é a evolução de um grupo constante.
+            </li>
+          )}
           {pontos
             .filter((p) => p.valor !== null && !p.elegivel)
             .map((p) => (
@@ -235,20 +274,45 @@ export function MiniSerie({
 
 export type LinhaPontos = { chave: string; rotulo: string; valor: number; selecionada: boolean };
 
+export type ReferenciasGrafico = {
+  mediana: number | null;
+  media: number | null;
+  /** faixa entre o primeiro e o terceiro quartis; só quando o grupo é grande o bastante para exibi-la */
+  faixa: { q1: number; q3: number } | null;
+  /** referências oficiais externas do mesmo universo (por exemplo, o Brasil, rede municipal) */
+  externas?: { rotulo: string; valor: number }[];
+};
+
+/** Marcas 1, 2 e 5 de cada potência de dez dentro do domínio, para o eixo logarítmico. */
+function ticksLog(min: number, max: number): number[] {
+  const out: number[] = [];
+  for (let e = Math.floor(Math.log10(min)); e <= Math.ceil(Math.log10(max)); e++) {
+    for (const k of [1, 2, 5]) {
+      const v = k * 10 ** e;
+      if (v >= min * 0.999 && v <= max * 1.001) out.push(v);
+    }
+  }
+  return out.length > 6 ? out.filter((v) => String(v)[0] === "1" || String(v)[0] === "5").slice(0, 6) : out;
+}
+
 export function GraficoPontosPares({
   linhas,
-  mediana,
+  referencias,
   formata,
   formataEixo,
   zero,
   titulo,
+  escala = "linear",
+  rotuloGrupo = "capitais na comparação",
 }: {
   linhas: LinhaPontos[];
-  mediana: number | null;
+  referencias: ReferenciasGrafico;
   formata: (v: number) => string;
   formataEixo: (v: number) => string;
   zero: boolean;
   titulo: string;
+  escala?: "linear" | "log";
+  rotuloGrupo?: string;
 }) {
   const [ref, w] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
@@ -259,12 +323,15 @@ export function GraficoPontosPares({
   const H = m.t + m.b + linhas.length * linhaH;
   // área útil estreita (320 px): duas marcas no eixo, para os rótulos não se sobreporem
   const util = w - m.l - m.r;
-  const dom = dominioBonito(
-    linhas.map((l) => l.valor),
-    { zero, n: estreito ? 3 : 5 },
-  );
+  const { mediana, media, faixa, externas = [] } = referencias;
+  const todos = [...linhas.map((l) => l.valor), ...[mediana, media, faixa?.q1 ?? null, faixa?.q3 ?? null, ...externas.map((e) => e.valor)].filter((v): v is number => v !== null)];
+  const log = escala === "log" && todos.every((v) => v > 0);
+  const dom = log
+    ? { min: Math.min(...todos) * 0.85, max: Math.max(...todos) * 1.15, ticks: ticksLog(Math.min(...todos) * 0.85, Math.max(...todos) * 1.15) }
+    : dominioBonito(todos, { zero, n: estreito ? 3 : 5 });
   const ticks = util < 200 ? dom.ticks.filter((_, i, a) => i === 0 || i === a.length - 1) : dom.ticks;
-  const x = escalaLinear([dom.min, dom.max], [m.l, w - m.r]);
+  const lin = escalaLinear([dom.min, dom.max], [m.l, w - m.r]);
+  const x = (v: number) => (log ? m.l + ((Math.log10(v) - Math.log10(dom.min)) / (Math.log10(dom.max) - Math.log10(dom.min))) * (w - m.r - m.l) : lin(v));
   const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
   const sel = linhas.findIndex((l) => l.selecionada);
 
@@ -295,6 +362,7 @@ export function GraficoPontosPares({
         onBlur={() => setAtivo(null)}
       >
         <svg width={w} height={H} aria-hidden="true" className="block">
+          {faixa && <rect x={x(faixa.q1)} y={m.t - 4} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={H - m.b - m.t + 4} fill="var(--cor-obee-fundo)" />}
           {ticks.map((t, it) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={m.t - 6} y2={H - m.b} stroke={COR.grade} strokeWidth={1} />
@@ -303,11 +371,11 @@ export function GraficoPontosPares({
               </text>
             </g>
           ))}
-          {mediana !== null && (
-            <g>
-              <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.5} />
-            </g>
-          )}
+          {externas.map((e) => (
+            <line key={e.rotulo} x1={x(e.valor)} x2={x(e.valor)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="1.5 3" strokeLinecap="round" />
+          ))}
+          {media !== null && <line x1={x(media)} x2={x(media)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="6 4" />}
+          {mediana !== null && <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={2} />}
           {linhas.map((l, i) => (
             <g key={l.chave}>
               {ativo === i && <rect x={0} y={yc(i) - linhaH / 2} width={w} height={linhaH} fill="var(--cor-obee-fundo)" />}
@@ -363,30 +431,59 @@ export function GraficoPontosPares({
           </div>
         )}
       </div>
-      <p className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-carvao-muted">
+      <ul className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-carvao-muted">
         {sel >= 0 && (
-          <span className="inline-flex items-center gap-1.5">
+          <li className="inline-flex items-center gap-1.5">
             <svg width="14" height="14" aria-hidden="true">
               <circle cx="7" cy="7" r="5.5" fill={COR.selecao} />
             </svg>
             Capital selecionada{estreito ? `: ${formata(linhas[sel].valor)}` : ""}
-          </span>
+          </li>
         )}
-        <span className="inline-flex items-center gap-1.5">
+        <li className="inline-flex items-center gap-1.5">
           <svg width="14" height="14" aria-hidden="true">
             <circle cx="7" cy="7" r="4" fill={COR.neutro} />
           </svg>
-          Demais capitais na comparação
-        </span>
+          Demais {rotuloGrupo}
+        </li>
         {mediana !== null && (
-          <span className="inline-flex items-center gap-1.5">
-            <svg width="14" height="14" aria-hidden="true">
-              <line x1="7" x2="7" y1="0" y2="14" stroke={COR.referencia} strokeWidth="1.5" />
+          <li className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="2" />
             </svg>
-            Mediana das {linhas.length} capitais na comparação: {formata(mediana)}
-          </span>
+            Mediana: {formata(mediana)}
+          </li>
         )}
-      </p>
+        {media !== null && (
+          <li className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="6 4" />
+            </svg>
+            Média simples: {formata(media)}
+          </li>
+        )}
+        {faixa && (
+          <li className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <rect x="2" y="2" width="18" height="10" fill="var(--cor-obee-fundo)" stroke={COR.grade} />
+            </svg>
+            Faixa onde estão os 50% centrais dos valores: {formata(faixa.q1)} a {formata(faixa.q3)}
+          </li>
+        )}
+        {externas.map((e) => (
+          <li key={e.rotulo} className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="1.5 3" strokeLinecap="round" />
+            </svg>
+            {e.rotulo}: {formata(e.valor)}
+          </li>
+        ))}
+      </ul>
+      {log && (
+        <p className="mt-1 text-xs text-carvao-muted">
+          Escala logarítmica: cada marca do eixo vale 2 ou 2,5 vezes a anterior; distâncias iguais representam razões iguais, não diferenças iguais. A escala linear, padrão, mostra a diferença real em reais.
+        </p>
+      )}
     </div>
   );
 }

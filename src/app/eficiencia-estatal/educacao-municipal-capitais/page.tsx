@@ -14,7 +14,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Educação municipal nas capitais",
   description:
-    "Despesa liquidada na função Educação, matrículas, alunos por turma, aprovação, Ideb e Saeb das redes municipais das 26 capitais estaduais, com fonte, período, perímetro e limitações de cada número.",
+    "Despesa em Educação total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb das redes municipais das 26 capitais estaduais, com referências do grupo, nacionais e internacionais, fonte, período, perímetro e limitações de cada número.",
   alternates: { canonical: "/eficiencia-estatal/educacao-municipal-capitais" },
 };
 
@@ -43,11 +43,30 @@ const GLOSSARIO: [string, string][] = [
   ["Mediana", "Valor do meio quando os valores são ordenados: metade das capitais na comparação fica abaixo e metade acima. Aqui, sem ponderação; não é meta, padrão nem estatística nacional."],
   ["Reais de 2025", "Valor corrigido pela inflação medida pelo IPCA: cada exercício é multiplicado pela razão entre a média do índice em 2025 e a média do índice no exercício, para expressar todos os anos no poder de compra médio de 2025."],
   ["Fora da comparação", "O valor oficial existe e pode ser consultado, mas não entra em comparações entre capitais, medianas nem variações, porque o perímetro é diferente ou a conferência com outra fonte oficial está pendente. O motivo aparece junto do dado."],
-  ["MSC", "Matriz de Saldos Contábeis: saldos das contas contábeis que cada ente envia mensalmente ao Tesouro. Aqui é a terceira fonte de conferência da despesa quando DCA e RREO diferem."],
+  ["MSC", "Matriz de Saldos Contábeis: saldos das contas contábeis que cada ente envia mensalmente ao Tesouro. Aqui é a terceira fonte de conferência da despesa quando DCA e RREO diferem e a fonte da ponte da despesa por matrícula (subfunção, modalidade de aplicação e elemento de cada linha da função 12)."],
+  ["Despesa por habitante", "Despesa liquidada na função Educação dividida pela população residente do mesmo ano. Divisão aritmética pelo território: não é tributo pago por pessoa, benefício recebido nem despesa por aluno."],
+  ["Despesa por matrícula", "Despesa de aplicação direta do município na função Educação, sem inativos, ensino superior e transferências a instituições privadas, dividida pelas matrículas das escolas municipais. É por matrícula, não por estudante único; não é custo integral nem custo marginal."],
+  ["Aplicação direta e transferência", "Modalidade da despesa: aplicação direta (90) é a que o próprio ente executa; transferências a instituições privadas (50 e 60) financiam, por exemplo, creches conveniadas. Intraorçamentária (91) é operação entre órgãos do mesmo ente."],
+  ["Média simples e razão agregada", "A média simples dá o mesmo peso a cada capital. A razão agregada soma os numeradores e os denominadores dos mesmos pares e divide: pesa cada capital pelo seu denominador. Respondem a perguntas diferentes e não se chamam apenas de média. Um indicador nacional oficial tem cálculo e universo definidos pela fonte e não é a média das capitais."],
+  ["Faixa dos 50% centrais", "Intervalo entre o primeiro e o terceiro quartis: metade dos valores do grupo está dentro dele. Só é exibida com 8 ou mais valores (política de apresentação, não garantia estatística)."],
+  ["População estimada e Censo", "As estimativas do IBGE têm data de referência em 1º de julho; o Censo 2022, em 1º de agosto de 2022. A estimativa de 2021 parte do Censo de 2010 e as de 2024 em diante, do Censo de 2022, por isso há quebra de série. O IBGE não publicou estimativa municipal para 2023."],
+  ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). O nível 1 equivale ao ensino fundamental, anos iniciais, e o nível 2 aos anos finais, segundo o mapeamento padrão adotado aqui."],
+  ["PPC", "Paridade de poder de compra: fator que converte valores em moeda local para uma unidade comum de poder de compra. A OCDE o usa no lugar do câmbio comercial, que não mede o que a renda compra."],
 ];
+
+const CLASSE_REF: Record<string, string> = {
+  nacional_mesmo_universo: "Nacional, mesmo universo",
+  nacional_outro_universo: "Nacional, outro universo",
+  internacional_contexto: "Contexto internacional",
+  incompativel: "Incompatível, rejeitada",
+};
 
 function rotuloCaptura(c: { chave: string }): string {
   const ano = c.chave.match(/(\d{4})$/)?.[1] ?? "";
+  if (c.chave.startsWith("inep_atu_brasil")) return `ATU, Brasil, ${ano}`;
+  if (c.chave.startsWith("inep_rendimento_brasil")) return `rendimento, Brasil, ${ano}`;
+  if (c.chave.startsWith("inep_ideb_brasil")) return `Ideb, Brasil, ${ano}`;
+  if (c.chave.startsWith("inep_investimento_estudante")) return `investimento por estudante, ${c.chave.endsWith("real") ? "valores reais" : "valores nominais"}`;
   if (c.chave.startsWith("inep_ideb_ai")) return `anos iniciais, edição ${ano}`;
   if (c.chave.startsWith("inep_ideb_af")) return `anos finais, edição ${ano}`;
   return ano;
@@ -75,10 +94,10 @@ function ComoLer({ g }: { g: GoldEducacao }) {
   const colunas = [
     {
       rotulo: "Recursos",
-      titulo: "Despesa liquidada na função Educação",
-      quem: "Todo o orçamento do município classificado na função Educação, o que pode incluir repasses a escolas conveniadas e despesas sem matrícula correspondente na rede.",
-      quando: `Exercício financeiro (janeiro a dezembro), ${g.periodos.financeiros[0]} a ${g.periodos.financeiros.at(-1)}.`,
-      fonte: "Tesouro Nacional, Siconfi, DCA.",
+      titulo: "Gasto em Educação, em três escalas",
+      quem: "Total: todo o orçamento do município na função Educação. Por habitante: o total dividido pela população residente. Por matrícula: a aplicação direta na rede própria dividida pelas matrículas das escolas municipais.",
+      quando: `Exercício financeiro (janeiro a dezembro), ${g.periodos.financeiros[0]} a ${g.periodos.financeiros.at(-1)}. A população do mesmo ano não existe em 2023.`,
+      fonte: "Tesouro Nacional (DCA e MSC), IBGE (população) e INEP (matrículas).",
     },
     {
       rotulo: "Atendimento",
@@ -96,7 +115,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
     },
   ];
   return (
-    <Secao id="como-ler" rotulo="Entender · como ler" titulo="Três medidas, três perímetros">
+    <Secao id="como-ler" rotulo="Entender · como ler" titulo="Três famílias de medidas, cada uma com o seu perímetro">
       <div className="grid gap-px border border-linha bg-linha md:grid-cols-3">
         {colunas.map((c) => (
           <div key={c.rotulo} className="bg-superficie px-5 py-5">
@@ -121,18 +140,18 @@ function ComoLer({ g }: { g: GoldEducacao }) {
       </div>
       <div className="mt-6 grid gap-6 text-[0.95rem] leading-relaxed text-obee-tinta md:grid-cols-2">
         <p>
-          As três colunas não descrevem o mesmo conjunto de alunos nem o mesmo período. Por isso o painel mostra despesa e matrículas
-          lado a lado, cada uma com o seu perímetro, e não divide uma pela outra. A razão &quot;despesa por matrícula&quot; foi avaliada e não
-          é publicada nesta etapa; os motivos e a medição que os sustenta estão em{" "}
-          <a href="#nao-publicado" className="text-obee-dark underline underline-offset-2">
-            Métodos e fontes
+          O gasto total mede volume e depende do tamanho da cidade. Por habitante, ele coloca capitais de portes diferentes na mesma escala territorial. Por matrícula, ele aproxima a despesa da rede atendida: do total
+          declarado na DCA sai o que não tem matrícula correspondente (transferências a escolas privadas, inativos, ensino superior), e a ponte mostra cada parcela. Nenhuma das três escalas substitui as outras, e nenhuma
+          é custo integral de um aluno. A despesa de toda a educação tampouco é específica de uma etapa:{" "}
+          <a href="#ponte" className="text-obee-dark underline underline-offset-2">
+            veja a ponte
           </a>
           .
         </p>
         <p>
-          A despesa de um exercício e o Ideb de uma edição não estão ligados por causa e efeito no painel: o resultado educacional depende
-          de muitos fatores, acumulados em anos, e a despesa de um ano financia também o que não aparece nas avaliações. Colocar os números
-          próximos não estabelece relação entre eles.
+          O gasto de um exercício e o Ideb de uma edição não estão ligados por causa e efeito no painel: o resultado educacional depende de muitos fatores, acumulados em anos. Colocar os números próximos não
+          estabelece relação entre eles. Média não é meta, máximo não é ideal, menor gasto não demonstra eficiência e gasto maior não demonstra qualidade; as referências do grupo, nacionais e internacionais servem
+          para situar um número, não para julgá-lo.
         </p>
       </div>
     </Secao>
@@ -144,6 +163,11 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
   const naoPub = g.indicadores.find((i) => i.estado === "NAO_PUBLICAVEL");
   const v04 = g.validacoes.find((v) => v.id === "V04");
   const m02 = g.validacoes.find((v) => v.id === "M02");
+  const v14 = g.validacoes.find((v) => v.id === "V14");
+  const v16 = g.validacoes.find((v) => v.id === "V16");
+  const m03 = g.validacoes.find((v) => v.id === "M03");
+  const m04 = g.validacoes.find((v) => v.id === "M04");
+  const fichaMat = g.indicadores.find((i) => i.id === "edu.despesa.por_matricula_rede_propria");
   const pol = g.politica_conferencia;
   return (
     <Secao id="metodos" rotulo="Auditar · métodos e fontes" titulo="Passaportes, fontes, validações e reprodução">
@@ -217,9 +241,78 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
           </div>
         )}
 
+        {fichaMat && v16 && (
+          <div id="despesa-por-matricula" className="scroll-mt-24">
+            <h3 className="font-serif text-xl text-obee-tinta">Despesa por matrícula: definição, ponte e cobertura</h3>
+            <p className="mt-2 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">
+              <span className="font-semibold">Fórmula.</span> {fichaMat.formula}
+            </p>
+            <ul className="mt-3 max-w-prose2 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-relaxed text-obee-tinta">
+              <li>
+                <span className="font-semibold">Entra no numerador:</span> despesa liquidada de aplicação direta (modalidade 90) na função Educação, nas contas de despesa liquidada da MSC de dezembro (6.2.2.1.3.03, .04 e .07).
+              </li>
+              <li>
+                <span className="font-semibold">Fica fora:</span> transferências a instituições privadas (modalidades 50 e 60, como as creches conveniadas, cujas matrículas também ficam fora do denominador), outras transferências, aposentadorias, pensões e outros
+                benefícios previdenciários (elementos 01, 03 e 05 do grupo 3.1.90), ensino superior (subfunção 364) e intraorçamentárias (modalidade 91, fora do total da DCA).
+              </li>
+              <li>
+                <span className="font-semibold">Não se faz:</span> somar matrículas conveniadas ao denominador, ratear despesa por etapa, ou chamar matrícula de pessoa. O rótulo é por matrícula.
+              </li>
+              <li>
+                <span className="font-semibold">Reconciliação.</span> A soma das linhas da MSC (sem intraorçamentárias) precisa igualar a DCA em até R$ 1,00 ou, como na política de conferência da despesa, em até 0,1% da DCA, com nota. Sem isso, não há valor, e o motivo aparece junto da capital.
+              </li>
+            </ul>
+            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-obee-tinta">{v16.detalhe}</p>
+            {m03 && <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-obee-tinta">{m03.detalhe}</p>}
+            <details className="mt-3">
+              <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">
+                Ver os {v16.casos.filter((c) => c.situacao).length} pares capital × exercício sem despesa por matrícula, com o motivo
+              </summary>
+              <ul className="mt-2 max-w-prose2 space-y-1.5 text-xs leading-snug text-carvao-muted">
+                {v16.casos
+                  .filter((c) => c.situacao)
+                  .map((c) => (
+                    <li key={`${String(c.ente)}-${String(c.ano)}`}>
+                      <span className="font-semibold text-obee-tinta">
+                        {String(c.nome)}, {String(c.ano)}:
+                      </span>{" "}
+                      {String(c.resultado)}
+                      {c.diferenca_pct_dca !== undefined && c.diferenca_pct_dca !== null ? ` (diferença de ${decimal(Number(c.diferenca_pct_dca), 2)}% da DCA)` : ""}.
+                    </li>
+                  ))}
+              </ul>
+            </details>
+            <div className="mt-4 border-l-2 border-obee-tinta pl-4">
+              <p className="font-semibold text-obee-tinta">O que impede o valor nos demais casos, e o dado que resolveria</p>
+              <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
+                A MSC de dezembro de alguns entes não traz a função Educação ou não fecha com a DCA (diferença acima de 0,1%). O que resolveria: a MSC retificada ou a DCA retificada do ente, ou a abertura da DCA por modalidade de aplicação
+                (hoje a DCA só abre por função e subfunção). Nada é estimado no lugar.
+              </p>
+            </div>
+            {m04 && (
+              <div className="mt-6">
+                <p className="font-semibold text-obee-tinta">Fonte examinada e não adotada: indicadores por aluno do SIOPE (FNDE)</p>
+                <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-obee-tinta">{m04.detalhe}</p>
+                <p className="mt-1 text-xs leading-relaxed text-carvao-muted">
+                  O SIOPE é declaratório (a responsabilidade pelas informações é do ente). Respostas preservadas no seed com sha256; evidência detalhada na validação M04.
+                </p>
+              </div>
+            )}
+            {v14 && (
+              <div className="mt-6">
+                <p className="font-semibold text-obee-tinta">População, o denominador da despesa por habitante</p>
+                <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
+                  2021: estimativa de 1º de julho de 2021, calculada a partir do Censo de 2010. 2022: Censo Demográfico (1º de agosto de 2022). 2023: o IBGE não publicou estimativa municipal; a despesa por habitante fica sem valor, sem
+                  interpolação nem reaproveitamento de outro ano. 2024 e 2025: estimativas de 1º de julho calculadas a partir do Censo de 2022. {v14.detalhe}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
         {naoPub && m01 && (
           <div id="nao-publicado" className="scroll-mt-24">
-            <h3 className="font-serif text-xl text-obee-tinta">Avaliado e não publicado: {naoPub.nome.toLowerCase()}</h3>
+            <h3 className="font-serif text-xl text-obee-tinta">Definição avaliada e descartada: despesa total da função ÷ matrículas da rede municipal</h3>
             <ul className="mt-3 max-w-prose2 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-relaxed text-obee-tinta">
               {naoPub.motivo_nao_publicacao?.map((t) => <li key={t}>{t}</li>)}
             </ul>
@@ -261,6 +354,51 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             </p>
           </div>
         )}
+
+        <div id="matriz-referencias" className="scroll-mt-24">
+          <h3 className="font-serif text-xl text-obee-tinta">Matriz de referências: aceitas, de contexto e rejeitadas</h3>
+          <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
+            Cada candidata, com fonte, universo, unidade, período, método, compatibilidade, uso permitido e a decisão fundamentada. Mesmo universo: permite diferença na unidade da escala. Outro universo: aparece ao lado, sem diferença. Contexto
+            internacional: seção própria, sem diferença contra a capital. Incompatível: examinada e rejeitada, com o motivo.
+          </p>
+          <div className="tabela-scroll mt-3 border border-linha" tabIndex={0} role="region" aria-label="Matriz de referências (role na horizontal se necessário)">
+            <table className="w-full min-w-[78rem] border-collapse text-xs leading-snug">
+              <caption className="sr-only">Candidatas a referência para os indicadores do painel, com a classificação e a decisão</caption>
+              <thead>
+                <tr className="text-left">
+                  {["Indicador", "Candidata", "Fonte", "Universo", "Unidade", "Período", "Método", "Compatibilidade", "Classe", "Uso permitido", "Decisão"].map((c) => (
+                    <th key={c} scope="col" className="border-b border-carvao-muted px-2 py-2 font-semibold">
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {g.matriz_referencias.map((m) => (
+                  <tr key={m.id} className="border-b border-linha align-top">
+                    <th scope="row" className="px-2 py-2 text-left font-normal">
+                      {g.indicadores.find((i) => i.id === m.indicador)?.nome_curto ?? m.indicador}
+                    </th>
+                    <td className="px-2 py-2 font-semibold">{m.candidata}</td>
+                    <td className="px-2 py-2">{m.fonte}</td>
+                    <td className="px-2 py-2">{m.universo}</td>
+                    <td className="px-2 py-2">{m.unidade}</td>
+                    <td className="px-2 py-2">{m.periodo}</td>
+                    <td className="px-2 py-2">{m.metodo}</td>
+                    <td className="px-2 py-2">{m.compatibilidade}</td>
+                    <td className="px-2 py-2">{CLASSE_REF[m.tipo]}</td>
+                    <td className="px-2 py-2">{m.uso}</td>
+                    <td className="px-2 py-2">{m.decisao}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+            {g.politica_referencias.media} {g.politica_referencias.razao_agregada} {g.politica_referencias.mediana} Quartis: {g.politica_referencias.quartis} {g.politica_referencias.limiar_quartis_nota}{" "}
+            {g.politica_referencias.empates} {g.politica_referencias.nacional}
+          </p>
+        </div>
 
         <div>
           <h3 className="font-serif text-xl text-obee-tinta">Fontes e capturas</h3>
@@ -336,10 +474,10 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                   <p className="mt-2 text-sm leading-relaxed text-obee-tinta">{v.detalhe}</p>
                   {v.casos.length > 0 && v.id !== "M01" && (
                     <ul className="mt-2 space-y-1 text-xs leading-snug text-carvao-muted">
-                      {v.casos.slice(0, 12).map((c, i) => (
+                      {v.casos.slice(0, 40).map((c, i) => (
                         <li key={i}>
                           {"nome" in c ? `${String(c.nome)}${"ano" in c ? `, ${String(c.ano)}` : ""}: ` : ""}
-                          {"explicacao" in c ? String(c.explicacao) : "situacao" in c ? String(c.situacao) : JSON.stringify(c)}
+                          {"explicacao" in c ? String(c.explicacao) : "resultado" in c ? String(c.resultado) : "situacao" in c ? String(c.situacao) : JSON.stringify(c)}
                         </li>
                       ))}
                     </ul>
@@ -351,7 +489,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
         </div>
 
         <div className="grid gap-10 lg:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <h3 className="font-serif text-xl text-obee-tinta">Exemplos de reprodução</h3>
             <p className="mt-1 text-sm text-carvao-muted">
               Uma trilha completa por indicador publicado, da fonte ao número. Regra de escolha: a primeira capital, em ordem alfabética, com
@@ -376,16 +514,21 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             <h3 className="mt-8 font-serif text-xl text-obee-tinta">Como reproduzir</h3>
             <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-obee-tinta">
               <li>
-                Reconstruir a gold a partir dos recortes versionados, sem rede: <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run</code>.
+                Reconstruir a gold a partir dos recortes versionados, sem rede: <code className="break-all font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run</code>.
               </li>
               <li>
-                Recoletar o Siconfi e o IPCA: <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run --coleta-siconfi</code>.
+                Recoletar o Siconfi e o IPCA: <code className="break-all font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run --coleta-siconfi</code>.
               </li>
               <li>
-                Reextrair os recortes do INEP a partir dos pacotes oficiais baixados: <code className="font-mono text-[0.8rem]">--inep &lt;pasta&gt;</code>.
+                Reextrair os recortes do INEP a partir dos pacotes oficiais baixados: <code className="break-all font-mono text-[0.8rem]">--inep &lt;pasta&gt;</code>; as referências nacionais, de{" "}
+                <code className="break-all font-mono text-[0.8rem]">--inep-nacional &lt;pasta&gt;</code>.
               </li>
               <li>
-                Testes: <code className="font-mono text-[0.8rem]">python3 -m unittest pipeline.tests.test_eficiencia</code>.
+                Recoletar a MSC, a população, a OCDE e o SIOPE examinado: <code className="break-all font-mono text-[0.8rem]">--coleta-msc</code>, <code className="break-all font-mono text-[0.8rem]">--coleta-populacao</code>,{" "}
+                <code className="break-all font-mono text-[0.8rem]">--coleta-ocde</code> e <code className="break-all font-mono text-[0.8rem]">--coleta-siope</code>.
+              </li>
+              <li>
+                Testes: <code className="break-all font-mono text-[0.8rem]">python3 -m unittest pipeline.tests.test_eficiencia pipeline.tests.test_eficiencia_comparacoes</code>.
               </li>
             </ol>
             <p className="mt-2 text-xs text-carvao-muted">
@@ -393,7 +536,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               {g.meta.versao_codigo ? `, código ${g.meta.versao_codigo}` : ""}, gerado em {dataBr(g.meta.gerado_em)}.
             </p>
           </div>
-          <div>
+          <div className="min-w-0">
             <h3 className="font-serif text-xl text-obee-tinta">Glossário</h3>
             <dl className="mt-3 space-y-3 text-sm leading-relaxed">
               {GLOSSARIO.map(([t, d]) => (
@@ -406,7 +549,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <h3 className="font-serif text-xl text-obee-tinta">Limitações gerais</h3>
           <ul className="mt-3 max-w-prose2 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-relaxed text-obee-tinta">
             <li>O universo é o das 26 capitais estaduais. Brasília não entra: {g.universo.excluidos[0]?.motivo}</li>
@@ -458,7 +601,7 @@ export default function PaginaEducacaoCapitais() {
                   ["Períodos", `Despesa: exercícios ${g.periodos.financeiros[0]} a ${ultimoFin}. Censo Escolar: ${g.periodos.censo[0]} a ${g.periodos.censo.at(-1)}. Ideb: edições ${g.periodos.ideb[0]} a ${g.periodos.ideb.at(-1)}.`],
                   [
                     `Cobertura em ${ultimoFin}`,
-                    `Despesa: ${cob(c["edu.despesa.funcao_educacao" as IndicadorId], ultimoFin)}. Matrículas: ${cob(c["edu.matriculas.rede_municipal" as IndicadorId], ultimoFin, "total")}. Ideb anos iniciais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_iniciais")}; anos finais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_finais")}.`,
+                    `Despesa total: ${cob(c["edu.despesa.funcao_educacao" as IndicadorId], ultimoFin)}. Por habitante: ${cob(c["edu.despesa.por_habitante" as IndicadorId], ultimoFin)}. Por matrícula: ${cob(c["edu.despesa.por_matricula_rede_propria" as IndicadorId], ultimoFin)}. Matrículas: ${cob(c["edu.matriculas.rede_municipal" as IndicadorId], ultimoFin, "total")}. Ideb anos iniciais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_iniciais")}; anos finais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_finais")}.`,
                   ],
                   ["Dados", `Coletados até ${dataBr(g.meta.dados_capturados_ate)}. ${inteiro(g.meta.observacoes)} observações, todas com estado e fonte.`],
                 ].map(([t, d]) => (

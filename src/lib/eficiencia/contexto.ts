@@ -9,6 +9,10 @@ import { dataBr } from "./formato";
 
 /** Validações que conferem cada indicador (ids de pipeline/eficiencia/validacoes.py). */
 export const VALIDACOES_DO_INDICADOR: Record<IndicadorId, string[]> = {
+  "ctx.populacao.residente": ["V09", "V14"],
+  "edu.despesa.por_habitante": ["V03", "V04", "V09", "V13", "V14", "V15"],
+  "edu.despesa.por_matricula_rede_propria": ["V04", "V05", "V06", "V09", "V13", "V16", "V17", "M03", "M04"],
+  "edu.despesa.ponte_matricula": ["V16", "V17", "M03"],
   "edu.despesa.funcao_educacao": ["V01", "V03", "V04", "V07", "V08", "V09", "V10"],
   "edu.despesa.subfuncao": ["V03", "V07", "V09"],
   "edu.matriculas.rede_municipal": ["V02", "V05", "V06", "V07", "V08", "V09", "V10"],
@@ -17,10 +21,12 @@ export const VALIDACOES_DO_INDICADOR: Record<IndicadorId, string[]> = {
   "edu.aprovacao.rede_municipal": ["V02", "V09", "V10", "V12"],
   "edu.ideb.rede_municipal": ["V02", "V09", "V10", "V11", "V12"],
   "edu.saeb.rede_municipal": ["V02", "V09", "V10", "V11"],
-  "edu.despesa_por_matricula": ["M01"],
+  "edu.despesa_por_matricula": ["M01", "M04"],
 };
 
 const GRUPO_FONTE: Record<string, string> = {
+  siconfi_msc_funcao12: "siconfi_msc_funcao12",
+  ibge_populacao: "ibge_populacao",
   siconfi_dca_anexo_i_e: "siconfi_dca_anexo_i_e",
   ibge_ipca: "ibge_ipca",
   inep_censo: "inep_censo",
@@ -30,6 +36,8 @@ const GRUPO_FONTE: Record<string, string> = {
 };
 
 const ROTULO_FONTE: Record<string, string> = {
+  siconfi_msc_funcao12: "Siconfi, MSC de dezembro, função 12",
+  ibge_populacao: "IBGE, população residente (SIDRA)",
   siconfi_dca_anexo_i_e: "Siconfi, DCA Anexo I-E",
   ibge_ipca: "IBGE, IPCA",
   inep_censo: "INEP, microdados do Censo Escolar",

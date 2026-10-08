@@ -40,6 +40,16 @@ export function reaisCompleto(v: number): string {
   return `R$ ${D2.format(v)}`;
 }
 
+/** Reais inteiros, para valores por habitante e por matrícula: R$ 1.160; R$ 23.747. */
+export function reaisInteiro(v: number): string {
+  return `R$ ${INT.format(v)}`;
+}
+
+/** Diferença assinada com sinal tipográfico: +R$ 203; −R$ 1.050. */
+export function sinal(v: number, texto: string): string {
+  return `${v >= 0 ? "+" : "−"}${texto}`;
+}
+
 export function percentual(v: number, casas = 1): string {
   return `${decimal(v, casas)}%`;
 }

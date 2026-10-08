@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { GoldEducacao, IndicadorId, StatusDado } from "./tipos";
-import type { DadosPainel, ObsCompacta } from "./consulta";
+import { GRUPOS_REF, type DadosPainel, type DescritorExterno, type ExternaCompacta, type ObsCompacta, type RefCompacta } from "./consulta";
 
 /**
  * Leitura da gold do painel no build (página estática). Arquivo ausente ou
@@ -39,15 +39,18 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
   const posComp = new Map<string, number>();
   const notas: string[] = [];
   const posNota = new Map<string, number>();
-  const idx = <T,>(mapa: Map<T, number>, lista: T[], v: T) => {
-    let i = mapa.get(v);
+  const idx = <T,>(mapa: Map<string | T, number>, lista: T[], v: T, chave?: (x: T) => string) => {
+    const k = chave ? chave(v) : v;
+    let i = mapa.get(k);
     if (i === undefined) {
       i = lista.length;
       lista.push(v);
-      mapa.set(v, i);
+      mapa.set(k, i);
     }
     return i;
   };
+  /** 12 algarismos significativos bastam à exibição e ao CSV do cliente; a gold e os CSV do servidor guardam a precisão original. */
+  const p12 = (v: number | null) => (v === null ? null : Number(v.toPrecision(12)));
   const situacoes: string[] = [];
   const posSit = new Map<string, number>();
   const obs: ObsCompacta[] = g.observacoes.map((o) => [
@@ -56,7 +59,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     o.ano,
     o.etapa ? posEtapa.get(o.etapa)! : -1,
     o.componente ? idx(posComp, componentes, o.componente) : -1,
-    o.valor,
+    p12(o.valor),
     posStatus.get(o.status)!,
     o.nota ? idx(posNota, notas, o.nota) : -1,
     o.participacao ?? null,
@@ -64,8 +67,43 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     o.nota_material ? 1 : 0,
     o.conferencia ? idx(posSit, situacoes, o.conferencia.situacao) : -1,
     o.conferencia?.motivo_inelegibilidade ? idx(posNota, notas, o.conferencia.motivo_inelegibilidade) : -1,
-    o.conferencia?.quebra_serie ? 1 : 0,
+    o.quebra_serie || o.conferencia?.quebra_serie ? 1 : 0,
   ]);
+  // referências estatísticas do grupo: só as que têm alguma capital com valor
+  const refs: RefCompacta[] = [];
+  for (const r of g.referencias) {
+    if (r.capitais_com_valor === 0) continue;
+    // P e N do Ideb só aparecem na tabela auditável, que lê as observações; as referências do grupo cobrem o que o painel compara
+    if (r.componente === "p_rendimento" || r.componente === "n_nota_padronizada") continue;
+    const grupo = GRUPOS_REF.indexOf(r.grupo);
+    refs.push([
+      posInd.get(r.indicador)!,
+      r.componente ? idx(posComp, componentes, r.componente) : -1,
+      r.etapa ? posEtapa.get(r.etapa)! : -1,
+      r.ano, grupo, r.capitais_no_grupo, r.capitais_com_valor, r.n, p12(r.media), p12(r.mediana), p12(r.minimo), p12(r.maximo),
+      r.quartis_exibicao ? p12(r.q1) : null, r.quartis_exibicao ? p12(r.q3) : null,
+      r.quartis_exibicao ? 1 : 0, p12(r.soma_numerador), p12(r.soma_denominador), p12(r.razao_agregada),
+      r.capitais_minimo.map((c) => posCap.get(c)!), r.capitais_maximo.map((c) => posCap.get(c)!),
+    ]);
+  }
+  const descritores: DescritorExterno[] = [];
+  const posDesc = new Map<string, number>();
+  const externas: ExternaCompacta[] = g.referencias_externas.map((r) => [
+    posInd.get(r.indicador)!,
+    r.componente ? idx(posComp, componentes, r.componente) : -1,
+    r.etapa ? posEtapa.get(r.etapa)! : -1,
+    r.ano,
+    r.tipo === "nacional_mesmo_universo" ? 0 : 1,
+    p12(r.valor)!,
+    idx(posDesc, descritores, { rotulo: r.rotulo, unidade: r.unidade, unidade_diferenca: r.unidade_diferenca, escopo: r.escopo }, (x) => JSON.stringify(x)),
+  ]);
+  // tipo e data de referência da população não variam entre capitais no mesmo ano
+  const populacao: DadosPainel["populacao"] = {};
+  for (const o of g.observacoes) {
+    if (o.indicador === "ctx.populacao.residente" && !(String(o.ano) in populacao)) {
+      populacao[String(o.ano)] = { tipo: o.tipo_populacao ?? null, referencia: o.data_referencia ?? null };
+    }
+  }
   const fontes: DadosPainel["fontes"] = {};
   for (const f of g.fontes) {
     const c = f.capturas[f.capturas.length - 1];
@@ -85,6 +123,12 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     obs,
     situacoes,
     rotulosSituacao: g.politica_conferencia.rotulos,
+    refs,
+    externas,
+    descritores,
+    internacionais: g.referencias_internacionais.map((x) => ({ conjunto: x.conjunto, nome: x.nome, nivel: x.nivel, etapa: x.etapa, instituicoes: x.instituicoes, ano: x.ano, unidade: x.unidade, brasil: x.brasil, media_ocde_publicada: x.media_ocde_publicada, paises: x.paises, paises_com_dado: x.paises_com_dado })),
+    populacao,
+    limiarQuartis: g.politica_referencias.limiar_quartis,
     fontes,
     meta: {
       gerado_em: g.meta.gerado_em,

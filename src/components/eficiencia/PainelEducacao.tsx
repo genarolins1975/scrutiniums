@@ -6,7 +6,9 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CABECALHO_CSV_COMPARACAO,
   CABECALHO_CSV_TABELA,
+  CABECALHO_CSV_TABELA_COMPARATIVA,
   CABECALHO_TABELA,
+  COLUNAS,
   Indice,
   MEDIDA,
   MEDIDAS,
@@ -16,18 +18,26 @@ import {
   composicaoDespesa,
   csv,
   distribuicaoMatriculas,
+  diferenca,
   edicaoIdeb,
+  etapaDaMedida,
   etapaValida,
   formata,
   formataEixo,
+  internacionaisDa,
   linhasCsvComparacao,
   linhasCsvTabela,
+  linhasCsvTabelaComparativa,
   linhasTabela,
   nomeEtapa,
+  ponteMatricula,
+  referenciasExternas,
   rotuloComparacao,
   serie,
+  tabelaComparativa,
   unidade,
   variacao,
+  type ColunaId,
   type DadosPainel,
   type Disciplina,
   type Grupo,
@@ -36,25 +46,54 @@ import {
   type Ordem,
   type Ponto,
 } from "@/lib/eficiencia/consulta";
-import { decimal, inteiro, percentual, reaisCompleto } from "@/lib/eficiencia/formato";
+import { decimal, inteiro, percentual, reaisCompleto, reaisExtenso } from "@/lib/eficiencia/formato";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
 import type { ContextoFicha } from "./FichaConteudo";
 import { Passaporte } from "./Passaporte";
 import { BarrasComposicao, GraficoPontosPares, MiniSerie, type Anotacao } from "./graficos";
+import { ContextoInternacionalBloco, RefLinha, RefNacionalLinha, ReferenciasNacionais, ResumoGrupo, SemReferencia } from "./ReferenciasPainel";
+import { TabelaComparativa, type VisaoColunas } from "./TabelaComparativa";
 
 const ETAPAS: EtapaId[] = ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"];
 
 const PANDEMIA_IDEB: Anotacao = { ano: 2021, texto: "edição afetada pela pandemia de covid-19 (nota informativa do INEP sobre o Ideb 2021)." };
 const PANDEMIA_APROVACAO: Anotacao = { ano: 2021, texto: "ano letivo afetado pela pandemia de covid-19, com regras excepcionais de avaliação em muitas redes." };
 
+const SEM_NACIONAL: Record<MedidaId, string> = {
+  despesa: "Despesa total é volume: depende do tamanho da cidade e não tem referência nacional comparável. Use o gasto por habitante ou por matrícula.",
+  despesa_hab: "O IBGE, o INEP, o Tesouro Nacional e o FNDE não publicam despesa municipal em Educação por habitante para o conjunto das redes municipais. Calculá-la aqui seria indicador próprio, não referência oficial.",
+  despesa_mat: "Há o investimento público direto por estudante do INEP (todas as redes públicas e esferas), publicado só até 2021; ele aparece para 2021, com o universo declarado.",
+  matriculas: "Matrícula absoluta depende do tamanho da rede; não há referência nacional comparável.",
+  conveniadas: "Matrícula em escolas conveniadas depende do tamanho da rede e da política de parceria de cada município; não há referência nacional comparável.",
+  atu: "Referência nacional da rede municipal do INEP existe para creche, pré-escola e anos iniciais e finais.",
+  aprovacao: "Referência nacional da rede municipal do INEP existe para anos iniciais e anos finais.",
+  ideb: "Referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
+  saeb: "Referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
+};
+const SEM_INTERNACIONAL: Record<MedidaId, string> = {
+  despesa: "Despesa total de um município não tem equivalente internacional comparável.",
+  despesa_hab: "A OCDE e a UNESCO publicam despesa como proporção do PIB e por estudante; despesa pública por habitante de um município não tem equivalente internacional comparável.",
+  despesa_mat: "Há contexto da OCDE (despesa por estudante, ISCED 1 e 2, em dólares de paridade de poder de compra), mostrado quando a medida é a despesa por matrícula.",
+  matriculas: "Matrículas de uma rede municipal não têm equivalente internacional comparável; contagens nacionais são de outra escala, e taxas de matrícula por idade medem a cobertura da população, outro conceito.",
+  conveniadas: "Sem equivalente internacional comparável.",
+  atu: "Há contexto da OCDE (tamanho médio das turmas, ISCED 1 e 2, instituições públicas) para anos iniciais e anos finais. Creche e pré-escola não têm tamanho de turma na OCDE; alunos por turma não é alunos por professor.",
+  aprovacao: "A OCDE e a UNESCO publicam repetência, outro conceito: o Brasil não tem valor na OCDE e o último valor da UNESCO é de 2010. Sem equivalente comparável da taxa de aprovação.",
+  ideb: "Ideb, Saeb e PISA não compartilham população, escala nem construto; o painel não converte notas entre escalas.",
+  saeb: "Ideb, Saeb e PISA não compartilham população, escala nem construto; o painel não converte notas entre escalas.",
+};
+
 function esquema(ids: string[]) {
   return {
     cap: campo(tiposUrl.opcao(ids), ids[0]),
     ano: campo(tiposUrl.inteiro({ min: 2021, max: 2025 }), 2025),
     etapa: campo(tiposUrl.opcao(ETAPAS), "anos_iniciais" as EtapaId),
-    med: campo(tiposUrl.opcao(MEDIDAS), "despesa" as MedidaId),
+    med: campo(tiposUrl.opcao(MEDIDAS), "despesa_hab" as MedidaId),
     grupo: campo(tiposUrl.opcao(["todas", "regiao"] as const), "todas" as Grupo),
     ord: campo(tiposUrl.opcao(["alfabetica", "valor"] as const), "alfabetica" as Ordem),
+    eixo: campo(tiposUrl.opcao(["linear", "log"] as const), "linear" as "linear" | "log"),
+    ot: campo(tiposUrl.opcao(["alfabetica", ...COLUNAS.map((c) => c.id)] as const), "alfabetica" as ColunaId | "alfabetica"),
+    od: campo(tiposUrl.opcao(["asc", "desc"] as const), "asc" as "asc" | "desc"),
+    vc: campo(tiposUrl.opcao(["todas", "recursos", "atendimento", "resultado"] as const), "todas" as VisaoColunas),
     moeda: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal" as Moeda),
     disc: campo(tiposUrl.opcao(["matematica", "portugues"] as const), "matematica" as Disciplina),
   };
@@ -91,13 +130,24 @@ function Bloco({ id, rotulo, titulo, children, acao }: { id: string; rotulo: str
 }
 
 function SemValor({ ponto, contexto }: { ponto: Ponto; contexto?: string }) {
+  const texto = contexto ?? ponto.nota ?? "Sem valor para este recorte.";
+  // frase inicial sempre visível; o restante do motivo abre por clique ou teclado
+  const corte = texto.length > 170 ? texto.search(/\.\s/) : -1;
+  const inicio = corte > 0 ? texto.slice(0, corte + 1) : texto;
+  const resto = corte > 0 ? texto.slice(corte + 1).trim() : "";
   return (
     <div className="mt-2 border border-dashed border-mineral bg-papel px-3 py-2 text-sm text-obee-tinta" role="note">
       <p className="rotulo flex items-center gap-1.5 !text-[0.66rem] text-carvao-muted">
         <span aria-hidden="true" className="inline-block h-2 w-2 border border-carvao-muted" />
-        {ROTULO_STATUS[ponto.status]}
+        {ponto.status === "NAO_COMPARAVEL" && ponto.valor === null ? "Sem valor publicável" : ROTULO_STATUS[ponto.status]}
       </p>
-      <p className="mt-1 leading-snug">{contexto ?? ponto.nota ?? "Sem valor para este recorte."}</p>
+      <p className="mt-1 leading-snug">{inicio}</p>
+      {resto && (
+        <details className="mt-1">
+          <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver o motivo completo</summary>
+          <p className="mt-1 leading-snug text-carvao-muted">{resto}</p>
+        </details>
+      )}
     </div>
   );
 }
@@ -150,10 +200,11 @@ function Selecao({
   rotulo: string;
   ajuda: string;
   valor: string;
-  opcoes: { v: string; t: string; desab?: boolean }[];
+  opcoes: { v: string; t: string; desab?: boolean; grupo?: string }[];
   aoMudar: (v: string) => void;
   desabilitado?: boolean;
 }) {
+  const grupos = Array.from(new Set(opcoes.map((o) => o.grupo ?? "")));
   return (
     <div className="min-w-0">
       <label htmlFor={id} className="rotulo block text-carvao-muted">
@@ -167,11 +218,22 @@ function Selecao({
         onChange={(e) => aoMudar(e.target.value)}
         className="mt-1.5 block min-h-[44px] w-full border border-linha bg-superficie px-3 text-[0.95rem] text-obee-tinta hover:border-obee disabled:text-mineral"
       >
-        {opcoes.map((o) => (
-          <option key={o.v} value={o.v} disabled={o.desab}>
-            {o.t}
-          </option>
-        ))}
+        {grupos.map((g) => {
+          const itens = opcoes
+            .filter((o) => (o.grupo ?? "") === g)
+            .map((o) => (
+              <option key={o.v} value={o.v} disabled={o.desab}>
+                {o.t}
+              </option>
+            ));
+          return g ? (
+            <optgroup key={g} label={g}>
+              {itens}
+            </optgroup>
+          ) : (
+            itens
+          );
+        })}
       </select>
       <p id={`${id}-ajuda`} className="mt-1 text-xs leading-snug text-carvao-muted">
         {ajuda}
@@ -204,6 +266,38 @@ function Alternancia<T extends string>({
           >
             <input type="radio" className="sr-only" name={rotulo} value={o.v} checked={valor === o.v} onChange={() => aoMudar(o.v)} />
             {o.t}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+const ESCALAS: { m: MedidaId; titulo: string; texto: string }[] = [
+  { m: "despesa", titulo: "Gasto total", texto: "Volume do orçamento do município na função Educação. Depende do tamanho da cidade." },
+  { m: "despesa_hab", titulo: "Por habitante", texto: "Divide pelos moradores do ano. Põe cidades de portes diferentes na mesma escala territorial; não é gasto por aluno." },
+  { m: "despesa_mat", titulo: "Por matrícula da rede municipal", texto: "Aplicação direta do município ÷ matrículas das escolas municipais, sem conveniadas, inativos nem ensino superior." },
+];
+
+function EscalaDespesa({ valor, aoMudar }: { valor: MedidaId; aoMudar: (m: MedidaId) => void }) {
+  return (
+    <fieldset className="min-w-0">
+      <legend className="rotulo text-carvao-muted">Gasto em Educação, em três escalas</legend>
+      <p className="mt-1 text-xs leading-snug text-carvao-muted">Cada escala responde a uma pergunta diferente. Nenhuma substitui as outras.</p>
+      <div className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-3">
+        {ESCALAS.map((e) => (
+          <label
+            key={e.m}
+            className={`relative flex min-h-[44px] cursor-pointer flex-col px-4 py-3 focus-within:outline focus-within:outline-2 focus-within:outline-obee ${
+              valor === e.m ? "bg-obee-fundo" : "bg-superficie hover:bg-papel"
+            }`}
+          >
+            <input type="radio" className="sr-only" name="escala-despesa" value={e.m} checked={valor === e.m} onChange={() => aoMudar(e.m)} />
+            <span className={`text-sm ${valor === e.m ? "font-semibold text-obee-tinta" : "text-obee-tinta"}`}>
+              <span aria-hidden="true">{valor === e.m ? "● " : "○ "}</span>
+              {e.titulo}
+            </span>
+            <span className="mt-0.5 text-xs leading-snug text-carvao-muted">{e.texto}</span>
           </label>
         ))}
       </div>
@@ -265,7 +359,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   const nomeCap = `${cap.nome} (${cap.uf})`;
 
   const restaurar = () => {
-    definir({ cap: ids[0], ano: 2025, etapa: "anos_iniciais", med: "despesa", grupo: "todas", ord: "alfabetica", moeda: "nominal", disc: "matematica" });
+    definir({ cap: ids[0], ano: 2025, etapa: "anos_iniciais", med: "despesa_hab", grupo: "todas", ord: "alfabetica", moeda: "nominal", disc: "matematica", eixo: "linear", ot: "alfabetica", od: "asc", vc: "todas" });
     setAviso("Recorte inicial restaurado.");
   };
   const copiar = async () => {
@@ -278,19 +372,39 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   };
 
   /* ---------- C: números de orientação ---------- */
-  const kDesp = componente("despesa", s.moeda, s.disc);
-  const desp = ix.ponto("edu.despesa.funcao_educacao", cap.cod, s.ano, null, kDesp);
-  const despAnt = ix.ponto("edu.despesa.funcao_educacao", cap.cod, s.ano - 1, null, kDesp);
+  const grp = s.grupo === "regiao" ? cap.regiao : "todas";
+  const rotuloGrupo = s.grupo === "regiao" ? `das capitais da região ${dados.regioes[cap.regiao]}` : "das capitais estaduais";
+  const compDe = (m: MedidaId) => componente(m, s.moeda, s.disc);
+  const refDe = (m: MedidaId, a = s.ano, et: EtapaId = s.etapa) => ix.referencia(MEDIDA[m].indicador, compDe(m), etapaDaMedida(m, et), a, grp);
+  const ptDe = (m: MedidaId, a = s.ano, et: EtapaId = s.etapa) => ix.ponto(MEDIDA[m].indicador, cap.cod, a, etapaDaMedida(m, et), compDe(m));
+  const desp = ptDe("despesa");
+  const despAnt = ptDe("despesa", s.ano - 1);
+  const hab = ptDe("despesa_hab");
+  const habAnt = ptDe("despesa_hab", s.ano - 1);
+  const dmat = ptDe("despesa_mat");
+  const dmatAnt = ptDe("despesa_mat", s.ano - 1);
+  const pop = ix.ponto("ctx.populacao.residente", cap.cod, s.ano, null, null);
+  const popMeta = dados.populacao[String(s.ano)];
   const mat = ix.ponto("edu.matriculas.rede_municipal", cap.cod, s.ano, s.etapa, null);
   const matAnt = ix.ponto("edu.matriculas.rede_municipal", cap.cod, s.ano - 1, s.etapa, null);
+  const matTotal = ix.ponto("edu.matriculas.rede_municipal", cap.cod, s.ano, "total", null);
   const conv = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, s.ano, s.etapa, null);
+  const convTotalCard = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, s.ano, "total", null);
+  const ponte = ponteMatricula(ix, cap.cod, s.ano);
   const etapaFund = s.etapa === "anos_iniciais" || s.etapa === "anos_finais";
-  const ideb = etapaFund ? ix.ponto("edu.ideb.rede_municipal", cap.cod, edicao, s.etapa, "ideb") : null;
-  const idebAnt = etapaFund ? ix.ponto("edu.ideb.rede_municipal", cap.cod, edicao - 2, s.etapa, "ideb") : null;
-  const aprov = etapaFund ? ix.ponto("edu.aprovacao.rede_municipal", cap.cod, s.ano, s.etapa, null) : null;
+  const etapaAtu = etapaValida("atu", s.etapa);
+  const atu = etapaAtu ? ptDe("atu") : null;
+  const ideb = etapaFund ? ptDe("ideb", edicao) : null;
+  const idebAnt = etapaFund ? ptDe("ideb", edicao - 2) : null;
+  const saeb = etapaFund ? ptDe("saeb", edicao) : null;
+  const aprov = etapaFund ? ptDe("aprovacao") : null;
+  const ext = (m: MedidaId, a: number) => referenciasExternas(dados, m, a, s.etapa, compDe(m));
 
-  /** Variação só entre valores elegíveis; quando um deles não é, diz por que não foi calculada. */
-  const variacaoPct = (a: Ponto, b: Ponto, anoB: number) => {
+  /** Variação só entre valores elegíveis e de mesma base; quando um deles não é, diz por que não foi calculada. */
+  const variacaoPct = (a: Ponto, b: Ponto, anoB: number, motivoQuebra = "há quebra de série entre os dois anos") => {
+    if (a.valor !== null && b.valor !== null && a.quebraSerie !== b.quebraSerie) {
+      return `Variação em relação a ${anoB} não calculada: ${motivoQuebra}.`;
+    }
     const v = variacao(a, b);
     if (!v) return null;
     if ("bloqueio" in v) return `Variação em relação a ${anoB} não calculada: um dos valores está fora das comparações.`;
@@ -304,7 +418,9 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
 
   /* ---------- E: séries ---------- */
   const series: { m: MedidaId; titulo: string; zero: boolean; anot?: Anotacao[] }[] = [
-    { m: "despesa", titulo: "Despesa liquidada na função Educação", zero: true },
+    { m: "despesa", titulo: "Despesa liquidada na função Educação, total", zero: true },
+    { m: "despesa_hab", titulo: "Despesa por habitante", zero: true },
+    { m: "despesa_mat", titulo: "Despesa por matrícula da rede municipal", zero: true },
     { m: "matriculas", titulo: "Matrículas na rede municipal", zero: true },
     { m: "conveniadas", titulo: "Matrículas em escolas privadas conveniadas só com o município", zero: true },
     { m: "atu", titulo: "Média de alunos por turma", zero: true },
@@ -339,6 +455,26 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
       csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, s.med, s.ano, s.etapa, s.moeda, s.disc)),
     );
 
+  const extComp = comp ? referenciasExternas(dados, s.med, med.anos === "ideb" ? s.ano : s.ano, s.etapa, compDe(s.med)) : [];
+  const extMesmo = extComp.filter((e) => e.tipo === "nacional_mesmo_universo");
+  const intl = internacionaisDa(dados, s.med, s.etapa);
+  const selPonto = comp ? comp.incluidas.find((i) => i.cap.id === cap.id) : undefined;
+  const LEITURA: Partial<Record<MedidaId, string>> = {
+    despesa: "Escala de volume: capitais maiores ficam mais à direita. Para comparar cidades de portes diferentes, use o gasto por habitante ou por matrícula.",
+    despesa_hab: "Divide o gasto pelos moradores do ano. Não é gasto por aluno nem tributo por pessoa, e a participação da rede municipal na oferta de ensino varia entre capitais: população semelhante não implica responsabilidades educacionais semelhantes.",
+    despesa_mat: "Aplicação direta do município na função Educação ÷ matrículas das escolas municipais. Não é custo integral do aluno nem custo marginal; despesa maior ou menor por matrícula não demonstra mais ou menos eficiência nem qualidade.",
+  };
+  const textoRazao = (() => {
+    const r = comp?.ref;
+    if (!r || r.razaoAgregada === null || (s.med !== "despesa_hab" && s.med !== "despesa_mat")) return undefined;
+    const den = s.med === "despesa_hab" ? "dos habitantes" : "das matrículas";
+    return (
+      <>
+        {formata(s.med, r.razaoAgregada)}: soma da despesa de {r.n} capitais ({s.moeda === "real" ? "R$ de 2025" : "R$ correntes"}, {reaisExtenso(r.somaNumerador ?? 0)}) ÷ soma {den} das mesmas {r.n} ({inteiro(r.somaDenominador ?? 0)}). Pesa cada capital pelo seu denominador; difere da média simples, que dá o mesmo peso a cada capital.
+      </>
+    );
+  })();
+
   /* ---------- G: decomposição ---------- */
   const compDesp = composicaoDespesa(ix, cap.cod, s.ano);
   const somaSub = compDesp.linhas.reduce((a, l) => a + l.valor, 0);
@@ -365,7 +501,10 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
             </button>
           </div>
         </div>
-        <div className="mt-4 grid gap-x-5 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4">
+          <EscalaDespesa valor={s.med} aoMudar={(m) => definir({ med: m })} />
+        </div>
+        <div className="mt-5 grid gap-x-5 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
           <Selecao
             id="f-cap"
             rotulo="Capital"
@@ -392,10 +531,10 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
           />
           <Selecao
             id="f-med"
-            rotulo="Indicador da comparação"
-            ajuda="Medida mostrada na comparação entre capitais (bloco Comparação)."
+            rotulo="Medida em foco"
+            ajuda="Medida da comparação, da tabela e das referências. Os três botões acima escolhem o gasto; este campo escolhe qualquer medida."
             valor={s.med}
-            opcoes={MEDIDAS.map((m) => ({ v: m, t: MEDIDA[m].rotulo }))}
+            opcoes={MEDIDAS.map((m) => ({ v: m, t: MEDIDA[m].rotulo, grupo: MEDIDA[m].familia === "recursos" ? "Recursos" : MEDIDA[m].familia === "atendimento" ? "Atendimento" : "Resultados" }))}
             aoMudar={(v) => definir({ med: v as MedidaId })}
           />
         </div>
@@ -434,23 +573,62 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
       </section>
 
       {/* C: números de orientação */}
-      <section aria-labelledby="orientacao-titulo">
+      <section aria-labelledby="orientacao-titulo" id="orientacao">
         <h2 id="orientacao-titulo" className="rotulo text-mineral">
           {nomeCap} · números de orientação
         </h2>
-        <p className="mt-1 text-sm text-carvao-muted">
-          Cada número tem o seu período. Quando os períodos diferem, isso aparece abaixo do valor.
+        <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
+          Cada número tem o seu período, o seu universo e uma referência do grupo ao lado. Quando os períodos diferem, isso aparece abaixo do valor. Grupo de referência:{" "}
+          {rotuloGrupo.replace("das ", "as ")}, escolhido nos controles.
         </p>
-        <div className="mt-4 grid gap-px border border-linha bg-linha sm:grid-cols-2 xl:grid-cols-4">
-          <Cartao id="despesa" rotulo="Despesa liquidada na função Educação" periodo={`Exercício ${s.ano} · ${unidade("despesa", s.moeda)} · ${univ("edu.despesa.funcao_educacao")}`} acao={pass("edu.despesa.funcao_educacao", "Passaporte", true)}>
+        <h3 className="rotulo mt-5 text-obee-dark">Recursos: gasto em Educação, em três escalas</h3>
+        <div className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-2 xl:grid-cols-4">
+          <Cartao id="despesa" rotulo="Gasto total na função Educação" periodo={`Exercício ${s.ano} · ${unidade("despesa", s.moeda)} · ${univ("edu.despesa.funcao_educacao")}`} acao={pass("edu.despesa.funcao_educacao", "Passaporte", true)}>
             {desp.valor !== null ? (
               <>
                 <Valor>{formata("despesa", desp.valor)}</Valor>
                 {variacaoPct(desp, despAnt, s.ano - 1) && <Detalhe>{variacaoPct(desp, despAnt, s.ano - 1)}</Detalhe>}
+                <Detalhe>Volume: depende do tamanho da cidade.</Detalhe>
                 <Ressalva ponto={desp} />
+                <RefLinha r={refDe("despesa")} m="despesa" valor={desp.valor} elegivel={desp.elegivel} rotuloGrupo={rotuloGrupo} />
               </>
             ) : (
               <SemValor ponto={desp} />
+            )}
+          </Cartao>
+          <Cartao id="habitante" rotulo="Gasto por habitante" periodo={`Exercício ${s.ano} · ${unidade("despesa_hab", s.moeda)} · ${univ("edu.despesa.por_habitante")}`} acao={pass("edu.despesa.por_habitante", "Passaporte", true)}>
+            {hab.valor !== null ? (
+              <>
+                <Valor>{formata("despesa_hab", hab.valor)}</Valor>
+                {variacaoPct(hab, habAnt, s.ano - 1, "a população de 2021 é estimativa anterior ao Censo 2022 e tem outra base") && <Detalhe>{variacaoPct(hab, habAnt, s.ano - 1, "a população de 2021 é estimativa anterior ao Censo 2022 e tem outra base")}</Detalhe>}
+                <Detalhe>
+                  {desp.valor !== null ? `${formata("despesa", desp.valor)} ÷ ${pop.valor !== null ? inteiro(pop.valor) : "?"} habitantes` : ""}
+                  {popMeta?.tipo === "censo" ? " (Censo 2022, 1º de agosto de 2022)" : popMeta?.referencia ? ` (população estimada, ${popMeta.referencia})` : ""}.
+                </Detalhe>
+                <Detalhe>Não é gasto por aluno, tributo por pessoa nem benefício individual.</Detalhe>
+                <Ressalva ponto={hab} />
+                <RefLinha r={refDe("despesa_hab")} m="despesa_hab" valor={hab.valor} elegivel={hab.elegivel} rotuloGrupo={rotuloGrupo} />
+                <p className="mt-1.5 text-xs leading-snug text-carvao-muted">Referência nacional: não há indicador oficial de despesa municipal em Educação por habitante.</p>
+              </>
+            ) : (
+              <SemValor ponto={hab} contexto={hab.status === "NAO_DIVULGADO" ? hab.nota ?? undefined : undefined} />
+            )}
+          </Cartao>
+          <Cartao id="matricula-despesa" rotulo="Gasto por matrícula da rede municipal" periodo={`Exercício ${s.ano} e Censo Escolar ${s.ano} · ${unidade("despesa_mat", s.moeda)} · ${univ("edu.despesa.por_matricula_rede_propria")}`} acao={pass("edu.despesa.por_matricula_rede_propria", "Passaporte", true)}>
+            {dmat.valor !== null ? (
+              <>
+                <Valor>{formata("despesa_mat", dmat.valor)}</Valor>
+                {variacaoPct(dmat, dmatAnt, s.ano - 1) && <Detalhe>{variacaoPct(dmat, dmatAnt, s.ano - 1)}</Detalhe>}
+                <Detalhe>
+                  Aplicação direta na rede própria ({ponte.linhas.find((l) => l.dentro) ? reaisExtenso(ponte.linhas.find((l) => l.dentro)!.valor) : ""}) ÷ {matTotal.valor !== null ? inteiro(matTotal.valor) : "?"} matrículas das escolas municipais.
+                  {convTotalCard.valor ? ` Fora desta razão: ${inteiro(convTotalCard.valor)} matrículas em escolas privadas conveniadas com o município e as transferências a elas.` : ""} Por matrícula, não por estudante único.
+                </Detalhe>
+                <Ressalva ponto={dmat} />
+                <RefLinha r={refDe("despesa_mat")} m="despesa_mat" valor={dmat.valor} elegivel={dmat.elegivel} rotuloGrupo={rotuloGrupo} />
+                <RefNacionalLinha externas={ext("despesa_mat", s.ano)} valor={dmat.valor} elegivel={dmat.elegivel} m="despesa_mat" nomeCapital={cap.nome} />
+              </>
+            ) : (
+              <SemValor ponto={dmat} />
             )}
           </Cartao>
           <Cartao id="matriculas" rotulo={`Matrículas na rede municipal · ${etapaNome}`} periodo={`Censo Escolar ${s.ano} · matrículas · ${univ("edu.matriculas.rede_municipal")}`} acao={pass("edu.matriculas.rede_municipal", "Passaporte", true)}>
@@ -464,26 +642,28 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   </Detalhe>
                 )}
                 <Ressalva ponto={mat} />
+                <RefLinha r={refDe("matriculas")} m="matriculas" valor={mat.valor} elegivel={mat.elegivel} rotuloGrupo={rotuloGrupo} />
+                <p className="mt-1.5 text-xs leading-snug text-carvao-muted">Matrícula absoluta depende do tamanho da rede; não há referência nacional comparável.</p>
               </>
             ) : (
               <SemValor ponto={mat} />
             )}
           </Cartao>
-          <Cartao
-            id="ideb"
-            rotulo={`Ideb da rede municipal${etapaFund ? ` · ${etapaNome}` : ""}`}
-            periodo={etapaFund ? `Edição ${edicao}${exata ? "" : ` (o Ideb é bienal; não há edição ${s.ano})`} · índice de 0 a 10 · ${univ("edu.ideb.rede_municipal")}` : "Edições bienais · índice de 0 a 10"}
-            acao={pass("edu.ideb.rede_municipal", "Passaporte", true)}
-          >
-            {!etapaFund ? (
-              <ForaDoEscopo texto={`O Ideb é calculado para os anos iniciais e os anos finais do ensino fundamental, não para ${etapaNome.toLowerCase()}.`} />
-            ) : ideb && ideb.valor !== null ? (
+        </div>
+        <h3 className="rotulo mt-8 text-obee-dark">Atendimento e resultados · {etapaNome}</h3>
+        <div className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-2 xl:grid-cols-4">
+          <Cartao id="atu" rotulo={`Alunos por turma · ${etapaNome}`} periodo={`Censo Escolar ${s.ano} · alunos por turma · ${univ("edu.atu.rede_municipal")}`} acao={pass("edu.atu.rede_municipal", "Passaporte", true)}>
+            {!etapaAtu ? (
+              <ForaDoEscopo texto={`A média de alunos por turma deste painel cobre creche, pré-escola e ensino fundamental, não ${etapaNome.toLowerCase()}.`} />
+            ) : atu && atu.valor !== null ? (
               <>
-                <Valor>{decimal(ideb.valor, 1)}</Valor>
-                {variacaoAbs(ideb, idebAnt, edicao - 2, 1) && <Detalhe>{variacaoAbs(ideb, idebAnt, edicao - 2, 1)}</Detalhe>}
+                <Valor>{decimal(atu.valor, 1)}</Valor>
+                <Ressalva ponto={atu} />
+                <RefLinha r={refDe("atu")} m="atu" valor={atu.valor} elegivel={atu.elegivel} rotuloGrupo={rotuloGrupo} />
+                <RefNacionalLinha externas={ext("atu", s.ano)} valor={atu.valor} elegivel={atu.elegivel} m="atu" nomeCapital={cap.nome} />
               </>
             ) : (
-              ideb && <SemValor ponto={ideb} />
+              atu && <SemValor ponto={atu} />
             )}
           </Cartao>
           <Cartao
@@ -498,12 +678,56 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
               <>
                 <Valor>{percentual(aprov.valor, 1)}</Valor>
                 <Ressalva ponto={aprov} />
+                <RefLinha r={refDe("aprovacao")} m="aprovacao" valor={aprov.valor} elegivel={aprov.elegivel} rotuloGrupo={rotuloGrupo} />
+                <RefNacionalLinha externas={ext("aprovacao", s.ano)} valor={aprov.valor} elegivel={aprov.elegivel} m="aprovacao" nomeCapital={cap.nome} />
               </>
             ) : (
               aprov && <SemValor ponto={aprov} />
             )}
           </Cartao>
+          <Cartao
+            id="ideb"
+            rotulo={`Ideb da rede municipal${etapaFund ? ` · ${etapaNome}` : ""}`}
+            periodo={etapaFund ? `Edição ${edicao}${exata ? "" : ` (o Ideb é bienal; não há edição ${s.ano})`} · índice de 0 a 10 · ${univ("edu.ideb.rede_municipal")}` : "Edições bienais · índice de 0 a 10"}
+            acao={pass("edu.ideb.rede_municipal", "Passaporte", true)}
+          >
+            {!etapaFund ? (
+              <ForaDoEscopo texto={`O Ideb é calculado para os anos iniciais e os anos finais do ensino fundamental, não para ${etapaNome.toLowerCase()}.`} />
+            ) : ideb && ideb.valor !== null ? (
+              <>
+                <Valor>{decimal(ideb.valor, 1)}</Valor>
+                {variacaoAbs(ideb, idebAnt, edicao - 2, 1) && <Detalhe>{variacaoAbs(ideb, idebAnt, edicao - 2, 1)}</Detalhe>}
+                <RefLinha r={refDe("ideb", edicao)} m="ideb" valor={ideb.valor} elegivel={ideb.elegivel} rotuloGrupo={rotuloGrupo} />
+                <RefNacionalLinha externas={ext("ideb", edicao)} valor={ideb.valor} elegivel={ideb.elegivel} m="ideb" nomeCapital={cap.nome} />
+              </>
+            ) : (
+              ideb && <SemValor ponto={ideb} />
+            )}
+          </Cartao>
+          <Cartao
+            id="saeb"
+            rotulo={`Saeb, ${s.disc === "matematica" ? "Matemática" : "Língua Portuguesa"}${etapaFund ? ` · ${etapaNome}` : ""}`}
+            periodo={etapaFund ? `Edição ${edicao}${exata ? "" : ` (bienal)`} · pontos na escala Saeb · ${univ("edu.saeb.rede_municipal")}` : "Edições bienais · pontos na escala Saeb"}
+            acao={pass("edu.saeb.rede_municipal", "Passaporte", true)}
+          >
+            {!etapaFund ? (
+              <ForaDoEscopo texto={`A proficiência no Saeb é divulgada aqui para os anos iniciais e os anos finais do ensino fundamental, não para ${etapaNome.toLowerCase()}.`} />
+            ) : saeb && saeb.valor !== null ? (
+              <>
+                <Valor>{decimal(saeb.valor, 2)}</Valor>
+                <Detalhe>Escalas do Saeb não se somam entre disciplinas nem entre anos escolares.</Detalhe>
+                <RefLinha r={refDe("saeb", edicao)} m="saeb" valor={saeb.valor} elegivel={saeb.elegivel} rotuloGrupo={rotuloGrupo} />
+                <RefNacionalLinha externas={ext("saeb", edicao)} valor={saeb.valor} elegivel={saeb.elegivel} m="saeb" nomeCapital={cap.nome} />
+              </>
+            ) : (
+              saeb && <SemValor ponto={saeb} />
+            )}
+          </Cartao>
         </div>
+        <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+          Despesa total, por habitante e por matrícula não se substituem: a primeira mede volume, a segunda contextualiza o território e a terceira a rede atendida. Os resultados educacionais ao lado são os da
+          etapa escolhida; a despesa de toda a educação não é específica dessa etapa e não deve ser lida como o gasto que gerou o resultado.
+        </p>
       </section>
 
       {/* E: série histórica */}
@@ -534,6 +758,11 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                       formataEixo={(v) => formataEixo(m, v)}
                       zero={zero}
                       anotacoes={anot}
+                      referencia={pts.map((p) => {
+                        const r = refDe(m, p.ano);
+                        return { ano: p.ano, valor: r?.mediana ?? null, n: r?.n ?? 0 };
+                      })}
+                      rotuloReferencia={s.grupo === "regiao" ? `Mediana das capitais da região ${dados.regioes[cap.regiao]}` : "Mediana das capitais"}
                     />
                   ) : (
                     <ForaDoEscopo
@@ -617,6 +846,22 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                     informativa.
                   </p>
                 )}
+                {(s.med === "despesa" || s.med === "matriculas" || s.med === "conveniadas") && (
+                  <div className="mb-3">
+                    <Alternancia
+                      rotulo="Escala do eixo"
+                      valor={s.eixo}
+                      opcoes={[
+                        { v: "linear", t: "Linear (padrão)" },
+                        { v: "log", t: "Logarítmica" },
+                      ]}
+                      aoMudar={(v) => definir({ eixo: v })}
+                    />
+                    <p className="mt-1 text-xs text-carvao-muted">
+                      Em volume, uma capital muito maior estica o eixo e comprime as demais. Nenhuma capital é omitida nem o eixo é cortado; a escala logarítmica separa as menores, e a diferença real em reais só se lê na linear.
+                    </p>
+                  </div>
+                )}
                 <GraficoPontosPares
                   titulo={`${med.rotulo}, ${s.ano}`}
                   linhas={comp.incluidas.map((i) => ({
@@ -625,10 +870,16 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                     valor: i.valor,
                     selecionada: i.cap.id === cap.id,
                   }))}
-                  mediana={comp.mediana}
+                  referencias={{
+                    mediana: comp.ref?.mediana ?? null,
+                    media: comp.ref?.media ?? null,
+                    faixa: comp.ref && comp.ref.quartisExibicao && comp.ref.q1 !== null && comp.ref.q3 !== null ? { q1: comp.ref.q1, q3: comp.ref.q3 } : null,
+                    externas: extMesmo.map((e) => ({ rotulo: e.rotulo, valor: e.valor })),
+                  }}
                   formata={fmt}
                   formataEixo={fmtCurto}
-                  zero={s.med === "despesa" || s.med === "matriculas" || s.med === "conveniadas"}
+                  zero={s.med === "despesa" || s.med === "matriculas" || s.med === "conveniadas" || s.med === "despesa_hab" || s.med === "despesa_mat"}
+                  escala={s.eixo}
                 />
                 <p className="mt-2 flex flex-wrap items-center gap-x-3 text-xs text-carvao-muted">
                   <span>Toque ou passe o ponteiro numa linha para ver o valor exato.</span>
@@ -645,7 +896,38 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   >
                     Ver todos os valores na tabela
                   </button>
+                  <a href="#tabela-comparativa" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">
+                    Ir à tabela comparativa completa
+                  </a>
                 </p>
+                {LEITURA[s.med] && <p className="mt-3 max-w-prose2 border-l-2 border-obee pl-3 text-sm leading-relaxed text-obee-tinta">{LEITURA[s.med]}</p>}
+                {comp.ref && (
+                  <div className="mt-4">
+                    <p className="rotulo text-mineral">Resumo do grupo ({comp.ref.n} {comp.ref.n === 1 ? "capital" : "capitais"} na comparação)</p>
+                    <div className="mt-2">
+                      <ResumoGrupo r={comp.ref} m={s.med} rotuloGrupo={rotuloGrupo} textoRazao={textoRazao} />
+                    </div>
+                    <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+                      A média simples dá o mesmo peso a cada capital; a mediana é o valor do meio. A média e a mediana do grupo de capitais não são metas, padrões nem estatísticas nacionais. Menor gasto não demonstra eficiência, e gasto maior não demonstra qualidade.
+                    </p>
+                  </div>
+                )}
+                {selPonto && comp.ref && (
+                  <p className="mt-3 text-sm leading-relaxed text-obee-tinta">
+                    <span className="font-semibold">{nomeCap}:</span> {fmt(selPonto.valor)}.{" "}
+                    {diferenca(s.med, selPonto.valor, comp.ref.mediana)?.texto
+                      ? `Diferença: ${diferenca(s.med, selPonto.valor, comp.ref.mediana)?.texto}.`
+                      : ""}
+                  </p>
+                )}
+                {extComp.length > 0 && (
+                  <div className="mt-4">
+                    <p className="rotulo text-mineral">Referência nacional oficial (escopo declarado)</p>
+                    <div className="mt-2">
+                      <ReferenciasNacionais externas={extComp} valor={selPonto?.valor ?? null} m={s.med} nomeCapital={nomeCap} />
+                    </div>
+                  </div>
+                )}
                 {comp.incluidas.every((i) => i.cap.id !== cap.id) && (
                   <p className="mt-2 text-sm text-obee-tinta">{nomeCap} não está entre as capitais incluídas neste recorte; o motivo está na lista abaixo.</p>
                 )}
@@ -669,24 +951,23 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                       ))}
                     </dl>
                     <p className="mt-3">
-                      A comparação é descritiva: não ajusta por população, renda, tamanho ou atribuições da rede. A mediana é o valor do meio
-                      entre as {comp.incluidas.length} capitais na comparação, sem ponderação; não é estatística nacional, meta nem valor de
-                      referência.
+                      A comparação é descritiva: não ajusta por renda, composição da rede ou atribuições de cada município. As referências são do grupo
+                      de {comp.incluidas.length} capitais na comparação, sem ponderação; não são estatística nacional, meta nem valor de referência.
                     </p>
                     {comp.incluidas.some((i) => i.ponto.nota) && (
                       <div className="mt-3">
                         <p className="rotulo text-mineral">* Incluídas com nota</p>
                         <ul className="mt-1 space-y-1.5">
-                          {comp.incluidas
-                            .filter((i) => i.ponto.nota)
-                            .map((i) => (
-                              <li key={i.cap.id} className="leading-snug">
-                                <span className="font-semibold">
-                                  {i.cap.nome} ({i.cap.uf})
-                                </span>
-                                : {i.ponto.nota}
-                              </li>
-                            ))}
+                          {Array.from(
+                            comp.incluidas
+                              .filter((i) => i.ponto.nota)
+                              .reduce((m, i) => m.set(i.ponto.nota as string, [...(m.get(i.ponto.nota as string) ?? []), `${i.cap.nome} (${i.cap.uf})`]), new Map<string, string[]>())
+                              .entries(),
+                          ).map(([nota, caps]) => (
+                            <li key={nota} className="leading-snug">
+                              <span className="font-semibold">{caps.length > 6 ? `${caps.length} das capitais na comparação` : caps.join(", ")}</span>: {nota}
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     )}
@@ -723,6 +1004,104 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
               </>
             )
           )}
+        </div>
+      </Bloco>
+
+      {/* tabela comparativa completa */}
+      <Bloco id="tabela-comparativa" rotulo="Explorar · capitais lado a lado" titulo="Tabela comparativa: gasto, população, matrículas e resultados">
+        <TabelaComparativa
+          ix={ix}
+          dados={dados}
+          ano={s.ano}
+          etapa={s.etapa}
+          moeda={s.moeda}
+          disc={s.disc}
+          grupo={s.grupo}
+          cap={cap}
+          medida={s.med}
+          ordem={s.ot}
+          decrescente={s.od === "desc"}
+          visao={s.vc}
+          aoOrdenar={(c) => definir(s.ot === c ? { od: s.od === "asc" ? "desc" : "asc" } : { ot: c, od: "asc" })}
+          aoVisao={(v) => definir({ vc: v })}
+          aoSelecionar={(id) => {
+            definir({ cap: id });
+            setAviso(`Capital selecionada: ${dados.capitais.find((c) => c.id === id)?.nome}.`);
+            document.getElementById("orientacao")?.scrollIntoView({ block: "start" });
+          }}
+          aoBaixar={() => {
+            const t = tabelaComparativa(ix, s.ano, s.etapa, s.moeda, s.disc, s.grupo, cap, s.med);
+            baixar(
+              `obee_tabela_comparativa_${s.ano}_${s.etapa}${s.grupo === "regiao" ? `_regiao_${cap.regiao}` : ""}.csv`,
+              csv(CABECALHO_CSV_TABELA_COMPARATIVA, linhasCsvTabelaComparativa(dados, t, s.ano, s.etapa, s.moeda, s.grupo, cap, s.med, ix, s.disc)),
+            );
+          }}
+        />
+        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
+          <span className="font-semibold">Por que não há um gráfico de gasto contra resultado.</span> A despesa por matrícula cobre toda a rede municipal, de creche a EJA; o Ideb e o Saeb cobrem só os anos iniciais ou
+          finais do ensino fundamental, das escolas com resultado divulgado, em edições bienais. Universos e períodos diferentes não permitem ler um contra o outro sem sugerir uma relação que a fonte não sustenta. Por isso
+          o painel os põe lado a lado, cada um com o seu universo e o seu ano, e não desenha quadrantes, linha de tendência nem nota.
+        </p>
+      </Bloco>
+
+      {/* referências */}
+      <Bloco id="referencias" rotulo="Contextualizar · referências" titulo={`Referências para ${med.rotulo.toLowerCase()}`}>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="min-w-0 space-y-4">
+            <h3 className="font-semibold text-obee-tinta">Do próprio município e do grupo</h3>
+            <p className="text-sm leading-relaxed text-obee-tinta">
+              O histórico de {nomeCap} está nas séries acima, com a mediana do grupo em cada ano em linha tracejada. A média simples, a mediana, os extremos e, em grupos de 8 ou mais capitais, a faixa dos 50% centrais estão
+              no resumo do grupo, sob o gráfico da comparação, e no CSV de referências.
+            </p>
+            {comp?.ref ? (
+              <ResumoGrupo r={comp.ref} m={s.med} rotuloGrupo={rotuloGrupo} textoRazao={textoRazao} />
+            ) : (
+              <SemReferencia medida={s.med} motivo="Escolha uma etapa e um ano em que a medida exista para ver o resumo do grupo." />
+            )}
+            <a href="/eficiencia/series/referencias_educacao_capitais.csv" className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-2">
+              Baixar as referências de todos os indicadores, anos e grupos (CSV)
+            </a>
+          </div>
+          <div className="min-w-0 space-y-4">
+            <h3 className="font-semibold text-obee-tinta">Referência nacional oficial</h3>
+            {extComp.length ? (
+              <ReferenciasNacionais externas={extComp} valor={selPonto?.valor ?? null} m={s.med} nomeCapital={nomeCap} />
+            ) : (
+              <SemReferencia medida={s.med} motivo={SEM_NACIONAL[s.med]} />
+            )}
+          </div>
+        </div>
+        <div className="mt-8">
+          <h3 className="font-semibold text-obee-tinta">Contexto internacional (outro universo, sem comparação direta)</h3>
+          {intl.length ? (
+            <div className="mt-3">
+              <ContextoInternacionalBloco grupos={intl} anoPainel={s.ano} />
+            </div>
+          ) : (
+            <div className="mt-3">
+              <SemReferencia medida={s.med} motivo={SEM_INTERNACIONAL[s.med]} />
+            </div>
+          )}
+        </div>
+        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+          <div>
+            <h3 className="font-semibold text-obee-tinta">Meta ou parâmetro oficial</h3>
+            <p className="mt-2 text-sm leading-relaxed text-obee-tinta">
+              Nenhuma meta ou parâmetro oficial aplicável a esta medida foi identificado. As metas do Ideb ficam fora do painel (a exibição induziria leitura de cumprimento), e os parâmetros de financiamento do Fundeb não são
+              despesa executada: não substituem o gasto por matrícula.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-obee-tinta">Como ler uma referência</h3>
+            <p className="mt-2 text-sm leading-relaxed text-obee-tinta">
+              Média não é meta. Máximo não é ideal. Menor gasto não demonstra eficiência, e gasto maior não demonstra qualidade. Um indicador isolado tampouco demonstra causalidade. Todas as candidatas a referência
+              examinadas, aceitas, contextuais e rejeitadas, com o motivo, estão na{" "}
+              <a href="#matriz-referencias" className="text-obee-dark underline underline-offset-2">
+                matriz de referências
+              </a>
+              .
+            </p>
+          </div>
         </div>
       </Bloco>
 
@@ -808,6 +1187,53 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
             )}
             <div className="mt-1">{pass("edu.matriculas.rede_municipal", "Passaporte", true)}</div>
           </div>
+        </div>
+        <div className="mt-12 border-t border-linha pt-8" id="ponte">
+          <h3 className="font-semibold text-obee-tinta">Da despesa total à despesa por matrícula: o que entra e o que fica fora</h3>
+          <p className="mt-0.5 text-xs text-carvao-muted">R$ correntes · exercício {s.ano} · Matriz de Saldos Contábeis de dezembro, função 12, e DCA · {nomeCap}</p>
+          {!ponte.linhas.length ? (
+            <SemValor ponto={dmat} contexto="A Matriz de Saldos Contábeis de dezembro não está disponível para esta capital e este exercício: a ponte não existe." />
+          ) : (
+            <>
+              <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
+                O total declarado na DCA é separado em parcelas mutuamente exclusivas, linha a linha da MSC. Só a aplicação direta na rede própria entra no numerador da despesa por matrícula; as demais parcelas ficam fora porque não têm matrícula correspondente no
+                denominador. Nenhuma despesa é rateada por etapa e nenhuma matrícula conveniada é somada ao denominador.
+              </p>
+              <p className="mt-4 text-sm text-obee-tinta">
+                <span className="font-semibold">Total declarado na DCA:</span> {reaisExtenso(ponte.total ?? 0)} (100%). Parcelas, em % do total:
+              </p>
+              <div className="mt-2 max-w-prose2">
+                <BarrasComposicao
+                  linhas={ponte.linhas
+                    .filter((l) => l.componente !== "dca_total")
+                    .map((l) => ({
+                      chave: l.componente,
+                      rotulo: `${l.dentro ? "Dentro do numerador: " : "Fora do numerador: "}${l.rotulo}`,
+                      pct: Math.max(0, l.participacao ?? 0),
+                      detalhe: `${reaisExtenso(l.valor)} (${percentual(l.participacao ?? 0, 1)})`,
+                    }))}
+                />
+              </div>
+              <p className="mt-3 text-sm text-obee-tinta">
+                {ponte.reconcilia ? (
+                  <>
+                    <span aria-hidden="true">✓ </span>A soma das parcelas, com a diferença entre a DCA e a MSC (quando existe), é igual ao total da função na DCA ({reaisCompleto(ponte.total ?? 0)}).
+                  </>
+                ) : (
+                  <>A MSC não reconcilia com a DCA neste exercício: as parcelas aparecem para transparência, mas o numerador por matrícula não é publicado.</>
+                )}
+              </p>
+              <details className="mt-2 text-sm">
+                <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
+                <TabelaSimples
+                  legenda={`Ponte da despesa por matrícula, ${nomeCap}, ${s.ano}`}
+                  cabecalho={["Parcela", "R$", "% do total da DCA"]}
+                  linhas={ponte.linhas.map((l) => [l.rotulo, reaisCompleto(l.valor), l.participacao === null ? "" : percentual(l.participacao, 2)])}
+                />
+              </details>
+              <div className="mt-2 flex flex-wrap gap-x-6">{pass("edu.despesa.ponte_matricula", "Passaporte da ponte", true)}</div>
+            </>
+          )}
         </div>
       </Bloco>
 

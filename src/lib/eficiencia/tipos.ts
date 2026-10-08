@@ -18,8 +18,12 @@ export type StatusDado =
 export type EstadoPublicacao = "PUBLICAVEL" | "PUBLICAVEL_COM_RESSALVAS" | "NAO_PUBLICAVEL";
 
 export type IndicadorId =
+  | "ctx.populacao.residente"
   | "edu.despesa.funcao_educacao"
   | "edu.despesa.subfuncao"
+  | "edu.despesa.por_habitante"
+  | "edu.despesa.por_matricula_rede_propria"
+  | "edu.despesa.ponte_matricula"
   | "edu.matriculas.rede_municipal"
   | "edu.matriculas.conveniadas_municipais"
   | "edu.atu.rede_municipal"
@@ -42,7 +46,7 @@ export type FichaIndicador = {
   id: IndicadorId;
   nome: string;
   nome_curto: string;
-  familia: "recursos" | "atendimento" | "resultado";
+  familia: "recursos" | "atendimento" | "resultado" | "contexto";
   pergunta: string;
   o_que_mede: string;
   o_que_nao_mede: string[];
@@ -106,6 +110,85 @@ export type Observacao = {
   escolas_sem_contagem?: number;
   fator_ipca?: number;
   conferencia?: Conferencia;
+  quebra_serie?: boolean;
+  tipo_populacao?: string | null;
+  data_referencia?: string | null;
+  publicacao_original?: number | null;
+  calculo?: { numerador: number; denominador: number; numerador_ref: string; denominador_ref: string; numerador_componente?: string; dca_total?: number };
+};
+
+/** Estatísticas do grupo de capitais (pipeline/eficiencia/referencias.py): uma única regra para cartões, gráficos, tabela e downloads. */
+export type ReferenciaGrupo = {
+  indicador: IndicadorId;
+  componente: string | null;
+  etapa: EtapaId | null;
+  ano: number;
+  grupo: "todas" | "N" | "NE" | "SE" | "S" | "CO";
+  capitais_no_grupo: number;
+  capitais_com_valor: number;
+  n: number;
+  media: number | null;
+  mediana: number | null;
+  minimo: number | null;
+  maximo: number | null;
+  q1: number | null;
+  q3: number | null;
+  capitais_minimo: number[];
+  capitais_maximo: number[];
+  quartis_exibicao: boolean;
+  soma_numerador: number | null;
+  soma_denominador: number | null;
+  razao_agregada: number | null;
+  pares: number[];
+};
+
+export type TipoReferencia = "nacional_mesmo_universo" | "nacional_outro_universo" | "internacional_contexto" | "incompativel";
+
+export type ReferenciaExterna = {
+  id: string;
+  indicador: IndicadorId;
+  componente: string | null;
+  etapa: EtapaId | null;
+  ano: number;
+  tipo: "nacional_mesmo_universo" | "nacional_outro_universo";
+  rotulo: string;
+  valor: number;
+  unidade: string;
+  unidade_diferenca: string | null;
+  escopo: string;
+  fonte: string;
+  registro: string;
+};
+
+export type InternacionalGrupo = {
+  conjunto: "ocde_tamanho_turma" | "ocde_despesa_por_estudante";
+  nome: string;
+  nivel: string;
+  etapa: EtapaId | null;
+  instituicoes: "publicas" | "todas";
+  ano: number;
+  unidade: string;
+  brasil: number | null;
+  media_ocde_publicada: number | null;
+  paises: { codigo: string; nome: string; valor: number }[];
+  paises_com_dado: number;
+  agregados_na_fonte: string[];
+  fonte: string;
+};
+
+export type LinhaMatriz = {
+  id: string;
+  indicador: IndicadorId;
+  candidata: string;
+  fonte: string;
+  universo: string;
+  unidade: string;
+  periodo: string;
+  metodo: string;
+  compatibilidade: string;
+  tipo: TipoReferencia;
+  uso: string;
+  decisao: string;
 };
 
 export type Capital = {
@@ -193,6 +276,11 @@ export type GoldEducacao = {
   indicadores: FichaIndicador[];
   cobertura: Partial<Record<IndicadorId, LinhaCobertura[]>>;
   validacoes: Validacao[];
+  referencias: ReferenciaGrupo[];
+  politica_referencias: { versao: string; media: string; razao_agregada: string; mediana: string; quartis: string; limiar_quartis: number; limiar_quartis_nota: string; empates: string; elegibilidade: string; precisao: string; nacional: string };
+  referencias_externas: ReferenciaExterna[];
+  referencias_internacionais: InternacionalGrupo[];
+  matriz_referencias: LinhaMatriz[];
   trilhas: Trilha[];
   fontes: Fonte[];
   status: Record<StatusDado, string>;
