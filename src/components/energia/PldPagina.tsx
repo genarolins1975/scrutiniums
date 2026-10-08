@@ -189,17 +189,13 @@ export function PldControles({ controles }: { controles: Controle[] }) {
 
 /** Abertura de cada página de painel: rótulo do módulo, pergunta como título e síntese curta. */
 export function PldCabecalho({ titulo, children, referencia, siglas }: { titulo: string; children?: ReactNode; referencia?: ReactNode; siglas?: readonly string[] }) {
-  const abertura = (
-    <>
-      {children && <div className="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>}
-      {referencia && <p className="cab-ref text-xs text-mineral">{referencia}</p>}
-    </>
-  );
+  const abertura = children && <div className="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>;
   return (
     <header className="cab-modulo">
       <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
       <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3rem)] leading-[1.1] text-carvao">{titulo}</h1>
-      {children || referencia ? <SobreEstaPagina>{abertura}</SobreEstaPagina> : abertura}
+      {referencia && <p className="cab-ref text-xs text-mineral">{referencia}</p>}
+      {abertura && <SobreEstaPagina>{abertura}</SobreEstaPagina>}
       <LegendaDeSiglas siglas={siglas} />
     </header>
   );

@@ -9,7 +9,7 @@ import { PldCabecalho } from "@/components/energia/PldPagina";
 /**
  * Mudanças estruturais depois da r8, sobre o que os nove revisores da r8 mais repetiram: a resposta curta ficou curta e continuou abaixo
  * da dobra (topo mediano a 1.071 px em 390 px), e as abas de seção em uma linha que rola foram lidas como cortadas (sete de nove).
- * Aqui: abertura, fontes e datas do módulo recolhidas em Entender, e abas que quebram linha no celular.
+ * Aqui: abertura do módulo recolhida em Entender (fontes e datas ficam à vista), e abas que quebram linha no celular.
  */
 const ler = (p: string) => readFileSync(join(process.cwd(), p), "utf-8");
 const css = ler("src/app/globals.css");
@@ -19,16 +19,19 @@ describe("abertura do módulo recolhida em Entender", () => {
     createElement(CabecalhoModulo, { rotulo: "Carga", titulo: "Quanto o sistema está consumindo?", referencia: "ONS, até 28/09/2026", siglas: ["ONS"] }, "A carga é a energia atendida no sistema interligado."),
   );
 
-  it("rótulo e pergunta ficam à vista; abertura e fontes vão para um bloco recolhido, que continua no HTML", () => {
+  it("rótulo, pergunta e fontes com datas ficam à vista; só a abertura vai para um bloco recolhido, que continua no HTML", () => {
     expect(h).toContain("<h1");
     const bloco = h.match(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/);
     expect(bloco, "bloco recolhido").not.toBeNull();
     expect(bloco![0]).not.toContain(" open");
-    expect(bloco![1]).toContain("Sobre esta página: abertura, fontes e datas");
+    expect(bloco![1]).toContain("Ler a abertura da página");
     expect(bloco![1]).toContain('class="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg"');
     expect(bloco![1]).toContain("A carga é a energia atendida no sistema interligado.");
-    expect(bloco![1]).toContain("Fontes e datas de referência: ");
-    expect(bloco![1]).toContain("ONS, até 28/09/2026");
+    // as fontes e as datas de referência não ficam atrás do toque (a J3 da r9 não achou até quando vão os dados)
+    expect(bloco![1]).not.toContain("Fontes e datas de referência");
+    const fora = h.replace(bloco![0], "");
+    expect(fora).toContain("Fontes e datas de referência: ");
+    expect(fora).toContain("ONS, até 28/09/2026");
   });
 
   it("a legenda de siglas fica fora do bloco recolhido, porque conta o texto à vista", () => {
@@ -43,16 +46,17 @@ describe("abertura do módulo recolhida em Entender", () => {
     expect(t).toContain("Abertura.");
   });
 
-  it("sem abertura e sem fontes não há bloco recolhido", () => {
+  it("sem abertura não há bloco recolhido", () => {
     const t = renderToStaticMarkup(createElement(CabecalhoModulo, { rotulo: "X", titulo: "Pergunta?" }));
     expect(t).not.toContain("<details");
   });
 
   it("o cabeçalho do PLD, que tem marcação própria, recolhe do mesmo modo", () => {
     const t = renderToStaticMarkup(createElement(PldCabecalho, { titulo: "Limites?", referencia: "CCEE até 30/09/2026" }, "Abertura do PLD."));
-    expect(t).toMatch(/<details[^>]*data-sobre-pagina="true"/);
-    expect(t).toContain("Abertura do PLD.");
-    expect(t).toContain("CCEE até 30/09/2026");
+    const bloco = t.match(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/);
+    expect(bloco![1]).toContain("Abertura do PLD.");
+    expect(bloco![1]).not.toContain("CCEE até 30/09/2026");
+    expect(t.replace(bloco![0], "")).toContain("CCEE até 30/09/2026");
   });
 
   it("as páginas sem seletor de profundidade pedem recolher falso", () => {

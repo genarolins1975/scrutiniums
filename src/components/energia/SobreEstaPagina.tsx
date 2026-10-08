@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
 /**
- * Abertura, fontes e datas do cabeçalho de um módulo, recolhidas em Entender e abertas em Analisar e Auditar.
+ * Abertura do cabeçalho de um módulo, recolhida em Entender e aberta em Analisar e Auditar. As fontes e datas de referência ficam sempre à vista, fora deste bloco.
  *
  * Na r8, a resposta curta de cada página ficou curta (mediana de 36 palavras) e continuou abaixo da dobra: a 390 px o topo
  * mediano dela estava a 1.071 px, porque o parágrafo de abertura do módulo (50 palavras de mediana, até 108), a linha de
@@ -32,7 +32,7 @@ export function SobreEstaPagina({ children }: { children: ReactNode }) {
   return (
     <details ref={ref} className="cab-sobre mt-3 max-w-prose2" data-sobre-pagina="true">
       <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">
-        Sobre esta página: abertura, fontes e datas
+        Ler a abertura da página
       </summary>
       {children}
     </details>
