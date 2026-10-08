@@ -57,11 +57,11 @@ function Lista({ itens }: { itens: string[] }) {
 export function FichaConteudo({ f, ctx }: { f: FichaIndicador; ctx: ContextoFicha }) {
   const publicado = f.estado !== "NAO_PUBLICAVEL";
   return (
-    <dl>
+    <dl className="[overflow-wrap:anywhere]">
       <Campo n={1} rotulo="Nome e identificador">
         <strong className="font-semibold">{f.nome}</strong>
         <br />
-        <code className="font-mono text-[0.8rem] text-carvao-muted">{f.id}</code>
+        <code className="break-all font-mono text-[0.8rem] text-carvao-muted">{f.id}</code>
         <span className="ml-2 text-carvao-muted">· {ESTADO_PUBLICACAO[f.estado]}</span>
       </Campo>
       <Campo n={2} rotulo="O que mede">

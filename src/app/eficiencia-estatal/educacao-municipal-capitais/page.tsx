@@ -51,7 +51,7 @@ const GLOSSARIO: [string, string][] = [
   ["Média simples e razão agregada", "A média simples dá o mesmo peso a cada capital. A razão agregada soma os numeradores e os denominadores dos mesmos pares e divide: pesa cada capital pelo seu denominador. Respondem a perguntas diferentes e não se chamam apenas de média. Um indicador nacional oficial tem cálculo e universo definidos pela fonte e não é a média das capitais."],
   ["Faixa dos 50% centrais", "Intervalo entre o primeiro e o terceiro quartis: metade dos valores do grupo está dentro dele. Só é exibida com 8 ou mais valores (política de apresentação, não garantia estatística)."],
   ["População estimada e Censo", "As estimativas do IBGE têm data de referência em 1º de julho; o Censo 2022, em 31 de julho de 2022. A estimativa de 2021 parte do Censo de 2010 e as de 2024 em diante, do Censo de 2022, por isso há quebra de série. Para 2023 não há estimativa municipal: o IBGE adotou, por lei, a população do Censo 2022 (relação do DOU de 31/08/2023). O painel a usa em 2023 identificada como censitária, igual à de 2022, e não como população de julho de 2023."],
-  ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). No Brasil, segundo o mapeamento da UNESCO (UIS, planilha “ISCED 2011 Mapping Brazil”, ano letivo 2012/13), o ensino fundamental do 1º ao 5º ano é o nível 1 e do 6º ao 9º ano é o nível 2; creche e pré-escola são o nível 0. O mapeamento é da UNESCO, não do INEP."],
+  ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). No Brasil, segundo o mapeamento da UNESCO (UIS, planilha “ISCED 2011 Mapping Brazil”, ano letivo de 2012 a 2013), o ensino fundamental do 1º ao 5º ano é o nível 1 e do 6º ao 9º ano é o nível 2; creche e pré-escola são o nível 0. O mapeamento é da UNESCO, não do INEP."],
   ["PPC", "Paridade de poder de compra: fator que converte valores em moeda local para uma unidade comum de poder de compra. A OCDE o usa no lugar do câmbio comercial, que não mede o que a renda compra."],
 ];
 
@@ -467,7 +467,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             {g.validacoes.map((v) => (
               <li key={v.id} className="py-3">
                 <details>
-                  <summary className="cursor-pointer text-sm text-obee-tinta">
+                  <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-obee-tinta">
                     <span className="font-mono text-[0.8rem]">{v.id}</span> <span className="font-semibold">{v.titulo}</span>
                     <span className="ml-2 text-carvao-muted">· {RESULTADO[v.resultado]}</span>
                   </summary>
@@ -498,7 +498,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             <div className="mt-3 space-y-4">
               {g.trilhas.map((t) => (
                 <details key={t.indicador} className="text-sm">
-                  <summary className="cursor-pointer py-3 text-obee-tinta">
+                  <summary className="flex min-h-[44px] cursor-pointer items-center py-3 text-obee-tinta">
                     {g.indicadores.find((i) => i.id === t.indicador)?.nome}: {t.nome}, {t.ano}
                   </summary>
                   <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-obee-tinta">

@@ -14,9 +14,9 @@ Fonte única das fichas: `pipeline/eficiencia/catalogo_indicadores.json`. A tabe
 | `edu.aprovacao.rede_municipal` | Taxa de aprovação (anos iniciais e finais) | Resultado | Observado | Publicável | Anos letivos 2021 a 2025 | INEP, Taxas de Rendimento |
 | `edu.ideb.rede_municipal` | Ideb, com P e N (anos iniciais e finais) | Resultado | Observado | Publicável | Edições 2005 a 2025 | INEP, Ideb 2025 |
 | `edu.saeb.rede_municipal` | Proficiência no Saeb, Matemática e Língua Portuguesa (5º e 9º anos) | Resultado | Observado | Publicável | Edições 2005 a 2025 | INEP, Ideb 2025 |
-| `ctx.populacao.residente` | População residente do município | Contexto | Observado | Publicável com ressalvas | 2021, 2022, 2024 e 2025 (2023 sem publicação) | IBGE, SIDRA 6579 e 4714 |
-| `edu.despesa.por_habitante` | Despesa liquidada em Educação por habitante | Recursos | Calculado | Publicável com ressalvas | Exercícios 2021 a 2025 (2023 sem valor) | DCA e IBGE |
-| `edu.despesa.por_matricula_rede_propria` | Despesa de aplicação direta por matrícula da rede municipal | Recursos | Calculado | Publicável com ressalvas | Exercícios 2021 a 2025, 102 de 130 pares | MSC, DCA e Censo Escolar |
+| `ctx.populacao.residente` | População residente do município | Contexto | Observado | Publicável com ressalvas | 2021 a 2025 (2023 = Censo 2022, relação do DOU) | IBGE, SIDRA 6579 e 4714 |
+| `edu.despesa.por_habitante` | Despesa liquidada em Educação por habitante | Recursos | Calculado | Publicável com ressalvas | Exercícios 2021 a 2025 (26 de 26 em 2023, com quebra de série) | DCA e IBGE |
+| `edu.despesa.aplicacao_direta_por_matricula` | Razão da despesa de aplicação direta por matrícula da rede municipal | Recursos | Calculado | Publicável com ressalvas | Exercícios 2021 a 2025, 123 de 130 pares | MSC, DCA e Censo Escolar |
 | `edu.despesa.ponte_matricula` | Ponte da DCA ao numerador por matrícula | Recursos | Calculado | Publicável com ressalvas | Exercícios 2021 a 2025 | MSC e DCA |
 | `edu.despesa_por_matricula` | Função inteira ÷ matrículas totais (definição descartada) | Recursos | Calculado | Não publicável | Não se aplica | Avaliação: DCA e Censo |
 
@@ -55,6 +55,6 @@ Elegíveis: 26 capitais em todos os recortes.
 ## Lacunas conhecidas
 
 * SIOPE (FNDE) examinado e não adotado para valores (medição M04): fórmula e universo não reproduzíveis com fontes abertas.
-* Despesa por matrícula sem valor em 28 de 130 pares (MSC não fecha com a DCA) e despesa por habitante sem valor em 2023 (população). Ver COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md.
+* Razão por matrícula sem valor em 7 de 130 pares (MSC sem a função, sem função em nenhuma linha ou abaixo da DCA; um par em aberto). Ver RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md.
 * Despesa por natureza (pessoal, custeio, investimento) da função Educação não integrada: exige RREO Anexo 8 ou Siope.
 * Censo 2025: situação de funcionamento da escola não consta da `Tabela_Matricula` (não usada nas somas).

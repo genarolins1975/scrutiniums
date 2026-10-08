@@ -31,12 +31,12 @@ ANOS_ATU = list(range(2021, 2026))
 
 AGREGADOS_OCDE = {"OECD", "EU25", "EU27", "G20", "OECDE", "EU22"}
 
-# nível ISCED ↔ etapa brasileira. Fonte: UNESCO UIS, planilha "ISCED 2011 Mapping Brazil", aba "Scope UOE" (ano letivo 2012/13):
+# nível ISCED ↔ etapa brasileira. Fonte: UNESCO UIS, planilha "ISCED 2011 Mapping Brazil", aba "Scope UOE" (ano letivo de 2012 a 2013):
 # ensino fundamental do 1º ao 5º ano = programa de nível 1; do 6º ao 9º ano = programa de nível 2 (código 2.44); creche e
 # pré-escola = nível 0 (0.10 e 0.20). Confirmado na Tabela X1.3 do Education at a Glance 2025 (linha do Brasil).
 # O INEP não publica mapeamento da educação básica para a ISCED.
 ISCED_ETAPA = {"ISCED11_1": "anos_iniciais", "ISCED11_2": "anos_finais"}
-FONTE_ISCED = ("UNESCO UIS, planilha \"ISCED 2011 Mapping Brazil\" (aba Scope UOE, ano letivo 2012/13): fundamental do 1º ao 5º ano é nível 1 e do 6º ao 9º ano, "
+FONTE_ISCED = ("UNESCO UIS, planilha \"ISCED 2011 Mapping Brazil\" (aba Scope UOE, ano letivo de 2012 a 2013): fundamental do 1º ao 5º ano é nível 1 e do 6º ao 9º ano, "
                "nível 2; creche e pré-escola, nível 0. Mapeamento da UNESCO, não do INEP.")
 
 # Membros da OCDE (38), lista oficial; sem mudança desde a adesão da Costa Rica em 25/05/2021 (Colômbia 28/04/2020, Lituânia 05/07/2018).
@@ -173,7 +173,7 @@ MATRIZ = [
      "unidade": "alunos por turma", "periodo": "2023 e 2024 (ano de referência da OCDE)", "metodo": "Alunos matriculados ÷ número de turmas; média da OCDE simples, sem ponderação, dos países com dado",
      "compatibilidade": "Definição próxima da ATU do INEP (alunos matriculados ÷ turmas), mas universo diferente (instituições públicas do país inteiro, não a rede municipal) e sem creche e pré-escola. A OCDE conta só programas regulares e exclui educação especial; a ATU do INEP não foi comparada nesse ponto. Dado de 2024 preliminar",
      "tipo": "internacional_contexto", "uso": "Seção própria de contexto internacional, sem diferença percentual com a capital e fora da distribuição das capitais",
-     "decisao": "Aceita só como contexto, para anos iniciais (ISCED 1) e anos finais (ISCED 2). Mapeamento validado na planilha da UNESCO UIS (aba Scope UOE, ano letivo 2012/13) e na Tabela X1.3 do Education at a Glance 2025: fundamental do 1º ao 5º ano = nível 1; do 6º ao 9º = nível 2. Mapeamento da UNESCO, não do INEP."},
+     "decisao": "Aceita só como contexto, para anos iniciais (ISCED 1) e anos finais (ISCED 2). Mapeamento validado na planilha da UNESCO UIS (aba Scope UOE, ano letivo de 2012 a 2013) e na Tabela X1.3 do Education at a Glance 2025: fundamental do 1º ao 5º ano = nível 1; do 6º ao 9º = nível 2. Mapeamento da UNESCO, não do INEP."},
     {"id": "ocde.tamanho_turma.infantil", "indicador": "edu.atu.rede_municipal", "candidata": "OCDE, tamanho de turma na educação infantil (ISCED 01 e 02)",
      "fonte": "OCDE, Education at a Glance 2025, tabela D2.1 (crianças por docente)", "universo": "País", "unidade": "crianças por docente",
      "periodo": "2023", "metodo": "Razão criança por docente, não tamanho de turma", "compatibilidade": "O dataflow de tamanho de turma não cobre ISCED 01 e 02; alunos por turma não é alunos por professor",

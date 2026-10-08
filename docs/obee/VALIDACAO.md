@@ -21,11 +21,12 @@ Validações automáticas, executadas a cada `python3 -m pipeline.eficiencia.run
 | V11 | Ideb publicado = N × P na mesma linha | Aprovada em 542 combinações |
 | V12 | Aprovação nos anos iniciais: planilha do Ideb × taxas de rendimento | 78 pares, 0 diferenças |
 | V13 | Elegibilidade: só valor observado e conferido entra em comparações, medianas e variações, incluídos valor real e subfunções | Aprovada; 6 observações com valor oficial fora das comparações (Campo Grande 2021: nominal, real e 4 subfunções) |
-| V14 | População do IBGE: 26 capitais por ano, 2023 sem valor, revisão posterior registrada | Aprovada com divergência documentada (Aracaju 2025 revisada) |
+| V14 | População do IBGE: 26 capitais por ano, 2023 = Censo 2022 (relação do DOU) rotulado como censitário, revisão posterior registrada | Aprovada com divergência documentada (Aracaju 2025 revisada) |
 | V15 | Despesa por habitante recalculada da despesa e da população publicadas | Aprovada |
-| V16 | MSC de dezembro × DCA | Regra aplicada com pendências: 102 de 130 pares reconciliam |
-| V17 | Despesa por matrícula reproduzida da ponte e das matrículas | Aprovada em 102 valores |
-| V18 | Referências externas lidas do seed; média da OCDE recomputada | Aprovada |
+| V16 | MSC de dezembro × DCA | Regra aplicada com pendências: 123 de 130 pares reconciliam (política 1.2, saldo líquido); 7 com causa documentada |
+| V17 | Razão por matrícula reproduzida do numerador da ponte (aplicação direta, com a parcela indeterminada) e das matrículas | Aprovada em 123 valores |
+| V18 | Referências externas lidas do seed; média da OCDE = média simples dos 38 membros oficiais com dado; origem e comparabilidade declaradas | Aprovada |
+| V19 | Referência nacional da despesa por habitante calculada pelo OBEE: contas fecham, mesmos municípios nos dois lados, capitais reproduzem o indicador | Aprovada: 5.060 de 5.570 municípios, 26 de 26 capitais |
 | M01 | Medição do perímetro despesa × matrículas | Conveniadas com o município entre 0,0% e 49,7% da rede municipal em 2025 (mediana 3,9%) |
 | M03 | Composição da função Educação pela MSC | Medição |
 | M04 | SIOPE × DCA e Censo | 0,81 a 2,50 vezes a DCA (mediana 1,15): fonte examinada, não adotada |

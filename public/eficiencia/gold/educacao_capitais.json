@@ -4,14 +4,14 @@
   "painel": "educacao-municipal-capitais",
   "versao_pipeline": "obee-0.2.0",
   "versao_catalogo": "2026-10-08.4",
-  "versao_codigo": "gerador-739cedcf6bc1",
-  "gerado_em": "2026-10-08T20:42:21Z",
+  "versao_codigo": "gerador-cb97c7ecea8f",
+  "gerado_em": "2026-10-08T20:48:35Z",
   "dados_capturados_ate": "2026-10-08T20:41:34Z",
   "hash_dados": "a488bfcbc9b3c9b264e2aae37d65ca260e70da1b3dda6d10b52236cfad94b663",
   "observacoes": 9137,
   "proveniencia": {
    "codigo_gerador": {
-    "sha256": "739cedcf6bc1d61da40be56623edbc4577fb6dfabdc862fdb4a8b4c17e235279",
+    "sha256": "cb97c7ecea8f94173c4ccb5a3ac2c16d9a9d7eb5f49d2241450bc0d4b2d9e6f9",
     "arquivos": 28,
     "escopo": "todos os .py de pipeline/eficiencia (sem seed e sem testes) e catalogo_indicadores.json"
    },
@@ -25,7 +25,7 @@
     "observacoes": 9137
    },
    "git": {
-    "commit_de_partida": "28aeb4b97d89f00fc9869225d521990e28df8c16",
+    "commit_de_partida": "5c5a39ec3a88dc81e87ffe4a6ed3dbd671d0d1a9",
     "codigo_com_mudanca_nao_commitada": true
    },
    "nota": "versao_codigo = 'gerador-' + 12 primeiros caracteres do sha256 do código gerador. O commit que incorpora estes dados é posterior à geração e é o que consta no histórico do repositório; 'commit_de_partida' é o HEAD de quando a geração começou."
@@ -13975,7 +13975,7 @@
    "compatibilidade": "Definição próxima da ATU do INEP (alunos matriculados ÷ turmas), mas universo diferente (instituições públicas do país inteiro, não a rede municipal) e sem creche e pré-escola. A OCDE conta só programas regulares e exclui educação especial; a ATU do INEP não foi comparada nesse ponto. Dado de 2024 preliminar",
    "tipo": "internacional_contexto",
    "uso": "Seção própria de contexto internacional, sem diferença percentual com a capital e fora da distribuição das capitais",
-   "decisao": "Aceita só como contexto, para anos iniciais (ISCED 1) e anos finais (ISCED 2). Mapeamento validado na planilha da UNESCO UIS (aba Scope UOE, ano letivo 2012/13) e na Tabela X1.3 do Education at a Glance 2025: fundamental do 1º ao 5º ano = nível 1; do 6º ao 9º = nível 2. Mapeamento da UNESCO, não do INEP.",
+   "decisao": "Aceita só como contexto, para anos iniciais (ISCED 1) e anos finais (ISCED 2). Mapeamento validado na planilha da UNESCO UIS (aba Scope UOE, ano letivo de 2012 a 2013) e na Tabela X1.3 do Education at a Glance 2025: fundamental do 1º ao 5º ano = nível 1; do 6º ao 9º = nível 2. Mapeamento da UNESCO, não do INEP.",
    "origem": "oficial_publicado",
    "comparabilidade": "contexto",
    "classe": "Contextual"
