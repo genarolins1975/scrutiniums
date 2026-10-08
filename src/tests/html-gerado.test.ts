@@ -30,6 +30,8 @@ const ROTAS_OBRIGATORIAS = [
 ];
 /** Piso de páginas do setor elétrico: um build que gerou muito menos que isto está incompleto. */
 const MINIMO_PAGINAS_SETOR_ELETRICO = 100;
+/** A análise estrutural de ~360 páginas leva cerca de 7 s numa máquina local (limite padrão do Vitest: 5 s); folga para runners mais lentos. */
+const LIMITE_ANALISE_MS = 120_000;
 
 const cobertura = coberturaDoBuild(APP, ROTAS_OBRIGATORIAS, MINIMO_PAGINAS_SETOR_ELETRICO, { existsSync, readdirSync }, join);
 const temBuild = cobertura.existe;
@@ -60,7 +62,7 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     const { analises, violacoes } = analisa(cobertura.setor);
     console.info(`HTML verificado (setor elétrico): ${cobertura.setor.length} páginas; literais: ${resumoLiterais(analises)}`);
     expect(violacoes).toEqual([]);
-  });
+  }, LIMITE_ANALISE_MS);
 
   it("OBEE: a página do painel pré-renderizada obedece ao mesmo contrato", (ctx) => {
     if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
