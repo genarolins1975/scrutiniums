@@ -1,7 +1,7 @@
 import type { FichaIndicador } from "@/lib/eficiencia/tipos";
 
 /**
- * Conteúdo do passaporte de um indicador: os dezesseis campos, na ordem, para
+ * Conteúdo de “Sobre este dado” (a ficha de um indicador): os dezesseis campos, na ordem, para
  * a mesma ficha aparecer no diálogo (a partir do valor, do gráfico e da tabela)
  * e na seção Métodos e fontes. Sem estado: serve ao servidor e ao cliente.
  */
