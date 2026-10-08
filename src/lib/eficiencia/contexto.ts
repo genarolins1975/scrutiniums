@@ -11,7 +11,7 @@ import { dataBr } from "./formato";
 export const VALIDACOES_DO_INDICADOR: Record<IndicadorId, string[]> = {
   "ctx.populacao.residente": ["V09", "V14"],
   "edu.despesa.por_habitante": ["V03", "V04", "V09", "V13", "V14", "V15"],
-  "edu.despesa.por_matricula_rede_propria": ["V04", "V05", "V06", "V09", "V13", "V16", "V17", "M03", "M04"],
+  "edu.despesa.aplicacao_direta_por_matricula": ["V04", "V05", "V06", "V09", "V13", "V16", "V17", "M03", "M04"],
   "edu.despesa.ponte_matricula": ["V16", "V17", "M03"],
   "edu.despesa.funcao_educacao": ["V01", "V03", "V04", "V07", "V08", "V09", "V10"],
   "edu.despesa.subfuncao": ["V03", "V07", "V09"],

@@ -62,8 +62,8 @@ describe("gold e payload do cliente", () => {
     }
   });
 
-  it("o payload é um recorte compacto (abaixo de 650 kB serializado: observações dos novos indicadores, ponte e estatísticas do grupo)", () => {
-    expect(JSON.stringify(d).length).toBeLessThan(650_000);
+  it("o payload é um recorte compacto (abaixo de 700 kB serializado: observações dos novos indicadores, ponte com 13 parcelas, população de 2023 e estatísticas do grupo)", () => {
+    expect(JSON.stringify(d).length).toBeLessThan(700_000);
   });
 });
 

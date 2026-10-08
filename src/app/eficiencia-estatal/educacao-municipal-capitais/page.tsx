@@ -45,21 +45,16 @@ const GLOSSARIO: [string, string][] = [
   ["Fora da comparação", "O valor oficial existe e pode ser consultado, mas não entra em comparações entre capitais, medianas nem variações, porque o perímetro é diferente ou a conferência com outra fonte oficial está pendente. O motivo aparece junto do dado."],
   ["MSC", "Matriz de Saldos Contábeis: saldos das contas contábeis que cada ente envia mensalmente ao Tesouro. Aqui é a terceira fonte de conferência da despesa quando DCA e RREO diferem e a fonte da ponte da despesa por matrícula (subfunção, modalidade de aplicação e elemento de cada linha da função 12)."],
   ["Despesa por habitante", "Despesa liquidada na função Educação dividida pela população residente do mesmo ano. Divisão aritmética pelo território: não é tributo pago por pessoa, benefício recebido nem despesa por aluno."],
-  ["Despesa por matrícula", "Despesa de aplicação direta do município na função Educação, sem inativos, ensino superior e transferências a instituições privadas, dividida pelas matrículas das escolas municipais. É por matrícula, não por estudante único; não é custo integral nem custo marginal."],
+  ["Razão da despesa de aplicação direta por matrícula", "Despesa liquidada de aplicação direta (modalidade 90) do município na função Educação, sem inativos, ensino superior, transferências e delegações, dividida pelas matrículas das escolas municipais. Razão orçamentária: a modalidade 90 diz quem executa a despesa, não quem recebe o serviço, e inclui serviços de terceiros que podem atender a rede própria ou não. É por matrícula, não por estudante único; não é custo integral nem custo marginal. A parcela de beneficiário indeterminado é medida e publicada ao lado."],
+  ["Parcela de beneficiário indeterminado", "Parte do numerador da razão por matrícula formada por elementos de despesa cujo beneficiário a MSC não permite afirmar: serviços de terceiros pessoa jurídica (39), contribuições (41, quando fora do grupo 3.1), indenizações e ressarcimentos (18, 48 e 45), além de compras de consórcio (modalidades 93 e 94). O painel mede e mostra essa parcela; não define limite de aceitabilidade."],
   ["Aplicação direta e transferência", "Modalidade da despesa: aplicação direta (90) é a que o próprio ente executa; transferências a instituições privadas (50 e 60) financiam, por exemplo, creches conveniadas. Intraorçamentária (91) é operação entre órgãos do mesmo ente."],
   ["Média simples e razão agregada", "A média simples dá o mesmo peso a cada capital. A razão agregada soma os numeradores e os denominadores dos mesmos pares e divide: pesa cada capital pelo seu denominador. Respondem a perguntas diferentes e não se chamam apenas de média. Um indicador nacional oficial tem cálculo e universo definidos pela fonte e não é a média das capitais."],
   ["Faixa dos 50% centrais", "Intervalo entre o primeiro e o terceiro quartis: metade dos valores do grupo está dentro dele. Só é exibida com 8 ou mais valores (política de apresentação, não garantia estatística)."],
   ["População estimada e Censo", "As estimativas do IBGE têm data de referência em 1º de julho; o Censo 2022, em 31 de julho de 2022. A estimativa de 2021 parte do Censo de 2010 e as de 2024 em diante, do Censo de 2022, por isso há quebra de série. Para 2023 não há estimativa municipal: o IBGE adotou, por lei, a população do Censo 2022 (relação do DOU de 31/08/2023). O painel a usa em 2023 identificada como censitária, igual à de 2022, e não como população de julho de 2023."],
-  ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). O nível 1 equivale ao ensino fundamental, anos iniciais, e o nível 2 aos anos finais, segundo o mapeamento padrão adotado aqui."],
+  ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). No Brasil, segundo o mapeamento da UNESCO (UIS, planilha “ISCED 2011 Mapping Brazil”, ano letivo 2012/13), o ensino fundamental do 1º ao 5º ano é o nível 1 e do 6º ao 9º ano é o nível 2; creche e pré-escola são o nível 0. O mapeamento é da UNESCO, não do INEP."],
   ["PPC", "Paridade de poder de compra: fator que converte valores em moeda local para uma unidade comum de poder de compra. A OCDE o usa no lugar do câmbio comercial, que não mede o que a renda compra."],
 ];
 
-const CLASSE_REF: Record<string, string> = {
-  nacional_mesmo_universo: "Nacional, mesmo universo",
-  nacional_outro_universo: "Nacional, outro universo",
-  internacional_contexto: "Contexto internacional",
-  incompativel: "Incompatível, rejeitada",
-};
 
 function rotuloCaptura(c: { chave: string }): string {
   const ano = c.chave.match(/(\d{4})$/)?.[1] ?? "";
@@ -95,7 +90,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
     {
       rotulo: "Recursos",
       titulo: "Gasto em Educação, em três escalas",
-      quem: "Total: todo o orçamento do município na função Educação. Por habitante: o total dividido pela população residente. Por matrícula: a aplicação direta na rede própria dividida pelas matrículas das escolas municipais.",
+      quem: "Total: todo o orçamento do município na função Educação. Por habitante: o total dividido pela população residente. Por matrícula: a despesa liquidada de aplicação direta (modalidade 90) dividida pelas matrículas das escolas municipais, uma razão orçamentária que não separa o que atende a rede própria.",
       quando: `Exercício financeiro (janeiro a dezembro), ${g.periodos.financeiros[0]} a ${g.periodos.financeiros.at(-1)}. Em 2023 a população oficial é a do Censo 2022, a mesma de 2022.`,
       fonte: "Tesouro Nacional (DCA e MSC), IBGE (população) e INEP (matrículas).",
     },
@@ -141,7 +136,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
       <div className="mt-6 grid gap-6 text-[0.95rem] leading-relaxed text-obee-tinta md:grid-cols-2">
         <p>
           O gasto total mede volume e depende do tamanho da cidade. Por habitante, ele coloca capitais de portes diferentes na mesma escala territorial. Por matrícula, ele aproxima a despesa da rede atendida: do total
-          declarado na DCA sai o que não tem matrícula correspondente (transferências a escolas privadas, inativos, ensino superior), e a ponte mostra cada parcela. Nenhuma das três escalas substitui as outras, e nenhuma
+          declarado na DCA sai o que não tem matrícula correspondente (transferências, delegações, inativos, ensino superior), e a ponte mostra cada parcela, inclusive a de beneficiário indeterminado. Nenhuma das três escalas substitui as outras, e nenhuma
           é custo integral de um aluno. A despesa de toda a educação tampouco é específica de uma etapa:{" "}
           <a href="#ponte" className="text-obee-dark underline underline-offset-2">
             veja a ponte
@@ -167,7 +162,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
   const v16 = g.validacoes.find((v) => v.id === "V16");
   const m03 = g.validacoes.find((v) => v.id === "M03");
   const m04 = g.validacoes.find((v) => v.id === "M04");
-  const fichaMat = g.indicadores.find((i) => i.id === "edu.despesa.por_matricula_rede_propria");
+  const fichaMat = g.indicadores.find((i) => i.id === "edu.despesa.aplicacao_direta_por_matricula");
   const pol = g.politica_conferencia;
   return (
     <Secao id="metodos" rotulo="Auditar · métodos e fontes" titulo="Passaportes, fontes, validações e reprodução">
@@ -243,16 +238,20 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
 
         {fichaMat && v16 && (
           <div id="despesa-por-matricula" className="scroll-mt-24">
-            <h3 className="font-serif text-xl text-obee-tinta">Despesa por matrícula: definição, ponte e cobertura</h3>
+            <h3 className="font-serif text-xl text-obee-tinta">Razão da despesa de aplicação direta por matrícula: definição, ponte e cobertura</h3>
+            <p className="mt-2 max-w-prose2 border-l-2 border-obee-tinta pl-4 text-[0.95rem] leading-relaxed text-obee-tinta" role="note">
+              <span className="font-semibold">Definição corrigida.</span> Até a versão 1.2 o indicador se chamava despesa efetiva da rede própria por aluno. A modalidade de aplicação 90 diz quem executa a despesa, não quem recebe o serviço, e o nome prometia mais do que a MSC sustenta. O indicador passou a se
+              chamar razão da despesa de aplicação direta por matrícula, com identificador novo (<code>edu.despesa.aplicacao_direta_por_matricula</code>) para que o identificador antigo não passe a designar outro conceito. Os valores antigos e novos não são a mesma série.
+            </p>
             <p className="mt-2 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">
               <span className="font-semibold">Fórmula.</span> {fichaMat.formula}
             </p>
             <ul className="mt-3 max-w-prose2 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-relaxed text-obee-tinta">
               <li>
-                <span className="font-semibold">Entra no numerador:</span> despesa liquidada de aplicação direta (modalidade 90) na função Educação, nas contas de despesa liquidada da MSC de dezembro (6.2.2.1.3.03, .04 e .07).
+                <span className="font-semibold">Entra no numerador:</span> despesa liquidada de aplicação direta (modalidade 90) na função Educação, nas contas de despesa liquidada da MSC de dezembro (6.2.2.1.3.03, .04 e .07), em saldo líquido (natureza C soma, D subtrai). As compras de consórcio (modalidades 93 e 94, desdobramento da 90) entram na parcela de beneficiário indeterminado.
               </li>
               <li>
-                <span className="font-semibold">Fica fora:</span> transferências a instituições privadas (modalidades 50 e 60, como as creches conveniadas, cujas matrículas também ficam fora do denominador), outras transferências, aposentadorias, pensões e outros
+                <span className="font-semibold">Fica fora:</span> transferências a instituições privadas (modalidades 50 e 60, como as creches conveniadas, cujas matrículas também ficam fora do denominador), transferências a outros entes e consórcios (20 a 46, 70 a 76 e 80), recursos recebidos por delegação (92), parcerias público-privadas (67), modalidades de uso atípico em Educação (95, 96 e 99), aposentadorias, pensões e outros
                 benefícios previdenciários (elementos 01, 03 e 05 do grupo 3.1.90), ensino superior (subfunção 364) e intraorçamentárias (modalidade 91, fora do total da DCA).
               </li>
               <li>
@@ -358,8 +357,9 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
         <div id="matriz-referencias" className="scroll-mt-24">
           <h3 className="font-serif text-xl text-obee-tinta">Matriz de referências: aceitas, de contexto e rejeitadas</h3>
           <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
-            Cada candidata, com fonte, universo, unidade, período, método, compatibilidade, uso permitido e a decisão fundamentada. Mesmo universo: permite diferença na unidade da escala. Outro universo: aparece ao lado, sem diferença. Contexto
-            internacional: seção própria, sem diferença contra a capital. Incompatível: examinada e rejeitada, com o motivo.
+            Cada candidata, com fonte, universo, unidade, período, método, compatibilidade, uso permitido e a decisão fundamentada. A classe combina duas dimensões: quem produziu o número (oficial publicado ou calculado pelo OBEE com fontes
+            oficiais) e o quanto ele é comparável às dimensões de origem do indicador da capital (direta, contextual ou incompatível). Oficial publicado e calculado pelo OBEE com fonte oficial podem ser mostrados com diferença para a capital quando o universo
+            é o mesmo; contextual aparece ao lado, sem diferença; incompatível foi examinada e rejeitada, com o motivo.
           </p>
           <div className="tabela-scroll mt-3 border border-linha" tabIndex={0} role="region" aria-label="Matriz de referências (role na horizontal se necessário)">
             <table className="w-full min-w-[78rem] border-collapse text-xs leading-snug">
@@ -386,7 +386,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                     <td className="px-2 py-2">{m.periodo}</td>
                     <td className="px-2 py-2">{m.metodo}</td>
                     <td className="px-2 py-2">{m.compatibilidade}</td>
-                    <td className="px-2 py-2">{CLASSE_REF[m.tipo]}</td>
+                    <td className="px-2 py-2">{m.classe}</td>
                     <td className="px-2 py-2">{m.uso}</td>
                     <td className="px-2 py-2">{m.decisao}</td>
                   </tr>
@@ -533,8 +533,16 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             </ol>
             <p className="mt-2 text-xs text-carvao-muted">
               Processamento {g.meta.versao_pipeline}, catálogo de <data value={g.meta.versao_catalogo}>{rotuloVersaoCatalogo(g.meta.versao_catalogo)}</data>
-              {g.meta.versao_codigo ? `, código ${g.meta.versao_codigo}` : ""}, gerado em {dataBr(g.meta.gerado_em)}.
+              {g.meta.versao_codigo ? `, código gerador ${g.meta.versao_codigo}` : ""}, gerado em {dataBr(g.meta.gerado_em)}.
             </p>
+            {g.meta.proveniencia && (
+              <p className="mt-1 text-xs leading-relaxed text-carvao-muted">
+                Proveniência: o código gerador é identificado pelo conteúdo ({g.meta.proveniencia.codigo_gerador.arquivos} arquivos, sha256{" "}
+                <span className="break-all font-mono">{g.meta.proveniencia.codigo_gerador.sha256.slice(0, 16)}</span>), as entradas pelo manifesto do seed ({g.meta.proveniencia.entradas.capturas_no_manifesto} capturas, sha256{" "}
+                <span className="break-all font-mono">{g.meta.proveniencia.entradas.manifesto_do_seed_sha256.slice(0, 16)}</span>) e as saídas pelo hash dos dados{" "}
+                <span className="break-all font-mono">{g.meta.proveniencia.saidas.hash_dados.slice(0, 16)}</span>. O commit que incorpora estes dados é posterior à geração e consta no histórico do repositório.
+              </p>
+            )}
           </div>
           <div className="min-w-0">
             <h3 className="font-serif text-xl text-obee-tinta">Glossário</h3>
@@ -601,7 +609,7 @@ export default function PaginaEducacaoCapitais() {
                   ["Períodos", `Despesa: exercícios ${g.periodos.financeiros[0]} a ${ultimoFin}. Censo Escolar: ${g.periodos.censo[0]} a ${g.periodos.censo.at(-1)}. Ideb: edições ${g.periodos.ideb[0]} a ${g.periodos.ideb.at(-1)}.`],
                   [
                     `Cobertura em ${ultimoFin}`,
-                    `Despesa total: ${cob(c["edu.despesa.funcao_educacao" as IndicadorId], ultimoFin)}. Por habitante: ${cob(c["edu.despesa.por_habitante" as IndicadorId], ultimoFin)}. Por matrícula: ${cob(c["edu.despesa.por_matricula_rede_propria" as IndicadorId], ultimoFin)}. Matrículas: ${cob(c["edu.matriculas.rede_municipal" as IndicadorId], ultimoFin, "total")}. Ideb anos iniciais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_iniciais")}; anos finais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_finais")}.`,
+                    `Despesa total: ${cob(c["edu.despesa.funcao_educacao" as IndicadorId], ultimoFin)}. Por habitante: ${cob(c["edu.despesa.por_habitante" as IndicadorId], ultimoFin)}. Por matrícula: ${cob(c["edu.despesa.aplicacao_direta_por_matricula" as IndicadorId], ultimoFin)}. Matrículas: ${cob(c["edu.matriculas.rede_municipal" as IndicadorId], ultimoFin, "total")}. Ideb anos iniciais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_iniciais")}; anos finais: ${cob(c["edu.ideb.rede_municipal" as IndicadorId], 2025, "anos_finais")}.`,
                   ],
                   ["Dados", `Coletados até ${dataBr(g.meta.dados_capturados_ate)}. ${inteiro(g.meta.observacoes)} observações, todas com estado e fonte.`],
                 ].map(([t, d]) => (

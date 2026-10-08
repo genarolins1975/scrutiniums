@@ -60,16 +60,24 @@ describe("diferença para a referência respeita a escala", () => {
 });
 
 describe("despesa por habitante e por matrícula no painel", () => {
-  it("2023 não tem despesa por habitante (população sem publicação do IBGE), em todas as capitais", () => {
+  it("2023 tem despesa por habitante com a população censitária da relação do DOU, rotulada como tal e com quebra de série", () => {
+    expect(d.populacao["2023"].tipo).toBe("censo_relacao_dou_2023");
+    expect(d.populacao["2023"].referencia).toMatch(/31 de julho de 2022/);
     for (const c of d.capitais) {
       const p = ix.ponto("edu.despesa.por_habitante", c.cod, 2023, null, "nominal");
-      expect(p.valor).toBeNull();
-      expect(p.status).toBe("NAO_DIVULGADO");
-      expect(p.elegivel).toBe(false);
+      expect(p.status).toBe("OBSERVADO");
+      expect(p.valor).not.toBeNull();
+      expect(p.quebraSerie).toBe(true);
+      expect(p.nota).toMatch(/31\/08\/2023|relação/);
+      // a população de 2023 é a mesma de 2022 (Censo 2022); a de 2022 não carrega quebra
+      const pop23 = ix.ponto("ctx.populacao.residente", c.cod, 2023, null, null);
+      const pop22 = ix.ponto("ctx.populacao.residente", c.cod, 2022, null, null);
+      expect(pop23.valor).toBe(pop22.valor);
+      expect(ix.ponto("edu.despesa.por_habitante", c.cod, 2022, null, "nominal").quebraSerie).toBe(false);
     }
     const comp = comparar(ix, "despesa_hab", 2023, "total", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
-    expect(comp.incluidas).toHaveLength(0);
-    expect(comp.ref).toBeNull();
+    expect(comp.incluidas.length).toBeGreaterThan(0);
+    expect(comp.ref).not.toBeNull();
   });
 
   it("variação por habitante entre 2021 e 2022 é bloqueada: a população de 2021 tem outra base", () => {
@@ -87,12 +95,12 @@ describe("despesa por habitante e por matrícula no painel", () => {
     expect(hab.valor).not.toBeNull();
     expect(hab.elegivel).toBe(false);
     expect(hab.motivo).toMatch(/Perímetro distinto/);
-    const mat = ix.ponto("edu.despesa.por_matricula_rede_propria", cap("campo-grande").cod, 2021, null, "nominal");
+    const mat = ix.ponto("edu.despesa.aplicacao_direta_por_matricula", cap("campo-grande").cod, 2021, null, "nominal");
     expect(mat.valor).toBeNull();
     const comp = comparar(ix, "despesa_hab", 2021, "total", "nominal", "matematica", "todas", cap("campo-grande"), "alfabetica");
     expect(comp.incluidas.some((i) => i.cap.id === "campo-grande")).toBe(false);
     expect(comp.excluidas.find((x) => x.cap.id === "campo-grande")?.comValor).toBe(true);
-    const bv = ix.ponto("edu.despesa.por_matricula_rede_propria", cap("boa-vista").cod, 2024, null, "nominal");
+    const bv = ix.ponto("edu.despesa.aplicacao_direta_por_matricula", cap("boa-vista").cod, 2024, null, "nominal");
     expect(bv.elegivel).toBe(true);
     expect(bv.notaMaterial).toBe(true);
     expect(bv.nota).toMatch(/RREO/);
@@ -103,9 +111,12 @@ describe("despesa por habitante e por matrícula no painel", () => {
     expect(p.reconcilia).toBe(true);
     const soma = p.linhas.filter((l) => l.componente !== "dca_total").reduce((a, l) => a + l.valor, 0);
     expect(Math.abs(soma - (p.total as number))).toBeLessThan(0.5);   // tolerância de arredondamento da política de conferência
-    const num = p.linhas.find((l) => l.dentro)!;
+    const dentro = p.linhas.filter((l) => l.dentro);
+    expect(dentro.map((l) => l.componente).sort()).toEqual(["ad_beneficiario_indeterminado", "ad_demais_elementos"].filter((c) => dentro.some((l) => l.componente === c)));
+    expect(dentro.length).toBeGreaterThan(0);
+    const num = { valor: dentro.reduce((a, l) => a + l.valor, 0) };
     const mat = ix.ponto("edu.matriculas.rede_municipal", cap("sao-paulo").cod, 2025, "total", null);
-    const razao = ix.ponto("edu.despesa.por_matricula_rede_propria", cap("sao-paulo").cod, 2025, null, "nominal");
+    const razao = ix.ponto("edu.despesa.aplicacao_direta_por_matricula", cap("sao-paulo").cod, 2025, null, "nominal");
     expect(razao.valor).toBeCloseTo(num.valor / (mat.valor as number), 4);
   });
 });
@@ -234,14 +245,18 @@ describe("referências externas", () => {
   it("contexto internacional: só tamanho de turma (anos iniciais e finais, públicas) e despesa por estudante; ano mais recente; nunca para outras medidas", () => {
     const ai = internacionaisDa(d, "atu", "anos_iniciais");
     expect(ai).toHaveLength(1);
-    expect(ai[0]).toMatchObject({ conjunto: "ocde_tamanho_turma", nivel: "ISCED11_1", instituicoes: "publicas", ano: 2024 });
-    expect(ai[0].brasil).toBeCloseTo(20.86, 1);
-    expect(ai[0].media_ocde_publicada).toBeCloseTo(20.70, 1);
+    expect(ai[0]).toMatchObject({ conjunto: "ocde_tamanho_turma", nivel: "ISCED11_1", instituicoes: "publicas", ano: 2023, preliminar: false });
+    expect(ai[0].media_confere).toBe(true);
+    expect(ai[0].membros_com_dado).toBeLessThanOrEqual(38);
+    expect(ai[0].paises.filter((p) => p.membro)).toHaveLength(ai[0].membros_com_dado);
+    expect(ai[0].brasil).not.toBeNull();
     expect(ai[0].paises.length).toBeGreaterThan(30);
     expect(internacionaisDa(d, "atu", "creche")).toHaveLength(0);
     expect(internacionaisDa(d, "atu", "pre_escola")).toHaveLength(0);
     const dm = internacionaisDa(d, "despesa_mat", "total");
-    expect(dm.map((x) => x.nivel).sort()).toEqual(["ISCED11_1", "ISCED11_1T8", "ISCED11_2"]);
+    // despesa municipal: só instituições públicas e os níveis 1 e 2; o agregado ISCED 1 a 8 inclui o superior e fica fora do painel
+    expect(dm.map((x) => x.nivel).sort()).toEqual(["ISCED11_1", "ISCED11_2"]);
+    expect(dm.every((x) => x.instituicoes === "publicas")).toBe(true);
     for (const m of ["despesa", "despesa_hab", "aprovacao", "ideb", "saeb", "matriculas"] as const) expect(internacionaisDa(d, m, "anos_iniciais")).toHaveLength(0);
     // os países do contexto internacional não aparecem entre as capitais nem nas referências do grupo
     const comp = comparar(ix, "atu", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
