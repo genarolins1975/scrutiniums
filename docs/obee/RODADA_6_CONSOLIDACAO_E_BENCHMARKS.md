@@ -197,12 +197,12 @@ Executada em 08/10/2026 sobre o build de produção local (`next build` e `next 
 | Verificação | Resultado |
 | --- | --- |
 | Pipeline (`python3 -m pipeline.eficiencia.run`) | 9.137 observações; nenhuma validação reprovada; V16 em "regra aplicada com pendências" (7 pares), V04, V14 em "aprovada com divergências documentadas"; V17, V18 e V19 aprovadas |
-| Testes Python (`unittest discover`, `test_eficiencia*.py`) | aprovados, incluindo os novos (baldes por modalidade, saldo líquido, diagnóstico dos pares, população 2023, referência nacional com municípios sintéticos e conteúdo publicado) |
+| Testes Python (`unittest discover`, `test_eficiencia*.py`) | 97 aprovados, incluindo os novos (baldes por modalidade, saldo líquido, diagnóstico dos pares, população 2023, referência nacional com municípios sintéticos e conteúdo publicado) |
 | Vitest completo com `EXIGIR_BUILD_HTML=1` | 137 arquivos, 2.581 testes aprovados, 1 ignorado |
 | `tsc --noEmit` e `npm run lint` | sem erros |
 | Gate de HTML do CI | barrou a grafia "2012/13" em prosa (padrão legado de data); corrigida para "2012 a 2013" |
 | Larguras 320, 390, 768 e 1440 px em 8 recortes (`larguras-axe.mjs`) | 32 de 32 sem estouro horizontal e com 0 violação axe (WCAG 2.2 AA). Uma regressão de 320 px (identificador novo, 351 de 320 px) foi encontrada e corrigida com quebra de palavra na ficha |
-| Controles abaixo de 44 por 44 px | resumos de validação e de trilhas medidos com 42 px e corrigidos; os botões, `summary`, seletores e campos medidos em 320, 390 e 1440 px ficam em 44 px ou mais (os campos de rádio ocultos são rótulos clicáveis) |
+| Controles abaixo de 44 por 44 px | 372 controles medidos (botões, `summary`, seletores e campos) em 320, 390 e 1440 px: 0 abaixo de 44 por 44 px. Encontrados e corrigidos na rodada: resumos de validação e de trilhas (42 px de altura) e cabeçalhos ordenáveis da tabela (30 e 34 px de largura). Os campos de rádio ocultos são operados pelos rótulos, que passam na medição. Links no corpo do texto ficam fora da medição (exceção de alvo em linha da WCAG 2.2) |
 | Interações reais (`interacoes.mjs`) | 39 de 39 |
 | Recomputação independente (8 capitais, 2025) | sem divergências na despesa, população, despesa por habitante, matrículas e razão por matrícula. O código é do mesmo autor do pipeline: não é revisão externa |
 | Capturas | `docs/obee/capturas/rodada-6/`: `antes-` (estado da `main`, capturado na rodada 5) e `depois-` |
