@@ -287,7 +287,8 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     expect(h).not.toContain("é repassado ao consumidor cativo pela tarifa");
     expect(h).not.toContain("Parte desse risco recai sobre o consumidor cativo e aparece na Conta Bandeira");
     expect(h).not.toContain("Submercados e risco hidrológico do consumidor cativo");
-    expect(h).toContain("a norma que define esse repasse não foi lida");
+    // o limite segue declarado, agora só em "Por que importa" (o lede deixou de descrever o processo do observatório)
+    expect(h).not.toContain("a norma que define esse repasse não foi lida");
     expect(h).toContain("o painel não verificou em norma como esse custo chega à tarifa");
     expect(h).toContain("As três definições abaixo são operacionais: o observatório as escreveu para ler este painel. Não são a definição regulatória nem foram conferidas em norma");
   });
