@@ -83,6 +83,28 @@ export function nomeDoConjunto(e: Pick<EntradaDados, "titulo">, integracoes: rea
   return { nome, tituloNaFonte: nome !== fonte ? fonte : null, motivo: nome !== fonte ? motivo : null };
 }
 
+/**
+ * Troca, num texto escrito pelo observatório, o identificador técnico de um conjunto da CCEE ("CONSUMO_CLASSE_AGENTE") pelo nome
+ * que a ficha dele usa. Identificador sem nome conhecido fica como está.
+ */
+export function trocaIdentificadores(texto: string, nomes: ReadonlyMap<string, string>): string {
+  return texto.replace(/\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b/g, (id) => nomes.get(id) ?? id);
+}
+
+/** Nome legível de cada conjunto cujo título é identificador técnico, pelo título da fonte. */
+export function nomesLegiveisDosTitulos(
+  entradas: readonly (Pick<EntradaDados, "titulo"> & { integracoes?: { id: string }[] })[],
+  integracoes: readonly Pick<ConjuntoIntegrado, "id" | "titulo">[],
+): Map<string, string> {
+  const porId = new Map(integracoes.map((i) => [i.id, i]));
+  const m = new Map<string, string>();
+  for (const e of entradas) {
+    if (!eTituloTecnico(e.titulo)) continue;
+    m.set(e.titulo.trim(), nomeDoConjunto(e, (e.integracoes ?? []).map((i) => porId.get(i.id)).filter((x): x is Pick<ConjuntoIntegrado, "id" | "titulo"> => !!x)).nome);
+  }
+  return m;
+}
+
 /* ---------------------------------------------------------------- abertura */
 
 /**

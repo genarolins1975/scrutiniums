@@ -129,7 +129,7 @@ export function PldHistorico({
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
           <dd className="mt-0.5">
-            R$/MWh nominais; moeda constante em R$ de {h.deflator.mes_base ? mesAno(h.deflator.mes_base) : "mês sem índice"} pelo IPCA
+            R$/MWh nominais; moeda constante: valores corrigidos pelo IPCA para os reais de {h.deflator.mes_base ? mesAno(h.deflator.mes_base) : "mês sem índice"}
           </dd>
         </div>
       </dl>

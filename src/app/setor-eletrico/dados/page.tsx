@@ -49,7 +49,9 @@ export default function DadosCatalogoPage() {
   const prov = provenienciaDados(pub.proveniencia.catalogo);
   const linhas = linhasCatalogo(cat);
   const porId = new Map(cat.entradas.map((e) => [e.id, e]));
-  const fichas = DATASETS_INTEGRADOS.filter((d) => porId.has(d.catalogoId));
+  // o catálogo dá o mesmo endereço de ficha a conjuntos que um módulo integra juntos: a lista tem uma linha por ficha
+  const fichas = DATASETS_INTEGRADOS.filter((d, i, todas) => porId.has(d.catalogoId) && todas.findIndex((x) => x.slug === d.slug) === i);
+  const conjuntosPorFicha = (slug: string) => cat.entradas.filter((x) => x.slug === slug).length;
   const nomesPortais = Object.entries(cat.portais);
   const acessados = (o: string) => (cat.recursos[o]?.total ?? 0) - (cat.recursos[o]?.por_estado.CATALOGADO ?? 0);
   const estadosComRecurso = ESTADOS_ESCADA.filter((s) => Object.values(cat.recursos).some((x) => (x.por_estado[s] ?? 0) > 0));
@@ -320,6 +322,7 @@ export default function DadosCatalogoPage() {
                   <li key={d.slug}>
                     <Link href={`/setor-eletrico/dados/${d.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                       {nomeDaFicha(d)} ({e.orgao}, {rotuloTema(e.tema).toLowerCase()})
+                      {conjuntosPorFicha(d.slug) > 1 ? `, com mais ${conjuntosPorFicha(d.slug) - 1}` : ""}
                     </Link>
                   </li>
                 );

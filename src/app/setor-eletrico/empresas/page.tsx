@@ -248,7 +248,7 @@ export default function EmpresasPage() {
                 casas={0}
                 unidade="pontos"
                 tamanho="medio"
-                nota={grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. O período vai do início da janela de declarações (${inicioJanela}) à data do SIGA.` : undefined}
+                nota={grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.` : undefined}
                 endereco={ancoraPainel("p039")}
               />
             }

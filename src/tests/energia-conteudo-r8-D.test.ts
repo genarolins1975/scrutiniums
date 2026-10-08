@@ -101,7 +101,9 @@ const paginas = {
 };
 const ficha = (slug: string) => renderToStaticMarkup(createElement(DatasetPage, { params: { dataset: slug } }));
 const OITO = ["aneel-agentes-geracao", "aneel-pautas-atas-diretoria", "aneel-scs", "ccee-lista-agente-associado", "ibge-pof-6715", "ibge-pof-cv", "ons-ena-diario-por-bacia", "senado-leis-feriados"];
-const fichas = Object.fromEntries(DATASETS_INTEGRADOS.map((d) => [d.slug, ficha(d.slug)]));
+// algumas fichas dividem o endereço entre conjuntos que um módulo integra juntos: uma ficha por endereço, a do primeiro conjunto
+const unicos = DATASETS_INTEGRADOS.filter((d, i, todas) => todas.findIndex((x) => x.slug === d.slug) === i);
+const fichas = Object.fromEntries(unicos.map((d) => [d.slug, ficha(d.slug)]));
 
 // dados lidos dos CSV publicados (outro artefato que o das golds usadas pelo código)
 const csvCatalogo = lerCsvComAspas(ler("public/energia/series/dados_catalogo.csv"));
@@ -221,7 +223,9 @@ describe("O que mudou diz o que mudou", () => {
     const maior = [...linhasConj].sort((a, b) => Number(b[cConj.maior_revisao_rel_pct] || 0) - Number(a[cConj.maior_revisao_rel_pct] || 0))[0];
     const observacoes = linhasConj.reduce((s, l) => s + Number(l[cConj.revisoes_observacoes] || 0), 0);
     const t = textoMudancaSaude(resumoSaude(pub));
-    expect(t).toContain(maior[cConj.conjunto]);
+    // o título do conjunto, lido do catálogo publicado em CSV (órgão e nome da linha da saúde)
+    const tituloDoMaior = linhasCat.find((l) => l[cCat.id] === `${maior[cConj.orgao].toLowerCase()}:${maior[cConj.conjunto]}`)![cCat.titulo];
+    expect(t).toContain(tituloDoMaior);
     expect(t).toContain(observacoes.toLocaleString("pt-BR"));
     expect(t).toContain("não prova erro");
     expect(entender(paginas.saude)).toContain(t);
@@ -291,6 +295,18 @@ describe("identificadores técnicos só em Analisar e Auditar", () => {
       for (const re of PROIBIDO) {
         const achou = re.exec(t);
         expect(achou ? `${rota}: ${t.slice(Math.max(0, achou.index - 40), achou.index + 60)}` : null, rota).toBeNull();
+      }
+    }
+  });
+
+  it("o mesmo vale para todas as fichas de conjunto: nenhum identificador, arquivo, reticência ou travessão em Entender", () => {
+    expect(unicos.length).toBeGreaterThan(100);
+    const COMUM = [/\bsha256\w*\b/i, /\bpipeline\b/i, /\bsilvers?\b/i, /\bbronze\b/i, /\bgolds?\b/, /\bvintages?\b/i, /\bcommits?\b/i, /HTTP \d{3}/, /\b[a-z]+_[a-z0-9_]+\b/, /\b[A-Z][A-Z0-9]*_[A-Z0-9_]+\b/, /\b[\w-]+\.(?:csv|json|parquet|py|zip|xlsx)\b/i, /CKAN|package_/, /\bSLA\b/, /…/, /[\u2013\u2014]/, /undefined|NaN/];
+    for (const d of unicos) {
+      const t = entender(fichas[d.slug]);
+      for (const re of COMUM) {
+        const achou = re.exec(t);
+        expect(achou ? `${d.slug}: ${t.slice(Math.max(0, achou.index - 40), achou.index + 60)}` : null, d.slug).toBeNull();
       }
     }
   });
@@ -372,10 +388,11 @@ describe("ficha de conjunto: nome, abertura e descrição", () => {
     expect(fraseAbertura({ orgao: "IBGE", cadencias: [], paginas: [{ rotulo: "A" }, { rotulo: "B" }] })).toBe(
       "Este é um conjunto de dados abertos publicado pelo IBGE. A fonte não declara a frequência de atualização. O observatório usa o conjunto nas páginas A e B.",
     );
-    for (const d of DATASETS_INTEGRADOS) {
+    for (const d of unicos) {
       const e = cat.entradas.find((x) => x.id === d.catalogoId)!;
       const t = entender(fichas[d.slug]);
-      expect(t, d.slug).toContain(`conjunto de dados abertos publicado ${["IBGE", "ONS", "Senado Federal"].includes(e.orgao) ? "pelo" : "pela"} ${e.orgao}.`);
+      expect(t, d.slug).toContain(`Este é um conjunto de dados abertos publicado pel`);
+      expect(t, d.slug).toMatch(new RegExp(`conjunto de dados abertos publicado pel[ao] ${e.orgao.replace(/[-.]/g, "\\$&")}\\.`));
       expect(t, d.slug).toMatch(/A fonte (declara atualização|não declara a frequência de atualização)/);
       expect(t, d.slug).not.toContain("…");
     }
@@ -384,7 +401,7 @@ describe("ficha de conjunto: nome, abertura e descrição", () => {
   it("a descrição cortada do catálogo compacto não aparece em Entender; em Analisar vai a íntegra publicada em dados_catalogo.csv, quando ela começa pelo texto guardado", () => {
     const bruto = json<{ entradas: { id: string; slug?: string; descricao?: string }[] }>("public/energia/gold/catalogo.json").entradas;
     let completas = 0;
-    for (const d of DATASETS_INTEGRADOS) {
+    for (const d of unicos) {
       const guardada = bruto.find((x) => x.id === d.catalogoId)?.descricao ?? "";
       const linha = linhasCat.find((l) => l[cCat.id] === d.catalogoId)!;
       const integral = linha[cCat.descricao];
@@ -558,12 +575,14 @@ describe("ficha de conjunto: licença, página oficial, formatos e arquivos", ()
         const nome = u.split("/").pop()!;
         const rotulo = rotuloDoArquivo(u);
         expect(rotulo, u).not.toMatch(/_|\.csv/);
-        expect(t, u).toContain(`${rotulo} (CSV)`);
+        const linha = t.split("\n").find((l) => l.startsWith(`${rotulo} (CSV)`));
+        expect(linha, u).toBeTruthy();
         expect(t, u).not.toContain(nome);
         expect(entender(fichas[slug], true), u).toContain(`Arquivo ${nome}`);
-        const outros = bruto.filter((x) => x.slug && x.slug !== slug && (x.downloads ?? []).includes(u) && DATASETS_INTEGRADOS.some((y) => y.slug === x.slug)).length;
-        if (outros > 0) expect(t, u).toContain(`Reúne dados também de ${outros} ${outros === 1 ? "outro conjunto" : "outros conjuntos"}.`);
-        else expect(t, u).not.toContain("Reúne dados também");
+        // fichas (endereços) distintas que oferecem o mesmo arquivo, lidas de catalogo.json
+        const outros = new Set(bruto.filter((x) => x.slug && x.slug !== slug && (x.downloads ?? []).includes(u)).map((x) => x.slug)).size;
+        if (outros > 0) expect(linha, u).toContain(`Reúne dados também de ${outros} ${outros === 1 ? "outro conjunto" : "outros conjuntos"}.`);
+        else expect(linha, u).not.toContain("Reúne dados também");
       }
     }
     // o mesmo arquivo de POF aparece nas duas páginas, com o mesmo nome legível

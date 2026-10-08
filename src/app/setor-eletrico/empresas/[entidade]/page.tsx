@@ -61,7 +61,7 @@ import {
 } from "@/lib/energia/empresas";
 import { alertasDePerdas, arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, evolucaoDistribuidora, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
 import { comValorExibido } from "@/lib/energia/evidencia";
-import { carimbo, datasLegiveis } from "@/lib/energia/formato";
+import { carimbo, datasLegiveis, sinal } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -270,12 +270,18 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   <div className="border border-linha bg-superficie p-5 text-sm text-carvao-muted">
                     <p className="rotulo text-mineral">DEC e limite</p>
                     <p className="mt-3 font-serif text-2xl text-carvao tabular-nums">{q?.dec !== null && q?.dec !== undefined ? `${numTexto(q.dec, 2)} h` : "sem dado"}</p>
-                    <p className="mt-2 text-xs">Limite {q?.dec_limite !== null && q?.dec_limite !== undefined ? `${numTexto(q.dec_limite, 2)} h` : "sem dado"}; {q?.ano ?? "sem ano de referência"}.</p>
+                    <p className="mt-2 text-xs">
+                      Limite {q?.dec_limite !== null && q?.dec_limite !== undefined ? `${numTexto(q.dec_limite, 2)} h` : "sem dado"}; {q?.ano ?? "sem ano de referência"}.
+                      {q && q.dec !== null && q.dec_limite !== null ? ` Diferença: ${sinal(q.dec - q.dec_limite, 2, " h")}.` : ""}
+                    </p>
                   </div>
                   <div className="border border-linha bg-superficie p-5 text-sm text-carvao-muted">
                     <p className="rotulo text-mineral">FEC e limite</p>
                     <p className="mt-3 font-serif text-2xl text-carvao tabular-nums">{q?.fec !== null && q?.fec !== undefined ? numTexto(q.fec, 2) : "sem dado"}</p>
-                    <p className="mt-2 text-xs">Interrupções por unidade consumidora; limite {numTexto(q?.fec_limite, 2)}.</p>
+                    <p className="mt-2 text-xs">
+                      Interrupções por unidade consumidora; limite {numTexto(q?.fec_limite, 2)}.
+                      {q && q.fec !== null && q.fec_limite !== null ? ` Diferença: ${sinal(q.fec - q.fec_limite, 2)}.` : ""}
+                    </p>
                   </div>
                   <div className="border border-linha bg-superficie p-5 text-sm text-carvao-muted">
                     <p className="rotulo text-mineral">Tarifa B1 vigente</p>

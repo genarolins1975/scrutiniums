@@ -30,10 +30,12 @@ import {
   colunasCoeficientes,
   emissaoDoModelo,
   enderecoPainel,
+  exemploDoModelo,
   formulaEmPalavras,
   linhasCoeficientes,
   linhasReexecucao,
   minusculaInicial,
+  notaEntradas,
   paraLeitorPrevisoes,
   perguntaPainel,
   respostaFicha,
@@ -173,6 +175,11 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                   universo="Sete horizontes (W1 a W4 e M1 a M3) e quatro submercados; um ajuste por horizonte e submercado nos candidatos"
                   unidade={coef.length ? "Coeficientes na unidade de cada variável; previsões em R$/MWh" : "R$/MWh nominais"}
                 />
+                {exemploDoModelo(f, g, resumoModelo?.metodologia) && (
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-exemplo={f.codigo}>
+                    {exemploDoModelo(f, g, resumoModelo?.metodologia)}
+                  </p>
+                )}
                 {!f.implementado_no_repositorio && (
                   <div data-nivel="analisar">
                     <PrevisoesAviso tipo="alerta">
@@ -258,6 +265,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                     ) : (
                       "não publicadas"
                     )}
+                    {notaEntradas(f) ? <p className="mt-1 text-xs text-carvao-muted">{notaEntradas(f)}</p> : null}
                   </PrevisoesFichaLinha>
                   <PrevisoesFichaLinha rotulo="Fórmula">{formulaEmPalavras(f) ?? "não publicada"}</PrevisoesFichaLinha>
                   {f.formula && formulaEmPalavras(f) !== f.formula && (

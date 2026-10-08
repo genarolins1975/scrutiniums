@@ -231,8 +231,8 @@ describe("vereditos: curtos, com poucos números, sem travessão e sem data ISO"
     for (const x of ref.por_sm) {
       const v = vereditoP009(D.cmo_pld, x.sm);
       expect(v).toContain(dataBR(ref.fim));
-      expect(v).toContain(`${x.pld_menos_decomp > 0 ? "acima" : "abaixo"} do CMO semanal do DECOMP`);
-      expect(v).toContain(`${x.pld_menos_dessem > 0 ? "acima" : "abaixo"} do CMO médio do DESSEM`);
+      expect(v).toContain(`${x.pld_menos_decomp! > 0 ? "acima" : "abaixo"} do CMO semanal do DECOMP`);
+      expect(v).toContain(`${x.pld_menos_dessem! > 0 ? "acima" : "abaixo"} do CMO médio do DESSEM`);
     }
   });
 
@@ -603,7 +603,7 @@ describe("mapas de calor: sem número nas células, o maior e o menor valor vão
       x.s += Number(r.horas_separadas);
       porPar.set(r.par, x);
     }
-    const frac = [...porPar.entries()].map(([par, x]) => ({ par, f: (100 * x.s) / x.h }));
+    const frac = Array.from(porPar.entries()).map(([par, x]) => ({ par, f: (100 * x.s) / x.h }));
     const maior = frac.reduce((a, b) => (b.f > a.f ? b : a));
     const menor = frac.reduce((a, b) => (b.f < a.f ? b : a));
     const t = textoEntender(html.regionais);

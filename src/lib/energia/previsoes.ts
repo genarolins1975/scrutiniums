@@ -950,12 +950,43 @@ export function explicacaoCorteOrigem(def: Pick<PrevisoesDesempenhoGold["definic
 export function termosPrevisoes(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional" | "entregas" | "quantis">): { termo: string; texto: string }[] {
   const itens: { termo: string; texto: string }[] = [];
   if (def.corte_operacional?.trim()) itens.push({ termo: "Corte e origem", texto: explicacaoCorteOrigem(def) });
+  if (/W1 é a primeira semana que começa depois do dia de origem/.test(def.entregas ?? "") && /M1 é o primeiro mês que começa depois do dia de origem/.test(def.entregas ?? ""))
+    itens.push({ termo: "W1 a W4 e M1 a M3", texto: "W1 a W4 são as quatro semanas, de sábado a sábado, que começam depois do dia de origem; M1 a M3 são os três meses civis que começam depois dele." });
   const celulas = /(\d+) células por modelo e rodada/.exec(def.entregas ?? "")?.[1];
   if (celulas) itens.push({ termo: "Rodada", texto: `cada emissão de previsões de um dia de origem; tem ${celulas} células por modelo, uma por horizonte e submercado.` });
   const p10 = /o quantil de 10% \(P10\) é o valor que o preço tem 10% de chance de não superar/.test(def.quantis ?? "");
   const faixa = /A faixa entre P10 e P90[^.]*\./.exec(def.quantis ?? "")?.[0];
   if (p10 && faixa) itens.push({ termo: "P10 e P90", texto: `P10 é o valor que o preço tem 10% de chance de não superar. ${faixa.replace(/\s*\(cobertura nominal\)/, "")}` });
   return itens;
+}
+
+/**
+ * Exemplo concreto de uma ficha, na primeira semana da rodada atual no Sudeste/Centro-Oeste. Do B0, lê a célula publicada (período
+ * repetido e número); do S0, que não emite número, só diz que período do ano anterior ele usaria, pela regra do registro de modelos (a semana que
+ * começa 364 dias antes da entrega). Outros modelos não têm exemplo.
+ */
+export function exemploDoModelo(f: Pick<Ficha, "codigo">, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, metodologia?: string | null): string | null {
+  const at = g.previsao_atual;
+  if (!temRodada(at)) return null;
+  const l = linhasGrade(at.celulas).find((x) => x.horizonte === "W1" && x.submercado === "SE");
+  if (!l) return null;
+  const semana = `${dataBR(l.inicio)} a ${dataBR(l.fim)}`;
+  if (f.codigo === "B0" && l.previsao !== null && l.periodo_inicio && l.periodo_fim)
+    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o B0 repete a média de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}, ${reaisMWh(l.previsao)}.`;
+  if (f.codigo === "S0" && metodologia && /364 dias antes da entrega/.test(metodologia))
+    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o S0 usaria a média do PLD de ${dataBR(somaDias(l.inicio, -364))} a ${dataBR(somaDias(l.fim, -364))}, a semana que começa 364 dias antes. O observatório não publica número do S0.`;
+  return null;
+}
+
+/** Explicação curta das entradas dos candidatos C2, lida dos próprios rótulos das entradas e do verbete da MLT (100% é o valor da média de longo termo). */
+export function notaEntradas(f: Pick<Ficha, "entradas">): string | null {
+  const e = f.entradas ?? [];
+  const partes: string[] = [];
+  if (e.some((x) => /− B0$/.test(x))) partes.push("Em “X − B0”, o modelo usa a diferença entre X e o B0.");
+  if (e.some((x) => /\(% da MLT\) − 100$/.test(x)))
+    partes.push("Na ENA em % da MLT, 100 é o valor da média de longo termo: “− 100” é quanto a ENA média dos 7 últimos dias fica acima ou abaixo dessa média.");
+  if (e.some((x) => /\(p\.p\.\)/.test(x))) partes.push("p.p. quer dizer ponto percentual.");
+  return partes.length ? partes.join(" ") : null;
 }
 
 /** Quando a rodada tem referência experimental, e não publicação de modelo em produção. */

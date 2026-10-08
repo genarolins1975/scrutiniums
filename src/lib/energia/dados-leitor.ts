@@ -248,6 +248,11 @@ export function separaIdentificadores(t: string): { texto: string; tecnico: stri
     tecnico.push(`(${lista})`);
     return "";
   });
+  // nome de coluna ou de campo entre parênteses ("(coluna mmgd_estimada)")
+  texto = texto.replace(/\s*\((?:colunas?|campos?)\s+[a-z][a-z0-9_]*(?:(?:,|\se)\s*[a-z][a-z0-9_]*)*\)/g, (trecho) => {
+    tecnico.push(trecho.trim());
+    return "";
+  });
   // a frase que cita o achado da auditoria ("Achado A06 (...): ...") é bastidor: fica em Analisar
   const achado = /\s+(Achado A\d+\b[\s\S]*)$/.exec(texto);
   if (achado) {

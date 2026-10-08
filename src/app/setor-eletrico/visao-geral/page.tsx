@@ -145,7 +145,7 @@ export default function VisaoGeralEnergia() {
   const m = g.multiplos;
   const datasRef = m ? Object.values(m.datas_referencia).filter((d): d is string => !!d).sort() : [];
   const titulosRegras = Object.fromEntries(g.observar.map((o) => [o.id, o.titulo]));
-  // pontes entre números que parecem divergir (causa e classificação em conteudo_r8): cada nota lê só dados publicados
+  // pontes entre números que parecem divergir (janelas, meses e universos diferentes): cada nota lê só dados publicados
   const cmo = lerGold<{ semana_referencia?: string; serie?: SemanaCmo[] }>("cmo.json");
   const inclusao = lerGold<{ tarifa_social?: { serie_mensal?: MesSerieTarifaSocial[] } }>("inclusao.json");
   const beneficios = g.sociedade.itens.find((x) => x.id === "beneficios");

@@ -18,7 +18,8 @@ describe("proveniência por painel", () => {
     // a Visão geral lê só sintese.json: cada frase leva versões (gold, snapshot, sha256), o caminho de
     // cada valor na gold de origem e a evidência "Comprove este número" (ver energia-visao.test.ts)
     expect(visao).toContain('lerGold<SinteseVisaoGold>("sintese.json")');
-    expect(visao).toContain("<VisaoFrases frases={g.frases} />");
+    // r8: a lista de frases também recebe as notas de ponte entre números (carga e rede), então o teste confere o início do elemento
+    expect(visao).toContain("<VisaoFrases frases={g.frases}");
     const tabelas = ler("src/components/energia/VisaoTabelasSobDemanda.tsx");
     expect(visao).toContain('<VisaoTabelasSobDemanda conjunto="sistema-auditoria"');
     expect(tabelas).toContain("linhasVersoes(g.frases)");

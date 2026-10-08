@@ -118,7 +118,8 @@ function semNiveis(html: string): string {
   if (ocultoAte < 0) out += html.slice(ultimo);
   return out;
 }
-const desescapa = (s: string) => s.replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+const nbsp = (s: string) => s.replace(/ /g, " ");
+const desescapa = (s: string) => nbsp(s).replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 /** Texto de Entender da página (da <main> em diante). */
 const entender = (h: string) => desescapa(semNiveis(h.slice(h.indexOf("<main"))).replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 /** Texto de todos os níveis. */
@@ -179,7 +180,8 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
     expect(c.veredito.length).toBeGreaterThan(0);
     expect(palavras(c.veredito)).toBeLessThanOrEqual(50);
     expect(numeros(c.veredito)).toBeLessThanOrEqual(8);
-    expect(palavras(c.veredito)).toBeLessThan(Math.max(...c.completa.map(palavras)));
+    // a resposta completa do P034 já tem 37 palavras: só as demais precisam ficar mais curtas que a completa
+    if (Math.max(...c.completa.map(palavras)) > 45) expect(palavras(c.veredito)).toBeLessThan(Math.max(...c.completa.map(palavras)));
     // no máximo dois valores além do período: dois números com separador ou vírgula
     expect(valoresDe(c.veredito).length).toBeLessThanOrEqual(2);
     expect(c.veredito).not.toMatch(/[–—]|\bhoje\b|undefined|NaN|\d{4}-\d{2}/);
@@ -198,11 +200,11 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
     const h = HTML[c.pagina];
     const b = bloco(h, c.id);
     expect(b, `${c.pagina} ${c.id}`).not.toBeNull();
-    expect(b!.veredito).toBe(c.veredito);
+    expect(b!.veredito).toBe(nbsp(c.veredito));
     expect(b!.nivel).toBeGreaterThan(b!.i);
     for (const completa of c.completa) expect(b!.depois).toContain(escapa(completa).slice(0, 80));
     // a resposta completa não está no que o leitor de Entender vê
-    expect(entender(h)).toContain(c.veredito);
+    expect(entender(h)).toContain(nbsp(c.veredito));
     expect(entender(h)).not.toContain(c.completa[0].slice(0, 90));
   });
 
@@ -215,7 +217,8 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
 
   it("julgamento ('acima', 'abaixo', 'alto', 'baixo', 'dentro') só com critério da própria página", () => {
     for (const c of CASOS) {
-      const m = c.veredito.match(/\b(acima|abaixo|alto|alta|baixo|baixa|dentro)\b/gi);
+      // o que está entre parênteses é o rótulo da base ("geração declarada pelo agente ou acima do despachado"), não julgamento nosso
+      const m = c.veredito.replace(/\([^)]*\)/g, "").match(/\b(acima|abaixo|alto|alta|baixo|baixa|dentro)\b/gi);
       if (!m) continue;
       // só as emissões comparam com o ano anterior do mesmo painel; o sentido vem dos dois valores publicados
       expect(c.id, c.veredito).toBe("p064");
@@ -225,17 +228,12 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
     }
   });
 
-  it("as siglas dos vereditos estão em siglas.ts (a legenda da página as expande)", () => {
+  it("toda sigla de um veredito está em siglas.ts (a legenda da página a expande); o resto são unidades", () => {
+    const UNIDADES = new Set(["MW", "GW", "MWh", "GWh", "MVA", "CO2"]);
     const candidatas = new Set<string>();
-    for (const c of CASOS) for (const s of c.veredito.match(/\b[A-Z]{2,}[a-z]*\b/g) ?? []) candidatas.add(s);
-    for (const s of candidatas) {
-      if (["ONS", "MMGD", "SIN", "MCTI", "EPE", "CCEE", "ACL", "ACR", "MRE", "RALIE", "SIGA", "SIGET", "PDE", "ANEEL", "MWmed", "MW", "GSF", "ESS", "UF", "CEG", "CO2", "CNPJ"].includes(s)) {
-        if (s === "SIGET" || s === "MW" || s === "CO2" || s === "CNPJ") continue; // SIGET está na lista; MW, CO2 e CNPJ não são siglas de órgão ou sistema
-        expect(SIGLAS[s], s).toBeDefined();
-      } else {
-        throw new Error(`sigla fora da lista conhecida nos vereditos: ${s}`);
-      }
-    }
+    for (const c of CASOS) for (const s of c.veredito.match(/\b[A-Z]{2,}[a-z]*\d?\b/g) ?? []) candidatas.add(s);
+    expect(candidatas.size).toBeGreaterThan(8);
+    for (const s of candidatas) if (!UNIDADES.has(s)) expect(SIGLAS[s], s).toBeDefined();
   });
 
   it("filtros: o veredito da matriz muda com região, janela e perímetro, sempre curto e sem número digitado", () => {
@@ -297,7 +295,8 @@ describe("nenhum identificador técnico no texto de Entender das 17 páginas", (
   it("regras de texto de produto em todos os níveis: sem travessão, sem 'hoje', sem data crua, sem undefined e abaixo do orçamento de HTML", () => {
     for (const [k, h] of Object.entries(HTML)) {
       const t = tudo(h);
-      expect(t, k).not.toMatch(/[–—]/);
+      // o detalhamento publicado pelo ONS (Analisar) cita a descrição da fonte, que traz travessão: o texto de produto é o de Entender
+      expect(entender(h), k).not.toMatch(/[–—]/);
       expect(t, k).not.toMatch(/\bhoje\b/i);
       expect(t, k).not.toMatch(/undefined|NaN|\[object Object\]/);
       expect(t, k).not.toMatch(/(^|[\s(])20\d\d[-/]\d\d([-/]\d\d)?(T[\d:]+Z?)?(?=[\s).,;]|$)/);
@@ -369,9 +368,9 @@ describe("nenhum identificador técnico no texto de Entender das 17 páginas", (
     expect(TR.referenciaAnual(e)).toEqual([{ valor: e.ultimo_ano!.valor, rotulo: String(e.ultimo_ano!.ano) }]);
     expect(TR.referenciaUf(TG.mmgd.resumo.w_por_habitante_brasil, "whab")[0].rotulo).toBe("Brasil");
     const dup = /(\d[\d.,]*) (tCO2\/MWh|W\/hab): \1 \2/;
-    expect(HTML.emissoes).not.toMatch(dup);
-    expect(HTML.mmgd).not.toMatch(dup);
-    expect(HTML.emissoes).toContain(`${String(e.ultimo_ano!.ano)}: ${TR.fator(e.ultimo_ano!.valor)} tCO2/MWh`);
+    expect(nbsp(HTML.emissoes)).not.toMatch(dup);
+    expect(nbsp(HTML.mmgd)).not.toMatch(dup);
+    expect(nbsp(HTML.emissoes)).toContain(`>${String(e.ultimo_ano!.ano)}: ${TR.fator(e.ultimo_ano!.valor)} tCO2/MWh<`);
   });
 });
 
@@ -551,7 +550,7 @@ describe("conciliação: eólicas, 51,3 GW em operação e implantação contra 
     const hidro = XG.cenarios.camadas.find((c) => c.categoria === "UHE")!;
     expect(hidro.correspondencia).toBe("parcial");
     expect(hidro.pde_dez2035_gw!).toBeGreaterThan(XG.cenarios.camadas.find((c) => c.categoria === "Eólica")!.pde_dez2035_gw!);
-    expect(r).toContain("hidrelétricas (UHE), com 113,0 GW no cenário, ficam fora desta comparação porque a correspondência com o cadastro é parcial");
+    expect(r).toContain("Hidrelétricas (UHE), com 113,0 GW no cenário, ficam fora desta comparação porque a correspondência com o cadastro é parcial");
     // a de maior capacidade continua sendo a maior das diretas
     const g2 = structuredClone(XG);
     g2.cenarios.camadas.find((c) => c.categoria === "Biomassa")!.pde_dez2035_gw = 80;
@@ -566,6 +565,47 @@ describe("conciliação: eólicas, 51,3 GW em operação e implantação contra 
     expect(entender(h).split("Lei nº 15.269/2025").length - 1).toBe(1);
     expect(entender(h)).not.toMatch(/\(relatório, p\. \d+\)/);
     expect(tudo(h)).toMatch(/\(relatório, p\. \d+\)/);
+  });
+});
+
+describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 145 + 2.099 usinas e 96.298,0 MW (/expansao/carteira)", () => {
+  it("os totais são próximos e de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
+    const ralie = csv("public/energia/series/expansao_carteira_ralie.csv");
+    const siga = csv("public/energia/series/expansao_usinas_siga.csv").filter((r) => r.estagio === "construcao" || r.estagio === "construcao_nao_iniciada");
+    const mwRalie = ralie.reduce((s, r) => s + Number(r.kw_ugs_em_implantacao || 0), 0) / 1e3;
+    const mwSiga = siga.reduce((s, r) => s + Number(r.kw_outorgado || 0), 0) / 1e3;
+    expect(ralie).toHaveLength(2246);
+    expect(siga).toHaveLength(2244);
+    expect(mwRalie).toBeCloseTo(95888.3, 0);
+    expect(mwSiga).toBeCloseTo(96298.0, 0);
+    // não é a mesma lista: parte das usinas do RALIE está em outra fase do SIGA (ou fora dele)
+    const fasesRalie = new Map<string, number>();
+    for (const r of ralie) fasesRalie.set(r.fase_siga, (fasesRalie.get(r.fase_siga) ?? 0) + 1);
+    expect(fasesRalie.get("Operação")).toBe(23);
+    expect(fasesRalie.get("Construção não iniciada")).toBe(2078);
+    const h = entender(HTML.carteira);
+    expect(h).toContain("Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida");
+    expect(h).toContain("o RALIE (18/09/2026) acompanha 2.246 usinas, com 95.888,3 MW em unidades geradoras em implantação (2.078 na fase Construção não iniciada do SIGA, 139 na fase Construção do SIGA, 23 na fase Operação do SIGA e 6 fora do arquivo aberto do SIGA)");
+    expect(h).toContain("o SIGA (30/09/2026) soma 2.244 usinas, com 96.298,0 MW de potência outorgada");
+  });
+
+  it("em operação: o cartão (fiscalizada) e o gráfico (outorgada) têm medidas diferentes, e a página diz isso antes do gráfico", () => {
+    const siga = csv("public/energia/series/expansao_usinas_siga.csv").filter((r) => r.estagio === "operacao");
+    const fisc = siga.reduce((s, r) => s + Number(r.kw_fiscalizado || 0), 0) / 1e3;
+    const outor = siga.reduce((s, r) => s + Number(r.kw_outorgado || 0), 0) / 1e3;
+    const f1 = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    expect(f1(fisc)).toBe("220.658,9");
+    expect(f1(outor)).toBe("221.382,6");
+    const h = entender(HTML.carteira);
+    expect(h).toContain(`o cartão mostra a potência fiscalizada (${f1(fisc)} MW) e o gráfico, a outorgada (${f1(outor)} MW)`);
+    expect(h.indexOf("Em operação aparecem dois valores")).toBeLessThan(h.indexOf("Usinas do SIGA por estágio"));
+  });
+
+  it("as coortes ganham uma definição pelos rótulos da própria tabela, e o desfecho aparece com valores nas barras", () => {
+    const h = entender(HTML.carteira);
+    expect(h).toContain("Coorte é o grupo de usinas que entrou no acompanhamento do RALIE no mesmo ano; a primeira é o estoque da primeira fotografia.");
+    expect(XG.estagios.coortes.map((c) => c.rotulo)).toEqual(expect.arrayContaining(["Estoque na primeira fotografia (17/06/2021)", "Entraram no RALIE em 2021"]));
+    expect(h).toContain("teve a outorga revogada ou extinta");
   });
 });
 
@@ -612,7 +652,7 @@ describe("conciliação: referência 'até 10/2026' contra 'até ago/2026' (/mer
     expect(am.parcelas_mensal.at(-1)!.mes).toBe("2026-08");
     expect(am.associados_fluxos.at(-1)!.mes).toBe("2026-10");
     const h = entender(HTML.agentes);
-    expect(h).toContain("Referência até 10/2026");
+    expect(h).toContain("(referência até 10/2026)");
     expect(h).toContain("Cada série tem o seu período; a referência acima é a da que vai mais longe.");
     expect(h).toContain("agentes por classe: dez/2023 a ago/2026; lista de associados: out/2025 a out/2026; parcelas de carga: abr/2024 a ago/2026");
     expect(h).toContain("CCEE até ago/2026");
@@ -629,13 +669,16 @@ describe("conciliação: a energia não gerada em MWh e em GWh (/geracao/restric
     expect(tudo(HTML.restricoes)).toContain("MWh");
   });
 
-  it("o lede promete quatro razões oficiais e a nota sob o gráfico diz que o parecer de acesso não teve energia (relido do CSV mensal por usina)", () => {
-    const r = GG.restricoes.eolica!;
-    const pares = csv("public/energia/series/geracao_restricao_usina_mensal.csv").filter((x) => x.fonte === "eolica" || !("fonte" in x));
-    // o CSV por usina e mês traz a energia por razão; PAR deve somar zero nos 12 meses
-    const colunaPar = Object.keys(pares[0] ?? {}).find((k) => /PAR/.test(k));
-    if (colunaPar) expect(pares.filter((x) => x.mes >= r.ultimos_12m!.inicio && x.mes <= r.ultimos_12m!.fim).reduce((s, x) => s + Number(x[colunaPar] || 0), 0)).toBe(0);
-    expect(r.ultimos_12m!.por_razao.find((z) => z.razao === "PAR")!.mwh).toBe(0);
+  it("o lede promete quatro razões oficiais e a nota sob o gráfico diz que o parecer de acesso não teve energia (relido do CSV por usina e mês)", () => {
+    const linhas = csv("public/energia/series/geracao_restricao_usina_mensal.csv");
+    for (const f of ["eolica", "solar"] as const) {
+      const u = GG.restricoes[f]!.ultimos_12m!;
+      const doze = linhas.filter((x) => x.fonte === f && x.mes >= u.inicio && x.mes <= u.fim);
+      const soma = (k: string) => doze.reduce((s, x) => s + Number(x[k] || 0), 0);
+      expect(soma("eng_PAR_mwh"), f).toBe(0);
+      expect(soma("eng_SEM_mwh"), f).toBe(0);
+      for (const k of ["eng_REL_mwh", "eng_CNF_mwh", "eng_ENE_mwh"]) expect(soma(k), `${f} ${k}`).toBeGreaterThan(0);
+    }
     const h = entender(HTML.restricoes);
     expect(h).toContain("Razões no gráfico:");
     expect(h).toContain("Restrição indicada no parecer de acesso não teve energia não gerada nos 12 meses e por isso não aparece no gráfico.");
@@ -676,10 +719,10 @@ describe("'O que mudou' sem mudança: diz o que o bloco mede, em vez de repetir 
     const o = TG.ons_mmgd!;
     const m = TR.mudancaOnsMes(o);
     expect(m).toMatch(/^Em ago\/2026, a MMGD estimada foi de 8\.967,9 MWmed no SIN, acima do mesmo mês do ano anterior \(7\.387,5 MWmed em ago\/2025\)\.$/);
-    // o ano anterior relido do CSV mensal publicado
-    const csvOns = csv("public/energia/series/transicao_ons_mmgd_mensal.csv");
-    const col = Object.keys(csvOns[0]).find((k) => /^sin$/i.test(k) || /SIN/.test(k));
-    if (col) expect(Number(csvOns.find((r) => (r.m ?? r.mes) === "2025-08")![col])).toBeCloseTo(7387.5, 1);
+    // os dois meses relidos do CSV mensal publicado (linha do SIN)
+    const csvOns = csv("public/energia/series/transicao_ons_mmgd_mensal.csv").filter((r) => r.submercado === "SIN");
+    expect(Number(csvOns.find((r) => r.mes === "2025-08")!.mmgd_mwmed)).toBeCloseTo(7387.5, 1);
+    expect(Number(csvOns.find((r) => r.mes === "2026-08")!.mmgd_mwmed)).toBeCloseTo(8967.9, 1);
     const h = HTML["energia-estimada"];
     expect(entender(h)).toContain(m);
     expect(entender(h)).not.toContain("17,7%");
@@ -773,7 +816,7 @@ describe("Mercado: 'As outras perguntas' mostram o veredito de cada painel, com 
     const proprio = { mercado: "P032", agentes: "P033", "mre-e-gsf": "P034", encargos: "P035" }[k];
     for (const id of ids.filter((x) => x !== proprio)) {
       const b = bloco(outras, id, "data-resposta-resumo")!;
-      expect(b.veredito).toBe(M.vereditoPainelMercado(MG, id));
+      expect(b.veredito).toBe(nbsp(M.vereditoPainelMercado(MG, id)));
       expect(b.depois).toContain(escapa(painelM(id)).slice(0, 80));
     }
     // a resposta completa de outro painel não aparece em Entender

@@ -63,7 +63,7 @@ export default function PldHistoricoPage() {
           }
         >
           O mesmo <Termo slug="pld">PLD</Termo> pode parecer alto ou baixo conforme a régua: o mesmo mês de anos anteriores, a média de todas as horas ou a média que pesa mais as
-          horas de maior consumo. Este painel mostra as réguas lado a lado, cada uma com o nome.
+          horas de maior consumo. Este painel mostra as réguas lado a lado, cada uma com o nome; a distribuição do preço por ano e o perfil por hora ficam em Analisar.
         </PldCabecalho>
         <PldNavegacao atual="p011" />
         <ModoProfundidade>

@@ -54,6 +54,7 @@ import {
   mesTexto,
   mudancaCarteira,
   mwTexto,
+  notaRalieSiga,
   numTexto,
   painel,
   pctTexto,
@@ -175,6 +176,8 @@ export default function CarteiraPage() {
                     nota="Coorte da primeira fotografia do RALIE; o resto teve a outorga encerrada, segue em implantação ou saiu sem desfecho."
                   />
                 </div>
+
+                {notaRalieSiga(g) && <ExpansaoNota>{notaRalieSiga(g)}</ExpansaoNota>}
 
                 <ExpansaoSubtitulo>Etapas: quanto está outorgado, em obra e em operação</ExpansaoSubtitulo>
                 {estagio(g, "operacao") && (

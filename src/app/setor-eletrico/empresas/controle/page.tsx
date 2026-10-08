@@ -94,7 +94,8 @@ export default function PaginaP039() {
           }
         >
           Quem está no topo da cadeia de controle declarada à ANEEL de cada dono de usina, quanto da capacidade instalada cada grupo detém e controla, e quão concentrada ela está,
-          sobre um recorte de usinas dito explicitamente, a fronteira: as usinas em operação cujas participações somam 100%.
+          sobre um recorte de usinas dito explicitamente, a fronteira: as usinas em operação cujas participações somam 100%. Cada agente declara à ANEEL, a cada trimestre, quem são os seus sócios; vale a
+          última declaração de cada um dentro do intervalo de trimestres considerado.
         </CabecalhoModulo>
         <EmpresasNavegacao atual="p039" />
         <ModoProfundidade>
@@ -112,7 +113,7 @@ export default function PaginaP039() {
               }
               oQueMudou={
                 <>
-                  O grafo usa a última declaração de cada agente entre {janela} (referência: {trimestreTexto(ct.polimero?.trimestre_referencia)}, com {inteiro(ct.polimero?.declarantes)}{" "}
+                  A cadeia de controle usa a última declaração de cada agente de {janela} (referência: {trimestreTexto(ct.polimero?.trimestre_referencia)}, com {inteiro(ct.polimero?.declarantes)}{" "}
                   declarantes); {inteiro(ct.polimero?.agentes_com_mudanca_relevante_declarada)} agentes declararam mudança societária relevante em algum momento da base.
                 </>
               }
@@ -158,7 +159,7 @@ export default function PaginaP039() {
                     tamanho="medio"
                     nota={
                       ct.concentracao.grupo_proporcional?.faixa
-                        ? `${ROTULO_FAIXA[ct.concentracao.grupo_proporcional.faixa]} nas faixas do Guia do CADE; CR4 ${pctTexto(ct.concentracao.grupo_proporcional.cr4, 2)}, CR10 ${pctTexto(ct.concentracao.grupo_proporcional.cr10, 2)}. O período vai do início da janela de declarações (${inicioJanela}) à data do SIGA.`
+                        ? `${ROTULO_FAIXA[ct.concentracao.grupo_proporcional.faixa]} nas faixas do Guia do CADE; CR4 ${pctTexto(ct.concentracao.grupo_proporcional.cr4, 2)}, CR10 ${pctTexto(ct.concentracao.grupo_proporcional.cr10, 2)}. O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`
                         : undefined
                     }
                     endereco={ancoraPainel("p039")}

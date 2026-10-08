@@ -76,7 +76,7 @@ export function EmpresasArvore({
             ))}
           </ol>
           <p className="mt-1 text-xs text-carvao-muted" data-nomes-cnpj="">
-            O nome de cada nível é o do cadastro; o nome de um sócio é o que o declarante escreveu à ANEEL. O mesmo CNPJ pode aparecer com nomes diferentes: o CNPJ é o que identifica a empresa.
+            O nome de cada nível é a razão social registrada para o CNPJ; o nome de um sócio é o que o declarante escreveu à ANEEL. O mesmo CNPJ pode aparecer com nomes diferentes: o CNPJ é o que identifica a empresa.
           </p>
         </div>
         <div>

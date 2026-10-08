@@ -165,6 +165,16 @@ export function EmpresasDistribuidoras({ linhas, entidades, comparacao, padrao, 
           </div>
         )}
         {dados.length > 0 && (
+          <div className="space-y-1 text-xs leading-relaxed text-carvao-muted" data-valores-continuidade="">
+            <p>
+              DEC apurado e limite: {dados.map((d) => `${d.rotulo}, ${d.dec === null ? "sem dado" : `${num(d.dec, 2)} h`} e ${d.dec_limite === null ? "sem limite" : `${num(d.dec_limite, 2)} h`}`).join("; ")}.
+            </p>
+            <p>
+              FEC apurado e limite: {dados.map((d) => `${d.rotulo}, ${d.fec === null ? "sem dado" : num(d.fec, 2)} e ${d.fec_limite === null ? "sem limite" : num(d.fec_limite, 2)} interrupções`).join("; ")}.
+            </p>
+          </div>
+        )}
+        {dados.length > 0 && (
           <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
             {dados.map((d) => (
               <li key={d.id}>

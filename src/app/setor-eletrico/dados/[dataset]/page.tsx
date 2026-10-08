@@ -20,10 +20,13 @@ import {
   licencaParaCitacao,
   nomeDoArquivo,
   nomeDoConjunto,
+  nomesLegiveisDosTitulos,
   notasDeQuebraPosterior,
   rotuloDoLinkOficial,
   rotuloDoArquivo,
+  trocaIdentificadores,
 } from "@/lib/energia/dados-ficha";
+import { separaIdentificadores } from "@/lib/energia/dados-leitor";
 import { descricoesCompletas, metricasPublicadas, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -31,7 +34,8 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return DATASETS_INTEGRADOS.map((d) => ({ dataset: d.slug }));
+  // alguns conjuntos que um módulo integra juntos dividem o mesmo endereço de ficha: um caminho por ficha
+  return DATASETS_INTEGRADOS.filter((d, i, todas) => todas.findIndex((x) => x.slug === d.slug) === i).map((d) => ({ dataset: d.slug }));
 }
 
 export function generateMetadata({ params }: { params: { dataset: string } }): Metadata {
@@ -90,6 +94,9 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
       return ex ? nomeDoConjunto(ex, (pub?.conjuntos ?? []).filter((c) => c.id.endsWith(`/${x.interno}`))).nome : x.slug;
     });
   const paraCitar = licencaParaCitacao(licenca.nome);
+  const nomesDosTitulos = nomesLegiveisDosTitulos(cat.entradas, pub?.conjuntos ?? []);
+  // o catálogo dá o mesmo endereço a conjuntos que um módulo integra juntos: a ficha vale para todos eles
+  const companheiros = cat.entradas.filter((x) => x.slug === d.slug && x.id !== e.id);
 
   return (
     <>
@@ -172,7 +179,12 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   <li key={`${q.data}-${q.origem ?? "FONTE"}`}>
                     <strong className="font-medium">{dataBR(q.data)}</strong>
                     <span className="rotulo ml-2 text-mineral">{q.origem === "PLATAFORMA" ? "identificada pela Scrutiniums no dado" : "declarada pela fonte"}</span>
-                    <span className="block">{q.descricao}</span>
+                    <span className="block">
+                      {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).texto}
+                      {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).tecnico && (
+                        <span data-nivel="analisar"> {separaIdentificadores(trocaIdentificadores(q.descricao, nomesDosTitulos)).tecnico}</span>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -181,6 +193,25 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   {n}
                 </p>
               ))}
+            </section>
+          )}
+
+          {companheiros.length > 0 && (
+            <section className="mt-8 border border-linha bg-superficie p-6" data-companheiros="true">
+              <h2 className="font-serif text-xl text-carvao">Outros conjuntos desta ficha</h2>
+              <p className="mt-1 text-sm text-carvao-muted">O catálogo registra {plural(companheiros.length, "outro conjunto", "outros conjuntos")} com o mesmo endereço de ficha, porque um mesmo módulo do observatório os integra juntos. O que esta ficha diz da coleta vale para o grupo.</p>
+              <ul className="mt-3 space-y-1 text-sm text-carvao">
+                {companheiros.map((x) => (
+                  <li key={x.id}>
+                    <strong className="font-medium">{nomeDoConjunto(x, (pub?.conjuntos ?? []).filter((c) => (x.integracoes ?? []).some((i) => i.id === c.id))).nome}</strong> ({x.orgao}){" "}
+                    {urlDoConjunto(x) && (
+                      <a href={urlDoConjunto(x) ?? undefined} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
+                        página oficial ↗
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 

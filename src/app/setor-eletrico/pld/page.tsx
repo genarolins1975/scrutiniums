@@ -193,7 +193,7 @@ export default function PldPage() {
               </a>
             ))}
           </nav>
-          <LegendaDeSiglas siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "ONS", "ANEEL", "REN"]} />
+          <LegendaDeSiglas siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "CVU", "ONS", "ANEEL", "REN"]} />
         </header>
         <PldNavegacao atual="p008" />
 

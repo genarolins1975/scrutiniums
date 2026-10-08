@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -158,10 +159,16 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
             </dd>
           </div>
           <div className="bg-superficie p-4">
-            <dt className="rotulo text-mineral">No menor valor observado do ano?</dt>
+            <dt className="rotulo text-mineral">Quanto do período ficou no menor valor horário do ano?</dt>
             <dd className="mt-1 text-sm text-carvao">
-              {SMS.map((s) => `${s.id === "SE" ? "SE/CO" : s.id} ${p(at.stats[s.id].frac_menor_valor_ano)}`).join(" · ")} das horas.
-              <span className="mt-1 block text-xs text-mineral">Menor valor observado não é o piso regulatório: o limite oficial não foi auditado nesta fase.</span>
+              {SMS.map((s) => `${s.id === "SE" ? "SE/CO" : s.id} ${p(at.stats[s.id].frac_menor_valor_ano)}`).join(" · ")} das {at.nHoras.toLocaleString("pt-BR")} horas do período.
+              <span className="mt-1 block text-xs text-mineral">
+                O menor valor horário observado no ano não é o piso regulatório; o piso de cada ano está na{" "}
+                <Link href="/setor-eletrico/pld/limites" className="underline underline-offset-4">
+                  página de limites
+                </Link>
+                .
+              </span>
             </dd>
           </div>
           <div className="bg-superficie p-4">

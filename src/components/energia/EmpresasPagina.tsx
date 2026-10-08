@@ -189,7 +189,7 @@ export function EmpresasComoLer() {
         dentro dele; diferença positiva, acima do limite.
       </p>
       <p>
-        <span className="text-carvao">Tarifa B1.</span> No conjunto de dados da ANEEL, o subgrupo B1 é a tarifa residencial. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem tributos e
+        <span className="text-carvao">Tarifa B1.</span> A tarifa residencial é, no conjunto de dados da ANEEL, a do subgrupo B1. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem tributos e
         sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
       </p>
     </div>

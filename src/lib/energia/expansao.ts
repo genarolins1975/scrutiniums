@@ -1508,3 +1508,17 @@ export function ressalvaLegivel(r: string): { texto: string; campo: string | nul
 export function semNomeDeCampo(texto: string): string {
   return texto.replace(/\s*\((?:soma|campo) de [A-Z][A-Za-z0-9]+\)/g, "");
 }
+
+/**
+ * RALIE e SIGA somam carteiras de totais próximos (usinas e MW) que não são a mesma lista nem a mesma medida: o RALIE conta as
+ * unidades geradoras em implantação na fotografia dele; o SIGA, a potência outorgada nas fases Construção e Construção não
+ * iniciada, na data do arquivo dele. A nota diz isso com a distribuição das usinas do RALIE pelas fases do SIGA.
+ */
+export function notaRalieSiga(g: Pick<ExpansaoGold, "estagios">): string {
+  const r = g.estagios.ralie;
+  const con = estagio(g, "construcao");
+  const nao = estagio(g, "construcao_nao_iniciada");
+  if (!con || !nao || !r.fase_no_siga?.length) return "";
+  const fases = r.fase_no_siga.map((f) => `${inteiro(f.usinas)} ${f.fase === "ausente do SIGA" ? "fora do arquivo aberto do SIGA" : `na fase ${f.fase} do SIGA`}`);
+  return `Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida: o RALIE (${dataTexto(r.data_ralie)}) acompanha ${inteiro(r.usinas)} usinas, com ${mwTexto(r.mw_ugs_em_implantacao)} em unidades geradoras em implantação (${listaTexto(fases)}); o SIGA (${dataTexto(g.estagios.data_referencia)}) soma ${inteiro(con.usinas + nao.usinas)} usinas, com ${mwTexto(con.mw_outorgado + nao.mw_outorgado)} de potência outorgada, nas fases Construção e Construção não iniciada.`;
+}
