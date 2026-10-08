@@ -23,8 +23,8 @@ for (const rota of ROTAS) {
     page.on("pageerror", (e) => erros.push(e.message));
     page.setDefaultTimeout(45000);
     try {
-      await page.goto(`${base}${rota}`, { waitUntil: "load" });
-      await page.waitForTimeout(600);
+      await page.goto(`${base}${rota}`, { waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(1200);
     } catch (e) {
       linhas.push({ rota, largura: lbl, rolagem: -1, literais: -1, tempos: -1, axe: "falha de carregamento", erros: 1 });
       await page.close();
@@ -47,11 +47,29 @@ for (const rota of ROTAS) {
       axeViol = v.length ? v.join(",") : "0";
     }
     if (lit > 0 && (lbl === "1440" || lbl === "390" || lbl === "320")) {
-      const el = page.locator("[data-literal-fonte]").first();
-      await el.scrollIntoViewIfNeeded().catch(() => {});
-      const alvo = el.locator("xpath=ancestor::*[self::li or self::p or self::td or self::th or self::dd][1]");
-      const caixa = (await alvo.count()) ? alvo.first() : el;
-      await caixa.screenshot({ path: `${out}/${nome(rota)}-literal-${lbl}.png` }).catch(() => {});
+      // o bloco do primeiro literal, centralizado na janela (captura da janela, que não depende da rolagem interna da tabela)
+      const lit1 = page.locator("[data-literal-fonte]").first();
+      const abre = () => lit1.evaluate((e) => { for (let n = e; n; n = n.parentElement) if (n.tagName === "DETAILS") n.open = true; }).catch(() => {});
+      const visivel = () => lit1.evaluate((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }).catch(() => false);
+      await abre();
+      // páginas com modos (Entender, Analisar, Auditar): ativa o modo que mostra o literal
+      for (const modo of ["Auditar", "Analisar", "Entender"]) {
+        if (await visivel()) break;
+        await page.getByRole("radio", { name: new RegExp(`^${modo}$`, "i") }).first().click({ timeout: 3000 }).catch(() => {});
+        await page.waitForTimeout(300);
+        await abre();
+      }
+      await lit1.evaluate((e) => e.scrollIntoView({ block: "center", inline: "center", behavior: "instant" })).catch(() => {});
+      await page.waitForTimeout(250);
+      // a linha, o item ou o parágrafo que envolve o literal, recortado da janela (funciona dentro de tabelas roláveis)
+      const bloco = lit1.locator("xpath=ancestor::*[self::tr or self::li or self::p or self::dd][1]").first();
+      const caixa = (await bloco.boundingBox().catch(() => null)) ?? (await lit1.boundingBox().catch(() => null));
+      const alvo = `${out}/${nome(rota)}-literal-${lbl}.png`;
+      if (caixa) {
+        const m = 10;
+        const x = Math.max(0, caixa.x - m), y = Math.max(0, caixa.y - m);
+        await page.screenshot({ path: alvo, clip: { x, y, width: Math.min(w - x, caixa.width + 2 * m), height: Math.min(h - y, caixa.height + 2 * m) }, timeout: 15000 }).catch(() => {});
+      } else await page.screenshot({ path: alvo, timeout: 15000 }).catch(() => {});
     }
     linhas.push({ rota, largura: lbl, rolagem, literais: lit, tempos: tempo, axe: axeViol, erros: erros.length });
     console.error(`ok ${rota} @${lbl}`);
