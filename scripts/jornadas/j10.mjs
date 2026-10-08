@@ -89,7 +89,9 @@ export default {
       j.afirmar(mapa.size === linhas.length, "identificadores repetidos na tabela do arquivo");
       return { cab, mapa, iId };
     };
-    const resposta = async () => normaliza(await p.locator("[data-resposta=p015]").innerText());
+    // a resposta completa fica na segunda camada (visível em Analisar e Auditar); o veredito fica à vista em todos os níveis
+    const resposta = async () => normaliza(await p.locator("[data-resposta=p015] [data-recorte]").innerText());
+    const veredito = async () => normaliza(await p.locator("[data-resposta=p015] > p").first().innerText());
     const porNome = (cab, linha) => Object.fromEntries(cab.map((c, i) => [c, linha[i]]));
     const barra = (rotulo) => p.locator(`g[role=button][aria-label^="${rotulo}"]`).first();
 
@@ -222,7 +224,7 @@ export default {
       }
       const w1 = linhas.find((l) => l["Horizonte"] === "W1" && l["Submercado"] === "SE/CO");
       g.arquivo30 = w1["Previsão arquivada (R$/MWh)"];
-      return `${rotulo}; ${c}; todas "com número", P10 e P90 "sem dado" (sem faixa), Realizado "sem dado"; W1 SE/CO arquivada em R$ ${w1["Previsão arquivada (R$/MWh)"]}/MWh, emitida em ${w1["Emitida em (Brasília)"]}, atraso ${w1["Atraso sobre o prazo (min)"]} min, código ${w1["Versão do código"]}`;
+      return `${rotulo}; ${c}; todas "com número", P10 e P90 "sem dado" (sem faixa), Realizado "sem dado"; W1 SE/CO arquivada em R$ ${w1["Previsão arquivada (R$/MWh)"]}/MWh, emitida em ${w1["Emitida em (Brasília)"]}, atraso ${w1["Atraso sobre o prazo (min)"]} min`;
     });
 
     await j.passo("Seleciona W1 SE/CO da rodada de 30/09 e compara a previsão arquivada com a de Previsão atual", async () => {
@@ -273,9 +275,11 @@ export default {
       await j.esperar(900);
       j.afirmar(new URL(p.url()).searchParams.get("em") === "2026-09-29", `URL sem em=2026-09-29: ${j.url()}`);
       const r = await resposta();
-      const m = r.match(/Ao fim de 29\/09\/2026, o arquivo tinha (\d+) registros \(de (\d+) hoje\) de (\d+) rodada/);
+      const m = r.match(/Ao fim de 29\/09\/2026, o arquivo tinha (\d+) registros \(de (\d+) no arquivo completo\) de (\d+) rodada/);
       j.afirmar(m, `texto inesperado: ${r.slice(0, 160)}`);
       j.afirmar(Number(m[1]) === 28 && Number(m[2]) === g.total, `a página diz ${m[1]} de ${m[2]}`);
+      const v29 = await veredito();
+      j.afirmar(/^Ao fim de 29\/09\/2026, o arquivo tinha 28 registros \(de \d+ no arquivo completo\) de 1 rodada/.test(v29), `veredito fora do recorte de 29/09: ${v29.slice(0, 160)}`);
       antigo = await lerArquivo();
       j.afirmar(antigo.mapa.size === 28, `a tabela mostra ${antigo.mapa.size} linhas, não 28`);
       const ids = [...antigo.mapa.keys()];
@@ -283,7 +287,7 @@ export default {
       j.afirmar(ids.every((k) => esperados.includes(k)) && esperados.every((k) => ids.includes(k)), "as linhas visíveis não são exatamente as que já estavam incluídas em 29/09/2026");
       j.afirmar(!ids.some((k) => k.startsWith(ID_30)), "há linha da rodada de 30/09 na visão de 29/09");
       const cont = await contagemArquivo();
-      return `controle aceita datas de ${min} a ${max}; texto: "Ao fim de 29/09/2026, o arquivo tinha ${m[1]} registros (de ${m[2]} hoje) de ${m[3]} rodada"; tabela "${cont}"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09`;
+      return `controle aceita datas de ${min} a ${max}; texto: "Ao fim de 29/09/2026, o arquivo tinha ${m[1]} registros (de ${m[2]} no arquivo completo) de ${m[3]} rodada"; tabela "${cont}"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09`;
     });
 
     await j.passo("Compara célula a célula as 28 linhas da visão antiga com as mesmas linhas de hoje", async () => {
@@ -373,7 +377,7 @@ export default {
     });
 
     await j.passo("Abre Desempenho e calibração e lê que ainda não há resultado para comparar com a previsão", async () => {
-      await j.clicar(p.locator('a[href="#p016"]').first());
+      await j.clicar(p.locator('nav[aria-label="Painéis de previsões e modelos"] a[data-painel="P016"]'));
       await p.waitForLoadState("networkidle");
       await j.esperar(900);
       j.afirmar(/\/pld\/modelos/.test(p.url()), `URL inesperada: ${j.url()}`);

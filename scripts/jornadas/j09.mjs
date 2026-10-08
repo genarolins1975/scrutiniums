@@ -73,12 +73,13 @@ export default {
       await j.clicar(p.getByRole("radio", { name: /analisar/i }));
       await j.esperar(600);
     };
-    /** a ficha do conjunto guarda coleta, snapshot e capturas num bloco fechado; abre para ler */
+    /** a ficha do conjunto guarda coleta, snapshot e capturas no nível Auditar; escolhe o nível e rola até o bloco */
     const abreDetalhesTecnicos = async () => {
-      const resumo = p.locator("details[data-detalhes-tecnicos] > summary");
-      await resumo.scrollIntoViewIfNeeded();
-      await j.clicar(resumo);
-      await j.esperar(300);
+      await j.clicar(p.getByRole("radio", { name: /auditar/i }));
+      await j.esperar(400);
+      const bloco = p.locator("[data-detalhes-tecnicos]").first();
+      await bloco.scrollIntoViewIfNeeded();
+      j.afirmar(await bloco.isVisible(), "o bloco de capturas guardadas não ficou visível em Auditar");
     };
     /** rola até a tabela com o cabeçalho pedido aparecer (as tabelas carregam sob demanda) */
     const acharTabela = async (rotuloCabecalho) => {
@@ -353,7 +354,7 @@ export default {
         atraso: /atrasad|além do prazo|defasad/i.test(t),
         texto: t,
       };
-      return `${j.url()}; título "${fichaScs.titulo.slice(0, 60)}"; última captura "${fichaScs.captura}"; última tentativa de coleta direta "${fichaScs.tentativa}"; menciona atraso: ${fichaScs.atraso ? "sim" : "não"}`;
+      return `${j.url()}; título "${fichaScs.titulo.slice(0, 60)}"; última captura "${fichaScs.captura}"; última tentativa de coleta direta ${fichaScs.tentativa ? `"${fichaScs.tentativa}"` : "não registrada (o conjunto só tem a captura das integrações)"}; menciona atraso: ${fichaScs.atraso ? "sim" : "não"}`;
     });
 
     await j.passo("Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero", async () => {
@@ -376,7 +377,7 @@ export default {
       j.afirmar(/sem dado para medir/i.test(t), "a ficha do conjunto sem dado não diz que a atualidade não pode ser medida");
       const campos = {
         "Última modificação na fonte": /ÚLTIMA MODIFICAÇÃO DE METADADOS NA FONTE (.*?)(?= Observação sobre a licença| Mudanças metodológicas| Detalhes técnicos|$)/i,
-        Formatos: /FORMATOS PUBLICADOS (.*?) USADO NAS PÁGINAS/i,
+        Formatos: /FORMATOS PUBLICADOS (.*?) DATA DE REFERÊNCIA/i,
       };
       const snap = t.match(/SNAPSHOT (.*?) SHA256 DO SNAPSHOT/i);
       j.afirmar(!snap || !/^0([.,]0+)?$/.test(snap[1].trim()), `o campo Snapshot mostra ${snap && snap[1]}, um zero no lugar de ausência`);
@@ -386,7 +387,7 @@ export default {
         j.afirmar(m, `campo ${nome} não achado`);
         lidos[nome] = m[1].trim();
         j.afirmar(!/^0([.,]0+)?$/.test(lidos[nome]), `o campo ${nome} mostra ${lidos[nome]}, um zero no lugar de ausência`);
-        j.afirmar(/^(–|sem captura|sem snapshot|não informad[oa]|não declarad[oa])$/i.test(lidos[nome]), `o campo ${nome} mostra "${lidos[nome]}", não uma marca explícita de ausência`);
+        j.afirmar(/^(–|sem captura|sem snapshot|não informad[oa]s?|não declarad[oa]s?)( no catálogo(; o endereço oficial é um arquivo \.\w+)?)?$/i.test(lidos[nome]), `o campo ${nome} mostra "${lidos[nome]}", não uma marca explícita de ausência`);
       }
       j.afirmar(/campo vazio significa ausência, nunca zero/.test(t), "a ficha não traz a regra do campo vazio");
       return `${j.url()}; última captura ${cap[1].slice(0, 12)}; atualidade "sem dado para medir"; campos sem valor: ${Object.entries(lidos).map(([k, v]) => `${k} "${v}"`).join("; ")}; a ficha traz "campo vazio significa ausência, nunca zero"`;
