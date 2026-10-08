@@ -50,11 +50,15 @@ Fonte oficial ──► pipeline/eficiencia/fontes/*.py   (coleta, integridade, 
                      ▼
                 pipeline/eficiencia/seed/          (recortes CSV/JSON gzip determinísticos + manifesto.json)
                      ▼
-                padroniza.py   observações tipadas: indicador, ente, ano, etapa, componente, valor, status, nota, fonte, registro
+                conferencia.py política de conferência DCA × RREO × MSC (pura, versionada)
                      ▼
-                validacoes.py  V01 a V12 automáticas + M01 medição
+                padroniza.py   observações tipadas: indicador, ente, ano, etapa, componente, valor, status, nota,
+                               nota_material, elegivel_comparacao, conferencia, fonte, registro
                      ▼
-                gold.py        public/eficiencia/gold/educacao_capitais.json + public/eficiencia/series/*.csv
+                validacoes.py  V01 a V13 automáticas + M01 e M02 medições
+                     ▼
+                gold.py        promove(): monta gold e séries em pasta temporária; só substitui public/eficiencia
+                               sem validação reprovada (senão grava em data/eficiencia/diagnostico e sai com código 1)
                      ▼
 src/lib/eficiencia/dados.ts    leitura no build e payload compacto do cliente (tuplas, textos deduplicados)
 src/lib/eficiencia/consulta.ts seleção, pares, mediana, composição, linhas da tabela e CSV (sem cálculo contábil)
@@ -70,19 +74,20 @@ Responsabilidades separadas logicamente (coleta, padronização, validação, c�
 * **Rede**: dependência administrativa do Censo (municipal = 3; privada conveniada com o município = 4 com parceria municipal). Responsável (ente), local da escola (município) e rede são campos distintos; município de residência do aluno não é usado.
 * **Indicador e versão**: `catalogo_indicadores.json` (id estável, ficha completa, versão metodológica, estado de publicação).
 * **Fonte e versão da extração**: `seed/manifesto.json` (URL, membro do pacote, publicado em, capturado em, sha256 do original e do recorte, MD5 conferido).
-* **Observação**: ente, ano, etapa, componente, valor, status, nota, fonte, registro; participação (composição); conferência com o RREO e comparabilidade (despesa).
+* **Observação**: ente, ano, etapa, componente, valor, status, nota, materialidade da nota, elegibilidade para comparação, fonte, registro; participação (composição); conferência completa na despesa (situação, RREO, MSC, diferença, evidências, sha256 das fontes, quebra de série).
 * **Cobertura e comparabilidade**: calculadas na gold por indicador, ano e etapa; capitais sem valor listadas com estado.
 
 ### Estados de dado
 
-`OBSERVADO`, `NAO_APLICAVEL`, `NAO_DIVULGADO`, `AUSENTE_NA_COLETA`, `DESATUALIZADO`, `INCONSISTENTE`, `NAO_COMPARAVEL`, `INDISPONIVEL_TEMPORARIAMENTE`. Só `OBSERVADO` tem valor (validação V09).
+`OBSERVADO`, `NAO_APLICAVEL`, `NAO_DIVULGADO`, `AUSENTE_NA_COLETA`, `DESATUALIZADO`, `INCONSISTENTE`, `INCOMPLETO`, `NAO_COMPARAVEL`, `INDISPONIVEL_TEMPORARIAMENTE`. Só `OBSERVADO` tem valor (validação V09). Elegibilidade para comparação é dimensão separada do estado: um valor `OBSERVADO` pode estar fora das comparações (V13).
 
 ### Componentes de interface
 
 | Componente | Função |
 | --- | --- |
 | `PainelEducacao` | Controles (capital, ano, etapa, indicador da comparação, grupo, moeda, disciplina, copiar link, restaurar), números de orientação, séries, comparação, decomposição e tabela auditável |
-| `MiniSerie` | Série com lacunas (nunca ponte entre anos sem valor), anotações de quebra, dica por ponteiro e teclado |
+| `MiniSerie` | Série com lacunas (nunca ponte entre anos sem valor nem com valor fora das comparações, marcado em losango), anotações de quebra, dica por ponteiro e teclado |
+| `Ressalva` | Nota ou ressalva ao lado do valor, em `details`/`summary` (abre por teclado), com rótulo distinto para nota, ressalva e fora das comparações |
 | `GraficoPontosPares` | Pontos por capital, ordem alfabética ou por valor, seleção destacada, mediana do grupo |
 | `BarrasComposicao` | Composição em barras de cor única, na ordem da classificação oficial |
 | `Passaporte` / `FichaConteudo` | Ficha de 16 campos, em diálogo (a partir do valor, do gráfico e da tabela) e na seção de métodos |

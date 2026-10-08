@@ -164,6 +164,8 @@ def fontes():
     grupos = {
         "siconfi_dca_anexo_i_e": ["siconfi_dca_anexo_i_e"],
         "siconfi_rreo_anexo_02_b6": ["siconfi_rreo_anexo_02_b6"],
+        "siconfi_msc_funcao12": [k for k in ("siconfi_msc_funcao12",) if k in m],
+        "siconfi_evidencias_divergencia": [k for k in ("siconfi_evidencias_divergencia",) if k in m],
         "siconfi_entes": ["siconfi_entes"],
         "ibge_ipca": ["ibge_ipca"],
         "inep_censo": sorted(k for k in m if k.startswith("inep_censo_")),
@@ -175,6 +177,8 @@ def fontes():
     papel = {
         "siconfi_dca_anexo_i_e": "Fonte da despesa liquidada na função Educação e da composição por subfunção.",
         "siconfi_rreo_anexo_02_b6": "Somente conferência cruzada da DCA; nunca somado.",
+        "siconfi_msc_funcao12": "Terceira fonte da conferência da despesa, usada quando a diferença entre DCA e RREO é material; nunca somada.",
+        "siconfi_evidencias_divergencia": "Evidência documental dos casos com diferença material (extrato de entregas e RREO do 5º bimestre); não alimenta valores.",
         "siconfi_entes": "Conferência dos códigos IBGE e da marcação de capital.",
         "ibge_ipca": "Correção monetária opcional para reais de 2025.",
         "inep_censo": "Fonte das matrículas da rede municipal e das escolas privadas conveniadas com o município.",
@@ -185,6 +189,8 @@ def fontes():
     }
     out = []
     for gid, chaves in grupos.items():
+        if not chaves:
+            continue
         caps = []
         for k in chaves:
             c = dict(m[k])

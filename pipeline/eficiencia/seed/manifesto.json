@@ -2380,6 +2380,39 @@
    "sha256_recorte": "c3e4ff9b476ba29155df0e0c810069fe8a785d748c9ed5134ed454360c97cd21",
    "linhas_recorte": 5598
   },
+  "siconfi_evidencias_divergencia": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Extrato de entregas do ente e RREO do 5º bimestre, Anexo 02 (evidências de divergência DCA × RREO)",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=<código IBGE>&an_referencia=<ano>",
+   "parametros": "coletadas só para os pares com diferença material; não alimentam valores publicados",
+   "arquivos": {
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=1400100&an_referencia=2024",
+     "urls": [
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=1400100&an_referencia=2024",
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=1400100&an_referencia=2025",
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=5&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100"
+     ],
+     "capturado_em": "2026-10-08T13:04:01Z",
+     "recorte": "pipeline/eficiencia/seed/siconfi/evidencias_divergencia/1400100_2024.json.gz",
+     "sha256": "c9ac03f05760626b2b322ae8f625f8c3fec4409bddbd5849629bc5af4a1e8f50",
+     "linhas": 158
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=5002704&an_referencia=2021",
+     "urls": [
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=5002704&an_referencia=2021",
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=5002704&an_referencia=2022",
+      "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=5&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704"
+     ],
+     "capturado_em": "2026-10-08T13:04:04Z",
+     "recorte": "pipeline/eficiencia/seed/siconfi/evidencias_divergencia/5002704_2021.json.gz",
+     "sha256": "c2aaf9d748c919a797735cdcde76b55332e1507153c476edb7f2d03db1e7f26a",
+     "linhas": 156
+    }
+   }
+  },
   "siconfi_msc_funcao12": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
    "conjunto": "Matriz de Saldos Contábeis (MSC) agregada, classe 6, saldo final de dezembro",

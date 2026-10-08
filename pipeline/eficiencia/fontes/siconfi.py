@@ -179,3 +179,33 @@ def coleta_msc_educacao(cod_ibge, ano, mes=12):
     }
     base.registra_captura("siconfi_msc_funcao12", m)
     return len(itens), len(filtrados)
+
+
+def coleta_evidencias_divergencia(cod_ibge, ano):
+    """Evidências documentais de um par DCA × RREO com diferença material: extrato de entregas do
+    ente no exercício seguinte (datas de homologação e retificações) e RREO do 5º bimestre, Anexo 02
+    (trajetória do acumulado). Não alimentam valores do painel; ficam no seed para conferência."""
+    capturado_em = base.agora_utc()
+    url_e, extrato = _todas_paginas("extrato_entregas", {"id_ente": cod_ibge, "an_referencia": ano + 1})
+    url_r, rreo5 = _todas_paginas("rreo", {
+        "an_exercicio": ano, "nr_periodo": 5, "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02", "co_esfera": "M", "id_ente": cod_ibge,
+    })
+    url_x, extrato_ano = _todas_paginas("extrato_entregas", {"id_ente": cod_ibge, "an_referencia": ano})
+    relevantes = [x for x in rreo5 if str(x.get("conta") or "").startswith(("Educação", "DESPESAS", "TOTAL", "Total"))]
+    destino = os.path.join(base.SEED, "siconfi", "evidencias_divergencia", f"{cod_ibge}_{ano}.json.gz")
+    obj = {"extrato_entregas_ano": extrato_ano, "extrato_entregas_ano_seguinte": extrato, "rreo_anexo_02_b5": relevantes}
+    sha = base.grava_json_gz(destino, obj)
+    m = base.le_manifesto()["capturas"].get("siconfi_evidencias_divergencia", {
+        "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+        "conjunto": "Extrato de entregas do ente e RREO do 5º bimestre, Anexo 02 (evidências de divergência DCA × RREO)",
+        "pagina": DOC,
+        "url": f"{API}/extrato_entregas?id_ente=<código IBGE>&an_referencia=<ano>",
+        "parametros": "coletadas só para os pares com diferença material; não alimentam valores publicados",
+        "arquivos": {},
+    })
+    m["arquivos"][f"{cod_ibge}_{ano}"] = {"url": url_x[0], "urls": [url_x[0], url_e[0], url_r[0]], "capturado_em": capturado_em,
+                                         "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha,
+                                         "linhas": len(extrato_ano) + len(extrato) + len(relevantes)}
+    base.registra_captura("siconfi_evidencias_divergencia", m)
+    return obj

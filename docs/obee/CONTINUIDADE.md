@@ -4,7 +4,7 @@ Para quem retoma o OBEE (pessoa ou agente). Ler antes: [README.md](./README.md),
 
 ## 1. Padrões a manter
 
-**Dados.** Toda fonte nova segue `fonte → seed (recorte + manifesto com URL, data, sha256, MD5 quando houver) → padroniza.py (observação tipada com status) → validacoes.py → gold.py`. Biblioteca padrão do Python; leitores de planilha em `fontes/xlsx.py` e `fontes/ods.py`. Arquivo oficial grande não entra no git: entra o recorte. Nenhuma ausência vira zero; zero só quando a fonte informa zero.
+**Dados.** Toda fonte nova segue `fonte → seed (recorte + manifesto com URL, data, sha256, MD5 quando houver) → padroniza.py (observação tipada com status) → validacoes.py → gold.py`. Biblioteca padrão do Python; leitores de planilha em `fontes/xlsx.py` e `fontes/ods.py`. Arquivo oficial grande não entra no git: entra o recorte. Nenhuma ausência vira zero; zero só quando a fonte informa zero (campo vazio é ausência: `padroniza.ler_contagem`). Despesa nova passa pela política de `conferencia.py`; tolerâncias não se ampliam para fazer um caso passar, e diferença material sem explicação fica fora das comparações. Publicação só por `gold.promove`.
 
 **Catálogo.** Indicador novo começa pela ficha em `catalogo_indicadores.json` (os 16 campos, estado de publicação). Sem ficha, sem número. O teste `test_fichas_completas_antes_da_publicacao` falha se faltar campo.
 
@@ -31,7 +31,8 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | --- | --- | --- | --- | --- |
 | T1 | Cobertura | Estender despesa para 2019 e 2020 | `padroniza.py` (`ANOS_FINANCEIROS`), `run.py`, IPCA desde 2019 | V03 e V04 aprovadas para os novos anos; séries mostram 7 exercícios; testes passam |
 | T2 | Cobertura | Estender Censo, ATU e aprovação para 2019 e 2020 | `fontes/inep_censo.py` (leiaute único), `padroniza.py` (`ANOS_CENSO`) | V05 e V06 (Sinopse 2019 e 2020 extraídas) sem diferença; anotação de 2020 (pandemia) na aprovação |
-| T3 | Desempenho | Reduzir o bloqueio do fio principal na hidratação (TBT medido 1,2 s com CPU 4× mais lenta) | `PainelEducacao.tsx` (dividir em ilhas; tabela auditável sob demanda) | TBT abaixo de 600 ms na mesma medição; interações (27 checagens) continuam aprovadas |
+| T3 | Desempenho | Reduzir o bloqueio do fio principal na hidratação (TBT mediano de 1,34 s com CPU 4× mais lenta, rodada 2) | `PainelEducacao.tsx` (dividir em ilhas; tabela auditável sob demanda) | TBT abaixo de 600 ms na mesma medição; interações (36 checagens) continuam aprovadas |
+| T10 | Qualidade | Coletar a MSC de dezembro de todos os pares DCA × RREO (hoje só os de diferença material e um controle) | `fontes/siconfi.py` (`coleta_msc_educacao`), `run.py` | V04 com a MSC conferindo também os casos sem diferença; nenhuma situação muda sem registro |
 | T4 | Interface | Exportar imagem do gráfico com unidade, período, fonte e ressalva | `graficos.tsx` | PNG baixado contém título, unidade, período, fonte; botão só aparece onde funciona |
 | T5 | Automação | Workflow anual de atualização (Siconfi em maio, INEP após cada divulgação) | `.github/workflows/`, `run.py` | Rodada sem rede alteração idempotente; abertura de PR com diff da gold e validações |
 | T6 | Indicador novo | Despesa por natureza na função Educação (pessoal, outras correntes, investimento) | `fontes/siconfi.py` (RREO Anexo 8 ou Anexo 2 por natureza), catálogo, consulta | Ficha completa; categorias mutuamente exclusivas somando o total; validação de reconciliação |
@@ -52,3 +53,4 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | Data | Entrega |
 | --- | --- |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
+| 08/10/2026 | Rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)): política de conferência 1.1 com MSC, elegibilidade separada do estado, portão de publicação, ausência sem zero, universo por indicador, CSVs autoexplicativos, metodologia 1.1 |

@@ -40,6 +40,7 @@ A reconstrução sem rede imprime as validações e termina com código 1 se alg
 | [METODOLOGIA.md](./METODOLOGIA.md) | Perímetros, fórmulas, estados de dado e regras de comparação do piloto |
 | [CATALOGO_COBERTURA.md](./CATALOGO_COBERTURA.md) | Indicadores, fontes, períodos, cobertura e lacunas |
 | [VALIDACAO.md](./VALIDACAO.md) | Verificações executadas, resultados e capturas de tela |
+| [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md) | Rodada de correções: achados, política de conferência 1.1, casos Boa Vista 2024 e Campo Grande 2021, campos vazios, antes e depois |
 | [CONTINUIDADE.md](./CONTINUIDADE.md) | Próximos módulos, decisões pendentes e tarefas delimitadas |
 
 ## Regra editorial (vale para todo o código e texto do domínio)
