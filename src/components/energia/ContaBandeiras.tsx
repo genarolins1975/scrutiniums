@@ -59,7 +59,7 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
                   c ? (
                     <td
                       key={i}
-                      className="h-8 border border-linha bg-superficie px-0.5 text-center leading-tight text-carvao"
+                      className="cb-cel"
                       style={{ borderTop: `6px solid ${c.bandeira ? (COR_BANDEIRA[c.bandeira] ?? "var(--serie-2)") : "transparent"}` }}
                     >
                       <span aria-hidden="true">{c.bandeira ? (SIGLA_BANDEIRA[c.bandeira] ?? c.bandeira) : "?"}</span>
@@ -68,7 +68,7 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
                       </span>
                     </td>
                   ) : (
-                    <td key={i} className="h-8 border border-dashed border-linha">
+                    <td key={i} className="cb-vazia">
                       <span className="sr-only">não publicado</span>
                     </td>
                   ),

@@ -235,19 +235,19 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
               )}
               <div className="min-w-0 md:col-span-2" data-descricao={descricao.origem}>
                 <dt className="rotulo text-mineral">Descrição publicada pela fonte</dt>
-                <dd className="mt-0.5 whitespace-pre-line leading-relaxed text-carvao-muted">
-                  {descricao.texto ?? "O catálogo não guarda descrição para este conjunto."}
+                <dd className="mt-0.5 leading-relaxed text-carvao-muted">
+                  <span className="whitespace-pre-line">{descricao.texto ?? "O catálogo não guarda descrição para este conjunto."}</span>
+                  {descricao.origem === "csv" && (
+                    <p className="mt-1 text-xs text-mineral" data-descricao-completa="true">
+                      Texto completo, de <a href={CSV_DADOS.catalogo.url} download className="underline underline-offset-4">dados_catalogo.csv</a>; o catálogo da página guarda só o começo.
+                    </p>
+                  )}
+                  {descricao.cortada && (
+                    <p className="mt-1 text-xs text-mineral" data-descricao-cortada="true">
+                      O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto.
+                    </p>
+                  )}
                 </dd>
-                {descricao.origem === "csv" && (
-                  <p className="mt-1 text-xs text-mineral" data-descricao-completa="true">
-                    Texto completo, de <a href={CSV_DADOS.catalogo.url} download className="underline underline-offset-4">dados_catalogo.csv</a>; o catálogo da página guarda só o começo.
-                  </p>
-                )}
-                {descricao.cortada && (
-                  <p className="mt-1 text-xs text-mineral" data-descricao-cortada="true">
-                    O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto.
-                  </p>
-                )}
               </div>
               <div>
                 <dt className="rotulo text-mineral">Etapa no catálogo</dt>

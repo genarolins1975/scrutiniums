@@ -192,6 +192,9 @@ html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
 
 /* Células da TabelaInterativa: três classes curtas no lugar de seis utilitárias repetidas em cada célula. O HTML de uma página com
    tabelas grandes (Território tem quase 500 células numéricas) perde dezenas de kB, e o orçamento de 600 kB deixa de depender disso. */
+/* Grade de bandeiras (ContaBandeiras): 141 células com as mesmas classes pesavam 11 kB no HTML da página de reajustes. */
+.cb-cel { height: 2rem; border: 1px solid var(--cor-linha); background: var(--cor-superficie); padding-inline: 0.125rem; text-align: center; line-height: 1.25; color: var(--cor-carvao); }
+.cb-vazia { height: 2rem; border: 1px dashed var(--cor-linha); }
 .tc { padding: 0.5rem; color: var(--cor-carvao); }
 .tc-n { white-space: nowrap; text-align: right; }
 .tc-d { white-space: nowrap; }

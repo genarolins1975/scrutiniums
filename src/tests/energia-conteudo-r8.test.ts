@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import DatasetPage, { generateStaticParams as paramsDatasets } from "@/app/setor-eletrico/dados/[dataset]/page";
 import PaginaEmpresas from "@/app/setor-eletrico/empresas/page";
 import PaginaInclusao from "@/app/setor-eletrico/inclusao-energetica/page";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -89,5 +90,39 @@ describe("Segunda camada da resposta: toda página que a usa tem o seletor de pr
     expect(h).toContain("Os números por trás da resposta");
     expect(h).toContain("modo-profundidade");
     expect(h.indexOf("modo-profundidade")).toBeLessThan(h.indexOf("Os números por trás da resposta"));
+  });
+});
+
+/** Filhos diretos de cada <dl>: só <dt>, <dd> ou <div> que contenha apenas <dt> e <dd> (regra definition-list do axe). */
+function dlInvalidos(html: string): string[] {
+  const erros: string[] = [];
+  const pilha: { tag: string; ehDl: boolean; dentroDeDivDeDl: boolean }[] = [];
+  const vazios = new Set(["br", "hr", "img", "input", "meta", "link", "source", "wbr", "col"]);
+  for (const m of Array.from(html.matchAll(/<(\/)?([a-z][a-z0-9]*)\b[^>]*?(\/)?>/g))) {
+    const [, fecha, tag, auto] = m;
+    if (fecha) {
+      while (pilha.length && pilha[pilha.length - 1].tag !== tag) pilha.pop();
+      pilha.pop();
+      continue;
+    }
+    const pai = pilha[pilha.length - 1];
+    if (pai?.ehDl && !["dt", "dd", "div", "script", "template"].includes(tag)) erros.push(`<${tag}> filho direto de <dl>`);
+    if (pai?.dentroDeDivDeDl && !["dt", "dd"].includes(tag)) erros.push(`<${tag}> dentro de <div> de <dl>`);
+    if (auto || vazios.has(tag)) continue;
+    pilha.push({ tag, ehDl: tag === "dl", dentroDeDivDeDl: tag === "div" && !!pai?.ehDl });
+  }
+  return erros;
+}
+
+describe("Ficha de conjunto de dados: listas de definição válidas (axe definition-list)", () => {
+  it("nenhuma das fichas tem filho inválido dentro de <dl>", () => {
+    const todas = paramsDatasets().map((x: { dataset: string }) => x.dataset);
+    expect(todas.length).toBeGreaterThan(50);
+    const ruins: string[] = [];
+    for (const dataset of todas) {
+      const e = dlInvalidos(renderToStaticMarkup(createElement(DatasetPage, { params: { dataset } })));
+      if (e.length) ruins.push(`${dataset}: ${Array.from(new Set(e)).join("; ")}`);
+    }
+    expect(ruins).toEqual([]);
   });
 });
