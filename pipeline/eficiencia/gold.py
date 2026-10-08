@@ -13,7 +13,7 @@ import io
 import json
 import os
 
-from pipeline.eficiencia import base, conferencia as CF, entes, padroniza as P, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, entes, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
 
 ARQUIVO_GOLD = os.path.join(base.GOLD, "educacao_capitais.json")
 
@@ -37,7 +37,9 @@ def cobertura(obs, catalogo):
             continue
         # componente principal de cada indicador (os demais seguem a mesma cobertura)
         principal = {"edu.despesa.funcao_educacao": "nominal", "edu.ideb.rede_municipal": "ideb",
-                     "edu.saeb.rede_municipal": "matematica"}.get(ind["id"])
+                     "edu.saeb.rede_municipal": "matematica", "edu.despesa.por_habitante": "nominal",
+                     "edu.despesa.por_matricula_rede_propria": "nominal",
+                     "edu.despesa.ponte_matricula": "dca_total"}.get(ind["id"])
         grupos = {}
         for o in sel:
             if ind["id"] == "edu.despesa.subfuncao":
@@ -168,6 +170,10 @@ def fontes():
         "siconfi_evidencias_divergencia": [k for k in ("siconfi_evidencias_divergencia",) if k in m],
         "siconfi_entes": ["siconfi_entes"],
         "ibge_ipca": ["ibge_ipca"],
+        "ibge_populacao": [k for k in ("ibge_populacao",) if k in m],
+        "inep_nacional": sorted(k for k in m if k.startswith(("inep_atu_brasil_", "inep_rendimento_brasil_", "inep_ideb_brasil_", "inep_investimento_estudante_"))),
+        "ocde_eag": [k for k in ("ocde_eag",) if k in m],
+        "siope_examinado": [k for k in ("siope_examinado",) if k in m],
         "inep_censo": sorted(k for k in m if k.startswith("inep_censo_")),
         "inep_sinopse": sorted(k for k in m if k.startswith("inep_sinopse_")),
         "inep_atu": sorted(k for k in m if k.startswith("inep_atu_")),
@@ -177,10 +183,14 @@ def fontes():
     papel = {
         "siconfi_dca_anexo_i_e": "Fonte da despesa liquidada na função Educação e da composição por subfunção.",
         "siconfi_rreo_anexo_02_b6": "Somente conferência cruzada da DCA; nunca somado.",
-        "siconfi_msc_funcao12": "Terceira fonte da conferência da despesa, usada quando a diferença entre DCA e RREO é material; nunca somada.",
+        "siconfi_msc_funcao12": "Terceira fonte da conferência da despesa (usada quando a diferença entre DCA e RREO é material) e fonte da ponte da despesa por matrícula (modalidade, subfunção e elemento de cada linha da função 12); nunca somada à DCA.",
         "siconfi_evidencias_divergencia": "Evidência documental dos casos com diferença material (extrato de entregas e RREO do 5º bimestre); não alimenta valores.",
         "siconfi_entes": "Conferência dos códigos IBGE e da marcação de capital.",
         "ibge_ipca": "Correção monetária opcional para reais de 2025.",
+        "ibge_populacao": "Denominador da despesa por habitante: população residente (estimativas de 1º de julho e Censo 2022).",
+        "inep_nacional": "Referências nacionais oficiais do INEP: ATU, aprovação e Ideb da rede municipal do Brasil; investimento público direto por estudante (outro universo).",
+        "ocde_eag": "Contexto internacional (OCDE, Education at a Glance): tamanho de turma e despesa por estudante, todos os países com dado; nunca comparação direta com uma capital.",
+        "siope_examinado": "Indicadores por aluno do SIOPE (FNDE): examinados e não adotados; evidência do exame, sem valor publicado.",
         "inep_censo": "Fonte das matrículas da rede municipal e das escolas privadas conveniadas com o município.",
         "inep_sinopse": "Conferência cruzada das somas dos microdados com outra publicação do próprio INEP (não é verificação externa) e confirmação dos grupos com escolas sem contagem.",
         "inep_atu": "Fonte da média de alunos por turma.",
@@ -210,6 +220,8 @@ CAMPOS_CSV = [
     "valor", "unidade", "base_monetaria", "universo", "status", "elegivel_comparacao", "situacao_conferencia",
     "motivo_inelegibilidade", "nota", "nota_material", "participacao_pct", "fonte", "registro",
     "versao_metodologica", "dados_gerados_em", "hash_dados",
+    "numerador", "denominador", "referencia_numerador", "referencia_denominador", "tipo_populacao", "data_referencia",
+    "quebra_serie",
 ]
 
 PERIODO_TIPO = {"exercicios": "exercício financeiro", "censo": "ano do Censo Escolar (referência em maio)",
@@ -248,6 +260,51 @@ def _csv(obs, caminho, nomes, catalogo, meta):
             "nota": o["nota"] or "", "nota_material": "sim" if o.get("nota_material") else "nao",
             "participacao_pct": o.get("participacao", "") if o.get("participacao") is not None else "",
             "fonte": o["fonte"], "registro": o["registro"], "versao_metodologica": f["versao_metodologica"],
+            "dados_gerados_em": meta["gerado_em"], "hash_dados": meta["hash_dados"],
+            "numerador": "" if not o.get("calculo") else repr(o["calculo"]["numerador"]),
+            "denominador": "" if not o.get("calculo") else repr(o["calculo"]["denominador"]),
+            "referencia_numerador": "" if not o.get("calculo") else o["calculo"]["numerador_ref"] + (
+                f" ({o['calculo']['numerador_componente']})" if o["calculo"].get("numerador_componente") else ""),
+            "referencia_denominador": "" if not o.get("calculo") else o["calculo"]["denominador_ref"],
+            "tipo_populacao": o.get("tipo_populacao") or "", "data_referencia": o.get("data_referencia") or "",
+            "quebra_serie": "sim" if (o.get("quebra_serie") or conf.get("quebra_serie")) else "nao",
+        })
+    with open(caminho, "w", encoding="utf-8", newline="") as fh:
+        fh.write(buf.getvalue())
+
+
+CAMPOS_CSV_REFERENCIAS = [
+    "indicador_id", "indicador", "componente", "etapa", "ano", "grupo", "capitais_no_grupo", "capitais_com_valor", "capitais_na_comparacao",
+    "media_simples", "mediana", "minimo", "capitais_do_minimo", "maximo", "capitais_do_maximo", "primeiro_quartil", "terceiro_quartil",
+    "quartis_exibidos", "soma_numerador", "soma_denominador", "razao_agregada", "pares_codigos_ibge", "politica_versao",
+    "versao_metodologica", "dados_gerados_em", "hash_dados",
+]
+
+
+def _csv_referencias(refs, caminho, catalogo, meta):
+    """Estatísticas do grupo, uma linha por indicador, componente, etapa, ano e grupo. Sem valor: vazio, nunca zero."""
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    fichas = {i["id"]: i for i in catalogo["indicadores"]}
+    etapas = {e["id"]: e["nome"] for e in catalogo["etapas"]}
+    nomes = {c: n for c, n, _ in entes.CAPITAIS}
+    vazio = lambda v: "" if v is None else repr(v)
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV_REFERENCIAS, lineterminator="\n")
+    w.writeheader()
+    for r in refs:
+        f = fichas[r["indicador"]]
+        w.writerow({
+            "indicador_id": r["indicador"], "indicador": f["nome"], "componente": r["componente"] or "",
+            "etapa": etapas.get(r["etapa"], "") if r["etapa"] else "", "ano": r["ano"], "grupo": r["grupo"],
+            "capitais_no_grupo": r["capitais_no_grupo"], "capitais_com_valor": r["capitais_com_valor"], "capitais_na_comparacao": r["n"],
+            "media_simples": vazio(r["media"]), "mediana": vazio(r["mediana"]), "minimo": vazio(r["minimo"]),
+            "capitais_do_minimo": "; ".join(nomes[c] for c in r["capitais_minimo"]), "maximo": vazio(r["maximo"]),
+            "capitais_do_maximo": "; ".join(nomes[c] for c in r["capitais_maximo"]),
+            "primeiro_quartil": vazio(r["q1"]), "terceiro_quartil": vazio(r["q3"]),
+            "quartis_exibidos": "sim" if r["quartis_exibicao"] else "nao",
+            "soma_numerador": vazio(r["soma_numerador"]), "soma_denominador": vazio(r["soma_denominador"]),
+            "razao_agregada": vazio(r["razao_agregada"]), "pares_codigos_ibge": " ".join(str(c) for c in r["pares"]),
+            "politica_versao": R.VERSAO, "versao_metodologica": f["versao_metodologica"],
             "dados_gerados_em": meta["gerado_em"], "hash_dados": meta["hash_dados"],
         })
     with open(caminho, "w", encoding="utf-8", newline="") as fh:
@@ -291,6 +348,11 @@ def constroi(gerado_em=None):
         "trilhas": trilhas(obs),
         "fontes": fontes(),
         "status": base.STATUS,
+        "politica_referencias": R.POLITICA,
+        "referencias_externas": RE.nacionais(),
+        "referencias_internacionais": RE.internacionais(),
+        "matriz_referencias": RE.matriz(),
+        "referencias": R.calcula(obs),
         "politica_conferencia": {"versao": CF.VERSAO_POLITICA, "tolerancia_arredondamento_reais": CF.TOL_ARREDONDAMENTO,
                                  "tolerancia_relativa": CF.TOL_RELATIVA, "elegiveis": sorted(CF.ELEGIVEIS),
                                  "rotulos": CF.ROTULO},
@@ -318,6 +380,8 @@ def publica(gold, raiz_publica=None):
             continue
         sel = [o for o in gold["observacoes"] if o["indicador"] == ind["id"]]
         _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), nomes, catalogo, gold["meta"])
+    _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "referencias_educacao_capitais.csv"),
+                     catalogo, gold["meta"])
     return arquivo
 
 

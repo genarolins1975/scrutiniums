@@ -1,5 +1,5 @@
 {
- "versao_catalogo": "2026-10-08.2",
+ "versao_catalogo": "2026-10-08.3",
  "painel": {
   "id": "educacao-municipal-capitais",
   "titulo": "Educação municipal nas capitais",
@@ -7,6 +7,56 @@
   "rede": "Rede municipal: escolas cuja dependência administrativa no Censo Escolar é municipal e que estão no território da capital."
  },
  "indicadores": [
+  {
+   "id": "ctx.populacao.residente",
+   "nome": "População residente do município",
+   "nome_curto": "População residente",
+   "familia": "contexto",
+   "pergunta": "Quantas pessoas residiam no município na data de referência da publicação do IBGE?",
+   "o_que_mede": "A população residente do município, na data de referência de cada publicação oficial do IBGE: estimativa de 1º de julho (2021, 2024 e 2025) ou contagem do Censo Demográfico de 2022 (1º de agosto de 2022).",
+   "o_que_nao_mede": [
+    "Não é a população atendida pela rede municipal de ensino, nem a população em idade escolar.",
+    "As estimativas não são contagens: são projeções do IBGE, revistas a cada edição. A de 2021 parte do Censo de 2010 e a de 2024 em diante parte do Censo de 2022, por isso a série tem uma quebra entre 2021 e 2022.",
+    "O IBGE não publicou estimativa municipal para 2023. O painel não interpola nem reaproveita a população de outro ano."
+   ],
+   "formula": "Valor publicado pelo IBGE para o município e o ano: SIDRA, tabela 6579, variável 9324 (estimativas); tabela 4714, variável 93 (Censo 2022).",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "habitantes",
+   "escala": "Número de pessoas; não há ajuste.",
+   "fontes": [
+    "ibge_populacao"
+   ],
+   "localizacao_registro": "IBGE, SIDRA: tabela 6579 (Estimativas da população residente), variável 9324, nível Município; tabela 4714 (Censo 2022), variável 93. Publicação original das estimativas: arquivos estimativa_dou_AAAA.ods no FTP do IBGE, preservados com sha256.",
+   "periodo": "Data de referência de cada publicação: 1º de julho de 2021, 2024 e 2025; 1º de agosto de 2022 (Censo). Sem publicação municipal para 2023.",
+   "perimetro": {
+    "territorial": "Município da capital, identificado pelo código IBGE de 7 dígitos.",
+    "institucional": "Não se aplica.",
+    "servico": "Não se aplica."
+   },
+   "ausencias": "2023 aparece como não divulgado pela fonte. Município ausente na captura aparece como ausente na coleta. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura da resposta do SIDRA preservada no seed (JSON gzip com sha256).",
+    "Comparação com a publicação original das estimativas (arquivo do FTP do IBGE): valores diferentes são registrados na observação, com o valor vigente do SIDRA como o usado.",
+    "Nenhuma interpolação, retroprojeção ou correção."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Cada ano usa a população da própria publicação. A população de 2021 e a de 2022 em diante têm bases diferentes e não formam uma série contínua; variações entre elas misturam a mudança de base.",
+   "natureza": "OBSERVADO",
+   "universo_curto": "População residente do município (estimativa de 1º de julho ou Censo 2022), conforme o IBGE.",
+   "universo_rotulo": "população do município",
+   "versao_metodologica": "1.2",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "2021 é estimativa anterior ao Censo 2022; 2023 não tem publicação municipal do IBGE.",
+    "Alguns valores foram revistos pelo IBGE depois da publicação original; o painel usa o vigente e registra a diferença."
+   ],
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "download": "/eficiencia/series/ctx_populacao_residente.csv"
+  },
   {
    "id": "edu.despesa.funcao_educacao",
    "nome": "Despesa liquidada na função Educação",
@@ -108,6 +158,167 @@
    "download": "/eficiencia/series/edu_despesa_subfuncao.csv",
    "universo_curto": "Despesa liquidada do município na função 12, distribuída pelas subfunções declaradas na DCA.",
    "universo_rotulo": "orçamento do município, função 12"
+  },
+  {
+   "id": "edu.despesa.por_habitante",
+   "nome": "Despesa liquidada em Educação por habitante",
+   "nome_curto": "Despesa por habitante",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou em Educação para cada habitante residente, no ano?",
+   "o_que_mede": "A despesa liquidada do município na função Educação dividida pela população residente do mesmo ano: uma forma de colocar capitais de portes diferentes na mesma escala territorial.",
+   "o_que_nao_mede": [
+    "Não é tributo pago por habitante nem benefício recebido por cada pessoa: a divisão é aritmética e inclui moradores sem relação com a rede municipal.",
+    "Não é despesa por aluno: o denominador é a população do território, não as matrículas.",
+    "Não é um padrão de esforço comparável entre capitais: a participação da rede municipal na oferta de ensino varia, e população semelhante não implica responsabilidades educacionais semelhantes.",
+    "Não mede qualidade nem resultado do serviço, e um valor maior ou menor não demonstra mais ou menos eficiência."
+   ],
+   "formula": "Despesa liquidada na função Educação (DCA, Anexo I-E) ÷ população residente do município no mesmo ano (IBGE).",
+   "numerador": "Despesa liquidada na função 12, Educação, do exercício (R$), exceto intraorçamentárias.",
+   "denominador": "População residente do município no ano de referência (habitantes).",
+   "unidade": "R$ por habitante por ano",
+   "escala": "Reais correntes do exercício por habitante (nominal). Alternativa: reais constantes de 2025, com o mesmo fator do IPCA aplicado ao numerador.",
+   "fontes": [
+    "siconfi_dca_anexo_i_e",
+    "ibge_populacao",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"12 - Educação\", coluna \"Despesas Liquidadas\". Denominador: IBGE, SIDRA, tabelas 6579 e 4714. Os dois valores usados são publicados na tabela do painel e no CSV.",
+   "periodo": "Exercício financeiro e população do mesmo ano (1º de julho; 1º de agosto de 2022 no ano do Censo). Sem valor em 2023, porque o IBGE não publicou população municipal nesse ano.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Numerador: orçamento fiscal e da seguridade do município. Denominador: toda a população residente.",
+    "servico": "Numerador: função Educação, todas as subfunções. Denominador: não se aplica."
+   },
+   "ausencias": "Sem população oficial no ano (2023) ou sem a despesa observada, a razão não é calculada. Divisão por zero e valores incompatíveis não geram valor. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão do valor liquidado da DCA pela população do mesmo ano, com a precisão original de ambos.",
+    "Correção monetária opcional: o numerador nominal × fator IPCA do exercício; a população não é corrigida.",
+    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.1) e as da população (estimativa anterior ao Censo 2022)."
+   ],
+   "correcao_monetaria": "Mesmo fator do IPCA da despesa total: média anual do número-índice de 2025 ÷ média do ano.",
+   "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. As duas respondem a perguntas diferentes e são rotuladas separadamente. Variações entre 2021 e anos posteriores são bloqueadas: a população de 2021 tem outra base.",
+   "natureza": "CALCULADO",
+   "universo_curto": "Despesa do município na função Educação ÷ população residente do município. Não é despesa por aluno.",
+   "universo_rotulo": "orçamento do município ÷ população",
+   "versao_metodologica": "1.2",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "A participação da rede municipal na oferta de ensino varia entre capitais; o valor por habitante não separa o que é gasto com a rede municipal.",
+    "2021 usa população estimada antes do Censo 2022; 2023 não tem população municipal publicada.",
+    "Herda as ressalvas do numerador: Campo Grande 2021 (perímetro distinto) fica fora das comparações; Boa Vista 2024 mantém a ressalva de reconciliação."
+   ],
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "download": "/eficiencia/series/edu_despesa_por_habitante.csv"
+  },
+  {
+   "id": "edu.despesa.por_matricula_rede_propria",
+   "nome": "Despesa liquidada de aplicação direta por matrícula da rede municipal",
+   "nome_curto": "Despesa por matrícula",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou, em aplicação direta na função Educação, para cada matrícula da sua própria rede de escolas?",
+   "o_que_mede": "A despesa liquidada de aplicação direta do município na função Educação, sem as parcelas que não têm matrícula correspondente no denominador, dividida pelas matrículas das escolas de dependência municipal. É uma razão orçamentária entre dois valores de mesmo universo, não o custo contábil integral de um aluno.",
+   "o_que_nao_mede": [
+    "Não é o custo integral nem o custo marginal de um aluno: inclui a administração central e demais despesas de aplicação direta da função, e não separa por etapa nem por turno.",
+    "Não inclui o que o município transfere a instituições privadas (por exemplo, creches conveniadas): essas escolas e suas matrículas ficam fora da razão.",
+    "Não inclui aposentadorias, pensões e outros benefícios previdenciários classificados na função Educação, nem o ensino superior; as duas parcelas aparecem na ponte, valor a valor.",
+    "É por matrícula, não por estudante único: um estudante com mais de uma matrícula é contado mais de uma vez pelo Censo.",
+    "Não mede qualidade nem resultado; valor menor ou maior não demonstra mais ou menos eficiência."
+   ],
+   "formula": "(Despesa liquidada na função 12 em aplicação direta (modalidade 90) − subfunção 364 − elementos 01, 03 e 05 do grupo 3.1.90) ÷ matrículas totais da rede municipal (QT_MAT_BAS das escolas de dependência municipal no Censo Escolar do ano).",
+   "numerador": "Linhas da MSC de dezembro (função 12, contas de despesa liquidada 6.2.2.1.3.03, .04 e .07), modalidade de aplicação 90, exceto subfunção 364 e elementos de inativos. Cada linha cai em um único balde da ponte.",
+   "denominador": "Matrículas da educação básica nas escolas de dependência municipal localizadas no município, Censo Escolar do ano (maio).",
+   "unidade": "R$ por matrícula por ano",
+   "escala": "Reais correntes do exercício por matrícula (nominal). Alternativa: reais constantes de 2025, com o fator do IPCA aplicado ao numerador.",
+   "fontes": [
+    "siconfi_msc_funcao12",
+    "siconfi_dca_anexo_i_e",
+    "inep_censo",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "Numerador: Siconfi, MSC agregada de dezembro, classe 6, saldo final, função 12; conferido com a DCA. Denominador: INEP, microdados do Censo Escolar, soma de QT_MAT_BAS das escolas com TP_DEPENDENCIA = 3. Os dois valores e a ponte são publicados na tabela do painel e nos CSV.",
+   "periodo": "Exercício financeiro (numerador) e Censo Escolar do mesmo ano, com referência em maio (denominador). Os períodos não coincidem exatamente: a despesa é de 1º de janeiro a 31 de dezembro e as matrículas são as de uma data de maio.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Numerador: administração direta e entidades do orçamento municipal que executam a despesa por aplicação direta. Denominador: escolas de dependência municipal.",
+    "servico": "Numerador e denominador: educação básica e modalidades da rede municipal (creche, pré-escola, ensino fundamental, ensino médio, EJA e profissional não integrada), sem rateio por etapa."
+   },
+   "ausencias": "Sem MSC de dezembro, sem reconciliação da MSC com a DCA, sem matrículas observadas ou com denominador nulo, a razão não é calculada e o motivo fica na observação. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Seleção das linhas da função 12 nas contas de despesa liquidada da MSC (modalidade 91, intraorçamentárias, fica fora do total).",
+    "Atribuição de cada linha a um único balde: transferências a instituições privadas (modalidades 50 e 60), transferências a outros entes (demais modalidades que não a 90), ensino superior (subfunção 364), inativos (elementos 01, 03 e 05 do grupo 3.1.90) e aplicação direta na rede própria.",
+    "Reconciliação: o total dos baldes, sem intraorçamentárias, precisa igualar a despesa liquidada da DCA (diferença de até R$ 1,00); sem isso, não há valor.",
+    "Divisão da aplicação direta na rede própria pelas matrículas totais da rede municipal, com a precisão original.",
+    "Correção monetária opcional: numerador nominal × fator IPCA do exercício."
+   ],
+   "correcao_monetaria": "Mesmo fator do IPCA da despesa total.",
+   "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com MSC reconciliada com a DCA, matrículas observadas e elegibilidade herdada da despesa. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma do numerador ÷ soma das matrículas dos mesmos pares) pesa pelo tamanho da rede. Capitais cuja rede municipal é pequena frente à população, ou que atendem muitas crianças em escolas conveniadas, têm uma razão que cobre uma parte menor da oferta municipal de ensino; a participação das matrículas conveniadas é exibida ao lado.",
+   "natureza": "CALCULADO",
+   "universo_curto": "Despesa de aplicação direta na função Educação, sem inativos, ensino superior e transferências a instituições privadas ÷ matrículas das escolas municipais. Por matrícula, não por estudante único.",
+   "universo_rotulo": "aplicação direta ÷ matrículas da rede municipal",
+   "versao_metodologica": "1.2",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Contas de aplicação direta podem incluir pagamento a prestadores privados de serviços que atendem alunos da rede (por exemplo, transporte, alimentação ou vagas contratadas); a MSC não separa o beneficiário do serviço.",
+    "O Censo tem referência em maio e a despesa cobre o ano; uma rede que cresce ou encolhe ao longo do ano tem os dois períodos desalinhados.",
+    "Herda as ressalvas da despesa total: Campo Grande 2021 não tem valor (a DCA inclui intraorçamentárias e a ponte não fecha); Boa Vista 2024 mantém a ressalva de reconciliação.",
+    "Um estudante com mais de uma matrícula conta mais de uma vez; o denominador é matrícula, não pessoa."
+   ],
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "download": "/eficiencia/series/edu_despesa_por_matricula_rede_propria.csv"
+  },
+  {
+   "id": "edu.despesa.ponte_matricula",
+   "nome": "Ponte da despesa liquidada da função Educação ao numerador por matrícula",
+   "nome_curto": "Ponte da despesa por matrícula",
+   "familia": "recursos",
+   "pergunta": "Quais parcelas da despesa liquidada da função Educação ficam dentro e fora do numerador da despesa por matrícula?",
+   "o_que_mede": "A decomposição da despesa liquidada da função Educação, linha a linha da Matriz de Saldos Contábeis de dezembro, em cinco parcelas mutuamente exclusivas: aplicação direta na rede própria, inativos, ensino superior, transferências a instituições privadas e transferências a outros entes.",
+   "o_que_nao_mede": [
+    "Não é a despesa por etapa: a MSC não permite atribuir despesa de aplicação direta a etapas sem rateio, e o painel não rateia.",
+    "Não mostra para onde vai cada transferência nem quem recebe o serviço contratado em aplicação direta."
+   ],
+   "formula": "Soma, por balde, das linhas da MSC (função 12, contas 6.2.2.1.3.03, .04 e .07) segundo a modalidade de aplicação, a subfunção e o elemento de despesa; soma dos baldes igual à despesa da DCA.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "R$",
+   "escala": "Reais correntes do exercício.",
+   "fontes": [
+    "siconfi_msc_funcao12",
+    "siconfi_dca_anexo_i_e"
+   ],
+   "localizacao_registro": "Siconfi, MSC agregada de dezembro (classe 6, saldo final), campos funcao, subfuncao, natureza_despesa (grupo, modalidade e elemento) e conta_contabil; DCA, Anexo I-E, conta \"12 - Educação\".",
+   "periodo": "Exercício financeiro.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Orçamento fiscal e da seguridade do município.",
+    "servico": "Função Educação, todas as subfunções."
+   },
+   "ausencias": "Sem MSC de dezembro no seed, a ponte não existe para o exercício. Ausência nunca é tratada como zero: um balde sem linhas vale zero porque a soma das linhas existentes é zero.",
+   "transformacoes": [
+    "Atribuição de cada linha a um único balde, na ordem: modalidade ≠ 90 (transferências), subfunção 364, elementos 01, 03 e 05 do grupo 3.1.90, demais.",
+    "Reconciliação do total dos baldes, sem intraorçamentárias, com a DCA (diferença de até R$ 1,00)."
+   ],
+   "correcao_monetaria": "Não se aplica (valores nominais).",
+   "comparacao": "Não se aplica: a ponte explica o numerador de cada capital e não entra em medianas.",
+   "natureza": "CALCULADO",
+   "universo_curto": "Despesa liquidada da função Educação decomposta pela MSC de dezembro.",
+   "universo_rotulo": "MSC, função 12",
+   "versao_metodologica": "1.2",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Só existe quando a MSC reconcilia com a DCA; nos demais casos, o motivo aparece na despesa por matrícula."
+   ],
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "download": "/eficiencia/series/edu_despesa_ponte_matricula.csv"
   },
   {
    "id": "edu.matriculas.rede_municipal",
@@ -385,15 +596,15 @@
   },
   {
    "id": "edu.despesa_por_matricula",
-   "nome": "Despesa anual por matrícula da rede municipal",
+   "nome": "Despesa total da função Educação por matrícula da rede municipal (definição avaliada e descartada)",
    "nome_curto": "Despesa por matrícula",
    "familia": "recursos",
    "pergunta": "Quanto o município liquidou na função Educação por matrícula da sua rede?",
-   "o_que_mede": "Não publicado nesta etapa.",
+   "o_que_mede": "Definição avaliada e descartada: a despesa da função Educação inteira dividida pelas matrículas da rede municipal. Não é publicada.",
    "o_que_nao_mede": [
     "Mesmo quando publicado, não seria o custo econômico do aluno."
    ],
-   "formula": "Despesa liquidada na função Educação ÷ matrículas da rede municipal (razão avaliada e não publicada).",
+   "formula": "Despesa liquidada na função Educação ÷ matrículas da rede municipal (razão avaliada e não publicada nesta definição).",
    "numerador": "Despesa liquidada na função Educação (R$).",
    "denominador": "Matrículas da rede municipal.",
    "unidade": "R$ por matrícula",
@@ -414,13 +625,13 @@
    "correcao_monetaria": "Não se aplica.",
    "comparacao": "Não se aplica.",
    "natureza": "CALCULADO",
-   "versao_metodologica": "0 (avaliação)",
+   "versao_metodologica": "0 (avaliação; substituída na 1.2)",
    "estado": "NAO_PUBLICAVEL",
    "motivo_nao_publicacao": [
     "O numerador inclui despesas que financiam matrículas fora do denominador: repasses a escolas privadas conveniadas (creches, sobretudo), cujas matrículas o Censo registra como privadas.",
-    "O numerador pode incluir despesas sem matrícula correspondente na rede (ensino superior, inativos classificados na função Educação, programas de outras etapas), em proporções que variam entre municípios.",
-    "Despesa e matrículas têm períodos diferentes (exercício financeiro e data de referência do Censo em maio).",
-    "A medição do tamanho desses desalinhamentos, por capital, está na seção Métodos e fontes (medição M01); ela orienta a construção de um perímetro compatível na próxima etapa."
+    "O numerador pode incluir despesas sem matrícula correspondente (ensino superior, inativos classificados na função Educação), em proporções que variam entre municípios.",
+    "Dividir a função inteira pelas matrículas de apenas uma parte da rede não é despesa por estudante dessa rede, e uma ressalva não corrige a definição.",
+    "Substituída na versão 1.2 por edu.despesa.por_matricula_rede_propria, cujo numerador separa essas parcelas pela MSC (ver a ponte)."
    ],
    "ressalvas": [],
    "granularidade": {
@@ -476,6 +687,11 @@
    "versao": "1.1",
    "data": "2026-10-08",
    "resumo": "Política de conferência da despesa com estados explícitos e elegibilidade separada do valor oficial; MSC como terceira fonte nas diferenças materiais; célula vazia do Censo tratada como ausência, com publicação do agregado só quando a Sinopse confirma contribuição nula; universos descritos por indicador; exportações com estado, elegibilidade, conferência, universo e versão."
+  },
+  {
+   "versao": "1.2",
+   "data": "2026-10-08",
+   "resumo": "Despesa por habitante (população residente do IBGE), despesa por matrícula da rede municipal própria com ponte pela MSC e referências estatísticas do grupo. Despesa total da função ÷ matrículas segue descartada."
   }
  ]
 }

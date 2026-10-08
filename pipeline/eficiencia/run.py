@@ -2,6 +2,11 @@
 
     python3 -m pipeline.eficiencia.run                 reconstrói a gold a partir do seed (sem rede)
     python3 -m pipeline.eficiencia.run --coleta-siconfi   recoleta DCA, RREO, entes e IPCA (rede)
+    python3 -m pipeline.eficiencia.run --coleta-msc    recoleta a MSC de dezembro de todas as capitais (rede)
+    python3 -m pipeline.eficiencia.run --coleta-populacao  recoleta a população do IBGE (rede)
+    python3 -m pipeline.eficiencia.run --coleta-ocde   recoleta a OCDE (tamanho de turma, despesa por estudante) (rede)
+    python3 -m pipeline.eficiencia.run --coleta-siope  recoleta os indicadores por aluno do SIOPE (examinados, não adotados) (rede)
+    python3 -m pipeline.eficiencia.run --inep-nacional <pasta>  extrai as referências nacionais do INEP dos .zip da pasta
     python3 -m pipeline.eficiencia.run --inep <pasta>  reextrai os recortes do INEP a partir dos .zip
                                                        oficiais já baixados nessa pasta
 
@@ -43,9 +48,25 @@ def _msc_para_divergencias():
             siconfi.coleta_msc_educacao(o["ente"], o["ano"])
 
 
+def _msc_todas():
+    """Captura a MSC de dezembro de todos os pares capital × exercício: sustenta a ponte da despesa por
+    matrícula (modalidade de aplicação, grupo de natureza e elemento) e a conferência de cada DCA."""
+    from pipeline.eficiencia import entes
+    from pipeline.eficiencia.fontes import siconfi
+    for cod, nome, _ in entes.CAPITAIS:
+        for ano in P.ANOS_FINANCEIROS:
+            n, f = siconfi.coleta_msc_educacao(cod, ano)
+            print(f"MSC {nome} {ano}: {n} linhas na resposta, {f} da função 12", flush=True)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--coleta-siconfi", action="store_true")
+    ap.add_argument("--coleta-msc", action="store_true", help="recoleta a MSC de dezembro de todas as capitais e exercícios (rede)")
+    ap.add_argument("--coleta-populacao", action="store_true", help="recoleta a população do IBGE (rede)")
+    ap.add_argument("--coleta-ocde", action="store_true", help="recoleta tamanho de turma e despesa por estudante da OCDE (rede)")
+    ap.add_argument("--coleta-siope", action="store_true", help="recoleta os indicadores por aluno do SIOPE, examinados e não adotados (rede)")
+    ap.add_argument("--inep-nacional", metavar="PASTA", help="extrai as referências nacionais dos .zip do INEP (ATU, rendimento e Ideb do Brasil; investimento por estudante)")
     ap.add_argument("--inep", metavar="PASTA")
     a = ap.parse_args(argv)
     if a.coleta_siconfi:
@@ -53,6 +74,20 @@ def main(argv=None):
         siconfi.coleta(P.ANOS_FINANCEIROS)
         ibge_ipca.coleta(min(P.ANOS_FINANCEIROS), max(P.ANOS_FINANCEIROS))
         _msc_para_divergencias()
+    if a.coleta_msc:
+        _msc_todas()
+    if a.coleta_populacao:
+        from pipeline.eficiencia.fontes import ibge_populacao
+        ibge_populacao.coleta()
+    if a.coleta_ocde:
+        from pipeline.eficiencia.fontes import ocde
+        ocde.coleta()
+    if a.coleta_siope:
+        from pipeline.eficiencia.fontes import siope
+        siope.coleta()
+    if a.inep_nacional:
+        from pipeline.eficiencia.fontes import inep_nacional
+        inep_nacional.extrai(a.inep_nacional)
     if a.inep:
         _inep(a.inep)
     g = gold.constroi()

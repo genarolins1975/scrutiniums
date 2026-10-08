@@ -258,9 +258,14 @@ class TestPoliticaConferencia(unittest.TestCase):
         self.assertEqual(self.c(700.0, 122.0, msc=msc)["situacao"], "PENDENTE")
 
     def test_msc_vinculada_ao_exercicio(self):
-        self.assertIsNotNone(self.CF.msc(1400100, 2024))
-        self.assertIsNone(self.CF.msc(1400100, 2023))
-        self.assertIsNone(self.CF.msc(1400100, 2025))
+        """Desde a rodada 5 a MSC é coletada para todos os pares; cada exercício tem a sua, com sha256 próprio,
+        e um exercício sem captura não herda o de outro."""
+        a, b = self.CF.msc(1400100, 2024), self.CF.msc(1400100, 2023)
+        self.assertIsNotNone(a)
+        self.assertIsNotNone(b)
+        self.assertNotEqual(a["sha256"], b["sha256"])
+        self.assertNotEqual(a["liquidado_total"], b["liquidado_total"])
+        self.assertIsNone(self.CF.msc(1400100, 2026))
 
     def test_rreo_ausente_linha_ausente_e_zero(self):
         self.assertEqual(self.c(1000.0, "sem")["situacao"], "NAO_CONFERIDO")

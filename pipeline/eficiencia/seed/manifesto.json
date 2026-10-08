@@ -11,6 +11,47 @@
    "sha256_recorte": "f156544598bc2e7a667c1a3c86610ed5810834fe62ed8e50e04a347044eeb084",
    "linhas_recorte": 60
   },
+  "ibge_populacao": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 1º de agosto de 2022)",
+   "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html",
+   "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2021",
+   "capturado_em": "2026-10-08T17:16:22Z",
+   "parametros": "26 capitais; estimativas de 2021, 2024 e 2025; Censo 2022; sem estimativa municipal publicada para 2022 e 2023",
+   "fontes": {
+    "sidra_6579_2021": {
+     "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2021",
+     "sha256_resposta": "9186ebf670ad71429feb5d6876bd6edafda4cc9ff445c5823df8be7f904fdf4a"
+    },
+    "ftp_estimativa_dou_2021": {
+     "url": "https://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2021/estimativa_dou_2021.ods",
+     "sha256_arquivo": "57746ed3f495f1f3111ed4ed33ee59d6e9ddd4f7023c25434fc79cd1e5b6a8bb"
+    },
+    "sidra_6579_2024": {
+     "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2024",
+     "sha256_resposta": "518110958b39e05bc7b75b1d645c347abef4e6f2aaecfd7969df28111d967597"
+    },
+    "ftp_estimativa_dou_2024": {
+     "url": "https://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2024/estimativa_dou_2024.ods",
+     "sha256_arquivo": "de66e4714c9fae2e11627eb60b27d4a7327f63ab7235e414e3599cca22421f19"
+    },
+    "sidra_6579_2025": {
+     "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2025",
+     "sha256_resposta": "aa117c2da18a67e598d54147f7eb84080bb8fed446ae1542dc6229bc0220649e"
+    },
+    "ftp_estimativa_dou_2025": {
+     "url": "https://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2025/estimativa_dou_2025.ods",
+     "sha256_arquivo": "16e2efbb0d2a43d18994d4354b58020b7231b0e99fafb08d86f5142c17ca0a6a"
+    },
+    "sidra_4714_2022": {
+     "url": "https://apisidra.ibge.gov.br/values/t/4714/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/93/p/2022",
+     "sha256_resposta": "6ea63aaafa2fe41b1670fbd388dd99b5253351668c2910cc9fc22b823a8fdc1e"
+    }
+   },
+   "recorte": "pipeline/eficiencia/seed/ibge_populacao/populacao_capitais.json.gz",
+   "sha256_recorte": "038ffc0f546dc316d45794b0b62c8b0acf14d39e10d41ce83acd0f75c56484d7",
+   "linhas_recorte": 104
+  },
   "inep_atu_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
    "conjunto": "Média de Alunos por Turma, municípios, 2021",
@@ -340,6 +381,146 @@
     "Fonte: Censo da Educação Básica 2025/INEP.",
     "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
    ]
+  },
+  "inep_atu_brasil_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, Brasil, regiões e UFs, 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2021/ATU_2021_BRASIL_REGIOES_UFS.zip",
+   "membro": "ATU_2021_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2021.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2022-01-18",
+   "sha256_original": "d553dc5a78f0f310282a0376751c76cda09694a0423efc6058a393e277bd43f5",
+   "bytes_original": 183437,
+   "md5_publicado_inep": "8f874dcb6677dda2d56b74bf813ffd10",
+   "md5_conferido": "8f874dcb6677dda2d56b74bf813ffd10",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2021_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2021.xlsx",
+     "md5_publicado_inep": "8f874dcb6677dda2d56b74bf813ffd10",
+     "md5_calculado": "8f874dcb6677dda2d56b74bf813ffd10",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2021_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2021.ods",
+     "md5_publicado_inep": "91279fb696e2390ae1f2929b84715c3e",
+     "md5_calculado": "91279fb696e2390ae1f2929b84715c3e",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_atu_brasil_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, Brasil, regiões e UFs, 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2022/ATU_2022_BRASIL_REGIOES_UFS.zip",
+   "membro": "ATU_2022_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2022.ods",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2023-01-23",
+   "sha256_original": "2bfa3017609f987fde694e9954c6b98f1b3b8c97b20efb4360053aeabdcf7123",
+   "bytes_original": 198113,
+   "md5_publicado_inep": "30d417f51549e892f9483fc756800c9c",
+   "md5_conferido": "30d417f51549e892f9483fc756800c9c",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2022_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2022.xlsx",
+     "md5_publicado_inep": "9cf10d9257c8d23fbab0bc90099d63d2",
+     "md5_calculado": "289cbe4c3a7cf7c1e723f633c41951d3",
+     "confere": false
+    },
+    {
+     "membro": "ATU_2022_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2022.ods",
+     "md5_publicado_inep": "30d417f51549e892f9483fc756800c9c",
+     "md5_calculado": "30d417f51549e892f9483fc756800c9c",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_atu_brasil_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, Brasil, regiões e UFs, 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2023/ATU_2023_BRASIL_REGIOES_UFS.zip",
+   "membro": "ATU_2023_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2023.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2024-01-26",
+   "sha256_original": "8e9cd586a4851abb460f3a450bc3436fd82f405dac6c336f4399fece9efc3500",
+   "bytes_original": 194185,
+   "md5_publicado_inep": "8e423ee3a87650015d4eb86ff15b8677",
+   "md5_conferido": "8e423ee3a87650015d4eb86ff15b8677",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2023_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2023.xlsx",
+     "md5_publicado_inep": "8e423ee3a87650015d4eb86ff15b8677",
+     "md5_calculado": "8e423ee3a87650015d4eb86ff15b8677",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2023_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2023.ods",
+     "md5_publicado_inep": "5b5914d6d43d406cc02420b9738c3e5a",
+     "md5_calculado": "5b5914d6d43d406cc02420b9738c3e5a",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_atu_brasil_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, Brasil, regiões e UFs, 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2024/ATU_2024_BRASIL_REGIOES_UFS.zip",
+   "membro": "ATU_2024_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2024.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2025-01-09",
+   "sha256_original": "cefc3dcbeaa10796c1d3803755656a72353f874298de7f1a64df625093080936",
+   "bytes_original": 193755,
+   "md5_publicado_inep": "60aa979fadea0644637dcd7ed0705fc8",
+   "md5_conferido": "60aa979fadea0644637dcd7ed0705fc8",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2024_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2024.xlsx",
+     "md5_publicado_inep": "60aa979fadea0644637dcd7ed0705fc8",
+     "md5_calculado": "60aa979fadea0644637dcd7ed0705fc8",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2024_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2024.ods",
+     "md5_publicado_inep": "843fd9c0f6403371dd0080cd9dfc87fe",
+     "md5_calculado": "843fd9c0f6403371dd0080cd9dfc87fe",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_atu_brasil_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, Brasil, regiões e UFs, 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2025/ATU_2025_BRASIL_REGIOES_UFS.zip",
+   "membro": "ATU_2025_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2025.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2026-01-20",
+   "sha256_original": "bc1bcf367a5233258d0dddfbd60376b914dc1f823ac412680d467dc4100ca69d",
+   "bytes_original": 193024,
+   "md5_publicado_inep": "4ebd537375d61624efc7095de33e963d",
+   "md5_conferido": "4ebd537375d61624efc7095de33e963d",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2025_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2025.xlsx",
+     "md5_publicado_inep": "4ebd537375d61624efc7095de33e963d",
+     "md5_calculado": "4ebd537375d61624efc7095de33e963d",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2025_BRASIL_REGIOES_UFS/ATU_BRASIL_REGIOES_UFS_2025.ods",
+     "md5_publicado_inep": "c7df94fa64d2c8360c09d1305498e532",
+     "md5_calculado": "c7df94fa64d2c8360c09d1305498e532",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
   },
   "inep_censo_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
@@ -794,6 +975,127 @@
     "(4) Com o fim do primeiro ciclo do Ideb, o Inep criou um Grupo Técnico para elaborar estudo e subsidiar a atualização do Ideb e a avaliação de novas metas - maiores",
     "informações na Nota informativa do Ideb de 2025 (https://download.inep.gov.br/ideb/nota_informativa_ideb_2025.pdf)."
    ]
+  },
+  "inep_ideb_brasil_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Ideb 2025: resultados do Brasil por rede (série 2005 a 2025)",
+   "pagina": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados",
+   "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_brasil_ideb_2025.zip",
+   "membro": "divulgacao_brasil_ideb_2025/divulgacao_brasil_ideb_2025.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2026-07-24",
+   "sha256_original": "c841dcbe726ade4c6a1c45cd54cff24255d2b3177b65bb55c7de0729491fb348",
+   "bytes_original": 85519,
+   "md5_publicado_inep": "94c8e530337c86251de705ddae42afc1",
+   "md5_conferido": "94c8e530337c86251de705ddae42afc1",
+   "conferencia_integridade": [
+    {
+     "membro": "divulgacao_brasil_ideb_2025/divulgacao_brasil_ideb_2025.xlsx",
+     "md5_publicado_inep": "94c8e530337c86251de705ddae42afc1",
+     "md5_calculado": "94c8e530337c86251de705ddae42afc1",
+     "confere": true
+    },
+    {
+     "membro": "divulgacao_brasil_ideb_2025/divulgacao_brasil_ideb_2025.ods",
+     "md5_publicado_inep": "4b14ce50317a88c8a8f144bb9d50c9b5",
+     "md5_calculado": "4b14ce50317a88c8a8f144bb9d50c9b5",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, rede Municipal, anos iniciais e anos finais"
+  },
+  "inep_investimento_estudante_nominal": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Investimento público direto por estudante, valores nominais, Brasil, 2000 a 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/indicadores-financeiros-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/investimentos_publicos_em_educacao/indicadores_financeiros_educacionais/Investimento_estudante_valor_nominal.zip",
+   "membro": "Investimento_estudante_valor_nominal.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2024-09-10",
+   "sha256_original": "80b09a1c4d2831a7517ede2cd4e2dab703659b7f41a1089a29c08ecec55eef9c",
+   "bytes_original": 131506,
+   "md5_publicado_inep": "5fbbdd36ca8e69c1817b2a92b2a7492c",
+   "md5_conferido": "5fbbdd36ca8e69c1817b2a92b2a7492c",
+   "conferencia_integridade": [
+    {
+     "membro": "Investimento_estudante_valor_nominal.xlsx",
+     "md5_publicado_inep": "5fbbdd36ca8e69c1817b2a92b2a7492c",
+     "md5_calculado": "5fbbdd36ca8e69c1817b2a92b2a7492c",
+     "confere": true
+    },
+    {
+     "membro": "Investimento_estudante_valor_nominal.ods",
+     "md5_publicado_inep": "7ebdf81f2b69f5efbcb6b062efa266fb",
+     "md5_calculado": "7ebdf81f2b69f5efbcb6b062efa266fb",
+     "confere": true
+    }
+   ],
+   "parametros": "série nacional completa (consolidado de União, estados, DF e municípios)",
+   "notas_da_fonte": [
+    "1 - Utilizaram-se os seguintes grupos de Natureza de Despesa: Pessoal Ativo e Encargos Sociais; outras Despesas Correntes; Investimentos e Inversões Financeiras;",
+    "2 - Não se incluem nestas informações as seguintes despesas: aposentadorias e reformas, pensões, recursos para bolsa de estudo e financiamento estudantil, despesas com juros e encargos da dívida e amortizações da dívida da área educacional e a modalidade de aplicação: Transferências Correntes e de Capital ao Setor Privado;",
+    "3 - Os investimentos em Educação Especial, Educação de Jovens e Adultos e Educação Indígena foram distribuídos na Educação Infantil, no Ensino Fundamental anos iniciais e anos finais e no Ensino Médio, dependendo do nível de ensino ao qual fazem referência. No Ensino Médio estão computados os valores da Educação Profissional (concomitante, subsequente e integrado);",
+    "4 - A Educação Superior corresponde aos cursos superiores em Tecnologia, demais cursos de Graduação (Presencial e a distância) (exceto cursos sequenciais) e cursos de pós-graduação Stricto Sensu - Mestrado, Mestrado Profissional e Doutorado (excetuando-se as especializações Lato Sensu);",
+    "5 - Estes dados referem-se aos investimentos em educação consolidados do Governo Federal, dos Estados e do Distrito Federal e dos Municípios;",
+    "6 - Para os anos de 2000 a 2003, estão contabilizados na área educacional, os valores despendidos pelo Governo Federal para o Programa Bolsa-Escola;",
+    "7 - Entre os anos de 2000 e 2005: para os dados estaduais, foi utilizada como fonte de informações, um trabalho técnico realizado pelo Inep diretamente dos balanços financeiros de cada estado; para os dados municipais do mesmo período, utilizou-se uma metodologia baseada no percentual mínimo de aplicação de cada município, definido pela legislação vigente;",
+    "8 - A partir de 2006, utilizaram-se como fontes de dados estaduais e municipais, o Sistema de Informações sobre Orçamento Público em Educação - Siope -, administrado pelo Fundo Nacional de Desenvolvimento da Educação - FNDE;",
+    "9 - Os dados da União foram coletados do Sistema Integrado de Administração Financeira - Siafi/STN - para todos os anos;",
+    "10 - Para o cálculo dos valores de Investimentos Públicos em Educação, utilizaram-se as seguintes fontes de dados primários:",
+    "- Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira - Inep/MEC; - Secretaria do Tesouro Nacional (STN); - FNDE; - Balanço Geral dos Estados e do Distrito Federal; - Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (Capes); - Instituto de Pesquisa Econômica Aplicada (Ipea); - Instituto Brasileiro de Geografia e Estatística (IBGE); - Caixa Econômica Federal (CEF); - Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq)."
+   ]
+  },
+  "inep_investimento_estudante_real": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Investimento público direto por estudante, valores reais, Brasil, 2000 a 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/indicadores-financeiros-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/investimentos_publicos_em_educacao/indicadores_financeiros_educacionais/Investimento_estudante_valor_real.zip",
+   "membro": "Investimento_estudante_valor_real.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2024-09-10",
+   "sha256_original": "9d2f3ebdc1dab38b8deb4d57498e075ad88376bbda59f7b7e13c6757a428d568",
+   "bytes_original": 133700,
+   "md5_publicado_inep": "dd023a8e9240200afa4f3b4655e79800",
+   "md5_conferido": "dd023a8e9240200afa4f3b4655e79800",
+   "conferencia_integridade": [
+    {
+     "membro": "Investimento_estudante_valor_real.xlsx",
+     "md5_publicado_inep": "dd023a8e9240200afa4f3b4655e79800",
+     "md5_calculado": "dd023a8e9240200afa4f3b4655e79800",
+     "confere": true
+    },
+    {
+     "membro": "Investimento_estudante_valor_real.ods",
+     "md5_publicado_inep": "9ea8fa1769fda4fe693ea25972a82869",
+     "md5_calculado": "9ea8fa1769fda4fe693ea25972a82869",
+     "confere": true
+    }
+   ],
+   "parametros": "série nacional completa (consolidado de União, estados, DF e municípios)",
+   "notas_da_fonte": [
+    "1 - Utilizaram-se os seguintes grupos de Natureza de Despesa: Pessoal Ativo e Encargos Sociais; outras Despesas Correntes; Investimentos e Inversões Financeiras;",
+    "2 - Não se incluem nestas informações as seguintes despesas: aposentadorias e reformas, pensões, recursos para bolsa de estudo e financiamento estudantil, despesas com juros e encargos da dívida e amortizações da dívida da área educacional e a modalidade de aplicação: Transferências Correntes e de Capital ao Setor Privado;",
+    "3 - Os investimentos em Educação Especial, Educação de Jovens e Adultos e Educação Indígena foram distribuídos na Educação Infantil, no Ensino Fundamental anos iniciais e anos finais e no Ensino Médio, dependendo do nível de ensino ao qual fazem referência. No Ensino Médio estão computados os valores da Educação Profissional (concomitante, subsequente e integrado);",
+    "4 - A Educação Superior corresponde aos cursos superiores em Tecnologia, demais cursos de Graduação (Presencial e a distância) (exceto cursos sequenciais) e cursos de pós-graduação Stricto Sensu - Mestrado, Mestrado Profissional e Doutorado (excetuando-se as especializações Lato Sensu);",
+    "5 - Estes dados referem-se aos investimentos em educação consolidados do Governo Federal, dos Estados e do Distrito Federal e dos Municípios;",
+    "6 - Para os anos de 2000 a 2003, estão contabilizados na área educacional, os valores despendidos pelo Governo Federal para o Programa Bolsa-Escola;",
+    "7 - Entre os anos de 2000 e 2005: para os dados estaduais, foi utilizada como fonte de informações, um trabalho técnico realizado pelo Inep diretamente dos balanços financeiros de cada estado; para os dados municipais do mesmo período, utilizou-se uma metodologia baseada no percentual mínimo de aplicação de cada município, definido pela legislação vigente;",
+    "8 - A partir de 2006, utilizaram-se como fontes de dados estaduais e municipais, o Sistema de Informações sobre Orçamento Público em Educação - Siope -, administrado pelo Fundo Nacional de Desenvolvimento da Educação - FNDE;",
+    "9 - Os dados da União foram coletados do Sistema Integrado de Administração Financeira - Siafi/STN - para todos os anos;",
+    "10 - Para o cálculo dos valores de Investimentos Públicos em Educação, utilizaram-se as seguintes fontes de dados primários:",
+    "- Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira - Inep/MEC; - Secretaria do Tesouro Nacional (STN); - FNDE; - Balanço Geral dos Estados e do Distrito Federal; - Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (Capes); - Instituto de Pesquisa Econômica Aplicada (Ipea); - Instituto Brasileiro de Geografia e Estatística (IBGE); - Caixa Econômica Federal (CEF); - Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq)."
+   ]
+  },
+  "inep_nacional": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Referências nacionais oficiais: ATU, aprovação e Ideb da rede municipal do Brasil; investimento público direto por estudante",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "parametros": "recorte único com as linhas nacionais lidas dos pacotes inep_*_brasil_* e inep_investimento_estudante_*",
+   "recorte": "pipeline/eficiencia/seed/inep_nacional/referencias_nacionais.json.gz",
+   "sha256_recorte": "5f4782d42e1472391669c46e79eedbceba9b786ecaa782b39a857961d9c4f298",
+   "linhas_recorte": 447
   },
   "inep_rendimento_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
@@ -1280,6 +1582,146 @@
     "Fonte: INEP/Censo Escolar da Educação Básica."
    ]
   },
+  "inep_rendimento_brasil_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, Brasil, regiões e UFs, 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2021/tx_rend_brasil_regioes_ufs_2021.zip",
+   "membro": "tx_rend_brasil_regioes_ufs_2021/tx_rend_brasil_regioes_ufs_2021.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2022-05-12",
+   "sha256_original": "f2a5cd3cb0ef6f5b29242c9870fd34be7654850aeb5ebdd117bf7c60226595c1",
+   "bytes_original": 400223,
+   "md5_publicado_inep": "c2cc51424d3d9682a2fa15b4397afd68",
+   "md5_conferido": "c2cc51424d3d9682a2fa15b4397afd68",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2021/tx_rend_brasil_regioes_ufs_2021.xlsx",
+     "md5_publicado_inep": "c2cc51424d3d9682a2fa15b4397afd68",
+     "md5_calculado": "c2cc51424d3d9682a2fa15b4397afd68",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2021/tx_rend_brasil_regioes_ufs_2021.ods",
+     "md5_publicado_inep": "efea1c583841ac0648081bd947130302",
+     "md5_calculado": "efea1c583841ac0648081bd947130302",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_rendimento_brasil_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, Brasil, regiões e UFs, 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2022/tx_rend_brasil_regioes_ufs_2022.zip",
+   "membro": "tx_rend_brasil_regioes_ufs_2022/tx_rend_brasil_regioes_ufs_2022.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2023-05-17",
+   "sha256_original": "1ff22afb3ed6e3d2112c3326fad71576a246f23d352db8d9c4d0a87c058fd974",
+   "bytes_original": 407358,
+   "md5_publicado_inep": "0e1822d5a2aff92f9d9c2213dc8e6605",
+   "md5_conferido": "0e1822d5a2aff92f9d9c2213dc8e6605",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2022/tx_rend_brasil_regioes_ufs_2022.xlsx",
+     "md5_publicado_inep": "0e1822d5a2aff92f9d9c2213dc8e6605",
+     "md5_calculado": "0e1822d5a2aff92f9d9c2213dc8e6605",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2022/tx_rend_brasil_regioes_ufs_2022.ods",
+     "md5_publicado_inep": "dbf43a839b7d6f3edf761afb616902de",
+     "md5_calculado": "dbf43a839b7d6f3edf761afb616902de",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_rendimento_brasil_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, Brasil, regiões e UFs, 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2023/tx_rend_brasil_regioes_ufs_2023.zip",
+   "membro": "tx_rend_brasil_regioes_ufs_2023/tx_rend_brasil_regioes_ufs_2023.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2024-08-09",
+   "sha256_original": "544353afb2bde2a00b9ef3538f7e74259fbe68ac6fd74dae418e08f8d70fb16d",
+   "bytes_original": 389928,
+   "md5_publicado_inep": "0a4d35a8a04f6f33e50fb6c34caf81a8",
+   "md5_conferido": "0a4d35a8a04f6f33e50fb6c34caf81a8",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2023/tx_rend_brasil_regioes_ufs_2023.xlsx",
+     "md5_publicado_inep": "0a4d35a8a04f6f33e50fb6c34caf81a8",
+     "md5_calculado": "0a4d35a8a04f6f33e50fb6c34caf81a8",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2023/tx_rend_brasil_regioes_ufs_2023.ods",
+     "md5_publicado_inep": "e3d81d5b9c32b086755f2c11efae073c",
+     "md5_calculado": "e3d81d5b9c32b086755f2c11efae073c",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_rendimento_brasil_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, Brasil, regiões e UFs, 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2024/tx_rend_brasil_regioes_ufs_2024.zip",
+   "membro": "tx_rend_brasil_regioes_ufs_2024/tx_rend_brasil_regioes_ufs_2024.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2025-04-30",
+   "sha256_original": "669ee147173154ab5d285e5a68ae1b4b16bd37fd586bf4783cca4708ac6f1075",
+   "bytes_original": 388235,
+   "md5_publicado_inep": "cc54b4be7fbd8888643955f7fa50aba3",
+   "md5_conferido": "cc54b4be7fbd8888643955f7fa50aba3",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2024/tx_rend_brasil_regioes_ufs_2024.xlsx",
+     "md5_publicado_inep": "cc54b4be7fbd8888643955f7fa50aba3",
+     "md5_calculado": "cc54b4be7fbd8888643955f7fa50aba3",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2024/tx_rend_brasil_regioes_ufs_2024.ods",
+     "md5_publicado_inep": "c7ec510b834c30e281d3745138feb0dd",
+     "md5_calculado": "c7ec510b834c30e281d3745138feb0dd",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
+  "inep_rendimento_brasil_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, Brasil, regiões e UFs, 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2025/tx_rend_brasil_regioes_ufs_2025.zip",
+   "membro": "tx_rend_brasil_regioes_ufs_2025/tx_rend_brasil_regioes_ufs_2025.xlsx",
+   "capturado_em": "2026-10-08T17:24:11Z",
+   "publicado_em": "2026-05-18",
+   "sha256_original": "cb6ba9fcbaa3a7c69d927b0b90937c83ee48d3200aa812645ea2dfa33e4c8410",
+   "bytes_original": 376867,
+   "md5_publicado_inep": "5fca4c0afca7e65c358bd397dacb9d24",
+   "md5_conferido": "5fca4c0afca7e65c358bd397dacb9d24",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2025/tx_rend_brasil_regioes_ufs_2025.xlsx",
+     "md5_publicado_inep": "5fca4c0afca7e65c358bd397dacb9d24",
+     "md5_calculado": "5fca4c0afca7e65c358bd397dacb9d24",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_brasil_regioes_ufs_2025/tx_rend_brasil_regioes_ufs_2025.ods",
+     "md5_publicado_inep": "8178316d91d162b18eb4c9b5bb2fb2bd",
+     "md5_calculado": "8178316d91d162b18eb4c9b5bb2fb2bd",
+     "confere": true
+    }
+   ],
+   "parametros": "só a linha Brasil, categoria Total, dependência Municipal"
+  },
   "inep_sinopse_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
    "conjunto": "Sinopse Estatística da Educação Básica 2021",
@@ -1449,6 +1891,33 @@
      "linhas": 27
     }
    }
+  },
+  "ocde_eag": {
+   "instituicao": "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
+   "conjunto": "Education at a Glance: tamanho de turma (2023 e 2024) e despesa por estudante (2023), todos os países com dado",
+   "pagina": "https://www.oecd.org/en/publications/serials/education-at-a-glance_g1g1b0a6.html",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_NON_FIN_PERS@DF_UOE_NF_PERS_CLS,1.1/.ISCED11_1+ISCED11_2.CLS..............?startPeriod=2023&endPeriod=2024&dimensionAtObservation=AllDimensions",
+   "capturado_em": "2026-10-08T17:25:30Z",
+   "parametros": "API SDMX; ISCED 1, 2 e 1 a 8; só observações com valor; tamanho de turma: instituições públicas e todas; despesa: fonte governamental, USD PPC, preços correntes",
+   "fontes": {
+    "ocde_tamanho_turma": {
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_NON_FIN_PERS@DF_UOE_NF_PERS_CLS,1.1/.ISCED11_1+ISCED11_2.CLS..............?startPeriod=2023&endPeriod=2024&dimensionAtObservation=AllDimensions",
+     "sha256_resposta": "3a62bceebf8ce34eedc69524f3b30e55b8fbb251335ca251e25e4436ba13b1ae",
+     "bytes": 423796
+    },
+    "ocde_despesa_por_estudante": {
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_FIN@DF_UOE_INDIC_FIN_PERSTUD,3.2/.FIN_PERSTUD.ISCED11_1+ISCED11_2+ISCED11_1T8.S13.INST_EDU.DIR_EXP.V.USD_PPP_ST.?startPeriod=2023&endPeriod=2023&dimensionAtObservation=AllDimensions",
+     "sha256_resposta": "43f8380346e6b132cb9028305a990864ea26be146edc3b0186533ea3c97274d2",
+     "bytes": 98688
+    }
+   },
+   "recorte": "pipeline/eficiencia/seed/ocde/education_at_a_glance.json.gz",
+   "sha256_recorte": "408dc3e380b00ae6b7f0574b4052b0c2bcda8ed3c213a3c6a89da5a80a61d539",
+   "linhas_recorte": 441,
+   "notas_da_fonte": [
+    "O dataflow de tamanho de turma informa que os dados do último ano disponível são preliminares; os finais seriam divulgados em 29 de setembro de 2026.",
+    "A média da OCDE é a média simples, sem ponderação, dos países da OCDE com dado, como no Reader's Guide do Education at a Glance 2025."
+   ]
   },
   "siconfi_dca_anexo_i_e": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
@@ -2422,7 +2891,7 @@
    "arquivos": {
     "1400100_2024": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T12:22:11Z",
+     "capturado_em": "2026-10-08T17:23:09Z",
      "linhas_resposta": 5744,
      "linhas": 380,
      "sha256_resposta_completa": "f022e44b2a15eaca5bc2b85d60edfd1aad69fb8925eae31954895bfbd8f90c9c",
@@ -2431,7 +2900,7 @@
     },
     "5002704_2021": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T12:22:12Z",
+     "capturado_em": "2026-10-08T17:18:24Z",
      "linhas_resposta": 7972,
      "linhas": 245,
      "sha256_resposta_completa": "f6971828a5dd694ac1904f5e858d0bd076396365fe4007c097bd7b9f72d947a5",
@@ -2440,12 +2909,1155 @@
     },
     "2611606_2024": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T12:22:15Z",
+     "capturado_em": "2026-10-08T17:20:35Z",
      "linhas_resposta": 9310,
      "linhas": 435,
      "sha256_resposta_completa": "53a60993c4d532760f3cbff8057307852b56cc1c71f0d74d168f1194c6b624c1",
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2024_12.json.gz",
      "sha256": "647ca66820691c4e004717c163c7cf66ef5463fe9f1bb36a7ce7b6b8b4db0818"
+    },
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:28Z",
+     "linhas_resposta": 1640,
+     "linhas": 65,
+     "sha256_resposta_completa": "7c7ac42cfd41337ceef15f819dae75fb1717002d3ce2d0f269d3e9046e108685",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1200401_2021_12.json.gz",
+     "sha256": "39674dce40e1fc4576270436cbc9478a887b12453951bf0a51f968a3cde8eb56"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:29Z",
+     "linhas_resposta": 1618,
+     "linhas": 36,
+     "sha256_resposta_completa": "ae640a9ab1954d0a90097750b736c64bd3418c8310f003226cdc24dd196de5ea",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1200401_2022_12.json.gz",
+     "sha256": "5c4081165e9af7f7f14b2e0adbc8aaa3beef9b2e60e3687038fb0f75c5c478d5"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:31Z",
+     "linhas_resposta": 1902,
+     "linhas": 55,
+     "sha256_resposta_completa": "578821625eb816313fdbb52da028e9f854e628817bf45231c46bb3a0b1877ba7",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1200401_2023_12.json.gz",
+     "sha256": "3270e34111fd628caafc8ce0da4b1a21b89acac564591ea43785fed88b31d280"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:32Z",
+     "linhas_resposta": 2265,
+     "linhas": 69,
+     "sha256_resposta_completa": "6caaf906726ba9a9999f3683167d00d7fefeb5b9cbcbfb76af3138290f6248cf",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1200401_2024_12.json.gz",
+     "sha256": "06aee4a50f138d66d8dce98de4f8899209c2c7e5f5ddd6736a38c0572dd807d1"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:34Z",
+     "linhas_resposta": 2213,
+     "linhas": 83,
+     "sha256_resposta_completa": "473075f5af4ab8917b44c0eb36754f441985d82f2d9f605cd98eeca48e678d7c",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1200401_2025_12.json.gz",
+     "sha256": "969b48f501627d2dadb597cfac55d3f5079415c9b805ac91e85177ae55b39fc7"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:36Z",
+     "linhas_resposta": 7332,
+     "linhas": 191,
+     "sha256_resposta_completa": "d08448dbd44e651bbec9437a25605fc8a861c9377355c55472102044b4819c32",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2704302_2021_12.json.gz",
+     "sha256": "55142a0f7af0d040345ca117d6d39fa3207dfe59166fc0891a0e27c59f0820ae"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:40Z",
+     "linhas_resposta": 3495,
+     "linhas": 159,
+     "sha256_resposta_completa": "3f81609edd50880b9e254afcd8b4296a4c33f330689d4f5ac43e64f22332bba2",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2704302_2022_12.json.gz",
+     "sha256": "6475febd1e74128bf8ae6a7f2330f5a6b8c5851075fa08aaad56c74ed1a615dc"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:42Z",
+     "linhas_resposta": 4544,
+     "linhas": 193,
+     "sha256_resposta_completa": "b859c24e2e217270012b041ee63f1d82bb701e03f2b54a767fa91e00f5ae0311",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2704302_2023_12.json.gz",
+     "sha256": "12559560af87bdfcbda565d55d2d98952e55bfdcde19097b04adf887f0f0c30e"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:44Z",
+     "linhas_resposta": 4713,
+     "linhas": 222,
+     "sha256_resposta_completa": "615e1ccd52dbda96021dd0f884e4426d0fa36cfc0eca6afacad1ffe698eb2c68",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2704302_2024_12.json.gz",
+     "sha256": "6b22904c887af2d3d0e6ab30b822b822d2da52807076afc1855e709ff620b679"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:46Z",
+     "linhas_resposta": 4631,
+     "linhas": 227,
+     "sha256_resposta_completa": "748c28d288d51d7bd5cf8cfe08c2d5f9fcddc8c276f75dda0f7e95b22e71b57e",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2704302_2025_12.json.gz",
+     "sha256": "876e0fb064c93af0c09b52e54817e515d8f7743ad34c93241fb381a3ba5803fa"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:48Z",
+     "linhas_resposta": 2631,
+     "linhas": 238,
+     "sha256_resposta_completa": "b37ce936d491c340b27af40e3d2201b0e80d5f1e4e31a08cb432814efabbe0c5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1600303_2021_12.json.gz",
+     "sha256": "c113829aa891a7839e2971b007fce94159de58a79ff8132d696f63593175b45f"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:50Z",
+     "linhas_resposta": 3525,
+     "linhas": 161,
+     "sha256_resposta_completa": "4eafa6c49d6d41cce1fa14693448fa90e3e7b0bfe15281e58dfa58334f0b57c4",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1600303_2022_12.json.gz",
+     "sha256": "c86c43218cc1f6a230432073f73f25dc589079297fe51da2c8f0566bb8308175"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:51Z",
+     "linhas_resposta": 1926,
+     "linhas": 164,
+     "sha256_resposta_completa": "cf1fc222b3ca518128acd5bae5b10313f45e563573521302a8d482d2ec4e0de7",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1600303_2023_12.json.gz",
+     "sha256": "22370b67ee34a91222b58fc31c8a05e709d9739011e230b5e3ad38d29607b2d0"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:54Z",
+     "linhas_resposta": 2516,
+     "linhas": 136,
+     "sha256_resposta_completa": "d8ff099be075fa8ca7907aca3bfbfd120d823d1d4be3d2a79d5143f520e5d1ba",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1600303_2024_12.json.gz",
+     "sha256": "9c3491b89159cbde6f99320df63a8dfc73e1f053c550acd84b5cf73c0232697f"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:55Z",
+     "linhas_resposta": 2168,
+     "linhas": 93,
+     "sha256_resposta_completa": "7beb0573e1f77c1ff3ce1a325c2142d9602e0e6704a7f37df391aa5a891b6a22",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1600303_2025_12.json.gz",
+     "sha256": "e0aa90abb0f5365cf106c5d7ea5522770a8511abdfea3e8125eba96108de0bea"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:57Z",
+     "linhas_resposta": 4530,
+     "linhas": 522,
+     "sha256_resposta_completa": "8c0c183d67fc7a9743b6b3c9a67a5549df9b3f91c9590bd09cf06eb528ae9604",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1302603_2021_12.json.gz",
+     "sha256": "434a29cc272d73c6a518addd386df92d16bbbb9fa44ad0636d9efbc5d5e6a4bc"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:15:59Z",
+     "linhas_resposta": 4749,
+     "linhas": 512,
+     "sha256_resposta_completa": "21cb35d8fd4e6424465b9691bca47289d05be0de0d09168f0bda302631ba72d2",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1302603_2022_12.json.gz",
+     "sha256": "5e53987f4ad2fd08c57025eec402d3c7b483a8f33641f68dc30e939714f54fa3"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:01Z",
+     "linhas_resposta": 5075,
+     "linhas": 517,
+     "sha256_resposta_completa": "91091c6d16e91d7091b5b212f992bcc5de88318431a00f3214229588248e2506",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1302603_2023_12.json.gz",
+     "sha256": "07402b540a5bd11952ee9bc7985b48aea78ddf1e9f1d6b2bc39ef3eb4a68eea3"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:04Z",
+     "linhas_resposta": 4774,
+     "linhas": 550,
+     "sha256_resposta_completa": "205f80023f7c25621b8e606c038b020e668ae2a3e88806f2779b173ed9db06bd",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1302603_2024_12.json.gz",
+     "sha256": "c9d6a3384315d5dd54f2fa7a1a674b18927808ef95a95b03abacadfa146a9c49"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:06Z",
+     "linhas_resposta": 4854,
+     "linhas": 540,
+     "sha256_resposta_completa": "f07e7b908300cecde01186bb1f17546676c1f17772eb5c895f59ccb88c5a1bce",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1302603_2025_12.json.gz",
+     "sha256": "81722f66ed40712f38d83333135cda47a34863478fd80a0eb8f1100af7b68b7d"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:10Z",
+     "linhas_resposta": 16879,
+     "linhas": 342,
+     "sha256_resposta_completa": "fe6b2a01b454419493dc2c99e592655802485cfc2979d591ee5418e4454e3e3f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2927408_2021_12.json.gz",
+     "sha256": "b4a9f1c3ba87c9a77db27224b0279f4897b45f595cd1030242e75092d275a6db"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:20Z",
+     "linhas_resposta": 7142,
+     "linhas": 258,
+     "sha256_resposta_completa": "4eb2b0f30f0f617539f17bc211c7bd50a2cb3999c067ae72383d65487e0d8a6a",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2927408_2022_12.json.gz",
+     "sha256": "8c5a23816fb4c896cd5dac18b6f8ef13b97ee5cfec1c546f04a4edd579953e29"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:23Z",
+     "linhas_resposta": 9817,
+     "linhas": 366,
+     "sha256_resposta_completa": "ffdbe498c3e7492f1a5cc0c5eace27c8d3912eb59861de0be702decc48215ec7",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2927408_2023_12.json.gz",
+     "sha256": "332080a8f4b86375c04e7d8dac7f45358a75b7f51e1106805fdd8dcec89db6b8"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:27Z",
+     "linhas_resposta": 9117,
+     "linhas": 339,
+     "sha256_resposta_completa": "8c536b7d76e3d25fc4faa3b35dfd831e174d8b84338d1a6c234f02ea6a1f719f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2927408_2024_12.json.gz",
+     "sha256": "1fbc226bef554af95e5f0c13fea1e7d7838f4a82bbb654bf11334afb127c1e7c"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:32Z",
+     "linhas_resposta": 7824,
+     "linhas": 233,
+     "sha256_resposta_completa": "f25b8d782f08ce2f6629939afd838ddfae0ea04dcc4b4073dd5d4bbf9dc661aa",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2927408_2025_12.json.gz",
+     "sha256": "e4f80c2430bc94731d09976c5416ff63656255bf14da3e044110e9708c6a9c76"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:36Z",
+     "linhas_resposta": 5898,
+     "linhas": 239,
+     "sha256_resposta_completa": "4335dcd4726c8b4f832ed9733d50fd2de8451c122bd872a92ed87e715ff7e662",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2304400_2021_12.json.gz",
+     "sha256": "9f1d31a210b83abcb62b9a6e6891c32550fe2f24fd0003d1c1c32e376822f73e"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:39Z",
+     "linhas_resposta": 6020,
+     "linhas": 242,
+     "sha256_resposta_completa": "85a487c04d6de85abbe3ea81b36b0deec5e75f9e34c3f4876466b1002dd3feb5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2304400_2022_12.json.gz",
+     "sha256": "bb4c68e1e982b7b68714ca15997f316ff56a50a95c2f7fb2cf11c6cfd2a70d18"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:44Z",
+     "linhas_resposta": 7827,
+     "linhas": 279,
+     "sha256_resposta_completa": "f99b8b51936b8d1d39cdda23616116af05bc514c8263722a00e9a5c4569d2703",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2304400_2023_12.json.gz",
+     "sha256": "733f30d4249ca207e2bbbe062d3357f493800d5f6f681107f6c496fb14ef6720"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:48Z",
+     "linhas_resposta": 6339,
+     "linhas": 311,
+     "sha256_resposta_completa": "24275ba72a0486f31d80b6d908d49c8dff918fccee813709d61342366c619a1e",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2304400_2024_12.json.gz",
+     "sha256": "abd636c035ed23e7c817be6a139bbfab38a8838277526f2c52368c551c1af916"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:51Z",
+     "linhas_resposta": 6112,
+     "linhas": 333,
+     "sha256_resposta_completa": "94554431e7a53b88a5d9f60a667f2a7c70a08b4c60d9954db2761d8ea462e121",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2304400_2025_12.json.gz",
+     "sha256": "ce143ed098112ec3a42266029d48eace3eb5d45c3b5acd301b37c86c0c8a8670"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:16:55Z",
+     "linhas_resposta": 18217,
+     "linhas": 702,
+     "sha256_resposta_completa": "8766880fd187842e3b8642e72a977095dd7ead3e503abb0a3e5e73e0f6424fcf",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3205309_2021_12.json.gz",
+     "sha256": "a3018d763a66972ad5ad636532c19495fbfe06920c863449af739e8f8725821a"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:05Z",
+     "linhas_resposta": 19041,
+     "linhas": 750,
+     "sha256_resposta_completa": "ff0bd42676e82c5a55646f971c54b6587b0979244f1bbdba897d2f0a52814009",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3205309_2022_12.json.gz",
+     "sha256": "ca47731f46289f2a5fc24737bc14cbeb2419bebb2932e3ada491bbef77fffd07"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:13Z",
+     "linhas_resposta": 20597,
+     "linhas": 768,
+     "sha256_resposta_completa": "6f4a2194fc8bc826e55b01e8ee4fc77e4c503111b9a3f91495a093d42fd965fd",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3205309_2023_12.json.gz",
+     "sha256": "e360c2e7f4f146ed2663ebbe9a17d3e760c1a70395869aeaecc66d20188efff7"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:24Z",
+     "linhas_resposta": 23999,
+     "linhas": 985,
+     "sha256_resposta_completa": "73ebbab99ceb57f5146b01d8b48963f07c42dc9f61d47321ea6ec054f6640773",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3205309_2024_12.json.gz",
+     "sha256": "2585a01112926a896a72f87c8ed822b312e7fb3100e34f2d67114669af118478"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:37Z",
+     "linhas_resposta": 21525,
+     "linhas": 1094,
+     "sha256_resposta_completa": "b5cc702afb101269ca2e78d0656188012c7b1511119cb26db24e6bf1084ae021",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3205309_2025_12.json.gz",
+     "sha256": "8794505fb45d86288a71be6ad071d106be4f6e66121d40959945064af71ff695"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:47Z",
+     "linhas_resposta": 6863,
+     "linhas": 226,
+     "sha256_resposta_completa": "8020aa851bf323bc5c4d72a809c0007bda5d65c8df385353e3693d1ebb4de8b0",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5208707_2021_12.json.gz",
+     "sha256": "33b1d232c1f4c291baca0d91ca6224a171045c4879899b6107b708948940dc55"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:50Z",
+     "linhas_resposta": 10890,
+     "linhas": 556,
+     "sha256_resposta_completa": "30e23c8843b13219aa4783a7438e1cdb38d9b1a2254928b4db24de0811cc28c3",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5208707_2022_12.json.gz",
+     "sha256": "f0caa79c31402b110fcaca4d304ef8d683169b121eb876cde00ba141638f099d"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:56Z",
+     "linhas_resposta": 4276,
+     "linhas": 203,
+     "sha256_resposta_completa": "1cd4704e221e3d00e94ce3c0af179194c2a0e19d7fbcb89539aebcae9ed24f3b",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5208707_2023_12.json.gz",
+     "sha256": "29b3bbafc47d164ddb1c524a029c586e104f788d3a654728b05b731ac1c6515a"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:17:59Z",
+     "linhas_resposta": 4141,
+     "linhas": 241,
+     "sha256_resposta_completa": "73ca57abad08cd2a7773780c089edc519aaa0e384ecbaf57f6ddd9492348f843",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5208707_2024_12.json.gz",
+     "sha256": "1ac5f3179f0d1ac622e70f9d8abf0ee32bf9d9635dbecf4ed9d92226ac4ecf4d"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:00Z",
+     "linhas_resposta": 4499,
+     "linhas": 284,
+     "sha256_resposta_completa": "676a1033e544d833753a380fe47ea2cb436d7eb028ae343dcf2eef633b5c4610",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5208707_2025_12.json.gz",
+     "sha256": "56298f87580e4872e571d71cd8a6f7600e0edcc2ff6649960760df816ae67823"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:02Z",
+     "linhas_resposta": 3588,
+     "linhas": 218,
+     "sha256_resposta_completa": "f30449a97daa45cb5b55283e5ed03b2a86c75591367a11fa9ca5ae2268eddcbc",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2021_12.json.gz",
+     "sha256": "1b5bc1fe30eaa8c84b6efb6c1f570a011c2348ac4c6d2e64e58dc39a20de21f0"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:04Z",
+     "linhas_resposta": 1915,
+     "linhas": 0,
+     "sha256_resposta_completa": "19304039c4200b13cf1ab747401019c51d6494c94ec5c8ef289a2478e6e03791",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2022_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:06Z",
+     "linhas_resposta": 2544,
+     "linhas": 0,
+     "sha256_resposta_completa": "38130a166a03bd129c8c0f266d475fc8afa00037d2caee0221eb65353e34ddab",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2023_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:08Z",
+     "linhas_resposta": 5586,
+     "linhas": 277,
+     "sha256_resposta_completa": "91164edbf5adf61b80f4696db47be6e38c27feb650454b3ef053f593b9dfe890",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2024_12.json.gz",
+     "sha256": "f886fbf8a6c061702ee06515288feca536c58c858dc834f5c4385919d3065b03"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:11Z",
+     "linhas_resposta": 5746,
+     "linhas": 327,
+     "sha256_resposta_completa": "042cdf7e1cee7826fa11453721d99ef4d1f64600a6c83881425a4c1fd8affa4f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2025_12.json.gz",
+     "sha256": "24f8178505cb482224b09c9dcd0ba73b37c007841e9a37f0a4b63065342fe564"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:14Z",
+     "linhas_resposta": 3627,
+     "linhas": 103,
+     "sha256_resposta_completa": "8f2baa39459c77ad0582ba00cdbf3a5a1c7a005f706930a32a3278fe7c28ab29",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5103403_2021_12.json.gz",
+     "sha256": "9de345a81c89d45e8a310a3050e45fc4ed857508bf4de947922e5528f37e8019"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:16Z",
+     "linhas_resposta": 3019,
+     "linhas": 120,
+     "sha256_resposta_completa": "bf061b840709b59f29f6b986017cc75c2eb2b89d4bf35245e6e76e7bda42b9e8",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5103403_2022_12.json.gz",
+     "sha256": "8a83de8826fe306e90e19094d776248bf62e876c78550bbff32bfd8f9e3a7a1e"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:18Z",
+     "linhas_resposta": 3637,
+     "linhas": 146,
+     "sha256_resposta_completa": "728f9de958d62c201392e2596bfb048a631f5a40b26f241245d1b6978dcfbe1a",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5103403_2023_12.json.gz",
+     "sha256": "675db0fdedfab2f65b30eee01fa0387daf922efd3033ee40decbae8cd99ff9ae"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:20Z",
+     "linhas_resposta": 3800,
+     "linhas": 147,
+     "sha256_resposta_completa": "d799478534a50b569266ae0ede695c8aefc418b103ff10fa5c2b21c3b41167bd",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5103403_2024_12.json.gz",
+     "sha256": "eb10f0e5a64b8b6e9ac183aa0bfd58af2842624f1d2dd53162979d8adee9f2c6"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:22Z",
+     "linhas_resposta": 3577,
+     "linhas": 135,
+     "sha256_resposta_completa": "ece60a3a74aa4faf25aab50580c02cd52cd04c2a67e9f738687b4798a0573f80",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5103403_2025_12.json.gz",
+     "sha256": "9c444281f7a768f32696ed74bcc2dd0fba882958c3a6b6c24d730ab60641d8ef"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:26Z",
+     "linhas_resposta": 9192,
+     "linhas": 219,
+     "sha256_resposta_completa": "f803c133ac588d7f187c0f3002a1d8f345128d1763ce974a90a9193ac2b4acbb",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2022_12.json.gz",
+     "sha256": "9b12dac7efb462fc140e47201a65785054cbb6385c4a7dd067e40833af405a8f"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:31Z",
+     "linhas_resposta": 8544,
+     "linhas": 213,
+     "sha256_resposta_completa": "c6ce08ea71041648d48e47378ae1d1d0eb633be2da4e0c2fe39b006d2cde3ed5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2023_12.json.gz",
+     "sha256": "6dda50a3cba5228bfc247cf746b4039979bf89517c876fc1b6ade6d1cc7e324f"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:35Z",
+     "linhas_resposta": 6390,
+     "linhas": 231,
+     "sha256_resposta_completa": "d456b8a1bb2163aba75a5ffe5875ac89c23ea54722dde44199df8c4807eda307",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2024_12.json.gz",
+     "sha256": "6802301944e8dda997dccffe3c9cf96ae7ae5e83b99b75ff564cd33431fe8dcb"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:39Z",
+     "linhas_resposta": 6794,
+     "linhas": 249,
+     "sha256_resposta_completa": "50e4536a783315e801669b63207642894af42f749d7aa9cd9617b44f0438288d",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2025_12.json.gz",
+     "sha256": "83b65ba04d8c4e2e690d73bb2cc167c7b1d669c2a41ba65edeea50dc75b597bb"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:43Z",
+     "linhas_resposta": 14269,
+     "linhas": 421,
+     "sha256_resposta_completa": "a7f55d0924956723632768164709058cb6861ebe03cec91f650194246bab0860",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3106200_2021_12.json.gz",
+     "sha256": "0dce60e4e42910ff4ac040ff51f4627909782857d91b35db02f9caff4710cc83"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:49Z",
+     "linhas_resposta": 15298,
+     "linhas": 392,
+     "sha256_resposta_completa": "bcbf710060a337bf5cfc9beed72665f2370d1b13104cfab8059bc20250c817d1",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3106200_2022_12.json.gz",
+     "sha256": "2a7b75ff0bae7a8ffe4aa70d1deba32b76f81f3da39cdf92d6251600c26d1ce8"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:18:57Z",
+     "linhas_resposta": 15591,
+     "linhas": 571,
+     "sha256_resposta_completa": "d5c3a6dd259c63cbbd93e3593d6d4cc699e2212dd9d9bfb68ad2320d519b8487",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3106200_2023_12.json.gz",
+     "sha256": "a4c4d2f148550de432173a55cbc9942675f9cc5154affb1adf3f81b79e3c0347"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:05Z",
+     "linhas_resposta": 16686,
+     "linhas": 538,
+     "sha256_resposta_completa": "991c6365b0ae65ece0529434599d7162811ddaa89d9ff3c8b6588ab48c776886",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3106200_2024_12.json.gz",
+     "sha256": "618c8c9e965a93a588bcbf779c0cb1061213b93eb4b5d9b36821e17b6df80f0f"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:13Z",
+     "linhas_resposta": 14360,
+     "linhas": 501,
+     "sha256_resposta_completa": "9a7c71921046b3c0ca7f7d1308210360ae26aa079bfff69fddbf2dd3b6b30105",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3106200_2025_12.json.gz",
+     "sha256": "ca910e1096e99e8280daef70c4805f4228cf8c756167a5fb81c507f3cb19d6f4"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:19Z",
+     "linhas_resposta": 4619,
+     "linhas": 318,
+     "sha256_resposta_completa": "d90155a3ae94925c26c55f89d9797e4a5f8e9cae67373ee23c34d14fd1a774c5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1501402_2021_12.json.gz",
+     "sha256": "153fb3d3b084c193da9c558228ab2c8ec51a40cb82c6e95ba6894f71bbd8cde1"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:21Z",
+     "linhas_resposta": 6628,
+     "linhas": 376,
+     "sha256_resposta_completa": "a9e8167cb8915326393266d7ff6abe8fc0c1cbbe4f2691620d72c09ec444e4e2",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1501402_2022_12.json.gz",
+     "sha256": "02186a9431f437294bcda2a9122f9f798d16ab47cbf1ce64057e8ca4c584b29a"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:25Z",
+     "linhas_resposta": 4464,
+     "linhas": 198,
+     "sha256_resposta_completa": "9e07439f89f4a0dfc8674830688ef742353cbadf955a44cae98a52ae4edf062c",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1501402_2023_12.json.gz",
+     "sha256": "19739f3f8d126a536350b8c62a623088c9b1469924e022bdb4cd31cfe617b405"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:27Z",
+     "linhas_resposta": 6742,
+     "linhas": 312,
+     "sha256_resposta_completa": "a0b5e54cddcd4f30ae8d5172d3838f4ed1e9a084c9e79977f7c965e36aa8011d",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1501402_2024_12.json.gz",
+     "sha256": "a532c09f7feb537e6b8f39117c6dee4beeb81599fb13985466d1b2c7d8d96714"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:30Z",
+     "linhas_resposta": 8309,
+     "linhas": 401,
+     "sha256_resposta_completa": "c5452194d2a16a175d48c6ccd86bab79d3ad97b635ad2c4c92dc13dff6d4a8f0",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1501402_2025_12.json.gz",
+     "sha256": "1c9a11ef9f1dea3bb2fec5a7e96d7d9ca2f35c18986b9d85a2f8081a951f4b87"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:35Z",
+     "linhas_resposta": 12896,
+     "linhas": 149,
+     "sha256_resposta_completa": "2ebe15aac097759fedcbad69ef4de07de629bc1190ff960751a5b235daaa2afd",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2507507_2021_12.json.gz",
+     "sha256": "152fa7eb1dc0312207acf009dd9f147ec168271a4b43b687465baee25c491884"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:41Z",
+     "linhas_resposta": 3748,
+     "linhas": 191,
+     "sha256_resposta_completa": "1d0eda37378ea4de01db62fe08dede1b273ba5418288cbaf593d1e3801c513c9",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2507507_2022_12.json.gz",
+     "sha256": "ad1f73329c762040c67cbd7fa635cf5b889fb03037c48083bce6b52cadf9ffc2"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:43Z",
+     "linhas_resposta": 3935,
+     "linhas": 196,
+     "sha256_resposta_completa": "dbba4de9d2442767191de7b267c3fd459ab4a5bdf7887a3be4a7e62581eaff50",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2507507_2023_12.json.gz",
+     "sha256": "53d7d0f6d0acb8a7e5cae6eba83e254d2d13719dd867b74ba2e5a113b0b3aed0"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:45Z",
+     "linhas_resposta": 4137,
+     "linhas": 194,
+     "sha256_resposta_completa": "ee1144fc52403ce3151f4500b7de8ba8ec44d784f2c5f7b773da7d8ae9650d6e",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2507507_2024_12.json.gz",
+     "sha256": "b04e7fc881585139dc96fca906479df236b589a690a54ef2bb8ca1aaae89407e"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:47Z",
+     "linhas_resposta": 4320,
+     "linhas": 222,
+     "sha256_resposta_completa": "30aaba618887f42a9dbe1e7ea8f63cbbc87c74d8b7e8943fb5eda330b72aa60c",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2507507_2025_12.json.gz",
+     "sha256": "200b7c2527d49fb38481f9b3dfe3f4e696cefe97ebe8fda4124870c5d5eaa0dd"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:50Z",
+     "linhas_resposta": 8589,
+     "linhas": 189,
+     "sha256_resposta_completa": "87f2190ac8a4268fd84bdbbd17656e0bd4cad866a826bc191843ee21d5e29b3f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4106902_2021_12.json.gz",
+     "sha256": "081de0db3fc3b4db72ac4b9e11821f5d2feb0b5e8cbb52e32c22577e6477bc2f"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:54Z",
+     "linhas_resposta": 9880,
+     "linhas": 198,
+     "sha256_resposta_completa": "3f08cadf522f9ebcda3dfeed0ea750eda51a477a48f4c7b544082b45380595d1",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4106902_2022_12.json.gz",
+     "sha256": "9c19d326f547ffa70cb47ebd408f7e65a02af8a3b2b87aad91ef141829c68a7c"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:19:58Z",
+     "linhas_resposta": 9230,
+     "linhas": 209,
+     "sha256_resposta_completa": "06ddf7cddb2656b9c03cd265029408cdffcd592c0d4b1b6972d8be0429650c31",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4106902_2023_12.json.gz",
+     "sha256": "211fdf5504fccfe49bea670219976646be222751198757a3a2fff7958075df1a"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:02Z",
+     "linhas_resposta": 9534,
+     "linhas": 256,
+     "sha256_resposta_completa": "d4cfcd62bddbc605a175c07aa25f5f7f6340c06fc1d0b2aa29b371cec38053d5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4106902_2024_12.json.gz",
+     "sha256": "e94b780f71a4a00cde6fb6fdef53f34cca8b010f64c791e166fb3ea02777642e"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:07Z",
+     "linhas_resposta": 9855,
+     "linhas": 253,
+     "sha256_resposta_completa": "83ebcb3b5b58d70d6b9198b9c046acf564a3f666d1e2cdf6bfd767313d6e6ffe",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4106902_2025_12.json.gz",
+     "sha256": "c91517d2fb6a24500a02893940f34006cd03f9dae80200e32b54feac7b4f95ae"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:11Z",
+     "linhas_resposta": 16218,
+     "linhas": 625,
+     "sha256_resposta_completa": "c34a61e800dd3ac79e345857620f6fcdbfe0f9dc45079900aa39785edbb7158d",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2021_12.json.gz",
+     "sha256": "7c052d1881bdacfb56fa05c35375a1f06d8b5917bd407645609ceb947b951b98"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:18Z",
+     "linhas_resposta": 16681,
+     "linhas": 628,
+     "sha256_resposta_completa": "71c66cdf2ecfe6c8852ac786902d53031111a1b18e8a536ffd6e00f89ecb2a80",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2022_12.json.gz",
+     "sha256": "4facd57d7b37fb8a28492ff592fc48ff9f474e41f668c05580e9301462cca226"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:26Z",
+     "linhas_resposta": 17826,
+     "linhas": 593,
+     "sha256_resposta_completa": "f9f0a82a8f84619e90ef31d5479cc6bc1a3f173d0f0060a03723689cbef2a4e0",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2023_12.json.gz",
+     "sha256": "b76d167d5a7d6d8c1e2c40b31f81cc6c9825973d2087129d772178e07cb59a93"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:36Z",
+     "linhas_resposta": 10717,
+     "linhas": 486,
+     "sha256_resposta_completa": "57909ef7ec055573174773b321f7caa01216c939232d0deb94c75944aa8a8c99",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2025_12.json.gz",
+     "sha256": "f849148afef9d30c09b6fea40c48442345581eeec631a9c90daedb525b27506a"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:41Z",
+     "linhas_resposta": 4472,
+     "linhas": 227,
+     "sha256_resposta_completa": "0c8d8d3edef84e9dbe044ecc90d61c5ed0a0e5e998e54844dc00e83d5964d7c2",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2211001_2021_12.json.gz",
+     "sha256": "8ad7c2d7fd82914a620997d45d1307aeb77dc9172e9f1d4b11074e3dd9b1a64e"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:43Z",
+     "linhas_resposta": 5175,
+     "linhas": 241,
+     "sha256_resposta_completa": "b2f41c831f4f4e79a47d362ee3c177f47ab83e72e82c23a41978dd358249c16b",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2211001_2022_12.json.gz",
+     "sha256": "cbb2a211565d5701fb2728a0f6c9f1995d831c7fb587ce5b6d0aa59869aed8b9"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:46Z",
+     "linhas_resposta": 5810,
+     "linhas": 278,
+     "sha256_resposta_completa": "1afbab693a07269aecea16aff650b356500ee66f768049ec0576c2137429e648",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2211001_2023_12.json.gz",
+     "sha256": "f50cd423fac84d5d5ea3dc1ffb7548544e4a91f6b2b7c23b5d4cb480ab848283"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:49Z",
+     "linhas_resposta": 6414,
+     "linhas": 220,
+     "sha256_resposta_completa": "642dcc50a598f38779c81ae957f2c86c8528bf27519a4ce75cdb63a655141186",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2211001_2024_12.json.gz",
+     "sha256": "4d347f8f3ffbd531612ccf547fad87816b683e640abbbd1290e68a4b400b4d31"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:53Z",
+     "linhas_resposta": 6315,
+     "linhas": 223,
+     "sha256_resposta_completa": "056d40c00e044280eca218e6a0ada110638d49f883f900d7b3fb72c5108ed877",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2211001_2025_12.json.gz",
+     "sha256": "fd9e8fc0807c21963ff7d630bc1c464b42b51496db6c1cf4934188f718ee1491"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:20:56Z",
+     "linhas_resposta": 18896,
+     "linhas": 528,
+     "sha256_resposta_completa": "ea97c35915029d43b0400324049173457ae155999b74c25141ff9d2c7b23b0a0",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2021_12.json.gz",
+     "sha256": "c66b526d79ddc759b7559a19cc0143eb07a378caf3d35a742c14e406dec5fe6a"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:05Z",
+     "linhas_resposta": 20457,
+     "linhas": 0,
+     "sha256_resposta_completa": "9534ab2658d653fa9d766accb9724398133f0355b723dff50ebd8d1f23a87447",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2022_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:14Z",
+     "linhas_resposta": 14838,
+     "linhas": 385,
+     "sha256_resposta_completa": "6205ef03ff0c6c7c4d4bce0443d5ee3855ab8286e7748eea56fcf6ecc65e5726",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2023_12.json.gz",
+     "sha256": "d7a2c5e185fee2dcd5ab926b461af7fbd4ef6332b93a4df120879ffda9e1bb55"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:20Z",
+     "linhas_resposta": 16757,
+     "linhas": 605,
+     "sha256_resposta_completa": "99f9a6fe8165eca658834fb26a9f009d213a05e00b2c4b3780183b4862b323fe",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2024_12.json.gz",
+     "sha256": "65f1a38ff120f41bff833cde17393b4a36140b1498c0233554657e9041ea3c7e"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:28Z",
+     "linhas_resposta": 15990,
+     "linhas": 764,
+     "sha256_resposta_completa": "d9501d2f7910d48834c6fa75d2f152cda3c057a9ce796c93b2505acd051bea1b",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2025_12.json.gz",
+     "sha256": "bb03e2511874a863af5c6e8d0bfcd7976d6af4419bc31b6b21105f7529bb8cc4"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:36Z",
+     "linhas_resposta": 9689,
+     "linhas": 419,
+     "sha256_resposta_completa": "6ea044997b6090ec6936303f1653bd2351f7c7a4533615f9470f5c4d868118a7",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2021_12.json.gz",
+     "sha256": "32df83d8ba0f33c0eaaf95c25543bda88bf3511d3c0bce0bfe1a4e1be46e521f"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:40Z",
+     "linhas_resposta": 13462,
+     "linhas": 281,
+     "sha256_resposta_completa": "3609bcf27d3ac43ffe03e7b6bd0dfc11a37e00af610640bcc87adad84b563605",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2022_12.json.gz",
+     "sha256": "700c582c11d704411c89f8d2b8d7be8621eac372927aaa855d177cac78601335"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:46Z",
+     "linhas_resposta": 3986,
+     "linhas": 243,
+     "sha256_resposta_completa": "9f61e1e6df0d8e58eccfcc2286c7dd59e17d9bce3d963e296f1f0efd6b2c22d7",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2023_12.json.gz",
+     "sha256": "50e8e217518fe3505d46068cd94bd65b9c0d44353faebd70db0fa991f97cafd3"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:48Z",
+     "linhas_resposta": 10264,
+     "linhas": 308,
+     "sha256_resposta_completa": "df14fc7a15867dfffa0e66770f63bb9deba3b4b862931e3ff2d766d1b05b6f7d",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2024_12.json.gz",
+     "sha256": "f7d4fc26388bb1948de003cf9fac72d6387cfadb802b988873b77a53712ccd2b"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:53Z",
+     "linhas_resposta": 9257,
+     "linhas": 294,
+     "sha256_resposta_completa": "6663e58cabd0582ffaa8a3f953e254e33a6cce437ee6fa99691efef2fec7dc1a",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2025_12.json.gz",
+     "sha256": "a987819b2ec679ac91999744b189673d123dba3eb7cde5c867c194351c7a73af"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:21:57Z",
+     "linhas_resposta": 14306,
+     "linhas": 341,
+     "sha256_resposta_completa": "6082acc8e021e1f76091c45e911318f03187bd36e9fea68e2a16edea37e4b8f6",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4314902_2021_12.json.gz",
+     "sha256": "2298eaf7fb2bce05d1dbb20fed98ca38d9e0d1e61d29730ee5d88a8960164444"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:03Z",
+     "linhas_resposta": 17400,
+     "linhas": 540,
+     "sha256_resposta_completa": "098e97d9bf55ef95358cb099adc40a9386c267f9486e551f67f1be1688c2c915",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4314902_2022_12.json.gz",
+     "sha256": "96094fd7a14b69c28c39b8ae70c4a26400340c3f31cedeb67571255f8386268d"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:12Z",
+     "linhas_resposta": 16776,
+     "linhas": 511,
+     "sha256_resposta_completa": "a2334ae1d64d20571c2d6a953f64e3a617e7197655e93818efb46e8638385452",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4314902_2023_12.json.gz",
+     "sha256": "f41aadd2b00848ae21fad2811d52295421cc87aed918bf6817b76bd1407d5378"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:20Z",
+     "linhas_resposta": 10620,
+     "linhas": 394,
+     "sha256_resposta_completa": "92b8ea84fb0030953f7d54526c5007b2ae9f0b7c9e125317763c9abeeeb6303d",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4314902_2024_12.json.gz",
+     "sha256": "2040e7922f31176c91ea9878b12323eb2c6f6bb4b083a32ce157d07ca00bb59c"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:30Z",
+     "linhas_resposta": 10952,
+     "linhas": 421,
+     "sha256_resposta_completa": "9c5b659aede7dfc5a9e2aa62925a2ac6d8f741b1e328e536b240ac214d756874",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4314902_2025_12.json.gz",
+     "sha256": "e82c40ee1ba3b0dc64eeb3993cb29f49fb5a01496c94e52ae91014374b4d20f0"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:36Z",
+     "linhas_resposta": 4195,
+     "linhas": 310,
+     "sha256_resposta_completa": "d68c133e7d753f811d1aabe4bdbf5c0a31fda0c57134a530a1d239f37da37855",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1100205_2021_12.json.gz",
+     "sha256": "4422c74f757649db182de7a4a4d90e2054644a4bdc9ceb69000466fc74082a77"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:38Z",
+     "linhas_resposta": 5440,
+     "linhas": 266,
+     "sha256_resposta_completa": "5818013dd19c94830013a2c37cac76286b1d2ac46be210f6b643880d63ded796",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1100205_2022_12.json.gz",
+     "sha256": "57481175ea69d835f635581358e5187fc1b2b6a98242e4c8e654206cf92072fb"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:41Z",
+     "linhas_resposta": 10726,
+     "linhas": 635,
+     "sha256_resposta_completa": "2c90b8cf720ce9d3e6115c72fa2a9497f54454656f791608dc39c3873c62d36e",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1100205_2023_12.json.gz",
+     "sha256": "3ffd7bda7c48c5534724bb7de6e1d5cc62374bf216f0c5c9c3cc7f48b2ecc268"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:47Z",
+     "linhas_resposta": 10079,
+     "linhas": 650,
+     "sha256_resposta_completa": "65d9ba149537fb30f19c5d2d8f89d53afda9d7ca30651578288d52b105ca61b8",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1100205_2024_12.json.gz",
+     "sha256": "f5d3f9d90a8367df4cca21dbffbc27c920873b5edb0daa4e03ec1d715dc746bd"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:52Z",
+     "linhas_resposta": 9104,
+     "linhas": 521,
+     "sha256_resposta_completa": "a925f35be844ec5ac25098408107da814027547f83851233c29c707f153a0dde",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1100205_2025_12.json.gz",
+     "sha256": "54548c3afdf2859c847c99955e12e928434a5297e24f2427a6786211bbf60473"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:22:58Z",
+     "linhas_resposta": 4777,
+     "linhas": 202,
+     "sha256_resposta_completa": "cf65a0954cc1b4b42649fe7a3fc27ca0edad7677fb73ddec3c32068161ae2d10",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1400100_2021_12.json.gz",
+     "sha256": "dde40233c993c8cd6d00c0e2b471833059b67436f52701d6f2230b358f57a3fe"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:00Z",
+     "linhas_resposta": 5595,
+     "linhas": 352,
+     "sha256_resposta_completa": "18f77735471aeb62357c6ef5e61cedc2321a92a1aebe91d955c96465f2758c93",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1400100_2022_12.json.gz",
+     "sha256": "899ae9c6a72b8af76d10642000885b0f618fd3b9fd562d6d8e1d5ecb8f5b4aff"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:05Z",
+     "linhas_resposta": 5923,
+     "linhas": 414,
+     "sha256_resposta_completa": "70d0089050529b3170a1ef6036b3302817937f5d552ed645773abec77242bed1",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1400100_2023_12.json.gz",
+     "sha256": "4a0be0709c6c1e7d51591e587b49ff2a67b3e1ab0fde6e1b9e67f5b1fdb2705d"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:11Z",
+     "linhas_resposta": 6507,
+     "linhas": 335,
+     "sha256_resposta_completa": "53d8258e6e0bd551521e91278fd58fdbcbe8295cf68a520158e6dfc0b4a70c6f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1400100_2025_12.json.gz",
+     "sha256": "1916fddbdc33084448965bf2a242bef933e857d6da521ac256ef9eb754213141"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:15Z",
+     "linhas_resposta": 4898,
+     "linhas": 177,
+     "sha256_resposta_completa": "1d431af0d971a887094f821d55b6cce22c640ca721a5df7a41e82af722300b34",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4205407_2021_12.json.gz",
+     "sha256": "cd57f8e849a770d43df2d809b5795619e59f6ceceb33567e7692acfc61c0b85e"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:17Z",
+     "linhas_resposta": 5089,
+     "linhas": 221,
+     "sha256_resposta_completa": "4912c4f5d9848e3bc417580fcf98e2fc91b8a3d64750f25b1a3f34b11fdbee07",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4205407_2022_12.json.gz",
+     "sha256": "d9b238e616771ee22c5441f770933241030ac9b370ded1e0cb34d4d59d29c194"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:21Z",
+     "linhas_resposta": 8810,
+     "linhas": 421,
+     "sha256_resposta_completa": "cb423203cc0767a76ee9a7c0befe08d78fa5e73b3f2ce100a3168b80167543da",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4205407_2023_12.json.gz",
+     "sha256": "ca173d9bf65b03736c19474415c22aa2ab068c29bf012cdca871b7a285132bd3"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:25Z",
+     "linhas_resposta": 10655,
+     "linhas": 484,
+     "sha256_resposta_completa": "5ee08f71ce5a15786ada2bce124533a96ebb4eb60a605eeb18c3c8e978757250",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4205407_2024_12.json.gz",
+     "sha256": "ad73343d64d68d8f42010a457846041af725142dce6173fbe1685f04bece0152"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:30Z",
+     "linhas_resposta": 12149,
+     "linhas": 368,
+     "sha256_resposta_completa": "74b4e3b2748e0b4f2eb2958190e6f46b391b052426822472a3d237120b4bf2ed",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/4205407_2025_12.json.gz",
+     "sha256": "849d68e15ccde3aa42e58c2d1d5c7ad041944c1c7b56c00c96484c485eaa79bb"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:38Z",
+     "linhas_resposta": 8161,
+     "linhas": 276,
+     "sha256_resposta_completa": "f999158c3ac021baa5490bf55c0136cefa22bb3a4eaef97281c9f2759f45adc6",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3550308_2021_12.json.gz",
+     "sha256": "b698ebc4f7657c682f38eaa9d166995d811a85a5e3317edd526b1d1de279e37d"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:42Z",
+     "linhas_resposta": 11416,
+     "linhas": 382,
+     "sha256_resposta_completa": "decf67092b6cc35fe34f4bbc9bea8f68e7095bad6788c432c7368f4e7e87aea5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3550308_2022_12.json.gz",
+     "sha256": "fabe0b4492efd515a9ee92fb5e3d6d8571b214f1e54c66cf032b6506ddf07eef"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:47Z",
+     "linhas_resposta": 14682,
+     "linhas": 789,
+     "sha256_resposta_completa": "de330b179b1e60a66d30f93b7c29c041fb6a7aedc4709a560ad3146c31195f44",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3550308_2023_12.json.gz",
+     "sha256": "dc458cb4ceacf92b2c25fe103013b027e2729627d822ca66b8c716650b102926"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:51Z",
+     "linhas_resposta": 13377,
+     "linhas": 699,
+     "sha256_resposta_completa": "d7c958da547eeb27ebd69cf4a8058492250931bcf9f83559dac1a506bc9e05e9",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3550308_2024_12.json.gz",
+     "sha256": "80dd8a9544a288415146aaa9f4255e3d0701ac882d38b6e1d403b41c25d4a213"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:23:58Z",
+     "linhas_resposta": 11834,
+     "linhas": 692,
+     "sha256_resposta_completa": "0e780ca939b40883973be4da2eb9b7ba3b31b09d74166f7e41b13fd347a3f63b",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3550308_2025_12.json.gz",
+     "sha256": "26a0ec566e37c48670c00246d8fcebdc4216113aae68cf5518cad45e54cd7be9"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:04Z",
+     "linhas_resposta": 5863,
+     "linhas": 202,
+     "sha256_resposta_completa": "2bb4a000d5765bed8acf45cbbfb84e5de51497bc13df2c9bf127cced123b69ce",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2800308_2021_12.json.gz",
+     "sha256": "7f99427eba19e3cd1b8ca9c9f4c9a68833e8d59ff2a961ae4d4b913cd2ecedd1"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:08Z",
+     "linhas_resposta": 6189,
+     "linhas": 208,
+     "sha256_resposta_completa": "21b4cbac1caba9046f06efe462e4a0ce31c5838983d5dafac4da8ad0ba82115a",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2800308_2022_12.json.gz",
+     "sha256": "b1ba1c21508223eff9b8311cab9ee86aa3ab100d8aef7ca2200f85e9c2a06443"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:11Z",
+     "linhas_resposta": 7425,
+     "linhas": 268,
+     "sha256_resposta_completa": "8c160e43ab9855341f93c4cd2f3caaac128b212f8f991483be5b310e199dc57f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2800308_2023_12.json.gz",
+     "sha256": "2a0dcaa4595d1ec533d471e0be38096bff128f828a500359bfafaeb0abf37295"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:15Z",
+     "linhas_resposta": 8014,
+     "linhas": 259,
+     "sha256_resposta_completa": "6f99d8a39615b5b1177d5e3f7c7cffa75e463fbf6c2150a244dee54aae71066f",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2800308_2024_12.json.gz",
+     "sha256": "03bf59b43d968c67c5c61cc635fde351f400d974a58c972bd49e340a1f662fc8"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:20Z",
+     "linhas_resposta": 7976,
+     "linhas": 287,
+     "sha256_resposta_completa": "3112c3bdb911fbf8d7f93806dbc8e3851bc98f077343b1267b53cd0508ac9ef2",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2800308_2025_12.json.gz",
+     "sha256": "76c353c623686182b21fedf66c3a618bdd9783cf87cad6ffe213b8f0b206527c"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:24Z",
+     "linhas_resposta": 12823,
+     "linhas": 470,
+     "sha256_resposta_completa": "a6b2633b6d4b960a4f20741ff076a71dfe258aa40b56b3836dfca92a67c06e8b",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1721000_2021_12.json.gz",
+     "sha256": "fad7d72d4a743c7db43008b4b47d47fdaf3c9f994a76a407b5d23ab347404474"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:33Z",
+     "linhas_resposta": 13677,
+     "linhas": 560,
+     "sha256_resposta_completa": "8656ffcf880977d37f84ee049002a9c7cd4f7e08cfc0205b8a3bae9a044e6046",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1721000_2022_12.json.gz",
+     "sha256": "2afbaac16aa1a9a53c1d884478834e0dd28adc46547b0f567c1af9aecf4f0cfc"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:41Z",
+     "linhas_resposta": 17324,
+     "linhas": 586,
+     "sha256_resposta_completa": "56030c625a9b55c3a22a209050507dc9235bba47bf0216f07c7e826cfdfd2ba0",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1721000_2023_12.json.gz",
+     "sha256": "b44777a68ab56de03a651e9d256b3c79797c7a54383388a607c4f73d9009d149"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:48Z",
+     "linhas_resposta": 15872,
+     "linhas": 552,
+     "sha256_resposta_completa": "ce6c7a6384fd518d47c1427f8643500d5e36e8a29fb526492c11ea49b314e6ab",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1721000_2024_12.json.gz",
+     "sha256": "53bea01758c2ebfd83f927938e8cb55cb57755d2b437985f0e19b3c9e95da912"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T17:24:57Z",
+     "linhas_resposta": 14253,
+     "linhas": 555,
+     "sha256_resposta_completa": "a9c1da5e7ce10b94c8fc9aede893ce4980a12a475c3eb51bd4c0b53f4dc40f99",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1721000_2025_12.json.gz",
+     "sha256": "3eaa5cb38829e4af4395bcb2e3034c1ba34532d30d17125c7bc8e9d3dda4da6c"
     }
    }
   },
@@ -3497,6 +5109,49 @@
      "sha256": "cbc618eac2d62e33a8b6536f37d051bb9686ccd46596a1567255396b022eff79"
     }
    }
+  },
+  "siope_examinado": {
+   "instituicao": "Fundo Nacional de Desenvolvimento da Educação (FNDE), SIOPE",
+   "conjunto": "Relatório gerencial de indicadores municipais: investimento por aluno (examinado e não adotado)",
+   "pagina": "https://www.fnde.gov.br/siope/relatorio-gerencial/dist/",
+   "url": "https://www.fnde.gov.br/siope/relatorioGerencialIndicador.do?metodo=relatorio",
+   "capturado_em": "2026-10-08T17:28:53Z",
+   "parametros": "uma consulta por capital, indicador anual, 2021 a 2025; codMuni com 6 dígitos do código IBGE; indicadores 57 (Investimento educacional por aluno), 56 (Investimento educacional por aluno da educação básica), 44 (Investimento educacional por aluno da educação infantil), 84 (Investimento educacional por aluno da educação infantil, creche), 85 (Investimento educacional por aluno da educação infantil, pré-escola), 45 (Investimento educacional por aluno do ensino fundamental), 46 (Investimento educacional por aluno do ensino médio), 53 (Investimento educacional por aluno da educação de jovens e adultos), 54 (Investimento educacional por aluno da educação especial), 55 (Investimento educacional por aluno da educação profissional), 58 (Despesa com professores por aluno da educação básica), 59 (Despesas com profissionais não docentes por aluno da educação básica)",
+   "sha256_respostas_por_capital": {
+    "1200401": "3d4db21f9ec834fad4407dd9be3839a8ace84274ef6857618c2dd4d1d1a504ae",
+    "2704302": "f181ca718679d29a4b55f283d968855962dd649099651cdebff75cfb0d507ddb",
+    "1600303": "16ef52acfcc2b2a9a8e61f44b87c3d585c6fb87cfdd955f04a136a1c28b64537",
+    "1302603": "07ba72568ccc772dee11b0ab1efe9be75b1ce17e3d553dd0abe98dddaea9c437",
+    "2927408": "789134e138c07ae4d216e62bc1ca411aa0fc7cfe22b0c1cf3ebb15ce77abdb0d",
+    "2304400": "29da236d56f8bcb10543a9636788f2f6a925e891bdcd21b0b3613da5e6e4d316",
+    "3205309": "01f3746fec54581c981f642871527a4e259b75b1d0e4aaefc54ad895775ccfd7",
+    "5208707": "7cedf275018e8babddb482af76fe77e87675bfffee9ae23b73e562953652834d",
+    "2111300": "211dfb0c45edd999f622519c7d2fe47d93f8ef7c23446353055d2739475e9cd8",
+    "5103403": "32a6a97b215109d1af31161b3882a88ad03cf80c4bc7563293b930f72767fb4e",
+    "5002704": "49d27f2b7877a28c3bb1479a7da29ce2fd4b492447dfe7f7d757f304803662ef",
+    "3106200": "3dba2f34cbee99b5521f2bd46c26a288650e4f48e9b9a12924d138050233c6bf",
+    "1501402": "0aaf569dbb69310089af4b1060f1fc9facb99b17321d04a176ee708ed3bfa5a0",
+    "2507507": "09237c641f50dae6e614adf1add52043b53a97a3860710d94f0fadbd151f68bb",
+    "4106902": "2aceb615747b5d09c979495debaff624255eca091e2569a0eb4a206a1cb731d1",
+    "2611606": "d6b7d7eb915a3222d9e99a6dc25864449ade60bebf8287481934875b8ed8561b",
+    "2211001": "7a24e0a04afbc92fe940649abf03e6aaeaaf75c63d9b20168a36ca39f647cee9",
+    "3304557": "45fe0c479ed97d5e16bb391ce7de6b7ef298022aa6cf1dd5ee4158961e52c897",
+    "2408102": "8017fdfe90f88de9f6c9750b0e823221a2bd53418a185f6e82669b2ea323af61",
+    "4314902": "de6d02e2979ffcb91c3fc52a24ca8f098b1d3a1bcc0209adcc08d438bf16aeaa",
+    "1100205": "e3a556b237d5ad69090eb31e87b7b514029a56272244e5f36d7bbae4c06dff4d",
+    "1400100": "120f68cd2e284ce02276249e9405ace749e68946ff4477c3bef555a5e16ca927",
+    "4205407": "0dc0f4ad02db376d6e478df26f24ae7f95577df1602022c01468688bb6734de0",
+    "3550308": "fff4720658f9e3b2df94c1393cef6daf567e997d1e76c93c9c1306f9ef56e39a",
+    "2800308": "97460fb5cd41c88fb598b072eada3a088f5f2a2d97da4ca1d60a021e4a55d838",
+    "1721000": "ab9cd61db35562cc543bd22de9d9d048efdd38ea53b635117dee2b2e3bba1eb8"
+   },
+   "recorte": "pipeline/eficiencia/seed/siope_examinado/indicadores_municipais.json.gz",
+   "sha256_recorte": "6c0c58e4a00d8431ce8c621edcd70fd785b3f0c6d854cfe97badab57d0541f29",
+   "linhas_recorte": 1486,
+   "notas_da_fonte": [
+    "Sistema declaratório: a responsabilidade pelas informações é do ente (FNDE, Mais sobre o Siope).",
+    "Fórmula e universo de matrículas dos indicadores não encontrados em documentação pública (nota técnica do SIOPE vazia em 08/10/2026)."
+   ]
   }
  }
 }

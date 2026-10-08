@@ -25,7 +25,7 @@ import functools
 import os
 import re
 
-from pipeline.eficiencia import base, conferencia as CF, entes
+from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes
 
 ANOS_FINANCEIROS = list(range(2021, 2026))
 ANOS_CENSO = list(range(2021, 2026))
@@ -448,5 +448,191 @@ def ideb_saeb():
     return obs
 
 
+# ------------------------------------------------------------------ População (IBGE) e indicadores derivados
+
+DATA_REF_ESTIMATIVA = "1º de julho"
+DATA_REF_CENSO = "1º de agosto de 2022"
+ANO_SEM_ESTIMATIVA = 2023
+
+
+def _seed_populacao():
+    caminho = os.path.join(base.SEED, "ibge_populacao", "populacao_capitais.json.gz")
+    if not os.path.exists(caminho):
+        return {}
+    return {(r["ano"], r["cod"]): r for r in base.le_json_gz(caminho)}
+
+
+def populacao():
+    """População residente por capital e exercício (denominador da despesa por habitante).
+
+    2021: estimativa de 1º de julho calculada a partir do Censo de 2010. 2022: Censo Demográfico (1º de agosto
+    de 2022). 2023: sem publicação municipal do IBGE. 2024 e 2025: estimativas de 1º de julho calculadas a
+    partir do Censo de 2022. O valor vigente vem do SIDRA; quando difere da publicação original, a observação
+    registra os dois."""
+    seed = _seed_populacao()
+    obs = []
+    for cod, nome, uf in entes.CAPITAIS:
+        for ano in ANOS_FINANCEIROS:
+            r = seed.get((ano, cod))
+            if r is None and ano == ANO_SEM_ESTIMATIVA:
+                obs.append(_obs("ctx.populacao.residente", cod, ano, None, "NAO_DIVULGADO", "ibge_populacao",
+                                "IBGE: sem estimativa municipal publicada para 2023 (entre o Censo 2022 e as estimativas de 2024)",
+                                nota="O IBGE não publicou estimativa da população municipal de 2023: o Censo 2022 e as estimativas de "
+                                     "2024 em diante são as publicações vizinhas. O painel não interpola nem reaproveita outro ano.",
+                                nota_material=True, tipo_populacao=None, data_referencia=None))
+                continue
+            if r is None:
+                obs.append(_obs("ctx.populacao.residente", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao",
+                                f"IBGE, população residente de {ano}", nota="Registro não encontrado no seed da população"))
+                continue
+            censo = r["tipo"] == "censo"
+            pre = ano < 2022
+            tipo = "censo" if censo else ("estimativa_pre_censo_2022" if pre else "estimativa_pos_censo_2022")
+            ref = DATA_REF_CENSO if censo else f"{DATA_REF_ESTIMATIVA} de {ano}"
+            tabela = f"SIDRA, tabela {r['tabela']}, variável {'93' if censo else '9324'}"
+            reg = f"IBGE, {tabela}, município {cod}, {ano} (população residente{' no Censo 2022' if censo else ' estimada'}, referência {ref})"
+            nota, material = None, False
+            if pre:
+                nota = ("Estimativa de 1º de julho de 2021, calculada a partir do Censo de 2010, anterior ao Censo de 2022. "
+                        "A população de 2022 em diante tem outra base; variações por habitante entre 2021 e os anos seguintes "
+                        "misturam a mudança da base populacional.")
+                material = True
+            orig = r.get("publicacao_original")
+            if orig is not None and orig != r["valor"]:
+                nota = (nota + " " if nota else "") + (f"Valor vigente no SIDRA; a publicação original da estimativa de {ano} informava "
+                                                       f"{orig:,}.".replace(",", "."))
+            if r.get("nota_rodape_original"):
+                nota = (nota + " " if nota else "") + ("A publicação original traz, para este município, uma população judicial "
+                                                       "(nota de rodapé do arquivo do IBGE), que não é a estimativa usada aqui.")
+            obs.append(_obs("ctx.populacao.residente", cod, ano, int(r["valor"]), "OBSERVADO", "ibge_populacao", reg, nota=nota,
+                            nota_material=material, quebra_serie=pre, tipo_populacao=tipo, data_referencia=ref,
+                            publicacao_original=orig))
+    return obs
+
+
+def _conf_resumo(conf):
+    """Conferência reduzida que acompanha as razões derivadas (a completa fica na observação da despesa)."""
+    return {k: conf.get(k) for k in ("versao_politica", "situacao", "rotulo", "elegivel_comparacao", "quebra_serie",
+                                      "motivo_inelegibilidade", "explicacao")}
+
+
+def despesa_por_habitante(despesa_obs, pop_obs):
+    """Despesa liquidada na função Educação ÷ população residente do mesmo exercício (nominal e real de 2025)."""
+    pop = {(o["ente"], o["ano"]): o for o in pop_obs}
+    obs = []
+    for d in despesa_obs:
+        if d["indicador"] != "edu.despesa.funcao_educacao":
+            continue
+        p = pop[(d["ente"], d["ano"])]
+        reg = (f"Despesa: DCA {d['ano']}, Anexo I-E, função 12, liquidada{'; em reais de 2025' if d['componente'] == 'real_2025' else ''}. "
+               f"População: {p['registro']}")
+        extra = {}
+        if d["status"] != "OBSERVADO" or p["status"] != "OBSERVADO" or d["valor"] is None or p["valor"] is None:
+            if p["status"] != "OBSERVADO":
+                st, nota = p["status"], p["nota"]
+            else:
+                st, nota = d["status"], d["nota"] or "Despesa sem valor observado"
+            obs.append(_obs("edu.despesa.por_habitante", d["ente"], d["ano"], None, st, "ibge_populacao+siconfi_dca_anexo_i_e", reg,
+                            componente=d["componente"], nota=nota, nota_material=True))
+            continue
+        v = DV.razao(d["valor"], p["valor"])
+        if v is None:
+            obs.append(_obs("edu.despesa.por_habitante", d["ente"], d["ano"], None, "INCONSISTENTE",
+                            "ibge_populacao+siconfi_dca_anexo_i_e", reg, componente=d["componente"], nota_material=True,
+                            nota="Denominador nulo ou numerador negativo: a razão não é calculada."))
+            continue
+        notas = [x for x in (d.get("nota"), p.get("nota")) if x]
+        conf = d["conferencia"]
+        eleg = bool(d["elegivel_comparacao"] and p["elegivel_comparacao"])
+        extra = dict(conferencia=_conf_resumo(conf), quebra_serie=bool(p.get("quebra_serie")),
+                     calculo={"numerador": d["valor"], "numerador_ref": "edu.despesa.funcao_educacao", "numerador_componente": d["componente"],
+                              "denominador": p["valor"], "denominador_ref": "ctx.populacao.residente"})
+        obs.append(_obs("edu.despesa.por_habitante", d["ente"], d["ano"], round(v, 6), "OBSERVADO",
+                        "ibge_populacao+siconfi_dca_anexo_i_e", reg, componente=d["componente"], nota=" ".join(notas) or None,
+                        elegivel_comparacao=eleg, nota_material=bool(d.get("nota_material") or p.get("nota_material")), **extra))
+    return obs
+
+
+def despesa_por_matricula(despesa_obs, matricula_obs):
+    """Despesa de aplicação direta na rede municipal própria ÷ matrículas da rede municipal (Censo Escolar).
+
+    Também devolve a ponte do total da DCA ao numerador (observações `edu.despesa.ponte_matricula`)."""
+    fatores, _ = fatores_ipca()
+    mat = {(o["ente"], o["ano"]): o for o in matricula_obs
+           if o["indicador"] == "edu.matriculas.rede_municipal" and o["etapa"] == "total"}
+    dca = {(o["ente"], o["ano"]): o for o in despesa_obs
+           if o["indicador"] == "edu.despesa.funcao_educacao" and o["componente"] == "nominal"}
+    razoes, pontes = [], []
+    for cod, nome, uf in entes.CAPITAIS:
+        for ano in ANOS_FINANCEIROS:
+            d, m = dca[(cod, ano)], mat[(cod, ano)]
+            reg_base = f"MSC de dezembro de {ano}, função 12, contas 6.2.2.1.3.03, .04 e .07; Censo Escolar {ano}, rede municipal, QT_MAT_BAS"
+            ind = "edu.despesa.por_matricula_rede_propria"
+            fonte = "siconfi_msc_funcao12+inep_censo+siconfi_dca_anexo_i_e"
+
+            def sem(status, nota, material=True, ind=ind):
+                return [_obs(ind, cod, ano, None, status, fonte, reg_base, componente=c, nota=nota, nota_material=material)
+                        for c in ("nominal", "real_2025")]
+
+            if d["status"] != "OBSERVADO":
+                razoes += sem(d["status"], d["nota"] or "Despesa da DCA sem valor observado")
+                continue
+            pt = DV.ponte(cod, ano, d["valor"])
+            if pt is None:
+                razoes += sem("AUSENTE_NA_COLETA", "Matriz de Saldos Contábeis de dezembro não encontrada no seed: a despesa de aplicação direta não pode ser separada.")
+                continue
+            residuo = round(d["valor"] - pt["total_sem_intra"], 2)
+            for k, v in list(pt["baldes"].items()) + [("diferenca_dca_msc", residuo), ("dca_total", d["valor"])]:
+                rotulo = {"dca_total": "Total da função Educação na DCA", "diferenca_dca_msc": "Diferença entre a DCA e a soma das linhas da MSC (sem intraorçamentárias)"}.get(k, DV.ROTULO_BALDE.get(k))
+                pontes.append(_obs("edu.despesa.ponte_matricula", cod, ano, v, "OBSERVADO", "siconfi_msc_funcao12+siconfi_dca_anexo_i_e",
+                                   f"MSC de dezembro de {ano}, função 12: {rotulo}", componente=k, elegivel_comparacao=pt["reconcilia"],
+                                   nota=None, reconcilia=pt["reconcilia"], situacao_msc=pt["situacao"], diferenca_dca=pt["diferenca_dca"]))
+            if not pt["reconcilia"]:
+                if pt["situacao"] == "SEM_LINHAS":
+                    nota = ("A Matriz de Saldos Contábeis de dezembro não traz linhas de despesa liquidada na função Educação para este ente e exercício "
+                            "(não entregue ou entregue sem a função): a despesa de aplicação direta não pode ser separada. A DCA segue válida para a despesa total.")
+                else:
+                    nota = (f"A MSC de dezembro, sem intraorçamentárias, soma {CF.brl(pt['total_sem_intra'])} e a DCA informa "
+                            f"{CF.brl(d['valor'])}: a ponte não fecha (diferença de {CF.brl(pt['diferenca_dca'])}, {str(pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
+                            "acima do limiar de 0,1% da política de conferência). "
+                            + ("A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, "
+                               "política de conferência 1.1). " if d["conferencia"]["situacao"] == "PERIMETRO_INTRA_MSC" else "")
+                            + "Sem reconciliação, o numerador por matrícula não é publicado.")
+                razoes += sem("NAO_COMPARAVEL", nota)
+                continue
+            if not pt["classificavel"]:
+                razoes += sem("NAO_COMPARAVEL", f"A MSC de dezembro traz {CF.brl(pt['baldes']['sem_natureza'])} liquidados na função Educação em linhas "
+                                                "sem natureza da despesa (sem modalidade nem elemento): o total fecha com a DCA, mas essas linhas não podem ser "
+                                                "atribuídas à aplicação direta nem às transferências. O numerador por matrícula não é publicado.")
+                continue
+            if m["status"] != "OBSERVADO" or m["valor"] is None:
+                razoes += sem(m["status"], m["nota"] or "Matrículas da rede municipal sem valor observado")
+                continue
+            num = pt["baldes"]["rede_propria"]
+            v = DV.razao(num, m["valor"])
+            if v is None:
+                razoes += sem("INCONSISTENTE", "Denominador nulo ou numerador negativo: a razão não é calculada.")
+                continue
+            eleg = bool(d["elegivel_comparacao"] and m["elegivel_comparacao"])
+            notas = [x for x in (d.get("nota"), m.get("nota")) if x]
+            if pt["situacao"] == "DIFERENCA_MENOR":
+                notas.append(f"A soma das linhas da MSC difere da DCA em {CF.brl(pt['diferenca_dca'])} ({str(pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
+                             "abaixo do limiar de 0,1%); a diferença não é atribuída ao numerador nem a outra parcela.")
+            for comp, fator in (("nominal", 1.0), ("real_2025", fatores[ano])):
+                calc = {"numerador": round(num * fator, 2), "numerador_ref": "edu.despesa.ponte_matricula", "numerador_componente": "rede_propria",
+                        "denominador": m["valor"], "denominador_ref": "edu.matriculas.rede_municipal",
+                        "dca_total": round(d["valor"] * fator, 2)}
+                razoes.append(_obs(ind, cod, ano, round(v * fator, 6), "OBSERVADO", fonte,
+                                   reg_base + ("; corrigido pelo IPCA (média anual) para reais de 2025" if comp == "real_2025" else ""),
+                                   componente=comp, nota=" ".join(notas) or None, elegivel_comparacao=eleg,
+                                   nota_material=bool(d.get("nota_material") or m.get("nota_material")),
+                                   conferencia=_conf_resumo(d["conferencia"]), calculo=calc,
+                                   **({"fator_ipca": fator} if comp == "real_2025" else {})))
+    return razoes, pontes
+
+
 def todas():
-    return despesa() + matriculas() + atu() + aprovacao() + ideb_saeb()
+    desp, mat, pop = despesa(), matriculas(), populacao()
+    hab = despesa_por_habitante(desp, pop)
+    por_mat, ponte = despesa_por_matricula(desp, mat)
+    return desp + mat + atu() + aprovacao() + ideb_saeb() + pop + hab + por_mat + ponte
