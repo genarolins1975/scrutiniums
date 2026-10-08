@@ -162,7 +162,7 @@ export function TabelaComparativa({
                     {ROTULO_GRUPO[c.grupo]}
                     {c.porEtapa ? ` · ${nomeEtapa(dados, etapa)}` : ""}
                   </span>
-                  <button type="button" onClick={() => aoOrdenar(c.id)} className="inline-flex min-h-[44px] items-end justify-end gap-1 text-right font-semibold text-obee-tinta">
+                  <button type="button" onClick={() => aoOrdenar(c.id)} className="inline-flex min-h-[44px] min-w-[44px] items-end justify-end gap-1 text-right font-semibold text-obee-tinta">
                     {c.rotulo}
                     {ordem === c.id ? <span aria-hidden="true">{decrescente ? "↓" : "↑"}</span> : null}
                   </button>
