@@ -120,10 +120,12 @@ function ehBuscavel(c: ColunaTabela): boolean {
  * Texto normalizado de cada linha nas colunas buscáveis, calculado uma vez por
  * linha (cache por objeto): com ~6.000 linhas, digitar não refaz a normalização.
  * Datas entram no formato ISO e no brasileiro; números, no bruto e no exibido.
+ * A coluna de rótulo da linha é buscável mesmo sendo data ou número; as demais colunas de data e número só com buscavel: true.
  */
-export function criarIndiceBusca(colunas: readonly ColunaTabela[]): (l: LinhaTabela) => string {
+export function criarIndiceBusca(colunas: readonly ColunaTabela[], colunaRotulo?: string): (l: LinhaTabela) => string {
   const cache = new WeakMap<LinhaTabela, string>();
-  const buscaveis = colunas.filter(ehBuscavel);
+  // a coluna que rotula a linha (mês, dia, ano) entra sempre: quem lê "09/2026" na tela espera achá-lo digitando
+  const buscaveis = colunas.filter((c) => ehBuscavel(c) || c.id === colunaRotulo);
   return (l) => {
     let t = cache.get(l);
     if (t === undefined) {

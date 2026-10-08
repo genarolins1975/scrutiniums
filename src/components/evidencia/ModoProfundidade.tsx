@@ -1,12 +1,16 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 
 /**
  * Três níveis de profundidade sobre a MESMA página (nunca três páginas):
  * Entender (padrão), Analisar, Auditar. Blocos marcados com data-nivel
  * aparecem a partir do seu nível. Sem JavaScript, tudo aparece em ordem.
- * O modo fica na URL (?modo=) para ser compartilhável.
+ * O modo fica na URL (?modo=) para ser compartilhável. Quem escolhe Analisar ou Auditar
+ * segue nesse nível ao trocar de painel: o clique em link interno do observatório, sem
+ * ?modo= próprio, leva o nível junto (abas do módulo, "Abrir o painel", "Próxima pergunta").
  *
  * Âncoras: o HTML chega com todos os níveis visíveis; ao aplicar o modo, blocos
  * acima do alvo somem e a rolagem se perde. Por isso, depois de aplicar o modo
@@ -37,7 +41,42 @@ function alvoDoHash(): HTMLElement | null {
   return h ? document.getElementById(h) : null;
 }
 
+/** Destinos que não têm seletor de profundidade: o nível não viaja para lá. */
+function destinoSemNivel(caminho: string): boolean {
+  return caminho === "/setor-eletrico" || caminho === "/setor-eletrico/" || caminho.startsWith("/setor-eletrico/aprenda");
+}
+
+/**
+ * Endereço de destino com o nível atual (?modo=) quando o clique em `href` deve levá-lo junto; null quando não deve:
+ * nível Entender (o padrão não vai para a URL), outra origem, fora do observatório, mesma página, destino sem seletor
+ * de profundidade (hub e Aprenda) ou link que já traz ?modo= próprio.
+ */
+export function urlComNivel(href: string, atual: { origin: string; pathname: string; search: string }): string | null {
+  const nivel = new URLSearchParams(atual.search).get("modo");
+  if (nivel !== "analisar" && nivel !== "auditar") return null;
+  let url: URL;
+  try {
+    url = new URL(href, `${atual.origin}${atual.pathname}${atual.search}`);
+  } catch {
+    return null;
+  }
+  if (url.origin !== atual.origin || !url.pathname.startsWith("/setor-eletrico")) return null;
+  if (url.pathname === atual.pathname || destinoSemNivel(url.pathname) || url.searchParams.has("modo")) return null;
+  url.searchParams.set("modo", nivel);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Roteador do app; null onde ele não está montado (renderização de teste), sem derrubar a página. */
+function useRoteadorOuNulo() {
+  try {
+    return useRouter();
+  } catch {
+    return null;
+  }
+}
+
 export function ModoProfundidade({ children }: { children: ReactNode }) {
+  const router = useRoteadorOuNulo();
   const [modo, setModo] = useState<Modo | "todos">("todos");
   const rolarPendente = useRef(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
@@ -115,9 +154,26 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("hashchange", aoMudarHash);
   }, [gravaUrl]);
 
-  function escolher(m: Modo) {
+  // o nível escolhido acompanha o clique em link interno do observatório que não traz ?modo= próprio
+  useEffect(() => {
+    function aoClicar(e: MouseEvent) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target instanceof Element ? e.target.closest("a[href]") : null;
+      if (!(a instanceof HTMLAnchorElement) || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      if (!router) return;
+      const destino = urlComNivel(a.href, window.location);
+      if (!destino) return;
+      e.preventDefault();
+      router.push(destino);
+    }
+    document.addEventListener("click", aoClicar, true);
+    return () => document.removeEventListener("click", aoClicar, true);
+  }, [router]);
+
+  // clique cria uma entrada no histórico; as setas do teclado só substituem a atual (percorrer três opções não pede três Voltar)
+  function escolher(m: Modo, novaEntrada = true) {
     setModo(m);
-    gravaUrl(m, true);
+    gravaUrl(m, novaEntrada);
   }
 
   // padrão de radiogroup: setas movem a seleção e o foco
@@ -126,13 +182,14 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     if (!passo) return;
     e.preventDefault();
     const j = (i + passo + MODOS.length) % MODOS.length;
-    escolher(MODOS[j].id);
+    escolher(MODOS[j].id, false);
     botoes.current[j]?.focus();
   }
 
   const ativoIdx = Math.max(0, MODOS.findIndex((m) => m.id === modo));
   return (
     <div data-modo={modo} className="modo-profundidade">
+      <AbreDetalhesAoImprimir />
       <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
         <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-1.5 sm:gap-2">
           <span className="rotulo mr-2 hidden text-mineral sm:inline">Profundidade</span>

@@ -231,6 +231,7 @@ export default function MercadoPage() {
                 </MercadoAviso>
               )}
               <GraficoLinhas
+                chaveUrl="liv"
                 titulo="Participação do mercado livre no consumo na rede, mês a mês (EPE)"
                 dados={serieLivreEpe(g)}
                 chaveX="mes"

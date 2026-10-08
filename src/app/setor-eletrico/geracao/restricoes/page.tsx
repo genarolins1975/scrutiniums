@@ -180,7 +180,8 @@ export default function GeracaoRestricoesPage() {
                       </p>
                       {r.detalhe && r.detalhe.length > 0 && (
                         <TabelaInterativa
-                          titulo="Detalhamento por usina dos meses mais recentes contra o arquivo principal"
+                          chaveUrl={`det-${f}`}
+                          titulo={`Detalhamento por usina dos meses mais recentes contra o arquivo principal, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}`}
                           colunas={COLUNAS_DETALHE.map((c) => (c.id === "mes" ? { ...c, id: "id", tipo: "data" as const } : c))}
                           linhas={paraTabela(linhasDetalhe(r))}
                           chaveLinha="id"

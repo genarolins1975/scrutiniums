@@ -206,6 +206,7 @@ export default function GeracaoTermicaPage() {
                       nota="Custo declarado considerado no Programa Mensal da Operação, não custo realizado nem preço. Uma usina com várias parcelas tem um CVU por parcela."
                     />
                     <GraficoLinhas
+                      chaveUrl="cvu"
                       titulo="Mediana mensal do CVU por combustível"
                       dados={cvuMensal}
                       chaveX="m"

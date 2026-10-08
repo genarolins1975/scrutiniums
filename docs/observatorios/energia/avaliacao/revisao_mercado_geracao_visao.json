@@ -656,14 +656,191 @@
     "/setor-eletrico/geracao/termica": 4,
     "/setor-eletrico/visao-geral": 5
    }
+  },
+  {
+   "lente": "interface e acessibilidade",
+   "achados_total": 19,
+   "por_estado": {
+    "corrigido": 13,
+    "aberto": 2,
+    "parcial": 4
+   },
+   "achados": [
+    {
+     "id": "I01",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado (também /setor-eletrico/mercado/agentes e /setor-eletrico/geracao/capacidade)",
+     "categoria": "Gravar o intervalo (de e ate, ou preset) na URL nas três páginas, com o mesmo contrato de ",
+     "estado": "corrigido",
+     "nota": "intervalo dos gráficos de linha de Mercado (liv), Agentes (ulv), Capacidade (fcm) e Geração (dia, hor) na URL como <chave>.de e <chave>.ate; F5, link em aba nova e Voltar conferidos em Chromium"
+    },
+    {
+     "id": "I02",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade (também /setor-eletrico/geracao/termica)",
+     "categoria": "Persistir o conjunto de séries visíveis na URL (lista curta de ids) em Capacidade e Térmic",
+     "estado": "corrigido",
+     "nota": "séries desligadas em <chave>.oc em Capacidade (fcm, pot), Térmica (cvu) e Geração (dia, hor); F5 conferido; a lista vazia explícita distingue tudo ligado do padrão"
+    },
+    {
+     "id": "I03",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Incluir a ordenação do painel na URL (ex.: ord=nome).",
+     "estado": "corrigido",
+     "nota": "ordem do gráfico de 365 dias em dzg.ord e dzg.dir"
+    },
+    {
+     "id": "I04",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes (também /setor-eletrico/mercado/agentes e /setor-eletrico/geracao/capacidade)",
+     "categoria": "Passar chaveUrl às 7 instâncias de TabelaInterativa.",
+     "estado": "corrigido",
+     "nota": "as sete tabelas passaram a ter chaveUrl (perf, fxm, det-<fonte>, um, rz, ss, ds)"
+    },
+    {
+     "id": "I05",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes (também /setor-eletrico/geracao e /setor-eletrico/geracao/termica)",
+     "categoria": "Incluir o modo do mapa e o estado aberto das tabelas recolhidas na URL, ou documentar que ",
+     "estado": "aberto",
+     "nota": "modo Brasil inteiro do mapa de Restrições e tabela aberta em Entender seguem fora da URL"
+    },
+    {
+     "id": "I06",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado (abas do módulo e 'Abrir o painel'; também /setor-eletrico/geracao)",
+     "categoria": "Repassar o modo atual (leitura de ?modo=) aos links internos entre painéis do módulo, ou l",
+     "estado": "corrigido",
+     "nota": "ModoProfundidade leva o nível no clique em link interno do observatório (urlComNivel); abas, Abrir o painel e Próxima pergunta de todos os módulos com seletor; hub e Aprenda ficam de fora; fecha o D050 no código"
+    },
+    {
+     "id": "I07",
+     "severidade": "media",
+     "pagina": "15 tabelas em /setor-eletrico/mercado, /setor-eletrico/mercado/agentes, /setor-eletrico/mercado/encargos, /setor-eletrico/mercado/mre-e-gsf, /setor-eletrico/geracao, /setor-eletrico/geracao/capacidade, /setor-eletrico/geracao/restricoes, /setor-eletrico/visao-geral",
+     "categoria": "Marcar como buscáveis as colunas de rótulo de data e indexar o texto exibido (dd/mm/aaaa, ",
+     "estado": "corrigido",
+     "nota": "a coluna de rótulo da linha entra sempre no índice de busca; 49 tabelas das nove páginas achadas pelo rótulo da primeira linha em Chromium"
+    },
+    {
+     "id": "I08",
+     "severidade": "media",
+     "pagina": "7 páginas: /setor-eletrico/mercado, /setor-eletrico/mercado/encargos, /setor-eletrico/mercado/mre-e-gsf, /setor-eletrico/geracao, /setor-eletrico/geracao/capacidade, /setor-eletrico/geracao/restricoes, /setor-eletrico/geracao/termica",
+     "categoria": "Mostrar a unidade nos rótulos do eixo y (ex.: 40 %) ou no título para qualquer unidade, in",
+     "estado": "corrigido",
+     "nota": "unidade de um caractere no eixo vertical ('40 %', '12 h'); o título segue sem repeti-la, pela decisão da r5"
+    },
+    {
+     "id": "I09",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Escurecer as duas cores a 3:1 ou delimitar o segmento com contorno escuro, e oferecer padr",
+     "estado": "parcial",
+     "nota": "Solar MMGD e Térmicas Tipo III de 1,6:1 e 1,8:1 para 5,1:1 e 6,2:1 contra o fundo; as onze séries do gráfico empilhado continuam distinguidas só por cor, com legenda, tooltip e tabela equivalente"
+    },
+    {
+     "id": "I10",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade (vale para os rádios de profundidade, rádios nativos e botões de série das nove páginas)",
+     "categoria": "Marcar o selecionado com borda mais grossa, sublinhado, marca de seleção ou outline que so",
+     "estado": "parcial",
+     "nota": "selecionado ganha cor de sistema, borda de 3 px e sublinhado em forced-colors, conferido na emulação do Chromium e não em Alto Contraste real do Windows; os botões de série já traziam '(oculta)' em texto"
+    },
+    {
+     "id": "I11",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica (45 tabelas nas nove páginas)",
+     "categoria": "Em @media print: overflow visible e table-layout fixo com fonte menor nas tabelas, mostrar",
+     "estado": "corrigido",
+     "nota": "em A4 nenhuma das 85 tabelas visíveis fica mais larga que a página; a paginação mantém 'Página 1 de N · linhas 1 a 25', que diz o que saiu no papel"
+    },
+    {
+     "id": "I12",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Montar o ouvinte beforeprint/afterprint no layout do módulo ou usar CSS que mostre o conte",
+     "estado": "corrigido",
+     "nota": "os details abrem antes de imprimir em toda página com profundidade e o toque dos que montam o conteúdo ao abrir é disparado na hora"
+    },
+    {
+     "id": "I13",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Estender a regra ::after aos links internos com URL absoluta, ocultar controles e a barra ",
+     "estado": "corrigido",
+     "nota": "links internos saem com o caminho; barra de profundidade, busca, filtros, exportação, botões de página, intervalo do gráfico e link do painel ficam fora do papel"
+    },
+    {
+     "id": "I14",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao (também /setor-eletrico/geracao/termica)",
+     "categoria": "Reduzir o HTML de /geracao (carregar tabelas sob demanda como em Mercado), evitar o prefet",
+     "estado": "aberto",
+     "nota": "HTML de 1.045,6 kB em Geração e 646,3 kB na Térmica; hidratação de 5,9 s com CPU 4x e 1,6 Mbps em emulação; carregar as tabelas sob demanda fica para rodada própria"
+    },
+    {
+     "id": "I15",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Aplicar o modo padrão (Entender) por CSS no HTML inicial e esconder os níveis mais fundos ",
+     "estado": "corrigido",
+     "nota": "com JavaScript ligado o HTML vale Entender desde o primeiro quadro (scripting: enabled); com os scripts atrasados em 2,5 s o conteúdo de Auditar ficou oculto e a altura não mudou na hidratação; sem JavaScript todos os níveis seguem à vista"
+    },
+    {
+     "id": "I16",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/capacidade (também /setor-eletrico/geracao/termica, /setor-eletrico/geracao)",
+     "categoria": "html { scroll-padding-top: altura da barra + folga } (por exemplo 5rem).",
+     "estado": "corrigido",
+     "nota": "scroll-padding-top de 5 rem: em 390 e 1440 px nenhuma das 70 paradas de Tab ficou coberta pela barra"
+    },
+    {
+     "id": "I17",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Usar replaceState durante a navegação por setas e gravar no histórico só ao parar ou ao co",
+     "estado": "parcial",
+     "nota": "as setas do seletor de profundidade substituem a entrada do histórico; os rádios nativos (Região e similares) seguem com uma entrada por seta"
+    },
+    {
+     "id": "I18",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral (também /setor-eletrico/geracao/restricoes)",
+     "categoria": "Usar H3 nos cartões e distinguir o nome das duas tabelas (eólicas e fotovoltaicas).",
+     "estado": "corrigido",
+     "nota": "h4 sob h2 virou h3 nos cartões da Visão geral e as duas tabelas de detalhamento de Restrições têm o nome da fonte"
+    },
+    {
+     "id": "I19",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Anunciar a nova divisão de páginas e a razão da recusa ('Sem linhas para exportar') e, se ",
+     "estado": "parcial",
+     "nota": "tamanho de página e exportação sem linhas são anunciados; o tamanho de página segue fora da URL e o botão desativado continua focável"
+    }
+   ],
+   "nao_testado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver): o anúncio foi avaliado só pelo DOM (role=status, aria-live, caption, aria-label).",
+    "Firefox e Safari: só Chromium 1194 em Playwright; touch por emulação, sem dispositivo real.",
+    "Varredura de Tab em Auditar a 1440 px: interrompida por erro do script e por ordem de encerramento; só o log de 4 páginas (paradas cobertas 17, 9, 30, 8) e sem JSON, grau de ocultação não medido. Tab em Entender foi feita nas nove páginas a 390 e 1440 px.",
+    "Tabelas (busca, filtro, ordem, paginação, exportação, seleção) só em 1440 px e nível auditar, com carga por rolagem para as tabelas sob demanda de Mercado; em 390 px só foram vistos o painel de filtro e a paginação por captura; Analisar e Entender não repetidos (mesmo componente).",
+    "Estado em URL, link do painel e Voltar/Avançar: executados só em 1440 px; em 390 px não rodados. O teste de Voltar/Avançar passo a passo ficou com alinhamento impreciso entre ações e entradas de histórico, então só se conclui que estados na URL são restaurados e estados fora dela não têm entrada de histórico.",
+    "axe-core em 360 e 768 px: não rodado (nessas larguras só rolagem horizontal e alvos de toque, todos sem achado). axe-core com regras AAA (color-contrast-enhanced) falha em todas as páginas e não foi listado por ser AAA.",
+    "Distinguibilidade das séries para daltonismo: o cálculo de diferença de cor foi descartado por erro de conversão; só vale a razão de contraste de I09.",
+    "Impressão: só PDF A4 do Chromium (page.pdf) e media print a 1440 e 718 px; não houve diálogo de impressão real nem outro navegador.",
+    "XLSX aberto apenas por leitura do XML (zipfile), não em Excel ou LibreOffice; fórmula ou formatação visual não avaliadas.",
+    "Arrasto com o mouse no gráfico (zoom por seleção), aria-valuetext dos controles 'Ajustar início e fim' e clique no fundo do diálogo para fechar: não testados. Gesto de pinça e zoom do mapa: não testados.",
+    "Modo escuro: não existe (nenhuma regra prefers-color-scheme; com colorScheme=dark o fundo continua rgb(243,239,229)); não é achado. Movimento reduzido: testado e correto (scroll-behavior vira auto, transições somem).",
+    "Desempenho em campo (INP, LCP reais): só emulação de CPU 4x e rede 1,6 Mbps."
+   ]
   }
  ],
  "resumo": {
-  "achados_total": 82,
+  "achados_total": 101,
   "por_estado": {
-   "corrigido": 21,
-   "parcial": 9,
-   "aberto": 52
+   "corrigido": 34,
+   "parcial": 13,
+   "aberto": 54
   },
   "nenhum_bloqueante": true,
   "nota": "As notas dos revisores são de agentes, não de leitores reais, e valem como instrumento de comparação, não como medida absoluta. Achados abertos de severidade baixa são, em sua maioria, polimento de redação ou de desenho; os de severidade média abertos estão listados em CONTINUIDADE.md. O leitor extraiu texto oculto como se fosse visível em alguns achados de bastidor: a visibilidade foi medida em Entender antes de corrigir."

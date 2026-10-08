@@ -132,7 +132,7 @@ export function VisaoObservar({
                     </span>
                   </p>
                   <div className="min-w-0">
-                    <h4 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>{o.titulo}</h4>
+                    <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>{o.titulo}</h3>
                     <div className="mt-1">{o.resumo}</div>
                     <details
                       className="mt-2"
@@ -170,7 +170,7 @@ export function VisaoObservar({
 
       {dominio && comparaveis.length > 0 && (
         <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-4">
-          <h4 className="font-serif text-lg text-carvao">Quando cada regra esteve em alerta nos últimos 365 dias</h4>
+          <h3 className="font-serif text-lg text-carvao">Quando cada regra esteve em alerta nos últimos 365 dias</h3>
           <VisaoLegendaEstados />
           <Comparador
             rotulo="Regras para comparar (até 4)"

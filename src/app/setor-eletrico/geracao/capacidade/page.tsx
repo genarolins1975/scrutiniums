@@ -224,6 +224,7 @@ export default function GeracaoCapacidadePage() {
                 <div className="space-y-4 border-t border-linha pt-5" id="capacidade-mensal">
                   <h3 className="font-serif text-lg text-carvao">Mês a mês: fator de capacidade e potência em operação</h3>
                   <GraficoLinhas
+                    chaveUrl="fcm"
                     titulo="Fator de capacidade mensal por fonte"
                     dados={linhasFcMensal(c, CATEGORIAS_CAPACIDADE)}
                     chaveX="m"
@@ -238,6 +239,7 @@ export default function GeracaoCapacidadePage() {
                     altura={300}
                   />
                   <GraficoLinhas
+                    chaveUrl="pot"
                     titulo="Potência em operação comercial, média de cada mês"
                     dados={linhasPotenciaMensal(c, CATEGORIAS_CAPACIDADE)}
                     chaveX="m"
@@ -354,6 +356,7 @@ export default function GeracaoCapacidadePage() {
                     . Mantidos como publicados, contados como ressalva. O fator passa de 100% por dois motivos: a geração em teste antes da operação comercial, que infla o mês de entrada, e a potência nominal do ato da ANEEL abaixo da geração bruta, que mantém as usinas nucleares perto de 101% em muitos meses de operação normal (76 dos 228 casos).
                   </p>
                   <TabelaInterativa
+                    chaveUrl="fxm"
                     titulo="Maiores fatores de capacidade mensais acima de 100%"
                     colunas={COLUNAS_FC_ACIMA_100.map((col) => (col.id === "mes" ? { ...col, id: "m", tipo: "data" as const } : col))}
                     linhas={paraTabela(linhasFcAcima100(par).map((l, i) => ({ ...l, m: par.fc_acima_de_100.exemplos[i].mes })))}

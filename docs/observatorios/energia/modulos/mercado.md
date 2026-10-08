@@ -208,3 +208,13 @@ Corrigido nesta rodada:
 * Legendas de siglas das quatro páginas refeitas a partir do texto visível.
 
 Aberto (detalhe e razão em `CONTINUIDADE.md`): seis percentuais para a participação do livre sem número principal; EER fora do gráfico de Entender; centro de gravidade, rede básica e cativo sem definição; datas de referência de Agentes (out/26 parcial como mês cheio); regra de rateio do EER e dos demais ESS; Regras de Comercialização da CCEE, não lidas.
+
+Interface (19 achados da lente de interface nas nove páginas, 9 de severidade média e 10 baixa, nenhum bloqueante; estado de cada um no registro). Corrigido e conferido em Chromium no build de 08/10/2026:
+
+* **Recorte na URL**: o período escolhido nos gráficos de linha de Mercado (`liv.de`, `liv.ate`) e de Agentes (`ulv.de`, `ulv.ate`) entra na URL, e o link do painel, o F5 e o Voltar o reproduzem. A tabela de perfis e agentes (`perf`) passou a gravar busca, filtro, ordem e página.
+* **Busca**: a coluna que rotula a linha (mês, dia, ano) entra sempre no índice da tabela, e digitar "09/2026" acha a linha em todas as 49 tabelas das nove páginas que têm campo de busca.
+* **Nível entre painéis**: as abas do módulo, "Abrir o painel" e "Próxima pergunta" levam o nível de profundidade escolhido (`ModoProfundidade`, função `urlComNivel`); o hub e o Aprenda ficam de fora, e em Entender a URL do destino segue limpa. Fecha o D050 para os módulos que usam o seletor.
+* **Unidade**: o eixo vertical dos gráficos de linha em % (e em horas) traz a unidade em cada rótulo ("40 %"); o título segue sem repeti-la, pela decisão da r5 de não duplicar a unidade ao lado do texto. Vale para todos os gráficos de linha do observatório.
+* **Impressão**: as tabelas cabem na largura do A4, a barra de profundidade, a busca, os filtros e os botões de página saem, os links internos trazem o caminho e os dados dos gráficos em tabela abrem antes de imprimir.
+
+Peso do HTML medido em 08/10/2026 no build novo (bytes decodificados, 1 kB = 1.000 bytes): 467,5 kB (Mercado), 409,7 kB (Agentes), 432,0 kB (Encargos) e 318,8 kB (MRE e GSF), todos abaixo de 600 kB.

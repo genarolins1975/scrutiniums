@@ -187,3 +187,13 @@ Registro completo em `avaliacao/revisao_mercado_geracao_visao.json`. Corrigido n
 * Textos montados com a caixa das siglas preservada (ONS, MMGD, CMSE).
 
 Aberto: abertura de Geração sem verbo e com a resposta após cerca de 200 palavras; comparação de 30 e 365 dias sem aviso de sazonalidade; chaves internas e quantis no Entender de Capacidade; título de Restrições fala em eólica e solar com padrão só eólico; definições de inflexibilidade, unit commitment, substituição e garantia energética no Entender da térmica; rótulos de natureza (observado, calculado, misto) sem regra única.
+
+Interface (19 achados da lente de interface nas nove páginas, 9 de severidade média e 10 baixa, nenhum bloqueante; estado de cada um no registro). Corrigido e conferido em Chromium no build de 08/10/2026:
+
+* **Recorte na URL**: o período e as séries desligadas dos gráficos de Capacidade (`fcm`, `pot`), da Térmica (`cvu`) e dos recentes de Geração (`dia`, `hor`) entram na URL (`<chave>.de`, `<chave>.ate`, `<chave>.oc`), e o link do painel, o F5 e o Voltar os reproduzem; a ordem do gráfico de 365 dias (`dzg.ord`, `dzg.dir`) também. Sete tabelas que não gravavam busca, filtro, ordem e página passaram a gravar (Capacidade `fxm`, Restrições `det-<fonte>`, `um`, `rz`, `ss`, `ds`).
+* **Contraste**: Solar MMGD (estimada) e Térmicas Tipo III passaram de 1,6:1 e 1,8:1 para 5,1:1 e 6,2:1 contra o fundo, com o tom escuro da série de origem (`COR_CATEGORIA`); as duas continuam distintas das séries de origem por luminosidade, legenda e tabela equivalente, mas as onze séries do gráfico empilhado seguem distinguidas só por cor.
+* **Título**: as duas tabelas de detalhamento por usina de Restrições (eólicas e fotovoltaicas) deixaram de ter o mesmo nome.
+* **Hidratação**: com JavaScript ligado, o HTML já nasce em Entender; antes, por 3 a 5 s com CPU 4x, a página mostrava o conteúdo de Auditar e encolhia na hidratação (Mercado ia de 17.053 px para 9.604 px).
+* **Foco**: `scroll-padding-top` de 5 rem, porque a barra fixa de profundidade cobria de 7% a 68% do elemento focado.
+
+Aberto: HTML de 1.045,6 kB em Geração (125,6 kB em gzip), o único acima de 1 MB, e de 646,3 kB na Térmica, medidos em 08/10/2026; com CPU 4x e 1,6 Mbps a página de Geração hidrata em 5,9 s e trocar para Auditar leva 1,7 s (emulação, não medida em campo). A saída é carregar as tabelas sob demanda, como em Mercado, e fica para rodada própria (D040 a D049). Também aberto: o modo "Brasil inteiro" do mapa de Restrições e a tabela aberta em Entender seguem fora da URL.

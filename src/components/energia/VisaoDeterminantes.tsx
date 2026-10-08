@@ -70,10 +70,10 @@ function Cartao({
   return (
     <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
       <div id={ancoras?.painel} className="scroll-mt-28">
-        <h4 id={`p005-${p.id}-titulo`} className="font-serif text-lg text-carvao">
+        <h3 id={`p005-${p.id}-titulo`} className="font-serif text-lg text-carvao">
           {p.titulo}{" "}
           <span className="ml-1 font-sans text-sm text-mineral">{p.pergunta}</span>
-        </h4>
+        </h3>
         <p className="mt-1 text-sm text-carvao">
           <span className="font-serif text-xl tabular-nums" data-valor-atual={p.id}>
             {valorAtualTexto(p)}

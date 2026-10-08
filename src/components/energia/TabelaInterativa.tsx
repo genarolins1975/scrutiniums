@@ -183,7 +183,8 @@ export function TabelaInterativa({
 
   // digitação responde já; a filtragem das ~6.000 linhas acompanha logo depois
   const buscaAdiada = useDeferredValue(busca);
-  const indice = useMemo(() => criarIndiceBusca(colunas), [colunas]);
+  const idRotulo = (colunas.find((c) => c.id === colunaRotulo) ?? colunas[0])?.id;
+  const indice = useMemo(() => criarIndiceBusca(colunas, idRotulo), [colunas, idRotulo]);
   const ordenadas = useMemo(() => ordenarLinhas(linhas, colunas, ordem), [linhas, colunas, ordem]);
   const filtradas = useMemo(
     () => filtrarLinhas(ordenadas, colunas, { busca: buscaAdiada, filtros }, indice),
@@ -290,7 +291,10 @@ export function TabelaInterativa({
   }
 
   function exportar(formato: "csv" | "xlsx") {
-    if (!filtradas.length) return;
+    if (!filtradas.length) {
+      setAnuncio("Nenhuma linha para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.");
+      return;
+    }
     const nome = nomeArquivo(baseArquivo, recorte, formato, versao);
     if (formato === "csv") baixar(nome, gerarCsv(colunas, filtradas), MIME_CSV);
     else {
@@ -562,8 +566,11 @@ export function TabelaInterativa({
             <select
               value={tamanho}
               onChange={(e) => {
-                setTamanho(Number(e.target.value));
+                const novo = Number(e.target.value);
+                setTamanho(novo);
                 definir({ pagina: 1 });
+                const alvo = paginar(filtradas.length, 1, novo);
+                setAnuncio(`${novo} linhas por página: ${plural(alvo.paginas, "página", "páginas")}. Página 1: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`);
               }}
               className="min-h-[44px] border border-linha bg-superficie px-2 text-carvao"
             >

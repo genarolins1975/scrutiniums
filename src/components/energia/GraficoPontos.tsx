@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import {
   diferencaPar,
   dominioBonito,
@@ -70,6 +72,8 @@ export type GraficoPontosProps = {
   /** Ordem controlada (ex.: vinda da URL); com ela, use onOrdenar para atualizar. */
   ordem?: OrdemPontos;
   onOrdenar?: (o: OrdemPontos) => void;
+  /** Prefixo único na página dos parâmetros de URL (`<chave>.ord` e `<chave>.dir`) da ordem escolhida, quando ela não é controlada: o link do painel e o F5 reabrem a mesma ordem. */
+  chaveUrl?: string;
   selecionado?: string | null;
   onSelecionar?: (id: string | null) => void;
   /** Altura de cada linha em px (mínimo recomendado 44, o alvo de toque). */
@@ -113,6 +117,7 @@ export function GraficoPontos({
   ordemInicial = { por: "valor", direcao: "desc" },
   ordem: ordemControlada,
   onOrdenar,
+  chaveUrl,
   selecionado = null,
   onSelecionar,
   alturaLinha = 44,
@@ -146,12 +151,23 @@ export function GraficoPontos({
     return () => document.removeEventListener("pointerdown", fora);
   }, [ativo]);
 
-  const ordem = ordemControlada ?? ordemInterna;
+  const esquemaUrl = useMemo(
+    () => ({
+      por: campo(tiposUrl.opcao(["nome", "valor", "diferenca"] as const), ordemInicial.por, { param: `${chaveUrl}.ord` }),
+      dir: campo(tiposUrl.opcao(["asc", "desc"] as const), ordemInicial.direcao, { param: `${chaveUrl}.dir` }),
+    }),
+    [chaveUrl, ordemInicial.por, ordemInicial.direcao],
+  );
+  const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
+  const ordem: OrdemPontos = ordemControlada ?? (chaveUrl ? { por: vUrl.por, direcao: vUrl.dir } : ordemInterna);
   const uDif = unidadeDiferenca ?? (unidade === "%" ? "p.p." : unidade);
   const nomeCriterio = (c: CriterioPontos) => (c === "valor" ? rotuloValor : c === "diferenca" ? "Diferença" : "Nome");
 
   function mudarOrdem(o: OrdemPontos) {
-    if (!ordemControlada) setOrdemInterna(o);
+    if (!ordemControlada) {
+      if (chaveUrl) definirUrl({ por: o.por, dir: o.direcao });
+      else setOrdemInterna(o);
+    }
     onOrdenar?.(o);
     setAnuncio(`Ordenado por: ${nomeCriterio(o.por)}, ${textoDirecao(o)}. Entidades sem dado ficam no fim.`);
   }

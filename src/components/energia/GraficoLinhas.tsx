@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
+import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import {
   dominioLinhas,
   formatarX,
@@ -89,6 +91,12 @@ export type GraficoLinhasProps = {
   grupoCursor?: string;
   /** Abre a tabela equivalente já montada (ex.: modo Auditar). */
   tabelaAbertaInicial?: boolean;
+  /**
+   * Prefixo único na página dos parâmetros de URL (`<chave>.de`, `<chave>.ate` e `<chave>.oc`) que guardam o
+   * intervalo e as séries ocultas quando o gráfico não é controlado: o link do painel e o F5 reabrem o mesmo
+   * recorte. Com a chave, a URL é a fonte do estado (`intervaloInicial` e `ocultasIniciais` valem sem parâmetro).
+   */
+  chaveUrl?: string;
 };
 
 const fmtX = formatarX;
@@ -139,6 +147,7 @@ export function GraficoLinhas({
   sincronizarCursor = true,
   grupoCursor,
   tabelaAbertaInicial = false,
+  chaveUrl,
 }: GraficoLinhasProps) {
   const uid = useId();
   const [largura, setLargura] = useState(760);
@@ -150,6 +159,19 @@ export function GraficoLinhas({
   const [arrasto, setArrasto] = useState<{ a: number; b: number } | null>(null);
   const [aviso, setAviso] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+
+  // recorte na URL (só com chaveUrl e sem controle externo): o esquema é estável enquanto a chave e as ocultas iniciais não mudam
+  const chaveOcultasIniciais = ocultasIniciais.join(",");
+  const esquemaUrl = useMemo(
+    () => ({
+      de: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.de` }),
+      ate: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.ate` }),
+      oc: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 })), chaveOcultasIniciais ? chaveOcultasIniciais.split(",") : [], { param: `${chaveUrl}.oc` }),
+    }),
+    [chaveUrl, chaveOcultasIniciais],
+  );
+  const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
+  const usaUrl = !!chaveUrl;
 
   useEffect(() => {
     const el = ref.current;
@@ -178,13 +200,14 @@ export function GraficoLinhas({
     () => (zoom ? periodosProntos(xsTodos, formatoX).map((p) => ({ ...p, indices: indicesDoIntervalo(xsTodos, p) })) : []),
     [zoom, xsTodos, formatoX],
   );
-  const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : intervaloInterno) : null;
+  const intervaloDaUrl: IntervaloX | null = vUrl.de && vUrl.ate ? { inicio: vUrl.de, fim: vUrl.ate } : intervaloInicial;
+  const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : usaUrl ? intervaloDaUrl : intervaloInterno) : null;
   const [i0, i1] = zoom ? indicesDoIntervalo(xsTodos, ivAtual) : [0, N - 1];
   const ampliado = zoom && N > 0 && (i0 > 0 || i1 < N - 1);
   const vis = ampliado ? dados.slice(i0, i1 + 1) : dados;
 
   /* ---------- séries visíveis (legenda interativa) ---------- */
-  const ocultasLista = legendaInterativa ? (ocultasControladas ?? ocultasInternas) : SEM_OCULTAS;
+  const ocultasLista = legendaInterativa ? (ocultasControladas ?? (usaUrl ? vUrl.oc : ocultasInternas)) : SEM_OCULTAS;
   let seriesVis = ocultasLista.length ? series.filter((s) => !ocultasLista.includes(s.id)) : series;
   if (!seriesVis.length) seriesVis = series; // nunca um gráfico sem linha: todas ocultas equivale a nenhuma
   const temOcultas = seriesVis.length < series.length;
@@ -294,6 +317,8 @@ export function GraficoLinhas({
     marcosVisiveis.push({ m, i, linha });
   }
 
+  // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
+  const unidadeNoEixo = unidade.length === 1 && unidade.trim() ? ` ${unidade}` : "";
   const yt = ticks(yMin, yMax);
   // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
   const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
@@ -342,7 +367,10 @@ export function GraficoLinhas({
 
   function aplicarIndices(a: number, b: number) {
     const novo = intervaloDosIndices(xsTodos, a, b);
-    if (intervaloControlado === undefined) setIntervaloInterno(novo);
+    if (intervaloControlado === undefined) {
+      if (usaUrl) definirUrl({ de: novo?.inicio ?? "", ate: novo?.fim ?? "" });
+      else setIntervaloInterno(novo);
+    }
     onIntervalo?.(novo);
     setAtivo(null);
     setAviso("");
@@ -359,7 +387,10 @@ export function GraficoLinhas({
       atual.add(id);
     }
     const lista = series.map((s) => s.id).filter((i) => atual.has(i));
-    if (ocultasControladas === undefined) setOcultasInternas(lista);
+    if (ocultasControladas === undefined) {
+      if (usaUrl) definirUrl({ oc: lista });
+      else setOcultasInternas(lista);
+    }
     onOcultas?.(lista);
     setAviso("");
   }
@@ -582,6 +613,7 @@ export function GraficoLinhas({
             <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
             <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
               {rotuloTick(v, passoY)}
+              {unidadeNoEixo}
             </text>
           </g>
         ))}

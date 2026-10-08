@@ -189,6 +189,7 @@ export default function MercadoAgentesPage() {
                 unidade="contagens (unidades, agentes, parcelas)"
               />
               <GraficoLinhas
+                chaveUrl="ulv"
                 titulo="Unidades consumidoras livres, estoque no fim de cada mês (EPE)"
                 dados={serieUcsLivres(g)}
                 chaveX="mes"
@@ -333,6 +334,7 @@ export default function MercadoAgentesPage() {
               <MercadoAuditoria titulo="Cadastro de perfis, agentes na ANEEL e conferências" id="agentes-auditoria">
                 {p && <MercadoVerificacoes painel={p} />}
                 <TabelaInterativa
+                  chaveUrl="perf"
                   titulo="Perfis e agentes por classe no cadastro de perfis da CCEE"
                   colunas={COLUNAS_PERFIS}
                   linhas={linhasPerfis(g)}

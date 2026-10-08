@@ -196,6 +196,7 @@ export default function GeracaoPage() {
                       rotuloReferencia="365 dias anteriores"
                       zeroNoEixo
                       ordemInicial={{ por: "valor", direcao: "desc" }}
+                      chaveUrl="dzg"
                     />
                     <TabelaInterativa
                       titulo="Tabela equivalente: 365 dias contra os 365 anteriores, com a variação publicada"
@@ -214,6 +215,7 @@ export default function GeracaoPage() {
 
                 <GeracaoAnalise id="recentes" titulo="Os últimos 60 dias e as últimas 72 horas, SIN">
                   <GraficoLinhas
+                    chaveUrl="dia"
                     titulo={`Geração diária do SIN por categoria, ${dataBR(m.diario_sin_recente.dias[0])} a ${dataBR(m.diario_sin_recente.dias[m.diario_sin_recente.dias.length - 1])}`}
                     dados={diario}
                     chaveX="x"
@@ -237,6 +239,7 @@ export default function GeracaoPage() {
                     ordemInicial={{ coluna: "x", direcao: "desc" }}
                   />
                   <GraficoLinhas
+                    chaveUrl="hor"
                     titulo={`Geração horária do SIN por categoria, de ${dataBR(m.horario_sin_recente.horas[0])} a ${dataBR(m.horario_sin_recente.horas[m.horario_sin_recente.horas.length - 1])}`}
                     dados={horario}
                     chaveX="x"

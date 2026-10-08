@@ -243,6 +243,7 @@ export function GeracaoRestricoes({
                   altura={240}
                 />
                 <TabelaInterativa
+                  chaveUrl="um"
                   titulo={`Tabela equivalente: ${usina.nome ?? usina.id}, mês a mês`}
                   colunas={colunasUsinaMes(razoesUsina).map((c) => (c.id === "mes" ? { ...c, id: "m", tipo: "data" as const } : c))}
                   linhas={paraTabela(historico)}
@@ -339,6 +340,7 @@ export function GeracaoRestricoesAnalise({ restricoes, fonte, versao }: { restri
             sistêmica) é a que o ONS registra em cada limitação; o observatório não a reclassifica.
           </p>
           <TabelaInterativa
+            chaveUrl="rz"
             titulo={`Energia não gerada por razão e origem, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
             colunas={COLUNAS_RAZOES_12M}
             linhas={paraTabela(linhasRazoes12m(r))}
@@ -349,6 +351,7 @@ export function GeracaoRestricoesAnalise({ restricoes, fonte, versao }: { restri
             nomeArquivo={`geracao-restricao-razoes-${f}`}
           />
           <TabelaInterativa
+            chaveUrl="ss"
             titulo={`Energia não gerada e taxa por subsistema, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
             colunas={COLUNAS_SUBSISTEMAS_12M}
             linhas={paraTabela(linhasSubsistemas12m(r))}
@@ -387,6 +390,7 @@ export function GeracaoRestricoesAnalise({ restricoes, fonte, versao }: { restri
       )}
       {r.descricoes_ultimo_mes && r.descricoes_ultimo_mes.itens.length > 0 && (
         <TabelaInterativa
+          chaveUrl="ds"
           titulo={`Detalhamento publicado pelo ONS em ${mesAno(r.descricoes_ultimo_mes.mes)} (${num(r.descricoes_ultimo_mes.n_descricoes, 0)} descrições)`}
           colunas={COLUNAS_DESCRICOES}
           linhas={paraTabela(linhasDescricoes(r))}

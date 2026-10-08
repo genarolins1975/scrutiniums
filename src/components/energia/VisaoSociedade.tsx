@@ -28,9 +28,9 @@ function Cartao({ it, i }: { it: ItemSociedade; i: number }) {
   return (
     <article id={`sociedade-${it.id}`} aria-labelledby={`sociedade-${it.id}-titulo`} className="relative flex min-w-0 flex-col border border-linha bg-superficie p-4">
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: COR_ITEM[it.id] ?? "var(--cor-energia)" }} />
-      <h4 id={`sociedade-${it.id}-titulo`} className="rotulo text-mineral">
+      <h3 id={`sociedade-${it.id}-titulo`} className="rotulo text-mineral">
         {it.titulo}
-      </h4>
+      </h3>
       <p className="mt-1 text-xs text-carvao-muted">{it.pergunta}</p>
       <p className="mt-2 font-serif text-2xl leading-tight tabular-nums text-carvao" data-valor-sociedade={it.id}>
         {valorSociedade(it)}

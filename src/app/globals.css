@@ -158,6 +158,22 @@ body {
   display: none;
 }
 
+/* Antes da hidratação o HTML ainda não sabe o nível (data-modo="todos"). Com JavaScript ligado, vale o padrão Entender desde o
+   primeiro quadro, sem mostrar por segundos o conteúdo de Analisar e Auditar que depois some; quem abre ?modo= sobe ao nível
+   pedido na hidratação. Sem JavaScript, todos os níveis continuam à vista, em ordem. */
+@media (scripting: enabled) {
+  .modo-profundidade[data-modo="todos"] [data-nivel="analisar"],
+  .modo-profundidade[data-modo="todos"] [data-nivel="auditar"] {
+    display: none;
+  }
+  .modo-profundidade[data-modo="todos"] .tabela-recolher { display: block; }
+  .modo-profundidade[data-modo="todos"] [data-recolhivel="fechada"] { display: none; }
+}
+
+/* A barra fixa de profundidade (sticky, até 69 px) não pode esconder a borda do elemento que recebe o foco nem o alvo de uma âncora:
+   a rolagem por foco e por âncora deixa folga em cima. */
+html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
+
 /* Caixas e botões de opção com pelo menos 24 px (WCAG 2.5.8): o rótulo já tinha 44 px, mas o controle em si media 13 a 16 px. */
 .dominio-energia input[type="checkbox"],
 .dominio-energia input[type="radio"] {
@@ -228,4 +244,46 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
   main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }
   main figure, main blockquote, main li { break-inside: avoid; }
   main h1, main h2 { break-after: avoid; }
+  /* links internos (fora das abas e menus) saem com o caminho: o CSV e a página de destino não somem do papel */
+  main a[href^="/"]:not(nav a)::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }
+  /* controles que não funcionam no papel: nível de profundidade, intervalo do gráfico, link do painel, gatilho Comprove em texto
+     e, em cada tabela, busca, filtros, exportação, dica de rolagem e botões de página (o texto "Página 1 de 2 · linhas 1 a 25" fica e diz o que saiu no papel) */
+  .modo-profundidade > .sticky,
+  [data-controles="intervalo"],
+  main span:has(> input[aria-label^="Endereço deste painel"]),
+  main button[data-comprove].rotulo,
+  [data-componente="tabela-interativa"] div:has(> input[type="search"]),
+  [data-componente="tabela-interativa"] div:has(> span.rotulo.mr-1),
+  [data-componente="tabela-interativa"] p[role="status"] + div,
+  [data-componente="tabela-interativa"] [data-dica-rolagem],
+  [data-componente="tabela-interativa"] nav[aria-label^="Paginação"] :is(button, label) { display: none !important; }
+  /* tabela inteira na largura da página: sem rolagem lateral, sem coluna fixa, texto quebra no lugar de cortar */
+  main .tabela-scroll { overflow: visible !important; border-top: 1px solid #999; }
+  main .tabela-scroll table { width: 100% !important; table-layout: auto; font-size: 0.68rem; }
+  main .tabela-scroll th,
+  main .tabela-scroll td {
+    min-width: 0 !important;
+    max-width: none !important;
+    position: static !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    padding: 0.15rem 0.25rem !important;
+  }
+  main .tabela-scroll tr { break-inside: avoid; }
+  main .tabela-scroll thead { display: table-header-group; }
+}
+
+/* Modo de alto contraste (forced-colors): o estado selecionado vive só em cor de fundo, que o modo apaga.
+   Seletor de profundidade, rádios nativos (o rótulo envolve o input escondido) e botões de período/série ganham
+   cores de sistema, borda grossa e sublinhado, que sobrevivem ao modo. */
+@media (forced-colors: active) {
+  [role="radio"][aria-checked="true"],
+  button[aria-pressed="true"],
+  .dominio-energia label:has(> input:checked) {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+    border: 3px solid Highlight;
+    text-decoration: underline;
+  }
 }

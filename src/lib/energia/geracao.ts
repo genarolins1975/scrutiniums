@@ -218,19 +218,22 @@ export const FRASE_CATEGORIA: Record<CategoriaGeracao, string> = {
   nao_mapeada: "categoria não mapeada",
 };
 
-/** Cor por categoria, só tokens (a MMGD e as térmicas Tipo III em tom claro da série de origem). */
+/**
+ * Cor por categoria, só tokens. A MMGD e as térmicas Tipo III usam um tom mais escuro da série de origem (25% de preto):
+ * o tom claro de antes (45% sobre o branco) dava 1,6:1 e 1,8:1 contra o fundo, abaixo dos 3:1 do WCAG 1.4.11. Agora são 5,1:1 e 6,2:1.
+ */
 export const COR_CATEGORIA: Record<CategoriaGeracao, string> = {
   hidraulica: "var(--serie-hidraulica)",
   eolica: "var(--serie-eolica)",
   solar_centralizada: "var(--serie-solar)",
-  solar_mmgd: "color-mix(in srgb, var(--serie-solar) 45%, var(--cor-superficie))",
+  solar_mmgd: "color-mix(in srgb, var(--serie-solar) 75%, #000)",
   nuclear: "var(--serie-sm-se)",
   gas: "var(--serie-termica)",
   carvao: "var(--serie-1)",
   oleo: "var(--serie-6)",
   biomassa: "var(--cor-sucesso)",
   outros: "var(--serie-3)",
-  termica_sem_combustivel: "color-mix(in srgb, var(--serie-termica) 45%, var(--cor-superficie))",
+  termica_sem_combustivel: "color-mix(in srgb, var(--serie-termica) 75%, #000)",
   nao_mapeada: "var(--serie-referencia)",
 };
 
