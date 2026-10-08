@@ -35,10 +35,10 @@ Idempotência: duas execuções seguidas com o mesmo seed produzem o mesmo `hash
 | Conjunto | Comando | Resultado |
 | --- | --- | --- |
 | OBEE, pipeline | `python3 -m unittest pipeline.tests.test_eficiencia` | 41 testes, todos aprovados |
-| OBEE, interface e consulta | `npx vitest run src/tests/obee-educacao.test.ts` | 49 testes, todos aprovados |
+| OBEE, interface e consulta | `npx vitest run src/tests/obee-educacao.test.ts` | 50 testes, todos aprovados |
 | Suíte Python do repositório | `python3 -m unittest discover -s pipeline/tests -t .` | 1.351 testes aprovados, 6 ignorados (com `pyarrow` 25.0.1, como no CI) |
 | Suíte `pesquisa` | `python3 -m unittest discover -s pesquisa/tests -t .` | 69 aprovados |
-| Suíte vitest do repositório | `npx vitest run` (no CI, com build e `EXIGIR_BUILD_HTML=1`) | Rodada 3: 2.522 aprovados, 1 ignorado, 1 reprovado (varredura de data crua em 21 páginas de Energia, ver VERIFICACAO_FINAL.md, seção 4) |
+| Suíte vitest do repositório | `npx vitest run` (no CI, com build e `EXIGIR_BUILD_HTML=1`) | Rodada 4, checkout limpo do commit final: 136 arquivos, 2.555 aprovados, 1 ignorado, 0 reprovados (rodada 3: 1 reprovado, a varredura de data crua em Energia, resolvida) |
 | Tipos e lint | `npx tsc --noEmit`; `npm run lint` | Sem erros |
 | Build de produção | `npm run build` | Concluído; rota estática, 22,2 kB de JavaScript próprio, 118 kB no primeiro carregamento |
 
@@ -60,6 +60,15 @@ Contraste dos tokens do OBEE testado em `obee-educacao.test.ts` (texto ≥ 4,5:1
 
 Ajustes feitos depois da primeira rodada de capturas: rótulo de valor cortado na comparação (margem direita), nomes de capitais cortados no celular (margem esquerda proporcional), sobreposição de rótulos do eixo a 320 px (duas marcas), casas decimais supérfluas nos eixos, separador decimal em textos de validação, colunas da tabela auditável.
 
+### Rodada 4: datas e literais de Energia, bloqueio do gate de HTML
+
+* Novos testes: `texto-datas.test.ts` (15, gramática, calendário, fuso, competência), `html-contrato.test.ts` (23, contrato estrutural com fixtures sintéticas positivas e negativas) e `html-gerado.test.ts` (gate obrigatório sobre 359 páginas de Energia e a página do OBEE, 0 violações).
+* Verificação visual de 23 rotas de Energia em 1440, 768, 390 e 320 px (`scripts/obee/energia-datas.mjs`): 92 verificações, 0 com rolagem horizontal, erro de página ou violação axe.
+* OBEE, fluxos do painel no build final: `interacoes.mjs` 39 de 39 em 1280 px e 39 de 39 em 390 px com toque.
+* Dados: nenhuma diferença em `public/`, `data/` e `pipeline/` entre `10f64b302` e o commit final; `hash_dados` da gold do OBEE `2c1ae8573966662e…`; `test_eficiencia` 41 aprovados.
+* Sequência do CI (npm ci, minify, lint, tsc, compileall, testes Python 1.351 + 69, build, vitest com `EXIGIR_BUILD_HTML=1`) executada em checkout limpo do commit de código final, sem falhas.
+* Detalhe, inventário por rota e capturas: [APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md) e `capturas/rodada-4/`.
+
 ## 4. Neutralidade
 
 * Teste automático varre componentes, página, consulta, catálogo, notas e validações em busca de termos avaliativos ("eficiente", "desperdício", "melhor", "pior", "ranking", "insight", "merece atenção", "sinaliza", "excesso" e outros) e de cores de semáforo ou hexadecimais soltos nos componentes: nenhuma ocorrência.
@@ -72,6 +81,8 @@ Ajustes feitos depois da primeira rodada de capturas: rótulo de valor cortado n
 * Leitor de tela real (NVDA, VoiceOver): não testado; a verificação de acessibilidade foi automática (axe) e por navegação de teclado.
 
 ## 6. Capturas
+
+Rodada 4: `capturas/rodada-4/` (15 capturas de datas formatadas e literais da fonte, lista em APRESENTACAO_DATAS_ENERGIA.md, seção 9).
 
 Rodada 2: `capturas/rodada-2/` (doze capturas dos casos de revisão, lista em RODADA_2_CORRECOES.md, seção 7).
 

@@ -1,5 +1,7 @@
 # Verificação final: data, gate de HTML no CI e passagem pelo painel
 
+> **Atualização (rodada 4, 08/10/2026): o bloqueio descrito na seção 4 foi resolvido.** As 23 rotas de Energia com data ISO em prosa passaram a obedecer ao contrato de apresentação, o gate obrigatório de HTML roda no CI e reprova só o que viola o contrato, e a classificação provisória P/B da seção 4 foi reavaliada. Política, contrato do teste, inventário reconciliado, antes e depois: [APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md). O texto abaixo é o registro da rodada 3 e foi mantido como histórico; onde diverge do documento de apresentação, vale o documento de apresentação.
+
 Rodada de 08/10/2026 sobre o PR genarolins1975/scrutiniums#117, executada no ambiente de nuvem do Claude Code. Segue a rodada 2 ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)).
 
 **Estado de encerramento: correções e verificação local concluídas; validação remota pendente de acesso; gate obrigatório de HTML reprovado por problema independente, no domínio Energia (21 páginas). Não está pronto para decisão de publicação.** Os motivos estão nas seções 3, 4 e 8.
@@ -71,7 +73,7 @@ Efeito colateral verificado: o mesmo formatador na gaveta resolveu também `/set
 
 **No runner**: run do commit `77ded6400` (https://github.com/genarolins1975/scrutiniums/actions/runs/37790289979): o build concluiu no runner, o Vitest executou 135 arquivos (2.522 testes aprovados, 1 ignorado) e reprovou na varredura do setor elétrico, com a mesma lista de 21 páginas do build local. Duração total do job: cerca de 4 minutos (antes, 2,5).
 
-## 4. Problema independente revelado pelo gate: Energia, 21 páginas, 113 ocorrências
+## 4. Problema independente revelado pelo gate: Energia, 21 páginas, 113 ocorrências (histórico; resolvido na rodada 4)
 
 Com o gate efetivo, o varredor de data crua encontra, além das 2 páginas tratadas na seção 2, **21 páginas do setor elétrico** (113 ocorrências: 5 instantes, 66 dias, 51 meses `AAAA-MM`). Antes desta rodada ninguém via isso: o teste não rodava no CI.
 

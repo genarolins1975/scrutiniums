@@ -42,7 +42,8 @@ A reconstrução sem rede imprime as validações e termina com código 1 se alg
 | [CATALOGO_COBERTURA.md](./CATALOGO_COBERTURA.md) | Indicadores, fontes, períodos, cobertura e lacunas |
 | [VALIDACAO.md](./VALIDACAO.md) | Verificações executadas, resultados e capturas de tela |
 | [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md) | Rodada de correções: achados, política de conferência 1.1, casos Boa Vista 2024 e Campo Grande 2021, campos vazios, antes e depois |
-| [VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md) | Verificação final: data legível, gate obrigatório de HTML no CI, passagem pelo painel, problema independente em Energia |
+| [VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md) | Verificação final: data legível, gate obrigatório de HTML no CI, passagem pelo painel, problema independente em Energia (histórico) |
+| [APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md) | Política de apresentação de datas e literais da fonte, contrato do teste de HTML, inventário reconciliado das rotas de Energia e do OBEE |
 | [CONTINUIDADE.md](./CONTINUIDADE.md) | Próximos módulos, decisões pendentes e tarefas delimitadas |
 
 ## Regra editorial (vale para todo o código e texto do domínio)
