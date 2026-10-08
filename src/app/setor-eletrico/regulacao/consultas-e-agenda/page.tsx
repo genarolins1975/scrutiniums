@@ -186,7 +186,7 @@ export default function ConsultasEAgendaPage() {
 
                 <section aria-labelledby="agenda-curta-titulo" className="space-y-1" data-agenda-curta="">
                   <h3 id="agenda-curta-titulo" className="font-serif text-lg text-carvao">
-                    O que a ANEEL prevê decidir, em resumo
+                    O que a ANEEL prevê decidir?
                   </h3>
                   <RespostaCurta id="agenda" atributo="data-resposta-agenda" tamanho="sm" veredito={vereditoAgenda(A, g.limites_em_revisao)}>
                     {respostaAgenda(A, g.limites_em_revisao)}

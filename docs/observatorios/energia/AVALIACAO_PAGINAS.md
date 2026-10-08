@@ -1,26 +1,26 @@
 # Avaliação das páginas do observatório
 
-Gerado por `scripts/energia_avaliacao.py` a partir de `public/energia/gold/avaliacao.json` (rodada 2026-10-08-r7, inspeção de 08/10/2026, rubrica 1.0). Não editar à mão: a página `/setor-eletrico/metodologia/avaliacao` lê o mesmo arquivo e mostra a evidência de cada nota.
+Gerado por `scripts/energia_avaliacao.py` a partir de `public/energia/gold/avaliacao.json` (rodada 2026-10-08-r8, inspeção de 08/10/2026, rubrica 1.0). Não editar à mão: a página `/setor-eletrico/metodologia/avaliacao` lê o mesmo arquivo e mostra a evidência de cada nota.
 
 A escala é uma ferramenta de revisão, não uma certificação externa. Nota só existe com evidência medida ou revisão registrada; dimensão não testada fica como não avaliada (n.av.) e não satisfaz o aceite; dimensão que não se aplica ao tipo de página fica como não aplicável (n.ap.) e sai do cálculo ponderado. Toda nota é truncada em uma casa decimal.
 
 ## Resultado da rodada
 
 - Páginas avaliadas: 94 (de 370 rotas construídas; as famílias dinâmicas foram amostradas, ver limites).
-- Nota ponderada média: 8,3.
+- Nota ponderada média: 8,4.
 - Páginas que atendem a meta de produto (todas as dimensões a partir de 9,0, didatismo e qualidade visual a partir de 9,5, nenhuma dimensão aplicável não avaliada, nenhum defeito crítico): 0 de 94.
 - Páginas com todas as dimensões aplicáveis avaliadas: 94 de 94.
-- Defeitos abertos: 36 (críticos 0, altos 4, médios 22, baixos 10); corrigidos desde a rodada anterior: 11.
-- Jornadas da seção 15.2: 9 cumpridas, 1 interrompidas, 0 com falha, de 10 (roteiro por script, sem participante humano).
+- Defeitos abertos: 37 (críticos 0, altos 3, médios 24, baixos 10); corrigidos desde a rodada anterior: 11.
+- Jornadas da seção 15.2: 10 cumpridas, 0 interrompidas, 0 com falha, de 10 (roteiro por script, sem participante humano).
 
 ## Por dimensão
 
 | Dimensão | Peso | Meta | Avaliadas | Não avaliadas | Não aplicáveis | Média | Mínimo | Atendem a meta |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Didatismo | 15% | 9,5 | 94 | 0 | 0 | 6,9 | 5,0 | 0 de 94 |
-| Qualidade visual | 12% | 9,5 | 94 | 0 | 0 | 7,3 | 6,0 | 0 de 94 |
-| Navegação e usabilidade | 10% | 9,0 | 94 | 0 | 0 | 9,1 | 8,0 | 93 de 94 |
-| Interatividade | 8% | 9,0 | 94 | 0 | 0 | 9,9 | 9,5 | 94 de 94 |
+| Didatismo | 15% | 9,5 | 94 | 0 | 0 | 7,2 | 6,0 | 0 de 94 |
+| Qualidade visual | 12% | 9,5 | 94 | 0 | 0 | 7,4 | 6,5 | 0 de 94 |
+| Navegação e usabilidade | 10% | 9,0 | 94 | 0 | 0 | 9,2 | 9,0 | 94 de 94 |
+| Interatividade | 8% | 9,0 | 93 | 0 | 1 | 9,9 | 9,5 | 93 de 93 |
 | Acessibilidade | 7% | 9,0 | 94 | 0 | 0 | 9,0 | 9,0 | 94 de 94 |
 | Completude | 12% | 9,0 | 94 | 0 | 0 | 8,9 | 4,5 | 59 de 94 |
 | Correção técnica e metodológica | 15% | 9,0 | 94 | 0 | 0 | 7,9 | 5,5 | 25 de 94 |
@@ -41,6 +41,7 @@ A comparação só vale para dimensões avaliadas nas duas rodadas: uma média q
 | 2026-10-07-r5 | 07/10/2026 | 94 | 10 de 10 | 8,3 | 0 | 0/4/35/12 | 10 |
 | 2026-10-08-r6 | 08/10/2026 | 94 | 10 de 10 | 8,3 | 0 | 0/3/25/10 | 10 |
 | 2026-10-08-r7 | 08/10/2026 | 94 | 10 de 10 | 8,3 | 0 | 0/4/22/10 | 9 |
+| 2026-10-08-r8 | 08/10/2026 | 94 | 10 de 10 | 8,4 | 0 | 0/3/24/10 | 10 |
 
 | Rodada | Didat. | Visual | Naveg. | Interat. | Acess. | Compl. | Correção | Rastr. | Atual. | Desemp. |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -51,6 +52,7 @@ A comparação só vale para dimensões avaliadas nas duas rodadas: uma média q
 | 2026-10-07-r5 | 7,0 | 7,4 | 9,2 | 9,9 | 9,0 | 8,7 | 7,9 | 9,3 | 7,9 | 8,7 |
 | 2026-10-08-r6 | 7,0 | 7,5 | 9,2 | 9,9 | 9,0 | 8,8 | 7,9 | 9,4 | 7,9 | 8,8 |
 | 2026-10-08-r7 | 6,9 | 7,3 | 9,1 | 9,9 | 9,0 | 8,9 | 7,9 | 9,4 | 7,9 | 8,8 |
+| 2026-10-08-r8 | 7,2 | 7,4 | 9,2 | 9,9 | 9,0 | 8,9 | 7,9 | 9,4 | 7,9 | 8,8 |
 
 O que mudou no método entre as rodadas:
 
@@ -76,44 +78,49 @@ O que mudou no método entre as rodadas:
 - Rodada 2026-10-08-r7: as 188 capturas versionadas da primeira dobra foram refeitas a partir das capturas limpas da r7
 - Rodada 2026-10-08-r7: a primeira execução das dez jornadas na r7 interrompeu três: J1, J5 e J9. A J9 foi regressão do código da r7, pois a data de publicação do rodapé tinha ficado dentro do bloco recolhido de fontes; ela segue interrompida na r7 e foi corrigida depois da medição (ver posteriores.json). A J1 e a J5 pararam porque os roteiros seguiam o desenho anterior do Aprenda: exemplo real em linha única, índice com todos os cartões à vista, exemplo da EAR do Sudeste/Centro-Oeste com mediana da data, exemplo do PLD com o pico horário, e o link ver no painel do PLD levando à página PLD. Os dois roteiros foram atualizados para o desenho vigente (exemplo em ficha, índice com busca, EAR do SIN sem mediana, PLD médio da semana operativa, painel CMO e formação de preço com a fonte em Analisar) e reexecutados sobre o mesmo build. A r7 registra a segunda execução de J1 e J5 e a primeira de J9. O custo em interações subiu em duas jornadas por causa do desenho novo: J1 de 8 para 10 e J5 de 10 para 12. A mediana da data deixou de constar do exemplo da EAR no verbete, e o roteiro da J5 passou a registrar isso em vez de exigi-la
 - Rodada 2026-10-08-r7: limitação do instrumento reconhecida na r7, sem alteração da régua: o item interação local da completude conta qualquer controle exercitado, inclusive o resumo Mais N siglas da legenda de siglas. Em Empresas, Inclusão energética e Transição, que não tinham outro controle, o item passou de ausente a completo e a completude subiu de 3,5 para 4,5. O ganho não representa interação analítica nova na página. A r7 não foi reprocessada; a regra de excluir a legenda do item fica para a rodada seguinte, se aprovada
+- Rodada 2026-10-08-r8: a rodada r8 foi feita sem mudar a rubrica, a régua, o roteiro dos revisores nem os grupos: os nove revisores receberam as mesmas instruções e as mesmas páginas por revisor (R1 a R9) da r7, e são outras instâncias de agente, de modo que a diferença por módulo mistura mudança na página e variação entre revisores. A comparação com a r7 vale como ordem de grandeza
+- Rodada 2026-10-08-r8: a coleta objetiva, as capturas limpas e as dez jornadas da r8 foram feitas sobre o build do código do commit 713f7d817 (o commit seguinte só regenerou a avaliação e a documentação); as jornadas rodaram com os roteiros J1 a J5, J9 e J10 atualizados depois da r7 para os textos e níveis novos, e as dez foram cumpridas
+- Rodada 2026-10-08-r8: o revisor R9 registrou como não aberto um trecho de 390 px da ficha aneel-scs que não constava do pacote: o pacote traz no máximo três trechos de 390 px por página, escolhidos ao longo dela, e a numeração do arquivo não é contígua. A nota foi mantida e a observação ficou em nao_abriu da revisão
+- Rodada 2026-10-08-r8: o trabalho de conteúdo feito entre a r7 e a r8 (resposta em duas camadas, identificadores técnicos fora de Entender e conciliação de números) está descrito na documentação do módulo Dados; a entrada correspondente em posteriores.json passou a fazer parte do que a r8 mede e foi retirada da lista de correções ainda não medidas
+- Rodada 2026-10-08-r8: a primeira coleta da r8 acusou a ficha Comprove da página Território como defeito alto (interatividade 6,0): os três botões estão nos cartões de cobertura do cadastro, que o trabalho de conteúdo moveu para o nível Analisar, e em Entender ficam ocultos; o instrumento clicava o primeiro botão do DOM, não o primeiro visível, e a clicagem falhava sem defeito da ficha. Conferido à mão: nos níveis Analisar e Auditar os três botões abrem a ficha com sha256, fonte e reprodução. O instrumento passou a testar só botões visíveis (scripts/energia-avaliacao.mjs), a rota foi medida de novo nas seis combinações de largura e modo e só ela foi substituída no relatório da r8 (as outras 93 não têm botão oculto que o teste usasse); o defeito alto some e a interatividade da página vai de 6,0 para 10,0. O efeito na página é real em outro ponto: em Entender, Território não oferece nenhuma ficha Comprove, porque os números com ficha estão em Analisar
 
 Defeitos corrigidos desde a rodada anterior:
 
-- (medio) itens ausentes da anatomia do painel: h1 único com abertura; equivalente textual para as figuras
-- (medio) itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; interação local; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta
-- (medio) itens ausentes da anatomia do painel: limite de leitura declarado; equivalente textual para as figuras
-- (medio) itens ausentes da anatomia do painel: equivalente textual para as figuras
-- (baixo) HTML de 643 KB, acima da meta de 600 KB
-- (baixo) HTML de 648 KB, acima da meta de 600 KB
-- (baixo) HTML de 656 KB, acima da meta de 600 KB
-- (baixo) HTML de 673 KB, acima da meta de 600 KB
-- (baixo) HTML de 684 KB, acima da meta de 600 KB
-- (baixo) HTML de 725 KB, acima da meta de 600 KB
-- (baixo) HTML de 880 KB, acima da meta de 600 KB
+- (alto) jornada J9 interrompida no passo "Compara a data de referência com as datas de captura e de processamento mostradas na página": não achei a data de publicação do rodapé
+- (medio) itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número
+- (medio) itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável
+- (baixo) HTML de 619 KB, acima da meta de 600 KB
+- (baixo) HTML de 622 KB, acima da meta de 600 KB
+- (baixo) HTML de 640 KB, acima da meta de 600 KB
+- (baixo) HTML de 650 KB, acima da meta de 600 KB
+- (baixo) HTML de 659 KB, acima da meta de 600 KB
+- (baixo) HTML de 683 KB, acima da meta de 600 KB
+- (baixo) HTML de 826 KB, acima da meta de 600 KB
+- (baixo) HTML de 855 KB, acima da meta de 600 KB
 
 ## Por entrega (média das páginas de cada módulo)
 
 | Entrega | Págs. | Didat. | Visual | Naveg. | Interat. | Acess. | Compl. | Correção | Rastr. | Atual. | Desemp. | Ponderada | Atendem |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Página inicial | 1 | 7,5 | 7,5 | 10,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | 0/1 |
-| Visão geral | 1 | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 9,6 | 8,0 | 9,5 | 8,0 | 9,0 | 8,5 | 0/1 |
-| Água e clima | 4 | 6,7 | 7,3 | 9,2 | 10,0 | 9,0 | 9,7 | 8,1 | 9,5 | 7,2 | 9,0 | 8,4 | 0/4 |
-| Carga | 3 | 6,8 | 7,3 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 7,6 | 8,0 | 0/3 |
-| Rede | 4 | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 8,5 | 8,2 | 0/4 |
-| PLD e previsões | 12 | 6,4 | 6,8 | 9,5 | 10,0 | 9,0 | 8,7 | 8,4 | 9,5 | 8,1 | 8,8 | 8,3 | 0/12 |
-| Geração | 4 | 7,2 | 7,2 | 9,0 | 9,8 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,4 | 0/4 |
-| Mercado | 4 | 7,3 | 7,7 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,5 | 0/4 |
+| Visão geral | 1 | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 9,6 | 8,0 | 9,5 | 8,0 | 9,0 | 8,5 | 0/1 |
+| Água e clima | 4 | 7,2 | 7,3 | 9,2 | 10,0 | 9,0 | 9,7 | 8,1 | 9,5 | 7,2 | 9,0 | 8,5 | 0/4 |
+| Carga | 3 | 6,6 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 7,6 | 7,9 | 0/3 |
+| Rede | 4 | 7,2 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 8,5 | 8,4 | 0/4 |
+| PLD e previsões | 12 | 6,7 | 7,0 | 9,5 | 10,0 | 9,0 | 8,7 | 8,4 | 9,5 | 8,1 | 8,8 | 8,3 | 0/12 |
+| Geração | 4 | 7,5 | 7,2 | 9,2 | 9,8 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,4 | 0/4 |
+| Mercado | 4 | 7,5 | 7,6 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,5 | 0/4 |
 | Conta de luz | 2 | 7,5 | 7,5 | 9,5 | 10,0 | 9,0 | 9,5 | 8,1 | 9,5 | 8,2 | 8,0 | 8,5 | 0/2 |
-| Perdas | 4 | 6,8 | 7,6 | 9,2 | 10,0 | 9,0 | 7,4 | 7,3 | 9,5 | 9,0 | 9,0 | 8,2 | 0/4 |
+| Perdas | 4 | 7,3 | 7,6 | 9,2 | 10,0 | 9,0 | 8,2 | 7,3 | 9,5 | 9,0 | 9,0 | 8,3 | 0/4 |
 | Qualidade | 1 | 8,0 | 7,5 | 10,0 | 10,0 | 9,0 | 9,8 | 8,0 | 9,5 | 8,9 | 7,0 | 8,7 | 0/1 |
-| Inclusão energética | 5 | 7,4 | 7,4 | 9,0 | 10,0 | 9,0 | 8,9 | 7,7 | 9,5 | 5,4 | 9,0 | 8,2 | 0/5 |
-| Transição e ambiente | 4 | 6,8 | 7,3 | 9,0 | 10,0 | 9,0 | 8,6 | 8,3 | 9,5 | 7,9 | 9,0 | 8,3 | 0/4 |
-| Empresas | 12 | 7,2 | 6,8 | 9,1 | 10,0 | 9,0 | 9,2 | 7,5 | 9,5 | 8,4 | 9,0 | 8,3 | 0/12 |
-| Expansão | 5 | 7,2 | 7,1 | 9,0 | 10,0 | 9,0 | 9,1 | 8,4 | 9,5 | 8,6 | 9,0 | 8,4 | 0/5 |
-| Regulação | 3 | 7,1 | 6,8 | 9,0 | 10,0 | 9,0 | 8,6 | 8,3 | 8,8 | 8,3 | 8,3 | 8,2 | 0/3 |
-| Território | 1 | 5,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 7,7 | 7,0 | 8,4 | 0/1 |
-| Aprenda | 12 | 7,7 | 8,1 | 9,4 | 10,0 | 9,0 | 8,7 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | 0/12 |
-| Dados e metodologia | 12 | 6,0 | 7,2 | 8,9 | 10,0 | 9,0 | 7,7 | 7,5 | 9,5 | 7,3 | 9,0 | 7,9 | 0/12 |
+| Inclusão energética | 5 | 7,2 | 7,4 | 9,0 | 10,0 | 9,0 | 8,9 | 7,7 | 9,5 | 5,4 | 9,0 | 8,1 | 0/5 |
+| Transição e ambiente | 4 | 7,5 | 7,6 | 9,0 | 10,0 | 9,0 | 8,6 | 8,3 | 9,5 | 7,9 | 9,0 | 8,4 | 0/4 |
+| Empresas | 12 | 7,5 | 7,2 | 9,1 | 10,0 | 9,0 | 9,2 | 7,5 | 9,5 | 8,4 | 9,0 | 8,4 | 0/12 |
+| Expansão | 5 | 7,4 | 7,5 | 9,0 | 10,0 | 9,0 | 9,1 | 8,4 | 9,5 | 8,6 | 9,0 | 8,5 | 0/5 |
+| Regulação | 3 | 7,3 | 7,0 | 9,0 | 10,0 | 9,0 | 8,1 | 8,3 | 8,8 | 8,3 | 8,3 | 8,2 | 0/3 |
+| Território | 1 | 6,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 7,7 | 7,0 | 8,5 | 0/1 |
+| Aprenda | 12 | 7,7 | 8,2 | 9,4 | 10,0 | 9,0 | 8,7 | 9,0 | 9,5 | n.ap. | 9,0 | 8,7 | 0/12 |
+| Dados e metodologia | 12 | 6,6 | 7,5 | 9,3 | 10,0 | 9,0 | 7,7 | 7,5 | 9,5 | 7,3 | 9,0 | 8,1 | 0/12 |
 
 ## Jornadas de usuário (seção 15.2)
 
@@ -124,19 +131,19 @@ Execução de roteiro por script em Chromium headless. Cada passo verifica um fa
 | J1 | Iniciante, sem vocabulário do setor, desktop 1440 | cumprida | 12 de 12 | 10 | 0 |
 | J2 | Consumidor residencial de Minas Gerais, desktop 1440 | cumprida | 11 de 11 | 12 | 0 |
 | J3 | Analista de mercado, desktop 1440 | cumprida | 8 de 8 | 5 | 0 |
-| J4 | Pesquisador que reproduz números, desktop 1440 | cumprida | 10 de 10 | 12 | 0 |
+| J4 | Pesquisador que reproduz números, desktop 1440 | cumprida | 10 de 10 | 13 | 0 |
 | J5 | Professor de engenharia ou economia, desktop 1440 | cumprida | 12 de 12 | 12 | 0 |
 | J6 | Leitor no celular (390 px de largura, toque, Chromium headless com emulação móvel) | cumprida | 19 de 19 | 21 | 0 |
-| J7 | Leitor que usa só o teclado (desktop 1440 px; Tab, Shift+Tab, Enter, Espaço, setas e Esc) | cumprida | 18 de 18 | 170 | 0 |
+| J7 | Leitor que usa só o teclado (desktop 1440 px; Tab, Shift+Tab, Enter, Espaço, setas e Esc) | cumprida | 18 de 18 | 165 | 0 |
 | J8 | Leitor que recebe um endereço copiado de outra pessoa (desktop 1440 px, contexto de navegador novo) | cumprida | 11 de 11 | 37 | 0 |
-| J9 | Leitor que precisa saber se uma lacuna é zero, atraso ou ausência da fonte (desktop 1440 px) | interrompida | 5 de 13 | 11 | 0 |
+| J9 | Leitor que precisa saber se uma lacuna é zero, atraso ou ausência da fonte (desktop 1440 px) | cumprida | 13 de 13 | 27 | 0 |
 | J10 | Leitor que quer auditar o que foi previsto antes do resultado (desktop 1440 px, modo Auditar) | cumprida | 14 de 14 | 12 | 0 |
 
 ### J1: Iniciante: entender PLD versus tarifa e achar os dados dos dois lados
 
 - ok: Abre a página inicial do Observatório e localiza a busca (h1 "Entenda a energia que move o Brasil"; campo de busca com o rótulo "Busque por pergunta, conceito, página ou distribuidora")
 - ok: Digita "PLD" na busca e lê os resultados (8 resultados listados (página diz: "15 resultados; os 8 mais próximos:"); tipos vistos: PÁGINA, PAINEL, CONCEITO, PERGUNTA; CONCEITO leva a /setor-eletrico/aprenda/pld, PÁGINA leva a /setor-eletrico/pld)
-- ok: Abre o conceito PLD pelo resultado da busca (URL /setor-eletrico/aprenda/pld; h1 "PLD Preço de Liquidação das Diferenças"; em uma frase: "Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efeti...")
+- ok: Abre o conceito PLD pelo resultado da busca (URL /setor-eletrico/aprenda/pld; h1 "PLD: Preço de Liquidação das Diferenças"; em uma frase: "Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efeti...")
 - ok: Lê "Não confundir com" e confere o contraste entre PLD e tarifa (TE e TUSD) (Contraste: "O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora segue a TE e a TUSD, que a ANEEL homologa nos processos "; em "O que não se pode concluir": "O PLD não é a tarifa do consumidor atendido pela distribuidora: essa conta segue os v..."; links ao verbete de tarifa: 1)
 - ok: Segue "ver no painel" do exemplo real e chega ao painel do PLD (Exemplo no verbete: "PLD MÉDIO DA SEMANA OPERATIVA DE 19/09/2026 A 25/09/2026
 
@@ -149,7 +156,7 @@ CALCULADO
 - ok: Vai do painel à página PLD, onde estão os arquivos (URL /setor-eletrico/pld; h1 "PLD")
 - ok: Baixa o CSV do PLD e confere cabeçalho, linhas e último dia (Arquivo pld_horario.csv; cabeçalho data_hora_local;SE;S;NE;N; 50376 linhas de dados; primeira 2021-01-01T00:00;204.37;204.37;204.36;204.37; última 2026-09-30T23:00;99.03;99.02;99.02;99.03; HTTP 200 text/csv; charset=UTF-8)
 - ok: Volta ao verbete pelo botão "Voltar ao verbete PLD" (URL /setor-eletrico/aprenda/pld#exemplo)
-- ok: Segue o link "TE e TUSD" de "Não confundir com" até o verbete da tarifa (URL /setor-eletrico/aprenda/tarifa-te-tusd; h1 "TE e TUSD Tarifa de Energia e Tarifa de Uso do Sistema de Distribuição"; contraste do lado da tarifa: "O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora s..."; exemplo real: R$ 0,8212/kWh)
+- ok: Segue o link "TE e TUSD" de "Não confundir com" até o verbete da tarifa (URL /setor-eletrico/aprenda/tarifa-te-tusd; h1 "TE e TUSD: Tarifa de Energia e Tarifa de Uso do Sistema de Distribuição"; contraste do lado da tarifa: "O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora s..."; exemplo real: R$ 0,8212/kWh)
 - ok: Segue "Ver no painel: Conta de luz: tarifa" até a página de dados da tarifa (URL /setor-eletrico/conta-de-luz#tarifa; h1 "Quanto custa a energia ao consumidor e o que compõe a conta?")
 - ok: Baixa o CSV de tarifas e confere cabeçalho e linhas (Arquivo conta_tarifas_b1_vigentes.csv; colunas cnpj;sigla;nome;inicio_vigencia;fim_vigencia;ato;te_rs_mwh;tusd_rs_mwh;total_rs_mwh;total_rs_kwh...; 81 distribuidoras; primeira DMED a R$ 0.6176/kWh; HTTP 200 text/csv; charset=UTF-8)
 - ok: Contabiliza as interações do leitor até os dois conjuntos de dados (10 interações a partir da home (digitação, cliques e dois downloads). PLD: página de dados na interação 4, arquivo na 5. Tarifa: página de dados na 9, arquivo na 10)
@@ -197,7 +204,7 @@ CALCULADO
 - ok: Aplica o filtro "Ponderada nas mesmas horas da temporal = sim" e confere o recorte ("8 de 69 linhas"; meses 01/2026, 02/2026, 03/2026, 04/2026, 05/2026, 06/2026, 07/2026, 08/2026 (09/2026 saiu); 2 chips: Remover filtro Busca: “2026” | Remover filtro Ponderada nas mesmas horas da temporal: sim)
 - ok: Ordena por média temporal e confere o aria-sort e a ordem dos valores (aria-sort="ascending"; primeira linha 08/2026 com 128,12, última 02/2026 com 382,41; 8 valores em ordem crescente)
 - ok: Baixa o CSV do recorte e confere linhas, cabeçalho e ordem com a tabela (Arquivo pld-mensal-se_busca-2026_mesmas-horas-sim_ordem-temporal-asc_v2026-09-30.csv; 8 linhas de dados = "8 de 69 linhas"; 13 colunas iguais às da tabela; mesma ordem e mesmos valores da média temporal; formato do arquivo: mês "2026-08" e decimal com ponto ("128.12"), na tela "08/2026" e "128,12")
-- ok: Baixa o XLSX do mesmo recorte e confere as linhas da planilha (Arquivo pld-mensal-se_busca-2026_mesmas-horas-sim_ordem-temporal-asc_v2026-09-30.xlsx (16975 bytes, zip válido, abas 2); 8 linhas de dados = CSV; célula E2 = 128.12 igual à primeira linha do CSV)
+- ok: Baixa o XLSX do mesmo recorte e confere as linhas da planilha (Arquivo pld-mensal-se_busca-2026_mesmas-horas-sim_ordem-temporal-asc_v2026-09-30.xlsx (16991 bytes, zip válido, abas 2); 8 linhas de dados = CSV; célula E2 = 128.12 igual à primeira linha do CSV)
 - ok: Reproduz o KPI "média temporal de ago/2026" a partir do CSV e da série horária (KPI exibido R$ 128,12/MWh; linha 2026-08 do CSV exportado 128.12 (diferença 0); recalculado sobre 744 horas de pld_horario.csv (coluna SE) 128.1175; diferença para o KPI −0,0025 R$/MWh, só de arredondamento)
 - ok: Reproduz a mediana e o percentil da média diária de 30/09/2026 a partir da série diária (Exibido: média de 30/09/2026 R$ 135,25, percentil 38,7, mediana R$ 247,81 (150 dias). Recalculado em pld_diario.csv (SE): média 135.2458, percentil 38.67 (fração de dias abaixo), mediana 247.8111; diferenças só de arredondamento)
 - ok: Remove os dois filtros pelos chips e confere que voltam as 69 linhas (Depois do primeiro chip: "68 de 69 linhas"; depois do segundo: "69 de 69 linhas"; chips restantes: 0)
@@ -210,15 +217,15 @@ CALCULADO
 ### J5: Professor: levar um conceito de água e um de preço, com exemplo real e gráfico, para a sala
 
 - ok: Abre a página Aprenda e localiza os verbetes de água e de preço (h1 "O que significam os conceitos e como se ligam aos números?"; 48 de 48 verbetes conferidos na fonte primária; 48 cartões de verbete; cartões EAR, PLD e a trilha "Água, operação e preço" presentes)
-- ok: Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado (Em uma frase: "Energia associada ao volume de água nos reservatórios que pode ser convertido em..."; exemplo real: 29/09/2026, SIN com 61,5% da EAR máxima (calculado); a mediana da data não consta no verbete; unidade: : MWmês ou percentual da EAR máxima)
+- ok: Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado (Em uma frase: "Energia associada ao volume de água nos reservatórios que pode ser convertido em..."; exemplo real: 29/09/2026, SIN com 61,5% da EAR máxima (calculado); a mediana da data não consta no verbete; unidade: : MWmês (a energia que os reservatórios produziriam em um mês à potência média de 1 MW) ou percentual da EAR máxima)
 - ok: Segue "ver no painel" do exemplo da EAR e confere gráfico, tabela, unidade e botão de retorno (Botão de retorno: "← Voltar ao verbete EAR"; 7 gráfico(s) com nome acessível, o primeiro: "EAR do SIN no último ano, a cada 14 dias, com a faixa do 10º ao 90º percentil da mesma data. Use as "; tabela equivalente com 27 linhas; unidade: "MWmês (energia armazenada; 1 MWmês = 720 MWh) e % da EAR máxima do pró")
-- ok: Compara o número do exemplo do verbete com o que o painel mostra (Verbete: 29/09/2026, SIN 61,5%. Painel (padrão): "Em 29/09/2026, o SIN guardava 179.724 MWmês, 61,5% da EAR máxima". O número do exemplo é o mesmo do painel, com a mesma data)
-- ok: Volta ao verbete pelo botão "Voltar ao verbete EAR" (URL /setor-eletrico/aprenda/ear#exemplo; h1 "EAR Energia Armazenada")
+- ok: Compara o número do exemplo do verbete com o que o painel mostra (Verbete: 29/09/2026, SIN 61,5%. Painel (padrão): "Em 29/09/2026, o SIN guardava 61,5% da energia que os reservatórios comportam". O número do exemplo é o mesmo do painel, com a mesma data)
+- ok: Volta ao verbete pelo botão "Voltar ao verbete EAR" (URL /setor-eletrico/aprenda/ear#exemplo; h1 "EAR: Energia Armazenada")
 - ok: Segue "Nas trilhas" do verbete EAR até o passo 2 da trilha Água, operação e preço (URL /setor-eletrico/aprenda/trilhas/agua-operacao-preco#passo-armazenamento; passo 2 de 6 "A água guardada": EAR do SIN 61,5% da EAR máxima em 29/09/2026 (escopo SIN, não Sudeste/Centro-Oeste como no verbete))
 - ok: Vai ao passo 5, o preço de curto prazo, pelo índice da trilha e lê o número do observatório (Passo 5 de 6: PLD médio do Sudeste/Centro-Oeste de 19/09/2026 a 25/09/2026, R$ 124,09/MWh (calculado))
-- ok: Segue "ver no painel" do passo 5 até o PLD e confere que o painel mostra os mesmos números (Botão de retorno: "← Voltar à trilha Água, operação e preço, passo 5"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 519 px, topo do painel a 192 px): gráfico não está à vista)
+- ok: Segue "ver no painel" do passo 5 até o PLD e confere que o painel mostra os mesmos números (Botão de retorno: "← Voltar à trilha Água, operação e preço, passo 5"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 603 px, topo do painel a 192 px): gráfico não está à vista)
 - ok: Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com a média do exemplo (Gráfico: "CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa, Sudeste/Centro"; tabela equivalente com 156 linhas, legenda "CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa, Sude", colunas Data | CMO semanal do DECOMP (ONS) (R$/MWh) | Média do CMO do DESSEM na semana (ONS) (R$/MWh) | Média do PLD na semana (CCEE) (R$/MWh); linha com a média do exemp)
-- ok: Lê no painel o que o professor leva para a sala: interpretação, "o que não é possível concluir" e fonte (modo Analisar) (Como interpretar: "Compare só o que está no mesmo intervalo: o valor semanal do DECOMP contra as médias do DE..."; O que não é possível concluir: "Os dados não dizem por que o PLD difere do CMO: os conjuntos do ONS não identificam deck, ..."; Fonte: ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD_HORARIO. Versão dos dados: 3 (a fonte só aparece depois de escolher Analisar); ações )
+- ok: Lê no painel o que o professor leva para a sala: interpretação, "o que não é possível concluir" e fonte (modo Analisar) (Como interpretar: "Compare só o que está no mesmo intervalo: o valor semanal do DECOMP contra as médias do DE..."; O que não é possível concluir: "Os dados não dizem por que o PLD difere do CMO: os conjuntos do ONS não identificam deck, ..."; Fonte: ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD horário por submercado. Vers (a fonte só aparece depois de escolher Analisar); ações )
 - ok: Volta à trilha pelo botão "Voltar à trilha Água, operação e preço, passo 5" (URL /setor-eletrico/aprenda/trilhas/agua-operacao-preco#passo-pld; o passo 5 está na janela de leitura)
 - ok: Abre o verbete PLD pela trilha e confere que o exemplo real é o mesmo número (URL /setor-eletrico/aprenda/pld; exemplo real de 19/09/2026 a 25/09/2026: R$ 124,09/MWh, igual ao da trilha e do painel; "O PLD não é a tarifa do consumidor" em "O que não se pode concluir": sim)
 - atrito: O verbete EAR dá 56,9% (Sudeste/Centro-Oeste, 28/09/2026), o painel de Água e clima abre em 29/09/2026 com 56,65% e a trilha usa 61,5% do SIN. São datas e escopos diferentes, todos escritos, mas o professor encontra três números de EAR para o mesmo conceito.
@@ -230,19 +237,19 @@ CALCULADO
 
 - ok: Abre Minha região no celular e confere o título e a ausência de rolagem horizontal (h1 "O que acontece na minha região?"; largura da página 390 px para janela de 390 px (sem rolagem horizontal))
 - ok: Toca em ANALISAR no seletor de profundidade e confere o modo na URL (URL /setor-eletrico/territorio?modo=analisar; alvo 110 por 44 px; aria-checked=true)
-- ok: Toca em Minas Gerais no mapa de UFs e confere a escolha na URL (URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 285 px abaixo do fim do mapa (topo da ficha a 904 px do topo da janela de 780 px), fora da tela)
+- ok: Toca em Minas Gerais no mapa de UFs e confere a escolha na URL (URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 246 px abaixo do fim do mapa (topo da ficha a 865 px do topo da janela de 780 px), fora da tela)
 - ok: Mede o tamanho de toque de cada UF no mapa (só medição, sem tocar): quantas regiões ficam abaixo de 24 px (7 de 27 UFs têm o menor lado do contorno abaixo de 24 px no mapa a 390 px: DF 7 por 4, AL 23 por 13, SE 13 por 16, RN 26 por 16, ES 16 por 25, PB 29 por 17, RJ 28 por 19; o botão + do mapa aproxima na seleção. As tocadas (MG 79 por 65 px) ficam acima de 24 px)
 - ok: Rola até a ficha e lê Minas Gerais: submercado, municípios, capacidade e PLD do dia (Minas Gerais no submercado Sudeste/Centro-Oeste; 853 municípios; 25.257,3 MW em 943 usinas; PLD médio do dia 30/09/2026: R$ 135,25/MWh (do submercado, não da UF))
 - ok: Toca em BA na tabela de UFs para comparar e lê a ficha da Bahia (URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 96 por 44 px; a ficha da Bahia ficou a -1726 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh)
 - ok: Compara as duas fichas: municípios, capacidade e submercado de cada UF (MG tem 853 municípios e a BA 417 (diferença 436); capacidade em operação MG 25.257,3 MW contra BA 22.031,2 MW (diferença 3.226,1 MW); submercados Sudeste/Centro-Oeste e Nordeste; PLD do dia MG R$ 135,25/MWh e BA R$ 124,93/MWh)
-- ok: Toca em Limpar a escolha e confere que o modo e a posição na página continuam (URL /setor-eletrico/territorio?modo=analisar; rolagem 5304 px antes e 5304 px depois; ficha voltou a "NENHUMA ESCOLHA"; alvo 117 por 44 px)
+- ok: Toca em Limpar a escolha e confere que o modo e a posição na página continuam (URL /setor-eletrico/territorio?modo=analisar; rolagem 5560 px antes e 5560 px depois; ficha voltou a "NENHUMA ESCOLHA"; alvo 117 por 44 px)
 - ok: Usa o botão voltar do navegador e confere que a escolha da Bahia volta (URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; ficha mostra de novo a Bahia com 417 municípios)
 - ok: Varre a página de Minha região: rolagem horizontal e textos espremidos (largura 390 px para janela de 390 px; 0 bloco(s) de texto com menos de 120 px de largura)
 - ok: Abre Perdas, toca em ANALISAR e escolhe o ano 2024 e o indicador Perdas técnicas (URL /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica; ano "2024"; indicador "Perdas técnicas (% da energia injetada)")
 - ok: Filtra a tabela por UF = MG (toca em UF, marca MG, fecha o painel) e lê o chip e a contagem (antes "123 de 123 linhas", depois "2 de 123 linhas"; caixa tocada com 290 por 44 px; URL /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica&tab.f.ufs=MG; chip "Remover filtro UF: MG" presente)
 - ok: Toca no botão da linha CEMIG-D e lê a ficha da distribuidora (URL /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica&tab.f.ufs=MG&d=06981180000116; alvo 101 por 88 px; ficha da CEMIG-D diz "em 2025, perdas totais de 7.394.845 MWh, 12,12% da energia injetada", com a página no ano 2024)
 - ok: Compara com COELBA e COPEL-DIS no comparador e lê os valores do último ano (2 de 4; 2025: COELBA 18,11%; COPEL-DIS 7,87%; Concessionárias (agregado) 14,75%; o comparador mostra a taxa de perdas totais (3 séries) embora a página esteja no indicador "Perdas técnicas (% da energia injetada)")
-- ok: Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição (alvo do chip 96 por 44 px; contagem "123 de 123 linhas"; ano "2024", indicador "Perdas técnicas (% da energia injetada)", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7124 para 7124 px)
+- ok: Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição (alvo do chip 96 por 44 px; contagem "123 de 123 linhas"; ano "2024", indicador "Perdas técnicas (% da energia injetada)", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7341 para 7341 px)
 - ok: Usa o botão voltar e confere que o filtro de UF = MG volta (URL /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica&tab.f.ufs=MG&d=06981180000116&cmp=15139629000194,04368898000106; chip "Remover filtro UF: MG" de volta)
 - ok: Varre Perdas: rolagem horizontal e textos espremidos (largura 390 px para janela de 390 px; 0 bloco(s) de texto com menos de 120 px de largura)
 - ok: Confere o conjunto: alvos tocados com pelo menos 24 px e nenhuma rolagem horizontal nas páginas medidas (16 alvos tocados, o menor foi ANALISAR (nível de profundidade) com 110 por 44 px; páginas medidas territorio e perdas sem rolagem horizontal)
@@ -254,24 +261,24 @@ CALCULADO
 
 ### J7: Usuário por teclado alcança o campo do mapa e a tabela equivalente e chega aos mesmos dados que o mouse
 
-- ok: Abre Minha região e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem (20 Tabs até o campo "Município, distribuidora, UF ou submercado"; 20 paradas, todas com indicador de foco (contorno 2px e sombra); primeira "Pular para o conteúdo", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo)
-- ok: Volta uma parada com Shift+Tab e avança com Tab: o foco não fica preso (Shift+Tab foi para "COMPROVE ESTE NÚMERO : USINAS COM TODOS OS MUNICÍPIOS DECLAR" e Tab voltou ao campo de busca (sombra))
+- ok: Abre Minha região e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem (17 Tabs até o campo "Município, distribuidora, UF ou submercado"; 17 paradas, todas com indicador de foco (contorno 2px e sombra); primeira "Pular para o conteúdo", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo)
+- ok: Volta uma parada com Shift+Tab e avança com Tab: o foco não fica preso (Shift+Tab foi para "ENTENDER" e Tab voltou ao campo de busca (sombra))
 - ok: Digita minas no campo: a lista abre com Minas Gerais na frente (aria-expanded=true; 30 opções; primeira "Minas Gerais UF MG")
 - ok: Pressiona Esc: a lista fecha, o foco fica no campo e nada foi escolhido (aria-expanded=false, nenhuma opção visível, foco no campo, URL /setor-eletrico/territorio sem escolha)
 - ok: Abre a lista com a seta para baixo, percorre as opções com setas e escolhe Minas Gerais com Enter (opção 1 "Minas Gerais UF MG", opção 2 "Minas Novas município · MG", volta à 1; Enter escolheu e a URL ficou /setor-eletrico/territorio?sel=uf:MG; ficha com 1535 caracteres)
 - ok: Repete a escolha de Minas Gerais com clique na tabela e compara URL e texto da ficha com a do teclado (URL igual (?sel=uf:MG) e ficha idêntica (1535 caracteres) nas duas formas)
-- ok: Segue com Tab até a tabela equivalente e escolhe BA com Espaço (25 Tabs do campo de busca até o botão BA (mais 20 até o campo, 45 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true)
+- ok: Segue com Tab até a tabela equivalente e escolhe BA com Espaço (25 Tabs do campo de busca até o botão BA (mais 17 até o campo, 42 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true)
 - ok: Repete a escolha da Bahia com clique e compara URL e ficha com a do teclado (sel=uf:BA nas duas formas; ficha idêntica (1523 caracteres))
-- ok: Usa o link Pular para o conteúdo e conta os Tabs até o campo do mapa (Enter no link levou o foco para main#conteudo (hash #conteudo); depois 6 Tabs até o campo, contra 20 sem o salto)
+- ok: Usa o link Pular para o conteúdo e conta os Tabs até o campo do mapa (Enter no link levou o foco para main#conteudo (hash #conteudo); depois 3 Tabs até o campo, contra 17 sem o salto)
 - ok: Segue até o filtro de submercado da tabela, abre com Enter, marca uma caixa com Espaço e fecha com Esc (2 Tabs do campo do mapa até o filtro; Enter abriu, Tab foi à caixa "Nordeste 8 linhas", Espaço marcou: URL ganhou ter.uf.f.submercado=Nordeste, contagem "8 de 27 linhas", chip "Remover filtro Submercado (cor no mapa): Nordeste"; Esc fechou e o foco voltou ao título do filtro; clique deu o mesmo parâmetro e a mesma contagem)
 - ok: Abre Perdas e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem (30 Tabs até o campo "Sigla, nome, UF ou município"; 30 paradas, todas com indicador de foco; ordem do documento respeitada)
 - ok: Digita cemig, desce com a seta e escolhe a distribuidora com Enter (opção "CEMIG-D · CEMIG DISTRIBUIÇÃO S.A, MG (distribuidora) 12,12%"; d=06981180000116; ficha: em 2025, perdas totais de 7.394.845 MWh, 12,12%)
 - ok: Escolhe a mesma distribuidora com clique na tabela e compara a ficha com a do teclado (d=06981180000116 nas duas formas; ficha idêntica (873 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG)
 - ok: Abre Comprove este número com Enter, confere onde cai o foco e fecha com Esc (24 Tabs até "COMPROVE ESTE NÚMERO : TAXA DE PERDAS TOTAIS "; Enter abriu o diálogo "COMPROVE ESTE NÚMERO Taxa de perdas totais na distribuição 1" com o foco em "Fechar"; Esc fechou e o foco voltou ao botão)
-- ok: Em Diferenças regionais, alcança o seletor Par em destaque com Tab e troca para Sul e Norte só com setas (24 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: "HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD")
+- ok: Em Diferenças regionais, alcança o seletor Par em destaque com Tab e troca para Sul e Norte só com setas (25 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: "HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD")
 - ok: Escolhe o mesmo par com clique na tabela e compara URL e indicador (par=S_N nas duas formas; indicador idêntico: "HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO")
 - ok: Entra na matriz de pares com Tab, percorre as células com setas e confere uma célula com a tabela equivalente (5 Tabs até a matriz; duas setas para a direita levaram a "17,8%, classe 10,0 a menos de 20,0", seta para baixo a "33,1%, classe 30,0 a menos de 40,0", End a "35,5%, classe 30,0 a menos de 40,0", Home a "13,0%, classe 10,0 a menos de 20,0"; a tabela equivalente traz SE/CO por Nordeste = 17,76% (célula 17,8%))
-- ok: Resume a jornada: nenhuma parada sem indicador de foco e nenhuma perda de foco (134 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 126, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página)
+- ok: Resume a jornada: nenhuma parada sem indicador de foco e nenhuma perda de foco (132 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 124, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página)
 - atrito: Distância em Tabs: 19 até o campo em Minha região (5 com o atalho de pular), 30 em Perdas, mais 25 do campo até a tabela (24 na rodada 3: a barra da tabela acrescentou uma parada), e 24 até o seletor em Diferenças regionais.
 - atrito: O mapa não tem elemento focável: a saída por teclado é o campo e a tabela, como o aviso diz. Depois de escolher, o foco fica no campo e a ficha muda sem região de leitura automática (não verificado com leitor de tela).
 - atrito: Visto na exploração, fora do roteiro: Enter ou Espaço numa célula da matriz de pares não muda nada visível, e nada avisa que a célula não é selecionável.
@@ -282,14 +289,14 @@ CALCULADO
 
 - ok: Em Histórico e distribuição, monta o recorte: Analisar, Sul, série desligada, 5 anos, busca, ordem e filtro (URL /setor-eletrico/pld/historico?modo=analisar&sm=S&de=2021-10-01&ate=2026-09-01&mes.q=2024&mes.ord=-temporal&mes.f.parcial=n%C3%A3o; a série "Ponderada pela carga do balanço do ONS" ficou desligada (não vai para a URL) e "Dados do gráfico em tabela" ficou aberto)
 - ok: Clica em Copiar link deste painel e confere a mensagem, o campo e a área de transferência (mensagem "Copiado para a área de transferência."; link /setor-eletrico/pld/historico?modo=analisar&sm=S&de=2021-10-01&ate=2026-09-01&mes.q=2024&mes.ord=-temporal&mes.f.parcial=n%C3%A3o#p011; campo "Endereço deste painel com o recorte atual" igual à área de transferência)
-- ok: Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição (âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 539 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b)
+- ok: Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição (âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 567 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b)
 - ok: Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação (URL /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica&tab.f.ufs=MG&tab.ord=taxa_tecnica&d=06981180000116&cmp=15139629000194,04368898000106; a seção "Dados do gráfico em tabela" do comparador ficou aberta (não vai para a URL))
 - ok: Clica em Copiar link deste painel de Perdas e confere a mensagem e a área de transferência (mensagem "Copiado para a área de transferência."; link /setor-eletrico/perdas?modo=analisar&periodo=2024&medida=tecnica&tab.f.ufs=MG&tab.ord=taxa_tecnica&d=06981180000116&cmp=15139629000194,04368898000106#mapa (esta página não mostra um campo com o endereço, só a mensagem))
-- ok: Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação (âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1357 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro))
+- ok: Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação (âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1369 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro))
 - ok: Confere em Perdas que o painel certo ficou à vista ao abrir o link (âncora do link copiado) (painel #mapa a 192 px do topo da janela)
 - ok: Em Minha região, monta o recorte: Analisar, UF BA, zoom no mapa, filtro de submercado e ordem na tabela (URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA&ter.uf.f.submercado=Nordeste&ter.uf.ord=municipios)
 - ok: Clica em Copiar link deste painel de Minha região e confere a mensagem e a área de transferência (mensagem "Copiado para a área de transferência."; link /setor-eletrico/territorio?modo=analisar&sel=uf:BA&ter.uf.f.submercado=Nordeste&ter.uf.ord=municipios#p002)
-- ok: Abre o link de Minha região num novo contexto e compara escolha, ficha, filtro e ordem (âncora #p002: elemento existe, topo 192 px, rolagem 479 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro))
+- ok: Abre o link de Minha região num novo contexto e compara escolha, ficha, filtro e ordem (âncora #p002: elemento existe, topo 192 px, rolagem 507 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro))
 - ok: Resume o que o link não restaurou nas três páginas (não voltaram em historico: seleção e séries ligadas, séries desligadas, seção Dados do gráfico em tabela aberta | perdas: seção Dados do gráfico em tabela aberta, zoom do mapa | territorio: zoom do mapa)
 - atrito: O que não volta no link compartilhado: a série desligada em Histórico do PLD, a seção Dados do gráfico em tabela aberta e o zoom do mapa (Perdas e Minha região abrem o mapa inteiro).
 - atrito: Em Perdas, Copiar link deste painel é um link âncora que só mostra a mensagem, sem o campo com o endereço que o Histórico mostra.
@@ -301,15 +308,15 @@ CALCULADO
 - ok: Filtra a tabela por Situação = Atrasado e refaz a conta do atraso com as datas da própria linha (1 de 151 linhas; "SCS: Sistema de Controle de Subvenções e Programas Sociais (": frequência Mensal, último período 06/2025, prazo 29/09/2025, atraso 367 dias; a conta 01/10/2026 menos 29/09/2025 dá 367 dias (confere); última captura 30/09/2026 22:30, completude 99,5%)
 - ok: Troca o filtro para Situação = Sem dado e confere que o atraso não aparece como zero (4 de 151 linhas; em todas as 4 linhas "Atraso (dias)" e "Prazo do próximo período" dizem "sem dado" (nenhum 0); conjuntos: Estimativas de população residente (SI | POF 2017-2018: despesa com energia elé | População residente estimada por UF (S | IBGE: população residente, Censo 2022 )
 - ok: Baixa o CSV desta tabela e confere que cada célula sem dado da tela é campo vazio no arquivo (CSV com 4 linhas, 72 células comparadas, 28 com "sem dado" na tela, 28 vazias no arquivo e nenhuma 0)
-- ok: Lê como a página explica sem dado, sem SLA e atrasado, e a regra do CSV (SLA: "SLA é o prazo derivado da frequência que a própria fonte declara: diária, 2 dias; semanal, 7; quinzenal, 15; mensal, 60; trimestral, 90; anual, 365, c..."; atraso: "Situação e atraso valem para a data de referência da publicação, e o prazo é o fim do último período disponíve..."; ausência: "“sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia")
-- falhou: Compara a data de referência com as datas de captura e de processamento mostradas na página (não achei a data de publicação do rodapé)
-- nao_executado: Em Perdas, mostra a tabela inteira e confere sem dado na tela contra célula vazia no CSV
-- nao_executado: Em Restrições de geração, confere a tabela por razão: sem dado na tela, célula vazia no CSV, e o total
-- nao_executado: No Histórico do PLD, confere o mês sem moeda constante: sem dado na tela, vazio no CSV e o motivo escrito
-- nao_executado: No Catálogo, busca SCS, escolhe a linha e lê no painel Ficha do conjunto como o atraso é explicado
-- nao_executado: Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura
-- nao_executado: Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero
-- nao_executado: Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura
+- ok: Lê como a página explica sem dado, sem SLA e atrasado, e a regra do CSV (SLA: "O prazo vem da frequência que a própria fonte declara, somada a uma tolerância: diária, 2 dias; semanal, 7 dias; quinzenal, 15 dias; mensal, 60 dias; ..."; atraso: "A situação vale para a data de referência dos dados, não para o dia em que você lê..."; ausência: "“Sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados, a ausência é célula vazia")
+- ok: Compara a data de referência com as datas de captura e de processamento mostradas na página (referência 01/10/2026; gold processada 01/10/2026, 08:22; última captura registrada 01/10/2026, 04:37; captura do conjunto atrasado 30/09/2026 22:30 (antes da gold, na ordem esperada); o último período dele é 06/2025, 487 dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz "Catálogo e manifesto publicados em 01/10/2026, 08:22", a mesma data do cabeçalho)
+- ok: Em Perdas, mostra a tabela inteira e confere sem dado na tela contra célula vazia no CSV (CSV com 123 linhas e 123 na tela; 1845 células comparadas, 437 com "sem dado", 417 vazias no CSV e nenhuma 0; 20 células "sem dado" de coluna de classe viram o TEXTO "sem dado" no CSV (Classe no mapa (taxa de perdas totais): 20), não campo vazio; exemplo ÂMBAR AMAZONAS: Técnicas "sem dado", Decomposição "sem separação publicada" (motivo na mesma linha))
+- ok: Em Restrições de geração, confere a tabela por razão: sem dado na tela, célula vazia no CSV, e o total (CSV com 5 linhas, 25 células, 5 "sem dado" na tela, 5 vazias no CSV e nenhuma 0. Linha "Parecer de acesso": origem local "sem dado", origem sistêmica "sem dado", mas Total "0,0" e Parcela "0,00": o total é um número, a página não diz se é zero medido ou soma de ausências)
+- ok: No Histórico do PLD, confere o mês sem moeda constante: sem dado na tela, vazio no CSV e o motivo escrito (CSV com 69 linhas, 828 células (pareadas por posição: o mês é 09/2026 na tela e 2026-09 no arquivo), 1 "sem dado" na tela, 1 vazias no CSV e nenhuma 0. Em 09/2026 a média em moeda constante é "sem dado" e em 08/2026 é 128,12; motivo escrito: "Moeda constante só existe até o último mês com IPCA publicado." (cabeçalho: IPCA até ago/2026))
+- ok: No Catálogo, busca SCS, escolhe a linha e lê no painel Ficha do conjunto como o atraso é explicado (painel: "Atualidade: atrasado; último período disponível 06/2025; 367 dias além do prazo"; última captura em 30/09/2026; coincide com a página de saúde (06/2025, 367 dias))
+- ok: Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura (/setor-eletrico/dados/aneel-scs?modo=auditar; título "SCS - Sistema de Controle de Subvenções e Programas Sociais"; última captura "30/09/2026, 19:30 (Brasília)"; última tentativa de coleta direta não registrada (o conjunto só tem a captura das integrações); menciona atraso: sim)
+- ok: Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero (/setor-eletrico/dados/ibge-pof-6715?modo=auditar; última captura 30/09/2026, ; atualidade "sem dado para medir"; campos sem valor: Última modificação na fonte "não informada"; Formatos "não informados no catálogo"; a ficha traz "campo vazio significa ausência, nunca zero")
+- ok: Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura (a ficha concorda com a saúde e com o painel do catálogo)
 - atrito: Em Restrições de geração, a linha Parecer de acesso mostra dois sem dado ao lado de Total 0,0 e Parcela 0,00, e a página não diz se é zero medido ou soma de ausências. Nas tabelas de saúde e de catálogo o nome do conjunto não tem link para a ficha.
 - atrito: A Saúde contava 151 conjuntos integrados e o catálogo, 126 publicados, sem dizer que a Saúde conta integrações e que um conjunto pode ter mais de uma. A frase foi corrigida depois da medição, ainda não medida.
 - limite: Confere a ausência em três tabelas e duas fichas; não cobre todos os módulos. Roteiro por script, sem pessoas.
@@ -321,10 +328,10 @@ CALCULADO
 - ok: Vai ao painel Arquivo de emissões pelo link da página e lê a contagem de registros e rodadas (painel #p015 a 192 px do topo; 56 registros de 2 rodadas; rodada de 27/09: sem número, motivo "nenhum PLD do período exigido havia sido capturado até o corte", emitida 490 min depois do prazo, transcrita em 28/09/2026; rodada de 30/09: 28 números, emitida 751 min depois do prazo; nenhuma entrega terminou, a primeira (W2026-10-03) termina em 10/10/2026; subtítulo "Arquivo imutável de emissões · uma)
 - ok: Escolhe a rodada de 27/09/2026 no gráfico e lê as linhas: sem número, motivo e sem realizado (Rodada de 27/09/2026: com número 0 células; sem número 28 células; total 28 células; 28 de 28 linhas; todas as 28 com "sem número", Previsão arquivada "sem dado" (nenhum 0), Realizado "sem dado", motivo "nenhum PLD do período exigido havia sido capturado até o corte"; incluídas no arquivo em 28/09/2026; transcrita depois da emissão: sim, incluído depois da emissão)
 - ok: Seleciona a primeira linha da rodada de 27/09 e lê a ficha do registro (reg=...:W1:SE na URL; ficha "Registro W1 SE/CO da rodada de 27/09/2026": PREVISÃO "sem número: nenhum PLD do período exigido havia sido capturado até o corte"; REALIZADO "ainda sem realizado (a entrega não terminou)"; INCLUSÃO "28/09/2026; transcrito depois da emissão: sim"; CORREÇÃO "registro original (não substitui outro)"; sha256 c7acd8447e62...)
-- ok: Escolhe a rodada de 30/09/2026 no gráfico e lê as linhas: com número, sem faixa e sem realizado (Rodada de 30/09/2026: com número 28 células; sem número 0 células; total 28 células; 28 de 28 linhas; todas "com número", P10 e P90 "sem dado" (sem faixa), Realizado "sem dado"; W1 SE/CO arquivada em R$ 124,0911/MWh, emitida em 30/09/2026 às 20h31, atraso 751,3 min, código 30ad85ccb171+alterado)
+- ok: Escolhe a rodada de 30/09/2026 no gráfico e lê as linhas: com número, sem faixa e sem realizado (Rodada de 30/09/2026: com número 28 células; sem número 0 células; total 28 células; 28 de 28 linhas; todas "com número", P10 e P90 "sem dado" (sem faixa), Realizado "sem dado"; W1 SE/CO arquivada em R$ 124,0911/MWh, emitida em 30/09/2026 às 20h31, atraso 751,3 min)
 - ok: Seleciona W1 SE/CO da rodada de 30/09 e compara a previsão arquivada com a de Previsão atual (ficha: PREVISÃO R$ 124,0911/MWh, FAIXA "sem faixa gravada", REALIZADO "ainda sem realizado"; o painel Previsão atual mostra R$ 124,09/MWh para o mesmo W1 SE/CO (mesmo número com 2 casas; o arquivo guarda 4); PLD já publicado no corte, outro dado: R$ 155,21/MWh)
 - ok: Desfaz a escolha de rodada e mostra as 56 linhas do arquivo de hoje, guardando cada uma pelo identificador (56 de 56 linhas; 56 identificadores únicos: 28 da rodada de 27/09 e 28 da de 30/09)
-- ok: Usa Ver o arquivo como estava ao fim de 29/09/2026: o texto e as linhas visíveis são só as que existiam (controle aceita datas de 2026-09-28 a 2026-09-30; texto: "Ao fim de 29/09/2026, o arquivo tinha 28 registros (de 56 hoje) de 1 rodada"; tabela "28 de 28 linhas"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09)
+- ok: Usa Ver o arquivo como estava ao fim de 29/09/2026: o texto e as linhas visíveis são só as que existiam (controle aceita datas de 2026-09-28 a 2026-09-30; texto: "Ao fim de 29/09/2026, o arquivo tinha 28 registros (de 56 no arquivo completo) de 1 rodada"; tabela "28 de 28 linhas"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09)
 - ok: Compara célula a célula as 28 linhas da visão antiga com as mesmas linhas de hoje (28 linhas e 616 células comparadas (inclusive Previsão arquivada, Realizado, sha256 e Incluída no arquivo em): nenhuma diferença entre a visão de 29/09 e a de hoje)
 - ok: Usa a data 30/09/2026 (a rodada nova já incluída) e depois limpa a data: volta às 56 linhas iguais às de hoje ("Ao fim de 30/09/2026, o arquivo tinha 56 registros de 2 rodadas"; as 56 linhas coincidem com as de hoje; com a data limpa, a URL perde em= e o texto volta a "O arquivo tem 56 registros de 2 rodadas")
 - ok: Baixa o CSV Emissões registradas e confere contra a tela: 56 linhas, sha256 iguais, sem número é campo vazio (56 linhas (como na tela); os 56 sha256 coincidem com a coluna sha256 do registro; as 28 linhas sem número têm previsao, realizado, p10 e p90 vazios (não 0); as 28 com número batem com a tela até a 4ª casa)
@@ -341,40 +348,41 @@ CALCULADO
 | --- | --- | --- | --- | --- |
 | D001 | alto | atualidade | conjunto atrasado: aneel_social/aneel_scs (367 dias) | 6 |
 | D002 | alto | correcao | nenhuma gold da página tem ficha de evidência com teste registrado | 5 |
-| D003 | alto | navegacao | jornada J9 interrompida no passo "Compara a data de referência com as datas de captura e de processamento mostradas na página": não achei a data de publicação do rodapé | 1 |
-| D004 | alto | rastreabilidade | painel numérico sem Comprove este número | 1 |
-| D005 | medio | correcao | 3 arquivo(s) CSV com checagem reprovada em publicacao.json (arquivos.csv_com_problema) | 12 |
-| D006 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa | 11 |
-| D007 | medio | completude | itens ausentes da anatomia do painel: limite de leitura declarado; caminho seguinte | 8 |
-| D008 | medio | completude | itens ausentes da anatomia do painel: h1 único com abertura | 6 |
-| D009 | medio | completude | itens ausentes da anatomia do painel: limite de leitura declarado | 3 |
-| D010 | medio | completude | itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta | 3 |
-| D011 | medio | completude | itens ausentes da anatomia do painel: resposta curta | 3 |
-| D012 | medio | completude | itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa | 3 |
-| D013 | medio | completude | itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável | 3 |
-| D014 | medio | navegacao | link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado | 3 |
-| D015 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local | 2 |
-| D016 | medio | completude | itens ausentes da anatomia do painel: evidência ou fonte oficial | 1 |
-| D017 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número | 1 |
-| D018 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa; interação local | 1 |
-| D019 | medio | completude | itens ausentes da anatomia do painel: pergunta como título; resposta curta | 1 |
+| D003 | alto | rastreabilidade | painel numérico sem Comprove este número | 1 |
+| D004 | medio | correcao | 3 arquivo(s) CSV com checagem reprovada em publicacao.json (arquivos.csv_com_problema) | 12 |
+| D005 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa | 11 |
+| D006 | medio | completude | itens ausentes da anatomia do painel: limite de leitura declarado; caminho seguinte | 8 |
+| D007 | medio | completude | itens ausentes da anatomia do painel: h1 único com abertura | 6 |
+| D008 | medio | completude | itens ausentes da anatomia do painel: limite de leitura declarado | 3 |
+| D009 | medio | completude | itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta | 3 |
+| D010 | medio | completude | itens ausentes da anatomia do painel: resposta curta | 3 |
+| D011 | medio | navegacao | link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado | 3 |
+| D012 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local | 2 |
+| D013 | medio | completude | itens ausentes da anatomia do painel: período, universo e unidade; download e link compartilhável | 2 |
+| D014 | medio | completude | itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa | 2 |
+| D015 | medio | completude | itens ausentes da anatomia do painel: evidência ou fonte oficial | 1 |
+| D016 | medio | completude | itens ausentes da anatomia do painel: gráfico ou mapa; interação local | 1 |
+| D017 | medio | completude | itens ausentes da anatomia do painel: pergunta como título; resposta curta | 1 |
+| D018 | medio | completude | itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa | 1 |
+| D019 | medio | completude | itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa; Comprove este número | 1 |
 | D020 | medio | completude | itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta | 1 |
-| D021 | medio | completude | itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável | 1 |
-| D022 | medio | correcao | Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências | 1 |
-| D023 | medio | interatividade | Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha | 1 |
-| D024 | medio | interatividade | controle sem efeito observável: /Brasil inteiro | 1 |
-| D025 | medio | rastreabilidade | histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas | 1 |
-| D026 | medio | rastreabilidade | histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS | 1 |
-| D027 | baixo | desempenho | HTML de 619 KB, acima da meta de 600 KB | 1 |
-| D028 | baixo | desempenho | HTML de 622 KB, acima da meta de 600 KB | 1 |
-| D029 | baixo | desempenho | HTML de 640 KB, acima da meta de 600 KB | 1 |
-| D030 | baixo | desempenho | HTML de 650 KB, acima da meta de 600 KB | 1 |
-| D031 | baixo | desempenho | HTML de 659 KB, acima da meta de 600 KB | 1 |
-| D032 | baixo | desempenho | HTML de 683 KB, acima da meta de 600 KB | 1 |
-| D033 | baixo | desempenho | HTML de 826 KB, acima da meta de 600 KB | 1 |
-| D034 | baixo | desempenho | HTML de 855 KB, acima da meta de 600 KB | 1 |
-| D035 | baixo | navegacao | Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade | 1 |
-| D036 | baixo | rastreabilidade | ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12% | 1 |
+| D021 | medio | completude | itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; download e link compartilhável | 1 |
+| D022 | medio | completude | itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável | 1 |
+| D023 | medio | correcao | Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências | 1 |
+| D024 | medio | interatividade | Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha | 1 |
+| D025 | medio | interatividade | controle sem efeito observável: /Brasil inteiro | 1 |
+| D026 | medio | rastreabilidade | histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas | 1 |
+| D027 | medio | rastreabilidade | histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS | 1 |
+| D028 | baixo | desempenho | HTML de 623 KB, acima da meta de 600 KB | 1 |
+| D029 | baixo | desempenho | HTML de 629 KB, acima da meta de 600 KB | 1 |
+| D030 | baixo | desempenho | HTML de 644 KB, acima da meta de 600 KB | 1 |
+| D031 | baixo | desempenho | HTML de 651 KB, acima da meta de 600 KB | 1 |
+| D032 | baixo | desempenho | HTML de 662 KB, acima da meta de 600 KB | 1 |
+| D033 | baixo | desempenho | HTML de 684 KB, acima da meta de 600 KB | 1 |
+| D034 | baixo | desempenho | HTML de 824 KB, acima da meta de 600 KB | 1 |
+| D035 | baixo | desempenho | HTML de 829 KB, acima da meta de 600 KB | 1 |
+| D036 | baixo | navegacao | Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade | 1 |
+| D037 | baixo | rastreabilidade | ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12% | 1 |
 
 ## Por página
 
@@ -383,99 +391,99 @@ Nota de cada dimensão (0 a 10); n.av. = não avaliada; n.ap. = não aplicável.
 | Rota | Tipo | Didat. | Visual | Naveg. | Interat. | Acess. | Compl. | Correção | Rastr. | Atual. | Desemp. | Ponderada | Meta |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | / | home | 7,5 | 7,5 | 10,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
-| /agua-e-clima | painel | 7,5 | 8,0 | 10,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,7 | não |
-| /agua-e-clima/afluencia | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,5 | não |
-| /agua-e-clima/chuva-e-temperatura | painel | 6,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,3 | não |
-| /agua-e-clima/reservatorios | painel | 6,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,1 | não |
-| /aprenda | editorial | 7,5 | 8,0 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | não |
-| /aprenda/trilhas | editorial | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,7 | não |
-| /aprenda/trilhas/agua-operacao-preco | editorial | 8,5 | 8,0 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
-| /aprenda/trilhas/custo-tarifa-orcamento | editorial | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,7 | não |
-| /carga | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 7,0 | 8,1 | não |
-| /carga/clima-e-calendario | painel | 6,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 9,0 | 7,9 | não |
+| /agua-e-clima | painel | 8,0 | 8,0 | 10,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,8 | não |
+| /agua-e-clima/afluencia | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,6 | não |
+| /agua-e-clima/chuva-e-temperatura | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,4 | não |
+| /agua-e-clima/reservatorios | painel | 6,5 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 8,1 | 9,5 | 7,2 | 9,0 | 8,2 | não |
+| /aprenda | editorial | 8,0 | 8,0 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | não |
+| /aprenda/trilhas | editorial | 8,0 | 8,0 | 9,0 | n.ap. | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,6 | não |
+| /aprenda/trilhas/agua-operacao-preco | editorial | 8,0 | 8,0 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | não |
+| /aprenda/trilhas/custo-tarifa-orcamento | editorial | 8,5 | 8,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
+| /carga | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 7,0 | 8,0 | não |
+| /carga/clima-e-calendario | painel | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 9,0 | 7,9 | não |
 | /carga/perfil-horario | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 5,5 | 9,5 | 7,0 | 7,0 | 8,0 | não |
 | /conta-de-luz | painel | 7,5 | 7,5 | 10,0 | 10,0 | 9,0 | 10,0 | 8,1 | 9,5 | 8,2 | 7,0 | 8,6 | não |
 | /conta-de-luz/reajustes-e-subsidios | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 9,0 | 8,1 | 9,5 | 8,2 | 9,0 | 8,5 | não |
-| /dados | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,1 | não |
-| /dados/reproducao | painel | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,0 | não |
-| /dados/saude | painel | 6,5 | 7,0 | 8,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,0 | não |
-| /empresas | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 4,5 | 9,1 | 9,5 | 9,0 | 9,0 | 8,2 | não |
-| /empresas/ativos | painel | 7,5 | 6,5 | 9,0 | 10,0 | 9,0 | 9,0 | 9,1 | 9,5 | 9,0 | 9,0 | 8,6 | não |
-| /empresas/controle | painel | 7,0 | 6,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,1 | 9,5 | 9,0 | 9,0 | 8,4 | não |
-| /empresas/distribuidoras | painel | 7,0 | 7,5 | 10,0 | 10,0 | 9,0 | 9,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,3 | não |
+| /dados | painel | 7,0 | 7,0 | 10,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,2 | não |
+| /dados/reproducao | painel | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,4 | não |
+| /dados/saude | painel | 7,0 | 7,5 | 10,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,3 | não |
+| /empresas | painel | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 4,5 | 9,1 | 9,5 | 9,0 | 9,0 | 8,3 | não |
+| /empresas/ativos | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 9,1 | 9,5 | 9,0 | 9,0 | 8,6 | não |
+| /empresas/controle | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 8,5 | 9,1 | 9,5 | 9,0 | 9,0 | 8,6 | não |
+| /empresas/distribuidoras | painel | 8,0 | 7,5 | 10,0 | 10,0 | 9,0 | 9,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,5 | não |
 | /empresas/financas | painel | 6,5 | 6,5 | 9,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 9,0 | 9,0 | 8,5 | não |
-| /expansao | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 5,5 | 8,4 | 9,5 | 8,6 | 9,0 | 8,1 | não |
-| /expansao/carteira | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,6 | não |
-| /expansao/cenarios | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,5 | não |
+| /expansao | painel | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 5,5 | 8,4 | 9,5 | 8,6 | 9,0 | 8,3 | não |
+| /expansao/carteira | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,7 | não |
+| /expansao/cenarios | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,6 | não |
 | /expansao/cronograma | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,5 | não |
-| /expansao/geracao-e-transmissao | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,5 | não |
+| /expansao/geracao-e-transmissao | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,4 | 9,5 | 8,6 | 9,0 | 8,7 | não |
 | /geracao | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,5 | não |
 | /geracao/capacidade | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,4 | não |
-| /geracao/restricoes | painel | 7,0 | 7,5 | 9,0 | 9,5 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,4 | não |
+| /geracao/restricoes | painel | 8,0 | 7,5 | 10,0 | 9,5 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,6 | não |
 | /geracao/termica | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,1 | 9,5 | 8,8 | 9,0 | 8,4 | não |
 | /inclusao-energetica | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 4,5 | 7,7 | 9,5 | 5,4 | 9,0 | 7,8 | não |
-| /inclusao-energetica/acesso | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,3 | não |
+| /inclusao-energetica/acesso | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,2 | não |
 | /inclusao-energetica/cobertura | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,4 | não |
-| /inclusao-energetica/orcamento | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,4 | não |
-| /inclusao-energetica/tarifa-social | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,2 | não |
-| /mercado | painel | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,7 | não |
-| /mercado/agentes | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,6 | não |
-| /mercado/encargos | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,5 | não |
-| /mercado/mre-e-gsf | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,5 | não |
-| /metodologia | painel | 5,5 | 6,5 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 7,9 | não |
-| /perdas | painel | 7,0 | 7,5 | 10,0 | 10,0 | 9,0 | 8,3 | 7,3 | 9,5 | 9,0 | 9,0 | 8,4 | não |
-| /perdas/composicao | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 7,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,3 | não |
-| /perdas/custo-e-contexto | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 7,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,2 | não |
-| /perdas/regulatorio | painel | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 6,5 | 7,3 | 9,5 | 9,0 | 9,0 | 7,9 | não |
+| /inclusao-energetica/orcamento | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,2 | não |
+| /inclusao-energetica/tarifa-social | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 5,4 | 9,0 | 8,3 | não |
+| /mercado | painel | 8,5 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,8 | não |
+| /mercado/agentes | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,5 | não |
+| /mercado/encargos | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,4 | não |
+| /mercado/mre-e-gsf | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,7 | 9,5 | 8,1 | 9,0 | 8,6 | não |
+| /metodologia | painel | 6,5 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 6,0 | 9,0 | 8,1 | não |
+| /perdas | painel | 8,0 | 7,5 | 10,0 | 10,0 | 9,0 | 8,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,5 | não |
+| /perdas/composicao | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 8,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,4 | não |
+| /perdas/custo-e-contexto | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 8,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,4 | não |
+| /perdas/regulatorio | painel | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 7,5 | 7,3 | 9,5 | 9,0 | 9,0 | 8,1 | não |
 | /pld | painel | 7,0 | 7,0 | 10,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 8,4 | 7,0 | 8,3 | não |
-| /pld/cmo-e-formacao | painel | 6,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,4 | não |
+| /pld/cmo-e-formacao | painel | 7,0 | 7,5 | 10,0 | 10,0 | 9,0 | 10,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,6 | não |
 | /pld/diferencas-regionais | painel | 7,0 | 6,5 | 10,0 | 10,0 | 9,0 | 10,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,4 | não |
 | /pld/historico | painel | 6,5 | 6,5 | 10,0 | 10,0 | 9,0 | 10,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,4 | não |
-| /pld/limites | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,3 | não |
+| /pld/limites | painel | 8,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,0 | 7,5 | 9,5 | 8,4 | 9,0 | 8,4 | não |
 | /pld/modelos | painel | 6,0 | 7,0 | 10,0 | 10,0 | 9,0 | 8,4 | 9,1 | 9,5 | 8,0 | 9,0 | 8,4 | não |
-| /pld/modelos/b0 | painel | 6,5 | 7,0 | 9,0 | 10,0 | 9,0 | 8,0 | 9,1 | 9,5 | 8,0 | 9,0 | 8,3 | não |
-| /pld/modelos/c1 | painel | 6,0 | 7,0 | 9,0 | 10,0 | 9,0 | 6,6 | 9,1 | 9,5 | 8,0 | 9,0 | 8,1 | não |
-| /pld/modelos/c2-h | painel | 5,5 | 6,5 | 9,0 | 10,0 | 9,0 | 8,8 | 9,1 | 9,5 | 8,0 | 9,0 | 8,2 | não |
-| /pld/modelos/c2-p | painel | 5,5 | 6,5 | 9,0 | 10,0 | 9,0 | 8,8 | 9,1 | 9,5 | 8,0 | 9,0 | 8,2 | não |
-| /pld/modelos/s0 | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 6,6 | 9,1 | 9,5 | 8,0 | 9,0 | 8,3 | não |
+| /pld/modelos/b0 | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 8,0 | 9,1 | 9,5 | 8,0 | 9,0 | 8,5 | não |
+| /pld/modelos/c1 | painel | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 6,6 | 9,1 | 9,5 | 8,0 | 9,0 | 8,2 | não |
+| /pld/modelos/c2-h | painel | 6,0 | 7,0 | 9,0 | 10,0 | 9,0 | 8,8 | 9,1 | 9,5 | 8,0 | 9,0 | 8,3 | não |
+| /pld/modelos/c2-p | painel | 6,0 | 7,0 | 9,0 | 10,0 | 9,0 | 8,8 | 9,1 | 9,5 | 8,0 | 9,0 | 8,3 | não |
+| /pld/modelos/s0 | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 6,6 | 9,1 | 9,5 | 8,0 | 9,0 | 8,3 | não |
 | /pld/previsoes | painel | 6,5 | 6,5 | 10,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 8,0 | 9,0 | 8,6 | não |
 | /qualidade | painel | 8,0 | 7,5 | 10,0 | 10,0 | 9,0 | 9,8 | 8,0 | 9,5 | 8,9 | 7,0 | 8,7 | não |
-| /rede | painel | 7,0 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 7,0 | 8,4 | não |
-| /rede/balanco-e-exterior | painel | 5,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,2 | não |
-| /rede/programado | painel | 5,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,2 | não |
-| /rede/restricoes | painel | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,3 | não |
-| /regulacao | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 9,3 | 8,3 | 9,5 | 8,3 | 7,0 | 8,5 | não |
-| /regulacao/consultas-e-agenda | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 8,5 | 8,3 | 9,5 | 8,3 | 9,0 | 8,4 | não |
-| /regulacao/linha-do-tempo | painel | 6,5 | 6,0 | 9,0 | 10,0 | 9,0 | 8,0 | 8,3 | 7,5 | 8,3 | 9,0 | 7,9 | não |
-| /territorio | painel | 5,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 7,7 | 7,0 | 8,4 | não |
-| /transicao | painel | 7,0 | 8,0 | 9,0 | 10,0 | 9,0 | 4,5 | 8,3 | 9,5 | 7,9 | 9,0 | 7,9 | não |
-| /transicao/emissoes | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,5 | não |
-| /transicao/energia-estimada | painel | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,5 | não |
-| /transicao/mmgd | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,5 | não |
-| /visao-geral | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 9,6 | 8,0 | 9,5 | 8,0 | 9,0 | 8,5 | não |
-| /aprenda/acl | verbete (amostra) | 8,5 | 8,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
+| /rede | painel | 8,0 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 7,0 | 8,6 | não |
+| /rede/balanco-e-exterior | painel | 6,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,3 | não |
+| /rede/programado | painel | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,5 | não |
+| /rede/restricoes | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 7,4 | 9,5 | 8,6 | 9,0 | 8,5 | não |
+| /regulacao | painel | 7,0 | 7,0 | 9,0 | 10,0 | 9,0 | 9,3 | 8,3 | 9,5 | 8,3 | 7,0 | 8,3 | não |
+| /regulacao/consultas-e-agenda | painel | 7,0 | 6,5 | 9,0 | 10,0 | 9,0 | 8,0 | 8,3 | 9,5 | 8,3 | 9,0 | 8,2 | não |
+| /regulacao/linha-do-tempo | painel | 8,0 | 7,5 | 9,0 | 10,0 | 9,0 | 7,0 | 8,3 | 7,5 | 8,3 | 9,0 | 8,2 | não |
+| /territorio | painel | 6,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 9,1 | 9,5 | 7,7 | 7,0 | 8,5 | não |
+| /transicao | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 4,5 | 8,3 | 9,5 | 7,9 | 9,0 | 8,0 | não |
+| /transicao/emissoes | painel | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,6 | não |
+| /transicao/energia-estimada | painel | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,7 | não |
+| /transicao/mmgd | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 8,3 | 9,5 | 7,9 | 9,0 | 8,6 | não |
+| /visao-geral | painel | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 9,6 | 8,0 | 9,5 | 8,0 | 9,0 | 8,5 | não |
+| /aprenda/acl | verbete (amostra) | 8,0 | 8,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | não |
 | /aprenda/cde | verbete (amostra) | 8,0 | 8,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,8 | não |
-| /aprenda/dessem | verbete (amostra) | 7,0 | 8,0 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,6 | não |
-| /aprenda/gsf | verbete (amostra) | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 8,7 | não |
-| /aprenda/percentual-regulatorio-de-perdas | verbete (amostra) | 7,5 | 8,0 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,7 | não |
-| /aprenda/tarifa-te-tusd | verbete (amostra) | 8,5 | 8,5 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 9,0 | não |
-| /dados/aneel-agentes-geracao | ficha (amostra) | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,1 | não |
-| /dados/aneel-pautas-atas-diretoria | ficha (amostra) | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,0 | não |
-| /dados/ccee-lista-agente-associado | ficha (amostra) | 5,5 | 7,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 7,9 | não |
-| /dados/ibge-pof-cv | ficha (amostra) | 5,0 | 7,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 6,0 | 9,0 | 7,6 | não |
+| /aprenda/dessem | verbete (amostra) | 7,0 | 8,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,6 | não |
+| /aprenda/gsf | verbete (amostra) | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 8,6 | não |
+| /aprenda/percentual-regulatorio-de-perdas | verbete (amostra) | 7,0 | 7,5 | 9,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,5 | não |
+| /aprenda/tarifa-te-tusd | verbete (amostra) | 8,0 | 8,5 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
+| /dados/aneel-agentes-geracao | ficha (amostra) | 6,5 | 8,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,1 | não |
+| /dados/aneel-pautas-atas-diretoria | ficha (amostra) | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,1 | não |
+| /dados/ccee-lista-agente-associado | ficha (amostra) | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,0 | não |
+| /dados/ibge-pof-cv | ficha (amostra) | 6,0 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 6,0 | 9,0 | 7,8 | não |
 | /dados/ons-ena-diario-por-bacia | ficha (amostra) | 6,5 | 7,5 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 9,0 | 9,0 | 8,1 | não |
-| /dados/senado-leis-feriados | ficha (amostra) | 5,5 | 7,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 6,0 | 9,0 | 7,7 | não |
-| /empresas/ambar-amazonas | ficha (amostra) | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
-| /empresas/cerbranorte | ficha (amostra) | 7,0 | 6,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,2 | não |
+| /dados/senado-leis-feriados | ficha (amostra) | 6,0 | 8,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 6,0 | 9,0 | 7,9 | não |
+| /empresas/ambar-amazonas | ficha (amostra) | 8,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,5 | não |
+| /empresas/cerbranorte | ficha (amostra) | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
 | /empresas/certhil | ficha (amostra) | 7,0 | 6,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,2 | não |
-| /empresas/cpfl-piratining | ficha (amostra) | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
-| /empresas/emt | ficha (amostra) | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
-| /empresas/uhenpal | ficha (amostra) | 7,5 | 6,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,3 | não |
+| /empresas/cpfl-piratining | ficha (amostra) | 8,0 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,5 | não |
+| /empresas/emt | ficha (amostra) | 7,5 | 7,5 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
+| /empresas/uhenpal | ficha (amostra) | 7,5 | 7,0 | 9,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,4 | não |
 | /aprenda/ear | verbete (amostra) | 8,0 | 8,5 | 10,0 | 10,0 | 9,0 | 8,5 | 9,0 | 9,5 | n.ap. | 9,0 | 8,9 | não |
-| /aprenda/pld | verbete (amostra) | 7,5 | 8,0 | 10,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 9,0 | não |
-| /dados/aneel-scs | ficha (amostra) | 7,0 | 8,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 7,5 | 9,0 | 8,1 | não |
-| /dados/ibge-pof-6715 | ficha (amostra) | 5,5 | 7,0 | 9,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 8,3 | 9,0 | 7,8 | não |
-| /empresas/cemig-d | ficha (amostra) | 7,5 | 7,0 | 10,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,5 | não |
+| /aprenda/pld | verbete (amostra) | 8,0 | 8,5 | 10,0 | 10,0 | 9,0 | 10,0 | 9,0 | 9,5 | n.ap. | 9,0 | 9,1 | não |
+| /dados/aneel-scs | ficha (amostra) | 7,5 | 8,0 | 10,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 7,5 | 9,0 | 8,3 | não |
+| /dados/ibge-pof-6715 | ficha (amostra) | 6,5 | 7,5 | 10,0 | 10,0 | 9,0 | 7,1 | 7,5 | 9,5 | 8,3 | 9,0 | 8,1 | não |
+| /empresas/cemig-d | ficha (amostra) | 8,0 | 7,5 | 10,0 | 10,0 | 9,0 | 10,0 | 6,8 | 9,5 | 8,2 | 9,0 | 8,6 | não |
 
 ## Rubrica
 

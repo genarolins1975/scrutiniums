@@ -1,18 +1,18 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-08T19:21:53Z",
+ "gerado_em": "2026-10-08T20:04:34Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "713f7d8173d5+alterado",
+ "versao_codigo": "a22df584c51c+alterado",
  "disponivel": true,
- "id_publicacao": "da64df7a9b488c1ac4e90860ad2e828f06a1250eb14930ac50e4fd971469be22",
+ "id_publicacao": "8c5cd1b1bcf4a091bb9ae6917e2422b96575a031f654f9ac432b9a3f2f9b66fe",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 270,
-  "bytes": 208205588,
+  "bytes": 208216124,
   "geometrias": 2,
   "golds": 31,
   "series": 212,
@@ -50,9 +50,9 @@
   {
    "caminho": "/energia/gold/avaliacao.json",
    "tipo": "gold",
-   "bytes": 927874,
-   "sha256": "10e838f17c7d94569d233c62b1ff6d6209f1131b75fbbc753e84a62cc9caea72",
-   "gerado_em": "2026-10-08T19:21:52Z",
+   "bytes": 938410,
+   "sha256": "87e91f85f40439b43ace3dcc927d7cbd16447f7e9540fb9cb7d45bbb4d1e22e4",
+   "gerado_em": "2026-10-08T20:04:33Z",
    "disponivel": true
   },
   {
@@ -219,7 +219,7 @@
    "caminho": "/energia/gold/publicacao.json",
    "tipo": "gold",
    "bytes": 402885,
-   "sha256": "615548470e71f6cf94b026a946f92aaa243d4c8546e0e9cd6073cfff19ef07c3",
+   "sha256": "b33a67d8b48cb3ee0a1b143d44ddd23e480e794b8cf32f9c1535f1d0fbcd7ae0",
    "gerado_em": "2026-10-01T11:22:00Z",
    "disponivel": true
   },

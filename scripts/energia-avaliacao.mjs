@@ -242,7 +242,9 @@ async function testarModo(p) {
 }
 
 async function testarComprove(p) {
-  const botoes = p.locator('main button:has-text("Comprove este número")');
+  // só os botões visíveis: com o seletor de profundidade, o cartão de um número pode estar no nível Analisar e ficar oculto em Entender
+  // (na r8 a página Território tinha os três botões ocultos em Entender, e o clique no primeiro do DOM falhava sem ser defeito da ficha)
+  const botoes = p.locator('main button:has-text("Comprove este número"):visible');
   const n = await botoes.count();
   if (!n) return { botoes: 0 };
   const alvo = botoes.first();

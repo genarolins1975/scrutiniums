@@ -164,3 +164,14 @@ describe("Saúde dos dados: a regra de completude não leva a palavra proibida e
     expect(h).not.toMatch(/disponível até hoje/i);
   });
 });
+
+describe("Regulação: os subpainéis de resumo têm pergunta como título (achado da r8)", () => {
+  it("a agenda curta e a lista curta da linha do tempo abrem com pergunta, não com rótulo", () => {
+    const agenda = ler("src/app/setor-eletrico/regulacao/consultas-e-agenda/page.tsx");
+    const linha = ler("src/components/energia/RegulacaoLinhaTempo.tsx");
+    expect(agenda).toMatch(/id="agenda-curta-titulo"[^>]*>\s*O que a ANEEL prevê decidir\?/);
+    expect(linha).toMatch(/id="lista-curta-titulo"[^>]*>\s*Quais foram os eventos mais recentes\?/);
+    expect(agenda).not.toContain("prevê decidir, em resumo");
+    expect(linha).not.toContain("Lista curta, do evento mais recente");
+  });
+});

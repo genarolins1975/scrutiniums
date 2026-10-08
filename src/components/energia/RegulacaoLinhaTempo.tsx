@@ -218,10 +218,10 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
         <section aria-labelledby="lista-curta-titulo" className="space-y-6" data-lista-curta="">
           <div>
             <h3 id="lista-curta-titulo" className="font-serif text-lg text-carvao">
-              Lista curta, do evento mais recente ao mais antigo
+              Quais foram os eventos mais recentes?
             </h3>
             <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-sem-impacto="">
-              Sem impacto estimado nesta fonte: o observatório não estima o efeito de nenhum evento. O efeito que o próprio ato declara, o dispositivo e as conferências estão na lista completa, em
+              Do evento mais recente ao mais antigo. Sem impacto estimado nesta fonte: o observatório não estima o efeito de nenhum evento. O efeito que o próprio ato declara, o dispositivo e as conferências estão na lista completa, em
               Analisar.
             </p>
           </div>

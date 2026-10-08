@@ -3223,6 +3223,302 @@
     "desempenho": 8.8
    },
    "jornadas_cumpridas": 9
+  },
+  {
+   "id": "2026-10-08-r8",
+   "reprocessada": null,
+   "ajustes_do_metodo": [
+    "a rodada r8 foi feita sem mudar a rubrica, a régua, o roteiro dos revisores nem os grupos: os nove revisores receberam as mesmas instruções e as mesmas páginas por revisor (R1 a R9) da r7, e são outras instâncias de agente, de modo que a diferença por módulo mistura mudança na página e variação entre revisores. A comparação com a r7 vale como ordem de grandeza",
+    "a coleta objetiva, as capturas limpas e as dez jornadas da r8 foram feitas sobre o build do código do commit 713f7d817 (o commit seguinte só regenerou a avaliação e a documentação); as jornadas rodaram com os roteiros J1 a J5, J9 e J10 atualizados depois da r7 para os textos e níveis novos, e as dez foram cumpridas",
+    "o revisor R9 registrou como não aberto um trecho de 390 px da ficha aneel-scs que não constava do pacote: o pacote traz no máximo três trechos de 390 px por página, escolhidos ao longo dela, e a numeração do arquivo não é contígua. A nota foi mantida e a observação ficou em nao_abriu da revisão",
+    "o trabalho de conteúdo feito entre a r7 e a r8 (resposta em duas camadas, identificadores técnicos fora de Entender e conciliação de números) está descrito na documentação do módulo Dados; a entrada correspondente em posteriores.json passou a fazer parte do que a r8 mede e foi retirada da lista de correções ainda não medidas",
+    "a primeira coleta da r8 acusou a ficha Comprove da página Território como defeito alto (interatividade 6,0): os três botões estão nos cartões de cobertura do cadastro, que o trabalho de conteúdo moveu para o nível Analisar, e em Entender ficam ocultos; o instrumento clicava o primeiro botão do DOM, não o primeiro visível, e a clicagem falhava sem defeito da ficha. Conferido à mão: nos níveis Analisar e Auditar os três botões abrem a ficha com sha256, fonte e reprodução. O instrumento passou a testar só botões visíveis (scripts/energia-avaliacao.mjs), a rota foi medida de novo nas seis combinações de largura e modo e só ela foi substituída no relatório da r8 (as outras 93 não têm botão oculto que o teste usasse); o defeito alto some e a interatividade da página vai de 6,0 para 10,0. O efeito na página é real em outro ponto: em Entender, Território não oferece nenhuma ficha Comprove, porque os números com ficha estão em Analisar"
+   ],
+   "data": "2026-10-08",
+   "versao_codigo": "a22df584c51c+alterado",
+   "paginas": 94,
+   "nota_ponderada_media": 8.4,
+   "atendem_meta": 0,
+   "defeitos": [
+    {
+     "chave": "3f7cd6230f",
+     "severidade": "alto",
+     "dimensao": "atualidade",
+     "descricao": "conjunto atrasado: aneel_social/aneel_scs (367 dias)",
+     "n_paginas": 6
+    },
+    {
+     "chave": "7daf9fa541",
+     "severidade": "alto",
+     "dimensao": "correcao",
+     "descricao": "nenhuma gold da página tem ficha de evidência com teste registrado",
+     "n_paginas": 5
+    },
+    {
+     "chave": "d8b838b731",
+     "severidade": "alto",
+     "dimensao": "rastreabilidade",
+     "descricao": "painel numérico sem Comprove este número",
+     "n_paginas": 1
+    },
+    {
+     "chave": "0cf72c78c8",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "3 arquivo(s) CSV com checagem reprovada em publicacao.json (arquivos.csv_com_problema)",
+     "n_paginas": 12
+    },
+    {
+     "chave": "3cb32d2298",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa",
+     "n_paginas": 11
+    },
+    {
+     "chave": "b8a5326574",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado; caminho seguinte",
+     "n_paginas": 8
+    },
+    {
+     "chave": "f8baad3cce",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura",
+     "n_paginas": 6
+    },
+    {
+     "chave": "7c1c50b3b6",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado",
+     "n_paginas": 3
+    },
+    {
+     "chave": "43a7002ac2",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "6384809e9b",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "5d686b57a0",
+     "severidade": "medio",
+     "dimensao": "navegacao",
+     "descricao": "link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado",
+     "n_paginas": 3
+    },
+    {
+     "chave": "bdbf1eb55c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local",
+     "n_paginas": 2
+    },
+    {
+     "chave": "6b798ef62c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; download e link compartilhável",
+     "n_paginas": 2
+    },
+    {
+     "chave": "98986f827c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa",
+     "n_paginas": 2
+    },
+    {
+     "chave": "aac136fd0c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: evidência ou fonte oficial",
+     "n_paginas": 1
+    },
+    {
+     "chave": "79d0d0f892",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; interação local",
+     "n_paginas": 1
+    },
+    {
+     "chave": "77264c7cde",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "fc28af2a6f",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa",
+     "n_paginas": 1
+    },
+    {
+     "chave": "8ac1f3f003",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta; gráfico ou mapa; Comprove este número",
+     "n_paginas": 1
+    },
+    {
+     "chave": "8275b70867",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "6611377a88",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; download e link compartilhável",
+     "n_paginas": 1
+    },
+    {
+     "chave": "5b94dc0e48",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c1dcce287a",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências",
+     "n_paginas": 1
+    },
+    {
+     "chave": "a2c77d513c",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha",
+     "n_paginas": 1
+    },
+    {
+     "chave": "de3d01f5bd",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "controle sem efeito observável: |Brasil inteiro",
+     "n_paginas": 1
+    },
+    {
+     "chave": "dba9cf3d31",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas",
+     "n_paginas": 1
+    },
+    {
+     "chave": "9dc774dfee",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS",
+     "n_paginas": 1
+    },
+    {
+     "chave": "733d15c66c",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 623 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "2293e99d8d",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 629 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "049beb94d8",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 644 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "ec6f819561",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 651 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "d985d79b83",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 662 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "21d853d27c",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 684 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "d0d7c04288",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 824 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c0a6c51fc1",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 829 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c4111b121d",
+     "severidade": "baixo",
+     "dimensao": "navegacao",
+     "descricao": "Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade",
+     "n_paginas": 1
+    },
+    {
+     "chave": "5a211d31a0",
+     "severidade": "baixo",
+     "dimensao": "rastreabilidade",
+     "descricao": "ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12%",
+     "n_paginas": 1
+    }
+   ],
+   "defeitos_por_severidade": {
+    "critico": 0,
+    "alto": 3,
+    "medio": 24,
+    "baixo": 10
+   },
+   "medias_por_dimensao": {
+    "didatismo": 7.2,
+    "visual": 7.4,
+    "navegacao": 9.2,
+    "interatividade": 9.9,
+    "acessibilidade": 9.0,
+    "completude": 8.9,
+    "correcao": 7.9,
+    "rastreabilidade": 9.4,
+    "atualidade": 7.9,
+    "desempenho": 8.8
+   },
+   "jornadas_cumpridas": 10
   }
  ]
 }

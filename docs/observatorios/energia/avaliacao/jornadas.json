@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-08T16:21:49.333Z",
+ "gerado_em": "2026-10-08T19:57:34.114Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6356,
+   "duracao_ms": 6211,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -37,7 +37,7 @@
     {
      "descricao": "Abre o conceito PLD pelo resultado da busca",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/aprenda/pld; h1 \"PLD Preço de Liquidação das Diferenças\"; em uma frase: \"Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efeti...\""
+     "observado": "URL /setor-eletrico/aprenda/pld; h1 \"PLD: Preço de Liquidação das Diferenças\"; em uma frase: \"Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efeti...\""
     },
     {
      "descricao": "Lê \"Não confundir com\" e confere o contraste entre PLD e tarifa (TE e TUSD)",
@@ -67,7 +67,7 @@
     {
      "descricao": "Segue o link \"TE e TUSD\" de \"Não confundir com\" até o verbete da tarifa",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/aprenda/tarifa-te-tusd; h1 \"TE e TUSD Tarifa de Energia e Tarifa de Uso do Sistema de Distribuição\"; contraste do lado da tarifa: \"O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora s...\"; exemplo real: R$ 0,8212/kWh"
+     "observado": "URL /setor-eletrico/aprenda/tarifa-te-tusd; h1 \"TE e TUSD: Tarifa de Energia e Tarifa de Uso do Sistema de Distribuição\"; contraste do lado da tarifa: \"O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora s...\"; exemplo real: R$ 0,8212/kWh"
     },
     {
      "descricao": "Segue \"Ver no painel: Conta de luz: tarifa\" até a página de dados da tarifa",
@@ -97,7 +97,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11572,
+   "duracao_ms": 10925,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -175,7 +175,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4152,
+   "duracao_ms": 4441,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -233,8 +233,8 @@
    "resultado": "cumprida",
    "passos_ok": 10,
    "passos_total": 10,
-   "cliques": 12,
-   "duracao_ms": 6076,
+   "cliques": 13,
+   "duracao_ms": 6592,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -268,7 +268,7 @@
     {
      "descricao": "Baixa o XLSX do mesmo recorte e confere as linhas da planilha",
      "resultado": "ok",
-     "observado": "Arquivo pld-mensal-se_busca-2026_mesmas-horas-sim_ordem-temporal-asc_v2026-09-30.xlsx (16975 bytes, zip válido, abas 2); 8 linhas de dados = CSV; célula E2 = 128.12 igual à primeira linha do CSV"
+     "observado": "Arquivo pld-mensal-se_busca-2026_mesmas-horas-sim_ordem-temporal-asc_v2026-09-30.xlsx (16991 bytes, zip válido, abas 2); 8 linhas de dados = CSV; célula E2 = 128.12 igual à primeira linha do CSV"
     },
     {
      "descricao": "Reproduz o KPI \"média temporal de ago/2026\" a partir do CSV e da série horária",
@@ -303,7 +303,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 12,
-   "duracao_ms": 7349,
+   "duracao_ms": 7506,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -322,7 +322,7 @@
     {
      "descricao": "Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado",
      "resultado": "ok",
-     "observado": "Em uma frase: \"Energia associada ao volume de água nos reservatórios que pode ser convertido em...\"; exemplo real: 29/09/2026, SIN com 61,5% da EAR máxima (calculado); a mediana da data não consta no verbete; unidade: : MWmês ou percentual da EAR máxima"
+     "observado": "Em uma frase: \"Energia associada ao volume de água nos reservatórios que pode ser convertido em...\"; exemplo real: 29/09/2026, SIN com 61,5% da EAR máxima (calculado); a mediana da data não consta no verbete; unidade: : MWmês (a energia que os reservatórios produziriam em um mês à potência média de 1 MW) ou percentual da EAR máxima"
     },
     {
      "descricao": "Segue \"ver no painel\" do exemplo da EAR e confere gráfico, tabela, unidade e botão de retorno",
@@ -332,12 +332,12 @@
     {
      "descricao": "Compara o número do exemplo do verbete com o que o painel mostra",
      "resultado": "ok",
-     "observado": "Verbete: 29/09/2026, SIN 61,5%. Painel (padrão): \"Em 29/09/2026, o SIN guardava 179.724 MWmês, 61,5% da EAR máxima\". O número do exemplo é o mesmo do painel, com a mesma data"
+     "observado": "Verbete: 29/09/2026, SIN 61,5%. Painel (padrão): \"Em 29/09/2026, o SIN guardava 61,5% da energia que os reservatórios comportam\". O número do exemplo é o mesmo do painel, com a mesma data"
     },
     {
      "descricao": "Volta ao verbete pelo botão \"Voltar ao verbete EAR\"",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/aprenda/ear#exemplo; h1 \"EAR Energia Armazenada\""
+     "observado": "URL /setor-eletrico/aprenda/ear#exemplo; h1 \"EAR: Energia Armazenada\""
     },
     {
      "descricao": "Segue \"Nas trilhas\" do verbete EAR até o passo 2 da trilha Água, operação e preço",
@@ -352,7 +352,7 @@
     {
      "descricao": "Segue \"ver no painel\" do passo 5 até o PLD e confere que o painel mostra os mesmos números",
      "resultado": "ok",
-     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 519 px, topo do painel a 192 px): gráfico não está à vista"
+     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 603 px, topo do painel a 192 px): gráfico não está à vista"
     },
     {
      "descricao": "Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com a média do exemplo",
@@ -362,7 +362,7 @@
     {
      "descricao": "Lê no painel o que o professor leva para a sala: interpretação, \"o que não é possível concluir\" e fonte (modo Analisar)",
      "resultado": "ok",
-     "observado": "Como interpretar: \"Compare só o que está no mesmo intervalo: o valor semanal do DECOMP contra as médias do DE...\"; O que não é possível concluir: \"Os dados não dizem por que o PLD difere do CMO: os conjuntos do ONS não identificam deck, ...\"; Fonte: ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD_HORARIO. Versão dos dados: 3 (a fonte só aparece depois de escolher Analisar); ações "
+     "observado": "Como interpretar: \"Compare só o que está no mesmo intervalo: o valor semanal do DECOMP contra as médias do DE...\"; O que não é possível concluir: \"Os dados não dizem por que o PLD difere do CMO: os conjuntos do ONS não identificam deck, ...\"; Fonte: ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD horário por submercado. Vers (a fonte só aparece depois de escolher Analisar); ações "
     },
     {
      "descricao": "Volta à trilha pelo botão \"Voltar à trilha Água, operação e preço, passo 5\"",
@@ -387,7 +387,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 25068,
+   "duracao_ms": 24570,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -407,7 +407,7 @@
     {
      "descricao": "Toca em Minas Gerais no mapa de UFs e confere a escolha na URL",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 285 px abaixo do fim do mapa (topo da ficha a 904 px do topo da janela de 780 px), fora da tela"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 246 px abaixo do fim do mapa (topo da ficha a 865 px do topo da janela de 780 px), fora da tela"
     },
     {
      "descricao": "Mede o tamanho de toque de cada UF no mapa (só medição, sem tocar): quantas regiões ficam abaixo de 24 px",
@@ -432,7 +432,7 @@
     {
      "descricao": "Toca em Limpar a escolha e confere que o modo e a posição na página continuam",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5304 px antes e 5304 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5560 px antes e 5560 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
     },
     {
      "descricao": "Usa o botão voltar do navegador e confere que a escolha da Bahia volta",
@@ -467,7 +467,7 @@
     {
      "descricao": "Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição",
      "resultado": "ok",
-     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7124 para 7124 px"
+     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7341 para 7341 px"
     },
     {
      "descricao": "Usa o botão voltar e confere que o filtro de UF = MG volta",
@@ -501,8 +501,8 @@
    "resultado": "cumprida",
    "passos_ok": 18,
    "passos_total": 18,
-   "cliques": 170,
-   "duracao_ms": 35109,
+   "cliques": 165,
+   "duracao_ms": 34552,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -513,12 +513,12 @@
     {
      "descricao": "Abre Minha região e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem",
      "resultado": "ok",
-     "observado": "20 Tabs até o campo \"Município, distribuidora, UF ou submercado\"; 20 paradas, todas com indicador de foco (contorno 2px e sombra); primeira \"Pular para o conteúdo\", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo"
+     "observado": "17 Tabs até o campo \"Município, distribuidora, UF ou submercado\"; 17 paradas, todas com indicador de foco (contorno 2px e sombra); primeira \"Pular para o conteúdo\", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo"
     },
     {
      "descricao": "Volta uma parada com Shift+Tab e avança com Tab: o foco não fica preso",
      "resultado": "ok",
-     "observado": "Shift+Tab foi para \"COMPROVE ESTE NÚMERO : USINAS COM TODOS OS MUNICÍPIOS DECLAR\" e Tab voltou ao campo de busca (sombra)"
+     "observado": "Shift+Tab foi para \"ENTENDER\" e Tab voltou ao campo de busca (sombra)"
     },
     {
      "descricao": "Digita minas no campo: a lista abre com Minas Gerais na frente",
@@ -543,7 +543,7 @@
     {
      "descricao": "Segue com Tab até a tabela equivalente e escolhe BA com Espaço",
      "resultado": "ok",
-     "observado": "25 Tabs do campo de busca até o botão BA (mais 20 até o campo, 45 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
+     "observado": "25 Tabs do campo de busca até o botão BA (mais 17 até o campo, 42 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
     },
     {
      "descricao": "Repete a escolha da Bahia com clique e compara URL e ficha com a do teclado",
@@ -553,7 +553,7 @@
     {
      "descricao": "Usa o link Pular para o conteúdo e conta os Tabs até o campo do mapa",
      "resultado": "ok",
-     "observado": "Enter no link levou o foco para main#conteudo (hash #conteudo); depois 6 Tabs até o campo, contra 20 sem o salto"
+     "observado": "Enter no link levou o foco para main#conteudo (hash #conteudo); depois 3 Tabs até o campo, contra 17 sem o salto"
     },
     {
      "descricao": "Segue até o filtro de submercado da tabela, abre com Enter, marca uma caixa com Espaço e fecha com Esc",
@@ -583,7 +583,7 @@
     {
      "descricao": "Em Diferenças regionais, alcança o seletor Par em destaque com Tab e troca para Sul e Norte só com setas",
      "resultado": "ok",
-     "observado": "24 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: \"HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD\""
+     "observado": "25 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: \"HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD\""
     },
     {
      "descricao": "Escolhe o mesmo par com clique na tabela e compara URL e indicador",
@@ -598,7 +598,7 @@
     {
      "descricao": "Resume a jornada: nenhuma parada sem indicador de foco e nenhuma perda de foco",
      "resultado": "ok",
-     "observado": "134 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 126, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
+     "observado": "132 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 124, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
     }
    ],
    "limite": "Teclado simulado pelo Playwright no Chromium; não cobre leitor de tela nem outros navegadores. Roteiro por script, sem pessoas."
@@ -613,7 +613,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 34973,
+   "duracao_ms": 35064,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -634,7 +634,7 @@
     {
      "descricao": "Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição",
      "resultado": "ok",
-     "observado": "âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 539 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
+     "observado": "âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 567 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
     },
     {
      "descricao": "Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação",
@@ -649,7 +649,7 @@
     {
      "descricao": "Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação",
      "resultado": "ok",
-     "observado": "âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1357 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1369 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Confere em Perdas que o painel certo ficou à vista ao abrir o link (âncora do link copiado)",
@@ -669,7 +669,7 @@
     {
      "descricao": "Abre o link de Minha região num novo contexto e compara escolha, ficha, filtro e ordem",
      "resultado": "ok",
-     "observado": "âncora #p002: elemento existe, topo 192 px, rolagem 479 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #p002: elemento existe, topo 192 px, rolagem 507 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Resume o que o link não restaurou nas três páginas",
@@ -685,14 +685,20 @@
    "perfil": "Leitor que precisa saber se uma lacuna é zero, atraso ou ausência da fonte (desktop 1440 px)",
    "largura": 1440,
    "movel": false,
-   "resultado": "interrompida",
-   "passos_ok": 5,
+   "resultado": "cumprida",
+   "passos_ok": 13,
    "passos_total": 13,
-   "cliques": 11,
-   "duracao_ms": 6655,
+   "cliques": 27,
+   "duracao_ms": 25273,
    "erros_console": [],
    "paginas_visitadas": [
-    "/setor-eletrico/dados/saude"
+    "/setor-eletrico/dados",
+    "/setor-eletrico/dados/aneel-scs",
+    "/setor-eletrico/dados/ibge-pof-6715",
+    "/setor-eletrico/dados/saude",
+    "/setor-eletrico/geracao/restricoes",
+    "/setor-eletrico/perdas",
+    "/setor-eletrico/pld/historico"
    ],
    "passos": [
     {
@@ -718,40 +724,47 @@
     {
      "descricao": "Lê como a página explica sem dado, sem SLA e atrasado, e a regra do CSV",
      "resultado": "ok",
-     "observado": "SLA: \"SLA é o prazo derivado da frequência que a própria fonte declara: diária, 2 dias; semanal, 7; quinzenal, 15; mensal, 60; trimestral, 90; anual, 365, c...\"; atraso: \"Situação e atraso valem para a data de referência da publicação, e o prazo é o fim do último período disponíve...\"; ausência: \"“sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia\""
+     "observado": "SLA: \"O prazo vem da frequência que a própria fonte declara, somada a uma tolerância: diária, 2 dias; semanal, 7 dias; quinzenal, 15 dias; mensal, 60 dias; ...\"; atraso: \"A situação vale para a data de referência dos dados, não para o dia em que você lê...\"; ausência: \"“Sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados, a ausência é célula vazia\""
     },
     {
      "descricao": "Compara a data de referência com as datas de captura e de processamento mostradas na página",
-     "resultado": "falhou",
-     "observado": "não achei a data de publicação do rodapé"
+     "resultado": "ok",
+     "observado": "referência 01/10/2026; gold processada 01/10/2026, 08:22; última captura registrada 01/10/2026, 04:37; captura do conjunto atrasado 30/09/2026 22:30 (antes da gold, na ordem esperada); o último período dele é 06/2025, 487 dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz \"Catálogo e manifesto publicados em 01/10/2026, 08:22\", a mesma data do cabeçalho"
     },
     {
      "descricao": "Em Perdas, mostra a tabela inteira e confere sem dado na tela contra célula vazia no CSV",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "CSV com 123 linhas e 123 na tela; 1845 células comparadas, 437 com \"sem dado\", 417 vazias no CSV e nenhuma 0; 20 células \"sem dado\" de coluna de classe viram o TEXTO \"sem dado\" no CSV (Classe no mapa (taxa de perdas totais): 20), não campo vazio; exemplo ÂMBAR AMAZONAS: Técnicas \"sem dado\", Decomposição \"sem separação publicada\" (motivo na mesma linha)"
     },
     {
      "descricao": "Em Restrições de geração, confere a tabela por razão: sem dado na tela, célula vazia no CSV, e o total",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "CSV com 5 linhas, 25 células, 5 \"sem dado\" na tela, 5 vazias no CSV e nenhuma 0. Linha \"Parecer de acesso\": origem local \"sem dado\", origem sistêmica \"sem dado\", mas Total \"0,0\" e Parcela \"0,00\": o total é um número, a página não diz se é zero medido ou soma de ausências"
     },
     {
      "descricao": "No Histórico do PLD, confere o mês sem moeda constante: sem dado na tela, vazio no CSV e o motivo escrito",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "CSV com 69 linhas, 828 células (pareadas por posição: o mês é 09/2026 na tela e 2026-09 no arquivo), 1 \"sem dado\" na tela, 1 vazias no CSV e nenhuma 0. Em 09/2026 a média em moeda constante é \"sem dado\" e em 08/2026 é 128,12; motivo escrito: \"Moeda constante só existe até o último mês com IPCA publicado.\" (cabeçalho: IPCA até ago/2026)"
     },
     {
      "descricao": "No Catálogo, busca SCS, escolhe a linha e lê no painel Ficha do conjunto como o atraso é explicado",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "painel: \"Atualidade: atrasado; último período disponível 06/2025; 367 dias além do prazo\"; última captura em 30/09/2026; coincide com a página de saúde (06/2025, 367 dias)"
     },
     {
      "descricao": "Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "/setor-eletrico/dados/aneel-scs?modo=auditar; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília)\"; última tentativa de coleta direta não registrada (o conjunto só tem a captura das integrações); menciona atraso: sim"
     },
     {
      "descricao": "Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "/setor-eletrico/dados/ibge-pof-6715?modo=auditar; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Última modificação na fonte \"não informada\"; Formatos \"não informados no catálogo\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
     },
     {
      "descricao": "Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura",
-     "resultado": "nao_executado"
+     "resultado": "ok",
+     "observado": "a ficha concorda com a saúde e com o painel do catálogo"
     }
    ],
    "limite": "Confere a ausência em três tabelas e duas fichas; não cobre todos os módulos. Roteiro por script, sem pessoas."
@@ -766,7 +779,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13710,
+   "duracao_ms": 13719,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",
@@ -801,7 +814,7 @@
     {
      "descricao": "Escolhe a rodada de 30/09/2026 no gráfico e lê as linhas: com número, sem faixa e sem realizado",
      "resultado": "ok",
-     "observado": "Rodada de 30/09/2026: com número 28 células; sem número 0 células; total 28 células; 28 de 28 linhas; todas \"com número\", P10 e P90 \"sem dado\" (sem faixa), Realizado \"sem dado\"; W1 SE/CO arquivada em R$ 124,0911/MWh, emitida em 30/09/2026 às 20h31, atraso 751,3 min, código 30ad85ccb171+alterado"
+     "observado": "Rodada de 30/09/2026: com número 28 células; sem número 0 células; total 28 células; 28 de 28 linhas; todas \"com número\", P10 e P90 \"sem dado\" (sem faixa), Realizado \"sem dado\"; W1 SE/CO arquivada em R$ 124,0911/MWh, emitida em 30/09/2026 às 20h31, atraso 751,3 min"
     },
     {
      "descricao": "Seleciona W1 SE/CO da rodada de 30/09 e compara a previsão arquivada com a de Previsão atual",
@@ -816,7 +829,7 @@
     {
      "descricao": "Usa Ver o arquivo como estava ao fim de 29/09/2026: o texto e as linhas visíveis são só as que existiam",
      "resultado": "ok",
-     "observado": "controle aceita datas de 2026-09-28 a 2026-09-30; texto: \"Ao fim de 29/09/2026, o arquivo tinha 28 registros (de 56 hoje) de 1 rodada\"; tabela \"28 de 28 linhas\"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09"
+     "observado": "controle aceita datas de 2026-09-28 a 2026-09-30; texto: \"Ao fim de 29/09/2026, o arquivo tinha 28 registros (de 56 no arquivo completo) de 1 rodada\"; tabela \"28 de 28 linhas\"; as 28 linhas são exatamente as incluídas até 29/09/2026 (todas da rodada de 27/09) e nenhuma da rodada de 30/09"
     },
     {
      "descricao": "Compara célula a célula as 28 linhas da visão antiga com as mesmas linhas de hoje",
