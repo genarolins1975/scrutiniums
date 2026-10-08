@@ -5,20 +5,18 @@ import type { FichaIndicador } from "@/lib/eficiencia/tipos";
 import { FichaConteudo, type ContextoFicha } from "./FichaConteudo";
 
 /**
- * Passaporte do indicador em diálogo nativo (showModal: foco preso, Esc
- * fecha, fundo inerte). Abrir e fechar não toca na URL nem nos filtros: o
- * recorte em exibição continua o mesmo ao voltar.
+ * "Sobre este dado": painel contextual do indicador, em diálogo nativo (showModal: foco preso, Esc fecha, fundo inerte).
+ * Traz a ficha completa (definição, fórmula, fonte, período, universo, ressalvas), a um clique do número. Abrir e
+ * fechar não toca na URL nem nos filtros: o recorte em exibição continua o mesmo ao voltar.
  */
-export function Passaporte({
+export function SobreEsteDado({
   f,
   ctx,
-  rotulo = "Passaporte",
+  rotulo = "Sobre este dado",
 }: {
   f: FichaIndicador;
   ctx: ContextoFicha;
   rotulo?: string;
-  /** Mantido por compatibilidade: todos os botões têm agora a mesma altura mínima de 44 px. */
-  compacto?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const tituloId = useId();
@@ -28,7 +26,7 @@ export function Passaporte({
         type="button"
         onClick={() => ref.current?.showModal()}
         aria-haspopup="dialog"
-        className="rotulo inline-flex min-h-[44px] items-center gap-1.5 text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta"
+        className="rotulo inline-flex min-h-[44px] min-w-[44px] items-center gap-1.5 text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta"
       >
         <span aria-hidden="true">ⓘ</span> {rotulo}
         <span className="sr-only">: {f.nome}</span>
@@ -44,7 +42,7 @@ export function Passaporte({
         <div className="flex h-full flex-col">
           <header className="flex items-start justify-between gap-4 border-b border-linha px-6 py-5">
             <div>
-              <p className="rotulo text-mineral">Passaporte do indicador</p>
+              <p className="rotulo text-mineral">Sobre este dado</p>
               <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug">
                 {f.nome}
               </h2>
@@ -53,12 +51,12 @@ export function Passaporte({
               type="button"
               onClick={() => ref.current?.close()}
               className="rotulo min-h-[44px] min-w-[44px] text-mineral hover:text-obee-tinta"
-              aria-label="Fechar passaporte"
+              aria-label="Fechar"
             >
               ✕
             </button>
           </header>
-          <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={`Passaporte: ${f.nome}`}>
+          <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={`Sobre este dado: ${f.nome}`}>
             <FichaConteudo f={f} ctx={ctx} />
           </div>
         </div>

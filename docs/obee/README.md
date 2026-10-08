@@ -41,6 +41,7 @@ A reconstrução sem rede imprime as validações e termina com código 1 se alg
 | [METODOLOGIA.md](./METODOLOGIA.md) | Perímetros, fórmulas, estados de dado e regras de comparação do piloto |
 | [CATALOGO_COBERTURA.md](./CATALOGO_COBERTURA.md) | Indicadores, fontes, períodos, cobertura e lacunas |
 | [VALIDACAO.md](./VALIDACAO.md) | Verificações executadas, resultados e capturas de tela |
+| [REDESENHO_EDITORIAL.md](./REDESENHO_EDITORIAL.md) | Redesenho editorial do painel: arquitetura em três camadas, frases factuais, referências com pouco ruído, verificação em cinco larguras e limitações |
 | [RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md) | Rodada 6: significado da despesa por matrícula, diagnóstico dos 28 pares, população de 2023, referência nacional calculada, validação internacional, proveniência, antes e depois |
 | [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md) | Rodada de correções: achados, política de conferência 1.1, casos Boa Vista 2024 e Campo Grande 2021, campos vazios, antes e depois |
 | [VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md) | Verificação final: data legível, gate obrigatório de HTML no CI, passagem pelo painel, problema independente em Energia (histórico) |

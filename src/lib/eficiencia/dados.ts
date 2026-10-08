@@ -164,3 +164,55 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     excluidos: g.universo.excluidos.map((e) => ({ nome: e.nome, uf: e.uf, motivo: e.motivo })),
   };
 }
+
+/**
+ * Indicadores que cada tema lê. A exploração de um tema leva ao navegador só as observações, as estatísticas do grupo e as
+ * referências desses indicadores, com as notas reindexadas; a base completa continua na gold, nos CSV e na tabela de Comparar.
+ * Os valores de um indicador são idênticos nos dois payloads: só deixa de ir o que a visão não usa.
+ */
+export const INDICADORES_DO_TEMA: Record<"gastos" | "atendimento" | "resultados" | "comparar", IndicadorId[]> = {
+  gastos: ["edu.despesa.funcao_educacao", "edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula", "edu.despesa.ponte_matricula", "edu.despesa.subfuncao"],
+  atendimento: ["edu.matriculas.rede_municipal", "edu.matriculas.conveniadas_municipais", "edu.atu.rede_municipal"],
+  resultados: ["edu.aprovacao.rede_municipal", "edu.ideb.rede_municipal", "edu.saeb.rede_municipal"],
+  // o comparador lê todas as medidas e a população, mas não a ponte nem a composição por subfunção
+  comparar: [
+    "ctx.populacao.residente",
+    "edu.despesa.funcao_educacao",
+    "edu.despesa.por_habitante",
+    "edu.despesa.aplicacao_direta_por_matricula",
+    "edu.matriculas.rede_municipal",
+    "edu.matriculas.conveniadas_municipais",
+    "edu.atu.rede_municipal",
+    "edu.aprovacao.rede_municipal",
+    "edu.ideb.rede_municipal",
+    "edu.saeb.rede_municipal",
+  ],
+};
+
+export function recortaPayload(d: DadosPainel, indicadores: readonly IndicadorId[]): DadosPainel {
+  const manter = new Set(indicadores.map((i) => d.indicadores.indexOf(i)));
+  const notas: string[] = [];
+  const nova = new Map<number, number>();
+  const remapeia = (i: number) => {
+    if (i < 0) return -1;
+    let j = nova.get(i);
+    if (j === undefined) {
+      j = notas.push(d.notas[i]) - 1;
+      nova.set(i, j);
+    }
+    return j;
+  };
+  const obs = d.obs
+    .filter((o) => manter.has(o[0]))
+    .map((o) => {
+      const c = [...o] as ObsCompacta;
+      c[7] = remapeia(o[7]);
+      c[12] = remapeia(o[12]);
+      return c;
+    });
+  return { ...d, obs, notas, refs: d.refs.filter((r) => manter.has(r[0])), externas: d.externas.filter((e) => manter.has(e[0])) };
+}
+
+export function dadosPainelTema(g: GoldEducacao, tema: keyof typeof INDICADORES_DO_TEMA): DadosPainel {
+  return recortaPayload(dadosPainel(g), INDICADORES_DO_TEMA[tema]);
+}

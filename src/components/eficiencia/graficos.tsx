@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
 import { ROTULO_STATUS, type PontoSerie } from "@/lib/eficiencia/consulta";
 
@@ -12,23 +12,34 @@ import { ROTULO_STATUS, type PontoSerie } from "@/lib/eficiencia/consulta";
  * fica sempre ao lado, porque a dica nunca é a única forma de ler um valor.
  */
 
-function useLargura<T extends HTMLElement>(padrao: number) {
+export function useLargura<T extends HTMLElement>(padrao: number) {
   const ref = useRef<T>(null);
   const [w, setW] = useState(padrao);
+  // antes da primeira medida (HTML do servidor e hidratação), o desenho escala à largura do contêiner por viewBox: a página
+  // nunca ganha rolagem horizontal por causa de um gráfico ainda não medido
+  const [medido, setMedido] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver((es) => {
       const largura = Math.round(es[0].contentRect.width);
-      if (largura > 0) setW(largura);
+      if (largura > 0) {
+        setW(largura);
+        setMedido(true);
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  return [ref, w] as const;
+  return [ref, w, medido] as const;
 }
 
-const COR = {
+/** Dimensões do desenho: em pixels depois de medido; antes, a largura do contêiner, com viewBox para escalar sem estourar. */
+export function dimensoes(medido: boolean, w: number, H: number) {
+  return medido ? { width: w, height: H } : { width: "100%", viewBox: `0 0 ${w} ${H}`, style: { height: "auto" } };
+}
+
+export const COR = {
   selecao: "var(--cor-obee)",
   neutro: "var(--cor-obee-neutro)",
   grade: "var(--cor-grade)",
@@ -53,6 +64,7 @@ export function MiniSerie({
   anotacoes = [],
   referencia,
   rotuloReferencia = "Mediana das capitais",
+  altura = 176,
 }: {
   titulo: string;
   pontos: PontoSerie[];
@@ -62,10 +74,12 @@ export function MiniSerie({
   anotacoes?: Anotacao[];
   referencia?: ReferenciaAnual[];
   rotuloReferencia?: string;
+  /** altura do desenho em px; o texto não encolhe com ela */
+  altura?: number;
 }) {
-  const [ref, w] = useLargura<HTMLDivElement>(320);
+  const [ref, w, medido] = useLargura<HTMLDivElement>(320);
   const [ativo, setAtivo] = useState<number | null>(null);
-  const H = 176;
+  const H = altura;
   const m = { t: 14, r: 14, b: 30, l: 62 };
   const valores = pontos.map((p) => p.valor);
   const temValor = valores.some((v) => v !== null);
@@ -124,7 +138,7 @@ export function MiniSerie({
         onBlur={() => setAtivo(null)}
         className="outline-offset-4"
       >
-        <svg width={w} height={H} aria-hidden="true" className="block overflow-visible">
+        <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block overflow-visible">
           {dom.ticks.map((t) => (
             <g key={t}>
               <line x1={m.l} x2={w - m.r} y1={y(t)} y2={y(t)} stroke={COR.grade} strokeWidth={1} />
@@ -270,21 +284,8 @@ export function MiniSerie({
   );
 }
 
-/* ------------------------------------------------------------------ comparação em pontos */
-
-export type LinhaPontos = { chave: string; rotulo: string; valor: number; selecionada: boolean };
-
-export type ReferenciasGrafico = {
-  mediana: number | null;
-  media: number | null;
-  /** faixa entre o primeiro e o terceiro quartis; só quando o grupo é grande o bastante para exibi-la */
-  faixa: { q1: number; q3: number } | null;
-  /** referências oficiais externas do mesmo universo (por exemplo, o Brasil, rede municipal) */
-  externas?: { rotulo: string; valor: number }[];
-};
-
 /** Marcas 1, 2 e 5 de cada potência de dez dentro do domínio, para o eixo logarítmico. */
-function ticksLog(min: number, max: number): number[] {
+export function ticksLog(min: number, max: number): number[] {
   const out: number[] = [];
   for (let e = Math.floor(Math.log10(min)); e <= Math.ceil(Math.log10(max)); e++) {
     for (const k of [1, 2, 5]) {
@@ -293,199 +294,6 @@ function ticksLog(min: number, max: number): number[] {
     }
   }
   return out.length > 6 ? out.filter((v) => String(v)[0] === "1" || String(v)[0] === "5").slice(0, 6) : out;
-}
-
-export function GraficoPontosPares({
-  linhas,
-  referencias,
-  formata,
-  formataEixo,
-  zero,
-  titulo,
-  escala = "linear",
-  rotuloGrupo = "capitais na comparação",
-}: {
-  linhas: LinhaPontos[];
-  referencias: ReferenciasGrafico;
-  formata: (v: number) => string;
-  formataEixo: (v: number) => string;
-  zero: boolean;
-  titulo: string;
-  escala?: "linear" | "log";
-  rotuloGrupo?: string;
-}) {
-  const [ref, w] = useLargura<HTMLDivElement>(640);
-  const [ativo, setAtivo] = useState<number | null>(null);
-  const estreito = w < 520;
-  const linhaH = 26;
-  const fonte = estreito ? 11.5 : 12;
-  const m = { t: 30, r: estreito ? 22 : 150, b: 8, l: estreito ? Math.min(150, Math.round(w * 0.42)) : 176 };
-  const H = m.t + m.b + linhas.length * linhaH;
-  // área útil estreita (320 px): duas marcas no eixo, para os rótulos não se sobreporem
-  const util = w - m.l - m.r;
-  const { mediana, media, faixa, externas = [] } = referencias;
-  const todos = [...linhas.map((l) => l.valor), ...[mediana, media, faixa?.q1 ?? null, faixa?.q3 ?? null, ...externas.map((e) => e.valor)].filter((v): v is number => v !== null)];
-  const log = escala === "log" && todos.every((v) => v > 0);
-  const dom = log
-    ? { min: Math.min(...todos) * 0.85, max: Math.max(...todos) * 1.15, ticks: ticksLog(Math.min(...todos) * 0.85, Math.max(...todos) * 1.15) }
-    : dominioBonito(todos, { zero, n: estreito ? 3 : 5 });
-  const ticks = util < 200 ? dom.ticks.filter((_, i, a) => i === 0 || i === a.length - 1) : dom.ticks;
-  const lin = escalaLinear([dom.min, dom.max], [m.l, w - m.r]);
-  const x = (v: number) => (log ? m.l + ((Math.log10(v) - Math.log10(dom.min)) / (Math.log10(dom.max) - Math.log10(dom.min))) * (w - m.r - m.l) : lin(v));
-  const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
-  const sel = linhas.findIndex((l) => l.selecionada);
-
-  const linhaDoPonteiro = (e: PointerEvent<SVGRectElement>) => {
-    const r = e.currentTarget.ownerSVGElement!.getBoundingClientRect();
-    const i = Math.floor((e.clientY - r.top - m.t) / linhaH);
-    setAtivo(i >= 0 && i < linhas.length ? i : null);
-  };
-
-  const teclado = (e: KeyboardEvent) => {
-    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
-    e.preventDefault();
-    setAtivo((a) => {
-      if (e.key === "Home") return 0;
-      if (e.key === "End") return linhas.length - 1;
-      const base = a ?? (e.key === "ArrowDown" ? -1 : linhas.length);
-      return Math.max(0, Math.min(linhas.length - 1, base + (e.key === "ArrowDown" ? 1 : -1)));
-    });
-  };
-
-  return (
-    <div ref={ref} className="relative">
-      <div
-        tabIndex={0}
-        role="group"
-        aria-label={`${titulo}. Use as setas para cima e para baixo para percorrer as capitais; a tabela equivalente traz todos os valores.`}
-        onKeyDown={teclado}
-        onBlur={() => setAtivo(null)}
-      >
-        <svg width={w} height={H} aria-hidden="true" className="block">
-          {faixa && <rect x={x(faixa.q1)} y={m.t - 4} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={H - m.b - m.t + 4} fill="var(--cor-obee-fundo)" />}
-          {ticks.map((t, it) => (
-            <g key={t}>
-              <line x1={x(t)} x2={x(t)} y1={m.t - 6} y2={H - m.b} stroke={COR.grade} strokeWidth={1} />
-              <text x={x(t)} y={m.t - 12} textAnchor={it === ticks.length - 1 && estreito ? "end" : "middle"} fontSize={11} fill={COR.eixo}>
-                {formataEixo(t)}
-              </text>
-            </g>
-          ))}
-          {externas.map((e) => (
-            <line key={e.rotulo} x1={x(e.valor)} x2={x(e.valor)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="1.5 3" strokeLinecap="round" />
-          ))}
-          {media !== null && <line x1={x(media)} x2={x(media)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="6 4" />}
-          {mediana !== null && <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 4} y2={H - m.b} stroke={COR.referencia} strokeWidth={2} />}
-          {linhas.map((l, i) => (
-            <g key={l.chave}>
-              {ativo === i && <rect x={0} y={yc(i) - linhaH / 2} width={w} height={linhaH} fill="var(--cor-obee-fundo)" />}
-              <line x1={m.l} x2={x(l.valor)} y1={yc(i)} y2={yc(i)} stroke={COR.grade} strokeWidth={1} />
-              <text
-                x={m.l - 10}
-                y={yc(i)}
-                dy="0.32em"
-                textAnchor="end"
-                fontSize={fonte}
-                fontWeight={l.selecionada ? 700 : 400}
-                fill={l.selecionada ? "var(--cor-obee-tinta)" : "var(--cor-carvao-muted)"}
-              >
-                {l.rotulo}
-              </text>
-              <circle
-                cx={x(l.valor)}
-                cy={yc(i)}
-                r={l.selecionada ? 6.5 : 4.5}
-                fill={l.selecionada ? COR.selecao : COR.neutro}
-                stroke={COR.superficie}
-                strokeWidth={2}
-              />
-              {(l.selecionada || ativo === i) && !estreito && (
-                <text x={w - m.r + 10} y={yc(i)} dy="0.32em" fontSize={12} fontWeight={l.selecionada ? 700 : 400} fill="var(--cor-obee-tinta)">
-                  {formata(l.valor)}
-                </text>
-              )}
-            </g>
-          ))}
-          <rect
-            x={0}
-            y={m.t}
-            width={w}
-            height={linhas.length * linhaH}
-            fill="transparent"
-            onPointerMove={(e) => linhaDoPonteiro(e)}
-            // toque: o valor da linha tocada fica visível até o próximo toque (o ponteiro de toque sai do elemento ao levantar o dedo)
-            onPointerDown={(e) => linhaDoPonteiro(e)}
-            onPointerLeave={(e) => {
-              if (e.pointerType === "mouse") setAtivo(null);
-            }}
-          />
-        </svg>
-        {ativo !== null && (
-          <div
-            role="status"
-            className="pointer-events-none absolute z-10 border border-linha bg-superficie px-3 py-2 text-xs shadow-sm"
-            style={{ top: yc(ativo) + 14, left: Math.min(Math.max(0, x(linhas[ativo].valor) - 70), Math.max(0, w - 200)) }}
-          >
-            <p className="rotulo text-mineral">{linhas[ativo].rotulo}</p>
-            <p className="mt-0.5 text-sm font-semibold text-obee-tinta">{formata(linhas[ativo].valor)}</p>
-          </div>
-        )}
-      </div>
-      <ul className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-carvao-muted">
-        {sel >= 0 && (
-          <li className="inline-flex items-center gap-1.5">
-            <svg width="14" height="14" aria-hidden="true">
-              <circle cx="7" cy="7" r="5.5" fill={COR.selecao} />
-            </svg>
-            Capital selecionada{estreito ? `: ${formata(linhas[sel].valor)}` : ""}
-          </li>
-        )}
-        <li className="inline-flex items-center gap-1.5">
-          <svg width="14" height="14" aria-hidden="true">
-            <circle cx="7" cy="7" r="4" fill={COR.neutro} />
-          </svg>
-          Demais {rotuloGrupo}
-        </li>
-        {mediana !== null && (
-          <li className="inline-flex items-center gap-1.5">
-            <svg width="22" height="14" aria-hidden="true">
-              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="2" />
-            </svg>
-            Mediana: {formata(mediana)}
-          </li>
-        )}
-        {media !== null && (
-          <li className="inline-flex items-center gap-1.5">
-            <svg width="22" height="14" aria-hidden="true">
-              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="6 4" />
-            </svg>
-            Média simples: {formata(media)}
-          </li>
-        )}
-        {faixa && (
-          <li className="inline-flex items-center gap-1.5">
-            <svg width="22" height="14" aria-hidden="true">
-              <rect x="2" y="2" width="18" height="10" fill="var(--cor-obee-fundo)" stroke={COR.grade} />
-            </svg>
-            Faixa onde estão os 50% centrais dos valores: {formata(faixa.q1)} a {formata(faixa.q3)}
-          </li>
-        )}
-        {externas.map((e) => (
-          <li key={e.rotulo} className="inline-flex items-center gap-1.5">
-            <svg width="22" height="14" aria-hidden="true">
-              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="1.5 3" strokeLinecap="round" />
-            </svg>
-            {e.rotulo}: {formata(e.valor)}
-          </li>
-        ))}
-      </ul>
-      {log && (
-        <p className="mt-1 text-xs text-carvao-muted">
-          Escala logarítmica: cada marca do eixo vale 2 ou 2,5 vezes a anterior; distâncias iguais representam razões iguais, não diferenças iguais. A escala linear, padrão, mostra a diferença real em reais.
-        </p>
-      )}
-    </div>
-  );
 }
 
 /* ------------------------------------------------------------------ barras de composição */

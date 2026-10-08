@@ -27,6 +27,11 @@ const ROTAS_OBRIGATORIAS = [
   "setor-eletrico.html",
   "setor-eletrico/agua-e-clima/chuva-e-temperatura.html",
   "eficiencia-estatal/educacao-municipal-capitais.html",
+  "eficiencia-estatal/educacao-municipal-capitais/gastos.html",
+  "eficiencia-estatal/educacao-municipal-capitais/atendimento.html",
+  "eficiencia-estatal/educacao-municipal-capitais/resultados.html",
+  "eficiencia-estatal/educacao-municipal-capitais/comparar.html",
+  "eficiencia-estatal/educacao-municipal-capitais/metodos.html",
 ];
 /** Piso de páginas do setor elétrico: um build que gerou muito menos que isto está incompleto. */
 const MINIMO_PAGINAS_SETOR_ELETRICO = 100;
@@ -64,15 +69,15 @@ describe(`HTML gerado pelo build (${EXIGIR ? "verificação obrigatória" : "mod
     expect(violacoes).toEqual([]);
   }, LIMITE_ANALISE_MS);
 
-  it("OBEE: a página do painel pré-renderizada obedece ao mesmo contrato", (ctx) => {
+  it("OBEE: as páginas do painel pré-renderizadas (panorama e as cinco visões) obedecem ao mesmo contrato", (ctx) => {
     if (!temBuild && !EXIGIR) ctx.skip(AVISO_SEM_BUILD);
     if (!cobertura.obee) {
       if (EXIGIR) expect.fail(`rota do painel ausente do build: ${join(APP, "eficiencia-estatal", "educacao-municipal-capitais.html")}`);
       ctx.skip("build sem a rota do painel OBEE");
     }
-    const { analises, violacoes } = analisa([cobertura.obee as string]);
-    expect(readFileSync(cobertura.obee as string, "utf-8")).toContain("Educação municipal nas capitais");
-    console.info(`HTML verificado (OBEE): 1 página; literais: ${resumoLiterais(analises)}`);
+    const { analises, violacoes } = analisa(cobertura.obeePaginas);
+    expect(readFileSync(cobertura.obee as string, "utf-8")).toContain("Educação nas capitais");
+    console.info(`HTML verificado (OBEE): ${cobertura.obeePaginas.length} páginas; literais: ${resumoLiterais(analises)}`);
     expect(violacoes).toEqual([]);
   });
 });

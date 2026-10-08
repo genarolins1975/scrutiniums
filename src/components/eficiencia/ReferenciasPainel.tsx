@@ -26,78 +26,6 @@ export function listaCapitais(cs: CapitalPainel[]): string {
   return cs.map(nomeCap).join(", ");
 }
 
-/** Extremos com empate: "menor valor observado entre as 26 capitais: Belém (PA)". */
-export function Extremos({ r, m, rotuloGrupo }: { r: RefGrupo; m: MedidaId; rotuloGrupo: string }) {
-  if (r.minimo === null || r.maximo === null) return null;
-  return (
-    <>
-      Menor valor observado {rotuloGrupo}: {formata(m, r.minimo)} ({listaCapitais(r.capitaisMinimo)}). Maior: {formata(m, r.maximo)} ({listaCapitais(r.capitaisMaximo)}).
-    </>
-  );
-}
-
-/** Linha de referência do grupo para um cartão: mediana, média, tamanho do grupo e posição descritiva do valor. */
-export function RefLinha({ r, m, valor, elegivel, rotuloGrupo }: { r: RefGrupo | null; m: MedidaId; valor: number | null; elegivel: boolean; rotuloGrupo: string }) {
-  if (!r || r.mediana === null) {
-    return <p className="mt-2 text-xs leading-snug text-carvao-muted">Sem referência do grupo: nenhuma capital do grupo tem valor observado e elegível neste recorte.</p>;
-  }
-  const d = valor !== null && elegivel ? diferenca(m, valor, r.mediana) : null;
-  const eMin = valor !== null && elegivel && r.minimo !== null && valor === r.minimo;
-  const eMax = valor !== null && elegivel && r.maximo !== null && valor === r.maximo;
-  return (
-    <div className="mt-2 border-t border-linha pt-2 text-xs leading-snug text-carvao-muted">
-      <p>
-        <span className="font-semibold text-obee-tinta">Mediana {rotuloGrupo}:</span> {formata(m, r.mediana)}
-        {r.media !== null && <> · média simples {formata(m, r.media)}</>} · {r.n} {r.n === 1 ? "capital" : "capitais"} na comparação
-        {r.n < r.noGrupo ? ` (de ${r.noGrupo})` : ""}
-      </p>
-      {r.quartisExibicao && r.q1 !== null && r.q3 !== null && (
-        <p className="mt-0.5">
-          50% centrais dos valores: {formata(m, r.q1)} a {formata(m, r.q3)}
-        </p>
-      )}
-      {d && <p className="mt-0.5 text-obee-tinta">Este valor: {d.texto}.</p>}
-      {(eMin || eMax) && <p className="mt-0.5 text-obee-tinta">{eMin ? "Menor valor observado" : "Maior valor observado"} entre as {r.n} capitais na comparação.</p>}
-      {valor !== null && !elegivel && <p className="mt-0.5 text-obee-tinta">Valor fora das comparações: não entra na referência do grupo.</p>}
-    </div>
-  );
-}
-
-/** Resumo completo do grupo, sob o gráfico: média, mediana, extremos, faixa central, razão agregada e cobertura. */
-export function ResumoGrupo({
-  r,
-  m,
-  rotuloGrupo,
-  textoRazao,
-}: {
-  r: RefGrupo;
-  m: MedidaId;
-  rotuloGrupo: string;
-  /** frase da razão agregada, quando a medida tem numerador e denominador publicados */
-  textoRazao?: ReactNode;
-}) {
-  const itens: [string, ReactNode, boolean?][] = [
-    ["Capitais na comparação", `${r.n} de ${r.noGrupo} no grupo${r.comValor !== r.n ? `; ${r.comValor} com valor` : ""}`],
-    ["Mediana", r.mediana === null ? "sem valor" : formata(m, r.mediana)],
-    ["Média simples", r.media === null ? "sem valor" : formata(m, r.media)],
-    ["Menor valor", r.minimo === null ? "sem valor" : `${formata(m, r.minimo)} · ${listaCapitais(r.capitaisMinimo)}`],
-    ["Maior valor", r.maximo === null ? "sem valor" : `${formata(m, r.maximo)} · ${listaCapitais(r.capitaisMaximo)}`],
-  ];
-  if (r.quartisExibicao && r.q1 !== null && r.q3 !== null) itens.push(["50% centrais dos valores", `${formata(m, r.q1)} a ${formata(m, r.q3)}`]);
-  else itens.push(["50% centrais dos valores", `não exibido: com ${r.n} valores, a faixa entre quartis daria precisão aparente (política de apresentação, limiar de 8)`]);
-  if (r.razaoAgregada !== null && textoRazao) itens.push(["Razão agregada do grupo", textoRazao, true]);
-  return (
-    <dl className="grid border-l border-t border-linha bg-superficie text-sm sm:grid-cols-2 lg:grid-cols-3" aria-label={`Resumo do grupo ${rotuloGrupo}`}>
-      {itens.map(([t, v, largo]) => (
-        <div key={t} className={`border-b border-r border-linha px-3 py-2.5 ${largo ? "sm:col-span-2 lg:col-span-3" : ""}`}>
-          <dt className="text-xs text-carvao-muted">{t}</dt>
-          <dd className="mt-0.5 leading-snug text-obee-tinta">{v}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-}
-
 /** Referências nacionais oficiais: mesmo universo (com diferença, na unidade da escala) ou outro universo (só ao lado). */
 export function ReferenciasNacionais({ externas, valor, m, nomeCapital }: { externas: NivelExterno[]; valor: number | null; m: MedidaId; nomeCapital: string }) {
   if (!externas.length) return null;
@@ -124,24 +52,6 @@ export function ReferenciasNacionais({ externas, valor, m, nomeCapital }: { exte
         );
       })}
     </ul>
-  );
-}
-
-/** Referência nacional em uma linha, para o cartão: valor da referência e diferença descritiva quando o universo é o mesmo. */
-export function RefNacionalLinha({ externas, valor, elegivel, m, nomeCapital }: { externas: NivelExterno[]; valor: number | null; elegivel: boolean; m: MedidaId; nomeCapital: string }) {
-  if (!externas.length) return null;
-  return (
-    <div className="mt-1.5 text-xs leading-snug text-carvao-muted">
-      {externas.map((e) => {
-        const d = e.tipo === "nacional_mesmo_universo" && valor !== null && elegivel ? diferenca(m, valor, e.valor, "referência nacional") : null;
-        return (
-          <p key={e.id}>
-            <span className="font-semibold text-obee-tinta">{e.rotulo}:</span> {formataExterna(m, e.valor)}
-            {e.tipo === "nacional_outro_universo" ? ` (${e.unidade}; outro universo, sem diferença com a capital)` : d ? ` · ${nomeCapital}: ${d.texto}` : ""}
-          </p>
-        );
-      })}
-    </div>
   );
 }
 
@@ -180,30 +90,41 @@ export function ReferenciaNacionalCalculadaBloco({ referencia, valor, elegivel, 
     <div className="border-l-2 border-obee-neutro pl-3 text-sm leading-relaxed text-obee-tinta">
       <p className="rotulo !text-[0.66rem] text-mineral">Calculado pelo OBEE com fontes oficiais</p>
       <p>
-        <span className="font-semibold">Despesa municipal em Educação por habitante, municípios com dados elegíveis, {referencia.ano}:</span> mediana {reaisInteiro(g.mediana ?? 0)}, média simples {reaisInteiro(g.media ?? 0)}, razão agregada {reaisInteiro(g.razao_agregada ?? 0)}.
+        <span className="font-semibold">Despesa municipal em Educação por habitante, municípios com dados elegíveis, {referencia.ano}:</span> mediana {reaisInteiro(g.mediana ?? 0)}, média simples {reaisInteiro(g.media ?? 0)}, razão agregada{" "}
+        {reaisInteiro(g.razao_agregada ?? 0)}.
       </p>
       <p className="mt-1 text-xs text-carvao-muted">
-        {referencia.rotulo_origem}. Mesmo conceito das capitais: despesa liquidada na função Educação (DCA, Anexo I-E, exceto intraorçamentárias) ÷ população residente estimada do IBGE; só entra o município cuja DCA confere com o RREO. A razão agregada soma a despesa e a população dos mesmos {inteiro(g.n_municipios)} municípios elegíveis. Não é indicador do IBGE nem da STN e não é meta.
+        {referencia.rotulo_origem}: {inteiro(g.n_municipios)} de {inteiro(ref_total(referencia))} municípios ({percentual(cob.municipios_pct ?? 0, 1)}), {percentual(cob.populacao_pct ?? 0, 1)} da população. Não é indicador do IBGE nem da STN e não é meta.
       </p>
-      <p className="mt-1 text-xs text-carvao-muted">
-        Cobertura: {inteiro(g.n_municipios)} de {inteiro(referencia.n_municipios_total)} municípios ({percentual(cob.municipios_pct ?? 0, 1)}), {percentual(cob.populacao_pct ?? 0, 1)} da população e {percentual(cob.despesa_pct ?? 0, 1)} da despesa declarada ({reaisCurto(referencia.despesa_declarada_total)}). Excluídos, por motivo:{" "}
-        {Object.entries(referencia.exclusoes).map(([k, v]) => `${ROTULO_EXCLUSAO_CURTO[k] ?? v.motivo} (${inteiro(v.n)})`).join("; ")}. Município excluído não é imputado nem tratado como zero.
-      </p>
-      <ul className="mt-2 space-y-0.5 text-xs text-carvao-muted">
-        {referencia.grupos.map((x) => (
-          <li key={x.id}>
-            <span className="font-semibold text-obee-tinta">{x.rotulo}</span> ({inteiro(x.n_municipios)}): mediana {reaisInteiro(x.mediana ?? 0)}, razão agregada {reaisInteiro(x.razao_agregada ?? 0)}. {x.nota}
-          </li>
-        ))}
-      </ul>
       {dif && (
-        <p className="mt-2 text-xs">
-          {nomeCapital}: {dif.mediana}{dif.agregada ? `; ${dif.agregada}` : ""}. A mediana nacional mistura municípios de todos os portes e responsabilidades educacionais; a diferença é descritiva, não avaliação.
+        <p className="mt-1 text-xs">
+          {nomeCapital}: {dif.mediana}
+          {dif.agregada ? `; ${dif.agregada}` : ""}. A mediana nacional mistura municípios de todos os portes e responsabilidades educacionais; a diferença é descritiva, não avaliação.
         </p>
       )}
+      <details className="mt-1">
+        <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Cobertura, grupos e exclusões</summary>
+        <p className="text-xs text-carvao-muted">
+          Mesmo conceito das capitais: despesa liquidada na função Educação (DCA, Anexo I-E, exceto intraorçamentárias) ÷ população residente estimada do IBGE; só entra o município cuja DCA confere com o RREO. A razão agregada soma a despesa e a população dos mesmos{" "}
+          {inteiro(g.n_municipios)} municípios elegíveis.
+        </p>
+        <p className="mt-1 text-xs text-carvao-muted">
+          Cobertura: {percentual(cob.municipios_pct ?? 0, 1)} dos municípios, {percentual(cob.populacao_pct ?? 0, 1)} da população e {percentual(cob.despesa_pct ?? 0, 1)} da despesa declarada ({reaisCurto(referencia.despesa_declarada_total)}). Excluídos, por
+          motivo: {Object.entries(referencia.exclusoes).map(([k, v]) => `${ROTULO_EXCLUSAO_CURTO[k] ?? v.motivo} (${inteiro(v.n)})`).join("; ")}. Município excluído não é imputado nem tratado como zero.
+        </p>
+        <ul className="mt-2 space-y-0.5 text-xs text-carvao-muted">
+          {referencia.grupos.map((x) => (
+            <li key={x.id}>
+              <span className="font-semibold text-obee-tinta">{x.rotulo}</span> ({inteiro(x.n_municipios)}): mediana {reaisInteiro(x.mediana ?? 0)}, razão agregada {reaisInteiro(x.razao_agregada ?? 0)}. {x.nota}
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }
+
+const ref_total = (r: ReferenciaNacionalCalculada) => r.n_municipios_total;
 
 function formataExterna(m: MedidaId, v: number): string {
   if (m === "despesa_mat") return reaisInteiro(v);
@@ -301,5 +222,37 @@ export function SemReferencia({ medida, motivo }: { medida: MedidaId; motivo: st
       <br />
       {motivo}
     </p>
+  );
+}
+
+/**
+ * Referências do grupo em linha, sem caixas: mediana, média simples, menor e maior valor (com a capital), cobertura e, quando
+ * informativa, a faixa dos 50% centrais. A razão agregada, que é outra conta, vem em frase própria logo abaixo, para não se
+ * confundir com a média simples. Nada aqui é meta, padrão ou nota.
+ */
+export function ReferenciasDoGrupo({ r, m, textoRazao }: { r: RefGrupo; m: MedidaId; textoRazao?: ReactNode }) {
+  const itens: [string, ReactNode][] = [
+    ["Mediana", r.mediana === null ? "sem valor" : formata(m, r.mediana)],
+    ["Média simples", r.media === null ? "sem valor" : formata(m, r.media)],
+    ["Menor valor", r.minimo === null ? "sem valor" : `${formata(m, r.minimo)} · ${listaCapitais(r.capitaisMinimo)}`],
+    ["Maior valor", r.maximo === null ? "sem valor" : `${formata(m, r.maximo)} · ${listaCapitais(r.capitaisMaximo)}`],
+    ["Capitais na comparação", `${r.n} de ${r.noGrupo}`],
+  ];
+  if (r.quartisExibicao && r.q1 !== null && r.q3 !== null) itens.push(["Metade central", `${formata(m, r.q1)} a ${formata(m, r.q3)}`]);
+  return (
+    <div>
+      <dl className="grid grid-cols-1 gap-x-8 gap-y-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+        {itens.map(([t, v]) => (
+          <div key={t} className="border-t border-linha pt-2">
+            <dt className="text-xs text-carvao-muted">{t}</dt>
+            <dd className="mt-0.5 leading-snug text-obee-tinta">{v}</dd>
+          </div>
+        ))}
+      </dl>
+      {!(r.quartisExibicao && r.q1 !== null) && (
+        <p className="mt-2 text-xs leading-snug text-carvao-muted">Com {r.n} valores, a faixa entre quartis daria precisão aparente: ela só é exibida a partir de 8 valores.</p>
+      )}
+      {r.razaoAgregada !== null && textoRazao && <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-obee-tinta">{textoRazao}</p>}
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+// OBSOLETO desde o redesenho editorial: roteiro da interface de página única (rodadas 2 a 6). Para a interface atual, use interacoes-redesenho.mjs.
 // Capturas do painel Educação municipal nas capitais, por recorte e largura. Uso: node capturas-comparacoes.mjs <base_url> <pasta> [prefixo] [lista]
 // Cada captura recorta a seção pelo id (clip de página, sem screenshot de elemento, que trava em contêineres com rolagem).
 import { createRequire } from "node:module";

@@ -325,6 +325,9 @@ describe("neutralidade do texto público", () => {
     ...arquivos(join(process.cwd(), "src/components/eficiencia")),
     ...arquivos(join(process.cwd(), "src/app/eficiencia-estatal")),
     join(process.cwd(), "src/lib/eficiencia/consulta.ts"),
+    join(process.cwd(), "src/lib/eficiencia/frases.ts"),
+    join(process.cwd(), "src/lib/eficiencia/panorama.ts"),
+    join(process.cwd(), "src/lib/eficiencia/visao.ts"),
   ];
   for (const f of fontes) {
     it(`sem linguagem avaliativa em ${f.replace(process.cwd() + "/", "")}`, () => {

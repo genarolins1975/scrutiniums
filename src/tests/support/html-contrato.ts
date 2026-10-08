@@ -197,11 +197,14 @@ export function coberturaDoBuild(app: string, rotasObrigatorias: string[], minim
   const setor = paginas(join(app, "setor-eletrico"));
   if (fs.existsSync(join(app, "setor-eletrico.html"))) setor.push(join(app, "setor-eletrico.html"));
   const obee = join(app, "eficiencia-estatal", "educacao-municipal-capitais.html");
+  // o painel tem uma rota por visão (panorama, gastos, atendimento, resultados, comparar, métodos): todas obedecem ao contrato
+  const obeePaginas = paginas(join(app, "eficiencia-estatal", "educacao-municipal-capitais"));
+  if (fs.existsSync(obee)) obeePaginas.unshift(obee);
   const erros: string[] = [];
   if (!existe) erros.push(`${app} não existe: o CI precisa gerar o build (npm run build) antes dos testes`);
   else {
     if (faltando.length) erros.push(`rotas esperadas ausentes do build: ${faltando.join(", ")}`);
     if (setor.length < minimoSetorEletrico) erros.push(`poucas páginas do setor elétrico no build (${setor.length}); mínimo ${minimoSetorEletrico}`);
   }
-  return { existe, faltando, setor, obee: fs.existsSync(obee) ? obee : null, erros };
+  return { existe, faltando, setor, obee: fs.existsSync(obee) ? obee : null, obeePaginas, erros };
 }

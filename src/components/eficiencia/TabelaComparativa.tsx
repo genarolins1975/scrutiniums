@@ -13,12 +13,10 @@ import {
   type ColunaId,
   type DadosPainel,
   type Disciplina,
-  type Grupo,
   type Indice,
   type LinhaComparativa,
   type MedidaId,
   type Moeda,
-  type CapitalPainel,
 } from "@/lib/eficiencia/consulta";
 import { inteiro, percentual } from "@/lib/eficiencia/formato";
 import type { EtapaId } from "@/lib/eficiencia/tipos";
@@ -47,8 +45,7 @@ export function TabelaComparativa({
   etapa,
   moeda,
   disc,
-  grupo,
-  cap,
+  destacadas,
   medida,
   ordem,
   decrescente,
@@ -64,8 +61,8 @@ export function TabelaComparativa({
   etapa: EtapaId;
   moeda: Moeda;
   disc: Disciplina;
-  grupo: Grupo;
-  cap: CapitalPainel;
+  /** capitais destacadas (poucas), sem tirar o contexto do grupo */
+  destacadas: string[];
   medida: MedidaId;
   ordem: ColunaId | "alfabetica";
   decrescente: boolean;
@@ -75,11 +72,11 @@ export function TabelaComparativa({
   aoSelecionar: (id: string) => void;
   aoBaixar: () => void;
 }) {
-  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, grupo, cap, medida), [ix, ano, etapa, moeda, disc, grupo, cap, medida]);
+  const t = useMemo(() => tabelaComparativa(ix, ano, etapa, moeda, disc, "todas", dados.capitais[0], medida), [ix, ano, etapa, moeda, disc, dados.capitais, medida]);
   const linhas = useMemo(() => ordenaTabela(t.linhas, ordem, decrescente), [t.linhas, ordem, decrescente]);
   const colunas = COLUNAS.filter((c) => visao === "todas" || c.grupo === visao);
   const colSel = COLUNAS.find((c) => c.medida === medida)?.id;
-  const nomeGrupo = grupo === "regiao" ? `capitais da região ${dados.regioes[cap.regiao]}` : "todas as capitais estaduais";
+  const nomeGrupo = "todas as capitais estaduais";
   const resultadoSemEscopo = !["anos_iniciais", "anos_finais"].includes(etapa);
   /** em tela estreita, a visão "Todas" mostra só as medidas centrais; as demais aparecem ao escolher um grupo de colunas */
   const esconde = (c: ColunaDef) => (visao === "todas" && !c.central ? "hidden md:table-cell" : "");
@@ -133,7 +130,7 @@ export function TabelaComparativa({
         <p className="mt-1 text-xs text-carvao-muted md:hidden">Em tela estreita, a visão Todas mostra as medidas centrais de gasto e matrículas. Escolha um grupo de colunas para ver população, atendimento e resultados.</p>
       )}
       <p className="mt-1 text-xs text-carvao-muted" id="aviso-rolagem">
-        A tabela rola na horizontal e na vertical dentro da caixa; a capital fica visível. Clique no título de uma coluna para ordenar; clique no nome da capital para vê-la nos números de orientação.
+        A tabela rola na horizontal e na vertical dentro da caixa; a capital fica visível. Clique no título de uma coluna para ordenar; clique no nome da capital para destacá-la (ou retirar o destaque) no gráfico e na tabela.
       </p>
       <div
         className="tabela-scroll mt-3 max-h-[40rem] overflow-y-auto border border-linha"
@@ -179,7 +176,7 @@ export function TabelaComparativa({
           </thead>
           <tbody>
             {linhas.map((l) => (
-              <LinhaTabela key={l.cap.id} l={l} colunas={colunas} colSel={colSel} selecionada={l.cap.id === cap.id} aoSelecionar={aoSelecionar} esconde={esconde} />
+              <LinhaTabela key={l.cap.id} l={l} colunas={colunas} colSel={colSel} selecionada={destacadas.includes(l.cap.id)} aoSelecionar={aoSelecionar} esconde={esconde} />
             ))}
           </tbody>
           <tfoot className="bg-papel">
@@ -282,7 +279,7 @@ function LinhaTabela({
           className="inline-flex min-h-[44px] items-center text-left text-obee-dark underline underline-offset-2 hover:text-obee-tinta"
         >
           {l.cap.nome} ({l.cap.uf})
-          <span className="sr-only">{selecionada ? ", capital selecionada" : ", selecionar esta capital nos números de orientação"}</span>
+          <span className="sr-only">{selecionada ? ", capital destacada; ativar retira o destaque" : ", destacar esta capital"}</span>
         </button>
       </th>
       {colunas.map((c) => (

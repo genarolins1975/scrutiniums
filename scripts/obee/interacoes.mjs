@@ -1,3 +1,4 @@
+// OBSOLETO desde o redesenho editorial: roteiro da interface de página única (rodadas 2 a 6). Para a interface atual, use interacoes-redesenho.mjs.
 // Verificação de interações reais do painel. Uso: node interacoes.mjs <base_url> <pasta>
 import { createRequire } from "node:module";
 import { readFileSync, mkdirSync } from "node:fs";
