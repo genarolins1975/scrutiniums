@@ -1370,7 +1370,7 @@ export const COLUNAS_DECOMPOSICAO: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Reservatório", tipo: "texto" },
   { id: "parte", rotulo: "Parte", tipo: "texto", categorica: true },
   { id: "delta", rotulo: "Variação da EAR", tipo: "numero", unidade: "MWmês", casas: 1 },
-  { id: "cod", rotulo: "Código da usina", tipo: "texto" },
+  { id: "cod", rotulo: "Código da usina", tipo: "texto", nivel: "analisar" },
 ];
 
 export function linhasDecomposicao(d: AguaDecomposicaoEar): LinhaTabela[] {
@@ -1520,7 +1520,7 @@ export const COLUNAS_RESERVATORIOS: ColunaTabela[] = [
   { id: "serie_pct", rotulo: "Dias dentro do arredondamento, série", tipo: "percentual", casas: 1 },
   { id: "convencao", rotulo: "Convenção da defluência", tipo: "texto", categorica: true },
   { id: "balanco", rotulo: "Balanço calculado", tipo: "texto", categorica: true },
-  { id: "id", rotulo: "Identificador no ONS", tipo: "texto" },
+  { id: "id", rotulo: "Identificador no ONS", tipo: "texto", nivel: "analisar" },
 ];
 
 export function linhasReservatorios(lista: readonly AguaReservatorio[]): LinhaTabela[] {

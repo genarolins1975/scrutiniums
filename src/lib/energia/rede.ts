@@ -1392,7 +1392,7 @@ export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
 
 export const COLUNAS_ATLS: ColunaTabela[] = [
   { id: "nome", rotulo: "Fluxo", tipo: "texto" },
-  { id: "fluxo", rotulo: "Sigla do ONS", tipo: "texto" },
+  { id: "fluxo", rotulo: "Sigla do ONS", tipo: "texto", nivel: "analisar" },
   { id: "definicao", rotulo: "Definição conferida", tipo: "texto" },
   { id: "publicado_no_ultimo_mes", rotulo: "Publicado no último mês", tipo: "texto", categorica: true },
   { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "data" },

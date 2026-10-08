@@ -43,6 +43,8 @@ export type ColunaTabela = {
   buscavel?: boolean;
   /** Pode ser ordenada (padrão: sim). */
   ordenavel?: boolean;
+  /** Nível mínimo de profundidade em que a coluna aparece na tela (código, hash). O arquivo exportado leva todas as colunas. */
+  nivel?: "analisar" | "auditar";
 };
 
 export type Ordem = { coluna: string; direcao: Direcao } | null;

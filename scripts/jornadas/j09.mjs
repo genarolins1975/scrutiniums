@@ -242,17 +242,18 @@ export default {
         j.afirmar(m, `a página não traz o texto sobre ${nome}`);
         return m[0];
       };
-      const sla = achar(/SLA é o prazo derivado da frequência[^.]*\. Conjunto sem frequência legível fica sem SLA\./, "o SLA");
-      const regra = achar(/Situação e atraso valem para a data de referência da publicação, e o prazo é o fim do último período disponível mais a tolerância da cadência/, "o prazo do atraso");
-      const csv = achar(/“sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia/, "ausência e CSV");
+      const sla = achar(/O prazo vem da frequência que a própria fonte declara, somada a uma tolerância[^.]*\. A tolerância se soma ao fim do período seguinte ao último disponível\. Conjunto sem frequência legível fica sem prazo declarado\./, "o prazo");
+      const regra = achar(/A situação vale para a data de referência dos dados, não para o dia em que você lê/, "a data a que a situação se refere");
+      const csv = achar(/“Sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados, a ausência é célula vazia/, "ausência e CSV");
       return `SLA: "${sla.slice(0, 150)}..."; atraso: "${regra.slice(0, 110)}..."; ausência: "${csv}"`;
     });
 
     await j.passo("Compara a data de referência com as datas de captura e de processamento mostradas na página", async () => {
       const texto = normaliza(await p.locator("main").innerText());
-      const cab = texto.match(/Data de referência da publicação: (\d\d\/\d\d\/\d{4})\. Publicação processada em ([^()]+) \(Brasília\)\. Última captura registrada: ([^()]+) \(Brasília\)/);
+      const cab = texto.match(/Data de referência dos dados: (\d\d\/\d\d\/\d{4})\. Catálogo e saúde processados em ([^()]+) \(Brasília\)\. Última captura registrada: ([^()]+) \(Brasília\)/);
       j.afirmar(cab, "não achei a linha de datas do cabeçalho");
-      const rodape = normaliza(await p.getByText(/Catálogo e manifesto publicados em/).first().innerText()).match(/Catálogo e manifesto publicados em ([^()]+) \(Brasília\)/);
+      // o cabeçalho e o rodapé usam o mesmo rótulo; o rodapé é o último
+      const rodape = normaliza(await p.getByText(/Catálogo e saúde processados em/).last().innerText()).match(/Catálogo e saúde processados em ([^()]+) \(Brasília\)/);
       j.afirmar(rodape, "não achei a data de publicação do rodapé");
       const [, ref, gold, ultima] = cab;
       const capturaLinha = guardado.atrasado.captura;

@@ -105,7 +105,7 @@ export default function DadosSaudePage() {
               comoInterpretar={
                 <>
                   Em dia quer dizer que o período seguinte ao último disponível ainda está dentro do prazo (o fim desse período mais a tolerância da frequência declarada). Sem prazo declarado é a fonte que não declara frequência: o observatório não inventa uma. Revisão é a troca de valor de uma
-                  mesma série e período entre capturas do mesmo arquivo; a captura anterior continua guardada. Atrasado é a fonte sem período novo, e a causa só é afirmada quando a coleta dá evidência.
+                  mesma série e período entre capturas do mesmo arquivo; a captura anterior continua guardada. Atrasado é a fonte sem período novo, e a causa só é afirmada quando a coleta dá evidência. “Sem dado” indica ausência na fonte, nunca zero; nos arquivos baixados, a ausência é célula vazia.
                 </>
               }
               naoConcluir={

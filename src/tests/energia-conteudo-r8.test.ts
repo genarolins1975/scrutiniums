@@ -10,6 +10,7 @@ import DatasetPage, { generateStaticParams as paramsDatasets } from "@/app/setor
 import PaginaEmpresas from "@/app/setor-eletrico/empresas/page";
 import PaginaInclusao from "@/app/setor-eletrico/inclusao-energetica/page";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { conjuntoLegivel } from "@/lib/energia/evidencia";
 import * as R from "@/lib/energia/rede";
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
@@ -124,5 +125,30 @@ describe("Ficha de conjunto de dados: listas de definição válidas (axe defini
       if (e.length) ruins.push(`${dataset}: ${Array.from(new Set(e)).join("; ")}`);
     }
     expect(ruins).toEqual([]);
+  });
+});
+
+describe("TabelaInterativa: coluna com nível mínimo de profundidade", () => {
+  const colunas = [
+    { id: "nome", rotulo: "Registro", tipo: "texto" as const },
+    { id: "valor", rotulo: "Valor", tipo: "numero" as const, casas: 1 },
+    { id: "hash", rotulo: "Impressão digital", tipo: "texto" as const, nivel: "auditar" as const },
+    { id: "cod", rotulo: "Código", tipo: "texto" as const, nivel: "analisar" as const },
+  ];
+  const linhas = [{ id: "a", nome: "B0 W1 SE", valor: 12.34, hash: "ab12", cod: "X_Y" }];
+  const h = renderToStaticMarkup(createElement(TabelaInterativa, { titulo: "Teste de coluna por nível", colunas, linhas, chaveLinha: "id", fonte: "Teste", versao: "v1", nomeArquivo: "teste" }));
+
+  it("marca cabeçalho e célula com o nível, e deixa as demais colunas sem marca", () => {
+    expect(h).toMatch(/<th[^>]*data-nivel="auditar"[^>]*>[\s\S]*?Impressão digital/);
+    expect(h).toMatch(/<td[^>]*data-nivel="auditar"[^>]*>ab12/);
+    expect(h).toMatch(/<td[^>]*data-nivel="analisar"[^>]*>X_Y/);
+    expect(h).not.toMatch(/<th[^>]*data-nivel="[a-z]+"[^>]*>[\s\S]{0,400}?Valor/);
+  });
+
+  it("a coluna continua no HTML (busca, impressão e leitura sem JavaScript) e a regra de CSS a esconde só em Entender", () => {
+    expect(h).toContain("ab12");
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf-8");
+    expect(css).toMatch(/\[data-modo="entender"\] \[data-nivel="analisar"\]/);
+    expect(css).toMatch(/\[data-modo="analisar"\] \[data-nivel="auditar"\]/);
   });
 });

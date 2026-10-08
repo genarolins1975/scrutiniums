@@ -449,6 +449,7 @@ export function TabelaInterativa({
                   <th
                     key={c.id}
                     scope="col"
+                    data-nivel={c.nivel}
                     aria-sort={ativa && ordem ? (ordem.direcao === "asc" ? "ascending" : "descending") : undefined}
                     className={`border-b-2 border-linha bg-superficie px-2 align-bottom font-medium ${numerica ? "min-w-[7rem] text-right" : "text-left"} ${
                       ativa ? "text-carvao" : "text-mineral"
@@ -534,7 +535,7 @@ export function TabelaInterativa({
                         );
                       }
                       return (
-                        <td key={c.id} className={`tc ${numerica ? "tc-n" : c.tipo === "data" ? "tc-d" : "tc-t"}`}>
+                        <td key={c.id} data-nivel={c.nivel} className={`tc ${numerica ? "tc-n" : c.tipo === "data" ? "tc-d" : "tc-t"}`}>
                           {conteudo}
                         </td>
                       );

@@ -201,6 +201,9 @@ export default {
     });
 
     await j.passo("Reproduz a mediana e o percentil da média diária de 30/09/2026 a partir da série diária", async () => {
+      // a resposta completa, com percentil e mediana, está em Analisar; o pesquisador a abre (uma interação a mais)
+      await clicar(p.getByRole("radio", { name: /analisar/i }));
+      await j.esperar(500);
       const texto = N(await p.locator("main").innerText());
       const m = texto.match(new RegExp(`foi R\\$ ${D}/MWh: percentil ${D} entre as (\\d+) médias diárias de setembro de 2021 a 2025 \\(mediana R\\$ ${D}/MWh\\)`));
       j.afirmar(m, "a página não traz o percentil e a mediana da média diária");

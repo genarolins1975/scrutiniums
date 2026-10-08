@@ -351,10 +351,15 @@ describe("identificadores técnicos fora do texto de Entender", () => {
     }
   });
 
-  it("a tabela do arquivo de emissões mostra o nome do registro e não o identificador nem o sha256", () => {
+  it("a tabela do arquivo de emissões abre com o nome do registro; identificador e sha256 só em Auditar, no fim da tabela", () => {
     const ids = COLUNAS_ARQUIVO_TABELA.map((c) => c.id);
     expect(ids[0]).toBe("linha");
-    for (const c of ["forecast_id", "sha256", "versao_codigo"]) expect(ids).not.toContain(c);
+    expect(ids).not.toContain("versao_codigo");
+    for (const c of ["forecast_id", "sha256"]) {
+      expect(ids).toContain(c);
+      expect(COLUNAS_ARQUIVO_TABELA.find((x) => x.id === c)?.nivel).toBe("auditar");
+    }
+    expect(COLUNAS_ARQUIVO_TABELA.filter((x) => x.nivel !== "auditar").map((x) => x.id)).not.toContain("sha256");
     expect(COLUNAS_GRADE.map((c) => c.id)).not.toContain("forecast_id");
     expect(textoEntender(html.previsoes)).toMatch(/B0 W1 SE\/CO, rodada de 27\/09\/2026/);
   });

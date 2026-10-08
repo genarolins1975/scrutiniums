@@ -88,11 +88,17 @@ export default {
     const abreTabela = async (cabecalho) => {
       const alvo = p.locator("main [data-recolhivel='fechada']").filter({ has: p.locator("th", { hasText: cabecalho }) }).first();
       if (!(await alvo.count())) return;
-      await clicar(p.locator(`main button[aria-controls="${await alvo.getAttribute("id")}"]`));
+      const botao = p.locator(`main button[aria-controls="${await alvo.getAttribute("id")}"]`);
+      // em Analisar a tabela já vem aberta e o botão fica escondido
+      if (!(await botao.isVisible())) return;
+      await clicar(botao);
       await j.esperar(300);
     };
 
     await j.passo("Identifica a variação entre set/2026 e ago/2026 e confere na tabela mensal", async () => {
+      // em Entender a resposta é um veredito curto; o analista abre Analisar para ler a resposta completa (uma interação a mais)
+      await clicar(p.getByRole("radio", { name: /analisar/i }));
+      await j.esperar(500);
       const texto = N(await p.locator("main").innerText());
       const setLead = texto.match(new RegExp(`set/2026: média temporal de R\\$ ${D}/MWh`))?.[1];
       j.afirmar(setLead, "o texto de abertura não traz a média temporal de set/2026");

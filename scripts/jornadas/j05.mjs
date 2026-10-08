@@ -101,13 +101,14 @@ export default {
 
     await j.passo("Compara o número do exemplo do verbete com o que o painel mostra", async () => {
       const painel = N(await p.locator("main").innerText());
-      const sin = painel.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o SIN guardava ${D} MWmês, ${D}% da EAR máxima`));
+      // o veredito do painel traz a data e o percentual do SIN; os MWmês ficam na resposta completa, em Analisar
+      const sin = painel.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o SIN guardava ${D}% da energia que os reservatórios comportam`));
       j.afirmar(sin, "a frase de abertura do painel não traz data e percentual do SIN");
       const tabela = p.locator("table:visible", { hasText: "EAR (%)" }).first();
       await tabela.waitFor({ state: "visible", timeout: 10000 });
-      const mesmoNumero = sin[1] === ear.data && sin[3] === ear.valor;
-      j.afirmar(mesmoNumero, `o painel diz ${sin[1]} e ${sin[3]}% para o SIN; o verbete diz ${ear.data} e ${ear.valor}%`);
-      return `Verbete: ${ear.data}, SIN ${ear.valor}%. Painel (padrão): "Em ${sin[1]}, o SIN guardava ${sin[2]} MWmês, ${sin[3]}% da EAR máxima". O número do exemplo é o mesmo do painel, com a mesma data`;
+      const mesmoNumero = sin[1] === ear.data && sin[2] === ear.valor;
+      j.afirmar(mesmoNumero, `o painel diz ${sin[1]} e ${sin[2]}% para o SIN; o verbete diz ${ear.data} e ${ear.valor}%`);
+      return `Verbete: ${ear.data}, SIN ${ear.valor}%. Painel (padrão): "Em ${sin[1]}, o SIN guardava ${sin[2]}% da energia que os reservatórios comportam". O número do exemplo é o mesmo do painel, com a mesma data`;
     });
 
     await j.passo('Volta ao verbete pelo botão "Voltar ao verbete EAR"', async () => {
@@ -154,6 +155,9 @@ export default {
       await voltar.first().waitFor({ state: "visible", timeout: 10000 });
       const painel = p.locator("section#p009");
       await painel.waitFor({ state: "attached", timeout: 10000 });
+      // o veredito do painel traz as diferenças; os valores de cada preço estão na resposta completa, em Analisar
+      await clicar(p.getByRole("radio", { name: /analisar/i }));
+      await j.esperar(600);
       const t = N(await painel.innerText());
       const m = t.match(new RegExp(`Na semana operativa de (\\d{2}/\\d{2}/\\d{4}) a (\\d{2}/\\d{2}/\\d{4}), no Sudeste/Centro-Oeste, o CMO semanal do DECOMP foi R\\$ ${D}/MWh, a média das \\d+ meias horas do CMO do DESSEM foi R\\$ ${D}/MWh e a média das \\d+ horas do PLD foi R\\$ ${D}/MWh`));
       j.afirmar(m, "o painel não traz a frase da semana com CMO do DECOMP, média do DESSEM e média do PLD");
@@ -189,15 +193,13 @@ export default {
     });
 
     await j.passo('Lê no painel o que o professor leva para a sala: interpretação, "o que não é possível concluir" e fonte (modo Analisar)', async () => {
-      await clicar(p.getByRole("radio", { name: /analisar/i }));
-      await j.esperar(600);
       const painel = p.locator("section#p009");
       const t = N(await painel.innerText());
       const interpretar = t.match(/COMO INTERPRETAR\s*([^\n]+)/i)?.[1];
       const naoConcluir = t.match(/O QUE NÃO É POSSÍVEL CONCLUIR:?\s*([^\n]+)/i)?.[1];
-      const fonte = t.match(/Fonte: ONS, CMO Semanal \(DECOMP\)[^\n]*PLD_HORARIO[^\n]*/)?.[0];
+      const fonte = t.match(/Fonte: ONS, CMO Semanal \(DECOMP\)[^\n]*PLD horário por submercado[^\n]*/)?.[0];
       j.afirmar(interpretar && naoConcluir, "faltam interpretação ou limite de conclusão no painel");
-      j.afirmar(fonte, "a fonte (ONS, CMO Semanal e Semi-Horário; CCEE, PLD_HORARIO) não aparece no painel, nem em Analisar");
+      j.afirmar(fonte, "a fonte (ONS, CMO Semanal e Semi-Horário; CCEE, PLD horário por submercado) não aparece no painel, nem em Analisar");
       const baixar = await painel.locator("button:visible, a:visible").evaluateAll((es) => es.filter((e) => /Baixar CSV/i.test(e.innerText)).length);
       return `Como interpretar: "${interpretar.slice(0, 90)}..."; O que não é possível concluir: "${naoConcluir.slice(0, 90)}..."; ${fonte.slice(0, 100)} (a fonte só aparece depois de escolher Analisar); ações do painel: baixar CSV ${baixar}`;
     });
@@ -216,7 +218,8 @@ export default {
     });
 
     await j.passo("Abre o verbete PLD pela trilha e confere que o exemplo real é o mesmo número", async () => {
-      await clicar(p.locator("#passo-pld").getByRole("link", { name: /^PLD$/ }).first());
+      // os chips de verbete trazem a sigla e o nome por extenso; o link é identificado pelo endereço
+      await clicar(p.locator('#passo-pld a[href="/setor-eletrico/aprenda/pld"]').first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/pld/, { timeout: 10000 });
       await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });

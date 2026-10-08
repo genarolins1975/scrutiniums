@@ -59,7 +59,8 @@ export default {
     const p = j.p;
     const g = {}; // valores lidos que passos seguintes reaproveitam
 
-    const tabelaArquivo = () => p.locator("main table").filter({ has: p.locator("th", { hasText: /sha256 do registro/ }) }).first();
+    // a tabela do arquivo é a única com a coluna Registro; o sha256 de cada registro está na ficha do registro e no CSV
+    const tabelaArquivo = () => p.locator("main table").filter({ has: p.locator("th", { hasText: /^Registro\b/ }) }).first();
     const caixaArquivo = () => tabelaArquivo().locator("xpath=ancestor::*[.//button[contains(., 'Baixar CSV') or contains(., 'BAIXAR CSV')]][1]");
     const contagemArquivo = async () => normaliza(await caixaArquivo().locator("[role=status]").filter({ hasText: /de \d+ linhas/ }).first().innerText());
     /** todas as linhas do arquivo na tela, por identificador; amplia a página se houver mais de uma */
@@ -82,6 +83,7 @@ export default {
           linhas: [...t.querySelectorAll("tbody tr")].map((tr) => [...tr.cells].map((td) => n(td.innerText))),
         };
       });
+      // o identificador técnico e o sha256 ficam no fim da tabela e só aparecem em Auditar (a jornada escolhe Auditar no primeiro passo)
       const iId = cab.indexOf("Identificador");
       const mapa = new Map(linhas.map((l) => [l[iId], l]));
       j.afirmar(mapa.size === linhas.length, "identificadores repetidos na tabela do arquivo");
@@ -134,7 +136,7 @@ export default {
 
     // ---------- Arquivo de emissões ----------
     await j.passo("Vai ao painel Arquivo de emissões pelo link da página e lê a contagem de registros e rodadas", async () => {
-      await j.clicar(p.getByRole("link", { name: /P015\s*Arquivo de emissões/i }).first());
+      await j.clicar(p.locator('a[href="#p015"]').first());
       await j.esperar(900);
       const topo = await p.evaluate(() => {
         const el = document.getElementById("p015");
@@ -196,7 +198,7 @@ export default {
       j.afirmar(/PREVISÃO sem número: nenhum PLD do período exigido havia sido capturado até o corte/.test(t), "a ficha não diz sem número com o motivo");
       j.afirmar(/REALIZADO ainda sem realizado \(a entrega não terminou\)/.test(t), "a ficha não diz que o realizado ainda não existe");
       j.afirmar(/CORREÇÃO registro original \(não substitui outro\)/.test(t), "a ficha não diz que é registro original");
-      const sha = (t.match(/SHA256 ([0-9a-f]{64})/) || [])[1];
+      const sha = (t.match(/SHA256 DO REGISTRO ([0-9a-f]{64})/) || [])[1];
       j.afirmar(sha, "sha256 não lido na ficha");
       return `reg=...:W1:SE na URL; ficha "Registro W1 SE/CO da rodada de 27/09/2026": PREVISÃO "sem número: nenhum PLD do período exigido havia sido capturado até o corte"; REALIZADO "ainda sem realizado (a entrega não terminou)"; INCLUSÃO "28/09/2026; transcrito depois da emissão: sim"; CORREÇÃO "registro original (não substitui outro)"; sha256 ${sha.slice(0, 12)}...`;
     });
@@ -371,7 +373,7 @@ export default {
     });
 
     await j.passo("Abre Desempenho e calibração e lê que ainda não há resultado para comparar com a previsão", async () => {
-      await j.clicar(p.getByRole("link", { name: /P016\s*Desempenho e calibração/i }).first());
+      await j.clicar(p.locator('a[href="#p016"]').first());
       await p.waitForLoadState("networkidle");
       await j.esperar(900);
       j.afirmar(/\/pld\/modelos/.test(p.url()), `URL inesperada: ${j.url()}`);

@@ -569,13 +569,15 @@ export const COLUNAS_ARQUIVO: ColunaTabela[] = [
 ];
 
 /**
- * Colunas da tabela do arquivo em Entender: o nome legível do registro no lugar do identificador técnico, sem o sha256 do registro e
- * sem a versão do código. Os três ficam em COLUNAS_ARQUIVO (conferência contra o CSV), no detalhe do registro em Analisar e Auditar e
- * no CSV completo do download.
+ * Colunas da tabela do arquivo: o nome legível do registro à frente, sem a versão do código; o sha256 e o identificador técnico ficam
+ * no fim da tabela e só aparecem em Auditar (conferência contra o CSV), além do detalhe do registro em Analisar e Auditar e do CSV
+ * completo do download.
  */
 export const COLUNAS_ARQUIVO_TABELA: ColunaTabela[] = [
   { id: "linha", rotulo: "Registro", tipo: "texto" },
   ...COLUNAS_ARQUIVO.filter((c) => !["forecast_id", "sha256", "versao_codigo"].includes(c.id)),
+  // a conferência registro a registro contra o CSV precisa do hash e do identificador: só em Auditar
+  ...COLUNAS_ARQUIVO.filter((c) => ["sha256", "forecast_id"].includes(c.id)).map((c) => ({ ...c, nivel: "auditar" as const })),
 ];
 
 /** Dias (Brasília) em que registros entraram no arquivo, em ordem. */

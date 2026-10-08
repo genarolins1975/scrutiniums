@@ -56,12 +56,13 @@ export default {
       const texto = N(await p.locator("main").innerText());
       const re = {
         perdas: new RegExp(`perdeu ${D}% da energia injetada`),
-        dec: new RegExp(`o DEC foi de ${D} horas, (?:abaixo|acima) do limite de ${D}`),
-        fec: new RegExp(`o FEC foi de ${D} interrupções, (?:abaixo|acima) do limite de ${D}`),
-        tarifa: new RegExp(`é de R\\$ ${D}/MWh, sem tributos \\(([^)]+)\\)`),
+        // a síntese em Entender é um veredito curto; DEC, FEC e limites estão nos cartões logo abaixo
+        dec: new RegExp(`DEC E LIMITE\\s*${D} h\\s*Limite ${D} h`),
+        fec: new RegExp(`FEC E LIMITE\\s*${D}\\s*Interrupções por unidade consumidora; limite ${D}`),
+        tarifa: new RegExp(`tarifa residencial vigente é de R\\$ ${D}/MWh, sem tributos`),
       };
       const m = Object.fromEntries(Object.entries(re).map(([k, r]) => [k, texto.match(r)]));
-      for (const [k, v] of Object.entries(m)) j.afirmar(v, `a ficha não traz ${k} na síntese`);
+      for (const [k, v] of Object.entries(m)) j.afirmar(v, `a ficha não traz ${k} à vista em Entender`);
       ficha.perdas = m.perdas[1];
       ficha.dec = m.dec[1];
       ficha.decLimite = m.dec[2];
