@@ -203,8 +203,9 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
             {selecionado.ato ?? selecionado.tipo_ato}; {textoPublicacao(selecionado.data_publicacao)}; vigência a partir de {vigenciaTexto(selecionado)} ({textoDefasagemEvento(selecionado)}).
           </p>
           <p className="mt-2 flex flex-wrap gap-x-4">
-            <a href={`#evento-${selecionado.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-              Ver o evento completo na lista
+            {/* o ato tem item na lista curta (Entender); o registro de bandeiras só aparece na lista completa (Analisar) */}
+            <a href={origemEvento(selecionado) === "ato" ? `#resumo-${selecionado.id}` : `#evento-${selecionado.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+              Ver o evento na lista
             </a>
             <button type="button" onClick={() => selecionar(null)} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
               Remover seleção
