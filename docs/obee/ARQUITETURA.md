@@ -88,7 +88,7 @@ Responsabilidades separadas logicamente (coleta, padronização, validação, c�
 
 | Componente | Função |
 | --- | --- |
-| `PainelEducacao` | Controles (capital, ano, etapa, indicador da comparação, grupo, moeda, disciplina, copiar link, restaurar), números de orientação, séries, comparação, decomposição e tabela auditável |
+| `PanoramaInterativo`, `ExploradorTema`, `ComparadorCapitais` | Panorama sem capital pré-selecionada; exploração por tema (família de medidas, gráfico, tabela, evolução e detalhe do mesmo conjunto, referências); comparação das 26 capitais com destaques e tabela completa. Estado na URL; payload recortado por tema. Ver [REDESENHO_EDITORIAL.md](./REDESENHO_EDITORIAL.md) |
 | `MiniSerie` | Série com lacunas (nunca ponte entre anos sem valor nem com valor fora das comparações, marcado em losango), anotações de quebra, dica por ponteiro e teclado |
 | `Ressalva` | Nota ou ressalva ao lado do valor, em `details`/`summary` (abre por teclado), com rótulo distinto para nota, ressalva e fora das comparações |
 | `GraficoPontosPares` | Pontos por capital, ordem alfabética ou por valor, seleção destacada, mediana do grupo |

@@ -40,11 +40,11 @@ export function FaixaDistribuicao({
   const estreito = w < 520;
   const r = estreito ? 6.5 : 7.5;
   const passo = 2 * r + 1.5;
-  const m = { t: 40, r: 14, b: 62, l: 14 };
+  const mb = { r: 14, b: 62, l: 14 };
   const ordenados = useMemo(() => [...pontos].sort((a, b) => a.valor - b.valor || a.rotulo.localeCompare(b.rotulo, "pt-BR")), [pontos]);
   const todos = [...ordenados.map((p) => p.valor), ...[mediana, media, faixa?.q1 ?? null, faixa?.q3 ?? null].filter((v): v is number => v !== null)];
   const dom = dominioBonito(todos, { zero, n: estreito ? 3 : 5 });
-  const x = escalaLinear([dom.min, dom.max], [m.l + r, w - m.r - r]);
+  const x = escalaLinear([dom.min, dom.max], [mb.l + r, w - mb.r - r]);
 
   // empilha as marcas em faixas horizontais para que nenhuma cubra outra; a ordem de valor garante determinismo
   const { posicoes, faixas } = useMemo(() => {
@@ -60,14 +60,20 @@ export function FaixaDistribuicao({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ordenados, w, dom.min, dom.max]);
 
-  const alturaMarcas = Math.max(faixas * passo, estreito ? 90 : 120);
-  const base = m.t + alturaMarcas + 8;
-  const H = base + m.b;
-  const yMarca = (f: number) => base - 8 - r - f * passo;
+  // rótulos do menor e do maior valor: se não cabem lado a lado, o do maior sobe uma linha, em vez de se sobrepor
   const menor = ordenados[0];
   const maior = ordenados[ordenados.length - 1];
   const iMenor = 0;
   const iMaior = ordenados.length - 1;
+  const larguraRotulo = (v: number, nome: string) => (formata(v).length + nome.length + 1) * 6.7;
+  const fimMenor = posicoes[iMenor].px + larguraRotulo(menor.valor, menor.rotulo);
+  const iniMaior = posicoes[iMaior].px - larguraRotulo(maior.valor, maior.rotulo);
+  const sobe = ordenados.length > 1 && maior.valor !== menor.valor && fimMenor + 10 > iniMaior;
+  const m = { t: 40 + (sobe ? 18 : 0), ...mb };
+  const alturaMarcas = Math.max(faixas * passo, estreito ? 90 : 120);
+  const base = m.t + alturaMarcas + 8;
+  const H = base + m.b;
+  const yMarca = (f: number) => base - 8 - r - f * passo;
   const destacados = ordenados.map((p, i) => ({ p, i })).filter(({ p }) => p.destacada);
 
   const maisProxima = (e: PointerEvent<SVGRectElement>) => {
@@ -144,7 +150,7 @@ export function FaixaDistribuicao({
             <tspan fontWeight={600}>{formata(menor.valor)}</tspan> {menor.rotulo}
           </text>
           {ordenados.length > 1 && maior.valor !== menor.valor && (
-            <text x={posicoes[iMaior].px} y={m.t - 18} textAnchor={ancora(posicoes[iMaior].px) === "middle" ? "end" : ancora(posicoes[iMaior].px)} fontSize={12} fill="var(--cor-obee-tinta)">
+            <text x={posicoes[iMaior].px} y={m.t - (sobe ? 36 : 18)} textAnchor={ancora(posicoes[iMaior].px) === "middle" ? "end" : ancora(posicoes[iMaior].px)} fontSize={12} fill="var(--cor-obee-tinta)">
               <tspan fontWeight={600}>{formata(maior.valor)}</tspan> {maior.rotulo}
             </text>
           )}
