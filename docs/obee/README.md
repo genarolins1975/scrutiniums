@@ -28,6 +28,7 @@ python3 -m pipeline.eficiencia.run --coleta-siconfi   # recoleta DCA, RREO, ente
 python3 -m pipeline.eficiencia.run --inep <pasta>     # reextrai recortes dos .zip oficiais do INEP
 python3 -m unittest pipeline.tests.test_eficiencia
 npx vitest run src/tests/obee-educacao.test.ts
+npm run build && EXIGIR_BUILD_HTML=1 npx vitest run src/tests/html-gerado.test.ts   # verificação do HTML gerado, como no CI
 ```
 
 A reconstrução sem rede imprime as validações e termina com código 1 se alguma for reprovada.
@@ -41,6 +42,7 @@ A reconstrução sem rede imprime as validações e termina com código 1 se alg
 | [CATALOGO_COBERTURA.md](./CATALOGO_COBERTURA.md) | Indicadores, fontes, períodos, cobertura e lacunas |
 | [VALIDACAO.md](./VALIDACAO.md) | Verificações executadas, resultados e capturas de tela |
 | [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md) | Rodada de correções: achados, política de conferência 1.1, casos Boa Vista 2024 e Campo Grande 2021, campos vazios, antes e depois |
+| [VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md) | Verificação final: data legível, gate obrigatório de HTML no CI, passagem pelo painel, problema independente em Energia |
 | [CONTINUIDADE.md](./CONTINUIDADE.md) | Próximos módulos, decisões pendentes e tarefas delimitadas |
 
 ## Regra editorial (vale para todo o código e texto do domínio)

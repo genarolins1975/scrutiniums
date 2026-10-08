@@ -12,7 +12,7 @@ Para quem retoma o OBEE (pessoa ou agente). Ler antes: [README.md](./README.md),
 
 **Convenções.** Ids de indicador `area.medida.perimetro` estáveis; estados em `base.STATUS`; textos públicos descritivos (o teste de neutralidade varre componentes, página, consulta, catálogo, notas e validações).
 
-**Verificação mínima antes de cada push.** `python3 -m pipeline.eficiencia.run` (nenhuma validação reprovada), `python3 -m unittest pipeline.tests.test_eficiencia`, `npx vitest run src/tests/obee-educacao.test.ts`, `npx tsc --noEmit`, `npm run lint`. Mudança visual: capturas em 1440, 768, 390 e 320 px (roteiro em VALIDACAO.md).
+**Verificação mínima antes de cada push.** `python3 -m pipeline.eficiencia.run` (nenhuma validação reprovada), `python3 -m unittest pipeline.tests.test_eficiencia`, `npx vitest run src/tests/obee-educacao.test.ts`, `npx tsc --noEmit`, `npm run lint`. O CI também gera o build e exige o HTML gerado sem `undefined`, `NaN` ou data ISO crua (`EXIGIR_BUILD_HTML=1`; em texto de pipeline use `TextoComDatas`). Mudança visual: capturas em 1440, 768, 390 e 320 px (roteiro em VALIDACAO.md).
 
 ## 2. Decisões pendentes (do responsável)
 
@@ -33,6 +33,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | T2 | Cobertura | Estender Censo, ATU e aprovação para 2019 e 2020 | `fontes/inep_censo.py` (leiaute único), `padroniza.py` (`ANOS_CENSO`) | V05 e V06 (Sinopse 2019 e 2020 extraídas) sem diferença; anotação de 2020 (pandemia) na aprovação |
 | T3 | Desempenho | Reduzir o bloqueio do fio principal na hidratação (TBT mediano de 1,34 s com CPU 4× mais lenta, rodada 2) | `PainelEducacao.tsx` (dividir em ilhas; tabela auditável sob demanda) | TBT abaixo de 600 ms na mesma medição; interações (36 checagens) continuam aprovadas |
 | T10 | Qualidade | Coletar a MSC de dezembro de todos os pares DCA × RREO (hoje só os de diferença material e um controle) | `fontes/siconfi.py` (`coleta_msc_educacao`), `run.py` | V04 com a MSC conferindo também os casos sem diferença; nenhuma situação muda sem registro |
+| T11 | Domínio Energia (fora do OBEE) | Resolver as 21 páginas do setor elétrico com data ISO crua reveladas pelo gate de HTML (lista em VERIFICACAO_FINAL.md, seção 4): formatar a prosa no ponto de exibição e decidir, com o domínio, o que são citações brutas | `src/components/energia/`, `src/lib/texto-datas.ts`, `pipeline/energia/modulos/` | `src/tests/html-gerado.test.ts` sem falha em "setor elétrico", sem relaxar o regex nem criar lista de exceções sem regra documentada |
 | T4 | Interface | Exportar imagem do gráfico com unidade, período, fonte e ressalva | `graficos.tsx` | PNG baixado contém título, unidade, período, fonte; botão só aparece onde funciona |
 | T5 | Automação | Workflow anual de atualização (Siconfi em maio, INEP após cada divulgação) | `.github/workflows/`, `run.py` | Rodada sem rede alteração idempotente; abertura de PR com diff da gold e validações |
 | T6 | Indicador novo | Despesa por natureza na função Educação (pessoal, outras correntes, investimento) | `fontes/siconfi.py` (RREO Anexo 8 ou Anexo 2 por natureza), catálogo, consulta | Ficha completa; categorias mutuamente exclusivas somando o total; validação de reconciliação |
@@ -53,4 +54,5 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | Data | Entrega |
 | --- | --- |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
+| 08/10/2026 | Verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md)): data legível na gaveta de proveniência, gate obrigatório de HTML no CI, valor exato por toque e atalho para a tabela da comparação; gate reprovado por 21 páginas de Energia (T11) |
 | 08/10/2026 | Rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)): política de conferência 1.1 com MSC, elegibilidade separada do estado, portão de publicação, ausência sem zero, universo por indicador, CSVs autoexplicativos, metodologia 1.1 |

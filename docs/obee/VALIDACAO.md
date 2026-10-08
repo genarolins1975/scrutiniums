@@ -1,6 +1,6 @@
 # Validação
 
-Estado após a rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)). Execução de 08/10/2026, ambiente de nuvem do Claude Code (Linux, Node 22, Python 3.13, Chromium headless via Playwright). Verificações de produto, não de governos: conferem cálculo, integridade, perímetros, interface e linguagem.
+Estado após a rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)) e a verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md), que atualiza os números de testes e registra o gate de HTML). Execução de 08/10/2026, ambiente de nuvem do Claude Code (Linux, Node 22, Python 3.13, Chromium headless via Playwright). Verificações de produto, não de governos: conferem cálculo, integridade, perímetros, interface e linguagem.
 
 ## 1. Dados e método (pipeline)
 
@@ -38,11 +38,11 @@ Idempotência: duas execuções seguidas com o mesmo seed produzem o mesmo `hash
 | OBEE, interface e consulta | `npx vitest run src/tests/obee-educacao.test.ts` | 49 testes, todos aprovados |
 | Suíte Python do repositório | `python3 -m unittest discover -s pipeline/tests -t .` | 1.351 testes aprovados, 6 ignorados (com `pyarrow` 25.0.1, como no CI) |
 | Suíte `pesquisa` | `python3 -m unittest discover -s pesquisa/tests -t .` | 69 aprovados |
-| Suíte vitest do repositório | `npx vitest run` | 2.512 aprovados, 1 ignorado; 1 falha fora do OBEE descrita abaixo |
+| Suíte vitest do repositório | `npx vitest run` (no CI, com build e `EXIGIR_BUILD_HTML=1`) | Rodada 3: 2.522 aprovados, 1 ignorado, 1 reprovado (varredura de data crua em 21 páginas de Energia, ver VERIFICACAO_FINAL.md, seção 4) |
 | Tipos e lint | `npx tsc --noEmit`; `npm run lint` | Sem erros |
 | Build de produção | `npm run build` | Concluído; rota estática, 22,2 kB de JavaScript próprio, 118 kB no primeiro carregamento |
 
-A falha da suíte vitest local é `energia-reauditoria.test.ts`, que só roda quando existe build local (`.next`) e encontra a data crua "2026-09-30T00:00Z" na página do setor elétrico `agua-e-clima/chuva-e-temperatura`, gerada a partir de dados do domínio de energia que este PR não altera; a mesma data aparece no build do commit examinado. No CI, que não faz build antes do vitest, o teste não se aplica.
+Atualização da rodada 3: a falha local da rodada 2 era o teste de HTML pré-renderizado, que retornava cedo sem build e por isso nunca rodava no CI. O teste foi movido para `src/tests/html-gerado.test.ts`, o CI passou a gerar o build do mesmo commit e a verificação é obrigatória (`EXIGIR_BUILD_HTML=1`): sem build, rota esperada ou páginas, ela reprova; localmente, sem a variável e sem build, fica ignorada, com o motivo. A data da página `agua-e-clima/chuva-e-temperatura` foi corrigida; a varredura completa passou a revelar 21 outras páginas de Energia (problema independente, fora do escopo do PR).
 
 Os testes do OBEE cobrem os casos específicos pedidos: período financeiro diferente do educacional (edição do Ideb declarada no cartão e na tabela), rede estadual na capital fora da rede municipal (São Paulo: 702.936 na rede × 2.512.355 no território em 2025), despesa ampla demais para o denominador (razão não publicada), dado não divulgado (códigos ND preservados), composição que não reconcilia (estado inconsistente; nenhum caso ocorreu), poucos pares (aviso abaixo de 3 capitais), quebra de série (2021 anotado), download igual ao exibido, DF fora do recorte, falha de atualização (estado "ausente na coleta"; coleta com novas tentativas e erro registrado no manifesto).
 
