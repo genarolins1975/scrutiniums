@@ -129,7 +129,7 @@ def classifica(dca, r, m):
                    explicacao=(f"O RREO do 6º bimestre informa {brl(rr)}; a DCA informa {brl(dca)}. Diferença de {brl(d)} "
                                f"({pct_br(pct, 3)} da DCA), abaixo do limiar de 0,1%."))
         return out
-    texto_dif = f"diferença de {brl(d)}" + (f" ({pct_br(pct)} da DCA)" if pct is not None else "")
+    texto_dif = f"diferença de {brl(d)}" + (f", {pct_br(pct)} da DCA" if pct is not None else "")
     if m is not None:
         out["msc"] = {"liquidado_total": m["liquidado_total"], "intra_mod91": m["intra_mod91"],
                       "sem_intra": round(m["liquidado_total"] - m["intra_mod91"], 2)}
@@ -143,7 +143,7 @@ def classifica(dca, r, m):
             out.update(situacao="RECONCILIADA_MSC", elegivel_comparacao=True, motivo_inelegibilidade=None,
                        explicacao=(f"O RREO do 6º bimestre informa {brl(rr)} ({texto_dif}). A Matriz de Saldos Contábeis de "
                                    f"dezembro confirma o valor da DCA ({brl(sem_intra)} liquidados na função Educação, sem "
-                                   "intraorçamentárias). A diferença está no RREO, que não foi retificado."))
+                                   "intraorçamentárias). O RREO diverge da DCA e da MSC e não foi retificado até a data da captura."))
             return out
         if abs(dca - m["liquidado_total"]) <= TOL_ARREDONDAMENTO and m["intra_mod91"] > TOL_ARREDONDAMENTO:
             out["evidencias"] = [

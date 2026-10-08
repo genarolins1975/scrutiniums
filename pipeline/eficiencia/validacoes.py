@@ -18,6 +18,7 @@ As validações conferem o produto: cálculo, integridade, perímetro e estados 
 dado. Nenhuma delas avalia governos ou redes.
 """
 import os
+import re
 import statistics
 
 from pipeline.eficiencia import base, entes, padroniza as P
@@ -25,8 +26,14 @@ from pipeline.eficiencia import base, entes, padroniza as P
 TOL_REAIS = 1.0
 
 
+def _numeros_br(texto):
+    """Separador de milhar nos inteiros de quatro ou mais dígitos do texto, exceto anos (2005 a 2039) e valores já formatados."""
+    return re.sub(r"(?<![\d.,/])(\d{4,})(?![\d.,]\d)", lambda m: m.group(1) if re.fullmatch(r"20[0-3]\d", m.group(1))
+                  else f"{int(m.group(1)):,}".replace(",", "."), texto)
+
+
 def _v(id_, titulo, tipo, resultado, detalhe, casos=None):
-    return {"id": id_, "titulo": titulo, "tipo": tipo, "resultado": resultado, "detalhe": detalhe,
+    return {"id": id_, "titulo": titulo, "tipo": tipo, "resultado": resultado, "detalhe": _numeros_br(detalhe),
             "casos": casos or []}
 
 
