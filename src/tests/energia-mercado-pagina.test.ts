@@ -9,6 +9,8 @@ import MercadoMreGsfPage from "@/app/setor-eletrico/mercado/mre-e-gsf/page";
 import MercadoEncargosPage from "@/app/setor-eletrico/mercado/encargos/page";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
+import { num } from "@/lib/energia/formato";
+import { integra, lerGold } from "@/lib/energia/gold";
 import {
   PAGINAS_MERCADO,
   barrasDesligamentos,
@@ -127,6 +129,18 @@ describe("mercado: páginas", () => {
     encargos: renderToStaticMarkup(createElement(MercadoEncargosPage)),
   } as const;
   const ids = { "livre-regulado": "P032", agentes: "P033", "mre-gsf": "P034", encargos: "P035" } as const;
+
+  it("GSF de 12 meses: a diferença com o InfoMercado diz a janela em que foi calculada, que não é a do cartão (r6, R4)", () => {
+    const g = lerGold<MercadoGold>("mercado.json");
+    const div = integra(g) ? g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado") : undefined;
+    if (!div || div.calculado === null || div.diferenca === null) return;
+    const html = paginas["mre-gsf"];
+    expect(html).toContain("na mesma janela");
+    expect(html).toContain(`${num(div.calculado, 2)}%`);
+    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} p.p. abaixo`);
+    // o cartão mostra outra janela; o texto não pode sugerir que a diferença é contra o valor do cartão
+    expect(html).toContain("O valor do cartão é o da janela mais recente");
+  });
 
   it("anatomia da seção 7.2 em cada painel: resposta da gold, prova, recorte, tabela, download, link e próxima pergunta", () => {
     for (const [pag, h] of Object.entries(paginas) as [keyof typeof paginas, string][]) {

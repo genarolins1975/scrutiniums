@@ -171,10 +171,11 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     return () => document.removeEventListener("click", aoClicar, true);
   }, [router]);
 
-  // clique cria uma entrada no histórico; as setas do teclado só substituem a atual (percorrer três opções não pede três Voltar)
-  function escolher(m: Modo, novaEntrada = true) {
+  // clique e seta do teclado criam uma entrada no histórico: o Voltar desfaz a troca de nível (seção 7.3 da especificação).
+  // Substituir a entrada nas setas fazia o Voltar pular para o nível anterior ao último clique (a r6 mediu 69 páginas assim).
+  function escolher(m: Modo) {
     setModo(m);
-    gravaUrl(m, novaEntrada);
+    gravaUrl(m, true);
   }
 
   // padrão de radiogroup: setas movem a seleção e o foco
@@ -183,7 +184,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     if (!passo) return;
     e.preventDefault();
     const j = (i + passo + MODOS.length) % MODOS.length;
-    escolher(MODOS[j].id, false);
+    escolher(MODOS[j].id);
     botoes.current[j]?.focus();
   }
 

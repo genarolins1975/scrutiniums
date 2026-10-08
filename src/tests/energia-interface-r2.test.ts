@@ -122,10 +122,12 @@ describe("I06 e D050: o nível escolhido acompanha o link interno", () => {
     expect(urlComNivel("/setor-eletrico/mercado/agentes", { ...aqui, search: "" })).toBeNull();
     expect(urlComNivel("/setor-eletrico/mercado/agentes", { ...aqui, search: "?modo=invalido" })).toBeNull();
   });
-  it("as setas do seletor substituem a entrada do histórico; o clique cria uma (I17)", () => {
+  it("clique e seta do teclado criam entrada no histórico: o Voltar desfaz a troca (I17 rejeitado, r6 mediu a regressão)", () => {
     const t = ler("src/components/evidencia/ModoProfundidade.tsx");
-    expect(t).toContain("escolher(MODOS[j].id, false)");
+    expect(t).toContain("escolher(MODOS[j].id);");
+    expect(t).not.toContain("escolher(MODOS[j].id, false)");
     expect(t).toContain("onClick={() => escolher(m.id)}");
+    expect(t).toMatch(/function escolher\(m: Modo\) \{\s*setModo\(m\);\s*gravaUrl\(m, true\);/);
   });
 });
 

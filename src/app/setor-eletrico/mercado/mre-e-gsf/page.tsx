@@ -55,6 +55,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/mercado/mre-e-gsf" },
 };
 
+/** Mês AAAA-MM n meses antes de outro. */
+function mesesAntes(mes: string, n: number): string {
+  const [a, m] = mes.split("-").map(Number);
+  const t = a * 12 + (m - 1) - n;
+  return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
+}
+
 export default function MercadoMreGsfPage() {
   const g = lerGold<MercadoGold>("mercado.json");
   if (!integra(g)) return <MercadoIndisponivel motivo={g?.motivo} />;
@@ -158,7 +165,9 @@ export default function MercadoMreGsfPage() {
                   nota={
                     <>
                       razão de somas em energia
-                      {div12 && div12.publicado !== null && div12.diferenca !== null ? `. O InfoMercado Nº ${div12.numero} publica ${num(div12.publicado, 2)}% para o ajuste médio de 12 meses; a diferença de ${num(Math.abs(div12.diferenca), 2)} p.p. não foi explicada` : ""}
+                      {div12 && div12.publicado !== null && div12.calculado !== null && div12.diferenca !== null
+                        ? `. O InfoMercado Nº ${div12.numero} publica ${num(div12.publicado, 2)}% para o ajuste médio de 12 meses até ${mesAno(div12.mes)}; na mesma janela (${mesAno(mesesAntes(div12.mes, 11))} a ${mesAno(div12.mes)}) a razão de energias dá ${num(div12.calculado, 2)}%, ${num(Math.abs(div12.diferenca), 2)} p.p. abaixo, diferença que não foi explicada. O valor do cartão é o da janela mais recente`
+                        : ""}
                     </>
                   }
                   tamanho="medio"

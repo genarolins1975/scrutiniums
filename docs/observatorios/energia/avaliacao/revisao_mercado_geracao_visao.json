@@ -663,7 +663,8 @@
    "por_estado": {
     "corrigido": 14,
     "aberto": 1,
-    "parcial": 4
+    "parcial": 3,
+    "rejeitado": 1
    },
    "achados": [
     {
@@ -799,8 +800,8 @@
      "severidade": "baixa",
      "pagina": "/setor-eletrico/mercado",
      "categoria": "Usar replaceState durante a navegação por setas e gravar no histórico só ao parar ou ao co",
-     "estado": "parcial",
-     "nota": "as setas do seletor de profundidade substituem a entrada do histórico; os rádios nativos (Região e similares) seguem com uma entrada por seta"
+     "estado": "rejeitado",
+     "nota": "as setas do seletor de profundidade chegaram a substituir a entrada do histórico, e a coleta da r6 mediu o efeito: o Voltar deixava de desfazer a troca em 69 páginas (defeito alto de navegação). A mudança foi revertida; clique e seta criam entrada, como pede a seção 7.3 da especificação, e o histórico cheio de quem percorre as setas é o custo aceito"
     },
     {
      "id": "I18",
@@ -839,8 +840,9 @@
   "achados_total": 101,
   "por_estado": {
    "corrigido": 35,
-   "parcial": 13,
-   "aberto": 53
+   "parcial": 12,
+   "aberto": 53,
+   "rejeitado": 1
   },
   "nenhum_bloqueante": true,
   "nota": "As notas dos revisores são de agentes, não de leitores reais, e valem como instrumento de comparação, não como medida absoluta. Achados abertos de severidade baixa são, em sua maioria, polimento de redação ou de desenho; os de severidade média abertos estão listados em CONTINUIDADE.md. O leitor extraiu texto oculto como se fosse visível em alguns achados de bastidor: a visibilidade foi medida em Entender antes de corrigir."

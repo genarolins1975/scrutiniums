@@ -1,12 +1,12 @@
 # Evidências de aceite
 
-Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-07-r5). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
+Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-08-r6). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
 
 Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nesta rodada, de 20 itens.
 
 | Item da seção 17 | Estado | Evidência e limite |
 | --- | --- | --- |
-| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 9,0; J1 cumprida (11 de 11 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
+| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 8,9; J1 cumprida (11 de 11 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
 | Todos os módulos obrigatórios existem e têm conteúdo real e útil. | atendido em parte | 19 entregas publicadas e medidas com resposta 200 em 94 rotas; a utilidade do conteúdo é lida pela revisão didática de cada página, não por contagem de módulos. |
 | Todos os painéis obrigatórios foram concluídos, incluindo os itens de execução posterior do Anexo A. | não atendido | 16 de 71 painéis concluídos (2 sem limitação, 14 com limitação declarada), segundo status_paineis.json; o denominador é fixo em 71. |
 | Mercado, Empresas, Expansão e Regulação deixaram de ser módulos vazios. | atendido em parte | As quatro páginas publicam conteúdo lido das golds; o contrato de painel da seção 7.2 foi adotado só no Mercado (P032 a P035). Ver nota de Completude de cada página. |
