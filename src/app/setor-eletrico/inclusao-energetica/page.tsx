@@ -6,6 +6,7 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { InclusaoIndisponivel, InclusaoNavegacao } from "@/components/energia/InclusaoPagina";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -122,6 +123,7 @@ export default function InclusaoEnergeticaPage() {
         </CabecalhoModulo>
         <InclusaoNavegacao atual="sintese" />
 
+        <ModoProfundidade>
         <section aria-labelledby="unidades" className="pb-6">
           <h2 id="unidades" className="rotulo pb-2 text-mineral">
             Cinco unidades que não se somam
@@ -248,6 +250,7 @@ export default function InclusaoEnergeticaPage() {
             ))}
           </ul>
         </section>
+        </ModoProfundidade>
       </main>
     </>
   );

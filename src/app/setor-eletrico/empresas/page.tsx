@@ -6,6 +6,7 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasIndisponivel, EmpresasNavegacao } from "@/components/energia/EmpresasPagina";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   ancoraPainel,
@@ -140,6 +141,7 @@ export default function EmpresasPage() {
         </CabecalhoModulo>
         <EmpresasNavegacao atual="sintese" />
 
+        <ModoProfundidade>
         <div className="space-y-6 pb-10">
           <Cartao
             id="p036"
@@ -295,6 +297,7 @@ export default function EmpresasPage() {
             </ul>
           </section>
         )}
+        </ModoProfundidade>
       </main>
     </>
   );

@@ -6,6 +6,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import PaginaEmpresas from "@/app/setor-eletrico/empresas/page";
+import PaginaInclusao from "@/app/setor-eletrico/inclusao-energetica/page";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { conjuntoLegivel } from "@/lib/energia/evidencia";
 import * as R from "@/lib/energia/rede";
@@ -75,5 +77,17 @@ describe("Fonte das fichas de evidência: código de conjunto fora do texto de E
     expect(r.codigos).toEqual(["PLD_HORARIO"]);
     expect(conjuntoLegivel("EAR Diário por Subsistema")).toEqual({ texto: "EAR Diário por Subsistema", codigos: [] });
     expect(conjuntoLegivel("PRORET")).toEqual({ texto: "PRORET", codigos: [] });
+  });
+});
+
+describe("Segunda camada da resposta: toda página que a usa tem o seletor de profundidade", () => {
+  it.each([
+    ["Empresas", PaginaEmpresas],
+    ["Inclusão energética", PaginaInclusao],
+  ])("%s: a síntese envolve as respostas em modo-profundidade, senão a segunda camada ficaria à vista em Entender", (_nome, Pagina) => {
+    const h = renderToStaticMarkup(createElement(Pagina as () => JSX.Element));
+    expect(h).toContain("Os números por trás da resposta");
+    expect(h).toContain("modo-profundidade");
+    expect(h.indexOf("modo-profundidade")).toBeLessThan(h.indexOf("Os números por trás da resposta"));
   });
 });
