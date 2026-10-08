@@ -3235,7 +3235,7 @@
     "a primeira coleta da r8 acusou a ficha Comprove da página Território como defeito alto (interatividade 6,0): os três botões estão nos cartões de cobertura do cadastro, que o trabalho de conteúdo moveu para o nível Analisar, e em Entender ficam ocultos; o instrumento clicava o primeiro botão do DOM, não o primeiro visível, e a clicagem falhava sem defeito da ficha. Conferido à mão: nos níveis Analisar e Auditar os três botões abrem a ficha com sha256, fonte e reprodução. O instrumento passou a testar só botões visíveis (scripts/energia-avaliacao.mjs), a rota foi medida de novo nas seis combinações de largura e modo e só ela foi substituída no relatório da r8 (as outras 93 não têm botão oculto que o teste usasse); o defeito alto some e a interatividade da página vai de 6,0 para 10,0. O efeito na página é real em outro ponto: em Entender, Território não oferece nenhuma ficha Comprove, porque os números com ficha estão em Analisar"
    ],
    "data": "2026-10-08",
-   "versao_codigo": "d23de7ebb159+alterado",
+   "versao_codigo": "f5a9a8cc8221+alterado",
    "paginas": 94,
    "nota_ponderada_media": 8.4,
    "atendem_meta": 0,
