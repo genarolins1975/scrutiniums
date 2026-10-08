@@ -178,7 +178,7 @@ def fontes():
         "siconfi_entes": "Conferência dos códigos IBGE e da marcação de capital.",
         "ibge_ipca": "Correção monetária opcional para reais de 2025.",
         "inep_censo": "Fonte das matrículas da rede municipal e das escolas privadas conveniadas com o município.",
-        "inep_sinopse": "Somente conferência independente das somas dos microdados.",
+        "inep_sinopse": "Conferência cruzada das somas dos microdados com outra publicação do próprio INEP (não é verificação externa) e confirmação dos grupos com escolas sem contagem.",
         "inep_atu": "Fonte da média de alunos por turma.",
         "inep_rendimento": "Fonte da taxa de aprovação.",
         "inep_ideb": "Fonte do Ideb, dos seus componentes e das médias do Saeb.",

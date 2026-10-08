@@ -254,7 +254,7 @@ def v06_censo_sinopse(obs):
                 if mic is None or abs(mic - sin) > 0:
                     casos.append({"ano": ano, "ente": cod, "nome": _nome(cod), "etapa": "conveniadas (município)",
                                   "microdados": mic, "sinopse": sin})
-    return _v("V06", "Conferência independente: somas dos microdados × Sinopse Estatística do INEP",
+    return _v("V06", "Conferência cruzada no próprio INEP: somas dos microdados × Sinopse Estatística",
               "automatica", "aprovada" if not casos else "aprovada_com_divergencias_documentadas",
               f"{n} comparações (rede municipal: total, creche e pré-escola; escolas privadas conveniadas com o município em 2025), "
               f"edições {', '.join(map(str, anos))} da Sinopse; {len(casos)} diferenças.", casos)
