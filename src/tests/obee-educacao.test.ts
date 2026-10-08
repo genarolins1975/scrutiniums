@@ -5,6 +5,7 @@ import config from "../../tailwind.config";
 import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
 import {
   Indice,
+  MEDIDA,
   MEDIDAS,
   comparar,
   composicaoDespesa,
@@ -61,8 +62,8 @@ describe("gold e payload do cliente", () => {
     }
   });
 
-  it("o payload é um recorte compacto (abaixo de 600 kB serializado)", () => {
-    expect(JSON.stringify(d).length).toBeLessThan(600_000);
+  it("o payload é um recorte compacto (abaixo de 650 kB serializado: observações dos novos indicadores, ponte e estatísticas do grupo)", () => {
+    expect(JSON.stringify(d).length).toBeLessThan(650_000);
   });
 });
 
@@ -129,18 +130,52 @@ describe("comparação entre capitais", () => {
     expect(l21.every((l) => l[col("capitais_incluidas")] === "25" && l[col("capitais_com_valor")] === "26")).toBe(true);
   });
 
-  it("mudar a elegibilidade de um valor recalcula mediana e contagens pela mesma regra", () => {
-    const base = comparar(ix, "aprovacao", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
-    const alvo = base.incluidas[0];
-    const d2 = { ...d, obs: d.obs.map((o) => [...o] as typeof o) };
-    const io = d2.obs.findIndex((o) => d.capitais[o[1]].cod === alvo.cap.cod && o[2] === 2025 && d.indicadores[o[0]] === "edu.aprovacao.rede_municipal"
-      && o[3] === d.etapas.findIndex((e) => e.id === "anos_iniciais"));
-    d2.obs[io][9] = 0;
-    const depois = comparar(new Indice(d2), "aprovacao", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
-    expect(depois.incluidas).toHaveLength(base.incluidas.length - 1);
-    expect(depois.comValor).toBe(base.comValor);
-    expect(depois.excluidas.find((x) => x.cap.id === alvo.cap.id)?.comValor).toBe(true);
-    expect(depois.mediana).toBe(mediana(base.incluidas.slice(1).map((i) => i.valor)));
+  it("a estatística do grupo vem do pipeline e coincide com a recomputação independente da seleção, em todos os recortes", () => {
+    // para cada medida, ano, etapa, moeda, grupo e região: as capitais incluídas, a contagem, a mediana, a média e os extremos
+    // calculados aqui, a partir dos pontos, são os da referência publicada pelo pipeline
+    let verificados = 0;
+    for (const m of MEDIDAS) {
+      for (const ano of d.anos[MEDIDA[m].anos]) {
+        for (const etapa of ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"] as const) {
+          if (!etapaValida(m, etapa)) continue;
+          for (const moeda of ["nominal", "real"] as const) {
+            for (const [grupo, capital] of [["todas", "recife"], ["regiao", "recife"], ["regiao", "sao-paulo"], ["regiao", "manaus"], ["regiao", "curitiba"], ["regiao", "goiania"]] as const) {
+              const c = comparar(ix, m, ano, etapa, moeda, "matematica", grupo, cap(capital), "alfabetica");
+              const vals = c.incluidas.map((i) => i.valor);
+              if (!vals.length) {
+                expect(c.ref === null || c.ref.n === 0).toBe(true);
+                continue;
+              }
+              expect(c.ref, `${m} ${ano} ${etapa} ${moeda} ${grupo}`).not.toBeNull();
+              expect(c.ref!.n).toBe(vals.length);
+              expect(c.ref!.comValor).toBe(c.comValor);
+              expect(c.ref!.noGrupo).toBe(c.universo.length);
+              const tol = (x: number) => 1e-9 * Math.max(1, Math.abs(x));
+              expect(Math.abs((c.mediana as number) - (mediana(vals) as number))).toBeLessThan(tol(c.mediana as number));
+              expect(Math.abs((c.ref!.media as number) - vals.reduce((a, b) => a + b, 0) / vals.length)).toBeLessThan(tol(c.ref!.media as number));
+              expect(c.ref!.minimo).toBeCloseTo(Math.min(...vals), 6);
+              expect(c.ref!.maximo).toBeCloseTo(Math.max(...vals), 6);
+              const extremos = c.incluidas.filter((i) => i.valor === Math.min(...vals)).map((i) => i.cap.cod).sort();
+              expect(c.ref!.capitaisMinimo.map((x) => x.cod).sort()).toEqual(extremos);
+              verificados++;
+            }
+          }
+        }
+      }
+    }
+    expect(verificados).toBeGreaterThan(1500);
+  });
+
+  it("média simples e razão agregada são rotuladas e diferentes para as razões, com os mesmos pares", () => {
+    const c = comparar(ix, "despesa_mat", 2025, "total", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    expect(c.ref!.razaoAgregada).not.toBeNull();
+    expect(c.ref!.razaoAgregada).not.toBeCloseTo(c.ref!.media as number, 0);
+    // a razão agregada é a soma dos numeradores dividida pela soma dos denominadores dos mesmos n pares
+    expect((c.ref!.somaNumerador as number) / (c.ref!.somaDenominador as number)).toBeCloseTo(c.ref!.razaoAgregada as number, 6);
+    const hab = comparar(ix, "despesa_hab", 2025, "total", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    expect(hab.ref!.razaoAgregada).not.toBeNull();
+    const atu = comparar(ix, "atu", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    expect(atu.ref!.razaoAgregada).toBeNull();   // taxa oficial: o painel não recalcula
   });
 
   it("cada indicador declara um universo próprio, coerente com o passaporte", () => {
