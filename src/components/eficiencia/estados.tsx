@@ -38,23 +38,37 @@ export function Ressalva({ ponto }: { ponto: Ponto }) {
   const texto = ponto.status === "OBSERVADO" && !ponto.elegivel ? ponto.motivo ?? ponto.nota : ponto.nota;
   if (!texto || ponto.status !== "OBSERVADO") return null;
   const material = ponto.notaMaterial || !ponto.elegivel;
+  const extra = !ponto.elegivel && ponto.nota && ponto.nota !== texto ? ponto.nota : null;
+  if (material) {
+    // ressalva material acompanha o número: a primeira frase fica à vista, o restante abre por clique ou teclado
+    const corte = texto.length > 170 ? texto.search(/\.\s/) : -1;
+    const inicio = corte > 0 ? texto.slice(0, corte + 1) : texto;
+    const resto = corte > 0 ? texto.slice(corte + 1).trim() : "";
+    return (
+      <div className="mt-3 max-w-prose2 border-l-2 border-obee-tinta pl-3 text-sm leading-snug text-obee-tinta" role="note">
+        <p className="rotulo !text-[0.66rem] text-carvao-muted">{ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações"}</p>
+        <p className="mt-0.5">{inicio}</p>
+        {(resto || extra) && (
+          <details className="mt-0.5">
+            <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o restante</summary>
+            {resto && <p className="text-carvao-muted">{resto}</p>}
+            {extra && <p className="mt-1 text-carvao-muted">{extra}</p>}
+          </details>
+        )}
+      </div>
+    );
+  }
   return (
     <details className="group mt-2 text-xs leading-snug">
-      <summary
-        className={`inline-flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 border px-2 ${
-          material ? "border-obee-tinta font-semibold text-obee-tinta" : "border-linha text-carvao-muted"
-        }`}
-      >
-        <span aria-hidden="true">{material ? "!" : "i"}</span>
-        {material ? (ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações") : "Nota"}
+      <summary className="inline-flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 border border-linha px-2 text-carvao-muted">
+        <span aria-hidden="true">i</span>
+        Nota
         <span className="sr-only"> (abrir detalhe)</span>
       </summary>
       <p className="mt-1.5 text-obee-tinta">{texto}</p>
-      {!ponto.elegivel && ponto.nota && ponto.nota !== texto && <p className="mt-1 text-carvao-muted">{ponto.nota}</p>}
     </details>
   );
 }
-
 
 export function ForaDoEscopo({ texto, children }: { texto: string; children?: ReactNode }) {
   return (

@@ -74,7 +74,7 @@ export function Alternancia<T extends string>({
   return (
     <fieldset className="min-w-0">
       <legend className={rotuloVisivel ? "rotulo text-carvao-muted" : "sr-only"}>{rotulo}</legend>
-      <div className={`${rotuloVisivel ? "mt-1.5 " : ""}inline-flex border border-linha bg-superficie`}>
+      <div className={`${rotuloVisivel ? "mt-1.5 " : ""}inline-flex max-w-full flex-wrap border border-linha bg-superficie`}>
         {opcoes.map((o) => (
           <label
             key={o.v}

@@ -193,6 +193,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
     medida,
     medida === "despesa_hab" ? "a população de referência muda de base (estimativa, Censo ou relação do DOU)" : "a base do dado mudou",
+    cap ? `Em ${nomeCap}` : "Na mediana das capitais",
   );
 
   const linhasTabela = [
@@ -272,7 +273,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                       <span aria-hidden="true">{ativa ? "● " : "○ "}</span>
                       {DEFINICAO_CURTA[f.m].titulo}
                     </span>
-                    <span className="rotulo !text-[0.66rem] text-mineral">{f.mm.anos === "ideb" ? `edição ${f.an}` : f.an}</span>
+                    <span className="rotulo !text-[0.66rem] text-carvao-muted">{f.mm.anos === "ideb" ? `edição ${f.an}` : f.an}</span>
                   </span>
                   <span className="mt-2 font-serif text-2xl tabular-nums text-obee-tinta">
                     {valor ? (valor.valor !== null ? formata(f.m, valor.valor) : "sem valor") : f.r?.mediana != null ? formata(f.m, f.r.mediana) : "sem valor"}
@@ -415,6 +416,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 anotacoes={anotacoes}
                 referencia={cap ? medianaPorAno : undefined}
                 rotuloReferencia="Mediana das capitais"
+                altura={260}
               />
               {!cap && <p className="mt-3 text-xs leading-snug text-carvao-muted">Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro.</p>}
               <details className="mt-2 text-sm">

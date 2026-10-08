@@ -588,7 +588,7 @@ export default function PaginaMetodos() {
       ) : (
         <div className="space-y-14">
           <section aria-labelledby="titulo-metodos">
-            <p className="rotulo text-obee-dark">Educação nas capitais · terceira camada</p>
+            <p className="rotulo text-obee-dark">Educação nas capitais</p>
             <h1 id="titulo-metodos" className="mt-3 font-serif text-[2.1rem] leading-[1.15] text-obee-tinta md:text-[2.75rem]">
               Dados e métodos
             </h1>

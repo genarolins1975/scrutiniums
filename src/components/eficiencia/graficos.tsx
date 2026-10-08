@@ -15,17 +15,28 @@ import { ROTULO_STATUS, type PontoSerie } from "@/lib/eficiencia/consulta";
 export function useLargura<T extends HTMLElement>(padrao: number) {
   const ref = useRef<T>(null);
   const [w, setW] = useState(padrao);
+  // antes da primeira medida (HTML do servidor e hidratação), o desenho escala à largura do contêiner por viewBox: a página
+  // nunca ganha rolagem horizontal por causa de um gráfico ainda não medido
+  const [medido, setMedido] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver((es) => {
       const largura = Math.round(es[0].contentRect.width);
-      if (largura > 0) setW(largura);
+      if (largura > 0) {
+        setW(largura);
+        setMedido(true);
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  return [ref, w] as const;
+  return [ref, w, medido] as const;
+}
+
+/** Dimensões do desenho: em pixels depois de medido; antes, a largura do contêiner, com viewBox para escalar sem estourar. */
+export function dimensoes(medido: boolean, w: number, H: number) {
+  return medido ? { width: w, height: H } : { width: "100%", viewBox: `0 0 ${w} ${H}`, style: { height: "auto" } };
 }
 
 export const COR = {
@@ -53,6 +64,7 @@ export function MiniSerie({
   anotacoes = [],
   referencia,
   rotuloReferencia = "Mediana das capitais",
+  altura = 176,
 }: {
   titulo: string;
   pontos: PontoSerie[];
@@ -62,10 +74,12 @@ export function MiniSerie({
   anotacoes?: Anotacao[];
   referencia?: ReferenciaAnual[];
   rotuloReferencia?: string;
+  /** altura do desenho em px; o texto não encolhe com ela */
+  altura?: number;
 }) {
-  const [ref, w] = useLargura<HTMLDivElement>(320);
+  const [ref, w, medido] = useLargura<HTMLDivElement>(320);
   const [ativo, setAtivo] = useState<number | null>(null);
-  const H = 176;
+  const H = altura;
   const m = { t: 14, r: 14, b: 30, l: 62 };
   const valores = pontos.map((p) => p.valor);
   const temValor = valores.some((v) => v !== null);
@@ -124,7 +138,7 @@ export function MiniSerie({
         onBlur={() => setAtivo(null)}
         className="outline-offset-4"
       >
-        <svg width={w} height={H} aria-hidden="true" className="block overflow-visible">
+        <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block overflow-visible">
           {dom.ticks.map((t) => (
             <g key={t}>
               <line x1={m.l} x2={w - m.r} y1={y(t)} y2={y(t)} stroke={COR.grade} strokeWidth={1} />

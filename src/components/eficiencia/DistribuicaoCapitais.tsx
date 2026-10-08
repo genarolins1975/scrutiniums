@@ -2,7 +2,7 @@
 
 import { useState, type KeyboardEvent, type PointerEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
-import { COR, ticksLog, useLargura } from "./graficos";
+import { COR, dimensoes, ticksLog, useLargura } from "./graficos";
 
 /**
  * Distribuição das capitais numa escala comum: um ponto por capital, em linhas alfabéticas (ou por valor, a pedido de
@@ -43,7 +43,7 @@ export function DistribuicaoCapitais({
   rotuloGrupo?: string;
   rotuloMediana?: string;
 }) {
-  const [ref, w] = useLargura<HTMLDivElement>(640);
+  const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
   const linhaH = 28;
@@ -94,7 +94,7 @@ export function DistribuicaoCapitais({
         onBlur={() => setAtivo(null)}
         className="outline-offset-4"
       >
-        <svg width={w} height={H} aria-hidden="true" className="block">
+        <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block">
           {faixa && <rect x={x(faixa.q1)} y={m.t - 2} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={base - m.t + 2} fill="var(--cor-obee-fundo)" />}
           {ticks.map((t, it) => (
             <g key={t}>

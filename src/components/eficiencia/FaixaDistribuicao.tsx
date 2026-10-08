@@ -2,7 +2,7 @@
 
 import { useMemo, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
-import { COR, useLargura } from "./graficos";
+import { COR, dimensoes, useLargura } from "./graficos";
 
 /**
  * Faixa de distribuição das capitais, para o panorama: todas as capitais numa única escala, uma marca por capital, com
@@ -35,7 +35,7 @@ export function FaixaDistribuicao({
   zero?: boolean;
   rotuloMediana?: string;
 }) {
-  const [ref, w] = useLargura<HTMLDivElement>(640);
+  const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
   const r = estreito ? 6.5 : 7.5;
@@ -108,7 +108,7 @@ export function FaixaDistribuicao({
         onBlur={() => setAtivo(null)}
         className="outline-offset-4"
       >
-        <svg width={w} height={H} aria-hidden="true" className="block">
+        <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block">
           {faixa && <rect x={x(faixa.q1)} y={m.t - 6} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={base - m.t + 6} fill="var(--cor-obee-fundo)" />}
           {dom.ticks.map((t, it) => (
             <g key={t}>

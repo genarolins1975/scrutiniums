@@ -133,7 +133,7 @@ export type PontoFrase = { ano: number; valor: number | null; elegivel: boolean;
  * Evolução entre dois períodos: só com valores elegíveis. Quebra de série entre os dois extremos bloqueia a comparação e
  * diz por quê; anos sem dado ficam fora da conta (nunca contam como zero) e nada de "melhorou" ou "piorou".
  */
-export function fraseEvolucao(pontos: PontoFrase[], medida: MedidaId, motivoQuebra = "a base do dado mudou"): string {
+export function fraseEvolucao(pontos: PontoFrase[], medida: MedidaId, motivoQuebra = "a base do dado mudou", onde?: string): string {
   const validos = pontos.filter((p) => p.valor !== null && p.elegivel);
   if (validos.length === 0) return "Não há dado comparável para mostrar a evolução neste recorte.";
   if (validos.length === 1) return `Há dado comparável em um só período (${validos[0].ano}: ${formata(medida, validos[0].valor as number)}).`;
@@ -144,5 +144,9 @@ export function fraseEvolucao(pontos: PontoFrase[], medida: MedidaId, motivoQueb
   if (quebra) {
     return `Entre ${a.ano} e ${b.ano} ${motivoQuebra}: os valores desses dois períodos não são diretamente comparáveis, e o gráfico marca a ruptura.`;
   }
-  return `O valor passou de ${formata(medida, a.valor as number)} em ${a.ano} para ${formata(medida, b.valor as number)} em ${b.ano}.`;
+  // o sujeito diz qual medida e de quem: "Em Recife (PE), a despesa em Educação por habitante passou de ..."
+  const suj = SUJEITO[medida][0].toLowerCase() + SUJEITO[medida].slice(1);
+  const quem = onde ? `${onde}, ` : "";
+  const frase = `${quem}${suj} passou de ${formata(medida, a.valor as number)} em ${a.ano} para ${formata(medida, b.valor as number)} em ${b.ano}.`;
+  return frase[0].toUpperCase() + frase.slice(1);
 }

@@ -58,7 +58,8 @@ describe("frases factuais geradas dos dados", () => {
       { ano: 2024, valor: 1106, elegivel: true, quebraSerie: false },
       { ano: 2025, valor: 1172, elegivel: true, quebraSerie: false },
     ];
-    expect(fraseEvolucao(ok, "despesa_hab")).toBe("O valor passou de R$ 800 em 2022 para R$ 1.172 em 2025.");
+    expect(fraseEvolucao(ok, "despesa_hab")).toBe("A despesa em Educação por habitante passou de R$ 800 em 2022 para R$ 1.172 em 2025.");
+    expect(fraseEvolucao(ok, "despesa_hab", undefined, "Em Recife (PE)")).toBe("Em Recife (PE), a despesa em Educação por habitante passou de R$ 800 em 2022 para R$ 1.172 em 2025.");
     const quebra = [{ ano: 2021, valor: 536, elegivel: true, quebraSerie: true }, ...ok.slice(0, 1), { ano: 2025, valor: 1172, elegivel: true, quebraSerie: false }];
     expect(fraseEvolucao(quebra, "despesa_hab", "a população passou de estimativa para Censo")).toMatch(/não são diretamente comparáveis/);
     expect(fraseEvolucao([{ ano: 2025, valor: 5, elegivel: true, quebraSerie: false }, { ano: 2024, valor: null, elegivel: false, quebraSerie: false }], "ideb")).toMatch(/um só período/);

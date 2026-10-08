@@ -10,7 +10,7 @@ export function CabecalhoObee() {
   return (
     <header className="border-b border-linha bg-superficie">
       <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-1 px-4 pt-3 sm:px-6">
-        <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] items-center gap-2.5">
+        <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center gap-2.5">
           <LogoMark size={20} />
           <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
         </Link>
