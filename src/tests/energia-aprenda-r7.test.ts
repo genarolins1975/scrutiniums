@@ -259,6 +259,7 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     const av = ler("src/components/energia/AtivoVisivel.tsx");
     expect(av).toContain("if (a.left >= l.left && a.right <= l.right - 8) return;");
     expect(av).toContain("acompanhaFaixa(lista, 0)");
+    expect(av).toContain("if (alvo > maximo) lista.style.paddingRight");
     expect(css).toMatch(/#modulos-energia \{\s*-webkit-mask-image: [^;]*calc\(var\(--fade-esq\) \* 0\.5rem\)/);
     const cab = ler("src/components/energia/CabecalhoEnergia.tsx");
     expect(cab).toMatch(/<Link\s+href=\{d\.href\}\s+prefetch=\{false\}/);

@@ -1,681 +1,723 @@
 {
- "revisao": "Revisão adversarial do módulo Aprenda (P065 e P066)",
- "data": "2026-10-07",
- "metodo": "Três revisores independentes, cada um em contexto limpo e com uma lente (leitor não especialista, auditor de fonte e de risco, interface e acessibilidade), sobre o site construído a partir do commit 3665932fb: 52 páginas em 390 e 1440 px, trechos conferidos contra os PDFs originais, fluxo de volta e simuladores exercitados em Chromium. Cada achado traz evidência verificável; o estado registra o que a rodada de correção de 07/10/2026 fez.",
- "lentes": [
-  {
-   "lente": "leitor",
-   "notas_antes_da_correcao": {
-    "didatismo": 5,
-    "jargao_e_siglas": 4,
-    "ordem_leveza_390": 4,
-    "ordem_leveza_1440": 6.5,
-    "exemplo_real": 6,
-    "nao_confundir": 7,
-    "trilhas_e_simulador": 6,
-    "bastidor_vs_entendimento": 4,
-    "promessa_do_titulo_vs_entrega": 5,
-    "indice_e_navegacao": 4.5
-   },
-   "achados_total": 38,
-   "por_estado": {
-    "corrigido": 14,
-    "parcial": 2,
-    "aberto": 22
-   },
-   "achados": [
+  "revisao": "Revisão adversarial do módulo Aprenda (P065 e P066)",
+  "data": "2026-10-07",
+  "metodo": "Três revisores independentes, cada um em contexto limpo e com uma lente (leitor não especialista, auditor de fonte e de risco, interface e acessibilidade), sobre o site construído a partir do commit 3665932fb: 52 páginas em 390 e 1440 px, trechos conferidos contra os PDFs originais, fluxo de volta e simuladores exercitados em Chromium. Cada achado traz evidência verificável; o estado registra o que a rodada de correção de 07/10/2026 fez.",
+  "lentes": [
     {
-     "id": "L-01",
-     "severidade": "alta",
-     "pagina": "/gsf",
-     "categoria": "jargao e siglas",
-     "estado": "corrigido"
+      "lente": "leitor",
+      "notas_antes_da_correcao": {
+        "didatismo": 5,
+        "jargao_e_siglas": 4,
+        "ordem_leveza_390": 4,
+        "ordem_leveza_1440": 6.5,
+        "exemplo_real": 6,
+        "nao_confundir": 7,
+        "trilhas_e_simulador": 6,
+        "bastidor_vs_entendimento": 4,
+        "promessa_do_titulo_vs_entrega": 5,
+        "indice_e_navegacao": 4.5
+      },
+      "achados_total": 38,
+      "por_estado": {
+        "corrigido": 32,
+        "parcial": 6,
+        "aberto": 0
+      },
+      "achados": [
+        {
+          "id": "L-01",
+          "severidade": "alta",
+          "pagina": "/gsf",
+          "categoria": "jargao e siglas",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-02",
+          "severidade": "alta",
+          "pagina": "/gsf",
+          "categoria": "exemplo real",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-03",
+          "severidade": "media",
+          "pagina": "/gsf e /garantia-fisica",
+          "categoria": "numero sem data",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-04",
+          "severidade": "alta",
+          "pagina": "/gsf, /ree, /constrained-off, /pld, /ear (todos os verbetes)",
+          "categoria": "jargao e siglas",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-05",
+          "severidade": "alta",
+          "pagina": "/gsf, /garantia-fisica, /ear, trilha Água",
+          "categoria": "jargao e siglas",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-06",
+          "severidade": "alta",
+          "pagina": "/constrained-off",
+          "categoria": "didatismo",
+          "estado": "corrigido",
+          "nota": "A frase de abertura passou a ser a leitura em palavras simples, com as três razões do evento, e o texto da fonte vem logo abaixo, rotulado."
+        },
+        {
+          "id": "L-07",
+          "severidade": "media",
+          "pagina": "/constrained-off",
+          "categoria": "promessa do titulo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-08",
+          "severidade": "media",
+          "pagina": "/constrained-off",
+          "categoria": "exemplo real",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-09",
+          "severidade": "media",
+          "pagina": "/constrained-off e /gsf",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido",
+          "nota": "Constrained-off e GSF abrem o Como é medido com um resumo de duas linhas; a norma, a curva e o cálculo ficam em Detalhe técnico, recolhido. No GSF, o que o MME faz fica separado do que o observatório faz."
+        },
+        {
+          "id": "L-10",
+          "severidade": "media",
+          "pagina": "/ree",
+          "categoria": "didatismo",
+          "estado": "corrigido",
+          "nota": "A frase do REE diz que as hidrelétricas de cada conjunto de bacias entram agrupadas num reservatório equivalente, com a topologia de 12 REE. O exemplo nomeia o REE sem armazenamento (Itaipu), e o onze deixa de ficar sem explicação."
+        },
+        {
+          "id": "L-11",
+          "severidade": "baixa",
+          "pagina": "/ree, /constrained-off, /pld",
+          "categoria": "exemplo real",
+          "estado": "parcial",
+          "nota": "PLD e EAR passaram a ter cartão com ficha Comprove, e o exemplo sem ficha usa o mesmo cartão, com o aviso de que não há ficha. O REE segue com frase e selos dentro do cartão, porque a gold não publica ficha para a EAR por REE."
+        },
+        {
+          "id": "L-12",
+          "severidade": "media",
+          "pagina": "/mre",
+          "categoria": "exemplo real",
+          "estado": "corrigido",
+          "nota": "O MRE tem exemplo próprio (geração conjunta das usinas e garantia física do mês), e o cartão do GSF fica só no GSF. A analogia de condomínio sugerida não foi adotada: não está em fonte conferida."
+        },
+        {
+          "id": "L-13",
+          "severidade": "alta",
+          "pagina": "/pld e /mcp",
+          "categoria": "didatismo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-14",
+          "severidade": "alta",
+          "pagina": "/pld, /newave, /cvu, /submercado, /gsf, /ree, /constrained-off",
+          "categoria": "bastidor",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-15",
+          "severidade": "media",
+          "pagina": "/newave",
+          "categoria": "promessa do titulo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-16",
+          "severidade": "alta",
+          "pagina": "/ree, /constrained-off, /pld, /gsf",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-17",
+          "severidade": "media",
+          "pagina": "/gsf e /constrained-off",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-18",
+          "severidade": "media",
+          "pagina": "/gsf, /ree, /constrained-off, /pld",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-19",
+          "severidade": "baixa",
+          "pagina": "/gsf, /ear, /constrained-off, /pld",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido",
+          "nota": "A unidade vem dentro de Como é medido. MRE e REE não têm unidade porque o texto diz que não são grandeza."
+        },
+        {
+          "id": "L-20",
+          "severidade": "media",
+          "pagina": "todas as páginas do Aprenda",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido",
+          "nota": "O bloco Fontes deste observatório ficou recolhido em todas as páginas do observatório, com os links em uma linha. O rodapé institucional da plataforma segue como estava."
+        },
+        {
+          "id": "L-21",
+          "severidade": "media",
+          "pagina": "/limites-do-pld",
+          "categoria": "bastidor",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-22",
+          "severidade": "baixa",
+          "pagina": "/gsf, /constrained-off, /ree, /pld, /ear",
+          "categoria": "didatismo",
+          "estado": "corrigido",
+          "nota": "Cada exemplo traz, abaixo, a legenda visível dos selos que usa, com as mesmas palavras do selo."
+        },
+        {
+          "id": "L-23",
+          "severidade": "baixa",
+          "pagina": "/gsf, /constrained-off, /ree",
+          "categoria": "didatismo",
+          "estado": "parcial",
+          "nota": "GSF, constrained-off e REE trazem uma frase por relação, escrita só com o que os trechos literais dizem. Os demais verbetes mantêm as relações como atalhos, sem frase."
+        },
+        {
+          "id": "L-24",
+          "severidade": "baixa",
+          "pagina": "/gsf, /mre, /garantia-fisica, /ear, /ree",
+          "categoria": "didatismo",
+          "estado": "corrigido",
+          "nota": "Quatro pares de verbetes vizinhos (MRE e GSF, GSF e garantia física, MRE e garantia física, REE e EAR) passaram a mostrar, de um dos lados, uma versão curta que aponta para o outro."
+        },
+        {
+          "id": "L-25",
+          "severidade": "baixa",
+          "pagina": "/gsf, /constrained-off, /pld",
+          "categoria": "ordem e leveza",
+          "estado": "corrigido",
+          "nota": "A coluna de texto tem 44 rem e o Não confundir está em 16 px."
+        },
+        {
+          "id": "L-26",
+          "severidade": "alta",
+          "pagina": "/ (índice)",
+          "categoria": "ordem e leveza",
+          "estado": "parcial",
+          "nota": "O índice agrupa os 48 verbetes em 11 grupos recolhidos, com a contagem, busca por sigla, nome ou texto guardada na URL, e abertura de duas frases. Altura em 390 px, em Entender: 14.499 px na r6, 3.488 px na medição de 08/10/2026 (Chromium headless). O cartão ainda mostra a definição inteira quando o grupo abre, e o texto da fonte continua longo; a definição curta de cada verbete exigiria texto novo conferido."
+        },
+        {
+          "id": "L-27",
+          "severidade": "media",
+          "pagina": "/ (índice)",
+          "categoria": "promessa do titulo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-28",
+          "severidade": "media",
+          "pagina": "/ (índice)",
+          "categoria": "didatismo",
+          "estado": "parcial",
+          "nota": "IMERG e MERRA-2 formam o grupo Fontes de dados, e os cartões de constrained-off e REE mostram a leitura em palavras simples. MLT, NEWAVE, DESSEM, CVU e carga global líquida seguem com a definição da fonte, circular ou incompleta, porque a fonte que as define não foi lida."
+        },
+        {
+          "id": "L-29",
+          "severidade": "alta",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "promessa do titulo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "L-30",
+          "severidade": "media",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "exemplo real",
+          "estado": "corrigido",
+          "nota": "O CMO do passo 4 e o PLD do passo 5 são da mesma semana operativa, ambos com ficha, e o texto do passo 5 diz isso."
+        },
+        {
+          "id": "L-31",
+          "severidade": "media",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "trilha",
+          "estado": "corrigido",
+          "nota": "O passo 5 é cartão com ficha Comprove e link ao painel, como os demais."
+        },
+        {
+          "id": "L-32",
+          "severidade": "media",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "numero sem referencia",
+          "estado": "parcial",
+          "nota": "No passo 1, 100% é dito como o valor da própria MLT; no passo 3, o texto diz que o número é média de potência em 12 meses e que o peso da fonte no total está no painel. A proporção da térmica sobre o total não foi acrescentada nesta rodada."
+        },
+        {
+          "id": "L-33",
+          "severidade": "media",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "jargao e siglas",
+          "estado": "parcial",
+          "nota": "A legenda de siglas passou a ser derivada do texto à vista e inclui ONS, CCEE, SIN, MCP, MRE e CVU quando aparecem. DECOMP e DESSEM não entram: o dicionário só traz nomes que o observatório já publica por extenso, e esses dois modelos não têm."
+        },
+        {
+          "id": "L-34",
+          "severidade": "media",
+          "pagina": "/trilhas/agua-operacao-preco",
+          "categoria": "simulador",
+          "estado": "corrigido",
+          "nota": "O quadro abre com o enunciado (agente contratou, consumiu, diferença liquidada ao preço da hora) e com a dica de onde o preço deixa de acompanhar o CMO, e fica entre os passos 5 e 6. O segundo simulador, do GSF, que a revisão pedia se possível, não foi feito."
+        },
+        {
+          "id": "L-35",
+          "severidade": "baixa",
+          "pagina": "/trilhas/custo-tarifa-orcamento",
+          "categoria": "simulador",
+          "estado": "corrigido",
+          "nota": "Os rótulos de bandeira dizem que são hipotéticos, o rótulo da tarifa cabe em uma linha, os três controles ficam alinhados (conferido em 1440 px) e o peso no orçamento avisa para não comparar com a POF. A renda inicial de R$ 1.500 não mudou."
+        },
+        {
+          "id": "L-36",
+          "severidade": "baixa",
+          "pagina": "/trilhas",
+          "categoria": "trilha",
+          "estado": "corrigido",
+          "nota": "O índice das trilhas não traz mais a legenda dos cinco tipos; cada trilha mostra só os que usa, e Decisão de operação e Associação analítica nunca aparecem juntas numa trilha. O traço dos dois no mapa conceitual não foi alterado."
+        },
+        {
+          "id": "L-37",
+          "severidade": "baixa",
+          "pagina": "todas as páginas",
+          "categoria": "navegação",
+          "estado": "corrigido",
+          "nota": "A faixa de módulos não rola quando o item atual cabe inteiro; quando não cabe, o item vai rente à borda e a lista ganha à direita o respiro que falta. Simulado nas 94 páginas em 390 e 360 px: nenhum item cortado à esquerda e o atual sempre à vista."
+        },
+        {
+          "id": "L-38",
+          "severidade": "baixa",
+          "pagina": "/gsf",
+          "categoria": "jargao e siglas",
+          "estado": "corrigido",
+          "nota": "Um só termo (painel) e um só link por destino: o fim da página não repete o destino do exemplo."
+        }
+      ]
     },
     {
-     "id": "L-02",
-     "severidade": "alta",
-     "pagina": "/gsf",
-     "categoria": "exemplo real",
-     "estado": "corrigido"
+      "lente": "fonte",
+      "notas_antes_da_correcao": {
+        "fidelidade_literal_dos_trechos": 9.0,
+        "fidelidade_das_parafrases": 6.0,
+        "afirmacoes_alem_do_trecho": 5.5,
+        "exatidao_de_numeros_datas_nomes_paginas": 8.5,
+        "declaracao_do_nao_acessado": 5.0,
+        "exemplo_real_x_painel": 8.5,
+        "coerencia_verbete_painel_trilhas": 5.5,
+        "separacao_evidencia_inferencia_recomendacao": 6.5,
+        "rastreabilidade_e_reproducao": 6.5
+      },
+      "achados_total": 26,
+      "por_estado": {
+        "corrigido": 24,
+        "parcial": 2,
+        "aberto": 0
+      },
+      "achados": [
+        {
+          "id": "F01",
+          "severidade": "alta",
+          "pagina": "/setor-eletrico/aprenda/ree",
+          "categoria": "paráfrase inverte o estado do fato (proposta lida como implantada)",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F02",
+          "severidade": "alta",
+          "pagina": "/setor-eletrico/aprenda/constrained-off",
+          "categoria": "documento declarado como não acessado mas recuperável pelo canal que o próprio projeto já usa",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F03",
+          "severidade": "alta",
+          "pagina": "/setor-eletrico/aprenda/(índice), /setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/ree, /setor-eletrico/aprenda/constrained-off",
+          "categoria": "selo e texto do índice dizem mais do que os verbetes provam",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F04",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/constrained-off",
+          "categoria": "paráfrase generaliza o escopo do trecho; número de exemplo maior que o alcance do método descrito",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F05",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/constrained-off",
+          "categoria": "inferência sem rótulo e \"por que importa\" que não responde à pergunta",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F06",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/constrained-off",
+          "categoria": "pequenas afirmações sem apoio no trecho exibido",
+          "estado": "corrigido",
+          "nota": "A fórmula do verbete traz o piso em zero e a meia hora, como a ficha publicada, e é rotulada como método do observatório sobre os dados do ONS. A unidade deixou de aparecer como se fosse de trecho da fonte."
+        },
+        {
+          "id": "F07",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf",
+          "categoria": "distinção entre denominadores correta nos fatos, mas incompleta e parcialmente imprecisa",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F08",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf",
+          "categoria": "\"por que importa\" apoiado em GSF de definição diferente da do exemplo, e sem a razão principal da fonte",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F09",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf",
+          "categoria": "conferência com o InfoMercado apresentada sem alcance; ressalva do MRE ausente no GSF",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F10",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/mre, /setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/garantia-fisica",
+          "categoria": "verbetes dizem coisas diferentes sobre o cálculo",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F11",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/mre, /setor-eletrico/aprenda/trilhas/agua-operacao-preco",
+          "categoria": "equivalência \"fator de ajuste do MRE\" = GSF não sustentada pelos trechos do verbete",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F12",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/gsf",
+          "categoria": "elipse esconde o sujeito da frase",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F13",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/garantia-fisica",
+          "categoria": "contraste usa \"teto\" e um número de 2020 sem data ao lado de exemplo de 2026",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F14",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/mre",
+          "categoria": "campos afirmam além do trecho e são contrariados por documento da própria captura",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F15",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/ree",
+          "categoria": "contagem de REE do verbete diverge da do painel sem explicação",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F16",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/ree",
+          "categoria": "atribuição institucional imprecisa",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F17",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco, /setor-eletrico/aprenda/ree",
+          "categoria": "trilha simplifica REE para \"agregação por bacia\"",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F18",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/pld, /setor-eletrico/aprenda/trilhas/agua-operacao-preco, /setor-eletrico/aprenda/mcp",
+          "categoria": "afirmação de mecanismo sem trecho na base Aprenda, enquanto o verbete a declara pendente",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F19",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/mercado/mre-e-gsf#mre-gsf (destino de GSF, MRE e garantia física)",
+          "categoria": "painel de destino afirma mecanismo que o verbete declara não conferido",
+          "estado": "parcial",
+          "nota": "O painel de Mercado deixou de afirmar o repasse do risco ao consumidor cativo como fato, e as definições operacionais passaram a vir rotuladas como não conferidas em norma (as Leis 12.783/2013 e 13.203/2015 e as Regras de Comercialização da CCEE não foram lidas). O título do painel, que fala em ajuste da garantia física, é gravado na gold pelo pipeline de Mercado e mudar exige regenerá-la, o que este ambiente não faz (falta o bronze)."
+        },
+        {
+          "id": "F20",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/ree (destino agua-e-clima?rec=ree#p017)",
+          "categoria": "link do exemplo leva a outra visão",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F21",
+          "severidade": "media",
+          "pagina": "todas as fichas \"Comprove este número\" (GSF, REE, constrained-off)",
+          "categoria": "rastreabilidade: versão do código não reprodutível",
+          "estado": "parcial",
+          "nota": "A ficha passou a dizer com todas as letras que o código tinha alterações locais ainda não confirmadas em commit (sufixo +alterado) e o que continua valendo (sha256 de entrada e comando de reprodução). O pipeline ainda não impede publicar de árvore suja."
+        },
+        {
+          "id": "F22",
+          "severidade": "baixa",
+          "pagina": "GSF, REE, constrained-off (campo Fonte oficial)",
+          "categoria": "paginação e localização das citações",
+          "estado": "corrigido",
+          "nota": "As citações do boletim, do PDE e do relatório de preços trazem a página do documento e a do PDF (28 e 33, 40 e 45, 4 e 7, 38 e 41, 9 e 12), conferidas contra os marcadores de página das capturas versionadas; as do relatório do GT do MRE dizem que as duas numerações coincidem."
+        },
+        {
+          "id": "F23",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/garantia-fisica, /setor-eletrico/aprenda/acr",
+          "categoria": "apoio do \"por que importa\" fora dos trechos exibidos",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F24",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/pld, /setor-eletrico/aprenda/mcp",
+          "categoria": "trecho truncado, paráfrase com \"somados\" e canal da captura",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F25",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/ree",
+          "categoria": "declaração de não acessado imprecisa",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F26",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/gsf",
+          "categoria": "\"em uma frase\" funde duas definições e usa verbos do verbete",
+          "estado": "corrigido",
+          "nota": "A frase do GSF qualifica a garantia física do boletim (sazonalizada) e o rótulo do centro de gravidade deixou de ser descrito como referenciada."
+        }
+      ]
     },
     {
-     "id": "L-03",
-     "severidade": "media",
-     "pagina": "/gsf e /garantia-fisica",
-     "categoria": "numero sem data",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-04",
-     "severidade": "alta",
-     "pagina": "/gsf, /ree, /constrained-off, /pld, /ear (todos os verbetes)",
-     "categoria": "jargao e siglas",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-05",
-     "severidade": "alta",
-     "pagina": "/gsf, /garantia-fisica, /ear, trilha Água",
-     "categoria": "jargao e siglas",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-06",
-     "severidade": "alta",
-     "pagina": "/constrained-off",
-     "categoria": "didatismo",
-     "estado": "parcial"
-    },
-    {
-     "id": "L-07",
-     "severidade": "media",
-     "pagina": "/constrained-off",
-     "categoria": "promessa do titulo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-08",
-     "severidade": "media",
-     "pagina": "/constrained-off",
-     "categoria": "exemplo real",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-09",
-     "severidade": "media",
-     "pagina": "/constrained-off e /gsf",
-     "categoria": "ordem e leveza",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-10",
-     "severidade": "media",
-     "pagina": "/ree",
-     "categoria": "didatismo",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-11",
-     "severidade": "baixa",
-     "pagina": "/ree, /constrained-off, /pld",
-     "categoria": "exemplo real",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-12",
-     "severidade": "media",
-     "pagina": "/mre",
-     "categoria": "exemplo real",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-13",
-     "severidade": "alta",
-     "pagina": "/pld e /mcp",
-     "categoria": "didatismo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-14",
-     "severidade": "alta",
-     "pagina": "/pld, /newave, /cvu, /submercado, /gsf, /ree, /constrained-off",
-     "categoria": "bastidor",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-15",
-     "severidade": "media",
-     "pagina": "/newave",
-     "categoria": "promessa do titulo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-16",
-     "severidade": "alta",
-     "pagina": "/ree, /constrained-off, /pld, /gsf",
-     "categoria": "ordem e leveza",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-17",
-     "severidade": "media",
-     "pagina": "/gsf e /constrained-off",
-     "categoria": "ordem e leveza",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-18",
-     "severidade": "media",
-     "pagina": "/gsf, /ree, /constrained-off, /pld",
-     "categoria": "ordem e leveza",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-19",
-     "severidade": "baixa",
-     "pagina": "/gsf, /ear, /constrained-off, /pld",
-     "categoria": "ordem e leveza",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-20",
-     "severidade": "media",
-     "pagina": "todas as páginas do Aprenda",
-     "categoria": "ordem e leveza",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-21",
-     "severidade": "media",
-     "pagina": "/limites-do-pld",
-     "categoria": "bastidor",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-22",
-     "severidade": "baixa",
-     "pagina": "/gsf, /constrained-off, /ree, /pld, /ear",
-     "categoria": "didatismo",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-23",
-     "severidade": "baixa",
-     "pagina": "/gsf, /constrained-off, /ree",
-     "categoria": "didatismo",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-24",
-     "severidade": "baixa",
-     "pagina": "/gsf, /mre, /garantia-fisica, /ear, /ree",
-     "categoria": "didatismo",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-25",
-     "severidade": "baixa",
-     "pagina": "/gsf, /constrained-off, /pld",
-     "categoria": "ordem e leveza",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-26",
-     "severidade": "alta",
-     "pagina": "/ (índice)",
-     "categoria": "ordem e leveza",
-     "estado": "parcial"
-    },
-    {
-     "id": "L-27",
-     "severidade": "media",
-     "pagina": "/ (índice)",
-     "categoria": "promessa do titulo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-28",
-     "severidade": "media",
-     "pagina": "/ (índice)",
-     "categoria": "didatismo",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-29",
-     "severidade": "alta",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "promessa do titulo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "L-30",
-     "severidade": "media",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "exemplo real",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-31",
-     "severidade": "media",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "trilha",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-32",
-     "severidade": "media",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "numero sem referencia",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-33",
-     "severidade": "media",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "jargao e siglas",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-34",
-     "severidade": "media",
-     "pagina": "/trilhas/agua-operacao-preco",
-     "categoria": "simulador",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-35",
-     "severidade": "baixa",
-     "pagina": "/trilhas/custo-tarifa-orcamento",
-     "categoria": "simulador",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-36",
-     "severidade": "baixa",
-     "pagina": "/trilhas",
-     "categoria": "trilha",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-37",
-     "severidade": "baixa",
-     "pagina": "todas as páginas",
-     "categoria": "navegação",
-     "estado": "aberto"
-    },
-    {
-     "id": "L-38",
-     "severidade": "baixa",
-     "pagina": "/gsf",
-     "categoria": "jargao e siglas",
-     "estado": "aberto"
+      "lente": "interface",
+      "notas_antes_da_correcao": {
+        "layout_responsivo_390_1440": 9.5,
+        "alvos_de_toque_44px": 6.5,
+        "teclado_e_foco": 7.5,
+        "contraste": 9.5,
+        "semantica_headings_landmarks": 8.5,
+        "axe_wcag22aa": 8.5,
+        "links_e_navegacao": 9.5,
+        "fluxo_de_volta": 9,
+        "simuladores": 8.5,
+        "sem_javascript": 7.5,
+        "impressao": 3,
+        "consistencia_visual_novos_vs_antigos": 8,
+        "desempenho_e_peso": 8.5,
+        "console_e_rede": 10
+      },
+      "achados_total": 20,
+      "por_estado": {
+        "corrigido": 17,
+        "parcial": 3,
+        "aberto": 0
+      },
+      "achados": [
+        {
+          "id": "F01",
+          "severidade": "alta",
+          "pagina": "Painéis alcançados pelo botão de volta, p.ex. /setor-eletrico/mercado/mre-e-gsf?volta=verbete%3Agsf (barra de RetornoContexto)",
+          "categoria": "Acessibilidade: WCAG 2.4.11 Foco não obscurecido (AA, nível mínimo)",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F02",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf (e todo verbete e trilha)",
+          "categoria": "Impressão (print CSS)",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F03",
+          "severidade": "media",
+          "pagina": "Os 48 verbetes, bloco 'Veja no portal' (ex.: /setor-eletrico/aprenda/gsf, /acl, /armazenamento)",
+          "categoria": "Alvo de toque menor que 44 px",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F04",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento; botões Comprove no GSF e no constrained-off",
+          "categoria": "Comportamento sem JavaScript",
+          "estado": "corrigido",
+          "nota": "Sem JavaScript, os três controles do exemplo ficam desligados, com aviso, e o botão Comprove fica escondido. Conferido em Chromium com JavaScript desligado."
+        },
+        {
+          "id": "F05",
+          "severidade": "media",
+          "pagina": "/setor-eletrico/aprenda/gsf (diálogo 'Comprove este número'), também nas trilhas e no constrained-off",
+          "categoria": "Acessibilidade: WCAG 1.3.1 (axe aria-allowed-role e listitem) em componente compartilhado",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F06",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/custo-de-disponibilidade",
+          "categoria": "Rótulo contraditório e promessa do índice",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F07",
+          "severidade": "media",
+          "pagina": "Verbetes: armazenamento, decomp, dessem, submercado (sem 'O que não se pode concluir'); agenda-regulatoria, conjunto-eletrico, decomp, dessem, mlt, mre, newave, ree, sin, submercado (sem 'Unidade')",
+          "categoria": "Consistência de campos e promessa do índice",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F08",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/ree (comparado com /gsf e /constrained-off)",
+          "categoria": "Consistência visual do exemplo real",
+          "estado": "parcial",
+          "nota": "Mesma situação de L-11: o REE usa o cartão, com o verbo variou e o link padronizado, mas sem ficha Comprove por falta de ficha publicada para a EAR por REE."
+        },
+        {
+          "id": "F09",
+          "severidade": "baixa",
+          "pagina": "21 verbetes com exemplo em texto (acr, agenda-regulatoria, armazenamento, carga, cmo, cvu, decomp, ear, ena, garantia-fisica, geracao-centralizada, intercambio, mcp, mlt, newave, percentual-regulatorio-de-perdas, perdas-tecnicas, pld, ree, sin, submercado)",
+          "categoria": "Tipografia: espaço antes de pontuação",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F10",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/ree, /constrained-off (e agenda-regulatoria, conjunto-eletrico, fator-de-emissao, tarifa-social)",
+          "categoria": "Consistência visual: 'Não confundir com' e alinhamento de fonte",
+          "estado": "corrigido",
+          "nota": "O termo sem verbete passou a ter a mesma caixa de 44 px e a inicial maiúscula do termo com link."
+        },
+        {
+          "id": "F11",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda (índice)",
+          "categoria": "ID inválido e aria-labelledby quebrado",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F12",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento",
+          "categoria": "ARIA sem suporte",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F13",
+          "severidade": "baixa",
+          "pagina": "48 verbetes (breadcrumb)",
+          "categoria": "Nome de landmark enganoso",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F14",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/gsf (Fonte oficial, 1º item) e outros",
+          "categoria": "Quebra de linha: seta ↗ órfã",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F15",
+          "severidade": "baixa",
+          "pagina": "Todas as páginas do Aprenda",
+          "categoria": "Legibilidade: corpo pequeno",
+          "estado": "parcial",
+          "nota": "Os rótulos de campo subiram para 0,8 rem, o selo de natureza para 0,72 rem e as notas de conferência para 14 px. A linha Siglas e algumas legendas seguem em 12 px."
+        },
+        {
+          "id": "F16",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento (simuladores)",
+          "categoria": "Simulador: anúncio ao leitor de tela e faixas",
+          "estado": "corrigido"
+        },
+        {
+          "id": "F17",
+          "severidade": "baixa",
+          "pagina": "Todas as páginas do Aprenda (cromo global: bloco 'Fontes deste observatório' e rodapé)",
+          "categoria": "Alvos de toque no cromo global",
+          "estado": "parcial",
+          "nota": "Os links do rodapé do observatório têm alvo de 44 px. O rodapé institucional da plataforma, compartilhado com os outros observatórios, ficou como está: cumpre a WCAG 2.5.8 pelo espaçamento, e alvos de 44 px dobrariam a altura dele."
+        },
+        {
+          "id": "F18",
+          "severidade": "baixa",
+          "pagina": "Todas as páginas do Aprenda",
+          "categoria": "Peso da página: prefetch",
+          "estado": "corrigido",
+          "nota": "A faixa de módulos do cabeçalho e os links do rodapé do observatório deixaram de pré carregar as páginas. Média de bytes de outros tipos nas 12 páginas do Aprenda a 390 px: 1.251 KB na r6, 391 KB na medição de 08/10/2026."
+        },
+        {
+          "id": "F19",
+          "severidade": "baixa",
+          "pagina": "Todas as páginas do Aprenda (cabeçalho do Setor Elétrico)",
+          "categoria": "Texto cortado no cabeçalho global",
+          "estado": "corrigido",
+          "nota": "Mesma correção de L-37: o item atual não fica mais cortado como LAÇÃO."
+        },
+        {
+          "id": "F20",
+          "severidade": "baixa",
+          "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento",
+          "categoria": "Hierarquia visual de títulos",
+          "estado": "corrigido",
+          "nota": "Os títulos Experimente com valores hipotéticos e O que esta trilha não permite concluir seguem o estilo dos títulos dos passos."
+        }
+      ]
     }
-   ]
-  },
-  {
-   "lente": "fonte",
-   "notas_antes_da_correcao": {
-    "fidelidade_literal_dos_trechos": 9.0,
-    "fidelidade_das_parafrases": 6.0,
-    "afirmacoes_alem_do_trecho": 5.5,
-    "exatidao_de_numeros_datas_nomes_paginas": 8.5,
-    "declaracao_do_nao_acessado": 5.0,
-    "exemplo_real_x_painel": 8.5,
-    "coerencia_verbete_painel_trilhas": 5.5,
-    "separacao_evidencia_inferencia_recomendacao": 6.5,
-    "rastreabilidade_e_reproducao": 6.5
-   },
-   "achados_total": 26,
-   "por_estado": {
-    "corrigido": 21,
-    "parcial": 3,
-    "aberto": 2
-   },
-   "achados": [
-    {
-     "id": "F01",
-     "severidade": "alta",
-     "pagina": "/setor-eletrico/aprenda/ree",
-     "categoria": "paráfrase inverte o estado do fato (proposta lida como implantada)",
-     "estado": "corrigido"
+  ],
+  "resumo": {
+    "achados_total": 84,
+    "por_estado": {
+      "corrigido": 73,
+      "parcial": 11,
+      "aberto": 0
     },
-    {
-     "id": "F02",
-     "severidade": "alta",
-     "pagina": "/setor-eletrico/aprenda/constrained-off",
-     "categoria": "documento declarado como não acessado mas recuperável pelo canal que o próprio projeto já usa",
-     "estado": "corrigido"
+    "nenhum_bloqueante": true,
+    "nota": "As notas são de revisores agentes, não de leitores reais, e valem como instrumento de comparação entre rodadas, não como medida absoluta. Dos achados de severidade alta, 2 seguem parciais (leitor L-06, leitor L-26); os demais abertos são de severidade média ou baixa, em sua maioria de desenho global (rodapé do observatório, selo de natureza) ou fora do Aprenda (painel de Mercado, versão do código nas fichas). Ficam como pendência declarada em CONTINUIDADE.md. Em 08/10/2026 os 35 foram retomados (campo fechamento): ficam 0 abertos e 11 parciais (1 de severidade alta, o índice, L-26), com a razão em cada nota. A posição do exemplo (L-18) e o título do índice (L-27) foram corrigidos depois da entrega da revisão; a avaliação r5 mediu o layout e o título anteriores e não foi remedida.",
+    "abertos_ou_parciais_por_severidade": {
+      "alta": 1,
+      "media": 5,
+      "baixa": 5
     },
-    {
-     "id": "F03",
-     "severidade": "alta",
-     "pagina": "/setor-eletrico/aprenda/(índice), /setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/ree, /setor-eletrico/aprenda/constrained-off",
-     "categoria": "selo e texto do índice dizem mais do que os verbetes provam",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F04",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/constrained-off",
-     "categoria": "paráfrase generaliza o escopo do trecho; número de exemplo maior que o alcance do método descrito",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F05",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/constrained-off",
-     "categoria": "inferência sem rótulo e \"por que importa\" que não responde à pergunta",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F06",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/constrained-off",
-     "categoria": "pequenas afirmações sem apoio no trecho exibido",
-     "estado": "parcial"
-    },
-    {
-     "id": "F07",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf",
-     "categoria": "distinção entre denominadores correta nos fatos, mas incompleta e parcialmente imprecisa",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F08",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf",
-     "categoria": "\"por que importa\" apoiado em GSF de definição diferente da do exemplo, e sem a razão principal da fonte",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F09",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf",
-     "categoria": "conferência com o InfoMercado apresentada sem alcance; ressalva do MRE ausente no GSF",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F10",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/mre, /setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/garantia-fisica",
-     "categoria": "verbetes dizem coisas diferentes sobre o cálculo",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F11",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/mre, /setor-eletrico/aprenda/trilhas/agua-operacao-preco",
-     "categoria": "equivalência \"fator de ajuste do MRE\" = GSF não sustentada pelos trechos do verbete",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F12",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/gsf",
-     "categoria": "elipse esconde o sujeito da frase",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F13",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf, /setor-eletrico/aprenda/garantia-fisica",
-     "categoria": "contraste usa \"teto\" e um número de 2020 sem data ao lado de exemplo de 2026",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F14",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/mre",
-     "categoria": "campos afirmam além do trecho e são contrariados por documento da própria captura",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F15",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/ree",
-     "categoria": "contagem de REE do verbete diverge da do painel sem explicação",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F16",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/ree",
-     "categoria": "atribuição institucional imprecisa",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F17",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco, /setor-eletrico/aprenda/ree",
-     "categoria": "trilha simplifica REE para \"agregação por bacia\"",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F18",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/pld, /setor-eletrico/aprenda/trilhas/agua-operacao-preco, /setor-eletrico/aprenda/mcp",
-     "categoria": "afirmação de mecanismo sem trecho na base Aprenda, enquanto o verbete a declara pendente",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F19",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/mercado/mre-e-gsf#mre-gsf (destino de GSF, MRE e garantia física)",
-     "categoria": "painel de destino afirma mecanismo que o verbete declara não conferido",
-     "estado": "aberto"
-    },
-    {
-     "id": "F20",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/ree (destino agua-e-clima?rec=ree#p017)",
-     "categoria": "link do exemplo leva a outra visão",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F21",
-     "severidade": "media",
-     "pagina": "todas as fichas \"Comprove este número\" (GSF, REE, constrained-off)",
-     "categoria": "rastreabilidade: versão do código não reprodutível",
-     "estado": "aberto"
-    },
-    {
-     "id": "F22",
-     "severidade": "baixa",
-     "pagina": "GSF, REE, constrained-off (campo Fonte oficial)",
-     "categoria": "paginação e localização das citações",
-     "estado": "parcial"
-    },
-    {
-     "id": "F23",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/garantia-fisica, /setor-eletrico/aprenda/acr",
-     "categoria": "apoio do \"por que importa\" fora dos trechos exibidos",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F24",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/pld, /setor-eletrico/aprenda/mcp",
-     "categoria": "trecho truncado, paráfrase com \"somados\" e canal da captura",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F25",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/ree",
-     "categoria": "declaração de não acessado imprecisa",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F26",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/gsf",
-     "categoria": "\"em uma frase\" funde duas definições e usa verbos do verbete",
-     "estado": "parcial"
+    "fechamento": {
+      "data": "2026-10-08",
+      "o_que": "Fechamento dos 35 achados que estavam abertos ou parciais após a entrega de 07/10/2026: o que dependia só do código e do texto do próprio Aprenda foi corrigido; o que exige fonte não lida, nova ficha publicada, regeneração de gold ou alteração do rodapé compartilhado da plataforma ficou como parcial, com a razão na nota de cada achado.",
+      "medicao": "Chromium headless, build de 08/10/2026: 24 combinações de página e largura (12 páginas, 390 e 1440 px) sem violação axe, sem rolagem horizontal e sem erro de console; índice do Aprenda com 3.488 px a 390 px (r6: 14.499 px); média de bytes de outros tipos nas 12 páginas do Aprenda a 390 px de 391 KB (r6: 1.251 KB). Os verbetes ficaram um pouco mais altos a 1440 px (GSF de 4.394 para 4.681 px, PLD de 3.638 para 4.059 px) pelo bloco de legenda do selo, pela leitura em palavras simples e pela coluna mais estreita.",
+      "nao_medido": "O efeito sobre as notas de didatismo e de qualidade visual não foi medido: não houve nova rodada com revisores. A r6 mediu o layout anterior."
     }
-   ]
-  },
-  {
-   "lente": "interface",
-   "notas_antes_da_correcao": {
-    "layout_responsivo_390_1440": 9.5,
-    "alvos_de_toque_44px": 6.5,
-    "teclado_e_foco": 7.5,
-    "contraste": 9.5,
-    "semantica_headings_landmarks": 8.5,
-    "axe_wcag22aa": 8.5,
-    "links_e_navegacao": 9.5,
-    "fluxo_de_volta": 9,
-    "simuladores": 8.5,
-    "sem_javascript": 7.5,
-    "impressao": 3,
-    "consistencia_visual_novos_vs_antigos": 8,
-    "desempenho_e_peso": 8.5,
-    "console_e_rede": 10
-   },
-   "achados_total": 20,
-   "por_estado": {
-    "corrigido": 12,
-    "aberto": 8
-   },
-   "achados": [
-    {
-     "id": "F01",
-     "severidade": "alta",
-     "pagina": "Painéis alcançados pelo botão de volta, p.ex. /setor-eletrico/mercado/mre-e-gsf?volta=verbete%3Agsf (barra de RetornoContexto)",
-     "categoria": "Acessibilidade: WCAG 2.4.11 Foco não obscurecido (AA, nível mínimo)",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F02",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf (e todo verbete e trilha)",
-     "categoria": "Impressão (print CSS)",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F03",
-     "severidade": "media",
-     "pagina": "Os 48 verbetes, bloco 'Veja no portal' (ex.: /setor-eletrico/aprenda/gsf, /acl, /armazenamento)",
-     "categoria": "Alvo de toque menor que 44 px",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F04",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento; botões Comprove no GSF e no constrained-off",
-     "categoria": "Comportamento sem JavaScript",
-     "estado": "aberto"
-    },
-    {
-     "id": "F05",
-     "severidade": "media",
-     "pagina": "/setor-eletrico/aprenda/gsf (diálogo 'Comprove este número'), também nas trilhas e no constrained-off",
-     "categoria": "Acessibilidade: WCAG 1.3.1 (axe aria-allowed-role e listitem) em componente compartilhado",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F06",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/custo-de-disponibilidade",
-     "categoria": "Rótulo contraditório e promessa do índice",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F07",
-     "severidade": "media",
-     "pagina": "Verbetes: armazenamento, decomp, dessem, submercado (sem 'O que não se pode concluir'); agenda-regulatoria, conjunto-eletrico, decomp, dessem, mlt, mre, newave, ree, sin, submercado (sem 'Unidade')",
-     "categoria": "Consistência de campos e promessa do índice",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F08",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/ree (comparado com /gsf e /constrained-off)",
-     "categoria": "Consistência visual do exemplo real",
-     "estado": "aberto"
-    },
-    {
-     "id": "F09",
-     "severidade": "baixa",
-     "pagina": "21 verbetes com exemplo em texto (acr, agenda-regulatoria, armazenamento, carga, cmo, cvu, decomp, ear, ena, garantia-fisica, geracao-centralizada, intercambio, mcp, mlt, newave, percentual-regulatorio-de-perdas, perdas-tecnicas, pld, ree, sin, submercado)",
-     "categoria": "Tipografia: espaço antes de pontuação",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F10",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/ree, /constrained-off (e agenda-regulatoria, conjunto-eletrico, fator-de-emissao, tarifa-social)",
-     "categoria": "Consistência visual: 'Não confundir com' e alinhamento de fonte",
-     "estado": "aberto"
-    },
-    {
-     "id": "F11",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda (índice)",
-     "categoria": "ID inválido e aria-labelledby quebrado",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F12",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento",
-     "categoria": "ARIA sem suporte",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F13",
-     "severidade": "baixa",
-     "pagina": "48 verbetes (breadcrumb)",
-     "categoria": "Nome de landmark enganoso",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F14",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/gsf (Fonte oficial, 1º item) e outros",
-     "categoria": "Quebra de linha: seta ↗ órfã",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F15",
-     "severidade": "baixa",
-     "pagina": "Todas as páginas do Aprenda",
-     "categoria": "Legibilidade: corpo pequeno",
-     "estado": "aberto"
-    },
-    {
-     "id": "F16",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento (simuladores)",
-     "categoria": "Simulador: anúncio ao leitor de tela e faixas",
-     "estado": "corrigido"
-    },
-    {
-     "id": "F17",
-     "severidade": "baixa",
-     "pagina": "Todas as páginas do Aprenda (cromo global: bloco 'Fontes deste observatório' e rodapé)",
-     "categoria": "Alvos de toque no cromo global",
-     "estado": "aberto"
-    },
-    {
-     "id": "F18",
-     "severidade": "baixa",
-     "pagina": "Todas as páginas do Aprenda",
-     "categoria": "Peso da página: prefetch",
-     "estado": "aberto"
-    },
-    {
-     "id": "F19",
-     "severidade": "baixa",
-     "pagina": "Todas as páginas do Aprenda (cabeçalho do Setor Elétrico)",
-     "categoria": "Texto cortado no cabeçalho global",
-     "estado": "aberto"
-    },
-    {
-     "id": "F20",
-     "severidade": "baixa",
-     "pagina": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco e /custo-tarifa-orcamento",
-     "categoria": "Hierarquia visual de títulos",
-     "estado": "aberto"
-    }
-   ]
   }
- ],
- "resumo": {
-  "achados_total": 84,
-  "por_estado": {
-   "corrigido": 49,
-   "parcial": 5,
-   "aberto": 30
-  },
-  "nenhum_bloqueante": true,
-  "nota": "As notas são de revisores agentes, não de leitores reais, e valem como instrumento de comparação entre rodadas, não como medida absoluta. Dos achados de severidade alta, 2 seguem parciais (leitor L-06, leitor L-26); os demais abertos são de severidade média ou baixa, em sua maioria de desenho global (rodapé do observatório, selo de natureza) ou fora do Aprenda (painel de Mercado, versão do código nas fichas). Ficam como pendência declarada em CONTINUIDADE.md. A posição do exemplo (L-18) e o título do índice (L-27) foram corrigidos depois da entrega da revisão; a avaliação r5 mediu o layout e o título anteriores e não foi remedida.",
-  "abertos_ou_parciais_por_severidade": {
-   "alta": 2,
-   "media": 12,
-   "baixa": 21
-  }
- }
 }

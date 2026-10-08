@@ -35,6 +35,7 @@ export function FaixasDeSecao() {
 
 function acompanhaFaixa(lista: HTMLElement, folga: number): () => void {
   const ativo = lista.querySelector<HTMLElement>('[aria-current="page"]');
+  const respiroBase = parseFloat(getComputedStyle(lista).paddingRight) || 0;
   const alinha = () => {
     if (!ativo) return;
     const a = ativo.getBoundingClientRect();
@@ -42,7 +43,12 @@ function acompanhaFaixa(lista: HTMLElement, folga: number): () => void {
     // o item atual já cabe inteiro: não se rola, e nenhum rótulo vizinho fica cortado à esquerda
     if (a.left >= l.left && a.right <= l.right - 8) return;
     // senão, alinha rente à borda (com a folga da faixa), de modo que o anterior saia inteiro da vista
-    lista.scrollLeft = Math.max(0, lista.scrollLeft + (a.left - l.left - folga));
+    const alvo = Math.max(0, lista.scrollLeft + (a.left - l.left - folga));
+    // perto do fim da lista o navegador limita a rolagem e o anterior ficaria cortado ("LAÇÃO"): a lista ganha, à direita, só o respiro
+    // que falta para o item atual chegar à borda
+    const maximo = lista.scrollWidth - lista.clientWidth;
+    if (alvo > maximo) lista.style.paddingRight = `${respiroBase + (alvo - maximo)}px`;
+    lista.scrollLeft = alvo;
   };
   const bordas = () => {
     const maximo = lista.scrollWidth - lista.clientWidth;
