@@ -149,7 +149,7 @@ export default function VisaoGeralEnergia() {
       <CabecalhoEnergia atual="visao-geral" />
       <MarcaVisita secao="energia:visao-geral" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo siglas={["PLD", "MWmed", "CMO", "FEC", "DEC", "CDE"]}
+        <CabecalhoModulo siglas={["PLD", "MWmed", "ONS", "ANEEL", "FEC", "DEC", "CDE", "CCEE", "CMO"]}
           rotulo="Visão geral"
           titulo={PAGINAS_MAPA["visao-geral"].pergunta}
           referencia={

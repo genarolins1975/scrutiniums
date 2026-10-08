@@ -175,3 +175,15 @@ Achados da construção da interface:
 
 Verificação de 06/10/2026: `next build` sem erro; HTML pré-renderizado de 502 KB (P023) e 409 KB (P024); inspeção em 360, 390, 768 e 1440 px nos modos Entender e Auditar sem violação do axe, sem rolagem horizontal e sem link quebrado (único erro de console: `favicon.ico` do site); seleção de usina pelo mapa e pela tabela, histórico sob demanda e estado na URL conferidos no navegador. Os dados são os da gold de 01/10/2026 (meses até 08/2026, dias até 29/09/2026); a coleta da Geração não foi refeita nesta etapa e segue no workflow diário.
 
+## 9. Revisão adversarial (08/10/2026)
+
+Registro completo em `avaliacao/revisao_mercado_geracao_visao.json`. Corrigido nesta rodada:
+
+* **Matriz (P021)**: a variação de 12 meses do total sem MMGD (-0,6%) incluía as três categorias cuja variação a própria página suprime por mudança de universo na fonte; sem elas o total varia +0,5% (recalculado no CSV diário, SIN, 30/09/2025 a 29/09/2026 contra os 365 dias anteriores). A gold publica `variacao_total_comparavel_pct` e o texto mostra os dois. A frase "o total é o mesmo do Balanço" virou "fica próximo", porque a reconciliação mostra dias e fontes com diferença.
+* **Térmica (P022)**: o rótulo "inflexibilidade declarada pelo agente" omitia metade da definição do ONS (declaração do agente ou geração acima do despachado, RO-AO.BR.08); a nuclear é 99,2% inflexível e responde por 35,1% da inflexibilidade, e sem ela a parcela é de 50,6% da geração térmica.
+* **Restrições (P023)**: o limite sobre ressarcimento (só a razão de indisponibilidade externa dá direito a ESS pela regra lida; alterações posteriores não verificadas) e o link para o verbete Constrained-off entram nos limites; a razão sem energia nos 12 meses diz isso na descrição; Tipo III e MMGD "não constam do registro", sem afirmar que não são cortados por outro mecanismo.
+* **Capacidade (P024)**: a ressalva do fator acima de 100% separa a geração em teste da potência nominal do ato (76 dos 228 casos são nucleares).
+* **Defasagem mensal**: o aviso contava a diferença entre rótulos de mês (ago a out são dois) e chamava de defasada uma fonte diária com dados até 29/09; passou a contar dias entre o fim do último mês completo e o processamento (limite de 45 dias).
+* Textos montados com a caixa das siglas preservada (ONS, MMGD, CMSE).
+
+Aberto: abertura de Geração sem verbo e com a resposta após cerca de 200 palavras; comparação de 30 e 365 dias sem aviso de sazonalidade; chaves internas e quantis no Entender de Capacidade; título de Restrições fala em eólica e solar com padrão só eólico; definições de inflexibilidade, unit commitment, substituição e garantia energética no Entender da térmica; rótulos de natureza (observado, calculado, misto) sem regra única.

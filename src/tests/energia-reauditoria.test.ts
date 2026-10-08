@@ -186,7 +186,8 @@ describe("auditoria final: regressões", () => {
       // data crua (AAAA-MM, AAAA-MM-DD ou instante ISO) solta no texto; identificadores com "@" ou "_" ficam de fora
       expect(texto, h).not.toMatch(/(^|[\s(])20\d\d[-/]\d\d([-/]\d\d)?(T[\d:]+Z?)?(?=[\s).,;]|$)/);
     }
-  });
+    // lê e varre mais de 360 arquivos HTML: com a suíte inteira em paralelo passa dos 5 s padrão do Vitest
+  }, 60_000);
 });
 
 describe("auditoria final B: regressões", () => {

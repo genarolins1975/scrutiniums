@@ -351,7 +351,7 @@ export default function GeracaoCapacidadePage() {
                     {Object.entries(par.fc_acima_de_100.por_categoria)
                       .map(([k, n]) => `${CURTO_CATEGORIA[k as keyof typeof CURTO_CATEGORIA] ?? k} ${num(n ?? 0, 0)}`)
                       .join("; ")}
-                    . Mantidos como publicados, contados como ressalva: geração em teste antes da operação comercial infla o mês de entrada.
+                    . Mantidos como publicados, contados como ressalva. O fator passa de 100% por dois motivos: a geração em teste antes da operação comercial, que infla o mês de entrada, e a potência nominal do ato da ANEEL abaixo da geração bruta, que mantém as usinas nucleares perto de 101% em muitos meses de operação normal (76 dos 228 casos).
                   </p>
                   <TabelaInterativa
                     titulo="Maiores fatores de capacidade mensais acima de 100%"

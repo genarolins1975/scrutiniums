@@ -187,6 +187,8 @@ export type ComparacaoDozeMeses = {
   variacao_pct: PorCategoria<number | null>;
   variacao_suprimida: Partial<Record<CategoriaGeracao, { motivo: string; datas: string[] }>>;
   variacao_total_sem_mmgd_pct: number | null;
+  /** Mesmo total, só com as categorias que têm variação publicada (as suprimidas saem das duas janelas). */
+  variacao_total_comparavel_pct?: number | null;
   anterior_mwmed: PorCategoria<number | null>;
 };
 

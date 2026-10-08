@@ -87,10 +87,10 @@ export default function MercadoPage() {
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIN", "SAMP", "MWmed", "CCEE", "EPE", "ANEEL"]} rotulo="Mercado de energia" titulo="Como a energia é contratada, alocada e liquidada?" referencia={<ReferenciaMercado g={g} />}>
+        <CabecalhoModulo siglas={["ACR", "ACL", "CCEE", "PLD", "MRE", "EPE", "GSF", "ANEEL", "SIN", "MWmed", "ONS", "SAMP"]} rotulo="Mercado de energia" titulo="Como a energia é contratada, alocada e liquidada?" referencia={<ReferenciaMercado g={g} />}>
           Parte do consumo compra energia da distribuidora a tarifa regulada (<Termo slug="acr">ACR</Termo>); a outra parte contrata no mercado livre (<Termo slug="acl">ACL</Termo>). As diferenças
           entre o contratado e o medido são liquidadas na CCEE ao <Termo slug="pld">PLD</Termo>, as hidrelétricas dividem o risco hidrológico no <Termo slug="mre">MRE</Termo> e os custos de operar o sistema
-          entram como encargos (<Termo slug="ess">ESS</Termo>). Quatro painéis respondem a quatro perguntas, cada número com a fonte e a conferência com a publicação oficial.
+          entram como encargos (<Termo slug="ess">ESS</Termo>). Quatro painéis respondem a quatro perguntas, cada número com a fonte e, na ficha Comprove, o que foi conferido com a publicação oficial, o que ficou com ressalva e o que não tem conferência.
         </CabecalhoModulo>
         <MercadoNavegacao atual="livre-regulado" />
 
@@ -194,7 +194,7 @@ export default function MercadoPage() {
               comoInterpretar={
                 <>
                   Três universos convivem e nenhum é a carga do ONS. A EPE mede o consumo na rede (cativo e livre) informado pelos agentes. A CCEE mede o consumo contabilizado no centro de gravidade de
-                  cada submercado, com as perdas da rede básica rateadas, e por isso a participação do ACL na CCEE é menor que a do livre na EPE. O SAMP da ANEEL mede o faturado por distribuidora e deixa
+                  cada submercado, já com 50% das perdas da rede básica (InfoMercado Nº 229, nota 6). As bases diferem e as participações não se comparam ponto a ponto: a diferença entre a CCEE e a EPE não foi decomposta, e em ago/2026 a CCEE mede 1,21 vez o consumo cativo da EPE no ambiente regulado e 1,04 vez o livre, ou seja, a diferença vem sobretudo do regulado. O SAMP da ANEEL mede o faturado por distribuidora e deixa
                   fora o consumidor livre ligado direto à rede básica. Cada participação é razão de somas em energia, nunca média de percentuais.
                 </>
               }

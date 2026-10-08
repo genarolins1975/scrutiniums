@@ -141,8 +141,10 @@ export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folg
 }
 
 /**
- * Atualidade de série mensal: o último mês completo fica um mês antes do mês do
- * processamento; com dois ou mais meses de distância, a fonte está defasada.
+ * Atualidade de série mensal: o último mês completo fica a cerca de um mês do processamento
+ * (31 dias quando se processa no dia 1 com o mês anterior ainda incompleto); acima de 45 dias
+ * entre o fim desse mês e o processamento, a fonte está defasada. A conta é em dias, não na
+ * diferença entre rótulos de mês: ago a out são dois rótulos e 31 dias.
  */
 /** "de" + artigo contraído: "de a térmica" → "da térmica", "de as restrições" → "das restrições". */
 export function deContraido(nome: string): string {
@@ -153,11 +155,13 @@ export function deContraido(nome: string): string {
 export function situacaoMensal(ultimoMes: string | null, geradoEm: string, nome: string): { defasada: boolean; texto: string } {
   const proc = diaDeBrasilia(geradoEm);
   if (!ultimoMes) return { defasada: true, texto: `${inicial(nome)}: nenhum mês completo publicado.` };
-  const d = mesesEntre(ultimoMes, proc.slice(0, 7));
-  if (d >= 2) {
+  // dias entre o fim do último mês completo e o processamento: processar no dia 1 com agosto completo são 31 dias, o ritmo normal de um conjunto diário
+  const fimDoMes = new Date(Date.UTC(Number(ultimoMes.slice(0, 4)), Number(ultimoMes.slice(5, 7)), 0));
+  const dias = Math.round((Date.parse(`${proc}T00:00:00Z`) - fimDoMes.getTime()) / 86_400_000);
+  if (dias > 45) {
     return {
       defasada: true,
-      texto: `Fonte defasada: o último mês completo ${deContraido(nome)} é ${mesAno(ultimoMes)}, ${plural(d, "mês", "meses")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
+      texto: `Fonte defasada: o último mês completo ${deContraido(nome)} é ${mesAno(ultimoMes)}, encerrado ${plural(dias, "dia", "dias")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
     };
   }
   return { defasada: false, texto: `${inicial(nome)}: último mês completo ${mesAno(ultimoMes)}, processado em ${dataBR(proc)}.` };
@@ -413,9 +417,14 @@ export function ressalvasDaJanela(mix: Mix | null, nomes: Record<CategoriaGeraca
   return CATEGORIAS.filter((c) => mix.ressalvas_universo[c]).map((c) => ({ id: c, nome: nomes[c], texto: textoRessalva(mix.ressalvas_universo[c])! }));
 }
 
+/** Minúscula só nas palavras apenas capitalizadas: "Previsão do ONS (grupos Tipo III)" vira "previsão do ONS (grupos tipo III)"; a sigla fica como está. */
+export function minusculaPalavras(s: string): string {
+  return s.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+/g, (w) => (/^[A-ZÀ-ÖØ-Þ][a-zß-öø-ÿ]+$/.test(w) ? w.toLowerCase() : w));
+}
+
 /** Natureza da energia na janela (para o recorte do painel). */
 export function textoNatureza(nat: Record<NaturezaGeracao, number | null>): string {
-  const partes = NATUREZAS.filter((n) => nat[n] !== null).map((n) => `${CURTO_NATUREZA[n].toLowerCase()} ${num(nat[n], 1)}%`);
+  const partes = NATUREZAS.filter((n) => nat[n] !== null).map((n) => `${minusculaPalavras(CURTO_NATUREZA[n])} ${num(nat[n], 1)}%`);
   return partes.length ? listaTexto(partes) : "sem natureza publicada";
 }
 
@@ -565,7 +574,31 @@ export function textoDozeMeses(c: ComparacaoDozeMeses): string {
   const s = sup.length
     ? ` ${inicial(listaTexto(sup.map((k) => FRASE_CATEGORIA[k])))}: variação suprimida, porque o número de usinas com dado na fonte mudou dentro das janelas comparadas.`
     : "";
-  return `${base}${regime}${s}`;
+  // com categorias suprimidas, o total das demais é o que se compara: o total completo muda também pelo cadastro de usinas da fonte
+  const v = c.variacao_total_comparavel_pct;
+  const cmp = sup.length && v !== null && v !== undefined ? ` Só com as demais categorias, o total varia ${v > 0 ? "+" : v < 0 ? "−" : ""}${num(Math.abs(v), 1)}%.` : "";
+  return `${base}${regime}${s}${cmp}`;
+}
+
+/**
+ * Quanto da inflexibilidade vem da nuclear e quanto ela vale sem a nuclear. A nuclear quase não varia de
+ * despacho (a inflexibilidade é a quase totalidade da sua geração) e pesa na parcela total; sem ela, a
+ * parcela é a das demais térmicas. Null quando falta o total, o motivo ou a nuclear.
+ */
+export function inflexibilidadeSemNuclear(u: {
+  total_mwh: number | null;
+  por_motivo: { motivo: string; mwh: number | null }[];
+  por_combustivel: { categoria: string; mwh: number | null; motivos_mwh: Record<string, number | null> }[];
+}): { nuclearNaInflexibilidadePct: number; nuclearInflexivelPct: number; semNuclearPct: number } | null {
+  const infl = u.por_motivo.find((m) => m.motivo === "inflexibilidade")?.mwh;
+  const nuc = u.por_combustivel.find((c) => c.categoria === "nuclear");
+  const nucInfl = nuc?.motivos_mwh.inflexibilidade;
+  if (!u.total_mwh || !infl || !nuc?.mwh || nucInfl === null || nucInfl === undefined || u.total_mwh <= nuc.mwh) return null;
+  return {
+    nuclearNaInflexibilidadePct: (100 * nucInfl) / infl,
+    nuclearInflexivelPct: (100 * nucInfl) / nuc.mwh,
+    semNuclearPct: (100 * (infl - nucInfl)) / (u.total_mwh - nuc.mwh),
+  };
 }
 
 /* ---------- anos ---------- */
@@ -891,8 +924,8 @@ export function respostaTermica(t: Pick<Termica, "ultimos_12m">): string {
   const frases = [
     `De ${mesAno(u.inicio)} a ${mesAno(u.fim)}, as térmicas despachadas pelo ONS geraram ${num(u.total_mwmed, 0)} MWmed em média (${num(gwh(u.total_mwh), 0)} GWh).`,
   ];
-  if (motivos.length) frases.push(`Por motivo: ${listaTexto(motivos.slice(0, 3).map((m) => `${CURTO_MOTIVO[m.motivo].toLowerCase()} ${num(m.pct, 1)}%`))}.`);
-  if (comb.length) frases.push(`Por combustível: ${listaTexto(comb.slice(0, 3).map((c) => `${CURTO_COMBUSTIVEL[c.categoria].toLowerCase()} ${num(c.pct_total, 1)}%`))}.`);
+  if (motivos.length) frases.push(`Por motivo: ${listaTexto(motivos.slice(0, 3).map((m) => `${minusculaPalavras(CURTO_MOTIVO[m.motivo])} ${num(m.pct, 1)}%`))}.`);
+  if (comb.length) frases.push(`Por combustível: ${listaTexto(comb.slice(0, 3).map((c) => `${minusculaPalavras(CURTO_COMBUSTIVEL[c.categoria])} ${num(c.pct_total, 1)}%`))}.`);
   if (u.nao_classificado_pct !== null) frases.push(`A diferença entre o total e a soma dos motivos (não classificada) é ${num(u.nao_classificado_pct, 3)}% da energia.`);
   frases.push("O motivo é a classificação publicada pelo ONS, não uma inferência a partir do preço.");
   return frases.join(" ");
@@ -1519,14 +1552,14 @@ export function respostaCapacidade(c: Capacidade): string {
   const r = c.retrato;
   const maiores = [...r.por_categoria].filter((x) => (x.pct ?? 0) > 0).sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0));
   const frases = [
-    `Em ${dataBR(r.data)}, as usinas despachadas pelo ONS somavam ${num(r.total_mw, 0)} MW em operação comercial${maiores.length ? `: ${listaTexto(maiores.slice(0, 3).map((x) => `${CURTO_CATEGORIA[x.categoria].toLowerCase()} ${num(x.pct, 1)}%`))}` : ""}.`,
+    `Em ${dataBR(r.data)}, as usinas despachadas pelo ONS somavam ${num(r.total_mw, 0)} MW em operação comercial${maiores.length ? `: ${listaTexto(maiores.slice(0, 3).map((x) => `${minusculaPalavras(CURTO_CATEGORIA[x.categoria])} ${num(x.pct, 1)}%`))}` : ""}.`,
   ];
   const u = c.ultimos_12m;
   if (u) {
     const fcs = ["hidraulica", "eolica", "solar_centralizada"]
       .map((k) => u.por_categoria.find((x) => x.categoria === k))
       .filter((x): x is Capacidade12m => !!x && x.fator_capacidade_pct !== null)
-      .map((x) => `${CURTO_CATEGORIA[x.categoria].toLowerCase()} ${num(x.fator_capacidade_pct, 1)}%`);
+      .map((x) => `${minusculaPalavras(CURTO_CATEGORIA[x.categoria])} ${num(x.fator_capacidade_pct, 1)}%`);
     if (fcs.length) frases.push(`De ${mesAno(u.inicio)} a ${mesAno(u.fim)}, a geração dividida pela potência em operação ao longo de cada mês (fator de capacidade) foi de ${listaTexto(fcs)}.`);
   }
   const mm = c.contexto.mmgd;

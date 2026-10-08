@@ -81,8 +81,9 @@ export function fimDoPeriodo(p: string): string {
   return new Date(Date.UTC(a, m, 0)).toISOString().slice(0, 10);
 }
 
-function minuscula(s: string): string {
-  return s ? s.charAt(0).toLowerCase() + s.slice(1) : s;
+/** Primeira letra em minúscula no meio de uma frase, menos quando a primeira palavra é sigla ("CMO publicado", e não "cMO"). */
+export function minuscula(s: string): string {
+  return /^[A-ZÀ-Þ][a-zß-ÿ]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s;
 }
 
 /** Casas decimais de um número publicado (no máximo 2), para complementos sem texto pronto. */

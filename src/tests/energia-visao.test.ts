@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { VisaoRegraDetalhe, VisaoRegraResumo } from "@/components/energia/VisaoRegras";
 import PaginaVisaoGeral from "@/app/setor-eletrico/visao-geral/page";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
@@ -32,6 +33,7 @@ import {
   linhasRegras,
   linhasSensibilidade,
   linhasSociedade,
+  minuscula,
   linhasValoresFrases,
   linhasVersoes,
   pedeAtencao,
@@ -499,5 +501,41 @@ describe("página da Visão geral", () => {
       const ctx = html.slice(Math.max(0, m.index! - 80), m.index! + 20).toLowerCase();
       expect(/nunca|não|nenhuma|sem /.test(ctx), `...${ctx}...`).toBe(true);
     }
+  });
+});
+
+
+describe("minúscula no meio da frase", () => {
+  it("poupa a primeira palavra quando é sigla: CMO publicado, e não cMO", () => {
+    expect(minuscula("CMO publicado pelo ONS para a semana operativa mais recente")).toBe("CMO publicado pelo ONS para a semana operativa mais recente");
+    expect(minuscula("Carga extrema no dia")).toBe("carga extrema no dia");
+    expect(minuscula("PLD no piso")).toBe("PLD no piso");
+    expect(minuscula("")).toBe("");
+  });
+});
+
+
+describe("bastidor das regras fora de Entender", () => {
+  const sem = (html: string, nivel: string) => html.replace(new RegExp(`<(span|p|ul)[^>]*data-nivel="${nivel}"[^>]*>[\\s\\S]*?</\\1>`, "g"), "");
+
+  it("o resumo da regra de coleta da CCEE manda firewall, HTTP e nome de arquivo para Analisar", () => {
+    const o = G.observar.find((x) => /firewall/.test(x.evidencia))!;
+    expect(o).toBeTruthy();
+    const html = renderToStaticMarkup(createElement(VisaoRegraResumo, { o }));
+    const entender = sem(html, "analisar");
+    expect(entender).not.toMatch(/firewall|HTTP \d{3}|\.json/);
+    expect(entender).toContain("Último dia integrado");
+    expect(html).toContain("firewall");
+  });
+
+  it("o detalhe da regra põe coleta direta, bloqueios e conjuntos avaliados em Auditar", () => {
+    const o = G.observar.find((x) => x.bloqueios_registrados && x.bloqueios_registrados.length > 0)!;
+    const html = renderToStaticMarkup(createElement(VisaoRegraDetalhe, { o }));
+    const entender = sem(html, "auditar");
+    expect(entender).not.toContain("Bloqueio registrado");
+    expect(entender).not.toContain("Última tentativa de coleta direta");
+    expect(html).toContain("Bloqueio registrado");
+    const comConjuntos = G.observar.find((x) => x.conjuntos_avaliados && x.conjuntos_avaliados.length > 0);
+    if (comConjuntos) expect(sem(renderToStaticMarkup(createElement(VisaoRegraDetalhe, { o: comConjuntos })), "auditar")).not.toContain("Conjuntos avaliados");
   });
 });

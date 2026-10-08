@@ -63,6 +63,7 @@ export default function MercadoMreGsfPage() {
   const prov = provenienciasLegiveis(g);
   const m = g.mre_gsf;
   const k = m.kpis;
+  const div12 = m.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
   const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_gsf ? mesAno(g.referencias.ccee_ultimo_mes_gsf) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anual = m.anual;
   const vDiv = p?.verificacoes.find((v) => v.nome.startsWith("GSF de 12 meses"));
@@ -75,7 +76,7 @@ export default function MercadoMreGsfPage() {
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado:mre-gsf" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP", "ACR", "SIN", "MWmed", "ACL", "EPE"]} rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
+        <CabecalhoModulo siglas={["MRE", "GSF", "EPE", "CCEE", "SAMP", "ANEEL", "ACR", "SIN", "MWmed", "ACL"]} rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
           As hidrelétricas do <Termo slug="mre">MRE</Termo> dividem entre si o risco de gerar menos que a garantia física, porque quem decide quanto cada uma gera é o despacho centralizado. O{" "}
           <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, a diferença fica exposta ao mercado de curto prazo. Parte desse risco
           recai sobre o consumidor cativo e aparece na Conta Bandeira.
@@ -154,7 +155,12 @@ export default function MercadoMreGsfPage() {
                   casas={1}
                   unidade="%"
                   periodo={k.gsf_12m ? textoPeriodoMes(k.gsf_12m.periodo) : undefined}
-                  nota={<>razão de somas em energia</>}
+                  nota={
+                    <>
+                      razão de somas em energia
+                      {div12 && div12.publicado !== null && div12.diferenca !== null ? `. O InfoMercado Nº ${div12.numero} publica ${num(div12.publicado, 2)}% para o ajuste médio de 12 meses; a diferença de ${num(Math.abs(div12.diferenca), 2)} p.p. não foi explicada` : ""}
+                    </>
+                  }
                   tamanho="medio"
                   motivoAusencia="A CCEE não publicou os 12 meses da janela."
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/mre-e-gsf#mre-gsf"
@@ -167,7 +173,7 @@ export default function MercadoMreGsfPage() {
                   unidade="R$ bilhões"
                   casas={2}
                   periodo={k.risco_hidrologico_acr_12m ? textoPeriodoMes(k.risco_hidrologico_acr_12m.periodo) : undefined}
-                  nota={<>Itaipu, repactuadas e cotas, antes da cobertura já concedida na tarifa</>}
+                  nota={<>Custo bruto de Itaipu, repactuadas e cotas, antes de descontar a previsão tarifária e o prêmio de risco; a tabela anual abaixo mostra as deduções</>}
                   tamanho="medio"
                   motivoAusencia="A ANEEL não publicou os 12 meses da janela."
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/mre-e-gsf#mre-gsf"
@@ -267,7 +273,7 @@ export default function MercadoMreGsfPage() {
                   csv={CSV_MERCADO.contaBandeira.url}
                 />
                 <p className="text-xs leading-relaxed text-carvao-muted">
-                  Previsão e prêmio de risco vêm negativos na Conta Bandeira porque já foram concedidos na tarifa; o bruto soma Itaipu, repactuadas e cotas. O ano com menos de 12 meses é parcial.
+                  Previsão e prêmio de risco entram negativos porque a ANEEL os deduz do custo bruto: a previsão é a de risco hidrológico considerada nos processos tarifários das distribuidoras, e o prêmio é o das usinas repactuadas (dicionário da Conta Bandeira da ANEEL). O bruto soma Itaipu, repactuadas e cotas. O ano com menos de 12 meses é parcial.
                 </p>
                 <TabelaInterativa
                   titulo="GSF, geração e garantia física por mês"

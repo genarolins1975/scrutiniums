@@ -230,3 +230,13 @@ Nenhum defeito foi refutado.
 5. Âncoras: pedir aos módulos PLD e Água que mantenham `id="limites"`, `id="diferencas-regionais"`, `id="historico"`, `id="cmo-e-formacao"` e `id="ena"` nas subpáginas (o teste de âncoras do módulo visao falha se sumirem).
 6. Testes TypeScript fora deste módulo que falham hoje e não dependem de `sintese.json`: `energia-reauditoria` ("mudança identificada pela plataforma não aparece como declarada pela fonte"), `energia-gold-contrato` (proveniência de `empresas.json` sem `snapshot.sha256`; revisões de `publicacao.json` do módulo Dados) e `energia-governanca` (vocabulário de causa em `pld/page.tsx`). `npx tsc --noEmit` acusa só `src/tests/energia-pld.test.ts` (iteração de `entries()`), do módulo PLD.
 7. O módulo Dados mudou o esquema de `publicacao.json#conjuntos` (o conjunto agora vem em `id` "família/dataset"); a Visão geral lê os dois formatos, mas convém fixar o contrato no tipo do módulo Dados.
+
+## 8. Revisão adversarial (08/10/2026)
+
+Registro completo em `avaliacao/revisao_mercado_geracao_visao.json`. Corrigido nesta rodada:
+
+* **Bastidor fora de Entender**: a evidência da regra de coleta da CCEE passa pelo separador de bastidor (firewall, HTTP 403 e nome de arquivo vão para Analisar), e coleta direta, bloqueios registrados e conjuntos avaliados do detalhe da regra vão para Auditar. Medido no navegador: firewall e pld_detalhe.json#conceito.bloqueios deixam de ser visíveis em Entender. O leitor também listou silver, sintese.json e a versão do código, que já estavam ocultos em Entender (a extração dele incluía texto oculto).
+* **Texto**: "dados vigentes hoje" e "dados de hoje" viraram "dados da data de processamento"; "cMO" voltou a CMO; "MMGD, que não é restringida pelo ONS" virou "fica fora do registro de restrições do ONS".
+* Legenda de siglas refeita (ONS, ANEEL e CCEE entram).
+
+Aberto: a síntese é o retrato de 01/10/2026 e o módulo Água foi recapturado depois (EAR 61,6% na frase e 61,7% na tabela de 90 dias da mesma página); o refresh consistente de todos os módulos depende da próxima execução completa do pipeline. Também abertos: o identificador aneel_scs e o termo NumCon no texto de Entender; a abertura descreve a página e o primeiro fato vem após cerca de 300 palavras; carga +10,5% (7 dias) e +14,6% (dia) sem base histórica; 58 revisões materiais sem dizer quais fatos afetam; ordem de títulos (axe heading-order, já presente antes desta rodada).

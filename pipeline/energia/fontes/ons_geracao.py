@@ -390,7 +390,7 @@ def agrega_geracao_usina(tabelas):
 # "não classificado", com sinal).
 MOTIVOS = (
     ("merito", "val_verifordemdemeritoacimadainflex", "Ordem de mérito (acima da inflexibilidade)"),
-    ("inflexibilidade", "val_verifinflexibilidade", "Inflexibilidade declarada pelo agente"),
+    ("inflexibilidade", "val_verifinflexibilidade", "Inflexibilidade (declarada pelo agente ou geração acima do despachado)"),
     ("razao_eletrica", "val_verifrazaoeletrica", "Razão elétrica (necessidade do SIN)"),
     ("garantia_energetica", "val_verifgarantiaenergetica", "Garantia de suprimento energético (decisão do CMSE)"),
     ("gfom", "val_verifgfom", "Geração fora da ordem de mérito para compensar falta futura de combustível (GFOM)"),

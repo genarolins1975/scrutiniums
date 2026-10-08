@@ -1904,7 +1904,8 @@
       "2026-05-01"
      ]
     }
-   }
+   },
+   "variacao_total_comparavel_pct": 0.5
   },
   "mensal_sin": {
    "meses": [
@@ -7863,7 +7864,7 @@
    },
    {
     "id": "inflexibilidade",
-    "rotulo": "Inflexibilidade declarada pelo agente",
+    "rotulo": "Inflexibilidade (declarada pelo agente ou geração acima do despachado)",
     "campo": "val_verifinflexibilidade"
    },
    {
@@ -9447,7 +9448,7 @@
     },
     {
      "motivo": "inflexibilidade",
-     "rotulo": "Inflexibilidade declarada pelo agente",
+     "rotulo": "Inflexibilidade (declarada pelo agente ou geração acima do despachado)",
      "mwh": 42978146.2,
      "pct": 61.08
     },
@@ -21224,7 +21225,7 @@
    "limitacoes": [
     "A geração de referência é estimativa do ONS (RO-AO.BR.13); a energia não gerada é estimada, não medida.",
     "Restrição não é indisponibilidade da usina nem falta de vento ou sol: meia hora sem limitação do ONS não entra, mesmo com referência maior que a geração.",
-    "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não são restringidos nesse registro.",
+    "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não constam desse registro, e eventual corte por outro mecanismo não entra na taxa.",
     "O ONS republica meses antigos (consistência recorrente); revisões entre capturas são detectadas."
    ],
    "download": "/energia/series/geracao_restricao_usina_mensal.csv",
@@ -21278,7 +21279,7 @@
    "limitacoes": [
     "A geração de referência é estimativa do ONS (RO-AO.BR.13); a energia não gerada é estimada, não medida.",
     "Restrição não é indisponibilidade da usina nem falta de vento ou sol: meia hora sem limitação do ONS não entra, mesmo com referência maior que a geração.",
-    "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não são restringidos nesse registro.",
+    "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não constam desse registro, e eventual corte por outro mecanismo não entra na taxa.",
     "O ONS republica meses antigos (consistência recorrente); revisões entre capturas são detectadas."
    ],
    "download": "/energia/series/geracao_restricao_usina_mensal.csv",
@@ -21892,7 +21893,7 @@
    "citacao": "SCRUTINIUMS. Geração térmica despachada pelo ONS, últimos 12 meses completos: 8.033 MWmed, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso GERACAO_TERMICA_DESPACHO-2_2025_09 a GERACAO_TERMICA_DESPACHO-2_2026_08 (12 arquivos), capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "termica_12m_inflexibilidade": {
-   "indicador": "Parcela da geração térmica por inflexibilidade declarada pelo agente, últimos 12 meses completos",
+   "indicador": "Parcela da geração térmica por inflexibilidade (declarada pelo agente ou geração acima do despachado), últimos 12 meses completos",
    "valor_exibido": "61,1%",
    "valor_calculo": 61.07609993783808,
    "unidade": "% da geração térmica verificada",
@@ -22006,7 +22007,7 @@
    "manifesto": null,
    "formula": "parcela = Σ val_verifinflexibilidade ÷ Σ val_verifgeracao × 100",
    "numerador": {
-    "descricao": "geração por inflexibilidade declarada pelo agente (MWh)",
+    "descricao": "geração por inflexibilidade (declarada pelo agente ou geração acima do despachado) (MWh)",
     "valor": 42978146.171000004
    },
    "denominador": {
@@ -22047,7 +22048,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Parcela da geração térmica por inflexibilidade declarada pelo agente, últimos 12 meses completos: 61,1%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso GERACAO_TERMICA_DESPACHO-2_2025_09 a GERACAO_TERMICA_DESPACHO-2_2026_08 (12 arquivos), capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Parcela da geração térmica por inflexibilidade (declarada pelo agente ou geração acima do despachado), últimos 12 meses completos: 61,1%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso GERACAO_TERMICA_DESPACHO-2_2025_09 a GERACAO_TERMICA_DESPACHO-2_2026_08 (12 arquivos), capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "restricao_eolica_12m_energia": {
    "indicador": "Energia não gerada estimada por restrição de operação (eólicas), últimos 12 meses completos",

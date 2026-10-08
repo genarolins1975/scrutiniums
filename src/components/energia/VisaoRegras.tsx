@@ -5,6 +5,7 @@ import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
 import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, datasLegiveis, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 
 /**
  * Conteúdo de cada regra do "O que observar" (P007), montado no servidor e entregue ao
@@ -23,7 +24,9 @@ export function VisaoRegraResumo({ o, caminho }: { o: RegraObservar; caminho?: s
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;
   return (
     <div className="space-y-1.5">
-      <p className="text-sm leading-relaxed text-carvao-muted">{datasLegiveis(o.evidencia)}</p>
+      <p className="text-sm leading-relaxed text-carvao-muted">
+        <TextoDoLeitor texto={datasLegiveis(o.evidencia)} />
+      </p>
       {valor && (
         <p className="text-xs text-carvao-muted">
           <span className="text-carvao">Valor avaliado:</span> {valor}
@@ -124,15 +127,19 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
           {o.conferencia_limites ? ` Conferência com a Regulação: ${o.conferencia_limites.resultado === "aprovado" ? "valores iguais" : "com ressalva"}.` : ""}
         </p>
       )}
-      {o.conjuntos_avaliados && <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">Conjuntos avaliados: {o.conjuntos_avaliados.join(", ")}.</p>}
+      {o.conjuntos_avaliados && (
+        <p data-nivel="auditar" className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
+          Conjuntos avaliados: {o.conjuntos_avaliados.join(", ")}.
+        </p>
+      )}
       {o.coleta_direta && (
-        <p className="text-sm text-carvao-muted">
+        <p data-nivel="auditar" className="text-sm text-carvao-muted">
           Última tentativa de coleta direta registrada: {o.coleta_direta.tentado_em ? carimbo(o.coleta_direta.tentado_em) : "sem registro"}
           {o.coleta_direta.ok === false ? ", sem sucesso" : o.coleta_direta.ok ? ", com sucesso" : ""} ({o.coleta_direta.fonte}).
         </p>
       )}
       {o.bloqueios_registrados && o.bloqueios_registrados.length > 0 && (
-        <ul className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
+        <ul data-nivel="auditar" className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
           {o.bloqueios_registrados.map((b) => (
             <li key={b.fonte + b.evidencia}>
               Bloqueio registrado ({b.origem}): {b.fonte}. {b.evidencia}

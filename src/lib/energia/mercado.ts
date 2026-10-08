@@ -305,7 +305,7 @@ export const COLUNAS_PARCELAS: ColunaTabela[] = [
   { id: "migracoes", rotulo: "Migrações no mês", tipo: "numero", casas: 0 },
   { id: "perfis", rotulo: "Perfis com parcela", tipo: "numero", casas: 0 },
   { id: "cnpj", rotulo: "CNPJ de carga", tipo: "numero", casas: 0 },
-  { id: "consumo_gwh", rotulo: "Consumo do ACL com exportação", tipo: "numero", unidade: "GWh", casas: 0 },
+  { id: "consumo_gwh", rotulo: "Consumo das parcelas do ACL e exportação, sem a classe varejista", tipo: "numero", unidade: "GWh", casas: 0 },
   { id: "distribuidoras", rotulo: "Parcelas das distribuidoras (ACR, à parte)", tipo: "numero", casas: 0 },
   { id: "conferencia", rotulo: "Conferência com o consumo por classe", tipo: "texto", categorica: true },
 ];

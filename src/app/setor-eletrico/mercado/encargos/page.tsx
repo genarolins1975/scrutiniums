@@ -61,6 +61,14 @@ export default function MercadoEncargosPage() {
   const prov = provenienciasLegiveis(g);
   const e = g.encargos;
   const k = e.kpis;
+  // últimas três liquidações informadas: o percentual de inadimplência depende do valor não pago e do valor a liquidar, e cada um se move por conta própria
+  const liqs = e.liquidacao_mensal.filter((x) => x.situacao === "liquidada" && x.inadimplencia !== null && x.a_liquidar !== null).slice(-3);
+  const ultimaLiq = liqs.at(-1);
+  const inad = k.inadimplencia_ultimo_mes;
+  const contextoInad =
+    inad && ultimaLiq && ultimaLiq.mes === inad.mes && liqs.length === 3
+      ? ` São ${reaisCurto(ultimaLiq.inadimplencia)} sobre ${reaisCurto(ultimaLiq.a_liquidar)} a liquidar. De ${mesAno(liqs[0].mes)} a ${mesAno(ultimaLiq.mes)}, o valor não pago ficou entre ${reaisCurto(Math.min(...liqs.map((x) => x.inadimplencia as number)))} e ${reaisCurto(Math.max(...liqs.map((x) => x.inadimplencia as number)))} e o valor a liquidar passou de ${reaisCurto(liqs[0].a_liquidar)} para ${reaisCurto(ultimaLiq.a_liquidar)}, e é por isso que o percentual sobe.`
+      : "";
   const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const lacunas = lacunasLiquidacao(g);
   const zeros = e.controles_pagamento.series.pagamento_ess ?? [];
@@ -73,7 +81,7 @@ export default function MercadoEncargosPage() {
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado:encargos" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIN", "SAMP", "ACR", "PLD", "ACL", "MRE"]} rotulo="Mercado de energia" titulo="Quais custos públicos aparecem na liquidação do mercado de curto prazo?" referencia={<ReferenciaMercado g={g} />}>
+        <CabecalhoModulo siglas={["CCEE", "MME", "EPE", "GSF", "SAMP", "ANEEL", "REN", "MRE", "SIN", "PLD", "ACL", "ACR"]} rotulo="Mercado de energia" titulo="Quais custos públicos aparecem na liquidação do mercado de curto prazo?" referencia={<ReferenciaMercado g={g} />}>
           Operar o sistema com segurança tem custos que não estão no preço da energia: geração fora da ordem de mérito, serviços ancilares, energia de reserva. Eles viram encargos (
           <Termo slug="ess">ESS</Termo> e EER), apurados pela CCEE no mês de competência e pagos depois, na liquidação do mercado de curto prazo. O observatório não publica preço de contrato, PPA nem
           curva a termo: só o que a CCEE e o MME publicam.
@@ -91,8 +99,7 @@ export default function MercadoEncargosPage() {
               complementares={[{ rotulo: "Encargos no boletim do MME", p: prov.encargos_mme }]}
               porQueImporta={
                 <>
-                  Os encargos são pagos pelos consumidores na proporção do consumo, no ambiente livre e no regulado. Um mês de muita geração fora da ordem de mérito por restrição elétrica aparece
-                  aqui antes de chegar à conta de luz.
+                  Os encargos cobrem custos de serviços do sistema prestados aos usuários do SIN (Decreto nº 5.163/2004, art. 59). Para o ESS de restrição de operação de eólicas e fotovoltaicas, o pagamento é proporcional ao consumo (REN ANEEL nº 1.030/2022, art. 16, § 1º); a regra de rateio dos demais encargos e do encargo de energia de reserva não foi lida. Um mês de muita geração fora da ordem de mérito por restrição elétrica aparece aqui antes de chegar à conta de luz.
                 </>
               }
               oQueMudou={
@@ -100,7 +107,7 @@ export default function MercadoEncargosPage() {
                   <>
                     Nos 12 meses até {mesAno(k.ess_12m.periodo.fim)}, o ESS somou {reaisCurto(k.ess_12m.valor_rs)} e o encargo de energia de reserva {reaisCurto(k.eer_12m.valor_rs)}.
                     {k.inadimplencia_ultimo_mes?.valor_pct !== null && k.inadimplencia_ultimo_mes?.valor_pct !== undefined && (
-                      <> Na liquidação de {mesAno(k.inadimplencia_ultimo_mes.mes)}, a inadimplência foi de {pct(k.inadimplencia_ultimo_mes.valor_pct, 1)} do valor a liquidar.</>
+                      <> Na liquidação de {mesAno(k.inadimplencia_ultimo_mes.mes)}, o valor registrado como inadimplência pela CCEE foi de {pct(k.inadimplencia_ultimo_mes.valor_pct, 1)} do valor a liquidar.{contextoInad} Os comunicados da CCEE sobre a liquidação não foram consultados, e o valor efetivamente inadimplente pode diferir do valor não pago.</>
                     )}
                   </>
                 ) : (

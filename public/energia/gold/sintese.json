@@ -6754,7 +6754,7 @@
    "retorno_dias": 7,
    "regra_retorno": "Volta ao normal depois de 7 dias seguidos abaixo do 95º percentil.",
    "materialidade": "Mesma regra da eólica; o registro de restrições fotovoltaicas começa em abril de 2024, então o histórico avaliável é mais curto.",
-   "nao_implica": "Não inclui micro e minigeração distribuída, que não é restringida pelo ONS; restrição alta não identifica a razão.",
+   "nao_implica": "Não inclui micro e minigeração distribuída, que fica fora do registro de restrições do ONS; restrição alta não identifica a razão.",
    "hipoteses": [
     {
      "texto": "Sobra de energia nas horas de sol (razão energética)",
@@ -8628,7 +8628,7 @@
  "limitacoes": [
   "A síntese reutiliza os números das bases publicadas de origem; limitações de cada fonte valem aqui e estão na proveniência de cada painel de origem.",
   "O histórico das regras usa os dados da data de processamento, já revisados; não reproduz o que um leitor via em cada data passada.",
-  "Cada regra tem o próprio histórico avaliável (primeiro_dia_avaliado e dias_avaliados): a carga extrema só é avaliada com os 364 dias anteriores no mesmo regime do ONS (de 01/01 a 28/02/2021, de 28/02/2022 a 28/04/2023 e desde 27/04/2024); a térmica, a restrição eólica e a fotovoltaica começam depois de 2021 por exigirem 365 janelas anteriores no mesmo regime ou universo.",
+  "Cada regra tem o próprio histórico avaliável (primeiro dia avaliado e número de dias avaliados): a carga extrema só é avaliada com os 364 dias anteriores no mesmo regime do ONS (de 01/01 a 28/02/2021, de 28/02/2022 a 28/04/2023 e desde 27/04/2024); a térmica, a restrição eólica e a fotovoltaica começam depois de 2021 por exigirem 365 janelas anteriores no mesmo regime ou universo.",
   "As revisões entre capturas só existem a partir das capturas versionadas (silver principal desde 27/09/2026); antes disso não há como medi-las.",
   "Restrições de eólicas e fotovoltaicas usam a geração possível estimada pelo ONS; o registro fotovoltaico começa em abril de 2024.",
   "Os indicadores de energia e sociedade têm períodos de referência diferentes (vigência, ano, mês) e não descrevem o dia."

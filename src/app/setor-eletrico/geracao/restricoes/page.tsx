@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -108,7 +109,7 @@ export default function GeracaoRestricoesPage() {
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo siglas={["SIN", "MMGD", "ONS", "IBGE"]}
+        <CabecalhoModulo siglas={["SIN", "MMGD", "ONS", "ANEEL", "REN", "ESS", "IBGE"]}
           rotulo="Geração · Renováveis restringidas"
           titulo={perguntaPainel("p023")}
           referencia={
@@ -148,7 +149,12 @@ export default function GeracaoRestricoesPage() {
                 <>
                   Que a usina estava indisponível ou que faltou vento ou sol: meia hora sem limitação do ONS não entra, mesmo que a usina tenha gerado abaixo da referência. Que
                   a energia não gerada foi medida: a referência é estimativa do ONS. Que a usina no mapa é o lugar onde o corte foi decidido: a marca é a usina afetada, não o
-                  ponto da rede que limitou.
+                  ponto da rede que limitou. Que toda razão dá direito a compensação: pela regra lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de
+                  indisponibilidade externa dá direito a ESS, como diz o verbete{" "}
+                  <Link href="/setor-eletrico/aprenda/constrained-off" className="text-energia-dark underline underline-offset-4">
+                    Constrained-off
+                  </Link>
+                  ; alterações posteriores do ressarcimento não foram verificadas.
                 </>
               }
               proveniencia={prov!}

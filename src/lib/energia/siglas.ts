@@ -46,6 +46,8 @@ export const SIGLAS: Record<string, string> = {
   ACR: "Ambiente de Contratação Regulada",
   MRE: "Mecanismo de Realocação de Energia",
   ESS: "Encargos de Serviços do Sistema",
+  EER: "Encargo de Energia de Reserva",
+  GSF: "Generation Scaling Factor, o fator de ajuste do MRE",
   MCP: "Mercado de Curto Prazo",
   CVU: "Custo Variável Unitário",
   RAP: "Receita Anual Permitida",

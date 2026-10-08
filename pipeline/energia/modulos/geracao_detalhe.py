@@ -1603,7 +1603,10 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                           "variacao_pct": {cat: var(cat) for cat in CATS},
                           "variacao_total_sem_mmgd_pct": c.r(100 * (m_at["_tot_sem"] / m_at["horas"]) / (m_ant["_tot_sem"] / m_ant["horas"]) - 100, 1),
                           "anterior_mwmed": {cat: c.r(m_ant["_mwh"][cat] / m_ant["horas"], 1) if m_ant["_mwh"][cat] is not None else None
-                                             for cat in CATS}}
+                                             for cat in CATS},
+                          # médias sem arredondar, só para o total das categorias comparáveis (campos privados não vão à gold)
+                          "_mwmed_atual": {cat: m_at["_mwh"][cat] / m_at["horas"] if m_at["_mwh"][cat] is not None else None for cat in CATS},
+                          "_mwmed_anterior": {cat: m_ant["_mwh"][cat] / m_ant["horas"] if m_ant["_mwh"][cat] is not None else None for cat in CATS}}
     # série mensal do SIN (só dias completos). Categoria sem linha no mês é nula (ausência,
     # nunca zero); com linha em parte dos dias, a contagem sai em dias_com_linha
     por_mes = defaultdict(list)
@@ -3499,7 +3502,7 @@ def construir(con, ctx):
                                formula="taxa = energia não gerada ÷ (geração verificada + energia não gerada) × 100",
                                limitacoes=["A geração de referência é estimativa do ONS (RO-AO.BR.13); a energia não gerada é estimada, não medida.",
                                            "Restrição não é indisponibilidade da usina nem falta de vento ou sol: meia hora sem limitação do ONS não entra, mesmo com referência maior que a geração.",
-                                           "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não são restringidos nesse registro.",
+                                           "Universo: usinas e conjuntos Tipo I, II-B e II-C; Tipo III e MMGD não constam desse registro, e eventual corte por outro mecanismo não entra na taxa.",
                                            "O ONS republica meses antigos (consistência recorrente); revisões entre capturas são detectadas."],
                                download=CSV["restricao_usina"])
     if cap:
@@ -3534,6 +3537,13 @@ def construir(con, ctx):
                 comp["variacao_suprimida"][cat] = {"motivo": "salto no número de usinas com dado na fonte dentro das janelas comparadas",
                                                    "datas": sorted(set(datas))}
                 comp["variacao_pct"][cat] = None
+        # total sem MMGD só nas categorias que têm variação publicada: com as suprimidas (mudança de universo na fonte), o
+        # total muda por causa do cadastro de usinas e não da geração, e o sinal pode inverter
+        cmp_ = [cat for cat in CATS if cat != "solar_mmgd" and cat not in comp["variacao_suprimida"]
+                and comp["_mwmed_atual"][cat] is not None and comp["_mwmed_anterior"][cat] is not None]
+        soma_at = sum(comp["_mwmed_atual"][cat] for cat in cmp_)
+        soma_ant = sum(comp["_mwmed_anterior"][cat] for cat in cmp_)
+        comp["variacao_total_comparavel_pct"] = c.r(100 * soma_at / soma_ant - 100, 1) if soma_ant > 0 else None
     gold = {
         **c.cabecalho(GOLD),
         "paineis": ["P021", "P022", "P023", "P024"],

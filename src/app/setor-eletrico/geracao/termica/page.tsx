@@ -33,6 +33,7 @@ import {
   linhasCvuCombustivel,
   linhasCvuMensal,
   linhasCvuUsinas,
+  inflexibilidadeSemNuclear,
   linhasUniversoTermica,
   painelPublicado,
   paraTabela,
@@ -65,6 +66,7 @@ export default function GeracaoTermicaPage() {
   const op = gold.geracao();
   const ctx = integra(op) ? op.termica_contexto : null;
   const atual = situacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho");
+  const semNuc = inflexibilidadeSemNuclear(t.ultimos_12m);
   const versao = t.ultimo_mes_completo;
   const { cvu: cvuDados, universo, identidade, mapa_combustivel: mapa, ...cliente } = t;
   const termicaCliente: TermicaCliente = cliente;
@@ -85,7 +87,7 @@ export default function GeracaoTermicaPage() {
             </>
           }
         >
-          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade declarada pelo agente, razão elétrica,
+          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade (declarada pelo agente ou geração acima do despachado), razão elétrica,
           exportação e outros. Este painel separa a geração por combustível e por motivo, sem inferir o motivo do preço, e mostra o{" "}
           <Termo slug="cvu">Custo Variável Unitário</Termo> declarado para a semana operativa vigente.
         </CabecalhoModulo>
@@ -109,6 +111,13 @@ export default function GeracaoTermicaPage() {
                   A geração verificada de cada usina é dividida pelos motivos que o ONS publica, sem dupla contagem: a inflexibilidade embutida na ordem de mérito conta
                   como inflexibilidade, e o mérito conta só acima dela. A soma dos motivos fecha com a geração verificada a menos de uma parcela não classificada, publicada
                   com sinal. Combustível é outra dimensão: as barras empilham os motivos dentro de cada combustível.
+                  {semNuc && (
+                    <>
+                      {" "}
+                      A nuclear é {num(semNuc.nuclearInflexivelPct, 1)}% inflexível e responde por {num(semNuc.nuclearNaInflexibilidadePct, 1)}% de toda a inflexibilidade; sem ela, a inflexibilidade é{" "}
+                      {num(semNuc.semNuclearPct, 1)}% da geração térmica.
+                    </>
+                  )}
                 </>
               }
               naoConcluir={
@@ -134,7 +143,7 @@ export default function GeracaoTermicaPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Numero rotulo="Geração térmica despachada pelo ONS, 12 meses completos" natureza="CALCULADO" evidencia={ev.termica_12m_total} casas={0} tamanho="medio" cor="var(--serie-termica)" endereco={`${rotaPainel("p022")}#p022`} />
                       <Numero
-                        rotulo="Parcela da geração térmica por inflexibilidade declarada pelo agente, 12 meses"
+                        rotulo="Parcela da geração térmica por inflexibilidade (declarada pelo agente ou geração acima do despachado), 12 meses"
                         natureza="CALCULADO"
                         evidencia={ev.termica_12m_inflexibilidade}
                         formato="pct"

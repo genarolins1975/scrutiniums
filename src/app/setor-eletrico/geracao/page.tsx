@@ -115,7 +115,7 @@ export default function GeracaoPage() {
       {/* o contexto térmico de 7 dias foi para o painel de despacho térmico; links antigos seguem para lá */}
       <RedirecionaAncoraAntiga ancoras={["termica", "termica-ctx"]} destino={rotaPainel("p022")} />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo siglas={["SIN", "CEG", "CVU", "SIGA", "ONS", "ANEEL"]}
+        <CabecalhoModulo siglas={["ONS", "MWmed", "SIN", "CEG", "CVU", "SIGA", "ANEEL"]}
           rotulo="Geração"
           titulo={PERGUNTA_MODULO_GERACAO}
           referencia={
@@ -150,8 +150,8 @@ export default function GeracaoPage() {
               }
               comoInterpretar={
                 <>
-                  Participação é a energia da categoria dividida pela energia de todas as categorias no mesmo período e região. No perímetro com MMGD o total é o mesmo do
-                  Balanço de Energia do ONS; no perímetro sem MMGD, a estimativa sai do numerador e do denominador. Categoria com ressalva de universo teve menos usinas
+                  Participação é a energia da categoria dividida pela energia de todas as categorias no mesmo período e região. No perímetro com MMGD o total soma as mesmas fontes do
+                  Balanço de Energia do ONS e fica próximo dele, com diferenças por fonte e por dia que a reconciliação do modo Auditar mostra; no perímetro sem MMGD, a estimativa sai do numerador e do denominador. Categoria com ressalva de universo teve menos usinas
                   publicadas com dado no período; a ressalva aparece junto da participação.
                 </>
               }

@@ -10,9 +10,12 @@ import {
   PAINEIS_GERACAO,
   deContraido,
   histogramaFc,
+  inflexibilidadeSemNuclear,
   linhasCapacidade,
   linhasMmgdCapacidade,
   linhasRazoes12m,
+  minusculaPalavras,
+  textoNatureza,
   linhasRestricaoMensal,
   linhasSigaHistorico,
   pontosUsinas,
@@ -20,6 +23,7 @@ import {
   respostaRestricao,
   rotaPainel,
   situacaoMensal,
+  textoDozeMeses,
 } from "@/lib/energia/geracao";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
@@ -154,6 +158,48 @@ describe("textos e navegação da Geração", () => {
     expect(deContraido("o fator de capacidade mensal")).toBe("do fator de capacidade mensal");
     expect(deContraido("fontes mensais")).toBe("de fontes mensais");
     expect(situacaoMensal("2026-07", "2026-10-01T07:00:00Z", "as restrições").texto).toContain("o último mês completo das restrições é jul/2026");
+  });
+
+  it("minúscula no meio da frase poupa a sigla: ONS, MMGD, CMSE e Tipo III não viram ons, mmgd, cmse", () => {
+    expect(minusculaPalavras("Previsão do ONS (grupos Tipo III)")).toBe("previsão do ONS (grupos tipo III)");
+    expect(minusculaPalavras("Solar MMGD")).toBe("solar MMGD");
+    expect(minusculaPalavras("Garantia de suprimento energético (decisão do CMSE)")).toBe("garantia de suprimento energético (decisão do CMSE)");
+    const texto = textoNatureza({ verificada: 81.7, grupo_tipo3: 6.9, grupo_mmgd: 11.3 });
+    expect(texto).toContain("previsão do ONS (grupos tipo III) 6,9%");
+    expect(texto).toContain("estimativa do ONS (MMGD) 11,3%");
+    expect(texto).not.toMatch(/\bons\b|\bmmgd\b/);
+  });
+
+  it("defasagem mensal em dias: ago/2026 processado em 01/10/2026 é o ritmo normal; jul/2026 é defasagem", () => {
+    const ago = situacaoMensal("2026-08", "2026-10-01T10:00:00Z", "a térmica por motivo de despacho");
+    expect(ago.defasada).toBe(false);
+    expect(ago.texto).toContain("último mês completo ago/2026");
+    const jul = situacaoMensal("2026-07", "2026-10-01T10:00:00Z", "a térmica por motivo de despacho");
+    expect(jul.defasada).toBe(true);
+    expect(jul.texto).toContain("encerrado 62 dias antes do processamento");
+    expect(jul.texto).not.toMatch(/\d meses antes/);
+  });
+
+  it("variação de 12 meses: com categorias suprimidas, o total das demais acompanha o total completo (o sinal pode inverter)", () => {
+    const c = G.matriz.comparacao_12m!;
+    expect(Object.keys(c.variacao_suprimida).length).toBeGreaterThan(0);
+    const texto = textoDozeMeses(c);
+    expect(texto).toContain("−0,6%");
+    expect(texto).toContain("Só com as demais categorias, o total varia +0,5%.");
+    // sem categoria suprimida, o total completo já é o comparável e o texto não repete
+    expect(textoDozeMeses({ ...c, variacao_suprimida: {} })).not.toContain("Só com as demais categorias");
+    // a gold publica o total comparável e ele sai das mesmas médias (sem MMGD, sem as suprimidas)
+    expect(c.variacao_total_comparavel_pct).toBe(0.5);
+  });
+
+  it("inflexibilidade térmica: a nuclear é quase toda inflexível e pesa na parcela; sem ela a parcela cai", () => {
+    const r = inflexibilidadeSemNuclear(G.termica!.ultimos_12m)!;
+    expect(r.nuclearInflexivelPct).toBeGreaterThan(99);
+    expect(r.nuclearNaInflexibilidadePct).toBeCloseTo(35.1, 1);
+    expect(r.semNuclearPct).toBeCloseTo(50.6, 1);
+    const pct = G.termica!.ultimos_12m.por_motivo.find((m) => m.motivo === "inflexibilidade")!.pct!;
+    expect(r.semNuclearPct).toBeLessThan(pct);
+    expect(inflexibilidadeSemNuclear({ total_mwh: null, por_motivo: [], por_combustivel: [] })).toBeNull();
   });
 
   it("os quatro painéis publicados, cada um com a sua rota", () => {

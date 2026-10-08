@@ -561,6 +561,13 @@ def _br(v, casas=1):
     return s.replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def _divergencia_gsf_12m(x):
+    """Frase da divergência entre o GSF de 12 meses calculado e o ajuste médio de 12 meses que o InfoMercado publica."""
+    return (f"; o InfoMercado Nº {x['numero']} publica {_br(x['publicado'], 2)}% para o ajuste médio do MRE nos últimos doze meses e a razão de energias do "
+            f"observatório dá {_br(x['calculado'], 2)}% na janela do boletim ({_br(abs(x['diferenca']), 2)} p.p. de diferença): nenhuma definição testada "
+            f"reproduz o número do boletim, a divergência fica publicada e as outras edições do boletim não foram conferidas.")
+
+
 def _fonte(orgao, dataset, recurso, url_dataset, url_primaria, licenca):
     return {"orgao": orgao, "dataset": dataset, "recurso": recurso, "url_dataset": url_dataset,
             "url_primaria": url_primaria, "licenca": licenca}
@@ -2676,7 +2683,7 @@ def paineis(g, pendencia_ccee=False):
         ("P034", "MRE e GSF", "Como foi o ajuste da garantia física das hidrelétricas do MRE?", resposta_p034(mg), c034,
          ["gsf", "risco_hidrologico_acr"],
          ["O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE"
-          + ("; o número de 12 meses do InfoMercado não é reproduzido por nenhuma definição testada e a divergência fica publicada."
+          + (_divergencia_gsf_12m(next(x for x in g12 if x["resultado"] != "aprovado"))
              if g12 and any(x["resultado"] != "aprovado" for x in g12) else "."),
           "A série aberta começa em 2023; o painel não infere exposição financeira de nenhuma usina ou agente."]),
         ("P035", "Encargos e contabilização", "Quais custos públicos aparecem na liquidação do mercado de curto prazo?", resposta_p035(en), c035,

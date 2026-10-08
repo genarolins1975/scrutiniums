@@ -15255,7 +15255,7 @@
     "risco_hidrologico_acr"
    ],
    "limitacoes": [
-    "O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE; o número de 12 meses do InfoMercado não é reproduzido por nenhuma definição testada e a divergência fica publicada.",
+    "O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE; o InfoMercado Nº 229 publica 92,55% para o ajuste médio do MRE nos últimos doze meses e a razão de energias do observatório dá 80,43% na janela do boletim (12,12 p.p. de diferença): nenhuma definição testada reproduz o número do boletim, a divergência fica publicada e as outras edições do boletim não foram conferidas.",
     "A série aberta começa em 2023; o painel não infere exposição financeira de nenhuma usina ou agente."
    ]
   },
