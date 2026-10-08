@@ -1,6 +1,6 @@
 # Metodologia do piloto: Educação municipal nas capitais
 
-Versão metodológica 1.1, catálogo `2026-10-08.2` (histórico: 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
+Versão metodológica 1.2, catálogo `2026-10-08.3` (histórico: 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md); 1.2 na rodada 5, ver [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
 
 ## 1. Universo e perímetros
 
@@ -68,16 +68,14 @@ Zero só aparece quando a fonte informa zero (etapa sem matrícula na rede).
 * Critério definido antes dos valores: mesma medida, mesma fonte, mesmo período, mesma etapa, universo do indicador; entram as capitais com valor observado e elegível.
 * Uma regra só para gráfico, mediana, tabela e CSV. O painel mostra três contagens: capitais no grupo, com valor oficial e na comparação; as demais aparecem listadas com estado, valor oficial quando houver e motivo.
 * Grupos: todas as capitais ou as capitais da região da capital selecionada.
-* Referência: mediana simples das capitais na comparação, rotulada com o número delas. Não é estatística nacional, meta nem padrão.
+* Referências do grupo (rodada 5): mediana, média simples, mínimo e máximo com empates, quartis tipo 7 (faixa dos 50% centrais exibida a partir de 8 valores) e, para despesa por habitante e por matrícula, a razão agregada (soma dos numeradores ÷ soma dos denominadores dos mesmos pares). Rotuladas com o número de capitais. Não são estatística nacional, meta nem padrão. Média simples, razão agregada e indicador nacional são grandezas distintas e nunca se confundem.
+* Referências externas: nacional do mesmo universo gera diferença; nacional de outro universo e contexto internacional são mostrados sem diferença e fora da distribuição das capitais; incompatíveis ficam só na matriz.
 * Ordem inicial alfabética; ordem por valor só quando o leitor escolhe.
 * Sem ajuste por contexto: comparação descritiva. Sem gráfico de dispersão entre despesa e resultado (perímetros e períodos não alinhados).
 
-## 7. Despesa por matrícula: avaliada, não publicada
+## 7. Despesa por habitante e despesa por matrícula (rodada 5)
 
-Numerador e denominador não representam o mesmo universo:
-
-1. a despesa pode financiar matrículas em escolas privadas conveniadas, que o Censo registra como privadas (em 2025, de 0,0% a 49,7% das matrículas da rede municipal, mediana de 3,9%; medição M01);
-2. a despesa pode incluir itens sem matrícula correspondente (ensino superior, inativos classificados na função, programas de outras etapas), com práticas que variam entre municípios;
-3. os períodos diferem (exercício financeiro e data de referência do Censo em maio).
-
-Caminho para a próxima etapa em CONTINUIDADE.md (tarefa T7).
+* **Despesa por habitante**: despesa liquidada na função 12 (DCA) ÷ população residente do IBGE do mesmo ano (estimativa 2021, Censo 2022, estimativas 2024 e 2025; 2023 sem publicação municipal, sem valor e sem interpolação). A população de 2021 tem outra base; variação entre 2021 e os anos seguintes é bloqueada.
+* **Despesa por matrícula da rede municipal**: despesa liquidada de aplicação direta (modalidade 90) na função 12, na MSC de dezembro, sem a subfunção 364 e sem os elementos 01, 03 e 05 do grupo 3.1.90, ÷ `QT_MAT_BAS` das escolas municipais. Regra de atribuição única das linhas da MSC a baldes mutuamente exclusivos, ponte conferida contra a DCA. Sem soma de conveniadas ao denominador, sem rateio por etapa, sem uso do SIOPE (examinado e não adotado).
+* Publicada em 102 de 130 pares capital × exercício; nos demais, o motivo do par. Detalhes, cobertura, matriz de referências e limitações em [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md).
+* A definição anterior, "despesa da função inteira ÷ matrículas totais" (`edu.despesa_por_matricula`), continua **não publicada**: numerador e denominador não representam o mesmo universo (conveniadas, itens sem matrícula, períodos diferentes; medição M01).

@@ -39,12 +39,15 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | T6 | Indicador novo | Despesa por natureza na função Educação (pessoal, outras correntes, investimento) | `fontes/siconfi.py` (RREO Anexo 8 ou Anexo 2 por natureza), catálogo, consulta | Ficha completa; categorias mutuamente exclusivas somando o total; validação de reconciliação |
 | T7 | Indicador novo | Avaliar despesa em MDE por etapa ÷ matrículas da rede + conveniadas (P4) | `fontes/siconfi.py` (RREO Anexo 8), `validacoes.py` | Medição M01 refeita no novo perímetro; publicação só com decisão P4 e ficha aprovada |
 | T8 | Cobertura | Censo 2026 e Ideb 2027 quando divulgados | `run.py --inep`, `padroniza.py` | Integridade (MD5) conferida; V06 sem diferença |
+| T12 | Cobertura | Reconciliar MSC e DCA nos 28 pares sem despesa por matrícula (MSC por poder e órgão, intraorçamentárias sem a modalidade 91) | `derivados.py`, `fontes/siconfi.py` | V16 sem pares pendentes ou cada par com causa documentada; nenhum rateio |
+| T13 | Referência | Conferir o mapeamento ISCED do Brasil e o conceito de despesa da OCDE contra documento do INEP | `referencias_externas.py`, matriz | Linha da matriz passa de contexto para direta só com mapeamento documentado |
 | T9 | Qualidade | Revisão externa da metodologia (não realizada até aqui) | `docs/obee/` | Parecer registrado; passaporte atualiza o campo 16 |
 
 ## 4. Expansão planejada (registrada, não implementada)
 
 * **Entes e poderes**: União, 26 estados, DF (tratamento P3) e 26 capitais; Executivo, Legislativo e Judiciário, com Ministério Público, defensorias e tribunais de contas em categorias próprias. O modelo já separa ente responsável, local da unidade e rede.
 * **Judiciário nas capitais**: órgãos que atendem o território, com vinculação institucional preservada; TJDFT com responsabilidade federal explícita, sem duplicar União e DF. Fontes: Justiça em Números e DataJud (CNJ).
+* **Estrutura administrativa**: servidores da atividade finalística (por área) separados de administração, cargos comissionados e terceirização (elementos 3.3.90.34 e 3.3.90.37), com a tabela de atribuições de cada ente registrada antes de qualquer razão. Pessoal por população não é diagnóstico de excesso.
 * **Outras áreas**: saúde (SIOPS, CNES), assistência, segurança, administração.
 * **Benchmark internacional**: só com compatibilidade documentada de conceito, perímetro, moeda (PPC) e período (por exemplo, OCDE Education at a Glance para gasto por estudante). Nada improvisado.
 * **Fora de escopo por desenho**: notas próprias, índices sintéticos, DEA ou SFA, cenários de corte, assistente conversacional.
@@ -54,6 +57,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | Data | Entrega |
 | --- | --- |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
+| 08/10/2026 | Rodada 5 ([COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)): despesa por habitante e por matrícula, ponte da MSC, referências do grupo, nacionais e internacionais, tabela comparativa; T7 resolvida em parte (publicada em 102 de 130 pares com a ponte pela MSC; os demais pares dependem de reconciliação) |
 | 08/10/2026 | Rodada 4: datas e literais da fonte em Energia, contrato estrutural do teste de HTML e inventário reconciliado ([APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md)); T11 resolvida |
 | 08/10/2026 | Verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md)): data legível na gaveta de proveniência, gate obrigatório de HTML no CI, valor exato por toque e atalho para a tabela da comparação; gate reprovado por 21 páginas de Energia (T11) |
 | 08/10/2026 | Rodada 2 de correções ([RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md)): política de conferência 1.1 com MSC, elegibilidade separada do estado, portão de publicação, ausência sem zero, universo por indicador, CSVs autoexplicativos, metodologia 1.1 |

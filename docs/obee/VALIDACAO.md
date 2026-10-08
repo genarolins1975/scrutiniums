@@ -21,7 +21,14 @@ Validações automáticas, executadas a cada `python3 -m pipeline.eficiencia.run
 | V11 | Ideb publicado = N × P na mesma linha | Aprovada em 542 combinações |
 | V12 | Aprovação nos anos iniciais: planilha do Ideb × taxas de rendimento | 78 pares, 0 diferenças |
 | V13 | Elegibilidade: só valor observado e conferido entra em comparações, medianas e variações, incluídos valor real e subfunções | Aprovada; 6 observações com valor oficial fora das comparações (Campo Grande 2021: nominal, real e 4 subfunções) |
+| V14 | População do IBGE: 26 capitais por ano, 2023 sem valor, revisão posterior registrada | Aprovada com divergência documentada (Aracaju 2025 revisada) |
+| V15 | Despesa por habitante recalculada da despesa e da população publicadas | Aprovada |
+| V16 | MSC de dezembro × DCA | Regra aplicada com pendências: 102 de 130 pares reconciliam |
+| V17 | Despesa por matrícula reproduzida da ponte e das matrículas | Aprovada em 102 valores |
+| V18 | Referências externas lidas do seed; média da OCDE recomputada | Aprovada |
 | M01 | Medição do perímetro despesa × matrículas | Conveniadas com o município entre 0,0% e 49,7% da rede municipal em 2025 (mediana 3,9%) |
+| M03 | Composição da função Educação pela MSC | Medição |
+| M04 | SIOPE × DCA e Censo | 0,81 a 2,50 vezes a DCA (mediana 1,15): fonte examinada, não adotada |
 | M02 | Registros de escola sem contagem (campos vazios) nos microdados | 13.002 registros (2022 a 2024, rede municipal e privada); nenhum parcial ou inválido; todos os grupos confirmados pela Sinopse; nenhum valor alterado |
 
 Portão de publicação: `gold.promove` só substitui `public/eficiencia` quando nenhuma validação é reprovada (teste `test_reprovacao_nao_substitui_saida_publica`).
@@ -69,6 +76,12 @@ Ajustes feitos depois da primeira rodada de capturas: rótulo de valor cortado n
 * Sequência do CI (npm ci, minify, lint, tsc, compileall, testes Python 1.351 + 69, build, vitest com `EXIGIR_BUILD_HTML=1`) executada em checkout limpo do commit de código final, sem falhas.
 * Detalhe, inventário por rota e capturas: [APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md) e `capturas/rodada-4/`.
 
+### Rodada 5: despesa por habitante e por matrícula
+
+* Python 84 aprovados (43 novos); vitest 2.575 aprovados e 1 ignorado (137 arquivos); lint e `tsc` limpos; interações 39 de 39 em 1280 px e em 390 px; 32 combinações de largura e recorte sem estouro horizontal e sem violação axe (`scripts/obee/larguras-axe.mjs`).
+* Recomputação separada do pipeline em 12 pares de portes e situações diferentes: sem divergência (`scripts/obee/recomputacao_independente.py`). Escrita pelo mesmo autor: não é revisão externa.
+* Detalhe, limitações e capturas (`capturas/rodada-5/`): [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md).
+
 ## 4. Neutralidade
 
 * Teste automático varre componentes, página, consulta, catálogo, notas e validações em busca de termos avaliativos ("eficiente", "desperdício", "melhor", "pior", "ranking", "insight", "merece atenção", "sinaliza", "excesso" e outros) e de cores de semáforo ou hexadecimais soltos nos componentes: nenhuma ocorrência.
@@ -81,6 +94,8 @@ Ajustes feitos depois da primeira rodada de capturas: rótulo de valor cortado n
 * Leitor de tela real (NVDA, VoiceOver): não testado; a verificação de acessibilidade foi automática (axe) e por navegação de teclado.
 
 ## 6. Capturas
+
+Rodada 5: `capturas/rodada-5/` (24 capturas, antes e depois, em 1440, 768, 390 e 320 px).
 
 Rodada 4: `capturas/rodada-4/` (15 capturas de datas formatadas e literais da fonte, lista em APRESENTACAO_DATAS_ENERGIA.md, seção 9).
 

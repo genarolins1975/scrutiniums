@@ -55,14 +55,17 @@ Fonte oficial ──► pipeline/eficiencia/fontes/*.py   (coleta, integridade, 
                 padroniza.py   observações tipadas: indicador, ente, ano, etapa, componente, valor, status, nota,
                                nota_material, elegivel_comparacao, conferencia, fonte, registro
                      ▼
-                validacoes.py  V01 a V13 automáticas + M01 e M02 medições
+                derivados.py   baldes da MSC, ponte da DCA ao numerador, razões (despesa por habitante e por matrícula)
+                referencias.py estatísticas do grupo (tipo 7, razão agregada, limiar de exibição) e referencias_externas.py
+                               (INEP nacional, OCDE, matriz de referências)
+                validacoes.py  V01 a V18 automáticas + M01 a M04 medições
                      ▼
                 gold.py        promove(): monta gold e séries em pasta temporária; só substitui public/eficiencia
                                sem validação reprovada (senão grava em data/eficiencia/diagnostico e sai com código 1)
                      ▼
 src/lib/eficiencia/dados.ts    leitura no build e payload compacto do cliente (tuplas, textos deduplicados)
 src/lib/eficiencia/consulta.ts seleção, pares, mediana, composição, linhas da tabela e CSV (sem cálculo contábil)
-src/components/eficiencia/     painel, gráficos SVG, passaporte
+src/components/eficiencia/     painel, gráficos SVG, passaporte, tabela comparativa, referências
 src/app/eficiencia-estatal/    rota estática
 ```
 

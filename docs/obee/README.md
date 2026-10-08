@@ -44,6 +44,7 @@ A reconstrução sem rede imprime as validações e termina com código 1 se alg
 | [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md) | Rodada de correções: achados, política de conferência 1.1, casos Boa Vista 2024 e Campo Grande 2021, campos vazios, antes e depois |
 | [VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md) | Verificação final: data legível, gate obrigatório de HTML no CI, passagem pelo painel, problema independente em Energia (histórico) |
 | [APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md) | Política de apresentação de datas e literais da fonte, contrato do teste de HTML, inventário reconciliado das rotas de Energia e do OBEE |
+| [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md) | Rodada 5: despesa por habitante e por matrícula, ponte da DCA, referências do grupo, nacionais e internacionais, tabela comparativa, exemplos verificáveis, limitações e próxima expansão |
 | [CONTINUIDADE.md](./CONTINUIDADE.md) | Próximos módulos, decisões pendentes e tarefas delimitadas |
 
 ## Regra editorial (vale para todo o código e texto do domínio)
