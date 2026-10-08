@@ -19,7 +19,7 @@ export function RespostaCurta({
 }: {
   id: string;
   veredito: string;
-  children: ReactNode;
+  children?: ReactNode;
   vivo?: boolean;
   atributo?: string;
   tamanho?: "base" | "sm";

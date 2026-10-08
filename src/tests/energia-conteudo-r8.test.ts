@@ -18,11 +18,11 @@ const numeros = (t: string) => (t.match(/\d[\d.,]*\d|\d/g) ?? []).length;
 const G = JSON.parse(ler("public/energia/gold/rede_detalhe.json")) as GoldRedeDetalhe;
 
 describe("RespostaCurta: veredito à vista, números por trás em Analisar", () => {
-  const html = renderToStaticMarkup(createElement(RespostaCurta, { id: "p999", veredito: "O preço subiu.", vivo: true, children: "Detalhe com 12 números." }));
+  const html = renderToStaticMarkup(createElement(RespostaCurta, { id: "p999", veredito: "O preço subiu.", vivo: true }, "Detalhe com 12 números."));
 
   it("o elemento externo leva data-resposta e é região viva só quando pedido", () => {
     expect(html).toMatch(/^<div data-resposta="p999" aria-live="polite"/);
-    expect(renderToStaticMarkup(createElement(RespostaCurta, { id: "x", veredito: "v", children: "d" }))).not.toContain("aria-live");
+    expect(renderToStaticMarkup(createElement(RespostaCurta, { id: "x", veredito: "v" }, "d"))).not.toContain("aria-live");
   });
 
   it("o veredito fica fora do bloco de Analisar e o detalhe dentro, com rótulo", () => {
@@ -35,7 +35,7 @@ describe("RespostaCurta: veredito à vista, números por trás em Analisar", () 
   });
 
   it("aceita outro atributo de resposta (filtros, ano, ficha)", () => {
-    expect(renderToStaticMarkup(createElement(RespostaCurta, { id: "2025", atributo: "data-resposta-ano", veredito: "v", children: "d" }))).toContain('data-resposta-ano="2025"');
+    expect(renderToStaticMarkup(createElement(RespostaCurta, { id: "2025", atributo: "data-resposta-ano", veredito: "v" }, "d"))).toContain('data-resposta-ano="2025"');
   });
 });
 

@@ -65,7 +65,6 @@ export default function MercadoMreGsfPage() {
   const prov = provenienciasLegiveis(g);
   const m = g.mre_gsf;
   const k = m.kpis;
-  const div12 = m.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
   const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_gsf ? mesAno(g.referencias.ccee_ultimo_mes_gsf) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anual = m.anual;
   const vDiv = p?.verificacoes.find((v) => v.nome.startsWith("GSF de 12 meses"));

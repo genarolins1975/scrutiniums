@@ -716,7 +716,7 @@ describe("Aprenda: índice e trilhas", () => {
 
 describe("RespostaCurta nos painéis da Visão geral: o componente compartilhado segue como estava", () => {
   it("o veredito fica antes do bloco de Analisar e a resposta completa dentro dele", () => {
-    const h = renderToStaticMarkup(createElement(RespostaCurta, { id: "sistema", veredito: "V.", children: "Completa." }));
+    const h = renderToStaticMarkup(createElement(RespostaCurta, { id: "sistema", veredito: "V." }, "Completa."));
     expect(h.indexOf("V.")).toBeLessThan(h.indexOf('data-nivel="analisar"'));
     expect(h.indexOf("Completa.")).toBeGreaterThan(h.indexOf('data-nivel="analisar"'));
   });
