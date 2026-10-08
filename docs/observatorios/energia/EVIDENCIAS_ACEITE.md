@@ -23,8 +23,8 @@ Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nes
 | O módulo de previsão cumpre as etapas aplicáveis de validação e publicação, sem contorná-las. | não verificado nesta rodada | Não foi objeto desta avaliação; J10 cumprida (14 de 14 passos) verificou a inspeção do arquivo de emissões. |
 | Backtest, prospectivo, observado, estimado e cenário estão corretamente separados. | não verificado nesta rodada | Não foi objeto desta avaliação. |
 | Avaliação por página e evidências estão registradas, sem notas inventadas. | atendido | 94 páginas com nota por dimensão, evidência, deduções e tetos em avaliacao.json; dimensão sem teste ou revisão fica como não avaliada (0 ocorrências). |
-| Não há regressão conhecida nas áreas afetadas do Scrutiniums. | atendido em parte | Vitest: 2742 testes em 143 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
-| Build e verificações exigidas passaram. | atendido em parte | tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 2742 testes em 143 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
+| Não há regressão conhecida nas áreas afetadas do Scrutiniums. | atendido em parte | Vitest: 2743 testes em 143 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
+| Build e verificações exigidas passaram. | atendido em parte | tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 2743 testes em 143 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
 | Qualquer limitação externa remanescente está descrita sem ser apresentada como cumprimento integral. | atendido | Limites da avaliação em avaliacao.json e em AVALIACAO_PAGINAS.md; limitações de cada painel em status_paineis.json e em DECISOES_E_LIMITACOES.md. |
 
 ## Onde está a evidência
