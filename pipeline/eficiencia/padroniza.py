@@ -142,7 +142,8 @@ def despesa():
             v = round(float(e[0]), 2)
             conf = CF.conferencia(cod, ano, v)
             eleg = conf["elegivel_comparacao"]
-            material = conf["situacao"] in ("PENDENTE", "PERIMETRO_INTRA_MSC", "NAO_CONFERIDO")
+            # reconciliada: valor elegível, mas o RREO publicado diverge de forma material; o leitor precisa ver
+            material = conf["situacao"] in ("RECONCILIADA_MSC", "PENDENTE", "PERIMETRO_INTRA_MSC", "NAO_CONFERIDO")
             nota = None if conf["situacao"] == "CONFERE" else conf["explicacao"]
             comuns = dict(conferencia=conf, elegivel_comparacao=eleg, nota_material=material)
             obs.append(_obs("edu.despesa.funcao_educacao", cod, ano, v, "OBSERVADO",

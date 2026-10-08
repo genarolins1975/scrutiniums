@@ -93,6 +93,7 @@ ok("CSV sem zero em linha sem valor", !conteudo.split("\n").some((l) => /;0;/.te
 const [dl2] = await Promise.all([page.waitForEvent("download"), page.locator("#comparacao").getByRole("button", { name: /Baixar esta comparação/ }).click()]);
 const c2 = readFileSync(await dl2.path(), "utf-8").replace(/^﻿/, "").trim().split("\n");
 ok("CSV da comparação cobre o universo do grupo (4 capitais do Sudeste)", c2.length - 1 === 4, c2.length - 1);
+ok("CSV da comparação traz universo, elegibilidade, motivo e versão", ["universo_do_indicador", "elegivel_comparacao", "incluida_na_comparacao", "motivo_exclusao", "versao_metodologica", "hash_dados"].every((c) => c2[0].split(";").includes(c)), c2[0]);
 
 // 9. restaurar padrão
 await page.getByRole("button", { name: "Voltar ao recorte inicial" }).click();
@@ -116,7 +117,35 @@ await page.screenshot({ path: `${out}/rio-branco-anos-finais.png`, fullPage: fal
 await page.goto(`${URL0}?cap=campo-grande&ano=2021`, { waitUntil: "networkidle" });
 await page.waitForTimeout(300);
 const comp5 = await page.locator("#comparacao").innerText();
-ok("Campo Grande 2021 fora da comparação, com motivo", /Campo Grande \(MS\)\s*: não comparável/.test(comp5), comp5.match(/Campo Grande \(MS\)\s*:[^\n]*/)?.[0]);
+ok("Campo Grande 2021 fora da comparação, com valor oficial e motivo", /Campo Grande \(MS\)\s*: valor oficial .*fora da comparação\. Perímetro distinto/.test(comp5), comp5.match(/Campo Grande \(MS\)\s*:[^\n]*/)?.[0]);
+ok("contagens: 26 no grupo, 26 com valor, 25 na comparação", /Capitais no grupo\s*26/.test(comp5) && /Com valor oficial\s*26/.test(comp5) && /Na comparação\s*25/.test(comp5), comp5.slice(0, 400).replace(/\n/g, " / "));
+const cardCg = await page.locator("[data-cartao=despesa]").innerText();
+ok("cartão de Campo Grande 2021 mostra a ressalva", /Ressalva: fora das comparações/.test(cardCg), cardCg.slice(0, 300));
+await page.locator("[data-cartao=despesa] summary").first().focus();
+await page.keyboard.press("Enter");
+await page.waitForTimeout(150);
+ok("ressalva abre pelo teclado", /intraorçamentárias/.test(await page.locator("[data-cartao=despesa] details[open]").first().innerText().catch(() => "")));
+await page.screenshot({ path: `${out}/campo-grande-2021.png`, fullPage: false });
+await page.goto(`${URL0}?cap=campo-grande&ano=2022`, { waitUntil: "networkidle" });
+await page.waitForTimeout(300);
+const cardCg22 = await page.locator("[data-cartao=despesa]").innerText();
+ok("Campo Grande 2022: variação com 2021 bloqueada", /Variação em relação a 2021 não calculada/.test(cardCg22), cardCg22.slice(0, 400));
+
+// 12b. Boa Vista 2024: reconciliada pela MSC, incluída com nota
+await page.goto(`${URL0}?cap=boa-vista&ano=2024`, { waitUntil: "networkidle" });
+await page.waitForTimeout(300);
+const comp6 = await page.locator("#comparacao").innerText();
+const aposNota = comp6.split(/Incluídas com nota/i)[1] ?? "";
+ok("Boa Vista 2024 incluída e marcada com nota", /Boa Vista \(RR\)\s*: O RREO/.test(aposNota), aposNota.slice(0, 200));
+const cardBv = await page.locator("[data-cartao=despesa]").innerText();
+ok("cartão de Boa Vista 2024 com ressalva e variação calculada", /Ressalva/.test(cardBv) && /em relação a 2023/.test(cardBv) && !/não calculada/.test(cardBv), cardBv.slice(0, 400));
+const [dl3] = await Promise.all([page.waitForEvent("download"), page.locator("#comparacao").getByRole("button", { name: /Baixar esta comparação/ }).click()]);
+const c3 = readFileSync(await dl3.path(), "utf-8").replace(/^\uFEFF/, "").trim().split("\n");
+const cab3 = c3[0].split(";");
+const bvl = c3.find((l) => l.includes(";Boa Vista;")) ?? "";
+ok("CSV: Boa Vista incluída com a nota da MSC", /;sim;sim;/.test(bvl) && /Matriz de Saldos Contábeis/.test(bvl), bvl.slice(0, 200));
+ok("CSV: 26 linhas no grupo de todas as capitais", c3.length - 1 === 26 && cab3.length > 20, c3.length - 1);
+await page.screenshot({ path: `${out}/boa-vista-2024.png`, fullPage: false });
 
 // 13. parâmetro inválido volta ao padrão sem quebrar
 await page.goto(`${URL0}?cap=brasilia&ano=2030&etapa=xyz`, { waitUntil: "networkidle" });

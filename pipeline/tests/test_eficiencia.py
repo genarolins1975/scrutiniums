@@ -115,6 +115,7 @@ class TestEficiencia(unittest.TestCase):
         self.assertAlmostEqual(c["msc"]["sem_intra"], bv["valor"], delta=1.0)
         self.assertAlmostEqual(c["rreo"]["exceto_intra"], 122547917.75, places=2)
         self.assertIn("não foi retificado", bv["nota"])
+        self.assertTrue(bv["nota_material"])
         self.assertTrue(c["fontes_sha256"]["msc"] and c["fontes_sha256"]["dca"] and c["fontes_sha256"]["rreo"])
 
     # ---------------------------------------------------------------- estados de dado
