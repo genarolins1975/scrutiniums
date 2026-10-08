@@ -21,7 +21,7 @@ import os
 import re
 import statistics
 
-from pipeline.eficiencia import base, derivados as DV, entes, padroniza as P, referencias_externas as RE
+from pipeline.eficiencia import base, derivados as DV, entes, padroniza as P, referencia_nacional as RN, referencias_externas as RE
 
 TOL_REAIS = 1.0
 
@@ -511,7 +511,7 @@ def v16_msc_dca(obs):
 
 def v17_despesa_por_matricula(obs):
     """Identidades da despesa por matrícula: numerador = balde da ponte, denominador = matrículas totais da rede municipal, sem conveniadas."""
-    razoes = [o for o in obs if o["indicador"] == "edu.despesa.por_matricula_rede_propria"]
+    razoes = [o for o in obs if o["indicador"] == "edu.despesa.aplicacao_direta_por_matricula"]
     pontes = {(o["ente"], o["ano"], o["componente"]): o for o in obs if o["indicador"] == "edu.despesa.ponte_matricula"}
     mat = _indice(obs, "edu.matriculas.rede_municipal", etapa="total")
     desp = {(o["ente"], o["ano"], o["componente"]): o for o in obs if o["indicador"] == "edu.despesa.funcao_educacao"}
@@ -523,7 +523,7 @@ def v17_despesa_por_matricula(obs):
             continue
         k = (o["ente"], o["ano"])
         m = mat[k]
-        num_nominal = pontes[(o["ente"], o["ano"], "rede_propria")]["valor"]
+        num_nominal = round(sum(pontes[(o["ente"], o["ano"], b)]["valor"] for b in DV.NUMERADOR), 2)
         fator = o.get("fator_ipca", 1.0)
         if m["status"] != "OBSERVADO" or o["calculo"]["denominador"] != m["valor"]:
             ruins.append({"ente": o["ente"], "ano": o["ano"], "motivo": "denominador diferente das matrículas totais da rede municipal"})
@@ -538,13 +538,13 @@ def v17_despesa_por_matricula(obs):
         if o["elegivel_comparacao"] and not desp[(o["ente"], o["ano"], "nominal")]["elegivel_comparacao"]:
             ruins.append({"ente": o["ente"], "ano": o["ano"], "motivo": "elegibilidade não herdada da despesa"})
     obs_n = sum(1 for o in razoes if o["status"] == "OBSERVADO" and o["componente"] == "nominal")
-    return _v("V17", "Despesa por matrícula: numerador = aplicação direta na rede própria da ponte; denominador = matrículas totais da rede municipal, sem conveniadas; ponte soma à DCA",
+    return _v("V17", "Despesa de aplicação direta por matrícula: numerador = aplicação direta (beneficiário indeterminado + demais elementos) da ponte; denominador = matrículas totais da rede municipal, sem conveniadas; ponte soma à DCA",
               "automatica", "reprovada" if ruins else "aprovada",
               f"{obs_n} valores nominais observados; cada um reproduzido a partir da ponte e das matrículas publicadas.", ruins[:20])
 
 
 def m03_composicao_ponte(obs):
-    """Medição: o que fica fora do numerador por matrícula, por balde, em 2025."""
+    """Medição: o que entra e o que fica fora do numerador por matrícula, por balde, em 2025, e a parcela de beneficiário indeterminado."""
     pontes = {}
     for o in obs:
         if o["indicador"] == "edu.despesa.ponte_matricula" and o["ano"] == 2025 and o["elegivel_comparacao"]:
@@ -558,9 +558,10 @@ def m03_composicao_ponte(obs):
     def faixa(k):
         v = [l[k] for l in linhas]
         return f"{br(min(v))}% a {br(max(v))}% (mediana de {br(statistics.median(v))}%)"
-    detalhe = (f"Em 2025, como parcela do total declarado na DCA, entre as {len(linhas)} capitais com ponte reconciliada: aplicação direta na rede própria {faixa('rede_propria')}; "
-               f"transferências a instituições privadas {faixa('transf_privadas')}; inativos {faixa('inativos')}; ensino superior {faixa('ensino_superior')}; "
-               f"outras modalidades {faixa('transf_outras')}.") if linhas else "Sem pontes reconciliadas em 2025."
+    detalhe = (f"Em 2025, como parcela do total declarado na DCA, entre as {len(linhas)} capitais com ponte reconciliada: aplicação direta com demais elementos {faixa('ad_demais_elementos')}; "
+               f"aplicação direta com beneficiário indeterminado {faixa('ad_beneficiario_indeterminado')}; transferências a instituições privadas {faixa('transf_privadas')}; "
+               f"inativos {faixa('inativos')}; ensino superior {faixa('ensino_superior')}; transferências e delegações a outros entes {faixa('transf_outros_entes')}; "
+               f"parceria público-privada {faixa('ppp')}; recursos recebidos por delegação {faixa('delegacao_recebida')}. A parcela de beneficiário indeterminado é medida, sem limite de aceitabilidade.") if linhas else "Sem pontes reconciliadas em 2025."
     return _v("M03", "Medição: composição do total da função Educação pela MSC (o que entra e o que fica fora do numerador por matrícula)",
               "medicao", "medicao", detalhe, linhas)
 
@@ -584,18 +585,28 @@ def v18_referencias_externas(obs):
     for chave, (n, media, pub, dif) in sorted(RE.paridade_ocde().items()):
         casos.append({"conjunto": chave[0], "nivel": chave[1], "instituicoes": chave[2], "ano": chave[3], "membros_da_ocde_com_dado": n,
                       "media_simples_reproduzida": round(media, 6), "media_publicada": round(pub, 6), "diferenca": round(dif, 6)})
-        if abs(dif) > 0.01 * max(1.0, abs(pub)):
-            ruins.append({"conjunto": chave[0], "nivel": chave[1], "ano": chave[3], "problema": f"média da OCDE publicada difere da média simples dos membros em {dif:.4f}"})
+        if abs(dif) > 1e-6 * max(1.0, abs(pub)):
+            ruins.append({"conjunto": chave[0], "nivel": chave[1], "ano": chave[3], "problema": f"média da OCDE publicada difere da média simples dos membros em {dif:.6f}"})
+    if len(RE.MEMBROS_OCDE) != 38 or len(set(RE.MEMBROS_OCDE)) != 38 or "BRA" in RE.MEMBROS_OCDE:
+        ruins.append({"problema": "composição da OCDE: esperados 38 membros distintos, sem o Brasil"})
+    for g in intl:
+        if any(p["membro"] and p["codigo"] not in RE.MEMBROS_OCDE for p in g["paises"]):
+            ruins.append({"conjunto": g["conjunto"], "problema": "país marcado como membro fora da lista oficial"})
     mat = RE.matriz()
     if {m["tipo"] for m in mat} - {"nacional_mesmo_universo", "nacional_outro_universo", "internacional_contexto", "incompativel"}:
         ruins.append({"problema": "tipo desconhecido na matriz de referências"})
+    for m in mat:
+        if m["origem"] not in ("oficial_publicado", "calculado_obee") or m["comparabilidade"] not in ("direta", "contexto", "incompativel"):
+            ruins.append({"referencia": m["id"], "problema": "origem ou comparabilidade inválida"})
+        if m["tipo"] == "incompativel" and m["comparabilidade"] != "incompativel":
+            ruins.append({"referencia": m["id"], "problema": "tipo incompatível com comparabilidade diferente de incompatível"})
     ids = [m["id"] for m in mat]
     if len(ids) != len(set(ids)):
         ruins.append({"problema": "identificadores duplicados na matriz de referências"})
     for g in intl:
         if g["brasil"] is None:
             ruins.append({"conjunto": g["conjunto"], "nivel": g["nivel"], "problema": "sem valor do Brasil"})
-    return _v("V18", "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos membros com dado; classes declaradas",
+    return _v("V18", "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos 38 membros com dado; origem e comparabilidade declaradas",
               "automatica", "reprovada" if ruins else "aprovada",
               f"{len(refs)} referências nacionais (INEP) em {len({r['indicador'] for r in refs})} indicadores; {len(intl)} conjuntos de contexto internacional; "
               f"{len(mat)} candidatas na matriz, {sum(1 for m in mat if m['tipo'] == 'incompativel')} rejeitadas.", casos + ruins[:20])
@@ -628,6 +639,49 @@ def m04_siope_examinado(obs):
     return _v("M04", "Medição: investimento por aluno do SIOPE × despesa da DCA e matrículas do Censo (fonte examinada, não adotada)", "medicao", "medicao", detalhe, casos)
 
 
+def v19_referencia_nacional(obs):
+    """Referência nacional calculada pelo OBEE: contas fecham, mesmos municípios no numerador e no denominador, capitais reproduzem o indicador."""
+    ref = RN.referencia(2025)
+    linhas = RN.linhas_municipios(2025)
+    if ref is None or linhas is None:
+        return _v("V19", "Referência nacional da despesa por habitante, calculada pelo OBEE", "medicao", "medicao",
+                  "Coleta nacional do Siconfi não presente no seed: nenhuma referência nacional é publicada.", [])
+    ruins, casos = [], []
+    el = [r for r in linhas if r["estado"] == "ELEGIVEL"]
+    ex = sum(e["n"] for e in ref["exclusoes"].values())
+    if len(el) != ref["n_elegiveis"] or len(el) + ex != ref["n_municipios_total"] or len(linhas) != ref["n_municipios_total"]:
+        ruins.append({"problema": f"municípios não fecham: {len(el)} elegíveis + {ex} excluídos ≠ {ref['n_municipios_total']}"})
+    g = next((x for x in ref["grupos"] if x["id"] == "elegiveis"), None)
+    if g is None:
+        ruins.append({"problema": "grupo de municípios elegíveis ausente"})
+    else:
+        desp = sum(r["dca_funcao12_liquidada"] for r in el)
+        pop = sum(r["populacao"] for r in el)
+        if abs(g["razao_agregada"] - desp / pop) > 1e-6 or g["n_municipios"] != len(el) or g["populacao_dos_municipios"] != pop:
+            ruins.append({"problema": "razão agregada não é a soma das despesas ÷ soma das populações dos mesmos municípios elegíveis"})
+        casos.append({"grupo": "elegiveis", "municipios": len(el), "populacao": pop, "razao_agregada": round(g["razao_agregada"], 4), "mediana": round(g["mediana"], 4)})
+    hab = {o["ente"]: o for o in obs if o["indicador"] == "edu.despesa.por_habitante" and o["ano"] == 2025 and o["componente"] == "nominal" and o["status"] == "OBSERVADO"}
+    pop25 = {o["ente"]: o["valor"] for o in obs if o["indicador"] == "ctx.populacao.residente" and o["ano"] == 2025 and o["status"] == "OBSERVADO"}
+    for r in linhas:
+        if not r["capital"]:
+            continue
+        if r["populacao"] != pop25.get(r["cod"]):
+            ruins.append({"capital": r["nome"], "problema": "população das capitais difere entre a referência nacional e o indicador"})
+        if r["estado"] == "ELEGIVEL" and r["cod"] in hab and abs(r["razao"] - hab[r["cod"]]["valor"]) > 1e-6:
+            ruins.append({"capital": r["nome"], "problema": "razão da capital na referência nacional difere do indicador das capitais"})
+    if ref["rotulo_origem"] != RN.ROTULO_ORIGEM:
+        ruins.append({"problema": "rótulo de origem alterado"})
+    for k in ("municipios_pct", "populacao_pct", "despesa_pct"):
+        if ref["cobertura"][k] is None or not 0 <= ref["cobertura"][k] <= 100:
+            ruins.append({"problema": f"cobertura {k} fora de 0 a 100"})
+    c = ref["cobertura"]
+    return _v("V19", "Referência nacional da despesa por habitante, calculada pelo OBEE: contas fecham, mesmos municípios nos dois lados, capitais reproduzem o indicador",
+              "automatica", "reprovada" if ruins else "aprovada",
+              f"{ref['n_elegiveis']} de {ref['n_municipios_total']} municípios elegíveis em {ref['ano']} ({str(c['municipios_pct']).replace('.', ',')}% dos municípios, "
+              f"{str(c['populacao_pct']).replace('.', ',')}% da população e {str(c['despesa_pct']).replace('.', ',')}% da despesa declarada); "
+              f"{len(ref['capitais_elegiveis'])} das 26 capitais entram e reproduzem o indicador das capitais.", casos + ruins[:20])
+
+
 def todas(obs):
     return [
         v01_entes(), v02_integridade(), v03_identidades_dca(), v04_dca_rreo(obs), v05_particao_censo(),
@@ -635,5 +689,5 @@ def todas(obs):
         v10_faixas(obs), v11_ideb_reproduz(obs), v12_aprovacao_ideb_rendimento(), v13_elegibilidade(obs),
         m01_perimetro_despesa_matricula(obs), m02_registros_sem_contagem(),
         v14_populacao(obs), v15_despesa_por_habitante(obs), v16_msc_dca(obs), v17_despesa_por_matricula(obs),
-        m03_composicao_ponte(obs), v18_referencias_externas(obs), m04_siope_examinado(obs),
+        m03_composicao_ponte(obs), v18_referencias_externas(obs), m04_siope_examinado(obs), v19_referencia_nacional(obs),
     ]
