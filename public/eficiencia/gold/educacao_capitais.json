@@ -4,10 +4,10 @@
   "painel": "educacao-municipal-capitais",
   "versao_pipeline": "obee-0.2.0",
   "versao_catalogo": "2026-10-08.2",
-  "versao_codigo": "bbe2c10acc4c",
-  "gerado_em": "2026-10-08T12:45:11Z",
+  "versao_codigo": "bb6d6954c74c",
+  "gerado_em": "2026-10-08T12:53:36Z",
   "dados_capturados_ate": "2026-10-08T12:28:29Z",
-  "hash_dados": "5db55c26dd5e51b4e6e512ce896fbe238992827669d9642495361cd6001ea3f2",
+  "hash_dados": "cac3a990f3f83fbe20d093661c39a158d96b1396b1fb1be1539f47dbbbcd469b",
   "observacoes": 6667
  },
  "painel": {
@@ -2790,7 +2790,7 @@
    "titulo": "Conferência da despesa: DCA × RREO do 6º bimestre e, na diferença material, MSC de dezembro",
    "tipo": "automatica",
    "resultado": "aprovada_com_divergencias_documentadas",
-   "detalhe": "130 declarações; confere com o rreo: 125; diferença com o rreo abaixo de 0,1%: 3; perímetro distinto: inclui despesas intraorçamentárias: 1; diferença com o rreo; dca confirmada pela msc: 1. Política 1.1: tolerância de R$ 1,00 para arredondamento e de 0,1% da DCA para diferenças menores; acima disso, só a MSC reconcilia. Pendentes, não conferidas e de perímetro distinto ficam disponíveis para consulta e fora das comparações.",
+   "detalhe": "130 declarações; Confere com o RREO (125); Diferença com o RREO abaixo de 0,1% (3); Perímetro distinto: inclui despesas intraorçamentárias (1); Diferença com o RREO, DCA confirmada pela MSC (1). Política 1.1: tolerância de R$ 1,00 para arredondamento e de 0,1% da DCA para diferenças menores; acima disso, só a MSC reconcilia. Pendentes, não conferidas e de perímetro distinto ficam disponíveis para consulta e fora das comparações.",
    "casos": [
     {
      "ente": 1400100,
@@ -2798,7 +2798,7 @@
      "ano": 2024,
      "dca": 658077936.34,
      "situacao": "RECONCILIADA_MSC",
-     "rotulo": "Diferença com o RREO; DCA confirmada pela MSC",
+     "rotulo": "Diferença com o RREO, DCA confirmada pela MSC",
      "elegivel": true,
      "rreo": {
       "exceto_intra": 122547917.75,
@@ -4368,7 +4368,7 @@
   "rotulos": {
    "CONFERE": "Confere com o RREO",
    "DIFERENCA_MENOR": "Diferença com o RREO abaixo de 0,1%",
-   "RECONCILIADA_MSC": "Diferença com o RREO; DCA confirmada pela MSC",
+   "RECONCILIADA_MSC": "Diferença com o RREO, DCA confirmada pela MSC",
    "PERIMETRO_INTRA_MSC": "Perímetro distinto: inclui despesas intraorçamentárias",
    "PENDENTE": "Conferência pendente: diferença material sem explicação",
    "NAO_CONFERIDO": "Não conferido: RREO indisponível"
@@ -20549,7 +20549,7 @@
      "rreo": "5d97fd47432823a8dea8ecdec5edbd7fa3cad2d2d17d72c3d09343984a59cf69",
      "msc": "fa2c6a7d35bd32e22294669db26143b1f58504eb53a7a0f8fda52e1adfdb86fb"
     },
-    "rotulo": "Diferença com o RREO; DCA confirmada pela MSC"
+    "rotulo": "Diferença com o RREO, DCA confirmada pela MSC"
    }
   },
   {
@@ -20594,7 +20594,7 @@
      "rreo": "5d97fd47432823a8dea8ecdec5edbd7fa3cad2d2d17d72c3d09343984a59cf69",
      "msc": "fa2c6a7d35bd32e22294669db26143b1f58504eb53a7a0f8fda52e1adfdb86fb"
     },
-    "rotulo": "Diferença com o RREO; DCA confirmada pela MSC"
+    "rotulo": "Diferença com o RREO, DCA confirmada pela MSC"
    }
   },
   {
