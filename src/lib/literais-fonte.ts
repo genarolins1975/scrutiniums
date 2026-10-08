@@ -74,7 +74,7 @@ export const LITERAIS = {
   },
   "data-fim-fora-da-cronologia": {
     papel: "valor",
-    fonteCurta: "ANEEL, qualidade",
+    fonteCurta: "dados abertos da ANEEL",
     descricao:
       "Data de fim de um evento no arquivo da ANEEL. É uma data válida no calendário, mas posterior à data de geração do arquivo; a frase em que aparece registra essa incompatibilidade. O original é preservado.",
     padrao: /^\d{4}-\d{2}-\d{2}$/,
@@ -84,7 +84,7 @@ export const LITERAIS = {
   },
   "ato-retificacao-sem-numero": {
     papel: "identificador",
-    fonteCurta: "ANEEL, tarifas",
+    fonteCurta: "dados abertos da ANEEL",
     descricao:
       "Código do ato quando o despacho de retificação não tem número: a espécie (DSP-RET) e a data de publicação, compostos pelo pipeline como chave do ato. Preservado porque é a chave usada nos arquivos analíticos.",
     padrao: /^[A-Z]{2,4}-[A-Z]{2,4} \d{4}-\d{2}-\d{2}$/,
