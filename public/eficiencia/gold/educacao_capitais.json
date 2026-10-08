@@ -4,8 +4,8 @@
   "painel": "educacao-municipal-capitais",
   "versao_pipeline": "obee-0.2.0",
   "versao_catalogo": "2026-10-08.2",
-  "versao_codigo": "1cd3aa6c1c84",
-  "gerado_em": "2026-10-08T12:41:21Z",
+  "versao_codigo": "7ab899418bb3",
+  "gerado_em": "2026-10-08T12:41:49Z",
   "dados_capturados_ate": "2026-10-08T12:28:29Z",
   "hash_dados": "dffe2381a22799e82e7528be742a2eb70bd5452d05ebee53cefab2c7bd60a551",
   "observacoes": 6667
@@ -2934,7 +2934,7 @@
   },
   {
    "id": "V06",
-   "titulo": "Conferência independente: somas dos microdados × Sinopse Estatística do INEP",
+   "titulo": "Conferência cruzada no próprio INEP: somas dos microdados × Sinopse Estatística",
    "tipo": "automatica",
    "resultado": "aprovada",
    "detalhe": "416 comparações (rede municipal: total, creche e pré-escola; escolas privadas conveniadas com o município em 2025), edições 2021, 2022, 2023, 2024, 2025 da Sinopse; 0 diferenças.",
@@ -3695,7 +3695,7 @@
   },
   {
    "id": "inep_sinopse",
-   "papel": "Somente conferência independente das somas dos microdados.",
+   "papel": "Conferência cruzada das somas dos microdados com outra publicação do próprio INEP (não é verificação externa) e confirmação dos grupos com escolas sem contagem.",
    "capturas": [
     {
      "chave": "inep_sinopse_2021",
