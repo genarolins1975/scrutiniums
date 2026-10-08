@@ -14,7 +14,7 @@ import statistics
 import tempfile
 import unittest
 
-from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes, gold, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes, gold, padroniza as P, referencia_nacional as RN, referencias as R, referencias_externas as RE, validacoes as V
 
 
 def linha(nd, valor, sub="361", conta="622130300", nat="C"):
@@ -539,6 +539,86 @@ class TestComparacoesPublicadas(unittest.TestCase):
         for l, o in zip(linhas, obs):
             self.assertEqual(l["valor"], "" if o["valor"] is None else repr(o["valor"]))
             self.assertEqual(l["denominador"], "" if not o.get("calculo") else repr(o["calculo"]["denominador"]))
+
+
+class TestReferenciaNacional(unittest.TestCase):
+    """Cálculo da referência nacional com municípios sintéticos: mesmo conceito das capitais, nada imputado."""
+
+    @staticmethod
+    def reg(cod, dca, rreo, linhas=1, f12=1):
+        return {"cod": cod, "dca": {"linhas": 10, "funcao12": dca, "linhas_funcao12": f12, "total_exceto_intra": dca},
+                "rreo": {"linhas": linhas, "exceto_intra": rreo, "intra": 0.0, "tipo_demonstrativo": "RREO"}}
+
+    def test_classificacao_por_motivo(self):
+        c = RN.classifica_municipio
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0), 100)[0], "ELEGIVEL")
+        self.assertEqual(c(self.reg(1, 1000.0, 999.5), 100)[0], "ELEGIVEL")                 # até R$ 1,00
+        self.assertEqual(c(self.reg(1, 1000000.0, 999500.0), 100)[0], "ELEGIVEL")            # até 0,1% da DCA
+        self.assertEqual(c(self.reg(1, 1000000.0, 900000.0), 100)[0], "DIFERENCA_MATERIAL_COM_RREO")
+        self.assertEqual(c(self.reg(1, 1000.0, None, linhas=0), 100)[0], "RREO_AUSENTE")
+        self.assertEqual(c({"cod": 1, "dca": {"linhas": 0}, "rreo": {}}, 100)[0], "DCA_AUSENTE")
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0, f12=2), 100)[0], "SEM_LINHA_EDUCACAO")
+        self.assertEqual(c(self.reg(1, -5.0, -5.0), 100)[0], "DESPESA_NAO_POSITIVA")
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0), None)[0], "POPULACAO_AUSENTE")
+        self.assertEqual(c({"cod": 1, "dca": {"erro": "x"}, "rreo": {}}, 100)[0], "ERRO_COLETA")
+
+    def test_razao_agregada_usa_os_mesmos_municipios_dos_dois_lados(self):
+        mun = [{"cod_ibge": i, "ente": f"M{i}", "uf": "XX"} for i in (1, 2, 3, 4)]
+        regs = [self.reg(1, 1000.0, 1000.0), self.reg(2, 3000.0, 3000.0), self.reg(3, 5000.0, 5000.0), self.reg(4, 9999.0, 1.0)]
+        pop = {1: 10, 2: 20, 3: 100, 4: 1_000_000}                      # o município 4 diverge do RREO: fica fora dos dois lados
+        r = RN.calcula(2025, regs, pop, mun, capitais={1})
+        g = next(x for x in r["grupos"] if x["id"] == "elegiveis")
+        self.assertEqual(g["n_municipios"], 3)
+        self.assertAlmostEqual(g["razao_agregada"], (1000 + 3000 + 5000) / (10 + 20 + 100), places=9)
+        self.assertEqual(g["populacao_dos_municipios"], 130)
+        self.assertAlmostEqual(g["mediana"], 100.0)                       # razões 100, 150, 50
+        self.assertNotAlmostEqual(g["razao_agregada"], g["media"], places=3)
+        self.assertEqual(r["exclusoes"]["DIFERENCA_MATERIAL_COM_RREO"]["n"], 1)
+        self.assertEqual(r["n_elegiveis"], 3)
+        self.assertAlmostEqual(r["cobertura"]["municipios_pct"], 75.0)
+        sem_cap = next(x for x in r["grupos"] if x["id"] == "elegiveis_exceto_capitais")
+        self.assertEqual(sem_cap["n_municipios"], 2)
+        self.assertEqual(r["rotulo_origem"], "Cálculo do OBEE com dados do Siconfi/STN e do IBGE")
+
+    def test_municipio_sem_registro_nao_e_imputado(self):
+        mun = [{"cod_ibge": i, "ente": f"M{i}", "uf": "XX"} for i in (1, 2)]
+        r = RN.calcula(2025, [self.reg(1, 1000.0, 1000.0)], {1: 10, 2: 10}, mun, capitais=set())
+        self.assertEqual(r["exclusoes"]["DCA_AUSENTE"]["n"], 1)
+        self.assertEqual(r["n_elegiveis"], 1)
+
+
+class TestReferenciaNacionalPublicada(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(base.RAIZ, "public", "eficiencia", "gold", "educacao_capitais.json"), encoding="utf-8") as f:
+            cls.g = json.load(f)
+
+    def test_referencia_publicada_e_completa(self):
+        refs = self.g["referencia_nacional_calculada"]
+        self.assertEqual([r["ano"] for r in refs], [2025])
+        r = refs[0]
+        self.assertEqual(r["n_municipios_total"], 5570)
+        self.assertEqual(r["rotulo_origem"], "Cálculo do OBEE com dados do Siconfi/STN e do IBGE")
+        self.assertEqual(sum(v["n"] for v in r["exclusoes"].values()) + r["n_elegiveis"], 5570)
+        self.assertEqual(len(r["capitais_elegiveis"]), 26)
+        g = next(x for x in r["grupos"] if x["id"] == "elegiveis")
+        self.assertEqual(g["n_municipios"], r["n_elegiveis"])
+        for k in ("municipios_pct", "populacao_pct", "despesa_pct"):
+            self.assertTrue(0 < r["cobertura"][k] <= 100)
+
+    def test_capitais_reproduzem_o_indicador(self):
+        r = self.g["referencia_nacional_calculada"][0]
+        hab = {o["ente"]: o["valor"] for o in self.g["observacoes"]
+               if o["indicador"] == "edu.despesa.por_habitante" and o["ano"] == 2025 and o["componente"] == "nominal"}
+        linhas = {l["cod"]: l for l in RN.linhas_municipios(2025)}
+        for cod in r["capitais_elegiveis"]:
+            self.assertAlmostEqual(linhas[cod]["razao"], hab[cod], places=6, msg=cod)
+
+    def test_a_matriz_marca_a_origem_calculada(self):
+        m = next(x for x in self.g["matriz_referencias"] if x["id"] == "obee.despesa_habitante_nacional")
+        self.assertEqual((m["origem"], m["comparabilidade"]), ("calculado_obee", "direta"))
+        self.assertTrue(all(x["origem"] in ("oficial_publicado", "calculado_obee") and x["comparabilidade"] in ("direta", "contexto", "incompativel")
+                            for x in self.g["matriz_referencias"]))
 
 
 if __name__ == "__main__":

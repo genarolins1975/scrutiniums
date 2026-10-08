@@ -25,7 +25,7 @@ MOTIVOS = {
     "DCA_AUSENTE": "DCA do exercício não encontrada no Siconfi",
     "SEM_LINHA_EDUCACAO": "DCA sem a linha da função Educação (ou com mais de uma)",
     "DESPESA_NAO_POSITIVA": "despesa liquidada na função Educação nula ou negativa",
-    "RREO_AUSENTE": "RREO do 6º bimestre sem a linha da Educação: DCA não conferida",
+    "RREO_AUSENTE": "RREO (ou RREO Simplificado) do 6º bimestre sem a linha da Educação: DCA não conferida",
     "DIFERENCA_MATERIAL_COM_RREO": "DCA diverge do RREO acima de 0,1% e de R$ 1,00 (sem reconciliação pela MSC em escala)",
     "POPULACAO_AUSENTE": "população estimada do IBGE ausente ou nula",
 }

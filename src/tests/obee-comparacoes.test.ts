@@ -6,11 +6,14 @@ import {
   CABECALHO_CSV_TABELA_COMPARATIVA,
   COLUNAS,
   Indice,
+  classeDaReferencia,
   comparar,
   diferenca,
+  diferencaNacionalCalculada,
   internacionaisDa,
   linhasCsvComparacao,
   linhasCsvTabelaComparativa,
+  nacionalCalculada,
   ordenaTabela,
   ponteMatricula,
   referenciasExternas,
@@ -262,5 +265,34 @@ describe("referências externas", () => {
     const comp = comparar(ix, "atu", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
     expect(comp.incluidas.length).toBeLessThanOrEqual(26);
     expect(variacao).toBeDefined();
+  });
+});
+
+describe("referência nacional calculada pelo OBEE", () => {
+  it("existe só para a despesa por habitante, com origem declarada e cobertura", () => {
+    const r = nacionalCalculada(d, "despesa_hab", 2025)!;
+    expect(r).not.toBeNull();
+    expect(r.rotulo_origem).toBe("Cálculo do OBEE com dados do Siconfi/STN e do IBGE");
+    expect(r.n_elegiveis + Object.values(r.exclusoes).reduce((a, x) => a + x.n, 0)).toBe(r.n_municipios_total);
+    expect(r.capitais_elegiveis).toHaveLength(26);
+    for (const m of ["despesa", "despesa_mat", "matriculas", "atu", "ideb"] as const) expect(nacionalCalculada(d, m, 2025)).toBeNull();
+    expect(nacionalCalculada(d, "despesa_hab", 2024)).toBeNull();
+  });
+
+  it("a diferença com a capital é descritiva e usa os mesmos municípios elegíveis", () => {
+    const r = nacionalCalculada(d, "despesa_hab", 2025)!;
+    const g = r.grupos.find((x) => x.id === "elegiveis")!;
+    const dif = diferencaNacionalCalculada(g.mediana! + 100, g);
+    expect(dif.mediana).toMatch(/R\$ 100 acima da mediana dos municípios elegíveis/);
+    expect(dif.agregada).toMatch(/razão agregada dos municípios elegíveis/);
+    expect(`${dif.mediana} ${dif.agregada}`).not.toMatch(/melhor|pior|eficien|desperd/i);
+  });
+
+  it("as classes de referência combinam origem e comparabilidade", () => {
+    expect(classeDaReferencia("oficial_publicado", "direta")).toBe("Oficial publicado");
+    expect(classeDaReferencia("calculado_obee", "direta")).toBe("Calculado pelo OBEE com fontes oficiais");
+    expect(classeDaReferencia("oficial_publicado", "contexto")).toBe("Contextual");
+    expect(classeDaReferencia("oficial_publicado", "incompativel")).toMatch(/Incompatível/);
+    for (const e of referenciasExternas(d, "atu", 2025, "anos_iniciais", "nominal")) expect(e.origem).toBe("oficial_publicado");
   });
 });

@@ -37,8 +37,14 @@ def _dca(cod, ano):
 
 
 def _rreo(cod, ano):
-    urls, itens = S._todas_paginas("rreo", {"an_exercicio": ano, "nr_periodo": 6, "co_tipo_demonstrativo": "RREO",
-                                            "no_anexo": "RREO-Anexo 02", "co_esfera": "M", "id_ente": cod})
+    """RREO do 6º bimestre, Anexo 02. Municípios que optam pela publicação semestral (LRF, art. 63) entregam o "RREO Simplificado":
+    a consulta ao demonstrativo "RREO" volta vazia para eles, e o mesmo anexo é lido no demonstrativo simplificado, no período 6.
+    O tipo de demonstrativo de onde saiu o valor fica registrado."""
+    for tipo in ("RREO", "RREO Simplificado"):
+        urls, itens = S._todas_paginas("rreo", {"an_exercicio": ano, "nr_periodo": 6, "co_tipo_demonstrativo": tipo,
+                                                "no_anexo": "RREO-Anexo 02", "co_esfera": "M", "id_ente": cod})
+        if itens:
+            break
     exc = intra = None
     for x in itens:
         if x.get("conta") == "Educação" and str(x.get("coluna", "")).startswith("DESPESAS LIQUIDADAS ATÉ O BIMESTRE"):
@@ -46,7 +52,8 @@ def _rreo(cod, ano):
                 exc = float(x["valor"])
             else:
                 intra = float(x["valor"])
-    return {"linhas": len(itens), "exceto_intra": exc, "intra": intra, "sha256": _sha_itens(itens) if itens else None}
+    return {"linhas": len(itens), "tipo_demonstrativo": tipo if itens else None, "exceto_intra": exc, "intra": intra,
+            "sha256": _sha_itens(itens) if itens else None}
 
 
 def _um(cod, ano):
@@ -57,6 +64,56 @@ def _um(cod, ano):
         except Exception as e:  # erro de rede ou resposta inesperada: registra, não imputa
             out[nome] = {"erro": str(e)[:200]}
     return out
+
+
+def _registra(ano, capturado_em, n_municipios, sha, linhas, erros, simplificado=None):
+    destino = os.path.join(PASTA, f"{ano}.json.gz")
+    base.registra_captura(f"siconfi_nacional_educacao_{ano}", {
+        "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+        "conjunto": f"DCA Anexo I-E e RREO 6º bimestre Anexo 02 (RREO ou, para quem publica por semestre, RREO Simplificado) de todos os municípios, exercício {ano}: despesa liquidada na função Educação",
+        "pagina": S.DOC,
+        "url": f"{S.API}/dca?an_exercicio={ano}&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>; {S.API}/rreo?an_exercicio={ano}&nr_periodo=6&co_tipo_demonstrativo=RREO[ ou RREO%20Simplificado]&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
+        "capturado_em": capturado_em,
+        "parametros": f"{n_municipios} municípios (esfera M da lista de entes); só os campos usados na conferência; sha256 da resposta completa de cada ente"
+                      + (f"; {simplificado} municípios com o RREO lido no demonstrativo simplificado" if simplificado is not None else ""),
+        "recorte": os.path.relpath(destino, base.RAIZ), "sha256_recorte": sha, "linhas_recorte": linhas, "municipios_com_erro_de_coleta": erros,
+    })
+
+
+def recoleta_rreo_vazio(ano, log=print):
+    """Refaz só o RREO dos municípios cuja resposta voltou sem linhas (defeito da primeira coleta, que não consultava o RREO
+    Simplificado). Atualiza o seed e o parcial; a DCA não é tocada."""
+    destino = os.path.join(PASTA, f"{ano}.json.gz")
+    registros = base.le_json_gz(destino)
+    alvo = [r for r in registros if not r["rreo"].get("linhas") and "erro" not in r["rreo"]]
+    log(f"{len(alvo)} municípios com RREO vazio a consultar no demonstrativo simplificado")
+    trava, n = threading.Lock(), 0
+
+    def um(r):
+        try:
+            return r["cod"], _rreo(r["cod"], ano)
+        except Exception as e:
+            return r["cod"], {"erro": str(e)[:200]}
+
+    novos = {}
+    with cf.ThreadPoolExecutor(max_workers=CONEXOES) as ex:
+        for cod, rreo in ex.map(um, [r for r in alvo]):
+            novos[cod] = rreo
+            with trava:
+                n += 1
+                if n % 250 == 0:
+                    log(f"  {n}/{len(alvo)}")
+    for r in registros:
+        if r["cod"] in novos and "erro" not in novos[r["cod"]]:
+            r["rreo"] = novos[r["cod"]]
+        elif r["cod"] in novos:
+            r["rreo"] = novos[r["cod"]]
+    sha = base.grava_json_gz(destino, registros)
+    erros = sum(1 for r in registros if "erro" in r["dca"] or "erro" in r["rreo"])
+    simpl = sum(1 for r in registros if r["rreo"].get("tipo_demonstrativo") == "RREO Simplificado")
+    _registra(ano, base.agora_utc(), len(registros), sha, len(registros), erros, simpl)
+    log(f"{simpl} municípios com RREO Simplificado; {erros} com erro de coleta")
+    return sha, len(registros), erros, simpl
 
 
 def coleta(ano, limite=None, log=print):
@@ -90,11 +147,5 @@ def coleta(ano, limite=None, log=print):
     os.makedirs(PASTA, exist_ok=True)
     destino = os.path.join(PASTA, f"{ano}.json.gz")
     sha = base.grava_json_gz(destino, registros)
-    base.registra_captura(f"siconfi_nacional_educacao_{ano}", {
-        "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
-        "conjunto": f"DCA Anexo I-E e RREO 6º bimestre Anexo 02 de todos os municípios, exercício {ano}: despesa liquidada na função Educação",
-        "pagina": S.DOC, "url": f"{S.API}/dca?an_exercicio={ano}&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>; {S.API}/rreo?an_exercicio={ano}&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
-        "capturado_em": capturado_em, "parametros": f"{len(cods)} municípios (esfera M da lista de entes); só os campos usados na conferência; sha256 da resposta completa de cada ente",
-        "recorte": os.path.relpath(destino, base.RAIZ), "sha256_recorte": sha, "linhas_recorte": len(registros), "municipios_com_erro_de_coleta": erros,
-    })
+    _registra(ano, capturado_em, len(cods), sha, len(registros), erros)
     return len(registros), erros
