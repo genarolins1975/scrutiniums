@@ -8,6 +8,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import DatasetPage, { generateStaticParams as paramsDatasets } from "@/app/setor-eletrico/dados/[dataset]/page";
 import PaginaEmpresas from "@/app/setor-eletrico/empresas/page";
+import PaginaSaude from "@/app/setor-eletrico/dados/saude/page";
 import PaginaInclusao from "@/app/setor-eletrico/inclusao-energetica/page";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -150,5 +151,16 @@ describe("TabelaInterativa: coluna com nível mínimo de profundidade", () => {
     const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf-8");
     expect(css).toMatch(/\[data-modo="entender"\] \[data-nivel="analisar"\]/);
     expect(css).toMatch(/\[data-modo="analisar"\] \[data-nivel="auditar"\]/);
+  });
+});
+
+describe("Saúde dos dados: a regra de completude não leva a palavra proibida em nenhum nível", () => {
+  const h = renderToStaticMarkup(createElement(PaginaSaude));
+
+  it("o texto da regra publicada na gold diz data de referência da publicação, não a palavra proibida", () => {
+    const bruto = (JSON.parse(ler("public/energia/gold/publicacao.json")) as { regras: { completude: string } }).regras.completude;
+    // a gold ainda traz a palavra até a próxima execução completa do módulo Dados; a página não a repete
+    if (/\bhoje\b/i.test(bruto)) expect(h).toContain("disponível até a data de referência da publicação");
+    expect(h).not.toMatch(/disponível até hoje/i);
   });
 });

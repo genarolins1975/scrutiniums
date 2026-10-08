@@ -2005,7 +2005,7 @@ def construir(con, ctx):
                       "fica preservada no silver (append only) e no bronze com sha256."),
             "completude": ("Completude interna de uma série = referências distintas presentes ÷ esperadas entre a primeira e a "
                            "última, no passo modal do conjunto. Cobertura do último período = séries com valor no último período "
-                           "disponível até hoje (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano "
+                           "disponível até a data de referência da publicação (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano "
                            "seguinte, cenário ou programação, não conta) comparada com as séries no período anterior a ele."),
             "revisao": ("Revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo "
                         "(recurso); a mesma referência com valores diferentes em arquivos diferentes é conflito entre recursos, "

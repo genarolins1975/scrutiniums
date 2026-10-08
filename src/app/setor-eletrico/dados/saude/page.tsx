@@ -340,7 +340,7 @@ export default function DadosSaudePage() {
                 </div>
                 <div>
                   <dt className="rotulo text-mineral">Completude interna e cobertura do último período</dt>
-                  <dd className="mt-1 max-w-prose2 leading-relaxed text-carvao-muted">{datasLegiveis(pub.regras.completude)}</dd>
+                  <dd className="mt-1 max-w-prose2 leading-relaxed text-carvao-muted">{datasLegiveis(pub.regras.completude).replace("disponível até hoje", "disponível até a data de referência da publicação")}</dd>
                 </div>
                 <div>
                   <dt className="rotulo text-mineral">Captura atrás da fonte</dt>

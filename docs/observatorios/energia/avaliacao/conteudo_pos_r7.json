@@ -1,0 +1,1972 @@
+{
+ "referencia": "08/10/2026",
+ "build": "c7c522e0c",
+ "natureza": "Medição própria por instrumento, sem revisor. Não é rodada de avaliação: didatismo e qualidade visual não foram remedidos e nenhuma nota nova entra em avaliacao.json.",
+ "instrumentos": {
+  "aberturas": "scripts/energia-aberturas.mjs: palavras e números do texto visível de cada resposta curta (elementos com atributo data-resposta*) em Entender, 1440 px, 94 rotas",
+  "coleta_objetiva": "scripts/energia-avaliacao.mjs: 94 rotas, 360, 390, 768 e 1440 px em Entender e 390 e 1440 px em Auditar (564 medições), axe-core, rolagem horizontal, console, peso do HTML, anomalias de texto",
+  "jornadas": "scripts/energia-jornadas.mjs: dez jornadas em Chromium headless, com os roteiros de scripts/jornadas atualizados"
+ },
+ "aberturas": {
+  "linha_de_base": {
+   "build": "r7 (commit 750e5df31)",
+   "primeira_resposta": {
+    "paginas": 70,
+    "palavras_mediana": 73.0,
+    "palavras_maximo": 190,
+    "acima_de_60_palavras": 50,
+    "numeros_mediana": 14.5,
+    "numeros_maximo": 49,
+    "acima_de_8_numeros": 63
+   },
+   "todas_as_respostas": {
+    "respostas": 103,
+    "palavras_mediana": 71,
+    "palavras_maximo": 190,
+    "acima_de_60_palavras": 69,
+    "numeros_mediana": 14,
+    "numeros_maximo": 49,
+    "acima_de_8_numeros": 85
+   },
+   "por_rota": {
+    "/setor-eletrico/agua-e-clima": {
+     "palavras": 75,
+     "numeros": 19
+    },
+    "/setor-eletrico/agua-e-clima/afluencia": {
+     "palavras": 62,
+     "numeros": 19
+    },
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura": {
+     "palavras": 152,
+     "numeros": 31
+    },
+    "/setor-eletrico/agua-e-clima/reservatorios": {
+     "palavras": 181,
+     "numeros": 39
+    },
+    "/setor-eletrico/carga": {
+     "palavras": 54,
+     "numeros": 20
+    },
+    "/setor-eletrico/carga/clima-e-calendario": {
+     "palavras": 67,
+     "numeros": 15
+    },
+    "/setor-eletrico/carga/perfil-horario": {
+     "palavras": 73,
+     "numeros": 19
+    },
+    "/setor-eletrico/conta-de-luz": {
+     "palavras": 40,
+     "numeros": 10
+    },
+    "/setor-eletrico/conta-de-luz/reajustes-e-subsidios": {
+     "palavras": 46,
+     "numeros": 14
+    },
+    "/setor-eletrico/dados": {
+     "palavras": 92,
+     "numeros": 9
+    },
+    "/setor-eletrico/dados/reproducao": {
+     "palavras": 80,
+     "numeros": 11
+    },
+    "/setor-eletrico/dados/saude": {
+     "palavras": 109,
+     "numeros": 16
+    },
+    "/setor-eletrico/empresas": {
+     "palavras": 72,
+     "numeros": 15
+    },
+    "/setor-eletrico/empresas/ativos": {
+     "palavras": 72,
+     "numeros": 15
+    },
+    "/setor-eletrico/empresas/controle": {
+     "palavras": 81,
+     "numeros": 12
+    },
+    "/setor-eletrico/empresas/distribuidoras": {
+     "palavras": 63,
+     "numeros": 9
+    },
+    "/setor-eletrico/empresas/financas": {
+     "palavras": 58,
+     "numeros": 10
+    },
+    "/setor-eletrico/expansao": {
+     "palavras": 77,
+     "numeros": 17
+    },
+    "/setor-eletrico/expansao/carteira": {
+     "palavras": 71,
+     "numeros": 18
+    },
+    "/setor-eletrico/expansao/cenarios": {
+     "palavras": 103,
+     "numeros": 19
+    },
+    "/setor-eletrico/expansao/cronograma": {
+     "palavras": 93,
+     "numeros": 29
+    },
+    "/setor-eletrico/expansao/geracao-e-transmissao": {
+     "palavras": 129,
+     "numeros": 16
+    },
+    "/setor-eletrico/geracao": {
+     "palavras": 89,
+     "numeros": 16
+    },
+    "/setor-eletrico/geracao/capacidade": {
+     "palavras": 73,
+     "numeros": 13
+    },
+    "/setor-eletrico/geracao/restricoes": {
+     "palavras": 74,
+     "numeros": 15
+    },
+    "/setor-eletrico/geracao/termica": {
+     "palavras": 70,
+     "numeros": 11
+    },
+    "/setor-eletrico/inclusao-energetica": {
+     "palavras": 51,
+     "numeros": 9
+    },
+    "/setor-eletrico/inclusao-energetica/acesso": {
+     "palavras": 67,
+     "numeros": 12
+    },
+    "/setor-eletrico/inclusao-energetica/cobertura": {
+     "palavras": 49,
+     "numeros": 6
+    },
+    "/setor-eletrico/inclusao-energetica/orcamento": {
+     "palavras": 53,
+     "numeros": 9
+    },
+    "/setor-eletrico/inclusao-energetica/tarifa-social": {
+     "palavras": 51,
+     "numeros": 9
+    },
+    "/setor-eletrico/mercado": {
+     "palavras": 121,
+     "numeros": 13
+    },
+    "/setor-eletrico/mercado/agentes": {
+     "palavras": 137,
+     "numeros": 17
+    },
+    "/setor-eletrico/mercado/encargos": {
+     "palavras": 97,
+     "numeros": 13
+    },
+    "/setor-eletrico/mercado/mre-e-gsf": {
+     "palavras": 67,
+     "numeros": 9
+    },
+    "/setor-eletrico/metodologia": {
+     "palavras": 87,
+     "numeros": 6
+    },
+    "/setor-eletrico/perdas": {
+     "palavras": 57,
+     "numeros": 14
+    },
+    "/setor-eletrico/pld": {
+     "palavras": 113,
+     "numeros": 17
+    },
+    "/setor-eletrico/pld/cmo-e-formacao": {
+     "palavras": 111,
+     "numeros": 16
+    },
+    "/setor-eletrico/pld/diferencas-regionais": {
+     "palavras": 107,
+     "numeros": 23
+    },
+    "/setor-eletrico/pld/historico": {
+     "palavras": 83,
+     "numeros": 24
+    },
+    "/setor-eletrico/pld/limites": {
+     "palavras": 58,
+     "numeros": 13
+    },
+    "/setor-eletrico/pld/modelos": {
+     "palavras": 60,
+     "numeros": 8
+    },
+    "/setor-eletrico/pld/modelos/b0": {
+     "palavras": 68,
+     "numeros": 6
+    },
+    "/setor-eletrico/pld/modelos/c1": {
+     "palavras": 73,
+     "numeros": 4
+    },
+    "/setor-eletrico/pld/modelos/c2-h": {
+     "palavras": 76,
+     "numeros": 12
+    },
+    "/setor-eletrico/pld/modelos/c2-p": {
+     "palavras": 57,
+     "numeros": 9
+    },
+    "/setor-eletrico/pld/modelos/s0": {
+     "palavras": 41,
+     "numeros": 4
+    },
+    "/setor-eletrico/pld/previsoes": {
+     "palavras": 81,
+     "numeros": 18
+    },
+    "/setor-eletrico/qualidade": {
+     "palavras": 73,
+     "numeros": 15
+    },
+    "/setor-eletrico/rede": {
+     "palavras": 86,
+     "numeros": 16
+    },
+    "/setor-eletrico/rede/balanco-e-exterior": {
+     "palavras": 190,
+     "numeros": 49
+    },
+    "/setor-eletrico/rede/programado": {
+     "palavras": 84,
+     "numeros": 17
+    },
+    "/setor-eletrico/rede/restricoes": {
+     "palavras": 91,
+     "numeros": 21
+    },
+    "/setor-eletrico/regulacao": {
+     "palavras": 87,
+     "numeros": 27
+    },
+    "/setor-eletrico/regulacao/consultas-e-agenda": {
+     "palavras": 93,
+     "numeros": 19
+    },
+    "/setor-eletrico/regulacao/linha-do-tempo": {
+     "palavras": 102,
+     "numeros": 23
+    },
+    "/setor-eletrico/territorio": {
+     "palavras": 108,
+     "numeros": 15
+    },
+    "/setor-eletrico/transicao": {
+     "palavras": 89,
+     "numeros": 17
+    },
+    "/setor-eletrico/transicao/emissoes": {
+     "palavras": 70,
+     "numeros": 16
+    },
+    "/setor-eletrico/transicao/energia-estimada": {
+     "palavras": 61,
+     "numeros": 9
+    },
+    "/setor-eletrico/transicao/mmgd": {
+     "palavras": 89,
+     "numeros": 17
+    },
+    "/setor-eletrico/visao-geral": {
+     "palavras": 47,
+     "numeros": 8
+    },
+    "/setor-eletrico/empresas/ambar-amazonas": {
+     "palavras": 54,
+     "numeros": 14
+    },
+    "/setor-eletrico/empresas/cerbranorte": {
+     "palavras": 60,
+     "numeros": 13
+    },
+    "/setor-eletrico/empresas/certhil": {
+     "palavras": 81,
+     "numeros": 14
+    },
+    "/setor-eletrico/empresas/cpfl-piratining": {
+     "palavras": 53,
+     "numeros": 14
+    },
+    "/setor-eletrico/empresas/emt": {
+     "palavras": 53,
+     "numeros": 14
+    },
+    "/setor-eletrico/empresas/uhenpal": {
+     "palavras": 53,
+     "numeros": 14
+    },
+    "/setor-eletrico/empresas/cemig-d": {
+     "palavras": 53,
+     "numeros": 14
+    }
+   }
+  },
+  "depois": {
+   "build": "commit c7c522e0c",
+   "primeira_resposta": {
+    "paginas": 73,
+    "palavras_mediana": 36,
+    "palavras_maximo": 40,
+    "acima_de_60_palavras": 0,
+    "numeros_mediana": 5,
+    "numeros_maximo": 8,
+    "acima_de_8_numeros": 0
+   },
+   "todas_as_respostas": {
+    "respostas": 123,
+    "palavras_mediana": 35,
+    "palavras_maximo": 43,
+    "acima_de_60_palavras": 0,
+    "numeros_mediana": 4,
+    "numeros_maximo": 9,
+    "acima_de_8_numeros": 1
+   },
+   "respostas": [
+    {
+     "rota": "/setor-eletrico/agua-e-clima",
+     "id": "p017",
+     "palavras": 37,
+     "numeros": 6,
+     "texto": "Em 29/09/2026, o SIN guardava 61,5% da energia que os reservatórios comportam, dentro da faixa usual da data; em 30 dias, a energia armazenada caiu 7.888 MWmês. A faixa compara capacidades que mudaram ao longo dos anos."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/afluencia",
+     "id": "p018",
+     "palavras": 29,
+     "numeros": 5,
+     "texto": "Nos 30 dias até 29/09/2026, a água que chegou ao SIN (ENA) foi 172,3% da média de longo prazo (MLT) do período, acima da faixa usual da mesma janela."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+     "id": "p019",
+     "palavras": 31,
+     "numeros": 7,
+     "texto": "Nos 30 dias até 14/09/2026, a bacia do Paranaíba recebeu 70,2 mm de chuva (estimativa por satélite), 351,4% acima da média dos mesmos dias (15,6 mm). A janela tem dias preliminares."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+     "id": "p019-temperatura",
+     "palavras": 32,
+     "numeros": 7,
+     "texto": "Nos 30 dias até 27/09/2026, a temperatura média do SIN foi de 22,87 °C, 0,1 °C acima da média dos mesmos dias (22,78 °C). É estimativa de reanálise, não medida de estação."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+     "id": "p019-associacao",
+     "palavras": 34,
+     "numeros": 5,
+     "texto": "Na bacia do Paranaíba, de 2001 a 2025, a correlação entre a chuva do mês e a afluência do mesmo mês é de 0,25, numa escala de −1 a 1. É associação, não causa."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/reservatorios",
+     "id": "p020",
+     "palavras": 23,
+     "numeros": 8,
+     "texto": "De 29/08/2026 a 28/09/2026, a energia armazenada do Sudeste/Centro-Oeste caiu 3.188,7 MWmês; a maior queda foi a de Serra da Mesa (1.862,4 MWmês)."
+    },
+    {
+     "rota": "/setor-eletrico/agua-e-clima/reservatorios",
+     "id": "p020-balanco",
+     "palavras": 39,
+     "numeros": 6,
+     "texto": "Em Serra da Mesa, nos 30 dias até 29/09/2026, saiu mais água do que entrou e o volume caiu 2.309,6 hm³. O resíduo da conta da água, a diferença que sobra quando ela não fecha, é de −1,95 hm³."
+    },
+    {
+     "rota": "/setor-eletrico/carga",
+     "id": "p025",
+     "palavras": 35,
+     "numeros": 7,
+     "texto": "Últimos 7 dias, até 28/09/2026, a carga do SIN teve média de 83.771 MWmed, 11,45% acima da média dos mesmos dias da semana 52 semanas antes. As duas janelas têm a mesma composição de calendário."
+    },
+    {
+     "rota": "/setor-eletrico/carga/clima-e-calendario",
+     "id": "p027",
+     "palavras": 38,
+     "numeros": 8,
+     "texto": "Nos 6 dias até 27/09/2026, a carga do SIN ficou 10,49 pontos acima da carga dos mesmos dias da semana 52 semanas antes. Calendário, temperatura e estação do ano acompanham 24% dessa diferença; o modelo não reproduz 51%."
+    },
+    {
+     "rota": "/setor-eletrico/carga/perfil-horario",
+     "id": "p026",
+     "palavras": 40,
+     "numeros": 5,
+     "texto": "Em ago/2026, a MMGD, estimada pelo ONS e não medida, foi 10,80% da carga global do SIN. Em 2026, o pico do dia caiu mais vezes entre 18h e 19h, na curva de carga e na carga líquida de MMGD."
+    },
+    {
+     "rota": "/setor-eletrico/carga/perfil-horario",
+     "id": "p026-perfil",
+     "palavras": 35,
+     "numeros": 7,
+     "texto": "Num dia útil médio de ago/2026, a carga líquida de MMGD do SIN é menor entre 12h e 13h e maior entre 19h e 20h; a MMGD estimada chega ao máximo entre 12h e 13h."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p047",
+     "palavras": 21,
+     "numeros": 6,
+     "texto": "Em 30/09/2026, 200 kWh no mês custam de R$ 123,51 (DMED) a R$ 313,85 (CERES), conforme a distribuidora, só pela tarifa."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p048",
+     "palavras": 17,
+     "numeros": 4,
+     "texto": "Na média das 80 distribuidoras, a tarifa B1 vai sobretudo para distribuição (32,8%) e energia comprada (30,5%)."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p049",
+     "palavras": 19,
+     "numeros": 2,
+     "texto": "Para 150 kWh no mês na CERIPa, a estimativa é de R$ 126,00, sem tributos e sem iluminação pública."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p050-reajustes",
+     "palavras": 32,
+     "numeros": 8,
+     "texto": "Em 12 meses até 31/08/2026, a tarifa B1 residencial subiu mais que o IPCA (4,22%) em 87 de 102 distribuidoras. É a variação entre duas datas, não o efeito do processo tarifário."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p050-bandeiras",
+     "palavras": 24,
+     "numeros": 5,
+     "texto": "A bandeira de set/2026 é amarela: acréscimo de R$ 0,01885/kWh consumido. Em 74 dos 141 meses publicados desde jan/2015, a bandeira não foi verde."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz",
+     "id": "p050-subsidios",
+     "palavras": 22,
+     "numeros": 2,
+     "texto": "Em 2025, a CDE repassou R$ 18,82 bilhões às distribuidoras para cobrir descontos a categorias de usuários. Não são transferências a famílias."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+     "id": "p050-reajustes",
+     "palavras": 32,
+     "numeros": 8,
+     "texto": "Em 12 meses até 31/08/2026, a tarifa B1 residencial subiu mais que o IPCA (4,22%) em 87 de 102 distribuidoras. É a variação entre duas datas, não o efeito do processo tarifário."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+     "id": "p050-bandeiras",
+     "palavras": 24,
+     "numeros": 5,
+     "texto": "A bandeira de set/2026 é amarela: acréscimo de R$ 0,01885/kWh consumido. Em 74 dos 141 meses publicados desde jan/2015, a bandeira não foi verde."
+    },
+    {
+     "rota": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+     "id": "p050-subsidios",
+     "palavras": 22,
+     "numeros": 2,
+     "texto": "Em 2025, a CDE repassou R$ 18,82 bilhões às distribuidoras para cobrir descontos a categorias de usuários. Não são transferências a famílias."
+    },
+    {
+     "rota": "/setor-eletrico/dados",
+     "id": "P067",
+     "palavras": 30,
+     "numeros": 2,
+     "texto": "Dos 415 conjuntos catalogados, 126 chegaram à última etapa: foram integrados, validados e alimentam uma base publicada. Validado quer dizer sem checagem reprovada; não atesta que o dado esteja atualizado."
+    },
+    {
+     "rota": "/setor-eletrico/dados/reproducao",
+     "id": "P069",
+     "palavras": 36,
+     "numeros": 1,
+     "texto": "Sim. Cada um dos 270 arquivos publicados tem a impressão digital registrada numa lista, e todos conferiram na construção desta página. Refazer o arquivo não refaz a coleta: ela depende de a fonte estar no ar."
+    },
+    {
+     "rota": "/setor-eletrico/dados/saude",
+     "id": "P068",
+     "palavras": 36,
+     "numeros": 5,
+     "texto": "Em 01/10/2026, só uma integração estava atrasada: SCS, 367 dias além do prazo; as sem prazo declarado não entram nessa conta. Em 4 integrações a fonte revisou valores já publicados; uma revisão grande não prova erro."
+    },
+    {
+     "rota": "/setor-eletrico/empresas",
+     "id": "p036",
+     "palavras": 38,
+     "numeros": 8,
+     "texto": "No SIGA de 30/09/2026, 99,91% da potência das usinas em operação tem todos os donos identificados pelo CNPJ. No SIGET de 29/09/2026, 100,0% dos módulos de transmissão estão ligados a um CNPJ. Capacidade instalada não é energia gerada."
+    },
+    {
+     "rota": "/setor-eletrico/empresas",
+     "id": "p037",
+     "palavras": 39,
+     "numeros": 3,
+     "texto": "O observatório reúne 123 distribuidoras pelo CNPJ. Em 2025, a taxa nacional de perdas das concessionárias foi de 14,75% da energia injetada; a ficha de cada empresa mostra as perdas dela, a continuidade do serviço e a tarifa residencial."
+    },
+    {
+     "rota": "/setor-eletrico/empresas",
+     "id": "p038",
+     "palavras": 35,
+     "numeros": 3,
+     "texto": "As 151 companhias abertas do setor elétrico na CVM reportam receita, resultado, dívida e patrimônio; 141 têm demonstrações anuais até 2025. Escolha uma companhia para ver a evolução; valores de companhias diferentes não se somam."
+    },
+    {
+     "rota": "/setor-eletrico/empresas",
+     "id": "p039",
+     "palavras": 40,
+     "numeros": 4,
+     "texto": "O maior grupo de controle, AXIA ENERGIA S.A., tem 15,99% da potência em operação. O índice de concentração (HHI), de 0 a 10.000, é 392: não concentrado nas faixas do Guia do CADE. É capacidade instalada, não poder de mercado."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/ativos",
+     "id": "p036",
+     "palavras": 38,
+     "numeros": 8,
+     "texto": "No SIGA de 30/09/2026, 99,91% da potência das usinas em operação tem todos os donos identificados pelo CNPJ. No SIGET de 29/09/2026, 100,0% dos módulos de transmissão estão ligados a um CNPJ. Capacidade instalada não é energia gerada."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/controle",
+     "id": "p039",
+     "palavras": 40,
+     "numeros": 4,
+     "texto": "O maior grupo de controle, AXIA ENERGIA S.A., tem 15,99% da potência em operação. O índice de concentração (HHI), de 0 a 10.000, é 392: não concentrado nas faixas do Guia do CADE. É capacidade instalada, não poder de mercado."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/distribuidoras",
+     "id": "p037",
+     "palavras": 39,
+     "numeros": 3,
+     "texto": "O observatório reúne 123 distribuidoras pelo CNPJ. Em 2025, a taxa nacional de perdas das concessionárias foi de 14,75% da energia injetada; a ficha de cada empresa mostra as perdas dela, a continuidade do serviço e a tarifa residencial."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/financas",
+     "id": "p038",
+     "palavras": 35,
+     "numeros": 3,
+     "texto": "As 151 companhias abertas do setor elétrico na CVM reportam receita, resultado, dívida e patrimônio; 141 têm demonstrações anuais até 2025. Escolha uma companhia para ver a evolução; valores de companhias diferentes não se somam."
+    },
+    {
+     "rota": "/setor-eletrico/expansao",
+     "id": "sintese",
+     "palavras": 32,
+     "numeros": 5,
+     "texto": "O RALIE acompanha 95.888,3 MW de geração em implantação (fotografia de 18/09/2026), 71.674,0 MW deles em usinas solares fotovoltaicas. Carteira não é entrada certa: parte das outorgas já foi revogada ou extinta."
+    },
+    {
+     "rota": "/setor-eletrico/expansao",
+     "id": "p040",
+     "palavras": 32,
+     "numeros": 5,
+     "texto": "Em 30/09/2026, o SIGA registra 9.030,8 MW outorgados em usinas em construção e 87.267,2 MW outorgados com a construção não iniciada. Outorga não é entrada garantida: parte já foi revogada ou extinta."
+    },
+    {
+     "rota": "/setor-eletrico/expansao",
+     "id": "p041",
+     "palavras": 38,
+     "numeros": 7,
+     "texto": "Das previsões de 22/08/2025 para os 12 meses seguintes, 50,5% da potência foi liberada no prazo. A fiscalização prevê 2.718,4 MW no restante de 2026. Boa parte da carteira tem só uma data convencional, não cronograma de obra."
+    },
+    {
+     "rota": "/setor-eletrico/expansao",
+     "id": "p042",
+     "palavras": 38,
+     "numeros": 2,
+     "texto": "O SIGET registra 25.947,5 km de circuito em linhas novas em obras de transmissão, e o RALIE acompanha 95.888,3 MW de geração em implantação. Só com esses totais não dá para saber se a rede escoa essa geração."
+    },
+    {
+     "rota": "/setor-eletrico/expansao",
+     "id": "p043",
+     "palavras": 28,
+     "numeros": 5,
+     "texto": "O PDE 2035 é um cenário, não uma previsão: no cenário de referência, a capacidade instalada nacional vai de 249,4 GW em dez/2025 a 359,0 GW em dez/2035."
+    },
+    {
+     "rota": "/setor-eletrico/expansao/carteira",
+     "id": "p040",
+     "palavras": 32,
+     "numeros": 5,
+     "texto": "Em 30/09/2026, o SIGA registra 9.030,8 MW outorgados em usinas em construção e 87.267,2 MW outorgados com a construção não iniciada. Outorga não é entrada garantida: parte já foi revogada ou extinta."
+    },
+    {
+     "rota": "/setor-eletrico/expansao/cenarios",
+     "id": "p043",
+     "palavras": 28,
+     "numeros": 5,
+     "texto": "O PDE 2035 é um cenário, não uma previsão: no cenário de referência, a capacidade instalada nacional vai de 249,4 GW em dez/2025 a 359,0 GW em dez/2035."
+    },
+    {
+     "rota": "/setor-eletrico/expansao/cronograma",
+     "id": "p041",
+     "palavras": 38,
+     "numeros": 7,
+     "texto": "Das previsões de 22/08/2025 para os 12 meses seguintes, 50,5% da potência foi liberada no prazo. A fiscalização prevê 2.718,4 MW no restante de 2026. Boa parte da carteira tem só uma data convencional, não cronograma de obra."
+    },
+    {
+     "rota": "/setor-eletrico/expansao/geracao-e-transmissao",
+     "id": "p042",
+     "palavras": 38,
+     "numeros": 2,
+     "texto": "O SIGET registra 25.947,5 km de circuito em linhas novas em obras de transmissão, e o RALIE acompanha 95.888,3 MW de geração em implantação. Só com esses totais não dá para saber se a rede escoa essa geração."
+    },
+    {
+     "rota": "/setor-eletrico/geracao",
+     "id": "p021",
+     "palavras": 32,
+     "numeros": 6,
+     "texto": "Nos 30 dias até 29/09/2026, as duas maiores fontes foram hidráulica, com 52,7% da geração do SIN, e eólica, com 18,4%. Parte da energia é estimativa ou previsão do ONS, não medição."
+    },
+    {
+     "rota": "/setor-eletrico/geracao/capacidade",
+     "id": "p024",
+     "palavras": 33,
+     "numeros": 7,
+     "texto": "Em 30/09/2026, as usinas despachadas pelo ONS somavam 200.657 MW. Nos 12 meses até ago/2026, as eólicas geraram 36,5% do máximo que a potência delas permitiria. A micro e minigeração distribuída fica fora."
+    },
+    {
+     "rota": "/setor-eletrico/geracao/restricoes",
+     "id": "p023",
+     "palavras": 38,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, a limitação do ONS fez as eólicas deixarem de gerar 21,3% do que teriam gerado, e as fotovoltaicas, 25,7%. O valor é estimativa, e restrição não é falta de vento nem de sol."
+    },
+    {
+     "rota": "/setor-eletrico/geracao/termica",
+     "id": "p022",
+     "palavras": 38,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, as térmicas despachadas pelo ONS geraram 8.033 MWmed em média, 61,1% por inflexibilidade (geração declarada pelo agente ou acima do despachado). O motivo é a classificação do ONS, não uma inferência do observatório."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica",
+     "id": "p059",
+     "palavras": 17,
+     "numeros": 5,
+     "texto": "Em mai/2025, 17.246.524 unidades consumidoras (21,1% das residenciais) tinham Tarifa Social, 2,4% a mais que em mai/2024."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica",
+     "id": "p060",
+     "palavras": 40,
+     "numeros": 3,
+     "texto": "Em mar/2026 havia 67,8 faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado. É uma medida indireta: não mede quantas famílias com direito ficaram sem o desconto."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica",
+     "id": "p061",
+     "palavras": 37,
+     "numeros": 5,
+     "texto": "Na POF 2017-2018, a energia elétrica pesou mais nas famílias de menor renda: a despesa média com energia foi 4,4% da despesa média total das famílias com rendimento até R$ 1.908, contra 2,5% no conjunto das famílias."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica",
+     "id": "p062",
+     "palavras": 36,
+     "numeros": 3,
+     "texto": "Em 2025, 135 mil domicílios (0,2%) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica/acesso",
+     "id": "p062",
+     "palavras": 36,
+     "numeros": 3,
+     "texto": "Em 2025, 135 mil domicílios (0,2%) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica/cobertura",
+     "id": "p060",
+     "palavras": 40,
+     "numeros": 3,
+     "texto": "Em mar/2026 havia 67,8 faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado. É uma medida indireta: não mede quantas famílias com direito ficaram sem o desconto."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica/orcamento",
+     "id": "p061",
+     "palavras": 37,
+     "numeros": 5,
+     "texto": "Na POF 2017-2018, a energia elétrica pesou mais nas famílias de menor renda: a despesa média com energia foi 4,4% da despesa média total das famílias com rendimento até R$ 1.908, contra 2,5% no conjunto das famílias."
+    },
+    {
+     "rota": "/setor-eletrico/inclusao-energetica/tarifa-social",
+     "id": "p059",
+     "palavras": 17,
+     "numeros": 5,
+     "texto": "Em mai/2025, 17.246.524 unidades consumidoras (21,1% das residenciais) tinham Tarifa Social, 2,4% a mais que em mai/2024."
+    },
+    {
+     "rota": "/setor-eletrico/mercado",
+     "id": "P032",
+     "palavras": 32,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, o mercado livre foi 45,3% do consumo na rede (EPE) e 42,4% do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam."
+    },
+    {
+     "rota": "/setor-eletrico/mercado",
+     "id": "P033",
+     "palavras": 35,
+     "numeros": 4,
+     "texto": "O mercado livre tinha 96.618 unidades consumidoras em ago/2026, 14.569 a mais que 12 meses antes. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela."
+    },
+    {
+     "rota": "/setor-eletrico/mercado",
+     "id": "P034",
+     "palavras": 39,
+     "numeros": 6,
+     "texto": "Em ago/2026, as hidrelétricas do MRE geraram 78,9% da garantia física ajustada, e 81,8% nos 12 meses até ago/2026: menos que a garantia. O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz."
+    },
+    {
+     "rota": "/setor-eletrico/mercado",
+     "id": "P035",
+     "palavras": 34,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão e o encargo de energia de reserva, R$ 10,20 bilhões. São valores do mês de contabilização, não do pagamento."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/agentes",
+     "id": "P033",
+     "palavras": 35,
+     "numeros": 4,
+     "texto": "O mercado livre tinha 96.618 unidades consumidoras em ago/2026, 14.569 a mais que 12 meses antes. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/agentes",
+     "id": "P032",
+     "palavras": 32,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, o mercado livre foi 45,3% do consumo na rede (EPE) e 42,4% do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/agentes",
+     "id": "P034",
+     "palavras": 39,
+     "numeros": 6,
+     "texto": "Em ago/2026, as hidrelétricas do MRE geraram 78,9% da garantia física ajustada, e 81,8% nos 12 meses até ago/2026: menos que a garantia. O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/agentes",
+     "id": "P035",
+     "palavras": 34,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão e o encargo de energia de reserva, R$ 10,20 bilhões. São valores do mês de contabilização, não do pagamento."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/encargos",
+     "id": "P035",
+     "palavras": 34,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão e o encargo de energia de reserva, R$ 10,20 bilhões. São valores do mês de contabilização, não do pagamento."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/encargos",
+     "id": "P032",
+     "palavras": 32,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, o mercado livre foi 45,3% do consumo na rede (EPE) e 42,4% do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/encargos",
+     "id": "P033",
+     "palavras": 35,
+     "numeros": 4,
+     "texto": "O mercado livre tinha 96.618 unidades consumidoras em ago/2026, 14.569 a mais que 12 meses antes. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/encargos",
+     "id": "P034",
+     "palavras": 39,
+     "numeros": 6,
+     "texto": "Em ago/2026, as hidrelétricas do MRE geraram 78,9% da garantia física ajustada, e 81,8% nos 12 meses até ago/2026: menos que a garantia. O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/mre-e-gsf",
+     "id": "P034",
+     "palavras": 39,
+     "numeros": 6,
+     "texto": "Em ago/2026, as hidrelétricas do MRE geraram 78,9% da garantia física ajustada, e 81,8% nos 12 meses até ago/2026: menos que a garantia. O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/mre-e-gsf",
+     "id": "P032",
+     "palavras": 32,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, o mercado livre foi 45,3% do consumo na rede (EPE) e 42,4% do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/mre-e-gsf",
+     "id": "P033",
+     "palavras": 35,
+     "numeros": 4,
+     "texto": "O mercado livre tinha 96.618 unidades consumidoras em ago/2026, 14.569 a mais que 12 meses antes. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela."
+    },
+    {
+     "rota": "/setor-eletrico/mercado/mre-e-gsf",
+     "id": "P035",
+     "palavras": 34,
+     "numeros": 4,
+     "texto": "Nos 12 meses até ago/2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão e o encargo de energia de reserva, R$ 10,20 bilhões. São valores do mês de contabilização, não do pagamento."
+    },
+    {
+     "rota": "/setor-eletrico/metodologia",
+     "id": "P070",
+     "palavras": 23,
+     "numeros": 2,
+     "texto": "Só as que a regra de cada indicador sustenta. Os 276 indicadores têm definição, unidade, recorte e limites escritos; 243 têm fórmula publicada."
+    },
+    {
+     "rota": "/setor-eletrico/perdas",
+     "id": "geral",
+     "palavras": 27,
+     "numeros": 4,
+     "texto": "Em 2025, as concessionárias com o ano completo perderam 14,75% da energia que entrou na rede, 0,01 ponto percentual a mais que em 2024 nas mesmas empresas."
+    },
+    {
+     "rota": "/setor-eletrico/perdas",
+     "id": "mapa",
+     "palavras": 25,
+     "numeros": 3,
+     "texto": "Em 2025, entre as distribuidoras comparáveis, a taxa de perdas totais vai de 3,25% (EFLUL) a 43,19% (ÂMBAR AMAZONAS) da energia que entrou na rede."
+    },
+    {
+     "rota": "/setor-eletrico/perdas",
+     "id": "evolucao",
+     "palavras": 22,
+     "numeros": 4,
+     "texto": "De 2003 a 2025, a taxa anual das concessionárias ficou entre 14,00% e 15,85%. Os anos não têm sempre as mesmas distribuidoras."
+    },
+    {
+     "rota": "/setor-eletrico/perdas/composicao",
+     "id": "composicao",
+     "palavras": 39,
+     "numeros": 3,
+     "texto": "Em 2025, nas concessionárias que publicam a separação, as perdas técnicas foram 7,16% da energia que entrou na rede e as não técnicas, 14,99% do mercado de baixa tensão. As duas porcentagens têm bases diferentes e não se somam."
+    },
+    {
+     "rota": "/setor-eletrico/perdas/custo-e-contexto",
+     "id": "custo",
+     "palavras": 25,
+     "numeros": 5,
+     "texto": "Na tarifa residencial de 01/10/2026, a parte que remunera perdas, sem tributos, vai de 14,65 R$/MWh (CERPRO) a 192,66 R$/MWh (ÂMBAR AMAZONAS), conforme a distribuidora."
+    },
+    {
+     "rota": "/setor-eletrico/perdas/custo-e-contexto",
+     "id": "contexto",
+     "palavras": 29,
+     "numeros": 2,
+     "texto": "Em 2022, nas 52 concessionárias, quanto maior a renda média da área, menor tende a ser a taxa de perdas totais. É uma associação entre áreas, não uma causa."
+    },
+    {
+     "rota": "/setor-eletrico/perdas/regulatorio",
+     "id": "regulatorio",
+     "palavras": 32,
+     "numeros": 1,
+     "texto": "O gráfico compara, em 49 distribuidoras, o percentual técnico regulatório do trecho mais recente com o do trecho anterior. A diferença é mudança de parâmetro entre processos tarifários, não desempenho da distribuidora."
+    },
+    {
+     "rota": "/setor-eletrico/pld",
+     "id": "p008",
+     "palavras": 39,
+     "numeros": 0,
+     "texto": "O PLD é o preço usado para valorar a diferença entre a energia contratada e a verificada de cada agente. Tem como base o custo marginal de operação e fica entre um mínimo e um máximo fixados pela ANEEL."
+    },
+    {
+     "rota": "/setor-eletrico/pld/cmo-e-formacao",
+     "id": "p009",
+     "palavras": 37,
+     "numeros": 5,
+     "texto": "Na semana que terminou em 25/09/2026, o PLD do Sudeste/Centro-Oeste ficou R$ 26,20/MWh acima do CMO semanal do DECOMP e R$ 60,78/MWh acima do CMO médio do DESSEM. A página compara os três valores no mesmo intervalo."
+    },
+    {
+     "rota": "/setor-eletrico/pld/diferencas-regionais",
+     "id": "p012",
+     "palavras": 39,
+     "numeros": 3,
+     "texto": "Nos últimos 12 meses, os preços dos quatro submercados diferiram em mais de um centavo em 43,3% das horas, em média R$ 37,82/MWh entre o maior e o menor. A contagem descreve quando os preços diferem, não o motivo."
+    },
+    {
+     "rota": "/setor-eletrico/pld/historico",
+     "id": "p011",
+     "palavras": 34,
+     "numeros": 6,
+     "texto": "Em 30/09/2026, a média diária do PLD do Sudeste/Centro-Oeste ficou abaixo da mediana dos dias de setembro de 2021 a 2025 e na metade central deles. Em 38,7% desses dias a média foi menor."
+    },
+    {
+     "rota": "/setor-eletrico/pld/limites",
+     "id": "p010",
+     "palavras": 32,
+     "numeros": 6,
+     "texto": "Em 2026 (até 30/09/2026), o PLD do Sudeste/Centro-Oeste ficou no piso (valor mínimo) em 23,96% das horas e no teto horário em 4 horas. Nenhum dia teve a média no teto estrutural."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos",
+     "id": "p014",
+     "palavras": 40,
+     "numeros": 5,
+     "texto": "Os 5 modelos estão todos em pesquisa: nenhum alimenta previsão oficial. B0 publica número só como referência experimental; C2-P e C2-H têm número retido até a liberação formal; C1 não pode ser refeito: a configuração da pesquisa não foi publicada."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos",
+     "id": "p016",
+     "palavras": 37,
+     "numeros": 1,
+     "texto": "Ainda não dá para dizer se algum modelo supera as referências simples: os números do teste com dados do passado estão calculados, mas ficam retidos até a liberação formal. Nenhuma das 28 previsões em acompanhamento tem resultado."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos/b0",
+     "id": "p014",
+     "palavras": 30,
+     "numeros": 0,
+     "texto": "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte. Está em pesquisa; é publicado só como referência experimental."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos/c1",
+     "id": "p014",
+     "palavras": 27,
+     "numeros": 0,
+     "texto": "Combina referências simples com pesos fixos. Está em pesquisa e não emite número: a configuração da pesquisa não foi publicada, então o modelo não pode ser refeito."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos/c2-h",
+     "id": "p014",
+     "palavras": 25,
+     "numeros": 1,
+     "texto": "Parte da persistência (B0) e a corrige com informações de preço e de hidrologia. Está em pesquisa; o número fica retido até a liberação formal."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos/c2-p",
+     "id": "p014",
+     "palavras": 23,
+     "numeros": 1,
+     "texto": "Parte da persistência (B0) e a corrige com informações recentes de preço. Está em pesquisa; o número fica retido até a liberação formal."
+    },
+    {
+     "rota": "/setor-eletrico/pld/modelos/s0",
+     "id": "p014",
+     "palavras": 14,
+     "numeros": 0,
+     "texto": "Repete o mesmo período do ano anterior. Está em pesquisa e não emite número."
+    },
+    {
+     "rota": "/setor-eletrico/pld/previsoes",
+     "id": "p013",
+     "palavras": 37,
+     "numeros": 2,
+     "texto": "Nenhum modelo de previsão do PLD está aprovado. A página mostra uma referência simples: repete o PLD médio do último período completo, de R$ 120,86 a R$ 128,12/MWh conforme submercado e prazo. Não há faixa de incerteza."
+    },
+    {
+     "rota": "/setor-eletrico/pld/previsoes",
+     "id": "p015",
+     "palavras": 25,
+     "numeros": 5,
+     "texto": "O arquivo tem 56 registros de 2 rodadas; só a de 30/09/2026 tem número. Nenhuma entrega prevista terminou, então ainda não há resultado para comparar."
+    },
+    {
+     "rota": "/setor-eletrico/qualidade",
+     "id": "p051",
+     "palavras": 36,
+     "numeros": 6,
+     "texto": "Em 2025, cada unidade consumidora ficou em média 9,33 horas sem energia (9 h 20 min) e teve 4,69 interrupções, menos que em 2024. O número não inclui as interrupções que a regra exclui do apurado."
+    },
+    {
+     "rota": "/setor-eletrico/qualidade",
+     "id": "p052",
+     "palavras": 32,
+     "numeros": 4,
+     "texto": "Em 2025, 25,7% dos conjuntos com limite ficaram acima do limite anual de DEC, contra 30,3% em 2024. A média do Brasil esconde as pontas: há conjuntos bem acima do próprio limite."
+    },
+    {
+     "rota": "/setor-eletrico/qualidade",
+     "id": "p053",
+     "palavras": 26,
+     "numeros": 4,
+     "texto": "Em 2025, as distribuidoras pagaram R$ 1.007,2 milhões a unidades consumidoras que tiveram limites individuais de continuidade violados, menos que os R$ 1.121,9 milhões de 2024."
+    },
+    {
+     "rota": "/setor-eletrico/qualidade",
+     "id": "p054",
+     "palavras": 15,
+     "numeros": 3,
+     "texto": "Em 2025, as distribuidoras registraram 400,9 reclamações por mil unidades consumidoras, 334,7 delas sobre interrupção."
+    },
+    {
+     "rota": "/setor-eletrico/rede",
+     "id": "p028",
+     "palavras": 36,
+     "numeros": 5,
+     "texto": "Nos 30 dias até 29/09/2026, o Sudeste/Centro-Oeste recebeu energia do Norte, do Nordeste e do Sul; o Norte recebeu do Nordeste. Em duas fronteiras, o saldo esconde energia que passou no sentido contrário: até 233.099 MWh."
+    },
+    {
+     "rota": "/setor-eletrico/rede",
+     "id": "p028-recorte",
+     "palavras": 43,
+     "numeros": 9,
+     "texto": "Em 29/09/2026: 94.244 MWh do Nordeste para o Norte; 36.511 MWh do Norte para o Sudeste/Centro-Oeste, com 3.077 MWh no sentido contrário; 140.730 MWh do Nordeste para o Sudeste/Centro-Oeste; e 25.528 MWh do Sul para o Sudeste/Centro-Oeste, com 25.729 MWh no sentido contrário."
+    },
+    {
+     "rota": "/setor-eletrico/rede/balanco-e-exterior",
+     "id": "p029",
+     "palavras": 38,
+     "numeros": 7,
+     "texto": "No SIN, geração, carga e intercâmbio conferem entre si em pelo menos 95% das horas conferidas, de 01/01/2021 a 29/09/2026. Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa."
+    },
+    {
+     "rota": "/setor-eletrico/rede/balanco-e-exterior",
+     "id": "p029-exterior",
+     "palavras": 35,
+     "numeros": 3,
+     "texto": "De set/2025 a ago/2026, o Brasil exportou 2.754.057 MWh a mais do que importou na troca com a Argentina e o Uruguai. O Paraguai não tem hora publicada no período: ausência de dado, não zero."
+    },
+    {
+     "rota": "/setor-eletrico/rede/programado",
+     "id": "p031",
+     "palavras": 40,
+     "numeros": 5,
+     "texto": "Desde 01/01/2026, na fronteira Norte → Nordeste, o fluxo medido se afastou do programado em 914,4 MWmed por hora, em média. O programa, em módulo, tem mediana de 2.574 MWmed. Desvio não é falha; a fonte não informa o motivo."
+    },
+    {
+     "rota": "/setor-eletrico/rede/restricoes",
+     "id": "p030",
+     "palavras": 40,
+     "numeros": 4,
+     "texto": "Em 12 meses, 7 dos 8 fluxos acompanhados pelo ONS passaram algum tempo acima do limite estabelecido, e houve 343 cortes de carga. Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite."
+    },
+    {
+     "rota": "/setor-eletrico/regulacao",
+     "id": "p044",
+     "palavras": 27,
+     "numeros": 5,
+     "texto": "Em 2026, o PLD não pode ficar abaixo de R$ 57,31/MWh nem passar de R$ 1.611,04/MWh numa hora. Os limites foram fixados pelo Despacho ANEEL nº 3.850/2025."
+    },
+    {
+     "rota": "/setor-eletrico/regulacao",
+     "id": "2026",
+     "palavras": 23,
+     "numeros": 0,
+     "texto": "Este é o ano da data de referência, o da resposta acima. Escolha outro ano para ver os limites e o ato dele."
+    },
+    {
+     "rota": "/setor-eletrico/regulacao/consultas-e-agenda",
+     "id": "p046",
+     "palavras": 29,
+     "numeros": 7,
+     "texto": "Em 08/10/2026, 7 consultas e audiências públicas da ANEEL recebem contribuições; a primeira a fechar encerra em 09/10/2026. Só entram as consultas abertas em reunião pública registrada em ata."
+    },
+    {
+     "rota": "/setor-eletrico/regulacao/consultas-e-agenda",
+     "id": "agenda",
+     "palavras": 29,
+     "numeros": 4,
+     "texto": "A Agenda Regulatória de 2026 e 2027 prevê 59 atividades; 2 tratam dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar."
+    },
+    {
+     "rota": "/setor-eletrico/regulacao/linha-do-tempo",
+     "id": "p045",
+     "palavras": 38,
+     "numeros": 6,
+     "texto": "A regra mais recente vale desde 16/12/2025: “ANEEL regula a nova Tarifa Social e o desconto social”, que afeta Inclusão energética e Conta de luz. É uma seleção de marcos conferida em 01/10/2026, sem impacto estimado nesta fonte."
+    },
+    {
+     "rota": "/setor-eletrico/territorio",
+     "id": "p002",
+     "palavras": 40,
+     "numeros": 0,
+     "texto": "Escolha uma região e veja preço, tarifa, perdas, continuidade e usinas. Cada número é da área da sua fonte: o preço é do submercado, a tarifa e as perdas são da distribuidora inteira e a continuidade é do conjunto elétrico."
+    },
+    {
+     "rota": "/setor-eletrico/transicao",
+     "id": "p063",
+     "palavras": 30,
+     "numeros": 6,
+     "texto": "Em 2025, último ano completo, São Paulo foi a UF que mais acrescentou potência (1.230,6 MW). O cadastro da ANEEL somava 53.965,6 MW em 29/09/2026; é capacidade, não energia gerada."
+    },
+    {
+     "rota": "/setor-eletrico/transicao",
+     "id": "ons",
+     "palavras": 34,
+     "numeros": 3,
+     "texto": "Em ago/2026, o ONS estimou que a MMGD entregou 8.967,9 MWmed ao SIN, 10,80% da carga global (a carga que o ONS verifica). É estimativa, não medição, e não se soma à capacidade cadastrada."
+    },
+    {
+     "rota": "/setor-eletrico/transicao",
+     "id": "p064",
+     "palavras": 36,
+     "numeros": 6,
+     "texto": "Em 2025, cada MWh gerado no SIN emitiu em média 0,0461 tonelada de CO2 (fator do MCTI), abaixo dos 0,0545 de 2024. A base de usinas do MCTI mudou em jan/2025, e a comparação mistura bases."
+    },
+    {
+     "rota": "/setor-eletrico/transicao/emissoes",
+     "id": "p064",
+     "palavras": 36,
+     "numeros": 6,
+     "texto": "Em 2025, cada MWh gerado no SIN emitiu em média 0,0461 tonelada de CO2 (fator do MCTI), abaixo dos 0,0545 de 2024. A base de usinas do MCTI mudou em jan/2025, e a comparação mistura bases."
+    },
+    {
+     "rota": "/setor-eletrico/transicao/energia-estimada",
+     "id": "ons",
+     "palavras": 34,
+     "numeros": 3,
+     "texto": "Em ago/2026, o ONS estimou que a MMGD entregou 8.967,9 MWmed ao SIN, 10,80% da carga global (a carga que o ONS verifica). É estimativa, não medição, e não se soma à capacidade cadastrada."
+    },
+    {
+     "rota": "/setor-eletrico/transicao/mmgd",
+     "id": "p063",
+     "palavras": 30,
+     "numeros": 6,
+     "texto": "Em 2025, último ano completo, São Paulo foi a UF que mais acrescentou potência (1.230,6 MW). O cadastro da ANEEL somava 53.965,6 MW em 29/09/2026; é capacidade, não energia gerada."
+    },
+    {
+     "rota": "/setor-eletrico/visao-geral",
+     "id": "sistema",
+     "palavras": 38,
+     "numeros": 1,
+     "texto": "Nenhuma regra sobre o sistema está em alerta. Sobre os próprios dados, 2 regras estão em alerta: um dado já publicado foi revisado e uma fonte usada nesta página está atrasada. Cada fato abaixo traz a sua data."
+    },
+    {
+     "rota": "/setor-eletrico/visao-geral",
+     "id": "determinantes",
+     "palavras": 39,
+     "numeros": 1,
+     "texto": "Preço, água e geração estão dentro da faixa de referência de cada painel. Carga: 14,6% acima do mesmo dia da semana do ano anterior. Rede: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio."
+    },
+    {
+     "rota": "/setor-eletrico/visao-geral",
+     "id": "sociedade",
+     "palavras": 30,
+     "numeros": 6,
+     "texto": "A tarifa residencial de referência é R$ 0,8212/kWh, sem tributos, vigente em 30/09/2026. Em média, cada consumidor ficou 9,33 h sem energia (ano de 2025). Nenhum número descreve o dia."
+    },
+    {
+     "rota": "/setor-eletrico/visao-geral",
+     "id": "observar",
+     "palavras": 37,
+     "numeros": 2,
+     "texto": "Nenhuma regra sobre o sistema está em alerta. Uma regra está em observação, ainda sem a duração mínima para virar alerta: afluência de 30 dias em nível extremo. Sobre os próprios dados, 2 regras estão em alerta."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/ambar-amazonas",
+     "id": "ficha",
+     "palavras": 39,
+     "numeros": 3,
+     "texto": "Em 2025, a Âmbar Amazonas perdeu 43,19% da energia injetada, acima da média das concessionárias do Brasil, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 875,71/MWh, sem tributos."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/cerbranorte",
+     "id": "ficha",
+     "palavras": 30,
+     "numeros": 5,
+     "texto": "Em 2025, a CERBRANORTE perdeu 12,36% da energia injetada, e as interrupções ficaram dentro dos limites de duração e de frequência. Não há tarifa residencial vigente: vigência encerrada em 29/09/2026."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/certhil",
+     "id": "ficha",
+     "palavras": 40,
+     "numeros": 3,
+     "texto": "Em 2025, a CERTHIL tem perda total negativa na fonte, de −17,31%, que o observatório mostra sem corrigir, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 729,93/MWh, sem tributos."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/cpfl-piratining",
+     "id": "ficha",
+     "palavras": 38,
+     "numeros": 3,
+     "texto": "Em 2025, a CPFL-PIRATINING perdeu 8,34% da energia injetada, abaixo da média das concessionárias do Brasil, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 739,69/MWh, sem tributos."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/emt",
+     "id": "ficha",
+     "palavras": 38,
+     "numeros": 3,
+     "texto": "Em 2025, a EMT perdeu 14,43% da energia injetada, abaixo da média das concessionárias do Brasil, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 899,42/MWh, sem tributos."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/uhenpal",
+     "id": "ficha",
+     "palavras": 38,
+     "numeros": 3,
+     "texto": "Em 2025, a UHENPAL perdeu 7,71% da energia injetada, abaixo da média das concessionárias do Brasil, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 835,15/MWh, sem tributos."
+    },
+    {
+     "rota": "/setor-eletrico/empresas/cemig-d",
+     "id": "ficha",
+     "palavras": 38,
+     "numeros": 3,
+     "texto": "Em 2025, a CEMIG-D perdeu 12,12% da energia injetada, abaixo da média das concessionárias do Brasil, e as interrupções ficaram dentro dos limites de duração e de frequência. A tarifa residencial vigente é de R$ 903,29/MWh, sem tributos."
+    }
+   ]
+  }
+ },
+ "coleta_objetiva": {
+  "r7": {
+   "gerado_em": "2026-10-08T16:14:02.316Z",
+   "rotas": 94,
+   "medicoes": 564,
+   "status_diferente_de_200": 0,
+   "axe_medicoes_com_violacao": 0,
+   "axe_rotas_com_violacao": 0,
+   "axe_violacoes": 0,
+   "rolagem_horizontal_medicoes": 0,
+   "transbordo_itens": 600,
+   "transbordo_rotas": 51,
+   "erros_console": 0,
+   "falhas_rede": 0,
+   "datas_cruas_itens": 0,
+   "datas_cruas_rotas": 0,
+   "nan_undefined_itens": 0,
+   "nan_undefined_rotas": 0,
+   "jargao_interno_itens": 1266,
+   "jargao_interno_rotas": 78,
+   "hoje_itens": 56,
+   "hoje_rotas": 8,
+   "hoje_com_numero_itens": 0,
+   "hoje_com_numero_rotas": 0,
+   "marcador_de_obra_itens": 0,
+   "marcador_de_obra_rotas": 0,
+   "unidade_duplicada_itens": 0,
+   "unidade_duplicada_rotas": 0,
+   "travessao_itens": 138,
+   "jargao_entender_itens": 448,
+   "jargao_entender_rotas": 44,
+   "jargao_1440_entender_itens": 112,
+   "jargao_1440_entender_rotas": 44,
+   "html_max_por_rota_kB": 876.0,
+   "html_mediana_kB": 401.3,
+   "rotas_html_acima_600kB": [
+    [
+     "/setor-eletrico/territorio",
+     876
+    ],
+    [
+     "/setor-eletrico/qualidade",
+     846
+    ],
+    [
+     "/setor-eletrico/carga/perfil-horario",
+     699
+    ],
+    [
+     "/setor-eletrico/pld",
+     675
+    ],
+    [
+     "/setor-eletrico/rede",
+     666
+    ],
+    [
+     "/setor-eletrico/conta-de-luz",
+     655
+    ],
+    [
+     "/setor-eletrico/carga",
+     637
+    ],
+    [
+     "/setor-eletrico/regulacao",
+     633
+    ]
+   ],
+   "alvos_menores_24": 1,
+   "altura_mediana_390_entender_px": 8163.5,
+   "altura_mediana_1440_entender_px": 4680.5,
+   "rotas_acima_10000px_390_entender": 29
+  },
+  "depois": {
+   "gerado_em": "2026-10-08T19:11:17.071Z",
+   "rotas": 94,
+   "medicoes": 564,
+   "status_diferente_de_200": 0,
+   "axe_medicoes_com_violacao": 0,
+   "axe_rotas_com_violacao": 0,
+   "axe_violacoes": 0,
+   "rolagem_horizontal_medicoes": 0,
+   "transbordo_itens": 594,
+   "transbordo_rotas": 51,
+   "erros_console": 0,
+   "falhas_rede": 0,
+   "datas_cruas_itens": 0,
+   "datas_cruas_rotas": 0,
+   "nan_undefined_itens": 0,
+   "nan_undefined_rotas": 0,
+   "jargao_interno_itens": 860,
+   "jargao_interno_rotas": 75,
+   "hoje_itens": 2,
+   "hoje_rotas": 1,
+   "hoje_com_numero_itens": 0,
+   "hoje_com_numero_rotas": 0,
+   "marcador_de_obra_itens": 0,
+   "marcador_de_obra_rotas": 0,
+   "unidade_duplicada_itens": 0,
+   "unidade_duplicada_rotas": 0,
+   "travessao_itens": 106,
+   "jargao_entender_itens": 36,
+   "jargao_entender_rotas": 5,
+   "jargao_1440_entender_itens": 9,
+   "jargao_1440_entender_rotas": 5,
+   "html_max_por_rota_kB": 849.1,
+   "html_mediana_kB": 410.0,
+   "rotas_html_acima_600kB": [
+    [
+     "/setor-eletrico/qualidade",
+     849
+    ],
+    [
+     "/setor-eletrico/territorio",
+     844
+    ],
+    [
+     "/setor-eletrico/carga/perfil-horario",
+     701
+    ],
+    [
+     "/setor-eletrico/pld",
+     678
+    ],
+    [
+     "/setor-eletrico/rede",
+     666
+    ],
+    [
+     "/setor-eletrico/conta-de-luz",
+     660
+    ],
+    [
+     "/setor-eletrico/regulacao",
+     644
+    ],
+    [
+     "/setor-eletrico/carga",
+     638
+    ]
+   ],
+   "alvos_menores_24": 1,
+   "altura_mediana_390_entender_px": 8080.0,
+   "altura_mediana_1440_entender_px": 4686.5,
+   "rotas_acima_10000px_390_entender": 28
+  }
+ },
+ "jornadas": {
+  "r7_final": {
+   "J1": {
+    "resultado": "cumprida",
+    "passos_ok": 12,
+    "passos_total": 12,
+    "interacoes": 10,
+    "erros_console": []
+   },
+   "J2": {
+    "resultado": "cumprida",
+    "passos_ok": 11,
+    "passos_total": 11,
+    "interacoes": 12,
+    "erros_console": []
+   },
+   "J3": {
+    "resultado": "cumprida",
+    "passos_ok": 8,
+    "passos_total": 8,
+    "interacoes": 5,
+    "erros_console": []
+   },
+   "J4": {
+    "resultado": "cumprida",
+    "passos_ok": 10,
+    "passos_total": 10,
+    "interacoes": 12,
+    "erros_console": []
+   },
+   "J5": {
+    "resultado": "cumprida",
+    "passos_ok": 12,
+    "passos_total": 12,
+    "interacoes": 12,
+    "erros_console": []
+   },
+   "J6": {
+    "resultado": "cumprida",
+    "passos_ok": 19,
+    "passos_total": 19,
+    "interacoes": 21,
+    "erros_console": []
+   },
+   "J7": {
+    "resultado": "cumprida",
+    "passos_ok": 18,
+    "passos_total": 18,
+    "interacoes": 170,
+    "erros_console": []
+   },
+   "J8": {
+    "resultado": "cumprida",
+    "passos_ok": 11,
+    "passos_total": 11,
+    "interacoes": 37,
+    "erros_console": []
+   },
+   "J9": {
+    "resultado": "interrompida",
+    "passos_ok": 5,
+    "passos_total": 13,
+    "interacoes": 11,
+    "erros_console": []
+   },
+   "J10": {
+    "resultado": "cumprida",
+    "passos_ok": 14,
+    "passos_total": 14,
+    "interacoes": 12,
+    "erros_console": []
+   }
+  },
+  "depois": {
+   "J1": {
+    "resultado": "cumprida",
+    "passos_ok": 12,
+    "passos_total": 12,
+    "interacoes": 10,
+    "erros_console": []
+   },
+   "J2": {
+    "resultado": "cumprida",
+    "passos_ok": 11,
+    "passos_total": 11,
+    "interacoes": 12,
+    "erros_console": []
+   },
+   "J3": {
+    "resultado": "cumprida",
+    "passos_ok": 8,
+    "passos_total": 8,
+    "interacoes": 5,
+    "erros_console": []
+   },
+   "J4": {
+    "resultado": "cumprida",
+    "passos_ok": 10,
+    "passos_total": 10,
+    "interacoes": 13,
+    "erros_console": []
+   },
+   "J5": {
+    "resultado": "cumprida",
+    "passos_ok": 12,
+    "passos_total": 12,
+    "interacoes": 12,
+    "erros_console": []
+   },
+   "J6": {
+    "resultado": "cumprida",
+    "passos_ok": 19,
+    "passos_total": 19,
+    "interacoes": 21,
+    "erros_console": []
+   },
+   "J7": {
+    "resultado": "cumprida",
+    "passos_ok": 18,
+    "passos_total": 18,
+    "interacoes": 165,
+    "erros_console": []
+   },
+   "J8": {
+    "resultado": "cumprida",
+    "passos_ok": 11,
+    "passos_total": 11,
+    "interacoes": 37,
+    "erros_console": []
+   },
+   "J9": {
+    "resultado": "cumprida",
+    "passos_ok": 13,
+    "passos_total": 13,
+    "interacoes": 27,
+    "erros_console": []
+   },
+   "J10": {
+    "resultado": "cumprida",
+    "passos_ok": 14,
+    "passos_total": 14,
+    "interacoes": 12,
+    "erros_console": []
+   }
+  }
+ },
+ "conciliacoes": {
+  "criterio": "classe 1: erro real, corrigido; classe 2: recortes, janelas ou universos diferentes, explicados no ponto de uso; classe 3: não reproduzível, relatado sem alteração; classe 0: conferido, sem divergência",
+  "totais": {
+   "0": 2,
+   "1": 9,
+   "2": 40,
+   "3": 1
+  },
+  "pares": [
+   {
+    "area": "territorio",
+    "par": "123 distribuidoras no cadastro e 104 no Território",
+    "classe": 2,
+    "causa": "As 19 sem município na relação de 2026 não têm balanço de 2025 (encerradas ou absorvidas).",
+    "onde_explica": "Universo do painel p002",
+    "fonte": "territorio_distribuidoras.csv; perdas_distribuidoras.csv (ano 2025)",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "qualidade",
+    "par": "102 distribuidoras em Qualidade e 21 fora",
+    "classe": 2,
+    "causa": "102 têm indicadores de 2025; as 21 fora são as 19 acima mais ENF e CODESAM, que estão na relação de municípios e não têm conjuntos na base de continuidade.",
+    "onde_explica": "Universo do p052 (ENF e CODESAM só no teste)",
+    "fonte": "qualidade_distribuidoras_anual.csv (ano 2025)",
+    "data": "2025"
+   },
+   {
+    "area": "perdas",
+    "par": "123, 103, 83, 51 e 49 distribuidoras em Perdas",
+    "classe": 2,
+    "causa": "123 no SAMP; 103 com balanço em 2025; 83 comparáveis; 51 concessionárias do ano completo (base da soma nacional); 49 com os mesmos meses nos dois anos (base do acumulado). Não foi identificado quais 2 concessionárias saem do acumulado (51 para 49).",
+    "onde_explica": "Universo do mapa e resposta completa",
+    "fonte": "perdas_distribuidoras.csv; perdas_nacional.csv; perdas_acumulado_ano.csv; perdas.json",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "perdas",
+    "par": "Taxa nacional de perdas: 14,7%, 14,75%, 14,77% e 14,8%",
+    "classe": 1,
+    "causa": "Número de casas diferente entre cartão (1) e texto (2). Regra única de duas casas na mesma medida, também nas páginas de Empresas.",
+    "onde_explica": "Cartões de taxa, acumulado e não técnica",
+    "fonte": "perdas_nacional.csv (taxa_total_pct 14,75); perdas_acumulado_ano.csv",
+    "data": "2025"
+   },
+   {
+    "area": "perdas",
+    "par": "CERPRO: 14,64 na barra e 14,65 na tabela",
+    "classe": 2,
+    "causa": "A barra soma três componentes já arredondadas (9,98 + 0,00 + 4,66); a coluna Perdas soma antes de arredondar (14,6465). Ocorre em 23 das 80 distribuidoras.",
+    "onde_explica": "Nota sob o gráfico de custo",
+    "fonte": "perdas_tarifa_b1.csv (CERPRO, REH 1.906/2026)",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "conta",
+    "par": "Conta de 150 kWh: R$ 126,00 e R$ 126,01",
+    "classe": 2,
+    "causa": "As parcelas arredondadas somam 126,01; o total sem arredondar é 126,0045.",
+    "onde_explica": "Nota sob a memória de cálculo (só quando há diferença)",
+    "fonte": "conta_tarifas_b1_vigentes.csv (CERIPa); conta.json (bandeira vigente)",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "inclusao e visao-geral",
+    "par": "Tarifa Social em mai/2025 e em jun/2025",
+    "classe": 2,
+    "causa": "O SCS publicado vai até jun/2025, mas jun/2025 é incompleto (98 distribuidoras; 4 ausentes). O último mês completo é mai/2025 (102).",
+    "onde_explica": "Quadro de fonte defasada em Inclusão; cartão e regra de atualidade na Visão geral; passo 4 da trilha de custo",
+    "fonte": "inclusao_tsee_mensal.csv; inclusao.json; publicacao.json (aneel_scs.atualidade)",
+    "data": "SCS gerado em 20/09/2026"
+   },
+   {
+    "area": "inclusao",
+    "par": "72 municípios acima de 100 e faixas que somam 75",
+    "classe": 2,
+    "causa": "Maior que 100 estrito contra faixa que começa em 100 inclusive; três municípios têm razão exatamente 100,0.",
+    "onde_explica": "Frase em O que mudou da cobertura (Analisar)",
+    "fonte": "inclusao_municipios.csv (razao_proxy_atualizadas)",
+    "data": "mar/2026"
+   },
+   {
+    "area": "conta",
+    "par": "IPCA de 4,22% repetido nos reajustes",
+    "classe": 2,
+    "causa": "Não era repetição: a mudança anterior da distribuidora mais recente é de 12 meses antes. Os meses entram no texto.",
+    "onde_explica": "Texto do ranking de reajustes",
+    "fonte": "conta.json (reajustes.ultimos); conta_reajuste_vs_ipca.csv",
+    "data": "ago/2026"
+   },
+   {
+    "area": "conta",
+    "par": "87 de 102 distribuidoras acima do IPCA",
+    "classe": 0,
+    "causa": "Conferido: 87 acima e 15 abaixo ou iguais (8 negativas).",
+    "onde_explica": "Veredito e nota do ranking",
+    "fonte": "conta_reajuste_vs_ipca.csv (janela 12)",
+    "data": "ago/2026"
+   },
+   {
+    "area": "inclusao",
+    "par": "Acesso: 7 de 7, 25, 23 e 26 linhas",
+    "classe": 2,
+    "causa": "São tabelas diferentes (UFs do PASI, localidades, Luz para Todos por UF, anos). Rótulo vem do botão da TabelaInterativa; não alterado.",
+    "onde_explica": "Sem alteração",
+    "fonte": "n/a",
+    "data": "n/a"
+   },
+   {
+    "area": "conta",
+    "par": "81, 80 e 102 distribuidoras",
+    "classe": 2,
+    "causa": "81 vigentes em 30/09/2026; 80 com componentes; 102 com tarifa nas duas datas da janela. Só o universo do p048 traz a explicação; não alterado.",
+    "onde_explica": "Universo do p048",
+    "fonte": "conta.json",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "carga",
+    "par": "Carga: cartão +11,4% e texto +11,45% (e 10,5% e 10,54%)",
+    "classe": 1,
+    "causa": "Cartão com 1 casa e texto com 2; valor completo 11,4498. Cartões passaram a 2 casas. Resíduo: a ficha Comprove ainda mostra 1 casa (valor_exibido sai do pipeline).",
+    "onde_explica": "Cartões do bloco",
+    "fonte": "carga_comparacoes.csv (SIN, 7d, equivalente)",
+    "data": "28/09/2026"
+   },
+   {
+    "area": "carga",
+    "par": "Últimos 28 dias e mês corrente idênticos",
+    "classe": 2,
+    "causa": "Mesmos dias (01/09/2026 a 28/09/2026).",
+    "onde_explica": "Frase sob a composição de calendário",
+    "fonte": "carga_comparacoes.csv (janelas 28d e mes_corrente)",
+    "data": "28/09/2026"
+   },
+   {
+    "area": "carga",
+    "par": "Clima e calendário: +11,06% (6 dias) e +11,45% (7 dias)",
+    "classe": 2,
+    "causa": "A janela do modelo tem 6 dias (a temperatura de 28/09 ainda não foi publicada) e o 11,06 é calculado sobre a média dos logaritmos diários, não sobre a média simples (7 dias na média simples, 11,45; 6 dias na média simples, 10,90).",
+    "onde_explica": "Parágrafo de defasagem da temperatura e resposta da decomposição",
+    "fonte": "carga_diaria.csv (SIN_calculado)",
+    "data": "27/09/2026"
+   },
+   {
+    "area": "carga",
+    "par": "Perfil horário: 83.065 e 80.189 MWmed em ago/2026",
+    "classe": 2,
+    "causa": "Dois produtos do ONS: carga global verificada e carga de energia diária.",
+    "onde_explica": "Nota sob o aviso de atualidade",
+    "fonte": "carga_verificada_diaria.csv; carga_diaria.csv",
+    "data": "ago/2026"
+   },
+   {
+    "area": "agua",
+    "par": "Reservatórios: queda de 3.188,7 (até 28/09) e de 3.297,8 MWmês (até 29/09)",
+    "classe": 2,
+    "causa": "Janelas que terminam em dias diferentes.",
+    "onde_explica": "Frase sob a linha Unidade",
+    "fonte": "agua_subsistemas_diario.csv (SE)",
+    "data": "28 e 29/09/2026"
+   },
+   {
+    "area": "carga",
+    "par": "MMGD por subsistema só desde set/2025; SIN desde fev/2019",
+    "classe": 2,
+    "causa": "Cobertura publicada diferente.",
+    "onde_explica": "Nota sob o gráfico da MMGD mensal",
+    "fonte": "carga_detalhe.json",
+    "data": "ago/2026"
+   },
+   {
+    "area": "agua e visao-geral",
+    "par": "EAR de 61,5% (29/09) e de 61,6% (28/09 na Visão geral)",
+    "classe": 2,
+    "causa": "Capturas diferentes do ONS: a Visão geral lê a captura de 30/09 02:19 UTC (termina em 28/09); o painel de Água usa recaptura de 30/09 23:51 UTC, que traz 29/09 e revisou 28/09 para 61,7%.",
+    "onde_explica": "Complemento do exemplo no verbete EAR e passo 2 da trilha da água",
+    "fonte": "hidrologia.json; agua_subsistemas_diario.csv; agua_detalhe.json",
+    "data": "28 e 29/09/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "Carga: +10,5% e +14,6%",
+    "classe": 2,
+    "causa": "A média de 7 dias (22 a 28/09/2026) compara as mesmas datas; o dia 28/09/2026 (88.896) é comparado com o mesmo dia da semana, 29/09/2025 (77.549).",
+    "onde_explica": "Para ler junto, sob a frase Carga e no cartão Carga",
+    "fonte": "carga_diaria.csv; carga.json",
+    "data": "28/09/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "Rede: 4.842 e 5.184 MWmed na fronteira NE para SE",
+    "classe": 2,
+    "causa": "Média de 30 dias contra fluxo de um dia.",
+    "onde_explica": "Frase Rede e cartão Rede",
+    "fonte": "rede.json (fronteiras NE_SE)",
+    "data": "28/09/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "CMO do Norte R$ 461,46 e R$ 42,43",
+    "classe": 0,
+    "causa": "Dado real do ONS, sem erro do observatório: o Norte difere de cada um dos outros três por 23 semanas seguidas desde 01/05/2026. O motivo não está no dado e a nota não o atribui.",
+    "onde_explica": "Nota na regra de CMO publicado pelo ONS (P007)",
+    "fonte": "cmo.json; cmo_semanal.csv",
+    "data": "semana de 02/10/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "123, 102, 51 e 49 distribuidoras na home e no seletor",
+    "classe": 2,
+    "causa": "123 é o índice inteiro (71 concessionárias e 52 permissionárias, 20 inativas); 103 com dado de 2025; 102 com DEC e FEC de 2025; 51 concessionárias do total nacional; 49 com percentual técnico inferido do SAMP.",
+    "onde_explica": "Seletores da home e verbete do percentual regulatório",
+    "fonte": "empresas.json; perdas.json",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "Rótulo 123 com dados no seletor de Perdas",
+    "classe": 1,
+    "causa": "Incluía 20 entidades extintas; corrigido.",
+    "onde_explica": "Seletor de Perdas",
+    "fonte": "empresas.json",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "visao-geral",
+    "par": "Cartão da tarifa misturava R$/kWh e R$/MWh; erros de texto 'até X a Y', 'diaria' e '1 dia normais'",
+    "classe": 1,
+    "causa": "Erro de unidade e de texto, corrigido.",
+    "onde_explica": "Cartão e frases da Visão geral",
+    "fonte": "n/a",
+    "data": "n/a"
+   },
+   {
+    "area": "aprenda",
+    "par": "GSF de 78,9% e de 75,9% em ago/2026",
+    "classe": 2,
+    "causa": "Mesmo mês e mesma geração (40.397 MWmed); muda só o denominador: garantia física modulada e ajustada (51.185) contra sazonalizada (53.212).",
+    "onde_explica": "Complemento do exemplo no verbete GSF",
+    "fonte": "mercado.json (mre_gsf.mensal)",
+    "data": "ago/2026"
+   },
+   {
+    "area": "dados",
+    "par": "415 conjuntos de 18 órgãos no catálogo e 151 de 13 no rodapé e na Saúde",
+    "classe": 2,
+    "causa": "O catálogo conta conjuntos; o rodapé e a Saúde contam integrações (uso de um conjunto por um módulo). 132 conjuntos têm integração, 17 têm mais de uma e 3 integrações reúnem mais de um conjunto. Os cartões da Saúde passaram a dizer integrações; rodapé alinhado.",
+    "onde_explica": "Aviso em Dados e em Saúde; rodapé (textoRodapeDasFontes)",
+    "fonte": "catalogo.json; publicacao.json; dados_catalogo.csv; dados_conjuntos.csv",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "dados",
+    "par": "Horários de 01/10 04:56, 01/10 08:22 e 08/10",
+    "classe": 2,
+    "causa": "Cada um mede uma coisa: expansão, catálogo e saúde, manifesto de arquivos. Rótulos novos em cada cabeçalho e aviso Que data é esta? em Reprodução.",
+    "onde_explica": "Cabeçalho das quatro páginas; Reprodução",
+    "fonte": "expansao.json; catalogo.json; publicacao.json; manifesto.json; meta.json",
+    "data": "01/10 e 08/10/2026"
+   },
+   {
+    "area": "dados",
+    "par": "Coleta da CCEE autorizada em 06/10/2026 numa página de referência 01/10/2026",
+    "classe": 2,
+    "causa": "06/10 é a data da decisão, não de dado. Achado: catalogo.json e publicacao.json (01/10) não foram regerados depois da coleta da CCEE de 06/10; as fichas da CCEE ainda mostram última captura de 30/09 enquanto o Mercado usa as de 06/10. A correção é regerar as golds (pipeline).",
+    "onde_explica": "Metodologia e fichas da CCEE",
+    "fonte": "mercado.json (acesso_ccee.decisao); publicacao.json",
+    "data": "06/10/2026"
+   },
+   {
+    "area": "dados",
+    "par": "Maior revisão relativa: 20.656,6% e 20656,6%",
+    "classe": 1,
+    "causa": "A gold escreve sem ponto de milhar; a página formata. A causa de origem fica no pipeline.",
+    "onde_explica": "Cartão de revisões da Saúde",
+    "fonte": "gold, evidencias.maior_revisao_relativa.valor_exibido",
+    "data": "01/10/2026"
+   },
+   {
+    "area": "dados",
+    "par": "Primeira captura em 27/09 e silvers reconstruídos em 29 e 30/09",
+    "classe": 2,
+    "causa": "Coisas diferentes; juntas numa limitação com as duas datas e a primeira revisão registrada (30/09).",
+    "onde_explica": "Limitação na Saúde",
+    "fonte": "publicacao.json; meta.json",
+    "data": "29 e 30/09/2026"
+   },
+   {
+    "area": "pld",
+    "par": "28 registros em PLD e 56 registros de 2 rodadas em Previsões",
+    "classe": 1,
+    "causa": "PLD lia só o trecho legado da gold (28 linhas, 1 rodada); Previsões lia o CSV completo. Corrigido: 56 registros de 2 rodadas e última execução como referência experimental de 30/09/2026 com o modelo B0.",
+    "onde_explica": "Histórico de previsões em PLD",
+    "fonte": "previsoes_emissoes.csv (linhas e run_id)",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "pld",
+    "par": "4.978 horas em Limites e 4.866 em CMO e formação (SE, 2026)",
+    "classe": 2,
+    "causa": "Limites conta todas as horas do ano; CMO e formação conta só as horas com CMO do DESSEM publicado.",
+    "onde_explica": "Nota em CMO e formação com os dois números",
+    "fonte": "pld_cmo_horario.csv; pld_limites_diario.csv",
+    "data": "2026 até 30/09"
+   },
+   {
+    "area": "pld",
+    "par": "R$ 155,21 (previsões) e R$ 135,25 (PLD) no SE em 30/09/2026",
+    "classe": 2,
+    "causa": "155,21 é a média das 17 horas de 07h a 23h; 135,25 é a média das 24 horas.",
+    "onde_explica": "Previsões",
+    "fonte": "pld_cmo_horario.csv (PLD_SE)",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "pld",
+    "par": "Percentil 60,3 nos cartões e 38,7% no Histórico",
+    "classe": 2,
+    "causa": "Cartão: média do dia contra as 2.099 médias diárias desde 2021; Histórico: contra os 150 dias de setembro de anos anteriores.",
+    "onde_explica": "PLD e Histórico",
+    "fonte": "pld_diario.csv (SE)",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "pld",
+    "par": "Média mensal de ago/2026 nos cartões e resposta de set/2026",
+    "classe": 2,
+    "causa": "Os cartões usam o último mês completo em carga; set/2026 tem 672 de 720 horas com carga.",
+    "onde_explica": "Histórico",
+    "fonte": "pld_mensal.csv (horas, horas_com_carga)",
+    "data": "ago e set/2026"
+   },
+   {
+    "area": "pld",
+    "par": "55 horas em PLD e a linha Últimos 30 dias em Diferenças regionais",
+    "classe": 2,
+    "causa": "Mesmo limiar de R$ 1,00/MWh e mesma janela; a nota diz isso.",
+    "onde_explica": "Diferenças regionais",
+    "fonte": "pld_cmo_horario.csv",
+    "data": "01/09 a 30/09/2026"
+   },
+   {
+    "area": "geracao",
+    "par": "Térmicas Tipo III: 6,9% no texto e 2,6% no gráfico",
+    "classe": 2,
+    "causa": "O texto soma hidráulica, eólica, solar e térmica do grupo; o gráfico mostra só a parte térmica.",
+    "onde_explica": "Nota abaixo do gráfico",
+    "fonte": "geracao_detalhe.json (matriz diária)",
+    "data": "12 meses até ago/2026"
+   },
+   {
+    "area": "mercado",
+    "par": "Mercado livre: 45,3% (EPE) e 42,4% (CCEE)",
+    "classe": 2,
+    "causa": "A EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado com perdas da rede básica rateadas. A diferença não foi decomposta e a página diz isso.",
+    "onde_explica": "Nota ao lado dos cartões e veredito do P032",
+    "fonte": "mercado.json; CSV de consumo da EPE e da CCEE",
+    "data": "set/2025 a ago/2026"
+   },
+   {
+    "area": "mercado",
+    "par": "GSF de 12 meses: 81,8% (cartão) e 80,43% (mesma janela do boletim)",
+    "classe": 2,
+    "causa": "Janelas diferentes: o cartão usa set/2025 a ago/2026 e a razão do observatório na janela do boletim (ago/2025 a jul/2026) dá 80,43%.",
+    "onde_explica": "notaGsfDozeMeses e veredito do P034",
+    "fonte": "CSV da CCEE (geração e garantia física); mercado.json",
+    "data": "ago/2025 a ago/2026"
+   },
+   {
+    "area": "mercado",
+    "par": "GSF de 12 meses: 92,55% no InfoMercado nº 229",
+    "classe": 3,
+    "causa": "O boletim publica 92,55% para o ajuste médio de 12 meses até jul/2026. A diferença de 12,12 pontos percentuais para os 80,43% do observatório na mesma janela não é reproduzível e a fonte não a explica. A página diz as duas janelas.",
+    "onde_explica": "notaGsfDozeMeses",
+    "fonte": "InfoMercado nº 229; mercado.json",
+    "data": "jul/2026"
+   },
+   {
+    "area": "mercado",
+    "par": "ESS: R$ 958,1 milhões (boletim do MME) e R$ 1,60 bilhão",
+    "classe": 2,
+    "causa": "O boletim soma 6 meses (jan a jun/2026) e inclui R$ 6,0 milhões de resposta da demanda; nesses meses o ESS da CCEE é R$ 952,1 milhões. O R$ 1,60 bilhão cobre 12 meses, sem resposta da demanda.",
+    "onde_explica": "notaEssMme",
+    "fonte": "mercado.json; boletim do MME",
+    "data": "jan a jun/2026; set/2025 a ago/2026"
+   },
+   {
+    "area": "expansao",
+    "par": "Eólicas: 51,3 GW (34,9 em operação e 16,4 em implantação) e 49,6 GW no PDE 2035",
+    "classe": 2,
+    "causa": "Camadas diferentes (SIGA 30/09/2026, RALIE 18/09/2026, cenário de dez/2035) que não se somam. A maior virou a de maior capacidade entre as de correspondência direta; a hidrelétrica fica fora da comparação.",
+    "onde_explica": "Nota em Cenários",
+    "fonte": "CSV de capacidade por UF, tipo e origem; figuras do PDE",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "expansao",
+    "par": "177, 63 e 50 fotografias; datas 22/09/2025 e 22/08/2025",
+    "classe": 2,
+    "causa": "177 publicadas desde 17/06/2021; 63 mensais; 50 com janela de 12 meses encerrada (confiabilidade); 51 pares de 12 meses alimentam a revisão. 22/08/2025 é a última janela encerrada e 22/09/2025 a 18/09/2026 é o último par.",
+    "onde_explica": "Parágrafo Data-base preservada e notaDatasCronograma",
+    "fonte": "CSV de confiabilidade e de revisão",
+    "data": "18/09/2026"
+   },
+   {
+    "area": "expansao e empresas",
+    "par": "RALIE: 2.246 usinas e 95.888,3 MW; SIGA: 2.244 usinas e 96.298,0 MW",
+    "classe": 2,
+    "causa": "Listas e medidas diferentes: RALIE soma unidades geradoras em implantação (18/09/2026); SIGA soma potência outorgada nas fases Construção e Construção não iniciada (30/09/2026). Das 2.246 do RALIE, 2.217 estão nessas fases do SIGA, 23 já estão em operação e 6 não aparecem; das 2.244 do SIGA, 27 não estão no RALIE.",
+    "onde_explica": "notaRalieSiga em Carteira; conciliação em Empresas, ativos (Analisar)",
+    "fonte": "expansao_carteira_ralie.csv; expansao_usinas_siga.csv; empresas_ativos.csv",
+    "data": "18/09 e 30/09/2026"
+   },
+   {
+    "area": "expansao",
+    "par": "Em operação: 220.658,9 MW (cartão) e 221.382,6 MW (gráfico)",
+    "classe": 2,
+    "causa": "Fiscalizada contra outorgada, a mesma medida das outras duas fases; a frase vem antes do gráfico.",
+    "onde_explica": "Carteira",
+    "fonte": "expansao_usinas_siga.csv",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "mercado",
+    "par": "Referência de agentes até 10/2026 e até ago/2026",
+    "classe": 1,
+    "causa": "10/2026 era a data da série mais longa (lista de associados); a referência passou a dizer CCEE até ago/2026 (consumo, agentes e encargos).",
+    "onde_explica": "Cabeçalho de Agentes",
+    "fonte": "mercado.json",
+    "data": "ago/2026"
+   },
+   {
+    "area": "geracao",
+    "par": "Energia não gerada em MWh e em GWh; três e quatro razões oficiais",
+    "classe": 1,
+    "causa": "Cartão e texto usam GWh derivado do mesmo campo em MWh; casas de 3 para 1; o texto passou a dizer quatro razões e a nota diz que o parecer de acesso não teve energia.",
+    "onde_explica": "Restrições",
+    "fonte": "geracao_detalhe.json",
+    "data": "n/a"
+   },
+   {
+    "area": "regulacao",
+    "par": "Consultas abertas: 8 e 7",
+    "classe": 2,
+    "causa": "O cartão conta em 01/10/2026 (data de referência); o parágrafo recalcula na data de leitura, 08/10/2026; a Consulta Pública nº 30/2026 (prazo até 02/10/2026) saiu da contagem.",
+    "onde_explica": "Nota do cartão e textoMudancaDeAbertas",
+    "fonte": "regulacao_consultas.csv; regulacao.json",
+    "data": "01/10 e 08/10/2026"
+   },
+   {
+    "area": "empresas",
+    "par": "22.798 usinas e 220.658,9 MW contra 22.665 e 220.501,8 MW",
+    "classe": 2,
+    "causa": "A fronteira de controle exclui 133 usinas e 157,1 MW: 123 sem proprietário informado ou com participações que não somam 100%, mais 10 sem potência fiscalizada.",
+    "onde_explica": "Síntese e Controle (textoFronteiraNoCadastro)",
+    "fonte": "empresas.json; empresas_ativos.csv",
+    "data": "30/09/2026"
+   },
+   {
+    "area": "empresas",
+    "par": "Mesmo CNPJ com nomes diferentes na cadeia de controle",
+    "classe": 2,
+    "causa": "O nível da cadeia mostra a razão social registrada para o CNPJ; o sócio mostra o nome declarado à ANEEL. Casos testados: CEMIG-D e Âmbar Amazonas. Data de referência da série não verificada.",
+    "onde_explica": "Fichas (data-nomes-cnpj)",
+    "fonte": "empresas_cadeia.json",
+    "data": "até 30/09/2026"
+   },
+   {
+    "area": "empresas",
+    "par": "Finanças: texto apontava bloqueio abaixo, aviso estava em outro lugar",
+    "classe": 1,
+    "causa": "Texto errado, corrigido: aviso acima, antes da caixa que o cita.",
+    "onde_explica": "Finanças",
+    "fonte": "n/a",
+    "data": "n/a"
+   }
+  ]
+ }
+}
