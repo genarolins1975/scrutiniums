@@ -1,4 +1,4 @@
-"""Conferência da despesa da DCA e elegibilidade para comparação (política 1.1).
+"""Conferência da despesa da DCA e elegibilidade para comparação (política 1.2; a 1.1 somava as linhas da MSC em módulo).
 
 Três dimensões separadas em cada observação de despesa:
 
@@ -30,10 +30,26 @@ import os
 
 from pipeline.eficiencia import base
 
-VERSAO_POLITICA = "1.1"
+VERSAO_POLITICA = "1.2"
 TOL_ARREDONDAMENTO = 1.0          # reais
 TOL_RELATIVA = 0.001              # 0,1% do valor da DCA
 MSC_CONTAS_LIQUIDADO = ("6221303", "6221304", "6221307")
+
+
+def saldo_liquido(linha):
+    """Saldo da linha da MSC com o sinal da natureza do valor (política 1.2).
+
+    A MSC informa o valor em módulo e a natureza do valor ("D" débito, "C" crédito) de cada linha
+    (Anexo I da Portaria STN 642/2019, "Natureza do Valor"). As contas 6.2.2.1.3.xx são de natureza
+    credora: uma linha "C" aumenta o saldo e uma linha "D" o reduz (o saldo da conta é créditos menos
+    débitos). Somar todas as linhas em módulo, como fazia a política 1.1, contava duas vezes a
+    liquidação transferida de uma conta para outra no encerramento. Natureza ausente ou diferente de
+    "C" e "D" não é interpretada: levanta ValueError."""
+    nat = linha.get("natureza_conta")
+    if nat not in ("C", "D"):
+        raise ValueError(f"natureza do valor inválida na MSC: {nat!r}")
+    v = float(linha["valor"])
+    return v if nat == "C" else -v
 
 ELEGIVEIS = {"CONFERE", "DIFERENCA_MENOR", "RECONCILIADA_MSC"}
 
@@ -88,7 +104,7 @@ def msc(cod, ano):
     for x in base.le_json_gz(caminho):
         if str(x.get("funcao")) != "12" or str(x.get("conta_contabil", ""))[:7] not in MSC_CONTAS_LIQUIDADO:
             continue
-        v = float(x["valor"])
+        v = saldo_liquido(x)
         tot += v
         if str(x.get("natureza_despesa") or "")[2:4] == "91":
             intra += v

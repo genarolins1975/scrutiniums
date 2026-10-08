@@ -31,6 +31,7 @@ Duas razões, cada uma com numerador, denominador, universo e período explícit
 import os
 
 from pipeline.eficiencia import base
+from pipeline.eficiencia import conferencia as CF
 
 MSC_CONTAS_LIQUIDADO = ("6221303", "6221304", "6221307")
 TOL = 1.0            # reais, igual à política de conferência (conferencia.TOL_ARREDONDAMENTO)
@@ -90,11 +91,16 @@ def ponte(cod, ano, dca):
     linhas = base.le_json_gz(caminho)
     soma = {b: 0.0 for b in BALDES}
     n = 0
+    n_debito, valor_debito = 0, 0.0
     for x in linhas:
         if str(x.get("funcao")) != "12" or str(x.get("conta_contabil", ""))[:7] not in MSC_CONTAS_LIQUIDADO:
             continue
-        soma[balde(x)] += float(x["valor"])
+        v = CF.saldo_liquido(x)  # C soma, D subtrai (política de conferência 1.2)
+        soma[balde(x)] += v
         n += 1
+        if v < 0:
+            n_debito += 1
+            valor_debito += -v
     soma = {k: round(v, 2) for k, v in soma.items()}
     sem_intra = round(sum(v for k, v in soma.items() if k != "intra"), 2)
     dif = None if dca is None else round(sem_intra - dca, 2)
@@ -109,7 +115,8 @@ def ponte(cod, ano, dca):
     else:
         situacao = "NAO_RECONCILIA"
     return {
-        "baldes": soma, "total_sem_intra": sem_intra, "linhas_msc": n, "sha256_msc": base.sha256_arquivo(caminho),
+        "baldes": soma, "total_sem_intra": sem_intra, "linhas_msc": n,
+        "linhas_debito": n_debito, "valor_debito": round(valor_debito, 2), "sha256_msc": base.sha256_arquivo(caminho),
         "diferenca_dca": dif, "situacao": situacao, "reconcilia": situacao in ("CONFERE", "DIFERENCA_MENOR"),
         "diferenca_pct_dca": None if not dca else round(100 * dif / dca, 4),
         "classificavel": abs(soma["sem_natureza"]) <= TOL,

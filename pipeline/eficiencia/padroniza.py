@@ -25,7 +25,7 @@ import functools
 import os
 import re
 
-from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes
+from pipeline.eficiencia import base, conferencia as CF, derivados as DV, diagnostico_pares as DG, entes
 
 ANOS_FINANCEIROS = list(range(2021, 2026))
 ANOS_CENSO = list(range(2021, 2026))
@@ -588,7 +588,11 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
                                    f"MSC de dezembro de {ano}, função 12: {rotulo}", componente=k, elegivel_comparacao=pt["reconcilia"],
                                    nota=None, reconcilia=pt["reconcilia"], situacao_msc=pt["situacao"], diferenca_dca=pt["diferenca_dca"]))
             if not pt["reconcilia"]:
-                if pt["situacao"] == "SEM_LINHAS":
+                dg = DG.par(cod, ano, nome, d["valor"])
+                nota_causa = DG.nota_para_par(dg, pt["total_sem_intra"], pt["diferenca_pct_dca"]) if d["conferencia"]["situacao"] != "PERIMETRO_INTRA_MSC" else None
+                if nota_causa is not None:
+                    nota = nota_causa
+                elif pt["situacao"] == "SEM_LINHAS":
                     nota = ("A Matriz de Saldos Contábeis de dezembro não traz linhas de despesa liquidada na função Educação para este ente e exercício "
                             "(não entregue ou entregue sem a função): a despesa de aplicação direta não pode ser separada. A DCA segue válida para a despesa total.")
                 else:

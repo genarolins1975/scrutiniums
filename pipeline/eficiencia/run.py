@@ -59,10 +59,23 @@ def _msc_todas():
             print(f"MSC {nome} {ano}: {n} linhas na resposta, {f} da função 12", flush=True)
 
 
+def _msc_pares(pares):
+    """Recoleta a MSC (com o resumo da resposta completa) e o extrato de entregas de pares "código:ano"."""
+    from pipeline.eficiencia import entes
+    from pipeline.eficiencia.fontes import siconfi
+    nomes = {c: n for c, n, _ in entes.CAPITAIS}
+    for par in pares.split(","):
+        cod, ano = (int(x) for x in par.split(":"))
+        n, f = siconfi.coleta_msc_educacao(cod, ano)
+        e = siconfi.coleta_msc_entregas(cod, ano)
+        print(f"MSC {nomes[cod]} {ano}: {n} linhas na resposta, {f} da função 12; {e} entregas de MSC no extrato", flush=True)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--coleta-siconfi", action="store_true")
     ap.add_argument("--coleta-msc", action="store_true", help="recoleta a MSC de dezembro de todas as capitais e exercícios (rede)")
+    ap.add_argument("--msc-pares", metavar="COD:ANO,...", help="recoleta a MSC, o resumo da resposta completa e o extrato de entregas só dos pares indicados (rede)")
     ap.add_argument("--coleta-populacao", action="store_true", help="recoleta a população do IBGE (rede)")
     ap.add_argument("--coleta-ocde", action="store_true", help="recoleta tamanho de turma e despesa por estudante da OCDE (rede)")
     ap.add_argument("--coleta-siope", action="store_true", help="recoleta os indicadores por aluno do SIOPE, examinados e não adotados (rede)")
@@ -76,6 +89,8 @@ def main(argv=None):
         _msc_para_divergencias()
     if a.coleta_msc:
         _msc_todas()
+    if a.msc_pares:
+        _msc_pares(a.msc_pares)
     if a.coleta_populacao:
         from pipeline.eficiencia.fontes import ibge_populacao
         ibge_populacao.coleta()

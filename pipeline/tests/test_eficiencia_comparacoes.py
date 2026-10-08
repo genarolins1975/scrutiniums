@@ -14,11 +14,11 @@ import statistics
 import tempfile
 import unittest
 
-from pipeline.eficiencia import base, derivados as DV, entes, gold, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes, gold, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
 
 
-def linha(nd, valor, sub="361", conta="622130300"):
-    return {"funcao": "12", "subfuncao": sub, "natureza_despesa": nd, "conta_contabil": conta, "valor": valor}
+def linha(nd, valor, sub="361", conta="622130300", nat="C"):
+    return {"funcao": "12", "subfuncao": sub, "natureza_despesa": nd, "conta_contabil": conta, "valor": valor, "natureza_conta": nat}
 
 
 class TestBaldes(unittest.TestCase):
@@ -99,7 +99,7 @@ class TestPonteSintetica(unittest.TestCase):
         self.assertFalse(DV.ponte(1, 2025, total * 1.01)["reconcilia"])
 
     def test_msc_sem_linhas_da_funcao_12(self):
-        self.grava(1, 2025, [{"funcao": "10", "subfuncao": "301", "natureza_despesa": "33903000", "conta_contabil": "622130300", "valor": 5.0}])
+        self.grava(1, 2025, [{"funcao": "10", "subfuncao": "301", "natureza_despesa": "33903000", "conta_contabil": "622130300", "valor": 5.0, "natureza_conta": "C"}])
         pt = DV.ponte(1, 2025, 1000.0)
         self.assertEqual(pt["situacao"], "SEM_LINHAS")
         self.assertFalse(pt["reconcilia"])
@@ -114,6 +114,27 @@ class TestPonteSintetica(unittest.TestCase):
 
     def test_sem_captura_devolve_none(self):
         self.assertIsNone(DV.ponte(9, 2025, 10.0))
+
+    def test_linha_de_natureza_d_reduz_o_saldo_em_vez_de_somar(self):
+        """Política 1.2: a MSC informa o valor em módulo e a natureza D ou C. A liquidação transferida da conta
+        6.2.2.1.3.03 para a .07 no encerramento aparece como C e D iguais na .03: o saldo líquido é zero e a
+        liquidação é contada uma vez só (na .07)."""
+        self.grava(1, 2025, [
+            linha("31901100", 800.0, conta="622130400"),
+            linha("31901100", 200.0, conta="622130300"), linha("31901100", 200.0, conta="622130300", nat="D"),
+            linha("31901100", 200.0, conta="622130700"),
+        ])
+        pt = DV.ponte(1, 2025, 1000.0)
+        self.assertEqual(pt["situacao"], "CONFERE")
+        self.assertEqual(pt["baldes"]["rede_propria"], 1000.0)
+        self.assertEqual((pt["linhas_debito"], pt["valor_debito"]), (1, 200.0))
+
+    def test_natureza_do_valor_ausente_ou_invalida_levanta(self):
+        for nat in (None, "", "X"):
+            with self.assertRaises(ValueError):
+                CF.saldo_liquido({"valor": 1.0, "natureza_conta": nat})
+        self.assertEqual(CF.saldo_liquido({"valor": 5.0, "natureza_conta": "C"}), 5.0)
+        self.assertEqual(CF.saldo_liquido({"valor": 5.0, "natureza_conta": "D"}), -5.0)
 
 
 class TestEstatisticas(unittest.TestCase):
@@ -313,13 +334,40 @@ class TestComparacoesPublicadas(unittest.TestCase):
         self.assertIsNone(sl["valor"])
         self.assertEqual(sl["status"], "NAO_COMPARAVEL")
         self.assertIn("não traz linhas", sl["nota"])
-        belem = self.ob("edu.despesa.por_matricula_rede_propria", 1501402, 2021)
-        self.assertIsNone(belem["valor"])
-        self.assertIn("0,1%", belem["nota"])
+        nat = self.ob("edu.despesa.por_matricula_rede_propria", 2408102, 2023)   # Natal: MSC abaixo da DCA em todas as funções
+        self.assertIsNone(nat["valor"])
+        self.assertIn("todas as funções", nat["nota"])
+        rio = self.ob("edu.despesa.por_matricula_rede_propria", 3304557, 2022)   # Rio: nenhuma linha da resposta traz função
+        self.assertIsNone(rio["valor"])
+        self.assertIn("Nenhuma das", rio["nota"])
 
-    def test_florianopolis_2023_linhas_sem_natureza_impedem_a_razao(self):
-        o = self.ob("edu.despesa.por_matricula_rede_propria", 4205407, 2023)
-        self.assertIsNone(o["valor"])
+    def test_pares_corrigidos_pelo_saldo_liquido_agora_tem_valor(self):
+        """Os cinco casos de 2025 e os demais pares que a política 1.1 deixava sem valor por somar linhas D em módulo."""
+        for cod, ano in ((2800308, 2025), (1501402, 2025), (5208707, 2025), (2408102, 2025), (1721000, 2025), (1501402, 2021), (4205407, 2023)):
+            o = self.ob("edu.despesa.por_matricula_rede_propria", cod, ano)
+            self.assertIsNotNone(o["valor"], (cod, ano))
+            self.assertEqual(o["calculo"]["denominador_ref"], "edu.matriculas.rede_municipal")
+
+    def test_sete_pares_seguem_sem_valor_com_a_causa_registrada(self):
+        sem = sorted((o["ente"], o["ano"]) for o in self.g["observacoes"]
+                     if o["indicador"] == "edu.despesa.por_matricula_rede_propria" and o["componente"] == "nominal" and o["valor"] is None)
+        self.assertEqual(sem, sorted([(2111300, 2022), (2111300, 2023), (3304557, 2021), (3304557, 2022), (2408102, 2022), (2408102, 2023), (5002704, 2021)]))
+        causas = {(d["ente"], d["ano"]): d["causa"] for d in self.g["diagnostico_pares_msc"]}
+        self.assertEqual(causas[(2111300, 2022)], "MSC_SEM_FUNCAO_12")
+        self.assertEqual(causas[(2408102, 2023)], "MSC_ABAIXO_EM_TODAS_AS_FUNCOES")
+        self.assertEqual(causas[(5002704, 2021)], "PERIMETRO_INTRA")
+        self.assertEqual(causas[(3304557, 2021)], "EM_ABERTO")
+
+    def test_diagnostico_cobre_os_28_pares_da_politica_1_1(self):
+        diag = self.g["diagnostico_pares_msc"]
+        self.assertEqual(len(diag), 28)
+        self.assertEqual(sum(1 for d in diag if d["causa"] == "SINAL_CORRIGIDO"), 21)
+        for d in diag:
+            self.assertEqual(d["situacao_politica_1_1"], "NAO_RECONCILIA")
+            if d["causa"] == "SINAL_CORRIGIDO":
+                self.assertEqual(d["situacao_politica_1_2"], "CONFERE")
+                self.assertGreater(d["linhas_d"], 0)
+            self.assertTrue(d["evidencia"])
 
     def test_catalogo_define_o_rotulo_por_matricula(self):
         f = next(i for i in self.g["indicadores"] if i["id"] == "edu.despesa.por_matricula_rede_propria")

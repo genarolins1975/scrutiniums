@@ -13,7 +13,7 @@ import io
 import json
 import os
 
-from pipeline.eficiencia import base, conferencia as CF, entes, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, diagnostico_pares as DG, entes, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
 
 ARQUIVO_GOLD = os.path.join(base.GOLD, "educacao_capitais.json")
 
@@ -353,12 +353,47 @@ def constroi(gerado_em=None):
         "referencias_internacionais": RE.internacionais(),
         "matriz_referencias": RE.matriz(),
         "referencias": R.calcula(obs),
+        "diagnostico_pares_msc": diagnostico_pares_msc(obs),
         "politica_conferencia": {"versao": CF.VERSAO_POLITICA, "tolerancia_arredondamento_reais": CF.TOL_ARREDONDAMENTO,
                                  "tolerancia_relativa": CF.TOL_RELATIVA, "elegiveis": sorted(CF.ELEGIVEIS),
                                  "rotulos": CF.ROTULO},
         "observacoes": obs,
     }
     return gold
+
+
+def diagnostico_pares_msc(obs):
+    """Diagnóstico dos pares que a política 1.1 deixava sem reconciliação da MSC com a DCA (rodada 6)."""
+    nomes = {c: n for c, n, _ in entes.CAPITAIS}
+    desp = {(o["ente"], o["ano"]): (nomes[o["ente"]], o["valor"]) for o in obs
+            if o["indicador"] == "edu.despesa.funcao_educacao" and o["componente"] == "nominal" and o["valor"] is not None}
+    return DG.abertos_da_politica_1_1(DG.todos(desp))
+
+
+CAMPOS_CSV_DIAGNOSTICO = ["codigo_ibge", "capital", "exercicio", "dca_funcao_12", "msc_em_modulo_sem_intra", "msc_saldo_liquido_sem_intra",
+                          "intraorcamentarias_mod91", "diferenca_politica_1_1", "situacao_politica_1_1", "diferenca_politica_1_2",
+                          "situacao_politica_1_2", "diferenca_pct_dca", "linhas_natureza_D", "valor_natureza_D", "entrega_msc_dezembro",
+                          "msc_capturada_em", "msc_sha256_resposta_completa", "causa", "causa_texto", "evidencia", "versao_dos_dados"]
+
+
+def _csv_diagnostico(diag, caminho, meta):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV_DIAGNOSTICO, lineterminator="\n")
+    w.writeheader()
+    for d in diag:
+        w.writerow({
+            "codigo_ibge": d["ente"], "capital": d["nome"], "exercicio": d["ano"], "dca_funcao_12": d["dca"],
+            "msc_em_modulo_sem_intra": d.get("msc_em_modulo_sem_intra", ""), "msc_saldo_liquido_sem_intra": d.get("msc_liquida_sem_intra", ""),
+            "intraorcamentarias_mod91": d.get("intra_mod91", ""), "diferenca_politica_1_1": d.get("diferenca_politica_1_1", ""),
+            "situacao_politica_1_1": d.get("situacao_politica_1_1", ""), "diferenca_politica_1_2": d.get("diferenca_politica_1_2", ""),
+            "situacao_politica_1_2": d.get("situacao_politica_1_2", ""), "diferenca_pct_dca": d.get("diferenca_pct_dca", ""),
+            "linhas_natureza_D": d.get("linhas_d", ""), "valor_natureza_D": d.get("valor_d", ""), "entrega_msc_dezembro": d.get("entrega_dezembro") or "",
+            "msc_capturada_em": d.get("msc_capturada_em") or "", "msc_sha256_resposta_completa": d.get("msc_sha256_resposta") or "",
+            "causa": d["causa"], "causa_texto": d["causa_texto"], "evidencia": " | ".join(d["evidencia"]), "versao_dos_dados": meta["hash_dados"][:16],
+        })
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
 
 
 DIAGNOSTICO = os.path.join(base.DADOS, "diagnostico")
@@ -382,6 +417,7 @@ def publica(gold, raiz_publica=None):
         _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), nomes, catalogo, gold["meta"])
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "referencias_educacao_capitais.csv"),
                      catalogo, gold["meta"])
+    _csv_diagnostico(gold["diagnostico_pares_msc"], os.path.join(raiz, "eficiencia", "series", "edu_diagnostico_pares_msc.csv"), gold["meta"])
     return arquivo
 
 
