@@ -385,8 +385,10 @@ Na r5 o método não mudou além da leitura do rótulo Publicação processada e
 ### 8.5 Como repetir uma rodada
 
 1. `npx next build` e `npx next start -p 3100`.
-2. `PW_CORE=<playwright-core> node scripts/energia-avaliacao.mjs --base http://localhost:3100 --rotas docs/observatorios/energia/avaliacao/rotas.txt --saida <pasta> --paralelo 3 --capturas 1`.
-3. `PW_CORE=<playwright-core> node scripts/energia-jornadas.mjs --base http://localhost:3100 --saida <pasta de jornadas>`.
-4. Revisão visual e didática por revisores em contexto limpo, registrada em `revisao_visual.json` com o roteiro de `revisao.metodo`.
-5. `python3 scripts/energia_avaliacao_testes.py --build-ok "<resultado do build>"`.
-6. `python3 scripts/energia_avaliacao.py --relatorio <pasta>/relatorio.json --jornadas <pasta de jornadas>/jornadas.json --rotas-construidas <lista das rotas do build> --rodada AAAA-MM-DD-rN --registrar-rodada`. Grava a gold, atualiza `publicacao.json` e o manifesto, e regenera os dois documentos. Não editar `AVALIACAO_PAGINAS.md` nem `EVIDENCIAS_ACEITE.md` à mão.
+2. Coleta objetiva: `PW_CORE=<playwright-core> node scripts/energia-avaliacao.mjs --base http://localhost:3100 --rotas docs/observatorios/energia/avaliacao/rotas.txt --saida <pasta> --paralelo 3 --capturas 0`.
+3. Capturas limpas para os revisores (texto, primeira dobra e página inteira, sem teste de teclado antes): o mesmo comando com `--limpas 1 --capturas 1`, em outra pasta.
+4. Jornadas: `PW_CORE=<playwright-core> node scripts/energia-jornadas.mjs --base http://localhost:3100 --saida <pasta de jornadas>`.
+5. Revisão visual e didática por nove revisores em contexto limpo: `python3 scripts/energia_revisao_pacote.py --origem <pasta das capturas limpas> --destino <pacote> --grupos-saida <pasta da revisão> [--max-390 6]` monta o pacote e os `grupo_R1.json` a `grupo_R9.json` (as mesmas páginas por revisor em toda rodada, de `avaliacao/grupos_revisao.json`) e copia as instruções (`avaliacao/INSTRUCOES_REVISORES.md`). Cada revisor lê as instruções e o seu grupo e grava o JSON em `<pasta da revisão>/saida/`. Depois, `python3 scripts/energia_revisao_junta.py --rodada AAAA-MM-DD-rN --grupos <pasta da revisão>` grava `revisao_visual.json` com o sha256 de cada arquivo aberto. O número de trechos de 390 px por página foi 3 na r7 e na r8; use `--max-390` maior, porque vários revisores declararam não ter visto gráficos e mapas em celular. Os dois scripts reproduzem, byte a byte, o pacote e o `revisao_visual.json` da r8.
+6. Capturas versionadas: `python3 scripts/energia_capturas_webp.py <pasta das capturas limpas>`.
+7. `python3 scripts/energia_avaliacao_testes.py --build-ok "<resultado do build>"`.
+8. `python3 scripts/energia_avaliacao.py --relatorio <pasta>/relatorio.json --jornadas <pasta de jornadas>/jornadas.json --rotas-construidas <lista das rotas do build> --rodada AAAA-MM-DD-rN --registrar-rodada`. Grava a gold, atualiza `publicacao.json` e o manifesto, e regenera os dois documentos. A lista das rotas do build são os arquivos `.html` de `.next/server/app/setor-eletrico`. Não editar `AVALIACAO_PAGINAS.md` nem `EVIDENCIAS_ACEITE.md` à mão. Ponto fixo: gerar, testes, gerar.
