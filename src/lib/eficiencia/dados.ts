@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { closeSync, openSync, readFileSync, readSync } from "node:fs";
 import { join } from "node:path";
 import type { GoldEducacao, IndicadorId, StatusDado } from "./tipos";
 import { GRUPOS_REF, type DadosPainel, type DescritorExterno, type ExternaCompacta, type ObsCompacta, type RefCompacta } from "./consulta";
@@ -20,6 +20,27 @@ export function goldEducacao(): GoldEducacao | null {
     cache = null;
   }
   return cache;
+}
+
+/**
+ * Datas de geração e de captura da gold, lidas do início do arquivo (o bloco `meta` é o primeiro) sem
+ * interpretar o arquivo inteiro. Usado onde só a data de atualização interessa. Ausente: null.
+ */
+export function metaEducacao(): { gerado_em: string | null; dados_capturados_ate: string | null } | null {
+  try {
+    const fd = openSync(ARQUIVO, "r");
+    try {
+      const buf = Buffer.alloc(4096);
+      const n = readSync(fd, buf, 0, buf.length, 0);
+      const cab = buf.toString("utf-8", 0, n);
+      const pega = (k: string) => cab.match(new RegExp(`"${k}"\\s*:\\s*"([^"]+)"`))?.[1] ?? null;
+      return { gerado_em: pega("gerado_em"), dados_capturados_ate: pega("dados_capturados_ate") };
+    } finally {
+      closeSync(fd);
+    }
+  } catch {
+    return null;
+  }
 }
 
 /**

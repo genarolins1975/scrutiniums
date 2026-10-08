@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { COOKIE_OBSERVATORIO, DOMINIOS, type DominioId } from "@/lib/dominios";
 import { gold, integra } from "@/lib/energia/gold";
+import { metaEducacao } from "@/lib/eficiencia/dados";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -30,6 +31,13 @@ function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
       return { rotulo: "Último dado disponível", linhas: ["Data-base indisponível no momento."] };
     }
   }
+  if (id === "eficiencia") {
+    const m = metaEducacao();
+    const linhas = [];
+    if (m?.dados_capturados_ate) linhas.push(`Educação municipal nas capitais: dados capturados até ${dataBR(m.dados_capturados_ate.slice(0, 10))}`);
+    if (m?.gerado_em) linhas.push(`Processado em ${carimbo(m.gerado_em)}`);
+    return { rotulo: "Último dado disponível", linhas: linhas.length ? linhas : ["Data de captura indisponível no momento."] };
+  }
   const hid = gold.hidrologia();
   const pld = gold.pld();
   const meta = gold.meta();
@@ -41,7 +49,7 @@ function atualizacao(id: DominioId): { rotulo: string; linhas: string[] } {
 }
 
 /**
- * Tela extremamente limpa pós login: dois cards de entrada, sem dashboard
+ * Tela extremamente limpa pós login: três cards de entrada, sem dashboard
  * intermediário. O último observatório escolhido aparece marcado.
  */
 export default async function EscolhaObservatorioPage() {
@@ -57,21 +65,21 @@ export default async function EscolhaObservatorioPage() {
         Escolha seu observatório
       </h1>
       <p className="mt-4 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
-        A mesma infraestrutura de dados, método e rastreabilidade aplicada a dois setores essenciais da
-        economia brasileira.
+        A mesma infraestrutura de dados, método e rastreabilidade aplicada a três frentes: crédito, setor elétrico
+        e eficiência estatal.
       </p>
 
-      <ul className="mt-12 grid gap-6 md:grid-cols-2">
+      <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {DOMINIOS.map((d) => {
           const at = atualizacao(d.id);
-          const energia = d.acento === "energia";
+          const filete = { bronze: "bg-bronze", energia: "bg-energia", obee: "bg-obee" }[d.acento];
           return (
             <li key={d.id}>
               <article
                 aria-labelledby={`escolha-${d.id}`}
                 className="relative flex h-full flex-col border border-linha bg-superficie p-8"
               >
-                <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${energia ? "bg-energia" : "bg-bronze"}`} />
+                <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${filete}`} />
                 <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
                   <h2 id={`escolha-${d.id}`} className="min-w-0 font-serif text-2xl leading-snug text-carvao">
                     {d.nome}
@@ -106,7 +114,7 @@ export default async function EscolhaObservatorioPage() {
         })}
       </ul>
       <p className="mt-10 text-sm text-mineral">
-        Conta, preferências e sessão valem para os dois observatórios. Troque a qualquer momento pelo seletor no
+        Conta, preferências e sessão valem para os três observatórios. Troque a qualquer momento pelo seletor no
         cabeçalho, sem novo login. <Link href="/app/conta" className="text-carvao underline underline-offset-4">Minha conta</Link>
       </p>
     </div>

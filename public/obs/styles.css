@@ -1512,6 +1512,7 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 .obs-dot { width: 8px; height: 8px; flex: none; }
 .obs-dot-credito { background: var(--accent); }
 .obs-dot-energia { background: #0e6170; }
+.obs-dot-eficiencia { background: #00697f; }
 .sb-collapsed .obs-switcher { display: none; }
 .mobile-obs { margin-left: auto; font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-2); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
