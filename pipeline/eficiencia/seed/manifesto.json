@@ -1,0 +1,3367 @@
+{
+ "capturas": {
+  "ibge_ipca": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "IPCA, número-índice (base dezembro de 1993 = 100), tabela 1737, variável 2266",
+   "pagina": "https://sidra.ibge.gov.br/tabela/1737",
+   "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1737/periodos/202101|202102|202103|202104|202105|202106|202107|202108|202109|202110|202111|202112|202201|202202|202203|202204|202205|202206|202207|202208|202209|202210|202211|202212|202301|202302|202303|202304|202305|202306|202307|202308|202309|202310|202311|202312|202401|202402|202403|202404|202405|202406|202407|202408|202409|202410|202411|202412|202501|202502|202503|202504|202505|202506|202507|202508|202509|202510|202511|202512/variaveis/2266?localidades=N1[all]",
+   "capturado_em": "2026-10-08T11:08:29Z",
+   "parametros": "Brasil, meses de janeiro de 2021 a dezembro de 2025",
+   "recorte": "pipeline/eficiencia/seed/ibge_ipca/ipca_numero_indice_2021_2025.json.gz",
+   "sha256_recorte": "f156544598bc2e7a667c1a3c86610ed5810834fe62ed8e50e04a347044eeb084",
+   "linhas_recorte": 60
+  },
+  "inep_atu_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, municípios, 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2021/ATU_2021_MUNICIPIOS.zip",
+   "membro": "ATU_2021_MUNICIPIOS/ATU_MUNICIPIOS_2021.xlsx",
+   "capturado_em": "2026-10-08T11:00:30Z",
+   "publicado_em": "2022-01-18",
+   "sha256_original": "37b74acc403b8dcb932ebfd81e4732a81298e110327be58d537ff56028872296",
+   "bytes_original": 14512691,
+   "md5_publicado_inep": "11d12246e9ff2228dc3ac6cf41048d36",
+   "md5_conferido": "11d12246e9ff2228dc3ac6cf41048d36",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2021_MUNICIPIOS/ATU_MUNICIPIOS_2021.xlsx",
+     "md5_publicado_inep": "11d12246e9ff2228dc3ac6cf41048d36",
+     "md5_calculado": "11d12246e9ff2228dc3ac6cf41048d36",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2021_MUNICIPIOS/ATU_MUNICIPIOS_2021.ods",
+     "md5_publicado_inep": "e0630b038f7212220f1f6147474467e3",
+     "md5_calculado": "e0630b038f7212220f1f6147474467e3",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_atu/atu_capitais_2021.csv.gz",
+   "sha256_recorte": "de3f9308814dfe01e618c34c1bc01773a2fc9bbf8a2ed48ee982cf7bbe22fc7e",
+   "linhas_recorte": 393,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "ED_INF_CAT_0": "Média de Alunos por Turma / Etapas de Ensino / Educação Infantil / Total 1",
+    "CRE_CAT_0": "Creche",
+    "PRE_CAT_0": "Pré-Escola",
+    "FUN_CAT_0": "Ensino Fundamental / Total",
+    "FUN_AI_CAT_0": "Anos Iniciais",
+    "FUN_AF_CAT_0": "Anos Finais",
+    "FUN_01_CAT_0": "1º Ano",
+    "FUN_02_CAT_0": "2° ano",
+    "FUN_03_CAT_0": "3° ano",
+    "FUN_04_CAT_0": "4° ano",
+    "FUN_05_CAT_0": "5° ano",
+    "FUN_06_CAT_0": "6° ano",
+    "FUN_07_CAT_0": "7° ano",
+    "FUN_08_CAT_0": "8° ano",
+    "FUN_09_CAT_0": "9° ano",
+    "MULT_ETA_CAT_0": "Turmas Multietapa, Multi ou Correção de Fluxo 2",
+    "MED_CAT_0": "Ensino Médio / Total",
+    "MED_01_CAT_0": "1ª série",
+    "MED_02_CAT_0": "2ª série",
+    "MED_03_CAT_0": "3ª série",
+    "MED_04_CAT_0": "4ª série",
+    "MED_NS_CAT_0": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2021/INEP.",
+    "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
+   ]
+  },
+  "inep_atu_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, municípios, 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2022/ATU_2022_MUNICIPIOS.zip",
+   "membro": "ATU_2022_MUNICIPIOS/ATU_MUNICIPIOS_2022.ods",
+   "capturado_em": "2026-10-08T11:00:36Z",
+   "publicado_em": "2023-01-23",
+   "sha256_original": "c5f26e0ac826c0678000e2e45f2aa9ecad6c6a09daef75438c264370ca07985d",
+   "bytes_original": 18120878,
+   "md5_publicado_inep": "4cd4cc9981938968cc5905bbf050cec8",
+   "md5_conferido": "4cd4cc9981938968cc5905bbf050cec8",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2022_MUNICIPIOS/ATU_MUNICIPIOS_2022.xlsx",
+     "md5_publicado_inep": "86960382b413c3cdb2fd614cc45f993f",
+     "md5_calculado": "80391087320b417b51413b08154914f4",
+     "confere": false
+    },
+    {
+     "membro": "ATU_2022_MUNICIPIOS/ATU_MUNICIPIOS_2022.ods",
+     "md5_publicado_inep": "4cd4cc9981938968cc5905bbf050cec8",
+     "md5_calculado": "4cd4cc9981938968cc5905bbf050cec8",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_atu/atu_capitais_2022.csv.gz",
+   "sha256_recorte": "b4a434b8fdb961ca87f453a969df91f7dcff1da8b3c17ba45037a6411bfe0f4f",
+   "linhas_recorte": 395,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "ED_INF_CAT_0": "Média de Alunos por Turma / Etapas de Ensino / Educação Infantil / Total1",
+    "CRE_CAT_0": "Creche",
+    "PRE_CAT_0": "Pré-Escola",
+    "FUN_CAT_0": "Ensino Fundamental / Total",
+    "FUN_AI_CAT_0": "Anos Iniciais",
+    "FUN_AF_CAT_0": "Anos Finais",
+    "FUN_01_CAT_0": "1º Ano",
+    "FUN_02_CAT_0": "2° ano",
+    "FUN_03_CAT_0": "3° ano",
+    "FUN_04_CAT_0": "4° ano",
+    "FUN_05_CAT_0": "5° ano",
+    "FUN_06_CAT_0": "6° ano",
+    "FUN_07_CAT_0": "7° ano",
+    "FUN_08_CAT_0": "8° ano",
+    "FUN_09_CAT_0": "9° ano",
+    "MULT_ETA_CAT_0": "Turmas Multietapa, Multi ou Correção de Fluxo2",
+    "MED_CAT_0": "Ensino Médio / Total",
+    "MED_01_CAT_0": "1ª série",
+    "MED_02_CAT_0": "2ª série",
+    "MED_03_CAT_0": "3ª série",
+    "MED_04_CAT_0": "4ª série",
+    "MED_NS_CAT_0": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2022/INEP.",
+    "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
+   ]
+  },
+  "inep_atu_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, municípios, 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2023/ATU_2023_MUNICIPIOS.zip",
+   "membro": "ATU_2023_MUNICIPIOS/ATU_MUNICIPIOS_2023.xlsx",
+   "capturado_em": "2026-10-08T11:00:47Z",
+   "publicado_em": "2024-01-26",
+   "sha256_original": "ea7f31a363dacaef1279b850e5f895c4e268ff92dfa31abe7819427520c5b999",
+   "bytes_original": 18086993,
+   "md5_publicado_inep": "2e83e74ee2f2d694534e42e3ee085cad",
+   "md5_conferido": "2e83e74ee2f2d694534e42e3ee085cad",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2023_MUNICIPIOS/ATU_MUNICIPIOS_2023.xlsx",
+     "md5_publicado_inep": "2e83e74ee2f2d694534e42e3ee085cad",
+     "md5_calculado": "2e83e74ee2f2d694534e42e3ee085cad",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2023_MUNICIPIOS/ATU_MUNICIPIOS_2023.ods",
+     "md5_publicado_inep": "b3c25863b0d604666ba2552a0a14686c",
+     "md5_calculado": "b3c25863b0d604666ba2552a0a14686c",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_atu/atu_capitais_2023.csv.gz",
+   "sha256_recorte": "d96975b9bd93661fbc91d0211cda38739b5490175037b29a83d43e636f0a00f9",
+   "linhas_recorte": 395,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "ED_INF_CAT_0": "Média de Alunos por Turma / Etapas de Ensino / Educação Infantil / Total 1",
+    "CRE_CAT_0": "Creche",
+    "PRE_CAT_0": "Pré-Escola",
+    "FUN_CAT_0": "Ensino Fundamental / Total",
+    "FUN_AI_CAT_0": "Anos Iniciais",
+    "FUN_AF_CAT_0": "Anos Finais",
+    "FUN_01_CAT_0": "1º Ano",
+    "FUN_02_CAT_0": "2° ano",
+    "FUN_03_CAT_0": "3° ano",
+    "FUN_04_CAT_0": "4° ano",
+    "FUN_05_CAT_0": "5° ano",
+    "FUN_06_CAT_0": "6° ano",
+    "FUN_07_CAT_0": "7° ano",
+    "FUN_08_CAT_0": "8° ano",
+    "FUN_09_CAT_0": "9° ano",
+    "MULT_ETA_CAT_0": "Turmas Multietapa, Multi ou Correção de Fluxo 2",
+    "MED_CAT_0": "Ensino Médio / Total",
+    "MED_01_CAT_0": "1ª série",
+    "MED_02_CAT_0": "2ª série",
+    "MED_03_CAT_0": "3ª série",
+    "MED_04_CAT_0": "4ª série",
+    "MED_NS_CAT_0": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2023/INEP.",
+    "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
+   ]
+  },
+  "inep_atu_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, municípios, 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2024/ATU_2024_MUNICIPIOS.zip",
+   "membro": "ATU_2024_MUNICIPIOS/ATU_MUNICIPIOS_2024.xlsx",
+   "capturado_em": "2026-10-08T11:00:53Z",
+   "publicado_em": "2025-01-09",
+   "sha256_original": "de458e95333764b846dfb1859a99e0474a6a0de9dbf77b4fe107b6f4ab7486e7",
+   "bytes_original": 18049510,
+   "md5_publicado_inep": "3ad5717cd6758d3a9e40e111b92ae3bf",
+   "md5_conferido": "3ad5717cd6758d3a9e40e111b92ae3bf",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2024_MUNICIPIOS/ATU_MUNICIPIOS_2024.xlsx",
+     "md5_publicado_inep": "3ad5717cd6758d3a9e40e111b92ae3bf",
+     "md5_calculado": "3ad5717cd6758d3a9e40e111b92ae3bf",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2024_MUNICIPIOS/ATU_MUNICIPIOS_2024.ods",
+     "md5_publicado_inep": "89468cc223cfdb89ba74008e87c2b7f1",
+     "md5_calculado": "89468cc223cfdb89ba74008e87c2b7f1",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_atu/atu_capitais_2024.csv.gz",
+   "sha256_recorte": "1e38c471cf4982dea5ea0482f35bda7f5a86ea3d91a723c3c2419937cca8d90d",
+   "linhas_recorte": 395,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "ED_INF_CAT_0": "Média de Alunos por Turma / Etapas de Ensino / Educação Infantil / Total 1",
+    "CRE_CAT_0": "Creche",
+    "PRE_CAT_0": "Pré-Escola",
+    "FUN_CAT_0": "Ensino Fundamental / Total",
+    "FUN_AI_CAT_0": "Anos Iniciais",
+    "FUN_AF_CAT_0": "Anos Finais",
+    "FUN_01_CAT_0": "1º Ano",
+    "FUN_02_CAT_0": "2° ano",
+    "FUN_03_CAT_0": "3° ano",
+    "FUN_04_CAT_0": "4° ano",
+    "FUN_05_CAT_0": "5° ano",
+    "FUN_06_CAT_0": "6° ano",
+    "FUN_07_CAT_0": "7° ano",
+    "FUN_08_CAT_0": "8° ano",
+    "FUN_09_CAT_0": "9° ano",
+    "MULT_ETA_CAT_0": "Turmas Multietapa, Multi ou Correção de Fluxo 2",
+    "MED_CAT_0": "Ensino Médio / Total",
+    "MED_01_CAT_0": "1ª série",
+    "MED_02_CAT_0": "2ª série",
+    "MED_03_CAT_0": "3ª série",
+    "MED_04_CAT_0": "4ª série",
+    "MED_NS_CAT_0": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2024/INEP.",
+    "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
+   ]
+  },
+  "inep_atu_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Média de Alunos por Turma, municípios, 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2025/ATU_2025_MUNICIPIOS.zip",
+   "membro": "ATU_2025_MUNICIPIOS/ATU_MUNICIPIOS_2025.xlsx",
+   "capturado_em": "2026-10-08T11:00:58Z",
+   "publicado_em": "2026-01-20",
+   "sha256_original": "1d14f67c2d863a8426f0764e403284920e2a014f690ecea3fa9c238b03ab4716",
+   "bytes_original": 18043953,
+   "md5_publicado_inep": "20272171f2d5401c954077dda434a25a",
+   "md5_conferido": "20272171f2d5401c954077dda434a25a",
+   "conferencia_integridade": [
+    {
+     "membro": "ATU_2025_MUNICIPIOS/ATU_MUNICIPIOS_2025.xlsx",
+     "md5_publicado_inep": "20272171f2d5401c954077dda434a25a",
+     "md5_calculado": "20272171f2d5401c954077dda434a25a",
+     "confere": true
+    },
+    {
+     "membro": "ATU_2025_MUNICIPIOS/ATU_MUNICIPIOS_2025.ods",
+     "md5_publicado_inep": "23fa29f465f1434ce18fe65fcbfa0a50",
+     "md5_calculado": "23fa29f465f1434ce18fe65fcbfa0a50",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_atu/atu_capitais_2025.csv.gz",
+   "sha256_recorte": "5ee2ddc2075ddd5447a59dbe9f2a9cc197c1814095b6ed00a5548688b5395b57",
+   "linhas_recorte": 391,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "ED_INF_CAT_0": "Média de Alunos por Turma / Etapas de Ensino / Educação Infantil / Total 1",
+    "CRE_CAT_0": "Creche",
+    "PRE_CAT_0": "Pré-Escola",
+    "FUN_CAT_0": "Ensino Fundamental / Total",
+    "FUN_AI_CAT_0": "Anos Iniciais",
+    "FUN_AF_CAT_0": "Anos Finais",
+    "FUN_01_CAT_0": "1º Ano",
+    "FUN_02_CAT_0": "2° ano",
+    "FUN_03_CAT_0": "3° ano",
+    "FUN_04_CAT_0": "4° ano",
+    "FUN_05_CAT_0": "5° ano",
+    "FUN_06_CAT_0": "6° ano",
+    "FUN_07_CAT_0": "7° ano",
+    "FUN_08_CAT_0": "8° ano",
+    "FUN_09_CAT_0": "9° ano",
+    "MULT_ETA_CAT_0": "Turmas Multietapa, Multi ou Correção de Fluxo 2",
+    "MED_CAT_0": "Ensino Médio / Total",
+    "MED_01_CAT_0": "1ª série",
+    "MED_02_CAT_0": "2ª série",
+    "MED_03_CAT_0": "3ª série",
+    "MED_04_CAT_0": "4ª série",
+    "MED_NS_CAT_0": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2025/INEP.",
+    "Notas: 1) - Inclusive turmas Unificadas. 2) - Indicador calculado para as turmas Multietapa, Multi ou Correção de Fluxo."
+   ]
+  },
+  "inep_censo_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Microdados do Censo Escolar da Educação Básica 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+   "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2021.zip",
+   "membro": "microdados_ed_basica_2021/dados/microdados_ed_basica_2021.csv",
+   "capturado_em": "2026-10-08T11:11:14Z",
+   "publicado_em": "2022-09-14",
+   "sha256_original": "b4083b55058ba19d7e45982239e5d6f3e843786da210b657e77c653e5558b1f2",
+   "bytes_original": 25942916,
+   "md5_publicado_inep": "3f3e77c9f0aa5ca871468cef1e747778",
+   "md5_conferido": "3f3e77c9f0aa5ca871468cef1e747778",
+   "escolas_no_arquivo": 221140,
+   "parametros": "escolas com CO_MUNICIPIO entre as 26 capitais e o DF; colunas: NU_ANO_CENSO, CO_MUNICIPIO, CO_ENTIDADE, NO_ENTIDADE, TP_DEPENDENCIA, TP_LOCALIZACAO, TP_SITUACAO_FUNCIONAMENTO, TP_CATEGORIA_ESCOLA_PRIVADA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA, QT_MAT_BAS, QT_MAT_INF, QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED, QT_MAT_PROF, QT_MAT_EJA, QT_MAT_EJA_FUND, QT_MAT_EJA_MED, QT_MAT_ESP, QT_MAT_ESP_CC, QT_MAT_ESP_CE",
+   "recorte": "pipeline/eficiencia/seed/inep_censo/escolas_capitais_2021.csv.gz",
+   "sha256_recorte": "d539e8c93680a4b7d57ec9088b0d9b900786b9a420f2c8e15437f82651a899d9",
+   "linhas_recorte": 31996,
+   "periodo_referencia": "2021 (data de referência do Censo: última quarta-feira de maio)",
+   "observacao": null
+  },
+  "inep_censo_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Microdados do Censo Escolar da Educação Básica 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+   "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2022.zip",
+   "membro": "Microdados do Censo Escolar da Educação Básica 2022/dados/microdados_ed_basica_2022.csv",
+   "capturado_em": "2026-10-08T11:11:48Z",
+   "publicado_em": "2023-01-25",
+   "sha256_original": "450d6f60d3447a8ca926b58d64eb5a0c4da823da07f045e129c3c8f154253a39",
+   "bytes_original": 26394408,
+   "md5_publicado_inep": "6433a4ff718a361c20d1996792409f07",
+   "md5_conferido": "6433a4ff718a361c20d1996792409f07",
+   "escolas_no_arquivo": 224649,
+   "parametros": "escolas com CO_MUNICIPIO entre as 26 capitais e o DF; colunas: NU_ANO_CENSO, CO_MUNICIPIO, CO_ENTIDADE, NO_ENTIDADE, TP_DEPENDENCIA, TP_LOCALIZACAO, TP_SITUACAO_FUNCIONAMENTO, TP_CATEGORIA_ESCOLA_PRIVADA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA, QT_MAT_BAS, QT_MAT_INF, QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED, QT_MAT_PROF, QT_MAT_EJA, QT_MAT_EJA_FUND, QT_MAT_EJA_MED, QT_MAT_ESP, QT_MAT_ESP_CC, QT_MAT_ESP_CE",
+   "recorte": "pipeline/eficiencia/seed/inep_censo/escolas_capitais_2022.csv.gz",
+   "sha256_recorte": "5931f11469337472e6fdd4060c39a50ee8421f640e68582d59b29cbf5a4d9406",
+   "linhas_recorte": 35111,
+   "periodo_referencia": "2022 (data de referência do Censo: última quarta-feira de maio)",
+   "observacao": null
+  },
+  "inep_censo_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Microdados do Censo Escolar da Educação Básica 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+   "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2023.zip",
+   "membro": "microdados_censo_escolar_2023/dados/microdados_ed_basica_2023.csv",
+   "capturado_em": "2026-10-08T11:11:25Z",
+   "publicado_em": "2024-02-19",
+   "sha256_original": "8ed0db8c557137593727b0574d5c99d0abb52491cd7c5769f8cefa98e1fa9e66",
+   "bytes_original": 32094587,
+   "md5_publicado_inep": "fb9dadd607cfb568f360d0dd88d32e85",
+   "md5_conferido": "fb9dadd607cfb568f360d0dd88d32e85",
+   "escolas_no_arquivo": 217625,
+   "parametros": "escolas com CO_MUNICIPIO entre as 26 capitais e o DF; colunas: NU_ANO_CENSO, CO_MUNICIPIO, CO_ENTIDADE, NO_ENTIDADE, TP_DEPENDENCIA, TP_LOCALIZACAO, TP_SITUACAO_FUNCIONAMENTO, TP_CATEGORIA_ESCOLA_PRIVADA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA, QT_MAT_BAS, QT_MAT_INF, QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED, QT_MAT_PROF, QT_MAT_EJA, QT_MAT_EJA_FUND, QT_MAT_EJA_MED, QT_MAT_ESP, QT_MAT_ESP_CC, QT_MAT_ESP_CE",
+   "recorte": "pipeline/eficiencia/seed/inep_censo/escolas_capitais_2023.csv.gz",
+   "sha256_recorte": "75eaed2ed1db5f33fd9a12a5882923467861cb34975fec3ccb1e567c48fdc194",
+   "linhas_recorte": 31840,
+   "periodo_referencia": "2023 (data de referência do Censo: última quarta-feira de maio)",
+   "observacao": null
+  },
+  "inep_censo_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Microdados do Censo Escolar da Educação Básica 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+   "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2024.zip",
+   "membro": "microdados_censo_escolar_2024_defeso/dados/microdados_ed_basica_2024.csv",
+   "capturado_em": "2026-10-08T11:11:31Z",
+   "publicado_em": "2026-07-08",
+   "sha256_original": "ae29d81d45ddecef59e11eda39788cbfd30dfa1cc71be9d29f23051fc2d640db",
+   "bytes_original": 33829396,
+   "md5_publicado_inep": "04d691fe6d8d744de65f21ed65068ad6",
+   "md5_conferido": "04d691fe6d8d744de65f21ed65068ad6",
+   "escolas_no_arquivo": 215545,
+   "parametros": "escolas com CO_MUNICIPIO entre as 26 capitais e o DF; colunas: NU_ANO_CENSO, CO_MUNICIPIO, CO_ENTIDADE, NO_ENTIDADE, TP_DEPENDENCIA, TP_LOCALIZACAO, TP_SITUACAO_FUNCIONAMENTO, TP_CATEGORIA_ESCOLA_PRIVADA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA, QT_MAT_BAS, QT_MAT_INF, QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED, QT_MAT_PROF, QT_MAT_EJA, QT_MAT_EJA_FUND, QT_MAT_EJA_MED, QT_MAT_ESP, QT_MAT_ESP_CC, QT_MAT_ESP_CE",
+   "recorte": "pipeline/eficiencia/seed/inep_censo/escolas_capitais_2024.csv.gz",
+   "sha256_recorte": "8609b143d927bfb06179e6e8f5468dc86072ca918eea3f8cfb0aa60bb49fdcac",
+   "linhas_recorte": 31545,
+   "periodo_referencia": "2024 (data de referência do Censo: última quarta-feira de maio)",
+   "observacao": null
+  },
+  "inep_censo_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Microdados do Censo Escolar da Educação Básica 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar",
+   "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025_.zip",
+   "membro": "microdados_censo_escolar_2025_v2/dados/Tabela_Matricula_2025_V2.csv",
+   "capturado_em": "2026-10-08T11:11:37Z",
+   "publicado_em": "2026-07-31",
+   "sha256_original": "ad2c389160be5cf6b8e32257677e9b5657f01d10a342355ad9757bfecd2fc90a",
+   "bytes_original": 537217189,
+   "md5_publicado_inep": "e2d61b36f4838284cc4516f6f9793804",
+   "md5_conferido": "e2d61b36f4838284cc4516f6f9793804",
+   "escolas_no_arquivo": 178766,
+   "parametros": "escolas com CO_MUNICIPIO entre as 26 capitais e o DF; colunas: NU_ANO_CENSO, CO_MUNICIPIO, CO_ENTIDADE, NO_ENTIDADE, TP_DEPENDENCIA, TP_LOCALIZACAO, TP_SITUACAO_FUNCIONAMENTO, TP_CATEGORIA_ESCOLA_PRIVADA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA, QT_MAT_BAS, QT_MAT_INF, QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED, QT_MAT_PROF, QT_MAT_EJA, QT_MAT_EJA_FUND, QT_MAT_EJA_MED, QT_MAT_ESP, QT_MAT_ESP_CC, QT_MAT_ESP_CE",
+   "recorte": "pipeline/eficiencia/seed/inep_censo/escolas_capitais_2025.csv.gz",
+   "sha256_recorte": "be3595294b4ae61282b4b5d7dffc4d5b92d2aafbb56320d1dc4108cd61b89610",
+   "linhas_recorte": 27987,
+   "periodo_referencia": "2025 (data de referência do Censo: última quarta-feira de maio)",
+   "observacao": "situação de funcionamento não consta da Tabela_Matricula; coluna vazia no recorte"
+  },
+  "inep_ideb_af_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Ideb 2025: resultados por município, anos finais do ensino fundamental",
+   "pagina": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados",
+   "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_finais_municipios_2025.zip",
+   "membro": "divulgacao_anos_finais_municipios_2025/divulgacao_anos_finais_municipios_2025.xlsx",
+   "capturado_em": "2026-10-08T11:04:56Z",
+   "publicado_em": "2026-07-24",
+   "sha256_original": "5f81ae18d33567608f10551d4f563a6879afc0182ff28cfd81e913958a30a6b3",
+   "bytes_original": 24381009,
+   "md5_publicado_inep": "b31539e40e6e5bae92c842c895ee5ea7",
+   "md5_conferido": "b31539e40e6e5bae92c842c895ee5ea7",
+   "conferencia_integridade": [
+    {
+     "membro": "divulgacao_anos_finais_municipios_2025/divulgacao_anos_finais_municipios_2025.xlsx",
+     "md5_publicado_inep": "b31539e40e6e5bae92c842c895ee5ea7",
+     "md5_calculado": "b31539e40e6e5bae92c842c895ee5ea7",
+     "confere": true
+    },
+    {
+     "membro": "divulgacao_anos_finais_municipios_2025/divulgacao_anos_finais_municipios_2025.ods",
+     "md5_publicado_inep": "b4a9593a6ab07875be06692af43852a5",
+     "md5_calculado": "b4a9593a6ab07875be06692af43852a5",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_ideb_af/ideb_af_capitais_2025.csv.gz",
+   "sha256_recorte": "21ca4bddf35f35e67d1f3573df922c75cd138736f95dbb4697c71dc244c5af65",
+   "linhas_recorte": 97,
+   "rotulos_colunas": {
+    "SG_UF": "Sigla da UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "REDE": "Rede",
+    "VL_APROVACAO_2005_SI_4": "Taxa de Aprovação - 2005 / 6º a 9º ano",
+    "VL_APROVACAO_2005_1": "6º",
+    "VL_APROVACAO_2005_2": "7º",
+    "VL_APROVACAO_2005_3": "8º",
+    "VL_APROVACAO_2005_4": "9º",
+    "VL_INDICADOR_REND_2005": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2007_SI_4": "Taxa de Aprovação - 2007 / 6º a 9º ano",
+    "VL_APROVACAO_2007_1": "6º",
+    "VL_APROVACAO_2007_2": "7º",
+    "VL_APROVACAO_2007_3": "8º",
+    "VL_APROVACAO_2007_4": "9º",
+    "VL_INDICADOR_REND_2007": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2009_SI_4": "Taxa de Aprovação - 2009 / 6º a 9º ano",
+    "VL_APROVACAO_2009_1": "6º",
+    "VL_APROVACAO_2009_2": "7º",
+    "VL_APROVACAO_2009_3": "8º",
+    "VL_APROVACAO_2009_4": "9º",
+    "VL_INDICADOR_REND_2009": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2011_SI_4": "Taxa de Aprovação - 2011 / 6º a 9º ano",
+    "VL_APROVACAO_2011_1": "6º",
+    "VL_APROVACAO_2011_2": "7º",
+    "VL_APROVACAO_2011_3": "8º",
+    "VL_APROVACAO_2011_4": "9º",
+    "VL_INDICADOR_REND_2011": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2013_SI_4": "Taxa de Aprovação - 2013 / 6º a 9º ano",
+    "VL_APROVACAO_2013_1": "6º",
+    "VL_APROVACAO_2013_2": "7º",
+    "VL_APROVACAO_2013_3": "8º",
+    "VL_APROVACAO_2013_4": "9º",
+    "VL_INDICADOR_REND_2013": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2015_SI_4": "Taxa de Aprovação - 2015 / 6º a 9º ano",
+    "VL_APROVACAO_2015_1": "6º",
+    "VL_APROVACAO_2015_2": "7º",
+    "VL_APROVACAO_2015_3": "8º",
+    "VL_APROVACAO_2015_4": "9º",
+    "VL_INDICADOR_REND_2015": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2017_SI_4": "Taxa de Aprovação - 2017 / 6º a 9º ano",
+    "VL_APROVACAO_2017_1": "6º",
+    "VL_APROVACAO_2017_2": "7º",
+    "VL_APROVACAO_2017_3": "8º",
+    "VL_APROVACAO_2017_4": "9º",
+    "VL_INDICADOR_REND_2017": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2019_SI_4": "Taxa de Aprovação - 2019 / 6º a 9º ano",
+    "VL_APROVACAO_2019_1": "6º",
+    "VL_APROVACAO_2019_2": "7º",
+    "VL_APROVACAO_2019_3": "8º",
+    "VL_APROVACAO_2019_4": "9º",
+    "VL_INDICADOR_REND_2019": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2021_SI_4": "Taxa de Aprovação - 20212 / 6º a 9º ano",
+    "VL_APROVACAO_2021_1": "6º",
+    "VL_APROVACAO_2021_2": "7º",
+    "VL_APROVACAO_2021_3": "8º",
+    "VL_APROVACAO_2021_4": "9º",
+    "VL_INDICADOR_REND_2021": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2023_SI_4": "Taxa de Aprovação - 2023 / 6º a 9º ano",
+    "VL_APROVACAO_2023_1": "6º",
+    "VL_APROVACAO_2023_2": "7º",
+    "VL_APROVACAO_2023_3": "8º",
+    "VL_APROVACAO_2023_4": "9º",
+    "VL_INDICADOR_REND_2023": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2025_SI_4": "Taxa de Aprovação - 2025 / 6º a 9º ano",
+    "VL_APROVACAO_2025_1": "6º",
+    "VL_APROVACAO_2025_2": "7º",
+    "VL_APROVACAO_2025_3": "8º",
+    "VL_APROVACAO_2025_4": "9º",
+    "VL_INDICADOR_REND_2025": "Indicador de Rendimento (P)",
+    "VL_NOTA_MATEMATICA_2005": "Nota SAEB - 2005 / Matemática",
+    "VL_NOTA_PORTUGUES_2005": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2005": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2007": "Nota SAEB - 2007 / Matemática",
+    "VL_NOTA_PORTUGUES_2007": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2007": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2009": "Nota SAEB - 2009 / Matemática",
+    "VL_NOTA_PORTUGUES_2009": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2009": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2011": "Nota SAEB - 2011 / Matemática",
+    "VL_NOTA_PORTUGUES_2011": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2011": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2013": "Nota SAEB - 2013 / Matemática",
+    "VL_NOTA_PORTUGUES_2013": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2013": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2015": "Nota SAEB - 2015 / Matemática",
+    "VL_NOTA_PORTUGUES_2015": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2015": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2017": "Nota SAEB - 2017 / Matemática",
+    "VL_NOTA_PORTUGUES_2017": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2017": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2019": "Nota SAEB - 2019 / Matemática",
+    "VL_NOTA_PORTUGUES_2019": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2019": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2021": "Nota SAEB - 20212 / Matemática",
+    "VL_NOTA_PORTUGUES_2021": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2021": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2023": "Nota SAEB - 2023 / Matemática",
+    "VL_NOTA_PORTUGUES_2023": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2023": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2025": "Nota SAEB - 2025 / Matemática",
+    "VL_NOTA_PORTUGUES_2025": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2025": "Nota Média Padronizada (N)",
+    "VL_OBSERVADO_2005": "IDEB 2005 (N x P)",
+    "VL_OBSERVADO_2007": "IDEB 2007 (N x P)",
+    "VL_OBSERVADO_2009": "IDEB 2009 (N x P)",
+    "VL_OBSERVADO_2011": "IDEB 2011 (N x P)",
+    "VL_OBSERVADO_2013": "IDEB 2013 (N x P)",
+    "VL_OBSERVADO_2015": "IDEB 2015 (N x P)",
+    "VL_OBSERVADO_2017": "IDEB 2017 (N x P)",
+    "VL_OBSERVADO_2019": "IDEB 2019 (N x P)",
+    "VL_OBSERVADO_2021": "IDEB 20212 (N x P)",
+    "VL_OBSERVADO_2023": "IDEB 2023 (N x P)",
+    "VL_OBSERVADO_2025": "IDEB 2025 (N x P)",
+    "VL_PROJECAO_2007": "Metas do 1º ciclo do Ideb3,4 (2007-2021)",
+    "VL_PROJECAO_2009": "",
+    "VL_PROJECAO_2011": "",
+    "VL_PROJECAO_2013": "",
+    "VL_PROJECAO_2015": "",
+    "VL_PROJECAO_2017": "",
+    "VL_PROJECAO_2019": "",
+    "VL_PROJECAO_2021": ""
+   },
+   "notas_da_fonte": [
+    "Fonte: MEC/Inep",
+    "Notas: ND - Número de participantes no SAEB insuficiente para que os resultados sejam divulgados;",
+    "ND* - Solicitação de não divulgação conforme Portaria Inep nº 410 de 03 de novembro de 2011 ou Portaria Inep nº 304 de 24 de junho de 2013;",
+    "(*) - Média calculada a partir dos resultados das escolas nas avaliações estaduais, em decorrência de extravio das provas retornadas e impossibilidade do cálculo da proficiência para o SAEB;",
+    "(**) - Média calculada a partir dos resultados dos alunos no SAEB com participação inferior a 50%, em decorrência de extravio de provas;",
+    "(1) - Médias do SAEB 2011 e Ideb 2011 calculados sem as escolas federais;",
+    "(2) Ver Nota informativa do Ideb de 2021 (https://download.inep.gov.br/educacao_basica/portal_ideb/planilhas_para_download/2021/nota_informativa_ideb_2021.pdf) e",
+    "Relatório de Resultados do Saeb de 2021 (https://download.inep.gov.br/educacao_basica/saeb/2021/resultados/relatorio_de_resultados_do_saeb_2021_volume_1.pdf)",
+    "para maiores informações sobre o impacto da pandemia no Ideb;",
+    "(3) O primeiro ciclo do Ideb considera as metas pactuadas no Compromisso Todos pela Educação (https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6094.htm)",
+    "que foram definidas (https://download.inep.gov.br/educacao_basica/portal_ideb/o_que_sao_as_metas/Nota_Tecnica_n2_metas_intermediarias_IDEB.pdf) para cada ente",
+    "federado de 2007 até 2021;",
+    "(4) Com o fim do primeiro ciclo do Ideb, o Inep criou um Grupo Técnico para elaborar estudo e subsidiar a atualização do Ideb e a avaliação de novas metas - maiores",
+    "informações na Nota informativa do Ideb de 2025 (https://download.inep.gov.br/ideb/nota_informativa_ideb_2025.pdf)."
+   ]
+  },
+  "inep_ideb_ai_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Ideb 2025: resultados por município, anos iniciais do ensino fundamental",
+   "pagina": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados",
+   "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2025.zip",
+   "membro": "divulgacao_anos_iniciais_municipios_2025/divulgacao_anos_iniciais_municipios_2025.xlsx",
+   "capturado_em": "2026-10-08T11:04:49Z",
+   "publicado_em": "2026-07-24",
+   "sha256_original": "89100286327ab07a4b1318ba51974d62da90af334f663bedf6374cb67298a3e7",
+   "bytes_original": 25308289,
+   "md5_publicado_inep": "91a145d0ce4b0c500115e5add13dd386",
+   "md5_conferido": "91a145d0ce4b0c500115e5add13dd386",
+   "conferencia_integridade": [
+    {
+     "membro": "divulgacao_anos_iniciais_municipios_2025/divulgacao_anos_iniciais_municipios_2025.xlsx",
+     "md5_publicado_inep": "91a145d0ce4b0c500115e5add13dd386",
+     "md5_calculado": "91a145d0ce4b0c500115e5add13dd386",
+     "confere": true
+    },
+    {
+     "membro": "divulgacao_anos_iniciais_municipios_2025/divulgacao_anos_iniciais_municipios_2025.ods",
+     "md5_publicado_inep": "42b7f95618ac7c6dab1e264634cc3299",
+     "md5_calculado": "42b7f95618ac7c6dab1e264634cc3299",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_ideb_ai/ideb_ai_capitais_2025.csv.gz",
+   "sha256_recorte": "af205587d09a66f13319573f21c4eb20436982d7818cbbb0910fa3f60fae060b",
+   "linhas_recorte": 92,
+   "rotulos_colunas": {
+    "SG_UF": "Sigla da UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "REDE": "Rede",
+    "VL_APROVACAO_2005_SI_4": "Taxa de Aprovação - 2005 / 1º ao 5º ano",
+    "VL_APROVACAO_2005_SI": "1º",
+    "VL_APROVACAO_2005_1": "2º",
+    "VL_APROVACAO_2005_2": "3º",
+    "VL_APROVACAO_2005_3": "4º",
+    "VL_APROVACAO_2005_4": "5º",
+    "VL_INDICADOR_REND_2005": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2007_SI_4": "Taxa de Aprovação - 2007 / 1º ao 5º ano",
+    "VL_APROVACAO_2007_SI": "1º",
+    "VL_APROVACAO_2007_1": "2º",
+    "VL_APROVACAO_2007_2": "3º",
+    "VL_APROVACAO_2007_3": "4º",
+    "VL_APROVACAO_2007_4": "5º",
+    "VL_INDICADOR_REND_2007": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2009_SI_4": "Taxa de Aprovação - 2009 / 1º ao 5º ano",
+    "VL_APROVACAO_2009_SI": "1º",
+    "VL_APROVACAO_2009_1": "2º",
+    "VL_APROVACAO_2009_2": "3º",
+    "VL_APROVACAO_2009_3": "4º",
+    "VL_APROVACAO_2009_4": "5º",
+    "VL_INDICADOR_REND_2009": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2011_SI_4": "Taxa de Aprovação - 2011 / 1º ao 5º ano",
+    "VL_APROVACAO_2011_SI": "1º",
+    "VL_APROVACAO_2011_1": "2º",
+    "VL_APROVACAO_2011_2": "3º",
+    "VL_APROVACAO_2011_3": "4º",
+    "VL_APROVACAO_2011_4": "5º",
+    "VL_INDICADOR_REND_2011": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2013_SI_4": "Taxa de Aprovação - 2013 / 1º ao 5º ano",
+    "VL_APROVACAO_2013_SI": "1º",
+    "VL_APROVACAO_2013_1": "2º",
+    "VL_APROVACAO_2013_2": "3º",
+    "VL_APROVACAO_2013_3": "4º",
+    "VL_APROVACAO_2013_4": "5º",
+    "VL_INDICADOR_REND_2013": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2015_SI_4": "Taxa de Aprovação - 2015 / 1º ao 5º ano",
+    "VL_APROVACAO_2015_SI": "1º",
+    "VL_APROVACAO_2015_1": "2º",
+    "VL_APROVACAO_2015_2": "3º",
+    "VL_APROVACAO_2015_3": "4º",
+    "VL_APROVACAO_2015_4": "5º",
+    "VL_INDICADOR_REND_2015": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2017_SI_4": "Taxa de Aprovação - 2017 / 1º ao 5º ano",
+    "VL_APROVACAO_2017_SI": "1º",
+    "VL_APROVACAO_2017_1": "2º",
+    "VL_APROVACAO_2017_2": "3º",
+    "VL_APROVACAO_2017_3": "4º",
+    "VL_APROVACAO_2017_4": "5º",
+    "VL_INDICADOR_REND_2017": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2019_SI_4": "Taxa de Aprovação - 2019 / 1º ao 5º ano",
+    "VL_APROVACAO_2019_SI": "1º",
+    "VL_APROVACAO_2019_1": "2º",
+    "VL_APROVACAO_2019_2": "3º",
+    "VL_APROVACAO_2019_3": "4º",
+    "VL_APROVACAO_2019_4": "5º",
+    "VL_INDICADOR_REND_2019": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2021_SI_4": "Taxa de Aprovação - 20212 / 1º ao 5º ano",
+    "VL_APROVACAO_2021_SI": "1º",
+    "VL_APROVACAO_2021_1": "2º",
+    "VL_APROVACAO_2021_2": "3º",
+    "VL_APROVACAO_2021_3": "4º",
+    "VL_APROVACAO_2021_4": "5º",
+    "VL_INDICADOR_REND_2021": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2023_SI_4": "Taxa de Aprovação - 2023 / 1º ao 5º ano",
+    "VL_APROVACAO_2023_SI": "1º",
+    "VL_APROVACAO_2023_1": "2º",
+    "VL_APROVACAO_2023_2": "3º",
+    "VL_APROVACAO_2023_3": "4º",
+    "VL_APROVACAO_2023_4": "5º",
+    "VL_INDICADOR_REND_2023": "Indicador de Rendimento (P)",
+    "VL_APROVACAO_2025_SI_4": "Taxa de Aprovação - 2025 / 1º ao 5º ano",
+    "VL_APROVACAO_2025_SI": "1º",
+    "VL_APROVACAO_2025_1": "2º",
+    "VL_APROVACAO_2025_2": "3º",
+    "VL_APROVACAO_2025_3": "4º",
+    "VL_APROVACAO_2025_4": "5º",
+    "VL_INDICADOR_REND_2025": "Indicador de Rendimento (P)",
+    "VL_NOTA_MATEMATICA_2005": "Nota SAEB - 2005 / Matemática",
+    "VL_NOTA_PORTUGUES_2005": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2005": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2007": "Nota SAEB - 2007 / Matemática",
+    "VL_NOTA_PORTUGUES_2007": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2007": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2009": "Nota SAEB - 2009 / Matemática",
+    "VL_NOTA_PORTUGUES_2009": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2009": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2011": "Nota SAEB - 2011 / Matemática",
+    "VL_NOTA_PORTUGUES_2011": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2011": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2013": "Nota SAEB - 2013 / Matemática",
+    "VL_NOTA_PORTUGUES_2013": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2013": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2015": "Nota SAEB - 2015 / Matemática",
+    "VL_NOTA_PORTUGUES_2015": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2015": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2017": "Nota SAEB - 2017 / Matemática",
+    "VL_NOTA_PORTUGUES_2017": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2017": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2019": "Nota SAEB - 2019 / Matemática",
+    "VL_NOTA_PORTUGUES_2019": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2019": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2021": "Nota SAEB - 20212 / Matemática",
+    "VL_NOTA_PORTUGUES_2021": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2021": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2023": "Nota SAEB - 2023 / Matemática",
+    "VL_NOTA_PORTUGUES_2023": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2023": "Nota Média Padronizada (N)",
+    "VL_NOTA_MATEMATICA_2025": "Nota SAEB - 2025 / Matemática",
+    "VL_NOTA_PORTUGUES_2025": "Língua Portuguesa",
+    "VL_NOTA_MEDIA_2025": "Nota Média Padronizada (N)",
+    "VL_OBSERVADO_2005": "IDEB 2005 (N x P)",
+    "VL_OBSERVADO_2007": "IDEB 2007 (N x P)",
+    "VL_OBSERVADO_2009": "IDEB 2009 (N x P)",
+    "VL_OBSERVADO_2011": "IDEB 2011 (N x P)",
+    "VL_OBSERVADO_2013": "IDEB 2013 (N x P)",
+    "VL_OBSERVADO_2015": "IDEB 2015 (N x P)",
+    "VL_OBSERVADO_2017": "IDEB 2017 (N x P)",
+    "VL_OBSERVADO_2019": "IDEB 2019 (N x P)",
+    "VL_OBSERVADO_2021": "IDEB 20212 (N x P)",
+    "VL_OBSERVADO_2023": "IDEB 2023 (N x P)",
+    "VL_OBSERVADO_2025": "IDEB 2025 (N x P)",
+    "VL_PROJECAO_2007": "Metas do 1º ciclo do Ideb3,4 (2007-2021)",
+    "VL_PROJECAO_2009": "",
+    "VL_PROJECAO_2011": "",
+    "VL_PROJECAO_2013": "",
+    "VL_PROJECAO_2015": "",
+    "VL_PROJECAO_2017": "",
+    "VL_PROJECAO_2019": "",
+    "VL_PROJECAO_2021": ""
+   },
+   "notas_da_fonte": [
+    "Fonte: MEC/Inep",
+    "Notas: ND - Número de participantes no SAEB insuficiente para que os resultados sejam divulgados;",
+    "ND* - Solicitação de não divulgação conforme Portaria Inep nº 410 de 03 de novembro de 2011 ou Portaria Inep nº 304 de 24 de junho de 2013;",
+    "ND*** - Município com pelo menos 20% do material extraviado, com participação insuficiente para divulgação dos resultados;",
+    "(*) - Média calculada a partir dos resultados das escolas nas avaliações estaduais, em decorrência de extravio das provas retornadas e impossibilidade do cálculo da proficiência para o SAEB;",
+    "(**) - Média calculada a partir dos resultados dos alunos no SAEB com participação inferior a 50%, em decorrência de extravio de provas;",
+    "(1) - Médias do SAEB 2011 e Ideb 2011 calculados sem as escolas federais;",
+    "(2) Ver Nota informativa do Ideb de 2021 (https://download.inep.gov.br/educacao_basica/portal_ideb/planilhas_para_download/2021/nota_informativa_ideb_2021.pdf) e",
+    "Relatório de Resultados do Saeb de 2021 (https://download.inep.gov.br/educacao_basica/saeb/2021/resultados/relatorio_de_resultados_do_saeb_2021_volume_1.pdf)",
+    "para maiores informações sobre o impacto da pandemia no Ideb;",
+    "(3) O primeiro ciclo do Ideb considera as metas pactuadas no Compromisso Todos pela Educação (https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6094.htm)",
+    "que foram definidas (https://download.inep.gov.br/educacao_basica/portal_ideb/o_que_sao_as_metas/Nota_Tecnica_n2_metas_intermediarias_IDEB.pdf) para cada ente",
+    "federado de 2007 até 2021;",
+    "(4) Com o fim do primeiro ciclo do Ideb, o Inep criou um Grupo Técnico para elaborar estudo e subsidiar a atualização do Ideb e a avaliação de novas metas - maiores",
+    "informações na Nota informativa do Ideb de 2025 (https://download.inep.gov.br/ideb/nota_informativa_ideb_2025.pdf)."
+   ]
+  },
+  "inep_rendimento_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, municípios, 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2021/tx_rend_municipios_2021.zip",
+   "membro": "tx_rend_municipios_2021/tx_rend_municipios_2021.xlsx",
+   "capturado_em": "2026-10-08T11:01:04Z",
+   "publicado_em": "2022-05-12",
+   "sha256_original": "db50a747b744ed83bcbea9e4f6a3ebe18944aa63951b6a828d6c73fde8e946e8",
+   "bytes_original": 33942286,
+   "md5_publicado_inep": "191f68a8afabe6f9a6a8995aaacb223a",
+   "md5_conferido": "191f68a8afabe6f9a6a8995aaacb223a",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_municipios_2021/tx_rend_municipios_2021.xlsx",
+     "md5_publicado_inep": "191f68a8afabe6f9a6a8995aaacb223a",
+     "md5_calculado": "191f68a8afabe6f9a6a8995aaacb223a",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_municipios_2021/tx_rend_municipios_2021.ods",
+     "md5_publicado_inep": "ded4cae449b72fbe9f1417ee31f9825e",
+     "md5_calculado": "ded4cae449b72fbe9f1417ee31f9825e",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_rendimento/rendimento_capitais_2021.csv.gz",
+   "sha256_recorte": "2a0b66400d6944dc502eb830d15ebe22dcb1e620dce8d847c1f0b48e5b5deefe",
+   "linhas_recorte": 391,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "1_CAT_FUN": "Taxa de Aprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "1_CAT_FUN_AI": "Anos Iniciais",
+    "1_CAT_FUN_AF": "Anos Finais",
+    "1_CAT_FUN_01": "1º Ano",
+    "1_CAT_FUN_02": "2º Ano",
+    "1_CAT_FUN_03": "3º Ano",
+    "1_CAT_FUN_04": "4º Ano",
+    "1_CAT_FUN_05": "5º Ano",
+    "1_CAT_FUN_06": "6º Ano",
+    "1_CAT_FUN_07": "7º Ano",
+    "1_CAT_FUN_08": "8º Ano",
+    "1_CAT_FUN_09": "9º Ano",
+    "1_CAT_MED": "Ensino Médio / Total",
+    "1_CAT_MED_01": "1ª série",
+    "1_CAT_MED_02": "2ª série",
+    "1_CAT_MED_03": "3ª série",
+    "1_CAT_MED_04": "4ª série",
+    "1_CAT_MED_NS": "Não-Seriado",
+    "2_CAT_FUN": "Taxa de Reprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "2_CAT_FUN_AI": "Anos Iniciais",
+    "2_CAT_FUN_AF": "Anos Finais",
+    "2_CAT_FUN_01": "1º Ano",
+    "2_CAT_FUN_02": "2º Ano",
+    "2_CAT_FUN_03": "3º Ano",
+    "2_CAT_FUN_04": "4º Ano",
+    "2_CAT_FUN_05": "5º Ano",
+    "2_CAT_FUN_06": "6º Ano",
+    "2_CAT_FUN_07": "7º Ano",
+    "2_CAT_FUN_08": "8º Ano",
+    "2_CAT_FUN_09": "9º Ano",
+    "2_CAT_MED": "Ensino Médio / Total",
+    "2_CAT_MED_01": "1ª série",
+    "2_CAT_MED_02": "2ª série",
+    "2_CAT_MED_03": "3ª série",
+    "2_CAT_MED_04": "4ª série",
+    "2_CAT_MED_NS": "Não-Seriado",
+    "3_CAT_FUN": "Taxa de Abandono / Ensino Fundamental de 8 e 9 anos / Total",
+    "3_CAT_FUN_AI": "Anos Iniciais",
+    "3_CAT_FUN_AF": "Anos Finais",
+    "3_CAT_FUN_01": "1º Ano",
+    "3_CAT_FUN_02": "2º Ano",
+    "3_CAT_FUN_03": "3º Ano",
+    "3_CAT_FUN_04": "4º Ano",
+    "3_CAT_FUN_05": "5º Ano",
+    "3_CAT_FUN_06": "6º Ano",
+    "3_CAT_FUN_07": "7º Ano",
+    "3_CAT_FUN_08": "8º Ano",
+    "3_CAT_FUN_09": "9º Ano",
+    "3_CAT_MED": "Ensino Médio / Total",
+    "3_CAT_MED_01": "1ª série",
+    "3_CAT_MED_02": "2ª série",
+    "3_CAT_MED_03": "3ª série",
+    "3_CAT_MED_04": "4ª série",
+    "3_CAT_MED_NS": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2021/INEP."
+   ]
+  },
+  "inep_rendimento_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, municípios, 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2022/tx_rend_municipios_2022.zip",
+   "membro": "tx_rend_municipios_2022/tx_rend_municipios_2022.xlsx",
+   "capturado_em": "2026-10-08T11:01:18Z",
+   "publicado_em": "2023-05-17",
+   "sha256_original": "87d8b33c1a7b9582a758283eb855c84ca080d3c1ef1d5cd781e59ed304de6659",
+   "bytes_original": 35558134,
+   "md5_publicado_inep": "1a83dcb93581e30402c371c75f58e595",
+   "md5_conferido": "1a83dcb93581e30402c371c75f58e595",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_municipios_2022/tx_rend_municipios_2022.xlsx",
+     "md5_publicado_inep": "1a83dcb93581e30402c371c75f58e595",
+     "md5_calculado": "1a83dcb93581e30402c371c75f58e595",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_municipios_2022/tx_rend_municipios_2022.ods",
+     "md5_publicado_inep": "aa8354118383e0489b36efcf7724bae6",
+     "md5_calculado": "aa8354118383e0489b36efcf7724bae6",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_rendimento/rendimento_capitais_2022.csv.gz",
+   "sha256_recorte": "72da0ab863ef26ff9cde582cfc5ffdaa35b2b583d03b95de4218294440785d28",
+   "linhas_recorte": 392,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "1_CAT_FUN": "Taxa de Aprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "1_CAT_FUN_AI": "Anos Iniciais",
+    "1_CAT_FUN_AF": "Anos Finais",
+    "1_CAT_FUN_01": "1º Ano",
+    "1_CAT_FUN_02": "2º Ano",
+    "1_CAT_FUN_03": "3º Ano",
+    "1_CAT_FUN_04": "4º Ano",
+    "1_CAT_FUN_05": "5º Ano",
+    "1_CAT_FUN_06": "6º Ano",
+    "1_CAT_FUN_07": "7º Ano",
+    "1_CAT_FUN_08": "8º Ano",
+    "1_CAT_FUN_09": "9º Ano",
+    "1_CAT_MED": "Ensino Médio / Total",
+    "1_CAT_MED_01": "1ª série",
+    "1_CAT_MED_02": "2ª série",
+    "1_CAT_MED_03": "3ª série",
+    "1_CAT_MED_04": "4ª série",
+    "1_CAT_MED_NS": "Não-Seriado",
+    "2_CAT_FUN": "Taxa de Reprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "2_CAT_FUN_AI": "Anos Iniciais",
+    "2_CAT_FUN_AF": "Anos Finais",
+    "2_CAT_FUN_01": "1º Ano",
+    "2_CAT_FUN_02": "2º Ano",
+    "2_CAT_FUN_03": "3º Ano",
+    "2_CAT_FUN_04": "4º Ano",
+    "2_CAT_FUN_05": "5º Ano",
+    "2_CAT_FUN_06": "6º Ano",
+    "2_CAT_FUN_07": "7º Ano",
+    "2_CAT_FUN_08": "8º Ano",
+    "2_CAT_FUN_09": "9º Ano",
+    "2_CAT_MED": "Ensino Médio / Total",
+    "2_CAT_MED_01": "1ª série",
+    "2_CAT_MED_02": "2ª série",
+    "2_CAT_MED_03": "3ª série",
+    "2_CAT_MED_04": "4ª série",
+    "2_CAT_MED_NS": "Não-Seriado",
+    "3_CAT_FUN": "Taxa de Abandono / Ensino Fundamental de 8 e 9 anos / Total",
+    "3_CAT_FUN_AI": "Anos Iniciais",
+    "3_CAT_FUN_AF": "Anos Finais",
+    "3_CAT_FUN_01": "1º Ano",
+    "3_CAT_FUN_02": "2º Ano",
+    "3_CAT_FUN_03": "3º Ano",
+    "3_CAT_FUN_04": "4º Ano",
+    "3_CAT_FUN_05": "5º Ano",
+    "3_CAT_FUN_06": "6º Ano",
+    "3_CAT_FUN_07": "7º Ano",
+    "3_CAT_FUN_08": "8º Ano",
+    "3_CAT_FUN_09": "9º Ano",
+    "3_CAT_MED": "Ensino Médio / Total",
+    "3_CAT_MED_01": "1ª série",
+    "3_CAT_MED_02": "2ª série",
+    "3_CAT_MED_03": "3ª série",
+    "3_CAT_MED_04": "4ª série",
+    "3_CAT_MED_NS": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: Censo da Educação Básica 2022/INEP."
+   ]
+  },
+  "inep_rendimento_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, municípios, 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2023/tx_rend_municipios_2023.zip",
+   "membro": "tx_rend_municipios_2023/tx_rend_municipios_2023.xlsx",
+   "capturado_em": "2026-10-08T11:01:30Z",
+   "publicado_em": "2024-08-09",
+   "sha256_original": "574de50d82cdd12af7674e2f7e1089ce98d0571b7f0bb36e1d102f985e577b6a",
+   "bytes_original": 34538780,
+   "md5_publicado_inep": "1e7cf01fcaec71d6933f1c2f0f294b40",
+   "md5_conferido": "1e7cf01fcaec71d6933f1c2f0f294b40",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_municipios_2023/tx_rend_municipios_2023.xlsx",
+     "md5_publicado_inep": "1e7cf01fcaec71d6933f1c2f0f294b40",
+     "md5_calculado": "1e7cf01fcaec71d6933f1c2f0f294b40",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_municipios_2023/tx_rend_municipios_2023.ods",
+     "md5_publicado_inep": "0cd07b584ca04bf50222cc19e1cd238e",
+     "md5_calculado": "0cd07b584ca04bf50222cc19e1cd238e",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_rendimento/rendimento_capitais_2023.csv.gz",
+   "sha256_recorte": "b714a9934d96844fdfeff4c018938f661f08057a72d13850935795e886397b39",
+   "linhas_recorte": 393,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "1_CAT_FUN": "Taxa de Aprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "1_CAT_FUN_AI": "Anos Iniciais",
+    "1_CAT_FUN_AF": "Anos Finais",
+    "1_CAT_FUN_01": "1º Ano",
+    "1_CAT_FUN_02": "2º Ano",
+    "1_CAT_FUN_03": "3º Ano",
+    "1_CAT_FUN_04": "4º Ano",
+    "1_CAT_FUN_05": "5º Ano",
+    "1_CAT_FUN_06": "6º Ano",
+    "1_CAT_FUN_07": "7º Ano",
+    "1_CAT_FUN_08": "8º Ano",
+    "1_CAT_FUN_09": "9º Ano",
+    "1_CAT_MED": "Ensino Médio / Total",
+    "1_CAT_MED_01": "1ª série",
+    "1_CAT_MED_02": "2ª série",
+    "1_CAT_MED_03": "3ª série",
+    "1_CAT_MED_04": "4ª série",
+    "1_CAT_MED_NS": "Não-Seriado",
+    "2_CAT_FUN": "Taxa de Reprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "2_CAT_FUN_AI": "Anos Iniciais",
+    "2_CAT_FUN_AF": "Anos Finais",
+    "2_CAT_FUN_01": "1º Ano",
+    "2_CAT_FUN_02": "2º Ano",
+    "2_CAT_FUN_03": "3º Ano",
+    "2_CAT_FUN_04": "4º Ano",
+    "2_CAT_FUN_05": "5º Ano",
+    "2_CAT_FUN_06": "6º Ano",
+    "2_CAT_FUN_07": "7º Ano",
+    "2_CAT_FUN_08": "8º Ano",
+    "2_CAT_FUN_09": "9º Ano",
+    "2_CAT_MED": "Ensino Médio / Total",
+    "2_CAT_MED_01": "1ª série",
+    "2_CAT_MED_02": "2ª série",
+    "2_CAT_MED_03": "3ª série",
+    "2_CAT_MED_04": "4ª série",
+    "2_CAT_MED_NS": "Não-Seriado",
+    "3_CAT_FUN": "Taxa de Abandono / Ensino Fundamental de 8 e 9 anos / Total",
+    "3_CAT_FUN_AI": "Anos Iniciais",
+    "3_CAT_FUN_AF": "Anos Finais",
+    "3_CAT_FUN_01": "1º Ano",
+    "3_CAT_FUN_02": "2º Ano",
+    "3_CAT_FUN_03": "3º Ano",
+    "3_CAT_FUN_04": "4º Ano",
+    "3_CAT_FUN_05": "5º Ano",
+    "3_CAT_FUN_06": "6º Ano",
+    "3_CAT_FUN_07": "7º Ano",
+    "3_CAT_FUN_08": "8º Ano",
+    "3_CAT_FUN_09": "9º Ano",
+    "3_CAT_MED": "Ensino Médio / Total",
+    "3_CAT_MED_01": "1ª série",
+    "3_CAT_MED_02": "2ª série",
+    "3_CAT_MED_03": "3ª série",
+    "3_CAT_MED_04": "4ª série",
+    "3_CAT_MED_NS": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: INEP/Censo Escolar da Educação Básica."
+   ]
+  },
+  "inep_rendimento_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, municípios, 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2024/tx_rend_municipios_2024.zip",
+   "membro": "tx_rend_municipios_2024/tx_rend_municipios_2024.xlsx",
+   "capturado_em": "2026-10-08T11:01:43Z",
+   "publicado_em": "2025-04-30",
+   "sha256_original": "57efe4b7e0387bdf2d80c72bb75dfef9f14a35a30daceba8d05fcf75faede976",
+   "bytes_original": 34487202,
+   "md5_publicado_inep": "ef5fb5ab0fcbce056e718aa1f94676bf",
+   "md5_conferido": "ef5fb5ab0fcbce056e718aa1f94676bf",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_municipios_2024/tx_rend_municipios_2024.xlsx",
+     "md5_publicado_inep": "ef5fb5ab0fcbce056e718aa1f94676bf",
+     "md5_calculado": "ef5fb5ab0fcbce056e718aa1f94676bf",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_municipios_2024/tx_rend_municipios_2024.ods",
+     "md5_publicado_inep": "02b04e28d35e7be5c4d6feaf63cde4c9",
+     "md5_calculado": "02b04e28d35e7be5c4d6feaf63cde4c9",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_rendimento/rendimento_capitais_2024.csv.gz",
+   "sha256_recorte": "b0610cedf0e8a031f64edc0a934c817e46c2c325d25e2b2788968428e8501adc",
+   "linhas_recorte": 393,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "1_CAT_FUN": "Taxa de Aprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "1_CAT_FUN_AI": "Anos Iniciais",
+    "1_CAT_FUN_AF": "Anos Finais",
+    "1_CAT_FUN_01": "1º Ano",
+    "1_CAT_FUN_02": "2º Ano",
+    "1_CAT_FUN_03": "3º Ano",
+    "1_CAT_FUN_04": "4º Ano",
+    "1_CAT_FUN_05": "5º Ano",
+    "1_CAT_FUN_06": "6º Ano",
+    "1_CAT_FUN_07": "7º Ano",
+    "1_CAT_FUN_08": "8º Ano",
+    "1_CAT_FUN_09": "9º Ano",
+    "1_CAT_MED": "Ensino Médio / Total",
+    "1_CAT_MED_01": "1ª série",
+    "1_CAT_MED_02": "2ª série",
+    "1_CAT_MED_03": "3ª série",
+    "1_CAT_MED_04": "4ª série",
+    "1_CAT_MED_NS": "Não-Seriado",
+    "2_CAT_FUN": "Taxa de Reprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "2_CAT_FUN_AI": "Anos Iniciais",
+    "2_CAT_FUN_AF": "Anos Finais",
+    "2_CAT_FUN_01": "1º Ano",
+    "2_CAT_FUN_02": "2º Ano",
+    "2_CAT_FUN_03": "3º Ano",
+    "2_CAT_FUN_04": "4º Ano",
+    "2_CAT_FUN_05": "5º Ano",
+    "2_CAT_FUN_06": "6º Ano",
+    "2_CAT_FUN_07": "7º Ano",
+    "2_CAT_FUN_08": "8º Ano",
+    "2_CAT_FUN_09": "9º Ano",
+    "2_CAT_MED": "Ensino Médio / Total",
+    "2_CAT_MED_01": "1ª série",
+    "2_CAT_MED_02": "2ª série",
+    "2_CAT_MED_03": "3ª série",
+    "2_CAT_MED_04": "4ª série",
+    "2_CAT_MED_NS": "Não-Seriado",
+    "3_CAT_FUN": "Taxa de Abandono / Ensino Fundamental de 8 e 9 anos / Total",
+    "3_CAT_FUN_AI": "Anos Iniciais",
+    "3_CAT_FUN_AF": "Anos Finais",
+    "3_CAT_FUN_01": "1º Ano",
+    "3_CAT_FUN_02": "2º Ano",
+    "3_CAT_FUN_03": "3º Ano",
+    "3_CAT_FUN_04": "4º Ano",
+    "3_CAT_FUN_05": "5º Ano",
+    "3_CAT_FUN_06": "6º Ano",
+    "3_CAT_FUN_07": "7º Ano",
+    "3_CAT_FUN_08": "8º Ano",
+    "3_CAT_FUN_09": "9º Ano",
+    "3_CAT_MED": "Ensino Médio / Total",
+    "3_CAT_MED_01": "1ª série",
+    "3_CAT_MED_02": "2ª série",
+    "3_CAT_MED_03": "3ª série",
+    "3_CAT_MED_04": "4ª série",
+    "3_CAT_MED_NS": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: INEP/Censo Escolar da Educação Básica."
+   ]
+  },
+  "inep_rendimento_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Taxas de Rendimento Escolar, municípios, 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais",
+   "url": "https://download.inep.gov.br/informacoes_estatisticas/indicadores_educacionais/2025/tx_rend_municipios_2025.zip",
+   "membro": "tx_rend_municipios_2025/tx_rend_municipios_2025.xlsx",
+   "capturado_em": "2026-10-08T11:05:01Z",
+   "publicado_em": "2026-05-18",
+   "sha256_original": "69d238494d4dec7aa537403354e5730ccb1191ccc76705b0e77deb892eff63b2",
+   "bytes_original": 32853597,
+   "md5_publicado_inep": "8690944ae2912ce6b75ccdeb0e06fe2c",
+   "md5_conferido": "8690944ae2912ce6b75ccdeb0e06fe2c",
+   "conferencia_integridade": [
+    {
+     "membro": "tx_rend_municipios_2025/tx_rend_municipios_2025.xlsx",
+     "md5_publicado_inep": "8690944ae2912ce6b75ccdeb0e06fe2c",
+     "md5_calculado": "8690944ae2912ce6b75ccdeb0e06fe2c",
+     "confere": true
+    },
+    {
+     "membro": "tx_rend_municipios_2025/tx_rend_municipios_2025.ods",
+     "md5_publicado_inep": "8561d5db2968d3d351ebc056f429816e",
+     "md5_calculado": "8561d5db2968d3d351ebc056f429816e",
+     "confere": true
+    }
+   ],
+   "parametros": "linhas com CO_MUNICIPIO entre as 26 capitais e o DF; todas as colunas",
+   "recorte": "pipeline/eficiencia/seed/inep_rendimento/rendimento_capitais_2025.csv.gz",
+   "sha256_recorte": "fa3ee812faa29307366f18d53e4a77c9993bfb010b0ef94a37c2f36378d25e54",
+   "linhas_recorte": 389,
+   "rotulos_colunas": {
+    "NU_ANO_CENSO": "Ano",
+    "NO_REGIAO": "Região",
+    "SG_UF": "UF",
+    "CO_MUNICIPIO": "Código do Município",
+    "NO_MUNICIPIO": "Nome do Município",
+    "NO_CATEGORIA": "Localização",
+    "NO_DEPENDENCIA": "Dependência Administrativa",
+    "1_CAT_FUN": "Taxa de Aprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "1_CAT_FUN_AI": "Anos Iniciais",
+    "1_CAT_FUN_AF": "Anos Finais",
+    "1_CAT_FUN_01": "1º Ano",
+    "1_CAT_FUN_02": "2º Ano",
+    "1_CAT_FUN_03": "3º Ano",
+    "1_CAT_FUN_04": "4º Ano",
+    "1_CAT_FUN_05": "5º Ano",
+    "1_CAT_FUN_06": "6º Ano",
+    "1_CAT_FUN_07": "7º Ano",
+    "1_CAT_FUN_08": "8º Ano",
+    "1_CAT_FUN_09": "9º Ano",
+    "1_CAT_MED": "Ensino Médio / Total",
+    "1_CAT_MED_01": "1ª série",
+    "1_CAT_MED_02": "2ª série",
+    "1_CAT_MED_03": "3ª série",
+    "1_CAT_MED_04": "4ª série",
+    "1_CAT_MED_NS": "Não-Seriado",
+    "2_CAT_FUN": "Taxa de Reprovação / Ensino Fundamental de 8 e 9 anos / Total",
+    "2_CAT_FUN_AI": "Anos Iniciais",
+    "2_CAT_FUN_AF": "Anos Finais",
+    "2_CAT_FUN_01": "1º Ano",
+    "2_CAT_FUN_02": "2º Ano",
+    "2_CAT_FUN_03": "3º Ano",
+    "2_CAT_FUN_04": "4º Ano",
+    "2_CAT_FUN_05": "5º Ano",
+    "2_CAT_FUN_06": "6º Ano",
+    "2_CAT_FUN_07": "7º Ano",
+    "2_CAT_FUN_08": "8º Ano",
+    "2_CAT_FUN_09": "9º Ano",
+    "2_CAT_MED": "Ensino Médio / Total",
+    "2_CAT_MED_01": "1ª série",
+    "2_CAT_MED_02": "2ª série",
+    "2_CAT_MED_03": "3ª série",
+    "2_CAT_MED_04": "4ª série",
+    "2_CAT_MED_NS": "Não-Seriado",
+    "3_CAT_FUN": "Taxa de Abandono / Ensino Fundamental de 8 e 9 anos / Total",
+    "3_CAT_FUN_AI": "Anos Iniciais",
+    "3_CAT_FUN_AF": "Anos Finais",
+    "3_CAT_FUN_01": "1º Ano",
+    "3_CAT_FUN_02": "2º Ano",
+    "3_CAT_FUN_03": "3º Ano",
+    "3_CAT_FUN_04": "4º Ano",
+    "3_CAT_FUN_05": "5º Ano",
+    "3_CAT_FUN_06": "6º Ano",
+    "3_CAT_FUN_07": "7º Ano",
+    "3_CAT_FUN_08": "8º Ano",
+    "3_CAT_FUN_09": "9º Ano",
+    "3_CAT_MED": "Ensino Médio / Total",
+    "3_CAT_MED_01": "1ª série",
+    "3_CAT_MED_02": "2ª série",
+    "3_CAT_MED_03": "3ª série",
+    "3_CAT_MED_04": "4ª série",
+    "3_CAT_MED_NS": "Não-Seriado"
+   },
+   "notas_da_fonte": [
+    "Fonte: INEP/Censo Escolar da Educação Básica."
+   ]
+  },
+  "inep_sinopse_2021": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Sinopse Estatística da Educação Básica 2021",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/sinopses-estatisticas/educacao-basica",
+   "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopses_estatisticas_censo_escolar_2021.zip",
+   "membro": "Sinopse_Estatistica_da_Educaç╞o_Basica_2021/Sinopse_Estatistica_da_Educaç╞o_Basica_2021.xlsx",
+   "capturado_em": "2026-10-08T11:10:17Z",
+   "publicado_em": "2022-01-05",
+   "sha256_original": "66861b1e0adc7e09e503ca3683f960f644707a69be7c6a8ac2673c415e77838e",
+   "bytes_original": 123101397,
+   "md5_publicado_inep": "a49b14cafc848967ca1bb08715a0a7e8",
+   "md5_conferido": "a49b14cafc848967ca1bb08715a0a7e8",
+   "parametros": "tabelas de matrículas por dependência administrativa (total, creche, pré-escola) e de matrículas em escolas privadas conveniadas; linhas das capitais e do DF",
+   "recorte": "pipeline/eficiencia/seed/inep_sinopse/sinopse_capitais_2021.json.gz",
+   "sha256_recorte": "639200a44aac88da87f3de2b24cede2ffc8245f0572772625727c970eeb2c2ec",
+   "tabelas": {
+    "total": {
+     "aba": "1.2",
+     "titulo": "1.2 – Número de Matrículas da Educação Básica, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2021",
+     "linhas": 27
+    },
+    "creche": {
+     "aba": "Creche 1.6",
+     "titulo": "1.6 – Número de Matrículas da Creche Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2021",
+     "linhas": 27
+    },
+    "pre_escola": {
+     "aba": "Pré-Escola 1.10",
+     "titulo": "1.10 – Número de Matrículas da Pré-Escola Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2021.",
+     "linhas": 27
+    }
+   }
+  },
+  "inep_sinopse_2024": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Sinopse Estatística da Educação Básica 2024",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/sinopses-estatisticas/educacao-basica",
+   "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopse_estatistica_censo_escolar_2024.zip",
+   "membro": "sinopse_estatistica_censo_escolar_2024/Sinopse_Estatistica_da_Educação_Basica_2024.xlsx",
+   "capturado_em": "2026-10-08T11:10:12Z",
+   "publicado_em": "2026-07-14",
+   "sha256_original": "b1555ecc1df586e17a1f34f692fbf248927fba4dd00cb91bb98fd7fdfe1c65cb",
+   "bytes_original": 145089739,
+   "md5_publicado_inep": "d70a85cb9770c13a739917da83f86fe3",
+   "md5_conferido": "d70a85cb9770c13a739917da83f86fe3",
+   "parametros": "tabelas de matrículas por dependência administrativa (total, creche, pré-escola) e de matrículas em escolas privadas conveniadas; linhas das capitais e do DF",
+   "recorte": "pipeline/eficiencia/seed/inep_sinopse/sinopse_capitais_2024.json.gz",
+   "sha256_recorte": "0e20c7f94cb83af90699f4a625830895add21cd4ac095612b310dde222be7bbb",
+   "tabelas": {
+    "total": {
+     "aba": "1.2",
+     "titulo": "1.2 – Número de Matrículas da Educação Básica, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2024",
+     "linhas": 27
+    },
+    "creche": {
+     "aba": "Creche 1.6",
+     "titulo": "1.6 – Número de Matrículas da Creche Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2024",
+     "linhas": 27
+    },
+    "pre_escola": {
+     "aba": "Pré-Escola 1.10",
+     "titulo": "1.10 – Número de Matrículas da Pré-Escola Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2024",
+     "linhas": 27
+    }
+   }
+  },
+  "inep_sinopse_2025": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Sinopse Estatística da Educação Básica 2025",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/sinopses-estatisticas/educacao-basica",
+   "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopse_estatistica_censo_escolar_2025.zip",
+   "membro": "Sinopse_Estatistica_da_Educação_Basica_2025_V2/Sinopse_Estatistica_da_Educação_Basica_2025_V2.xlsx",
+   "capturado_em": "2026-10-08T11:10:21Z",
+   "publicado_em": "2026-07-28",
+   "sha256_original": "a8a41fcd487e98dc26c9107dfd92f403641983b2737d50497bac3e47b4f051c8",
+   "bytes_original": 232142480,
+   "md5_publicado_inep": "07461c4fd19e120ef31945af8a3d0625",
+   "md5_conferido": "07461c4fd19e120ef31945af8a3d0625",
+   "parametros": "tabelas de matrículas por dependência administrativa (total, creche, pré-escola) e de matrículas em escolas privadas conveniadas; linhas das capitais e do DF",
+   "recorte": "pipeline/eficiencia/seed/inep_sinopse/sinopse_capitais_2025.json.gz",
+   "sha256_recorte": "03847daed1ba34eb4746dfde710e32b824f863d973f668d61f566f0f8633c0e7",
+   "tabelas": {
+    "total": {
+     "aba": "1.2",
+     "titulo": "1.2 – Número de Matrículas da Educação Básica, por Localização, Dependência Administrativa e Categoria da Escola Privada, segundo a Região Geográfica, a Unidade da Federação e o Município - 2025",
+     "linhas": 27
+    },
+    "conveniadas": {
+     "aba": "1.3",
+     "titulo": "1.3 – Número de Matrículas da Educação Básica na Rede Privada em estabelecimentos conveniados com a Administração Pública, por Poder Público responsável pelo Convênio e categoria da escola privada, segundo Região Geográfica, Unidade da Federação e Município – 2025",
+     "linhas": 27
+    },
+    "creche": {
+     "aba": "Creche 1.10",
+     "titulo": "1.10 – Número de Matrículas da Educação Infantil - Creche, por Localização, Dependência Administrativa e Categoria da Escola Privada, segundo a Região Geográfica, a Unidade da Federação e o Município - 2025",
+     "linhas": 27
+    },
+    "pre_escola": {
+     "aba": "Pré-Escola 1.15",
+     "titulo": "1.15 – Número de Matrículas da Educação Infantil - Pré-Escola, por Localização, Dependência Administrativa e Categoria da Escola Privada, segundo a Região Geográfica, a Unidade da Federação e o Município - 2025",
+     "linhas": 27
+    }
+   }
+  },
+  "siconfi_dca_anexo_i_e": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Declaração de Contas Anuais (DCA), Anexo I-E: Despesa por Função",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=<ano>&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>",
+   "parametros": "exercícios 2021 a 2025; 26 capitais",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-08T10:59:01Z",
+     "linhas": 258,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1200401_2021.json.gz",
+     "sha256": "d7e7a2ce2c1fd6c08813723b360b0eb0cc939dca23a2d371c7b061f9f9d032ef"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-08T10:59:05Z",
+     "linhas": 296,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2704302_2021.json.gz",
+     "sha256": "c7441fc4ee67feb52abb9d64f10308dae45b2ff89f15963793c9a4ca86295ecd"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-08T10:59:09Z",
+     "linhas": 244,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1600303_2021.json.gz",
+     "sha256": "7647df7768966a06d0fc60d52dd3ca700896d796fdec209135f0ff24addba293"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-08T10:59:13Z",
+     "linhas": 386,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1302603_2021.json.gz",
+     "sha256": "86d3fe028e8cff58299c4eab547ccf7ac0f505dbed960714522da94c06dc6c14"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-08T10:59:17Z",
+     "linhas": 378,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2927408_2021.json.gz",
+     "sha256": "1aebe6c9274b5ccf3e59fba634c12082923d58387a3bc905e9c74a6b73ded2de"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-08T10:59:20Z",
+     "linhas": 430,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2304400_2021.json.gz",
+     "sha256": "a51a3fb5b7ca3edcb382f4d5a653611940798cb9ee435a661a46f41b9a0b1e1b"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-08T10:59:24Z",
+     "linhas": 367,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3205309_2021.json.gz",
+     "sha256": "482231f8d294b3837dec4d603804f685e85828531eeec40bdb781f0370ab204e"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-08T10:59:28Z",
+     "linhas": 265,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5208707_2021.json.gz",
+     "sha256": "89233110b46e652c2722b788d675f025bafac0aa5652f0c34ba6ff8738a89aab"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-08T10:59:32Z",
+     "linhas": 308,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2111300_2021.json.gz",
+     "sha256": "9433987c2f0d0ddc341c8453555a99eb7a6561c7064d1e01350e2e4c406a74f1"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-08T10:59:36Z",
+     "linhas": 254,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5103403_2021.json.gz",
+     "sha256": "f4ea674d26309280cf184afa3087dd78fa912a4f000f2b196060320c9f663120"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-08T10:59:40Z",
+     "linhas": 361,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5002704_2021.json.gz",
+     "sha256": "a4278ec3d7e08a679bfc4fe09b66f744cb7d283ca33816a269776d77e1a68090"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-08T10:59:44Z",
+     "linhas": 405,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3106200_2021.json.gz",
+     "sha256": "bbdc070b90c0e93b7dc10e1e685785c81a5c4a1ab17de8b9abf8e836579838ef"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-08T10:59:49Z",
+     "linhas": 250,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1501402_2021.json.gz",
+     "sha256": "5204912f928b12b15fc9d65017f26cdeec0a4f9943a283bc1c110bff6163d947"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-08T10:59:52Z",
+     "linhas": 265,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2507507_2021.json.gz",
+     "sha256": "01a4cad1b5a7a11c306bcbf1c641045899ac1d5959ffd0c2c6565f916a7d1730"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-08T10:59:57Z",
+     "linhas": 376,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4106902_2021.json.gz",
+     "sha256": "037a8beaf529b51b89c014d18ef26e8f1fe0e8cbc609ca2f0ba88c86c73275fc"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:00:01Z",
+     "linhas": 346,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2611606_2021.json.gz",
+     "sha256": "9060086bfdee737960605dde41cab56d2a40081b87aa4b183b04c5107ca03938"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:00:05Z",
+     "linhas": 309,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2211001_2021.json.gz",
+     "sha256": "890120d0d07dc0165abce4ba568d84ef5af569bfd7bdafa8529d8ef2cc6ecf20"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:00:09Z",
+     "linhas": 495,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3304557_2021.json.gz",
+     "sha256": "20cd1a395213f26896e75d0a3308687e6ec134c514dde3bfe78551614be56bd9"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:00:13Z",
+     "linhas": 317,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2408102_2021.json.gz",
+     "sha256": "beee80b442272a64c573c1829797063c2e6c0919949aa477312d44674f5ce8cc"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:00:17Z",
+     "linhas": 442,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4314902_2021.json.gz",
+     "sha256": "f53e0d173f5334ab75b4bd5d36f4dc134a91cf84391bbebc2ef44464082d4ea3"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:00:21Z",
+     "linhas": 316,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1100205_2021.json.gz",
+     "sha256": "caf3be9ef364228af2746993ac2ee568b6a0a295efce5bc986094623b488110f"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:00:25Z",
+     "linhas": 272,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1400100_2021.json.gz",
+     "sha256": "b3492904dd65bb3a97b068de56cd0e055e7e4681060012d8d592027f05b1472a"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:00:29Z",
+     "linhas": 283,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4205407_2021.json.gz",
+     "sha256": "d89a0f00b275aa73cbbf3c587ca8f953fb547ad9f84390c3edfd0494fb994dd8"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:00:32Z",
+     "linhas": 523,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3550308_2021.json.gz",
+     "sha256": "caadc128a15da3ec43aafcf16d25c069231f861dff7736a1744e3e1f0c2bc162"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:00:36Z",
+     "linhas": 313,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2800308_2021.json.gz",
+     "sha256": "5c6dbe6fedf39193e8a9ac86ab1cf33b91473bd3466fecca9e9b1acd1174426e"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2021&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:00:40Z",
+     "linhas": 408,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1721000_2021.json.gz",
+     "sha256": "4af63231bef4b922e4eed199cdd815f4a0d2b36465f7ca7c68b3b093ced5ce69"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:00:44Z",
+     "linhas": 278,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1200401_2022.json.gz",
+     "sha256": "dea5e312b8bcf96e2e7ba9335ce98418aceab7859b6eb727cea8e0d6bf509566"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:00:48Z",
+     "linhas": 311,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2704302_2022.json.gz",
+     "sha256": "f264bdfeb6d5c823197c41fe710fb426075e04d511d28fb6adb63f0cf06164f8"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:00:51Z",
+     "linhas": 266,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1600303_2022.json.gz",
+     "sha256": "34b6ec104eee182afa7f6bdddef6d6b6474bb1c5a9a00d920528d2b6fd58735a"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:00:55Z",
+     "linhas": 396,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1302603_2022.json.gz",
+     "sha256": "ce7fc7289e403d5cd7f979b6aca3d0ed8073173c65069e3631217ed33ff7bbf3"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:00:59Z",
+     "linhas": 427,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2927408_2022.json.gz",
+     "sha256": "dd8b8df316ae1411b20a40c9e68ec22667929f5851b42adb682417eef2f2062b"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:01:03Z",
+     "linhas": 429,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2304400_2022.json.gz",
+     "sha256": "7e17d416d1ab23c0aa60dce2d7acfb1e61131cb5aef356f2f707cadac31055b8"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:01:07Z",
+     "linhas": 367,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3205309_2022.json.gz",
+     "sha256": "ba6f65f7fe43a4b5e8d9dd84b350d6c7fcd4e2489c532a1cfe2a94b8ba46b200"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:01:11Z",
+     "linhas": 281,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5208707_2022.json.gz",
+     "sha256": "391b0b8026d77214498df28ef5b2c8e268d5e831c44be0244851b8f6d951275f"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:01:15Z",
+     "linhas": 358,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2111300_2022.json.gz",
+     "sha256": "dd01f8cfdc4e2d6abd1cdd92b602dc2b0c6ed5d0d18b89ef7e2b4d4f9cd7349b"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:01:18Z",
+     "linhas": 276,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5103403_2022.json.gz",
+     "sha256": "6fe5e12b58b5d17e383f2c60959e16fb00fc8580983997541a3222fc73bb0f9d"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:01:21Z",
+     "linhas": 359,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5002704_2022.json.gz",
+     "sha256": "3b5121440e90babaf8ac27857e23ed1f9e50da2189c1370d04e380d5ea086945"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:01:25Z",
+     "linhas": 407,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3106200_2022.json.gz",
+     "sha256": "3648f604555f8e4f93a2a6d2ef6408489651d17d548eb864a3e7ab59375fa58b"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:01:30Z",
+     "linhas": 234,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1501402_2022.json.gz",
+     "sha256": "71202433fdf35c198543b9b784677d11835c55d3a8146e602cd4f45da989d59f"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:01:33Z",
+     "linhas": 397,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2507507_2022.json.gz",
+     "sha256": "a688a5f7b9fa7c6c0d68bca0d82af3668e52f4d6b80e939b2bad2514836eaf01"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:01:37Z",
+     "linhas": 389,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4106902_2022.json.gz",
+     "sha256": "67fbc8286f6d0ae0f6f486b180b31fcbde5a22700b2552ca15ec1ddeffe4675f"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:01:42Z",
+     "linhas": 340,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2611606_2022.json.gz",
+     "sha256": "e262394ca576a7ec6a484ed9492d854dd0d94578e55f6d7075666fb38b4e590c"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:01:46Z",
+     "linhas": 327,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2211001_2022.json.gz",
+     "sha256": "8aaca3c4da2bbe13c7c05d8d15c8e838abb3420ef2c417ffdf6fcef795b39851"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:01:50Z",
+     "linhas": 502,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3304557_2022.json.gz",
+     "sha256": "466031f33f67e825bf1b90eeb5e0defcaf985ba4b9990a7189dd9c42853317d4"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:01:54Z",
+     "linhas": 315,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2408102_2022.json.gz",
+     "sha256": "1b534ae433876cdea7be1b910b4a2b49f58a09c2e77bd6a186841189eba09c32"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:01:57Z",
+     "linhas": 441,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4314902_2022.json.gz",
+     "sha256": "9e2102fca517f43183b49b24c488f5946cb9f07383ed1c4e0103b5ce0e9ab67f"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:02:02Z",
+     "linhas": 317,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1100205_2022.json.gz",
+     "sha256": "f4e123874dfeea7e187c7a69b57462f4dd16b701b52bbf672af1a16e0b9c2491"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:02:05Z",
+     "linhas": 317,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1400100_2022.json.gz",
+     "sha256": "671d2750283c72c95a8a4d15cc18621c0092e8faebc54deade1936d3a71eab08"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:02:09Z",
+     "linhas": 306,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4205407_2022.json.gz",
+     "sha256": "5956d95173d680993198dabaaa8bb5a34b549315e25907cd3f56b9a0ab7f0c9e"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:02:13Z",
+     "linhas": 542,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3550308_2022.json.gz",
+     "sha256": "ef95cda2f7f19d013e46e5df14ea371bc27530b9794395cfadc00c9852e751fc"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:02:18Z",
+     "linhas": 316,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2800308_2022.json.gz",
+     "sha256": "1e6e75bd731189d3cd2f9f7f1387cadee586869a190770ed6a2d158e9478171f"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2022&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:02:21Z",
+     "linhas": 414,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1721000_2022.json.gz",
+     "sha256": "fb80af1223d872918c39095120acfc0d1e1541daf6bc95bb57e7b3850f4869d4"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:02:25Z",
+     "linhas": 284,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1200401_2023.json.gz",
+     "sha256": "6a05ab697eea5711f9140c2337dfdfe0fffb78f6e5bc61705d3e0d6130f3ec3d"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:02:29Z",
+     "linhas": 334,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2704302_2023.json.gz",
+     "sha256": "257196d27c43a631ad0d70bfb74b763ca6dc9d93271e039d66e7d0c166ac5a55"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:02:34Z",
+     "linhas": 277,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1600303_2023.json.gz",
+     "sha256": "f6e8350d7c898603d99ad650ed42edf60383f3f521d44fc2cf26f0122d049d1a"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:02:37Z",
+     "linhas": 397,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1302603_2023.json.gz",
+     "sha256": "0f633485cc5d109e16342c5235403d41cf3e5e54cc7b8050b7a03ac94d856bbf"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:02:41Z",
+     "linhas": 464,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2927408_2023.json.gz",
+     "sha256": "b8b7d59b64ed36161a558015578f4dc5a161ea85706e7746f14d7ba396d3dbe8"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:02:45Z",
+     "linhas": 464,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2304400_2023.json.gz",
+     "sha256": "0692413e3491c99f69092f05d50d940d369fe0b114e2881dbea6b38ee5c2e516"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:02:50Z",
+     "linhas": 366,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3205309_2023.json.gz",
+     "sha256": "235713b70af5a8e5e972d76b4cd9ff8052f3e38e6a3c8ad998dd27b2e36c40d2"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:02:53Z",
+     "linhas": 251,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5208707_2023.json.gz",
+     "sha256": "2fec62e997e1c099f194368fa6d6a95964ff55b338792c45affa19655b219603"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:02:57Z",
+     "linhas": 379,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2111300_2023.json.gz",
+     "sha256": "3068c95cce16f67bb56a5f45d78e4847689061bdd478ca0be51eddc7fcfe8082"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:03:01Z",
+     "linhas": 300,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5103403_2023.json.gz",
+     "sha256": "ffc788e83a9296ab2dabaec3f6bcbe03798b9c65fe962492e7c8ff2522e0045f"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:03:05Z",
+     "linhas": 325,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5002704_2023.json.gz",
+     "sha256": "2324aabd0cc06ac5b04691e8197c45e6930e4ce21fdc62edf43ee83191810adf"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:03:09Z",
+     "linhas": 411,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3106200_2023.json.gz",
+     "sha256": "db9ddc3abbf6656776723e2885efb1ba015c4a83983b6b1258d5826f786dc7a1"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:03:13Z",
+     "linhas": 234,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1501402_2023.json.gz",
+     "sha256": "fdf0d6311ccec73436a1f8800aefd03703486882b3a1c9bf0f4d91cb80eb9230"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:03:16Z",
+     "linhas": 446,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2507507_2023.json.gz",
+     "sha256": "2864f7a81240d62f98db4ad6c68097d58ccd50a687a53b22db3bb5108dc577c4"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:03:21Z",
+     "linhas": 393,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4106902_2023.json.gz",
+     "sha256": "95c80c48da7b528bfb96a6ade323bc75028d7a338024114aaf3cc3fc12510fe9"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:03:25Z",
+     "linhas": 340,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2611606_2023.json.gz",
+     "sha256": "89a79f7b7311110ae9a7a4a8c42f7494d08cfd9bc027773ff4d2141499b22489"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:03:29Z",
+     "linhas": 374,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2211001_2023.json.gz",
+     "sha256": "dca846872572c2cd5c4738f370fbcc49f47fc8df1d591f7453a01793d2c14cd1"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:03:32Z",
+     "linhas": 505,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3304557_2023.json.gz",
+     "sha256": "6c3f677a6f34a0532b6ed975ec88361aa8630cd0498fa07612d0cf6244a5eb43"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:03:37Z",
+     "linhas": 329,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2408102_2023.json.gz",
+     "sha256": "f326480fd18117da10be623b3bad21286a5efbb5d3ed50140e2fa4af277c5d8a"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:03:40Z",
+     "linhas": 439,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4314902_2023.json.gz",
+     "sha256": "84e38edde9998c07bff6145f83041ab3ffe25f4e84a924ca84fb4b0540f9f77d"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:03:44Z",
+     "linhas": 328,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1100205_2023.json.gz",
+     "sha256": "720f7403cc2b54cfafcdda384fd0452b353e8e3448baebac7e9f786332e5632b"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:03:48Z",
+     "linhas": 297,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1400100_2023.json.gz",
+     "sha256": "e6223346ac1d2d805366bf60c5733ef7f332d43b204358dfe1760a0e1743613d"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:03:52Z",
+     "linhas": 314,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4205407_2023.json.gz",
+     "sha256": "eb0b659967efafa13436768089f495ce175f0d4348ca0ee7492de728e0b64d48"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:03:56Z",
+     "linhas": 567,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3550308_2023.json.gz",
+     "sha256": "383ca890f7603aafa77e45c6eb6d4a088e0716eaee870588eb249aa0ac7c508e"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:03:59Z",
+     "linhas": 332,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2800308_2023.json.gz",
+     "sha256": "955dbd701012beb37a20a36c09f547f0b5bf2a1ff5a72111247fdcf9e1f6192f"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2023&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:04:03Z",
+     "linhas": 426,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1721000_2023.json.gz",
+     "sha256": "ed7bc192458584b530f76cbaad017e0be8ad0a17b7afa4bd0f85e842f4e782b0"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:04:10Z",
+     "linhas": 279,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1200401_2024.json.gz",
+     "sha256": "f0aaa4c79356c21a71402e1b80cf86f15aa7feaa133f42a6e03b916b701b5d9f"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:04:14Z",
+     "linhas": 332,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2704302_2024.json.gz",
+     "sha256": "abd8f3fab4c0a76111992776d89374cbd4ead1f05e01d7183473a1b1fcb4c746"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:04:17Z",
+     "linhas": 248,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1600303_2024.json.gz",
+     "sha256": "6d041efa0abcff9debd36a912d2d1ddba58b85f6407d7ea744f6eac818488390"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:04:21Z",
+     "linhas": 405,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1302603_2024.json.gz",
+     "sha256": "4edfb85a7636cab3b61ed4ddef9abab2d947ed14ee77fdc8e4c8181258d48540"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:04:25Z",
+     "linhas": 444,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2927408_2024.json.gz",
+     "sha256": "c927d18d810dc0f9941272dce660ca23c3f9d600235d3126b862374b453fada4"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:04:29Z",
+     "linhas": 451,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2304400_2024.json.gz",
+     "sha256": "6bbc4b05d6c4d302efaa24354c3ca1b0b47c1fb96a6eed509a53d557826dbef2"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:04:32Z",
+     "linhas": 370,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3205309_2024.json.gz",
+     "sha256": "a89afde8594131b62456a371050888f320498110383762f34adaea8cb697cc7b"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:04:36Z",
+     "linhas": 259,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5208707_2024.json.gz",
+     "sha256": "f65ba8c2de80b1fffb43504fd08e6f2313626142408fcfbe18b58295db15bbb1"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:04:40Z",
+     "linhas": 348,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2111300_2024.json.gz",
+     "sha256": "b84859a198429c25ce762f6cb314f6b7cc2a3bd352348b301abde3ee602179da"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:04:43Z",
+     "linhas": 312,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5103403_2024.json.gz",
+     "sha256": "c990177a6c136784ac2e5d3b582536963a4a6d453b9c5fafed150eab7877fa67"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:04:47Z",
+     "linhas": 354,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5002704_2024.json.gz",
+     "sha256": "b5cb68c60fe2efe0d35af8517b5c6d9e106724ae87f940976b4a76488175045e"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:04:51Z",
+     "linhas": 417,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3106200_2024.json.gz",
+     "sha256": "ae4491a540f24e01da97892946e67caf52b0780b5619e0556a85e58100b2105d"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:04:55Z",
+     "linhas": 318,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1501402_2024.json.gz",
+     "sha256": "df7e8b66606454e6f1d1fde0192576cd022cc9669a91b015792405ff4dcce4f0"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:04:59Z",
+     "linhas": 435,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2507507_2024.json.gz",
+     "sha256": "249bae30a0332462ab8cf3c2c0bcabc676b2de917cc86fa9b45d9b1eb44a9b86"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:05:04Z",
+     "linhas": 397,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4106902_2024.json.gz",
+     "sha256": "25c4ddaacb61bae6c52291aa170eb4aae08d636236da2c57add38cd901c68544"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:05:08Z",
+     "linhas": 358,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2611606_2024.json.gz",
+     "sha256": "e28239d1e9178643cbe11de9b837116c03cb7734e5697ae965579968d5d6ab0f"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:05:12Z",
+     "linhas": 379,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2211001_2024.json.gz",
+     "sha256": "e50be66f61b9db832190e8b37483d6d9a51867fd0495226b36763025da3804b7"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:05:15Z",
+     "linhas": 493,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3304557_2024.json.gz",
+     "sha256": "d23ffc60e3e13a74caf5476f4841ac2bc3ecbf971ac4eaa262a7e4c2072427e4"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:05:19Z",
+     "linhas": 317,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2408102_2024.json.gz",
+     "sha256": "40950b8f31880389a22a4723bdb349c5dccfd7bfd7825680340480aa99568785"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:05:23Z",
+     "linhas": 410,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4314902_2024.json.gz",
+     "sha256": "79d1a4b0b60c6780ec76b8283ab0eaab5ea9d902a5879f7becb5595147a829a9"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:05:28Z",
+     "linhas": 314,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1100205_2024.json.gz",
+     "sha256": "c7df2612d92b3d3564cc3967a4e6fc95cc30abfe7457ab60f30e1a7341b17618"
+    },
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:05:31Z",
+     "linhas": 305,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1400100_2024.json.gz",
+     "sha256": "72293070d7644333b307666a7469e6d4de863e654b36ea1b3bae5ff180770fd6"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:05:35Z",
+     "linhas": 311,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4205407_2024.json.gz",
+     "sha256": "19555d5f5b61333b4dc8e0529a7927b41cc15b5121328943cf5ec26b19d1983d"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:05:39Z",
+     "linhas": 568,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3550308_2024.json.gz",
+     "sha256": "be271c682ca363b3a54fc750f7f7b119d687678a3eaf97cb191fd570f7b261a6"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:05:41Z",
+     "linhas": 332,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2800308_2024.json.gz",
+     "sha256": "c58354f65d5325365331172f6edbb487c763ddd0d98e392e7455e7be1848162c"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2024&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:05:46Z",
+     "linhas": 372,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1721000_2024.json.gz",
+     "sha256": "73e15ee658a14d66f77e0313c933e53075399ba6b6ef0ffa19335dda6d2e6801"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:05:50Z",
+     "linhas": 287,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1200401_2025.json.gz",
+     "sha256": "78865a43264f0e2ce5b626f08aad2b4f5b07a0ba9f886443c47e6e7bbfb3e9a0"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:05:54Z",
+     "linhas": 322,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2704302_2025.json.gz",
+     "sha256": "9b52c4231672623073249ecb635689e70b92ffb3d4ae9336f888e69ed18b82bc"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:05:57Z",
+     "linhas": 253,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1600303_2025.json.gz",
+     "sha256": "3293f21754a9b5b29ed6461088e4d5ced69f3bce0a0f9e652503f5673ac42bdd"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:06:02Z",
+     "linhas": 405,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1302603_2025.json.gz",
+     "sha256": "008854f34951c90bd2e10cc84b1c621fff28292368f3e9b181edbb076010046e"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:06:06Z",
+     "linhas": 447,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2927408_2025.json.gz",
+     "sha256": "b23076cad6597d4b102635a36970ec63e5d6926440fb9ad942c95eaf303c37d2"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:06:10Z",
+     "linhas": 419,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2304400_2025.json.gz",
+     "sha256": "5da0c3cb6114c47f0205735d1d47e7f1db47d733f984aceb25b7cf6e0b071383"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:06:15Z",
+     "linhas": 374,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3205309_2025.json.gz",
+     "sha256": "a1e496107367356532f3ab6ea4de208dd8b2c1b8b18d0a2ec35af51a2e45215c"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:06:18Z",
+     "linhas": 247,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5208707_2025.json.gz",
+     "sha256": "bfdfa0add527d81b742e531d6b87edc9b79a064a191d13ae9e3c83be00270873"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:06:22Z",
+     "linhas": 351,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2111300_2025.json.gz",
+     "sha256": "6a8f8f8d8a91ce27450f7a74435952f65fd83ff968e5d54edee2b0aa363893f8"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:06:26Z",
+     "linhas": 319,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5103403_2025.json.gz",
+     "sha256": "3868ed686dbf7865c358078fa12f01e7ee7fa09d9f6779566b81217f6a9dd5e3"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:06:30Z",
+     "linhas": 340,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/5002704_2025.json.gz",
+     "sha256": "f046a9ec23bd4c8673e088f9904b987b01feff36b87d46f306ca7288b925fd30"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:06:34Z",
+     "linhas": 410,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3106200_2025.json.gz",
+     "sha256": "899a73511e0ec2d6059ddab30af9b104a3812b95f3f1a7d4223e6c383e172fd5"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:06:38Z",
+     "linhas": 319,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1501402_2025.json.gz",
+     "sha256": "de5392ddbf55158f076d582fda21e0eeb17c77f3f8c454b592c86f7d1c80a1bd"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:06:42Z",
+     "linhas": 406,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2507507_2025.json.gz",
+     "sha256": "64f453358e70196072a83194ba520e4a08f9307549d9e58ef1396a182ab8800a"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:06:46Z",
+     "linhas": 409,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4106902_2025.json.gz",
+     "sha256": "5c2a08717085c6f72dca0f35c3458c6a4f564eb50c3eb1ab8b73454333ff228c"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:06:52Z",
+     "linhas": 355,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2611606_2025.json.gz",
+     "sha256": "8e484a3452ed8f2c4576e007d454c032b1e6e3d7c6dd512d4e91637b6b29269c"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:06:56Z",
+     "linhas": 342,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2211001_2025.json.gz",
+     "sha256": "690ffbc14747f652b1872ee6cb89f26ebdc576e6dc098a6bcb4e93e59fc28670"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:06:59Z",
+     "linhas": 520,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3304557_2025.json.gz",
+     "sha256": "3377881836fe46ff36d2d5d1ac21301b223c8fd83d9b5245a263a5a27e05a65b"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:07:03Z",
+     "linhas": 335,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2408102_2025.json.gz",
+     "sha256": "72609888bcfc3393a68ff157c8fb44954dcb7d30ccd2aaf3d5dd914f18c03c0e"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:07:07Z",
+     "linhas": 413,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4314902_2025.json.gz",
+     "sha256": "9db97bdabfbe7303938eb0b6ea3c12cb930730a85b346ff0b3a9b14e89559f9a"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:07:11Z",
+     "linhas": 348,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1100205_2025.json.gz",
+     "sha256": "9ae64e8ade76f9f1ed1822cca180392edf289b692ed0a1247348a10d5c0fb723"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:07:14Z",
+     "linhas": 281,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1400100_2025.json.gz",
+     "sha256": "5a0de17ed2e2fd7fa6e494ba7e1add3209dcef6eadb4ed794773aaf4f98d891c"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:07:18Z",
+     "linhas": 310,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/4205407_2025.json.gz",
+     "sha256": "2a21ced5f71ad7ce432b5a7401c483b8d23d1a943c343192f3bdf38342c16307"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:07:21Z",
+     "linhas": 545,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/3550308_2025.json.gz",
+     "sha256": "6c7a9f69b4611daea6363f4cf7e91b614562013133af160af25283fac21e7ff7"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:07:25Z",
+     "linhas": 330,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/2800308_2025.json.gz",
+     "sha256": "a46c925975aa341cb2010bf1a33999e95acd4dd4574dcbaf194d5f0211419006"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo+I-E&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:07:29Z",
+     "linhas": 328,
+     "recorte": "pipeline/eficiencia/seed/siconfi/dca_anexo_i_e/1721000_2025.json.gz",
+     "sha256": "43df41f321092d079bb602517ecde0c38d74d21fe0a0d1a0084858f21d1d3731"
+    }
+   }
+  },
+  "siconfi_entes": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Lista de entes do Siconfi",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/entes?",
+   "capturado_em": "2026-10-08T10:58:59Z",
+   "parametros": "sem filtro",
+   "recorte": "pipeline/eficiencia/seed/siconfi/entes.json.gz",
+   "sha256_recorte": "c3e4ff9b476ba29155df0e0c810069fe8a785d748c9ed5134ed454360c97cd21",
+   "linhas_recorte": 5598
+  },
+  "siconfi_rreo_anexo_02_b6": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Relatório Resumido da Execução Orçamentária (RREO), 6º bimestre, Anexo 02: Despesa por Função/Subfunção",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=<ano>&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
+   "parametros": "exercícios 2021 a 2025; 26 capitais; gravadas só as linhas da função Educação e os totais",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-08T10:59:03Z",
+     "linhas_resposta": 965,
+     "linhas": 122,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1200401_2021.json.gz",
+     "sha256": "8b2e28a51c23c7bd8a07ea1e4e7cef1fc77a5518eaccdb1948913503498c45c9"
+    },
+    "2704302_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-08T10:59:06Z",
+     "linhas_resposta": 920,
+     "linhas": 106,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2704302_2021.json.gz",
+     "sha256": "d6b759f1026bbfbf00b11aaf826e8fdf5a7326c92b92ccb17ead82a9c11ff976"
+    },
+    "1600303_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-08T10:59:10Z",
+     "linhas_resposta": 744,
+     "linhas": 148,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1600303_2021.json.gz",
+     "sha256": "d5c563f3494965312214c2b0ef91113f6f72b3aa85c483304181b870b8bf5f44"
+    },
+    "1302603_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-08T10:59:15Z",
+     "linhas_resposta": 1319,
+     "linhas": 156,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1302603_2021.json.gz",
+     "sha256": "3199a2a0cba88cb8765ed864b03bfcdd6e45dad52b472bb102a6809228491447"
+    },
+    "2927408_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-08T10:59:18Z",
+     "linhas_resposta": 1373,
+     "linhas": 119,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2927408_2021.json.gz",
+     "sha256": "1ffde18b9b6c7b5e554e340e0c824f4440f8941f60feaa3b95d6a3659e98c7c5"
+    },
+    "2304400_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-08T10:59:22Z",
+     "linhas_resposta": 1490,
+     "linhas": 151,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2304400_2021.json.gz",
+     "sha256": "a0c79acc0c557e6aa674ce8f85aeadf82ce45df513a239f11c2a2c059be0119e"
+    },
+    "3205309_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-08T10:59:26Z",
+     "linhas_resposta": 1258,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3205309_2021.json.gz",
+     "sha256": "c9452d120d3a2f7ef7a6a6d57c74038a0f2830e4b94ac3bbb3cc39a52ef71a1b"
+    },
+    "5208707_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-08T10:59:30Z",
+     "linhas_resposta": 878,
+     "linhas": 146,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5208707_2021.json.gz",
+     "sha256": "8e8ca7d006f5ad24a33431956ef5a874c8ab7a07fba2953d4b8f59ef6fc34843"
+    },
+    "2111300_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-08T10:59:34Z",
+     "linhas_resposta": 861,
+     "linhas": 119,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2111300_2021.json.gz",
+     "sha256": "15b0adc7e7e21525847c4509cfe0698c9455ef5cf590948ab8f908822a54c50f"
+    },
+    "5103403_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-08T10:59:38Z",
+     "linhas_resposta": 968,
+     "linhas": 112,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5103403_2021.json.gz",
+     "sha256": "ad37eb26b39ac1ba863976f929cc07397fb6715bd2bbbadcae759ded0c25f1da"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-08T10:59:42Z",
+     "linhas_resposta": 1480,
+     "linhas": 128,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5002704_2021.json.gz",
+     "sha256": "58cffff2a7cddacdadb900c0fee751a5d74f6997011b9e465cf2344dc84abd5d"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-08T10:59:46Z",
+     "linhas_resposta": 1477,
+     "linhas": 139,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3106200_2021.json.gz",
+     "sha256": "992e732f18b56902cd3e66b33cbec75f6290e50c17cbf8432a0c2730e26fb139"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-08T10:59:50Z",
+     "linhas_resposta": 1239,
+     "linhas": 135,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1501402_2021.json.gz",
+     "sha256": "6d30774a2d7886b9287c12d6dcc842b2f261cf9f1dfa338187981ab84bbf5c9f"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-08T10:59:55Z",
+     "linhas_resposta": 1150,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2507507_2021.json.gz",
+     "sha256": "617bbb33e6867fe479c4ba0eff49b1580e6c59bdecb706d7f0f0a4a3250da199"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-08T10:59:59Z",
+     "linhas_resposta": 1365,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4106902_2021.json.gz",
+     "sha256": "19da631c91fa645caeed3f57fcfae79dc763ad48de3c2e30416d8042f6ac8dcb"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:00:02Z",
+     "linhas_resposta": 1106,
+     "linhas": 115,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2611606_2021.json.gz",
+     "sha256": "5728896ec3b2998545a3e6abb3abb6f4cdb4a7fcbbb4ceb12f7a7810ab7fb067"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:00:07Z",
+     "linhas_resposta": 1008,
+     "linhas": 135,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2211001_2021.json.gz",
+     "sha256": "e1049e6153920406c1c3a71e13dc26db8adc4adfd907a16945e52c0175aaa65c"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:00:11Z",
+     "linhas_resposta": 1616,
+     "linhas": 105,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3304557_2021.json.gz",
+     "sha256": "e16ff296e17bb7828866a4f25adc6b3074f766ba6fa1420c6b685482801fc9c3"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:00:15Z",
+     "linhas_resposta": 902,
+     "linhas": 131,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2408102_2021.json.gz",
+     "sha256": "d6f41f624eb848e35519b4c478fff263a5aaed4f20b866c9e448928b01d1029f"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:00:19Z",
+     "linhas_resposta": 1318,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4314902_2021.json.gz",
+     "sha256": "7c62bd0a5577cc57039c26bd4cbc51a93298933ec62fc556fa7ba3455b7ff2e7"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:00:23Z",
+     "linhas_resposta": 955,
+     "linhas": 120,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1100205_2021.json.gz",
+     "sha256": "dae0c4fc0d3bef36ada6dbf5b40c63115d4f9363b473037d34e5829e7eceb6b3"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:00:27Z",
+     "linhas_resposta": 938,
+     "linhas": 107,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1400100_2021.json.gz",
+     "sha256": "778a3003caf2165db0d4fb379d6e84510739942ff5bb20f6114451953a2e47df"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:00:30Z",
+     "linhas_resposta": 954,
+     "linhas": 117,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4205407_2021.json.gz",
+     "sha256": "e24a14cf4b341b2f3719e52ad7cb169e144d48d45d4ffd07223c38be4d4f6a88"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:00:34Z",
+     "linhas_resposta": 1602,
+     "linhas": 170,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3550308_2021.json.gz",
+     "sha256": "7fe63b76b02784da894443b470a70a11ad90b2ea2ec2f1bbdafe3b5fc5a07b17"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:00:38Z",
+     "linhas_resposta": 1062,
+     "linhas": 156,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2800308_2021.json.gz",
+     "sha256": "b91a2fcf9af7650e66c13a7177d005811c306244c404ed67d249c10c0a19b0ec"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2021&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:00:42Z",
+     "linhas_resposta": 1446,
+     "linhas": 119,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1721000_2021.json.gz",
+     "sha256": "03741a5245b59f6fb68fe31617c995cdfa03d4e4bc6827d826e0909793c45a2c"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:00:46Z",
+     "linhas_resposta": 1025,
+     "linhas": 124,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1200401_2022.json.gz",
+     "sha256": "068f8c0ff0929f70ae25f06e1b400945cc19d0598eeac72ef449da42013b8d8c"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:00:50Z",
+     "linhas_resposta": 954,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2704302_2022.json.gz",
+     "sha256": "1512306398f4bad9e86c3c3c617d720d0bbd6ed136ecf157e608ea0ba57e10e6"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:00:53Z",
+     "linhas_resposta": 858,
+     "linhas": 145,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1600303_2022.json.gz",
+     "sha256": "9eca7c24c6f49b8eb5df2643fd08f8f2793d24856a3994850257a14e5424d6e7"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:00:57Z",
+     "linhas_resposta": 1342,
+     "linhas": 160,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1302603_2022.json.gz",
+     "sha256": "6686d78763169fb771ad10b712a737586307bdcc11817d8cc0a8f189275110e5"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:01:00Z",
+     "linhas_resposta": 1421,
+     "linhas": 124,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2927408_2022.json.gz",
+     "sha256": "e7436b4e1d19aba49b13af4858bcace146b281fe511d8c84e5d238d96950fcc7"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:01:05Z",
+     "linhas_resposta": 1522,
+     "linhas": 160,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2304400_2022.json.gz",
+     "sha256": "0bd9601715b9c3ec4758a400ddbe6c3db5b61b20342ae4aee70f5ad61b47eb34"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:01:09Z",
+     "linhas_resposta": 1188,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3205309_2022.json.gz",
+     "sha256": "ca9da8374e3383aaac06e77df7824f8e1dd36453d405503a69b8e67da7f6bb3a"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:01:13Z",
+     "linhas_resposta": 861,
+     "linhas": 146,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5208707_2022.json.gz",
+     "sha256": "5bd7892efa70938f2a3500201829936bd4d755f26b675bcdc0342a3b3cdb2e7a"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:01:16Z",
+     "linhas_resposta": 999,
+     "linhas": 142,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2111300_2022.json.gz",
+     "sha256": "408166688f6a81c3912caa4fb33d6579b47fde49b9e16f4f8fe49d0d1fef166e"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:01:20Z",
+     "linhas_resposta": 934,
+     "linhas": 114,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5103403_2022.json.gz",
+     "sha256": "aa11ec18fdcb6d126c34f91c5d346ba51f52c38bb8ed30833b00a62156a5e7d2"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:01:23Z",
+     "linhas_resposta": 1486,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5002704_2022.json.gz",
+     "sha256": "932e2d5556c9fb4a451d22a7fd1e7e8fe60fa27eb96e0226b4ada2773a9a384a"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:01:28Z",
+     "linhas_resposta": 1493,
+     "linhas": 141,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3106200_2022.json.gz",
+     "sha256": "ed1e6c96624bc45652027367a59c7db4c7488e38336a6fbf6a5db30f59b27487"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:01:31Z",
+     "linhas_resposta": 1197,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1501402_2022.json.gz",
+     "sha256": "b5762f8c3f9841536916ef58e5b464f1fcb877add1ba9ab0f322405e7390ad95"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:01:35Z",
+     "linhas_resposta": 1263,
+     "linhas": 153,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2507507_2022.json.gz",
+     "sha256": "e57ff1f18d3f109f7f535b38aaccb6b4e6ca8fc38cb9f32b1a27abe13291238f"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:01:38Z",
+     "linhas_resposta": 1380,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4106902_2022.json.gz",
+     "sha256": "a00f6990afb8b85ab0987f47aa4bc58db81336909445296d920ba902beee2874"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:01:44Z",
+     "linhas_resposta": 1140,
+     "linhas": 120,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2611606_2022.json.gz",
+     "sha256": "808a7c4b978f5f26fa6750fedb5ccd9206839059bbb15c8042fc5b608c14c6a8"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:01:48Z",
+     "linhas_resposta": 1046,
+     "linhas": 137,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2211001_2022.json.gz",
+     "sha256": "a03746f674bc4afac0517125d7bca6c3d8e4c9fe952938655350a186c9787528"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:01:52Z",
+     "linhas_resposta": 1660,
+     "linhas": 99,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3304557_2022.json.gz",
+     "sha256": "1c62ac6d3387f509b37c48b79baaed2fa0ffde6fcd4f7a66800c8143a16cf089"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:01:56Z",
+     "linhas_resposta": 927,
+     "linhas": 132,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2408102_2022.json.gz",
+     "sha256": "73249dd613eadce7a1d9563812907e52e6da3944286211dd580a93aa6b85878e"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:01:59Z",
+     "linhas_resposta": 1334,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4314902_2022.json.gz",
+     "sha256": "57337c561633f11910a9ace458b14803a1ba568b546079039cbc72a4953deae0"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:02:03Z",
+     "linhas_resposta": 965,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1100205_2022.json.gz",
+     "sha256": "976fbaa24de5ee5366fd6f51cf6a73e426826a1f0a9bebae12dd7aafe3789273"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:02:07Z",
+     "linhas_resposta": 973,
+     "linhas": 109,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1400100_2022.json.gz",
+     "sha256": "87f57a6c45b2a3e8ff44971e9117a7d5135538cea9581c69d5bec79d1f9fcd19"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:02:11Z",
+     "linhas_resposta": 981,
+     "linhas": 121,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4205407_2022.json.gz",
+     "sha256": "0b382a1df19f75fb20b1a20a3d9dae54385cf5dbe80dab647b706a46a90fabfb"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:02:15Z",
+     "linhas_resposta": 1692,
+     "linhas": 164,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3550308_2022.json.gz",
+     "sha256": "e7712eabc347278aad64db8b4d91b6235113abf3f6e35508d305625404aed383"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:02:19Z",
+     "linhas_resposta": 1076,
+     "linhas": 159,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2800308_2022.json.gz",
+     "sha256": "560df1de9a867b738ae2be0881afc7de6091cd9cc1cdfefa52ddf489c80a90a2"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2022&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:02:23Z",
+     "linhas_resposta": 1410,
+     "linhas": 130,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1721000_2022.json.gz",
+     "sha256": "fb7cce5158023d93aa29173eccc4ba2999a8cec387bef481ca9b31a4016ec479"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:02:27Z",
+     "linhas_resposta": 1053,
+     "linhas": 122,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1200401_2023.json.gz",
+     "sha256": "fa181ec81bfa52d1b4fd19dd8bc2d522430fc999c21fa2d042e2604df78d658f"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:02:32Z",
+     "linhas_resposta": 959,
+     "linhas": 125,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2704302_2023.json.gz",
+     "sha256": "f6d2fe7f7b627cbfd079d995159fc6bbfcef41f23fb06193cafed40a1da7e76a"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:02:35Z",
+     "linhas_resposta": 777,
+     "linhas": 128,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1600303_2023.json.gz",
+     "sha256": "b6c5e46643ef91fd65eb412537f5f20816783fb6bef8b029bb576e0b383ed0fa"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:02:39Z",
+     "linhas_resposta": 1315,
+     "linhas": 155,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1302603_2023.json.gz",
+     "sha256": "02af6c73e2336360b07856cfe434258d497a300fc03a7849d43a088a77dc977c"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:02:43Z",
+     "linhas_resposta": 1438,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2927408_2023.json.gz",
+     "sha256": "3a9b94a5b0c874da0dc751dbe3852f0403af5b84053ac3c0697820351e0ab346"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:02:47Z",
+     "linhas_resposta": 1558,
+     "linhas": 163,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2304400_2023.json.gz",
+     "sha256": "9d535e8795b7a062c140b9939384f1fae7b917971c1215565d6ad7bcbd74f8d7"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:02:51Z",
+     "linhas_resposta": 1199,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3205309_2023.json.gz",
+     "sha256": "3551ba55a2f923b69c1d5b73aad9b15c40ad3fce775bb1badc49124804d0a53e"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:02:55Z",
+     "linhas_resposta": 844,
+     "linhas": 145,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5208707_2023.json.gz",
+     "sha256": "c7bf0d2be2bd2dfdafb100b2e9929fa18a17af20fdf876c1db7dcf5a4784bf18"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:02:59Z",
+     "linhas_resposta": 1003,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2111300_2023.json.gz",
+     "sha256": "8bf60cd15da28015a7fe5aaa0b7c1b5543bdfde96dee914c7279dc910497ef8a"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:03:03Z",
+     "linhas_resposta": 1026,
+     "linhas": 115,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5103403_2023.json.gz",
+     "sha256": "11cfe6c1c322095d56633f80417a1a451a5dd2e715e48833877c498398ba2973"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:03:07Z",
+     "linhas_resposta": 1494,
+     "linhas": 130,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5002704_2023.json.gz",
+     "sha256": "026fbd43f71c912946618982579d119ce4a6a0edaa1cc79cab3d705e46c65a9f"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:03:11Z",
+     "linhas_resposta": 1471,
+     "linhas": 139,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3106200_2023.json.gz",
+     "sha256": "ad910177db273973c7bcf6936c12a1b039cdbd177a3846049561c3701b0446b6"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:03:14Z",
+     "linhas_resposta": 1232,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1501402_2023.json.gz",
+     "sha256": "3e206a3c182f015e7cc0a46e84da11cdfbc77f358b7907b11ea2a34ec27ebcac"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:03:19Z",
+     "linhas_resposta": 1288,
+     "linhas": 153,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2507507_2023.json.gz",
+     "sha256": "96c1c387b917666a4433e32b3d7ee16d2a1c291deb9a0725dc0c3afed3b89ab3"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:03:23Z",
+     "linhas_resposta": 1382,
+     "linhas": 107,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4106902_2023.json.gz",
+     "sha256": "7b0b497ef6010e2c10070535cab70b9dd7deabe4e169591bbcaa4622dc550a4e"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:03:27Z",
+     "linhas_resposta": 1121,
+     "linhas": 112,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2611606_2023.json.gz",
+     "sha256": "f873a6cfc311ce0e4ea3e654fa323bca6cffbb4bb0b7517b0abd98d784a6f890"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:03:31Z",
+     "linhas_resposta": 1078,
+     "linhas": 140,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2211001_2023.json.gz",
+     "sha256": "90f03d5ff180e9906b492b640961109b02d6b71b9573368766dd6c4bd1a1dae4"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:03:34Z",
+     "linhas_resposta": 1660,
+     "linhas": 99,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3304557_2023.json.gz",
+     "sha256": "ce8b6a669c15723c3f1404899a57f975b76ccc5e78f04827d3c70f755327d82a"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:03:38Z",
+     "linhas_resposta": 921,
+     "linhas": 130,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2408102_2023.json.gz",
+     "sha256": "ad8023bf8a38f91ee8781e64fbb7358578d5fdcd134fde84fe4b9ba78473bec2"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:03:42Z",
+     "linhas_resposta": 1314,
+     "linhas": 109,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4314902_2023.json.gz",
+     "sha256": "baff050f77b9778fb3474246ee9d351c01dc200948689906769ee036e41387c7"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:03:46Z",
+     "linhas_resposta": 1000,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1100205_2023.json.gz",
+     "sha256": "349d275556b83e2d5113e1a27679c40a68df28809f7617c593ddcb6583fa9ce3"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:03:50Z",
+     "linhas_resposta": 965,
+     "linhas": 102,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1400100_2023.json.gz",
+     "sha256": "8b7d5d61d86a212a11aaa2c7455bf21172a839138cbe65d8afc1ac2ea68ff488"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:03:54Z",
+     "linhas_resposta": 976,
+     "linhas": 115,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4205407_2023.json.gz",
+     "sha256": "6a39387c62fafc4c6cd4fcfd52f58b62944896b69d0f539441f7678d34cf2c06"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:03:57Z",
+     "linhas_resposta": 1764,
+     "linhas": 165,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3550308_2023.json.gz",
+     "sha256": "33663a5d0e4a177833e0d873b0e551923f827a68a3b6b464a77482d92b72bc43"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:04:01Z",
+     "linhas_resposta": 1100,
+     "linhas": 155,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2800308_2023.json.gz",
+     "sha256": "1a536f6880b52f82342ce76e930c4e546264a8379524a6d8a92eb6b262e42e16"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2023&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:04:08Z",
+     "linhas_resposta": 1441,
+     "linhas": 117,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1721000_2023.json.gz",
+     "sha256": "96aa540ed1fd695ee8b23b9f1b113ddab586ed71fed2133fbd2484c6c8644ae7"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:04:12Z",
+     "linhas_resposta": 1005,
+     "linhas": 112,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1200401_2024.json.gz",
+     "sha256": "d27877fa4a0a67567a890203e21d957b572fe0a981d33f0601fd6ef4f8c296dd"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:04:15Z",
+     "linhas_resposta": 986,
+     "linhas": 130,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2704302_2024.json.gz",
+     "sha256": "ab72b8c393b387f9eaf1dd44a97b84cddbfeb1dff5bbedaa95d592d7644aca4a"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:04:19Z",
+     "linhas_resposta": 863,
+     "linhas": 142,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1600303_2024.json.gz",
+     "sha256": "26f5827896ec53c42eb4283cbd95f8fafd2fae3ab8a61878f9c2fc91e04399b7"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:04:23Z",
+     "linhas_resposta": 1347,
+     "linhas": 156,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1302603_2024.json.gz",
+     "sha256": "f302dd90a53fc0420acf67d99be274c29df629a5c8dbad9ecc4919378b88e3f2"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:04:27Z",
+     "linhas_resposta": 1464,
+     "linhas": 138,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2927408_2024.json.gz",
+     "sha256": "01d1fc523bdd574c34bc84cdb663e41938dcd83d7f13ff078600c85cd7ad346c"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:04:31Z",
+     "linhas_resposta": 1495,
+     "linhas": 169,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2304400_2024.json.gz",
+     "sha256": "4f11fdd4a7d66a02c13232fea71ad0d44f2c3e60cecae9c3d42a35831c367caa"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:04:34Z",
+     "linhas_resposta": 1202,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3205309_2024.json.gz",
+     "sha256": "51438162bdb531f97eb4448ddbc7249041936fb988bc78553a5cd6c18f79c4cd"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:04:38Z",
+     "linhas_resposta": 857,
+     "linhas": 154,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5208707_2024.json.gz",
+     "sha256": "289e602b3110173b1b437f7462c00fb49f0c720ce44ee3de5375ebef5f1dfbb9"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:04:41Z",
+     "linhas_resposta": 954,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2111300_2024.json.gz",
+     "sha256": "1d4f26debdcc97c2971048bebea3e7ee9fe2e83b4bd1ab1719a1c60265fb4b58"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:04:45Z",
+     "linhas_resposta": 1025,
+     "linhas": 121,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5103403_2024.json.gz",
+     "sha256": "0ea2fa30caefff08d4af285db9004a07c89cb31bc31c6860fd5ff40da37017a7"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:04:49Z",
+     "linhas_resposta": 1466,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5002704_2024.json.gz",
+     "sha256": "3baa253dad891ca8cc481e004d51497bd689de217d53c6e67c27fc5330604ce9"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:04:53Z",
+     "linhas_resposta": 1485,
+     "linhas": 140,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3106200_2024.json.gz",
+     "sha256": "a1e0da6fd78a99c35e5eccd99fca3306209646193f95091b3cc38e4f657a3cc7"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:04:57Z",
+     "linhas_resposta": 1206,
+     "linhas": 128,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1501402_2024.json.gz",
+     "sha256": "0a7e9c3fed1f5ff2021813a0562d6a6f05706ee2735dc398dcb56f6a88a09982"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:05:02Z",
+     "linhas_resposta": 1277,
+     "linhas": 155,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2507507_2024.json.gz",
+     "sha256": "7a4d6bf2088a382214f5906612c058c4d06623378f56927bacadd32554beb03b"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:05:06Z",
+     "linhas_resposta": 1426,
+     "linhas": 149,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4106902_2024.json.gz",
+     "sha256": "942202a39827df71cb10d8929b5c1678cbab2c03f25f5ee1a4550251dfe9952a"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:05:10Z",
+     "linhas_resposta": 1132,
+     "linhas": 112,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2611606_2024.json.gz",
+     "sha256": "9dfa542554654269bb5383294e87cdac2a88734344dbb7d4d0ef9652a5b5c62a"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:05:14Z",
+     "linhas_resposta": 1065,
+     "linhas": 140,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2211001_2024.json.gz",
+     "sha256": "99006a13d93fcef8b77b74d0b4a4055fe88169d0bf81202012657eabe0d1509d"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:05:17Z",
+     "linhas_resposta": 1725,
+     "linhas": 99,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3304557_2024.json.gz",
+     "sha256": "ce2bfb4cd1dcf30b82473cc007c424aa0120df0d226bec93fbfa17f8577cc182"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:05:21Z",
+     "linhas_resposta": 900,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2408102_2024.json.gz",
+     "sha256": "35776150224cc00ad60992e41e3a77bd7c58d58efb96b5452fd5ef9e340998e4"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:05:25Z",
+     "linhas_resposta": 1347,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4314902_2024.json.gz",
+     "sha256": "540d68ff13948932f1185ea9d3c95ef78581bfbe881c15a5358157b8168307dd"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:05:29Z",
+     "linhas_resposta": 991,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1100205_2024.json.gz",
+     "sha256": "4327c8a432e83a849cfc77566bcba279e30a1382198ffaf4923d051d507e9e0b"
+    },
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:05:33Z",
+     "linhas_resposta": 877,
+     "linhas": 96,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1400100_2024.json.gz",
+     "sha256": "babb8ca5da2611fa9d3df4c5e0161afe1c955bac8b4c72f29c84926ee830f8a4"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:05:37Z",
+     "linhas_resposta": 1001,
+     "linhas": 109,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4205407_2024.json.gz",
+     "sha256": "80530e6796424606aaebb86c6250558241b69d724c8f146ac41c6938d57e1f8b"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:05:40Z",
+     "linhas_resposta": 1775,
+     "linhas": 180,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3550308_2024.json.gz",
+     "sha256": "bdbae6d8cb983bf97c69381b629bf25d028a765652c0b58a22b174a2b4b025e1"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:05:43Z",
+     "linhas_resposta": 1077,
+     "linhas": 154,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2800308_2024.json.gz",
+     "sha256": "0f9572e623838b2ea9d1215bfb43c197adb0387f29bd6d3d0f8635621fd63360"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2024&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:05:48Z",
+     "linhas_resposta": 1339,
+     "linhas": 107,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1721000_2024.json.gz",
+     "sha256": "fc3147e6049c7ac8255e3dbd5dd37d3fd749d446ecb1868c85afd736fae7c73c"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1200401",
+     "capturado_em": "2026-10-08T11:05:52Z",
+     "linhas_resposta": 1045,
+     "linhas": 122,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1200401_2025.json.gz",
+     "sha256": "2df57a32888709a3157781304bb1409a7723c32f341287f1c417f895e5ec9a15"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2704302",
+     "capturado_em": "2026-10-08T11:05:56Z",
+     "linhas_resposta": 950,
+     "linhas": 123,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2704302_2025.json.gz",
+     "sha256": "131a8b8f9662b67cbafc76fb3d01ac15f01701e3d7c8cdfdb1b136d29b945390"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1600303",
+     "capturado_em": "2026-10-08T11:05:59Z",
+     "linhas_resposta": 798,
+     "linhas": 135,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1600303_2025.json.gz",
+     "sha256": "81c051ee592dd0fb38128bdec642be29a733d3c7fed1e0f0cf95d05271615db7"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1302603",
+     "capturado_em": "2026-10-08T11:06:04Z",
+     "linhas_resposta": 1368,
+     "linhas": 153,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1302603_2025.json.gz",
+     "sha256": "74b1da1186508dcd8125f7d044954c6f82eecba49aa24883188b4268db13c963"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2927408",
+     "capturado_em": "2026-10-08T11:06:08Z",
+     "linhas_resposta": 1468,
+     "linhas": 134,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2927408_2025.json.gz",
+     "sha256": "b9a55406c35f7c91333c41e517f59e9b7f2e5f602802fc445db8052a187e7e2c"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2304400",
+     "capturado_em": "2026-10-08T11:06:13Z",
+     "linhas_resposta": 1450,
+     "linhas": 166,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2304400_2025.json.gz",
+     "sha256": "92f515efeae8bbf7a8d68a3f10dbcb42a6e5aada246a54b031970e2d57720aea"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3205309",
+     "capturado_em": "2026-10-08T11:06:16Z",
+     "linhas_resposta": 1152,
+     "linhas": 122,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3205309_2025.json.gz",
+     "sha256": "f4e961fd94ab7d20e7d84c7567c8355bfcd65aef0f2fe98b225bf0c843fb1a85"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5208707",
+     "capturado_em": "2026-10-08T11:06:20Z",
+     "linhas_resposta": 845,
+     "linhas": 153,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5208707_2025.json.gz",
+     "sha256": "cced00eb1056ff99ea4ab7398418349f1ca876c443bb3d3f9a283c55dc01d056"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2111300",
+     "capturado_em": "2026-10-08T11:06:24Z",
+     "linhas_resposta": 947,
+     "linhas": 121,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2111300_2025.json.gz",
+     "sha256": "eabd3e7f1bf629f450bc17446f41dd784299e0299457acdc5eaeb45a1e7bdd3a"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5103403",
+     "capturado_em": "2026-10-08T11:06:28Z",
+     "linhas_resposta": 1060,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5103403_2025.json.gz",
+     "sha256": "740bdedb063c14f550e125c2a1f6b4bafba4a4671105c3b8f642430e020b98a4"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=5002704",
+     "capturado_em": "2026-10-08T11:06:32Z",
+     "linhas_resposta": 1435,
+     "linhas": 127,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/5002704_2025.json.gz",
+     "sha256": "c791f3805fac7a448b682d1f18e1e141e8ae1a4979a55e3c24a0760ccc34d725"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3106200",
+     "capturado_em": "2026-10-08T11:06:36Z",
+     "linhas_resposta": 1490,
+     "linhas": 140,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3106200_2025.json.gz",
+     "sha256": "d08119263cada4d6701f4207dda3754435e0c52e14f02fadbd2311a8a40521e9"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1501402",
+     "capturado_em": "2026-10-08T11:06:40Z",
+     "linhas_resposta": 1247,
+     "linhas": 124,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1501402_2025.json.gz",
+     "sha256": "521c89059f4fb57df6a43151bb03edf2dbab9c9fb631fd887546706f54066591"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2507507",
+     "capturado_em": "2026-10-08T11:06:44Z",
+     "linhas_resposta": 1254,
+     "linhas": 137,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2507507_2025.json.gz",
+     "sha256": "dfe05a2158162e5643271cbb551dc176547fb05936906a222ac31acba6c2426e"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4106902",
+     "capturado_em": "2026-10-08T11:06:48Z",
+     "linhas_resposta": 1492,
+     "linhas": 151,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4106902_2025.json.gz",
+     "sha256": "fee13f009155d35217ecbea320860f7d30604b27b9ef24c5edb1220e7f5bcda1"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2611606",
+     "capturado_em": "2026-10-08T11:06:53Z",
+     "linhas_resposta": 1119,
+     "linhas": 121,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2611606_2025.json.gz",
+     "sha256": "0f06a8677ad4476dc6ccb957ad04c259e292ccd0ee9c3de2ce921eaad944046f"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2211001",
+     "capturado_em": "2026-10-08T11:06:57Z",
+     "linhas_resposta": 1084,
+     "linhas": 138,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2211001_2025.json.gz",
+     "sha256": "8cc8df9b9e81ee1fd9211ab8467e4e3fd95c38b6577fa679d862ac653ffe8af0"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3304557",
+     "capturado_em": "2026-10-08T11:07:01Z",
+     "linhas_resposta": 1783,
+     "linhas": 142,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3304557_2025.json.gz",
+     "sha256": "5261373d9d952da6089cbb6d87128137b5010aff502636d78012085954bda914"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2408102",
+     "capturado_em": "2026-10-08T11:07:05Z",
+     "linhas_resposta": 923,
+     "linhas": 129,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2408102_2025.json.gz",
+     "sha256": "1b88474d8dd0493490fd0677c369a3b5b7775c9640007552a85baf1376443446"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4314902",
+     "capturado_em": "2026-10-08T11:07:09Z",
+     "linhas_resposta": 1381,
+     "linhas": 110,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4314902_2025.json.gz",
+     "sha256": "d90345165ec518fbc9ef830a137d13e55e5de85af6847e5a4cccb154824364ca"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1100205",
+     "capturado_em": "2026-10-08T11:07:13Z",
+     "linhas_resposta": 1048,
+     "linhas": 126,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1100205_2025.json.gz",
+     "sha256": "a3ec5ed1ff0e8f92a76e53217f9900ad9afe12422e67eeb6ef376e6b583844c5"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1400100",
+     "capturado_em": "2026-10-08T11:07:16Z",
+     "linhas_resposta": 997,
+     "linhas": 109,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1400100_2025.json.gz",
+     "sha256": "329922de9e03a2df1ebd8f201ce38ea4009dd054fc63a2fa6be040b73145d9a1"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=4205407",
+     "capturado_em": "2026-10-08T11:07:20Z",
+     "linhas_resposta": 664,
+     "linhas": 66,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/4205407_2025.json.gz",
+     "sha256": "344cc53b365c061d9d192377e89bd5c667dad36496b0e8ab664878244e2a106b"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=3550308",
+     "capturado_em": "2026-10-08T11:07:23Z",
+     "linhas_resposta": 1614,
+     "linhas": 174,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/3550308_2025.json.gz",
+     "sha256": "d51b64a98be59dba9e76eccc0931fd62f85d380bd74411edda4004c531d23b47"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=2800308",
+     "capturado_em": "2026-10-08T11:07:27Z",
+     "linhas_resposta": 1055,
+     "linhas": 161,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/2800308_2025.json.gz",
+     "sha256": "f4e4dc517426ea4d2612d4e9e31e28e5c32ca05ec6ac1bdbc8648d8f726c1a17"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=M&id_ente=1721000",
+     "capturado_em": "2026-10-08T11:07:32Z",
+     "linhas_resposta": 1212,
+     "linhas": 105,
+     "recorte": "pipeline/eficiencia/seed/siconfi/rreo_anexo_02_b6/1721000_2025.json.gz",
+     "sha256": "cbc618eac2d62e33a8b6536f37d051bb9686ccd46596a1567255396b022eff79"
+    }
+   }
+  }
+ }
+}

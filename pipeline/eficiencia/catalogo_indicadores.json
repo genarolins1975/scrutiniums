@@ -1,0 +1,377 @@
+{
+ "versao_catalogo": "2026-10-08",
+ "painel": {
+  "id": "educacao-municipal-capitais",
+  "titulo": "Educação municipal nas capitais",
+  "frase": "Recursos, matrículas e indicadores educacionais oficiais das redes municipais de ensino das 26 capitais estaduais, cada um com o seu perímetro, período e fonte.",
+  "rede": "Rede municipal: escolas cuja dependência administrativa no Censo Escolar é municipal e que estão no território da capital."
+ },
+ "indicadores": [
+  {
+   "id": "edu.despesa.funcao_educacao",
+   "nome": "Despesa liquidada na função Educação",
+   "nome_curto": "Despesa em Educação",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou, no exercício, em despesas classificadas na função orçamentária Educação?",
+   "o_que_mede": "O valor das despesas do município classificadas na função 12 (Educação) que chegaram ao estágio de liquidação no exercício, segundo a Declaração de Contas Anuais enviada ao Tesouro Nacional.",
+   "o_que_nao_mede": [
+    "Não é o custo econômico da educação: não inclui depreciação, não separa o que foi pago com recursos próprios ou com transferências e não inclui despesas de outros entes no mesmo território.",
+    "Não é o valor aplicado em manutenção e desenvolvimento do ensino (MDE) para fins do mínimo constitucional; esse cálculo tem regras próprias e outro demonstrativo.",
+    "Não separa a despesa por etapa de ensino de forma comparável entre municípios; a classificação por subfunção depende de práticas contábeis locais.",
+    "Exclui despesas intraorçamentárias (operações entre órgãos do próprio município, como contribuição patronal ao regime próprio de previdência), apresentadas pela fonte em linha separada."
+   ],
+   "formula": "Valor da linha \"12 - Educação\", coluna \"Despesas Liquidadas\", do Anexo I-E da DCA do município no exercício.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "R$",
+   "escala": "Reais correntes do exercício (nominal). Alternativa: reais constantes de 2025, corrigidos pela média anual do IPCA.",
+   "fontes": ["siconfi_dca_anexo_i_e", "ibge_ipca"],
+   "localizacao_registro": "Siconfi, DCA, Anexo I-E (Despesa por Função), rótulo \"Total Geral da Despesa por Função\", conta \"12 - Educação\", coluna \"Despesas Liquidadas\".",
+   "periodo": "Exercício financeiro (1º de janeiro a 31 de dezembro).",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Todos os órgãos e entidades do município que integram o orçamento fiscal e da seguridade social (administração direta, autarquias, fundações e empresas estatais dependentes), conforme declarado na DCA.",
+    "servico": "Despesas classificadas na função Educação, qualquer subfunção e qualquer etapa de ensino."
+   },
+   "ausencias": "Município sem DCA homologada no exercício ou sem a linha da função Educação aparece como ausente na coleta. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura da resposta da API do Siconfi preservada no seed (JSON gzip com sha256).",
+    "Seleção da linha \"12 - Educação\" e da coluna \"Despesas Liquidadas\".",
+    "Correção monetária opcional: valor nominal × (média do número-índice IPCA de 2025 ÷ média do número-índice IPCA do exercício)."
+   ],
+   "correcao_monetaria": "IPCA, IBGE, tabela 1737, variável 2266 (número-índice, base dezembro de 1993 = 100). Média aritmética dos 12 números-índice mensais de cada ano. Período-base: média de 2025.",
+   "comparacao": "Compara-se o mesmo estágio (liquidado), a mesma função e o mesmo exercício entre capitais. É uma comparação descritiva de valores absolutos: capitais com populações e redes de tamanhos muito diferentes têm despesas de ordens de grandeza diferentes, e o painel não ajusta por contexto.",
+   "natureza": "OBSERVADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Diferenças de classificação funcional entre municípios afetam o valor (por exemplo, inativos da educação classificados na função Previdência em uns municípios e na função Educação em outros).",
+    "O valor da DCA é conferido contra o RREO do 6º bimestre; divergências aparecem na tabela de validação."
+   ],
+   "granularidade": {"etapa": false, "anos": "exercicios"},
+   "download": "/eficiencia/series/edu_despesa_funcao_educacao.csv"
+  },
+  {
+   "id": "edu.despesa.subfuncao",
+   "nome": "Composição da despesa liquidada na função Educação, por subfunção",
+   "nome_curto": "Despesa por subfunção",
+   "familia": "recursos",
+   "pergunta": "Como a despesa liquidada na função Educação se distribui entre as subfunções orçamentárias declaradas pelo município?",
+   "o_que_mede": "A parcela da despesa liquidada na função Educação registrada em cada subfunção (ensino fundamental, educação infantil, administração geral, demais subfunções e outras), segundo o Anexo I-E da DCA.",
+   "o_que_nao_mede": [
+    "Não mede quanto cada etapa de ensino custa: despesas comuns a várias etapas (merenda, transporte, administração) podem estar em subfunções próprias ou distribuídas nas subfunções de etapa, conforme a prática de cada município.",
+    "Não é uma classificação por natureza da despesa (pessoal, custeio, investimento)."
+   ],
+   "formula": "Participação da subfunção s = despesa liquidada na subfunção s ÷ despesa liquidada na função 12. A soma das subfunções é conferida contra o total da função antes da publicação.",
+   "numerador": "Despesa liquidada na subfunção (R$).",
+   "denominador": "Despesa liquidada na função Educação (R$), mesmo município e exercício.",
+   "unidade": "% da despesa liquidada na função Educação",
+   "escala": "Percentual com uma casa decimal; o valor em reais acompanha cada categoria na tabela.",
+   "fontes": ["siconfi_dca_anexo_i_e"],
+   "localizacao_registro": "Siconfi, DCA, Anexo I-E, contas \"12.xxx\" e \"FU12 - Demais Subfunções\", coluna \"Despesas Liquidadas\".",
+   "periodo": "Exercício financeiro.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Mesmo da despesa na função Educação.",
+    "servico": "Subfunções declaradas dentro da função Educação. \"Demais subfunções\" é a agregação feita pela própria DCA para subfunções sem linha própria no anexo."
+   },
+   "ausencias": "Subfunção sem linha no anexo não aparece (não vale zero). Se a soma das subfunções não reconcilia com o total da função, a composição daquele município e exercício não é exibida e recebe o estado \"inconsistente\".",
+   "transformacoes": [
+    "Seleção das linhas da função 12 e das suas subfunções no Anexo I-E.",
+    "Conferência: soma das subfunções = total da função, com tolerância de R$ 1,00 por arredondamento.",
+    "Cálculo das participações."
+   ],
+   "correcao_monetaria": "Não se aplica às participações.",
+   "comparacao": "Participações são comparáveis em forma, não em conteúdo: a mesma subfunção pode reunir despesas diferentes em municípios diferentes. A comparação entre capitais é apresentada apenas na tabela, sem gráfico de pares.",
+   "natureza": "CALCULADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Práticas de classificação por subfunção variam entre municípios e entre exercícios."
+   ],
+   "granularidade": {"etapa": false, "anos": "exercicios"},
+   "download": "/eficiencia/series/edu_despesa_subfuncao.csv"
+  },
+  {
+   "id": "edu.matriculas.rede_municipal",
+   "nome": "Matrículas na rede municipal",
+   "nome_curto": "Matrículas na rede municipal",
+   "familia": "atendimento",
+   "pergunta": "Quantas matrículas da educação básica as escolas da rede municipal da capital registraram no Censo Escolar, no total e por etapa?",
+   "o_que_mede": "A soma das matrículas em turmas de escolarização da educação básica declaradas pelas escolas de dependência administrativa municipal localizadas no município, na data de referência do Censo Escolar.",
+   "o_que_nao_mede": [
+    "Não inclui matrículas em escolas estaduais, federais ou privadas situadas na capital, nem em escolas privadas conveniadas com a prefeitura (estas aparecem em indicador separado).",
+    "Matrícula não é aluno: um estudante pode ter mais de uma matrícula (por exemplo, em turmas de etapas diferentes).",
+    "Não inclui turmas exclusivas de atividade complementar nem de atendimento educacional especializado."
+   ],
+   "formula": "Σ QT_MAT_BAS das escolas com TP_DEPENDENCIA = 3 (municipal) e CO_MUNICIPIO = código da capital. Por etapa: Σ QT_MAT_INF_CRE, QT_MAT_INF_PRE, QT_MAT_FUND_AI, QT_MAT_FUND_AF, QT_MAT_MED e QT_MAT_EJA; \"educação profissional não integrada\" = QT_MAT_BAS − soma das etapas anteriores.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "matrículas",
+   "escala": "Contagem.",
+   "fontes": ["inep_censo"],
+   "localizacao_registro": "Microdados do Censo Escolar, arquivo de escolas (microdados_ed_basica_AAAA.csv), colunas QT_MAT_*.",
+   "periodo": "Ano do Censo Escolar; a data de referência é a última quarta-feira de maio.",
+   "perimetro": {
+    "territorial": "Escolas localizadas no município da capital.",
+    "institucional": "Escolas com dependência administrativa municipal (mantidas pela prefeitura).",
+    "servico": "Educação básica: creche, pré-escola, ensino fundamental, ensino médio, educação de jovens e adultos e educação profissional. A educação especial é uma modalidade transversal e já está contada nas etapas."
+   },
+   "ausencias": "Etapa sem matrícula na rede é registrada como zero matrícula observada (o Censo informa zero), o que é diferente de ausência de dado. Ano sem microdados publicados aparece como ausente na coleta.",
+   "transformacoes": [
+    "Recorte das escolas da capital no arquivo oficial, com MD5 conferido contra o publicado pelo INEP.",
+    "Soma das colunas de matrícula das escolas municipais.",
+    "Partição por etapa mutuamente exclusiva, conferida contra QT_MAT_BAS."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Compara-se o mesmo ano do Censo e a mesma etapa. As redes municipais das capitais têm atribuições diferentes (algumas oferecem ensino fundamental completo, outras concentram-se na educação infantil e nos anos iniciais), o que muda o significado da comparação do total.",
+   "natureza": "CALCULADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL",
+   "ressalvas": [],
+   "granularidade": {"etapa": true, "anos": "censo"},
+   "download": "/eficiencia/series/edu_matriculas_rede_municipal.csv"
+  },
+  {
+   "id": "edu.matriculas.conveniadas_municipais",
+   "nome": "Matrículas em escolas privadas com parceria ou convênio com o poder público municipal",
+   "nome_curto": "Matrículas em escolas privadas conveniadas com o município",
+   "familia": "atendimento",
+   "pergunta": "Quantas matrículas há, na capital, em escolas privadas que declaram parceria ou convênio com o poder público municipal?",
+   "o_que_mede": "A soma das matrículas da educação básica em escolas de dependência privada, localizadas na capital, que declaram ao Censo Escolar parceria ou convênio com o poder público municipal (TP_PODER_PUBLICO_PARCERIA = 1).",
+   "o_que_nao_mede": [
+    "A parceria é declarada pela escola, não por matrícula: nem todas as matrículas da escola são necessariamente financiadas pelo convênio.",
+    "Não inclui escolas com parceria simultânea com o estado e o município (código 3), apresentadas separadamente na tabela.",
+    "Não informa o valor repassado pela prefeitura."
+   ],
+   "formula": "Σ QT_MAT_BAS (e colunas por etapa) das escolas com TP_DEPENDENCIA = 4, IN_PODER_PUBLICO_PARCERIA = 1 e TP_PODER_PUBLICO_PARCERIA = 1, no município da capital. Até 2021 as variáveis chamavam-se IN_CONVENIADA_PP e TP_CONVENIO_PODER_PUBLICO.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "matrículas",
+   "escala": "Contagem.",
+   "fontes": ["inep_censo"],
+   "localizacao_registro": "Microdados do Censo Escolar, arquivo de escolas, colunas TP_DEPENDENCIA, IN_PODER_PUBLICO_PARCERIA, TP_PODER_PUBLICO_PARCERIA e QT_MAT_*.",
+   "periodo": "Ano do Censo Escolar.",
+   "perimetro": {
+    "territorial": "Escolas localizadas no município da capital.",
+    "institucional": "Escolas privadas que declaram parceria com o poder público municipal.",
+    "servico": "Educação básica."
+   },
+   "ausencias": "Como no indicador de matrículas da rede municipal.",
+   "transformacoes": [
+    "Mesmo recorte do Censo Escolar.",
+    "Filtro por dependência privada e parceria municipal; soma das matrículas."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Serve para delimitar o perímetro do atendimento financiado pelo município, não para comparar redes. Mostrado ao lado das matrículas da rede municipal, nunca somado a elas no painel.",
+   "natureza": "CALCULADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Declaração de parceria feita pela escola; o Censo não identifica as matrículas financiadas."
+   ],
+   "granularidade": {"etapa": true, "anos": "censo"},
+   "download": "/eficiencia/series/edu_matriculas_conveniadas_municipais.csv"
+  },
+  {
+   "id": "edu.atu.rede_municipal",
+   "nome": "Média de alunos por turma na rede municipal",
+   "nome_curto": "Alunos por turma",
+   "familia": "atendimento",
+   "pergunta": "Quantos alunos, em média, há por turma nas escolas da rede municipal da capital, por etapa?",
+   "o_que_mede": "O indicador oficial do INEP de média de alunos por turma, para a dependência administrativa municipal, localização total, no município.",
+   "o_que_nao_mede": [
+    "Não é a relação entre alunos e professores.",
+    "Não informa a distribuição entre escolas: uma média igual pode resultar de turmas muito diferentes entre si."
+   ],
+   "formula": "Indicador calculado e publicado pelo INEP; o OBEE reproduz o valor sem recálculo.",
+   "numerador": "Matrículas nas turmas da etapa (cálculo do INEP).",
+   "denominador": "Número de turmas da etapa (cálculo do INEP).",
+   "unidade": "alunos por turma",
+   "escala": "Uma casa decimal, como publicado.",
+   "fontes": ["inep_atu"],
+   "localizacao_registro": "INEP, Indicadores Educacionais, ATU_AAAA_MUNICIPIOS, linha com NO_CATEGORIA = Total e NO_DEPENDENCIA = Municipal, colunas CRE_CAT_0, PRE_CAT_0, FUN_AI_CAT_0 e FUN_AF_CAT_0.",
+   "periodo": "Ano do Censo Escolar.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Escolas de dependência municipal.",
+    "servico": "Creche, pré-escola, anos iniciais e anos finais do ensino fundamental."
+   },
+   "ausencias": "Célula \"--\" na planilha do INEP: não aplicável quando a rede municipal não tem matrícula na etapa no Censo do mesmo ano; caso contrário, não divulgado.",
+   "transformacoes": [
+    "Leitura da planilha oficial, com MD5 conferido contra o publicado pelo INEP; em 2022 foi lida a versão .ods, a única do pacote que confere com o MD5."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Mesma etapa e mesmo ano.",
+   "natureza": "OBSERVADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL",
+   "ressalvas": [],
+   "granularidade": {"etapa": true, "anos": "censo"},
+   "download": "/eficiencia/series/edu_atu_rede_municipal.csv"
+  },
+  {
+   "id": "edu.aprovacao.rede_municipal",
+   "nome": "Taxa de aprovação na rede municipal",
+   "nome_curto": "Taxa de aprovação",
+   "familia": "resultado",
+   "pergunta": "Que percentual das matrículas da rede municipal terminou o ano letivo aprovado, por etapa do ensino fundamental?",
+   "o_que_mede": "A taxa de aprovação oficial do INEP para a dependência municipal, localização total, nos anos iniciais e nos anos finais do ensino fundamental.",
+   "o_que_nao_mede": [
+    "Não mede aprendizagem; aprovação depende também das regras de progressão de cada rede (por exemplo, ciclos sem retenção).",
+    "Não inclui transferências: o cálculo do INEP considera aprovados, reprovados e afastados por abandono."
+   ],
+   "formula": "Indicador publicado pelo INEP (aprovados ÷ (aprovados + reprovados + abandonos) × 100), reproduzido sem recálculo.",
+   "numerador": "Matrículas aprovadas (cálculo do INEP).",
+   "denominador": "Matrículas aprovadas, reprovadas e afastadas por abandono (cálculo do INEP).",
+   "unidade": "%",
+   "escala": "Uma casa decimal, como publicado.",
+   "fontes": ["inep_rendimento"],
+   "localizacao_registro": "INEP, Indicadores Educacionais, tx_rend_municipios_AAAA, linha com NO_CATEGORIA = Total e NO_DEPENDENCIA = Municipal, colunas 1_CAT_FUN_AI e 1_CAT_FUN_AF.",
+   "periodo": "Ano letivo informado na segunda etapa do Censo Escolar (situação do aluno ao fim do ano).",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Escolas de dependência municipal.",
+    "servico": "Anos iniciais e anos finais do ensino fundamental."
+   },
+   "ausencias": "Como na média de alunos por turma.",
+   "transformacoes": [
+    "Leitura da planilha oficial, com MD5 conferido contra o publicado pelo INEP."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Mesma etapa e mesmo ano letivo. Os anos letivos de 2020 e 2021 foram afetados pela pandemia de covid-19, com regras excepcionais de avaliação em muitas redes (nota informativa do Ideb 2021, INEP).",
+   "natureza": "OBSERVADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL",
+   "ressalvas": [],
+   "granularidade": {"etapa": true, "anos": "censo"},
+   "download": "/eficiencia/series/edu_aprovacao_rede_municipal.csv"
+  },
+  {
+   "id": "edu.ideb.rede_municipal",
+   "nome": "Ideb da rede municipal",
+   "nome_curto": "Ideb",
+   "familia": "resultado",
+   "pergunta": "Qual o Índice de Desenvolvimento da Educação Básica (Ideb) da rede municipal da capital, nos anos iniciais e nos anos finais do ensino fundamental?",
+   "o_que_mede": "O Ideb publicado pelo INEP para a rede municipal do município. O Ideb combina o indicador de rendimento (P, derivado das taxas de aprovação) e a nota média padronizada no Saeb (N, Língua Portuguesa e Matemática): Ideb = N × P.",
+   "o_que_nao_mede": [
+    "Não mede todas as dimensões da educação: considera só aprovação e desempenho em duas disciplinas, em dois anos escolares (5º e 9º anos).",
+    "Não é um indicador do órgão gestor isoladamente: reflete condições dos estudantes, das escolas e do território.",
+    "Não é calculado em anos pares; o painel não repete o último valor nos anos sem edição."
+   ],
+   "formula": "Ideb = N × P, calculado e publicado pelo INEP. O OBEE reproduz o valor e os componentes sem recálculo.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "índice (0 a 10)",
+   "escala": "Uma casa decimal, como publicado.",
+   "fontes": ["inep_ideb"],
+   "localizacao_registro": "INEP, Ideb 2025, planilhas divulgacao_anos_iniciais_municipios_2025 e divulgacao_anos_finais_municipios_2025, linha com REDE = Municipal, colunas VL_OBSERVADO_AAAA, VL_INDICADOR_REND_AAAA e VL_NOTA_MEDIA_AAAA.",
+   "periodo": "Edições bienais de 2005 a 2025 (ano de aplicação do Saeb).",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Escolas da rede municipal que atendem aos critérios de participação do Saeb.",
+    "servico": "Anos iniciais (1º ao 5º ano) e anos finais (6º ao 9º ano) do ensino fundamental."
+   },
+   "ausencias": "Códigos da planilha do INEP preservados: \"ND\" (participantes insuficientes no Saeb), \"ND*\" (não divulgação a pedido, Portarias INEP nº 410/2011 e nº 304/2013), \"-\" (sem resultado para a rede na edição). Nenhum vira zero.",
+   "transformacoes": [
+    "Leitura da planilha oficial, com MD5 conferido contra o publicado pelo INEP.",
+    "Conversão de números escritos com vírgula decimal (edição 2015 das notas Saeb) para ponto."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Mesma etapa e mesma edição. Não se somam nem se tiram médias de anos iniciais e finais. A edição 2021 foi afetada pela pandemia, segundo a nota informativa do INEP sobre o Ideb 2021.",
+   "natureza": "OBSERVADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL",
+   "ressalvas": [],
+   "granularidade": {"etapa": true, "anos": "edicoes_ideb"},
+   "download": "/eficiencia/series/edu_ideb_rede_municipal.csv"
+  },
+  {
+   "id": "edu.saeb.rede_municipal",
+   "nome": "Proficiência média no Saeb da rede municipal",
+   "nome_curto": "Proficiência no Saeb",
+   "familia": "resultado",
+   "pergunta": "Qual a proficiência média dos estudantes da rede municipal no Saeb, em Matemática e em Língua Portuguesa, no 5º e no 9º ano?",
+   "o_que_mede": "As médias de proficiência do Saeb usadas no cálculo do Ideb da rede municipal, em Matemática e Língua Portuguesa, para o 5º ano (anos iniciais) e o 9º ano (anos finais).",
+   "o_que_nao_mede": [
+    "A escala do Saeb é diferente para cada disciplina e não pode ser somada entre disciplinas nem entre anos escolares.",
+    "Não mede outras disciplinas nem outros anos escolares."
+   ],
+   "formula": "Valor publicado pelo INEP na planilha do Ideb (VL_NOTA_MATEMATICA_AAAA e VL_NOTA_PORTUGUES_AAAA), reproduzido sem recálculo.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "pontos na escala Saeb",
+   "escala": "Duas casas decimais, como publicado.",
+   "fontes": ["inep_ideb"],
+   "localizacao_registro": "INEP, planilhas do Ideb 2025, linha com REDE = Municipal.",
+   "periodo": "Edições bienais de 2005 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Escolas da rede municipal participantes do Saeb.",
+    "servico": "5º e 9º anos do ensino fundamental."
+   },
+   "ausencias": "Como no Ideb.",
+   "transformacoes": [
+    "Leitura da planilha oficial; conversão da vírgula decimal da edição 2015."
+   ],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Mesma disciplina, mesmo ano escolar e mesma edição.",
+   "natureza": "OBSERVADO",
+   "versao_metodologica": "1.0",
+   "estado": "PUBLICAVEL",
+   "ressalvas": [],
+   "granularidade": {"etapa": true, "anos": "edicoes_ideb"},
+   "download": "/eficiencia/series/edu_saeb_rede_municipal.csv"
+  },
+  {
+   "id": "edu.despesa_por_matricula",
+   "nome": "Despesa anual por matrícula da rede municipal",
+   "nome_curto": "Despesa por matrícula",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou na função Educação por matrícula da sua rede?",
+   "o_que_mede": "Não publicado nesta etapa.",
+   "o_que_nao_mede": [
+    "Mesmo quando publicado, não seria o custo econômico do aluno."
+   ],
+   "formula": "Despesa liquidada na função Educação ÷ matrículas da rede municipal (razão avaliada e não publicada).",
+   "numerador": "Despesa liquidada na função Educação (R$).",
+   "denominador": "Matrículas da rede municipal.",
+   "unidade": "R$ por matrícula",
+   "escala": "Não se aplica.",
+   "fontes": ["siconfi_dca_anexo_i_e", "inep_censo"],
+   "localizacao_registro": "Não se aplica.",
+   "periodo": "Não se aplica.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Numerador: todo o orçamento municipal na função Educação. Denominador: só escolas de dependência municipal.",
+    "servico": "Numerador: todas as subfunções da Educação. Denominador: educação básica."
+   },
+   "ausencias": "Não se aplica.",
+   "transformacoes": [],
+   "correcao_monetaria": "Não se aplica.",
+   "comparacao": "Não se aplica.",
+   "natureza": "CALCULADO",
+   "versao_metodologica": "0 (avaliação)",
+   "estado": "NAO_PUBLICAVEL",
+   "motivo_nao_publicacao": [
+    "O numerador inclui despesas que financiam matrículas fora do denominador: repasses a escolas privadas conveniadas (creches, sobretudo), cujas matrículas o Censo registra como privadas.",
+    "O numerador pode incluir despesas sem matrícula correspondente na rede (ensino superior, inativos classificados na função Educação, programas de outras etapas), em proporções que variam entre municípios.",
+    "Despesa e matrículas têm períodos diferentes (exercício financeiro e data de referência do Censo em maio).",
+    "A medição do tamanho desses desalinhamentos, por capital e ano, está na seção de validação; ela orienta a construção de um perímetro compatível na próxima etapa."
+   ],
+   "ressalvas": [],
+   "granularidade": {"etapa": false, "anos": "exercicios"},
+   "download": null
+  }
+ ],
+ "etapas": [
+  {"id": "total", "nome": "Total da educação básica"},
+  {"id": "creche", "nome": "Creche"},
+  {"id": "pre_escola", "nome": "Pré-escola"},
+  {"id": "anos_iniciais", "nome": "Ensino fundamental, anos iniciais"},
+  {"id": "anos_finais", "nome": "Ensino fundamental, anos finais"},
+  {"id": "ensino_medio", "nome": "Ensino médio"},
+  {"id": "eja", "nome": "Educação de jovens e adultos"},
+  {"id": "profissional", "nome": "Educação profissional não integrada"}
+ ]
+}
