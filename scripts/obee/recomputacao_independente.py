@@ -1,4 +1,4 @@
-"""Recomputação separada do pipeline: refaz despesa por habitante e despesa por matrícula direto das sementes
+"""Recomputação separada do pipeline: refaz despesa por habitante e a razão da despesa de aplicação direta por matrícula direto das sementes
 versionadas (DCA, IBGE, MSC, Censo Escolar), sem importar nada de pipeline.eficiencia, e compara com a gold.
 
 Escrita pelo autor do pipeline: serve de conferência reproduzível por outro código, não de revisão externa.
@@ -44,32 +44,44 @@ def matriculas(cod, ano):
     return sum(int(r["QT_MAT_BAS"] or 0) for r in linhas)
 
 
+MODALIDADES = {"20", "22", "30", "31", "32", "35", "36", "40", "41", "42", "45", "46", "50", "60", "67", "70", "71", "72", "73", "74", "75", "76",
+               "80", "90", "91", "92", "93", "94", "95", "96", "99"}   # as 31 da tabela oficial (MCASP 11ª edição / MTO 2025)
+
+
 def numerador_msc(cod, ano):
-    # função 12, contas de despesa liquidada (6221303, 6221304, 6221307); fora: modalidade != 90, subfunção 364,
-    # elementos 01, 03 e 05 do grupo 31 (inativos). Devolve (numerador, total sem intra, linhas sem natureza)
+    """Refaz, por outro código, o numerador da razão por matrícula (versão 1.3 da metodologia).
+
+    Função 12, contas de despesa liquidada (6221303, 6221304, 6221307), saldo líquido por linha (natureza C soma, D subtrai).
+    Numerador: modalidades 90 (aplicação direta) e 93 e 94 (compras de consórcio, desdobramento da 90), exceto subfunção 364
+    (ensino superior) e elementos 01, 03 e 05 do grupo 31 (inativos). Fora: 91 (intra), 92, 67, 95, 96, 99, transferências.
+    A parcela indeterminada é a do numerador em elementos 18, 39, 41, 45 e 48 (fora do grupo 31) e nas modalidades 93 e 94.
+    Devolve (numerador, total sem intra, sem natureza, modalidade fora da lista, parcela indeterminada)."""
     caminho = os.path.join(SEED, "siconfi", "msc_funcao12", f"{cod}_{ano}_12.json.gz")
     if not os.path.exists(caminho):
         return None
-    num = 0.0
-    sem_intra = 0.0
-    sem_nat = 0.0
+    num = sem_intra = sem_nat = fora_lista = indet = 0.0
     for x in lj(caminho):
         if str(x["funcao"]) != "12" or str(x["conta_contabil"])[:7] not in ("6221303", "6221304", "6221307"):
             continue
+        v = float(x["valor"]) * (1 if x["natureza_conta"] == "C" else -1 if x["natureza_conta"] == "D" else float("nan"))
         nd = str(x.get("natureza_despesa") or "")
-        v = float(x["valor"])
         if not nd:
             sem_nat += v
             sem_intra += v
             continue
-        mod = nd[2:4]
+        mod, grupo, elem = nd[2:4], nd[:2], nd[4:6]
         if mod == "91":
             continue
         sem_intra += v
-        if mod != "90" or str(x["subfuncao"]) == "364" or (nd[:2] == "31" and nd[4:6] in ("01", "03", "05")):
+        if mod not in MODALIDADES:
+            fora_lista += v
+            continue
+        if mod not in ("90", "93", "94") or str(x["subfuncao"]) == "364" or (grupo == "31" and elem in ("01", "03", "05")):
             continue
         num += v
-    return round(num, 2), round(sem_intra, 2), round(sem_nat, 2)
+        if mod in ("93", "94") or (grupo != "31" and elem in ("18", "39", "41", "45", "48")):
+            indet += v
+    return round(num, 2), round(sem_intra, 2), round(sem_nat, 2), round(fora_lista, 2), round(indet, 2)
 
 
 def main():
@@ -87,10 +99,10 @@ def main():
         hab = None if d is None or not pop else d / pop
         m = numerador_msc(cod, ano)
         mat_valor = None
-        if m and d is not None and mat and m[2] <= 1.0 and abs(m[1] - d) <= max(1.0, 0.001 * d):
+        if m and d is not None and mat and m[2] <= 1.0 and m[3] <= 1.0 and abs(m[1] - d) <= max(1.0, 0.001 * d):
             mat_valor = m[0] / mat
         gh = obs.get(("edu.despesa.por_habitante", cod, ano, None, "nominal"))
-        gm = obs.get(("edu.despesa.por_matricula_rede_propria", cod, ano, None, "nominal"))
+        gm = obs.get(("edu.despesa.aplicacao_direta_por_matricula", cod, ano, None, "nominal"))
         gd = obs.get(("edu.despesa.funcao_educacao", cod, ano, None, "nominal"))
         gmat = obs.get(("edu.matriculas.rede_municipal", cod, ano, "total", None))
         linhas = [
@@ -98,7 +110,7 @@ def main():
             ("população", pop, gh and gh.get("calculo", {}).get("denominador"), 0.5),
             ("despesa por habitante", hab, gh and gh["valor"], 0.01),
             ("matrículas", mat, gmat and gmat["valor"], 0.5),
-            ("despesa por matrícula", mat_valor, gm and gm["valor"], 0.01),
+            ("razão por matrícula", mat_valor, gm and gm["valor"], 0.01),
         ]
         print(f"\n{c['nome']} ({c['uf']}), código {cod}")
         for nome, a, b, tol in linhas:
@@ -116,7 +128,7 @@ def main():
             fb = "sem valor" if b is None else f"{b:,.2f}"
             print(f"  {nome:<24} recomputado {fa:>22}   gold {fb:>22}   {st}")
         if m:
-            print(f"  ponte: aplicação direta na rede própria {m[0]:,.2f}; total da MSC sem intra {m[1]:,.2f}; linhas sem natureza {m[2]:,.2f}")
+            print(f"  ponte: aplicação direta (numerador) {m[0]:,.2f}, dos quais beneficiário indeterminado {m[4]:,.2f}; total da MSC sem intra {m[1]:,.2f}; sem natureza {m[2]:,.2f}; modalidade fora da lista {m[3]:,.2f}")
     print(f"\n{'sem divergências' if divergencias == 0 else str(divergencias) + ' divergência(s)'}")
     return 0 if divergencias == 0 else 1
 

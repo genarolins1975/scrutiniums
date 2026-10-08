@@ -578,7 +578,10 @@ def despesa_por_habitante(despesa_obs, pop_obs):
 
 
 def despesa_por_matricula(despesa_obs, matricula_obs):
-    """Despesa de aplicação direta na rede municipal própria ÷ matrículas da rede municipal (Censo Escolar).
+    """Despesa de aplicação direta na função Educação ÷ matrículas da rede municipal (Censo Escolar).
+
+    Razão entre um agregado orçamentário e o tamanho da rede: não afirma que a despesa atenda só as matrículas do
+    denominador (ver `derivados.py`). A parcela de beneficiário indeterminado acompanha cada valor.
 
     Também devolve a ponte do total da DCA ao numerador (observações `edu.despesa.ponte_matricula`)."""
     fatores, _ = fatores_ipca()
@@ -590,8 +593,8 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
     for cod, nome, uf in entes.CAPITAIS:
         for ano in ANOS_FINANCEIROS:
             d, m = dca[(cod, ano)], mat[(cod, ano)]
-            reg_base = f"MSC de dezembro de {ano}, função 12, contas 6.2.2.1.3.03, .04 e .07; Censo Escolar {ano}, rede municipal, QT_MAT_BAS"
-            ind = "edu.despesa.por_matricula_rede_propria"
+            reg_base = f"MSC de dezembro de {ano}, função 12, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C); Censo Escolar {ano}, rede municipal, QT_MAT_BAS"
+            ind = "edu.despesa.aplicacao_direta_por_matricula"
             fonte = "siconfi_msc_funcao12+inep_censo+siconfi_dca_anexo_i_e"
 
             def sem(status, nota, material=True, ind=ind):
@@ -629,14 +632,14 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
                 razoes += sem("NAO_COMPARAVEL", nota)
                 continue
             if not pt["classificavel"]:
-                razoes += sem("NAO_COMPARAVEL", f"A MSC de dezembro traz {CF.brl(pt['baldes']['sem_natureza'])} liquidados na função Educação em linhas "
-                                                "sem natureza da despesa (sem modalidade nem elemento): o total fecha com a DCA, mas essas linhas não podem ser "
-                                                "atribuídas à aplicação direta nem às transferências. O numerador por matrícula não é publicado.")
+                razoes += sem("NAO_COMPARAVEL", f"A MSC de dezembro traz {CF.brl(pt['baldes']['sem_natureza'] + pt['baldes']['modalidade_nao_reconhecida'])} liquidados na função Educação em linhas "
+                                                "sem natureza da despesa ou com modalidade de aplicação fora da lista da norma: o total fecha com a DCA, mas essas linhas não podem ser "
+                                                "atribuídas à aplicação direta nem às transferências. O numerador não é publicado.")
                 continue
             if m["status"] != "OBSERVADO" or m["valor"] is None:
                 razoes += sem(m["status"], m["nota"] or "Matrículas da rede municipal sem valor observado")
                 continue
-            num = pt["baldes"]["rede_propria"]
+            num = pt["numerador"]
             v = DV.razao(num, m["valor"])
             if v is None:
                 razoes += sem("INCONSISTENTE", "Denominador nulo ou numerador negativo: a razão não é calculada.")
@@ -647,9 +650,11 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
                 notas.append(f"A soma das linhas da MSC difere da DCA em {CF.brl(pt['diferenca_dca'])} ({('%.3f' % pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
                              "abaixo do limiar de 0,1%); a diferença não é atribuída ao numerador nem a outra parcela.")
             for comp, fator in (("nominal", 1.0), ("real_2025", fatores[ano])):
-                calc = {"numerador": round(num * fator, 2), "numerador_ref": "edu.despesa.ponte_matricula", "numerador_componente": "rede_propria",
+                calc = {"numerador": round(num * fator, 2), "numerador_ref": "edu.despesa.ponte_matricula", "numerador_componente": "numerador",
                         "denominador": m["valor"], "denominador_ref": "edu.matriculas.rede_municipal",
-                        "dca_total": round(d["valor"] * fator, 2)}
+                        "dca_total": round(d["valor"] * fator, 2),
+                        "parcela_indeterminada": round(pt["parcela_indeterminada"] * fator, 2),
+                        "parcela_indeterminada_pct": pt["parcela_indeterminada_pct"]}
                 razoes.append(_obs(ind, cod, ano, round(v * fator, 6), "OBSERVADO", fonte,
                                    reg_base + ("; corrigido pelo IPCA (média anual) para reais de 2025" if comp == "real_2025" else ""),
                                    componente=comp, nota=" ".join(notas) or None, elegivel_comparacao=eleg,

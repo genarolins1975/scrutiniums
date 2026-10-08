@@ -1,5 +1,5 @@
 {
- "versao_catalogo": "2026-10-08.3",
+ "versao_catalogo": "2026-10-08.4",
  "painel": {
   "id": "educacao-municipal-capitais",
   "titulo": "Educação municipal nas capitais",
@@ -214,21 +214,23 @@
    "download": "/eficiencia/series/edu_despesa_por_habitante.csv"
   },
   {
-   "id": "edu.despesa.por_matricula_rede_propria",
+   "id": "edu.despesa.aplicacao_direta_por_matricula",
    "nome": "Despesa liquidada de aplicação direta por matrícula da rede municipal",
-   "nome_curto": "Despesa por matrícula",
+   "nome_curto": "Despesa de aplicação direta por matrícula",
    "familia": "recursos",
-   "pergunta": "Quanto o município liquidou, em aplicação direta na função Educação, para cada matrícula da sua própria rede de escolas?",
-   "o_que_mede": "A despesa liquidada de aplicação direta do município na função Educação, sem as parcelas que não têm matrícula correspondente no denominador, dividida pelas matrículas das escolas de dependência municipal. É uma razão orçamentária entre dois valores de mesmo universo, não o custo contábil integral de um aluno.",
+   "pergunta": "Quanto o município liquidou, em aplicação direta na função Educação, para cada matrícula das escolas da sua rede municipal?",
+   "o_que_mede": "A razão entre a despesa liquidada de aplicação direta do município na função Educação, sem o ensino superior e sem aposentadorias, pensões e outros benefícios previdenciários, e as matrículas das escolas de dependência municipal. É uma razão entre um agregado orçamentário e o tamanho da rede, não o custo de um aluno e não a despesa efetiva da rede por aluno.",
    "o_que_nao_mede": [
-    "Não é o custo integral nem o custo marginal de um aluno: inclui a administração central e demais despesas de aplicação direta da função, e não separa por etapa nem por turno.",
-    "Não inclui o que o município transfere a instituições privadas (por exemplo, creches conveniadas): essas escolas e suas matrículas ficam fora da razão.",
-    "Não inclui aposentadorias, pensões e outros benefícios previdenciários classificados na função Educação, nem o ensino superior; as duas parcelas aparecem na ponte, valor a valor.",
+    "Não afirma que a despesa atenda apenas as matrículas do denominador. A modalidade de aplicação indica quem executa o gasto (aplicação direta), não o aluno, a escola, a dependência administrativa nem o credor; a Matriz de Saldos Contábeis (MSC) não traz esses campos.",
+    "Parte da aplicação direta está em elementos que não identificam o beneficiário (serviços de terceiros pessoa jurídica, auxílios financeiros a estudantes e a pessoas físicas, contribuições e compras de consórcio). Eles incluem desde transporte e alimentação de alunos da rede até, em tese, vagas contratadas fora dela. A parcela é quantificada por capital e exercício e publicada junto da razão.",
+    "Não é o custo integral nem o custo marginal de um aluno: inclui a administração da função e demais despesas de aplicação direta, e não separa por etapa nem por turno.",
+    "Não inclui o que o município transfere a instituições privadas (modalidades 50 e 60, como creches conveniadas): essas escolas e suas matrículas ficam fora da razão. Também ficam fora transferências a outros entes, recursos recebidos por delegação (modalidade 92) e contratos de parceria público-privada (modalidade 67), cada um na sua parcela da ponte.",
+    "Não inclui aposentadorias, pensões e outros benefícios previdenciários classificados na função Educação, nem o ensino superior.",
     "É por matrícula, não por estudante único: um estudante com mais de uma matrícula é contado mais de uma vez pelo Censo.",
     "Não mede qualidade nem resultado; valor menor ou maior não demonstra mais ou menos eficiência."
    ],
-   "formula": "(Despesa liquidada na função 12 em aplicação direta (modalidade 90) − subfunção 364 − elementos 01, 03 e 05 do grupo 3.1.90) ÷ matrículas totais da rede municipal (QT_MAT_BAS das escolas de dependência municipal no Censo Escolar do ano).",
-   "numerador": "Linhas da MSC de dezembro (função 12, contas de despesa liquidada 6.2.2.1.3.03, .04 e .07), modalidade de aplicação 90, exceto subfunção 364 e elementos de inativos. Cada linha cai em um único balde da ponte.",
+   "formula": "(Despesa liquidada na função 12 em aplicação direta (modalidades 90, 93 e 94) − subfunção 364 − elementos 01, 03 e 05 do grupo 3.1) ÷ matrículas totais da rede municipal (QT_MAT_BAS das escolas de dependência municipal no Censo Escolar do ano).",
+   "numerador": "Linhas da MSC de dezembro (função 12, contas de despesa liquidada 6.2.2.1.3.03, .04 e .07), com o saldo líquido pela natureza D ou C, em aplicação direta, exceto subfunção 364 e elementos de inativos. Cada linha cai em um único balde da ponte. Parcela de beneficiário indeterminado: elementos 18, 39, 41, 45 e 48 e modalidades 93 e 94.",
    "denominador": "Matrículas da educação básica nas escolas de dependência municipal localizadas no município, Censo Escolar do ano (maio).",
    "unidade": "R$ por matrícula por ano",
    "escala": "Reais correntes do exercício por matrícula (nominal). Alternativa: reais constantes de 2025, com o fator do IPCA aplicado ao numerador.",
@@ -247,21 +249,21 @@
    },
    "ausencias": "Sem MSC de dezembro, sem reconciliação da MSC com a DCA, sem matrículas observadas ou com denominador nulo, a razão não é calculada e o motivo fica na observação. Ausência nunca é tratada como zero.",
    "transformacoes": [
-    "Seleção das linhas da função 12 nas contas de despesa liquidada da MSC (modalidade 91, intraorçamentárias, fica fora do total).",
-    "Atribuição de cada linha a um único balde: transferências a instituições privadas (modalidades 50 e 60), transferências a outros entes (demais modalidades que não a 90), ensino superior (subfunção 364), inativos (elementos 01, 03 e 05 do grupo 3.1.90) e aplicação direta na rede própria.",
-    "Reconciliação: o total dos baldes, sem intraorçamentárias, precisa igualar a despesa liquidada da DCA (diferença de até R$ 1,00); sem isso, não há valor.",
-    "Divisão da aplicação direta na rede própria pelas matrículas totais da rede municipal, com a precisão original.",
+    "Seleção das linhas da função 12 nas contas de despesa liquidada da MSC, com o saldo líquido pela natureza do valor (C soma, D subtrai: política de conferência 1.2). A modalidade 91 (intraorçamentárias) fica fora do total.",
+    "Atribuição de cada linha a um único balde, pela modalidade de aplicação (MCASP 11ª ed., MTO 2025): transferências a instituições privadas (50 e 60); transferências e delegações a outros entes, consórcios, instituições multigovernamentais e exterior; recursos recebidos por delegação (92); parceria público-privada (67); uso atípico (95, 96 e 99); e, na aplicação direta (90, 93 e 94), ensino superior (subfunção 364), inativos (elementos 01, 03 e 05 do grupo 3.1), beneficiário indeterminado (elementos 18, 39, 41, 45 e 48 e modalidades 93 e 94) e demais elementos.",
+    "Reconciliação: o total dos baldes, sem intraorçamentárias, precisa igualar a despesa liquidada da DCA (diferença de até R$ 1,00, ou até 0,1% da DCA, como na política de conferência); sem isso, não há valor.",
+    "Divisão do numerador (beneficiário indeterminado + demais elementos) pelas matrículas totais da rede municipal, com a precisão original.",
     "Correção monetária opcional: numerador nominal × fator IPCA do exercício."
    ],
    "correcao_monetaria": "Mesmo fator do IPCA da despesa total.",
-   "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com MSC reconciliada com a DCA, matrículas observadas e elegibilidade herdada da despesa. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma do numerador ÷ soma das matrículas dos mesmos pares) pesa pelo tamanho da rede. Capitais cuja rede municipal é pequena frente à população, ou que atendem muitas crianças em escolas conveniadas, têm uma razão que cobre uma parte menor da oferta municipal de ensino; a participação das matrículas conveniadas é exibida ao lado.",
+   "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com MSC reconciliada com a DCA, matrículas observadas e elegibilidade herdada da despesa. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma do numerador ÷ soma das matrículas dos mesmos pares) pesa pelo tamanho da rede. As capitais diferem na forma de prestar o serviço: onde há mais vagas contratadas ou conveniadas, o numerador e o denominador cobrem partes diferentes da oferta. A participação das matrículas conveniadas e a parcela de beneficiário indeterminado são exibidas ao lado; nenhum limite as usa para incluir ou excluir uma capital.",
    "natureza": "CALCULADO",
-   "universo_curto": "Despesa de aplicação direta na função Educação, sem inativos, ensino superior e transferências a instituições privadas ÷ matrículas das escolas municipais. Por matrícula, não por estudante único.",
+   "universo_curto": "Despesa de aplicação direta na função Educação, sem inativos, ensino superior, transferências e delegações ÷ matrículas das escolas municipais. Por matrícula, não por estudante único; não é despesa efetiva da rede por aluno.",
    "universo_rotulo": "aplicação direta ÷ matrículas da rede municipal",
-   "versao_metodologica": "1.2",
+   "versao_metodologica": "1.3",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
-    "Contas de aplicação direta podem incluir pagamento a prestadores privados de serviços que atendem alunos da rede (por exemplo, transporte, alimentação ou vagas contratadas); a MSC não separa o beneficiário do serviço.",
+    "Aplicação direta não é sinônimo de rede própria: pode incluir pagamento a prestadores privados de serviços que atendem alunos da rede (transporte, alimentação) e, em tese, vagas contratadas fora dela; a MSC não separa o beneficiário do serviço. O ID e o nome mudaram na rodada 6 (antes, \"por matrícula da rede própria\") justamente por isso; a série anterior não é reutilizada.",
     "O Censo tem referência em maio e a despesa cobre o ano; uma rede que cresce ou encolhe ao longo do ano tem os dois períodos desalinhados.",
     "Herda as ressalvas da despesa total: Campo Grande 2021 não tem valor (a DCA inclui intraorçamentárias e a ponte não fecha); Boa Vista 2024 mantém a ressalva de reconciliação.",
     "Um estudante com mais de uma matrícula conta mais de uma vez; o denominador é matrícula, não pessoa."
@@ -270,20 +272,21 @@
     "etapa": false,
     "anos": "exercicios"
    },
-   "download": "/eficiencia/series/edu_despesa_por_matricula_rede_propria.csv"
+   "download": "/eficiencia/series/edu_despesa_aplicacao_direta_por_matricula.csv",
+   "substitui": "edu.despesa.por_matricula_rede_propria"
   },
   {
    "id": "edu.despesa.ponte_matricula",
    "nome": "Ponte da despesa liquidada da função Educação ao numerador por matrícula",
    "nome_curto": "Ponte da despesa por matrícula",
    "familia": "recursos",
-   "pergunta": "Quais parcelas da despesa liquidada da função Educação ficam dentro e fora do numerador da despesa por matrícula?",
-   "o_que_mede": "A decomposição da despesa liquidada da função Educação, linha a linha da Matriz de Saldos Contábeis de dezembro, em cinco parcelas mutuamente exclusivas: aplicação direta na rede própria, inativos, ensino superior, transferências a instituições privadas e transferências a outros entes.",
+   "pergunta": "Quais parcelas da despesa liquidada da função Educação ficam dentro e fora do numerador da despesa de aplicação direta por matrícula, e o que cada parcela identifica?",
+   "o_que_mede": "A decomposição da despesa liquidada da função Educação, linha a linha da Matriz de Saldos Contábeis de dezembro (saldo líquido pela natureza D ou C), em parcelas mutuamente exclusivas pela modalidade de aplicação, subfunção e elemento de despesa. Duas parcelas formam o numerador da despesa de aplicação direta por matrícula (demais elementos e beneficiário indeterminado); as outras ficam fora e cada uma diz o que é.",
    "o_que_nao_mede": [
     "Não é a despesa por etapa: a MSC não permite atribuir despesa de aplicação direta a etapas sem rateio, e o painel não rateia.",
     "Não mostra para onde vai cada transferência nem quem recebe o serviço contratado em aplicação direta."
    ],
-   "formula": "Soma, por balde, das linhas da MSC (função 12, contas 6.2.2.1.3.03, .04 e .07) segundo a modalidade de aplicação, a subfunção e o elemento de despesa; soma dos baldes igual à despesa da DCA.",
+   "formula": "Soma, por balde, das linhas da MSC (função 12, contas 6.2.2.1.3.03, .04 e .07, saldo líquido pela natureza D ou C) segundo a modalidade de aplicação, a subfunção e o elemento de despesa; soma dos baldes igual à despesa da DCA.",
    "numerador": null,
    "denominador": null,
    "unidade": "R$",
@@ -301,15 +304,15 @@
    },
    "ausencias": "Sem MSC de dezembro no seed, a ponte não existe para o exercício. Ausência nunca é tratada como zero: um balde sem linhas vale zero porque a soma das linhas existentes é zero.",
    "transformacoes": [
-    "Atribuição de cada linha a um único balde, na ordem: modalidade ≠ 90 (transferências), subfunção 364, elementos 01, 03 e 05 do grupo 3.1.90, demais.",
-    "Reconciliação do total dos baldes, sem intraorçamentárias, com a DCA (diferença de até R$ 1,00)."
+    "Atribuição de cada linha a um único balde, na ordem: modalidade 91 (fora da DCA), 50 e 60, demais transferências e delegações, 92, 67, uso atípico, modalidade não reconhecida e, na aplicação direta, subfunção 364, elementos 01, 03 e 05 do grupo 3.1, beneficiário indeterminado e demais elementos.",
+    "Reconciliação do total dos baldes, sem intraorçamentárias, com a DCA (diferença de até R$ 1,00 ou até 0,1% da DCA)."
    ],
    "correcao_monetaria": "Não se aplica (valores nominais).",
    "comparacao": "Não se aplica: a ponte explica o numerador de cada capital e não entra em medianas.",
    "natureza": "CALCULADO",
    "universo_curto": "Despesa liquidada da função Educação decomposta pela MSC de dezembro.",
    "universo_rotulo": "MSC, função 12",
-   "versao_metodologica": "1.2",
+   "versao_metodologica": "1.3",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
     "Só existe quando a MSC reconcilia com a DCA; nos demais casos, o motivo aparece na despesa por matrícula."
@@ -631,7 +634,7 @@
     "O numerador inclui despesas que financiam matrículas fora do denominador: repasses a escolas privadas conveniadas (creches, sobretudo), cujas matrículas o Censo registra como privadas.",
     "O numerador pode incluir despesas sem matrícula correspondente (ensino superior, inativos classificados na função Educação), em proporções que variam entre municípios.",
     "Dividir a função inteira pelas matrículas de apenas uma parte da rede não é despesa por estudante dessa rede, e uma ressalva não corrige a definição.",
-    "Substituída na versão 1.2 por edu.despesa.por_matricula_rede_propria, cujo numerador separa essas parcelas pela MSC (ver a ponte)."
+    "Substituída na versão 1.2 por edu.despesa.aplicacao_direta_por_matricula, cujo numerador separa essas parcelas pela MSC (ver a ponte)."
    ],
    "ressalvas": [],
    "granularidade": {
@@ -692,6 +695,11 @@
    "versao": "1.2",
    "data": "2026-10-08",
    "resumo": "Despesa por habitante (população residente do IBGE), despesa por matrícula da rede municipal própria com ponte pela MSC e referências estatísticas do grupo. Despesa total da função ÷ matrículas segue descartada."
+  },
+  {
+   "versao": "1.3",
+   "data": "2026-10-08",
+   "resumo": "Rodada 6: despesa de aplicação direta por matrícula (novo ID, no lugar de \"por matrícula da rede própria\"), baldes da ponte pela norma da modalidade de aplicação, parcela de beneficiário indeterminado, política de conferência 1.2 (saldo líquido D/C da MSC), população de 2023 do Censo 2022, referência nacional calculada pelo OBEE, referências com origem e comparabilidade."
   }
  ]
 }
