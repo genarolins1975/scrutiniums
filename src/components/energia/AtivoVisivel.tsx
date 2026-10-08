@@ -38,6 +38,9 @@ function acompanhaFaixa(lista: HTMLElement, folga: number): () => void {
   const respiroBase = parseFloat(getComputedStyle(lista).paddingRight) || 0;
   const alinha = () => {
     if (!ativo) return;
+    // lista que quebra linha (abas de seção no celular, faixa de módulos abaixo de 768 px) não rola: nada a alinhar, e o respiro à
+    // direita deixaria de ser folga de rolagem para apertar os itens da coluna
+    if (lista.scrollWidth <= lista.clientWidth + 1) return;
     const a = ativo.getBoundingClientRect();
     const l = lista.getBoundingClientRect();
     // o item atual já cabe inteiro: não se rola, e nenhum rótulo vizinho fica cortado à esquerda

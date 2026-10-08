@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-08T19:57:34.114Z",
+ "gerado_em": "2026-10-08T21:19:37.603Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6211,
+   "duracao_ms": 6956,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -97,7 +97,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 10925,
+   "duracao_ms": 12472,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -175,7 +175,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4441,
+   "duracao_ms": 4479,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -234,7 +234,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 13,
-   "duracao_ms": 6592,
+   "duracao_ms": 6751,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -303,7 +303,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 12,
-   "duracao_ms": 7506,
+   "duracao_ms": 7479,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -352,7 +352,7 @@
     {
      "descricao": "Segue \"ver no painel\" do passo 5 até o PLD e confere que o painel mostra os mesmos números",
      "resultado": "ok",
-     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 603 px, topo do painel a 192 px): gráfico não está à vista"
+     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; painel CMO e formação de preço: semana 19/09/2026 a 25/09/2026, CMO semanal do DECOMP R$ 97,89, média do DESSEM R$ 63,31 e média do PLD R$ 124,09/MWh, a mesma da trilha. Ao chegar (rolagem 659 px, topo do painel a 192 px): gráfico não está à vista"
     },
     {
      "descricao": "Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com a média do exemplo",
@@ -387,7 +387,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24570,
+   "duracao_ms": 24644,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -432,7 +432,7 @@
     {
      "descricao": "Toca em Limpar a escolha e confere que o modo e a posição na página continuam",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5560 px antes e 5560 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5662 px antes e 5662 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
     },
     {
      "descricao": "Usa o botão voltar do navegador e confere que a escolha da Bahia volta",
@@ -467,7 +467,7 @@
     {
      "descricao": "Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição",
      "resultado": "ok",
-     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7341 para 7341 px"
+     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7533 para 7533 px"
     },
     {
      "descricao": "Usa o botão voltar e confere que o filtro de UF = MG volta",
@@ -501,8 +501,8 @@
    "resultado": "cumprida",
    "passos_ok": 18,
    "passos_total": 18,
-   "cliques": 165,
-   "duracao_ms": 34552,
+   "cliques": 164,
+   "duracao_ms": 34242,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -513,7 +513,7 @@
     {
      "descricao": "Abre Minha região e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem",
      "resultado": "ok",
-     "observado": "17 Tabs até o campo \"Município, distribuidora, UF ou submercado\"; 17 paradas, todas com indicador de foco (contorno 2px e sombra); primeira \"Pular para o conteúdo\", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo"
+     "observado": "18 Tabs até o campo \"Município, distribuidora, UF ou submercado\"; 18 paradas, todas com indicador de foco (contorno 2px e sombra); primeira \"Pular para o conteúdo\", ordem do documento respeitada, nenhum tabindex positivo, foco nunca no corpo"
     },
     {
      "descricao": "Volta uma parada com Shift+Tab e avança com Tab: o foco não fica preso",
@@ -543,7 +543,7 @@
     {
      "descricao": "Segue com Tab até a tabela equivalente e escolhe BA com Espaço",
      "resultado": "ok",
-     "observado": "25 Tabs do campo de busca até o botão BA (mais 17 até o campo, 42 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
+     "observado": "25 Tabs do campo de busca até o botão BA (mais 18 até o campo, 43 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
     },
     {
      "descricao": "Repete a escolha da Bahia com clique e compara URL e ficha com a do teclado",
@@ -553,7 +553,7 @@
     {
      "descricao": "Usa o link Pular para o conteúdo e conta os Tabs até o campo do mapa",
      "resultado": "ok",
-     "observado": "Enter no link levou o foco para main#conteudo (hash #conteudo); depois 3 Tabs até o campo, contra 17 sem o salto"
+     "observado": "Enter no link levou o foco para main#conteudo (hash #conteudo); depois 4 Tabs até o campo, contra 18 sem o salto"
     },
     {
      "descricao": "Segue até o filtro de submercado da tabela, abre com Enter, marca uma caixa com Espaço e fecha com Esc",
@@ -563,7 +563,7 @@
     {
      "descricao": "Abre Perdas e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem",
      "resultado": "ok",
-     "observado": "30 Tabs até o campo \"Sigla, nome, UF ou município\"; 30 paradas, todas com indicador de foco; ordem do documento respeitada"
+     "observado": "28 Tabs até o campo \"Sigla, nome, UF ou município\"; 28 paradas, todas com indicador de foco; ordem do documento respeitada"
     },
     {
      "descricao": "Digita cemig, desce com a seta e escolhe a distribuidora com Enter",
@@ -578,12 +578,12 @@
     {
      "descricao": "Abre Comprove este número com Enter, confere onde cai o foco e fecha com Esc",
      "resultado": "ok",
-     "observado": "24 Tabs até \"COMPROVE ESTE NÚMERO : TAXA DE PERDAS TOTAIS \"; Enter abriu o diálogo \"COMPROVE ESTE NÚMERO Taxa de perdas totais na distribuição 1\" com o foco em \"Fechar\"; Esc fechou e o foco voltou ao botão"
+     "observado": "22 Tabs até \"COMPROVE ESTE NÚMERO : TAXA DE PERDAS TOTAIS \"; Enter abriu o diálogo \"COMPROVE ESTE NÚMERO Taxa de perdas totais na distribuição 1\" com o foco em \"Fechar\"; Esc fechou e o foco voltou ao botão"
     },
     {
      "descricao": "Em Diferenças regionais, alcança o seletor Par em destaque com Tab e troca para Sul e Norte só com setas",
      "resultado": "ok",
-     "observado": "25 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: \"HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD\""
+     "observado": "26 Tabs até o seletor; 4 setas para baixo; URL /setor-eletrico/pld/diferencas-regionais?modo=analisar&hora.t.pag=7&par=S_N; indicador: \"HORAS SEPARADAS: SUL E NORTE 35,53%das horas Últimos 12 meses ◆ NATUREZA DO DADO: CALCULAD\""
     },
     {
      "descricao": "Escolhe o mesmo par com clique na tabela e compara URL e indicador",
@@ -598,7 +598,7 @@
     {
      "descricao": "Resume a jornada: nenhuma parada sem indicador de foco e nenhuma perda de foco",
      "resultado": "ok",
-     "observado": "132 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 124, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
+     "observado": "130 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 122, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
     }
    ],
    "limite": "Teclado simulado pelo Playwright no Chromium; não cobre leitor de tela nem outros navegadores. Roteiro por script, sem pessoas."
@@ -613,7 +613,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 35064,
+   "duracao_ms": 34076,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -634,7 +634,7 @@
     {
      "descricao": "Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição",
      "resultado": "ok",
-     "observado": "âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 567 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
+     "observado": "âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 623 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
     },
     {
      "descricao": "Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação",
@@ -649,7 +649,7 @@
     {
      "descricao": "Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação",
      "resultado": "ok",
-     "observado": "âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1369 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1425 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Confere em Perdas que o painel certo ficou à vista ao abrir o link (âncora do link copiado)",
@@ -669,7 +669,7 @@
     {
      "descricao": "Abre o link de Minha região num novo contexto e compara escolha, ficha, filtro e ordem",
      "resultado": "ok",
-     "observado": "âncora #p002: elemento existe, topo 192 px, rolagem 507 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #p002: elemento existe, topo 192 px, rolagem 563 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Resume o que o link não restaurou nas três páginas",
@@ -689,7 +689,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 25273,
+   "duracao_ms": 24952,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -779,7 +779,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13719,
+   "duracao_ms": 13506,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

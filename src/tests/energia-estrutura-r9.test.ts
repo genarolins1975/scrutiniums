@@ -84,3 +84,16 @@ describe("abas de seção quebram linha no celular", () => {
     expect(css).toMatch(/@media \(max-width: 47\.99rem\) \{\s*#modulos-energia \{ flex-wrap: wrap; overflow: visible; -webkit-mask-image: none; mask-image: none; \}/);
   });
 });
+
+describe("lista que quebra linha não ganha respiro de rolagem", () => {
+  // Erro da r9: acompanhaFaixa tratava a lista que passou a quebrar linha como faixa que rola. Com a aba atual na coluna da direita
+  // (a borda direita do item coincide com a da lista, e a regra pede 8 px de folga), a função gravava padding-right inline de até 175 px,
+  // e os itens ficavam com 80 px em vez de metade da linha: "Armazenamento" cortado e "Limites e regras de preço" em 5 linhas.
+  it("só alinha quando a lista tem rolagem horizontal, antes de medir o item atual", () => {
+    const av = ler("src/components/energia/AtivoVisivel.tsx");
+    const alinha = av.slice(av.indexOf("const alinha = () => {"), av.indexOf("const bordas = () => {"));
+    expect(alinha).toContain("if (lista.scrollWidth <= lista.clientWidth + 1) return;");
+    expect(alinha.indexOf("if (lista.scrollWidth <= lista.clientWidth + 1) return;")).toBeLessThan(alinha.indexOf("getBoundingClientRect"));
+    expect(alinha.indexOf("if (lista.scrollWidth <= lista.clientWidth + 1) return;")).toBeLessThan(alinha.indexOf("lista.style.paddingRight"));
+  });
+});
