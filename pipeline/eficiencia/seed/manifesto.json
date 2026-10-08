@@ -52,6 +52,19 @@
    "sha256_recorte": "038ffc0f546dc316d45794b0b62c8b0acf14d39e10d41ce83acd0f75c56484d7",
    "linhas_recorte": 104
   },
+  "ibge_populacao_municipios_2025": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "População residente estimada de todos os municípios, 2025 (SIDRA 6579, variável 9324, referência 1º de julho)",
+   "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html",
+   "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/all/v/9324/p/2025",
+   "capturado_em": "2026-10-08T19:58:27Z",
+   "parametros": "n6/all; 5571 municípios; valor vigente no SIDRA na data da captura",
+   "sha256_resposta": "3a2be712c79be2c8c50bd16527cd5cfcf14a58b0ab4c80bef379dc0f7c7e262d",
+   "recorte": "pipeline/eficiencia/seed/ibge_populacao/populacao_municipios_2025.json.gz",
+   "sha256_recorte": "3879d42e6432821a934efa6fb466aba9e754805c16b22fddea037c26ebbfe70f",
+   "linhas_recorte": 5571,
+   "municipios_sem_valor": 0
+  },
   "ibge_populacao_relacao_2023": {
    "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
    "conjunto": "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), relação do DOU de 31/08/2023",
@@ -1917,7 +1930,7 @@
    "conjunto": "Education at a Glance: tamanho de turma (2023 e 2024) e despesa por estudante (2023), todos os países com dado",
    "pagina": "https://www.oecd.org/en/publications/serials/education-at-a-glance_g1g1b0a6.html",
    "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_NON_FIN_PERS@DF_UOE_NF_PERS_CLS,1.1/.ISCED11_1+ISCED11_2.CLS..............?startPeriod=2023&endPeriod=2024&dimensionAtObservation=AllDimensions",
-   "capturado_em": "2026-10-08T17:25:30Z",
+   "capturado_em": "2026-10-08T20:00:48Z",
    "parametros": "API SDMX; ISCED 1, 2 e 1 a 8; só observações com valor; tamanho de turma: instituições públicas e todas; despesa: fonte governamental, USD PPC, preços correntes",
    "fontes": {
     "ocde_tamanho_turma": {
@@ -1926,17 +1939,19 @@
      "bytes": 423796
     },
     "ocde_despesa_por_estudante": {
-     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_FIN@DF_UOE_INDIC_FIN_PERSTUD,3.2/.FIN_PERSTUD.ISCED11_1+ISCED11_2+ISCED11_1T8.S13.INST_EDU.DIR_EXP.V.USD_PPP_ST.?startPeriod=2023&endPeriod=2023&dimensionAtObservation=AllDimensions",
-     "sha256_resposta": "43f8380346e6b132cb9028305a990864ea26be146edc3b0186533ea3c97274d2",
-     "bytes": 98688
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_FIN@DF_UOE_INDIC_FIN_PERSTUD,3.2/.FIN_PERSTUD.ISCED11_1+ISCED11_2+ISCED11_1T8.S13.INST_EDU+INST_EDU_PUB.DIR_EXP.V.USD_PPP_ST.?startPeriod=2023&endPeriod=2023&dimensionAtObservation=AllDimensions",
+     "sha256_resposta": "f33e2f1aab28c9210d4e9fdecadfa2f145468580855d6eaea1b9a4034bb64b1a",
+     "bytes": 192022
     }
    },
    "recorte": "pipeline/eficiencia/seed/ocde/education_at_a_glance.json.gz",
-   "sha256_recorte": "408dc3e380b00ae6b7f0574b4052b0c2bcda8ed3c213a3c6a89da5a80a61d539",
-   "linhas_recorte": 441,
+   "sha256_recorte": "1d24cfb7172cad40e86a9d02a07dba63fdad8d4a1c4b73bc469592d004db37b6",
+   "linhas_recorte": 575,
    "notas_da_fonte": [
     "O dataflow de tamanho de turma informa que os dados do último ano disponível são preliminares; os finais seriam divulgados em 29 de setembro de 2026.",
-    "A média da OCDE é a média simples, sem ponderação, dos países da OCDE com dado, como no Reader's Guide do Education at a Glance 2025."
+    "A média da OCDE é a média simples, sem ponderação, dos países membros com dado (composição fixa de 38 membros), como no Reader's Guide do Education at a Glance 2025.",
+    "Despesa por estudante: para o Brasil, o recorte de todas as instituições (INST_EDU) divide o gasto em instituições públicas pela matrícula de públicas e privadas; o recorte de instituições públicas (INST_EDU_PUB) é o coerente com uma rede pública e é o exibido.",
+    "Tamanho de turma: o dado de 2024 é preliminar (dataflow marcado como não produtivo na consulta de 08/10/2026)."
    ]
   },
   "siconfi_dca_anexo_i_e": {
@@ -4336,6 +4351,18 @@
      "sha256": "3eaa5cb38829e4af4395bcb2e3034c1ba34532d30d17125c7bc8e9d3dda4da6c"
     }
    }
+  },
+  "siconfi_nacional_educacao_2025": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "DCA Anexo I-E e RREO 6º bimestre Anexo 02 (RREO ou, para quem publica por semestre, RREO Simplificado) de todos os municípios, exercício 2025: despesa liquidada na função Educação",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>; https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO[ ou RREO%20Simplificado]&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
+   "capturado_em": "2026-10-08T20:41:34Z",
+   "parametros": "5570 municípios (esfera M da lista de entes); só os campos usados na conferência; sha256 da resposta completa de cada ente; 2311 municípios com o RREO lido no demonstrativo simplificado",
+   "recorte": "pipeline/eficiencia/seed/siconfi/nacional_educacao/2025.json.gz",
+   "sha256_recorte": "eaf25ee0130ab5d10c0fb1c617577f23fb78730ae3580d6f0ff7ab2e6ff5d750",
+   "linhas_recorte": 5570,
+   "municipios_com_erro_de_coleta": 0
   },
   "siconfi_rreo_anexo_02_b6": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
