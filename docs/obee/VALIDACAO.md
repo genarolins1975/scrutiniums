@@ -42,7 +42,7 @@ Idempotência: duas execuções seguidas com o mesmo seed produzem o mesmo `hash
 | Tipos e lint | `npx tsc --noEmit`; `npm run lint` | Sem erros |
 | Build de produção | `npm run build` | Concluído; rota estática, 22,2 kB de JavaScript próprio, 118 kB no primeiro carregamento |
 
-A falha da suíte vitest local é `energia-reauditoria.test.ts`, que só roda quando existe build local (`.next`) e encontra a data crua "2026-09-30T00:00Z" na página do setor elétrico `agua-e-clima/chuva-e-temperatura`, gerada a partir de dados do domínio de energia que este PR não altera. No CI, que não faz build antes do vitest, o teste não se aplica.
+A falha da suíte vitest local é `energia-reauditoria.test.ts`, que só roda quando existe build local (`.next`) e encontra a data crua "2026-09-30T00:00Z" na página do setor elétrico `agua-e-clima/chuva-e-temperatura`, gerada a partir de dados do domínio de energia que este PR não altera; a mesma data aparece no build do commit examinado. No CI, que não faz build antes do vitest, o teste não se aplica.
 
 Os testes do OBEE cobrem os casos específicos pedidos: período financeiro diferente do educacional (edição do Ideb declarada no cartão e na tabela), rede estadual na capital fora da rede municipal (São Paulo: 702.936 na rede × 2.512.355 no território em 2025), despesa ampla demais para o denominador (razão não publicada), dado não divulgado (códigos ND preservados), composição que não reconcilia (estado inconsistente; nenhum caso ocorreu), poucos pares (aviso abaixo de 3 capitais), quebra de série (2021 anotado), download igual ao exibido, DF fora do recorte, falha de atualização (estado "ausente na coleta"; coleta com novas tentativas e erro registrado no manifesto).
 
