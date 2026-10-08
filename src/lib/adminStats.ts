@@ -222,7 +222,7 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
     porSecao.set(secao, atual);
     if (e.userId && e.createdAt >= corte7d) ativos7d.add(e.userId);
   }
-  const visitasPorDominio: Record<DominioId | "plataforma", number> = { credito: 0, energia: 0, plataforma: 0 };
+  const visitasPorDominio: Record<DominioId | "plataforma", number> = { credito: 0, energia: 0, eficiencia: 0, plataforma: 0 };
   for (const e of visitas30dRows) visitasPorDominio[dominioDaSecao(e.name.slice(VIEW_EVENT_PREFIX.length))]++;
   const ranking: SecaoRanking[] = Array.from(porSecao.entries())
     .map(([secao, v]) => ({

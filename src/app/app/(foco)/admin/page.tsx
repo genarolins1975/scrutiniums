@@ -144,7 +144,7 @@ export default async function AdminPage() {
             ))}
           </dl>
           <p className="mt-6 text-xs text-mineral">
-            Visitas contam aberturas de seção por usuários com sessão, nos dois observatórios, sem
+            Visitas contam aberturas de seção por usuários com sessão, nos observatórios, sem
             qualquer dado pessoal: apenas a seção, o domínio e o momento. Dias no fuso de Brasília.
           </p>
         </section>

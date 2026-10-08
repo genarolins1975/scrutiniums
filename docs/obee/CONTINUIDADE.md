@@ -19,7 +19,7 @@ Para quem retoma o OBEE (pessoa ou agente). Ler antes: [README.md](./README.md),
 | # | Decisão | Opções | Efeito |
 | --- | --- | --- | --- |
 | P1 | Publicação em produção | Merge em `main` (Vercel) ou manter em branch | Hoje só a branch tem o painel |
-| P2 | Registrar o OBEE em `src/lib/dominios.ts` (home, seletor de observatórios, rodapé) | Agora, com um painel; ou quando houver o segundo painel | Altera textos "dois observatórios" e testes de `dois-observatorios.test.ts` |
+| P2 | Registrar o OBEE em `src/lib/dominios.ts` (home, seletor de observatórios, rodapé) | **Decidida em 08/10/2026 pelo responsável e implementada**: OBEE no registro, na home (três cards), no seletor, na escolha pós login, no cabeçalho público, no rodapé e no seletor da SPA do Crédito | Textos "dois observatórios" passaram a "três"; teste em `src/tests/dois-observatorios.test.ts` |
 | P3 | Tratamento do Distrito Federal | Painel próprio com rede distrital e despesa distrital separada por competência; ou fora do OBEE municipal | Necessário para a futura visão de entes |
 | P4 | Perímetro da despesa por matrícula | RREO Anexo 8 (MDE por etapa) + conveniadas no denominador; ou Siope; ou não publicar | Define se a razão entra na próxima etapa |
 
@@ -57,6 +57,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | Data | Entrega |
 | --- | --- |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
+| 08/10/2026 | OBEE incluído na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito (P2) |
 | 08/10/2026 | Rodada 5 ([COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)): despesa por habitante e por matrícula, ponte da MSC, referências do grupo, nacionais e internacionais, tabela comparativa; T7 resolvida em parte (publicada em 102 de 130 pares com a ponte pela MSC; os demais pares dependem de reconciliação) |
 | 08/10/2026 | Rodada 4: datas e literais da fonte em Energia, contrato estrutural do teste de HTML e inventário reconciliado ([APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md)); T11 resolvida |
 | 08/10/2026 | Verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md)): data legível na gaveta de proveniência, gate obrigatório de HTML no CI, valor exato por toque e atalho para a tabela da comparação; gate reprovado por 21 páginas de Energia (T11) |

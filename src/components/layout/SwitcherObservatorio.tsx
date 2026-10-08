@@ -2,8 +2,10 @@ import Link from "next/link";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
 
+const PONTO: Record<(typeof DOMINIOS)[number]["acento"], string> = { bronze: "bg-bronze", energia: "bg-energia", obee: "bg-obee" };
+
 /**
- * Switcher discreto de observatório ("Crédito ▾" / "Setor Elétrico ▾").
+ * Switcher discreto de observatório ("Crédito ▾" / "Setor Elétrico ▾" / "Eficiência Estatal ▾").
  * <details> nativo: funciona sem JavaScript e abre por teclado e toque; com
  * JavaScript, fecha com Esc, com clique fora e quando o foco sai do menu. Troca de observatório sem novo login: a
  * sessão e as preferências são da plataforma.
@@ -43,7 +45,7 @@ export function SwitcherObservatorio({
                 <span className="flex items-center gap-2 text-sm text-carvao">
                   <span
                     aria-hidden="true"
-                    className={`inline-block h-2 w-2 ${d.acento === "energia" ? "bg-energia" : "bg-bronze"}`}
+                    className={`inline-block h-2 w-2 ${PONTO[d.acento]}`}
                   />
                   {d.nome}
                   {d.id === atual && <span className="sr-only"> (atual)</span>}
