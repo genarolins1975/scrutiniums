@@ -14,7 +14,7 @@ const TETO = 14;
  * O HTML do servidor traz a lista que a página declara (`siglas`), para quem lê sem JavaScript e para o primeiro quadro.
  * Depois da hidratação a lista passa a ser derivada do texto que está à vista agora: cada sigla do dicionário que aparece
  * no texto visível do nível escolhido (Entender, Analisar ou Auditar), sem as que o próprio texto já expande, na ordem
- * da primeira aparição. Trocar de nível refaz a lista. Texto escondido (nível mais fundo, tabela recolhida, bloco
+ * da primeira aparição. Trocar de nível, ou abrir e fechar um bloco, refaz a lista. Texto escondido (nível mais fundo, tabela recolhida, bloco
  * fechado) não conta: a legenda não define o que o leitor ainda não leu. Sigla fora do dicionário não é expandida.
  */
 export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
@@ -35,9 +35,12 @@ export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
     agenda();
     const mo = new MutationObserver(agenda);
     document.querySelectorAll(".modo-profundidade").forEach((e) => mo.observe(e, { attributes: true, attributeFilter: ["data-modo"] }));
+    // abrir ou fechar um bloco (a abertura do módulo, uma tabela recolhida) muda o texto à vista; o evento toggle não borbulha, então a captura
+    document.addEventListener("toggle", agenda, true);
     return () => {
       if (tempo) clearTimeout(tempo);
       mo.disconnect();
+      document.removeEventListener("toggle", agenda, true);
     };
   }, []);
 

@@ -25,7 +25,7 @@ export default function TrilhasPage() {
             Aprenda
           </Link>
         </nav>
-        <CabecalhoModulo siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números?">
+        <CabecalhoModulo recolher={false} siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números?">
           Resposta curta: uma trilha é um percurso em ordem por verbetes conferidos, em que cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte. As duas trilhas
           mostram como a água chega ao preço da energia e como os custos chegam à conta de luz. Cada passo tem o link ao painel e a ficha Comprove quando o painel a publica; do painel, um botão traz o
           leitor de volta ao passo. No fim, um exemplo sintético, com valores hipotéticos, mostra a conta que liga os conceitos.

@@ -45,7 +45,7 @@ export default function AprendaPage() {
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
+        <CabecalhoModulo recolher={false} rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
           Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Comece por uma trilha, que liga os conceitos aos números, ou procure um termo.
         </CabecalhoModulo>
         <section aria-labelledby="trilhas" className="border-t border-linha py-8">

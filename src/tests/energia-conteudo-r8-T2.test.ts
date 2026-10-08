@@ -75,7 +75,11 @@ const VAZIOS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "inpu
  * HTML sem o que Entender não mostra: blocos data-nivel analisar e auditar, tabela recolhida, conteúdo de details fechado (o
  * resumo continua), dialog fechado e elemento hidden.
  */
-function entender(html: string): string {
+/** A abertura do módulo fica atrás de "Sobre esta página" (um toque): para estes testes ela conta como texto de Entender, porque é onde os termos são definidos. */
+const comAberturaAberta = (h: string) => h.replace(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/g, "<div>$1</div>");
+
+function entender(html0: string): string {
+  const html = comAberturaAberta(html0);
   const re = /<(\/?)([a-zA-Z][a-zA-Z0-9-]*)([^>]*?)(\/?)>/g;
   type No = { nome: string; duro: boolean; mole: boolean; fechado: boolean };
   const pilha: No[] = [];

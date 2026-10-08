@@ -251,26 +251,18 @@ html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
   mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 0.5rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
 }
 
-/* No celular, as abas de seção da página ficam numa só linha que rola, em vez de empilhar quatro ou cinco botões de 44 px antes
-   da resposta (a primeira tela de 390 px é curta). A aba atual é trazida à vista por FaixasDeSecao. A partir de 640 px quebram linha. */
+/* No celular as abas de seção da página quebram linha e ficam todas à vista, duas por linha. Na r7 elas passaram a uma linha que rola, e na
+   r8 sete dos nove revisores a leram como "cortada sem pista de rolagem" (a aba atual ficava fora da tela em várias páginas). Quebrar custa
+   uma ou duas linhas de 44 px; o ganho de altura vem da abertura do módulo recolhida (SobreEstaPagina). A faixa de módulos do cabeçalho
+   do site também quebra linha abaixo de 768 px, em vez de rolar. */
 @media (max-width: 40rem) {
-  .nav-faixa,
-  .nav-faixa-barra {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .nav-faixa::-webkit-scrollbar,
-  .nav-faixa-barra::-webkit-scrollbar { display: none; }
   .nav-faixa > li,
-  .nav-faixa-barra > li { flex: none; }
+  .nav-faixa-barra > li { flex: 1 1 calc(50% - 0.25rem); min-width: 0; }
   .nav-faixa a,
-  .nav-faixa span,
-  .nav-faixa-barra a { white-space: nowrap; }
-  /* a folga de 3 px, em cima e embaixo, evita que o contorno do foco seja cortado. A faixa fica na largura do conteúdo: sangrar até a borda
-     da tela com margem negativa estourava a página (rolagem horizontal) onde o respiro lateral da página é de 16 px, e não de 24 px. */
-  .nav-faixa { margin: -3px 0; padding: 3px 0; }
+  .nav-faixa-barra a { width: 100%; justify-content: center; text-align: center; }
+}
+@media (max-width: 47.99rem) {
+  #modulos-energia { flex-wrap: wrap; overflow: visible; -webkit-mask-image: none; mask-image: none; }
 }
 
 /* A resposta curta do painel vem antes dos filtros e dos controles: o leitor lê o número que responde à pergunta e só depois ajusta

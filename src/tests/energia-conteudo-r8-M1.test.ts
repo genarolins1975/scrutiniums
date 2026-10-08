@@ -121,7 +121,9 @@ function semNiveis(html: string): string {
 const nbsp = (s: string) => s.replace(/ /g, " ");
 const desescapa = (s: string) => nbsp(s).replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 /** Texto de Entender da página (da <main> em diante). */
-const entender = (h: string) => desescapa(semNiveis(h.slice(h.indexOf("<main"))).replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+/** A abertura do módulo fica atrás de "Sobre esta página" (um toque): para estes testes ela conta como texto de Entender, porque é onde os termos são definidos. */
+const comAberturaAberta = (h: string) => h.replace(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/g, "<div>$1</div>");
+const entender = (h: string) => desescapa(semNiveis(comAberturaAberta(h).slice(comAberturaAberta(h).indexOf("<main"))).replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 /** Texto de todos os níveis. */
 const tudo = (h: string) => desescapa(h.slice(h.indexOf("<main")).replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 

@@ -15,26 +15,17 @@ const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 const css = ler("src/app/globals.css");
 
-describe("abas de seção em uma linha no celular", () => {
+// Contrato alterado de propósito na r9: as abas de seção deixaram de rolar no celular (ver energia-estrutura-r9.test.ts).
+describe("abas de seção: marcação comum às duas versões", () => {
   const NAVEGACOES = ["Agua", "Carga", "Empresas", "Expansao", "Geracao", "Inclusao", "Pld", "Previsoes", "Rede", "Regulacao", "Transicao"].map((m) => `src/components/energia/${m}Pagina.tsx`);
   const BARRAS = ["MercadoPainel", "PerdasPainel", "DadosPainel"].map((m) => `src/components/energia/${m}.tsx`);
 
-  it("as onze navegações de seção com quebra de linha usam a faixa que rola", () => {
+  it("as onze navegações de seção com quebra de linha usam a faixa de seções", () => {
     for (const f of NAVEGACOES) expect(ler(f), f).toContain('<ol className="nav-faixa flex flex-wrap gap-2 text-sm">');
   });
 
   it("as três barras de Mercado, Perdas e Dados usam a variante de barra", () => {
     for (const f of BARRAS) expect(ler(f), f).toContain('<ul className="nav-faixa-barra flex flex-wrap');
-  });
-
-  it("até 640 px a faixa não quebra linha, rola na horizontal e esmaece a borda com itens fora da vista", () => {
-    expect(css).toMatch(/@media \(max-width: 40rem\) \{\s*\.nav-faixa,\s*\.nav-faixa-barra \{\s*flex-wrap: nowrap;\s*overflow-x: auto;/);
-    expect(css).toMatch(/#modulos-energia,\s*\.nav-faixa,\s*\.nav-faixa-barra \{[^}]*--fade-dir: 0;[^}]*mask-image/);
-  });
-
-  it("a faixa de seções fica na largura do conteúdo: margem lateral negativa estourava a página onde o respiro é de 16 px (rolagem horizontal)", () => {
-    expect(css).toMatch(/\.nav-faixa \{ margin: -3px 0; padding: 3px 0; \}/);
-    expect(css).not.toMatch(/\.nav-faixa \{[^}]*margin:[^;}]*-1\.5rem/);
   });
 
   it("a aba atual é trazida à vista só quando está cortada, pelo mesmo componente que cuida da faixa de módulos", () => {
