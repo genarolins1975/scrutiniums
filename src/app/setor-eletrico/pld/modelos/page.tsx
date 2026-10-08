@@ -18,6 +18,7 @@ import {
   PrevisoesRecorte,
   PrevisoesResposta,
   PrevisoesSeguir,
+  PrevisoesTermos,
 } from "@/components/energia/PrevisoesPagina";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -41,13 +42,17 @@ import {
   emissaoDoModelo,
   enderecoPainel,
   fichasOrdenadas,
+  formulaEmPalavras,
   linhasAmostra,
   linhasCoeficientes,
   linhasDesempenho,
   linhasModelos,
   linhasProspectivo,
   linhasReexecucao,
+  liberacaoEmPalavras,
   minimoCalibracao,
+  paraLeitorPrevisoes,
+  partirInterno,
   perguntaPainel,
   proximoPainel,
   respostaP014,
@@ -55,10 +60,15 @@ import {
   rotaModelo,
   rotuloEstadoModelo,
   segmentosCoeficientes,
+  semCodigosInternos,
   slugModelo,
+  termosPrevisoes,
   textoCoeficientes,
   textoReexecucao,
+  vereditoP014,
+  vereditoP016,
 } from "@/lib/energia/previsoes";
+import type { ModelosGold } from "@/lib/energia/tipos";
 import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 import { snapshotLegivel } from "@/lib/energia/visao";
 
@@ -77,18 +87,24 @@ export default function ModelosPage() {
   if (!integra(g)) return <PrevisoesIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
 
   const fichas = fichasOrdenadas(g.fichas);
+  const registro = lerGold<ModelosGold>("modelos.json");
+  const resumoDe = (codigo: string) => (integra(registro) ? registro.modelos.find((x) => x.codigo === codigo) : undefined);
   const cartoes: CartaoModelo[] = fichas.map((f) => ({
     id: slugModelo(f.codigo),
     codigo: f.codigo,
     nome: f.nome,
     versao: f.versao,
     estado: f.estado,
-    papel: f.papel ?? "sem papel registrado",
+    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
     emite: emissaoDoModelo(f, g),
     entradas: f.entradas,
-    formula: f.formula,
+    formula: formulaEmPalavras(f),
+    formulaRegistro: f.formula,
     reexecucao: textoReexecucao(f),
-    limitacao: f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : f.motivo_sem_implementacao),
+    limitacao:
+      resumoDe(f.codigo)?.limitacao_principal ??
+      paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
+      null,
     href: rotaModelo(f.codigo),
   }));
   const coef = linhasCoeficientes(fichas);
@@ -141,6 +157,7 @@ export default function ModelosPage() {
           diz o que já se pode afirmar sobre o desempenho: o teste fora da amostra, o acompanhamento depois de cada rodada e a calibração das faixas.
         </CabecalhoModulo>
         <PrevisoesNavegacao pagina="modelos" />
+        <PrevisoesTermos itens={termosPrevisoes(g.definicoes)} />
         <ModoProfundidade>
           <Bloco id="registro">
             <PainelEvidencia
@@ -180,7 +197,9 @@ export default function ModelosPage() {
               proveniencia={g.proveniencia}
             >
               <div className="space-y-6">
-                <PrevisoesResposta id="p014">{respostaP014(g)}</PrevisoesResposta>
+                <PrevisoesResposta id="p014" veredito={vereditoP014(g)}>
+                  {respostaP014(g)}
+                </PrevisoesResposta>
                 <PrevisoesRecorte
                   periodo={<>Versões vigentes na execução de {carimbo(g.gerado_em)}{ajuste ? `; pesos do ajuste de ${dataBR(ajuste)}` : ""}</>}
                   universo={<>{fichas.map((f) => f.codigo).join(", ")}; sete horizontes e quatro submercados</>}
@@ -194,7 +213,7 @@ export default function ModelosPage() {
                     </h3>
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                       Cada valor abaixo é o número arquivado na rodada mais recente; a prova de cada um mostra as horas somadas, os arquivos da CCEE capturados até o corte
-                      com sha256 e o resultado da reexecução.
+                      e o resultado da reexecução.
                     </p>
                     <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Previsões arquivadas refeitas (rolável)">
                       <table className="w-full min-w-[36rem] border-collapse text-sm">
@@ -219,7 +238,7 @@ export default function ModelosPage() {
                                 {g.evidencias[r.id] ? <ComproveNumero variante="valor" evidencia={g.evidencias[r.id]} endereco={enderecoPainel("p014")} /> : "sem prova"}
                               </td>
                               <td className="border-b border-linha px-2 py-1 text-carvao">{ROTULO_RESULTADO[r.resultado] ?? r.resultado}</td>
-                              <td className="border-b border-linha px-2 py-1 text-xs text-carvao-muted">{r.detalhe}</td>
+                              <td className="border-b border-linha px-2 py-1 text-xs text-carvao-muted">{r.detalhe.replace(/\b(\d+)\.(\d+)\b/g, "$1,$2")}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -332,8 +351,8 @@ export default function ModelosPage() {
               }
               comoInterpretar={
                 <>
-                  O teste retrospectivo refaz, para cada dia desde {dataBR(g.dados.origens.inicio)}, a previsão com o dado disponível naquele corte (hipótese LAT1D) e a
-                  compara com o realizado; o acompanhamento prospectivo usa só rodadas registradas antes do resultado. Uma faixa é calibrada quando contém o realizado na
+                  O teste retrospectivo refaz, para cada dia desde {dataBR(g.dados.origens.inicio)}, a previsão com o dado disponível naquele corte (um dado só entra se o seu
+                  período terminou até 1 dia antes do corte) e a compara com o realizado; o acompanhamento prospectivo usa só rodadas registradas antes do resultado. Uma faixa é calibrada quando contém o realizado na
                   proporção prometida, medida em entregas distintas, não em origens.
                 </>
               }
@@ -349,7 +368,9 @@ export default function ModelosPage() {
               proveniencia={g.proveniencia}
             >
               <div className="space-y-6">
-                <PrevisoesResposta id="p016">{respostaP016(g)}</PrevisoesResposta>
+                <PrevisoesResposta id="p016" veredito={vereditoP016(g)}>
+                  {respostaP016(g)}
+                </PrevisoesResposta>
                 <PrevisoesRecorte
                   periodo={
                     <>
@@ -367,11 +388,16 @@ export default function ModelosPage() {
                 {!pubDes.publicado && (
                   <PrevisoesAviso tipo="alerta">
                     <p>
-                      <span className="font-medium">Por que não há números de desempenho aqui:</span> {pubDes.motivo}
+                      <span className="font-medium">Por que não há números de desempenho aqui:</span> {partirInterno(pubDes.motivo).leitor || pubDes.motivo}
                     </p>
                     <p className="mt-1">
-                      <span className="font-medium">O que libera a publicação:</span> {pubDes.para_liberar}
+                      <span className="font-medium">O que libera a publicação:</span> {liberacaoEmPalavras(pubDes.para_liberar)}
                     </p>
+                    <div data-nivel="analisar" className="mt-2 border-t border-linha pt-2 text-xs text-carvao-muted">
+                      <p className="rotulo text-mineral">Texto do registro, sem edição</p>
+                      <p className="mt-1">{pubDes.motivo}</p>
+                      <p className="mt-1">{pubDes.para_liberar}</p>
+                    </div>
                   </PrevisoesAviso>
                 )}
 
@@ -422,7 +448,7 @@ export default function ModelosPage() {
                       fonte={fonte}
                       versao={versao}
                       nomeArquivo="previsoes-pld-amostra-calibracao"
-                      nota="Contagem de entregas distintas do período de teste com quantis, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
+                      nota="Contagem de entregas distintas do período de teste com faixas de incerteza, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
                     />
                   </>
                 )}

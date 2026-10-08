@@ -18,9 +18,12 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   COLUNAS_DECOMPOSICAO_SUBSISTEMAS,
+  entidadeLegivel,
+  entidadesEar,
   linhasDecomposicaoSubsistemas,
   nomeProprio,
   perguntaPainel,
@@ -67,8 +70,10 @@ export default function ReservatoriosPage() {
             </>
           }
         >
-          A <Termo slug="ear">EAR</Termo> de um subsistema é a soma da energia guardada em cada reservatório. Esta página mostra quais reservatórios explicam a variação de 30
-          dias e, em cada um, a conta da água: o que entrou, o que saiu pelas turbinas, pelos vertedouros e por outras estruturas, e o resíduo que sobra quando a conta não fecha.
+          A <Termo slug="ear">EAR</Termo> de um subsistema é a soma da energia guardada em cada reservatório, em <Unidade u="MWmês" />; a parte &ldquo;própria&rdquo; de um reservatório é a energia que a
+          água dele produz na própria usina, e a parte &ldquo;a jusante&rdquo;, a que ela produz nas usinas rio abaixo, na cascata. Esta página mostra quais reservatórios
+          explicam a variação de 30 dias e, em cada um, a conta da água, em hm³ (milhões de metros cúbicos): o que entrou (afluência), o que saiu (defluência, pelas turbinas,
+          pelos vertedouros e por outras estruturas) e o resíduo, a diferença que sobra quando a conta não fecha.
         </CabecalhoModulo>
         <AguaNavegacao atual="p020" />
         <ModoProfundidade>
@@ -109,6 +114,7 @@ export default function ReservatoriosPage() {
                     lista={r.lista}
                     decomposicao={r.decomposicao_ear}
                     janela={{ inicio: r.inicio, fim: r.fim, periodo_fecham_por_construcao: r.periodo_fecham_por_construcao }}
+                    armazenamento={entidadesEar(g.armazenamento)}
                     urlSeries={r.series_45d.arquivo}
                     diasSeries={r.series_45d.dias}
                     fonte={FONTE}
@@ -124,7 +130,7 @@ export default function ReservatoriosPage() {
                           unidade="hm³"
                           tamanho="medio"
                           cor="var(--serie-hidraulica)"
-                          nota={ev.balanco_maior_reservatorio ? `${ev.balanco_maior_reservatorio.entidade}: variação observada menos afluência mais defluência.` : undefined}
+                          nota={ev.balanco_maior_reservatorio ? `${entidadeLegivel(ev.balanco_maior_reservatorio.entidade)}: variação observada menos afluência mais defluência.` : undefined}
                           endereco={`${rotaPainel("p020")}#p020`}
                         />
                         <Numero

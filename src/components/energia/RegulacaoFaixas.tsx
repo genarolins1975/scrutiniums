@@ -283,6 +283,11 @@ export function RegulacaoFaixas({
               </div>
             )}
           </div>
+          {h > alturaMaxima && (
+            <p className="mt-1 text-xs text-carvao-muted" data-aviso-rolagem="true">
+              O gráfico mostra {Math.floor(alturaMaxima / alturaLinha)} das {faixas.length} linhas por vez; role dentro dele para ver as demais.
+            </p>
+          )}
           {refs.length > 0 && (
             <p className="mt-1 text-xs text-carvao-muted">
               Linha tracejada vertical: {refs.map((r) => `${r.rotulo} (${dataBR(r.data)})`).join("; ")}.

@@ -22,6 +22,18 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num, pct, plural } from "@/lib/energia/formato";
 import { CSV_DADOS, ROTULO_SITUACAO, conjuntosComRevisao, inicioRegistroCapturas, janelaCalendario, linhasSaude, refLegivel, respostaSaude, resumoSaude, situacaoPorCadencia, uni } from "@/lib/energia/dados";
+import {
+  conciliarCatalogoEIntegracoes,
+  limitacaoInicioDoRegistro,
+  limitacaoParaLeitor,
+  primeiroDiaComRevisao,
+  textoConciliacao,
+  textoMudancaSaude,
+  textoPrazos,
+  tituloCurto,
+  vereditoSaude,
+} from "@/lib/energia/dados-leitor";
+import { catalogoDados } from "@/lib/energia/datasets";
 import { provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -53,19 +65,26 @@ export default function DadosSaudePage() {
   const inicioRegistro = inicioRegistroCapturas(pub.calendario);
   const jan = janelaCalendario(pub.referencia.hoje, janela);
   const ultimaCaptura = pub.conjuntos.map((c) => c.capturas.ultima).filter((x): x is string => !!x).sort().at(-1);
+  const cat = catalogoDados();
+  const conciliacao = cat ? conciliarCatalogoEIntegracoes(cat, pub) : null;
+  const atrasado = r.atrasados[0];
+  // a maior revisão relativa, com o número formatado como o do cartão (a gold escreve 20656,6% sem o ponto de milhar)
+  const evAtrasadosLegivel = evAtrasados ? { ...evAtrasados, indicador: "Integrações com atualização atrasada" } : undefined;
+  const evRevisaoLegivel = evRevisao ? { ...evRevisao, valor_exibido: pct(evRevisao.valor_calculo, 1) } : undefined;
+  const maiorRevisao = r.comRevisao.map((c) => ({ c, e: c.revisoes?.maior_rel })).filter((x) => x.e && x.e.relativa_pct !== null).sort((a, b) => (b.e!.relativa_pct ?? 0) - (a.e!.relativa_pct ?? 0))[0];
 
   return (
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:saude" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["TE", "SIGA", "DEC", "FEC", "CDE", "SIN"]}
+        <CabecalhoModulo siglas={["SCS", "ONS"]}
           rotulo="Dados e metodologia"
           titulo="O que atrasou ou mudou?"
-          referencia={<ReferenciaDados geradoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Última captura registrada: {ultimaCaptura ? carimbo(ultimaCaptura) : "nenhuma"}.</>} />}
+          referencia={<ReferenciaDados processadoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Última captura registrada: {ultimaCaptura ? carimbo(ultimaCaptura) : "nenhuma"}.</>} />}
         >
-          Cada conjunto integrado tem uma frequência declarada pela fonte e um prazo derivado dela. Esta página mostra quem passou do prazo, quando o pipeline capturou, quando falhou e quanto os valores já publicados mudaram entre capturas. A situação vale para a
-          data de referência da publicação, não para o dia em que você lê.
+          Cada conjunto integrado tem uma frequência de atualização declarada pela fonte e um prazo derivado dela. Esta página mostra quem passou do prazo, quando o observatório baixou os arquivos, quando a coleta falhou e quanto os valores já publicados mudaram entre uma captura e outra.
+          A situação vale para a data de referência dos dados, não para o dia em que você lê.
         </CabecalhoModulo>
         <DadosNavegacao atual="saude" />
 
@@ -82,34 +101,27 @@ export default function DadosSaudePage() {
                   Um número publicado só vale tanto quanto o dado de que veio. Se a fonte parou de publicar, ou se revisou valores que já tinham sido usados, o leitor precisa saber antes de comparar períodos ou de citar a série.
                 </>
               }
-              oQueMudou={
-                r.comRevisao.length ? (
-                  <>
-                    {plural(r.comRevisao.length, "conjunto teve", "conjuntos tiveram")} {num(r.observacoesRevisadas, 0)} observações revisadas entre capturas, em {num(r.referenciasRevisadas, 0)} referências (períodos distintos). {r.atrasados.length ? `${plural(r.atrasados.length, "conjunto está", "conjuntos estão")} atrasado${r.atrasados.length === 1 ? "" : "s"}.` : "Nenhum conjunto está atrasado."}
-                  </>
-                ) : (
-                  <>Nenhuma revisão entre capturas foi detectada nesta publicação.</>
-                )
-              }
+              oQueMudou={<>{textoMudancaSaude(r)}</>}
               comoInterpretar={
                 <>
-                  Em dia quer dizer que o período seguinte ao último disponível ainda está dentro do prazo (fim do último período mais a tolerância da cadência). Sem SLA é a fonte que não declara frequência: o pipeline não inventa uma. Revisão é a troca de valor de uma mesma série e
-                  referência entre capturas do mesmo arquivo; a captura anterior continua guardada. Atrasado é a fonte sem período novo, e a causa só é afirmada quando a coleta dá evidência.
+                  Em dia quer dizer que o período seguinte ao último disponível ainda está dentro do prazo (o fim desse período mais a tolerância da frequência declarada). Sem prazo declarado é a fonte que não declara frequência: o observatório não inventa uma. Revisão é a troca de valor de uma
+                  mesma série e período entre capturas do mesmo arquivo; a captura anterior continua guardada. Atrasado é a fonte sem período novo, e a causa só é afirmada quando a coleta dá evidência.
                 </>
               }
               naoConcluir={
                 <>
-                  Que uma revisão grande seja erro da fonte ou do pipeline: a página mostra o tamanho e as duas capturas, não a causa. Que sem SLA signifique desatualizado. Que a ausência de falha seja saúde da fonte: a primeira captura registrada é de{" "}
+                  Que uma revisão grande seja erro da fonte ou do observatório: a página mostra o tamanho e as duas capturas, não a causa. Que sem prazo declarado signifique desatualizado. Que a ausência de falha seja saúde da fonte: a primeira captura registrada é de{" "}
                   {dataBR(inicioRegistro ?? pub.referencia.hoje)}.
                 </>
               }
             >
               <DadosResposta
                 painel="P068"
+                veredito={vereditoSaude(r)}
                 prova={
                   <>
-                    {evAtrasados && <ComproveNumero evidencia={evAtrasados} rotulo="Comprove os atrasados" endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />}
-                    {evRevisao && <ComproveNumero evidencia={evRevisao} rotulo="Comprove a maior revisão" endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />}
+                    {evAtrasadosLegivel && <ComproveNumero evidencia={evAtrasadosLegivel} rotulo="Comprove os atrasados" endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />}
+                    {evRevisaoLegivel && <ComproveNumero evidencia={evRevisaoLegivel} rotulo="Comprove a maior revisão" endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />}
                   </>
                 }
               >
@@ -117,36 +129,50 @@ export default function DadosSaudePage() {
               </DadosResposta>
 
               <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <Numero rotulo="Conjuntos em dia" natureza="CALCULADO" valor={emDia} casas={0} unidade="conjuntos" tamanho="medio" periodo={dataBR(r.hoje)} nota={<>de {num(r.integracoes, 0)} integrados</>} endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />
+                <Numero rotulo="Integrações em dia" natureza="CALCULADO" valor={emDia} casas={0} unidade="integrações" tamanho="medio" periodo={dataBR(r.hoje)} nota={<>de {num(r.integracoes, 0)} integrações</>} endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude" />
                 <Numero
-                  rotulo="Conjuntos atrasados"
+                  rotulo="Integrações atrasadas"
                   natureza="CALCULADO"
-                  evidencia={evAtrasados ?? null}
+                  evidencia={evAtrasadosLegivel ?? null}
                   valor={r.atrasados.length}
                   casas={0}
-                  unidade={uni(r.atrasados.length, "conjunto", "conjuntos")}
+                  unidade={uni(r.atrasados.length, "integração", "integrações")}
                   tamanho="medio"
-                  nota={r.atrasados[0] ? <>{r.atrasados[0].titulo}: {plural(r.atrasados[0].atualidade.dias_atraso ?? 0, "dia", "dias")} além do prazo</> : undefined}
+                  nota={
+                    atrasado ? (
+                      <>
+                        {tituloCurto(atrasado.titulo)}: {plural(atrasado.atualidade.dias_atraso ?? 0, "dia", "dias")} além do prazo{atrasado.atualidade.prazo_proximo ? ` de ${dataBR(atrasado.atualidade.prazo_proximo)}` : ""}
+                      </>
+                    ) : undefined
+                  }
                   motivoAusencia="Sem medida de atraso nesta publicação."
                   endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude"
                 />
                 <Numero
                   rotulo="Maior revisão relativa"
                   natureza="CALCULADO"
-                  evidencia={evRevisao ?? null}
+                  evidencia={evRevisaoLegivel ?? null}
                   formato="pct"
                   casas={1}
                   tamanho="medio"
-                  nota={<>entre duas capturas do mesmo arquivo</>}
+                  nota={
+                    maiorRevisao?.e ? (
+                      <>
+                        {tituloCurto(maiorRevisao.c.titulo)} ({maiorRevisao.c.orgao}): de {num(maiorRevisao.e.de, 1)} para {num(maiorRevisao.e.para, 1)} entre duas capturas do mesmo arquivo
+                      </>
+                    ) : (
+                      <>entre duas capturas do mesmo arquivo</>
+                    )
+                  }
                   motivoAusencia="Nenhuma revisão detectada."
                   endereco="https://scrutiniums.com/setor-eletrico/dados/saude#saude"
                 />
                 <Numero
-                  rotulo="Conjuntos com falha de coleta"
+                  rotulo="Integrações com falha de coleta"
                   natureza="CALCULADO"
                   valor={r.comFalha.length}
                   casas={0}
-                  unidade={uni(r.comFalha.length, "conjunto", "conjuntos")}
+                  unidade={uni(r.comFalha.length, "integração", "integrações")}
                   tamanho="medio"
                   periodo={dataBR(r.hoje)}
                   nota={<>{num(r.comFalhaRecente, 0)} com falha recente; {num(r.atrasFonte.length, 0)} com arquivo mais novo na fonte</>}
@@ -156,10 +182,16 @@ export default function DadosSaudePage() {
               <DadosRecorte
                 periodo={<>situação em {dataBR(r.hoje)}; calendário de {dataBR(jan.inicio)} a {dataBR(jan.fim)} ({janela} dias)</>}
                 universo={`${num(r.integracoes, 0)} integrações de conjuntos feitas pelos módulos (o catálogo conta conjuntos, e um conjunto pode ter mais de uma integração)`}
-                unidade="dias de atraso; % de períodos e de séries; contagem de capturas, falhas e observações"
+                unidade="dias de atraso; % de períodos e de séries; contagem de capturas, falhas e valores revisados"
               />
+              {conciliacao && (
+                <DadosAviso id="conjuntos-e-integracoes">
+                  <p className="rotulo text-mineral">Integrações e conjuntos: por que os números diferem do catálogo</p>
+                  <p className="mt-1">{textoConciliacao(conciliacao)}</p>
+                </DadosAviso>
+              )}
               <GraficoBarras
-                titulo={`Situação dos conjuntos por cadência declarada pela fonte, em ${dataBR(r.hoje)}`}
+                titulo={`Situação das integrações por cadência declarada pela fonte, em ${dataBR(r.hoje)}`}
                 dados={cadencias.map((c) => ({ ...c, rotulo: c.tolerancia === null ? "Sem cadência" : `${c.rotulo} · ${c.tolerancia} d` }))}
                 chaveCategoria="cadencia"
                 chaveRotulo="rotulo"
@@ -169,16 +201,14 @@ export default function DadosSaudePage() {
                   { id: "SEM DADO", rotulo: ROTULO_SITUACAO["SEM DADO"], cor: "var(--serie-3)" },
                   { id: "SEM SLA", rotulo: ROTULO_SITUACAO["SEM SLA"], cor: "var(--escala-seq-1)" },
                 ]}
-                unidade="conjuntos"
+                unidade="integrações"
                 casas={0}
                 orientacao="horizontal"
                 empilhado
                 rotulosValor
                 alturaCategoria={48}
               />
-              <DadosAviso>
-                SLA é o prazo derivado da frequência que a própria fonte declara: diária, 2 dias; semanal, 7; quinzenal, 15; mensal, 60; trimestral, 90; anual, 365, contados do fim do último período disponível. Conjunto sem frequência legível fica sem SLA.
-              </DadosAviso>
+              <DadosAviso>{textoPrazos(pub.regras.sla)}</DadosAviso>
               <div id="calendario" className="mt-6 scroll-mt-28">
                 <h3 className="font-serif text-lg text-carvao">Calendário de atualização e mudanças</h3>
                 <div className="mt-3">
@@ -190,12 +220,11 @@ export default function DadosSaudePage() {
               </div>
               <DadosLimitacoes
                 itens={[
-                  <>A primeira captura registrada é de {dataBR(inicioRegistro ?? pub.referencia.hoje)}: ausência de revisão antes disso não quer dizer que a fonte não revisou, porque o pipeline não tinha como ver.</>,
-                  <>
-                    A situação vale para {dataBR(r.hoje)}. Os conjuntos novos e as capturas posteriores só entram na próxima execução do pipeline.
-                  </>,
-                  ...prov.limitacoes,
+                  limitacaoInicioDoRegistro(inicioRegistro, primeiroDiaComRevisao(pub.calendario), prov.limitacoes),
+                  <>A situação vale para {dataBR(r.hoje)}. Os conjuntos novos e as capturas posteriores só entram na próxima atualização do observatório.</>,
+                  ...prov.limitacoes.filter((l) => !/reconstru[ií]dos em/.test(l)).map(limitacaoParaLeitor),
                 ]}
+                tecnicas={prov.limitacoes.filter((l) => limitacaoParaLeitor(l) !== l)}
               />
               <DadosSeguir
                 ancora="painel-saude"

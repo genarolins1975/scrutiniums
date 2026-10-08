@@ -415,10 +415,11 @@ describe("textos derivados dos números", () => {
     expect(c).toContain("Em 2025, 18 das 51 concessionárias válidas publicaram a perda técnica nos 12 meses (32,6% da energia injetada); nelas, a técnica foi 7,16% da energia injetada.");
     expect(c).toContain("Nas mesmas 16 concessionárias de 2023 a 2025, a não técnica passou de 14,35% para 15,01% do mercado de baixa tensão.");
     const reg = linhasRegulatorio(g.distribuidoras);
-    const r = respostaRegulatorio(reg, true);
-    expect(r).toContain("não pode ser medida");
+    const r = respostaRegulatorio(reg);
+    // o aviso de bloqueio saiu da resposta: a caixa da página o diz uma vez só (r8)
+    expect(r).not.toContain("não pode ser medida");
     expect(r).toContain(`em ${reg.length} distribuidoras`);
-    expect(respostaRegulatorio([], false)).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
+    expect(respostaRegulatorio([])).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
     const custo = linhasCusto(g.distribuidoras);
     const enc = custo.filter((l) => l.situacao === "vigencia_encerrada").length;
     const encAtivas = g.distribuidoras.filter((d) => d.ativa && d.tarifa?.situacao === "vigencia_encerrada").length;
@@ -490,7 +491,7 @@ describe("páginas renderizadas no servidor", () => {
     const esperado: Record<keyof typeof paginas, { ids: string[]; perguntas: string[] }> = {
       mapa: { ids: ["painel-mapa", "painel-evolucao"], perguntas: ["Onde estão as perdas e como evoluíram?", "Como a taxa de perdas das concessionárias evoluiu desde 2003?"] },
       composicao: { ids: ["painel-composicao"], perguntas: ["Qual parte das perdas é técnica e qual é não técnica?"] },
-      regulatorio: { ids: ["painel-regulatorio"], perguntas: ["Quanto o realizado diverge da referência regulatória?"] },
+      regulatorio: { ids: ["painel-regulatorio"], perguntas: ["Como mudou o percentual regulatório de perdas técnicas de cada distribuidora?"] },
       custo: { ids: ["painel-custo", "painel-contexto"], perguntas: ["Qual é a dimensão econômica das perdas na tarifa?", "Que características das áreas aparecem associadas às perdas?"] },
     };
     for (const [k, h] of Object.entries(paginas) as [keyof typeof paginas, string][]) {
@@ -505,7 +506,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(paginas.mapa).toContain('data-resposta="mapa"');
     expect(conteudo(paginas.mapa)).toContain(respostaGeral(g).slice(0, 80));
     expect(conteudo(paginas.composicao)).toContain(respostaComposicao(g).slice(0, 80));
-    expect(conteudo(paginas.regulatorio)).toContain("não pode ser medida");
+    expect(conteudo(paginas.regulatorio)).toContain("recusaram o acesso do observatório");
     expect(conteudo(paginas.custo)).toContain(respostaAssociacao(g.associacao).slice(0, 60));
   });
 
@@ -523,7 +524,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(conteudo(paginas.composicao)).toContain("Comprove");
     expect(paginas.regulatorio).toContain('data-bloqueio="regulatorio"');
     expect(paginas.custo).toContain('data-bloqueio="custo-total"');
-    expect(conteudo(paginas.custo)).toContain("Comprove o ρ da taxa de perdas totais");
+    expect(conteudo(paginas.custo)).toContain("Comprove a associação da taxa de perdas totais com a renda");
     for (const [k, h] of Object.entries(paginas)) {
       expect(conteudo(h), k).toContain("Próxima pergunta");
       expect(conteudo(h), k).toContain("Copiar link deste painel");
@@ -652,9 +653,9 @@ describe("revisão de interface: anos, ligações e ausência", () => {
     }
   });
 
-  it("o bloqueio regulatório descreve acesso recusado, não ausência de publicação", () => {
-    const r = respostaRegulatorio(linhasRegulatorio(g.distribuidoras), true);
-    expect(r).toContain("recusaram o acesso automatizado");
-    expect(r).not.toContain("a ANEEL não publica");
+  it("o bloqueio regulatório descreve acesso recusado, não ausência de publicação, e aparece uma vez só no texto do leitor", () => {
+    const texto = renderToStaticMarkup(createElement(PerdasRegulatorioPage)).replace(/<[^>]+>/g, " ");
+    expect((texto.match(/recusaram/g) ?? []).length).toBe(1);
+    expect(texto).not.toContain("a ANEEL não publica");
   });
 });

@@ -7,6 +7,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RedeEscolha, RedeLista } from "@/components/energia/RedeControles";
 import { RedeMapaFluxos, type FluxoMapa } from "@/components/energia/RedeMapaFluxos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -53,6 +54,7 @@ import {
   sentidoPositivo,
   serieJanela,
   textoPrecos30d,
+  vereditoCirculacao,
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { CirculacaoRede, FronteiraRede, JanelaHorariaRede } from "@/lib/energia/tipos-rede";
@@ -170,9 +172,9 @@ export function RedeCirculacao({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p028">
+      <RespostaCurta id="p028" veredito={vereditoCirculacao(c.resumo_30d)}>
         {respostaCirculacao(c.resumo_30d)}
-      </p>
+      </RespostaCurta>
 
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
         <RedeEscolha legenda="Escala" opcoes={OPCOES_ESCALA} valor={escala} onEscolher={(x) => definir({ esc: x })} />
@@ -463,7 +465,7 @@ export function RedeCirculacao({
           entidades={FRONTEIRAS.map((p) => ({ id: p, rotulo: nomeFronteira(p), sinonimos: [curtoFronteira(p)] }))}
           selecionadas={escolhidas}
           onMudar={(ids) => definir({ frs: ids as FronteiraRede[] })}
-          dicaBusca="Norte, Sul, NE"
+          dicaBusca="Buscar, por exemplo Norte, Sul, NE"
           vazio="Nenhuma fronteira escolhida. Escolha até quatro para ver os saldos na mesma escala."
         >
           {() => null}

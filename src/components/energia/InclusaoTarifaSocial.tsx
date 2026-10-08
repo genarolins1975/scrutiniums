@@ -219,14 +219,14 @@ export function InclusaoMapaTsee({ ufs, mesMapa, serieUfUrl, atingidas, marcos, 
         <InclusaoOpcoes rotulo="Histórico" nome="inclusao-ts-hist" opcoes={OPCOES_HIST} valor={v.hist} onMudar={(hist) => definir({ hist })} />
         {precisa && !serieUf && !erro && (
           <p role="status" className="text-sm text-carvao-muted">
-            Carregando a série mensal por UF (arquivo JSON publicado com a gold)…
+            Carregando a série mensal por UF…
           </p>
         )}
         {erro && (
           <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
             Não foi possível carregar a série por UF ({erro}). O mesmo dado está em{" "}
             <a href="/energia/series/inclusao_cde_mensal_uf.csv" download className="text-energia-dark underline underline-offset-4">
-              inclusao_cde_mensal_uf.csv
+              faturas com desconto por UF e mês (CSV)
             </a>
             .
           </p>

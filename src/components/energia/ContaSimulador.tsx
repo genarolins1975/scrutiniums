@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno, num, reais } from "@/lib/energia/formato";
@@ -12,10 +13,13 @@ import {
   curvaSimulacao,
   destacar,
   nomeLigacao,
+  notaArredondamentoSimulacao,
   respostaSimulacao,
   minuscula,
   rotuloDistribuidora,
+  separaBloqueioDeNorma,
   simular,
+  vereditoSimulacao,
 } from "@/lib/energia/conta";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import type { ClasseSimuladorId, EstadoRegra, Ligacao, Simulador } from "@/lib/energia/tipos-conta";
@@ -131,6 +135,9 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
     nomeBandeira === vig.bandeira &&
     adicional === vig.rs_mwh;
 
+  // a memória mostra cada parcela arredondada; o total é o da soma antes de arredondar, e a diferença de R$ 0,01 é dita
+  const notaArredondamento = r.disponivel ? notaArredondamentoSimulacao([...r.linhas.map((l) => l.valor), semBandeira ? 0 : r.bandeira], r.total) : null;
+
   const regrasAplicadas = REGRAS_DA_CLASSE[v.classe].map((id) => s.regras_texto.find((x) => x.id === id)).filter((x): x is Simulador["regras_texto"][number] => !!x);
 
   const mudarKwh = (bruto: string) => {
@@ -141,9 +148,9 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
 
   return (
     <div className="space-y-5">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" aria-live="polite" data-resposta="p049">
+      <RespostaCurta id="p049" vivo veredito={vereditoSimulacao(r, sigla, v.kwh)}>
         {respostaSimulacao(r, sigla, classe.rotulo, v.kwh, semBandeira ? null : nomeBandeira, s.rotulo)}
-      </p>
+      </RespostaCurta>
 
       <form className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" onSubmit={(e) => e.preventDefault()} aria-label="Parâmetros da simulação">
         <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
@@ -334,6 +341,11 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
               </tbody>
             </table>
           </div>
+          {notaArredondamento && (
+            <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-nota="arredondamento">
+              {notaArredondamento}
+            </p>
+          )}
           {r.disponivel && r.observacoes.length > 0 && (
             <ul className="mt-2 list-disc space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
               {r.observacoes.map((o) => (
@@ -423,9 +435,10 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
         <ul className="mt-2 space-y-3 text-sm leading-relaxed">
           {regrasAplicadas.map((rg) => (
             <li key={rg.id} className="border-l-2 border-linha pl-3">
-              <p className="text-carvao">{rg.aplicacao_no_simulador}</p>
-              <p className="mt-1 text-xs text-carvao-muted">
-                Estado: {ROTULO_ESTADO[s.estado_regras[rg.id] ?? rg.estado]}.{" "}
+              <p className="text-carvao">{separaBloqueioDeNorma(rg.aplicacao_no_simulador).leitor}</p>
+              {(s.estado_regras[rg.id] ?? rg.estado) !== "CONFERIDA" && <p className="mt-1 text-xs text-carvao-muted">Parte desta regra é leitura do observatório, ainda não conferida no texto oficial.</p>}
+              <p className="mt-1 text-xs text-carvao-muted" data-nivel="analisar">
+                {separaBloqueioDeNorma(rg.aplicacao_no_simulador).tecnico ? `${separaBloqueioDeNorma(rg.aplicacao_no_simulador).tecnico} ` : ""}Estado: {ROTULO_ESTADO[s.estado_regras[rg.id] ?? rg.estado]}.{" "}
                 {rg.partes
                   .filter((p) => p.estado !== "CONFERIDA")
                   .map((p) => `Leitura declarada, não conferida: “${p.texto}”${p.motivo ? ` (${p.motivo})` : ""}.`)

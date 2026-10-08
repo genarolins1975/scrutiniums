@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { RedeAuditoria, RedeAviso, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeSeguir } from "@/components/energia/RedePagina";
+import { RedeAnalise, RedeAuditoria, RedeAviso, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeSeguir } from "@/components/energia/RedePagina";
 import { RedeProgramado } from "@/components/energia/RedeProgramado";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -53,11 +53,10 @@ export default function RedeProgramadoPage() {
             </>
           }
         >
-          {versaoProg
-            ? `Na versão ${versaoProg.versao} do dicionário de dados (${versaoProg.data.replaceAll("-", "/")}), o ONS incluiu o campo do valor programado. `
-            : ""}
-          O <Termo slug="intercambio">intercâmbio</Termo> programado de cada hora está publicado ao lado do verificado de {dataBR(p.inicio)} em diante. Este painel mede quanto a
-          operação se afastou do programa em cada fronteira e com Argentina e Uruguai.
+          O <Termo slug="intercambio">intercâmbio</Termo> programado é o fluxo que se esperava em cada hora antes da operação; o verificado é o fluxo medido. Os dois estão
+          publicados lado a lado de {dataBR(p.inicio)} em diante
+          {versaoProg ? ` (o campo do programado entrou na versão ${versaoProg.versao} do dicionário de dados do ONS, de ${versaoProg.data.replaceAll("-", "/")})` : ""}. Este painel mede quanto
+          o verificado se afastou do programado em cada fronteira entre regiões e nas trocas com a Argentina e o Uruguai.
         </CabecalhoModulo>
         <RedeNavegacao atual="p031" />
         <ModoProfundidade>
@@ -81,7 +80,8 @@ export default function RedeProgramadoPage() {
               comoInterpretar={
                 <>
                   Desvio é verificado menos programado, na mesma hora e no mesmo sentido do nome do par; o desvio absoluto ignora o sinal. A faixa mostra a mediana, os
-                  percentis 90 e 99 e o maior desvio de cada par; a linha marca o limiar material.
+                  percentis 90 e 99 e o maior desvio de cada par: no percentil 90, por exemplo, 90% das horas têm desvio absoluto menor ou igual a esse valor. A linha marca o
+                  limiar material.
                 </>
               }
               naoConcluir={
@@ -94,9 +94,6 @@ export default function RedeProgramadoPage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
-                <RedeAviso>
-                  Programa e revisão: {vp.texto} {textoConferenciaPdo(p)}
-                </RedeAviso>
                 <RedeProgramado
                   programado={{
                     distribuicao: p.distribuicao,
@@ -116,6 +113,10 @@ export default function RedeProgramadoPage() {
                   versao={versao}
                   regraMaterialidade={g.regras.materialidade}
                 />
+
+                <RedeAnalise id="programa-e-revisao" titulo="De onde vem o valor programado">
+                  <p className="text-sm leading-relaxed text-carvao-muted">{vp.texto}</p>
+                </RedeAnalise>
 
                 <RedeAuditoria id="pdo" titulo="Conferência do programa do exterior com o PDO das conversoras">
                   <p className="text-sm text-carvao-muted">{textoConferenciaPdo(p)}</p>

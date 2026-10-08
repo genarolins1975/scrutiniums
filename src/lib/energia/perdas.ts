@@ -745,6 +745,43 @@ export function respostaMapa(a: {
   return partes.join(" ");
 }
 
+/**
+ * Veredito da consulta atual do mapa (período e medida): o intervalo da medida entre as distribuidoras comparáveis, com a
+ * distribuidora de cada ponta, ou quantas subiram e quantas caíram na variação. Os números são os de respostaMapa; o agregado
+ * nacional, os universos e as distribuidoras fora da comparação ficam na resposta completa.
+ */
+export function vereditoMapa(a: {
+  periodo: PeriodoPerdas;
+  medida: Medida;
+  valores: Readonly<Record<string, ValorMapa>>;
+  rotulos: Readonly<Record<string, string>>;
+  acumulado: PerdasGold["acumulado"];
+}): string {
+  const { periodo, medida, valores, rotulos } = a;
+  const e = extremos(valores, rotulos);
+  const quando = periodo.tipo === "acumulado" ? `De janeiro a ${MESES_LONGOS[(a.acumulado?.mes_fim ?? 1) - 1]} de ${periodo.ano}` : `Em ${periodo.ano}`;
+  if (!e) return `${quando}, nenhuma distribuidora entra na comparação de ${medida.rotulo.toLowerCase()}.`;
+  if (medida.id === "variacao") {
+    let sobe = 0;
+    let cai = 0;
+    for (const v of Object.values(valores)) {
+      if (v.estado !== "valor") continue;
+      const x = r(v.v, medida.casas);
+      if (x > 0) sobe++;
+      else if (x < 0) cai++;
+    }
+    return `De ${periodo.ano - 1} para ${periodo.ano}, a taxa de perdas totais subiu em ${plural(sobe, "distribuidora", "distribuidoras")} e caiu em ${num(cai, 0)}, entre as que podem ser comparadas.`;
+  }
+  const FRASE: Record<Exclude<IdMedida, "variacao">, [string, string]> = {
+    taxa: ["a taxa de perdas totais vai", " da energia que entrou na rede"],
+    volume: ["as perdas totais vão", ""],
+    tecnica: ["as perdas técnicas estimadas vão", " da energia que entrou na rede"],
+    pnt_bt: ["as perdas não técnicas estimadas vão", " do mercado de baixa tensão"],
+  };
+  const [sujeito, base] = FRASE[medida.id];
+  return `${quando}, entre as distribuidoras comparáveis, ${sujeito} de ${textoNumero(e.min.v, medida)} (${e.min.rotulo}) a ${textoNumero(e.max.v, medida)} (${e.max.rotulo})${base}.`;
+}
+
 function agregadoNacional(medida: IdMedida, periodo: PeriodoPerdas, nacional: LinhaNacional | null, acumulado: PerdasGold["acumulado"]): string | null {
   if (periodo.tipo === "acumulado") {
     const c = acumulado?.agregados.find((x) => x.universo === "concessionarias");
@@ -1169,24 +1206,23 @@ export function degrausRegulatorio(segmentos: readonly SegmentoTecnico[]): { m: 
   return mesesEntre(segs[0].inicio, segs[segs.length - 1].fim).map((m) => ({ m, pct: valor.get(m) ?? null }));
 }
 
-export function respostaRegulatorio(linhas: readonly LinhaRegulatorio[], bloqueada: boolean): string {
-  const partes: string[] = [];
-  if (bloqueada)
-    partes.push(
-      "A diferença entre a perda não técnica realizada e a referência regulatória não pode ser medida com as bases abertas acessíveis: o portal de dados abertos da ANEEL não traz os percentuais regulatórios de perdas não técnicas, e os endereços da ANEEL que os publicam em relatório e memória de cálculo recusaram o acesso automatizado nesta coleta (endereços tentados e respostas no quadro de bloqueio do painel Realizado e regulatório).",
-    );
-  if (!linhas.length) {
-    partes.push("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
-    return partes.join(" ");
-  }
+export function respostaRegulatorio(linhas: readonly LinhaRegulatorio[]): string {
+  if (!linhas.length) return "Nenhum percentual técnico regulatório foi identificado na série do SAMP.";
   const desc = [...linhas].sort((a, b) => b.atual - a.atual || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
   const max = desc[0];
   const min = desc[desc.length - 1];
   const comReh = linhas.filter((l) => l.resolucao).length;
-  partes.push(
-    `O que se observa: o percentual técnico regulatório implícito no SAMP, em ${plural(linhas.length, "distribuidora", "distribuidoras")}; no trecho mais recente de cada uma, vai de ${num(min.atual, 3)}% (${min.rotulo}, ${mesAno(min.inicio)} a ${mesAno(min.fim)}) a ${num(max.atual, 3)}% (${max.rotulo}, ${mesAno(max.inicio)} a ${mesAno(max.fim)}) da energia injetada publicada. ${plural(comReh, "trecho recente coincide", "trechos recentes coincidem")} com o início de vigência de uma resolução homologatória.`,
-  );
-  return partes.join(" ");
+  return `Percentual técnico regulatório implícito no SAMP, em ${plural(linhas.length, "distribuidora", "distribuidoras")}: no trecho mais recente de cada uma, vai de ${num(min.atual, 3)}% (${min.rotulo}, ${mesAno(min.inicio)} a ${mesAno(min.fim)}) a ${num(max.atual, 3)}% (${max.rotulo}, ${mesAno(max.inicio)} a ${mesAno(max.fim)}) da energia injetada publicada. ${plural(comReh, "trecho recente coincide", "trechos recentes coincidem")} com o início de vigência de uma resolução homologatória.`;
+}
+
+/**
+ * Veredito do P057: o que o gráfico mostra de fato (o percentual técnico regulatório do trecho mais recente contra o do
+ * trecho anterior de cada distribuidora) e o limite de leitura: a diferença é mudança de parâmetro entre processos, não
+ * desempenho. A comparação com a perda não técnica realizada não é feita; o aviso dela fica na caixa da página, uma vez só.
+ */
+export function vereditoRegulatorio(linhas: readonly LinhaRegulatorio[]): string {
+  if (!linhas.length) return "Nenhum percentual técnico regulatório foi identificado na série do SAMP.";
+  return `O gráfico compara, em ${plural(linhas.length, "distribuidora", "distribuidoras")}, o percentual técnico regulatório do trecho mais recente com o do trecho anterior. A diferença é mudança de parâmetro entre processos tarifários, não desempenho da distribuidora.`;
 }
 
 /* ------------------------------------------------------------------ custo e contexto (P058) */
@@ -1254,12 +1290,41 @@ export function respostaCusto(linhas: readonly LinhaCusto[], consultadaEm: strin
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P058: quanto da tarifa residencial B1 remunera perdas, em R$/MWh, no menor e no maior valor entre as
+ * distribuidoras com processo vigente. O valor é o da coluna Perdas (soma das componentes antes do arredondamento), o mesmo
+ * da resposta completa.
+ */
+export function vereditoCusto(linhas: readonly LinhaCusto[], consultadaEm: string): string {
+  const vig = linhas.filter((l) => l.situacao === "vigente" && l.participacao_perdas_pct !== null);
+  if (!vig.length) return `Nenhuma distribuidora tem processo tarifário vigente em ${dataBR(consultadaEm)} no arquivo de componentes tarifárias.`;
+  const porRs = [...vig].sort((a, b) => a.perdas - b.perdas || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+  const menor = porRs[0];
+  const maior = porRs[porRs.length - 1];
+  return `Na tarifa residencial de ${dataBR(consultadaEm)}, a parte que remunera perdas, sem tributos, vai de ${num(menor.perdas, 2)} R$/MWh (${menor.rotulo}) a ${num(maior.perdas, 2)} R$/MWh (${maior.rotulo}), conforme a distribuidora.`;
+}
+
+/**
+ * Distribuidoras vigentes em que a soma das três componentes, já arredondadas em duas casas (o que a barra do gráfico soma),
+ * difere da coluna Perdas (soma antes do arredondamento). A diferença é de arredondamento, no máximo 0,01 R$/MWh.
+ */
+export function divergenciaArredondamentoCusto(linhas: readonly LinhaCusto[]): { n: number; de: number; exemplo: { rotulo: string; barra: number; tabela: number } | null } {
+  const vig = linhas.filter((l) => l.situacao === "vigente");
+  const dif = vig.filter((l) => r(l.pt + l.pnt + l.rede_basica, 2) !== r(l.perdas, 2));
+  // o exemplo é a divergência de menor valor: é a ponta baixa que o veredito cita
+  const ex = [...dif].sort((a, b) => a.perdas - b.perdas)[0];
+  return { n: dif.length, de: vig.length, exemplo: ex ? { rotulo: ex.rotulo, barra: r(ex.pt + ex.pnt + ex.rede_basica, 2), tabela: r(ex.perdas, 2) } : null };
+}
+
+/** Limites da escala de |ρ| (nula, fraca, moderada), a mesma regra fixa que o texto da página declara. */
+export const LIMITES_RHO = [0.1, 0.3, 0.5] as const;
+
 /** Intensidade da correlação de postos por regra fixa (|ρ| < 0,1; 0,3; 0,5). */
 export function intensidadeRho(rho: number): string {
   const a = Math.abs(rho);
-  if (a < 0.1) return "praticamente nula";
-  if (a < 0.3) return "fraca";
-  if (a < 0.5) return "moderada";
+  if (a < LIMITES_RHO[0]) return "praticamente nula";
+  if (a < LIMITES_RHO[1]) return "fraca";
+  if (a < LIMITES_RHO[2]) return "moderada";
   return "forte";
 }
 
@@ -1273,8 +1338,20 @@ export function respostaAssociacao(a: Pick<Associacao, "spearman_taxa_total" | "
   partes.push(`Em ${a.ano_perdas}, ano do Censo, comparando áreas de concessão pela renda média domiciliar per capita dos seus municípios.`);
   partes.push(fr(a.spearman_taxa_total, a.n_taxa_total, "a taxa de perdas totais"));
   partes.push(fr(a.spearman_pnt_bt, a.n_pnt_bt, "a não técnica sobre o mercado de baixa tensão"));
+  partes.push(`Escala do observatório para |ρ|: praticamente nula abaixo de ${num(LIMITES_RHO[0], 1)}, fraca até ${num(LIMITES_RHO[1], 1)}, moderada até ${num(LIMITES_RHO[2], 1)} e forte a partir daí.`);
   partes.push("É descrição entre áreas, não causa.");
   return partes.join(" ");
+}
+
+/**
+ * Veredito do painel de contexto: o sentido da associação entre a renda média da área e a taxa de perdas totais, em
+ * palavras comuns e sem o coeficiente (que fica na segunda camada, com a escala), e o limite de leitura.
+ */
+export function vereditoAssociacao(a: Pick<Associacao, "spearman_taxa_total" | "n_taxa_total" | "ano_perdas">): string {
+  const rho = a.spearman_taxa_total;
+  if (rho === null || a.n_taxa_total < 3) return "Não há pares suficientes para comparar a renda média das áreas com a taxa de perdas.";
+  const sentido = rho < 0 ? "quanto maior a renda média da área, menor tende a ser a taxa de perdas totais" : rho > 0 ? "quanto maior a renda média da área, maior tende a ser a taxa de perdas totais" : "a renda média da área não indica tendência na taxa de perdas totais";
+  return `Em ${a.ano_perdas}, nas ${num(a.n_taxa_total, 0)} concessionárias, ${sentido}. É uma associação entre áreas, não uma causa.`;
 }
 
 /* ------------------------------------------------------------------ indicadores de destaque */
@@ -1392,10 +1469,41 @@ export function respostaGeral(g: Pick<PerdasGold, "nacional" | "referencia" | "a
   const c = g.acumulado?.agregados.find((x) => x.universo === "concessionarias");
   if (g.acumulado && c && c.atual.taxa_total_pct !== null && c.anterior.taxa_total_pct !== null) {
     partes.push(
-      `De janeiro a ${MESES_LONGOS[g.acumulado.mes_fim - 1]} de ${g.acumulado.ano}, nas ${num(c.n_distribuidoras, 0)} concessionárias comparáveis, a taxa foi ${num(c.atual.taxa_total_pct, 2)}%, contra ${num(c.anterior.taxa_total_pct, 2)}% no mesmo período de ${g.acumulado.ano - 1}.`,
+      `De janeiro a ${MESES_LONGOS[g.acumulado.mes_fim - 1]} de ${g.acumulado.ano}, nas ${num(c.n_distribuidoras, 0)} concessionárias comparáveis, a taxa foi ${num(c.atual.taxa_total_pct, 2)}%, contra ${num(c.anterior.taxa_total_pct, 2)}% no mesmo período de ${g.acumulado.ano - 1}. ` +
+        `As ${num(c.n_distribuidoras, 0)} são as que têm os mesmos meses publicados nos dois anos; ${num(l.n_distribuidoras, 0)} têm o ano de ${l.ano} completo.`,
     );
   }
   return partes.join(" ");
+}
+
+/** "0,01 ponto percentual a mais" / "a menos" / "o mesmo valor": a diferença entre duas taxas de duas casas, na precisão exibida. */
+function frasePontos(antes: number, depois: number, anoBase: number): string {
+  const x = r(depois - antes, 2);
+  if (x === 0) return `o mesmo valor de ${anoBase}`;
+  return `${num(Math.abs(x), 2)} ${Math.abs(x) > 1 ? "pontos percentuais" : "ponto percentual"} ${x > 0 ? "a mais" : "a menos"} que em ${anoBase}`;
+}
+
+/**
+ * Veredito da página: quanto as concessionárias com o ano completo perderam, em % da energia que entrou na rede, e como isso
+ * se compara ao ano anterior nas mesmas empresas. Os dois números são os de respostaGeral; o volume em TWh, os universos e o
+ * acumulado do ano aberto ficam na resposta completa.
+ */
+export function vereditoGeral(g: Pick<PerdasGold, "nacional" | "referencia">): string {
+  const l = linhaNacional(g, g.referencia.ano);
+  if (!l || l.taxa_total_pct === null) return `Sem soma nacional das concessionárias em ${g.referencia.ano}.`;
+  const m = l.mesmas_ano_anterior;
+  const comparacao = m?.taxa_total_pct && m.taxa_total_pct[0] !== null && m.taxa_total_pct[1] !== null ? `, ${frasePontos(m.taxa_total_pct[0], m.taxa_total_pct[1], l.ano - 1)} nas mesmas empresas` : "";
+  return `Em ${l.ano}, as concessionárias com o ano completo perderam ${num(l.taxa_total_pct, 2)}% da energia que entrou na rede${comparacao}.`;
+}
+
+/** Veredito da composição: as duas parcelas, cada uma na sua base, e o aviso de que as bases são diferentes e não se somam. */
+export function vereditoComposicao(g: Pick<PerdasGold, "nacional" | "referencia">): string {
+  const l = linhaNacional(g, g.referencia.ano);
+  if (!l || l.taxa_total_pct === null) return `Sem soma nacional das concessionárias em ${g.referencia.ano}.`;
+  if (l.taxa_tecnica_pct === null) return `Em ${l.ano}, nenhuma concessionária válida publicou a perda técnica nos 12 meses.`;
+  const tecnica = `as perdas técnicas foram ${num(l.taxa_tecnica_pct, 2)}% da energia que entrou na rede`;
+  if (l.pnt_bt_pct === null) return `Em ${l.ano}, nas concessionárias que publicam a separação, ${tecnica}. Nenhuma publicou a parcela não técnica fechando com a total.`;
+  return `Em ${l.ano}, nas concessionárias que publicam a separação, ${tecnica} e as não técnicas, ${num(l.pnt_bt_pct, 2)}% do mercado de baixa tensão. As duas porcentagens têm bases diferentes e não se somam.`;
 }
 
 /** Série nacional em tabela: uma linha por ano completo, com universo e comparação nas mesmas. */
@@ -1452,4 +1560,12 @@ export function respostaEvolucao(nacional: readonly LinhaNacional[], anoRef: num
   return `De ${serie[0].ano} a ${serie[serie.length - 1].ano}, a taxa anual das concessionárias ficou entre ${num(min.taxa, 2)}% (${min.ano}) e ${num(max.taxa, 2)}% (${max.ano})${
     ult ? `; em ${anoRef}, ${num(ult.taxa, 2)}%` : ""
   }. Os anos não têm todos o mesmo conjunto de distribuidoras: a tabela diz onde o universo mudou.`;
+}
+
+/** Veredito da série nacional: a faixa da taxa anual das concessionárias e o aviso de que o conjunto de distribuidoras muda de ano a ano. */
+export function vereditoEvolucao(nacional: readonly LinhaNacional[]): string {
+  const serie = serieNacional(nacional).filter((l): l is typeof l & { taxa: number } => l.taxa !== null);
+  if (!serie.length) return "Sem série nacional das concessionárias publicada.";
+  const ordem = [...serie].sort((a, b) => a.taxa - b.taxa || Number(a.ano) - Number(b.ano));
+  return `De ${serie[0].ano} a ${serie[serie.length - 1].ano}, a taxa anual das concessionárias ficou entre ${num(ordem[0].taxa, 2)}% e ${num(ordem[ordem.length - 1].taxa, 2)}%. Os anos não têm sempre as mesmas distribuidoras.`;
 }

@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MapaCalor } from "@/components/energia/MapaCalor";
 import { Numero } from "@/components/energia/Numero";
 import { PldEscolha, PldLista } from "@/components/energia/PldControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -32,6 +33,7 @@ import {
   regimesDoAno,
   respostaP010,
   rotaPainel,
+  vereditoP010,
   type JanelaCalendario,
   type LimiteHora,
 } from "@/lib/energia/pld";
@@ -58,6 +60,7 @@ export function PldLimites({
   fichas,
   fonte,
   versao,
+  notaPermanencia,
 }: {
   l: LimitesP010;
   anos: number[];
@@ -65,6 +68,8 @@ export function PldLimites({
   fichas: Record<string, Evidencia>;
   fonte: string;
   versao: string;
+  /** Contexto de anos com muitas horas no piso que o dado publicado sustenta (ver o achado A02, na página CMO e formação de preço). */
+  notaPermanencia?: ReactNode;
 }) {
   const ultimo = anos[anos.length - 1] ?? Number(diaReferencia.slice(0, 4));
   const esquema = useMemo(
@@ -119,9 +124,9 @@ export function PldLimites({
         />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p010" aria-live="polite">
+      <RespostaCurta id="p010" vivo veredito={vereditoP010(bloco, ano, sm, diaReferencia)}>
         {respostaP010(bloco, ano, sm, diaReferencia)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -136,7 +141,10 @@ export function PldLimites({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">horas e % das horas; limites em R$/MWh nominais; hora no limite = igualdade ao centavo (|PLD − limite| ≤ R$ {String(bloco.tolerancia.hora).replace(".", ",")}/MWh)</dd>
+          <dd className="mt-0.5">
+            horas e % das horas; limites em R$/MWh nominais; hora no limite = preço igual ao limite, ao centavo
+            <span data-nivel="analisar"> (|PLD − limite| ≤ R$ {String(bloco.tolerancia.hora).replace(".", ",")}/MWh)</span>
+          </dd>
         </div>
       </dl>
 
@@ -179,7 +187,7 @@ export function PldLimites({
           motivoAusencia="Sem permanência publicada."
           tamanho="medio"
           cor={COR_SM[sm]}
-          nota="Conferido sobre a média das 24 horas do dia (ver a nota do teto estrutural)."
+          nota="Conferido sobre a média das 24 horas do dia."
         />
         <div role="group" aria-label={`Limites vigentes em ${ano}`} className="flex h-full flex-col border border-linha bg-superficie p-5">
           <p className="rotulo text-mineral">Limites de {ano} (atos da ANEEL)</p>
@@ -201,7 +209,13 @@ export function PldLimites({
           ) : (
             <p className="mt-2 text-sm text-carvao-muted">{regs.length ? "Mais de um trecho de vigência no ano: veja a tabela de limites." : "Sem ato vigente integrado para o ano."}</p>
           )}
-          {reg && <p className="mt-2 text-xs text-mineral">Piso: {reg.ato_pld_min ?? "ato não identificado"}; tetos: {reg.ato_pld_max_horario ?? "ato não identificado"}.</p>}
+          {reg && (
+            <p className="mt-2 text-xs text-mineral">
+              {reg.ato_pld_min === reg.ato_pld_max_horario && reg.ato_pld_min === reg.ato_pld_max_estrutural
+                ? `Piso e tetos: ${reg.ato_pld_min ?? "ato não identificado"}.`
+                : `Piso: ${reg.ato_pld_min ?? "ato não identificado"}; teto horário: ${reg.ato_pld_max_horario ?? "ato não identificado"}; teto estrutural: ${reg.ato_pld_max_estrutural ?? "ato não identificado"}.`}
+            </p>
+          )}
         </div>
       </div>
 
@@ -271,6 +285,7 @@ export function PldLimites({
           Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
           terminou e não se compara a anos completos sem essa ressalva.
         </p>
+        {notaPermanencia ? <p className="text-sm leading-relaxed text-carvao-muted">{notaPermanencia}</p> : null}
         <TabelaInterativa
           titulo={`Tabela equivalente: permanência nos limites por ano, ${NOME_SM[sm]}`}
           colunas={COLUNAS_PERMANENCIA}

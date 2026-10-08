@@ -7,6 +7,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Comparador, type EntidadeComparavel } from "@/components/energia/Comparador";
 import { GraficoLinhas, type SerieLinha } from "@/components/energia/GraficoLinhas";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { mesAno, num } from "@/lib/energia/formato";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -24,6 +25,7 @@ import {
   recortesDoPeriodo,
   respostaDistribuidora,
   respostaMapa,
+  vereditoMapa,
   avisoTerritorio,
   rotuloDistribuidora,
   serieComparacao,
@@ -121,6 +123,9 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   const rotulos = useMemo(() => Object.fromEntries(distribuidoras.map((d) => [d.cnpj, rotuloDistribuidora(d)])), [distribuidoras]);
   const linhaNac = nacional.find((l) => l.ano === periodo.ano && l.universo === "concessionarias") ?? null;
   const resposta = valores ? respostaMapa({ periodo, medida, valores, rotulos, nacional: linhaNac, acumulado }) : null;
+  const veredito = valores ? vereditoMapa({ periodo, medida, valores, rotulos, acumulado }) : null;
+  // concessionárias que somam o agregado nacional do período (51 em 2025; as comparáveis nos dois períodos no acumulado)
+  const nSoma = periodo.tipo === "acumulado" ? acumulado?.agregados.find((x) => x.universo === "concessionarias")?.n_distribuidoras ?? null : linhaNac && !linhaNac.parcial ? linhaNac.n_distribuidoras : null;
   const entidadesMapa = useMemo<EntidadeMapa[]>(
     () => distribuidoras.map((d) => ({ id: d.cnpj, rotulo: rotuloDistribuidora(d), nome: d.nome, ufs: d.territorio?.ufs.join("/") ?? "" })),
     [distribuidoras],
@@ -198,11 +203,11 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
       </div>
 
       {/* resposta da consulta atual, com período, universo e unidade */}
-      <div className="border-l-2 border-energia pl-4" aria-live="polite">
-        {resposta ? (
-          <p className="text-base leading-relaxed text-carvao" data-resposta="mapa">
+      <div className="border-l-2 border-energia pl-4">
+        {resposta && veredito ? (
+          <RespostaCurta id="mapa" vivo veredito={veredito}>
             {resposta}
-          </p>
+          </RespostaCurta>
         ) : cargaAnual.estado === "erro" ? (
           <p className="text-sm text-carvao">
             Não foi possível carregar a série anual ({cargaAnual.erro}).{" "}
@@ -212,12 +217,12 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
           </p>
         ) : (
           <p role="status" className="text-sm text-carvao-muted">
-            Carregando a série anual de {periodo.ano} (perdas_anual.json).
+            Carregando a série anual de {periodo.ano}.
           </p>
         )}
         <p className="mt-1 text-xs text-mineral">
           Período: {periodo.rotulo}. Universo: {distribuidoras.length} distribuidoras com balanço no SAMP em algum ano
-          {nComDado !== null && nComparaveis !== null ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida` : ""}. Unidade: {medida.unidade}.
+          {nComDado !== null && nComparaveis !== null ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida${nSoma !== null && medida.id !== "variacao" ? `; a soma nacional usa só as ${nSoma} concessionárias comparáveis` : ""}` : ""}. Unidade: {medida.unidade}.
         </p>
       </div>
 

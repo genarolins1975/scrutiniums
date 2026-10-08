@@ -37,12 +37,14 @@ import {
   barrasSubmercadosGsf,
   linhasGsf,
   linhasInfoMercado,
+  notaGsfDozeMeses,
   painelMercado,
   provenienciasLegiveis,
   reaisCurto,
   serieGeracaoGarantia,
   serieGsf,
   textoPeriodoMes,
+  vereditoGsf,
 } from "@/lib/energia/mercado";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
@@ -54,13 +56,6 @@ export const metadata: Metadata = {
     "Como foi o ajuste da garantia física das hidrelétricas do MRE: GSF mês a mês, geração e garantia física em colunas separadas, risco hidrológico alocado às distribuidoras na Conta Bandeira e a conferência com o InfoMercado da CCEE.",
   alternates: { canonical: "/setor-eletrico/mercado/mre-e-gsf" },
 };
-
-/** Mês AAAA-MM n meses antes de outro. */
-function mesesAntes(mes: string, n: number): string {
-  const [a, m] = mes.split("-").map(Number);
-  const t = a * 12 + (m - 1) - n;
-  return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
-}
 
 export default function MercadoMreGsfPage() {
   const g = lerGold<MercadoGold>("mercado.json");
@@ -85,8 +80,8 @@ export default function MercadoMreGsfPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo siglas={["MRE", "GSF", "EPE", "CCEE", "SAMP", "ANEEL", "ACR", "SIN", "MWmed", "ACL"]} rotulo="Mercado de energia" titulo="Como foi o ajuste da garantia física das hidrelétricas do MRE?" referencia={<ReferenciaMercado g={g} />}>
           As hidrelétricas do <Termo slug="mre">MRE</Termo> dividem entre si o risco de gerar menos que a garantia física, porque quem decide quanto cada uma gera é o despacho centralizado. O{" "}
-          <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física, e os documentos do MME registram que isso expôs agentes
-          hidrelétricos a valores elevados de PLD. A base da ANEEL com a Conta Bandeira traz o risco hidrológico alocado às distribuidoras, mostrado mais abaixo; a norma que define esse repasse não foi lida.
+          <Termo slug="gsf">GSF</Termo> mede, no conjunto, quanto foi gerado em relação à garantia física ajustada; abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a <Termo slug="garantia-fisica">garantia física</Termo>, e os documentos do MME registram que isso expôs agentes
+          hidrelétricos a valores elevados de PLD. Mais abaixo, a Conta Bandeira da ANEEL mostra o risco hidrológico alocado às distribuidoras.
         </CabecalhoModulo>
         <MercadoNavegacao atual="mre-gsf" />
 
@@ -121,7 +116,7 @@ export default function MercadoMreGsfPage() {
               comoInterpretar={
                 <>
                   GSF do mês = geração das usinas do MRE ÷ garantia física modulada e ajustada pelo fator de disponibilidade, a razão que reproduz o fator publicado pela CCEE no InfoMercado. O de 12
-                  meses é razão de somas em energia (MWh), não média dos fatores mensais. Geração e garantia física aparecem em colunas separadas, nunca somadas.
+                  meses divide a soma da geração dos 12 meses pela soma da garantia física dos 12 meses (MWh); não é a média dos fatores mensais. Geração e garantia física aparecem em colunas separadas, nunca somadas.
                 </>
               }
               naoConcluir={
@@ -133,6 +128,7 @@ export default function MercadoMreGsfPage() {
             >
               <MercadoResposta
                 painel="P034"
+                veredito={vereditoGsf(g)}
                 prova={
                   <>
                     {k.gsf_ultimo_mes && <ComproveNumero evidencia={k.gsf_ultimo_mes.evidencia} rotulo="Comprove o GSF do mês" />}
@@ -151,6 +147,7 @@ export default function MercadoMreGsfPage() {
                   casas={1}
                   unidade="%"
                   periodo={k.gsf_ultimo_mes ? mesAno(k.gsf_ultimo_mes.mes) : undefined}
+                  nota={k.gsf_ultimo_mes ? <>para cada 100 MWh de garantia física ajustada, as hidrelétricas do MRE geraram {num(k.gsf_ultimo_mes.valor_pct, 1)} MWh</> : undefined}
                   tamanho="medio"
                   motivoAusencia="A CCEE não publicou o mês."
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/mre-e-gsf#mre-gsf"
@@ -163,14 +160,7 @@ export default function MercadoMreGsfPage() {
                   casas={1}
                   unidade="%"
                   periodo={k.gsf_12m ? textoPeriodoMes(k.gsf_12m.periodo) : undefined}
-                  nota={
-                    <>
-                      razão de somas em energia
-                      {div12 && div12.publicado !== null && div12.calculado !== null && div12.diferenca !== null
-                        ? `. O InfoMercado Nº ${div12.numero} publica ${num(div12.publicado, 2)}% para o ajuste médio de 12 meses até ${mesAno(div12.mes)}; na mesma janela (${mesAno(mesesAntes(div12.mes, 11))} a ${mesAno(div12.mes)}) a razão de energias dá ${num(div12.calculado, 2)}%, ${num(Math.abs(div12.diferenca), 2)} p.p. abaixo, diferença que não foi explicada. O valor do cartão é o da janela mais recente`
-                        : ""}
-                    </>
-                  }
+                  nota={<>{notaGsfDozeMeses(g)}</>}
                   tamanho="medio"
                   motivoAusencia="A CCEE não publicou os 12 meses da janela."
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/mre-e-gsf#mre-gsf"
@@ -183,7 +173,12 @@ export default function MercadoMreGsfPage() {
                   unidade="R$ bilhões"
                   casas={2}
                   periodo={k.risco_hidrologico_acr_12m ? textoPeriodoMes(k.risco_hidrologico_acr_12m.periodo) : undefined}
-                  nota={<>Custo bruto de Itaipu, repactuadas e cotas, antes de descontar a previsão tarifária e o prêmio de risco; a tabela anual abaixo mostra as deduções</>}
+                  nota={
+                    <>
+                      Risco hidrológico que recai sobre o consumidor cativo (usinas em cotas, usinas que repactuaram o risco com a ANEEL e Itaipu), no valor bruto, antes de descontar a previsão na tarifa e o prêmio de risco; a tabela
+                      anual, no modo Analisar, mostra as deduções. A janela termina em {mesAno(prov.risco_hidrologico_acr.periodo_referencia.fim)}, o último mês da Conta Bandeira que a ANEEL publicou.
+                    </>
+                  }
                   tamanho="medio"
                   motivoAusencia="A ANEEL não publicou os 12 meses da janela."
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/mre-e-gsf#mre-gsf"

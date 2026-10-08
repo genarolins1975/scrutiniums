@@ -883,6 +883,86 @@ export function respostaCde(f: FinanciamentoCde | null): string {
   );
 }
 
+/* ---------- vereditos (r8): a resposta em palavras comuns, com os números da resposta completa ---------- */
+
+/** Rótulo de grupo sem o parêntese técnico: "Distribuição (fio B)" vira "distribuição". */
+const nomeGrupo = (rotulo: string) => minuscula(rotulo.replace(/\s*\([^)]*\)/g, ""));
+
+/** Veredito do P047: o perfil escolhido do menor ao maior custo, só pela tarifa. A mediana fica na resposta completa e na linha do gráfico. */
+export function vereditoTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil): string {
+  const chave = String(perfil) as "100" | "200" | "300";
+  const ord = [...vigentes].sort((a, b) => a.posicao - b.posicao);
+  const menor = ord[0];
+  const maior = ord[ord.length - 1];
+  if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
+  return `Em ${dataBR(dataReferencia)}, ${perfil} kWh no mês custam de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}), conforme a distribuidora, só pela tarifa.`;
+}
+
+/** Veredito do P048: os dois maiores grupos da tarifa B1 na média das distribuidoras, em %. Os demais grupos, os itens negativos e a CDE ficam na resposta completa. */
+export function vereditoComposicao(comp: Composicao): string {
+  const m = comp.media;
+  if (!m || m.total_rs_mwh === null) return "Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.";
+  const rot = new Map(comp.grupos.map((g) => [g.id, nomeGrupo(g.rotulo)]));
+  const positivos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) > 0).sort((a, b) => (m.grupos_pct[b] ?? 0) - (m.grupos_pct[a] ?? 0));
+  const [a, b] = positivos;
+  if (!a) return "Sem grupo com valor positivo na composição média.";
+  const dois = b ? `${rot.get(a)} (${pct(m.grupos_pct[a], 1)}) e ${rot.get(b)} (${pct(m.grupos_pct[b], 1)})` : `${rot.get(a)} (${pct(m.grupos_pct[a], 1)})`;
+  return `Na média das ${m.n} distribuidoras, a tarifa B1 vai sobretudo para ${dois}.`;
+}
+
+/** Veredito do P049: a estimativa mensal, sem tributos, para o consumo e a distribuidora escolhidos. A parcela da bandeira e os rótulos de estimativa ficam na resposta completa. */
+export function vereditoSimulacao(r: ResultadoSimulacao, sigla: string, kwh: number): string {
+  if (!r.disponivel) return `Simulação indisponível para ${sigla}: ${r.motivo}.`;
+  return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, a estimativa é de ${reais(r.total)}, sem tributos e sem iluminação pública.`;
+}
+
+/**
+ * Veredito do P050 (reajustes): em quantas distribuidoras a tarifa B1 subiu mais que o IPCA do mesmo período, com o limite
+ * de leitura: é a variação entre duas datas, não o efeito do processo tarifário.
+ */
+export function vereditoReajustes(j: JanelaInflacao): string {
+  if (j.mediana_pct === null || j.ipca_pct === null) return `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`;
+  return `Em ${j.meses} meses até ${dataBR(j.ate)}, a tarifa B1 residencial subiu mais que o IPCA (${pct(j.ipca_pct, 2)}) em ${j.acima_ipca} de ${j.n} distribuidoras. É a variação entre duas datas, não o efeito do processo tarifário.`;
+}
+
+/** Veredito do P050 (bandeiras): a bandeira do mês e quantos meses publicados tiveram acréscimo. */
+export function vereditoBandeira(b: Bandeiras): string {
+  const v = b.vigente;
+  const publicados = b.acionamento.filter((a) => a.bandeira !== null);
+  const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length;
+  const inicio = b.acionamento[0]?.m;
+  const historico = inicio ? ` Em ${comAcrescimo} dos ${publicados.length} meses publicados desde ${mesAno(`${inicio}-01`)}, a bandeira não foi verde.` : "";
+  if (!v || !v.bandeira) return `O conjunto de bandeiras não traz acionamento publicado.${historico}`;
+  const valor = v.bandeira === "Verde" ? "sem acréscimo" : `acréscimo de ${rsKwh(v.rs_mwh, 5)} consumido`;
+  return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}.${historico}`;
+}
+
+/** Veredito do P050 (subsídios): quanto a CDE repassou no último ano completo e que não são transferências a famílias. O orçamento e a maior categoria ficam na resposta completa. */
+export function vereditoSubsidios(s: Subsidios): string {
+  const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
+  if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
+  return `Em ${ano.ano}, a CDE repassou ${reais(ano.soma_categorias / BI, 2)} bilhões às distribuidoras para cobrir descontos a categorias de usuários. Não são transferências a famílias.`;
+}
+
+/**
+ * Soma das parcelas já arredondadas contra o total arredondado, em reais: a nota que explica a diferença de R$ 0,01 quando existe
+ * (cada valor é arredondado depois de calculado), ou null quando as parcelas fecham com o total.
+ */
+export function notaArredondamentoSimulacao(parcelas: readonly number[], total: number): string | null {
+  const centavos = (v: number) => Math.round(v * 100);
+  const soma = parcelas.reduce((acc, v) => acc + centavos(v), 0);
+  const t = centavos(total);
+  if (soma === t) return null;
+  return `As parcelas somam ${reais(soma / 100)} e o total é ${reais(t / 100)}: cada valor é arredondado depois de calculado, e a soma dos valores arredondados pode diferir do total em R$ 0,01.`;
+}
+
+/** Separa, numa frase de regra, o que fala de acesso a norma que o observatório não conseguiu ler (detalhe para Analisar) do resto. */
+export function separaBloqueioDeNorma(texto: string): { leitor: string; tecnico: string } {
+  const frases = texto.split(/(?<=\.)\s+/);
+  const ehBloqueio = (f: string) => /não pôde ser lid[oa]|bloque(?:io|ou)/i.test(f);
+  return { leitor: frases.filter((f) => !ehBloqueio(f)).join(" ").trim(), tecnico: frases.filter(ehBloqueio).join(" ").trim() };
+}
+
 /** Mesmo texto para o leitor de tela e para o rótulo do período no painel. */
 export function periodoReferencia(g: Pick<ContaGold, "data_referencia" | "gerado_pela_fonte_em">): string {
   return `vigente em ${dataBR(g.data_referencia)} (arquivo gerado pela ANEEL em ${dataBR(g.gerado_pela_fonte_em)})`;
@@ -936,5 +1016,8 @@ export function mudancaComposicao(comp: Composicao): string {
     ? `, quando a faixa histórica do código, em ${faixa.n} vigências iniciadas até ${dataBR(faixa.vigencias_iniciadas_ate)}, ia de ${num(faixa.minimo, 2)} a ${num(faixa.maximo, 2)} R$/MWh`
     : "";
   const intervalo = valores.length ? ` (de ${num(Math.min(...valores), 2)} a ${num(Math.max(...valores), 2)} R$/MWh)` : "";
-  return `${cr.distribuidoras.length} distribuidoras têm valor negativo em ${cr.codigos.join(", ")} na vigência atual${intervalo}${historico}. O valor fica no grupo créditos: ${cr.leitura}.`;
+  // a componente aparece pela descrição do dicionário da fonte, não pelo código; sem descrição, o texto diz só "componente de custo"
+  const descricoes = new Map(comp.grupos.flatMap((g) => g.componentes.map((c) => [c.codigo, c.descricao] as const)));
+  const nomes = cr.codigos.map((c) => descricoes.get(c) ?? "componente de custo");
+  return `${cr.distribuidoras.length} distribuidoras têm valor negativo na componente «${nomes.join(", ")}» na vigência atual${intervalo}${historico}. O valor fica no grupo créditos, lido como crédito tarifário (leitura do observatório).`;
 }

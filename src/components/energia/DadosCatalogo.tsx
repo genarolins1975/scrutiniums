@@ -12,6 +12,7 @@ import {
   COLUNAS_CATALOGO,
   COLUNAS_RECURSOS,
   ROTULO_ESTADO_DADOS,
+  ROTULO_PAPEL,
   URL_GOLD,
   evidenciaEtapas,
   lerCsv,
@@ -21,6 +22,8 @@ import {
   urlOficial,
   type SituacaoEtapa,
 } from "@/lib/energia/dados";
+import { nomeDoConjunto } from "@/lib/energia/dados-ficha";
+import { pelo } from "@/lib/energia/dados";
 import type { CatalogoDados, ConjuntoIntegrado, EntradaDados } from "@/lib/energia/tipos-dados";
 import type { LinhaTabela } from "@/lib/energia/tabela";
 
@@ -93,6 +96,8 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
   const etapas = evidenciaEtapas(e);
   const oficial = urlOficial(e, c.portais);
   const licenca = e.licenca ?? c.portais[e.orgao]?.licenca ?? "não informada";
+  const nome = nomeDoConjunto(e, c.integracoes);
+  const paginas = (e.paginas ?? []).map((p) => p.rotulo);
   return (
     <div className="space-y-4" data-ficha={e.id}>
       <header>
@@ -100,8 +105,22 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
           {e.orgao} · {rotuloTema(e.tema)} · {ROTULO_ESTADO_DADOS[e.estado]}
           {e.descontinuado ? " · descontinuado pela fonte" : ""}
         </p>
-        <h3 className="mt-1 font-serif text-xl text-carvao">{e.titulo}</h3>
-        {e.descricao && <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{e.descricao}</p>}
+        <h3 className="mt-1 font-serif text-xl text-carvao">{nome.nome}</h3>
+        <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          Conjunto de dados abertos publicado {pelo(e.orgao)} {e.orgao}.
+          {paginas.length ? ` O observatório o usa ${paginas.length === 1 ? "na página" : "nas páginas"} ${paginas.join(", ")}.` : " O observatório não o usa em nenhuma página."}
+        </p>
+        {nome.tituloNaFonte && (
+          <p className="mt-1 text-xs text-mineral" data-nivel="analisar">
+            Título na fonte: {nome.tituloNaFonte}.
+          </p>
+        )}
+        {e.descricao && (
+          <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+            Descrição guardada no catálogo: {e.descricao}
+            {e.descricao.endsWith("…") ? " O texto completo está no CSV do catálogo e na página oficial do conjunto." : ""}
+          </p>
+        )}
       </header>
 
       <ol className="grid gap-px border border-linha bg-linha md:grid-cols-5" aria-label="Escada de estados do conjunto">
@@ -113,14 +132,16 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
               <p className={`mt-1 text-sm ${m.cor}`}>
                 <span aria-hidden="true">{m.glifo}</span> {m.texto}
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-carvao-muted">{x.detalhe}</p>
+              <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                {x.detalhe}
+              </p>
             </li>
           );
         })}
       </ol>
 
       {c.integracoes.length > 0 && (
-        <div className="text-sm" data-integracoes="true">
+        <div className="text-sm" data-integracoes="true" data-nivel="analisar">
           <p className="rotulo text-mineral">{c.integracoes.length === 1 ? "Integração do conjunto" : `Integrações do conjunto (${c.integracoes.length})`}</p>
           <ul className="mt-1 space-y-2">
             {c.integracoes.map((i) => (
@@ -180,8 +201,13 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
           <dd className="mt-0.5 text-carvao-muted">
             {e.usado_em.length ? (
               <>
-                {(e.papeis ?? []).join(", ") || "indicador"} em {e.usado_em.join(", ")}
-                {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""}
+                {(e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(", ") || "indicador"}
+                {paginas.length ? ` ${paginas.length === 1 ? "na página" : "nas páginas"} ${paginas.join(", ")}` : ""}
+                <span data-nivel="analisar">
+                  {" "}
+                  ({e.usado_em.join(", ")}
+                  {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""})
+                </span>
               </>
             ) : (
               "nenhum: o conjunto está catalogado, mas não alimenta nenhuma base publicada"
@@ -192,7 +218,7 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
           <dt className="rotulo text-mineral">Arquivos (recursos)</dt>
           <dd className="mt-0.5 text-carvao-muted">
             {e.recursos_resumo
-              ? `${num(e.recursos_resumo.total, 0)} no conjunto, ${num(e.recursos_resumo.acessados ?? 0, 0)} acessados pelo pipeline${e.recursos_resumo.removidos ? `, ${num(e.recursos_resumo.removidos, 0)} removidos pela fonte` : ""}`
+              ? `${num(e.recursos_resumo.total, 0)} no conjunto, ${num(e.recursos_resumo.acessados ?? 0, 0)} acessados pelo observatório${e.recursos_resumo.removidos ? `, ${num(e.recursos_resumo.removidos, 0)} removidos pela fonte` : ""}`
               : "não contados"}
           </dd>
         </div>
@@ -214,7 +240,7 @@ function Ficha({ id, n, slugsComFicha }: { id: string; n: number; slugsComFicha:
       {e.slug && slugsComFicha.includes(e.slug) && (
         <p className="text-sm">
           <Link href={`/setor-eletrico/dados/${e.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-            Abrir a ficha do conjunto: capturas com sha256, downloads e como citar
+            Abrir a ficha do conjunto: situação dos dados, arquivos para baixar e como citar
           </Link>
         </p>
       )}
@@ -264,7 +290,7 @@ export function DadosCatalogo({ linhas, slugsComFicha, versao }: { linhas: Linha
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="titulo"
-        fonte="Scrutiniums, catalogo.json (listagens do ONS, da ANEEL e da CCEE, package_show versionados, registros dos módulos e cadastro manual)"
+        fonte="Scrutiniums, catálogo de conjuntos (listagens do ONS, da ANEEL e da CCEE, metadados oficiais guardados, registros dos módulos e cadastro manual)"
         versao={versao}
         nomeArquivo="dados-catalogo"
         chaveUrl="cat"

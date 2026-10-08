@@ -3,12 +3,13 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { PrevisoesLinkPainel } from "@/components/energia/PrevisoesLinkPainel";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { PAINEIS_PREVISOES, ROTA_MODELOS, ROTA_PREVISOES, enderecoPainel, type IdPainelPrevisoes } from "@/lib/energia/previsoes";
 
 /**
  * Peças de servidor das páginas de Previsões e modelos do PLD: navegação entre os
- * quatro painéis (P013 e P015 em /previsoes, P014 e P016 em /modelos), resposta
+ * quatro painéis (previsão atual e arquivo em /previsoes, registro de modelos e desempenho em /modelos), resposta
  * curta, recorte (período, universo e unidade), avisos de ausência legítima e de
  * fonte defasada, "Como ler" e "O que não permite concluir", rodapé com downloads,
  * link compartilhável e próxima pergunta, e os blocos dos modos Analisar e Auditar.
@@ -32,12 +33,12 @@ export function PrevisoesNavegacao({ pagina }: { pagina: "previsoes" | "modelos"
             <li key={p.id}>
               <Link
                 href={aqui ? `#${p.id}` : enderecoPainel(p.id)}
+                data-painel={p.codigo}
                 aria-current={aqui ? "location" : undefined}
                 className={`inline-flex min-h-[44px] items-center gap-2 border px-3 ${
                   aqui ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
                 }`}
               >
-                <span className="tabular-nums text-xs">{p.codigo}</span>
                 {p.rotulo}
               </Link>
             </li>
@@ -71,12 +72,33 @@ export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
   );
 }
 
-/** Resposta curta derivada dos dados (anatomia da seção 7.2, item 2). */
-export function PrevisoesResposta({ id, children }: { id: IdPainelPrevisoes; children: ReactNode }) {
+/**
+ * Resposta curta do painel em duas camadas (seção 7.2, item 2): o veredito em palavras simples fica à vista e a resposta completa,
+ * derivada dos mesmos campos, fica em Analisar e Auditar. `vivo` anuncia a troca quando a resposta muda com a escolha do leitor.
+ */
+export function PrevisoesResposta({ id, veredito, children, vivo = false }: { id: IdPainelPrevisoes; veredito: string; children: ReactNode; vivo?: boolean }) {
   return (
-    <p data-resposta={id} className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">
+    <RespostaCurta id={id} veredito={veredito} vivo={vivo} tamanho="base">
       {children}
-    </p>
+    </RespostaCurta>
+  );
+}
+
+/**
+ * Termos da página explicados com o texto do próprio registro de modelos (definicoes.corte_operacional e definicoes.quantis), sem
+ * "vintages" nem fuso: corte, origem, rodada e a faixa P10 a P90. Cada linha só aparece quando a definição está no registro.
+ */
+export function PrevisoesTermos({ itens }: { itens: { termo: string; texto: string }[] }) {
+  if (!itens.length) return null;
+  return (
+    <dl className="max-w-prose2 space-y-1 text-xs leading-relaxed text-carvao-muted" data-termos="">
+      {itens.map((t) => (
+        <div key={t.termo}>
+          <dt className="inline font-medium text-carvao">{t.termo}: </dt>
+          <dd className="inline">{t.texto}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
@@ -187,10 +209,10 @@ export function PrevisoesAuditoria({ titulo, id, children }: { titulo: string; i
   );
 }
 
-/** Lista de definição compacta (rótulo e valor) para fichas e metadados da rodada. */
-export function PrevisoesFichaLinha({ rotulo, children }: { rotulo: string; children: ReactNode }) {
+/** Lista de definição compacta (rótulo e valor) para fichas e metadados da rodada; `nivel` esconde a linha em Entender. */
+export function PrevisoesFichaLinha({ rotulo, children, nivel }: { rotulo: string; children: ReactNode; nivel?: "analisar" | "auditar" }) {
   return (
-    <div className="border-t border-linha py-3 md:grid md:grid-cols-[13rem_1fr] md:gap-6">
+    <div data-nivel={nivel} className="border-t border-linha py-3 md:grid md:grid-cols-[13rem_1fr] md:gap-6">
       <dt className="rotulo text-mineral">{rotulo}</dt>
       <dd className="mt-1 min-w-0 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere] md:mt-0">{children}</dd>
     </div>

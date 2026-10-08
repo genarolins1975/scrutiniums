@@ -33,7 +33,7 @@ export function DadosConferirArquivo({ itens, idPublicacao, commit }: { itens: M
   async function escolher(f: File | undefined) {
     if (!f) return;
     if (typeof crypto === "undefined" || !crypto.subtle) {
-      setE({ fase: "erro", motivo: "Este navegador só calcula o sha256 em página segura (https). Use o comando sha256sum e compare com a coluna sha256 da tabela." });
+      setE({ fase: "erro", motivo: "Este navegador só calcula a impressão digital do arquivo em página segura (https). Calcule-a com outro programa (por exemplo, o comando sha256sum) e compare com a última coluna da tabela." });
       return;
     }
     setE({ fase: "lendo", nome: f.name });
@@ -49,34 +49,34 @@ export function DadosConferirArquivo({ itens, idPublicacao, commit }: { itens: M
       <label htmlFor={id} className="block">
         <span className="rotulo text-mineral">Conferir um arquivo que você baixou</span>
         <span className="mt-1 block text-sm leading-relaxed text-carvao-muted">
-          Escolha um CSV, Parquet ou JSON baixado do observatório. O navegador calcula o sha256 e compara com o manifesto da publicação ({idPublicacao.slice(0, 12)}); o arquivo não sai do seu computador.
+          Escolha um arquivo CSV, Parquet ou JSON baixado do observatório. O navegador calcula a impressão digital do arquivo<span data-nivel="analisar"> (sha256)</span> e compara com a lista da publicação (id {idPublicacao.slice(0, 12)}); o arquivo não sai do seu computador.
         </span>
       </label>
       <input id={id} type="file" onChange={(ev) => escolher(ev.target.files?.[0])} className="block min-h-[44px] w-full text-sm text-carvao file:mr-3 file:min-h-[44px] file:border file:border-linha file:bg-superficie file:px-3 file:text-carvao hover:file:border-energia" />
       <div role="status" aria-live="polite" className="text-sm leading-relaxed">
-        {e.fase === "lendo" && <p className="text-carvao-muted">Calculando o sha256 de {e.nome}…</p>}
+        {e.fase === "lendo" && <p className="text-carvao-muted">Calculando a impressão digital de {e.nome}…</p>}
         {e.fase === "erro" && <p className="text-erro">Não foi possível conferir: {e.motivo}</p>}
         {e.fase === "pronto" && (
           <div data-resultado={e.conf.resultado} className="space-y-1">
             <p className={e.conf.resultado === "igual" ? "text-sucesso" : "text-aviso"}>
               {e.conf.resultado === "igual" && (
                 <>
-                  Confere: o sha256 de {e.nome} é o de <strong className="font-medium">{e.conf.item.caminho}</strong> no manifesto desta publicação.
+                  Confere: a impressão digital de {e.nome} é a de <strong className="font-medium">{e.conf.item.caminho}</strong> na lista desta publicação.
                 </>
               )}
               {e.conf.resultado === "outra_versao" && (
                 <>
-                  Não confere: o manifesto tem um arquivo de mesmo nome (<strong className="font-medium">{e.conf.item.caminho}</strong>) com outro sha256. É outra versão da publicação ou o arquivo foi alterado depois do download.
+                  Não confere: a lista tem um arquivo de mesmo nome (<strong className="font-medium">{e.conf.item.caminho}</strong>) com outra impressão digital. É outra versão da publicação ou o arquivo foi alterado depois do download.
                 </>
               )}
-              {e.conf.resultado === "desconhecido" && <>Não confere: nenhum arquivo do manifesto tem este sha256 nem este nome. O arquivo é de outra publicação ou não é um arquivo publicado aqui.</>}
+              {e.conf.resultado === "desconhecido" && <>Não confere: nenhum arquivo da lista tem esta impressão digital nem este nome. O arquivo é de outra publicação ou não é um arquivo publicado aqui.</>}
             </p>
             <p className="text-xs text-carvao-muted">
-              {num(e.bytes, 0)} bytes · sha256 <span className="break-all font-mono">{e.sha256}</span>
+              {num(e.bytes, 0)} bytes · impressão digital <span className="break-all font-mono">{e.sha256}</span>
             </p>
             {e.conf.resultado === "outra_versao" && (
               <p className="text-xs text-carvao-muted">
-                No manifesto: {num(e.conf.item.bytes, 0)} bytes · sha256 <span className="break-all font-mono">{e.conf.item.sha256}</span>.{" "}
+                Na lista: {num(e.conf.item.bytes, 0)} bytes · impressão digital <span className="break-all font-mono">{e.conf.item.sha256}</span>.{" "}
                 <a href={urlVersao(e.conf.item.caminho, commit).url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
                   Histórico do arquivo no GitHub ↗
                 </a>
@@ -166,7 +166,7 @@ function FichaArquivo({ caminho, commit, dicionarioOperacao, parquets }: { camin
           )}
           {item && (
             <p className="text-xs text-mineral">
-              Manifesto: {num(item.bytes, 0)} bytes{item.linhas !== undefined ? ` · ${num(item.linhas, 0)} linhas` : ""} · sha256 <span className="break-all font-mono">{item.sha256}</span>
+              Na lista de arquivos: {num(item.bytes, 0)} bytes{item.linhas !== undefined ? ` · ${num(item.linhas, 0)} linhas` : ""} · impressão digital <span className="break-all font-mono">{item.sha256}</span>
             </p>
           )}
         </>
@@ -193,12 +193,12 @@ export function DadosManifesto({
   return (
     <div className="space-y-5">
       <TabelaInterativa
-        titulo="Arquivos publicados, com tamanho, linhas, dicionário e sha256"
+        titulo="Arquivos publicados, com tamanho, linhas, dicionário e impressão digital"
         colunas={COLUNAS_MANIFESTO}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="caminho"
-        fonte="Scrutiniums, manifesto.json (sha256 e tamanho de cada arquivo publicado em /energia/)"
+        fonte="Scrutiniums, lista de arquivos publicados em /energia/ (manifesto: impressão digital e tamanho de cada arquivo)"
         versao={versao}
         nomeArquivo="dados-manifesto"
         chaveUrl="man"
@@ -207,7 +207,7 @@ export function DadosManifesto({
         dicaBusca="Nome do arquivo ou módulo"
         selecionado={escolhida ? String(escolhida.id) : null}
         onSelecionar={(id) => definir({ a: id ?? "" })}
-        nota="O sha256 é o do arquivo inteiro, como publicado: sha256sum no arquivo baixado dá o mesmo valor. Linhas e colunas só existem para CSV; em JSON, Parquet e geometrias, sem dado quer dizer que a medida não se aplica. Dicionário publicado é o texto que explica cada coluna. A tabela de cada painel exporta as linhas filtradas; o arquivo completo de origem é o que aparece aqui."
+        nota="A impressão digital de cada arquivo (última coluna) é a do arquivo inteiro, como publicado: calcular a impressão digital do arquivo baixado dá o mesmo valor. Linhas e colunas só existem para CSV; em JSON, Parquet e malhas geográficas, sem dado quer dizer que a medida não se aplica. Dicionário publicado é o texto que explica cada coluna. A tabela de cada painel exporta as linhas filtradas; o arquivo completo de origem é o que aparece aqui."
       />
       <section aria-labelledby="ficha-arq-h" aria-live="polite" className="border border-linha bg-papel p-4 md:p-5">
         <h3 id="ficha-arq-h" className="rotulo text-mineral">

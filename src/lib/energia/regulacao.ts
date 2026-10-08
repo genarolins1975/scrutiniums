@@ -1189,3 +1189,190 @@ export function unicosPaineis(links: readonly PainelLink[]): PainelLink[] {
   for (const l of links) if (!m.has(l.href)) m.set(l.href, l);
   return Array.from(m.values());
 }
+
+/* ---------------------------------------------------------------- vereditos (resposta em duas camadas) */
+
+/**
+ * Cada veredito responde, em palavras simples e com poucos números, à pergunta do título do painel. Sai dos mesmos
+ * campos da resposta completa (que continua inteira como segunda camada, em Analisar e Auditar) e nunca escreve
+ * número à mão. Sigla de uso corrente (PLD, ANEEL) está em siglas.ts; termo técnico novo fica fora do veredito.
+ */
+
+/** "A", "A e B", "A, B e C". */
+export function listaComE(itens: readonly string[]): string {
+  if (itens.length <= 1) return itens[0] ?? "";
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+/**
+ * Veredito dos limites do PLD num ano: o piso e o teto de uma hora, com o ato que os fixou. O teto da média
+ * diária (teto estrutural) e as datas de publicação e de vigência ficam na resposta completa.
+ */
+export function vereditoLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
+  const vs = vigenciasDoAno(g, ano);
+  if (!vs.length) return `Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`;
+  const v = vs[vs.length - 1];
+  const piso = v.pld_min === null ? null : `${reais(v.pld_min, 2)}/MWh`;
+  const teto = v.pld_max_horario === null ? null : `${reais(v.pld_max_horario, 2)}/MWh`;
+  let frase: string;
+  if (piso && teto) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso} nem passar de ${teto} numa hora.`;
+  else if (piso) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso}; o teto de uma hora fica sem valor (nenhum ato em vigor o fixa).`;
+  else if (teto) frase = `Em ${ano}, o PLD não pode passar de ${teto} numa hora; o piso fica sem valor (nenhum ato em vigor o fixa).`;
+  else frase = `Em ${ano}, nenhum ato em vigor fixa o piso nem o teto de uma hora do PLD.`;
+  const atos = Array.from(new Set(CAMPOS_LIMITE.map((c) => v[ATO_CAMPO[c]]).filter((a): a is string => !!a)));
+  if (!atos.length) return frase;
+  return atos.length === 1
+    ? `${frase} Os limites foram fixados ${porAto(atos[0])}.`
+    : `${frase} Os limites foram fixados por ${atos.length} atos: ${listaComE(atos)}.`;
+}
+
+/** Veredito do P044 na data de referência da gold: o ano em vigor nessa data. */
+export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia">): string {
+  const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
+  if (!v) return `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.`;
+  return vereditoLimites(g, v.ano);
+}
+
+/** Painéis afetados de um evento, em texto ("que afeta A e B"); vazio sem painel indicado. */
+function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
+  return e.paineis.length ? `, que afeta ${listaComE(e.paineis.map((p) => p.rotulo))}` : "";
+}
+
+/**
+ * Veredito do P045 para o recorte atual: a regra mais recente (título, desde quando vale, quem é afetado), a natureza
+ * da lista (seleção de marcos, conferida numa data) e o limite de leitura (nenhum impacto é estimado). Os eventos já
+ * vêm na ordem de filtrarLinhaTempo, o mais recente primeiro na data escolhida.
+ */
+export function vereditoLinhaTempo(eventos: readonly EventoRegulatorio[], total: number, base: BaseData = "vigencia", conferidoEm?: string | null): string {
+  if (!eventos.length) return `Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`;
+  const r = eventos[0];
+  const recorte = eventos.length !== total ? " deste recorte" : "";
+  const quando =
+    base === "publicacao"
+      ? r.data_publicacao
+        ? `saiu no Diário Oficial em ${dataBR(r.data_publicacao)}`
+        : "não tem data de publicação na fonte"
+      : `vale desde ${dataBR(r.vigencia_grao === "mes" ? r.vigencia_inicio.slice(0, 7) : r.vigencia_inicio)}`;
+  const abre = base === "publicacao" ? `A regra publicada por último${recorte}` : `A regra mais recente${recorte}`;
+  const comImpacto = eventos.filter((e) => e.impacto_estimado).length;
+  const limite = comImpacto === 0 ? "sem impacto estimado nesta fonte" : `${comImpacto} de ${eventos.length} eventos trazem impacto estimado`;
+  const lista = conferidoEm ? `É uma seleção de marcos conferida em ${dataBR(conferidoEm)}, ${limite}.` : `É uma seleção de marcos, ${limite}.`;
+  return `${abre} ${quando}: “${r.titulo}”${textoAfeta(r)}. ${lista}`;
+}
+
+/** Primeira frase de um texto (até o primeiro ponto final seguido de maiúscula); o resto fica para Analisar. */
+export function primeiraFrase(texto: string): string {
+  const t = texto.trim();
+  const m = /^[\s\S]+?[.!?](?=\s+[A-ZÀ-Ú"“(]|$)/.exec(t);
+  return m ? m[0] : t;
+}
+
+/** Tira de um texto os parênteses que citam identificador interno (nome_com_sublinhado), que o leitor de Entender não consulta. */
+export function semIdentificadores(texto: string): string {
+  return texto.replace(/\s*\([^()]*\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b[^()]*\)/g, "").replace(/\s{2,}/g, " ");
+}
+
+/** Resumo do evento como o leitor de Entender o lê: a primeira frase do resumo do observatório, com as datas na forma da página. */
+export function resumoCurtoEvento(e: Pick<EventoRegulatorio, "resumo">, legivel: (t: string) => string): string {
+  return legivel(primeiraFrase(semIdentificadores(e.resumo)));
+}
+
+export type GrupoRegistros = {
+  tipo: string;
+  n: number;
+  /** O mais antigo e o mais recente do grupo, pela data de vigência. */
+  primeiro: EventoRegulatorio;
+  ultimo: EventoRegulatorio;
+  /** Títulos distintos do grupo, na ordem em que aparecem. */
+  titulos: string[];
+};
+
+/**
+ * Registros do conjunto de dados de bandeiras agrupados por tipo de ato: um cartão por tipo, com a quantidade e o
+ * período. O grupo do registro mais recente vem primeiro. Os eventos já vêm filtrados e ordenados.
+ */
+export function agruparRegistros(eventos: readonly EventoRegulatorio[]): GrupoRegistros[] {
+  const m = new Map<string, EventoRegulatorio[]>();
+  for (const e of eventos) if (origemEvento(e) === "registro") m.set(e.tipo_ato, [...(m.get(e.tipo_ato) ?? []), e]);
+  return Array.from(m.entries())
+    .map(([tipo, es]) => {
+      const porVigencia = es.slice().sort((a, b) => a.vigencia_inicio.localeCompare(b.vigencia_inicio));
+      return { tipo, n: es.length, primeiro: porVigencia[0], ultimo: porVigencia[porVigencia.length - 1], titulos: Array.from(new Set(es.map((x) => x.titulo))) };
+    })
+    .sort((a, b) => b.ultimo.vigencia_inicio.localeCompare(a.ultimo.vigencia_inicio));
+}
+
+/**
+ * O que os registros de bandeiras têm em comum de vazio, dito uma vez em vez de em cada cartão: sem data de publicação,
+ * sem efeito declarado e com o texto do ato não lido. Só afirma o que vale para todos; senão conta quantos.
+ */
+export function textoVaziosRegistros(regs: readonly EventoRegulatorio[]): string {
+  const n = regs.length;
+  if (!n) return "";
+  const semPub = regs.filter((e) => !e.data_publicacao).length;
+  const semEfeito = regs.filter((e) => !e.efeito_declarado).length;
+  const naoLido = regs.filter((e) => e.nivel_conferencia === "registro_em_conjunto_de_dados_oficial").length;
+  if (semPub === n && semEfeito === n && naoLido === n) return `Nos ${num(n, 0)} registros, a fonte é um conjunto de dados: não informa a data de publicação nem o efeito declarado, e o texto do ato não foi lido.`;
+  return `${num(semPub, 0)} dos ${num(n, 0)} registros não têm data de publicação, ${num(semEfeito, 0)} não têm efeito declarado e em ${num(naoLido, 0)} o texto do ato não foi lido.`;
+}
+
+/**
+ * Veredito do P046 na data de leitura: quantas consultas e audiências recebem contribuições, quando fecha a primeira
+ * e o limite do universo (só entram as abertas em reunião pública registrada em ata).
+ */
+export function vereditoConsultas(c: Pick<Consultas, "itens">, data: string): string {
+  const itens = consultasNaData(c.itens, data);
+  const abertas = ordenarConsultas(itens.filter((x) => x.situacao_na_data === "aberta"));
+  const aAbrir = itens.filter((x) => x.situacao_na_data === "a_abrir").length;
+  const partes: string[] = [];
+  if (abertas.length) {
+    const n = abertas.length;
+    partes.push(
+      `Em ${dataBR(data)}, ${n} ${pl(n, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; a primeira a fechar encerra em ${dataBR(abertas[0].fim)}.`,
+    );
+  } else {
+    partes.push(`Em ${dataBR(data)}, nenhuma consulta ou audiência pública da ANEEL com janela escrita nas atas recebe contribuições.`);
+  }
+  if (aAbrir) partes.push(`${num(aAbrir, 0)} ${pl(aAbrir, "ainda não começou", "ainda não começaram")}.`);
+  partes.push("Só entram as consultas abertas em reunião pública registrada em ata.");
+  return partes.join(" ");
+}
+
+/**
+ * Consultas que mudaram de situação aberta entre a data de referência da gold e a data de leitura: as que estavam abertas
+ * e já fecharam, e as que ainda não tinham começado e já abriram.
+ */
+export function mudancasDeAbertas(itens: readonly Consulta[], referencia: string, data: string): { antes: number; depois: number; fecharam: ConsultaNaData[]; abriram: ConsultaNaData[] } {
+  const naRef = consultasNaData(itens, referencia).filter((x) => x.situacao_na_data === "aberta");
+  const naData = consultasNaData(itens, data).filter((x) => x.situacao_na_data === "aberta");
+  const idsRef = new Set(naRef.map((x) => x.id));
+  const idsData = new Set(naData.map((x) => x.id));
+  return {
+    antes: naRef.length,
+    depois: naData.length,
+    fecharam: ordenarConsultas(naRef.filter((x) => !idsData.has(x.id))),
+    abriram: ordenarConsultas(naData.filter((x) => !idsRef.has(x.id))),
+  };
+}
+
+/** Frase que concilia a contagem da data de referência com a da data de leitura; vazia quando as duas datas coincidem. */
+export function textoMudancaDeAbertas(itens: readonly Consulta[], referencia: string, data: string): string {
+  if (data <= referencia) return "";
+  const m = mudancasDeAbertas(itens, referencia, data);
+  const fim = (x: ConsultaNaData) => `${x.rotulo}, prazo até ${dataBR(x.fim)}`;
+  const partes = [`Em ${dataBR(referencia)} eram ${num(m.antes, 0)} abertas; em ${dataBR(data)}, ${pl(m.depois, "é", "são")} ${num(m.depois, 0)}.`];
+  if (m.fecharam.length) partes.push(`${pl(m.fecharam.length, "Encerrou o prazo", "Encerraram o prazo")} no intervalo: ${listaComE(m.fecharam.map(fim))}.`);
+  if (m.abriram.length) partes.push(`${pl(m.abriram.length, "Passou a receber contribuições", "Passaram a receber contribuições")} no intervalo: ${listaComE(m.abriram.map((x) => `${x.rotulo}, desde ${dataBR(x.inicio)}`))}.`);
+  return partes.join(" ");
+}
+
+/**
+ * Veredito da Agenda Regulatória: quantas atividades a ANEEL prevê no biênio, quantas tratam dos limites do PLD e o limite
+ * de leitura (o ano é previsão).
+ */
+export function vereditoAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
+  if (!a.disponivel) return `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`;
+  const n = a.itens.length;
+  const k = limites.length;
+  return `A ${nomeAgenda(a)} prevê ${num(n, 0)} ${pl(n, "atividade", "atividades")}; ${num(k, 0)} ${pl(k, "trata", "tratam")} dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar.`;
+}

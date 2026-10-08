@@ -509,13 +509,14 @@ describe("P039: controle e concentração", () => {
 describe("textos derivados dos números (mudar o número muda o texto)", () => {
   it("P036: cobertura e transmissão vêm da gold", () => {
     const r = respostaCadastro(G.cadastro);
-    expect(r).toContain(pct(G.cadastro.ativos.pct_mw_operacao_vinculado!, 1));
+    // r8: a potência vinculada tem duas casas no texto, como no cartão e na tabela (mesma regra de casas para a mesma medida)
+    expect(r).toContain(pct(G.cadastro.ativos.pct_mw_operacao_vinculado!, 2));
     expect(r).toContain(num(G.cadastro.ativos.operacao.usinas, 0));
     const g2 = gold();
     g2.cadastro.ativos.pct_mw_operacao_vinculado = 87.5;
     g2.cadastro.transmissao = null;
     const r2 = respostaCadastro(g2.cadastro);
-    expect(r2).toContain("87,5%");
+    expect(r2).toContain("87,50%");
     expect(r2).toContain("não estão nesta publicação");
   });
 
@@ -548,7 +549,10 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     d.perdas!.taxa_total_pct = -17.31;
     const r = respostaFicha(d);
     expect(r).toContain("registrou perda total negativa, de \u221217,31%");
-    expect(r).toContain("a energia fornecida superou a injetada");
+    // r8: só o que a fonte diz (a medida do SAMP é negativa); a causa e o balanço entre injetada e fornecida não são afirmados no texto
+    expect(r).toContain("Valor negativo quer dizer que a medida publicada pelo SAMP é negativa");
+    expect(r).toContain("sem corrigi-lo e sem explicar a causa");
+    expect(r).not.toContain("superou a injetada");
     expect(r).not.toContain("perdeu \u2212");
     d.perdas!.taxa_total_pct = 8.4;
     expect(respostaFicha(d)).toContain("perdeu 8,40%");

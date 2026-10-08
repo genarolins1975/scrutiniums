@@ -251,7 +251,7 @@ describe("P063: gráfico, tabela e exportação usam as mesmas linhas", () => {
   });
 
   it("referência das barras: W/hab do Brasil publicado; sem referência inventada nas outras medidas", () => {
-    expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, "whab")).toEqual([{ valor: G.mmgd.resumo.w_por_habitante_brasil, rotulo: `Brasil: ${num(G.mmgd.resumo.w_por_habitante_brasil, 1)} W/hab` }]);
+    expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, "whab")).toEqual([{ valor: G.mmgd.resumo.w_por_habitante_brasil, rotulo: "Brasil" }]);
     for (const med of MEDIDAS_UF.filter((x) => x !== "whab")) expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, med)).toEqual([]);
     expect(referenciaUf(null, "whab")).toEqual([]);
   });

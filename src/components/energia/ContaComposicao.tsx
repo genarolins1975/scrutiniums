@@ -147,12 +147,16 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                 <th scope="col" className="py-2 pr-3 text-right font-normal">
                   Mediana (R$/MWh, não soma)
                 </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {nomeDestaque ? `${nomeDestaque} (R$/MWh)` : "Destaque (R$/MWh)"}
-                </th>
-                <th scope="col" className="py-2 text-right font-normal">
-                  {nomeDestaque ? `${nomeDestaque} (%)` : "Destaque (%)"}
-                </th>
+                {dDestaque && (
+                  <>
+                    <th scope="col" className="py-2 pr-3 text-right font-normal">
+                      {nomeDestaque ? `${nomeDestaque} (R$/MWh)` : "Destaque (R$/MWh)"}
+                    </th>
+                    <th scope="col" className="py-2 text-right font-normal">
+                      {nomeDestaque ? `${nomeDestaque} (%)` : "Destaque (%)"}
+                    </th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -165,8 +169,12 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                   <td className="py-2 pr-3 text-right">{num(g.media_rs, 2)}</td>
                   <td className="py-2 pr-3 text-right">{pct(g.media_pct, 1)}</td>
                   <td className="py-2 pr-3 text-right text-carvao-muted">{num(g.mediana_rs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{dDestaque ? num(g.dist_rs, 2) : "sem destaque"}</td>
-                  <td className="py-2 text-right">{dDestaque ? pct(g.dist_pct, 1) : "sem destaque"}</td>
+                  {dDestaque && (
+                    <>
+                      <td className="py-2 pr-3 text-right">{num(g.dist_rs, 2)}</td>
+                      <td className="py-2 text-right">{pct(g.dist_pct, 1)}</td>
+                    </>
+                  )}
                 </tr>
               ))}
               <tr className="border-b border-linha font-medium">
@@ -178,8 +186,12 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                 <td className="py-2 pr-3 text-right text-carvao-muted">
                   {num(comp.mediana.mediana_do_total_rs_mwh, 2)} (soma das medianas: {num(comp.mediana.soma_das_medianas_rs_mwh, 2)})
                 </td>
-                <td className="py-2 pr-3 text-right">{dDestaque ? num(dDestaque.total, 2) : "sem destaque"}</td>
-                <td className="py-2 text-right">{dDestaque ? pct(100, 1) : "sem destaque"}</td>
+                {dDestaque && (
+                  <>
+                    <td className="py-2 pr-3 text-right">{num(dDestaque.total, 2)}</td>
+                    <td className="py-2 text-right">{pct(100, 1)}</td>
+                  </>
+                )}
               </tr>
               <tr>
                 <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao-muted">
@@ -188,8 +200,12 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.media?.cde_rs_mwh, 2)}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 1)}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.cde.mediana_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{dDestaque ? num(dDestaque.cde, 2) : "sem destaque"}</td>
-                <td className="py-2 text-right text-carvao-muted">{dDestaque ? pct(dDestaque.cde_pct, 1) : "sem destaque"}</td>
+                {dDestaque && (
+                  <>
+                    <td className="py-2 pr-3 text-right text-carvao-muted">{num(dDestaque.cde, 2)}</td>
+                    <td className="py-2 text-right text-carvao-muted">{pct(dDestaque.cde_pct, 1)}</td>
+                  </>
+                )}
               </tr>
             </tbody>
           </table>

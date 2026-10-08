@@ -9,6 +9,7 @@ import { ContaSimulador } from "@/components/energia/ContaSimulador";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { ContaTarifas } from "@/components/energia/ContaTarifas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -26,6 +27,10 @@ import {
   respostaSubsidios,
   minuscula,
   rotuloDistribuidora,
+  vereditoBandeira,
+  vereditoComposicao,
+  vereditoReajustes,
+  vereditoSubsidios,
 } from "@/lib/energia/conta";
 import { carimbo, dataBR, mesAno, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -208,7 +213,12 @@ export default function ContaDeLuzPage() {
             <li className="bg-superficie p-5">
               <p className="rotulo text-mineral">Tarifa média de fornecimento (não publicada)</p>
               <p className="mt-2 text-sm leading-relaxed text-carvao">{g.definicoes.tarifa_media_fornecimento}</p>
-              <p className="mt-2 text-xs leading-relaxed text-carvao-muted">Motivo: {g.tarifa_media_fornecimento.motivo}</p>
+              <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
+                Não há base oficial estruturada com receita, energia e tributos que sirva para calcular a tarifa média; o observatório não a publica.
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                Motivo da coleta: {g.tarifa_media_fornecimento.motivo}
+              </p>
             </li>
             <li className="bg-superficie p-5">
               <p className="rotulo text-mineral">Conta simulada (estimativa)</p>
@@ -286,8 +296,8 @@ export default function ContaDeLuzPage() {
                   }
                   universo={
                     <>
-                      {t.resumo.n} distribuidoras com vigência na data; {t.resumo.fora_vigencia_recente + t.resumo.fora_sem_tarifa_ha_mais_de_90_dias} fora do ranking (lista no
-                      modo Auditar)
+                      {t.resumo.n} distribuidoras com vigência na data; {t.resumo.fora_vigencia_recente + t.resumo.fora_sem_tarifa_ha_mais_de_90_dias} fora do ranking (lista em
+                      Auditar)
                     </>
                   }
                   unidade="R$/mês para o perfil; R$/MWh para a tarifa (÷ 1000 = R$/kWh)"
@@ -376,7 +386,12 @@ export default function ContaDeLuzPage() {
                   publica para cada processo tarifário.
                 </>
               }
-              oQueMudou={mudancaComposicao(comp)}
+              oQueMudou={
+                <>
+                  {mudancaComposicao(comp)}
+                  <span data-nivel="analisar"> Leitura completa do valor negativo: {comp.creditos.leitura}.</span>
+                </>
+              }
               comoInterpretar={
                 <>
                   As partes positivas de cada barra passam do total, e os itens negativos (créditos e devoluções) trazem de volta: a soma de tudo é TE + TUSD. Os grupos seguem a
@@ -387,15 +402,15 @@ export default function ContaDeLuzPage() {
               naoConcluir={
                 <>
                   Não se conclui margem ou lucro da distribuidora: o grupo distribuição é a remuneração regulada do fio, não resultado contábil. Não se conclui o valor em reais do
-                  crédito da UBP por distribuidora (o conjunto dá R$/MWh da tarifa B1, não o mercado a que se aplica). Tributos e iluminação pública não estão na tarifa homologada.
+                  crédito tarifário por distribuidora (o conjunto dá R$/MWh da tarifa B1, não o mercado a que se aplica). Tributos e iluminação pública não estão na tarifa homologada.
                 </>
               }
               proveniencia={comp.proveniencia}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p048">
+                <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
                   {respostaComposicao(comp)}
-                </p>
+                </RespostaCurta>
                 <Recorte
                   periodo={<>Componentes da vigência que cobre {dataBR(ref)}</>}
                   universo={
@@ -518,7 +533,7 @@ export default function ContaDeLuzPage() {
               naoConcluir={
                 <>
                   Não é a fatura: faltam ICMS, PIS/Pasep, Cofins, iluminação pública, multas, parcelamentos e serviços. A aplicação do Desconto Social por parcela, o mínimo da
-                  Tarifa Social acima de {sim.regras.tarifa_social_limite_kwh} kWh e a bandeira na Tarifa Social são leituras declaradas (a REN nº 1.000/2021 não pôde ser lida).
+                  Tarifa Social acima de {sim.regras.tarifa_social_limite_kwh} kWh e a bandeira na Tarifa Social são leituras do observatório, não conferidas no texto da REN nº 1.000/2021.
                   Bandeira não vale em sistemas isolados.
                 </>
               }
@@ -628,15 +643,22 @@ export default function ContaDeLuzPage() {
               </header>
               <ul className="mt-5 grid gap-px border-t border-linha bg-linha md:grid-cols-3">
                 {[
-                  { ancora: "reajustes", pergunta: "A tarifa subiu mais que a inflação?", resposta: janela12 ? respostaReajustes(janela12) : "Sem janela de 12 meses publicada." },
-                  { ancora: "bandeiras", pergunta: "Quando a bandeira encareceu a conta?", resposta: respostaBandeira(band) },
-                  { ancora: "subsidios", pergunta: "Quem financia os descontos e benefícios?", resposta: `${respostaSubsidios(sub)} ${respostaCde(cde)}` },
+                  {
+                    ancora: "reajustes",
+                    pergunta: "A tarifa subiu mais que a inflação?",
+                    veredito: janela12 ? vereditoReajustes(janela12) : "Sem janela de 12 meses publicada.",
+                    resposta: janela12 ? respostaReajustes(janela12) : "Sem janela de 12 meses publicada.",
+                  },
+                  { ancora: "bandeiras", pergunta: "Quando a bandeira encareceu a conta?", veredito: vereditoBandeira(band), resposta: respostaBandeira(band) },
+                  { ancora: "subsidios", pergunta: "Quem financia os descontos e benefícios?", veredito: vereditoSubsidios(sub), resposta: `${respostaSubsidios(sub)} ${respostaCde(cde)}` },
                 ].map((x) => (
                   <li key={x.ancora} className="flex flex-col bg-superficie px-5 py-4 md:px-6">
                     <h3 className="font-serif text-lg text-carvao">{x.pergunta}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-carvao-muted" data-resposta={`p050-${x.ancora}`}>
-                      {x.resposta}
-                    </p>
+                    <div className="mt-2 flex-1">
+                      <RespostaCurta id={`p050-${x.ancora}`} tamanho="sm" veredito={x.veredito}>
+                        {x.resposta}
+                      </RespostaCurta>
+                    </div>
                     <ContaLinkFiltros
                       href={`${ROTA_REAJUSTES}#${x.ancora}`}
                       className="mt-3 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"

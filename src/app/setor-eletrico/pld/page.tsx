@@ -1,4 +1,5 @@
-import { textoMotivo } from "@/lib/energia/previsoes";
+import { linhasArquivo, resumoRodadas, rotuloTipo, textoMotivo } from "@/lib/energia/previsoes";
+import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
@@ -11,6 +12,7 @@ import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { Termo } from "@/components/evidencia/Termo";
 import { Conferido } from "@/components/evidencia/Conferido";
 import { CartoesPld } from "@/components/energia/CartoesPld";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PldFormacao } from "@/components/energia/PldFormacao";
@@ -29,7 +31,19 @@ import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoTermicas } from "@/lib/energia/leituras";
 import type { PldGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold, RegimeLimites } from "@/lib/energia/tipos-pld";
-import { NOME_SM, documentosCitados, ligacoesFormacao, perguntaPainel, proximoPainel, resumoLigacoes, respostaP008, rotaPainel } from "@/lib/energia/pld";
+import {
+  NOME_SM,
+  documentosCitados,
+  ligacoesFormacao,
+  perguntaPainel,
+  proximoPainel,
+  resumoLigacoes,
+  respostaP008,
+  rotaPainel,
+  notaDoisPercentis,
+  semCodigoHttp,
+  vereditoP008,
+} from "@/lib/energia/pld";
 import { snapshotLegivel, datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
@@ -109,7 +123,7 @@ export default function PldPage() {
       ? {
           texto: `Em ${dataBR(rede.dia_referencia)}: ${rede.fronteiras
             .map((f) => {
-              if (f.fluxo_dia === null) return `${f.de}–${f.para} sem dado`;
+              if (f.fluxo_dia === null) return `${f.de} e ${f.para} sem dado`;
               const [o, d] = f.fluxo_dia >= 0 ? [f.de, f.para] : [f.para, f.de];
               return `${o}→${d} ${num(Math.abs(f.fluxo_dia), 0)} MWmed`;
             })
@@ -149,6 +163,11 @@ export default function PldPage() {
   const bloqueioCcee = conceitoDet?.bloqueios.find((b) => b.fonte.startsWith("CCEE")) ?? null;
   const bloqueioCepel = conceitoDet?.bloqueios.find((b) => b.fonte.startsWith("CEPEL")) ?? null;
   const semanaRef = integra(detalhe) ? detalhe.cmo_pld.semana_referencia : null;
+  // o histórico de previsões é o mesmo arquivo da página de previsões: as contagens saem do CSV completo, não do trecho legado da gold
+  const csvEmissoes = lerCsvPrevisoes("/energia/series/previsoes_emissoes.csv");
+  const linhasEmissoes = csvEmissoes ? linhasArquivo(csvEmissoes.linhas, Object.fromEntries((mods?.modelos ?? []).map((m) => [m.codigo, m.estado]))) : [];
+  const rodadasEmissoes = resumoRodadas(linhasEmissoes);
+  const notaPercentis = integra(detalhe) && integra(pld) ? notaDoisPercentis(pld.cartoes.find((c) => c.sm === "SE"), detalhe.historico.posicao_referencia.find((x) => x.sm === "SE")) : null;
 
   return (
     <>
@@ -174,7 +193,7 @@ export default function PldPage() {
               </a>
             ))}
           </nav>
-          <LegendaDeSiglas siglas={["REN", "ENA", "EAR", "MWmed", "ANEEL", "ONS"]} />
+          <LegendaDeSiglas siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "ONS", "ANEEL", "REN"]} />
         </header>
         <PldNavegacao atual="p008" />
 
@@ -189,13 +208,16 @@ export default function PldPage() {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
-                  No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE apura o balanço de energia de cada perfil de agente, positivo ou
-                  negativo, por submercado e hora, e o resultado financeiro correspondente. O PLD é o preço desse mercado. A CCEE publica esses
-                  valores somados por submercado e hora e, no consolidado do mês, separa o resultado de venda e o de compra.
+                  No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE compara, hora a hora e por submercado, a energia que cada agente contratou com a que gerou ou
+                  consumiu de fato, e calcula o resultado financeiro dessa diferença. O PLD é o preço desse mercado. A CCEE publica esses valores somados por submercado e hora e,
+                  no consolidado do mês, separa o resultado de venda e o de compra.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
-                  Base: descrições oficiais dos conjuntos PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e
-                  SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO no portal de dados abertos da CCEE, capturadas em 28/09/2026. <Conferido ok />
+                  Base: descrições oficiais da CCEE no portal de dados abertos, capturadas em 28/09/2026. <Conferido ok />
+                </p>
+                <p data-nivel="analisar" className="mt-2 max-w-prose2 text-xs leading-relaxed text-mineral [overflow-wrap:anywhere]">
+                  Na descrição da CCEE, o balanço de energia (MWh) e o resultado (R$) são apurados para cada perfil de agente, por submercado e hora. Conjuntos consultados:
+                  PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO.
                 </p>
                 {passagem("ren957_art5_p4") && (
                   <div className="mt-5 border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao">
@@ -217,18 +239,22 @@ export default function PldPage() {
                   máximos vigentes.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
-                  Base: descrição oficial da CCEE no portal de dados abertos (conjunto PLD_HORARIO), capturada em 27/09/2026. <Conferido ok />
+                  Base: descrição oficial da CCEE no portal de dados abertos, capturada em 27/09/2026. <Conferido ok />
+                  <span data-nivel="analisar"> Conjunto consultado: PLD_HORARIO.</span>
                 </p>
                 <p className="mt-6 leading-relaxed text-carvao-muted">
-                  Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre
-                  quem vende e quem compra estão nas Regras de Comercialização da CCEE.
+                  Como o balanço de cada agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre quem vende e quem compra estão nas Regras de
+                  Comercialização da CCEE.
                 </p>
                 <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
                   Regras de Comercialização: <Conferido ok={false} />{" "}
                   {bloqueioCcee ? (
                     <>
-                      {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")} {bloqueioCcee.consequencia}
-                      <span data-nivel="analisar"> Evidência: {bloqueioCcee.evidencia.replace(/\.$/, "")}.</span>
+                      o documento não pôde ser lido nesta publicação. {bloqueioCcee.consequencia}
+                      <span data-nivel="analisar">
+                        {" "}
+                        {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")} Evidência: {bloqueioCcee.evidencia.replace(/\.$/, "")}.
+                      </span>
                     </>
                   ) : (
                     "documento não conferido nesta publicação."
@@ -249,7 +275,7 @@ export default function PldPage() {
                   <p className="mt-3 border border-dashed border-mineral p-3 text-sm leading-relaxed text-carvao-muted">
                     <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
                     O sistema brasileiro é descrito como <strong className="font-medium">hidrotérmico e intertemporal</strong>: parte da
-                    geração hidráulica vem de usinas com reservatório, e a água usada hoje não estará disponível amanhã. Nessa leitura,
+                    geração hidráulica vem de usinas com reservatório, e a água usada agora não estará disponível depois. Nessa leitura,
                     a água guardada tem valor para o futuro, esse valor pesa na decisão de gerar com água agora ou acionar outras
                     fontes, e o preço sai dessa decisão, não de uma única variável.
                   </p>
@@ -328,9 +354,9 @@ export default function PldPage() {
                 proveniencia={pld.proveniencia.horario}
               >
                 <div className="space-y-6">
-                  <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p008">
+                  <RespostaCurta id="p008" veredito={vereditoP008(conceitoDet)}>
                     {respostaP008(conceitoDet, ligacoes)}
-                  </p>
+                  </RespostaCurta>
                   <PldRecorte
                     periodo={<>Normas e procedimentos vigentes, conferidos nas capturas mais recentes; exemplo com o PLD de {exemplo ? `${dataBR(exemplo.pld.hora)} às ${exemplo.pld.hora.slice(11, 13)}h` : "uma hora real"}</>}
                     universo={<>Mercado de Curto Prazo da CCEE; PLD horário dos quatro submercados</>}
@@ -353,8 +379,8 @@ export default function PldPage() {
                       </h4>
                       <p className="text-sm leading-relaxed text-carvao">{exemplo.aviso}</p>
                       <p className="text-sm text-carvao-muted">
-                        PLD usado: {reais(exemplo.pld.valor)}/MWh, {exemplo.pld.nome}, {dataBR(exemplo.pld.hora)} às {exemplo.pld.hora.slice(11, 13)}h ({exemplo.pld.fonte};{" "}
-                        {exemplo.pld.regra_escolha}) <SeloNatureza natureza="OBSERVADO" />
+                        PLD usado: {reais(exemplo.pld.valor)}/MWh, {exemplo.pld.nome}, {dataBR(exemplo.pld.hora)} às {exemplo.pld.hora.slice(11, 13)}h (
+                        {exemplo.pld.fonte.replace(/PLD_HORARIO/g, "PLD horário por submercado")}; {exemplo.pld.regra_escolha}) <SeloNatureza natureza="OBSERVADO" />
                       </p>
                       <p className="text-sm text-carvao-muted">Regra do exemplo: {exemplo.formula}.</p>
                       <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Exemplo sintético de liquidação (tabela rolável)">
@@ -393,7 +419,7 @@ export default function PldPage() {
                         <p className="rotulo text-mineral">Simplificações do exemplo</p>
                         <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
                           {exemplo.simplificacoes.map((t) => (
-                            <li key={t}>{t}</li>
+                            <li key={t}>{semCodigoHttp(t)}</li>
                           ))}
                         </ul>
                       </div>
@@ -537,8 +563,17 @@ export default function PldPage() {
                   a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária:{" "}
                   valores observados; média, variação e percentil: calculados.
                 </p>
+                {notaPercentis && (
+                  <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="dois-percentis">
+                    {notaPercentis}{" "}
+                    <Link href={`${rotaPainel("p011")}#p011`} className="text-energia-dark underline underline-offset-4">
+                      Ver o Histórico
+                    </Link>
+                    .
+                  </p>
+                )}
                 <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
-                  <span>Fonte: CCEE, PLD_HORARIO; médias e posição calculadas pela Scrutiniums.</span>
+                  <span>Fonte: CCEE, PLD horário por submercado; médias e posição calculadas pela Scrutiniums.</span>
                   <SobreEsteDado p={pld.proveniencia.horario} rotulo="Sobre o PLD horário" />
                   <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre a média diária" />
                   <SobreEsteDado p={pld.proveniencia.posicao} rotulo="Sobre a posição histórica" />
@@ -660,7 +695,7 @@ export default function PldPage() {
                 <div className="min-w-0 space-y-4 leading-relaxed text-carvao">
                   <p>
                     A CCEE calcula um PLD para cada submercado. As regiões estão ligadas por linhas de transmissão de fronteira, e o
-                    ONS mede o <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora.
+                    ONS mede o <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora, em MWmed (megawatt médio).
                   </p>
                   <p className="border border-dashed border-mineral p-3 text-sm text-carvao-muted">
                     <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
@@ -729,7 +764,7 @@ export default function PldPage() {
                     ultimaExecucao={
                       ult ? (
                         <>
-                          Rodada interna de {dataBR(ult.origem)}, com o modelo {ult.modelo} ({ult.estado_modelo === "PESQUISA" ? "em pesquisa" : ult.estado_modelo.toLowerCase()}):{" "}
+                          {rotuloTipo(ult.tipo).replace(/^./, (c) => c.toUpperCase())} de {dataBR(ult.origem)}, com o modelo {ult.modelo} ({ult.estado_modelo === "PESQUISA" ? "em pesquisa" : ult.estado_modelo.toLowerCase()}):{" "}
                           {ult.celulas} previsões tentadas, {ult.com_numero === 0 ? "nenhuma com número" : `${ult.com_numero} com número`}.
                           {ult.motivos.length > 0 ? ` Motivo: ${ult.motivos.map((m) => textoMotivo(m)).join("; ")}.` : ""}
                         </>
@@ -742,14 +777,14 @@ export default function PldPage() {
                   >
                     <p className="mt-5 flex flex-wrap gap-4 text-sm">
                       <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
-                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
+                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({csvEmissoes ? `${linhasEmissoes.length.toLocaleString("pt-BR")} registros de ${rodadasEmissoes.length} ${rodadasEmissoes.length === 1 ? "rodada" : "rodadas"}` : "arquivo não lido nesta publicação"})</Link>
                     </p>
                   </Indisponivel>
                 ) : prev && prev.atual.disponivel ? (
                   <div className="border border-linha bg-superficie p-5">
                     <p className="rotulo text-mineral">Previsão publicada</p>
                     <p className="mt-2 text-sm leading-relaxed text-carvao">
-                      Há publicação do modelo em produção no arquivo imutável. Cada registro traz modelo, versão, corte, quantis e sha256.
+                      Há publicação do modelo em produção no arquivo imutável de previsões. Cada registro traz modelo, versão, corte e faixas de incerteza.
                     </p>
                     <Link href="/setor-eletrico/pld/previsoes" className="mt-3 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
                       Ver no histórico de previsões

@@ -554,7 +554,7 @@ describe("página renderizada no servidor", () => {
     expect(h).toContain(G.pergunta);
     expect(h).toContain('data-resposta="p002"');
     expect(h).toContain(respostaTerritorio(G).slice(0, 40));
-    for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel", "Regra do grão"]) {
+    for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel", "Regra de atribuição"]) {
       expect(h, parte).toContain(parte);
     }
     expect((h.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
@@ -570,11 +570,11 @@ describe("página renderizada no servidor", () => {
     expect(h).toContain("Submercado de cada UF (as UFs que o mapa pinta)");
     expect(h).toContain("Distribuidoras: área e indicadores da área inteira");
     expect(h).toContain("Submercados: preço, armazenamento e MMGD estimada");
-    expect(h).toContain("Correspondências entre recortes declaradas na base");
+    expect(h).toContain("Correspondências entre tipos de área declaradas na base");
     expect(h).toContain("Fechamento por submercado nos dias conferidos");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(8);
     // o mapa ainda não tem malha no servidor: estado de carga com altura fixa, nunca "em breve"
-    expect(h).toContain("Carregando a malha de UF do IBGE");
+    expect(h).toContain("Carregando o mapa das UFs (IBGE)");
   });
 
   it("sem estado de construção, sem hexadecimal solto e abaixo de 600 KB somando HTML e dados do cliente", () => {

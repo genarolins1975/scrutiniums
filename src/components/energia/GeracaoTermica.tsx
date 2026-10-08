@@ -5,6 +5,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energia/GeracaoControles";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -33,6 +34,7 @@ import {
   paraTabela,
   respostaTermica,
   usinaTermicaEscolhida,
+  vereditoTermica,
   type TermicaCliente,
 } from "@/lib/energia/geracao";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -105,13 +107,17 @@ export function GeracaoTermica({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p022">
+      <RespostaCurta id="p022" veredito={vereditoTermica(t) || respostaTermica(t)}>
         {respostaTermica(t)}
-      </p>
+      </RespostaCurta>
 
       <GeracaoRecorte
         periodo={`${mesAno(u.inicio)} a ${mesAno(u.fim)} (12 meses completos, ${num(u.horas, 0)} horas); série mensal desde ${mesAno(t.primeiro_mes_na_gold)} e no arquivo desde ${mesAno(t.primeiro_mes)}`}
-        universo={`Usinas térmicas despachadas pelo ONS (Tipo I e II-A), inclusive nucleares; ${num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período`}
+        universo={
+          <>
+            Usinas térmicas despachadas pelo ONS <span data-nivel="analisar">(Tipo I e II-A) </span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
+          </>
+        }
         unidade="MWmed (média do período), GWh (energia) e % da geração térmica verificada; CVU em R$/MWh"
       />
 
@@ -129,6 +135,16 @@ export function GeracaoTermica({
         empilhado
         rotulosValor
       />
+      <details className="text-sm leading-relaxed text-carvao-muted" data-motivos="rotulos">
+        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">O que cada motivo quer dizer, com o rótulo da base publicada</summary>
+        <ul className="list-disc space-y-1 pl-5">
+          {t.motivos
+            .filter((m) => cruzado.motivos.includes(m.id))
+            .map((m) => (
+              <li key={m.id}>{m.rotulo}</li>
+            ))}
+        </ul>
+      </details>
       <TabelaInterativa
         titulo="Tabela equivalente: geração por combustível e motivo, 12 meses"
         colunas={colunasCombustivelMotivo(cruzado.motivos)}
@@ -191,7 +207,7 @@ export function GeracaoTermica({
           onSelecionar={selecionar}
           ordemInicial={{ coluna: "gwh", direcao: "desc" }}
           dicaBusca="Nome da usina ou CEG"
-          nota={`A lista completa, mês a mês e com todas as usinas, está no arquivo para download. Combustível pela autoridade publicada (${Object.values(ROTULO_ORIGEM_COMBUSTIVEL).slice(0, 3).join("; ")}...); nunca pelo nome.`}
+          nota={`A lista completa, mês a mês e com todas as usinas, está no CSV para download, no fim do painel. Combustível pela autoridade publicada (${Object.values(ROTULO_ORIGEM_COMBUSTIVEL).slice(0, 3).join("; ")}...); nunca pelo nome.`}
         />
         {usina && (
           <div className="space-y-3" data-usina={usina.id}>

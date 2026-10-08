@@ -216,7 +216,7 @@ export function ContaHistorico({ evolucao, entidades, historicoUrl, ultimoIpca, 
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
           Não foi possível carregar o histórico ({erro}). O gráfico mostra só a mediana; o arquivo completo está em{" "}
           <a href={historicoUrl} download className="text-energia-dark underline underline-offset-4">
-            conta_historico_b1.json
+            histórico da tarifa B1 por distribuidora (JSON)
           </a>
           .
         </p>

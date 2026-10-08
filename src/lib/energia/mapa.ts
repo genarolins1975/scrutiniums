@@ -85,7 +85,7 @@ export const NOS_MAPA: NoMapa[] = [
     titulo: "Água, vento, sol e clima",
     curto: "Os recursos que movem as usinas e o tempo que muda o consumo.",
     explicacao:
-      "A água que chega e fica guardada nos reservatórios, o vento, o sol e os combustíveis são a matéria-prima da geração. A chuva e a temperatura também mudam quanto se consome. O observatório mede a água em energia (EAR e ENA) e mostra chuva e temperatura por bacia e por região.",
+      "A água que chega e fica guardada nos reservatórios, o vento, o sol e os combustíveis são a matéria-prima da geração. A chuva e a temperatura também mudam quanto se consome. O observatório mede a água em energia: a Energia Armazenada (EAR) e a Energia Natural Afluente (ENA). E mostra chuva e temperatura por bacia e por região.",
     destinos: ["agua-e-clima"],
     conceitos: [
       { slug: "ear", rotulo: "EAR" },

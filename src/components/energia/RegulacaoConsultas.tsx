@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -23,14 +24,16 @@ import {
   situacaoSeConfirmada,
   temaCurto,
   textoJanela,
+  textoMudancaDeAbertas,
   textoReuniao,
+  vereditoConsultas,
 } from "@/lib/energia/regulacao";
 import { faseAtual, hojeBrasilia, type Consultas, type SituacaoConsulta } from "@/lib/energia/tipos-regulacao";
 
 /**
  * P046, consultas e audiências públicas da ANEEL. A situação de cada consulta é
  * recalculada pela regra do pipeline (situacaoConsulta) na data em que a página é
- * lida: o HTML sai com a data do build e, já no navegador, passa à data de hoje no
+ * lida: o HTML sai com a data do build e, já no navegador, passa à data do dia no
  * horário de Brasília. Assim uma consulta vencida nunca continua aparecendo como
  * aberta, mesmo que a página estática tenha sido gerada dias antes.
  *
@@ -48,6 +51,7 @@ export function RegulacaoConsultas({
   fonte,
   versao,
   inicioHistorico = null,
+  depoisDaResposta = null,
 }: {
   consultas: Pick<Consultas, "itens" | "janela_dias" | "decisoes_sem_resultado_formal" | "atas_deliberadas_ate" | "atas_ate" | "atas_geradas_em" | "data_referencia">;
   /** Data do build (nunca anterior à data de referência da gold); o navegador troca pela de hoje. */
@@ -56,6 +60,8 @@ export function RegulacaoConsultas({
   versao: string;
   /** Ano de início do histórico no CSV, lido da proveniência da gold (null sem a data). */
   inicioHistorico?: string | null;
+  /** Recorte e cartões do painel: entram logo depois do veredito, para que a resposta seja a primeira coisa do painel. */
+  depoisDaResposta?: ReactNode;
 }) {
   const [hoje, setHoje] = useState(dataServidor);
   useEffect(() => {
@@ -78,6 +84,9 @@ export function RegulacaoConsultas({
   const doModo = naData.filter((c) => (v.mod === "cp" ? c.modalidade === "Consulta Pública" : v.mod === "ap" ? c.modalidade === "Audiência Pública" : true));
   const contagem = contarSituacoes(doModo);
   const sit = new Set<SituacaoConsulta>(v.sit);
+  // situação sem nenhuma consulta no recorte não ganha caixa: marcá-la não mudaria nada; ela é dita numa linha
+  const situacoesComConsulta = ORDEM_SITUACAO.filter((s) => contagem[s] > 0);
+  const situacoesSemConsulta = ORDEM_SITUACAO.filter((s) => contagem[s] === 0);
   const visiveis = ordenarConsultas(doModo.filter((c) => sit.has(c.situacao_na_data)));
   const faixas = faixasConsultas(visiveis);
   const linhas = linhasConsultas(visiveis);
@@ -95,15 +104,16 @@ export function RegulacaoConsultas({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg" data-resposta="p046" data-resposta-hoje={hoje} aria-live="polite">
-        {respostaConsultas(consultas, hoje)}
-      </p>
+      <RespostaCurta id="p046" vivo veredito={vereditoConsultas(consultas, hoje)}>
+        <span data-resposta-hoje={hoje}>{respostaConsultas(consultas, hoje)}</span>
+      </RespostaCurta>
       {hoje !== consultas.data_referencia && (
-        <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted" data-recalculo="">
+        <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-recalculo="">
           Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório. O número com a ficha Comprove acima se refere a {dataBR(consultas.data_referencia)}, a data de
-          referência da publicação.
+          referência da publicação. {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
         </p>
       )}
+      {depoisDaResposta}
       <p role={defas.defasada ? "alert" : undefined} className={`border-l-2 pl-3 text-sm leading-relaxed ${defas.defasada ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`} data-defasagem-atas={defas.dias ?? ""}>
         {defas.defasada ? "Fonte defasada: " : ""}
         As atas integradas trazem resultados deliberados até a reunião de {dataBR(consultas.atas_deliberadas_ate ?? null)} (pauta registrada até {dataBR(consultas.atas_ate ?? null)}), no
@@ -115,13 +125,18 @@ export function RegulacaoConsultas({
       <div role="group" aria-label="Filtros das consultas" className="space-y-2 border-b border-linha pb-3">
         <fieldset className="flex flex-wrap items-center gap-x-4">
           <legend className="rotulo float-left mr-3 text-mineral">Situação em {dataBR(hoje)}</legend>
-          {ORDEM_SITUACAO.map((s) => (
+          {situacoesComConsulta.map((s) => (
             <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
               <input type="checkbox" checked={sit.has(s)} onChange={() => alternar(s)} className="h-4 w-4 accent-energia" />
               {ROTULO_CURTO_SITUACAO[s]} <span className="tabular-nums text-mineral">({contagem[s]})</span>
             </label>
           ))}
         </fieldset>
+        {situacoesSemConsulta.length > 0 && (
+          <p className="text-xs text-carvao-muted" data-situacoes-vazias="">
+            Sem consultas nesta data em: {situacoesSemConsulta.map((s) => ROTULO_CURTO_SITUACAO[s]).join("; ")}.
+          </p>
+        )}
         <fieldset className="flex flex-wrap items-center gap-x-4">
           <legend className="rotulo float-left mr-3 text-mineral">Modalidade</legend>
           {MODALIDADES.map((m) => (
@@ -170,6 +185,7 @@ export function RegulacaoConsultas({
               </svg>
               fim calculado do início e da duração
             </li>
+            <li data-legenda-siglas="">CP: consulta pública; AP: audiência pública</li>
           </ul>
         }
       />
@@ -270,7 +286,7 @@ export function RegulacaoConsultas({
       />
 
       {(consultas.decisoes_sem_resultado_formal ?? []).length > 0 && (
-        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2" data-decisoes-sem-resultado="">
+        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2 border-t border-linha pt-5" data-decisoes-sem-resultado="" data-nivel="analisar">
           <h4 id="sem-resultado-formal-titulo" className="font-serif text-base text-carvao">
             Quais decisões de abertura ainda não têm resultado formal na ata (fora da contagem)?
           </h4>

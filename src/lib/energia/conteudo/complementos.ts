@@ -15,7 +15,7 @@ export const UNIDADE: Record<string, string> = {
   mcp: "MWh (balanço) e R$ (resultado), por submercado e período de comercialização",
   cmo: "R$/MWh, por subsistema; por patamar de carga na versão semanal",
   cvu: "R$/MWh, por usina e semana operativa",
-  ear: "MWmês ou percentual da EAR máxima",
+  ear: "MWmês (a energia que os reservatórios produziriam em um mês à potência média de 1 MW) ou percentual da EAR máxima",
   armazenamento: "MWmês",
   ena: "energia (MWmês, segundo o dicionário do ONS) ou percentual da MLT",
   carga: "MWmed, por subsistema e dia",
@@ -80,7 +80,7 @@ export const CONTRASTES: Contraste[] = [
     a: "limites-do-pld",
     b: "pld",
     texto:
-      "Os limites são o piso e os dois tetos que a ANEEL fixa a cada ano; o PLD é o preço calculado dentro deles. Os limites são nominais: comparar anos exige deflator.",
+      "Os limites são o piso e os dois tetos que a ANEEL fixa a cada ano; o PLD é o preço calculado dentro deles. Os limites são valores nominais, sem correção pela inflação: para comparar anos é preciso corrigir os valores.",
   },
   {
     a: "mcp",
@@ -332,7 +332,8 @@ export function contrastesDe(slug: string): ContrasteDoVerbete[] {
     if (typeof outro === "string") {
       const v = conceito(outro);
       if (!v) continue;
-      out.push({ com: outro, rotulo: v.sigla ? `${v.sigla} (${v.nome})` : v.nome, href: `/setor-eletrico/aprenda/${outro}`, texto: c.b === slug && c.textoB ? c.textoB : c.texto });
+      // sigla igual ao nome (DECOMP, NEWAVE) não se repete entre parênteses
+      out.push({ com: outro, rotulo: v.sigla && v.sigla.toLowerCase() !== v.nome.toLowerCase() ? `${v.sigla} (${v.nome})` : v.nome, href: `/setor-eletrico/aprenda/${outro}`, texto: c.b === slug && c.textoB ? c.textoB : c.texto });
     } else {
       out.push({ com: outro.rotulo, rotulo: outro.rotulo, href: null, texto: c.texto });
     }

@@ -12,7 +12,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, mesAno, num, plural } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
@@ -53,12 +53,6 @@ export function generateMetadata(): Metadata {
 }
 
 const FONTE = "ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)";
-/** Anos cujos arquivos de fronteira trazem o programado, lidos do esquema da fonte publicado na gold. */
-const anosComProgramado = (g: GoldRedeDetalhe) =>
-  g.esquema_fonte.intercambio_nacional
-    .filter((x) => x.tem_programado)
-    .map((x) => x.recurso.replace(/\D/g, ""))
-    .join(" e ") || "nenhum ano";
 const COLUNAS_SALDOS: ColunaTabela[] = [
   { id: "nome", rotulo: "Subsistema", tipo: "texto" },
   { id: "dia", rotulo: "Saldo no dia (positivo = exporta)", tipo: "numero", unidade: "MWmed", casas: 0 },
@@ -97,10 +91,10 @@ export default function RedePage() {
             </>
           }
         >
-          A energia passa de uma região para outra pelas linhas de transmissão de fronteira; o ONS publica, hora a hora, o <Termo slug="intercambio">intercâmbio</Termo> verificado em
-          quatro fronteiras entre <Termo slug="submercado">subsistemas</Termo> e, no arquivo de {anosComProgramado(g)}, também o programado. Quatro painéis: como a energia circula, de onde vem a diferença entre os balanços,
-          que evidência de restrição é publicada e quanto o fluxo se afastou do programa. Os limites operativos de cada fronteira não são públicos; por isso nenhum painel diz que a
-          rede estava no limite. Fluxo em <Unidade u="MWmed" />, energia em MWh.
+          A energia passa de uma região para outra pelas linhas de transmissão de fronteira. O ONS publica, hora a hora, o <Termo slug="intercambio">intercâmbio</Termo>{" "}
+          verificado em quatro fronteiras entre <Termo slug="submercado">subsistemas</Termo> e, desde {dataBR(g.programado.inicio)}, também o programado. Os limites operativos
+          de cada fronteira não são públicos; por isso nenhum painel diz que a rede estava no limite. Fluxo em <Unidade u="MWmed" />, energia em MWh; num valor horário, os dois
+          números são iguais.
         </CabecalhoModulo>
         <RedeNavegacao atual="p028" />
         <ModoProfundidade>
@@ -144,24 +138,30 @@ export default function RedePage() {
                   fonte={FONTE}
                   versao={versao}
                   destaques={
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                      {FRONTEIRAS.map((par) => (
-                        <Numero
-                          key={par}
-                          rotulo={`Energia escondida pelo saldo de 30 dias, ${nomeFronteira(par)}`}
-                          natureza="CALCULADO"
-                          evidencia={ev[`contra_saldo_30d.${par}`] ?? null}
-                          casas={0}
-                          tamanho="medio"
-                          cor={COR_PAR[par]}
-                          motivoAusencia="Sem fluxo publicado na janela de 30 dias."
-                          nota={(() => {
-                            const x = resumo.find((y) => y.par === par);
-                            return x ? `${num(x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo.` : undefined;
-                          })()}
-                          endereco={`${rotaPainel("p028")}#p028`}
-                        />
-                      ))}
+                    <div className="space-y-3">
+                      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                        {resumo[0] ? `Em ${plural(resumo[0].dias, "dia", "dias")}` : "Na janela"}, a energia pode passar nos dois sentidos de uma fronteira, e o saldo mostra só a diferença entre eles. A
+                        energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido.
+                      </p>
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {FRONTEIRAS.map((par) => (
+                          <Numero
+                            key={par}
+                            rotulo={`Energia escondida pelo saldo de 30 dias, ${nomeFronteira(par)}`}
+                            natureza="CALCULADO"
+                            evidencia={ev[`contra_saldo_30d.${par}`] ?? null}
+                            casas={0}
+                            tamanho="medio"
+                            cor={COR_PAR[par]}
+                            motivoAusencia="Sem fluxo publicado na janela de 30 dias."
+                            nota={(() => {
+                              const x = resumo.find((y) => y.par === par);
+                              return x ? `${num(x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo.` : undefined;
+                            })()}
+                            endereco={`${rotaPainel("p028")}#p028`}
+                          />
+                        ))}
+                      </div>
                     </div>
                   }
                 />

@@ -17,6 +17,7 @@ import {
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -45,10 +46,13 @@ import {
   linhasSemPrevisao,
   mudancaCronograma,
   mwTexto,
+  notaDatasCronograma,
   painel,
   pctTexto,
   respostaCronograma,
+  textoContagemFotografias,
   ultimaConfiabilidade,
+  vereditoCronograma,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
@@ -107,10 +111,19 @@ export default function CronogramaPage() {
                   permite saber se ela foi cumprida.
                 </>
               }
-              oQueMudou={mudancaCronograma(g)}
+              oQueMudou={
+                <>
+                  {mudancaCronograma(g)} {notaDatasCronograma(g)}
+                </>
+              }
               comoInterpretar={
                 <>
-                  {g.regras.previsao} {g.regras.confiabilidade} {g.regras.data_em_bloco}
+                  Previsão de operação comercial é a previsão da fiscalização da ANEEL por unidade geradora, sempre com a data da fotografia do RALIE em que foi registrada. Confiabilidade: de cada fotografia mensal (a última do mês), a
+                  potência com previsão para os 12 meses seguintes e quanto dela foi liberada para operação comercial até o fim desses 12 meses, depois disso ou não foi liberada até a data do arquivo de liberações; só entram janelas
+                  encerradas há pelo menos 15 dias. {g.regras.data_em_bloco}
+                  <span data-nivel="analisar" className="mt-2 block">
+                    Regras como a base publicada as escreve: {g.regras.previsao} {g.regras.confiabilidade}
+                  </span>
                 </>
               }
               naoConcluir={
@@ -127,9 +140,9 @@ export default function CronogramaPage() {
               ]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p041">
+                <RespostaCurta id="p041" veredito={vereditoCronograma(g) || respostaCronograma(g)}>
                   {respostaCronograma(g)}
-                </p>
+                </RespostaCurta>
                 <ExpansaoRecorte
                   periodo={
                     <>
@@ -150,6 +163,7 @@ export default function CronogramaPage() {
                     natureza="CALCULADO"
                     evidencia={g.evidencias.confiabilidade_ultima ?? null}
                     formato="pct"
+                    unidade=""
                     casas={1}
                     tamanho="medio"
                     endereco="/setor-eletrico/expansao/cronograma#p041"
@@ -159,11 +173,13 @@ export default function CronogramaPage() {
                   <div className="space-y-2 border border-linha bg-superficie p-5 text-sm leading-relaxed text-carvao">
                     <p className="rotulo text-mineral">Data-base preservada</p>
                     <p>
-                      O RALIE publica {inteiro(c.historico_fonte.fotografias)} fotografias de {dataTexto(c.historico_fonte.primeira_fotografia)} a {dataTexto(c.historico_fonte.ultima_fotografia)};
-                      cada previsão deste painel sai com a fotografia em que foi registrada. Previsões anteriores a {dataTexto(c.historico_fonte.primeira_fotografia)} não são reconstruídas com o
-                      estoque atual.
+                      Cada previsão deste painel sai com a data da fotografia do RALIE em que foi registrada, de {dataTexto(c.historico_fonte.primeira_fotografia)} a {dataTexto(c.historico_fonte.ultima_fotografia)}. Previsões
+                      anteriores a {dataTexto(c.historico_fonte.primeira_fotografia)} não são reconstruídas com o estoque atual.
                     </p>
-                    <p className="text-carvao-muted">
+                    <p className="text-carvao-muted" data-contagem="fotografias">
+                      {textoContagemFotografias(g)}
+                    </p>
+                    <p className="text-carvao-muted" data-nivel="analisar">
                       O observatório também guarda a previsão de cada unidade a cada captura do RALIE atual, desde {dataTexto(c.historico_proprio.primeira_captura)} ({inteiro(c.historico_proprio.capturas)}{" "}
                       {c.historico_proprio.capturas === 1 ? "captura" : "capturas"}; {inteiro(c.historico_proprio.ugs_com_previsao_revisada)} previsões revisadas até aqui).
                     </p>

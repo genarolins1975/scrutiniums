@@ -3,11 +3,12 @@
 import { useMemo } from "react";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno, pct } from "@/lib/energia/formato";
-import { CAMPO_DIST, COLUNAS_JANELA, destacar, linhasJanela, remover, respostaReajustes, rotuloDistribuidora } from "@/lib/energia/conta";
+import { CAMPO_DIST, COLUNAS_JANELA, destacar, linhasJanela, remover, respostaReajustes, rotuloDistribuidora, vereditoReajustes } from "@/lib/energia/conta";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { JanelaInflacao, UltimoEvento } from "@/lib/energia/tipos-conta";
 
@@ -112,8 +113,13 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
         })}
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" aria-live="polite" data-resposta="p050-reajustes">
+      <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela)}>
         {respostaReajustes(janela)}
+      </RespostaCurta>
+
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="ordem-ranking">
+        A lista começa pelas menores variações e segue até a maior ({linhas.length} no total). As primeiras barras ficam à esquerda do IPCA e da mediana: {janela.abaixo_ou_igual_ipca} distribuidoras
+        ficaram abaixo da inflação ou iguais a ela, e {janela.acima_ipca} ficaram acima. Role a lista ou use &quot;Mostrar todas&quot; para ver as que ficaram acima.
       </p>
 
       <GraficoBarras

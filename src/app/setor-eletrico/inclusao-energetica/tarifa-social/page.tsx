@@ -7,6 +7,7 @@ import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNaveg
 import { InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
@@ -34,6 +35,7 @@ import {
   rotaPainel,
   textoCusteioTarifaSocial,
   ufsAtingidasPorAusencia,
+  vereditoTarifaSocial,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -177,9 +179,9 @@ export default function TarifaSocialPage() {
               ]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p059">
+                <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
                   {respostaTarifaSocial(t)}
-                </p>
+                </RespostaCurta>
                 <InclusaoRecorte
                   periodo={
                     <>
@@ -194,11 +196,17 @@ export default function TarifaSocialPage() {
                   }
                   unidade="UC (SCS); faturas (CDE); R$ correntes"
                 />
-                <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
-                  Fonte defasada, declarada: o SCS publicado em {dataBR(geracaoScs)} termina em {mes(ultimoScs)}, e o último mês com todas as distribuidoras é {mes(t.mes_referencia)}. Para
-                  os meses seguintes, os arquivos de Beneficiários da CDE vão até {mes(g.referencias.cde_mes_mais_recente)}, mas só {mes(mesMapa)} tem todas as distribuidoras entre os
-                  mais recentes.
-                </p>
+                <div className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
+                  <p>Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-5">
+                    <li>
+                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC.
+                    </li>
+                    <li>
+                      Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e do mapa.
+                    </li>
+                  </ul>
+                </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   <Numero rotulo="UC com Tarifa Social" natureza="OBSERVADO" evidencia={k.uc_tsee.evidencia} casas={0} unidade="UC" tamanho="medio" endereco={`${rotaPainel("p059")}#p059`} />
                   <Numero
@@ -244,8 +252,8 @@ export default function TarifaSocialPage() {
 
                 <InclusaoSubtitulo>Depois do SCS: o que os arquivos da CDE mostram mês a mês?</InclusaoSubtitulo>
                 <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                  Desconto médio por fatura (desconto das faturas ÷ faturas, calculado pelo observatório). Meses abaixo da cobertura mínima da regra do mês do mapa (modo Auditar) ficam tracejados; os
-                  arquivos sondados sem o original guardado aparecem só na tabela, com a cobertura.
+                  Desconto médio por fatura (desconto das faturas ÷ faturas, calculado pelo observatório). Meses em que faltam distribuidoras ficam tracejados; os meses mais recentes, cujos arquivos
+                  ainda não trazem todas as distribuidoras, aparecem só na tabela, com a cobertura.
                 </p>
                 <GraficoLinhas
                   titulo={`Desconto médio por fatura com Tarifa Social, ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} (Beneficiários da CDE)`}

@@ -4,6 +4,7 @@ import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoCompararAnos, TransicaoFatorMensal } from "@/components/energia/TransicaoEmissoes";
 import {
@@ -38,6 +39,7 @@ import {
   estadoAcessoMcti,
   fator,
   inteiro,
+  kgPorMwh,
   linhasFatorAnual,
   linhasFatorMensal,
   mes,
@@ -48,6 +50,7 @@ import {
   referenciaAnual,
   respostaEmissoes,
   rotaPainel,
+  vereditoEmissoes,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -110,12 +113,13 @@ export default function EmissoesPage() {
           titulo="Intensidade de emissões da geração no SIN"
           referencia={
             <>
-              Fator médio do MCTI de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)} (mensal) e de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (anual), planilha{" "}
-              {e.ultimo_mes?.arquivo ?? "sem dado"}; listagem da página do MCTI capturada em {carimbo(e.pagina_vigente?.listagem_capturada_em)}. Processado em {carimbo(g.gerado_em)}.
+              Fator médio do MCTI de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)} (mensal) e de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (anual)
+              <span data-nivel="auditar">, planilha {e.ultimo_mes?.arquivo ?? "sem dado"}</span>; listagem da página do MCTI capturada em {carimbo(e.pagina_vigente?.listagem_capturada_em)}. Processado em{" "}
+              {carimbo(g.gerado_em)}.
             </>
           }
         >
-          Quantas toneladas de CO2 a geração do SIN emite, em média, por MWh, mês a mês e ano a ano, como o MCTI publica. O fator médio serve a inventários e não é o efeito de consumir ou
+          Quantas toneladas de CO2 a geração do SIN emite, em média, por MWh, mês a mês e ano a ano, como o MCTI publica. O fator médio serve para contabilizar as emissões da eletricidade consumida e não é o efeito de consumir ou
           economizar um MWh a mais.
         </CabecalhoModulo>
         <TransicaoNavegacao atual="p064" />
@@ -155,9 +159,9 @@ export default function EmissoesPage() {
                     {acesso.texto}
                   </TransicaoAviso>
                 )}
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p064">
+                <RespostaCurta id="p064" veredito={vereditoEmissoes(e) || respostaEmissoes(e)}>
                   {respostaEmissoes(e)}
-                </p>
+                </RespostaCurta>
                 <TransicaoRecorte
                   periodo={
                     <>
@@ -178,7 +182,7 @@ export default function EmissoesPage() {
                     tamanho="medio"
                     cor="var(--serie-termica)"
                     motivoAusencia="Nenhum ano completo publicado nesta versão."
-                    nota="Estimado e publicado pelo MCTI, sem alteração."
+                    nota={`Estimado e publicado pelo MCTI, sem alteração. Em kg: ${kgPorMwh(e.ultimo_ano?.valor)}.`}
                     endereco={`${rotaPainel("p064")}#p064`}
                   />
                   <Numero
@@ -189,7 +193,7 @@ export default function EmissoesPage() {
                     unidade="tCO2/MWh"
                     tamanho="medio"
                     motivoAusencia="Nenhum mês publicado nesta versão."
-                    nota="Um mês isolado não equivale ao fator anual; compare com o mesmo mês de outros anos."
+                    nota={`Um mês isolado não equivale ao fator anual; compare com o mesmo mês de outros anos. Em kg: ${kgPorMwh(e.ultimo_mes?.valor)}.`}
                     endereco={`${rotaPainel("p064")}#p064`}
                   />
                 </div>
@@ -197,7 +201,12 @@ export default function EmissoesPage() {
                   {docFatorMedio ? `Nas palavras do MCTI: "${docFatorMedio.trecho}" ` : ""}
                   Para o efeito de uma decisão de consumo, o fator relevante seria marginal, e os fatores de margem do MCTI são de uso exclusivo em projetos de MDL.
                 </TransicaoAviso>
-                {!acesso.defasada && <p className="text-xs text-carvao-muted">{acesso.texto}</p>}
+                {!acesso.defasada && (
+                  <p className="text-xs text-carvao-muted">
+                    {acesso.texto}
+                    {acesso.detalhe && <span data-nivel="auditar"> Listagem: {acesso.detalhe}.</span>}
+                  </p>
+                )}
 
                 <TransicaoFatorMensal
                   dados={dadosFatorMensal(e)}

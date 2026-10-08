@@ -7,6 +7,7 @@ import { AprendaIndice, type GrupoIndice } from "@/components/energia/AprendaInd
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CONCEITOS, GRUPOS } from "@/lib/energia/conteudo/conceitos";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
+import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -44,13 +45,16 @@ export default function AprendaPage() {
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo siglas={["MWmed", "DIC", "FIC", "CCEE", "ONS", "ANEEL"]} rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
+        <CabecalhoModulo rotulo="Aprenda" titulo="O que significam os conceitos e como se ligam aos números?">
           Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Comece por uma trilha, que liga os conceitos aos números, ou procure um termo.
         </CabecalhoModulo>
         <section aria-labelledby="trilhas" className="border-t border-linha py-8">
           <h2 id="trilhas" className="rotulo text-mineral">
             Trilhas: dos conceitos aos números
           </h2>
+          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+            Uma trilha é um percurso em ordem pelos verbetes: cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte. No fim, há um {ROTULO_SINTETICO.toLowerCase()}. {AVISO_SINTETICO}
+          </p>
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             {TRILHAS_APRENDA.map((t) => (
               <li key={t.id}>
@@ -64,7 +68,6 @@ export default function AprendaPage() {
             ))}
           </ul>
         </section>
-        <AprendaIndice grupos={grupos} />
         <section aria-labelledby="como-ler" className="border-t border-linha py-8">
           <h2 id="como-ler" className="rotulo text-mineral">
             Como ler um verbete
@@ -77,6 +80,7 @@ export default function AprendaPage() {
               : `${conferidos} de ${CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem definição, com o que já foi consultado e o que falta.`}
           </p>
         </section>
+        <AprendaIndice grupos={grupos} />
       </main>
     </>
   );

@@ -188,7 +188,7 @@ export function QualidadeMapa({
             <p className="mt-2">
               A mesma informação está no arquivo{" "}
               <a href={urlMunicipios} download className="text-energia-dark underline underline-offset-4">
-                qualidade_municipios.csv
+                DEC e FEC dos conjuntos por município (CSV)
               </a>
               .{" "}
               <button type="button" className={BOTAO} onClick={() => setTentativa((t) => t + 1)}>
@@ -278,7 +278,7 @@ export function QualidadeMapa({
                 />
               ) : erroSerie ? (
                 <p role="alert" className="text-sm text-carvao">
-                  Histórico indisponível ({erroSerie}); a série está em qualidade_distribuidoras_anual.csv.
+                  Histórico indisponível ({erroSerie}); a série anual por distribuidora está no CSV da lista de downloads do painel.
                 </p>
               ) : (
                 <p role="status" className="text-sm text-carvao-muted">

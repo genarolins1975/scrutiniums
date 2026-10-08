@@ -21,6 +21,7 @@ import {
   perguntaPainel,
   proximoPainel,
   textoComparabilidade,
+  textoSensibilidadePeso,
 } from "@/lib/energia/pld";
 import { fichasPld } from "@/lib/energia/pld-arquivos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/pld/historico" },
 };
 
-const FONTE = "CCEE, PLD_HORARIO; ONS, Balanço de Energia e Carga Verificada; IBGE, IPCA";
+const FONTE = "CCEE, PLD horário por submercado; ONS, Balanço de Energia e Carga Verificada; IBGE, IPCA";
 
 export default function PldHistoricoPage() {
   const g = lerGold<PldDetalheGold>("pld_detalhe.json");
@@ -52,7 +53,7 @@ export default function PldHistoricoPage() {
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["MWmed", "CCEE", "ONS", "IBGE"]}
+        <PldCabecalho siglas={["MMGD", "IPCA", "CCEE", "ONS", "IBGE"]}
           titulo="Histórico e distribuição"
           referencia={
             <>
@@ -70,7 +71,7 @@ export default function PldHistoricoPage() {
             <PainelEvidencia
               id="p011"
               pergunta={perguntaPainel("p011")}
-              subtitulo="Média diária no percentil do mesmo mês e semana; médias mensais temporal e ponderadas pela carga · R$/MWh"
+              subtitulo="Média diária frente ao mesmo mês e à mesma semana de anos anteriores; médias mensais temporal e ponderadas pela carga · R$/MWh"
               porQueImporta={
                 <>
                   O PLD tem forte componente sazonal (chuva e reservatórios) e regimes de limites que mudam a cada ano. Comparar com a mesma época de anos anteriores evita chamar de
@@ -79,14 +80,14 @@ export default function PldHistoricoPage() {
               }
               oQueMudou={
                 <>
-                  {atual.texto} {pond.sensibilidade_peso?.texto ?? ""}
+                  {atual.texto} {pond.sensibilidade_peso ? textoSensibilidadePeso(pond.sensibilidade_peso) : ""}
                 </>
               }
               comoInterpretar={
                 <>
-                  O percentil diz em que posição a média do dia fica entre as médias diárias do mesmo mês (e da mesma semana ISO) nos anos anteriores: 50 é o meio. A média temporal
-                  dá o mesmo peso a cada hora; a ponderada pela carga dá mais peso às horas de maior consumo. A ponderada pelo balanço muda de perímetro dentro da série; a sem MMGD
-                  tem perímetro homogêneo.
+                  O percentil diz em que posição a média do dia fica entre as médias diárias do mesmo mês (e da mesma semana do ano, na numeração ISO) nos anos anteriores: 50 é o meio. A média temporal
+                  dá o mesmo peso a cada hora; a ponderada pela carga dá mais peso às horas de maior consumo. A ponderada pelo balanço muda de base dentro da série (as marcas no
+                  gráfico mostram quando); a ponderada sem MMGD usa a mesma base em toda a série.
                 </>
               }
               naoConcluir={
@@ -106,11 +107,13 @@ export default function PldHistoricoPage() {
               <div className="space-y-6">
                 {atual.defasada && <PldAviso tipo="alerta">{atual.texto}</PldAviso>}
                 {g.referencia.ultima_hora_carga && g.referencia.ultima_hora_carga < g.referencia.ultima_hora_pld && (
-                  <PldAviso>
-                    A carga do balanço do ONS vai até {horaLocal(g.referencia.ultima_hora_carga)} e a carga verificada sem MMGD até{" "}
-                    {pond.peso_sem_mmgd.ultima_hora ? horaLocal(pond.peso_sem_mmgd.ultima_hora) : "sem dado"}; o PLD, até {horaLocal(g.referencia.ultima_hora_pld)}. No mês em curso, as
-                    ponderadas usam só as horas com carga publicada (coluna &ldquo;mesmas horas&rdquo; da tabela) e podem mudar com as próximas publicações e revisões do ONS.
-                  </PldAviso>
+                  <div data-nivel="analisar">
+                    <PldAviso>
+                      A carga do balanço do ONS vai até {horaLocal(g.referencia.ultima_hora_carga)} e a carga verificada sem MMGD até{" "}
+                      {pond.peso_sem_mmgd.ultima_hora ? horaLocal(pond.peso_sem_mmgd.ultima_hora) : "sem dado"}; o PLD, até {horaLocal(g.referencia.ultima_hora_pld)}. No mês em curso, as
+                      ponderadas usam só as horas com carga publicada (coluna &ldquo;mesmas horas&rdquo; da tabela) e podem mudar com as próximas publicações e revisões do ONS.
+                    </PldAviso>
+                  </div>
                 )}
                 <PldHistorico
                   h={{

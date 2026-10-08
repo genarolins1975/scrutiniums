@@ -6,6 +6,7 @@ import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -27,6 +28,8 @@ import {
   respostaClima,
   respostaDecomposicao,
   respostaUltimoDia,
+  textoJanelaCurta,
+  vereditoClima,
   textoDefasagemTemperatura,
   type TipoComparacao,
 } from "@/lib/energia/carga";
@@ -114,9 +117,9 @@ export function CargaClima({
   destaques,
 }: {
   p027: Pick<NonNullable<P027>, "metricas" | "periodo_avaliacao" | "sensibilidade" | "por_origem_sin" | "recente_sin" | "resposta_temperatura">;
-  a07: Pick<A07, "decomposicao">;
-  /** Janela do achado A07 (a07.referencia) e o motivo publicado quando o modelo cobre menos dias (a07.janela_modelo). */
-  achado: { inicio: string; fim: string; motivo: string | null };
+  a07: Pick<A07, "decomposicao" | "comparacoes">;
+  /** Janela do achado A07 (a07.referencia), os dias dela e o motivo publicado quando o modelo cobre menos dias (a07.janela_modelo). */
+  achado: { inicio: string; fim: string; dias_janela: number; motivo: string | null };
   diaReferencia: string;
   fonte: string;
   versao: string;
@@ -136,14 +139,15 @@ export function CargaClima({
   const origens = useMemo(() => p.por_origem_sin.map((o) => ({ ...o, id: o.origem, mes: mesAno(o.origem.slice(0, 7)) })), [p]);
   const temperatura = useMemo(() => linhasRespostaTemperatura(p), [p]);
   const metricasRegioes = REGIOES.map((r) => ({ id: r, regiao: NOME_REGIAO[r], ...p.metricas[r] }));
+  const janelaCurta = textoJanelaCurta(d, { fim: achado.fim, dias_janela: achado.dias_janela }, a07.comparacoes);
   const variantesDisponiveis = VARIANTES.filter((x) => a07.decomposicao.some((y) => y.sm === sm && y.variante === x && y.comparacao === tipo));
 
   return (
     <div className="space-y-6">
       <CargaEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={sm} onEscolher={(x) => definir({ sm: x })} />
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p027" aria-live="polite">
+      <RespostaCurta id="p027" vivo veredito={vereditoClima(d, p, sm)}>
         {respostaClima(p, sm)}
-      </p>
+      </RespostaCurta>
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
           <dt className="rotulo text-mineral">Período</dt>
@@ -159,10 +163,16 @@ export function CargaClima({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmed; erro em %; contribuições em log × 100 (aproximadamente pontos percentuais)</dd>
+          <dd className="mt-0.5">
+            MWmed; erro em %; contribuições em log × 100: o modelo trabalha com o logaritmo natural da carga, e a diferença entre duas cargas nessa escala se lê, aproximadamente,
+            como pontos percentuais
+          </dd>
         </div>
       </dl>
-      <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{textoDefasagemTemperatura(p, diaReferencia)}</p>
+      <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
+        {textoDefasagemTemperatura(p, diaReferencia)}
+        {janelaCurta ? ` ${janelaCurta}` : ""}
+      </p>
 
       {destaques}
 
@@ -199,6 +209,10 @@ export function CargaClima({
             legendaInterativa
           />
         </CursorSincronizado>
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          No primeiro gráfico, a linha contínua é a carga real e a tracejada, a prevista pelo modelo; a faixa é o intervalo de 80%. No segundo, cada linha é a contribuição de um
+          grupo de variáveis. A do calendário sobe e desce ao longo da semana porque dia útil, sábado e domingo ou feriado entram no modelo como grupos diferentes.
+        </p>
         <TabelaInterativa
           titulo="Tabela equivalente: os mesmos dias dos dois gráficos"
           colunas={COLUNAS_RECENTE}
@@ -229,9 +243,10 @@ export function CargaClima({
         </div>
         {d ? (
           <>
-            <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p027-decomposicao" aria-live="polite">
-              {respostaDecomposicao(d)}
-            </p>
+            <div data-nivel="analisar" data-resposta="p027-decomposicao" aria-live="polite" className="max-w-prose2 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted">
+              <p className="rotulo mb-1 text-mineral">Os números por trás da resposta</p>
+              <p>{respostaDecomposicao(d)}</p>
+            </div>
             {d.fim < achado.fim && (
               <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
                 Esta variante cobre {plural(d.dias, "dia", "dias")}, até {dataBR(d.fim)}, e não a janela inteira do achado

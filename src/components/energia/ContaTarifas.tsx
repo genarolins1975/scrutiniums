@@ -2,11 +2,12 @@
 
 import { useMemo } from "react";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
-import { CAMPO_DIST, COLUNAS_RANKING, destacar, linhasRanking, remover, respostaTarifa, type Perfil } from "@/lib/energia/conta";
+import { CAMPO_DIST, COLUNAS_RANKING, destacar, linhasRanking, remover, respostaTarifa, vereditoTarifa, type Perfil } from "@/lib/energia/conta";
 import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
 
 /**
@@ -51,9 +52,9 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
 
   return (
     <div className="space-y-5">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" aria-live="polite" data-resposta="p047">
+      <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil)}>
         {resposta}
-      </p>
+      </RespostaCurta>
 
       <fieldset className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <legend className="sr-only">Perfil e leitura do ranking</legend>
@@ -87,6 +88,11 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
           ))}
         </div>
       </fieldset>
+
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="ordem-ranking">
+        A lista começa pela distribuidora mais barata e segue até a mais cara ({linhas.length} no total): as primeiras barras são as menores, e a escala do gráfico vai até a maior de todas. Role a lista ou use
+        &quot;Mostrar todas&quot; para ver as mais caras.
+      </p>
 
       {v.leitura === "perfil" ? (
         <GraficoBarras

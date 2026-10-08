@@ -9,12 +9,12 @@ import {
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
-  EmpresasResposta,
   EmpresasSeguir,
   EmpresasSubtitulo,
 } from "@/components/energia/EmpresasPagina";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -26,6 +26,7 @@ import {
   COLUNAS_TIPOS,
   LIMIARES_HHI_CADE,
   ROTULO_FAIXA,
+  ROTULO_NIVEL_CURTO,
   ancoraPainel,
   barrasGrupos,
   dataTexto,
@@ -42,11 +43,13 @@ import {
   pctTexto,
   respostaControle,
   rotaPainel,
+  textoFronteiraNoCadastro,
   textoTipos,
   trimestreTexto,
+  vereditoControle,
 } from "@/lib/energia/empresas";
 import { arvoreDoArquivo } from "@/lib/energia/empresas-arquivos";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { metrica } from "@/lib/energia/metricas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
@@ -69,6 +72,7 @@ export default function PaginaP039() {
   const datas = g.datas;
   const fontePolimero = "ANEEL, SIGA e Composição Societária (Polímero)";
   const janela = datas.polimero_janela.length ? `${trimestreTexto(datas.polimero_janela[0])} a ${trimestreTexto(datas.polimero_janela.at(-1))}` : "sem janela";
+  const inicioJanela = datas.polimero_janela.length ? trimestreTexto(datas.polimero_janela[0]) : "sem janela";
   const bloqueioP039 = g.bloqueios.filter((b) => b.painel === "P039");
   // árvore do maior grupo já na página; as demais vêm do arquivo da cadeia no navegador
   const padraoGrupo = ct.grupos[0]?.cnpj ?? "";
@@ -90,7 +94,7 @@ export default function PaginaP039() {
           }
         >
           Quem está no topo da cadeia de controle declarada à ANEEL de cada dono de usina, quanto da capacidade instalada cada grupo detém e controla, e quão concentrada ela está,
-          sobre uma fronteira dita explicitamente.
+          sobre um recorte de usinas dito explicitamente, a fronteira: as usinas em operação cujas participações somam 100%.
         </CabecalhoModulo>
         <EmpresasNavegacao atual="p039" />
         <ModoProfundidade>
@@ -128,11 +132,13 @@ export default function PaginaP039() {
               complementares={[{ rotulo: "Concentração (HHI, CR4, CR10)", p: g.proveniencia.concentracao }]}
             >
               <div className="space-y-6">
-                <EmpresasResposta id="p039">{respostaControle(ct)}</EmpresasResposta>
+                <RespostaCurta id="p039" veredito={vereditoControle(ct)}>
+                  {respostaControle(ct)}
+                </RespostaCurta>
                 <EmpresasRecorte
                   periodo={
                     <>
-                      SIGA de {dataTexto(ct.fronteira.data)} e declarações ao Polímero de {janela}
+                      SIGA de {dataTexto(ct.fronteira.data)} e declarações de composição societária à ANEEL de {janela}
                     </>
                   }
                   universo={
@@ -152,30 +158,31 @@ export default function PaginaP039() {
                     tamanho="medio"
                     nota={
                       ct.concentracao.grupo_proporcional?.faixa
-                        ? `${ROTULO_FAIXA[ct.concentracao.grupo_proporcional.faixa]} nas faixas do Guia do CADE; CR4 ${pctTexto(ct.concentracao.grupo_proporcional.cr4, 2)}, CR10 ${pctTexto(ct.concentracao.grupo_proporcional.cr10, 2)}.`
+                        ? `${ROTULO_FAIXA[ct.concentracao.grupo_proporcional.faixa]} nas faixas do Guia do CADE; CR4 ${pctTexto(ct.concentracao.grupo_proporcional.cr4, 2)}, CR10 ${pctTexto(ct.concentracao.grupo_proporcional.cr10, 2)}. O período vai do início da janela de declarações (${inicioJanela}) à data do SIGA.`
                         : undefined
                     }
                     endereco={ancoraPainel("p039")}
                   />
                   <div className="space-y-1 border border-linha bg-superficie p-5 text-sm text-carvao-muted">
                     <p className="rotulo text-mineral">Fronteira explícita</p>
+                    <p>{textoFronteiraNoCadastro(ct.fronteira, c.ativos)}</p>
                     <p>
-                      {mwTexto(ct.fronteira.mw)} na fronteira, de {mwTexto(ct.fronteira.mw_operacao_total)} em operação: {mwTexto(ct.fronteira.mw_fora)} ficam fora (proprietário não informado ou
-                      participações que não somam 100%).
-                    </p>
-                    <p>
-                      {mwTexto(ct.fronteira.mw_sem_documento)} de participantes sem CNPJ ficam no denominador e fora do numerador (o índice é limite inferior); {mwTexto(ct.fronteira.mw_sem_controlador_majoritario)} em{" "}
-                      {inteiro(ct.fronteira.usinas_sem_controlador_majoritario)} usinas sem dono com mais de 50% ficam fora da capacidade sob controle.
+                      {mwTexto(ct.fronteira.mw_sem_documento)} pertencem a participantes sem CNPJ: contam no total da fronteira, mas não entram em nenhum grupo, e por isso o índice é um limite inferior (o valor real pode ser maior, não menor).{" "}
+                      {mwTexto(ct.fronteira.mw_sem_controlador_majoritario)} em {inteiro(ct.fronteira.usinas_sem_controlador_majoritario)} usinas sem dono com mais de 50% ficam fora da capacidade sob controle.
                     </p>
                   </div>
                 </div>
+                <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-leitura-hhi="">
+                  Como ler o HHI: ele vai de 0 a 10.000, e 10.000 seria um único dono de toda a capacidade. Nas faixas do Guia do CADE, abaixo de {num(LIMIARES_HHI_CADE.moderado, 0)} pontos é não concentrado, de{" "}
+                  {num(LIMIARES_HHI_CADE.moderado, 0)} a {num(LIMIARES_HHI_CADE.alto, 0)} é moderadamente concentrado e acima de {num(LIMIARES_HHI_CADE.alto, 0)}, altamente concentrado.
+                </p>
 
                 <EmpresasSubtitulo>Quanto a concentração muda conforme o nível?</EmpresasSubtitulo>
                 <GraficoBarras
                   titulo="HHI da potência em operação por nível, com os limiares do Guia do CADE"
                   dados={linhasNiveis(ct.concentracao)}
                   chaveCategoria="id"
-                  chaveRotulo="nivel"
+                  chaveRotulo="nivel_curto"
                   series={[{ id: "hhi", rotulo: "HHI", cor: "var(--serie-comp-1)" }]}
                   unidade="pontos"
                   casas={0}
@@ -186,6 +193,9 @@ export default function PaginaP039() {
                     { valor: LIMIARES_HHI_CADE.alto, rotulo: "acima: altamente concentrada (CADE)" },
                   ]}
                 />
+                <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-leitura-niveis="">
+                  Os três HHI usam a mesma fronteira de usinas e diferem no que é contado: o dono direto ou o grupo de controle, e a capacidade proporcional ou a capacidade sob controle. As duas capacidades não se somam.
+                </p>
                 <TabelaInterativa
                   titulo="HHI, CR4 e CR10 por nível de agregação"
                   colunas={COLUNAS_NIVEIS}
@@ -205,6 +215,7 @@ export default function PaginaP039() {
                   padrao={padraoGrupo}
                   arvoreInicial={arvoreInicial}
                   urlCadeia={g.series.cadeia}
+                  motivos={ct.cobertura.motivos_parada}
                   fonte={fontePolimero}
                   versao={datas.polimero_referencia ?? ""}
                 />

@@ -137,7 +137,7 @@ describe("mercado: páginas", () => {
     const html = paginas["mre-gsf"];
     expect(html).toContain("na mesma janela");
     expect(html).toContain(`${num(div.calculado, 2)}%`);
-    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} p.p. abaixo`);
+    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo`);
     // o cartão mostra outra janela; o texto não pode sugerir que a diferença é contra o valor do cartão
     expect(html).toContain("O valor do cartão é o da janela mais recente");
   });

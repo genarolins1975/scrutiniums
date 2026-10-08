@@ -79,7 +79,7 @@ export default function AfluenciaPage() {
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["REE", "SIN", "MWmed", "EAR", "ONS"]}
+        <CabecalhoModulo siglas={["ENA", "MLT", "REE", "SIN", "MWmed", "EAR", "ONS"]}
           rotulo="Água e clima"
           titulo="Afluência"
           referencia={
@@ -88,9 +88,9 @@ export default function AfluenciaPage() {
             </>
           }
         >
-          A <Termo slug="ena">ENA</Termo> converte em energia as vazões naturais que chegam aos reservatórios. Em % da <Termo slug="mlt">MLT</Termo>, ela diz se a água que
-          chega está acima ou abaixo da média de longo termo usada pelo ONS. Esta página soma 30 dias de ENA e de MLT antes de dividir, compara com a mesma janela dos anos
-          anteriores e mostra que a própria MLT muda de versão.
+          {perguntaPainel("p018")} A <Termo slug="ena">ENA</Termo> converte em energia as vazões naturais que chegam aos reservatórios. Em % da <Termo slug="mlt">MLT</Termo>, ela
+          diz se a água que chega está acima ou abaixo da média de longo termo usada pelo ONS. Para isso, a página soma 30 dias de ENA e 30 dias de MLT antes de dividir, compara
+          o resultado com a mesma janela dos anos anteriores e mostra que a própria MLT muda de versão.
         </CabecalhoModulo>
         <AguaNavegacao atual="p018" />
         <ModoProfundidade>
@@ -102,7 +102,7 @@ export default function AfluenciaPage() {
               natureza="CALCULADO"
               porQueImporta={
                 <>
-                  A água que chega hoje é a energia que poderá ser guardada ou gerada nas próximas semanas. Somar 30 dias suaviza a oscilação diária, e a comparação com a mesma
+                  A água que chega é a energia que poderá ser guardada ou gerada nas próximas semanas. Somar 30 dias suaviza a oscilação diária, e a comparação com a mesma
                   janela de outros anos separa a estação chuvosa de uma afluência fora do comum.
                 </>
               }

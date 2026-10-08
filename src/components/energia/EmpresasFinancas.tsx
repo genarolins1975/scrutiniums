@@ -133,7 +133,7 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
             <select value={v.conta} onChange={(e) => definir({ conta: e.target.value as ContaCvm })} className="min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-carvao">
               {contas.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.rotulo} ({c.codigo})
+                  {c.rotulo}
                 </option>
               ))}
             </select>
@@ -207,7 +207,8 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
         {!faltaSerie && v.sel.length > 0 && (
           <>
             <p className="text-sm text-carvao-muted" aria-live="polite">
-              {conta?.rotulo} (conta {conta?.codigo}), {rotuloEscopo(v.escopo)}, {freq === "anual" ? "exercícios de 12 meses (DFP)" : `informações trimestrais (ITR), ${ROTULO_RECORTE[d.recorte ?? ""] ?? "recorte publicado"}`}. O 4º trimestre não é deduzido por diferença.
+              {conta?.rotulo}
+              <span data-nivel="analisar"> (conta {conta?.codigo} do plano padronizado da CVM)</span>, {rotuloEscopo(v.escopo)}, {freq === "anual" ? "exercícios de 12 meses (DFP)" : `informações trimestrais (ITR), ${ROTULO_RECORTE[d.recorte ?? ""] ?? "recorte publicado"}`}. O 4º trimestre não é deduzido por diferença.
               {semDados.length ? ` Sem valor neste escopo e nesta conta: ${semDados.map(nome).join(", ")}.` : ""}
             </p>
             {d.linhas.length > 0 ? (

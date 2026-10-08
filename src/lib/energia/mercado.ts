@@ -1,4 +1,4 @@
-import { mesAno, mesAnoCurto, num } from "./formato";
+import { mesAno, mesAnoCurto, num, pct } from "./formato";
 import { datasLegiveis } from "./visao";
 import type { Proveniencia } from "./tipos";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
@@ -63,8 +63,26 @@ export function provenienciaLegivel(p: Proveniencia): Proveniencia {
   };
 }
 
+/**
+ * Nome com que o leitor reconhece os conjuntos abertos da CCEE, cujo título no portal é o próprio código. O texto vem da
+ * descrição que o catálogo do observatório já publica para cada conjunto (dados_catalogo.csv); o código fica no recurso e
+ * no endereço do conjunto, em Analisar e Auditar ("Sobre este dado").
+ */
+export const NOME_CONJUNTO_CCEE: Record<string, string> = {
+  agente_qtd_contabilizacao: "quantidade de agentes participantes por classe de comercialização",
+  consumo_classe_agente: "consumo usado na contabilização do mercado de curto prazo, por classe de agente",
+  mre_mensal: "dados do MRE usados na contabilização do mercado de curto prazo",
+  encargo_ess_ancilar: "encargos gerados no mercado de curto prazo",
+};
+
 export function provenienciasLegiveis(g: MercadoGold): ProvenienciaMercado {
-  return Object.fromEntries(Object.entries(g.proveniencia).map(([k, v]) => [k, provenienciaLegivel(v)])) as ProvenienciaMercado;
+  return Object.fromEntries(
+    Object.entries(g.proveniencia).map(([k, v]) => {
+      const p = provenienciaLegivel(v);
+      const nome = p.fonte.orgao === "CCEE" ? NOME_CONJUNTO_CCEE[p.fonte.dataset] : undefined;
+      return [k, nome ? { ...p, fonte: { ...p.fonte, dataset: nome } } : p];
+    }),
+  ) as ProvenienciaMercado;
 }
 
 export function painelMercado(g: MercadoGold, id: IdPainelMercado): PainelMercado | null {
@@ -525,3 +543,179 @@ export function textoVariacaoPp(atual: number | null | undefined, anterior: numb
   return `${d >= 0 ? "+" : "−"}${num(Math.abs(d), 1)} p.p.`;
 }
 
+
+/** "subiu 4,3%", "caiu 1,2%" ou "não variou": o sentido da variação dito por extenso (a decisão é na precisão exibida). */
+export function textoVariacaoVerbo(v: number, casas = 1): string {
+  const arred = Number(Math.abs(v).toFixed(casas));
+  if (arred === 0) return "não variou";
+  return `${v > 0 ? "subiu" : "caiu"} ${num(arred, casas)}%`;
+}
+
+/* ---------------------------------------------------------------- vereditos (r8): resposta curta em duas camadas */
+
+/**
+ * Cada veredito responde, em palavras simples e com no máximo dois números, à pergunta do título do painel e diz o limite
+ * de leitura. Os números saem dos mesmos campos (KPIs) da resposta completa que a gold publica em `paineis[].resposta`,
+ * que continua inteira como segunda camada (Analisar e Auditar). Sem o KPI, o veredito é vazio e a página mostra só a
+ * mensagem de ausência.
+ */
+
+const mesesDoPeriodo = (p: { inicio: string; fim: string }): string[] => {
+  const out: string[] = [];
+  let [a, m] = p.inicio.split("-").map(Number);
+  const [af, mf] = p.fim.split("-").map(Number);
+  while (a < af || (a === af && m <= mf)) {
+    out.push(`${a}-${String(m).padStart(2, "0")}`);
+    m += 1;
+    if (m > 12) {
+      m = 1;
+      a += 1;
+    }
+  }
+  return out;
+};
+
+/** P032: o livre nos dois universos, com a ressalva de que os dois percentuais não se comparam. */
+export function vereditoLivreRegulado(g: Pick<MercadoGold, "livre_regulado">): string {
+  const k = g.livre_regulado.kpis;
+  const epe = k.participacao_livre_12m;
+  const ccee = k.participacao_acl_ccee_12m;
+  if (!epe && !ccee) return "";
+  if (epe && ccee) {
+    const igual = epe.periodo.inicio === ccee.periodo.inicio && epe.periodo.fim === ccee.periodo.fim;
+    return igual
+      ? `Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE: os dois percentuais medem universos diferentes e não se comparam.`
+      : `O mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE, 12 meses até ${mesAno(epe.periodo.fim)}) e ${pct(ccee.valor_pct, 1)} do consumo contabilizado pela CCEE (12 meses até ${mesAno(ccee.periodo.fim)}): os dois percentuais medem universos diferentes e não se comparam.`;
+  }
+  if (epe) return `Nos 12 meses até ${mesAno(epe.periodo.fim)}, o mercado livre foi ${pct(epe.valor_pct, 1)} do consumo na rede (EPE). A CCEE não publicou os 12 meses para a segunda medida.`;
+  return `Nos 12 meses até ${mesAno(ccee!.periodo.fim)}, o mercado livre foi ${pct(ccee!.valor_pct, 1)} do consumo contabilizado pela CCEE. A EPE não publicou os 12 meses para a segunda medida.`;
+}
+
+/** Nota ao lado dos dois percentuais do livre: por que um é da EPE e o outro da CCEE (texto das limitações publicadas). */
+export function notaDoisUniversos(g: Pick<MercadoGold, "livre_regulado">): string {
+  const k = g.livre_regulado.kpis;
+  if (!k.participacao_livre_12m || !k.participacao_acl_ccee_12m) return "";
+  return `Os dois percentuais do mercado livre (${pct(k.participacao_livre_12m.valor_pct, 1)} e ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) vêm de universos diferentes: a EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado, com as perdas da rede básica rateadas, o que o torna maior que o medido no ponto de conexão. A diferença entre as duas não foi decomposta.`;
+}
+
+/** P033: o que mudou na composição (unidades livres da EPE) e que as contagens não se somam. */
+export function vereditoAgentes(g: Pick<MercadoGold, "agentes_migracao">): string {
+  const k = g.agentes_migracao.kpis;
+  const u = k.ucs_livres;
+  if (!u) {
+    return k.agentes_contabilizados ? `Em ${mesAno(k.agentes_contabilizados.mes)}, ${num(k.agentes_contabilizados.valor, 0)} agentes participaram da contabilização da CCEE. Agente, perfil e unidade consumidora são contagens diferentes e não se somam.` : "";
+  }
+  const v = u.variacao_12m;
+  const dif = v === null || v === undefined ? "" : v > 0 ? `, ${num(v, 0)} a mais que 12 meses antes` : v < 0 ? `, ${num(Math.abs(v), 0)} a menos que 12 meses antes` : ", o mesmo número de 12 meses antes";
+  return `O mercado livre tinha ${num(u.valor, 0)} unidades consumidoras em ${mesAno(u.mes)}${dif}. A EPE conta unidades, não empresas; os agentes da CCEE são outra contagem e não se somam a ela.`;
+}
+
+/** P034: o GSF do mês e o de 12 meses contra os 100% do gráfico, e que o boletim da CCEE traz outro valor para 12 meses. */
+export function vereditoGsf(g: Pick<MercadoGold, "mre_gsf">): string {
+  const k = g.mre_gsf.kpis;
+  const mes = k.gsf_ultimo_mes;
+  const doze = k.gsf_12m;
+  if (!mes && !doze) return "";
+  const divergente = g.mre_gsf.reconciliacao_infomercado.some((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
+  const resto = divergente ? " O boletim da CCEE traz outro valor para os 12 meses, que o observatório não reproduz." : "";
+  if (mes && doze) {
+    const abaixo = mes.valor_pct < 100 && doze.valor_pct < 100 ? ": menos que a garantia" : "";
+    return `Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada, e ${pct(doze.valor_pct, 1)} nos 12 meses até ${mesAno(doze.periodo.fim)}${abaixo}.${resto}`;
+  }
+  if (mes) return `Em ${mesAno(mes.mes)}, as hidrelétricas do MRE geraram ${pct(mes.valor_pct, 1)} da garantia física ajustada. Os 12 meses não estão publicados.`;
+  return `Nos 12 meses até ${mesAno(doze!.periodo.fim)}, as hidrelétricas do MRE geraram ${pct(doze!.valor_pct, 1)} da garantia física ajustada.${resto}`;
+}
+
+/** P035: os dois encargos dos 12 meses, ditos como valores de competência (o mês da contabilização), não de pagamento. */
+export function vereditoEncargos(g: Pick<MercadoGold, "encargos">): string {
+  const k = g.encargos.kpis;
+  const ess = k.ess_12m;
+  const eer = k.eer_12m;
+  if (!ess && !eer) return "";
+  if (ess && eer) {
+    return `Nos 12 meses até ${mesAno(ess.periodo.fim)}, os encargos de serviços do sistema somaram ${reaisCurto(ess.valor_rs)} e o encargo de energia de reserva, ${reaisCurto(eer.valor_rs)}. São valores do mês de contabilização, não do pagamento.`;
+  }
+  const um = ess ?? eer!;
+  return `Nos 12 meses até ${mesAno(um.periodo.fim)}, ${ess ? "os encargos de serviços do sistema somaram" : "o encargo de energia de reserva somou"} ${reaisCurto(um.valor_rs)}. São valores do mês de contabilização, não do pagamento.`;
+}
+
+/** Veredito do painel pelo id; vazio quando o dado falta. */
+export function vereditoPainelMercado(g: MercadoGold, id: IdPainelMercado): string {
+  switch (id) {
+    case "P032":
+      return vereditoLivreRegulado(g);
+    case "P033":
+      return vereditoAgentes(g);
+    case "P034":
+      return vereditoGsf(g);
+    case "P035":
+      return vereditoEncargos(g);
+  }
+}
+
+/**
+ * Conciliação do ESS do boletim do MME (seis meses, com a resposta da demanda) com o ESS de 12 meses da CCEE: o boletim
+ * soma `periodo` e inclui a resposta da demanda; o conjunto aberto da CCEE nos mesmos meses fecha com o boletim sem ela.
+ * Null quando falta o KPI do boletim, o do conjunto da CCEE ou algum mês do conjunto.
+ */
+export function conciliacaoEssMme(g: Pick<MercadoGold, "encargos">): {
+  periodo: { inicio: string; fim: string };
+  meses: number;
+  mmeMilRs: number;
+  respostaDemandaMilRs: number | null;
+  cceeRs: number;
+  ess12mRs: number;
+  periodo12m: { inicio: string; fim: string };
+} | null {
+  const e = g.encargos;
+  const mme = e.kpis.ess_mme_ano;
+  const doze = e.kpis.ess_12m;
+  if (!mme || !doze) return null;
+  const meses = mesesDoPeriodo(mme.periodo);
+  const totais = meses.map((m) => e.ess_mensal.find((x) => x.mes === m)?.total);
+  if (totais.some((t) => t === null || t === undefined)) return null;
+  const rd = meses.map((m) => e.mme.vigente.find((x) => x.tipo === "resposta_demanda" && x.mes === m)?.valor_mil_rs);
+  return {
+    periodo: mme.periodo,
+    meses: meses.length,
+    mmeMilRs: mme.valor_mil_rs,
+    respostaDemandaMilRs: rd.every((v) => v !== undefined) ? (rd as number[]).reduce((s, v) => s + v, 0) : null,
+    cceeRs: (totais as number[]).reduce((s, v) => s + v, 0),
+    ess12mRs: doze.valor_rs,
+    periodo12m: doze.periodo,
+  };
+}
+
+/** Frase que explica por que o ESS do boletim do MME e o ESS de 12 meses não se comparam. */
+export function notaEssMme(g: Pick<MercadoGold, "encargos">): string {
+  const c = conciliacaoEssMme(g);
+  if (!c) return "";
+  const rd = c.respostaDemandaMilRs === null ? "inclui a resposta da demanda" : `inclui ${reaisCurto(c.respostaDemandaMilRs * 1e3)} de resposta da demanda`;
+  return `O cartão do boletim do MME (${reaisCurto(c.mmeMilRs * 1e3)}) soma ${c.meses} meses, ${mesAno(c.periodo.inicio)} a ${mesAno(c.periodo.fim)}, e ${rd}; nesses meses, o ESS da CCEE é ${reaisCurto(c.cceeRs)}. Por isso ele não se compara com os ${reaisCurto(c.ess12mRs)} de 12 meses (${mesAno(c.periodo12m.inicio)} a ${mesAno(c.periodo12m.fim)}), que não incluem a resposta da demanda.`;
+}
+
+/**
+ * Nota do GSF de 12 meses: três valores em três recortes. O do cartão é do observatório na janela mais recente; o do
+ * boletim da CCEE (InfoMercado) tem a janela dele, que termina um mês antes; o terceiro é o do observatório nessa janela.
+ */
+export function notaGsfDozeMeses(g: Pick<MercadoGold, "mre_gsf">): string {
+  const k = g.mre_gsf.kpis;
+  const div = g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado");
+  const base = "soma da geração dos 12 meses sobre a soma da garantia física ajustada";
+  if (!div || div.publicado === null || div.calculado === null || div.diferenca === null) return base;
+  const inicio = mesAno(mesesAntes(div.mes, 11));
+  const janela = `${inicio} a ${mesAno(div.mes)}`;
+  const cartao = k.gsf_12m ? `${pct(k.gsf_12m.valor_pct, 1)}, de ${textoPeriodoMes(k.gsf_12m.periodo)}` : "";
+  return (
+    `${base}. Três valores, três recortes: o InfoMercado Nº ${div.numero}, boletim mensal da CCEE, publica ${num(div.publicado, 2)}% para o ajuste médio de 12 meses até ${mesAno(div.mes)}; ` +
+    `na mesma janela (${janela}) a razão de energias do observatório dá ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo, diferença que a fonte não explica` +
+    (cartao ? `; o cartão mostra ${cartao}. O valor do cartão é o da janela mais recente` : "")
+  );
+}
+
+/** Mês AAAA-MM n meses antes de outro. */
+export function mesesAntes(mes: string, n: number): string {
+  const [a, m] = mes.split("-").map(Number);
+  const t = a * 12 + (m - 1) - n;
+  return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
+}

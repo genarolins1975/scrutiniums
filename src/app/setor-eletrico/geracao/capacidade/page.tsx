@@ -16,6 +16,7 @@ import {
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -42,6 +43,8 @@ import {
   respostaCapacidade,
   rotaPainel,
   situacaoMensal,
+  textoSemComparacaoMensal,
+  vereditoCapacidade,
 } from "@/lib/energia/geracao";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
@@ -114,7 +117,7 @@ export default function GeracaoCapacidadePage() {
                   o despacho. Comparar instalado e produzido evita ler crescimento de capacidade como crescimento de geração na mesma proporção.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
+              oQueMudou={<>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "o fator de capacidade mensal")}</>}
               comoInterpretar={
                 <>
                   Fator de capacidade = geração do mês ÷ (potência em operação comercial média do mês × horas com dado), somado nos 12 meses como razão de energias, só nas usinas
@@ -133,12 +136,17 @@ export default function GeracaoCapacidadePage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <GeracaoAviso tipo="alerta">{atual.texto}</GeracaoAviso>}
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p024">
+                <RespostaCurta id="p024" veredito={vereditoCapacidade(c) || respostaCapacidade(c)}>
                   {respostaCapacidade(c)}
-                </p>
+                </RespostaCurta>
                 <GeracaoRecorte
                   periodo={`retrato de ${dataBR(c.retrato.data)}; fator de capacidade de ${periodo12} (12 meses completos); série mensal de ${mesAno(c.mensal.meses[0])} a ${ultimoMes ? mesAno(ultimoMes) : "mês não publicado"}`}
-                  universo={`unidades geradoras das usinas despachadas pelo ONS (Tipo I, II-A, II-B e II-C) em operação comercial: ${num(c.retrato.por_categoria.reduce((s, x) => s + x.usinas, 0), 0)} usinas e ${num(c.retrato.por_categoria.reduce((s, x) => s + x.unidades, 0), 0)} unidades no retrato`}
+                  universo={
+                    <>
+                      unidades geradoras das usinas despachadas pelo ONS <span data-nivel="analisar">(Tipo I, II-A, II-B e II-C) </span>em operação comercial: {num(c.retrato.por_categoria.reduce((s, x) => s + x.usinas, 0), 0)} usinas e{" "}
+                      {num(c.retrato.por_categoria.reduce((s, x) => s + x.unidades, 0), 0)} unidades no retrato
+                    </>
+                  }
                   unidade="MW (potência), % (fator de capacidade e parcela), MWmed (geração estimada da MMGD)"
                 />
                 <div className="grid gap-4 sm:grid-cols-3">

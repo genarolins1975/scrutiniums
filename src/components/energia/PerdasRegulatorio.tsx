@@ -97,7 +97,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
 
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
         {!sel ? (
-          <p className="text-carvao-muted">Escolha um ponto, uma linha da tabela ou uma área do mapa para ver os degraus mensais do percentual técnico dessa distribuidora.</p>
+          <p className="text-carvao-muted">Escolha um ponto ou uma linha da tabela para ver, mês a mês, o percentual técnico dessa distribuidora.</p>
         ) : !linhaSel ? (
           <p>{rotulos[sel] ?? sel}: nenhum trecho de 6 meses ou mais com o mesmo percentual técnico foi identificado na série do SAMP (trechos curtos ficam só no arquivo para download).</p>
         ) : (

@@ -52,6 +52,7 @@ function Amostra({ tipo }: { tipo: TipoLigacao }) {
 
 function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: PassoTrilha; ordem: number; total: number }) {
   const prova = provaDoPasso(passo.prova);
+  const nota = passo.nota?.(prova) ?? null;
   return (
     <li id={`passo-${passo.id}`} className="scroll-mt-4" data-passo={passo.id}>
       <article aria-labelledby={`t-${passo.id}`} className="border border-linha bg-superficie p-5 md:p-6">
@@ -67,8 +68,9 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
               const c = conceito(s);
               return c ? (
                 <li key={s}>
-                  <Link href={`/setor-eletrico/aprenda/${s}`} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-                    {c.sigla ?? c.nome}
+                  <Link href={`/setor-eletrico/aprenda/${s}`} className="inline-flex min-h-[44px] items-center gap-2 border border-linha px-3 text-carvao hover:border-energia">
+                    <span className="rotulo">{c.sigla ?? c.nome}</span>
+                    {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-carvao-muted">{c.nome}</span>}
                   </Link>
                 </li>
               ) : null;
@@ -79,6 +81,11 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
         <div className="mt-4">
           <p className="rotulo mb-2 text-mineral">O número no observatório</p>
           <AprendaProva prova={prova} volta={`trilha:${trilhaId}:${passo.id}`} />
+          {nota && (
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao" data-nota-passo={passo.id}>
+              {nota}
+            </p>
+          )}
         </div>
       </article>
       {passo.ligacao && (

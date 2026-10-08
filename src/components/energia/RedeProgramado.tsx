@@ -6,6 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeEscolha } from "@/components/energia/RedeControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -35,6 +36,7 @@ import {
   semCaminhosInternos,
   sentidoPositivo,
   textoProgramaRepetido,
+  vereditoProgramado,
   type BaseDesvio,
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -99,9 +101,9 @@ export function RedeProgramado({
         <RedeEscolha legenda="Base" opcoes={OPCOES_BASE} valor={base} onEscolher={(x) => definir({ base: x })} />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p031" aria-live="polite">
+      <RespostaCurta id="p031" vivo veredito={vereditoProgramado(p, par, base)}>
         {respostaProgramado(p, par, base)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div className="min-w-0">
@@ -205,6 +207,9 @@ export function RedeProgramado({
 
       <div className="space-y-4 border-t border-linha pt-5">
         <h3 className="font-serif text-lg text-carvao">Os maiores desvios horários{base === "sem" ? ", fora dos dias rotulados" : ""}</h3>
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          São as {maiores.length} horas em que o fluxo medido mais se afastou do programado, cada uma com o programado, o verificado e o desvio.
+        </p>
         <TabelaInterativa
           titulo={`Os ${maiores.length} maiores desvios absolutos${base === "sem" ? " fora dos dias rotulados" : ""}`}
           colunas={COLUNAS_MAIORES_DESVIOS}
@@ -226,7 +231,7 @@ export function RedeProgramado({
           entidades={PARES_PROGRAMADO.map((x) => ({ id: x, rotulo: nomePar(x), sinonimos: [curtoPar(x)] }))}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ pares: ids as ParProgramado[] })}
-          dicaBusca="Norte, Sul, Argentina"
+          dicaBusca="Buscar, por exemplo Norte, Sul, Argentina"
           vazio="Nenhum par escolhido. Escolha até quatro para ver as horas materiais na mesma escala."
         >
           {() => null}

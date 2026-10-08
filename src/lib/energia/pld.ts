@@ -40,7 +40,9 @@ import type {
   PermanenciaAnual,
   PldHoraDiaArquivo,
   PldHorarioRecenteArquivo,
+  PosicaoReferencia,
   RegimeLimites,
+  SensibilidadePeso,
 } from "@/lib/energia/tipos-pld";
 
 /* ---------- rotas e painéis ---------- */
@@ -324,6 +326,25 @@ export function respostaP008(c: ConceitoPld, lig: Record<string, LigacaoFormacao
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P008 em palavras simples: o que o PLD é e de onde sai, sem número. Cada frase depende das mesmas passagens
+ * conferidas que sustentam a resposta completa (respostaP008); sem elas, o veredito diz que a definição não está conferida.
+ */
+export function vereditoP008(c: ConceitoPld): string {
+  const tem = (...ids: string[]) => ids.every((id) => passagemValida(c.fontes_textuais.find((f) => f.id === id)));
+  const partes: string[] = [];
+  if (tem("ren957_art2_xiii", "ren957_art5_p4"))
+    partes.push("O PLD é o preço usado para valorar a diferença entre a energia contratada e a verificada de cada agente.");
+  if (tem("d5163_art57_p1", "ren957_art78")) partes.push("Tem como base o custo marginal de operação e fica entre um mínimo e um máximo fixados pela ANEEL.");
+  if (!partes.length) return "As passagens normativas que sustentam a definição não estão nesta publicação; a explicação fica sem conferência.";
+  return partes.join(" ");
+}
+
+/** Tira o código HTTP entre parênteses de uma frase escrita para a gold ("... não estão acessíveis (HTTP 403)." vira "... não estão acessíveis."). */
+export function semCodigoHttp(texto: string): string {
+  return texto.replace(/\s*\(HTTP [45]\d{2}[^)]*\)/g, "");
+}
+
 /* ====================================================================== */
 /* P009: CMO e formação de preço                                          */
 /* ====================================================================== */
@@ -372,6 +393,35 @@ export function respostaP009(c: BlocoCmoPld, sm: Submercado): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P009 em palavras simples: onde o PLD médio da semana de referência ficou frente ao CMO semanal do DECOMP e à média do
+ * DESSEM, e o que a página compara. Usa as mesmas diferenças prontas da gold que a resposta completa (respostaP009); o sentido
+ * (acima, abaixo, igual) é o do valor arredondado a centavos, como em diferencaTexto.
+ */
+export function vereditoP009(c: BlocoCmoPld, sm: Submercado): string {
+  const ref = c.semana_referencia;
+  const x = ref?.por_sm.find((p) => p.sm === sm) ?? null;
+  if (!ref || !x) return "Nenhuma semana operativa completa com os três valores (CMO semanal do DECOMP, CMO do DESSEM e PLD) nesta publicação.";
+  return (
+    `Na semana que terminou em ${dataBR(ref.fim)}, o PLD ${DO_SM[sm]} ficou ${diferencaTexto(x.pld_menos_decomp, "CMO semanal do DECOMP", "m")} ` +
+    `e ${diferencaTexto(x.pld_menos_dessem, "CMO médio do DESSEM", "m")}. A página compara os três valores no mesmo intervalo.`
+  );
+}
+
+/**
+ * Por que a contagem de horas entre os limites daqui difere da página de limites no mesmo ano: aqui só entram as horas com o CMO do
+ * DESSEM publicado. Devolve null quando as duas contagens coincidem ou falta um dos blocos. As duas leem pld_detalhe.json.
+ */
+export function notaHorasEntreLimites(c: BlocoCmoPld, l: BlocoLimitesDisponivel | null, sm: Submercado): string | null {
+  const r = relacaoMaisRecente(c, sm);
+  const p = l && r ? permanencia(l, r.ano, sm) : null;
+  if (!r || !p || r.entre === null || r.entre.n === p.horas_entre) return null;
+  return (
+    `Na página de limites, ${r.ano}${r.parcial ? " (ano parcial)" : ""} tem ${num(p.horas_entre, 0)} horas entre os limites ${DO_SM[sm]}; aqui são ${num(r.entre.n, 0)}, ` +
+    `porque entram só as horas com o CMO do DESSEM publicado (${num(r.horas_com_cmo, 0)} das ${num(r.horas_pld, 0)} horas do ano).`
+  );
+}
+
 export type LinhaRelacao = LinhaTabela & { id: string };
 
 export function linhasRelacaoAnual(c: BlocoCmoPld, sm: Submercado): LinhaRelacao[] {
@@ -417,13 +467,13 @@ export function linhasHorariasCmo(r: PldHorarioRecenteArquivo, sm: Submercado): 
   return r.t.map((t, i) => ({ t, pld: r.pld[sm][i] ?? null, cmo: r.cmo_dessem[sm][i] ?? null }));
 }
 
-/** Marcos de evento com evidência no eixo semanal: fim da sequência de zeros do A02, quando está no recorte. */
+/** Marcos de evento com evidência no eixo semanal: primeira e última semana da sequência de CMO semanal zero (A02), quando estão no recorte. */
 export function marcosSemanais(a02: AchadoA02, fins: readonly string[]): { x: string; rotulo: string }[] {
   const seq = a02.sequencia_comum_mais_longa;
   if (!seq || !fins.length) return [];
   const m: { x: string; rotulo: string }[] = [];
-  if (seq.inicio >= fins[0] && seq.inicio <= fins[fins.length - 1]) m.push({ x: seq.inicio, rotulo: `início dos zeros do DECOMP (${seq.semanas} semanas)` });
-  if (seq.fim >= fins[0] && seq.fim <= fins[fins.length - 1]) m.push({ x: seq.fim, rotulo: "fim dos zeros do DECOMP" });
+  if (seq.inicio >= fins[0] && seq.inicio <= fins[fins.length - 1]) m.push({ x: seq.inicio, rotulo: `primeira semana com CMO semanal zero (${seq.semanas} seguidas)` });
+  if (seq.fim >= fins[0] && seq.fim <= fins[fins.length - 1]) m.push({ x: seq.fim, rotulo: "última semana com CMO semanal zero" });
   return m;
 }
 
@@ -490,6 +540,20 @@ export function respostaP010(l: BlocoLimitesDisponivel, ano: number, sm: Submerc
   if (p.horas_um_centavo_acima_do_piso > 0)
     partes.push(`${plural(p.horas_um_centavo_acima_do_piso, "hora ficou", "horas ficaram")} exatamente um centavo acima do piso e não contam como piso.`);
   return partes.join(" ");
+}
+
+/**
+ * Veredito do P010 em palavras simples: quanto do tempo o PLD ficou no piso e no teto horário no ano e submercado escolhidos, e se
+ * algum dia teve a média no teto estrutural. Lê os mesmos campos de permanência que a resposta completa (respostaP010).
+ */
+export function vereditoP010(l: BlocoLimitesDisponivel, ano: number, sm: Submercado, diaReferencia: string): string {
+  const p = permanencia(l, ano, sm);
+  if (!p) return `Sem permanência publicada para ${ano} ${NO_SM[sm]}.`;
+  const periodo = p.parcial ? `${ano} (até ${dataBR(diaReferencia)})` : String(ano);
+  const teto = p.horas_teto_horario === 0 ? "em nenhuma hora no teto horário" : `no teto horário em ${plural(p.horas_teto_horario, "hora", "horas")}`;
+  const estrutural =
+    p.dias_teto_estrutural === 0 ? "Nenhum dia teve a média no teto estrutural." : `${plural(p.dias_teto_estrutural, "dia teve", "dias tiveram")} a média no teto estrutural.`;
+  return `Em ${periodo}, o PLD ${DO_SM[sm]} ficou no piso (valor mínimo) em ${fracPct(p.frac_piso, 2)} das horas e ${teto}. ${estrutural}`;
 }
 
 export type LinhaPermanencia = LinhaTabela & { id: string; rotulo: string };
@@ -776,7 +840,7 @@ export const MEDIDAS_MENSAIS: readonly MedidaMensal[] = ["temporal", "ponderada_
 export const ROTULO_MEDIDA: Record<MedidaMensal, string> = {
   temporal: "Média temporal (todas as horas pesam igual)",
   ponderada_carga: "Ponderada pela carga do balanço do ONS",
-  ponderada_carga_sem_mmgd: "Ponderada pela carga sem MMGD (perímetro homogêneo)",
+  ponderada_carga_sem_mmgd: "Ponderada pela carga sem MMGD (mesma base em toda a série)",
   real: "Média temporal em moeda constante (IPCA)",
 };
 export const CURTO_MEDIDA: Record<MedidaMensal, string> = {
@@ -846,7 +910,7 @@ export function serieMedidaPorSm(h: BlocoHistorico, medida: MedidaMensal, sms: r
 
 /** Mudanças de perímetro do peso declaradas pelo ONS, como marcos no eixo mensal. */
 export function marcosPerimetro(h: BlocoHistorico): { x: string; rotulo: string }[] {
-  return h.ponderacao.quebras.map((q) => ({ x: q.mes, rotulo: `perímetro da carga: ${q.de} para ${q.para} (${dataBR(q.data)})` }));
+  return h.ponderacao.quebras.map((q) => ({ x: q.mes, rotulo: `${q.descricao.replace(/\.$/, "")} (${dataBR(q.data)})` }));
 }
 
 export function respostaP011(h: BlocoHistorico, sm: Submercado): string {
@@ -878,6 +942,63 @@ export function respostaP011(h: BlocoHistorico, sm: Submercado): string {
   }
   partes.push("Percentil não é previsão, e cada ano teve piso e tetos próprios.");
   return partes.join(" ");
+}
+
+/**
+ * Veredito do P011 em palavras simples. O critério é o que a página já tem: a mediana e o percentil das médias diárias do mesmo mês
+ * em anos anteriores (percentil = fração de dias menores mais metade dos empates). A frase "em X% desses dias a média foi menor" só
+ * sai quando não há empate; com empate, o veredito diz o percentil. A metade central vai do 25º ao 75º percentil, a mesma regra
+ * das faixas baixa, central e alta da página principal.
+ */
+export function vereditoP011(h: BlocoHistorico, sm: Submercado): string {
+  const p = h.posicao_referencia.find((x) => x.sm === sm);
+  if (!p || p.media_dia === null) return `Sem média diária completa no dia de referência ${NO_SM[sm]}.`;
+  const mm = p.mesmo_mes;
+  if (mm.percentil === null || mm.p50 === null) return `Em ${dataBR(p.dia)}, não há dias de ${nomeMes(mm.mes)} em anos anteriores para comparar.`;
+  const anos = Array.from(new Set(h.sazonal_mes.find((s) => s.sm === sm && s.mes === mm.mes)?.anos ?? []));
+  const faixaAnos = anos.length > 1 ? ` de ${anos[0]} a ${anos[anos.length - 1]}` : anos.length === 1 ? ` de ${anos[0]}` : "";
+  const centavos = (v: number) => Math.round(v * 100);
+  const frenteMediana = centavos(p.media_dia) === centavos(mm.p50) ? "igual à mediana" : p.media_dia < mm.p50 ? "abaixo da mediana" : "acima da mediana";
+  const faixa = mm.percentil < 25 ? "entre os 25% mais baixos" : mm.percentil > 75 ? "entre os 25% mais altos" : "na metade central";
+  const posicao = mm.empates === 0 ? `Em ${num(mm.percentil, 1)}% desses dias a média foi menor.` : `A posição entre esses dias é o percentil ${num(mm.percentil, 1)}.`;
+  return `Em ${dataBR(p.dia)}, a média diária do PLD ${DO_SM[sm]} ficou ${frenteMediana} dos dias de ${nomeMes(mm.mes)}${faixaAnos} e ${faixa} deles. ${posicao}`;
+}
+
+/**
+ * Por que o percentil do cartão da página principal difere do percentil do Histórico para o mesmo dia e a mesma média: o cartão
+ * compara o dia com todas as médias diárias desde 2021 (todos os meses); o Histórico, só com os dias do mesmo mês de anos anteriores.
+ * Devolve null quando falta um dos dois percentis. Os dois números vêm da gold (pld.json e pld_detalhe.json).
+ */
+export function notaDoisPercentis(
+  cartao: { sm: Submercado; media_dia: number | null; posicao: { percentil: number | null; n_dias: number } } | undefined,
+  historico: PosicaoReferencia | undefined,
+): string | null {
+  if (!cartao || !historico || cartao.posicao.percentil === null || historico.mesmo_mes.percentil === null || cartao.media_dia === null) return null;
+  return (
+    `O percentil dos cartões compara a média do dia com as ${num(cartao.posicao.n_dias, 0)} médias diárias desde 2021, de todos os meses; o painel Histórico compara com os ` +
+    `${num(historico.mesmo_mes.n_dias, 0)} dias de ${nomeMes(historico.mesmo_mes.mes)} de anos anteriores. Por isso os dois diferem para a mesma média: no ${CURTO_SM[cartao.sm]}, ` +
+    `percentil ${num(cartao.posicao.percentil, 1)} nos cartões e ${num(historico.mesmo_mes.percentil, 1)} no Histórico, com média de ${reais(cartao.media_dia)}/MWh.`
+  );
+}
+
+/**
+ * "O que mudou" do P011 sem a frase confusa da gold: em cada submercado, a média ponderada pela carga do balanço contra a média
+ * temporal e contra a ponderada sem MMGD, no mês das fichas. Os limites vêm de por_sm (a gold traz as diferenças prontas); o sentido
+ * (acima ou abaixo) só é escrito quando é o mesmo nos quatro submercados.
+ */
+export function textoSensibilidadePeso(sp: SensibilidadePeso): string {
+  const faixa = (vs: number[], termo: string) => {
+    if (!vs.length) return null;
+    const todosPos = vs.every((v) => v > 0);
+    const todosNeg = vs.every((v) => v < 0);
+    if (!todosPos && !todosNeg) return `de ${reais(Math.min(...vs))} a ${reais(Math.max(...vs))}/MWh em relação ${termo}`;
+    const abs = vs.map(Math.abs);
+    return `de ${reais(Math.min(...abs))} a ${reais(Math.max(...abs))}/MWh ${todosPos ? "acima" : "abaixo"} ${termo}`;
+  };
+  const a = faixa(sp.por_sm.map((x) => x.ponderada_menos_temporal), "da média temporal");
+  const b = faixa(sp.por_sm.map((x) => x.ponderada_menos_sem_mmgd), "da ponderada pela carga sem MMGD");
+  if (!a || !b) return "";
+  return `Em ${mesAno(sp.mes)}, nos quatro submercados, a média ponderada pela carga do balanço (com a MMGD estimada) ficou ${a} e ${b}. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma com o seu perímetro.`;
 }
 
 export function linhasSazonal(h: BlocoHistorico, sm: Submercado): LinhaTabela[] {
@@ -1079,6 +1200,20 @@ export function respostaP012(r: BlocoRegional, periodo: string): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P012 em palavras simples: em que fração das horas os preços dos submercados diferiram (mais de um centavo, o limiar
+ * da página) e quanto, na média, entre o maior e o menor. Lê os mesmos campos de amplitude que a resposta completa (respostaP012).
+ */
+export function vereditoP012(r: BlocoRegional, periodo: string): string {
+  const a = r.amplitude.find((x) => x.periodo === periodo);
+  const per = r.periodos.find((p) => p.id === periodo);
+  if (!a || !per) return "Sem horas com os quatro submercados publicados neste período.";
+  const quando =
+    periodo === "12m" ? "Nos últimos 12 meses" : periodo === "30d" ? "Nos últimos 30 dias" : /parcial/i.test(per.rotulo) ? `Em ${per.rotulo.replace(/\s*\(parcial\)/i, "")} (até ${dataBR(a.fim)})` : `Em ${per.rotulo}`;
+  const media = a.media === null ? "" : `, em média ${reais(a.media)}/MWh entre o maior e o menor`;
+  return `${quando}, os preços dos quatro submercados diferiram em mais de um centavo em ${fracPct(a.frac_com_separacao, 1)} das horas${media}. A contagem descreve quando os preços diferem, não o motivo.`;
+}
+
 export function linhasSeparacao(r: BlocoRegional, periodo: string): LinhaTabela[] {
   return PARES.map((par) => {
     const s = r.separacao.find((x) => x.periodo === periodo && x.par === par);
@@ -1155,6 +1290,30 @@ export function matrizRegional(r: BlocoRegional, medida: MedidaMatriz): { eixo: 
   const fonte = medida === "dif_media" ? m.dif_media : m.frac_separadas;
   const valores = fonte.map((linha, i) => linha.map((v, j) => (i === j ? NAO_SE_APLICA : medida === "frac_separadas" ? emPct(v) : typeof v === "number" ? v : null)));
   return { eixo, valores };
+}
+
+/**
+ * Maior e menor valor da matriz em palavras, para o leitor que não tem o número em cada célula. Na fração de horas separadas, os pares
+ * são simétricos (conta cada par uma vez); na diferença média, o maior valor tem o sinal da célula ("a linha mais cara que a coluna") e o
+ * menor é o de menor valor absoluto. Lê as mesmas células que o mapa (matrizRegional).
+ */
+export function extremosMatriz(m: { eixo: { id: string; rotulo: string; curto: string }[]; valores: ValorCelula[][] }, medida: MedidaMatriz): string | null {
+  const itens: { i: number; j: number; v: number }[] = [];
+  m.valores.forEach((linha, i) =>
+    linha.forEach((v, j) => {
+      if (typeof v === "number" && Number.isFinite(v) && (medida === "frac_separadas" ? i < j : true)) itens.push({ i, j, v });
+    }),
+  );
+  if (!itens.length) return null;
+  const par = (i: number, j: number) => `${m.eixo[i].curto} e ${m.eixo[j].curto}`;
+  if (medida === "frac_separadas") {
+    const maior = itens.reduce((a, b) => (b.v > a.v ? b : a));
+    const menor = itens.reduce((a, b) => (b.v < a.v ? b : a));
+    return `Maior valor: ${par(maior.i, maior.j)}, ${num(maior.v, 1)}% das horas. Menor valor: ${par(menor.i, menor.j)}, ${num(menor.v, 1)}% das horas.`;
+  }
+  const maior = itens.reduce((a, b) => (b.v > a.v ? b : a));
+  const menor = itens.filter((x) => x.i < x.j).reduce((a, b) => (Math.abs(b.v) < Math.abs(a.v) ? b : a));
+  return `Maior diferença: ${m.eixo[maior.i].curto} acima de ${m.eixo[maior.j].curto} em ${reais(maior.v)}/MWh. Menor diferença: ${par(menor.i, menor.j)}, ${reais(Math.abs(menor.v))}/MWh.`;
 }
 
 /** Linhas da tabela equivalente da matriz (pares ordenados A, B), com os mesmos valores das células. */

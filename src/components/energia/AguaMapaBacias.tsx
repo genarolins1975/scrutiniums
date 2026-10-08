@@ -52,6 +52,14 @@ async function busca(url: string): Promise<CamadaGeo> {
 
 const LARGURA_REF = 700;
 
+/** "ONS, Contornos das Bacias Hidrográficas (Bacias_Hidrograficas_SIN.zip)": o nome da fonte para o leitor, sem o nome do arquivo. */
+function fonteSemArquivo(fonte: string): string {
+  return fonte.replace(/\s*\([^()]*\.(?:zip|csv|json|parquet)\)/i, "");
+}
+function arquivoDaFonte(fonte: string): string | null {
+  return /\(([^()]*\.(?:zip|csv|json|parquet))\)/i.exec(fonte)?.[1] ?? null;
+}
+
 export function AguaMapaBacias({
   titulo,
   fonteGeometria,
@@ -240,7 +248,9 @@ export function AguaMapaBacias({
         {geo && semPoligono.length > 0 && <p>Sem polígono nesta camada: {semPoligono.map((id) => nomes[id] ?? id).join(", ")}.</p>}
         {geo && (
           <p>
-            {geo.fonte}, capturado em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome}, simplificação de {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
+            {fonteSemArquivo(geo.fonte)}
+            {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome}, simplificação de{" "}
+            {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
             {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só para
             orientação.
           </p>

@@ -33,7 +33,9 @@ export type CartaoModelo = {
   papel: string;
   emite: string;
   entradas: string[] | null;
+  /** Fórmula em palavras (formulaEmPalavras); a do registro, com os símbolos, fica em formulaRegistro e só aparece em Analisar. */
   formula: string | null;
+  formulaRegistro: string | null;
   reexecucao: string;
   limitacao: string | null;
   href: string;
@@ -124,15 +126,21 @@ export function PrevisoesModelos({
                   </div>
                   <div>
                     <dt className="rotulo text-mineral">Fórmula</dt>
-                    <dd className="text-carvao [overflow-wrap:anywhere]">{c.formula ?? "não publicada: configuração fora do repositório"}</dd>
+                    <dd className="text-carvao [overflow-wrap:anywhere]">{c.formula ?? "não publicada: a configuração da pesquisa não foi publicada"}</dd>
                   </div>
+                  {c.formulaRegistro && c.formulaRegistro !== c.formula && (
+                    <div data-nivel="analisar">
+                      <dt className="rotulo text-mineral">Fórmula no registro</dt>
+                      <dd className="text-carvao-muted [overflow-wrap:anywhere]">{c.formulaRegistro}</dd>
+                    </div>
+                  )}
                   <div>
                     <dt className="rotulo text-mineral">Reexecução</dt>
                     <dd className="text-carvao">{c.reexecucao}</dd>
                   </div>
                   {c.limitacao && (
                     <div>
-                      <dt className="rotulo text-mineral">Primeira limitação registrada</dt>
+                      <dt className="rotulo text-mineral">Principal limitação</dt>
                       <dd className="text-carvao-muted">{c.limitacao}</dd>
                     </div>
                   )}
@@ -197,7 +205,7 @@ export function PrevisoesModelos({
             casas={2}
             orientacao="horizontal"
             rotulosValor
-            referencias={[{ valor: 1, rotulo: "1: acima, a correção amplia o desvio recente (G23-R1)" }]}
+            referencias={[{ valor: 1, rotulo: "1: acima disso, a correção amplia o desvio recente" }]}
           />
           <TabelaInterativa
             titulo="Coeficientes do último ajuste, todos os segmentos"

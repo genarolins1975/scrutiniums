@@ -2,6 +2,7 @@ import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type { Evidencia } from "./evidencia";
 import { lerGold } from "./gold";
+import { ROTULO_ALERTA as ROTULO_ALERTA_PERDAS } from "./perdas";
 import type { ArvoreSocietaria } from "./empresas";
 import { arvoreDe, evolucaoPerdas, evolucaoQualidade, evolucaoTarifa, type PontoPerdas, type PontoQualidade, type PontoTarifa } from "./empresas";
 import type { CadeiaSocietaria, Distribuidoras, EvidenciasEmpresas, SeriesFinanceiras } from "./tipos-empresas";
@@ -121,4 +122,14 @@ export function evidenciaPerdas(cnpj: string): { evidencia: Evidencia; ano: numb
   const e = lerSerie<{ ano: number; evidencias: Record<string, Evidencia> }>(g?.series?.evidencias ?? null);
   const ev = e?.evidencias[cnpj];
   return ev && e ? { evidencia: ev, ano: e.ano } : null;
+}
+
+/**
+ * Alertas que o módulo Perdas publica para a taxa de perdas do ano de referência de um CNPJ (por exemplo, perda total negativa
+ * ou energia fornecida maior que a injetada), com o rótulo que o próprio módulo usa. Vazio sem alerta ou sem o CNPJ.
+ */
+export function alertasDePerdas(cnpj: string): string[] {
+  const g = lerGold<{ distribuidoras?: { cnpj: string; referencia?: { alertas?: string[] } | null }[] }>("perdas.json");
+  const alertas = g?.distribuidoras?.find((x) => x.cnpj === cnpj)?.referencia?.alertas ?? [];
+  return alertas.map((a) => (ROTULO_ALERTA_PERDAS as Record<string, string>)[a] ?? a);
 }

@@ -14,6 +14,7 @@ import {
   PrevisoesRecorte,
   PrevisoesResposta,
   PrevisoesSeguir,
+  PrevisoesTermos,
 } from "@/components/energia/PrevisoesPagina";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -29,16 +30,21 @@ import {
   colunasCoeficientes,
   emissaoDoModelo,
   enderecoPainel,
+  formulaEmPalavras,
   linhasCoeficientes,
   linhasReexecucao,
   minusculaInicial,
+  paraLeitorPrevisoes,
   perguntaPainel,
   respostaFicha,
   rotaModelo,
   rotuloEstadoModelo,
+  semCodigosInternos,
   slugModelo,
+  termosPrevisoes,
   textoReexecucao,
   textoTolerancia,
+  vereditoFicha,
 } from "@/lib/energia/previsoes";
 import type { Ficha, PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 
@@ -116,14 +122,15 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
           <span className="inline-flex flex-wrap items-center gap-2">
             <EstadoModelo estado={f.estado} comTexto />
           </span>{" "}
-          {f.aprovacao.leitura.trim()}
+          {semCodigosInternos(f.aprovacao.leitura.trim())}
         </CabecalhoModulo>
+        <PrevisoesTermos itens={termosPrevisoes(g.definicoes)} />
         <ModoProfundidade>
           <Bloco id="ficha">
             <PainelEvidencia
               id={ancora}
               pergunta={`Como o ${f.codigo} calcula a previsão do PLD?`}
-              subtitulo={`${f.nome}, versão ${f.versao} · ${f.papel ?? "sem papel registrado"}`}
+              subtitulo={`${f.nome}, versão ${f.versao} · ${semCodigosInternos(f.papel ?? "sem papel registrado")}`}
               natureza="PREVISTO"
               porQueImporta={
                 <>
@@ -141,19 +148,19 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
               }
               comoInterpretar={
                 <>
-                  {resumoModelo?.resumo ?? "Sem resumo publicado para este modelo."} {resumoModelo?.limitacao_principal ?? ""}
-                  {f.formula && <span data-nivel="analisar"> Fórmula: {f.formula}</span>}
+                  Estado {rotuloEstadoModelo(f.estado)} quer dizer que o modelo não alimenta a previsão principal.
+                  {f.formula && <span data-nivel="analisar"> Fórmula no registro: {f.formula}</span>}
                 </>
               }
               naoConcluir={
                 <>
-                  A ficha não diz se o modelo acerta: o desempenho está no painel de desempenho. {f.limitacoes?.[0] ?? ""}
+                  A ficha não diz se o modelo acerta: o desempenho está no painel de desempenho. {resumoModelo?.limitacao_principal ?? paraLeitorPrevisoes(f.limitacoes?.[0] ?? "")}
                 </>
               }
               proveniencia={proveniencia}
             >
               <div className="space-y-6">
-                <PrevisoesResposta id="p014">
+                <PrevisoesResposta id="p014" veredito={vereditoFicha(f, resumoModelo?.resumo, g)}>
                   {resumoModelo?.resumo ? `${resumoModelo.resumo} ` : ""}
                   {respostaFicha(f, g)}
                 </PrevisoesResposta>
@@ -167,10 +174,16 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                   unidade={coef.length ? "Coeficientes na unidade de cada variável; previsões em R$/MWh" : "R$/MWh nominais"}
                 />
                 {!f.implementado_no_repositorio && (
-                  <PrevisoesAviso tipo="alerta">
-                    Sem implementação no repositório: {minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "motivo não registrado"))}
-                    {f.pesos_c1_motivo && f.pesos_c1_motivo !== f.motivo_sem_implementacao ? ` ${semCaminhosDeArquivo(f.pesos_c1_motivo)}` : ""}
-                  </PrevisoesAviso>
+                  <div data-nivel="analisar">
+                    <PrevisoesAviso tipo="alerta">
+                      Sem implementação no observatório: {minusculaInicial(paraLeitorPrevisoes(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "motivo não registrado")))}
+                      {f.pesos_c1_motivo && f.pesos_c1_motivo !== f.motivo_sem_implementacao ? ` ${paraLeitorPrevisoes(semCaminhosDeArquivo(f.pesos_c1_motivo))}` : ""}
+                      <span>
+                        {" "}
+                        Texto do registro: Sem implementação no repositório: {minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "motivo não registrado"))}
+                      </span>
+                    </PrevisoesAviso>
+                  </div>
                 )}
 
                 {reexec.length > 0 && (
@@ -201,7 +214,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                                 {g.evidencias[r.id] ? <ComproveNumero variante="valor" evidencia={g.evidencias[r.id]} endereco={`${rotaModelo(f.codigo)}#${ancora}`} /> : "sem prova"}
                               </td>
                               <td className="border-b border-linha px-2 py-1">{ROTULO_RESULTADO[r.resultado] ?? r.resultado}</td>
-                              <td className="border-b border-linha px-2 py-1 text-xs text-carvao-muted">{r.detalhe}</td>
+                              <td className="border-b border-linha px-2 py-1 text-xs text-carvao-muted">{r.detalhe.replace(/\b(\d+)\.(\d+)\b/g, "$1,$2")}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -230,7 +243,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
 
                 <dl>
                   <PrevisoesFichaLinha rotulo="Estado e aprovação">
-                    {rotuloEstadoModelo(f.estado)}; {f.aprovacao.leitura.trim()} {f.aprovacao.promovido_em ? `Promovido em ${dataBR(f.aprovacao.promovido_em)}.` : "Nunca promovido."}
+                    {rotuloEstadoModelo(f.estado)}; {semCodigosInternos(f.aprovacao.leitura.trim())} {f.aprovacao.promovido_em ? `Promovido em ${dataBR(f.aprovacao.promovido_em)}.` : "Nunca promovido."}
                   </PrevisoesFichaLinha>
                   <PrevisoesFichaLinha rotulo="Número no arquivo">{emissaoDoModelo(f, g)}</PrevisoesFichaLinha>
                   <PrevisoesFichaLinha rotulo="Alvo">{g.definicoes.alvo}</PrevisoesFichaLinha>
@@ -246,10 +259,13 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                       "não publicadas"
                     )}
                   </PrevisoesFichaLinha>
-                  <PrevisoesFichaLinha rotulo="Fórmula">
-                    {f.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{f.formula}</code> : "não publicada"}
-                  </PrevisoesFichaLinha>
-                  <PrevisoesFichaLinha rotulo="Transformações">
+                  <PrevisoesFichaLinha rotulo="Fórmula">{formulaEmPalavras(f) ?? "não publicada"}</PrevisoesFichaLinha>
+                  {f.formula && formulaEmPalavras(f) !== f.formula && (
+                    <PrevisoesFichaLinha rotulo="Fórmula no registro" nivel="analisar">
+                      <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{f.formula}</code>
+                    </PrevisoesFichaLinha>
+                  )}
+                  <PrevisoesFichaLinha rotulo="Transformações" nivel="analisar">
                     {f.transformacoes ? (
                       <ol className="list-decimal space-y-0.5 pl-5">
                         {f.transformacoes.map((x) => (
@@ -260,16 +276,20 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                       "não publicadas"
                     )}
                   </PrevisoesFichaLinha>
-                  <PrevisoesFichaLinha rotulo="Corte">{f.corte}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Corte">{semCodigosInternos(f.corte)}</PrevisoesFichaLinha>
                   <PrevisoesFichaLinha rotulo="Hipóteses">
                     <ul className="list-disc space-y-0.5 pl-5">
                       {f.hipoteses.map((x) => (
-                        <li key={x}>{x}</li>
+                        <li key={x}>{semCodigosInternos(x)}</li>
                       ))}
                     </ul>
                   </PrevisoesFichaLinha>
-                  <PrevisoesFichaLinha rotulo="Faixa de incerteza">{g.governanca.referencia_experimental.faixas}</PrevisoesFichaLinha>
-                  <PrevisoesFichaLinha rotulo="Limitações">
+                  <PrevisoesFichaLinha rotulo="Faixa de incerteza">{g.governanca.referencia_experimental.faixas.replace(/\bCALIBRADO\b/g, "calibrado")}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Principal limitação">
+                    {resumoModelo?.limitacao_principal ?? (f.limitacoes?.length ? paraLeitorPrevisoes(f.limitacoes[0]) : "nenhuma registrada")}
+                    {f.limitacoes && f.limitacoes.length > 1 ? ` Há mais ${f.limitacoes.length - 1 === 1 ? "uma limitação registrada" : `${f.limitacoes.length - 1} limitações registradas`}, em Analisar.` : ""}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Limitações registradas" nivel="analisar">
                     {f.limitacoes?.length ? (
                       <ul className="list-disc space-y-0.5 pl-5">
                         {f.limitacoes.map((x) => (
@@ -284,7 +304,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                     {f.falhas_conhecidas?.length ? (
                       <ul className="list-disc space-y-0.5 pl-5">
                         {f.falhas_conhecidas.map((x) => (
-                          <li key={x}>{x}</li>
+                          <li key={x}>{semCodigosInternos(x)}</li>
                         ))}
                       </ul>
                     ) : (
@@ -297,7 +317,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                 <PrevisoesLeitura
                   comoLer={
                     <>
-                      A fórmula e as transformações dizem, em ordem, como o dado vira previsão; o corte diz o que estava disponível. {coef.length ? "No gráfico, escolha uma variável para ver o peso dela em cada segmento; a tabela tem todas as variáveis e os mesmos números." : ""}
+                      A fórmula diz como o dado vira previsão e o corte diz o que estava disponível; as transformações, em ordem, estão em Analisar. {coef.length ? "No gráfico, escolha uma variável para ver o peso dela em cada segmento; a tabela tem todas as variáveis e os mesmos números." : ""}
                     </>
                   }
                   naoPermite={
@@ -309,6 +329,13 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
 
                 <PrevisoesAuditoria id="implementacao" titulo="Implementação, configuração e reprodução">
                   <dl>
+                    <PrevisoesFichaLinha rotulo="Hipóteses e falhas, como no registro">
+                      <ul className="list-disc space-y-0.5 pl-5">
+                        {[...f.hipoteses, ...(f.falhas_conhecidas ?? [])].map((x) => (
+                          <li key={x}>{x}</li>
+                        ))}
+                      </ul>
+                    </PrevisoesFichaLinha>
                     {impl && (
                       <PrevisoesFichaLinha rotulo="Código">
                         {impl.codigo ?? "não informado"}

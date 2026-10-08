@@ -6,6 +6,7 @@ import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNaveg
 import { InclusaoIsolados, InclusaoLpt, InclusaoMapaPnad, InclusaoRegioesPnad } from "@/components/energia/InclusaoAcesso";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -24,6 +25,7 @@ import {
   respostaAcesso,
   rotaPainel,
   textoPrecisaoPnad,
+  vereditoAcesso,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -132,9 +134,9 @@ export default function AcessoPage() {
               ]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p062">
+                <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
                   {respostaAcesso(a)}
-                </p>
+                </RespostaCurta>
                 <InclusaoRecorte
                   periodo={
                     <>

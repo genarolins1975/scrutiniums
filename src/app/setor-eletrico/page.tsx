@@ -13,7 +13,7 @@ import { Unidade } from "@/components/evidencia/Unidade";
 import { conjuntoLegivel } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { LINKEDIN_URL } from "@/lib/contato";
-import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { dataBR, carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -118,6 +118,22 @@ function Cartao({ titulo, children }: { titulo: string; children: ReactNode }) {
 
 const porId = new Map(NOS_MAPA.map((n) => [n.id, n]));
 
+/** Nome do verbete quando o chip mostra só a sigla ou uma forma curta; null quando o chip já é o nome. */
+function nomeDoConceito(slug: string, rotulo: string): string | null {
+  const c = conceito(slug);
+  if (!c || c.nome.toLowerCase() === rotulo.toLowerCase()) return null;
+  return c.nome;
+}
+
+/** "Concessionárias de distribuição (Brasil)" dentro de uma frase, sem parênteses dentro de parênteses: "concessionárias de distribuição do Brasil". */
+function entidadeEmFrase(e: string): string {
+  const m = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(e.trim());
+  const base = (m ? m[1] : e).trim();
+  const minuscula = /^[A-ZÀ-Þ][a-zß-ÿ]/.test(base) ? base.charAt(0).toLowerCase() + base.slice(1) : base;
+  if (!m) return minuscula;
+  return m[2].toLowerCase() === "brasil" ? `${minuscula} do Brasil` : `${minuscula} (${m[2]})`;
+}
+
 /** Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. */
 function DetalheNo({ no }: { no: NoMapa }) {
   const saem = LIGACOES.filter((l) => l.de === no.id);
@@ -148,6 +164,7 @@ function DetalheNo({ no }: { no: NoMapa }) {
               <Termo slug={c.slug} alvo>
                 {c.rotulo}
               </Termo>
+              {nomeDoConceito(c.slug, c.rotulo) && <span className="ml-1 text-carvao-muted">({nomeDoConceito(c.slug, c.rotulo)})</span>}
             </li>
           ))}
         </ul>
@@ -249,8 +266,12 @@ export default function MapaDoObservatorio() {
   const pub = lerGold<PublicacaoAtualidade & { disponivel?: boolean; resumo?: { com_revisao?: number; observacoes_revisadas?: number; referencias_revisadas?: number } }>("publicacao.json");
 
   const distribuidoras = integra(empresas) ? empresas.distribuidoras.indice : [];
-  const opcoesPerdas = opcoesDistribuidora(distribuidoras, (d) => d.perdas !== null);
-  const opcoesQualidade = opcoesDistribuidora(distribuidoras, (d) => d.qualidade !== null);
+  // o índice traz 123 distribuidoras, entre elas as extintas (a série de perdas de algumas termina em 2005): o seletor de "sua
+  // distribuidora" só lista quem tem dado no ano de referência do módulo, e o rótulo diz qual é o ano e quantas são
+  const anoPerdas = integra(perdas) ? perdas.referencia.ano : null;
+  const anoQualidade = distribuidoras.reduce<number | null>((m, d) => (d.qualidade?.ano != null && (m === null || d.qualidade.ano > m) ? d.qualidade.ano : m), null);
+  const opcoesPerdas = opcoesDistribuidora(distribuidoras, (d) => d.perdas?.ano != null && d.perdas.ano === anoPerdas);
+  const opcoesQualidade = opcoesDistribuidora(distribuidoras, (d) => d.qualidade?.ano != null && d.qualidade.ano === anoQualidade);
   const busca = indiceBusca(
     DESTINOS_NAVEGACAO,
     CONCEITOS,
@@ -265,6 +286,15 @@ export default function MapaDoObservatorio() {
   const ev = integra(perdas) ? perdas.evidencias.taxa_nacional : null;
   const natEv = (metrica("perdas_taxa_total_injetada")?.natureza_transformacao ?? null) as Natureza | null;
   const revisoes = pub?.resumo ?? null;
+  // quantas distribuidoras há por trás de cada contagem da página: o total nacional usa só as concessionárias
+  const universoPerdas = (() => {
+    if (!integra(perdas)) return null;
+    const ano = perdas.referencia.ano;
+    const com = perdas.distribuidoras.filter((d) => d.referencia?.ano === ano);
+    const concessionarias = com.filter((d) => d.grupo === "concessionaria").length;
+    const permissionarias = com.filter((d) => d.grupo === "permissionaria").length;
+    return concessionarias && permissionarias ? { ano, total: com.length, concessionarias, permissionarias } : null;
+  })();
 
   const destinosComCartao = (ds: DestinoNavegacao[]) => ds.filter((d) => d.publicado && d.slug !== "mapa" && CARTOES[d.slug]);
 
@@ -414,9 +444,9 @@ export default function MapaDoObservatorio() {
                 <p className="font-serif text-lg leading-snug text-carvao">{p.pergunta}</p>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.resposta}</p>
                 {p.porDistribuidora === "perdas" && opcoesPerdas.length > 0 ? (
-                  <EscolhaDistribuidora opcoes={opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" />
+                  <EscolhaDistribuidora opcoes={opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={anoPerdas} />
                 ) : p.porDistribuidora === "qualidade" && opcoesQualidade.length > 0 ? (
-                  <EscolhaDistribuidora opcoes={opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" />
+                  <EscolhaDistribuidora opcoes={opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" ano={anoQualidade} />
                 ) : (
                   <p className="mt-2 flex flex-wrap gap-x-5 text-sm">
                     {p.destinos.map((d) => (
@@ -489,8 +519,9 @@ export default function MapaDoObservatorio() {
               {ev ? (
                 <>
                   <p>
-                    <span className="font-serif text-2xl text-carvao">{ev.valor_exibido}</span> é a taxa de perdas totais das distribuidoras ({ev.entidade.toLowerCase()}) de{" "}
-                    {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}, com {ev.universo}.
+                    <span className="font-serif text-2xl text-carvao">{ev.valor_exibido}</span> é a taxa de perdas totais das {entidadeEmFrase(ev.entidade)}, de{" "}
+                    {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}: {ev.universo}.
+                    {universoPerdas && ` Ao todo, ${universoPerdas.total} distribuidoras têm dado de ${universoPerdas.ano}; este total soma só as ${universoPerdas.concessionarias} concessionárias, e as ${universoPerdas.permissionarias} permissionárias ficam fora dele.`}
                   </p>
                   {natEv && (
                     <p className="flex flex-wrap items-center gap-2">
@@ -518,7 +549,7 @@ export default function MapaDoObservatorio() {
                     <dd className="text-carvao">{dataBR(perdas!.gerado_em.slice(0, 10))}</dd>
                   </dl>
                   <div>
-                    <p>A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o sha256, os testes e a citação pronta.</p>
+                    <p>A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o seu código de verificação (sha256, que prova que é o mesmo arquivo), os testes e a citação pronta.</p>
                     <ComproveNumero evidencia={ev} rotulo="Comprove este número" />
                   </div>
                 </>
@@ -677,6 +708,16 @@ export default function MapaDoObservatorio() {
               </tbody>
             </table>
           </div>
+          {atualidade.some((l) => l.situacao === "sem calendário declarado") && (
+            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota-atualidade="sem-calendario">
+              Sem calendário declarado: a fonte não informa de quanto em quanto tempo atualiza, e por isso o observatório não diz se está em dia ou atrasada; mostra só o último período que ela publicou.
+            </p>
+          )}
+          {atualidade.some((l) => l.ultimo?.startsWith("vigência")) && (
+            <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota-atualidade="vigencia">
+              Nas tarifas, a fonte publica vigências (a data em que cada tarifa passa a valer), e não um período de referência: o que aparece é o início da vigência mais recente. A situação vem da frequência de atualização que a fonte declara.
+            </p>
+          )}
           <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
             {hojePub ? `Situação avaliada na publicação de ${dataBR(hojePub)}, pela frequência que a própria fonte declara. ` : ""}A data de captura de cada arquivo fica na ficha do conjunto, em{" "}
             <Link href="/setor-eletrico/dados" className={linkTexto}>

@@ -26,9 +26,9 @@ export default function TrilhasPage() {
           </Link>
         </nav>
         <CabecalhoModulo siglas={["ENA", "EAR", "CMO", "PLD", "TE", "TUSD"]} rotulo="Trilhas" titulo="Como ligar conceitos aos números?">
-          Cada trilha percorre verbetes conferidos na ordem em que um afeta o outro. Em cada passo há um número publicado pelo observatório, com o link ao painel e a
-          ficha Comprove quando o painel a publica, e o tipo da ligação com o passo seguinte. Do painel, um botão traz o leitor de volta ao passo. No fim, um exemplo sintético, com valores
-          hipotéticos, mostra a conta que liga os conceitos.
+          Resposta curta: uma trilha é um percurso em ordem por verbetes conferidos, em que cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte. As duas trilhas
+          mostram como a água chega ao preço da energia e como os custos chegam à conta de luz. Cada passo tem o link ao painel e a ficha Comprove quando o painel a publica; do painel, um botão traz o
+          leitor de volta ao passo. No fim, um exemplo sintético, com valores hipotéticos, mostra a conta que liga os conceitos.
         </CabecalhoModulo>
         <ul className="grid gap-4 md:grid-cols-2">
           {TRILHAS_APRENDA.map((t) => (
@@ -36,12 +36,17 @@ export default function TrilhasPage() {
               <Link href={`/setor-eletrico/aprenda/trilhas/${t.id}`} className="flex h-full flex-col border border-linha bg-superficie p-6 transition-colors hover:border-energia">
                 <span className="font-serif text-2xl text-carvao">{t.titulo}</span>
                 <span className="mt-2 leading-relaxed text-carvao">{t.pergunta}</span>
-                <span className="mt-3 text-sm leading-relaxed text-carvao-muted">
-                  {t.passos.length} passos:{" "}
-                  {t.passos
-                    .map((p) => p.conceitos.map((s) => conceito(s)?.sigla ?? conceito(s)?.nome).filter(Boolean)[0] ?? p.titulo.toLowerCase())
-                    .join(" → ")}
-                </span>
+                <span className="mt-3 text-sm text-carvao-muted">{t.passos.length} passos:</span>
+                <ol className="mt-1 space-y-0.5 text-sm leading-relaxed text-carvao-muted">
+                  {t.passos.map((p, i) => {
+                    const c = conceito(p.conceitos[0] ?? "");
+                    return (
+                      <li key={p.id}>
+                        {i + 1}. {c ? (c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla}, ${c.nome}` : c.nome) : p.titulo}
+                      </li>
+                    );
+                  })}
+                </ol>
               </Link>
             </li>
           ))}

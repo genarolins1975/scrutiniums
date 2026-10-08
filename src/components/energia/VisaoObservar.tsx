@@ -132,7 +132,12 @@ export function VisaoObservar({
                     </span>
                   </p>
                   <div className="min-w-0">
-                    <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>{o.titulo}</h3>
+                    <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>
+                      {o.titulo}
+                      <span data-nivel="analisar" className="ml-2 font-mono text-[11px] font-normal text-mineral">
+                        código {o.id}
+                      </span>
+                    </h3>
                     <div className="mt-1">{o.resumo}</div>
                     <details
                       className="mt-2"

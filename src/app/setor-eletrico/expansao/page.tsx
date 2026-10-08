@@ -6,19 +6,29 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoIndisponivel, ExpansaoNavegacao, ExpansaoNota } from "@/components/energia/ExpansaoPagina";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   PAINEIS_EXPANSAO,
   dataTexto,
+  estagio,
   linhasRalieTipo,
+  mwTexto,
   respostaCarteira,
   respostaCenarios,
   respostaCronograma,
   respostaSintese,
   respostaTransmissao,
+  ressalvaLegivel,
   rotaPainel,
+  vereditoCarteira,
+  vereditoCenarios,
+  vereditoCronograma,
+  vereditoSintese,
+  vereditoTransmissao,
   type PainelExpansao,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
@@ -38,7 +48,7 @@ export const metadata: Metadata = {
  * e o caminho para o painel completo (mapa, séries, tabelas, downloads, modos Analisar e
  * Auditar). Página editorial e de navegação: não repete os gráficos dos painéis.
  */
-function Cartao({ id, resposta, numero, recorte, limite, conteudo }: { id: PainelExpansao; resposta: string; numero: ReactNode; recorte: ReactNode; limite: ReactNode; conteudo: string }) {
+function Cartao({ id, resposta, veredito, numero, recorte, limite, conteudo }: { id: PainelExpansao; resposta: string; veredito: string; numero: ReactNode; recorte: ReactNode; limite: ReactNode; conteudo: string }) {
   const p = PAINEIS_EXPANSAO.find((x) => x.id === id)!;
   return (
     <section id={`sintese-${id}`} aria-labelledby={`sintese-${id}-titulo`} className="scroll-mt-28 border border-linha bg-superficie">
@@ -47,9 +57,9 @@ function Cartao({ id, resposta, numero, recorte, limite, conteudo }: { id: Paine
         <h2 id={`sintese-${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
           {p.pergunta}
         </h2>
-        <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
+        <RespostaCurta id={id} veredito={veredito || resposta}>
           {resposta}
-        </p>
+        </RespostaCurta>
         <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
           {numero}
           <div className="space-y-3 text-sm text-carvao-muted">
@@ -99,13 +109,14 @@ export default function ExpansaoPage() {
         </CabecalhoModulo>
         <ExpansaoNavegacao atual="sintese" />
 
+        <ModoProfundidade>
         <section aria-labelledby="chegando" className="space-y-4 pb-8">
           <h2 id="chegando" className="sr-only">
             Capacidade em implantação por fonte
           </h2>
-          <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="sintese">
+          <RespostaCurta id="sintese" veredito={vereditoSintese(g) || respostaSintese(g)}>
             {respostaSintese(g)}
-          </p>
+          </RespostaCurta>
           <div className="grid gap-6 md:grid-cols-[minmax(0,20rem)_1fr]">
             <Numero
               rotulo="Unidades em implantação no RALIE"
@@ -130,7 +141,8 @@ export default function ExpansaoPage() {
             />
           </div>
           <ExpansaoNota>
-            A carteira em implantação é o que está outorgado e acompanhado, com obra iniciada ou não. Quanto dela entra e quando está nos painéis de carteira e de cronograma.
+            A carteira em implantação é o que está outorgado e acompanhado, com obra iniciada ou não. Para escala, o que já opera soma {mwTexto(estagio(g, "operacao")?.mw_fiscalizado)} fiscalizados no SIGA; as duas camadas não se
+            somam, porque a carteira não é entrada certa. Quanto dela entra e quando está nos painéis de carteira e de cronograma.
           </ExpansaoNota>
         </section>
 
@@ -172,6 +184,7 @@ export default function ExpansaoPage() {
             id="p040"
             conteudo="etapas, desfechos, mapa, tabelas e dados"
             resposta={respostaCarteira(g)}
+            veredito={vereditoCarteira(g)}
             numero={
               <Numero
                 rotulo="Outorgado com construção não iniciada"
@@ -184,18 +197,20 @@ export default function ExpansaoPage() {
               />
             }
             recorte={<p>Fases do SIGA de {dataTexto(g.estagios.data_referencia)}; desfecho das usinas acompanhadas pelo RALIE desde {dataTexto(ref.ralie_historico_desde)}; outorgas encerradas desde {g.estagios.encerramentos.desde}.</p>}
-            limite="quanto da carteira atual vai entrar: o desfecho das coortes passadas não é probabilidade para a carteira de hoje."
+            limite="quanto da carteira atual vai entrar: o desfecho dos grupos de usinas de anos anteriores não é probabilidade para a carteira atual."
           />
           <Cartao
             id="p041"
             conteudo="previsões datadas, revisões, tabelas e dados"
             resposta={respostaCronograma(g)}
+            veredito={vereditoCronograma(g)}
             numero={
               <Numero
                 rotulo="Da potência prevista para 12 meses, liberada no prazo"
                 natureza="CALCULADO"
                 evidencia={ev.confiabilidade_ultima ?? null}
                 formato="pct"
+                unidade=""
                 casas={1}
                 tamanho="medio"
                 endereco={`${rotaPainel("p041")}#p041`}
@@ -204,8 +219,8 @@ export default function ExpansaoPage() {
             }
             recorte={
               <p>
-                Previsões da fotografia de {dataTexto(g.cronograma.data_ralie)}; confiabilidade em {g.cronograma.confiabilidade.length} fotografias mensais desde {dataTexto(g.cronograma.confiabilidade[0]?.ralie)}, contra as
-                liberações até {dataTexto(ref.liberacoes_ultima_data)}.
+                Previsões da fotografia de {dataTexto(g.cronograma.data_ralie)}; confiabilidade nas {g.cronograma.confiabilidade.length} fotografias mensais com a janela de 12 meses encerrada, desde{" "}
+                {dataTexto(g.cronograma.confiabilidade[0]?.ralie)}, contra as liberações até {dataTexto(ref.liberacoes_ultima_data)}.
               </p>
             }
             limite="a data provável de cada usina: boa parte da carteira tem previsão numa data convencional atribuída em bloco."
@@ -214,6 +229,7 @@ export default function ExpansaoPage() {
             id="p042"
             conteudo="mapas, séries anuais, tabelas e dados"
             resposta={respostaTransmissao(g)}
+            veredito={vereditoTransmissao(g)}
             numero={
               <Numero
                 rotulo="Linhas novas em obras de transmissão em andamento"
@@ -231,12 +247,13 @@ export default function ExpansaoPage() {
                 capturada em {dataTexto(ref.rede_epe_capturada_em)}; por UF e por ano.
               </p>
             }
-            limite="se a rede é suficiente para escoar a geração de uma UF: isso depende da topologia e dos limites da rede, não de km ou MVA."
+            limite="se a rede é suficiente para escoar a geração de uma UF: isso depende do desenho da rede (topologia) e dos limites dela, não de km ou MVA."
           />
           <Cartao
             id="p043"
             conteudo="camadas, figuras, hipóteses e dados"
             resposta={respostaCenarios(g)}
+            veredito={vereditoCenarios(g)}
             numero={
               <Numero
                 rotulo="Capacidade nacional em dez/2035 no cenário de referência"
@@ -272,16 +289,23 @@ export default function ExpansaoPage() {
             ))}
           </ul>
           {g.ressalvas.length > 0 && (
-            <div className="mt-6 space-y-2">
+            <div className="mt-6 space-y-2" data-nivel="analisar">
               <h3 className="rotulo text-mineral">Ressalvas da validação desta publicação</h3>
               <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
-                {g.ressalvas.map((x) => (
-                  <li key={x}>{datasLegiveis(x)}</li>
-                ))}
+                {g.ressalvas.map((x) => {
+                  const r = ressalvaLegivel(datasLegiveis(x));
+                  return (
+                    <li key={x}>
+                      {r.texto}
+                      {r.campo && <span data-nivel="auditar"> Campo da base publicada: {r.campo}.</span>}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
         </section>
+        </ModoProfundidade>
       </main>
     </>
   );

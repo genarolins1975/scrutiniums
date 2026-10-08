@@ -21,6 +21,7 @@ import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -61,6 +62,7 @@ import {
   mvaTexto,
   painel,
   respostaTransmissao,
+  vereditoTransmissao,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -131,7 +133,7 @@ export default function GeracaoTransmissaoPage() {
               comoInterpretar={<>{g.regras.transmissao}</>}
               naoConcluir={
                 <>
-                  Se a rede é suficiente para a geração de uma UF: capacidade de escoamento depende da topologia, dos limites de intercâmbio e dos estudos de acesso, não de km ou MVA.
+                  Se a rede é suficiente para a geração de uma UF: a capacidade de escoamento depende do desenho da rede (topologia) e dos limites dela, não de km ou MVA.
                   Também não liga obra de transmissão a usina específica: a EPE e o SIGET não têm chave comum, e o vínculo publicado é territorial.
                 </>
               }
@@ -139,9 +141,9 @@ export default function GeracaoTransmissaoPage() {
               complementares={complementares}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p042">
+                <RespostaCurta id="p042" veredito={vereditoTransmissao(g) || respostaTransmissao(g)}>
                   {respostaTransmissao(g)}
-                </p>
+                </RespostaCurta>
                 <ExpansaoRecorte
                   periodo={
                     <>
@@ -159,14 +161,14 @@ export default function GeracaoTransmissaoPage() {
                 <div className="grid gap-4 sm:grid-cols-3">
                   <Numero rotulo="Linhas novas em obras em andamento" natureza="CALCULADO" evidencia={ev.transmissao_em_andamento ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042" motivoAusencia="Sem o SIGET nesta publicação." />
                   <Numero
-                    rotulo={`Extensão contratada em leilão em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo"}`}
+                    rotulo={`Extensão contratada em leilão em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo"}, último ano do arquivo aberto`}
                     natureza="CALCULADO"
                     evidencia={ev.leiloes_ultimo_ano ?? null}
                     casas={1}
                     tamanho="medio"
                     endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
                     motivoAusencia="Sem o arquivo de leilões nesta publicação."
-                    nota="Último ano do arquivo aberto de leilões; os anos seguintes são ausência na fonte."
+                    nota="Os anos seguintes ao último leilão do arquivo aberto são ausência na fonte, não anos sem leilão; por isso este cartão é de um ano anterior aos demais."
                   />
                   <Numero rotulo="Geração em implantação (RALIE)" natureza="CALCULADO" evidencia={ev.ralie_em_implantacao ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042" motivoAusencia="Sem a fotografia do RALIE nesta publicação." />
                 </div>
@@ -230,13 +232,15 @@ export default function GeracaoTransmissaoPage() {
                 <ExpansaoNota>
                   Três painéis, um por grandeza, com o cursor sincronizado pelo ano; dentro de cada painel, linhas separadas e nunca somadas: energizado, contratado em leilão e
                   contratado no SIGET são momentos diferentes do mesmo tipo de obra, não partes de um total. Lacuna na linha é ausência na fonte; zero é zero. O ano parcial está
-                  marcado. {l.nota_mva}
+                  marcado. <span data-nivel="analisar">{l.nota_mva}</span>
                 </ExpansaoNota>
                 <ExpansaoAusencia titulo="Leilões depois do arquivo aberto: ausência na fonte">
                   <p>
                     O recurso aberto de resultados de leilões da ANEEL (publicado em {dataTexto(l.publicado_em)}) termina no leilão {l.ultimo_leilao.leilao ?? "sem dado"} ({dataTexto(l.ultimo_leilao.data)}).
-                    Os anos seguintes aparecem como ausência, não como anos sem leilão. A planilha mais recente para a qual a página de relatórios da ANEEL aponta exige um desafio anti-robô
-                    para ser baixada, e esse bloqueio não foi contornado.
+                    Os anos seguintes aparecem como ausência, não como anos sem leilão.{" "}
+                    <span data-nivel="auditar">
+                      A planilha mais recente para a qual a página de relatórios da ANEEL aponta exige um desafio anti-robô para ser baixada, e esse bloqueio não foi contornado.
+                    </span>
                   </p>
                   <p>
                     Alternativa usada: os contratos de concessão do SIGET, com a data de assinatura, cobrem o período seguinte, sem RAP nem deságio ({inteiro(ca?.depois_do_ultimo_leilao_do_arquivo.contratos.length)} contratos

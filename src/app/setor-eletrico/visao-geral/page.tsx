@@ -7,7 +7,8 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { VisaoDeterminantes } from "@/components/energia/VisaoDeterminantes";
 import { VisaoDestaques, VisaoFrases } from "@/components/energia/VisaoFrases";
 import { VisaoObservar, type ItemObservar, type LinhaComparavel } from "@/components/energia/VisaoObservar";
-import { VisaoAnalise, VisaoAuditoria, VisaoAviso, VisaoControles, VisaoIndisponivel, VisaoNavegacao, VisaoRecorte, VisaoResposta, VisaoSeguir } from "@/components/energia/VisaoPagina";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { VisaoAnalise, VisaoAuditoria, VisaoAviso, VisaoControles, VisaoIndisponivel, VisaoNavegacao, VisaoRecorte, VisaoSeguir } from "@/components/energia/VisaoPagina";
 import { VisaoRegraResumo } from "@/components/energia/VisaoRegras";
 import { VisaoTabelasSobDemanda } from "@/components/energia/VisaoTabelasSobDemanda";
 import { VisaoLinhaTempo, VisaoSociedadeCartoes } from "@/components/energia/VisaoSociedade";
@@ -17,7 +18,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { PAGINAS_MAPA } from "@/lib/energia/mapa";
-import type { RegraObservar, SinteseVisaoGold } from "@/lib/energia/tipos-visao";
+import type { IdRegra, RegraObservar, SinteseVisaoGold } from "@/lib/energia/tipos-visao";
 import {
   ANCORAS_DETERMINANTES,
   COLUNAS_FRASES,
@@ -27,6 +28,10 @@ import {
   dominioEstados,
   linhasFrases,
   linhasSociedade,
+  notaCarga,
+  notaCmoNorte,
+  notaRede,
+  notaTarifaSocial,
   pedeAtencao,
   referenciasFrases,
   respostaDeterminantes,
@@ -36,6 +41,12 @@ import {
   textoFrequenciaConjunta,
   textoLinhaEstado,
   trechosEstado,
+  vereditoDeterminantes,
+  vereditoObservar,
+  vereditoSistema,
+  vereditoSociedade,
+  type MesSerieTarifaSocial,
+  type SemanaCmo,
 } from "@/lib/energia/visao";
 
 /**
@@ -69,7 +80,9 @@ function TituloPainel({ id }: { id: keyof typeof P }) {
   return (
     <div className="mb-5">
       <p className="rotulo flex items-center gap-3 text-mineral">
-        <span className="font-serif text-lg normal-case tracking-normal text-energia">{p.codigo}</span>
+        <span data-nivel="analisar" className="font-serif text-lg normal-case tracking-normal text-energia">
+          {p.codigo}
+        </span>
         {p.rotulo}
       </p>
       <h2 id={`${id}-h`} className="mt-2 max-w-3xl font-serif text-2xl leading-snug text-carvao md:text-3xl">
@@ -95,7 +108,7 @@ function ComoLer({ comoLer, naoConcluir }: { comoLer: React.ReactNode; naoConclu
 }
 
 /** Itens do "O que observar": o resumo de cada regra montado no servidor; o detalhe é lido da gold ao abrir. */
-function itensObservar(observar: readonly RegraObservar[]): ItemObservar[] {
+function itensObservar(observar: readonly RegraObservar[], notas: Partial<Record<IdRegra, string | null>>, titulosConjuntos: Record<string, string>): ItemObservar[] {
   return observar.map((o, i) => ({
     id: o.id,
     titulo: o.titulo,
@@ -105,7 +118,7 @@ function itensObservar(observar: readonly RegraObservar[]): ItemObservar[] {
     rotuloEstado: ROTULO_ESTADO[o.estado] ?? o.estado,
     referencia: o.referencia,
     href: o.href,
-    resumo: <VisaoRegraResumo o={o} caminho={`observar[${i}]`} />,
+    resumo: <VisaoRegraResumo o={o} caminho={`observar[${i}]`} nota={notas[o.id]} titulosConjuntos={titulosConjuntos} />,
   }));
 }
 
@@ -116,7 +129,7 @@ function comparaveisObservar(observar: readonly RegraObservar[]): LinhaComparave
     .map((o) => ({ id: o.id, rotulo: o.titulo, trechos: trechosEstado(o.linha_estado), texto: textoLinhaEstado(o) ?? "" }));
 }
 
-/** Comparação inicial: as regras que pedem atenção hoje e, para completar quatro, as de sistema na ordem publicada. */
+/** Comparação inicial: as regras que pedem atenção agora e, para completar quatro, as de sistema na ordem publicada. */
 function padraoComparacao(observar: readonly RegraObservar[], comparaveis: readonly LinhaComparavel[]): string[] {
   const ids = new Set(comparaveis.map((c) => c.id));
   const atencao = observar.filter((o) => pedeAtencao(o) && ids.has(o.id)).map((o) => o.id);
@@ -132,7 +145,23 @@ export default function VisaoGeralEnergia() {
   const m = g.multiplos;
   const datasRef = m ? Object.values(m.datas_referencia).filter((d): d is string => !!d).sort() : [];
   const titulosRegras = Object.fromEntries(g.observar.map((o) => [o.id, o.titulo]));
-  const itens = itensObservar(g.observar);
+  // pontes entre números que parecem divergir (causa e classificação em conteudo_r8): cada nota lê só dados publicados
+  const cmo = lerGold<{ semana_referencia?: string; serie?: SemanaCmo[] }>("cmo.json");
+  const inclusao = lerGold<{ tarifa_social?: { serie_mensal?: MesSerieTarifaSocial[] } }>("inclusao.json");
+  const beneficios = g.sociedade.itens.find((x) => x.id === "beneficios");
+  const notaTS = beneficios ? notaTarifaSocial(beneficios, inclusao?.tarifa_social?.serie_mensal) : null;
+  const notasRegras: Partial<Record<IdRegra, string | null>> = {
+    cmo_semana: cmo?.semana_referencia ? notaCmoNorte(cmo.serie, cmo.semana_referencia) : null,
+    atualidade_fontes: notaTS ? `${beneficios!.titulo}: ${notaTS}` : null,
+  };
+  // "percentil" como o painel de PLD o define (pld.json, regras.posicao_historica): o texto é o da própria gold
+  const pld = lerGold<{ regras?: { posicao_historica?: string } }>("pld.json");
+  const termosDasFrases = pld?.regras?.posicao_historica
+    ? ` Termos das frases: p.p. é a abreviação de pontos percentuais; percentil, como o painel de PLD o define: ${pld.regras.posicao_historica}`
+    : " Termos das frases: p.p. é a abreviação de pontos percentuais.";
+  const saude = lerGold<{ conjuntos?: { id: string; titulo: string }[] }>("publicacao.json");
+  const titulosConjuntos = Object.fromEntries((saude?.conjuntos ?? []).map((c) => [c.id.split("/").pop() ?? c.id, c.titulo]));
+  const itens = itensObservar(g.observar, notasRegras, titulosConjuntos);
   const comparaveis = comparaveisObservar(g.observar);
   const dominio = dominioEstados(g.observar);
   const regras = g.observar.filter((o) => o.tipo !== "evento");
@@ -149,17 +178,17 @@ export default function VisaoGeralEnergia() {
       <CabecalhoEnergia atual="visao-geral" />
       <MarcaVisita secao="energia:visao-geral" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo siglas={["PLD", "MWmed", "ONS", "ANEEL", "FEC", "DEC", "CDE", "CCEE", "CMO"]}
+        <CabecalhoModulo siglas={["SIN", "PLD", "EAR", "MLT", "MWmed", "ONS", "ANEEL", "CMO", "CCEE", "DEC", "FEC", "CDE", "UC", "SCS"]}
           rotulo="Visão geral"
           titulo={PAGINAS_MAPA["visao-geral"].pergunta}
           referencia={
             <>
               Processado em {dataBR(g.data_processamento)} (data civil de Brasília). Cada número usa a data de referência da sua fonte: fatos de {refs ? `${dataBR(refs.min)} a ${dataBR(refs.max)}` : "sem data"};
-              determinantes até {datasRef.length ? `${dataBR(datasRef[0])} a ${dataBR(datasRef[datasRef.length - 1])}` : "sem data"}; indicadores de energia e sociedade com período próprio (vigência, ano ou mês).
+              determinantes de {datasRef.length ? `${dataBR(datasRef[0])} a ${dataBR(datasRef[datasRef.length - 1])}` : "sem data"}; indicadores de energia e sociedade com período próprio (vigência, ano ou mês).
             </>
           }
         >
-          O <Termo slug="sin">Sistema Interligado Nacional</Termo> em poucos minutos, em quatro painéis: os fatos de hoje com a evidência de cada número, os cinco determinantes lado a lado, o que chega ao consumidor
+          O <Termo slug="sin">Sistema Interligado Nacional</Termo> em poucos minutos, em quatro painéis: os fatos mais recentes com a evidência de cada número, os cinco determinantes lado a lado, o que chega ao consumidor
           em custo e qualidade, e as regras que dizem o que observar. Tudo lido das bases publicadas dos módulos de origem; o que não está integrado aparece como ausência, nunca como estimativa.
         </CabecalhoModulo>
         <VisaoNavegacao />
@@ -169,7 +198,9 @@ export default function VisaoGeralEnergia() {
           <Bloco id="sistema">
             <section aria-labelledby="sistema-h" className="space-y-5">
               <TituloPainel id="sistema" />
-              <VisaoResposta painel="sistema">{respostaSistema(g)}</VisaoResposta>
+              <RespostaCurta id="sistema" veredito={vereditoSistema(g)}>
+                {respostaSistema(g)}
+              </RespostaCurta>
               <VisaoRecorte
                 periodo={refs ? (refs.min === refs.max ? dataBR(refs.min) : `${dataBR(refs.min)} a ${dataBR(refs.max)}, uma data por frase`) : "sem data"}
                 universo="Sistema Interligado Nacional; carga e intercâmbio por subsistema, PLD por submercado"
@@ -178,7 +209,7 @@ export default function VisaoGeralEnergia() {
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start">
                 <div className="min-w-0">
                   {g.frases.length ? (
-                    <VisaoFrases frases={g.frases} />
+                    <VisaoFrases frases={g.frases} notas={{ carga: notaCarga(g) ?? undefined, rede: notaRede(g) ?? undefined }} />
                   ) : (
                     <VisaoAviso tipo="alerta">Nenhuma frase pôde ser escrita nesta publicação: faltam os dados de origem.</VisaoAviso>
                   )}
@@ -189,7 +220,7 @@ export default function VisaoGeralEnergia() {
                 <VisaoDestaques destaques={g.destaques} fatosEHipoteses={g.fatos_e_hipoteses} titulos={titulosRegras} />
               </div>
               <ComoLer
-                comoLer="Cada frase é um fato de um indicador, montado por um modelo fixo a partir de números da base publicada de origem; o trecho sublinhado leva ao painel que publica o número e o botão de prova refaz o cálculo por outro caminho. A caixa de destaques só mostra regras sobre o sistema confirmadas há poucos dias; vazia é o normal."
+                comoLer={`Cada frase é um fato de um indicador, montado por um modelo fixo a partir de números da base publicada de origem; o trecho sublinhado leva ao painel que publica o número e o botão de prova refaz o cálculo por outro caminho. A caixa de destaques só mostra regras sobre o sistema confirmadas há poucos dias; vazia é o normal.${termosDasFrases}`}
                 naoConcluir="As frases descrevem o estado de cada indicador na sua data, não a relação entre eles: reservatório, afluência, carga, térmicas, preço e rede não são apresentados como explicação uns dos outros. Hipóteses, quando aparecem, estão rotuladas e não foram testadas nesta página."
               />
               <VisaoAnalise titulo="As frases como tabela: referência, defasagem, atualidade e revisões" id="sistema-tabela">
@@ -228,20 +259,20 @@ export default function VisaoGeralEnergia() {
               <TituloPainel id="determinantes" />
               {m ? (
                 <>
-                  <VisaoResposta painel="determinantes">
+                  <RespostaCurta id="determinantes" veredito={vereditoDeterminantes(m)}>
                     <ul className="space-y-1.5">
                       {respostaDeterminantes(m).map((t, i) => (
                         <li key={i}>{t}</li>
                       ))}
                     </ul>
-                  </VisaoResposta>
+                  </RespostaCurta>
                   <VisaoRecorte
                     periodo={`${dataBR(m.janela.inicio)} a ${dataBR(m.janela.fim)} (${plural(m.janela.dias, "dia", "dias")} alinhados pelo calendário); cada painel termina na sua data de referência`}
                     universo="PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS"
                     unidade={m.paineis.map((p) => `${p.titulo.toLowerCase()} em ${p.unidade}`).join("; ")}
                   />
                   <VisaoAviso tipo="alerta">{m.aviso_datas}</VisaoAviso>
-                  <VisaoDeterminantes m={m} ancoras={ANCORAS_DETERMINANTES} fonte={fonteTabelas} />
+                  <VisaoDeterminantes m={m} ancoras={ANCORAS_DETERMINANTES} fonte={fonteTabelas} notas={{ carga: notaCarga(g), rede: notaRede(g) }} />
                   <ComoLer
                     comoLer="Cinco gráficos pequenos sobre o mesmo calendário, cada um com a sua referência de comparação: faixa histórica do dia para a água, quartis para o preço e a participação térmica, o mesmo dia da semana do ano anterior para a carga, o zero para o sentido do fluxo. Os valores são copiados das bases publicadas de origem, célula a célula, sem recálculo."
                     naoConcluir="Alinhar os painéis pelo calendário não afirma que um determina o outro. Fluxo alto na rede não indica congestionamento: os limites de intercâmbio não estão integrados. Dia em branco é dia sem valor na origem, nunca zero."
@@ -259,7 +290,9 @@ export default function VisaoGeralEnergia() {
           <Bloco id="sociedade">
             <section aria-labelledby="sociedade-h" className="space-y-5">
               <TituloPainel id="sociedade" />
-              <VisaoResposta painel="sociedade">{respostaSociedade(g.sociedade)}</VisaoResposta>
+              <RespostaCurta id="sociedade" veredito={vereditoSociedade(g.sociedade)}>
+                {respostaSociedade(g.sociedade)}
+              </RespostaCurta>
               <VisaoRecorte
                 periodo="Vigência, ano completo ou mês de referência, conforme o indicador; nenhum descreve o dia"
                 universo="Distribuidoras e consumidores do país, no universo de cada conjunto da ANEEL"
@@ -268,7 +301,7 @@ export default function VisaoGeralEnergia() {
               <VisaoAviso>
                 Estes números têm período próprio e defasagem própria: uma tarifa vale pela vigência, continuidade e perdas valem pelo ano completo, o alcance da Tarifa Social vale pelo mês publicado. A linha do tempo abaixo mostra o período de cada um contra a data de processamento.
               </VisaoAviso>
-              <VisaoSociedadeCartoes s={g.sociedade} />
+              <VisaoSociedadeCartoes s={g.sociedade} notas={{ beneficios: notaTS }} />
               {g.sociedade.ausentes.length > 0 && (
                 <ul className="space-y-1 text-sm text-carvao-muted">
                   {g.sociedade.ausentes.map((a) => (
@@ -279,7 +312,7 @@ export default function VisaoGeralEnergia() {
               <VisaoLinhaTempo s={g.sociedade} dataProcessamento={g.data_processamento} />
               <ComoLer
                 comoLer="Cada cartão traz o valor e a evidência do módulo de origem, o período a que o número se refere, a defasagem até o processamento, a cobertura e a atualidade do conjunto. Conjunto atrasado no painel de saúde dos dados aparece marcado."
-                naoConcluir="Um ano completo ou um mês de referência não descreve a situação de hoje, e indicadores de universos diferentes (todas as distribuidoras, um conjunto de concessionárias, as unidades com Tarifa Social) não se somam nem se comparam entre si."
+                naoConcluir="Um ano completo ou um mês de referência não descreve a situação do dia, e indicadores de universos diferentes (todas as distribuidoras, um conjunto de concessionárias, as unidades com Tarifa Social) não se somam nem se comparam entre si."
               />
               <VisaoAnalise titulo="Os indicadores como tabela: período, defasagem, cobertura e atualidade" id="sociedade-tabela">
                 <TabelaInterativa
@@ -304,7 +337,9 @@ export default function VisaoGeralEnergia() {
           <Bloco id="observar">
             <section aria-labelledby="observar-h" className="space-y-5">
               <TituloPainel id="observar" />
-              <VisaoResposta painel="observar">{respostaObservar(g.observar)}</VisaoResposta>
+              <RespostaCurta id="observar" veredito={vereditoObservar(g.observar)}>
+                {respostaObservar(g.observar)}
+              </RespostaCurta>
               <VisaoRecorte
                 periodo={`Estado do dia na data de referência de cada regra; linha de estado dos últimos 365 dias; histórico reavaliado desde ${dataBR(g.historico_regras.inicio)} com os dados da data de processamento`}
                 universo={`${plural(regras.length, "regra", "regras")} sobre o sistema e sobre os próprios dados, e ${plural(g.observar.length - regras.length, "evento de calendário", "eventos de calendário")}`}
@@ -353,37 +388,36 @@ export default function VisaoGeralEnergia() {
               <VisaoSeguir ancora="observar" proximo={{ href: PAGINAS_MAPA.pld.href, pergunta: PAGINAS_MAPA.pld.pergunta }} downloads={[...dlPor("sintese_regras_diario"), ...dlPor("sintese_episodios")]} />
             </section>
           </Bloco>
-        </ModoProfundidade>
-
-        <footer className="mt-10 space-y-4 border-t border-linha pt-6 text-sm leading-relaxed text-carvao-muted">
-          <p>{g.nota}</p>
-          <div>
-            <p className="rotulo text-mineral">Limitações desta publicação</p>
-            <ul className="mt-1 list-disc space-y-1 pl-5">
-              {g.limitacoes.map((l) => (
-                <li key={l}>
-                  <TextoDoLeitor texto={l} />
+          <footer className="mt-10 space-y-4 border-t border-linha pt-6 text-sm leading-relaxed text-carvao-muted">
+            <p>{g.nota}</p>
+            <div>
+              <p className="rotulo text-mineral">Limitações desta publicação</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5">
+                {g.limitacoes.map((l) => (
+                  <li key={l}>
+                    <TextoDoLeitor texto={l} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p>
+              Síntese publicada em {carimbo(g.gerado_em)}.
+              <span data-nivel="analisar"> Base {g.gold}, versão {g.versao_pipeline} (código {g.versao_codigo}).</span>{" "}
+              <Link href="/setor-eletrico/metodologia#sintese" className="text-energia-dark underline underline-offset-4">Regras das frases e dos alertas</Link>
+              {" · "}
+              <Link href="/setor-eletrico/dados" className="text-energia-dark underline underline-offset-4">Dados e catálogo</Link>
+            </p>
+            <ul className="flex flex-wrap gap-x-5 gap-y-1">
+              {g.downloads.map((d) => (
+                <li key={d.url}>
+                  <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                    {d.rotulo}
+                  </a>
                 </li>
               ))}
             </ul>
-          </div>
-          <p>
-            Síntese publicada em {carimbo(g.gerado_em)}.
-            <span data-nivel="analisar"> Base {g.gold}, versão {g.versao_pipeline} (código {g.versao_codigo}).</span>{" "}
-            <Link href="/setor-eletrico/metodologia#sintese" className="text-energia-dark underline underline-offset-4">Regras das frases e dos alertas</Link>
-            {" · "}
-            <Link href="/setor-eletrico/dados" className="text-energia-dark underline underline-offset-4">Dados e catálogo</Link>
-          </p>
-          <ul className="flex flex-wrap gap-x-5 gap-y-1">
-            {g.downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </footer>
+          </footer>
+        </ModoProfundidade>
       </main>
     </>
   );

@@ -27,6 +27,7 @@ import {
   ROTULO_REGRA,
   combustiveisCvu,
   downloadsDoPainel,
+  explicacaoDoMotivo,
   linhasCvuMensal,
   inflexibilidadeSemNuclear,
   painelPublicado,
@@ -34,6 +35,7 @@ import {
   rotaPainel,
   situacaoMensal,
   textoCvu,
+  textoSemComparacaoMensal,
   textoTermica7d,
   type TermicaCliente,
 } from "@/lib/energia/geracao";
@@ -59,6 +61,10 @@ export default function GeracaoTermicaPage() {
   const op = gold.geracao();
   const ctx = integra(op) ? op.termica_contexto : null;
   const atual = situacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho");
+  const exp = (id: Parameters<typeof explicacaoDoMotivo>[1]) => {
+    const e = explicacaoDoMotivo(t.motivos, id);
+    return e ? ` (${e})` : "";
+  };
   const semNuc = inflexibilidadeSemNuclear(t.ultimos_12m);
   const versao = t.ultimo_mes_completo;
   const { cvu: cvuDados, universo, identidade, mapa_combustivel: mapa, ...cliente } = t;
@@ -80,7 +86,7 @@ export default function GeracaoTermicaPage() {
             </>
           }
         >
-          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade (declarada pelo agente ou geração acima do despachado), razão elétrica,
+          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade{exp("inflexibilidade")}, razão elétrica{exp("razao_eletrica")}, unit commitment{exp("unit_commitment")},
           exportação e outros. Este painel separa a geração por combustível e por motivo, sem inferir o motivo do preço, e mostra o{" "}
           <Termo slug="cvu">Custo Variável Unitário</Termo> declarado para a semana operativa vigente.
         </CabecalhoModulo>
@@ -98,7 +104,7 @@ export default function GeracaoTermicaPage() {
                   elétrica). O motivo muda a leitura do custo da operação e do uso da água nos reservatórios.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
+              oQueMudou={<>{textoSemComparacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho")}</>}
               comoInterpretar={
                 <>
                   A geração verificada de cada usina é dividida pelos motivos que o ONS publica, sem dupla contagem: a inflexibilidade embutida na ordem de mérito conta
@@ -158,7 +164,7 @@ export default function GeracaoTermicaPage() {
                       <p className="text-sm leading-relaxed text-carvao">{textoTermica7d(ctx)}</p>
                       <p className="text-sm text-carvao-muted">
                         Base diferente da do motivo de despacho: o Balanço de Energia do ONS, até {dataBR(op.dia_referencia)}, com a nuclear entre as térmicas e sem separar
-                        combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior.
+                        combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior e vai de 0 (entre as menores participações) a 100 (entre as maiores); a faixa usual é do 10º ao 90º percentil dessas janelas.
                       </p>
                       {serie7d.length > 0 && (
                         <GraficoLinhas

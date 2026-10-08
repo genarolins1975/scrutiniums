@@ -28,6 +28,7 @@ import {
   atualidadePld,
   linhasCobertura,
   marcosSemanais,
+  notaHorasEntreLimites,
   perguntaPainel,
   proximoPainel,
 } from "@/lib/energia/pld";
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/pld/cmo-e-formacao" },
 };
 
-const FONTE = "ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD_HORARIO";
+const FONTE = "ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM); CCEE, PLD horário por submercado";
 
 const COLUNAS_CONVENCAO: ColunaTabela[] = [
   { id: "sm", rotulo: "Submercado", tipo: "texto" },
@@ -89,13 +90,15 @@ export default function PldCmoPage() {
   const controles = g.controles.filter((x) => /CMO|meia hora|semanal|Equival|S3/i.test(x.nome));
   const downloads = g.downloads.filter((d) => /cmo_semanal|cmo_horario|horario_recente/.test(d.url));
   const n = c.semanal.fim.length;
+  const limitesDisponiveis = g.limites.disponivel ? g.limites : null;
+  const notasEntreLimites = Object.fromEntries(SUBMERCADOS.map((sm) => [sm, notaHorasEntreLimites(c, limitesDisponiveis, sm)]));
 
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["ONS", "ANEEL"]}
+        <PldCabecalho siglas={["ONS", "CCEE"]}
           titulo="CMO e formação de preço"
           referencia={
             <>
@@ -104,9 +107,10 @@ export default function PldCmoPage() {
             </>
           }
         >
-          O <Termo slug="cmo">custo marginal de operação</Termo> é a base do PLD, mas o ONS publica dois CMOs diferentes, um do <Termo slug="decomp">DECOMP</Termo> por semana
-          operativa e outro do <Termo slug="dessem">DESSEM</Termo> por meia hora, e a CCEE calcula o PLD de cada hora com os próprios processamentos. Este painel põe os três
-          lado a lado só no mesmo intervalo.
+          O <Termo slug="cmo">custo marginal de operação</Termo> (CMO) é o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no
+          sistema interligado; segundo a CCEE, é a base do PLD. O ONS publica dois CMOs: o do modelo <Termo slug="decomp">DECOMP</Termo>, por semana operativa, e o do modelo{" "}
+          <Termo slug="dessem">DESSEM</Termo>, por meia hora e para cada barra do sistema. A CCEE calcula o PLD de cada hora com os próprios processamentos. Esta página põe os
+          três valores lado a lado, só no mesmo intervalo.
         </PldCabecalho>
         <PldNavegacao atual="p009" />
         <ModoProfundidade>
@@ -157,10 +161,14 @@ export default function PldCmoPage() {
                   fichas={fichas}
                   fonte={FONTE}
                   versao={versao}
+                  notasEntreLimites={notasEntreLimites}
                 />
                 <PldAviso>
-                  O gráfico tem as últimas {num(n, 0)} semanas; o CSV semanal tem as {num(c.semanal_recorte.semanas_no_csv, 0)} desde 2021, conferido célula a célula contra a base publicada
-                  ({num(c.equivalencia_csv.celulas, 0)} células, {num(c.equivalencia_csv.divergentes, 0)} divergentes).
+                  O gráfico tem as últimas {num(n, 0)} semanas; o CSV semanal tem as {num(c.semanal_recorte.semanas_no_csv, 0)} desde 2021.
+                  <span data-nivel="analisar">
+                    {" "}
+                    O CSV foi conferido célula a célula contra a base publicada ({num(c.equivalencia_csv.celulas, 0)} células, {num(c.equivalencia_csv.divergentes, 0)} divergentes).
+                  </span>
                 </PldAviso>
 
                 <PldAnalise id="produtos" titulo="Três produtos, três momentos de cálculo">

@@ -5,6 +5,7 @@ import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNaveg
 import { InclusaoClassesPof, InclusaoUfsPof } from "@/components/energia/InclusaoOrcamento";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -24,6 +25,7 @@ import {
   respostaOrcamento,
   rotaPainel,
   textoPrecisaoPof,
+  vereditoOrcamento,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -80,7 +82,7 @@ export default function OrcamentoPage() {
           titulo="Peso da energia no orçamento das famílias"
           referencia={
             <>
-              IBGE, Pesquisa de Orçamentos Familiares ({nomePof(o)}): microdados ({o.proveniencia.microdados.fonte.recurso}) e tabela 6715 do SIDRA. Estatística histórica, sem atualização
+              IBGE, Pesquisa de Orçamentos Familiares ({nomePof(o)}): microdados<span data-nivel="analisar"> ({o.proveniencia.microdados.fonte.recurso})</span> e tabela 6715 do SIDRA. Estatística histórica, sem atualização
               modelada. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -121,9 +123,9 @@ export default function OrcamentoPage() {
               complementares={[{ rotulo: "Tabela 6715 (SIDRA)", p: o.proveniencia.sidra }]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p061">
+                <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
                   {respostaOrcamento(o)}
-                </p>
+                </RespostaCurta>
                 <InclusaoRecorte
                   periodo={`${periodoPof}; ${o.referencia}`}
                   universo={
@@ -134,7 +136,7 @@ export default function OrcamentoPage() {
                   unidade="% da despesa total ou da renda; R$ por família e mês"
                 />
                 <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
-                  Estatística histórica: a POF mais recente publicada pelo IBGE é a {nomePof(o)}. O painel mostra o que ela mediu e não projeta o resultado para hoje.
+                  Estatística histórica: a POF mais recente publicada pelo IBGE é a {nomePof(o)}. O painel mostra o que ela mediu e não projeta o resultado para {anoPublicacao}.
                 </p>
                 <div className="grid gap-4 sm:grid-cols-3">
                   <Numero

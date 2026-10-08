@@ -2,10 +2,11 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { VisaoLinkPainel } from "@/components/energia/VisaoLinkPainel";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { carimbo, mesAno } from "@/lib/energia/formato";
 import { datasLegiveis } from "@/lib/energia/visao";
-import { PAGINAS_MERCADO, ROTULO_RESULTADO, textoEstado, type IdPaginaMercado } from "@/lib/energia/mercado";
+import { PAGINAS_MERCADO, ROTULO_RESULTADO, textoEstado, vereditoPainelMercado, type IdPaginaMercado } from "@/lib/energia/mercado";
 import type { MercadoGold, PainelMercado } from "@/lib/energia/tipos-mercado";
 
 /**
@@ -55,10 +56,22 @@ export function ReferenciaMercado({ g }: { g: MercadoGold }) {
   );
 }
 
-export function MercadoResposta({ painel, children, prova }: { painel: string; children: ReactNode; prova?: ReactNode }) {
+/**
+ * Resposta do painel em duas camadas: o veredito (palavras simples, no máximo dois números) fica à vista e a resposta
+ * completa da gold fica em Analisar e Auditar, inteira. Sem veredito (dado ausente), a mensagem de ausência vale como resposta.
+ */
+export function MercadoResposta({ painel, veredito, children, prova }: { painel: string; veredito?: string; children: ReactNode; prova?: ReactNode }) {
   return (
-    <div className="mb-5 border-l-2 border-energia pl-4" data-resposta={painel}>
-      <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
+    <div className="mb-5 border-l-2 border-energia pl-4">
+      {veredito ? (
+        <RespostaCurta id={painel} veredito={veredito}>
+          {children}
+        </RespostaCurta>
+      ) : (
+        <div data-resposta={painel}>
+          <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
+        </div>
+      )}
       {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
     </div>
   );
@@ -132,7 +145,7 @@ export function MercadoLimitacoes({ painel }: { painel: PainelMercado }) {
       <p className="rotulo text-mineral">Limitações declaradas</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
         {painel.limitacoes.map((l) => (
-          <li key={l}>{datasLegiveis(l)}</li>
+          <li key={l}>{datasLegiveis(l).replace(/\bp\.p\./g, "pontos percentuais")}</li>
         ))}
       </ul>
     </div>
@@ -216,11 +229,20 @@ export function MercadoOutrasPerguntas({ g, atual }: { g: MercadoGold; atual: Id
       <ul className="mt-4 grid gap-4 lg:grid-cols-3">
         {outras.map((o) => {
           const p = g.paineis.find((x) => x.id === o.painel);
+          const veredito = p?.resposta ? vereditoPainelMercado(g, o.painel) : "";
           return (
             <li key={o.id} className="flex flex-col border border-linha bg-papel px-4 py-4">
               <p className="rotulo text-mineral">{o.rotulo}</p>
               <h3 className="mt-1 font-serif text-lg leading-snug text-carvao">{p?.pergunta ?? o.rotulo}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-carvao-muted">{p?.resposta ?? "Sem resposta publicada nesta atualização: falta dado na gold."}</p>
+              <div className="mt-2 flex-1">
+                {veredito ? (
+                  <RespostaCurta id={o.painel} atributo="data-resposta-resumo" tamanho="sm" veredito={veredito}>
+                    {p?.resposta}
+                  </RespostaCurta>
+                ) : (
+                  <p className="text-sm leading-relaxed text-carvao-muted">{p?.resposta ?? "Sem resposta publicada nesta atualização: falta dado na gold."}</p>
+                )}
+              </div>
               <Link href={o.href} className={`rotulo ${LINK}`}>
                 Abrir o painel {o.rotulo.toLowerCase()}
               </Link>

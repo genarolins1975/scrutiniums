@@ -51,6 +51,7 @@ import type {
 import type { Download } from "./tipos";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { dataBR, num, pct } from "./formato";
+import { SIGLAS } from "./siglas";
 import { LIMITE_COMPARACAO, type ColunaTabela, type EntidadeBuscavel, type LinhaTabela } from "./tabela";
 
 /* ================================================================ comum */
@@ -155,6 +156,12 @@ export function reaisEscala(v: number | null | undefined): string {
   return `${sinal}R$ ${num(a, 0)}`;
 }
 
+/** "R$ 6.010,7 milhões" para frase: sempre em milhões, a unidade das tabelas e dos gráficos da página; negativo com o sinal de menos tipográfico. */
+export function reaisMilhoes(v: number | null | undefined): string {
+  if (!temValor(v)) return SEM_DADO;
+  return `${v < 0 ? "−" : ""}R$ ${num(Math.abs(v) / 1e6, 1)} milhões`;
+}
+
 /** R$ inteiros → R$ milhões (conversão de unidade para tabela e gráfico; nenhuma conta refeita). */
 export function emMilhoes(v: number | null | undefined): number | null {
   return temValor(v) ? v / 1e6 : null;
@@ -191,7 +198,7 @@ export function respostaCadastro(c: Cadastro): string {
   const a = c.ativos;
   const semVinculoOperacao = a.estados.filter((e) => e.estado !== "vinculado").reduce((s, e) => s + e.usinas_operacao, 0);
   const partes = [
-    `No SIGA de ${dataTexto(a.data)}, ${inteiro(a.operacao.usinas)} usinas estão em operação, com ${mwTexto(a.operacao.mw_fiscalizado)} de potência fiscalizada; ${pctTexto(a.pct_mw_operacao_vinculado)} dessa potência tem todos os proprietários identificados pelo CNPJ publicado no próprio registro, num total de ${inteiro(a.proprietarios_cnpj)} proprietários.`,
+    `No SIGA de ${dataTexto(a.data)}, ${inteiro(a.operacao.usinas)} usinas estão em operação, com ${mwTexto(a.operacao.mw_fiscalizado)} de potência fiscalizada; ${pctTexto(a.pct_mw_operacao_vinculado, 2)} dessa potência tem todos os proprietários identificados pelo CNPJ publicado no próprio registro, num total de ${inteiro(a.proprietarios_cnpj)} proprietários.`,
     semVinculoOperacao > 0
       ? `As ${inteiro(semVinculoOperacao)} usinas em operação sem vínculo completo continuam identificadas, cada uma com o motivo.`
       : "Nenhuma usina em operação ficou sem vínculo completo.",
@@ -690,9 +697,9 @@ export function respostaFicha(d: Distribuidora): string {
   if (p && temValor(p.taxa_total_pct) && p.ano) {
     const incompleto = p.completo === false ? " (ano incompleto no SAMP)" : "";
     if (p.taxa_total_pct < 0) {
-      // perda negativa: a energia fornecida superou a injetada; o valor é o publicado, sem causa afirmada
+      // perda negativa: a medida que o SAMP publica é negativa; o valor é o publicado, sem correção e sem causa afirmada
       partes.push(
-        `Em ${p.ano}, a ${d.sigla} registrou perda total negativa, de ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${incompleto}: a energia fornecida superou a injetada. O valor é o que consta no SAMP e a página não o corrige nem explica a causa.`,
+        `Em ${p.ano}, a ${d.sigla} registrou perda total negativa, de ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${incompleto}. Valor negativo quer dizer que a medida publicada pelo SAMP é negativa; o observatório mostra o valor como a fonte o entrega, sem corrigi-lo e sem explicar a causa.`,
       );
     } else {
       partes.push(`Em ${p.ano}, a ${d.sigla} perdeu ${pct(p.taxa_total_pct, 2)} da energia injetada na rede${incompleto}.`);
@@ -737,7 +744,7 @@ export function paresPerdas(d: Distribuidora, ix: readonly Distribuidora[]): Par
   if (!d.grupo || !temValor(v) || !ano) return null;
   const pares = ix.filter((x) => x.grupo === d.grupo && x.perdas?.ano === ano && temValor(x.perdas.taxa_total_pct));
   const itens = pares
-    .map((x) => ({ id: x.slug, rotulo: x.sigla, valor: x.perdas!.taxa_total_pct as number, referencia: null }))
+    .map((x) => ({ id: x.slug, rotulo: rotuloDistribuidora(x), valor: x.perdas!.taxa_total_pct as number, referencia: null }))
     .sort((a, b) => a.valor - b.valor || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
   return {
     regra: `${d.grupo === "concessionaria" ? "concessionárias" : "permissionárias"} com taxa de perdas em ${ano}`,
@@ -756,7 +763,7 @@ export function paresQualidade(d: Distribuidora, ix: readonly Distribuidora[]): 
     (x) => x.grupo === d.grupo && x.qualidade?.ano === q.ano && temValor(x.qualidade.dec) && (q.porte ? x.qualidade.porte === q.porte : true),
   );
   const itens = pares
-    .map((x) => ({ id: x.slug, rotulo: x.sigla, valor: x.qualidade!.dec as number, referencia: x.qualidade!.dec_limite }))
+    .map((x) => ({ id: x.slug, rotulo: rotuloDistribuidora(x), valor: x.qualidade!.dec as number, referencia: x.qualidade!.dec_limite }))
     .sort((a, b) => a.valor - b.valor || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
   const grupo = d.grupo === "concessionaria" ? "concessionárias" : "permissionárias";
   return {
@@ -768,13 +775,13 @@ export function paresQualidade(d: Distribuidora, ix: readonly Distribuidora[]): 
   };
 }
 
-export function textoPares(sigla: string, medida: string, p: Pares | null): string {
+export function textoPares(sigla: string, medida: string, p: Pares | null, id?: string): string {
   if (!p) return `Sem pares comparáveis para ${medida}: falta o grupo, o ano de referência ou o valor.`;
-  const meu = p.itens.find((x) => x.rotulo === sigla)?.valor;
+  const meu = p.itens.find((x) => (id ? x.id === id : x.rotulo === sigla))?.valor;
   const base = `Entre as ${inteiro(p.total)} ${p.regra}, a ${sigla} ocupa a posição ${posicaoTexto(p.posicao, p.total)} em ordem crescente de ${medida}`;
   // a ordem é da menor para a maior: a 1ª tem o menor valor e a última, o maior (em perdas e em DEC, menor é melhor)
   if (typeof meu === "number" && meu < 0)
-    return `${base}. O valor é negativo (a energia fornecida superou a injetada), e por isso a posição não indica a menor perda.`;
+    return `${base}. O valor é negativo na fonte, e por isso a posição não indica a menor perda.`;
   const sentido = p.posicao === p.total ? `: é o maior valor do grupo` : p.posicao === 1 ? `: é o menor valor do grupo` : "";
   return `${base}${sentido}. Menor é melhor nessa medida.`;
 }
@@ -1044,8 +1051,9 @@ export function textoCompanhia(c: Companhia, contas: readonly DefinicaoConta[]):
   if (!c.valores || !c.ultimo_exercicio) return `${nome} não tem demonstração anual (DFP) no período lido; só aparece no cadastro${c.ultimo_trimestre ? ` e nas informações trimestrais até ${dataTexto(c.ultimo_trimestre)}` : ""}.`;
   const v = c.valores;
   const rot = (id: ContaCvm) => contas.find((x) => x.id === id)?.rotulo.toLocaleLowerCase("pt-BR") ?? id;
+  // uma só unidade no parágrafo e nos cartões (R$ milhões, como as tabelas e os gráficos): bilhões e milhões alternados faziam o mesmo valor parecer outro
   const partes = [
-    `No exercício de ${c.ultimo_exercicio}, ${nome} (${rotuloEscopo(c.escopo_exibido)}) reportou receita de ${reaisEscala(v.receita)}, lucro líquido de ${reaisEscala(v.lucro_liquido)} e ${rot("caixa_investimento")} de ${reaisEscala(v.caixa_investimento)}; no fim do exercício, a dívida bruta era de ${reaisEscala(v.divida_bruta)} e o patrimônio líquido de ${reaisEscala(v.patrimonio_liquido)}.`,
+    `No exercício de ${c.ultimo_exercicio}, ${nome} (${rotuloEscopo(c.escopo_exibido)}) reportou receita de ${reaisMilhoes(v.receita)}, lucro líquido de ${reaisMilhoes(v.lucro_liquido)} e ${rot("caixa_investimento")} de ${reaisMilhoes(v.caixa_investimento)}; no fim do exercício, a dívida bruta era de ${reaisMilhoes(v.divida_bruta)} e o patrimônio líquido de ${reaisMilhoes(v.patrimonio_liquido)}.`,
   ];
   if (c.alertas.length) partes.push(`Avisos: ${c.alertas.map((a) => ROTULO_ALERTA[a] ?? a).join("; ")}.`);
   if (c.controladora_aberta) partes.push(`A controladora aberta ${nomeOuCnpj(c.controladora_aberta.nome, c.controladora_aberta.cnpj)} já consolida estes números: os dois não se somam.`);
@@ -1157,6 +1165,13 @@ export const ROTULO_FAIXA: Readonly<Record<FaixaHhi, string>> = {
  */
 export const LIMIARES_HHI_CADE = { moderado: 1500, alto: 2500 } as const;
 
+/** Rótulos curtos dos níveis para o eixo do gráfico, que trunca nomes longos (a tabela mantém os completos). */
+export const ROTULO_NIVEL_CURTO: Readonly<Record<"proprietario_direto" | "grupo_proporcional" | "grupo_controle", string>> = {
+  proprietario_direto: "Dono direto (proporcional)",
+  grupo_proporcional: "Grupo (proporcional)",
+  grupo_controle: "Grupo (sob controle)",
+};
+
 export const ROTULO_NIVEL: Readonly<Record<"proprietario_direto" | "grupo_proporcional" | "grupo_controle", string>> = {
   proprietario_direto: "Proprietário direto (capacidade proporcional)",
   grupo_proporcional: "Grupo de controle (capacidade proporcional)",
@@ -1196,6 +1211,7 @@ export function linhasNiveis(cc: Controle["concentracao"]): LinhaTabela[] {
     .map(([id, c]) => ({
       id,
       nivel: ROTULO_NIVEL[id],
+      nivel_curto: ROTULO_NIVEL_CURTO[id],
       hhi: c.hhi,
       faixa: c.faixa ? ROTULO_FAIXA[c.faixa] : null,
       cr4: c.cr4,
@@ -1369,10 +1385,10 @@ export function arvoreDe(c: CadeiaSocietaria, cnpj: string): ArvoreSocietaria | 
 }
 
 /** Frase da árvore: até onde a cadeia sobe e por que para. */
-export function textoArvore(a: ArvoreSocietaria): string {
+export function textoArvore(a: ArvoreSocietaria, motivos: readonly { motivo: string; rotulo: string }[] = []): string {
   const nome = nomeOuCnpj(a.raiz.nome, a.raiz.cnpj);
   const topo = a.cadeia[a.cadeia.length - 1];
-  const motivo = a.motivoTopo ? ROTULO_MOTIVO[a.motivoTopo] : "motivo não publicado";
+  const motivo = a.motivoTopo ? motivoExplicado(a.motivoTopo, motivos) : "motivo não publicado";
   const subida =
     a.cadeia.length > 1
       ? `A cadeia de controladores únicos declarada à ANEEL sobe ${plural(a.cadeia.length - 1, "nível", "níveis")} de ${nome} até ${nomeOuCnpj(topo.nome, topo.cnpj)}`
@@ -1395,6 +1411,239 @@ export function entidadesControle(gs: readonly Grupo[], ps: readonly Proprietari
 /** Todas as entidades do arquivo da cadeia (para a busca depois que ele chega). */
 export function entidadesCadeia(c: CadeiaSocietaria): EntidadeBuscavel[] {
   return Object.entries(c.nos).map(([cnpj, [nome]]) => ({ id: cnpj, rotulo: nomeOuCnpj(nome, cnpj), detalhe: cnpjFormatado(cnpj), sinonimos: [cnpj] }));
+}
+
+/* ================================================================ vereditos (resposta em duas camadas) */
+
+/**
+ * Cada veredito responde, em palavras simples e com poucos números, à pergunta do título do painel, a partir dos mesmos
+ * campos da resposta completa (que continua inteira como segunda camada). Nenhuma frase traz número fixo: todo número
+ * vem do argumento, e a ausência vira "sem dado". Termo técnico novo fica fora do veredito.
+ */
+
+function listaE(itens: readonly string[]): string {
+  return itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+/** P036: quanto da potência em operação e dos módulos de transmissão tem dono identificado pelo CNPJ, com o limite de leitura. */
+export function vereditoCadastro(c: Cadastro): string {
+  const a = c.ativos;
+  const t = c.transmissao;
+  const usinas = `No SIGA de ${dataTexto(a.data)}, ${pctTexto(a.pct_mw_operacao_vinculado, 2)} da potência das usinas em operação tem todos os donos identificados pelo CNPJ.`;
+  const linhas = t
+    ? `No SIGET de ${dataTexto(t.data)}, ${pctTexto(t.resumo.pct_modulos_com_cnpj)} dos módulos de transmissão estão ligados a um CNPJ.`
+    : "Os ativos de transmissão não estão nesta publicação.";
+  return `${usinas} ${linhas} Capacidade instalada não é energia gerada.`;
+}
+
+/**
+ * P037: o universo de distribuidoras e, quando a gold de Perdas publica a taxa nacional do mesmo ano, a escala para
+ * ler a ficha de cada uma. O que cada ficha reúne está na resposta completa.
+ */
+export function vereditoDistribuidoras(d: Distribuidoras, nacional: number | null = null, ano: number | null = null): string {
+  const r = d.resumo;
+  const base = `O observatório reúne ${inteiro(r.distribuidoras)} distribuidoras pelo CNPJ.`;
+  const ficha = "a ficha de cada empresa mostra as perdas dela, a continuidade do serviço e a tarifa residencial";
+  if (temValor(nacional) && ano) return `${base} Em ${ano}, a taxa nacional de perdas das concessionárias foi de ${pct(nacional, 2)} da energia injetada; ${ficha}.`;
+  return `${base} ${ficha.charAt(0).toUpperCase()}${ficha.slice(1)}.`;
+}
+
+/** P038: quantas companhias reportam, até quando, e a regra de não somar entre elas. */
+export function vereditoFinancas(f: Financas): string {
+  const u = f.universo;
+  const p = f.periodos;
+  return `As ${inteiro(u.companhias)} companhias abertas do setor elétrico na CVM reportam receita, resultado, dívida e patrimônio; ${inteiro(u.com_dfp)} têm demonstrações anuais até ${p.ultimo_exercicio ?? SEM_DADO}. Escolha uma companhia para ver a evolução; valores de companhias diferentes não se somam.`;
+}
+
+/** P039: o maior grupo, o HHI com a escala e a faixa, e o limite de leitura (capacidade instalada, não poder de mercado). */
+export function vereditoControle(c: Controle): string {
+  const g = c.concentracao.grupo_proporcional;
+  const maior = g?.maiores[0];
+  const grupo = maior ? `O maior grupo de controle, ${nomeOuCnpj(maior.nome, maior.cnpj)}, tem ${pctTexto(maior.pct, 2)} da potência em operação.` : "Não há grupo de controle com potência publicada.";
+  const hhi = `O índice de concentração (HHI), de 0 a 10.000, é ${numTexto(g?.hhi, 0)}${g?.faixa ? `: ${ROTULO_FAIXA[g.faixa]} nas faixas do Guia do CADE` : ""}.`;
+  return `${grupo} ${hhi} É capacidade instalada, não poder de mercado.`;
+}
+
+/**
+ * Ficha: perdas (com a média das concessionárias quando a página a traz), continuidade diante do limite da própria
+ * distribuidora e tarifa residencial. "Dentro" e "acima" só diante do limite que a ANEEL fixa para ela, decidido na
+ * precisão exibida; "abaixo da média" só com a referência nacional do mesmo ano.
+ */
+export function vereditoFicha(d: Distribuidora, nacional: number | null = null): string {
+  const p = d.perdas;
+  const q = d.qualidade;
+  const dentro = (s: ReturnType<typeof sentidoLimite>) => s === "abaixo" || s === "igual";
+  let abertura: string;
+  if (p && temValor(p.taxa_total_pct) && p.ano) {
+    const incompleto = p.completo === false ? " (ano incompleto no SAMP)" : "";
+    if (p.taxa_total_pct < 0) {
+      abertura = `Em ${p.ano}, a ${d.sigla} tem perda total negativa na fonte, de ${pct(p.taxa_total_pct, 2)}${incompleto}, que o observatório mostra sem corrigir`;
+    } else {
+      const s = temValor(nacional) ? sentidoLimite(p.taxa_total_pct, nacional) : null;
+      const comp = s === "abaixo" ? ", abaixo da média das concessionárias do Brasil" : s === "acima" ? ", acima da média das concessionárias do Brasil" : s === "igual" ? ", igual à média das concessionárias do Brasil" : "";
+      abertura = `Em ${p.ano}, a ${d.sigla} perdeu ${pct(p.taxa_total_pct, 2)} da energia injetada${incompleto}${comp}`;
+    }
+  } else if (p) {
+    abertura = `A ${d.sigla} não tem perdas no ano de referência do SAMP`;
+  } else {
+    abertura = `A ${d.sigla} não aparece no SAMP`;
+  }
+  let continuidade: string;
+  if (q && q.ano) {
+    const dec = sentidoLimite(q.dec, q.dec_limite);
+    const fec = sentidoLimite(q.fec, q.fec_limite);
+    const quando = p?.ano === q.ano ? "" : `em ${q.ano}, `;
+    if (!dec && !fec) continuidade = `${quando}a continuidade não tem dado comparável com o limite`;
+    else if (dec && fec) {
+      if (dentro(dec) && dentro(fec)) continuidade = `${quando}as interrupções ficaram dentro dos limites de duração e de frequência`;
+      else if (!dentro(dec) && !dentro(fec)) continuidade = `${quando}as interrupções ficaram acima dos limites de duração e de frequência`;
+      else continuidade = dentro(dec) ? `${quando}as interrupções ficaram dentro do limite de duração e acima do limite de frequência` : `${quando}as interrupções ficaram acima do limite de duração e dentro do limite de frequência`;
+    } else {
+      const [nome, s, outro] = dec ? (["duração", dec, "frequência"] as const) : (["frequência", fec, "duração"] as const);
+      continuidade = `${quando}a ${nome} das interrupções ficou ${dentro(s) ? "dentro do" : "acima do"} limite, e a ${outro} ficou sem dado`;
+    }
+  } else {
+    continuidade = "não há indicador de continuidade publicado para o ano de referência";
+  }
+  const t = d.tarifa;
+  const tarifa =
+    t && t.vigente && temValor(t.total)
+      ? `A tarifa residencial vigente é de R$ ${num(t.total, 2)}/MWh, sem tributos.`
+      : t && !t.vigente
+        ? `Não há tarifa residencial vigente: ${(t.motivo ?? "motivo não publicado").split(";")[0]}.`
+        : "Ela não aparece nas tarifas de aplicação.";
+  return `${abertura}, e ${continuidade}. ${tarifa}`;
+}
+
+/**
+ * Concilia a fronteira do painel de controle com o total em operação do cadastro: a fronteira é menor porque deixa de fora as
+ * usinas sem proprietário informado ou com participações que não somam 100% (contagem por estado do vínculo, na gold) e as
+ * que não têm potência fiscalizada para contar (o resto da diferença). Todo número vem da gold.
+ */
+export function textoFronteiraNoCadastro(f: Controle["fronteira"], a: Ativos): string {
+  const fora = a.operacao.usinas - f.usinas;
+  if (fora <= 0) return "";
+  const semParticipacao = a.estados.filter((e) => e.estado === "sem_proprietario" || e.estado === "soma_divergente").reduce((n, e) => n + e.usinas_operacao, 0);
+  const resto = fora - semParticipacao;
+  return (
+    `A fronteira (${mwTexto(f.mw)} em ${inteiro(f.usinas)} usinas) é menor que o total em operação do cadastro (${mwTexto(f.mw_operacao_total)} em ${inteiro(a.operacao.usinas)} usinas): ficam de fora ${inteiro(fora)} usinas e ${mwTexto(f.mw_fora)}, ` +
+    `sendo ${inteiro(semParticipacao)} usinas sem proprietário informado ou com participações que não somam 100%${resto > 0 ? ` e ${inteiro(resto)} sem potência fiscalizada para contar` : ""}.`
+  );
+}
+
+/** O que a conciliação com o RALIE lê da gold de Expansão (estagios.ralie). */
+export type RalieResumo = {
+  data_ralie: string;
+  usinas: number;
+  mw_outorgado: number | null;
+  mw_ugs_em_implantacao: number | null;
+  fase_no_siga: { fase: string; usinas: number }[];
+};
+
+/**
+ * Concilia as fases de construção do SIGA com a carteira do RALIE: duas fontes da ANEEL, duas datas e duas medidas (a
+ * potência outorgada por usina, no SIGA, e a das unidades geradoras em implantação, no RALIE). A diferença de usinas vem das
+ * que o RALIE lista e o SIGA já tem em operação ou não tem, e das que o SIGA tem em construção e o RALIE não lista; os dois
+ * números do cruzamento (fase_no_siga) são os da gold de Expansão.
+ */
+export function textoFasesSigaERalie(a: Ativos, ralie: RalieResumo | null): string {
+  const construcao = a.por_fase.filter((f) => f.fase === "Construção" || f.fase === "Construção não iniciada");
+  const usinas = construcao.reduce((n, f) => n + f.usinas, 0);
+  const mw = construcao.reduce((n, f) => n + (f.mw_outorgado ?? 0), 0);
+  const siga = `No SIGA de ${dataTexto(a.data)}, as fases Construção e Construção não iniciada somam ${inteiro(usinas)} usinas e ${mwTexto(mw)} de potência outorgada.`;
+  if (!ralie) return siga;
+  const na = (f: string) => ralie.fase_no_siga.find((x) => x.fase === f)?.usinas ?? 0;
+  const emConstrucao = na("Construção") + na("Construção não iniciada");
+  const ausentes = ralie.fase_no_siga.filter((x) => x.fase !== "Construção" && x.fase !== "Construção não iniciada" && x.fase !== "Operação").reduce((n, x) => n + x.usinas, 0);
+  return (
+    `${siga} O RALIE, outra fonte da ANEEL, acompanhava em ${dataTexto(ralie.data_ralie)} ${inteiro(ralie.usinas)} usinas em implantação: ${mwTexto(ralie.mw_outorgado)} de potência outorgada e ${mwTexto(ralie.mw_ugs_em_implantacao)} de potência das unidades geradoras em implantação, o número que a página Expansão destaca. ` +
+    `Das ${inteiro(ralie.usinas)}, ${inteiro(emConstrucao)} estão nessas duas fases do SIGA, ${inteiro(na("Operação"))} já aparecem em operação e ${inteiro(ausentes)} não aparecem no SIGA; das ${inteiro(usinas)} do SIGA, ${inteiro(usinas - emConstrucao)} não estão no RALIE. ` +
+    "Por isso os dois totais não coincidem: mudam a fonte, a data e a medida."
+  );
+}
+
+/** Concessionárias de transmissão do mesmo grupo entre as maiores, ditas uma vez para o gráfico não parecer ter empresas sem relação. */
+export function textoGruposNaTransmissao(t: Transmissao): string {
+  const porGrupo = new Map<string, { nome: string | null; n: number }>();
+  for (const a of t.maiores) {
+    const k = a.grupo ?? a.cnpj;
+    const x = porGrupo.get(k) ?? { nome: a.grupo ? a.grupo_nome : a.nome, n: 0 };
+    x.n += 1;
+    porGrupo.set(k, x);
+  }
+  const reunidos = Array.from(porGrupo.values()).filter((x) => x.n > 1);
+  if (!reunidos.length) return "";
+  const frase = reunidos.map((x) => `${inteiro(x.n)} do grupo ${x.nome ?? SEM_DADO}`);
+  return `Entre as ${inteiro(t.maiores.length)} maiores concessionárias, ${listaE(frase)}: empresas do mesmo grupo aparecem separadas no gráfico, e a tabela dos grupos, abaixo, as reúne.`;
+}
+
+/* ---------------------------------------------------------------- leitura das fichas */
+
+/**
+ * Tira de um texto escrito para a gold o nome interno de campo entre parênteses ("(campo qualidade.porte)"), que o leitor
+ * de Entender não consulta.
+ */
+export function semNomesDeCampo(texto: string): string {
+  return texto
+    .replace(/\s*\((?:campo\s+)?[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+\)/g, "")
+    .replace(/\s*\((?:[a-z]+[A-Z]|[A-Z][a-z]+[A-Z])[A-Za-z0-9]*\)/g, "");
+}
+
+/**
+ * Rótulo da distribuidora nos gráficos de pares: a sigla; quando a sigla coincide com uma sigla que o observatório expande
+ * como outra coisa (ESS é a distribuidora Energisa Sul-Sudeste e também a sigla de Encargos de Serviços do Sistema), o nome
+ * da empresa sem o complemento depois do hífen, para a legenda de siglas não confundir as duas.
+ */
+export function rotuloDistribuidora(d: Pick<Distribuidora, "sigla" | "nome">): string {
+  if (!(d.sigla in SIGLAS) || !d.nome) return d.sigla;
+  const curto = d.nome.split(/\s+[-–]\s+/)[0].trim();
+  return curto || d.sigla;
+}
+
+/**
+ * Parâmetros dos gráficos de pares para que a distribuidora da página apareça entre as linhas visíveis ao abrir: a ordem
+ * parte da ponta mais próxima dela (crescente se ela está na primeira metade, decrescente se na segunda) e a altura visível
+ * vai até a linha dela e uma a mais. `posicao` é a posição na ordem crescente (1 é o menor valor).
+ */
+export function janelaDosPares(posicao: number, total: number, alturaLinha: number, minimo: number): { crescente: boolean; alturaMaxima: number } {
+  const deCima = Math.max(1, posicao);
+  const deBaixo = Math.max(1, total - posicao + 1);
+  const crescente = deCima <= deBaixo;
+  const linhas = Math.min(deCima, deBaixo);
+  return { crescente, alturaMaxima: Math.max(minimo, (linhas + 1) * alturaLinha) };
+}
+
+/** Pares com valor negativo na fonte: quais são, para dizer uma vez que a barra negativa é a medida da fonte. Vazio sem negativos. */
+export function textoNegativos(p: Pares | null): string {
+  if (!p) return "";
+  const neg = p.itens.filter((i) => i.valor < 0);
+  if (!neg.length) return "";
+  return `${neg.length === 1 ? "Uma distribuidora do grupo tem" : `${inteiro(neg.length)} distribuidoras do grupo têm`} valor negativo na fonte (${listaE(neg.map((n) => n.rotulo))}): barra negativa é a medida publicada pelo SAMP, mostrada sem correção.`;
+}
+
+/** Anos de uma série com valor negativo na fonte, para dizer uma vez o que os valores negativos significam. */
+export function textoAnosNegativos(pontos: readonly Pick<PontoPerdas, "ano" | "taxa_completo" | "taxa_parcial">[]): string {
+  const neg = pontos.filter((x) => (x.taxa_completo ?? x.taxa_parcial ?? 0) < 0);
+  if (!neg.length) return "";
+  const lista = neg.map((x) => `${x.ano} (${pct((x.taxa_completo ?? x.taxa_parcial) as number, 2)})`);
+  return `Anos com perda total negativa na fonte: ${listaE(lista)}. Valor negativo é a medida publicada pelo SAMP; o observatório não o corrige.`;
+}
+
+/**
+ * Motivo da parada da cadeia de controle em palavras que o leitor entende: a explicação que a gold publica
+ * (cobertura.motivos_parada, por exemplo "declarações do mesmo trimestre discordam sobre quem é o controlador") no lugar do
+ * rótulo curto ("declarações discordantes"), que fica nas tabelas. Sem a explicação, o rótulo curto.
+ */
+export function motivoExplicado(motivo: MotivoParada, motivos: readonly { motivo: string; rotulo: string }[] = []): string {
+  return motivos.find((m) => m.motivo === motivo)?.rotulo ?? ROTULO_MOTIVO[motivo] ?? motivo;
+}
+
+/** Resumo dos sócios diretos: quantos, quantos marcados como controlador pela própria declaração, quantos sem CNPJ. */
+export function textoSocios(socios: readonly SocioArvore[]): string {
+  if (!socios.length) return "";
+  const ctl = socios.filter((s) => s.controlador).length;
+  const semDoc = socios.filter((s) => !s.cnpj).length;
+  return `${plural(socios.length, "sócio direto declarado", "sócios diretos declarados")}, ${ctl === 0 ? "nenhum marcado" : `${inteiro(ctl)} ${ctl === 1 ? "marcado" : "marcados"}`} como controlador na declaração à ANEEL e ${inteiro(semDoc)} sem CNPJ.`;
 }
 
 /* ================================================================ carga sob demanda */

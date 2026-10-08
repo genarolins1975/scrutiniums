@@ -149,7 +149,7 @@ export function QualidadeLimites({
             </>
           ) : erro ? (
             <p role="alert" className="text-sm text-carvao">
-              Histórico indisponível ({erro}); a série está em qualidade_distribuidoras_anual.csv.
+              Histórico indisponível ({erro}); a série anual por distribuidora está no CSV da lista de downloads do painel.
             </p>
           ) : (
             <p role="status" className="text-sm text-carvao-muted">

@@ -49,10 +49,12 @@ import {
   linhaUsina,
   municipiosDoJson,
   potenciaUsina,
+  descricaoCamada,
   proximaPergunta,
   selecaoDeId,
   situacaoVinculo,
   textoDistribuidoras,
+  textoQualidadeMalha,
   textoSubmercadoMunicipio,
   usinasDoJson,
   valoresMedida,
@@ -454,7 +456,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     if (cUf.estado === "erro") return { ...vazio, falha: <Falha erro={cUf.erro} arquivo={dados.arquivos.geoUf} nome="a malha de UF do IBGE" repetir={repetirUf} /> };
 
     if (cam === "submercado") {
-      if (!geoUf) return { ...vazio, carregando: "Carregando a malha de UF do IBGE (67 KB)…" };
+      if (!geoUf) return { ...vazio, carregando: "Carregando o mapa das UFs (IBGE)…" };
       const fills = geoUf.features.map((f) => {
         const s = ufPorSigla.get(f.uf)?.subsistema;
         return s ? fundoSubmercado(s) : "sem-dado";
@@ -525,9 +527,9 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     }
 
     if (cam === "usinas") {
-      if (!geoUf) return { ...vazio, carregando: "Carregando a malha de UF do IBGE (67 KB)…" };
+      if (!geoUf) return { ...vazio, carregando: "Carregando o mapa das UFs (IBGE)…" };
       if (cUsinas.estado === "erro") return { ...vazio, falha: <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome="as usinas" repetir={repetirUsinas} /> };
-      if (!usinasVisiveis) return { ...vazio, carregando: "Carregando as 25 mil usinas do SIGA (arquivo de 3,1 MB)…" };
+      if (!usinasVisiveis) return { ...vazio, carregando: "Carregando as usinas do SIGA…" };
       const grupos = new Map<string, { cor: string; ponta: "round" | "square"; espessura: number; d: string[]; vazado: boolean; ordem: number }>();
       for (const u of usinasVisiveis) {
         if (u.x === null || u.y === null) continue;
@@ -614,7 +616,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     // camadas sobre a malha municipal
     if (cMalha.estado === "erro") return { ...vazio, falha: <Falha erro={cMalha.erro} arquivo={dados.arquivos.geoMunicipios} nome="a malha municipal do IBGE" repetir={repetirMalha} /> };
     if (cIndice.estado === "erro") return { ...vazio, falha: <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} /> };
-    if (!geoMun || !municipios || !linhasMun) return { ...vazio, carregando: "Carregando a malha municipal do IBGE (1,3 MB) e o índice dos 5.571 municípios (1,1 MB)…" };
+    if (!geoMun || !municipios || !linhasMun) return { ...vazio, carregando: "Carregando o mapa e o índice dos municípios (IBGE)…" };
 
     if (cam === "distribuidora") {
       const area = corr.dist;
@@ -777,7 +779,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     ) : municipios ? (
       <Estado alerta>O código IBGE {sel.id} não está no índice municipal publicado.</Estado>
     ) : (
-      <Estado>Carregando o índice dos municípios (1,1 MB) para a ficha…</Estado>
+      <Estado>Carregando o índice dos municípios para a ficha…</Estado>
     );
   } else if (sel?.tipo === "dist") {
     ficha = selDist ? <FichaDistribuidora d={selDist} dados={dados} onSelecionar={selecionar} /> : <Estado alerta>O CNPJ {sel.id} não tem município na relação oficial vigente.</Estado>;
@@ -793,15 +795,15 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     ) : usinas ? (
       <Estado alerta>A usina {sel.id} não está no arquivo publicado.</Estado>
     ) : (
-      <Estado>Carregando as usinas (3,1 MB) para a ficha…</Estado>
+      <Estado>Carregando as usinas para a ficha…</Estado>
     );
   } else {
     const c = dados.camadas.find((x) => x.id === (cam === "usinas" ? "usinas" : cam));
     ficha = (
       <div className="space-y-2 text-sm text-carvao-muted">
         <p className="rotulo text-mineral">Nenhuma escolha</p>
-        <p className="text-carvao">Busque o seu município acima, toque no mapa ou escolha uma linha da tabela. A ficha mostra cada número debaixo do grão a que ele pertence.</p>
-        {c && <p>{c.descricao}</p>}
+        <p className="text-carvao">Busque o seu município acima, toque no mapa ou escolha uma linha da tabela. A ficha diz de quem é cada número.</p>
+        {c && <p>{descricaoCamada(c.descricao)}</p>}
       </div>
     );
   }
@@ -913,7 +915,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               dica={montagem.dica}
               ajuda={
                 <p>
-                  Malha territorial do IBGE{montagem.geo.malha.revisao ? `, revisão de ${montagem.geo.malha.revisao}` : ""} (qualidade {montagem.geo.malha.qualidade === "minima" ? "mínima, simplificada para desenhar" : montagem.geo.malha.qualidade}), em projeção de áreas
+                  Malha territorial do IBGE{montagem.geo.malha.revisao ? `, revisão de ${montagem.geo.malha.revisao}` : ""} (qualidade {textoQualidadeMalha(montagem.geo.malha.qualidade)}), em projeção de áreas
                   iguais. Pelo teclado, use a busca acima e a tabela abaixo.
                 </p>
               }
@@ -930,8 +932,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           {cam === "submercado" && !(geoMun && municipios) && cMalha.estado !== "carregando" && (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3 text-sm text-carvao-muted">
               <p className="min-w-0 flex-[1_1_16rem]">
-                {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada: a cor da UF
-                não vale para os primeiros. Para vê-los no mapa, a malha municipal (1,3 MB) e o índice (1,1 MB) são baixados.
+                {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada. Para vê-los no mapa, a página carrega os municípios.
               </p>
               <button type="button" onClick={() => setPedidoMalha(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo">
                 Mostrar os municípios fora do SIN
@@ -1043,7 +1044,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               selecionado={idSel("mun")}
               onSelecionar={(id) => selecionar(id ? { tipo: "mun", id } : null)}
               dicaBusca="Município, UF ou código IBGE"
-              nota="Nenhuma coluna desta tabela é valor de distribuidora, conjunto, submercado ou UF: esses ficam nas tabelas do seu grão."
+              nota="Nenhuma coluna desta tabela é valor de distribuidora, conjunto, submercado ou UF: esses ficam nas tabelas de cada tipo de área."
             />
           ) : (
             <Estado>A tabela dos municípios aparece com o índice municipal.</Estado>
@@ -1078,7 +1079,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       </Secao>
 
       {/* tabelas por grão */}
-      <Secao titulo="Tabelas por grão: cada número na tabela do seu grão" nivel="analisar" id="territorio-graos">
+      <Secao titulo="Tabelas por tipo de área: cada número na tabela da sua área" nivel="analisar" id="territorio-graos">
         <TabelaInterativa
           titulo="Submercados: preço, armazenamento e MMGD estimada (valores do submercado inteiro)"
           colunas={COLUNAS_SUBMERCADOS}
@@ -1133,7 +1134,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} />
           ) : (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
-              <p className="min-w-0 flex-[1_1_16rem] text-sm text-carvao-muted">A comparação lê o índice municipal (1,1 MB), baixado só quando pedido.</p>
+              <p className="min-w-0 flex-[1_1_16rem] text-sm text-carvao-muted">A comparação lê o índice municipal, carregado só quando pedido.</p>
               <button type="button" onClick={() => setPedidoIndice(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-sm text-carvao hover:bg-energia-fundo">
                 {cIndice.estado === "carregando" ? "Carregando…" : "Carregar os municípios"}
               </button>
@@ -1226,7 +1227,7 @@ function TabelaComparacao({ municipios, linhas }: { municipios: MunicipioT[]; li
         </tbody>
       </table>
       <p className="mt-2 text-xs text-carvao-muted">
-        Distribuidora e submercado entram como referência: os valores deles são da área inteira e do submercado inteiro, e ficam na ficha e nas tabelas do grão.
+        Distribuidora e submercado entram como referência: os valores deles são da área inteira e do submercado inteiro, e ficam na ficha e nas tabelas de cada tipo de área.
       </p>
     </div>
   );

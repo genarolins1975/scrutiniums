@@ -55,6 +55,11 @@ export type Conceito = {
   relacoes: string[];
   fontes: FonteOficial[];
   limitacoes?: string[];
+  /**
+   * Detalhe técnico da conferência que o leitor comum não precisa (o código da resposta de um servidor, o que foi tentado):
+   * a página o mostra recolhido, depois das limitações. A limitação em si diz em palavras comuns que a fonte não foi lida e por quê.
+   */
+  detalheDaConferencia?: string[];
   vejaNoPortal: { rotulo: string; href: string }[];
   /** Fonte planejada para verbetes pendentes. */
   fontePlanejada?: string;
@@ -145,9 +150,11 @@ const CONCEITOS_BASE: Conceito[] = [
     conferidoEm: "2026-09-28",
     revisadoEm: "2026-10-07",
     emUmaFrase:
-      "Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efetivamente verificada; é calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
+      "Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efetivamente verificada. É calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
-      "No Mercado de Curto Prazo, a CCEE contabiliza as diferenças entre a energia que cada agente contratou e a que efetivamente gerou ou consumiu, e as exposições são valoradas ao PLD (REN ANEEL nº 957/2021). Para cada perfil de agente, submercado e hora, a CCEE apura um balanço energético em MWh (positivo ou negativo) e um resultado em R$. O PLD tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado em detalhe está nas Regras de Comercialização da CCEE, que este verbete não lê.",
+      "No Mercado de Curto Prazo, a CCEE contabiliza as diferenças entre a energia que cada agente contratou e a que efetivamente gerou ou consumiu, e as exposições são valoradas ao PLD (REN ANEEL nº 957/2021). Para cada perfil de agente, submercado e hora, a CCEE apura um balanço energético em MWh (positivo ou negativo) e um resultado em R$. O PLD tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado em detalhe está nas Regras de Comercialização da CCEE, que o observatório não consultou.",
+    comoEMedidoResumo:
+      "Em reais por megawatt-hora (R$/MWh), com um valor por hora e por submercado, publicado pela CCEE. Médias diárias, semanais ou mensais são agregações dessas horas.",
     comoEMedido:
       "Em reais por megawatt-hora (R$/MWh), unidade usual de preço de energia; a descrição do conjunto na CCEE registra a unidade apenas como R$. Um valor por hora e por submercado, no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
     relacoes: ["cmo", "submercado", "newave", "decomp", "dessem"],
@@ -520,9 +527,15 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO em base semi-horária para cada barra do sistema, segundo o ONS.",
-    porQueImporta: "Sua saída publicada tem resolução semi-horária, mais fina que a do CMO semanal; a CCEE o cita entre os modelos do cálculo do PLD.",
-    comoEMedido: "Modelo computacional; sua saída publicada pelo ONS é o CMO semi-horário por barra e por subsistema.",
+    porQueImporta:
+      "A CCEE cita o DESSEM entre os modelos do cálculo do PLD, que sai por hora. O CMO que o ONS publica a partir dele é semi-horário, mais fino que o CMO semanal do DECOMP.",
+    comoEMedido:
+      "Modelo computacional, não uma grandeza. O ONS publica o CMO que ele estima a cada meia hora, por barra; o CMO do subsistema é a média dos CMOs das barras ponderada pelas cargas. No exemplo, o observatório usa o CMO do subsistema e faz a média dele nas meias horas da semana operativa.",
     relacoes: ["cmo", "decomp", "pld"],
+    limitacoes: [
+      "A fonte descreve o DESSEM só pelo CMO que ele estima; a documentação técnica do modelo não foi lida.",
+      "O CMO semi-horário não é o PLD: o PLD aplica limites regulatórios e é calculado pela CCEE em base horária.",
+    ],
     fontes: [ONS("cmo-semi-horario", "CMO Semi-Horário", TRECHO_CMO_SEMI), CCEE_PLD],
     vejaNoPortal: [{ rotulo: "De onde vem o preço", href: "/setor-eletrico/pld#formacao" }],
   },

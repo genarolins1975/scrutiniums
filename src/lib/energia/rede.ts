@@ -356,6 +356,40 @@ function numeroPorExtenso(n: number): string {
   return ["zero", "uma", "duas", "três", "quatro"][n] ?? String(n);
 }
 
+/** "o Sudeste/Centro-Oeste", "o Norte": a região com o artigo, para frases com sujeito. */
+const O_SM: Record<SubsistemaOuSin, string> = { SE: "o Sudeste/Centro-Oeste", S: "o Sul", NE: "o Nordeste", N: "o Norte", SIN: "o SIN" };
+
+/**
+ * Veredito do P028 em palavras simples: para onde a energia foi no saldo dos últimos 30 dias e se o saldo esconde energia
+ * que passou no sentido contrário. As quantidades de cada fronteira ficam em respostaCirculacao; aqui só o maior valor
+ * escondido, lido dos mesmos campos (contra_saldo_mwh).
+ */
+export function vereditoCirculacao(resumo: readonly ResumoFronteira30d[]): string {
+  const comDado = resumo.filter((r) => r.horas > 0);
+  if (!comDado.length) return "Sem fluxo publicado na janela de 30 dias.";
+  const fim = resumo.map((r) => r.fim).sort().at(-1)!;
+  const dias = Math.max(...resumo.map((r) => r.dias));
+  // quem recebeu energia de quem, no saldo da janela, na ordem em que as fronteiras aparecem
+  const porDestino = new Map<Submercado, Submercado[]>();
+  for (const r of comDado) {
+    const s = sentidoDoSaldo(r.par, r.liquido_mwh);
+    if (s) porDestino.set(s.destino, [...(porDestino.get(s.destino) ?? []), s.origem]);
+  }
+  const recebimentos = Array.from(porDestino.entries())
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([destino, origens], i) => `${O_SM[destino]} recebeu ${i === 0 ? "energia " : ""}${listaTexto(origens.map((o) => DO_SM[o]))}`);
+  const frases = [`Nos ${dias} dias até ${dataBR(fim)}, ${recebimentos.length ? recebimentos.join("; ") : "o saldo foi nulo em todas as fronteiras com fluxo publicado"}.`];
+  const escondem = comDado.filter((r) => horasContraSaldo(r) > 0);
+  if (!escondem.length) {
+    frases.push("Em nenhuma fronteira o saldo esconde energia que passou no sentido contrário.");
+  } else {
+    const maior = Math.max(...escondem.map((r) => r.contra_saldo_mwh));
+    const onde = escondem.length === 1 ? "Em uma fronteira" : `Em ${numeroPorExtenso(escondem.length)} fronteiras`;
+    frases.push(`${onde}, o saldo esconde energia que passou no sentido contrário: ${escondem.length === 1 ? "" : "até "}${mwh(maior)}.`);
+  }
+  return frases.join(" ");
+}
+
 /** Preço nas pontas, nas horas da janela de 30 dias: separação descrita, sem diagnóstico. */
 export function textoPrecos30d(resumo: readonly ResumoFronteira30d[]): string {
   const partes = resumo
@@ -981,7 +1015,7 @@ export function colunasIdentidades(b: Pick<BalancoRede, "tolerancia_mwmed" | "fa
   const tol = num(b.tolerancia_mwmed, 1);
   const [f1, f10, f100] = b.faixas_mwmed.map((f) => num(f, 0));
   return [
-    { id: "identidade", rotulo: "Identidade", tipo: "texto", categorica: true },
+    { id: "identidade", rotulo: "Conta conferida", tipo: "texto", categorica: true },
     { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
     { id: "horas", rotulo: "Horas com todas as parcelas", tipo: "numero", casas: 0 },
     { id: "horas_fecham", rotulo: `Horas que fecham (até ${tol} MWmed)`, tipo: "numero", casas: 0 },
@@ -1059,6 +1093,26 @@ export function vereditoBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
       : `pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas`;
   const resto = ids.some((y) => y.horas_residuo > 0) ? " Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa." : "";
   return `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}.${resto}`;
+}
+
+/**
+ * Onde estão as horas com resíduo do balanço interno do SIN, lido da contagem por ano e das horas extremas da gold: os anos com
+ * resíduo, o período, o maior valor e os anos cobertos em que o balanço fecha em todas as horas. Sem causa atribuída.
+ */
+export function textoMudancaBalanco(b: Pick<BalancoRede, "identidades" | "mensal">): string {
+  const x = identidadesDa(b, "SIN").find((y) => y.identidade === "balanco");
+  if (!x || x.horas === 0) return "";
+  if (x.horas_residuo === 0) return `No balanço interno do SIN, nenhuma das ${num(x.horas, 0)} horas conferidas tem resíduo.`;
+  const comResiduo = Object.entries(x.horas_residuo_por_ano)
+    .filter(([, n]) => n > 0)
+    .map(([a]) => a)
+    .sort();
+  const cobertos = Array.from(new Set(b.mensal.meses.map((m) => m.slice(0, 4)))).sort();
+  const outros = cobertos.filter((a) => !comResiduo.includes(a));
+  const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` (${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo)})` : "";
+  const maior = x.maior_residuo_mwmed !== null && x.maior_residuo_em ? `; o maior foi de ${mwmed(x.maior_residuo_mwmed, 1)}, em ${horaLocal(x.maior_residuo_em)}` : "";
+  const fecha = outros.length ? ` Em ${listaTexto(outros)}, o balanço interno fecha em todas as horas conferidas.` : "";
+  return `No balanço interno do SIN, as ${num(x.horas_residuo, 0)} horas com resíduo estão em ${listaTexto(comResiduo)}${quando}${maior}.${fecha}`;
 }
 
 export type LinhaMesBalanco = {
@@ -1223,6 +1277,27 @@ export function respostaExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais"
   return t;
 }
 
+/**
+ * Veredito do exterior em palavras simples: o saldo dos 12 meses (exportação menos importação) dos países com hora
+ * publicada e o país sem hora, dito ausente. É a soma dos mesmos campos da resposta completa e do número em destaque do
+ * painel; as quantidades de cada país ficam em respostaExterior.
+ */
+export function vereditoExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">): string {
+  const linhas = linhasExterior12m(e);
+  const com = linhas.filter((l) => l.horas > 0);
+  const sem = linhas.filter((l) => l.horas === 0);
+  if (!com.length) return "Nenhum país tem hora publicada de intercâmbio nos 12 meses completos mais recentes: é ausência de dado, não zero.";
+  const saldo = com.reduce((s, l) => s + (l.exportacao_mwh ?? 0) - (l.importacao_mwh ?? 0), 0);
+  const per = com[0].inicio && com[0].fim ? `De ${mesAno(com[0].inicio)} a ${mesAno(com[0].fim)}` : "Nos 12 meses completos mais recentes";
+  const paises = listaTexto(com.map((l) => `${l.id === "ARGENTINA" ? "a" : "o"} ${l.pais}`));
+  const rumo = saldo > 0 ? `exportou ${mwh(saldo)} a mais do que importou` : saldo < 0 ? `importou ${mwh(-saldo)} a mais do que exportou` : "exportou e importou a mesma energia";
+  let t = `${per}, o Brasil ${rumo} na troca com ${paises}.`;
+  if (sem.length) {
+    t += ` ${listaTexto(sem.map((l) => `${l.id === "ARGENTINA" ? "A" : "O"} ${l.pais}`))} ${sem.length === 1 ? "não tem" : "não têm"} hora publicada no período: ausência de dado, não zero.`;
+  }
+  return t;
+}
+
 export type LinhaItaipu = { id: string; m: string; total_mwh: number | null; brasil_mwh: number | null; nao_brasil_mwh: number | null; horas: number | null };
 
 export function linhasItaipu(e: Pick<ExteriorRede, "meses" | "itaipu">): LinhaItaipu[] {
@@ -1273,8 +1348,15 @@ export function fluxoEscolhido(atls: Pick<RestricoesRede["atls"], "fluxos">, ped
   return atls.fluxos.find((f) => f.fluxo === pedido) ?? fluxosAtivos(atls)[0] ?? atls.fluxos[0] ?? null;
 }
 
+/** Nome do fluxo como o leitor o entende: a definição conferida em documento público do ONS; sem ela, a sigla do ONS. */
+export function nomeFluxo(f: Pick<FluxoAtls, "fluxo" | "definicao">): string {
+  return f.definicao ?? f.fluxo;
+}
+
 export type LinhaAtls = {
   id: string;
+  /** Nome legível (a definição conferida; sem ela, a própria sigla). */
+  nome: string;
   fluxo: string;
   definicao: string;
   publicado_no_ultimo_mes: string;
@@ -1292,6 +1374,7 @@ export type LinhaAtls = {
 export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
   return fluxos.map((f) => ({
     id: f.fluxo,
+    nome: nomeFluxo(f),
     fluxo: f.fluxo,
     definicao: f.definicao ?? "sem definição em documento público conferido",
     publicado_no_ultimo_mes: f.ativo ? "sim" : "não",
@@ -1308,7 +1391,8 @@ export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
 }
 
 export const COLUNAS_ATLS: ColunaTabela[] = [
-  { id: "fluxo", rotulo: "Fluxo (sigla do ONS)", tipo: "texto" },
+  { id: "nome", rotulo: "Fluxo", tipo: "texto" },
+  { id: "fluxo", rotulo: "Sigla do ONS", tipo: "texto" },
   { id: "definicao", rotulo: "Definição conferida", tipo: "texto" },
   { id: "publicado_no_ultimo_mes", rotulo: "Publicado no último mês", tipo: "texto", categorica: true },
   { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "data" },
@@ -1362,6 +1446,27 @@ export function respostaRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoe
     );
   }
   frases.push("Os limites operativos e as suas vigências não são públicos: nenhuma utilização da rede é calculada.");
+  return frases.join(" ");
+}
+
+/**
+ * Veredito do P030 em palavras simples: em quantos dos fluxos acompanhados o tempo acima do limite foi diferente de zero e
+ * quantos cortes de carga o ONS registrou, com o limite de leitura (os limites de cada fronteira não são públicos). O tempo de
+ * cada fluxo, os períodos exatos e a energia não suprida ficam em respostaRestricoes.
+ */
+export function vereditoRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">): string {
+  const ativos = fluxosAtivos(r.atls);
+  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  const u = r.interrupcoes.ultimos_12_meses;
+  const frases: string[] = [];
+  if (ativos.length && ativos[0].ultimos_12_meses) {
+    frases.push(`Em 12 meses, ${num(com.length, 0)} dos ${num(ativos.length, 0)} fluxos acompanhados pelo ONS passaram algum tempo acima do limite estabelecido${u.inicio && u.fim ? `, e houve ${plural(u.registros, "corte de carga", "cortes de carga")}` : ""}.`);
+  } else if (u.inicio && u.fim) {
+    frases.push(`Em 12 meses, o ONS registrou ${plural(u.registros, "corte de carga", "cortes de carga")}; o indicador de tempo acima do limite não tem fluxo publicado no último mês.`);
+  } else {
+    frases.push("Não há evidência publicada de limitação na janela de 12 meses desta publicação.");
+  }
+  frases.push("Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite.");
   return frases.join(" ");
 }
 
@@ -1557,6 +1662,20 @@ export function respostaProgramado(p: Pick<ProgramadoRede, "distribuicao" | "lim
     else if (completa.sem_dias_rotulados) frases.push(`Sem ${rot === 1 ? "o dia rotulado" : "os dias rotulados"} por programa repetido (${listaTexto(dias)}), a média cai para ${mwmed(completa.sem_dias_rotulados.desvio_abs_medio_mwmed, 1)}.`);
   }
   return frases.join(" ");
+}
+
+/**
+ * Veredito do P031 em palavras simples: quanto o fluxo medido se afastou do programa, em média, para o par e a base
+ * escolhidos, ao lado do tamanho do programa (a mediana do programado em módulo) quando ele existe. Mediana, percentis,
+ * horas acima do limiar e horas no sentido oposto ficam em respostaProgramado. Desvio não é falha.
+ */
+export function vereditoProgramado(p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">, par: ParProgramado, base: BaseDesvio): string {
+  const d = distribuicaoDe(p, par, base);
+  if (!d) return `Sem programado e verificado comparáveis para ${nomePar(par)}.`;
+  const nome = ehFronteira(par) ? `na fronteira ${nomeFronteira(par)}` : `no intercâmbio com ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`;
+  const tamanho = d.programado_abs_mediano_mwmed > 0 ? `O programa, em módulo, tem mediana de ${mwmed(d.programado_abs_mediano_mwmed, 0)}.` : "A mediana do programa, em módulo, é zero.";
+  const semRotulados = base === "sem" && ehFronteira(par) && p.distribuicao[par] && p.distribuicao[par]!.dias_rotulados > 0 ? ", sem os dias rotulados por programa repetido" : "";
+  return `Desde ${dataBR(d.inicio)}, ${nome}, o fluxo medido se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1)} por hora, em média${semRotulados}. ${tamanho} Desvio não é falha; a fonte não informa o motivo.`;
 }
 
 export type LinhaDiaProgramado = {

@@ -3,7 +3,7 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR, num, plural } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
-import type { DestaquesVisao, DestaqueVisao, FraseVisao } from "@/lib/energia/tipos-visao";
+import type { DestaquesVisao, DestaqueVisao, FraseVisao, IdFrase } from "@/lib/energia/tipos-visao";
 import { ROTA_VISAO, ROTULO_FRASE, URL_GOLD_VISAO, textoAtualidadeFrase, textoComponentesFrase } from "@/lib/energia/visao";
 
 /**
@@ -16,7 +16,7 @@ import { ROTA_VISAO, ROTULO_FRASE, URL_GOLD_VISAO, textoAtualidadeFrase, textoCo
  * Componente de servidor: o texto é o da gold, sem reescrita. Trecho com link leva ao
  * painel de origem; o caminho do número na gold vai no title e na tabela de auditoria.
  */
-export function VisaoFrases({ frases }: { frases: FraseVisao[] }) {
+export function VisaoFrases({ frases, notas = {} }: { frases: FraseVisao[]; notas?: Partial<Record<IdFrase, string>> }) {
   return (
     <ol className="divide-y divide-linha border-y border-linha" aria-label="Fatos do sistema, um por indicador">
       {frases.map((f, i) => {
@@ -44,13 +44,19 @@ export function VisaoFrases({ frases }: { frases: FraseVisao[] }) {
               {f.qualidade.texto_defasagem} {textoAtualidadeFrase(f)}
               {componentes ? ` Parte da série não é medição: ${componentes}.` : ""}
             </p>
+            {notas[f.id] && (
+              <p className="mt-1.5 text-xs leading-relaxed text-carvao" data-nota-frase={f.id}>
+                <span className="rotulo mr-2 text-mineral">Para ler junto</span>
+                {notas[f.id]}
+              </p>
+            )}
             <div data-nivel="analisar" className="mt-1.5 space-y-1 text-xs leading-relaxed text-carvao-muted">
               <p>Revisões: {f.qualidade.revisoes.texto}</p>
               {f.regra && <p>Regra: {f.regra}</p>}
             </div>
             <p className="mt-1">
               {f.evidencia ? (
-                <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `frases[${i}].evidencia`, indicador: f.evidencia.indicador, valorExibido: f.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#frase-${f.id}`} />
+                <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `frases[${i}].evidencia`, indicador: ROTULO_FRASE[f.id], valorExibido: f.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#frase-${f.id}`} />
               ) : (
                 <span className="text-xs text-aviso">
                   Evidência deste número não publicada nesta execução{f.evidencia_problemas?.length ? `: ${f.evidencia_problemas.join("; ")}` : "."}
@@ -99,7 +105,7 @@ function Destaque({ d, i }: { d: DestaqueVisao; i: number }) {
       <p className="text-xs leading-relaxed text-carvao-muted">
         <span className="text-carvao">Não implica:</span> {d.nao_implica}
       </p>
-      {d.evidencia && <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `destaques.itens[${i}].evidencia`, indicador: d.evidencia.indicador, valorExibido: d.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#destaques`} />}
+      {d.evidencia && <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `destaques.itens[${i}].evidencia`, indicador: d.titulo, valorExibido: d.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#destaques`} />}
     </article>
   );
 }

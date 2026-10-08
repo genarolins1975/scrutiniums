@@ -5,6 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoDestaques, TransicaoMmgdMensal, TransicaoMmgdPerfil, TransicaoMmgdUf, TransicaoMunicipios } from "@/components/energia/TransicaoMmgd";
 import {
@@ -43,6 +44,7 @@ import {
   linhasUfs,
   mes,
   mudancaMmgd,
+  mudancaMmgdAno,
   nomesMunicipios,
   numTexto,
   participacaoTexto,
@@ -53,6 +55,7 @@ import {
   rotaPainel,
   textoModalidadesRemotas,
   ufAnualCompacto,
+  vereditoMmgd,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
 
@@ -110,7 +113,7 @@ export default function MmgdPage() {
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-mmgd" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIN", "MWmed", "UC", "ANEEL", "ONS", "IBGE"]}
+        <CabecalhoModulo siglas={["MMGD", "SIN", "MWmed", "UC", "ANEEL", "ONS", "IBGE"]}
           rotulo="Transição e ambiente"
           titulo="Micro e minigeração distribuída no território"
           referencia={
@@ -120,8 +123,8 @@ export default function MmgdPage() {
             </>
           }
         >
-          Onde estão e quanto crescem as unidades de micro e minigeração distribuída cadastradas na ANEEL, por UF, município, distribuidora e perfil. O cadastro mede capacidade
-          instalada; a energia que essas unidades entregam ao SIN está na página da energia estimada pelo ONS, sem nunca ser somada ao cadastro.
+          Onde estão e quanto crescem as unidades de <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastradas na ANEEL, por UF, município,
+          distribuidora e perfil. O cadastro mede capacidade instalada; a energia que essas unidades entregam ao SIN está na página da energia estimada pelo ONS, sem nunca ser somada ao cadastro.
         </CabecalhoModulo>
         <TransicaoNavegacao atual="p063" />
         {g.pendencias.length > 0 && (
@@ -141,14 +144,21 @@ export default function MmgdPage() {
               porQueImporta={
                 <>
                   A <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> é a geração instalada junto às unidades consumidoras, quase toda solar. Ela cresce de forma
-                  desigual pelo território, muda o que a distribuidora entrega e o que o ONS precisa prever, e entra na conta de quem gera pelo sistema de compensação.
+                  desigual pelo território, muda o que a distribuidora entrega e o que o ONS precisa prever, e entra na conta de quem gera pelo Sistema de Compensação de Energia Elétrica (SCEE).
                 </>
               }
-              oQueMudou={mudancaMmgd(m)}
+              oQueMudou={
+                <>
+                  {mudancaMmgdAno(m)}
+                  <span data-nivel="analisar" className="mt-2 block">
+                    {mudancaMmgd(m)}
+                  </span>
+                </>
+              }
               comoInterpretar={
                 <>
                   Unidades = empreendimentos no cadastro vigente; potência = soma da potência instalada informada (kW; MW nas tabelas). W por habitante = potência ÷ população estimada
-                  pelo IBGE, razão de somas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de{" "}
+                  pelo IBGE, as duas somadas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de{" "}
                   {m.ano_referencia - 1}. O ano de conexão vem da data publicada pela ANEEL, conferida com a data de conexão do recurso técnico. {g.regras.ano_referencia}
                 </>
               }
@@ -163,9 +173,9 @@ export default function MmgdPage() {
               complementares={[{ rotulo: "Por habitante (ANEEL e IBGE)", p: m.proveniencia.por_habitante }]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p063">
+                <RespostaCurta id="p063" veredito={vereditoMmgd(m) || respostaMmgd(m)}>
                   {respostaMmgd(m)}
-                </p>
+                </RespostaCurta>
                 <TransicaoRecorte
                   periodo={
                     <>
@@ -200,7 +210,7 @@ export default function MmgdPage() {
                     casas={0}
                     unidade="unidades"
                     tamanho="medio"
-                    nota={`Soma, por empreendimento, das unidades consumidoras que recebem créditos: ${inteiro(r.ucs_recebem_credito)}.`}
+                    nota={`Cada unidade do cadastro é um empreendimento gerador. A soma das unidades consumidoras que recebem créditos desses empreendimentos é outra contagem: ${inteiro(r.ucs_recebem_credito)}.`}
                     endereco={`${rotaPainel("p063")}#p063`}
                   />
                 </div>

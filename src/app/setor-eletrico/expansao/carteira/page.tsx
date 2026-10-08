@@ -19,6 +19,7 @@ import {
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -56,7 +57,10 @@ import {
   numTexto,
   painel,
   pctTexto,
+  estagio,
   respostaCarteira,
+  semNomeDeCampo,
+  vereditoCarteira,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -100,7 +104,7 @@ export default function CarteiraPage() {
             </>
           }
         >
-          O que está outorgado, o que está em obra, o que já opera e o que teve a outorga encerrada. Outorga não é obra, e obra não é entrada certa: por isso o desfecho das usinas
+          O que está outorgado, o que está em obra, o que já opera e o que teve a outorga revogada ou extinta. Outorga não é obra, e obra não é entrada certa: por isso o desfecho das usinas
           acompanhadas pelo RALIE desde {dataTexto(g.referencias.ralie_historico_desde)} aparece ao lado da carteira.
         </CabecalhoModulo>
         <ExpansaoNavegacao atual="p040" />
@@ -139,9 +143,9 @@ export default function CarteiraPage() {
               ]}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p040">
+                <RespostaCurta id="p040" veredito={vereditoCarteira(g) || respostaCarteira(g)}>
                   {respostaCarteira(g)}
-                </p>
+                </RespostaCurta>
                 <ExpansaoRecorte
                   periodo={
                     <>
@@ -173,6 +177,12 @@ export default function CarteiraPage() {
                 </div>
 
                 <ExpansaoSubtitulo>Etapas: quanto está outorgado, em obra e em operação</ExpansaoSubtitulo>
+                {estagio(g, "operacao") && (
+                  <ExpansaoNota>
+                    Em operação aparecem dois valores porque a medida muda: o cartão mostra a potência fiscalizada ({mwTexto(estagio(g, "operacao")?.mw_fiscalizado)}) e o gráfico, a outorgada ({mwTexto(estagio(g, "operacao")?.mw_outorgado)}),
+                    a mesma das outras duas fases.
+                  </ExpansaoNota>
+                )}
                 <GraficoBarras
                   titulo={`Usinas do SIGA por estágio, ${dataTexto(e.data_referencia)} (MW outorgado)`}
                   dados={linhasEstagios(g)}
@@ -201,9 +211,10 @@ export default function CarteiraPage() {
                   casas={1}
                   orientacao="horizontal"
                   empilhado
+                  rotulosValor
                 />
                 <ExpansaoNota>
-                  Coortes recentes tiveram menos tempo para chegar à operação: a parcela que segue em implantação é maior nelas por construção, não por pior desempenho. Percentuais
+                  Coorte é o grupo de usinas que entrou no acompanhamento do RALIE no mesmo ano; a primeira é o estoque da primeira fotografia. Coortes recentes tiveram menos tempo para chegar à operação: a parcela que segue em implantação é maior nelas por construção, não por pior desempenho. Percentuais
                   arredondados a uma casa; a soma de cada barra pode diferir de 100 por arredondamento. Das usinas que saíram sem desfecho,{" "}
                   {e.sem_desfecho_no_siga.map((s) => `${inteiro(s.usinas)} ${s.situacao_siga === "ausente do SIGA" ? "estão fora do arquivo aberto do SIGA" : `estão na fase ${s.situacao_siga} do SIGA`} (${mwTexto(s.mw_outorgado)} outorgados)`).join("; ")}.
                 </ExpansaoNota>
@@ -217,7 +228,7 @@ export default function CarteiraPage() {
                   versao={g.referencias.ralie}
                   nomeArquivo="expansao-desfecho-coortes"
                   chaveUrl="car.coo"
-                  nota={e.coortes_peso.regra}
+                  nota={semNomeDeCampo(e.coortes_peso.regra)}
                 />
 
                 <ExpansaoSubtitulo>Onde está a carteira</ExpansaoSubtitulo>

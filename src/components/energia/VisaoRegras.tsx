@@ -4,7 +4,7 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, datasLegiveis, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, conjuntosLegiveis, datasLegiveis, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 
 /**
@@ -17,16 +17,35 @@ import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
  */
 
 /** `caminho` é o lugar da regra na gold ("observar[3]"), para a ficha de prova ser lida sob demanda. */
-export function VisaoRegraResumo({ o, caminho }: { o: RegraObservar; caminho?: string }) {
+export function VisaoRegraResumo({
+  o,
+  caminho,
+  nota,
+  titulosConjuntos = {},
+}: {
+  o: RegraObservar;
+  caminho?: string;
+  nota?: string | null;
+  /** Título de cada conjunto no painel de saúde dos dados, para o texto do leitor não citar o identificador interno. */
+  titulosConjuntos?: Readonly<Record<string, string>>;
+}) {
   const valor = textoValorRegra(o);
+  const evidencia = conjuntosLegiveis(datasLegiveis(o.evidencia), titulosConjuntos);
   const le = o.linha_estado;
   const trechos = trechosEstado(le);
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;
   return (
     <div className="space-y-1.5">
       <p className="text-sm leading-relaxed text-carvao-muted">
-        <TextoDoLeitor texto={datasLegiveis(o.evidencia)} />
+        <TextoDoLeitor texto={evidencia.texto} />
+        {evidencia.ids.length > 0 && <span data-nivel="analisar"> Identificador do conjunto: {evidencia.ids.join(", ")}.</span>}
       </p>
+      {nota && (
+        <p className="text-xs leading-relaxed text-carvao" data-nota-regra={o.id}>
+          <span className="rotulo mr-2 text-mineral">Para ler junto</span>
+          {nota}
+        </p>
+      )}
       {valor && (
         <p className="text-xs text-carvao-muted">
           <span className="text-carvao">Valor avaliado:</span> {valor}
@@ -35,7 +54,7 @@ export function VisaoRegraResumo({ o, caminho }: { o: RegraObservar; caminho?: s
       )}
       {o.evidencia_numero ? (
         caminho ? (
-          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: o.evidencia_numero.indicador, valorExibido: o.evidencia_numero.valor_exibido }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: o.titulo, valorExibido: o.evidencia_numero.valor_exibido }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
         ) : (
           <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
         )

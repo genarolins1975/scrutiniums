@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { VisaoLinkPainel } from "@/components/energia/VisaoLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { carimbo } from "@/lib/energia/formato";
@@ -41,19 +42,47 @@ export function DadosNavegacao({ atual }: { atual: IdPaginaDados }) {
   );
 }
 
-/** Linha de referência do cabeçalho: as datas que o leitor precisa para não ler o painel como "hoje". */
-export function ReferenciaDados({ geradoEm, referencia, extra }: { geradoEm: string; referencia?: string; extra?: ReactNode }) {
+/**
+ * Linha de referência do cabeçalho: as datas que o leitor precisa para não ler o painel como o dia em que abre a página, cada
+ * uma com o que mede. A data de referência é o dia a que valem a situação e as contagens; o processamento é a hora em que o
+ * catálogo e a saúde foram calculados; a lista de arquivos (manifesto) é refeita no fim de cada execução que reescreve
+ * arquivos publicados, por isso pode ser mais recente.
+ */
+export function ReferenciaDados({ processadoEm, geradoEm, referencia, manifestoEm, extra }: { processadoEm?: string; geradoEm?: string; referencia?: string; manifestoEm?: string; extra?: ReactNode }) {
+  // `geradoEm` é a forma antiga (uma só data de processamento), mantida para a página de avaliação dos painéis
+  if (processadoEm === undefined) {
+    return (
+      <>
+        {referencia ? <>Data de referência da publicação: {referencia}. </> : null}Publicação processada em {carimbo(geradoEm)}. {extra}
+      </>
+    );
+  }
   return (
     <>
-      {referencia ? <>Data de referência da publicação: {referencia}. </> : null}Publicação processada em {carimbo(geradoEm)}. {extra}
+      {referencia ? <>Data de referência dos dados: {referencia}. </> : null}Catálogo e saúde processados em {carimbo(processadoEm)}. {manifestoEm ? <>Lista de arquivos gerada em {carimbo(manifestoEm)}. </> : null}
+      {extra}
     </>
   );
 }
 
-export function DadosResposta({ painel, children, prova }: { painel: string; children: ReactNode; prova?: ReactNode }) {
+/**
+ * Resposta do painel. Com `veredito`, em duas camadas: o veredito à vista e a resposta completa em Analisar e Auditar; as provas
+ * (Comprove este número) ficam fora das duas camadas. Sem `veredito`, a resposta completa à vista (página de avaliação).
+ */
+export function DadosResposta({ painel, veredito, children, prova }: { painel: string; veredito?: string; children: ReactNode; prova?: ReactNode }) {
+  if (veredito === undefined) {
+    return (
+      <div className="mb-5 border-l-2 border-energia pl-4" data-resposta={painel}>
+        <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
+        {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
+      </div>
+    );
+  }
   return (
-    <div className="mb-5 border-l-2 border-energia pl-4" data-resposta={painel}>
-      <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
+    <div className="mb-5 border-l-2 border-energia pl-4">
+      <RespostaCurta id={painel} veredito={veredito}>
+        {children}
+      </RespostaCurta>
       {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
     </div>
   );
@@ -105,14 +134,20 @@ export function DadosAuditoria({ titulo, id, children }: { titulo: string; id?: 
   );
 }
 
-export function DadosLimitacoes({ itens }: { itens: readonly ReactNode[] }) {
-  if (!itens.length) return null;
+/** Limitações do painel: as de leitor sempre; as `tecnicas` (nome de banco, commit, arquivo) só em Analisar e Auditar. */
+export function DadosLimitacoes({ itens, tecnicas = [] }: { itens: readonly ReactNode[]; tecnicas?: readonly ReactNode[] }) {
+  if (!itens.length && !tecnicas.length) return null;
   return (
     <div className="mt-4">
       <p className="rotulo text-mineral">Limitações declaradas</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
         {itens.map((l, i) => (
           <li key={i}>{l}</li>
+        ))}
+        {tecnicas.map((l, i) => (
+          <li key={`t${i}`} data-nivel="analisar">
+            {l}
+          </li>
         ))}
       </ul>
     </div>

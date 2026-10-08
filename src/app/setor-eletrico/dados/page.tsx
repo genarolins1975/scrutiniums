@@ -1,4 +1,3 @@
-import { leitor } from "@/lib/energia/bastidor";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -28,6 +27,8 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { catalogoDados, DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { CSV_DADOS, ESTADOS_ESCADA, ROTULO_ESTADO_DADOS, linhasCatalogo, respostaCatalogo, resumoCatalogo, rotuloTema, uni } from "@/lib/energia/dados";
+import { nomeDoConjunto } from "@/lib/energia/dados-ficha";
+import { agruparRessalvas, conciliarCatalogoEIntegracoes, ressalvaParaLeitor, textoConciliacao, textoMudancaCatalogo, vereditoCatalogo } from "@/lib/energia/dados-leitor";
 import { provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 
 export const dynamic = "force-static";
@@ -59,22 +60,31 @@ export default function DadosCatalogoPage() {
   }));
   const versao = cat.gerado_em;
   const evPublicados = pub.evidencias.conjuntos_publicados;
+  const conciliacao = conciliarCatalogoEIntegracoes(cat, pub);
+  // a mesma ressalva em vários conjuntos aparece uma vez, no texto; a lista traz só o que é específico de cada um
+  const gruposRessalva = agruparRessalvas(r.usadasAbaixo, (e) => e.titulo);
+  const ressalvaComum = gruposRessalva[0] && gruposRessalva[0].titulos.length > 1 ? gruposRessalva[0] : null;
+  const nomeDaFicha = (d: (typeof fichas)[number]) => {
+    const e = porId.get(d.catalogoId)!;
+    return nomeDoConjunto(e, pub.conjuntos.filter((c) => c.id.endsWith(`/${d.interno}`))).nome;
+  };
 
   return (
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["PLD", "DEC", "FEC", "PRODIST", "EAR", "ENA"]}
+        <CabecalhoModulo siglas={["ONS", "ANEEL", "CCEE"]}
           rotulo="Dados e metodologia"
           titulo="Quais dados estão de fato validados?"
-          referencia={<ReferenciaDados geradoEm={cat.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Listagens oficiais colhidas em {nomesPortais.map(([o, p]) => `${o} ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}.</>} />}
+          referencia={<ReferenciaDados processadoEm={cat.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Listagens oficiais colhidas em {nomesPortais.map(([o, p]) => `${o} ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}.</>} />}
         >
-          Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Verificar o recurso é acessar um arquivo. Integrar é coletá-lo e guardar a cópia original com impressão digital (sha256). Validar é conferir a captura sem checagem
-          reprovada. Publicar é alimentar uma base publicada e íntegra. Cada conjunto mostra até onde chegou, com a evidência de cada etapa, e o uso que o observatório faz dele fica à parte.{" "}
+          Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Verificar o recurso é acessar um arquivo. Integrar é coletá-lo e guardar a cópia original com a impressão digital do arquivo. Validar é conferir a captura sem checagem
+          reprovada. Publicar é alimentar uma base publicada e íntegra. Cada conjunto mostra até onde chegou, com a evidência de cada etapa, e o uso que o observatório faz dele fica à parte. As regras de cada indicador estão na{" "}
           <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">
             Metodologia
           </Link>
+          .
         </CabecalhoModulo>
         <DadosNavegacao atual="catalogo" />
 
@@ -93,8 +103,11 @@ export default function DadosCatalogoPage() {
               }
               oQueMudou={
                 <>
-                  Listagens colhidas em {nomesPortais.map(([o, p]) => `${o}, ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}. O catálogo se atualiza a cada coleta automática, e esta página mostra a de {carimbo(cat.gerado_em)}.
-                  <span data-nivel="analisar"> A coleta da CCEE usa o mesmo cliente do PLD horário.</span>
+                  {textoMudancaCatalogo(cat)}
+                  <span data-nivel="analisar">
+                    {" "}
+                    Listagens colhidas em {nomesPortais.map(([o, p]) => `${o}, ${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"}`).join("; ")}. O catálogo se atualiza a cada coleta automática, e esta página mostra a de {carimbo(cat.gerado_em)}. A coleta da CCEE usa o mesmo cliente do PLD horário.
+                  </span>
                 </>
               }
               comoInterpretar={
@@ -106,12 +119,13 @@ export default function DadosCatalogoPage() {
               naoConcluir={
                 <>
                   Que um conjunto publicado esteja atualizado: a atualidade é medida na página de saúde. Que catalogado signifique dado bom: é existência na listagem e licença. Que a contagem de recursos verificados represente a cobertura da fonte:
-                  só {num(acessados("ONS"), 0)} dos {num(cat.recursos.ONS?.total ?? 0, 0)} arquivos do ONS foram acessados pelo pipeline.
+                  só {num(acessados("ONS"), 0)} dos {num(cat.recursos.ONS?.total ?? 0, 0)} arquivos do ONS foram acessados pelo observatório.
                 </>
               }
             >
               <DadosResposta
                 painel="P067"
+                veredito={vereditoCatalogo(r)}
                 prova={evPublicados ? <ComproveNumero evidencia={evPublicados} rotulo="Comprove os conjuntos publicados" endereco="https://scrutiniums.com/setor-eletrico/dados#catalogo" /> : undefined}
               >
                 {respostaCatalogo(r)}
@@ -151,19 +165,28 @@ export default function DadosCatalogoPage() {
 
               <DadosEscada cat={cat} resumo={r} />
 
+              <DadosAviso id="conjuntos-e-integracoes">
+                <p className="rotulo text-mineral">Conjuntos e integrações: por que os números diferem do rodapé e da página Saúde</p>
+                <p className="mt-1">{textoConciliacao(conciliacao)}</p>
+              </DadosAviso>
+
               {r.usadasAbaixo.length > 0 && (
                 <DadosAviso id="em-uso-abaixo">
                   <p className="rotulo text-mineral">Em uso, mas abaixo de publicado</p>
                   <p className="mt-1">
-                    {r.usadasAbaixo.length === 1 ? "Este conjunto alimenta" : `Estes ${r.usadasAbaixo.length} conjuntos alimentam`} uma base publicada, mas o estado calculado pelo observatório não passou de recurso verificado. A ressalva é a do próprio catálogo; o que a etapa de
-                    integração exige está nos critérios da escada, acima.
+                    {r.usadasAbaixo.length === 1 ? "Este conjunto alimenta" : `Estes ${r.usadasAbaixo.length} conjuntos alimentam`} uma base publicada, mas o estado calculado pelo observatório não passou de recurso verificado: o observatório abriu um arquivo do conjunto e conferiu o formato e o
+                    cabeçalho, mas ainda não guarda o histórico dos dados. Por isso o conjunto não conta como publicado, mesmo que o módulo declare o uso.
+                    {ressalvaComum ? ` Em ${ressalvaComum.titulos.length} deles a ressalva do catálogo é a mesma: ${ressalvaComum.texto.charAt(0).toLowerCase()}${ressalvaComum.texto.slice(1)}` : ""}
                   </p>
                   <ul className="mt-2 space-y-1.5" data-lista="em-uso-abaixo">
-                    {r.usadasAbaixo.map((e) => (
-                      <li key={e.id} className="leading-relaxed">
-                        <strong className="font-medium text-carvao">{e.titulo}</strong> ({e.orgao}, {ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}): {leitor((e.ressalvas ?? []).join(" ")) || `usado em ${e.usado_em.join(", ")}`}
-                      </li>
-                    ))}
+                    {r.usadasAbaixo.map((e) => {
+                      const texto = ressalvaParaLeitor((e.ressalvas ?? []).join(" ")) || `usado em ${e.usado_em.join(", ")}`;
+                      return (
+                        <li key={e.id} className="leading-relaxed">
+                          <strong className="font-medium text-carvao">{e.titulo}</strong> ({e.orgao}, {ROTULO_ESTADO_DADOS[e.estado].toLowerCase()}){ressalvaComum && texto === ressalvaComum.texto ? "" : `: ${texto}`}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </DadosAviso>
               )}
@@ -284,7 +307,7 @@ export default function DadosCatalogoPage() {
             Fichas dos conjuntos integrados
           </h2>
           <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            Cada ficha traz as capturas com sha256, as mudanças metodológicas, os downloads e como citar o conjunto.
+            Cada ficha traz a situação dos dados, a licença, os arquivos para baixar e como citar o conjunto; as mudanças metodológicas, quando há, e as capturas guardadas ficam na própria ficha.
           </p>
           <details className="mt-3">
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
@@ -296,7 +319,7 @@ export default function DadosCatalogoPage() {
                 return (
                   <li key={d.slug}>
                     <Link href={`/setor-eletrico/dados/${d.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                      {e.titulo} ({e.orgao}, {rotuloTema(e.tema).toLowerCase()})
+                      {nomeDaFicha(d)} ({e.orgao}, {rotuloTema(e.tema).toLowerCase()})
                     </Link>
                   </li>
                 );

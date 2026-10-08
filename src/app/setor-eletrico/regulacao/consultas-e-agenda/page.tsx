@@ -5,6 +5,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
 import { RegulacaoConsultas } from "@/components/energia/RegulacaoConsultas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import {
   RegulacaoAnalise,
   RegulacaoAuditoria,
@@ -40,6 +41,7 @@ import {
   respostaAgenda,
   rotaPainel,
   textoCoberturaFaixa,
+  vereditoAgenda,
 } from "@/lib/energia/regulacao";
 import { hojeBrasilia, type FormaResultado, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
@@ -133,45 +135,68 @@ export default function ConsultasEAgendaPage() {
               complementares={[{ rotulo: agenda, p: g.proveniencia.agenda }]}
             >
               <div className="space-y-6">
-                <RegulacaoRecorte
-                  periodo={
-                    <>
-                      {inicioJanela
-                        ? `consultas com janela encerrada, resultado ou fase deliberada de ${dataBR(inicioJanela)} a ${dataBR(C.data_referencia)} (${C.janela_dias} dias)`
-                        : `consultas com atividade recente até ${dataBR(C.data_referencia)} (a publicação não informa a janela)`}
-                      {`; histórico ${totalHistorico ? `de ${totalHistorico} consultas` : "completo (contagem não informada)"} desde ${dataBR(g.proveniencia.consultas.cobertura_historica.inicio)} no CSV`}
-                    </>
+                <RegulacaoConsultas
+                  consultas={C}
+                  dataServidor={dataServidor}
+                  fonte={fonte}
+                  versao={C.data_referencia}
+                  inicioHistorico={anoHistorico}
+                  depoisDaResposta={
+                    <div className="space-y-6">
+                      <RegulacaoRecorte
+                        periodo={
+                          <>
+                            {inicioJanela
+                              ? `consultas com janela encerrada, resultado ou fase deliberada de ${dataBR(inicioJanela)} a ${dataBR(C.data_referencia)} (${C.janela_dias} dias)`
+                              : `consultas com atividade recente até ${dataBR(C.data_referencia)} (a publicação não informa a janela)`}
+                            {`; histórico ${totalHistorico ? `de ${totalHistorico} consultas` : "completo (contagem não informada)"} desde ${dataBR(g.proveniencia.consultas.cobertura_historica.inicio)} no CSV`}
+                          </>
+                        }
+                        universo="Avisos de consulta e de audiência pública com abertura deliberada em reunião pública da Diretoria da ANEEL"
+                        unidade="consulta ou audiência (contagem) e datas no calendário de Brasília"
+                      />
+                      <div className="grid gap-4 sm:grid-cols-2">
+                      {g.evidencias.consultas_abertas ? (
+                        <Numero
+                          rotulo={`Consultas e audiências recebendo contribuições em ${dataBR(C.data_referencia)}`}
+                          natureza="CALCULADO"
+                          evidencia={g.evidencias.consultas_abertas}
+                          formato="num"
+                          casas={0}
+                          tamanho="medio"
+                          cor="var(--cor-energia)"
+                          endereco={`${rotaPainel("p046")}#p046`}
+                          nota={`Contagem em ${dataBR(C.data_referencia)}, a data de referência da publicação. A contagem na data de leitura vem logo abaixo: as consultas com prazo terminado depois de ${dataBR(C.data_referencia)} saem dela.`}
+                        />
+                      ) : (
+                        <Numero rotulo="Consultas recebendo contribuições" natureza="CALCULADO" valor={null} motivoAusencia="as atas não foram integradas nesta publicação" />
+                      )}
+                      <div className="border border-linha bg-superficie p-5 text-sm text-carvao-muted">
+                        <p className="rotulo text-mineral">Onde contribuir</p>
+                        <p className="mt-2 leading-relaxed">
+                          As atas não trazem o endereço de cada consulta. A ANEEL recebe contribuições pelas páginas oficiais de{" "}
+                          <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.consultas}>consultas públicas</RegulacaoLinkExterno> e de{" "}
+                          <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.audiencias}>audiências públicas</RegulacaoLinkExterno>; procure pelo número da consulta.
+                        </p>
+                      </div>
+                    </div>
+                    </div>
                   }
-                  universo="Avisos de consulta e de audiência pública com abertura deliberada em reunião pública da Diretoria da ANEEL"
-                  unidade="consulta ou audiência (contagem) e datas no calendário de Brasília"
                 />
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {g.evidencias.consultas_abertas ? (
-                    <Numero
-                      rotulo={`Consultas e audiências recebendo contribuições em ${dataBR(C.data_referencia)}`}
-                      natureza="CALCULADO"
-                      evidencia={g.evidencias.consultas_abertas}
-                      formato="num"
-                      casas={0}
-                      tamanho="medio"
-                      cor="var(--cor-energia)"
-                      endereco={`${rotaPainel("p046")}#p046`}
-                      nota="Data de referência da publicação; abaixo, a situação recalculada para hoje."
-                    />
-                  ) : (
-                    <Numero rotulo="Consultas recebendo contribuições" natureza="CALCULADO" valor={null} motivoAusencia="as atas não foram integradas nesta publicação" />
-                  )}
-                  <div className="border border-linha bg-superficie p-5 text-sm text-carvao-muted">
-                    <p className="rotulo text-mineral">Onde contribuir</p>
-                    <p className="mt-2 leading-relaxed">
-                      As atas não trazem o endereço de cada consulta. A ANEEL recebe contribuições pelas páginas oficiais de{" "}
-                      <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.consultas}>consultas públicas</RegulacaoLinkExterno> e de{" "}
-                      <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.audiencias}>audiências públicas</RegulacaoLinkExterno>; procure pelo número da consulta.
-                    </p>
-                  </div>
-                </div>
 
-                <RegulacaoConsultas consultas={C} dataServidor={dataServidor} fonte={fonte} versao={C.data_referencia} inicioHistorico={anoHistorico} />
+                <section aria-labelledby="agenda-curta-titulo" className="space-y-1" data-agenda-curta="">
+                  <h3 id="agenda-curta-titulo" className="font-serif text-lg text-carvao">
+                    O que a ANEEL prevê decidir, em resumo
+                  </h3>
+                  <RespostaCurta id="agenda" atributo="data-resposta-agenda" tamanho="sm" veredito={vereditoAgenda(A, g.limites_em_revisao)}>
+                    {respostaAgenda(A, g.limites_em_revisao)}
+                  </RespostaCurta>
+                  <p className="text-sm">
+                    <a href="#agenda" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                      Ver as atividades da agenda, uma a uma, em Analisar
+                    </a>
+                  </p>
+                </section>
 
                 <RegulacaoLeitura
                   comoLer={
@@ -191,9 +216,6 @@ export default function ConsultasEAgendaPage() {
                 <RegulacaoAnalise id="agenda" titulo="Agenda Regulatória: o que a ANEEL prevê decidir">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     A <Termo slug="agenda-regulatoria">Agenda Regulatória</Termo> lista as atividades em que a ANEEL prevê editar norma no biênio.
-                  </p>
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-agenda="">
-                    {respostaAgenda(A, g.limites_em_revisao)}
                   </p>
                   {A.disponivel ? (
                     <>

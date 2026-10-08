@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { PldAuditoria, PldAviso, PldCabecalho, PldControles, PldIndisponivel, PldNavegacao, PldPassagem, PldSeguir } from "@/components/energia/PldPagina";
@@ -8,7 +9,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, horaLocal } from "@/lib/energia/formato";
-import { integra, lerGold } from "@/lib/energia/gold";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { PARES, atualidadePld, horaPadrao, perguntaPainel, proximoPainel } from "@/lib/energia/pld";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import type { Par, PldDetalheGold } from "@/lib/energia/tipos-pld";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/pld/diferencas-regionais" },
 };
 
-const FONTE = "CCEE, PLD_HORARIO";
+const FONTE = "CCEE, PLD horário por submercado";
 
 export default function PldRegionalPage() {
   const g = lerGold<PldDetalheGold>("pld_detalhe.json");
@@ -37,13 +38,16 @@ export default function PldRegionalPage() {
     .map((x) => x.p) as Par[];
   const fichas = fichasPld(g.evidencias.arquivo, PARES.map((p) => `separacao_12m_${p}`));
   const passagens = g.conceito.fontes_textuais.filter((f) => ["d5163_art57_p1_v", "d5163_art57_p4"].includes(f.id) && f.texto);
+  // contagem da página PLD (últimos 30 dias acima do limiar) para conferir com a linha "Últimos 30 dias" daqui
+  const pldPagina = gold.pld();
+  const horasAcimaLimiarPaginaPld = integra(pldPagina) ? pldPagina.periodos["30d"].diferenca.horas_acima_limiar : null;
 
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["SIN", "MWmed", "CMO", "CCEE", "ONS"]}
+        <PldCabecalho siglas={["CCEE", "ONS"]}
           titulo="Diferenças regionais"
           referencia={
             <>
@@ -53,7 +57,7 @@ export default function PldRegionalPage() {
           }
         >
           A CCEE calcula um PLD para cada um dos quatro <Termo slug="submercado">submercados</Termo>. Na maior parte das horas os quatro são iguais ou quase; este painel conta as horas
-          em que se separam, quanto e entre quais regiões, e mostra o <Termo slug="intercambio">intercâmbio</Termo> verificado na mesma hora.
+          em que se separam, quanto e entre quais regiões. Em Analisar, mostra também o <Termo slug="intercambio">intercâmbio</Termo> verificado na mesma hora.
         </PldCabecalho>
         <PldNavegacao atual="p012" />
         <ModoProfundidade>
@@ -86,6 +90,16 @@ export default function PldRegionalPage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <PldAviso tipo="alerta">{atual.texto}</PldAviso>}
+                {passagens.length === 2 && (
+                  <PldAviso>
+                    Por que os preços se separam: o Decreto nº 5.163/2004 manda o cálculo do PLD observar as restrições de transmissão entre submercados (art. 57, § 1º, V) e define os
+                    submercados pela presença e duração de restrições relevantes de transmissão aos fluxos de energia no SIN (art. 57, § 4º).{" "}
+                    <Link href="/setor-eletrico/pld#submercados" className="text-energia-dark underline underline-offset-4">
+                      Ver como a página PLD explica a separação
+                    </Link>
+                    .
+                  </PldAviso>
+                )}
                 <PldRegional
                   r={r}
                   rec={rec}
@@ -95,6 +109,7 @@ export default function PldRegionalPage() {
                   ultimaHoraFluxo={g.referencia.ultima_hora_fluxo}
                   fonte={FONTE}
                   versao={versao}
+                  horasAcimaLimiarPaginaPld={horasAcimaLimiarPaginaPld}
                 />
 
                 <PldAuditoria id="regras" titulo="Regras de separação, limiar e fluxo">

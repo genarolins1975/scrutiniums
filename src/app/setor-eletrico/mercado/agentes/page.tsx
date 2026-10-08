@@ -3,6 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
 import { Numero } from "@/components/energia/Numero";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -41,6 +42,7 @@ import {
   serieFluxosAssociados,
   serieParcelas,
   serieUcsLivres,
+  vereditoAgentes,
 } from "@/lib/energia/mercado";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
@@ -79,8 +81,9 @@ export default function MercadoAgentesPage() {
       <MarcaVisita secao="energia:mercado:agentes" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo siglas={["CCEE", "EPE", "GSF", "SAMP", "ANEEL", "MRE", "ACL", "ACR"]} rotulo="Mercado de energia" titulo="Quem participa do mercado e como a composição mudou?" referencia={<ReferenciaMercado g={g} />}>
-          Agente, perfil, parcela de carga e unidade consumidora são contagens diferentes e não se somam: um agente (CNPJ) pode ter vários perfis na CCEE, uma parcela de carga pode reunir várias
-          unidades consumidoras, e a EPE conta unidades, não empresas. Aqui cada número diz o que conta.
+          Agente, perfil, parcela de carga e unidade consumidora são contagens diferentes e não se somam: um agente (a empresa, identificada pelo CNPJ) pode ter vários perfis na CCEE, uma parcela de carga pode reunir várias
+          unidades consumidoras, e a EPE conta unidades, não empresas. As parcelas de carga contadas são as do mercado livre (<Termo slug="acl">ACL</Termo>); as das distribuidoras, que representam o mercado regulado
+          (<Termo slug="acr">ACR</Termo>), ficam fora. Aqui cada número diz o que conta.
         </CabecalhoModulo>
         <MercadoNavegacao atual="agentes" />
 
@@ -93,6 +96,7 @@ export default function MercadoAgentesPage() {
               natureza="OBSERVADO"
               proveniencia={prov.agentes_ccee}
               complementares={[{ rotulo: "Unidades consumidoras livres (EPE)", p: prov.consumo_epe }]}
+              extraFonte={prov.agentes_ccee.notas_fonte ? <span data-referencia-por-serie="agentes">Cada série tem o seu período; a referência acima é a da que vai mais longe. {prov.agentes_ccee.notas_fonte}</span> : undefined}
               porQueImporta={
                 <>
                   A entrada de consumidores no mercado livre muda quem paga o quê: a energia passa a ser contratada fora da distribuidora, e a CCEE passa a contabilizar mais parcelas de carga. A contagem
@@ -128,6 +132,7 @@ export default function MercadoAgentesPage() {
             >
               <MercadoResposta
                 painel="P033"
+                veredito={vereditoAgentes(g)}
                 prova={
                   <>
                     {k.agentes_contabilizados && <ComproveNumero evidencia={k.agentes_contabilizados.evidencia} rotulo="Comprove os agentes" />}

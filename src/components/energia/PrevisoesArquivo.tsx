@@ -2,18 +2,20 @@
 
 import { useMemo, type ReactNode } from "react";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, num } from "@/lib/energia/formato";
 import {
-  COLUNAS_ARQUIVO,
+  COLUNAS_ARQUIVO_TABELA,
   arquivoAte,
   datasInclusao,
   linhasGraficoRodadas,
   reaisMWh,
   respostaP015,
   resumoRodadas,
+  vereditoP015,
   type LinhaArquivo,
 } from "@/lib/energia/previsoes";
 
@@ -67,9 +69,9 @@ export function PrevisoesArquivo({
   return (
     <div className="space-y-6">
       {/* resposta curta do painel (seção 7.2, item 2), refeita para o recorte escolhido */}
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg" aria-live="polite" data-resposta="p015" data-recorte={v.em || "tudo"}>
-        {respostaP015(noDia, v.em, total)}
-      </p>
+      <RespostaCurta id="p015" vivo veredito={vereditoP015(noDia, v.em, total)}>
+        <span data-recorte={v.em || "tudo"}>{respostaP015(noDia, v.em, total)}</span>
+      </RespostaCurta>
       {recorte}
       <div className="flex flex-wrap items-end gap-4">
         <label className="flex flex-col gap-1 text-sm text-carvao">
@@ -120,41 +122,44 @@ export function PrevisoesArquivo({
             onSelecionar={(id) => definir({ rod: id && id !== v.rod ? id : "", reg: "" })}
             altura={260}
           />
-          <GraficoBarras
-            titulo="Atraso da emissão sobre o prazo das 08h00"
-            dados={grafico}
-            chaveCategoria="id"
-            chaveRotulo="rotulo"
-            series={[{ id: "atraso_min", rotulo: "atraso", cor: "var(--cor-carvao-muted)" }]}
-            unidade="minutos"
-            casas={0}
-            orientacao="horizontal"
-            rotulosValor
-            selecionado={v.rod || null}
-            onSelecionar={(id) => definir({ rod: id && id !== v.rod ? id : "", reg: "" })}
-          />
+          <div data-nivel="analisar">
+            <GraficoBarras
+              titulo="Atraso da emissão sobre o prazo das 08h00"
+              dados={grafico}
+              chaveCategoria="id"
+              chaveRotulo="rotulo"
+              series={[{ id: "atraso_min", rotulo: "atraso", cor: "var(--cor-carvao-muted)" }]}
+              unidade="minutos"
+              casas={0}
+              orientacao="horizontal"
+              rotulosValor
+              selecionado={v.rod || null}
+              onSelecionar={(id) => definir({ rod: id && id !== v.rod ? id : "", reg: "" })}
+            />
+          </div>
         </div>
       )}
 
       <TabelaInterativa
         titulo="Registros do arquivo de emissões"
-        colunas={COLUNAS_ARQUIVO}
+        colunas={COLUNAS_ARQUIVO_TABELA}
         linhas={visiveis}
         chaveLinha="id"
-        colunaRotulo="forecast_id"
+        colunaRotulo="linha"
         fonte={fonte}
         versao={versao}
         nomeArquivo={v.em ? `previsoes-pld-arquivo-ate-${v.em}` : "previsoes-pld-arquivo"}
         chaveUrl="arq"
         selecionado={reg?.id ?? null}
         onSelecionar={(id) => definir({ reg: id ?? "" })}
-        dicaBusca="Entrega, horizonte, submercado ou sha256"
+        dicaBusca="Entrega, horizonte ou submercado"
         semLinhas={v.em ? `Nenhum registro estava no arquivo ao fim de ${dataBR(v.em)}.` : "O arquivo não tem registro publicado."}
         nota={
           <>
-            Uma linha por célula emitida, como gravada; o sha256 de cada registro e o do anterior formam o encadeamento que denuncia alteração, remoção ou reordenação.
-            Escolha uma linha para ver versão do código, alertas, correção e o sha256 do registro anterior; o CSV completo, no download, traz todas as colunas.
+            Uma linha por célula emitida, como gravada. Cada registro guarda uma impressão digital do conteúdo e a do registro anterior, o que denuncia alteração, remoção
+            ou reordenação. Escolha uma linha para ver o registro inteiro; o CSV completo, no download, traz todas as colunas.
             {omitidas > 0 ? ` As ${omitidas} rodadas mais antigas não estão nesta página: o CSV completo, no download, tem as ${total} linhas.` : ""}
+            <span data-nivel="analisar"> A impressão digital é o sha256 do registro.</span>
           </>
         }
       />
@@ -171,20 +176,25 @@ export function PrevisoesArquivo({
             <Item rotulo="Realizado">{reg.realizado === null ? "ainda sem realizado (a entrega não terminou)" : reaisMWh(reg.realizado)}</Item>
             <Item rotulo="Corte e emissão">
               corte em {dataBR(reg.origem)} às 07h00; {reg.emitido}
-              {reg.atraso_min !== null && reg.atraso_min > 0 ? ` (${num(reg.atraso_min, 1)} minutos depois do prazo; ${reg.atraso_origem})` : ""}
+              {reg.atraso_min !== null && reg.atraso_min > 0 ? <span data-nivel="analisar">{` (${num(reg.atraso_min, 1)} minutos depois do prazo; ${reg.atraso_origem})`}</span> : null}
             </Item>
             <Item rotulo="Inclusão no arquivo">
               {dataBR(reg.registrado_no_portal_em)}; transcrito depois da emissão: {reg.transcrito}
             </Item>
-            <Item rotulo="Modelo e código">
-              {reg.modelo} {reg.versao_modelo} ({reg.tipo}); código {reg.versao_codigo || "não registrado"}
+            <Item rotulo="Modelo">
+              {reg.modelo} {reg.versao_modelo} ({reg.tipo})
             </Item>
-            <Item rotulo="Alertas">{reg.alertas || "nenhum"}</Item>
+            <Item rotulo="Versão do código" nivel="analisar">
+              {reg.versao_codigo || "não registrada"}
+            </Item>
+            <Item rotulo="Alertas" nivel="analisar">
+              {reg.alertas || "nenhum"}
+            </Item>
             <Item rotulo="Correção">{reg.substitui ? `substitui ${reg.substitui}` : "registro original (não substitui outro)"}</Item>
-            <Item rotulo="sha256">
+            <Item rotulo="sha256 do registro" nivel="analisar">
               <span className="font-mono text-xs">{reg.sha256}</span>
             </Item>
-            <Item rotulo="Registro anterior">
+            <Item rotulo="Registro anterior" nivel="analisar">
               <span className="font-mono text-xs">{reg.anterior || "início do encadeamento particionado"}</span>
             </Item>
           </dl>
@@ -194,9 +204,9 @@ export function PrevisoesArquivo({
   );
 }
 
-function Item({ rotulo, children }: { rotulo: string; children: ReactNode }) {
+function Item({ rotulo, children, nivel }: { rotulo: string; children: ReactNode; nivel?: "analisar" | "auditar" }) {
   return (
-    <div className="min-w-0 border-t border-linha py-1.5">
+    <div data-nivel={nivel} className="min-w-0 border-t border-linha py-1.5">
       <dt className="rotulo text-mineral">{rotulo}</dt>
       <dd className="mt-0.5 text-carvao [overflow-wrap:anywhere]">{children}</dd>
     </div>

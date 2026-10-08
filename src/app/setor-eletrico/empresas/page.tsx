@@ -5,6 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasIndisponivel, EmpresasNavegacao } from "@/components/energia/EmpresasPagina";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   ancoraPainel,
@@ -15,6 +16,7 @@ import {
   nomeOuCnpj,
   padraoFinancas,
   painel,
+  pctTexto,
   referenciaPerdasNacional,
   respostaCadastro,
   respostaControle,
@@ -22,13 +24,18 @@ import {
   respostaFinancas,
   rotaEntidade,
   rotaPainel,
+  textoFronteiraNoCadastro,
   trimestreTexto,
+  vereditoCadastro,
+  vereditoControle,
+  vereditoDistribuidoras,
+  vereditoFinancas,
   type PainelEmpresas,
 } from "@/lib/energia/empresas";
 import { evidenciasReceita } from "@/lib/energia/empresas-arquivos";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import type { Evidencia } from "@/lib/energia/evidencia";
+import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
@@ -40,13 +47,13 @@ export const metadata: Metadata = {
 };
 
 /**
- * Síntese do módulo Empresas: as quatro perguntas, cada uma com a resposta curta derivada da
- * gold, um número com a sua ficha de prova, o recorte e o limite principal, e o caminho para a
+ * Síntese do módulo Empresas: as quatro perguntas, cada uma com o veredito em palavras simples (a
+ * resposta completa, derivada da gold, fica recolhida logo abaixo), um número com a sua ficha de prova, o recorte e o limite principal, e o caminho para a
  * página completa do painel (mapa, árvore, séries, tabelas, downloads, modos Analisar e
  * Auditar) e para a ficha de cada distribuidora. Página editorial e de navegação: não repete os
  * gráficos dos painéis.
  */
-function Cartao({ id, resposta, numero, recorte, limite, extra }: { id: PainelEmpresas; resposta: string; numero: ReactNode; recorte: ReactNode; limite: ReactNode; extra?: ReactNode }) {
+function Cartao({ id, veredito, resposta, numero, recorte, limite, extra }: { id: PainelEmpresas; veredito: string; resposta: string; numero: ReactNode; recorte: ReactNode; limite: ReactNode; extra?: ReactNode }) {
   const p = painel(id);
   return (
     <section id={`sintese-${id}`} aria-labelledby={`sintese-${id}-titulo`} className="scroll-mt-28 border border-linha bg-superficie">
@@ -55,9 +62,12 @@ function Cartao({ id, resposta, numero, recorte, limite, extra }: { id: PainelEm
         <h2 id={`sintese-${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
           {p.pergunta}
         </h2>
-        <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
-          {resposta}
-        </p>
+        <RespostaCurta id={id} veredito={veredito}>
+          <details>
+            <summary className="inline-flex min-h-[44px] cursor-pointer items-center underline underline-offset-4">Ver a resposta completa</summary>
+            <p className="mt-1">{resposta}</p>
+          </details>
+        </RespostaCurta>
         <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
           {numero}
           <div className="space-y-3 text-sm text-carvao-muted">
@@ -91,10 +101,13 @@ export default function EmpresasPage() {
   const ct = g.controle;
   const datas = g.datas;
   const janela = datas.polimero_janela.length ? `${trimestreTexto(datas.polimero_janela[0])} a ${trimestreTexto(datas.polimero_janela.at(-1))}` : "sem janela";
+  const inicioJanela = datas.polimero_janela.length ? trimestreTexto(datas.polimero_janela[0]) : "sem janela";
 
   const evTaxaNacional = lerGold<{ evidencias?: { taxa_nacional?: Evidencia } }>("perdas.json")?.evidencias?.taxa_nacional ?? null;
   const anoPerdas = d.indice.find((x) => x.perdas?.ano)?.perdas?.ano ?? null;
   const refPerdas = referenciaPerdasNacional(evTaxaNacional, anoPerdas);
+  // a taxa nacional aparece com duas casas, como as perdas de cada distribuidora e a legenda do gráfico do comparador
+  const evTaxaNacional2 = evTaxaNacional ? comValorExibido(evTaxaNacional, pctTexto(evTaxaNacional.valor_calculo, 2)) : null;
   const padraoFin = padraoFinancas(f.companhias);
   const compPadrao = f.companhias.find((x) => x.cnpj === padraoFin[0]) ?? null;
   const evReceita = padraoFin.length ? (evidenciasReceita(g.series.evidencias, padraoFin)[padraoFin[0]] ?? null) : null;
@@ -110,7 +123,7 @@ export default function EmpresasPage() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIGA", "DFP", "SAMP", "HHI", "ANEEL", "CVM"]}
+        <CabecalhoModulo siglas={["SIGA", "SIGET", "CVM", "DFP", "ITR", "HHI"]}
           rotulo="Empresas"
           titulo="Quem é dono de quê no setor elétrico?"
           referencia={
@@ -122,39 +135,21 @@ export default function EmpresasPage() {
           }
         >
           Quatro perguntas sobre quem atua no setor: quem opera as usinas e as linhas, como cada distribuidora atende a sua área, como evoluem os números que as companhias abertas
-          reportam e quem controla quanto da capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ publicado pela fonte oficial no mesmo registro; nenhuma é feita por
+          reportam e quem controla quanto da capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ (o número de registro da empresa) publicado pela fonte oficial no mesmo registro; nenhuma é feita por
           semelhança de nome.
         </CabecalhoModulo>
         <EmpresasNavegacao atual="sintese" />
 
-        <section aria-labelledby="medidas" className="pb-6">
-          <h2 id="medidas" className="rotulo pb-2 text-mineral">
-            Medidas que não se somam
-          </h2>
-          <ul className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["Capacidade proporcional", "A potência de cada usina repartida pela participação de cada dono. As parcelas somam a potência da usina, sem dupla contagem."],
-              ["Capacidade sob controle", "A usina inteira para quem tem mais de 50% dela. Mede comando, não propriedade; não se soma à proporcional."],
-              ["Consolidado e individual", "O consolidado inclui as controladas; o individual, só a companhia. São séries separadas, e nada se soma entre companhias."],
-              ["Potência e energia", "MW é capacidade instalada (potência); o que as usinas geram é energia, em MWh, e está na página de Geração."],
-            ].map(([n, x]) => (
-              <li key={n} className="bg-superficie p-4">
-                <p className="rotulo text-mineral">{n}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-carvao">{x}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
         <div className="space-y-6 pb-10">
           <Cartao
             id="p036"
+            veredito={vereditoCadastro(c)}
             resposta={respostaCadastro(c)}
             numero={
               <Numero
                 rotulo="Potência em operação com vínculo provado"
                 natureza="CALCULADO"
-                evidencia={a.evidencia}
+                evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
                 formato="pct"
                 casas={2}
                 tamanho="medio"
@@ -171,15 +166,16 @@ export default function EmpresasPage() {
           />
           <Cartao
             id="p037"
+            veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}
             resposta={respostaDistribuidoras(d)}
             numero={
-              evTaxaNacional && refPerdas ? (
+              evTaxaNacional2 && refPerdas ? (
                 <Numero
                   rotulo="Referência: perdas totais na distribuição, Brasil"
                   natureza={g.proveniencia.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                  evidencia={evTaxaNacional}
+                  evidencia={evTaxaNacional2}
                   formato="pct"
-                  casas={1}
+                  casas={2}
                   tamanho="medio"
                   nota="Número do módulo Perdas, a referência das barras de perdas no comparador de distribuidoras."
                   endereco={ancoraPainel("p037")}
@@ -213,6 +209,7 @@ export default function EmpresasPage() {
           />
           <Cartao
             id="p038"
+            veredito={vereditoFinancas(f)}
             resposta={respostaFinancas(f)}
             numero={
               compPadrao ? (
@@ -241,6 +238,7 @@ export default function EmpresasPage() {
           />
           <Cartao
             id="p039"
+            veredito={vereditoControle(ct)}
             resposta={respostaControle(ct)}
             numero={
               <Numero
@@ -250,18 +248,37 @@ export default function EmpresasPage() {
                 casas={0}
                 unidade="pontos"
                 tamanho="medio"
-                nota={grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}.` : undefined}
+                nota={grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. O período vai do início da janela de declarações (${inicioJanela}) à data do SIGA.` : undefined}
                 endereco={ancoraPainel("p039")}
               />
             }
             recorte={
               <p>
-                SIGA de {dataTexto(ct.fronteira.data)} e declarações ao Polímero de {janela}; usinas em operação com participações válidas.
+                SIGA de {dataTexto(ct.fronteira.data)} e declarações de composição societária à ANEEL de {janela}; usinas em operação com participações válidas. {textoFronteiraNoCadastro(ct.fronteira, a)}
               </p>
             }
             limite={<>poder de mercado: a fronteira é capacidade instalada, não energia vendida nem mercado relevante, e a participação indireta não é calculada.</>}
           />
         </div>
+        <section aria-labelledby="medidas" className="pb-8">
+          <h2 id="medidas" className="rotulo pb-2 text-mineral">
+            Medidas que não se somam
+          </h2>
+          <ul className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ["Capacidade proporcional", "A potência de cada usina repartida pela participação de cada dono. As parcelas somam a potência da usina, sem dupla contagem."],
+              ["Capacidade sob controle", "A usina inteira para quem tem mais de 50% dela. Mede comando, não propriedade; não se soma à proporcional."],
+              ["Consolidado e individual", "O consolidado inclui as controladas; o individual, só a companhia. São séries separadas, e nada se soma entre companhias."],
+              ["Potência e energia", "MW é capacidade instalada (potência); o que as usinas geram é energia, em MWh, e está na página de Geração."],
+            ].map(([n, x]) => (
+              <li key={n} className="bg-superficie p-4">
+                <p className="rotulo text-mineral">{n}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-carvao">{x}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         {g.downloads.length > 0 && (
           <section aria-labelledby="dados-do-modulo" className="mt-10 border-t border-linha pb-16 pt-6">
             <h2 id="dados-do-modulo" className="rotulo text-mineral">

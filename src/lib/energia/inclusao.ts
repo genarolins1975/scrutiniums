@@ -483,6 +483,19 @@ export function respostaTarifaSocial(t: TarifaSocial): string {
 }
 
 /**
+ * Veredito do P059 em palavras comuns: quantas unidades consumidoras tinham Tarifa Social no último mês completo do SCS, que
+ * parte das residenciais isso é e a variação relativa (em %, não em pontos percentuais) sobre o mesmo mês do ano anterior. As
+ * faturas da CDE, o número de distribuidoras e o desconto médio ficam na resposta completa.
+ */
+export function vereditoTarifaSocial(t: TarifaSocial): string {
+  const k = t.kpis;
+  const part = k.participacao_pct.valor === null ? "" : ` (${pct(k.participacao_pct.valor, 1)} das residenciais)`;
+  const v = k.variacao_12m_pct;
+  const variacao = v.valor !== null && v.comparavel ? `, ${pct(Math.abs(v.valor), 1)} ${v.valor >= 0 ? "a mais" : "a menos"} que em ${mes(v.mes_base)}` : "";
+  return `Em ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} unidades consumidoras${part} tinham Tarifa Social${variacao}.`;
+}
+
+/**
  * "O que mudou" do P059: o evento regulatório mais recente da gold que cai dentro da
  * série da CDE (com um mês com valor antes dele) aparece no desconto médio por
  * fatura. O evento vem da gold, nunca de uma data escrita aqui: com outro evento
@@ -631,6 +644,17 @@ export function respostaCobertura(c: Cobertura): string {
   return t;
 }
 
+/**
+ * Veredito do P060: a razão de faturas por 100 famílias do Cadastro Único com cadastro atualizado, em palavras comuns, e o
+ * limite de leitura (medida indireta: não mede quantas famílias com direito ficaram sem o desconto). A razão contando todas as
+ * cadastradas e o intervalo entre as UF ficam na resposta completa.
+ */
+export function vereditoCobertura(c: Cobertura): string {
+  const b = c.brasil;
+  if (!b) return "Sem dado: a gold desta publicação não tem o cruzamento entre faturas e Cadastro Único.";
+  return `Em ${mes(b.mes)} havia ${numTexto(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado. É uma medida indireta: não mede quantas famílias com direito ficaram sem o desconto.`;
+}
+
 export function mudancaCobertura(c: Cobertura): string {
   const u = c.serie_mensal_ultimo;
   const b = c.brasil;
@@ -643,8 +667,11 @@ export function mudancaCobertura(c: Cobertura): string {
   if (b) partes.push(`O ponto de ${mes(b.mes)} usa faturas da CDE, outra unidade: as duas séries não se emendam.`);
   const d = c.distribuicao_municipal;
   if (d) {
+    // as faixas do histograma começam em número inclusive; "passam de 100" é estritamente acima: a diferença são os municípios com razão exatamente 100
+    const deCemEmDiante = d.histograma.filter((h) => h.de >= 100).reduce((acc, h) => acc + h.municipios, 0);
+    const faixas = deCemEmDiante !== d.acima_de_100 ? ` (as faixas do histograma de 100 em diante somam ${inteiro(deCemEmDiante)} porque a faixa começa em 100, inclusive)` : "";
     partes.push(
-      `Nos municípios, a mediana é ${numTexto(d.quantis.p50, 1)} e metade fica entre ${numTexto(d.quantis.p25, 1)} e ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100, o que a proxy admite sem erro de cálculo: o numerador inclui beneficiários fora do critério de renda do denominador.`,
+      `Nos municípios, a mediana é ${numTexto(d.quantis.p50, 1)} e metade fica entre ${numTexto(d.quantis.p25, 1)} e ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100${faixas}, o que a proxy admite sem erro de cálculo: o numerador inclui beneficiários fora do critério de renda do denominador.`,
     );
   }
   return partes.join(" ");
@@ -970,6 +997,25 @@ export function respostaOrcamento(orc: OrcamentoBase): string {
   return s;
 }
 
+/**
+ * Veredito do P061: o peso da energia elétrica na despesa das famílias da classe de menor renda contra o conjunto, na razão de
+ * médias (despesa média com energia sobre despesa média total). A direção sai dos números no arredondamento em que aparecem; a
+ * participação família a família, a classe mais alta e a sensibilidade ficam na resposta completa.
+ */
+export function vereditoOrcamento(orc: OrcamentoBase): string {
+  const classes = classesRenda(orc);
+  const baixa = classes[0];
+  const t = linhaPof(orc, "BR", "7999");
+  const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
+  if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
+  const rmV = (l: LinhaPof | undefined) => estimativa(l, "razao_medias_pct")[0];
+  const dir = comparaArredondado(rmV(b), rmV(t), 1);
+  const abertura =
+    dir === "maior" ? "a energia elétrica pesou mais" : dir === "menor" ? "a energia elétrica pesou menos" : dir === "igual" ? "a energia elétrica pesou o mesmo" : "o peso da energia elétrica não tem as duas estimativas para comparar";
+  const quem = dir === "igual" ? "nas famílias de menor renda e no conjunto" : "nas famílias de menor renda";
+  return `Na ${nomePof(orc)}, ${abertura} ${quem}: a despesa média com energia foi ${pctTexto(rmV(b), 1)} da despesa média total das famílias com rendimento ${minusculaInicial(baixa.rotulo)}, contra ${pctTexto(rmV(t), 1)} no conjunto das famílias.`;
+}
+
 export function mudancaOrcamento(orc: OrcamentoBase): string {
   const classes = classesRenda(orc);
   const baixa = classes[0];
@@ -1231,6 +1277,23 @@ export function respostaAcesso(a: Acesso): string {
     );
   }
   return partes.join(" ") || "Sem dado: o bloco de acesso não foi publicado nesta gold.";
+}
+
+/**
+ * Veredito do P062: quantos domicílios não tinham energia elétrica de nenhuma fonte (PNAD Contínua), com o limite de leitura:
+ * sistemas isolados (pessoas) e Luz para Todos (domicílios atendidos) têm outra unidade e outra fonte e não se somam a esse
+ * número. O fornecimento em tempo integral, as localidades e o total atendido ficam na resposta completa.
+ */
+export function vereditoAcesso(a: Acesso): string {
+  const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
+  if (!br) return "Sem dado: o bloco de acesso não foi publicado nesta gold.";
+  const sem =
+    br.domicilios_sem_energia_estado === "menos_de_1_mil"
+      ? "menos de 1 mil domicílios"
+      : br.domicilios_sem_energia_mil === null
+        ? "um número sem dado de domicílios"
+        : `${inteiro(br.domicilios_sem_energia_mil)} mil domicílios`;
+  return `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua. Sistemas isolados e Luz para Todos têm outra fonte e outra unidade e não se somam a esse número.`;
 }
 
 export function mudancaAcesso(a: Acesso): string {

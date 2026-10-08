@@ -11,9 +11,9 @@ import {
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
-  EmpresasResposta,
   EmpresasSeguir,
 } from "@/components/energia/EmpresasPagina";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -36,6 +36,7 @@ import {
   respostaFinancas,
   resumoCompanhias,
   rotaPainel,
+  vereditoFinancas,
 } from "@/lib/energia/empresas";
 import { evidenciasReceita, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
 import { carimbo } from "@/lib/energia/formato";
@@ -69,7 +70,7 @@ export default function PaginaP038() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-financas" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["DFP", "CVM", "ANEEL"]}
+        <CabecalhoModulo siglas={["CVM", "DFP", "ITR", "ANEEL"]}
           rotulo="Empresas"
           titulo={painel("p038").pergunta}
           referencia={
@@ -112,14 +113,16 @@ export default function PaginaP038() {
               naoConcluir={
                 <>
                   Não se soma nada entre companhias: a controladora já consolida as controladas. {f.universo.nota_cobertura} As demonstrações regulatórias da ANEEL, que usam outro plano de
-                  contas, não estão aqui (bloqueio abaixo). O resultado antes do financeiro e dos tributos não é EBITDA.
+                  contas, não estão aqui (ver o aviso &ldquo;Fonte indisponível&rdquo;, acima). O resultado antes do financeiro e dos tributos não é EBITDA.
                 </>
               }
               proveniencia={g.proveniencia.financas}
               complementares={[{ rotulo: "Valores com a escala convertida", p: g.proveniencia.financas_escala }]}
             >
               <div className="space-y-6">
-                <EmpresasResposta id="p038">{respostaFinancas(f)}</EmpresasResposta>
+                <RespostaCurta id="p038" veredito={vereditoFinancas(f)}>
+                  {respostaFinancas(f)}
+                </RespostaCurta>
                 <EmpresasRecorte
                   periodo={
                     <>
@@ -135,21 +138,6 @@ export default function PaginaP038() {
                   }
                   unidade="R$ nominais (R$ milhões nas tabelas e nos gráficos)"
                 />
-                {bloqueioP038.map((b) => (
-                  <EmpresasAviso key={b.id} rotulo="Fonte indisponível">
-                    <p>
-                      {b.descricao} {fraseDeRecusa(b.evidencia, "da ANEEL")} <TextoDoLeitor texto={b.evidencia} />
-                    </p>
-                    <p className="mt-1">O que se entrega no lugar: {b.alternativa}</p>
-                  </EmpresasAviso>
-                ))}
-                {decisoesP038.map((x) => (
-                  <EmpresasAviso key={x.id} rotulo="Decisão de método">
-                    <p>
-                      {x.decisao} {x.motivo}
-                    </p>
-                  </EmpresasAviso>
-                ))}
                 <EmpresasFinancas
                   linhas={linhasCompanhias(f.companhias)}
                   entidades={entidadesCompanhias(f.companhias)}
@@ -164,7 +152,23 @@ export default function PaginaP038() {
                   versao={f.periodos.ultimo_trimestre ?? String(f.periodos.ultimo_exercicio ?? "")}
                 />
 
+                {bloqueioP038.map((b) => (
+                  <EmpresasAviso key={b.id} rotulo="Fonte indisponível">
+                    <p>
+                      {b.descricao} {fraseDeRecusa(b.evidencia, "da ANEEL")} <TextoDoLeitor texto={b.evidencia} />
+                    </p>
+                    <p className="mt-1">O que se entrega no lugar: {b.alternativa}</p>
+                  </EmpresasAviso>
+                ))}
+
                 <EmpresasAnalise titulo="Contas, setores e revisões">
+                  {decisoesP038.map((x) => (
+                    <EmpresasAviso key={x.id} rotulo="Decisão de método">
+                      <p>
+                        {x.decisao} {x.motivo}
+                      </p>
+                    </EmpresasAviso>
+                  ))}
                   <TabelaInterativa
                     titulo="Contas publicadas (plano padronizado da CVM, só contas fixas)"
                     colunas={COLUNAS_CONTAS}

@@ -24,6 +24,8 @@ export type ConjuntoAtualidade = {
     ultimo_periodo?: string | null;
     fim_ultimo_periodo?: string | null;
   } | null;
+  /** Como o conjunto é publicado: "vigencia" traz datas de início e fim de cada tarifa ("início|fim|ato"), e não um período de referência. */
+  dado?: { formato?: string | null; ref_max?: string | null } | null;
 };
 
 export type PublicacaoAtualidade = { referencia: { hoje: string }; conjuntos: ConjuntoAtualidade[] };
@@ -60,6 +62,13 @@ const SITUACAO: Record<string, string> = {
   "SEM DADO": "sem período de referência",
 };
 
+/** Conjunto publicado por vigência (as tarifas): sem período de referência, vale o início da vigência mais recente. */
+export function vigenciaMaisRecente(dado: ConjuntoAtualidade["dado"]): string | null {
+  if (dado?.formato !== "vigencia" || !dado.ref_max) return null;
+  const inicio = periodoLegivel(dado.ref_max.split("|")[0]);
+  return inicio ? `vigência iniciada em ${inicio}` : null;
+}
+
 export type LinhaAtualidade = {
   tema: string;
   href: string;
@@ -89,7 +98,7 @@ export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: Reado
         href: f.href,
         rotulo: fc.rotulo,
         orgao: c?.orgao ?? null,
-        ultimo: periodoLegivel(a?.ultimo_periodo),
+        ultimo: periodoLegivel(a?.ultimo_periodo) ?? vigenciaMaisRecente(c?.dado),
         emCurso: Boolean(fim && hoje && fim > hoje),
         cadencia: a?.cadencia ? (CADENCIA[a.cadencia] ?? a.cadencia) : null,
         situacao: a?.situacao ? (SITUACAO[a.situacao] ?? a.situacao.toLowerCase()) : null,
@@ -141,9 +150,9 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
 }
 
 /** Opções do seletor "sua distribuidora": só quem tem dado na página de destino, em ordem de sigla. */
-export function opcoesDistribuidora<T extends { cnpj: string; sigla: string; nome: string | null }>(lista: readonly T[], tem: (d: T) => boolean): OpcaoDistribuidora[] {
+export function opcoesDistribuidora<T extends { cnpj: string; sigla: string; nome: string | null; ufs?: string[] }>(lista: readonly T[], tem: (d: T) => boolean): OpcaoDistribuidora[] {
   return lista
     .filter(tem)
-    .map((d) => ({ cnpj: d.cnpj, sigla: d.sigla, nome: d.nome }))
+    .map((d) => ({ cnpj: d.cnpj, sigla: d.sigla, nome: d.nome, ufs: d.ufs }))
     .sort((a, b) => a.sigla.localeCompare(b.sigla, "pt-BR"));
 }

@@ -974,23 +974,30 @@ export function respostaTerritorio(g: Pick<GoldTerritorio, "resumo" | "referenci
   );
 }
 
-/** "O que mudou": a data de cada fonte que a página junta (cada número traz a sua). */
+/**
+ * Veredito do P002 em palavras comuns: o que a página faz e de quem é cada número (do submercado, da distribuidora inteira
+ * ou do conjunto elétrico). Cita só as camadas que a gold traz; a cobertura por município, distribuidora, submercado e usina
+ * fica em respostaTerritorio, na segunda camada.
+ */
+export function vereditoTerritorio(g: Pick<GoldTerritorio, "resumo">): string {
+  const r = g.resumo;
+  const usinas = r.usinas.total > 0 ? " e usinas" : "";
+  const conjunto = r.conjuntos_referenciados > 0 ? " e a continuidade é do conjunto elétrico" : "";
+  return `Escolha uma região e veja preço, tarifa, perdas, continuidade${usinas}. Cada número é da área da sua fonte: o preço é do submercado, a tarifa e as perdas são da distribuidora inteira${conjunto}.`;
+}
+
+/**
+ * "O que mudou": a página não compara com a publicação anterior, então não descreve mudança. Traz só as datas que o campo
+ * Período não traz (Tarifa Social, população e a conferência das áreas de carga); as demais ficam no Período, sem repetir.
+ */
 export function textoAtualidade(g: Pick<GoldTerritorio, "referencias">): string {
   const r = g.referencias;
   const partes = [
-    r.relacao_distribuidoras_ano !== null && `relação de distribuidoras de ${r.relacao_distribuidoras_ano}`,
-    r.perdas_ano !== null && `perdas de ${r.perdas_ano}`,
-    r.qualidade_ano !== null && `DEC e FEC de ${r.qualidade_ano}`,
-    r.tarifa_data && `tarifa vigente em ${dataBR(r.tarifa_data)}`,
-    r.mmgd_data_cadastro && `cadastro de MMGD de ${dataBR(r.mmgd_data_cadastro)}`,
-    r.siga_data && `SIGA de ${dataBR(r.siga_data)}`,
     r.tsee_mes_cde && `Tarifa Social de ${textoReferencia(r.tsee_mes_cde)}`,
-    r.pld_dia && `PLD de ${dataBR(r.pld_dia)}`,
-    r.ear_dia && `EAR de ${dataBR(r.ear_dia)}`,
     r.populacao_ano !== null && `população estimada de ${r.populacao_ano}`,
   ].filter((x): x is string => typeof x === "string");
   const dias = r.areas_carga_dias.map(dataBR);
-  return `Cada número traz a data da sua fonte: ${lista(partes)}.${dias.length ? ` A pertença das áreas de carga ao submercado foi conferida em ${lista(dias)}.` : ""}`;
+  return `Sem comparação com a publicação anterior.${partes.length ? ` Datas que o Período não traz: ${lista(partes)}.` : ""}${dias.length ? ` A pertença das áreas de carga ao submercado foi conferida em ${lista(dias)}.` : ""}`;
 }
 
 export type ContextoTexto = {
@@ -1301,14 +1308,35 @@ export function selecaoDeId(id: string): Selecao {
   return leitorSelecao.ler(id) ?? null;
 }
 
+/** Descrição de camada da gold sem o nome de campo do índice municipal entre parênteses ("(sm_estado 'fora_do_sin' no índice municipal)"). */
+export function descricaoCamada(descricao: string): string {
+  return descricao.replace(/\s*\([a-z]+(?:_[a-z]+)+ '[a-z_]+'[^)]*\)/g, "");
+}
+
+/** Qualidade da malha do IBGE como a gold a publica ("minima", "intermediaria") escrita em português. */
+export function textoQualidadeMalha(qualidade: string): string {
+  const ROTULO: Record<string, string> = { minima: "mínima, simplificada para desenhar", intermediaria: "intermediária", maxima: "máxima" };
+  return ROTULO[qualidade] ?? qualidade;
+}
+
 /* ================================================================ recorte do painel (seção 7.2, item 3) */
+
+/**
+ * Por que o cadastro tem mais distribuidoras que a relação de municípios: as que não têm município na relação vigente. Quando
+ * todas estão inativas na gold, a causa é dita ("encerradas ou absorvidas"); com alguma ativa ou sem informação, só a contagem.
+ */
+function causaSemArea(ds: readonly Pick<DistribuidoraTerritorio, "area" | "ativa">[]): string {
+  const sem = ds.filter((d) => d.area.municipios === 0);
+  if (!sem.length) return "";
+  return sem.every((d) => d.ativa === false) ? `; as outras ${inteiro(sem.length)} foram encerradas ou absorvidas` : `; ${inteiro(sem.length)} sem município na relação`;
+}
 
 /** Universo do painel, todo tirado da gold. */
 export function textoUniverso(g: Pick<GoldTerritorio, "resumo" | "ufs" | "submercados" | "distribuidoras">): string {
   const comArea = g.distribuidoras.filter((d) => d.area.municipios > 0).length;
   return (
     `${inteiro(g.resumo.municipios)} municípios do IBGE, ${inteiro(g.ufs.length)} UFs, ${inteiro(g.submercados.length)} submercados, ` +
-    `${inteiro(comArea)} distribuidoras com município na relação (de ${inteiro(g.distribuidoras.length)} no cadastro), ` +
+    `${inteiro(comArea)} distribuidoras com município na relação (de ${inteiro(g.distribuidoras.length)} no cadastro${causaSemArea(g.distribuidoras)}), ` +
     `${inteiro(g.resumo.conjuntos_referenciados)} conjuntos elétricos e ${inteiro(g.resumo.usinas.total)} usinas do SIGA`
   );
 }

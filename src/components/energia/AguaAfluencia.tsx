@@ -5,6 +5,7 @@ import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -22,6 +23,7 @@ import {
   recorteEscolhido,
   recortePadraoEna,
   respostaAfluencia,
+  vereditoAfluencia,
   textoPasso,
   textoReeNovos,
   type EntidadeEna,
@@ -103,9 +105,9 @@ export function AguaAfluencia({
         />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p018" aria-live="polite">
+      <RespostaCurta id="p018" vivo veredito={e ? vereditoAfluencia(e) : "Recorte sem dado nesta publicação."}>
         {e ? respostaAfluencia(e) : "Recorte sem dado nesta publicação."}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -120,7 +122,10 @@ export function AguaAfluencia({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">% da MLT: soma da ENA bruta (MWmed por dia) dividida pela soma da MLT vigente em cada dia, nos mesmos 30 dias</dd>
+          <dd className="mt-0.5">
+            % da MLT: soma da ENA bruta dos 30 dias (MWmed·dia: a média de cada dia, em MWmed, somada ao longo dos dias) dividida pela soma da MLT vigente em cada dia, nos
+            mesmos 30 dias
+          </dd>
         </div>
       </dl>
 
@@ -164,7 +169,7 @@ export function AguaAfluencia({
           entidades={REGIOES.map((r) => ({ id: r, rotulo: NOME_REGIAO[r], sinonimos: [CURTO_REGIAO[r]] }))}
           selecionadas={regioes}
           onMudar={(ids) => definir({ sms: ids as Regiao[] })}
-          dicaBusca="SIN, Sul, Nordeste"
+          dicaBusca="Buscar, por exemplo SIN, Sul, Nordeste"
           vazio="Nenhuma região escolhida. Escolha até quatro para ver a ENA de 30 dias na mesma escala."
         >
           {() => null}

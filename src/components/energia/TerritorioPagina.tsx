@@ -50,9 +50,9 @@ export function TerritorioRecorte({ periodo, universo, unidade }: { periodo: Rea
 }
 
 /** Aviso que muda a leitura: borda tracejada, rótulo em texto, nunca só cor. */
-export function TerritorioAviso({ rotulo, children }: { rotulo: string; children: ReactNode }) {
+export function TerritorioAviso({ rotulo, children, nivel }: { rotulo: string; children: ReactNode; nivel?: "analisar" }) {
   return (
-    <div className="flex flex-wrap items-start gap-x-3 gap-y-1 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-relaxed text-carvao">
+    <div data-nivel={nivel} className="flex flex-wrap items-start gap-x-3 gap-y-1 border border-dashed border-mineral bg-papel px-4 py-3 text-sm leading-relaxed text-carvao">
       <span className="rotulo shrink-0 text-carvao">{rotulo}</span>
       <span className="min-w-0 flex-1">{children}</span>
     </div>
@@ -85,7 +85,7 @@ export function TerritorioAuditoria({ titulo, children, id }: { titulo: string; 
 export function TerritorioTabela({ titulo, colunas, linhas, numericas = [] }: { titulo: string; colunas: string[]; linhas: ReactNode[][]; numericas?: number[] }) {
   return (
     <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
-      <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">
+      <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums [&_td]:px-2 [&_td]:py-1.5 [&_td]:text-carvao">
         <caption className="pb-2 text-left text-sm font-medium text-carvao">{titulo}</caption>
         <thead>
           <tr>
@@ -105,7 +105,7 @@ export function TerritorioTabela({ titulo, colunas, linhas, numericas = [] }: { 
                     {c}
                   </th>
                 ) : (
-                  <td key={i} className={`px-2 py-1.5 text-carvao ${numericas.includes(i) ? "text-right" : "text-left"}`}>
+                  <td key={i} className={numericas.includes(i) ? "text-right" : "text-left"}>
                     {c}
                   </td>
                 ),

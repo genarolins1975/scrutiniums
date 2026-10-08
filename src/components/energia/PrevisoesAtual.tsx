@@ -8,7 +8,7 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { dominioBonito, escalaLinear, rotuloTick } from "@/lib/energia/escalas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { CURTO_SM, NOME_SM, dataBR, num } from "@/lib/energia/formato";
+import { CURTO_SM, NOME_SM, dataBR, num, reais } from "@/lib/energia/formato";
 import {
   COLUNAS_GRADE,
   COR_SM,
@@ -53,6 +53,7 @@ export function PrevisoesAtual({
   fonte,
   versao,
   endereco,
+  mediaDiaPaginaPld,
 }: {
   linhas: LinhaGrade[];
   /** Dia de origem da rodada (o corte é às 07h dele). */
@@ -62,6 +63,8 @@ export function PrevisoesAtual({
   fonte: string;
   versao: string;
   endereco: string;
+  /** Média das 24 horas do dia de origem que a página PLD mostra (pld.json), por submercado; null quando o dia da página PLD não é o da rodada. */
+  mediaDiaPaginaPld?: Partial<Record<Submercado, number | null>> | null;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const sel = linhas.find((l) => l.submercado === v.sm && l.horizonte === v.h) ?? null;
@@ -168,7 +171,17 @@ export function PrevisoesAtual({
           casas={2}
           unidade="R$/MWh"
           periodo={pubSm?.primeira && pubSm.ultima ? `${dataBR(publicado?.origem)}, ${pubSm.primeira.slice(11, 13)}h a ${pubSm.ultima.slice(11, 13)}h` : undefined}
-          nota="Média simples das horas do dia de origem depois do corte, já publicadas pela CCEE. É dado, não previsão."
+          nota={
+            <>
+              Média simples das horas do dia de origem depois do corte, já publicadas pela CCEE. É dado, não previsão.
+              {typeof mediaDiaPaginaPld?.[v.sm] === "number" && pubSm?.horas ? (
+                <>
+                  {" "}
+                  A página PLD mostra a média das 24 horas do dia, {reais(mediaDiaPaginaPld[v.sm] as number)}/MWh; aqui entram só as {pubSm.horas} horas depois do corte.
+                </>
+              ) : null}
+            </>
+          }
           motivoAusencia="Nenhuma hora do dia de origem depois do corte estava capturada."
           tamanho="medio"
           endereco={endereco}

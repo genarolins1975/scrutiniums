@@ -10,7 +10,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { PerdasComposicao } from "@/components/energia/PerdasComposicao";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { PERGUNTA_REGULATORIO, PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno } from "@/lib/energia/formato";
@@ -28,6 +28,7 @@ import {
   respostaComposicao,
   rotuloDistribuidora,
   serieNacional,
+  vereditoComposicao,
 } from "@/lib/energia/perdas";
 
 export const dynamic = "force-static";
@@ -62,6 +63,12 @@ export default function PerdasComposicaoPage() {
   const uf = g.universo_fixo;
   const inicioSerie = anosSerieNacional(g.nacional)?.inicio ?? ref;
   const cobertura = fraseCoberturaSeparacao(g.nacional, ref);
+  // as barras misturam concessionárias e permissionárias; a linha tracejada é só das concessionárias válidas
+  const grupoDe = new Map(g.distribuidoras.map((d) => [d.cnpj, d.grupo]));
+  const nBarrasConc = composicao.linhas.filter((l) => grupoDe.get(l.id) === "concessionaria").length;
+  const universoBarras = composicao.linhas.length
+    ? `as distribuidoras com a decomposição fechando (${nBarrasConc} concessionárias e ${composicao.linhas.length - nBarrasConc} permissionárias)`
+    : null;
 
   return (
     <>
@@ -115,7 +122,9 @@ export default function PerdasComposicaoPage() {
                 </>
               }
             >
-              <Resposta prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>{respostaComposicao(g)}</Resposta>
+              <Resposta id="composicao" veredito={vereditoComposicao(g)} prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>
+                {respostaComposicao(g)}
+              </Resposta>
               <Recorte
                 periodo={`${ref} (barras e tabela); ${inicioSerie} a ${ref} (série nacional)`}
                 universo={`concessionárias e permissionárias com o ano completo, sem alerta e com a decomposição fechando (${composicao.linhas.length} distribuidoras nas barras)`}
@@ -133,6 +142,7 @@ export default function PerdasComposicaoPage() {
               />
               <p className="mt-3 text-xs text-carvao-muted">
                 Fora das barras em {ref}: {composicao.semSeparacao} distribuidoras válidas sem a separação publicada em todos os meses e {composicao.fora} com a decomposição que não fecha.
+                {nac && universoBarras ? ` A linha tracejada é a taxa das ${nac.n_distribuidoras} concessionárias válidas; as ${composicao.linhas.length} barras são ${universoBarras}, outro conjunto.` : ""}
               </p>
               <div data-nivel="analisar" className="mt-6 space-y-4">
                 <h3 className="font-serif text-lg text-carvao">Separação nacional das concessionárias, com cobertura</h3>
@@ -203,7 +213,7 @@ export default function PerdasComposicaoPage() {
               </div>
               <RodapePainel
                 ancora="composicao"
-                proxima={{ pergunta: "Como o realizado se compara à referência regulatória?", href: "/setor-eletrico/perdas/regulatorio" }}
+                proxima={{ pergunta: PERGUNTA_REGULATORIO, href: "/setor-eletrico/perdas/regulatorio" }}
                 downloads={[
                   { rotulo: "Por distribuidora e ano (CSV)", url: "/energia/series/perdas_distribuidoras.csv" },
                   { rotulo: "Balanço mensal para auditoria (CSV)", url: "/energia/series/perdas_mensal.csv" },

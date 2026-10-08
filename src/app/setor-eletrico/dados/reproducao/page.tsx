@@ -21,6 +21,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { commitDoBuild } from "@/lib/energia/datasets";
 import { CSV_DADOS, URL_GOLD, linhasManifesto, respostaReproducao, type ParquetEquivalente } from "@/lib/energia/dados";
+import { quadroDeDatas, textoMudancaReproducao, vereditoReproducao } from "@/lib/energia/dados-leitor";
 import { conferirManifestoNoDisco, manifestoDados, provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { lerGold } from "@/lib/energia/gold";
@@ -58,18 +59,25 @@ export default function DadosReproducaoPage() {
   const minis = m.arquivos.map((a) => ({ caminho: a.caminho, sha256: a.sha256, bytes: a.bytes }));
   const limiarMb = pub.arquivos.limiar_parquet_bytes / 1024 / 1024;
 
+  const datas = quadroDeDatas({ referencia: pub.referencia.hoje, processadoEm: pub.gerado_em, manifestoEm: m.gerado_em });
+  // quando cada base (gold) foi processada, lido da própria lista de arquivos; cada módulo processa a sua em horário próprio
+  const basesPorHorario = m.arquivos
+    .filter((a) => a.tipo === "gold" && a.gerado_em)
+    .map((a) => ({ arquivo: a.caminho.split("/").pop() ?? a.caminho, em: a.gerado_em as string }))
+    .sort((a, b) => a.em.localeCompare(b.em));
+
   return (
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:reproducao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["PLD", "ENA", "MLT", "SIN", "MWmed", "CMO"]}
+        <CabecalhoModulo
           rotulo="Dados e metodologia"
           titulo="Consigo reproduzir este gráfico?"
-          referencia={<ReferenciaDados geradoEm={m.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Id da publicação {m.id_publicacao.slice(0, 12)}.</>} />}
+          referencia={<ReferenciaDados processadoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} manifestoEm={m.gerado_em} extra={<>Id da publicação {m.id_publicacao.slice(0, 12)}.</>} />}
         >
-          Todo número do observatório vem de um arquivo publicado em /energia/, e cada arquivo tem o sha256 no manifesto. Aqui estão a lista completa, o dicionário de cada arquivo, a versão exata no GitHub, o formato colunar para as séries maiores e a conferência de um arquivo baixado.
-          Nada depende de link temporário.
+          Todo número do observatório vem de um arquivo publicado, e cada arquivo tem uma impressão digital registrada numa lista, o manifesto. Aqui estão a lista completa, o dicionário de cada arquivo, o link para a versão exata no GitHub, uma versão compacta (Parquet) dos arquivos
+          maiores e a conferência de um arquivo baixado. Nada depende de link temporário.
         </CabecalhoModulo>
         <DadosNavegacao atual="reproducao" />
 
@@ -78,76 +86,40 @@ export default function DadosReproducaoPage() {
             <PainelEvidencia
               id="painel-reproducao"
               pergunta="Consigo reproduzir este gráfico?"
-              subtitulo={`${num(m.totais.arquivos, 0)} arquivos publicados · sha256 de cada um · Parquet para as séries maiores`}
+              subtitulo={`${num(m.totais.arquivos, 0)} arquivos publicados · impressão digital de cada um · versão compacta para as séries maiores`}
               proveniencia={prov}
               porQueImporta={
                 <>
                   Um número que ninguém consegue refazer vale pouco. Com o arquivo, o dicionário, a fórmula e a versão, quem baixa chega ao mesmo agregado que a página mostra, e quem cita sabe exatamente qual versão citou.
                 </>
               }
-              oQueMudou={
-                <>
-                  O manifesto desta publicação é de {carimbo(m.gerado_em)}, tem {num(m.totais.arquivos, 0)} arquivos e {m.completo ? "inclui todos os arquivos publicados" : "ainda não inclui os arquivos reescritos depois do módulo Dados"}. Cada atualização gera outro manifesto, com outro id.
-                </>
-              }
+              oQueMudou={<>{textoMudancaReproducao(m, pub.gerado_em)}</>}
               comoInterpretar={
                 <>
-                  Igual ao manifesto é igual byte a byte: o sha256 do arquivo baixado coincide com o publicado. O Parquet traz os mesmos valores do CSV, conferidos célula a célula na publicação, com número lido como decimal, sem perda de precisão. A planilha exportada pela tabela de um painel traz as
-                  linhas filtradas, com fonte, versão e dicionário; o arquivo completo de origem é o que está aqui.
+                  Confere quer dizer que o arquivo é igual, byte a byte, ao publicado: a impressão digital<span data-nivel="analisar"> (sha256)</span> do arquivo baixado coincide com a da lista. A versão compacta (Parquet) traz os mesmos valores do CSV, conferidos célula a célula na publicação<span data-nivel="analisar">, com número lido como decimal</span>, sem perda de precisão. A planilha
+                  exportada pela tabela de um painel traz as linhas filtradas, com fonte, versão e dicionário; o arquivo completo de origem é o que está aqui.
                 </>
               }
               naoConcluir={
                 <>
-                  Que um arquivo com sha256 diferente seja errado: pode ser de outra publicação. Que o histórico completo das capturas esteja aqui: ele não é publicado no repositório, só o resultado de cada atualização. Que reproduzir o arquivo reproduza a coleta: a coleta
+                  Que um arquivo com impressão digital diferente seja errado: pode ser de outra publicação. Que o histórico completo das capturas esteja aqui: ele não é publicado no repositório, só o resultado de cada atualização. Que reproduzir o arquivo reproduza a coleta: a coleta
                   depende da fonte estar no ar.
                 </>
               }
             >
               <DadosResposta
                 painel="P069"
-                prova={evParquet ? <ComproveNumero evidencia={evParquet} rotulo="Comprove os Parquet equivalentes" endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" /> : undefined}
+                veredito={vereditoReproducao(m, conf)}
+                prova={evParquet ? <ComproveNumero evidencia={evParquet} rotulo="Comprove as versões compactas iguais ao CSV" endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" /> : undefined}
               >
                 {respostaReproducao(m, pub, conf)}
               </DadosResposta>
 
-              <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <Numero rotulo="Arquivos no manifesto" natureza="CALCULADO" valor={m.totais.arquivos} casas={0} unidade="arquivos" tamanho="medio" periodo={dataBR(m.gerado_em.slice(0, 10))} nota={<>{m.totais.golds} bases, {m.totais.series} séries, {m.totais.parquets} Parquet e {m.totais.geometrias} geometrias</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
-                <Numero
-                  rotulo="Parquet equivalentes ao CSV"
-                  natureza="CALCULADO"
-                  evidencia={evParquet ?? null}
-                  valor={pq.equivalentes}
-                  casas={0}
-                  unidade="arquivos"
-                  tamanho="medio"
-                  nota={<>de {num(pq.arquivos, 0)} Parquet publicados, conferidos célula a célula</>}
-                  motivoAusencia="Sem Parquet nesta publicação."
-                  endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao"
-                />
-                <Numero
-                  rotulo="Arquivos com o sha256 do manifesto"
-                  natureza="CALCULADO"
-                  valor={conf.conferidos}
-                  casas={0}
-                  unidade="arquivos"
-                  tamanho="medio"
-                  periodo="na construção desta página"
-                  nota={<>de {num(conf.total, 0)} listados{conf.divergentes.length + conf.ausentes.length ? `; ${num(conf.divergentes.length + conf.ausentes.length, 0)} não conferem (modo Auditar)` : ""}</>}
-                  endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao"
-                />
-                <Numero rotulo="Tamanho da publicação" natureza="CALCULADO" valor={m.totais.bytes / 1024 / 1024} casas={0} unidade="MB" tamanho="medio" periodo={dataBR(m.gerado_em.slice(0, 10))} nota={<>soma dos arquivos do manifesto</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
-              </div>
-              <DadosRecorte
-                periodo={<>publicação de {dataBR(m.gerado_em.slice(0, 10))} (id {m.id_publicacao.slice(0, 12)}); pacote por consulta, na data do download</>}
-                universo={`${num(m.totais.arquivos, 0)} arquivos de /energia/ (bases, séries, Parquet e geometrias)`}
-                unidade="bytes e KB; linhas e colunas de cada CSV"
-              />
-
               <ol className="mb-6 grid gap-px border border-linha bg-linha md:grid-cols-4" aria-label="Do gráfico ao pacote em quatro passos" data-passos="reproducao">
                 {[
                   ["1. Filtre e baixe", "Em qualquer tabela de painel, filtre e use Baixar CSV ou XLSX: a planilha leva fonte, versão, filtros e dicionário."],
-                  ["2. Comprove o número", "Em Comprove este número, veja a fórmula, o numerador e o denominador, o arquivo e o sha256 de origem e como refazer a conta."],
-                  ["3. Pegue o arquivo completo", "Aqui, baixe o arquivo de origem (CSV, ou Parquet nas séries maiores) e confira o sha256 com a ferramenta abaixo."],
+                  ["2. Comprove o número", "Em Comprove este número, veja a fórmula, o numerador e o denominador, o arquivo e a impressão digital de origem e como refazer a conta."],
+                  ["3. Pegue o arquivo completo", "Aqui, baixe o arquivo de origem (CSV, ou a versão compacta Parquet nas séries maiores) e confira a impressão digital com a ferramenta abaixo."],
                   ["4. Cite a versão", "Use o id da publicação e o link permanente do GitHub: o conteúdo de uma versão registrada não muda."],
                 ].map(([t, d]) => (
                   <li key={t} className="bg-superficie p-4">
@@ -157,6 +129,50 @@ export default function DadosReproducaoPage() {
                 ))}
               </ol>
 
+              <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <Numero rotulo="Arquivos publicados" natureza="CALCULADO" valor={m.totais.arquivos} casas={0} unidade="arquivos" tamanho="medio" periodo={`lista de ${dataBR(m.gerado_em.slice(0, 10))}`} nota={<>{m.totais.golds} bases publicadas, {m.totais.series} séries, {m.totais.parquets} versões compactas e {m.totais.geometrias} malhas geográficas</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
+                <Numero
+                  rotulo="Versões compactas iguais ao CSV"
+                  natureza="CALCULADO"
+                  evidencia={evParquet ?? null}
+                  valor={pq.equivalentes}
+                  casas={0}
+                  unidade="arquivos"
+                  tamanho="medio"
+                  nota={<>de {num(pq.arquivos, 0)} versões compactas (Parquet), conferidas célula a célula</>}
+                  motivoAusencia="Sem versão compacta nesta publicação."
+                  endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao"
+                />
+                <Numero
+                  rotulo="Arquivos que conferem com a lista"
+                  natureza="CALCULADO"
+                  valor={conf.conferidos}
+                  casas={0}
+                  unidade="arquivos"
+                  tamanho="medio"
+                  periodo="na construção desta página"
+                  nota={<>de {num(conf.total, 0)} listados{conf.divergentes.length + conf.ausentes.length ? `; ${num(conf.divergentes.length + conf.ausentes.length, 0)} não conferem (modo Auditar)` : ""}</>}
+                  endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao"
+                />
+                <Numero rotulo="Tamanho da publicação" natureza="CALCULADO" valor={m.totais.bytes / 1024 / 1024} casas={0} unidade="MB" tamanho="medio" periodo={`lista de ${dataBR(m.gerado_em.slice(0, 10))}`} nota={<>soma dos arquivos da lista</>} endereco="https://scrutiniums.com/setor-eletrico/dados/reproducao#reproducao" />
+              </div>
+              <DadosRecorte
+                periodo={<>publicação de {dataBR(m.gerado_em.slice(0, 10))} (id {m.id_publicacao.slice(0, 12)}); pacote por consulta, na data do download</>}
+                universo={`${num(m.totais.arquivos, 0)} arquivos publicados (bases, séries, versões compactas e malhas geográficas)`}
+                unidade="bytes e KB; linhas e colunas de cada CSV"
+              />
+              <DadosAviso id="datas-da-publicacao">
+                <p className="rotulo text-mineral">Que data é esta? Cada data mede uma coisa diferente</p>
+                <ul className="mt-1 space-y-1" data-lista="datas">
+                  {datas.map((x) => (
+                    <li key={x.rotulo}>
+                      <strong className="font-medium text-carvao">{x.rotulo}: {x.valor}.</strong> {x.mede.charAt(0).toUpperCase() + x.mede.slice(1)}.
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-1">Cada módulo do observatório processa a sua base em horário próprio; a lista está em Analisar.</p>
+              </DadosAviso>
+
               <DadosConferirArquivo itens={minis} idPublicacao={m.id_publicacao} commit={commit} />
 
               <div id="tabela" className="mt-8 scroll-mt-28">
@@ -165,19 +181,21 @@ export default function DadosReproducaoPage() {
 
               <DadosLimitacoes
                 itens={[
+                  <>Os arquivos CSV maiores que {num(limiarMb, 0)} MB têm também uma versão compacta (Parquet); os menores só têm CSV.</>,
+                  <>O histórico completo de capturas, com as versões anteriores de cada dado, não é publicado no repositório (ocupa centenas de MB); uma cópia durável fica numa versão publicada do repositório, sobrescrita a cada execução.</>,
                   <>
-                    O Parquet existe para os CSV maiores que {num(limiarMb, 0)} MB; os menores só têm CSV.
+                    {commit
+                      ? "O link da versão exata aponta o código do build desta página."
+                      : "O link da versão exata depende de o site saber de qual versão do código foi construído; esta construção não sabe, e o link aponta o histórico do arquivo. A impressão digital da lista identifica a versão."}
                   </>,
-                  <>{rep.silver}</>,
-                  <>{commit ? `Commit deste build: ${commit}.` : "Este build não conhece o commit: o link da versão aponta o histórico do arquivo, e o sha256 do manifesto identifica a versão."}</>,
-                  ...prov.limitacoes,
                 ]}
+                tecnicas={[rep.silver, commit ? `Commit deste build: ${commit}.` : "Este build não conhece o commit: o link da versão aponta o histórico do arquivo, e o sha256 do manifesto identifica a versão.", ...prov.limitacoes]}
               />
               <DadosSeguir
                 ancora="painel-reproducao"
                 proximo={{ href: "/setor-eletrico/metodologia", pergunta: "Quais interpretações são permitidas?" }}
                 downloads={[
-                  { rotulo: "Manifesto da publicação (JSON)", url: URL_GOLD.manifesto },
+                  { rotulo: "Lista de arquivos da publicação (manifesto, JSON)", url: URL_GOLD.manifesto },
                   { rotulo: "Dicionário dos arquivos (JSON)", url: URL_GOLD.arquivos },
                   CSV_DADOS.validacoes,
                 ]}
@@ -228,6 +246,21 @@ export default function DadosReproducaoPage() {
                 ))}
               </ol>
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{rep.pacote_por_consulta}</p>
+            </DadosAnalise>
+          </Bloco>
+
+          <Bloco id="processamento-das-bases">
+            <DadosAnalise titulo="Quando cada base foi processada" id="bases-por-horario">
+              <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                Cada módulo do observatório gera a sua base em horário próprio; o horário vem da lista de arquivos. A lista de arquivos é refeita depois da última base, por isso a data dela é a mais recente.
+              </p>
+              <ul className="grid gap-x-6 text-sm sm:grid-cols-2 lg:grid-cols-3" data-lista="bases-por-horario">
+                {basesPorHorario.map((b) => (
+                  <li key={b.arquivo} className="py-0.5">
+                    <span className="font-medium text-carvao">{b.arquivo}</span> <span className="text-carvao-muted">{carimbo(b.em)}</span>
+                  </li>
+                ))}
+              </ul>
             </DadosAnalise>
           </Bloco>
 

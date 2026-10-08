@@ -12,7 +12,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Evidencia } from "../evidencia";
-import { num, pct } from "../formato";
+import { dataBR, mesAno, num, pct, plural } from "../formato";
 import type { Natureza } from "../tipos";
 
 export type FonteExemplo = {
@@ -109,7 +109,7 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     caminho: ["tarifas", "evidencia_mediana"],
     natureza: "CALCULADO",
     painel: { rotulo: "Conta de luz: tarifa", href: "/setor-eletrico/conta-de-luz#tarifa" },
-    leitura: "Mediana, entre as distribuidoras com tarifa vigente na data, da TE mais TUSD residencial B1 convencional, sem ponderação e sem tributos.",
+    leitura: "Tarifa residencial (no conjunto da ANEEL: subgrupo B1, modalidade convencional): a mediana, entre as distribuidoras com tarifa vigente na data, da soma de TE e TUSD, sem tributos.",
   },
   "bandeira-tarifaria": {
     arquivo: "gold/conta.json",
@@ -123,7 +123,7 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     caminho: ["financiamento_cde", "evidencia"],
     natureza: "CALCULADO",
     painel: { rotulo: "Conta de luz: subsídios", href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios#subsidios" },
-    leitura: "Parcela das receitas do orçamento da CDE no ano que vem das quotas pagas nas tarifas.",
+    leitura: "Parcela das receitas do orçamento aprovado da CDE de {ano} que vem das quotas pagas nas tarifas.",
   },
   "perdas-de-energia": {
     arquivo: "gold/perdas.json",
@@ -266,11 +266,31 @@ export function evidenciaPublicada(arquivo: string, caminho: string[]): Evidenci
 
 type Linha = Record<string, number | string | null>;
 
+/** Ficha publicada em outro arquivo, pelo valor exibido e pelo cálculo; null sem ficha. */
+const ficha = (arquivo: string, caminho: string[]) => evidenciaPublicada(arquivo, caminho);
+
+/** EAR do SIN (% da EAR máxima) de um dia, na série diária publicada pelo painel de Água (captura mais recente); null sem o dia. */
+function earDoDia(dia: string): number | null {
+  try {
+    const linhas = readFileSync(join(RAIZ, "series", "agua_subsistemas_diario.csv"), "utf-8").split("\n");
+    const cab = linhas[0].split(";");
+    const iPct = cab.indexOf("ear_pct");
+    const achada = linhas.find((l) => l.startsWith(`${dia};SIN;`));
+    const v = achada ? Number(achada.split(";")[iPct]) : NaN;
+    return Number.isFinite(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Reais em bilhões, com uma casa: "R$ 50,7 bilhões". */
+const bilhoes = (v: number) => `R$ ${num(v / 1e9, 1)} bilhões`;
+
 /**
  * Complemento do exemplo de alguns verbetes: os termos da conta (GSF) ou a decomposição do número
  * (constrained-off), lidos da mesma gold do painel e do mesmo mês ou período da ficha. Nunca escrito à mão.
  */
-const COMPLEMENTO_EXEMPLO: Record<string, () => string | null> = {
+const COMPLEMENTO_EXEMPLO: Record<string, (ev: Evidencia) => string | null> = {
   gsf: () => {
     const mes = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "kpis", "gsf_ultimo_mes", "mes"]);
     const linhas = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "mensal"]);
@@ -279,7 +299,11 @@ const COMPLEMENTO_EXEMPLO: Record<string, () => string | null> = {
     const modulada = Number(u?.gf_modulada_fdisp_mwmed);
     const sazonalizada = Number(u?.gf_sazonalizada_mwmed);
     if (![ger, modulada, sazonalizada].every((x) => Number.isFinite(x) && x > 0)) return null;
-    return `Os termos da conta, em MWmed: ${num(ger, 0)} de geração das usinas do MRE divididos por ${num(modulada, 0)} de garantia física modulada e ajustada pelo fator de disponibilidade. Com a garantia física sazonalizada (${num(sazonalizada, 0)}) no lugar dela, a mesma geração daria ${pct((ger / sazonalizada) * 100, 1)}.`;
+    return (
+      `Os termos da conta, em MWmed: ${num(ger, 0)} de geração das usinas do MRE divididos por ${num(modulada, 0)} de garantia física modulada e ajustada pelo fator de disponibilidade. ` +
+      `Com a garantia física sazonalizada (${num(sazonalizada, 0)}) no lugar dela, a mesma geração daria ${pct((ger / sazonalizada) * 100, 1)}. ` +
+      `São dois resultados do mesmo mês e da mesma geração: só a garantia física do denominador muda. O observatório usa a modulada e ajustada pelo fator de disponibilidade; o boletim do MME usa a sazonalizada.`
+    );
   },
   "constrained-off": () => {
     const u = noCaminho(lerPublicado("gold/geracao_detalhe.json"), ["restricoes", "eolica", "ultimos_12m"]) as { taxa_pct?: number; por_razao?: { razao: string; pct: number }[] } | undefined;
@@ -288,6 +312,72 @@ const COMPLEMENTO_EXEMPLO: Record<string, () => string | null> = {
     if (!u || typeof u.taxa_pct !== "number" || [rel, cnf, ene].some((x) => typeof x !== "number")) return null;
     return `Nos mesmos 12 meses, a taxa de restrição foi de ${pct(u.taxa_pct, 1)} da geração possível estimada (verificada mais não gerada). Por razão, a energia não gerada se divide em ${pct(rel, 1)} de indisponibilidade externa, ${pct(cnf, 1)} de confiabilidade elétrica e ${pct(ene, 1)} de razão energética. Segundo a REN, nos eventos posteriores aos marcos de vigência (1º/10/2021 nas eólicas, 1º/04/2024 nas fotovoltaicas), só a primeira razão dá direito ao pagamento por ESS, e só depois de um limite de horas acumuladas no ano.`;
   },
+  // leitura do número em palavras comuns: lida da própria ficha (numerador e denominador) e do período dela
+  acl: (ev) => {
+    const v = ev.valor_exibido.replace("%", "");
+    return `De cada 100 MWh contabilizados pela CCEE nas classes do ACR e do ACL, sem a exportação, ${v} foram consumidos no ACL nos 12 meses de ${mesAno(ev.periodo.inicio)} a ${mesAno(ev.periodo.fim)}.`;
+  },
+  cde: (ev) => {
+    const n = ev.numerador?.valor;
+    const d = ev.denominador?.valor;
+    if (typeof n !== "number" || typeof d !== "number") return null;
+    return `No orçamento aprovado de ${ev.periodo.fim}, as quotas pagas nas tarifas somam ${bilhoes(n)}, de ${bilhoes(d)} em receitas publicadas.`;
+  },
+  ear: (ev) => {
+    const sin = (noCaminho(lerPublicado("gold/agua_detalhe.json"), ["armazenamento", "subsistemas"]) as Record<string, unknown>[] | undefined)?.find((x) => x.sm === "SIN");
+    const dia = String(sin?.dia ?? ev.periodo.fim);
+    const p50 = Number(sin?.p50);
+    const [p10, p90] = [Number(sin?.p10), Number(sin?.p90)];
+    const base = String(sin?.periodo_base ?? "");
+    const anos = Number(sin?.anos_na_base);
+    if (![p50, p10, p90, anos].every(Number.isFinite) || !/^\d{4}-\d{4}$/.test(base)) return null;
+    const faixa = sin?.faixa === "dentro" ? "dentro dessa faixa" : sin?.faixa === "acima" ? "acima dessa faixa" : sin?.faixa === "abaixo" ? "abaixo dessa faixa" : null;
+    // a Visão geral lê a base de hidrologia, cuja captura do ONS pode terminar um dia antes da deste painel
+    const h = (noCaminho(lerPublicado("gold/hidrologia.json"), ["subsistemas"]) as { sm: string; ear?: { valor: number; dia: string } }[] | undefined)?.find((x) => x.sm === "SIN")?.ear;
+    const dias = h ? Math.round((Date.parse(dia) - Date.parse(h.dia)) / 86_400_000) : 0;
+    // o mesmo dia na captura mais recente (a série diária do painel de Água): o ONS revisa os valores já publicados
+    const revisado = h ? earDoDia(h.dia) : null;
+    const mudou = revisado !== null && h !== undefined && pct(revisado, 1) !== pct(h.valor, 1);
+    const ponte =
+      h && dias > 0
+        ? ` A Visão geral traz ${pct(h.valor, 1)} em ${dataBR(h.dia)}, ${plural(dias, "dia", "dias")} antes: ela lê a base de hidrologia, cuja captura do arquivo do ONS é anterior, e este exemplo usa uma captura mais recente, que já traz ${dataBR(dia).slice(0, 5)}${mudou ? ` e dá ${pct(revisado, 1)} para o próprio ${dataBR(h.dia).slice(0, 5)}, porque o ONS revisa os valores publicados` : ""}.`
+        : "";
+    return (
+      `Para ${dataBR(dia).slice(0, 5)}, a mediana dos anos completos desde ${base.slice(0, 4)} (${base.replace("-", " a ")}, ${num(anos, 0)} anos) é ${pct(p50, 1)} da EAR máxima; o 10º a 90º percentil vai de ${pct(p10, 1)} a ${pct(p90, 1)}` +
+      `${faixa ? `, e o valor deste dia fica ${faixa}` : ""}.${ponte}`
+    );
+  },
+  dessem: (ev) => {
+    const pld = ficha("series/pld_evidencias.json", ["evidencias", "pld_semana_SE"]);
+    if (!pld || pld.valor_calculo === null || ev.valor_calculo === null) return null;
+    const lado = pld.valor_calculo > ev.valor_calculo ? "acima" : pld.valor_calculo < ev.valor_calculo ? "abaixo" : "igual ao";
+    return (
+      `No mesmo recorte (Sudeste/Centro-Oeste, mesma semana operativa), o PLD médio foi ${pld.valor_exibido}, ${lado} do CMO médio do DESSEM. ` +
+      `O PLD parte do CMO, mas não é o CMO: é calculado pela CCEE por hora e submercado e aplica os limites regulatórios.`
+    );
+  },
+  pld: (ev) => {
+    const dessem = ficha("series/pld_evidencias.json", ["evidencias", "dessem_semana_SE"]);
+    const piso = ficha("gold/regulacao.json", ["evidencias", "limites", "pld_min"]);
+    const teto = ficha("gold/regulacao.json", ["evidencias", "limites", "pld_max_horario"]);
+    const partes: string[] = [];
+    if (piso && teto) partes.push(`Em ${piso.periodo.inicio.slice(0, 4)}, o piso do PLD é ${piso.valor_exibido} e o teto horário, ${teto.valor_exibido}.`);
+    if (dessem && dessem.valor_calculo !== null && ev.valor_calculo !== null) {
+      const lado = dessem.valor_calculo < ev.valor_calculo ? "abaixo" : dessem.valor_calculo > ev.valor_calculo ? "acima" : "igual ao";
+      partes.push(`No mesmo recorte, o CMO médio que o DESSEM estima foi ${dessem.valor_exibido}, ${lado} do PLD médio.`);
+    }
+    return partes.length ? partes.join(" ") : null;
+  },
+  "tarifa-te-tusd": () => {
+    const r = noCaminho(lerPublicado("gold/conta.json"), ["tarifas", "resumo"]) as { n?: number; p25?: number; p75?: number; perfis_mediana?: Record<string, number> } | undefined;
+    const kwh = (mwh: number) => `R$ ${num(mwh / 1000, 4)}`;
+    const mes200 = r?.perfis_mediana?.["200"];
+    if (!r || typeof r.n !== "number" || typeof r.p25 !== "number" || typeof r.p75 !== "number" || typeof mes200 !== "number") return null;
+    return (
+      `A mediana é a tarifa do meio entre as ${num(r.n, 0)} distribuidoras: metade cobra menos e metade cobra mais, e cada uma conta uma vez, qualquer que seja o número de consumidores. ` +
+      `A metade do meio cobra de ${kwh(r.p25)} a ${kwh(r.p75)} por kWh. Um consumo de 200 kWh em um mês custa R$ ${num(mes200, 2)} na tarifa mediana, sem tributos nem bandeira.`
+    );
+  },
 };
 
 /** Evidência publicada para o exemplo do verbete; null sem mapeamento, sem gold ou sem valor. */
@@ -295,5 +385,18 @@ export function exemploComEvidencia(slug: string): ExemploComEvidencia | null {
   const f = EXEMPLO_EVIDENCIA[slug];
   if (!f) return null;
   const ev = evidenciaPublicada(f.arquivo, f.caminho);
-  return ev ? { ...f, evidencia: ev, complemento: COMPLEMENTO_EXEMPLO[slug]?.() ?? null } : null;
+  return ev ? { ...f, leitura: f.leitura.replace("{ano}", ev.periodo.fim.slice(0, 4)), evidencia: ev, complemento: COMPLEMENTO_EXEMPLO[slug]?.(ev) ?? null } : null;
+}
+
+/**
+ * Ponte do passo "Onde o preço vira resultado" (o exemplo do MRE mostra a geração e a garantia física do último mês, sem a razão):
+ * o GSF do mesmo mês, lido da ficha do GSF. Só escreve quando os dois exemplos são do mesmo mês.
+ */
+export function notaGsfDoMes(): string | null {
+  const g = exemploComEvidencia("gsf");
+  const mensal = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "mensal"]);
+  const ultimo = Array.isArray(mensal) ? (mensal[mensal.length - 1] as Linha | undefined)?.mes : undefined;
+  const mes = noCaminho(lerPublicado("gold/mercado.json"), ["mre_gsf", "kpis", "gsf_ultimo_mes", "mes"]);
+  if (!g || typeof ultimo !== "string" || ultimo !== mes) return null;
+  return `A razão entre a geração e a garantia física modulada e ajustada pelo fator de disponibilidade é o GSF de ${mesAno(ultimo)}: ${g.evidencia.valor_exibido}.`;
 }

@@ -219,7 +219,7 @@ export function InclusaoMapaPnad({ acesso, csvUrl, fonte }: { acesso: AcessoPnad
           <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
             Não foi possível carregar a série das UF ({erro}). O arquivo está em{" "}
             <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-              inclusao_acesso_pnad.csv
+              acesso à energia por UF, PNAD (CSV)
             </a>
             .
           </p>
@@ -391,7 +391,7 @@ export function InclusaoIsolados({
           <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
             Não foi possível carregar a lista completa ({erro}). Ela também está em{" "}
             <a href="/energia/series/inclusao_sistemas_isolados.csv" download className="text-energia-dark underline underline-offset-4">
-              inclusao_sistemas_isolados.csv
+              localidades de sistemas isolados (CSV)
             </a>
             .
           </p>

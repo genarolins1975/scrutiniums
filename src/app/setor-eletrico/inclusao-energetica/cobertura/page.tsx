@@ -5,6 +5,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir, InclusaoSubtitulo } from "@/components/energia/InclusaoPagina";
 import { InclusaoCoberturaUf, InclusaoMunicipiosCobertura, InclusaoSerieCobertura } from "@/components/energia/InclusaoCobertura";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
@@ -20,6 +21,7 @@ import {
   numTexto,
   respostaCobertura,
   rotaPainel,
+  vereditoCobertura,
 } from "@/lib/energia/inclusao";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
@@ -76,8 +78,7 @@ export default function CoberturaPage() {
               comoInterpretar={
                 <>
                   Razão = 100 × faturas com desconto ÷ famílias do Cadastro Único com renda por pessoa até meio salário mínimo, no mesmo mês. O denominador com cadastro atualizado
-                  segue o requisito da concessão; com todas as cadastradas, a razão cai. As duas formam uma faixa de sensibilidade à definição do denominador, não um intervalo
-                  estatístico. {c.faixa_de_sensibilidade}
+                  segue o requisito da concessão; com todas as cadastradas, a razão cai. As duas formam uma faixa de sensibilidade à definição do denominador. {c.faixa_de_sensibilidade}
                 </>
               }
               naoConcluir={
@@ -93,9 +94,9 @@ export default function CoberturaPage() {
                   <span className="rotulo">Proxy</span>
                   <span>medida indireta, com denominador elegível só pelo critério de renda</span>
                 </p>
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p060">
+                <RespostaCurta id="p060" veredito={vereditoCobertura(c)}>
                   {respostaCobertura(c)}
-                </p>
+                </RespostaCurta>
                 <InclusaoRecorte
                   periodo={
                     <>
@@ -131,7 +132,7 @@ export default function CoberturaPage() {
                       <p className="text-carvao-muted">
                         As famílias cadastradas por município estão em{" "}
                         <a href="/energia/series/inclusao_municipios.csv" download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-                          inclusao_municipios.csv
+                          famílias cadastradas por município (CSV)
                         </a>
                         , que soma o total nacional.
                       </p>

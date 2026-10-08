@@ -33,6 +33,7 @@ import {
   ROTULO_RESULTADO,
   URL_DETALHE_MERCADO,
   lacunasLiquidacao,
+  notaEssMme,
   painelMercado,
   provenienciasLegiveis,
   reaisCurto,
@@ -41,6 +42,7 @@ import {
   serieInadimplencia,
   serieLiquidacao,
   textoPeriodoMes,
+  vereditoEncargos,
 } from "@/lib/energia/mercado";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
@@ -83,8 +85,7 @@ export default function MercadoEncargosPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo siglas={["CCEE", "MME", "EPE", "GSF", "SAMP", "ANEEL", "REN", "MRE", "SIN", "PLD", "ACL", "ACR"]} rotulo="Mercado de energia" titulo="Quais custos públicos aparecem na liquidação do mercado de curto prazo?" referencia={<ReferenciaMercado g={g} />}>
           Operar o sistema com segurança tem custos que não estão no preço da energia: geração fora da ordem de mérito, serviços ancilares, energia de reserva. Eles viram encargos (
-          <Termo slug="ess">ESS</Termo> e EER), apurados pela CCEE no mês de competência e pagos depois, na liquidação do mercado de curto prazo. O observatório não publica preço de contrato, PPA nem
-          curva a termo: só o que a CCEE e o MME publicam.
+          <Termo slug="ess">ESS</Termo> e EER), apurados pela CCEE no mês de competência e pagos depois, na liquidação do mercado de curto prazo. O observatório não publica preço de contrato: só o que a CCEE e o MME publicam.
         </CabecalhoModulo>
         <MercadoNavegacao atual="encargos" />
 
@@ -99,7 +100,10 @@ export default function MercadoEncargosPage() {
               complementares={[{ rotulo: "Encargos no boletim do MME", p: prov.encargos_mme }]}
               porQueImporta={
                 <>
-                  Os encargos cobrem custos de serviços do sistema prestados aos usuários do SIN (Decreto nº 5.163/2004, art. 59). Para o ESS de restrição de operação de eólicas e fotovoltaicas, o pagamento é proporcional ao consumo (REN ANEEL nº 1.030/2022, art. 16, § 1º); a regra de rateio dos demais encargos e do encargo de energia de reserva não foi lida. Um mês de muita geração fora da ordem de mérito por restrição elétrica aparece aqui antes de chegar à conta de luz.
+                  Os encargos cobrem custos de serviços do sistema prestados aos usuários do SIN. Para o ESS de restrição de operação de eólicas e fotovoltaicas, o pagamento é proporcional ao consumo; a regra de rateio dos demais encargos e do encargo de energia de reserva não foi lida. Um mês de muita geração fora da ordem de mérito por restrição elétrica aparece aqui antes de chegar à conta de luz.
+                  <span data-nivel="analisar" className="block pt-1">
+                    Fundamentos: Decreto nº 5.163/2004, art. 59 (custos dos serviços do sistema); REN ANEEL nº 1.030/2022, art. 16, § 1º (pagamento proporcional ao consumo).
+                  </span>
                 </>
               }
               oQueMudou={
@@ -117,18 +121,19 @@ export default function MercadoEncargosPage() {
               comoInterpretar={
                 <>
                   Competência é o mês da contabilização; pagamento é a liquidação financeira, que sai depois e passa pelo alívio com recursos do próprio mercado. As barras somam os tipos de ESS do
-                  mês; a resposta da demanda vem de conjunto próprio da CCEE e fica fora da soma. Mês sem barra é ausência, com o motivo escrito: nunca zero.
+                  mês; a resposta da demanda vem de conjunto próprio da CCEE e fica fora da soma. A restrição de operação reúne três encargos: <Termo slug="constrained-off">constrained-off</Termo>, constrained-on e unit commitment. Mês sem barra é ausência, com o motivo escrito: nunca zero.
                 </>
               }
               naoConcluir={
                 <>
-                  O preço da energia nos contratos: o observatório não publica preço de contrato, PPA nem curva a termo, e o PLD não é preço de contrato. Que inadimplência alta signifique perda
+                  O preço da energia nos contratos: o observatório não publica preço de contrato, e o PLD não é preço de contrato. Que inadimplência alta signifique perda
                   definitiva: o valor não pago numa liquidação pode ser pago depois. Que o pagamento publicado como zero em sequência seja zero.
                 </>
               }
             >
               <MercadoResposta
                 painel="P035"
+                veredito={vereditoEncargos(g)}
                 prova={
                   <>
                     {k.ess_12m && <ComproveNumero evidencia={k.ess_12m.evidencia} rotulo="Comprove o ESS" />}
@@ -192,6 +197,11 @@ export default function MercadoEncargosPage() {
                   endereco="https://scrutiniums.com/setor-eletrico/mercado/encargos#encargos"
                 />
               </div>
+              {notaEssMme(g) && (
+                <p className="mb-5 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota="ess-mme">
+                  {notaEssMme(g)}
+                </p>
+              )}
               <MercadoRecorte
                 periodo={<>competência de {textoPeriodoMes({ inicio: e.ess_mensal[0]?.mes ?? "", fim: e.ess_mensal.at(-1)?.mes ?? "" })}; liquidação de {textoPeriodoMes({ inicio: e.liquidacao_mensal[0]?.mes ?? "", fim: e.liquidacao_mensal.at(-1)?.mes ?? "" })}</>}
                 universo="mercado de curto prazo contabilizado pela CCEE (SIN)"
@@ -203,7 +213,7 @@ export default function MercadoEncargosPage() {
                 chaveCategoria="mes"
                 chaveRotulo="rotulo"
                 series={[
-                  { id: "restricao", rotulo: "Restrição de operação (constrained-on, constrained-off, unit commitment)", cor: "var(--serie-termica)" },
+                  { id: "restricao", rotulo: "Restrição de operação", cor: "var(--serie-termica)" },
                   { id: "ancilares", rotulo: "Serviços ancilares", cor: "var(--serie-2)" },
                   { id: "outros", rotulo: "Segurança energética, deslocamento hidráulico, importação e reserva", cor: "var(--serie-hidraulica)" },
                 ]}

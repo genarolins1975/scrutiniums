@@ -11,6 +11,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Histograma } from "@/components/energia/Histograma";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { QualidadeComparador } from "@/components/energia/QualidadeComparador";
 import { QualidadeConjuntos } from "@/components/energia/QualidadeConjuntos";
 import { QualidadeLimites } from "@/components/energia/QualidadeLimites";
@@ -62,6 +63,10 @@ import {
   tabelaQualidade,
   textoAtualidade,
   notaTiposSemUc,
+  vereditoP051,
+  vereditoP052,
+  vereditoP053,
+  vereditoP054,
   type IdTabela,
 } from "@/lib/energia/qualidade";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
@@ -137,12 +142,12 @@ function Auditoria({ titulo, children }: { titulo: string; children: ReactNode }
   );
 }
 
-function Resposta({ id, children, prova }: { id: string; children: ReactNode; prova?: ReactNode }) {
+function Resposta({ id, veredito, children, prova }: { id: string; veredito: string; children: ReactNode; prova?: ReactNode }) {
   return (
     <div className="space-y-1">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
+      <RespostaCurta id={id} veredito={veredito}>
         {children}
-      </p>
+      </RespostaCurta>
       {prova && <div className="flex flex-wrap items-center gap-x-5 gap-y-1">{prova}</div>}
     </div>
   );
@@ -229,7 +234,7 @@ export default function QualidadePage() {
       <CabecalhoEnergia atual="qualidade" />
       <MarcaVisita secao="energia:qualidade" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
+        <CabecalhoModulo siglas={["DEC", "FEC", "DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
           rotulo="Qualidade do serviço"
           titulo="Com que frequência e por quanto tempo falta energia?"
           referencia={
@@ -378,6 +383,7 @@ export default function QualidadePage() {
               <div className="space-y-6">
                 <Resposta
                   id="p051"
+                  veredito={vereditoP051(g)}
                   prova={
                     <>
                       {ev.dec_brasil && <ComproveNumero evidencia={ev.dec_brasil} rotulo="Comprove o DEC do Brasil" endereco="/setor-eletrico/qualidade#duracao" />}
@@ -594,6 +600,7 @@ export default function QualidadePage() {
               <div className="space-y-6">
                 <Resposta
                   id="p052"
+                  veredito={vereditoP052(g)}
                   prova={ev.conjuntos_acima_limite && <ComproveNumero evidencia={ev.conjuntos_acima_limite} rotulo="Comprove a contagem de conjuntos" endereco="/setor-eletrico/qualidade#limites" />}
                 >
                   {respostaP052(g)}
@@ -602,7 +609,7 @@ export default function QualidadePage() {
                   periodo={<>Ano de apuração {c.ano}, com o limite do mesmo ano; histórico de {c.historico[0]?.ano ?? c.ano} a {c.ano}</>}
                   universo={
                     <>
-                      {num(c.com_limite, 0)} conjuntos com 12 meses e limite; {g.distribuidoras.length} distribuidoras ({g.distribuidoras.filter((d) => d.dec === null).length} sem valor anual)
+                      {num(c.com_limite, 0)} conjuntos com 12 meses e limite; {g.distribuidoras.length} distribuidoras com indicadores de continuidade ({g.distribuidoras.filter((d) => d.dec === null).length} sem valor anual); as encerradas ou absorvidas, listadas em Perdas e em Minha região, não têm
                     </>
                   }
                   unidade="horas (DEC), interrupções (FEC) e razão apurado ÷ limite (adimensional)"
@@ -717,6 +724,7 @@ export default function QualidadePage() {
               <div className="space-y-6">
                 <Resposta
                   id="p053"
+                  veredito={vereditoP053(g)}
                   prova={ev.compensacoes_ano && <ComproveNumero evidencia={ev.compensacoes_ano} rotulo="Comprove o total do ano" endereco="/setor-eletrico/qualidade#compensacoes" />}
                 >
                   {respostaP053(g)}
@@ -872,7 +880,9 @@ export default function QualidadePage() {
               ]}
             >
               <div className="space-y-6">
-                <Resposta id="p054">{respostaP054(g)}</Resposta>
+                <Resposta id="p054" veredito={vereditoP054(g)}>
+                  {respostaP054(g)}
+                </Resposta>
                 <Recorte
                   periodo={
                     <>

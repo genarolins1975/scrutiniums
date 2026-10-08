@@ -13,7 +13,9 @@
  * alimentam nenhum indicador do observatório.
  */
 import type { TipoLigacao } from "../mapa";
-import type { FonteExemplo } from "./evidencias-verbetes";
+import { mesAno } from "../formato";
+import { notaGsfDoMes, type FonteExemplo } from "./evidencias-verbetes";
+import type { Prova } from "./provas";
 
 export type ProvaPasso =
   /** Ficha publicada por um painel (mesmo formato do exemplo com evidência do verbete). */
@@ -29,6 +31,8 @@ export type PassoTrilha = {
   prova: ProvaPasso;
   /** Ligação com o passo seguinte; o último passo não tem. */
   ligacao?: { tipo: TipoLigacao; texto: string };
+  /** Frase que liga o número do passo ao texto do passo (o mês do número, a razão que o exemplo não mostra), lida da prova; null quando não se aplica. */
+  nota?: (prova: Prova | null) => string | null;
 };
 
 export type IdTrilha = "agua-operacao-preco" | "custo-tarifa-orcamento";
@@ -51,7 +55,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
     titulo: "Água, operação e preço",
     pergunta: "Como a água que chega aos reservatórios aparece no preço de curto prazo?",
     resumo:
-      "Resposta curta: a água chega ao preço por etapas que o observatório mostra em seis passos. A afluência e o armazenamento alimentam os modelos com que o ONS planeja a operação, que estimam o CMO; a CCEE parte do CMO para calcular o PLD, e é ao PLD que o mercado valora as diferenças entre a energia contratada e a verificada. Entre a água e o preço há decisões de operação e regras de mercado: nenhum passo determina sozinho o seguinte.",
+      "Resposta curta: a água chega ao preço por etapas que o observatório mostra em seis passos. A afluência e o armazenamento alimentam os modelos com que o ONS planeja a operação. Esses modelos estimam o CMO. A CCEE parte do CMO para calcular o PLD, e é ao PLD que o mercado valora as diferenças entre a energia contratada e a verificada. Entre a água e o preço há decisões de operação e regras de mercado: nenhum passo determina sozinho o seguinte.",
     passos: [
       {
         id: "afluencia",
@@ -96,7 +100,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         titulo: "A operação decide quem gera",
         conceitos: ["geracao-centralizada", "cvu", "constrained-off"],
         texto:
-          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o CVU de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa. A geração eólica também pode ser reduzida por comando do ONS, por motivo externo à usina: é o constrained-off. O número abaixo é uma média de potência em 12 meses, em MWmed, e não o total de energia; o peso da fonte no total está no painel.",
+          "O ONS decide quais usinas geram, considerando custo, segurança e os limites da rede. Para as térmicas, o custo variável unitário (CVU) de cada usina é considerado no Programa Mensal da Operação e nos modelos; o painel separa a geração térmica pelo motivo de despacho que o próprio ONS informa. A geração eólica também pode ser reduzida por comando do ONS, por motivo externo à usina: é o constrained-off. O número abaixo é uma média de potência em 12 meses, em MWmed, e não o total de energia; o peso da fonte no total está no painel.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/geracao_detalhe.json",
@@ -140,6 +144,7 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         texto:
           "No MCP, a CCEE define o balanço de energia e o resultado de cada perfil de agente por submercado e hora. As hidrelétricas do MRE compartilham o risco hidrológico: quando, juntas, geram menos que a garantia física, o fator de ajuste do MRE (GSF) fica abaixo de 100%.",
         prova: { tipo: "verbete", slug: "mre" },
+        nota: () => notaGsfDoMes(),
       },
     ],
     naoConclua: [
@@ -155,21 +160,21 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
     titulo: "Custo, tarifa e orçamento",
     pergunta: "Como custos do setor chegam à conta de luz e ao orçamento das famílias?",
     resumo:
-      "Dos custos reconhecidos pela regulação ao peso da energia no orçamento, em cinco passos. Cada passo usa uma fonte e um período próprios; o percurso explica a relação, não soma as fontes.",
+      "Resposta curta: as perdas que a regulação reconhece e as quotas da CDE entram na tarifa que a ANEEL homologa (TE e TUSD); a tarifa, a bandeira do mês, os encargos e os tributos compõem a conta de luz. A Tarifa Social é um desconto na fatura, custeado pela CDE, e o peso da energia no orçamento vem de outra fonte, a POF 2017-2018. O percurso tem cinco passos; cada um usa uma fonte e um período próprios, e o percurso explica a relação, não soma as fontes.",
     passos: [
       {
         id: "custos",
         titulo: "Custos que a regulação reconhece",
         conceitos: ["perdas-de-energia", "percentual-regulatorio-de-perdas", "cde"],
         texto:
-          "Parte da energia que passa pelas redes não chega a ser comercializada. Na revisão tarifária, a ANEEL define para cada concessionária os percentuais de perdas que a tarifa reconhece. A CDE, fundo das políticas públicas do setor, é arrecadada principalmente por quotas incluídas nas tarifas de uso da rede.",
+          "Parte da energia que passa pelas redes não chega a ser comercializada. Na revisão tarifária, a ANEEL define para cada concessionária os percentuais de perdas que a tarifa reconhece. A CDE, fundo das políticas públicas do setor, é arrecadada principalmente por quotas incluídas nas tarifas de uso da rede. O número abaixo é a perda realizada nas concessionárias, e não o percentual que a tarifa reconhece.",
         prova: {
           tipo: "evidencia",
           arquivo: "gold/perdas.json",
           caminho: ["evidencias", "taxa_nacional"],
           natureza: "CALCULADO",
           painel: { rotulo: "Perdas: mapa das distribuidoras", href: "/setor-eletrico/perdas#painel-mapa" },
-          leitura: "Perdas totais medidas sobre a energia injetada de referência, somando as concessionárias de distribuição no último ano completo.",
+          leitura: "Perdas totais medidas sobre a energia injetada de referência, somando as concessionárias de distribuição no último ano completo. É a perda realizada; o percentual que a tarifa reconhece é outro número (verbete Percentual regulatório de perdas).",
         },
         ligacao: {
           tipo: "custo",
@@ -204,6 +209,11 @@ export const TRILHAS_APRENDA: TrilhaConceitual[] = [
         texto:
           "A Tarifa Social dá desconto na fatura a famílias de baixa renda e a idosos ou pessoas com deficiência que recebem o BPC, custeado pela CDE. Nas faturas emitidas a partir de 5 de julho de 2025, o desconto é de 100% para o consumo até 80 kWh no mês.",
         prova: { tipo: "verbete", slug: "tarifa-social" },
+        nota: (p) => {
+          const mes = p?.tipo === "evidencia" ? p.dado.evidencia.periodo.fim.slice(0, 7) : null;
+          // a regra descrita no passo vale para faturas emitidas a partir de 5 de julho de 2025
+          return mes && mes < "2025-07" ? `O mês do número é ${mesAno(mes)}, anterior às faturas emitidas a partir de 5 de julho de 2025: o número não mede o efeito da regra descrita acima.` : null;
+        },
         ligacao: {
           tipo: "associacao",
           texto:

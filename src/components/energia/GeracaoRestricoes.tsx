@@ -5,6 +5,7 @@ import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energ
 import { GeracaoMapaUsinas } from "@/components/energia/GeracaoMapaUsinas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { carregaJson } from "@/lib/energia/carregaJson";
@@ -32,11 +33,13 @@ import {
   linhasRestricaoMensal,
   linhasSubsistemas12m,
   linhasUsinasRestricao,
+  notaRazoesRestricao,
   paraTabela,
   pontosUsinas,
   respostaRestricao,
   serieUsinaCsv,
   usinaRestricaoEscolhida,
+  vereditoRestricao,
   type FonteRestricao,
   type LinhaUsinaMes,
 } from "@/lib/energia/geracao";
@@ -75,12 +78,15 @@ export function GeracaoRestricoes({
   fonte,
   versao,
   destaques,
+  rotulosRazao,
 }: {
   restricoes: Partial<Record<FonteRestricao, RestricaoCliente>>;
   fonte: string;
   versao: string;
   /** Números de destaque já montados no servidor para cada fonte (com a evidência). */
   destaques: Partial<Record<FonteRestricao, ReactNode>>;
+  /** Rótulo oficial de cada razão (a gold publica; vai para a chave sob o gráfico mensal). */
+  rotulosRazao?: Partial<Record<RazaoRestricao, string>>;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const disponiveis = FONTES_RESTRICAO.filter((f) => restricoes[f]);
@@ -149,9 +155,9 @@ export function GeracaoRestricoes({
         />
       )}
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p023" data-fonte={f}>
-        {respostaRestricao(r)}
-      </p>
+      <RespostaCurta id="p023" veredito={vereditoRestricao(restricoes) || respostaRestricao(r)}>
+        <span data-fonte={f}>{respostaRestricao(r)}</span>
+      </RespostaCurta>
 
       <GeracaoRecorte
         periodo={
@@ -160,9 +166,16 @@ export function GeracaoRestricoes({
             : `série mensal desde ${mesAno(r.primeiro_mes)}, sem 12 meses completos`
         }
         universo={
-          u
-            ? `${NOME_FONTE_RESTRICAO[f]} despachadas ou programadas pelo ONS (Tipo I, II-B e II-C) com limitação registrada: ${num(u.usinas_com_restricao, 0)} de ${num(u.usinas_no_universo, 0)} usinas e conjuntos no período`
-            : `${NOME_FONTE_RESTRICAO[f]} despachadas ou programadas pelo ONS (Tipo I, II-B e II-C)`
+          u ? (
+            <>
+              {NOME_FONTE_RESTRICAO[f]} despachadas ou programadas pelo ONS <span data-nivel="analisar">(Tipo I, II-B e II-C) </span>com limitação registrada: {num(u.usinas_com_restricao, 0)} de {num(u.usinas_no_universo, 0)} usinas e conjuntos no
+              período
+            </>
+          ) : (
+            <>
+              {NOME_FONTE_RESTRICAO[f]} despachadas ou programadas pelo ONS <span data-nivel="analisar">(Tipo I, II-B e II-C)</span>
+            </>
+          )
         }
         unidade="GWh (energia não gerada estimada); % de verificada mais não gerada (taxa); MW (maior corte simultâneo numa meia hora)"
       />
@@ -207,8 +220,8 @@ export function GeracaoRestricoes({
           selecionado={usina?.id ?? null}
           onSelecionar={selecionar}
           ordemInicial={{ coluna: "nao_gerada_gwh", direcao: "desc" }}
-          dicaBusca="Nome, identificador do ONS ou UF"
-          nota={`Lista completa, mês a mês, no arquivo ${r.usinas_12m_resumo.lista_completa.split("/").pop()}. Coordenada publicada pelo ONS no conjunto de fator de capacidade (subestação coletora; sem ela, ponto de conexão).`}
+          dicaBusca="Nome da usina ou UF"
+          nota={`Lista completa, mês a mês, no CSV de restrição por usina, no fim do painel. Coordenada publicada pelo ONS no conjunto de fator de capacidade (subestação coletora; sem ela, ponto de conexão).`}
         />
         {usina && (
           <div className="space-y-3 border-l-2 border-energia pl-4" data-usina={usina.id}>
@@ -275,6 +288,11 @@ export function GeracaoRestricoes({
         />
         {ultimo?.parcial === "sim" && (
           <GeracaoAviso>O último mês ({ultimo.mes}) é parcial: soma só os dias já publicados e não se compara com meses completos.</GeracaoAviso>
+        )}
+        {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes) && (
+          <p className="text-xs leading-relaxed text-carvao-muted" data-nota="razoes-restricao">
+            {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes)}
+          </p>
         )}
         <GraficoLinhas
           titulo="Taxa de restrição: não gerada ÷ (verificada + não gerada)"

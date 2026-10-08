@@ -405,7 +405,7 @@ export function linhasRecursos(csv: RecursoCsv[]): LinhaTabela[] {
 export const ROTULO_SITUACAO: Record<SituacaoAtualidade, string> = {
   "EM DIA": "Em dia",
   ATRASADO: "Atrasado",
-  "SEM SLA": "Sem SLA",
+  "SEM SLA": "Sem prazo declarado",
   "SEM DADO": "Sem dado",
 };
 
@@ -460,7 +460,7 @@ export const COLUNAS_SAUDE: ColunaTabela[] = [
   { id: "familia", rotulo: "Família", tipo: "texto", categorica: true },
   { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
   { id: "frequencia", rotulo: "Frequência declarada pela fonte", tipo: "texto", categorica: true },
-  { id: "caso", rotulo: "Caso do SLA", tipo: "texto", categorica: true },
+  { id: "caso", rotulo: "Regra de prazo aplicada (caso A a E)", tipo: "texto", categorica: true },
   { id: "grao", rotulo: "Grão do dado", tipo: "texto", categorica: true },
   { id: "ultimo_periodo", rotulo: "Último período disponível", tipo: "texto" },
   { id: "prazo", rotulo: "Prazo do próximo período", tipo: "data" },
@@ -471,7 +471,7 @@ export const COLUNAS_SAUDE: ColunaTabela[] = [
   { id: "tentativas", rotulo: "Tentativas de coleta", tipo: "numero", casas: 0 },
   { id: "falhas", rotulo: "Falhas de coleta", tipo: "numero", casas: 0 },
   { id: "ultima_falha", rotulo: "Última falha", tipo: "data" },
-  { id: "revisoes", rotulo: "Observações revisadas", tipo: "numero", casas: 0 },
+  { id: "revisoes", rotulo: "Valores revisados", tipo: "numero", casas: 0 },
   { id: "maior_rel", rotulo: "Maior revisão relativa", tipo: "percentual", casas: 1 },
   { id: "atras_fonte", rotulo: "Fonte com arquivo mais novo", tipo: "texto", categorica: true },
   { id: "descontinuado", rotulo: "Descontinuado", tipo: "texto", categorica: true },
@@ -561,10 +561,10 @@ export type MedidaCalendario = "capturas" | "recapturas" | "falhas" | "revisoes"
 
 export const MEDIDAS_CALENDARIO: readonly { id: MedidaCalendario; rotulo: string; detalhe: string; unidade: string; campo: keyof DiaCalendario; deCaptura: boolean }[] = [
   { id: "fonte", rotulo: "Publicações da fonte", detalhe: "arquivos cuja data de modificação na fonte cai no dia", unidade: "arquivos", campo: "publicacoes_fonte", deCaptura: false },
-  { id: "capturas", rotulo: "Capturas novas", detalhe: "arquivos baixados com conteúdo novo (vintage nova com sha256)", unidade: "capturas", campo: "capturas_novas", deCaptura: true },
-  { id: "recapturas", rotulo: "Recapturas sem mudança", detalhe: "downloads idênticos a uma vintage já guardada", unidade: "recapturas", campo: "recapturas_sem_mudanca", deCaptura: true },
+  { id: "capturas", rotulo: "Capturas novas", detalhe: "arquivos baixados com conteúdo novo, que o observatório guardou como versão nova", unidade: "capturas", campo: "capturas_novas", deCaptura: true },
+  { id: "recapturas", rotulo: "Recapturas sem mudança", detalhe: "downloads idênticos a uma versão já guardada", unidade: "recapturas", campo: "recapturas_sem_mudanca", deCaptura: true },
   { id: "falhas", rotulo: "Falhas de coleta", detalhe: "tentativas que não trouxeram o arquivo", unidade: "falhas", campo: "falhas", deCaptura: true },
-  { id: "revisoes", rotulo: "Observações revisadas", detalhe: "pares série e referência com valor diferente do da captura anterior", unidade: "observações", campo: "observacoes_revisadas", deCaptura: true },
+  { id: "revisoes", rotulo: "Valores revisados", detalhe: "valores (de uma série, em um período) diferentes dos da captura anterior", unidade: "valores", campo: "observacoes_revisadas", deCaptura: true },
 ];
 
 export const ESCALA_CALENDARIO: Record<MedidaCalendario, { limites: number[]; rotulos: string[] }> = {
@@ -977,7 +977,7 @@ export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { 
   if (a.situacao === "ATRASADO") {
     return {
       alerta: true,
-      titulo: `Dado atrasado${a.dias_atraso ? `: ${plural(a.dias_atraso, "dia", "dias")} além do prazo` : ""}`,
+      titulo: `Dado atrasado${a.dias_atraso ? `: ${plural(a.dias_atraso, "dia", "dias")} além do prazo${a.prazo_proximo ? ` de ${dataBR(a.prazo_proximo)}` : ""}` : ""}`,
       texto: `${periodo} ${instantesLegiveis(a.causa ?? "A fonte não publicou período mais recente.")}`.trim(),
     };
   }

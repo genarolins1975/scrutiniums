@@ -5,6 +5,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energia/GeracaoControles";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -19,6 +20,7 @@ import {
   NOME_REGIAO,
   NO_REGIAO,
   PERIMETROS,
+  PERIMETRO_EM_FRASE,
   REGIOES,
   ROTULO_JANELA,
   ROTULO_PERIMETRO,
@@ -30,12 +32,14 @@ import {
   linhasCategoriasMensal,
   linhasMatriz,
   linhasMensalMatriz,
+  notaTipoIII,
   paraTabela,
   periodoMix,
   primeiroMesComMmgd,
   respostaMatriz,
   ressalvasDaJanela,
   textoNatureza,
+  vereditoMatriz,
 } from "@/lib/energia/geracao";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { CategoriaGeracao, Matriz, MensalSin } from "@/lib/energia/tipos-geracao";
@@ -73,6 +77,7 @@ export function GeracaoMatriz({
   fonte,
   versao,
   destaques,
+  fontesTipo3 = [],
 }: {
   janelas: Matriz["janelas"];
   mensal: MensalSin;
@@ -83,6 +88,8 @@ export function GeracaoMatriz({
   fonte: string;
   versao: string;
   destaques?: ReactNode;
+  /** Fontes das pequenas usinas Tipo III (hidráulicas, eólicas, solares e térmicas), para a nota que concilia o Tipo III do texto com o do gráfico. */
+  fontesTipo3?: readonly string[];
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const m = useMemo(() => ({ janelas }), [janelas]);
@@ -116,9 +123,9 @@ export function GeracaoMatriz({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p021">
+      <RespostaCurta id="p021" vivo veredito={vereditoMatriz(m, rg, v.jan, per) || resposta}>
         {resposta}
-      </p>
+      </RespostaCurta>
 
       <GeracaoRecorte
         periodo={mix ? `${periodoMix(mix)}; dias completos (24 horas em todos os subsistemas)` : "sem janela publicada"}
@@ -145,7 +152,7 @@ export function GeracaoMatriz({
       )}
 
       <GraficoBarras
-        titulo={`Participação na geração ${DO_REGIAO[rg]}: ${ROTULO_JANELA[janela]} contra ${ROTULO_JANELA[ref]} (${ROTULO_PERIMETRO[per].toLowerCase()})`}
+        titulo={`Participação na geração ${DO_REGIAO[rg]}: ${ROTULO_JANELA[janela]} contra ${ROTULO_JANELA[ref]} (${PERIMETRO_EM_FRASE[per]})`}
         dados={paraTabela(linhas)}
         chaveCategoria="id"
         chaveRotulo="curto"
@@ -160,6 +167,7 @@ export function GeracaoMatriz({
         selecionado={sel}
         onSelecionar={selecionar}
       />
+      {notaTipoIII(mix, per, fontesTipo3) && <GeracaoAviso>{notaTipoIII(mix, per, fontesTipo3)}</GeracaoAviso>}
       {ressalvas.length > 0 && (
         <div className="space-y-1 border-l-2 border-aviso pl-3 text-sm text-carvao" data-ressalvas="p021">
           <p className="rotulo text-mineral">Ressalvas de universo nesta janela</p>
@@ -194,9 +202,9 @@ export function GeracaoMatriz({
       />
 
       <div className="space-y-4 border-t border-linha pt-5" id="historico-mensal">
-        <h3 className="font-serif text-lg text-carvao">Energia por fonte, mês a mês ({ROTULO_PERIMETRO[per].toLowerCase()})</h3>
+        <h3 className="font-serif text-lg text-carvao">Energia por fonte, mês a mês ({PERIMETRO_EM_FRASE[per]})</h3>
         <GraficoBarras
-          titulo={`Geração média mensal do SIN por categoria, ${ROTULO_PERIMETRO[per].toLowerCase()}`}
+          titulo={`Geração média mensal do SIN por categoria, ${PERIMETRO_EM_FRASE[per]}`}
           dados={paraTabela(mensalLinhas)}
           chaveCategoria="id"
           chaveRotulo="mes"
@@ -213,7 +221,7 @@ export function GeracaoMatriz({
           {ultimo && ultimo.parcial !== "não" ? ` O último mês (${ultimo.mes}) é ${ultimo.parcial}.` : ""}
         </GeracaoAviso>
         <TabelaInterativa
-          titulo={`Tabela equivalente: geração média mensal por categoria (${ROTULO_PERIMETRO[per].toLowerCase()})`}
+          titulo={`Tabela equivalente: geração média mensal por categoria (${PERIMETRO_EM_FRASE[per]})`}
           colunas={colunasMensalMatriz(mensalEscolhido.series)}
           linhas={paraTabela(mensalLinhas)}
           chaveLinha="id"

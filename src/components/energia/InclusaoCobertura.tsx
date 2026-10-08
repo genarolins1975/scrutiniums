@@ -141,7 +141,7 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
         Não foi possível carregar a série mensal ({erro}). O mesmo dado está em{" "}
         <a href="/energia/series/inclusao_cobertura_mensal.csv" download className="text-energia-dark underline underline-offset-4">
-          inclusao_cobertura_mensal.csv
+          série mensal da cobertura (CSV)
         </a>
         .
       </p>
@@ -244,7 +244,7 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
         Não foi possível carregar o mapa municipal ({erro}). Os mesmos números estão em{" "}
         <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-          inclusao_municipios.csv
+          famílias e faturas por município (CSV)
         </a>
         .
       </p>

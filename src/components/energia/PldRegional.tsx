@@ -9,6 +9,7 @@ import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
 import { Numero } from "@/components/energia/Numero";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { PldEscolha, PldLista } from "@/components/energia/PldControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -30,6 +31,7 @@ import {
   curtoPar,
   emPct,
   estadoHora,
+  extremosMatriz,
   linhasAmplitude,
   linhasFluxos,
   linhasJanelaHoraria,
@@ -42,6 +44,7 @@ import {
   rotaPainel,
   serieSeparacaoHoraria,
   textoHora,
+  vereditoP012,
   type MedidaMatriz,
 } from "@/lib/energia/pld";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -68,6 +71,7 @@ export function PldRegional({
   ultimaHoraFluxo,
   fonte,
   versao,
+  horasAcimaLimiarPaginaPld,
 }: {
   r: BlocoRegional;
   rec: PldHorarioRecenteArquivo | null;
@@ -77,6 +81,8 @@ export function PldRegional({
   ultimaHoraFluxo: string | null;
   fonte: string;
   versao: string;
+  /** Horas dos últimos 30 dias com diferença acima do limiar na página PLD (pld.json), para conferir com a linha "Últimos 30 dias" daqui. */
+  horasAcimaLimiarPaginaPld?: number | null;
 }) {
   const periodos = r.periodos.map((p) => p.id);
   const esquema = useMemo(
@@ -110,6 +116,14 @@ export function PldRegional({
   const endereco = `${rotaPainel("p012")}#p012`;
   const rotuloPer = r.periodos.find((p) => p.id === per)?.rotulo ?? per;
   const barras = sep.map((l) => ({ id: l.id as string, rotulo: curtoPar(l.id as Par), frac: l.frac }));
+  const a30 = r.amplitude.find((x) => x.periodo === "30d") ?? null;
+  const notaLimiar =
+    a30 && typeof horasAcimaLimiarPaginaPld === "number"
+      ? horasAcimaLimiarPaginaPld === a30.horas_acima_1
+        ? `Mesmo limiar da página PLD, que conta ${plural(horasAcimaLimiarPaginaPld, "hora", "horas")} nos últimos 30 dias; escolhendo Últimos 30 dias aqui, a contagem é a mesma.`
+        : `A página PLD conta ${plural(horasAcimaLimiarPaginaPld, "hora", "horas")} nos últimos 30 dias com o mesmo limiar; aqui, Últimos 30 dias dá ${plural(a30.horas_acima_1, "hora", "horas")}.`
+      : "Limiar de R$ 1,00/MWh, o mesmo da página PLD.";
+  const extremos = extremosMatriz(matriz, mat);
 
   return (
     <div className="space-y-6">
@@ -118,9 +132,9 @@ export function PldRegional({
         <PldLista rotulo="Par em destaque" opcoes={PARES.map((p) => ({ id: p, rotulo: nomePar(p) }))} valor={par} onEscolher={(p) => definir({ par: p })} />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p012" aria-live="polite">
+      <RespostaCurta id="p012" vivo veredito={vereditoP012(r, per)}>
         {respostaP012(r, per)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -136,7 +150,10 @@ export function PldRegional({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">horas, % das horas e R$/MWh; separação = diferença de mais de R$ 0,01/MWh na mesma hora; fluxo em MWmed</dd>
+          <dd className="mt-0.5">
+            horas, % das horas e R$/MWh; separação = diferença de mais de R$ 0,01/MWh na mesma hora
+            <span data-nivel="analisar">; fluxo em MWmed (megawatt médio)</span>
+          </dd>
         </div>
       </dl>
 
@@ -163,7 +180,7 @@ export function PldRegional({
           periodo={rotuloPer}
           motivoAusencia="Sem horas no período."
           tamanho="medio"
-          nota="Mesmo limiar da página de operação, para os dois números conferirem."
+          nota={notaLimiar}
         />
         <Numero
           rotulo="Diferença média entre o maior e o menor PLD"
@@ -227,7 +244,7 @@ export function PldRegional({
             escala={mat === "dif_media" ? ESCALA_DIFERENCA : ESCALA_FRACAO}
             unidade={mat === "dif_media" ? "R$/MWh" : "%"}
             casas={mat === "dif_media" ? 2 : 1}
-            nota="Diagonal com borda tracejada: um submercado com ele mesmo não se aplica. Na diferença, positivo é a linha mais cara que a coluna."
+            nota={`Diagonal com borda tracejada: um submercado com ele mesmo não se aplica. Na diferença, positivo é a linha mais cara que a coluna.${extremos ? ` ${extremos}` : ""}`}
           />
         </div>
       </div>
@@ -320,7 +337,7 @@ export function PldRegional({
               linhas={janela}
               chaveLinha="id"
               colunaRotulo="t"
-              fonte="CCEE, PLD_HORARIO; ONS, Intercâmbios entre Subsistemas"
+              fonte="CCEE, PLD horário por submercado; ONS, Intercâmbios entre Subsistemas"
               versao={versao}
               nomeArquivo="pld-hora-a-hora-168h"
               chaveUrl="hora.t"
@@ -347,7 +364,7 @@ export function PldRegional({
           linhas={flx}
           chaveLinha="id"
           colunaRotulo="fronteira"
-          fonte="CCEE, PLD_HORARIO; ONS, Intercâmbios entre Subsistemas"
+          fonte="CCEE, PLD horário por submercado; ONS, Intercâmbios entre Subsistemas"
           versao={versao}
           nomeArquivo={`pld-fluxo-separacao-${per}`}
           chaveUrl="flx"

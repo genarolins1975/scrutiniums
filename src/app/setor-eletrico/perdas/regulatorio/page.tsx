@@ -1,4 +1,4 @@
-import { fraseDeRecusa, semCodigosDePergunta } from "@/lib/energia/bastidor";
+import { semCodigosDePergunta } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -8,12 +8,12 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { PerdasRegulatorio } from "@/components/energia/PerdasRegulatorio";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { PERGUNTA_REGULATORIO, PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
-import { linhasRegulatorio, respostaRegulatorio, rotuloDistribuidora, segmentosPorDistribuidora } from "@/lib/energia/perdas";
+import { linhasRegulatorio, respostaRegulatorio, rotuloDistribuidora, segmentosPorDistribuidora, vereditoRegulatorio } from "@/lib/energia/perdas";
 
 export const dynamic = "force-static";
 
@@ -45,6 +45,8 @@ export default function PerdasRegulatorioPage() {
   const segmentos = segmentosPorDistribuidora(g.distribuidoras);
   // quantos trechos a gold traz por distribuidora (os demais ficam no CSV), lido dos dados
   const maxTrechos = Math.max(0, ...Object.values(segmentos).map((s) => s.length));
+  // a data da recusa vem da evidência da coleta (dd/mm/aaaa); o código da resposta e o desafio do navegador ficam em Analisar
+  const dataRecusa = bloqueioRegulatorio ? /(\d{2}\/\d{2}\/\d{4})/.exec(bloqueioRegulatorio.evidencia)?.[1] ?? null : null;
 
   return (
     <>
@@ -53,12 +55,11 @@ export default function PerdasRegulatorioPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo siglas={["SAMP", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia · realizado e regulatório"
-          titulo="Quanto o realizado diverge da referência regulatória?"
+          titulo={PERGUNTA_REGULATORIO}
           referencia={<ReferenciaPerdas g={g} />}
         >
           A ANEEL define, a cada revisão tarifária, os <Termo slug="percentual-regulatorio-de-perdas">percentuais regulatórios</Termo> de perdas técnicas e não técnicas que a tarifa reconhece.
-          Comparar a perda realizada com eles diz quanto da perda a tarifa cobre; a referência de perdas não técnicas não está no portal de dados abertos e os endereços da ANEEL que a publicam
-          recusaram o acesso automatizado, e a página mostra o que dá para medir e o que está bloqueado.
+          Esta página mostra como o percentual técnico mudou de um processo tarifário para o seguinte, em cada distribuidora. Ela não compara a perda realizada com a referência regulatória.
         </CabecalhoModulo>
         <PerdasNavegacao atual="regulatorio" />
 
@@ -66,7 +67,7 @@ export default function PerdasRegulatorioPage() {
           <Bloco id="regulatorio">
             <PainelEvidencia
               id="painel-regulatorio"
-              pergunta="Quanto o realizado diverge da referência regulatória?"
+              pergunta={PERGUNTA_REGULATORIO}
               subtitulo="Percentual técnico regulatório implícito no SAMP · % da energia injetada publicada · trechos de 6 meses ou mais"
               natureza="ESTIMADO"
               proveniencia={g.proveniencia.tecnica_regulatoria}
@@ -99,8 +100,8 @@ export default function PerdasRegulatorioPage() {
                 <div className="mb-5 border border-erro bg-papel px-4 py-3 text-sm text-carvao" data-bloqueio="regulatorio">
                   <p className="rotulo text-erro">Bloqueado em parte: comparação do realizado com a referência regulatória</p>
                   <p className="mt-1 leading-relaxed">
-                    {semCodigosDePergunta(bloqueioRegulatorio.item)}. {fraseDeRecusa(bloqueioRegulatorio.evidencia, "da ANEEL")} O relatório da ANEEL traz esses valores só em figuras, sem tabela; por isso esta
-                    comparação não é feita aqui.
+                    {semCodigosDePergunta(bloqueioRegulatorio.item)}: o relatório da ANEEL traz esses valores só em figuras, sem tabela, e os endereços da ANEEL que os publicam recusaram o acesso do observatório
+                    {dataRecusa ? ` em ${dataRecusa}` : ""}. Por isso a comparação do realizado com a referência regulatória não é feita.
                   </p>
                   <p className="mt-1 leading-relaxed" data-nivel="analisar">
                     Evidência: {bloqueioRegulatorio.evidencia}
@@ -120,7 +121,9 @@ export default function PerdasRegulatorioPage() {
                   </details>
                 </div>
               )}
-              <Resposta>{respostaRegulatorio(regulatorio, !!bloqueioRegulatorio)}</Resposta>
+              <Resposta id="regulatorio" veredito={vereditoRegulatorio(regulatorio)}>
+                {respostaRegulatorio(regulatorio)}
+              </Resposta>
               <Recorte
                 periodo={`trechos de ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.inicio)} a ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.fim)}; até ${num(maxTrechos, 0)} mais recentes de cada distribuidora (os demais no CSV)`}
                 universo={`${regulatorio.length} distribuidoras com ao menos um trecho de 6 meses ou mais`}

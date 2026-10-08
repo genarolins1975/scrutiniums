@@ -647,7 +647,10 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     for (const e of gold.linha_do_tempo.eventos) expect(h, e.id).toContain(`data-evento="${e.id}"`);
     expect(h).toContain('data-grafico="faixas-tempo"');
     expect(h).toContain("Efeito declarado pelo ato");
-    expect((h.match(/não estimado pelo observatório/g) ?? []).length).toBe(gold.linha_do_tempo.eventos.length);
+    // r8: o impacto estimado vazio é dito uma vez (na lista curta e na lista completa), não em um cartão por evento
+    expect((h.match(/não estimado pelo observatório/g) ?? []).length).toBe(0);
+    expect((h.match(/Sem impacto estimado nesta fonte/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    expect((h.match(/Sem impacto estimado nesta fonte/g) ?? []).length).toBeLessThanOrEqual(5);
     expect(h).toContain("Eventos da linha do tempo no recorte (tabela equivalente)");
     expect(h).toContain(esc(respostaLinhaTempo(gold.linha_do_tempo.eventos, gold.linha_do_tempo.eventos.length)));
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(4);

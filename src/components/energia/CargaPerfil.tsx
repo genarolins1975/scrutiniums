@@ -7,6 +7,7 @@ import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MapaCalor } from "@/components/energia/MapaCalor";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -37,7 +38,10 @@ import {
   respostaPerfilTipico,
   rotuloHora,
   textoAtualidadeHoraria,
+  textoInicioSeriesMmgd,
   textoQuebraCurva,
+  vereditoPerfil,
+  vereditoPerfilTipico,
   type MedidaPerfil,
 } from "@/lib/energia/carga";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -120,6 +124,7 @@ export function CargaPerfil({
   versao,
   regimes,
   diferencaCurva,
+  globalContraDiaria,
   destaques,
 }: {
   p026: Omit<P026, "compatibilidade" | "conceitos">;
@@ -130,6 +135,8 @@ export function CargaPerfil({
   regimes: (Regime & { observado_nos_dados?: string })[];
   /** Onde a carga global da API se afasta da curva, por hora (textoDiferencaHoraria, no servidor). */
   diferencaCurva: string | null;
+  /** Média do mês da carga global (carga verificada) contra a da Carga de Energia Diária da página Carga; vazio sem o mês nos dois produtos. */
+  globalContraDiaria?: string;
   destaques?: ReactNode;
 }) {
   const p = p026 as P026;
@@ -163,6 +170,7 @@ export function CargaPerfil({
   const recente = useMemo(() => paraTabela(linhasRecente(p)), [p]);
   const mmgd = useMemo(() => linhasMmgdMensal(p), [p]);
   const mmgdTabela = useMemo(() => paraTabela(mmgd), [mmgd]);
+  const inicioSeries = textoInicioSeriesMmgd(p);
   // o mapa de calor abre nos anos da carga verificada (o HTML do servidor fica leve: cada célula é um alvo
   // de foco com rótulo); "todos os anos" monta o histórico desde 2000 no navegador, com os dados já na página
   const desdeApi = p.hora_pico_api_sin_por_ano[0]?.ano;
@@ -186,9 +194,9 @@ export function CargaPerfil({
   return (
     <div className="space-y-6">
       <CargaEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={sm} onEscolher={(x) => definir({ sm: x })} />
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p026" aria-live="polite">
+      <RespostaCurta id="p026" vivo veredito={vereditoPerfil(p, sm)}>
         {respostaPerfil(p, sm)}
-      </p>
+      </RespostaCurta>
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
           <dt className="rotulo text-mineral">Período</dt>
@@ -212,6 +220,7 @@ export function CargaPerfil({
         </div>
       </dl>
       <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{textoAtualidadeHoraria(p)}</p>
+      {globalContraDiaria && sm === "SIN" && <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{globalContraDiaria}</p>}
 
       {destaques}
 
@@ -276,9 +285,9 @@ export function CargaPerfil({
         </div>
         {perfil ? (
           <>
-            <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p026-perfil" aria-live="polite">
+            <RespostaCurta id="p026-perfil" vivo tamanho="sm" veredito={vereditoPerfilTipico(perfil)}>
               {respostaPerfilTipico(perfil)}
-            </p>
+            </RespostaCurta>
             <CursorSincronizado>
               <GraficoLinhas
                 titulo={`Carga verificada, ${ROTULO_CLASSE[perfil.classe]} médio de ${mesAno(perfil.mes)} (${perfil.dias_api} dias)`}
@@ -338,6 +347,7 @@ export function CargaPerfil({
           intervalo={v.mde && v.mate ? { inicio: v.mde, fim: v.mate } : null}
           onIntervalo={(i) => definir({ mde: i?.inicio ?? "", mate: i?.fim ?? "" })}
         />
+        {inicioSeries && <p className="text-sm text-carvao-muted">{inicioSeries}</p>}
         <TabelaInterativa
           titulo="Tabela equivalente: parcela mensal da MMGD por região"
           colunas={COLUNAS_MMGD}
@@ -447,7 +457,7 @@ export function CargaPerfil({
           entidades={anos.map((a) => ({ id: a, rotulo: a }))}
           selecionadas={anosEscolhidos}
           onMudar={(ids) => definir({ anos: ids })}
-          dicaBusca={anos.length ? listaTexto([anos[0], anos[anos.length - 1]]) : ""}
+          dicaBusca={anos.length ? `Buscar, por exemplo ${listaTexto([anos[0], anos[anos.length - 1]])}` : ""}
           vazio="Nenhum ano escolhido. Escolha até quatro para comparar o perfil na mesma escala."
         >
           {() => null}

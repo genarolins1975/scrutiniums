@@ -7,6 +7,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   COLUNAS_ACUMULADO,
@@ -33,7 +34,9 @@ import {
   respostaNivel,
   serieComReferencia,
   textoClasses,
+  textoJanelasIguais,
   textoMesCorrente,
+  vereditoNivel,
   type SerieColunar,
   type TipoComparacao,
 } from "@/lib/energia/carga";
@@ -114,6 +117,7 @@ export function CargaNivel({
   const anualTabela = useMemo(() => paraTabela(anual), [anual]);
   const anosMisturados = anual.filter((a) => a.regimes.includes(" e ")).map((a) => a.ano);
   const escolhidas = (v.sms as Regiao[]).length ? (v.sms as Regiao[]) : [];
+  const janelasIguais = textoJanelasIguais(p.comparacoes.janelas);
 
   return (
     <div className="space-y-6">
@@ -127,10 +131,14 @@ export function CargaNivel({
         />
         <CargaEscolha legenda="Comparar com" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ cmp: x })} />
       </div>
-
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p025" aria-live="polite">
-        {respostaNivel(p, sm, janela, tipo)}
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+        Mesmos dias da semana compara cada dia com o dia de mesma posição na semana, 52 semanas antes (364 dias); mesmas datas compara com o mesmo calendário do ano anterior, em
+        que os dias caem em outros dias da semana.
       </p>
+
+      <RespostaCurta id="p025" vivo veredito={vereditoNivel(p, sm, janela, tipo)}>
+        {respostaNivel(p, sm, janela, tipo)}
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -169,6 +177,7 @@ export function CargaNivel({
         <p className="text-sm text-carvao-muted">
           Composição de calendário de {j.rotulo}: {textoClasses(j.classes)}
           {j.eventos.length ? `; eventos: ${listaTexto(j.eventos.map(([d, nome]) => `${nome} (${dataBR(d)})`))}` : "; nenhum feriado nem ponto facultativo"}.
+          {janelasIguais ? ` ${janelasIguais}` : ""}
         </p>
       )}
       <TabelaInterativa
@@ -210,7 +219,7 @@ export function CargaNivel({
           entidades={REGIOES.map((r) => ({ id: r, rotulo: NOME_REGIAO[r], sinonimos: [CURTO_REGIAO[r]] }))}
           selecionadas={escolhidas}
           onMudar={(ids) => definir({ sms: ids as Regiao[] })}
-          dicaBusca="SIN, Sul, Nordeste"
+          dicaBusca="Buscar, por exemplo SIN, Sul, Nordeste"
           vazio="Nenhuma região escolhida. Escolha até quatro para ver a variação mensal na mesma escala."
         >
           {() => null}

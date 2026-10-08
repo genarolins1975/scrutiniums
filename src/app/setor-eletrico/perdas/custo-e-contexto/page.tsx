@@ -14,7 +14,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
-import { linhasContexto, linhasCusto, pontosAssociacao, respostaAssociacao, respostaCusto, rotuloDistribuidora } from "@/lib/energia/perdas";
+import { linhasContexto, linhasCusto, pontosAssociacao, respostaAssociacao, respostaCusto, rotuloDistribuidora, vereditoAssociacao, vereditoCusto } from "@/lib/energia/perdas";
 
 export const dynamic = "force-static";
 
@@ -95,7 +95,9 @@ export default function PerdasCustoContextoPage() {
                 </>
               }
             >
-              <Resposta>{respostaCusto(custo, g.referencia.tarifa_consultada_em)}</Resposta>
+              <Resposta id="custo" veredito={vereditoCusto(custo, g.referencia.tarifa_consultada_em)}>
+                {respostaCusto(custo, g.referencia.tarifa_consultada_em)}
+              </Resposta>
               <Recorte
                 periodo={custo.length ? `processos tarifários de ${dataBR(custo.map((l) => l.inicio).sort()[0])} até a consulta em ${dataBR(g.referencia.tarifa_consultada_em)}` : `nenhum processo na consulta de ${dataBR(g.referencia.tarifa_consultada_em)}`}
                 universo={`${custo.length} distribuidoras com tarifa residencial B1 nos arquivos de componentes tarifárias`}
@@ -104,11 +106,15 @@ export default function PerdasCustoContextoPage() {
               <PerdasCusto linhas={custo} urlEvidencias={g.series.evidencias_tarifa} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} anosArquivos={anosTarifa} versao={versao} />
               {bloqueioRegulatorio && (
                 <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="custo-total">
-                  Custo total reconhecido em reais por processo: bloqueado pela mesma razão da referência regulatória (evidência e endereços tentados no{" "}
+                  O custo total reconhecido em reais por processo não está disponível, pela mesma razão da comparação com a referência regulatória (explicada no{" "}
                   <a href="/setor-eletrico/perdas/regulatorio#regulatorio" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                     painel Realizado e regulatório
-                  </a>{" "}
-                  e no bloco &quot;Como esses números foram conferidos?&quot;, no nível Auditar). Dependência: {bloqueioRegulatorio.dependencia.replace(/aos hosts acima/, "aos endereços tentados")}
+                  </a>
+                  ).
+                  <span data-nivel="analisar">
+                    {" "}
+                    Evidência e endereços tentados no bloco &quot;Como esses números foram conferidos?&quot;, no nível Auditar. Dependência: {bloqueioRegulatorio.dependencia.replace(/aos hosts acima/, "aos endereços tentados")}
+                  </span>
                 </p>
               )}
               <RodapePainel
@@ -136,7 +142,7 @@ export default function PerdasCustoContextoPage() {
               }
               comoInterpretar={
                 <>
-                  Cada ponto é uma concessionária: renda média domiciliar per capita dos municípios da área, ponderada pelos moradores, contra a taxa do mesmo ano. O ρ de Spearman compara postos e não supõe
+                  Cada ponto é uma concessionária: renda média domiciliar per capita dos municípios da área, ponderada pelos moradores, contra a taxa do mesmo ano. A associação é medida pelo ρ de Spearman, que compara a ordem das áreas por renda com a ordem por taxa de perdas e não supõe
                   relação linear; não há reta desenhada.
                 </>
               }
@@ -147,7 +153,11 @@ export default function PerdasCustoContextoPage() {
                 </>
               }
             >
-              <Resposta prova={g.evidencias.associacao ? <ComproveNumero evidencia={g.evidencias.associacao} rotulo="Comprove o ρ da taxa de perdas totais" /> : undefined}>
+              <Resposta
+                id="contexto"
+                veredito={vereditoAssociacao(assoc)}
+                prova={g.evidencias.associacao ? <ComproveNumero evidencia={g.evidencias.associacao} rotulo="Comprove a associação da taxa de perdas totais com a renda" /> : undefined}
+              >
                 {respostaAssociacao(assoc)}
               </Resposta>
               <Recorte

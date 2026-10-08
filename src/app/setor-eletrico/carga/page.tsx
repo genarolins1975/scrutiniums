@@ -26,6 +26,7 @@ import {
   serieColunar,
   situacaoAtualidade,
   textoAvisoRegimes,
+  textoRegimesCarga,
   textoRevisoes,
 } from "@/lib/energia/carga";
 import { carimbo, dataBR, mesAno, num, plural, sinal } from "@/lib/energia/formato";
@@ -137,7 +138,7 @@ export default function CargaPage() {
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["MMGD", "SIN", "ONS"]}
+        <CabecalhoModulo siglas={["MWmed", "MMGD", "SIN", "ONS"]}
           rotulo="Carga"
           titulo="Quanto o sistema está consumindo?"
           referencia={
@@ -146,9 +147,9 @@ export default function CargaPage() {
             </>
           }
         >
-          A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema, em <Unidade u="MWmed" />. Esta página compara
-          janelas com a mesma composição de calendário e dentro do mesmo regime metodológico do ONS; o perfil horário e a MMGD estão no segundo painel, e a decomposição por
-          clima e calendário no terceiro.
+          A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema, em <Unidade u="MWmed" />. Esta página compara a
+          carga de uma janela de dias com a de uma janela de referência, e só quando as duas têm a mesma mistura de dias úteis, sábados e domingos ou feriados e foram medidas do
+          mesmo modo: {textoRegimesCarga(g.regimes)}. O perfil horário e a MMGD estão no segundo painel, e a decomposição por clima e calendário no terceiro.
         </CabecalhoModulo>
         <CargaNavegacao atual="p025" />
         <ModoProfundidade>
@@ -202,7 +203,7 @@ export default function CargaPage() {
                         natureza="CALCULADO"
                         evidencia={ev.p025_7d_equivalente}
                         formato="pct"
-                        casas={1}
+                        casas={2}
                         tamanho="medio"
                         cor="var(--cor-energia)"
                         endereco={`${rotaPainel("p025")}#p025`}
@@ -212,7 +213,7 @@ export default function CargaPage() {
                         natureza="CALCULADO"
                         evidencia={ev.a07_reproducao}
                         formato="pct"
-                        casas={1}
+                        casas={2}
                         tamanho="medio"
                         cor="var(--serie-referencia)"
                         nota="Variação maior que zero não indica, sozinha, mais atividade econômica."

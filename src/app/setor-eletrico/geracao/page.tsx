@@ -33,6 +33,7 @@ import {
   PERGUNTA_MODULO_GERACAO,
   ROTULO_REGRA,
   downloadsDoPainel,
+  fontesDoGrupoTipo3,
   linhasDozeMeses,
   linhasMmgdApi,
   linhasNaturezaMensal,
@@ -146,6 +147,7 @@ export default function GeracaoPage() {
                   marcos={marcos}
                   fonte={FONTE}
                   versao={versao}
+                  fontesTipo3={fontesDoGrupoTipo3(m.rotulos, g.categorias)}
                   destaques={
                     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                       <Numero rotulo="Geração do SIN, últimos 30 dias, com a MMGD estimada" natureza="CALCULADO" evidencia={ev.matriz_30d_total} casas={0} tamanho="medio" cor="var(--cor-energia)" endereco={`${rotaPainel("p021")}#p021`} />

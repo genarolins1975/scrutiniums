@@ -5,6 +5,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
 import { RegulacaoLimites } from "@/components/energia/RegulacaoLimites";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import {
   RegulacaoAnalise,
   RegulacaoAuditoria,
@@ -14,7 +15,6 @@ import {
   RegulacaoLinkExterno,
   RegulacaoNavegacao,
   RegulacaoRecorte,
-  RegulacaoResposta,
   RegulacaoSeguir,
 } from "@/components/energia/RegulacaoPagina";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -25,6 +25,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
+  ALCANCE_LIMITE,
   ARTIGO_LIMITE,
   CAMPOS_LIMITE,
   COLUNAS_ATOS,
@@ -58,6 +59,8 @@ import {
   rotaPainel,
   textoConferenciaAcionamento,
   textoReuniao,
+  vereditoLimites,
+  vereditoP044,
   vigenteEm,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -85,7 +88,11 @@ const COLUNAS_ACIONAMENTO: ColunaTabela[] = [
   { id: "motivo", rotulo: "Por que não há resolução", tipo: "texto", categorica: true },
 ];
 
-/** Um ato de limites: o que fixou, quando saiu, desde quando vale, onde foi lido e como foi conferido. */
+/**
+ * Um ato de limites. Em Entender: o que fixou (com o que cada limite limita), quando saiu no Diário Oficial e desde quando
+ * vale. A data do ato, o dispositivo, onde foi lido, as conferências feitas sobre o texto, o trecho literal e o documento
+ * ficam em Analisar.
+ */
 function CartaoAto({ a }: { a: AtoLimite }) {
   const fixou = CAMPOS_LIMITE.filter((c) => a[c] !== null);
   return (
@@ -94,68 +101,87 @@ function CartaoAto({ a }: { a: AtoLimite }) {
       <dl className="mt-2 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 [&_dd]:[overflow-wrap:anywhere]">
         <dt className="text-carvao-muted">Fixou</dt>
         <dd className="text-carvao">
-          {fixou.length ? fixou.map((c) => `${ARTIGO_LIMITE[c].replace(/^o /, "")} ${reais(a[c], 2)}/MWh`).join("; ") : "nenhum dos três limites"}
-          {fixou.length < 3 && fixou.length > 0 ? " (os demais limites do ano vêm de outro ato)" : ""}
+          {fixou.length ? (
+            <ul className="space-y-0.5">
+              {fixou.map((c) => (
+                <li key={c}>
+                  {ARTIGO_LIMITE[c].replace(/^o /, "")} {reais(a[c], 2)}/MWh <span className="text-carvao-muted">({ALCANCE_LIMITE[c]})</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            "nenhum dos três limites"
+          )}
+          {fixou.length < 3 && fixou.length > 0 ? <span className="block text-carvao-muted">Os demais limites do ano vêm de outro ato.</span> : null}
         </dd>
-        <dt className="text-carvao-muted">Data do ato</dt>
-        <dd className="tabular-nums text-carvao">{a.data_do_ato ? dataBR(a.data_do_ato) : "não informada"}</dd>
         <dt className="text-carvao-muted">Publicação</dt>
         <dd className="text-carvao">
           {a.data_publicacao ? <time dateTime={a.data_publicacao}>{dataBR(a.data_publicacao)}</time> : <span className="italic text-carvao-muted">não conferida (extrato do ato não acessível)</span>}
-          {a.dou ? <span className="block text-xs text-carvao-muted">{a.dou}</span> : null}
         </dd>
         <dt className="text-carvao-muted">Vigência</dt>
         <dd className="tabular-nums text-carvao">
           de {dataBR(a.vigencia_inicio)} a {dataBR(a.vigencia_fim)}
         </dd>
-        <dt className="text-carvao-muted">Dispositivo</dt>
-        <dd className="text-carvao">{a.dispositivo}</dd>
-        <dt className="text-carvao-muted">Onde foi lido</dt>
-        <dd className="text-carvao">
-          {a.nivel_conferencia === "texto_do_ato" ? "no texto do próprio ato" : "em documento oficial do mesmo processo (o texto do ato não está acessível)"}
-          {a.documento_titulo ? `: ${a.documento_titulo}` : ""}
-          {a.pagina !== null ? `, página ${a.pagina}` : ""}
-        </dd>
-        {a.deliberacao && (
-          <>
-            <dt className="text-carvao-muted">Deliberação</dt>
-            <dd className="text-carvao">
-              reunião {textoReuniao(a.deliberacao.reuniao)} da Diretoria, em {dataBR(a.deliberacao.data)}
-              {a.deliberacao.processo ? `, processo ${a.deliberacao.processo}` : ""}
-            </dd>
-          </>
-        )}
-        {a.altera_ou_revoga && (
-          <>
-            <dt className="text-carvao-muted">Altera ou revoga</dt>
-            <dd className="text-carvao">{a.altera_ou_revoga}</dd>
-          </>
-        )}
       </dl>
-      <ul className="mt-2 space-y-0.5 text-xs text-carvao-muted" aria-label={`Conferências de ${a.ato}`}>
-        {a.conferencias.map((c, i) => (
-          <li key={`${c.conferencia}:${c.campo}:${i}`}>
-            <span className="text-carvao">{ROTULO_CONFERENCIA[c.conferencia] ?? c.conferencia}</span>
-            {c.campo && ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE] ? ` (${ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE].replace(/^o /, "")})` : ""}: {ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}. {c.detalhe}
-          </li>
-        ))}
-      </ul>
-      <details className="mt-2 text-xs">
-        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Trecho literal, documento e observações</summary>
-        <div className="mt-1 space-y-1.5 border-l-2 border-linha pl-3 text-carvao-muted">
-          <p>
-            <q>{a.trecho}</q>
-          </p>
-          {a.observacoes.map((o) => (
-            <p key={o}>{o}</p>
+      <div data-nivel="analisar" className="mt-3 space-y-2 border-t border-linha pt-3">
+        <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 [&_dd]:[overflow-wrap:anywhere]">
+          <dt className="text-carvao-muted">Data do ato</dt>
+          <dd className="tabular-nums text-carvao">{a.data_do_ato ? dataBR(a.data_do_ato) : "não informada"}</dd>
+          {a.dou ? (
+            <>
+              <dt className="text-carvao-muted">Diário Oficial</dt>
+              <dd className="text-carvao">{a.dou}</dd>
+            </>
+          ) : null}
+          <dt className="text-carvao-muted">Dispositivo</dt>
+          <dd className="text-carvao">{a.dispositivo}</dd>
+          <dt className="text-carvao-muted">Onde foi lido</dt>
+          <dd className="text-carvao">
+            {a.nivel_conferencia === "texto_do_ato" ? "no texto do próprio ato" : "em documento oficial do mesmo processo (o texto do ato não está acessível)"}
+            {a.documento_titulo ? `: ${a.documento_titulo}` : ""}
+            {a.pagina !== null ? `, página ${a.pagina}` : ""}
+          </dd>
+          {a.deliberacao && (
+            <>
+              <dt className="text-carvao-muted">Deliberação</dt>
+              <dd className="text-carvao">
+                reunião {textoReuniao(a.deliberacao.reuniao)} da Diretoria, em {dataBR(a.deliberacao.data)}
+                {a.deliberacao.processo ? `, processo ${a.deliberacao.processo}` : ""}
+              </dd>
+            </>
+          )}
+          {a.altera_ou_revoga && (
+            <>
+              <dt className="text-carvao-muted">Altera ou revoga</dt>
+              <dd className="text-carvao">{a.altera_ou_revoga}</dd>
+            </>
+          )}
+        </dl>
+        <ul className="space-y-0.5 text-xs text-carvao-muted" aria-label={`Conferências de ${a.ato}`}>
+          {a.conferencias.map((c, i) => (
+            <li key={`${c.conferencia}:${c.campo}:${i}`}>
+              <span className="text-carvao">{ROTULO_CONFERENCIA[c.conferencia] ?? c.conferencia}</span>
+              {c.campo && ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE] ? ` (${ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE].replace(/^o /, "")})` : ""}: {ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}. {c.detalhe}
+            </li>
           ))}
-          <p className="flex flex-wrap gap-x-4">
-            {a.url_oficial && <RegulacaoLinkExterno bloco href={a.url_oficial}>Endereço oficial (ANEEL)</RegulacaoLinkExterno>}
-            {a.copia_publica && <RegulacaoLinkExterno bloco href={a.copia_publica}>Cópia pública lida, conferida por sha256</RegulacaoLinkExterno>}
-          </p>
-          {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {a.sha256}</p>}
-        </div>
-      </details>
+        </ul>
+        <details className="text-xs">
+          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Trecho literal, documento e observações</summary>
+          <div className="mt-1 space-y-1.5 border-l-2 border-linha pl-3 text-carvao-muted">
+            <p>
+              <q>{a.trecho}</q>
+            </p>
+            {a.observacoes.map((o) => (
+              <p key={o}>{o}</p>
+            ))}
+            <p className="flex flex-wrap gap-x-4">
+              {a.url_oficial && <RegulacaoLinkExterno bloco href={a.url_oficial}>Endereço oficial (ANEEL)</RegulacaoLinkExterno>}
+              {a.copia_publica && <RegulacaoLinkExterno bloco href={a.copia_publica}>Cópia pública lida, conferida por sha256</RegulacaoLinkExterno>}
+            </p>
+            {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {a.sha256}</p>}
+          </div>
+        </details>
+      </div>
     </article>
   );
 }
@@ -170,6 +196,7 @@ export default function RegulacaoPage() {
   const vig = vigenteEm(L.vigencias, g.data_referencia);
   const anoPadrao = linhas.find((l) => l.inicio === vig?.inicio)?.id ?? linhas[linhas.length - 1]?.id ?? "";
   const respostas = Object.fromEntries(linhas.map((l) => [l.id, respostaLimites(g, l.ano)]));
+  const vereditos = Object.fromEntries(linhas.map((l) => [l.id, vereditoLimites(g, l.ano)]));
   const detalhes = Object.fromEntries(
     linhas.map((l) => [
       l.id,
@@ -190,13 +217,15 @@ export default function RegulacaoPage() {
   const ipca = paresRegraIpca(g);
   const avisoIpca = avisoToleranciaIpca(g);
   const semPublicacao = Array.from(new Set(L.atos.filter((a) => !a.data_publicacao).map((a) => a.ano)));
+  // anos em que nenhum ato foi lido no texto: o valor veio de documento oficial do mesmo processo
+  const anosSemTexto = Array.from(new Set(L.atos.filter((a) => a.nivel_conferencia !== "texto_do_ato").map((a) => a.ano))).sort((a, b) => a - b);
 
   return (
     <>
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["PRODIST", "REH", "REN", "ANEEL", "CCEE", "IBGE"]}
+        <CabecalhoModulo siglas={["PLD", "DOU", "ANEEL", "CCEE", "PRODIST", "PRORET"]}
           rotulo="Regulação"
           titulo="Que regras mudaram, quando e com qual efeito declarado?"
           referencia={
@@ -206,9 +235,9 @@ export default function RegulacaoPage() {
             </>
           }
         >
-          Quais regras valem em cada período, com o ato que as fixou, a data em que saiu no Diário Oficial e a data em que começou a valer, sempre em campos separados. Este
-          painel começa pelos <Termo slug="limites-do-pld">limites</Termo> do <Termo slug="pld">PLD</Termo>, que a página do preço usa para dizer se um valor está no piso ou no teto; a linha do tempo das
-          mudanças está no segundo painel, e as consultas abertas e a agenda da ANEEL no terceiro.
+          Esta página tem três painéis. O primeiro, aberto agora, responde quais regras de preço valem em cada período e qual ato as fixou, com a data em que o ato saiu no Diário Oficial
+          e a data em que começou a valer em campos separados. Ele parte dos <Termo slug="limites-do-pld">limites</Termo> do <Termo slug="pld">PLD</Termo>, que a página do preço usa para dizer
+          se um valor está no piso ou no teto. O segundo painel é a linha do tempo do que mudou, e o terceiro traz as consultas abertas e a agenda da ANEEL.
         </CabecalhoModulo>
         <RegulacaoNavegacao atual="p044" />
         <ModoProfundidade>
@@ -246,7 +275,9 @@ export default function RegulacaoPage() {
               ]}
             >
               <div className="space-y-6">
-                <RegulacaoResposta id="p044">{respostaP044(g)}</RegulacaoResposta>
+                <RespostaCurta id="p044" veredito={vereditoP044(g)}>
+                  {respostaP044(g)}
+                </RespostaCurta>
                 <RegulacaoRecorte
                   periodo={
                     <>
@@ -277,7 +308,7 @@ export default function RegulacaoPage() {
                   )}
                 </div>
 
-                <RegulacaoLimites linhas={linhas} anoPadrao={anoPadrao} respostas={respostas} detalhes={detalhes} fonte={FONTE_LIMITES} versao={versao} />
+                <RegulacaoLimites linhas={linhas} anoPadrao={anoPadrao} respostas={respostas} vereditos={vereditos} detalhes={detalhes} fonte={FONTE_LIMITES} versao={versao} />
 
                 <RegulacaoLeitura
                   comoLer={
@@ -301,11 +332,18 @@ export default function RegulacaoPage() {
                   }
                 />
 
-                {pendencias.length > 0 && (
+                {anosSemTexto.length > 0 && (
                   <RegulacaoAviso>
-                    Limitação declarada:{" "}
-                    {pendencias.map((p) => `${p.ano}: ${p.item} ${p.situacao}; ${p.efeito}`).join(" ")}
+                    Os valores de {anosSemTexto.join(" e ")} foram lidos em documento oficial do mesmo processo, porque o texto do ato não estava acessível. O detalhe de cada limitação está em Analisar.
                   </RegulacaoAviso>
+                )}
+                {pendencias.length > 0 && (
+                  <div data-nivel="analisar">
+                    <RegulacaoAviso>
+                      Limitação declarada:{" "}
+                      {pendencias.map((p) => `${p.ano}: ${p.item} ${p.situacao}; ${p.efeito}`).join(" ")}
+                    </RegulacaoAviso>
+                  </div>
                 )}
 
                 <RegulacaoAnalise id="regra" titulo="A regra dos limites e como os atos a aplicam">

@@ -3,6 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RegulacaoLinhaTempo } from "@/components/energia/RegulacaoLinhaTempo";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import {
   RegulacaoAnalise,
   RegulacaoAuditoria,
@@ -10,7 +11,6 @@ import {
   RegulacaoLeitura,
   RegulacaoNavegacao,
   RegulacaoRecorte,
-  RegulacaoResposta,
   RegulacaoSeguir,
 } from "@/components/energia/RegulacaoPagina";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -32,6 +32,7 @@ import {
   respostaLinhaTempo,
   rotaPainel,
   rotuloCurtoEvento,
+  vereditoLinhaTempo,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
@@ -77,7 +78,7 @@ export default function LinhaDoTempoPage() {
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["PLD", "REN", "PRODIST", "DEC", "DIC", "CDE"]}
+        <CabecalhoModulo siglas={["PLD", "REN", "REH", "DOU", "CDE", "PRODIST"]}
           rotulo="Regulação"
           titulo="Linha do tempo das regras"
           referencia={
@@ -86,8 +87,8 @@ export default function LinhaDoTempoPage() {
             </>
           }
         >
-          O que mudou nas regras que os painéis do observatório usam, desde quando vale e quem é afetado. Cada evento traz a data em que saiu no Diário Oficial e a data em
-          que passou a valer, o dispositivo que sustenta a mudança, o efeito que o próprio ato declara e os painéis em que a leitura muda.
+          O que mudou nas regras que os painéis do observatório usam, desde quando vale e quem é afetado. Cada ato traz a data em que passou a valer, o resumo do observatório e os painéis em
+          que a leitura muda; a data de publicação no Diário Oficial, o dispositivo, o efeito que o próprio ato declara e as conferências estão em Analisar.
         </CabecalhoModulo>
         <RegulacaoNavegacao atual="p045" />
         <ModoProfundidade>
@@ -95,7 +96,7 @@ export default function LinhaDoTempoPage() {
             <PainelEvidencia
               id="p045"
               pergunta={perguntaPainel("p045")}
-              subtitulo="Eventos regulatórios com publicação, vigência, dispositivo e efeito declarado · data"
+              subtitulo="Atos, leis e registros de bandeiras com data de publicação e de vigência, resumo e painéis afetados · data"
               natureza="OBSERVADO"
               porQueImporta={
                 <>
@@ -105,14 +106,14 @@ export default function LinhaDoTempoPage() {
               }
               oQueMudou={
                 <>
-                  O evento mais recente é &ldquo;{eventos[0]?.titulo}&rdquo;, com vigência a partir de {dataBR(eventos[0]?.vigencia_inicio ?? null)}. A linha do tempo é
-                  uma seleção editorial de marcos que mudam a leitura dos painéis, não um repositório de todos os atos.
+                  O evento mais recente é &ldquo;{eventos[0]?.titulo}&rdquo;, com vigência a partir de {dataBR(eventos[0]?.vigencia_inicio ?? null)}. A lista foi conferida em {dataBR(T.conferido_em)} e
+                  não inclui o que foi publicado depois disso. É uma seleção editorial de marcos que mudam a leitura dos painéis, não um repositório de todos os atos.
                 </>
               }
               comoInterpretar={
                 <>
-                  O círculo vazado é a publicação no Diário Oficial; o cheio, o início de vigência; o traço entre eles é a espera até a regra valer. O resumo é texto do
-                  observatório, conferido no documento; o efeito declarado é o que o ato diz de si mesmo, citado literalmente; o impacto estimado fica vazio.
+                  O círculo vazado é a publicação no Diário Oficial; o cheio, o início de vigência; o traço entre eles é a espera até a regra valer. O resumo é texto do observatório, conferido no documento; o efeito declarado, que está em Analisar, é o que o ato diz de si mesmo, citado literalmente; o
+                  impacto estimado fica vazio.
                 </>
               }
               naoConcluir={
@@ -125,7 +126,9 @@ export default function LinhaDoTempoPage() {
               complementares={[{ rotulo: "Adicionais das bandeiras tarifárias", p: g.proveniencia.bandeiras }]}
             >
               <div className="space-y-6">
-                <RegulacaoResposta id="p045">{respostaLinhaTempo(eventos, eventos.length)}</RegulacaoResposta>
+                <RespostaCurta id="p045" veredito={vereditoLinhaTempo(eventos, eventos.length, "vigencia", T.conferido_em)}>
+                  {respostaLinhaTempo(eventos, eventos.length)}
+                </RespostaCurta>
                 <RegulacaoRecorte
                   periodo={vigencias.length ? `vigências de ${dataBR(vigencias[0])} a ${dataBR(vigencias[vigencias.length - 1])}` : "sem eventos"}
                   universo={`${eventos.length} eventos: ${atos} atos e leis lidos no texto e ${eventos.length - atos} registros do conjunto de dados de bandeiras`}
@@ -137,7 +140,7 @@ export default function LinhaDoTempoPage() {
                 <RegulacaoLeitura
                   comoLer={
                     <>
-                      Filtre por painel afetado para ver só o que muda a leitura daquele painel, ou por origem para separar atos lidos de registros do conjunto de dados. O
+                      Filtre por painel afetado para ver só o que muda a leitura daquele painel, ou por origem para separar atos lidos de registros do conjunto de dados. Em Analisar, o
                       período vale para a data que você escolher (publicação ou vigência); eventos sem essa data ficam fora do recorte e a contagem diz quantos.
                     </>
                   }

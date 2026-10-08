@@ -164,6 +164,15 @@ export function nomeProprio(nome: string | null | undefined): string {
     .join("");
 }
 
+/**
+ * Entidade de uma ficha de prova ("reservatório SERRA DA MESA (TOSMES)") como o leitor a lê: sem o código da usina no fim
+ * e com o nome em maiúsculas e minúsculas. O código fica na tabela e no arquivo.
+ */
+export function entidadeLegivel(entidade: string): string {
+  const semCodigo = entidade.replace(/\s*\([A-Z0-9]{3,8}\)\s*$/, "");
+  return semCodigo.replace(/^(reservat[óo]rio|bacia|REE)\s+(.+)$/i, (_, tipo: string, nome: string) => `${tipo.toLowerCase() === "ree" ? "REE" : tipo.toLowerCase()} ${nomeProprio(nome)}`);
+}
+
 /* ---------- recortes (subsistema, REE, bacia) ---------- */
 
 export type TipoRecorte = "subsistema" | "ree" | "bacia";
@@ -191,6 +200,12 @@ export function rotuloRecorte(tipo: TipoRecorte, nome: string): string {
 export function artigoRecorte(tipo: TipoRecorte, nome: string): string {
   if (tipo === "bacia") return `a bacia do ${nomeProprio(nome)}`;
   return `o ${tipo === "ree" ? `REE ${nomeProprio(nome)}` : rotuloRecorte(tipo, nome)}`;
+}
+
+/** Contração com "a": "ao SIN", "ao REE Paraná", "à bacia do Grande". */
+export function aoRecorte(tipo: TipoRecorte, nome: string): string {
+  if (tipo === "bacia") return `à bacia do ${nomeProprio(nome)}`;
+  return `ao ${tipo === "ree" ? `REE ${nomeProprio(nome)}` : rotuloRecorte(tipo, nome)}`;
 }
 
 /** Contração: "do SIN", "do REE Paraná", "da bacia do Grande". */
@@ -391,6 +406,28 @@ export function respostaArmazenamento(e: EntidadeEar): string {
   }
   if (e.perimetro_mudou_em) partes.push(`O perímetro deste REE mudou em ${dataBR(e.perimetro_mudou_em)}: a base começa em ${e.base_desde}.`);
   return partes.join(" ");
+}
+
+/**
+ * Veredito do P017 em palavras simples: quanto da energia que os reservatórios comportam estava guardada no dia, a posição
+ * diante da faixa usual da data e a variação em 30 dias. Os percentis, a EAR em MWmês, a EAR máxima e a mudança de perímetro
+ * ficam em respostaArmazenamento.
+ */
+export function vereditoArmazenamento(e: EntidadeEar): string {
+  const quem = artigoRecorte(e.tipo, e.nome);
+  if (e.dia === null || e.ear_mwmes === null) return `${cap(quem)} não tem EAR publicada no dia de referência: o valor fica ausente, nunca zero.`;
+  if (e.sem_armazenamento) return `${cap(quem)} não tem armazenamento, só usinas a fio d'água: percentual, faixa usual e percentil não se aplicam.`;
+  let t = `Em ${dataBR(e.dia)}, ${quem} guardava ${pct(e.ear_pct, 1)} da energia que os reservatórios comportam`;
+  if (e.faixa && e.p10 !== null && e.p90 !== null) t += `, ${ROTULO_FAIXA[e.faixa]} da data`;
+  else t += `; com ${plural(e.anos_na_base, "ano", "anos")} na base, não há faixa usual`;
+  if (e.variacao_30d_mwmes !== null) {
+    t += `; em 30 dias, a energia armazenada ${e.variacao_30d_mwmes < 0 ? "caiu" : e.variacao_30d_mwmes > 0 ? "subiu" : "ficou igual"}${e.variacao_30d_mwmes === 0 ? "" : ` ${mwmes(Math.abs(e.variacao_30d_mwmes))} MWmês`}`;
+  } else if (e.variacao_30d_pp !== null) {
+    t += `; em 30 dias, a EAR ${e.variacao_30d_pp < 0 ? "caiu" : e.variacao_30d_pp > 0 ? "subiu" : "ficou igual"}${e.variacao_30d_pp === 0 ? "" : ` ${num(Math.abs(e.variacao_30d_pp), 1)} p.p.`}`;
+  }
+  t += ".";
+  if (e.capacidade_mudou_na_base) t += " A faixa compara capacidades que mudaram ao longo dos anos.";
+  return t;
 }
 
 export const COLUNAS_ARMAZENAMENTO: ColunaTabela[] = [
@@ -727,6 +764,17 @@ export function respostaAfluencia(e: EntidadeEna): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P018 em palavras simples: a água que chegou em 30 dias contra a média de longo prazo e contra a faixa usual da
+ * janela. As somas em MWmed·dia, o percentil e a ENA armazenável ficam em respostaAfluencia.
+ */
+export function vereditoAfluencia(e: EntidadeEna): string {
+  if (e.pct_mlt_30d === null) return `Sem ENA de 30 dias ${doRecorte(e.tipo, e.nome)} até ${dataBR(e.dia)}: falta dia na janela ou não há MLT publicada, e a razão nunca é calculada com dia faltando.`;
+  const base = `Nos 30 dias até ${dataBR(e.dia)}, a água que chegou ${aoRecorte(e.tipo, e.nome)} (ENA) foi ${pct(e.pct_mlt_30d, 1)} da média de longo prazo (MLT) do período`;
+  if (e.faixa_30d && e.p10_30d !== null && e.p90_30d !== null) return `${base}, ${ROTULO_FAIXA[e.faixa_30d]} da mesma janela.`;
+  return `${base}; com ${plural(e.anos_na_base_30d, "ano", "anos")} na base da janela, não há faixa usual.`;
+}
+
 export const COLUNAS_AFLUENCIA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
   { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
@@ -961,6 +1009,35 @@ export function respostaTemperatura(t: AguaTemperatura, base: string): string {
   ];
   if (t.preliminar_30d) partes.push("Os dias mais recentes vêm do GEOS-IT e ainda serão trocados pelo MERRA-2 (preliminar).");
   return partes.join(" ");
+}
+
+/**
+ * Veredito da chuva do P019 em palavras simples: os milímetros dos 30 dias ao lado da média dos mesmos dias (a anomalia em %
+ * sozinha engana quando a média é pequena). Percentis, janela preliminar e a correlação ficam em respostaChuva e textoAssociacao.
+ */
+export function vereditoChuva(b: AguaPrecipitacaoBacia): string {
+  const onde = `a bacia do ${nomeProprio(b.bacia)}`;
+  if (b.mm_30d === null) return `Sem estimativa de chuva de 30 dias para ${onde} até ${dataBR(b.dia)}: algum dia da janela ficou abaixo de 80% de cobertura, e a soma nunca é feita com dia faltando.`;
+  const an = textoAnomaliaPct(b.anomalia_30d_pct);
+  const comparacao = an ? `, ${an} média dos mesmos dias (${num(b.media_30d_base, 1)} mm)` : "";
+  const prelim = b.preliminar_30d ? " A janela tem dias preliminares." : "";
+  return `Nos 30 dias até ${dataBR(b.dia)}, ${onde} recebeu ${num(b.mm_30d, 1)} mm de chuva (estimativa por satélite)${comparacao}.${prelim}`;
+}
+
+/** Veredito da temperatura do P019: a média dos 30 dias ao lado da média dos mesmos dias. Percentil e produto da reanálise ficam em respostaTemperatura. */
+export function vereditoTemperatura(t: AguaTemperatura): string {
+  const de = DO_REGIAO[t.recorte];
+  if (t.media_30d_c === null) return `Sem temperatura de 30 dias ${de} até ${dataBR(t.dia)}: falta dia com cobertura suficiente na janela.`;
+  const an = textoAnomaliaGraus(t.anomalia_30d_c);
+  const comparacao = an ? `, ${an} média dos mesmos dias (${num(t.media_30d_base_c, 2)} °C)` : "";
+  return `Nos 30 dias até ${dataBR(t.dia)}, a temperatura média ${de} foi de ${num(t.media_30d_c, 2)} °C${comparacao}. É estimativa de reanálise, não medida de estação.`;
+}
+
+/** Veredito da associação entre a chuva e a afluência da bacia: a correlação do mesmo mês, dita como associação e nunca como causa. */
+export function vereditoAssociacao(b: AguaPrecipitacaoBacia): string | null {
+  const a = b.associacao_ena;
+  if (!a || a.r_mesmo_mes === null) return null;
+  return `Na bacia do ${nomeProprio(b.bacia)}, de ${periodoBase(a.periodo)}, a correlação entre a chuva do mês e a afluência do mesmo mês é de ${num(a.r_mesmo_mes, 2)}, numa escala de −1 a 1. É associação, não causa.`;
 }
 
 export function textoAssociacao(b: AguaPrecipitacaoBacia): string | null {
@@ -1251,6 +1328,22 @@ export function respostaDecomposicao(d: AguaDecomposicaoEar): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P020, decomposição: quanto a energia armazenada do subsistema variou na janela de 30 dias e qual reservatório
+ * pesou mais nessa variação. A soma dos reservatórios, o resíduo, os três maiores de cada sentido e o contexto (ENA e geração)
+ * ficam em respostaDecomposicao.
+ */
+export function vereditoDecomposicao(d: AguaDecomposicaoEar): string {
+  const de = DO_REGIAO[d.sm];
+  if (d.delta_ear_mwmes === null) return `Sem variação da energia armazenada ${de} de ${dataBR(d.inicio)} a ${dataBR(d.fim)} nesta publicação: o valor fica ausente, nunca zero.`;
+  const queda = d.delta_ear_mwmes < 0;
+  const lista = queda ? d.maiores_quedas : d.maiores_altas;
+  const maior = lista.find((x) => (queda ? (x.delta_mwmes ?? 0) < 0 : (x.delta_mwmes ?? 0) > 0));
+  const mudou = d.delta_ear_mwmes === 0 ? "ficou igual" : `${queda ? "caiu" : "subiu"} ${num(Math.abs(d.delta_ear_mwmes), 1)} MWmês`;
+  const principal = maior ? `; ${queda ? "a maior queda" : "a maior alta"} foi a de ${nomeProprio(maior.nome ?? maior.cod)} (${num(Math.abs(maior.delta_mwmes ?? 0), 1)} MWmês)` : "";
+  return `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, a energia armazenada ${de} ${mudou}${principal}.`;
+}
+
 export type BarraParcela = { id: string; rotulo: string; delta: number | null; cod: string; parte: string };
 
 /** Barras da decomposição: as maiores quedas e altas publicadas, da maior queda à maior alta. */
@@ -1359,6 +1452,32 @@ export function respostaBalanco(r: AguaReservatorio, res: Pick<AguaReservatorios
     );
   }
   return partes.join(" ");
+}
+
+/**
+ * A variação de 30 dias do mesmo subsistema na página de armazenamento (janela que termina no último dia da EAR do subsistema)
+ * ao lado da decomposição por reservatório (janela que termina no último dia da EAR por reservatório): janelas diferentes, não
+ * divergência. Vazia quando as duas terminam no mesmo dia ou quando falta a variação de 30 dias do subsistema.
+ */
+export function textoOutraJanelaDaEar(d: AguaDecomposicaoEar | null, lista: readonly Pick<EntidadeEar, "id" | "tipo" | "dia" | "variacao_30d_mwmes">[]): string {
+  if (!d || d.delta_ear_mwmes === null) return "";
+  const e = lista.find((x) => x.tipo === "subsistema" && x.id === d.sm);
+  if (!e || e.variacao_30d_mwmes === null || !e.dia || e.dia === d.fim) return "";
+  return `A página de armazenamento mostra ${sinal(e.variacao_30d_mwmes, 1)} MWmês ${DO_REGIAO[d.sm]} em 30 dias até ${dataBR(e.dia)}. Aqui a janela vai de ${dataBR(d.inicio)} a ${dataBR(d.fim)}, o último dia com EAR por reservatório, e a variação é ${sinal(d.delta_ear_mwmes, 1)} MWmês.`;
+}
+
+/**
+ * Veredito do P020, balanço do reservatório: se saiu mais água do que entrou no reservatório escolhido nos 30 dias, quanto o
+ * volume variou e o resíduo da conta. As saídas por estrutura, a transferência e a série de dias ficam em respostaBalanco.
+ */
+export function vereditoBalancoReservatorio(r: AguaReservatorio, res: Pick<AguaReservatorios, "inicio" | "fim">): string {
+  const nome = nomeProprio(r.nome);
+  if (!r.balanco_calculado || r.dv_obs_hm3 === null || r.residuo_hm3 === null) {
+    return `${nome}: sem balanço de 30 dias de ${dataBR(res.inicio)} a ${dataBR(res.fim)}, porque falta volume ou vazão na janela, ou volume útil no cadastro. Nada é preenchido.`;
+  }
+  const dv = Number(r.dv_obs_hm3.toFixed(1));
+  const quanto = dv === 0 ? "o volume ficou estável" : `${dv < 0 ? "saiu mais água do que entrou" : "entrou mais água do que saiu"} e o volume ${dv < 0 ? "caiu" : "subiu"} ${num(Math.abs(r.dv_obs_hm3), 1)} hm³`;
+  return `Em ${nome}, nos 30 dias até ${dataBR(res.fim)}, ${quanto}. O resíduo da conta da água, a diferença que sobra quando ela não fecha, é de ${sinal(r.residuo_hm3, 2)} hm³.`;
 }
 
 export type BarraBalanco = { id: string; rotulo: string; v: number | null };

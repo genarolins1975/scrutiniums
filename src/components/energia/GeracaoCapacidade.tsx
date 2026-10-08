@@ -65,7 +65,7 @@ export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao }: { u
           periodo={periodo}
           valorAtual={{ valor: u.fator_capacidade_pct, rotulo: "Agregado da categoria" }}
           cor="var(--cor-energia-soft)"
-          nota="Cada observação é um grupo de pareamento (usina com o mesmo CEG ou conjunto com relacionamento vigente). Classes de 10 pontos publicadas pelo observatório."
+          nota="Cada observação é uma usina (mesmo CEG) ou um conjunto com relacionamento vigente, pareados com a Capacidade Instalada do ONS. Classes de 10 pontos publicadas pelo observatório."
         />
       ) : (
         <GeracaoAviso>A distribuição desta categoria não foi publicada em classes.</GeracaoAviso>

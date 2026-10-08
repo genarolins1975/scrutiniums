@@ -358,7 +358,8 @@ export function dadosBarrasUf(linhas: readonly LinhaUf[], med: MedidaUf): { id: 
  * (W/hab do Brasil). As demais ficam sem linha de referência, e a nota diz por quê.
  */
 export function referenciaUf(wPorHabitanteBrasil: number | null, med: MedidaUf): { valor: number; rotulo: string }[] {
-  return med === "whab" && temValor(wPorHabitanteBrasil) ? [{ valor: wPorHabitanteBrasil, rotulo: `Brasil: ${num(wPorHabitanteBrasil, 1)} W/hab` }] : [];
+  // o gráfico já escreve "rótulo: valor unidade" na linha e na legenda: o rótulo é só o recorte, sem repetir o valor
+  return med === "whab" && temValor(wPorHabitanteBrasil) ? [{ valor: wPorHabitanteBrasil, rotulo: "Brasil" }] : [];
 }
 
 /* ---------- histórico anual ---------- */
@@ -1216,7 +1217,8 @@ export function dadosFatorAnual(e: Pick<BlocoEmissoes, "medio_anual">): { id: st
 /** Referência das barras anuais: o último ano completo publicado, para comparar cada ano com ele. */
 export function referenciaAnual(e: Pick<BlocoEmissoes, "ultimo_ano">): { valor: number; rotulo: string }[] {
   const u = e.ultimo_ano;
-  return u ? [{ valor: u.valor, rotulo: `${u.ano}: ${fator(u.valor)} tCO2/MWh` }] : [];
+  // o gráfico já escreve "rótulo: valor unidade" na linha e na legenda: o rótulo é só o ano, sem repetir o valor
+  return u ? [{ valor: u.valor, rotulo: String(u.ano) }] : [];
 }
 
 /** Anos com pelo menos um mês do fator médio publicado; no ano corrente, os meses ainda não publicados ficam em branco na comparação. */
@@ -1301,15 +1303,18 @@ export function mudancaEmissoes(e: Pick<BlocoEmissoes, "medio_mensal" | "ultimo_
  * aviso de fonte defasada (vale a última captura válida); acesso normal vira só a
  * data. Nunca "em breve": o texto diz o que aconteceu e quando.
  */
-export function estadoAcessoMcti(a: BlocoEmissoes["acesso"]): { defasada: boolean; texto: string } {
+export function estadoAcessoMcti(a: BlocoEmissoes["acesso"]): { defasada: boolean; texto: string; detalhe: string | null } {
   if (a.situacao === "bloqueada") {
     return {
       defasada: true,
       texto: `Na última tentativa (${carimbo(a.tentado_em)}), a página do MCTI respondeu com um desafio de verificação humana, que não é contornado. Os valores são da última captura válida (${carimbo(a.ultimo_acesso_ok)}); um mês publicado depois dela ainda não aparece aqui.`,
+      detalhe: null,
     };
   }
-  if (a.situacao === null) return { defasada: true, texto: "Não há registro de acesso à página do MCTI nesta publicação; os valores vêm das planilhas já capturadas." };
-  return { defasada: false, texto: `Página do MCTI acessada em ${carimbo(a.ultimo_acesso_ok)}: ${a.detalhe ?? "listagem lida"}.` };
+  if (a.situacao === null) return { defasada: true, texto: "Não há registro de acesso à página do MCTI nesta publicação; os valores vêm das planilhas já capturadas.", detalhe: null };
+  // a contagem de planilhas, âncoras e notas da listagem é detalhe de coleta: vai separada, para o modo Auditar
+  const detalhe = a.detalhe ? a.detalhe.replace(/\b1 notas técnicas\b/, "1 nota técnica") : null;
+  return { defasada: false, texto: `Página do MCTI acessada em ${carimbo(a.ultimo_acesso_ok)}.`, detalhe };
 }
 
 /* ================================================================ síntese */
@@ -1332,3 +1337,79 @@ export const GRANDEZAS = [
     texto: "Toneladas de CO2 por MWh gerado no SIN, calculadas e publicadas pelo MCTI. Só CO2, emissões da operação das usinas.",
   },
 ] as const;
+
+/* ================================================================ vereditos (r8): resposta curta em duas camadas */
+
+/**
+ * Cada veredito responde, em palavras simples e com no máximo dois números, à pergunta do título do painel e diz o limite
+ * de leitura. Os números saem dos mesmos campos da resposta completa (respostaMmgd, respostaOns e respostaEmissoes), que
+ * continua inteira como segunda camada em Analisar e Auditar. Dado ausente: veredito vazio.
+ */
+
+/** P063: a UF que mais acrescentou potência no último ano completo, o total cadastrado e o limite (capacidade, não energia). */
+export function vereditoMmgd(m: Pick<BlocoMmgd, "data_cadastro" | "ano_referencia" | "resumo" | "ufs">): string {
+  const r = m.resumo;
+  if (!temValor(r.potencia_mw)) return "";
+  const mais = extremo(m.ufs, (u) => u.potencia_mw_ano_referencia, "max");
+  const onde = mais ? `Em ${m.ano_referencia}, último ano completo, ${mais.nome} foi a UF que mais acrescentou potência (${numTexto(mais.potencia_mw_ano_referencia, 1)} MW). ` : "";
+  return `${onde}O cadastro da ANEEL somava ${numTexto(r.potencia_mw, 1)} MW em ${data(m.data_cadastro)}; é capacidade, não energia gerada.`;
+}
+
+/** O que mudou na MMGD, em palavras: as conexões do último ano completo contra o anterior; o resto é o aviso dos meses provisórios. */
+export function mudancaMmgdAno(m: Pick<BlocoMmgd, "ano_referencia" | "anual" | "corte_provisorio">): string {
+  const atual = m.anual.find((a) => a.ano === m.ano_referencia);
+  const ant = m.anual.find((a) => a.ano === m.ano_referencia - 1);
+  const provisorio = `Os meses depois de ${mes(m.corte_provisorio)} são provisórios: a ANEEL ainda pode receber registros deles.`;
+  if (!atual) return provisorio;
+  const dir = comparaArredondado(atual.potencia_mw, ant?.potencia_mw, 1);
+  const comp = dir === null || !ant ? "" : dir === "igual" ? `, igual aos ${numTexto(ant.potencia_mw, 1)} MW de ${ant.ano}` : `, ${dir === "maior" ? "mais" : "menos"} que os ${numTexto(ant.potencia_mw, 1)} MW de ${ant.ano}`;
+  return `Em ${m.ano_referencia}, último ano completo, foram conectados ${numTexto(atual.potencia_mw, 1)} MW${comp}. ${provisorio}`;
+}
+
+/** Energia estimada (ONS): o último mês completo, com "carga global" dita como a carga que o ONS verifica (nome do verbete), e o limite. */
+export function vereditoOns(o: Pick<BlocoOnsMmgd, "ultimo_mes_completo">): string {
+  const u = o.ultimo_mes_completo;
+  if (!u || !temValor(u.SIN)) return "";
+  return `Em ${mes(u.m)}, o ONS estimou que a MMGD entregou ${numTexto(u.SIN, 1)} MWmed ao SIN, ${pctTexto(u.participacao_carga_global_sin_pct, 2)} da carga global (a carga que o ONS verifica). É estimativa, não medição, e não se soma à capacidade cadastrada.`;
+}
+
+/**
+ * O que mudou na energia estimada: o último mês completo contra o mesmo mês do ano anterior (a sazonalidade da solar não
+ * entra na comparação). Sem o mês de um ano antes, só o valor.
+ */
+export function mudancaOnsMes(o: Pick<BlocoOnsMmgd, "ultimo_mes_completo" | "mensal">): string {
+  const u = o.ultimo_mes_completo;
+  if (!u || !temValor(u.SIN)) return "";
+  const antes = `${Number(u.m.slice(0, 4)) - 1}${u.m.slice(4)}`;
+  const a = o.mensal.find((x) => x.m === antes && x.completo);
+  const dir = comparaArredondado(u.SIN, a?.SIN, 1);
+  if (dir === null || !a) return `Em ${mes(u.m)}, a MMGD estimada foi de ${numTexto(u.SIN, 1)} MWmed no SIN; o mesmo mês do ano anterior não tem valor completo.`;
+  const verbo = dir === "igual" ? "igual ao" : dir === "maior" ? "acima do" : "abaixo do";
+  return `Em ${mes(u.m)}, a MMGD estimada foi de ${numTexto(u.SIN, 1)} MWmed no SIN, ${verbo} mesmo mês do ano anterior (${numTexto(a.SIN, 1)} MWmed em ${mes(a.m)}).`;
+}
+
+/** Como ler a participação na carga global: o exemplo com o último mês, antes de qualquer fórmula. */
+export function comoLerOns(o: Pick<BlocoOnsMmgd, "ultimo_mes_completo">): string {
+  const u = o.ultimo_mes_completo;
+  if (!u || !temValor(u.participacao_carga_global_sin_pct)) return "";
+  return `Leia como a parcela da carga do SIN que o ONS atribui à MMGD: ${pctTexto(u.participacao_carga_global_sin_pct, 2)} em ${mes(u.m)} quer dizer que, de cada 100 MWh da carga global, cerca de ${numTexto(u.participacao_carga_global_sin_pct, 1)} MWh vieram da MMGD, segundo a estimativa do ONS.`;
+}
+
+/** "46,1 kg de CO2 por MWh": o fator em tCO2/MWh na unidade de menor tamanho (conversão de unidade, sem outra conta). */
+export function kgPorMwh(v: number | null | undefined): string {
+  return temValor(v) ? `${num(v * 1000, 1)} kg de CO2 por MWh` : SEM_DADO;
+}
+
+/** P064: o fator médio do último ano completo contra o anterior, na linguagem de toneladas por MWh, e o limite da comparação. */
+export function vereditoEmissoes(e: Pick<BlocoEmissoes, "medio_anual" | "ultimo_ano" | "quebras">): string {
+  const ua = e.ultimo_ano;
+  if (!ua) return "";
+  const ant = e.medio_anual.find((x) => x.ano === ua.ano - 1);
+  const dir = comparaArredondado(ua.valor, ant?.valor, 4);
+  const q = e.quebras[0];
+  const anoQuebra = q ? Number(q.data.slice(0, 4)) : null;
+  const atravessa = !!ant && anoQuebra !== null && anoQuebra > ant.ano && anoQuebra <= ua.ano;
+  const comp = dir === null || !ant ? "" : dir === "igual" ? `, igual ao de ${ant.ano}` : `, ${dir === "maior" ? "acima" : "abaixo"} dos ${fator(ant.valor)} de ${ant.ano}`;
+  const limite = atravessa ? ` A base de usinas do MCTI mudou em ${mes(q!.data)}, e a comparação mistura bases.` : " O fator médio não é o efeito de consumir um MWh a mais.";
+  return `Em ${ua.ano}, cada MWh gerado no SIN emitiu em média ${fator(ua.valor)} tonelada de CO2 (fator do MCTI)${comp}.${limite}`;
+}

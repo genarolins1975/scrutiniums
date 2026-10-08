@@ -153,7 +153,7 @@ export function MetodologiaRegras({ linhas, versao }: { linhas: LinhaTabela[]; v
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="titulo"
-        fonte="Scrutiniums, metricas.json (catálogo de métricas dos módulos; o mesmo que o pipeline usa para calcular)"
+        fonte="Scrutiniums, catálogo de indicadores dos módulos (o mesmo que o observatório usa para calcular)"
         versao={versao}
         nomeArquivo="metodologia-regras-por-indicador"
         chaveUrl="reg"

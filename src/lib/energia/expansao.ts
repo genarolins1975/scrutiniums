@@ -94,6 +94,11 @@ export function mesTexto(m: string | null | undefined): string {
   return m && /^\d{4}-\d{2}/.test(m) ? mesAno(m.slice(0, 7)) : SEM_DADO;
 }
 
+/** Primeira letra maiúscula (início de frase). */
+export function inicial(t: string): string {
+  return t ? t.charAt(0).toLocaleUpperCase("pt-BR") + t.slice(1) : t;
+}
+
 /** Lista legível: "a", "a e b", "a, b e c". */
 export function listaTexto(itens: readonly string[]): string {
   if (itens.length <= 1) return itens[0] ?? "";
@@ -762,7 +767,7 @@ export function mudancaCronograma(g: Pick<ExpansaoGold, "cronograma">): string {
   const d = ultimoDeslizamento(g);
   if (!d) return "Sem pares de fotografias com 12 meses de distância nesta publicação (sem dado).";
   const s = d.sem_datas_em_bloco;
-  return `Entre as fotografias de ${dataTexto(d.ralie)} e ${dataTexto(d.ralie_seguinte)}, ${pctTexto(d.pct_adiada)} da potência que seguia em implantação teve a previsão adiada, ${pctTexto(d.pct_mantida)} manteve e ${pctTexto(d.pct_antecipada)} antecipou (mediana ponderada de ${diasTexto(d.mediana_dias_ponderada)}). Sem as unidades em data em bloco, que andam com a fotografia, as parcelas são ${pctTexto(s.pct_adiada)}, ${pctTexto(s.pct_mantida)} e ${pctTexto(s.pct_antecipada)} (mediana de ${diasTexto(s.mediana_dias_ponderada)}).`;
+  return `Entre as fotografias de ${dataTexto(d.ralie)} e ${dataTexto(d.ralie_seguinte)}, ${pctTexto(d.pct_adiada)} da potência que seguia em implantação teve a previsão adiada, ${pctTexto(d.pct_mantida)} manteve e ${pctTexto(d.pct_antecipada)} antecipou (adiamento mediano, ponderado pela potência: ${diasTexto(d.mediana_dias_ponderada)}). Sem as unidades em data em bloco, que andam com a fotografia, as parcelas são ${pctTexto(s.pct_adiada)}, ${pctTexto(s.pct_mantida)} e ${pctTexto(s.pct_antecipada)} (adiamento mediano de ${diasTexto(s.mediana_dias_ponderada)}).`;
 }
 
 /** Viabilidade na URL sem acento; o rótulo é o da fonte. */
@@ -1278,8 +1283,13 @@ export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias"
   const diretas = c.camadas.filter((x) => x.correspondencia === "direta" && temValor(x.pde_dez2035_gw));
   const maior = [...diretas].sort((a, b) => (b.pde_dez2035_gw ?? 0) - (a.pde_dez2035_gw ?? 0))[0];
   if (maior) {
+    // categoria maior que a escolhida, mas só em parte comparável com o cadastro (a hidrelétrica, que soma Itaipu 50 Hz): dita, para a frase não contradizer o gráfico
+    const acima = c.camadas.filter((x) => x.correspondencia === "parcial" && temValor(x.pde_dez2035_gw) && x.pde_dez2035_gw > (maior.pde_dez2035_gw ?? 0));
+    const ressalva = acima.length
+      ? ` ${inicial(listaTexto(acima.map((x) => `${x.rotulo.charAt(0).toLocaleLowerCase("pt-BR")}${x.rotulo.slice(1)}, com ${gwTexto(x.pde_dez2035_gw)} no cenário,`)))} ficam fora desta comparação porque a correspondência com o cadastro é parcial.`
+      : "";
     partes.push(
-      `Entre as categorias com correspondência direta no cadastro da ANEEL, a maior em ${mesTexto(fim)} é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA de ${dataBR(g.referencias.siga)} e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE de ${dataBR(g.referencias.ralie)}.`,
+      `Entre as categorias com correspondência direta no cadastro da ANEEL, a de maior capacidade em ${mesTexto(fim)} é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA de ${dataBR(g.referencias.siga)} e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE de ${dataBR(g.referencias.ralie)}.${ressalva}`,
     );
   }
   return partes.join(" ");
@@ -1288,8 +1298,9 @@ export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias"
 /** "O que mudou" do P043: o que o próprio relatório diz ter mudado depois da data-base (ressalvas publicadas com a página). */
 export function mudancaCenarios(g: Pick<ExpansaoGold, "cenarios">): string {
   const r = g.cenarios.hipoteses.filter((h) => h.ressalva);
-  if (!r.length) return `O relatório não registra mudança posterior à data-base (${g.cenarios.data_base_premissas}) nas hipóteses publicadas.`;
-  return r.map((h) => `${h.ressalva}${h.pagina_ressalva ? ` (relatório, p. ${h.pagina_ressalva})` : ""}`).join(" ");
+  const unica = `Esta publicação traz uma única edição do plano (${g.cenarios.edicao}), sem comparação de números com outra edição.`;
+  if (!r.length) return `${unica} O relatório não registra mudança posterior à data-base (${g.cenarios.data_base_premissas}) nas hipóteses publicadas.`;
+  return `${unica} Mudança que o próprio relatório registra depois da data-base: ${r.map((h) => h.ressalva).join(" ")}`;
 }
 
 export const FIGURAS_PDE = ["fig_3_25", "fig_3_6", "fig_3_23", "fig_4_19", "fig_4_24", "fig_4_27", "fig_12_4"] as const;
@@ -1382,4 +1393,118 @@ export const COLUNAS_CAMADAS: ColunaTabela[] = [
 /** Só as categorias com valor comparável no Anexo I-3 entram no gráfico de camadas; as demais ficam na tabela, com o motivo. */
 export function linhasCamadasComparaveis(linhas: readonly LinhaCamada[]) {
   return linhas.filter((l) => temValor(l.anexo_dez2035) || temValor(l.realizado));
+}
+
+/* ================================================================ vereditos (r8): resposta curta em duas camadas */
+
+/**
+ * Cada veredito responde, em palavras simples e com no máximo dois números, à pergunta do título do painel e diz o limite
+ * de leitura. Os números saem dos mesmos campos da resposta completa (respostaSintese, respostaCarteira,
+ * respostaCronograma, respostaTransmissao e respostaCenarios), que continua inteira como segunda camada em Analisar e
+ * Auditar. Dado ausente: veredito vazio e a página mostra a resposta completa.
+ */
+
+/** Síntese: o total em implantação, o tipo com mais potência e o lembrete de que carteira não é entrada certa. */
+export function vereditoSintese(g: Pick<ExpansaoGold, "estagios">): string {
+  const r = g.estagios.ralie;
+  if (!temValor(r.mw_ugs_em_implantacao)) return "";
+  const top = linhasRalieTipo(g)[0];
+  const maior = top ? `, ${mwTexto(top.mw)} deles em ${TIPO_EM_FRASE[top.id] ?? top.id}` : "";
+  const enc = coorteInicial(g)?.desfechos.outorga_encerrada.pct_mw;
+  const limite = temValor(enc) && enc > 0 ? " Carteira não é entrada certa: parte das outorgas já foi revogada ou extinta." : " Carteira não é entrada certa.";
+  return `O RALIE acompanha ${mwTexto(r.mw_ugs_em_implantacao)} de geração em implantação (fotografia de ${dataTexto(r.data_ralie)})${maior}.${limite}`;
+}
+
+/** P040: o que está em construção e o que está só outorgado, e que outorga não é entrada garantida. */
+export function vereditoCarteira(g: Pick<ExpansaoGold, "estagios">): string {
+  const con = estagio(g, "construcao");
+  const nao = estagio(g, "construcao_nao_iniciada");
+  if (!con && !nao) return "";
+  const partes = [con ? `${mwTexto(con.mw_outorgado)} outorgados em usinas em construção` : "", nao ? `${mwTexto(nao.mw_outorgado)} outorgados com a construção não iniciada` : ""].filter(Boolean);
+  const c0 = coorteInicial(g);
+  const d = c0?.desfechos;
+  const perda = !!d && ((temValor(d.outorga_encerrada.pct_mw) && d.outorga_encerrada.pct_mw > 0) || (temValor(d.sem_desfecho.pct_mw) && d.sem_desfecho.pct_mw > 0));
+  return `Em ${dataTexto(g.estagios.data_referencia)}, o SIGA registra ${listaTexto(partes)}. ${perda ? "Outorga não é entrada garantida: parte já foi revogada ou extinta." : "Outorga não é entrada garantida."}`;
+}
+
+/** P041: o que a fiscalização prevê para o ano da fotografia, quanto da previsão passada foi cumprido no prazo, e que data em bloco não é cronograma. */
+export function vereditoCronograma(g: Pick<ExpansaoGold, "cronograma">): string {
+  const pa = g.cronograma.previsoes_atuais;
+  const anoFoto = pa.data_ralie.slice(0, 4);
+  const primeiro = [...pa.por_ano].sort((a, b) => a.ano.localeCompare(b.ano))[0];
+  const c = ultimaConfiabilidade(g);
+  if (!primeiro && !c) return "";
+  const frases: string[] = [];
+  if (c && temValor(c.pct_no_prazo)) frases.push(`Das previsões de ${dataTexto(c.ralie)} para os 12 meses seguintes, ${pctTexto(c.pct_no_prazo)} da potência foi liberada no prazo.`);
+  if (primeiro) frases.push(`A fiscalização prevê ${mwTexto(primeiro.mw)} ${primeiro.ano === anoFoto ? `no restante de ${primeiro.ano}` : `em ${primeiro.ano}`}.`);
+  if (pa.datas_em_bloco && pa.datas_em_bloco.datas.length) frases.push("Boa parte da carteira tem só uma data convencional, não cronograma de obra.");
+  return frases.join(" ");
+}
+
+/** P042: obras de transmissão e geração em implantação lado a lado, e que os totais não dizem se a rede escoa a geração. */
+export function vereditoTransmissao(g: Pick<ExpansaoGold, "transmissao" | "estagios">): string {
+  const o = g.transmissao.obras;
+  const r = g.estagios.ralie;
+  if (!temValor(o.em_andamento.km_lt_novas) && !temValor(r.mw_ugs_em_implantacao)) return "";
+  return `O SIGET registra ${kmTexto(o.em_andamento.km_lt_novas)} de circuito em linhas novas em obras de transmissão, e o RALIE acompanha ${mwTexto(r.mw_ugs_em_implantacao)} de geração em implantação. Só com esses totais não dá para saber se a rede escoa essa geração.`;
+}
+
+/** P043: a capacidade nacional do cenário de referência no início e no fim do horizonte, dita como cenário e não previsão. */
+export function vereditoCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias">): string {
+  const c = g.cenarios;
+  const refs = (c.figuras.fig_3_25?.linhas ?? []).map((l) => l.ref).sort();
+  const ini = refs[0];
+  const fim = refs.at(-1);
+  const conf = (ref: string | undefined) => (ref ? c.conferencia_relatorio.find((x) => x.descricao.includes("3-25") && x.descricao.includes(`${mesTexto(ref)}`)) : undefined);
+  const totalFim = g.evidencias.pde_capacidade_2035?.valor_calculo ?? conf(fim)?.calculado_gw ?? null;
+  const gwIni = conf(ini)?.calculado_gw;
+  if (!temValor(gwIni) && !temValor(totalFim)) return "";
+  return `O ${c.edicao} é um cenário, não uma previsão: no cenário de referência, a capacidade instalada nacional vai de ${gwTexto(gwIni)} em ${mesTexto(ini)} a ${gwTexto(totalFim)} em ${mesTexto(fim)}.`;
+}
+
+/**
+ * Categorias com correspondência direta em que operação (SIGA) mais implantação (RALIE) passam do cenário de dez/2035:
+ * a soma de camadas diferentes não é previsão, e a nota diz isso com os números lado a lado. Vazia quando nenhuma passa.
+ */
+export function notaCarteiraAcimaDoCenario(g: Pick<ExpansaoGold, "cenarios">): string {
+  const acima = g.cenarios.camadas.filter(
+    (x) => x.correspondencia === "direta" && temValor(x.pde_dez2035_gw) && temValor(x.realizado_siga_gw) && temValor(x.carteira_ralie_gw) && x.realizado_siga_gw + x.carteira_ralie_gw > x.pde_dez2035_gw,
+  );
+  if (!acima.length) return "";
+  const itens = acima.map((x) => {
+    const nome = x.rotulo.charAt(0).toLocaleLowerCase("pt-BR") + x.rotulo.slice(1);
+    return `${nome} (${gwTexto(x.realizado_siga_gw)} em operação mais ${gwTexto(x.carteira_ralie_gw)} em implantação, ${gwTexto((x.realizado_siga_gw as number) + (x.carteira_ralie_gw as number))}, contra ${gwTexto(x.pde_dez2035_gw)} no cenário)`;
+  });
+  return `Operação mais implantação passa do cenário de dez/2035 em ${listaTexto(itens)}. As camadas ficam lado a lado e não se somam: a carteira em implantação não é entrada certa, e o cenário é hipótese de planejamento, não previsão.`;
+}
+
+/** Contagens de fotografias do RALIE e o uso de cada uma: 177 publicadas, 63 mensais, 50 janelas de confiabilidade e 51 pares de revisão. */
+export function textoContagemFotografias(g: Pick<ExpansaoGold, "cronograma">): string {
+  const c = g.cronograma;
+  const h = c.historico_fonte;
+  return `O RALIE publicou ${inteiro(h.fotografias)} fotografias desde ${dataTexto(h.primeira_fotografia)}; ${inteiro(h.fotografias_mensais)} são mensais (a última de cada mês). A confiabilidade das previsões usa ${inteiro(c.confiabilidade.length)} delas, as que têm a janela de 12 meses já encerrada, e a revisão das previsões usa ${inteiro(c.deslizamento.length)} pares de fotografias com 12 meses de distância.`;
+}
+
+/** As datas das duas leituras do cronograma: a confiabilidade termina numa fotografia, a revisão em outra. */
+export function notaDatasCronograma(g: Pick<ExpansaoGold, "cronograma">): string {
+  const c = ultimaConfiabilidade(g);
+  const d = ultimoDeslizamento(g);
+  if (!c || !d) return "";
+  return `As duas leituras terminam em fotografias diferentes: a confiabilidade usa a última janela de 12 meses já encerrada (previsões de ${dataTexto(c.ralie)}, janela até ${dataTexto(c.fim_janela)}), e a revisão compara a fotografia de ${dataTexto(d.ralie)} com a de ${dataTexto(d.ralie_seguinte)}, a mais recente que tem par 12 meses depois.`;
+}
+
+/**
+ * Ressalva da validação sem o nome de campo da gold ("ver estagios.encerramentos.potencia_conferida") e sem "Parquet": o
+ * texto de leitor; o campo vai separado, para o modo Auditar.
+ */
+export function ressalvaLegivel(r: string): { texto: string; campo: string | null } {
+  const m = /[:.]?\s*[Vv]er (estagios(?:\.[a-z_]+)+)\.?\s*$/.exec(r);
+  const base = m ? r.slice(0, m.index).replace(/[:;,\s]+$/, "") : r.replace(/\s+$/, "");
+  const texto = base.replace(/Parquet histórico/g, "arquivo histórico").replace(/\.?$/, ".");
+  return { texto, campo: m ? m[1] : null };
+}
+
+/** Tira da regra publicada o nome de campo da fonte entre parênteses ("(soma de MdaPotenciaUnitaria)"), que o leitor não tem como consultar. */
+export function semNomeDeCampo(texto: string): string {
+  return texto.replace(/\s*\((?:soma|campo) de [A-Z][A-Za-z0-9]+\)/g, "");
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
@@ -12,7 +13,7 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { PerdasExplorador } from "@/components/energia/PerdasExplorador";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLinkConsulta } from "@/components/energia/PerdasLinkConsulta";
-import { LINK_PERDAS, PAGINAS_PERDAS, PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { LINK_PERDAS, PAGINAS_PERDAS, PERGUNTA_REGULATORIO, PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
@@ -28,13 +29,15 @@ import {
   linhasRegulatorio,
   pctOu,
   periodosDisponiveis,
-  respostaComposicao,
-  respostaCusto,
   respostaEvolucao,
   respostaGeral,
-  respostaRegulatorio,
   serieNacional,
   variacaoMesmas,
+  vereditoComposicao,
+  vereditoCusto,
+  vereditoEvolucao,
+  vereditoGeral,
+  vereditoRegulatorio,
 } from "@/lib/energia/perdas";
 
 export const dynamic = "force-static";
@@ -65,7 +68,6 @@ export default function PerdasPage() {
   const acumConc = g.acumulado?.agregados.find((a) => a.universo === "concessionarias") ?? null;
   const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, publicado em ${dataBR(g.gerado_em)}`;
   const bloqueioGeometria = g.bloqueios.find((b) => b.item.includes("P055")) ?? null;
-  const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
   // o item do bloqueio entra no meio da frase: sem o ID do painel e com inicial minúscula
   const itemGeometria = bloqueioGeometria ? bloqueioGeometria.item.replace(/ \(P055\)$/, "").replace(/^./, (c) => c.toLowerCase()) : "";
   const mesFimAcum = g.acumulado ? mesAno(`${g.acumulado.ano}-${String(g.acumulado.mes_fim).padStart(2, "0")}`) : null;
@@ -75,11 +77,11 @@ export default function PerdasPage() {
   const anos = anosSerieNacional(g.nacional);
   const inicioSerie = anos?.inicio ?? ref;
   const periodoMapa = `${inicioSerie} a ${ref}${g.acumulado ? ` e ${g.acumulado.ano} até ${mesFimAcum}` : ""}`;
-  // respostas das outras páginas, para a abertura dizer o essencial de cada painel
+  // vereditos das outras páginas, para a abertura dizer o essencial de cada painel (a resposta completa fica em cada página)
   const outras = [
-    { pagina: PAGINAS_PERDAS[1], pergunta: "Qual parte das perdas é técnica e qual é não técnica?", resposta: respostaComposicao(g) },
-    { pagina: PAGINAS_PERDAS[2], pergunta: "Quanto o realizado diverge da referência regulatória?", resposta: respostaRegulatorio(linhasRegulatorio(g.distribuidoras), !!bloqueioRegulatorio) },
-    { pagina: PAGINAS_PERDAS[3], pergunta: "Qual é a dimensão econômica e territorial das perdas?", resposta: respostaCusto(linhasCusto(g.distribuidoras), g.referencia.tarifa_consultada_em) },
+    { pagina: PAGINAS_PERDAS[1], pergunta: "Qual parte das perdas é técnica e qual é não técnica?", resposta: vereditoComposicao(g) },
+    { pagina: PAGINAS_PERDAS[2], pergunta: PERGUNTA_REGULATORIO, resposta: vereditoRegulatorio(linhasRegulatorio(g.distribuidoras)) },
+    { pagina: PAGINAS_PERDAS[3], pergunta: "Qual é a dimensão econômica e territorial das perdas?", resposta: vereditoCusto(linhasCusto(g.distribuidoras), g.referencia.tarifa_consultada_em) },
   ];
 
   return (
@@ -94,8 +96,7 @@ export default function PerdasPage() {
         >
           Parte da energia que entra na rede de cada distribuidora não chega a ser entregue como consumo medido: são as <Termo slug="perdas-de-energia">perdas</Termo>. Uma parte vem da física das
           redes (<Termo slug="perdas-tecnicas">perdas técnicas</Termo>); outra, de furto, fraude e erros de medição e faturamento (<Termo slug="perdas-nao-tecnicas">perdas não técnicas</Termo>). Aqui estão
-          volume, taxa, trajetória, composição, o percentual técnico regulatório e o custo das perdas na tarifa de cada distribuidora, com o denominador de cada taxa escrito; a comparação com a
-          referência de perdas não técnicas está bloqueada, com a evidência no painel Realizado e regulatório.
+          volume, taxa, trajetória, composição, o percentual técnico regulatório e o custo das perdas na tarifa de cada distribuidora.
         </CabecalhoModulo>
         <PerdasNavegacao atual="mapa" />
 
@@ -105,9 +106,11 @@ export default function PerdasPage() {
               <h2 id="perdas-resumo" className="font-serif text-xl text-carvao md:text-2xl">
                 Quanto se perde na distribuição?
               </h2>
-              <p className="mt-3 max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="geral">
-                {respostaGeral(g)}
-              </p>
+              <div className="mt-3">
+                <RespostaCurta id="geral" veredito={vereditoGeral(g)}>
+                  {respostaGeral(g)}
+                </RespostaCurta>
+              </div>
               {g.referencia.aviso_parcial && <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">{g.referencia.aviso_parcial}</p>}
               <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <Numero
@@ -115,7 +118,7 @@ export default function PerdasPage() {
                   natureza="CALCULADO"
                   evidencia={ev.taxa_nacional}
                   formato="pct"
-                  casas={1}
+                  casas={2}
                   unidade="%"
                   periodo={String(ref)}
                   variacao={
@@ -142,7 +145,7 @@ export default function PerdasPage() {
                   natureza="ESTIMADO"
                   evidencia={ev.pnt_bt_nacional}
                   formato="pct"
-                  casas={1}
+                  casas={2}
                   unidade="%"
                   periodo={String(ref)}
                   nota={
@@ -159,7 +162,7 @@ export default function PerdasPage() {
                   natureza="CALCULADO"
                   evidencia={ev.acumulado}
                   formato="pct"
-                  casas={1}
+                  casas={2}
                   unidade="%"
                   motivoAusencia="Sem recorte do ano aberto publicado por ao menos 90% das distribuidoras."
                   variacao={
@@ -208,7 +211,7 @@ export default function PerdasPage() {
                 <>
                   Cada área tem a cor do valor da distribuidora inteira: o mapa não mostra perda por município. A taxa compara distribuidoras de tamanhos diferentes; o volume mostra onde a energia perdida
                   se concentra. O denominador é a energia injetada de referência (desde {ANO_LEIAUTE_SAMP}, fornecida + irregular + perdas, porque a linha publicada deixou de fechar o balanço). Hachura cruzada é valor
-                  publicado fora da comparação (ano incompleto ou alerta físico), com o motivo na tabela; hachura simples é ausência. As áreas vêm da relação de municípios mais recente: em anos anteriores, quem absorveu outra distribuidora depois aparece com o território de hoje, e o aviso abaixo do mapa diz quem.
+                  publicado fora da comparação (ano incompleto ou alerta físico), com o motivo na tabela; hachura simples é ausência. As áreas vêm da relação de municípios mais recente: em anos anteriores, quem absorveu outra distribuidora depois aparece com o território atual, e o aviso abaixo do mapa diz quem.
                 </>
               }
               naoConcluir={
@@ -237,8 +240,9 @@ export default function PerdasPage() {
               </div>
               {bloqueioGeometria && (
                 <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="geometria">
-                  Limitação declarada: o {itemGeometria} não está acessível ({bloqueioGeometria.evidencia.replace(/\.\s*$/, "")}). A área é desenhada pelos municípios do IBGE ligados à
+                  Limitação: o {itemGeometria} não está acessível ao observatório. A área é desenhada pelos municípios do IBGE ligados à
                   distribuidora pela relação oficial da ANEEL; limites dentro de municípios compartilhados e a área em km² da concessão não podem ser lidos aqui.
+                  <span data-nivel="analisar"> Evidência da coleta: {bloqueioGeometria.evidencia}</span>
                 </p>
               )}
               <RodapePainel
@@ -274,7 +278,7 @@ export default function PerdasPage() {
               }
               naoConcluir={<>Que a queda ou a alta de um ano para o outro seja da mesma rede: distribuidoras entram, saem e são incorporadas, e {ANO_LEIAUTE_SAMP} trouxe um denominador novo.</>}
             >
-              <Resposta prova={<ComproveNumero evidencia={ev.taxa_nacional} rotulo={`Comprove a taxa de ${ref}`} />}>
+              <Resposta id="evolucao" veredito={vereditoEvolucao(g.nacional)} prova={<ComproveNumero evidencia={ev.taxa_nacional} rotulo={`Comprove a taxa de ${ref}`} />}>
                 {respostaEvolucao(g.nacional, ref)}
               </Resposta>
               <Recorte periodo={`${inicioSerie} a ${ref}, anos completos`} universo="concessionárias com os 12 meses e sem alerta físico em cada ano" unidade="% da energia injetada de referência" />

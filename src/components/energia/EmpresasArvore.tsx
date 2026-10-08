@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ROTULO_MOTIVO, cnpjFormatado, nomeOuCnpj, textoArvore, type ArvoreSocietaria } from "@/lib/energia/empresas";
+import { cnpjFormatado, nomeOuCnpj, textoArvore, textoSocios, type ArvoreSocietaria } from "@/lib/energia/empresas";
 import { num } from "@/lib/energia/formato";
 
 /**
@@ -12,8 +12,30 @@ import { num } from "@/lib/energia/formato";
  * painel de controle (`href`). Nome de pessoa nunca aparece: o arquivo da cadeia já traz
  * "pessoa física" ou "sócio sem documento" no lugar.
  */
-export function EmpresasArvore({ a, ir, href }: { a: ArvoreSocietaria; ir?: (cnpj: string) => void; href?: (cnpj: string) => string }) {
-  const topo = a.cadeia[a.cadeia.length - 1];
+export function EmpresasArvore({
+  a,
+  ir,
+  href,
+  motivos = [],
+  resumo = true,
+}: {
+  a: ArvoreSocietaria;
+  ir?: (cnpj: string) => void;
+  href?: (cnpj: string) => string;
+  /** Frase-resumo da árvore no alto; na ficha, a frase da própria seção já diz o topo e o motivo. */
+  resumo?: boolean;
+  /** Motivos de parada com a explicação que a gold publica (controle.cobertura.motivos_parada). */
+  motivos?: readonly { motivo: string; rotulo: string }[];
+}) {
+  const nivelDoCnpj = new Map(a.cadeia.map((n, i) => [n.cnpj, i]));
+  // controladores sem CNPJ acima do topo, reunidos por nome: sete "pessoa física" viram uma linha com os sete percentuais
+  const acima: { nome: string; n: number; pcts: string[] }[] = [];
+  for (const s of a.acimaDoTopo) {
+    const nome = s.nome ?? "sem nome publicado";
+    const g = acima.find((x) => x.nome === nome) ?? acima[acima.push({ nome, n: 0, pcts: [] }) - 1];
+    g.n += 1;
+    if (s.pct !== null) g.pcts.push(`${num(s.pct, 2)}%`);
+  }
   const no = (cnpj: string, nome: string | null, atual = false) => {
     const classe = `inline-flex min-h-[44px] items-center text-left underline underline-offset-4 ${atual ? "font-medium text-carvao" : "text-energia-dark hover:text-carvao"}`;
     if (ir)
@@ -32,7 +54,7 @@ export function EmpresasArvore({ a, ir, href }: { a: ArvoreSocietaria; ir?: (cnp
   };
   return (
     <div className="space-y-4 text-sm" aria-live={ir ? "polite" : undefined}>
-      <p className="text-carvao">{textoArvore(a)}</p>
+      {resumo && <p className="text-carvao">{textoArvore(a, motivos)}</p>}
       <div className="grid gap-4 lg:grid-cols-3">
         <div>
           <p className="rotulo text-mineral">Cadeia de controle, de baixo para cima</p>
@@ -44,26 +66,33 @@ export function EmpresasArvore({ a, ir, href }: { a: ArvoreSocietaria; ir?: (cnp
                 <span className="block text-xs text-carvao-muted">CNPJ {cnpjFormatado(n.cnpj)}</span>
               </li>
             ))}
-            {a.acimaDoTopo.map((s, i) => (
-              <li key={`acima-${i}`} className="text-carvao-muted">
-                <span className="mr-1 text-xs text-mineral">acima do topo, sem CNPJ</span>
-                {s.nome ?? "sem nome publicado"}
-                {s.pct !== null ? ` (${num(s.pct, 2)}%)` : ""}
+            {acima.map((g) => (
+              <li key={`acima-${g.nome}`} className="text-carvao-muted">
+                <span className="mr-1 text-xs text-mineral">controlador acima do topo, sem CNPJ</span>
+                {g.n > 1 ? `${g.n} × ` : ""}
+                {g.nome}
+                {g.pcts.length ? ` (${g.pcts.join("; ")})` : ""}
               </li>
             ))}
           </ol>
-          <p className="mt-2 text-xs text-carvao-muted">
-            A cadeia para em {nomeOuCnpj(topo.nome, topo.cnpj)}: {a.motivoTopo ? ROTULO_MOTIVO[a.motivoTopo] : "motivo não publicado"}.
+          <p className="mt-1 text-xs text-carvao-muted" data-nomes-cnpj="">
+            O nome de cada nível é o do cadastro; o nome de um sócio é o que o declarante escreveu à ANEEL. O mesmo CNPJ pode aparecer com nomes diferentes: o CNPJ é o que identifica a empresa.
           </p>
         </div>
         <div>
           <p className="rotulo text-mineral">Sócios diretos declarados</p>
+          {a.socios.length > 0 && (
+            <p className="mt-1 text-xs text-carvao-muted" data-resumo-socios="">
+              {textoSocios(a.socios)} &ldquo;Controlador&rdquo; é a marca que a própria declaração põe no sócio; o observatório não a deduz do percentual.
+            </p>
+          )}
           {a.socios.length ? (
             <ul className="mt-1 max-h-80 space-y-1 overflow-y-auto" tabIndex={0} aria-label="Sócios diretos declarados (lista rolável)">
               {a.socios.map((s, i) => (
                 <li key={`${s.cnpj ?? "s"}-${i}`} className="flex flex-wrap items-baseline gap-x-2">
                   {s.cnpj ? no(s.cnpj, s.nome) : <span className="text-carvao-muted">{s.nome ?? "sem nome publicado"}</span>}
                   <span className="text-xs text-carvao-muted">
+                    {s.cnpj ? `CNPJ ${cnpjFormatado(s.cnpj)}${nivelDoCnpj.has(s.cnpj) ? `, o mesmo do ${nivelDoCnpj.get(s.cnpj) === 0 ? "nível escolhido" : `nível ${nivelDoCnpj.get(s.cnpj)}`}` : ""} · ` : ""}
                     {s.pct !== null ? `${num(s.pct, 2)}% direto` : "percentual direto indefinido na fonte"}
                     {s.controlador ? " · controlador" : ""}
                   </span>

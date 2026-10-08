@@ -8,6 +8,7 @@ import { Numero } from "@/components/energia/Numero";
 import { PldEscolha, PldLista } from "@/components/energia/PldControles";
 import { PldFaixas } from "@/components/energia/PldFaixas";
 import { PldHoraDia } from "@/components/energia/PldHoraDia";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -30,11 +31,13 @@ import {
   faixasRegimes,
   linhasMensais,
   linhasSazonal,
+  nomeMes,
   perfilHoraMes,
   respostaP011,
   rotaPainel,
   serieMedidaPorSm,
   serieSazonal,
+  vereditoP011,
   type MedidaMensal,
 } from "@/lib/energia/pld";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -107,9 +110,9 @@ export function PldHistorico({
     <div className="space-y-6">
       <PldEscolha legenda="Submercado" opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: CURTO_SM[s], detalhe: NOME_SM[s] }))} valor={sm} onEscolher={(s) => definir({ sm: s })} />
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p011" aria-live="polite">
+      <RespostaCurta id="p011" vivo veredito={vereditoP011(bloco, sm)}>
         {respostaP011(bloco, sm)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -131,6 +134,16 @@ export function PldHistorico({
         </div>
       </dl>
 
+      {mesFichas && ultimoMes !== mesFichas && (
+        <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-troca-de-mes="">
+          Os três cartões de média mensal usam {mesAno(mesFichas)}, o último mês com as médias calculadas em todas as horas do mês. {mesAno(ultimoMes)} aparece na tabela e no
+          gráfico, mas{" "}
+          {h.mensal[sm].horas_com_carga[h.mensal.meses.length - 1] < h.mensal[sm].horas[h.mensal.meses.length - 1]
+            ? `a carga do balanço tem ${num(h.mensal[sm].horas_com_carga[h.mensal.meses.length - 1], 0)} das ${num(h.mensal[sm].horas[h.mensal.meses.length - 1], 0)} horas do mês, e as ponderadas de ${mesAno(ultimoMes)} usam só as horas com carga publicada.`
+            : "ainda não tem as três médias calculadas nas mesmas horas."}
+        </p>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Numero
           rotulo={`Média diária de ${dataBR(pos?.dia ?? diaReferencia)}`}
@@ -143,7 +156,13 @@ export function PldHistorico({
           motivoAusencia="Dia sem as 24 horas publicadas."
           tamanho="medio"
           cor={COR_SM[sm]}
-          nota={pos?.mesmo_mes.percentil !== null && pos ? `Percentil ${num(pos.mesmo_mes.percentil, 1)} entre ${num(pos.mesmo_mes.n_dias, 0)} dias do mesmo mês de anos anteriores.` : undefined}
+          nota={
+            pos && pos.mesmo_mes.percentil !== null
+              ? pos.mesmo_mes.empates === 0
+                ? `Em ${num(pos.mesmo_mes.percentil, 1)}% dos ${num(pos.mesmo_mes.n_dias, 0)} dias de ${nomeMes(pos.mesmo_mes.mes)} de anos anteriores, a média diária foi menor.`
+                : `Percentil ${num(pos.mesmo_mes.percentil, 1)} entre ${num(pos.mesmo_mes.n_dias, 0)} dias do mesmo mês de anos anteriores.`
+              : undefined
+          }
         />
         <Numero
           rotulo={`Média temporal de ${mesFichas ? mesAno(mesFichas) : "mês sem dado"}`}
@@ -155,7 +174,12 @@ export function PldHistorico({
           periodo={mesFichas ? mesAno(mesFichas) : undefined}
           motivoAusencia="Sem mês completo com as três médias."
           tamanho="medio"
-          nota="Todas as horas pesam igual. Média simples das horas do mês: coluna media_temporal de pld_mensal.csv, sem ficha Comprove própria."
+          nota={
+            <>
+              Todas as horas pesam igual. Média simples das horas do mês, sem ficha de prova própria.
+              <span data-nivel="analisar"> No arquivo baixado, é a coluna media_temporal de pld_mensal.csv.</span>
+            </>
+          }
         />
         <Numero
           rotulo={`Ponderada pela carga do balanço, ${mesFichas ? mesAno(mesFichas) : ""}`}
@@ -181,7 +205,7 @@ export function PldHistorico({
           motivoAusencia="Sem a carga verificada da API do ONS no mês."
           tamanho="medio"
           endereco={endereco}
-          nota="Perímetro homogêneo em toda a série. A carga verificada vem da API do ONS e também não vai nos arquivos desta página."
+          nota="Mesma base de carga em toda a série. A carga verificada vem do ONS e também não vai nos arquivos desta página."
         />
       </div>
 

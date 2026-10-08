@@ -1,4 +1,3 @@
-import { recusaEmLinguagemSimples } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -8,6 +7,7 @@ import { ContaReajustes } from "@/components/energia/ContaReajustes";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -28,6 +28,8 @@ import {
   minuscula,
   rotuloDistribuidora,
   verboVariacao,
+  vereditoBandeira,
+  vereditoSubsidios,
 } from "@/lib/energia/conta";
 import { carimbo, dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -117,6 +119,8 @@ export default function ContaReajustesPage() {
   // a mudança mais recente pela data (a ordem do arquivo não é contrato)
   const ultimoEvento = reaj.ultimos.reduce<(typeof reaj.ultimos)[number] | null>((m, u) => (m === null || u[2] > m[2] ? u : m), null);
   const subUltimo = sub.anual.at(-1) ?? null;
+  // a data da recusa vem do registro da coleta (dd/mm/aaaa); o código da resposta e o desafio do navegador ficam em Analisar
+  const dataEfeitoMedio = /(\d{2}\/\d{2}\/\d{4})/.exec(reaj.efeito_medio.motivo)?.[1] ?? null;
   const adicionalVigente = band.vigente?.rs_mwh ?? null;
   const janelasMeses = (reaj.comparacao_inflacao?.janelas ?? []).map((j) => j.meses);
   const listaPt = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}` : (xs[0] ?? ""));
@@ -137,7 +141,7 @@ export default function ContaReajustesPage() {
           </ContaLinkFiltros>{" "}
           <span aria-hidden="true">›</span> Reajustes, bandeiras e subsídios
         </nav>
-        <CabecalhoModulo siglas={["REH", "PLD", "SIN", "TUSD", "TE", "ANEEL"]}
+        <CabecalhoModulo siglas={["REH", "PLD", "SIN", "TUSD", "TE", "ANEEL", "IPCA", "CDE", "SCEE"]}
           rotulo="Conta de luz"
           titulo="O que mudou e quem financia os benefícios?"
           referencia={
@@ -191,7 +195,7 @@ export default function ContaReajustesPage() {
                   ultimoEvento ? (
                     <>
                       Mudança mais recente no arquivo: {rotuloDistribuidora(ultimoEvento[1], ultimoEvento[0])}, em {dataBR(ultimoEvento[2])} ({ultimoEvento[3]}), quando a tarifa B1{" "}
-                      {verboVariacao(ultimoEvento[4])}; o IPCA desde a mudança anterior foi {pct(ultimoEvento[5], 2)}.
+                      {verboVariacao(ultimoEvento[4])}; o IPCA desde a mudança anterior ({mesAno(`${ultimoEvento[6]}-01`)} a {mesAno(`${ultimoEvento[7]}-01`)}) foi {pct(ultimoEvento[5], 2)}.
                     </>
                   ) : (
                     "Nenhuma mudança de tarifa no arquivo."
@@ -247,7 +251,13 @@ export default function ContaReajustesPage() {
                   <ContaReajustes janelas={reaj.comparacao_inflacao?.janelas ?? []} ultimos={reaj.ultimos} dataReferencia={ref} fonte={FONTE_TARIFAS} />
                   <div className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
                     <p className="rotulo text-mineral">Efeito médio do processo tarifário: não publicado</p>
-                    <p className="mt-1 leading-relaxed">{recusaEmLinguagemSimples(reaj.efeito_medio.motivo)}</p>
+                    <p className="mt-1 leading-relaxed">
+                      O efeito médio de cada processo tarifário (todas as classes) e o calendário dos processos não estão no portal de dados abertos da ANEEL, e os endereços da ANEEL que os publicam recusaram o
+                      acesso do observatório{dataEfeitoMedio ? ` em ${dataEfeitoMedio}` : ""}. Este painel mostra a variação da tarifa B1 residencial, que é outra medida.
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                      Registro da coleta: {reaj.efeito_medio.motivo}
+                    </p>
                   </div>
                   <Auditoria titulo="Incorporações e conferência do IPCA">
                     <ul className="space-y-2 text-sm text-carvao-muted">
@@ -318,9 +328,9 @@ export default function ContaReajustesPage() {
                 proveniencia={band.proveniencia}
               >
                 <div className="space-y-6">
-                  <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p050-bandeiras">
+                  <RespostaCurta id="p050-bandeiras" veredito={vereditoBandeira(band)}>
                     {respostaBandeira(band)}
-                  </p>
+                  </RespostaCurta>
                   <Recorte
                     periodo={
                       <>
@@ -462,9 +472,9 @@ export default function ContaReajustesPage() {
                 complementares={cde?.proveniencia ? [{ rotulo: "Orçamento da CDE", p: cde.proveniencia }] : []}
               >
                 <div className="space-y-6">
-                  <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p050-subsidios">
+                  <RespostaCurta id="p050-subsidios" veredito={vereditoSubsidios(sub)}>
                     {respostaSubsidios(sub)} {respostaCde(cde)}
-                  </p>
+                  </RespostaCurta>
                   <Recorte
                     periodo={
                       <>
@@ -528,7 +538,7 @@ export default function ContaReajustesPage() {
                           <span aria-hidden="true" className="mr-2 inline-block h-2.5 w-2.5 align-middle" style={{ background: corSubsidio(c.categoria) }} />
                           {c.categoria}
                         </dt>
-                        <dd className="mt-0.5 text-carvao-muted">{c.definicao}</dd>
+                        <dd className="mt-0.5 text-carvao-muted">{c.definicao.replace(/\bo dicionário\b/g, "a fonte")}</dd>
                       </div>
                     ))}
                   </dl>

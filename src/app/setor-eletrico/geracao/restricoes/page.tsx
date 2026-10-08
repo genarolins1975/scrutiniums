@@ -18,6 +18,7 @@ import { Numero } from "@/components/energia/Numero";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
@@ -34,6 +35,7 @@ import {
   rotaPainel,
   situacaoMensal,
   textoControlesRestricao,
+  textoSemComparacaoMensal,
   type FonteRestricao,
 } from "@/lib/energia/geracao";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -83,6 +85,8 @@ export default function GeracaoRestricoesPage() {
           rotulo={`Energia não gerada por restrição, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}, 12 meses`}
           natureza="ESTIMADO"
           evidencia={ev[`restricao_${f}_12m_energia`]}
+          valor={ev[`restricao_${f}_12m_energia`]?.valor_calculo != null ? (ev[`restricao_${f}_12m_energia`]!.valor_calculo as number) / 1e3 : null}
+          unidade="GWh"
           casas={0}
           tamanho="medio"
           cor={COR_RAZAO.ENE}
@@ -119,7 +123,7 @@ export default function GeracaoRestricoesPage() {
             </>
           }
         >
-          O ONS limita a geração de usinas eólicas e fotovoltaicas e registra a razão de cada limitação em quatro códigos oficiais: elétrica (indisponibilidade externa),
+          O ONS limita a geração de usinas eólicas e fotovoltaicas (o que ele chama de <Termo slug="constrained-off">constrained-off</Termo>) e registra a razão de cada limitação em quatro códigos oficiais: elétrica (indisponibilidade externa),
           confiabilidade, energética e parecer de acesso. Este painel estima quanto deixou de ser gerado nessas limitações e separa duas grandezas que costumam ser confundidas:
           a energia não gerada ao longo do tempo (GWh) e o maior corte simultâneo num instante (MW). Restrição não é indisponibilidade da usina nem falta de vento ou de sol.
         </CabecalhoModulo>
@@ -137,7 +141,7 @@ export default function GeracaoRestricoesPage() {
                   prevaleceu em cada caso. Com a expansão dessas fontes, a parcela restringida é um dado central para quem acompanha a operação e o planejamento.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
+              oQueMudou={<>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "as restrições de eólicas e fotovoltaicas")}</>}
               comoInterpretar={
                 <>
                   Energia não gerada = geração de referência estimada pelo ONS menos a verificada, só nas meias horas em que o ONS limitou a usina. Taxa = não gerada ÷
@@ -150,7 +154,7 @@ export default function GeracaoRestricoesPage() {
                   Que a usina estava indisponível ou que faltou vento ou sol: meia hora sem limitação do ONS não entra, mesmo que a usina tenha gerado abaixo da referência. Que
                   a energia não gerada foi medida: a referência é estimativa do ONS. Que a usina no mapa é o lugar onde o corte foi decidido: a marca é a usina afetada, não o
                   ponto da rede que limitou. Que toda razão dá direito a compensação: pela regra lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de
-                  indisponibilidade externa dá direito a ESS, como diz o verbete{" "}
+                  indisponibilidade externa dá direito a <Termo slug="ess">ESS</Termo>, como diz o verbete{" "}
                   <Link href="/setor-eletrico/aprenda/constrained-off" className="text-energia-dark underline underline-offset-4">
                     Constrained-off
                   </Link>
@@ -162,7 +166,7 @@ export default function GeracaoRestricoesPage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <GeracaoAviso tipo="alerta">{atual.texto}</GeracaoAviso>}
-                <GeracaoRestricoes restricoes={painel} fonte={FONTE} versao={versao} destaques={destaques} />
+                <GeracaoRestricoes restricoes={painel} fonte={FONTE} versao={versao} destaques={destaques} rotulosRazao={Object.fromEntries(g.razoes.map((z) => [z.id, z.rotulo]))} />
 
                 <GeracaoAnalise id="analise-restricoes" titulo="Razões, origem, subsistemas, os últimos dias e o detalhamento publicado pelo ONS">
                   <GeracaoRestricoesAnalise restricoes={analise} fonte={FONTE} versao={versao} />

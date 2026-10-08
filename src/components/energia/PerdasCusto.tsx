@@ -7,7 +7,7 @@ import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/Perda
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataBR, num } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import { pctOu, rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
+import { divergenciaArredondamentoCusto, pctOu, rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
 
 /**
  * Custo unitário das perdas na tarifa residencial B1 (P058): as três componentes de perdas
@@ -70,6 +70,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
     [linhas],
   );
   const linhaSel = sel ? linhas.find((l) => l.id === sel) ?? null : null;
+  const arredondamento = useMemo(() => divergenciaArredondamentoCusto(linhas), [linhas]);
   const [prova, tentarProva] = useEvidenciaPerdas(urlEvidencias, linhaSel ? linhaSel.id : null);
   return (
     <div className="space-y-5">
@@ -91,9 +92,15 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         selecionado={linhaSel && linhaSel.situacao === "vigente" ? linhaSel.id : null}
         onSelecionar={selecionar}
       />
+      {arredondamento.exemplo && (
+        <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-arredondamento="custo">
+          O total na ponta de cada barra soma as três componentes já arredondadas em duas casas; a coluna Perdas da tabela soma antes de arredondar. A diferença é de no máximo 0,01 R$/MWh e aparece em{" "}
+          {num(arredondamento.n, 0)} das {num(arredondamento.de, 0)} distribuidoras (por exemplo, {arredondamento.exemplo.rotulo}: {num(arredondamento.exemplo.barra, 2)} na barra e {num(arredondamento.exemplo.tabela, 2)} na tabela).
+        </p>
+      )}
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
         {!sel ? (
-          <p className="text-carvao-muted">Escolha uma barra, uma linha da tabela ou uma área do mapa para ler a componente de perdas da tarifa de uma distribuidora.</p>
+          <p className="text-carvao-muted">Escolha uma barra ou uma linha da tabela para ler a componente de perdas da tarifa de uma distribuidora.</p>
         ) : !linhaSel ? (
           <p>{rotulos[sel] ?? sel}: sem processo tarifário com tarifa residencial B1 convencional nos arquivos de componentes tarifárias de {anosArquivos}.</p>
         ) : (

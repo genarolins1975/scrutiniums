@@ -116,7 +116,7 @@ export function SimulacaoLiquidacao() {
   return (
     <Quadro
       titulo="Do CMO ao PLD e à liquidação da diferença"
-      simplificacao={`Simplificação pedagógica. O piso (${RMWH(PISO)}) e o teto horário (${RMWH(TETO)}) são hipotéticos; o teto estrutural, que limita a média do dia, fica de fora. O balanço real de cada perfil de agente segue as Regras de Comercialização da CCEE, não conferidas nesta fase: aqui aparece só a ideia de liquidar a diferença entre o contratado e o verificado ao preço da hora.`}
+      simplificacao={`Simplificação pedagógica. O piso (${RMWH(PISO)}) e o teto horário (${RMWH(TETO)}) são hipotéticos e não são os vigentes, que estão no verbete Limites do PLD; o teto estrutural, que limita a média do dia, fica de fora. O balanço real de cada perfil de agente segue as Regras de Comercialização da CCEE, não conferidas nesta fase: aqui aparece só a ideia de liquidar a diferença entre o contratado e o verificado ao preço da hora.`}
     >
       <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-enunciado="true">
         Um agente contratou {MWH(contratado)} para uma hora e consumiu {MWH(verificado)}. A diferença, {MWH(Math.abs(dif))}, é liquidada ao preço da hora, que parte do CMO e respeita o piso e o teto. Mova o CMO acima de {RMWH(TETO)} ou abaixo de {RMWH(PISO)} para ver o preço deixar de acompanhá-lo.

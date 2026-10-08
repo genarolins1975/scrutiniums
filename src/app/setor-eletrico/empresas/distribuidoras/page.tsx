@@ -6,13 +6,14 @@ import { EmpresasDistribuidoras } from "@/components/energia/EmpresasDistribuido
 import {
   EmpresasAnalise,
   EmpresasAuditoria,
+  EmpresasComoLer,
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
-  EmpresasResposta,
   EmpresasSeguir,
 } from "@/components/energia/EmpresasPagina";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
@@ -27,14 +28,17 @@ import {
   linhasDistribuidoras,
   padraoComparacao,
   painel,
+  pctTexto,
   referenciaPerdasNacional,
   respostaDistribuidoras,
   rotaEntidade,
+  semNomesDeCampo,
+  vereditoDistribuidoras,
 } from "@/lib/energia/empresas";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
-import type { Evidencia } from "@/lib/energia/evidencia";
+import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
@@ -56,6 +60,8 @@ export default function PaginaP037() {
   const anoPerdas = d.indice.find((x) => x.perdas?.ano)?.perdas?.ano ?? null;
   const anoQualidade = d.indice.find((x) => x.qualidade?.ano)?.qualidade?.ano ?? null;
   const refPerdas = referenciaPerdasNacional(evTaxaNacional, anoPerdas);
+  // a taxa nacional aparece com duas casas, como a legenda do gráfico de perdas e as perdas de cada distribuidora
+  const evTaxaNacional2 = evTaxaNacional ? comValorExibido(evTaxaNacional, pctTexto(evTaxaNacional.valor_calculo, 2)) : null;
   const perdasDestino = DESTINOS_NAVEGACAO.find((x) => x.slug === "perdas");
 
   return (
@@ -63,7 +69,7 @@ export default function PaginaP037() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-distribuidoras" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP", "ANEEL"]}
+        <CabecalhoModulo siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "ANEEL"]}
           rotulo="Empresas"
           titulo={painel("p037").pergunta}
           referencia={
@@ -98,7 +104,7 @@ export default function PaginaP037() {
                   {inteiro(d.resumo.com_evolucao.qualidade)} e tarifa em {inteiro(d.resumo.com_evolucao.tarifa)}) está na ficha.
                 </>
               }
-              comoInterpretar={<>{d.pares}</>}
+              comoInterpretar={<>{semNomesDeCampo(d.pares)}</>}
               naoConcluir={
                 <>
                   Não se conclui eficiência nem culpa: perdas, continuidade e tarifa dependem da área atendida (densidade, clima, renda, rede herdada). Anos de referência diferentes não se
@@ -114,7 +120,9 @@ export default function PaginaP037() {
               ]}
             >
               <div className="space-y-6">
-                <EmpresasResposta id="p037">{respostaDistribuidoras(d)}</EmpresasResposta>
+                <RespostaCurta id="p037" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}>
+                  {respostaDistribuidoras(d)}
+                </RespostaCurta>
                 <EmpresasRecorte
                   periodo={
                     <>
@@ -128,20 +136,21 @@ export default function PaginaP037() {
                   }
                   unidade="% da energia injetada; horas e interrupções por unidade consumidora; R$/MWh sem tributos"
                 />
-                {evTaxaNacional && refPerdas && (
+                {evTaxaNacional2 && refPerdas && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Numero
                       rotulo="Referência: perdas totais na distribuição, Brasil"
                       natureza={g.proveniencia.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                      evidencia={evTaxaNacional}
+                      evidencia={evTaxaNacional2}
                       formato="pct"
-                      casas={1}
+                      casas={2}
                       tamanho="medio"
                       nota="Número do módulo Perdas, usado como referência nas barras do comparador (mesmo ano das perdas por distribuidora)."
                       endereco={ancoraPainel("p037")}
                     />
                   </div>
                 )}
+                <EmpresasComoLer />
                 <EmpresasDistribuidoras
                   linhas={linhasDistribuidoras(d.indice)}
                   entidades={entidadesDistribuidoras(d.indice)}

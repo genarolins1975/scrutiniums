@@ -157,7 +157,7 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-30",
     emUmaFrase:
-      "Fundo setorial que custeia políticas públicas do setor elétrico, como a universalização do serviço e os descontos tarifários a usuários (baixa renda, rural, irrigação e aquicultura, saneamento, fontes incentivadas), arrecadado principalmente por quotas incluídas nas tarifas de uso da rede.",
+      "Fundo setorial que custeia políticas públicas do setor elétrico, como a universalização do serviço e os descontos tarifários a usuários (baixa renda, rural, irrigação e aquicultura, saneamento, fontes incentivadas). É arrecadado principalmente por quotas incluídas nas tarifas de uso da rede.",
     porQueImporta:
       "É por onde passam os descontos da conta de luz: quem tem desconto recebe, e o custo é repartido nas tarifas de todos os consumidores pela quota da CDE, que a ANEEL fixa a cada ano no valor que falta depois das demais receitas.",
     comoEMedido:

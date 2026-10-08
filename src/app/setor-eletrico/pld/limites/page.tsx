@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { LinhaDoTempo } from "@/components/energia/LinhaDoTempo";
@@ -18,6 +19,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/pld/limites" },
 };
 
-const FONTE = "CCEE, PLD_HORARIO; ANEEL, atos anuais de limites do PLD";
+const FONTE = "CCEE, PLD horário por submercado; ANEEL, atos anuais de limites do PLD";
 
 export default function PldLimitesPage() {
   const g = lerGold<PldDetalheGold>("pld_detalhe.json");
@@ -56,6 +58,21 @@ export default function PldLimitesPage() {
   const atual = atualidadePld(g.referencia.dia, g.gerado_em);
   const versao = g.referencia.dia;
   const anoRef = Number(g.referencia.dia.slice(0, 4));
+  // contexto que o dado publicado sustenta para anos com muitas horas no piso: a sequência de CMO semanal zero (achado A02, página CMO e formação de preço)
+  const seq = g.achados.A02.sequencia_comum_mais_longa;
+  const anosNaSequencia = seq && l.disponivel ? anosPermanencia(l).filter((a) => `${a}-01-01` >= seq.inicio && `${a}-12-31` <= seq.fim) : [];
+  const notaPermanencia =
+    seq && anosNaSequencia.length ? (
+      <>
+        {anosNaSequencia.length === 1 ? `O ano de ${anosNaSequencia[0]} inteiro está dentro de um período` : `Os anos de ${anosNaSequencia.join(" e ")} inteiros estão dentro de um período`} de{" "}
+        {num(seq.semanas, 0)} semanas seguidas, de {dataBR(seq.inicio)} a {dataBR(seq.fim)} (datas das sextas-feiras que encerram as semanas), em que o custo marginal de operação (CMO)
+        semanal, estimado pelo modelo DECOMP e publicado pelo ONS, foi zero nos quatro subsistemas.{" "}
+        <Link href="/setor-eletrico/pld/cmo-e-formacao#p009" className="text-energia-dark underline underline-offset-4">
+          Ver na página CMO e formação de preço
+        </Link>
+        . A fonte não informa a razão dos zeros, e esta página não atribui causa.
+      </>
+    ) : null;
   const passagensLimites = g.conceito.fontes_textuais.filter((f) => ["d5163_art57_p1", "d5163_art57_p2", "d5163_art57_p3", "ren957_art78"].includes(f.id) && f.texto);
 
   return (
@@ -63,7 +80,7 @@ export default function PldLimitesPage() {
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["REH", "DOU", "ANEEL", "CCEE"]}
+        <PldCabecalho siglas={["ANEEL", "CCEE", "ONS"]}
           titulo="Limites, piso e tetos"
           referencia={
             <>
@@ -72,8 +89,9 @@ export default function PldLimitesPage() {
             </>
           }
         >
-          A ANEEL fixa, a cada ano, três limites para o PLD: o piso (valor mínimo), o teto horário (o máximo de cada hora) e o teto estrutural. Este painel mostra quando o preço
-          encostou em cada um, com os valores lidos no ato e a vigência de cada campo.
+          A ANEEL fixa, a cada ano, <Termo slug="limites-do-pld">três limites</Termo> para o PLD: o piso (valor mínimo), o teto horário (o máximo de cada hora) e o teto
+          estrutural (o limite para a média diária dos preços horários). Este painel mostra quando o preço encostou em cada um, com os valores de cada ato da ANEEL e o
+          período em que valem.
         </PldCabecalho>
         <PldNavegacao atual="p010" />
         <ModoProfundidade>
@@ -127,6 +145,7 @@ export default function PldLimitesPage() {
                     fichas={fichasPld(g.evidencias.arquivo, SUBMERCADOS.map((sm) => `piso_${anoRef}_${sm}`))}
                     fonte={FONTE}
                     versao={versao}
+                    notaPermanencia={notaPermanencia}
                   />
 
                   <PldAnalise id="atos" titulo="Os atos anuais, com publicação e vigência">

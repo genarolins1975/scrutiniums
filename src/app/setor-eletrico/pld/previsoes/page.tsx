@@ -16,6 +16,7 @@ import {
   PrevisoesRecorte,
   PrevisoesResposta,
   PrevisoesSeguir,
+  PrevisoesTermos,
 } from "@/components/energia/PrevisoesPagina";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -23,7 +24,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CURTO_SM, carimbo, dataBR, datasLegiveis, num, plural } from "@/lib/energia/formato";
-import { integra, lerGold } from "@/lib/energia/gold";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_REVISOES,
   COR_SM,
@@ -47,9 +48,12 @@ import {
   respostaP013,
   rodadasRecentes,
   temRodada,
+  termosPrevisoes,
   textoAlertas,
   textoEmissao,
+  textoEmissaoLeitor,
   textoTolerancia,
+  vereditoP013,
 } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
@@ -95,6 +99,9 @@ export default function PrevisoesPage() {
   const proxima = primeiraEntregaAMaturar(g.prospectivo.apuracoes);
   const retido = !g.desempenho.publicado;
   const transcritas = rodadasArquivo.filter((r) => r.transcrito);
+  // média das 24 horas do dia de origem na página PLD (pld.json), só quando é o mesmo dia da rodada
+  const pldPagina = gold.pld();
+  const mediaDiaPaginaPld = integra(pldPagina) && pub && pldPagina.dia_referencia === pub.origem ? Object.fromEntries(pldPagina.cartoes.map((c) => [c.sm, c.media_dia])) : null;
 
   return (
     <>
@@ -117,11 +124,12 @@ export default function PrevisoesPage() {
             </>
           }
         >
-          Nenhum modelo de previsão do PLD está aprovado: o que aparece aqui é uma referência simples, a persistência (B0), identificada como tal, com a prova de cada
-          número. O segundo painel guarda todas as emissões como foram registradas, antes do resultado, para que o desempenho possa ser medido depois sem reescrever
+          Nenhum modelo de previsão do PLD está aprovado: o que aparece aqui é uma referência simples, a persistência (B0), que repete o PLD médio do último período
+          completo, identificada como tal, com a prova de cada número. O segundo painel guarda todas as emissões como foram registradas, antes do resultado, para que o desempenho possa ser medido depois sem reescrever
           nada. Como cada número é calculado está no registro de modelos.
         </CabecalhoModulo>
         <PrevisoesNavegacao pagina="previsoes" />
+        <PrevisoesTermos itens={termosPrevisoes(g.definicoes)} />
         <ModoProfundidade>
           <Bloco id="atual">
             <PainelEvidencia
@@ -153,7 +161,9 @@ export default function PrevisoesPage() {
               complementares={pub ? [{ rotulo: "PLD já publicado no corte", p: pub.proveniencia }] : []}
             >
               <div className="space-y-6">
-                <PrevisoesResposta id="p013">{respostaP013(g)}</PrevisoesResposta>
+                <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
+                  {respostaP013(g)}
+                </PrevisoesResposta>
                 <PrevisoesRecorte
                   periodo={
                     linhas.length ? (
@@ -175,7 +185,11 @@ export default function PrevisoesPage() {
                 />
                 {comRodada && (
                   <PrevisoesAviso tipo={at.atraso_min !== null && at.atraso_min > 0 ? "alerta" : "nota"}>
-                    Rodada {textoEmissao(at)}. {at.alertas.length ? `Alertas registrados: ${textoAlertas(at.alertas)}.` : ""}{" "}
+                    Rodada {textoEmissaoLeitor(at)}.
+                    <span data-nivel="analisar">
+                      {" "}
+                      Detalhe: rodada {textoEmissao(at)}. {at.alertas.length ? `Alertas registrados: ${textoAlertas(at.alertas)}.` : ""}
+                    </span>{" "}
                     {atraso !== null && atraso > 0
                       ? `Fonte defasada: a verificação de ${carimbo(g.rotina.verificado_em)} já tinha o prazo de ${dataBR(g.rotina.dias_vencidos_ate)} vencido, e a rodada mais recente é de ${dataBR(at.origem)}, ${plural(atraso, "dia", "dias")} antes.`
                       : `Na verificação de ${carimbo(g.rotina.verificado_em)}, nenhum prazo de rodada posterior a ${dataBR(at.origem)} tinha vencido.`}
@@ -190,6 +204,7 @@ export default function PrevisoesPage() {
                     fonte={fonteGrade}
                     versao={versao}
                     endereco={enderecoPainel("p013")}
+                    mediaDiaPaginaPld={mediaDiaPaginaPld}
                   />
                 ) : (
                   <PrevisoesAviso tipo="alerta">

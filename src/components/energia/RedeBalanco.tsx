@@ -33,6 +33,7 @@ import {
   paraTabela,
   respostaBalanco,
   vereditoBalanco,
+  vereditoExterior,
   respostaExterior,
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -118,14 +119,14 @@ export function RedeBalanco({
         </div>
         <div className="min-w-0">
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">Horas (contagem por identidade, tolerância de {balanco.tolerancia_mwmed.toLocaleString("pt-BR")} MWmed); MWh nas somas mensais</dd>
+          <dd className="mt-0.5">Horas (contagem por conta conferida, tolerância de {balanco.tolerancia_mwmed.toLocaleString("pt-BR")} MWmed por hora); MWh nas somas mensais</dd>
         </div>
       </dl>
 
       {destaques}
 
       <GraficoBarras
-        titulo={`Horas em que cada identidade fecha e horas com resíduo, ${sm === "SIN" ? "SIN" : NOME_SM[sm]}`}
+        titulo={`Horas em que cada conta fecha e horas com resíduo, ${sm === "SIN" ? "SIN" : NOME_SM[sm]}`}
         dados={paraTabela(ids)}
         chaveCategoria="id"
         chaveRotulo="identidade"
@@ -139,7 +140,7 @@ export function RedeBalanco({
         empilhado
       />
       <TabelaInterativa
-        titulo={`Tabela equivalente: identidades ${sm === "SIN" ? "do SIN" : `do ${NOME_SM[sm]}`}`}
+        titulo={`Tabela equivalente: contas conferidas ${sm === "SIN" ? "do SIN" : `do ${NOME_SM[sm]}`}`}
         colunas={colunasIdentidades(balanco)}
         linhas={paraTabela(ids)}
         chaveLinha="id"
@@ -148,7 +149,7 @@ export function RedeBalanco({
         versao={versao}
         nomeArquivo={`rede-identidades-${sm}`}
         chaveUrl="id.t"
-        nota="Hora sem alguma parcela fica fora da identidade (horas com todas as parcelas). A soma dos subsistemas só existe para o SIN."
+        nota="Hora sem alguma parcela fica fora da conta (horas com todas as parcelas). A soma dos subsistemas só existe para o SIN."
       />
 
       <GraficoLinhas
@@ -170,8 +171,8 @@ export function RedeBalanco({
         legendaInterativa
       />
       <p className="text-sm text-carvao-muted">
-        Cada soma mensal usa só as horas da sua identidade: o balanço interno nas horas com geração, carga e intercâmbio; o perímetro nas horas com o intercâmbio e todas as
-        fronteiras e o exterior. O zero do eixo é a referência: num mês em que a identidade fecha em todas as horas, a soma só se afasta do zero pela tolerância de cada hora.{" "}
+        Cada soma mensal usa só as horas da sua conta: o balanço interno nas horas com geração, carga e intercâmbio; o perímetro nas horas com o intercâmbio e todas as
+        fronteiras e o exterior. O zero do eixo é a referência: num mês em que a conta fecha em todas as horas, a soma só se afasta do zero pela tolerância de cada hora.{" "}
         {marcos.length
           ? `A marca no gráfico (${marcos.map((m) => m.rotulo).join("; ")}) separa meses de geração e carga que não se comparam diretamente; o resíduo e o intercâmbio não mudam com ela.`
           : ""}
@@ -191,9 +192,9 @@ export function RedeBalanco({
 
       <div className="space-y-4 border-t border-linha pt-5">
         <h3 className="font-serif text-lg text-carvao">Exterior: Argentina, Uruguai e Paraguai</h3>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p029-exterior">
+        <RespostaCurta id="p029-exterior" tamanho="sm" veredito={vereditoExterior(exterior)}>
           {respostaExterior(exterior)}
-        </p>
+        </RespostaCurta>
         <TabelaInterativa
           titulo="Exterior nos 12 meses completos mais recentes, por país"
           colunas={COLUNAS_EXTERIOR_12M}
@@ -254,7 +255,7 @@ export function RedeBalanco({
           entidades={REGIOES_BALANCO.map((r) => ({ id: r, rotulo: NOME_SM[r], sinonimos: [CURTO_SM[r]] }))}
           selecionadas={escolhidas}
           onMudar={(x) => definir({ sms: x as SubsistemaOuSin[] })}
-          dicaBusca="SIN, Sul, Nordeste"
+          dicaBusca="Buscar, por exemplo SIN, Sul, Nordeste"
           vazio="Nenhuma região escolhida. Escolha até quatro para ver as horas com resíduo na mesma escala."
         >
           {() => null}

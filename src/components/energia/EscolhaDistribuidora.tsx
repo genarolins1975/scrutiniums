@@ -10,7 +10,7 @@ import { useId, useState } from "react";
  * página sem escolha.
  */
 
-export type OpcaoDistribuidora = { cnpj: string; sigla: string; nome: string | null };
+export type OpcaoDistribuidora = { cnpj: string; sigla: string; nome: string | null; ufs?: string[] };
 
 export function EscolhaDistribuidora({
   opcoes,
@@ -18,12 +18,15 @@ export function EscolhaDistribuidora({
   parametro,
   ancora,
   rotulo,
+  ano,
 }: {
   opcoes: OpcaoDistribuidora[];
   destino: string;
   parametro: "d" | "dist";
   ancora: string;
   rotulo: string;
+  /** Ano do dado de cada distribuidora da lista (a lista só tem quem tem dado nele). */
+  ano?: number | null;
 }) {
   const [cnpj, setCnpj] = useState("");
   const id = useId();
@@ -42,11 +45,14 @@ export function EscolhaDistribuidora({
           onChange={(e) => setCnpj(e.target.value)}
           className="mt-1 min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-sm text-carvao"
         >
-          <option value="">Escolha ({opcoes.length} com dados)</option>
+          <option value="">
+            Escolha ({opcoes.length} distribuidoras{ano ? ` com dado de ${ano}` : ""})
+          </option>
           {opcoes.map((o) => (
-            <option key={o.cnpj} value={o.cnpj}>
+            // sigla e estados: o nome oficial da fonte vem em caixa alta e sem acento, e fica no title
+            <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined}>
               {o.sigla}
-              {o.nome && o.nome !== o.sigla ? ` · ${o.nome}` : ""}
+              {o.ufs && o.ufs.length ? ` (${o.ufs.join(", ")})` : ""}
             </option>
           ))}
         </select>

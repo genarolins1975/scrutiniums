@@ -103,8 +103,13 @@ export function AprendaIndice({ grupos }: { grupos: GrupoIndice[] }) {
         grupos.map((g) => (
           <details key={g.id} id={g.id} className="scroll-mt-4 border-t border-linha">
             <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
-              <h2 className="rotulo text-mineral">{g.nome}</h2>
-              <span className="text-sm text-carvao-muted">
+              <span className="min-w-0">
+                <h2 className="rotulo text-mineral">{g.nome}</h2>
+                <span className="block text-sm leading-snug text-carvao-muted" data-previa="true">
+                  {g.itens.map((i) => i.titulo).join(", ")}
+                </span>
+              </span>
+              <span className="shrink-0 whitespace-nowrap text-sm text-carvao-muted">
                 {g.itens.length} {g.itens.length === 1 ? "verbete" : "verbetes"} <span aria-hidden="true">▾</span>
               </span>
             </summary>

@@ -46,7 +46,7 @@ export function CartoesPld({ pld }: { pld: PldGold }) {
             <div className="flex justify-between gap-3">
               <dt className="text-mineral">Posição desde 2021</dt>
               <dd className="text-right text-carvao">
-                {c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)}` : "sem dado"}
+                {c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)} de ${num(c.posicao.n_dias, 0)} dias` : "sem dado"}
               </dd>
             </div>
           </dl>

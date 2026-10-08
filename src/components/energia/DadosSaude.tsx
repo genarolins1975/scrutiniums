@@ -12,7 +12,7 @@ import type { DiaCalendario } from "@/lib/energia/tipos-dados";
 
 /**
  * P068, saúde e revisões: o calendário de atualização e mudanças (uma medida por vez, na URL em
- * ?med=) e a tabela dos conjuntos integrados com SLA, completude, coleta e revisão. Tudo vem
+ * ?med=) e a tabela das integrações com SLA, completude, coleta e revisão. Tudo vem
  * pronto de publicacao.json: aqui só se escolhe a medida e se desenha. Antes do primeiro dia
  * de captura registrado, as medidas de captura são "sem dado": o ambiente ainda não registrava
  * capturas, e zero afirmaria que nada foi capturado.
@@ -31,7 +31,7 @@ export function DadosCalendario({ calendario, hoje, janela }: { calendario: DiaC
     <div className="space-y-3" data-medida={m.id}>
       <GeracaoEscolha legenda="Medida do calendário" opcoes={MEDIDAS_CALENDARIO.map((x) => ({ id: x.id, rotulo: x.rotulo, detalhe: x.detalhe }))} valor={m.id} onEscolher={(x) => definir({ med: x })} />
       <p className="text-sm leading-relaxed text-carvao-muted">
-        {m.rotulo}: {m.detalhe}, por dia (UTC), de {dataBR(c.janela.inicio)} a {dataBR(c.janela.fim)}.
+        {m.rotulo}: {m.detalhe}, por dia no horário universal (UTC, três horas à frente de Brasília), de {dataBR(c.janela.inicio)} a {dataBR(c.janela.fim)}.
         {m.deCaptura && c.inicioRegistro
           ? ` O registro de capturas deste ambiente começa em ${dataBR(c.inicioRegistro)}; os dias anteriores aparecem como sem dado, não como zero.`
           : ""}
@@ -47,7 +47,7 @@ export function DadosCalendario({ calendario, hoje, janela }: { calendario: DiaC
         unidade={m.unidade}
         casas={0}
         periodo={`${dataBR(c.janela.inicio)} a ${dataBR(c.janela.fim)}`}
-        nota="Dia (UTC) com a contagem de eventos de coleta registrados. Falha de coleta nunca troca a data do dado: a captura anterior continua guardada."
+        nota="Dia no horário universal (UTC) com a contagem de eventos de coleta registrados. Falha de coleta nunca troca a data do dado: a captura anterior continua guardada."
       />
     </div>
   );
@@ -56,19 +56,19 @@ export function DadosCalendario({ calendario, hoje, janela }: { calendario: DiaC
 export function DadosSaudeTabela({ linhas, versao }: { linhas: LinhaTabela[]; versao: string }) {
   return (
     <TabelaInterativa
-      titulo="Conjuntos integrados: atualidade, completude, coleta e revisões"
+      titulo="Integrações: atualidade, completude, coleta e revisões"
       colunas={COLUNAS_SAUDE}
       linhas={linhas}
       chaveLinha="id"
       colunaRotulo="titulo"
-      fonte="Scrutiniums, publicacao.json (histórico de capturas do observatório: capturas, coletas, recorte, completude e revisões de cada conjunto integrado)"
+      fonte="Scrutiniums, publicação de saúde dos dados (histórico de capturas do observatório: capturas, coletas, recorte, completude e revisões de cada integração)"
       versao={versao}
       nomeArquivo="dados-saude-conjuntos"
       chaveUrl="sau"
       ordemInicial={{ coluna: "atraso", direcao: "desc" }}
       tamanhoPagina={25}
       dicaBusca="Nome do conjunto"
-      nota="Situação e atraso valem para a data de referência da publicação, e o prazo é o fim do último período disponível mais a tolerância da cadência (caso A a E no modo Auditar). A última captura é a da última vintage com conteúdo: falha de coleta não a renova. Completude é a fração de períodos presentes entre o primeiro e o último de cada série; séries no último período é a fração das séries do conjunto com valor nesse período."
+      nota="Situação e atraso valem para a data de referência da publicação, e o prazo é o fim do último período disponível mais a tolerância da cadência (regra de prazo, caso A a E, no modo Auditar). A última captura é a da última versão com conteúdo: falha de coleta não a renova. Completude é a fração de períodos presentes entre o primeiro e o último de cada série; séries no último período é a fração das séries do conjunto com valor nesse período."
     />
   );
 }

@@ -9,14 +9,15 @@ import {
   EmpresasAnalise,
   EmpresasAuditoria,
   EmpresasAviso,
+  EmpresasComoLer,
   EmpresasNavegacao,
   EmpresasRecorte,
-  EmpresasResposta,
   EmpresasSeguir,
   EmpresasSubtitulo,
 } from "@/components/energia/EmpresasPagina";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -28,7 +29,6 @@ import {
   COLUNAS_EVOLUCAO_QUALIDADE,
   COLUNAS_EVOLUCAO_TARIFA,
   ROTA_EMPRESAS,
-  ROTULO_MOTIVO,
   cnpjFormatado,
   comReferenciaNacional,
   dadosFinancas,
@@ -37,6 +37,7 @@ import {
   emMilhoes,
   inteiro,
   linksOrigem,
+  motivoExplicado,
   mwTexto,
   nomeOuCnpj,
   numTexto,
@@ -49,11 +50,16 @@ import {
   rotaPainel,
   rotuloEscopo,
   rotuloGrupo,
+  semNomesDeCampo,
   slugsEstaticos,
+  textoAnosNegativos,
   textoCompanhia,
+  textoNegativos,
   textoPares,
+  trimestreTexto,
+  vereditoFicha,
 } from "@/lib/energia/empresas";
-import { arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, evolucaoDistribuidora, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
+import { alertasDePerdas, arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, evolucaoDistribuidora, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
 import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -115,6 +121,10 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
   const nacional = lerGold<{ nacional?: { ano: number; parcial: boolean; taxa_total_pct: number | null; universo?: string }[] }>("perdas.json")?.nacional ?? [];
   const perdasSerie = d.grupo === "concessionaria" ? comReferenciaNacional(evol.perdas, nacional) : evol.perdas.map((p) => ({ ...p, brasil: null }));
   const evPerdas = evidenciaPerdas(d.cnpj);
+  const alertas = alertasDePerdas(d.cnpj);
+  // média das concessionárias do mesmo ano da perda exibida (só ano completo, como no gráfico de evolução)
+  const nacionalDoAno = perdasSerie.find((x) => x.ano === String(d.perdas?.ano))?.brasil ?? null;
+  const motivos = g.controle.cobertura.motivos_parada;
   const pp = paresPerdas(d, ix);
   const pq = paresQualidade(d, ix);
   const arvore = arvoreDoArquivo(g.series.cadeia, d.cnpj);
@@ -149,6 +159,9 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
   const t = d.tarifa;
   const p = d.perdas;
   const origens = linksOrigem(d);
+  // a linha das siglas só diz algo quando as fontes publicam siglas realmente diferentes (e não a mesma, com outra caixa ou acento)
+  const semAcento = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const siglasDiferentes = new Set(d.siglas.map((x) => semAcento(x.sigla))).size > 1;
 
   return (
     <>
@@ -166,18 +179,19 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
           · {d.sigla}
         </nav>
         <CabecalhoModulo
-          siglas={["SAMP", "DEC", "FEC", "TE", "TUSD"]}
+          siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "REH"]}
           rotulo="Perfil da distribuidora"
           titulo={`${d.sigla}: ${d.nome ?? "razão social sem registro"}`}
           referencia={
             <>
               Perdas de {p?.ano ?? "sem dado"} (base publicada de Perdas), continuidade de {q?.ano ?? "sem dado"} (base publicada de Qualidade), tarifas da base publicada de Conta de luz; cadeia de controle declarada à ANEEL de{" "}
-              {g.datas.polimero_janela[0] ?? "sem dado"} a {g.datas.polimero_janela.at(-1) ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
+              {trimestreTexto(g.datas.polimero_janela[0])} a {trimestreTexto(g.datas.polimero_janela.at(-1))}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
         >
           CNPJ {cnpjFormatado(d.cnpj)} · {d.classificacao ?? rotuloGrupo(d.grupo)} · {d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} ·{" "}
-          {d.ativa ? "ativa" : "inativa"}. Siglas publicadas pelas fontes: {d.siglas.map((s) => `${s.sigla} (${{ tarifas: "tarifas", continuidade: "continuidade", samp: "SAMP", cadastro_agentes: "cadastro de agentes" }[s.fonte]})`).join("; ")}.
+          {d.ativa ? "ativa" : "inativa"}.
+          {siglasDiferentes ? ` Siglas publicadas pelas fontes: ${d.siglas.map((s) => `${s.sigla} (${{ tarifas: "tarifas", continuidade: "continuidade", samp: "SAMP", cadastro_agentes: "cadastro de agentes" }[s.fonte]})`).join("; ")}.` : ""}
         </CabecalhoModulo>
         <EmpresasNavegacao atual="ficha" />
 
@@ -201,7 +215,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   {evol.quebrasQualidade.length ? ` O perímetro da continuidade mudou em ${evol.quebrasQualidade.join(", ")}.` : ""}
                 </>
               }
-              comoInterpretar={<>{g.distribuidoras.pares} Ano incompleto de perdas aparece tracejado e fora da comparação; o limite de DEC e FEC é o fixado pela ANEEL para a própria distribuidora.</>}
+              comoInterpretar={<>{semNomesDeCampo(g.distribuidoras.pares)} Ano incompleto de perdas aparece tracejado e fora da comparação; o limite de DEC e FEC é o fixado pela ANEEL para a própria distribuidora.</>}
               naoConcluir={
                 <>
                   Não se conclui eficiência nem culpa: perdas, interrupções e tarifa dependem da área atendida. A tarifa B1 sem tributos não é a conta inteira. As taxas da distribuidora não
@@ -216,7 +230,9 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
               ]}
             >
               <div className="space-y-6">
-                <EmpresasResposta id="ficha">{respostaFicha(d)}</EmpresasResposta>
+                <RespostaCurta id="ficha" veredito={vereditoFicha(d, nacionalDoAno)}>
+                  {respostaFicha(d)}
+                </RespostaCurta>
                 <EmpresasRecorte
                   periodo={
                     <>
@@ -235,7 +251,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     <Numero
                       rotulo="Perdas totais"
                       natureza={g.proveniencia.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                      evidencia={comValorExibido(evPerdas.evidencia, pctTexto(evPerdas.evidencia.valor_calculo, 2))}
+                      evidencia={comValorExibido(evPerdas.evidencia, pctTexto(evPerdas.evidencia.valor_calculo, 2).replace("\u2212", "-"))}
                       formato="pct"
                       casas={2}
                       tamanho="medio"
@@ -269,6 +285,13 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     </p>
                   </div>
                 </div>
+                {p && p.taxa_total_pct !== null && p.taxa_total_pct < 0 && (
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-perda-negativa="">
+                    Valor negativo quer dizer que a medida publicada pelo SAMP é negativa. O observatório mostra o valor como a fonte o entrega, sem corrigi-lo.
+                    {alertas.length ? ` O módulo Perdas marca a ${d.sigla} em ${p.ano} com os alertas: ${alertas.join("; ")}.` : ""}
+                  </p>
+                )}
+                <EmpresasComoLer />
                 <p className="text-xs text-carvao-muted">
                   DEC, FEC e tarifa são cópias das bases publicadas de Qualidade e de Conta de luz, que não publicam ficha Comprove por distribuidora; a proveniência de cada um está nos selos abaixo, e o
                   número pode ser conferido na página de origem com a mesma distribuidora escolhida.
@@ -293,6 +316,11 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       legendaInterativa
                       altura={280}
                     />
+                    {textoAnosNegativos(evol.perdas) && (
+                      <p className="max-w-prose2 text-sm text-carvao-muted" data-anos-negativos="">
+                        {textoAnosNegativos(evol.perdas)}
+                      </p>
+                    )}
                   </>
                 )}
                 {evol.qualidade.length > 0 && (
@@ -360,20 +388,30 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
 
                 <EmpresasSubtitulo>Como ela se compara com as pares?</EmpresasSubtitulo>
                 <ul className="space-y-1 text-sm text-carvao">
-                  <li>{textoPares(d.sigla, "taxa de perdas", pp)}</li>
-                  <li>{textoPares(d.sigla, "DEC", pq)}</li>
+                  <li>{textoPares(d.sigla, "taxa de perdas", pp, d.slug)}</li>
+                  <li>{textoPares(d.sigla, "DEC", pq, d.slug)}</li>
                 </ul>
+                {d.grupo === "permissionaria" && (
+                  <p className="max-w-prose2 text-sm text-carvao-muted" data-grupo-permissionaria="">
+                    Permissionária é a classificação que a ANEEL dá a esta distribuidora, diferente da de concessionária. Os pares são só as distribuidoras do mesmo grupo.
+                  </p>
+                )}
+                {textoNegativos(pp) && (
+                  <p className="max-w-prose2 text-sm text-carvao-muted" data-pares-negativos="">
+                    {textoNegativos(pp)}
+                  </p>
+                )}
                 <EmpresasFichaPares slug={d.slug} sigla={d.sigla} perdas={pp} qualidade={pq} />
 
                 <EmpresasSubtitulo>Quem controla a {d.sigla}?</EmpresasSubtitulo>
                 <p className="text-sm text-carvao">
                   {d.controle.topo
-                    ? `O topo da cadeia de controladores únicos declarada à ANEEL é ${nomeOuCnpj(d.controle.topo_nome, d.controle.topo)}; a cadeia para ali porque: ${ROTULO_MOTIVO[d.controle.motivo_parada]}.`
-                    : `A própria ${d.sigla} é o topo da cadeia declarada: ${ROTULO_MOTIVO[d.controle.motivo_parada]}.`}
+                    ? `O topo da cadeia de controladores únicos declarada à ANEEL é ${nomeOuCnpj(d.controle.topo_nome, d.controle.topo)}; a cadeia para ali porque: ${motivoExplicado(d.controle.motivo_parada, motivos)}.`
+                    : `A própria ${d.sigla} é o topo da cadeia declarada: ${motivoExplicado(d.controle.motivo_parada, motivos)}.`}
                   {d.controle.acima ? ` Acima, sem CNPJ: ${d.controle.acima}.` : ""}
                 </p>
                 {arvore ? (
-                  <EmpresasArvore a={arvore} href={(c) => `${rotaPainel("p039")}?ctl.e=${c}#p039`} />
+                  <EmpresasArvore a={arvore} href={(c) => `${rotaPainel("p039")}?ctl.e=${c}#p039`} motivos={motivos} resumo={false} />
                 ) : (
                   <p className="text-sm text-carvao-muted">O CNPJ não aparece na composição societária declarada na janela vigente nem como sócio de outro declarante.</p>
                 )}

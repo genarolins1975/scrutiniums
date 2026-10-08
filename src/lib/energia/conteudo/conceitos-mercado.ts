@@ -136,6 +136,8 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase: "Segmento do mercado em que a energia é comprada e vendida em contratos bilaterais livremente negociados, conforme regras e procedimentos de comercialização específicos.",
     porQueImporta:
       "A parte do consumo que contrata nesse ambiente não compra a energia da distribuidora; a participação do ACL no consumo mostra quanto do mercado passou a negociar a própria energia.",
+    comoEMedidoResumo:
+      "A participação do ACL é a energia consumida nas classes de agente do ACL dividida pelo consumo contabilizado pela CCEE (ACR e ACL), sem a exportação. Aqui, o ACR é a classe de agente Distribuidor e o ACL, a soma das demais classes, exceto Exportador. A conta soma a energia dos meses antes de dividir: é uma razão de somas, e não a média dos percentuais mensais.",
     comoEMedido:
       "No observatório, pelo consumo contabilizado pela CCEE nas classes de agente de consumo, sem a exportação, em MW médios; e pelo consumo livre na rede publicado pela EPE, em MWh. Participações sempre como razão de somas em energia, nunca média de percentuais.",
     relacoes: ["acr", "mcp", "pld"],
@@ -228,7 +230,7 @@ export const CONCEITOS: Conceito[] = [
     conferidoEm: "2026-10-07",
     ressalva: "definição regulatória não lida (Regras de Comercialização da CCEE)",
     emUmaFrase:
-      "Razão, em percentual, entre a geração verificada das usinas do Mecanismo de Realocação de Energia (MRE) no mês e a garantia física dessas usinas (no boletim do MME, a garantia física sazonalizada); abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física.",
+      "Razão, em percentual, entre a geração verificada das usinas do Mecanismo de Realocação de Energia (MRE) no mês e a garantia física dessas usinas (no boletim do MME, a garantia física sazonalizada). Abaixo de 100%, as hidrelétricas do mecanismo geraram, juntas, menos que a garantia física.",
     porQueImporta:
       "A garantia física é a quantidade máxima de energia de um empreendimento que pode comprovar atendimento de carga ou lastrear contratos (ver Garantia física); o GSF mostra, mês a mês, quanto dela as hidrelétricas do MRE entregaram juntas. O relatório do GT de Aprimoramento do MRE (julho de 2019) registra que, desde 2014, o GSF tem ficado abaixo de 90%, o que expôs negativamente muitos agentes hidrelétricos a valores elevados de PLD, e que o descolamento entre a sazonalidade da produção e a da garantia física sazonalizada infla o GSF no período úmido e o reduz no período seco, com oscilações artificiais que elevam o risco das hidrelétricas.",
     comoEMedidoResumo:
@@ -275,10 +277,11 @@ export const CONCEITOS: Conceito[] = [
     ],
     limitacoes: [
       "As fontes não usam o mesmo denominador. O boletim do MME usa a garantia física sazonalizada; o relatório do GT usa as garantias físicas históricas, sem sazonalização, na Tabela 1, e a garantia física sazonalizada nas figuras; o observatório usa a garantia física modulada e ajustada pelo fator de disponibilidade. A diferença pode ser grande: no exemplo, o mesmo mês dá resultados distintos com cada denominador. Valores de fontes diferentes só se comparam depois de conferir o denominador.",
-      "A definição regulatória do fator de ajuste do MRE, nas Regras de Comercialização da CCEE e na regulamentação da ANEEL, não foi lida: o repositório de normas da ANEEL responde 403 a requisições automatizadas e o bloqueio não foi contornado, e as Regras de Comercialização não foram lidas. O verbete descreve o GSF como os documentos do MME o usam.",
+      "A definição regulatória do fator de ajuste do MRE, nas Regras de Comercialização da CCEE e na regulamentação da ANEEL, não foi lida: o repositório de normas da ANEEL recusa as consultas automáticas do observatório, e as Regras de Comercialização também não foram lidas. O verbete descreve o GSF como os documentos do MME o usam.",
       "A conferência com o fator mensal do InfoMercado cobre alguns meses da série, e o mês do exemplo pode ainda não ter edição correspondente; a lista e a divergência do número de 12 meses estão no painel de Mercado (ver MRE).",
       "O GSF é o resultado do conjunto das usinas do mecanismo, que o boletim descreve como as usinas do MRE geraram \"juntas\"; não é o desempenho de uma usina.",
     ],
+    detalheDaConferencia: ["O repositório de normas da ANEEL responde 403 a requisições automatizadas, e o bloqueio não foi contornado."],
     vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" }],
   },
 ];

@@ -3,6 +3,7 @@
 import { useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -17,13 +18,15 @@ import { CAMPOS_LIMITE, COLUNAS_LIMITES, COR_LIMITE, NOME_LIMITE, SERIES_LIMITES
  * seletor muda os três; o voltar desfaz); sem ano no link vale o ano da data de
  * referência da gold. A comparação de até quatro anos mora em `?anos=`.
  *
- * A resposta e o detalhe de cada ano chegam prontos do servidor (respostaLimites e o
- * bloco dos atos): este componente só escolhe qual mostrar, sem refazer conta.
+ * A resposta e o detalhe de cada ano chegam prontos do servidor (vereditoLimites,
+ * respostaLimites e o bloco dos atos): este componente só escolhe qual mostrar, sem refazer
+ * conta. O veredito do ano fica à vista; a resposta completa dele é a segunda camada.
  */
 export function RegulacaoLimites({
   linhas,
   anoPadrao,
   respostas,
+  vereditos,
   detalhes,
   fonte,
   versao,
@@ -31,6 +34,7 @@ export function RegulacaoLimites({
   linhas: LinhaLimites[];
   anoPadrao: string;
   respostas: Record<string, string>;
+  vereditos: Record<string, string>;
   detalhes: Record<string, ReactNode>;
   fonte: string;
   versao: string;
@@ -61,9 +65,15 @@ export function RegulacaoLimites({
             ))}
           </select>
         </label>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" aria-live="polite" data-resposta-ano={ano}>
-          {ano === anoPadrao ? "Ano da data de referência: os limites dele estão na resposta acima; escolha outro ano para comparar." : respostas[ano]}
-        </p>
+        <RespostaCurta
+          id={ano}
+          atributo="data-resposta-ano"
+          vivo
+          tamanho="sm"
+          veredito={ano === anoPadrao ? "Este é o ano da data de referência, o da resposta acima. Escolha outro ano para ver os limites e o ato dele." : vereditos[ano]}
+        >
+          {respostas[ano]}
+        </RespostaCurta>
       </div>
 
       <GraficoBarras

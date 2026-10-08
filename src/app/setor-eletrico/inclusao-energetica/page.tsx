@@ -5,10 +5,25 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { InclusaoIndisponivel, InclusaoNavegacao } from "@/components/energia/InclusaoPagina";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { PAINEIS_INCLUSAO, mes, nomePof, respostaAcesso, respostaCobertura, respostaOrcamento, respostaTarifaSocial, rotaPainel, type PainelInclusao } from "@/lib/energia/inclusao";
+import {
+  PAINEIS_INCLUSAO,
+  mes,
+  nomePof,
+  respostaAcesso,
+  respostaCobertura,
+  respostaOrcamento,
+  respostaTarifaSocial,
+  rotaPainel,
+  vereditoAcesso,
+  vereditoCobertura,
+  vereditoOrcamento,
+  vereditoTarifaSocial,
+  type PainelInclusao,
+} from "@/lib/energia/inclusao";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
 export const dynamic = "force-static";
@@ -29,6 +44,7 @@ export const metadata: Metadata = {
 function Cartao({
   id,
   pergunta,
+  veredito,
   resposta,
   numero,
   recorte,
@@ -36,6 +52,7 @@ function Cartao({
 }: {
   id: PainelInclusao;
   pergunta: string;
+  veredito: string;
   resposta: string;
   numero: ReactNode;
   recorte: ReactNode;
@@ -49,9 +66,9 @@ function Cartao({
         <h2 id={`sintese-${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
           {pergunta}
         </h2>
-        <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
+        <RespostaCurta id={id} veredito={veredito}>
           {resposta}
-        </p>
+        </RespostaCurta>
         <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
           {numero}
           <div className="space-y-3 text-sm text-carvao-muted">
@@ -129,7 +146,8 @@ export default function InclusaoEnergeticaPage() {
           <Cartao
             id="p059"
             pergunta={t.pergunta}
-            resposta={respostaTarifaSocial(t)}
+            veredito={vereditoTarifaSocial(t)}
+          resposta={respostaTarifaSocial(t)}
             numero={
               <Numero
                 rotulo="UC com Tarifa Social"
@@ -153,7 +171,8 @@ export default function InclusaoEnergeticaPage() {
           <Cartao
             id="p060"
             pergunta={c.pergunta}
-            resposta={respostaCobertura(c)}
+            veredito={vereditoCobertura(c)}
+          resposta={respostaCobertura(c)}
             numero={
               <Numero
                 rotulo="Faturas por 100 famílias elegíveis pela renda (proxy)"
@@ -172,7 +191,8 @@ export default function InclusaoEnergeticaPage() {
           <Cartao
             id="p061"
             pergunta={o.pergunta}
-            resposta={respostaOrcamento(o)}
+            veredito={vereditoOrcamento(o)}
+          resposta={respostaOrcamento(o)}
             numero={
               <Numero
                 rotulo="Energia na despesa total das famílias (razão de médias)"
@@ -190,7 +210,8 @@ export default function InclusaoEnergeticaPage() {
           <Cartao
             id="p062"
             pergunta={a.pergunta}
-            resposta={respostaAcesso(a)}
+            veredito={vereditoAcesso(a)}
+          resposta={respostaAcesso(a)}
             numero={
               <Numero
                 rotulo="Domicílios sem energia elétrica de nenhuma fonte"

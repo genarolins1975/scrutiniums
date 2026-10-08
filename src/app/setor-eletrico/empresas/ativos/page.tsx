@@ -8,13 +8,13 @@ import {
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
-  EmpresasResposta,
   EmpresasSeguir,
   EmpresasSubtitulo,
 } from "@/components/energia/EmpresasPagina";
 import { EmpresasProprietarios } from "@/components/energia/EmpresasProprietarios";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -41,11 +41,17 @@ import {
   pctTexto,
   respostaCadastro,
   rotaPainel,
+  semNomesDeCampo,
   textoConferenciaAgentes,
+  textoFasesSigaERalie,
+  textoGruposNaTransmissao,
+  vereditoCadastro,
 } from "@/lib/energia/empresas";
+import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
+import type { RalieResumo } from "@/lib/energia/empresas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
@@ -81,6 +87,8 @@ export default function PaginaP036() {
   const a = c.ativos;
   const t = c.transmissao;
   const fonteCadastro = "ANEEL, SIGA e Agentes do Setor Elétrico";
+  // a carteira do RALIE vem da gold de Expansão: a conciliação com as fases do SIGA usa os números dela, sem refazer conta
+  const ralie = lerGold<{ estagios?: { ralie?: RalieResumo } }>("expansao.json")?.estagios?.ralie ?? null;
 
   return (
     <>
@@ -115,7 +123,8 @@ export default function PaginaP036() {
               }
               oQueMudou={
                 <>
-                  A recoleta mensal do cadastro de agentes e do conjunto Agentes de Geração registra cada campo revisto; o SIGA e o SIGET são diários. {textoConferenciaAgentes(a.conferencia_agentes_geracao)}
+                  Revisões detectadas nos dados desta publicação: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. O SIGA e o SIGET são lidos todo dia; o cadastro de agentes e o conjunto Agentes de Geração, todo mês.{" "}
+                  <span data-nivel="analisar">{textoConferenciaAgentes(a.conferencia_agentes_geracao)}</span>
                 </>
               }
               comoInterpretar={
@@ -138,7 +147,9 @@ export default function PaginaP036() {
               ]}
             >
               <div className="space-y-6">
-                <EmpresasResposta id="p036">{respostaCadastro(c)}</EmpresasResposta>
+                <RespostaCurta id="p036" veredito={vereditoCadastro(c)}>
+                  {respostaCadastro(c)}
+                </RespostaCurta>
                 <EmpresasRecorte
                   periodo={
                     <>
@@ -157,7 +168,7 @@ export default function PaginaP036() {
                   <Numero
                     rotulo="Potência em operação com vínculo provado"
                     natureza="CALCULADO"
-                    evidencia={a.evidencia}
+                    evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
                     formato="pct"
                     casas={2}
                     tamanho="medio"
@@ -168,7 +179,7 @@ export default function PaginaP036() {
                     <Numero
                       rotulo="Módulos de transmissão ligados ao CNPJ"
                       natureza="CALCULADO"
-                      evidencia={t.evidencia}
+                      evidencia={comValorExibido(t.evidencia, pctTexto(t.evidencia.valor_calculo, 1))}
                       formato="pct"
                       casas={1}
                       tamanho="medio"
@@ -177,6 +188,21 @@ export default function PaginaP036() {
                     />
                   )}
                 </div>
+
+                <dl className="grid gap-3 text-sm sm:grid-cols-2" data-como-ler="">
+                  <div>
+                    <dt className="font-medium text-carvao">Vínculo provado</dt>
+                    <dd className="mt-0.5 text-carvao-muted">{g.definicoes.vinculo.replace(/^Vínculo provado = /, "")}</dd>
+                  </div>
+                  {t && (
+                    <div>
+                      <dt className="font-medium text-carvao">Módulos de transmissão</dt>
+                      <dd className="mt-0.5 text-carvao-muted">
+                        {semNomesDeCampo(t.definicoes.km_circuito)} {semNomesDeCampo(t.regra_vinculo)}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
 
                 <EmpresasSubtitulo>Onde estão as usinas e de quem são?</EmpresasSubtitulo>
                 <EmpresasMapaAtivos urlAtivos={g.series.ativos} totalUsinas={a.usinas} dataSiga={a.data} fonte="ANEEL, SIGA" versao={a.data ?? ""} />
@@ -212,6 +238,7 @@ export default function PaginaP036() {
                 {t && (
                   <>
                     <EmpresasSubtitulo>Quem opera as linhas de transmissão?</EmpresasSubtitulo>
+                    {textoGruposNaTransmissao(t) && <p className="max-w-prose2 text-sm text-carvao-muted" data-grupos-transmissao="">{textoGruposNaTransmissao(t)}</p>}
                     <GraficoBarras
                       titulo={`As ${t.maiores.length} maiores concessionárias por km de circuito em operação, SIGET de ${dataTexto(t.data)}`}
                       dados={linhasTransmissao(t)}
@@ -265,6 +292,9 @@ export default function PaginaP036() {
                       rotulosValor
                     />
                   </div>
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-conciliacao-ralie="">
+                    {textoFasesSigaERalie(a, ralie)}
+                  </p>
                   <TabelaInterativa
                     titulo="Parcelas de propriedade por regime de exploração"
                     colunas={COLUNAS_REGIMES}

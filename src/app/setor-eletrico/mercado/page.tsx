@@ -39,6 +39,7 @@ import {
   barrasClasse,
   barrasUf,
   linhasDistribuidoras,
+  notaDoisUniversos,
   painelMercado,
   provenienciasLegiveis,
   serieAmbientesCcee,
@@ -47,6 +48,8 @@ import {
   serieLivreEpeAnual,
   textoPeriodoMes,
   textoVariacaoPp,
+  textoVariacaoVerbo,
+  vereditoLivreRegulado,
 } from "@/lib/energia/mercado";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
@@ -90,7 +93,7 @@ export default function MercadoPage() {
         <CabecalhoModulo siglas={["ACR", "ACL", "CCEE", "PLD", "MRE", "EPE", "GSF", "ANEEL", "SIN", "MWmed", "ONS", "SAMP"]} rotulo="Mercado de energia" titulo="Como a energia é contratada, alocada e liquidada?" referencia={<ReferenciaMercado g={g} />}>
           Parte do consumo compra energia da distribuidora a tarifa regulada (<Termo slug="acr">ACR</Termo>); a outra parte contrata no mercado livre (<Termo slug="acl">ACL</Termo>). As diferenças
           entre o contratado e o medido são liquidadas na CCEE ao <Termo slug="pld">PLD</Termo>, as hidrelétricas dividem o risco hidrológico no <Termo slug="mre">MRE</Termo> e os custos de operar o sistema
-          entram como encargos (<Termo slug="ess">ESS</Termo>). Quatro painéis respondem a quatro perguntas, cada número com a fonte e, na ficha Comprove, o que foi conferido com a publicação oficial, o que ficou com ressalva e o que não tem conferência.
+          entram como encargos (<Termo slug="ess">ESS</Termo>). Este painel mostra quanto do consumo está no mercado livre; os outros três tratam dos agentes e da migração, do ajuste das hidrelétricas (MRE e GSF) e dos encargos.
         </CabecalhoModulo>
         <MercadoNavegacao atual="livre-regulado" />
 
@@ -111,7 +114,7 @@ export default function MercadoPage() {
                   periodo={k.participacao_livre_12m ? textoPeriodoMes(k.participacao_livre_12m.periodo) : undefined}
                   variacao={
                     k.participacao_livre_12m?.anterior_pct !== null && k.participacao_livre_12m?.anterior_pct !== undefined
-                      ? { valor: k.participacao_livre_12m.valor_pct - k.participacao_livre_12m.anterior_pct, casas: 1, sufixo: " p.p.", referencia: "contra os 12 meses anteriores" }
+                      ? { valor: k.participacao_livre_12m.valor_pct - k.participacao_livre_12m.anterior_pct, casas: 1, sufixo: " pontos percentuais", referencia: "contra os 12 meses anteriores" }
                       : undefined
                   }
                   motivoAusencia="A EPE não publicou os 12 meses da janela."
@@ -154,6 +157,11 @@ export default function MercadoPage() {
                   endereco="https://scrutiniums.com/setor-eletrico/mercado#resumo"
                 />
               </div>
+              {notaDoisUniversos(g) && (
+                <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota="dois-universos">
+                  {notaDoisUniversos(g)}
+                </p>
+              )}
             </section>
           </Bloco>
 
@@ -178,11 +186,11 @@ export default function MercadoPage() {
                 k.participacao_livre_12m ? (
                   <>
                     Na EPE, a participação de 12 meses foi de {pct(k.participacao_livre_12m.valor_pct, 1)} até {mesAno(k.participacao_livre_12m.periodo.fim)}
-                    {k.participacao_livre_12m.anterior_pct !== null ? <>, contra {pct(k.participacao_livre_12m.anterior_pct, 1)} nos 12 meses anteriores ({textoVariacaoPp(k.participacao_livre_12m.valor_pct, k.participacao_livre_12m.anterior_pct)})</> : null}.
+                    {k.participacao_livre_12m.anterior_pct !== null ? <>, contra {pct(k.participacao_livre_12m.anterior_pct, 1)} nos 12 meses anteriores ({textoVariacaoPp(k.participacao_livre_12m.valor_pct, k.participacao_livre_12m.anterior_pct)?.replace("p.p.", "pontos percentuais")})</> : null}.
                     {kAcl?.variacao_acl_ultimo_mes && (
                       <>
                         {" "}
-                        Na CCEE, o consumo do ACL de {mesAno(kAcl.variacao_acl_ultimo_mes.mes)} variou {num(kAcl.variacao_acl_ultimo_mes.sem_exportacao_pct, 1)}% contra o mesmo mês do ano anterior, sem a
+                        Na CCEE, o consumo do ACL de {mesAno(kAcl.variacao_acl_ultimo_mes.mes)} {textoVariacaoVerbo(kAcl.variacao_acl_ultimo_mes.sem_exportacao_pct, 1)} contra o mesmo mês do ano anterior, sem a
                         exportação.
                       </>
                     )}
@@ -194,8 +202,8 @@ export default function MercadoPage() {
               comoInterpretar={
                 <>
                   Três universos convivem e nenhum é a carga do ONS. A EPE mede o consumo na rede (cativo e livre) informado pelos agentes. A CCEE mede o consumo contabilizado no centro de gravidade de
-                  cada submercado, já com 50% das perdas da rede básica (InfoMercado Nº 229, nota 6). As bases diferem e as participações não se comparam ponto a ponto: a diferença entre a CCEE e a EPE não foi decomposta, e em ago/2026 a CCEE mede 1,21 vez o consumo cativo da EPE no ambiente regulado e 1,04 vez o livre, ou seja, a diferença vem sobretudo do regulado. O SAMP da ANEEL mede o faturado por distribuidora e deixa
-                  fora o consumidor livre ligado direto à rede básica. Cada participação é razão de somas em energia, nunca média de percentuais.
+                  cada submercado, já com 50% das perdas da rede básica (nota 6 do InfoMercado Nº 229, boletim mensal da CCEE). As bases diferem e as participações não se comparam ponto a ponto: a diferença entre a CCEE e a EPE não foi decomposta, e em ago/2026 a CCEE mede 1,21 vez o consumo cativo da EPE no ambiente regulado e 1,04 vez o livre, ou seja, a diferença vem sobretudo do regulado. O SAMP da ANEEL mede o faturado por distribuidora e deixa
+                  fora o consumidor livre ligado direto à rede básica. Cada participação divide a soma da energia do livre pela soma da energia total, nunca é média de percentuais.
                 </>
               }
               naoConcluir={
@@ -207,6 +215,7 @@ export default function MercadoPage() {
             >
               <MercadoResposta
                 painel="P032"
+                veredito={vereditoLivreRegulado(g)}
                 prova={
                   <>
                     {k.participacao_livre_12m && <ComproveNumero evidencia={k.participacao_livre_12m.evidencia} rotulo="Comprove a participação na EPE" />}

@@ -200,6 +200,25 @@ export function respostaP051(g: QualidadeGold): string {
   );
 }
 
+/**
+ * Veredito do P051: o DEC e o FEC do Brasil no ano de referência, com a comparação ao ano anterior (a mesma precisão da
+ * resposta completa) e o limite de leitura: o número não inclui as interrupções que a regra exclui do apurado.
+ */
+export function vereditoP051(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  if (!a || a.dec === null || a.fec === null) return `Sem DEC e FEC nacionais para ${ref}: o ano não tem os 12 meses nacionais completos publicados.`;
+  const ant = anoBrasil(g, ref - 1);
+  let comparacao = "";
+  if (ant && ant.dec !== null && ant.fec !== null) {
+    const sd = comparaNaPrecisao(a.dec, ant.dec, 2);
+    const sf = comparaNaPrecisao(a.fec, ant.fec, 2);
+    const rel = (x: "abaixo" | "acima" | "igual") => (x === "igual" ? "igual ao" : x === "abaixo" ? "menor que o" : "maior que o");
+    comparacao = sd === sf ? (sd === "igual" ? `, o mesmo de ${ref - 1}` : `, ${sd === "abaixo" ? "menos" : "mais"} que em ${ref - 1}`) : `; a duração ficou ${rel(sd)} de ${ref - 1} e a frequência ficou ${rel(sf)} dele`;
+  }
+  return `Em ${ref}, cada unidade consumidora ficou em média ${num(a.dec, 2)} horas sem energia (${horasEMinutos(a.dec)}) e teve ${num(a.fec, 2)} interrupções${comparacao}.${a.dec_todas_parcelas !== null ? " O número não inclui as interrupções que a regra exclui do apurado." : ""}`;
+}
+
 /** Acumulado do ano corrente: só meses nacionais completos nos dois anos; nunca comparado a ano cheio. */
 export function respostaParcial(p: ParcialAno | null): string {
   if (!p || p.dec === null || p.dec_mesmos_meses_ano_anterior === null) return "";
@@ -535,6 +554,19 @@ export function respostaP052(g: QualidadeGold): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P052: que fração dos conjuntos com limite passou do limite anual de DEC e como estava no ano anterior. Os
+ * conjuntos em número, o peso em unidades consumidoras, o Brasil diante do limite agregado e as caudas ficam na resposta completa.
+ */
+export function vereditoP052(g: QualidadeGold): string {
+  const c = g.conjuntos;
+  const ant = c.historico.find((h) => h.ano === c.ano - 1);
+  const contra = ant && ant.pct_acima_limite_dec !== null ? `, contra ${pct(ant.pct_acima_limite_dec, 1)} em ${ant.ano}` : "";
+  const q = c.quantis_razao_dec;
+  const pontas = q.p90 !== null && q.p90 > 1 ? " A média do Brasil esconde as pontas: há conjuntos bem acima do próprio limite." : "";
+  return `Em ${c.ano}, ${pct(c.pct_acima_limite_dec, 1)} dos conjuntos com limite ficaram acima do limite anual de DEC${contra}.${pontas}`;
+}
+
 /** P052, "o que mudou": trajetória da fração de conjuntos acima do limite. */
 export function mudancaP052(c: Conjuntos): string {
   const h = c.historico.filter((x) => x.pct_acima_limite_dec !== null);
@@ -807,6 +839,20 @@ export function respostaP053(g: QualidadeGold): string {
   return `Em ${a.ano}, as distribuidoras informaram ${reaisMilhoes(a.valor_uc)} pagos a unidades consumidoras${qt}, por violação de limites individuais de continuidade (valores nominais da competência)${comp}.${ug}${conc}`;
 }
 
+/** Veredito do P053: o total pago a unidades consumidoras no ano de referência e a comparação ao ano anterior completo. */
+export function vereditoP053(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  if (!a || a.valor_uc === null) return `Sem total de compensações para ${c.ano_referencia}: o ano não tem os 12 meses informados pelas distribuidoras.`;
+  const ant = c.anual.find((x) => x.ano === c.ano_referencia - 1 && x.completo);
+  let comp = "";
+  if (ant && ant.valor_uc !== null) {
+    const s = comparaNaPrecisao(a.valor_uc / 1e6, ant.valor_uc / 1e6, 1);
+    comp = s === "igual" ? `, o mesmo de ${ant.ano}` : `, ${s === "abaixo" ? "menos" : "mais"} que os ${reaisMilhoes(ant.valor_uc)} de ${ant.ano}`;
+  }
+  return `Em ${a.ano}, as distribuidoras pagaram ${reaisMilhoes(a.valor_uc)} a unidades consumidoras que tiveram limites individuais de continuidade violados${comp}.`;
+}
+
 /** P053, "o que mudou": maior ano da série e o acumulado do ano corrente, marcado como parcial. */
 export function mudancaP053(g: QualidadeGold): string {
   const c = g.compensacoes;
@@ -995,6 +1041,15 @@ export function respostaP054(g: QualidadeGold): string {
   }
   if (tmae && tmae.tmae_min !== null) partes.push(`O atendimento a uma ocorrência emergencial levou em média ${num(tmae.tmae_min, 0)} minutos (${horasEMinutos(tmae.tmae_min / 60)}) da reclamação ao restabelecimento.`);
   return partes.join(" ") || "Sem indicadores de atendimento publicados para o ano de referência.";
+}
+
+/** Veredito do P054: reclamações por mil unidades consumidoras nas distribuidoras e quantas foram sobre interrupção. */
+export function vereditoP054(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const rec = g.atendimento.reclamacoes_distribuidora.find((x) => x.ano === ref);
+  if (!rec || rec.por_ucs === null) return rec ? `Reclamações nas distribuidoras em ${ref}: sem taxa (${rec.motivo_ausencia ?? "universo vazio"}).` : "Sem indicadores de atendimento publicados para o ano de referência.";
+  const interrupcao = rec.interrupcao_por_mil_uc !== null ? `, ${num(rec.interrupcao_por_mil_uc, 1)} delas sobre interrupção` : "";
+  return `Em ${ref}, as distribuidoras registraram ${num(rec.por_ucs, 1)} reclamações por mil unidades consumidoras${interrupcao}.`;
 }
 
 /** P054, "o que mudou": evolução das taxas (anos completos) e o ano corrente sem taxa. */

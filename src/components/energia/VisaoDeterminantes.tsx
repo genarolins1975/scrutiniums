@@ -54,6 +54,7 @@ function Cartao({
   ancoras,
   ocultas,
   onOcultas,
+  nota,
 }: {
   p: PainelDeterminante;
   i: number;
@@ -62,6 +63,8 @@ function Cartao({
   ancoras?: AncorasDeterminante;
   ocultas?: string[];
   onOcultas?: (ids: string[]) => void;
+  /** Ponte entre este número e o da mesma grandeza em outra janela, escrita a partir da gold (visao.ts). */
+  nota?: string | null;
 }) {
   const dados = dadosDeterminante(p, linhas);
   const banda = bandaDeterminante(p);
@@ -85,9 +88,15 @@ function Cartao({
         </p>
         <p className="mt-1 text-xs leading-relaxed text-carvao-muted">{leituraDeterminante(p, m)}</p>
         <p className="mt-0.5 text-xs text-mineral">{p.texto_defasagem}</p>
+        {nota && (
+          <p className="mt-1 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
+            <span className="rotulo mr-2 text-mineral">Para ler junto</span>
+            {nota}
+          </p>
+        )}
         <div className="mt-1">
           {p.evidencia ? (
-            <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `multiplos.paineis[${i}].evidencia`, indicador: p.evidencia.indicador, valorExibido: p.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`} />
+            <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `multiplos.paineis[${i}].evidencia`, indicador: p.valor_atual.rotulo ? `${p.titulo} (${p.valor_atual.rotulo})` : p.titulo, valorExibido: p.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`} />
           ) : (
             <span className="text-xs text-aviso">Evidência do valor atual não publicada nesta execução{p.evidencia_problemas?.length ? `: ${p.evidencia_problemas.join("; ")}` : "."}</span>
           )}
@@ -120,7 +129,17 @@ function Cartao({
   );
 }
 
-export function VisaoDeterminantes({ m, ancoras, fonte }: { m: MultiplosVisao; ancoras: Partial<Record<string, AncorasDeterminante>>; fonte: string }) {
+export function VisaoDeterminantes({
+  m,
+  ancoras,
+  fonte,
+  notas = {},
+}: {
+  m: MultiplosVisao;
+  ancoras: Partial<Record<string, AncorasDeterminante>>;
+  fonte: string;
+  notas?: Partial<Record<string, string | null>>;
+}) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const nome = useId();
   const linhas = recorteMultiplos(m, Number(v.dias));
@@ -162,6 +181,7 @@ export function VisaoDeterminantes({ m, ancoras, fonte }: { m: MultiplosVisao; a
               m={m}
               linhas={linhas}
               ancoras={ancoras[p.id]}
+              nota={notas[p.id]}
               ocultas={p.id === "preco" ? v.sm : p.id === "rede" ? v.fr : undefined}
               onOcultas={p.id === "preco" ? (ids) => definir({ sm: ids }) : p.id === "rede" ? (ids) => definir({ fr: ids }) : undefined}
             />

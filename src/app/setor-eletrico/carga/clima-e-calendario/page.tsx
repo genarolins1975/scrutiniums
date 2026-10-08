@@ -133,8 +133,8 @@ export default function ClimaCalendarioPage() {
                       recente_sin: p.recente_sin,
                       resposta_temperatura: p.resposta_temperatura,
                     }}
-                    a07={{ decomposicao: g.a07.decomposicao }}
-                    achado={{ inicio: g.a07.referencia.inicio, fim: g.a07.referencia.fim, motivo: g.a07.janela_modelo.motivo }}
+                    a07={{ decomposicao: g.a07.decomposicao, comparacoes: g.a07.comparacoes }}
+                    achado={{ inicio: g.a07.referencia.inicio, fim: g.a07.referencia.fim, dias_janela: g.a07.janela_modelo.dias_janela, motivo: g.a07.janela_modelo.motivo }}
                     diaReferencia={g.dia_referencia}
                     fonte={FONTE}
                     versao={p.periodo_avaliacao.fim}

@@ -27,6 +27,7 @@ import {
   textoCobertura,
   textoConferenciaSilver,
   textoIdentidadesItaipu,
+  textoMudancaBalanco,
   ROTULO_REGRA,
 } from "@/lib/energia/rede";
 import type { ConferenciaDegrauMmgd, GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
@@ -67,7 +68,7 @@ export default function RedeBalancoPage() {
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo siglas={["MWmed", "ONS", "CCEE"]}
+        <CabecalhoModulo siglas={["MWmed", "SIN", "ONS", "CCEE"]}
           rotulo="Rede · Balanço e exterior"
           titulo={perguntaPainel("p029")}
           referencia={
@@ -76,9 +77,11 @@ export default function RedeBalancoPage() {
             </>
           }
         >
-          O ONS publica, para cada subsistema e para o <Termo slug="sin">SIN</Termo>, geração, carga e intercâmbio líquido de cada hora, e publica à parte o fluxo de cada fronteira e
-          o intercâmbio com outros países. Este painel confere, hora a hora, se essas parcelas fecham entre si e mostra onde não fecham, sem forçar soma zero e sem atribuir o
-          resíduo a perdas.
+          O ONS publica, hora a hora, a geração, a carga e o <Termo slug="intercambio">intercâmbio</Termo> de cada região do <Termo slug="sin">SIN</Termo>, e publica à parte o fluxo
+          de cada fronteira e o intercâmbio com outros países. Se os números forem consistentes, geração menos carga é igual ao intercâmbio da região, e o intercâmbio da
+          região é igual aos fluxos que cruzam as suas fronteiras, com outros países incluídos quando for o caso (o observatório chama esta segunda conta de perímetro).
+          O painel faz as duas contas hora a hora e mostra em que horas sobra uma diferença maior que {num(b.tolerancia_mwmed, 1)} MWmed, o resíduo, sem atribuí-lo a perdas
+          nem a outra causa.
         </CabecalhoModulo>
         <RedeNavegacao atual="p029" />
         <ModoProfundidade>
@@ -86,7 +89,7 @@ export default function RedeBalancoPage() {
             <PainelEvidencia
               id="p029"
               pergunta={perguntaPainel("p029")}
-              subtitulo="Identidades do balanço conferidas hora a hora, resíduos e intercâmbio internacional · horas e MWh"
+              subtitulo="Contas do balanço conferidas hora a hora, resíduos e intercâmbio internacional · horas e MWh"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -96,18 +99,19 @@ export default function RedeBalancoPage() {
               }
               oQueMudou={
                 <>
-                  {atual.texto}<span data-nivel="analisar"> Estado da verificação do balanço: {a.status}.</span>
+                  {atual.texto} {textoMudancaBalanco(b)}
+                  <span data-nivel="analisar"> Estado da verificação do balanço: {a.status}.</span>
                 </>
               }
               comoInterpretar={
                 <>
-                  {a.perimetro} {a.sinais} Uma identidade fecha numa hora quando a diferença fica em até {num(b.tolerancia_mwmed, 1)} MWmed. Desde {dataBR(q?.dia)} a geração solar e a
+                  {a.perimetro} {a.sinais} Uma conta fecha numa hora quando a diferença fica em até {num(b.tolerancia_mwmed, 1)} MWmed. Desde {dataBR(q?.dia)} a geração solar e a
                   carga do balanço incluem a MMGD estimada pelo ONS, sem a parcela separada.
                 </>
               }
               naoConcluir={
                 <>
-                  A causa dos resíduos: a fonte não a informa, e nenhuma identidade tem termo de perdas. Também não se separa, no balanço, o que é medição do que é estimativa da
+                  A causa dos resíduos: a fonte não a informa, e nenhuma das contas tem termo de perdas. Também não se separa, no balanço, o que é medição do que é estimativa da
                   MMGD desde {dataBR(q?.dia)}, nem se comparam geração e carga mensais dos dois lados dessa data.
                 </>
               }

@@ -102,7 +102,10 @@ describe("P065: fontes primárias versionadas", () => {
   });
 
   it("as fontes de GSF e de constrained-off com a nota de 2022 e a REN ANEEL declaram o que não foi lido no original", () => {
-    expect(conceito("gsf")!.limitacoes!.join(" ")).toMatch(/403/);
+    // r8: o leitor lê em palavras comuns que a norma não foi lida e por quê; o código da resposta fica no detalhe recolhido
+    expect(conceito("gsf")!.limitacoes!.join(" ")).toMatch(/recusa as consultas automáticas/);
+    expect(conceito("gsf")!.limitacoes!.join(" ")).not.toMatch(/403/);
+    expect(conceito("gsf")!.detalheDaConferencia!.join(" ")).toMatch(/403/);
     expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/Internet Archive de 08\/01\/2025/);
     expect(conceito("constrained-off")!.limitacoes!.join(" ")).toMatch(/403/);
     expect(conceito("ree")!.limitacoes!.join(" ")).toMatch(/Procedimentos de Rede/);

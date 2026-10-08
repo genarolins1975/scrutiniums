@@ -23,7 +23,8 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { afirmacoesConferidas, linhasMetricas, respostaRegras, resumoMetricas, ROTULO_ESTADO_DADOS, URL_GOLD } from "@/lib/energia/dados";
-import { metricasPublicadas, provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
+import { maiuscula, quadroDeDatas, resumirAcessoCcee, separaIdentificadores, textoDatasDaColetaCcee, textoMudancaRegras, vereditoRegras } from "@/lib/energia/dados-leitor";
+import { acessoCceeDados, metricasGeradoEm, metricasPublicadas, provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { carimbo, dataBR, num, rotuloRegra } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 
@@ -51,8 +52,13 @@ const ROTULO_FRASE: Record<string, string> = {
   termica: "Participação térmica",
   pld: "PLD",
   preco: "PLD",
+  rede: "Rede",
   descolamento: "Diferença entre submercados",
 };
+
+/** Rótulos de regra que a gold escreve sem acento e que o rótulo geral não corrige. */
+const ROTULO_REGRA_LOCAL: Record<string, string> = { validacao_fisica: "Validação física" };
+const rotuloDaRegra = (k: string) => ROTULO_REGRA_LOCAL[k] ?? rotuloRegra(k);
 
 function Regras({ titulo, regras }: { titulo: string; regras?: Record<string, string> }) {
   if (!regras) return null;
@@ -62,7 +68,7 @@ function Regras({ titulo, regras }: { titulo: string; regras?: Record<string, st
       <dl className="mt-3 space-y-3">
         {Object.entries(regras).map(([k, v]) => (
           <div key={k}>
-            <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
+            <dt className="rotulo text-mineral">{rotuloDaRegra(k)}</dt>
             <dd className="mt-0.5 text-sm text-carvao">{v}</dd>
           </div>
         ))}
@@ -84,6 +90,12 @@ export default function MetodologiaEnergia() {
   const evAfirm = pub?.evidencias.afirmacoes_conferidas;
   const evReprovadas = pub?.evidencias.checagens_reprovadas;
   const eixos = pub?.eixos;
+  const ccee = pub ? resumirAcessoCcee(acessoCceeDados(), pub.referencia.executado_em) : null;
+  const decisaoCcee = ccee?.decididaEm ? dataBR(ccee.decididaEm) : "06/10/2026";
+  // as regras por indicador vêm de metricas.json, gerado em outro momento que o catálogo e a saúde (publicacao.json)
+  const geradoRegras = metricasGeradoEm() ?? pub?.gerado_em ?? "";
+  const datas = pub ? quadroDeDatas({ referencia: pub.referencia.hoje, processadoEm: pub.gerado_em, metaEm: meta?.gerado_em, indicadoresEm: geradoRegras }) : [];
+  const afirmLimitacoes = (pub?.afirmacoes ?? []).filter((a) => ["limites_intercambio", "cvu_usina", "geracao_usina", "despacho_termico"].includes(a.id));
   const SITUACOES = ["reconciliacao_aprovada", "controles_aprovados", "ressalva", "divergencia", "pendencia"] as const;
   return (
     <>
@@ -93,7 +105,7 @@ export default function MetodologiaEnergia() {
         <CabecalhoModulo siglas={["ENA", "REE", "MLT", "CVU", "PLD", "CMO"]}
           rotulo="Metodologia"
           titulo="Quais interpretações são permitidas?"
-          referencia={pub ? <ReferenciaDados geradoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} /> : undefined}
+          referencia={pub ? <ReferenciaDados processadoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Catálogo de indicadores gerado em {carimbo(geradoRegras)}.{meta ? <> Último processamento completo: {carimbo(meta.gerado_em)}.</> : null}</>} /> : undefined}
         >
           Esta página descreve o caminho de cada número, da fonte primária à tela, e a regra de cada indicador: definição, unidade, recortes, cálculo, revisão e o que ele não permite concluir. A documentação técnica completa (arquitetura, catálogo de fontes, auditabilidade e governança de previsão) está no{" "}
           <a href="https://github.com/genarolins1975/scrutiniums/tree/main/docs/observatorios" target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
@@ -117,11 +129,7 @@ export default function MetodologiaEnergia() {
                       Um número sem regra convida a leitura que a regra não sustenta. Aqui, cada indicador diz o que mede, em que unidade, para qual recorte, como se agrega, o que acontece quando falta dado e o que ele não permite concluir.
                     </>
                   }
-                  oQueMudou={
-                    <>
-                      O catálogo tem {num(rm.total, 0)} indicadores, {num(rm.comFormula, 0)} com fórmula publicada. {conferidas === afirm.length ? `As ${num(afirm.length, 0)} afirmações sobre fontes integradas correspondem a conjuntos com recurso verificado.` : `${num(afirm.length - conferidas, 0)} de ${num(afirm.length, 0)} afirmações sobre fontes integradas não correspondem a recurso verificado.`}
-                    </>
-                  }
+                  oQueMudou={<>{textoMudancaRegras(afirm.map((x) => x.afirmacao), conferidas)}</>}
                   comoInterpretar={
                     <>
                       A natureza do dado de origem e a do resultado são diferentes: um valor observado pode virar um calculado, e um calculado de dado estimado continua dependendo da estimativa. Mista é a combinação de naturezas. A regra de cobertura diz o mínimo para publicar; a política de ausência diz o que aparece
@@ -130,13 +138,14 @@ export default function MetodologiaEnergia() {
                   }
                   naoConcluir={
                     <>
-                      Que a regra publicada garanta a ausência de erro: ela diz o que o pipeline faz, e as validações e a evidência de cada número dizem se deu certo. Que um indicador de um módulo possa ser comparado com um de outro sem olhar o recorte e a unidade. Que a lista esteja completa para o que a
+                      Que a regra publicada garanta a ausência de erro: ela diz o que o observatório faz, e as validações e a evidência de cada número dizem se deu certo. Que um indicador de um módulo possa ser comparado com um de outro sem olhar o recorte e a unidade. Que a lista esteja completa para o que a
                       fonte publica: só entram os números que o observatório exibe.
                     </>
                   }
                 >
                   <DadosResposta
                     painel="P070"
+                    veredito={vereditoRegras(rm)}
                     prova={
                       <>
                         {evAfirm && <ComproveNumero evidencia={evAfirm} rotulo="Comprove as afirmações conferidas" endereco="https://scrutiniums.com/setor-eletrico/metodologia#regras" />}
@@ -147,8 +156,8 @@ export default function MetodologiaEnergia() {
                     {respostaRegras(rm)}
                   </DadosResposta>
                   <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                    <Numero rotulo="Indicadores com regra publicada" natureza="CALCULADO" valor={rm.total} casas={0} unidade="indicadores" tamanho="medio" periodo={dataBR(pub.gerado_em.slice(0, 10))} nota={<>em {rm.modulos} módulos</>} endereco="https://scrutiniums.com/setor-eletrico/metodologia#regras" />
-                    <Numero rotulo="Com fórmula publicada" natureza="CALCULADO" valor={rm.comFormula} casas={0} unidade="indicadores" tamanho="medio" periodo={dataBR(pub.gerado_em.slice(0, 10))} nota={<>os demais têm definição e regra de agregação</>} endereco="https://scrutiniums.com/setor-eletrico/metodologia#regras" />
+                    <Numero rotulo="Indicadores com regra publicada" natureza="CALCULADO" valor={rm.total} casas={0} unidade="indicadores" tamanho="medio" periodo={dataBR(geradoRegras.slice(0, 10))} nota={<>em {rm.modulos} módulos</>} endereco="https://scrutiniums.com/setor-eletrico/metodologia#regras" />
+                    <Numero rotulo="Com fórmula publicada" natureza="CALCULADO" valor={rm.comFormula} casas={0} unidade="indicadores" tamanho="medio" periodo={dataBR(geradoRegras.slice(0, 10))} nota={<>os demais têm definição e regra de agregação</>} endereco="https://scrutiniums.com/setor-eletrico/metodologia#regras" />
                     <Numero
                       rotulo="Afirmações de fonte integrada conferidas"
                       natureza="CALCULADO"
@@ -174,18 +183,19 @@ export default function MetodologiaEnergia() {
                     />
                   </div>
                   <DadosRecorte
-                    periodo={<>regras da versão de {dataBR(pub.gerado_em.slice(0, 10))}; cada indicador traz o seu período</>}
+                    periodo={<>regras da versão de {dataBR(geradoRegras.slice(0, 10))}; cada indicador traz o seu período</>}
                     universo={`${num(rm.total, 0)} indicadores publicados pelos módulos temáticos`}
                     unidade="a de cada indicador, escrita na regra"
                   />
                   <div id="tabela" className="scroll-mt-28">
-                    <MetodologiaRegras linhas={linhasMetricas(metricas)} versao={pub.gerado_em} />
+                    <MetodologiaRegras linhas={linhasMetricas(metricas)} versao={geradoRegras} />
                   </div>
                   <DadosLimitacoes
                     itens={[
-                      <>A lista é a do pipeline em {dataBR(pub.gerado_em.slice(0, 10))}; indicador novo só aparece depois da próxima execução.</>,
-                      <>{eixos?.limitacao_natureza}</>,
+                      <>A lista é a do observatório em {dataBR(geradoRegras.slice(0, 10))}; indicador novo só aparece na próxima atualização.</>,
+                      <>O rótulo Estimado não separa o valor estimado pela fonte do estimado pelo observatório: a plataforma tem uma só categoria para os dois, e nenhuma ficha diz qual dos dois é. A separação está pedida e ainda não foi feita.</>,
                     ]}
+                    tecnicas={eixos?.limitacao_natureza ? [eixos.limitacao_natureza] : []}
                   />
                   <DadosSeguir
                     ancora="painel-regras"
@@ -322,7 +332,6 @@ export default function MetodologiaEnergia() {
               </p>
             </Bloco>
           )}
-        </ModoProfundidade>
 
         <S id="natureza" titulo="Taxonomia de natureza do dado">
           <p>Todo número exibido carrega um selo. As categorias nunca se confundem, e a forma do selo muda com a categoria, não só a cor.</p>
@@ -360,12 +369,24 @@ export default function MetodologiaEnergia() {
           <p>Toda visualização relevante responde, nesta ordem: o que estou vendo, por que importa, o que mudou, como interpretar, o que não é possível concluir e qual é a fonte. A regra é obrigatória no componente de painel: um painel sem esses campos não é construído.</p>
         </S>
 
-        <S id="linhagem" titulo="Linhagem e vintages">
+        <S id="linhagem" titulo="Linhagem e versões dos dados">
           <p>
-            O processamento tem três camadas, com nomes usuais em engenharia de dados: bronze guarda o arquivo original de cada captura, silver guarda o
-            histórico de observações por captura (vintage) e gold reúne os dados processados que as páginas publicam.
+            Cada número percorre três etapas. O arquivo original de cada coleta é guardado sem alteração. Os valores de cada coleta entram num histórico que só acrescenta: nada é apagado. As bases publicadas, que as páginas mostram,
+            saem desse histórico por regras publicadas.
+            <span data-nivel="analisar">
+              {" "}
+              Os nomes usuais em engenharia de dados são bronze (o arquivo original de cada captura), silver (o histórico de observações por captura, a vintage) e gold (os dados processados que as páginas publicam).
+            </span>
           </p>
-          <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
+          <ol className="grid gap-px border border-linha bg-linha md:grid-cols-5" aria-label="Do arquivo da fonte à visualização">
+            {["Fonte (CCEE, ONS, ANEEL)", "Arquivo original guardado", "Histórico por coleta", "Bases publicadas", "Indicador, gráfico ou modelo"].map((t, i) => (
+              <li key={t} className="bg-superficie p-3 text-sm text-carvao">
+                <span className="rotulo mr-2 text-mineral">{i + 1}</span>
+                {t}
+              </li>
+            ))}
+          </ol>
+          <pre data-nivel="analisar" tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
   ↓ normalização determinística
@@ -377,10 +398,10 @@ INDICADOR → VISUALIZAÇÃO | MODELO
 
 Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
           <p>
-            Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
-            nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem
-            ambiguidade de data) e é a que as variáveis de entrada de modelos em produção e os testes retrospectivos por vintage devem usar. O backtest da pesquisa atual foi feito
-            sobre um snapshot único, em pseudo tempo real; a limitação está declarada em cada cartão de modelo.
+            Cada valor guarda de qual coleta veio. Quando a fonte revisa um valor (o ONS declara que seus dados passam por consistência recorrente), o observatório guarda a versão nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em
+            qualquer instante (com fuso explícito, sem ambiguidade de data) e é a que as variáveis de entrada de modelos em produção e os testes retrospectivos por versão devem usar. O teste retrospectivo da pesquisa atual foi feito sobre uma única cópia congelada dos dados, simulando o tempo real; a
+            limitação está declarada em cada cartão de modelo.
+            <span data-nivel="analisar"> No vocabulário de engenharia: backtest sobre um snapshot único, em pseudo tempo real, com a vintage de cada observação.</span>
           </p>
           <p className="text-sm text-carvao-muted">
             Datas distinguidas: período de referência; publicação pela fonte (quando informada); captura pela Scrutiniums; corte da previsão; emissão.
@@ -399,14 +420,14 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
         </S>
 
         <S id="sintese" titulo="Frases e alertas da Visão geral">
-          <p>A síntese &quot;o sistema em 60 segundos&quot; e a lista &quot;o que observar&quot; são montadas por regras fixas a partir dos dados processados; nenhum texto é redigido livremente. Cada frase tem sua regra; cada alerta, sua condição.</p>
+          <p>A síntese &quot;o sistema em 60 segundos&quot; e a lista &quot;o que observar&quot; são montadas por regras fixas a partir dos dados processados; nenhum texto é redigido livremente. Cada frase tem sua regra; cada alerta, sua condição. As regras de cada frase repetem as fórmulas acima e estão em Analisar.</p>
           {sintese && (
-            <ul className="space-y-2 text-sm">
+            <ul data-nivel="analisar" className="space-y-2 text-sm">
               {sintese.frases.map((f) => (
-                <li key={f.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{ROTULO_FRASE[f.id] ?? f.id}:</strong> {f.regra}</li>
+                <li key={f.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{ROTULO_FRASE[f.id] ?? maiuscula(f.id)}:</strong> {f.regra}</li>
               ))}
               {sintese.observar.map((o) => (
-                <li key={o.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{o.titulo}:</strong> {o.condicao}</li>
+                <li key={o.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{maiuscula(o.titulo)}:</strong> {o.condicao}</li>
               ))}
             </ul>
           )}
@@ -415,7 +436,7 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
         <S id="previsao" titulo="Governança de previsão">
           <p>
             Modelos têm estado explícito: PESQUISA, VALIDAÇÃO, PRODUÇÃO ou APOSENTADO. Só modelo em PRODUÇÃO alimenta a previsão principal. Cada previsão
-            registrada ganha um identificador e um sha256 do conteúdo; correção cria novo registro que aponta para o original, com motivo. Faixas de
+            registrada ganha um identificador e uma impressão digital do conteúdo<span data-nivel="analisar"> (sha256)</span>; correção cria novo registro que aponta para o original, com motivo. Faixas de
             incerteza só são chamadas de &quot;80%&quot; quando a cobertura medida fora do ajuste sustenta isso.
           </p>
           <p>
@@ -427,7 +448,7 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
         <S id="limitacoes" titulo="Limitações gerais desta fase">
           <ul className="list-disc space-y-2 pl-5">
             <li>
-              O portal de dados abertos da CCEE recusa consultas automáticas comuns. O observatório usa um cliente próprio, com coleta autorizada pelo responsável em 06/10/2026 para o PLD horário, os conjuntos abertos do Mercado e o InfoMercado, e tenta a
+              O portal de dados abertos da CCEE recusa consultas automáticas comuns. O observatório usa um cliente próprio, com coleta autorizada pelo responsável em {decisaoCcee} para o PLD horário, os conjuntos abertos do Mercado e o InfoMercado, e tenta a
               coleta em cada atualização agendada. O histórico do PLD de 2021 a 2025 vem das capturas primárias de 27/09/2026.
               <span data-nivel="analisar">
                 {" "}
@@ -436,39 +457,63 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
               {meta?.fontes?.ccee_pld_horario?.ultima_tentativa
                 ? `Última tentativa do PLD horário: ${carimbo(meta.fontes.ccee_pld_horario.ultima_tentativa.tentado_em)}, ${meta.fontes.ccee_pld_horario.ultima_tentativa.ok ? "bem-sucedida" : "sem sucesso"}.`
                 : "Nenhuma tentativa registrada nesta publicação."}
+              {pub && ccee && textoDatasDaColetaCcee(ccee, pub.referencia.hoje, pub.gerado_em) ? (
+                <span data-datas-coleta-ccee="true"> {textoDatasDaColetaCcee(ccee, pub.referencia.hoje, pub.gerado_em)}</span>
+              ) : null}
             </li>
             <li>
               Os limites regulatórios do PLD (piso, teto horário e teto estrutural) vêm dos atos da ANEEL, com o ato e a vigência de cada valor, no{" "}
               <Link href="/setor-eletrico/regulacao#p044" className="text-energia-dark underline underline-offset-4">painel de limites da Regulação</Link>; o &quot;menor valor observado no ano&quot; é descritivo e nunca é chamado de piso.
             </li>
-            {/* afirmações de integração geradas pelo pipeline a partir do estado real do catálogo (achado A06) */}
-            {(pub?.afirmacoes ?? [])
-              .filter((a) => ["limites_intercambio", "cvu_usina", "geracao_usina", "despacho_termico"].includes(a.id))
-              .map((a) => (
-                <li key={a.id}>{a.texto}</li>
-              ))}
+            {/* afirmações de integração geradas pelo pipeline a partir do estado real do catálogo */}
+            {afirmLimitacoes.map((a) => {
+              const { texto, tecnico } = separaIdentificadores(a.texto);
+              return (
+                <li key={a.id}>
+                  {texto}
+                  {tecnico && <span data-nivel="analisar"> {tecnico}</span>}
+                </li>
+              );
+            })}
             <li>
               {pendentes.length === 0
                 ? "Todos os verbetes do Aprenda têm a definição conferida em fonte primária."
                 : `${pendentes.length === 1 ? "Um verbete do Aprenda aparece" : `${pendentes.length} verbetes do Aprenda aparecem`} em preparação, sem definição, porque a fonte primária que o define não foi encontrada nos documentos consultados (${pendentes.map((c) => c.sigla ?? c.nome).join(", ")}); cada um diz o que já foi consultado e o que falta.`}
             </li>
             <li>Valores monetários em R$ nominais.</li>
-            <li>O histórico de vintages persiste no cache da automação (GitHub Actions). O silver (banco com vintages e observações) tem cópia durável numa release do repositório; os arquivos brutos do bronze não têm, mas o sha256 de cada um fica registrado no silver. Se cache e cópia se perderem, a automação abre um alerta, os dados publicados continuam corretos e só o registro de revisões anteriores se perde.</li>
-              <li>Quando a fonte remove uma referência de um arquivo, a remoção não é registrada: a série continua com o último valor publicado para ela. Revisões de valor são registradas.</li>
+            <li>
+              O histórico de versões anteriores dos dados persiste no cache da automação (GitHub Actions) e tem uma cópia durável numa versão publicada do repositório. Os arquivos originais de cada coleta não têm cópia, mas a impressão digital de cada um fica registrada no histórico. Se o cache e a cópia se perderem, a automação abre um alerta,
+              os dados publicados continuam corretos e só o registro de revisões anteriores se perde.
+              <span data-nivel="analisar"> No vocabulário de engenharia: o histórico de vintages persiste no cache da automação; o silver (banco com vintages e observações) tem cópia durável numa release; os arquivos brutos do bronze não têm, mas o sha256 de cada um fica registrado no silver.</span>
+            </li>
+            <li>Quando a fonte remove uma referência de um arquivo, a remoção não é registrada: a série continua com o último valor publicado para ela. Revisões de valor são registradas.</li>
           </ul>
         </S>
 
         <S id="versao" titulo="Versão desta publicação">
           {meta ? (
             <p className="text-sm">
-              Último processamento completo do pipeline (meta.json): {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
-              {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""} · coleta executada nesse processamento: {meta.coleta_executada ? "sim" : "não (reconstrução a partir do estado salvo)"} ·
-              falhas de construção: {meta.builders_falhos.length} · regressões retidas: {meta.regressoes.length}.
+              Último processamento completo dos dados: {carimbo(meta.gerado_em)} · coleta executada nesse processamento: {meta.coleta_executada ? "sim" : "não (reconstrução a partir do estado salvo)"}.
+              <span data-nivel="auditar">
+                {" "}
+                Versão do processamento {meta.versao_pipeline}
+                {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""} · falhas de construção: {meta.builders_falhos.length} · regressões retidas: {meta.regressoes.length}.
+              </span>
             </p>
           ) : (
             <p className="text-sm text-mineral">Metadados da publicação indisponíveis.</p>
           )}
+          {datas.length > 0 && (
+            <ul className="space-y-1 text-sm text-carvao-muted" data-lista="datas">
+              {datas.map((x) => (
+                <li key={x.rotulo}>
+                  <strong className="font-medium text-carvao">{x.rotulo}: {x.valor}.</strong> {maiuscula(x.mede)}.
+                </li>
+              ))}
+            </ul>
+          )}
         </S>
+        </ModoProfundidade>
       </main>
     </>
   );

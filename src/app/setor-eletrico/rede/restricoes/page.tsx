@@ -53,9 +53,10 @@ export default function RedeRestricoesPage() {
             </>
           }
         >
-          A pergunta original era se o fluxo de cada fronteira chegou ao seu limite. Os limites operativos de intercâmbio e as suas vigências não são públicos em formato que
-          permita comparar com o fluxo de cada hora, então este painel responde a pergunta que os dados públicos sustentam: quando o ONS publicou evidência de limitação, pelo tempo
-          em que fluxos acompanhados ficaram acima do limite e pelos cortes de carga.
+          Os limites operativos de intercâmbio e as suas vigências não são públicos em formato que permita compará-los com o fluxo de cada hora; por isso este painel não diz
+          se uma fronteira estava no limite. Ele mostra a evidência de limitação que o ONS publica: o tempo em que fluxos acompanhados pelo indicador{" "}
+          <Termo slug="atls">ATLS</Termo> (Atendimento aos Limites Sistêmicos) ficaram acima do limite estabelecido, e os cortes de carga, que são registros de interrupção do
+          atendimento, com a energia não suprida, isto é, a que deixou de ser entregue.
         </CabecalhoModulo>
         <RedeNavegacao atual="p030" />
         <ModoProfundidade>
@@ -133,7 +134,7 @@ export default function RedeRestricoesPage() {
                         casas={1}
                         tamanho="medio"
                         cor="var(--cor-energia)"
-                        nota={`${num(r.interrupcoes.ultimos_12_meses.registros, 0)} registros em ${num(r.interrupcoes.ultimos_12_meses.perturbacoes, 0)} perturbações.`}
+                        nota={`${num(r.interrupcoes.ultimos_12_meses.registros, 0)} registros de corte em ${num(r.interrupcoes.ultimos_12_meses.perturbacoes, 0)} perturbações (uma perturbação pode ter mais de um registro).`}
                         endereco={`${rotaPainel("p030")}#p030`}
                       />
                     </div>

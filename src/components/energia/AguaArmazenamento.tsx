@@ -6,6 +6,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -26,6 +27,7 @@ import {
   recorteEscolhido,
   recortePadrao,
   respostaArmazenamento,
+  vereditoArmazenamento,
   serieSemanal,
   textoForaDosPontos,
   textoPasso,
@@ -124,9 +126,9 @@ export function AguaArmazenamento({
         />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p017" aria-live="polite">
+      <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
         {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -141,7 +143,9 @@ export function AguaArmazenamento({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmês (energia armazenada; 1 MWmês = 720 MWh) e % da EAR máxima do próprio recorte</dd>
+          <dd className="mt-0.5">
+            MWmês (energia armazenada; 1 MWmês = 720 MWh) e % da EAR máxima do próprio recorte; p.p., pontos percentuais: de 60% para 62% são 2 p.p.
+          </dd>
         </div>
       </dl>
 
@@ -205,7 +209,7 @@ export function AguaArmazenamento({
           entidades={comArmazenamento.map((x) => ({ id: x.id, rotulo: x.rotulo, detalhe: ROTULO_TIPO_RECORTE[x.tipo], sinonimos: [x.nome] }))}
           selecionadas={escolhidas.map((x) => x.id)}
           onMudar={(ids) => definir({ cmp: ids })}
-          dicaBusca="SIN, Sul, REE Paraná, Bacia do Grande"
+          dicaBusca="Buscar, por exemplo SIN, Sul, REE Paraná, Bacia do Grande"
           vazio="Nenhum recorte escolhido. Escolha até quatro para ver a EAR do último ano com a faixa da data, na mesma escala."
         >
           {() => null}

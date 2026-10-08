@@ -4,6 +4,8 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { TransicaoIndisponivel, TransicaoNavegacao } from "@/components/energia/TransicaoPagina";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
@@ -13,12 +15,16 @@ import {
   LIGACAO_GERACAO,
   PERGUNTA_ONS,
   data,
+  kgPorMwh,
   mes,
   perguntaPainel,
   respostaEmissoes,
   respostaMmgd,
   respostaOns,
   rotaPainel,
+  vereditoEmissoes,
+  vereditoMmgd,
+  vereditoOns,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
@@ -42,6 +48,7 @@ function Cartao({
   rotulo,
   pergunta,
   resposta,
+  veredito,
   numero,
   recorte,
   limite,
@@ -52,6 +59,7 @@ function Cartao({
   rotulo: string;
   pergunta: string;
   resposta: string;
+  veredito: string;
   numero: ReactNode;
   recorte: ReactNode;
   limite: ReactNode;
@@ -65,9 +73,9 @@ function Cartao({
         <h2 id={`sintese-${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
           {pergunta}
         </h2>
-        <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
+        <RespostaCurta id={id} veredito={veredito || resposta}>
           {resposta}
-        </p>
+        </RespostaCurta>
         <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
           {numero}
           <div className="space-y-3 text-sm text-carvao-muted">
@@ -123,6 +131,7 @@ export default function TransicaoPage() {
         </CabecalhoModulo>
         <TransicaoNavegacao atual="sintese" />
 
+        <ModoProfundidade>
         <section aria-labelledby="grandezas" className="pb-6">
           <h2 id="grandezas" className="rotulo pb-2 text-mineral">
             Três grandezas que não se somam
@@ -145,6 +154,7 @@ export default function TransicaoPage() {
             rotulo="MMGD no território"
             pergunta={perguntaPainel("p063")}
             resposta={respostaMmgd(m)}
+            veredito={vereditoMmgd(m)}
             numero={
               <Numero
                 rotulo="Potência instalada de MMGD cadastrada"
@@ -173,6 +183,7 @@ export default function TransicaoPage() {
               rotulo="Energia estimada"
               pergunta={PERGUNTA_ONS}
               resposta={respostaOns(o)}
+              veredito={vereditoOns(o)}
               numero={
                 <Numero
                   rotulo="MMGD estimada no SIN, último mês completo"
@@ -192,7 +203,7 @@ export default function TransicaoPage() {
               }
               limite="que o valor seja medido (é estimativa da fonte), nem nada fora do SIN; e não se soma à capacidade cadastrada."
               href={`${rotaPainel("ons")}#ons`}
-              ligacao="Abrir a estimativa do ONS e a conferência de quando ela entrou no Balanço de Energia"
+              ligacao="Abrir a energia estimada pelo ONS: série mensal e anual"
             />
           ) : (
             <p className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
@@ -205,6 +216,7 @@ export default function TransicaoPage() {
               rotulo="Emissões"
               pergunta={perguntaPainel("p064")}
               resposta={respostaEmissoes(e)}
+              veredito={vereditoEmissoes(e)}
               numero={
                 <Numero
                   rotulo={`Fator médio anual de ${e.ultimo_ano?.ano ?? "sem dado"}`}
@@ -214,6 +226,7 @@ export default function TransicaoPage() {
                   unidade="tCO2/MWh"
                   tamanho="medio"
                   motivoAusencia="Nenhum ano completo publicado nesta versão."
+                  nota={e.ultimo_ano ? `Toneladas de CO2 por MWh gerado no SIN; ${kgPorMwh(e.ultimo_ano.valor)}.` : undefined}
                   endereco={`${rotaPainel("p064")}#p064`}
                 />
               }
@@ -264,6 +277,7 @@ export default function TransicaoPage() {
             ))}
           </ul>
         </section>
+        </ModoProfundidade>
       </main>
     </>
   );

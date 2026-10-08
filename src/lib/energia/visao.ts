@@ -17,6 +17,7 @@ import type {
   FraseVisao,
   IdFrase,
   IdPainelMultiplo,
+  IdRegra,
   ItemSociedade,
   LinhaMultiplos,
   MultiplosVisao,
@@ -86,6 +87,12 @@ export function minuscula(s: string): string {
   return /^[A-ZÀ-Þ][a-zß-ÿ]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s;
 }
 
+/** "a", "a e b", "a, b e c". */
+export function listaEmPortugues(xs: readonly string[]): string {
+  if (xs.length <= 1) return xs.join("");
+  return `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}`;
+}
+
 /** Casas decimais de um número publicado (no máximo 2), para complementos sem texto pronto. */
 export function casasDe(v: number): number {
   if (Math.abs(v - Math.round(v)) < 1e-9) return 0;
@@ -126,6 +133,16 @@ export const ROTULO_ATUALIDADE: Record<string, string> = {
   "SEM DADO": "sem registro de atualidade",
 };
 
+/** Cadência como a gold a grava (sem acento) e como a página a escreve. */
+export const ROTULO_CADENCIA: Record<string, string> = {
+  diaria: "diária",
+  semanal: "semanal",
+  quinzenal: "quinzenal",
+  mensal: "mensal",
+  trimestral: "trimestral",
+  anual: "anual",
+};
+
 /** Menor e maior data de referência entre as frases (cada frase tem a sua). */
 export function referenciasFrases(frases: readonly FraseVisao[]): { min: string; max: string } | null {
   if (!frases.length) return null;
@@ -138,7 +155,7 @@ export function textoAtualidadeFrase(f: FraseVisao): string {
   const a = f.qualidade.atualidade;
   const sit = a?.situacao ? (ROTULO_ATUALIDADE[a.situacao] ?? a.situacao.toLowerCase()) : null;
   const atraso = a?.dias_atraso ? `, ${plural(a.dias_atraso, "dia", "dias")} além do prazo` : "";
-  return sit ? `Fonte ${sit}${a?.cadencia ? ` pela cadência ${a.cadencia}` : ""}${atraso}.` : "Sem registro de atualidade da fonte.";
+  return sit ? `Fonte ${sit}${a?.cadencia ? ` pela cadência ${ROTULO_CADENCIA[a.cadencia] ?? a.cadencia}` : ""}${atraso}.` : "Sem registro de atualidade da fonte.";
 }
 
 /** Componentes que não são medição, como a gold de origem declara (PREVISTO, ESTIMADO). */
@@ -174,6 +191,43 @@ export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_aus
   const dados = g.observar.filter((o) => o.assunto === "dados" && o.tipo !== "evento" && o.ativo);
   if (dados.length) partes.push(`Em alerta sobre os próprios dados: ${dados.map((o) => minuscula(o.titulo)).join("; ")}.`);
   if (g.frases_ausentes.length) partes.push(`Sem frase nesta publicação: ${g.frases_ausentes.map((id) => minuscula(ROTULO_FRASE[id])).join(", ")}.`);
+  return partes.join(" ");
+}
+
+/**
+ * As regras sobre os próprios dados, em palavras comuns. O título da gold ("Revisão material de dado já publicado") e a
+ * condição técnica ficam na lista do P007 e em Analisar; o veredito diz só o que o leitor precisa saber.
+ */
+const DADOS_EM_PALAVRAS: Partial<Record<IdRegra, string>> = {
+  revisao_material: "um dado já publicado foi revisado",
+  atualidade_fontes: "uma fonte usada nesta página está atrasada",
+  pld_defasagem: "a série do PLD está sem atualização recente",
+};
+
+/** Nomes de regras no veredito: até duas por extenso; mais que isso, só a contagem, para a frase não virar lista. */
+function nomesNoVeredito(regras: readonly RegraObservar[], palavras: boolean): string | null {
+  if (regras.length === 0 || regras.length > 2) return null;
+  return listaEmPortugues(regras.map((o) => (palavras ? (DADOS_EM_PALAVRAS[o.id] ?? minuscula(o.titulo)) : minuscula(o.titulo))));
+}
+
+/**
+ * Veredito do P004 ("O que mudou e merece atenção?"): se alguma regra sobre o sistema está em alerta e o que se avisa
+ * sobre os próprios dados. Lê os mesmos campos de respostaSistema (observar e frases); os fatos e as datas ficam abaixo.
+ */
+export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">): string {
+  const regras = g.observar.filter((o) => o.tipo !== "evento");
+  const sistema = regras.filter((o) => o.assunto === "sistema" && o.ativo);
+  const dados = regras.filter((o) => o.assunto === "dados" && o.ativo);
+  const partes: string[] = [];
+  if (sistema.length) {
+    const nomes = nomesNoVeredito(sistema, false);
+    partes.push(`${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${num(sistema.length, 0)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
+  } else partes.push("Nenhuma regra sobre o sistema está em alerta.");
+  if (dados.length) {
+    const nomes = nomesNoVeredito(dados, true);
+    partes.push(`Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${num(dados.length, 0)} regras estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
+  }
+  if (g.frases.length) partes.push("Cada fato abaixo traz a sua data.");
   return partes.join(" ");
 }
 
@@ -399,6 +453,37 @@ export function respostaDeterminantes(m: MultiplosVisao): string[] {
   return m.paineis.map((p) => leituraDeterminante(p, m));
 }
 
+/**
+ * Veredito do P005 ("Como estão os principais determinantes?"): quais painéis estão dentro da faixa de referência que o
+ * próprio painel publica, qual está fora e a comparação da carga com o ano anterior. A rede só tem o sentido do fluxo.
+ * Os mesmos campos e a mesma posição de leituraDeterminante; os valores e as datas de cada painel ficam na resposta completa.
+ */
+export function vereditoDeterminantes(m: MultiplosVisao): string {
+  const dentro: string[] = [];
+  const fora: string[] = [];
+  const semDado: string[] = [];
+  const sentido: string[] = [];
+  m.paineis.forEach((p) => {
+    const pos = posicaoDeterminante(p, m);
+    const nome = p.titulo;
+    if (pos.situacao === "sem_dado") semDado.push(nome);
+    else if (pos.situacao === "sentido") sentido.push(nome);
+    else if (pos.situacao === "sem_referencia") semDado.push(`${nome} (sem referência)`);
+    else if (p.referencia.tipo === "serie") {
+      const ref = p.referencia.rotulo.split(",")[0];
+      const pct = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1)}% `;
+      fora.push(pos.situacao === "dentro" ? `${nome}: igual ao ${minuscula(ref)}` : `${nome}: ${pct}${pos.situacao === "acima" ? "acima" : "abaixo"} do ${minuscula(ref)}`);
+    } else if (pos.situacao === "dentro") dentro.push(nome);
+    else fora.push(`${nome}: ${pos.situacao === "acima" ? "acima" : "abaixo"} da faixa de referência`);
+  });
+  const partes: string[] = [];
+  if (dentro.length) partes.push(`${listaEmPortugues(dentro.map((x, i) => (i === 0 ? x : minuscula(x))))} ${dentro.length === 1 ? "está" : "estão"} dentro da faixa de referência ${dentro.length === 1 ? "do painel" : "de cada painel"}.`);
+  for (const f of fora) partes.push(`${f}.`);
+  if (sentido.length) partes.push(`${sentido.join(", ")}: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio.`);
+  if (semDado.length) partes.push(`Sem dado: ${listaEmPortugues(semDado.map((x) => minuscula(x)))}.`);
+  return partes.join(" ");
+}
+
 /** Colunas da tabela equivalente aos pequenos múltiplos: a data e todas as colunas publicadas no recorte. */
 export function colunasMultiplos(m: MultiplosVisao): ColunaTabela[] {
   const cols: ColunaTabela[] = [{ id: "d", rotulo: "Data", tipo: "data" }];
@@ -454,8 +539,15 @@ export function valorSociedade(it: Pick<ItemSociedade, "valor_exibido" | "unidad
 /** Texto de um complemento: número único ou par (faixa entre percentis ou atual e comparação). */
 export function textoComplemento(c: { rotulo: string; valor: number | (number | null)[] | null; unidade: string | null; valor_exibido?: string }): string {
   if (c.valor_exibido) return c.valor_exibido;
-  const u = c.unidade ? ` ${c.unidade}` : "";
   if (c.valor === null) return "sem dado";
+  // tarifa: o cartão mostra o valor em R$/kWh (R$/MWh ÷ 1000, como o verbete TE e TUSD explica), então a faixa também
+  if (c.unidade === "R$/MWh") {
+    const kwh = (x: number | null) => (x === null ? "sem dado" : `R$ ${num(x / 1000, 4)}/kWh`);
+    return Array.isArray(c.valor) ? `${kwh(c.valor[0])} ${/percentil/i.test(c.rotulo) ? "a" : "e"} ${kwh(c.valor[1])}` : kwh(c.valor);
+  }
+  if (c.unidade === "R$/mês" && typeof c.valor === "number") return `R$ ${num(c.valor, 2)} por mês`;
+  // percentual colado ao número, como no resto da página ("61,6%", e não "61,6 %")
+  const u = c.unidade ? (c.unidade.startsWith("%") ? c.unidade : ` ${c.unidade}`) : "";
   if (Array.isArray(c.valor)) {
     const [a, b] = c.valor;
     const f = (x: number | null) => (x === null ? "sem dado" : num(x, casasDe(x)));
@@ -473,6 +565,32 @@ export function respostaSociedade(s: SociedadeVisao): string {
   });
   const aus = s.ausentes.length ? ` Sem dado: ${s.ausentes.map((a) => a.id).join(", ")}.` : "";
   return `Cada número tem o seu período, e nenhum descreve o dia. ${partes.join(" ")}${aus}`;
+}
+
+/** Valor com a unidade quando o texto publicado é só o número (sem o equivalente em horas e minutos do DEC). */
+function valorComUnidade(it: Pick<ItemSociedade, "valor_exibido" | "unidade">): string {
+  return /^[\d.,−-]+$/.test(it.valor_exibido.trim()) ? `${it.valor_exibido} ${it.unidade}` : it.valor_exibido;
+}
+
+/**
+ * Veredito do P006 ("Como custo e qualidade chegam ao consumidor?"): a tarifa de referência e o tempo sem energia, cada um
+ * com o seu período, e o limite de leitura (nenhum descreve o dia). Os mesmos itens e campos de respostaSociedade; perdas e
+ * Tarifa Social ficam nos cartões.
+ */
+export function vereditoSociedade(s: SociedadeVisao): string {
+  const por = new Map(s.itens.map((i) => [i.id, i]));
+  const partes: string[] = [];
+  const t = por.get("tarifa");
+  if (t) partes.push(`A tarifa residencial de referência é ${valorComUnidade(t)}${/sem tributos/i.test(t.aviso) ? ", sem tributos" : ""}, ${periodoCurto(t)}.`);
+  const c = por.get("continuidade");
+  if (c) partes.push(`Em média, cada consumidor ficou ${valorComUnidade(c)} sem energia (${periodoCurto(c)}).`);
+  if (!partes.length) {
+    const outros = s.itens.slice(0, 2).map((it) => `${it.titulo}: ${valorComUnidade(it)} (${periodoCurto(it)})`);
+    if (!outros.length) return "";
+    partes.push(`${outros.join("; ")}.`);
+  }
+  partes.push("Nenhum número descreve o dia.");
+  return partes.join(" ");
 }
 
 export const COLUNAS_SOCIEDADE: ColunaTabela[] = [
@@ -581,6 +699,30 @@ export function respostaObservar(observar: readonly RegraObservar[]): string {
   if (sd.length) partes.push(`Sem dado para avaliar: ${nomes(sd)}.`);
   const ev = observar.filter((o) => o.tipo === "evento");
   if (ev.length) partes.push(`No calendário: ${nomes(ev)}.`);
+  return partes.join(" ");
+}
+
+/**
+ * Veredito do P007 ("Quais alterações são relevantes?"): se alguma regra sobre o sistema está em alerta, quais estão em
+ * observação (condição presente, ainda sem a duração mínima) e quantas regras sobre os dados estão em alerta. Os mesmos campos
+ * de respostaObservar.
+ */
+export function vereditoObservar(observar: readonly RegraObservar[]): string {
+  const regras = observar.filter((o) => o.tipo !== "evento");
+  const alerta = regras.filter((o) => o.ativo);
+  const sistema = alerta.filter((o) => o.assunto === "sistema");
+  const dados = alerta.filter((o) => o.assunto === "dados");
+  const obs = regras.filter((o) => o.estado === "em_observacao");
+  const partes: string[] = [];
+  if (sistema.length) {
+    const nomes = nomesNoVeredito(sistema, false);
+    partes.push(`${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${num(sistema.length, 0)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
+  } else partes.push("Nenhuma regra sobre o sistema está em alerta.");
+  if (obs.length) {
+    const nomes = nomesNoVeredito(obs, false);
+    partes.push(`${obs.length === 1 ? "Uma regra está" : `${num(obs.length, 0)} regras estão`} em observação, ainda sem a duração mínima para virar alerta${nomes ? `: ${nomes}` : ""}.`);
+  }
+  if (dados.length) partes.push(`Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${num(dados.length, 0)} regras estão`} em alerta.`);
   return partes.join(" ");
 }
 
@@ -765,7 +907,7 @@ export function textoLinhaEstado(o: Pick<RegraObservar, "linha_estado">): string
   const partes = [
     c["A"] ? `${plural(c["A"], "dia", "dias")} com alerta exibido` : "nenhum dia com alerta exibido",
     c["o"] ? `${plural(c["o"], "dia", "dias")} com a condição sem a duração mínima` : null,
-    c["."] ? `${plural(c["."], "dia", "dias")} normais` : null,
+    c["."] ? `${plural(c["."], "dia normal", "dias normais")}` : null,
     c["-"] ? `${plural(c["-"], "dia", "dias")} sem dado` : null,
   ].filter(Boolean);
   return `De ${dataBR(le.inicio)} a ${dataBR(fim)}: ${partes.join(", ")}.`;
@@ -781,4 +923,116 @@ export function textoFrequenciaConjunta(g: Pick<SinteseVisaoGold, "destaques">):
     + `${num(pc.dias_com_destaque, 0)} de ${num(pc.dias, 0)} dias (${num(pc.pct_dias_com_destaque, 1)}%); a meta é no máximo ${num(f.meta_pct, 1)}%`
     + `${f.atende_meta ? ", cumprida" : ", não cumprida"}. O limite de novidade é de ${plural(f.novidade_dias, "dia", "dias")} depois da confirmação.`
   );
+}
+
+/* ---------------------------------------------------------------- conciliações no ponto de uso (r8) */
+
+const sinal = (v: number) => (v >= 0 ? "acima" : "abaixo");
+
+/**
+ * Carga contra o ano anterior em duas janelas: a frase do P004 compara a média dos 7 dias com as mesmas datas do ano
+ * anterior; o painel de determinantes compara o dia com o mesmo dia da semana, 364 dias antes. Lê os dois números da gold
+ * (frase `carga` e painel `carga`) e as datas de cada janela; não recalcula nenhum percentual.
+ */
+export function notaCarga(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): string | null {
+  const f = g.frases.find((x) => x.id === "carga");
+  const m = g.multiplos;
+  const p = m?.paineis.find((x) => x.id === "carga");
+  const v7 = f?.valores.variacao_pct?.valor;
+  const [atual, anterior] = f?.qualidade.janelas ?? [];
+  if (!f || !m || !p || typeof v7 !== "number" || !atual || !anterior) return null;
+  const pos = posicaoDeterminante(p, m);
+  if (pos.variacao_pct === null) return null;
+  const dia = p.data_referencia;
+  return (
+    `A carga aparece contra o ano anterior de duas formas: a média dos 7 dias de ${dataBR(atual.inicio)} a ${dataBR(atual.fim)}, contra ${dataBR(anterior.inicio)} a ${dataBR(anterior.fim)}, ficou ${num(Math.abs(v7), 1)}% ${sinal(v7)}; ` +
+    `o dia ${dataBR(dia)}, contra o mesmo dia da semana (${dataBR(somaDias(dia, -364))}), ficou ${num(Math.abs(pos.variacao_pct), 1)}% ${sinal(pos.variacao_pct)}. ` +
+    `A janela e o dia de comparação são diferentes, e por isso os dois percentuais não precisam coincidir.`
+  );
+}
+
+/**
+ * Rede: a frase do P004 traz a média de 30 dias da fronteira de maior fluxo; o painel de determinantes, o fluxo médio de um
+ * dia. Só escreve a nota quando as duas leituras são da mesma fronteira (o par da frase está no caminho do valor do painel).
+ */
+export function notaRede(g: Pick<SinteseVisaoGold, "frases" | "multiplos">): string | null {
+  const f = g.frases.find((x) => x.id === "rede");
+  const p = g.multiplos?.paineis.find((x) => x.id === "rede");
+  const media = f?.valores.fluxo_mwmed?.valor;
+  const par = f?.valores.par?.valor;
+  const ini = f?.valores.inicio?.valor;
+  const fim = f?.valores.fim?.valor;
+  const dia = p?.valor_atual.valor;
+  if (!f || !p || typeof media !== "number" || typeof par !== "string" || typeof ini !== "string" || typeof fim !== "string" || typeof dia !== "number") return null;
+  if (!p.valor_atual.caminho?.includes(`[${par}]`)) return null;
+  const nome = p.valor_atual.rotulo ?? par;
+  return (
+    `Na fronteira ${nome}, a frase de Rede traz a média dos 30 dias de ${dataBR(ini)} a ${dataBR(fim)} (${comUnidade(media, "MWmed", 0)}) e o gráfico de Rede traz o fluxo médio do dia ${dataBR(p.data_referencia)} (${comUnidade(dia, "MWmed", 0)}). ` +
+    `Média de 30 dias e valor de um dia não precisam coincidir.`
+  );
+}
+
+/** Mês de uma série mensal do módulo de Inclusão (inclusao.json, tarifa_social.serie_mensal), com a completude que o módulo publica. */
+export type MesSerieTarifaSocial = { m: string; completo: boolean; distribuidoras?: number; distribuidoras_faltantes?: number };
+
+/**
+ * Tarifa Social: o cartão usa o último mês completo do arquivo do SCS e a regra de atualidade usa o último mês do arquivo,
+ * que pode estar incompleto. Escreve a ponte entre os dois meses; sem divergência, devolve null.
+ */
+export function notaTarifaSocial(it: Pick<ItemSociedade, "periodo" | "atualidade">, serie: readonly MesSerieTarifaSocial[] | null | undefined): string | null {
+  const ultimo = it.atualidade?.ultimo_periodo;
+  const ref = it.periodo.fim.slice(0, 7);
+  if (!ultimo || ultimo.slice(0, 7) === ref) return null;
+  const mes = (serie ?? []).find((x) => x.m === ultimo.slice(0, 7));
+  const base = `O número é de ${mesAno(ref)}, o último mês completo do arquivo da ANEEL; o conjunto chega a ${mesAno(ultimo.slice(0, 7))}, e é esse último mês que a regra de atualidade usa para dizer que a fonte está atrasada.`;
+  if (mes && !mes.completo && typeof mes.distribuidoras_faltantes === "number")
+    return `${base} ${mesAno(mes.m)} não entra no número porque está incompleto: ${plural(mes.distribuidoras_faltantes, "distribuidora esperada não informou", "distribuidoras esperadas não informaram")} nesse mês.`;
+  return base;
+}
+
+/** Semana do CMO semanal do ONS por subsistema (cmo.json, serie). */
+export type SemanaCmo = { s: string; SE: number; S: number; NE: number; N: number };
+
+/**
+ * CMO semanal: o Norte difere de cada um dos outros três subsistemas na semana de referência. Lê a série publicada e conta há
+ * quantas semanas seguidas isso acontece, para o leitor ver que não é um valor isolado nem de outra semana. A causa não está
+ * no dado: a nota diz isso.
+ */
+export function notaCmoNorte(serie: readonly SemanaCmo[] | null | undefined, referencia: string): string | null {
+  const ate = (serie ?? []).filter((x) => x.s <= referencia);
+  const ult = ate[ate.length - 1];
+  if (!ult || ult.s !== referencia) return null;
+  const difere = (x: SemanaCmo) => [x.SE, x.S, x.NE].every((v) => Math.abs(x.N - v) > 0.005);
+  if (!difere(ult)) return null;
+  let n = 0;
+  for (let i = ate.length - 1; i >= 0 && difere(ate[i]); i--) n++;
+  const outros = listaEmPortugues(Array.from(new Set([ult.SE, ult.S, ult.NE])).map((v) => comUnidade(v, "R$/MWh", 2)));
+  const quando = n < 2 ? "" : `, e a série semanal do ONS mostra essa diferença em ${plural(n, "semana seguida", "semanas seguidas")}, desde a semana de ${dataBR(ate[ate.length - n].s)}`;
+  return `Na semana de ${dataBR(ult.s)}, o Norte (${comUnidade(ult.N, "R$/MWh", 2)}) difere de cada um dos outros três subsistemas (${outros})${quando}. O dado do ONS não informa o motivo, e o observatório não o atribui.`;
+}
+
+/**
+ * Aviso de um complemento sem o bastidor de coleta: o parêntese com o nome de campo da fonte (NumCon) sai do texto do
+ * leitor e fica inteiro no detalhe, que a página põe em Analisar. O leitor lê a mesma exclusão em palavras comuns.
+ */
+export function avisoSemBastidor(aviso: string): { leitor: string; detalhe: string } {
+  const m = /\s*\(([^()]*NumCon[^()]*)\)/.exec(aviso);
+  if (!m) return { leitor: aviso, detalhe: "" };
+  const quem = /NumCon implausível de ([^;)]+)/.exec(m[1])?.[1]?.trim();
+  const leitor = aviso.replace(m[0], ` (o número de unidades consumidoras informado${quem ? ` por ${quem}` : ""} não é plausível)`);
+  return { leitor, detalhe: m[1] };
+}
+
+/**
+ * Identificadores de conjunto ("aneel_scs", "ear_subsistema_di") no texto de uma regra trocados pelo título do conjunto no
+ * painel de saúde dos dados (publicacao.json). Os identificadores trocados voltam em `ids`, para a página mostrá-los em Analisar.
+ */
+export function conjuntosLegiveis(texto: string, titulos: Readonly<Record<string, string>>): { texto: string; ids: string[] } {
+  const ids: string[] = [];
+  const out = texto.replace(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g, (id) => {
+    if (!titulos[id]) return id;
+    if (!ids.includes(id)) ids.push(id);
+    return titulos[id];
+  });
+  return { texto: out, ids };
 }

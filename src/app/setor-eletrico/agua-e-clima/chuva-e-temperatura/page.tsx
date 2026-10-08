@@ -96,9 +96,10 @@ export default function ClimaPage() {
             </>
           }
         >
-          A chuva nas bacias alimenta a afluência dos reservatórios, e a temperatura acompanha a demanda por energia. Esta página mostra a chuva estimada por satélite
-          (<Termo slug="imerg">IMERG</Termo>) em cada bacia do ONS e a temperatura estimada por reanálise (<Termo slug="merra-2">MERRA-2</Termo>) em cada subsistema,
-          contra a média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}, e separa estimativa, observação, previsão e cenário.
+          {perguntaPainel("p019")} A chuva nas bacias alimenta a afluência dos reservatórios, e a temperatura acompanha a demanda por energia. Esta página mostra a chuva estimada
+          por satélite (<Termo slug="imerg">IMERG</Termo>) em cada bacia do ONS e a temperatura estimada por reanálise (<Termo slug="merra-2">MERRA-2</Termo>) em cada
+          subsistema, contra a média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}; a diferença para essa média é a anomalia. Estimativa, observação, previsão e cenário ficam
+          separados.
         </CabecalhoModulo>
         <AguaNavegacao atual="p019" />
         <ModoProfundidade>

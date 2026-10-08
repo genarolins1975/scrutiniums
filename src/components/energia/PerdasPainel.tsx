@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { PerdasLinkConsulta } from "@/components/energia/PerdasLinkConsulta";
 import { PerdasLinkPainel } from "@/components/energia/PerdasLinkPainel";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
 import { anosSerieNacional } from "@/lib/energia/perdas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
@@ -22,6 +23,9 @@ export const PAGINAS_PERDAS = [
   { id: "regulatorio", href: "/setor-eletrico/perdas/regulatorio", rotulo: "Realizado e regulatório", painel: "P057" },
   { id: "custo", href: "/setor-eletrico/perdas/custo-e-contexto", rotulo: "Custo e contexto", painel: "P058" },
 ] as const;
+
+/** Pergunta do painel Realizado e regulatório: o que o gráfico mostra de fato (a mudança do percentual, não o desvio do realizado). */
+export const PERGUNTA_REGULATORIO = "Como mudou o percentual regulatório de perdas técnicas de cada distribuidora?";
 
 export type IdPaginaPerdas = (typeof PAGINAS_PERDAS)[number]["id"];
 
@@ -70,10 +74,20 @@ export function ReferenciaPerdas({ g }: { g: PerdasGold }) {
   );
 }
 
-export function Resposta({ children, prova }: { children: ReactNode; prova?: ReactNode }) {
+/**
+ * Resposta do painel. Com `veredito` (e o `id` do painel), vira a resposta em duas camadas: o veredito em palavras comuns
+ * fica à vista e o texto completo (`children`) passa a Analisar e Auditar, sem sair do HTML do servidor.
+ */
+export function Resposta({ children, prova, veredito, id }: { children: ReactNode; prova?: ReactNode; veredito?: string; id?: string }) {
   return (
     <div className="mb-5 border-l-2 border-energia pl-4">
-      <p className="text-base leading-relaxed text-carvao">{children}</p>
+      {veredito && id ? (
+        <RespostaCurta id={id} veredito={veredito}>
+          {children}
+        </RespostaCurta>
+      ) : (
+        <p className="text-base leading-relaxed text-carvao">{children}</p>
+      )}
       {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
     </div>
   );

@@ -6,6 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeEscolha } from "@/components/energia/RedeControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -26,9 +27,11 @@ import {
   linhasAtls,
   linhasInterrupcoesAno,
   linhasPerturbacoes,
+  nomeFluxo,
   paraTabela,
   respostaRestricoes,
   serieAtls,
+  vereditoRestricoes,
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { RestricoesRede, SubsistemaOuSin } from "@/lib/energia/tipos-rede";
@@ -85,6 +88,9 @@ export function RedeRestricoes({
   const conhecidos = new Set(r.atls.fluxos.map((f) => f.fluxo));
   const comparados = (v.fls as string[]).filter((f) => conhecidos.has(f));
   const noHistorico = comparados.length ? comparados : escolhido ? [escolhido.fluxo] : [];
+  // nome legível de cada sigla do ONS (a definição conferida; sem ela, a própria sigla)
+  const nomes = new Map(r.atls.fluxos.map((f) => [f.fluxo, nomeFluxo(f)]));
+  const nomeDe = (sigla: string) => nomes.get(sigla) ?? sigla;
   const fluxosHistorico = r.atls.fluxos.filter((f) => noHistorico.includes(f.fluxo));
   const serie = useMemo(() => serieAtls(fluxosHistorico), [fluxosHistorico]);
   const smi = v.smi as SubsistemaOuSin;
@@ -98,9 +104,9 @@ export function RedeRestricoes({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p030">
+      <RespostaCurta id="p030" veredito={vereditoRestricoes(r)}>
         {respostaRestricoes(r)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div className="min-w-0">
@@ -129,7 +135,7 @@ export function RedeRestricoes({
         titulo={`Horas acima do limite em 12 meses, fluxos publicados em ${ultimo ? mesAno(ultimo) : "último mês"}`}
         dados={paraTabela(linhasAtivos)}
         chaveCategoria="id"
-        chaveRotulo="fluxo"
+        chaveRotulo="nome"
         series={[{ id: "horas_12m", rotulo: "Horas acima do limite", cor: "var(--cor-energia)" }]}
         unidade="h"
         casas={1}
@@ -143,7 +149,7 @@ export function RedeRestricoes({
         colunas={COLUNAS_ATLS}
         linhas={paraTabela(linhasAtivos)}
         chaveLinha="id"
-        colunaRotulo="fluxo"
+        colunaRotulo="nome"
         fonte={fonteAtls}
         versao={versao}
         nomeArquivo="rede-atls-12-meses"
@@ -157,7 +163,7 @@ export function RedeRestricoes({
         <div className="space-y-4">
           <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
             <Numero
-              rotulo={`Horas acima do limite em 12 meses, ${escolhido.fluxo}`}
+              rotulo={`Horas acima do limite em 12 meses, ${nomeFluxo(escolhido)}`}
               natureza="CALCULADO"
               valor={ev ? undefined : (escolhido.ultimos_12_meses?.horas_violacao ?? null)}
               evidencia={ev ?? null}
@@ -177,9 +183,9 @@ export function RedeRestricoes({
             />
             <div className="space-y-2 text-sm text-carvao-muted">
               <p>
-                <span className="text-carvao">{escolhido.fluxo}</span>
+                <span className="text-carvao">{nomeFluxo(escolhido)}</span>
                 {escolhido.definicao
-                  ? `: ${escolhido.definicao} (definição conferida em ${(escolhido.documento_definicao && titulosDocumentos[escolhido.documento_definicao]) || "documento público do ONS"}).`
+                  ? ` (sigla do ONS: ${escolhido.fluxo}): definição conferida em ${(escolhido.documento_definicao && titulosDocumentos[escolhido.documento_definicao]) || "documento público do ONS"}.`
                   : ": sem definição em documento público conferido; a sigla é publicada como o ONS a escreve."}
               </p>
               <p>
@@ -197,21 +203,21 @@ export function RedeRestricoes({
       <div className="space-y-4">
         <Comparador
           rotulo={`Fluxos no histórico (até ${LIMITE_COMPARACAO}); sem escolha, o fluxo selecionado acima`}
-          entidades={r.atls.fluxos.map((f) => ({ id: f.fluxo, rotulo: f.fluxo, detalhe: f.definicao ?? (f.ativo ? "publicado no último mês" : "encerrado") }))}
+          entidades={r.atls.fluxos.map((f) => ({ id: f.fluxo, rotulo: nomeFluxo(f), detalhe: f.definicao ? f.fluxo : f.ativo ? "publicado no último mês" : "encerrado", sinonimos: [f.fluxo] }))}
           selecionadas={comparados}
           onMudar={(ids) => definir({ fls: ids })}
-          dicaBusca="FNS, RSUL, FNESE"
-          vazio={escolhido ? `Mostrando ${escolhido.fluxo}. Escolha até quatro fluxos para comparar na mesma escala.` : "Escolha até quatro fluxos."}
+          dicaBusca="Buscar por nome ou sigla do ONS, por exemplo RSUL"
+          vazio={escolhido ? `Mostrando ${nomeFluxo(escolhido)}. Escolha até quatro fluxos para comparar na mesma escala.` : "Escolha até quatro fluxos."}
         >
           {() => null}
         </Comparador>
         {serie.length ? (
           <GraficoLinhas
-            titulo={`Horas acima do limite por mês: ${noHistorico.join(", ")}`}
+            titulo={`Horas acima do limite por mês: ${noHistorico.map(nomeDe).join(", ")}`}
             dados={serie}
             chaveX="m"
             formatoX="mes"
-            series={noHistorico.map((f, i) => ({ id: f, rotulo: f, cor: COR_COMPARACAO[i % COR_COMPARACAO.length] }))}
+            series={noHistorico.map((f, i) => ({ id: f, rotulo: nomeDe(f), sigla: f, cor: COR_COMPARACAO[i % COR_COMPARACAO.length] }))}
             unidade="h"
             casas={1}
             zeroNoEixo
@@ -221,13 +227,13 @@ export function RedeRestricoes({
           />
         ) : (
           <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
-            {noHistorico.join(", ")}: sem mês publicado desde o início da série mensal desta página; o histórico completo
+            {noHistorico.map(nomeDe).join(", ")}: sem mês publicado desde o início da série mensal desta página; o histórico completo
             {inicioArquivo ? `, desde ${mesAno(inicioArquivo)},` : ""} está no arquivo do ATLS para download.
           </p>
         )}
         <TabelaInterativa
-          titulo={`Tabela equivalente: horas acima do limite por mês (${noHistorico.join(", ")})`}
-          colunas={[{ id: "m", rotulo: "Mês", tipo: "data" as const }, ...noHistorico.map((f) => ({ id: f, rotulo: f, tipo: "numero" as const, unidade: "h", casas: 1 }))]}
+          titulo={`Tabela equivalente: horas acima do limite por mês (${noHistorico.map(nomeDe).join(", ")})`}
+          colunas={[{ id: "m", rotulo: "Mês", tipo: "data" as const }, ...noHistorico.map((f) => ({ id: f, rotulo: nomeDe(f), tipo: "numero" as const, unidade: "h", casas: 1 }))]}
           linhas={paraTabela(serie)}
           chaveLinha="id"
           colunaRotulo="m"

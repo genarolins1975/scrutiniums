@@ -242,11 +242,18 @@ export function exemploDe(slug: string): Exemplo {
       if (l.length < 2) return null;
       const max = l[0];
       const min = l[l.length - 1];
+      // mediana dos mesmos percentuais (o valor típico que o intervalo entre os extremos não dá); uma casa, como o resto do observatório
+      const ord = l.map((x) => x.atual).sort((a, b) => a - b);
+      const meio = ord.length % 2 ? ord[(ord.length - 1) / 2] : (ord[ord.length / 2 - 1] + ord[ord.length / 2]) / 2;
+      const ano = g.referencia?.ano;
+      const comDado = g.distribuidoras.filter((d) => d.referencia?.ano === ano).length;
       return {
         partes: [
           t(`No trecho mais recente de cada uma das ${num(l.length, 0)} distribuidoras com série, o percentual técnico regulatório implícito no SAMP vai de `),
-          t(`${num(min.atual, 3)}% (${min.rotulo}) a ${num(max.atual, 3)}% (${max.rotulo}) da energia injetada publicada`, "ESTIMADO"),
-          t(". O percentual regulatório não técnico não está em base aberta acessível."),
+          t(`${num(min.atual, 1)}% (${min.rotulo}) a ${num(max.atual, 1)}% (${max.rotulo}), com mediana de ${num(meio, 1)}%, da energia injetada publicada`, "ESTIMADO"),
+          t(
+            `. As ${num(l.length, 0)} são as distribuidoras${comDado ? ` (de ${num(comDado, 0)} com dado de ${ano})` : ""} em que o observatório consegue inferir o percentual da série do SAMP. O percentual regulatório não técnico não está em base aberta acessível.`,
+          ),
         ],
         href: "/setor-eletrico/perdas/regulatorio#painel-regulatorio",
       };

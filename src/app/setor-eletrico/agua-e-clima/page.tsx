@@ -217,7 +217,7 @@ export default function AguaPage() {
                           endereco={`${rotaPainel("p017")}#p017`}
                         />
                         <Numero
-                          rotulo={`Mudanças da EAR máxima${desdeCap ? ` desde ${desdeCap}` : ""}`}
+                          rotulo={`Mudanças da capacidade de armazenamento (EAR máxima)${desdeCap ? ` desde ${desdeCap}` : ""}`}
                           natureza="CALCULADO"
                           evidencia={ev.capacidade}
                           formato="num"
@@ -227,8 +227,8 @@ export default function AguaPage() {
                           cor="var(--serie-referencia)"
                           nota={
                             a.capacidade.eventos_fechados === a.capacidade.n_eventos
-                              ? "Todas atribuídas a reservatórios, com o resíduo publicado."
-                              : `${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} atribuídas a reservatórios dentro da tolerância; o resíduo de cada uma está publicado.`
+                              ? "Cada mudança é um dia em que a EAR máxima de um subsistema mudou. Todas foram atribuídas a reservatórios, e a diferença que sobra em cada uma (o resíduo) está publicada."
+                              : `Cada mudança é um dia em que a EAR máxima de um subsistema mudou. ${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} foram atribuídas a reservatórios dentro da tolerância; a diferença que sobra em cada uma (o resíduo) está publicada.`
                           }
                           endereco={`${rotaPainel("p017")}#capacidade`}
                         />

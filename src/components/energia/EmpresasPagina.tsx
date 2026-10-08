@@ -3,7 +3,9 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { EmpresasLinkPainel } from "@/components/energia/EmpresasLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, rotaPainel, type PainelEmpresas } from "@/lib/energia/empresas";
+import { SIGLAS } from "@/lib/energia/siglas";
 
 /**
  * Peças de servidor das páginas do módulo Empresas (a síntese em /setor-eletrico/empresas, um
@@ -158,5 +160,38 @@ export function EmpresasResposta({ id, children }: { id: PainelEmpresas | "ficha
     <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
       {children}
     </p>
+  );
+}
+
+/**
+ * Como ler os números de continuidade e a tarifa, junto dos números (não só no fim da página): DEC e FEC com a frase que os
+ * verbetes publicam, o sentido da diferença diante do limite e o que é a tarifa B1. Nenhuma definição é escrita aqui: as frases
+ * vêm dos verbetes (conferidos) e das siglas do observatório.
+ */
+export function EmpresasComoLer() {
+  const dec = conceito("dec")?.emUmaFrase;
+  const fec = conceito("fec")?.emUmaFrase;
+  return (
+    <div className="space-y-1.5 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted" data-como-ler="continuidade-e-tarifa">
+      <p className="rotulo text-mineral">Como ler continuidade e tarifa</p>
+      {dec && (
+        <p>
+          <span className="text-carvao">DEC ({SIGLAS.DEC}).</span> {dec}
+        </p>
+      )}
+      {fec && (
+        <p>
+          <span className="text-carvao">FEC ({SIGLAS.FEC}).</span> {fec}
+        </p>
+      )}
+      <p>
+        O limite de DEC e de FEC é o que a ANEEL fixa para cada distribuidora. Nos gráficos de pontos, a diferença é o valor apurado menos o limite: diferença negativa quer dizer abaixo do limite, ou seja,
+        dentro dele; diferença positiva, acima do limite.
+      </p>
+      <p>
+        <span className="text-carvao">Tarifa B1.</span> No conjunto de dados da ANEEL, o subgrupo B1 é a tarifa residencial. O valor é a soma da {SIGLAS.TE} (TE) e da {SIGLAS.TUSD} (TUSD), em R$/MWh, sem tributos e
+        sem bandeira. O ato é a resolução homologatória em que a ANEEL a publica ({SIGLAS.REH}, REH).
+      </p>
+    </div>
   );
 }

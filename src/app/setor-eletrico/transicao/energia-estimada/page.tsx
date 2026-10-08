@@ -4,6 +4,7 @@ import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoConferencia2023, TransicaoOnsMensal } from "@/components/energia/TransicaoOns";
 import {
@@ -20,6 +21,7 @@ import {
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -29,6 +31,7 @@ import {
   PERGUNTA_A11,
   PERGUNTA_ONS,
   dadosConferencia,
+  comoLerOns,
   dadosRazaoCapacidade,
   data,
   dataIncorporacao,
@@ -37,12 +40,14 @@ import {
   linhasPares,
   mes,
   mudancaOns,
+  mudancaOnsMes,
   numTexto,
   pctTexto,
   perguntaPainel,
   respostaOns,
   rotaPainel,
   trechosConferencia,
+  vereditoOns,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
@@ -78,7 +83,7 @@ export default function EnergiaEstimadaPage() {
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-energia-estimada" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
+        <CabecalhoModulo siglas={["MMGD", "SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
           titulo="Energia da micro e minigeração distribuída no SIN"
           referencia={
@@ -88,8 +93,8 @@ export default function EnergiaEstimadaPage() {
             </>
           }
         >
-          O cadastro da ANEEL mede capacidade; esta página mostra a energia que o ONS estima para a MMGD no SIN, em MWmed, e confere o que mudou nos dados do ONS quando essa
-          estimativa passou a compor a geração e a carga do Balanço de Energia.
+          O cadastro da ANEEL mede capacidade; esta página mostra a energia que o ONS estima para a MMGD no SIN, em MWmed. No modo Analisar, confere o que mudou nos dados do ONS quando essa
+          estimativa entrou na geração e na carga do Balanço de Energia.
         </CabecalhoModulo>
         <TransicaoNavegacao atual="ons" />
         <ModoProfundidade>
@@ -106,11 +111,23 @@ export default function EnergiaEstimadaPage() {
                     parcela supervisionada e da medida para faturamento, e que entrou nos dados de geração e carga do Balanço de Energia.
                   </>
                 }
-                oQueMudou={mudancaOns(o, m.corte_provisorio)}
+                oQueMudou={
+                  <>
+                    {mudancaOnsMes(o) || mudancaOns(o, m.corte_provisorio)}
+                    {mudancaOnsMes(o) && (
+                      <span data-nivel="analisar" className="mt-2 block">
+                        {mudancaOns(o, m.corte_provisorio)}
+                      </span>
+                    )}
+                  </>
+                }
                 comoInterpretar={
                   <>
-                    Energia de cada meia hora = valor publicado × 0,5 h; MWmed do período = energia ÷ horas cobertas, nunca média de médias. SIN = soma dos quatro submercados nos dias
-                    em que os quatro têm as 24 horas. Participação = 100 × energia de MMGD ÷ energia da carga global, mesmos intervalos.
+                    {comoLerOns(o)} <Termo slug="carga-global">Carga global</Termo> é a carga verificada pelo ONS.
+                    <span data-nivel="analisar" className="mt-2 block">
+                      Como o observatório calcula: energia de cada meia hora = valor publicado × 0,5 h; MWmed do período = energia ÷ horas cobertas, nunca média de médias. SIN = soma dos quatro submercados nos dias em que os
+                      quatro têm as 24 horas. Participação = 100 × energia de MMGD ÷ energia da carga global, mesmos intervalos.
+                    </span>
                   </>
                 }
                 naoConcluir={
@@ -123,9 +140,9 @@ export default function EnergiaEstimadaPage() {
                 complementares={[{ rotulo: "Razão com a capacidade cadastrada", p: o.proveniencia.razao }]}
               >
                 <div className="space-y-6">
-                  <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="ons">
+                  <RespostaCurta id="ons" veredito={vereditoOns(o) || respostaOns(o)}>
                     {respostaOns(o)}
-                  </p>
+                  </RespostaCurta>
                   <TransicaoRecorte
                     periodo={
                       <>

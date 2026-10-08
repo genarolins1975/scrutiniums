@@ -11,9 +11,19 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { NOME_REGIAO, perguntaPainel, rotaPainel, rotuloHora, situacaoAtualidade, textoDiferencaHoraria } from "@/lib/energia/carga";
+import {
+  NOME_REGIAO,
+  perguntaPainel,
+  rotaPainel,
+  rotuloHora,
+  semTiposDeGeracao,
+  separaCampoDaSerie,
+  situacaoAtualidade,
+  textoDiferencaHoraria,
+  textoGlobalContraDiaria,
+} from "@/lib/energia/carga";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
-import { integra, lerGold } from "@/lib/energia/gold";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
@@ -77,6 +87,9 @@ export default function PerfilHorarioPage() {
   const porHora = p.compatibilidade.por_hora_sin_365d;
   const diferencaCurva = textoDiferencaHoraria(porHora);
   const diasPorHora = Math.max(0, ...porHora.map((x) => x.horas));
+  // média mensal da carga global (carga verificada) ao lado da Carga de Energia Diária da página Carga, o outro produto do ONS
+  const diaria = gold.carga();
+  const globalContraDiaria = integra(diaria) ? textoGlobalContraDiaria(p, diaria.mensal) : "";
 
   return (
     <>
@@ -141,6 +154,7 @@ export default function PerfilHorarioPage() {
                   versao={p.ultimo_dia}
                   regimes={g.regimes}
                   diferencaCurva={diferencaCurva}
+                  globalContraDiaria={globalContraDiaria}
                   destaques={
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Numero
@@ -171,23 +185,35 @@ export default function PerfilHorarioPage() {
                 <div className="space-y-3">
                   <h3 className="font-serif text-lg text-carvao">Que carga é cada série</h3>
                   <dl className="grid gap-3 text-sm md:grid-cols-2" data-conceitos="p026">
-                    {Object.entries(p.conceitos).map(([k, texto]) => (
-                      <div key={k} className="border-l-2 border-linha pl-3">
-                        <dt className="font-medium text-carvao">{ROTULO_CONCEITO[k] ?? k}</dt>
-                        <dd className="mt-1 leading-relaxed text-carvao-muted">{texto}</dd>
-                      </div>
-                    ))}
+                    {Object.entries(p.conceitos).map(([k, texto]) => {
+                      const { texto: leitura, tipos } = semTiposDeGeracao(texto);
+                      return (
+                        <div key={k} className="border-l-2 border-linha pl-3">
+                          <dt className="font-medium text-carvao">{ROTULO_CONCEITO[k] ?? k}</dt>
+                          <dd className="mt-1 leading-relaxed text-carvao-muted">
+                            {leitura}
+                            {tipos.length > 0 && <span data-nivel="analisar"> Classes da fonte: {tipos.join("; ")}.</span>}
+                          </dd>
+                        </div>
+                      );
+                    })}
                   </dl>
                   <ul className="space-y-2 text-sm text-carvao-muted">
-                    {natSeries.map((s) => (
-                      <li key={s.serie} className="flex flex-wrap items-center gap-2">
-                        <SeloNatureza natureza={s.natureza} />
-                        <span>
-                          <span className="text-carvao">{s.rotulo}</span>: {s.descricao}
-                          {s.componentes.length ? ` Componente: ${s.componentes.map((c) => `${c.descricao} (${c.natureza.toLowerCase()})`).join("; ")}.` : ""}
-                        </span>
-                      </li>
-                    ))}
+                    {natSeries.map((s) => {
+                      const { nome, campo } = separaCampoDaSerie(s.rotulo);
+                      const { texto: leitura, tipos } = semTiposDeGeracao(s.descricao);
+                      return (
+                        <li key={s.serie} className="flex flex-wrap items-center gap-2">
+                          <SeloNatureza natureza={s.natureza} />
+                          <span>
+                            <span className="text-carvao">{nome}</span>
+                            {campo && <span data-nivel="analisar"> (campo {campo})</span>}: {leitura}
+                            {s.componentes.length ? ` Componente: ${s.componentes.map((c) => `${c.descricao} (${c.natureza.toLowerCase()})`).join("; ")}.` : ""}
+                            {tipos.length > 0 && <span data-nivel="analisar"> Classes da fonte: {tipos.join("; ")}.</span>}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
 

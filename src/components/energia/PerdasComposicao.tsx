@@ -92,7 +92,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
 
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
         {!sel ? (
-          <p className="text-carvao-muted">Escolha uma barra, uma linha da tabela ou uma área do mapa para ver a composição de uma distribuidora ao longo dos anos.</p>
+          <p className="text-carvao-muted">Escolha uma barra ou uma linha da tabela para ver a composição de uma distribuidora ao longo dos anos.</p>
         ) : (
           <>
             <p data-resposta="composicao-distribuidora">

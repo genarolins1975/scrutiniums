@@ -79,7 +79,7 @@ export function QualidadeComparador({
       </Comparador>
       {erro && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-          Não foi possível carregar as séries por distribuidora ({erro}). Os mesmos valores estão em qualidade_distribuidoras_anual.csv.
+          Não foi possível carregar as séries por distribuidora ({erro}). Os mesmos valores estão no CSV anual por distribuidora, na lista de downloads do painel.
         </p>
       )}
       {!serie && !erro && (

@@ -12,6 +12,7 @@ import {
   TerritorioSeguir,
   TerritorioTabela,
 } from "@/components/energia/TerritorioPagina";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia, type ProvenienciaComplementar } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -30,6 +31,7 @@ import {
   textoAtualidade,
   textoPeriodoPainel,
   textoUniverso,
+  vereditoTerritorio,
 } from "@/lib/energia/territorio";
 import type { GoldTerritorio } from "@/lib/energia/tipos-territorio";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -38,7 +40,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Minha região: submercado, distribuidora, município e usinas no mapa",
   description:
-    "Mapa geográfico do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora (relação oficial da ANEEL), indicadores por município e usinas do SIGA, cada número no seu recorte e com a fonte.",
+    "Mapa geográfico do setor elétrico: submercado de cada UF (EPE e ONS), área de cada distribuidora (relação oficial da ANEEL), indicadores por município e usinas do SIGA, cada número na área da sua fonte e com a fonte.",
   alternates: { canonical: "/setor-eletrico/territorio" },
 };
 
@@ -103,8 +105,7 @@ export default function TerritorioPage() {
             </>
           }
         >
-          Os números não mudam de recorte: o preço é do submercado, a tarifa e as perdas são
-          da distribuidora inteira, o DEC é do conjunto elétrico, e só o publicado por município aparece como do município.
+          Submercado é cada uma das divisões do sistema elétrico interligado com preço próprio; conjunto elétrico é a subdivisão da área de uma distribuidora em que a ANEEL acompanha o DEC e o FEC. Só o que a fonte publica por município aparece como do município.
         </CabecalhoModulo>
 
         <ModoProfundidade>
@@ -112,7 +113,7 @@ export default function TerritorioPage() {
             <PainelEvidencia
               id={ID_PAINEL}
               pergunta={g.pergunta}
-              subtitulo="Submercado, UF, distribuidora, conjunto elétrico, município e usina · cada número no seu grão e na unidade da fonte"
+              subtitulo="Preço, tarifa, perdas, continuidade e usinas de uma região · cada número na área e na unidade da fonte"
               natureza={g.proveniencia.indice.natureza}
               porQueImporta={
                 <>
@@ -125,7 +126,7 @@ export default function TerritorioPage() {
               comoInterpretar={
                 <>
                   Escolha uma camada: submercado (cor da UF), distribuidoras (municípios inteiros da relação oficial), municípios (uma medida publicada por município) ou usinas
-                  (pontos do SIGA). A ficha separa os números pelo grão de cada um e diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência
+                  (pontos do SIGA). A ficha diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência
                   válida; onde não há, a página diz por quê.
                 </>
               }
@@ -140,15 +141,15 @@ export default function TerritorioPage() {
               complementares={complementares}
             >
               <div className="space-y-6">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={ID_PAINEL}>
+                <RespostaCurta id={ID_PAINEL} veredito={vereditoTerritorio(g)}>
                   {respostaTerritorio(g)}
-                </p>
+                </RespostaCurta>
                 <TerritorioRecorte
                   periodo={textoPeriodoPainel(g)}
                   universo={textoUniverso(g)}
-                  unidade="Cada indicador na unidade da sua fonte: R$/MWh (PLD e tarifa), % (perdas, EAR, Tarifa Social), horas e interrupções por unidade consumidora (DEC e FEC), unidades e kW (MMGD), MW (usinas), habitantes e domicílios."
+                  unidade="R$/MWh (PLD e tarifa), % (perdas, EAR, Tarifa Social), horas e interrupções por unidade consumidora (DEC e FEC), unidades e kW (MMGD), MW (usinas), habitantes e domicílios."
                 />
-                <div className="grid gap-4 md:grid-cols-3">
+                <div data-nivel="analisar" className="grid gap-4 md:grid-cols-3">
                   {ev.municipios_compartilhados && (
                     <Numero
                       rotulo="Municípios atendidos por mais de uma distribuidora"
@@ -186,25 +187,25 @@ export default function TerritorioPage() {
                     />
                   )}
                 </div>
-                <TerritorioAviso rotulo="Regra do grão">{g.regra_granularidade}</TerritorioAviso>
+                <TerritorioAviso rotulo="Regra de atribuição" nivel="analisar">{g.regra_granularidade}</TerritorioAviso>
 
                 <TerritorioExplorador dados={dados} />
 
                 <TerritorioAnalise titulo="Quando a escolha passa de uma camada para outra?" id="territorio-compatibilidade">
                   <TerritorioTabela
-                    titulo="Correspondências entre recortes declaradas na base"
+                    titulo="Correspondências entre tipos de área declaradas na base"
                     colunas={["De", "Para", "Passa", "Regra", "Condição"]}
                     linhas={g.compatibilidade.map((c) => [c.de, c.para, c.valida ? "sim" : "não", c.regra, c.condicao ?? "sem condição"])}
                   />
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Par que não está na tabela não passa: a camada mostra só o contorno da UF quando ele ajuda a localizar a escolha, sem levar nenhum valor da UF para outro grão.
+                    Par que não está na tabela não passa: a camada mostra só o contorno da UF quando ele ajuda a localizar a escolha, sem levar nenhum valor da UF para outro tipo de área.
                   </p>
                 </TerritorioAnalise>
 
-                <TerritorioAnalise titulo="Onde cada indicador mora (catálogo por grão)" id="territorio-catalogo">
+                <TerritorioAnalise titulo="Onde cada indicador mora (catálogo por tipo de área)" id="territorio-catalogo">
                   <TerritorioTabela
-                    titulo={`${inteiro(g.indicadores.length)} indicadores, cada um na tabela do seu grão`}
-                    colunas={["Indicador", "Grão", "Unidade", "Natureza", "Como aparece na ficha do município", "Origem"]}
+                    titulo={`${inteiro(g.indicadores.length)} indicadores, cada um na tabela da sua área`}
+                    colunas={["Indicador", "Tipo de área", "Unidade", "Natureza", "Como aparece na ficha do município", "Origem"]}
                     linhas={g.indicadores.map((i) => [
                       i.rotulo,
                       i.rotulo_grao,

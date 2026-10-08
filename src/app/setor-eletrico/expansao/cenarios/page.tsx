@@ -17,6 +17,7 @@ import {
 } from "@/components/energia/ExpansaoPagina";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -30,9 +31,11 @@ import {
   linhasCamadas,
   mesTexto,
   mudancaCenarios,
+  notaCarteiraAcimaDoCenario,
   numTexto,
   painel,
   respostaCenarios,
+  vereditoCenarios,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
@@ -114,9 +117,9 @@ export default function CenariosPage() {
                     {c.aprovacao ? `, aprovado pela ${c.aprovacao.texto}` : ""}
                   </span>
                 </p>
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p043">
+                <RespostaCurta id="p043" veredito={vereditoCenarios(g) || respostaCenarios(g)}>
                   {respostaCenarios(g)}
-                </p>
+                </RespostaCurta>
                 <ExpansaoRecorte
                   periodo={
                     <>
@@ -143,9 +146,14 @@ export default function CenariosPage() {
                       {c.hipoteses.map((h) => (
                         <li key={h.texto}>
                           {h.texto}
-                          {h.pagina ? <span className="text-carvao-muted"> (relatório, p. {h.pagina})</span> : null}
+                          {h.pagina ? (
+                            <span data-nivel="analisar" className="text-carvao-muted">
+                              {" "}
+                              (relatório, p. {h.pagina})
+                            </span>
+                          ) : null}
                           {h.ressalva ? (
-                            <span className="mt-1 block text-carvao-muted">
+                            <span data-nivel="analisar" className="mt-1 block text-carvao-muted">
                               <span className="rotulo mr-1 text-mineral">Ressalva</span>
                               {h.ressalva}
                               {h.pagina_ressalva ? ` (p. ${h.pagina_ressalva})` : ""}
@@ -180,6 +188,7 @@ export default function CenariosPage() {
 
                 <ExpansaoSubtitulo>Cenário, realizado e carteira, lado a lado</ExpansaoSubtitulo>
                 <ExpansaoCamadas linhas={linhasCamadas(g)} notas={notas} datas={{ siga: dataTexto(g.referencias.siga), ralie: dataTexto(g.referencias.ralie) }} />
+                {notaCarteiraAcimaDoCenario(g) && <ExpansaoNota>{notaCarteiraAcimaDoCenario(g)}</ExpansaoNota>}
 
                 <ExpansaoAnalise titulo="Figuras do caderno de dados" id="figuras">
                   <ExpansaoFiguras figuras={c.figuras} />

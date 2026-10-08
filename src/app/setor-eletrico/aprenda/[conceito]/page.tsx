@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { AprendaProva } from "@/components/energia/AprendaProva";
-import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
+import { CONCEITOS, conceito, type FonteOficial } from "@/lib/energia/conteudo/conceitos";
 import { EXEMPLO_SINTETICO, UNIDADE, contrastesDe } from "@/lib/energia/conteudo/complementos";
 import { provaDoVerbete } from "@/lib/energia/conteudo/provas";
 import { hrefPasso, passosComVerbete } from "@/lib/energia/conteudo/trilhas";
@@ -57,8 +57,21 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   const outrosPaineis = c.vejaNoPortal.filter((v) => v.href !== destinoDoExemplo);
   // siglas do texto principal (sem as da fonte citada, que o leitor abre se quiser) que o texto não expande
   const siglas = conferido
-    ? siglasNoTexto([c.emUmaFrase, c.porQueImporta, c.comoEMedido, unidade, ...(c.limitacoes ?? [])].filter(Boolean).join(" "), 8).filter((x) => x !== c.sigla)
+    ? siglasNoTexto(
+        [c.emUmaFrase, c.porQueImporta, c.comoEMedidoResumo, c.comoEMedido, unidade, ...(c.limitacoes ?? []), ...(prova?.tipo === "evidencia" ? [prova.dado.evidencia.indicador, prova.dado.leitura, prova.dado.complemento ?? ""] : [])]
+          .filter(Boolean)
+          .join(" "),
+        8,
+      ).filter((x) => x !== c.sigla)
     : [];
+  // o mesmo documento citado em mais de um trecho aparece uma só vez; cada trecho (e a sua leitura) fica embaixo dele
+  const fontesAgrupadas = c.fontes.reduce<{ chave: string; orgao: string; documento: string; url: string; trechos: FonteOficial[] }[]>((acc, f) => {
+    const chave = `${f.orgao}|${f.url}|${f.documento}`;
+    const g = acc.find((x) => x.chave === chave);
+    if (g) g.trechos.push(f);
+    else acc.push({ chave, orgao: f.orgao, documento: f.documento, url: f.url, trechos: [f] });
+    return acc;
+  }, []);
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
@@ -72,8 +85,8 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
             {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? (
               <>
-                <span className="mr-3">{c.sigla}</span>{" "}
-                <span className="text-carvao-muted">{c.nome}</span>
+                <span>{c.sigla}</span>
+                <span className="text-carvao-muted">: {c.nome}</span>
               </>
             ) : (
               <span>{c.nome}</span>
@@ -189,8 +202,9 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               const nota = c.relacoesNotas?.[r];
               return rc ? (
                 <li key={r} className={nota ? "flex flex-wrap items-center gap-x-3 gap-y-1" : undefined}>
-                  <Link href={`/setor-eletrico/aprenda/${r}`} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
-                    {rc.sigla ?? rc.nome}
+                  <Link href={`/setor-eletrico/aprenda/${r}`} className="inline-flex min-h-[44px] items-center gap-2 border border-linha px-3 text-carvao hover:border-energia">
+                    <span className="rotulo">{rc.sigla ?? rc.nome}</span>
+                    {rc.sigla && rc.sigla.toLowerCase() !== rc.nome.toLowerCase() && <span className="text-sm text-carvao-muted">{rc.nome}</span>}
                   </Link>
                   {nota && <span className="min-w-0 flex-1 basis-64 text-sm leading-relaxed text-carvao-muted">{nota}</span>}
                 </li>
@@ -214,21 +228,25 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
         {c.fontes.length > 0 && (
           <Campo rotulo="Fonte oficial">
             <ul className="space-y-4">
-              {c.fontes.map((f) => (
-                <li key={f.url + f.documento}>
+              {fontesAgrupadas.map((g) => (
+                <li key={g.chave}>
                   <p className="text-sm">
-                    <strong className="font-medium">{f.orgao}</strong>
-                    <a href={f.url} target="_blank" rel="noopener noreferrer" className="block py-3 leading-snug text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                      {f.documento}&nbsp;<span aria-hidden="true">↗</span>
+                    <strong className="font-medium">{g.orgao}</strong>
+                    <a href={g.url} target="_blank" rel="noopener noreferrer" className="block py-3 leading-snug text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                      {g.documento}&nbsp;<span aria-hidden="true">↗</span>
                     </a>
                   </p>
-                  {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}
-                  {f.trecho && (
-                    <details className="mt-1 pl-4 text-sm">
-                      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">Trecho literal do documento</summary>
-                      <blockquote className="border-l-2 border-linha pl-4 text-carvao-muted">“{f.trecho}”</blockquote>
-                    </details>
-                  )}
+                  {g.trechos.map((f) => (
+                    <div key={f.trecho ?? f.parafrase ?? g.chave}>
+                      {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}
+                      {f.trecho && (
+                        <details className="mt-1 pl-4 text-sm">
+                          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">Trecho literal do documento</summary>
+                          <blockquote className="border-l-2 border-linha pl-4 text-carvao-muted">“{f.trecho}”</blockquote>
+                        </details>
+                      )}
+                    </div>
+                  ))}
                 </li>
               ))}
             </ul>
@@ -247,6 +265,18 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                 <li key={l}>{l}</li>
               ))}
             </ul>
+          </Campo>
+        )}
+        {c.detalheDaConferencia && c.detalheDaConferencia.length > 0 && (
+          <Campo rotulo="Detalhe da conferência">
+            <details>
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">O que a conferência encontrou na fonte</summary>
+              <ul className="mt-1 list-disc space-y-1.5 pl-5 text-sm text-carvao-muted">
+                {c.detalheDaConferencia.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+            </details>
           </Campo>
         )}
         {outrosPaineis.length > 0 && (

@@ -7,6 +7,7 @@ import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -29,11 +30,15 @@ import {
   respostaBalanco,
   respostaDecomposicao,
   serieReservatorio,
+  textoOutraJanelaDaEar,
+  vereditoBalancoReservatorio,
+  vereditoDecomposicao,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Submercado } from "@/lib/energia/tipos";
+import type { EntidadeEar } from "@/lib/energia/agua";
 import type { AguaDecomposicaoEar, AguaReservatorio, AguaReservatorios45d } from "@/lib/energia/tipos-agua";
 
 /**
@@ -57,6 +62,7 @@ export function AguaReservatorios({
   lista,
   decomposicao,
   janela,
+  armazenamento,
   urlSeries,
   diasSeries,
   fonte,
@@ -66,6 +72,8 @@ export function AguaReservatorios({
   lista: AguaReservatorio[];
   decomposicao: AguaDecomposicaoEar[];
   janela: { inicio: string; fim: string; periodo_fecham_por_construcao: { inicio: string; fim: string } | null };
+  /** Variação de 30 dias de cada subsistema na página de armazenamento (para dizer por que o número difere da decomposição). */
+  armazenamento: Pick<EntidadeEar, "id" | "tipo" | "dia" | "variacao_30d_mwmes">[];
   urlSeries: string;
   /** Dias de cada série diária do arquivo sob demanda (gold: reservatorios.series_45d.dias). */
   diasSeries: number;
@@ -90,6 +98,7 @@ export function AguaReservatorios({
     if (r) selecionar(r.id);
   };
   const escolhidos = (v.cmp as string[]).filter((id) => lista.some((r) => r.id === id));
+  const outraJanela = textoOutraJanelaDaEar(dec, armazenamento);
 
   // séries de 45 dias: buscadas quando a seção chega perto da tela (carregamento progressivo)
   const alvo = useRef<HTMLDivElement>(null);
@@ -168,9 +177,13 @@ export function AguaReservatorios({
         />
       </div>
 
-      <div className="max-w-prose2 space-y-2 text-base leading-relaxed text-carvao" data-resposta="p020" aria-live="polite">
-        <p>{dec ? respostaDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}</p>
-        <p>{res ? respostaBalanco(res, janela) : "Sem reservatório com balanço nesta publicação."}</p>
+      <div className="space-y-3">
+        <RespostaCurta id="p020" vivo veredito={dec ? vereditoDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}>
+          {dec ? respostaDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}
+        </RespostaCurta>
+        <RespostaCurta id="p020-balanco" vivo veredito={res ? vereditoBalancoReservatorio(res, janela) : "Sem reservatório com balanço nesta publicação."}>
+          {res ? respostaBalanco(res, janela) : "Sem reservatório com balanço nesta publicação."}
+        </RespostaCurta>
       </div>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
@@ -190,9 +203,14 @@ export function AguaReservatorios({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmês na decomposição da EAR; hm³ no balanço (m³/s × 86.400 s ÷ 10⁶ por dia); m³/s e % do volume útil nas séries diárias</dd>
+          <dd className="mt-0.5">
+            MWmês na decomposição da EAR; hm³ (hectômetro cúbico, um milhão de metros cúbicos) no balanço, com a vazão do dia convertida por m³/s × 86.400 s ÷ 10⁶; m³/s e % do
+            volume útil nas séries diárias
+          </dd>
         </div>
       </dl>
+
+      {outraJanela && <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{outraJanela}</p>}
 
       {destaques}
 
@@ -221,7 +239,7 @@ export function AguaReservatorios({
             nomeArquivo={`agua-decomposicao-ear-${dec.sm}`}
             selecionado={barraSel}
             onSelecionar={selecionarParcela}
-            nota={`O gráfico mostra as maiores quedas e altas publicadas; a soma de todos os ${dec.n_reservatorios} reservatórios e o resíduo estão na resposta acima e na tabela dos subsistemas.`}
+            nota={`O gráfico mostra as maiores quedas e altas publicadas; a soma de todos os ${dec.n_reservatorios} reservatórios e o resíduo estão na resposta completa (modo Analisar) e na tabela dos subsistemas.`}
           />
         </>
       )}
@@ -242,8 +260,8 @@ export function AguaReservatorios({
             orientacao="horizontal"
           />
           <p className="text-sm text-carvao-muted">
-            Identidade: variação observada = afluência − defluência + resíduo. Turbinado, vertido, outras estruturas e defluência não discriminada são partes da defluência
-            conforme a convenção do reservatório; a vazão natural é reconstituída e não entra no balanço. Componente sem dado aparece como &ldquo;sem dado&rdquo;, nunca como zero.
+            A conta da água: variação observada = afluência − defluência + resíduo. Turbinado, vertido, outras estruturas e defluência não discriminada são partes da defluência
+            conforme a convenção do reservatório; a vazão natural é reconstituída e não entra no balanço. Transferência é um campo que o ONS publica à parte, e a convenção do seu sinal não está documentada. Componente sem dado aparece como &ldquo;sem dado&rdquo;, nunca como zero.
           </p>
         </div>
       )}
@@ -295,7 +313,7 @@ export function AguaReservatorios({
           entidades={lista.map((r) => ({ id: r.id, rotulo: nomeProprio(r.nome), detalhe: r.subsistema ?? undefined, sinonimos: [r.nome, r.id] }))}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ cmp: ids })}
-          dicaBusca="Serra da Mesa, Furnas, Sobradinho"
+          dicaBusca="Buscar, por exemplo Serra da Mesa, Furnas, Sobradinho"
           vazio={`Nenhum reservatório escolhido. Escolha até ${LIMITE_COMPARACAO} para ver o volume útil dos últimos ${dias} na mesma escala.`}
         >
           {() => null}

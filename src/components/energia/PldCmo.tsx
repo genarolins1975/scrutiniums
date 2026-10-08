@@ -6,6 +6,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { PldEscolha } from "@/components/energia/PldControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -22,6 +23,7 @@ import {
   linhasSemanais,
   respostaP009,
   rotaPainel,
+  vereditoP009,
 } from "@/lib/energia/pld";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { BlocoCmoPld } from "@/lib/energia/tipos-pld";
@@ -52,6 +54,7 @@ export function PldCmo({
   fichas,
   fonte,
   versao,
+  notasEntreLimites,
 }: {
   c: Pick<BlocoCmoPld, "semanal" | "semana_referencia" | "relacao_anual">;
   /** Últimas 168 horas (pld_horario_recente.json), só PLD e CMO; null quando o arquivo falta. */
@@ -60,9 +63,12 @@ export function PldCmo({
   fichas: Record<string, Evidencia>;
   fonte: string;
   versao: string;
+  /** Por submercado, a frase que concilia as horas entre os limites daqui com as da página de limites (notaHorasEntreLimites). */
+  notasEntreLimites?: Partial<Record<Submercado, string | null>>;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const sm = v.sm as Submercado;
+  const notaEntreLimites = notasEntreLimites?.[sm] ?? null;
   const linhas = useMemo(() => linhasSemanais(c as BlocoCmoPld, sm), [c, sm]);
   const relacao = useMemo(() => linhasRelacaoAnual(c as BlocoCmoPld, sm), [c, sm]);
   const ref = c.semana_referencia;
@@ -89,9 +95,10 @@ export function PldCmo({
     <div className="space-y-6">
       <PldEscolha legenda="Submercado" opcoes={OPCOES_SM} valor={sm} onEscolher={(s) => definir({ sm: s })} />
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p009" aria-live="polite">
+      <RespostaCurta id="p009" vivo veredito={vereditoP009(c as BlocoCmoPld, sm)}>
         {respostaP009(c as BlocoCmoPld, sm)}
-      </p>
+        {notaEntreLimites ? <span className="mt-2 block">{notaEntreLimites}</span> : null}
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
@@ -107,7 +114,9 @@ export function PldCmo({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">R$/MWh nominais (a média semanal do DECOMP aparece como R$/MW no dicionário do ONS)</dd>
+          <dd className="mt-0.5">
+            R$/MWh nominais<span data-nivel="analisar"> (a média semanal do DECOMP aparece como R$/MW no dicionário do ONS)</span>
+          </dd>
         </div>
       </dl>
 

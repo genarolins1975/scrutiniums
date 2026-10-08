@@ -7,6 +7,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -42,6 +43,9 @@ import {
   seriePrevisao,
   textoAssociacao,
   valoresMapaChuva,
+  vereditoAssociacao,
+  vereditoChuva,
+  vereditoTemperatura,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
@@ -134,10 +138,18 @@ export function AguaClima({
         <AguaEscolha legenda="Temperatura" opcoes={REGIOES.map((r) => ({ id: r, rotulo: CURTO_REGIAO[r], detalhe: NOME_REGIAO[r] }))} valor={rt} onEscolher={(x) => definir({ rt: x })} />
       </div>
 
-      <div className="max-w-prose2 space-y-2 text-base leading-relaxed text-carvao" data-resposta="p019" aria-live="polite">
-        <p>{bacia ? respostaChuva(bacia, base) : "Sem estimativa de chuva por bacia nesta publicação."}</p>
-        <p>{temp ? respostaTemperatura(temp, base) : "Sem temperatura estimada nesta publicação."}</p>
-        {assoc && <p className="text-sm text-carvao-muted">{assoc}</p>}
+      <div className="space-y-3">
+        <RespostaCurta id="p019" vivo veredito={bacia ? vereditoChuva(bacia) : "Sem estimativa de chuva por bacia nesta publicação."}>
+          {bacia ? respostaChuva(bacia, base) : "Sem estimativa de chuva por bacia nesta publicação."}
+        </RespostaCurta>
+        <RespostaCurta id="p019-temperatura" vivo veredito={temp ? vereditoTemperatura(temp) : "Sem temperatura estimada nesta publicação."}>
+          {temp ? respostaTemperatura(temp, base) : "Sem temperatura estimada nesta publicação."}
+        </RespostaCurta>
+        {assoc && bacia && (
+          <RespostaCurta id="p019-associacao" vivo tamanho="sm" veredito={vereditoAssociacao(bacia) ?? assoc}>
+            {assoc}
+          </RespostaCurta>
+        )}
       </div>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
@@ -222,7 +234,7 @@ export function AguaClima({
           entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia] }))}
           selecionadas={escolhidas.map((b) => b.bacia)}
           onMudar={(ids) => definir({ cmp: ids })}
-          dicaBusca="Grande, Paranaíba, São Francisco"
+          dicaBusca="Buscar, por exemplo Grande, Paranaíba, São Francisco"
           vazio="Nenhuma bacia escolhida. Escolha até quatro para ver a chuva mensal e a média na mesma escala."
         >
           {() => null}
