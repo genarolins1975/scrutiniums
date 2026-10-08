@@ -13,7 +13,7 @@ import io
 import json
 import os
 
-from pipeline.eficiencia import base, entes, padroniza as P, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, entes, padroniza as P, validacoes as V
 
 ARQUIVO_GOLD = os.path.join(base.GOLD, "educacao_capitais.json")
 
@@ -42,17 +42,21 @@ def cobertura(obs, catalogo):
         for o in sel:
             if ind["id"] == "edu.despesa.subfuncao":
                 chave = (o["ano"], None)
-                grupos.setdefault(chave, {})[o["ente"]] = grupos.get(chave, {}).get(o["ente"]) or o["status"]
+                if o["ente"] not in grupos.get(chave, {}):
+                    grupos.setdefault(chave, {})[o["ente"]] = (o["status"], o.get("elegivel_comparacao", False))
                 continue
             if principal and o["componente"] != principal:
                 continue
             chave = (o["ano"], o["etapa"])
-            grupos.setdefault(chave, {})[o["ente"]] = o["status"]
+            grupos.setdefault(chave, {})[o["ente"]] = (o["status"], o.get("elegivel_comparacao", False))
         linhas = []
         for (ano, etapa), por_ente in sorted(grupos.items(), key=lambda x: (x[0][0], x[0][1] or "")):
-            sem = [{"ente": e, "nome": nomes[e], "status": st} for e, st in sorted(por_ente.items()) if st != "OBSERVADO"]
+            sem = [{"ente": e, "nome": nomes[e], "status": st} for e, (st, _) in sorted(por_ente.items()) if st != "OBSERVADO"]
+            fora = [{"ente": e, "nome": nomes[e]} for e, (st, el) in sorted(por_ente.items()) if st == "OBSERVADO" and not el]
             linhas.append({"ano": ano, "etapa": etapa, "elegiveis": len(entes.CAPITAIS),
-                           "com_valor": sum(1 for st in por_ente.values() if st == "OBSERVADO"), "sem_valor": sem})
+                           "com_valor": sum(1 for st, _ in por_ente.values() if st == "OBSERVADO"),
+                           "comparaveis": sum(1 for st, el in por_ente.values() if st == "OBSERVADO" and el),
+                           "sem_valor": sem, "fora_da_comparacao": fora})
         out[ind["id"]] = linhas
     return out
 
@@ -83,7 +87,7 @@ def trilhas(obs):
             f"Resposta preservada em {os.path.relpath(arq, base.RAIZ)} (sha256 do conteúdo {cap['sha256']}).",
             "Linha com conta \"12 - Educação\" e coluna \"Despesas Liquidadas\".",
             f"Valor lido: {P.brl(o['valor'])}.",
-            f"Conferência com o RREO do 6º bimestre: {o['conferencia_rreo']['situacao']}.",
+            f"Conferência: {o['conferencia']['rotulo']} (política {o['conferencia']['versao_politica']}).",
         ], "valor": o["valor"]})
         subs = [x for x in obs if x["indicador"] == "edu.despesa.subfuncao" and x["ente"] == o["ente"] and x["ano"] == 2025
                 and x["status"] == "OBSERVADO"]
@@ -195,29 +199,53 @@ def fontes():
     return out
 
 
-def _csv(obs, caminho, nomes, catalogo):
+CAMPOS_CSV = [
+    "indicador_id", "indicador", "codigo_ibge", "capital", "uf", "periodo_tipo", "ano", "etapa", "componente",
+    "valor", "unidade", "base_monetaria", "universo", "status", "elegivel_comparacao", "situacao_conferencia",
+    "motivo_inelegibilidade", "nota", "nota_material", "participacao_pct", "fonte", "registro",
+    "versao_metodologica", "dados_gerados_em", "hash_dados",
+]
+
+PERIODO_TIPO = {"exercicios": "exercício financeiro", "censo": "ano do Censo Escolar (referência em maio)",
+                "edicoes_ideb": "edição bienal do Ideb/Saeb"}
+
+
+def _universo(ficha):
+    p = ficha["perimetro"]
+    return f"{p['territorial']} {p['institucional']} {p['servico']}"
+
+
+def _csv(obs, caminho, nomes, catalogo, meta):
+    """CSV analítico: valor numérico com ponto decimal e precisão da fonte; vazio quando não há valor
+    (nunca zero); estado, elegibilidade, conferência, nota, universo, fonte e versão em colunas próprias."""
     os.makedirs(os.path.dirname(caminho), exist_ok=True)
     etapas = {e["id"]: e["nome"] for e in catalogo["etapas"]}
-    unid = {i["id"]: i["unidade"] for i in catalogo["indicadores"]}
-    campos = ["indicador", "codigo_ibge", "capital", "uf", "ano", "etapa", "componente", "valor", "unidade",
-              "status", "nota", "participacao_pct", "comparavel_entre_capitais", "fonte", "registro"]
+    fichas = {i["id"]: i for i in catalogo["indicadores"]}
     ufs = {c: u for c, _, u in entes.CAPITAIS}
     buf = io.StringIO()
-    w = csv.DictWriter(buf, fieldnames=campos, lineterminator="\n")
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV, lineterminator="\n")
     w.writeheader()
     for o in obs:
-        conf = o.get("conferencia_rreo") or {}
+        f = fichas[o["indicador"]]
+        conf = o.get("conferencia") or {}
         w.writerow({
-            "indicador": o["indicador"], "codigo_ibge": o["ente"], "capital": nomes[o["ente"]], "uf": ufs[o["ente"]],
-            "ano": o["ano"], "etapa": etapas.get(o["etapa"], "") if o["etapa"] else "",
-            "componente": o["componente"] or "", "valor": "" if o["valor"] is None else o["valor"],
-            "unidade": unid[o["indicador"]], "status": o["status"], "nota": o["nota"] or "",
+            "indicador_id": o["indicador"], "indicador": f["nome"], "codigo_ibge": o["ente"], "capital": nomes[o["ente"]],
+            "uf": ufs[o["ente"]], "periodo_tipo": PERIODO_TIPO[f["granularidade"]["anos"]], "ano": o["ano"],
+            "etapa": etapas.get(o["etapa"], "") if o["etapa"] else "", "componente": o["componente"] or "",
+            "valor": "" if o["valor"] is None else repr(o["valor"]) if isinstance(o["valor"], float) else o["valor"],
+            "unidade": f["unidade"],
+            "base_monetaria": ("R$ de 2025 (IPCA, média anual)" if o["componente"] == "real_2025" else
+                               "R$ correntes do exercício" if o["indicador"].startswith("edu.despesa") else ""),
+            "universo": _universo(f), "status": o["status"],
+            "elegivel_comparacao": "sim" if o.get("elegivel_comparacao") else "nao",
+            "situacao_conferencia": conf.get("situacao", ""), "motivo_inelegibilidade": conf.get("motivo_inelegibilidade") or "",
+            "nota": o["nota"] or "", "nota_material": "sim" if o.get("nota_material") else "nao",
             "participacao_pct": o.get("participacao", "") if o.get("participacao") is not None else "",
-            "comparavel_entre_capitais": "nao" if conf.get("comparavel") is False else "sim",
-            "fonte": o["fonte"], "registro": o["registro"],
+            "fonte": o["fonte"], "registro": o["registro"], "versao_metodologica": f["versao_metodologica"],
+            "dados_gerados_em": meta["gerado_em"], "hash_dados": meta["hash_dados"],
         })
-    with open(caminho, "w", encoding="utf-8", newline="") as f:
-        f.write(buf.getvalue())
+    with open(caminho, "w", encoding="utf-8", newline="") as fh:
+        fh.write(buf.getvalue())
 
 
 def constroi(gerado_em=None):
@@ -257,22 +285,59 @@ def constroi(gerado_em=None):
         "trilhas": trilhas(obs),
         "fontes": fontes(),
         "status": base.STATUS,
+        "politica_conferencia": {"versao": CF.VERSAO_POLITICA, "tolerancia_arredondamento_reais": CF.TOL_ARREDONDAMENTO,
+                                 "tolerancia_relativa": CF.TOL_RELATIVA, "elegiveis": sorted(CF.ELEGIVEIS),
+                                 "rotulos": CF.ROTULO},
         "observacoes": obs,
     }
     return gold
 
 
-def publica(gold):
-    base.grava_json(ARQUIVO_GOLD, gold)
+DIAGNOSTICO = os.path.join(base.DADOS, "diagnostico")
+
+
+def reprovadas(gold):
+    return [v["id"] for v in gold["validacoes"] if v["resultado"] == "reprovada"]
+
+
+def publica(gold, raiz_publica=None):
+    """Escreve a gold e as séries. raiz_publica: diretório equivalente a public/ (padrão: o público)."""
+    raiz = raiz_publica or os.path.join(base.RAIZ, "public")
+    arquivo = os.path.join(raiz, "eficiencia", "gold", "educacao_capitais.json")
+    base.grava_json(arquivo, gold)
     catalogo = {"indicadores": gold["indicadores"], "etapas": gold["etapas"]}
     nomes = {c["cod_ibge"]: c["nome"] for c in gold["universo"]["capitais"]}
     for ind in gold["indicadores"]:
         if not ind.get("download"):
             continue
         sel = [o for o in gold["observacoes"] if o["indicador"] == ind["id"]]
-        destino = os.path.join(base.RAIZ, "public", ind["download"].lstrip("/"))
-        _csv(sel, destino, nomes, catalogo)
-    return ARQUIVO_GOLD
+        _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), nomes, catalogo, gold["meta"])
+    return arquivo
+
+
+def promove(gold, raiz_publica=None, diagnostico=None):
+    """Gera tudo primeiro numa área de trabalho; só substitui a saída pública se nenhuma validação
+    foi reprovada. Com reprovação, o conjunto fica em data/eficiencia/diagnostico para inspeção e a
+    saída pública anterior fica intacta. Devolve (promovido, caminho)."""
+    import shutil
+    import tempfile
+    diagnostico = diagnostico or DIAGNOSTICO
+    raiz = raiz_publica or os.path.join(base.RAIZ, "public")
+    ruins = reprovadas(gold)
+    if ruins:
+        if os.path.isdir(diagnostico):
+            shutil.rmtree(diagnostico)
+        caminho = publica(gold, diagnostico)
+        return False, caminho
+    with tempfile.TemporaryDirectory(dir=os.path.dirname(raiz.rstrip("/")) or None) as tmp:
+        publica(gold, tmp)
+        for sub in ("gold", "series"):
+            origem = os.path.join(tmp, "eficiencia", sub)
+            destino = os.path.join(raiz, "eficiencia", sub)
+            os.makedirs(destino, exist_ok=True)
+            for nome in os.listdir(origem):
+                os.replace(os.path.join(origem, nome), os.path.join(destino, nome))
+    return True, os.path.join(raiz, "eficiencia", "gold", "educacao_capitais.json")
 
 
 def resumo_validacoes(gold):

@@ -66,11 +66,12 @@ export function MiniSerie({
   const y = escalaLinear([dom.min, dom.max], [H - m.b, m.t]);
   const passoX = pontos.length > 1 ? (w - m.l - m.r) / (pontos.length - 1) : 0;
   const x = (i: number) => (pontos.length > 1 ? m.l + i * passoX : (m.l + w - m.r) / 2);
-  // segmentos só entre anos consecutivos com valor: ausência é lacuna, nunca ponte
+  // segmentos só entre anos consecutivos com valor elegível: ausência é lacuna, nunca ponte; um valor fora
+  // das comparações (perímetro distinto ou conferência pendente) fica isolado, sem linha que sugira continuidade
   const segs: string[] = [];
   let atual: string[] = [];
   pontos.forEach((p, i) => {
-    if (p.valor === null) {
+    if (p.valor === null || !p.elegivel) {
       if (atual.length > 1) segs.push(atual.join(" "));
       atual = [];
     } else atual.push(`${atual.length ? "L" : "M"}${x(i).toFixed(1)},${y(p.valor).toFixed(1)}`);
@@ -133,8 +134,20 @@ export function MiniSerie({
             <path key={d} d={d} fill="none" stroke={COR.selecao} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
           ))}
           {pontos.map((p, i) =>
-            p.valor === null ? null : (
+            p.valor === null ? null : p.elegivel ? (
               <circle key={p.ano} cx={x(i)} cy={y(p.valor)} r={ativo === i ? 5.5 : 4} fill={COR.selecao} stroke={COR.superficie} strokeWidth={2} />
+            ) : (
+              <rect
+                key={p.ano}
+                x={x(i) - 4.5}
+                y={y(p.valor) - 4.5}
+                width={9}
+                height={9}
+                transform={`rotate(45 ${x(i)} ${y(p.valor)})`}
+                fill={COR.superficie}
+                stroke={COR.selecao}
+                strokeWidth={2}
+              />
             ),
           )}
           {ultimo && ultimo.valor !== null && ativo === null && (
@@ -183,12 +196,20 @@ export function MiniSerie({
                 {pa.nota ? `: ${pa.nota}` : ""}
               </p>
             )}
-            {pa.valor !== null && pa.nota && <p className="mt-1 text-carvao-muted">{pa.nota}</p>}
+            {pa.valor !== null && !pa.elegivel && <p className="mt-1 font-semibold text-obee-tinta">Fora das comparações: {pa.motivo ?? pa.nota}</p>}
+            {pa.valor !== null && pa.elegivel && pa.nota && pa.notaMaterial && <p className="mt-1 text-carvao-muted">{pa.nota}</p>}
           </div>
         )}
       </div>
-      {(pontos.some((p) => p.valor === null) || anotacoes.length > 0) && (
+      {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0) && (
         <ul className="mt-1 space-y-0.5 text-xs leading-snug text-carvao-muted">
+          {pontos
+            .filter((p) => p.valor !== null && !p.elegivel)
+            .map((p) => (
+              <li key={`f${p.ano}`} className="text-obee-tinta">
+                <span aria-hidden="true">◇</span> {p.ano}: valor oficial fora das comparações e sem linha com os anos vizinhos. {p.motivo}
+              </li>
+            ))}
           {pontos.some((p) => p.valor === null) && (
             <li>
               <span aria-hidden="true">○</span> no eixo: ano sem valor (

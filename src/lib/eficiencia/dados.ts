@@ -48,6 +48,8 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     }
     return i;
   };
+  const situacoes: string[] = [];
+  const posSit = new Map<string, number>();
   const obs: ObsCompacta[] = g.observacoes.map((o) => [
     posInd.get(o.indicador)!,
     posCap.get(o.ente)!,
@@ -58,7 +60,11 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     posStatus.get(o.status)!,
     o.nota ? idx(posNota, notas, o.nota) : -1,
     o.participacao ?? null,
-    o.conferencia_rreo?.comparavel === false ? 0 : 1,
+    o.elegivel_comparacao ? 1 : 0,
+    o.nota_material ? 1 : 0,
+    o.conferencia ? idx(posSit, situacoes, o.conferencia.situacao) : -1,
+    o.conferencia?.motivo_inelegibilidade ? idx(posNota, notas, o.conferencia.motivo_inelegibilidade) : -1,
+    o.conferencia?.quebra_serie ? 1 : 0,
   ]);
   const fontes: DadosPainel["fontes"] = {};
   for (const f of g.fontes) {
@@ -77,8 +83,17 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     status,
     notas,
     obs,
+    situacoes,
+    rotulosSituacao: g.politica_conferencia.rotulos,
     fontes,
-    meta: { gerado_em: g.meta.gerado_em, versao_pipeline: g.meta.versao_pipeline, versao_codigo: g.meta.versao_codigo, hash_dados: g.meta.hash_dados },
+    meta: {
+      gerado_em: g.meta.gerado_em,
+      versao_pipeline: g.meta.versao_pipeline,
+      versao_codigo: g.meta.versao_codigo,
+      hash_dados: g.meta.hash_dados,
+      versao_catalogo: g.meta.versao_catalogo,
+      dados_capturados_ate: g.meta.dados_capturados_ate,
+    },
     excluidos: g.universo.excluidos.map((e) => ({ nome: e.nome, uf: e.uf, motivo: e.motivo })),
   };
 }

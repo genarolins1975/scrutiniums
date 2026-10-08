@@ -13,10 +13,14 @@ import {
   edicaoIdeb,
   etapaValida,
   formataEixo,
+  CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_TABELA,
+  linhasCsvComparacao,
   linhasCsvTabela,
   linhasTabela,
   mediana,
   serie,
+  variacao,
 } from "@/lib/eficiencia/consulta";
 import { contextos, resumoCobertura } from "@/lib/eficiencia/contexto";
 
@@ -78,6 +82,78 @@ describe("comparação entre capitais", () => {
     // o valor continua na série da capital
     const s = serie(ix, "despesa", cap("campo-grande").cod, "anos_iniciais", "nominal", "matematica");
     expect(s.find((p) => p.ano === 2021)?.valor).toBeGreaterThan(0);
+  });
+
+  it("Campo Grande 2021: fora da comparação também em reais de 2025, variações bloqueadas e quebra na série", () => {
+    const c = comparar(ix, "despesa", 2021, "anos_iniciais", "real", "matematica", "todas", cap("campo-grande"), "alfabetica");
+    const cg = c.excluidas.find((e) => e.cap.id === "campo-grande")!;
+    expect(cg.comValor).toBe(true);
+    expect(c.comValor).toBe(26);
+    expect(c.incluidas).toHaveLength(25);
+    const s = serie(ix, "despesa", cap("campo-grande").cod, "anos_iniciais", "nominal", "matematica");
+    const p21 = s.find((p) => p.ano === 2021)!;
+    const p22 = s.find((p) => p.ano === 2022)!;
+    expect(p21.elegivel).toBe(false);
+    expect(p21.quebraSerie).toBe(true);
+    expect(variacao(p22, p21)).toHaveProperty("bloqueio");
+  });
+
+  it("Boa Vista 2024: reconciliada pela MSC, entra na comparação com nota", () => {
+    const c = comparar(ix, "despesa", 2024, "anos_iniciais", "nominal", "matematica", "todas", cap("boa-vista"), "alfabetica");
+    const bv = c.incluidas.find((i) => i.cap.id === "boa-vista")!;
+    expect(bv).toBeDefined();
+    expect(bv.ponto.situacao).toBe("RECONCILIADA_MSC");
+    expect(bv.ponto.nota).toMatch(/Matriz de Saldos Contábeis/);
+    const s = serie(ix, "despesa", cap("boa-vista").cod, "anos_iniciais", "nominal", "matematica");
+    expect(variacao(s.find((p) => p.ano === 2024)!, s.find((p) => p.ano === 2023)!)).toHaveProperty("pct");
+  });
+
+  it("CSV da comparação: uma linha por capital do grupo, incluídas com nota e excluídas com motivo", () => {
+    const c = comparar(ix, "despesa", 2024, "anos_iniciais", "nominal", "matematica", "todas", cap("boa-vista"), "alfabetica");
+    const linhas = linhasCsvComparacao(d, c, "despesa", 2024, "anos_iniciais", "nominal", "matematica");
+    expect(linhas).toHaveLength(26);
+    expect(linhas.every((l) => l.length === CABECALHO_CSV_COMPARACAO.length)).toBe(true);
+    const col = (n: string) => CABECALHO_CSV_COMPARACAO.indexOf(n);
+    const bv = linhas.find((l) => l[col("capital")] === "Boa Vista")!;
+    expect(bv[col("incluida_na_comparacao")]).toBe("sim");
+    expect(bv[col("nota")]).toMatch(/Matriz de Saldos Contábeis/);
+    expect(bv[col("universo_do_indicador")]).toBeTruthy();
+    expect(bv[col("unidade")]).toMatch(/R\$|reais/);
+    const cg21 = comparar(ix, "despesa", 2021, "anos_iniciais", "nominal", "matematica", "todas", cap("campo-grande"), "alfabetica");
+    const l21 = linhasCsvComparacao(d, cg21, "despesa", 2021, "anos_iniciais", "nominal", "matematica");
+    const cg = l21.find((l) => l[col("capital")] === "Campo Grande")!;
+    expect(cg[col("incluida_na_comparacao")]).toBe("nao");
+    expect(cg[col("valor_numerico")]).not.toBe("");
+    expect(cg[col("motivo_exclusao")]).toMatch(/Perímetro distinto/);
+    expect(l21.every((l) => l[col("capitais_incluidas")] === "25" && l[col("capitais_com_valor")] === "26")).toBe(true);
+  });
+
+  it("mudar a elegibilidade de um valor recalcula mediana e contagens pela mesma regra", () => {
+    const base = comparar(ix, "aprovacao", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    const alvo = base.incluidas[0];
+    const d2 = { ...d, obs: d.obs.map((o) => [...o] as typeof o) };
+    const io = d2.obs.findIndex((o) => d.capitais[o[1]].cod === alvo.cap.cod && o[2] === 2025 && d.indicadores[o[0]] === "edu.aprovacao.rede_municipal"
+      && o[3] === d.etapas.findIndex((e) => e.id === "anos_iniciais"));
+    d2.obs[io][9] = 0;
+    const depois = comparar(new Indice(d2), "aprovacao", 2025, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    expect(depois.incluidas).toHaveLength(base.incluidas.length - 1);
+    expect(depois.comValor).toBe(base.comValor);
+    expect(depois.excluidas.find((x) => x.cap.id === alvo.cap.id)?.comValor).toBe(true);
+    expect(depois.mediana).toBe(mediana(base.incluidas.slice(1).map((i) => i.valor)));
+  });
+
+  it("cada indicador declara um universo próprio, coerente com o passaporte", () => {
+    const u = (id: string) => g.indicadores.find((f) => f.id === id)!;
+    const desp = u("edu.despesa.funcao_educacao").universo_curto;
+    const rede = u("edu.matriculas.rede_municipal").universo_curto;
+    const conv = u("edu.matriculas.conveniadas_municipais").universo_curto;
+    expect(new Set([desp, rede, conv]).size).toBe(3);
+    expect(desp).toMatch(/^Despesa liquidada do município/);
+    expect(rede).toMatch(/dependência municipal/);
+    expect(u("edu.matriculas.conveniadas_municipais").nome).toMatch(/exclusiva/);
+    const c = comparar(ix, "despesa", 2024, "anos_iniciais", "nominal", "matematica", "todas", cap("recife"), "alfabetica");
+    expect(c.universoIndicador).toBe(desp);
+    expect(c.criterio).not.toMatch(/rede municipal/i);
   });
 
   it("grupo regional usa só capitais da mesma região da capital selecionada", () => {
@@ -142,8 +218,9 @@ describe("decomposições reconciliam", () => {
 describe("tabela auditável e exportação", () => {
   it("o CSV tem exatamente as linhas da tabela, com estado do dado", () => {
     const linhas = linhasTabela(ix, cap("macapa").cod, 2024);
-    const texto = csv(["a"], linhasCsvTabela(linhas));
+    const texto = csv(CABECALHO_CSV_TABELA, linhasCsvTabela(d, cap("macapa"), linhas));
     expect(texto.trim().split("\n").length - 1).toBe(linhas.length);
+    expect(texto).toContain("Macapá;1600303;");
     const semValor = linhas.filter((l) => l.status !== "OBSERVADO");
     expect(semValor.length).toBeGreaterThan(0);
     expect(semValor.every((l) => l.valor === "")).toBe(true);

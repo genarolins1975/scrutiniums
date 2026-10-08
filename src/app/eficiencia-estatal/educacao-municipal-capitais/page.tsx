@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 const RESULTADO: Record<string, string> = {
   aprovada: "Aprovada",
   aprovada_com_divergencias_documentadas: "Aprovada, com divergências documentadas",
+  regra_aplicada_com_pendencias: "Regra aplicada; há pendências de conferência, fora das comparações",
   reprovada: "Reprovada",
   medicao: "Medição",
 };
@@ -38,7 +39,10 @@ const GLOSSARIO: [string, string][] = [
   ["Escola conveniada", "Escola privada que declara ao Censo Escolar parceria ou convênio com o poder público para financiar o atendimento."],
   ["Saeb", "Sistema de Avaliação da Educação Básica, avaliação bienal do INEP em Língua Portuguesa e Matemática."],
   ["Ideb", "Índice de Desenvolvimento da Educação Básica, do INEP: produto da nota média padronizada no Saeb (N) pelo indicador de rendimento (P), em escala de 0 a 10."],
-  ["Mediana", "Valor do meio quando os valores são ordenados: metade das capitais com dado fica abaixo e metade acima. Aqui, sem ponderação."],
+  ["Mediana", "Valor do meio quando os valores são ordenados: metade das capitais na comparação fica abaixo e metade acima. Aqui, sem ponderação; não é meta, padrão nem estatística nacional."],
+  ["Reais de 2025", "Valor corrigido pela inflação medida pelo IPCA: cada exercício é multiplicado pela razão entre a média do índice em 2025 e a média do índice no exercício, para expressar todos os anos no poder de compra médio de 2025."],
+  ["Fora da comparação", "O valor oficial existe e pode ser consultado, mas não entra em comparações entre capitais, medianas nem variações, porque o perímetro é diferente ou a conferência com outra fonte oficial está pendente. O motivo aparece junto do dado."],
+  ["MSC", "Matriz de Saldos Contábeis: saldos das contas contábeis que cada ente envia mensalmente ao Tesouro. Aqui é a terceira fonte de conferência da despesa quando DCA e RREO diferem."],
 ];
 
 function rotuloCaptura(c: { chave: string }): string {
@@ -50,7 +54,8 @@ function rotuloCaptura(c: { chave: string }): string {
 
 function cob(l: LinhaCobertura[] | undefined, ano: number, etapa: string | null = null) {
   const x = l?.find((c) => c.ano === ano && c.etapa === etapa);
-  return x ? `${x.com_valor} de ${x.elegiveis}` : "sem dado";
+  if (!x) return "sem dado";
+  return `${x.com_valor} de ${x.elegiveis} com valor${x.comparaveis !== x.com_valor ? ` (${x.comparaveis} na comparação)` : ""}`;
 }
 
 function Secao({ id, rotulo, titulo, children }: { id: string; rotulo: string; titulo: string; children: React.ReactNode }) {
@@ -77,7 +82,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
     {
       rotulo: "Atendimento",
       titulo: "Matrículas e alunos por turma",
-      quem: "Escolas de dependência municipal no território da capital. Escolas privadas conveniadas com o município são contadas à parte.",
+      quem: "Escolas de dependência municipal no território da capital. Escolas privadas com parceria só com o município são contadas à parte e nunca somadas; parceria simultânea com estado e município fica fora.",
       quando: `Data de referência do Censo Escolar (maio), ${g.periodos.censo[0]} a ${g.periodos.censo.at(-1)}.`,
       fonte: "INEP, Censo Escolar.",
     },
@@ -136,6 +141,9 @@ function ComoLer({ g }: { g: GoldEducacao }) {
 function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos> }) {
   const m01 = g.validacoes.find((v) => v.id === "M01");
   const naoPub = g.indicadores.find((i) => i.estado === "NAO_PUBLICAVEL");
+  const v04 = g.validacoes.find((v) => v.id === "V04");
+  const m02 = g.validacoes.find((v) => v.id === "M02");
+  const pol = g.politica_conferencia;
   return (
     <Secao id="metodos" rotulo="Auditar · métodos e fontes" titulo="Passaportes, fontes, validações e reprodução">
       <div className="space-y-12">
@@ -166,6 +174,47 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             ))}
           </div>
         </div>
+
+        {v04 && (
+          <div id="conferencia" className="scroll-mt-24">
+            <h3 className="font-serif text-xl text-obee-tinta">Conferência da despesa e elegibilidade para comparação</h3>
+            <p className="mt-2 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">
+              Cada valor da DCA é conferido com o RREO do 6º bimestre. Diferença de até R$ 1,00 confere; até{" "}
+              {decimal(pol.tolerancia_relativa * 100, 1)}% da DCA é diferença menor. Acima disso, só a Matriz de Saldos Contábeis (MSC) de
+              dezembro reconcilia. Valores com perímetro distinto ou conferência pendente continuam disponíveis para consulta e ficam fora
+              de comparações, medianas e variações. Política {pol.versao}.
+            </p>
+            <ul className="mt-4 space-y-4">
+              {v04.casos
+                .filter((c) => c.situacao && c.situacao !== "DIFERENCA_MENOR")
+                .map((c) => (
+                  <li key={`${String(c.ente)}-${String(c.ano)}`} className="border-l-2 border-obee-tinta pl-4 text-sm leading-relaxed text-obee-tinta">
+                    <p className="font-semibold">
+                      {String(c.nome)}, {String(c.ano)}: {String(c.rotulo)}
+                      {c.elegivel ? " · elegível" : " · fora das comparações"}
+                    </p>
+                    <p className="mt-1">{String(c.explicacao)}</p>
+                    {Array.isArray(c.evidencias) && c.evidencias.length > 0 && (
+                      <ul className="mt-1 list-disc pl-5 text-carvao-muted">
+                        {(c.evidencias as string[]).map((e) => (
+                          <li key={e}>{e}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+            </ul>
+            <p className="mt-3 text-xs text-carvao-muted">
+              Diferenças menores (abaixo de {decimal(pol.tolerancia_relativa * 100, 1)}% da DCA):{" "}
+              {v04.casos
+                .filter((c) => c.situacao === "DIFERENCA_MENOR")
+                .map((c) => `${String(c.nome)} ${String(c.ano)}`)
+                .join("; ") || "nenhuma"}
+              . Detalhe de todos os casos na validação V04.
+            </p>
+            {m02 && <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-obee-tinta">{m02.detalhe}</p>}
+          </div>
+        )}
 
         {naoPub && m01 && (
           <div id="nao-publicado" className="scroll-mt-24">

@@ -1313,6 +1313,72 @@
     }
    }
   },
+  "inep_sinopse_2022": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Sinopse Estatística da Educação Básica 2022",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/sinopses-estatisticas/educacao-basica",
+   "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopses_estatisticas_censo_escolar_2022.zip",
+   "membro": "Sinopse_Estatistica_da_Educação_Basica_2022/Sinopse_Estatistica_da_Educação_Basica_2022/Sinopse_Estatistica_da_Educação_Basica_2022.xlsx",
+   "capturado_em": "2026-10-08T12:26:59Z",
+   "publicado_em": "2023-02-25",
+   "sha256_original": "811d291a9ad716906132e162e871c8e0f8fc09b092205afdce3be4fedf38cfa9",
+   "bytes_original": 309843475,
+   "md5_publicado_inep": "31d097d0e872d69677a5c9099f8a43ae",
+   "md5_conferido": "31d097d0e872d69677a5c9099f8a43ae",
+   "parametros": "tabelas de matrículas por dependência administrativa (total, creche, pré-escola) e de matrículas em escolas privadas conveniadas; linhas das capitais e do DF",
+   "recorte": "pipeline/eficiencia/seed/inep_sinopse/sinopse_capitais_2022.json.gz",
+   "sha256_recorte": "9acda5620811ee470b854603c8247569aaa43dce996c80df7620f7c2d0c7b6dc",
+   "tabelas": {
+    "total": {
+     "aba": "1.2",
+     "titulo": "1.2 – Número de Matrículas da Educação Básica, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2022",
+     "linhas": 27
+    },
+    "creche": {
+     "aba": "Creche 1.6",
+     "titulo": "1.6 – Número de Matrículas da Creche Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2022",
+     "linhas": 27
+    },
+    "pre_escola": {
+     "aba": "Pré-Escola 1.10",
+     "titulo": "1.10 – Número de Matrículas da Pré-Escola Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2022",
+     "linhas": 27
+    }
+   }
+  },
+  "inep_sinopse_2023": {
+   "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
+   "conjunto": "Sinopse Estatística da Educação Básica 2023",
+   "pagina": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/sinopses-estatisticas/educacao-basica",
+   "url": "https://download.inep.gov.br/dados_abertos/sinopses_estatisticas/sinopse_estatistica_censo_escolar_2023.zip",
+   "membro": "sinopse_estatistica_censo_escolar_2023/Sinopse_Estatistica_da_Educação_Basica_2023.xlsx",
+   "capturado_em": "2026-10-08T12:28:29Z",
+   "publicado_em": "2026-07-14",
+   "sha256_original": "6a29e549ea381ccb74a8b0aeec8b7fd1e4ec00c43bb83eae3ecc5c91bd7a88f5",
+   "bytes_original": 151568286,
+   "md5_publicado_inep": "7aef4ae1088d54a732dcb827b58f9965",
+   "md5_conferido": "7aef4ae1088d54a732dcb827b58f9965",
+   "parametros": "tabelas de matrículas por dependência administrativa (total, creche, pré-escola) e de matrículas em escolas privadas conveniadas; linhas das capitais e do DF",
+   "recorte": "pipeline/eficiencia/seed/inep_sinopse/sinopse_capitais_2023.json.gz",
+   "sha256_recorte": "0e7da597e4ee73e04a70e7d4061a7bd9a5a603f9f0230634205acb9c31ea12c6",
+   "tabelas": {
+    "total": {
+     "aba": "1.2",
+     "titulo": "1.2 – Número de Matrículas da Educação Básica, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2023",
+     "linhas": 27
+    },
+    "creche": {
+     "aba": "Creche 1.6",
+     "titulo": "1.6 – Número de Matrículas da Creche Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2023",
+     "linhas": 27
+    },
+    "pre_escola": {
+     "aba": "Pré-Escola 1.10",
+     "titulo": "1.10 – Número de Matrículas da Pré-Escola Regular, por Localização e Dependência Administrativa, segundo a Região Geográfica, a Unidade da Federação e o Município - 2023",
+     "linhas": 27
+    }
+   }
+  },
   "inep_sinopse_2024": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
    "conjunto": "Sinopse Estatística da Educação Básica 2024",
@@ -2313,6 +2379,42 @@
    "recorte": "pipeline/eficiencia/seed/siconfi/entes.json.gz",
    "sha256_recorte": "c3e4ff9b476ba29155df0e0c810069fe8a785d748c9ed5134ed454360c97cd21",
    "linhas_recorte": 5598
+  },
+  "siconfi_msc_funcao12": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Matriz de Saldos Contábeis (MSC) agregada, classe 6, saldo final de dezembro",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=<código IBGE>&an_referencia=<ano>&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+   "parametros": "coletada só para os pares DCA × RREO com diferença material e para casos de controle; gravadas as linhas da função 12 nas contas 6.2.2.1.3.03 a .07",
+   "arquivos": {
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T12:22:11Z",
+     "linhas_resposta": 5744,
+     "linhas": 380,
+     "sha256_resposta_completa": "f022e44b2a15eaca5bc2b85d60edfd1aad69fb8925eae31954895bfbd8f90c9c",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/1400100_2024_12.json.gz",
+     "sha256": "c5cd01cdbb8cbb3adfb5a679da028aab05fb90a96556014cbf806d62d0281f57"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T12:22:12Z",
+     "linhas_resposta": 7972,
+     "linhas": 245,
+     "sha256_resposta_completa": "f6971828a5dd694ac1904f5e858d0bd076396365fe4007c097bd7b9f72d947a5",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2021_12.json.gz",
+     "sha256": "ffe8df8da26ec82634fe1ee73c59e6e4fc0f39bba77c0bd64a5f59e8c807fcfb"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-08T12:22:15Z",
+     "linhas_resposta": 9310,
+     "linhas": 435,
+     "sha256_resposta_completa": "53a60993c4d532760f3cbff8057307852b56cc1c71f0d74d168f1194c6b624c1",
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2611606_2024_12.json.gz",
+     "sha256": "647ca66820691c4e004717c163c7cf66ef5463fe9f1bb36a7ce7b6b8b4db0818"
+    }
+   }
   },
   "siconfi_rreo_anexo_02_b6": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",

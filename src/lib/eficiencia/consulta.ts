@@ -9,8 +9,12 @@ import { decimal, inteiro, percentual, reaisCompleto, reaisCurto, reaisExtenso }
 
 /* ------------------------------------------------------------------ payload compacto */
 
-/** [indicador, capital, ano, etapa, componente, valor, status, nota, participação, comparável] */
-export type ObsCompacta = [number, number, number, number, number, number | null, number, number, number | null, 0 | 1];
+/**
+ * [indicador, capital, ano, etapa, componente, valor, status, nota, participação, elegível para comparação,
+ *  nota material, situação da conferência, motivo da inelegibilidade, quebra de série]
+ * Índices -1 = ausente. Textos (notas e motivos) deduplicados em `notas`; situações em `situacoes`.
+ */
+export type ObsCompacta = [number, number, number, number, number, number | null, number, number, number | null, 0 | 1, 0 | 1, number, number, 0 | 1];
 
 export type CapitalPainel = { id: string; cod: number; nome: string; uf: string; regiao: string };
 
@@ -26,42 +30,66 @@ export type DadosPainel = {
   status: StatusDado[];
   notas: string[];
   obs: ObsCompacta[];
+  situacoes: string[];
+  rotulosSituacao: Record<string, string>;
   fontes: Record<string, { instituicao: string; conjunto: string; pagina: string; capturado_em: string }>;
-  meta: { gerado_em: string; versao_pipeline: string; versao_codigo: string | null; hash_dados: string };
+  meta: {
+    gerado_em: string;
+    versao_pipeline: string;
+    versao_codigo: string | null;
+    hash_dados: string;
+    versao_catalogo: string;
+    dados_capturados_ate: string;
+  };
   excluidos: { nome: string; uf: string; motivo: string }[];
 };
 
+/**
+ * Três dimensões separadas: o valor oficial (valor, status), o resultado da conferência (situacao)
+ * e a elegibilidade para comparações, medianas e variações (elegivel). Um valor observado pode
+ * estar disponível para consulta e fora das comparações.
+ */
 export type Ponto = {
   valor: number | null;
   status: StatusDado;
   nota: string | null;
+  /** a nota é uma restrição que precisa aparecer junto do dado */
+  notaMaterial: boolean;
   participacao: number | null;
-  comparavel: boolean;
-  fonte: string | null;
+  elegivel: boolean;
+  situacao: string | null;
+  motivo: string | null;
+  quebraSerie: boolean;
 };
 
 const SEM_OBS: Ponto = {
   valor: null,
   status: "AUSENTE_NA_COLETA",
   nota: "Sem registro para este recorte",
+  notaMaterial: true,
   participacao: null,
-  comparavel: true,
-  fonte: null,
+  elegivel: false,
+  situacao: null,
+  motivo: null,
+  quebraSerie: false,
 };
 
 export class Indice {
   private mapa = new Map<string, Ponto>();
   constructor(readonly d: DadosPainel) {
     for (const o of d.obs) {
-      const [i, c, a, e, k, v, s, n, p, comp] = o;
+      const [i, c, a, e, k, v, s, n, p, eleg, mat, sit, mot, qb] = o;
       const chave = Indice.chave(d.indicadores[i], d.capitais[c].cod, a, e < 0 ? null : d.etapas[e].id, k < 0 ? null : d.componentes[k]);
       this.mapa.set(chave, {
         valor: v,
         status: d.status[s],
         nota: n < 0 ? null : d.notas[n],
+        notaMaterial: mat === 1,
         participacao: p,
-        comparavel: comp === 1,
-        fonte: null,
+        elegivel: eleg === 1,
+        situacao: sit < 0 ? null : d.situacoes[sit],
+        motivo: mot < 0 ? null : d.notas[mot],
+        quebraSerie: qb === 1,
       });
     }
   }
@@ -203,12 +231,15 @@ export function serie(ix: Indice, m: MedidaId, cod: number, etapa: EtapaId, moed
 export type Grupo = "todas" | "regiao";
 export type Ordem = "alfabetica" | "valor";
 
-export type ItemComparacao = { cap: CapitalPainel; valor: number };
-export type ExcluidoComparacao = { cap: CapitalPainel; status: StatusDado; motivo: string };
+export type ItemComparacao = { cap: CapitalPainel; valor: number; ponto: Ponto };
+/** comValor: há valor oficial, mas fora da comparação (perímetro distinto ou conferência pendente). */
+export type ExcluidoComparacao = { cap: CapitalPainel; status: StatusDado; motivo: string; comValor: boolean; ponto: Ponto };
 
 export type Comparacao = {
   criterio: string;
+  universoIndicador: string;
   universo: CapitalPainel[];
+  comValor: number;
   incluidas: ItemComparacao[];
   excluidas: ExcluidoComparacao[];
   mediana: number | null;
@@ -221,6 +252,22 @@ export function mediana(vs: number[]): number | null {
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 }
 
+export function ficha(d: DadosPainel, ind: IndicadorId): FichaIndicador {
+  return d.fichas.find((f) => f.id === ind)!;
+}
+
+export function rotuloPeriodoMedida(m: MedidaId, ano: number): string {
+  const md = MEDIDA[m];
+  if (md.anos === "financeiros") return `exercício ${ano}`;
+  if (md.anos === "ideb") return `edição ${ano}`;
+  return m === "aprovacao" ? `ano letivo ${ano}` : `Censo Escolar ${ano}`;
+}
+
+/**
+ * Comparação entre capitais. Uma única regra serve ao gráfico, à mediana, à tabela e ao download:
+ * entram só valores observados e elegíveis; os demais ficam listados com estado e motivo,
+ * inclusive os que têm valor oficial disponível para consulta.
+ */
 export function comparar(
   ix: Indice,
   m: MedidaId,
@@ -238,22 +285,40 @@ export function comparar(
   const k = componente(m, moeda, disc);
   const incluidas: ItemComparacao[] = [];
   const excluidas: ExcluidoComparacao[] = [];
+  let comValor = 0;
   for (const cap of universo) {
     const p = ix.ponto(MEDIDA[m].indicador, cap.cod, ano, e, k);
-    if (p.status !== "OBSERVADO" || p.valor === null) {
-      excluidas.push({ cap, status: p.status, motivo: p.nota ?? "" });
-    } else if (!p.comparavel) {
-      excluidas.push({ cap, status: "NAO_COMPARAVEL", motivo: p.nota ?? "" });
+    const observado = p.status === "OBSERVADO" && p.valor !== null;
+    if (observado) comValor++;
+    if (!observado) {
+      excluidas.push({ cap, status: p.status, motivo: p.nota ?? "", comValor: false, ponto: p });
+    } else if (!p.elegivel) {
+      excluidas.push({ cap, status: "NAO_COMPARAVEL", motivo: p.motivo ?? p.nota ?? "", comValor: true, ponto: p });
     } else {
-      incluidas.push({ cap, valor: p.valor });
+      incluidas.push({ cap, valor: p.valor as number, ponto: p });
     }
   }
   if (ordem === "valor") incluidas.sort((a, b) => a.valor - b.valor || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
+  const f = ficha(d, MEDIDA[m].indicador);
   const regiao = d.regioes[capSel.regiao];
+  const recorte = [rotuloPeriodoMedida(m, ano), e ? nomeEtapa(d, e).toLowerCase() : null, m === "saeb" ? (disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
+    m === "despesa" ? (moeda === "real" ? "reais de 2025" : "reais correntes") : null].filter(Boolean).join(", ");
   const criterio =
-    (grupo === "regiao" ? `Capitais da região ${regiao}` : "Todas as capitais estaduais") +
-    `, rede municipal, ${ano}${e ? `, ${nomeEtapa(d, e)}` : ""}, mesma definição e mesma fonte; entram as capitais com valor observado e comparável.`;
-  return { criterio, universo, incluidas, excluidas, mediana: mediana(incluidas.map((i) => i.valor)) };
+    `${grupo === "regiao" ? `Capitais da região ${regiao}` : "Todas as capitais estaduais"}; ${recorte}. ` +
+    "Entram as capitais com valor observado e elegível para comparação" +
+    (m === "despesa" ? " pela política de conferência da despesa" : "") + ".";
+  return { criterio, universoIndicador: f.universo_curto, universo, comValor, incluidas, excluidas, mediana: mediana(incluidas.map((i) => i.valor)) };
+}
+
+/** Variação entre dois períodos, só quando os dois valores são elegíveis. */
+export function variacao(atual: Ponto, anterior: Ponto): { pct: number } | { bloqueio: string } | null {
+  if (atual.valor === null || anterior.valor === null) return null;
+  if (!atual.elegivel || !anterior.elegivel) {
+    const motivo = !atual.elegivel ? atual.motivo : anterior.motivo;
+    return { bloqueio: motivo ?? "um dos valores está fora das comparações" };
+  }
+  if (anterior.valor === 0) return null;
+  return { pct: ((atual.valor - anterior.valor) / anterior.valor) * 100 };
 }
 
 export function nomeEtapa(d: DadosPainel, e: EtapaId | null): string {
@@ -303,14 +368,23 @@ export function distribuicaoMatriculas(ix: Indice, cod: number, ano: number): { 
 export type LinhaTabela = {
   indicador: IndicadorId;
   medida: string;
+  universo: string;
   etapa: string;
   componente: string;
   periodo: string;
+  /** valor como exibido (texto) */
   valor: string;
+  /** valor numérico na precisão da fonte, com ponto decimal; vazio quando não há valor */
+  valorNumerico: string;
+  participacao: string;
   unidade: string;
   status: StatusDado;
+  elegivel: boolean;
+  situacao: string;
   nota: string;
+  notaMaterial: boolean;
   fonte: string;
+  versao: string;
 };
 
 const ROTULO_COMPONENTE: Record<string, string> = {
@@ -336,7 +410,8 @@ export const ROTULO_STATUS: Record<StatusDado, string> = {
   AUSENTE_NA_COLETA: "Ausente na coleta",
   DESATUALIZADO: "Desatualizado",
   INCONSISTENTE: "Inconsistente",
-  NAO_COMPARAVEL: "Não comparável",
+  NAO_COMPARAVEL: "Fora da comparação",
+  INCOMPLETO: "Incompleto",
   INDISPONIVEL_TEMPORARIAMENTE: "Indisponível temporariamente",
 };
 
@@ -366,19 +441,25 @@ export function linhasTabela(ix: Indice, cod: number, ano: number): LinhaTabela[
     const k = o[4] < 0 ? null : d.componentes[o[4]];
     const st = d.status[o[6]];
     const f = fichas.get(ind)!;
-    let valor = o[5] === null ? "" : formataCompleto(ind, o[5]);
-    if (ind === "edu.despesa.subfuncao" && o[8] !== null && o[5] !== null) valor += ` (${percentual(o[8], 1)})`;
+    const valor = o[5] === null ? "" : formataCompleto(ind, o[5]);
     out.push({
       indicador: ind,
       medida: f.nome_curto,
+      universo: f.universo_curto,
       etapa: etapa?.nome ?? "Não se aplica",
       componente: rotuloComponente(d, ind, k),
       periodo: rotuloPeriodo(ind, o[2]),
       valor,
-      unidade: ind === "edu.despesa.subfuncao" ? "R$ (% da função)" : k === "real_2025" ? "R$ de 2025" : f.unidade,
+      valorNumerico: o[5] === null ? "" : String(o[5]),
+      participacao: o[8] === null ? "" : String(o[8]),
+      unidade: ind === "edu.despesa.subfuncao" ? "R$ correntes" : k === "real_2025" ? "R$ de 2025 (IPCA)" : ind === "edu.despesa.funcao_educacao" ? "R$ correntes" : f.unidade,
       status: st,
+      elegivel: o[9] === 1,
+      situacao: o[11] < 0 ? "" : d.rotulosSituacao[d.situacoes[o[11]]] ?? d.situacoes[o[11]],
       nota: o[7] < 0 ? "" : d.notas[o[7]],
+      notaMaterial: o[10] === 1,
       fonte: fonteLegivel(d, ind, o[2]),
+      versao: f.versao_metodologica,
     });
   }
   return out;
@@ -401,8 +482,55 @@ export function csv(cabecalho: string[], linhas: (string | number)[][]): string 
   return "﻿" + [cabecalho, ...linhas].map((l) => l.map(esc).join(";")).join("\n") + "\n";
 }
 
-export const CABECALHO_TABELA = ["Medida", "Etapa", "Componente", "Período", "Valor", "Unidade", "Estado do dado", "Nota", "Fonte"];
+export const CABECALHO_TABELA = ["Medida", "Etapa", "Componente", "Período", "Valor", "Unidade", "Estado do dado", "Comparação", "Nota", "Fonte"];
 
-export function linhasCsvTabela(linhas: LinhaTabela[]): string[][] {
-  return linhas.map((l) => [l.medida, l.etapa, l.componente, l.periodo, l.valor, l.unidade, ROTULO_STATUS[l.status], l.nota, l.fonte]);
+/** Exportação da tabela: valor como exibido e valor numérico em colunas separadas, participação à parte. */
+export const CABECALHO_CSV_TABELA = [
+  "capital", "codigo_ibge", "indicador_id", "medida", "universo", "etapa", "componente", "periodo", "valor_exibido",
+  "valor_numerico", "participacao_pct", "unidade", "estado_do_dado", "elegivel_comparacao", "conferencia",
+  "nota", "nota_material", "fonte", "versao_metodologica", "dados_gerados_em", "hash_dados",
+];
+
+export function rotuloComparacao(l: { status: StatusDado; elegivel: boolean }): string {
+  if (l.status !== "OBSERVADO") return "Sem valor";
+  return l.elegivel ? "Elegível" : "Fora da comparação";
+}
+
+export function linhasCsvTabela(d: DadosPainel, cap: CapitalPainel, linhas: LinhaTabela[]): string[][] {
+  return linhas.map((l) => [
+    cap.nome, String(cap.cod), l.indicador, l.medida, l.universo, l.etapa, l.componente, l.periodo, l.valor, l.valorNumerico,
+    l.participacao, l.unidade, ROTULO_STATUS[l.status], l.status !== "OBSERVADO" ? "" : l.elegivel ? "sim" : "nao", l.situacao,
+    l.nota, l.notaMaterial ? "sim" : "nao", l.fonte, l.versao, d.meta.gerado_em, d.meta.hash_dados,
+  ]);
+}
+
+/** Exportação da comparação: todas as capitais do grupo, incluídas e excluídas, com estado, motivo e contexto. */
+export const CABECALHO_CSV_COMPARACAO = [
+  "indicador_id", "indicador", "universo_do_indicador", "grupo_de_comparacao", "periodo", "etapa", "componente",
+  "codigo_ibge", "capital", "uf", "valor_numerico", "valor_exibido", "unidade", "estado_do_dado", "elegivel_comparacao",
+  "incluida_na_comparacao", "conferencia", "motivo_exclusao", "nota", "mediana_das_incluidas", "capitais_no_grupo",
+  "capitais_com_valor", "capitais_incluidas", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
+];
+
+export function linhasCsvComparacao(
+  d: DadosPainel, comp: Comparacao, m: MedidaId, ano: number, etapa: EtapaId, moeda: Moeda, disc: Disciplina,
+): string[][] {
+  const md = MEDIDA[m];
+  const f = ficha(d, md.indicador);
+  const e = etapaDaMedida(m, etapa);
+  const k = componente(m, moeda, disc);
+  const comum = (cap: CapitalPainel) => [md.indicador, f.nome, f.universo_curto, comp.criterio, rotuloPeriodoMedida(m, ano),
+    e ? nomeEtapa(d, e) : "Não se aplica", rotuloComponente(d, md.indicador, k), String(cap.cod), cap.nome, cap.uf];
+  const cauda = [comp.mediana === null ? "" : String(comp.mediana), String(comp.universo.length), String(comp.comValor),
+    String(comp.incluidas.length), f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, ano)];
+  const sit = (p: Ponto) => (p.situacao ? d.rotulosSituacao[p.situacao] ?? p.situacao : "");
+  const linhas = [
+    ...comp.incluidas.map((i) => [...comum(i.cap), String(i.valor), formata(m, i.valor), unidade(m, moeda), ROTULO_STATUS.OBSERVADO,
+      "sim", "sim", sit(i.ponto), "", i.ponto.nota ?? "", ...cauda]),
+    ...comp.excluidas.map((x) => [...comum(x.cap), x.comValor && x.ponto.valor !== null ? String(x.ponto.valor) : "",
+      x.comValor && x.ponto.valor !== null ? formata(m, x.ponto.valor) : "", unidade(m, moeda), ROTULO_STATUS[x.ponto.status],
+      x.comValor ? "nao" : "", "nao", sit(x.ponto), x.motivo, x.ponto.nota ?? "", ...cauda]),
+  ];
+  const ordem = new Map(d.capitais.map((c, i) => [String(c.cod), i]));
+  return linhas.sort((a, b) => (ordem.get(a[7]) ?? 0) - (ordem.get(b[7]) ?? 0));
 }

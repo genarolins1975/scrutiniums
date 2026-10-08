@@ -31,7 +31,7 @@ GOLD = os.path.join(RAIZ, "public", "eficiencia", "gold")
 SERIES = os.path.join(RAIZ, "public", "eficiencia", "series")
 CATALOGO = os.path.join(AQUI, "catalogo_indicadores.json")
 
-VERSAO_PIPELINE = "obee-0.1.0"
+VERSAO_PIPELINE = "obee-0.2.0"
 DOMINIO = "eficiencia"
 
 # Estados de dado. Nenhum deles vira zero.
@@ -42,6 +42,7 @@ STATUS = {
     "AUSENTE_NA_COLETA": "O registro não foi encontrado na captura",
     "DESATUALIZADO": "Há captura mais recente pendente de integração",
     "INCONSISTENTE": "O valor falhou em uma validação e não é exibido",
+    "INCOMPLETO": "Agregado com registros sem contagem na fonte; a soma parcial não é publicada como total",
     "NAO_COMPARAVEL": "O valor existe, mas não atende às condições de comparação",
     "INDISPONIVEL_TEMPORARIAMENTE": "A fonte não respondeu na última tentativa de coleta",
 }

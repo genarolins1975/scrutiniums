@@ -4,6 +4,8 @@ import { useMemo, useState, type ReactNode } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
+  CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_TABELA,
   CABECALHO_TABELA,
   Indice,
   MEDIDA,
@@ -18,11 +20,14 @@ import {
   etapaValida,
   formata,
   formataEixo,
+  linhasCsvComparacao,
   linhasCsvTabela,
   linhasTabela,
   nomeEtapa,
+  rotuloComparacao,
   serie,
   unidade,
+  variacao,
   type DadosPainel,
   type Disciplina,
   type Grupo,
@@ -94,6 +99,31 @@ function SemValor({ ponto, contexto }: { ponto: Ponto; contexto?: string }) {
       </p>
       <p className="mt-1 leading-snug">{contexto ?? ponto.nota ?? "Sem valor para este recorte."}</p>
     </div>
+  );
+}
+
+/**
+ * Ressalva junto ao dado: restrição material com sinal visível ("Ressalva"); nota informativa com
+ * "Nota". O detalhe abre por clique ou teclado (details/summary), sem depender de hover ou cor.
+ */
+function Ressalva({ ponto }: { ponto: Ponto }) {
+  const texto = ponto.status === "OBSERVADO" && !ponto.elegivel ? ponto.motivo ?? ponto.nota : ponto.nota;
+  if (!texto || ponto.status !== "OBSERVADO") return null;
+  const material = ponto.notaMaterial || !ponto.elegivel;
+  return (
+    <details className="group mt-2 text-xs leading-snug">
+      <summary
+        className={`inline-flex min-h-[32px] cursor-pointer list-none items-center gap-1.5 border px-2 ${
+          material ? "border-obee-tinta font-semibold text-obee-tinta" : "border-linha text-carvao-muted"
+        }`}
+      >
+        <span aria-hidden="true">{material ? "!" : "i"}</span>
+        {material ? (ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações") : "Nota"}
+        <span className="sr-only"> (abrir detalhe)</span>
+      </summary>
+      <p className="mt-1.5 text-obee-tinta">{texto}</p>
+      {!ponto.elegivel && ponto.nota && ponto.nota !== texto && <p className="mt-1 text-carvao-muted">{ponto.nota}</p>}
+    </details>
   );
 }
 
@@ -259,20 +289,24 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   const idebAnt = etapaFund ? ix.ponto("edu.ideb.rede_municipal", cap.cod, edicao - 2, s.etapa, "ideb") : null;
   const aprov = etapaFund ? ix.ponto("edu.aprovacao.rede_municipal", cap.cod, s.ano, s.etapa, null) : null;
 
-  const variacaoPct = (a: Ponto, b: Ponto, anoB: number) =>
-    a.valor !== null && b.valor !== null && b.valor !== 0
-      ? `${(((a.valor - b.valor) / b.valor) * 100 >= 0 ? "+" : "−") + decimal(Math.abs(((a.valor - b.valor) / b.valor) * 100), 1)}% em relação a ${anoB}`
-      : null;
+  /** Variação só entre valores elegíveis; quando um deles não é, diz por que não foi calculada. */
+  const variacaoPct = (a: Ponto, b: Ponto, anoB: number) => {
+    const v = variacao(a, b);
+    if (!v) return null;
+    if ("bloqueio" in v) return `Variação em relação a ${anoB} não calculada: um dos valores está fora das comparações.`;
+    return `${v.pct >= 0 ? "+" : "−"}${decimal(Math.abs(v.pct), 1)}% em relação a ${anoB}`;
+  };
   const variacaoAbs = (a: Ponto | null, b: Ponto | null, anoB: number, casas: number) =>
-    a && b && a.valor !== null && b.valor !== null
+    a && b && a.valor !== null && b.valor !== null && a.elegivel && b.elegivel
       ? `${a.valor - b.valor >= 0 ? "+" : "−"}${decimal(Math.abs(a.valor - b.valor), casas)} em relação à edição ${anoB}`
       : null;
+  const univ = (id: IndicadorId) => ficha(id).universo_rotulo;
 
   /* ---------- E: séries ---------- */
   const series: { m: MedidaId; titulo: string; zero: boolean; anot?: Anotacao[] }[] = [
     { m: "despesa", titulo: "Despesa liquidada na função Educação", zero: true },
     { m: "matriculas", titulo: "Matrículas na rede municipal", zero: true },
-    { m: "conveniadas", titulo: "Matrículas em escolas privadas conveniadas com o município", zero: true },
+    { m: "conveniadas", titulo: "Matrículas em escolas privadas conveniadas só com o município", zero: true },
     { m: "atu", titulo: "Média de alunos por turma", zero: true },
     { m: "aprovacao", titulo: "Taxa de aprovação", zero: false, anot: [PANDEMIA_APROVACAO] },
     { m: "ideb", titulo: "Ideb", zero: false, anot: [PANDEMIA_IDEB] },
@@ -287,18 +321,22 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   const unidadeMed = unidade(s.med, s.moeda);
   const fmt = (v: number) => formata(s.med, v);
   const fmtCurto = (v: number) => formataEixo(s.med, v);
-  const linhasComp = comp ? comp.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, formata(s.med, i.valor)]) : [];
+  // tabela equivalente e download saem da mesma comparação: incluídas e excluídas, com estado e motivo
+  const linhasComp = comp
+    ? [
+        ...comp.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, formata(s.med, i.valor), i.ponto.nota ? "Incluída, com nota" : "Incluída"]),
+        ...comp.excluidas.map((x) => [
+          `${x.cap.nome} (${x.cap.uf})`,
+          x.comValor && x.ponto.valor !== null ? formata(s.med, x.ponto.valor) : "",
+          x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status],
+        ]),
+      ]
+    : [];
   const csvComp = () =>
     comp &&
     baixar(
-      `obee_comparacao_${s.med}_${s.ano}${med.etapas ? `_${s.etapa}` : ""}.csv`,
-      csv(
-        ["Capital", "UF", "Medida", "Unidade", "Período", "Etapa", "Valor", "Estado do dado", "Nota"],
-        [
-          ...comp.incluidas.map((i) => [i.cap.nome, i.cap.uf, med.rotulo, unidadeMed, String(s.ano), med.etapas ? etapaNome : "Não se aplica", String(i.valor).replace(".", ","), "Observado", ""]),
-          ...comp.excluidas.map((e) => [e.cap.nome, e.cap.uf, med.rotulo, unidadeMed, String(s.ano), med.etapas ? etapaNome : "Não se aplica", "", ROTULO_STATUS[e.status], e.motivo]),
-        ],
-      ),
+      `obee_comparacao_${s.med}_${s.ano}${med.etapas ? `_${s.etapa}` : ""}${s.grupo === "regiao" ? `_regiao_${cap.regiao}` : ""}.csv`,
+      csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, s.med, s.ano, s.etapa, s.moeda, s.disc)),
     );
 
   /* ---------- G: decomposição ---------- */
@@ -404,27 +442,28 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
           Cada número tem o seu período. Quando os períodos diferem, isso aparece abaixo do valor.
         </p>
         <div className="mt-4 grid gap-px border border-linha bg-linha sm:grid-cols-2 xl:grid-cols-4">
-          <Cartao id="despesa" rotulo="Despesa liquidada na função Educação" periodo={`Exercício ${s.ano} · ${unidade("despesa", s.moeda)}`} acao={pass("edu.despesa.funcao_educacao", "Passaporte", true)}>
+          <Cartao id="despesa" rotulo="Despesa liquidada na função Educação" periodo={`Exercício ${s.ano} · ${unidade("despesa", s.moeda)} · ${univ("edu.despesa.funcao_educacao")}`} acao={pass("edu.despesa.funcao_educacao", "Passaporte", true)}>
             {desp.valor !== null ? (
               <>
                 <Valor>{formata("despesa", desp.valor)}</Valor>
                 {variacaoPct(desp, despAnt, s.ano - 1) && <Detalhe>{variacaoPct(desp, despAnt, s.ano - 1)}</Detalhe>}
-                {desp.nota && <Detalhe>{desp.comparavel ? "Divergência com o RREO registrada: " : "Fora da comparação entre capitais: "}ver tabela auditável.</Detalhe>}
+                <Ressalva ponto={desp} />
               </>
             ) : (
               <SemValor ponto={desp} />
             )}
           </Cartao>
-          <Cartao id="matriculas" rotulo={`Matrículas na rede municipal · ${etapaNome}`} periodo={`Censo Escolar ${s.ano} · matrículas`} acao={pass("edu.matriculas.rede_municipal", "Passaporte", true)}>
+          <Cartao id="matriculas" rotulo={`Matrículas na rede municipal · ${etapaNome}`} periodo={`Censo Escolar ${s.ano} · matrículas · ${univ("edu.matriculas.rede_municipal")}`} acao={pass("edu.matriculas.rede_municipal", "Passaporte", true)}>
             {mat.valor !== null ? (
               <>
                 <Valor>{inteiro(mat.valor)}</Valor>
                 {variacaoPct(mat, matAnt, s.ano - 1) && <Detalhe>{variacaoPct(mat, matAnt, s.ano - 1)}</Detalhe>}
                 {conv.valor !== null && (
                   <Detalhe>
-                    Contadas à parte: {inteiro(conv.valor)} em escolas privadas conveniadas com o município.
+                    Contadas à parte, não somadas: {inteiro(conv.valor)} em escolas privadas com parceria só com o município.
                   </Detalhe>
                 )}
+                <Ressalva ponto={mat} />
               </>
             ) : (
               <SemValor ponto={mat} />
@@ -433,7 +472,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
           <Cartao
             id="ideb"
             rotulo={`Ideb da rede municipal${etapaFund ? ` · ${etapaNome}` : ""}`}
-            periodo={etapaFund ? `Edição ${edicao}${exata ? "" : ` (o Ideb é bienal; não há edição ${s.ano})`} · índice de 0 a 10` : "Edições bienais · índice de 0 a 10"}
+            periodo={etapaFund ? `Edição ${edicao}${exata ? "" : ` (o Ideb é bienal; não há edição ${s.ano})`} · índice de 0 a 10 · ${univ("edu.ideb.rede_municipal")}` : "Edições bienais · índice de 0 a 10"}
             acao={pass("edu.ideb.rede_municipal", "Passaporte", true)}
           >
             {!etapaFund ? (
@@ -450,13 +489,16 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
           <Cartao
             id="aprovacao"
             rotulo={`Taxa de aprovação na rede municipal${etapaFund ? ` · ${etapaNome}` : ""}`}
-            periodo={`Ano letivo ${s.ano} · %`}
+            periodo={`Ano letivo ${s.ano} · % · ${univ("edu.aprovacao.rede_municipal")}`}
             acao={pass("edu.aprovacao.rede_municipal", "Passaporte", true)}
           >
             {!etapaFund ? (
               <ForaDoEscopo texto={`A taxa de aprovação deste painel cobre os anos iniciais e os anos finais do ensino fundamental, não ${etapaNome.toLowerCase()}.`} />
             ) : aprov && aprov.valor !== null ? (
-              <Valor>{percentual(aprov.valor, 1)}</Valor>
+              <>
+                <Valor>{percentual(aprov.valor, 1)}</Valor>
+                <Ressalva ponto={aprov} />
+              </>
             ) : (
               aprov && <SemValor ponto={aprov} />
             )}
@@ -481,6 +523,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 <figcaption>
                   <p className="font-semibold leading-snug text-obee-tinta">{titulo}</p>
                   <p className="mt-0.5 text-xs text-carvao-muted">{sub}</p>
+                  <p className="text-xs text-carvao-muted">{ficha(md.indicador).universo_rotulo}</p>
                 </figcaption>
                 <div className="mt-3">
                   {ok ? (
@@ -575,7 +618,12 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 )}
                 <GraficoPontosPares
                   titulo={`${med.rotulo}, ${s.ano}`}
-                  linhas={comp.incluidas.map((i) => ({ chave: i.cap.id, rotulo: `${i.cap.nome} (${i.cap.uf})`, valor: i.valor, selecionada: i.cap.id === cap.id }))}
+                  linhas={comp.incluidas.map((i) => ({
+                    chave: i.cap.id,
+                    rotulo: `${i.cap.nome} (${i.cap.uf})${i.ponto.nota ? " *" : ""}`,
+                    valor: i.valor,
+                    selecionada: i.cap.id === cap.id,
+                  }))}
                   mediana={comp.mediana}
                   formata={fmt}
                   formataEixo={fmtCurto}
@@ -589,13 +637,45 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                     <p className="rotulo text-mineral">Critério do grupo, definido antes dos valores</p>
                     <p className="mt-1">{comp.criterio}</p>
                     <p className="mt-2">
-                      Com valor: {comp.incluidas.length} de {comp.universo.length} capitais do grupo. A comparação é descritiva: não ajusta por
-                      população, renda, tamanho ou atribuições da rede. A mediana é a das capitais do grupo com valor, sem ponderação; não é uma
-                      estatística nacional nem um valor de referência.
+                      <span className="text-carvao-muted">O que o indicador mede:</span> {comp.universoIndicador}
                     </p>
+                    <dl className="mt-3 grid grid-cols-3 gap-px border border-linha bg-linha text-center">
+                      {[
+                        ["Capitais no grupo", comp.universo.length],
+                        ["Com valor oficial", comp.comValor],
+                        ["Na comparação", comp.incluidas.length],
+                      ].map(([t, n]) => (
+                        <div key={String(t)} className="bg-superficie px-2 py-2">
+                          <dt className="text-xs leading-tight text-carvao-muted">{t}</dt>
+                          <dd className="mt-0.5 text-lg font-semibold tabular-nums text-obee-tinta">{n}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <p className="mt-3">
+                      A comparação é descritiva: não ajusta por população, renda, tamanho ou atribuições da rede. A mediana é o valor do meio
+                      entre as {comp.incluidas.length} capitais na comparação, sem ponderação; não é estatística nacional, meta nem valor de
+                      referência.
+                    </p>
+                    {comp.incluidas.some((i) => i.ponto.nota) && (
+                      <div className="mt-3">
+                        <p className="rotulo text-mineral">* Incluídas com nota</p>
+                        <ul className="mt-1 space-y-1.5">
+                          {comp.incluidas
+                            .filter((i) => i.ponto.nota)
+                            .map((i) => (
+                              <li key={i.cap.id} className="leading-snug">
+                                <span className="font-semibold">
+                                  {i.cap.nome} ({i.cap.uf})
+                                </span>
+                                : {i.ponto.nota}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                   <div className="text-sm text-obee-tinta">
-                    <p className="rotulo text-mineral">Sem valor neste recorte ({comp.excluidas.length})</p>
+                    <p className="rotulo text-mineral">Fora da comparação neste recorte ({comp.excluidas.length})</p>
                     {comp.excluidas.length ? (
                       <ul className="mt-1 space-y-1.5">
                         {comp.excluidas.map((e) => (
@@ -603,7 +683,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                             <span className="font-semibold">
                               {e.cap.nome} ({e.cap.uf})
                             </span>
-                            : {ROTULO_STATUS[e.status].toLowerCase()}
+                            : {e.comValor ? `valor oficial ${formata(s.med, e.ponto.valor as number)}, fora da comparação` : ROTULO_STATUS[e.status].toLowerCase()}
                             {e.motivo ? `. ${e.motivo}` : "."}
                           </li>
                         ))}
@@ -615,7 +695,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 </div>
                 <details className="mt-5 text-sm">
                   <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela da comparação</summary>
-                  <TabelaSimples legenda={`${med.rotulo}, ${s.ano}, por capital`} cabecalho={["Capital", `Valor (${unidadeMed})`]} linhas={linhasComp} />
+                  <TabelaSimples legenda={`${med.rotulo}, ${s.ano}, por capital`} cabecalho={["Capital", `Valor (${unidadeMed})`, "Situação"]} linhas={linhasComp} />
                 </details>
                 <div className="mt-3 flex flex-wrap items-center gap-4">
                   <button type="button" onClick={csvComp} className="rotulo min-h-[44px] border border-obee-tinta px-4 text-obee-tinta hover:bg-obee-tinta hover:text-superficie">
@@ -722,7 +802,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
         acao={
           <button
             type="button"
-            onClick={() => baixar(`obee_educacao_${cap.id}_${s.ano}.csv`, csv(CABECALHO_TABELA, linhasCsvTabela(tabela)))}
+            onClick={() => baixar(`obee_educacao_${cap.id}_${s.ano}.csv`, csv(CABECALHO_CSV_TABELA, linhasCsvTabela(dados, cap, tabela)))}
             className="rotulo min-h-[44px] border border-obee-tinta px-4 text-obee-tinta hover:bg-obee-tinta hover:text-superficie"
           >
             Baixar esta tabela (CSV, {tabela.length} linhas)
@@ -756,9 +836,16 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   <td className="px-2.5 py-1.5 text-obee-tinta">{l.etapa}</td>
                   <td className="px-2.5 py-1.5 text-obee-tinta">{l.componente}</td>
                   <td className="whitespace-nowrap px-2.5 py-1.5 text-obee-tinta">{l.periodo}</td>
-                  <td className="whitespace-nowrap px-2.5 py-1.5 text-right text-obee-tinta">{l.valor}</td>
+                  <td className="whitespace-nowrap px-2.5 py-1.5 text-right text-obee-tinta">
+                    {l.valor}
+                    {l.participacao && <span className="block text-xs text-carvao-muted">{percentual(Number(l.participacao), 1)} da função</span>}
+                  </td>
                   <td className="px-2.5 py-1.5 text-carvao-muted">{l.unidade}</td>
                   <td className="whitespace-nowrap px-2.5 py-1.5 text-obee-tinta">{ROTULO_STATUS[l.status]}</td>
+                  <td className={`px-2.5 py-1.5 ${l.status === "OBSERVADO" && !l.elegivel ? "font-semibold text-obee-tinta" : "text-carvao-muted"}`}>
+                    {rotuloComparacao(l)}
+                    {l.situacao && <span className="block text-xs font-normal text-carvao-muted">{l.situacao}</span>}
+                  </td>
                   <td className="max-w-[22rem] px-2.5 py-1.5 text-xs leading-snug text-carvao-muted">{l.nota}</td>
                   <td className="px-2.5 py-1.5 text-xs text-carvao-muted">{l.fonte}</td>
                 </tr>

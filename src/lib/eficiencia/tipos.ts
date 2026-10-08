@@ -12,6 +12,7 @@ export type StatusDado =
   | "DESATUALIZADO"
   | "INCONSISTENTE"
   | "NAO_COMPARAVEL"
+  | "INCOMPLETO"
   | "INDISPONIVEL_TEMPORARIAMENTE";
 
 export type EstadoPublicacao = "PUBLICAVEL" | "PUBLICAVEL_COM_RESSALVAS" | "NAO_PUBLICAVEL";
@@ -59,6 +60,8 @@ export type FichaIndicador = {
   correcao_monetaria: string;
   comparacao: string;
   natureza: "OBSERVADO" | "CALCULADO";
+  universo_curto: string;
+  universo_rotulo: string;
   versao_metodologica: string;
   estado: EstadoPublicacao;
   ressalvas: string[];
@@ -67,14 +70,22 @@ export type FichaIndicador = {
   download: string | null;
 };
 
-export type ConferenciaRreo = {
-  situacao: "confere" | "diferenca_menor" | "diverge" | "inclui_intra" | "sem_rreo";
-  comparavel: boolean;
-  rreo?: number;
-  rreo_intra?: number;
-  diferenca?: number;
-  diferenca_pct?: number;
-  explicacao?: string;
+export type SituacaoConferencia = "CONFERE" | "DIFERENCA_MENOR" | "RECONCILIADA_MSC" | "PERIMETRO_INTRA_MSC" | "PENDENTE" | "NAO_CONFERIDO";
+
+export type Conferencia = {
+  versao_politica: string;
+  situacao: SituacaoConferencia;
+  rotulo: string;
+  elegivel_comparacao: boolean;
+  quebra_serie: boolean;
+  motivo_inelegibilidade: string | null;
+  explicacao: string;
+  rreo: { exceto_intra: number; intra: number | null } | null;
+  msc: { liquidado_total: number; intra_mod91: number; sem_intra: number } | null;
+  diferenca: number | null;
+  diferenca_pct_dca: number | null;
+  evidencias: string[];
+  fontes_sha256: { dca: string | null; rreo: string | null; msc: string | null };
 };
 
 export type Observacao = {
@@ -86,12 +97,15 @@ export type Observacao = {
   valor: number | null;
   status: StatusDado;
   nota: string | null;
+  nota_material: boolean;
+  elegivel_comparacao: boolean;
   fonte: string;
   registro: string;
   participacao?: number | null;
   escolas?: number;
+  escolas_sem_contagem?: number;
   fator_ipca?: number;
-  conferencia_rreo?: ConferenciaRreo;
+  conferencia?: Conferencia;
 };
 
 export type Capital = {
@@ -108,7 +122,7 @@ export type Validacao = {
   id: string;
   titulo: string;
   tipo: "automatica" | "medicao";
-  resultado: "aprovada" | "aprovada_com_divergencias_documentadas" | "reprovada" | "medicao";
+  resultado: "aprovada" | "aprovada_com_divergencias_documentadas" | "regra_aplicada_com_pendencias" | "reprovada" | "medicao";
   detalhe: string;
   casos: Record<string, unknown>[];
 };
@@ -140,7 +154,9 @@ export type LinhaCobertura = {
   etapa: EtapaId | null;
   elegiveis: number;
   com_valor: number;
+  comparaveis: number;
   sem_valor: { ente: number; nome: string; status: StatusDado }[];
+  fora_da_comparacao: { ente: number; nome: string }[];
 };
 
 export type Trilha = { indicador: IndicadorId; ente: number; nome: string; ano: number; passos: string[]; valor: number };
@@ -156,6 +172,13 @@ export type GoldEducacao = {
     dados_capturados_ate: string;
     hash_dados: string;
     observacoes: number;
+  };
+  politica_conferencia: {
+    versao: string;
+    tolerancia_arredondamento_reais: number;
+    tolerancia_relativa: number;
+    elegiveis: SituacaoConferencia[];
+    rotulos: Record<SituacaoConferencia, string>;
   };
   painel: { id: string; titulo: string; frase: string; rede: string };
   universo: {

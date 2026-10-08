@@ -137,3 +137,45 @@ def coleta(anos, pausa=0.4):
         "arquivos": rreo,
     })
     return dca, rreo
+
+
+# ---------------------------------------------------------------- MSC (terceira fonte de conferência)
+
+MSC_CONTAS_LIQUIDADO = ("6221303", "6221304", "6221307")
+"""Contas de controle da execução da despesa (classe 6) que compõem o liquidado no exercício:
+6.2.2.1.3.03 crédito empenhado liquidado a pagar, 6.2.2.1.3.04 liquidado pago e 6.2.2.1.3.07
+liquidado a pagar inscrito em restos a pagar processados (PCASP, Manual de Contabilidade Aplicada
+ao Setor Público). As contas 6.2.2.1.3.05 e .06 (restos a pagar não processados) ficam fora."""
+
+
+def coleta_msc_educacao(cod_ibge, ano, mes=12):
+    """Matriz de Saldos Contábeis (MSC agregada de dezembro), classe 6, saldo final.
+
+    Grava só as linhas da função 12 nas contas de despesa liquidada e de restos a pagar, com o
+    sha256 da resposta completa (todas as páginas). Usada para conferir a DCA quando a diferença
+    entre DCA e RREO é material: a MSC separa as despesas intraorçamentárias pela modalidade 91
+    da natureza da despesa, o que permite comprovar o enquadramento, e não só a aritmética."""
+    capturado_em = base.agora_utc()
+    urls, itens = _todas_paginas("msc_orcamentaria", {
+        "id_ente": cod_ibge, "an_referencia": ano, "me_referencia": mes, "co_tipo_matriz": "MSCC",
+        "classe_conta": 6, "id_tv": "ending_balance",
+    })
+    sha_completo = base.sha256_bytes(json.dumps(itens, ensure_ascii=False, sort_keys=True).encode("utf-8"))
+    filtrados = [x for x in itens if str(x.get("funcao")) == "12" and str(x.get("conta_contabil", ""))[:7] in
+                 MSC_CONTAS_LIQUIDADO + ("6221305", "6221306")]
+    destino = os.path.join(base.SEED, "siconfi", "msc_funcao12", f"{cod_ibge}_{ano}_{mes:02d}.json.gz")
+    sha = base.grava_json_gz(destino, filtrados)
+    m = base.le_manifesto()["capturas"].get("siconfi_msc_funcao12", {
+        "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+        "conjunto": "Matriz de Saldos Contábeis (MSC) agregada, classe 6, saldo final de dezembro",
+        "pagina": DOC,
+        "url": f"{API}/msc_orcamentaria?id_ente=<código IBGE>&an_referencia=<ano>&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+        "parametros": "coletada só para os pares DCA × RREO com diferença material e para casos de controle; gravadas as linhas da função 12 nas contas 6.2.2.1.3.03 a .07",
+        "arquivos": {},
+    })
+    m["arquivos"][f"{cod_ibge}_{ano}"] = {
+        "url": urls[0], "capturado_em": capturado_em, "linhas_resposta": len(itens), "linhas": len(filtrados),
+        "sha256_resposta_completa": sha_completo, "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha,
+    }
+    base.registra_captura("siconfi_msc_funcao12", m)
+    return len(itens), len(filtrados)

@@ -49,12 +49,18 @@ export function resumoCobertura(linhas: LinhaCobertura[] | undefined, nomesEtapa
   for (const [etapa, ls] of Array.from(porEtapa.entries())) {
     const ord = [...ls].sort((a, b) => a.ano - b.ano);
     const rotulo = etapa ? `${nomesEtapa[etapa] ?? etapa}: ` : "";
-    const faixa = ord.map((l) => `${l.ano}: ${l.com_valor} de ${l.elegiveis}`).join("; ");
+    const faixa = ord
+      .map((l) => `${l.ano}: ${l.com_valor} de ${l.elegiveis} com valor${l.comparaveis !== l.com_valor ? `, ${l.comparaveis} na comparação` : ""}`)
+      .join("; ");
     const faltas = ord
       .filter((l) => l.sem_valor.length)
       .map((l) => `${l.ano} (${l.sem_valor.map((s) => s.nome).join(", ")})`)
       .join("; ");
-    out.push(`${rotulo}${faixa}.${faltas ? ` Sem valor: ${faltas}.` : ""}`);
+    const fora = ord
+      .filter((l) => l.fora_da_comparacao?.length)
+      .map((l) => `${l.ano} (${l.fora_da_comparacao.map((s) => s.nome).join(", ")})`)
+      .join("; ");
+    out.push(`${rotulo}${faixa}.${faltas ? ` Sem valor: ${faltas}.` : ""}${fora ? ` Com valor oficial, fora da comparação: ${fora}.` : ""}`);
   }
   return out;
 }

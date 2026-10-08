@@ -26,9 +26,21 @@ def _inep(pasta):
     inep_indicadores.extrai("ideb_ai", 2025, os.path.join(pasta, "divulgacao_anos_iniciais_municipios_2025.zip"))
     inep_indicadores.extrai("ideb_af", 2025, os.path.join(pasta, "divulgacao_anos_finais_municipios_2025.zip"))
     for ano, nome in ((2021, "sinopses_estatisticas_censo_escolar_2021.zip"),
+                      (2022, "sinopses_estatisticas_censo_escolar_2022.zip"),
+                      (2023, "sinopse_estatistica_censo_escolar_2023.zip"),
                       (2024, "sinopse_estatistica_censo_escolar_2024.zip"),
                       (2025, "sinopse_estatistica_censo_escolar_2025.zip")):
         inep_sinopse.extrai(ano, os.path.join(pasta, nome))
+
+
+def _msc_para_divergencias():
+    """Captura a MSC de dezembro para cada DCA com diferença material em relação ao RREO."""
+    from pipeline.eficiencia.fontes import siconfi
+    for o in P.despesa():
+        if o["componente"] != "nominal" or o["status"] != "OBSERVADO":
+            continue
+        if o["conferencia"]["situacao"] in ("PENDENTE", "RECONCILIADA_MSC", "PERIMETRO_INTRA_MSC"):
+            siconfi.coleta_msc_educacao(o["ente"], o["ano"])
 
 
 def main(argv=None):
@@ -40,16 +52,17 @@ def main(argv=None):
         from pipeline.eficiencia.fontes import ibge_ipca, siconfi
         siconfi.coleta(P.ANOS_FINANCEIROS)
         ibge_ipca.coleta(min(P.ANOS_FINANCEIROS), max(P.ANOS_FINANCEIROS))
+        _msc_para_divergencias()
     if a.inep:
         _inep(a.inep)
     g = gold.constroi()
-    gold.publica(g)
-    reprovadas = [v for v in g["validacoes"] if v["resultado"] == "reprovada"]
+    promovido, caminho = gold.promove(g)
     for v in g["validacoes"]:
         print(f"{v['id']}  {v['resultado']:<40} {v['titulo']}")
-    print(f"gold: {os.path.relpath(gold.ARQUIVO_GOLD, base.RAIZ)} · {g['meta']['observacoes']} observações · hash {g['meta']['hash_dados'][:16]}")
-    if reprovadas:
-        print("validação reprovada: a gold foi escrita para inspeção, mas não deve ser publicada", file=sys.stderr)
+    print(f"gold: {os.path.relpath(caminho, base.RAIZ)} · {g['meta']['observacoes']} observações · hash {g['meta']['hash_dados'][:16]}")
+    if not promovido:
+        print(f"validação reprovada ({', '.join(gold.reprovadas(g))}): diagnóstico em {os.path.relpath(caminho, base.RAIZ)}; "
+              "a saída pública anterior não foi alterada", file=sys.stderr)
         return 1
     return 0
 

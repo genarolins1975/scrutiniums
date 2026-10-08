@@ -3,7 +3,16 @@
 Cada validação devolve {id, titulo, tipo, resultado, detalhe, casos}. Tipos:
 "automatica" (roda em toda reconstrução) e "medicao" (quantifica um fato que
 apoia uma decisão metodológica, sem aprovar ou reprovar). Resultado:
-"aprovada", "aprovada_com_divergencias_documentadas", "reprovada" ou "medicao".
+
+    aprovada                                os valores conferem e a regra foi cumprida
+    aprovada_com_divergencias_documentadas  a regra foi cumprida; diferenças sem efeito sobre valores
+                                            publicados ficam listadas (ex.: integridade de um arquivo
+                                            alternativo do mesmo pacote)
+    regra_aplicada_com_pendencias           a regra foi cumprida, mas há observações com pendência de
+                                            conferência, mantidas para consulta e fora das comparações;
+                                            não significa que os valores conferem
+    reprovada                               a regra foi violada: a gold não é promovida a público
+    medicao                                 quantifica um fato; não aprova nem reprova
 
 As validações conferem o produto: cálculo, integridade, perímetro e estados de
 dado. Nenhuma delas avalia governos ou redes.
@@ -88,44 +97,114 @@ def v03_identidades_dca():
 
 
 def v04_dca_rreo(obs):
-    casos, n, iguais = [], 0, 0
+    """Conferência DCA × RREO (e MSC, quando material) segundo pipeline/eficiencia/conferencia.py.
+    Reprova só se a regra for violada (estado incompatível com a elegibilidade). Pendências tratadas
+    corretamente não viram aprovação: o resultado diz que há pendência."""
+    from pipeline.eficiencia import conferencia as CF
+    contagem, casos, violacoes, n = {}, [], [], 0
     for o in obs:
         if o["indicador"] != "edu.despesa.funcao_educacao" or o["componente"] != "nominal" or o["status"] != "OBSERVADO":
             continue
         n += 1
-        c = o.get("conferencia_rreo") or {}
-        if c.get("situacao") == "confere":
-            iguais += 1
-            continue
-        casos.append({"ente": o["ente"], "nome": _nome(o["ente"]), "ano": o["ano"], "dca": o["valor"], **c})
-    materiais = [c for c in casos if c.get("situacao") in ("diverge", "inclui_intra", "sem_rreo")]
-    return _v("V04", "Conferência cruzada: despesa liquidada na função Educação, DCA × RREO do 6º bimestre",
-              "automatica", "aprovada" if not casos else "aprovada_com_divergencias_documentadas",
-              f"{n} pares comparados; {iguais} iguais até R$ 1,00; {len(casos) - len(materiais)} com diferença "
-              f"inferior a 1%; {len(materiais)} com diferença material, explicada ou registrada caso a caso. O painel publica "
-              "o valor da DCA (contas anuais); o RREO serve só de conferência e nunca é somado.",
-              sorted(casos, key=lambda c: -abs(c.get("diferenca_pct") or 0)))
+        c = o.get("conferencia") or {}
+        st = c.get("situacao")
+        contagem[st] = contagem.get(st, 0) + 1
+        if (st in CF.ELEGIVEIS) != bool(o.get("elegivel_comparacao")):
+            violacoes.append({"ente": o["ente"], "ano": o["ano"], "situacao": st, "elegivel": o.get("elegivel_comparacao")})
+        if st != "CONFERE":
+            casos.append({"ente": o["ente"], "nome": _nome(o["ente"]), "ano": o["ano"], "dca": o["valor"], "situacao": st,
+                          "rotulo": c.get("rotulo"), "elegivel": c.get("elegivel_comparacao"), "rreo": c.get("rreo"),
+                          "msc": c.get("msc"), "diferenca": c.get("diferenca"), "diferenca_pct_dca": c.get("diferenca_pct_dca"),
+                          "explicacao": c.get("explicacao"), "evidencias": c.get("evidencias"), "fontes_sha256": c.get("fontes_sha256")})
+    pend = contagem.get("PENDENTE", 0) + contagem.get("NAO_CONFERIDO", 0)
+    if violacoes:
+        resultado = "reprovada"
+    elif pend:
+        resultado = "regra_aplicada_com_pendencias"
+    elif set(contagem) <= {"CONFERE"}:
+        resultado = "aprovada"
+    else:
+        resultado = "aprovada_com_divergencias_documentadas"
+    partes = "; ".join(f"{CF.ROTULO.get(k, k).lower()}: {v}" for k, v in sorted(contagem.items(), key=lambda x: -x[1]))
+    return _v("V04", "Conferência da despesa: DCA × RREO do 6º bimestre e, na diferença material, MSC de dezembro",
+              "automatica", resultado,
+              f"{n} declarações; {partes}. Política {CF.VERSAO_POLITICA}: tolerância de R$ 1,00 para arredondamento e de 0,1% da "
+              "DCA para diferenças menores; acima disso, só a MSC reconcilia. Pendentes, não conferidas e de perímetro distinto "
+              "ficam disponíveis para consulta e fora das comparações." + (f" Violações da regra: {len(violacoes)}." if violacoes else ""),
+              violacoes + sorted(casos, key=lambda c: -abs(c.get("diferenca_pct_dca") or 0)))
+
+
+def v13_elegibilidade(obs):
+    """Nenhuma observação sem valor, com conferência pendente ou de perímetro distinto é marcada como elegível."""
+    from pipeline.eficiencia import conferencia as CF
+    ruins = []
+    for o in obs:
+        if o.get("elegivel_comparacao") and o["status"] != "OBSERVADO":
+            ruins.append({k: o[k] for k in ("indicador", "ente", "ano", "etapa", "componente", "status")})
+        c = o.get("conferencia")
+        if c and o.get("elegivel_comparacao") and c.get("situacao") not in CF.ELEGIVEIS:
+            ruins.append({k: o[k] for k in ("indicador", "ente", "ano", "componente")} | {"situacao": c.get("situacao")})
+    n_ineleg = sum(1 for o in obs if o["status"] == "OBSERVADO" and not o.get("elegivel_comparacao"))
+    return _v("V13", "Elegibilidade: só valor observado e conferido entra em comparações, medianas e variações",
+              "automatica", "aprovada" if not ruins else "reprovada",
+              f"{len(obs)} observações conferidas; {n_ineleg} com valor oficial disponível para consulta e fora das comparações "
+              "(perímetro distinto ou conferência pendente), incluindo os componentes derivados (valor real e subfunções).",
+              ruins[:30])
 
 
 def v05_particao_censo():
-    casos, n = [], 0
+    casos, n, vazias = [], 0, 0
     for ano in P.ANOS_CENSO:
         linhas = P.escolas(ano) or []
         for l in linhas:
             if l["TP_DEPENDENCIA"] != "3" or int(l["CO_MUNICIPIO"]) not in entes.codigos_capitais():
                 continue
+            vals = [P.ler_contagem(l.get(c)) for c in P.COLUNAS_CONTAGEM + ["QT_MAT_PROF"]]
+            if all(v is None for v in vals):
+                vazias += 1
+                continue
             n += 1
-            bas = P._int(l["QT_MAT_BAS"])
-            soma = sum(P._int(l[c]) for _, c in P.ETAPAS_CENSO)
-            resid = bas - soma
-            prof = P._int(l["QT_MAT_PROF"])
+            if any(v is None for v in vals):
+                casos.append({"ano": ano, "escola": l["CO_ENTIDADE"], "situacao": "contagem parcial"})
+                continue
+            bas, *etapas, prof = vals
+            resid = bas - sum(etapas)
             if resid < 0 or resid > prof:
                 casos.append({"ano": ano, "escola": l["CO_ENTIDADE"], "ente": int(l["CO_MUNICIPIO"]), "bas": bas,
-                              "soma_etapas": soma, "prof": prof})
+                              "soma_etapas": sum(etapas), "prof": prof})
     return _v("V05", "Censo: partição das matrículas da rede municipal por etapa reconcilia com o total (QT_MAT_BAS)",
               "automatica", "aprovada" if not casos else "reprovada",
-              f"{n} registros de escola municipal conferidos; o resíduo (educação profissional não integrada) fica entre zero e QT_MAT_PROF em todos."
-              if not casos else f"{len(casos)} escolas com partição incoerente.", casos[:50])
+              (f"{n} registros de escola municipal com contagem conferidos; o resíduo (educação profissional não integrada) fica "
+               f"entre zero e QT_MAT_PROF em todos. {vazias} registros sem nenhuma contagem ficaram fora da conferência (medição M02).")
+              if not casos else f"{len(casos)} escolas com partição incoerente ou contagem parcial.", casos[:50])
+
+
+def m02_registros_sem_contagem():
+    """Varredura de campos vazios nas colunas de matrícula, por ano, e da confirmação pela Sinopse."""
+    casos = []
+    for ano in P.ANOS_CENSO:
+        linhas = [l for l in (P.escolas(ano) or []) if int(l["CO_MUNICIPIO"]) in entes.codigos_capitais()]
+        for dep, nome in (("3", "municipal"), ("4", "privada")):
+            grupo = [l for l in linhas if l["TP_DEPENDENCIA"] == dep]
+            _, meta = P._somas(grupo)
+            if not meta["sem_contagem"] and not meta["parciais"] and not meta["invalidos"]:
+                casos.append({"ano": ano, "dependencia": nome, "registros": len(grupo), "sem_contagem": 0,
+                              "parciais": 0, "invalidos": 0, "capitais_afetadas": 0, "capitais_confirmadas_pela_sinopse": 0})
+                continue
+            afetadas = sorted({int(l["CO_MUNICIPIO"]) for l in grupo if l["CO_ENTIDADE"] in set(meta["sem_contagem"])})
+            conf = [c for c in afetadas if P.grupo_verificado(ano, c, dep)["verificado"]]
+            casos.append({"ano": ano, "dependencia": nome, "registros": len(grupo), "sem_contagem": len(meta["sem_contagem"]),
+                          "parciais": len(meta["parciais"]), "invalidos": len(meta["invalidos"]),
+                          "capitais_afetadas": len(afetadas), "capitais_confirmadas_pela_sinopse": len(conf),
+                          "nao_confirmadas": [_nome(c) for c in afetadas if c not in conf]})
+    total = sum(c["sem_contagem"] for c in casos)
+    nao = sum(c["capitais_afetadas"] - c["capitais_confirmadas_pela_sinopse"] for c in casos)
+    return _v("M02", "Medição: registros de escola sem contagem de matrícula (campos vazios) nos microdados",
+              "medicao", "medicao",
+              f"{total} registros sem nenhuma contagem nas capitais (todas as colunas de matrícula vazias; nenhum registro com "
+              f"contagem parcial ou valor não numérico). O dicionário de dados do INEP não define vazio como zero. Os agregados "
+              f"que contêm esses registros só são publicados quando a Sinopse do mesmo ano, município e dependência confirma "
+              f"contribuição nula; {nao} combinações de capital, ano e dependência ficaram sem essa confirmação.", casos)
 
 
 def _sinopse(ano):
@@ -145,7 +224,7 @@ def v06_censo_sinopse(obs):
     idx = {(o["indicador"], o["ente"], o["ano"], o["etapa"]): o["valor"] for o in obs
            if o["indicador"].startswith("edu.matriculas") and o["status"] == "OBSERVADO"}
     casos, n, anos = [], 0, []
-    for ano in (2021, 2024, 2025):
+    for ano in P.ANOS_CENSO:
         s = _sinopse(ano)
         if not s:
             continue
@@ -321,5 +400,6 @@ def todas(obs):
     return [
         v01_entes(), v02_integridade(), v03_identidades_dca(), v04_dca_rreo(obs), v05_particao_censo(),
         v06_censo_sinopse(obs), v07_unicidade(), v08_df_fora(obs), v09_ausencia_nao_zero(obs),
-        v10_faixas(obs), v11_ideb_reproduz(obs), v12_aprovacao_ideb_rendimento(), m01_perimetro_despesa_matricula(obs),
+        v10_faixas(obs), v11_ideb_reproduz(obs), v12_aprovacao_ideb_rendimento(), v13_elegibilidade(obs),
+        m01_perimetro_despesa_matricula(obs), m02_registros_sem_contagem(),
     ]
