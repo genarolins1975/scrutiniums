@@ -223,12 +223,30 @@ class TestComparacoesPublicadas(unittest.TestCase):
         self.assertEqual(pop(2022)["valor"], 11451999)     # Censo 2022
         self.assertEqual(pop(2024)["valor"], 11895578)
         self.assertEqual(pop(2025)["valor"], 11904961)
-        self.assertEqual(pop(2023)["status"], "NAO_DIVULGADO")
-        self.assertIsNone(pop(2023)["valor"])
+        # 2023: população oficial do exercício = Censo 2022 (relação do DOU de 31/08/2023), identificada como censitária
+        self.assertEqual(pop(2023)["status"], "OBSERVADO")
+        self.assertEqual(pop(2023)["valor"], pop(2022)["valor"])
+        self.assertEqual(pop(2023)["tipo_populacao"], "censo_relacao_dou_2023")
+        self.assertIn("31 de julho de 2022", pop(2023)["data_referencia"])
+        self.assertIn("30 de abril de 2023", pop(2023)["data_referencia"])
+        self.assertIn("Não é estimativa de população em julho de 2023", pop(2023)["nota"])
+        self.assertTrue(pop(2023)["nota_material"])
         self.assertEqual(pop(2022)["tipo_populacao"], "censo")
         self.assertTrue(pop(2021)["quebra_serie"])
+        self.assertTrue(pop(2023)["quebra_serie"])
         self.assertFalse(pop(2024)["quebra_serie"])
-        self.assertIn("1º de agosto de 2022", pop(2022)["data_referencia"])
+        self.assertIn("31 de julho de 2022", pop(2022)["data_referencia"])
+
+    def test_populacao_2023_idem_ao_censo_em_todas_as_capitais_e_o_seed_registra_a_conferencia(self):
+        r23 = base.le_json_gz(os.path.join(base.SEED, "ibge_populacao", "relacao_2023_capitais.json.gz"))
+        self.assertEqual(len(r23), 26)
+        self.assertTrue(all(r["igual_ao_sidra_4714"] and r["tipo"] == "censo_relacao_dou_2023" for r in r23))
+        cap = base.le_manifesto()["capturas"]["ibge_populacao_relacao_2023"]
+        self.assertEqual(cap["total_brasil"], 203080756)
+        self.assertEqual(cap["capitais_iguais_ao_sidra_4714"], 26)
+        self.assertEqual(len(cap["sha256_tabela_pdf"]), 64)
+        self.assertEqual(len(cap["sha256_nota_metodologica_pdf"]), 64)
+        self.assertIn("não foi baixado", cap["parametros"])
 
     def test_populacao_revisada_usa_o_valor_vigente_e_registra_a_diferenca(self):
         aju = self.ob("ctx.populacao.residente", 2800308, 2025, comp=None)
@@ -253,12 +271,20 @@ class TestComparacoesPublicadas(unittest.TestCase):
             esperado = liq / pop[(ano, cod)]
             self.assertAlmostEqual(self.ob("edu.despesa.por_habitante", cod, ano)["valor"], esperado, places=4)
 
-    def test_despesa_por_habitante_sem_populacao_nao_tem_valor(self):
+    def test_despesa_por_habitante_de_2023_usa_a_populacao_censitaria_e_bloqueia_variacao(self):
         for cod, _, _ in entes.CAPITAIS:
             o = self.ob("edu.despesa.por_habitante", cod, 2023)
-            self.assertIsNone(o["valor"])
-            self.assertEqual(o["status"], "NAO_DIVULGADO")
-            self.assertFalse(o["elegivel_comparacao"])
+            self.assertEqual(o["status"], "OBSERVADO")
+            self.assertTrue(o["quebra_serie"])
+            self.assertEqual(o["calculo"]["denominador"], self.ob("ctx.populacao.residente", cod, 2022, comp=None)["valor"])
+            self.assertAlmostEqual(o["valor"], o["calculo"]["numerador"] / o["calculo"]["denominador"], places=4)
+
+    def test_despesa_por_habitante_sem_populacao_nao_tem_valor(self):
+        """Sem população observada o pipeline não calcula nem reaproveita outro ano (teste sintético)."""
+        pop = [dict(P.populacao()[0], valor=None, status="AUSENTE_NA_COLETA", nota="sem")]
+        d = [o for o in P.despesa() if o["ente"] == pop[0]["ente"] and o["ano"] == pop[0]["ano"] and o["indicador"] == "edu.despesa.funcao_educacao"]
+        r = P.despesa_por_habitante(d, pop)
+        self.assertTrue(r and all(o["valor"] is None and o["status"] == "AUSENTE_NA_COLETA" for o in r))
 
     def test_campo_grande_2021_continua_fora_das_comparacoes_derivadas(self):
         cg = 5002704

@@ -49,7 +49,7 @@ const GLOSSARIO: [string, string][] = [
   ["Aplicação direta e transferência", "Modalidade da despesa: aplicação direta (90) é a que o próprio ente executa; transferências a instituições privadas (50 e 60) financiam, por exemplo, creches conveniadas. Intraorçamentária (91) é operação entre órgãos do mesmo ente."],
   ["Média simples e razão agregada", "A média simples dá o mesmo peso a cada capital. A razão agregada soma os numeradores e os denominadores dos mesmos pares e divide: pesa cada capital pelo seu denominador. Respondem a perguntas diferentes e não se chamam apenas de média. Um indicador nacional oficial tem cálculo e universo definidos pela fonte e não é a média das capitais."],
   ["Faixa dos 50% centrais", "Intervalo entre o primeiro e o terceiro quartis: metade dos valores do grupo está dentro dele. Só é exibida com 8 ou mais valores (política de apresentação, não garantia estatística)."],
-  ["População estimada e Censo", "As estimativas do IBGE têm data de referência em 1º de julho; o Censo 2022, em 1º de agosto de 2022. A estimativa de 2021 parte do Censo de 2010 e as de 2024 em diante, do Censo de 2022, por isso há quebra de série. O IBGE não publicou estimativa municipal para 2023."],
+  ["População estimada e Censo", "As estimativas do IBGE têm data de referência em 1º de julho; o Censo 2022, em 31 de julho de 2022. A estimativa de 2021 parte do Censo de 2010 e as de 2024 em diante, do Censo de 2022, por isso há quebra de série. Para 2023 não há estimativa municipal: o IBGE adotou, por lei, a população do Censo 2022 (relação do DOU de 31/08/2023). O painel a usa em 2023 identificada como censitária, igual à de 2022, e não como população de julho de 2023."],
   ["ISCED", "Classificação Internacional Padronizada da Educação (UNESCO). O nível 1 equivale ao ensino fundamental, anos iniciais, e o nível 2 aos anos finais, segundo o mapeamento padrão adotado aqui."],
   ["PPC", "Paridade de poder de compra: fator que converte valores em moeda local para uma unidade comum de poder de compra. A OCDE o usa no lugar do câmbio comercial, que não mede o que a renda compra."],
 ];
@@ -96,7 +96,7 @@ function ComoLer({ g }: { g: GoldEducacao }) {
       rotulo: "Recursos",
       titulo: "Gasto em Educação, em três escalas",
       quem: "Total: todo o orçamento do município na função Educação. Por habitante: o total dividido pela população residente. Por matrícula: a aplicação direta na rede própria dividida pelas matrículas das escolas municipais.",
-      quando: `Exercício financeiro (janeiro a dezembro), ${g.periodos.financeiros[0]} a ${g.periodos.financeiros.at(-1)}. A população do mesmo ano não existe em 2023.`,
+      quando: `Exercício financeiro (janeiro a dezembro), ${g.periodos.financeiros[0]} a ${g.periodos.financeiros.at(-1)}. Em 2023 a população oficial é a do Censo 2022, a mesma de 2022.`,
       fonte: "Tesouro Nacional (DCA e MSC), IBGE (população) e INEP (matrículas).",
     },
     {
@@ -302,8 +302,8 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               <div className="mt-6">
                 <p className="font-semibold text-obee-tinta">População, o denominador da despesa por habitante</p>
                 <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
-                  2021: estimativa de 1º de julho de 2021, calculada a partir do Censo de 2010. 2022: Censo Demográfico (1º de agosto de 2022). 2023: o IBGE não publicou estimativa municipal; a despesa por habitante fica sem valor, sem
-                  interpolação nem reaproveitamento de outro ano. 2024 e 2025: estimativas de 1º de julho calculadas a partir do Censo de 2022. {v14.detalhe}
+                  2021: estimativa de 1º de julho de 2021, calculada a partir do Censo de 2010. 2022: Censo Demográfico (31 de julho de 2022). 2023: o IBGE não publicou estimativa municipal e adotou como oficial a população do Censo 2022 (relação do DOU de
+                  31/08/2023); a despesa por habitante de 2023 usa essa população censitária, a mesma de 2022, sem interpolação, e variações com 2023 são bloqueadas. 2024 e 2025: estimativas de 1º de julho calculadas a partir do Censo de 2022. {v14.detalhe}
                 </p>
               </div>
             )}

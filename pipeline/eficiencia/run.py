@@ -94,6 +94,7 @@ def main(argv=None):
     if a.coleta_populacao:
         from pipeline.eficiencia.fontes import ibge_populacao
         ibge_populacao.coleta()
+        ibge_populacao.coleta_relacao_2023()
     if a.coleta_ocde:
         from pipeline.eficiencia.fontes import ocde
         ocde.coleta()

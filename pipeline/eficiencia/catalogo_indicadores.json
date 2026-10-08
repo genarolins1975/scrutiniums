@@ -13,13 +13,13 @@
    "nome_curto": "População residente",
    "familia": "contexto",
    "pergunta": "Quantas pessoas residiam no município na data de referência da publicação do IBGE?",
-   "o_que_mede": "A população residente do município, na data de referência de cada publicação oficial do IBGE: estimativa de 1º de julho (2021, 2024 e 2025) ou contagem do Censo Demográfico de 2022 (1º de agosto de 2022).",
+   "o_que_mede": "A população residente do município, na data de referência de cada publicação oficial do IBGE: estimativa de 1º de julho (2021, 2024 e 2025) ou contagem do Censo Demográfico de 2022 (31 de julho de 2022). Para 2023 o IBGE adotou como oficial, por lei, a população do Censo 2022 (relação do DOU de 31/08/2023), identificada como censitária e não como estimativa.",
    "o_que_nao_mede": [
     "Não é a população atendida pela rede municipal de ensino, nem a população em idade escolar.",
     "As estimativas não são contagens: são projeções do IBGE, revistas a cada edição. A de 2021 parte do Censo de 2010 e a de 2024 em diante parte do Censo de 2022, por isso a série tem uma quebra entre 2021 e 2022.",
-    "O IBGE não publicou estimativa municipal para 2023. O painel não interpola nem reaproveita a população de outro ano."
+    "Para 2023 o IBGE não publicou estimativa municipal; adotou como oficial a população do Censo 2022 (relação do DOU de 31/08/2023). O painel a usa com essa identificação e não interpola nem estima população de julho de 2023."
    ],
-   "formula": "Valor publicado pelo IBGE para o município e o ano: SIDRA, tabela 6579, variável 9324 (estimativas); tabela 4714, variável 93 (Censo 2022).",
+   "formula": "Valor publicado pelo IBGE para o município e o ano: SIDRA, tabela 6579, variável 9324 (estimativas); tabela 4714, variável 93 (Censo 2022). Para 2023, a tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023), cujos valores coincidem com os da tabela 4714 nas 26 capitais.",
    "numerador": null,
    "denominador": null,
    "unidade": "habitantes",
@@ -28,27 +28,27 @@
     "ibge_populacao"
    ],
    "localizacao_registro": "IBGE, SIDRA: tabela 6579 (Estimativas da população residente), variável 9324, nível Município; tabela 4714 (Censo 2022), variável 93. Publicação original das estimativas: arquivos estimativa_dou_AAAA.ods no FTP do IBGE, preservados com sha256.",
-   "periodo": "Data de referência de cada publicação: 1º de julho de 2021, 2024 e 2025; 1º de agosto de 2022 (Censo). Sem publicação municipal para 2023.",
+   "periodo": "Data de referência de cada publicação: 1º de julho de 2021, 2024 e 2025; 31 de julho de 2022 (Censo, usada em 2022 e, com malha territorial de 30 de abril de 2023, como população oficial de 2023).",
    "perimetro": {
     "territorial": "Município da capital, identificado pelo código IBGE de 7 dígitos.",
     "institucional": "Não se aplica.",
     "servico": "Não se aplica."
    },
-   "ausencias": "2023 aparece como não divulgado pela fonte. Município ausente na captura aparece como ausente na coleta. Ausência nunca é tratada como zero.",
+   "ausencias": "Município ausente na captura aparece como ausente na coleta. Ausência nunca é tratada como zero. Não há estimativa municipal do IBGE para 2022 nem para 2023; os dois anos usam a população do Censo 2022.",
    "transformacoes": [
     "Leitura da resposta do SIDRA preservada no seed (JSON gzip com sha256).",
     "Comparação com a publicação original das estimativas (arquivo do FTP do IBGE): valores diferentes são registrados na observação, com o valor vigente do SIDRA como o usado.",
     "Nenhuma interpolação, retroprojeção ou correção."
    ],
    "correcao_monetaria": "Não se aplica.",
-   "comparacao": "Cada ano usa a população da própria publicação. A população de 2021 e a de 2022 em diante têm bases diferentes e não formam uma série contínua; variações entre elas misturam a mudança de base.",
+   "comparacao": "Cada ano usa a população da própria publicação. A população de 2021 e a de 2022 em diante têm bases diferentes e não formam uma série contínua; variações entre elas misturam a mudança de base. 2022 e 2023 usam a mesma população (Censo 2022): a variação por habitante entre os dois anos vem só da despesa, e a de 2023 para 2024 mistura dois anos de crescimento populacional; por isso variações com 2023 são bloqueadas.",
    "natureza": "OBSERVADO",
-   "universo_curto": "População residente do município (estimativa de 1º de julho ou Censo 2022), conforme o IBGE.",
+   "universo_curto": "População residente do município (estimativa de 1º de julho ou Censo 2022, que é a população oficial de 2022 e de 2023), conforme o IBGE.",
    "universo_rotulo": "população do município",
    "versao_metodologica": "1.2",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
-    "2021 é estimativa anterior ao Censo 2022; 2023 não tem publicação municipal do IBGE.",
+    "2021 é estimativa anterior ao Censo 2022; 2023 é a população do Censo 2022 (referência em 31 de julho de 2022), não uma estimativa de julho de 2023; o arquivo da relação do DOU não foi baixado e a igualdade município a município com a tabela usada não foi verificada.",
     "Alguns valores foram revistos pelo IBGE depois da publicação original; o painel usa o vigente e registra a diferença."
    ],
    "granularidade": {
@@ -183,13 +183,13 @@
     "ibge_ipca"
    ],
    "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"12 - Educação\", coluna \"Despesas Liquidadas\". Denominador: IBGE, SIDRA, tabelas 6579 e 4714. Os dois valores usados são publicados na tabela do painel e no CSV.",
-   "periodo": "Exercício financeiro e população do mesmo ano (1º de julho; 1º de agosto de 2022 no ano do Censo). Sem valor em 2023, porque o IBGE não publicou população municipal nesse ano.",
+   "periodo": "Exercício financeiro e população oficial do mesmo ano (estimativa de 1º de julho; Censo 2022 em 2022 e em 2023, com referência em 31 de julho de 2022).",
    "perimetro": {
     "territorial": "Município da capital.",
     "institucional": "Numerador: orçamento fiscal e da seguridade do município. Denominador: toda a população residente.",
     "servico": "Numerador: função Educação, todas as subfunções. Denominador: não se aplica."
    },
-   "ausencias": "Sem população oficial no ano (2023) ou sem a despesa observada, a razão não é calculada. Divisão por zero e valores incompatíveis não geram valor. Ausência nunca é tratada como zero.",
+   "ausencias": "Sem população oficial no ano ou sem a despesa observada, a razão não é calculada. Divisão por zero e valores incompatíveis não geram valor. Ausência nunca é tratada como zero.",
    "transformacoes": [
     "Divisão do valor liquidado da DCA pela população do mesmo ano, com a precisão original de ambos.",
     "Correção monetária opcional: o numerador nominal × fator IPCA do exercício; a população não é corrigida.",
@@ -204,7 +204,7 @@
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
     "A participação da rede municipal na oferta de ensino varia entre capitais; o valor por habitante não separa o que é gasto com a rede municipal.",
-    "2021 usa população estimada antes do Censo 2022; 2023 não tem população municipal publicada.",
+    "2021 usa população estimada antes do Censo 2022; 2022 e 2023 usam a mesma população censitária, de 31 de julho de 2022: o gasto por habitante de 2023 não acompanha o crescimento populacional posterior ao Censo.",
     "Herda as ressalvas do numerador: Campo Grande 2021 (perímetro distinto) fica fora das comparações; Boa Vista 2024 mantém a ressalva de reconciliação."
    ],
    "granularidade": {

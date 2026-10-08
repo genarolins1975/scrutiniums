@@ -52,6 +52,26 @@
    "sha256_recorte": "038ffc0f546dc316d45794b0b62c8b0acf14d39e10d41ce83acd0f75c56484d7",
    "linhas_recorte": 104
   },
+  "ibge_populacao_relacao_2023": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), relação do DOU de 31/08/2023",
+   "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/37734-relacao-da-populacao-dos-municipios-para-publicacao-no-tcu.html",
+   "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Populacao_e_domicilios_Primeiros_resultados/Resultados_da_2a_apuracao_20231027/POP2022_Municipios_Primeiros_Resultados_20231222.pdf",
+   "capturado_em": "2026-10-08T19:52:14Z",
+   "parametros": "26 capitais; tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023); total nacional conferido (203080756); valores conferidos contra o SIDRA 4714; o arquivo da relação do DOU não foi baixado (ibge.gov.br responde 403)",
+   "sha256_tabela_pdf": "29455030c4aec0920fa4dd76a17e39a3e04aecfc7747f9e090a3a9c0faf2826d",
+   "url_nota_metodologica": "https://www.ibge.gov.br/biblioteca/visualizacao/livros/liv102024.pdf",
+   "sha256_nota_metodologica_pdf": "c3780aff198f344e7adce4a4aa676ff590b43319e97ee41e6c5c6eda5d84f27c",
+   "sidra_4714": {
+    "url": "https://apisidra.ibge.gov.br/values/t/4714/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/93/p/2022",
+    "sha256_resposta": "6ea63aaafa2fe41b1670fbd388dd99b5253351668c2910cc9fc22b823a8fdc1e"
+   },
+   "total_brasil": 203080756,
+   "capitais_iguais_ao_sidra_4714": 26,
+   "recorte": "pipeline/eficiencia/seed/ibge_populacao/relacao_2023_capitais.json.gz",
+   "sha256_recorte": "3800078e11b7bbdc9ca7470d844e19cacb8289f1d0714463083150060ab5124c",
+   "linhas_recorte": 26
+  },
   "inep_atu_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
    "conjunto": "Média de Alunos por Turma, municípios, 2021",

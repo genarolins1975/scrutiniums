@@ -419,18 +419,25 @@ def v14_populacao(obs):
     esperado = len(entes.CAPITAIS) * len(P.ANOS_FINANCEIROS)
     if len(pop) != esperado:
         ruins.append({"indicador": "ctx.populacao.residente", "motivo": f"{len(pop)} observações; esperado {esperado}"})
-    sem_2023 = [o for o in pop if o["ano"] == P.ANO_SEM_ESTIMATIVA]
-    if any(o["status"] == "OBSERVADO" for o in sem_2023):
-        ruins.append({"indicador": "ctx.populacao.residente", "motivo": "valor em ano sem publicação municipal"})
+    # 2023: população oficial do exercício = Censo 2022 (relação do DOU), identificada como censitária, igual à de 2022
+    p22 = {o["ente"]: o["valor"] for o in pop if o["ano"] == 2022 and o["status"] == "OBSERVADO"}
+    for o in (x for x in pop if x["ano"] == P.ANO_RELACAO_DOU):
+        if o["status"] != "OBSERVADO" or o["tipo_populacao"] != "censo_relacao_dou_2023":
+            ruins.append({"indicador": "ctx.populacao.residente", "ente": o["ente"], "motivo": "2023 sem a população censitária da relação do DOU"})
+        elif o["valor"] != p22.get(o["ente"]):
+            ruins.append({"indicador": "ctx.populacao.residente", "ente": o["ente"], "motivo": "a população de 2023 deveria ser a do Censo 2022"})
+        elif "estimativa" in (o["registro"] or "").lower().replace("em substituição às estimativas", ""):
+            ruins.append({"indicador": "ctx.populacao.residente", "ente": o["ente"], "motivo": "a população de 2023 não pode ser rotulada como estimativa"})
     revisados = [(r["ano"], r["cod"], r["publicacao_original"], r["valor"]) for r in seed.values()
-                 if r["publicacao_original"] is not None and r["publicacao_original"] != r["valor"]]
+                 if r.get("publicacao_original") is not None and r["publicacao_original"] != r["valor"]]
     for ano, cod, orig, vig in sorted(revisados):
         casos.append({"ente": cod, "nome": _nome(cod), "ano": ano, "publicacao_original": orig, "valor_vigente_sidra": vig,
                       "situacao": "revisão posterior à publicação original; usado o valor vigente"})
     com_valor = sum(1 for o in pop if o["status"] == "OBSERVADO")
-    return _v("V14", "População do IBGE: 26 capitais por ano, valores positivos e inteiros, sem valor em ano sem publicação, SIDRA conferido com a publicação original",
+    return _v("V14", "População do IBGE: 26 capitais por ano, valores positivos e inteiros, 2023 = Censo 2022 (relação do DOU) rotulado como censitário, SIDRA conferido com a publicação original",
               "automatica", "reprovada" if ruins else ("aprovada_com_divergencias_documentadas" if casos else "aprovada"),
-              f"{com_valor} valores de população em {len(pop)} observações (2023 sem publicação municipal do IBGE). "
+              f"{com_valor} valores de população em {len(pop)} observações; 2023 usa a população do Censo 2022 (segunda apuração, referência em 31 de julho de 2022) "
+              f"da relação publicada no DOU em 31/08/2023, que o IBGE adotou em substituição às estimativas de 2023. "
               f"Comparação com os arquivos originais das estimativas (mesma instituição, não é verificação independente): "
               f"{len(casos)} valor(es) revisto(s) depois da publicação original, listado(s).", casos + [{"problema": str(r)[:200]} for r in ruins[:10]])
 

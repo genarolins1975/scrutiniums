@@ -451,22 +451,30 @@ def ideb_saeb():
 # ------------------------------------------------------------------ População (IBGE) e indicadores derivados
 
 DATA_REF_ESTIMATIVA = "1º de julho"
-DATA_REF_CENSO = "1º de agosto de 2022"
-ANO_SEM_ESTIMATIVA = 2023
+DATA_REF_CENSO = "31 de julho de 2022"          # Nota Metodológica nº 1 do IBGE (relação do DOU de 2023)
+DATA_REF_RELACAO_2023 = "31 de julho de 2022 (malha territorial de 30 de abril de 2023)"
+ANO_RELACAO_DOU = 2023                          # exercício em que a população oficial é a do Censo 2022, não uma estimativa
 
 
 def _seed_populacao():
     caminho = os.path.join(base.SEED, "ibge_populacao", "populacao_capitais.json.gz")
     if not os.path.exists(caminho):
         return {}
-    return {(r["ano"], r["cod"]): r for r in base.le_json_gz(caminho)}
+    out = {(r["ano"], r["cod"]): r for r in base.le_json_gz(caminho)}
+    c23 = os.path.join(base.SEED, "ibge_populacao", "relacao_2023_capitais.json.gz")
+    if os.path.exists(c23):
+        for r in base.le_json_gz(c23):
+            out[(r["ano"], r["cod"])] = dict(r, tabela="Primeiros Resultados 2ª apuração (22/12/2023)")
+    return out
 
 
 def populacao():
     """População residente por capital e exercício (denominador da despesa por habitante).
 
-    2021: estimativa de 1º de julho calculada a partir do Censo de 2010. 2022: Censo Demográfico (1º de agosto
-    de 2022). 2023: sem publicação municipal do IBGE. 2024 e 2025: estimativas de 1º de julho calculadas a
+    2021: estimativa de 1º de julho calculada a partir do Censo de 2010. 2022: Censo Demográfico (referência em
+    31 de julho de 2022). 2023: população oficial do exercício, a relação publicada no DOU em 31/08/2023 com a
+    população do Censo 2022 (segunda apuração), em substituição às estimativas de 2023; é identificada como
+    censitária e nunca como estimativa de julho de 2023. 2024 e 2025: estimativas de 1º de julho calculadas a
     partir do Censo de 2022. O valor vigente vem do SIDRA; quando difere da publicação original, a observação
     registra os dois."""
     seed = _seed_populacao()
@@ -474,11 +482,23 @@ def populacao():
     for cod, nome, uf in entes.CAPITAIS:
         for ano in ANOS_FINANCEIROS:
             r = seed.get((ano, cod))
-            if r is None and ano == ANO_SEM_ESTIMATIVA:
-                obs.append(_obs("ctx.populacao.residente", cod, ano, None, "NAO_DIVULGADO", "ibge_populacao",
-                                "IBGE: sem estimativa municipal publicada para 2023 (entre o Censo 2022 e as estimativas de 2024)",
-                                nota="O IBGE não publicou estimativa da população municipal de 2023: o Censo 2022 e as estimativas de "
-                                     "2024 em diante são as publicações vizinhas. O painel não interpola nem reaproveita outro ano.",
+            if r is not None and r["tipo"] == "censo_relacao_dou_2023":
+                nota = ("População oficial do exercício de 2023: o IBGE publicou, em 31/08/2023, a relação das populações municipais "
+                        "em substituição às estimativas de 2023, com a população do Censo 2022 (segunda apuração), referência em "
+                        "31 de julho de 2022. Não é estimativa de população em julho de 2023: é a mesma população de 2022. "
+                        "A despesa por habitante de 2023 não acompanha o crescimento populacional posterior ao Censo e a variação "
+                        "entre 2022 e 2023 vem só da despesa; a variação entre 2023 e 2024 mistura dois anos de crescimento populacional.")
+                if r.get("nota_rodape_original"):
+                    nota += (" A publicação do IBGE traz, para este município, uma população judicial (nota de rodapé), que não é a usada aqui.")
+                obs.append(_obs("ctx.populacao.residente", cod, ano, int(r["valor"]), "OBSERVADO", "ibge_populacao_relacao_2023",
+                                f"IBGE, relação da população dos municípios de 2023 (Censo 2022, 2ª apuração), município {cod}, referência {DATA_REF_RELACAO_2023}",
+                                nota=nota, nota_material=True, quebra_serie=True, tipo_populacao="censo_relacao_dou_2023",
+                                data_referencia=DATA_REF_RELACAO_2023, publicacao_original=None))
+                continue
+            if r is None and ano == ANO_RELACAO_DOU:
+                obs.append(_obs("ctx.populacao.residente", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao_relacao_2023",
+                                "IBGE, relação da população dos municípios de 2023 (Censo 2022, 2ª apuração)",
+                                nota="População oficial de 2023 não encontrada no seed (relação do Censo 2022 publicada em 31/08/2023). Não foi preenchida com outro ano.",
                                 nota_material=True, tipo_populacao=None, data_referencia=None))
                 continue
             if r is None:
@@ -491,7 +511,11 @@ def populacao():
             ref = DATA_REF_CENSO if censo else f"{DATA_REF_ESTIMATIVA} de {ano}"
             tabela = f"SIDRA, tabela {r['tabela']}, variável {'93' if censo else '9324'}"
             reg = f"IBGE, {tabela}, município {cod}, {ano} (população residente{' no Censo 2022' if censo else ' estimada'}, referência {ref})"
+
             nota, material = None, False
+            if censo:
+                nota = ("Censo Demográfico 2022 (segunda apuração), população residente com data de referência em 31 de julho de 2022, "
+                        "conforme a Nota Metodológica nº 1 do IBGE. É a mesma população que o IBGE adotou como oficial para 2023.")
             if pre:
                 nota = ("Estimativa de 1º de julho de 2021, calculada a partir do Censo de 2010, anterior ao Censo de 2022. "
                         "A população de 2022 em diante tem outra base; variações por habitante entre 2021 e os anos seguintes "
