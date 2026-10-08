@@ -62,10 +62,10 @@ function Controle({
 }) {
   const id = useId();
   return (
-    <div className="flex min-w-0 flex-col gap-1 text-sm">
+    <div className="flex min-w-0 flex-col justify-end gap-1 text-sm">
       <label htmlFor={id} className="flex items-baseline justify-between gap-3">
         <span className="rotulo text-mineral">{rotulo}</span>
-        <span className="tabular-nums text-carvao">{formato(valor)}</span>
+        <span className="whitespace-nowrap tabular-nums text-carvao">{formato(valor)}</span>
       </label>
       <input
         id={id}

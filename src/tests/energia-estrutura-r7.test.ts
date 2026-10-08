@@ -36,7 +36,7 @@ describe("abas de seção em uma linha no celular", () => {
     const av = ler("src/components/energia/AtivoVisivel.tsx");
     expect(av).toContain("export function FaixasDeSecao()");
     expect(av).toContain('document.querySelectorAll<HTMLElement>(".nav-faixa")');
-    expect(av).toContain("if (soSeCortada && a.left >= l.left + 8 && a.right <= l.right - 8) return;");
+    expect(av).toContain("if (a.left >= l.left && a.right <= l.right - 8) return;");
     expect(ler("src/components/evidencia/ModoProfundidade.tsx")).toContain("<FaixasDeSecao />");
   });
 });

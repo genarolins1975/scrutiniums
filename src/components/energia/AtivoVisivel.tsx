@@ -8,14 +8,15 @@ import { useEffect } from "react";
  * dos dois lados; alinhado ao início, só a borda direita termina cortada, o que sinaliza
  * que há mais itens. O alinhamento usa as posições medidas na tela e é refeito quando as
  * fontes terminam de carregar, porque a largura dos rótulos muda e deixava o módulo atual
- * com o começo cortado. O módulo atual fica rente à borda esquerda, de modo que o anterior sai
- * inteiro da vista (uma lasca de rótulo, como "LAÇÃO" no lugar de "REGULAÇÃO", parecia erro). Nas
- * bordas em que ainda há itens fora da vista, um esmaecimento mostra que o corte é rolagem.
+ * com o começo cortado. Se o módulo atual já cabe inteiro, a lista não rola; se não cabe, ele fica
+ * rente à borda esquerda e o anterior sai inteiro da vista (uma lasca de rótulo, como "LAÇÃO" no
+ * lugar de "REGULAÇÃO", parecia erro). Nas bordas em que ainda há itens fora da vista, um
+ * esmaecimento mostra que o corte é rolagem.
  */
 export function AtivoVisivel({ alvo }: { alvo: string }) {
   useEffect(() => {
     const lista = document.getElementById(alvo);
-    return lista ? acompanhaFaixa(lista, false) : undefined;
+    return lista ? acompanhaFaixa(lista, 0) : undefined;
   }, [alvo]);
   return null;
 }
@@ -26,22 +27,22 @@ export function AtivoVisivel({ alvo }: { alvo: string }) {
  */
 export function FaixasDeSecao() {
   useEffect(() => {
-    const limpezas = Array.from(document.querySelectorAll<HTMLElement>(".nav-faixa")).map((lista) => acompanhaFaixa(lista, true));
+    const limpezas = Array.from(document.querySelectorAll<HTMLElement>(".nav-faixa")).map((lista) => acompanhaFaixa(lista, 24));
     return () => limpezas.forEach((l) => l());
   }, []);
   return null;
 }
 
-function acompanhaFaixa(lista: HTMLElement, soSeCortada: boolean): () => void {
+function acompanhaFaixa(lista: HTMLElement, folga: number): () => void {
   const ativo = lista.querySelector<HTMLElement>('[aria-current="page"]');
   const alinha = () => {
     if (!ativo) return;
     const a = ativo.getBoundingClientRect();
     const l = lista.getBoundingClientRect();
-    if (soSeCortada && a.left >= l.left + 8 && a.right <= l.right - 8) return;
-    // faixa de seções: folga de 24 px (o início do item ainda aparece dentro do esmaecimento); faixa de módulos: rente à borda, para o
-    // item anterior sair inteiro da vista em vez de sobrar uma lasca de rótulo cortado
-    lista.scrollLeft = Math.max(0, lista.scrollLeft + (a.left - l.left - (soSeCortada ? 24 : 0)));
+    // o item atual já cabe inteiro: não se rola, e nenhum rótulo vizinho fica cortado à esquerda
+    if (a.left >= l.left && a.right <= l.right - 8) return;
+    // senão, alinha rente à borda (com a folga da faixa), de modo que o anterior saia inteiro da vista
+    lista.scrollLeft = Math.max(0, lista.scrollLeft + (a.left - l.left - folga));
   };
   const bordas = () => {
     const maximo = lista.scrollWidth - lista.clientWidth;
