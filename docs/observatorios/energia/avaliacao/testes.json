@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-08T16:39:12Z",
+ "gerado_em": "2026-10-08T19:21:47Z",
  "vitest": {
   "admin": {
    "total": 11,
@@ -170,7 +170,7 @@
    "falhas": 0
   },
   "energia-comp-integracao": {
-   "total": 318,
+   "total": 319,
    "falhas": 0
   },
   "energia-comp-linha-do-tempo": {
@@ -203,6 +203,38 @@
   },
   "energia-conteudo-conferido": {
    "total": 10,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-D": {
+   "total": 51,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-M1": {
+   "total": 140,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-M2": {
+   "total": 52,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-P": {
+   "total": 55,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-R": {
+   "total": 35,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-T1": {
+   "total": 32,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-T2": {
+   "total": 54,
+   "falhas": 0
+  },
+  "energia-conteudo-r8": {
+   "total": 13,
    "falhas": 0
   },
   "energia-dados-interface": {
@@ -746,6 +778,6 @@
   "ok": true,
   "saida": "✔ No ESLint warnings or errors"
  },
- "resumo_regressao": "Vitest: 2805 testes em 145 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
- "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 2805 testes em 145 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+ "resumo_regressao": "Vitest: 3238 testes em 153 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 08/10/2026 concluído sem erro. Vitest: 3238 testes em 153 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
 }
