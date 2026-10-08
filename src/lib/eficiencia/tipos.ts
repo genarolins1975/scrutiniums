@@ -22,7 +22,7 @@ export type IndicadorId =
   | "edu.despesa.funcao_educacao"
   | "edu.despesa.subfuncao"
   | "edu.despesa.por_habitante"
-  | "edu.despesa.por_matricula_rede_propria"
+  | "edu.despesa.aplicacao_direta_por_matricula"
   | "edu.despesa.ponte_matricula"
   | "edu.matriculas.rede_municipal"
   | "edu.matriculas.conveniadas_municipais"
@@ -72,6 +72,8 @@ export type FichaIndicador = {
   motivo_nao_publicacao?: string[];
   granularidade: { etapa: boolean; anos: "exercicios" | "censo" | "edicoes_ideb" };
   download: string | null;
+  /** id do indicador que esta ficha substitui, quando a definição mudou e o identificador antigo não foi reaproveitado */
+  substitui?: IndicadorId | null;
 };
 
 export type SituacaoConferencia = "CONFERE" | "DIFERENCA_MENOR" | "RECONCILIADA_MSC" | "PERIMETRO_INTRA_MSC" | "PENDENTE" | "NAO_CONFERIDO";
@@ -114,7 +116,17 @@ export type Observacao = {
   tipo_populacao?: string | null;
   data_referencia?: string | null;
   publicacao_original?: number | null;
-  calculo?: { numerador: number; denominador: number; numerador_ref: string; denominador_ref: string; numerador_componente?: string; dca_total?: number };
+  calculo?: {
+    numerador: number;
+    denominador: number;
+    numerador_ref: string;
+    denominador_ref: string;
+    numerador_componente?: string;
+    dca_total?: number;
+    /** despesa de aplicação direta cujo beneficiário a MSC não permite afirmar (elementos 18, 39, 41, 45, 48 e compras de consórcio 93/94) */
+    parcela_indeterminada?: number;
+    parcela_indeterminada_pct?: number;
+  };
 };
 
 /** Estatísticas do grupo de capitais (pipeline/eficiencia/referencias.py): uma única regra para cartões, gráficos, tabela e downloads. */
@@ -144,6 +156,10 @@ export type ReferenciaGrupo = {
 
 export type TipoReferencia = "nacional_mesmo_universo" | "nacional_outro_universo" | "internacional_contexto" | "incompativel";
 
+/** Duas dimensões independentes: quem calculou o número e o quanto ele é comparável às dimensões de origem do indicador da capital. */
+export type OrigemReferencia = "oficial_publicado" | "calculado_obee";
+export type ComparabilidadeReferencia = "direta" | "contexto" | "incompativel";
+
 export type ReferenciaExterna = {
   id: string;
   indicador: IndicadorId;
@@ -158,6 +174,57 @@ export type ReferenciaExterna = {
   escopo: string;
   fonte: string;
   registro: string;
+  origem: OrigemReferencia;
+  comparabilidade: ComparabilidadeReferencia;
+};
+
+/** Referência calculada pelo OBEE a partir de DCA/RREO (Siconfi) e população (IBGE) de todos os municípios (pipeline/eficiencia/referencia_nacional.py). */
+export type GrupoNacionalCalculado = {
+  id: "elegiveis" | "elegiveis_500mil_ou_mais" | "elegiveis_exceto_capitais";
+  rotulo: string;
+  nota: string;
+  n_municipios: number;
+  populacao_dos_municipios: number;
+  despesa_dos_municipios: number;
+  media: number | null;
+  mediana: number | null;
+  minimo: number | null;
+  maximo: number | null;
+  q1: number | null;
+  q3: number | null;
+  razao_agregada: number | null;
+  quartis_exibicao: boolean;
+  capitais_minimo: string[];
+  capitais_maximo: string[];
+};
+
+export type ReferenciaNacionalCalculada = {
+  ano: number;
+  rotulo_origem: string;
+  n_municipios_total: number;
+  n_elegiveis: number;
+  populacao_total_municipios: number;
+  despesa_declarada_total: number;
+  cobertura: { municipios_pct: number | null; populacao_pct: number | null; despesa_pct: number | null };
+  grupos: GrupoNacionalCalculado[];
+  exclusoes: Record<string, { motivo: string; n: number }>;
+  capitais_elegiveis: number[];
+};
+
+export type DiagnosticoPar = {
+  ente: number;
+  nome: string;
+  ano: number;
+  dca: number;
+  msc_em_modulo_sem_intra: number | null;
+  msc_liquida_sem_intra: number | null;
+  diferenca_politica_1_1: number | null;
+  diferenca_politica_1_2: number | null;
+  situacao_politica_1_1: string;
+  situacao_politica_1_2: string;
+  causa: string;
+  causa_texto: string;
+  evidencia: string[];
 };
 
 export type InternacionalGrupo = {
@@ -170,8 +237,15 @@ export type InternacionalGrupo = {
   unidade: string;
   brasil: number | null;
   media_ocde_publicada: number | null;
-  paises: { codigo: string; nome: string; valor: number }[];
+  paises: { codigo: string; nome: string; valor: number; membro: boolean }[];
   paises_com_dado: number;
+  /** membros da OCDE (lista oficial de 38) com dado neste conjunto */
+  membros_com_dado: number;
+  /** média simples dos membros com dado, recalculada pelo OBEE para conferir a média publicada */
+  media_membros_recomputada: number | null;
+  diferenca_media: number | null;
+  media_confere: boolean;
+  preliminar: boolean;
   agregados_na_fonte: string[];
   fonte: string;
 };
@@ -189,6 +263,10 @@ export type LinhaMatriz = {
   tipo: TipoReferencia;
   uso: string;
   decisao: string;
+  origem: OrigemReferencia;
+  comparabilidade: ComparabilidadeReferencia;
+  /** rótulo de exibição da classe: oficial publicado, calculado pelo OBEE, contextual ou incompatível */
+  classe: string;
 };
 
 export type Capital = {
@@ -255,6 +333,13 @@ export type GoldEducacao = {
     dados_capturados_ate: string;
     hash_dados: string;
     observacoes: number;
+    proveniencia?: {
+      codigo_gerador: { sha256: string; arquivos: number; escopo: string };
+      entradas: { manifesto_do_seed_sha256: string; capturas_no_manifesto: number; nota: string };
+      saidas: { hash_dados: string; observacoes: number };
+      git: { commit_de_partida: string | null; codigo_com_mudanca_nao_commitada: boolean | null };
+      nota: string;
+    };
   };
   politica_conferencia: {
     versao: string;
@@ -279,6 +364,8 @@ export type GoldEducacao = {
   referencias: ReferenciaGrupo[];
   politica_referencias: { versao: string; media: string; razao_agregada: string; mediana: string; quartis: string; limiar_quartis: number; limiar_quartis_nota: string; empates: string; elegibilidade: string; precisao: string; nacional: string };
   referencias_externas: ReferenciaExterna[];
+  referencia_nacional_calculada: ReferenciaNacionalCalculada[];
+  diagnostico_pares_msc: DiagnosticoPar[];
   referencias_internacionais: InternacionalGrupo[];
   matriz_referencias: LinhaMatriz[];
   trilhas: Trilha[];

@@ -1,5 +1,8 @@
 # Rodada 5: comparações de gasto por habitante e por matrícula
 
+> **Superado em parte pela rodada 6** ([RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md)). Mantido como registro histórico da rodada 5. Mudaram: (1) o indicador por matrícula passou a se chamar razão da despesa de aplicação direta por matrícula (`edu.despesa.aplicacao_direta_por_matricula`), com a parcela de beneficiário indeterminado medida; (2) a política de conferência 1.2 soma a MSC em saldo líquido (natureza C e D), o que levou a cobertura de 102 para 123 dos 130 pares; (3) 2023 passou a ter população oficial (relação do DOU de 31/08/2023, base do Censo 2022) e despesa por habitante; (4) há referência nacional de despesa por habitante calculada pelo OBEE; (5) as referências internacionais usam a lista oficial de membros da OCDE. Onde este documento disser o contrário, vale a rodada 6.
+
+
 Painel: Educação municipal nas capitais (`/eficiencia-estatal/educacao-municipal-capitais`). Pipeline: `pipeline/eficiencia`, versão `obee-0.2.0`, catálogo `2026-10-08.3`, metodologia 1.2. Data de referência de todas as coletas e cálculos: 08/10/2026. Valores em R$ correntes, salvo indicação.
 
 ## 1. O que mudou para o leitor

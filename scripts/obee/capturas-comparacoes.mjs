@@ -30,7 +30,12 @@ const CAPTURAS = [
   ["ponte-matricula-390", "?med=despesa_mat&cap=sao-paulo", 390, "#decomposicao", 1700],
   ["campo-grande-2021-1440", "?med=despesa_hab&cap=campo-grande&ano=2021", 1440, "#comparacao", 1500],
   ["boa-vista-2024-1440", "?med=despesa_mat&cap=boa-vista&ano=2024", 1440, "#comparacao", 1500],
-  ["sem-habitante-2023-1440", "?med=despesa_hab&cap=manaus&ano=2023", 1440, "#comparacao", 900],
+  ["habitante-2023-censitaria-1440", "?med=despesa_hab&cap=manaus&ano=2023", 1440, "#comparacao", 1500],
+  ["referencia-nacional-habitante-1440", "?med=despesa_hab&cap=recife", 1440, "#referencias", 2200],
+  ["referencia-nacional-habitante-390", "?med=despesa_hab&cap=recife", 390, "#referencias", 2600],
+  ["referencias-despesa-estudante-1440", "?med=despesa_mat&cap=curitiba", 1440, "#referencias", 2600],
+  ["definicao-por-matricula-1440", "?med=despesa_mat&cap=curitiba", 1440, "#despesa-por-matricula", 1800],
+  ["definicao-por-matricula-390", "?med=despesa_mat&cap=curitiba", 390, "#despesa-por-matricula", 2400],
   ["series-1440", "?cap=belo-horizonte", 1440, "#serie", 1700],
 ];
 

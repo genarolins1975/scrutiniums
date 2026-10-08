@@ -13,7 +13,7 @@ import io
 import json
 import os
 
-from pipeline.eficiencia import base, conferencia as CF, entes, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, diagnostico_pares as DG, entes, padroniza as P, referencia_nacional as RN, referencias as R, referencias_externas as RE, validacoes as V
 
 ARQUIVO_GOLD = os.path.join(base.GOLD, "educacao_capitais.json")
 
@@ -38,7 +38,7 @@ def cobertura(obs, catalogo):
         # componente principal de cada indicador (os demais seguem a mesma cobertura)
         principal = {"edu.despesa.funcao_educacao": "nominal", "edu.ideb.rede_municipal": "ideb",
                      "edu.saeb.rede_municipal": "matematica", "edu.despesa.por_habitante": "nominal",
-                     "edu.despesa.por_matricula_rede_propria": "nominal",
+                     "edu.despesa.aplicacao_direta_por_matricula": "nominal",
                      "edu.despesa.ponte_matricula": "dca_total"}.get(ind["id"])
         grupos = {}
         for o in sel:
@@ -333,6 +333,7 @@ def constroi(gerado_em=None):
             "dados_capturados_ate": max(c for c in capturas if c),
             "hash_dados": _hash_dados(obs),
             "observacoes": len(obs),
+            "proveniencia": proveniencia(manif, obs),
         },
         "painel": catalogo["painel"],
         "universo": {"capitais": entes.capitais(), "excluidos": entes.excluidos(),
@@ -353,12 +354,89 @@ def constroi(gerado_em=None):
         "referencias_internacionais": RE.internacionais(),
         "matriz_referencias": RE.matriz(),
         "referencias": R.calcula(obs),
+        "diagnostico_pares_msc": diagnostico_pares_msc(obs),
+        "referencia_nacional_calculada": [x for x in (RN.referencia(2025),) if x is not None],
         "politica_conferencia": {"versao": CF.VERSAO_POLITICA, "tolerancia_arredondamento_reais": CF.TOL_ARREDONDAMENTO,
                                  "tolerancia_relativa": CF.TOL_RELATIVA, "elegiveis": sorted(CF.ELEGIVEIS),
                                  "rotulos": CF.ROTULO},
         "observacoes": obs,
     }
     return gold
+
+
+def proveniencia(manif, obs):
+    """Quem gerou, a partir de quê, e o que saiu. `versao_codigo` identifica o código gerador pelo conteúdo; o commit que
+    incorpora a gold gerada é posterior à geração e, por isso, não consta nela (só o commit de partida, informativo)."""
+    sha_gerador, n_arquivos = base.hash_gerador()
+    return {
+        "codigo_gerador": {"sha256": sha_gerador, "arquivos": n_arquivos,
+                           "escopo": "todos os .py de pipeline/eficiencia (sem seed e sem testes) e catalogo_indicadores.json"},
+        "entradas": {"manifesto_do_seed_sha256": base.sha256_arquivo(base.MANIFESTO), "capturas_no_manifesto": len(manif),
+                     "nota": "o manifesto registra o sha256 de cada arquivo do seed; alterar uma entrada altera este hash"},
+        "saidas": {"hash_dados": _hash_dados(obs), "observacoes": len(obs)},
+        "git": base.proveniencia_git(),
+        "nota": "versao_codigo = 'gerador-' + 12 primeiros caracteres do sha256 do código gerador. O commit que incorpora estes dados é "
+                "posterior à geração e é o que consta no histórico do repositório; 'commit_de_partida' é o HEAD de quando a geração começou.",
+    }
+
+
+def diagnostico_pares_msc(obs):
+    """Diagnóstico dos pares que a política 1.1 deixava sem reconciliação da MSC com a DCA (rodada 6)."""
+    nomes = {c: n for c, n, _ in entes.CAPITAIS}
+    desp = {(o["ente"], o["ano"]): (nomes[o["ente"]], o["valor"]) for o in obs
+            if o["indicador"] == "edu.despesa.funcao_educacao" and o["componente"] == "nominal" and o["valor"] is not None}
+    return DG.abertos_da_politica_1_1(DG.todos(desp))
+
+
+CAMPOS_CSV_DIAGNOSTICO = ["codigo_ibge", "capital", "exercicio", "dca_funcao_12", "msc_em_modulo_sem_intra", "msc_saldo_liquido_sem_intra",
+                          "intraorcamentarias_mod91", "diferenca_politica_1_1", "situacao_politica_1_1", "diferenca_politica_1_2",
+                          "situacao_politica_1_2", "diferenca_pct_dca", "linhas_natureza_D", "valor_natureza_D", "entrega_msc_dezembro",
+                          "msc_capturada_em", "msc_sha256_resposta_completa", "causa", "causa_texto", "evidencia", "versao_dos_dados"]
+
+
+def _csv_diagnostico(diag, caminho, meta):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV_DIAGNOSTICO, lineterminator="\n")
+    w.writeheader()
+    for d in diag:
+        w.writerow({
+            "codigo_ibge": d["ente"], "capital": d["nome"], "exercicio": d["ano"], "dca_funcao_12": d["dca"],
+            "msc_em_modulo_sem_intra": d.get("msc_em_modulo_sem_intra", ""), "msc_saldo_liquido_sem_intra": d.get("msc_liquida_sem_intra", ""),
+            "intraorcamentarias_mod91": d.get("intra_mod91", ""), "diferenca_politica_1_1": d.get("diferenca_politica_1_1", ""),
+            "situacao_politica_1_1": d.get("situacao_politica_1_1", ""), "diferenca_politica_1_2": d.get("diferenca_politica_1_2", ""),
+            "situacao_politica_1_2": d.get("situacao_politica_1_2", ""), "diferenca_pct_dca": d.get("diferenca_pct_dca", ""),
+            "linhas_natureza_D": d.get("linhas_d", ""), "valor_natureza_D": d.get("valor_d", ""), "entrega_msc_dezembro": d.get("entrega_dezembro") or "",
+            "msc_capturada_em": d.get("msc_capturada_em") or "", "msc_sha256_resposta_completa": d.get("msc_sha256_resposta") or "",
+            "causa": d["causa"], "causa_texto": d["causa_texto"], "evidencia": " | ".join(d["evidencia"]), "versao_dos_dados": meta["hash_dados"][:16],
+        })
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
+
+
+CAMPOS_CSV_NACIONAL = ["codigo_ibge", "municipio", "uf", "capital", "populacao_estimada", "dca_funcao12_liquidada_r", "rreo_educacao_liquidada_exceto_intra_r",
+                       "conferencia_dca_rreo", "estado", "motivo", "despesa_por_habitante_r", "sha256_dca", "sha256_rreo", "origem"]
+
+
+def _csv_referencia_nacional(ano, caminho, meta):
+    """Um município por linha: o que entrou e o que ficou de fora da referência nacional, e por quê. Sem valor: vazio, nunca zero."""
+    linhas = RN.linhas_municipios(ano)
+    if linhas is None:
+        return
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV_NACIONAL, lineterminator="\n")
+    w.writeheader()
+    vazio = lambda v: "" if v is None else repr(v)
+    for r in linhas:
+        w.writerow({"codigo_ibge": r["cod"], "municipio": r["nome"], "uf": r["uf"], "capital": "sim" if r["capital"] else "não",
+                    "populacao_estimada": vazio(r["populacao"]), "dca_funcao12_liquidada_r": vazio(r["dca_funcao12_liquidada"]),
+                    "rreo_educacao_liquidada_exceto_intra_r": vazio(r["rreo_educacao_liquidada_exceto_intra"]),
+                    "conferencia_dca_rreo": r["conferencia"] or "", "estado": r["estado"], "motivo": r["motivo"],
+                    "despesa_por_habitante_r": vazio(r["razao"]), "sha256_dca": r["sha256_dca"] or "", "sha256_rreo": r["sha256_rreo"] or "",
+                    "origem": RN.ROTULO_ORIGEM})
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
 
 
 DIAGNOSTICO = os.path.join(base.DADOS, "diagnostico")
@@ -382,6 +460,9 @@ def publica(gold, raiz_publica=None):
         _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), nomes, catalogo, gold["meta"])
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "referencias_educacao_capitais.csv"),
                      catalogo, gold["meta"])
+    _csv_diagnostico(gold["diagnostico_pares_msc"], os.path.join(raiz, "eficiencia", "series", "edu_diagnostico_pares_msc.csv"), gold["meta"])
+    for ref in gold["referencia_nacional_calculada"]:
+        _csv_referencia_nacional(ref["ano"], os.path.join(raiz, "eficiencia", "series", f"referencia_nacional_despesa_habitante_{ref['ano']}.csv"), gold["meta"])
     return arquivo
 
 

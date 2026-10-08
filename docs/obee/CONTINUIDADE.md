@@ -21,6 +21,7 @@ Para quem retoma o OBEE (pessoa ou agente). Ler antes: [README.md](./README.md),
 | P1 | Publicação em produção | Merge em `main` (Vercel) ou manter em branch | Hoje só a branch tem o painel |
 | P2 | Registrar o OBEE em `src/lib/dominios.ts` (home, seletor de observatórios, rodapé) | **Decidida em 08/10/2026 pelo responsável e implementada**: OBEE no registro, na home (três cards), no seletor, na escolha pós login, no cabeçalho público, no rodapé e no seletor da SPA do Crédito | Textos "dois observatórios" passaram a "três"; teste em `src/tests/dois-observatorios.test.ts` |
 | P3 | Tratamento do Distrito Federal | Painel próprio com rede distrital e despesa distrital separada por competência; ou fora do OBEE municipal | Necessário para a futura visão de entes |
+| P5 | Autorização de merge da rodada 6 | O merge da rodada 5 **não** se estende a esta; depende de autorização específica do responsável | Nada da rodada 6 está em produção |
 | P4 | Perímetro da despesa por matrícula | RREO Anexo 8 (MDE por etapa) + conveniadas no denominador; ou Siope; ou não publicar | Define se a razão entra na próxima etapa |
 
 ## 3. Tarefas delimitadas (adequadas a sessões curtas)
@@ -39,8 +40,8 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | T6 | Indicador novo | Despesa por natureza na função Educação (pessoal, outras correntes, investimento) | `fontes/siconfi.py` (RREO Anexo 8 ou Anexo 2 por natureza), catálogo, consulta | Ficha completa; categorias mutuamente exclusivas somando o total; validação de reconciliação |
 | T7 | Indicador novo | Avaliar despesa em MDE por etapa ÷ matrículas da rede + conveniadas (P4) | `fontes/siconfi.py` (RREO Anexo 8), `validacoes.py` | Medição M01 refeita no novo perímetro; publicação só com decisão P4 e ficha aprovada |
 | T8 | Cobertura | Censo 2026 e Ideb 2027 quando divulgados | `run.py --inep`, `padroniza.py` | Integridade (MD5) conferida; V06 sem diferença |
-| T12 | Cobertura | Reconciliar MSC e DCA nos 28 pares sem despesa por matrícula (MSC por poder e órgão, intraorçamentárias sem a modalidade 91) | `derivados.py`, `fontes/siconfi.py` | V16 sem pares pendentes ou cada par com causa documentada; nenhum rateio |
-| T13 | Referência | Conferir o mapeamento ISCED do Brasil e o conceito de despesa da OCDE contra documento do INEP | `referencias_externas.py`, matriz | Linha da matriz passa de contexto para direta só com mapeamento documentado |
+| T12 | Cobertura | **Resolvida em parte na rodada 6**: 21 dos 28 pares eram defeito do pipeline (soma da MSC em módulo) e foram recuperados; restam 7 com causa documentada (São Luís 2022 e 2023, Rio de Janeiro 2021 e 2022, Natal 2022 e 2023, Campo Grande 2021). O que falta é dado externo: MSC ou DCA retificada pelo ente, ou DCA aberta por modalidade | `diagnostico_pares.py`, `conferencia.py` | Cada par com causa documentada (feito); nenhum rateio |
+| T13 | Referência | **Resolvida na rodada 6**: mapeamento ISCED do Brasil conferido na UNESCO UIS (o INEP não tem mapeamento próprio); membros oficiais da OCDE; despesa em instituições públicas. Continua contexto, não comparação direta. Pendente: notas por país da OCDE e Education at a Glance 2026 (403) | `referencias_externas.py`, matriz | Linha só passa de contexto para direta com conceito idêntico; não é o caso |
 | T9 | Qualidade | Revisão externa da metodologia (não realizada até aqui) | `docs/obee/` | Parecer registrado; passaporte atualiza o campo 16 |
 
 ## 4. Expansão planejada (registrada, não implementada)
@@ -58,6 +59,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 | --- | --- |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
 | 08/10/2026 | OBEE incluído na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito (P2) |
+| 08/10/2026 | Rodada 6 ([RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md)): indicador por matrícula renomeado (razão de aplicação direta, parcela indeterminada medida), política de conferência 1.2 (saldo líquido da MSC; 123 de 130 pares), população de 2023 do Censo 2022 (relação do DOU), referência nacional calculada (5.060 municípios), validação OCDE/ISCED, proveniência por conteúdo. Decisões da rodada 5 superadas estão marcadas no documento dela |
 | 08/10/2026 | Rodada 5 ([COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)): despesa por habitante e por matrícula, ponte da MSC, referências do grupo, nacionais e internacionais, tabela comparativa; T7 resolvida em parte (publicada em 102 de 130 pares com a ponte pela MSC; os demais pares dependem de reconciliação) |
 | 08/10/2026 | Rodada 4: datas e literais da fonte em Energia, contrato estrutural do teste de HTML e inventário reconciliado ([APRESENTACAO_DATAS_ENERGIA.md](./APRESENTACAO_DATAS_ENERGIA.md)); T11 resolvida |
 | 08/10/2026 | Verificação final ([VERIFICACAO_FINAL.md](./VERIFICACAO_FINAL.md)): data legível na gaveta de proveniência, gate obrigatório de HTML no CI, valor exato por toque e atalho para a tabela da comparação; gate reprovado por 21 páginas de Energia (T11) |

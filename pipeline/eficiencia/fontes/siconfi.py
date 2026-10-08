@@ -148,6 +148,42 @@ liquidado a pagar inscrito em restos a pagar processados (PCASP, Manual de Conta
 ao Setor Público). As contas 6.2.2.1.3.05 e .06 (restos a pagar não processados) ficam fora."""
 
 
+def resumo_msc(itens):
+    """Resumo da resposta COMPLETA da MSC (todas as funções): quantas linhas há por código de função e o
+    saldo líquido das contas de despesa liquidada, sem intraorçamentárias (modalidade 91), por função. Serve ao
+    diagnóstico dos pares que não reconciliam com a DCA: mostra se a MSC traz a função 12, em que outra função
+    as linhas estão e se a MSC fica abaixo da DCA em todas as funções ou só na Educação."""
+    from pipeline.eficiencia import conferencia as CF
+    por_funcao, liquido = {}, {}
+    for x in itens:
+        f = x.get("funcao")
+        chave = "sem_funcao" if f in (None, "") else str(f)
+        por_funcao[chave] = por_funcao.get(chave, 0) + 1
+        if str(x.get("conta_contabil", ""))[:7] in MSC_CONTAS_LIQUIDADO and chave != "sem_funcao":
+            if str(x.get("natureza_despesa") or "")[2:4] != "91":
+                liquido[chave] = round(liquido.get(chave, 0.0) + CF.saldo_liquido(x), 2)
+    return {"linhas_por_funcao": dict(sorted(por_funcao.items())), "liquidado_liquido_sem_intra_por_funcao": dict(sorted(liquido.items()))}
+
+
+def coleta_msc_entregas(cod_ibge, ano):
+    """Entregas da MSC do ente no exercício (extrato do Siconfi): MSC Agregada de dezembro e MSC de encerramento,
+    com data e forma de envio. O extrato não informa retificação; registra o que existe."""
+    capturado_em = base.agora_utc()
+    url, extrato = _todas_paginas("extrato_entregas", {"id_ente": cod_ibge, "an_referencia": ano})
+    msc = [x for x in extrato if str(x.get("entregavel", "")).startswith("MSC") and (x.get("periodo") in (12, "12") or "Encerramento" in str(x.get("entregavel")))]
+    destino = os.path.join(base.SEED, "siconfi", "msc_entregas", f"{cod_ibge}_{ano}.json.gz")
+    sha = base.grava_json_gz(destino, msc)
+    m = base.le_manifesto()["capturas"].get("siconfi_msc_entregas", {
+        "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+        "conjunto": "Extrato de entregas: MSC Agregada de dezembro e MSC de encerramento",
+        "pagina": DOC, "url": f"{API}/extrato_entregas?id_ente=<código IBGE>&an_referencia=<ano>",
+        "parametros": "só os pares capital × exercício cuja MSC não reconcilia com a DCA", "arquivos": {},
+    })
+    m["arquivos"][f"{cod_ibge}_{ano}"] = {"url": url[0], "capturado_em": capturado_em, "linhas": len(msc), "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha}
+    base.registra_captura("siconfi_msc_entregas", m)
+    return len(msc)
+
+
 def coleta_msc_educacao(cod_ibge, ano, mes=12):
     """Matriz de Saldos Contábeis (MSC agregada de dezembro), classe 6, saldo final.
 
@@ -175,7 +211,7 @@ def coleta_msc_educacao(cod_ibge, ano, mes=12):
     })
     m["arquivos"][f"{cod_ibge}_{ano}"] = {
         "url": urls[0], "capturado_em": capturado_em, "linhas_resposta": len(itens), "linhas": len(filtrados),
-        "sha256_resposta_completa": sha_completo, "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha,
+        "sha256_resposta_completa": sha_completo, "resumo_resposta": resumo_msc(itens), "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha,
     }
     base.registra_captura("siconfi_msc_funcao12", m)
     return len(itens), len(filtrados)

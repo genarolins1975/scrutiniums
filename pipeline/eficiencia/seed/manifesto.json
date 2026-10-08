@@ -52,6 +52,39 @@
    "sha256_recorte": "038ffc0f546dc316d45794b0b62c8b0acf14d39e10d41ce83acd0f75c56484d7",
    "linhas_recorte": 104
   },
+  "ibge_populacao_municipios_2025": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "População residente estimada de todos os municípios, 2025 (SIDRA 6579, variável 9324, referência 1º de julho)",
+   "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html",
+   "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/all/v/9324/p/2025",
+   "capturado_em": "2026-10-08T19:58:27Z",
+   "parametros": "n6/all; 5571 municípios; valor vigente no SIDRA na data da captura",
+   "sha256_resposta": "3a2be712c79be2c8c50bd16527cd5cfcf14a58b0ab4c80bef379dc0f7c7e262d",
+   "recorte": "pipeline/eficiencia/seed/ibge_populacao/populacao_municipios_2025.json.gz",
+   "sha256_recorte": "3879d42e6432821a934efa6fb466aba9e754805c16b22fddea037c26ebbfe70f",
+   "linhas_recorte": 5571,
+   "municipios_sem_valor": 0
+  },
+  "ibge_populacao_relacao_2023": {
+   "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
+   "conjunto": "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), relação do DOU de 31/08/2023",
+   "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/37734-relacao-da-populacao-dos-municipios-para-publicacao-no-tcu.html",
+   "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Populacao_e_domicilios_Primeiros_resultados/Resultados_da_2a_apuracao_20231027/POP2022_Municipios_Primeiros_Resultados_20231222.pdf",
+   "capturado_em": "2026-10-08T19:52:14Z",
+   "parametros": "26 capitais; tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023); total nacional conferido (203080756); valores conferidos contra o SIDRA 4714; o arquivo da relação do DOU não foi baixado (ibge.gov.br responde 403)",
+   "sha256_tabela_pdf": "29455030c4aec0920fa4dd76a17e39a3e04aecfc7747f9e090a3a9c0faf2826d",
+   "url_nota_metodologica": "https://www.ibge.gov.br/biblioteca/visualizacao/livros/liv102024.pdf",
+   "sha256_nota_metodologica_pdf": "c3780aff198f344e7adce4a4aa676ff590b43319e97ee41e6c5c6eda5d84f27c",
+   "sidra_4714": {
+    "url": "https://apisidra.ibge.gov.br/values/t/4714/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/93/p/2022",
+    "sha256_resposta": "6ea63aaafa2fe41b1670fbd388dd99b5253351668c2910cc9fc22b823a8fdc1e"
+   },
+   "total_brasil": 203080756,
+   "capitais_iguais_ao_sidra_4714": 26,
+   "recorte": "pipeline/eficiencia/seed/ibge_populacao/relacao_2023_capitais.json.gz",
+   "sha256_recorte": "3800078e11b7bbdc9ca7470d844e19cacb8289f1d0714463083150060ab5124c",
+   "linhas_recorte": 26
+  },
   "inep_atu_2021": {
    "instituicao": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP)",
    "conjunto": "Média de Alunos por Turma, municípios, 2021",
@@ -1897,7 +1930,7 @@
    "conjunto": "Education at a Glance: tamanho de turma (2023 e 2024) e despesa por estudante (2023), todos os países com dado",
    "pagina": "https://www.oecd.org/en/publications/serials/education-at-a-glance_g1g1b0a6.html",
    "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_NON_FIN_PERS@DF_UOE_NF_PERS_CLS,1.1/.ISCED11_1+ISCED11_2.CLS..............?startPeriod=2023&endPeriod=2024&dimensionAtObservation=AllDimensions",
-   "capturado_em": "2026-10-08T17:25:30Z",
+   "capturado_em": "2026-10-08T20:00:48Z",
    "parametros": "API SDMX; ISCED 1, 2 e 1 a 8; só observações com valor; tamanho de turma: instituições públicas e todas; despesa: fonte governamental, USD PPC, preços correntes",
    "fontes": {
     "ocde_tamanho_turma": {
@@ -1906,17 +1939,19 @@
      "bytes": 423796
     },
     "ocde_despesa_por_estudante": {
-     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_FIN@DF_UOE_INDIC_FIN_PERSTUD,3.2/.FIN_PERSTUD.ISCED11_1+ISCED11_2+ISCED11_1T8.S13.INST_EDU.DIR_EXP.V.USD_PPP_ST.?startPeriod=2023&endPeriod=2023&dimensionAtObservation=AllDimensions",
-     "sha256_resposta": "43f8380346e6b132cb9028305a990864ea26be146edc3b0186533ea3c97274d2",
-     "bytes": 98688
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.EDU.IMEP,DSD_EAG_UOE_FIN@DF_UOE_INDIC_FIN_PERSTUD,3.2/.FIN_PERSTUD.ISCED11_1+ISCED11_2+ISCED11_1T8.S13.INST_EDU+INST_EDU_PUB.DIR_EXP.V.USD_PPP_ST.?startPeriod=2023&endPeriod=2023&dimensionAtObservation=AllDimensions",
+     "sha256_resposta": "f33e2f1aab28c9210d4e9fdecadfa2f145468580855d6eaea1b9a4034bb64b1a",
+     "bytes": 192022
     }
    },
    "recorte": "pipeline/eficiencia/seed/ocde/education_at_a_glance.json.gz",
-   "sha256_recorte": "408dc3e380b00ae6b7f0574b4052b0c2bcda8ed3c213a3c6a89da5a80a61d539",
-   "linhas_recorte": 441,
+   "sha256_recorte": "1d24cfb7172cad40e86a9d02a07dba63fdad8d4a1c4b73bc469592d004db37b6",
+   "linhas_recorte": 575,
    "notas_da_fonte": [
     "O dataflow de tamanho de turma informa que os dados do último ano disponível são preliminares; os finais seriam divulgados em 29 de setembro de 2026.",
-    "A média da OCDE é a média simples, sem ponderação, dos países da OCDE com dado, como no Reader's Guide do Education at a Glance 2025."
+    "A média da OCDE é a média simples, sem ponderação, dos países membros com dado (composição fixa de 38 membros), como no Reader's Guide do Education at a Glance 2025.",
+    "Despesa por estudante: para o Brasil, o recorte de todas as instituições (INST_EDU) divide o gasto em instituições públicas pela matrícula de públicas e privadas; o recorte de instituições públicas (INST_EDU_PUB) é o coerente com uma rede pública e é o exibido.",
+    "Tamanho de turma: o dado de 2024 é preliminar (dataflow marcado como não produtivo na consulta de 08/10/2026)."
    ]
   },
   "siconfi_dca_anexo_i_e": {
@@ -2882,6 +2917,64 @@
     }
    }
   },
+  "siconfi_msc_entregas": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "Extrato de entregas: MSC Agregada de dezembro e MSC de encerramento",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=<código IBGE>&an_referencia=<ano>",
+   "parametros": "só os pares capital × exercício cuja MSC não reconcilia com a DCA",
+   "arquivos": {
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=2111300&an_referencia=2022",
+     "capturado_em": "2026-10-08T19:40:55Z",
+     "linhas": 2,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/2111300_2022.json.gz",
+     "sha256": "38f8d1f14fa5262365cf9a779ceb9d8d891221e3bdad25bca40b7ae753b5cf99"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=2111300&an_referencia=2023",
+     "capturado_em": "2026-10-08T19:40:56Z",
+     "linhas": 4,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/2111300_2023.json.gz",
+     "sha256": "337293cdb9789aab0619b352b4d266940665a6e44ede35bab9e0a07901f5e917"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=3304557&an_referencia=2022",
+     "capturado_em": "2026-10-08T19:41:00Z",
+     "linhas": 6,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/3304557_2022.json.gz",
+     "sha256": "89185ca694357982bead0b2893f05a1c1ffdb4c6ead02543f99d0427d7fe2802"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=3304557&an_referencia=2021",
+     "capturado_em": "2026-10-08T19:41:05Z",
+     "linhas": 6,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/3304557_2021.json.gz",
+     "sha256": "d0cebbdbb40c5ce172a64c371cb5296fde55735774e66627d982be3db580b5d2"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=2408102&an_referencia=2022",
+     "capturado_em": "2026-10-08T19:41:07Z",
+     "linhas": 4,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/2408102_2022.json.gz",
+     "sha256": "afaa9c025da55147f07c0630f1b5455e7d488cae3f58667e55c4344d98edf669"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=2408102&an_referencia=2023",
+     "capturado_em": "2026-10-08T19:41:09Z",
+     "linhas": 4,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/2408102_2023.json.gz",
+     "sha256": "c550c1242d4e0b0f265ce8d27cc2bddf82bc312084d57236ac7c472e44ef6dbf"
+    },
+    "5002704_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/extrato_entregas?id_ente=5002704&an_referencia=2021",
+     "capturado_em": "2026-10-08T19:41:11Z",
+     "linhas": 4,
+     "recorte": "pipeline/eficiencia/seed/siconfi/msc_entregas/5002704_2021.json.gz",
+     "sha256": "73fd6491381407be8eaec960680df830008b36b4cb830e5265bd11a745af2dee"
+    }
+   }
+  },
   "siconfi_msc_funcao12": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
    "conjunto": "Matriz de Saldos Contábeis (MSC) agregada, classe 6, saldo final de dezembro",
@@ -2900,10 +2993,62 @@
     },
     "5002704_2021": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:18:24Z",
+     "capturado_em": "2026-10-08T19:41:10Z",
      "linhas_resposta": 7972,
      "linhas": 245,
      "sha256_resposta_completa": "f6971828a5dd694ac1904f5e858d0bd076396365fe4007c097bd7b9f72d947a5",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "01": 134,
+       "02": 192,
+       "04": 866,
+       "06": 204,
+       "08": 543,
+       "09": 147,
+       "10": 1652,
+       "11": 255,
+       "12": 846,
+       "13": 266,
+       "14": 199,
+       "15": 626,
+       "16": 208,
+       "18": 121,
+       "19": 74,
+       "20": 87,
+       "22": 67,
+       "23": 292,
+       "24": 45,
+       "26": 440,
+       "27": 272,
+       "28": 73,
+       "99": 2,
+       "sem_funcao": 361
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "01": 82536382.04,
+       "02": 29033684.88,
+       "04": 190926828.17,
+       "06": 62984405.85,
+       "08": 100102186.58,
+       "09": 524308976.39,
+       "10": 1499131890.72,
+       "11": 63146080.67,
+       "12": 906686417.45,
+       "13": 16244225.23,
+       "14": 16206873.66,
+       "15": 365109506.58,
+       "16": 13003793.7,
+       "18": 31155545.71,
+       "19": 813842.62,
+       "20": 6121740.56,
+       "22": 180310.02,
+       "23": 7972945.23,
+       "24": 6752027.87,
+       "26": 195852943.51,
+       "27": 15733010.79,
+       "28": 157431155.24
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/5002704_2021_12.json.gz",
      "sha256": "ffe8df8da26ec82634fe1ee73c59e6e4fc0f39bba77c0bd64a5f59e8c807fcfb"
     },
@@ -3287,19 +3432,37 @@
     },
     "2111300_2022": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:18:04Z",
+     "capturado_em": "2026-10-08T19:40:54Z",
      "linhas_resposta": 1915,
      "linhas": 0,
      "sha256_resposta_completa": "19304039c4200b13cf1ab747401019c51d6494c94ec5c8ef289a2478e6e03791",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "04": 1765,
+       "sem_funcao": 150
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "04": 3265485110.24
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2022_12.json.gz",
      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "2111300_2023": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:18:06Z",
+     "capturado_em": "2026-10-08T19:40:56Z",
      "linhas_resposta": 2544,
      "linhas": 0,
      "sha256_resposta_completa": "38130a166a03bd129c8c0f266d475fc8afa00037d2caee0221eb65353e34ddab",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "04": 2330,
+       "sem_funcao": 214
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "04": 3903333871.51
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2111300_2023_12.json.gz",
      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
@@ -3665,19 +3828,73 @@
     },
     "3304557_2021": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:20:56Z",
+     "capturado_em": "2026-10-08T19:41:02Z",
      "linhas_resposta": 18896,
      "linhas": 528,
      "sha256_resposta_completa": "ea97c35915029d43b0400324049173457ae155999b74c25141ff9d2c7b23b0a0",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "01": 216,
+       "02": 475,
+       "04": 1665,
+       "06": 663,
+       "08": 1018,
+       "09": 329,
+       "10": 4923,
+       "11": 380,
+       "12": 2196,
+       "13": 1101,
+       "14": 257,
+       "15": 2037,
+       "16": 344,
+       "17": 404,
+       "18": 782,
+       "19": 125,
+       "22": 260,
+       "23": 650,
+       "26": 728,
+       "27": 253,
+       "28": 90
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "01": 832963203.33,
+       "02": 147184565.22,
+       "04": 1405477069.15,
+       "06": 574744128.75,
+       "08": 782742469.72,
+       "09": 5386601105.26,
+       "10": 3740996324.14,
+       "11": 63092363.33,
+       "12": 5004044248.03,
+       "13": 151120991.15,
+       "14": 15669378.61,
+       "15": 2234270942.4,
+       "16": 39821125.06,
+       "17": 573206906.7,
+       "18": 70506579.24,
+       "19": 13232702.27,
+       "22": 4661432.36,
+       "23": 61700966.66,
+       "26": 279851920.2,
+       "27": 50150445.25,
+       "28": 2600850241.13
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2021_12.json.gz",
      "sha256": "c66b526d79ddc759b7559a19cc0143eb07a378caf3d35a742c14e406dec5fe6a"
     },
     "3304557_2022": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:21:05Z",
+     "capturado_em": "2026-10-08T19:40:57Z",
      "linhas_resposta": 20457,
      "linhas": 0,
      "sha256_resposta_completa": "9534ab2658d653fa9d766accb9724398133f0355b723dff50ebd8d1f23a87447",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "sem_funcao": 20457
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {}
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/3304557_2022_12.json.gz",
      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
@@ -3719,19 +3936,93 @@
     },
     "2408102_2022": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:21:40Z",
+     "capturado_em": "2026-10-08T19:41:06Z",
      "linhas_resposta": 13462,
      "linhas": 281,
      "sha256_resposta_completa": "3609bcf27d3ac43ffe03e7b6bd0dfc11a37e00af610640bcc87adad84b563605",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "01": 142,
+       "03": 269,
+       "04": 962,
+       "06": 296,
+       "08": 1767,
+       "09": 359,
+       "10": 3310,
+       "12": 2034,
+       "13": 605,
+       "15": 2247,
+       "16": 234,
+       "18": 368,
+       "23": 127,
+       "27": 307,
+       "28": 121,
+       "sem_funcao": 314
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "01": 68068054.44,
+       "03": 67000789.3,
+       "04": 74090145.26,
+       "06": 36522903.56,
+       "08": 67107760.12,
+       "09": 310357831.89,
+       "10": 815874330.0,
+       "12": 362052911.44,
+       "13": 22792996.3,
+       "15": 398318861.09,
+       "16": 3531198.31,
+       "18": 5378952.95,
+       "23": 6147446.74,
+       "27": 9024216.05,
+       "28": 111907498.41
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2022_12.json.gz",
      "sha256": "700c582c11d704411c89f8d2b8d7be8621eac372927aaa855d177cac78601335"
     },
     "2408102_2023": {
      "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
-     "capturado_em": "2026-10-08T17:21:46Z",
+     "capturado_em": "2026-10-08T19:41:08Z",
      "linhas_resposta": 3986,
      "linhas": 243,
      "sha256_resposta_completa": "9f61e1e6df0d8e58eccfcc2286c7dd59e17d9bce3d963e296f1f0efd6b2c22d7",
+     "resumo_resposta": {
+      "linhas_por_funcao": {
+       "01": 125,
+       "03": 118,
+       "04": 277,
+       "06": 104,
+       "08": 551,
+       "09": 141,
+       "10": 855,
+       "12": 432,
+       "13": 152,
+       "15": 576,
+       "16": 77,
+       "18": 92,
+       "23": 67,
+       "27": 109,
+       "28": 76,
+       "sem_funcao": 234
+      },
+      "liquidado_liquido_sem_intra_por_funcao": {
+       "01": 17458809.48,
+       "03": 10847675.42,
+       "04": 15040415.93,
+       "06": 6698936.6,
+       "08": 15131470.54,
+       "09": 59893922.74,
+       "10": 278520702.87,
+       "12": 87295395.36,
+       "13": 20192764.92,
+       "15": 108378327.23,
+       "16": 868157.63,
+       "18": 779732.62,
+       "23": 1145970.75,
+       "27": 1955288.81,
+       "28": 31588471.0
+      }
+     },
      "recorte": "pipeline/eficiencia/seed/siconfi/msc_funcao12/2408102_2023_12.json.gz",
      "sha256": "50e8e217518fe3505d46068cd94bd65b9c0d44353faebd70db0fa991f97cafd3"
     },
@@ -4060,6 +4351,18 @@
      "sha256": "3eaa5cb38829e4af4395bcb2e3034c1ba34532d30d17125c7bc8e9d3dda4da6c"
     }
    }
+  },
+  "siconfi_nacional_educacao_2025": {
+   "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
+   "conjunto": "DCA Anexo I-E e RREO 6º bimestre Anexo 02 (RREO ou, para quem publica por semestre, RREO Simplificado) de todos os municípios, exercício 2025: despesa liquidada na função Educação",
+   "pagina": "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos",
+   "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio=2025&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE>; https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO[ ou RREO%20Simplificado]&no_anexo=RREO-Anexo%2002&co_esfera=M&id_ente=<código IBGE>",
+   "capturado_em": "2026-10-08T20:41:34Z",
+   "parametros": "5570 municípios (esfera M da lista de entes); só os campos usados na conferência; sha256 da resposta completa de cada ente; 2311 municípios com o RREO lido no demonstrativo simplificado",
+   "recorte": "pipeline/eficiencia/seed/siconfi/nacional_educacao/2025.json.gz",
+   "sha256_recorte": "eaf25ee0130ab5d10c0fb1c617577f23fb78730ae3580d6f0ff7ab2e6ff5d750",
+   "linhas_recorte": 5570,
+   "municipios_com_erro_de_coleta": 0
   },
   "siconfi_rreo_anexo_02_b6": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",

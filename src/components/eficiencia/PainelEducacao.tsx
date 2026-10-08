@@ -25,6 +25,7 @@ import {
   formata,
   formataEixo,
   internacionaisDa,
+  nacionalCalculada,
   linhasCsvComparacao,
   linhasCsvTabela,
   linhasCsvTabelaComparativa,
@@ -51,7 +52,7 @@ import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
 import type { ContextoFicha } from "./FichaConteudo";
 import { Passaporte } from "./Passaporte";
 import { BarrasComposicao, GraficoPontosPares, MiniSerie, type Anotacao } from "./graficos";
-import { ContextoInternacionalBloco, RefLinha, RefNacionalLinha, ReferenciasNacionais, ResumoGrupo, SemReferencia } from "./ReferenciasPainel";
+import { ContextoInternacionalBloco, RefLinha, RefNacionalLinha, ReferenciaNacionalCalculadaBloco, ReferenciasNacionais, ResumoGrupo, SemReferencia } from "./ReferenciasPainel";
 import { TabelaComparativa, type VisaoColunas } from "./TabelaComparativa";
 
 const ETAPAS: EtapaId[] = ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"];
@@ -61,7 +62,7 @@ const PANDEMIA_APROVACAO: Anotacao = { ano: 2021, texto: "ano letivo afetado pel
 
 const SEM_NACIONAL: Record<MedidaId, string> = {
   despesa: "Despesa total é volume: depende do tamanho da cidade e não tem referência nacional comparável. Use o gasto por habitante ou por matrícula.",
-  despesa_hab: "O IBGE, o INEP, o Tesouro Nacional e o FNDE não publicam despesa municipal em Educação por habitante para o conjunto das redes municipais. Calculá-la aqui seria indicador próprio, não referência oficial.",
+  despesa_hab: "O IBGE, o INEP, o Tesouro Nacional e o FNDE não publicam despesa municipal em Educação por habitante para o conjunto das redes municipais. O cálculo do OBEE com dados do Siconfi/STN e do IBGE não está disponível para este exercício.",
   despesa_mat: "Há o investimento público direto por estudante do INEP (todas as redes públicas e esferas), publicado só até 2021; ele aparece para 2021, com o universo declarado.",
   matriculas: "Matrícula absoluta depende do tamanho da rede; não há referência nacional comparável.",
   conveniadas: "Matrícula em escolas conveniadas depende do tamanho da rede e da política de parceria de cada município; não há referência nacional comparável.",
@@ -144,7 +145,7 @@ function SemValor({ ponto, contexto }: { ponto: Ponto; contexto?: string }) {
       <p className="mt-1 leading-snug">{inicio}</p>
       {resto && (
         <details className="mt-1">
-          <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver o motivo completo</summary>
+          <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver o motivo completo</summary>
           <p className="mt-1 leading-snug text-carvao-muted">{resto}</p>
         </details>
       )}
@@ -163,7 +164,7 @@ function Ressalva({ ponto }: { ponto: Ponto }) {
   return (
     <details className="group mt-2 text-xs leading-snug">
       <summary
-        className={`inline-flex min-h-[32px] cursor-pointer list-none items-center gap-1.5 border px-2 ${
+        className={`inline-flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 border px-2 ${
           material ? "border-obee-tinta font-semibold text-obee-tinta" : "border-linha text-carvao-muted"
         }`}
       >
@@ -276,7 +277,7 @@ function Alternancia<T extends string>({
 const ESCALAS: { m: MedidaId; titulo: string; texto: string }[] = [
   { m: "despesa", titulo: "Gasto total", texto: "Volume do orçamento do município na função Educação. Depende do tamanho da cidade." },
   { m: "despesa_hab", titulo: "Por habitante", texto: "Divide pelos moradores do ano. Põe cidades de portes diferentes na mesma escala territorial; não é gasto por aluno." },
-  { m: "despesa_mat", titulo: "Por matrícula da rede municipal", texto: "Aplicação direta do município ÷ matrículas das escolas municipais, sem conveniadas, inativos nem ensino superior." },
+  { m: "despesa_mat", titulo: "Razão por matrícula da rede municipal", texto: "Despesa liquidada de aplicação direta (modalidade 90) ÷ matrículas das escolas municipais. Razão orçamentária: não é o custo do aluno e não separa o que atende a rede própria." },
 ];
 
 function EscalaDespesa({ valor, aoMudar }: { valor: MedidaId; aoMudar: (m: MedidaId) => void }) {
@@ -391,6 +392,8 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   const conv = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, s.ano, s.etapa, null);
   const convTotalCard = ix.ponto("edu.matriculas.conveniadas_municipais", cap.cod, s.ano, "total", null);
   const ponte = ponteMatricula(ix, cap.cod, s.ano);
+  const numeradorMat = ponte.linhas.some((l) => l.dentro) ? ponte.linhas.filter((l) => l.dentro).reduce((a, l) => a + l.valor, 0) : null;
+  const indetMat = ponte.linhas.find((l) => l.componente === "ad_beneficiario_indeterminado") ?? null;
   const etapaFund = s.etapa === "anos_iniciais" || s.etapa === "anos_finais";
   const etapaAtu = etapaValida("atu", s.etapa);
   const atu = etapaAtu ? ptDe("atu") : null;
@@ -458,11 +461,12 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
   const extComp = comp ? referenciasExternas(dados, s.med, med.anos === "ideb" ? s.ano : s.ano, s.etapa, compDe(s.med)) : [];
   const extMesmo = extComp.filter((e) => e.tipo === "nacional_mesmo_universo");
   const intl = internacionaisDa(dados, s.med, s.etapa);
+  const nacCalc = nacionalCalculada(dados, s.med, s.ano);
   const selPonto = comp ? comp.incluidas.find((i) => i.cap.id === cap.id) : undefined;
   const LEITURA: Partial<Record<MedidaId, string>> = {
     despesa: "Escala de volume: capitais maiores ficam mais à direita. Para comparar cidades de portes diferentes, use o gasto por habitante ou por matrícula.",
     despesa_hab: "Divide o gasto pelos moradores do ano. Não é gasto por aluno nem tributo por pessoa, e a participação da rede municipal na oferta de ensino varia entre capitais: população semelhante não implica responsabilidades educacionais semelhantes.",
-    despesa_mat: "Aplicação direta do município na função Educação ÷ matrículas das escolas municipais. Não é custo integral do aluno nem custo marginal; despesa maior ou menor por matrícula não demonstra mais ou menos eficiência nem qualidade.",
+    despesa_mat: "Despesa liquidada de aplicação direta (modalidade 90) na função Educação ÷ matrículas das escolas municipais, sem inativos, ensino superior, transferências e delegações. Razão orçamentária, não custo do aluno: o numerador inclui serviços de terceiros e outras despesas cujo beneficiário a MSC não identifica, e a parcela está medida ao lado. Valor maior ou menor não demonstra mais ou menos eficiência nem qualidade.",
   };
   const textoRazao = (() => {
     const r = comp?.ref;
@@ -608,21 +612,30 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 <Detalhe>Não é gasto por aluno, tributo por pessoa nem benefício individual.</Detalhe>
                 <Ressalva ponto={hab} />
                 <RefLinha r={refDe("despesa_hab")} m="despesa_hab" valor={hab.valor} elegivel={hab.elegivel} rotuloGrupo={rotuloGrupo} />
-                <p className="mt-1.5 text-xs leading-snug text-carvao-muted">Referência nacional: não há indicador oficial de despesa municipal em Educação por habitante.</p>
+                {nacCalc ? (
+                  <ReferenciaNacionalCalculadaBloco referencia={nacCalc} valor={hab.valor} elegivel={hab.elegivel} nomeCapital={cap.nome} />
+                ) : (
+                  <p className="mt-1.5 text-xs leading-snug text-carvao-muted">Referência nacional: não há indicador oficial de despesa municipal em Educação por habitante, e o cálculo do OBEE não está disponível para {s.ano}.</p>
+                )}
               </>
             ) : (
               <SemValor ponto={hab} contexto={hab.status === "NAO_DIVULGADO" ? hab.nota ?? undefined : undefined} />
             )}
           </Cartao>
-          <Cartao id="matricula-despesa" rotulo="Gasto por matrícula da rede municipal" periodo={`Exercício ${s.ano} e Censo Escolar ${s.ano} · ${unidade("despesa_mat", s.moeda)} · ${univ("edu.despesa.por_matricula_rede_propria")}`} acao={pass("edu.despesa.por_matricula_rede_propria", "Passaporte", true)}>
+          <Cartao id="matricula-despesa" rotulo="Razão da despesa de aplicação direta por matrícula da rede municipal" periodo={`Exercício ${s.ano} e Censo Escolar ${s.ano} · ${unidade("despesa_mat", s.moeda)} · ${univ("edu.despesa.aplicacao_direta_por_matricula")}`} acao={pass("edu.despesa.aplicacao_direta_por_matricula", "Passaporte", true)}>
             {dmat.valor !== null ? (
               <>
                 <Valor>{formata("despesa_mat", dmat.valor)}</Valor>
                 {variacaoPct(dmat, dmatAnt, s.ano - 1) && <Detalhe>{variacaoPct(dmat, dmatAnt, s.ano - 1)}</Detalhe>}
                 <Detalhe>
-                  Aplicação direta na rede própria ({ponte.linhas.find((l) => l.dentro) ? reaisExtenso(ponte.linhas.find((l) => l.dentro)!.valor) : ""}) ÷ {matTotal.valor !== null ? inteiro(matTotal.valor) : "?"} matrículas das escolas municipais.
+                  Despesa liquidada de aplicação direta ({numeradorMat === null ? "" : reaisExtenso(numeradorMat)}) ÷ {matTotal.valor !== null ? inteiro(matTotal.valor) : "?"} matrículas das escolas municipais. Razão orçamentária, não custo do aluno.
                   {convTotalCard.valor ? ` Fora desta razão: ${inteiro(convTotalCard.valor)} matrículas em escolas privadas conveniadas com o município e as transferências a elas.` : ""} Por matrícula, não por estudante único.
                 </Detalhe>
+                {indetMat !== null && indetMat.valor > 0 && numeradorMat ? (
+                  <Detalhe>
+                    Parcela indeterminada: {reaisExtenso(indetMat.valor)} ({percentual((100 * indetMat.valor) / numeradorMat, 1)} do numerador) é aplicação direta cujo beneficiário a MSC não permite afirmar (serviços de terceiros, benefícios a pessoal e similares). O painel mede e mostra a parcela; não define limite de aceitabilidade.
+                  </Detalhe>
+                ) : null}
                 <Ressalva ponto={dmat} />
                 <RefLinha r={refDe("despesa_mat")} m="despesa_mat" valor={dmat.valor} elegivel={dmat.elegivel} rotuloGrupo={rotuloGrupo} />
                 <RefNacionalLinha externas={ext("despesa_mat", s.ano)} valor={dmat.valor} elegivel={dmat.elegivel} m="despesa_mat" nomeCapital={cap.nome} />
@@ -774,7 +787,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 </div>
                 {ok && (
                   <details className="mt-2 text-sm">
-                    <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
+                    <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
                     <TabelaSimples
                       legenda={`${titulo}, ${nomeCap}`}
                       cabecalho={["Ano", "Valor", "Estado do dado"]}
@@ -920,11 +933,12 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                       : ""}
                   </p>
                 )}
-                {extComp.length > 0 && (
+                {(extComp.length > 0 || nacCalc) && (
                   <div className="mt-4">
-                    <p className="rotulo text-mineral">Referência nacional oficial (escopo declarado)</p>
-                    <div className="mt-2">
+                    <p className="rotulo text-mineral">Referência nacional (origem e escopo declarados)</p>
+                    <div className="mt-2 space-y-3">
                       <ReferenciasNacionais externas={extComp} valor={selPonto?.valor ?? null} m={s.med} nomeCapital={nomeCap} />
+                      {nacCalc && <ReferenciaNacionalCalculadaBloco referencia={nacCalc} valor={selPonto?.valor ?? null} elegivel={selPonto !== undefined} nomeCapital={nomeCap} />}
                     </div>
                   </div>
                 )}
@@ -1063,9 +1077,12 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
             </a>
           </div>
           <div className="min-w-0 space-y-4">
-            <h3 className="font-semibold text-obee-tinta">Referência nacional oficial</h3>
-            {extComp.length ? (
-              <ReferenciasNacionais externas={extComp} valor={selPonto?.valor ?? null} m={s.med} nomeCapital={nomeCap} />
+            <h3 className="font-semibold text-obee-tinta">Referência nacional</h3>
+            {extComp.length || nacCalc ? (
+              <div className="space-y-3">
+                <ReferenciasNacionais externas={extComp} valor={selPonto?.valor ?? null} m={s.med} nomeCapital={nomeCap} />
+                {nacCalc && <ReferenciaNacionalCalculadaBloco referencia={nacCalc} valor={selPonto?.valor ?? null} elegivel={selPonto !== undefined} nomeCapital={nomeCap} completo />}
+              </div>
             ) : (
               <SemReferencia medida={s.med} motivo={SEM_NACIONAL[s.med]} />
             )}
@@ -1131,7 +1148,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   administração geral, em demais subfunções ou distribuídas nas subfunções de etapa. A composição não mede o custo de cada etapa.
                 </p>
                 <details className="mt-2 text-sm">
-                  <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
+                  <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
                   <TabelaSimples
                     legenda={`Despesa por subfunção, ${nomeCap}, ${s.ano}`}
                     cabecalho={["Subfunção", "R$", "% da função"]}
@@ -1173,7 +1190,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   município aparecem só na tabela, em coluna separada, e não entram na soma.
                 </p>
                 <details className="mt-2 text-sm">
-                  <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
+                  <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
                   <TabelaSimples
                     legenda={`Matrículas por etapa, ${nomeCap}, ${s.ano}`}
                     cabecalho={["Etapa", "Rede municipal", "Conveniadas com o município (à parte)"]}
@@ -1189,15 +1206,15 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
           </div>
         </div>
         <div className="mt-12 border-t border-linha pt-8" id="ponte">
-          <h3 className="font-semibold text-obee-tinta">Da despesa total à despesa por matrícula: o que entra e o que fica fora</h3>
+          <h3 className="font-semibold text-obee-tinta">Da despesa total à razão por matrícula: o que entra e o que fica fora</h3>
           <p className="mt-0.5 text-xs text-carvao-muted">R$ correntes · exercício {s.ano} · Matriz de Saldos Contábeis de dezembro, função 12, e DCA · {nomeCap}</p>
           {!ponte.linhas.length ? (
             <SemValor ponto={dmat} contexto="A Matriz de Saldos Contábeis de dezembro não está disponível para esta capital e este exercício: a ponte não existe." />
           ) : (
             <>
               <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta">
-                O total declarado na DCA é separado em parcelas mutuamente exclusivas, linha a linha da MSC. Só a aplicação direta na rede própria entra no numerador da despesa por matrícula; as demais parcelas ficam fora porque não têm matrícula correspondente no
-                denominador. Nenhuma despesa é rateada por etapa e nenhuma matrícula conveniada é somada ao denominador.
+                O total declarado na DCA é separado em parcelas mutuamente exclusivas, linha a linha da MSC, pela natureza da despesa. Entram no numerador a aplicação direta (modalidade 90) em geral e, em linha própria, a aplicação direta com beneficiário
+                indeterminado; as demais parcelas ficam fora porque não têm matrícula correspondente no denominador. Nenhuma despesa é rateada por etapa e nenhuma matrícula conveniada é somada ao denominador.
               </p>
               <p className="mt-4 text-sm text-obee-tinta">
                 <span className="font-semibold">Total declarado na DCA:</span> {reaisExtenso(ponte.total ?? 0)} (100%). Parcelas, em % do total:
@@ -1224,7 +1241,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                 )}
               </p>
               <details className="mt-2 text-sm">
-                <summary className="rotulo inline-flex min-h-[32px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
+                <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
                 <TabelaSimples
                   legenda={`Ponte da despesa por matrícula, ${nomeCap}, ${s.ano}`}
                   cabecalho={["Parcela", "R$", "% do total da DCA"]}

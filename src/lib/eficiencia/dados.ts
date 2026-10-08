@@ -116,7 +116,7 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     r.ano,
     r.tipo === "nacional_mesmo_universo" ? 0 : 1,
     p12(r.valor)!,
-    idx(posDesc, descritores, { rotulo: r.rotulo, unidade: r.unidade, unidade_diferenca: r.unidade_diferenca, escopo: r.escopo }, (x) => JSON.stringify(x)),
+    idx(posDesc, descritores, { rotulo: r.rotulo, unidade: r.unidade, unidade_diferenca: r.unidade_diferenca, escopo: r.escopo, origem: r.origem, comparabilidade: r.comparabilidade }, (x) => JSON.stringify(x)),
   ]);
   // tipo e data de referência da população não variam entre capitais no mesmo ano
   const populacao: DadosPainel["populacao"] = {};
@@ -147,7 +147,9 @@ export function dadosPainel(g: GoldEducacao): DadosPainel {
     refs,
     externas,
     descritores,
-    internacionais: g.referencias_internacionais.map((x) => ({ conjunto: x.conjunto, nome: x.nome, nivel: x.nivel, etapa: x.etapa, instituicoes: x.instituicoes, ano: x.ano, unidade: x.unidade, brasil: x.brasil, media_ocde_publicada: x.media_ocde_publicada, paises: x.paises, paises_com_dado: x.paises_com_dado })),
+    // só os conjuntos que o painel mostra (instituições públicas; sem o agregado ISCED 1 a 8, que inclui o ensino superior); a gold guarda todos
+    internacionais: g.referencias_internacionais.filter((x) => x.instituicoes === "publicas" && x.nivel !== "ISCED11_1T8").map((x) => ({ conjunto: x.conjunto, nome: x.nome, nivel: x.nivel, etapa: x.etapa, instituicoes: x.instituicoes, ano: x.ano, unidade: x.unidade, brasil: x.brasil, media_ocde_publicada: x.media_ocde_publicada, paises: x.paises, paises_com_dado: x.paises_com_dado, membros_com_dado: x.membros_com_dado, media_membros_recomputada: x.media_membros_recomputada, diferenca_media: x.diferenca_media, media_confere: x.media_confere, preliminar: x.preliminar })),
+    nacionalCalculada: g.referencia_nacional_calculada,
     populacao,
     limiarQuartis: g.politica_referencias.limiar_quartis,
     fontes,

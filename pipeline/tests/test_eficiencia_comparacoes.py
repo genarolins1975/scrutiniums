@@ -14,35 +14,58 @@ import statistics
 import tempfile
 import unittest
 
-from pipeline.eficiencia import base, derivados as DV, entes, gold, padroniza as P, referencias as R, referencias_externas as RE, validacoes as V
+from pipeline.eficiencia import base, conferencia as CF, derivados as DV, entes, gold, padroniza as P, referencia_nacional as RN, referencias as R, referencias_externas as RE, validacoes as V
 
 
-def linha(nd, valor, sub="361", conta="622130300"):
-    return {"funcao": "12", "subfuncao": sub, "natureza_despesa": nd, "conta_contabil": conta, "valor": valor}
+def linha(nd, valor, sub="361", conta="622130300", nat="C"):
+    return {"funcao": "12", "subfuncao": sub, "natureza_despesa": nd, "conta_contabil": conta, "valor": valor, "natureza_conta": nat}
 
 
 class TestBaldes(unittest.TestCase):
     def test_cada_regra_de_atribuicao(self):
-        self.assertEqual(DV.balde(linha("31901100", 1)), "rede_propria")      # pessoal ativo, aplicação direta
-        self.assertEqual(DV.balde(linha("33903000", 1)), "rede_propria")      # material de consumo
-        self.assertEqual(DV.balde(linha("33503900", 1)), "transf_privadas")   # transferência a instituição privada sem fins lucrativos
-        self.assertEqual(DV.balde(linha("33603900", 1)), "transf_privadas")   # privada com fins lucrativos
-        self.assertEqual(DV.balde(linha("33403900", 1)), "transf_outras")     # transferência a municípios
-        self.assertEqual(DV.balde(linha("33713900", 1)), "transf_outras")     # consórcio público
-        self.assertEqual(DV.balde(linha("31911300", 1)), "intra")             # intraorçamentária (modalidade 91)
-        self.assertEqual(DV.balde(linha("31900100", 1)), "inativos")          # aposentadorias
-        self.assertEqual(DV.balde(linha("31900300", 1)), "inativos")          # pensões
-        self.assertEqual(DV.balde(linha("31900500", 1)), "inativos")          # outros benefícios previdenciários
-        self.assertEqual(DV.balde(linha("33901000", 1)), "rede_propria")      # elemento 01 fora do grupo 3.1.90 não é inativo
-        self.assertEqual(DV.balde(linha("33900100", 1)), "rede_propria")
+        # aplicação direta (90): pessoal ativo e demais elementos
+        self.assertEqual(DV.balde(linha("31901100", 1)), "ad_demais_elementos")      # vencimentos, pessoal ativo
+        self.assertEqual(DV.balde(linha("33903000", 1)), "ad_demais_elementos")      # material de consumo
+        self.assertEqual(DV.balde(linha("44905100", 1)), "ad_demais_elementos")      # obras e instalações
+        self.assertEqual(DV.balde(linha("33903700", 1)), "ad_demais_elementos")      # locação de mão de obra: opera a rede, beneficiário não é o aluno de fora
+        # aplicação direta com beneficiário indeterminado: a MSC não diz quem recebe o serviço
+        for nd in ("33903900", "33904800", "33901800", "33904100", "33904500"):
+            self.assertEqual(DV.balde(linha(nd, 1)), "ad_beneficiario_indeterminado", nd)
+        self.assertEqual(DV.balde(linha("33933900", 1)), "ad_beneficiario_indeterminado")   # compra de consórcio (93)
+        self.assertEqual(DV.balde(linha("33943900", 1)), "ad_beneficiario_indeterminado")   # compra de consórcio (94)
+        self.assertEqual(DV.balde(linha("31903900", 1)), "ad_demais_elementos")      # grupo 3.1 não tem elemento 39 de terceiros: não é indeterminado por isso
+        # fora do numerador, cada um com o seu motivo
+        self.assertEqual(DV.balde(linha("33503900", 1)), "transf_privadas")          # instituição privada sem fins lucrativos
+        self.assertEqual(DV.balde(linha("33603900", 1)), "transf_privadas")          # com fins lucrativos
+        for nd in ("33403900", "33713900", "33203900", "33303900", "33803900", "33703900", "33313900"):
+            self.assertEqual(DV.balde(linha(nd, 1)), "transf_outros_entes", nd)      # municípios, consórcio, União, estados, exterior, multigovernamental
+        self.assertEqual(DV.balde(linha("33923900", 1)), "delegacao_recebida")       # recursos recebidos por delegação (92)
+        self.assertEqual(DV.balde(linha("33673900", 1)), "ppp")                      # contrato de PPP (67)
+        for nd in ("33953000", "33963000", "33993900"):
+            self.assertEqual(DV.balde(linha(nd, 1)), "uso_atipico", nd)              # 95 e 96 só saúde; 99 a definir
+        self.assertEqual(DV.balde(linha("33883900", 1)), "modalidade_nao_reconhecida")
+        self.assertEqual(DV.balde(linha("31911300", 1)), "intra")                    # intraorçamentária (modalidade 91)
+        self.assertEqual(DV.balde(linha("31900100", 1)), "inativos")                 # aposentadorias
+        self.assertEqual(DV.balde(linha("31900300", 1)), "inativos")                 # pensões
+        self.assertEqual(DV.balde(linha("31900500", 1)), "inativos")                 # outros benefícios previdenciários
+        self.assertEqual(DV.balde(linha("33901000", 1)), "ad_demais_elementos")      # elemento 10 fora do grupo 3.1.90 não é inativo
+        self.assertEqual(DV.balde(linha("33900100", 1)), "ad_demais_elementos")      # elemento 01 fora do grupo 3.1 não é inativo
         self.assertEqual(DV.balde(linha("33903000", 1, sub="364")), "ensino_superior")
         self.assertEqual(DV.balde(linha("", 1)), "sem_natureza")
 
+    def test_modalidade_90_nao_significa_rede_propria(self):
+        """O numerador inclui pessoal e compras de serviços; a parcela de beneficiário indeterminado fica identificada à parte."""
+        self.assertIn("ad_beneficiario_indeterminado", DV.NUMERADOR)
+        self.assertIn("ad_demais_elementos", DV.NUMERADOR)
+        self.assertNotIn("rede_propria", DV.BALDES)
+        self.assertEqual(set(DV.NUMERADOR) & {"transf_privadas", "transf_outros_entes", "delegacao_recebida", "ppp", "inativos", "ensino_superior", "intra"}, set())
+
     def test_precedencia_da_atribuicao_sem_dupla_contagem(self):
-        """Uma linha cai em um só balde, na ordem: intra, privadas, outras modalidades, superior, inativos, rede própria."""
+        """Uma linha cai em um só balde, na ordem: intra, privadas, outras modalidades, superior, inativos, indeterminado, demais."""
         self.assertEqual(DV.balde(linha("31911300", 1, sub="364")), "intra")
         self.assertEqual(DV.balde(linha("33503900", 1, sub="364")), "transf_privadas")
         self.assertEqual(DV.balde(linha("31900100", 1, sub="364")), "ensino_superior")
+        self.assertEqual(DV.balde(linha("33903900", 1, sub="364")), "ensino_superior")
         self.assertEqual(DV.balde(linha("31503900", 1)), "transf_privadas")
 
     def test_natureza_invalida_levanta(self):
@@ -77,15 +100,18 @@ class TestPonteSintetica(unittest.TestCase):
 
     def base_linhas(self):
         return [linha("31901100", 700.0), linha("33903000", 100.0), linha("33503900", 150.0), linha("31900100", 30.0), linha("33903000", 20.0, sub="364"),
-                linha("31911300", 55.0), linha("33903000", 999.0, conta="622130500")]  # restos a pagar não processados ficam fora
+                linha("31911300", 55.0), linha("33903000", 999.0, conta="622130500"),   # restos a pagar não processados ficam fora
+                linha("33903900", 0.0)]
 
     def test_reconcilia_e_soma_dos_baldes(self):
         self.grava(1, 2025, self.base_linhas())
         pt = DV.ponte(1, 2025, 1000.0)
         self.assertEqual(pt["situacao"], "CONFERE")
-        self.assertEqual(pt["baldes"], {"rede_propria": 800.0, "inativos": 30.0, "ensino_superior": 20.0, "transf_privadas": 150.0,
-                                        "transf_outras": 0.0, "sem_natureza": 0.0, "intra": 55.0})
+        self.assertEqual(pt["baldes"], {"ad_demais_elementos": 800.0, "ad_beneficiario_indeterminado": 0.0, "inativos": 30.0, "ensino_superior": 20.0,
+                                        "transf_privadas": 150.0, "transf_outros_entes": 0.0, "delegacao_recebida": 0.0, "ppp": 0.0, "uso_atipico": 0.0,
+                                        "modalidade_nao_reconhecida": 0.0, "sem_natureza": 0.0, "intra": 55.0})
         self.assertEqual(pt["total_sem_intra"], 1000.0)
+        self.assertEqual((pt["numerador"], pt["parcela_indeterminada"], pt["parcela_indeterminada_pct"]), (800.0, 0.0, 0.0))
         self.assertTrue(pt["reconcilia"] and pt["classificavel"])
 
     def test_diferenca_menor_e_nao_reconcilia(self):
@@ -99,7 +125,7 @@ class TestPonteSintetica(unittest.TestCase):
         self.assertFalse(DV.ponte(1, 2025, total * 1.01)["reconcilia"])
 
     def test_msc_sem_linhas_da_funcao_12(self):
-        self.grava(1, 2025, [{"funcao": "10", "subfuncao": "301", "natureza_despesa": "33903000", "conta_contabil": "622130300", "valor": 5.0}])
+        self.grava(1, 2025, [{"funcao": "10", "subfuncao": "301", "natureza_despesa": "33903000", "conta_contabil": "622130300", "valor": 5.0, "natureza_conta": "C"}])
         pt = DV.ponte(1, 2025, 1000.0)
         self.assertEqual(pt["situacao"], "SEM_LINHAS")
         self.assertFalse(pt["reconcilia"])
@@ -110,10 +136,31 @@ class TestPonteSintetica(unittest.TestCase):
         self.assertTrue(pt["reconcilia"])
         self.assertFalse(pt["classificavel"])
         self.assertEqual(pt["baldes"]["sem_natureza"], 100.0)
-        self.assertEqual(pt["baldes"]["rede_propria"], 900.0)
+        self.assertEqual(pt["baldes"]["ad_demais_elementos"], 900.0)
 
     def test_sem_captura_devolve_none(self):
         self.assertIsNone(DV.ponte(9, 2025, 10.0))
+
+    def test_linha_de_natureza_d_reduz_o_saldo_em_vez_de_somar(self):
+        """Política 1.2: a MSC informa o valor em módulo e a natureza D ou C. A liquidação transferida da conta
+        6.2.2.1.3.03 para a .07 no encerramento aparece como C e D iguais na .03: o saldo líquido é zero e a
+        liquidação é contada uma vez só (na .07)."""
+        self.grava(1, 2025, [
+            linha("31901100", 800.0, conta="622130400"),
+            linha("31901100", 200.0, conta="622130300"), linha("31901100", 200.0, conta="622130300", nat="D"),
+            linha("31901100", 200.0, conta="622130700"),
+        ])
+        pt = DV.ponte(1, 2025, 1000.0)
+        self.assertEqual(pt["situacao"], "CONFERE")
+        self.assertEqual(pt["baldes"]["ad_demais_elementos"], 1000.0)
+        self.assertEqual((pt["linhas_debito"], pt["valor_debito"]), (1, 200.0))
+
+    def test_natureza_do_valor_ausente_ou_invalida_levanta(self):
+        for nat in (None, "", "X"):
+            with self.assertRaises(ValueError):
+                CF.saldo_liquido({"valor": 1.0, "natureza_conta": nat})
+        self.assertEqual(CF.saldo_liquido({"valor": 5.0, "natureza_conta": "C"}), 5.0)
+        self.assertEqual(CF.saldo_liquido({"valor": 5.0, "natureza_conta": "D"}), -5.0)
 
 
 class TestEstatisticas(unittest.TestCase):
@@ -202,12 +249,30 @@ class TestComparacoesPublicadas(unittest.TestCase):
         self.assertEqual(pop(2022)["valor"], 11451999)     # Censo 2022
         self.assertEqual(pop(2024)["valor"], 11895578)
         self.assertEqual(pop(2025)["valor"], 11904961)
-        self.assertEqual(pop(2023)["status"], "NAO_DIVULGADO")
-        self.assertIsNone(pop(2023)["valor"])
+        # 2023: população oficial do exercício = Censo 2022 (relação do DOU de 31/08/2023), identificada como censitária
+        self.assertEqual(pop(2023)["status"], "OBSERVADO")
+        self.assertEqual(pop(2023)["valor"], pop(2022)["valor"])
+        self.assertEqual(pop(2023)["tipo_populacao"], "censo_relacao_dou_2023")
+        self.assertIn("31 de julho de 2022", pop(2023)["data_referencia"])
+        self.assertIn("30 de abril de 2023", pop(2023)["data_referencia"])
+        self.assertIn("Não é estimativa de população em julho de 2023", pop(2023)["nota"])
+        self.assertTrue(pop(2023)["nota_material"])
         self.assertEqual(pop(2022)["tipo_populacao"], "censo")
         self.assertTrue(pop(2021)["quebra_serie"])
+        self.assertTrue(pop(2023)["quebra_serie"])
         self.assertFalse(pop(2024)["quebra_serie"])
-        self.assertIn("1º de agosto de 2022", pop(2022)["data_referencia"])
+        self.assertIn("31 de julho de 2022", pop(2022)["data_referencia"])
+
+    def test_populacao_2023_idem_ao_censo_em_todas_as_capitais_e_o_seed_registra_a_conferencia(self):
+        r23 = base.le_json_gz(os.path.join(base.SEED, "ibge_populacao", "relacao_2023_capitais.json.gz"))
+        self.assertEqual(len(r23), 26)
+        self.assertTrue(all(r["igual_ao_sidra_4714"] and r["tipo"] == "censo_relacao_dou_2023" for r in r23))
+        cap = base.le_manifesto()["capturas"]["ibge_populacao_relacao_2023"]
+        self.assertEqual(cap["total_brasil"], 203080756)
+        self.assertEqual(cap["capitais_iguais_ao_sidra_4714"], 26)
+        self.assertEqual(len(cap["sha256_tabela_pdf"]), 64)
+        self.assertEqual(len(cap["sha256_nota_metodologica_pdf"]), 64)
+        self.assertIn("não foi baixado", cap["parametros"])
 
     def test_populacao_revisada_usa_o_valor_vigente_e_registra_a_diferenca(self):
         aju = self.ob("ctx.populacao.residente", 2800308, 2025, comp=None)
@@ -232,26 +297,34 @@ class TestComparacoesPublicadas(unittest.TestCase):
             esperado = liq / pop[(ano, cod)]
             self.assertAlmostEqual(self.ob("edu.despesa.por_habitante", cod, ano)["valor"], esperado, places=4)
 
-    def test_despesa_por_habitante_sem_populacao_nao_tem_valor(self):
+    def test_despesa_por_habitante_de_2023_usa_a_populacao_censitaria_e_bloqueia_variacao(self):
         for cod, _, _ in entes.CAPITAIS:
             o = self.ob("edu.despesa.por_habitante", cod, 2023)
-            self.assertIsNone(o["valor"])
-            self.assertEqual(o["status"], "NAO_DIVULGADO")
-            self.assertFalse(o["elegivel_comparacao"])
+            self.assertEqual(o["status"], "OBSERVADO")
+            self.assertTrue(o["quebra_serie"])
+            self.assertEqual(o["calculo"]["denominador"], self.ob("ctx.populacao.residente", cod, 2022, comp=None)["valor"])
+            self.assertAlmostEqual(o["valor"], o["calculo"]["numerador"] / o["calculo"]["denominador"], places=4)
+
+    def test_despesa_por_habitante_sem_populacao_nao_tem_valor(self):
+        """Sem população observada o pipeline não calcula nem reaproveita outro ano (teste sintético)."""
+        pop = [dict(P.populacao()[0], valor=None, status="AUSENTE_NA_COLETA", nota="sem")]
+        d = [o for o in P.despesa() if o["ente"] == pop[0]["ente"] and o["ano"] == pop[0]["ano"] and o["indicador"] == "edu.despesa.funcao_educacao"]
+        r = P.despesa_por_habitante(d, pop)
+        self.assertTrue(r and all(o["valor"] is None and o["status"] == "AUSENTE_NA_COLETA" for o in r))
 
     def test_campo_grande_2021_continua_fora_das_comparacoes_derivadas(self):
         cg = 5002704
         hab = self.ob("edu.despesa.por_habitante", cg, 2021)
         self.assertEqual(hab["status"], "OBSERVADO")                     # o valor oficial segue disponível para consulta
         self.assertFalse(hab["elegivel_comparacao"])
-        mat = self.ob("edu.despesa.por_matricula_rede_propria", cg, 2021)
+        mat = self.ob("edu.despesa.aplicacao_direta_por_matricula", cg, 2021)
         self.assertIsNone(mat["valor"])                                   # a ponte não fecha com a DCA deste exercício
         self.assertFalse(mat["elegivel_comparacao"])
         self.assertIn("perímetro distinto", mat["nota"])
 
     def test_boa_vista_2024_mantem_a_ressalva_nos_derivados(self):
         bv = 1400100
-        for ind in ("edu.despesa.por_habitante", "edu.despesa.por_matricula_rede_propria"):
+        for ind in ("edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula"):
             o = self.ob(ind, bv, 2024)
             self.assertEqual(o["status"], "OBSERVADO", ind)
             self.assertTrue(o["elegivel_comparacao"], ind)
@@ -260,7 +333,7 @@ class TestComparacoesPublicadas(unittest.TestCase):
 
     def test_real_2025_usa_o_mesmo_fator_do_numerador(self):
         fatores = self.g["ipca"]["fatores_para_2025"]
-        for ind in ("edu.despesa.por_habitante", "edu.despesa.por_matricula_rede_propria"):
+        for ind in ("edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula"):
             for cod in (3550308, 2611606):
                 n, r = self.ob(ind, cod, 2024), self.ob(ind, cod, 2024, "real_2025")
                 if n["valor"] is not None:
@@ -287,21 +360,20 @@ class TestComparacoesPublicadas(unittest.TestCase):
                     continue                                              # fora: inativos
                 direta_rede += x["valor"]
             censo = [o for o in self.obs if o["indicador"] == "edu.matriculas.rede_municipal" and o["etapa"] == "total" and o["ente"] == cod and o["ano"] == ano][0]
-            o = self.ob("edu.despesa.por_matricula_rede_propria", cod, ano)
+            o = self.ob("edu.despesa.aplicacao_direta_por_matricula", cod, ano)
             self.assertEqual(o["status"], "OBSERVADO", (cod, ano))
             self.assertAlmostEqual(o["valor"], direta_rede / censo["valor"], places=3)
             self.assertEqual(o["calculo"]["denominador"], censo["valor"])
 
     def test_denominador_nao_soma_conveniadas(self):
         for o in self.obs:
-            if o["indicador"] == "edu.despesa.por_matricula_rede_propria" and o["status"] == "OBSERVADO":
+            if o["indicador"] == "edu.despesa.aplicacao_direta_por_matricula" and o["status"] == "OBSERVADO":
                 rede = self.ob("edu.matriculas.rede_municipal", o["ente"], o["ano"], comp=None, etapa="total")
                 self.assertEqual(o["calculo"]["denominador"], rede["valor"])
 
     def test_ponte_soma_a_dca(self):
         for cod, ano in ((3550308, 2025), (2927408, 2023), (4314902, 2022)):
-            pontes = {c: self.ob("edu.despesa.ponte_matricula", cod, ano, c) for c in ("rede_propria", "inativos", "ensino_superior", "transf_privadas",
-                                                                                         "transf_outras", "sem_natureza", "diferenca_dca_msc", "dca_total")
+            pontes = {c: self.ob("edu.despesa.ponte_matricula", cod, ano, c) for c in (*(b for b in DV.BALDES if b != "intra"), "diferenca_dca_msc", "dca_total")
                       if (("edu.despesa.ponte_matricula", cod, ano, None, c) in self.idx)}
             if not pontes:
                 continue
@@ -309,20 +381,47 @@ class TestComparacoesPublicadas(unittest.TestCase):
             self.assertAlmostEqual(soma, pontes["dca_total"]["valor"], places=1, msg=(cod, ano))
 
     def test_sem_reconciliacao_nao_ha_valor_e_o_motivo_aparece(self):
-        sl = self.ob("edu.despesa.por_matricula_rede_propria", 2111300, 2022)    # São Luís: MSC sem a função Educação
+        sl = self.ob("edu.despesa.aplicacao_direta_por_matricula", 2111300, 2022)    # São Luís: MSC sem a função Educação
         self.assertIsNone(sl["valor"])
         self.assertEqual(sl["status"], "NAO_COMPARAVEL")
         self.assertIn("não traz linhas", sl["nota"])
-        belem = self.ob("edu.despesa.por_matricula_rede_propria", 1501402, 2021)
-        self.assertIsNone(belem["valor"])
-        self.assertIn("0,1%", belem["nota"])
+        nat = self.ob("edu.despesa.aplicacao_direta_por_matricula", 2408102, 2023)   # Natal: MSC abaixo da DCA em todas as funções
+        self.assertIsNone(nat["valor"])
+        self.assertIn("todas as funções", nat["nota"])
+        rio = self.ob("edu.despesa.aplicacao_direta_por_matricula", 3304557, 2022)   # Rio: nenhuma linha da resposta traz função
+        self.assertIsNone(rio["valor"])
+        self.assertIn("Nenhuma das", rio["nota"])
 
-    def test_florianopolis_2023_linhas_sem_natureza_impedem_a_razao(self):
-        o = self.ob("edu.despesa.por_matricula_rede_propria", 4205407, 2023)
-        self.assertIsNone(o["valor"])
+    def test_pares_corrigidos_pelo_saldo_liquido_agora_tem_valor(self):
+        """Os cinco casos de 2025 e os demais pares que a política 1.1 deixava sem valor por somar linhas D em módulo."""
+        for cod, ano in ((2800308, 2025), (1501402, 2025), (5208707, 2025), (2408102, 2025), (1721000, 2025), (1501402, 2021), (4205407, 2023)):
+            o = self.ob("edu.despesa.aplicacao_direta_por_matricula", cod, ano)
+            self.assertIsNotNone(o["valor"], (cod, ano))
+            self.assertEqual(o["calculo"]["denominador_ref"], "edu.matriculas.rede_municipal")
+
+    def test_sete_pares_seguem_sem_valor_com_a_causa_registrada(self):
+        sem = sorted((o["ente"], o["ano"]) for o in self.g["observacoes"]
+                     if o["indicador"] == "edu.despesa.aplicacao_direta_por_matricula" and o["componente"] == "nominal" and o["valor"] is None)
+        self.assertEqual(sem, sorted([(2111300, 2022), (2111300, 2023), (3304557, 2021), (3304557, 2022), (2408102, 2022), (2408102, 2023), (5002704, 2021)]))
+        causas = {(d["ente"], d["ano"]): d["causa"] for d in self.g["diagnostico_pares_msc"]}
+        self.assertEqual(causas[(2111300, 2022)], "MSC_SEM_FUNCAO_12")
+        self.assertEqual(causas[(2408102, 2023)], "MSC_ABAIXO_EM_TODAS_AS_FUNCOES")
+        self.assertEqual(causas[(5002704, 2021)], "PERIMETRO_INTRA")
+        self.assertEqual(causas[(3304557, 2021)], "EM_ABERTO")
+
+    def test_diagnostico_cobre_os_28_pares_da_politica_1_1(self):
+        diag = self.g["diagnostico_pares_msc"]
+        self.assertEqual(len(diag), 28)
+        self.assertEqual(sum(1 for d in diag if d["causa"] == "SINAL_CORRIGIDO"), 21)
+        for d in diag:
+            self.assertEqual(d["situacao_politica_1_1"], "NAO_RECONCILIA")
+            if d["causa"] == "SINAL_CORRIGIDO":
+                self.assertEqual(d["situacao_politica_1_2"], "CONFERE")
+                self.assertGreater(d["linhas_d"], 0)
+            self.assertTrue(d["evidencia"])
 
     def test_catalogo_define_o_rotulo_por_matricula(self):
-        f = next(i for i in self.g["indicadores"] if i["id"] == "edu.despesa.por_matricula_rede_propria")
+        f = next(i for i in self.g["indicadores"] if i["id"] == "edu.despesa.aplicacao_direta_por_matricula")
         self.assertIn("por matrícula", f["nome"].lower())
         self.assertNotIn("estudante", f["nome"].lower())
         self.assertIn("não por estudante único", " ".join(f["o_que_nao_mede"]).lower())
@@ -336,7 +435,7 @@ class TestComparacoesPublicadas(unittest.TestCase):
 
     def test_referencias_do_grupo_conferem_com_as_observacoes(self):
         for r in self.g["referencias"]:
-            if r["grupo"] != "todas" or r["indicador"] not in ("edu.despesa.por_habitante", "edu.despesa.por_matricula_rede_propria", "edu.atu.rede_municipal"):
+            if r["grupo"] != "todas" or r["indicador"] not in ("edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula", "edu.atu.rede_municipal"):
                 continue
             vals = [o["valor"] for o in self.obs if o["indicador"] == r["indicador"] and o["componente"] == r["componente"] and o["etapa"] == r["etapa"]
                     and o["ano"] == r["ano"] and o["status"] == "OBSERVADO" and o["elegivel_comparacao"]]
@@ -348,7 +447,7 @@ class TestComparacoesPublicadas(unittest.TestCase):
 
     def test_razao_agregada_usa_os_mesmos_pares_da_media(self):
         for r in self.g["referencias"]:
-            if r["indicador"] != "edu.despesa.por_matricula_rede_propria" or r["grupo"] != "todas" or r["componente"] != "nominal" or not r["n"]:
+            if r["indicador"] != "edu.despesa.aplicacao_direta_por_matricula" or r["grupo"] != "todas" or r["componente"] != "nominal" or not r["n"]:
                 continue
             nums = dens = 0.0
             for cod in r["pares"]:
@@ -417,7 +516,7 @@ class TestComparacoesPublicadas(unittest.TestCase):
         self.assertEqual(V.v15_despesa_por_habitante(obs)["resultado"], "reprovada")
         obs = [dict(o) for o in self.obs]
         for o in obs:
-            if o["indicador"] == "edu.despesa.por_matricula_rede_propria" and o["status"] == "OBSERVADO":
+            if o["indicador"] == "edu.despesa.aplicacao_direta_por_matricula" and o["status"] == "OBSERVADO":
                 o["valor"] = o["valor"] + 1
                 break
         self.assertEqual(V.v17_despesa_por_matricula(obs)["resultado"], "reprovada")
@@ -440,6 +539,86 @@ class TestComparacoesPublicadas(unittest.TestCase):
         for l, o in zip(linhas, obs):
             self.assertEqual(l["valor"], "" if o["valor"] is None else repr(o["valor"]))
             self.assertEqual(l["denominador"], "" if not o.get("calculo") else repr(o["calculo"]["denominador"]))
+
+
+class TestReferenciaNacional(unittest.TestCase):
+    """Cálculo da referência nacional com municípios sintéticos: mesmo conceito das capitais, nada imputado."""
+
+    @staticmethod
+    def reg(cod, dca, rreo, linhas=1, f12=1):
+        return {"cod": cod, "dca": {"linhas": 10, "funcao12": dca, "linhas_funcao12": f12, "total_exceto_intra": dca},
+                "rreo": {"linhas": linhas, "exceto_intra": rreo, "intra": 0.0, "tipo_demonstrativo": "RREO"}}
+
+    def test_classificacao_por_motivo(self):
+        c = RN.classifica_municipio
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0), 100)[0], "ELEGIVEL")
+        self.assertEqual(c(self.reg(1, 1000.0, 999.5), 100)[0], "ELEGIVEL")                 # até R$ 1,00
+        self.assertEqual(c(self.reg(1, 1000000.0, 999500.0), 100)[0], "ELEGIVEL")            # até 0,1% da DCA
+        self.assertEqual(c(self.reg(1, 1000000.0, 900000.0), 100)[0], "DIFERENCA_MATERIAL_COM_RREO")
+        self.assertEqual(c(self.reg(1, 1000.0, None, linhas=0), 100)[0], "RREO_AUSENTE")
+        self.assertEqual(c({"cod": 1, "dca": {"linhas": 0}, "rreo": {}}, 100)[0], "DCA_AUSENTE")
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0, f12=2), 100)[0], "SEM_LINHA_EDUCACAO")
+        self.assertEqual(c(self.reg(1, -5.0, -5.0), 100)[0], "DESPESA_NAO_POSITIVA")
+        self.assertEqual(c(self.reg(1, 1000.0, 1000.0), None)[0], "POPULACAO_AUSENTE")
+        self.assertEqual(c({"cod": 1, "dca": {"erro": "x"}, "rreo": {}}, 100)[0], "ERRO_COLETA")
+
+    def test_razao_agregada_usa_os_mesmos_municipios_dos_dois_lados(self):
+        mun = [{"cod_ibge": i, "ente": f"M{i}", "uf": "XX"} for i in (1, 2, 3, 4)]
+        regs = [self.reg(1, 1000.0, 1000.0), self.reg(2, 3000.0, 3000.0), self.reg(3, 5000.0, 5000.0), self.reg(4, 9999.0, 1.0)]
+        pop = {1: 10, 2: 20, 3: 100, 4: 1_000_000}                      # o município 4 diverge do RREO: fica fora dos dois lados
+        r = RN.calcula(2025, regs, pop, mun, capitais={1})
+        g = next(x for x in r["grupos"] if x["id"] == "elegiveis")
+        self.assertEqual(g["n_municipios"], 3)
+        self.assertAlmostEqual(g["razao_agregada"], (1000 + 3000 + 5000) / (10 + 20 + 100), places=9)
+        self.assertEqual(g["populacao_dos_municipios"], 130)
+        self.assertAlmostEqual(g["mediana"], 100.0)                       # razões 100, 150, 50
+        self.assertNotAlmostEqual(g["razao_agregada"], g["media"], places=3)
+        self.assertEqual(r["exclusoes"]["DIFERENCA_MATERIAL_COM_RREO"]["n"], 1)
+        self.assertEqual(r["n_elegiveis"], 3)
+        self.assertAlmostEqual(r["cobertura"]["municipios_pct"], 75.0)
+        sem_cap = next(x for x in r["grupos"] if x["id"] == "elegiveis_exceto_capitais")
+        self.assertEqual(sem_cap["n_municipios"], 2)
+        self.assertEqual(r["rotulo_origem"], "Cálculo do OBEE com dados do Siconfi/STN e do IBGE")
+
+    def test_municipio_sem_registro_nao_e_imputado(self):
+        mun = [{"cod_ibge": i, "ente": f"M{i}", "uf": "XX"} for i in (1, 2)]
+        r = RN.calcula(2025, [self.reg(1, 1000.0, 1000.0)], {1: 10, 2: 10}, mun, capitais=set())
+        self.assertEqual(r["exclusoes"]["DCA_AUSENTE"]["n"], 1)
+        self.assertEqual(r["n_elegiveis"], 1)
+
+
+class TestReferenciaNacionalPublicada(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(base.RAIZ, "public", "eficiencia", "gold", "educacao_capitais.json"), encoding="utf-8") as f:
+            cls.g = json.load(f)
+
+    def test_referencia_publicada_e_completa(self):
+        refs = self.g["referencia_nacional_calculada"]
+        self.assertEqual([r["ano"] for r in refs], [2025])
+        r = refs[0]
+        self.assertEqual(r["n_municipios_total"], 5570)
+        self.assertEqual(r["rotulo_origem"], "Cálculo do OBEE com dados do Siconfi/STN e do IBGE")
+        self.assertEqual(sum(v["n"] for v in r["exclusoes"].values()) + r["n_elegiveis"], 5570)
+        self.assertEqual(len(r["capitais_elegiveis"]), 26)
+        g = next(x for x in r["grupos"] if x["id"] == "elegiveis")
+        self.assertEqual(g["n_municipios"], r["n_elegiveis"])
+        for k in ("municipios_pct", "populacao_pct", "despesa_pct"):
+            self.assertTrue(0 < r["cobertura"][k] <= 100)
+
+    def test_capitais_reproduzem_o_indicador(self):
+        r = self.g["referencia_nacional_calculada"][0]
+        hab = {o["ente"]: o["valor"] for o in self.g["observacoes"]
+               if o["indicador"] == "edu.despesa.por_habitante" and o["ano"] == 2025 and o["componente"] == "nominal"}
+        linhas = {l["cod"]: l for l in RN.linhas_municipios(2025)}
+        for cod in r["capitais_elegiveis"]:
+            self.assertAlmostEqual(linhas[cod]["razao"], hab[cod], places=6, msg=cod)
+
+    def test_a_matriz_marca_a_origem_calculada(self):
+        m = next(x for x in self.g["matriz_referencias"] if x["id"] == "obee.despesa_habitante_nacional")
+        self.assertEqual((m["origem"], m["comparabilidade"]), ("calculado_obee", "direta"))
+        self.assertTrue(all(x["origem"] in ("oficial_publicado", "calculado_obee") and x["comparabilidade"] in ("direta", "contexto", "incompativel")
+                            for x in self.g["matriz_referencias"]))
 
 
 if __name__ == "__main__":

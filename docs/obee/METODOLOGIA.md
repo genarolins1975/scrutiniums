@@ -1,6 +1,6 @@
 # Metodologia do piloto: Educação municipal nas capitais
 
-Versão metodológica 1.2, catálogo `2026-10-08.3` (histórico: 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md); 1.2 na rodada 5, ver [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
+Versão metodológica 1.3, catálogo `2026-10-08.4` (histórico: 1.3 na rodada 6, ver [RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md); 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md); 1.2 na rodada 5, ver [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
 
 ## 1. Universo e perímetros
 
@@ -16,7 +16,7 @@ Versão metodológica 1.2, catálogo `2026-10-08.3` (histórico: 1.0 na etapa in
 * **Estágio**: liquidado. Empenhado, liquidado e pago não se somam. Restos a pagar não processados inscritos no exercício não estão no liquidado.
 * **Perímetro**: função 12 (Educação), qualquer subfunção, despesas exceto intraorçamentárias (a DCA traz as intraorçamentárias em linha separada e sem abertura por função).
 * **Correção monetária opcional**: valor × (média do número-índice IPCA de 2025 ÷ média do ano). IPCA do IBGE, tabela 1737, variável 2266; média aritmética dos 12 meses. Fatores publicados na gold com 10 casas decimais.
-* **Conferência e elegibilidade (política 1.1)**: cada valor da DCA é comparado com o RREO do 6º bimestre, Anexo 02 (liquidado até o bimestre, função Educação, exceto intraorçamentárias). `d = DCA − RREO`.
+* **Conferência e elegibilidade (política 1.2; a 1.1 somava a MSC em módulo, ver rodada 6)**: cada valor da DCA é comparado com o RREO do 6º bimestre, Anexo 02 (liquidado até o bimestre, função Educação, exceto intraorçamentárias). `d = DCA − RREO`.
 
   | Situação | Regra | Comparações, medianas e variações |
   | --- | --- | --- |
@@ -73,9 +73,9 @@ Zero só aparece quando a fonte informa zero (etapa sem matrícula na rede).
 * Ordem inicial alfabética; ordem por valor só quando o leitor escolhe.
 * Sem ajuste por contexto: comparação descritiva. Sem gráfico de dispersão entre despesa e resultado (perímetros e períodos não alinhados).
 
-## 7. Despesa por habitante e despesa por matrícula (rodada 5)
+## 7. Despesa por habitante e razão por matrícula (rodadas 5 e 6)
 
-* **Despesa por habitante**: despesa liquidada na função 12 (DCA) ÷ população residente do IBGE do mesmo ano (estimativa 2021, Censo 2022, estimativas 2024 e 2025; 2023 sem publicação municipal, sem valor e sem interpolação). A população de 2021 tem outra base; variação entre 2021 e os anos seguintes é bloqueada.
-* **Despesa por matrícula da rede municipal**: despesa liquidada de aplicação direta (modalidade 90) na função 12, na MSC de dezembro, sem a subfunção 364 e sem os elementos 01, 03 e 05 do grupo 3.1.90, ÷ `QT_MAT_BAS` das escolas municipais. Regra de atribuição única das linhas da MSC a baldes mutuamente exclusivos, ponte conferida contra a DCA. Sem soma de conveniadas ao denominador, sem rateio por etapa, sem uso do SIOPE (examinado e não adotado).
-* Publicada em 102 de 130 pares capital × exercício; nos demais, o motivo do par. Detalhes, cobertura, matriz de referências e limitações em [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md).
+* **Despesa por habitante**: despesa liquidada na função 12 (DCA) ÷ população residente do IBGE do mesmo ano (estimativa 2021, Censo 2022, relação do DOU de 31/08/2023 para 2023, estimativas 2024 e 2025; a população de 2023 é censitária, a mesma de 2022, e não estimativa de julho de 2023). A população de 2021 e a de 2023 têm outra base: variações que as envolvem são bloqueadas.
+* **Razão da despesa de aplicação direta por matrícula da rede municipal** (`edu.despesa.aplicacao_direta_por_matricula`; substitui `edu.despesa.por_matricula_rede_propria`): despesa liquidada de aplicação direta (modalidades 90, 93 e 94) na função 12, na MSC de dezembro em saldo líquido, sem a subfunção 364 e sem os elementos 01, 03 e 05 do grupo 3.1, ÷ `QT_MAT_BAS` das escolas municipais. A parcela de beneficiário indeterminado (elementos 18, 39, 41, 45, 48 e compras de consórcio) é medida e publicada, sem limite de aceitabilidade. Regra de atribuição única das linhas da MSC a baldes mutuamente exclusivos, ponte conferida contra a DCA. Sem soma de conveniadas ao denominador, sem rateio por etapa, sem uso do SIOPE (examinado e não adotado).
+* Publicada em 123 de 130 pares capital × exercício; nos 7 restantes, a causa do par. Referência nacional da despesa por habitante calculada pelo OBEE (2025, 5.060 municípios). Detalhes, cobertura, matriz de referências e limitações em [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md).
 * A definição anterior, "despesa da função inteira ÷ matrículas totais" (`edu.despesa_por_matricula`), continua **não publicada**: numerador e denominador não representam o mesmo universo (conveniadas, itens sem matrícula, períodos diferentes; medição M01).

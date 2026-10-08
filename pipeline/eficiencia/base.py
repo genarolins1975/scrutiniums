@@ -72,22 +72,51 @@ def md5_arquivo_membro(zf, nome):
     return h.hexdigest()
 
 
+def hash_gerador():
+    """(sha256, n_arquivos) do código que gera a gold: todos os .py de pipeline/eficiencia (sem seed) e o catálogo de
+    indicadores, em ordem de caminho, cada um precedido do seu caminho relativo. Depende só do conteúdo: o mesmo código
+    dá o mesmo hash em qualquer máquina, esteja ou não commitado."""
+    arquivos = []
+    for pasta, dirs, nomes in os.walk(AQUI):
+        dirs[:] = sorted(d for d in dirs if d not in ("seed", "__pycache__"))
+        for n in sorted(nomes):
+            if n.endswith(".py") or os.path.join(pasta, n) == CATALOGO:
+                arquivos.append(os.path.join(pasta, n))
+    h = hashlib.sha256()
+    for a in sorted(arquivos):
+        h.update(os.path.relpath(a, RAIZ).encode("utf-8") + b"\0")
+        with open(a, "rb") as f:
+            h.update(f.read())
+        h.update(b"\0")
+    return h.hexdigest(), len(arquivos)
+
+
 def versao_codigo():
-    """Commit curto do código que gerou a gold; '+alterado' com mudança não commitada."""
+    """Identificação do CÓDIGO GERADOR: 'gerador-' e 12 caracteres do sha256 do conteúdo dos arquivos que calculam a gold.
+    Não é o commit que incorpora os dados: um commit só existe depois da geração. O commit de referência e o estado do
+    working tree ficam em `proveniencia_git()`, fora do hash de dados."""
+    return "gerador-" + hash_gerador()[0][:12]
+
+
+def proveniencia_git():
+    """Commit em que a geração partiu (HEAD no momento) e se havia mudança não commitada no código gerador. Informativo:
+    o commit que incorpora a gold gerada é o seguinte a este, e não pode constar nela."""
     env = os.environ.get("GITHUB_SHA")
-    if env:
-        return env[:12]
     try:
-        out = subprocess.run(["git", "-C", RAIZ, "rev-parse", "--short=12", "HEAD"],
-                             capture_output=True, text=True, timeout=10)
-        sha = out.stdout.strip() or None
-        suja = subprocess.run(
-            ["git", "-C", RAIZ, "status", "--porcelain", "--", "pipeline/eficiencia",
-             ":(exclude)pipeline/eficiencia/seed"],
-            capture_output=True, text=True, timeout=10).stdout.strip()
-        return f"{sha}+alterado" if sha and suja else sha
+        sha = env or subprocess.run(["git", "-C", RAIZ, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=10).stdout.strip() or None
+        suja = subprocess.run(["git", "-C", RAIZ, "status", "--porcelain", "--", "pipeline/eficiencia", ":(exclude)pipeline/eficiencia/seed"],
+                              capture_output=True, text=True, timeout=10).stdout.strip()
+        return {"commit_de_partida": sha, "codigo_com_mudanca_nao_commitada": bool(suja)}
     except Exception:
-        return None
+        return {"commit_de_partida": None, "codigo_com_mudanca_nao_commitada": None}
+
+
+def sha256_arquivo(caminho):
+    h = hashlib.sha256()
+    with open(caminho, "rb") as f:
+        for bloco in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloco)
+    return h.hexdigest()
 
 
 # ---------------------------------------------------------------- seed (CSV gz e JSON gz)
