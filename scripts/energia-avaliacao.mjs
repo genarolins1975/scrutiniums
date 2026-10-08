@@ -145,7 +145,7 @@ function medirPagina() {
       fonte: contar(/\bFontes?( e datas? de referência)?: /g),
       referencia: contar(/(Data de referência|Referência até|referência até|Gold processada|Publicação processada|datas? de referência:)/g),
       tabelas: principal.querySelectorAll("table").length,
-      figuras: principal.querySelectorAll("svg[role=img], img, canvas, figure").length,
+      figuras: [...principal.querySelectorAll("svg[role=img], img, canvas, figure")].filter((e) => !e.closest("figure[data-prova]")).length,
       glossario: principal.querySelectorAll('a[href*="/setor-eletrico/aprenda/"]').length,
       externo: principal.querySelectorAll('a[href^="http"]').length,
       conferido: contar(/conferid[oa]/gi),

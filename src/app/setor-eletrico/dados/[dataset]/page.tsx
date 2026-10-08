@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
@@ -75,6 +76,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
               O catálogo guarda só o começo da descrição da fonte; o texto completo está na página oficial do conjunto, abaixo.
             </p>
           )}
+          <LegendaDeSiglas />
         </header>
 
         {situacao && (

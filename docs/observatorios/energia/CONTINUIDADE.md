@@ -85,7 +85,7 @@ Para retomar a Fase 2:
 
 1. Ler `FASE_1.md` (o que ficou de fora e as duas decisões pendentes com o responsável: coleta da CCEE e revisão das interfaces de PLD e Previsões).
 2. Fluxos de módulos: o script está em `~/.claude/projects/.../workflows/scripts/modulos-energia-wf_d8ec3241-4c4.js` da sessão original; numa sessão nova, refazer a partir dos documentos de cada módulo em `modulos/*.md`, que registram fontes, método, estado e pedidos ao integrador.
-3. Pendências conhecidas: P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070; entregue em 07/10/2026), avaliação (P071; entregue em 07/10/2026), páginas acima de 600 KB sem compressão (Geração, Território, Qualidade). As datas cruas em textos de módulos foram corrigidas em 07/10/2026 (Território, Expansão, Empresas, PLD previsões, Regulação, Transição e o diálogo Comprove): o teste de reauditoria, que falhava, passa, e a Vitest está sem falhas (141 arquivos, 2689 testes aprovados e 1 ignorado).
+3. Pendências conhecidas **em 06/10/2026** (retrato daquela data; P023 e P024, Mercado, Visão geral e Aprenda foram entregues em 07 e 08/10/2026, ver as seções "Entregue" abaixo, e o que sobra do Aprenda são os 35 achados abertos ou parciais da revisão adversarial, em `modulos/aprenda.md`, seção 7): P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070; entregue em 07/10/2026), avaliação (P071; entregue em 07/10/2026), páginas acima de 600 KB sem compressão (Geração, Território, Qualidade). As datas cruas em textos de módulos foram corrigidas em 07/10/2026 (Território, Expansão, Empresas, PLD previsões, Regulação, Transição e o diálogo Comprove): o teste de reauditoria, que falhava, passa, e a Vitest está sem falhas (141 arquivos, 2689 testes aprovados e 1 ignorado).
 
 ## 06/10/2026: Fase 2, Visão geral nova em produção
 
@@ -186,6 +186,26 @@ Para retomar a Fase 2:
 * **Corrigido depois da medição, sem medir** (`avaliacao/posteriores.json`): a nota do GSF de 12 meses.
 * **Verificação**: Vitest, tsc, lint e build sem erro; Python com a falha conhecida de `test_energia_carga` (bronze não versionado).
 * Estado: rodada concluída com limitação; a meta de 9,5 em didatismo e qualidade visual segue a 2,5 e 2,0 pontos.
+
+### Entregue: Mudanças estruturais da r7 (08/10/2026, ainda não medidas pelos nove revisores)
+
+* **O que mudou** (resposta ao tripé que os revisores da r6 repetiram: Siglas desalinhada, resposta fora da primeira tela, Entender pesado): (1) a legenda de Siglas passou a ser derivada do texto à vista no nível escolhido (`LegendaSiglas.tsx`; o HTML do servidor mantém a lista declarada pela página); dicionário com 15 nomes novos, todos já publicados por extenso no observatório e protegidos por teste; (2) abas de seção em uma linha que rola no celular, com esmaecimento de 2 rem; (3) a resposta curta vem antes dos filtros, por CSS, sem mexer na ordem do DOM; cabeçalho de módulo mais baixo no celular; (4) `TabelaInterativa` recolhe em Entender também a tabela com mais de 6 colunas; (5) células da tabela com classes curtas (`tc`), que liberam dezenas de kB de HTML nas páginas com tabela grande e devolveram folga ao Território, que estava a 100 bytes do teto de 600 kB.
+* **Medição própria** (`scripts/energia-estrutura.mjs` e `scripts/energia_estrutura_resumo.py`; Chromium headless, Entender, 94 páginas; antes = build do commit `df2a374ed`, depois = build de 08/10/2026 sobre o commit `0f16fd0e2`):
+
+| Medida | Antes | Depois |
+|---|---|---|
+| Resposta começa na primeira tela, 390 px (de 70 páginas com resposta) | 3 | 7 |
+| Resposta começa na primeira tela, 1440 px | 30 | 38 |
+| Topo da resposta, mediana, 390 px | 1.256 px | 1.037 px |
+| Topo da resposta, mediana, 1440 px | 916 px | 891 px |
+| Altura da página, mediana, 390 px | 8.558 px | 8.234 px |
+| Páginas com sigla do texto fora da legenda | 55 (149 siglas) | 8 (33 siglas) |
+| Páginas com sigla na legenda que o texto não usa | 34 (64 siglas) | 2 (2 siglas) |
+| Páginas com tabela de mais de 6 colunas à vista | 30 (44 tabelas) | 23 (32 tabelas) |
+
+* **O que não foi resolvido**: em 390 px a resposta ainda começa abaixo da dobra em 63 das 70 páginas (dobra em 844 px, topo mediano em 1.037 px), porque título, abertura, fontes, siglas, abas e seletor de profundidade seguem ocupando cerca de 640 px; resolver isso passa por reescrever a abertura de cada página como a resposta, que é conteúdo por página e não estrutura. A página inicial do observatório segue sem legenda (22 siglas no texto, que pedem expansão no ponto de uso). Restam 32 tabelas largas à vista, quase todas tabelas simples sem o componente `TabelaInterativa`.
+* **Régua**: decisão registrada para a r7: ficha de evidência (`figure[data-prova]`) deixa de contar como figura, porque o cartão é ele próprio o equivalente textual (número, fonte e período). Aplicada em `scripts/energia-avaliacao.mjs`; só muda a página `/aprenda/gsf` (o item "equivalente textual para as figuras") e entra em `ajustes_do_metodo.json` quando a r7 for gerada. A r6 não é reprocessada.
+* **Pendente**: nova rodada de revisores para medir o efeito sobre didatismo e qualidade visual; sem ela, esta seção só afirma o que o script mede.
 
 ### Próximos passos da Fase 2
 
