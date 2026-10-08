@@ -10,6 +10,7 @@ import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraA
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
+import { conjuntoLegivel } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
@@ -493,7 +494,7 @@ export default function MapaDoObservatorio() {
                   </p>
                   {natEv && (
                     <p className="flex flex-wrap items-center gap-2">
-                      <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {ev.fonte.conjunto}, da {ev.fonte.orgao}.</span>
+                      <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {conjuntoLegivel(ev.fonte.conjunto).texto}, da {ev.fonte.orgao}.</span>
                     </p>
                   )}
                   <dl className="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_auto]">

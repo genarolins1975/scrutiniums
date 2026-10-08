@@ -5,6 +5,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RedeEscolha } from "@/components/energia/RedeControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -31,6 +32,7 @@ import {
   marcosQuebras,
   paraTabela,
   respostaBalanco,
+  vereditoBalanco,
   respostaExterior,
 } from "@/lib/energia/rede";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -95,9 +97,9 @@ export function RedeBalanco({
         <RedeEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={sm} onEscolher={(x) => definir({ sm: x })} />
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p029" aria-live="polite">
+      <RespostaCurta id="p029" vivo veredito={vereditoBalanco(balanco, sm, periodo)}>
         {respostaBalanco(balanco, sm, periodo)}
-      </p>
+      </RespostaCurta>
 
       <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
         <div className="min-w-0">

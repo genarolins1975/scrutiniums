@@ -2,7 +2,7 @@ import Link from "next/link";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import type { Natureza } from "@/lib/energia/tipos";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
-import { dataRef, diaBrasilia, textoPeriodo } from "@/lib/energia/evidencia";
+import { conjuntoLegivel, dataRef, diaBrasilia, textoPeriodo } from "@/lib/energia/evidencia";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import type { Prova } from "@/lib/energia/conteudo/provas";
 import { comVolta } from "@/lib/energia/conteudo/trilhas";
@@ -73,6 +73,7 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
   }
   const { evidencia: ev, painel, natureza, leitura, complemento } = prova.dado;
   const base = baseDoValor(ev);
+  const conjunto = conjuntoLegivel(ev.fonte.conjunto);
   const fimRef = dataRef(ev.periodo.fim ?? ev.periodo.inicio);
   return (
     <figure data-prova="evidencia" className="border border-linha bg-superficie p-4 sm:p-5">
@@ -88,9 +89,10 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
         {textoPeriodo(ev.periodo)} · {ev.entidade}
       </p>
       <p className="mt-1 text-xs text-mineral" data-fonte="true">
-        Fonte: {ev.fonte.orgao}, {ev.fonte.conjunto}.
+        Fonte: {ev.fonte.orgao}, {conjunto.texto}.
         {fimRef ? ` Referência até ${fimRef}.` : ""}
         {ev.fonte.capturado_em ? ` Capturada em ${dataRef(diaBrasilia(ev.fonte.capturado_em))}.` : ""}
+        {conjunto.codigos.length > 0 && <span data-nivel="analisar"> Código do conjunto na fonte: {conjunto.codigos.join(", ")}.</span>}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-carvao">{leitura}</p>
       {complemento && (

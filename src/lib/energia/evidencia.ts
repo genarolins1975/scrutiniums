@@ -101,6 +101,32 @@ export type Evidencia = {
   citacao: string;
 };
 
+/** Nome com que o leitor reconhece alguns conjuntos cujo código é o nome técnico da fonte. */
+const NOME_DO_CONJUNTO: Record<string, string> = {
+  PLD_HORARIO: "PLD horário por submercado",
+};
+
+const CODIGO_DE_CONJUNTO = /^(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)$/;
+
+/**
+ * Nome do conjunto da fonte como o leitor o lê, mais os códigos técnicos que ficaram de fora. Códigos de conjunto da
+ * CCEE (PLD_HORARIO, mre_mensal) saem do texto de Entender e vão para Analisar: o nome legível vem do dicionário acima,
+ * do texto entre parênteses que a própria fonte já traz ("PLD_HORARIO (PLD horário por submercado)") ou, na falta de
+ * ambos, do próprio código com espaços no lugar do sublinhado. Itens separados por ponto e vírgula são tratados um a um.
+ */
+export function conjuntoLegivel(conjunto: string): { texto: string; codigos: string[] } {
+  const codigos: string[] = [];
+  const itens = conjunto.split(/;\s*/).map((item) => {
+    const m = /^([A-Za-z0-9_]+)\s*\((.+)\)$/.exec(item.trim());
+    const cod = m ? m[1] : item.trim();
+    if (!CODIGO_DE_CONJUNTO.test(cod)) return item.trim();
+    codigos.push(cod);
+    if (m) return m[2];
+    return NOME_DO_CONJUNTO[cod] ?? cod.replace(/_/g, " ").toLowerCase();
+  });
+  return { texto: itens.join("; "), codigos };
+}
+
 export const SEM_DADO = "sem dado";
 export const SITE = "https://scrutiniums.com/setor-eletrico";
 

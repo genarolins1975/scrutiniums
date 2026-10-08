@@ -1043,6 +1043,24 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
   return frases.join(" ");
 }
 
+/**
+ * Veredito do P029 em palavras simples: em quantas horas os números do balanço conferem entre si na região escolhida e o
+ * que a fonte não diz. A contagem por identidade, o período de cada resíduo e o maior valor ficam em respostaBalanco.
+ */
+export function vereditoBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">, sm: SubsistemaOuSin, periodo: { inicio: string; fim: string }): string {
+  const ids = identidadesDa(b, sm);
+  const conferidas = ids.filter((x) => x.horas > 0);
+  if (!conferidas.length) return "";
+  const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
+  const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
+  const confere =
+    menor === 1
+      ? "todas as horas conferidas"
+      : `pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas`;
+  const resto = ids.some((y) => y.horas_residuo > 0) ? " Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa." : "";
+  return `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}.${resto}`;
+}
+
 export type LinhaMesBalanco = {
   id: string;
   m: string;
