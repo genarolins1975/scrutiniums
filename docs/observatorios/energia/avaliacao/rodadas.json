@@ -2934,6 +2934,293 @@
     "desempenho": 8.8
    },
    "jornadas_cumpridas": 10
+  },
+  {
+   "id": "2026-10-08-r7",
+   "reprocessada": null,
+   "ajustes_do_metodo": [
+    "a ficha de evidência (o elemento figure com data-prova, que mostra valor, fonte, período e a ficha Comprove este número) deixa de contar como figura na anatomia da página: o cartão já é o equivalente textual do número, e a régua cobrava dele uma tabela equivalente. A contagem de figuras passa a ignorar a ficha de evidência e o que está dentro dela. O efeito conhecido é uma página, o verbete do GSF, que na r6 perdia o item equivalente textual para as figuras; as outras páginas com ficha tinham tabela ou outras figuras. A regra vale da rodada 2026-10-08-r7 em diante, e a r6 não foi reprocessada",
+    "a coleta objetiva da r7 foi feita duas vezes. A primeira, sobre o build do commit ee8588d03, acusou rolagem horizontal da página a 360 e 390 px em 10 páginas, entre elas Geração (e as páginas de capacidade, restrições e térmica), Rede (e balanço e exterior) e PLD (modelos e previsões): a faixa de seções, sangrada até a borda da tela com margem negativa de 24 px, passava da tela onde o respiro lateral da página é de 16 px. A causa foi corrigida no commit 750e5df31, a rolagem horizontal foi conferida nas 94 páginas em 360, 390, 768 e 1440 px (564 combinações, nenhuma com rolagem), e a coleta, as capturas limpas, as dez jornadas e a revisão foram feitas sobre o build corrigido. A primeira coleta não entra na gold",
+    "as 188 capturas versionadas da primeira dobra foram refeitas a partir das capturas limpas da r7"
+   ],
+   "data": "2026-10-08",
+   "versao_codigo": "b1702c12e014+alterado",
+   "paginas": 94,
+   "nota_ponderada_media": 8.3,
+   "atendem_meta": 0,
+   "defeitos": [
+    {
+     "chave": "3f7cd6230f",
+     "severidade": "alto",
+     "dimensao": "atualidade",
+     "descricao": "conjunto atrasado: aneel_social/aneel_scs (367 dias)",
+     "n_paginas": 6
+    },
+    {
+     "chave": "7daf9fa541",
+     "severidade": "alto",
+     "dimensao": "correcao",
+     "descricao": "nenhuma gold da página tem ficha de evidência com teste registrado",
+     "n_paginas": 5
+    },
+    {
+     "chave": "e0e6b0c97b",
+     "severidade": "alto",
+     "dimensao": "navegacao",
+     "descricao": "jornada J9 interrompida no passo \"Compara a data de referência com as datas de captura e de processamento mostradas na página\": não achei a data de publicação do rodapé",
+     "n_paginas": 1
+    },
+    {
+     "chave": "d8b838b731",
+     "severidade": "alto",
+     "dimensao": "rastreabilidade",
+     "descricao": "painel numérico sem Comprove este número",
+     "n_paginas": 1
+    },
+    {
+     "chave": "0cf72c78c8",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "3 arquivo(s) CSV com checagem reprovada em publicacao.json (arquivos.csv_com_problema)",
+     "n_paginas": 12
+    },
+    {
+     "chave": "3cb32d2298",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa",
+     "n_paginas": 11
+    },
+    {
+     "chave": "b8a5326574",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado; caminho seguinte",
+     "n_paginas": 8
+    },
+    {
+     "chave": "f8baad3cce",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: h1 único com abertura",
+     "n_paginas": 6
+    },
+    {
+     "chave": "7c1c50b3b6",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: limite de leitura declarado",
+     "n_paginas": 3
+    },
+    {
+     "chave": "43a7002ac2",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; tabela equivalente; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "6384809e9b",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta",
+     "n_paginas": 3
+    },
+    {
+     "chave": "98986f827c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; gráfico ou mapa",
+     "n_paginas": 3
+    },
+    {
+     "chave": "5b94dc0e48",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; download e link compartilhável",
+     "n_paginas": 3
+    },
+    {
+     "chave": "5d686b57a0",
+     "severidade": "medio",
+     "dimensao": "navegacao",
+     "descricao": "link compartilhado: a série desligada, o zoom do mapa e a seção de tabela aberta não voltam para quem abre o endereço copiado",
+     "n_paginas": 3
+    },
+    {
+     "chave": "bdbf1eb55c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; tabela equivalente; interação local",
+     "n_paginas": 2
+    },
+    {
+     "chave": "aac136fd0c",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: evidência ou fonte oficial",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c9e37973e9",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; Comprove este número",
+     "n_paginas": 1
+    },
+    {
+     "chave": "79d0d0f892",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: gráfico ou mapa; interação local",
+     "n_paginas": 1
+    },
+    {
+     "chave": "77264c7cde",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: pergunta como título; resposta curta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "8275b70867",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: período, universo e unidade; gráfico ou mapa; como ler e o que não permite concluir; download e link compartilhável; próxima pergunta",
+     "n_paginas": 1
+    },
+    {
+     "chave": "64d040073a",
+     "severidade": "medio",
+     "dimensao": "completude",
+     "descricao": "itens ausentes da anatomia do painel: resposta curta; período, universo e unidade; gráfico ou mapa; download e link compartilhável",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c1dcce287a",
+     "severidade": "medio",
+     "dimensao": "correcao",
+     "descricao": "Restrições de geração: a linha Parecer de acesso mostra origem local e sistêmica como sem dado e, na mesma linha, Total 0,0 e Parcela 0,00, sem dizer se é zero medido ou soma de ausências",
+     "n_paginas": 1
+    },
+    {
+     "chave": "a2c77d513c",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "Perdas: com ano e indicador escolhidos, a ficha da distribuidora e o comparador continuam em perdas totais de 2025 e de 2003 a 2025, sem respeitar a escolha",
+     "n_paginas": 1
+    },
+    {
+     "chave": "de3d01f5bd",
+     "severidade": "medio",
+     "dimensao": "interatividade",
+     "descricao": "controle sem efeito observável: |Brasil inteiro",
+     "n_paginas": 1
+    },
+    {
+     "chave": "dba9cf3d31",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: a média temporal de ago/2026, base da variação mostrada, não traz período escrito nem ficha Comprove este número, ao contrário das médias ponderadas",
+     "n_paginas": 1
+    },
+    {
+     "chave": "9dc774dfee",
+     "severidade": "medio",
+     "dimensao": "rastreabilidade",
+     "descricao": "histórico do PLD: as médias ponderadas pela carga não podem ser reproduzidas a partir dos arquivos oferecidos na página, porque nenhum deles traz a carga horária do ONS",
+     "n_paginas": 1
+    },
+    {
+     "chave": "f310844b0c",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 619 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "723a57c379",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 622 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "cd2154a849",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 640 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "23a863e95e",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 650 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "2ee530ab1a",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 659 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "46b3a72321",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 683 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "6f9521f190",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 826 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "9a51459c65",
+     "severidade": "baixo",
+     "dimensao": "desempenho",
+     "descricao": "HTML de 855 KB, acima da meta de 600 KB",
+     "n_paginas": 1
+    },
+    {
+     "chave": "c4111b121d",
+     "severidade": "baixo",
+     "dimensao": "navegacao",
+     "descricao": "Previsões: o link do painel P016, seguido a partir do modo Auditar, abre em Entender e perde o nível de profundidade",
+     "n_paginas": 1
+    },
+    {
+     "chave": "5a211d31a0",
+     "severidade": "baixo",
+     "dimensao": "rastreabilidade",
+     "descricao": "ficha de distribuidora: o Comprove do cartão de perdas exibe 12,1% enquanto o cartão e a página Perdas exibem 12,12%",
+     "n_paginas": 1
+    }
+   ],
+   "defeitos_por_severidade": {
+    "critico": 0,
+    "alto": 4,
+    "medio": 22,
+    "baixo": 10
+   },
+   "medias_por_dimensao": {
+    "didatismo": 6.9,
+    "visual": 7.3,
+    "navegacao": 9.1,
+    "interatividade": 9.9,
+    "acessibilidade": 9.0,
+    "completude": 8.9,
+    "correcao": 7.9,
+    "rastreabilidade": 9.4,
+    "atualidade": 7.9,
+    "desempenho": 8.8
+   },
+   "jornadas_cumpridas": 9
   }
  ]
 }

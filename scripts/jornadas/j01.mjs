@@ -93,18 +93,30 @@ export default {
       return `Contraste: "${contraste.slice(0, 175)}"; em "O que não se pode concluir": "${naoConcluir.slice(0, 85)}..."; links ao verbete de tarifa: ${ligaTarifa}`;
     });
 
-    await j.passo('Segue "ver no painel" do exemplo real e chega à página PLD', async () => {
-      const exemplo = N((await p.locator("main").innerText()).match(/EXEMPLO REAL\s*([^\n]+)/i)?.[1] ?? "");
+    await j.passo('Segue "ver no painel" do exemplo real e chega ao painel do PLD', async () => {
+      // o exemplo real é uma ficha: rótulo, data e valor ficam em linhas separadas até o link "Ver no painel"
+      const exemplo = N((await p.locator("main").innerText()).match(/EXEMPLO REAL([\s\S]*?)VER NO PAINEL/i)?.[1] ?? "");
       j.afirmar(/\d{2}\/\d{2}\/\d{4}/.test(exemplo) && /R\$\s?[\d.,]+/.test(exemplo), `exemplo real sem data e valor: "${exemplo}"`);
       await clicar(p.getByRole("link", { name: /ver no painel/i }).first());
+      await p.waitForURL(/\/setor-eletrico\/pld\/cmo-e-formacao(\?|#|$)/, { timeout: 10000 });
+      await assentar();
+      await p.locator("h1").first().waitFor({ state: "visible" });
+      const h1 = N(await p.locator("h1").first().innerText());
+      j.afirmar(h1 === "CMO e formação de preço", `h1 do painel inesperado: ${h1}`);
+      const volta = N(await p.getByRole("link", { name: /Voltar ao verbete PLD/ }).first().innerText()).replace(/\s+/g, " ");
+      return `Exemplo no verbete: "${exemplo.slice(0, 110)}"; URL ${j.url()}; h1 "${h1}"; botão de retorno: "${volta}"`;
+    });
+
+    // o link do exemplo leva ao painel que contém a evidência; o arquivo do PLD fica na página do módulo, a um clique
+    await j.passo("Vai do painel à página PLD, onde estão os arquivos", async () => {
+      await clicar(p.locator('a[href="/setor-eletrico/pld"]:visible').first());
       await p.waitForURL(/\/setor-eletrico\/pld(\?|#|$)/, { timeout: 10000 });
       await assentar();
       await p.locator("h1").first().waitFor({ state: "visible" });
       const h1 = N(await p.locator("h1").first().innerText());
       j.afirmar(h1 === "PLD", `h1 da página de dados inesperado: ${h1}`);
-      const volta = N(await p.getByRole("link", { name: /Voltar ao verbete PLD/ }).first().innerText()).replace(/\s+/g, " ");
       marcos.chegadaPld = n;
-      return `Exemplo no verbete: "${exemplo.slice(0, 110)}"; URL ${j.url()}; h1 "${h1}"; botão de retorno: "${volta}"`;
+      return `URL ${j.url()}; h1 "${h1}"`;
     });
 
     await j.passo("Baixa o CSV do PLD e confere cabeçalho, linhas e último dia", async () => {
@@ -124,6 +136,9 @@ export default {
     });
 
     await j.passo('Volta ao verbete pelo botão "Voltar ao verbete PLD"', async () => {
+      await agir(() => p.goBack());
+      await p.waitForURL(/\/setor-eletrico\/pld\/cmo-e-formacao/, { timeout: 10000 });
+      await assentar();
       await clicar(p.getByRole("link", { name: /Voltar ao verbete PLD/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/pld#exemplo/, { timeout: 10000 });
       await assentar();

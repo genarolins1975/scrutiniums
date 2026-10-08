@@ -206,7 +206,7 @@ Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma r
 
 ### 8.2 Rodadas e resultado
 
-Fonte: `public/energia/gold/avaliacao.json`; seis rodadas, cinco em 07/10/2026 (`2026-10-07-r1` a `r5`) e a sexta em 08/10/2026 (`2026-10-08-r6`); dados de referência das golds de 01/10/2026. A r6 é a rodada atual, medida depois da revisão adversarial de Mercado, Geração e Visão geral e da leitura de tabelas sob demanda.
+Fonte: `public/energia/gold/avaliacao.json`; sete rodadas, cinco em 07/10/2026 (`2026-10-07-r1` a `r5`) e duas em 08/10/2026 (`2026-10-08-r6` e `r7`); dados de referência das golds de 01/10/2026. A r7 é a rodada atual, medida depois das três mudanças estruturais (legenda de siglas pelo texto visível, resposta curta na primeira tela com faixas de navegação roláveis, Entender sem tabelas largas) e do fechamento dos 35 achados do Aprenda.
 
 | Rodada | Páginas | Dimensões com nota | Nota ponderada média | Atendem a meta | Defeitos crítico / alto / médio / baixo | Jornadas cumpridas |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -216,21 +216,22 @@ Fonte: `public/energia/gold/avaliacao.json`; seis rodadas, cinco em 07/10/2026 (
 | r4 (depois da segunda rodada de correção) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 33 / 12 | 10 de 10 |
 | r5 (depois da terceira rodada de correção) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 35 / 12 | 10 de 10 |
 | r6 (depois da revisão adversarial 2 e das tabelas sob demanda) | 94 | 10 de 10 | 8,3 | 0 | 0 / 3 / 25 / 10 | 10 de 10 |
+| r7 (depois das mudanças estruturais e do fechamento do Aprenda) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 22 / 10 | 9 de 10 |
 
 Média das páginas por dimensão (rubrica 1.0; n.av.: dimensão não avaliada na rodada):
 
-| Dimensão | r1 | r2 | r3 | r4 | r5 | r6 | Meta |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Didatismo | n.av. | 6,8 | 7,0 | 6,9 | 7,0 | 7,0 | 9,5 |
-| Qualidade visual | n.av. | 6,9 | 7,2 | 7,4 | 7,4 | 7,5 | 9,5 |
-| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,2 | 9,2 | 9,2 | 9,0 |
-| Interatividade | 9,5 | 9,4 | 9,9 | 9,9 | 9,9 | 9,9 | 9,0 |
-| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 | 9,0 | 9,0 | 9,0 |
-| Completude | 8,4 | 8,5 | 8,6 | 8,7 | 8,7 | 8,8 | 9,0 |
-| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 7,9 | 7,9 | 7,9 | 9,0 |
-| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,3 | 9,3 | 9,4 | 9,0 |
-| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 7,9 | 7,9 | 7,9 | 9,0 |
-| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 8,7 | 8,7 | 8,8 | 9,0 |
+| Dimensão | r1 | r2 | r3 | r4 | r5 | r6 | r7 | Meta |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Didatismo | n.av. | 6,8 | 7,0 | 6,9 | 7,0 | 7,0 | 6,9 | 9,5 |
+| Qualidade visual | n.av. | 6,9 | 7,2 | 7,4 | 7,4 | 7,5 | 7,3 | 9,5 |
+| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,2 | 9,2 | 9,2 | 9,1 | 9,0 |
+| Interatividade | 9,5 | 9,4 | 9,9 | 9,9 | 9,9 | 9,9 | 9,9 | 9,0 |
+| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 | 9,0 | 9,0 | 9,0 | 9,0 |
+| Completude | 8,4 | 8,5 | 8,6 | 8,7 | 8,7 | 8,8 | 8,9 | 9,0 |
+| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 7,9 | 7,9 | 7,9 | 7,9 | 9,0 |
+| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,3 | 9,3 | 9,4 | 9,4 | 9,0 |
+| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 7,9 | 7,9 | 7,9 | 7,9 | 9,0 |
+| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 8,7 | 8,7 | 8,8 | 8,8 | 9,0 |
 
 * **O que evoluiu e o que não evoluiu.** Defeitos abertos de 94 (r2) para 50 (r3): 54 corrigidos entre as rodadas. Rolagem horizontal da página: de 23 páginas para nenhuma (360 e 390 px em Entender, 390 px em Auditar). Alvos de toque abaixo de 24 px: de 67 páginas para nenhuma. Violações axe: nenhuma nas duas rodadas. Acessibilidade subiu de 7,7 para 9,0, que é o teto da rubrica sem leitor de tela real. Didatismo (6,8 para 7,0) e qualidade visual (6,9 para 7,2) mexeram pouco: nenhuma das 94 páginas atinge 9,5 e a pior nota de didatismo subiu de 4,0 para 5,0.
 * **Defeitos altos que sobram (4):** conjunto atrasado da ANEEL, SCS, 367 dias além do prazo (6 páginas); nenhuma ficha de evidência com teste registrado nas páginas do PLD (5); painel numérico sem Comprove este número nas fichas de modelos e na linha do tempo da Regulação (5); uma página sem fonte declarada.
@@ -271,6 +272,24 @@ Evidência: `public/energia/gold/avaliacao.json` (rodada `2026-10-08-r6`), nove 
 * **Defeitos de gráfico e de número apontados pelos revisores e ainda abertos (não reconferidos por mim, exceto o do GSF).** Rótulo duplicado na linha de referência de Emissões e de MMGD ("2025: 0,0461 tCO2/MWh: 0,0461 tCO2/MWh"); eixo de Carteira em 390 px sem separação entre os rótulos; quadros de texto de Emissões espremidos em 390 px; eixo de Acesso (Inclusão) começando em 0,200, que faz 0,1 ponto percentual parecer um pico; texto de Cobertura com 72 municípios acima de 100 contra faixas que somam 75; CERBRANORTE com perdas negativas sem explicação; total de usinas sob controle da Equatorial S.A. (13.161) destoando da fronteira.
 * **Erros meus acusados pela medição.** (1) O seletor de profundidade: a correção da revisão adversarial (setas do teclado substituindo a entrada do histórico) quebrou o contrato de que o Voltar desfaz a troca de nível; a primeira coleta mediu 69 páginas com defeito alto de navegação e nota ponderada média de 8,1. Foi revertida, e a coleta objetiva e as jornadas foram refeitas (ver `ajustes_do_metodo.json`). (2) O cartão do GSF de 12 meses: a diferença de 12,12 p.p. com o InfoMercado Nº 229 vale para a janela do boletim (ago/2025 a jul/2026, 80,43%), e o cartão mostra a janela mais recente (81,8%), de modo que a subtração do leitor dava 10,75 p.p. A nota passou a dizer as duas janelas (corrigido depois da medição, ver `posteriores.json`).
 * **Limites.** Os revisores são agentes de IA, sem calibração entre rodadas e sem teste com pessoas. Em 390 px o pacote traz três trechos por página, e vários revisores declararam não ter visto gráficos e mapas de celular. Os revisores da r6 leram as capturas da primeira versão do build, e a coleta objetiva é a da versão corrigida; a diferença é só o histórico do navegador.
+
+#### Rodada 7: o que mudou, o que não mudou e por quê
+
+Evidência: `public/energia/gold/avaliacao.json` (rodada `2026-10-08-r7`), nove revisores em contexto limpo sobre as 94 páginas, capturas limpas, coleta de 08/10/2026 sobre o build do commit `750e5df31` (código igual ao do commit seguinte, que só acrescentou documentação). As jornadas J1 e J5 estão na segunda execução, com os roteiros atualizados (ver `ajustes_do_metodo.json`).
+
+* **Resultado.** Nota ponderada média 8,3 nas duas rodadas (`resumo.nota_ponderada_media`), nenhuma página na meta, 36 defeitos abertos (r6: 38) com severidades 0 / 4 / 22 / 10 (r6: 0 / 3 / 25 / 10), 94 rotas sem violação axe e sem rolagem horizontal da página, jornadas 9 de 10 (a J9 interrompeu por regressão minha, descrita adiante).
+* **Didatismo e qualidade visual não subiram.** Didatismo 6,94 (r6: 7,00) e visual 7,31 (r6: 7,50), ambos contra metas de 9,5 (fonte: médias das notas de `revisao_visual.json`, r6 lida do commit anterior). Em didatismo, 21 páginas subiram, 45 ficaram iguais e 28 caíram; em visual, 11, 40 e 43. Páginas com visual de 8,0 ou mais: 28 na r6, 19 na r7. Pior didatismo 5,0 (r6: 5,5), no conjunto POF CV; melhor 8,5.
+* **Onde a nota se mexeu.** O Aprenda subiu 0,33 em didatismo (7,46 para 7,79; 12 páginas), o único módulo em que esta rodada reescreveu conteúdo (os 35 achados). Também subiram Carga (0,50, três páginas) e Expansão (0,30, cinco). Caíram Dados (0,46 em didatismo e 0,50 em visual, 12 páginas), Transição (0,50), Visão geral (0,50, uma página), Mercado (0,38) e, em visual, PLD (0,42) e Empresas (0,46). Cada grupo de 8 a 14 páginas foi lido por um revisor, e os revisores são outras instâncias de agente: parte da variação por módulo é calibração do revisor, não mudança na página.
+* **O que as mudanças estruturais produziram** (evidência: `relatorio.json` da coleta e texto dos revisores; as contagens por expressão regular nos textos dos revisores são heurísticas):
+  * Legenda de siglas pelo texto visível: páginas com queixa sobre a lista de siglas caíram de 68 para 57. Os reparos novos são siglas usadas e fora da lista (SIN, PASI, PNAD, SCS, CDE, DMR, MMGD) e itens escondidos em "Mais N siglas".
+  * Resposta curta na primeira tela: queixas de resposta tardia, de 8 páginas para 7. Os revisores seguem descrevendo a primeira tela de 390 px como cabeçalho, fontes, siglas e abas, e as aberturas continuam a descrever a página em vez de responder ao título, o que é conteúdo (pela medição estrutural, a resposta fica abaixo da dobra de 390 px em 63 de 70 páginas).
+  * Entender com menos peso: altura mediana a 390 px de 8.657 para 8.164 px (menos 6%) e a 1440 px de 4.852 para 4.680 px; páginas acima de 10.000 px a 390 px, de 32 para 29. Queixas de tabela larga cortada, de 19 páginas para 14.
+  * Faixas de navegação roláveis: trocaram a quebra em várias linhas por uma linha só com esmaecimento nas bordas, e os revisores a leem como cortada. Sete dos nove citam abas ou menu cortados sem pista de rolagem; as páginas com essa queixa foram de 36 para 41; a coleta registra 191 itens de navegação além da borda a 390 px em 48 páginas, contra nenhum na r6 (a faixa é rolável por desenho). O esmaecimento não basta como sinal nas capturas. É o ponto em que a mudança estrutural custou legibilidade e provavelmente contribuiu para a queda do visual.
+* **O que mexeu na nota ponderada.** A completude subiu de 8,8 para 8,9 em dez páginas, por dois motivos que não são conteúdo novo. Sete são do ajuste da régua (a ficha de evidência deixa de contar como figura): o verbete do GSF (de 8,5 para 10,0), as trilhas Água, operação e preço e Custo, tarifa e orçamento, e os verbetes ACL, CDE, DESSEM e Tarifa TE e TUSD (de 7,1 para 8,5). Três são um artefato do instrumento: Empresas, Inclusão energética e Transição passaram de 3,5 para 4,5 porque o item interação local passou a contar o resumo "Mais N siglas" da legenda, que não é interação analítica (registrado em `ajustes_do_metodo.json`, sem alteração da régua). A navegação ficou em 9,1 (r6: 9,2): a página Saúde caiu de 10,0 para 8,0 pela J9 interrompida. A interatividade, 9,9, passou a ser aplicável a 94 páginas (92 na r6).
+* **Defeitos altos (4).** SCS da ANEEL, 367 dias além do prazo (seis páginas, dado da fonte); ausência de ficha de evidência com teste nas páginas do PLD (cinco; o código segue as fichas externas, mas o efeito só aparece depois de uma execução completa do módulo Dados, que este ambiente não faz); painel numérico sem Comprove na linha do tempo da Regulação; e a J9 interrompida em Saúde.
+* **O que os nove revisores da r7 mais repetiram** (evidência: relatórios dos revisores, campos `defeitos` e `problemas_entre_paginas` de `revisao_visual.json`): (1) abas e menu cortados sem pista de rolagem em 390 px, sete revisores; (2) tabelas largas cortadas e rótulos de gráfico truncados, sete revisores; (3) bastidor e jargão no Entender (sha256, HTTP 403, pipeline, vintage, silver, "achado A09", códigos P004 a P016, nomes de campo), seis revisores; (4) números que parecem divergir sem conciliação, cinco revisores (Tipo III 6,9% e 2,6%; mercado livre 45,3% e 42,4%; consultas abertas 8 e 7; GSF de 12 meses 81,8%, 80,43% e 92,55%; ESS R$ 958,1 milhões e R$ 1,60 bilhão; RALIE e SIGA com contagens de usinas diferentes; 151 conjuntos no rodapé e 415 no catálogo; perdas 14,7% e 14,75%); (5) respostas em parágrafo de números e siglas, sem veredito em palavras simples, quatro revisores; (6) rankings que abrem com 12 categorias e induzem leitura errada: em Reajustes aparecem só as 12 menores variações, quando, segundo o revisor, 87 de 102 distribuidoras estão acima da inflação; (7) a linha do tempo da Regulação com 14.787 px a 1440 px e 27.768 px a 390 px, 26 cartões quase iguais. A leitura de que a causa é o conteúdo, e não a estrutura, vem do conjunto: os problemas (3) a (6) dependem de reescrever texto e de conciliar números.
+* **Erros meus acusados pela medição.** (1) Rodapé: ao recolher as fontes em um bloco, a data de publicação foi junto, e a J9 não a achou. Corrigido depois da medição: a linha da data voltou para fora do bloco; a J9 cumpre os 13 passos sobre o build corrigido e um teste novo trava o posicionamento; a revisão visual não foi refeita (`posteriores.json`). (2) A faixa rolável de navegação, descrita acima, segue como está e depende de decisão. (3) Dois roteiros de jornada (J1 e J5) ficaram defasados em relação ao Aprenda; foram atualizados e reexecutados, e o custo em interações subiu de 8 para 10 na J1 e de 10 para 12 na J5. (4) O exemplo da EAR no verbete perdeu a mediana da data quando passou a ser ficha de evidência; o leitor deixou de ver se 61,5% é alto ou baixo para a época. Não corrigido.
+* **Limites.** Os revisores são agentes de IA, sem calibração entre rodadas e sem teste com pessoas. Cada grupo teve um revisor, então a diferença entre módulos mistura revisor e página. Em 390 px o pacote traz três trechos por página, e vários revisores declararam não ter visto gráficos e mapas de celular. As capturas dos revisores são do build medido; o rodapé corrigido não aparece nelas.
 
 #### Correção de um erro da r2
 

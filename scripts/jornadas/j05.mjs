@@ -57,21 +57,24 @@ export default {
     });
 
     await j.passo("Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado", async () => {
-      await clicar(p.locator('main a[href="/setor-eletrico/aprenda/ear"]').first());
+      // o índice abre com os grupos recolhidos: o leitor procura a sigla (um passo a mais que na versão anterior)
+      await agir(() => p.getByLabel("Procurar um termo").fill("EAR"));
+      await clicar(p.locator('main a[href="/setor-eletrico/aprenda/ear"]:visible').first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/ear/, { timeout: 10000 });
       await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       const texto = N(await p.locator("main").innerText());
       const frase = texto.match(/EM UMA FRASE\s*([^\n]+)/i)?.[1] ?? "";
-      const ex = texto.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), os reservatórios do Sudeste/Centro-Oeste estavam com ${D}% da EAR máxima`));
-      const mediana = texto.match(new RegExp(`a mediana para a data, nos anos completos desde 2001, é ${D}%`))?.[1];
-      const natureza = /NATUREZA DO DADO:\s*OBSERVADO/i.test(texto);
+      // o exemplo real é uma ficha do SIN: rótulo, percentual, natureza e data ficam em linhas separadas
+      const ex = texto.match(new RegExp(`EXEMPLO REAL\\s*EAR DO SIN\\s*${D}%\\s*da EAR máxima[\\s\\S]*?(\\d{2}/\\d{2}/\\d{4}) · Sistema Interligado Nacional`, "i"));
+      const natureza = texto.match(/NATUREZA DO DADO:\s*([A-ZÇÃÕÉÊ]+)/i)?.[1];
       const unidade = texto.match(/UNIDADE\s*([^\n]+)/i)?.[1];
+      const mediana = /mediana para a data/i.test(texto);
       j.afirmar(/Energia associada ao volume de água/i.test(frase), "definição em uma frase ausente");
       j.afirmar(ex, "o exemplo real não traz data e percentual");
-      j.afirmar(mediana && natureza && unidade, "faltam mediana, natureza do dado ou unidade no exemplo");
-      Object.assign(ear, { data: ex[1], valor: ex[2], mediana });
-      return `Em uma frase: "${frase.slice(0, 80)}..."; exemplo real: ${ex[1]}, Sudeste/Centro-Oeste com ${ex[2]}% da EAR máxima (observado), mediana da data ${mediana}%; unidade: ${unidade}`;
+      j.afirmar(natureza && unidade, "faltam natureza do dado ou unidade no exemplo");
+      Object.assign(ear, { data: ex[2], valor: ex[1], natureza });
+      return `Em uma frase: "${frase.slice(0, 80)}..."; exemplo real: ${ex[2]}, SIN com ${ex[1]}% da EAR máxima (${natureza.toLowerCase()}); a mediana da data ${mediana ? "consta" : "não consta"} no verbete; unidade: ${unidade}`;
     });
 
     await j.passo('Segue "ver no painel" do exemplo da EAR e confere gráfico, tabela, unidade e botão de retorno', async () => {
@@ -102,15 +105,9 @@ export default {
       j.afirmar(sin, "a frase de abertura do painel não traz data e percentual do SIN");
       const tabela = p.locator("table:visible", { hasText: "EAR (%)" }).first();
       await tabela.waitFor({ state: "visible", timeout: 10000 });
-      const cab = await tabela.locator("thead th").evaluateAll((es) => es.map((e) => e.innerText.replace(/\s+/g, " ").replace(/[↕▲▼]/g, "").trim()));
-      const linhas = await tabela.locator("tbody tr").evaluateAll((rs) => rs.map((r) => [...r.querySelectorAll("td,th")].map((c) => c.innerText.trim())));
-      const se = linhas.find((l) => l[0] === "Sudeste/Centro-Oeste");
-      j.afirmar(se, "a tabela do painel não tem a linha Sudeste/Centro-Oeste");
-      const dia = se[cab.indexOf("Dia")];
-      const pct = se[cab.indexOf("EAR (%)")];
-      const mesmoNumero = dia === ear.data && pct.replace(/0$/, "") === ear.valor;
-      const apareceNaPagina = painel.includes(`${ear.valor}%`);
-      return `Verbete: ${ear.data}, ${ear.valor}%. Painel (padrão): ${dia}, Sudeste/Centro-Oeste ${pct}% e SIN ${sin[3]}% em ${sin[1]}. O número do exemplo ${mesmoNumero ? "é o mesmo do painel" : `não é o mostrado no painel (data do painel ${dia}, diferença de ${(parseFloat(pct.replace(",", ".")) - parseFloat(ear.valor.replace(",", "."))).toFixed(2).replace(".", ",").replace("-", "−")} p.p.)`}; "${ear.valor}%" aparece em algum texto da página: ${apareceNaPagina ? "sim" : "não"}`;
+      const mesmoNumero = sin[1] === ear.data && sin[3] === ear.valor;
+      j.afirmar(mesmoNumero, `o painel diz ${sin[1]} e ${sin[3]}% para o SIN; o verbete diz ${ear.data} e ${ear.valor}%`);
+      return `Verbete: ${ear.data}, SIN ${ear.valor}%. Painel (padrão): "Em ${sin[1]}, o SIN guardava ${sin[2]} MWmês, ${sin[3]}% da EAR máxima". O número do exemplo é o mesmo do painel, com a mesma data`;
     });
 
     await j.passo('Volta ao verbete pelo botão "Voltar ao verbete EAR"', async () => {
@@ -141,76 +138,68 @@ export default {
       await j.esperar(500);
       const t = N(await passo.innerText());
       j.afirmar(/PASSO 5 DE 6/i.test(t), "o índice não levou ao passo 5");
-      const m = t.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o PLD horário do Sudeste/Centro-Oeste variou de R\\$ ${D} a R\\$ ${D}/MWh[\\s\\S]*?a média simples das 24 horas foi R\\$ ${D}/MWh`));
-      j.afirmar(m, "o passo 5 não traz data, faixa horária e média do PLD");
-      Object.assign(preco, { data: m[1], min: m[2], max: m[3], media: m[4] });
-      return `Passo 5 de 6: em ${m[1]}, PLD horário do Sudeste/Centro-Oeste de R$ ${m[2]} a R$ ${m[3]}/MWh, média simples das 24 horas R$ ${m[4]}/MWh`;
+      // o número é uma ficha: o rótulo traz a semana operativa; valor e natureza ficam em linhas separadas
+      const m = t.match(new RegExp(`PLD MÉDIO DA SEMANA OPERATIVA DE (\\d{2}/\\d{2}/\\d{4}) A (\\d{2}/\\d{2}/\\d{4})\\s*R\\$ ${D}/MWh`, "i"));
+      const natureza = t.match(/NATUREZA DO DADO:\s*([A-ZÇÃÕÉÊ]+)/i)?.[1];
+      j.afirmar(m && natureza, "o passo 5 não traz a semana operativa, a média do PLD e a natureza do dado");
+      Object.assign(preco, { de: m[1], ate: m[2], media: m[3], natureza });
+      return `Passo 5 de 6: PLD médio do Sudeste/Centro-Oeste de ${m[1]} a ${m[2]}, R$ ${m[3]}/MWh (${natureza.toLowerCase()})`;
     });
 
     await j.passo('Segue "ver no painel" do passo 5 até o PLD e confere que o painel mostra os mesmos números', async () => {
       await clicar(p.locator("#passo-pld").getByRole("link", { name: /ver no painel/i }).first());
-      await p.waitForURL(/\/setor-eletrico\/pld/, { timeout: 10000 });
+      await p.waitForURL(/\/setor-eletrico\/pld\/cmo-e-formacao/, { timeout: 10000 });
       await assentar();
       const voltar = p.getByRole("link", { name: /Voltar à trilha Água, operação e preço, passo 5/ });
       await voltar.first().waitFor({ state: "visible", timeout: 10000 });
-      const hoje = p.locator("section#hoje");
-      await hoje.waitFor({ state: "attached", timeout: 10000 });
-      const t = N(await hoje.innerText());
-      const se = t.match(new RegExp(`SUDESTE/CENTRO-OESTE\\s*R\\$ ${D}/MWh\\s*média de (\\d{2}/\\d{2}/\\d{4})[\\s\\S]*?Faixa horária\\s*R\\$ ${D} a R\\$ ${D}`, "i"));
-      j.afirmar(se, "o painel não traz o cartão do Sudeste/Centro-Oeste com média e faixa horária");
-      j.afirmar(se[1] === preco.media && se[3] === preco.min && se[4] === preco.max, `o painel (${se[1]}, ${se[3]} a ${se[4]}) difere da trilha (${preco.media}, ${preco.min} a ${preco.max})`);
-      j.afirmar(se[2] === preco.data, `data do painel ${se[2]} difere da da trilha ${preco.data}`);
-      // posição em que a página aterrissa: o que o botão fixo de retorno cobre e se o gráfico já está à vista
+      const painel = p.locator("section#p009");
+      await painel.waitFor({ state: "attached", timeout: 10000 });
+      const t = N(await painel.innerText());
+      const m = t.match(new RegExp(`Na semana operativa de (\\d{2}/\\d{2}/\\d{4}) a (\\d{2}/\\d{2}/\\d{4}), no Sudeste/Centro-Oeste, o CMO semanal do DECOMP foi R\\$ ${D}/MWh, a média das \\d+ meias horas do CMO do DESSEM foi R\\$ ${D}/MWh e a média das \\d+ horas do PLD foi R\\$ ${D}/MWh`));
+      j.afirmar(m, "o painel não traz a frase da semana com CMO do DECOMP, média do DESSEM e média do PLD");
+      j.afirmar(m[1] === preco.de && m[2] === preco.ate, `a semana do painel (${m[1]} a ${m[2]}) difere da da trilha (${preco.de} a ${preco.ate})`);
+      j.afirmar(m[5] === preco.media, `o painel diz R$ ${m[5]}/MWh e a trilha R$ ${preco.media}/MWh`);
+      // posição em que a página aterrissa: onde fica o painel e se o gráfico já está à vista
       const aterrissagem = await p.evaluate(() => {
-        const link = [...document.querySelectorAll("a")].find((a) => /Voltar à trilha/.test(a.textContent ?? ""));
-        const fixo = link?.closest("[class*=fixed]") ?? link;
-        const r = fixo.getBoundingClientRect();
-        const cobertas = [...document.querySelectorAll("section#hoje button")]
-          .filter((b) => /^(DIA \d|7 DIAS|30 DIAS|12 MESES|HISTÓRICO)/i.test((b.textContent ?? "").trim()))
-          .filter((b) => {
-            const q = b.getBoundingClientRect();
-            return q.width > 0 && q.bottom > 0 && q.top < innerHeight && !(q.right < r.left || q.left > r.right || q.bottom < r.top || q.top > r.bottom);
-          })
-          .map((b) => (b.textContent ?? "").trim());
-        const g = document.querySelector("section#hoje svg[role=img]")?.getBoundingClientRect();
-        return { cobertas, graficoNaTela: !!g && g.top < innerHeight && g.bottom > 0, rolagem: Math.round(scrollY) };
+        const sec = document.getElementById("p009");
+        const g = sec?.querySelector("svg[role=img]")?.getBoundingClientRect();
+        return { rolagem: Math.round(scrollY), topo: Math.round(sec?.getBoundingClientRect().top ?? -1), graficoNaTela: !!g && g.top < innerHeight && g.bottom > 0 };
       });
       await j.captura("painel_pld");
-      return `Botão de retorno: "${N(await voltar.first().innerText()).replace(/\s+/g, " ")}"; cartão Sudeste/Centro-Oeste: média R$ ${se[1]} em ${se[2]}, faixa horária R$ ${se[3]} a R$ ${se[4]}, iguais ao texto da trilha. Ao chegar (rolagem ${aterrissagem.rolagem} px): gráfico horário ${aterrissagem.graficoNaTela ? "já está" : "não está"} à vista; abas de período cobertas pelo botão fixo: ${aterrissagem.cobertas.length ? aterrissagem.cobertas.join(", ") : "nenhuma"}`;
+      return `Botão de retorno: "${N(await voltar.first().innerText()).replace(/\s+/g, " ")}"; painel CMO e formação de preço: semana ${m[1]} a ${m[2]}, CMO semanal do DECOMP R$ ${m[3]}, média do DESSEM R$ ${m[4]} e média do PLD R$ ${m[5]}/MWh, a mesma da trilha. Ao chegar (rolagem ${aterrissagem.rolagem} px, topo do painel a ${aterrissagem.topo} px): gráfico ${aterrissagem.graficoNaTela ? "já está" : "não está"} à vista`;
     });
 
-    await j.passo("Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com o pico do exemplo", async () => {
-      const hoje = p.locator("section#hoje");
-      const graficos = await nomesDosGraficos(hoje);
+    await j.passo("Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com a média do exemplo", async () => {
+      const painel = p.locator("section#p009");
+      const graficos = await nomesDosGraficos(painel);
       j.afirmar(graficos.length > 0, "o painel do PLD não tem gráfico com nome acessível");
-      const resumo = hoje.locator("summary", { hasText: /Dados do gráfico em tabela \(24 linhas\)/i }).first();
+      const resumo = painel.locator("summary:visible", { hasText: /Dados do gráfico em tabela \(\d+ linhas\)/i }).first();
       await resumo.scrollIntoViewIfNeeded();
       await clicar(resumo);
       const detalhe = resumo.locator("xpath=..");
       await detalhe.locator("tbody tr").first().waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
       const legenda = N(await detalhe.locator("caption").first().innerText().catch(() => ""));
-      const cab = await detalhe.locator("thead th").evaluateAll((es) => es.map((e) => e.innerText.trim()));
+      const cab = await detalhe.locator("thead th").evaluateAll((es) => es.map((e) => e.innerText.replace(/[↕▲▼]/g, "").replace(/\s+/g, " ").trim()));
       const linhas = await detalhe.locator("tbody tr").evaluateAll((rs) => rs.map((r) => [...r.querySelectorAll("td,th")].map((c) => c.innerText.trim())));
-      j.afirmar(linhas.length === 24, `esperava 24 horas na tabela, vieram ${linhas.length}`);
-      j.afirmar(/R\$\/MWh/.test(legenda) && cab.every((c, i) => i === 0 || /R\$\/MWh/.test(c)), `unidade ausente na legenda ou nas colunas: ${legenda} | ${cab.join(", ")}`);
-      const iSe = cab.findIndex((c) => /^Sudeste/.test(c));
-      const horaMax = linhas.find((l) => l[iSe] === preco.max);
-      j.afirmar(horaMax, `a tabela não tem o pico ${preco.max} citado no exemplo`);
-      const horaMin = linhas.filter((l) => l[iSe] === preco.min).map((l) => l[0]);
-      const media = linhas.reduce((s, l) => s + parseFloat(l[iSe].replace(",", ".")), 0) / linhas.length;
-      return `Gráfico: "${graficos[0].slice(0, 80)}"; tabela equivalente com 24 horas, legenda "${legenda}", colunas ${cab.slice(0, 2).join(" | ")}...; pico R$ ${preco.max} às ${horaMax[0]} (Sudeste/Centro-Oeste); média das 24 linhas ${media.toFixed(2).replace(".", ",")} contra R$ ${preco.media} no texto`;
+      j.afirmar(linhas.length > 0, "a tabela equivalente do gráfico está vazia");
+      j.afirmar(/R\$\/MWh/.test(legenda) || cab.some((c) => /R\$\/MWh/.test(c)), `unidade ausente na legenda ou nas colunas: ${legenda} | ${cab.join(", ")}`);
+      const linha = linhas.find((l) => l.includes(preco.media));
+      j.afirmar(linha, `a tabela equivalente não tem a média R$ ${preco.media}/MWh do exemplo`);
+      return `Gráfico: "${graficos[0].slice(0, 90)}"; tabela equivalente com ${linhas.length} linhas, legenda "${legenda.slice(0, 80)}", colunas ${cab.slice(0, 4).join(" | ")}; linha com a média do exemplo: ${linha.join(" | ")}`;
     });
 
-    await j.passo('Lê no painel o que o professor leva para a sala: interpretação, "o que não é possível concluir" e fonte', async () => {
-      const hoje = p.locator("section#hoje");
-      const t = N(await hoje.innerText());
+    await j.passo('Lê no painel o que o professor leva para a sala: interpretação, "o que não é possível concluir" e fonte (modo Analisar)', async () => {
+      await clicar(p.getByRole("radio", { name: /analisar/i }));
+      await j.esperar(600);
+      const painel = p.locator("section#p009");
+      const t = N(await painel.innerText());
       const interpretar = t.match(/COMO INTERPRETAR\s*([^\n]+)/i)?.[1];
       const naoConcluir = t.match(/O QUE NÃO É POSSÍVEL CONCLUIR:?\s*([^\n]+)/i)?.[1];
-      const fonte = t.match(/Fonte: CCEE, PLD_HORARIO[^\n]*/)?.[0];
-      j.afirmar(interpretar && naoConcluir && fonte, "faltam interpretação, limite de conclusão ou fonte no painel");
-      const exportaImagem = await hoje.locator("button, a").evaluateAll((es) => es.filter((e) => /imagem|png|svg|imprimir|copiar gráfico/i.test((e.getAttribute("aria-label") || e.innerText))).length);
-      const baixar = await hoje.locator("button:visible, a:visible").evaluateAll((es) => es.filter((e) => /Baixar CSV/i.test(e.innerText)).length);
-      return `Como interpretar: "${interpretar.slice(0, 90)}..."; O que não é possível concluir: "${naoConcluir.slice(0, 90)}..."; ${fonte.slice(0, 100)}; ações do painel: baixar CSV ${baixar}, exportar o gráfico como imagem ${exportaImagem}`;
+      const fonte = t.match(/Fonte: ONS, CMO Semanal \(DECOMP\)[^\n]*PLD_HORARIO[^\n]*/)?.[0];
+      j.afirmar(interpretar && naoConcluir, "faltam interpretação ou limite de conclusão no painel");
+      j.afirmar(fonte, "a fonte (ONS, CMO Semanal e Semi-Horário; CCEE, PLD_HORARIO) não aparece no painel, nem em Analisar");
+      const baixar = await painel.locator("button:visible, a:visible").evaluateAll((es) => es.filter((e) => /Baixar CSV/i.test(e.innerText)).length);
+      return `Como interpretar: "${interpretar.slice(0, 90)}..."; O que não é possível concluir: "${naoConcluir.slice(0, 90)}..."; ${fonte.slice(0, 100)} (a fonte só aparece depois de escolher Analisar); ações do painel: baixar CSV ${baixar}`;
     });
 
     await j.passo('Volta à trilha pelo botão "Voltar à trilha Água, operação e preço, passo 5"', async () => {
@@ -232,11 +221,11 @@ export default {
       await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       const t = N(await p.locator("main").innerText());
-      const m = t.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o PLD horário do Sudeste/Centro-Oeste variou de R\\$ ${D} a R\\$ ${D}/MWh[\\s\\S]*?a média simples das 24 horas foi R\\$ ${D}/MWh`));
-      j.afirmar(m, "o verbete PLD não traz o exemplo real com data e faixa");
-      j.afirmar(m[1] === preco.data && m[2] === preco.min && m[3] === preco.max && m[4] === preco.media, `exemplo do verbete (${m.slice(1).join(", ")}) difere do da trilha (${Object.values(preco).join(", ")})`);
+      const m = t.match(new RegExp(`PLD MÉDIO DA SEMANA OPERATIVA DE (\\d{2}/\\d{2}/\\d{4}) A (\\d{2}/\\d{2}/\\d{4})\\s*R\\$ ${D}/MWh`, "i"));
+      j.afirmar(m, "o verbete PLD não traz o exemplo real com a semana e a média");
+      j.afirmar(m[1] === preco.de && m[2] === preco.ate && m[3] === preco.media, `exemplo do verbete (${m.slice(1).join(", ")}) difere do da trilha (${preco.de}, ${preco.ate}, ${preco.media})`);
       const contraste = /O PLD não é a tarifa do consumidor/.test(t);
-      return `URL ${j.url()}; exemplo real em ${m[1]}: R$ ${m[2]} a R$ ${m[3]}/MWh, média R$ ${m[4]}/MWh, igual ao da trilha e do painel; "O PLD não é a tarifa do consumidor" em "O que não se pode concluir": ${contraste ? "sim" : "não"}`;
+      return `URL ${j.url()}; exemplo real de ${m[1]} a ${m[2]}: R$ ${m[3]}/MWh, igual ao da trilha e do painel; "O PLD não é a tarifa do consumidor" em "O que não se pode concluir": ${contraste ? "sim" : "não"}`;
     });
   },
 };

@@ -255,6 +255,17 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     expect((h.match(/min-h-\[44px\]/g) ?? []).length).toBeGreaterThanOrEqual(6);
   });
 
+  it("a data de publicação do rodapé fica fora do bloco recolhido (jornada J9 da r7 não a achava)", () => {
+    const h = renderToStaticMarkup(createElement(RodapeEnergia));
+    const fim = h.indexOf("</details>");
+    expect(fim).toBeGreaterThan(0);
+    const dentro = h.slice(0, fim);
+    const fora = h.slice(fim);
+    expect(dentro).not.toContain("Catálogo e manifesto publicados em");
+    expect(fora).toMatch(/Catálogo e manifesto publicados em .*\(Brasília\)/);
+    expect(fora).toContain("/setor-eletrico/dados/reproducao");
+  });
+
   it("L-37: a faixa de módulos fica rente à borda, com esmaecimento estreito daquele lado; F18: sem prefetch dos módulos do grupo", () => {
     const av = ler("src/components/energia/AtivoVisivel.tsx");
     expect(av).toContain("if (a.left >= l.left && a.right <= l.right - 8) return;");

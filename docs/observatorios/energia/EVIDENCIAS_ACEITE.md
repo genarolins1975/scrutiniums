@@ -1,12 +1,12 @@
 # Evidências de aceite
 
-Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-08-r6). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
+Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-08-r7). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
 
 Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nesta rodada, de 20 itens.
 
 | Item da seção 17 | Estado | Evidência e limite |
 | --- | --- | --- |
-| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 8,9; J1 cumprida (11 de 11 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
+| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 8,9; J1 cumprida (12 de 12 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
 | Todos os módulos obrigatórios existem e têm conteúdo real e útil. | atendido em parte | 19 entregas publicadas e medidas com resposta 200 em 94 rotas; a utilidade do conteúdo é lida pela revisão didática de cada página, não por contagem de módulos. |
 | Todos os painéis obrigatórios foram concluídos, incluindo os itens de execução posterior do Anexo A. | não atendido | 16 de 71 painéis concluídos (2 sem limitação, 14 com limitação declarada), segundo status_paineis.json; o denominador é fixo em 71. |
 | Mercado, Empresas, Expansão e Regulação deixaram de ser módulos vazios. | atendido em parte | As quatro páginas publicam conteúdo lido das golds; o contrato de painel da seção 7.2 foi adotado só no Mercado (P032 a P035). Ver nota de Completude de cada página. |
@@ -18,7 +18,7 @@ Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nes
 | Gráfico, tabela, texto e exportação derivam da mesma consulta e versão. | atendido em parte | J4 cumprida (10 de 10 passos): o agregado exibido foi recalculado a partir do CSV exportado. |
 | O usuário consegue comprovar números e reproduzir agregados. | atendido em parte | Ficha Comprove aberta por roteiro em cada página que a oferece (ver Interatividade e Rastreabilidade); J3 cumprida (8 de 8 passos); J4 cumprida (10 de 10 passos). Reprodução por terceiros, fora do ambiente, não foi exercitada. |
 | Todas as interações prometidas foram executadas em teste. | atendido em parte | Controles visíveis acionados por roteiro em 390 e 1440 px em cada página (nota de Interatividade); as interações específicas de cada painel seguem nos testes de cada módulo. |
-| As telas foram inspecionadas em desktop e celular, inclusive estados extremos e vazios legítimos. | atendido em parte | Capturas de 1440 e 390 px de 94 páginas abertas por revisores em contexto limpo; estados vazios e defasados: J9 cumprida (13 de 13 passos). |
+| As telas foram inspecionadas em desktop e celular, inclusive estados extremos e vazios legítimos. | atendido em parte | Capturas de 1440 e 390 px de 94 páginas abertas por revisores em contexto limpo; estados vazios e defasados: J9 interrompida (5 de 13 passos). |
 | A atualização e o tratamento de falhas foram testados. | atendido em parte | Testes do pipeline com falha simulada, revisão e período parcial (nota de Atualidade); sem exercício completo em produção. |
 | O módulo de previsão cumpre as etapas aplicáveis de validação e publicação, sem contorná-las. | não verificado nesta rodada | Não foi objeto desta avaliação; J10 cumprida (14 de 14 passos) verificou a inspeção do arquivo de emissões. |
 | Backtest, prospectivo, observado, estimado e cenário estão corretamente separados. | não verificado nesta rodada | Não foi objeto desta avaliação. |

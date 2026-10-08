@@ -34,18 +34,18 @@ export function RodapeEnergia() {
               Licença, frequência e estado de cada conjunto estão no catálogo; cada número tem natureza, fonte, período e
               limitações no painel &quot;Sobre este dado&quot;.
             </p>
-            {meta && (
-              <p className="mt-3 text-xs text-mineral">
-                {pub ? "Catálogo e manifesto publicados em " : "Dados processados em "}
-                {carimbo(meta.gerado_em)}. Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em{" "}
-                <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
-                  Download e reprodução
-                </Link>
-                .
-              </p>
-            )}
           </div>
         </details>
+        {meta && (
+          <p className="max-w-prose2 py-1 text-xs leading-relaxed text-mineral">
+            {pub ? "Catálogo e manifesto publicados em " : "Dados processados em "}
+            {carimbo(meta.gerado_em)}. Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em{" "}
+            <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
+              Download e reprodução
+            </Link>
+            .
+          </p>
+        )}
         <ul className="flex flex-wrap gap-x-6 text-sm">
           <li><Link prefetch={false} href="/setor-eletrico" className={link}>Mapa do Observatório: por onde começar</Link></li>
           <li><Link prefetch={false} href="/setor-eletrico/dados" className={link}>Catálogo de dados e downloads</Link></li>
