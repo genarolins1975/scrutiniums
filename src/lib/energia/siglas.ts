@@ -12,6 +12,8 @@ export const SIGLAS: Record<string, string> = {
   IBGE: "Instituto Brasileiro de Geografia e Estatística",
   CADE: "Conselho Administrativo de Defesa Econômica",
   SIN: "Sistema Interligado Nacional",
+  CNPJ: "Cadastro Nacional da Pessoa Jurídica",
+  ATLS: "Atendimento aos Limites Sistêmicos",
   SAMP: "Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica, da ANEEL",
   SIGA: "Sistema de Informações de Geração da ANEEL",
   RALIE: "Relatório de Acompanhamento da Expansão da Oferta de Geração de Energia Elétrica",

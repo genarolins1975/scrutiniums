@@ -64,7 +64,9 @@ describe("Fonte das fichas de evidência: código de conjunto fora do texto de E
   it("troca o código pelo nome legível e guarda o código para Analisar", () => {
     expect(conjuntoLegivel("PLD_HORARIO")).toEqual({ texto: "PLD horário por submercado", codigos: ["PLD_HORARIO"] });
     expect(conjuntoLegivel("PLD_HORARIO (PLD horário por submercado)")).toEqual({ texto: "PLD horário por submercado", codigos: ["PLD_HORARIO"] });
-    expect(conjuntoLegivel("mre_mensal")).toEqual({ texto: "mre mensal", codigos: ["mre_mensal"] });
+    expect(conjuntoLegivel("mre_mensal")).toEqual({ texto: "MRE mensal", codigos: ["mre_mensal"] });
+    expect(conjuntoLegivel("GERACAO_SUBMERCADO e MRE_MENSAL")).toEqual({ texto: "geração por submercado e MRE mensal", codigos: ["GERACAO_SUBMERCADO", "MRE_MENSAL"] });
+    expect(conjuntoLegivel("PARCELA_CARGA_CONSUMO (classe do perfil pelo cadastro LISTA_PERFIL_V1)").texto).toBe("classe do perfil pelo cadastro lista de perfis (versão 1)");
   });
 
   it("trata cada item separado por ponto e vírgula e preserva nomes que já são legíveis", () => {

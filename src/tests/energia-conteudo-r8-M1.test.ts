@@ -151,7 +151,7 @@ const CASOS: Caso[] = [
   {
     pagina: "restricoes",
     id: "p023",
-    veredito: GE.vereditoRestricao({ eolica: GG.restricoes.eolica, solar: GG.restricoes.solar }),
+    veredito: GE.vereditoRestricao({ eolica: GG.restricoes.eolica ?? undefined, solar: GG.restricoes.solar ?? undefined }),
     completa: [GE.respostaRestricao(GG.restricoes.eolica!)],
   },
   { pagina: "capacidade", id: "p024", veredito: GE.vereditoCapacidade(GG.capacidade!), completa: [GE.respostaCapacidade(GG.capacidade!)] },
@@ -233,7 +233,7 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
     const candidatas = new Set<string>();
     for (const c of CASOS) for (const s of c.veredito.match(/\b[A-Z]{2,}[a-z]*\d?\b/g) ?? []) candidatas.add(s);
     expect(candidatas.size).toBeGreaterThan(8);
-    for (const s of candidatas) if (!UNIDADES.has(s)) expect(SIGLAS[s], s).toBeDefined();
+    Array.from(candidatas).forEach((s) => { if (!UNIDADES.has(s)) expect(SIGLAS[s], s).toBeDefined(); });
   });
 
   it("filtros: o veredito da matriz muda com região, janela e perímetro, sempre curto e sem número digitado", () => {
@@ -252,7 +252,7 @@ describe("vereditos: curtos, derivados do dado e com a resposta completa por tr�
   });
 
   it("restrições: com uma só fonte publicada o veredito fala só dela; sem 12 meses, é vazio", () => {
-    const so = GE.vereditoRestricao({ eolica: GG.restricoes.eolica });
+    const so = GE.vereditoRestricao({ eolica: GG.restricoes.eolica ?? undefined });
     expect(so).toContain("eólicas");
     expect(so).not.toContain("fotovoltaicas");
     expect(GE.vereditoRestricao({})).toBe("");
@@ -382,8 +382,8 @@ describe("conciliação: Tipo III, 6,9% no texto contra 2,6% no gráfico (/gerac
     const rot = csv("public/energia/series/geracao_rotulos_fonte.csv").filter((r) => r.natureza === "grupo_tipo3" && r.ano === "2025");
     const porCat = new Map<string, number>();
     for (const r of rot) porCat.set(r.categoria, (porCat.get(r.categoria) ?? 0) + Number(r.mwh));
-    expect([...porCat.keys()].sort()).toEqual(["eolica", "hidraulica", "solar_centralizada", "termica_sem_combustivel"]);
-    const total = [...porCat.values()].reduce((s, v) => s + v, 0);
+    expect(Array.from(porCat.keys()).sort()).toEqual(["eolica", "hidraulica", "solar_centralizada", "termica_sem_combustivel"]);
+    const total = Array.from(porCat.values()).reduce((s, v) => s + v, 0);
     expect(porCat.get("termica_sem_combustivel")! / total).toBeGreaterThan(0.2);
     expect(porCat.get("termica_sem_combustivel")! / total).toBeLessThan(0.5);
 
@@ -455,11 +455,11 @@ describe("conciliação: GSF de 12 meses com 81,8%, 80,43% e 92,55% (/mercado/mr
     const rows = csv("public/energia/series/mercado_ccee_mensal.csv");
     const serie = (conj: string, s: string) => new Map(rows.filter((r) => r.conjunto === conj && r.serie === s && r.valor !== "").map((r) => [r.mes, Number(r.valor)]));
     const gen = new Map<string, number>();
-    for (const sm of ["SE", "S", "NE", "N"]) for (const [m, v] of serie("geracao_submercado", `${sm}|GERACAO_MRE`)) gen.set(m, (gen.get(m) ?? 0) + v);
+    for (const sm of ["SE", "S", "NE", "N"]) Array.from(serie("geracao_submercado", `${sm}|GERACAO_MRE`)).forEach(([m, v]) => gen.set(m, (gen.get(m) ?? 0) + v));
     const gf = serie("mre_mensal", "GARANTIA_FISICA_MODULADA_FDISP");
     const horas = (mes: string) => new Date(Date.UTC(Number(mes.slice(0, 4)), Number(mes.slice(5, 7)), 0)).getUTCDate() * 24;
     const gsf = (ini: string, fim: string) => {
-      const ms = [...gen.keys()].filter((m) => m >= ini && m <= fim);
+      const ms = Array.from(gen.keys()).filter((m) => m >= ini && m <= fim);
       expect(ms).toHaveLength(12);
       return (100 * ms.reduce((s, m) => s + gen.get(m)! * horas(m), 0)) / ms.reduce((s, m) => s + gf.get(m)! * horas(m), 0);
     };

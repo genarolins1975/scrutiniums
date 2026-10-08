@@ -123,7 +123,7 @@ export default function EmpresasPage() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIGA", "SIGET", "CVM", "DFP", "ITR", "HHI"]}
+        <CabecalhoModulo siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR"]}
           rotulo="Empresas"
           titulo="Quem é dono de quê no setor elétrico?"
           referencia={
@@ -135,7 +135,7 @@ export default function EmpresasPage() {
           }
         >
           Quatro perguntas sobre quem atua no setor: quem opera as usinas e as linhas, como cada distribuidora atende a sua área, como evoluem os números que as companhias abertas
-          reportam e quem controla quanto da capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ (o número de registro da empresa) publicado pela fonte oficial no mesmo registro; nenhuma é feita por
+          reportam e quem controla quanto da capacidade instalada. Toda ligação entre empresa e ativo é o CNPJ publicado pela fonte oficial no mesmo registro; nenhuma é feita por
           semelhança de nome.
         </CabecalhoModulo>
         <EmpresasNavegacao atual="sintese" />

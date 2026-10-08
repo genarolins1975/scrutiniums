@@ -66,7 +66,8 @@ export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotul
   const [carregada, setCarregada] = useState<Evidencia | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const ev = evidencia ?? carregada;
-  const indicador = ev?.indicador ?? sobDemanda?.indicador ?? "";
+  // o nome que a página passa (sobDemanda) vale mais que o indicador técnico da gold, que pode citar códigos internos
+  const indicador = sobDemanda?.indicador ?? ev?.indicador ?? "";
   const valorExibido = ev?.valor_exibido ?? sobDemanda?.valorExibido ?? "";
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
@@ -163,7 +164,7 @@ export function DialogoEvidencia({
           <div className="min-w-0">
             <p className="rotulo text-mineral">Comprove este número</p>
             <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
-              {ev?.indicador ?? titulo}
+              {titulo ?? ev?.indicador}
             </h2>
             <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
               <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ?? valor}</span>
@@ -174,7 +175,7 @@ export function DialogoEvidencia({
             ✕
           </button>
         </header>
-        <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${ev?.indicador ?? titulo ?? ""}`}>
+        <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${titulo ?? ev?.indicador ?? ""}`}>
           {montado &&
             (ev ? (
               <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />

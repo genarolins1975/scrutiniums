@@ -496,7 +496,7 @@ describe("fontes citadas no rodapé do observatório", () => {
     const html = renderToStaticMarkup(createElement(RodapeEnergia));
     const pub = JSON.parse(readFileSync(join(process.cwd(), "public/energia/gold/publicacao.json"), "utf-8")) as { conjuntos: { orgao: string }[]; gerado_em: string };
     Array.from(new Set(pub.conjuntos.map((c) => c.orgao))).forEach((o) => expect(html, o).toContain(o));
-    expect(html).toContain("Catálogo e manifesto publicados em");
+    expect(html).toContain("Catálogo e saúde processados em");
     expect(html).not.toContain("Dados processados em");
   });
 });

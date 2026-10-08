@@ -375,9 +375,9 @@ describe("identificadores técnicos fora do texto de Entender", () => {
     expect(p.interno).toContain("validacao_observatorio");
   });
 
-  it("os termos do registro (corte, origem, rodada, P10 e P90) são explicados com o texto publicado", () => {
+  it("os termos do registro (corte, origem, horizontes, rodada, P10 e P90) são explicados com o texto publicado", () => {
     const itens = termosPrevisoes(P.definicoes);
-    expect(itens.map((i) => i.termo)).toEqual(["Corte e origem", "Rodada", "P10 e P90"]);
+    expect(itens.map((i) => i.termo)).toEqual(["Corte e origem", "W1 a W4 e M1 a M3", "Rodada", "P10 e P90"]);
     for (const pagina of ["previsoes", "modelos", "ficha-b0"]) {
       const t = textoEntender(html[pagina]);
       expect(t, pagina).toContain("Corte às 07h00 de Brasília do dia de origem; prazo de emissão às 08h00.");
@@ -610,6 +610,63 @@ describe("mapas de calor: sem número nas células, o maior e o menor valor vão
     expect(t).toContain(`${br(maior.f, 1)}% das horas`);
     expect(t).toContain(`${br(menor.f, 1)}% das horas`);
     expect(t).toMatch(/Maior valor: .+, \d+,\d% das horas\. Menor valor: .+, \d+,\d% das horas\./);
+  });
+});
+
+describe("ajustes finais de entendimento: exemplo concreto nas fichas, entradas dos C2, horizontes e rótulos com base explícita", () => {
+  const entregas = P.definicoes.entregas ?? "";
+  const atual = P.previsao_atual as unknown as { origem: string; celulas: { horizonte: string; submercado: string; previsao: number | null }[] };
+  const celulaW1SE = atual.celulas.find((c) => c.horizonte === "W1" && c.submercado === "SE");
+
+  it("a ficha do B0 traz um exemplo com o período repetido e o número da primeira semana do Sudeste/Centro-Oeste, lidos da gold", () => {
+    const t = textoEntender(html["ficha-b0"]);
+    expect(celulaW1SE?.previsao).not.toBeNull();
+    expect(t).toContain("o B0 repete a média de");
+    expect(t).toContain(plano(`${reaisBr(celulaW1SE!.previsao as number)}/MWh`));
+    expect(t).toContain(dataBR(atual.origem));
+  });
+
+  it("a ficha do S0 diz que período do ano anterior usaria, pela regra do registro, e que o observatório não publica número", () => {
+    const m = M.modelos.find((x) => x.codigo === "S0");
+    expect(m?.metodologia).toMatch(/364 dias antes da entrega/);
+    const t = textoEntender(html["ficha-s0"]);
+    expect(t).toContain("o S0 usaria a média do PLD de");
+    expect(t).toContain("a semana que começa 364 dias antes. O observatório não publica número do S0.");
+  });
+
+  it("as fichas dos C2 explicam 'X − B0', '− 100' da ENA e p.p. com o que o registro e os verbetes dizem", () => {
+    const t = textoEntender(html["ficha-c2-h"]);
+    expect(t).toContain("Em “X − B0”, o modelo usa a diferença entre X e o B0.");
+    expect(t).toContain("100 é o valor da média de longo termo");
+    expect(t).toContain("p.p. quer dizer ponto percentual.");
+    expect(textoEntender(html["ficha-b0"])).not.toContain("p.p. quer dizer");
+  });
+
+  it("W1 a W4 e M1 a M3 são explicados em Previsões com a definição de entregas publicada", () => {
+    expect(entregas).toMatch(/W1 é a primeira semana que começa depois do dia de origem/);
+    const t = textoEntender(html.previsoes);
+    expect(t).toContain("W1 a W4 e M1 a M3:");
+    expect(t).toContain("cada uma de um sábado, 0h, até o sábado seguinte, 0h");
+    expect(t).toContain("M1 a M3 são os três meses civis");
+  });
+
+  it("o rótulo do menor valor horário do ano diz a base (as horas do período) e remete aos limites em vez de dizer que não foi auditado", () => {
+    const t = textoEntender(html.pld);
+    expect(t).toContain("Quanto do período ficou no menor valor horário do ano?");
+    expect(t).toMatch(/das 24 horas do período\./);
+    expect(t).not.toContain("No menor valor observado do ano?");
+    expect(t).not.toContain("não foi auditado");
+    expect(html.pld).toContain('href="/setor-eletrico/pld/limites"');
+  });
+
+  it("o Histórico diz o que é moeda constante e onde ficam a distribuição por ano e o perfil por hora", () => {
+    const t = textoEntender(html.historico);
+    expect(t).toContain("moeda constante: valores corrigidos pelo IPCA para os reais de");
+    expect(t).toContain("a distribuição do preço por ano e o perfil por hora ficam em Analisar");
+  });
+
+  it("a página principal declara CVU entre as siglas", () => {
+    expect(html.pld).toContain("CVU");
   });
 });
 

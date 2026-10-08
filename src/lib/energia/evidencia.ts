@@ -101,30 +101,57 @@ export type Evidencia = {
   citacao: string;
 };
 
-/** Nome com que o leitor reconhece alguns conjuntos cujo código é o nome técnico da fonte. */
+/**
+ * Nome com que o leitor reconhece os conjuntos cujo código é o nome técnico da fonte. É a leitura palavra por palavra do
+ * próprio código (acentuação e preposições restauradas), sem acrescentar significado que o código não tenha.
+ */
 const NOME_DO_CONJUNTO: Record<string, string> = {
-  PLD_HORARIO: "PLD horário por submercado",
+  pld_horario: "PLD horário por submercado",
+  agente_qtd_contabilizacao: "quantidade de agentes na contabilização",
+  consumo_classe_agente: "consumo por classe de agente",
+  consumo_mensal_ambiente_comercializacao: "consumo mensal por ambiente de comercialização",
+  encargo_ess_ancilar: "encargo de serviço ancilar (ESS)",
+  encargo_pgto_mensal: "pagamento mensal de encargos",
+  garantia_fisica_sazo_mre_submercado: "garantia física sazonalizada do MRE por submercado",
+  geracao_submercado: "geração por submercado",
+  lista_agente_associado: "lista de agentes associados",
+  lista_perfil_v1: "lista de perfis (versão 1)",
+  mre_mensal: "MRE mensal",
+  parcela_carga_consumo: "parcela de carga de consumo",
+  rd_encargos_contab_mensal: "encargos na contabilização mensal",
+  reserva_encargo: "encargo de reserva",
+  sumario_mensal_compra_venda_submercado: "sumário mensal de compra e venda por submercado",
+  sumario_mensal_liquidacao: "sumário mensal da liquidação",
+  aneel_continuidade: "indicadores de continuidade (ANEEL)",
+  aneel_samp_balanco: "balanço do SAMP (ANEEL)",
+  aneel_scs: "SCS (ANEEL)",
+  aneel_tarifas_aplicacao: "tarifas de aplicação (ANEEL)",
+  desligamento_compulsorio: "desligamento compulsório",
+  desligamento_voluntario: "desligamento voluntário",
+  imerg_prectot: "precipitação total (IMERG)",
 };
 
-const CODIGO_DE_CONJUNTO = /^(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)$/;
+const CODIGO_NO_TEXTO = /(?<![\w])(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)(?![\w])/g;
 
 /**
  * Nome do conjunto da fonte como o leitor o lê, mais os códigos técnicos que ficaram de fora. Códigos de conjunto da
  * CCEE (PLD_HORARIO, mre_mensal) saem do texto de Entender e vão para Analisar: o nome legível vem do dicionário acima,
  * do texto entre parênteses que a própria fonte já traz ("PLD_HORARIO (PLD horário por submercado)") ou, na falta de
- * ambos, do próprio código com espaços no lugar do sublinhado. Itens separados por ponto e vírgula são tratados um a um.
+ * ambos, do próprio código com espaços no lugar do sublinhado. Vale para o código em qualquer posição do texto
+ * ("GERACAO_SUBMERCADO e MRE_MENSAL", "PLD_HORARIO; Balanço de Energia nos Subsistemas").
  */
 export function conjuntoLegivel(conjunto: string): { texto: string; codigos: string[] } {
   const codigos: string[] = [];
-  const itens = conjunto.split(/;\s*/).map((item) => {
-    const m = /^([A-Za-z0-9_]+)\s*\((.+)\)$/.exec(item.trim());
-    const cod = m ? m[1] : item.trim();
-    if (!CODIGO_DE_CONJUNTO.test(cod)) return item.trim();
+  const legivel = (cod: string) => NOME_DO_CONJUNTO[cod.toLowerCase()] ?? cod.replace(/_/g, " ").toLowerCase();
+  const comParenteses = conjunto.replace(new RegExp(`(${CODIGO_NO_TEXTO.source})\\s*\\(([^()]+)\\)`, "g"), (_t, cod: string, nome: string) => {
     codigos.push(cod);
-    if (m) return m[2];
-    return NOME_DO_CONJUNTO[cod] ?? cod.replace(/_/g, " ").toLowerCase();
+    return nome;
   });
-  return { texto: itens.join("; "), codigos };
+  const texto = comParenteses.replace(CODIGO_NO_TEXTO, (cod) => {
+    codigos.push(cod);
+    return legivel(cod);
+  });
+  return { texto, codigos };
 }
 
 export const SEM_DADO = "sem dado";

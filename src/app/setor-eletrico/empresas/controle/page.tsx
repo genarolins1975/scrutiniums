@@ -26,7 +26,6 @@ import {
   COLUNAS_TIPOS,
   LIMIARES_HHI_CADE,
   ROTULO_FAIXA,
-  ROTULO_NIVEL_CURTO,
   ancoraPainel,
   barrasGrupos,
   dataTexto,

@@ -1,3 +1,5 @@
+import { conjuntoLegivel } from "@/lib/energia/evidencia";
+
 /**
  * Texto de coleta e de engenharia dentro de frases escritas para a gold: código HTTP, desafio de navegador,
  * hash de arquivo, nome de banco intermediário. O leitor de Entender precisa saber que a fonte não respondeu e o
@@ -45,7 +47,7 @@ export function semCaminhosDeArquivo(texto: string): string {
 
 /** Nome de fonte como o leitor o lê: sem "pipeline", "silver" e "gold" e sem caminho de arquivo. */
 export function fonteLegivel(nome: string): string {
-  return semCaminhosDeArquivo(nome)
+  return conjuntoLegivel(semCaminhosDeArquivo(nome)).texto
     .replace(/\(pipeline do observatório\)/g, "(observatório)")
     .replace(/Silvers e golds do domínio/g, "Bases do domínio")
     .replace(/Silvers do domínio/g, "Histórico de capturas do domínio")

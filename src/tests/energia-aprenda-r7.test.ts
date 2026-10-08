@@ -261,8 +261,8 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     expect(fim).toBeGreaterThan(0);
     const dentro = h.slice(0, fim);
     const fora = h.slice(fim);
-    expect(dentro).not.toContain("Catálogo e manifesto publicados em");
-    expect(fora).toMatch(/Catálogo e manifesto publicados em .*\(Brasília\)/);
+    expect(dentro).not.toContain("Catálogo e saúde processados em");
+    expect(fora).toMatch(/Catálogo e saúde processados em .*\(Brasília\)/);
     expect(fora).toContain("/setor-eletrico/dados/reproducao");
   });
 

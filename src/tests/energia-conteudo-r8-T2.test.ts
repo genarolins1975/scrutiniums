@@ -343,7 +343,7 @@ describe("P045: lista curta em Entender e lista completa em Analisar", () => {
     for (const l of linhasCsv.filter((x) => x.origem === "conjunto_de_dados")) porTipo.set(l.tipo_ato, (porTipo.get(l.tipo_ato) ?? 0) + 1);
     expect(registros.length).toBe(Array.from(porTipo.values()).reduce((a, b) => a + b, 0));
     expect((e.match(/data-grupo-registros="/g) ?? []).length).toBe(porTipo.size);
-    for (const [tipo, n] of porTipo) {
+    for (const [tipo, n] of Array.from(porTipo.entries())) {
       const g = R.agruparRegistros(eventos).find((x) => x.tipo === tipo)!;
       expect(g.n, tipo).toBe(n);
       expect(texto(e), tipo).toContain(`${n} ${n === 1 ? "registro" : "registros"}`);
@@ -537,7 +537,7 @@ describe("conciliação (iii): 22.798 usinas e 220.658,9 MW contra 22.665 e 220.
     expect(fora.length).toBe(semParticipacao.length + semPotencia.length);
     // as usinas fora por falta de potência são todas de participação válida: a causa do resto é só a potência zero
     expect(semPotencia.every((u) => u.estado_vinculo === "vinculado" || u.estado_vinculo === "inclui_sem_documento")).toBe(true);
-    expect(Math.abs(fora.reduce((s, u) => s + kw(u), 0) / 1000 - GE.controle.fronteira.mw_fora)).toBeLessThan(0.1);
+    expect(Math.abs(fora.reduce((s, u) => s + kw(u), 0) / 1000 - (GE.controle.fronteira.mw_fora as number))).toBeLessThan(0.1);
 
     const t = E.textoFronteiraNoCadastro(GE.controle.fronteira, GE.cadastro.ativos);
     expect(t).toContain(`ficam de fora ${num(fora.length, 0)} usinas e ${num(GE.controle.fronteira.mw_fora, 1)} MW`);
@@ -757,9 +757,10 @@ describe("síntese de Empresas: a resposta vem primeiro, as medidas depois, e os
     expect(h.indexOf('id="sintese-p039"')).toBeLessThan(h.indexOf("Medidas que não se somam"));
     for (const id of ["p036", "p037", "p038", "p039"]) expect(h).toContain(`data-resposta="${id}"`);
   });
-  it("CNPJ é descrito, e a sigla ITR entra na linha de siglas", () => {
-    expect(textoEntender(h)).toContain("CNPJ (o número de registro da empresa)");
+  it("CNPJ, DFP e ITR entram na linha de siglas da síntese, com o nome por extenso de siglas.ts", () => {
+    expect(texto(entender(principal(h)))).toContain(`CNPJ, ${SIGLAS.CNPJ}`);
     expect(h).toContain(esc(SIGLAS.ITR));
+    expect(h).toContain(esc(SIGLAS.DFP));
   });
   it("o período do HHI diz de onde as declarações consideradas começam", () => {
     expect(textoEntender(htmlEmp.p039)).toContain("O período vai do primeiro trimestre de declarações considerado (3º trimestre de 2025) à data do SIGA.");

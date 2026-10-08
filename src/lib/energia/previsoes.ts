@@ -951,7 +951,7 @@ export function termosPrevisoes(def: Pick<PrevisoesDesempenhoGold["definicoes"],
   const itens: { termo: string; texto: string }[] = [];
   if (def.corte_operacional?.trim()) itens.push({ termo: "Corte e origem", texto: explicacaoCorteOrigem(def) });
   if (/W1 é a primeira semana que começa depois do dia de origem/.test(def.entregas ?? "") && /M1 é o primeiro mês que começa depois do dia de origem/.test(def.entregas ?? ""))
-    itens.push({ termo: "W1 a W4 e M1 a M3", texto: "W1 a W4 são as quatro semanas, de sábado a sábado, que começam depois do dia de origem; M1 a M3 são os três meses civis que começam depois dele." });
+    itens.push({ termo: "W1 a W4 e M1 a M3", texto: "W1 a W4 são as quatro semanas que começam depois do dia de origem, cada uma de um sábado, 0h, até o sábado seguinte, 0h; M1 a M3 são os três meses civis que começam depois dele." });
   const celulas = /(\d+) células por modelo e rodada/.exec(def.entregas ?? "")?.[1];
   if (celulas) itens.push({ termo: "Rodada", texto: `cada emissão de previsões de um dia de origem; tem ${celulas} células por modelo, uma por horizonte e submercado.` });
   const p10 = /o quantil de 10% \(P10\) é o valor que o preço tem 10% de chance de não superar/.test(def.quantis ?? "");

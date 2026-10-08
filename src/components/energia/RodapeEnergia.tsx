@@ -3,6 +3,8 @@ import { gold } from "@/lib/energia/gold";
 import { carimbo } from "@/lib/energia/formato";
 import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
+import { catalogoDados } from "@/lib/energia/datasets";
+import { conciliarCatalogoEIntegracoes, textoRodapeDasFontes } from "@/lib/energia/dados-leitor";
 
 /**
  * Rodapé do domínio: os órgãos das fontes, a data da última publicação e o caminho para
@@ -14,7 +16,10 @@ export function RodapeEnergia() {
   const pub = publicacaoDados();
   const meta = pub ?? gold.meta();
   const orgaos = orgaosDasFontes(pub);
-  const resumo = orgaos.length > 0 ? `${orgaos.length} órgãos, ${pub!.conjuntos.length} conjuntos` : "CCEE, ONS e ANEEL";
+  const cat = catalogoDados();
+  // o rodapé conta integrações (uso de um conjunto por um módulo), como a página Saúde; o catálogo conta conjuntos
+  const textos = pub && cat && orgaos.length > 0 ? textoRodapeDasFontes(conciliarCatalogoEIntegracoes(cat, pub), orgaos.map((o) => o.orgao)) : null;
+  const resumo = textos ? textos.resumo : orgaos.length > 0 ? `${orgaos.length} órgãos, ${pub!.conjuntos.length} integrações` : "CCEE, ONS e ANEEL";
   const link = "inline-flex min-h-[44px] items-center text-carvao underline-offset-4 hover:underline";
   return (
     <aside aria-label="Observatório Brasileiro do Setor Elétrico: mapa e fontes" className="border-t border-linha bg-papel">
@@ -28,7 +33,7 @@ export function RodapeEnergia() {
           </summary>
           <div className="pb-3 pt-1">
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              {orgaos.length > 0
+              {textos ? `${textos.detalhe} ` : orgaos.length > 0
                 ? `Dados abertos de ${listaEmPortugues(orgaos.map((o) => o.orgao))}, em ${pub!.conjuntos.length} integrações de conjuntos. `
                 : "Dados abertos da CCEE, do ONS e da ANEEL. "}
               Licença, frequência e estado de cada conjunto estão no catálogo; cada número tem natureza, fonte, período e
@@ -38,7 +43,7 @@ export function RodapeEnergia() {
         </details>
         {meta && (
           <p className="max-w-prose2 py-1 text-xs leading-relaxed text-mineral">
-            {pub ? "Catálogo e manifesto publicados em " : "Dados processados em "}
+            {pub ? "Catálogo e saúde processados em " : "Dados processados em "}
             {carimbo(meta.gerado_em)}. Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em{" "}
             <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
               Download e reprodução
