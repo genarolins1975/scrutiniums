@@ -26,6 +26,13 @@
   --cor-energia-soft: #5e98a3;
   --cor-energia-fundo: #e6eeee;
   --cor-superficie: #ffffff;
+  /* Observatório Brasileiro de Eficiência Estatal: acento de seleção (petróleo),
+     tinta azul muito escura e neutro dos pares. Seleção, nunca juízo de valor. */
+  --cor-obee: #00697f;
+  --cor-obee-dark: #0b4f5e;
+  --cor-obee-fundo: #e6eff0;
+  --cor-obee-tinta: #14243a;
+  --cor-obee-neutro: #858072;
   --cor-grade: #e5e0d5; /* grade de gráfico, recessiva */
   --cor-previsto: #5b3f8c; /* natureza PREVISTO (selo e ilustração) */
 
@@ -165,6 +172,15 @@ body {
 .termo:hover .termo-dica,
 .termo:focus-within .termo-dica { display: block !important; }
 .termo.termo-fechada .termo-dica { display: none !important; }
+
+/* OBEE: foco no acento do domínio, algarismos alinhados e tabulares nas tabelas */
+.dominio-obee :focus-visible {
+  outline-color: var(--cor-obee);
+}
+.dominio-obee .font-serif { font-variant-numeric: lining-nums; }
+.dominio-obee table { font-variant-numeric: tabular-nums; }
+.dominio-obee { overflow-wrap: break-word; }
+.dominio-obee ::selection { background: var(--cor-obee); color: #ffffff; }
 
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */

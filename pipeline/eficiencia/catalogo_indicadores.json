@@ -357,7 +357,7 @@
     "O numerador inclui despesas que financiam matrículas fora do denominador: repasses a escolas privadas conveniadas (creches, sobretudo), cujas matrículas o Censo registra como privadas.",
     "O numerador pode incluir despesas sem matrícula correspondente na rede (ensino superior, inativos classificados na função Educação, programas de outras etapas), em proporções que variam entre municípios.",
     "Despesa e matrículas têm períodos diferentes (exercício financeiro e data de referência do Censo em maio).",
-    "A medição do tamanho desses desalinhamentos, por capital e ano, está na seção de validação; ela orienta a construção de um perímetro compatível na próxima etapa."
+    "A medição do tamanho desses desalinhamentos, por capital, está na seção Métodos e fontes (medição M01); ela orienta a construção de um perímetro compatível na próxima etapa."
    ],
    "ressalvas": [],
    "granularidade": {"etapa": false, "anos": "exercicios"},

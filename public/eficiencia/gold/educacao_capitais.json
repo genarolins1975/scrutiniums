@@ -4,8 +4,8 @@
   "painel": "educacao-municipal-capitais",
   "versao_pipeline": "obee-0.1.0",
   "versao_catalogo": "2026-10-08",
-  "versao_codigo": "2065ba07fe03+alterado",
-  "gerado_em": "2026-10-08T11:18:28Z",
+  "versao_codigo": "7f7d48f1d75c+alterado",
+  "gerado_em": "2026-10-08T11:48:39Z",
   "dados_capturados_ate": "2026-10-08T11:11:48Z",
   "hash_dados": "4fc6cfd883c59afe8f415a795a5a3e1ccf22242c9689c2054f2325948ca8aae9",
   "observacoes": 6667
@@ -756,7 +756,7 @@
     "O numerador inclui despesas que financiam matrículas fora do denominador: repasses a escolas privadas conveniadas (creches, sobretudo), cujas matrículas o Censo registra como privadas.",
     "O numerador pode incluir despesas sem matrícula correspondente na rede (ensino superior, inativos classificados na função Educação, programas de outras etapas), em proporções que variam entre municípios.",
     "Despesa e matrículas têm períodos diferentes (exercício financeiro e data de referência do Censo em maio).",
-    "A medição do tamanho desses desalinhamentos, por capital e ano, está na seção de validação; ela orienta a construção de um perímetro compatível na próxima etapa."
+    "A medição do tamanho desses desalinhamentos, por capital, está na seção Métodos e fontes (medição M01); ela orienta a construção de um perímetro compatível na próxima etapa."
    ],
    "ressalvas": [],
    "granularidade": {
@@ -2423,7 +2423,7 @@
    "titulo": "DCA: soma das funções = total exceto intraorçamentárias, e soma das subfunções = função Educação",
    "tipo": "automatica",
    "resultado": "aprovada",
-   "detalhe": "130 declarações conferidas (26 capitais × 5 exercícios), tolerância de R$ 1.00; 0 fora da tolerância.",
+   "detalhe": "130 declarações conferidas (26 capitais × 5 exercícios), tolerância de R$ 1,00; 0 fora da tolerância.",
    "casos": []
   },
   {
@@ -2431,7 +2431,7 @@
    "titulo": "Conferência cruzada: despesa liquidada na função Educação, DCA × RREO do 6º bimestre",
    "tipo": "automatica",
    "resultado": "aprovada_com_divergencias_documentadas",
-   "detalhe": "130 pares comparados; 125 iguais até R$ 1.00; 3 com diferença inferior a 1%; 2 com diferença material, explicada ou registrada caso a caso. O painel publica o valor da DCA (contas anuais); o RREO serve só de conferência e nunca é somado.",
+   "detalhe": "130 pares comparados; 125 iguais até R$ 1,00; 3 com diferença inferior a 1%; 2 com diferença material, explicada ou registrada caso a caso. O painel publica o valor da DCA (contas anuais); o RREO serve só de conferência e nunca é somado.",
    "casos": [
     {
      "ente": 1400100,
@@ -2565,7 +2565,7 @@
    "titulo": "Medição do perímetro: despesa na função Educação × matrículas da rede municipal",
    "tipo": "medicao",
    "resultado": "medicao",
-   "detalhe": "Em 2025, as matrículas em escolas privadas conveniadas com o município equivalem a valores entre 0.0% e 49.7% das matrículas da rede municipal, conforme a capital (mediana de 3.9%). Essas matrículas não estão no denominador, mas os repasses que as financiam podem estar na despesa da função Educação.",
+   "detalhe": "Em 2025, as matrículas em escolas privadas conveniadas com o município equivalem a valores entre 0,0% e 49,7% das matrículas da rede municipal, conforme a capital (mediana de 3,9%). Essas matrículas não estão no denominador, mas os repasses que as financiam podem estar na despesa da função Educação.",
    "casos": [
     {
      "ente": 1100205,

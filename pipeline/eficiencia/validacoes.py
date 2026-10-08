@@ -83,7 +83,7 @@ def v03_identidades_dca():
                 casos.append({"ente": cod, "nome": _nome(cod), "ano": ano, "dif_funcoes": d1, "dif_subfuncoes": d2})
     return _v("V03", "DCA: soma das funções = total exceto intraorçamentárias, e soma das subfunções = função Educação",
               "automatica", "aprovada" if not casos else "reprovada",
-              f"{n} declarações conferidas (26 capitais × {len(P.ANOS_FINANCEIROS)} exercícios), tolerância de R$ {TOL_REAIS:.2f}; {len(casos)} fora da tolerância.",
+              f"{n} declarações conferidas (26 capitais × {len(P.ANOS_FINANCEIROS)} exercícios), tolerância de R$ 1,00; {len(casos)} fora da tolerância.",
               casos)
 
 
@@ -101,7 +101,7 @@ def v04_dca_rreo(obs):
     materiais = [c for c in casos if c.get("situacao") in ("diverge", "inclui_intra", "sem_rreo")]
     return _v("V04", "Conferência cruzada: despesa liquidada na função Educação, DCA × RREO do 6º bimestre",
               "automatica", "aprovada" if not casos else "aprovada_com_divergencias_documentadas",
-              f"{n} pares comparados; {iguais} iguais até R$ {TOL_REAIS:.2f}; {len(casos) - len(materiais)} com diferença "
+              f"{n} pares comparados; {iguais} iguais até R$ 1,00; {len(casos) - len(materiais)} com diferença "
               f"inferior a 1%; {len(materiais)} com diferença material, explicada ou registrada caso a caso. O painel publica "
               "o valor da DCA (contas anuais); o RREO serve só de conferência e nunca é somado.",
               sorted(casos, key=lambda c: -abs(c.get("diferenca_pct") or 0)))
@@ -308,9 +308,10 @@ def m01_perimetro_despesa_matricula(obs):
             "pct_despesa_ensino_superior": round(d.get("364", 0.0), 1),
         })
     conv = [c["conveniadas_sobre_rede_pct"] for c in casos if c["conveniadas_sobre_rede_pct"] is not None]
+    br = lambda v: f"{v:.1f}".replace(".", ",")
     detalhe = (f"Em 2025, as matrículas em escolas privadas conveniadas com o município equivalem a valores entre "
-               f"{min(conv):.1f}% e {max(conv):.1f}% das matrículas da rede municipal, conforme a capital (mediana de "
-               f"{statistics.median(conv):.1f}%). Essas matrículas não estão no denominador, mas os repasses que as "
+               f"{br(min(conv))}% e {br(max(conv))}% das matrículas da rede municipal, conforme a capital (mediana de "
+               f"{br(statistics.median(conv))}%). Essas matrículas não estão no denominador, mas os repasses que as "
                f"financiam podem estar na despesa da função Educação.")
     return _v("M01", "Medição do perímetro: despesa na função Educação × matrículas da rede municipal",
               "medicao", "medicao", detalhe, casos)
