@@ -40,7 +40,7 @@ ELEGIVEIS = {"CONFERE", "DIFERENCA_MENOR", "RECONCILIADA_MSC"}
 ROTULO = {
     "CONFERE": "Confere com o RREO",
     "DIFERENCA_MENOR": "Diferença com o RREO abaixo de 0,1%",
-    "RECONCILIADA_MSC": "Diferença com o RREO; DCA confirmada pela MSC",
+    "RECONCILIADA_MSC": "Diferença com o RREO, DCA confirmada pela MSC",
     "PERIMETRO_INTRA_MSC": "Perímetro distinto: inclui despesas intraorçamentárias",
     "PENDENTE": "Conferência pendente: diferença material sem explicação",
     "NAO_CONFERIDO": "Não conferido: RREO indisponível",

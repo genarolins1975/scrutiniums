@@ -18,11 +18,11 @@ export function decimal(v: number, casas = 1): string {
   return casas === 2 ? D2.format(v) : casas === 0 ? INT.format(v) : D1.format(v);
 }
 
-/** Reais com escala por extenso: R$ 566,4 milhões; R$ 23,58 bilhões. */
+/** Reais com escala por extenso: R$ 566,4 milhões; R$ 1,03 bilhão (singular abaixo de 2); R$ 23,58 bilhões. */
 export function reaisExtenso(v: number): string {
   const a = Math.abs(v);
-  if (a >= 1e9) return `R$ ${D2.format(v / 1e9)} bilhões`;
-  if (a >= 1e6) return `R$ ${D1.format(v / 1e6)} milhões`;
+  if (a >= 1e9) return `R$ ${D2.format(v / 1e9)} ${a < 2e9 ? "bilhão" : "bilhões"}`;
+  if (a >= 1e6) return `R$ ${D1.format(v / 1e6)} ${a < 2e6 ? "milhão" : "milhões"}`;
   if (a >= 1e3) return `R$ ${D1.format(v / 1e3)} mil`;
   return `R$ ${D2.format(v)}`;
 }

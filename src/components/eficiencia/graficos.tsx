@@ -358,24 +358,26 @@ export function GraficoPontosPares({
         )}
       </div>
       <p className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-carvao-muted">
-        <span className="inline-flex items-center gap-1.5">
-          <svg width="14" height="14" aria-hidden="true">
-            <circle cx="7" cy="7" r="5.5" fill={COR.selecao} />
-          </svg>
-          Capital selecionada{sel >= 0 && estreito ? `: ${formata(linhas[sel].valor)}` : ""}
-        </span>
+        {sel >= 0 && (
+          <span className="inline-flex items-center gap-1.5">
+            <svg width="14" height="14" aria-hidden="true">
+              <circle cx="7" cy="7" r="5.5" fill={COR.selecao} />
+            </svg>
+            Capital selecionada{estreito ? `: ${formata(linhas[sel].valor)}` : ""}
+          </span>
+        )}
         <span className="inline-flex items-center gap-1.5">
           <svg width="14" height="14" aria-hidden="true">
             <circle cx="7" cy="7" r="4" fill={COR.neutro} />
           </svg>
-          Demais capitais do grupo
+          Demais capitais na comparação
         </span>
         {mediana !== null && (
           <span className="inline-flex items-center gap-1.5">
             <svg width="14" height="14" aria-hidden="true">
               <line x1="7" x2="7" y1="0" y2="14" stroke={COR.referencia} strokeWidth="1.5" />
             </svg>
-            Mediana das capitais do grupo com dado: {formata(mediana)}
+            Mediana das {linhas.length} capitais na comparação: {formata(mediana)}
           </span>
         )}
       </p>

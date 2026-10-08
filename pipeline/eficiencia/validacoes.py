@@ -125,7 +125,7 @@ def v04_dca_rreo(obs):
         resultado = "aprovada"
     else:
         resultado = "aprovada_com_divergencias_documentadas"
-    partes = "; ".join(f"{CF.ROTULO.get(k, k).lower()}: {v}" for k, v in sorted(contagem.items(), key=lambda x: -x[1]))
+    partes = "; ".join(f"{CF.ROTULO.get(k, k)} ({v})" for k, v in sorted(contagem.items(), key=lambda x: -x[1]))
     return _v("V04", "Conferência da despesa: DCA × RREO do 6º bimestre e, na diferença material, MSC de dezembro",
               "automatica", resultado,
               f"{n} declarações; {partes}. Política {CF.VERSAO_POLITICA}: tolerância de R$ 1,00 para arredondamento e de 0,1% da "

@@ -23,6 +23,7 @@ import {
   variacao,
 } from "@/lib/eficiencia/consulta";
 import { contextos, resumoCobertura } from "@/lib/eficiencia/contexto";
+import { reaisExtenso } from "@/lib/eficiencia/formato";
 
 /**
  * Painel Educação municipal nas capitais (OBEE). Os testes miram erros
@@ -242,6 +243,13 @@ describe("tabela auditável e exportação", () => {
     expect(formataEixo("saeb", 220)).toBe("220");
     expect(formataEixo("ideb", 5.5)).toBe("5,5");
     expect(formataEixo("aprovacao", 96)).toBe("96%");
+  });
+
+  it("escala por extenso concorda em número", () => {
+    expect(reaisExtenso(1_030_887_330.5)).toBe("R$ 1,03 bilhão");
+    expect(reaisExtenso(2_500_000_000)).toBe("R$ 2,50 bilhões");
+    expect(reaisExtenso(1_500_000)).toBe("R$ 1,5 milhão");
+    expect(reaisExtenso(658_077_936.34)).toBe("R$ 658,1 milhões");
   });
 });
 

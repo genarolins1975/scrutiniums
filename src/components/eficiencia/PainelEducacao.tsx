@@ -612,8 +612,9 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
               <>
                 {comp.incluidas.length < 3 && (
                   <p className="mb-3 border-l-2 border-obee pl-3 text-sm text-obee-tinta">
-                    Só {comp.incluidas.length} {comp.incluidas.length === 1 ? "capital tem" : "capitais têm"} valor neste recorte. A mediana de um grupo tão
-                    pequeno é pouco informativa.
+                    Só {comp.incluidas.length} {comp.incluidas.length === 1 ? "capital está" : "capitais estão"} na comparação neste recorte
+                    {comp.comValor > comp.incluidas.length ? ` (${comp.comValor} com valor oficial)` : ""}. A mediana de um grupo tão pequeno é pouco
+                    informativa.
                   </p>
                 )}
                 <GraficoPontosPares
