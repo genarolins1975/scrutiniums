@@ -110,7 +110,7 @@ export function FaixaDistribuicao({
       >
         <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block">
           {faixa && <rect x={x(faixa.q1)} y={m.t - 6} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={base - m.t + 6} fill="var(--cor-obee-fundo)" />}
-          {dom.ticks.map((t, it) => (
+          {dom.ticks.map((t) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={base} y2={base + 5} stroke={COR.eixo} strokeWidth={1} />
               <text x={x(t)} y={base + 20} textAnchor={x(t) > w - 34 ? "end" : x(t) < 34 ? "start" : "middle"} fontSize={11.5} fill={COR.eixo}>

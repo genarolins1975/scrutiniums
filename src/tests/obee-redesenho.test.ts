@@ -107,3 +107,57 @@ describe("panorama editorial", () => {
     for (const id of ["edu.despesa.ponte_matricula", "edu.despesa.subfuncao"]) expect(ctx[id]).toBeDefined();
   });
 });
+
+describe("payload por tema", () => {
+  const temas = ["gastos", "atendimento", "resultados"] as const;
+  it("o comparador leva a tabela completa idêntica, sem a ponte nem a composição", async () => {
+    const { dadosPainelTema } = await import("@/lib/eficiencia/dados");
+    const { tabelaComparativa } = await import("@/lib/eficiencia/consulta");
+    const dc = dadosPainelTema(g, "comparar");
+    const ixc = new Indice(dc);
+    expect(JSON.stringify(dc).length).toBeLessThan(JSON.stringify(d).length * 0.85);
+    for (const [m, etapa] of [["despesa_hab", "anos_iniciais"], ["ideb", "anos_finais"], ["despesa_mat", "total"]] as const) {
+      const a = tabelaComparativa(ix, 2025, etapa, "nominal", "matematica", "todas", d.capitais[0], m);
+      const b = tabelaComparativa(ixc, 2025, etapa, "nominal", "matematica", "todas", dc.capitais[0], m);
+      expect(b.linhas.map((l) => [l.cap.cod, ...Object.values(l.celulas).map((c) => c.valor), ...l.ressalvas.map((r) => r.texto)])).toEqual(a.linhas.map((l) => [l.cap.cod, ...Object.values(l.celulas).map((c) => c.valor), ...l.ressalvas.map((r) => r.texto)]));
+    }
+  });
+
+  it("cada tema leva só o que usa, bem menos que a base completa", async () => {
+    const { dadosPainelTema } = await import("@/lib/eficiencia/dados");
+    const cheio = JSON.stringify(d).length;
+    for (const t of temas) {
+      const r = JSON.stringify(dadosPainelTema(g, t)).length;
+      expect(r, t).toBeLessThan(cheio * 0.6);
+    }
+  });
+
+  it("os valores dos indicadores do tema são idênticos nos dois payloads (comparação, ponto, referência, ponte e composição)", async () => {
+    const { dadosPainelTema, INDICADORES_DO_TEMA } = await import("@/lib/eficiencia/dados");
+    const { ponteMatricula, composicaoDespesa, distribuicaoMatriculas } = await import("@/lib/eficiencia/consulta");
+    for (const t of temas) {
+      const dt = dadosPainelTema(g, t);
+      const ixt = new Indice(dt);
+      for (const m of DEFINICAO_TEMA[t].medidas) {
+        expect(INDICADORES_DO_TEMA[t]).toContain(MEDIDA[m].indicador);
+        const etapa = etapaEfetiva(m, "anos_iniciais", "anos_iniciais");
+        for (const ano of anosDaMedida(d, m).slice(-3)) {
+          const a = comparar(ix, m, ano, etapa, "nominal", "matematica", "todas", d.capitais[0], "alfabetica");
+          const b = comparar(ixt, m, ano, etapa, "nominal", "matematica", "todas", dt.capitais[0], "alfabetica");
+          expect(b.incluidas.map((i) => [i.cap.cod, i.valor, i.ponto.nota, i.ponto.motivo])).toEqual(a.incluidas.map((i) => [i.cap.cod, i.valor, i.ponto.nota, i.ponto.motivo]));
+          expect(b.excluidas.map((x) => [x.cap.cod, x.motivo])).toEqual(a.excluidas.map((x) => [x.cap.cod, x.motivo]));
+          expect(b.ref?.mediana).toBe(a.ref?.mediana);
+        }
+      }
+    }
+    const dg = dadosPainelTema(g, "gastos");
+    const ixg = new Indice(dg);
+    for (const cap of d.capitais) {
+      expect(ponteMatricula(ixg, cap.cod, 2025)).toEqual(ponteMatricula(ix, cap.cod, 2025));
+      expect(composicaoDespesa(ixg, cap.cod, 2025)).toEqual(composicaoDespesa(ix, cap.cod, 2025));
+    }
+    const da = dadosPainelTema(g, "atendimento");
+    const ixa = new Indice(da);
+    for (const cap of d.capitais) expect(distribuicaoMatriculas(ixa, cap.cod, 2025)).toEqual(distribuicaoMatriculas(ix, cap.cod, 2025));
+  });
+});

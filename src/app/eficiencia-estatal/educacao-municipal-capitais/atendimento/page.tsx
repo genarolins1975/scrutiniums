@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ExploradorTema } from "@/components/eficiencia/ExploradorTema";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextos } from "@/lib/eficiencia/contexto";
-import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
+import { dadosPainelTema, goldEducacao } from "@/lib/eficiencia/dados";
 
 export const dynamic = "force-static";
 
@@ -23,5 +23,5 @@ export default function PaginaAtendimento() {
       />
     );
   }
-  return <ExploradorTema tema="atendimento" dados={dadosPainel(g)} contextos={contextos(g)} />;
+  return <ExploradorTema tema="atendimento" dados={dadosPainelTema(g, "atendimento")} contextos={contextos(g)} />;
 }

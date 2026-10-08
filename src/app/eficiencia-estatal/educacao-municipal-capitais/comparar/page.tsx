@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ComparadorCapitais } from "@/components/eficiencia/ComparadorCapitais";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
+import { dadosPainelTema, goldEducacao } from "@/lib/eficiencia/dados";
 
 export const dynamic = "force-static";
 
@@ -22,5 +22,5 @@ export default function PaginaComparar() {
       />
     );
   }
-  return <ComparadorCapitais dados={dadosPainel(g)} />;
+  return <ComparadorCapitais dados={dadosPainelTema(g, "comparar")} />;
 }
