@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { statSync } from "node:fs";
@@ -1024,7 +1025,13 @@ export default function QualidadePage() {
                   <QualidadeTabela tabela="eventos" titulo="Eventos em situação de emergência com maior CHI" linhas={n("eventos")} chaveUrl="tevt" />
                   {evt.datas_invalidas.length > 0 && (
                     <p className="text-sm text-carvao-muted">
-                      Datas mantidas como publicadas, sem duração: {evt.datas_invalidas.map((d) => `${d.sigla ?? "distribuidora não identificada"}, evento ${d.codigo} (${d.motivo})`).join("; ")}.
+                      Datas mantidas como publicadas, sem duração:{" "}
+                      <TextoEnergia
+                        texto={evt.datas_invalidas.map((d) => `${d.sigla ?? "distribuidora não identificada"}, evento ${d.codigo} (${d.motivo})`).join("; ")}
+                        origem={prov.eventos.fonte.url_dataset}
+                        literais={["data-fim-fora-da-cronologia"]}
+                      />
+                      .
                     </p>
                   )}
                 </Analise>

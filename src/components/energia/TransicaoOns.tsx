@@ -77,7 +77,7 @@ export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdM
         nomeArquivo="transicao-ons-mmgd-mensal"
         chaveUrl="ons.tab"
         ordemInicial={{ coluna: "m", direcao: "desc" }}
-        dicaBusca="Mês (2025-08)"
+        dicaBusca="Mês (08/2025)"
         nota="MWmed do mês = energia do mês ÷ horas cobertas. SIN só nos dias com as 24 horas dos quatro submercados. A razão com a capacidade compara perímetros diferentes (SIN e Brasil) e fica vazia em mês incompleto ou com cadastro provisório."
       />
     </div>

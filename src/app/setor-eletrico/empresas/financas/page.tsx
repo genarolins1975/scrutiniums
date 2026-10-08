@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasFinancas } from "@/components/energia/EmpresasFinancas";
@@ -135,7 +136,7 @@ export default function PaginaP038() {
                 {bloqueioP038.map((b) => (
                   <EmpresasAviso key={b.id} rotulo="Bloqueio documentado">
                     <p>
-                      {b.descricao} {b.evidencia}
+                      <TextoEnergia texto={b.descricao} /> <TextoEnergia texto={b.evidencia} />
                     </p>
                     <p className="mt-1">O que se entrega no lugar: {b.alternativa}</p>
                   </EmpresasAviso>
@@ -194,11 +195,15 @@ export default function PaginaP038() {
                   />
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.regra_nao_preenchida} Total: {inteiro(f.exclusoes.colunas_nao_preenchidas.colunas)} colunas e {inteiro(f.exclusoes.colunas_nao_preenchidas.valores)} valores.
-                    {f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.length ? ` No período corrente: ${f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.join("; ")}.` : ""}
+                    {f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.length ? (
+                      <>
+                        {" "}No período corrente: <TextoEnergia texto={f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.join("; ")} />.
+                      </>
+                    ) : null}
                   </p>
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.escala.regra} {inteiro(f.exclusoes.escala.documentos_corrigidos)} documentos de {inteiro(f.exclusoes.escala.companhias)} companhias, {inteiro(f.exclusoes.escala.valores_corrigidos)}{" "}
-                    valores: {f.exclusoes.escala.por_companhia.join("; ")}.
+                    valores: <TextoEnergia texto={f.exclusoes.escala.por_companhia.join("; ")} />.
                   </p>
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.regra_inicio} {inteiro(f.exclusoes.inicio_inconsistente.length)} exercícios aceitos com nota; {inteiro(f.exclusoes.exercicios_irregulares.valores)} valores de exercícios curtos

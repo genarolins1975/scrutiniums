@@ -82,6 +82,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       rota(d.href, 0.8, "weekly"),
     ),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
+    // Observatório Brasileiro de Eficiência Estatal: etapa inicial, um painel publicado.
+    rota("/eficiencia-estatal/educacao-municipal-capitais", 0.6, "monthly"),
     rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),
     ...modelosEnergia.map((m) => rota(`/setor-eletrico/pld/modelos/${m}`, 0.5, "weekly")),
     rota("/setor-eletrico/pld/previsoes", 0.6, "daily"),

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { PrevisoesLinkPainel } from "@/components/energia/PrevisoesLinkPainel";
@@ -146,7 +147,7 @@ export function PrevisoesSeguir({
             {downloads.map((d) => (
               <li key={d.url}>
                 <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere] hover:text-carvao">
-                  {d.rotulo}
+                  <TextoEnergia texto={d.rotulo} />
                 </a>
               </li>
             ))}

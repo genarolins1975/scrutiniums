@@ -5,6 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
@@ -135,7 +136,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
               {d.downloads.map((u) => (
                 <li key={u}>
                   <a href={u} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{u.split("/").pop()}</a>
-                  {COLUNAS_ARQUIVO[u] && <span className="block text-xs leading-relaxed text-carvao-muted">{COLUNAS_ARQUIVO[u]}</span>}
+                  {COLUNAS_ARQUIVO[u] && (
+                    <span className="block text-xs leading-relaxed text-carvao-muted">
+                      <TextoEnergia texto={COLUNAS_ARQUIVO[u]} origem={urlDoConjunto(e) ?? undefined} literais={["marcador-ausencia-siga"]} />
+                    </span>
+                  )}
                 </li>
               ))}
               {d.paginas.map((p) => (

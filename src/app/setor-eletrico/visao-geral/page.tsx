@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -326,7 +327,9 @@ export default function VisaoGeralEnergia() {
                       <p className={`font-medium ${o.ativo ? "text-carvao" : "text-carvao-muted"}`}>
                         <Link href={o.href} className="underline-offset-4 hover:underline">{o.titulo}</Link>
                       </p>
-                      <p className="mt-1 text-sm text-carvao-muted">{o.evidencia}</p>
+                      <p className="mt-1 text-sm text-carvao-muted">
+                        <TextoEnergia texto={o.evidencia} />
+                      </p>
                       <p className="mt-1 text-xs text-mineral">Regra: {o.condicao}</p>
                     </div>
                   </li>

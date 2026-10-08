@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -160,26 +160,8 @@ describe("auditoria final: regressões", () => {
     }
   });
 
-  it("páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)", () => {
-    const dir = join(raiz, ".next", "server", "app", "setor-eletrico");
-    if (!existsSync(dir)) return;
-    const htmls: string[] = [];
-    const varre = (d: string) => {
-      for (const e of readdirSync(d, { withFileTypes: true })) {
-        const p = join(d, e.name);
-        if (e.isDirectory()) varre(p);
-        else if (e.name.endsWith(".html")) htmls.push(p);
-      }
-    };
-    varre(dir);
-    if (existsSync(join(raiz, ".next", "server", "app", "setor-eletrico.html"))) htmls.push(join(raiz, ".next", "server", "app", "setor-eletrico.html"));
-    for (const h of htmls) {
-      const texto = readFileSync(h, "utf-8").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
-      expect(texto, h).not.toMatch(/\bundefined\b|\bNaN\b/);
-      // data crua (AAAA-MM, AAAA-MM-DD ou instante ISO) solta no texto; identificadores com "@" ou "_" ficam de fora
-      expect(texto, h).not.toMatch(/(^|[\s(])20\d\d[-/]\d\d([-/]\d\d)?(T[\d:]+Z?)?(?=[\s).,;]|$)/);
-    }
-  });
+  // A verificação do HTML pré-renderizado (undefined, NaN, data crua) saiu daqui para
+  // src/tests/html-gerado.test.ts: lá ela é obrigatória no CI e nunca retorna sucesso sem build.
 });
 
 describe("auditoria final B: regressões", () => {

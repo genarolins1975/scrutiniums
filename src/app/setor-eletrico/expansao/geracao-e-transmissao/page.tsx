@@ -26,6 +26,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
+import { textoComDatas } from "@/lib/texto-datas";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_CONTRATOS_ANO,
@@ -385,7 +386,7 @@ export default function GeracaoTransmissaoPage() {
                         nota={`${ca.regra} ${ca.nota_zero}`}
                       />
                       <TabelaInterativa
-                        titulo={`Contratos assinados depois do último leilão do arquivo aberto (${ca.depois_do_ultimo_leilao_do_arquivo.ultimo_leilao ?? "sem dado"})`}
+                        titulo={textoComDatas(`Contratos assinados depois do último leilão do arquivo aberto (${ca.depois_do_ultimo_leilao_do_arquivo.ultimo_leilao ?? "sem dado"})`)}
                         colunas={COLUNAS_CONTRATOS_RECENTES}
                         linhas={linhasContratosRecentes(g)}
                         chaveLinha="id"

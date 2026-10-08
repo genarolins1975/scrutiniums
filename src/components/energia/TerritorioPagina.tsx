@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { TerritorioLinkPainel } from "@/components/energia/TerritorioLinkPainel";
@@ -102,11 +103,11 @@ export function TerritorioTabela({ titulo, colunas, linhas, numericas = [] }: { 
               {l.map((c, i) =>
                 i === 0 ? (
                   <th key={i} scope="row" className="px-2 py-1.5 text-left font-normal text-carvao">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </th>
                 ) : (
                   <td key={i} className={`px-2 py-1.5 text-carvao ${numericas.includes(i) ? "text-right" : "text-left"}`}>
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </td>
                 ),
               )}

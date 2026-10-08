@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
@@ -127,7 +128,7 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
           {() => null}
         </Comparador>
         <div className="flex flex-wrap items-end gap-3 text-sm">
-          <label className="flex flex-col gap-1 text-carvao-muted">
+          <label className="flex min-w-0 max-w-full flex-col gap-1 text-carvao-muted">
             Conta
             <select value={v.conta} onChange={(e) => definir({ conta: e.target.value as ContaCvm })} className="min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-carvao">
               {contas.map((c) => (
@@ -243,7 +244,7 @@ export function EmpresasFinancas({ linhas, entidades, contas, padrao, seriesInic
             />
             {escalaCorrigida.length > 0 && (
               <p className="text-xs text-carvao-muted">
-                Escala convertida pelo observatório (natureza estimada; regra no modo Auditar): {escalaCorrigida.join("; ")}.
+                Escala convertida pelo observatório (natureza estimada; regra no modo Auditar): <TextoEnergia texto={escalaCorrigida.join("; ")} />.
               </p>
             )}
           </>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
@@ -491,7 +492,7 @@ export default function PldPage() {
                     <ul className="space-y-2 text-sm text-carvao-muted">
                       {conceitoDet.bloqueios.map((b) => (
                         <li key={b.fonte} className="leading-relaxed [overflow-wrap:anywhere]">
-                          <span className="text-carvao">{b.fonte}</span>: {b.evidencia.replace(/\.$/, "")}. {b.consequencia}
+                          <span className="text-carvao">{b.fonte}</span>: <TextoEnergia texto={b.evidencia.replace(/\.$/, "")} />. <TextoEnergia texto={b.consequencia} />
                         </li>
                       ))}
                     </ul>
@@ -707,7 +708,7 @@ export default function PldPage() {
           {/* 5. Previsão */}
           <Capitulo id="previsao" numero="5" subtitulo="Previsão" titulo="Para onde o PLD pode ir?">
             <p className="max-w-prose2 font-serif text-xl leading-snug text-carvao">Previsão é distribuição de possibilidades, não um único número.</p>
-            <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
+            <div className="mt-6 grid grid-cols-[minmax(0,1fr)] items-start gap-8 lg:grid-cols-2">
               <IlustracaoDistribuicao />
               <div>
                 {prev && !prev.atual.disponivel ? (

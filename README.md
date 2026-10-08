@@ -94,6 +94,17 @@ python3 -m unittest discover -s pipeline/tests -t .
 
 A previsão do PLD segue governança explícita: modelos com estado (PESQUISA, VALIDAÇÃO, PRODUÇÃO, APOSENTADO) em `pipeline/energia/registro_modelos.json`, arquivo imutável em `pipeline/energia/previsoes/arquivo.jsonl` com sha256 por registro, e previsão principal exibida como indisponível, com motivo, enquanto nenhum modelo está em produção. Arquitetura, catálogo de fontes, modelo de auditabilidade e plano em [docs/observatorios/](./docs/observatorios/README.md).
 
+## Observatório Brasileiro de Eficiência Estatal (etapa inicial)
+
+Domínio `eficiencia`, em **`/eficiencia-estatal`**. Nesta etapa há um único painel publicado, **Educação municipal nas capitais** (`/eficiencia-estatal/educacao-municipal-capitais`): despesa liquidada na função Educação (Siconfi, DCA), matrículas da rede municipal e de escolas conveniadas (microdados do Censo Escolar), alunos por turma, aprovação, Ideb e Saeb (INEP), com passaporte de 16 campos por indicador, estados de dado explícitos e tabela auditável com exportação. O pipeline fica em `pipeline/eficiencia/` (biblioteca padrão; recortes versionados em `seed/` com sha256 e MD5 conferidos) e escreve `public/eficiencia/`:
+
+```bash
+python3 -m pipeline.eficiencia.run                   # reconstrói a gold a partir do seed (sem rede)
+python3 -m unittest pipeline.tests.test_eficiencia
+```
+
+Regra editorial do domínio: apresenta indicadores, não conclusões sobre governos. Documentação, inventário, metodologia, validação e continuidade em [docs/obee/](./docs/obee/README.md). O OBEE ainda não está no registro de domínios (`src/lib/dominios.ts`); a decisão está em `docs/obee/CONTINUIDADE.md`.
+
 ## Documentação
 
 As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md). A arquitetura da plataforma de dois observatórios e do domínio Energia está em [docs/observatorios/](./docs/observatorios/README.md).

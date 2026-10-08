@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { ExpansaoLinkPainel } from "@/components/energia/ExpansaoLinkPainel";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { PAINEIS_EXPANSAO, ROTA_EXPANSAO, painel, proximoPainel, rotaPainel, type PainelExpansao } from "@/lib/energia/expansao";
 import { num } from "@/lib/energia/formato";
@@ -173,12 +174,17 @@ export function ExpansaoAusencia({ titulo, children }: { titulo: string; childre
 }
 
 /** Lista das limitações publicadas pela proveniência (texto da gold, sem reescrita). */
+/** Conjunto do SIGA (ANEEL) de onde vêm o marcador de data ausente e a competência de reconciliação citados nas limitações. */
+const ORIGEM_SIGA = "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel";
+
 export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
   if (!itens.length) return null;
   return (
     <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
       {itens.map((x) => (
-        <li key={x}>{x}</li>
+        <li key={x}>
+          <TextoEnergia texto={x} origem={ORIGEM_SIGA} literais={["marcador-ausencia-siga"]} />
+        </li>
       ))}
     </ul>
   );
@@ -205,11 +211,11 @@ export function ExpansaoTabelaSimples({ titulo, cabecalho, linhas }: { titulo: s
               {l.map((c, j) =>
                 j === 0 ? (
                   <th key={j} scope="row" className="px-2 py-1.5 text-left font-normal">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </th>
                 ) : (
                   <td key={j} className="px-2 py-1.5">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </td>
                 ),
               )}

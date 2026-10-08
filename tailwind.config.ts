@@ -39,6 +39,17 @@ const config: Config = {
           soft: "#5E98A3",
           fundo: "#E6EEEE",
         },
+        // Acento do Observatório Brasileiro de Eficiência Estatal (petróleo).
+        // DEFAULT e dark passam AA como texto sobre papel e branco; neutro é só
+        // marcação não textual (pontos dos pares nos gráficos), validada >= 3:1.
+        // tinta: azul muito escuro do texto do domínio. Ver docs/obee/ARQUITETURA.md.
+        obee: {
+          DEFAULT: "#00697F",
+          dark: "#0B4F5E",
+          fundo: "#E6EFF0",
+          tinta: "#14243A",
+          neutro: "#858072",
+        },
         superficie: "#FFFFFF",
         // Selos de natureza do dado (texto AA sobre papel e branco).
         natureza: {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -430,7 +431,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       <p className="text-sm text-carvao-muted">Sem série anual no escopo {rotuloEscopo(escopo)} para esta companhia.</p>
                     )}
                     {fin?.[companhia.cnpj]?.escala_corrigida?.length ? (
-                      <p className="text-xs text-carvao-muted">Escala convertida pelo observatório (natureza estimada): {fin[companhia.cnpj].escala_corrigida!.join("; ")}.</p>
+                      <p className="text-xs text-carvao-muted">Escala convertida pelo observatório (natureza estimada): <TextoEnergia texto={fin[companhia.cnpj].escala_corrigida!.join("; ")} />.</p>
                     ) : null}
                     <p className="text-sm">
                       <Link href={`${rotaPainel("p038")}?fin.sel=${companhia.cnpj}#p038`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
