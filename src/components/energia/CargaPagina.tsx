@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CargaLinkPainel } from "@/components/energia/CargaLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { TextoComDatas } from "@/components/TextoComDatas";
 import { PAINEIS_CARGA, ROTA_CARGA, rotaPainel, type PainelCarga } from "@/lib/energia/carga";
 import { carimbo } from "@/lib/energia/formato";
 import type { FonteCarga } from "@/lib/energia/tipos-carga";
@@ -158,7 +159,11 @@ export function CargaFontes({ fontes }: { fontes: FonteCarga[] }) {
           </span>
           : {f.recurso}. Grão: {f.grao}
           {f.unidade ? `; unidade: ${f.unidade}` : ""}
-          {f.periodo ? `; período: ${f.periodo.inicio ?? "sem início"} a ${f.periodo.fim ?? "sem fim"}` : ""}
+          {f.periodo && (
+            <>
+              ; período: <TextoComDatas texto={f.periodo.inicio ?? "sem início"} /> a <TextoComDatas texto={f.periodo.fim ?? "sem fim"} />
+            </>
+          )}
           {f.ultima_captura ? `; última captura: ${carimbo(f.ultima_captura)}` : ""}. Licença: {f.licenca}.{" "}
           <a href={f.url} className="text-energia-dark underline underline-offset-4" rel="noopener noreferrer">
             Endereço da fonte

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
@@ -276,7 +277,9 @@ export default function ExpansaoPage() {
               <h3 className="rotulo text-mineral">Ressalvas da validação desta publicação</h3>
               <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                 {g.ressalvas.map((x) => (
-                  <li key={x}>{x}</li>
+                  <li key={x}>
+                    <TextoEnergia texto={x} />
+                  </li>
                 ))}
               </ul>
             </div>

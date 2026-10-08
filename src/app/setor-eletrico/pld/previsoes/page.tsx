@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -417,7 +418,7 @@ export default function PrevisoesPage() {
                       {particoes.map((p) => (
                         <li key={p.url}>
                           <a href={p.url} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                            {p.rotulo}
+                            <TextoEnergia texto={p.rotulo} />
                           </a>
                         </li>
                       ))}

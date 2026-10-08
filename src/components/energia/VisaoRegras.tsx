@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
@@ -22,7 +23,9 @@ export function VisaoRegraResumo({ o }: { o: RegraObservar }) {
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;
   return (
     <div className="space-y-1.5">
-      <p className="text-sm leading-relaxed text-carvao-muted">{o.evidencia}</p>
+      <p className="text-sm leading-relaxed text-carvao-muted">
+        <TextoEnergia texto={o.evidencia} />
+      </p>
       {valor && (
         <p className="text-xs text-carvao-muted">
           <span className="text-carvao">Valor avaliado:</span> {valor}
@@ -130,7 +133,7 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
         <ul className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
           {o.bloqueios_registrados.map((b) => (
             <li key={b.fonte + b.evidencia}>
-              Bloqueio registrado ({b.origem}): {b.fonte}. {b.evidencia}
+              Bloqueio registrado ({b.origem}): {b.fonte}. <TextoEnergia texto={b.evidencia} />
             </li>
           ))}
         </ul>

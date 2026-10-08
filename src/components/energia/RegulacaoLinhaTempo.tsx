@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
+import { LiteralFonte } from "@/components/LiteralFonte";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -249,7 +251,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                   <div className="mt-2 space-y-1.5 text-sm leading-relaxed">
                     <p className="text-carvao-muted">
                       <span className="rotulo mr-1.5 text-mineral">Resumo do observatório</span>
-                      {e.resumo}
+                      <TextoEnergia texto={e.resumo} />
                     </p>
                     <p className="text-carvao">
                       <span className="rotulo mr-1.5 text-mineral">Efeito declarado pelo ato</span>
@@ -276,7 +278,15 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                         <span className="text-carvao">Regra de vigência:</span> <q>{e.vigencia_regra}</q>
                         {e.vigencia_calculada ? " (data calculada pela LC nº 95/1998, art. 8º, § 1º)" : ""}
                       </p>
-                      {e.trecho && (
+                      {e.trecho && e.origem === "conjunto_de_dados" && e.url_oficial && (
+                        <p>
+                          <span className="text-carvao">Registro no conjunto de dados:</span>{" "}
+                          <LiteralFonte classe="registro-composto-bandeiras" origem={e.url_oficial}>
+                            {e.trecho}
+                          </LiteralFonte>
+                        </p>
+                      )}
+                      {e.trecho && !(e.origem === "conjunto_de_dados" && e.url_oficial) && (
                         <p>
                           <span className="text-carvao">Trecho:</span> <q>{e.trecho}</q>
                         </p>

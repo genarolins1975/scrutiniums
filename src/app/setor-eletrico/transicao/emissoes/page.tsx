@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DataDaFonte } from "@/components/energia/TextoEnergia";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -251,7 +252,7 @@ export default function EmissoesPage() {
                     nomeArquivo="transicao-mcti-fator-medio-mensal"
                     chaveUrl="em.mtab"
                     ordemInicial={{ coluna: "m", direcao: "desc" }}
-                    dicaBusca="Mês (2025-08) ou ano"
+                    dicaBusca="Mês (08/2025) ou ano"
                   />
                 </TransicaoAnalise>
 
@@ -339,7 +340,7 @@ export default function EmissoesPage() {
                     titulo="Valores descartados na leitura"
                     colunas={["Data na planilha", "Valor", "Motivo", "Planilha"]}
                     numericas={[1]}
-                    linhas={e.descartes.map((x) => [x.data, fator(x.valor), x.motivo, x.arquivo])}
+                    linhas={e.descartes.map((x) => [<DataDaFonte key={`${x.arquivo}-${x.data}`} valor={x.data} classe="data-planilha-inexistente" origem={e.acesso.url} />, fator(x.valor), x.motivo, x.arquivo])}
                   />
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     {e.problemas_de_leitura.map((x) => (
