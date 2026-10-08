@@ -306,7 +306,7 @@ export default function VisaoGeralEnergia() {
               <TituloPainel id="observar" />
               <VisaoResposta painel="observar">{respostaObservar(g.observar)}</VisaoResposta>
               <VisaoRecorte
-                periodo={`Estado do dia na data de referência de cada regra; linha de estado dos últimos 365 dias; histórico reavaliado desde ${dataBR(g.historico_regras.inicio)} com os dados de hoje`}
+                periodo={`Estado do dia na data de referência de cada regra; linha de estado dos últimos 365 dias; histórico reavaliado desde ${dataBR(g.historico_regras.inicio)} com os dados da data de processamento`}
                 universo={`${plural(regras.length, "regra", "regras")} sobre o sistema e sobre os próprios dados, e ${plural(g.observar.length - regras.length, "evento de calendário", "eventos de calendário")}`}
                 unidade="Cada regra na unidade do indicador que avalia; limiares publicados na mesma unidade"
               />

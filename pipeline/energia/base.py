@@ -11,8 +11,10 @@ Uma observação ganha linha nova só quando o valor difere do último valor
 conhecido para (dataset, serie, ref): revisão fica registrada, nunca
 sobrescrita. Valor ausente não gera linha (ausência não é zero).
 """
+import csv
 import gzip
 import hashlib
+import io
 import json
 import os
 import sqlite3
@@ -436,13 +438,16 @@ def escreve_gold(nome, payload, destino=None):
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):
-    """CSV com ';' e ponto decimal; ausência = campo vazio (nunca zero)."""
+    """CSV com ';' e ponto decimal; ausência = campo vazio (nunca zero). Campo com ';', aspas ou quebra de
+    linha vai entre aspas (RFC 4180), como em regulacao._escreve_csv: sem isso, um texto com ponto e vírgula
+    vira coluna a mais e o arquivo baixado deixa de ter o número de colunas do cabeçalho."""
     base = destino or SERIES
-    partes = [";".join(cabecalho)]
+    buf = io.StringIO()
+    w = csv.writer(buf, delimiter=";", quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+    w.writerow(cabecalho)
     for linha in linhas:
-        partes.append(";".join("" if v is None else (repr(round(v, 4)) if isinstance(v, float) else str(v))
-                               for v in linha))
-    return _escreve_atomico(os.path.join(base, nome), "\n".join(partes) + "\n")
+        w.writerow(["" if v is None else (repr(round(v, 4)) if isinstance(v, float) else str(v)) for v in linha])
+    return _escreve_atomico(os.path.join(base, nome), buf.getvalue())
 
 
 def le_gold(nome, destino=None):

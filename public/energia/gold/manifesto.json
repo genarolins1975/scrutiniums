@@ -1,18 +1,18 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-08T00:46:37Z",
+ "gerado_em": "2026-10-08T08:42:17Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dda7297b8c1c+alterado",
+ "versao_codigo": "c18fa7427557+alterado",
  "disponivel": true,
- "id_publicacao": "1f4c5eaa60f9e61738cdaaba5d9c85f393dda5c673ff9e287b732f14850ab7c7",
+ "id_publicacao": "35d9d77d6f0890bca2a46cd6d336ded78cb68214cd748e8eb344ff36a2626132",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 270,
-  "bytes": 208180450,
+  "bytes": 208189137,
   "geometrias": 2,
   "golds": 31,
   "series": 212,
@@ -50,9 +50,9 @@
   {
    "caminho": "/energia/gold/avaliacao.json",
    "tipo": "gold",
-   "bytes": 909796,
-   "sha256": "f484868d7846ecbe31bafc63cd279e5e0bc4eae1a92a256ee9f43f97ad8acac1",
-   "gerado_em": "2026-10-08T00:46:36Z",
+   "bytes": 911972,
+   "sha256": "eb98301f5830d56579f9592869d92a34b8d26283ac5c285765387ac8e0a3b2b3",
+   "gerado_em": "2026-10-08T08:42:16Z",
    "disponivel": true
   },
   {
@@ -162,8 +162,8 @@
   {
    "caminho": "/energia/gold/metricas.json",
    "tipo": "gold",
-   "bytes": 619503,
-   "sha256": "cdd73aa80d2d549165d35ab7e2e497dfef7e30f51147e471a972e016bfdc4058",
+   "bytes": 619717,
+   "sha256": "a4d97343947a96a636a3caa8214fb6de0bcb2b23551f9e88152c6c2c7d657d29",
    "gerado_em": "2026-10-06T20:02:52Z",
    "disponivel": true
   },
@@ -258,8 +258,8 @@
   {
    "caminho": "/energia/gold/sintese.json",
    "tipo": "gold",
-   "bytes": 359126,
-   "sha256": "03f23f040c3bdd18cdc780240b5632373e89d0eb7b2a2af8023c8ab6a6af7685",
+   "bytes": 359163,
+   "sha256": "c91ff96b9cb6490bb1838be31d7a90451178b2ccbc5daa34d304a736fb07c143",
    "gerado_em": "2026-10-01T11:37:53Z",
    "disponivel": true
   },
@@ -274,8 +274,8 @@
   {
    "caminho": "/energia/gold/transicao.json",
    "tipo": "gold",
-   "bytes": 434279,
-   "sha256": "75c915092e676cf8d53dfea47a6393b46b9b6fffdb830fb489ce8b5fdc8ea6a2",
+   "bytes": 434299,
+   "sha256": "f412cc29836f2911967d9b0530ba57298ee2d3bddba4611f5197da56b23497c7",
    "gerado_em": "2026-10-01T06:38:31Z",
    "disponivel": true
   },
@@ -1592,8 +1592,8 @@
   {
    "caminho": "/energia/series/empresas_financas_ajustes.csv",
    "tipo": "serie",
-   "bytes": 18884,
-   "sha256": "25518c16ec119b7afc8e697be910a5ca5541f000131e8d8d50a3d1ca82deea17",
+   "bytes": 18890,
+   "sha256": "7b03785d34417e989a383f0cf4dc8c349b835df50a2f771af882317fe0a75c8a",
    "colunas": [
     "tipo",
     "cnpj",
@@ -2943,8 +2943,8 @@
   {
    "caminho": "/energia/series/mercado_nacional_mensal.csv",
    "tipo": "serie",
-   "bytes": 35521,
-   "sha256": "eb6fcba7b021f6d4d145b4b1d76d81d2331282195784067af7be923986b2c2a0",
+   "bytes": 35557,
+   "sha256": "78dc79def97822f8aa45cdc5c26eea1eac5c58826479c1f2599d40a56ead1c11",
    "colunas": [
     "mes",
     "cativo_mwh",
@@ -4591,8 +4591,8 @@
   {
    "caminho": "/energia/series/sintese_regras_diario.csv",
    "tipo": "serie",
-   "bytes": 1187066,
-   "sha256": "7b975056e280af8cce712c6b599169edd36fdd2bb77837246bbfd80e0cf4ddd1",
+   "bytes": 1193264,
+   "sha256": "498a38d0dba8108b91650604660e32e5f4359efb7076545d82096364b49c221d",
    "colunas": [
     "data",
     "regra",

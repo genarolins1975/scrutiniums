@@ -107,7 +107,7 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
       )}
       {h ? (
         <p className="text-sm leading-relaxed text-carvao-muted">
-          Histórico reavaliado com os dados de hoje, avaliável desde {dataBR(h.primeiro_dia_avaliado)} ({plural(h.dias_avaliados, "dia", "dias")} avaliados): condição em{" "}
+          Histórico reavaliado com os dados da data de processamento, avaliável desde {dataBR(h.primeiro_dia_avaliado)} ({plural(h.dias_avaliados, "dia", "dias")} avaliados): condição em{" "}
           {num(h.pct_dias_com_condicao, 1)}% dos dias e alerta exibido em {num(h.pct_dias_exibidos, 1)}%; {plural(h.episodios, "episódio", "episódios")}
           {h.episodios_por_ano !== null ? ` (${num(h.episodios_por_ano, 1)} por ano)` : " (frequência anual não estimável com menos de um ano avaliado)"}; {plural(h.acionamentos_brutos, "acionamento", "acionamentos")}, dos quais{" "}
           {plural(h.acionamentos_curtos_descartados, "foi descartado", "foram descartados")} por durar menos que o mínimo

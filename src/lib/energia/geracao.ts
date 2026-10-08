@@ -1256,7 +1256,8 @@ export function linhasRazoes12m(r: Pick<Restricao, "ultimos_12m">) {
   return (r.ultimos_12m?.por_razao ?? []).map((x) => ({
     id: x.razao,
     razao: CURTO_RAZAO[x.razao],
-    rotulo_oficial: x.rotulo,
+    // total zero: não há limitação a classificar por origem, e as duas origens ficam sem valor por isso (a soma das origens é o total)
+    rotulo_oficial: x.mwh === 0 ? `${x.rotulo}. Nenhuma energia não gerada com esta razão nos 12 meses; sem limitação, as origens ficam sem valor.` : x.rotulo,
     gwh: gwh(x.mwh),
     pct: x.pct,
     LOC: gwh(x.origens_mwh.LOC),

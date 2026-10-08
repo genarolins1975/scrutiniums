@@ -48,6 +48,7 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
     );
   const { evidencia: ev, painel, natureza, leitura, complemento } = prova.dado;
   const base = baseDoValor(ev);
+  const fimRef = dataRef(ev.periodo.fim ?? ev.periodo.inicio);
   return (
     <figure data-prova="evidencia" className="border border-linha bg-superficie p-4 sm:p-5">
       <figcaption className="rotulo text-mineral">{ev.indicador}</figcaption>
@@ -62,8 +63,9 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
         {textoPeriodo(ev.periodo)} · {ev.entidade}
       </p>
       <p className="mt-1 text-xs text-mineral" data-fonte="true">
-        Fonte: {ev.fonte.orgao}, {ev.fonte.conjunto}
-        {ev.fonte.capturado_em ? `, capturada em ${dataRef(diaBrasilia(ev.fonte.capturado_em))}` : ""}.
+        Fonte: {ev.fonte.orgao}, {ev.fonte.conjunto}.
+        {fimRef ? ` Referência até ${fimRef}.` : ""}
+        {ev.fonte.capturado_em ? ` Capturada em ${dataRef(diaBrasilia(ev.fonte.capturado_em))}.` : ""}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-carvao">{leitura}</p>
       {complemento && (

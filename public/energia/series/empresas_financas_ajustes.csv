@@ -96,9 +96,9 @@ escala_corrigida;31001230000107;consolidado;DFP;2019-12-31;todas;todas;;UNIDADE;
 demonstracao_zerada;31001230000107;individual;DFP;2018-12-31;penultimo;todas;2017-12-31;MIL;;;ativo total igual a zero na coluna
 escala_corrigida;31001230000107;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
 escopo_nao_apresentado;33541368000116;consolidado;DFP;2014-12-31;penultimo;todas;2013-12-31;MIL;;;ativo total igual a zero na coluna
-coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-03-31;ultimo;saldo;2021-03-31;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 29.546.317 unidades
-coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;DRE;2021-04-01/2021-06-30;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 1.774.479 unidades
-coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;saldo;2021-06-30;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 28.552.507 unidades
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-03-31;ultimo;saldo;2021-03-31;MIL;;;"valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 29.546.317 unidades"
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;DRE;2021-04-01/2021-06-30;MIL;;;"valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 1.774.479 unidades"
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;saldo;2021-06-30;MIL;;;"valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 28.552.507 unidades"
 escopo_nao_apresentado;33541368000116;consolidado;DFP;2024-12-31;penultimo;todas;2023-12-31;MIL;;;ativo total igual a zero na coluna
 escopo_nao_apresentado;37663076000107;consolidado;DFP;2021-12-31;penultimo;todas;2020-12-31;MIL;;;ativo total igual a zero na coluna
 demonstracao_zerada;37663076000107;individual;DFP;2020-12-31;penultimo;todas;2019-12-31;UNIDADE;;;ativo total igual a zero na coluna

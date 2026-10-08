@@ -12,6 +12,7 @@ import {
   histogramaFc,
   linhasCapacidade,
   linhasMmgdCapacidade,
+  linhasRazoes12m,
   linhasRestricaoMensal,
   linhasSigaHistorico,
   pontosUsinas,
@@ -37,6 +38,23 @@ const eol = G.restricoes.eolica!;
 const cap = G.capacidade!;
 
 describe("P023: restrições", () => {
+  it("razão sem energia não gerada nos 12 meses diz isso na descrição e não parece medida sem dado (D033)", () => {
+    for (const f of ["eolica", "solar"] as const) {
+      const r = G.restricoes[f]!;
+      for (const l of linhasRazoes12m(r)) {
+        const x = r.ultimos_12m!.por_razao.find((z) => z.razao === l.id)!;
+        if (x.mwh === 0) {
+          expect(l.rotulo_oficial, `${f} ${l.id}`).toContain("Nenhuma energia não gerada com esta razão nos 12 meses");
+          expect(l.gwh).toBe(0);
+        } else expect(l.rotulo_oficial, `${f} ${l.id}`).toBe(x.rotulo);
+      }
+    }
+    // a soma das origens é o total: sem energia, não há origem a classificar
+    const parecer = linhasRazoes12m(eol).find((l) => l.id === "PAR")!;
+    expect(parecer.gwh).toBe(0);
+    expect(parecer.pct).toBe(0);
+  });
+
   it("a resposta cita energia, taxa com o denominador, razões e o maior corte como potência; mudar o número muda o texto", () => {
     const u = eol.ultimos_12m!;
     const t = respostaRestricao(eol);

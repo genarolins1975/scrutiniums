@@ -54,6 +54,7 @@ import {
   textoPares,
 } from "@/lib/energia/empresas";
 import { arvoreDoArquivo, evidenciaPerdas, evidenciasReceita, evolucaoDistribuidora, seriesFinanceirasDe } from "@/lib/energia/empresas-arquivos";
+import { comValorExibido } from "@/lib/energia/evidencia";
 import { carimbo, datasLegiveis } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -234,7 +235,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     <Numero
                       rotulo="Perdas totais"
                       natureza={g.proveniencia.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                      evidencia={evPerdas.evidencia}
+                      evidencia={comValorExibido(evPerdas.evidencia, pctTexto(evPerdas.evidencia.valor_calculo, 2))}
                       formato="pct"
                       casas={2}
                       tamanho="medio"

@@ -259,6 +259,11 @@ describe("leitura sob demanda da gold e datas legíveis", () => {
   it("datas ISO soltas no texto do pipeline viram datas da página; identificadores ficam", () => {
     expect(datasLegiveis("de 2025-04-13 a 2026-09-28; meta 33.3%")).toBe("de 13/04/2025 a 28/09/2026; meta 33.3%");
     expect(datasLegiveis("último período 2025-06, 367 dias")).toBe("último período jun/2025, 367 dias");
+    // intervalo ISO de dias vira "de a"; datas coladas a CNPJ, identificador ou barra de caminho não mudam
+    expect(datasLegiveis("02291077000193 ind DFP DFC 2013-01-01/2013-12-31: fluxos")).toBe("02291077000193 ind DFP DFC 01/01/2013 a 31/12/2013: fluxos");
+    expect(datasLegiveis("2013-01-01/2013-12-31")).toBe("01/01/2013 a 31/12/2013");
+    expect(datasLegiveis("33.541.368/0001-86 e 2021-13-01/2021-14-01")).toBe("33.541.368/0001-86 e 2021-13-01/2021-14-01");
+    expect(datasLegiveis("data/2013-01-01/2013-12-31")).toBe("data/2013-01-01/2013-12-31");
     expect(datasLegiveis("snapshot ear_subsistema_di@2026-09-30T02:19:44Z")).toBe("snapshot ear_subsistema_di@2026-09-30T02:19:44Z");
     expect(datasLegiveis("PREVISÃO emitida em 2026-09-30T00:00Z (inicialização do modelo)")).toBe("PREVISÃO emitida em 30/09/2026 00:00 UTC (inicialização do modelo)");
     // só data válida vira data: o "0001-86" de um CNPJ e meses ou dias impossíveis ficam como vieram

@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-08T00:10:11.567Z",
+ "gerado_em": "2026-10-08T08:38:01.154Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6338,
+   "duracao_ms": 6348,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11049,
+   "duracao_ms": 11632,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -109,7 +109,7 @@
     {
      "descricao": "Abre a ficha da CEMIG-D e lê perdas, DEC, FEC e tarifa",
      "resultado": "ok",
-     "observado": "Síntese: perdas 12,12%, DEC 8,98 h (limite 9,50), FEC 5,14 (limite 5,84), tarifa B1 R$ 903,29/MWh. Cartão de perdas: \"PERDAS TOTAIS 12,12%da energia injetada 01/20\" (sinal % repetido: não); botão \"Comprove\": 12,1%"
+     "observado": "Síntese: perdas 12,12%, DEC 8,98 h (limite 9,50), FEC 5,14 (limite 5,84), tarifa B1 R$ 903,29/MWh. Cartão de perdas: \"PERDAS TOTAIS 12,12%da energia injetada 01/20\" (sinal % repetido: não); botão \"Comprove\": 12,12%"
     },
     {
      "descricao": "Lê como a ficha posiciona a distribuidora frente às pares",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4065,
+   "duracao_ms": 4226,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 12,
-   "duracao_ms": 5887,
+   "duracao_ms": 5918,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6323,
+   "duracao_ms": 6435,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24313,
+   "duracao_ms": 24991,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 168,
-   "duracao_ms": 34601,
+   "duracao_ms": 35592,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 33838,
+   "duracao_ms": 35303,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 24912,
+   "duracao_ms": 25572,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13411,
+   "duracao_ms": 13623,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

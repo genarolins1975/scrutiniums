@@ -74,7 +74,7 @@ import {
   textoTipos,
   type ProjecaoMalha,
 } from "@/lib/energia/empresas";
-import { problemasEvidencia } from "@/lib/energia/evidencia";
+import { citacaoBase, comValorExibido, problemasEvidencia } from "@/lib/energia/evidencia";
 import { lerCaminho, pontoNaRegiao, type CamadaGeo } from "@/lib/energia/geo";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
@@ -629,6 +629,40 @@ describe("páginas renderizadas no servidor", () => {
   const sintese = renderToStaticMarkup(createElement(Sintese));
   const fichas = Object.fromEntries(["cemig-d", "cergapa", "ceb", "eletropaulo"].map((s) => [s, renderToStaticMarkup(createElement(Ficha, { params: { entidade: s } }))]));
   const respostas = { p036: respostaCadastro(G.cadastro), p037: respostaDistribuidoras(G.distribuidoras), p038: respostaFinancas(G.financas), p039: respostaControle(G.controle) };
+
+  it("CEMIG-D: o Comprove de perdas totais mostra o mesmo valor do cartão (12,12%), não o da ficha com uma casa", () => {
+    const texto = fichas["cemig-d"].replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    const perdas = /Taxa de perdas totais[^%]{0,60}%/.exec(texto)?.[0] ?? "";
+    expect(texto).toContain("12,12%");
+    expect(texto).not.toMatch(/\b12,1%/);
+    // o rótulo do Comprove, quando o cartão tem ficha, repete o valor exibido
+    if (perdas) expect(perdas).toContain("12,12%");
+  });
+
+  it("comValorExibido só reescreve o texto quando o novo é o arredondamento do valor da ficha, na mesma unidade", () => {
+    const ev = { indicador: "Taxa de perdas totais", valor_exibido: "12,1%", valor_calculo: 12.12486, unidade: "% da energia injetada", entidade: "X", periodo: { inicio: "2025-01", fim: "2025-12" },
+      fonte: { orgao: "ANEEL", conjunto: "SAMP", recurso: "r", capturado_em: "2026-09-30T22:26:40Z" }, versao: { pipeline: "p", codigo: "c", publicacao: "2026-10-01T00:00:00Z" },
+      citacao: "SCRUTINIUMS. Taxa de perdas totais: 12,1%, X, 01/2025 a 12/2025. Fim." } as unknown as Parameters<typeof comValorExibido>[0];
+    const novo = comValorExibido(ev, "12,12%");
+    expect(novo.valor_exibido).toBe("12,12%");
+    expect(novo.citacao).toContain("Taxa de perdas totais: 12,12%, X");
+    expect(novo.valor_calculo).toBe(12.12486);
+    expect(citacaoBase(novo)).toContain("Taxa de perdas totais: 12,12%, X");
+    // não inventa dígito, não troca a unidade e não aceita lixo
+    expect(comValorExibido(ev, "12,13%")).toBe(ev);
+    expect(comValorExibido(ev, "12,12")).toBe(ev);
+    expect(comValorExibido(ev, "sem dado")).toBe(ev);
+    const semValor = { ...ev, valor_calculo: null };
+    expect(comValorExibido(semValor, "12,12%")).toBe(semValor);
+    expect(comValorExibido(ev, "12,1%").valor_exibido).toBe("12,1%");
+    expect(comValorExibido({ ...ev, valor_exibido: "1.234,5%", valor_calculo: 1234.5 }, "1.234,50%").valor_exibido).toBe("1.234,50%");
+  });
+
+  it("a síntese de Empresas oferece os dez arquivos do módulo para baixar", () => {
+    expect(sintese).toContain("Baixar os dados do módulo");
+    for (const x of G.downloads) expect(sintese).toContain(`href="${x.url}"`);
+    expect((sintese.match(/download=""/g) ?? []).length).toBeGreaterThanOrEqual(G.downloads.length);
+  });
 
   it("cada painel renderiza na sua página com a pergunta como título, a resposta derivada e toda a anatomia da seção 7.2", () => {
     for (const p of PAINEIS_EMPRESAS) {

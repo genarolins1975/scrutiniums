@@ -2175,7 +2175,7 @@ def _leitura_quebra(degrau, mmgd_dia, med_sol, med_car, med_mm, n):
                 "carga a partir de 29/04/2023. O balanço da janela não está completo no silver, e a conferência no dado não foi feita.")
     t = ("O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a "
          f"partir de 29/04/2023. No dado, a solar do SIN no balanço sobe {_br(degrau)} MWmed de 28/04 para 29/04/2023; a MMGD "
-         f"estimada pela API de carga verificada, como publicada hoje, é {_br(mmgd_dia)} MWmed em 29/04/2023, {_br(mmgd_dia - degrau)} "
+         f"estimada pela API de carga verificada, como publicada na data de processamento, é {_br(mmgd_dia)} MWmed em 29/04/2023, {_br(mmgd_dia - degrau)} "
          "MWmed acima do degrau. A fonte não publica explicação para essa diferença.")
     if med_sol is not None and med_car is not None and med_mm is not None:
         t += (f" Comparando cada dia de 29/04 a 06/05 com o mesmo dia da semana 14 dias antes ({n} pares, sem feriados), a mediana "

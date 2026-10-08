@@ -364,7 +364,11 @@ describe("P066: trilhas", () => {
       const n = (h.match(/data-prova="evidencia"/g) ?? []).length;
       expect(n, t.id).toBeGreaterThan(0);
       expect((h.match(/data-fonte="true"/g) ?? []).length, t.id).toBe(n);
-      expect(h, t.id).toMatch(/data-fonte="true">Fonte: [^<]+, capturada em \d\d\/\d\d\/\d{4}\.</);
+      const fontes = h.match(/data-fonte="true">[^<]*</g) ?? [];
+      expect(fontes.length, t.id).toBe(n);
+      // a data de referência (fim do período do número) vem escrita em toda fonte; a captura, quando a ficha a traz
+      for (const x of fontes) expect(x, `${t.id}: ${x}`).toMatch(/Fonte: [^<]+\. Referência até (\d\d\/)?\d\d\/\d{4}\./);
+      expect(h, t.id).toMatch(/data-fonte="true">Fonte: [^<]+\. Referência até [\d/]+\. Capturada em \d\d\/\d\d\/\d{4}\.</);
     }
     expect(paginas["custo-tarifa-orcamento"]).toContain("Fonte: ANEEL, SAMP Balanço");
     expect(paginas["custo-tarifa-orcamento"]).toContain("Fonte: IBGE, POF 2017-2018, microdados");

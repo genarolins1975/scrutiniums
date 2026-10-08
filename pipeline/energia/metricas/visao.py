@@ -20,7 +20,7 @@ F_EAR, F_ENA, F_CARGA = "ear_subsistema_di", "ena_subsistema_di", "carga_energia
 F_BAL, F_INT, F_PLD, F_CMO = "balanco_energia_subsistema_ho", "intercambio_nacional_ho", "ccee_pld_horario", "cmo_se"
 F_COFF_E, F_COFF_S = "ons_coff_eolica", "ons_coff_fotovoltaica"
 
-_HIST = ("Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), "
+_HIST = ("Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), "
          "pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).")
 _NAO_CAUSA = "Alerta descreve condição medida; não implica causa nem é previsão."
 
@@ -217,7 +217,7 @@ METRICAS = [
        regras_comparabilidade=["Regras com histórico avaliável diferente (termica e restrição solar começam depois) não têm a mesma base."],
        regra_cobertura="Dias avaliados de cada regra.", politica_ausencia="Dia não avaliado fica fora do denominador.",
        validacoes=["mesma máquina de estados que avalia o dia", "episódios publicados em sintese_episodios.csv"],
-       limitacoes=["Reavaliação com dados de hoje: não reproduz o que se via na época; os alertas publicados são registrados a partir da gold aceita.",
+       limitacoes=["Reavaliação com dados da data de processamento: não reproduz o que se via na época; os alertas publicados são registrados a partir da gold aceita.",
                    "Cada regra tem o próprio início de histórico avaliável (primeiro_dia_avaliado); o texto do histórico usa esse dia, não o início comum.",
                    "Sem verdade de referência, nenhum alerta é rotulado como falso; o registro das publicações mede os que deixaram de se confirmar após revisão."]),
     _m(id="visao_frequencia_conjunta_destaques", titulo="Frequência conjunta da caixa de destaques",
@@ -237,5 +237,5 @@ METRICAS = [
        politica_ausencia="Dia sem avaliação de uma regra conta como sem destaque daquela regra.",
        validacoes=["critério de materialidade: período comum com no máximo um terço dos dias com destaque (validação da gold)"],
        limitacoes=["A meta de um terço é escolha documentada, não padrão externo; a tabela de sensibilidade mostra o efeito de outros limites.",
-                   "Reavaliação com os dados de hoje: não reproduz a caixa que o leitor via em cada data."]),
+                   "Reavaliação com os dados da data de processamento: não reproduz a caixa que o leitor via em cada data."]),
 ]

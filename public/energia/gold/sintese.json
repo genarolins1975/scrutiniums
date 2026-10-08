@@ -8538,7 +8538,7 @@
  ],
  "historico_regras": {
   "inicio": "2021-01-01",
-  "regra": "Cada regra é reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados): mostra quantas vezes teria disparado e por quanto tempo, não o que se via na época. Cada regra só é avaliável quando a base dela existe (primeiro_dia_avaliado no histórico de cada uma). O registro dos alertas publicados fica no silver sintese, conjunto _visao_alertas, gravado a partir da gold aceita.",
+  "regra": "Cada regra é reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados): mostra quantas vezes teria disparado e por quanto tempo, não o que se via na época. Cada regra só é avaliável quando a base dela existe (primeiro_dia_avaliado no histórico de cada uma). O registro dos alertas publicados fica no silver sintese, conjunto _visao_alertas, gravado a partir da gold aceita.",
   "registro_publicacoes": {
    "publicacao_anterior_registrada_nesta_execucao": true
   },
@@ -8627,7 +8627,7 @@
  ],
  "limitacoes": [
   "A síntese reutiliza os números das bases publicadas de origem; limitações de cada fonte valem aqui e estão na proveniência de cada painel de origem.",
-  "O histórico das regras usa os dados de hoje, já revisados; não reproduz o que um leitor via em cada data passada.",
+  "O histórico das regras usa os dados da data de processamento, já revisados; não reproduz o que um leitor via em cada data passada.",
   "Cada regra tem o próprio histórico avaliável (primeiro_dia_avaliado e dias_avaliados): a carga extrema só é avaliada com os 364 dias anteriores no mesmo regime do ONS (de 01/01 a 28/02/2021, de 28/02/2022 a 28/04/2023 e desde 27/04/2024); a térmica, a restrição eólica e a fotovoltaica começam depois de 2021 por exigirem 365 janelas anteriores no mesmo regime ou universo.",
   "As revisões entre capturas só existem a partir das capturas versionadas (silver principal desde 27/09/2026); antes disso não há como medi-las.",
   "Restrições de eólicas e fotovoltaicas usam a geração possível estimada pelo ONS; o registro fotovoltaico começa em abril de 2024.",

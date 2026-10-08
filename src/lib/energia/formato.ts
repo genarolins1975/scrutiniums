@@ -177,6 +177,11 @@ export function datasLegiveis(texto: string): string {
   const D = "(?:0[1-9]|[12]\\d|3[01])";
   const FORA = "[^\\w@_/.-]";
   return texto
+    // intervalo ISO de dias ("2013-01-01/2013-12-31"): vira "01/01/2013 a 31/12/2013"
+    .replace(
+      new RegExp(`(^|${FORA})(${A})-(${M})-(${D})/(${A})-(${M})-(${D})(?![\\w@_/-])`, "g"),
+      (_, antes: string, a1: string, m1: string, d1: string, a2: string, m2: string, d2: string) => `${antes}${d1}/${m1}/${a1} a ${d2}/${m2}/${a2}`,
+    )
     .replace(
       new RegExp(`(^|${FORA})(${A})-(${M})-(${D})T([01]\\d|2[0-3]):([0-5]\\d)(?::[0-5]\\d(?:\\.\\d+)?)?(Z?)(?![\\w@_/-])`, "g"),
       (_, antes: string, a: string, m: string, d: string, h: string, mi: string, z: string) => `${antes}${d}/${m}/${a} ${h}:${mi}${z ? " UTC" : ""}`,

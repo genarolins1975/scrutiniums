@@ -152,9 +152,10 @@ export function PldHistorico({
           formato="reais"
           casas={2}
           unidade="R$/MWh"
+          periodo={mesFichas ? mesAno(mesFichas) : undefined}
           motivoAusencia="Sem mês completo com as três médias."
           tamanho="medio"
-          nota="Todas as horas pesam igual."
+          nota="Todas as horas pesam igual. Média simples das horas do mês: coluna media_temporal de pld_mensal.csv, sem ficha Comprove própria."
         />
         <Numero
           rotulo={`Ponderada pela carga do balanço, ${mesFichas ? mesAno(mesFichas) : ""}`}
@@ -167,7 +168,7 @@ export function PldHistorico({
           motivoAusencia="Sem carga do balanço em todas as horas do mês."
           tamanho="medio"
           endereco={endereco}
-          nota="Peso estimado: inclui a MMGD estimada pelo ONS desde 2023."
+          nota="Peso estimado: inclui a MMGD estimada pelo ONS desde 2023. O peso é a carga horária do Balanço de Energia nos Subsistemas do ONS, que não vai nos arquivos desta página: para refazer a média, baixe-a na fonte."
         />
         <Numero
           rotulo={`Ponderada pela carga sem MMGD, ${mesFichas ? mesAno(mesFichas) : ""}`}
@@ -180,7 +181,7 @@ export function PldHistorico({
           motivoAusencia="Sem a carga verificada da API do ONS no mês."
           tamanho="medio"
           endereco={endereco}
-          nota="Perímetro homogêneo em toda a série."
+          nota="Perímetro homogêneo em toda a série. A carga verificada vem da API do ONS e também não vai nos arquivos desta página."
         />
       </div>
 

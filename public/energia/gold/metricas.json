@@ -11047,7 +11047,7 @@
    ],
    "limitacoes": [
     "A meta de um terço é escolha documentada, não padrão externo; a tabela de sensibilidade mostra o efeito de outros limites.",
-    "Reavaliação com os dados de hoje: não reproduz a caixa que o leitor via em cada data."
+    "Reavaliação com os dados da data de processamento: não reproduz a caixa que o leitor via em cada data."
    ],
    "arquivo": "pipeline/energia/metricas/visao.py"
   },
@@ -11093,7 +11093,7 @@
     "episódios publicados em sintese_episodios.csv"
    ],
    "limitacoes": [
-    "Reavaliação com dados de hoje: não reproduz o que se via na época; os alertas publicados são registrados a partir da gold aceita.",
+    "Reavaliação com dados da data de processamento: não reproduz o que se via na época; os alertas publicados são registrados a partir da gold aceita.",
     "Cada regra tem o próprio início de histórico avaliável (primeiro_dia_avaliado); o texto do histórico usa esse dia, não o início comum.",
     "Sem verdade de referência, nenhum alerta é rotulado como falso; o registro das publicações mede os que deixaram de se confirmar após revisão."
    ],
@@ -11277,7 +11277,7 @@
    "regra_cobertura": "Dias com base completa no mesmo regime.",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11317,7 +11317,7 @@
    "regra_cobertura": "Dias com os quatro submercados (desde 01/01/2021).",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11356,7 +11356,7 @@
    "regra_cobertura": "Dias com os quatro subsistemas e faixa da data disponível (2021 em diante).",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11395,7 +11395,7 @@
    "regra_cobertura": "Janelas com os 30 dias.",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11470,7 +11470,7 @@
    "regra_cobertura": "Dias do PLD horário com limites vigentes (desde 01/01/2021).",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem",
     "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
    ],
@@ -11510,7 +11510,7 @@
    "regra_cobertura": "Dias do PLD horário com limites vigentes.",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem",
     "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
    ],
@@ -11551,7 +11551,7 @@
    "regra_cobertura": "Eólica avaliável desde 13/10/2022 e fotovoltaica desde 13/04/2025 (registros desde out/2021 e abr/2024, mais 365 janelas anteriores completas).",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11597,7 +11597,7 @@
    "regra_cobertura": "Capturas versionadas do silver principal (desde 27/09/2026).",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [
@@ -11644,7 +11644,7 @@
    "regra_cobertura": "Dias com as 365 janelas anteriores completas no regime atual.",
    "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
    "validacoes": [
-    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes na data de processamento (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
     "estado do dia reavaliado e comparado com a classificação publicada pela base publicada de origem"
    ],
    "limitacoes": [

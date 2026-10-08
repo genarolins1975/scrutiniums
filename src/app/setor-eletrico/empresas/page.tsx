@@ -262,6 +262,22 @@ export default function EmpresasPage() {
             limite={<>poder de mercado: a fronteira é capacidade instalada, não energia vendida nem mercado relevante, e a participação indireta não é calculada.</>}
           />
         </div>
+        {g.downloads.length > 0 && (
+          <section aria-labelledby="dados-do-modulo" className="mt-10 border-t border-linha pb-16 pt-6">
+            <h2 id="dados-do-modulo" className="rotulo text-mineral">
+              Baixar os dados do módulo
+            </h2>
+            <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              {g.downloads.map((x) => (
+                <li key={x.url}>
+                  <a href={x.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                    {x.rotulo}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
     </>
   );

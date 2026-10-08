@@ -185,6 +185,29 @@ export function numeroMaquina(v: number | null | undefined): string {
 
 const SO_NUMERO = /^[−+-]?[\d.,]+$/;
 
+/** Número de um texto pt-BR com milhar em ponto e decimal em vírgula ("12,12%" vira 12.12); null se o texto não começa por número. */
+function numeroDoTexto(s: string): { valor: number; casas: number; resto: string } | null {
+  const m = /^(-?\d{1,3}(?:\.\d{3})*|-?\d+)(?:,(\d+))?/.exec(s.trim());
+  if (!m) return null;
+  return { valor: Number(m[1].replace(/\./g, "") + (m[2] ? `.${m[2]}` : "")), casas: m[2]?.length ?? 0, resto: s.trim().slice(m[0].length) };
+}
+
+/**
+ * Ficha com o valor escrito como o cartão o exibe. O Comprove tem de mostrar o mesmo texto do número que
+ * prova; quando a ficha foi publicada com menos casas que o cartão (12,1% na ficha, 12,12% no cartão), o
+ * texto é reescrito, mas só se o novo for o arredondamento de `valor_calculo` e trouxer a mesma unidade
+ * escrita: nunca inventa dígito. Qualquer dúvida devolve a ficha como veio.
+ */
+export function comValorExibido(ev: Evidencia, texto: string): Evidencia {
+  const novo = numeroDoTexto(texto);
+  const velho = numeroDoTexto(ev.valor_exibido);
+  if (!novo || !velho || ev.valor_calculo === null || !Number.isFinite(ev.valor_calculo)) return ev;
+  if (novo.resto.trim() !== velho.resto.trim()) return ev;
+  if (Math.abs(novo.valor - ev.valor_calculo) > 0.5 * 10 ** -novo.casas + 1e-9) return ev;
+  const citacao = ev.citacao?.includes(`: ${ev.valor_exibido},`) ? ev.citacao.replace(`: ${ev.valor_exibido},`, `: ${texto.trim()},`) : ev.citacao;
+  return { ...ev, valor_exibido: texto.trim(), citacao };
+}
+
 /** Referência ABNT simplificada sem data de acesso: espelho de `citacao()` no Python. */
 export function citacaoBase(ev: Evidencia, endereco: string = SITE): string {
   const pub = diaBrasilia(ev.versao?.publicacao);

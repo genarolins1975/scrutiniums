@@ -1,6 +1,8 @@
 """Infraestrutura dos módulos temáticos de Energia: coletor CKAN (política de recoleta,
 vintages idênticas), registros textuais com revisão, silver por família, registro de
 módulos e catálogo de métricas."""
+import csv
+import io
 import os
 import sys
 import tempfile
@@ -141,3 +143,38 @@ class RegistroEMetricas(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CsvDeDownload(unittest.TestCase):
+    """O CSV que o leitor baixa precisa ter o número de colunas do cabeçalho em toda linha."""
+
+    def test_campo_com_ponto_e_virgula_vai_entre_aspas_e_volta_inteiro(self):
+        with tempfile.TemporaryDirectory() as d:
+            base.escreve_csv("t.csv", ["id", "valor", "detalhe"],
+                             [(1, 2.5, "horas no piso SE:4; dia inteiro N"), (2, None, 'diz "oi"'), (3, 1.23456789, "simples")], destino=d)
+            bruto = open(os.path.join(d, "t.csv"), encoding="utf-8", newline="").read()
+            linhas = list(csv.reader(io.StringIO(bruto), delimiter=";"))
+        self.assertEqual(linhas[0], ["id", "valor", "detalhe"])
+        self.assertEqual(linhas[1], ["1", "2.5", "horas no piso SE:4; dia inteiro N"])
+        self.assertEqual(linhas[2], ["2", "", 'diz "oi"'])           # ausência é campo vazio, nunca zero
+        self.assertEqual(linhas[3], ["3", "1.2346", "simples"])       # o arredondamento em quatro casas não mudou
+        self.assertTrue(all(len(x) == 3 for x in linhas))
+        self.assertIn('1;2.5;"horas no piso SE:4; dia inteiro N"\n', bruto)
+        self.assertIn('3;1.2346;simples\n', bruto)                    # sem caractere especial, o texto é o mesmo de antes
+
+    def test_todo_csv_publicado_tem_o_numero_de_colunas_do_cabecalho(self):
+        serie = os.path.join(base.RAIZ, "public", "energia", "series")
+        ruins = {}
+        for nome in sorted(os.listdir(serie)):
+            if not nome.endswith(".csv"):
+                continue
+            with open(os.path.join(serie, nome), encoding="utf-8", newline="") as f:
+                linhas = list(csv.reader(f, delimiter=";"))
+            if not linhas:
+                continue
+            n = len(linhas[0])
+            fora = sum(1 for r in linhas[1:] if len(r) != n)
+            if fora:
+                ruins[nome] = fora
+        self.assertEqual(ruins, {}, "CSV com linhas de número de colunas diferente do cabeçalho")
+
