@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
@@ -172,6 +173,14 @@ export function GraficoLinhas({
   );
   const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
   const usaUrl = !!chaveUrl;
+
+  // impressão: a tabela do gráfico só é montada com o details aberto, e o toggle chega depois do layout da impressão;
+  // montá-la aqui, de forma síncrona, é o que a leva ao papel (AbreDetalhesAoImprimir abre o details; fechá-lo desmonta de novo)
+  useEffect(() => {
+    const montar = () => flushSync(() => setTabelaAberta(true));
+    window.addEventListener("beforeprint", montar);
+    return () => window.removeEventListener("beforeprint", montar);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;

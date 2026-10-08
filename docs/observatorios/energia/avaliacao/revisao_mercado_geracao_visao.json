@@ -760,7 +760,7 @@
      "pagina": "/setor-eletrico/mercado",
      "categoria": "Montar o ouvinte beforeprint/afterprint no layout do módulo ou usar CSS que mostre o conte",
      "estado": "corrigido",
-     "nota": "os details abrem antes de imprimir em toda página com profundidade e o toque dos que montam o conteúdo ao abrir é disparado na hora"
+     "nota": "os details abrem antes de imprimir em toda página com profundidade, e o GraficoLinhas monta a tabela dos dados de forma síncrona no beforeprint (o toggle do navegador chega depois do layout); o PDF A4 de Mercado em Auditar traz a tabela de 140 linhas"
     },
     {
      "id": "I13",

@@ -12,7 +12,8 @@ import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImpri
  * segue nesse nível ao trocar de painel: o clique em link interno do observatório, sem
  * ?modo= próprio, leva o nível junto (abas do módulo, "Abrir o painel", "Próxima pergunta").
  *
- * Âncoras: o HTML chega com todos os níveis visíveis; ao aplicar o modo, blocos
+ * Âncoras: antes da hidratação o HTML ainda não sabe o modo (data-modo="todos": o CSS mostra tudo
+ * sem JavaScript e só Entender com JavaScript); ao aplicar o modo, blocos
  * acima do alvo somem e a rolagem se perde. Por isso, depois de aplicar o modo
  * (e a cada troca de #hash), o alvo é rolado de novo até a vista; se ele estiver
  * num nível mais profundo que o atual, o modo sobe até esse nível.

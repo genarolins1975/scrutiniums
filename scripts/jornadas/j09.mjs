@@ -341,7 +341,7 @@ export default {
       await j.clicar(p.getByRole("link", { name: /abrir a ficha do conjunto/i }).first());
       await p.waitForLoadState("networkidle");
       await j.esperar(600);
-      j.afirmar(/\/dados\/aneel-scs$/.test(p.url()), `URL inesperada: ${j.url()}`);
+      j.afirmar(/\/dados\/aneel-scs(\?modo=\w+)?$/.test(p.url()), `URL inesperada: ${j.url()}`);
       await abreDetalhesTecnicos();
       const t = normaliza(await p.locator("main").innerText());
       const pega = (re) => (t.match(re) || [])[1];
@@ -364,7 +364,7 @@ export default {
       await j.clicar(p.getByRole("link", { name: /abrir a ficha do conjunto/i }).first());
       await p.waitForLoadState("networkidle");
       await j.esperar(600);
-      j.afirmar(/\/dados\/ibge-pof-6715$/.test(p.url()), `URL inesperada: ${j.url()}`);
+      j.afirmar(/\/dados\/ibge-pof-6715(\?modo=\w+)?$/.test(p.url()), `URL inesperada: ${j.url()}`);
       await abreDetalhesTecnicos();
       const t = normaliza(await p.locator("main").innerText());
       // a última captura vem das integrações de publicacao.json (o conjunto tem captura, só não tem SLA mensurável);

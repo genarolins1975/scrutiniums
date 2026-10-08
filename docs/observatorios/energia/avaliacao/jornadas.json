@@ -1,6 +1,6 @@
 {
- "base": "http://localhost:3101",
- "gerado_em": "2026-10-08T10:03:27.955Z",
+ "base": "http://localhost:3100",
+ "gerado_em": "2026-10-08T10:47:19.078Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6467,
+   "duracao_ms": 5631,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11540,
+   "duracao_ms": 11883,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4290,
+   "duracao_ms": 4241,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 12,
-   "duracao_ms": 6285,
+   "duracao_ms": 5943,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6587,
+   "duracao_ms": 6529,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -346,7 +346,7 @@
     {
      "descricao": "Segue \"ver no painel\" do passo 5 até o PLD e confere que o painel mostra os mesmos números",
      "resultado": "ok",
-     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; cartão Sudeste/Centro-Oeste: média R$ 135,25 em 30/09/2026, faixa horária R$ 57,31 a R$ 577,20, iguais ao texto da trilha. Ao chegar (rolagem 5006 px): gráfico horário não está à vista; abas de período cobertas pelo botão fixo: Dia 30/09, 7 dias, 30 dias, 12 meses"
+     "observado": "Botão de retorno: \"← Voltar à trilha Água, operação e preço, passo 5\"; cartão Sudeste/Centro-Oeste: média R$ 135,25 em 30/09/2026, faixa horária R$ 57,31 a R$ 577,20, iguais ao texto da trilha. Ao chegar (rolagem 4926 px): gráfico horário não está à vista; abas de período cobertas pelo botão fixo: nenhuma"
     },
     {
      "descricao": "Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com o pico do exemplo",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24972,
+   "duracao_ms": 25111,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -401,7 +401,7 @@
     {
      "descricao": "Toca em Minas Gerais no mapa de UFs e confere a escolha na URL",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 285 px abaixo do fim do mapa (topo da ficha a 864 px do topo da janela de 780 px), fora da tela"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:MG; região tocada com 80 por 66 px; a ficha começa 285 px abaixo do fim do mapa (topo da ficha a 904 px do topo da janela de 780 px), fora da tela"
     },
     {
      "descricao": "Mede o tamanho de toque de cada UF no mapa (só medição, sem tocar): quantas regiões ficam abaixo de 24 px",
@@ -416,7 +416,7 @@
     {
      "descricao": "Toca em BA na tabela de UFs para comparar e lê a ficha da Bahia",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 96 por 44 px; a ficha da Bahia ficou a -1766 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 96 por 44 px; a ficha da Bahia ficou a -1726 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
     },
     {
      "descricao": "Compara as duas fichas: municípios, capacidade e submercado de cada UF",
@@ -426,7 +426,7 @@
     {
      "descricao": "Toca em Limpar a escolha e confere que o modo e a posição na página continuam",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5280 px antes e 5280 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar; rolagem 5240 px antes e 5240 px depois; ficha voltou a \"NENHUMA ESCOLHA\"; alvo 117 por 44 px"
     },
     {
      "descricao": "Usa o botão voltar do navegador e confere que a escolha da Bahia volta",
@@ -461,7 +461,7 @@
     {
      "descricao": "Remove o filtro de UF pelo chip e confere modo, ano, indicador, escolha, comparação e posição",
      "resultado": "ok",
-     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7288 para 7288 px"
+     "observado": "alvo do chip 96 por 44 px; contagem \"123 de 123 linhas\"; ano \"2024\", indicador \"Perdas técnicas (% da energia injetada)\", modo analisar, escolha d=06981180000116 e comparação cmp mantidos; rolagem 7248 para 7248 px"
     },
     {
      "descricao": "Usa o botão voltar e confere que o filtro de UF = MG volta",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 168,
-   "duracao_ms": 35683,
+   "duracao_ms": 35161,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -567,7 +567,7 @@
     {
      "descricao": "Escolhe a mesma distribuidora com clique na tabela e compara a ficha com a do teclado",
      "resultado": "ok",
-     "observado": "d=06981180000116 nas duas formas; ficha idêntica (865 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
+     "observado": "d=06981180000116 nas duas formas; ficha idêntica (873 caracteres). A URL do teclado traz tab.pag=2, a do mouse traz tab.q=CEMIG"
     },
     {
      "descricao": "Abre Comprove este número com Enter, confere onde cai o foco e fecha com Esc",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 36137,
+   "duracao_ms": 34535,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -628,7 +628,7 @@
     {
      "descricao": "Abre o link num novo contexto de navegador e compara o recorte de Histórico e distribuição",
      "resultado": "ok",
-     "observado": "âncora #p011 (O preço está alto para esta época?) a 112 px do topo da janela, rolagem 571 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
+     "observado": "âncora #p011 (O preço está alto para esta época?) a 192 px do topo da janela, rolagem 491 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, intervalo do gráfico, busca na tabela, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação; não voltaram: seleção e séries ligadas (ligada só no link: Ponderada pela carga do b"
     },
     {
      "descricao": "Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação",
@@ -643,12 +643,12 @@
     {
      "descricao": "Abre o link de Perdas num novo contexto e compara ano, indicador, filtro, ordem, escolha e comparação",
      "resultado": "ok",
-     "observado": "âncora #mapa: elemento existe no destino, topo 112 px, rolagem 1409 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #mapa: elemento existe no destino, topo 192 px, rolagem 1329 px; voltaram: modo de profundidade, seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas; não voltaram: seção Dados do gráfico em tabela aberta; zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Confere em Perdas que o painel certo ficou à vista ao abrir o link (âncora do link copiado)",
      "resultado": "ok",
-     "observado": "painel #mapa a 112 px do topo da janela"
+     "observado": "painel #mapa a 192 px do topo da janela"
     },
     {
      "descricao": "Em Minha região, monta o recorte: Analisar, UF BA, zoom no mapa, filtro de submercado e ordem na tabela",
@@ -663,7 +663,7 @@
     {
      "descricao": "Abre o link de Minha região num novo contexto e compara escolha, ficha, filtro e ordem",
      "resultado": "ok",
-     "observado": "âncora #p002: elemento existe, topo 112 px, rolagem 492 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
+     "observado": "âncora #p002: elemento existe, topo 192 px, rolagem 412 px; voltaram: modo de profundidade, opções marcadas (submercado, moeda, camada), seletores de ano e indicador, ordenação (aria-sort), contagem de linhas, chips de filtro e de comparação, seleção e séries ligadas, ficha da escolha; não voltaram: zoom do mapa (a origem estava aproximada; o link abre o mapa inteiro)"
     },
     {
      "descricao": "Resume o que o link não restaurou nas três páginas",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 25565,
+   "duracao_ms": 25697,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -748,12 +748,12 @@
     {
      "descricao": "Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/aneel-scs; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília)\"; última tentativa de coleta direta \"undefined\"; menciona atraso: sim"
+     "observado": "/setor-eletrico/dados/aneel-scs?modo=analisar; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília)\"; última tentativa de coleta direta \"undefined\"; menciona atraso: sim"
     },
     {
      "descricao": "Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/ibge-pof-6715; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
+     "observado": "/setor-eletrico/dados/ibge-pof-6715?modo=analisar; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
     },
     {
      "descricao": "Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13744,
+   "duracao_ms": 13811,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",
@@ -793,7 +793,7 @@
     {
      "descricao": "Vai ao painel Arquivo de emissões pelo link da página e lê a contagem de registros e rodadas",
      "resultado": "ok",
-     "observado": "painel #p015 a 112 px do topo; 56 registros de 2 rodadas; rodada de 27/09: sem número, motivo \"nenhum PLD do período exigido havia sido capturado até o corte\", emitida 490 min depois do prazo, transcrita em 28/09/2026; rodada de 30/09: 28 números, emitida 751 min depois do prazo; nenhuma entrega terminou, a primeira (W2026-10-03) termina em 10/10/2026; subtítulo \"Arquivo imutável de emissões · uma"
+     "observado": "painel #p015 a 192 px do topo; 56 registros de 2 rodadas; rodada de 27/09: sem número, motivo \"nenhum PLD do período exigido havia sido capturado até o corte\", emitida 490 min depois do prazo, transcrita em 28/09/2026; rodada de 30/09: 28 números, emitida 751 min depois do prazo; nenhuma entrega terminou, a primeira (W2026-10-03) termina em 10/10/2026; subtítulo \"Arquivo imutável de emissões · uma"
     },
     {
      "descricao": "Escolhe a rodada de 27/09/2026 no gráfico e lê as linhas: sem número, motivo e sem realizado",
@@ -848,7 +848,7 @@
     {
      "descricao": "Abre Desempenho e calibração e lê que ainda não há resultado para comparar com a previsão",
      "resultado": "ok",
-     "observado": "/setor-eletrico/pld/modelos#p016 (modo de profundidade marcado: ENTENDER; modo na URL: nenhum; a página anterior estava em auditar); \"No acompanhamento prospectivo, nenhuma das 28 previsões com número tem realizado: a primeira entrega termina em 10/10/2026\" (igual ao arquivo: 28 números, primeira entrega W2026-10-03 termina em 10/10/2026); o painel diz que os números de desempenho do teste retrosp"
+     "observado": "/setor-eletrico/pld/modelos?modo=auditar#p016 (modo de profundidade marcado: AUDITAR; modo na URL: auditar; a página anterior estava em auditar); \"No acompanhamento prospectivo, nenhuma das 28 previsões com número tem realizado: a primeira entrega termina em 10/10/2026\" (igual ao arquivo: 28 números, primeira entrega W2026-10-03 termina em 10/10/2026); o painel diz que os números de desempenho do "
     }
    ],
    "limite": "Não há resultado publicado para comparar: nenhuma entrega prevista terminou até a publicação lida. Roteiro por script, sem pessoas."
