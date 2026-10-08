@@ -593,7 +593,7 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
                             "(não entregue ou entregue sem a função): a despesa de aplicação direta não pode ser separada. A DCA segue válida para a despesa total.")
                 else:
                     nota = (f"A MSC de dezembro, sem intraorçamentárias, soma {CF.brl(pt['total_sem_intra'])} e a DCA informa "
-                            f"{CF.brl(d['valor'])}: a ponte não fecha (diferença de {CF.brl(pt['diferenca_dca'])}, {str(pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
+                            f"{CF.brl(d['valor'])}: a ponte não fecha (diferença de {CF.brl(pt['diferenca_dca'])}, {('%.2f' % pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
                             "acima do limiar de 0,1% da política de conferência). "
                             + ("A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, "
                                "política de conferência 1.1). " if d["conferencia"]["situacao"] == "PERIMETRO_INTRA_MSC" else "")
@@ -616,7 +616,7 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
             eleg = bool(d["elegivel_comparacao"] and m["elegivel_comparacao"])
             notas = [x for x in (d.get("nota"), m.get("nota")) if x]
             if pt["situacao"] == "DIFERENCA_MENOR":
-                notas.append(f"A soma das linhas da MSC difere da DCA em {CF.brl(pt['diferenca_dca'])} ({str(pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
+                notas.append(f"A soma das linhas da MSC difere da DCA em {CF.brl(pt['diferenca_dca'])} ({('%.3f' % pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
                              "abaixo do limiar de 0,1%); a diferença não é atribuída ao numerador nem a outra parcela.")
             for comp, fator in (("nominal", 1.0), ("real_2025", fatores[ano])):
                 calc = {"numerador": round(num * fator, 2), "numerador_ref": "edu.despesa.ponte_matricula", "numerador_componente": "rede_propria",
