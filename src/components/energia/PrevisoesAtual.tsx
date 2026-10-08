@@ -94,12 +94,12 @@ export function PrevisoesAtual({
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end gap-4">
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Submercado</span>
           <select
             value={v.sm}
             onChange={(e) => selecionar(e.currentTarget.value as Submercado)}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia"
+            className="min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia"
           >
             {entidades.map((e) => (
               <option key={e.id} value={e.id}>
@@ -108,12 +108,12 @@ export function PrevisoesAtual({
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Horizonte</span>
           <select
             value={v.h}
             onChange={(e) => definir({ h: e.currentTarget.value as Horizonte })}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia"
+            className="min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-sm text-carvao focus:border-energia"
           >
             {HORIZONTES.map((h) => (
               <option key={h} value={h}>

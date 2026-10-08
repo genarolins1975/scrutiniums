@@ -708,7 +708,7 @@ export default function PldPage() {
           {/* 5. Previsão */}
           <Capitulo id="previsao" numero="5" subtitulo="Previsão" titulo="Para onde o PLD pode ir?">
             <p className="max-w-prose2 font-serif text-xl leading-snug text-carvao">Previsão é distribuição de possibilidades, não um único número.</p>
-            <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
+            <div className="mt-6 grid grid-cols-[minmax(0,1fr)] items-start gap-8 lg:grid-cols-2">
               <IlustracaoDistribuicao />
               <div>
                 {prev && !prev.atual.disponivel ? (
