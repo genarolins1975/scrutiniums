@@ -118,12 +118,10 @@ describe("verbete: exemplo em cartão (L-11, F08) e achados de fonte (F22, L-24,
   it("o PLD do verbete e o do passo 5 da trilha de água são a mesma semana operativa do CMO do passo 4 (L-30 e L-31)", () => {
     const pld = provaDoVerbete("pld");
     const cmo = provaDoVerbete("dessem");
-    expect(pld!.tipo === "evidencia" && cmo!.tipo === "evidencia").toBe(true);
-    if (pld!.tipo === "evidencia" && cmo!.tipo === "evidencia") {
-      const semana = (t: string) => /de (\d{2}\/\d{2}\/\d{4}) a (\d{2}\/\d{2}\/\d{4})/.exec(t)?.slice(1).join(" a ");
-      expect(semana(pld.dado.evidencia.indicador)).toBeTruthy();
-      expect(semana(pld.dado.evidencia.indicador)).toBe(semana(cmo.dado.evidencia.indicador));
-    }
+    if (!pld || !cmo || pld.tipo !== "evidencia" || cmo.tipo !== "evidencia") throw new Error("PLD e DESSEM precisam de ficha publicada");
+    const semana = (t: string) => /de (\d{2}\/\d{2}\/\d{4}) a (\d{2}\/\d{2}\/\d{4})/.exec(t)?.slice(1).join(" a ");
+    expect(semana(pld.dado.evidencia.indicador)).toBeTruthy();
+    expect(semana(pld.dado.evidencia.indicador)).toBe(semana(cmo.dado.evidencia.indicador));
     const t = TRILHAS_APRENDA.find((x) => x.id === "agua-operacao-preco")!;
     expect(t.passos.find((p) => p.id === "pld")!.prova).toEqual({ tipo: "verbete", slug: "pld" });
     expect(t.passos.find((p) => p.id === "pld")!.texto).toContain("na mesma semana operativa do CMO do passo anterior");
