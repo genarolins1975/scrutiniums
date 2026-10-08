@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
 import { ROTULO_STATUS, type PontoSerie } from "@/lib/eficiencia/consulta";
 
@@ -268,6 +268,12 @@ export function GraficoPontosPares({
   const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
   const sel = linhas.findIndex((l) => l.selecionada);
 
+  const linhaDoPonteiro = (e: PointerEvent<SVGRectElement>) => {
+    const r = e.currentTarget.ownerSVGElement!.getBoundingClientRect();
+    const i = Math.floor((e.clientY - r.top - m.t) / linhaH);
+    setAtivo(i >= 0 && i < linhas.length ? i : null);
+  };
+
   const teclado = (e: KeyboardEvent) => {
     if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
@@ -338,12 +344,12 @@ export function GraficoPontosPares({
             width={w}
             height={linhas.length * linhaH}
             fill="transparent"
-            onPointerMove={(e) => {
-              const r = (e.currentTarget as SVGRectElement).ownerSVGElement!.getBoundingClientRect();
-              const i = Math.floor((e.clientY - r.top - m.t) / linhaH);
-              setAtivo(i >= 0 && i < linhas.length ? i : null);
+            onPointerMove={(e) => linhaDoPonteiro(e)}
+            // toque: o valor da linha tocada fica visível até o próximo toque (o ponteiro de toque sai do elemento ao levantar o dedo)
+            onPointerDown={(e) => linhaDoPonteiro(e)}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") setAtivo(null);
             }}
-            onPointerLeave={() => setAtivo(null)}
           />
         </svg>
         {ativo !== null && (

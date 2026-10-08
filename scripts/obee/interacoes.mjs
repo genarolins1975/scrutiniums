@@ -12,7 +12,9 @@ const r = [];
 const ok = (nome, cond, det = "") => r.push({ nome, ok: !!cond, det: String(det).slice(0, 300) });
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ acceptDownloads: true, viewport: { width: 1280, height: 900 } });
+// VIEWPORT=390x844 repete a bateria no celular (com toque)
+const [vw, vh] = (process.env.VIEWPORT ?? "1280x900").split("x").map(Number);
+const ctx = await browser.newContext({ acceptDownloads: true, viewport: { width: vw, height: vh }, hasTouch: vw < 768, isMobile: vw < 768 });
 const page = await ctx.newPage();
 const erros = [];
 page.on("pageerror", (e) => erros.push(e.message));
@@ -160,6 +162,24 @@ await page.waitForTimeout(150);
 const dica = await page.locator("#serie [role=status]").first().innerText().catch(() => "");
 ok("teclado mostra a dica no gráfico", /2021/.test(dica), dica);
 await page.screenshot({ path: `${out}/dica-teclado.png`, clip: { x: 0, y: 0, width: 1280, height: 900 } });
+
+// 15. gráfico monetário: valor exato por toque ou ponteiro e atalho para a tabela da comparação
+await page.goto(`${URL0}?med=despesa&cap=sao-paulo`, { waitUntil: "networkidle" });
+const grupo = page.locator("#comparacao [role=group]").first();
+await grupo.scrollIntoViewIfNeeded();
+const caixa = await grupo.boundingBox();
+const alvoX = caixa.x + Math.min(200, caixa.width / 2);
+const alvoY = caixa.y + 30 + 20 * 26 + 13; // 21ª capital (Rio de Janeiro), margem 30 e linha de 26 px
+if (vw < 768) await page.touchscreen.tap(alvoX, alvoY);
+else await page.mouse.move(alvoX, alvoY);
+await page.waitForTimeout(250);
+const dicaLinha = (await page.locator("#comparacao [role=status]").allInnerTexts()).join(" ");
+ok("valor exato da linha tocada ou apontada", /rio de janeiro/i.test(dicaLinha) && /R\$/.test(dicaLinha), dicaLinha.replace(/\s+/g, " "));
+await page.getByRole("button", { name: "Ver todos os valores na tabela" }).click();
+await page.waitForTimeout(250);
+ok("atalho abre a tabela da comparação com todas as capitais", (await page.locator("#tabela-comparacao[open] table tbody tr").count()) === 26);
+const focoResumo = await page.evaluate(() => document.activeElement?.textContent?.trim());
+ok("foco vai para o resumo da tabela", /Ver tabela da comparação/.test(focoResumo ?? ""), focoResumo);
 
 ok("sem erros de página", erros.length === 0, erros.join(" | "));
 await browser.close();

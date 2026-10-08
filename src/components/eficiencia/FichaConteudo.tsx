@@ -93,7 +93,7 @@ export function FichaConteudo({ f, ctx }: { f: FichaIndicador; ctx: ContextoFich
             {ctx.coletas.map((c) => (
               <li key={c.fonte}>
                 {c.fonte}: coletado em {c.capturado_em}.{" "}
-                <a href={c.pagina} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
+                <a href={c.pagina} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">
                   Página oficial<span className="sr-only"> de {c.fonte} (abre em nova aba)</span>
                 </a>
               </li>

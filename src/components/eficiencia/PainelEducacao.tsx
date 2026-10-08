@@ -630,6 +630,22 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                   formataEixo={fmtCurto}
                   zero={s.med === "despesa" || s.med === "matriculas" || s.med === "conveniadas"}
                 />
+                <p className="mt-2 flex flex-wrap items-center gap-x-3 text-xs text-carvao-muted">
+                  <span>Toque ou passe o ponteiro numa linha para ver o valor exato.</span>
+                  <button
+                    type="button"
+                    className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2"
+                    onClick={() => {
+                      const d = document.getElementById("tabela-comparacao") as HTMLDetailsElement | null;
+                      if (!d) return;
+                      d.open = true;
+                      d.scrollIntoView({ block: "start" });
+                      d.querySelector("summary")?.focus();
+                    }}
+                  >
+                    Ver todos os valores na tabela
+                  </button>
+                </p>
                 {comp.incluidas.every((i) => i.cap.id !== cap.id) && (
                   <p className="mt-2 text-sm text-obee-tinta">{nomeCap} não está entre as capitais incluídas neste recorte; o motivo está na lista abaixo.</p>
                 )}
@@ -694,7 +710,7 @@ export function PainelEducacao({ dados, contextos }: { dados: DadosPainel; conte
                     )}
                   </div>
                 </div>
-                <details className="mt-5 text-sm">
+                <details id="tabela-comparacao" className="mt-5 scroll-mt-24 text-sm">
                   <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela da comparação</summary>
                   <TabelaSimples legenda={`${med.rotulo}, ${s.ano}, por capital`} cabecalho={["Capital", `Valor (${unidadeMed})`, "Situação"]} linhas={linhasComp} />
                 </details>

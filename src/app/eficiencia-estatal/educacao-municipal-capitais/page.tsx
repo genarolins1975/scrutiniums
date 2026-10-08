@@ -282,7 +282,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                   return (
                     <tr key={f.id} className="border-b border-linha align-top">
                       <th scope="row" className="px-2.5 py-2 text-left font-normal">
-                        <a href={c0.pagina} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
+                        <a href={c0.pagina} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">
                           {c0.instituicao}
                           <span className="sr-only"> (abre em nova aba)</span>
                         </a>
@@ -360,7 +360,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             <div className="mt-3 space-y-4">
               {g.trilhas.map((t) => (
                 <details key={t.indicador} className="text-sm">
-                  <summary className="cursor-pointer text-obee-tinta">
+                  <summary className="cursor-pointer py-3 text-obee-tinta">
                     {g.indicadores.find((i) => i.id === t.indicador)?.nome}: {t.nome}, {t.ano}
                   </summary>
                   <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-obee-tinta">
