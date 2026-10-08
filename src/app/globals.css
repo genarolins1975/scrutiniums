@@ -265,8 +265,9 @@ html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
   .nav-faixa a,
   .nav-faixa span,
   .nav-faixa-barra a { white-space: nowrap; }
-  /* sangra até a borda da tela; a folga de 3 px evita que o contorno do foco seja cortado em cima e embaixo */
-  .nav-faixa { margin: -3px -1.5rem; padding: 3px 1.5rem; }
+  /* a folga de 3 px, em cima e embaixo, evita que o contorno do foco seja cortado. A faixa fica na largura do conteúdo: sangrar até a borda
+     da tela com margem negativa estourava a página (rolagem horizontal) onde o respiro lateral da página é de 16 px, e não de 24 px. */
+  .nav-faixa { margin: -3px 0; padding: 3px 0; }
 }
 
 /* A resposta curta do painel vem antes dos filtros e dos controles: o leitor lê o número que responde à pergunta e só depois ajusta

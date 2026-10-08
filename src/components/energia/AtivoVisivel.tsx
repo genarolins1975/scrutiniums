@@ -27,7 +27,7 @@ export function AtivoVisivel({ alvo }: { alvo: string }) {
  */
 export function FaixasDeSecao() {
   useEffect(() => {
-    const limpezas = Array.from(document.querySelectorAll<HTMLElement>(".nav-faixa")).map((lista) => acompanhaFaixa(lista, 24));
+    const limpezas = Array.from(document.querySelectorAll<HTMLElement>(".nav-faixa")).map((lista) => acompanhaFaixa(lista, 0));
     return () => limpezas.forEach((l) => l());
   }, []);
   return null;

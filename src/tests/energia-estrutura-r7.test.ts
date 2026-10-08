@@ -32,6 +32,11 @@ describe("abas de seção em uma linha no celular", () => {
     expect(css).toMatch(/#modulos-energia,\s*\.nav-faixa,\s*\.nav-faixa-barra \{[^}]*--fade-dir: 0;[^}]*mask-image/);
   });
 
+  it("a faixa de seções fica na largura do conteúdo: margem lateral negativa estourava a página onde o respiro é de 16 px (rolagem horizontal)", () => {
+    expect(css).toMatch(/\.nav-faixa \{ margin: -3px 0; padding: 3px 0; \}/);
+    expect(css).not.toMatch(/\.nav-faixa \{[^}]*margin:[^;}]*-1\.5rem/);
+  });
+
   it("a aba atual é trazida à vista só quando está cortada, pelo mesmo componente que cuida da faixa de módulos", () => {
     const av = ler("src/components/energia/AtivoVisivel.tsx");
     expect(av).toContain("export function FaixasDeSecao()");
