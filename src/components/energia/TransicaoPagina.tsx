@@ -23,7 +23,7 @@ export function TransicaoNavegacao({ atual }: { atual: PainelTransicao | "sintes
   const itens = [{ href: ROTA_TRANSICAO, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_TRANSICAO.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
   return (
     <nav aria-label="Páginas da transição e ambiente" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {itens.map((i) => (
           <li key={i.id}>
             <Link

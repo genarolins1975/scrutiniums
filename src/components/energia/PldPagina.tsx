@@ -22,7 +22,7 @@ import type { Controle, FonteTextual } from "@/lib/energia/tipos-pld";
 export function PldNavegacao({ atual }: { atual: PainelPld }) {
   return (
     <nav aria-label="Painéis do PLD" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_PLD.map((p) => (
           <li key={p.id}>
             <Link
@@ -189,11 +189,11 @@ export function PldControles({ controles }: { controles: Controle[] }) {
 /** Abertura de cada página de painel: rótulo do módulo, pergunta como título e síntese curta. */
 export function PldCabecalho({ titulo, children, referencia, siglas }: { titulo: string; children?: ReactNode; referencia?: ReactNode; siglas?: readonly string[] }) {
   return (
-    <header className="pb-6 pt-10 md:pt-14">
+    <header className="cab-modulo">
       <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
       <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3rem)] leading-[1.1] text-carvao">{titulo}</h1>
-      {children && <div className="mt-4 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>}
-      {referencia && <p className="mt-4 text-xs text-mineral">{referencia}</p>}
+      {children && <div className="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>}
+      {referencia && <p className="cab-ref text-xs text-mineral">{referencia}</p>}
       <LegendaDeSiglas siglas={siglas} />
     </header>
   );

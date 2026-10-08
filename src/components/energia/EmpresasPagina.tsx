@@ -24,7 +24,7 @@ export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese"
   const itens = [{ href: ROTA_EMPRESAS, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_EMPRESAS.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
   return (
     <nav aria-label="Páginas do módulo Empresas" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {itens.map((i) => (
           <li key={i.id}>
             <Link

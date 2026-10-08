@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
+import { FaixasDeSecao } from "@/components/energia/AtivoVisivel";
 
 /**
  * Três níveis de profundidade sobre a MESMA página (nunca três páginas):
@@ -192,6 +193,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   return (
     <div data-modo={modo} className="modo-profundidade">
       <AbreDetalhesAoImprimir />
+      <FaixasDeSecao />
       <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
         <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-1.5 sm:gap-2">
           <span className="rotulo mr-2 hidden text-mineral sm:inline">Profundidade</span>

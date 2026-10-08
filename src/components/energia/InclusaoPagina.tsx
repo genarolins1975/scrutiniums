@@ -22,7 +22,7 @@ export function InclusaoNavegacao({ atual }: { atual: PainelInclusao | "sintese"
   const itens = [{ href: ROTA_INCLUSAO, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_INCLUSAO.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
   return (
     <nav aria-label="Páginas da inclusão energética" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {itens.map((i) => (
           <li key={i.id}>
             <Link

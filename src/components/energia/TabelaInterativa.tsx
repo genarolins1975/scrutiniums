@@ -80,14 +80,17 @@ export type TabelaInterativaProps = {
   /** Nota extra no rodapé (limitação que muda a leitura). */
   nota?: ReactNode;
   /**
-   * Em Entender, a tabela longa fica atrás do botão "Ver a tabela completa": o essencial da página é a resposta,
-   * e a tabela serve a quem quer conferir. Padrão: tabelas com mais de 12 linhas. Em Analisar e Auditar, e fora de
-   * uma página com níveis de profundidade, a tabela aparece sempre aberta.
+   * Em Entender, a tabela longa ou larga fica atrás do botão "Ver a tabela completa": o essencial da página é a
+   * resposta, e a tabela serve a quem quer conferir. Padrão: tabelas com mais de 12 linhas ou mais de 6 colunas (no
+   * celular, mais que isso não cabe sem esconder os números). Em Analisar e Auditar, e fora de uma página com níveis
+   * de profundidade, a tabela aparece sempre aberta.
    */
   recolher?: boolean;
 };
 
 const TAMANHOS = [25, 50, 100, 200] as const;
+const LINHAS_PARA_RECOLHER = 12;
+const COLUNAS_PARA_RECOLHER = 6;
 const FILTRO = "f:";
 
 /** Esquema da URL: busca e página substituem a entrada do histórico; ordem e filtros criam entrada nova. */
@@ -210,7 +213,7 @@ export function TabelaInterativa({
   const itensFiltro = recorte.filter((r) => r.tipo !== "ordem");
   const [anuncio, setAnuncio] = useState("");
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
-  const recolhivel = recolher ?? linhas.length > 12;
+  const recolhivel = recolher ?? (linhas.length > LINHAS_PARA_RECOLHER || colunas.length > COLUNAS_PARA_RECOLHER);
   const [aberta, setAberta] = useState(false);
   const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || !!selecionado;
   // quem chega por um link com busca, filtro, página ou linha escolhida precisa ver a tabela
@@ -531,7 +534,7 @@ export function TabelaInterativa({
                         );
                       }
                       return (
-                        <td key={c.id} className={`px-2 py-2 text-carvao ${numerica ? "whitespace-nowrap text-right" : c.tipo === "data" ? "whitespace-nowrap" : "min-w-[8rem]"}`}>
+                        <td key={c.id} className={`tc ${numerica ? "tc-n" : c.tipo === "data" ? "tc-d" : "tc-t"}`}>
                           {conteudo}
                         </td>
                       );

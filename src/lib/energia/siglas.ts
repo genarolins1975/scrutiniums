@@ -56,6 +56,22 @@ export const SIGLAS: Record<string, string> = {
   FIC: "Frequência de Interrupção Individual por Unidade Consumidora",
   MME: "Ministério de Minas e Energia",
   MCTI: "Ministério da Ciência, Tecnologia e Inovação",
+  // acrescentadas na r7: nomes que o próprio observatório já traz por extenso nas fontes e fichas (não vêm de memória)
+  POF: "Pesquisa de Orçamentos Familiares, do IBGE",
+  SIDRA: "Sistema IBGE de Recuperação Automática",
+  IPCA: "Índice Nacional de Preços ao Consumidor Amplo",
+  PMO: "Programa Mensal de Operação",
+  SCEE: "Sistema de Compensação de Energia Elétrica",
+  PRORET: "Procedimentos de Regulação Tarifária",
+  BDGD: "Base de Dados Geográfica da Distribuidora",
+  CCC: "Conta de Consumo de Combustíveis",
+  MPV: "Medida Provisória",
+  MDL: "Mecanismo de Desenvolvimento Limpo",
+  DVA: "Demonstração do Valor Adicionado",
+  UF: "unidade da federação",
+  SIGET: "Sistema de Gestão da Transmissão",
+  SCS: "Sistema de Controle de Subvenções e Programas Sociais",
+  DMR: "Diferença Mensal de Receita",
 };
 
 /** Padrão que reconhece cada sigla como palavra inteira no texto. */

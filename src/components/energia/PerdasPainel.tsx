@@ -30,7 +30,7 @@ export const LINK_PERDAS = "rotulo inline-flex min-h-[44px] items-center text-en
 export function PerdasNavegacao({ atual }: { atual: IdPaginaPerdas }) {
   return (
     <nav aria-label="Painéis do módulo de perdas" className="border-y border-linha bg-superficie">
-      <ul className="flex flex-wrap gap-x-1 gap-y-0 px-2">
+      <ul className="nav-faixa-barra flex flex-wrap gap-x-1 gap-y-0 px-2">
         {PAGINAS_PERDAS.map((p) => {
           const ativo = p.id === atual;
           return (

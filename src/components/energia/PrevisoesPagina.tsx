@@ -25,7 +25,7 @@ export function PrevisoesNavegacao({ pagina }: { pagina: "previsoes" | "modelos"
   const rota = pagina === "previsoes" ? ROTA_PREVISOES : ROTA_MODELOS;
   return (
     <nav aria-label="Painéis de previsões e modelos" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_PREVISOES.map((p) => {
           const aqui = p.rota === rota;
           return (

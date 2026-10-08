@@ -24,7 +24,7 @@ const LINK = "inline-flex min-h-[44px] items-center text-energia-dark underline 
 export function MercadoNavegacao({ atual }: { atual: IdPaginaMercado }) {
   return (
     <nav aria-label="Painéis do módulo Mercado" className="border-y border-linha bg-superficie">
-      <ul className="flex flex-wrap gap-x-1 gap-y-0 px-2">
+      <ul className="nav-faixa-barra flex flex-wrap gap-x-1 gap-y-0 px-2">
         {PAGINAS_MERCADO.map((p) => {
           const ativo = p.id === atual;
           return (

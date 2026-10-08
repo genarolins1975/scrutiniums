@@ -190,6 +190,13 @@ html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
   }
 }
 
+/* Células da TabelaInterativa: três classes curtas no lugar de seis utilitárias repetidas em cada célula. O HTML de uma página com
+   tabelas grandes (Território tem quase 500 células numéricas) perde dezenas de kB, e o orçamento de 600 kB deixa de depender disso. */
+.tc { padding: 0.5rem; color: var(--cor-carvao); }
+.tc-n { white-space: nowrap; text-align: right; }
+.tc-d { white-space: nowrap; }
+.tc-t { min-width: 8rem; }
+
 /* Tabela longa em Entender: atrás do botão "Ver a tabela completa" (TabelaInterativa). Analisar, Auditar e páginas sem níveis de profundidade mostram a tabela aberta e escondem o botão. */
 .tabela-recolher { display: none; }
 .tabela-recolher-btn {
@@ -223,12 +230,54 @@ html:has(.modo-profundidade) { scroll-padding-top: 5rem; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
 
-/* Lista de módulos que rola na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel liga --fade-esq e --fade-dir) */
-#modulos-energia {
+/* Lista de módulos e faixas de seções que rolam na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel e FaixasDeSecao
+   ligam --fade-esq e --fade-dir). O esmaecimento de 2 rem não deixa dúvida de que o último rótulo cortado é rolagem. */
+#modulos-energia,
+.nav-faixa,
+.nav-faixa-barra {
   --fade-esq: 0;
   --fade-dir: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 2rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 2rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+}
+
+/* No celular, as abas de seção da página ficam numa só linha que rola, em vez de empilhar quatro ou cinco botões de 44 px antes
+   da resposta (a primeira tela de 390 px é curta). A aba atual é trazida à vista por FaixasDeSecao. A partir de 640 px quebram linha. */
+@media (max-width: 40rem) {
+  .nav-faixa,
+  .nav-faixa-barra {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-faixa::-webkit-scrollbar,
+  .nav-faixa-barra::-webkit-scrollbar { display: none; }
+  .nav-faixa > li,
+  .nav-faixa-barra > li { flex: none; }
+  .nav-faixa a,
+  .nav-faixa span,
+  .nav-faixa-barra a { white-space: nowrap; }
+  /* sangra até a borda da tela; a folga de 3 px evita que o contorno do foco seja cortado em cima e embaixo */
+  .nav-faixa { margin: -3px -1.5rem; padding: 3px 1.5rem; }
+}
+
+/* A resposta curta do painel vem antes dos filtros e dos controles: o leitor lê o número que responde à pergunta e só depois ajusta
+   submercado, ano ou período (a resposta continua sendo atualizada por eles). Vale para o contêiner de espaçamento vertical que tem
+   a resposta como filho direto; a ordem no DOM e o foco por teclado não mudam. A margem de cima do espaçamento vertical passa
+   para baixo, porque a resposta agora é o primeiro item visual. */
+[class*="space-y-"]:has(> [data-resposta]) { display: flex; flex-direction: column; }
+[class*="space-y-"] > [data-resposta] { order: -1; margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+
+/* Cabeçalho das páginas de módulo: no celular a primeira tela é curta (844 px com o menu do site, 167 px), então o topo, o
+   parágrafo de abertura e a linha de fontes ficam mais apertados; a partir de 768 px valem os espaços de leitura de tela larga. */
+.cab-modulo { padding-top: 1.5rem; padding-bottom: 1rem; }
+.cab-lead { margin-top: 0.75rem; font-size: 0.95rem; }
+.cab-ref { margin-top: 0.75rem; }
+@media (min-width: 768px) {
+  .cab-modulo { padding-top: 3.5rem; padding-bottom: 1.5rem; }
+  .cab-lead { margin-top: 1rem; font-size: 1.125rem; }
+  .cab-ref { margin-top: 1rem; }
 }
 
 /* A barra fixa de volta ao Aprenda não pode cobrir o elemento que recebe o foco (WCAG 2.4.11): enquanto existe,

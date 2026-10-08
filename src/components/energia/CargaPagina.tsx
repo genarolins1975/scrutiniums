@@ -24,7 +24,7 @@ import { datasLegiveis } from "@/lib/energia/visao";
 export function CargaNavegacao({ atual }: { atual: PainelCarga }) {
   return (
     <nav aria-label="Painéis da carga" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_CARGA.map((p) => (
           <li key={p.id}>
             <Link

@@ -23,7 +23,7 @@ import type { DicionarioOns, DocumentoOns } from "@/lib/energia/tipos-rede";
 export function RedeNavegacao({ atual }: { atual: PainelRede }) {
   return (
     <nav aria-label="Painéis da rede" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_REDE.map((p) => (
           <li key={p.id}>
             <Link

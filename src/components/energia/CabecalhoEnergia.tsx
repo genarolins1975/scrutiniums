@@ -57,7 +57,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
         </div>
       </div>
       <div className="mx-auto max-w-page px-6 pb-1 pt-2">
-        <p className="font-serif text-lg leading-snug text-carvao md:text-xl">
+        <p className="font-serif text-base leading-snug text-carvao min-[420px]:text-lg md:text-xl">
           <span aria-hidden="true" className="mr-2 inline-block h-2.5 w-2.5 bg-energia align-middle" />
           Observatório Brasileiro do Setor Elétrico
         </p>

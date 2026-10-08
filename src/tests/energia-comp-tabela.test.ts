@@ -453,6 +453,16 @@ describe("TabelaInterativa: recolher em Entender", () => {
     expect(h).toContain('data-recolhivel="fechada"');
   });
 
+  it("tabela com mais de 6 colunas também começa fechada em Entender, mesmo curta", () => {
+    const extras: ColunaTabela[] = [1, 2].map((i) => ({ id: `x${i}`, rotulo: `Extra ${i}`, tipo: "texto" }));
+    const seis = html({ colunas: [...colunas, extras[0]] });
+    expect(seis).not.toContain("tabela-recolher-btn");
+    const sete = html({ colunas: [...colunas, ...extras] });
+    expect(sete).toMatch(/Ver a tabela completa \(5 linhas\)/);
+    expect(sete).toContain('data-recolhivel="fechada"');
+    expect(html({ colunas: [...colunas, ...extras], recolher: false })).not.toContain("tabela-recolher-btn");
+  });
+
   it("tabela curta, ou com recolher desligado, fica sempre aberta e sem o botão", () => {
     expect(html()).not.toContain("tabela-recolher-btn");
     expect(html()).not.toContain("data-recolhivel");

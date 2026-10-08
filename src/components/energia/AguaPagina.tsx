@@ -25,7 +25,7 @@ import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
 export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
   return (
     <nav aria-label="Painéis de água e clima" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_AGUA.map((p) => (
           <li key={p.id}>
             <Link

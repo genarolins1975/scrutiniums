@@ -24,7 +24,7 @@ import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 export function GeracaoNavegacao({ atual }: { atual: PainelGeracao }) {
   return (
     <nav aria-label="Painéis da geração" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_GERACAO.map((p) =>
           !p.publicado ? (
             <li key={p.id}>

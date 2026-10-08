@@ -24,7 +24,7 @@ import { PAINEIS_REGULACAO, ROTA_REGULACAO, rotaPainel, type IdPainelRegulacao }
 export function RegulacaoNavegacao({ atual }: { atual: IdPainelRegulacao }) {
   return (
     <nav aria-label="Painéis da regulação" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {PAINEIS_REGULACAO.map((p) => (
           <li key={p.id}>
             <Link

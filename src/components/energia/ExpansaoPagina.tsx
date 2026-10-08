@@ -40,7 +40,7 @@ export function ExpansaoNavegacao({ atual }: { atual: PainelExpansao | "sintese"
   const itens = [{ href: ROTA_EXPANSAO, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_EXPANSAO.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
   return (
     <nav aria-label="Páginas da expansão" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
+      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
         {itens.map((i) => (
           <li key={i.id}>
             <Link
