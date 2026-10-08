@@ -36,7 +36,7 @@ Navegação persistente, igual no computador e no celular: Panorama, Gastos, Ate
 | "Passaporte" | "Sobre este dado" (a ficha de 16 campos permanece) |
 | Avisos repetidos | Uma ressalva por número; a primeira frase da ressalva material fica à vista, o resto abre por clique |
 
-Medida de tamanho (Chromium, 08/10/2026, build de produção): a página anterior media **24.851 px** de altura em 1440 px de largura e **43.231 px** em 390 px; o panorama novo mede **3.111 px** em 1440 px (2.748 px até o rodapé) e **4.820 px** em 390 px (3.588 px até o rodapé). O HTML do panorama pesa 138 kB; o da página anterior, cerca de 1,9 MB.
+Medida de tamanho (Chromium, 08/10/2026, build de produção): a página anterior media **24.851 px** de altura em 1440 px de largura e **43.231 px** em 390 px; o panorama novo mede **3.111 px** em 1440 px (2.748 px até o rodapé) e **4.838 px** em 390 px (3.606 px até o rodapé). O HTML do panorama pesa 138 kB; o da página anterior, cerca de 1,9 MB.
 
 ## 4. Frases factuais e linguagem
 
