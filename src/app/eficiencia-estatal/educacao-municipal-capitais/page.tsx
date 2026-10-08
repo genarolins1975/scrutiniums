@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { TextoComDatas } from "@/components/TextoComDatas";
 import { CabecalhoObee } from "@/components/eficiencia/CabecalhoObee";
 import { ESTADO_PUBLICACAO, FichaConteudo } from "@/components/eficiencia/FichaConteudo";
 import { PainelEducacao } from "@/components/eficiencia/PainelEducacao";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextos } from "@/lib/eficiencia/contexto";
 import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
-import { dataBr, decimal, inteiro } from "@/lib/eficiencia/formato";
+import { dataBr, decimal, inteiro, rotuloVersaoCatalogo } from "@/lib/eficiencia/formato";
 import type { GoldEducacao, IndicadorId, LinhaCobertura } from "@/lib/eficiencia/tipos";
 
 export const dynamic = "force-static";
@@ -365,7 +366,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
                   <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-obee-tinta">
                     {t.passos.map((p) => (
                       <li key={p} className="break-words">
-                        {p}
+                        <TextoComDatas texto={p} />
                       </li>
                     ))}
                   </ol>
@@ -388,7 +389,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               </li>
             </ol>
             <p className="mt-2 text-xs text-carvao-muted">
-              Processamento {g.meta.versao_pipeline}, catálogo {g.meta.versao_catalogo}
+              Processamento {g.meta.versao_pipeline}, catálogo de <data value={g.meta.versao_catalogo}>{rotuloVersaoCatalogo(g.meta.versao_catalogo)}</data>
               {g.meta.versao_codigo ? `, código ${g.meta.versao_codigo}` : ""}, gerado em {dataBr(g.meta.gerado_em)}.
             </p>
           </div>

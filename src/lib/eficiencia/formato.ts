@@ -55,3 +55,10 @@ export function dataBr(iso: string | null | undefined): string {
   const [a, m, d] = iso.slice(0, 10).split("-");
   return d ? `${d}/${m}/${a}` : iso;
 }
+
+/** Identificador do catálogo ("AAAA-MM-DD.N") em texto para o leitor: "08/10/2026, revisão 2". O identificador original fica na gold. */
+export function rotuloVersaoCatalogo(id: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:\.(\d+))?$/.exec(id);
+  if (!m) return id;
+  return `${m[3]}/${m[2]}/${m[1]}${m[4] ? `, revisão ${m[4]}` : ""}`;
+}

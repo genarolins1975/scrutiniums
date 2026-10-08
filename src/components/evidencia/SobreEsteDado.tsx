@@ -3,6 +3,7 @@
 import { useId, useRef } from "react";
 import type { Proveniencia } from "@/lib/energia/tipos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
+import { TextoComDatas } from "@/components/TextoComDatas";
 
 /**
  * Drawer "Sobre este dado": o caminho número → série → transformação → fonte
@@ -172,7 +173,9 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               <Linha rotulo="Limitações">
                 <ul className="list-disc space-y-1.5 pl-5">
                   {p.limitacoes.map((l) => (
-                    <li key={l}>{l}</li>
+                    <li key={l}>
+                      <TextoComDatas texto={l} />
+                    </li>
                   ))}
                 </ul>
               </Linha>

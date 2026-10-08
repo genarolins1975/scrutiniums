@@ -23,7 +23,7 @@ import {
   variacao,
 } from "@/lib/eficiencia/consulta";
 import { contextos, resumoCobertura } from "@/lib/eficiencia/contexto";
-import { reaisExtenso } from "@/lib/eficiencia/formato";
+import { reaisExtenso, rotuloVersaoCatalogo } from "@/lib/eficiencia/formato";
 
 /**
  * Painel Educação municipal nas capitais (OBEE). Os testes miram erros
@@ -243,6 +243,12 @@ describe("tabela auditável e exportação", () => {
     expect(formataEixo("saeb", 220)).toBe("220");
     expect(formataEixo("ideb", 5.5)).toBe("5,5");
     expect(formataEixo("aprovacao", 96)).toBe("96%");
+  });
+
+  it("identificador do catálogo vira data legível, sem perder a revisão", () => {
+    expect(rotuloVersaoCatalogo("2026-10-08.2")).toBe("08/10/2026, revisão 2");
+    expect(rotuloVersaoCatalogo("2026-10-08")).toBe("08/10/2026");
+    expect(rotuloVersaoCatalogo("sem-formato")).toBe("sem-formato");
   });
 
   it("escala por extenso concorda em número", () => {
