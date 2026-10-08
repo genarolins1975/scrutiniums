@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
-import { textoPeriodo } from "@/lib/energia/evidencia";
+import { dataRef, diaBrasilia, textoPeriodo } from "@/lib/energia/evidencia";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import type { Prova } from "@/lib/energia/conteudo/provas";
 import { comVolta } from "@/lib/energia/conteudo/trilhas";
@@ -60,6 +60,10 @@ export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: str
       </p>
       <p className="mt-1 text-xs text-mineral">
         {textoPeriodo(ev.periodo)} · {ev.entidade}
+      </p>
+      <p className="mt-1 text-xs text-mineral" data-fonte="true">
+        Fonte: {ev.fonte.orgao}, {ev.fonte.conjunto}
+        {ev.fonte.capturado_em ? `, capturada em ${dataRef(diaBrasilia(ev.fonte.capturado_em))}` : ""}.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-carvao">{leitura}</p>
       {complemento && (

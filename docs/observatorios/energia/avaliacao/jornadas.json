@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-07T23:55:05.660Z",
+ "gerado_em": "2026-10-08T00:10:11.567Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6355,
+   "duracao_ms": 6338,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11139,
+   "duracao_ms": 11049,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -169,7 +169,7 @@
    "passos_ok": 8,
    "passos_total": 8,
    "cliques": 5,
-   "duracao_ms": 4069,
+   "duracao_ms": 4065,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -228,7 +228,7 @@
    "passos_ok": 10,
    "passos_total": 10,
    "cliques": 12,
-   "duracao_ms": 5732,
+   "duracao_ms": 5887,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6269,
+   "duracao_ms": 6323,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24285,
+   "duracao_ms": 24313,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -496,7 +496,7 @@
    "passos_ok": 18,
    "passos_total": 18,
    "cliques": 168,
-   "duracao_ms": 34317,
+   "duracao_ms": 34601,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 34682,
+   "duracao_ms": 33838,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -683,7 +683,7 @@
    "passos_ok": 13,
    "passos_total": 13,
    "cliques": 27,
-   "duracao_ms": 24564,
+   "duracao_ms": 24912,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13376,
+   "duracao_ms": 13411,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

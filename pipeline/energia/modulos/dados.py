@@ -1027,6 +1027,31 @@ def fichas_com_proveniencia(o, ctx=None, out=None):
     return out
 
 
+def fichas_externas(g, raiz=None):
+    """Fichas que a gold guarda em arquivo à parte: ela publica só o índice e aponta
+    `evidencias.arquivo` (o PLD faz assim para o HTML não carregar as 27 fichas). Sem este
+    passo, uma gold cujas fichas têm todas testes e reconciliação aparecia com zero fichas
+    na publicação. O arquivo precisa estar sob public/ e ser JSON; qualquer outra coisa
+    devolve lista vazia, nunca um erro de publicação."""
+    ev_ = g.get("evidencias") if isinstance(g, dict) else None
+    arq = ev_.get("arquivo") if isinstance(ev_, dict) else None
+    if not isinstance(arq, str) or not arq.startswith("/energia/"):
+        return []
+    publico = os.path.realpath(os.path.join(raiz or base.RAIZ, "public"))
+    caminho = os.path.realpath(os.path.join(publico, arq.lstrip("/")))
+    if not caminho.startswith(publico + os.sep) or not os.path.isfile(caminho):
+        return []
+    try:
+        with open(caminho, encoding="utf-8") as f:
+            corpo = json.load(f)
+    except (OSError, ValueError):
+        return []
+    fichas = corpo.get("evidencias") if isinstance(corpo, dict) else None
+    if not isinstance(fichas, dict):
+        return []
+    return [e for e in fichas.values() if isinstance(e, dict) and "valor_exibido" in e and "testes" in e and "fonte" in e]
+
+
 def situacao_validacao(e):
     """Situação da validação de uma ficha (seção 11.3), separada da natureza."""
     rec = e.get("reconciliacao") if isinstance(e.get("reconciliacao"), dict) else None
@@ -1062,7 +1087,7 @@ def eixos(golds_res):
                 p_ = g["proveniencia"].get(k)
                 if isinstance(e_, dict) and _eh_proveniencia(p_):
                     por_chave[id(e_)] = p_.get("natureza")
-        for e, prov in fichas_com_proveniencia(g):
+        for e, prov in fichas_com_proveniencia(g) + [(x, None) for x in fichas_externas(g)]:
             s = situacao_validacao(e)
             sits[s] += 1
             # prov = proveniência no mesmo objeto da ficha (fichas_com_proveniencia), nunca

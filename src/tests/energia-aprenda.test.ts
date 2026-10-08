@@ -358,6 +358,18 @@ describe("P066: trilhas", () => {
     expect(aprenda).toContain("não todo o vocabulário do setor");
   });
 
+  it("todo número com ficha traz a fonte à vista (órgão, conjunto e dia da captura), no verbete e em cada passo da trilha", () => {
+    for (const t of TRILHAS_APRENDA) {
+      const h = paginas[t.id];
+      const n = (h.match(/data-prova="evidencia"/g) ?? []).length;
+      expect(n, t.id).toBeGreaterThan(0);
+      expect((h.match(/data-fonte="true"/g) ?? []).length, t.id).toBe(n);
+      expect(h, t.id).toMatch(/data-fonte="true">Fonte: [^<]+, capturada em \d\d\/\d\d\/\d{4}\.</);
+    }
+    expect(paginas["custo-tarifa-orcamento"]).toContain("Fonte: ANEEL, SAMP Balanço");
+    expect(paginas["custo-tarifa-orcamento"]).toContain("Fonte: IBGE, POF 2017-2018, microdados");
+  });
+
   it("índice das trilhas, Aprenda com as trilhas e telemetria própria", () => {
     for (const t of TRILHAS_APRENDA) {
       expect(indice).toContain(`/setor-eletrico/aprenda/trilhas/${t.id}`);
