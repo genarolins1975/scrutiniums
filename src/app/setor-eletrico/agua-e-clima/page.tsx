@@ -394,7 +394,7 @@ export default function AguaPage() {
                 <AguaPontes
                   itens={[
                     { slug: "geracao", assunto: "Quanto cada fonte gerou, a hidrelétrica inclusive: outro painel, com outra fonte de dados." },
-                    { slug: "pld", assunto: "O preço de curto prazo por submercado: outro painel, com outra fonte de dados." },
+                    { slug: "pld", assunto: "O PLD por submercado: outro painel, com outra fonte de dados." },
                     { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
                   ]}
                 />

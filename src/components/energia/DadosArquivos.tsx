@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { num } from "@/lib/energia/formato";
 import { formatoDoArquivo, nomeDoArquivo } from "@/lib/energia/dados-ficha";
 import { textoEstadoDoArquivo } from "@/lib/energia/dados-leitor";
@@ -21,6 +22,8 @@ export type ItemArquivo = {
   linhas?: number | null;
   /** Aviso próprio do arquivo (reúne dados de outros conjuntos). */
   aviso?: ReactNode;
+  /** Endereço do conjunto de onde vêm os literais da legenda (o marcador de ausência do SIGA, por exemplo): sem ele a data da legenda sai formatada. */
+  origemDosLiterais?: string;
 };
 
 /** Os itens da lista a partir de endereços publicados: o estado de cada arquivo, as linhas do manifesto e o dicionário de colunas. */
@@ -70,7 +73,7 @@ export function DadosArquivos({ itens }: { itens: readonly ItemArquivo[] }) {
             {a.colunas && (
               <div className="max-w-prose2 pb-1 text-xs leading-relaxed text-carvao-muted [overflow-wrap:anywhere]" data-nivel="analisar" data-legenda-arquivo="">
                 <span className="rotulo mr-2 text-mineral">Colunas e códigos</span>
-                {a.colunas}
+                <TextoEnergia texto={a.colunas} origem={a.origemDosLiterais} literais={["marcador-ausencia-siga"]} />
               </div>
             )}
           </li>

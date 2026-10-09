@@ -106,6 +106,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
     const outras = outrasFichas(a.url);
     return {
       ...a,
+      origemDosLiterais: urlDoConjunto(e) ?? undefined,
       aviso:
         outras.length > 0 ? (
           <span className="block text-xs text-carvao-muted" data-arquivo-compartilhado="true">

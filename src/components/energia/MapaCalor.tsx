@@ -376,7 +376,7 @@ export function MapaCalor({
 }
 
 /**
- * Contraste da cor de uma classe contra o papel do domínio (#faf8f2). A cor chega como hexadecimal ou como `var(--token)`: a sonda
+ * Contraste da cor de uma classe contra o papel do domínio (token cor-papel). A cor chega como hexadecimal ou como `var(--token)`: a sonda
  * resolve a que o navegador usa. Nulo quando não dá para medir (sem DOM ou cor que o navegador não reconhece).
  */
 function contrasteComPapel(cor: string): number | null {

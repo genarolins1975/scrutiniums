@@ -213,7 +213,7 @@ export default function ClimaPage() {
                             assunto:
                               "Quanto da variação da carga é compatível com clima e calendário, com a sua própria série de temperatura (NASA POWER nas capitais, ponderadas pela população: outra seleção de células, então os graus não são os desta página).",
                           },
-                          { slug: "pld", assunto: "O preço de curto prazo por submercado: outro painel, com outra fonte de dados." },
+                          { slug: "pld", assunto: "O PLD por submercado: outro painel, com outra fonte de dados." },
                           { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
                         ]}
                       />

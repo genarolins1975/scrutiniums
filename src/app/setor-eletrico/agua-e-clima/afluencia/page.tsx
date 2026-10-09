@@ -356,7 +356,7 @@ export default function AfluenciaPage() {
                       assunto: "Se a Visão geral ou o PLD mostram outro valor de ENA ou de EAR, a página de armazenamento (em Auditar) põe os dois lado a lado, cada um com o seu dia.",
                     },
                     { slug: "geracao", assunto: "Quanto cada fonte gerou, a hidrelétrica inclusive: outro painel, com outra fonte de dados." },
-                    { slug: "pld", assunto: "O preço de curto prazo por submercado: outro painel, com outra fonte de dados." },
+                    { slug: "pld", assunto: "O PLD por submercado: outro painel, com outra fonte de dados." },
                     { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
                   ]}
                 />

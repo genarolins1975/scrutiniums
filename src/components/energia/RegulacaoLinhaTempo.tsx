@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, type ReactNode } from "react";
+import { LiteralFonte } from "@/components/LiteralFonte";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -436,7 +437,15 @@ export function RegulacaoLinhaTempo({
                           <span className="text-carvao">Regra de vigência:</span> <q>{e.vigencia_regra}</q>
                           {e.vigencia_calculada ? " (data calculada pela LC nº 95/1998, art. 8º, § 1º)" : ""}
                         </p>
-                        {e.trecho && (
+                        {e.trecho && e.origem === "conjunto_de_dados" && e.url_oficial && (
+                          <p>
+                            <span className="text-carvao">Registro no conjunto de dados:</span>{" "}
+                            <LiteralFonte classe="registro-composto-bandeiras" origem={e.url_oficial}>
+                              {e.trecho}
+                            </LiteralFonte>
+                          </p>
+                        )}
+                        {e.trecho && !(e.origem === "conjunto_de_dados" && e.url_oficial) && (
                           <p>
                             <span className="text-carvao">Trecho:</span> <q><code className="font-sans">{e.trecho}</code></q>
                           </p>
