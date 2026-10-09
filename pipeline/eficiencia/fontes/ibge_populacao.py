@@ -5,8 +5,8 @@ Três publicações oficiais, cada uma com sua data de referência:
 * Estimativas da população (SIDRA, tabela 6579, variável 9324): referência em 1º de julho. Publicadas
   no Diário Oficial da União para os anos de 2021, 2024, 2025 e 2026. Não há estimativa municipal
   publicada para 2022 nem para 2023: o ano de 2022 é o do Censo e o de 2023 não tem publicação.
-* Censo Demográfico 2022 (SIDRA, tabela 4714, variável 93): população residente, referência em 1º de
-  agosto de 2022.
+* Censo Demográfico 2022 (SIDRA, tabela 4714, variável 93): população residente, referência em 31 de
+  julho de 2022 (segunda apuração, Nota Metodológica nº 1 do IBGE).
 * Arquivos das estimativas no FTP do IBGE (estimativa_dou_AAAA.ods): a publicação original de cada
   ano. O pipeline os preserva (sha256) e compara com o SIDRA, que traz a versão vigente; diferenças
   são registradas, não corrigidas.
@@ -126,7 +126,7 @@ def coleta():
     sha = base.grava_json_gz(destino, registros)
     base.registra_captura("ibge_populacao", {
         "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
-        "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 1º de agosto de 2022)",
+        "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 31 de julho de 2022, segunda apuração)",
         "pagina": PAGINA_ESTIMATIVAS,
         "url": fontes[f"sidra_6579_{ANOS_ESTIMATIVA[0]}"]["url"],
         "capturado_em": capturado_em,

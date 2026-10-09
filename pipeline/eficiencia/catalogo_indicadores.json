@@ -1,5 +1,5 @@
 {
- "versao_catalogo": "2026-10-08.4",
+ "versao_catalogo": "2026-10-09.1",
  "painel": {
   "id": "educacao-municipal-capitais",
   "titulo": "Educação municipal nas capitais",
@@ -90,7 +90,7 @@
    "transformacoes": [
     "Leitura da resposta da API do Siconfi preservada no seed (JSON gzip com sha256).",
     "Seleção da linha \"12 - Educação\" e da coluna \"Despesas Liquidadas\".",
-    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.1, pipeline/eficiencia/conferencia.py).",
+    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.2, pipeline/eficiencia/conferencia.py).",
     "Correção monetária opcional: valor nominal × (média do número-índice IPCA de 2025 ÷ média do número-índice IPCA do exercício)."
    ],
    "correcao_monetaria": "IPCA, IBGE, tabela 1737, variável 2266 (número-índice, base dezembro de 1993 = 100). Média aritmética dos 12 números-índice mensais de cada ano. Período-base: média de 2025.",
@@ -193,7 +193,7 @@
    "transformacoes": [
     "Divisão do valor liquidado da DCA pela população do mesmo ano, com a precisão original de ambos.",
     "Correção monetária opcional: o numerador nominal × fator IPCA do exercício; a população não é corrigida.",
-    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.1) e as da população (estimativa anterior ao Censo 2022)."
+    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.2) e as da população (estimativa anterior ao Censo 2022)."
    ],
    "correcao_monetaria": "Mesmo fator do IPCA da despesa total: média anual do número-índice de 2025 ÷ média do ano.",
    "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. As duas respondem a perguntas diferentes e são rotuladas separadamente. Variações entre 2021 e anos posteriores são bloqueadas: a população de 2021 tem outra base.",

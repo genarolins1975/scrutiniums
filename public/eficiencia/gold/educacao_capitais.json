@@ -3,29 +3,29 @@
   "dominio": "eficiencia",
   "painel": "educacao-municipal-capitais",
   "versao_pipeline": "obee-0.2.0",
-  "versao_catalogo": "2026-10-08.4",
-  "versao_codigo": "gerador-cb97c7ecea8f",
-  "gerado_em": "2026-10-08T20:48:35Z",
+  "versao_catalogo": "2026-10-09.1",
+  "versao_codigo": "gerador-c563a7572f97",
+  "gerado_em": "2026-10-09T05:55:59Z",
   "dados_capturados_ate": "2026-10-08T20:41:34Z",
-  "hash_dados": "a488bfcbc9b3c9b264e2aae37d65ca260e70da1b3dda6d10b52236cfad94b663",
+  "hash_dados": "326adb15ec058bd45a0dfe34ef281fe92c02015978641320e7aee317aa4f8608",
   "observacoes": 9137,
   "proveniencia": {
    "codigo_gerador": {
-    "sha256": "cb97c7ecea8f94173c4ccb5a3ac2c16d9a9d7eb5f49d2241450bc0d4b2d9e6f9",
+    "sha256": "c563a7572f97466bb1ef4a865405856a1d5a761ceada3b81959e264b0ffebeaf",
     "arquivos": 28,
     "escopo": "todos os .py de pipeline/eficiencia (sem seed e sem testes) e catalogo_indicadores.json"
    },
    "entradas": {
-    "manifesto_do_seed_sha256": "8089f5a5066dfc43d84c84f1c529f0ddcae528e88f8e8ef85f66065956b8f522",
+    "manifesto_do_seed_sha256": "4c1ef5727a285fb3de2a64fcc58f4e99217fb4988cb701fb48554d4b0dd25132",
     "capturas_no_manifesto": 49,
     "nota": "o manifesto registra o sha256 de cada arquivo do seed; alterar uma entrada altera este hash"
    },
    "saidas": {
-    "hash_dados": "a488bfcbc9b3c9b264e2aae37d65ca260e70da1b3dda6d10b52236cfad94b663",
+    "hash_dados": "326adb15ec058bd45a0dfe34ef281fe92c02015978641320e7aee317aa4f8608",
     "observacoes": 9137
    },
    "git": {
-    "commit_de_partida": "5c5a39ec3a88dc81e87ffe4a6ed3dbd671d0d1a9",
+    "commit_de_partida": "8834111cc8693a14973a35b9c08a9b0fd0c37218",
     "codigo_com_mudanca_nao_commitada": true
    },
    "nota": "versao_codigo = 'gerador-' + 12 primeiros caracteres do sha256 do código gerador. O commit que incorpora estes dados é posterior à geração e é o que consta no histórico do repositório; 'commit_de_partida' é o HEAD de quando a geração começou."
@@ -466,7 +466,7 @@
    "transformacoes": [
     "Leitura da resposta da API do Siconfi preservada no seed (JSON gzip com sha256).",
     "Seleção da linha \"12 - Educação\" e da coluna \"Despesas Liquidadas\".",
-    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.1, pipeline/eficiencia/conferencia.py).",
+    "Conferência com o RREO do 6º bimestre e, na diferença material, com a MSC de dezembro (política 1.2, pipeline/eficiencia/conferencia.py).",
     "Correção monetária opcional: valor nominal × (média do número-índice IPCA de 2025 ÷ média do número-índice IPCA do exercício)."
    ],
    "correcao_monetaria": "IPCA, IBGE, tabela 1737, variável 2266 (número-índice, base dezembro de 1993 = 100). Média aritmética dos 12 números-índice mensais de cada ano. Período-base: média de 2025.",
@@ -569,7 +569,7 @@
    "transformacoes": [
     "Divisão do valor liquidado da DCA pela população do mesmo ano, com a precisão original de ambos.",
     "Correção monetária opcional: o numerador nominal × fator IPCA do exercício; a população não é corrigida.",
-    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.1) e as da população (estimativa anterior ao Censo 2022)."
+    "Herda a elegibilidade e as ressalvas do numerador (política de conferência 1.2) e as da população (estimativa anterior ao Censo 2022)."
    ],
    "correcao_monetaria": "Mesmo fator do IPCA da despesa total: média anual do número-índice de 2025 ÷ média do ano.",
    "comparacao": "Compara-se, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples das capitais dá o mesmo peso a cada uma; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. As duas respondem a perguntas diferentes e são rotuladas separadamente. Variações entre 2021 e anos posteriores são bloqueadas: a população de 2021 tem outra base.",
@@ -4448,7 +4448,7 @@
   },
   {
    "id": "V18",
-   "titulo": "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos 38 membros com dado; origem e comparabilidade declaradas",
+   "titulo": "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos membros da OCDE com dado (composição fixa de 38 membros); origem e comparabilidade declaradas",
    "tipo": "automatica",
    "resultado": "aprovada",
    "detalhe": "161 referências nacionais (INEP) em 5 indicadores; 14 conjuntos de contexto internacional; 12 candidatas na matriz, 5 rejeitadas.",
@@ -5833,6 +5833,46 @@
    "valor": 33933
   },
   {
+   "indicador": "ctx.populacao.residente",
+   "ente": 2800308,
+   "nome": "Aracaju",
+   "ano": 2025,
+   "passos": [
+    "Consulta ao SIDRA do IBGE: https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2025 (capturada em 2026-10-08T17:16:22Z).",
+    "Resposta preservada com sha256 aa117c2da18a67e598d54147f7eb84080bb8fed446ae1542dc6229bc0220649e; tabela 6579, variável 9324, município 2800308, ano 2025.",
+    "População residente estimada, referência em 1º de julho de 2025: 621.408.",
+    "O valor vigente do SIDRA prevalece sobre a publicação original do Diário Oficial; a diferença, quando existe, fica registrada na observação (validação V14)."
+   ],
+   "valor": 621408
+  },
+  {
+   "indicador": "edu.despesa.por_habitante",
+   "ente": 2800308,
+   "nome": "Aracaju",
+   "ano": 2025,
+   "passos": [
+    "Numerador: despesa liquidada na função 12 (Educação) da DCA 2025, Anexo I-E: R$ 566.422.643,48 (trilha da despesa total).",
+    "Denominador: população residente estimada em 1º de julho de 2025: 621.408 (trilha da população).",
+    "R$ 566.422.643,48 ÷ 621.408 = R$ 911,51 por habitante.",
+    "A conferência de elegibilidade é a da despesa (DCA contra RREO); a população não entra na comparação como estimativa de outro ano."
+   ],
+   "valor": 911.514888
+  },
+  {
+   "indicador": "edu.despesa.aplicacao_direta_por_matricula",
+   "ente": 2800308,
+   "nome": "Aracaju",
+   "ano": 2025,
+   "passos": [
+    "Total da função 12 na DCA 2025: R$ 566.422.643,48; as intraorçamentárias (R$ 136.862.271,40) ficam fora do total.",
+    "MSC de dezembro de 2025, função 12, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C): aplicação direta com beneficiário não indeterminado, R$ 405.334.941,67; com beneficiário indeterminado, R$ 156.528.060,31.",
+    "Numerador (soma das duas parcelas): R$ 561.863.001,98.",
+    "Denominador: matrículas da rede municipal no Censo Escolar 2025, soma de QT_MAT_BAS: 33.933 (trilha das matrículas).",
+    "R$ 561.863.001,98 ÷ 33.933 = R$ 16.558,01 por matrícula. É razão orçamentária, não custo do aluno."
+   ],
+   "valor": 16558.011434
+  },
+  {
    "indicador": "edu.matriculas.conveniadas_municipais",
    "ente": 2800308,
    "nome": "Aracaju",
@@ -6007,7 +6047,7 @@
     {
      "chave": "ibge_populacao",
      "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
-     "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 1º de agosto de 2022)",
+     "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 31 de julho de 2022, segunda apuração)",
      "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html",
      "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2021",
      "capturado_em": "2026-10-08T17:16:22Z",
@@ -72760,7 +72800,7 @@
    },
    "entrega_dezembro": "2022-01-27",
    "causa": "PERIMETRO_INTRA",
-   "causa_texto": "Perímetro: a DCA inclui intraorçamentárias na função Educação (política 1.1 de conferência)",
+   "causa_texto": "Perímetro: a DCA inclui intraorçamentárias na função Educação (política 1.2 de conferência)",
    "evidencia": [
     "H1: sem linhas D nas contas de despesa liquidada da função 12",
     "H2: intraorçamentárias (modalidade 91) somam R$ 124,200,913.05; explicam a diferença",
@@ -191317,7 +191357,7 @@
    "componente": "nominal",
    "valor": null,
    "status": "NAO_COMPARAVEL",
-   "nota": "A MSC de dezembro, sem intraorçamentárias, soma R$ 906.686.417,45 e a DCA informa R$ 1.030.887.330,50: a ponte não fecha (diferença de −R$ 124.200.913,05, -12,05% da DCA, acima do limiar de 0,1% da política de conferência). A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, política de conferência 1.1). Sem reconciliação, o numerador por matrícula não é publicado.",
+   "nota": "A MSC de dezembro, sem intraorçamentárias, soma R$ 906.686.417,45 e a DCA informa R$ 1.030.887.330,50: a ponte não fecha (diferença de −R$ 124.200.913,05, -12,05% da DCA, acima do limiar de 0,1% da política de conferência). A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, política de conferência 1.2). Sem reconciliação, o numerador por matrícula não é publicado.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao12+inep_censo+siconfi_dca_anexo_i_e",
@@ -191331,7 +191371,7 @@
    "componente": "real_2025",
    "valor": null,
    "status": "NAO_COMPARAVEL",
-   "nota": "A MSC de dezembro, sem intraorçamentárias, soma R$ 906.686.417,45 e a DCA informa R$ 1.030.887.330,50: a ponte não fecha (diferença de −R$ 124.200.913,05, -12,05% da DCA, acima do limiar de 0,1% da política de conferência). A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, política de conferência 1.1). Sem reconciliação, o numerador por matrícula não é publicado.",
+   "nota": "A MSC de dezembro, sem intraorçamentárias, soma R$ 906.686.417,45 e a DCA informa R$ 1.030.887.330,50: a ponte não fecha (diferença de −R$ 124.200.913,05, -12,05% da DCA, acima do limiar de 0,1% da política de conferência). A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, política de conferência 1.2). Sem reconciliação, o numerador por matrícula não é publicado.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao12+inep_censo+siconfi_dca_anexo_i_e",

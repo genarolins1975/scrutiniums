@@ -13,7 +13,7 @@
   },
   "ibge_populacao": {
    "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
-   "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 1º de agosto de 2022)",
+   "conjunto": "População residente: estimativas (SIDRA 6579, referência 1º de julho) e Censo Demográfico 2022 (SIDRA 4714, referência 31 de julho de 2022, segunda apuração)",
    "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html",
    "url": "https://apisidra.ibge.gov.br/values/t/6579/n6/1200401,2704302,1600303,1302603,2927408,2304400,3205309,5208707,2111300,5103403,5002704,3106200,1501402,2507507,4106902,2611606,2211001,3304557,2408102,4314902,1100205,1400100,4205407,3550308,2800308,1721000/v/9324/p/2021",
    "capturado_em": "2026-10-08T17:16:22Z",

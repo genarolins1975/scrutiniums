@@ -81,6 +81,7 @@ def trilhas(obs):
     out = []
 
     o = _primeira_capital_com_valor(obs, "edu.despesa.funcao_educacao", 2025, componente="nominal")
+    desp = o
     if o:
         arq = os.path.join(base.SEED, "siconfi", "dca_anexo_i_e", f"{o['ente']}_2025.json.gz")
         cap = m["siconfi_dca_anexo_i_e"]["arquivos"][f"{o['ente']}_2025"]
@@ -111,6 +112,47 @@ def trilhas(obs):
             f"Soma de QT_MAT_BAS: {o['valor']:,}.".replace(",", "."),
             "Conferência com a Sinopse Estatística 2025, tabela 1.2, coluna Municipal: valor idêntico (validação V06).",
         ], "valor": o["valor"]})
+
+    def _inteiro(v):
+        return f"{int(round(v)):,}".replace(",", ".")
+
+    # população, despesa por habitante e despesa por matrícula: mesma capital e mesmo exercício da trilha da despesa total
+    if desp:
+        cod = desp["ente"]
+        pop = next((x for x in obs if x["indicador"] == "ctx.populacao.residente" and x["ente"] == cod and x["ano"] == 2025 and x["status"] == "OBSERVADO"), None)
+        ph = next((x for x in obs if x["indicador"] == "edu.despesa.por_habitante" and x["ente"] == cod and x["ano"] == 2025
+                   and x["componente"] == "nominal" and x["status"] == "OBSERVADO"), None)
+        src = m["ibge_populacao"]["fontes"].get("sidra_6579_2025")
+        if pop and src:
+            out.append({"indicador": "ctx.populacao.residente", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Consulta ao SIDRA do IBGE: {src['url']} (capturada em {m['ibge_populacao']['capturado_em']}).",
+                f"Resposta preservada com sha256 {src['sha256_resposta']}; tabela 6579, variável 9324, município {cod}, ano 2025.",
+                f"População residente estimada, referência em 1º de julho de 2025: {_inteiro(pop['valor'])}.",
+                "O valor vigente do SIDRA prevalece sobre a publicação original do Diário Oficial; a diferença, quando existe, fica registrada na observação (validação V14).",
+            ], "valor": pop["valor"]})
+        if pop and ph:
+            out.append({"indicador": "edu.despesa.por_habitante", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Numerador: despesa liquidada na função 12 (Educação) da DCA 2025, Anexo I-E: {P.brl(desp['valor'])} (trilha da despesa total).",
+                f"Denominador: população residente estimada em 1º de julho de 2025: {_inteiro(pop['valor'])} (trilha da população).",
+                f"{P.brl(desp['valor'])} ÷ {_inteiro(pop['valor'])} = {P.brl(ph['valor'])} por habitante.",
+                "A conferência de elegibilidade é a da despesa (DCA contra RREO); a população não entra na comparação como estimativa de outro ano.",
+            ], "valor": ph["valor"]})
+        pm = next((x for x in obs if x["indicador"] == "edu.despesa.aplicacao_direta_por_matricula" and x["ente"] == cod and x["ano"] == 2025
+                   and x["componente"] == "nominal" and x["status"] == "OBSERVADO"), None)
+        mat = next((x for x in obs if x["indicador"] == "edu.matriculas.rede_municipal" and x["ente"] == cod and x["ano"] == 2025
+                    and x["etapa"] == "total" and x["status"] == "OBSERVADO"), None)
+        ponte = {x["componente"]: x["valor"] for x in obs if x["indicador"] == "edu.despesa.ponte_matricula" and x["ente"] == cod
+                 and x["ano"] == 2025 and x["status"] == "OBSERVADO"}
+        if pm and mat and "ad_demais_elementos" in ponte and "ad_beneficiario_indeterminado" in ponte:
+            num = ponte["ad_demais_elementos"] + ponte["ad_beneficiario_indeterminado"]
+            out.append({"indicador": "edu.despesa.aplicacao_direta_por_matricula", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
+                f"Total da função 12 na DCA 2025: {P.brl(ponte['dca_total'])}; as intraorçamentárias ({P.brl(ponte.get('intra', 0))}) ficam fora do total.",
+                f"MSC de dezembro de 2025, função 12, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C): aplicação direta com beneficiário não indeterminado, "
+                f"{P.brl(ponte['ad_demais_elementos'])}; com beneficiário indeterminado, {P.brl(ponte['ad_beneficiario_indeterminado'])}.",
+                f"Numerador (soma das duas parcelas): {P.brl(num)}.",
+                f"Denominador: matrículas da rede municipal no Censo Escolar 2025, soma de QT_MAT_BAS: {_inteiro(mat['valor'])} (trilha das matrículas).",
+                f"{P.brl(num)} ÷ {_inteiro(mat['valor'])} = {P.brl(pm['valor'])} por matrícula. É razão orçamentária, não custo do aluno.",
+            ], "valor": pm["valor"]})
 
     alvo = None
     for cap in entes.capitais():

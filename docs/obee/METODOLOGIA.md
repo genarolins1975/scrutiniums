@@ -1,6 +1,6 @@
 # Metodologia do piloto: Educação municipal nas capitais
 
-Versão metodológica 1.3, catálogo `2026-10-08.4` (histórico: 1.3 na rodada 6, ver [RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md); 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md); 1.2 na rodada 5, ver [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
+Versão metodológica 1.3, catálogo `2026-10-09.1` (histórico: 1.3 na rodada 6, ver [RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md](./RODADA_6_CONSOLIDACAO_E_BENCHMARKS.md); 1.0 na etapa inicial; 1.1 na rodada de correções, ver [RODADA_2_CORRECOES.md](./RODADA_2_CORRECOES.md); 1.2 na rodada 5, ver [COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md](./COMPARACOES_GASTO_POR_HABITANTE_E_MATRICULA.md)). As fichas completas (16 campos) estão em `pipeline/eficiencia/catalogo_indicadores.json` e na seção Métodos e fontes do painel.
 
 ## 1. Universo e perímetros
 

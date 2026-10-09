@@ -627,7 +627,7 @@ def despesa_por_matricula(despesa_obs, matricula_obs):
                             f"{CF.brl(d['valor'])}: a ponte não fecha (diferença de {CF.brl(pt['diferenca_dca'])}, {('%.2f' % pt['diferenca_pct_dca']).replace('.', ',')}% da DCA, "
                             "acima do limiar de 0,1% da política de conferência). "
                             + ("A DCA deste exercício inclui despesas intraorçamentárias na função Educação (perímetro distinto, "
-                               "política de conferência 1.1). " if d["conferencia"]["situacao"] == "PERIMETRO_INTRA_MSC" else "")
+                               "política de conferência 1.2). " if d["conferencia"]["situacao"] == "PERIMETRO_INTRA_MSC" else "")
                             + "Sem reconciliação, o numerador por matrícula não é publicado.")
                 razoes += sem("NAO_COMPARAVEL", nota)
                 continue

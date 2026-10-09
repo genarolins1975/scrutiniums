@@ -606,7 +606,7 @@ def v18_referencias_externas(obs):
     for g in intl:
         if g["brasil"] is None:
             ruins.append({"conjunto": g["conjunto"], "nivel": g["nivel"], "problema": "sem valor do Brasil"})
-    return _v("V18", "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos 38 membros com dado; origem e comparabilidade declaradas",
+    return _v("V18", "Referências externas: valores do INEP e da OCDE lidos do seed; média da OCDE = média simples dos membros da OCDE com dado (composição fixa de 38 membros); origem e comparabilidade declaradas",
               "automatica", "reprovada" if ruins else "aprovada",
               f"{len(refs)} referências nacionais (INEP) em {len({r['indicador'] for r in refs})} indicadores; {len(intl)} conjuntos de contexto internacional; "
               f"{len(mat)} candidatas na matriz, {sum(1 for m in mat if m['tipo'] == 'incompativel')} rejeitadas.", casos + ruins[:20])
