@@ -367,7 +367,7 @@ export const O_QUE_O_MAPA_NAO_DIZ = [
 export const TRANSVERSAIS: { titulo: string; texto: string; destinos: string[] }[] = [
   {
     titulo: "Empresas",
-    texto: "Quem é dono das usinas, das linhas e das distribuidoras de cada elo, pelo CNPJ.",
+    texto: "Quem é dono das usinas, das linhas e das distribuidoras de cada elo, pelo Cadastro Nacional da Pessoa Jurídica (CNPJ).",
     destinos: ["empresas"],
   },
   {
@@ -810,18 +810,18 @@ export const FONTES_PRINCIPAIS: { tema: string; href: string; conjuntos: FontePr
       { id: "aneel_tarifas/aneel_bandeiras_tarifarias", rotulo: "Bandeiras tarifárias (ANEEL)" },
     ],
   },
-  { tema: "Perdas", href: "/setor-eletrico/perdas", conjuntos: [{ id: "aneel_distribuicao/aneel_samp_balanco", rotulo: "SAMP, balanço energético das distribuidoras (ANEEL)" }] },
+  { tema: "Perdas", href: "/setor-eletrico/perdas", conjuntos: [{ id: "aneel_distribuicao/aneel_samp_balanco", rotulo: "Balanço energético das distribuidoras (ANEEL)" }] },
   { tema: "Qualidade", href: "/setor-eletrico/qualidade", conjuntos: [{ id: "aneel_qualidade/aneel_continuidade", rotulo: "Indicadores coletivos de continuidade, DEC e FEC (ANEEL)" }] },
   {
     tema: "Inclusão energética",
     href: "/setor-eletrico/inclusao-energetica",
     conjuntos: [
-      { id: "aneel_social/aneel_scs", rotulo: "Tarifa Social por distribuidora, SCS (ANEEL)" },
+      { id: "aneel_social/aneel_scs", rotulo: "Tarifa Social por distribuidora (ANEEL)" },
       { id: "aneel_social/ibge_pnadc_energia", rotulo: "PNAD Contínua: energia nos domicílios (IBGE)" },
     ],
   },
   { tema: "Empresas", href: "/setor-eletrico/empresas", conjuntos: [{ id: "empresas/cvm_itr", rotulo: "Informações trimestrais das companhias abertas (CVM)" }] },
-  { tema: "Expansão", href: "/setor-eletrico/expansao", conjuntos: [{ id: "aneel_geracao/aneel_ralie", rotulo: "RALIE, acompanhamento da expansão da geração (ANEEL)" }] },
+  { tema: "Expansão", href: "/setor-eletrico/expansao", conjuntos: [{ id: "aneel_geracao/aneel_ralie", rotulo: "Acompanhamento da expansão da geração (ANEEL)" }] },
   {
     tema: "Transição e ambiente",
     href: "/setor-eletrico/transicao",

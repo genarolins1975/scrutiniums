@@ -409,7 +409,7 @@ describe("respostas escritas por regra a partir dos números", () => {
       "src/components/energia/RedeBalanco.tsx",
       "src/components/energia/RedeRestricoes.tsx",
       "src/components/energia/RedeProgramado.tsx",
-      "src/components/energia/RedeMapaFluxos.tsx",
+      "src/components/energia/RedeEsquemaFluxos.tsx",
       "src/components/energia/RedePagina.tsx",
       "src/lib/energia/rede.ts",
     ];
@@ -453,8 +453,11 @@ describe("páginas renderizadas no servidor", () => {
       expect(h, id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
+      // navegação entre as páginas: na abertura (P028) as outras três aparecem como capítulos depois da figura principal; nas filhas, a faixa de
+      // páginas irmãs traz a atual com aria-current. O mesmo rótulo não aparece nas duas formas na mesma página.
       for (const p of R.PAINEIS_REDE) expect(h, `${id} -> ${p.id}`).toContain(`href="${R.rotaPainel(p.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${R.PAINEIS_REDE.find((p) => p.id === id)!.rotulo}<`));
+      if (id === "p028") expect(h, id).toContain('data-navegacao-local="capitulos"');
+      else expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${R.PAINEIS_REDE.find((p) => p.id === id)!.rotulo}<`));
       expect(h.length, id).toBeLessThan(600_000);
       const m = principal(h);
       expect(m, id).not.toMatch(/em breve|em integração|em construção|indisponíve/i);
@@ -462,9 +465,10 @@ describe("páginas renderizadas no servidor", () => {
     }
   });
 
-  it("P028: título do módulo, esquema de fluxos com lista no celular e o painel do último ano com PLD", () => {
+  it("P028: título da página, esquema de fluxos com lista no celular e o painel do último ano com PLD", () => {
     const h = html.p028;
-    expect(h).toContain(R.PERGUNTA_MODULO_REDE);
+    // o título da abertura é a pergunta do painel (a pergunta do módulo, mais longa, segue no menu: ver o teste do destino Rede)
+    expect(h).toContain(`>${R.perguntaPainel("p028")}</h1>`);
     expect(h).toContain("Esquema sem escala geográfica");
     expect(h).toContain('role="group"');
     expect((h.match(/aria-pressed="false"/g) ?? []).length).toBeGreaterThanOrEqual(8);

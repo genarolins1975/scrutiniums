@@ -819,7 +819,7 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
       // o texto de "o que mudou" vem das funções da lib que outros testes de conteúdo fixam palavra por palavra (a conta das faixas do
       // histograma municipal traz um "porque" aritmético): fica fora desta varredura, e a causalidade é vigiada no texto novo das páginas
       const proprio = [mudancaAcesso(G.acesso), mudancaCobertura(G.cobertura), mudancaOrcamento(G.orcamento), mudancaTarifaSocial(G.tarifa_social)].reduce((x, f) => x.split(f).join(" "), t);
-      expect(achado(proprio, /\bporque\b|\bdevido a\b|\bem razão d[aeo]s?\b|\bgraças a\b/i), `${k}: causalidade`).toBeNull();
+      expect(achado(proprio, /\bporque\b|\bdevido a\b|\bem razão d[aeo]s?\b|\bgraças a\b|\bpor isso\b|\bpor esse motivo\b|\bem consequência\b|\bpor causa d/i), `${k}: causalidade`).toBeNull();
       expect(achado(texto(h), /\b(hoje|undefined|NaN)\b|\[object Object\]/), `${k}: marca de erro`).toBeNull();
     }
   });

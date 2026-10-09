@@ -91,18 +91,6 @@ export function InclusaoRecorte({ periodo, universo, unidade }: { periodo: React
   );
 }
 
-/** Aviso que muda a leitura (fonte defasada, pesquisa antiga, comparação incompatível). */
-export function InclusaoAviso({ children, tipo = "nota" }: { children: ReactNode; tipo?: "nota" | "alerta" }) {
-  return (
-    <div
-      role={tipo === "alerta" ? "alert" : undefined}
-      className={`border-l-2 pl-3 text-sm leading-relaxed ${tipo === "alerta" ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
-    >
-      {children}
-    </div>
-  );
-}
-
 /**
  * Datas de referência de cada medida, uma por fonte: o SCS, a CDE, o Cadastro Único, a POF, a PNAD, o PASI e o Luz para Todos têm
  * calendários próprios, e nenhuma medida herda a data de outra (dentro do bloco "Fontes, datas e siglas" da abertura).

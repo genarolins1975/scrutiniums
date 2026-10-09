@@ -120,7 +120,7 @@ export default function EnergiaEstimadaPage() {
         <CabecalhoModulo
           siglas={["MMGD", "SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
-          titulo="Energia da micro e minigeração distribuída no SIN"
+          titulo="Energia da geração distribuída no SIN"
           lead="Estimativa do ONS, em MWmed e em participação na carga global. Não é medição e não se soma à capacidade cadastrada pela ANEEL."
           recorte={`${data(o?.inicio_serie)} a ${data(o?.fim_serie)} · SIN · MWmed e % da carga global`}
           fonte="ONS, carga de energia verificada (parcela de MMGD)"
@@ -229,10 +229,11 @@ export default function EnergiaEstimadaPage() {
                 complementares={[{ rotulo: "Razão com a capacidade cadastrada", p: o.proveniencia.razao }]}
               >
                 <div className="space-y-6">
-                  <RespostaCurta id="ons" veredito={vereditoOns(o) || respostaOns(o)}>
+                  <TransicaoOnsMensal mensal={o.mensal} fonte={FONTE_ONS} versao={o.fim_serie} />
+                  {/* a faixa de cima já traz os números; a resposta vem depois do gráfico para que ele comece na primeira tela */}
+                  <RespostaCurta id="ons" depois veredito={vereditoOns(o) || respostaOns(o)}>
                     {respostaOns(o)}
                   </RespostaCurta>
-                  <TransicaoOnsMensal mensal={o.mensal} fonte={FONTE_ONS} versao={o.fim_serie} />
                   <TransicaoRecorte
                     periodo={
                       <>

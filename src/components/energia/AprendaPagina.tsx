@@ -34,35 +34,34 @@ export function AprendaNavegacao({ atual }: { atual: "verbetes" | "trilhas" }) {
   return <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} />;
 }
 
-/** Descrição de uma trilha como capítulo: a pergunta que ela responde e o que cada passo traz. */
+/** Descrição de uma trilha como capítulo: a pergunta que ela responde e quantos passos tem. */
 export function descricaoDaTrilha(t: TrilhaConceitual): string {
-  return `${t.pergunta} ${t.passos.length} passos, com o número de cada um no observatório e um exemplo sintético.`;
+  return `${t.pergunta} ${t.passos.length} passos.`;
 }
 
 /**
  * Capítulos da abertura: as trilhas do módulo, cada uma com a pergunta que responde, e o que é uma trilha e um exemplo sintético em
- * texto à vista. Quem busca um termo não vê este bloco (a busca troca o que vem abaixo dela); sem JavaScript ele aparece sempre.
+ * texto à vista. Quem busca um termo não vê este bloco (a busca troca o que vem abaixo dela); sem JavaScript ele aparece sempre. Em tela
+ * larga o bloco fica numa coluna ao lado da lista (os capítulos empilham); em tela estreita, entre a busca e a lista.
  */
 export function AprendaTrilhas() {
   const itens: ItemLocal[] = TRILHAS_APRENDA.map((t) => ({ id: t.id, href: `${ROTA_TRILHAS}/${t.id}`, rotulo: t.titulo, descricao: descricaoDaTrilha(t) }));
   return (
     <section aria-labelledby="aprenda-trilhas" data-trilhas-do-indice="" className="border-t border-linha pt-6">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-        <h2 id="aprenda-trilhas" className="ed-h2 font-serif text-carvao">
-          Trilhas: dos conceitos aos números
-        </h2>
-        <Link href={ROTA_TRILHAS} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-          Como funciona uma trilha
-        </Link>
-      </div>
-      <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+      <h2 id="aprenda-trilhas" className="ed-h2 font-serif text-carvao">
+        Trilhas: dos conceitos aos números
+      </h2>
+      <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         Uma trilha é um percurso em ordem pelos verbetes: cada passo traz um número publicado pelo observatório e diz como ele se liga ao passo seguinte.
       </p>
-      <div className="mt-4 [&>nav]:border-t-0 [&>nav]:pt-0">
+      <div className="mt-4 lg:[&>nav>ol]:!grid-cols-1 [&>nav]:border-t-0 [&>nav]:pt-0">
         <NavegacaoLocal rotulo="Trilhas do Aprenda" itens={itens} atual="" variante="capitulos" />
       </div>
       <p className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota-sintetico="">
-        No fim de cada trilha, há um {ROTULO_SINTETICO.toLowerCase()}. {AVISO_SINTETICO}
+        No fim de cada trilha, há um {ROTULO_SINTETICO.toLowerCase()}. {AVISO_SINTETICO}{" "}
+        <Link href={ROTA_TRILHAS} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
+          Como funciona uma trilha
+        </Link>
       </p>
     </section>
   );

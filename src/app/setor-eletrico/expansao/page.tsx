@@ -28,7 +28,7 @@ import {
   capacidadeNoCenario,
   dataTexto,
   inteiro,
-  linhasRalieTipo,
+  linhasRalieTipoNoGrafico,
   metricasEtapas,
   mesTexto,
   mudancaCarteira,
@@ -228,7 +228,7 @@ export default function ExpansaoPage() {
                   />
                   <GraficoBarras
                     titulo={`Carteira em implantação por tipo de geração, fotografia do RALIE de ${dataTexto(r.data_ralie)} (MW das unidades)`}
-                    dados={linhasRalieTipo(g)}
+                    dados={linhasRalieTipoNoGrafico(g)}
                     chaveCategoria="id"
                     chaveRotulo="tipo"
                     series={[{ id: "mw", rotulo: "Unidades em implantação", cor: "var(--cor-energia)" }]}

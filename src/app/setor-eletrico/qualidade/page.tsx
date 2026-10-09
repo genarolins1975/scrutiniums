@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { statSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -29,17 +29,25 @@ import { carimbo, dataBR, mesAno, num, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COMP_ANUAL,
+  LIMITE_FEC_PARCIAL_CENTESIMOS,
   COR_PARCELA,
   FONTE_CONTINUIDADE,
   ORDEM_PARCELAS,
   PAINEIS_QUALIDADE,
   ROTULO_PARCELA_CURTO,
+  DEFINICAO_CONJUNTO,
+  DEFINICAO_LIMITES_INDIVIDUAIS,
   anoBrasil,
+  arquivoConjuntosDoAno,
   avisoDefasagem,
+  avisosFec as montaAvisosFec,
+  conjuntosDoCsv,
   downloadsDoPainel,
+  fecComCoberturaParcial,
   histogramaDeFaixas,
   horasEMinutos,
-  itensLimite,
+  itensLimites,
+  limpaProveniencia,
   linhasBrasilAnual,
   linhasBrasilMensal,
   linhasCompensacaoAnual,
@@ -53,15 +61,21 @@ import {
   linhasTipoAnoReferencia,
   maioresDistribuidoras,
   marcosHistoriaApurado,
+  mesesComFecParcial,
   metricasAbertura,
   metricasCompensacao,
   mudancaP051,
   mudancaP052,
   mudancaP053,
   mudancaP054,
+  notaDivulgadoCartao,
+  notaPerimetroAbertura,
   notaTiposSemUc,
+  paraLeitor,
   painelQualidade,
   pctCobertura,
+  recorteColunas,
+  resumoSemRazaoFec,
   respostaP051,
   respostaP052,
   respostaP053,
@@ -69,10 +83,16 @@ import {
   respostaParcial,
   rotuloDistribuidora,
   tabelaQualidade,
+  taxaNaBaseDaOuvidoria,
   textoAtualidade,
+  textoContagemFec,
+  textoDivergenciasDgc,
   textoDivulgadoAno,
+  textoFecBrasilConfere,
   textoParcelasAno,
+  textoQuebraApurado,
   textoUniversoBrasil,
+  textoUniversosConjuntos,
   vereditoP051,
   vereditoP052,
   vereditoP053,
@@ -103,6 +123,15 @@ function tamanho(url: string): string {
   }
 }
 
+/** Texto de um arquivo publicado, lido no servidor na geração da página; nulo se o arquivo não existir (a página diz o que falta e segue). */
+function lerPublico(url: string): string | null {
+  try {
+    return readFileSync(join(process.cwd(), "public", url), "utf-8");
+  } catch {
+    return null;
+  }
+}
+
 export default function QualidadePage() {
   const g = lerGold<QualidadeGold>("qualidade.json");
   if (!integra(g)) return <QualidadeIndisponivel motivo={g?.motivo} />;
@@ -113,17 +142,39 @@ export default function QualidadePage() {
   const comp = g.compensacoes;
   const at = g.atendimento;
   const ev = g.evidencias;
-  const prov = g.proveniencia;
+  // ficha de origem com texto de leitor (sem marcação crua nem termo interno) e a descrição longa da fonte resumida
+  const prov = Object.fromEntries(Object.entries(g.proveniencia).map(([k, x]) => [k, limpaProveniencia(x)])) as QualidadeGold["proveniencia"];
+  // regras e universos da gold escritos para o leitor (sem nome de campo nem termo interno)
+  const regras = Object.fromEntries(Object.entries(g.regras).map(([k, x]) => [k, paraLeitor(x)])) as QualidadeGold["regras"];
+  const universo = { principal: paraLeitor(g.brasil.universo.principal), concessionarias: paraLeitor(g.brasil.universo.concessionarias) };
+  const avisoAnoCorrente = g.parcial ? paraLeitor(g.parcial.aviso) : "";
   const m = metricasAbertura(g);
   const mc = metricasCompensacao(g);
   const anual = linhasBrasilAnual(g);
+  const anualDec = recorteColunas(anual, ["ano", "dec", "dec_concessionarias", "dec_limite"]);
+  const anualFec = recorteColunas(anual, ["ano", "fec", "fec_concessionarias", "fec_limite"]);
   const primeiroAno = anual[0]?.ano ?? String(ref);
   const mensal = linhasBrasilMensal(g);
+  const mensalDec = recorteColunas(mensal, ["m", "dec"]);
+  const mensalFec = recorteColunas(mensal, ["m", "fec"]);
+  const histConjuntos = linhasHistoricoConjuntos(g.conjuntos);
+  const histUcs = recorteColunas(histConjuntos, ["ano", "pct_ucs_acima", "pct_acima"]);
+  const histRazoes = recorteColunas(histConjuntos, ["ano", "razao_p50", "razao_p90"]);
   const incompletos = g.brasil.mensal.filter((x) => !x.completo);
   const parcelas = linhasParcelas(g);
   const inicioParcelas = parcelas[0]?.ano ?? null;
   const marcos = marcosHistoriaApurado(g);
   const defasagem = avisoDefasagem(prov.conjuntos.publicado_pela_fonte_em, g.gerado_em);
+  // FEC de cobertura parcial: a regra usa só a gold; os meses de cobertura baixa vêm do CSV mensal por distribuidora, lido aqui no servidor
+  const candidatosFec = fecComCoberturaParcial(g).map((x) => x.cnpj);
+  const mensalDistribuidoras = candidatosFec.length ? lerPublico("/energia/series/qualidade_distribuidoras_mensal.csv") : null;
+  const avisos = montaAvisosFec(g, mensalDistribuidoras ? mesesComFecParcial(mensalDistribuidoras, candidatosFec, ref) : {});
+  const listaAvisos = Object.values(avisos);
+  // conjuntos sem razão de FEC (menos de 12 meses de FEC): a contagem de conjuntos acima do limite de FEC é um mínimo
+  const csvConjuntosAno = lerPublico(arquivoConjuntosDoAno(c.ano));
+  const semRazaoFec = csvConjuntosAno ? resumoSemRazaoFec(conjuntosDoCsv(csvConjuntosAno, c.ano), c.ano) : null;
+  const contagemFec = textoContagemFec(g, semRazaoFec);
+  const quebraApurado = textoQuebraApurado(g);
   const entidades = g.distribuidoras
     .map((d) => ({ id: d.cnpj, rotulo: rotuloDistribuidora(d), detalhe: [d.nome_comercial, d.classificacao].filter(Boolean).join(", ") || undefined, sinonimos: [d.cnpj] }))
     .sort((x, y) => x.rotulo.localeCompare(y.rotulo, "pt-BR"));
@@ -168,12 +219,13 @@ export default function QualidadePage() {
   const oQueMudouP051 = (
     <>
       {mudancaP051(g)}
+      {quebraApurado && ` ${quebraApurado}`}
       {respostaParcial(g.parcial)}
     </>
   );
   const comoInterpretarP051 = (
     <>
-      {g.regras.agregacao} A linha tracejada é o limite agregado do mesmo ano (limites dos conjuntos ponderados pelas UCs), não um limite oficial nacional.
+      {regras.agregacao} A linha tracejada é o limite agregado do mesmo ano (limites dos conjuntos ponderados pelas UCs), não um limite oficial nacional.
       {inicioConcessionarias !== null
         ? ` Desde ${inicioConcessionarias}, a linha das concessionárias reproduz o universo do número que a ANEEL divulga.`
         : " A linha só das concessionárias não tem anos com todas as distribuidoras classificadas nesta publicação."}
@@ -189,7 +241,7 @@ export default function QualidadePage() {
   const comoInterpretarP052 = (
     <>
       No gráfico de pontos, o círculo é o apurado e o losango o limite da distribuidora (limites dos conjuntos ponderados pelas UCs médias do ano); a diferença está escrita.{" "}
-      {g.regras.limite_centesimos} O histograma mostra todos os conjuntos pela razão apurado ÷ limite: à direita de 1, acima do limite.
+      {regras.limite_centesimos} O histograma mostra todos os conjuntos pela razão apurado ÷ limite: à direita de 1, acima do limite.
     </>
   );
   const naoConcluirP052 = (
@@ -200,8 +252,9 @@ export default function QualidadePage() {
   );
   const comoInterpretarP053 = (
     <>
-      {g.regras.compensacao} As barras somam o que as distribuidoras informaram por competência (o mês de apuração), só para unidades consumidoras, o universo que a ANEEL
-      divulga; unidades geradoras ficam na tabela. Valor por UC é só normalização para comparar distribuidoras de tamanhos diferentes. {divulgado}
+      {regras.compensacao} As barras somam o que as distribuidoras informaram por competência (o mês de apuração), só para unidades consumidoras, o universo que a ANEEL
+      divulga; unidades geradoras ficam na tabela. Valor por UC é só normalização para comparar distribuidoras de tamanhos diferentes: soma as compensações de unidades consumidoras e
+      geradoras e divide pelas UCs médias, por isso difere do total só de unidades consumidoras. {divulgado}
     </>
   );
   const naoConcluirP053 = (
@@ -268,6 +321,7 @@ export default function QualidadePage() {
                       <>
                         Cerca de {m.decHorasMinutos} por UC.
                         {m.decAnterior !== null && ` Em ${m.anoAnterior}: ${num(m.decAnterior, 2)} h.`}
+                        {notaPerimetroAbertura(g, "dec") && ` ${notaPerimetroAbertura(g, "dec")}`}
                       </>
                     ) : undefined
                   }
@@ -290,6 +344,7 @@ export default function QualidadePage() {
                       <>
                         Interrupções de 3 min ou mais.
                         {m.fecAnterior !== null && ` Em ${m.anoAnterior}: ${num(m.fecAnterior, 2)}.`}
+                        {notaPerimetroAbertura(g, "fec") && ` ${notaPerimetroAbertura(g, "fec")}`}
                       </>
                     ) : undefined
                   }
@@ -309,7 +364,7 @@ export default function QualidadePage() {
                   evidencia={ev.conjuntos_acima_limite ?? null}
                   nota={
                     <>
-                      {num(m.conjuntos.acima, 0)} de {num(m.conjuntos.comLimite, 0)} conjuntos, cada um com limite próprio.
+                      {num(m.conjuntos.acima, 0)} de {num(m.conjuntos.comLimite, 0)} conjuntos. {DEFINICAO_CONJUNTO}
                       {m.conjuntos.pctAnterior !== null && ` Em ${m.conjuntos.anoAnterior}: ${pct(m.conjuntos.pctAnterior, 1)}.`}
                     </>
                   }
@@ -326,7 +381,13 @@ export default function QualidadePage() {
                   unidade="h por UC"
                   periodo={String(m.ano)}
                   motivoAusencia="Parcelas não publicadas para o ano."
-                  nota={m.decTodasOrigens !== null ? <>Cerca de {m.decTodasOrigensHorasMinutos}. Inclui o expurgado, que o limite não compara.</> : undefined}
+                  nota={
+                    m.decTodasOrigens !== null ? (
+                      <>
+                        Cerca de {m.decTodasOrigensHorasMinutos}. Soma o apurado e o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do ONS.
+                      </>
+                    ) : undefined
+                  }
                 />
               </FaixaMetricas>
             </>
@@ -344,7 +405,7 @@ export default function QualidadePage() {
             <PainelEvidencia
               id={p051.id}
               pergunta={p051.titulo}
-              subtitulo="DEC e FEC apurados do Brasil, das distribuidoras e dos conjuntos · horas e interrupções por unidade consumidora"
+              subtitulo="Duração (DEC) e frequência (FEC) apuradas, o que a regra conta para comparar com o limite, no Brasil, nas distribuidoras e nos conjuntos elétricos · horas e interrupções por unidade consumidora"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -367,7 +428,7 @@ export default function QualidadePage() {
                   <QualidadePar>
                     <GraficoLinhas
                       titulo={`DEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`}
-                      dados={anual}
+                      dados={anualDec}
                       chaveX="ano"
                       formatoX="texto"
                       series={[
@@ -382,7 +443,7 @@ export default function QualidadePage() {
                     />
                     <GraficoLinhas
                       titulo={`FEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`}
-                      dados={anual}
+                      dados={anualFec}
                       chaveX="ano"
                       formatoX="texto"
                       series={[
@@ -418,7 +479,7 @@ export default function QualidadePage() {
                   }
                   unidade={
                     <>
-                      DEC em horas e centésimos de hora, não em minutos: {g.regras.centesimos}
+                      DEC em horas e centésimos de hora, não em minutos: {regras.centesimos}
                       {exemploDec !== null && ` Assim, as ${num(exemploDec, 2)} h do Brasil em ${ref} são ${horasEMinutos(exemploDec)}.`} FEC em interrupções e centésimos por unidade
                       consumidora: média de vezes em que cada unidade ficou sem energia por 3 minutos ou mais.
                     </>
@@ -465,7 +526,7 @@ export default function QualidadePage() {
                       ))}
                     </dl>
                   </div>
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{g.regras.apurado}</p>
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{regras.apurado}</p>
                 </SecaoDoPainel>
 
                 <SecaoDoPainel
@@ -473,9 +534,9 @@ export default function QualidadePage() {
                   titulo="Que conjuntos atendem cada município?"
                   lead={
                     <>
-                      {num(g.mapa.municipios_com_valor, 0)} municípios com valor em {g.mapa.ano}. Cada cor é o valor de um conjunto, não do município: um conjunto pode atender vários municípios e
-                      um município pode ter vários conjuntos, por isso não há média municipal. Escolha o maior ou o menor valor entre eles; clique num município, ou busque pelo nome, para
-                      ver os conjuntos e as distribuidoras.
+                      {num(g.mapa.municipios_com_valor, 0)} municípios com valor em {g.mapa.ano}. {DEFINICAO_CONJUNTO} Cada cor é o valor de um conjunto, não do município: um conjunto pode atender
+                      vários municípios e um município pode ter vários conjuntos, por isso não há média municipal. Escolha o maior ou o menor valor entre eles; clique num município, ou busque
+                      pelo nome, para ver os conjuntos, com o limite de cada um, e as distribuidoras.
                     </>
                   }
                 >
@@ -488,19 +549,21 @@ export default function QualidadePage() {
                     totalMunicipios={g.mapa.correspondencia.cadastro_ibge}
                     fonte="ANEEL, IndQual Município e Indicadores Coletivos de Continuidade; IBGE, cadastro de municípios"
                     versao={String(g.mapa.ano)}
+                    avisosFec={avisos}
+                    tamanhoConjuntos={tamanhos[arquivoConjuntosDoAno(g.mapa.ano)]}
                   />
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="mensal" nivel="analisar" titulo="Mês a mês, nos últimos meses publicados">
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    {g.regras.mes_completo}{" "}
+                    {regras.mes_completo}{" "}
                     {incompletos.length ? `Ficam fora, com o valor publicado na tabela: ${incompletos.map((x) => mesAno(x.m)).join(", ")}.` : "Todos os meses do período estão completos."}
                   </p>
                   <CursorSincronizado>
                     <QualidadePar>
                       <GraficoLinhas
                         titulo="DEC mensal do Brasil (meses completos)"
-                        dados={mensal}
+                        dados={mensalDec}
                         chaveX="m"
                         formatoX="mes"
                         series={[{ id: "dec", rotulo: "DEC mensal", cor: "var(--cor-energia)" }]}
@@ -511,7 +574,7 @@ export default function QualidadePage() {
                       />
                       <GraficoLinhas
                         titulo="FEC mensal do Brasil (meses completos)"
-                        dados={mensal}
+                        dados={mensalFec}
                         chaveX="m"
                         formatoX="mes"
                         series={[{ id: "fec", rotulo: "FEC mensal", cor: "var(--serie-sm-se)" }]}
@@ -526,7 +589,7 @@ export default function QualidadePage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="tabela-distribuidoras" nivel="analisar" titulo={`Todas as distribuidoras em ${ref}: duração, frequência e expurgos`}>
-                  <QualidadeTabela tabela="dist-p051" titulo={`DEC, FEC e parcelas por distribuidora, ${ref}`} linhas={n("dist-p051")} chaveUrl="tdist" />
+                  <QualidadeTabela tabela="dist-p051" titulo={`DEC, FEC e parcelas por distribuidora, ${ref}`} linhas={n("dist-p051")} chaveUrl="tdist" avisosFec={avisos} />
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="conjuntos-do-ano" nivel="analisar" titulo="Todos os conjuntos de um ano">
@@ -536,19 +599,24 @@ export default function QualidadePage() {
                 <SecaoDoPainel id="universos-e-arquivos" nivel="auditar" titulo="Universos, pesos, controles e arquivos">
                   <ul className="space-y-2 text-sm text-carvao-muted">
                     <li>
-                      <strong className="font-medium text-carvao">Universo principal:</strong> {g.brasil.universo.principal}
+                      <strong className="font-medium text-carvao">Universo principal:</strong> {universo.principal}
                     </li>
                     <li>
-                      <strong className="font-medium text-carvao">Só concessionárias:</strong> {g.brasil.universo.concessionarias}
+                      <strong className="font-medium text-carvao">Só concessionárias:</strong> {universo.concessionarias}
                     </li>
                     <li>
-                      <strong className="font-medium text-carvao">Peso:</strong> {g.regras.agregacao}
+                      <strong className="font-medium text-carvao">Peso:</strong> {regras.agregacao}
                     </li>
                     <li>
-                      <strong className="font-medium text-carvao">Controle do número de unidades:</strong> {g.regras.numcon}
+                      <strong className="font-medium text-carvao">Controle do número de unidades:</strong> {regras.numcon}
                     </li>
                     <li>
-                      <strong className="font-medium text-carvao">Ano corrente:</strong> {g.regras.parcial} {g.parcial?.aviso}
+                      <strong className="font-medium text-carvao">Ano corrente:</strong> {regras.parcial} {avisoAnoCorrente}
+                    </li>
+                    <li data-texto="cobertura-fec">
+                      <strong className="font-medium text-carvao">Cobertura do FEC:</strong> o FEC anual de uma distribuidora que difere em mais de {num(LIMITE_FEC_PARCIAL_CENTESIMOS / 100, 2)} da soma das
+                      parcelas internas (FECIP + FECIND) é marcado como de cobertura parcial, e o valor da base não muda.{" "}
+                      {listaAvisos.length ? listaAvisos.map((x) => x.frase).join(" ") : "Nenhuma distribuidora tem a marca nesta publicação."} {textoFecBrasilConfere(g)}
                     </li>
                   </ul>
                   <QualidadeTabela tabela="identidade" titulo="Identidade do apurado: DEC e FEC iguais às parcelas internas (IP + IND), por ano" linhas={n("identidade")} chaveUrl="tide" />
@@ -591,14 +659,13 @@ export default function QualidadePage() {
             >
               <div className="space-y-6">
                 <RespostaCurta id={p052.id} veredito={vereditoP052(g)}>
-                  {respostaP052(g)}
+                  {respostaP052(g)} {contagemFec}
                 </RespostaCurta>
 
                 <QualidadeLimites
                   ano={ref}
-                  itensDec={itensLimite(g, "dec")}
-                  itensFec={itensLimite(g, "fec")}
-                  classes={Object.fromEntries(g.distribuidoras.map((d) => [d.cnpj, d.classificacao]))}
+                  itens={itensLimites(g)}
+                  avisosFec={avisos}
                   totalLinhas={n("limites")}
                   urlSerie={URL_SERIE}
                 />
@@ -625,7 +692,7 @@ export default function QualidadePage() {
                   titulo="Como cada distribuidora se compara com o próprio limite, ano a ano?"
                   lead={`Sem escolha no link, entram as quatro maiores distribuidoras em unidades consumidoras em ${ref}. Todos os painéis de cada indicador usam a mesma escala; a linha tracejada é o limite de cada ano. Incorporações mudam a área da distribuidora e aparecem na nota do painel.`}
                 >
-                  <QualidadeComparador entidades={entidades} padrao={maiores} urlSerie={URL_SERIE} />
+                  <QualidadeComparador entidades={entidades} padrao={maiores} urlSerie={URL_SERIE} avisosFec={avisos} />
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="distribuicao-dos-conjuntos" titulo="Como os conjuntos se distribuem diante do limite? As médias não escondem as caudas">
@@ -647,16 +714,16 @@ export default function QualidadePage() {
                   />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="ano-a-ano" titulo="Quantos conjuntos passaram do limite, ano a ano?">
+                <SecaoDoPainel id="ano-a-ano" titulo="Quantos conjuntos passaram do limite, ano a ano?" lead={textoUniversosConjuntos(g)}>
                   <QualidadePar>
                     <GraficoLinhas
-                      titulo={`Conjuntos acima do limite de DEC, ${c.historico[0]?.ano ?? ""} a ${c.ano}`}
-                      dados={linhasHistoricoConjuntos(c)}
+                      titulo={`Unidades consumidoras e conjuntos acima do limite de DEC, ${c.historico[0]?.ano ?? ""} a ${c.ano}`}
+                      dados={histUcs}
                       chaveX="ano"
                       formatoX="texto"
                       series={[
-                        { id: "pct_acima", rotulo: "% dos conjuntos", sigla: "Conjuntos", cor: "var(--cor-energia)" },
-                        { id: "pct_ucs_acima", rotulo: "% das unidades consumidoras nesses conjuntos", sigla: "UCs", cor: "var(--serie-sm-se)" },
+                        { id: "pct_ucs_acima", rotulo: "% das unidades consumidoras (leitura principal)", sigla: "UCs", cor: "var(--cor-energia)" },
+                        { id: "pct_acima", rotulo: "% dos conjuntos", sigla: "Conjuntos", cor: "var(--serie-sm-se)" },
                       ]}
                       unidade="%"
                       casas={1}
@@ -664,7 +731,7 @@ export default function QualidadePage() {
                     />
                     <GraficoLinhas
                       titulo="Razão DEC ÷ limite dos conjuntos: mediana e percentil 90"
-                      dados={linhasHistoricoConjuntos(c)}
+                      dados={histRazoes}
                       chaveX="ano"
                       formatoX="texto"
                       series={[
@@ -688,9 +755,11 @@ export default function QualidadePage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="dgc" nivel="auditar" titulo="DGC calculado × DGC publicado no ranking da ANEEL">
-                  <p className="max-w-prose2 text-sm text-carvao-muted">
-                    {g.regras.limite} Tolerância de 0,01, a precisão do DGC publicado. As divergências não foram explicadas caso a caso; as hipóteses, não verificadas, estão em
-                    &ldquo;Sobre este dado&rdquo; do ranking da continuidade, no rodapé deste painel, e não são afirmadas aqui.
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                    {regras.limite} Tolerância de 0,01, a precisão do DGC publicado. Posição no ranking e DGC publicado são da ANEEL; o DGC calculado é do observatório.
+                  </p>
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="divergencias-dgc">
+                    {textoDivergenciasDgc(g)}
                   </p>
                   <QualidadeTabela tabela="dgc" titulo="Reconciliação do DGC por ano" linhas={n("dgc")} chaveUrl="tdgc" />
                 </SecaoDoPainel>
@@ -705,7 +774,7 @@ export default function QualidadePage() {
             <PainelEvidencia
               id={p053.id}
               pergunta={p053.titulo}
-              subtitulo="Compensações por violação dos limites individuais de continuidade (DIC, FIC, DMIC, DICRI, DISE) · R$ nominais e quantidade"
+              subtitulo="Compensações pagas quando o limite individual de continuidade de uma unidade consumidora é violado · R$ nominais e quantidade"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -724,6 +793,10 @@ export default function QualidadePage() {
                   {respostaP053(g)}
                 </RespostaCurta>
 
+                <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="limites-individuais">
+                  {DEFINICAO_LIMITES_INDIVIDUAIS}
+                </p>
+
                 <FaixaMetricas colunas={3} rotulo="Compensações do ano de referência">
                   <Numero
                     variante="faixa"
@@ -736,11 +809,14 @@ export default function QualidadePage() {
                     periodo={String(comp.ano_referencia)}
                     evidencia={ev.compensacoes_ano ?? null}
                     motivoAusencia="Ano sem os 12 meses informados pelas distribuidoras."
-                    nota={
+                    nota={[
                       mc.valorUcAnteriorMilhoes !== null
                         ? `Valores nominais da competência. Em ${mc.anoAnterior}: R$ ${num(mc.valorUcAnteriorMilhoes, 1)} milhões.`
-                        : "Valores nominais da competência."
-                    }
+                        : "Valores nominais da competência.",
+                      notaDivulgadoCartao(g),
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                     cor="var(--cor-energia)"
                     endereco={`/setor-eletrico/qualidade#${p053.ancora}`}
                   />
@@ -772,7 +848,7 @@ export default function QualidadePage() {
 
                 <GraficoBarras
                   titulo={`Compensações pagas a unidades consumidoras por ano, ${compBarras[0]?.ano ?? ""} a ${comp.ano_referencia}`}
-                  dados={compBarras}
+                  dados={recorteColunas(compBarras, ["ano", "valor_uc_mi"])}
                   chaveCategoria="ano"
                   series={[{ id: "valor_uc_mi", rotulo: "Valor a unidades consumidoras", cor: "var(--cor-energia)" }]}
                   unidade="R$ milhões"
@@ -827,7 +903,7 @@ export default function QualidadePage() {
                     <Histograma
                       titulo={`Distribuidoras por valor de compensação ÷ unidades consumidoras, ${comp.ano_referencia}`}
                       dados={histValorUc}
-                      rotuloX="Valor no ano ÷ UCs médias"
+                      rotuloX="Valor no ano (UC e UG) ÷ UCs médias"
                       unidade="R$ por UC"
                       casas={2}
                       contagem={{ singular: "distribuidora", plural: "distribuidoras" }}
@@ -842,7 +918,7 @@ export default function QualidadePage() {
 
                 <SecaoDoPainel id="compensacoes-mes-a-mes" nivel="analisar" titulo="Mês a mês: valor e quantidade separados">
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Competência mensal. {g.regras.mes_completo_compensacao}{" "}
+                    Competência mensal. {regras.mes_completo_compensacao}{" "}
                     {compIncompletos.length ? `Ficam fora, com o valor publicado na tabela: ${compIncompletos.map((x) => mesAno(x.m)).join(", ")}.` : "Todos os meses do período estão completos."} Os dois gráficos
                     compartilham o cursor.
                   </p>
@@ -850,7 +926,7 @@ export default function QualidadePage() {
                     <QualidadePar>
                       <GraficoLinhas
                         titulo="Valor das compensações por mês (meses completos)"
-                        dados={compMensal}
+                        dados={recorteColunas(compMensal, ["m", "valor_mi"])}
                         chaveX="m"
                         formatoX="mes"
                         series={[{ id: "valor_mi", rotulo: "Valor (UC e UG)", cor: "var(--cor-energia)" }]}
@@ -861,7 +937,7 @@ export default function QualidadePage() {
                       />
                       <GraficoLinhas
                         titulo="Quantidade de compensações por mês (meses completos)"
-                        dados={compMensal}
+                        dados={recorteColunas(compMensal, ["m", "quantidade_mil"])}
                         chaveX="m"
                         formatoX="mes"
                         series={[{ id: "quantidade_mil", rotulo: "Compensações (UC e UG)", cor: "var(--serie-sm-se)" }]}
@@ -933,7 +1009,11 @@ export default function QualidadePage() {
                     casas={1}
                     unidade="por mil UCs"
                     motivoAusencia={rec?.motivo_ausencia ?? "Sem distribuidora com os 12 meses enviados."}
-                    nota="Base: unidades consumidoras médias das mesmas distribuidoras."
+                    nota={
+                      rec && rec.por_ucs !== null
+                        ? `Base: 1.000 unidades consumidoras médias das mesmas distribuidoras. Na base de 100 mil UCs do cartão ao lado, seriam ${num(taxaNaBaseDaOuvidoria(rec.por_ucs), 0)}.`
+                        : "Base: 1.000 unidades consumidoras médias das mesmas distribuidoras."
+                    }
                     cor="var(--cor-energia)"
                     endereco={`/setor-eletrico/qualidade#${p054.ancora}`}
                   />
@@ -945,7 +1025,7 @@ export default function QualidadePage() {
                     casas={1}
                     unidade="por 100 mil UCs"
                     motivoAusencia="Arquivo da Ouvidoria sem os 12 meses do ano."
-                    nota="Segunda instância, depois do atendimento na distribuidora."
+                    nota="Base: 100 mil UCs, diferente da do cartão ao lado (1.000). Segunda instância, depois do atendimento na distribuidora."
                     cor="var(--serie-sm-se)"
                     endereco={`/setor-eletrico/qualidade#${p054.ancora}`}
                   />
@@ -1146,7 +1226,7 @@ export default function QualidadePage() {
                 publicou e o caso fica listado.
               </p>
               <QualidadeTabela tabela="validacao" titulo="Controles de validação" linhas={n("validacao")} chaveUrl="tval" />
-              <QualidadeTabela tabela="arquivos" titulo="Arquivos importados (bronze com sha256)" linhas={n("arquivos")} chaveUrl="tarq" />
+              <QualidadeTabela tabela="arquivos" titulo="Arquivos de origem importados, cada um com o sha256" linhas={n("arquivos")} chaveUrl="tarq" />
               {g.mapa.correspondencia.codigos_sem_ibge.length > 0 && (
                 <p className="text-sm text-carvao-muted">
                   Códigos da base IndQual Município fora do cadastro do IBGE, fora do mapa:{" "}

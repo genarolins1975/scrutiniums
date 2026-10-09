@@ -29,6 +29,7 @@ import {
   histogramaDeFaixas,
   horasEMinutos,
   itensLimite,
+  itensLimites,
   lerCsv,
   linhasBrasilAnual,
   linhasBrasilMensal,
@@ -769,9 +770,7 @@ describe.skipIf(!disponivel)("componentes do módulo no servidor", () => {
     const html = renderToStaticMarkup(
       createElement(QualidadeLimites, {
         ano: gold.ano_referencia,
-        itensDec: itensLimite(gold, "dec"),
-        itensFec: itensLimite(gold, "fec"),
-        classes: Object.fromEntries(gold.distribuidoras.map((d) => [d.cnpj, d.classificacao])),
+        itens: itensLimites(gold),
         totalLinhas: gold.distribuidoras.length,
         urlSerie: "/energia/series/qualidade_distribuidoras_serie.json",
       }),

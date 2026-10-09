@@ -54,6 +54,7 @@ import {
   matrizGrade,
   minimoCalibracao,
   minusculaInicial,
+  semCodigoDeEstado,
   oQueMudouRodada,
   perguntaPainel,
   proximoPainel,
@@ -927,5 +928,10 @@ describe("texto citado da gold depois de dois-pontos", () => {
     expect(minusculaInicial("Nenhum modelo")).toBe("nenhum modelo");
     expect(minusculaInicial("CCEE publica")).toBe("CCEE publica");
     expect(minusculaInicial("B0 repete")).toBe("B0 repete");
+  });
+  it("o código do estado de calibração em maiúsculas vira rótulo em palavras; o resto da frase não muda", () => {
+    expect(semCodigoDeEstado("Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste.")).toBe("Sem faixa: nenhum segmento do B0 está calibrado no período de teste.");
+    expect(semCodigoDeEstado("estado AMOSTRA_INSUFICIENTE em W1; DESCALIBRADO em M1")).toBe("estado amostra insuficiente em W1; descalibrado em M1");
+    expect(semCodigoDeEstado("CCEE publica o PLD")).toBe("CCEE publica o PLD");
   });
 });

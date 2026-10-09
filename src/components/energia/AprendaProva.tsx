@@ -41,9 +41,20 @@ function LegendaNatureza({ naturezas }: { naturezas: Natureza[] }) {
  * ?volta= para o painel oferecer o caminho de volta a este contexto (RetornoContexto).
  * Renderiza no servidor; só a ficha de prova é cliente.
  */
-export function AprendaProva({ prova, volta }: { prova: Prova | null; volta: string }) {
+export function AprendaProva({ prova, volta, alternativa }: { prova: Prova | null; volta: string; alternativa?: { rotulo: string; href: string } | null }) {
   if (!prova)
-    return <p className="text-carvao-muted">Exemplo com dado integrado indisponível nesta publicação: a gold do módulo não trouxe o número.</p>;
+    return (
+      <div data-prova="indisponivel" className="border border-dashed border-mineral bg-papel p-4 sm:p-5">
+        <p className="text-sm leading-relaxed text-carvao">
+          Este exemplo está indisponível nesta publicação: o painel de origem não trouxe o número, e o observatório não o substitui por outro.
+        </p>
+        {alternativa && (
+          <Link href={comVolta(alternativa.href, volta)} className="mt-1 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+            Abrir o painel: {alternativa.rotulo}
+          </Link>
+        )}
+      </div>
+    );
   if (prova.tipo === "texto") {
     const naturezas = Array.from(new Set(prova.partes.map((pt) => pt.natureza).filter((n): n is Natureza => !!n)));
     return (

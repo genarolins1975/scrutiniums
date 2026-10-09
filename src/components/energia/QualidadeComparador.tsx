@@ -4,9 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Comparador, type EntidadeComparavel } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
+import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Leitor } from "@/lib/energia/estadoUrl";
-import { carregarUmaVez, linhasSerieDistribuidoras, respostaHistoricoDistribuidora } from "@/lib/energia/qualidade";
+import { carregarUmaVez, linhasSerieDistribuidoras, respostaHistoricoDistribuidora, type AvisosFec } from "@/lib/energia/qualidade";
+import type { EscalaPaineis } from "@/lib/energia/series-temporais";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
 
@@ -30,17 +32,21 @@ export function QualidadeComparador({
   entidades,
   padrao,
   urlSerie,
+  avisosFec = {},
 }: {
   entidades: EntidadeComparavel[];
   /** Quatro maiores em UCs no ano de referência (maioresDistribuidoras). */
   padrao: string[];
   urlSerie: string;
+  /** Distribuidoras cujo FEC do ano é de cobertura parcial: a frase vai com o histórico do FEC e o ano leva um marco. */
+  avisosFec?: AvisosFec;
 }) {
   // o padrão depende da gold, então o esquema é montado uma vez por instância (estável)
   const esquema = useMemo(() => ({ dist: campo(tiposUrl.lista(leitorCnpj, { max: LIMITE_COMPARACAO }), padrao, { param: "dist" }) }), [padrao.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
   const [v, definir] = useEstadoUrl(esquema);
   const [serie, setSerie] = useState<QualidadeSeriesDistribuidorasGold | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [escala, setEscala] = useState<EscalaPaineis>("compartilhada");
 
   useEffect(() => {
     let vivo = true;
@@ -65,7 +71,13 @@ export function QualidadeComparador({
         { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
         { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
       ],
-      nota: serie?.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
+      nota:
+        [
+          serie?.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : null,
+          ind === "fec" && avisosFec[c] ? `${avisosFec[c].ano}: FEC de cobertura parcial` : null,
+        ]
+          .filter(Boolean)
+          .join("; ") || undefined,
     }));
 
   const bloco = (ind: "dec" | "fec", dados: ReturnType<typeof linhasSerieDistribuidoras>) => {
@@ -77,7 +89,10 @@ export function QualidadeComparador({
         {/* só a lista do DEC é região viva: a troca de escolha é anunciada uma vez, não duas */}
         <ul className="space-y-1 text-sm text-carvao" aria-live={ind === "dec" ? "polite" : undefined}>
           {escolhidas.map((c) => (
-            <li key={c}>{respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}</li>
+            <li key={c}>
+              {respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}
+              {ind === "fec" && avisosFec[c] && ` ${avisosFec[c].frase}`}
+            </li>
           ))}
         </ul>
         {unica ? (
@@ -94,7 +109,10 @@ export function QualidadeComparador({
             unidade={unidade}
             casas={2}
             altura={240}
-            marcos={(serie?.distribuidoras[unica]?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` }))}
+            marcos={[
+              ...(serie?.distribuidoras[unica]?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` })),
+              ...(ind === "fec" && avisosFec[unica] ? [{ x: String(avisosFec[unica].ano), rotulo: `${avisosFec[unica].ano}: FEC de cobertura parcial` }] : []),
+            ]}
           />
         ) : (
           <PequenosMultiplos
@@ -106,6 +124,7 @@ export function QualidadeComparador({
             casas={2}
             colunas={2}
             nivelTitulo={4}
+            escala={escala}
             paineis={paineis(ind)}
           />
         )}
@@ -135,6 +154,7 @@ export function QualidadeComparador({
           Carregando as séries anuais por distribuidora…
         </p>
       )}
+      {serie && escolhidas.length > 1 && <QualidadeEscala valor={escala} onMudar={setEscala} />}
       {serie && escolhidas.length > 0 && (
         <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2 [&>*]:min-w-0">
           {bloco("dec", dadosDec)}

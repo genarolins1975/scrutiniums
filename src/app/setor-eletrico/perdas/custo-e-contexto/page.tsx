@@ -56,7 +56,7 @@ export default function PerdasCustoContextoPage() {
     <>
       {custo.filter((l) => l.situacao === "vigencia_encerrada" && l.ativa).length} distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte em{" "}
       {dataBR(g.referencia.tarifa_consultada_em)}: a tarifa em vigor delas é desconhecida até a próxima publicação e elas não entram no gráfico. Outras{" "}
-      {custo.filter((l) => l.situacao === "vigencia_encerrada" && !l.ativa).length} têm o último processo encerrado porque a série delas no SAMP também terminou.
+      {custo.filter((l) => l.situacao === "vigencia_encerrada" && !l.ativa).length} têm o último processo encerrado, e a série delas no SAMP também terminou.
     </>
   );
   const comoInterpretarCusto = (

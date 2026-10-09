@@ -48,7 +48,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Perdas de energia na distribuição",
   description:
-    "Onde se perde energia em cada distribuidora, quanto e como evoluiu: mapa das áreas de atuação, taxa com denominador explícito, comparação de até quatro distribuidoras e a série anual do SAMP, com a fonte da ANEEL.",
+    "Onde a energia se perde: taxa e energia perdida das concessionárias somadas e de cada distribuidora, cada uma com o denominador explícito, mapa das áreas de atuação, comparação de até quatro distribuidoras e a série anual do SAMP, com a fonte da ANEEL.",
   alternates: { canonical: "/setor-eletrico/perdas" },
 };
 
@@ -219,9 +219,9 @@ export default function PerdasPage() {
             </div>
           }
         >
-          Parte da energia que entra na rede de cada distribuidora não chega a ser entregue como consumo medido: são as <Termo slug="perdas-de-energia">perdas</Termo>. Uma parte vem da física das redes
-          (<Termo slug="perdas-tecnicas">perdas técnicas</Termo>); outra, de furto, fraude e erros de medição e faturamento (<Termo slug="perdas-nao-tecnicas">perdas não técnicas</Termo>). Aqui estão volume, taxa,
-          trajetória, composição, o percentual técnico regulatório e o custo das perdas na tarifa de cada distribuidora.
+          Parte da energia que entra na rede de cada distribuidora não chega a ser entregue como consumo medido: são as <Termo slug="perdas-de-energia">perdas</Termo>. Uma parte é a das{" "}
+          <Termo slug="perdas-tecnicas">perdas técnicas</Termo>, ligada à física das redes; a outra, as <Termo slug="perdas-nao-tecnicas">perdas não técnicas</Termo>, é a diferença entre a perda total e a técnica
+          e inclui furto, fraude e erros de medição e faturamento. Aqui estão volume, taxa, trajetória, composição, o percentual técnico regulatório e o custo das perdas na tarifa de cada distribuidora.
         </CabecalhoModulo>
 
         <ModoProfundidade>

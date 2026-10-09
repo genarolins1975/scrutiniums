@@ -30,8 +30,7 @@ export default function AprendaPage() {
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="indice">
-        <CabecalhoModulo
-          recolher={false}
+        <CabecalhoModulo recolher={false}
           titulo={PAGINAS_MAPA.aprenda.pergunta}
           lead="Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Procure um termo ou comece por uma trilha, que liga os conceitos aos números."
           recorte={recorteDoAcervo(resumo)}

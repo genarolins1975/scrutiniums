@@ -96,6 +96,14 @@ const ESTADOS_CALIBRACAO: Record<string, string> = {
 };
 export const rotuloCalibracao = (s: string | null | undefined) => (s ? ESTADOS_CALIBRACAO[s] ?? s : "sem estado registrado");
 
+/**
+ * Frases escritas pelo registro às vezes trazem o código do estado de calibração em maiúsculas ("está CALIBRADO"). No texto de leitura
+ * entra o rótulo em palavras ("está calibrado"); o resto da frase fica como foi escrito.
+ */
+export function semCodigoDeEstado(texto: string): string {
+  return texto.replace(/\b(NAO_CALIBRADO_NO_PILOTO|AMOSTRA_INSUFICIENTE|DESCALIBRADO|CALIBRADO|SEM_AVALIACAO)\b/g, (c) => ESTADOS_CALIBRACAO[c] ?? c);
+}
+
 const ESTADOS_MODELO: Record<string, string> = { PESQUISA: "pesquisa", VALIDACAO: "validação", PRODUCAO: "produção", APOSENTADO: "aposentado" };
 export const rotuloEstadoModelo = (s: string) => ESTADOS_MODELO[s] ?? s;
 
@@ -738,7 +746,7 @@ export function textoTolerancia(t: string | null | undefined): string {
 /** Estado da reexecução das previsões arquivadas de um modelo, em palavras. */
 export function textoReexecucao(f: Ficha): string {
   const r = f.reproducao?.reexecucao_do_arquivo;
-  if (!f.implementado_no_repositorio) return "sem reexecução: o modelo não pode ser refeito, porque a configuração da pesquisa não foi publicada";
+  if (!f.implementado_no_repositorio) return "sem reexecução: o modelo não pode ser refeito; a configuração da pesquisa não foi publicada";
   if (!r) return "sem previsão arquivada com número para refazer";
   const div = r.divergentes.length;
   return `${r.conferidas} ${r.conferidas === 1 ? "previsão arquivada refeita" : "previsões arquivadas refeitas"} com o dado do corte, ${div === 0 ? "sem divergência" : `${div} com divergência`} (tolerância ${textoTolerancia(r.tolerancia)})`;
@@ -843,7 +851,7 @@ export function respostaP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previs
   const partes: string[] = [];
   if (ref.length) partes.push(`${ref.join(", ")} é publicado só como referência experimental`);
   if (retidos.length) partes.push(`${retidos.join(" e ")}, reimplementados no observatório, não têm número emitido`);
-  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser reimplementado, porque a configuração da pesquisa não está no repositório`);
+  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser reimplementado; a configuração da pesquisa não está no repositório`);
   const reex = fs.find((f) => f.reproducao?.reexecucao_do_arquivo);
   const reexecucao = reex ? ` Reexecução do ${reex.codigo}: ${textoReexecucao(reex)}.` : "";
   return `${estados}${oficial}${partes.length ? ` ${partes.join("; ")}.` : ""}${reexecucao}`.replace(/^./, (c) => c.toUpperCase());

@@ -3,10 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
+import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeConjuntosDoMunicipio";
+import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasFixas } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
+import type { EscalaPaineis } from "@/lib/energia/series-temporais";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import {
   CAMPO_DIST,
@@ -23,7 +26,9 @@ import {
   linhasSerieDistribuidoras,
   municipiosDoCsv,
   respostaMunicipio,
+  textoCorDoMapa,
   valoresMapa,
+  type AvisosFec,
   type MedidaMapa,
   type MunicipioQualidade,
 } from "@/lib/energia/qualidade";
@@ -64,6 +69,8 @@ export function QualidadeMapa({
   totalMunicipios,
   fonte,
   versao,
+  avisosFec = {},
+  tamanhoConjuntos,
 }: {
   ano: number;
   urlMunicipios: string;
@@ -76,6 +83,10 @@ export function QualidadeMapa({
   totalMunicipios: number | null;
   fonte: string;
   versao: string;
+  /** Distribuidoras cujo FEC do ano é de cobertura parcial (nota no histórico do FEC). */
+  avisosFec?: AvisosFec;
+  /** Tamanho do arquivo anual dos conjuntos, dito antes de baixar os valores da ficha do município. */
+  tamanhoConjuntos?: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const caixa = useRef<HTMLDivElement>(null);
@@ -84,6 +95,7 @@ export function QualidadeMapa({
   const [serie, setSerie] = useState<QualidadeSeriesDistribuidorasGold | null>(null);
   const [erroSerie, setErroSerie] = useState<string | null>(null);
   const [tentativa, setTentativa] = useState(0);
+  const [escala, setEscala] = useState<EscalaPaineis>("compartilhada");
 
   const nomes = useMemo(() => new Map(distribuidoras.map((d) => [d.cnpj, d.rotulo])), [distribuidoras]);
   const rotuloCnpj = (c: string) => nomes.get(c) ?? `CNPJ ${c}`;
@@ -175,7 +187,7 @@ export function QualidadeMapa({
             valores={valores}
             cores={CORES_MAPA}
             classificacao={classificacao}
-            unidade={med.unidade}
+            unidade={`${med.unidade}, ${v.med.endsWith("max") ? "maior" : "menor"} entre os conjuntos do município`}
             casas={2}
             rotuloRegiao={{ singular: "município", plural: "municípios" }}
             selecionado={v.mun || null}
@@ -226,6 +238,11 @@ export function QualidadeMapa({
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="municipio">
               {respostaMunicipio(selecionado, ano)}
             </p>
+            {textoCorDoMapa(selecionado, v.med) && (
+              <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-cor-mapa="">
+                {textoCorDoMapa(selecionado, v.med)}
+              </p>
+            )}
             <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
               <div>
                 <dt className="rotulo text-mineral">Relação com os conjuntos</dt>
@@ -256,6 +273,15 @@ export function QualidadeMapa({
                 {foraDaComparacao === 1 ? "fica" : "ficam"} só na lista acima.
               </p>
             )}
+            <QualidadeConjuntosDoMunicipio
+              ano={ano}
+              codigoMunicipio={selecionado.cod}
+              municipio={`${selecionado.nome} (${selecionado.uf})`}
+              codigos={selecionado.conjuntos}
+              fonte={fonte}
+              tamanho={tamanhoConjuntos}
+            />
+            {selecionado.cnpjs.length > 1 && serie && <QualidadeEscala valor={escala} onMudar={setEscala} />}
             {selecionado.cnpjs.length > 0 &&
               (serie ? (
                 <div className="grid gap-x-10 gap-y-6 lg:grid-cols-2 [&>*]:min-w-0">
@@ -271,6 +297,7 @@ export function QualidadeMapa({
                       colunas={2}
                       nivelTitulo={4}
                       alturaPainel={130}
+                      escala={escala}
                       paineis={cnpjsSel.map((c) => ({
                         id: c,
                         titulo: rotuloCnpj(c),
@@ -278,7 +305,13 @@ export function QualidadeMapa({
                           { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
                           { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
                         ],
-                        nota: serie.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
+                        nota:
+                          [
+                            serie.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : null,
+                            ind === "fec" && avisosFec[c] ? `${avisosFec[c].ano}: FEC de cobertura parcial` : null,
+                          ]
+                            .filter(Boolean)
+                            .join("; ") || undefined,
                       }))}
                     />
                   ))}
@@ -292,6 +325,11 @@ export function QualidadeMapa({
                   Carregando o histórico das distribuidoras…
                 </p>
               ))}
+            {cnpjsSel.filter((c) => avisosFec[c]).map((c) => (
+              <p key={c} role="note" data-aviso="fec-cobertura-parcial" className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao">
+                {avisosFec[c].frase}
+              </p>
+            ))}
             <p className="text-xs text-carvao-muted">
               O histórico é da distribuidora inteira (todos os seus conjuntos), não do município: a fonte não publica série municipal.
             </p>

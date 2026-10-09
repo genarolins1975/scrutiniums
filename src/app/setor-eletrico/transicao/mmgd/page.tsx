@@ -125,7 +125,7 @@ export default function MmgdPage() {
       pelo IBGE, as duas somadas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de {m.ano_referencia - 1}. O ano
       de conexão vem da data publicada pela ANEEL, conferida com a data de conexão do recurso técnico. {g.regras.ano_referencia} Pelo Sistema de Compensação de Energia Elétrica (SCEE), a
       energia que a unidade injeta na rede vira crédito para abater o consumo, no mesmo local, em outra unidade do mesmo titular, entre condôminos ou entre os participantes de uma
-      geração compartilhada.
+      geração compartilhada. {g.regras.cadastro_x_estimativa}
     </>
   );
   const naoConcluir = (
@@ -148,8 +148,7 @@ export default function MmgdPage() {
           titulo={perguntaPainel("p063")}
           lead={
             <>
-              Onde está e quanto cresce a <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastrada na ANEEL, por UF,
-              município, distribuidora e perfil. O cadastro mede capacidade instalada, não energia gerada.
+              Onde está e quanto cresce a <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastrada na ANEEL.
             </>
           }
           recorte={`Cadastro de ${data(m.data_cadastro)} · conexões de ${anual[0]?.ano ?? "sem dado"} a ${data(r.ultima_data_conexao)} · MW e W por habitante`}
@@ -170,7 +169,7 @@ export default function MmgdPage() {
             />
           }
           metricas={
-            <FaixaMetricas colunas={4} rotulo="Indicadores da MMGD no cadastro" nota={<>{g.regras.capacidade_nao_e_energia} {g.regras.cadastro_x_estimativa}</>}>
+            <FaixaMetricas colunas={4} rotulo="Indicadores da MMGD no cadastro" nota={g.regras.capacidade_nao_e_energia}>
               <Numero
                 variante="faixa"
                 rotulo="Potência instalada cadastrada"
@@ -189,7 +188,7 @@ export default function MmgdPage() {
                 evidencia={m.evidencias.unidades}
                 casas={0}
                 unidade="unidades"
-                nota={`Cada unidade do cadastro é um empreendimento gerador. A soma das unidades consumidoras que recebem créditos desses empreendimentos é outra contagem: ${inteiro(r.ucs_recebem_credito)}.`}
+                nota={`Empreendimentos geradores. As unidades consumidoras com crédito (${inteiro(r.ucs_recebem_credito)}) são outra contagem.`}
                 endereco={`${rotaPainel("p063")}#p063`}
               />
               <Numero
@@ -213,7 +212,7 @@ export default function MmgdPage() {
                 unidade="W/hab"
                 periodo={`população do IBGE para ${m.ano_populacao ?? "sem dado"}`}
                 cor="var(--serie-referencia)"
-                nota="Potência instalada cadastrada dividida pela população estimada, as duas somadas no país."
+                nota="Potência instalada ÷ população estimada, as duas somadas no país."
                 motivoAusencia="Sem a população do IBGE nesta publicação."
               />
             </FaixaMetricas>

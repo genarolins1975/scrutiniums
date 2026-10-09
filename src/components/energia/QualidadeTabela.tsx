@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
-import { carregarUmaVez, tabelaQualidade, type DefinicaoTabela, type IdTabela } from "@/lib/energia/qualidade";
+import { carregarUmaVez, tabelaQualidade, type AvisosFec, type DefinicaoTabela, type IdTabela } from "@/lib/energia/qualidade";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 
 /**
@@ -20,6 +20,7 @@ export function QualidadeTabela({
   chaveUrl,
   selecionado,
   onSelecionar,
+  avisosFec,
   urlGold = "/energia/gold/qualidade.json",
 }: {
   tabela: IdTabela;
@@ -29,6 +30,8 @@ export function QualidadeTabela({
   chaveUrl?: string;
   selecionado?: string | null;
   onSelecionar?: (id: string | null) => void;
+  /** Distribuidoras de FEC com cobertura parcial (a página lê os meses do CSV mensal); sem isto, a marca vem só da gold. */
+  avisosFec?: AvisosFec;
   urlGold?: string;
 }) {
   const [aberta, setAberta] = useState(false);
@@ -46,13 +49,13 @@ export function QualidadeTabela({
     if (!aberta || def) return;
     let vivo = true;
     carregarUmaVez(urlGold, (r) => r.json() as Promise<QualidadeGold>).then(
-      (g) => vivo && setDef(tabelaQualidade(tabela, g)),
+      (g) => vivo && setDef(tabelaQualidade(tabela, g, avisosFec)),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
     );
     return () => {
       vivo = false;
     };
-  }, [aberta, def, tabela, urlGold]);
+  }, [aberta, def, tabela, urlGold, avisosFec]);
 
   if (!aberta) {
     return (

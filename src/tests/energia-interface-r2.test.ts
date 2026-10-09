@@ -139,8 +139,11 @@ describe("I01 a I04: recorte dos gráficos e tabelas na URL", () => {
       ["src/app/setor-eletrico/geracao/capacidade/page.tsx", 'chaveUrl="fcm"'],
       ["src/app/setor-eletrico/geracao/capacidade/page.tsx", 'chaveUrl="pot"'],
       ["src/app/setor-eletrico/geracao/termica/page.tsx", 'chaveUrl="cvu"'],
-      ["src/app/setor-eletrico/geracao/page.tsx", 'chaveUrl="dia"'],
-      ["src/app/setor-eletrico/geracao/page.tsx", 'chaveUrl="hor"'],
+      // as séries diária e horária do SIN são lidas sob demanda: o gráfico mora em GeracaoSerieRecente, que escolhe a chave pelo tipo
+      ["src/components/energia/GeracaoSerieRecente.tsx", 'tipo === "diaria" ? "dia" : "hor"'],
+      ["src/components/energia/GeracaoSerieRecente.tsx", "chaveUrl={chaveUrl}"],
+      ["src/app/setor-eletrico/geracao/page.tsx", '<GeracaoSerieRecente tipo="diaria"'],
+      ["src/app/setor-eletrico/geracao/page.tsx", '<GeracaoSerieRecente tipo="horaria"'],
       ["src/app/setor-eletrico/geracao/page.tsx", 'chaveUrl="dzg"'],
     ];
     for (const [f, trecho] of esperado) expect(ler(f), `${f}: ${trecho}`).toContain(trecho);
@@ -152,6 +155,8 @@ describe("I01 a I04: recorte dos gráficos e tabelas na URL", () => {
       "src/app/setor-eletrico/mercado/encargos/page.tsx",
       "src/app/setor-eletrico/mercado/mre-e-gsf/page.tsx",
       "src/app/setor-eletrico/geracao/page.tsx",
+      "src/components/energia/GeracaoSerieRecente.tsx",
+      "src/components/energia/GeracaoMatriz.tsx",
       "src/app/setor-eletrico/geracao/capacidade/page.tsx",
       "src/app/setor-eletrico/geracao/termica/page.tsx",
     ];

@@ -27,6 +27,7 @@ import {
   respostaLinhaTempo,
   rotaPainel,
   rotuloCurtoEvento,
+  rotuloDownload,
   vereditoLinhaTempo,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -247,7 +248,7 @@ export default function LinhaDoTempoPage() {
                 <SeguirPainel
                   ancora="p045"
                   proximo={{ href: `${proximo.rota}#${proximo.id}`, pergunta: proximo.pergunta }}
-                  downloads={downloadsDoPainel(g, "p045").map((d) => ({ ...d, rotulo: `${d.rotulo} (CSV)` }))}
+                  downloads={downloadsDoPainel(g, "p045").map((d) => ({ ...d, rotulo: rotuloDownload(d.rotulo) }))}
                 />
               </div>
             </PainelEvidencia>

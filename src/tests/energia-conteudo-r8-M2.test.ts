@@ -416,8 +416,9 @@ describe("Página inicial: contagens de distribuidoras (123, 102, 51 e 49), clas
   const h = pagina.home();
   it("os seletores listam só quem tem dado no ano e dizem quantas são; as extintas e as siglas repetidas saem", () => {
     const t = texto(h);
-    expect(t).toContain("Escolha (103 distribuidoras com dado de 2025)");
-    expect(t).toContain("Escolha (102 distribuidoras com dado de 2025)");
+    // a contagem e o ano seguem à vista, agora no rótulo do seletor (a opção padrão ficou curta para caber em 390 px)
+    expect(t).toContain("Sua distribuidora (103 com dado de 2025)");
+    expect(t).toContain("Sua distribuidora (102 com dado de 2025)");
     expect(t).not.toContain("com dados)");
     // CELESC, RGE e CPFL Santa Cruz aparecem uma vez em cada seletor
     for (const s of ["CELESC (", "RGE (", "CPFL Santa Cruz ("]) {

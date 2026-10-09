@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -85,6 +85,59 @@ function pontua(i: ItemDoIndice, termo: string, termos: string[]): number | null
   return 3;
 }
 
+const plural = (n: number) => `${n} ${n === 1 ? "verbete" : "verbetes"}`;
+
+/**
+ * A lista por tema, em duas apresentações do mesmo conteúdo, escolhidas por CSS (sem salto na hidratação):
+ *  - a partir de 768 px, todos os temas abertos, uma linha por verbete (a página é lida de cima a baixo e cada pergunta cabe numa linha);
+ *  - abaixo de 768 px, um tema por vez, recolhido, com a prévia dos verbetes (sigla ou nome) e a contagem: 48 linhas abertas teriam mais de
+ *    dez telas no celular, e a prévia deixa ver o acervo inteiro de relance. O que não está à vista não some: está no HTML e abre por toque.
+ * Só a apresentação à vista conta para leitor de tela e para a busca do navegador; o link #g-<tema> leva ao tema nas duas.
+ */
+function ListaPorTema({ grupos }: { grupos: GrupoDoIndice[] }) {
+  return (
+    <>
+      <div className="md:hidden" data-lista="recolhida">
+        {grupos.map((g) => (
+          <details key={g.id} id={g.id} className="group scroll-mt-28 border-t border-linha last:border-b">
+            <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
+              <span className="min-w-0">
+                <h3 className="ed-h3 font-serif text-carvao">{g.nome}</h3>
+                <span className="mt-0.5 block text-sm leading-snug text-carvao-muted" data-previa="true">
+                  {g.itens.map((i) => i.titulo).join(", ")}
+                </span>
+              </span>
+              <span className="shrink-0 whitespace-nowrap text-sm text-carvao-muted">
+                {plural(g.itens.length)} <span aria-hidden="true" className="inline-block motion-safe:transition-transform group-open:rotate-180">▾</span>
+              </span>
+            </summary>
+            <ul className="pb-2">
+              {g.itens.map((i) => (
+                <Linha key={i.slug} i={i} />
+              ))}
+            </ul>
+          </details>
+        ))}
+      </div>
+      <div className="hidden space-y-8 md:block" data-lista="aberta">
+        {grupos.map((g) => (
+          <section key={g.id} id={`${g.id}-lista`} aria-labelledby={`${g.id}-titulo`} className="scroll-mt-28">
+            <h3 id={`${g.id}-titulo`} className="ed-h3 flex flex-wrap items-baseline gap-x-3 font-serif text-carvao">
+              {g.nome}
+              <span className="font-sans text-xs font-normal text-carvao-muted">{plural(g.itens.length)}</span>
+            </h3>
+            <ul className="mt-2 border-b border-linha">
+              {g.itens.map((i) => (
+                <Linha key={i.slug} i={i} />
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </>
+  );
+}
+
 /**
  * Índice dos verbetes: busca por pergunta, sigla, nome ou palavra do texto (guardada em ?q=, para o resultado ser um link) e, sem busca,
  * as trilhas e a lista de todos os verbetes por tema, cada um numa linha curta com a pergunta prática, o nome e o link ao painel.
@@ -92,6 +145,7 @@ function pontua(i: ItemDoIndice, termo: string, termos: string[]): number | null
  * Todo verbete está no HTML do servidor (a lista por tema não depende de JavaScript, a busca do navegador e a impressão a leem inteira).
  * A busca só troca o que vem abaixo dela: os resultados, na ordem de quem tem o termo na sigla ou no nome, depois na pergunta, depois no
  * texto. Termo sem resultado não diz que o conceito não existe: diz que nenhum verbete publicado o traz e lembra o escopo do acervo.
+ * Em tela larga as trilhas ficam numa coluna ao lado da lista, que acompanha a rolagem; em tela estreita vêm entre a busca e a lista.
  */
 export function AprendaIndice({
   grupos,
@@ -122,55 +176,80 @@ export function AprendaIndice({
       .map((x) => x.i);
   }, [todos, termo]);
 
+  // link com #g-<tema>: no celular abre o tema recolhido; em tela larga leva à lista aberta do tema
+  useEffect(() => {
+    const abre = () => {
+      let id = window.location.hash.slice(1);
+      try {
+        id = decodeURIComponent(id);
+      } catch {
+        // âncora com % malformado: vale o texto cru
+      }
+      if (!id.startsWith("g-")) return;
+      const el = document.getElementById(id);
+      if (el instanceof HTMLDetailsElement && el.getClientRects().length > 0) {
+        el.open = true;
+        el.scrollIntoView();
+      } else if (el) {
+        document.getElementById(`${id}-lista`)?.scrollIntoView();
+      }
+    };
+    abre();
+    window.addEventListener("hashchange", abre);
+    return () => window.removeEventListener("hashchange", abre);
+  }, []);
+
   const limpar = () => {
     definir({ q: "" });
     campoBusca.current?.focus();
   };
 
   return (
-    <div data-aprenda-indice="">
-      <div id="busca" role="search" aria-label="Busca de verbetes" className="scroll-mt-28 border-t border-linha py-6 [@media(scripting:none)]:hidden">
-        <label htmlFor="aprenda-busca" className="ed-h3 block font-serif text-carvao">
-          O que você quer entender?
-        </label>
-        <input
-          ref={campoBusca}
-          id="aprenda-busca"
-          type="search"
-          value={v.q}
-          onChange={(e) => definir({ q: e.target.value })}
-          placeholder="Pergunta, sigla ou palavra: PLD, garantia física, perdas"
-          autoComplete="off"
-          spellCheck={false}
-          aria-describedby="aprenda-busca-contagem"
-          className="mt-2 block min-h-[44px] w-full max-w-xl border border-linha bg-superficie px-3 text-base text-carvao placeholder:text-mineral hover:border-energia"
-        />
-        <p id="aprenda-busca-contagem" role="status" className="mt-2 text-sm text-carvao-muted">
-          {achados
-            ? achados.length === 0
-              ? "Nenhum verbete publicado tem esse termo."
-              : `${achados.length} ${achados.length === 1 ? "verbete" : "verbetes"} com esse termo.`
-            : `${todos.length} verbetes em ${grupos.length} temas. Procure um termo ou veja a lista por tema.`}
-        </p>
-        {achados && achados.length > 1 && (
-          <p className="text-xs text-carvao-muted">Primeiro os que têm o termo na sigla ou no nome, depois os que o têm na pergunta ou no texto.</p>
-        )}
-        {achados && (
-          <div className="mt-1 flex flex-wrap items-center gap-x-5">
-            <button
-              type="button"
-              onClick={limpar}
-              className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
-            >
-              Limpar a busca
-            </button>
-            <LinkDoPainel ancora="busca" rotulo="Copiar link desta busca" />
-          </div>
-        )}
+    <div data-aprenda-indice="" className={achados ? "" : "lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-x-12"}>
+      <div className="lg:col-start-1 lg:row-start-1">
+        <div id="busca" role="search" aria-label="Busca de verbetes" className="scroll-mt-28 border-t border-linha py-6 [@media(scripting:none)]:hidden">
+          <label htmlFor="aprenda-busca" className="ed-h3 block font-serif text-carvao">
+            O que você quer entender?
+          </label>
+          <input
+            ref={campoBusca}
+            id="aprenda-busca"
+            type="search"
+            value={v.q}
+            onChange={(e) => definir({ q: e.target.value })}
+            placeholder="Pergunta, sigla ou palavra: PLD, garantia física, perdas"
+            autoComplete="off"
+            spellCheck={false}
+            aria-describedby="aprenda-busca-contagem"
+            className="mt-2 block min-h-[44px] w-full max-w-xl border border-linha bg-superficie px-3 text-base text-carvao placeholder:text-mineral hover:border-energia"
+          />
+          <p id="aprenda-busca-contagem" role="status" className="mt-2 text-sm text-carvao-muted">
+            {achados
+              ? achados.length === 0
+                ? "Nenhum verbete publicado tem esse termo."
+                : `${achados.length} ${achados.length === 1 ? "verbete" : "verbetes"} com esse termo.`
+              : `${todos.length} verbetes em ${grupos.length} temas. Procure um termo ou veja a lista por tema.`}
+          </p>
+          {achados && achados.length > 1 && (
+            <p className="text-xs text-carvao-muted">Primeiro os que têm o termo na sigla ou no nome, depois os que o têm na pergunta ou no texto.</p>
+          )}
+          {achados && (
+            <div className="mt-1 flex flex-wrap items-center gap-x-5">
+              <button
+                type="button"
+                onClick={limpar}
+                className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
+              >
+                Limpar a busca
+              </button>
+              <LinkDoPainel ancora="busca" rotulo="Copiar link desta busca" />
+            </div>
+          )}
+        </div>
+        <noscript>
+          <p className="border-t border-linha py-4 text-sm text-carvao-muted">A busca precisa de JavaScript. Os {todos.length} verbetes estão todos na lista por tema, mais abaixo.</p>
+        </noscript>
       </div>
-      <noscript>
-        <p className="border-t border-linha py-4 text-sm text-carvao-muted">A busca precisa de JavaScript. Os {todos.length} verbetes estão todos na lista por tema, mais abaixo.</p>
-      </noscript>
 
       {achados ? (
         <section aria-labelledby="aprenda-resultados" className="border-t border-linha pt-4">
@@ -192,8 +271,8 @@ export function AprendaIndice({
         </section>
       ) : (
         <>
-          {trilhas}
-          <section aria-labelledby="aprenda-todos" className="mt-6 border-t border-linha pt-6">
+          <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:sticky lg:top-4">{trilhas}</div>
+          <section aria-labelledby="aprenda-todos" className="mt-6 border-t border-linha pt-6 lg:col-start-1 lg:row-start-2 lg:mt-0">
             <h2 id="aprenda-todos" className="ed-h2 font-serif text-carvao">
               Todos os verbetes, por tema
             </h2>
@@ -205,22 +284,8 @@ export function AprendaIndice({
               {comRessalva > 0 && " ◐ com ressalva: conferido, com a ressalva declarada no próprio verbete."}
               {emPreparacao > 0 && " ○ em preparação: sem definição publicada, com o que já foi consultado e o que falta."}
             </p>
-            <div className="mt-4 space-y-8">
-              {grupos.map((g) => (
-                <section key={g.id} id={g.id} aria-labelledby={`${g.id}-titulo`} className="scroll-mt-28">
-                  <h3 id={`${g.id}-titulo`} className="ed-h3 flex flex-wrap items-baseline gap-x-3 font-serif text-carvao">
-                    {g.nome}
-                    <span className="font-sans text-xs font-normal text-carvao-muted">
-                      {g.itens.length} {g.itens.length === 1 ? "verbete" : "verbetes"}
-                    </span>
-                  </h3>
-                  <ul className="mt-2 grid gap-x-12 border-b border-linha lg:grid-cols-2">
-                    {g.itens.map((i) => (
-                      <Linha key={i.slug} i={i} />
-                    ))}
-                  </ul>
-                </section>
-              ))}
+            <div className="mt-4">
+              <ListaPorTema grupos={grupos} />
             </div>
           </section>
         </>

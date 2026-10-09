@@ -137,7 +137,7 @@ export default function EmpresasPage() {
         <CabecalhoModulo
           siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR"]}
           titulo="Quem atua no setor elétrico?"
-          lead={`Dono de usinas e de linhas, distribuidora, companhia aberta e grupo de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) que a fonte oficial publica no próprio registro. Cada caminho tem a sua fonte e a sua data, e as medidas de um não se somam às de outro.`}
+          lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) que a fonte oficial publica no próprio registro.`}
           recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · demais fontes com datas próprias`}
           fonte="ANEEL (geração e transmissão: SIGA e SIGET) e CVM (demonstrações anuais e trimestrais: DFP e ITR)"
           referencia={
@@ -168,7 +168,8 @@ export default function EmpresasPage() {
               rotulo="Indicadores do cadastro de usinas"
               nota={
                 <>
-                  {g.definicoes.vinculo.replace(/^Vínculo provado = /, "Vínculo provado: ")} {semMmgd}
+                  {g.definicoes.vinculo.replace(/^Vínculo provado = /, "Vínculo provado: ")} {semMmgd} Dos {inteiro(a.operacao.usinas)} registros em operação, {inteiro(a.sem_vinculo_total)} ficam sem vínculo
+                  completo, todos identificados com o motivo.
                 </>
               }
             >
@@ -181,8 +182,8 @@ export default function EmpresasPage() {
                 formato="num"
                 casas={1}
                 unidade="MW"
-                periodo={`usinas em operação, SIGA de ${dataSiga}`}
-                nota="Capacidade instalada das usinas em operação: não é energia gerada."
+                periodo={`SIGA de ${dataSiga}`}
+                nota="Capacidade instalada, não é energia gerada."
               />
               <Numero
                 variante="faixa"
@@ -192,18 +193,17 @@ export default function EmpresasPage() {
                 formato="num"
                 casas={0}
                 unidade="CNPJ"
-                periodo={`usinas de todas as fases, SIGA de ${dataSiga}`}
-                nota="CNPJ de 14 dígitos que a fonte publica no registro das usinas; matriz e filial contam separadas."
+                periodo={`SIGA de ${dataSiga}, todas as fases`}
+                nota="CNPJ distintos; matriz e filial contam separadas."
               />
               <Numero
                 variante="faixa"
-                rotulo="Potência com todos os donos identificados"
+                rotulo="Potência com donos identificados"
                 natureza="CALCULADO"
                 evidencia={comValorExibido(a.evidencia, pctTexto(a.evidencia.valor_calculo, 2))}
                 formato="pct"
                 casas={2}
-                unidade="da potência fiscalizada"
-                nota={`${inteiro(a.sem_vinculo_total)} usinas em operação sem vínculo completo, todas identificadas com o motivo.`}
+                unidade="da potência"
                 endereco={ancoraPainel("p036")}
               />
             </FaixaMetricas>
@@ -220,11 +220,8 @@ export default function EmpresasPage() {
               <h2 id="busca-titulo" className="ed-h2 font-serif text-carvao">
                 Qual empresa você procura?
               </h2>
-              <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                O resultado abre a ficha da distribuidora, as demonstrações da companhia na CVM ou a árvore de controle do grupo, e não um relatório de cobertura do cadastro.
-              </p>
-              <div className="mt-3">
-                <EmpresasBusca entidades={entidades} exemplos={exemplos} hrefArvore={`${rotaPainel("p039")}#arvore`} total={entidades.length} />
+              <div className="mt-2">
+                <EmpresasBusca entidades={entidades} hrefArvore={`${rotaPainel("p039")}#arvore`} total={entidades.length} />
               </div>
             </section>
 

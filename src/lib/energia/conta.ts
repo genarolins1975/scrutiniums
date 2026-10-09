@@ -36,11 +36,13 @@ import type {
   Ligacao,
   PontoEvolucao,
   ResumoTarifas,
+  SemVigente,
   Simulador,
   Subsidios,
   TarifaVigente,
   VigenciaB1,
 } from "./tipos-conta";
+import type { Evidencia } from "./evidencia";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { AUSENTE, dataBR, mesAno, num, pct, reais } from "./formato";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
@@ -160,6 +162,10 @@ export type LinhaRanking = {
   inicio: string;
   fim: string;
   ato: string;
+  /** UF da área (uma ou mais, "PR, SC"), tipo e consumidores da distribuidora: das golds de Território e de Qualidade; null sem dado. */
+  uf: string | null;
+  tipo: string | null;
+  ucs: number | null;
 };
 
 /** Sigla exibida; o CNPJ entra quando a fonte não publica sigla (nunca uma sigla inventada). */
@@ -167,33 +173,45 @@ export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: stri
   return sigla && sigla.trim() ? sigla : `CNPJ ${cnpj}`;
 }
 
-/** Linhas do ranking na ordem publicada (posição 1 = menor tarifa), com o custo do perfil escolhido. */
-export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil): LinhaRanking[] {
+/**
+ * Linhas do ranking na ordem publicada (posição 1 = menor tarifa), com o custo do perfil escolhido. `info` traz UF, tipo e UCs de cada
+ * distribuidora (`infoDistribuidoras`); sem ele, as três colunas ficam sem dado.
+ */
+export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil, info: Readonly<Record<string, InfoDistribuidora>> = {}): LinhaRanking[] {
   return [...vigentes]
     .sort((a, b) => a.posicao - b.posicao)
-    .map((v) => ({
-      id: v.cnpj,
-      sigla: rotuloDistribuidora(v.sigla, v.cnpj),
-      nome: v.nome,
-      posicao: v.posicao,
-      te: v.te,
-      tusd: v.tusd,
-      total: v.total,
-      be_total: v.be_total,
-      custo_100: v.perfis["100"],
-      custo_200: v.perfis["200"],
-      custo_300: v.perfis["300"],
-      custo: v.perfis[String(perfil) as "100" | "200" | "300"],
-      inicio: v.inicio,
-      fim: v.fim,
-      ato: v.ato,
-    }));
+    .map((v) => {
+      const i = info[v.cnpj];
+      return {
+        id: v.cnpj,
+        sigla: rotuloDistribuidora(v.sigla, v.cnpj),
+        nome: v.nome,
+        posicao: v.posicao,
+        te: v.te,
+        tusd: v.tusd,
+        total: v.total,
+        be_total: v.be_total,
+        custo_100: v.perfis["100"],
+        custo_200: v.perfis["200"],
+        custo_300: v.perfis["300"],
+        custo: v.perfis[String(perfil) as "100" | "200" | "300"],
+        inicio: v.inicio,
+        fim: v.fim,
+        ato: v.ato,
+        uf: i?.uf ?? null,
+        tipo: i?.tipo ? ROTULO_TIPO[i.tipo] : null,
+        ucs: i?.ucs ?? null,
+      };
+    });
 }
 
 /** Colunas da tabela do ranking (P047): a mesma matriz vai para a tela e para a exportação. */
 export const COLUNAS_RANKING: ColunaTabela[] = [
   { id: "posicao", rotulo: "Posição (1 = menor)", tipo: "numero", casas: 0 },
   { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "uf", rotulo: "UF", tipo: "texto" },
+  { id: "tipo", rotulo: "Tipo", tipo: "texto" },
+  { id: "ucs", rotulo: "Consumidores (UCs)", tipo: "numero", casas: 0 },
   { id: "nome", rotulo: "Razão social", tipo: "texto" },
   { id: "id", rotulo: "CNPJ", tipo: "texto" },
   { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -869,7 +887,10 @@ export function respostaSubsidios(s: Subsidios): string {
     .sort((a, b) => b[1] - a[1]);
   const maior = cats[0];
   const maiorTxt = maior ? `; a maior categoria foi ${maior[0]} (${reais(maior[1] / BI, 2)} bilhões)` : "";
-  return `Em ${ano.ano}, os repasses homologados da CDE às distribuidoras para cobrir descontos a categorias de usuários somaram ${reais(ano.soma_categorias / BI, 2)} bilhões${maiorTxt}. Não são transferências a famílias.`;
+  return (
+    `Em ${ano.ano}, foram homologados ${reais(ano.soma_categorias / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
+    `para cobrir descontos a categorias de usuários${maiorTxt}. É o valor homologado, não o desembolso realizado, e não são transferências a famílias.`
+  );
 }
 
 /** P050: orçamento da CDE do último ano, peso das quotas e da Tarifa Social. */
@@ -937,11 +958,14 @@ export function vereditoBandeira(b: Bandeiras): string {
   return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}.${historico}`;
 }
 
-/** Veredito do P050 (subsídios): quanto a CDE repassou no último ano completo e que não são transferências a famílias. O orçamento e a maior categoria ficam na resposta completa. */
+/** Veredito do P050 (subsídios): quanto foi homologado para repasse da CDE no último ano completo, com a ressalva de que não é desembolso nem transferência a famílias. O orçamento e a maior categoria ficam na resposta completa. */
 export function vereditoSubsidios(s: Subsidios): string {
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
   if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
-  return `Em ${ano.ano}, a CDE repassou ${reais(ano.soma_categorias / BI, 2)} bilhões às distribuidoras para cobrir descontos a categorias de usuários. Não são transferências a famílias.`;
+  return (
+    `Em ${ano.ano}, foram homologados ${reais(ano.soma_categorias / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
+    `para cobrir descontos a categorias de usuários. Não são desembolso realizado nem transferências a famílias.`
+  );
 }
 
 /**
@@ -972,14 +996,15 @@ export function periodoReferencia(g: Pick<ContaGold, "data_referencia" | "gerado
  * P047, "o que mudou": a mediana da data contra a do dia 1º do último mês da
  * evolução, com o motivo da diferença de cobertura (distribuidoras fora do ranking).
  */
-export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evolucao: readonly LinhaEvolucao[]): string {
+export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evolucao: readonly LinhaEvolucao[], comparacao: ComparacaoMesmoConjunto | null = null): string {
   const ult = [...evolucao].reverse().find((p) => p.mediana !== null);
   const hoje = `Em ${dataBR(dataReferencia)}, a mediana é ${num(resumo.mediana, 2)} R$/MWh entre ${resumo.n} distribuidoras com tarifa vigente.`;
-  const antes = ult ? ` No dia 1º de ${mesAno(`${ult.m}-01`)}, era ${num(ult.mediana, 2)} R$/MWh entre ${ult.n}.` : "";
   const fora = resumo.fora_vigencia_recente + resumo.fora_sem_tarifa_ha_mais_de_90_dias;
-  const motivo = fora
-    ? ` Ficam fora do ranking ${resumo.fora_vigencia_recente} com a vigência encerrada há até 90 dias (a tarifa seguinte ainda não está no arquivo) e ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} sem tarifa há mais de 90 dias; por isso as duas medianas não comparam o mesmo conjunto.`
-    : "";
+  const foraDoRanking = `Ficam fora do ranking ${resumo.fora_vigencia_recente} com a vigência encerrada há até 90 dias (a tarifa seguinte ainda não está no arquivo) e ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} sem tarifa há mais de 90 dias.`;
+  // com a comparação no mesmo conjunto, a variação sai das distribuidoras que têm tarifa nas duas datas, e o texto diz quem saiu
+  if (comparacao) return `${hoje}${fora ? ` ${foraDoRanking}` : ""} ${textoComparacaoMesmoConjunto(comparacao)}`;
+  const antes = ult ? ` No dia 1º de ${mesAno(`${ult.m}-01`)}, era ${num(ult.mediana, 2)} R$/MWh entre ${ult.n}.` : "";
+  const motivo = fora ? ` ${foraDoRanking.replace(/\.$/, "")}; por isso as duas medianas não comparam o mesmo conjunto.` : "";
   return `${hoje}${antes}${motivo}`;
 }
 
@@ -1136,11 +1161,12 @@ export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
  * Ressalva que acompanha a faixa de métricas da abertura: o que a tarifa não inclui e como a mediana é feita. O universo (quantas
  * distribuidoras) é o `n` do mesmo resumo que alimenta o ranking e a mediana.
  */
-export function notaFaixaTarifa(resumo: ResumoTarifas): string {
-  return (
+export function notaFaixaTarifa(resumo: ResumoTarifas, comparacao: ComparacaoMesmoConjunto | null = null): string {
+  const base =
     `Tarifa homologada (TE + TUSD), sem tributos (ICMS, PIS/Pasep e Cofins), iluminação pública e bandeira: não é o valor da fatura. ` +
-    `Mediana simples das ${resumo.n} distribuidoras, sem ponderar por consumidores; não é o custo médio do país.`
-  );
+    `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente, sem ponderar por consumidores; não é o custo médio do país.`;
+  // o ranking de 30/09 não é o conjunto de 1º/09: quantas saíram fica dito junto da mediana
+  return comparacao && comparacao.saidas.n > 0 ? `${base} Em ${dataBR(comparacao.de)} eram ${comparacao.nDe}: ${comparacao.saidas.n} saíram do conjunto.` : base;
 }
 
 export type ResumoSerieReal = {
@@ -1195,4 +1221,575 @@ export function textoSerieReal(r: ResumoSerieReal | null): string {
     : "";
   const sem = r.semReal.length ? ` ${r.semReal.map(mes).join(", ")} ${r.semReal.length === 1 ? "fica" : "ficam"} sem valor em reais (IPCA do mês ainda não publicado).` : "";
   return `${inicio}${fim}.${sem}`;
+}
+
+/* ============================================================================================================================
+ * Segunda passada (avaliações iniciais de 09/10/2026): comparação no mesmo conjunto, UF, tipo e UCs, grupos de pares, busca por
+ * município, valores reais de subsídios e da CDE, janelas no mesmo conjunto, cartão do simulador e ficha com procedimento externo.
+ * Tudo aqui é seletor sobre números já publicados (gold e séries): nada refaz cálculo do pipeline, e cada mediana nova tem teste que a
+ * reproduz sobre o conjunto inteiro contra a mediana que a gold publica.
+ * ========================================================================================================================== */
+
+/* ---------- aritmética simples ---------- */
+
+/**
+ * Arredondamento decimal, meio para cima e simétrico no zero, sobre a representação decimal do número (795,965 vira 795,97, o que
+ * `Math.round(v * 100) / 100` não faz por causa do resíduo binário). É a regra do pipeline para as medianas publicadas.
+ */
+export function arredondar(v: number, casas = 2): number {
+  if (!Number.isFinite(v)) return v;
+  const a = Math.abs(v);
+  const txt = String(a);
+  const r = txt.includes("e") ? Math.round(a * 10 ** casas) / 10 ** casas : Number(`${Math.round(Number(`${txt}e${casas}`))}e-${casas}`);
+  return v < 0 && r !== 0 ? -r : r;
+}
+
+/** Mediana simples (média dos dois valores centrais quando o número de valores é par); null sem valores. */
+export function mediana(valores: readonly number[]): number | null {
+  const v = valores.filter((x) => Number.isFinite(x)).sort((a, b) => a - b);
+  if (!v.length) return null;
+  const m = v.length >> 1;
+  return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+}
+
+/* ---------- o mesmo conjunto de distribuidoras nas duas datas ---------- */
+
+export type SaidaDoConjunto = {
+  /** Distribuidoras com tarifa no dia de partida e sem tarifa vigente na data do ranking. */
+  n: number;
+  mediana: number | null;
+  /** Quantas dessas têm "cooperativa" na razão social. */
+  cooperativas: number;
+  /** Fim da vigência, quando é o mesmo para todas (AAAA-MM-DD); null quando variam. */
+  fimDaVigencia: string | null;
+};
+
+export type ComparacaoMesmoConjunto = {
+  /** Dia 1º do último mês da evolução mensal (AAAA-MM-DD) e a data de referência do ranking. */
+  de: string;
+  ate: string;
+  /** Distribuidoras com tarifa em `de`, com tarifa vigente em `ate` e nas duas datas. */
+  nDe: number;
+  nAte: number;
+  nComum: number;
+  /** Mediana de `de` entre todas (a da evolução mensal publicada) e entre as comuns; mediana de `ate` entre as comuns. */
+  medianaDeTodas: number | null;
+  medianaDeComum: number | null;
+  medianaAteComum: number | null;
+  /** Variação % entre as duas medianas do conjunto comum, calculada antes de arredondar. */
+  variacaoPct: number | null;
+  saidas: SaidaDoConjunto;
+};
+
+/**
+ * Compara a mediana do ranking com a do dia 1º do último mês da evolução NO MESMO CONJUNTO de distribuidoras: as que têm tarifa nas duas
+ * datas. A mediana de todas em `de` é a que a evolução mensal publica; a das comuns e a das que saíram vêm da linha do tempo resolvida
+ * de cada distribuidora (`tarifaNaData`, a mesma regra do pipeline para "a tarifa vigente no dia 1º"). Sem mês com mediana, null.
+ */
+export function compararMesmoConjunto(a: {
+  vigentes: readonly Pick<TarifaVigente, "cnpj" | "total">[];
+  semVigente: readonly Pick<SemVigente, "cnpj" | "nome" | "ultima_vigencia">[];
+  historico: Readonly<Record<string, { nome: string | null; vigencias: readonly VigenciaB1[] }>>;
+  evolucao: readonly LinhaEvolucao[];
+  dataReferencia: string;
+}): ComparacaoMesmoConjunto | null {
+  const ult = [...a.evolucao].reverse().find((p) => p.mediana !== null);
+  if (!ult) return null;
+  const de = `${ult.m}-01`;
+  const noRanking = new Map(a.vigentes.map((v) => [v.cnpj, v.total]));
+  const emDe = new Map<string, number>();
+  for (const [cnpj, h] of Object.entries(a.historico)) {
+    const t = tarifaNaData(h.vigencias, de);
+    if (t !== null) emDe.set(cnpj, t);
+  }
+  const comuns = Array.from(noRanking.keys()).filter((c) => emDe.has(c));
+  const saidos = Array.from(emDe.keys()).filter((c) => !noRanking.has(c));
+  const semVig = new Map(a.semVigente.map((s) => [s.cnpj, s]));
+  const nomeDe = (c: string) => semVig.get(c)?.nome ?? a.historico[c]?.nome ?? "";
+  const fins = new Set(saidos.map((c) => semVig.get(c)?.ultima_vigencia.fim ?? null));
+  const medDe = mediana(comuns.map((c) => emDe.get(c) as number));
+  const medAte = mediana(comuns.map((c) => noRanking.get(c) as number));
+  return {
+    de,
+    ate: a.dataReferencia,
+    nDe: emDe.size,
+    nAte: noRanking.size,
+    nComum: comuns.length,
+    medianaDeTodas: ult.mediana,
+    medianaDeComum: medDe === null ? null : arredondar(medDe, 2),
+    medianaAteComum: medAte === null ? null : arredondar(medAte, 2),
+    variacaoPct: medDe === null || medAte === null || medDe === 0 ? null : arredondar((medAte / medDe - 1) * 100, 2),
+    saidas: {
+      n: saidos.length,
+      mediana: (() => {
+        const m = mediana(saidos.map((c) => emDe.get(c) as number));
+        return m === null ? null : arredondar(m, 2);
+      })(),
+      cooperativas: saidos.filter((c) => /cooperativa/i.test(nomeDe(c))).length,
+      fimDaVigencia: fins.size === 1 && !fins.has(null) ? (Array.from(fins)[0] as string) : null,
+    },
+  };
+}
+
+/**
+ * A comparação em três frases: a variação nas mesmas distribuidoras, quem saiu do ranking e com que mediana, e o limite de leitura
+ * (não comparar o ranking com o conjunto maior da data de partida). Sem número fixo: tudo vem da comparação.
+ */
+export function textoComparacaoMesmoConjunto(c: ComparacaoMesmoConjunto): string {
+  const rs = (v: number | null) => `${num(v, 2)} R$/MWh`;
+  const mesmas = `Nas mesmas ${c.nComum} distribuidoras, a mediana ${verboVariacao(c.variacaoPct)}, de ${rs(c.medianaDeComum)} em ${dataBR(c.de)} para ${rs(c.medianaAteComum)} em ${dataBR(c.ate)}.`;
+  if (c.saidas.n === 0) return mesmas;
+  const coop = c.saidas.cooperativas === 0 ? "" : c.saidas.cooperativas === c.saidas.n ? "todas cooperativas" : `${c.saidas.cooperativas} cooperativas`;
+  const detalhe = [c.saidas.fimDaVigencia ? `vigência encerrada em ${dataBR(c.saidas.fimDaVigencia)}` : "", coop, c.saidas.fimDaVigencia ? "a tarifa seguinte ainda não está no arquivo da ANEEL" : ""].filter(Boolean).join("; ");
+  const saiu = `Em ${dataBR(c.de)} eram ${c.nDe} distribuidoras, com mediana de ${rs(c.medianaDeTodas)}; as ${c.saidas.n} que ficaram fora do ranking${detalhe ? ` (${detalhe})` : ""} tinham mediana de ${rs(c.saidas.mediana)}.`;
+  const limite = `Comparar a mediana do ranking com a das ${c.nDe} de ${dataBR(c.de)} mistura conjuntos diferentes; a comparação válida é a das mesmas ${c.nComum}.`;
+  return `${mesmas} ${saiu} ${limite}`;
+}
+
+/**
+ * Três valores típicos convivem na página: a média simples das distribuidoras com componentes, a mediana dessas mesmas e a mediana do
+ * ranking. Uma frase diz o que cada um é e em que diferem (o cálculo e o conjunto). null sem composição média.
+ */
+export function textoTresValoresTipicos(comp: Pick<Composicao, "media" | "mediana">, resumo: Pick<ResumoTarifas, "n" | "mediana">): string | null {
+  const m = comp.media;
+  if (!m || m.total_rs_mwh === null || comp.mediana.mediana_do_total_rs_mwh === null || resumo.mediana === null) return null;
+  const rs = (v: number) => num(v, 2);
+  const conjuntos =
+    resumo.n === m.n ? `as duas medianas usam o mesmo conjunto de ${m.n}` : `${m.n} distribuidoras têm componentes publicadas e ${resumo.n} têm tarifa vigente`;
+  return (
+    `Três valores típicos convivem nesta página: a média simples das ${m.n} distribuidoras com componentes (${rs(m.total_rs_mwh)} R$/MWh), a mediana dessas mesmas ${m.n} ` +
+    `(${rs(comp.mediana.mediana_do_total_rs_mwh)}) e a mediana das ${resumo.n} do ranking (${rs(resumo.mediana)}). Diferem no cálculo, média ou mediana, e no conjunto: ${conjuntos}.`
+  );
+}
+
+/* ---------- UF, tipo e UCs de cada distribuidora ---------- */
+
+export type TipoDistribuidora = "concessionaria" | "permissionaria";
+export const ROTULO_TIPO: Record<TipoDistribuidora, string> = { concessionaria: "Concessionária", permissionaria: "Permissionária" };
+
+export type InfoDistribuidora = {
+  /** UF da área de atuação (ordem alfabética, "PR, SC"); null sem dado. */
+  uf: string | null;
+  tipo: TipoDistribuidora | null;
+  /** Unidades consumidoras (média do ano) e o ano. */
+  ucs: number | null;
+  anoUcs: number | null;
+};
+
+export type FonteQualidade = { cnpj: string; classificacao?: string | null; ucs?: number | null; ano?: number | null };
+export type FonteTerritorio = { cnpj: string; area?: { ufs?: readonly string[] | null } | null };
+
+/**
+ * UF, tipo e UCs de cada CNPJ do ranking, lidos das golds de Território (UFs da área de atuação, pela relação oficial da ANEEL) e de
+ * Qualidade (classificação e UCs médias do ano). A ausência fica null: nunca se completa com palpite.
+ */
+export function infoDistribuidoras(cnpjs: readonly string[], qualidade: readonly FonteQualidade[] | null, territorio: readonly FonteTerritorio[] | null): Record<string, InfoDistribuidora> {
+  const q = new Map((qualidade ?? []).map((x) => [x.cnpj, x]));
+  const t = new Map((territorio ?? []).map((x) => [x.cnpj, x]));
+  const out: Record<string, InfoDistribuidora> = {};
+  for (const cnpj of cnpjs) {
+    const ufs = [...(t.get(cnpj)?.area?.ufs ?? [])].sort();
+    const qd = q.get(cnpj);
+    const tipo = qd?.classificacao === "Concessionária" ? "concessionaria" : qd?.classificacao === "Permissionária" ? "permissionaria" : null;
+    const ucs = typeof qd?.ucs === "number" && Number.isFinite(qd.ucs) ? qd.ucs : null;
+    out[cnpj] = { uf: ufs.length ? ufs.join(", ") : null, tipo, ucs, anoUcs: ucs === null ? null : (qd?.ano ?? null) };
+  }
+  return out;
+}
+
+/* ---------- grupos de pares: tipo e UF ---------- */
+
+export type GrupoRanking = "todas" | TipoDistribuidora;
+export const CAMPO_GRUPO = campo(tiposUrl.opcao(["todas", "concessionaria", "permissionaria"] as const), "todas", { param: "grupo" });
+/** UF do filtro (duas letras, ou vazio para todas); o valor que não é UF do ranking é ignorado por `filtrarRanking`. */
+export const CAMPO_UF = campo(tiposUrl.texto({ max: 2 }), "", { param: "uf" });
+
+const ufsDaLinha = (l: Pick<LinhaRanking, "uf">) => (l.uf ? l.uf.split(", ") : []);
+
+/** UFs presentes no ranking, em ordem alfabética, com quantas distribuidoras cada uma tem. */
+export function ufsDoRanking(linhas: readonly Pick<LinhaRanking, "uf">[]): { uf: string; n: number }[] {
+  const n = new Map<string, number>();
+  for (const l of linhas) for (const u of ufsDaLinha(l)) n.set(u, (n.get(u) ?? 0) + 1);
+  return Array.from(n.entries()).map(([uf, k]) => ({ uf, n: k })).sort((a, b) => a.uf.localeCompare(b.uf, "pt-BR"));
+}
+
+/** Distribuidoras do grupo escolhido (tipo e UF), na ordem do ranking. UF que não existe no ranking não filtra. */
+export function filtrarRanking(linhas: readonly LinhaRanking[], grupo: GrupoRanking, uf: string): LinhaRanking[] {
+  const ufs = new Set(ufsDoRanking(linhas).map((x) => x.uf));
+  return linhas.filter((l) => (grupo === "todas" || l.tipo === ROTULO_TIPO[grupo]) && (!uf || !ufs.has(uf) || ufsDaLinha(l).includes(uf)));
+}
+
+export type ResumoDoRanking = {
+  n: number;
+  menor: LinhaRanking | null;
+  maior: LinhaRanking | null;
+  /** Mediana simples do custo do perfil e da tarifa TE + TUSD entre as linhas. */
+  mediana: number | null;
+  medianaTarifa: number | null;
+};
+
+/** Menor, maior e mediana do custo do perfil entre as linhas dadas (o ranking inteiro ou um grupo de pares). */
+export function resumoDoRanking(linhas: readonly LinhaRanking[]): ResumoDoRanking {
+  const ord = [...linhas].filter((l) => l.custo !== null).sort((a, b) => (a.custo as number) - (b.custo as number) || a.posicao - b.posicao);
+  const m = mediana(ord.map((l) => l.custo as number));
+  const mt = mediana(linhas.map((l) => l.total));
+  return {
+    n: linhas.length,
+    menor: ord[0] ?? null,
+    maior: ord[ord.length - 1] ?? null,
+    mediana: m === null ? null : arredondar(m, 2),
+    medianaTarifa: mt === null ? null : arredondar(mt, 2),
+  };
+}
+
+export function rotuloGrupo(grupo: GrupoRanking, uf: string): string {
+  const tipo = grupo === "todas" ? "distribuidoras" : grupo === "concessionaria" ? "concessionárias" : "permissionárias";
+  return uf ? `${tipo} com área em ${uf}` : tipo;
+}
+
+/** Frase do grupo de pares escolhido: menor, maior e mediana do custo do perfil entre as distribuidoras do grupo. */
+export function textoResumoDoRanking(r: ResumoDoRanking, perfil: Perfil, grupo: GrupoRanking, uf: string): string {
+  const nome = rotuloGrupo(grupo, uf);
+  if (!r.n || !r.menor || !r.maior || r.mediana === null) return `Nenhuma das ${nome} tem tarifa B1 residencial vigente na data.`;
+  return (
+    `Entre as ${r.n} ${nome}, ${perfil} kWh no mês custam de ${reais(r.menor.custo)} (${r.menor.sigla}) a ${reais(r.maior.custo)} (${r.maior.sigla}); ` +
+    `a mediana simples do grupo é ${reais(r.mediana)}.`
+  );
+}
+
+/* ---------- busca por município ---------- */
+
+/**
+ * Índice compacto município → distribuidoras, montado a partir de `territorio_municipios.csv` (relação oficial da ANEEL):
+ * `d` são as distribuidoras ([CNPJ, sigla]) e cada município é [nome, UF, vínculos], com vínculo = índice × 3 + estado
+ * (1 confirmado, 2 só pelo cadastro de MMGD, 0 sem confirmação).
+ */
+export type IndiceMunicipios = { d: [string, string][]; m: [string, string, number[]][] };
+
+function linhaCsv(l: string): string[] {
+  const out: string[] = [];
+  let c = "";
+  let aspas = false;
+  for (let i = 0; i < l.length; i++) {
+    const ch = l[i];
+    if (aspas) {
+      if (ch === '"' && l[i + 1] === '"') {
+        c += '"';
+        i++;
+      } else if (ch === '"') aspas = false;
+      else c += ch;
+    } else if (ch === '"') aspas = true;
+    else if (ch === ";") {
+      out.push(c);
+      c = "";
+    } else c += ch;
+  }
+  out.push(c);
+  return out;
+}
+
+export function criarIndiceMunicipios(csv: string): IndiceMunicipios {
+  const linhas = csv.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.length);
+  const cab = linhaCsv(linhas[0] ?? "");
+  const iNome = cab.indexOf("municipio");
+  const iUf = cab.indexOf("uf");
+  const iDist = cab.indexOf("distribuidoras");
+  const d: [string, string][] = [];
+  const posicao = new Map<string, number>();
+  const m: [string, string, number[]][] = [];
+  if (iNome < 0 || iUf < 0 || iDist < 0) return { d, m };
+  for (const l of linhas.slice(1)) {
+    const c = linhaCsv(l);
+    const vinculos: number[] = [];
+    for (const par of (c[iDist] ?? "").split("|")) {
+      const partes = par.split(":");
+      if (partes.length < 3) continue;
+      const estado = Number(partes[partes.length - 1]);
+      const cnpj = partes[partes.length - 2];
+      const sigla = partes.slice(0, -2).join(":");
+      if (!/^\d{14}$/.test(cnpj) || ![0, 1, 2].includes(estado)) continue;
+      let i = posicao.get(cnpj);
+      if (i === undefined) {
+        i = d.length;
+        posicao.set(cnpj, i);
+        d.push([cnpj, sigla]);
+      }
+      vinculos.push(i * 3 + estado);
+    }
+    m.push([c[iNome] ?? "", c[iUf] ?? "", vinculos]);
+  }
+  return { d, m };
+}
+
+const semAcento = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’´`-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+export type MunicipioEncontrado = { nome: string; uf: string; vinculos: { cnpj: string; sigla: string; estado: 0 | 1 | 2 }[] };
+
+/** Nomes sem acento nem caixa, para buscar sem recalcular a cada tecla. */
+export function prepararBuscaMunicipios(indice: IndiceMunicipios): string[] {
+  return indice.m.map(([nome, uf]) => `${semAcento(nome)}|${uf.toLowerCase()}`);
+}
+
+/**
+ * Municípios cujo nome começa por todas as palavras digitadas (sem acento nem caixa); uma palavra que é UF restringe ao estado.
+ * Ordem: nome igual, nome que começa pelo texto, palavra que começa, e o resto; empate pelo nome.
+ */
+export function buscarMunicipios(indice: IndiceMunicipios, preparado: readonly string[], termo: string, max = 8): MunicipioEncontrado[] {
+  const t = semAcento(termo);
+  if (t.length < 2) return [];
+  const ufs = new Set(indice.m.map((x) => x[1].toLowerCase()));
+  const palavras = t.split(" ");
+  const ufPedida = palavras.length > 1 && ufs.has(palavras[palavras.length - 1]) ? palavras[palavras.length - 1] : null;
+  const consulta = (ufPedida ? palavras.slice(0, -1) : palavras).join(" ");
+  const partes = consulta.split(" ");
+  const achados: { i: number; peso: number }[] = [];
+  for (let i = 0; i < preparado.length; i++) {
+    const [nome, uf] = preparado[i].split("|");
+    if (ufPedida && uf !== ufPedida) continue;
+    const palavrasDoNome = nome.split(" ");
+    if (!partes.every((p) => palavrasDoNome.some((w) => w.startsWith(p)))) continue;
+    achados.push({ i, peso: nome === consulta ? 0 : nome.startsWith(consulta) ? 1 : 2 });
+  }
+  achados.sort((a, b) => a.peso - b.peso || indice.m[a.i][0].length - indice.m[b.i][0].length || indice.m[a.i][0].localeCompare(indice.m[b.i][0], "pt-BR"));
+  return achados.slice(0, max).map(({ i }) => {
+    const [nome, uf, v] = indice.m[i];
+    return { nome, uf, vinculos: v.map((x) => ({ cnpj: indice.d[Math.floor(x / 3)][0], sigla: indice.d[Math.floor(x / 3)][1], estado: (x % 3) as 0 | 1 | 2 })) };
+  });
+}
+
+/* ---------- valores nominais e em reais constantes (subsídios e orçamento da CDE) ---------- */
+
+export type FatorReal = { fator: number; meses: number };
+
+/**
+ * Fator que leva um valor nominal do ano para reais do mês-base: índice do IPCA do mês-base ÷ média dos índices mensais do ano. O ano
+ * do mês-base usa só os meses com índice (parcial, e o fator diz quantos); ano depois do mês-base ou sem índice fica null. A série do
+ * IPCA é a de `conta_ipca.csv`, a mesma que a gold usa na mediana em reais.
+ */
+export function fatoresReaisPorAno(ipca: readonly { mes: string; indice: number }[], anos: readonly string[], base: string): Record<string, FatorReal | null> {
+  const indiceBase = ipca.find((x) => x.mes === base)?.indice ?? null;
+  const out: Record<string, FatorReal | null> = {};
+  for (const ano of anos) {
+    const doAno = ipca.filter((x) => x.mes.startsWith(`${ano}-`) && x.mes <= base && x.indice > 0);
+    out[ano] = indiceBase === null || !doAno.length ? null : { fator: indiceBase / (doAno.reduce((s, x) => s + x.indice, 0) / doAno.length), meses: doAno.length };
+  }
+  return out;
+}
+
+/** CSV do IPCA publicado (`mes;indice;variacao_12m_pct_publicada`) como série de índices; mês sem índice fica de fora. */
+export function lerIpcaCsv(csv: string): { mes: string; indice: number }[] {
+  return csv
+    .split(/\r?\n/)
+    .slice(1)
+    .map((l) => l.split(";"))
+    .filter((c) => /^\d{4}-\d{2}$/.test(c[0] ?? "") && Number.isFinite(Number(c[1])) && c[1] !== "")
+    .map((c) => ({ mes: c[0], indice: Number(c[1]) }));
+}
+
+/** As mesmas linhas com as chaves de valor em reais do mês-base (cada ano pelo seu fator); ano sem fator vira null, nunca o nominal. */
+export function emReaisDoMesBase<L extends Record<string, string | number | null>>(linhas: readonly L[], chaves: readonly string[], fatores: Readonly<Record<string, FatorReal | null>>, chaveAno = "ano"): L[] {
+  return linhas.map((l) => {
+    const f = fatores[String(l[chaveAno])] ?? null;
+    const out: Record<string, string | number | null> = { ...l };
+    for (const c of chaves) {
+      const v = l[c];
+      out[c] = typeof v === "number" && f ? v * f.fator : null;
+    }
+    return out as L;
+  });
+}
+
+/* ---------- quotas da CDE: série e leitura do residual ---------- */
+
+export type PontoQuotas = { ano: string; pct: number | null };
+
+/** Participação das quotas nas receitas do orçamento, ano a ano (a mesma que a tabela do orçamento mostra). */
+export function serieQuotas(f: FinanciamentoCde): PontoQuotas[] {
+  return f.totais.map((t) => ({ ano: t.ano, pct: t.quotas_pct }));
+}
+
+export type ReceitaQueZerou = { fonte: string; anterior: number; ano: string; anoAnterior: string };
+
+/** Rubricas de receita (fora as quotas) com valor no ano anterior e zero no último ano do orçamento. */
+export function receitasQueZeraram(f: FinanciamentoCde): ReceitaQueZerou[] {
+  const i = f.anos.indexOf(f.ultimo_ano);
+  if (i < 1) return [];
+  return f.rubricas
+    .filter((r) => r.tipo === "Receita" && r.grupo !== "quotas_tarifa")
+    .flatMap((r) => {
+      const atual = r.valores[i];
+      const antes = r.valores[i - 1];
+      return atual === 0 && typeof antes === "number" && antes > 0 ? [{ fonte: r.fonte, anterior: antes, ano: f.ultimo_ano, anoAnterior: f.anos[i - 1] }] : [];
+    });
+}
+
+/**
+ * A leitura do destaque das quotas: série dos anos anteriores, a quota como residual do orçamento e o que mudou nas outras receitas
+ * do último ano. Tudo do orçamento publicado; o residual é a regra que a nota da gold cita (a quota cobre a diferença).
+ */
+export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | null {
+  if (!f) return null;
+  const serie = serieQuotas(f);
+  const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
+  if (i < 0 || serie[i].pct === null) return null;
+  const anteriores = serie.slice(Math.max(0, i - anosAntes), i).filter((p) => p.pct !== null);
+  const historico = anteriores.length ? `${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}, contra ` : "";
+  const zeraram = receitasQueZeraram(f);
+  const semValor = f.totais.find((t) => t.ano === f.ultimo_ano)?.rubricas_sem_valor ?? [];
+  const lista = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}` : (xs[0] ?? ""));
+  const outras =
+    zeraram.length || semValor.length
+      ? ` Em ${f.ultimo_ano}, ${[
+          zeraram.length ? `${lista(zeraram.map((z) => z.fonte))} ${zeraram.length > 1 ? "aparecem" : "aparece"} como zero (em ${zeraram[0].anoAnterior}: ${lista(zeraram.map((z) => `R$ ${num(z.anterior / BI, 2)} bi`))})` : "",
+          semValor.length ? `${semValor.length} ${semValor.length === 1 ? "rubrica está sem valor publicado" : "rubricas estão sem valor publicado"}` : "",
+        ]
+          .filter(Boolean)
+          .join(" e ")}.`
+      : "";
+  return `A quota é o residual do orçamento: a despesa do ano é fixada e a quota cobre o que as demais receitas não cobrem. Participação das quotas: ${historico}${pct(serie[i].pct, 1)} em ${f.ultimo_ano}.${outras}`;
+}
+
+/* ---------- janelas de comparação com o IPCA no mesmo conjunto ---------- */
+
+export type JanelasNoMesmoConjunto = {
+  /** Distribuidoras com variação nas três janelas. */
+  n: number;
+  itens: { meses: number; nDaJanela: number; medianaPct: number | null; medianaRealPct: number | null; ipcaPct: number | null; acima: number }[];
+};
+
+/**
+ * Mediana da variação em cada janela só entre as distribuidoras que têm variação em TODAS elas. Cada janela tem o seu universo
+ * (as de 60 e 120 meses perdem distribuidoras sem tarifa ou com área alterada nas datas antigas), então as medianas publicadas de
+ * janelas diferentes não são comparáveis entre si; no mesmo conjunto são.
+ */
+export function janelasNoMesmoConjunto(janelas: readonly JanelaInflacao[]): JanelasNoMesmoConjunto | null {
+  if (janelas.length < 2) return null;
+  const porJanela = janelas.map((j) => new Map(j.distribuidoras.filter((d) => d[2] !== null).map((d) => [d[0], d] as [string, JanelaInflacao["distribuidoras"][number]])));
+  const comuns = Array.from(porJanela[0].keys()).filter((c) => porJanela.every((m) => m.has(c)));
+  if (!comuns.length) return null;
+  return {
+    n: comuns.length,
+    itens: janelas.map((j, k) => {
+      const linhas = comuns.map((c) => porJanela[k].get(c) as JanelaInflacao["distribuidoras"][number]);
+      const m = mediana(linhas.map((l) => l[2] as number));
+      const r = mediana(linhas.map((l) => l[3]).filter((x): x is number => x !== null));
+      return {
+        meses: j.meses,
+        nDaJanela: j.n,
+        medianaPct: m === null ? null : arredondar(m, 2),
+        medianaRealPct: r === null ? null : arredondar(r, 2),
+        ipcaPct: j.ipca_pct,
+        acima: j.ipca_pct === null ? 0 : linhas.filter((l) => (l[2] as number) > (j.ipca_pct as number)).length,
+      };
+    }),
+  };
+}
+
+/** Frase das janelas no mesmo conjunto: a mediana de cada janela entre as distribuidoras comuns às três, contra o IPCA do período. */
+export function textoJanelasNoMesmoConjunto(c: JanelasNoMesmoConjunto): string {
+  const partes = c.itens.map((i) => `${i.meses} meses, ${pct(i.medianaPct, 2)} contra IPCA de ${pct(i.ipcaPct, 2)}`);
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
+  const universos = Array.from(new Set(c.itens.map((i) => i.nDaJanela)));
+  return `Nas ${c.n} distribuidoras com variação nas três janelas (cada janela, sozinha, tem ${universos.length > 1 ? universos.join(", ") : universos[0]}), a mediana é de ${lista}.`;
+}
+
+/* ---------- simulador: tarifa usada, classes iguais à residencial e leituras não conferidas ---------- */
+
+/** Regras que valem para cada classe (ids de `simulador.regras_texto`). */
+export const REGRAS_DA_CLASSE: Record<ClasseSimuladorId, string[]> = {
+  residencial: ["custo_disponibilidade", "bandeira", "exclusoes"],
+  rural: ["custo_disponibilidade", "bandeira", "exclusoes"],
+  demais: ["custo_disponibilidade", "bandeira", "exclusoes"],
+  tarifa_social: ["tarifa_social", "custo_disponibilidade", "bandeira", "exclusoes"],
+  desconto_social: ["desconto_social", "custo_disponibilidade", "bandeira", "exclusoes"],
+};
+
+/**
+ * Leituras do observatório, ainda não conferidas no texto oficial, de que o resultado da classe depende: as partes não conferidas da
+ * regra própria da classe (Tarifa Social, Desconto Social) e, nas regras comuns, as que falam da classe pelo nome. Classe sem leitura
+ * pendente devolve lista vazia.
+ */
+export function leiturasNaoConferidas(classe: ClasseSimuladorId, regras: readonly { id: string; partes: readonly { texto: string; estado: string }[] }[]): string[] {
+  const nome = classe === "tarifa_social" ? /tarifa social/i : classe === "desconto_social" ? /desconto social/i : null;
+  const out: string[] = [];
+  for (const id of REGRAS_DA_CLASSE[classe]) {
+    const r = regras.find((x) => x.id === id);
+    if (!r) continue;
+    for (const p of r.partes) {
+      if (p.estado === "CONFERIDA") continue;
+      if ((id === classe || (nome && nome.test(p.texto))) && !out.includes(p.texto)) out.push(p.texto);
+    }
+  }
+  return out;
+}
+
+/** Em quantas distribuidoras a tarifa (TE e TUSD) da classe é igual à da Residencial na vigência. Só conta onde as duas existem. */
+export function igualdadeComResidencial(distribuidoras: readonly { tarifas: Partial<Record<ChaveTarifa, readonly [number | null, number | null] | null>> }[], chave: ChaveTarifa): { iguais: number; total: number } {
+  let iguais = 0;
+  let total = 0;
+  for (const d of distribuidoras) {
+    const a = d.tarifas.residencial;
+    const b = d.tarifas[chave];
+    if (!a || !b) continue;
+    total++;
+    if (a[0] === b[0] && a[1] === b[1]) iguais++;
+  }
+  return { iguais, total };
+}
+
+/** "subgrupo B2, sem subclasse na fonte": a linha da fonte de que a tarifa vem. */
+export function descricaoDaTarifa(c: { subgrupo: string; subclasse: string }): string {
+  return `subgrupo ${c.subgrupo}${c.subclasse && c.subclasse !== "Não se aplica" ? `, subclasse ${c.subclasse}` : ", sem subclasse na fonte"}`;
+}
+
+/* ---------- ficha "Comprove este número" com procedimento externo ---------- */
+
+/**
+ * A ficha da gold indica como refazer o número por um comando interno do pipeline. Para o leitor de fora, o passo "Execute" vira o
+ * procedimento sobre o arquivo da fonte: filtros, fórmula, conferência com o valor exibido e a data de corte da captura. Só reescreve
+ * o texto da reprodução; todos os outros campos da ficha seguem como a gold os publica.
+ */
+export function comProcedimentoExterno(ev: Evidencia | null): Evidencia | null {
+  if (!ev) return ev;
+  const corte = ev.fonte.capturado_em ? dataBR(ev.fonte.capturado_em.slice(0, 10)) : null;
+  const passos = [
+    "Sem o código do observatório: abra o arquivo da fonte indicado acima (o endereço é o da ANEEL; o sha256 identifica a cópia que foi usada).",
+    ev.filtros.length ? `Mantenha só as linhas que cumprem: ${ev.filtros.join("; ")}.` : "",
+    `Aplique a fórmula: ${ev.formula}.`,
+    `Confira o resultado com o valor exibido (${ev.valor_exibido}).`,
+    corte
+      ? `Data de corte: arquivo capturado em ${corte}. A fonte é atualizada depois dessa data; linhas novas mudam o resultado, e a cópia capturada fica identificada pelo sha256.`
+      : "Data de corte: a captura não informa a data; use a versão da fonte indicada acima.",
+  ];
+  return { ...ev, reproducao: passos.filter(Boolean).join("\n") };
+}
+
+/* ---------- pontos de uma faixa (cada distribuidora um ponto, sem sobrepor) ---------- */
+
+/**
+ * Posição vertical de cada ponto de uma faixa horizontal: linha 0 no centro, depois +1, −1, +2, −2 …, o primeiro lugar em que o
+ * ponto não encosta no anterior da mesma linha (`raio` de cada ponto e `folga` entre eles, em px). Determinístico: a mesma lista
+ * dá o mesmo desenho no servidor e no navegador.
+ */
+export function empilharPontos(pontos: readonly { id: string; x: number }[], raio: number, folga = 1): { id: string; x: number; linha: number }[] {
+  const ordem = [...pontos].sort((a, b) => a.x - b.x || (a.id < b.id ? -1 : 1));
+  const ultimo = new Map<number, number>();
+  const passo = 2 * raio + folga;
+  return ordem.map((p) => {
+    for (let k = 0; ; k++) {
+      const linha = k === 0 ? 0 : k % 2 === 1 ? (k + 1) / 2 : -(k / 2);
+      const x0 = ultimo.get(linha);
+      if (x0 === undefined || p.x - x0 >= passo) {
+        ultimo.set(linha, p.x);
+        return { id: p.id, x: p.x, linha };
+      }
+    }
+  });
 }

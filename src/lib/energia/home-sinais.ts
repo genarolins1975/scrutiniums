@@ -293,7 +293,7 @@ export function descreverDenominador(d: DenominadorDePerdas): { curta: string; c
   const completa =
     fora === 0
       ? `O denominador é a energia injetada de referência, ${twh(d.referenciaTwh)} nas ${d.n} concessionárias, e em todas elas é a linha de energia injetada que a ANEEL publica.`
-      : `O denominador é a energia injetada de referência: ${twh(d.referenciaTwh)} nas ${d.n} concessionárias. Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora} essa linha deixou de fechar o balanço com a perda calculada pela fonte, a causa não é atribuída, e a referência é a energia requerida, isto é, fornecida mais irregular mais perdas${
+      : `O denominador é a energia injetada de referência: ${twh(d.referenciaTwh)} nas ${d.n} concessionárias. Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora} essa linha deixou de fechar o balanço com a perda calculada pela fonte, sem explicação publicada, e a referência é a energia requerida, isto é, fornecida mais irregular mais perdas${
           d.nMista ? ` (em ${d.nMista} delas o ano mistura meses dos dois leiautes)` : ""
         }.${
           d.publicadaTwh !== null && comPublicada !== null && dif !== null
@@ -363,14 +363,14 @@ export function sinalPerdas(
 
 /* ------------------------------------------------------------------ 4. reservatórios */
 
-const MEDIDA_AGUA = "Energia armazenada no SIN";
+const MEDIDA_AGUA = "Energia armazenada no Sistema Interligado Nacional (SIN)";
 
 export function sinalAgua(g: AguaDetalheGold | null = lerGold<AguaDetalheGold>("agua_detalhe.json")): SinalHome {
   if (!integra(g)) return ausente("agua", MEDIDA_AGUA, motivoDaGold(g, "A base publicada de Água e clima não foi processada nesta publicação."), null, "indisponivel");
   const sin = entidadesEar(g.armazenamento).find((e) => e.tipo === "subsistema" && e.id === "SIN") ?? null;
   const dia = sin?.dia ?? g.dias_referencia.ear ?? null;
   if (!sin || !temValor(sin.ear_pct)) {
-    return ausente("agua", MEDIDA_AGUA, `Sem a energia armazenada do SIN${dia ? ` em ${dataBR(dia)}` : " nesta publicação"}.`, dia ? dataBR(dia) : null);
+    return ausente("agua", MEDIDA_AGUA, `Sem a energia armazenada do Sistema Interligado Nacional${dia ? ` em ${dataBR(dia)}` : " nesta publicação"}.`, dia ? dataBR(dia) : null);
   }
   const variacao: Variacao | null = temValor(sin.variacao_30d_pp) ? { valor: sin.variacao_30d_pp, casas: 1, sufixo: " p.p.", referencia: "em 30 dias" } : null;
   const ev = g.evidencias?.ear_sin ?? null;
@@ -387,7 +387,7 @@ export function sinalAgua(g: AguaDetalheGold | null = lerGold<AguaDetalheGold>("
     valorTexto: valorDestaque(sin.ear_pct, "pct", 1),
     unidade: "da EAR máxima",
     periodo: dia ? dataBR(dia) : "dia não informado",
-    universo: "Sistema Interligado Nacional: soma da energia armazenada dos quatro subsistemas sobre a soma das capacidades, e não a média dos percentuais.",
+    universo: "Soma da energia armazenada dos quatro subsistemas sobre a soma das capacidades, e não a média dos percentuais.",
     variacao,
     referencias,
     ressalva: sin.capacidade_mudou_na_base

@@ -47,7 +47,6 @@ import {
   linhasPrevisoesAno,
   linhasProximos24,
   linhasSemPrevisao,
-  listaTexto,
   mudancaCronograma,
   mwTexto,
   notaDatasCronograma,
@@ -170,7 +169,7 @@ export default function CronogramaPage() {
                 unidade="MW"
                 periodo={`fotografia do RALIE de ${dataRalie}`}
                 cor="var(--serie-comp-3)"
-                nota={`${inteiro(sep.datas.length)} ${sep.datas.length === 1 ? "data" : "datas"} (${listaTexto(sep.datas.map(dataTexto))}) em lote, não cronograma de obra.`}
+                nota={`${inteiro(sep.datas.length)} ${sep.datas.length === 1 ? "data atribuída" : "datas atribuídas"} em lote, não cronograma de obra.`}
               />
               <Numero
                 variante="faixa"

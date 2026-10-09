@@ -591,7 +591,7 @@ export function textoMesParcial(s: AguaArmazenamento["serie_mensal_mwmes"]): str
 /* --- capacidade --- */
 
 const ROTULO_TIPO_EVENTO: Record<string, string> = { entrada: "entrada", saida: "saída", alteracao: "alteração" };
-const ROTULO_PARTE: Record<string, string> = { proprio: "própria", jusante: "a jusante" };
+const ROTULO_PARTE: Record<string, string> = { proprio: "própria", jusante: "a jusante", restante: "soma dos demais" };
 
 export function respostaCapacidade(c: AguaArmazenamento["capacidade"], dia: string): string {
   const sin = c.variacao_desde_inicio_mwmes.SIN;
@@ -788,9 +788,9 @@ export function motivoSemEna30d(e: Pick<EntidadeEna, "nome" | "tipo" | "ena_30d_
   return "algum dia da janela ficou sem dado, e a razão nunca é calculada com dia faltando";
 }
 
-/** O período da faixa usual da janela, sem a expressão quebrada "em sem base" quando o recorte não tem base: "faixa da mesma janela em 2001 a 2025". */
-export function textoFaixaJanela(e: Pick<EntidadeEna, "periodo_base" | "anos_na_base_30d" | "pct_mlt_30d">): string {
-  if (e.periodo_base) return `faixa da mesma janela em ${periodoBase(e.periodo_base)}`;
+/** O período da faixa usual da janela, sem a expressão quebrada "em sem base" quando o recorte não tem faixa: "faixa da mesma janela em 2001 a 2025". */
+export function textoFaixaJanela(e: Pick<EntidadeEna, "periodo_base" | "anos_na_base_30d" | "pct_mlt_30d" | "faixa_30d">): string {
+  if (e.faixa_30d && e.periodo_base) return `faixa da mesma janela em ${periodoBase(e.periodo_base)}`;
   if (e.pct_mlt_30d === null) return "sem faixa da mesma janela, porque o recorte não tem ENA de 30 dias";
   return `sem faixa da mesma janela: ${plural(e.anos_na_base_30d, "ano", "anos")} na base, e o mínimo é 5`;
 }
@@ -1050,14 +1050,10 @@ export function serieDiferencaMlt(mlt: AguaMlt): PontoDiferencaMlt[] {
   const meses = Array.from(new Set(mlt.pmo.comparacao.map((c) => c.mes))).sort();
   if (!meses.length) return [];
   const tol = mlt.pmo.tolerancia_pct;
+  // a tolerância é referência, não dado: a faixa vale em todos os meses do eixo, inclusive nos sem relatório
   return mesesEntre(meses[0], meses[meses.length - 1]).map((m) => {
-    const l = { m, SE: null, S: null, NE: null, N: null, tol_inf: null, tol_sup: null } as PontoDiferencaMlt;
-    for (const c of mlt.pmo.comparacao) {
-      if (c.mes !== m) continue;
-      l[c.sm] = c.dif_inicio_pct;
-      l.tol_inf = -tol;
-      l.tol_sup = tol;
-    }
+    const l = { m, SE: null, S: null, NE: null, N: null, tol_inf: -tol, tol_sup: tol } as PontoDiferencaMlt;
+    for (const c of mlt.pmo.comparacao) if (c.mes === m) l[c.sm] = c.dif_inicio_pct;
     return l;
   });
 }
@@ -1263,19 +1259,20 @@ export function classificacaoChuva(valores: Record<string, number | null>): Clas
   return quebrasFixas(CORTES_ANOMALIA, Object.values(valores), { casas: 0, formatar: (v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${num(Math.abs(v), 0)}%` });
 }
 
+/** Em Entender ficam a bacia, os milímetros e a anomalia (cabem em 360 px, com o número junto do nome); o resto vai para Analisar. O arquivo exportado leva todas. */
 export const COLUNAS_CHUVA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Bacia", tipo: "texto" },
   { id: "mm", rotulo: "Chuva", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "media", rotulo: "Média da base", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "p10", rotulo: "10º percentil", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "p90", rotulo: "90º percentil", tipo: "numero", unidade: "mm", casas: 1 },
+  { id: "media", rotulo: "Média da base", tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" },
+  { id: "p10", rotulo: "10º percentil", tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" },
+  { id: "p90", rotulo: "90º percentil", tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" },
   { id: "anomalia", rotulo: "Anomalia", tipo: "percentual", casas: 1 },
-  { id: "percentil", rotulo: "Percentil", tipo: "numero", casas: 1 },
-  { id: "preliminar", rotulo: "IMERG Late (preliminar)", tipo: "texto", categorica: true },
-  { id: "cobertura", rotulo: "Cobertura média", tipo: "percentual", casas: 1 },
-  { id: "r_mesmo_mes", rotulo: "Correlação com a ENA no mesmo mês", tipo: "numero", casas: 2 },
-  { id: "r_mes_seguinte", rotulo: "Correlação com a ENA do mês seguinte", tipo: "numero", casas: 2 },
-  { id: "bacia", rotulo: "Nome no ONS", tipo: "texto" },
+  { id: "percentil", rotulo: "Percentil", tipo: "numero", casas: 1, nivel: "analisar" },
+  { id: "preliminar", rotulo: "IMERG Late (preliminar)", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "cobertura", rotulo: "Cobertura média", tipo: "percentual", casas: 1, nivel: "analisar" },
+  { id: "r_mesmo_mes", rotulo: "Correlação com a ENA no mesmo mês", tipo: "numero", casas: 2, nivel: "analisar" },
+  { id: "r_mes_seguinte", rotulo: "Correlação com a ENA do mês seguinte", tipo: "numero", casas: 2, nivel: "analisar" },
+  { id: "bacia", rotulo: "Nome no ONS", tipo: "texto", nivel: "analisar" },
 ];
 
 /** Linhas da tabela equivalente ao mapa (mesmo período, mesmos valores). */
@@ -1337,15 +1334,15 @@ export function serieMensalTemperatura(t: AguaTemperatura): PontoTemperaturaMens
 
 export const COLUNAS_TEMPERATURA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
-  { id: "dia", rotulo: "Último dia", tipo: "data" },
+  { id: "dia", rotulo: "Último dia", tipo: "data", nivel: "analisar" },
   { id: "media", rotulo: "Média de 30 dias", tipo: "numero", unidade: "°C", casas: 2 },
-  { id: "base", rotulo: "Média da base", tipo: "numero", unidade: "°C", casas: 2 },
+  { id: "base", rotulo: "Média da base", tipo: "numero", unidade: "°C", casas: 2, nivel: "analisar" },
   { id: "anomalia", rotulo: "Anomalia", tipo: "numero", unidade: "°C", casas: 1 },
-  { id: "p10", rotulo: "10º percentil", tipo: "numero", unidade: "°C", casas: 2 },
-  { id: "p90", rotulo: "90º percentil", tipo: "numero", unidade: "°C", casas: 2 },
-  { id: "percentil", rotulo: "Percentil", tipo: "numero", casas: 1 },
-  { id: "anos_base", rotulo: "Anos na base", tipo: "numero", casas: 0 },
-  { id: "preliminar", rotulo: "GEOS-IT (preliminar)", tipo: "texto", categorica: true },
+  { id: "p10", rotulo: "10º percentil", tipo: "numero", unidade: "°C", casas: 2, nivel: "analisar" },
+  { id: "p90", rotulo: "90º percentil", tipo: "numero", unidade: "°C", casas: 2, nivel: "analisar" },
+  { id: "percentil", rotulo: "Percentil", tipo: "numero", casas: 1, nivel: "analisar" },
+  { id: "anos_base", rotulo: "Anos na base", tipo: "numero", casas: 0, nivel: "analisar" },
+  { id: "preliminar", rotulo: "GEOS-IT (preliminar)", tipo: "texto", categorica: true, nivel: "analisar" },
 ];
 
 export function linhasTemperatura(lista: readonly AguaTemperatura[]): LinhaTabela[] {
@@ -1390,10 +1387,10 @@ export function respostaPrevisao(pv: AguaPrevisao, bacia: string): string {
 export const COLUNAS_PREVISAO_CHUVA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Bacia", tipo: "texto" },
   { id: "mm_7d", rotulo: "Prevista, 7 dias", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "imerg_7d", rotulo: "Média IMERG, mesmos 7 dias", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "mm_total", rotulo: "Prevista, todos os dias", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "imerg_total", rotulo: "Média IMERG, mesmos dias", tipo: "numero", unidade: "mm", casas: 1 },
-  { id: "bacia", rotulo: "Nome no ONS", tipo: "texto" },
+  { id: "imerg_7d", rotulo: "Média IMERG, 7 dias", tipo: "numero", unidade: "mm", casas: 1 },
+  { id: "mm_total", rotulo: "Prevista, todos os dias", tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" },
+  { id: "imerg_total", rotulo: "Média IMERG, todos os dias", tipo: "numero", unidade: "mm", casas: 1, nivel: "analisar" },
+  { id: "bacia", rotulo: "Nome no ONS", tipo: "texto", nivel: "analisar" },
 ];
 
 export function linhasPrevisaoChuva(pv: AguaPrevisao): LinhaTabela[] {
@@ -1410,8 +1407,8 @@ export function linhasPrevisaoChuva(pv: AguaPrevisao): LinhaTabela[] {
 
 export const COLUNAS_PREVISAO_TEMPERATURA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
-  { id: "t_7d", rotulo: "Média prevista, 7 dias", tipo: "numero", unidade: "°C", casas: 2 },
-  { id: "merra2_7d", rotulo: "Média MERRA-2, mesmos dias", tipo: "numero", unidade: "°C", casas: 2 },
+  { id: "t_7d", rotulo: "Prevista, 7 dias", tipo: "numero", unidade: "°C", casas: 2 },
+  { id: "merra2_7d", rotulo: "MERRA-2, mesmos dias", tipo: "numero", unidade: "°C", casas: 2 },
 ];
 
 export function linhasPrevisaoTemperatura(pv: AguaPrevisao): LinhaTabela[] {
@@ -1545,15 +1542,47 @@ export function barrasDecomposicao(d: AguaDecomposicaoEar): BarraParcela[] {
     }));
 }
 
+/**
+ * O que a decomposição publica e o que fica de fora: as parcelas das maiores quedas e altas (as do gráfico) e a soma das demais, por
+ * diferença entre a soma de todas as parcelas do subsistema (publicada) e a soma das listadas. A gold não traz as variações individuais
+ * das demais, só a soma delas; sem a soma ou sem parcelas restantes, não há restante.
+ */
+export function restanteDecomposicao(d: AguaDecomposicaoEar): { nListadas: number; somaListadas: number; nRestantes: number; somaRestantes: number } | null {
+  const listadas = barrasDecomposicao(d);
+  const nRestantes = d.n_reservatorios - listadas.length;
+  if (d.soma_reservatorios_mwmes === null || nRestantes <= 0) return null;
+  const somaListadas = listadas.reduce((t, b) => t + (b.delta ?? 0), 0);
+  return { nListadas: listadas.length, somaListadas, nRestantes, somaRestantes: d.soma_reservatorios_mwmes - somaListadas };
+}
+
+/** As barras do gráfico: as parcelas listadas e, depois delas, uma barra com a soma dos demais reservatórios (marcada como soma por diferença). */
+export function barrasDecomposicaoComRestante(d: AguaDecomposicaoEar): BarraParcela[] {
+  const barras = barrasDecomposicao(d);
+  const r = restanteDecomposicao(d);
+  if (!r) return barras;
+  return [...barras, { id: "demais", rotulo: `Demais ${plural(r.nRestantes, "reservatório", "reservatórios")}, soma`, delta: r.somaRestantes, cod: "", parte: "restante" }];
+}
+
+/**
+ * Frase do que o gráfico mostra e do que falta: a soma das parcelas listadas, a soma dos demais (por diferença) e a ressalva de que as
+ * variações individuais dos demais não estão publicadas. Vazia quando todas as parcelas estão no gráfico.
+ */
+export function textoParcelasFaltantes(d: AguaDecomposicaoEar): string {
+  const r = restanteDecomposicao(d);
+  if (!r) return "";
+  return `O gráfico mostra ${r.nListadas} das ${d.n_reservatorios} parcelas, que somam ${sinal(r.somaListadas, 1)} MWmês; os demais ${plural(r.nRestantes, "reservatório soma", "reservatórios somam")} ${sinal(r.somaRestantes, 1)} MWmês, por diferença entre a soma publicada e a das parcelas listadas. As variações de cada um dos demais não estão publicadas.`;
+}
+
+/** Em Entender: o reservatório, a variação da EAR (junto do nome) e a parte; o código da usina vai para Analisar. */
 export const COLUNAS_DECOMPOSICAO: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Reservatório", tipo: "texto" },
-  { id: "parte", rotulo: "Parte", tipo: "texto", categorica: true },
   { id: "delta", rotulo: "Variação da EAR", tipo: "numero", unidade: "MWmês", casas: 1 },
+  { id: "parte", rotulo: "Parte", tipo: "texto", categorica: true },
   { id: "cod", rotulo: "Código da usina", tipo: "texto", nivel: "analisar" },
 ];
 
 export function linhasDecomposicao(d: AguaDecomposicaoEar): LinhaTabela[] {
-  return barrasDecomposicao(d).map((b) => ({ id: b.id, rotulo: b.rotulo, parte: ROTULO_PARTE[b.parte] ?? b.parte, delta: b.delta, cod: b.cod }));
+  return barrasDecomposicaoComRestante(d).map((b) => ({ id: b.id, rotulo: b.rotulo, parte: ROTULO_PARTE[b.parte] ?? b.parte, delta: b.delta, cod: b.cod }));
 }
 
 export const COLUNAS_DECOMPOSICAO_SUBSISTEMAS: ColunaTabela[] = [
@@ -1596,10 +1625,40 @@ export function reservatorioDaParcela(lista: readonly AguaReservatorio[], cod: s
   return lista.find((r) => r.cod === cod) ?? null;
 }
 
-export function respostaBalanco(r: AguaReservatorio, res: Pick<AguaReservatorios, "inicio" | "fim" | "periodo_fecham_por_construcao">): string {
+/**
+ * Por que um reservatório não tem balanço de 30 dias, dito pela causa exata: sem correspondência no cadastro do ONS (que traz o volume
+ * útil), cadastro sem volume útil, ou falta de volume ou vazão na janela. `semCadastro` é a lista de identificadores que a gold publica.
+ */
+export function motivoSemBalanco(r: Pick<AguaReservatorio, "id" | "vol_util_total_hm3">, semCadastro?: readonly string[]): string {
+  if (semCadastro?.includes(r.id)) return "o reservatório não tem correspondência no cadastro do ONS, que traz o volume útil";
+  if (r.vol_util_total_hm3 === null) return "o cadastro do ONS não informa o volume útil";
+  return "falta volume ou vazão na janela";
+}
+
+/** O volume no fim da janela fora de 0 a 100% do volume útil: é o valor da fonte (acima do volume máximo normal ou abaixo de zero), e a página o diz. */
+export function volumeForaDaFaixa(pctFim: number | null | undefined): "acima" | "abaixo" | null {
+  if (pctFim === null || pctFim === undefined || !Number.isFinite(pctFim)) return null;
+  return pctFim > 100 ? "acima" : pctFim < 0 ? "abaixo" : null;
+}
+
+const AVISO_VOLUME: Record<"acima" | "abaixo", string> = {
+  acima: "valor da fonte, acima do volume máximo normal do reservatório",
+  abaixo: "valor da fonte, abaixo de zero",
+};
+
+/** Frase da tabela e do veredito: quantos reservatórios terminam fora de 0 a 100% do volume útil, com os maiores. Vazia quando nenhum. */
+export function textoVolumeForaDaFaixa(lista: readonly Pick<AguaReservatorio, "nome" | "vol_util_pct_fim">[]): string {
+  const fora = lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null);
+  if (!fora.length) return "";
+  const desvio = (x: number | null) => (x === null ? 0 : x > 100 ? x - 100 : x < 0 ? -x : 0);
+  const maiores = [...fora].sort((a, b) => desvio(b.vol_util_pct_fim) - desvio(a.vol_util_pct_fim)).slice(0, 3);
+  return `${plural(fora.length, "reservatório termina", "reservatórios terminam")} a janela fora de 0 a 100% do volume útil (${listaTexto(maiores.map((r) => `${nomeProprio(r.nome)} ${pct(r.vol_util_pct_fim, 2)}`))}${fora.length > maiores.length ? ", entre os maiores desvios" : ""}): é o valor da fonte, acima do volume máximo normal ou abaixo de zero, e a conta da água o usa como veio.`;
+}
+
+export function respostaBalanco(r: AguaReservatorio, res: Pick<AguaReservatorios, "inicio" | "fim" | "periodo_fecham_por_construcao">, semCadastro?: readonly string[]): string {
   const nome = nomeProprio(r.nome);
   if (!r.balanco_calculado || r.dv_obs_hm3 === null || r.residuo_hm3 === null) {
-    return `${nome}: sem balanço de 30 dias de ${dataBR(res.inicio)} a ${dataBR(res.fim)} (falta volume ou vazão na janela, ou volume útil no cadastro; o motivo está em agua_reservatorios.csv). Nada é preenchido.`;
+    return `${nome}: sem balanço de 30 dias de ${dataBR(res.inicio)} a ${dataBR(res.fim)}, porque ${motivoSemBalanco(r, semCadastro)}. Nada é preenchido.`;
   }
   const dv = r.dv_obs_hm3;
   const sentido = Number(dv.toFixed(1)) < 0 ? "caiu" : Number(dv.toFixed(1)) > 0 ? "subiu" : "ficou estável, com variação de";
@@ -1611,8 +1670,9 @@ export function respostaBalanco(r: AguaReservatorio, res: Pick<AguaReservatorios
     r.vertido_hm3 !== null ? `${num(r.vertido_hm3, 1)} vertidos` : null,
     outras !== null && dentro ? `${num(outras, 1)} por outras estruturas` : null,
   ].filter((x): x is string => x !== null);
+  const fora = volumeForaDaFaixa(r.vol_util_pct_fim);
   const partes = [
-    `De ${dataBR(res.inicio)} a ${dataBR(res.fim)}, o volume de ${nome} ${sentido} ${num(Math.abs(dv), 1)} hm³ e terminou em ${pct(r.vol_util_pct_fim, 2)} do volume útil. Entraram ${num(r.afluencia_hm3, 1)} hm³ (afluência) e saíram ${num(r.defluencia_hm3, 1)} hm³ (defluência${saidas.length ? `: ${listaTexto(saidas)}` : ""})${
+    `De ${dataBR(res.inicio)} a ${dataBR(res.fim)}, o volume de ${nome} ${sentido} ${num(Math.abs(dv), 1)} hm³ e terminou em ${pct(r.vol_util_pct_fim, 2)} do volume útil${fora ? ` (${AVISO_VOLUME[fora]})` : ""}. Entraram ${num(r.afluencia_hm3, 1)} hm³ (afluência) e saíram ${num(r.defluencia_hm3, 1)} hm³ (defluência${saidas.length ? `: ${listaTexto(saidas)}` : ""})${
       outras !== null && !dentro ? `; as outras estruturas, que o ONS publica à parte e fora da defluência deste reservatório, somaram ${num(outras, 1)} hm³` : ""
     }. O resíduo do balanço, variação observada menos afluência mais defluência, é de ${sinal(r.residuo_hm3, 2)} hm³.`,
   ];
@@ -1649,10 +1709,10 @@ export function textoOutraJanelaDaEar(d: AguaDecomposicaoEar | null, lista: read
  * Veredito do P020, balanço do reservatório: se saiu mais água do que entrou no reservatório escolhido nos 30 dias, quanto o
  * volume variou e o resíduo da conta. As saídas por estrutura, a transferência e a série de dias ficam em respostaBalanco.
  */
-export function vereditoBalancoReservatorio(r: AguaReservatorio, res: Pick<AguaReservatorios, "inicio" | "fim">): string {
+export function vereditoBalancoReservatorio(r: AguaReservatorio, res: Pick<AguaReservatorios, "inicio" | "fim">, semCadastro?: readonly string[]): string {
   const nome = nomeProprio(r.nome);
   if (!r.balanco_calculado || r.dv_obs_hm3 === null || r.residuo_hm3 === null) {
-    return `${nome}: sem balanço de 30 dias de ${dataBR(res.inicio)} a ${dataBR(res.fim)}, porque falta volume ou vazão na janela, ou volume útil no cadastro. Nada é preenchido.`;
+    return `${nome}: sem balanço de 30 dias de ${dataBR(res.inicio)} a ${dataBR(res.fim)}, porque ${motivoSemBalanco(r, semCadastro)}. Nada é preenchido.`;
   }
   const dv = Number(r.dv_obs_hm3.toFixed(1));
   const quanto = dv === 0 ? "o volume ficou estável" : `${dv < 0 ? "saiu mais água do que entrou" : "entrou mais água do que saiu"} e o volume ${dv < 0 ? "caiu" : "subiu"} ${num(Math.abs(r.dv_obs_hm3), 1)} hm³`;
@@ -1661,72 +1721,118 @@ export function vereditoBalancoReservatorio(r: AguaReservatorio, res: Pick<AguaR
 
 export type BarraBalanco = { id: string; rotulo: string; v: number | null };
 
-/** Componentes do balanço de 30 dias em hm³, na ordem da identidade (a vazão natural vem como contexto). */
+/**
+ * Componentes do balanço de 30 dias em hm³ em três grupos, cada um na sua régua: o que entrou, saiu e variou (totais da identidade, mais a
+ * vazão natural como contexto fora do balanço), as partes da defluência e o resíduo com a transferência (pequenos, que na régua dos totais
+ * sumiriam). Um componente sem dado fica como ausência na barra, nunca como zero.
+ */
 export function barrasBalanco(r: AguaReservatorio): BarraBalanco[] {
+  return [...barrasBalancoTotais(r), ...barrasBalancoDefluencia(r), ...barrasBalancoResiduo(r)];
+}
+
+export function barrasBalancoTotais(r: AguaReservatorio): BarraBalanco[] {
   return [
-    { id: "dv", rotulo: "Variação observada do volume", v: r.dv_obs_hm3 },
     { id: "afl", rotulo: "Afluência", v: r.afluencia_hm3 },
     { id: "defl", rotulo: "Defluência", v: r.defluencia_hm3 },
+    { id: "dv", rotulo: "Variação observada do volume", v: r.dv_obs_hm3 },
+    { id: "nat", rotulo: "Vazão natural (fora do balanço)", v: r.natural_hm3 },
+  ];
+}
+
+export function barrasBalancoDefluencia(r: AguaReservatorio): BarraBalanco[] {
+  return [
     { id: "turb", rotulo: "Turbinado", v: r.turbinado_hm3 },
     { id: "vert", rotulo: "Vertido", v: r.vertido_hm3 },
     { id: "outras", rotulo: "Outras estruturas", v: r.outras_estruturas_hm3 },
     { id: "nd", rotulo: "Defluência não discriminada", v: r.defluencia_nao_discriminada_hm3 },
-    { id: "transf", rotulo: "Transferência", v: r.transferido_hm3 },
-    { id: "res", rotulo: "Resíduo do balanço", v: r.residuo_hm3 },
-    { id: "nat", rotulo: "Vazão natural (contexto, fora do balanço)", v: r.natural_hm3 },
   ];
 }
 
+export function barrasBalancoResiduo(r: AguaReservatorio): BarraBalanco[] {
+  return [
+    { id: "res", rotulo: "Resíduo do balanço", v: r.residuo_hm3 },
+    { id: "transf", rotulo: "Transferência", v: r.transferido_hm3 },
+  ];
+}
+
+/**
+ * Nota do gráfico das vazões diárias: a defluente (o que sai) e a turbinada (o que passa pelas turbinas) coincidem quando nada é
+ * vertido, e a linha de uma cobre a da outra. Vazia quando as duas linhas se distinguem.
+ */
+export function notaVazoesCoincidem(serie: readonly Pick<PontoReservatorio, "defl" | "turb" | "vert">[]): string {
+  const pares = serie.filter((p) => p.defl !== null && p.turb !== null);
+  if (pares.length < 2) return "";
+  const coincide = pares.every((p) => Math.abs((p.defl as number) - (p.turb as number)) < 0.5);
+  if (!coincide) return "";
+  const semVertido = serie.every((p) => p.vert === null || p.vert === 0);
+  return `A linha da vazão defluente cobre a da turbinada: nos dias mostrados, a defluência é igual à vazão que passa pelas turbinas${semVertido ? ", porque nada foi vertido" : ""}.`;
+}
+
+/**
+ * Em Entender ficam o reservatório, a variação observada do volume e o resíduo (cabem em 360 px, com o número junto do nome); as demais
+ * colunas, inclusive o volume no fim e o motivo da ausência de balanço, vão para Analisar. O arquivo exportado leva todas.
+ */
 export const COLUNAS_RESERVATORIOS: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Reservatório", tipo: "texto" },
-  { id: "subsistema", rotulo: "Subsistema", tipo: "texto", categorica: true },
-  { id: "bacia", rotulo: "Bacia", tipo: "texto", categorica: true },
-  { id: "ear_max_mwmes", rotulo: "EAR máxima", tipo: "numero", unidade: "MWmês", casas: 1 },
-  { id: "vol_util_total_hm3", rotulo: "Volume útil", tipo: "numero", unidade: "hm³", casas: 1 },
-  { id: "vol_util_pct_fim", rotulo: "Volume no fim", tipo: "percentual", casas: 2 },
   { id: "dv_obs_hm3", rotulo: "Variação observada", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "afluencia_hm3", rotulo: "Afluência", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "defluencia_hm3", rotulo: "Defluência", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "turbinado_hm3", rotulo: "Turbinado", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "vertido_hm3", rotulo: "Vertido", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "outras_estruturas_hm3", rotulo: "Outras estruturas", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "defluencia_nao_discriminada_hm3", rotulo: "Não discriminada", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "transferido_hm3", rotulo: "Transferência", tipo: "numero", unidade: "hm³", casas: 2 },
   { id: "residuo_hm3", rotulo: "Resíduo", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "residuo_com_transferencia_hm3", rotulo: "Resíduo com transferência", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "natural_hm3", rotulo: "Vazão natural (contexto)", tipo: "numero", unidade: "hm³", casas: 2 },
-  { id: "janela_pct", rotulo: "Dias dentro do arredondamento, janela", tipo: "percentual", casas: 1 },
-  { id: "serie_pct", rotulo: "Dias dentro do arredondamento, série", tipo: "percentual", casas: 1 },
-  { id: "convencao", rotulo: "Convenção da defluência", tipo: "texto", categorica: true },
-  { id: "balanco", rotulo: "Balanço calculado", tipo: "texto", categorica: true },
+  { id: "subsistema", rotulo: "Subsistema", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "bacia", rotulo: "Bacia", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "ear_max_mwmes", rotulo: "EAR máxima", tipo: "numero", unidade: "MWmês", casas: 1, nivel: "analisar" },
+  { id: "vol_util_total_hm3", rotulo: "Volume útil", tipo: "numero", unidade: "hm³", casas: 1, nivel: "analisar" },
+  { id: "vol_util_pct_fim", rotulo: "Volume no fim", tipo: "percentual", casas: 2, nivel: "analisar" },
+  { id: "afluencia_hm3", rotulo: "Afluência", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "defluencia_hm3", rotulo: "Defluência", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "turbinado_hm3", rotulo: "Turbinado", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "vertido_hm3", rotulo: "Vertido", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "outras_estruturas_hm3", rotulo: "Outras estruturas", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "defluencia_nao_discriminada_hm3", rotulo: "Não discriminada", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "transferido_hm3", rotulo: "Transferência", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "residuo_com_transferencia_hm3", rotulo: "Resíduo com transferência", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "natural_hm3", rotulo: "Vazão natural (contexto)", tipo: "numero", unidade: "hm³", casas: 2, nivel: "analisar" },
+  { id: "janela_pct", rotulo: "Dias dentro do arredondamento, janela", tipo: "percentual", casas: 1, nivel: "analisar" },
+  { id: "serie_pct", rotulo: "Dias dentro do arredondamento, série", tipo: "percentual", casas: 1, nivel: "analisar" },
+  { id: "convencao", rotulo: "Convenção da defluência", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "balanco", rotulo: "Balanço calculado", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "motivo", rotulo: "Observação", tipo: "texto", nivel: "analisar" },
   { id: "id", rotulo: "Identificador no ONS", tipo: "texto", nivel: "analisar" },
 ];
 
-export function linhasReservatorios(lista: readonly AguaReservatorio[]): LinhaTabela[] {
-  return lista.map((r) => ({
-    id: r.id,
-    rotulo: nomeProprio(r.nome),
-    subsistema: r.subsistema && ehRegiao(r.subsistema) ? NOME_REGIAO[r.subsistema] : r.subsistema,
-    bacia: r.bacia ? nomeProprio(r.bacia) : null,
-    ear_max_mwmes: r.ear_max_mwmes,
-    vol_util_total_hm3: r.vol_util_total_hm3,
-    vol_util_pct_fim: r.vol_util_pct_fim,
-    dv_obs_hm3: r.dv_obs_hm3,
-    afluencia_hm3: r.afluencia_hm3,
-    defluencia_hm3: r.defluencia_hm3,
-    turbinado_hm3: r.turbinado_hm3,
-    vertido_hm3: r.vertido_hm3,
-    outras_estruturas_hm3: r.outras_estruturas_hm3,
-    defluencia_nao_discriminada_hm3: r.defluencia_nao_discriminada_hm3,
-    transferido_hm3: r.transferido_hm3,
-    residuo_hm3: r.residuo_hm3,
-    residuo_com_transferencia_hm3: r.residuo_com_transferencia_hm3,
-    natural_hm3: r.natural_hm3,
-    janela_pct: r.dias_residuo_dentro_tolerancia_pct,
-    serie_pct: r.serie_dias_residuo_dentro_tolerancia_pct,
-    convencao: ROTULO_CONVENCAO[r.convencao_defluencia] ?? r.convencao_defluencia,
-    balanco: r.balanco_calculado ? "sim" : "não",
-  }));
+/**
+ * Linhas da tabela do balanço. O nome leva o aviso quando o volume no fim está fora de 0 a 100% do volume útil, e a coluna Observação diz
+ * o aviso por extenso e, nos reservatórios sem balanço, o motivo exato (`semCadastro` é a lista de identificadores da gold).
+ */
+export function linhasReservatorios(lista: readonly AguaReservatorio[], semCadastro?: readonly string[]): LinhaTabela[] {
+  return lista.map((r) => {
+    const fora = volumeForaDaFaixa(r.vol_util_pct_fim);
+    const sem = !r.balanco_calculado;
+    const obs = [fora ? `${cap(AVISO_VOLUME[fora])}` : null, sem ? `Sem balanço: ${motivoSemBalanco(r, semCadastro)}` : null].filter((x): x is string => x !== null);
+    return {
+      id: r.id,
+      rotulo: `${nomeProprio(r.nome)}${fora ? ` (volume ${fora === "acima" ? "acima de 100%" : "abaixo de 0%"})` : ""}`,
+      subsistema: r.subsistema && ehRegiao(r.subsistema) ? NOME_REGIAO[r.subsistema] : r.subsistema,
+      bacia: r.bacia ? nomeProprio(r.bacia) : null,
+      ear_max_mwmes: r.ear_max_mwmes,
+      vol_util_total_hm3: r.vol_util_total_hm3,
+      vol_util_pct_fim: r.vol_util_pct_fim,
+      dv_obs_hm3: r.dv_obs_hm3,
+      afluencia_hm3: r.afluencia_hm3,
+      defluencia_hm3: r.defluencia_hm3,
+      turbinado_hm3: r.turbinado_hm3,
+      vertido_hm3: r.vertido_hm3,
+      outras_estruturas_hm3: r.outras_estruturas_hm3,
+      defluencia_nao_discriminada_hm3: r.defluencia_nao_discriminada_hm3,
+      transferido_hm3: r.transferido_hm3,
+      residuo_hm3: r.residuo_hm3,
+      residuo_com_transferencia_hm3: r.residuo_com_transferencia_hm3,
+      natural_hm3: r.natural_hm3,
+      janela_pct: r.dias_residuo_dentro_tolerancia_pct,
+      serie_pct: r.serie_dias_residuo_dentro_tolerancia_pct,
+      convencao: ROTULO_CONVENCAO[r.convencao_defluencia] ?? r.convencao_defluencia,
+      balanco: r.balanco_calculado ? "sim" : "não",
+      motivo: obs.length ? obs.join("; ") : null,
+    };
+  });
 }
 
 export type PontoReservatorio = { d: string; vol: number | null; afl: number | null; defl: number | null; turb: number | null; vert: number | null };
@@ -2023,7 +2129,9 @@ export function textoValidacao(v: AguaClima["validacao_estacoes"], corteFinal?: 
   if (!v.pares) return "Sem pares bacia e mês para conferir o IMERG com estações nesta publicação.";
   const per = periodoValidacao(v);
   const final = corteFinal && v.periodo && v.periodo.fim <= corteFinal.slice(0, 7) ? " Os meses comparados são de IMERG Final, não do Late que alimenta os destaques." : "";
-  return `Conferência do IMERG com as estações que o ONS publicou${per ? ` (meses comparados: ${per})` : ""}: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A correlação junta bacias e meses e inclui o ciclo sazonal; o viés varia de uma bacia para outra (tabela).${final} A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
+  const vies = v.bacias.map((b) => b.vies_pct).filter((x): x is number => x !== null && Number.isFinite(x));
+  const porBacia = vies.length > 1 ? `; o viés por bacia vai de ${sinal(Math.min(...vies), 1)}% a ${sinal(Math.max(...vies), 1)}% (tabela)` : "";
+  return `Conferência do IMERG com as estações que o ONS publicou${per ? ` (meses comparados: ${per})` : ""}: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A correlação junta bacias e meses e inclui o ciclo sazonal${porBacia}.${final} A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
 }
 
 /** Reservatórios dos dados hidráulicos sem correspondência no cadastro (sem volume útil, sem balanço). */
@@ -2141,3 +2249,48 @@ export function textoEnaProvisoria(rs: readonly AguaRevisaoCaptura[]): string {
   const quanto = menor === maior ? `${maior} dos 30 dias` : `de ${menor} a ${maior} dos 30 dias`;
   return `${base}. Entre as duas capturas mais recentes, ele revisou ${quanto}, conforme o subsistema (detalhe na tabela de revisões, em Auditar).`;
 }
+
+/* ---------- duas janelas de 30 dias para o mesmo subsistema ---------- */
+
+/**
+ * Nota curta da variação do subsistema na decomposição por reservatório, com a outra janela ao lado quando a página de armazenamento
+ * termina em outro dia ("na página de armazenamento, −3.297,8 MWmês em 30 dias até 29/09/2026"). Vazia quando as duas terminam no mesmo dia.
+ */
+export function notaOutraJanelaCurta(d: AguaDecomposicaoEar | null, lista: readonly Pick<EntidadeEar, "id" | "tipo" | "dia" | "variacao_30d_mwmes">[]): string {
+  if (!d || d.delta_ear_mwmes === null) return "";
+  const e = lista.find((x) => x.tipo === "subsistema" && x.id === d.sm);
+  if (!e || e.variacao_30d_mwmes === null || !e.dia || e.dia === d.fim) return "";
+  return `Na página de armazenamento, ${sinal(e.variacao_30d_mwmes, 1)} MWmês em 30 dias até ${dataBR(e.dia)}: outra janela, que termina em outro dia.`;
+}
+
+/**
+ * O mesmo aviso, escrito para a página de armazenamento: a decomposição por reservatório usa outra janela (a que termina no último dia
+ * com EAR por reservatório). Vazia quando as duas terminam no mesmo dia.
+ */
+export function textoOutraJanelaNaArmazenamento(e: Pick<EntidadeEar, "id" | "tipo" | "dia" | "variacao_30d_mwmes">, ds: readonly AguaDecomposicaoEar[]): string {
+  if (e.tipo !== "subsistema" || e.variacao_30d_mwmes === null || !e.dia) return "";
+  const d = ds.find((x) => x.sm === e.id);
+  if (!d || d.delta_ear_mwmes === null || d.fim === e.dia) return "";
+  return `A página de reservatórios mostra ${sinal(d.delta_ear_mwmes, 1)} MWmês ${DO_REGIAO[d.sm]} de ${dataBR(d.inicio)} a ${dataBR(d.fim)}, o último dia com EAR por reservatório. Aqui a janela é de 30 dias até ${dataBR(e.dia)}, e a variação é ${sinal(e.variacao_30d_mwmes, 1)} MWmês.`;
+}
+
+/* ---------- nomes na ficha "Comprove este número" ---------- */
+
+/**
+ * A mesma ficha de prova com o nome e o valor do cartão: o indicador técnico da gold cita o nome do ONS em maiúsculas e o valor com
+ * outro arredondamento ("Chuva de 30 dias na bacia PARANAIBA, 70 mm" contra "Bacia do Paranaíba, 70,2 mm"); a prova (valor antes do
+ * arredondamento, arquivos, fórmula) segue como está.
+ */
+export function evidenciaComNome<E extends { indicador: string; valor_exibido: string }>(ev: E, indicador: string, valorExibido: string): E {
+  return { ...ev, indicador, valor_exibido: valorExibido };
+}
+
+/* ---------- regras da ENA em Auditar, escritas para a ENA (a da gold repete a regra da EAR e cita termos internos) ---------- */
+
+/** Faixa usual da ENA de 30 dias: o que o texto da gold diz da EAR, dito para a ENA e sem nomes de campo nem de camada. */
+export const REGRA_FAIXA_ENA =
+  "Faixa usual da ENA de 30 dias: mediana, 10º e 90º percentis da ENA de 30 dias que termina no mesmo dia do calendário, em % da MLT vigente, nos anos completos anteriores da base de cada recorte (a coluna Período da base da tabela mostra os anos usados). Com menos de 5 anos na base, não há faixa.";
+
+/** Captura usada: a recaptura feita pelo observatório vale mais que a captura principal, e as revisões entre as duas são publicadas. */
+export const REGRA_CAPTURA_ENA =
+  "Para cada ano vale a captura mais recente do arquivo anual do ONS por subsistema, entre a captura principal do observatório e a recaptura feita para esta página. As revisões entre as duas nos últimos 30 dias são publicadas na tabela de revisões, nesta seção.";

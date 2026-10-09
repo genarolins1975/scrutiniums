@@ -1,14 +1,16 @@
-import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AprendaCabecalho, AprendaNavegacao, ROTA_APRENDA, ROTA_TRILHAS } from "@/components/energia/AprendaPagina";
 import { AprendaProva } from "@/components/energia/AprendaProva";
 import { SimulacaoConta, SimulacaoLiquidacao } from "@/components/energia/AprendaSimulacao";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { destinoNoPainel } from "@/lib/energia/conteudo/aprenda-indice";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { provaDoPasso } from "@/lib/energia/conteudo/provas";
 import { TRILHAS_APRENDA, trilha as acharTrilha, type PassoTrilha } from "@/lib/energia/conteudo/trilhas";
+import { plural } from "@/lib/energia/formato";
 import { TIPOS_LIGACAO, type TipoLigacao } from "@/lib/energia/mapa";
 
 /**
@@ -16,6 +18,9 @@ import { TIPOS_LIGACAO, type TipoLigacao } from "@/lib/energia/mapa";
  * prova e o link ao painel (com ?volta= para o caminho de volta), a ligação tipificada com
  * o passo seguinte (a forma do traço muda com o tipo, como no mapa do setor), um exemplo
  * sintético rotulado e o que o percurso não permite concluir.
+ *
+ * Página filha do Aprenda: a faixa das seções do módulo no alto, a pergunta da trilha e a resposta curta na abertura, o percurso (os
+ * passos em ordem, com os tipos de ligação) e depois cada passo, com o texto ao lado do número que o ilustra.
  */
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -36,7 +41,7 @@ export function generateMetadata({ params }: { params: { trilha: string } }): Me
 
 function Traco({ tipo }: { tipo: TipoLigacao }) {
   return (
-    <svg aria-hidden="true" width="14" height="100%" viewBox="0 0 14 100" preserveAspectRatio="none" className="h-full min-h-[4.5rem] shrink-0">
+    <svg aria-hidden="true" width="14" height="100%" viewBox="0 0 14 100" preserveAspectRatio="none" className="h-full min-h-[3.25rem] shrink-0">
       <line x1="7" y1="0" x2="7" y2="100" stroke="var(--cor-energia)" strokeWidth="2" strokeDasharray={TIPOS_LIGACAO[tipo].traco || undefined} vectorEffect="non-scaling-stroke" />
     </svg>
   );
@@ -50,37 +55,43 @@ function Amostra({ tipo }: { tipo: TipoLigacao }) {
   );
 }
 
+/** Um passo: à esquerda o que ele ensina (título, verbetes, texto); à direita o número publicado que o ilustra, com a ficha e o link ao painel. */
 function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: PassoTrilha; ordem: number; total: number }) {
   const prova = provaDoPasso(passo.prova);
   const nota = passo.nota?.(prova) ?? null;
+  // sem número publicado, o passo ainda leva ao painel de origem
+  const verbeteDoPasso = passo.prova.tipo === "verbete" ? conceito(passo.prova.slug) : undefined;
+  const alternativa = passo.prova.tipo === "evidencia" ? passo.prova.painel : verbeteDoPasso ? destinoNoPainel(verbeteDoPasso) : null;
   return (
-    <li id={`passo-${passo.id}`} className="scroll-mt-4" data-passo={passo.id}>
-      <article aria-labelledby={`t-${passo.id}`} className="border border-linha bg-superficie p-5 md:p-6">
-        <p className="rotulo text-mineral">
-          Passo {ordem} de {total}
-        </p>
-        <h2 id={`t-${passo.id}`} className="mt-1 font-serif text-2xl text-carvao">
-          {passo.titulo}
-        </h2>
-        {passo.conceitos.length > 0 && (
-          <ul aria-label="Verbetes deste passo" className="mt-3 flex flex-wrap gap-2">
-            {passo.conceitos.map((s) => {
-              const c = conceito(s);
-              return c ? (
-                <li key={s}>
-                  <Link href={`/setor-eletrico/aprenda/${s}`} className="inline-flex min-h-[44px] items-center gap-2 border border-linha px-3 text-carvao hover:border-energia">
-                    <span className="rotulo">{c.sigla ?? c.nome}</span>
-                    {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-carvao-muted">{c.nome}</span>}
-                  </Link>
-                </li>
-              ) : null;
-            })}
-          </ul>
-        )}
-        <p className="mt-4 max-w-prose2 leading-relaxed text-carvao">{passo.texto}</p>
-        <div className="mt-4">
+    <li id={`passo-${passo.id}`} className="scroll-mt-6" data-passo={passo.id}>
+      <article aria-labelledby={`t-${passo.id}`} className="border-t border-linha py-6 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-x-10">
+        <div>
+          <p className="rotulo text-mineral">
+            Passo {ordem} de {total}
+          </p>
+          <h2 id={`t-${passo.id}`} className="ed-h2 mt-1 font-serif text-carvao">
+            {passo.titulo}
+          </h2>
+          {passo.conceitos.length > 0 && (
+            <ul aria-label="Verbetes deste passo" className="mt-3 flex flex-wrap gap-2">
+              {passo.conceitos.map((s) => {
+                const c = conceito(s);
+                return c ? (
+                  <li key={s}>
+                    <Link href={`${ROTA_APRENDA}/${s}`} className="inline-flex min-h-[44px] items-center gap-2 border border-linha px-3 text-carvao hover:border-energia">
+                      <span className="rotulo">{c.sigla ?? c.nome}</span>
+                      {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-carvao-muted">{c.nome}</span>}
+                    </Link>
+                  </li>
+                ) : null;
+              })}
+            </ul>
+          )}
+          <p className="mt-4 max-w-prose2 leading-relaxed text-carvao">{passo.texto}</p>
+        </div>
+        <div className="mt-5 min-w-0 md:mt-0">
           <p className="rotulo mb-2 text-mineral">O número no observatório</p>
-          <AprendaProva prova={prova} volta={`trilha:${trilhaId}:${passo.id}`} />
+          <AprendaProva prova={prova} volta={`trilha:${trilhaId}:${passo.id}`} alternativa={alternativa} />
           {nota && (
             <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao" data-nota-passo={passo.id}>
               {nota}
@@ -89,9 +100,9 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
         </div>
       </article>
       {passo.ligacao && (
-        <div className="flex gap-4 py-2 pl-6" data-ligacao={passo.ligacao.tipo}>
+        <div className="flex gap-4 py-1 pl-6" data-ligacao={passo.ligacao.tipo}>
           <Traco tipo={passo.ligacao.tipo} />
-          <p className="self-center py-3 text-sm leading-relaxed text-carvao-muted">
+          <p className="self-center py-2 text-sm leading-relaxed text-carvao-muted">
             <span className="rotulo mr-2 text-carvao">{TIPOS_LIGACAO[passo.ligacao.tipo].rotulo}</span>
             {passo.ligacao.texto}
           </p>
@@ -106,6 +117,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
   if (!t) notFound();
   const tipos = Array.from(new Set(t.passos.flatMap((p) => (p.ligacao ? [p.ligacao.tipo] : []))));
   const outra = TRILHAS_APRENDA.find((x) => x.id !== t.id);
+  const verbetes = new Set(t.passos.flatMap((p) => p.conceitos)).size;
   // o exemplo sintético fica logo depois do passo que ele explica; os passos seguintes continuam a numeração
   const idxSimulacao = Math.max(0, t.passos.findIndex((p) => p.id === t.simulacaoApos));
   const antes = t.passos.slice(0, idxSimulacao + 1);
@@ -114,38 +126,43 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda:trilhas" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
-        <nav aria-label="Trilha de navegação" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] items-center underline underline-offset-4">
-            Aprenda
-          </Link>{" "}
-          ·{" "}
-          <Link href="/setor-eletrico/aprenda/trilhas" className="inline-flex min-h-[44px] items-center underline underline-offset-4">
-            Trilhas
-          </Link>
-        </nav>
-        <header className="pb-6 pt-2">
-          <p className="rotulo text-mineral">Trilha</p>
-          <h1 className="mt-2 font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">{t.titulo}</h1>
-          <p className="mt-3 max-w-prose2 font-serif text-xl leading-relaxed text-carvao">{t.pergunta}</p>
-          <p className="mt-3 max-w-prose2 leading-relaxed text-carvao-muted">{t.resumo}</p>
-          <LegendaDeSiglas
-            siglas={params.trilha === "agua-operacao-preco" ? ["ENA", "EAR", "MWmed", "CMO", "PLD"] : ["CDE", "TUSD", "TE", "SIN", "BPC"]}
-          />
-        </header>
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="trilha">
+        <AprendaNavegacao atual="trilhas" />
+        <AprendaCabecalho
+          tipo="trilha"
+          rotulo="Trilha"
+          titulo={t.titulo}
+          lead={t.pergunta}
+          contexto={
+            <>
+              <span>
+                {plural(t.passos.length, "passo", "passos")} · {plural(verbetes, "verbete", "verbetes")}
+              </span>
+              <span>Fonte: órgão, conjunto e data de cada número, na ficha do passo</span>
+            </>
+          }
+          siglas={params.trilha === "agua-operacao-preco" ? ["ENA", "EAR", "MWmed", "CMO", "PLD"] : ["CDE", "TUSD", "TE", "SIN", "BPC"]}
+        />
+        <p className="mt-4 max-w-prose2 leading-relaxed text-carvao" data-resposta-curta="">
+          {t.resumo}
+        </p>
 
-        <nav aria-label="Passos da trilha" className="border-y border-linha py-4">
-          <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+        <nav aria-label="Passos da trilha" className="mt-6 border-y border-linha py-3" data-percurso="">
+          <ol className="grid grid-cols-2 gap-x-4 text-sm sm:flex sm:flex-wrap sm:items-center sm:gap-x-2">
             {t.passos.map((p, i) => (
               <li key={p.id} className="flex items-center gap-2">
                 <a href={`#passo-${p.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                   {i + 1}. {p.titulo}
                 </a>
-                {i < t.passos.length - 1 && <span aria-hidden="true" className="text-mineral">→</span>}
+                {i < t.passos.length - 1 && (
+                  <span aria-hidden="true" className="hidden text-mineral sm:inline">
+                    →
+                  </span>
+                )}
               </li>
             ))}
           </ol>
-          <div role="group" className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs text-carvao-muted" aria-label="Tipos de ligação nesta trilha">
+          <div role="group" className="mt-2 flex flex-col gap-x-6 gap-y-2 text-xs text-carvao-muted sm:flex-row sm:flex-wrap" aria-label="Tipos de ligação nesta trilha">
             {tipos.map((x) => (
               <span key={x} className="inline-flex items-center gap-2">
                 <Amostra tipo={x} />
@@ -157,21 +174,21 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           </div>
         </nav>
 
-        <ol className="mt-8 max-w-4xl" aria-label={`Passos 1 a ${idxSimulacao + 1}: ${t.titulo}`}>
+        <ol className="mt-4" aria-label={`Passos 1 a ${idxSimulacao + 1}: ${t.titulo}`}>
           {antes.map((p, i) => (
             <Passo key={p.id} trilhaId={t.id} passo={p} ordem={i + 1} total={t.passos.length} />
           ))}
         </ol>
 
-        <section aria-labelledby="sintetico" className="my-8 max-w-4xl" data-simulacao-apos={t.simulacaoApos}>
-          <h2 id="sintetico" className="font-serif text-2xl text-carvao">
+        <section aria-labelledby="sintetico" className="my-8" data-simulacao-apos={t.simulacaoApos}>
+          <h2 id="sintetico" className="ed-h2 font-serif text-carvao">
             Experimente com valores hipotéticos
           </h2>
           <div className="mt-3">{t.simulacao === "liquidacao" ? <SimulacaoLiquidacao /> : <SimulacaoConta />}</div>
         </section>
 
         {depois.length > 0 && (
-          <ol className="max-w-4xl" start={idxSimulacao + 2} aria-label={`Passos ${idxSimulacao + 2} a ${t.passos.length}: ${t.titulo}`}>
+          <ol start={idxSimulacao + 2} aria-label={`Passos ${idxSimulacao + 2} a ${t.passos.length}: ${t.titulo}`}>
             {depois.map((p, i) => (
               <Passo key={p.id} trilhaId={t.id} passo={p} ordem={idxSimulacao + 2 + i} total={t.passos.length} />
             ))}
@@ -179,7 +196,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
         )}
 
         <section aria-labelledby="nao-conclua" className="mt-10 max-w-4xl border-l-2 border-energia pl-4">
-          <h2 id="nao-conclua" className="font-serif text-2xl text-carvao">
+          <h2 id="nao-conclua" className="ed-h2 font-serif text-carvao">
             O que esta trilha não permite concluir
           </h2>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao">
@@ -189,13 +206,16 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           </ul>
         </section>
 
-        <nav aria-label="Continuar" className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-linha pt-6 text-sm">
+        <nav aria-label="Continuar" className="mt-10 flex flex-wrap gap-x-8 gap-y-0 border-t border-linha pt-2 text-sm">
           {outra && (
-            <Link href={`/setor-eletrico/aprenda/trilhas/${outra.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+            <Link href={`${ROTA_TRILHAS}/${outra.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
               Outra trilha: {outra.titulo}
             </Link>
           )}
-          <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+          <Link href={ROTA_TRILHAS} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+            Todas as trilhas
+          </Link>
+          <Link href={ROTA_APRENDA} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
             Todos os verbetes
           </Link>
         </nav>

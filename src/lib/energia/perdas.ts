@@ -1287,7 +1287,7 @@ export function respostaCusto(linhas: readonly LinhaCusto[], consultadaEm: strin
     partes.push(
       `${plural(encAtivas, "distribuidora ativa só tem", "distribuidoras ativas só têm")} processo com vigência encerrada no arquivo da fonte: a tarifa em vigor ${encAtivas === 1 ? "dela" : "delas"} é desconhecida até a próxima publicação, e ${encAtivas === 1 ? "ela fica" : "elas ficam"} fora da faixa.`,
     );
-  if (enc > encAtivas) partes.push(`Outras ${num(enc - encAtivas, 0)} têm o último processo encerrado porque a série delas no SAMP também terminou.`);
+  if (enc > encAtivas) partes.push(`Outras ${num(enc - encAtivas, 0)} têm o último processo encerrado, e a série delas no SAMP também terminou.`);
   return partes.join(" ");
 }
 

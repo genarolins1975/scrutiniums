@@ -67,6 +67,7 @@ import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 import type { Natureza } from "@/lib/energia/tipos";
 import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
+import { SIGLAS, legendaDeSiglas } from "@/lib/energia/siglas";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 
 export const dynamic = "force-static";
@@ -280,6 +281,66 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
   );
 }
 
+/**
+ * O mapa do celular em uma tela: as quatro faixas na ordem do desenho, os sete elos numerados como links para o texto de cada um, a seta e o
+ * tipo da ligação entre os elos da mesma faixa, e, em cada elo, as ligações que saem dele para outras faixas. Tudo vem de NOS_MAPA e LIGACOES:
+ * é o mesmo grafo do desenho, lido de cima para baixo.
+ */
+function ResumoDoMapa() {
+  const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
+  return (
+    <section aria-labelledby="mapa-resumo" className="mb-6 border border-linha bg-superficie p-4" data-mapa-resumo="">
+      <h3 id="mapa-resumo" className="font-serif text-lg text-carvao">
+        O mapa em uma tela
+      </h3>
+      <ol className="mt-3 space-y-4">
+        {ORDEM_FAIXAS.map((f) => {
+          const nos = NOS_MAPA.filter((n) => n.faixa === f);
+          return (
+            <li key={f}>
+              <p className="rotulo text-mineral">{FAIXAS_MAPA[f].rotulo}</p>
+              <ol className="mt-1.5">
+                {nos.map((n, i) => {
+                  const proximo = nos[i + 1];
+                  const seguinte = proximo ? LIGACOES.find((l) => l.de === n.id && l.para === proximo.id) : undefined;
+                  // as ligações que saem do elo e não são a seta para o elo de baixo
+                  const outras = LIGACOES.filter((l) => l.de === n.id && l !== seguinte);
+                  return (
+                    <li key={n.id}>
+                      <a href={`#mapa-elo-${n.id}`} className="flex min-h-[44px] items-center gap-3 border border-linha px-3 py-2 text-sm leading-snug text-carvao">
+                        <span className="tabular-nums text-mineral">{numero.get(n.id)}</span>
+                        {n.titulo}
+                      </a>
+                      {outras.length > 0 && (
+                        <p className="mt-1 pl-3 text-xs leading-snug text-carvao-muted">
+                          Liga-se a{" "}
+                          {outras.map((l, k) => (
+                            <span key={l.para}>
+                              {k > 0 && "; "}
+                              {numero.get(l.para)}, {porId.get(l.para)!.titulo.toLowerCase()} ({TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()})
+                            </span>
+                          ))}
+                          .
+                        </p>
+                      )}
+                      {proximo && seguinte && (
+                        <p className="py-1 pl-3 text-xs text-carvao-muted">
+                          <span aria-hidden="true">↓</span> {TIPOS_LIGACAO[seguinte.tipo].rotulo.toLowerCase()}
+                          <span className="sr-only"> para {proximo.titulo.toLowerCase()}</span>
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
 /** A versão do mapa em texto: as quatro faixas na ordem do desenho, cada elo com a explicação, onde explorar, conceitos e as ligações que partem dele. */
 function MapaEmTexto() {
   const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
@@ -293,7 +354,7 @@ function MapaEmTexto() {
           <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{FAIXAS_MAPA[f].resumo}</p>
           <ol className="mt-3 space-y-5">
             {NOS_MAPA.filter((n) => n.faixa === f).map((n) => (
-              <li key={n.id} className="border-t border-linha pt-3">
+              <li key={n.id} id={`mapa-elo-${n.id}`} className="scroll-mt-24 border-t border-linha pt-3">
                 <h5 className="font-serif text-lg leading-snug text-carvao">
                   <span className="mr-2 text-mineral">{numero.get(n.id)}.</span>
                   {n.titulo}
@@ -557,6 +618,8 @@ export default function MapaDoObservatorio() {
   const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas, refinosDePeriodo(qualidade));
   const resumoAtual = resumoAtualidade(atualidade);
   const regraAtual = regraDeAtualidade(atualidade);
+  // os órgãos que a tabela cita, com o nome por extenso: o rótulo de cada fonte traz só a sigla
+  const orgaosDaTabela = Array.from(new Set(atualidade.map((l) => l.orgao).filter((o): o is string => !!o)));
   const dataPublicacao = pub?.referencia?.hoje ?? null;
   const pubFontes = publicacaoDados();
   const orgaos = pubFontes ? orgaosDasFontes(pubFontes).map((o) => o.orgao) : [];
@@ -605,7 +668,7 @@ export default function MapaDoObservatorio() {
                 <span>Cada número informa o próprio período e universo</span>
                 {orgaos.length > 0 && (
                   <span>
-                    Fonte: {orgaos.length} órgãos, entre eles {listaEmPortugues(orgaos.slice(0, 3))}
+                    Fonte: {orgaos.length} órgãos, entre eles {listaEmPortugues(orgaos.slice(0, 3).map((o) => (SIGLAS[o] ? `${SIGLAS[o]} (${o})` : o)))}
                   </span>
                 )}
                 <DetalheDoNivel resumo="Fontes, datas e siglas" abreEm="nunca" className="[&[open]]:basis-full">
@@ -757,7 +820,16 @@ export default function MapaDoObservatorio() {
         <Secao
           id="mapa-conceitual"
           titulo="Como as partes do setor elétrico se ligam"
-          subtitulo="Sete elos, da água à vida das pessoas, em quatro faixas: o caminho físico, a coordenação da operação, as relações econômicas e a experiência das pessoas. Escolha um elo para ver o que ele é, onde explorá-lo e com que tipo de ligação ele se conecta aos outros. A forma do traço diz o tipo da ligação."
+          subtitulo={
+            <>
+              Sete elos, da água à vida das pessoas, em quatro faixas: o caminho físico, a coordenação da operação, as relações econômicas e a experiência das pessoas.{" "}
+              {/* o desenho e os botões só existem a partir de md: no celular a instrução é outra */}
+              <span className="hidden md:inline">
+                Escolha um elo para ver o que ele é, onde explorá-lo e com que tipo de ligação ele se conecta aos outros. A forma do traço diz o tipo da ligação.
+              </span>
+              <span className="md:hidden">Leia os sete elos abaixo, um a um; o resumo mostra o caminho em uma tela.</span>
+            </>
+          }
         >
           <div className="hidden md:block">
             <MapaConceitual
@@ -772,6 +844,7 @@ export default function MapaDoObservatorio() {
           {/* versão em texto: é o mapa no celular. No desktop ela some (display: none), porque cópia só para o leitor de tela deixava dezenas de paradas de Tab
               em links e resumos invisíveis; lá o leitor de tela e o teclado usam os sete botões e o painel do elo, que trazem o mesmo conteúdo */}
           <div className="md:hidden">
+            <ResumoDoMapa />
             <h3 className="mb-3 font-serif text-lg text-carvao">O mapa em texto</h3>
             <p className="mb-2 text-sm leading-relaxed text-carvao-muted">
               Tipos de ligação: <TiposDeLigacao />
@@ -1143,6 +1216,12 @@ export default function MapaDoObservatorio() {
                   `: ${regraAtual.comMesAtras.map((l) => `em ${l.tema}, o arquivo foi publicado em ${l.publicadoEm} e o ${l.ultimoMesRotulo} é ${l.ultimoMes}`).join("; ")}`}
                 .{regraAtual.tolerancias.length > 0 && ` Tolerância depois do prazo, por atualização: ${regraAtual.tolerancias.map((x) => `${x.cadencia}, ${x.dias} dias`).join("; ")}.`}
               </p>
+              {orgaosDaTabela.length > 0 && (
+                <p className="max-w-prose2 text-xs" data-orgaos="">
+                  <span className="font-medium text-carvao-muted">Órgãos: </span>
+                  {legendaDeSiglas(orgaosDaTabela)}.
+                </p>
+              )}
               {atualidade.some((l) => l.situacao === "sem calendário declarado") && (
                 <p className="max-w-prose2" data-nota-atualidade="sem-calendario">
                   Sem calendário declarado: a fonte não informa de quanto em quanto tempo atualiza, e por isso o observatório não diz se está em dia ou atrasada; mostra só o último período que ela publicou.

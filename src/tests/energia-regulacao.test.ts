@@ -613,9 +613,17 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
       expect(h, id).toContain(`id="${id}-titulo"`);
       expect(h, id).toContain(esc(perguntaPainel(id)));
       expect(h, id).toContain(`data-resposta="${id}"`);
-      for (const parte of ["Período", "Universo", "Unidade", "Como ler", "O que não permite concluir", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel"]) {
+      // "Como ler" e "O que não permite concluir" foram fundidos a "Como interpretar" e "O que não é possível concluir"; o rodapé é o SeguirPainel compartilhado
+      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados"]) {
         expect(h, `${id}: ${parte}`).toContain(parte);
       }
+      for (const velha of ["Como ler", "O que não permite concluir", "Baixar os dados deste painel"]) expect(h, `${id}: ${velha}`).not.toContain(velha);
+      // a pergunta da página é o h1; o título do painel (h2) pergunta outra coisa e não repete o da página
+      const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(conteudo(h))?.[1].replace(/<[^>]+>/g, "") ?? "";
+      expect(h1, id).toBe(perguntaPainel(id));
+      const h2 = new RegExp(`<h2[^>]*id="${id}-titulo"[^>]*>([\\s\\S]*?)</h2>`).exec(conteudo(h))?.[1].replace(/<[^>]+>/g, "") ?? "";
+      expect(h2.length, `${id}: h2 do painel`).toBeGreaterThan(0);
+      expect(h2, `${id}: h2 do painel`).not.toBe(h1);
       expect(h, id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');

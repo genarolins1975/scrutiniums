@@ -3,21 +3,37 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import GeracaoPage from "@/app/setor-eletrico/geracao/page";
 import GeracaoRestricoesPage from "@/app/setor-eletrico/geracao/restricoes/page";
 import GeracaoCapacidadePage from "@/app/setor-eletrico/geracao/capacidade/page";
+import GeracaoTermicaPage from "@/app/setor-eletrico/geracao/termica/page";
+import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import { lerCaminho, pontoNaRegiao, type CamadaGeo } from "@/lib/energia/geo";
 import {
+  CATEGORIAS,
+  FRASE_CATEGORIA,
   PAINEIS_GERACAO,
+  TOLERANCIA_SOMA_PP,
+  coberturaMensal,
+  comparacaoEntreJanelas,
+  composicaoDaJanela,
+  datasDoModulo,
   deContraido,
+  fechamentoDaComposicao,
+  fontePrincipalDaJanela,
   histogramaFc,
   inflexibilidadeSemNuclear,
   linhasCapacidade,
   linhasMmgdCapacidade,
   linhasRazoes12m,
+  maioresFontes,
   minusculaPalavras,
+  naturezaDaCategoria,
+  partesDaNatureza,
   textoNatureza,
   linhasRestricaoMensal,
   linhasSigaHistorico,
+  perguntaPainel,
   pontosUsinas,
   respostaCapacidade,
   respostaRestricao,
@@ -208,6 +224,296 @@ describe("textos e navegação da Geração", () => {
   });
 });
 
+describe("P021 na abertura: composição completa, recorte das cinco maiores e comparação entre janelas", () => {
+  const m = G.matriz;
+  const mix30 = m.janelas.SIN["30d"]!;
+  const mix12 = m.janelas.SIN["12m"]!;
+  const soma = (xs: readonly { participacao: number }[]) => xs.reduce((t, l) => t + l.participacao, 0);
+
+  it("a composição completa traz toda categoria com valor, da maior para a menor, com a participação publicada e sem linha para o que está ausente", () => {
+    const c = composicaoDaJanela(m, "SIN", "30d", "com");
+    const comValor = CATEGORIAS.filter((k) => mix30.participacao[k] !== null);
+    expect(c.map((l) => l.id).sort()).toEqual([...comValor].sort());
+    expect(c.length).toBe(11);
+    for (let i = 1; i < c.length; i++) expect(c[i - 1].participacao).toBeGreaterThanOrEqual(c[i].participacao);
+    // nenhum número novo: cada participação é a da gold, sem novo arredondamento, e a energia média também
+    for (const l of c) {
+      expect(l.participacao, l.id).toBe(mix30.participacao[l.id]);
+      expect(l.mwmed, l.id).toBe(mix30.mwmed[l.id]);
+    }
+    // ausência não vira linha nem zero: a categoria sem valor na janela não está na lista
+    expect(c.map((l) => l.id)).not.toContain("nao_mapeada");
+  });
+
+  it("a composição fecha 100% dentro da tolerância do controle publicado, e o texto diz quando não fecha", () => {
+    const f = fechamentoDaComposicao(composicaoDaJanela(m, "SIN", "30d", "com"));
+    expect(f.categorias).toBe(11);
+    expect(f.tolerancia).toBe(TOLERANCIA_SOMA_PP);
+    expect(Math.abs(f.soma - 100)).toBeLessThanOrEqual(TOLERANCIA_SOMA_PP + 1e-9);
+    expect(f.fecha).toBe(true);
+    // a soma é a das participações exibidas, não um complemento: duas casas, como a gold
+    expect(f.soma).toBeCloseTo(soma(composicaoDaJanela(m, "SIN", "30d", "com")), 2);
+    expect(fechamentoDaComposicao([{ participacao: 60 }, { participacao: 30 }])).toMatchObject({ soma: 90, categorias: 2, fecha: false });
+    expect(fechamentoDaComposicao([]).fecha).toBe(false);
+    // em todas as janelas e regiões publicadas a composição fecha (é o controle "Participações somam 100%")
+    for (const rg of ["SIN", "SE", "S", "NE", "N"] as const) {
+      for (const j of ["dia", "7d", "30d", "12m"] as const) {
+        if (!m.janelas[rg]?.[j]) continue;
+        for (const per of ["com", "sem"] as const) expect(fechamentoDaComposicao(composicaoDaJanela(m, rg, j, per)).fecha, `${rg} ${j} ${per}`).toBe(true);
+      }
+    }
+  });
+
+  it("sem a MMGD a Solar MMGD sai da composição e o total é o do perímetro", () => {
+    const sem = composicaoDaJanela(m, "SIN", "30d", "sem");
+    expect(sem.map((l) => l.id)).not.toContain("solar_mmgd");
+    expect(sem.length).toBe(10);
+    for (const l of sem) expect(l.participacao, l.id).toBe(mix30.participacao_sem_mmgd[l.id]);
+  });
+
+  it("o recorte da abertura são as cinco maiores, as primeiras da composição, e nunca vira um 'outros' por subtração", () => {
+    const c = composicaoDaJanela(m, "SIN", "30d", "com");
+    const cinco = maioresFontes(c);
+    expect(cinco.map((l) => l.id)).toEqual(c.slice(0, 5).map((l) => l.id));
+    expect(soma(cinco)).toBeLessThan(soma(c));
+    // só entram categorias reais, com a participação publicada: nada de linha calculada como 100 menos as cinco
+    for (const l of cinco) expect(c).toContain(l);
+    expect(maioresFontes(c, 3)).toHaveLength(3);
+    expect(maioresFontes([{ participacao: 0 }, { participacao: 0 }])).toEqual([]);
+  });
+
+  it("natureza de cada fonte: MMGD é estimativa do ONS, térmica Tipo III é previsão do ONS e o resto é medição", () => {
+    expect(naturezaDaCategoria("solar_mmgd")).toBe("estimativa");
+    expect(naturezaDaCategoria("termica_sem_combustivel")).toBe("previsao");
+    for (const k of CATEGORIAS.filter((x) => x !== "solar_mmgd" && x !== "termica_sem_combustivel")) expect(naturezaDaCategoria(k), k).toBe("medicao");
+    const c = composicaoDaJanela(m, "SIN", "30d", "com");
+    expect(c.find((l) => l.id === "solar_mmgd")!.natureza).toBe("estimativa");
+    expect(c.find((l) => l.id === "hidraulica")!.natureza).toBe("medicao");
+  });
+
+  it("a comparação entre janelas tira as categorias com cobertura alterada e diz o motivo, sem formar valor por subtração", () => {
+    const k = comparacaoEntreJanelas(m, "SIN", "30d", "com");
+    expect([k.janela, k.ref]).toEqual(["30d", "12m"]);
+    const comRessalva = CATEGORIAS.filter((c) => mix30.ressalvas_universo[c] || mix12.ressalvas_universo[c]);
+    expect(comRessalva.length).toBeGreaterThan(0);
+    expect(k.fora.map((f) => f.id).sort()).toEqual([...comRessalva].sort());
+    for (const f of k.fora) expect(f.motivo, f.id).toMatch(/usinas com dado/);
+    // as comparáveis são as demais, cada uma com a participação publicada nas duas janelas
+    for (const l of k.comparaveis) {
+      expect(comRessalva, l.id).not.toContain(l.id);
+      expect(l.participacao, l.id).toBe(mix30.participacao[l.id]);
+      expect(l.participacao_ref, l.id).toBe(mix12.participacao[l.id]);
+    }
+    expect(k.comparaveis.length + k.fora.length).toBe(CATEGORIAS.filter((c) => mix30.participacao[c] !== null || mix12.participacao[c] !== null).length);
+    // 365 dias contra 30: a mesma regra, com a referência trocada
+    const inv = comparacaoEntreJanelas(m, "SIN", "12m", "com");
+    expect([inv.janela, inv.ref]).toEqual(["12m", "30d"]);
+    expect(inv.fora.map((f) => f.id).sort()).toEqual([...comRessalva].sort());
+    // subsistema sem a janela de um dia: cai nos 30 dias, como o resto da página
+    expect(comparacaoEntreJanelas(m, "NE", "dia", "com").janela).toBe("30d");
+    // sem a MMGD ela não entra, nem como comparável nem como fora
+    const sem = comparacaoEntreJanelas(m, "SIN", "30d", "sem");
+    expect([...sem.comparaveis.map((l) => l.id), ...sem.fora.map((f) => f.id)]).not.toContain("solar_mmgd");
+  });
+
+  it("a fonte principal da faixa é a de maior participação no perímetro, e a MMGD só conta com a MMGD", () => {
+    const p = fontePrincipalDaJanela(mix30, "com")!;
+    const c = composicaoDaJanela(m, "SIN", "30d", "com");
+    expect(p.id).toBe(c[0].id);
+    expect(p.participacao).toBe(c[0].participacao);
+    expect(p.frase).toBe(FRASE_CATEGORIA[p.id]);
+    expect(fontePrincipalDaJanela(null, "com")).toBeNull();
+    // mudar o número muda a fonte principal; no perímetro sem MMGD a categoria MMGD nunca é a principal
+    const g = structuredClone(mix30);
+    g.participacao.solar_mmgd = 99;
+    expect(fontePrincipalDaJanela(g, "com")!.id).toBe("solar_mmgd");
+    expect(fontePrincipalDaJanela(g, "sem")!.id).not.toBe("solar_mmgd");
+  });
+
+  it("a natureza da energia fecha 100% em medição, previsão e estimativa do ONS; natureza ausente não vira zero", () => {
+    const partes = partesDaNatureza(mix30);
+    expect(partes.map((x) => x.id)).toEqual(["verificada", "grupo_tipo3", "grupo_mmgd"]);
+    expect(Math.abs(partes.reduce((t, x) => t + x.pct, 0) - 100)).toBeLessThanOrEqual(TOLERANCIA_SOMA_PP + 1e-9);
+    expect(partes.find((x) => x.id === "grupo_mmgd")!.pct).toBe(mix30.natureza_pct.grupo_mmgd);
+    expect(partesDaNatureza(null)).toEqual([]);
+    const sem = partesDaNatureza({ natureza_pct: { verificada: 90, grupo_tipo3: 10, grupo_mmgd: null } });
+    expect(sem.map((x) => x.id)).toEqual(["verificada", "grupo_tipo3"]);
+  });
+
+  it("as datas do módulo trazem a data e a natureza de cada parte, e só das partes que a gold publica", () => {
+    const d = datasDoModulo(G);
+    expect(d[0]).toMatchObject({ rotulo: "Matriz efetiva", texto: `até ${dataBR(G.dia_referencia)}`, natureza: "CALCULADO" });
+    const mmgd = d.find((x) => x.rotulo === "MMGD estimada pelo ONS")!;
+    expect(mmgd.natureza).toBe("ESTIMADO");
+    expect(mmgd.texto).toContain(dataBR(G.a11.primeiro_dia_mmgd!));
+    expect(d.find((x) => x.rotulo === "Despacho térmico")!.texto).toContain(mesAno(G.termica!.ultimo_mes_completo));
+    expect(d.find((x) => x.rotulo === "Potência instalada")!.natureza).toBe("OBSERVADO");
+    expect(d.find((x) => x.rotulo === "Fator de capacidade")).toBeDefined();
+    // sem o bloco térmico a parte some, em vez de aparecer vazia
+    expect(datasDoModulo({ ...G, termica: undefined }).map((x) => x.rotulo)).not.toContain("Despacho térmico");
+  });
+
+  it("a cobertura mensal lista as categorias que a fonte passou a publicar com outro número de usinas, com os meses e o último", () => {
+    const cob = coberturaMensal(m.mensal_sin);
+    const esperadas = CATEGORIAS.filter((c) => (m.mensal_sin.ressalvas_universo[c] ?? []).length > 0);
+    expect(cob.map((x) => x.id)).toEqual(esperadas);
+    for (const x of cob) {
+      const lista = m.mensal_sin.ressalvas_universo[x.id]!;
+      expect(x.meses, x.id).toBe(lista.length);
+      expect(x.ultimo, x.id).toBe([...lista].sort().at(-1));
+    }
+  });
+});
+
+describe("abertura de Geração e despacho térmico renderizados", () => {
+  const abertura = renderToStaticMarkup(createElement(GeracaoPage as never));
+  const termica = renderToStaticMarkup(createElement(GeracaoTermicaPage as never));
+  const restricoes = renderToStaticMarkup(createElement(GeracaoRestricoesPage));
+  const capacidade = renderToStaticMarkup(createElement(GeracaoCapacidadePage));
+  const h1 = (h: string) => (h.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>/g, "").trim();
+  const faixa = (h: string) => {
+    const i = h.indexOf("data-faixa-metricas");
+    return h.slice(i, h.indexOf("</section>", i));
+  };
+  const ocorrencias = (h: string, t: string) => h.split(t).length - 1;
+  /** Linhas (<li>) da lista de barras cujo título começa com o texto dado. */
+  const linhasDaLista = (h: string, inicioDoTitulo: string) => {
+    const i = h.indexOf(`aria-label="${inicioDoTitulo}`);
+    expect(i, inicioDoTitulo).toBeGreaterThan(-1);
+    return h.slice(h.lastIndexOf("<ol", i), h.indexOf("</ol>", i)).split("<li").slice(1);
+  };
+  const mix30 = G.matriz.janelas.SIN["30d"]!;
+
+  it("título de 5 a 9 palavras em forma de pergunta, em todas as páginas da família", () => {
+    expect(h1(abertura)).toBe("De onde vem a eletricidade?");
+    expect(h1(termica)).toBe(perguntaPainel("p022"));
+    expect(h1(restricoes)).toBe(perguntaPainel("p023"));
+    expect(h1(capacidade)).toBe(perguntaPainel("p024"));
+    for (const h of [abertura, termica, restricoes, capacidade]) {
+      const palavras = h1(h).split(/\s+/).length;
+      expect(palavras, h1(h)).toBeGreaterThanOrEqual(5);
+      expect(palavras, h1(h)).toBeLessThanOrEqual(9);
+      expect(h1(h).endsWith("?"), h1(h)).toBe(true);
+    }
+  });
+
+  it("a faixa da abertura tem três medidas, cada uma com a janela e o período de 30 dias do SIN, e diz que a MMGD é estimativa", () => {
+    const f = faixa(abertura);
+    expect(ocorrencias(f, 'data-metrica=""')).toBe(3);
+    expect(ocorrencias(f, `30 dias, de ${dataBR(mix30.inicio)} a ${dataBR(mix30.fim)}`)).toBe(3);
+    expect(f).toContain("MWmed");
+    expect(f).toContain("com a MMGD estimada");
+    expect(f).toContain("Participação da MMGD solar, estimativa do ONS");
+    expect(f).toContain("Estimado");
+    expect(f).toContain("não medição");
+    // a participação da fonte principal sai do mesmo seletor do gráfico
+    expect(f).toContain(num(fontePrincipalDaJanela(mix30, "com")!.participacao, 1));
+  });
+
+  it("a abertura mostra as cinco maiores como recorte e a composição completa de 11 categorias como seção própria, fora de Analisar", () => {
+    const cinco = linhasDaLista(abertura, "Cinco maiores participações na geração do SIN: 30 dias (com MMGD estimada)");
+    expect(cinco).toHaveLength(5);
+    expect(abertura).toContain("Recorte das cinco maiores fontes, não a composição completa.");
+    const completa = linhasDaLista(abertura, "Composição completa da geração do SIN: 30 dias (com MMGD estimada), 11 categorias");
+    expect(completa).toHaveLength(11);
+    // a seção da composição é visível em Entender: sem data-nivel na própria abertura
+    const i = abertura.indexOf('id="composicao"');
+    expect(i).toBeGreaterThan(-1);
+    expect(abertura.slice(abertura.lastIndexOf("<section", i), i + 20)).not.toContain("data-nivel");
+    expect(abertura).toContain("Como se divide toda a geração?");
+    // o fechamento é dito: total, soma das participações exibidas e a tolerância do controle publicado
+    const f = fechamentoDaComposicao(composicaoDaJanela(G.matriz, "SIN", "30d", "com"));
+    expect(abertura).toContain('data-composicao-fecha="sim"');
+    expect(abertura).toContain(`Soma das ${f.categorias} participações exibidas: ${num(f.soma, 2)}%`);
+    expect(abertura).toContain(`Total da janela: ${num(mix30.total_mwmed, 0)} MWmed`);
+    expect(abertura).not.toMatch(/Outras? fontes|Demais fontes/);
+  });
+
+  it("medição, previsão e estimativa se distinguem por texto e selo, e a MMGD é sempre estimativa do ONS", () => {
+    const completa = linhasDaLista(abertura, "Composição completa");
+    const mmgd = completa.find((l) => l.includes("Solar MMGD"))!;
+    expect(mmgd).toContain("Estimado");
+    expect(mmgd).toContain("pelo ONS, não medição");
+    const tipo3 = completa.find((l) => l.includes("Térmicas Tipo III"))!;
+    expect(tipo3).toContain("Previsto");
+    const hidraulica = completa.find((l) => l.includes("Hidráulica"))!;
+    expect(hidraulica).not.toContain("não medição");
+    // a natureza da energia numa barra que fecha 100%, com os três nomes na legenda
+    for (const t of ["Medição (usinas com relacionamento com o ONS)", "Previsão do ONS (grupos Tipo III)", "Estimativa do ONS (MMGD)"]) expect(abertura, t).toContain(t);
+  });
+
+  it("a comparação entre janelas deixa de fora as categorias com cobertura alterada e a mudança de cobertura aparece", () => {
+    const k = comparacaoEntreJanelas(G.matriz, "SIN", "30d", "com");
+    const i = abertura.indexOf("Participação na geração do SIN: 30 dias contra 365 dias (com MMGD estimada)");
+    expect(i).toBeGreaterThan(-1);
+    const j = abertura.indexOf('data-fora-da-comparacao="p021"');
+    expect(j).toBeGreaterThan(i);
+    const grafico = abertura.slice(i, j);
+    const fora = abertura.slice(j, abertura.indexOf("</ul>", j));
+    for (const f of k.fora) {
+      expect(fora, f.id).toContain(f.rotulo);
+      expect(fora, f.id).toContain("usinas com dado");
+      expect(grafico, f.id).not.toContain(f.rotulo);
+    }
+    for (const l of k.comparaveis) expect(grafico, l.id).toContain(l.rotulo);
+    expect(abertura).toContain("Fora da comparação: cobertura da fonte alterada");
+    expect(abertura).toContain("não mede mudança na geração");
+    // a série mensal repete o aviso de cobertura
+    expect(abertura).toContain("Mudança de cobertura na fonte:");
+  });
+
+  it("as séries diária e horária de Analisar são lidas sob demanda: o HTML traz o marcador e o botão, não as linhas", () => {
+    for (const t of ["diaria", "horaria"]) expect(abertura).toContain(`data-grafico-sob-demanda="${t}"`);
+    expect(abertura).toContain("Carregar a série");
+    expect(abertura).not.toContain("Geração diária do SIN por categoria");
+    expect(abertura).not.toContain("Geração horária do SIN por categoria");
+  });
+
+  it("a faixa do despacho térmico tem três medidas com o período dos 12 meses, e o motivo de cada barra está escrito ao lado dela", () => {
+    const t = G.termica!;
+    const f = faixa(termica);
+    const periodo = `${mesAno(t.ultimos_12m.inicio)} a ${mesAno(t.ultimos_12m.fim)}`;
+    expect(ocorrencias(f, 'data-metrica=""')).toBe(3);
+    expect(ocorrencias(f, periodo)).toBe(3);
+    expect(f).toContain("Inflexibilidade sem a nuclear");
+    expect(f).toContain("MWmed");
+    // a lista visível dos motivos traz o rótulo publicado de cada um, como na legenda do gráfico
+    const i = termica.indexOf('data-motivos="rotulos"');
+    expect(i).toBeGreaterThan(-1);
+    const lista = termica.slice(i, termica.indexOf("</ul>", i)).split("<li").slice(1);
+    expect(lista.length).toBeGreaterThanOrEqual(6);
+    expect(termica).toContain("unit commitment (rampa e tempos mínimos)");
+    expect(termica).toContain("razão elétrica (necessidade do SIN)");
+    // a participação térmica de 7 dias é outra base e diz isso
+    expect(termica).toContain("Base diferente da do motivo de despacho");
+  });
+
+  it("restrições e capacidade abrem com a faixa de medidas, cada medida com o seu período, e a figura principal vem antes das seções complementares", () => {
+    expect(ocorrencias(faixa(restricoes), 'data-metrica=""')).toBe(4);
+    expect(ocorrencias(faixa(capacidade), 'data-metrica=""')).toBe(3);
+    for (const [h, primeiraSecao] of [[restricoes, 'id="taxa-e-corte"'], [capacidade, 'id="distribuicao"']] as const) {
+      const fig = h.indexOf('data-grafico="barras"');
+      expect(fig, primeiraSecao).toBeGreaterThan(-1);
+      expect(fig, primeiraSecao).toBeLessThan(h.indexOf(primeiraSecao));
+    }
+    // capacidade: as duas figuras seguem a mesma ordem de fontes (a de potência, da maior para a menor)
+    const potencia = G.capacidade!.retrato.por_categoria.filter((x) => x.mw !== null).sort((a, b) => (b.mw ?? 0) - (a.mw ?? 0)).map((x) => x.categoria);
+    expect(linhasCapacidade(G.capacidade!).length).toBeGreaterThanOrEqual(potencia.length);
+    expect(capacidade).toContain("As duas figuras seguem a mesma ordem de fontes");
+  });
+
+  it("textos novos sem julgamento, sem causalidade afirmada e sem data relativa nas quatro páginas", () => {
+    for (const [id, h] of Object.entries({ abertura, termica, restricoes, capacidade })) {
+      const texto = h.replace(/<[^>]+>/g, " ");
+      expect(texto, id).not.toMatch(/\b(hoje|agora)\b/i);
+      expect(texto, id).not.toMatch(/\b(melhor|pior|ineficiente|excelente|péssim[oa])\b/i);
+      expect(texto, id).not.toMatch(/\bporque\b/i);
+      expect(texto, id).not.toMatch(/[—–]/);
+      expect(texto, id).not.toMatch(/\bgold\b|\bsilver\b|\bpipeline\b/i);
+    }
+  });
+});
+
 describe("páginas P023 e P024", () => {
   const paginas = {
     p023: renderToStaticMarkup(createElement(GeracaoRestricoesPage)),
@@ -217,7 +523,7 @@ describe("páginas P023 e P024", () => {
   it("anatomia da seção 7.2: resposta, recorte, prova, tabela, download, link e próxima pergunta", () => {
     for (const [id, h] of Object.entries(paginas)) {
       expect(h, id).toContain(`data-resposta="${id}"`);
-      for (const t of ["Período", "Universo", "Unidade", "Comprove este número", "Como interpretar", "O que não é possível concluir", "Copiar link deste painel", "Próxima pergunta", "Baixar os dados deste painel"]) {
+      for (const t of ["Período", "Universo", "Unidade", "Comprove este número", "Como interpretar", "O que não é possível concluir", "Copiar link deste painel", "Próxima pergunta", "Baixar os dados"]) {
         expect(h, `${id}: ${t}`).toContain(t);
       }
       expect(h, id).toContain('data-nivel="analisar"');

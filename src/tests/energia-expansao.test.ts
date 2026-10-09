@@ -550,8 +550,8 @@ describe("páginas renderizadas no servidor", () => {
     const SEM_FICHA: Record<string, RegExp[]> = {
       sintese: [/^Em construção$/],
       p040: [/^Em construção$/],
-      p041: [/^Prevista para o restante de \d{4}$/, /^Em datas convencionais em bloco$/, /^Com cronograma atrasado, segundo a fiscalização$/],
-      p042: [/^Transformação nova em obras em andamento$/],
+      p041: [/^Prevista para o restante de \d{4}$/, /^Em datas convencionais em bloco$/, /^Cronograma atrasado \(fiscalização\)$/],
+      p042: [/^Transformação nova em obras$/],
       p043: [/^Capacidade instalada nacional em [a-z]{3}\/\d{4}$/],
     };
     // grupos de medida com os <div> balanceados: o gatilho da prova e a ausência ficam dentro do próprio grupo

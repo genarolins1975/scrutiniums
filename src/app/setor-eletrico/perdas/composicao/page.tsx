@@ -88,8 +88,8 @@ export default function PerdasComposicaoPage() {
   );
   const naoConcluir = (
     <>
-      Que perda não técnica seja só furto (inclui erros de medição, leitura e faturamento); que a tendência nacional da separação depois de {ANO_LEIAUTE_SAMP} valha para todas as distribuidoras (só o universo
-      fixo é comparável); que toda perda técnica possa ser eliminada.
+      Que perda não técnica seja só furto (inclui erros de medição, leitura e faturamento); que a tendência nacional da separação depois de {ANO_LEIAUTE_SAMP} valha para todas as
+      distribuidoras (só o universo fixo é comparável); que toda perda técnica possa ser eliminada.
     </>
   );
 
@@ -104,22 +104,23 @@ export default function PerdasComposicaoPage() {
           titulo={PERGUNTA_COMPOSICAO}
           lead={
             <>
-              A perda <Termo slug="perdas-tecnicas">técnica</Termo> vem da física das redes; a <Termo slug="perdas-nao-tecnicas">não técnica</Termo> é a diferença entre a total e a técnica, e inclui furto, fraude e
-              erros de medição e de faturamento. As duas são estimativas, publicadas só por parte das distribuidoras.
+              A perda <Termo slug="perdas-tecnicas">técnica</Termo> vem da física das redes; a <Termo slug="perdas-nao-tecnicas">não técnica</Termo> é a diferença entre a total e a técnica,
+              e inclui furto, fraude e erros de medição e de faturamento. As duas são estimativas, publicadas só por parte das distribuidoras.
             </>
           }
           recorte={
             <>
               {ref}
-              {nac ? ` · ${num(nac.n_distribuidoras, 0)} concessionárias no agregado` : ""} · {num(composicao.linhas.length, 0)} distribuidoras nas barras · % da energia injetada e % do mercado de baixa tensão
+              {nac ? ` · ${num(nac.n_distribuidoras, 0)} concessionárias no agregado` : ""} · {num(composicao.linhas.length, 0)} distribuidoras nas barras · % da energia injetada e % do
+              mercado de baixa tensão
             </>
           }
           fonte="ANEEL, SAMP Balanço"
           referencia={<ReferenciaPerdas g={g} />}
           metricas={<SeparacaoMetricas g={g} endereco="https://scrutiniums.com/setor-eletrico/perdas/composicao#composicao" />}
         >
-          Pela definição da ANEEL, a perda total se divide em técnica, inevitável no transporte da energia, e não técnica, a diferença entre a total e a técnica. As duas são estimativas: a técnica do SAMP é o
-          percentual regulatório aplicado à energia injetada, e a não técnica herda essa estimativa.
+          Pela definição da ANEEL, a perda total se divide em técnica, inevitável no transporte da energia, e não técnica, a diferença entre a total e a técnica. As duas são estimativas: a
+          técnica do SAMP é o percentual regulatório aplicado à energia injetada, e a não técnica herda essa estimativa.
         </CabecalhoModulo>
         <PerdasNavegacao atual="composicao" />
 
@@ -135,8 +136,8 @@ export default function PerdasComposicaoPage() {
               complementares={[{ rotulo: "Taxas com denominador explícito", p: g.proveniencia.taxas }]}
               porQueImporta={
                 <>
-                  As duas parcelas têm causas e tratamentos diferentes: a técnica depende da rede (extensão, tensão, carregamento); a não técnica, de furto, fraude, medição e faturamento. A ANEEL
-                  regula as duas com referências próprias.
+                  As duas parcelas se leem de modos diferentes: a técnica está ligada à rede (extensão, tensão, carregamento); a não técnica é a diferença entre a total e a técnica e inclui
+                  furto, fraude e erros de medição e de faturamento. A ANEEL regula as duas com referências próprias.
                 </>
               }
               oQueMudou={oQueMudou}
@@ -145,10 +146,10 @@ export default function PerdasComposicaoPage() {
               naoConcluirNoCorpo
             >
               <div className="space-y-6">
-              <Resposta id="composicao" veredito={vereditoComposicao(g)} prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>
-                {respostaComposicao(g)}
-              </Resposta>
-              <PerdasComposicao
+                <Resposta id="composicao" veredito={vereditoComposicao(g)} prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>
+                  {respostaComposicao(g)}
+                </Resposta>
+                <PerdasComposicao
                   linhas={composicao.linhas}
                   ids={ids}
                   rotulos={rotulos}
@@ -158,16 +159,19 @@ export default function PerdasComposicaoPage() {
                   urlAnual={g.series.anual}
                   versao={versao}
                 />
-              <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-                Ordem das barras: perda total da distribuidora, da maior para a menor. Fora das barras em {ref}: {composicao.semSeparacao} distribuidoras válidas sem a separação publicada em todos os meses e {composicao.fora} com a decomposição que não fecha.
-                {nac && universoBarras ? ` A linha tracejada é a taxa das ${nac.n_distribuidoras} concessionárias válidas; as ${composicao.linhas.length} barras são ${universoBarras}, outro conjunto.` : ""}
-              </p>
-              <Recorte
-                periodo={`${ref} (barras e tabela); ${inicioSerie} a ${ref} (série nacional)`}
-                universo={`concessionárias e permissionárias com o ano completo, sem alerta e com a decomposição fechando (${composicao.linhas.length} distribuidoras nas barras)`}
-                unidade="% da energia injetada de referência; não técnica também em % do mercado de baixa tensão medido"
-              />
-              <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+                <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+                  Ordem das barras: perda total da distribuidora, da maior para a menor. Fora das barras em {ref}: {composicao.semSeparacao} distribuidoras válidas sem a separação publicada
+                  em todos os meses e {composicao.fora} com a decomposição que não fecha.
+                  {nac && universoBarras
+                    ? ` A linha tracejada é a taxa das ${nac.n_distribuidoras} concessionárias válidas; as ${composicao.linhas.length} barras são ${universoBarras}, outro conjunto.`
+                    : ""}
+                </p>
+                <Recorte
+                  periodo={`${ref} (barras e tabela); ${inicioSerie} a ${ref} (série nacional)`}
+                  universo={`concessionárias e permissionárias com o ano completo, sem alerta e com a decomposição fechando (${composicao.linhas.length} distribuidoras nas barras)`}
+                  unidade="% da energia injetada de referência; não técnica também em % do mercado de baixa tensão medido"
+                />
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
                 <SecaoDoPainel id="separacao-nacional" titulo={`Como a separação mudou desde ${inicioSerie}, e quantas concessionárias a publicam?`}>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <GraficoLinhas
@@ -196,12 +200,22 @@ export default function PerdasComposicaoPage() {
                     />
                   </div>
                   <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-                    Cada ano soma as concessionárias que publicam a parte em questão, e esse conjunto muda de ano a ano: a marca de {ANO_LEIAUTE_SAMP} mostra quantas publicam no leiaute novo. A tendência comparável está na série de
-                    universo fixo, abaixo.
+                    Cada ano soma as concessionárias que publicam a parte em questão, e esse conjunto muda de ano a ano: a marca de {ANO_LEIAUTE_SAMP} mostra quantas publicam no leiaute
+                    novo. A tendência comparável está na série de universo fixo, abaixo.
                   </p>
                   <TabelaDados
                     titulo="Separação nacional por ano, com o universo de cada medida"
-                    colunas={["Ano", "Com técnica", "Cobertura da injetada (%)", "Técnicas (% injetada)", "Técnicas (% injetada publicada)", "Com não técnica", "Cobertura da BT (%)", "Não técnicas (% BT)", "Mesmo universo da não técnica"]}
+                    colunas={[
+                      "Ano",
+                      "Com técnica",
+                      "Cobertura da injetada (%)",
+                      "Técnicas (% injetada)",
+                      "Técnicas (% injetada publicada)",
+                      "Com não técnica",
+                      "Cobertura da BT (%)",
+                      "Não técnicas (% BT)",
+                      "Mesmo universo da não técnica",
+                    ]}
                     linhas={linhasSeparacaoNacional(g.nacional)}
                     casas={[0, 0, 1, 2, 2, 0, 1, 2, null]}
                     limite={40}
@@ -238,14 +252,14 @@ export default function PerdasComposicaoPage() {
                     </table>
                   </div>
                 </SecaoDoPainel>
-              <PerdasSeguir
-                ancora="composicao"
-                proxima={{ pergunta: PERGUNTA_REGULATORIO, href: "/setor-eletrico/perdas/regulatorio" }}
-                downloads={[
-                  { rotulo: "Por distribuidora e ano (CSV)", url: "/energia/series/perdas_distribuidoras.csv" },
-                  { rotulo: "Balanço mensal para auditoria (CSV)", url: "/energia/series/perdas_mensal.csv" },
-                ]}
-              />
+                <PerdasSeguir
+                  ancora="composicao"
+                  proxima={{ pergunta: PERGUNTA_REGULATORIO, href: "/setor-eletrico/perdas/regulatorio" }}
+                  downloads={[
+                    { rotulo: "Por distribuidora e ano (CSV)", url: "/energia/series/perdas_distribuidoras.csv" },
+                    { rotulo: "Balanço mensal para auditoria (CSV)", url: "/energia/series/perdas_mensal.csv" },
+                  ]}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>

@@ -1049,9 +1049,55 @@ export function anoInicioHistorico(g: Pick<GoldRegulacao, "proveniencia">): stri
  * Regulatória de 2026 e 2027"), nunca escrito à mão; sem anos, o nome genérico.
  */
 export function nomeAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string {
+  const anos = textoAnosAgenda(a);
+  return anos ? `Agenda Regulatória de ${anos}` : "Agenda Regulatória da ANEEL";
+}
+
+/** Anos previstos na agenda, em ordem e em texto ("2026 e 2027"); null quando a portaria não traz ano. */
+export function textoAnosAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string | null {
   const anos = Array.from(new Set([...Object.keys(a.por_ano ?? {}), ...a.itens.map((i) => String(i.ano_previsto))])).sort();
-  if (!anos.length) return "Agenda Regulatória da ANEEL";
-  return `Agenda Regulatória de ${anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`}`;
+  if (!anos.length) return null;
+  return anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`;
+}
+
+/**
+ * Contagem por situação das consultas com atividade recente numa data. Na faixa de métricas vale a data de referência da
+ * publicação; no veredito e na resposta, a data de leitura. A regra é a mesma do gráfico, do filtro e da tabela.
+ */
+export function contagemConsultasNaData(c: Pick<Consultas, "itens">, data: string): Record<SituacaoConsulta, number> {
+  return contarSituacoes(consultasNaData(c.itens, data));
+}
+
+/**
+ * Aviso à vista quando a página oficial diz que a agenda foi atualizada por outra portaria e o texto da atualização não pôde ser
+ * lido: os anos previstos são os da versão original. null quando não há atualização pendente de leitura. O detalhe da tentativa de
+ * leitura (endereço, resposta do servidor) fica em Analisar.
+ */
+export function avisoRevisaoAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | "disponivel">): string | null {
+  const r = a.revisao;
+  if (!a.disponivel || !r.atualizada_por || r.texto_lido) return null;
+  return `A página oficial da agenda diz que ela foi ${r.trecho ?? `atualizada pela ${r.atualizada_por}`}. O texto dessa atualização não pôde ser lido, então os anos previstos são os da versão original e podem ter mudado.`;
+}
+
+/**
+ * Nota da contagem de atividades da agenda: o ano é previsão da ANEEL e, quando a página oficial diz que a agenda foi atualizada por
+ * outra portaria cujo texto não pôde ser lido, a contagem é a da versão original.
+ */
+export function notaContagemAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | "disponivel">): string {
+  const r = a.revisao;
+  if (a.disponivel && r.atualizada_por && !r.texto_lido) {
+    return `Versão original da agenda. A ${r.atualizada_por}, que a atualiza, não pôde ser lida; o ano de cada atividade é previsão da ANEEL.`;
+  }
+  return "O ano de cada atividade é previsão da ANEEL e pode mudar.";
+}
+
+/**
+ * Nome de arquivo para baixar, em frase: "(histórico)" vira ", histórico", o intervalo de anos ganha "a" no lugar do hífen e o
+ * formato fecha o rótulo.
+ */
+export function rotuloDownload(rotulo: string, formato = "CSV"): string {
+  const sem = rotulo.replace(/\s*\(([^)]*)\)\s*$/, ", $1").replace(/(\d{4})-(\d{4})/, "$1 a $2");
+  return `${sem} (${formato})`;
 }
 
 /** Dias entre a geração do arquivo das atas pela fonte e a data de leitura; a fonte se declara semanal. */

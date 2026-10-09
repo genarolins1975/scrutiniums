@@ -19,6 +19,7 @@ import type {
   IdFrase,
   IdPainelMultiplo,
   IdRegra,
+  IdSociedade,
   ItemSociedade,
   LinhaMultiplos,
   MultiplosVisao,
@@ -189,6 +190,8 @@ export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_aus
   } else if (g.destaques.vazio) {
     partes.push(g.destaques.vazio);
   }
+  const observacao = regrasEmObservacao(g.observar);
+  if (observacao.length) partes.push(`Em observação, com a condição presente e ainda sem a duração mínima para virar alerta: ${observacao.map((o) => minuscula(o.titulo)).join("; ")}.`);
   const dados = g.observar.filter((o) => o.assunto === "dados" && o.tipo !== "evento" && o.ativo);
   if (dados.length) partes.push(`Em alerta sobre os próprios dados: ${dados.map((o) => minuscula(o.titulo)).join("; ")}.`);
   if (g.frases_ausentes.length) partes.push(`Sem frase nesta publicação: ${g.frases_ausentes.map((id) => minuscula(ROTULO_FRASE[id])).join(", ")}.`);
@@ -200,8 +203,8 @@ export function respostaSistema(g: Pick<SinteseVisaoGold, "frases" | "frases_aus
  * condição técnica ficam na lista do P007 e em Analisar; o veredito diz só o que o leitor precisa saber.
  */
 const DADOS_EM_PALAVRAS: Partial<Record<IdRegra, string>> = {
-  revisao_material: "um dado já publicado foi revisado",
-  atualidade_fontes: "uma fonte usada nesta página está atrasada",
+  revisao_material: "um dado publicado foi revisado",
+  atualidade_fontes: "uma fonte desta página está atrasada",
   pld_defasagem: "a série do PLD está sem atualização recente",
 };
 
@@ -211,24 +214,37 @@ function nomesNoVeredito(regras: readonly RegraObservar[], palavras: boolean): s
   return listaEmPortugues(regras.map((o) => (palavras ? (DADOS_EM_PALAVRAS[o.id] ?? minuscula(o.titulo)) : minuscula(o.titulo))));
 }
 
+/** Regras sobre o sistema em observação: a condição está presente, mas ainda sem a duração mínima que a confirma como alerta. */
+export function regrasEmObservacao<T extends Pick<RegraObservar, "tipo" | "assunto" | "estado">>(observar: readonly T[]): T[] {
+  return observar.filter((o) => o.tipo !== "evento" && o.assunto === "sistema" && o.estado === "em_observacao");
+}
+
 /**
- * Veredito do P004 ("O que mudou e merece atenção?"): se alguma regra sobre o sistema está em alerta e o que se avisa
- * sobre os próprios dados. Lê os mesmos campos de respostaSistema (observar e frases); os fatos e as datas ficam abaixo.
+ * Veredito do P004 ("O que mudou e merece atenção?"): se alguma regra sobre o sistema está em alerta ou em observação e o que se
+ * avisa sobre os próprios dados. Lê os mesmos campos de respostaSistema (observar e frases); os fatos e as datas ficam abaixo.
+ * A regra em observação aparece aqui porque o leitor que só lê o topo não pode concluir que "nada merece atenção" quando uma
+ * condição já está presente e só falta a duração mínima para virar alerta.
  */
 export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">): string {
   const regras = g.observar.filter((o) => o.tipo !== "evento");
   const sistema = regras.filter((o) => o.assunto === "sistema" && o.ativo);
+  const observacao = regrasEmObservacao(regras);
   const dados = regras.filter((o) => o.assunto === "dados" && o.ativo);
   const partes: string[] = [];
+  const nomesObs = observacao.length ? nomesNoVeredito(observacao, false) : null;
+  const sufixoObs = nomesObs ? `: ${nomesObs}` : "";
   if (sistema.length) {
     const nomes = nomesNoVeredito(sistema, false);
     partes.push(`${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${num(sistema.length, 0)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
-  } else partes.push("Nenhuma regra sobre o sistema está em alerta.");
+    if (observacao.length) partes.push(`${observacao.length === 1 ? "Uma regra está" : `${num(observacao.length, 0)} regras estão`} em observação${sufixoObs}.`);
+  } else {
+    const obs = observacao.length ? `; ${observacao.length === 1 ? "uma está" : `${num(observacao.length, 0)} estão`} em observação${sufixoObs}` : "";
+    partes.push(`Nenhuma regra sobre o sistema está em alerta${obs}.`);
+  }
   if (dados.length) {
     const nomes = nomesNoVeredito(dados, true);
     partes.push(`Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${num(dados.length, 0)} regras estão`} em alerta${nomes ? `: ${nomes}` : ""}.`);
   }
-  if (g.frases.length) partes.push("Cada fato abaixo traz a sua data.");
   return partes.join(" ");
 }
 
@@ -446,7 +462,7 @@ export function leituraDeterminante(p: PainelDeterminante, m: MultiplosVisao): s
   const v = pos.valor ?? 0;
   const [de, para] = (p.valor_atual.rotulo ?? "").split(" → ");
   const sentido = de && para ? (v >= 0 ? `de ${de} para ${para}` : `de ${para} para ${de}`) : "";
-  return `${p.titulo}: ${comUnidade(Math.abs(v), p.unidade, p.casas)}${sentido ? ` ${sentido}` : ""} ${quando} (fluxo médio verificado do dia, sem comparação com limites de intercâmbio).`;
+  return `${p.titulo}: ${comUnidade(Math.abs(v), p.unidade, p.casas)}${sentido ? ` ${sentido}` : ""} ${quando} (saldo líquido do dia, a média das 24 horas do fluxo verificado, sem comparação com limites de intercâmbio).`;
 }
 
 /** Resposta do P005: uma leitura por painel, na ordem publicada. */
@@ -557,12 +573,250 @@ export function textoComplemento(c: { rotulo: string; valor: number | (number | 
   return `${num(c.valor, casasDe(c.valor))}${u}`;
 }
 
+/* ---------------------------------------------------------------- ressalvas essenciais dos indicadores de sociedade */
+
+/** Horas decimais como horas e minutos ("17,20" vira "17 h 12 min"), na forma do resto do observatório. */
+export function horasMinutos(h: number): string {
+  const total = Math.round(h * 60);
+  const horas = Math.floor(total / 60);
+  const minutos = total % 60;
+  if (horas === 0) return `${minutos} min`;
+  return minutos === 0 ? `${num(horas, 0)} h` : `${num(horas, 0)} h ${minutos} min`;
+}
+
+/** Parcelas do DEC que a regra exclui do apurado, na ordem em que a página as lista. */
+export const PARCELAS_EXCLUIDAS_DEC = [
+  { chave: "emergencia", rotulo: "situação de emergência" },
+  { chave: "dia_critico", rotulo: "dia crítico" },
+  { chave: "externa", rotulo: "origem externa ao sistema de distribuição" },
+  { chave: "ons", rotulo: "racionamento ou alívio de carga pelo ONS" },
+] as const;
+
+/**
+ * O DEC apurado de um ano com o que a regra deixa de fora dele (parcelas expurgadas e total de todas as origens) e a posição dos
+ * conjuntos elétricos frente ao próprio limite. Tudo lido de qualidade.json, o mesmo conjunto de dados da página Qualidade:
+ * a Visão geral não escreve nenhuma dessas horas, só as relê.
+ */
+export type DecDoAno = {
+  ano: number;
+  apurado: number;
+  todasOrigens: number | null;
+  /** Soma das parcelas excluídas, como publicadas; null quando alguma delas não foi publicada. */
+  excluido: number | null;
+  parcelas: { chave: (typeof PARCELAS_EXCLUIDAS_DEC)[number]["chave"]; rotulo: string; horas: number | null }[];
+  /** Média dos limites dos conjuntos ponderada pelas unidades consumidoras médias: o projeto a calcula, não existe limite nacional. */
+  limite: number | null;
+  conjuntos: { total: number; acima: number; pct: number | null; pctUc: number | null } | null;
+  quantis: { min: number | null; p25: number | null; p50: number | null; p75: number | null; max: number | null } | null;
+};
+
+export function decDoAno(q: { brasil: { anual: readonly BrasilAnual[] }; conjuntos: Conjuntos } | null | undefined, ano: number): DecDoAno | null {
+  const a = q?.brasil.anual.find((x) => x.ano === ano);
+  if (!q || !a || a.dec === null) return null;
+  const p = a.parcelas_dec;
+  const parcelas = PARCELAS_EXCLUIDAS_DEC.map((e) => ({ chave: e.chave, rotulo: e.rotulo, horas: p ? (p[e.chave] ?? null) : null }));
+  const completas = parcelas.every((x) => x.horas !== null);
+  const c = q.conjuntos;
+  const doAno = c.ano === ano;
+  return {
+    ano,
+    apurado: a.dec,
+    todasOrigens: a.dec_todas_parcelas,
+    excluido: completas ? parcelas.reduce((s, x) => s + (x.horas as number), 0) : null,
+    parcelas,
+    limite: a.dec_limite,
+    conjuntos: doAno ? { total: c.com_limite, acima: c.acima_limite_dec, pct: c.pct_acima_limite_dec, pctUc: c.pct_ucs_acima_limite_dec } : null,
+    quantis: doAno ? { min: c.quantis_dec.min ?? null, p25: c.quantis_dec.p25 ?? null, p50: c.quantis_dec.p50 ?? null, p75: c.quantis_dec.p75 ?? null, max: c.quantis_dec.max ?? null } : null,
+  };
+}
+
+/** A ressalva essencial do DEC, junto do número: o que "apurado" quer dizer, o que a regra deixa de fora e o total de todas as origens. */
+export function textoDecApurado(d: DecDoAno): string {
+  const lista = d.parcelas.map((x) => (x.horas === null ? x.rotulo : `${x.rotulo} (${num(x.horas, 2)} h)`));
+  const exclusoes = listaEmPortugues(lista);
+  if (d.excluido === null || d.todasOrigens === null)
+    return `O DEC apurado de ${d.ano}, ${num(d.apurado, 2)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}. A fonte não publica todas essas parcelas para o ano.`;
+  return (
+    `O DEC apurado de ${d.ano}, ${num(d.apurado, 2)} h por unidade consumidora, não conta as interrupções que a regra exclui do apurado: ${exclusoes}, que somam ${num(d.excluido, 2)} h. ` +
+    `Com todas as origens, o DEC de ${d.ano} foi de ${num(d.todasOrigens, 2)} h (${horasMinutos(d.todasOrigens)}).`
+  );
+}
+
+/** Versão de uma linha da ressalva do DEC, para a nota que fica sob o número. */
+export function textoDecApuradoCurto(d: DecDoAno): string {
+  if (d.excluido === null || d.todasOrigens === null) return "Apurado: não conta as interrupções que a regra exclui.";
+  return `Apurado: não conta ${num(d.excluido, 2)} h que a regra exclui; todas as origens somam ${num(d.todasOrigens, 2)} h.`;
+}
+
+/** O que o limite agregado é e o que ele não é, com a parcela de conjuntos acima do próprio limite. */
+export function textoLimiteAgregado(d: DecDoAno): string {
+  if (d.limite === null) return "";
+  const base = `Não existe limite nacional de DEC. O limite agregado de ${num(d.limite, 2)} h é a média dos limites de cada conjunto elétrico, ponderada pelas unidades consumidoras médias do ano, calculada pelo observatório.`;
+  const c = d.conjuntos;
+  if (!c || c.pct === null) return base;
+  const uc = c.pctUc === null ? "" : `, que reúnem ${num(c.pctUc, 1)}% das unidades consumidoras`;
+  return `${base} Em ${d.ano}, ${num(c.acima, 0)} de ${num(c.total, 0)} conjuntos (${num(c.pct, 1)}%${uc}) ficaram acima do próprio limite.`;
+}
+
+/** Dispersão do DEC apurado entre os conjuntos elétricos: a média nacional não mostra que o valor varia de conjunto para conjunto. */
+export function textoDispersaoDec(d: DecDoAno): string {
+  const q = d.quantis;
+  if (!q || q.min === null || q.max === null || q.p25 === null || q.p50 === null || q.p75 === null) return "";
+  return `O DEC apurado de cada conjunto elétrico em ${d.ano} vai de ${num(q.min, 2)} h a ${num(q.max, 2)} h; metade dos conjuntos ficou entre ${num(q.p25, 2)} h e ${num(q.p75, 2)} h, com mediana de ${num(q.p50, 2)} h.`;
+}
+
+/**
+ * Denominador da taxa de perdas: a energia injetada de referência das concessionárias do ano, quantas usam a energia requerida
+ * (fornecida mais irregular mais perdas, leiaute de 2024 da ANEEL) ou uma mistura dos dois leiautes em vez da injetada publicada,
+ * e a taxa que sairia com a injetada publicada. Lido de perdas_distribuidoras.csv e conferido contra a linha nacional da gold.
+ */
+export type DenominadorPerdas = {
+  ano: number;
+  concessionarias: number;
+  requeridaOuMista: number;
+  publicada: number;
+  referenciaTwh: number;
+  publicadaTwh: number;
+  perdasTwh: number;
+  taxaReferenciaPct: number;
+  taxaPublicadaPct: number;
+};
+
+/** Linha da série `perdas_distribuidoras.csv` (campos do arquivo, como texto). */
+export type LinhaPerdasCsv = Record<string, string>;
+
+/**
+ * As concessionárias do ano completo e sem alerta físico são as mesmas da linha nacional (`nacional`): se a conta não reproduz a
+ * contagem e a energia injetada de referência da gold, devolve null em vez de afirmar um denominador que não bate.
+ */
+export function denominadorPerdas(
+  linhas: readonly LinhaPerdasCsv[] | null | undefined,
+  ano: number,
+  nacional: { n_distribuidoras: number; injetada_mwh: number; perdas_totais_mwh: number } | null | undefined,
+): DenominadorPerdas | null {
+  if (!linhas || !nacional) return null;
+  const doAno = linhas.filter((l) => l.ano === String(ano) && l.classificacao === "Concessionária" && l.completo === "1" && !(l.alertas ?? ""));
+  if (doAno.length !== nacional.n_distribuidoras) return null;
+  const soma = (k: string) => doAno.reduce((s, l) => s + (Number(l[k]) || 0), 0);
+  const referencia = soma("injetada_referencia_mwh");
+  const publicada = soma("injetada_publicada_mwh");
+  const perdas = soma("perdas_totais_mwh");
+  if (Math.abs(referencia - nacional.injetada_mwh) > 2 || Math.abs(perdas - nacional.perdas_totais_mwh) > 2 || publicada <= 0 || referencia <= 0) return null;
+  const mista = doAno.filter((l) => l.origem_injetada === "requerida" || l.origem_injetada === "mista").length;
+  return {
+    ano,
+    concessionarias: doAno.length,
+    requeridaOuMista: mista,
+    publicada: doAno.filter((l) => l.origem_injetada === "publicada").length,
+    referenciaTwh: referencia / 1e6,
+    publicadaTwh: publicada / 1e6,
+    perdasTwh: perdas / 1e6,
+    taxaReferenciaPct: (100 * perdas) / referencia,
+    taxaPublicadaPct: (100 * perdas) / publicada,
+  };
+}
+
+export function textoDenominadorPerdas(d: DenominadorPerdas): string {
+  return (
+    `A taxa tem como denominador a energia injetada de referência (${num(d.referenciaTwh, 2)} TWh). Em ${num(d.requeridaOuMista, 0)} das ${num(d.concessionarias, 0)} concessionárias, ela é a energia requerida ` +
+    `(fornecida mais irregular mais perdas, leiaute de 2024 da ANEEL) ou uma mistura dos dois leiautes, e não a linha de energia injetada publicada. ` +
+    `Com a injetada publicada (${num(d.publicadaTwh, 2)} TWh), a mesma perda de ${num(d.perdasTwh, 2)} TWh daria ${num(d.taxaPublicadaPct, 1)}%, e não ${num(d.taxaReferenciaPct, 1)}%.`
+  );
+}
+
+export function textoDenominadorPerdasCurto(d: DenominadorPerdas): string {
+  return `Denominador: energia injetada de referência, que em ${num(d.requeridaOuMista, 0)} das ${num(d.concessionarias, 0)} concessionárias é a requerida; com a injetada publicada, ${num(d.taxaPublicadaPct, 1)}%.`;
+}
+
+/**
+ * Cobertura da tarifa de referência: a mediana é das distribuidoras com tarifa B1 residencial vigente na data; as demais ficaram
+ * fora, e a página diz quantas e por quê. Lido de conta.json (tarifas.sem_vigente), o mesmo conjunto do módulo Conta de luz.
+ */
+export type CoberturaTarifa = {
+  data: string;
+  comTarifa: number;
+  cnpjs: number;
+  fora: number;
+  /** Vigência anterior encerrada há 90 dias ou menos, com a seguinte ainda ausente do arquivo capturado. */
+  foraRecente: number;
+  /** Dessas, as que tiveram a vigência encerrada na véspera da data de referência. */
+  naVespera: number;
+  /** Sem tarifa há mais de 90 dias. */
+  foraAntigas: number;
+  incorporadas: number;
+};
+
+export function coberturaTarifa(
+  conta: { tarifas: { resumo: { n: number }; sem_vigente: readonly { dias_sem_tarifa: number | null; incorporada_por: string | null; ultima_vigencia: { fim: string } | null }[] } } | null | undefined,
+  data: string,
+): CoberturaTarifa | null {
+  if (!conta) return null;
+  const sem = conta.tarifas.sem_vigente;
+  const vespera = somaDias(data, -1);
+  const recente = sem.filter((x) => x.dias_sem_tarifa !== null && x.dias_sem_tarifa <= 90);
+  const antigas = sem.filter((x) => x.dias_sem_tarifa === null || x.dias_sem_tarifa > 90);
+  return {
+    data,
+    comTarifa: conta.tarifas.resumo.n,
+    cnpjs: conta.tarifas.resumo.n + sem.length,
+    fora: sem.length,
+    foraRecente: recente.length,
+    naVespera: recente.filter((x) => x.ultima_vigencia?.fim === vespera).length,
+    foraAntigas: antigas.length,
+    incorporadas: antigas.filter((x) => x.incorporada_por !== null).length,
+  };
+}
+
+export function textoCoberturaTarifa(c: CoberturaTarifa): string {
+  if (c.fora === 0) return `Mediana das ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, todas as que constam no conjunto de dados.`;
+  const recentes =
+    c.foraRecente > 0
+      ? `${num(c.foraRecente, 0)} tiveram a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${dataBR(c.data)}${c.naVespera > 0 ? ` (${num(c.naVespera, 0)} delas com a vigência encerrada em ${dataBR(somaDias(c.data, -1))})` : ""}`
+      : "";
+  const antigas =
+    c.foraAntigas > 0
+      ? `${num(c.foraAntigas, 0)} estão sem tarifa há mais de 90 dias${c.incorporadas > 0 ? ` (${num(c.incorporadas, 0)} incorporadas por outra distribuidora)` : ""}`
+      : "";
+  return (
+    `A tarifa de referência é a mediana de ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, de ${num(c.cnpjs, 0)} com tarifa no conjunto de dados. ` +
+    `Ficaram fora ${num(c.fora, 0)}: ${[recentes, antigas].filter(Boolean).join("; ")}.`
+  );
+}
+
+export function textoCoberturaTarifaCurto(c: CoberturaTarifa): string {
+  return `Mediana de ${num(c.comTarifa, 0)} de ${num(c.cnpjs, 0)} distribuidoras: ${num(c.fora, 0)} ficaram fora (${num(c.foraRecente, 0)} com a tarifa seguinte ainda ausente do arquivo da ANEEL).`;
+}
+
+/** O que cada indicador de sociedade precisa dizer junto do número; ausente quando a gold de origem não está disponível. */
+export type ContextoSociedade = { dec?: DecDoAno | null; perdas?: DenominadorPerdas | null; tarifa?: CoberturaTarifa | null };
+
+/** Título de um indicador como a página o escreve: o DEC leva a palavra "apurado", que carrega a ressalva essencial. */
+export function tituloSociedade(it: Pick<ItemSociedade, "id" | "titulo">): string {
+  return it.id === "continuidade" ? `${it.titulo} (DEC apurado)` : it.titulo;
+}
+
+/** Pergunta de cada indicador como a página a escreve; a do DEC diz que só as interrupções apuradas entram. */
+export const PERGUNTA_SOCIEDADE: Partial<Record<IdSociedade, string>> = {
+  continuidade: "Quanto tempo e quantas vezes, em média, cada consumidor ficou sem energia no ano, contadas só as interrupções que a regra apura?",
+};
+
+/** Valor de enumeração da gold ("ATRASADO", "EM DIA") escrito como palavra comum no texto corrido. */
+export function enumLegivel(texto: string): string {
+  return texto.replace(/\bEM DIA\b/g, "em dia").replace(/\bATRASADO\b/g, "atrasado").replace(/\bSEM SLA\b/g, "sem prazo declarado").replace(/\bSEM DADO\b/g, "sem registro");
+}
+
 /** Resposta do P006: cada indicador com o seu período; nenhum descreve o dia. */
-export function respostaSociedade(s: SociedadeVisao): string {
+export function respostaSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}): string {
   if (!s.itens.length) return "Nenhum indicador de energia e sociedade disponível nesta publicação.";
   const partes = s.itens.map((it) => {
     const atrasado = it.atualidade?.situacao === "ATRASADO" ? "; conjunto atrasado no painel de saúde dos dados" : "";
-    return `${it.titulo}: ${valorSociedade(it)}, ${periodoCurto(it)}${atrasado}.`;
+    if (it.id === "continuidade" && ctx.dec) {
+      const limite = textoLimiteAgregado(ctx.dec);
+      return `${tituloSociedade(it)}: ${valorSociedade(it)}, ${periodoCurto(it)}${atrasado}. ${textoDecApurado(ctx.dec)}${limite ? ` ${limite}` : ""}`;
+    }
+    const titulo = tituloSociedade(it);
+    const extra = it.id === "perdas" && ctx.perdas ? ` ${textoDenominadorPerdas(ctx.perdas)}` : it.id === "tarifa" && ctx.tarifa ? ` ${textoCoberturaTarifa(ctx.tarifa)}` : "";
+    return `${titulo}: ${valorSociedade(it)}, ${periodoCurto(it)}${atrasado}.${extra}`;
   });
   const aus = s.ausentes.length ? ` Sem dado: ${s.ausentes.map((a) => a.id).join(", ")}.` : "";
   return `Cada número tem o seu período, e nenhum descreve o dia. ${partes.join(" ")}${aus}`;
@@ -578,13 +832,21 @@ function valorComUnidade(it: Pick<ItemSociedade, "valor_exibido" | "unidade">): 
  * com o seu período, e o limite de leitura (nenhum descreve o dia). Os mesmos itens e campos de respostaSociedade; perdas e
  * Tarifa Social ficam nos cartões.
  */
-export function vereditoSociedade(s: SociedadeVisao): string {
+export function vereditoSociedade(s: SociedadeVisao, ctx: ContextoSociedade = {}): string {
   const por = new Map(s.itens.map((i) => [i.id, i]));
   const partes: string[] = [];
   const t = por.get("tarifa");
   if (t) partes.push(`A tarifa residencial de referência é ${valorComUnidade(t)}${/sem tributos/i.test(t.aviso) ? ", sem tributos" : ""}, ${periodoCurto(t)}.`);
   const c = por.get("continuidade");
-  if (c) partes.push(`Em média, cada consumidor ficou ${valorComUnidade(c)} sem energia (${periodoCurto(c)}).`);
+  if (c) {
+    // o número é o DEC apurado: o veredito diz o que a regra deixa de fora, para ninguém ler 9,33 h como todo o tempo sem energia
+    const d = ctx.dec;
+    partes.push(
+      d && d.excluido !== null && d.todasOrigens !== null
+        ? `O DEC apurado (${periodoCurto(c)}) foi de ${valorComUnidade(c)}, sem ${num(d.excluido, 2)} h que a regra exclui (todas as origens: ${num(d.todasOrigens, 2)} h).`
+        : `O DEC apurado (${periodoCurto(c)}) foi de ${valorComUnidade(c)}, sem as interrupções que a regra exclui.`,
+    );
+  }
   if (!partes.length) {
     const outros = s.itens.slice(0, 2).map((it) => `${it.titulo}: ${valorComUnidade(it)} (${periodoCurto(it)})`);
     if (!outros.length) return "";
@@ -727,17 +989,26 @@ export function vereditoObservar(observar: readonly RegraObservar[]): string {
   return partes.join(" ");
 }
 
+/**
+ * Regras cujo alerta é uma igualdade com o limiar, e não uma passagem por ele: o piso do PLD dispara com as 24 horas do dia no
+ * mínimo vigente, e "acima de 24 horas" não existe num dia de 24 horas.
+ */
+const ALERTA_COM_O_LIMIAR: ReadonlySet<IdRegra> = new Set<IdRegra>(["pld_piso"]);
+
 /** Texto do valor avaliado de uma regra com os limiares, na unidade da regra. */
-export function textoValorRegra(o: Pick<RegraObservar, "valor" | "unidade">): string | null {
+export function textoValorRegra(o: Pick<RegraObservar, "valor" | "unidade"> & { id?: IdRegra }): string | null {
   const v = o.valor;
   if (!v) return null;
   const c = casasUnidade(o.unidade);
   const f = (x: number | null) => comUnidade(x, o.unidade, c);
+  const igual = o.id !== undefined && ALERTA_COM_O_LIMIAR.has(o.id);
   const lim =
     v.limiar_inferior !== null && v.limiar_superior !== null
       ? `alerta abaixo de ${f(v.limiar_inferior)} ou acima de ${f(v.limiar_superior)}`
       : v.limiar_superior !== null
-        ? `alerta acima de ${f(v.limiar_superior)}`
+        ? igual
+          ? `alerta com ${f(v.limiar_superior)}`
+          : `alerta acima de ${f(v.limiar_superior)}`
         : v.limiar_inferior !== null
           ? `alerta abaixo de ${f(v.limiar_inferior)}`
           : "sem limiar numérico";
@@ -1036,4 +1307,173 @@ export function conjuntosLegiveis(texto: string, titulos: Readonly<Record<string
     return titulos[id];
   });
   return { texto: out, ids };
+}
+
+/* ---------------------------------------------------------------- r10: episódios, EAR sem arredondamento duplo e janela dos determinantes */
+
+/**
+ * O corte da tabela de episódios: a gold guarda os últimos episódios de cada regra (até cinco), e o arquivo para baixar traz todos. A
+ * tabela diz quantos lista e quantos existem, em vez de se apresentar como a lista inteira.
+ */
+export function corteEpisodios(observar: readonly Pick<RegraObservar, "historico">[], inicioHistorico: string): { listados: number; total: number; porRegra: number; texto: string } {
+  const comHistorico = observar.filter((o) => o.historico);
+  const listados = comHistorico.reduce((s, o) => s + (o.historico?.ultimos_episodios.length ?? 0), 0);
+  const total = comHistorico.reduce((s, o) => s + (o.historico?.episodios ?? 0), 0);
+  const porRegra = comHistorico.reduce((m, o) => Math.max(m, o.historico?.ultimos_episodios.length ?? 0), 0);
+  const texto =
+    listados >= total
+      ? `A tabela lista todos os ${num(total, 0)} episódios registrados desde ${dataBR(inicioHistorico)}.`
+      : `A tabela lista os últimos ${num(porRegra, 0)} episódios de cada regra: ${num(listados, 0)} dos ${num(total, 0)} registrados desde ${dataBR(inicioHistorico)}. A lista completa está no arquivo de episódios das regras (CSV).`;
+  return { listados, total, porRegra, texto };
+}
+
+/** EAR do SIN em % da EAR máxima com quatro casas (ear_diario.csv, coluna SIN_calculado), por data. Linhas no formato de lerCsvComAspas. */
+export function serieEarSin(linhas: readonly (readonly string[])[]): Map<string, number> {
+  const [cab, ...resto] = linhas;
+  const out = new Map<string, number>();
+  if (!cab) return out;
+  const iData = cab.indexOf("data");
+  const iSin = cab.indexOf("SIN_calculado");
+  if (iData < 0 || iSin < 0) return out;
+  for (const l of resto) {
+    const v = Number(l[iSin]);
+    if (l[iSin] !== "" && l[iSin] !== undefined && Number.isFinite(v)) out.set(l[iData], v);
+  }
+  return out;
+}
+
+/**
+ * A EAR do SIN dos determinantes com o valor da série publicada, sem o arredondamento a duas casas que a gold da síntese aplica antes
+ * de o gráfico e a tabela arredondarem de novo a uma casa (61,6473 vira 61,65 e depois 61,7). O gráfico, a tabela, o anúncio por teclado e o
+ * arquivo exportado passam a arredondar uma só vez, a partir do mesmo valor do cartão. Só troca o valor quando ele é o mesmo da gold
+ * na precisão em que a gold o publica; nunca preenche dia sem valor nem usa outra grandeza.
+ */
+export function comEarPrecisa(dados: readonly LinhaMultiplos[], ear: ReadonlyMap<string, number>): LinhaMultiplos[] {
+  return dados.map((l) => {
+    const v = ear.get(l.d);
+    const antes = l.agua_SIN;
+    if (v === undefined || typeof antes !== "number") return l;
+    return Math.abs(v - antes) <= 0.0051 ? { ...l, agua_SIN: v } : l;
+  });
+}
+
+/** Mediana da data da EAR do SIN (hidrologia.json, bandas_ear, SIN_p50) copiada para cada dia, pela mesma regra do dia do calendário das faixas. */
+export function comMedianaAgua(dados: readonly LinhaMultiplos[], bandas: readonly { md: string; SIN_p50?: number | null }[]): LinhaMultiplos[] {
+  const porMd = new Map(bandas.map((b) => [b.md, b.SIN_p50 ?? null]));
+  return dados.map((l) => {
+    const md = l.d.slice(5, 10) === "02-29" ? "02-28" : l.d.slice(5, 10);
+    const p50 = porMd.get(md);
+    return p50 === undefined || p50 === null ? l : { ...l, agua_p50: p50 };
+  });
+}
+
+/** Texto do campo "Período" dos determinantes para a janela escolhida: o recorte exibido, não o recorte publicado. */
+export function periodoDaJanela(linhas: readonly Pick<LinhaMultiplos, "d">[]): string {
+  if (!linhas.length) return "sem dia na janela";
+  return `${dataBR(linhas[0].d)} a ${dataBR(linhas[linhas.length - 1].d)} (${plural(linhas.length, "dia", "dias")} alinhados pelo calendário); cada gráfico termina na data de referência da sua fonte`;
+}
+
+/** Valor do painel no dia de referência lido da própria série exibida (a mesma célula da tabela), com o do cartão como reserva. */
+export function valorDoDiaNaSerie(p: Pick<PainelDeterminante, "colunas" | "data_referencia" | "valor_atual">, linhas: readonly LinhaMultiplos[]): number | null {
+  const col = p.colunas[0]?.id;
+  const x = linhas.find((l) => l.d === p.data_referencia)?.[col];
+  return typeof x === "number" ? x : p.valor_atual.valor;
+}
+
+/* ---------------------------------------------------------------- r10: regras de cada frase */
+
+/**
+ * Regras do "O que observar" que avaliam o mesmo indicador de cada frase: a frase leva a marca da regra quando ela está em alerta ou em
+ * observação, para o leitor do topo não ver 168,6% da média de longo termo sem saber que a regra de afluência já está em observação.
+ */
+export const REGRAS_DA_FRASE: Readonly<Record<IdFrase, readonly IdRegra[]>> = {
+  reservatorios: ["ear_faixa"],
+  afluencias: ["ena_faixa"],
+  carga: ["carga_extrema"],
+  termica: ["termica"],
+  pld: ["pld_piso", "pld_teto", "descolamento"],
+  rede: [],
+};
+
+export function regrasDaFrase<T extends Pick<RegraObservar, "id" | "tipo" | "estado">>(id: IdFrase, observar: readonly T[]): T[] {
+  const ids = REGRAS_DA_FRASE[id];
+  return observar.filter((o) => o.tipo !== "evento" && ids.includes(o.id) && (o.estado === "ativo" || o.estado === "em_retorno" || o.estado === "em_observacao"));
+}
+
+/* ---------------------------------------------------------------- r10: cada medida diz o corte e a data que usa, e o que o módulo de origem mostra */
+
+const MES_POR_EXTENSO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const reaisMwh = (v: number) => `R$ ${num(v, 2)}/MWh`;
+
+/** O mesmo mês nos anos anteriores: a referência sazonal do PLD (pld_detalhe.json, historico.posicao_referencia). */
+export type PosicaoPldSazonal = { mes: number; percentil: number | null; n_dias: number; p50: number | null; anos: readonly number[] };
+
+/** "percentil 38,7 entre as 150 médias diárias de setembro de 2021 a 2025 (mediana R$ 247,81/MWh)"; null sem percentil. */
+export function textoSazonalPld(s: PosicaoPldSazonal): string | null {
+  if (s.percentil === null) return null;
+  const anos = s.anos.length > 1 ? ` de ${s.anos[0]} a ${s.anos[s.anos.length - 1]}` : s.anos.length === 1 ? ` de ${s.anos[0]}` : "";
+  const mediana = s.p50 === null ? "" : `, mediana ${reaisMwh(s.p50)}`;
+  return `percentil ${num(s.percentil, 1)} entre as ${num(s.n_dias, 0)} médias diárias de ${MES_POR_EXTENSO[s.mes - 1]}${anos}${mediana}`;
+}
+
+/**
+ * Os dois critérios que a página usa para dizer onde está o PLD do dia, lado a lado com a ponte: a frase compara com todas as
+ * médias diárias nominais desde 2021 (todos os meses, anos com pisos e tetos diferentes) e a página de PLD compara com o mesmo mês
+ * dos anos anteriores. Cada número vem da gold de PLD, e os limites vêm dos regimes anuais publicados.
+ */
+export function textoDoisCriteriosPld(a: {
+  media: number;
+  percentilTodos: number | null;
+  diasTodos: number;
+  sazonal: PosicaoPldSazonal | null;
+  pisos: readonly number[];
+  anoInicial: string;
+  anoFinal: string;
+}): string | null {
+  const sazonal = a.sazonal ? textoSazonalPld(a.sazonal) : null;
+  if (a.percentilTodos === null) return null;
+  const piso = a.pisos.length ? ` Os dois critérios juntam anos com limites regulatórios diferentes: o piso foi de R$ ${num(Math.min(...a.pisos), 2)} a ${reaisMwh(Math.max(...a.pisos))} entre ${a.anoInicial} e ${a.anoFinal}.` : "";
+  return (
+    `Dois critérios para a mesma média de ${reaisMwh(a.media)}: a frase compara com as ${num(a.diasTodos, 0)} médias diárias nominais desde 2021, de todos os meses, e dá percentil ${num(a.percentilTodos, 1)}` +
+    `${sazonal ? `; a referência sazonal da página de PLD compara com o mesmo mês dos anos anteriores e dá ${sazonal}` : ""}.${piso}`
+  );
+}
+
+/** EAR do SIN e capacidade: a faixa do mesmo dia está em % da EAR máxima de cada ano, e a EAR máxima mudou ao longo da base. */
+export function textoCapacidadeAgua(a: { periodoBase: string | null; minMwmes: number | null; maxMwmes: number | null; mudou: boolean }): string | null {
+  if (!a.mudou || a.minMwmes === null || a.maxMwmes === null || a.maxMwmes <= 0) return null;
+  const queda = (100 * (a.maxMwmes - a.minMwmes)) / a.maxMwmes;
+  const base = a.periodoBase ? ` de ${a.periodoBase.replace("-", " a ")}` : "";
+  return `A faixa e a mediana comparam anos${base} em % da EAR máxima de cada época, e a EAR máxima do SIN variou de ${num(a.minMwmes, 0)} a ${num(a.maxMwmes, 0)} MWmês nesse período (a menor ${num(queda, 1)}% abaixo da maior): o mesmo percentual em épocas diferentes não é a mesma energia.`;
+}
+
+/** A EAR que o módulo Água e clima mostra, quando o dia dele não é o da Visão geral: cada página diz o dia que usa. */
+export function textoEarNoModulo(a: { diaVisao: string; diaModulo: string | null; pctModulo: number | null }): string | null {
+  if (a.diaModulo === null || a.pctModulo === null || a.diaModulo === a.diaVisao) return null;
+  return `A página Água e clima, de outra captura do ONS, traz ${num(a.pctModulo, 1)}% em ${dataBR(a.diaModulo)}.`;
+}
+
+/** A carga nos dois cortes: o que esta página usa na frase e o padrão da página Carga, com os dois percentuais na mesma casa. */
+export function textoCargaNoModulo(a: { mesmasDatasPct: number | null; mesmosDiasDaSemanaPct: number | null; mesmosDiasDaSemanaInicio: string | null; mesmosDiasDaSemanaFim: string | null }): string | null {
+  if (a.mesmasDatasPct === null || a.mesmosDiasDaSemanaPct === null) return null;
+  const periodo = a.mesmosDiasDaSemanaInicio && a.mesmosDiasDaSemanaFim ? ` (${dataBR(a.mesmosDiasDaSemanaInicio)} a ${dataBR(a.mesmosDiasDaSemanaFim)})` : "";
+  const direcao = (v: number) => (v >= 0 ? "alta" : "queda");
+  return `Na página Carga, a comparação padrão é com os mesmos dias da semana, 52 semanas antes${periodo}: ${direcao(a.mesmosDiasDaSemanaPct)} de ${num(Math.abs(a.mesmosDiasDaSemanaPct), 2)}%. Esta página usa as mesmas datas do ano anterior, que na Carga dão ${direcao(a.mesmasDatasPct)} de ${num(Math.abs(a.mesmasDatasPct), 2)}%.`;
+}
+
+/** Horas do dia em que o fluxo da fronteira foi contra o sentido do saldo líquido (o saldo as compensa). */
+export function horasContraOSaldo(c: { liquido_mwh: readonly (number | null)[]; horas: readonly (number | null)[]; horas_inverso: readonly (number | null)[] }, i: number): number | null {
+  const liq = c.liquido_mwh[i];
+  const h = c.horas[i];
+  const inv = c.horas_inverso[i];
+  if (liq === null || liq === undefined || h === null || h === undefined || inv === null || inv === undefined) return null;
+  return liq >= 0 ? inv : h - inv;
+}
+
+/** Saldo líquido do dia e as horas contra o saldo em cada fronteira, com a ligação para a página Rede escrita pelo componente. */
+export function textoSaldoLiquidoRede(a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null }): string {
+  const listadas = a.fronteiras.filter((f) => f.horasContra !== null).map((f) => `${f.rotulo}, ${num(f.horasContra as number, 0)} de ${num(f.horas, 0)}`);
+  const horas = listadas.length ? ` Horas do dia em que o fluxo foi contra o sentido do saldo: ${listadas.join("; ")}.` : "";
+  const modulo = a.diaModulo && a.diaModulo !== a.dia ? ` A página Rede traz também ${dataBR(a.diaModulo)}.` : "";
+  return `Saldo líquido do dia ${dataBR(a.dia)}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`;
 }

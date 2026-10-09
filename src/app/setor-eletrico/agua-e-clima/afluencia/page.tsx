@@ -4,9 +4,8 @@ import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, Agua
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
-import { Numero } from "@/components/energia/Numero";
+import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -23,6 +22,8 @@ import {
   COR_REGIAO,
   CURTO_REGIAO,
   NOME_REGIAO,
+  REGRA_CAPTURA_ENA,
+  REGRA_FAIXA_ENA,
   SUBSISTEMAS,
   anoInicial,
   entidadesEna,
@@ -32,18 +33,22 @@ import {
   linhasRevisoesCapturas,
   linhasRevisoesMlt,
   linhasUnidade,
+  listaMeses,
   listaTexto,
+  mesesSemPmo,
   nomeProprio,
-  notaEnaDoDia,
-  periodoBase,
   perguntaPainel,
   rotaPainel,
+  serieDiferencaMlt,
   serieMltImplicita,
+  serieMltJanJul,
+  serieMltMensal,
   serieRegioes,
   situacaoAtualidade,
   textoConferenciaBacias,
   textoMltNaoConcluir,
   textoMudancaAfluencia,
+  textoMudancaMltNoMes,
   textoRevisoesCapturas,
   textosMlt,
 } from "@/lib/energia/agua";
@@ -71,13 +76,16 @@ export default function AfluenciaPage() {
   const entidades = entidadesEna(f);
   const atual = situacaoAtualidade(g.dias_referencia.ena, g.gerado_em, 3, "o ONS publica a ENA do dia anterior");
   const versao = g.dias_referencia.ena;
-  const downloads = g.downloads.filter((d) => /agua_subsistemas_diario|agua_ear_recortes|agua_mlt_mudancas/.test(d.url));
-  const sin = entidades.find((e) => e.id === "SIN");
-  const naturezaSin = f.subsistemas.find((s) => s.sm === "SIN")?.natureza ?? "CALCULADO";
+  // o arquivo diário de 2000 em diante é a base da faixa: o CSV do painel começa em 2022, então a base entra à parte
+  const downloads = [
+    ...g.downloads.filter((d) => /agua_subsistemas_diario|agua_ear_recortes|agua_mlt_mudancas/.test(d.url)),
+    { rotulo: "ENA diária por subsistema e SIN desde 2000, a base da faixa usual (CSV)", url: "/energia/series/ena_diario.csv" },
+  ];
   const conf = f.conferencia_bacias_sin;
-  const mltSe = f.mlt.pmo.comparacao.filter((c) => c.sm === "SE");
   const implicita = serieMltImplicita(f.mlt);
   const desdeImplicita = anoInicial(implicita[0]?.x);
+  const semPmo = mesesSemPmo(f.mlt);
+  const mudancaNoMes = textoMudancaMltNoMes(f.mlt);
   const oQueMudou = (
     <>
       {atual.texto} {textoMudancaAfluencia(entidades)}
@@ -85,9 +93,9 @@ export default function AfluenciaPage() {
   );
   const comoInterpretar = (
     <>
-      A ENA é a energia produzível a partir das vazões naturais que chegam aos reservatórios. 100% é a MLT dos mesmos dias. A ENA de 30 dias é a soma da ENA dividida pela soma da
-      MLT vigente em cada dia, nunca a média dos percentuais diários; o SIN soma as ENA e as MLT dos quatro subsistemas. A faixa usual vai do 10º ao 90º percentil da mesma janela
-      de 30 dias nos anos da base (mínimo de 5 anos).
+      A ENA é a energia produzível a partir das vazões naturais que chegam aos reservatórios; o ONS a deriva da vazão natural reconstituída, e ela não é uma medição direta. 100% é
+      a MLT dos mesmos dias. A ENA de 30 dias é a soma da ENA dividida pela soma da MLT vigente em cada dia, nunca a média dos percentuais diários; o SIN soma as ENA e as MLT
+      dos quatro subsistemas. A faixa usual vai do 10º ao 90º percentil da mesma janela de 30 dias nos anos da base (mínimo de 5 anos).
     </>
   );
   const naoConcluir = (
@@ -107,71 +115,15 @@ export default function AfluenciaPage() {
           rotulo="Água e clima"
           siglas={["ENA", "MLT", "REE", "SIN", "MWmed", "EAR", "ONS", "PMO"]}
           titulo={perguntaPainel("p018")}
-          lead="A energia natural afluente (ENA) em 30 dias, em % da média de longo termo (MLT)."
-          recorte={`${dataBR(g.dias_referencia.ena)} · SIN, subsistemas, REE e bacias · % da MLT e MWmed`}
-          fonte="ONS, ENA Diário por subsistema, por REE e por bacia"
+          lead="A energia natural afluente (ENA) de 30 dias, em % da média de longo termo (MLT)."
+          recorte={`Até ${dataBR(g.dias_referencia.ena)} · SIN, subsistemas, REE e bacias · % da MLT e MWmed`}
+          fonte="Operador Nacional do Sistema Elétrico (ONS), ENA Diário"
           referencia={
             <>
               ONS, ENA Diário por Subsistema, por REE e por Bacia, até {dataBR(g.dias_referencia.ena)}; MLT do Relatório Executivo do PMO; processado em {carimbo(g.gerado_em)}.
             </>
           }
-          datas={<AguaDatas itens={[{ rotulo: "ENA", dia: g.dias_referencia.ena, natureza: "OBSERVADO" }]} />}
-          metricas={
-            sin ? (
-              <FaixaMetricas colunas={4} rotulo="Indicadores da afluência no SIN">
-                <Numero
-                  variante="faixa"
-                  rotulo="ENA bruta de 30 dias do SIN"
-                  natureza="CALCULADO"
-                  evidencia={ev.ena_30d_sin}
-                  formato="pct"
-                  casas={1}
-                  unidade="da MLT"
-                  cor="var(--cor-energia)"
-                  nota="O percentual da MLT é outra régua que o da EAR: os dois não se comparam."
-                  endereco={`${rotaPainel("p018")}#p018`}
-                />
-                {sin.p50_30d !== null && (
-                  <Numero
-                    variante="faixa"
-                    rotulo="Mediana da mesma janela"
-                    natureza="CALCULADO"
-                    valor={sin.p50_30d}
-                    formato="pct"
-                    casas={1}
-                    unidade="da MLT"
-                    periodo={`mesma janela de 30 dias em ${periodoBase(sin.periodo_base)}`}
-                    cor="var(--serie-referencia)"
-                  />
-                )}
-                <Numero
-                  variante="faixa"
-                  rotulo="ENA do SIN no dia"
-                  natureza={naturezaSin}
-                  valor={sin.ena_mwmed_dia}
-                  formato="num"
-                  casas={0}
-                  unidade="MWmed"
-                  periodo={dataBR(sin.dia)}
-                  nota={notaEnaDoDia(sin) ?? undefined}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo="ENA armazenável de 30 dias do SIN"
-                  natureza="CALCULADO"
-                  evidencia={ev.ena_arm_30d_sin}
-                  valor={sin.pct_mlt_arm_30d ?? null}
-                  formato="pct"
-                  casas={1}
-                  unidade="da MLT"
-                  periodo={`30 dias até ${dataBR(sin.dia)}`}
-                  motivoAusencia="Sem ENA armazenável de 30 dias completa nesta publicação."
-                  nota="Em % da MLT armazenável: vazões naturais menos as vertidas."
-                  endereco={`${rotaPainel("p018")}#p018`}
-                />
-              </FaixaMetricas>
-            ) : undefined
-          }
+          datas={<AguaDatas itens={[{ rotulo: "ENA, derivada pelo ONS das vazões naturais reconstituídas", dia: g.dias_referencia.ena, natureza: "OBSERVADO" }]} />}
         >
           A <Termo slug="ena">ENA</Termo> converte em energia as vazões naturais que chegam aos reservatórios. Em % da <Termo slug="mlt">MLT</Termo>, ela diz se a água que chega está acima ou
           abaixo da média de longo termo usada pelo ONS. Para isso, a página soma 30 dias de ENA e 30 dias de MLT antes de dividir, compara o resultado com a mesma janela dos anos
@@ -182,7 +134,7 @@ export default function AfluenciaPage() {
             <PainelEvidencia
               id="p018"
               pergunta="Cada região frente à mediana da mesma janela"
-              subtitulo="ENA bruta de 30 dias por subsistema, REE e bacia · % da MLT (razão de somas) · faixa da mesma janela nos anos da base"
+              subtitulo="ENA de 30 dias em % da MLT, contra a faixa da mesma janela"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -211,16 +163,68 @@ export default function AfluenciaPage() {
                   fonte={FONTE}
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  evidencias={{ ena30d: ev.ena_30d_sin, enaArm30d: ev.ena_arm_30d_sin }}
+                  revisoes={f.revisoes_entre_capturas_30d}
+                  enderecoMedidas={`${rotaPainel("p018")}#p018`}
                 />
 
                 <SecaoDoPainel
                   id="mlt"
                   titulo="Qual MLT? A referência muda de versão"
-                  lead="A MLT é o 100% desta página. As duas figuras mostram como ela é publicada, no relatório mensal do PMO e nos arquivos abertos do ONS, e como a MLT implícita de cada subsistema variou."
+                  lead="A MLT é o 100% desta página. As figuras mostram quanto a MLT dos arquivos abertos do ONS difere da publicada no relatório mensal do Programa Mensal de Operação (PMO) e como a MLT implícita de cada subsistema variou."
                 >
                   <GraficoLinhas
+                    titulo="Diferença da MLT do conjunto aberto contra a do PMO no início de cada mês, por subsistema, em %"
+                    dados={serieDiferencaMlt(f.mlt)}
+                    chaveX="m"
+                    formatoX="mes"
+                    series={SUBSISTEMAS.map((sm) => ({ id: sm, rotulo: NOME_REGIAO[sm], sigla: CURTO_REGIAO[sm], cor: COR_REGIAO[sm] }))}
+                    banda={{ inferior: "tol_inf", superior: "tol_sup", rotulo: `Tolerância de ${num(f.mlt.pmo.tolerancia_pct, 2)}% (o PMO publica MWmed inteiros)` }}
+                    unidade="%"
+                    casas={2}
+                    zeroNoEixo
+                    altura={260}
+                  />
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="mlt-lacuna">
+                    Positivo: a MLT do conjunto aberto é maior que a do PMO. Fora da faixa de tolerância, as duas diferem.
+                    {semPmo.length > 0 ? ` Sem relatório do PMO coletado em ${listaMeses(semPmo)}: nesses meses não há comparação, e as linhas são interrompidas.` : ""} {mudancaNoMes}
+                  </p>
+                  {ev.mlt_pmo_vs_aberto && (
+                    <p className="text-sm text-carvao">
+                      Diferença entre a MLT do conjunto aberto e a do PMO no Sudeste/Centro-Oeste, no mês mais recente:{" "}
+                      <ComproveNumero variante="valor" evidencia={ev.mlt_pmo_vs_aberto} />
+                    </p>
+                  )}
+                  <PequenosMultiplos
+                    titulo={`MLT implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho${desdeImplicita ? `, desde ${desdeImplicita}` : ""}`}
+                    dados={serieMltJanJul(f.mlt)}
+                    chaveX="x"
+                    formatoX="texto"
+                    unidade="MWmed"
+                    casas={0}
+                    escala="livre"
+                    colunas={4}
+                    nivelTitulo={4}
+                    paineis={SUBSISTEMAS.map((sm) => ({
+                      id: sm,
+                      titulo: NOME_REGIAO[sm],
+                      series: [
+                        { id: `${sm}_1`, rotulo: "15 de janeiro", cor: COR_REGIAO[sm], espessura: 2 },
+                        { id: `${sm}_7`, rotulo: "15 de julho", cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
+                      ],
+                    }))}
+                  />
+                  <p className="text-sm text-carvao-muted">
+                    Linha contínua: 15 de janeiro; linha tracejada: 15 de julho. MLT implícita = ENA ÷ (% da MLT ÷ 100), lida dos próprios arquivos. Ela cresce com a entrada de
+                    usinas e muda quando o ONS troca a versão da referência; janeiro e julho mostram a estação chuvosa e a seca, e cada degrau é uma mudança de versão.{" "}
+                    {f.mlt.anos_regra}.
+                  </p>
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="mlt-detalhes" nivel="analisar" titulo="Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam">
+                  <GraficoLinhas
                     titulo="MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto, mês a mês"
-                    dados={mltSe.map((c) => ({ m: c.mes, pmo: c.pmo_mwmed, inicio: c.aberto_inicio_mwmed, fim: c.aberto_fim_mwmed }))}
+                    dados={serieMltMensal(f.mlt, "SE")}
                     chaveX="m"
                     formatoX="mes"
                     series={[
@@ -231,28 +235,6 @@ export default function AfluenciaPage() {
                     unidade="MWmed"
                     casas={0}
                   />
-                  {ev.mlt_pmo_vs_aberto && (
-                    <p className="text-sm text-carvao">
-                      Diferença entre a MLT do conjunto aberto e a do PMO no Sudeste/Centro-Oeste, no mês mais recente:{" "}
-                      <ComproveNumero variante="valor" evidencia={ev.mlt_pmo_vs_aberto} />
-                    </p>
-                  )}
-                  <GraficoLinhas
-                    titulo={`MLT implícita de cada subsistema no dia 15 de janeiro e de julho${desdeImplicita ? `, desde ${desdeImplicita}` : ""}`}
-                    dados={implicita}
-                    chaveX="x"
-                    formatoX="mes"
-                    series={SUBSISTEMAS.map((sm) => ({ id: sm, rotulo: NOME_REGIAO[sm], sigla: CURTO_REGIAO[sm], cor: COR_REGIAO[sm] }))}
-                    unidade="MWmed"
-                    casas={0}
-                  />
-                  <p className="text-sm text-carvao-muted">
-                    MLT implícita = ENA ÷ (% da MLT ÷ 100), lida dos próprios arquivos. Ela cresce com a entrada de usinas e muda quando o ONS troca a versão da referência; janeiro
-                    e julho mostram a estação chuvosa e a seca. {f.mlt.anos_regra}.
-                  </p>
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="mlt-detalhes" nivel="analisar" titulo="Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam">
                   <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao" data-textos="mlt">
                     {textosMlt(f.mlt, g.dias_referencia.ena.slice(0, 4)).map((t) => (
                       <li key={t}>{t}</li>
@@ -309,6 +291,7 @@ export default function AfluenciaPage() {
                     fonte="ONS, ENA Diário por Reservatório e por Subsistema"
                     versao={versao}
                     nomeArquivo="agua-ena-unidade"
+                    nota="O dia de exemplo é o mais recente comparado, não o dia da maior diferença. Esta publicação não informa em que anos a soma das usinas difere do subsistema nem o dia da maior diferença."
                   />
                   {conf && (
                     <p className="text-sm text-carvao-muted" data-texto="conferencia-bacias">
@@ -347,7 +330,7 @@ export default function AfluenciaPage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="regras-p018" nivel="auditar" titulo="Regras, fontes e arquivos">
-                  <AguaRegras regras={g.regras} chaves={["ena_30d", "mlt", "faixa_sazonal", "captura"]} />
+                  <AguaRegras regras={{ ...g.regras, faixa_sazonal: REGRA_FAIXA_ENA, captura: REGRA_CAPTURA_ENA }} chaves={["ena_30d", "mlt", "faixa_sazonal", "captura"]} />
                   <AguaFontes provs={[prov.ena_30d, prov.ena_30d_ree, prov.ena_30d_bacia, prov.mlt]} />
                 </SecaoDoPainel>
 

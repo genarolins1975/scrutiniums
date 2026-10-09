@@ -2,26 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { EmpresasDistribuidoras } from "@/components/energia/EmpresasDistribuidoras";
+import { EmpresasComparador, EmpresasIndiceDistribuidoras } from "@/components/energia/EmpresasDistribuidoras";
 import {
-  EmpresasAnalise,
-  EmpresasAuditoria,
   EmpresasComoLer,
+  EmpresasDatas,
   EmpresasIndisponivel,
   EmpresasNavegacao,
   EmpresasRecorte,
   EmpresasSeguir,
 } from "@/components/energia/EmpresasPagina";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   COLUNAS_DISTRIBUIDORAS,
   ancoraPainel,
   dadosComparacao,
+  dataTexto,
   downloadsDe,
   entidadesDistribuidoras,
   inteiro,
@@ -39,6 +41,7 @@ import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { comValorExibido, type Evidencia } from "@/lib/energia/evidencia";
+import { SIGLAS } from "@/lib/energia/siglas";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
@@ -54,6 +57,7 @@ export default function PaginaP037() {
   if (!integra(g)) return <EmpresasIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
 
   const d = g.distribuidoras;
+  const prov = g.proveniencia;
   const golds = d.golds_origem;
   // referência nacional de perdas: a da gold de Perdas, só quando é do mesmo ano das perdas por distribuidora
   const evTaxaNacional = lerGold<{ evidencias?: { taxa_nacional?: Evidencia } }>("perdas.json")?.evidencias?.taxa_nacional ?? null;
@@ -63,66 +67,158 @@ export default function PaginaP037() {
   // a taxa nacional aparece com duas casas, como a legenda do gráfico de perdas e as perdas de cada distribuidora
   const evTaxaNacional2 = evTaxaNacional ? comValorExibido(evTaxaNacional, pctTexto(evTaxaNacional.valor_calculo, 2)) : null;
   const perdasDestino = DESTINOS_NAVEGACAO.find((x) => x.slug === "perdas");
+  const dataIndice = dataTexto(g.gerado_em.slice(0, 10));
+
+  const oQueMudou = (
+    <>
+      As bases publicadas de origem foram geradas em {carimbo(golds["perdas.json"].gerado_em)} (Perdas), {carimbo(golds["qualidade.json"].gerado_em)} (Qualidade) e {carimbo(golds["conta.json"].gerado_em)}{" "}
+      (Conta de luz). A evolução de cada distribuidora (perdas em {inteiro(d.resumo.com_evolucao.perdas)}, continuidade em {inteiro(d.resumo.com_evolucao.qualidade)} e tarifa em{" "}
+      {inteiro(d.resumo.com_evolucao.tarifa)}) está na ficha.
+    </>
+  );
+  const comoInterpretar = <>{semNomesDeCampo(d.pares)}</>;
+  const naoConcluir = (
+    <>
+      Não se conclui eficiência nem culpa: perdas, continuidade e tarifa dependem da área atendida (densidade, clima, renda, rede herdada). Anos de referência diferentes não se comparam. A tarifa B1
+      residencial não é a conta inteira (tributos e bandeiras ficam fora). O ramo declarado no cadastro de agentes não define distribuidora.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-distribuidoras" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "ANEEL"]}
+        <EmpresasNavegacao atual="p037" />
+        <CabecalhoModulo
           rotulo="Empresas"
+          siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "ANEEL"]}
           titulo={painel("p037").pergunta}
+          lead="Perdas, continuidade do serviço e tarifa residencial de cada distribuidora, pelo CNPJ que as bases reguladas da ANEEL publicam. Compare até quatro ou abra a ficha de uma."
+          recorte={`Perdas de ${anoPerdas ?? "sem dado"} · continuidade de ${anoQualidade ?? "sem dado"} · tarifa vigente na data do arquivo de tarifas · % da energia injetada, horas, interrupções e R$/MWh`}
+          fonte="ANEEL, bases de perdas, continuidade e tarifas, copiadas dos módulos de origem"
           referencia={
             <>
               Perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, copiadas da base publicada de Perdas, gerada em {carimbo(golds["perdas.json"].gerado_em)}, e da de Qualidade,
-              gerada em {carimbo(golds["qualidade.json"].gerado_em)}; tarifas da base publicada de Conta de luz, gerada em {carimbo(golds["conta.json"].gerado_em)}. Processado em {carimbo(g.gerado_em)}.
+              gerada em {carimbo(golds["qualidade.json"].gerado_em)}; tarifas da base publicada de Conta de luz, gerada em {carimbo(golds["conta.json"].gerado_em)}. Processado em{" "}
+              {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <EmpresasDatas
+              itens={[
+                { rotulo: "Índice pelo CNPJ", texto: `de ${dataIndice}`, natureza: prov.distribuidoras.natureza },
+                { rotulo: "Perdas", texto: `${anoPerdas ?? "sem dado"}, base publicada de Perdas`, natureza: prov.distribuidoras_perdas?.natureza ?? "CALCULADO" },
+                { rotulo: "Continuidade", texto: `${anoQualidade ?? "sem dado"}, base publicada de Qualidade`, natureza: prov.distribuidoras_qualidade?.natureza ?? "OBSERVADO" },
+                { rotulo: "Tarifa B1", texto: "vigente na data do arquivo de tarifas, base publicada de Conta de luz", natureza: prov.distribuidoras_tarifa?.natureza ?? "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={4}
+              rotulo="Indicadores das distribuidoras"
+              nota="Contagens do índice inteiro e referência nacional, fixas: não mudam com a comparação escolhida. Distribuidora sem número em uma base fica sem dado nela, nunca com zero."
+            >
+              <Numero
+                variante="faixa"
+                rotulo="Distribuidoras pelo CNPJ"
+                natureza={prov.distribuidoras.natureza}
+                valor={d.resumo.distribuidoras}
+                formato="num"
+                casas={0}
+                unidade="distribuidoras"
+                periodo={`índice de ${dataIndice}`}
+                nota={`${inteiro(d.resumo.ativas)} ativas; ${inteiro(d.resumo.concessionarias)} concessionárias e ${inteiro(d.resumo.permissionarias)} permissionárias.`}
+              />
+              {evTaxaNacional2 && refPerdas ? (
+                <Numero
+                  variante="faixa"
+                  rotulo="Referência: perdas totais na distribuição, Brasil"
+                  natureza={prov.distribuidoras_perdas?.natureza ?? "CALCULADO"}
+                  evidencia={evTaxaNacional2}
+                  formato="pct"
+                  casas={2}
+                  unidade="da energia injetada"
+                  nota={`Taxa das concessionárias em conjunto (perdas somadas sobre energia injetada somada, não a média das taxas): ${evTaxaNacional2.universo}. Mesmo ano das perdas por distribuidora.`}
+                  endereco={ancoraPainel("p037")}
+                />
+              ) : (
+                <Numero
+                  variante="faixa"
+                  rotulo="Referência: perdas totais na distribuição, Brasil"
+                  natureza="CALCULADO"
+                  valor={null}
+                  motivoAusencia="A base publicada de Perdas não publica a taxa nacional do mesmo ano das perdas por distribuidora."
+                />
+              )}
+              <Numero
+                variante="faixa"
+                rotulo="Com continuidade publicada"
+                natureza={prov.distribuidoras_qualidade?.natureza ?? "OBSERVADO"}
+                valor={d.resumo.com_qualidade}
+                formato="num"
+                casas={0}
+                unidade="distribuidoras"
+                periodo={`DEC e FEC de ${anoQualidade ?? "sem dado"}`}
+                nota="Cada uma com o limite que a ANEEL fixa para ela."
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Com tarifa residencial vigente"
+                natureza={prov.distribuidoras_tarifa?.natureza ?? "OBSERVADO"}
+                valor={d.resumo.com_tarifa_vigente}
+                formato="num"
+                casas={0}
+                unidade="distribuidoras"
+                periodo="tarifa B1, vigente na data do arquivo de tarifas"
+              />
+            </FaixaMetricas>
+          }
         >
-          O índice de todas as distribuidoras, identificadas pelo CNPJ que as próprias bases reguladas publicam, com as perdas, a continuidade do serviço e a tarifa residencial de
-          cada uma, um comparador de até quatro e a ficha completa de cada distribuidora, com a evolução própria e os pares.
+          O índice de todas as distribuidoras, identificadas pelo CNPJ que as próprias bases reguladas publicam, com as perdas, a continuidade do serviço e a tarifa residencial de cada uma, um comparador de
+          até quatro e a ficha completa de cada distribuidora, com a evolução própria e os pares. Os números são cópia das páginas de Perdas, Qualidade e Conta de luz, sem recálculo.
         </CabecalhoModulo>
-        <EmpresasNavegacao atual="p037" />
-        <ModoProfundidade>
 
+        <ModoProfundidade>
           <Bloco id="distribuidoras">
             <PainelEvidencia
               id="p037"
-              pergunta={painel("p037").pergunta}
+              pergunta="Como se comparam as distribuidoras escolhidas?"
               subtitulo="Distribuidoras pelo CNPJ: perdas, continuidade, tarifa residencial e controle · %, horas, interrupções, R$/MWh"
               porQueImporta={
                 <>
-                  A distribuidora é a empresa com que o consumidor lida: quem leva a energia, quanto se perde no caminho (<Termo slug="perdas-de-energia">perdas</Termo>), quanto tempo e quantas
-                  vezes falta luz (<Termo slug="dec">DEC</Termo> e <Termo slug="fec">FEC</Termo>) e quanto custa a <Termo slug="tarifa-te-tusd">tarifa</Termo>. A ficha junta esses números, que estão em
-                  bases diferentes da ANEEL, pela mesma identidade.
+                  A distribuidora é a empresa com que o consumidor lida: quem leva a energia, quanto se perde no caminho (<Termo slug="perdas-de-energia">perdas</Termo>), quanto tempo e quantas vezes falta
+                  luz (<Termo slug="dec">DEC</Termo> e <Termo slug="fec">FEC</Termo>) e quanto custa a <Termo slug="tarifa-te-tusd">tarifa</Termo>. A ficha junta esses números, que estão em bases
+                  diferentes da ANEEL, pela mesma identidade.
                 </>
               }
-              oQueMudou={
-                <>
-                  As bases publicadas de origem foram geradas em {carimbo(golds["perdas.json"].gerado_em)} (Perdas), {carimbo(golds["qualidade.json"].gerado_em)} (Qualidade) e{" "}
-                  {carimbo(golds["conta.json"].gerado_em)} (Conta de luz). A evolução de cada distribuidora (perdas em {inteiro(d.resumo.com_evolucao.perdas)}, continuidade em{" "}
-                  {inteiro(d.resumo.com_evolucao.qualidade)} e tarifa em {inteiro(d.resumo.com_evolucao.tarifa)}) está na ficha.
-                </>
-              }
-              comoInterpretar={<>{semNomesDeCampo(d.pares)}</>}
-              naoConcluir={
-                <>
-                  Não se conclui eficiência nem culpa: perdas, continuidade e tarifa dependem da área atendida (densidade, clima, renda, rede herdada). Anos de referência diferentes não se
-                  comparam. A tarifa B1 residencial não é a conta inteira (tributos e bandeiras ficam fora). O ramo declarado no cadastro de agentes não define distribuidora.
-                </>
-              }
-              proveniencia={g.proveniencia.distribuidoras}
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
+              proveniencia={prov.distribuidoras}
               complementares={[
-                ...(g.proveniencia.distribuidoras_perdas ? [{ rotulo: "Perdas totais (base publicada de Perdas)", p: g.proveniencia.distribuidoras_perdas }] : []),
-                ...(g.proveniencia.distribuidoras_pnt ? [{ rotulo: "Perdas não técnicas (estimadas pela fonte)", p: g.proveniencia.distribuidoras_pnt }] : []),
-                ...(g.proveniencia.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (base publicada de Qualidade)", p: g.proveniencia.distribuidoras_qualidade }] : []),
-                ...(g.proveniencia.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (base publicada de Conta de luz)", p: g.proveniencia.distribuidoras_tarifa }] : []),
+                ...(prov.distribuidoras_perdas ? [{ rotulo: "Perdas totais (base publicada de Perdas)", p: prov.distribuidoras_perdas }] : []),
+                ...(prov.distribuidoras_pnt ? [{ rotulo: "Perdas não técnicas (estimadas pela fonte)", p: prov.distribuidoras_pnt }] : []),
+                ...(prov.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (base publicada de Qualidade)", p: prov.distribuidoras_qualidade }] : []),
+                ...(prov.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (base publicada de Conta de luz)", p: prov.distribuidoras_tarifa }] : []),
               ]}
             >
               <div className="space-y-6">
                 <RespostaCurta id="p037" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}>
                   {respostaDistribuidoras(d)}
                 </RespostaCurta>
+                <EmpresasComparador
+                  entidades={entidadesDistribuidoras(d.indice)}
+                  padrao={padraoComparacao(d.indice)}
+                  comparacao={dadosComparacao(
+                    d.indice,
+                    d.indice.map((x) => x.slug),
+                  )}
+                  referenciaPerdas={refPerdas}
+                />
+                <EmpresasComoLer />
                 <EmpresasRecorte
                   periodo={
                     <>
@@ -131,40 +227,28 @@ export default function PaginaP037() {
                   }
                   universo={
                     <>
-                      {inteiro(d.resumo.distribuidoras)} distribuidoras com CNPJ no SAMP, nos indicadores de continuidade ou nas tarifas ({inteiro(d.resumo.ativas)} ativas)
+                      {inteiro(d.resumo.distribuidoras)} distribuidoras com CNPJ no SAMP ({SIGLAS.SAMP}), nos indicadores de continuidade ou nas tarifas ({inteiro(d.resumo.ativas)} ativas)
                     </>
                   }
                   unidade="% da energia injetada; horas e interrupções por unidade consumidora; R$/MWh sem tributos"
                 />
-                {evTaxaNacional2 && refPerdas && (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Numero
-                      rotulo="Referência: perdas totais na distribuição, Brasil"
-                      natureza={g.proveniencia.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                      evidencia={evTaxaNacional2}
-                      formato="pct"
-                      casas={2}
-                      tamanho="medio"
-                      nota="Número do módulo Perdas, usado como referência nas barras do comparador (mesmo ano das perdas por distribuidora)."
-                      endereco={ancoraPainel("p037")}
-                    />
-                  </div>
-                )}
-                <EmpresasComoLer />
-                <EmpresasDistribuidoras
-                  linhas={linhasDistribuidoras(d.indice)}
-                  entidades={entidadesDistribuidoras(d.indice)}
-                  comparacao={dadosComparacao(
-                    d.indice,
-                    d.indice.map((x) => x.slug),
-                  )}
-                  padrao={padraoComparacao(d.indice)}
-                  referenciaPerdas={refPerdas}
-                  fonte="ANEEL, SAMP, indicadores de continuidade e tarifas de aplicação (pelas bases publicadas dos módulos de origem)"
-                  versao={g.gerado_em.slice(0, 10)}
-                />
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
 
-                <EmpresasAnalise titulo="Todas as fichas e de onde vem a evolução de cada uma">
+                <SecaoDoPainel
+                  id="indice"
+                  titulo="Qual é a distribuidora, e onde está a ficha dela?"
+                  lead={`As ${inteiro(d.resumo.distribuidoras)} distribuidoras pelo CNPJ, com os números de referência de cada módulo de origem. Escolha uma linha para ver o resumo e abrir a ficha.`}
+                >
+                  <EmpresasIndiceDistribuidoras
+                    entidades={entidadesDistribuidoras(d.indice)}
+                    padrao={padraoComparacao(d.indice)}
+                    linhas={linhasDistribuidoras(d.indice)}
+                    fonte="ANEEL, SAMP, indicadores de continuidade e tarifas de aplicação (pelas bases publicadas dos módulos de origem)"
+                    versao={g.gerado_em.slice(0, 10)}
+                  />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="fichas" titulo="Todas as fichas e de onde vem a evolução de cada uma" nivel="analisar">
                   <nav aria-label="Fichas das distribuidoras">
                     <ul className="grid grid-cols-2 gap-x-4 text-sm sm:grid-cols-3 lg:grid-cols-5">
                       {d.indice
@@ -200,17 +284,17 @@ export default function PaginaP037() {
                       );
                     })}
                   </ul>
-                </EmpresasAnalise>
+                </SecaoDoPainel>
 
-                <EmpresasAuditoria titulo="Regra do universo e identidade">
+                <SecaoDoPainel id="regra-universo" titulo="Regra do universo e identidade" nivel="auditar">
                   <p className="text-sm text-carvao-muted">{d.regra_universo}</p>
                   <p className="text-sm text-carvao-muted">
-                    {inteiro(d.resumo.conflitos_classificacao)} conflitos de classificação entre SAMP e continuidade; {inteiro(d.resumo.sem_uf)} distribuidoras sem conjunto elétrico vigente ficam sem UF
-                    (a área oficial vem da relação conjunto × município publicada pelo módulo Perdas, sem replicar taxas por município). Os números são cópia da base publicada de origem pelo CNPJ, sem
+                    {inteiro(d.resumo.conflitos_classificacao)} conflitos de classificação entre SAMP e continuidade; {inteiro(d.resumo.sem_uf)} distribuidoras sem conjunto elétrico vigente ficam sem UF (a
+                    área oficial vem da relação conjunto × município publicada pelo módulo Perdas, sem replicar taxas por município). Os números são cópia da base publicada de origem pelo CNPJ, sem
                     recálculo, com a natureza e a unidade de origem (selos acima).
                   </p>
                   <p className="text-sm text-carvao-muted">Colunas do índice, como na exportação: {COLUNAS_DISTRIBUIDORAS.map((x) => x.rotulo).join("; ")}.</p>
-                </EmpresasAuditoria>
+                </SecaoDoPainel>
 
                 <EmpresasSeguir
                   ancora="p037"

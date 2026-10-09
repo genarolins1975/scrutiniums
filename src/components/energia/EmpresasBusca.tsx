@@ -12,20 +12,17 @@ import { buscarEntidades } from "@/lib/energia/tabela";
  * e demonstrações), as demonstrações da companhia na CVM já com ela escolhida ou a árvore de controle do grupo.
  *
  * A lista de entidades vem pronta do servidor (uma por CNPJ, com os destinos), a busca é local, ignora acento e caixa e mostra até
- * seis resultados; a contagem fica numa região viva. Sem digitar, a página oferece as fichas das maiores distribuidoras. Empresas
- * fora das listas estão na busca da árvore de controle, que lê o arquivo inteiro da cadeia societária.
+ * seis resultados; a contagem fica numa região viva. Empresas fora das listas estão na busca da árvore de controle, que lê o arquivo
+ * inteiro da cadeia societária.
  */
 const MAXIMO = 6;
 
 export function EmpresasBusca({
   entidades,
-  exemplos,
   hrefArvore,
   total,
 }: {
   entidades: EntidadeEmpresa[];
-  /** Fichas das distribuidoras com mais unidades consumidoras, para quem ainda não sabe o que procurar. */
-  exemplos: { rotulo: string; href: string }[];
   /** Busca da árvore de controle, que cobre todas as empresas do grafo societário. */
   hrefArvore: string;
   /** Quantas empresas a busca cobre (texto de ajuda). */
@@ -39,7 +36,7 @@ export function EmpresasBusca({
   return (
     <div role="search" data-busca-empresa="" className="space-y-2">
       <label htmlFor={id} className="block text-sm text-carvao-muted">
-        Nome, sigla ou CNPJ de uma distribuidora, companhia aberta, dono de usinas ou grupo de controle ({num(total, 0)} empresas)
+        Nome, sigla ou CNPJ
       </label>
       <input
         id={id}
@@ -58,7 +55,7 @@ export function EmpresasBusca({
             : "Nenhuma empresa com esse nome, sigla ou CNPJ entre as listadas. Para outras empresas do grafo societário, use a busca da árvore de controle."
           : consulta.length === 1
             ? "Digite ao menos duas letras ou dois números."
-            : ""}
+            : `Entre ${num(total, 0)} empresas: distribuidoras, companhias abertas, maiores donos de usinas e grupos de controle. O resultado abre a ficha da distribuidora, as demonstrações da companhia na CVM ou a árvore de controle do grupo.`}
       </p>
       {r && r.itens.length > 0 && (
         <ul className="divide-y divide-linha border-y border-linha">
@@ -88,20 +85,6 @@ export function EmpresasBusca({
           <Link href={hrefArvore} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             Buscar outra empresa na árvore de controle, que cobre todo o grafo societário
           </Link>
-        </p>
-      )}
-      {!r && exemplos.length > 0 && (
-        <p className="text-sm leading-relaxed text-carvao-muted">
-          Fichas das distribuidoras com mais unidades consumidoras:{" "}
-          {exemplos.map((x, i) => (
-            <span key={x.href}>
-              {i ? ", " : ""}
-              <Link href={x.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                {x.rotulo}
-              </Link>
-            </span>
-          ))}
-          .
         </p>
       )}
     </div>

@@ -174,6 +174,17 @@ export const TIPO_EM_FRASE: Readonly<Record<string, string>> = {
   UTN: "termonuclear",
   CGU: "centrais undi-elétricas",
 };
+/** Nome curto do tipo de geração para o eixo de um gráfico estreito (o nome completo fica nas tabelas): sem "Central geradora". */
+export const NOME_TIPO_CURTO: Readonly<Record<string, string>> = {
+  UHE: "Hidrelétrica",
+  PCH: "Pequena hidrelétrica",
+  CGH: "Central hidrelétrica",
+  EOL: "Eólica",
+  UFV: "Solar fotovoltaica",
+  UTE: "Termelétrica",
+  UTN: "Termonuclear",
+  CGU: "Undi-elétrica",
+};
 /** Número por extenso nas frases curtas (até dez), como no texto editorial; acima disso, algarismos. */
 export function porExtenso(n: number, genero: "f" | "m" = "f"): string {
   const f = ["zero", "uma", "duas", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez"];
@@ -263,6 +274,11 @@ export function linhasRalieTipo(g: Pick<ExpansaoGold, "estagios">) {
   return [...g.estagios.ralie.por_tipo]
     .sort((a, b) => b.mw_ugs_em_implantacao - a.mw_ugs_em_implantacao)
     .map((t) => ({ id: t.tipo, tipo: `${NOME_TIPO[t.tipo] ?? t.tipo} (${t.tipo})`, usinas: t.usinas, mw: t.mw_ugs_em_implantacao, mw_outorgado: t.mw_outorgado }));
+}
+
+/** As mesmas linhas de linhasRalieTipo com o nome curto do tipo, para o eixo do gráfico da abertura (mesmos números, mesma ordem). */
+export function linhasRalieTipoNoGrafico(g: Pick<ExpansaoGold, "estagios">) {
+  return linhasRalieTipo(g).map((l) => ({ ...l, tipo: `${NOME_TIPO_CURTO[l.id] ?? l.id} (${l.id})` }));
 }
 
 /**

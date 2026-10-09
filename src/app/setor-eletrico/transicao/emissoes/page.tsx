@@ -159,12 +159,7 @@ export default function EmissoesPage() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores do fator de emissão"
-              nota={
-                <>
-                  tCO2/MWh é a tonelada de CO2 por megawatt-hora gerado no SIN: só o CO2 da operação das usinas, não CO2 equivalente nem de ciclo de vida. O <Termo slug="fator-de-emissao">fator médio de emissão</Termo> é o
-                  que se usa para contabilizar as emissões da eletricidade consumida.
-                </>
-              }
+              nota="tCO2/MWh é a tonelada de CO2 por MWh gerado no SIN: só CO2 da operação, não CO2 equivalente nem de ciclo de vida."
             >
               <Numero
                 variante="faixa"
@@ -175,7 +170,7 @@ export default function EmissoesPage() {
                 unidade="tCO2/MWh"
                 periodo="ano completo"
                 cor="var(--serie-termica)"
-                nota={`Estimado e publicado pelo MCTI, sem alteração. Em kg: ${kgPorMwh(e.ultimo_ano?.valor)}.`}
+                nota={`Em kg: ${kgPorMwh(e.ultimo_ano?.valor)}.`}
                 motivoAusencia="Nenhum ano completo publicado nesta versão."
                 endereco={`${rotaPainel("p064")}#p064`}
               />
@@ -189,18 +184,18 @@ export default function EmissoesPage() {
                   unidade="tCO2/MWh"
                   periodo="ano completo"
                   cor="var(--serie-referencia)"
-                  nota={anoAnterior.mesmaBase ? "Mesma base de usinas do último ano." : `Base de usinas anterior a ${mes(quebra?.data)}: a comparação com ${e.ultimo_ano?.ano} mistura bases.`}
+                  nota={anoAnterior.mesmaBase ? "Mesma base de usinas do último ano." : `Base anterior a ${mes(quebra?.data)}: comparar com ${e.ultimo_ano?.ano} mistura bases.`}
                 />
               )}
               <Numero
                 variante="faixa"
-                rotulo={`Fator médio do último mês publicado (${mes(e.ultimo_mes?.m)})`}
+                rotulo={`Fator médio do último mês (${mes(e.ultimo_mes?.m)})`}
                 natureza="ESTIMADO"
                 evidencia={e.evidencia_mensal}
                 casas={4}
                 unidade="tCO2/MWh"
                 cor="var(--serie-termica)"
-                nota={`Um mês isolado não equivale ao fator anual; compare com o mesmo mês de outros anos. Em kg: ${kgPorMwh(e.ultimo_mes?.valor)}.`}
+                nota={`Mês isolado, não o fator anual. Em kg: ${kgPorMwh(e.ultimo_mes?.valor)}.`}
                 motivoAusencia="Nenhum mês publicado nesta versão."
                 endereco={`${rotaPainel("p064")}#p064`}
               />
@@ -214,13 +209,13 @@ export default function EmissoesPage() {
                   unidade="tCO2/MWh"
                   periodo="mesmo mês do ano anterior"
                   cor="var(--serie-referencia)"
-                  nota={mesAnterior.mesmaBase ? "Mesma sazonalidade e mesma base de usinas do último mês." : `Base de usinas anterior a ${mes(quebra?.data)}: a comparação com o último mês mistura bases.`}
+                  nota={mesAnterior.mesmaBase ? "Mesma sazonalidade e base de usinas." : `Base anterior a ${mes(quebra?.data)}: comparar com o último mês mistura bases.`}
                 />
               )}
             </FaixaMetricas>
           }
         >
-          O fator médio serve para contabilizar as emissões da eletricidade consumida e não é o efeito de consumir ou economizar um MWh a mais.
+          O <Termo slug="fator-de-emissao">fator médio de emissão</Termo> serve para contabilizar as emissões da eletricidade consumida e não é o efeito de consumir ou economizar um MWh a mais.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="emissoes">
@@ -248,9 +243,6 @@ export default function EmissoesPage() {
                     {acesso.texto}
                   </TransicaoAviso>
                 )}
-                <RespostaCurta id="p064" veredito={vereditoEmissoes(e) || respostaEmissoes(e)}>
-                  {respostaEmissoes(e)}
-                </RespostaCurta>
                 <GraficoBarras
                   titulo="Fator médio anual de emissão de CO2 do SIN"
                   dados={dadosFatorAnual(e)}
@@ -262,6 +254,10 @@ export default function EmissoesPage() {
                   referencias={referenciaAnual(e)}
                   altura={300}
                 />
+                {/* a faixa de cima já traz os números e o aviso da quebra de base; a resposta vem depois do gráfico para que ele comece na primeira tela */}
+                <RespostaCurta id="p064" depois veredito={vereditoEmissoes(e) || respostaEmissoes(e)}>
+                  {respostaEmissoes(e)}
+                </RespostaCurta>
                 {quebra && (
                   <TransicaoAviso rotulo={`Quebra de ${mes(quebra.data)}`}>
                     {quebra.descricao}

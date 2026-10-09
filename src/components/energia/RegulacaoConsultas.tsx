@@ -50,8 +50,8 @@ export function RegulacaoConsultas({
   dataServidor,
   fonte,
   versao,
-  inicioHistorico = null,
   depoisDaResposta = null,
+  legendaFigura = null,
   recorte = null,
   notas = null,
 }: {
@@ -60,10 +60,10 @@ export function RegulacaoConsultas({
   dataServidor: string;
   fonte: string;
   versao: string;
-  /** Ano de início do histórico no CSV, lido da proveniência da gold (null sem a data). */
-  inicioHistorico?: string | null;
   /** Onde contribuir: entra logo depois do veredito, para que a resposta seja a primeira coisa do painel. */
   depoisDaResposta?: ReactNode;
+  /** O que a figura mostra do universo e onde baixar o resto (histórico completo), logo abaixo dela. */
+  legendaFigura?: ReactNode;
   /** Período, universo e unidade como legenda, depois da figura e da tabela. */
   recorte?: ReactNode;
   /** Notas do painel (NotasDoPainel), logo depois da figura principal, da tabela e do recorte. */
@@ -196,12 +196,14 @@ export function RegulacaoConsultas({
         }
       />
 
+      {legendaFigura && <div className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-legenda-figura="">{legendaFigura}</div>}
+
       {selecionada && (
         <section className="space-y-2 border border-energia bg-superficie p-4 text-sm" data-consulta-selecionada={selecionada.id} aria-labelledby="consulta-selecionada-titulo">
           <p className="rotulo text-energia-dark">{ROTULO_CURTO_SITUACAO[selecionada.situacao_na_data]} em {dataBR(hoje)}</p>
-          <h4 id="consulta-selecionada-titulo" className="font-serif text-lg text-carvao">
+          <h3 id="consulta-selecionada-titulo" className="font-serif text-lg text-carvao">
             {selecionada.rotulo}
-          </h4>
+          </h3>
           <p className="text-carvao">{temaCurto(selecionada.tema)}</p>
           <p className="text-carvao-muted">
             Processo {selecionada.processos.join(", ")}
@@ -288,7 +290,7 @@ export function RegulacaoConsultas({
         selecionado={selecionada?.id ?? null}
         onSelecionar={selecionar}
         semLinhas="Nenhuma consulta no recorte atual."
-        nota={`Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta. O histórico completo${inicioHistorico ? `, desde ${inicioHistorico},` : ""} está no CSV do painel.`}
+        nota="Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta."
       />
 
       {recorte}

@@ -85,7 +85,7 @@ export default function CoberturaPage() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores da cobertura potencial"
-              nota="A razão é 100 × faturas ÷ famílias, no mesmo mês. Fatura e família são unidades diferentes, e o denominador usa só o critério de renda: por isso é uma proxy, e não a proporção de famílias atendidas."
+              nota="A razão é 100 × faturas ÷ famílias, no mesmo mês. Fatura e família são unidades diferentes e o denominador usa só o critério de renda: é uma proxy, e não a proporção de famílias atendidas."
             >
               <Numero
                 variante="faixa"

@@ -1994,7 +1994,7 @@ export function notaTetoComConfirmacaoEmpirica(nota: string): string {
 
 /* ---------- geração do Balanço do ONS (diagrama e ideia central) ---------- */
 
-const BASE_BALANCO = "geração do Balanço de Energia nos Subsistemas do ONS";
+const BASE_BALANCO = "geração do SIN no Balanço de Energia nos Subsistemas do ONS";
 
 function ressalvaMmgd(g: GeracaoGold): string {
   const desde = g.inicio_regime_atual ? ` desde ${dataBR(g.inicio_regime_atual)}` : "";
@@ -2021,7 +2021,7 @@ export function textoHidraulicaBalanco(g: GeracaoGold | null): string | null {
   if (!g?.disponivel) return null;
   const m = g.regioes.find((r) => r.rg === "SIN")?.["12m"];
   if (!m) return null;
-  return `Nos 12 meses até ${dataBR(m.fim)}, a geração hidráulica respondeu por ${num(m.participacao.hidraulica, 1)}% da ${BASE_BALANCO}; ${ressalvaMmgd(g)}, e a MMGD estimada entra no total.`;
+  return `Nos 12 meses até ${dataBR(m.fim)}, a geração hidráulica respondeu por ${num(m.participacao.hidraulica, 1)}% da geração do Sistema Interligado Nacional (SIN) no Balanço de Energia nos Subsistemas do ONS; ${ressalvaMmgd(g)}, e a MMGD estimada entra no total.`;
 }
 
 /* ---------- fluxo por hora no dia do mapa ---------- */

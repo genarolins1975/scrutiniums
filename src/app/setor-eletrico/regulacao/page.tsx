@@ -58,6 +58,7 @@ import {
   respostaP044,
   respostaProcedimentos,
   rotaPainel,
+  rotuloDownload,
   semTravessao,
   textoAtosDoAno,
   textoConferenciaAcionamento,
@@ -527,7 +528,7 @@ export default function RegulacaoPage() {
                 <SeguirPainel
                   ancora="p044"
                   proximo={{ href: `${proximo.rota}#${proximo.id}`, pergunta: proximo.pergunta }}
-                  downloads={downloadsDoPainel(g, "p044").map((d) => ({ ...d, rotulo: `${d.rotulo} (CSV)` }))}
+                  downloads={downloadsDoPainel(g, "p044").map((d) => ({ ...d, rotulo: rotuloDownload(d.rotulo) }))}
                 />
               </div>
             </PainelEvidencia>

@@ -1983,17 +1983,60 @@ export function notaFecCobertura(avisos: AvisosFec): string {
 }
 
 /**
- * Itens do gráfico de pontos com as ressalvas da avaliação: no FEC, a distribuidora de cobertura parcial leva um asterisco no nome e a
- * frase na dica; nos dois indicadores, a distribuidora cujo DGC calculado difere do publicado no ano de referência leva a diferença na dica.
- * O valor de cada ponto é o da gold.
+ * Uma distribuidora para o painel de limites, com DEC e FEC e os dois limites do ano de referência. É o que viaja ao navegador: uma lista só
+ * (em vez de uma por indicador, cada uma repetindo CNPJ e nome), com a classe em uma letra e as notas só onde existem.
  */
-export function itensLimiteComRessalvas(g: QualidadeGold, ind: Indicador, avisos: AvisosFec) {
+export type ItemLimites = {
+  id: string;
+  rotulo: string;
+  /** c: concessionária; p: permissionária; s: sem classificação publicada. */
+  classe: "c" | "p" | "s";
+  dec: number | null;
+  decLim: number | null;
+  fec: number | null;
+  fecLim: number | null;
+  /** Notas do ano (meses publicados, cobertura do limite, perímetro). */
+  det?: string;
+  /** DGC calculado que difere do publicado pela ANEEL no ano de referência. */
+  dgc?: string;
+};
+
+export function itensLimites(g: QualidadeGold): ItemLimites[] {
+  const fec = new Map(itensLimite(g, "fec").map((i) => [i.id, i]));
   const dgc = detalheDgcDoAno(g);
-  return itensLimite(g, ind).map((i) => {
-    const aviso = ind === "fec" ? avisos[i.id] : undefined;
-    const notas = [i.detalhe, aviso ? aviso.frase.replace(/\.$/, "") : null, dgc[i.id] ?? null].filter((x): x is string => !!x);
-    return { ...i, rotulo: aviso ? `${i.rotulo} *` : i.rotulo, detalhe: notas.length ? notas.join("; ") : undefined };
+  const classe = new Map(g.distribuidoras.map((d) => [d.cnpj, d.classificacao === "Concessionária" ? "c" : d.classificacao === "Permissionária" ? "p" : "s"] as const));
+  return itensLimite(g, "dec").map((i) => {
+    const f = fec.get(i.id);
+    const item: ItemLimites = { id: i.id, rotulo: i.rotulo, classe: classe.get(i.id) ?? "s", dec: i.valor, decLim: i.referencia, fec: f?.valor ?? null, fecLim: f?.referencia ?? null };
+    if (i.detalhe) item.det = i.detalhe;
+    if (dgc[i.id]) item.dgc = dgc[i.id];
+    return item;
   });
+}
+
+/**
+ * Pares realizado × limite de um indicador para o gráfico de pontos, com as ressalvas da avaliação: no FEC, a distribuidora de cobertura
+ * parcial leva um asterisco no nome e a frase na dica; nos dois indicadores, a distribuidora cujo DGC calculado difere do publicado no
+ * ano de referência leva a diferença na dica. O valor de cada ponto é o da gold.
+ */
+export function paresLimites(itens: readonly ItemLimites[], ind: Indicador, avisos: AvisosFec): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string }[] {
+  return itens.map((i) => {
+    const aviso = ind === "fec" ? avisos[i.id] : undefined;
+    const notas = [i.det, aviso ? aviso.frase.replace(/\.$/, "") : null, i.dgc].filter((x): x is string => !!x);
+    const par: { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string } = {
+      id: i.id,
+      rotulo: aviso ? `${i.rotulo} *` : i.rotulo,
+      valor: ind === "dec" ? i.dec : i.fec,
+      referencia: ind === "dec" ? i.decLim : i.fecLim,
+    };
+    if (notas.length) par.detalhe = notas.join("; ");
+    return par;
+  });
+}
+
+/** Só as colunas pedidas de cada linha (o que um gráfico lê): o resto não viaja ao navegador. Ausência continua nula. */
+export function recorteColunas(linhas: readonly LinhaTabela[], ids: readonly string[]): LinhaTabela[] {
+  return linhas.map((l) => Object.fromEntries(ids.map((k) => [k, l[k] ?? null])));
 }
 
 /* ---- conjuntos acima do limite de FEC: a contagem é um mínimo */
@@ -2105,7 +2148,7 @@ export function textoQuebraApurado(g: QualidadeGold): string {
       ? `Antes de ${c.desde} a fonte usa outra desagregação; de ${c.desde} a ${c.uniforme - 1}, o apurado de parte dos conjuntos incluía também interrupções de origem externa ao sistema de distribuição; desde ${c.uniforme}, inclui só as internas.`
       : `Antes de ${c.desde} a fonte usa outra desagregação.`;
   const anos = listaPt(c.maiorMesmaDefinicao.anos.map(String));
-  return `Esse máximo cruza regras diferentes do apurado. ${regras} Pela regra de ${c.uniforme ?? c.referencia.ano} aplicada desde ${c.desde} (a parcela apurada do gráfico de parcelas, abaixo), o maior DEC foi o de ${anos} (${num(c.maiorMesmaDefinicao.dec, 2)} h), e ${c.referencia.ano} fechou com ${num(c.referencia.mesmaDefinicao, 2)} h.`;
+  return `O maior valor publicado, o de ${c.maiorPublicado.ano}, cruza regras diferentes do apurado. ${regras} Pela regra de ${c.uniforme ?? c.referencia.ano} aplicada desde ${c.desde} (a parcela apurada do gráfico de parcelas, abaixo), o maior DEC foi o de ${anos} (${num(c.maiorMesmaDefinicao.dec, 2)} h), e ${c.referencia.ano} fechou com ${num(c.referencia.mesmaDefinicao, 2)} h.`;
 }
 
 /* ---------------------------------------------------------------- DGC: divergências com o ranking da ANEEL */
@@ -2270,4 +2313,17 @@ export function textoCorDoMapa(m: MunicipioQualidade, medida: MedidaMapa): strin
   const un = medida.startsWith("dec") ? `${num(valor, 2)} h` : `${num(valor, 2)} interrupções`;
   if (m.conjuntos.length === 1) return `Cor do mapa: o valor do único conjunto citado, ${un}.`;
   return `Cor do mapa: ${maior ? "o maior" : "o menor"} valor entre os ${num(m.conjuntos.length, 0)} conjuntos citados, ${un}.`;
+}
+
+/**
+ * O efeito da cobertura parcial do FEC no número nacional: o FEC do ano de referência e a soma das parcelas internas, comparados nas duas
+ * casas publicadas. Vazio sem as duas.
+ */
+export function textoFecBrasilConfere(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  const parcelas = a?.parcelas_fec?.apurado ?? null;
+  if (!a || a.fec === null || parcelas === null) return "";
+  return centesimos(a.fec) === centesimos(parcelas)
+    ? `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) e a soma das parcelas internas coincidem nas duas casas: a ressalva não muda o número nacional.`
+    : `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) difere da soma das parcelas internas (${num(parcelas, 2)}).`;
 }

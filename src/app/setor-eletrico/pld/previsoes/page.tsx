@@ -57,6 +57,7 @@ import {
   resumoRodadas,
   respostaP013,
   rodadasRecentes,
+  semCodigoDeEstado,
   temRodada,
   termosPrevisoes,
   textoAlertas,
@@ -173,7 +174,7 @@ export default function PrevisoesPage() {
   const comoInterpretar13 = (
     <>
       O B0 repete a média do PLD do último período completo disponível às 07h do dia de origem: a última semana de sábado a sexta para W1 a W4 e o último mês civil para M1 a
-      M3. Por isso as quatro semanas têm o mesmo número, e os três meses também. Cada número é a média simples de todas as horas da entrega, não ponderada pelo consumo.
+      M3. As quatro semanas têm o mesmo número, e os três meses também. Cada número é a média simples de todas as horas da entrega, não ponderada pelo consumo.
     </>
   );
   const naoConcluir13 = (
@@ -355,7 +356,7 @@ export default function PrevisoesPage() {
                 porQueImporta={
                   <>
                     Quem compra, vende ou planeja consumo quer saber o preço das próximas semanas e meses. Um número de previsão só serve se vier com o que o produziu, a
-                    informação disponível no corte e o quanto se pode confiar nele; por isso o número publicado aqui é chamado de referência, não de previsão aprovada.
+                    informação disponível no corte e o quanto se pode confiar nele. O número publicado aqui é chamado de referência, não de previsão aprovada.
                   </>
                 }
                 oQueMudou={oQueMudou13}
@@ -384,7 +385,7 @@ export default function PrevisoesPage() {
                       aposPrincipal={
                         <>
                           <PrevisoesAviso>
-                            {at.bandas} {at.candidatos.emitidos ? "" : at.candidatos.motivo}
+                            {semCodigoDeEstado(at.bandas)} {at.candidatos.emitidos ? "" : at.candidatos.motivo}
                           </PrevisoesAviso>
                           <PrevisoesTermos itens={termos} />
                           <PrevisoesCapitulos pagina="previsoes" />

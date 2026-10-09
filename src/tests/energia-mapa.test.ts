@@ -1,10 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { buscar, normalizarBusca } from "@/lib/energia/busca";
+import { buscar, moverAtivo, normalizarBusca } from "@/lib/energia/busca";
+import { SINONIMOS_BUSCA, sinonimosDe } from "@/lib/energia/busca-sinonimos";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
-import { escolhasDeDistribuidora, estadoDoDestino, indiceBusca, linhasAtualidade, periodoLegivel, resumoAtualidade, type PublicacaoAtualidade } from "@/lib/energia/home";
+import {
+  escolhasDeDistribuidora,
+  estadoDoDestino,
+  indiceBusca,
+  linhasAtualidade,
+  nomeDoPeriodoEmCurso,
+  periodoLegivel,
+  refinosDePeriodo,
+  regraDeAtualidade,
+  resumoAtualidade,
+  type PublicacaoAtualidade,
+} from "@/lib/energia/home";
 import {
   ANCORAS_VISAO_GERAL,
   CAMINHOS_INTENCAO,
@@ -256,8 +268,12 @@ describe("página inicial: mapa didático (P001)", () => {
 
 describe("busca da página inicial", () => {
   const verbetes = CONCEITOS.map((c) => ({ slug: c.slug, nome: c.nome, sigla: c.sigla, emUmaFrase: c.emUmaFrase, estado: c.estado }));
-  const dist = [{ slug: "cemig-d", sigla: "CEMIG-D", nome: "CEMIG DISTRIBUIÇÃO S.A.", cnpj: "06981180000116", ufs: ["MG"] }];
+  const dist = [
+    { slug: "cemig-d", sigla: "CEMIG-D", nome: "CEMIG DISTRIBUIÇÃO S.A.", cnpj: "06981180000116", ufs: ["MG"] },
+    { slug: "enel-ce", sigla: "ENEL CE", nome: "COMPANHIA ENERGÉTICA DO CEARÁ", cnpj: "07047251000170", ufs: ["CE"] },
+  ];
   const indice = indiceBusca(DESTINOS_NAVEGACAO, verbetes, dist);
+  const hrefsDe = (q: string, n = 8) => buscar(indice, q, n).itens.map((i) => i.href);
 
   it("só indexa o que existe: todo resultado leva a uma rota existente", () => {
     for (const i of indice.filter((x) => x.tipo !== "Distribuidora")) confereDestino(i.href);
@@ -281,13 +297,122 @@ describe("busca da página inicial", () => {
 
   it("acha sem acento e sem maiúscula, exige todas as palavras e põe o título na frente", () => {
     expect(normalizarBusca("Reservatórios  ÁGUA")).toBe("reservatorios agua");
+    // plural em "ões" e "ães" volta ao singular: quem digita "compensação" acha "Compensações"
+    expect(normalizarBusca("Compensações Informações")).toBe("compensacao informacao");
     const r = buscar(indice, "perdas");
     expect(r.total).toBeGreaterThan(0);
     expect(r.itens[0].titulo.toLowerCase()).toContain("perdas");
     expect(buscar(indice, "reservatorios").total).toBeGreaterThan(0);
     expect(buscar(indice, "cemig").itens[0]).toMatchObject({ tipo: "Distribuidora", href: "/setor-eletrico/empresas/cemig-d" });
-    expect(buscar(indice, "perdas zzzz").total).toBe(0);
+    expect(buscar(indice, "zzzz").total).toBe(0);
     expect(buscar(indice, "   ").total).toBe(0);
+    // singular e plural se acham: "perda" acha "Perdas de energia", "compensação" acha o verbete e o painel de compensações
+    expect(hrefsDe("perda")).toContain("/setor-eletrico/perdas");
+    expect(hrefsDe("compensação")).toEqual(expect.arrayContaining(["/setor-eletrico/aprenda/compensacao-continuidade", "/setor-eletrico/qualidade#p053"]));
+  });
+
+  it("a sigla digitada por inteiro leva ao verbete antes de qualquer item, e palavra de até três letras não acha o que só começa com elas", () => {
+    const dec = buscar(indice, "DEC", 20).itens;
+    expect(dec[0]).toMatchObject({ tipo: "Conceito", href: "/setor-eletrico/aprenda/dec" });
+    expect(dec[1]).toMatchObject({ tipo: "Painel", href: "/setor-eletrico/qualidade#p051" });
+    // DECOMP, "declarados" e "decomposição" não entram para quem digitou DEC; entram para quem digitou mais letras
+    expect(dec.some((i) => i.href === "/setor-eletrico/aprenda/decomp" || /declarad|decomposi/i.test(i.titulo))).toBe(false);
+    expect(hrefsDe("deco")).toContain("/setor-eletrico/aprenda/decomp");
+    expect(buscar(indice, "decl").itens.some((i) => /declarad/i.test(i.titulo))).toBe(true);
+    // se a palavra curta não é palavra inteira de nada, vale o começo dela: quem digita "cem" ainda acha a CEMIG
+    expect(hrefsDe("cem")).toContain("/setor-eletrico/empresas/cemig-d");
+    // e se é palavra inteira de algo, só isso: "ce" é a ENEL CE
+    expect(hrefsDe("ce")).toEqual(["/setor-eletrico/empresas/enel-ce"]);
+    for (const sigla of ["PLD", "EAR", "CMO", "ONS", "MMGD", "TSEE"]) {
+      const verbete = CONCEITOS.find((c) => c.sigla === sigla);
+      if (verbete?.estado !== "CONFERIDO") continue;
+      expect(buscar(indice, sigla).itens[0], sigla).toMatchObject({ tipo: "Conceito", href: `/setor-eletrico/aprenda/${verbete.slug}` });
+    }
+  });
+
+  it("começo de palavra, e não pedaço: 'EAR' acha a energia armazenada e não a distribuidora do Ceará", () => {
+    const ear = buscar(indice, "EAR").itens;
+    expect(ear[0]).toMatchObject({ tipo: "Conceito", href: "/setor-eletrico/aprenda/ear" });
+    expect(ear.some((i) => i.href === "/setor-eletrico/empresas/enel-ce")).toBe(false);
+    // a distribuidora continua achável pelo nome inteiro ou pelo começo dele
+    expect(hrefsDe("cear")).toContain("/setor-eletrico/empresas/enel-ce");
+    expect(hrefsDe("enel")).toContain("/setor-eletrico/empresas/enel-ce");
+  });
+
+  it("'o que é', 'qual' e as demais palavras de pergunta não contam: 'o que é PLD' acha o verbete e a página do PLD", () => {
+    const r = hrefsDe("o que é PLD", 3);
+    expect(r[0]).toBe("/setor-eletrico/aprenda/pld");
+    expect(r).toContain("/setor-eletrico/pld");
+    expect(hrefsDe("qual é a tarifa", 8).length).toBeGreaterThan(0);
+    // só palavras de ligação ou de pergunta: ainda não há o que procurar
+    expect(buscar(indice, "o que é").total).toBe(0);
+    expect(buscar(indice, "de da").total).toBe(0);
+  });
+
+  it("vocabulário de quem não conhece a sigla leva à página certa, e o resultado diz o termo que casou", () => {
+    const luz = buscar(indice, "preço da luz");
+    expect(luz.itens.map((i) => i.href)).toContain("/setor-eletrico/conta-de-luz");
+    expect(luz.itens.find((i) => i.href === "/setor-eletrico/conta-de-luz")?.viaSinonimo).toBe("preço da luz");
+    expect(hrefsDe("congestionamento")).toEqual(expect.arrayContaining(["/setor-eletrico/rede", "/setor-eletrico/pld/diferencas-regionais#p012"]));
+    expect(hrefsDe("apagão")).toEqual(expect.arrayContaining(["/setor-eletrico/qualidade", "/setor-eletrico/rede/restricoes#p030"]));
+    expect(hrefsDe("energia solar")).toEqual(expect.arrayContaining(["/setor-eletrico/geracao"]));
+    expect(hrefsDe("falta de energia")).toContain("/setor-eletrico/qualidade");
+    expect(hrefsDe("gato de energia")).toContain("/setor-eletrico/aprenda/perdas-nao-tecnicas");
+    expect(hrefsDe("nível dos reservatórios")).toContain("/setor-eletrico/agua-e-clima");
+    // palavra que já está no título não precisa de explicação: o termo relacionado só aparece quando foi ele que trouxe o resultado
+    expect(buscar(indice, "perdas").itens.every((i) => i.viaSinonimo === undefined || !normalizarBusca(i.titulo).includes("perda"))).toBe(true);
+  });
+
+  it("frase que nenhum item reúne inteira devolve os que têm parte dela, marcados como parciais; sem nada, fica vazio", () => {
+    const parcial = buscar(indice, "perdas zzzz qqqq");
+    expect(parcial.parcial).toBe(false);
+    expect(parcial.total).toBe(0);
+    const dois = buscar(indice, "perdas zzzz");
+    expect(dois.parcial).toBe(true);
+    expect(dois.total).toBeGreaterThan(0);
+    expect(dois.itens.every((i) => normalizarBusca(`${i.titulo} ${(i.sinonimos ?? []).join(" ")}`).includes("perda"))).toBe(true);
+    // resultado completo nunca é parcial
+    expect(buscar(indice, "perdas").parcial).toBe(false);
+    // nome de município não está no índice: a busca não inventa, e a tela aponta para Minha região
+    expect(buscar(indice, "Campinas").total).toBe(0);
+    const comp = ler("src/components/energia/BuscaObservatorio.tsx");
+    expect(comp).toContain("Procura um município?");
+    expect(ler(HOME)).toContain('destino("territorio")');
+  });
+
+  it("o vocabulário leigo só aponta para itens que existem, não repete o título e não afirma causa", () => {
+    const hrefsDoIndice = new Set(indice.map((i) => i.href));
+    expect(SINONIMOS_BUSCA.length).toBeGreaterThan(20);
+    for (const g of SINONIMOS_BUSCA) {
+      for (const alvo of g.alvos) expect(hrefsDoIndice.has(alvo), `alvo fora do índice: ${alvo}`).toBe(true);
+      expect(g.termos.length, g.alvos.join()).toBeGreaterThan(0);
+      for (const termo of g.termos) {
+        expect(termo, termo).not.toMatch(/porque|por causa|culpa|[–—]/i);
+        for (const alvo of g.alvos) {
+          const item = indice.find((i) => i.href === alvo)!;
+          expect(normalizarBusca(item.titulo), `${termo} repete o título de ${alvo}`).not.toBe(normalizarBusca(termo));
+        }
+      }
+    }
+    // o item recebe os termos do endereço dele e de mais nenhum
+    expect(sinonimosDe("/setor-eletrico/conta-de-luz")).toContain("preço da luz");
+    expect(sinonimosDe("/setor-eletrico/perdas")).not.toContain("preço da luz");
+    expect(sinonimosDe("/endereco/que/nao/existe")).toEqual([]);
+    expect(indice.find((i) => i.href === "/setor-eletrico/conta-de-luz" && i.tipo === "Página")?.sinonimos).toContain("preço da luz");
+  });
+
+  it("no teclado: as setas percorrem os resultados e param nos extremos; o campo segue o padrão combobox", () => {
+    expect(moverAtivo(-1, "ArrowDown", 5)).toBe(0);
+    expect(moverAtivo(-1, "ArrowUp", 5)).toBe(4);
+    expect(moverAtivo(2, "ArrowDown", 5)).toBe(3);
+    expect(moverAtivo(4, "ArrowDown", 5)).toBe(4);
+    expect(moverAtivo(0, "ArrowUp", 5)).toBe(0);
+    expect(moverAtivo(0, "Enter", 5)).toBeNull();
+    expect(moverAtivo(0, "ArrowDown", 0)).toBeNull();
+    const comp = ler("src/components/energia/BuscaObservatorio.tsx");
+    for (const x of ['role="combobox"', "aria-activedescendant", "aria-controls", "aria-expanded", 'role="listbox"', 'role="option"', "aria-selected", '"ArrowDown"', '"Enter"', '"Escape"']) {
+      expect(comp, x).toContain(x);
+    }
   });
 });
 
@@ -300,22 +425,92 @@ describe("atualidade das fontes (P003)", () => {
     expect(periodoLegivel(null)).toBeNull();
     const pub: PublicacaoAtualidade = {
       referencia: { hoje: "2026-10-01" },
+      regras: { sla: { mensal: { tolerancia_dias: 60 }, trimestral: { tolerancia_dias: 90 } } },
       conjuntos: [
-        { id: "aneel_distribuicao/aneel_samp_balanco", slug: "x", orgao: "ANEEL", titulo: "SAMP", atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026-08", fim_ultimo_periodo: "2026-08-31" } },
-        { id: "aneel_qualidade/aneel_continuidade", orgao: "ANEEL", titulo: "DEC", atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026", fim_ultimo_periodo: "2026-12-31" } },
-        { id: "aneel_social/aneel_scs", orgao: "ANEEL", titulo: "SCS", atualidade: { situacao: "ATRASADO", cadencia: "mensal", ultimo_periodo: "2025-06", fim_ultimo_periodo: "2025-06-30" } },
+        {
+          id: "aneel_distribuicao/aneel_samp_balanco",
+          slug: "x",
+          orgao: "ANEEL",
+          titulo: "SAMP",
+          atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026-08", fim_ultimo_periodo: "2026-08-31", base: "periodo_de_referencia" },
+          capturas: { ultima_publicacao_fonte: "2026-09-15T05:01:12Z" },
+        },
+        {
+          id: "aneel_qualidade/aneel_continuidade",
+          orgao: "ANEEL",
+          titulo: "DEC",
+          atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026", fim_ultimo_periodo: "2026-12-31", base: "publicacao_da_fonte", periodo_parcial: true },
+          capturas: { ultima_publicacao_fonte: "2026-09-05T05:27:08Z" },
+        },
+        { id: "aneel_social/aneel_scs", orgao: "ANEEL", titulo: "SCS", atualidade: { situacao: "ATRASADO", cadencia: "mensal", ultimo_periodo: "2025-06", fim_ultimo_periodo: "2025-06-30", base: "periodo_de_referencia" } },
       ],
     };
     const linhas = linhasAtualidade(pub, new Set());
     expect(linhas).toHaveLength(FONTES_PRINCIPAIS.reduce((n, f) => n + f.conjuntos.length, 0));
     const samp = linhas.find((l) => l.tema === "Perdas")!;
-    expect(samp).toMatchObject({ ultimo: "ago/2026", emCurso: false, cadencia: "mensal", situacao: "em dia", ficha: null });
-    expect(linhas.find((l) => l.tema === "Qualidade")).toMatchObject({ ultimo: "2026", emCurso: true });
+    expect(samp).toMatchObject({ ultimo: "ago/2026", emCurso: false, cadencia: "mensal", situacao: "em dia", ficha: null, base: "periodo", toleranciaDias: 60 });
+    // sem o mês do módulo, o ano em curso fica como a publicação o traz: o mês nunca é inventado
+    expect(linhas.find((l) => l.tema === "Qualidade")).toMatchObject({ ultimo: "2026", emCurso: true, ultimoMes: null, base: "publicacao", publicadoEm: "05/09/2026", toleranciaDias: 60 });
     expect(linhas.find((l) => l.rotulo.startsWith("Tarifa Social"))).toMatchObject({ ultimo: "jun/2025", atrasado: true, situacao: "atrasada" });
     // conjunto ausente da publicação: sem período, nunca uma data inventada
-    expect(linhas.find((l) => l.tema === "Carga")).toMatchObject({ ultimo: null, situacao: null });
-    // o código da home não usa captura como referência
-    expect(ler("src/lib/energia/home.ts")).not.toMatch(/capturas|capturado_em/);
+    expect(linhas.find((l) => l.tema === "Carga")).toMatchObject({ ultimo: null, situacao: null, base: null, publicadoEm: null, toleranciaDias: null });
+    // o código da home não usa a data de captura como referência: lê a data em que a própria fonte publicou o arquivo (ultima_publicacao_fonte),
+    // nunca capturado_em nem capturas.ultima
+    const home = ler("src/lib/energia/home.ts");
+    expect(home).not.toMatch(/capturado_em|capturas\??\.ultima(?!_publicacao_fonte)/);
+    expect(home).toContain("ultima_publicacao_fonte");
+  });
+
+  it("o ano em curso do DEC e do FEC ganha o último mês nacional completo do módulo de Qualidade, e a regra da situação diz de onde vem o 'em dia'", () => {
+    const pub: PublicacaoAtualidade = {
+      referencia: { hoje: "2026-10-01" },
+      regras: { sla: { mensal: { tolerancia_dias: 60 }, diaria: { tolerancia_dias: 2 } } },
+      conjuntos: [
+        {
+          id: "aneel_qualidade/aneel_continuidade",
+          orgao: "ANEEL",
+          titulo: "DEC",
+          atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026", fim_ultimo_periodo: "2026-12-31", base: "publicacao_da_fonte", periodo_parcial: true },
+          capturas: { ultima_publicacao_fonte: "2026-09-05T05:27:08Z" },
+        },
+        {
+          id: "energia/ccee_pld_horario",
+          orgao: "CCEE",
+          titulo: "PLD",
+          atualidade: { situacao: "EM DIA", cadencia: "diaria", ultimo_periodo: "2026-09-30", fim_ultimo_periodo: "2026-09-30", base: "periodo_de_referencia" },
+        },
+      ],
+    };
+    const refinos = refinosDePeriodo({ disponivel: true, ultimo_mes_completo: "2026-06" });
+    expect(refinos).toEqual({ "aneel_qualidade/aneel_continuidade": { periodo: "jun/2026", rotulo: "último mês nacional completo" } });
+    const linhas = linhasAtualidade(pub, new Set(), refinos);
+    const q = linhas.find((l) => l.tema === "Qualidade")!;
+    expect(q).toMatchObject({ ultimo: "2026", ultimoMes: "jun/2026", ultimoMesRotulo: "último mês nacional completo", situacao: "em dia", base: "publicacao", publicadoEm: "05/09/2026" });
+    // o mês só refina o mesmo ano e só o período em curso: nunca troca um período por outro
+    expect(linhasAtualidade(pub, new Set(), { "aneel_qualidade/aneel_continuidade": { periodo: "jun/2025", rotulo: "x" } }).find((l) => l.tema === "Qualidade")!.ultimoMes).toBeNull();
+    expect(linhasAtualidade(pub, new Set(), { "energia/ccee_pld_horario": { periodo: "jun/2026", rotulo: "x" } }).find((l) => l.rotulo.startsWith("PLD horário"))!.ultimoMes).toBeNull();
+    // módulo indisponível ou sem mês: nenhum refino
+    expect(refinosDePeriodo(null)).toEqual({});
+    expect(refinosDePeriodo({ disponivel: false, ultimo_mes_completo: "2026-06" })).toEqual({});
+    expect(refinosDePeriodo({ disponivel: true, ultimo_mes_completo: null })).toEqual({});
+    // a regra: quem é avaliado pela data de publicação, o exemplo do mês que ficou para trás e as tolerâncias, da menor para a maior
+    const r = regraDeAtualidade(linhas);
+    expect(r.pelaPublicacao.map((l) => l.tema)).toEqual(["Qualidade"]);
+    expect(r.comMesAtras.map((l) => l.tema)).toEqual(["Qualidade"]);
+    expect(r.tolerancias).toEqual([
+      { cadencia: "diária", dias: 2 },
+      { cadencia: "mensal", dias: 60 },
+    ]);
+    expect(nomeDoPeriodoEmCurso("2026")).toBe("ano em curso");
+    expect(nomeDoPeriodoEmCurso("set/2026")).toBe("mês em curso");
+    expect(nomeDoPeriodoEmCurso("28/09/2026")).toBe("período em curso");
+    // na publicação real: DEC e FEC mostram jun/2026 (o último mês nacional completo da gold), e Regulação segue no ano em curso, sem mês
+    const real = JSON.parse(ler("public/energia/gold/publicacao.json")) as PublicacaoAtualidade & { disponivel: boolean };
+    const quali = JSON.parse(ler("public/energia/gold/qualidade.json")) as { disponivel: boolean; ultimo_mes_completo: string };
+    const lr = linhasAtualidade(real, new Set(), refinosDePeriodo(quali));
+    expect(lr.find((l) => l.tema === "Qualidade")).toMatchObject({ ultimoMes: periodoLegivel(quali.ultimo_mes_completo), base: "publicacao", situacao: "em dia" });
+    expect(lr.find((l) => l.tema === "Regulação")).toMatchObject({ ultimo: "2026", emCurso: true, ultimoMes: null, base: "publicacao" });
+    expect(lr.find((l) => l.tema === "Perdas")).toMatchObject({ base: "periodo", emCurso: false });
   });
 
   it("o resumo conta quantas fontes estão em dia, atrasadas, sem calendário e sem avaliação, e nomeia as atrasadas", () => {

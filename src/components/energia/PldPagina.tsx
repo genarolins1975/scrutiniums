@@ -56,7 +56,8 @@ const CAPITULOS: ItemLocal[] = [
 ];
 
 export function PldCapitulos() {
-  return <NavegacaoLocal rotulo="Capítulos do PLD" itens={CAPITULOS} atual="p008" variante="capitulos" titulo="Outras perguntas sobre o preço" />;
+  // dentro do painel de abertura (que já é h2), o título do bloco de capítulos é h3
+  return <NavegacaoLocal rotulo="Capítulos do PLD" itens={CAPITULOS} atual="p008" variante="capitulos" titulo="Outras perguntas sobre o preço" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -69,7 +70,7 @@ export function PldIndisponivel({ motivo }: { motivo?: string | null }) {
           titulo="Painel do PLD indisponível nesta publicação"
           motivo={
             motivo ??
-            "A gold de detalhe do PLD (public/energia/gold/pld_detalhe.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados detalhados do PLD não foram gerados ou não passaram na validação desta publicação; a última publicação válida é mantida quando existe."
           }
         />
         <p className="mt-6 text-sm">

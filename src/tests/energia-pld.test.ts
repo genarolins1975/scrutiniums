@@ -789,7 +789,7 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(faixa).toContain(escHtml(pldGold.regras.media_diaria));
     expect(faixa).toContain("Não existe um PLD único do Brasil");
     expect(faixa).not.toMatch(/PLD Brasil|PLD do Brasil|PLD nacional|média dos quatro submercados:/i);
-    for (const m of faixa.matchAll(/aria-label="([^"]+)" data-metrica/g)) expect(m[1]).not.toMatch(/Brasil|SIN|nacional/i);
+    for (const m of Array.from(faixa.matchAll(/aria-label="([^"]+)" data-metrica/g))) expect(m[1]).not.toMatch(/Brasil|SIN|nacional/i);
   });
 
   it("o preço vem antes da aula: faixa, seletor de profundidade, painel de preços, gráfico, e só depois a aula, a formação e a previsão", () => {

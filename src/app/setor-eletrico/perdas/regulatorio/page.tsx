@@ -19,7 +19,7 @@ import { linhasRegulatorio, perimetroRegulatorio, respostaRegulatorio, rotuloDis
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Perdas: realizado e referência regulatória",
+  title: "Perdas: percentual técnico regulatório por distribuidora",
   description:
     "Percentual técnico regulatório implícito no SAMP por distribuidora, trecho a trecho, com a resolução homologatória associada, e o bloqueio da comparação com a referência de perdas não técnicas, com evidência.",
   alternates: { canonical: "/setor-eletrico/perdas/regulatorio" },

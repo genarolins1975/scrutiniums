@@ -1924,13 +1924,6 @@ export function partesDaNatureza(mix: Pick<Mix, "natureza_pct"> | null): { id: N
   });
 }
 
-/** Primeiro mês (AAAA-MM) com valor de uma natureza na série mensal: de quando a previsão Tipo III e a estimativa da MMGD existem na fonte. */
-export function primeiroMesDaNatureza(n: Pick<NaturezaMensal, "meses"> & Partial<Record<NaturezaGeracao, (number | null)[]>>, nat: NaturezaGeracao): string | null {
-  const serie = n[nat] ?? [];
-  const i = serie.findIndex((v) => v !== null && v !== undefined);
-  return i >= 0 ? (n.meses[i] ?? null) : null;
-}
-
 /**
  * Datas de referência de cada parte do módulo, com a natureza de cada uma: a matriz vai até o último dia completo; o despacho térmico,
  * as restrições e o fator de capacidade, até o último mês completo de cada conjunto; a capacidade instalada é o retrato de uma data.

@@ -9,8 +9,25 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Home from "@/app/setor-eletrico/page";
 import { lerCaminho } from "@/lib/energia/carregaJson";
-import { sinaisDaInicial, sinalAgua, sinalConta, sinalExpansao, sinalPerdas, sinalPld, sinalQualidade, universoPerdas, type SinalDisponivel, type SinalHome } from "@/lib/energia/home-sinais";
-import { linhasAtualidade } from "@/lib/energia/home";
+import {
+  denominadorDePerdas,
+  descreverDenominador,
+  evidenciaComDenominadorNomeado,
+  sinaisDaInicial,
+  sinalAgua,
+  sinalConta,
+  sinalExpansao,
+  sinalPerdas,
+  sinalPld,
+  sinalQualidade,
+  universoPerdas,
+  type SinalDisponivel,
+  type SinalHome,
+} from "@/lib/energia/home-sinais";
+import { linhasAtualidade, periodoLegivel, refinosDePeriodo } from "@/lib/energia/home";
+import { num } from "@/lib/energia/formato";
+import { SIGLAS } from "@/lib/energia/siglas";
+import { lerCsv } from "@/lib/energia/qualidade";
 import { CARTOES, CAMINHOS_INTENCAO, ID_SINAIS, LIGACOES, NOS_MAPA, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS, TRANSVERSAIS, TRILHAS } from "@/lib/energia/mapa";
 import { DESTINOS_NAVEGACAO, destino } from "@/lib/energia/navegacao";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
@@ -116,6 +133,102 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
     expect(u).toMatchObject({ ano });
     expect(s.universo).toContain(`${u.permissionarias} permissionárias ficam fora deste total`);
     expect(s.ressalva).toMatch(/não é sinônimo de furto/);
+  });
+
+  it("perdas: o denominador é nomeado (quantas concessionárias usam a energia requerida) e a diferença para a energia injetada publicada é dita", () => {
+    const csv = readFileSync(join(raiz, "public/energia/series/perdas_distribuidoras.csv"), "utf-8");
+    const d = denominadorDePerdas(PERDAS, csv)!;
+    const ano = PERDAS.referencia.ano;
+    const nac = PERDAS.nacional.find((l) => l.ano === ano && l.universo === "concessionarias")!;
+    const ev = PERDAS.evidencias.taxa_nacional;
+    expect(d).toMatchObject({ ano, n: nac.n_distribuidoras });
+    expect(d.nPublicada + d.nRequerida + d.nMista).toBe(d.n);
+    // refeito de forma independente, a partir do arquivo por distribuidora e da regra de entrada no total (12 meses, sem alerta)
+    const cnpjs = new Set(PERDAS.distribuidoras.filter((x) => x.grupo === "concessionaria" && x.referencia?.ano === ano && x.referencia.completo && x.referencia.alertas.length === 0).map((x) => x.cnpj));
+    const linhas = lerCsv(csv).filter((r) => r.ano === String(ano) && cnpjs.has(r.cnpj));
+    expect(linhas).toHaveLength(d.n);
+    const origem = (o: string) => linhas.filter((r) => r.origem_injetada === o).length;
+    expect([d.nPublicada, d.nRequerida, d.nMista]).toEqual([origem("publicada"), origem("requerida"), origem("mista")]);
+    const soma = (campo: string) => linhas.reduce((a, r) => a + Number(r[campo]), 0);
+    expect(d.referenciaTwh).toBeCloseTo(soma("injetada_referencia_mwh") / 1e6, 3);
+    expect(d.referenciaTwh).toBeCloseTo(ev.denominador!.valor! / 1e6, 3);
+    expect(d.publicadaTwh!).toBeCloseTo(soma("injetada_publicada_mwh") / 1e6, 3);
+    expect(d.taxaPct).toBe(nac.taxa_total_pct);
+    expect(d.taxaComPublicadaPct!).toBeCloseTo((100 * soma("perdas_totais_mwh")) / soma("injetada_publicada_mwh"), 2);
+    // o texto diz o que é o denominador, em quantas concessionárias ele é a energia requerida, as duas somas e as duas taxas
+    const fora = d.nRequerida + d.nMista;
+    const f = descreverDenominador(d);
+    expect(f.completa).toContain(`${num(d.referenciaTwh, 2)} TWh nas ${d.n} concessionárias`);
+    expect(f.completa).toContain(`Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora}`);
+    expect(f.completa).toContain("fornecida mais irregular mais perdas");
+    expect(f.completa).toContain(`${num(d.publicadaTwh!, 2)} TWh`);
+    expect(f.completa).toContain(`daria ${num(d.taxaComPublicadaPct!, 2)}%, e não ${num(d.taxaPct, 2)}%`);
+    expect(f.completa).toContain(`uma diferença de ${num(Math.abs(d.taxaPct - d.taxaComPublicadaPct!), 2)} ponto`);
+    expect(f.curta).toContain(`Em ${fora} das ${d.n} concessionárias`);
+    expect(f.curta).toContain(`${num(d.taxaComPublicadaPct!, 2)}%`);
+    for (const x of [f.curta, f.completa, f.rotuloDaFicha]) {
+      expect(x).not.toMatch(/[–—]| - |undefined|NaN|\bhoje\b/);
+      expect(x).not.toMatch(/\b(melhor|pior|bom|ruim)\b|causa|porque/i);
+    }
+    // o sinal da inicial traz a frase curta junto do número
+    const s = disponivel(sinalPerdas(PERDAS, csv));
+    expect(s.referencias).toEqual([f.curta]);
+    // a explicação que o pipeline dá para a origem do denominador segue na gold: se mudar, esta frase precisa ser revista
+    expect(PERDAS.decisoes.some((x) => /fornecida \+ irregular \+ perdas/.test(x))).toBe(true);
+  });
+
+  it("perdas: sem o arquivo por distribuidora ficam as contagens e a ausência da injetada publicada; arquivo que não é desta publicação não entra", () => {
+    const csv = readFileSync(join(raiz, "public/energia/series/perdas_distribuidoras.csv"), "utf-8");
+    const sem = denominadorDePerdas(PERDAS, null)!;
+    expect(sem.n).toBe(denominadorDePerdas(PERDAS, csv)!.n);
+    expect(sem.publicadaTwh).toBeNull();
+    expect(sem.taxaComPublicadaPct).toBeNull();
+    const f = descreverDenominador(sem);
+    expect(f.completa).toContain("não está disponível nesta publicação");
+    expect(f.curta).not.toContain("a taxa seria");
+    expect(f.rotuloDaFicha).not.toContain("a taxa seria");
+    // a ficha ainda nomeia a origem do denominador, mas não promete a taxa sobre a energia injetada publicada
+    expect(disponivel(sinalPerdas(PERDAS, null)).evidencia!.denominador!.descricao).toContain("energia requerida");
+    expect(disponivel(sinalPerdas(PERDAS, null)).evidencia!.denominador!.descricao).not.toContain("a taxa seria");
+    // uma linha do arquivo com a referência diferente da gold: o arquivo é de outra publicação, e nada é somado
+    const linhas = csv.split("\n");
+    const cab = linhas[0].split(";");
+    const iRef = cab.indexOf("injetada_referencia_mwh");
+    const iAno = cab.indexOf("ano");
+    const iClass = cab.indexOf("classificacao");
+    const k = linhas.findIndex((l, i) => i > 0 && l.split(";")[iAno] === String(PERDAS.referencia.ano) && l.split(";")[iClass] === "Concessionária");
+    const campos = linhas[k].split(";");
+    campos[iRef] = String(Number(campos[iRef]) + 500);
+    linhas[k] = campos.join(";");
+    expect(denominadorDePerdas(PERDAS, linhas.join("\n"))!.publicadaTwh).toBeNull();
+    // gold em que a regra de entrada não reproduz o total: não há denominador a descrever
+    const g = clone(PERDAS);
+    const um = g.distribuidoras.find((x) => x.grupo === "concessionaria" && x.referencia?.ano === g.referencia.ano && x.referencia.completo)!;
+    um.referencia!.alertas = ["balanco_nao_fecha"];
+    expect(denominadorDePerdas(g, csv)).toBeNull();
+    expect(denominadorDePerdas(null, csv)).toBeNull();
+  });
+
+  it("a ficha do número de perdas ganha o denominador nomeado, e só isso: valor, numerador, fórmula, testes e arquivo seguem como a gold os publica", () => {
+    const csv = readFileSync(join(raiz, "public/energia/series/perdas_distribuidoras.csv"), "utf-8");
+    const den = denominadorDePerdas(PERDAS, csv)!;
+    const ev = PERDAS.evidencias.taxa_nacional;
+    const nomeada = evidenciaComDenominadorNomeado(ev, den);
+    expect(nomeada.denominador!.descricao).toContain(ev.denominador!.descricao);
+    expect(nomeada.denominador!.descricao).toContain(descreverDenominador(den).rotuloDaFicha);
+    expect(nomeada.denominador!.valor).toBe(ev.denominador!.valor);
+    expect({ ...nomeada, denominador: null }).toEqual({ ...ev, denominador: null });
+    // a ficha da gold não é alterada no lugar
+    expect(ev.denominador!.descricao).toBe("Σ energia injetada de referência (MWh)");
+    // denominador da ficha que não é a soma refeita, ou sem denominador refeito: a ficha segue como está
+    const outra = clone(ev);
+    outra.denominador!.valor = ev.denominador!.valor! + 1e7;
+    expect(evidenciaComDenominadorNomeado(outra, den)).toBe(outra);
+    expect(evidenciaComDenominadorNomeado(ev, null)).toBe(ev);
+    // o sinal leva a ficha nomeada, e a ficha lida sob demanda segue disponível quando o denominador não pôde ser refeito
+    const s = disponivel(sinalPerdas(PERDAS, csv));
+    expect(s.evidencia!.denominador!.descricao).toContain("energia requerida");
+    expect(s.prova).not.toBeNull();
   });
 
   it("reservatórios: a EAR do SIN em % da EAR máxima, a mediana do mesmo dia na base publicada e a variação em 30 dias", () => {
@@ -441,10 +554,12 @@ describe("a página renderizada", () => {
     expect(t).not.toMatch(/undefined|NaN|\[object Object\]/);
   });
 
-  it("os dois seletores de distribuidora seguem na inicial, com o ano e a contagem no rótulo", () => {
+  it("os dois seletores de distribuidora seguem na inicial, com o ano e a contagem no rótulo e uma opção padrão curta que cabe em 390 px", () => {
     const t = texto(html);
-    expect(t).toContain("Escolha (103 distribuidoras com dado de 2025)");
-    expect(t).toContain("Escolha (102 distribuidoras com dado de 2025)");
+    expect(t).toContain("Sua distribuidora (103 com dado de 2025)");
+    expect(t).toContain("Sua distribuidora (102 com dado de 2025)");
+    expect(html.match(/<option value="" selected="">Escolha a distribuidora<\/option>/g)).toHaveLength(2);
+    expect(t).not.toContain("Escolha (103 distribuidoras");
   });
 
   it("a ficha da atualidade usa os conjuntos que a publicação traz (a tabela recolhida lista todas as fontes principais)", () => {
@@ -452,5 +567,100 @@ describe("a página renderizada", () => {
     const linhas = linhasAtualidade(pub.disponivel === false ? null : pub, new Set(DATASETS_INTEGRADOS.map((d) => d.slug)));
     const tabela = html.slice(html.indexOf('<table class="w-full min-w-[44rem]'), html.indexOf("</table>", html.indexOf('<table class="w-full min-w-[44rem]')));
     expect(tabela.match(/<tr/g)!.length).toBe(linhas.length + 1);
+  });
+});
+
+describe("a página renderizada: siglas, mapa no celular, atualidade e busca", () => {
+  /** O texto que o leitor vê sem abrir nada: fora dos blocos recolhíveis. */
+  const aVista = texto(html.replace(/<details[\s\S]*?<\/details>/g, " "));
+  const padrao = (s: string) => new RegExp(`(?<![\\p{L}\\p{N}_])${s}(?![\\p{L}\\p{N}_])`, "u");
+
+  it("ANEEL, ONS, CCEE e SIN saem por extenso na primeira ocorrência à vista, e o CNPJ também", () => {
+    for (const s of ["ANEEL", "ONS", "CCEE", "SIN", "CNPJ"]) {
+      const i = aVista.search(padrao(s));
+      expect(i, s).toBeGreaterThan(0);
+      const antes = aVista.slice(Math.max(0, i - SIGLAS[s].length - 2), i + s.length + 1);
+      expect(antes, s).toBe(`${SIGLAS[s]} (${s})`);
+    }
+    // a primeira à vista é a do alto: a linha de fontes da abertura
+    expect(aVista.indexOf("Operador Nacional do Sistema Elétrico (ONS)")).toBeLessThan(aVista.indexOf("Seis perguntas para começar"));
+  });
+
+  it("os órgãos que a tabela de atualidade cita (EPE, IBGE, CVM, MCTI e os demais) vêm com o nome por extenso logo abaixo dela", () => {
+    const f = secao("aprofundar").html;
+    expect(f).toContain("data-orgaos");
+    const legenda = texto(f.slice(f.indexOf("data-orgaos")));
+    const orgaos = Array.from(new Set(linhasAtualidade(gold("publicacao.json"), new Set()).map((l) => l.orgao).filter(Boolean))) as string[];
+    expect(orgaos.length).toBeGreaterThan(3);
+    for (const o of orgaos) expect(legenda, o).toContain(`${o}, ${SIGLAS[o]}`);
+    for (const o of ["EPE", "IBGE"]) expect(orgaos).toContain(o);
+    // siglas de conjunto de dados (SAMP, SCS, RALIE) não ficam soltas nos rótulos das fontes
+    const tabela = f.slice(f.indexOf("<table"), f.indexOf("</table>"));
+    expect(texto(tabela)).not.toMatch(/\b(SAMP|SCS|RALIE)\b/);
+  });
+
+  it("no celular a instrução é 'Leia os sete elos abaixo' e vem um resumo de uma tela; a instrução do desenho fica só para o desktop", () => {
+    const mapa = secao("mapa-conceitual").html;
+    const semDesktop = mapa.replace(/<span class="hidden md:inline">[\s\S]*?<\/span>/, "");
+    expect(mapa).toContain('<span class="hidden md:inline">');
+    expect(texto(mapa)).toContain("Escolha um elo para ver o que ele é");
+    expect(texto(semDesktop)).not.toContain("Escolha um elo");
+    expect(texto(semDesktop)).not.toContain("A forma do traço diz o tipo da ligação");
+    expect(texto(semDesktop)).toContain("Leia os sete elos abaixo");
+    // o resumo está no bloco do celular, antes do mapa em texto, e leva a cada elo
+    const mobile = mapa.slice(mapa.indexOf('<div class="md:hidden">'));
+    expect(mobile.indexOf("data-mapa-resumo")).toBeGreaterThan(0);
+    expect(mobile.indexOf("data-mapa-resumo")).toBeLessThan(mobile.indexOf("O mapa em texto"));
+    const resumo = mobile.slice(mobile.indexOf("data-mapa-resumo"), mobile.indexOf("O mapa em texto"));
+    for (const n of NOS_MAPA) {
+      expect(resumo, n.id).toContain(`href="#mapa-elo-${n.id}"`);
+      expect(mapa.split(`id="mapa-elo-${n.id}"`).length - 1, n.id).toBe(1);
+      expect(texto(resumo), n.id).toContain(n.titulo);
+    }
+    for (const f of ["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]) expect(texto(resumo), f).toContain(f);
+    // a seta entre dois elos seguidos da mesma faixa leva o tipo da ligação; as demais ligações vêm ditas em "Liga-se a"
+    const seguidos = LIGACOES.filter((l) => {
+      const nos = NOS_MAPA.filter((n) => n.faixa === NOS_MAPA.find((x) => x.id === l.de)!.faixa);
+      return nos[nos.findIndex((n) => n.id === l.de) + 1]?.id === l.para;
+    });
+    expect(seguidos.length).toBeGreaterThan(0);
+    expect(resumo.match(/↓/g)).toHaveLength(seguidos.length);
+    expect(texto(resumo)).toContain("Liga-se a");
+  });
+
+  it("a atualidade mostra o último mês nacional completo do DEC e do FEC, de onde vem o 'em dia' e a regra, e dá forma própria à fonte atrasada", () => {
+    const f = secao("aprofundar").html;
+    const t = texto(f);
+    const pub = gold<PublicacaoAtualidade & { disponivel?: boolean }>("publicacao.json");
+    const linhas = linhasAtualidade(pub, new Set(DATASETS_INTEGRADOS.map((d) => d.slug)), refinosDePeriodo(QUALIDADE));
+    const q = linhas.find((l) => l.tema === "Qualidade")!;
+    expect(q.ultimoMes).toBe(periodoLegivel(QUALIDADE.ultimo_mes_completo));
+    expect(t).toContain(`${q.ultimoMes} último mês nacional completo; o arquivo é anual, e ${q.ultimo} está em curso`);
+    expect(t).toContain(`pela publicação do arquivo, em ${q.publicadoEm}`);
+    expect(t).toContain("pelo último período");
+    // a regra, com o exemplo vindo da própria linha e as tolerâncias da publicação
+    expect(f).toContain('data-nota-atualidade="regra"');
+    expect(t).toContain("Como a situação é medida.");
+    expect(t).toContain(`em Qualidade, o arquivo foi publicado em ${q.publicadoEm} e o último mês nacional completo é ${q.ultimoMes}`);
+    expect(t).toContain(`mensal, ${pub.regras!.sla!.mensal!.tolerancia_dias} dias`);
+    // o ano em curso sem mês conhecido (Regulação) continua dito como em curso, sem mês inventado
+    expect(linhas.find((l) => l.tema === "Regulação")).toMatchObject({ ultimo: "2026", ultimoMes: null, emCurso: true });
+    expect(t).toContain("ano em curso");
+    // a fonte atrasada tem forma própria (losango com moldura), as demais não
+    const atrasadas = linhas.filter((l) => l.atrasado).length;
+    expect(atrasadas).toBeGreaterThan(0);
+    expect(f.match(/◆/g)!.length).toBeGreaterThanOrEqual(atrasadas);
+    expect(f).toContain("border border-carvao");
+    expect(f).toContain("●");
+  });
+
+  it("a busca do alto está no padrão combobox, sugere o vocabulário de quem não conhece a sigla e aponta para Minha região", () => {
+    expect(html).toContain('role="combobox"');
+    expect(html).toContain('aria-autocomplete="list"');
+    expect(html).toContain('role="listbox"');
+    expect(texto(html)).toContain("Sugestões: preço da luz, falta de energia, reservatórios, Tarifa Social.");
+    expect(html).toContain('placeholder="Ex.: preço da luz, DEC, CEMIG"');
+    // o vocabulário leigo vai no índice que a busca recebe
+    expect(html).toContain("preço da luz");
   });
 });

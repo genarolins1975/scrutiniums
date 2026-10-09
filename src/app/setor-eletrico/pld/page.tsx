@@ -27,38 +27,51 @@ import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribui
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
-import { carimbo, dataBR, horaLocal, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, num, reais, rotuloRegra } from "@/lib/energia/formato";
 import { textoAmplitude } from "@/lib/energia/resumos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
-import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoTermicas } from "@/lib/energia/leituras";
+import { CONTRASTES } from "@/lib/energia/conteudo/complementos";
+import { estadoCarga, estadoEar, estadoEna, estadoPld } from "@/lib/energia/leituras";
 import type { PldGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold, RegimeLimites } from "@/lib/energia/tipos-pld";
 import {
   COR_SM,
   NOME_SM,
   documentosCitados,
+  estadoRenovaveisBalanco,
+  estadoTermicasBalanco,
   extremosMediaDiaria,
+  horasPorSentidoNoDia,
+  intervaloSemanaOperativa,
   ligacoesFormacao,
   linhasMediaDiaria,
   nomesDosSubmercados,
   notaDoisPercentis,
   perguntaPainel,
+  pontesSeparacao,
   proximoPainel,
+  provenienciaSemRessalvaObsoleta,
   regimeVigenteEm,
   resumoLigacoes,
   respostaP008,
   rotaPainel,
   semCodigoHttp,
+  semRessalvaDeLimitesNaoAuditados,
   textoEmpatesMediaDiaria,
+  textoHidraulicaBalanco,
   textoLimitesVigentes,
+  textoMenorValorEPiso,
   textoMudancaMediaDiaria,
   textoReferenciaDistancia,
+  textoRegimesDistribuicao,
+  textoSentidoNoDia,
   variacaoComumDoGrupo,
   vereditoMediaDiaria,
   vereditoP008,
 } from "@/lib/energia/pld";
+import { horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import { snapshotLegivel, datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
@@ -115,6 +128,11 @@ function periodos(p: PldGold): PeriodoPld[] {
 
 const ligacaoTexto = "underline underline-offset-4 text-energia-dark hover:text-carvao";
 
+/** Como o PLD e a conta de luz se relacionam, na frase do registro de contrastes do observatório (a mesma que o verbete usa). */
+const LIGACAO_COM_A_CONTA =
+  CONTRASTES.find((c) => c.a === "pld" && c.b === "tarifa-te-tusd")?.texto ??
+  "O PLD é o preço das diferenças liquidadas no Mercado de Curto Prazo. A conta do consumidor atendido pela distribuidora segue a TE e a TUSD, que a ANEEL homologa, mais bandeira e tributos.";
+
 export default function PldPage() {
   const pld = gold.pld();
   const hid = gold.hidrologia();
@@ -132,12 +150,15 @@ export default function PldPage() {
   const mods = gold.modelos();
   const cPld = conceito("pld");
 
+  const semanaRef = integra(detalhe) ? detalhe.cmo_pld.semana_referencia : null;
+
   const estados: Record<string, NoComEstado["estado"]> = {
     afluencias: estadoEna(hid) ? { texto: estadoEna(hid)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da ENA", href: "/setor-eletrico/agua-e-clima/afluencia#p018" } } : null,
     reservatorios: estadoEar(hid) ? { texto: estadoEar(hid)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da EAR", href: "/setor-eletrico/agua-e-clima#ear" } } : null,
     carga: estadoCarga(carga) ? { texto: estadoCarga(carga)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da carga", href: "/setor-eletrico/carga" } } : null,
-    renovaveis: estadoRenovaveis(ger) ? { texto: estadoRenovaveis(ger)!, natureza: "CALCULADO", historico: { rotulo: "Matriz por janela", href: "/setor-eletrico/geracao" } } : null,
-    termicas: estadoTermicas(ger) ? { texto: estadoTermicas(ger)!, natureza: "CALCULADO", historico: { rotulo: "Térmicas em contexto", href: "/setor-eletrico/geracao#termica" } } : null,
+    // participações do Balanço de Energia do ONS, cuja solar inclui a MMGD estimada: o texto diz isso e o selo é Estimado
+    renovaveis: estadoRenovaveisBalanco(ger) ? { texto: estadoRenovaveisBalanco(ger)!, natureza: "ESTIMADO", historico: { rotulo: "Matriz por janela", href: "/setor-eletrico/geracao" } } : null,
+    termicas: estadoTermicasBalanco(ger) ? { texto: estadoTermicasBalanco(ger)!, natureza: "ESTIMADO", historico: { rotulo: "Térmicas em contexto", href: "/setor-eletrico/geracao#termica" } } : null,
     rede: integra(rede)
       ? {
           texto: `Em ${dataBR(rede.dia_referencia)}: ${rede.fronteiras
@@ -154,7 +175,8 @@ export default function PldPage() {
     otimizacao: null,
     cmo: integra(cmo)
       ? {
-          texto: `CMO semanal publicado pelo ONS para a semana operativa de ${dataBR(cmo.semana_referencia)}: ${cmo.ultima_semana.map((s) => `${s.sm === "SE" ? "SE/CO" : s.sm} ${reais(s.semanal)}`).join("; ")} por MWh.`,
+          // a semana mais recente publicada pelo ONS e a última semana completa nos três produtos (a da tabela de Analisar) são semanas diferentes: as duas vêm com o intervalo
+          texto: `CMO semanal do DECOMP publicado pelo ONS para a semana operativa de ${dataBR(intervaloSemanaOperativa(cmo.semana_referencia).inicio)} a ${dataBR(cmo.semana_referencia)} (a mais recente): ${cmo.ultima_semana.map((s) => `${s.sm === "SE" ? "SE/CO" : s.sm} ${reais(s.semanal)}`).join("; ")} por MWh.${semanaRef ? ` A tabela deste capítulo compara a última semana completa nos três produtos, de ${dataBR(semanaRef.inicio)} a ${dataBR(semanaRef.fim)}.` : ""}`,
           // natureza vem da proveniência da gold (ESTIMADO: resultado do modelo DECOMP), nunca escrita aqui
           natureza: cmo.proveniencia.cmo.natureza,
           historico: { rotulo: "Série do CMO", href: "#cmo" },
@@ -181,7 +203,6 @@ export default function PldPage() {
   const exemplo = conceitoDet?.exemplo_liquidacao ?? null;
   const bloqueioCcee = conceitoDet?.bloqueios.find((b) => b.fonte.startsWith("CCEE")) ?? null;
   const bloqueioCepel = conceitoDet?.bloqueios.find((b) => b.fonte.startsWith("CEPEL")) ?? null;
-  const semanaRef = integra(detalhe) ? detalhe.cmo_pld.semana_referencia : null;
   // o histórico de previsões é o mesmo arquivo da página de previsões: as contagens saem do CSV completo, não do trecho legado da gold
   const csvEmissoes = lerCsvPrevisoes("/energia/series/previsoes_emissoes.csv");
   const linhasEmissoes = csvEmissoes ? linhasArquivo(csvEmissoes.linhas, Object.fromEntries((mods?.modelos ?? []).map((m) => [m.codigo, m.estado]))) : [];
@@ -194,6 +215,27 @@ export default function PldPage() {
   const referenciaDistancia = integra(pld) && integra(rede) ? textoReferenciaDistancia(rede.resumo_amplitude, pld.dia_referencia) : null;
   const empates = extremos ? textoEmpatesMediaDiaria(extremos) : null;
 
+  // ponte entre os dois critérios de diferença entre submercados (R$ 1,00 aqui; R$ 0,01 em Diferenças regionais): só nos períodos em que a
+  // gold regional tem a mesma janela (mesmas horas e mesma contagem acima de R$ 1,00, que a própria gold publica igual nas duas)
+  const pontesRegional = integra(detalhe) ? pontesSeparacao(detalhe.regional) : {};
+  const pontes =
+    integra(pld) && integra(detalhe)
+      ? Object.fromEntries(
+          (["30d", "12m"] as const).flatMap((id) => {
+            const a = detalhe.regional.amplitude.find((x) => x.periodo === id);
+            const per = pld.periodos[id];
+            return a && pontesRegional[id] && a.horas === per.n_horas && a.horas_acima_1 === per.diferenca.horas_acima_limiar ? [[id, pontesRegional[id]] as const] : [];
+          }),
+        )
+      : {};
+  const notaMenorValor = limDet ? textoMenorValorEPiso(limDet.conferencias) : null;
+  const textoRegimes = limDet ? textoRegimesDistribuicao(limDet) : null;
+  // o mapa de submercados usa o último dia com fluxo publicado para o preço e para o fluxo: o mesmo dia nas duas medidas
+  const recHorario = integra(detalhe) ? horarioRecentePld(detalhe.horario_recente.url) : null;
+  const diaDoFluxo = integra(rede) ? rede.dia_referencia : null;
+  const diarioDoFluxo = integra(pld) && diaDoFluxo ? pld.diario.find((x) => x.d === diaDoFluxo) : undefined;
+  const sentidosNoDia = recHorario && diaDoFluxo ? horasPorSentidoNoDia(recHorario, diaDoFluxo) : [];
+
   const faixaAbertura =
     integra(pld) && extremos ? (
       <FaixaMetricas
@@ -202,7 +244,7 @@ export default function PldPage() {
         nota={
           <>
             <span className="font-medium text-carvao">Média diária:</span> {pld.regras.media_diaria} Não existe um PLD único do Brasil: cada submercado tem o seu preço, e a
-            média simples dos quatro não é um preço publicado pela CCEE, por isso esta faixa não a mostra.
+            média simples dos quatro não é publicada pela CCEE.
           </>
         }
       >
@@ -223,7 +265,7 @@ export default function PldPage() {
               formato="reais"
               casas={2}
               unidade="R$/MWh"
-              periodo={`${nomesDosSubmercados(e.submercados)}${e.submercados.length > 1 && extremos.distancia > 0 ? " (mesmo valor)" : ""} · média das 24 horas de ${dataBR(pld.dia_referencia)}`}
+              periodo={`${nomesDosSubmercados(e.submercados)}${e.submercados.length > 1 && extremos.distancia > 0 ? " (mesmo valor)" : ""} · ${dataBR(pld.dia_referencia)}`}
               cor={e.submercados.length === 1 ? COR_SM[e.submercados[0]] : undefined}
               variacao={variacao === null ? undefined : { valor: variacao, casas: 2, sufixo: " R$/MWh", referencia: "em relação ao dia anterior" }}
             />
@@ -237,7 +279,7 @@ export default function PldPage() {
           formato="reais"
           casas={2}
           unidade="R$/MWh"
-          periodo={`maior menos menor média diária · ${dataBR(pld.dia_referencia)}`}
+          periodo={`maior menos menor · ${dataBR(pld.dia_referencia)}`}
           nota={referenciaDistancia ?? undefined}
         />
       </FaixaMetricas>
@@ -325,13 +367,13 @@ export default function PldPage() {
                 comoInterpretar={comoInterpretarPrecos}
                 naoConcluir={naoConcluirPrecos}
                 naoConcluirNoCorpo
-                proveniencia={pld.proveniencia.diario}
+                proveniencia={provenienciaSemRessalvaObsoleta(pld.proveniencia.diario)}
                 extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
                 complementares={[
-                  { rotulo: "Sobre o PLD horário", p: pld.proveniencia.horario },
-                  ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: pld.proveniencia.estatisticas }] : []),
-                  ...(pld.proveniencia.mensal ? [{ rotulo: "Sobre as médias mensais", p: pld.proveniencia.mensal }] : []),
-                  { rotulo: "Sobre a posição histórica", p: pld.proveniencia.posicao },
+                  { rotulo: "Sobre o PLD horário", p: provenienciaSemRessalvaObsoleta(pld.proveniencia.horario) },
+                  ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: provenienciaSemRessalvaObsoleta(pld.proveniencia.estatisticas) }] : []),
+                  ...(pld.proveniencia.mensal ? [{ rotulo: "Sobre as médias mensais", p: provenienciaSemRessalvaObsoleta(pld.proveniencia.mensal) }] : []),
+                  { rotulo: "Sobre a posição histórica", p: provenienciaSemRessalvaObsoleta(pld.proveniencia.posicao) },
                   ...(integra(rede)
                     ? [
                         { rotulo: "Sobre os fluxos", p: rede.proveniencia.fluxo },
@@ -341,15 +383,7 @@ export default function PldPage() {
                 ]}
               >
                 <div className="space-y-6">
-                  <RespostaCurta id="hoje" veredito={vereditoMediaDiaria(pld.dia_referencia, extremos)}>
-                    <p>{pld.regras.dia_referencia}</p>
-                    <p className="mt-1">{pld.regras.media_diaria}</p>
-                    <p className="mt-1">
-                      Empate é igualdade nos centavos exibidos: se mais de um submercado tem a maior ou a menor média, todos aparecem. A distância é a maior média menos a menor,
-                      calculada sobre esses valores.
-                    </p>
-                  </RespostaCurta>
-
+                  {/* a faixa de métricas já traz a resposta em números: o gráfico vem primeiro e a resposta em palavras logo depois dele */}
                   <div className="space-y-3">
                     <GraficoBarras
                       titulo={`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`}
@@ -367,12 +401,29 @@ export default function PldPage() {
                     </p>
                   </div>
 
+                  <RespostaCurta id="hoje" depois veredito={vereditoMediaDiaria(pld.dia_referencia, extremos)}>
+                    <p>{pld.regras.dia_referencia}</p>
+                    <p className="mt-1">{pld.regras.media_diaria}</p>
+                    <p className="mt-1">
+                      Empate é igualdade nos centavos exibidos: se mais de um submercado tem a maior ou a menor média, todos aparecem. A distância é a maior média menos a menor,
+                      calculada sobre esses valores.
+                    </p>
+                  </RespostaCurta>
+
                   <NotasDoPainel oQueMudou={oQueMudouPrecos} comoInterpretar={comoInterpretarPrecos} naoConcluir={naoConcluirPrecos} />
 
                   <PldCapitulos />
 
                   <SecaoDoPainel id="periodos" titulo="Em que horas o preço sobe, e as regiões se separam?" lead="PLD por submercado · R$/MWh nominais · hora local de Brasília.">
-                    <PldPeriodos periodos={periodos(pld)} limiar={pld.limiar_diferenca} />
+                    <PldPeriodos
+                      periodos={periodos(pld)}
+                      limiar={pld.limiar_diferenca}
+                      ponte={pontes}
+                      regimes={limDet?.regimes ?? []}
+                      fonte="CCEE, PLD horário por submercado"
+                      versao={pld.dia_referencia}
+                      notaMenorValor={notaMenorValor}
+                    />
                     <NotasDoPainel
                       oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados.</>}
                       comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
@@ -397,6 +448,16 @@ export default function PldPage() {
                       a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária: valores observados; média, variação e
                       percentil: calculados.
                     </p>
+                    {textoRegimes && (
+                      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="nominal-e-regimes">
+                        <span className="rotulo mr-1 text-mineral">Percentil e faixas:</span>
+                        {textoRegimes}{" "}
+                        <Link href={`${rotaPainel("p010")}#p010`} className="text-energia-dark underline underline-offset-4">
+                          Ver os limites de cada ano
+                        </Link>
+                        . A série semanal do PLD de 2001 a 2020, que a CCEE também publica, tem outra granularidade e ainda não está integrada: as referências começam em janeiro de 2021.
+                      </p>
+                    )}
                     {notaPercentis && (
                       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="dois-percentis">
                         {notaPercentis}{" "}
@@ -420,10 +481,31 @@ export default function PldPage() {
                         <div className="min-w-0">
                           <MapaSubmercados
                             fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
-                            precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
+                            precos={
+                              diarioDoFluxo
+                                ? { SE: diarioDoFluxo.SE, S: diarioDoFluxo.S, NE: diarioDoFluxo.NE, N: diarioDoFluxo.N }
+                                : Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))
+                            }
                             diaFluxo={dataBR(rede.dia_referencia)}
-                            diaPreco={dataBR(pld.dia_referencia)}
+                            diaPreco={diarioDoFluxo ? dataBR(rede.dia_referencia) : dataBR(pld.dia_referencia)}
                           />
+                          {diarioDoFluxo && rede.dia_referencia !== pld.dia_referencia && (
+                            <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="mapa-mesmo-dia">
+                              O último dia com PLD é {dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até {dataBR(rede.dia_referencia)}. O mapa usa o dia {dataBR(rede.dia_referencia)}
+                              para o preço e para o fluxo, e as setas mostram o sentido da média do dia.
+                            </p>
+                          )}
+                          {sentidosNoDia.some((x) => x.horas > 0) && (
+                            <div className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="horas-por-sentido">
+                              <p className="font-medium text-carvao">Horas em cada sentido em {dataBR(rede.dia_referencia)}, no arquivo horário do ONS:</p>
+                              <ul className="mt-1 list-disc space-y-0.5 pl-5">
+                                {sentidosNoDia.map((x) => {
+                                  const t = textoSentidoNoDia(x);
+                                  return t ? <li key={x.fronteira}>{t}</li> : null;
+                                })}
+                              </ul>
+                            </div>
+                          )}
                           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
                             <span>Fonte: CCEE (PLD) e ONS (intercâmbio). O mapa não mostra limites de transferência nem explica diferenças de preço.</span>
                           </div>
@@ -508,7 +590,7 @@ export default function PldPage() {
                       {Object.entries(pld.regras).map(([k, v]) => (
                         <div key={k}>
                           <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
-                          <dd className="mt-1 text-sm leading-relaxed text-carvao">{v}</dd>
+                          <dd className="mt-1 text-sm leading-relaxed text-carvao">{semRessalvaDeLimitesNaoAuditados(v)}</dd>
                         </div>
                       ))}
                     </dl>
@@ -561,109 +643,109 @@ export default function PldPage() {
           <Capitulo id="o-que-e" rotulo="Entenda em 90 segundos" titulo="O que é o PLD, e o que ele não é">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
+                {/* Entender: a resposta curta. A norma, as citações e a leitura usual do setor estão em Analisar */}
                 <p className="ed-lead text-carvao">
                   No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE compara, hora a hora e por submercado, a energia que cada agente contratou com a que gerou ou
-                  consumiu de fato, e calcula o resultado financeiro dessa diferença. O PLD é o preço desse mercado. A CCEE publica esses valores somados por submercado e hora e,
-                  no consolidado do mês, separa o resultado de venda e o de compra.
+                  consumiu de fato, e calcula o resultado financeiro dessa diferença. O PLD é o preço desse mercado.
+                </p>
+                <p className="mt-3 text-base leading-relaxed text-carvao">
+                  É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro <Termo slug="submercado">submercados</Termo>. O
+                  cálculo é feito por modelos computacionais (<Termo slug="newave">NEWAVE</Termo>, <Termo slug="decomp">DECOMP</Termo> e <Termo slug="dessem">DESSEM</Termo>), tem como
+                  base o <Termo slug="cmo">custo marginal de operação</Termo> e respeita os <Termo slug="limites-do-pld">limites mínimo e máximos</Termo> vigentes.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
-                  Base: descrições oficiais da CCEE no portal de dados abertos, capturadas em 28/09/2026. <Conferido ok />
+                  Base: descrições oficiais da CCEE no portal de dados abertos, capturadas em 27/09/2026 e 28/09/2026. <Conferido ok />
+                  <span data-nivel="auditar"> Conjuntos consultados: PLD_HORARIO, PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO.</span>
                 </p>
-                <p data-nivel="analisar" className="mt-2 max-w-prose2 text-xs leading-relaxed text-mineral [overflow-wrap:anywhere]">
-                  Na descrição da CCEE, o balanço de energia (MWh) e o resultado (R$) são apurados para cada perfil de agente, por submercado e hora. Conjuntos consultados:
-                  PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO.
-                </p>
-                {passagem("ren957_art5_p4") && (
-                  <div className="mt-5 border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao">
-                    <p className="rotulo text-mineral">O que a norma diz</p>
-                    <p className="mt-2">
-                      Pela Convenção de Comercialização da ANEEL, as operações no Mercado de Curto Prazo são contabilizadas pela CCEE e as exposições dos agentes são valoradas ao
-                      PLD. A plataforma não mostra valores de liquidação de nenhum agente: o painel abaixo traz um exemplo sintético, com quantidades hipotéticas e o PLD real de
-                      uma hora, para mostrar o mecanismo.
-                    </p>
-                    <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
-                      {passagem("ren957_art5_p4")!.origem}. <Conferido ok />
-                    </p>
-                  </div>
-                )}
-                <p className="mt-6 text-base leading-relaxed text-carvao">
-                  É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro{" "}
-                  <Termo slug="submercado">submercados</Termo>. O cálculo é feito por modelos computacionais (NEWAVE, DECOMP e
-                  DESSEM), tem como base o <Termo slug="cmo">custo marginal de operação</Termo> e respeita os limites mínimo e
-                  máximos vigentes.
-                </p>
-                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
-                  Base: descrição oficial da CCEE no portal de dados abertos, capturada em 27/09/2026. <Conferido ok />
-                  <span data-nivel="analisar"> Conjunto consultado: PLD_HORARIO.</span>
-                </p>
-                <p className="mt-6 leading-relaxed text-carvao-muted">
-                  Como o balanço de cada agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre quem vende e quem compra estão nas Regras de
-                  Comercialização da CCEE.
-                </p>
-                <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
-                  Regras de Comercialização: <Conferido ok={false} />{" "}
-                  {bloqueioCcee ? (
-                    <>
-                      o documento não pôde ser lido nesta publicação. {bloqueioCcee.consequencia}
-                      <span data-nivel="analisar">
-                        {" "}
-                        {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")} Evidência: {bloqueioCcee.evidencia.replace(/\.$/, "")}.
-                      </span>
-                    </>
-                  ) : (
-                    "documento não conferido nesta publicação."
-                  )}
-                </p>
-                <div className="mt-8 border-l-2 border-energia pl-5">
-                  <p className="rotulo text-mineral">A ideia central</p>
-                  {integra(ger) && ger.regioes.find((r) => r.rg === "SIN")?.["12m"] && (
-                    <p className="mt-2 flex flex-wrap items-center gap-2 leading-relaxed text-carvao">
-                      <span>
-                        Nos 12 meses até {dataBR(ger.dia_referencia)}, a geração hidráulica respondeu por{" "}
-                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do <Termo slug="sin">SIN</Termo>{" "}
-                        (ONS, Balanço de Energia nos Subsistemas).
-                      </span>
-                      <SeloNatureza natureza="CALCULADO" />
-                    </p>
-                  )}
-                  <p className="mt-3 border border-dashed border-mineral p-3 text-sm leading-relaxed text-carvao-muted">
-                    <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
-                    O sistema brasileiro é descrito como <strong className="font-medium">hidrotérmico e intertemporal</strong>: parte da
-                    geração hidráulica vem de usinas com reservatório, e a água usada agora não estará disponível depois. Nessa leitura,
-                    a água guardada tem valor para o futuro, esse valor pesa na decisão de gerar com água agora ou acionar outras
-                    fontes, e o preço sai dessa decisão, não de uma única variável.
+
+                <div data-nivel="analisar" className="mt-6 space-y-6" data-bloco="aula-analisar">
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                    A CCEE publica os valores do balanço de energia (MWh) e do resultado (R$) somados por submercado e hora e, no consolidado do mês, separa o resultado de venda e o
+                    de compra; na descrição da CCEE, os dois são apurados para cada perfil de agente, por submercado e hora.
                   </p>
-                  {passagem("dessem_acoplamento") && (
-                    <div className="mt-3">
-                      <PldPassagem p={passagem("dessem_acoplamento")!} />
+                  {passagem("ren957_art5_p4") && (
+                    <div className="border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao">
+                      <p className="rotulo text-mineral">O que a norma diz</p>
+                      <p className="mt-2">
+                        Pela Convenção de Comercialização da ANEEL, as operações no Mercado de Curto Prazo são contabilizadas pela CCEE e as exposições dos agentes são valoradas ao
+                        PLD. A plataforma não mostra valores de liquidação de nenhum agente: o painel abaixo traz um exemplo sintético, com quantidades hipotéticas e o PLD real de
+                        uma hora, para mostrar o mecanismo.
+                      </p>
+                      <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
+                        {passagem("ren957_art5_p4")!.origem}. <Conferido ok />
+                      </p>
                     </div>
                   )}
-                  <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
-                    Mecanismo do valor da água: <Conferido ok={false} />{" "}
-                    {bloqueioCepel
-                      ? "o manual do DESSEM confirma o acoplamento pela função de custo futuro (trecho acima), mas não descreve o valor da água; os manuais do DECOMP e do NEWAVE não estão entre os arquivos públicos do CEPEL."
-                      : "documentação dos modelos não acessada nesta publicação."}
-                  </p>
+                  <div>
+                    <p className="leading-relaxed text-carvao-muted">
+                      Como o balanço de cada agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre quem vende e quem compra estão nas Regras
+                      de Comercialização da CCEE.
+                    </p>
+                    <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
+                      Regras de Comercialização: <Conferido ok={false} />{" "}
+                      {bloqueioCcee ? (
+                        <>
+                          o documento não pôde ser lido nesta publicação. {bloqueioCcee.consequencia}
+                          {fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE") ? ` ${fraseDeRecusa(bloqueioCcee.evidencia, "da CCEE")}` : ""}
+                          <span data-nivel="auditar"> Evidência registrada: {bloqueioCcee.evidencia.replace(/\.$/, "")}.</span>
+                        </>
+                      ) : (
+                        "documento não conferido nesta publicação."
+                      )}
+                    </p>
+                  </div>
+                  <div className="border-l-2 border-energia pl-5">
+                    <p className="rotulo text-mineral">A ideia central</p>
+                    {textoHidraulicaBalanco(ger) && (
+                      <p className="mt-2 flex flex-wrap items-center gap-2 leading-relaxed text-carvao">
+                        <span>{textoHidraulicaBalanco(ger)}</span>
+                        <SeloNatureza natureza="ESTIMADO" />
+                      </p>
+                    )}
+                    <p className="mt-3 border border-dashed border-mineral p-3 text-sm leading-relaxed text-carvao-muted">
+                      <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
+                      O sistema brasileiro é descrito como <strong className="font-medium">hidrotérmico e intertemporal</strong>: parte da geração hidráulica vem de usinas com
+                      reservatório, e a água usada agora não estará disponível depois. Nessa leitura, a água guardada tem valor para o futuro, esse valor pesa na decisão de gerar
+                      com água agora ou acionar outras fontes, e o preço sai dessa decisão, não de uma única variável.
+                    </p>
+                    {passagem("dessem_acoplamento") && (
+                      <div className="mt-3">
+                        <PldPassagem p={passagem("dessem_acoplamento")!} />
+                      </div>
+                    )}
+                    <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
+                      Mecanismo do valor da água: <Conferido ok={false} />{" "}
+                      {bloqueioCepel
+                        ? "o manual do DESSEM confirma o acoplamento pela função de custo futuro (trecho acima), mas não descreve o valor da água; os manuais do DECOMP e do NEWAVE não estão entre os arquivos públicos do CEPEL."
+                        : "documentação dos modelos não acessada nesta publicação."}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div>
                 <h3 className="rotulo text-mineral">O que o PLD não é</h3>
                 <ul className="mt-3 space-y-5">
-                  {PLD_NAO_E.map((x) => (
-                    <li key={x.titulo} className="border-l-2 border-linha pl-4">
-                      <p className="font-medium text-carvao">{x.titulo}</p>
-                      <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{x.porque}</p>
-                      <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
-                        {x.base} <Conferido ok={x.conferencia === "CONFERIDO"} />
-                      </p>
-                    </li>
-                  ))}
+                  {PLD_NAO_E.map((x) => {
+                    const tarifa = /tarifa/i.test(x.titulo);
+                    return (
+                      <li key={x.titulo} className="border-l-2 border-linha pl-4">
+                        <p className="font-medium text-carvao">{x.titulo}</p>
+                        <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{x.porque}</p>
+                        {tarifa && (
+                          <p className="mt-2 text-sm leading-relaxed text-carvao-muted" data-texto="pld-e-conta">
+                            {LIGACAO_COM_A_CONTA}{" "}
+                            <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                              Ver como a conta de luz é formada
+                            </Link>
+                          </p>
+                        )}
+                        <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
+                          {x.base} <Conferido ok={x.conferencia === "CONFERIDO"} />
+                        </p>
+                      </li>
+                    );
+                  })}
                 </ul>
-                <p className="mt-5 text-sm">
-                  <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                    Como a tarifa e a fatura são formadas: Conta de luz
-                  </Link>
-                </p>
               </div>
             </div>
             {cPld?.fontes[0]?.trecho && (
@@ -699,8 +781,8 @@ export default function PldPage() {
                 }
                 comoInterpretar={
                   <>
-                    Toque em cada etapa do diagrama: o painel ao lado diz o que ela é, o último dado publicado quando há dado integrado e cada ligação com a etapa seguinte, com o
-                    tipo da relação e o trecho do documento que a sustenta. Ligação marcada como pendente tem só base editorial.
+                    Toque em cada etapa do diagrama: o detalhe, ao lado do diagrama em tela larga e abaixo dele no celular, diz o que ela é, o último dado publicado quando há dado
+                    integrado e cada ligação com a etapa seguinte, com o tipo da relação e o trecho do documento que a sustenta. Ligação marcada como pendente tem só base editorial.
                   </>
                 }
                 naoConcluir={
@@ -955,7 +1037,7 @@ export default function PldPage() {
               </div>
             </div>
 
-            <div className="grid gap-x-8 gap-y-6 md:grid-cols-3">
+            <div className="grid gap-x-8 gap-y-6 md:grid-cols-3" data-nivel="analisar">
               <div className="border-l-2 border-linha pl-4">
                 <h3 className="ed-h3 font-serif text-carvao">Como ler, quando houver previsão</h3>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
