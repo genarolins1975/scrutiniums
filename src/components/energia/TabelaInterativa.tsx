@@ -72,7 +72,8 @@ export type TabelaInterativaProps = {
   /** Busca da página no servidor (buscaDeParametros(searchParams)), para o HTML já sair com o recorte do link. */
   buscaInicial?: string;
   ordemInicial?: Ordem;
-  tamanhoPagina?: 25 | 50 | 100 | 200;
+  /** Linhas por página na abertura. 10 e 12 servem a tabelas que abrem curtas (menos HTML); a lista de tamanhos ganha esse valor no início. */
+  tamanhoPagina?: 10 | 12 | 25 | 50 | 100 | 200;
   /** Exemplo do que se pode buscar ("Nome, código ou UF"). */
   dicaBusca?: string;
   /** Texto do estado vazio quando não há nenhuma linha publicada. */
@@ -93,7 +94,7 @@ export type TabelaInterativaProps = {
   iniciarAberta?: boolean;
 };
 
-const TAMANHOS = [25, 50, 100, 200] as const;
+const TAMANHOS: readonly number[] = [25, 50, 100, 200];
 const LINHAS_PARA_RECOLHER = 12;
 const COLUNAS_PARA_RECOLHER = 6;
 const FILTRO = "f:";
@@ -209,6 +210,7 @@ export function TabelaInterativa({
   }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice]);
 
   const [tamanho, setTamanho] = useState<number>(tamanhoPagina);
+  const tamanhos = tamanhoPagina < TAMANHOS[0] ? [tamanhoPagina, ...TAMANHOS] : TAMANHOS;
   const pag = paginar(filtradas.length, paginaPedida, tamanho);
   const visiveis = filtradas.slice(pag.inicio, pag.fim);
   const colRot = colunas.find((c) => c.id === colunaRotulo) ?? colunas[0];
@@ -571,7 +573,7 @@ export function TabelaInterativa({
         </table>
       </div>
 
-      {filtradas.length > TAMANHOS[0] && (
+      {filtradas.length > tamanhos[0] && (
         <nav aria-label={`Paginação: ${titulo}`} className="mt-3 flex flex-wrap items-center gap-2">
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(1)}>
             <span aria-hidden="true">«</span> Primeira
@@ -601,7 +603,7 @@ export function TabelaInterativa({
               }}
               className="min-h-[44px] border border-linha bg-superficie px-2 text-carvao"
             >
-              {TAMANHOS.map((t) => (
+              {tamanhos.map((t) => (
                 <option key={t} value={t}>
                   {t}
                 </option>

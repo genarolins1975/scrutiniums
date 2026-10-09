@@ -26,7 +26,7 @@ A abertura passou a se chamar "De onde vem a eletricidade?", a pergunta da tela 
 
 `GraficoBarras` desenha toda barra com a mesma marca. A direção da tela 05 pede que a MMGD (estimativa do ONS) e as térmicas Tipo III (previsão do ONS) se distingam da medição na própria barra, por forma e por texto, não só por cor. Local: `src/components/energia/GeracaoBarrasFontes.tsx` (`BarrasPorFonte`: lista de linhas com nome, barra e valor; medição em barra cheia, estimativa e previsão em barra vazada com contorno tracejado, o `SeloNatureza` e o texto "pelo ONS, não medição" ao lado do nome; marca "cobertura da fonte alterada"; eixo com zero; setas, Home e End percorrem as barras; um único tab stop; vira lista de leitura sem `onSelecionar`). Proposta: uma propriedade opcional por categoria em `GraficoBarras` (por exemplo `natureza` em cada linha de dados, com preenchimento vazado e contorno tracejado) para que as outras famílias com dado estimado ou previsto (Carga, Rede, Transição) não precisem de um componente próprio.
 
-O gráfico mensal empilhado de 11 categorias (`GeracaoMatriz.tsx`, `GraficoBarras` com `empilhado`) ainda distingue as séries só por cor e legenda. A avaliação técnica nota que a MMGD estimada e o gás natural podem se confundir com daltonismo. Local: as térmicas pequenas vêm somadas em "Demais térmicas" por padrão (menos camadas finas de cor parecida) e a legenda traz o nome de cada série. Proposta: propriedade opcional `padrao` (hachura) por série em `GraficoBarras` empilhado e em `GraficoLinhas`.
+O gráfico mensal empilhado de 11 categorias (`GeracaoMatriz.tsx`, `GraficoBarras` com `empilhado`) ainda distingue as séries só por cor e legenda. A avaliação de produto (U04) simulou daltonismo e achou pares quase iguais (Solar MMGD e gás natural, óleo e biomassa, biomassa e outras térmicas). Local: as térmicas pequenas vêm somadas em "Demais térmicas" por padrão (menos camadas finas de cor parecida) e a legenda traz o nome de cada série. Proposta: propriedade opcional `padrao` (hachura) por série em `GraficoBarras` empilhado e em `GraficoLinhas`.
 
 ## 4. Primeira tela das filhas: altura do cabeçalho
 
@@ -103,13 +103,108 @@ Todas têm solução local, descrita em cada item; nenhuma bloqueia.
 - Perfil por hora do dia da restrição: a gold não o publica. Local: gráficos diário e mensal do corte, sem perfil horário.
 - Maior corte simultâneo por dia: os gráficos (diário e mensal) e a tabela mensal trazem o valor, e o CSV diário tem a coluna `potencia_max_cortada_mw` por região, razão e origem. Pedido: confirmar se essa coluna é o corte simultâneo que a página rotula ("numa meia hora") e, se for, dar a ela esse nome no cabeçalho; se não for, publicar a série do corte simultâneo.
 - Faixa usual da térmica sem os dias em que o Balanço difere das usinas: pedir à gold a coluna de dias conciliados na série de participação térmica de 7 dias.
-- Recorte por subsistema e UF em Capacidade e Térmica (item 7.8).
+- Recorte por subsistema e UF em Capacidade e Térmica (item 7.8) e série mensal por subsistema na matriz: a gold publica os subsistemas só nas janelas de 30 e 365 dias, e o gráfico mensal de 11 categorias é do SIN (a página diz isso e não oferece a série por subsistema).
 - Descrição de coluna: os CSV estáticos de `public/energia/series` não trazem unidade nem descrição no cabeçalho, e o XLSX das tabelas tem dicionário só com tipo, unidade e casas (item 7.2).
 
 ## 9. Equivalências para a matriz de preservação
 
-@@EQUIV@@
+Conferência mecânica: `scripts/energia-visoes.mjs` nas quatro rotas (1440 px, três níveis) contra o inventário anterior das mesmas rotas (`dados/visoes_antes.json`) e `scripts/energia_visoes_compara.py`. Sem equivalência manual, o comparador casa 90 de 94 visões anteriores (painéis, gráficos, tabelas, resumos em tabela, mapas) e deixa 4 a justificar. Com as 11 equivalências abaixo: **94 de 94 casadas, 0 a justificar**, também com a versão do comparador que confere controles, opções, arquivos e fichas por nível (rodada de 09/10/2026, depois do commit d9c63150c). Contagens: controles 19 para 20 (abertura), 8 para 8 (capacidade), 5 para 5 (restrições), 9 para 12 (térmica); arquivos para baixar 5, 3, 2 e 3, iguais; fichas "Comprove este número" 4 para 4, 3 para 3, 2 para 4 e 2 para 2, nos três níveis. Visões novas, que não contam como perda: 16, 6, 8 e 9. As quatro linhas de "Dados do gráfico em tabela (N linhas)" que mudaram de contagem são o mesmo resumo de cada gráfico (o do gráfico de 30 contra 365 dias passou de 11 para 8 linhas, ver a primeira equivalência).
+
+Onde está cada visão agora (id da seção na própria rota e nível):
+
+- `/setor-eletrico/geracao`. Entender: `p021` (cinco maiores fontes e controles Região, Janela e Perímetro), `composicao` (composição completa de 11 categorias e a tabela equivalente de 11 linhas; antes o gráfico de 30 contra 365 dias fazia as duas coisas), `natureza` (medição, previsão e estimativa; a série mensal por natureza subiu de Analisar), `janelas` (30 contra 365 dias só das 8 categorias comparáveis, "Fora da comparação" e o aviso de sazonalidade), `doze-meses` (365 dias contra os 365 anteriores; subiu de Analisar), `historico-mensal` (gráfico mensal de 11 categorias e a tabela de 41 linhas). Analisar: `comparar-categorias` (comparador até 4 categorias, gráfico e tabela mensais da categoria), `recentes` (diária de 60 dias e horária de 72 horas, lidas sob demanda), `anos` (participação anual sem a MMGD e a MMGD à parte), `a11` (quebra de 29/04/2023). Auditar: `reconciliacao`, `universo`, `controles`, com as mesmas tabelas e filtros.
+- `/setor-eletrico/geracao/capacidade`. Entender: `p024` (potência em operação e fator de capacidade por fonte, mais a tabela de 9 linhas), `distribuicao` (fator de capacidade entre usinas, com mediana marcada, e a tabela de menores e maiores), `capacidade-mensal` (fator e potência mês a mês, com o controle de categoria e de período). Analisar: `contexto-capacidade` (ANEEL e ONS, fator do painel e do ONS, MMGD). Auditar: `pareamento`, `regras-capacidade`.
+- `/setor-eletrico/geracao/restricoes`. Entender: `p023` (energia não gerada por razão, com o controle Fonte), `taxa-e-corte` (taxa e maior corte simultâneo), `mapa-usinas` (mapa, lista das 10 maiores e a tabela de usinas, com a vista Usinas ou Brasil na URL). Analisar: `analise-restricoes` (dia e razão, razão e origem, subsistemas, detalhamento do ONS, maior corte por dia, filtros de subsistema, UF, razão e origem da coordenada). Auditar: `auditoria-eolica`, `auditoria-solar`, `regras-restricao`.
+- `/setor-eletrico/geracao/termica`. Entender: `p022` (combustível e motivo, com a definição de cada motivo), `motivos-mensal` (série mensal por motivo), `termica` (participação térmica em janelas de 7 dias; as âncoras antigas `#termica` e `#termica-ctx` da abertura seguem por redirecionamento), `usinas` (as 10 e as 40 usinas, e a comparação de motivos aberta com 3 usinas). Analisar: `combustiveis-mensal` (comparador de combustíveis), `cvu` (CVU por combustível e por usina). Auditar: `universo-termica`, `regras-termica`.
+
+Para `docs/energia/redesign/equivalencias.json`:
+
+```json
+{
+  "/setor-eletrico/geracao": [
+    {
+      "antes": "painel|quais fontes atenderam a carga?",
+      "depois": "painel|participação de cada fonte na geração",
+      "justificativa": "A pergunta virou o título da página (H1 \"De onde vem a eletricidade?\") e o painel p021 ganhou título descritivo; mesmo id, mesmo nível (Entender); ganhou o gráfico das cinco maiores fontes e a composição completa de 11 categorias."
+    },
+    {
+      "antes": "tabela-recolhida|dados do gráfico em tabela (11 linhas)",
+      "depois": "tabela-recolhida|dados do gráfico em tabela (8 linhas)",
+      "justificativa": "O gráfico de 30 contra 365 dias passou a comparar só as 8 categorias com universo comparável; as 3 de cobertura alterada ficam no bloco \"Fora da comparação\" e a composição completa de 11 categorias (gráfico de barras e tabela equivalente de 11 linhas) está em \"Como se divide toda a geração?\"."
+    }
+  ],
+  "/setor-eletrico/geracao/capacidade": [
+    {
+      "antes": "painel|quanto está instalado e quanto produz?",
+      "depois": "painel|potência instalada e fator de capacidade, fonte por fonte",
+      "justificativa": "A pergunta virou o título da página (H1) e o painel p024 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+    },
+    {
+      "antes": "grafico|potência em operação comercial por fonte, usinas despachadas pelo ons, 30/09/2026, em mw",
+      "depois": "grafico|potência em operação por fonte, 30/09/2026, em mw",
+      "justificativa": "Título mais curto: \"comercial\" e \"usinas despachadas pelo ONS\" foram para o recorte do cabeçalho e para a nota do gráfico; mesmas barras, mesma unidade."
+    },
+    {
+      "antes": "grafico|potência em operação comercial, média de cada mês",
+      "depois": "grafico|potência em operação comercial, média de cada mês, a partir do retrato de 30/09/2026",
+      "justificativa": "O título ganhou a data do retrato de capacidade de onde parte a série; mesma série, mesmo nível."
+    }
+  ],
+  "/setor-eletrico/geracao/restricoes": [
+    {
+      "antes": "painel|quanta geração eólica e solar foi restringida?",
+      "depois": "painel|energia não gerada por razão oficial do ons",
+      "justificativa": "A pergunta virou o título da página (H1) e o painel p023 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+    },
+    {
+      "antes": "diagrama|ro",
+      "depois": "diagrama|conj. caju (rn): 802,0 gwh não gerados, taxa 28,8%, confiabilidade (cnf)",
+      "justificativa": "Mesmo mapa de usinas e conjuntos. O rastreador lia o primeiro título interno do SVG: antes era o da UF (RO, o primeiro polígono); agora a lista das 10 maiores fica ao lado e cada marca de usina traz o próprio título, então o primeiro é o de uma usina. O mapa continua no painel mapa-usinas, nos três níveis, com a vista Usinas ou Brasil na URL."
+    }
+  ],
+  "/setor-eletrico/geracao/termica": [
+    {
+      "antes": "painel|quanto as térmicas geraram e por que foram acionadas?",
+      "depois": "painel|geração térmica por combustível e motivo de despacho",
+      "justificativa": "A pergunta virou o título da página (H1) e o painel p022 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+    },
+    {
+      "antes": "grafico|parcela de cada motivo na geração da usina, 12 meses: angra ii",
+      "depois": "grafico|parcela de cada motivo na geração da usina, 12 meses: angra ii, gna ii, do atlântico",
+      "justificativa": "A comparação abre com a maior usina de cada um de 3 combustíveis (Angra II, GNA II e Do Atlântico); o controle \"Usinas para comparar\" segue com até 4 usinas."
+    },
+    {
+      "antes": "tabela|tabela equivalente: parcela de cada motivo por usina. 2 de 2 linhas.",
+      "depois": "tabela|tabela equivalente: parcela de cada motivo por usina. 4 de 4 linhas.",
+      "justificativa": "A tabela equivalente tem uma coluna por usina da comparação (Angra II, GNA II e Do Atlântico por padrão) e uma linha por motivo com geração (4 em vez de 2)."
+    },
+    {
+      "antes": "tabela-recolhida|dados do gráfico em tabela (2 linhas)",
+      "depois": "tabela-recolhida|dados do gráfico em tabela (4 linhas)",
+      "justificativa": "Mesmo resumo em tabela do gráfico de parcela por usina, agora com as 3 usinas da comparação aberta por padrão (4 motivos com geração em vez de 2)."
+    }
+  ]
+}
+```
 
 ## 10. Medidas finais da primeira tela e peso das páginas
 
-@@MEDIDAS@@
+Posição vertical do topo do primeiro gráfico (nível Entender, medida com `medidas.mjs`; o topo inclui o título da figura) e altura total da página:
+
+| Rota | 1440 por 900 | 390 por 844 | Altura total (1440 e 390) | Peso servido |
+| --- | --- | --- | --- | --- |
+| `/geracao` (barras por fonte) | 791 | 1.609 | 7.063 e 11.442 | 499.436 B |
+| `/geracao/capacidade` | 777 | 1.447 | 5.533 e 9.694 | 428.265 B |
+| `/geracao/restricoes` | 835 | 1.624 | 4.180 e 7.373 | 511.450 B |
+| `/geracao/termica` | 863 | 1.436 | 6.455 e 9.850 | 533.096 B |
+
+Referência da família Água e clima, medida antes: 779 e 1.324. Em relação à primeira medida desta família (732 e 1.439 na abertura; 764 e 1.514 na capacidade; 822 e 1.581 nas restrições; 832 e 1.487 na térmica), a abertura subiu 59 px no desktop e 170 px no celular por causa do que as avaliações independentes pediram junto da resposta: segunda frase do lead, nota da faixa dizendo que as três medidas não mudam com Região, Janela e Perímetro, e o limite principal logo depois da resposta curta. As filhas variaram entre menos 67 px e mais 43 px. No celular as três medidas da faixa empilham e já ocupam a primeira tela; o gráfico começa depois dos filtros, que ficam antes da figura para que a figura mostre o recorte escolhido. Todos os pesos estão abaixo dos 600 kB do contrato.
+
+Verificações mecânicas feitas nas quatro rotas, depois da última mudança de código:
+
+- 48 combinações (3 níveis por 4 larguras: 1440, 768, 390 e 320 px): sem rolagem horizontal, sem elemento além da borda, sem erro de console e sem marcador "Lendo..." sobrando depois da rolagem.
+- axe-core (WCAG 2.0 a 2.2 AA e boas práticas) em 24 combinações (3 níveis por 1440 e 390): nenhuma violação.
+- Teclado: setas, Home, End e Enter percorrem as barras por fonte da abertura (um tab stop) e a lista das 10 maiores usinas do mapa; Enter grava `?cat=` e `?ru=`, e a vista Brasil grava `?vm=brasil`.
+- Alvos de toque: os controles de escolha têm 44 px (o rádio é `sr-only` dentro de um rótulo de 44 px); só ficam abaixo disso o campo `sr-only` do `SeguirPainel` e a sigla com link (item 7.12).
+- Texto: nenhum nome de campo (snake_case) em texto de leitor nem em nome acessível das quatro páginas (exceto o dicionário de colunas dos motivos da térmica, em Auditar), nenhum "hoje", "agora", "porque", julgamento ou travessão em Entender (testes em `energia-geracao.test.ts`).
+- Testes: `energia-geracao.test.ts`, `energia-geracao-sob-demanda.test.ts` e `energia-interface-r2.test.ts` (105 testes) e `energia-conteudo-r8-M1.test.ts` (140 testes, inclui as quatro páginas) passam; `tsc --noEmit` do projeto sem erro; eslint sem aviso nos arquivos da família.

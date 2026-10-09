@@ -166,3 +166,99 @@ describe("GraficoBarras empilhado e horizontal", () => {
     expect(m).toContain('data-rolagem="nao"');
   });
 });
+
+describe("GraficoBarras: limite inicial, série opcional e linhas ao largo dos textos", () => {
+  const ranking = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `d${i}`, nome: `Distribuidora ${i + 1}`, v: (i + 1) * 10 }));
+  const horizontal: GraficoBarrasProps = {
+    titulo: "Ranking",
+    dados: ranking(30),
+    chaveCategoria: "id",
+    chaveRotulo: "nome",
+    series: [{ id: "v", rotulo: "Custo", cor: "var(--serie-1)" }],
+    unidade: "R$",
+    orientacao: "horizontal",
+    rotulosValor: true,
+  };
+
+  it("com limiteInicial desenha só as primeiras, mantém a escala do conjunto e a tabela inteira, e oferece 'Mostrar todas'", () => {
+    const m = html({ ...horizontal, limiteInicial: 12 });
+    expect(m).toContain('data-parcial="sim"');
+    expect(Array.from(m.matchAll(/<g[^>]*role="img"[^>]*data-id=/g))).toHaveLength(12);
+    expect(m).toContain("O gráfico mostra as 12 primeiras das 30 categorias, na ordem escolhida.");
+    expect(m).toContain("Mostrar todas as 30");
+    // a tabela do gráfico traz as 30 linhas, e a escala vai até o maior valor do conjunto (300), não do que está desenhado (120)
+    expect(Array.from(m.matchAll(/<th scope="row"/g))).toHaveLength(30);
+    expect(m).toContain("Dados do gráfico em tabela (30 linhas)");
+    expect(m).toMatch(/>300<\/text>|>350<\/text>/);
+    expect(m).toContain("as primeiras 12 desenhadas");
+  });
+
+  it("categoria selecionada depois do limite: o gráfico desenha todas, diz por quê e não oferece botão que não faria nada", () => {
+    const m = html({ ...horizontal, limiteInicial: 12, selecionado: "d20", onSelecionar: () => {} });
+    expect(Array.from(m.matchAll(/<g[^>]*role="button"[^>]*data-id=/g))).toHaveLength(30);
+    expect(m).toContain("Todas as 30 categorias, porque a escolhida está depois das primeiras 12.");
+    expect(m).not.toContain("Mostrar todas as 30");
+    expect(m).not.toContain("Mostrar só o início");
+  });
+
+  it("sem limiteInicial ou com menos categorias que o limite, nada muda", () => {
+    expect(html({ ...horizontal, dados: ranking(8), limiteInicial: 12 })).not.toContain("data-parcial");
+    expect(html({ ...horizontal, limiteInicial: undefined, alturaMaxima: 5000 })).not.toContain("data-parcial");
+  });
+
+  it("série opcional: o nulo é 'não se aplica', sem hachura, sem 'incompleto' e sem linha na dica", () => {
+    const m = html({
+      titulo: "Cortes por ano",
+      dados: [
+        { id: "2024", completo: 5, parcial: null },
+        { id: "2025", completo: null, parcial: 2 },
+      ],
+      chaveCategoria: "id",
+      series: [
+        { id: "completo", rotulo: "Ano completo", cor: "var(--serie-1)" },
+        { id: "parcial", rotulo: "Ano parcial", cor: "var(--serie-3)", opcional: true },
+      ],
+      unidade: "GWh",
+      empilhado: true,
+      orientacao: "horizontal",
+    });
+    // 2024: a parte opcional ausente não torna a pilha incompleta e não entra no texto lido
+    const a = categoria(m, "2024");
+    expect(a.abertura).toContain("total 5,0\u00a0GWh");
+    expect(a.abertura).not.toContain("Ano parcial");
+    expect(a.corpo).not.toContain('data-estado="sem-dado"');
+    // 2025: a parte obrigatória ausente continua sendo lacuna
+    const b = categoria(m, "2025");
+    expect(b.corpo).toContain('data-estado="sem-dado"');
+    expect(b.abertura).toContain("total incompleto");
+    const linha24 = m.match(/<tr[^>]*data-id="2024"[^>]*>([\s\S]*?)<\/tr>/)?.[1] ?? "";
+    expect(linha24).toContain(">não se aplica</td>");
+    expect(linha24).not.toContain(">sem dado</td>");
+  });
+
+  it("a linha de referência passa ao largo do rótulo de valor que cruzaria (o caminho tem uma quebra)", () => {
+    const m = html({
+      titulo: "Contra o limite",
+      dados: [{ id: "A", v: 10 }],
+      chaveCategoria: "id",
+      series: [{ id: "v", rotulo: "Valor", cor: "var(--serie-1)" }],
+      unidade: "GWh",
+      orientacao: "horizontal",
+      rotulosValor: true,
+      referencias: [{ valor: 10.3, rotulo: "Limite" }],
+    });
+    const d = m.match(/<g[^>]*data-referencia="Limite"[^>]*><path d="([^"]+)"/)?.[1] ?? "";
+    expect(d.match(/M/g)?.length).toBeGreaterThanOrEqual(2);
+    // sem rótulo de valor a linha é um traço só
+    const semValor = html({
+      titulo: "Contra o limite",
+      dados: [{ id: "A", v: 10 }],
+      chaveCategoria: "id",
+      series: [{ id: "v", rotulo: "Valor", cor: "var(--serie-1)" }],
+      unidade: "GWh",
+      orientacao: "horizontal",
+      referencias: [{ valor: 10.3, rotulo: "Limite" }],
+    });
+    expect((semValor.match(/<g[^>]*data-referencia="Limite"[^>]*><path d="([^"]+)"/)?.[1] ?? "").match(/M/g)).toHaveLength(1);
+  });
+});

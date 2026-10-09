@@ -31,6 +31,12 @@ export type SerieBarra = {
   rotulo: string;
   /** Cor da marca, sempre token CSS (ex.: "var(--serie-hidraulica)"). Texto nunca usa esta cor. */
   cor: string;
+  /**
+   * Série que só existe em parte das categorias por construção (ex.: "ano parcial", que só tem valor no ano em curso). O nulo dela não é
+   * lacuna: não vira marca "sem dado", não torna a pilha "incompleta" e aparece como "não se aplica" na dica e na tabela. Ausência de
+   * uma série que deveria ter valor continua sendo `null` sem esta marca.
+   */
+  opcional?: boolean;
 };
 
 export type ReferenciaBarra = {
@@ -66,6 +72,12 @@ export type GraficoBarrasProps = {
   alturaCategoria?: number;
   /** Horizontal: acima desta altura a área das barras rola na vertical. */
   alturaMaxima?: number;
+  /**
+   * Horizontal com muitas categorias (ranking): desenha só as primeiras N, na ordem dos dados, até a pessoa pedir "Mostrar todas" (a tabela
+   * equivalente já traz todas, e uma categoria selecionada fora das N faz o gráfico desenhar todas e rolar até ela). Corta o HTML e evita
+   * a caixa de rolagem dentro da página.
+   */
+  limiteInicial?: number;
 };
 
 const LARGURA_SSR = 760;
@@ -80,6 +92,20 @@ function cabe(texto: string, largura: number, px = PX_CARACTERE): string {
   if (texto.length * px <= largura) return texto;
   const n = Math.floor(largura / px) - 1;
   return n >= 3 ? `${texto.slice(0, n).trimEnd()}…` : "";
+}
+
+/** Quebra o rótulo em até duas linhas na última palavra que cabe; a segunda linha encurta com reticências. */
+function duasLinhas(texto: string, largura: number, px: number): string[] {
+  if (texto.length * px <= largura) return [texto];
+  const palavras = texto.split(" ");
+  let primeira = "";
+  let i = 0;
+  while (i < palavras.length - 1 && ((primeira ? `${primeira} ` : "") + palavras[i]).length * px <= largura) {
+    primeira = primeira ? `${primeira} ${palavras[i]}` : palavras[i];
+    i++;
+  }
+  const segunda = cabe(palavras.slice(i).join(" "), largura, px);
+  return primeira && segunda ? [primeira, segunda] : [cabe(texto, largura, px)];
 }
 
 type Lado = "cima" | "baixo" | "direita" | "esquerda" | null;
@@ -98,7 +124,7 @@ function pathBarra(x: number, y: number, w: number, h: number, lado: Lado): stri
 
 export function GraficoBarras({
   titulo,
-  dados,
+  dados: dadosTodos,
   chaveCategoria,
   chaveRotulo,
   series,
@@ -113,6 +139,7 @@ export function GraficoBarras({
   altura = 300,
   alturaCategoria,
   alturaMaxima = 480,
+  limiteInicial,
 }: GraficoBarrasProps) {
   const uid = useId().replace(/:/g, "");
   const [largura, setLargura] = useState(LARGURA_SSR);
@@ -122,12 +149,23 @@ export function GraficoBarras({
   const [cursor, setCursor] = useState(0);
   const [anuncio, setAnuncio] = useState("");
   const raiz = useRef<HTMLDivElement>(null);
+  const caixa = useRef<HTMLDivElement>(null);
+  const hcRef = useRef(0);
   const alvos = useRef<(SVGGElement | null)[]>([]);
 
-  const n = dados.length;
-  const ids = dados.map((d) => String(d[chaveCategoria] ?? ""));
-  const nomes = dados.map((d) => String(d[chaveRotulo ?? chaveCategoria] ?? ""));
-  const iSel = selecionado === null ? -1 : ids.indexOf(selecionado);
+  // com `limiteInicial` o gráfico desenha só as primeiras categorias; a escala, a tabela e a seleção seguem as do conjunto inteiro
+  const nTotal = dadosTodos.length;
+  const idsTodos = dadosTodos.map((d) => String(d[chaveCategoria] ?? ""));
+  const nomesTodos = dadosTodos.map((d) => String(d[chaveRotulo ?? chaveCategoria] ?? ""));
+  const iSelTodos = selecionado === null ? -1 : idsTodos.indexOf(selecionado);
+  const comLimite = orientacao === "horizontal" && !!limiteInicial && limiteInicial > 0 && nTotal > limiteInicial;
+  const selecaoForaDoLimite = comLimite && iSelTodos >= (limiteInicial ?? 0);
+  const corta = comLimite && !todas && !selecaoForaDoLimite;
+  const n = corta ? (limiteInicial as number) : nTotal;
+  const dados = corta ? dadosTodos.slice(0, n) : dadosTodos;
+  const ids = corta ? idsTodos.slice(0, n) : idsTodos;
+  const nomes = corta ? nomesTodos.slice(0, n) : nomesTodos;
+  const iSel = iSelTodos < n ? iSelTodos : -1;
 
   useEffect(() => {
     const el = raiz.current;
@@ -141,6 +179,15 @@ export function GraficoBarras({
   useEffect(() => {
     if (iSel >= 0) setCursor(iSel);
   }, [iSel]);
+
+  // e a caixa de rolagem das barras horizontais leva a categoria escolhida para dentro da janela (a rolagem é só da caixa, nunca da página)
+  useEffect(() => {
+    const el = caixa.current;
+    const alt = hcRef.current;
+    if (!el || iSel < 0 || !alt) return;
+    const topo = iSel * alt;
+    if (topo < el.scrollTop || topo + alt > el.scrollTop + el.clientHeight) el.scrollTop = Math.max(0, topo - (el.clientHeight - alt) / 2);
+  }, [iSel, todas]);
 
   // toque fora do gráfico fecha a dica (no toque não há pointerleave útil)
   useEffect(() => {
@@ -165,22 +212,37 @@ export function GraficoBarras({
   const maiorRotulo = Math.max(0, ...nomes.map((t) => t.length));
   const virouHorizontal = orientacao === "vertical" && largura < LARGURA_ESTREITA && maiorRotulo > 9 && n <= 16;
   const vertical = orientacao === "vertical" && !virouHorizontal;
-  const valor = (i: number, s: SerieBarra): number | null => {
-    const v = dados[i][s.id];
+  const valorDe = (linha: LinhaBarras, s: SerieBarra): number | null => {
+    const v = linha[s.id];
     return valido(v) ? v : null;
   };
-  const pilhas: Pilha[] | null = empilhado ? dados.map((_, i) => empilhar(series.map((s) => valor(i, s)))) : null;
-  const semDado = dados.some((_, i) => series.some((s) => valor(i, s) === null));
+  const valor = (i: number, s: SerieBarra): number | null => valorDe(dados[i], s);
+  /** Nulo de série `opcional` é ausência por construção (não se aplica), não lacuna. */
+  const naoSeAplica = (v: number | null, s: SerieBarra) => v === null && !!s.opcional;
+  const pilhaDe = (linha: LinhaBarras): Pilha =>
+    empilhar(
+      series.map((s) => {
+        const v = valorDe(linha, s);
+        return naoSeAplica(v, s) ? 0 : v;
+      }),
+    );
+  // a escala e a tabela são do conjunto inteiro, mesmo quando o gráfico desenha só as primeiras categorias
+  const pilhasTodas: Pilha[] | null = empilhado ? dadosTodos.map(pilhaDe) : null;
+  const pilhas: Pilha[] | null = pilhasTodas && corta ? pilhasTodas.slice(0, n) : pilhasTodas;
+  const semDado = dados.some((linha) => series.some((s) => valorDe(linha, s) === null && !s.opcional));
 
   const valoresDominio: number[] = referencias.map((r) => r.valor);
-  dados.forEach((_, i) => {
-    if (pilhas) valoresDominio.push(pilhas[i].positivo, pilhas[i].negativo);
-    else for (const s of series) valoresDominio.push(valor(i, s) ?? 0); // nulo não estende o domínio além do zero
+  dadosTodos.forEach((linha, i) => {
+    if (pilhasTodas) valoresDominio.push(pilhasTodas[i].positivo, pilhasTodas[i].negativo);
+    else for (const s of series) valoresDominio.push(valorDe(linha, s) ?? 0); // nulo não estende o domínio além do zero
   });
   const dom = dominioComZero(valoresDominio);
   const temNeg = dom.min < 0;
   const k = empilhado ? 1 : series.length;
   const w = largura;
+  // abaixo de 640 px o texto do gráfico tem 12 px (11 px ficava abaixo do que as demais figuras da página usam); pxc é a largura média de um caractere nesse tamanho
+  const FS = w < 640 ? 12 : 11;
+  const pxc = w < 640 ? 6.7 : PX_CARACTERE;
 
   // ---------- geometria ----------
   let h: number; // altura do SVG das barras
@@ -215,7 +277,9 @@ export function GraficoBarras({
     hc = rotuloEmCima
       ? Math.max(alturaCategoria ?? 0, 44, topo + k * 14 + (k - 1) * 2 + 10)
       : (alturaCategoria ?? Math.max(44, k * 14 + (k - 1) * 2 + 16));
-    colunaRotulo = rotuloEmCima ? 0 : Math.round(Math.min(200, Math.max(88, w * 0.3)));
+    // coluna lateral do tamanho do maior nome (até 42% da largura e 260 px); o que ainda passar quebra em duas linhas
+    const larguraMaiorNome = Math.max(0, ...nomes.map((t) => t.length * pxCaractere12(t)));
+    colunaRotulo = rotuloEmCima ? 0 : Math.round(Math.min(Math.max(88, w * 0.42), 260, Math.max(88, larguraMaiorNome + 12)));
     const R = rotulosValor ? (w < LARGURA_ESTREITA ? 64 : 80) : 16;
     const padNeg = rotulosValor && temNeg ? 56 : 0;
     h = n * hc;
@@ -228,6 +292,7 @@ export function GraficoBarras({
     barra = (i, j) => ({ pos: i * hc + topo + (interno - grupo) / 2 + j * (esp + 2), esp });
   }
   const zero = escala(0);
+  hcRef.current = vertical ? 0 : hc;
   // barras que viraram horizontais no celular aparecem inteiras (até 16 categorias): rolar dentro de uma caixa de 480 px escondia categorias
   const limiteAltura = virouHorizontal ? Math.max(alturaMaxima, h) : alturaMaxima;
 
@@ -281,9 +346,11 @@ export function GraficoBarras({
 
   // ---------- textos ----------
   const leitura = (i: number): string => {
-    const partes = series.map((s) => {
-      const t = formatarValor(valor(i, s), casas, unidade);
-      return series.length > 1 ? `${s.rotulo} ${t}` : t;
+    const partes = series.flatMap((s) => {
+      const v = valor(i, s);
+      if (naoSeAplica(v, s)) return [];
+      const t = formatarValor(v, casas, unidade);
+      return [series.length > 1 ? `${s.rotulo} ${t}` : t];
     });
     const total = pilhas && series.length > 1 ? `; total ${pilhas[i].completo ? formatarValor(pilhas[i].total, casas, unidade) : "incompleto, há parte sem dado"}` : "";
     return `${nomes[i]}: ${partes.join("; ")}${total}`;
@@ -317,8 +384,11 @@ export function GraficoBarras({
   const cursorEfetivo = Math.min(cursor, n - 1);
   // largura do maior rótulo curto (até 9 caracteres: "set/26", "2026-S1"): o passo é o menor que o mostra inteiro;
   // rótulos mais longos seguem encurtados com reticências, mas com mais espaço por rótulo
-  const larguraRotulo = vertical ? Math.min(Math.max(0, ...nomes.map((t) => t.length)), 9) * PX_CARACTERE + 4 : 0;
+  const larguraRotulo = vertical ? Math.min(Math.max(0, ...nomes.map((t) => t.length)), 9) * pxc + 4 : 0;
   const passoRotulo = vertical ? Math.max(1, Math.ceil(Math.max(36, larguraRotulo) / ((plot.x1 - plot.x0) / n))) : 1;
+
+  // retângulos dos rótulos de valor: a base e as linhas de referência passam ao largo deles
+  const ocupados: { x0: number; x1: number; y0: number; y1: number }[] = [];
 
   // ---------- desenho das categorias ----------
   const categorias = dados.map((_, i) => {
@@ -367,6 +437,7 @@ export function GraficoBarras({
       series.forEach((s, j) => {
         const v = valor(i, s);
         if (v === null) {
+          if (s.opcional) return;
           marcas.push(marcaSemDado(i, j, 0, sentidoBase, s.id));
           if (rotulosValor && !vertical) textos.push(rotuloPonta(i, j, "sem dado", sentidoBase > 0, depoisDaMarca(0, sentidoBase), s.id, true));
           return;
@@ -440,9 +511,9 @@ export function GraficoBarras({
         {vertical
           ? i % passoRotulo === 0 &&
             (() => {
-              const texto = cabe(nomes[i], b.w * passoRotulo - 4);
+              const texto = cabe(nomes[i], b.w * passoRotulo - 4, pxc);
               const centro = b.x + b.w / 2;
-              const meia = (texto.length * PX_CARACTERE) / 2;
+              const meia = (texto.length * pxc) / 2;
               // o último rótulo (por exemplo "set/2026") não passa da borda do gráfico: ancora na borda quando o centro não deixa espaço
               const ancora = centro + meia > w - 2 ? "end" : centro - meia < 2 ? "start" : "middle";
               return (
@@ -450,7 +521,7 @@ export function GraficoBarras({
                   x={r1(ancora === "end" ? w - 2 : ancora === "start" ? 2 : centro)}
                   y={h - 12}
                   textAnchor={ancora}
-                  fontSize="11"
+                  fontSize={FS}
                   fontWeight={sel ? 600 : 400}
                   fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
                 >
@@ -458,10 +529,12 @@ export function GraficoBarras({
                 </text>
               );
             })()
-          : (
+          : (() => {
+              const linhas = rotuloEmCima ? [cabe(nomes[i], w - 8, pxCaractere12(nomes[i]))] : duasLinhas(nomes[i], colunaRotulo - 8, pxCaractere12(nomes[i]));
+              return (
               <text
                 x="4"
-                y={r1(rotuloEmCima ? b.y + 12 : b.y + hc / 2 + 4)}
+                y={r1(rotuloEmCima ? b.y + 12 : b.y + hc / 2 + 4 - (linhas.length - 1) * 7)}
                 fontSize="12"
                 fontWeight={sel ? 600 : 400}
                 fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
@@ -471,9 +544,16 @@ export function GraficoBarras({
                 paintOrder={rotuloEmCima ? "stroke" : undefined}
                 data-rotulo-categoria="true"
               >
-                {rotuloEmCima ? cabe(nomes[i], w - 8, pxCaractere12(nomes[i])) : cabe(nomes[i], colunaRotulo - 8)}
+                {linhas.length > 1
+                  ? linhas.map((l, q) => (
+                      <tspan key={q} x="4" dy={q ? 14 : 0}>
+                        {l}
+                      </tspan>
+                    ))
+                  : linhas[0]}
               </text>
-            )}
+              );
+            })()}
         {focoVisivel === i && (
           <rect x={r1(b.x + 1)} y={r1(b.y + 1)} width={r1(Math.max(0, b.w - 2))} height={r1(Math.max(0, b.h - 2))} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />
         )}
@@ -484,25 +564,30 @@ export function GraficoBarras({
   /** Rótulo de valor na ponta da barra; omitido quando não cabe (a dica e a tabela o carregam). */
   function rotuloPonta(i: number, j: number, texto: string, positivo: boolean, ponta: number, chave: string, suave = false) {
     const { pos, esp } = barra(i, j);
-    const tw = texto.length * PX_CARACTERE;
+    const tw = texto.length * pxc;
     if (vertical) {
       const disponivel = k === 1 ? banda(i).w - 4 : esp + 4;
       if (tw > disponivel) return null;
+      const cx = pos + esp / 2;
+      const yv = positivo ? ponta - 5 : ponta + 13;
+      ocupados.push({ x0: cx - tw / 2, x1: cx + tw / 2, y0: yv - FS, y1: yv + 3 });
       return (
-        <text key={`v-${chave}`} x={r1(pos + esp / 2)} y={r1(positivo ? ponta - 5 : ponta + 13)} textAnchor="middle" fontSize="11" fill="var(--cor-carvao)" className="tabular-nums">
+        <text key={`v-${chave}`} x={r1(cx)} y={r1(yv)} textAnchor="middle" fontSize={FS} fill="var(--cor-carvao)" className="tabular-nums">
           {texto}
         </text>
       );
     }
     const x = positivo ? ponta + 4 : ponta - 4;
     if (positivo ? x + tw > w - 2 : x - tw < colunaRotulo + 4) return null;
+    const yv = pos + esp / 2 + 4;
+    ocupados.push({ x0: positivo ? x : x - tw, x1: positivo ? x + tw : x, y0: yv - FS, y1: yv + 3 });
     return (
       <text
         key={`v-${chave}`}
         x={r1(x)}
         y={r1(pos + esp / 2 + 4)}
         textAnchor={positivo ? "start" : "end"}
-        fontSize="11"
+        fontSize={FS}
         fill={suave ? "var(--cor-carvao-muted)" : "var(--cor-carvao)"}
         className="tabular-nums"
       >
@@ -515,7 +600,7 @@ export function GraficoBarras({
   // marcas do eixo de valores: só as que cabem sem encostar na vizinha (a 390 px "25.000", "50.000" e "75.000" saíam coladas)
   const ticksEixo = vertical
     ? ticksQueCabem(dom.ticks, escala, () => 12, 6)
-    : ticksQueCabem(dom.ticks, escala, (t) => rotuloTick(t, dom.passo).length * PX_CARACTERE, 10);
+    : ticksQueCabem(dom.ticks, escala, (t) => rotuloTick(t, dom.passo).length * pxc, 10);
   const grade = ticksEixo.map((t) =>
     t === 0 ? null : vertical ? (
       <line key={t} x1={plot.x0} x2={plot.x1} y1={r1(escala(t))} y2={r1(escala(t))} stroke="var(--cor-grade)" strokeWidth="1" />
@@ -523,11 +608,30 @@ export function GraficoBarras({
       <line key={t} x1={r1(escala(t))} x2={r1(escala(t))} y1={0} y2={h} stroke="var(--cor-grade)" strokeWidth="1" />
     ),
   );
-  const base = vertical ? (
-    <line x1={plot.x0} x2={plot.x1} y1={r1(zero)} y2={r1(zero)} stroke="var(--cor-carvao-muted)" strokeWidth="1" />
-  ) : (
-    <line x1={r1(zero)} x2={r1(zero)} y1={0} y2={h} stroke="var(--cor-carvao-muted)" strokeWidth="1" />
-  );
+  /**
+   * Caminho de uma linha reta (a base ou uma referência) em `p`: horizontal nas colunas, vertical nas barras horizontais. Ela passa ao largo dos
+   * textos: no celular, da faixa do rótulo de cada categoria (a linha cortava a primeira letra e riscava o nome), e sempre, dos rótulos de valor
+   * que cruzaria. A grade fica por baixo dos textos e dispensa o corte.
+   */
+  const traco = (p: number): string => {
+    const [ini, fim] = vertical ? [plot.x0, plot.x1] : [0, h];
+    const cortes: [number, number][] = [];
+    if (!vertical && rotuloEmCima) for (let i = 0; i < n; i++) cortes.push([i * hc, i * hc + ALTURA_ROTULO]);
+    for (const o of ocupados) {
+      if (vertical ? p >= o.y0 - 2 && p <= o.y1 + 2 : p >= o.x0 - 3 && p <= o.x1 + 3) cortes.push(vertical ? [o.x0 - 2, o.x1 + 2] : [o.y0 - 1, o.y1 + 1]);
+    }
+    cortes.sort((a, b) => a[0] - b[0]);
+    const seg = (a: number, b: number) => (vertical ? `M${r1(a)},${p}H${r1(b)}` : `M${p},${r1(a)}V${r1(b)}`);
+    let d = "";
+    let cursor = ini;
+    for (const [a, b] of cortes) {
+      if (a > cursor) d += seg(cursor, a);
+      cursor = Math.max(cursor, b);
+    }
+    if (cursor < fim) d += seg(cursor, fim);
+    return d;
+  };
+  const base = <path d={traco(r1(zero))} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1" />;
   const linhasRef = referencias.map((r, k) => {
     const p = r1(escala(r.valor));
     const texto = `${r.rotulo}: ${formatarValor(r.valor, casas, unidade)}`;
@@ -535,13 +639,13 @@ export function GraficoBarras({
       <g key={`${k}-${r.rotulo}`} pointerEvents="none" data-referencia={r.rotulo}>
         {vertical ? (
           <>
-            <line x1={plot.x0} x2={plot.x1} y1={p} y2={p} stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
-            {texto.length * PX_CARACTERE < plot.x1 - plot.x0 && (
+            <path d={traco(p)} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
+            {texto.length * pxc < plot.x1 - plot.x0 && (
               <text
                 x={plot.x1}
                 y={p - 5 < plot.y0 + 8 ? p + 14 : p - 5}
                 textAnchor="end"
-                fontSize="11"
+                fontSize={FS}
                 fill="var(--cor-carvao-muted)"
                 stroke="var(--cor-superficie)"
                 strokeWidth="3"
@@ -552,7 +656,7 @@ export function GraficoBarras({
             )}
           </>
         ) : (
-          <line x1={p} x2={p} y1={0} y2={h} stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
+          <path d={traco(p)} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
         )}
       </g>
     );
@@ -578,7 +682,9 @@ export function GraficoBarras({
       >
         <p className="font-medium text-carvao">{nomes[ativo]}</p>
         <ul className="mt-1 space-y-0.5">
-          {series.map((s) => (
+          {series
+            .filter((s) => !naoSeAplica(valor(ativo, s), s))
+            .map((s) => (
             <li key={s.id} className="flex items-center justify-between gap-3">
               <span className="flex items-center gap-1.5 text-carvao-muted">
                 <span aria-hidden="true" className="inline-block h-0.5 w-3" style={{ background: s.cor }} />
@@ -588,7 +694,7 @@ export function GraficoBarras({
                 {formatarValor(valor(ativo, s), casas, unidade)}
               </span>
             </li>
-          ))}
+            ))}
           {pilhas && series.length > 1 && (
             <li className="flex justify-between gap-3 border-t border-linha pt-0.5">
               <span className="text-carvao-muted">Total</span>
@@ -611,7 +717,7 @@ export function GraficoBarras({
     ) : null;
 
   // ---------- montagem ----------
-  const instrucoes = `${n} ${n === 1 ? "categoria" : "categorias"}${empilhado ? ", barras empilhadas" : ""}. Use Tab para entrar no gráfico, as setas para percorrer as categorias, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`;
+  const instrucoes = `${nTotal} ${nTotal === 1 ? "categoria" : "categorias"}${corta ? `, as primeiras ${n} desenhadas` : ""}${empilhado ? ", barras empilhadas" : ""}. Use Tab para entrar no gráfico, as setas para percorrer as categorias, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`;
 
   const svgBarras = (
     <svg
@@ -626,7 +732,7 @@ export function GraficoBarras({
       <title id={`${uid}-t`}>{titulo}</title>
       {vertical &&
         ticksEixo.map((t) => (
-          <text key={t} x={plot.x0 - 8} y={r1(escala(t) + 4)} textAnchor="end" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums" aria-hidden="true">
+          <text key={t} x={plot.x0 - 8} y={r1(escala(t) + 4)} textAnchor="end" fontSize={FS} fill="var(--cor-mineral)" className="tabular-nums" aria-hidden="true">
             {rotuloTick(t, dom.passo)}
           </text>
         ))}
@@ -652,7 +758,7 @@ export function GraficoBarras({
   );
 
   return (
-    <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={vertical ? "vertical" : "horizontal"} data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"}>
+    <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={vertical ? "vertical" : "horizontal"} data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"} data-parcial={corta ? "sim" : undefined}>
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
         {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
@@ -707,10 +813,10 @@ export function GraficoBarras({
             {ticksEixo.map((t) => {
               const x = escala(t);
               const rotulo = rotuloTick(t, dom.passo);
-              const meia = (rotulo.length * PX_CARACTERE) / 2;
+              const meia = (rotulo.length * pxc) / 2;
               // o rótulo não passa da borda do gráfico: ancora na ponta quando o centro da marca não deixa espaço
               return (
-                <text key={t} x={r1(x)} y="14" textAnchor={x - meia < 0 ? "start" : x + meia > w ? "end" : "middle"} fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                <text key={t} x={r1(x)} y="14" textAnchor={x - meia < 0 ? "start" : x + meia > w ? "end" : "middle"} fontSize={FS} fill="var(--cor-mineral)" className="tabular-nums">
                   {rotulo}
                 </text>
               );
@@ -719,23 +825,33 @@ export function GraficoBarras({
               <line key={`${k}-${r.rotulo}`} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             ))}
           </svg>
-          <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: limiteAltura }} data-rolagem={h > limiteAltura && !todas ? "sim" : "nao"}>
+          <div ref={caixa} className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: limiteAltura }} data-rolagem={h > limiteAltura && !todas ? "sim" : "nao"}>
             <div className="relative">
               {svgBarras}
               {dica}
             </div>
           </div>
-          {h > limiteAltura && (
+          {(h > limiteAltura || comLimite) && (
             <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
-              <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} categorias.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} categorias, na ordem escolhida.`}</span>
-              <button
-                type="button"
-                aria-expanded={todas}
-                onClick={() => setTodas((t) => !t)}
-                className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
-              >
-                {todas ? "Mostrar só o início" : `Mostrar todas as ${n.toLocaleString("pt-BR")}`}
-              </button>
+              <span>
+                {selecaoForaDoLimite && !todas
+                  ? `Todas as ${nTotal.toLocaleString("pt-BR")} categorias, porque a escolhida está depois das primeiras ${(limiteInicial ?? 0).toLocaleString("pt-BR")}.`
+                  : todas
+                    ? `Todas as ${nTotal.toLocaleString("pt-BR")} categorias.`
+                    : corta
+                      ? `O gráfico mostra as ${n.toLocaleString("pt-BR")} primeiras das ${nTotal.toLocaleString("pt-BR")} categorias, na ordem escolhida.`
+                      : `O gráfico mostra só parte das ${nTotal.toLocaleString("pt-BR")} categorias, na ordem escolhida.`}
+              </span>
+              {!(selecaoForaDoLimite && !todas) && (
+                <button
+                  type="button"
+                  aria-expanded={todas}
+                  onClick={() => setTodas((t) => !t)}
+                  className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
+                >
+                  {todas ? "Mostrar só o início" : `Mostrar todas as ${nTotal.toLocaleString("pt-BR")}`}
+                </button>
+              )}
             </p>
           )}
         </>
@@ -746,7 +862,7 @@ export function GraficoBarras({
       </p>
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Dados do gráfico em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
+          Dados do gráfico em tabela ({nTotal.toLocaleString("pt-BR")} {nTotal === 1 ? "linha" : "linhas"})
         </summary>
         <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
           <table className="w-full border-collapse tabular-nums">
@@ -761,7 +877,7 @@ export function GraficoBarras({
                     {s.rotulo} ({unidade})
                   </th>
                 ))}
-                {pilhas && series.length > 1 && (
+                {pilhasTodas && series.length > 1 && (
                   <th scope="col" className="border-b border-linha px-2 py-1.5 text-right font-medium">
                     Total ({unidade})
                   </th>
@@ -769,26 +885,26 @@ export function GraficoBarras({
               </tr>
             </thead>
             <tbody>
-              {dados.map((_, i) => {
-                const sel = i === iSel;
+              {dadosTodos.map((linha, i) => {
+                const sel = i === iSelTodos;
                 const ausente = sel ? "italic text-carvao-muted" : "italic text-mineral";
                 return (
-                  <tr key={ids[i] || i} className={`border-b border-linha ${sel ? "bg-energia-fundo" : ""}`} data-id={ids[i]}>
+                  <tr key={idsTodos[i] || i} className={`border-b border-linha ${sel ? "bg-energia-fundo" : ""}`} data-id={idsTodos[i]}>
                     <th scope="row" className={`px-2 py-1 text-left text-carvao ${sel ? "font-semibold" : "font-normal"}`}>
-                      {nomes[i]}
+                      {nomesTodos[i]}
                       {sel && <span className="sr-only"> (selecionada)</span>}
                     </th>
                     {series.map((s) => {
-                      const v = valor(i, s);
+                      const v = valorDe(linha, s);
                       return (
                         <td key={s.id} className={`px-2 py-1 text-right ${v === null ? ausente : "text-carvao"}`}>
-                          {formatarValor(v, casas)}
+                          {naoSeAplica(v, s) ? "não se aplica" : formatarValor(v, casas)}
                         </td>
                       );
                     })}
-                    {pilhas && series.length > 1 && (
-                      <td className={`px-2 py-1 text-right ${pilhas[i].completo ? "text-carvao" : ausente}`}>
-                        {pilhas[i].completo ? formatarValor(pilhas[i].total, casas) : "incompleto"}
+                    {pilhasTodas && series.length > 1 && (
+                      <td className={`px-2 py-1 text-right ${pilhasTodas[i].completo ? "text-carvao" : ausente}`}>
+                        {pilhasTodas[i].completo ? formatarValor(pilhasTodas[i].total, casas) : "incompleto"}
                       </td>
                     )}
                   </tr>

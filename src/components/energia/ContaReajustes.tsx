@@ -288,6 +288,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
           onSelecionar={selecionar}
           alturaCategoria={44}
           alturaMaxima={520}
+          limiteInicial={12}
         />
       </div>
 

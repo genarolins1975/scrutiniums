@@ -113,7 +113,8 @@ describe("rótulo da categoria acima da barra no celular", () => {
     expect(t).toContain("const LARGURA_ESTREITA = 520;");
     expect(t).toContain("rotuloEmCima = w < LARGURA_ESTREITA;");
     expect(t).toContain("colunaRotulo = rotuloEmCima ? 0 :");
-    expect(t).toContain("rotuloEmCima ? cabe(nomes[i], w - 8, pxCaractere12(nomes[i])) : cabe(nomes[i], colunaRotulo - 8)");
+    // acima da barra: uma linha com a largura toda; na coluna lateral: até duas linhas, com a largura de um caractere de 12 px
+    expect(t).toContain("rotuloEmCima ? [cabe(nomes[i], w - 8, pxCaractere12(nomes[i]))] : duasLinhas(nomes[i], colunaRotulo - 8, pxCaractere12(nomes[i]))");
     expect(t).toContain('data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"}');
   });
 

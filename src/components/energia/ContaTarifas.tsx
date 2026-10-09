@@ -270,6 +270,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               onSelecionar={selecionar}
               alturaCategoria={44}
               alturaMaxima={520}
+              limiteInicial={12}
             />
           ) : (
             <GraficoBarras
@@ -298,6 +299,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               onSelecionar={selecionar}
               alturaCategoria={44}
               alturaMaxima={520}
+              limiteInicial={12}
             />
           )}
 
