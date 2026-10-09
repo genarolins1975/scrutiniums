@@ -1284,6 +1284,1077 @@
      "sha256_resposta_completa": "f6971828a5dd694ac1904f5e858d0bd076396365fe4007c097bd7b9f72d947a5",
      "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2021_12.json.gz",
      "sha256": "9329f6179b0bed5420d4b9a961b1c3983bdc75db563d7c1c4d227f9ba4536e90"
+    },
+    "3106200_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:13Z",
+     "linhas_resposta": 14269,
+     "linhas": 1142,
+     "sha256_resposta_completa": "a7f55d0924956723632768164709058cb6861ebe03cec91f650194246bab0860",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3106200_2021_12.json.gz",
+     "sha256": "2db599534bfd6b19991886fe9911ae75ba18bdb207f14cbbaa4d79e36470503b"
+    },
+    "1501402_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:20Z",
+     "linhas_resposta": 4619,
+     "linhas": 398,
+     "sha256_resposta_completa": "d90155a3ae94925c26c55f89d9797e4a5f8e9cae67373ee23c34d14fd1a774c5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1501402_2021_12.json.gz",
+     "sha256": "f7495d6d565d4a5b715aef668547a333cd404a9ba9df773f95f5bb735fb8e89a"
+    },
+    "2507507_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:23Z",
+     "linhas_resposta": 12896,
+     "linhas": 389,
+     "sha256_resposta_completa": "2ebe15aac097759fedcbad69ef4de07de629bc1190ff960751a5b235daaa2afd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2507507_2021_12.json.gz",
+     "sha256": "b4fd1a5dcf839fc0303d6ebafe99c8c628d562e0a025b18679351b93711eabb2"
+    },
+    "4106902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:30Z",
+     "linhas_resposta": 8589,
+     "linhas": 362,
+     "sha256_resposta_completa": "87f2190ac8a4268fd84bdbbd17656e0bd4cad866a826bc191843ee21d5e29b3f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4106902_2021_12.json.gz",
+     "sha256": "c213b4d127441470fba1ccd903da52ece6472bbfca1a0544b004469d0ffe297a"
+    },
+    "2611606_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:34Z",
+     "linhas_resposta": 16218,
+     "linhas": 924,
+     "sha256_resposta_completa": "c34a61e800dd3ac79e345857620f6fcdbfe0f9dc45079900aa39785edbb7158d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2611606_2021_12.json.gz",
+     "sha256": "077b49437dbaf13d415959035531618e967e46c69649017e9dab3ef82395765c"
+    },
+    "2211001_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:43Z",
+     "linhas_resposta": 4472,
+     "linhas": 398,
+     "sha256_resposta_completa": "0c8d8d3edef84e9dbe044ecc90d61c5ed0a0e5e998e54844dc00e83d5964d7c2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2211001_2021_12.json.gz",
+     "sha256": "b2d2a68c1e29843c455bc1dc100f2d0f8259ddc2c1c6e22d49176dee4e740a40"
+    },
+    "3304557_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:45Z",
+     "linhas_resposta": 18896,
+     "linhas": 1060,
+     "sha256_resposta_completa": "ea97c35915029d43b0400324049173457ae155999b74c25141ff9d2c7b23b0a0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3304557_2021_12.json.gz",
+     "sha256": "b3f506bfdea6b2bb06049e65d0ecfb6e96a6a8bb4115101981f7a550422bde15"
+    },
+    "2408102_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:54Z",
+     "linhas_resposta": 9689,
+     "linhas": 843,
+     "sha256_resposta_completa": "6ea044997b6090ec6936303f1653bd2351f7c7a4533615f9470f5c4d868118a7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2408102_2021_12.json.gz",
+     "sha256": "ad2d9d56563bd70bea8a4a53ee4af6b4abdf6dac83e6938511db4b7dd81e1c2b"
+    },
+    "4314902_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:27:59Z",
+     "linhas_resposta": 14306,
+     "linhas": 996,
+     "sha256_resposta_completa": "6082acc8e021e1f76091c45e911318f03187bd36e9fea68e2a16edea37e4b8f6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4314902_2021_12.json.gz",
+     "sha256": "f207b28098c2d94523fba203a8b3c9454212e78f3a11b52843c49b93b098120a"
+    },
+    "1100205_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:03Z",
+     "linhas_resposta": 4195,
+     "linhas": 349,
+     "sha256_resposta_completa": "d68c133e7d753f811d1aabe4bdbf5c0a31fda0c57134a530a1d239f37da37855",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1100205_2021_12.json.gz",
+     "sha256": "0ba99b12d2d4cc56fbd3f7706d622b3583663ca047003cbff900770d4c755cc0"
+    },
+    "1400100_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:05Z",
+     "linhas_resposta": 4777,
+     "linhas": 600,
+     "sha256_resposta_completa": "cf65a0954cc1b4b42649fe7a3fc27ca0edad7677fb73ddec3c32068161ae2d10",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1400100_2021_12.json.gz",
+     "sha256": "c480faef83b94c861115c40161de1412eae2aa6ca31ae23b0d1919c942279fba"
+    },
+    "4205407_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:08Z",
+     "linhas_resposta": 4898,
+     "linhas": 288,
+     "sha256_resposta_completa": "1d431af0d971a887094f821d55b6cce22c640ca721a5df7a41e82af722300b34",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4205407_2021_12.json.gz",
+     "sha256": "9ab455e4a1f31fa54a74dd5ecdb6558bde0fa3a3160d8fe8c73178db8f5d94f0"
+    },
+    "3550308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:10Z",
+     "linhas_resposta": 8161,
+     "linhas": 287,
+     "sha256_resposta_completa": "f999158c3ac021baa5490bf55c0136cefa22bb3a4eaef97281c9f2759f45adc6",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3550308_2021_12.json.gz",
+     "sha256": "8cd9f3b46e71c83d11bc9cbf38eaf4024b2d2b32477c178ed7c37d5bd0a6b83f"
+    },
+    "2800308_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:14Z",
+     "linhas_resposta": 5863,
+     "linhas": 254,
+     "sha256_resposta_completa": "2bb4a000d5765bed8acf45cbbfb84e5de51497bc13df2c9bf127cced123b69ce",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2800308_2021_12.json.gz",
+     "sha256": "f714aba0ba9b313f2c1184c872b5ff1767dfcfa933da0a283e045db9660adf6c"
+    },
+    "1721000_2021": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2021&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:18Z",
+     "linhas_resposta": 12823,
+     "linhas": 1282,
+     "sha256_resposta_completa": "a6b2633b6d4b960a4f20741ff076a71dfe258aa40b56b3836dfca92a67c06e8b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1721000_2021_12.json.gz",
+     "sha256": "723d31f4614f3b98f7c317bbc57c7aef2e7ce1864dd042b76560b38901d6b188"
+    },
+    "1200401_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:25Z",
+     "linhas_resposta": 1618,
+     "linhas": 45,
+     "sha256_resposta_completa": "ae640a9ab1954d0a90097750b736c64bd3418c8310f003226cdc24dd196de5ea",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1200401_2022_12.json.gz",
+     "sha256": "adb658aaf90c19f7b0c0b1cb8b699a3b62e300853310a60e5f143aa4f93dede2"
+    },
+    "2704302_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:26Z",
+     "linhas_resposta": 3495,
+     "linhas": 354,
+     "sha256_resposta_completa": "3f81609edd50880b9e254afcd8b4296a4c33f330689d4f5ac43e64f22332bba2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2704302_2022_12.json.gz",
+     "sha256": "94f98b7f807d58c32fe45957033fa2d8d209dacfe832b9294e4077fd8dccb7dd"
+    },
+    "1600303_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:29Z",
+     "linhas_resposta": 3525,
+     "linhas": 209,
+     "sha256_resposta_completa": "4eafa6c49d6d41cce1fa14693448fa90e3e7b0bfe15281e58dfa58334f0b57c4",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1600303_2022_12.json.gz",
+     "sha256": "1710b17fcddf0eba1f65d7db83a3fa0edbdcc59db28ef6be25dc727749a1219a"
+    },
+    "1302603_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:31Z",
+     "linhas_resposta": 4749,
+     "linhas": 469,
+     "sha256_resposta_completa": "21cb35d8fd4e6424465b9691bca47289d05be0de0d09168f0bda302631ba72d2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1302603_2022_12.json.gz",
+     "sha256": "74007ee0030c415f0015d6dc1a05940428ab53fc6893eac678e31f408d89b87c"
+    },
+    "2927408_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:33Z",
+     "linhas_resposta": 7142,
+     "linhas": 460,
+     "sha256_resposta_completa": "4eb2b0f30f0f617539f17bc211c7bd50a2cb3999c067ae72383d65487e0d8a6a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2927408_2022_12.json.gz",
+     "sha256": "2481c725e7e6e67b6870ed44859f1cdc98b82c9ee7f38adf5596adfff6076832"
+    },
+    "2304400_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:37Z",
+     "linhas_resposta": 6020,
+     "linhas": 455,
+     "sha256_resposta_completa": "85a487c04d6de85abbe3ea81b36b0deec5e75f9e34c3f4876466b1002dd3feb5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2304400_2022_12.json.gz",
+     "sha256": "76685d3e0d3edac54da645eb66742b3c0348153c193a4ec5083609d747300945"
+    },
+    "3205309_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:41Z",
+     "linhas_resposta": 19041,
+     "linhas": 1012,
+     "sha256_resposta_completa": "ff0bd42676e82c5a55646f971c54b6587b0979244f1bbdba897d2f0a52814009",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3205309_2022_12.json.gz",
+     "sha256": "2327668247ce460b6fd95d96e654217d0e07cc624fa1598c1ebef94d988728d5"
+    },
+    "5208707_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:51Z",
+     "linhas_resposta": 10890,
+     "linhas": 507,
+     "sha256_resposta_completa": "30e23c8843b13219aa4783a7438e1cdb38d9b1a2254928b4db24de0811cc28c3",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5208707_2022_12.json.gz",
+     "sha256": "a45bf80be4bdb00b7a8f16bd9e4fd996a5056fbb65e65967a51ccd58d3713da3"
+    },
+    "2111300_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:57Z",
+     "linhas_resposta": 1915,
+     "linhas": 0,
+     "sha256_resposta_completa": "19304039c4200b13cf1ab747401019c51d6494c94ec5c8ef289a2478e6e03791",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2111300_2022_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "5103403_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:57Z",
+     "linhas_resposta": 3019,
+     "linhas": 259,
+     "sha256_resposta_completa": "bf061b840709b59f29f6b986017cc75c2eb2b89d4bf35245e6e76e7bda42b9e8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5103403_2022_12.json.gz",
+     "sha256": "e1540e1ab25aa8fac6aada33cc44c2235f6b618714d60601ce9004dd4fd6a355"
+    },
+    "5002704_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:28:59Z",
+     "linhas_resposta": 9192,
+     "linhas": 492,
+     "sha256_resposta_completa": "f803c133ac588d7f187c0f3002a1d8f345128d1763ce974a90a9193ac2b4acbb",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2022_12.json.gz",
+     "sha256": "738e0cc71acc704590eb145b8b59f8c02e0055603e1c453c748a64c9fe0b2d31"
+    },
+    "3106200_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:04Z",
+     "linhas_resposta": 15298,
+     "linhas": 1271,
+     "sha256_resposta_completa": "bcbf710060a337bf5cfc9beed72665f2370d1b13104cfab8059bc20250c817d1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3106200_2022_12.json.gz",
+     "sha256": "4e729d7c77c36c6310eab33417ff928aa2a24b87c5642c19626a8e01ce4c2d7c"
+    },
+    "1501402_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:14Z",
+     "linhas_resposta": 6628,
+     "linhas": 334,
+     "sha256_resposta_completa": "a9e8167cb8915326393266d7ff6abe8fc0c1cbbe4f2691620d72c09ec444e4e2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1501402_2022_12.json.gz",
+     "sha256": "c05d941b3a3ec72877ef5fe3bf8707e23db3d8d47107bb98a9023f1f23d7d5be"
+    },
+    "2507507_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:18Z",
+     "linhas_resposta": 3748,
+     "linhas": 215,
+     "sha256_resposta_completa": "1d0eda37378ea4de01db62fe08dede1b273ba5418288cbaf593d1e3801c513c9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2507507_2022_12.json.gz",
+     "sha256": "cf5c5129d8bd6677d00ff03ddf19332811419520fc44a37a53c66f344e55b0ba"
+    },
+    "4106902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:21Z",
+     "linhas_resposta": 9880,
+     "linhas": 340,
+     "sha256_resposta_completa": "3f08cadf522f9ebcda3dfeed0ea750eda51a477a48f4c7b544082b45380595d1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4106902_2022_12.json.gz",
+     "sha256": "eca0e145e4e5bff97fe8ebd7a004ee58f2a824bb7ec37fd3a5c3b572074dde4e"
+    },
+    "2611606_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:25Z",
+     "linhas_resposta": 16681,
+     "linhas": 1047,
+     "sha256_resposta_completa": "71c66cdf2ecfe6c8852ac786902d53031111a1b18e8a536ffd6e00f89ecb2a80",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2611606_2022_12.json.gz",
+     "sha256": "101ad174597fbfbf44db49c574bd9fa6bb06a3fb34ed5399d832b53ca7233277"
+    },
+    "2211001_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:34Z",
+     "linhas_resposta": 5175,
+     "linhas": 410,
+     "sha256_resposta_completa": "b2f41c831f4f4e79a47d362ee3c177f47ab83e72e82c23a41978dd358249c16b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2211001_2022_12.json.gz",
+     "sha256": "507e919b4233f564cf126edbd428094299029045af02843418d6c6b6d3066bc2"
+    },
+    "3304557_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:37Z",
+     "linhas_resposta": 20457,
+     "linhas": 0,
+     "sha256_resposta_completa": "9534ab2658d653fa9d766accb9724398133f0355b723dff50ebd8d1f23a87447",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3304557_2022_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "2408102_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:47Z",
+     "linhas_resposta": 13462,
+     "linhas": 496,
+     "sha256_resposta_completa": "3609bcf27d3ac43ffe03e7b6bd0dfc11a37e00af610640bcc87adad84b563605",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2408102_2022_12.json.gz",
+     "sha256": "948c3e5e46a4591ac69036baf2a0a6b59ba7f4bda19150abf1de46c9b1f5351d"
+    },
+    "4314902_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:29:55Z",
+     "linhas_resposta": 17400,
+     "linhas": 1467,
+     "sha256_resposta_completa": "098e97d9bf55ef95358cb099adc40a9386c267f9486e551f67f1be1688c2c915",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4314902_2022_12.json.gz",
+     "sha256": "e1fe826352ff136b6a7f6cfa2fb7c46198fb6bd73090470cd5b5e7a804651468"
+    },
+    "1100205_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:03Z",
+     "linhas_resposta": 5440,
+     "linhas": 358,
+     "sha256_resposta_completa": "5818013dd19c94830013a2c37cac76286b1d2ac46be210f6b643880d63ded796",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1100205_2022_12.json.gz",
+     "sha256": "51fc98e7c66d59668deab3a60ba9179a010bf3fe416db04911aa9059e829af56"
+    },
+    "1400100_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:07Z",
+     "linhas_resposta": 5595,
+     "linhas": 642,
+     "sha256_resposta_completa": "18f77735471aeb62357c6ef5e61cedc2321a92a1aebe91d955c96465f2758c93",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1400100_2022_12.json.gz",
+     "sha256": "81b0de496aacb7fa4cf004bb0d3be84d07c07ef55889e791fb647664cfaae83c"
+    },
+    "4205407_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:10Z",
+     "linhas_resposta": 5089,
+     "linhas": 248,
+     "sha256_resposta_completa": "4912c4f5d9848e3bc417580fcf98e2fc91b8a3d64750f25b1a3f34b11fdbee07",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4205407_2022_12.json.gz",
+     "sha256": "ca61d75d3b64a30e671e1accc080671952ca4529ab7cb86364406f11bdca25ee"
+    },
+    "3550308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:14Z",
+     "linhas_resposta": 11416,
+     "linhas": 394,
+     "sha256_resposta_completa": "decf67092b6cc35fe34f4bbc9bea8f68e7095bad6788c432c7368f4e7e87aea5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3550308_2022_12.json.gz",
+     "sha256": "a38115c95665bb87a11f0c97afbcb2d90c73793e49aea5113d82146becf596de"
+    },
+    "2800308_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:21Z",
+     "linhas_resposta": 6189,
+     "linhas": 256,
+     "sha256_resposta_completa": "21b4cbac1caba9046f06efe462e4a0ce31c5838983d5dafac4da8ad0ba82115a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2800308_2022_12.json.gz",
+     "sha256": "aba79304001160ee6c5925057f51a62fa86b923797fb04c1d60c6c21965bbd4f"
+    },
+    "1721000_2022": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2022&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:24Z",
+     "linhas_resposta": 13677,
+     "linhas": 1210,
+     "sha256_resposta_completa": "8656ffcf880977d37f84ee049002a9c7cd4f7e08cfc0205b8a3bae9a044e6046",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1721000_2022_12.json.gz",
+     "sha256": "ec4f927b82e4fe17dc413507e7678029d3b5f1aac691d97e98674d700d795fa4"
+    },
+    "1200401_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:32Z",
+     "linhas_resposta": 1902,
+     "linhas": 70,
+     "sha256_resposta_completa": "578821625eb816313fdbb52da028e9f854e628817bf45231c46bb3a0b1877ba7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1200401_2023_12.json.gz",
+     "sha256": "8fc6b291a5b6e8dc33700300e55fe7d9d99ead6cef8f5a8f898e6f650fb750ca"
+    },
+    "2704302_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:34Z",
+     "linhas_resposta": 4544,
+     "linhas": 537,
+     "sha256_resposta_completa": "b859c24e2e217270012b041ee63f1d82bb701e03f2b54a767fa91e00f5ae0311",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2704302_2023_12.json.gz",
+     "sha256": "59056e4be880dd908911d11ef0ee7bbe648e43defcd87f7f90965f415cd39586"
+    },
+    "1600303_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:36Z",
+     "linhas_resposta": 1926,
+     "linhas": 159,
+     "sha256_resposta_completa": "cf1fc222b3ca518128acd5bae5b10313f45e563573521302a8d482d2ec4e0de7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1600303_2023_12.json.gz",
+     "sha256": "05159e903c4f12a2c7ca0dbaa42188080d51940a05d333e559a943c9d0051f02"
+    },
+    "1302603_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:38Z",
+     "linhas_resposta": 5075,
+     "linhas": 451,
+     "sha256_resposta_completa": "91091c6d16e91d7091b5b212f992bcc5de88318431a00f3214229588248e2506",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1302603_2023_12.json.gz",
+     "sha256": "a29ceded23796c1a6bb489f1cbc01d8722f1f7cc13faab4cf72fd369973980eb"
+    },
+    "2927408_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:42Z",
+     "linhas_resposta": 9817,
+     "linhas": 778,
+     "sha256_resposta_completa": "ffdbe498c3e7492f1a5cc0c5eace27c8d3912eb59861de0be702decc48215ec7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2927408_2023_12.json.gz",
+     "sha256": "c297a05a746cad9bca31f18c05ea20715b8b5fdf637561d48e248e71b405eadf"
+    },
+    "2304400_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:46Z",
+     "linhas_resposta": 7827,
+     "linhas": 439,
+     "sha256_resposta_completa": "f99b8b51936b8d1d39cdda23616116af05bc514c8263722a00e9a5c4569d2703",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2304400_2023_12.json.gz",
+     "sha256": "a5ba8c139877035b85bcf9ac089419bfcdd5f3e0d66206e8821a5d587a550551"
+    },
+    "3205309_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:30:50Z",
+     "linhas_resposta": 20597,
+     "linhas": 1189,
+     "sha256_resposta_completa": "6f4a2194fc8bc826e55b01e8ee4fc77e4c503111b9a3f91495a093d42fd965fd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3205309_2023_12.json.gz",
+     "sha256": "32b529f6f19c27830b8bca88742afcd243ad3fdcd768082017c263fb4bba2668"
+    },
+    "5208707_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:01Z",
+     "linhas_resposta": 4276,
+     "linhas": 192,
+     "sha256_resposta_completa": "1cd4704e221e3d00e94ce3c0af179194c2a0e19d7fbcb89539aebcae9ed24f3b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5208707_2023_12.json.gz",
+     "sha256": "3c042c980a09b0dd6c66b80699756547efeaaf4925cdbab624733087fe6ad9cc"
+    },
+    "2111300_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:03Z",
+     "linhas_resposta": 2544,
+     "linhas": 0,
+     "sha256_resposta_completa": "38130a166a03bd129c8c0f266d475fc8afa00037d2caee0221eb65353e34ddab",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2111300_2023_12.json.gz",
+     "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "5103403_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:06Z",
+     "linhas_resposta": 3637,
+     "linhas": 389,
+     "sha256_resposta_completa": "728f9de958d62c201392e2596bfb048a631f5a40b26f241245d1b6978dcfbe1a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5103403_2023_12.json.gz",
+     "sha256": "998acc25f25a7ab3d48281de3b1794d1aaff6aaf6a7aab16ba5f8619af556732"
+    },
+    "5002704_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:08Z",
+     "linhas_resposta": 8544,
+     "linhas": 379,
+     "sha256_resposta_completa": "c6ce08ea71041648d48e47378ae1d1d0eb633be2da4e0c2fe39b006d2cde3ed5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2023_12.json.gz",
+     "sha256": "3c1bde6667996645d3867da3520c7ed10e5ab65a8b0ed6031ff2d7e626fbe0cb"
+    },
+    "3106200_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:13Z",
+     "linhas_resposta": 15591,
+     "linhas": 1294,
+     "sha256_resposta_completa": "d5c3a6dd259c63cbbd93e3593d6d4cc699e2212dd9d9bfb68ad2320d519b8487",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3106200_2023_12.json.gz",
+     "sha256": "87e4402a5a7421ecf354170bedee57af7c397c49ce0e11d41713edef86065f48"
+    },
+    "1501402_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:21Z",
+     "linhas_resposta": 4464,
+     "linhas": 203,
+     "sha256_resposta_completa": "9e07439f89f4a0dfc8674830688ef742353cbadf955a44cae98a52ae4edf062c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1501402_2023_12.json.gz",
+     "sha256": "53ac06ebc9029cffcb7ed04e657b9f6087ac5b63873903da6db26b6f4a237e20"
+    },
+    "2507507_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:24Z",
+     "linhas_resposta": 3935,
+     "linhas": 194,
+     "sha256_resposta_completa": "dbba4de9d2442767191de7b267c3fd459ab4a5bdf7887a3be4a7e62581eaff50",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2507507_2023_12.json.gz",
+     "sha256": "a37e4df43fc36d86b27a51267a294406e2988df52d558617973a32953533c4d1"
+    },
+    "4106902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:27Z",
+     "linhas_resposta": 9230,
+     "linhas": 421,
+     "sha256_resposta_completa": "06ddf7cddb2656b9c03cd265029408cdffcd592c0d4b1b6972d8be0429650c31",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4106902_2023_12.json.gz",
+     "sha256": "fd82c2dbf84e4ae03ac47072bb4895af0d1ba6d96296ab559e22793da219fd8a"
+    },
+    "2611606_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:32Z",
+     "linhas_resposta": 17826,
+     "linhas": 952,
+     "sha256_resposta_completa": "f9f0a82a8f84619e90ef31d5479cc6bc1a3f173d0f0060a03723689cbef2a4e0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2611606_2023_12.json.gz",
+     "sha256": "eb6a2f0f51871685189471a51c9e254f5bf01552ac530932605d02c48b8f0cb9"
+    },
+    "2211001_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:43Z",
+     "linhas_resposta": 5810,
+     "linhas": 544,
+     "sha256_resposta_completa": "1afbab693a07269aecea16aff650b356500ee66f768049ec0576c2137429e648",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2211001_2023_12.json.gz",
+     "sha256": "c6cf19e7f5659498885e081665adfe15ffc9122324f68503542aa388bfef8dc4"
+    },
+    "3304557_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:47Z",
+     "linhas_resposta": 14838,
+     "linhas": 676,
+     "sha256_resposta_completa": "6205ef03ff0c6c7c4d4bce0443d5ee3855ab8286e7748eea56fcf6ecc65e5726",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3304557_2023_12.json.gz",
+     "sha256": "d36367eabfcdfbbb35eb84618673070fabf98cdffa66a55b48dc0beb46748494"
+    },
+    "2408102_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:54Z",
+     "linhas_resposta": 3986,
+     "linhas": 410,
+     "sha256_resposta_completa": "9f61e1e6df0d8e58eccfcc2286c7dd59e17d9bce3d963e296f1f0efd6b2c22d7",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2408102_2023_12.json.gz",
+     "sha256": "8a75334d0ff341c4d1f1008fac51e31ef05d6ba00d4304ab3b91973c2c935e6a"
+    },
+    "4314902_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:31:55Z",
+     "linhas_resposta": 16776,
+     "linhas": 1307,
+     "sha256_resposta_completa": "a2334ae1d64d20571c2d6a953f64e3a617e7197655e93818efb46e8638385452",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4314902_2023_12.json.gz",
+     "sha256": "5dcf6bc3c916c928766e01a5bff364f71e229adf0183f86f89f9ea9363d8cce3"
+    },
+    "1100205_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:03Z",
+     "linhas_resposta": 10726,
+     "linhas": 659,
+     "sha256_resposta_completa": "2c90b8cf720ce9d3e6115c72fa2a9497f54454656f791608dc39c3873c62d36e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1100205_2023_12.json.gz",
+     "sha256": "7d9c3c0e998e2f4e6bc91573eca8d71affc74f7445d43f78f9b61efd5c2d7473"
+    },
+    "1400100_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:10Z",
+     "linhas_resposta": 5923,
+     "linhas": 556,
+     "sha256_resposta_completa": "70d0089050529b3170a1ef6036b3302817937f5d552ed645773abec77242bed1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1400100_2023_12.json.gz",
+     "sha256": "576a4b3317be78dabcaab1613e18e9ca62e6bddad2495d78cb576e5175d05dc6"
+    },
+    "4205407_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:14Z",
+     "linhas_resposta": 8810,
+     "linhas": 468,
+     "sha256_resposta_completa": "cb423203cc0767a76ee9a7c0befe08d78fa5e73b3f2ce100a3168b80167543da",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4205407_2023_12.json.gz",
+     "sha256": "4eab2054409e9fc1232f0d205f46be96fba1049dc05d805bebe6210c6470f810"
+    },
+    "3550308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:19Z",
+     "linhas_resposta": 14682,
+     "linhas": 1131,
+     "sha256_resposta_completa": "de330b179b1e60a66d30f93b7c29c041fb6a7aedc4709a560ad3146c31195f44",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3550308_2023_12.json.gz",
+     "sha256": "cca9314fe79f1912ee4f3ca392b3c2dec2d75af85b8b7e0e5c86f3190fec9326"
+    },
+    "2800308_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:26Z",
+     "linhas_resposta": 7425,
+     "linhas": 359,
+     "sha256_resposta_completa": "8c160e43ab9855341f93c4cd2f3caaac128b212f8f991483be5b310e199dc57f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2800308_2023_12.json.gz",
+     "sha256": "88d0b44695693629a6136fa78ef0898395e5ed63de27f5352df25df9e5e0ea5a"
+    },
+    "1721000_2023": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2023&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:31Z",
+     "linhas_resposta": 17324,
+     "linhas": 1404,
+     "sha256_resposta_completa": "56030c625a9b55c3a22a209050507dc9235bba47bf0216f07c7e826cfdfd2ba0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1721000_2023_12.json.gz",
+     "sha256": "194f988400624a6ff1f9d51d38b82dba96a9446b945b4d1796019edb6325a83f"
+    },
+    "1200401_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:33Z",
+     "linhas_resposta": 2265,
+     "linhas": 90,
+     "sha256_resposta_completa": "6caaf906726ba9a9999f3683167d00d7fefeb5b9cbcbfb76af3138290f6248cf",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1200401_2024_12.json.gz",
+     "sha256": "923e66756fed2181761863a42a3a8d92c1d0dbddc5334a6de80b9d17b3cb4ce8"
+    },
+    "2704302_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:34Z",
+     "linhas_resposta": 4713,
+     "linhas": 538,
+     "sha256_resposta_completa": "615e1ccd52dbda96021dd0f884e4426d0fa36cfc0eca6afacad1ffe698eb2c68",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2704302_2024_12.json.gz",
+     "sha256": "fe792bfe527bdad47e822609fdb0b04507172e0687f20d30c47eae4cbfd20fcd"
+    },
+    "1600303_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:36Z",
+     "linhas_resposta": 2516,
+     "linhas": 117,
+     "sha256_resposta_completa": "d8ff099be075fa8ca7907aca3bfbfd120d823d1d4be3d2a79d5143f520e5d1ba",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1600303_2024_12.json.gz",
+     "sha256": "905020a48712058353c7fb2549657a03f4b07b91a4ccd083adacc57fc58329ec"
+    },
+    "1302603_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:39Z",
+     "linhas_resposta": 4774,
+     "linhas": 476,
+     "sha256_resposta_completa": "205f80023f7c25621b8e606c038b020e668ae2a3e88806f2779b173ed9db06bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1302603_2024_12.json.gz",
+     "sha256": "b2ad8409a1479e51bde33daac69c7e011378e20a4a0224afbfa0f18a4553d8a0"
+    },
+    "2927408_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:41Z",
+     "linhas_resposta": 9117,
+     "linhas": 716,
+     "sha256_resposta_completa": "8c536b7d76e3d25fc4faa3b35dfd831e174d8b84338d1a6c234f02ea6a1f719f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2927408_2024_12.json.gz",
+     "sha256": "7cbf6d586a540c3f88baea16e5414aa144c9b909e1cb3475153c8ab5842f105e"
+    },
+    "2304400_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:46Z",
+     "linhas_resposta": 6339,
+     "linhas": 459,
+     "sha256_resposta_completa": "24275ba72a0486f31d80b6d908d49c8dff918fccee813709d61342366c619a1e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2304400_2024_12.json.gz",
+     "sha256": "b659bd782decdd8c963acdf51cff9bec4b6b4cca1ceba2e6ac07bbfccab3362f"
+    },
+    "3205309_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:32:50Z",
+     "linhas_resposta": 23999,
+     "linhas": 1787,
+     "sha256_resposta_completa": "73ebbab99ceb57f5146b01d8b48963f07c42dc9f61d47321ea6ec054f6640773",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3205309_2024_12.json.gz",
+     "sha256": "0bc78f2723a6d2af9ba523bd26837022ba1f37e44e061ed4c6e732ba0c0882b1"
+    },
+    "5208707_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:02Z",
+     "linhas_resposta": 4141,
+     "linhas": 162,
+     "sha256_resposta_completa": "73ca57abad08cd2a7773780c089edc519aaa0e384ecbaf57f6ddd9492348f843",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5208707_2024_12.json.gz",
+     "sha256": "9630c7604c8e8d0ce6c523d54603137f63c8065b38c8fcb74c32df460b026700"
+    },
+    "2111300_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:05Z",
+     "linhas_resposta": 5586,
+     "linhas": 841,
+     "sha256_resposta_completa": "91164edbf5adf61b80f4696db47be6e38c27feb650454b3ef053f593b9dfe890",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2111300_2024_12.json.gz",
+     "sha256": "d30228732c9cb912b5460d66536af5a5c58fad45cdd9773a954cf80cc1613f36"
+    },
+    "5103403_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:09Z",
+     "linhas_resposta": 3800,
+     "linhas": 240,
+     "sha256_resposta_completa": "d799478534a50b569266ae0ede695c8aefc418b103ff10fa5c2b21c3b41167bd",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5103403_2024_12.json.gz",
+     "sha256": "f007ad222a8f459fc5a4dfbd4d5b792973e4024bac326e9af11fe438aa00431f"
+    },
+    "5002704_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:12Z",
+     "linhas_resposta": 6390,
+     "linhas": 397,
+     "sha256_resposta_completa": "d456b8a1bb2163aba75a5ffe5875ac89c23ea54722dde44199df8c4807eda307",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2024_12.json.gz",
+     "sha256": "ee5a46c377ae1a234c900580bfe1443499ca45dc68d4e419c635797bfc3749bc"
+    },
+    "3106200_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:17Z",
+     "linhas_resposta": 16686,
+     "linhas": 1325,
+     "sha256_resposta_completa": "991c6365b0ae65ece0529434599d7162811ddaa89d9ff3c8b6588ab48c776886",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3106200_2024_12.json.gz",
+     "sha256": "741591446712ac1c196cb9887080389e581df1843d7a5f48ff96da09a353e9f7"
+    },
+    "1501402_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:19Z",
+     "linhas_resposta": 6742,
+     "linhas": 315,
+     "sha256_resposta_completa": "a0b5e54cddcd4f30ae8d5172d3838f4ed1e9a084c9e79977f7c965e36aa8011d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1501402_2024_12.json.gz",
+     "sha256": "414017cdaf9d71917ea6f4491f26f69213114c6a392954ad960db0d47431f293"
+    },
+    "2507507_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:23Z",
+     "linhas_resposta": 4137,
+     "linhas": 230,
+     "sha256_resposta_completa": "ee1144fc52403ce3151f4500b7de8ba8ec44d784f2c5f7b773da7d8ae9650d6e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2507507_2024_12.json.gz",
+     "sha256": "d63993c424b4aec85c9c0ce9618b1841697edf277864b0f09638a476ed08e19f"
+    },
+    "4106902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:26Z",
+     "linhas_resposta": 9534,
+     "linhas": 395,
+     "sha256_resposta_completa": "d4cfcd62bddbc605a175c07aa25f5f7f6340c06fc1d0b2aa29b371cec38053d5",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4106902_2024_12.json.gz",
+     "sha256": "38e74d2beabab481d68243b1ca7d00ffccbc0aae3ceb1f1db3f51a5795d2c788"
+    },
+    "2611606_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:31Z",
+     "linhas_resposta": 9310,
+     "linhas": 1034,
+     "sha256_resposta_completa": "53a60993c4d532760f3cbff8057307852b56cc1c71f0d74d168f1194c6b624c1",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2611606_2024_12.json.gz",
+     "sha256": "c708a52798e64167b40b291b50c97bdf6a810e2317d2bc756d93414d8fc745bf"
+    },
+    "2211001_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:35Z",
+     "linhas_resposta": 6414,
+     "linhas": 496,
+     "sha256_resposta_completa": "642dcc50a598f38779c81ae957f2c86c8528bf27519a4ce75cdb63a655141186",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2211001_2024_12.json.gz",
+     "sha256": "363b122029488f43d07fc31cc177c5564ef0de80cf53606225cf80f18833f6a7"
+    },
+    "3304557_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:39Z",
+     "linhas_resposta": 16757,
+     "linhas": 1118,
+     "sha256_resposta_completa": "99f9a6fe8165eca658834fb26a9f009d213a05e00b2c4b3780183b4862b323fe",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3304557_2024_12.json.gz",
+     "sha256": "e7e95d66fc1c6f11c57510d0d2569236a3b2c71055d3bc9420470a38bbf6e87c"
+    },
+    "2408102_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:49Z",
+     "linhas_resposta": 10264,
+     "linhas": 415,
+     "sha256_resposta_completa": "df14fc7a15867dfffa0e66770f63bb9deba3b4b862931e3ff2d766d1b05b6f7d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2408102_2024_12.json.gz",
+     "sha256": "ea1a4c1659f53dd744025513a638bf4aee581c668880132566feda33110321fb"
+    },
+    "4314902_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:33:54Z",
+     "linhas_resposta": 10620,
+     "linhas": 1105,
+     "sha256_resposta_completa": "92b8ea84fb0030953f7d54526c5007b2ae9f0b7c9e125317763c9abeeeb6303d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4314902_2024_12.json.gz",
+     "sha256": "6f1a24b42eca1cbe2dbaba8b0d99ef3e7c5abba1117abbfebd69b9f253c680dd"
+    },
+    "1100205_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:01Z",
+     "linhas_resposta": 10079,
+     "linhas": 698,
+     "sha256_resposta_completa": "65d9ba149537fb30f19c5d2d8f89d53afda9d7ca30651578288d52b105ca61b8",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1100205_2024_12.json.gz",
+     "sha256": "87dc1d37dbd5598aea8c702ff507ee939ddcd92299596ae634581927be0d376e"
+    },
+    "1400100_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:06Z",
+     "linhas_resposta": 5744,
+     "linhas": 592,
+     "sha256_resposta_completa": "f022e44b2a15eaca5bc2b85d60edfd1aad69fb8925eae31954895bfbd8f90c9c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1400100_2024_12.json.gz",
+     "sha256": "6f9406c5c7abbe87d8cf3864965022a66fdffe249ebae24c023481058ed0d887"
+    },
+    "4205407_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:07Z",
+     "linhas_resposta": 10655,
+     "linhas": 509,
+     "sha256_resposta_completa": "5ee08f71ce5a15786ada2bce124533a96ebb4eb60a605eeb18c3c8e978757250",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4205407_2024_12.json.gz",
+     "sha256": "3888898b28fd3b74c619415664b81544a78d18c7a0fa5ba9c202d4b073fab0c0"
+    },
+    "3550308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:14Z",
+     "linhas_resposta": 13377,
+     "linhas": 919,
+     "sha256_resposta_completa": "d7c958da547eeb27ebd69cf4a8058492250931bcf9f83559dac1a506bc9e05e9",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3550308_2024_12.json.gz",
+     "sha256": "03310af19f74cd68c16361f0ba72522163f1059029c07aead812e640c06114c3"
+    },
+    "2800308_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:20Z",
+     "linhas_resposta": 8014,
+     "linhas": 385,
+     "sha256_resposta_completa": "6f99d8a39615b5b1177d5e3f7c7cffa75e463fbf6c2150a244dee54aae71066f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2800308_2024_12.json.gz",
+     "sha256": "2656f05e896f95ebcbccca0a8ce9577051d256e124e14de2272cf471cca1f49f"
+    },
+    "1721000_2024": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2024&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:25Z",
+     "linhas_resposta": 15872,
+     "linhas": 957,
+     "sha256_resposta_completa": "ce6c7a6384fd518d47c1427f8643500d5e36e8a29fb526492c11ea49b314e6ab",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1721000_2024_12.json.gz",
+     "sha256": "91fa34f3441e4025e6253f79732c418e503019bc880abd587647929bbe01014d"
+    },
+    "1200401_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1200401&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:32Z",
+     "linhas_resposta": 2213,
+     "linhas": 111,
+     "sha256_resposta_completa": "473075f5af4ab8917b44c0eb36754f441985d82f2d9f605cd98eeca48e678d7c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1200401_2025_12.json.gz",
+     "sha256": "5bb2e9e9756d983e8a7cc734efebb32e77054262a2b2db51fba9d0056162c9ca"
+    },
+    "2704302_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2704302&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:33Z",
+     "linhas_resposta": 4631,
+     "linhas": 454,
+     "sha256_resposta_completa": "748c28d288d51d7bd5cf8cfe08c2d5f9fcddc8c276f75dda0f7e95b22e71b57e",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2704302_2025_12.json.gz",
+     "sha256": "5a814f8c511e9bebdf711e96ca9ef59c6835c8f5525ec88de4cc387d81811367"
+    },
+    "1600303_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1600303&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:34Z",
+     "linhas_resposta": 2168,
+     "linhas": 138,
+     "sha256_resposta_completa": "7beb0573e1f77c1ff3ce1a325c2142d9602e0e6704a7f37df391aa5a891b6a22",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1600303_2025_12.json.gz",
+     "sha256": "89ae5fbe9993e57a81f3023a5443fd1bb64f789c4d29cddc9ca37d1f54a4b2b4"
+    },
+    "1302603_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1302603&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:35Z",
+     "linhas_resposta": 4854,
+     "linhas": 422,
+     "sha256_resposta_completa": "f07e7b908300cecde01186bb1f17546676c1f17772eb5c895f59ccb88c5a1bce",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1302603_2025_12.json.gz",
+     "sha256": "9203ab24b197cda6d49d7301d1420321c048bb1a583f3e15503ec5e99c92ef63"
+    },
+    "2927408_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2927408&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:36Z",
+     "linhas_resposta": 7824,
+     "linhas": 538,
+     "sha256_resposta_completa": "f25b8d782f08ce2f6629939afd838ddfae0ea04dcc4b4073dd5d4bbf9dc661aa",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2927408_2025_12.json.gz",
+     "sha256": "2a1262c93498de1d0d661969bd5e9da6ab50878c764c85d07343c11209639ead"
+    },
+    "2304400_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2304400&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:37Z",
+     "linhas_resposta": 6112,
+     "linhas": 400,
+     "sha256_resposta_completa": "94554431e7a53b88a5d9f60a667f2a7c70a08b4c60d9954db2761d8ea462e121",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2304400_2025_12.json.gz",
+     "sha256": "5e76691cfa404c61b0303951d87b9fc798a87f8e2b16c6aeb0558786683aa757"
+    },
+    "3205309_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3205309&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:40Z",
+     "linhas_resposta": 21525,
+     "linhas": 1157,
+     "sha256_resposta_completa": "b5cc702afb101269ca2e78d0656188012c7b1511119cb26db24e6bf1084ae021",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3205309_2025_12.json.gz",
+     "sha256": "d9f81f66137b22c5f36b71aeac428f9fadda5f14adeab52845759f7769afb915"
+    },
+    "5208707_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5208707&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:52Z",
+     "linhas_resposta": 4499,
+     "linhas": 148,
+     "sha256_resposta_completa": "676a1033e544d833753a380fe47ea2cb436d7eb028ae343dcf2eef633b5c4610",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5208707_2025_12.json.gz",
+     "sha256": "83342acee9f2fccaf51fca6e07c1ff70759c2cc7317b32963862f7d264d01448"
+    },
+    "2111300_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2111300&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:54Z",
+     "linhas_resposta": 5746,
+     "linhas": 610,
+     "sha256_resposta_completa": "042cdf7e1cee7826fa11453721d99ef4d1f64600a6c83881425a4c1fd8affa4f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2111300_2025_12.json.gz",
+     "sha256": "1df1f3fdf6c0e5307dbb9120ebed09c69babb4bf287c604a647aef9e4d4b6f96"
+    },
+    "5103403_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5103403&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:34:59Z",
+     "linhas_resposta": 3577,
+     "linhas": 299,
+     "sha256_resposta_completa": "ece60a3a74aa4faf25aab50580c02cd52cd04c2a67e9f738687b4798a0573f80",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5103403_2025_12.json.gz",
+     "sha256": "eabea0caceae2648e8f5ba8904bd9a4d9b6c7a7b86807523fc2e7168b0b22edc"
+    },
+    "5002704_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=5002704&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:01Z",
+     "linhas_resposta": 6794,
+     "linhas": 409,
+     "sha256_resposta_completa": "50e4536a783315e801669b63207642894af42f749d7aa9cd9617b44f0438288d",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/5002704_2025_12.json.gz",
+     "sha256": "b0c82b73d646de01cdee5af58a6dd8e38baaf056d8666ed472e24d007b5173e9"
+    },
+    "3106200_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3106200&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:05Z",
+     "linhas_resposta": 14360,
+     "linhas": 1264,
+     "sha256_resposta_completa": "9a7c71921046b3c0ca7f7d1308210360ae26aa079bfff69fddbf2dd3b6b30105",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3106200_2025_12.json.gz",
+     "sha256": "63cb66217c7ac7b4bcc5b5a9e955b05c08262ce4003e5ab7ec6cc72047b9cd3b"
+    },
+    "1501402_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1501402&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:19Z",
+     "linhas_resposta": 8309,
+     "linhas": 359,
+     "sha256_resposta_completa": "c5452194d2a16a175d48c6ccd86bab79d3ad97b635ad2c4c92dc13dff6d4a8f0",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1501402_2025_12.json.gz",
+     "sha256": "479eaed3c8e14ccb66daaaff3fbf280bae2a5bcf125eadd729546f4323199817"
+    },
+    "2507507_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2507507&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:24Z",
+     "linhas_resposta": 4320,
+     "linhas": 282,
+     "sha256_resposta_completa": "30aaba618887f42a9dbe1e7ea8f63cbbc87c74d8b7e8943fb5eda330b72aa60c",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2507507_2025_12.json.gz",
+     "sha256": "1ab3818eb9ff1a146f2914957051915e9017a646329d89b963c3d66576516c24"
+    },
+    "4106902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4106902&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:27Z",
+     "linhas_resposta": 9855,
+     "linhas": 304,
+     "sha256_resposta_completa": "83ebcb3b5b58d70d6b9198b9c046acf564a3f666d1e2cdf6bfd767313d6e6ffe",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4106902_2025_12.json.gz",
+     "sha256": "51a837c0c2052746f695149dfe19d79a7bf1d89716fa87b150f650f17e663e4e"
+    },
+    "2611606_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2611606&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:31Z",
+     "linhas_resposta": 10717,
+     "linhas": 777,
+     "sha256_resposta_completa": "57909ef7ec055573174773b321f7caa01216c939232d0deb94c75944aa8a8c99",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2611606_2025_12.json.gz",
+     "sha256": "023efe7cc069d4c77b86e96544f974e94ec00b402d7bc401944319b6270c9ecd"
+    },
+    "2211001_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2211001&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:35Z",
+     "linhas_resposta": 6315,
+     "linhas": 410,
+     "sha256_resposta_completa": "056d40c00e044280eca218e6a0ada110638d49f883f900d7b3fb72c5108ed877",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2211001_2025_12.json.gz",
+     "sha256": "f6339071f4e07cf3b9c3cfc5c59df26a47d617b175cb4d04de96b778880fa9b1"
+    },
+    "3304557_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3304557&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:39Z",
+     "linhas_resposta": 15990,
+     "linhas": 1136,
+     "sha256_resposta_completa": "d9501d2f7910d48834c6fa75d2f152cda3c057a9ce796c93b2505acd051bea1b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3304557_2025_12.json.gz",
+     "sha256": "88cde3bcf32e4fc6e05cba47ca1ff62b950d93dc4ebba7e5b41f400c95ad1485"
+    },
+    "2408102_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2408102&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:48Z",
+     "linhas_resposta": 9257,
+     "linhas": 529,
+     "sha256_resposta_completa": "6663e58cabd0582ffaa8a3f953e254e33a6cce437ee6fa99691efef2fec7dc1a",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2408102_2025_12.json.gz",
+     "sha256": "6a15c998b831ef722dbbc7030e730661a505032ea209e2d9f42246e5f012487c"
+    },
+    "4314902_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4314902&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:49Z",
+     "linhas_resposta": 10952,
+     "linhas": 1307,
+     "sha256_resposta_completa": "9c5b659aede7dfc5a9e2aa62925a2ac6d8f741b1e328e536b240ac214d756874",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4314902_2025_12.json.gz",
+     "sha256": "5513595e33e85a9e1f6e8e734d98ca34b4b971a03eb9d653cbb8c39cbb76c4a0"
+    },
+    "1100205_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1100205&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:52Z",
+     "linhas_resposta": 9104,
+     "linhas": 661,
+     "sha256_resposta_completa": "a925f35be844ec5ac25098408107da814027547f83851233c29c707f153a0dde",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1100205_2025_12.json.gz",
+     "sha256": "d126cce866774e5196210253cbb66875edb29d02cc39c3972bf236b8392149cd"
+    },
+    "1400100_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1400100&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:35:57Z",
+     "linhas_resposta": 6507,
+     "linhas": 690,
+     "sha256_resposta_completa": "53d8258e6e0bd551521e91278fd58fdbcbe8295cf68a520158e6dfc0b4a70c6f",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1400100_2025_12.json.gz",
+     "sha256": "7537f60d1f6b5048ea1b477e24d826aa8a52e65a95e67a5ffd169a8f31992077"
+    },
+    "4205407_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=4205407&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:36:01Z",
+     "linhas_resposta": 12149,
+     "linhas": 517,
+     "sha256_resposta_completa": "74b4e3b2748e0b4f2eb2958190e6f46b391b052426822472a3d237120b4bf2ed",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/4205407_2025_12.json.gz",
+     "sha256": "d13f8412dfd7688cabc3f5c9114f3bb423974858f1fd028939cdc3a88d7e2b84"
+    },
+    "3550308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=3550308&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:36:08Z",
+     "linhas_resposta": 11834,
+     "linhas": 888,
+     "sha256_resposta_completa": "0e780ca939b40883973be4da2eb9b7ba3b31b09d74166f7e41b13fd347a3f63b",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/3550308_2025_12.json.gz",
+     "sha256": "4979de8a6bd7e0cd57b456296fbc53b9674ff84528d8b25e5db7247574cb3271"
+    },
+    "2800308_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=2800308&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:36:10Z",
+     "linhas_resposta": 7976,
+     "linhas": 369,
+     "sha256_resposta_completa": "3112c3bdb911fbf8d7f93806dbc8e3851bc98f077343b1267b53cd0508ac9ef2",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/2800308_2025_12.json.gz",
+     "sha256": "e7a59fa9e0f940fb062d1a10dc42a8913f631dbc2e34c2626265cb79612e14d7"
+    },
+    "1721000_2025": {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria?id_ente=1721000&an_referencia=2025&me_referencia=12&co_tipo_matriz=MSCC&classe_conta=6&id_tv=ending_balance",
+     "capturado_em": "2026-10-09T11:36:11Z",
+     "linhas_resposta": 14253,
+     "linhas": 1269,
+     "sha256_resposta_completa": "a9c1da5e7ce10b94c8fc9aede893ce4980a12a475c3eb51bd4c0b53f4dc40f99",
+     "recorte": "pipeline/eficiencia_saude/seed/siconfi/msc_funcao10/1721000_2025_12.json.gz",
+     "sha256": "156156a1ecf39551ee80fac7172ab5e5a19a443f477604bae3923fce37171a98"
     }
    }
   },
