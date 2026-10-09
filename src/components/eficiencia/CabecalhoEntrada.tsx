@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
 import { LogoMark } from "@/components/ui/Logo";
 
 /** Cabeçalho da entrada do observatório: marca, nome e nada de navegação de painel. */
@@ -16,6 +17,7 @@ export function CabecalhoEntrada() {
           Observatório Brasileiro de Eficiência Estatal
         </p>
       </div>
+      <div className="mx-auto max-w-page border-t border-linha px-4 sm:px-6"><NavegacaoObservatorios atual="eficiencia" /></div>
     </header>
   );
 }
