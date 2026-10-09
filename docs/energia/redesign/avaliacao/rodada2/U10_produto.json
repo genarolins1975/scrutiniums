@@ -1,0 +1,1216 @@
+{
+ "avaliador": "P2-U10",
+ "papel": "produto",
+ "unidade": "U10",
+ "rodada": "2 (versão redesenhada)",
+ "versao_avaliada": "commit cbb5fbfeb, servido em http://localhost:3101",
+ "paginas": {
+  "/setor-eletrico/perdas": {
+   "paineis": [],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e captura própria em 768: H1 em pergunta, definição de Perda, 4 KPIs com ano, universo e natureza, seletor de profundidade e início do primeiro painel na primeira tela.",
+      "1440_inteira_01de03.png: o mapa, que responde 'onde', começa perto de 2.300 px, depois de blocos de leitura e dos cartões 'Outras perguntas'; em 390 (captura própria) começa perto de 4.400 px.",
+      "1440_inteira_03de03.png: no painel de evolução há cerca de 190 px de vazio à esquerda, ao lado do cartão de 14,77%, e dois avisos de ano aberto seguidos antes do gráfico."
+     ],
+     "atendidos": [
+      "Pergunta e número principal reconhecíveis na primeira tela",
+      "Hierarquia entre síntese (KPIs), comparação (faixas, mapa) e aprofundamento (profundidade, tabela)",
+      "Números com unidade, ano e universo em cada cartão",
+      "Celular preserva KPIs, filtros, gráficos, mapa e tabela sem rolagem horizontal",
+      "Tipografia e espaçamento consistentes em 390, 768 e 1440"
+     ],
+     "problemas": [
+      "O mapa fica depois de cerca de 2.000 px de texto em 1440 e 4.400 px em 390.",
+      "O bloco de três colunas 'O que mudou, Como interpretar, O que não é possível concluir' e as notas em 12 px dominam a leitura; o aviso de ano aberto aparece duas vezes seguidas.",
+      "Vazio de cerca de 190 px à esquerda no painel de evolução em 1440; em 390 o título do gráfico fica colado ao aviso.",
+      "Em 390 a legenda e os controles ocupam cerca de 480 px antes do mapa, que fica pequeno (356 px de largura).",
+      "O último painel repete a abertura da página de composição."
+     ],
+     "justificativa": "Primeira tela boa e consistente, com números legíveis e celular íntegro. A resposta visual a 'onde' fica distante, há repetição de blocos e de avisos e vazios pontuais. Por isso a nota fica abaixo de 9."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt linhas 5 a 7 e 73 a 79: perda definida com glossário, denominador explícito, 'Como interpretar' e 'O que não é possível concluir' visíveis dentro do painel.",
+      "texto_entender.txt linhas 94 e 109: legenda do mapa e nota 'Limitação' citam MMGD, SIGEL, BDGD e File Geodatabase sem tradução no nível Entender.",
+      "1440_inteira_01de03.png: 'Por que isso importa' está recolhido, então a razão da medida não aparece na primeira tela."
+     ],
+     "atendidos": [
+      "Conceito de perda definido antes dos números, com glossário em 'Perda'",
+      "Denominador explícito e agregado separado da média simples e da mediana",
+      "'O que não é possível concluir' visível sem expandir",
+      "Natureza do dado marcada por glifo e texto (calculado, observado, estimado)",
+      "Próximos passos guiados ('Outras perguntas sobre perdas', 'Próxima pergunta')"
+     ],
+     "problemas": [
+      "Por que a medida importa (custo, tarifa) só está em bloco recolhido; a primeira tela não diz a consequência.",
+      "Siglas e termos sem tradução no nível Entender: MMGD, SIGEL, BDGD, GDAL, BT.",
+      "A explicação do denominador ('fornecida + irregular + perdas', 'energia injetada de referência') é densa para leitor leigo.",
+      "As cinco perguntas da abertura só ficam completas depois de rolar até o fim do primeiro painel."
+     ],
+     "justificativa": "Abertura honesta e bem definida, com limites de leitura visíveis. Falta dizer logo o porquê e o custo, e há jargão de coleta e siglas sem tradução no nível básico."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: Período e Medida mudam gráfico, frase, universo, legenda e mapa; busca 'light' escolhe LIGHT SESA; comparação de CEMIG-D, ENEL RJ, EQUATORIAL PA e LIGHT SESA com o agregado na mesma escala.",
+      "Tabela filtrada (52 de 123) baixa em CSV com nome que registra período, medida, filtro, ordem e versão.",
+      "texto_entender.txt linha 79: o texto afirma que não se pode concluir meta regulatória; técnicas, não técnicas e custo aparecem só como atalhos."
+     ],
+     "atendidos": [
+      "Taxa com denominador correto, no agregado e por distribuidora",
+      "Comparação entre distribuidoras e contra o agregado na mesma escala",
+      "Distribuição por faixas, extremos, mediana e universo visíveis",
+      "Série histórica com quebra de leiaute marcada",
+      "Exportação com o recorte e atalhos para os painéis seguintes"
+     ],
+     "problemas": [
+      "Sem referência regulatória, a leitura 'acima ou abaixo da meta' não é possível (bloqueio externo documentado).",
+      "Separação técnica e não técnica e custo ficam em outras páginas; aqui há só um resumo repetido.",
+      "Resumo nacional e 'O que mudou' ficam em 2025 quando o leitor muda período ou medida.",
+      "Em celular o toque no mapa leva a página ao topo e o resultado fica a 5.351 px do topo."
+     ],
+     "justificativa": "Cumpre bem a interpretação do denominador e a comparação entre distribuidoras, com exportação. A tarefa completa (referência regulatória, custo) depende de outras páginas e parte está bloqueada na fonte; o resumo fixo em 2025 reduz a utilidade na exploração."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de03.png: mapa por área de distribuidora com hachuras para 'fora da comparação' e 'sem dado' e nota de limitação territorial visível.",
+      "Playwright 1440: 'Copiar link deste painel' grava a URL com período, medida, distribuidora e comparação; CSV e XLSX acompanham filtro e ordem.",
+      "O custo para quem consome só aparece em 'Por que isso importa' (recolhido) e na página de custo."
+     ],
+     "atendidos": [
+      "Recorte territorial pertinente, com limites e lacunas explícitos",
+      "Meios de compartilhar e exportar com contexto",
+      "Lacunas relevantes visíveis (20 fora da comparação, 20 sem dado)",
+      "Cautela contra leitura de eficiência ou de furto"
+     ],
+     "problemas": [
+      "A consequência para a tarifa e para quem consome não aparece na primeira tela.",
+      "Sem leitura de desigualdade (renda, acesso) nesta página; ela está na página de custo.",
+      "Linguagem técnica de coleta limita a compreensão por leitor não especializado."
+     ],
+     "justificativa": "Boa base territorial, exportação e transparência sobre lacunas. O impacto social (custo, desigualdade) está em outra página ou recolhido, e o leitor leigo encontra jargão. É potencial de impacto, não impacto comprovado."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de03.png: barras por faixa com contagem e percentual, zero na origem e ausentes fora das faixas; mapa com legenda, hachuras e padrão para município compartilhado.",
+      "Playwright 1440: comparação com quatro linhas, agregado tracejado, rótulos diretos e mesma escala; setas do teclado percorrem os pontos.",
+      "Cores medidas: classes claras com 1,31:1 e 1,9:1 contra o branco; selo do painel fixo em 'Calculado, Observado' para todas as medidas."
+     ],
+     "atendidos": [
+      "Gráfico escolhido pela tarefa (faixas, mapa, linhas)",
+      "Escalas com zero e mesma escala na comparação",
+      "Categorias completas com 'fora da comparação' e 'sem dado' separados",
+      "Mapa com unidade territorial explícita e limites declarados",
+      "Alternativas por tabela, texto e interação além do hover"
+     ],
+     "problemas": [
+      "O selo do painel continua 'Calculado, Observado' ao escolher perdas técnicas ou não técnicas, que são estimadas.",
+      "As classes mais claras do mapa (1,31:1 e 1,9:1) e a classe neutra da variação (1,31:1) quase somem no fundo branco.",
+      "A paleta divergente da variação usa marrom avermelhado para queda da taxa, convenção pouco usual.",
+      "A série nacional com eixo de 0 a 15% achata a variação de 14,00 a 15,85; a marca de 2024 usa 10 px.",
+      "Em 390 o mapa tem 356 px de largura para milhares de municípios."
+     ],
+     "justificativa": "Escolhas de gráfico adequadas e honestas, com ausência tratada à parte e alternativas por tabela e teclado. Pesam o selo de natureza fixo, o contraste fraco das classes claras, a paleta divergente incomum e o mapa pequeno no celular."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright 1440 e 390: o primeiro clique ou toque em texto, gráfico ou mapa leva scrollY de 2.098 para 70 (1440) e de 4.165 para 25 (390) e põe o foco em main.",
+      "Período 2024 com volume: frase e universo mudam, mas 'Em 2025, as concessionárias perderam 14,75%...' e 'O que mudou' ficam em 2025.",
+      "A URL guarda periodo, medida, d, cmp, tab.* e modo (Entender 6.150 px, Analisar 10.041 px, Auditar 12.288 px); há 'Restaurar a consulta padrão' e aviso de limite de quatro comparações."
+     ],
+     "atendidos": [
+      "Estado em URL (inclui o nível ?modo=), link copiável e botão de restaurar",
+      "Busca por distribuidora e município com teclado",
+      "Comparação de até quatro com remoção e aviso de limite",
+      "Estados vazios e fora da comparação compreensíveis (ENF encerrada, CERMC)",
+      "Exportação CSV e XLSX acompanha filtro e ordem"
+     ],
+     "problemas": [
+      "O primeiro clique em área não interativa, inclusive no mapa, joga a página ao topo; o painel da escolha fica a 3.174 px (1440) e 5.351 px (390) do topo.",
+      "Resumo nacional, 'O que mudou' e 'Como interpretar' não acompanham período e medida.",
+      "A tabela ordenada por taxa traz valores 'fora da comparação' no topo (2020: 11.480,35% e quatro outros).",
+      "A página principal não tem a faixa de quatro abas das páginas irmãs; os atalhos ficam no meio da página.",
+      "Três acessos a tabelas parecidas ('Dados do gráfico', 'Resumo em tabela', 'Ver a tabela completa')."
+     ],
+     "justificativa": "Estado em URL, busca, comparação e exportação são fortes. O salto ao topo no primeiro clique, os blocos que não acompanham o recorte e a tabela com valores inválidos no topo impedem nota alta."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json: axe vazio, sem rolagem horizontal, sem foco invisível; axe-core próprio sem violações em 1440 e 390 (45 nós de contraste 'incompleto'); contraste de texto medido sem falhas.",
+      "Teclado (Playwright): pular para o conteúdo, ordem lógica, anel de 2 px, setas, Home e End nos gráficos, Esc fecha a ficha; com movimento reduzido a rolagem suave é desligada.",
+      "objetivo.json: 71 de 179 alvos abaixo de 44 px em Auditar 390 (0 em Entender); captura própria em 320: sem rolagem horizontal, trilha truncada em 'Perda...'."
+     ],
+     "atendidos": [
+      "Teclado e foco visível com ordem coerente",
+      "Semântica e rótulos (marcos, rádios, comboboxes, aria-label nas barras)",
+      "Alternativas à cor (hachuras, glifos de natureza, rótulos)",
+      "Sem rolagem horizontal de página em 320, 360, 390, 768 e 1440",
+      "Movimento reduzido respeitado"
+     ],
+     "problemas": [
+      "O primeiro clique em conteúdo move o foco para main e rola ao topo (main com tabindex -1).",
+      "71 alvos abaixo de 44 px em Auditar no celular; notas e rótulos em 10 a 12 px.",
+      "Classes claras do mapa com contraste de objeto gráfico abaixo de 3:1.",
+      "O mapa só opera por teclado pela busca; leitor de tela real não foi testado.",
+      "Em 320 px a trilha de navegação trunca o nome da página ('Perda...'), embora o H1 o repita."
+     ],
+     "justificativa": "Base de acessibilidade sólida: axe limpo, teclado e foco bons, movimento reduzido respeitado. Descontos pelo salto de foco ao topo, alvos pequenos no celular em Auditar, contraste das classes claras e ausência de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p1-salto-topo-clique",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "main#conteudo (tabindex -1) e mapa em #perdas-territorio",
+     "descricao": "O primeiro clique ou toque numa área não interativa (texto, gráfico, mapa) foca main e rola a página ao topo: scrollY 2.098 para 70 em 1440 e 4.165 para 25 em 390; vale também depois de focar outro controle. O painel 'Qual é a situação da distribuidora escolhida?' fica a 3.174 px (1440) e 5.351 px (390) do topo, sem aviso junto ao mapa.",
+     "sugestao": "Tirar o tabindex -1 de main (usar um alvo pequeno só para o link de pular) e anunciar ou rolar até o resultado da escolha."
+    },
+    {
+     "id": "p1-blocos-fixos-em-2025",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "painel 'Como variam as perdas entre as distribuidoras?', blocos abaixo do gráfico",
+     "descricao": "Ao mudar Período ou Medida, gráfico, frase de abertura, universo, legenda e mapa mudam, mas a frase 'Em 2025, as concessionárias com o ano completo perderam 14,75%...', 'O que mudou' e 'Como interpretar' permanecem em 2025 e na taxa.",
+     "sugestao": "Atrelar esses blocos ao recorte ou rotulá-los como resumo nacional fixo de 2025."
+    },
+    {
+     "id": "p1-selo-natureza-fixo",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "J"
+     ],
+     "onde": "cabeçalho do painel de mapa e comparação",
+     "descricao": "Os selos 'Calculado' e 'Observado' não mudam ao escolher perdas técnicas ou não técnicas (estimadas, glifo de meio círculo nas outras páginas). A frase diz 'estimadas', mas o título do gráfico e a legenda do mapa não.",
+     "sugestao": "Trocar o selo por 'Estimado' nessas medidas e acrescentar 'estimadas' ao título e à legenda."
+    },
+    {
+     "id": "p1-tabela-fora-no-topo",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "tabela 'Qual é o valor de cada distribuidora?', ordenação padrão",
+     "descricao": "Ordenada por taxa decrescente, a tabela abre com valores publicados 'fora da comparação' (em 2020: 11.480,35; 2.820,73; 987,79; 444,76; 402,78) e, em 2025, intercala duas linhas fora (CERMC, CEREJ) entre comparáveis.",
+     "sugestao": "Ordenar as linhas fora da comparação por último ou esmaecê-las."
+    },
+    {
+     "id": "p1-mapa-distante",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "ordem dos painéis",
+     "descricao": "O mapa, que responde 'onde', começa perto de 2.300 px (1440) e 4.400 px (390), depois dos blocos de leitura e dos cartões 'Outras perguntas sobre perdas'. A primeira tela só traz o intervalo entre distribuidoras.",
+     "sugestao": "Subir o mapa logo após o gráfico por faixas e deixar os blocos de leitura para depois."
+    },
+    {
+     "id": "p1-jargao-entender",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "nota 'Limitação' sob o mapa e legenda do mapa (nível Entender)",
+     "descricao": "Aparecem SIGEL, BDGD, GDAL, File Geodatabase e MMGD sem tradução, e a evidência de coleta de 30/09/2026 é nota operacional, não explicação para o leitor.",
+     "sugestao": "Levar a evidência de coleta para Auditar e traduzir as siglas no ponto de uso."
+    },
+    {
+     "id": "p1-comprove-valor-exibido",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "I"
+     ],
+     "onde": "fichas 'Comprove este número'",
+     "descricao": "A ficha informa 'Valor exibido' 14,7%, 14,8% e 15,0%, enquanto a página mostra 14,75%, 14,77% e 14,99%. O nome do botão repete o valor arredondado.",
+     "sugestao": "Mostrar na ficha o mesmo valor, com as mesmas casas, que a página exibe."
+    },
+    {
+     "id": "p1-sem-abas-da-familia",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "topo da página principal",
+     "descricao": "As três páginas irmãs têm a faixa de quatro abas; a principal não tem, e os atalhos ficam em 'Outras perguntas sobre perdas' no meio da página.",
+     "sugestao": "Repetir a faixa de abas no topo da página principal."
+    },
+    {
+     "id": "p1-vazio-e-avisos-repetidos",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "painel de evolução, 1440 e 390",
+     "descricao": "Vazio de cerca de 190 px à esquerda ao lado do cartão de 14,77%, dois avisos de ano aberto seguidos e, em 390, título do gráfico colado ao aviso. A tabela do gráfico tem cabeçalho genérico 'Item'.",
+     "sugestao": "Fundir os avisos, ajustar o espaçamento e nomear a coluna como 'Ano'."
+    },
+    {
+     "id": "p1-contraste-e-paleta",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "legenda e mapa de taxa e de variação",
+     "descricao": "Classes claras com 1,31:1 e 1,9:1 contra o fundo branco; classe neutra da variação com 1,31:1; queda da taxa em marrom avermelhado e alta em verde azulado.",
+     "sugestao": "Contorno escuro nas classes claras e rever a paleta divergente para não sugerir alerta."
+    },
+    {
+     "id": "p1-alvos-pequenos-auditar-celular",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "nível Auditar em 390 px",
+     "descricao": "71 de 179 alvos de toque têm menos de 44 px (nenhum abaixo de 24 px); em Entender são 0.",
+     "sugestao": "Aumentar a altura mínima dos controles de tabela e dos links de arquivo no celular."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, VoiceOver, TalkBack).",
+    "Firefox e Safari: o salto ao topo no primeiro clique foi medido só no Chromium 1194 headless.",
+    "Visual em 768 px além da primeira tela e do mapa.",
+    "Texto completo do nível Analisar (lido apenas pelos trechos marcados no texto de Auditar e por medidas)."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T4",
+     "escopo": "Interpretar perdas com o denominador correto e comparar distribuidoras; referência regulatória e custo ficam nas páginas irmãs",
+     "perfil": "jornalista ou professor, com variações de pesquisador e gestor, por agente (inspeção heurística)",
+     "passos": [
+      "Ler a primeira tela: taxa de 14,75% da energia injetada, 51 concessionárias, mediana de 11,31% e faixa de 3,25% a 43,19%.",
+      "Mudar Período (2024, 2003, acumulado de 2026) e Medida (volume, técnicas, não técnicas, variação) e conferir frase, gráfico, legenda e universo.",
+      "Buscar LIGHT SESA, ler a situação da distribuidora e a série própria com o agregado.",
+      "Comparar quatro distribuidoras (CEMIG-D, ENEL RJ, EQUATORIAL PA, LIGHT SESA) na mesma escala.",
+      "Abrir a tabela, filtrar por tipo, ordenar e baixar CSV; ler 'O que não é possível concluir'.",
+      "Em 390 px, abrir o menu e tocar numa área do mapa para escolher uma distribuidora."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "O mapa fica a 2.300 px (1440) e 4.400 px (390) da abertura.",
+      "O resumo nacional não acompanha o recorte escolhido.",
+      "A referência regulatória e o custo não existem nesta página."
+     ],
+     "erros": [
+      "Salto ao topo ao primeiro clique no mapa ou em texto.",
+      "Tabela abre com valores fora da comparação no topo em 2020."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/perdas/composicao": {
+   "paineis": [],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png: H1 em pergunta, definição de técnica e não técnica no lead, dois KPIs e aviso 'não se somam'; o gráfico começa logo abaixo da dobra.",
+      "1440_inteira_01de02.png: barras empilhadas mostram 11 de 19; eixo de menos 10 a 30 deixa cerca de um quarto da largura vazio; rótulos 14,22, 12,55 e 11,31 sob a linha tracejada.",
+      "390_inteira_02de05.png e captura própria em 320: rótulos de 12,55 a 8,69 cruzados pela linha tracejada de referência."
+     ],
+     "atendidos": [
+      "Pergunta e números principais na primeira tela",
+      "Hierarquia: síntese (KPIs), comparação (barras) e aprofundamento (séries e universo fixo)",
+      "Tabela de universo fixo pequena e legível",
+      "Celular mantém todos os blocos e o gráfico legível",
+      "Página curta (3.816 px em 1440), sem repetir gráficos"
+     ],
+     "problemas": [
+      "Rótulos de valor cruzados pela linha tracejada em 320, 390 e 1440.",
+      "Eixo começa em menos 10 sem barra negativa visível por padrão, o que desperdiça largura.",
+      "Segmentos de técnica e não técnica sem rótulo; só o total aparece.",
+      "Dois KPIs em bases diferentes e parágrafo de aviso ocupam a primeira tela.",
+      "Duas tabelas para os mesmos 19 itens ('Dados do gráfico' e 'Ver a tabela completa')."
+     ],
+     "justificativa": "Página enxuta e bem hierarquizada, com celular íntegro. Rótulos sob a linha de referência, eixo com folga inútil, segmentos sem valor e tabelas duplicadas reduzem a leitura."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt linha 6: 'A perda técnica vem da física das redes; a não técnica é a diferença entre a total e a técnica', com glossário nos dois termos.",
+      "texto_entender.txt linhas 25 e 49: 'não se somam' e 'outro conjunto' explicam bases e universos diferentes.",
+      "Tabela da composição (Playwright 1440): DMED e EFLUL com perda não técnica negativa (menos 0,37 e menos 0,50 p.p.), sem explicação junto ao gráfico; a definição só está em Auditar."
+     ],
+     "atendidos": [
+      "Conceitos definidos no lead antes dos números",
+      "Denominadores distintos explicados (energia injetada e mercado de baixa tensão)",
+      "Estimativa marcada como tal (glifo e texto)",
+      "Limites de leitura visíveis: não técnica não é só furto",
+      "Queda da cobertura explicada (48 de 50 em 2023, 18 de 51 em 2025)"
+     ],
+     "problemas": [
+      "A resposta à pergunta do título são duas porcentagens de bases diferentes que 'não se somam'; a divisão na mesma base não aparece.",
+      "Perda não técnica negativa aparece sem explicação junto ao gráfico.",
+      "'Por que isso importa' recolhido; 'mercado de baixa tensão' e 'leiaute novo' sem tradução imediata.",
+      "A série de não técnicas só começa em 2010, sem nota no gráfico."
+     ],
+     "justificativa": "Conceitos bem definidos e ressalvas claras. O leitor leigo não vê a divisão na mesma base e encontra valores negativos sem explicação; o porquê fica recolhido."
+    },
+    "C": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt linhas 49 e 59: 18 de 51 concessionárias publicam a separação em 2025, 32,6% da energia, contra 48 de 50 em 2023.",
+      "Playwright 1440: Enter numa barra abre o histórico da distribuidora; 'Mostrar todas as 19'; tabela com busca e CSV e XLSX.",
+      "Tabela de universo fixo (16 concessionárias, 2023 a 2025) traz uma tendência comparável."
+     ],
+     "atendidos": [
+      "Separação técnica e não técnica por distribuidora na mesma base",
+      "Cobertura e queda de publicação visíveis",
+      "Série de universo fixo para tendência comparável",
+      "Histórico por distribuidora ao escolher a barra",
+      "Exportação e link com o recorte"
+     ],
+     "problemas": [
+      "Cobre 32,6% da energia em 2025; o agregado na mesma base não é mostrado (exige subtração).",
+      "Sem referência regulatória de não técnicas para situar cada barra.",
+      "A linha de 14,75% é de outro conjunto (51 concessionárias) e a dica calcula 'Diferença' contra ela.",
+      "O filtro 'Decomposição' tem uma só opção e há colunas constantes na tabela."
+     ],
+     "justificativa": "Atende a separação com honestidade sobre a cobertura e traz série comparável. Cobertura baixa, falta do agregado na mesma base e de referência regulatória limitam o uso para decisão."
+    },
+    "D": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt linha 63: 'perda não técnica seja só furto' e 'toda perda técnica possa ser eliminada' como conclusões não permitidas.",
+      "1440_inteira_01de02.png: sem recorte territorial nem custo para o consumidor na página.",
+      "Copiar link, 'Baixar os dados (2 arquivos)' e CSV e XLSX da tabela."
+     ],
+     "atendidos": [
+      "Linguagem acessível e cautela contra estigma (não técnica não é só furto)",
+      "Lacuna de cobertura visível e quantificada",
+      "Compartilhar e exportar com contexto",
+      "Útil a jornalistas e conselhos para ler divulgação parcial"
+     ],
+     "problemas": [
+      "Sem recorte territorial ou por UF nem custo para o consumidor nesta página.",
+      "O efeito da perda não técnica na tarifa fica em outra página.",
+      "Quem paga não é dito na primeira tela."
+     ],
+     "justificativa": "Boa cautela editorial e visibilidade da lacuna, mas pouco recorte social, território ou custo nesta página. É potencial de impacto, não impacto comprovado."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "1440_inteira_01de02.png e captura própria: barras empilhadas horizontais ordenadas pelo total, linha tracejada de referência e dois gráficos de linha com marca de 2024 e contagem de publicantes.",
+      "Playwright 1440: rótulo desenhado 14,22 e 10,45 contra tabela e CSV 14,23 e 10,44 (NEOENERGIA BRASÍLIA, COSERN).",
+      "Eixo de menos 10 a 30; as barras negativas de DMED e EFLUL só aparecem após 'Mostrar todas' (ou tecla End)."
+     ],
+     "atendidos": [
+      "Gráfico adequado à tarefa de composição",
+      "Referência visível com universo declarado",
+      "Marca de quebra de 2024 com contagem de publicantes",
+      "Alternativa por tabela e por teclado (setas, Home, End)",
+      "Ausência tratada como lacuna ('sem dado')"
+     ],
+     "problemas": [
+      "O rótulo desenhado difere da tabela em 2 de 19 linhas (0,01 p.p.), sem nota nesta página.",
+      "Rótulos de valor sob a linha tracejada; segmentos sem valor.",
+      "O padrão esconde 8 de 19 barras, inclusive as duas negativas; após a tecla End o aviso 'mostra só parte' continua.",
+      "A linha de referência é de outro conjunto, mas a dica calcula a diferença contra ela.",
+      "Dois gráficos de linha lado a lado com escalas e bases diferentes (0 a 8 e 0 a 20)."
+     ],
+     "justificativa": "Escolhas corretas e transparentes, com marca de quebra e alternativas. Divergência de arredondamento sem nota, rótulos sob a referência, barras ocultas e referência de outro conjunto limitam a nota."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: Enter numa barra grava ?d=CNPJ, abre os gráficos por ano e a tabela; 'Ocultar a tabela'; setas, Home e End percorrem as barras.",
+      "O filtro 'Decomposição' tem só 'fecha' (19 de 19) e as colunas 'Total menos técnica menos não técnica' e 'Decomposição' são constantes.",
+      "Primeiro clique em parágrafo: scrollY 1.400 para 70 (main com tabindex -1)."
+     ],
+     "atendidos": [
+      "Seleção por barra, linha ou teclado com estado em URL",
+      "'Mostrar todas' e tabela completa com busca, ordenação e exportação",
+      "Abas da família e profundidade preservada entre páginas (?modo=)",
+      "Mensagem de estado ao escolher e ao limitar",
+      "Link copiável"
+     ],
+     "problemas": [
+      "O primeiro clique em conteúdo rola a página ao topo.",
+      "Dois caminhos para a mesma tabela ('Dados do gráfico' e 'Ver a tabela completa').",
+      "Após a tecla End o gráfico mostra tudo, mas o texto e o botão seguem dizendo 'mostra só parte'.",
+      "Filtro e colunas sem função, porque todas as linhas fecham."
+     ],
+     "justificativa": "Interação previsível e com estado em URL. Salto ao topo no primeiro clique, tabelas duplicadas, filtro sem função e mensagem de estado desatualizada mantêm a nota abaixo de 9."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe vazio e sem foco invisível; axe-core próprio sem violações (110 nós de contraste 'incompleto'); 4 alvos abaixo de 44 px em 1440 e 0 em 390 Entender.",
+      "aria-label por barra com técnica, não técnica e total; instruções para setas, Home, End e Enter; Esc fecha a ficha 'Comprove'.",
+      "Playwright: 320 e 360 px sem rolagem horizontal; trilha de navegação truncada em 320."
+     ],
+     "atendidos": [
+      "Teclado e foco visível nos controles e nos gráficos",
+      "Semântica e rótulos acessíveis nas barras e nas tabelas",
+      "Alternativa à cor (rótulos, glifo de natureza, tabela)",
+      "Sem perda de informação em 320, 390, 768 e 1440",
+      "Alvos de toque confortáveis em Entender no celular"
+     ],
+     "problemas": [
+      "O primeiro clique em conteúdo rola ao topo e põe o foco em main.",
+      "Rótulos cruzados pela linha tracejada reduzem a leitura em 320 e 390.",
+      "Leitor de tela real não testado; nós de contraste 'incompleto' no axe.",
+      "Notas e anotações em 10 a 12 px."
+     ],
+     "justificativa": "Boa acessibilidade medida: axe limpo, teclado completo e sem rolagem horizontal. O salto de foco ao topo, os rótulos cruzados e a falta de teste com leitor de tela impedem 9."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "divergência entre gráfico, tabela e exportação",
+     "descricao": "NEOENERGIA BRASÍLIA aparece com perdas totais de 14,22 no gráfico (rótulo desenhado, aria-label e 'Dados do gráfico em tabela') e 14,23 na tabela completa e no CSV; COSERN, 10,45 contra 10,44. A diferença é de 0,01 p.p., por arredondamento da soma dos componentes, e esta página não traz nota explicativa (a página de custo traz).",
+     "evidencia": "Playwright 1440 em /setor-eletrico/perdas/composicao: rótulo SVG, aria-label, tabela completa e CSV perdas-composicao-2025_completo baixado em 2026-10-09."
+    }
+   ],
+   "achados": [
+    {
+     "id": "p2-arredondamento-grafico-tabela",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "J"
+     ],
+     "onde": "rótulos das barras NEOENERGIA BRASÍLIA e COSERN versus tabela completa e CSV",
+     "descricao": "Total de 14,22 na barra e 14,23 na tabela; 10,45 na barra e 10,44 na tabela. A soma dos componentes arredondados (7,64 + 6,58) explica o 14,22, mas a tabela exibe outro total sem nota.",
+     "sugestao": "Usar na barra o mesmo total da tabela ou explicar a soma arredondada junto ao gráfico, como a página de custo já faz."
+    },
+    {
+     "id": "p2-resposta-em-bases-diferentes",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "KPIs de abertura (7,16% da injetada e 14,99% do mercado de baixa tensão)",
+     "descricao": "A resposta à pergunta do título são duas porcentagens de bases diferentes com aviso de que não se somam; a divisão na mesma base não aparece. Pelo CSV aberto da própria página, nas 18 concessionárias a técnica é 7,16% e a não técnica 6,66% da energia injetada.",
+     "sugestao": "Mostrar a divisão na mesma base (técnica e não técnica como % da injetada e da perda total) e manter a base de baixa tensão como segunda leitura."
+    },
+    {
+     "id": "p2-negativos-sem-explicacao",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "I"
+     ],
+     "onde": "barras DMED e EFLUL, eixo a partir de menos 10 e tabela da composição",
+     "descricao": "Perda não técnica negativa (DMED menos 0,37 e EFLUL menos 0,50 p.p.) aparece em barra à esquerda do zero e na tabela sem explicação junto ao gráfico; a definição só existe no nível Auditar.",
+     "sugestao": "Nota curta: a não técnica fica negativa quando a estimativa técnica excede a perda medida."
+    },
+    {
+     "id": "p2-salto-topo-clique",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "main#conteudo (tabindex -1)",
+     "descricao": "O primeiro clique em parágrafo ou gráfico leva a página de scrollY 1.400 para 70 e o foco para main.",
+     "sugestao": "Tirar o tabindex -1 de main e usar alvo pequeno só para o link de pular."
+    },
+    {
+     "id": "p2-rotulos-sob-a-referencia",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "I"
+     ],
+     "onde": "rótulos 14,22 a 8,69 e eixo do gráfico de barras",
+     "descricao": "A linha tracejada cruza os rótulos em 320, 390 e 1440; os segmentos não têm valor; cerca de um quarto da largura à esquerda do zero fica vazio quando não há barra negativa visível.",
+     "sugestao": "Deslocar os rótulos para depois da linha, rotular os segmentos e iniciar o eixo no menor valor."
+    },
+    {
+     "id": "p2-estado-mostrar-todas",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "'Mostrar todas as 19' e nota abaixo do gráfico",
+     "descricao": "O padrão mostra 11 de 19 barras; a tecla End leva o foco a EFLUL e expande o gráfico, mas o texto 'mostra só parte das 19 categorias' e o botão permanecem.",
+     "sugestao": "Sincronizar o estado do botão e da nota com o que está desenhado."
+    },
+    {
+     "id": "p2-filtro-e-colunas-sem-funcao",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "filtro 'Decomposição' e colunas da tabela completa",
+     "descricao": "Só há a opção 'fecha' e duas colunas constantes (0 e 'fecha (até 2 kWh por mês)') nas 19 linhas; a tabela repete os dados da tabela do gráfico.",
+     "sugestao": "Tirar filtro e colunas constantes do nível Entender e fundir as duas tabelas."
+    },
+    {
+     "id": "p2-referencia-de-outro-conjunto",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "linha tracejada de 14,75% e dica 'Diferença'",
+     "descricao": "A referência (51 concessionárias) é de outro conjunto das 19 barras; a dica calcula 'Diferença' em p.p. contra ela e o aviso 'outro conjunto' está só abaixo do gráfico.",
+     "sugestao": "Dizer 'outro conjunto' na legenda da linha ou comparar com a taxa das mesmas 18 concessionárias."
+    },
+    {
+     "id": "p2-serie-nao-tecnica-comeca-em-2010",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "gráfico de linhas das não técnicas",
+     "descricao": "A série só começa em 2010; a tabela mostra 'sem dado' de 2003 a 2009, mas o gráfico não explica o início tardio.",
+     "sugestao": "Anotar no gráfico que a separação passou a existir em 2010."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real.",
+    "Firefox e Safari.",
+    "Visual em 768 px além da primeira tela.",
+    "Se a diferença entre a taxa técnica sobre a injetada e sobre a injetada publicada em 2024 e 2025 (7,09 e 6,98; 7,16 e 7,12) está correta (avaliação técnica)."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T4",
+     "escopo": "Separar técnicas e não técnicas com os denominadores corretos",
+     "perfil": "jornalista ou professor (inspeção heurística de agente)",
+     "passos": [
+      "Ler o lead e os dois KPIs e o aviso de que as bases diferem.",
+      "Percorrer as barras por teclado, abrir ENEL RJ e ver o histórico por ano.",
+      "Usar 'Mostrar todas as 19' e ler os dois valores negativos na tabela.",
+      "Abrir 'Ver a tabela completa', ordenar e baixar CSV; comparar totais com o gráfico.",
+      "Ler 'O que mudou' e a tabela de universo fixo (16 concessionárias)."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Só 18 de 51 concessionárias publicam a separação em 2025 (32,6% da energia).",
+      "A divisão na mesma base não é mostrada; exige subtrair.",
+      "Valores negativos sem explicação junto ao gráfico."
+     ],
+     "erros": [
+      "Total de 14,22 e 10,45 no gráfico contra 14,23 e 10,44 na tabela.",
+      "Salto ao topo no primeiro clique em conteúdo."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/perdas/custo-e-contexto": {
+   "paineis": [],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png: H1 em pergunta, lead, frase com o intervalo de 14,65 a 192,66 R$/MWh e início do gráfico na primeira tela.",
+      "1440_inteira_01de02.png: barras empilhadas (11 de 80), dispersão com 52 pontos cinza e blocos de leitura em três colunas.",
+      "texto_entender.txt linha 6: o lead promete 'R$/MWh e % da tarifa', mas gráfico e frase trazem só R$/MWh."
+     ],
+     "atendidos": [
+      "Pergunta e resposta numérica na primeira tela",
+      "Hierarquia entre custo (primeiro painel) e contexto (segundo painel)",
+      "Unidades, base (sem tributos) e data de vigência visíveis",
+      "Celular com nomes acima das barras e valores legíveis",
+      "Tipografia e espaçamento consistentes"
+     ],
+     "problemas": [
+      "O lead promete % da tarifa, mas a participação só está na tabela e no nível Analisar.",
+      "O gráfico padrão mostra só as 11 maiores de 80; o mínimo citado na frase (CERPRO) não aparece.",
+      "A dispersão tem pontos cinza sem rótulo nem destaque dos extremos.",
+      "O rótulo 'O que mudou' abriga nota de cobertura, não mudança.",
+      "Nota de dependência em linguagem operacional ('acesso automatizado aos endereços tentados')."
+     ],
+     "justificativa": "Primeira tela objetiva e coerente com a pergunta. A promessa de % da tarifa não se cumpre no gráfico, o padrão exibe só o topo e a dispersão não identifica pontos, o que reduz a leitura."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt linhas 6 e 46: tarifa residencial sem tributos e 'nível reconhecido por MWh, não o custo das perdas reais nem o total em reais'.",
+      "B1, TUSD, TE e Rede Básica aparecem sem tradução no nível Entender (siglas só em bloco recolhido e em Auditar); REH aparece na tabela.",
+      "texto_entender.txt linha 42: 'Dependência: ... liberação de acesso automatizado aos endereços tentados'."
+     ],
+     "atendidos": [
+      "Distingue tarifa por MWh de custo total em reais",
+      "Associação com renda explicada como ordem (ρ de Spearman), sem reta",
+      "'Associação, não causa' repetido em três pontos",
+      "Limites da leitura visíveis",
+      "Conexão com a página de perdas e próximos passos"
+     ],
+     "problemas": [
+      "B1, TUSD, TE, Rede Básica e 'processo tarifário' sem explicação no ponto de uso.",
+      "Perda não técnica acima de 100% do mercado de baixa tensão (eixo até 150) sem explicação.",
+      "Nota de bloqueio com linguagem de operação.",
+      "'Por que isso importa' recolhido."
+     ],
+     "justificativa": "Boa distinção entre tarifa e custo e cautela sobre causalidade. Termos tarifários sem tradução e nota operacional no nível básico dificultam o leitor leigo."
+    },
+    "C": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright 1440: 'Mostrar todas as 80' expande (4.338 para 7.378 px); tabela de 115 linhas com filtro de situação e CSV e XLSX; o eixo vertical alterna total e não técnicas.",
+      "texto_entender.txt linhas 42 e 48: custo total em reais por processo indisponível; só o nível por MWh.",
+      "Tabela e CSV: CERR e CERIS com não técnica e Rede Básica iguais a 0; CELETRO, CERRP e CERPRO com não técnica 0; todas misturadas às concessionárias."
+     ],
+     "atendidos": [
+      "Valor reconhecido por MWh e participação na tarifa por distribuidora",
+      "Situação da vigência por distribuidora (vigente, encerrada)",
+      "Contexto de renda por área com n e ρ",
+      "Exportação do que se vê",
+      "Limite do que não se pode concluir (custo total em reais)"
+     ],
+     "problemas": [
+      "O custo total em reais não está disponível (bloqueio externo documentado).",
+      "Sem mediana ou faixa típica, e a ordenação em R$/MWh reflete o nível da tarifa.",
+      "Concessionárias e cooperativas no mesmo ranking, sem marca de tipo e com componentes zero sem explicação.",
+      "23 distribuidoras ativas sem tarifa vigente ficam fora do gráfico."
+     ],
+     "justificativa": "Atende o custo unitário e o contexto de renda com limites claros. Falta custo total, tendência central e distinção de tipo, e o ranking em R$/MWh mistura estruturas tarifárias diferentes."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt linhas 6 e 21: perdas 'entram na tarifa de quem consome na área' e custo residencial B1 por distribuidora.",
+      "Dispersão de renda média da área contra perdas (52 concessionárias), com 'associação entre áreas, não causa'.",
+      "texto_entender.txt linha 44: 23 ativas sem tarifa vigente e 12 com série encerrada visíveis; CSV, XLSX e link copiável."
+     ],
+     "atendidos": [
+      "Atenção ao custo para o consumidor residencial",
+      "Desigualdade tratada com cautela (renda média da área, não da família)",
+      "Recorte territorial por distribuidora, com filtro por UF na tabela",
+      "Lacunas relevantes visíveis",
+      "Compartilhar e exportar com contexto"
+     ],
+     "problemas": [
+      "Sem custo total em reais nem efeito para um consumidor típico.",
+      "O contexto social usa renda média de município, que esconde desigualdade interna (dito no texto).",
+      "Não há exemplo de leitura para o consumidor."
+     ],
+     "justificativa": "É a página de maior relevância social do módulo: custo na tarifa, renda e lacunas explícitas, com cautela sobre causa. Falta custo total e exemplo para o consumidor. Potencial de impacto, não impacto comprovado."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de02.png: barras empilhadas por componente com total na ponta; Playwright: dica por barra e leitura por teclado.",
+      "Playwright 1440 e capturas em 320 e 390: com 'Não técnicas' o eixo vai de menos 50 a 150 e comprime os pontos; o título do eixo x é truncado e perde '(R$ de 2022 por mês)'.",
+      "texto_entender.txt linha 33: total da barra difere da tabela em 23 de 80 (CERPRO 14,64 contra 14,65, valor da frase de abertura)."
+     ],
+     "atendidos": [
+      "Barras empilhadas adequadas à composição por componente",
+      "Dispersão sem reta inventada, com n e ρ",
+      "Zero na origem das barras e legenda de componentes",
+      "Alternativas por tabela, dica e teclado",
+      "Ausências tratadas à parte (processos encerrados fora do gráfico)"
+     ],
+     "problemas": [
+      "O total da barra difere da tabela e da frase em 23 de 80 linhas (0,01), explicado em nota.",
+      "O padrão exibe 11 de 80 barras, sem tipo da distribuidora nem explicação dos componentes zero.",
+      "Pontos da dispersão anônimos, sem destaque de extremos.",
+      "O título do eixo x perde a unidade em 320 e 390 px.",
+      "O eixo vertical de menos 50 a 150 na opção não técnicas comprime a maioria dos pontos."
+     ],
+     "justificativa": "Gráficos adequados e honestos, sem curva inventada e com alternativas. Pesam a divergência de arredondamento entre barra e tabela, pontos anônimos, unidade do eixo cortada no celular e o padrão que mostra só as 11 maiores."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright 1440: o eixo vertical 'Não técnicas' muda gráfico, n (46) e ρ (menos 0,377), mas a frase 'nas 52 concessionárias... taxa de perdas totais' e o botão 'Comprove a associação... menos 0,606' ficam como estavam.",
+      "texto_auditar.txt linha 57: a tabela ordenada por perdas põe CERR (processo de 2014 com vigência encerrada, 45,57% da tarifa) em segundo.",
+      "A URL guarda rel=pnt_bt; 'Mostrar todas as 80' vira 'Mostrar só o início'."
+     ],
+     "atendidos": [
+      "Alternância de eixo com estado em URL",
+      "Expandir e recolher o gráfico",
+      "Tabela com filtro de situação, busca, ordenação e exportação",
+      "Estados bloqueados compreensíveis (custo total, tarifa encerrada)",
+      "Link copiável e retorno à página de perdas"
+     ],
+     "problemas": [
+      "A frase e a ficha 'Comprove' da dispersão não acompanham o eixo escolhido (52 e menos 0,606 contra 46 e menos 0,377).",
+      "A tabela padrão mistura um processo encerrado de 2014 entre os vigentes.",
+      "O primeiro clique em conteúdo rola ao topo.",
+      "Dois caminhos para tabelas (dados do gráfico e tabela completa)."
+     ],
+     "justificativa": "Alternância e filtros funcionam com estado em URL. Frase e ficha de prova desatualizadas após trocar o eixo, tabela que mistura vigências e salto ao topo no primeiro clique mantêm a nota baixa."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json e axe próprio: sem violações (194 nós de contraste 'incompleto'); foco visível; 43 alvos abaixo de 44 px em Auditar 1440 e 39 em 390.",
+      "Barras com role button e aria-label por componente; rádios nativos; Esc fecha a ficha.",
+      "Capturas em 320 e 390: título do eixo x truncado; 320 sem rolagem horizontal."
+     ],
+     "atendidos": [
+      "Teclado e foco visível, com ordem coerente",
+      "Rótulos e semântica nas barras e nos controles",
+      "Alternativa à cor por rótulos, dica e tabela",
+      "Sem rolagem horizontal em 320 a 1440",
+      "Movimento reduzido respeitado"
+     ],
+     "problemas": [
+      "O primeiro clique em conteúdo rola ao topo e põe o foco em main.",
+      "39 a 43 alvos abaixo de 44 px em Auditar.",
+      "O título do eixo x é cortado com reticências em 320 e 390 e perde a unidade.",
+      "Leitor de tela real não testado; contraste de nós de gráfico 'incompleto' no axe."
+     ],
+     "justificativa": "Acessibilidade medida boa, sem violações no axe e com teclado completo. Salto de foco no primeiro clique, alvos pequenos em Auditar, unidade do eixo cortada no celular e ausência de leitor de tela real mantêm a nota."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "divergência entre gráfico, tabela e exportação",
+     "descricao": "O total na ponta da barra difere da coluna 'Perdas' da tabela em 23 de 80 distribuidoras (até 0,01 R$/MWh): CERPRO tem 14,64 na barra e 14,65 na tabela, no CSV e na frase de abertura. A página explica por arredondamento em nota, mas mantém dois valores para o mesmo item.",
+     "evidencia": "texto_entender.txt linhas 21 e 33; captura própria do gráfico expandido (CERPRO 14,64); CSV perdas-custo-tarifa-b1_completo (14.65)."
+    }
+   ],
+   "achados": [
+    {
+     "id": "p3-frase-e-comprove-nao-acompanham-eixo",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "painel 'Que características das áreas aparecem associadas às perdas?', seletor 'Eixo vertical'",
+     "descricao": "Ao escolher 'Não técnicas', gráfico, amostra (46) e ρ (menos 0,377) mudam, mas a frase de abertura continua 'nas 52 concessionárias... taxa de perdas totais' e a ficha 'Comprove a associação' continua com menos 0,606.",
+     "sugestao": "Fazer frase e ficha seguirem o eixo, ou mostrar as duas associações lado a lado."
+    },
+    {
+     "id": "p3-promessa-de-percentual-da-tarifa",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "C"
+     ],
+     "onde": "lead, frase de abertura e gráfico do painel 'Quanto da tarifa residencial remunera as perdas?'",
+     "descricao": "O lead promete 'R$/MWh e % da tarifa', mas gráfico e frase trazem só R$/MWh; a participação (de 1,51% a 22,01%) só está na tabela e no nível Analisar. A ordem em R$/MWh acompanha em boa parte o nível da tarifa.",
+     "sugestao": "Alternar o gráfico entre R$/MWh e % da tarifa e citar os dois intervalos na frase."
+    },
+    {
+     "id": "p3-topo-de-11-sem-tipo-e-zeros",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "gráfico de barras e tabela de componentes",
+     "descricao": "O padrão mostra só as 11 maiores de 80, e o mínimo da frase (CERPRO) não aparece. Concessionárias e cooperativas ficam no mesmo ranking sem marca de tipo; CERR e CERIS trazem não técnica e Rede Básica iguais a 0, e CELETRO, CERRP e CERPRO trazem não técnica 0, sem explicar se é zero regulatório.",
+     "sugestao": "Marcar o tipo, explicar os zeros ou usar 'sem componente', e mostrar mediana e extremos no padrão."
+    },
+    {
+     "id": "p3-tabela-mistura-vigencias",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "tabela 'Ver a tabela completa (115 linhas)', ordem padrão",
+     "descricao": "Ordenada por perdas, a tabela traz em segundo lugar CERR, processo de 2014 com vigência encerrada (45,57% da tarifa), entre distribuidoras vigentes, enquanto o gráfico exclui esses processos.",
+     "sugestao": "Ordenar as vigências encerradas por último ou mostrá-las só ao filtrar."
+    },
+    {
+     "id": "p3-arredondamento-barra-tabela",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "J"
+     ],
+     "onde": "total na ponta das barras, coluna 'Perdas' e frase de abertura",
+     "descricao": "A barra soma componentes já arredondados e a tabela soma antes de arredondar; 23 de 80 distribuidoras diferem em 0,01 R$/MWh (CERPRO 14,64 e 14,65). A página explica em nota, mas a frase de abertura usa o valor da tabela e o gráfico o outro.",
+     "sugestao": "Exibir na barra o total da tabela (arredondar o total real)."
+    },
+    {
+     "id": "p3-salto-topo-clique",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "main#conteudo (tabindex -1)",
+     "descricao": "O primeiro clique em parágrafo ou gráfico leva a página de scrollY 1.400 para 70 e o foco para main.",
+     "sugestao": "Tirar o tabindex -1 de main e usar alvo pequeno só para o link de pular."
+    },
+    {
+     "id": "p3-dispersao-anonima-e-unidade-cortada",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "gráfico de dispersão renda e perdas",
+     "descricao": "Pontos cinza sem nome nem destaque dos extremos; o título do eixo x é truncado em 320 e 390 e perde '(R$ de 2022 por mês)'; com 'Não técnicas' o eixo vai de menos 50 a 150 e comprime a maioria dos pontos.",
+     "sugestao": "Rotular os extremos, quebrar o título do eixo em duas linhas e limitar o eixo com nota para os valores fora."
+    },
+    {
+     "id": "p3-termos-tarifarios-e-nota-operacional",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "lead, 'Como interpretar' e nota de dependência (nível Entender)",
+     "descricao": "B1, TUSD, TE e Rede Básica (e REH na tabela) não são explicados no ponto de uso; a nota 'Dependência: ... liberação de acesso automatizado aos endereços tentados' é linguagem de operação; no nível Auditar aparecem TUSD_PT, vigencia_encerrada e códigos como P057 e S5.",
+     "sugestao": "Traduzir os termos no lugar e mover a nota de dependência para Auditar."
+    },
+    {
+     "id": "p3-rotulo-o-que-mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "bloco 'O que mudou' do painel de custo",
+     "descricao": "O bloco traz a cobertura (23 distribuidoras sem tarifa vigente e 12 com série encerrada), não uma mudança; o rótulo não corresponde ao conteúdo.",
+     "sugestao": "Renomear para 'Cobertura' neste painel."
+    },
+    {
+     "id": "p3-nao-tecnica-acima-de-100",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "dispersão com eixo 'Não técnicas (% do mercado de baixa tensão)'",
+     "descricao": "Dois pontos ficam acima de 100% do mercado de baixa tensão e há valores negativos, sem nota que explique que a base é o mercado de baixa tensão e não a energia injetada.",
+     "sugestao": "Nota curta ao lado do eixo sobre base e valores acima de 100% ou negativos."
+    }
+   ],
+   "nao_verificado": [
+    "Se os zeros de não técnica e de Rede Básica em cooperativas são valores publicados ou ausência convertida em zero (avaliação técnica).",
+    "Leitor de tela real.",
+    "Firefox e Safari.",
+    "Visual em 768 px além da medição de overflow."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T4",
+     "escopo": "Ver custo e contexto das perdas",
+     "perfil": "gestor público ou conselho (inspeção heurística de agente)",
+     "passos": [
+      "Ler a frase de abertura e o gráfico (14,65 a 192,66 R$/MWh).",
+      "Expandir para as 80 distribuidoras e conferir CERPRO e CERIS.",
+      "Abrir a tabela de 115 linhas, filtrar por situação e baixar CSV.",
+      "Alternar o eixo da dispersão entre total e não técnicas e ler n e ρ.",
+      "Ler o que não se pode concluir sobre custo em reais e causa."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Custo total em reais indisponível (bloqueio externo documentado).",
+      "Ranking em R$/MWh mistura concessionárias e cooperativas, com componentes zero sem explicação.",
+      "A participação na tarifa está só na tabela."
+     ],
+     "erros": [
+      "Frase e ficha 'Comprove' ficam em 52 e menos 0,606 após escolher 'Não técnicas'.",
+      "CERPRO 14,64 na barra e 14,65 na frase e na tabela."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/perdas/regulatorio": {
+   "paineis": [],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "1440_dobra.png: H1 em pergunta e lead; a frase de abertura descreve o gráfico ('compara, em 49 distribuidoras...') sem trazer achado; o gráfico começa na borda da dobra.",
+      "1440_inteira_01de02.png: gráfico de pontos com diferença à direita e bloco de três estados ('Disponível', 'Não se aplica', 'Indisponível nesta publicação').",
+      "390_inteira_02de04.png: gráfico legível; legenda e explicações ocupam cerca de duas telas antes do bloco de estados."
+     ],
+     "atendidos": [
+      "Gráfico de pontos com diferença em coluna própria, legível de 320 a 1440",
+      "Bloco claro do que a página compara e não compara",
+      "Página curta (3.149 px em 1440)",
+      "Celular preserva todos os elementos",
+      "Tipografia consistente"
+     ],
+     "problemas": [
+      "A primeira tela não traz o achado (quantas subiram, caíram ou ficaram iguais); a frase descreve o gráfico.",
+      "O padrão mostra 12 de 49 linhas, 2 delas sem dado.",
+      "Legenda e escala comprimidas em uma linha acima do gráfico.",
+      "'O que mudou' trata de coincidência com resoluções, não do que mudou.",
+      "A tabela de 111 linhas fica atrás de outro botão, sem relação visual com o gráfico."
+     ],
+     "justificativa": "Layout limpo e honesto sobre limites, com celular íntegro. A primeira tela não responde à pergunta do título e o gráfico traz muitas linhas sem diferença calculável, o que enfraquece a hierarquia de informação."
+    },
+    "B": {
+     "nota": 6.5,
+     "evidencia": [
+      "texto_entender.txt linhas 6 e 62: 'percentuais regulatórios' com glossário; 'trecho', 'implícito' e 'inferido' só são explicados em 'Como interpretar', abaixo do gráfico.",
+      "texto_entender.txt linha 62: 'referência quer dizer o trecho anterior da própria distribuidora, e não uma meta regulatória'.",
+      "1440_inteira_01de02.png: bloco 'O que esta página compara e o que não compara' com Disponível, Não se aplica e Indisponível."
+     ],
+     "atendidos": [
+      "Definição de percentual regulatório no lead, com glossário",
+      "Honestidade sobre o que não é comparável, em estados nomeados",
+      "Ressalva de que a diferença não é desempenho",
+      "Natureza estimada marcada"
+     ],
+     "problemas": [
+      "Os conceitos de trecho, razão constante e inferência só são explicados depois do gráfico.",
+      "Não há exemplo de leitura de uma linha (círculo, losango, diferença).",
+      "'Por que isso importa' recolhido, sem custo ou consequência na tarifa na primeira tela.",
+      "'Leiaute' e 'resolução homologatória' sem tradução.",
+      "A abertura não responde 'como mudou'."
+     ],
+     "justificativa": "Honesta quanto a limites, mas conceitos centrais (trecho, inferência) chegam tarde e a pergunta do título não é respondida na abertura. O leitor leigo teria dificuldade de usar o gráfico sem leitura prévia."
+    },
+    "C": {
+     "nota": 6.0,
+     "evidencia": [
+      "texto_entender.txt linhas 47 a 51: perda técnica realizada contra regulatório 'Não se aplica' e não técnica contra referência 'Indisponível nesta publicação'.",
+      "Playwright 1440: das 49 linhas, 15 caíram, 9 subiram, 13 ficaram iguais e 12 não têm trecho anterior.",
+      "Ordenação por trecho, diferença ou nome; tabela de 111 trechos com CSV e XLSX."
+     ],
+     "atendidos": [
+      "Mostra a mudança do percentual técnico entre trechos por distribuidora",
+      "Explicita o que não pode ser comparado e por quê",
+      "Ordenação por diferença para achar as maiores mudanças",
+      "Tabela de trechos e CSV para reproduzir"
+     ],
+     "problemas": [
+      "A tarefa de comparar distribuidoras com referência regulatória não é atendida: a referência de não técnicas está indisponível (bloqueio externo).",
+      "O percentual técnico é inferido, não lido do ato, e cobre 49 de 123 distribuidoras.",
+      "Sem síntese 'quantas subiram, caíram ou ficaram iguais', que o gráfico permitiria.",
+      "Poucas decisões possíveis a partir da mudança de um parâmetro inferido."
+     ],
+     "justificativa": "Honesta, mas a tarefa essencial (comparar com referência regulatória de perímetro compatível) não pode ser feita. Sobra a descrição da mudança de um parâmetro inferido, sem síntese e sem uso claro para decisão."
+    },
+    "D": {
+     "nota": 6.0,
+     "evidencia": [
+      "texto_auditar.txt 'Por que isso importa': comparar realizado e regulatório mostraria quanto da perda a tarifa reconhece; 'nesta publicação só o percentual técnico é observável'.",
+      "1440_inteira_01de02.png: sem recorte territorial nem custo para o consumidor na página.",
+      "CSV, XLSX e link copiável disponíveis."
+     ],
+     "atendidos": [
+      "Lacuna relevante visível e nomeada",
+      "Meios de exportar e compartilhar",
+      "Cautela de que a perda técnica não é eliminável",
+      "Linguagem de ressalva acessível"
+     ],
+     "problemas": [
+      "Sem custo, território ou desigualdade na página.",
+      "O impacto do tema (quanto a tarifa reconhece) fica em bloco recolhido e sem dados.",
+      "Pouca utilidade para consumidor e conselho sem a referência regulatória."
+     ],
+     "justificativa": "Pouca relevância social na forma atual, sem custo, território ou referência regulatória. Registra a lacuna com transparência. O potencial depende do dado bloqueado."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de02.png: gráfico de pontos (círculo cheio e losango vazado) com linha de ligação e coluna de diferença; 'sem dado' em itálico e marca não desenhada.",
+      "Playwright 1440: ordenar por trecho, diferença ou nome com ordem alternável; ponto selecionado abre a série mensal com eixo ajustado (11,0 a 12,5).",
+      "Padrão mostra 12 de 49 linhas; 12 das 49 não têm trecho anterior."
+     ],
+     "atendidos": [
+      "Gráfico escolhido pela tarefa (antes e depois por distribuidora)",
+      "Sem curva ou intervalo inventado; 'sem dado' não é desenhado",
+      "Legenda com forma e texto, não só cor",
+      "Alternativas por tabela, aria-label e teclado",
+      "Série mensal ao selecionar"
+     ],
+     "problemas": [
+      "O padrão mostra 12 de 49 linhas, ordenadas pelo percentual do trecho mais recente.",
+      "Os 13 pontos sem mudança se sobrepõem (círculo dentro de losango).",
+      "A série mensal usa eixo ajustado ao intervalo, o que amplia mudanças mínimas.",
+      "Legenda e escala comprimidas em uma linha."
+     ],
+     "justificativa": "Boa escolha de gráfico, honesto com ausências e acessível. Poucas linhas por padrão, sobreposição de pontos iguais e eixo ajustado na série mensal reduzem a nota."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: os rádios 'Trecho mais recente', 'Diferença' e 'Nome' e o botão de ordem alternam a ordenação; a URL não registra a ordem.",
+      "Enter num ponto grava ?d=CNPJ e abre a série mensal; 'Mostrar todas as 49'.",
+      "Primeiro clique em parágrafo: scrollY 1.400 para 70."
+     ],
+     "atendidos": [
+      "Ordenação clara, com rótulos e sentido",
+      "Seleção por ponto, linha ou teclado com estado em URL",
+      "Estados vazios e indisponíveis nomeados (Não se aplica, Indisponível)",
+      "Tabela com busca, ordenação e exportação",
+      "Abas da família e profundidade preservadas"
+     ],
+     "problemas": [
+      "A ordem escolhida não vai para a URL nem para o link copiado.",
+      "O primeiro clique em conteúdo rola ao topo.",
+      "Duas tabelas (dados do gráfico e 111 trechos).",
+      "Sem comparação de entidades lado a lado."
+     ],
+     "justificativa": "Controles claros e estados bloqueados bem nomeados. Ordem fora da URL, salto ao topo, tabelas duplicadas e falta de comparação lado a lado mantêm a nota abaixo de 9."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json e axe próprio: sem violações (116 nós de contraste 'incompleto'); 6 alvos abaixo de 44 px em 1440 e 3 em 390; foco visível.",
+      "Rádios nativos com rótulo; pontos com aria-label como 'diferença +4,460 p.p., maior que no trecho anterior'; Esc fecha as fichas.",
+      "Capturas em 320 e 390 sem rolagem horizontal; trilha de navegação truncada."
+     ],
+     "atendidos": [
+      "Teclado e foco visível, rádios e botões nomeados",
+      "Rótulos em texto com o sentido da diferença (alternativa à cor e à forma)",
+      "Sem rolagem horizontal de 320 a 1440",
+      "Contraste de texto medido sem falhas",
+      "Movimento reduzido respeitado"
+     ],
+     "problemas": [
+      "O primeiro clique em conteúdo rola ao topo e põe o foco em main.",
+      "Losango e círculo cobrem pontos iguais; sem teste com leitor de tela.",
+      "116 nós de contraste 'incompleto' no axe.",
+      "Rótulos de 10 a 12 px."
+     ],
+     "justificativa": "Boa acessibilidade medida e rótulos descritivos nos pontos. O salto de foco ao topo, a falta de teste com leitor de tela e nós de contraste não conclusivos impedem 9."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "barreira em tarefa essencial",
+     "descricao": "A comparação de distribuidoras com a referência regulatória, parte essencial da tarefa da família, não pode ser feita nesta publicação: realizado contra regulatório de não técnicas aparece como 'Indisponível nesta publicação' (acesso à ANEEL recusado em 30/09/2026) e, para técnicas, 'Não se aplica' por construção. O site documenta o bloqueio externo e não mostra valor de reserva, mas a página segue incompleta para a tarefa.",
+     "evidencia": "texto_entender.txt linhas 46 a 51; texto_auditar.txt, bloco 'Bloqueios externos'."
+    }
+   ],
+   "achados": [
+    {
+     "id": "p4-referencia-regulatoria-ausente",
+     "gravidade": "alta",
+     "criterios": [
+      "C",
+      "D"
+     ],
+     "onde": "bloco 'O que esta página compara e o que não compara'",
+     "descricao": "A comparação do realizado com a referência regulatória, que é o uso decisório do tema, está indisponível (não técnicas) ou sem sentido (técnicas). A página mostra apenas a mudança de um percentual técnico inferido pelo observatório.",
+     "sugestao": "Integrar a referência quando houver acesso aberto; até lá, dizer na abertura que a página não comparece com a meta e levar o leitor ao que está disponível."
+    },
+    {
+     "id": "p4-abertura-sem-achado",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "frase de abertura do painel 'O percentual técnico de cada distribuidora, trecho a trecho'",
+     "descricao": "A frase descreve o gráfico e não traz achado. O próprio gráfico permite dizer que, das 49 distribuidoras, 15 caíram, 9 subiram, 13 ficaram iguais e 12 não têm trecho anterior.",
+     "sugestao": "Abrir com essa contagem e a maior mudança em p.p."
+    },
+    {
+     "id": "p4-conceitos-chegam-tarde",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "'Como interpretar' e legenda do gráfico",
+     "descricao": "Trecho, razão constante, inferência e 'referência' (trecho anterior, não meta) só são explicados abaixo do gráfico; a legenda compacta não traz exemplo de leitura.",
+     "sugestao": "Um exemplo curto antes do gráfico ('em COOPERLUZ o percentual foi de 15,90% para 20,36%')."
+    },
+    {
+     "id": "p4-cobertura-49-de-123",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "I"
+     ],
+     "onde": "universo do painel e gráfico",
+     "descricao": "Só 49 de 123 distribuidoras têm trecho de 6 meses ou mais; 12 dessas 49 não têm trecho anterior e 13 não mudaram, ou seja, 25 das 49 linhas não mostram variação.",
+     "sugestao": "Separar as linhas sem diferença e mostrar a cobertura em destaque."
+    },
+    {
+     "id": "p4-salto-topo-clique",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "main#conteudo (tabindex -1)",
+     "descricao": "O primeiro clique em parágrafo ou gráfico leva a página de scrollY 1.400 para 70 e o foco para main.",
+     "sugestao": "Tirar o tabindex -1 de main e usar alvo pequeno só para o link de pular."
+    },
+    {
+     "id": "p4-ordem-fora-da-url",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "rádios 'Ordenar por' e botão de ordem",
+     "descricao": "A ordenação escolhida não entra na URL; só a entidade selecionada entra.",
+     "sugestao": "Guardar a ordem na URL e no link copiado."
+    },
+    {
+     "id": "p4-pontos-sobrepostos-e-eixo-ajustado",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "gráfico de pontos e série mensal",
+     "descricao": "Os 13 pontos sem mudança se sobrepõem (círculo dentro de losango) e a série mensal usa eixo ajustado (11,0 a 12,5), que amplia mudanças mínimas.",
+     "sugestao": "Marcar 'sem mudança' com forma própria e indicar o eixo ajustado."
+    },
+    {
+     "id": "p4-rotulo-o-que-mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "bloco 'O que mudou'",
+     "descricao": "O bloco fala de 10 trechos que coincidem com resoluções homologatórias, não da mudança do percentual; o rótulo não corresponde ao conteúdo.",
+     "sugestao": "Renomear ou trazer a contagem de subidas e descidas."
+    }
+   ],
+   "nao_verificado": [
+    "Se o percentual 'implícito' inferido pelo observatório corresponde aos atos homologatórios (avaliação técnica).",
+    "Leitor de tela real.",
+    "Firefox e Safari.",
+    "Visual em 768 px além da medição de overflow."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T4",
+     "escopo": "Comparar distribuidoras com referência regulatória de perímetro compatível",
+     "perfil": "gestor público ou conselho (inspeção heurística de agente)",
+     "passos": [
+      "Ler o lead e o bloco 'O que esta página compara e o que não compara'.",
+      "Ordenar por diferença e ler as maiores subidas e descidas.",
+      "Selecionar CEDRI e ver a série mensal do percentual técnico.",
+      "Abrir a tabela de 111 trechos e procurar a comparação com a perda realizada.",
+      "Ler o que não é possível concluir."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Realizado contra referência regulatória é 'Não se aplica' (técnica) e 'Indisponível' (não técnica).",
+      "O percentual técnico é inferido e cobre 49 de 123 distribuidoras.",
+      "A abertura não resume quantas subiram, caíram ou ficaram iguais."
+     ],
+     "erros": [
+      "Salto ao topo no primeiro clique em conteúdo."
+     ]
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Salto ao topo no primeiro clique ou toque em área não interativa: main#conteudo tem tabindex -1 e a página vai de scrollY 1.400 para 70 nas quatro páginas (e em conta-de-luz); no mapa de perdas, de 2.098 para 70 em 1440 e de 4.165 para 25 em 390.",
+  "Blocos de resposta que não acompanham o recorte: no mapa de perdas, a frase de 14,75%, 'O que mudou' e 'Como interpretar' ficam em 2025; na dispersão de custo, a frase e a ficha 'Comprove' ficam com 52 concessionárias e menos 0,606 após escolher 'Não técnicas'.",
+  "Divergência de 0,01 entre rótulo do gráfico e tabela: composição (NEOENERGIA BRASÍLIA 14,22 e 14,23; COSERN 10,45 e 10,44), sem nota; custo (23 de 80, CERPRO 14,64 e 14,65), com nota.",
+  "Jargão e códigos internos no texto público: SIGEL, BDGD, GDAL, MMGD, BT, TUSD, TE, REH, B1 e a nota 'liberação de acesso automatizado aos endereços tentados' em Entender; P055, P057, P058, S5, S6 e vigencia_encerrada em Auditar.",
+  "Fichas 'Comprove este número' das páginas de perdas e de composição trazem 'Valor exibido' em uma casa (14,7%; 14,8%; 15,0%) enquanto a página mostra duas (14,75%; 14,77%; 14,99%).",
+  "Acessos repetidos às tabelas ('Dados do gráfico em tabela', 'Resumo em tabela', 'Ver a tabela completa') e o mesmo bloco de três colunas em todos os painéis, além de dois avisos de ano aberto seguidos.",
+  "Gráficos longos abrem só com o topo (11 de 19, 11 de 80, 12 de 49) e a frase de abertura cita extremos que não aparecem (CERPRO); tabelas abrem com linhas não comparáveis ou encerradas no topo (perdas em 2020, CERR em custo).",
+  "Rótulos e títulos de eixo perdem legibilidade em telas estreitas: valores cruzados pela linha tracejada (composição) e título do eixo x truncado, sem a unidade (custo, 320 e 390); anotações do gráfico em 10 px."
+ ],
+ "limites_da_avaliacao": "Inspeção heurística feita por agente em Chromium headless 1194 contra http://localhost:3101 (commit cbb5fbfeb), sem leitor de tela real, sem Firefox ou Safari (o salto ao topo foi medido só no Chromium), com toque emulado e sem teste com pessoas. As pastas de evidência trazem só parte das fatias de 390 px (faltam, por exemplo, 02, 04 e 06 de 07 em perdas e 03 de 05 em composição e custo); usei capturas próprias do mesmo servidor para as demais. O objetivo.json traz 360 e não 320 px e teclado só em 390 e 1440; medi 320 e 360 por conta própria (overflow, alvos, capturas) e rodei o axe-core do repositório em 1440 e 390, com 'contraste incompleto' em nós de gráfico. Não recebi os códigos P0xx de painel por rota, então 'paineis' está vazio. Não li avaliações anteriores. Correção numérica e rastreabilidade ficam com o avaliador técnico; conferi só, pelo CSV aberto, mediana, extremos, agregado e a divisão técnica e não técnica de 2025, que bateram com a página."
+}

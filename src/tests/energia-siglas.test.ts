@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { legendaDeSiglas, siglasNoTexto, SIGLAS } from "@/lib/energia/siglas";
 
 /**
@@ -31,5 +35,33 @@ describe("siglasNoTexto", () => {
 
   it("não repete a sigla que o texto já expande", () => {
     expect(siglasNoTexto("Preço de Liquidação das Diferenças (PLD) e ENA.")).toEqual(["ENA"]);
+  });
+});
+
+/**
+ * Natureza do dado em texto (rodada 2): a dica do selo (`title`) não aparece no toque nem para leitor de tela. O selo carrega a natureza
+ * em `data-natureza` e a legenda do cabeçalho, depois da hidratação, escreve a definição de cada natureza que está à vista.
+ */
+describe("legenda das naturezas do dado", () => {
+  it("o selo, completo ou em texto, leva a natureza em data-natureza", () => {
+    for (const n of Object.keys(NATUREZAS) as (keyof typeof NATUREZAS)[]) {
+      expect(renderToStaticMarkup(createElement(SeloNatureza, { natureza: n }))).toContain(`data-natureza="${n}"`);
+      expect(renderToStaticMarkup(createElement(SeloNatureza, { natureza: n, texto: true }))).toContain(`data-natureza="${n}"`);
+    }
+  });
+
+  it("toda natureza tem definição em uma frase, sem hífen nem travessão", () => {
+    for (const n of Object.values(NATUREZAS)) {
+      expect(n.definicao.length).toBeGreaterThan(20);
+      expect(n.definicao).not.toMatch(/[-–—]/);
+    }
+  });
+
+  it("a legenda só lista o selo que está à vista: ignora elemento escondido e bloco fechado", () => {
+    const fonte = readFileSync("src/components/energia/LegendaSiglas.tsx", "utf8");
+    expect(fonte).toContain('querySelectorAll<HTMLElement>("[data-natureza]")');
+    expect(fonte).toContain("estaVisivel(el, raiz)");
+    expect(fonte).toContain('n.tagName === "DETAILS" && !n.hasAttribute("open")');
+    expect(fonte).toContain('data-legenda-naturezas="true"');
   });
 });

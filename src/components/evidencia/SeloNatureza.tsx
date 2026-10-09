@@ -51,7 +51,7 @@ export function SeloNatureza({ natureza, compacto = false, texto = false }: { na
   const n = NATUREZAS[natureza];
   if (texto) {
     return (
-      <span className={`inline-flex items-center gap-1 whitespace-nowrap ${n.cor.split(" ")[0]}`} title={`${n.rotulo}: ${n.definicao}`}>
+      <span className={`inline-flex items-center gap-1 whitespace-nowrap ${n.cor.split(" ")[0]}`} title={`${n.rotulo}: ${n.definicao}`} data-natureza={natureza}>
         <span aria-hidden="true">{n.glifo}</span>
         <span className="sr-only">Natureza do dado: </span>
         {n.rotulo}
@@ -62,6 +62,7 @@ export function SeloNatureza({ natureza, compacto = false, texto = false }: { na
     <span
       className={`rotulo relative inline-flex items-center gap-1.5 whitespace-nowrap border bg-superficie px-1.5 py-0.5 !text-xs ${n.borda} ${n.cor}`}
       title={`${n.rotulo}: ${n.definicao}`}
+      data-natureza={natureza}
     >
       <span aria-hidden="true">{n.glifo}</span>
       <span className="sr-only">Natureza do dado: </span>

@@ -26,7 +26,7 @@
           "problemas": [
             "A referência histórica começa em 01/01/2021; a série semanal de 2001 a 2020, que a própria página diz ser publicada pela CCEE, não está integrada",
             "A relação entre preço e intercâmbio é só descritiva: faltam limites de transferência (não achei conjunto público no catálogo do ONS) e o mapa usa 28/09, dois dias antes do último PLD",
-            "Dois dos 12 vínculos do diagrama de formação seguem como conferência pendente, embora as Regras de Comercialização da CCEE (módulo PLD v2025.1.0, p. 5 e 6) tragam texto que os sustenta"
+            "Dois dos 12 vínculos do diagrama de formação e o mecanismo de separação por limite de transferência seguem como conferência pendente, embora as Regras de Comercialização da CCEE (módulo PLD v2025.1.0, p. 6) tragam texto que sustenta o vínculo dos reservatórios com os modelos e os limites de transmissão entre submercados"
           ],
           "justificativa": "Cobertura ampla e conferida: nível, evolução, distribuição, território e relações presentes, com limitações declaradas. Abaixo de 9 porque a história de referência começa em 2021, a relação com o intercâmbio é só descritiva e o mapa de fluxo usa dia anterior ao do preço."
         },
@@ -55,7 +55,7 @@
           "nota": 9,
           "evidencia": [
             "Fluxo horário do site (rede_horario_2026.csv) contra INTERCAMBIO_NACIONAL_2026.csv do ONS: 26.112 células, 0 divergências; sinal positivo da primeira para a segunda ponta; sentidos de 28/09 refeitos.",
-            "Semana 19 a 25/09: DECOMP 97,89, DESSEM 63,31 e PLD 124,09 recalculados; DESSEM da hora conferido com o ONS em 25.824 horas por subsistema (96 de diferença, todas de 10/09, publicado depois da captura).",
+            "Semana 19 a 25/09: DECOMP 97,89, DESSEM 63,31 e PLD 124,09 recalculados; DESSEM da hora conferido com o ONS em 25.824 pares de hora e subsistema (96 de diferença, todos de 10/09, publicado depois da captura).",
             "EAR 61,6% e 12,4 p.p. sobre a mediana de 25 anos, ENA a 169% da MLT, carga de 7 dias com mais 10,5%, eólica 16,8% e solar 17,9% refeitos dos CSV.",
             "Regras da CCEE (módulo PLD v2025.1.0, p. 13 e 14): hora igual à média de duas meias horas e ajuste iterativo ao teto estrutural, como a página descreve."
           ],
@@ -76,7 +76,7 @@
           "nota": 9,
           "evidencia": [
             "manifesto.json: sha256 de 21 arquivos do PLD, da carga e da rede conferem (0 divergências). Oito fichas 'Sobre este dado' abertas: fonte e recurso, captura em 29/09/2026 23:20, fórmula, snapshot com sha256, versão, revisões e limitações.",
-            "Exportação 'Baixar este período' em cinco janelas (24, 168, 720, 365 e 69 linhas) igual a pld_horario, pld_diario e pld_mensal (0 divergências); tabelas de 4, 24 e 368 linhas idem.",
+            "Exportação 'Baixar este período' em cinco janelas (24, 168, 720, 365 e 69 linhas) igual a pld_horario, pld_diario e pld_mensal (0 divergências); tabelas de 4 e 24 linhas idênticas; a de 368 linhas igual ao máximo menos mínimo de pld_diario.csv, salvo 14 empates de meio centavo.",
             "Reproduzi os números do topo e das respostas só com o CSV baixado, seguindo a fórmula da ficha."
           ],
           "atendidos": [
@@ -146,7 +146,7 @@
             "H"
           ],
           "onde": "Cartões Vs. dia anterior; tabela de 368 linhas da amplitude diária",
-          "descricao": "O Sul exibe mais 13,03 (11,4%): as médias diárias são 127,8575 e 114,8225 e a diferença exata, 13,035, arredonda para 13,04 pela regra declarada (decimal, meio para cima). Na série de amplitude diária, 14 de 368 pontos divergem R$ 0,01 da aritmética decimal exata (04/10/2025 mostra 134,57 e o exato é 134,575; 23/03/2026, 214,88 contra 214,885; cinco dias mostram 0,00 onde o exato é 0,005). O efeito vem da soma em ponto flutuante antes do arredondamento.",
+          "descricao": "O Sul exibe mais 13,03 (11,4%): as médias diárias são 127,8575 e 114,8225 e a diferença exata, 13,035, arredonda para 13,04 pela regra declarada (decimal, meio para cima). Na série de amplitude diária, 14 de 368 pontos divergem R$ 0,01 da aritmética decimal exata (04/10/2025 mostra 134,57 e o exato é 134,575; 23/03/2026, 214,88 contra 214,885; nove dias mostram 0,00 onde o exato é 0,005). Refiz com pld_diario.csv em Decimal, meio para cima: os 14 casos são empates exatos, todos arredondados para baixo na página. O efeito vem da aritmética em ponto flutuante antes do arredondamento.",
           "sugestao": "Somar e subtrair em Decimal sobre os valores de duas casas e arredondar só no fim; acrescentar teste de empate de meio centavo em médias de 24 horas."
         },
         {
@@ -188,14 +188,14 @@
             "H"
           ],
           "onde": "Seção O que não foi possível conferir e por quê; diagrama de formação",
-          "descricao": "A página diz que as Regras de Comercialização da CCEE (módulo PLD) estavam inacessíveis (HTTP 403). Em 09/10/2026 consegui baixar a versão 2025.1.0 (PDF só de imagem). Ela traz texto que fecha vínculos hoje pendentes: a função de custo futuro depende da tendência hidrológica e dos níveis dos reservatórios (p. 6), os limites de transmissão entre submercados entram no DECOMP e no DESSEM (p. 6), a hora é a média de duas meias horas (p. 13) e o teto estrutural é aplicado por processo iterativo (p. 14). Não sei se é a versão vigente.",
+          "descricao": "A página diz que as Regras de Comercialização da CCEE (módulo PLD) estavam inacessíveis (HTTP 403). Em 09/10/2026 consegui baixar a versão 2025.1.0 (PDF só de imagem). Ela traz texto que ajuda a fechar conferências hoje pendentes: a função de custo futuro depende da tendência hidrológica e dos níveis dos reservatórios (p. 6), os limites de transmissão entre submercados entram no DECOMP e no DESSEM (p. 6), a hora é a média de duas meias horas (p. 13) e o teto estrutural é aplicado por processo iterativo (p. 14). Não sei se é a versão vigente.",
           "sugestao": "Integrar o documento (com sha256) e atualizar os estados pendentes, citando a página de cada passagem."
         }
       ],
       "nao_verificado": [
         "PLD horário contra a fonte original da CCEE (portal respondeu 403): só coerência interna e resumos qualitativos de InfoPLD de 30/07, 19/08 e 01/09/2026 obtidos por busca",
         "PLD de 28 a 30/09/2026 sem conferência independente do CSV do site",
-        "Decreto 5.163/2004, REN 957/2021 e Procedimentos de Rede do ONS no texto original (Planalto indisponível)",
+        "Decreto 5.163/2004, REN 957/2021 e Procedimentos de Rede do ONS no texto original (Planalto indisponível); o art. 57 do Decreto foi corroborado só por site jurídico de terceiros e por texto da CCEE",
         "Causa do perfil de dois valores em 30/05, 09/08 e 05/09/2026",
         "Desempenho de campo (LCP, INP) e leitor de tela real"
       ]
@@ -208,7 +208,7 @@
         "E": {
           "nota": 8.5,
           "evidencia": [
-            "CMO semanal do DECOMP igual aos arquivos CMO_SEMANAL de 2021 a 2026 do ONS (4.816 células, 0 divergências); DESSEM da hora igual a CMO_SEMIHORARIO_2026 (25.824 horas por subsistema, 96 de diferença por 10/09 publicado depois).",
+            "CMO semanal do DECOMP igual aos arquivos CMO_SEMANAL de 2021 a 2026 do ONS (4.816 células, 0 divergências); DESSEM da hora igual a CMO_SEMIHORARIO_2026 (25.824 pares de hora e subsistema, 96 de diferença por 10/09 publicado depois).",
             "Refiz a relação PLD menos CMO por ano (2026: 4.866 horas entre limites, mediana do valor absoluto 27,31) e a sequência de 61 semanas de CMO zero (30/12/2022 a 23/02/2024).",
             "A tabela por ano traz três médias e uma mediana do valor absoluto, sem quartis da diferença com sinal."
           ],
@@ -247,7 +247,7 @@
         "G": {
           "nota": 9,
           "evidencia": [
-            "Hora do DESSEM como média das duas meias horas (Regras da CCEE, p. 13, divisão por 2) reproduzida contra o arquivo do ONS: 0 divergências além das 96 horas de 10/09 publicadas depois.",
+            "Hora do DESSEM como média das duas meias horas (Regras da CCEE, p. 13, divisão por 2) reproduzida contra o arquivo do ONS: 0 divergências além dos 96 pares de hora e subsistema de 10/09 publicados depois.",
             "Semana de sábado a sexta com 336 meias horas e 168 horas; semana sem meia hora fica 'sem dado' (05 a 11/09/2026 sem DESSEM); nunca zero.",
             "Zeros do CMO semanal: 61 semanas nos quatro subsistemas (recalculei), 91,2% das meias horas do SE/CO em zero (17.904 de 19.632) e 98,5% das horas do PLD no piso (10.098 de 10.248)."
           ],
@@ -288,7 +288,7 @@
           "nota": 9,
           "evidencia": [
             "objetivo.json: 0 erros de console e 0 falhas de rede em seis medições, cargas de 1,0 a 1,6 s em laboratório; medi CLS 0 e HTML de 470.470 bytes (dentro da meta).",
-            "Seletor de submercado (?sm=N) atualiza texto, gráfico, tetos e tabelas sem erro; exportações das tabelas sem erro.",
+            "Seletor de submercado (SE, S, NE, N) atualiza frase, gráfico, linhas dos tetos e tabela por ano sem erro de console; refiz as frases do Sul (22,97 e 62,57), do Nordeste (26,20 e 64,42) e do Norte (menos 1.742,65 e 37,55).",
             "Testes lidos: relação PLD menos CMO, convenção de data e de meia hora em test_energia_pld.py e energia-pld.test.ts; workflow e sentinela como na página principal."
           ],
           "atendidos": [
@@ -354,7 +354,7 @@
             "L"
           ],
           "onde": "Tabela Meias horas esperadas e publicadas por ano; média da semana 05 a 11/09/2026",
-          "descricao": "10/09/2026 aparece como dia sem publicação, mas o arquivo atual do ONS já o traz (96 horas por subsistema); a média do DESSEM da semana de 05 a 11/09 segue 'sem dado'. O rótulo descreve a captura de 30/09, não a fonte.",
+          "descricao": "10/09/2026 aparece como dia sem publicação, mas o arquivo atual do ONS já o traz (96 pares de hora e subsistema); a média do DESSEM da semana de 05 a 11/09 segue 'sem dado'. O rótulo descreve a captura de 30/09, não a fonte.",
           "sugestao": "Rotular como 'sem publicação até a captura de DD/MM' e reabrir os dias ausentes a cada execução."
         }
       ],
@@ -415,7 +415,7 @@
           "nota": 9,
           "evidencia": [
             "Fluxos: sinal positivo da primeira para a segunda ponta como no ONS; 26.112 células de fluxo iguais a INTERCAMBIO_NACIONAL_2026.csv; fluxo de até 1 MWmed tratado como nulo.",
-            "Hora aberta no esquema (24/09/2026 01h, diferença de R$ 56,05, fluxos de 3.929, 1.930, 1.954 e 4.244 MWmed) refeita a partir dos CSV.",
+            "Hora aberta no esquema (24/09/2026 01h, diferença de R$ 56,05, fluxos de 3.929, 1.929, 1.954 e 4.244 MWmed) refeita a partir dos CSV; a página mostra 1.930 no segundo.",
             "Horas com fluxo publicado: 8.712 de 8.760; ausência como vazio, nunca zero."
           ],
           "atendidos": [
@@ -456,7 +456,8 @@
           "evidencia": [
             "objetivo.json: 0 erros de console e 0 falhas de rede em seis medições; medi CLS 0 e HTML de 382.655 bytes.",
             "Estados por URL (per=2023, per=2022 e par=NE_N, per=30d, per=2021 e mat=dif_media) renderizam sem erro de console.",
-            "Controle de amplitude (energia-pld.test.ts) e test_energia_pld.py lidos; sentinela e workflow como na página principal."
+            "Testes lidos: controle de amplitude em energia-pld.test.ts e, em test_energia_pld.py, recálculo independente por awk de separação, fluxo e amplitude; sentinela e workflow como na página principal.",
+            "Esquema da hora 24/09 01h mostra 1.930 MWmed de SE/CO para Norte; o ONS dá 1.929,496 e o JSON guarda 1.929,5, arredondado de novo (efeito de 1 MWmed)."
           ],
           "atendidos": [
             "Sem erros de console nem falhas de rede",
@@ -466,9 +467,10 @@
             "Bloqueio de publicação com sentinela, validações e testes"
           ],
           "problemas": [
+            "Arredondamento duplo no esquema: 1.930 MWmed exibido contra 1.929,496 do ONS (1.929 pelo valor exato)",
             "Desempenho conhecido só de laboratório, sem dado de campo"
           ],
-          "justificativa": "Sem erros, CLS 0, HTML bem abaixo da meta, estados de URL estáveis e testes dirigidos aos riscos. Limitado a 9 porque o desempenho é de laboratório."
+          "justificativa": "Sem erros, CLS 0, HTML bem abaixo da meta, estados de URL estáveis e testes dirigidos aos riscos. Limitado a 9 porque o desempenho é de laboratório e há um arredondamento duplo de 1 MWmed no esquema."
         }
       },
       "bloqueios": [],
@@ -525,6 +527,16 @@
           "sugestao": "Reler a captura vigente na reconciliação."
         },
         {
+          "id": "dif_arredondamento_fluxo",
+          "gravidade": "baixa",
+          "criterios": [
+            "L"
+          ],
+          "onde": "Esquema Preço e fluxo na mesma hora (24/09/2026 01h)",
+          "descricao": "O esquema mostra 1.930 MWmed de SE/CO para Norte. O valor do ONS, que o arquivo de rede repete, é 1.929,496 (1.929 arredondado). O JSON de 168 horas guarda 1.929,5 e a interface arredonda de novo. Os outros três fluxos da hora não são afetados. Efeito de 1 MWmed (0,05%).",
+          "sugestao": "Guardar o fluxo com as casas completas e arredondar uma vez só, na exibição."
+        },
+        {
           "id": "dif_pares_sem_fronteira",
           "gravidade": "baixa",
           "criterios": [
@@ -537,7 +549,7 @@
       ],
       "nao_verificado": [
         "Limites de intercâmbio entre subsistemas: não achei conjunto público no catálogo do ONS, logo não há classificação de congestionamento",
-        "Decreto 5.163/2004, art. 57, § 1º, V e § 4º, no texto primário (Planalto indisponível); li a citação na página",
+        "Decreto 5.163/2004, art. 57, § 1º, V e § 4º, no texto primário (Planalto indisponível): o § 4º foi corroborado por site jurídico de terceiros e por texto da CCEE; o inciso V não foi visto",
         "Fluxos de 29 e 30/09: a página não os exibe; o ONS já publicou 30/09",
         "Desempenho de campo e leitor de tela real"
       ]
@@ -705,7 +717,7 @@
           ],
           "onde": "Peso da página",
           "descricao": "HTML de 616.257 bytes (meta de cerca de 600 KB) e 3,6 mil nós de DOM, contra 2,0 a 2,2 mil em PLD, CMO e Diferenças regionais.",
-          "sugestao": "Carregar sob demanda as tabelas de 69 e 288 células e a de 30 dias do mapa."
+          "sugestao": "Carregar sob demanda a tabela mensal de 69 linhas e as grades de 288 e 720 células."
         },
         {
           "id": "hist_dia_plano_0509",
@@ -793,7 +805,7 @@
           "evidencia": [
             "Nenhuma hora fora dos limites de 2021 a 2026 (controle 0) e nenhuma média diária acima do teto estrutural (370 dias por submercado na média do teto, 196 com hora acima), refeito dos CSV.",
             "Regra do teto estrutural nas Regras da CCEE (módulo PLD v2025.1.0, p. 14): ajuste iterativo até a média diária ser menor ou igual ao teto.",
-            "O piso do ato (TEO Itaipu, a maior das duas TEO, em 2026) não é inferido pelo mínimo observado."
+            "O piso de 2026 corresponde à TEO Itaipu, a maior das duas TEO (fonte secundária); a página não o infere do mínimo observado."
           ],
           "atendidos": [
             "Piso, teto horário e teto estrutural distintos e aplicados na vigência correta, inclusive atos com vigência retroativa",
@@ -815,10 +827,10 @@
             "Exportação do calendário (183 linhas) igual a pld_limites_diario.csv; sha256 do manifesto conferem."
           ],
           "atendidos": [
-            "Ato, publicação, vigência e dispositivo de cada limite, com endereço oficial e cópia lida",
+            "Ato, publicação, vigência e dispositivo de cada limite, com endereço oficial, cópia lida e sha256",
+            "Passagens literais da REN 1.032/2022 e do Decreto 5.163/2004, com o que dizem em outras palavras",
             "Fórmula, numerador, denominador e exclusões (um centavo à parte) na ficha",
-            "Controles automáticos da construção em Auditar",
-            "CSV diário com limites vigentes de cada dia",
+            "CSV diário com limites vigentes de cada dia e controles automáticos em Auditar",
             "Paridade entre gráfico, tabela, texto e exportação"
           ],
           "problemas": [
@@ -916,12 +928,12 @@
   "achados_entre_paginas": [
     "Versão de código das fichas: as quatro páginas filhas citam eec0a3121e05+alterado (publicação de 01/10/2026 de árvore com alterações fora de commit; a ficha avisa que a reprodução pode diferir) e a página principal cita 196905461ac0. A mesma publicação mistura duas versões.",
     "Datas de referência por fonte inconsistentes: fluxo do ONS até 28/09 nas páginas do PLD, mas rede_horario_2026.csv traz 29/09; rodapés com 'referência até 02/10/2026' para o PLD (CMO) e 'até 30/09/2026 23:00' para o intercâmbio (Diferenças), contra 30/09 e 28/09 nos cabeçalhos.",
-    "Arredondamento de empates de meio centavo em diferenças derivadas: Sul mais 13,03 em vez de 13,04 e 14 de 368 pontos da amplitude diária (PLD); Norte 0,39 em vez de 0,38 (Histórico). O teste de arredondamento cobre valores guardados, não a aritmética anterior.",
+    "Arredondamento de empates e arredondamento duplo: Sul mais 13,03 em vez de 13,04 e 14 de 368 pontos da amplitude diária (PLD); Norte 0,39 em vez de 0,38 (Histórico); fluxo de 1.930 em vez de 1.929 MWmed (Diferenças). O teste de arredondamento cobre valores guardados, não a aritmética que os antecede.",
     "Referência histórica só desde 2021 e comparações nominais (percentis, faixas e faixa sazonal) com pisos de R$ 49,77 a R$ 69,04; a série semanal de 2001 a 2020 não está integrada (PLD, Histórico).",
     "Dicionário de colunas incompleto nos CSV que sustentam as páginas: pld_mensal.csv 12 de 24, carga_verificada_horaria.csv 1 de 16, pld_limites_diario.csv 11 de 14.",
     "Peso das páginas: HTML de 644.708 bytes (PLD) e 616.257 (Histórico), acima da meta de cerca de 600 KB do projeto; DOM de 3,3 a 3,6 mil nós em Histórico e Limites; desempenho só de laboratório em todas.",
     "Dias sem CMO do DESSEM (30/05, 09/08 e 05/09/2026, entre outros) com PLD de dois valores no dia, compatível com a contingência por semana e patamar das Regras da CCEE, sem sinalização nas leituras horárias (PLD, Histórico, CMO).",
     "Reconciliação das fichas Comprove: 5 das 7 relêem a captura de 27/09 do PLD, e duas (Diferenças e Limites) ficam 'com ressalva' porque 72 horas posteriores não entram na releitura."
   ],
-  "limites_da_avaliacao": "Consultei em fonte primária: dados abertos do ONS (CMO semanal e semi horário, balanço de energia por subsistema, intercâmbio entre subsistemas e dicionários), IBGE SIDRA (IPCA, tabela 1737, variável 2266) e as Regras de Comercialização da CCEE, módulo PLD v2025.1.0 (PDF só de imagem; li as páginas 5, 6, 13 e 14; não sei se é a versão vigente). Não consegui abrir o portal de dados abertos da CCEE, o Planalto, a biblioteca de atos da ANEEL, o DOU nem o Internet Archive. Por isso o PLD horário foi conferido por coerência interna e por resumos qualitativos dos InfoPLD diários de 30/07, 19/08 e 01/09/2026 obtidos por busca (os PDFs excederam o limite de leitura); as horas de 28 a 30/09/2026 não têm conferência independente. Os limites de 2021 a 2026 foram corroborados por fontes secundárias (Cenário Energia e Brasil Energia, via busca) e pela razão constante de 2,0516 entre teto horário e estrutural, não pelo texto dos atos; não verifiquei a numeração dos artigos da REN 1.032/2022 nem do Decreto 5.163/2004. A semântica das variáveis val_cargaglobal e val_cargammgd da API de carga verificada do ONS não foi conferida em dicionário primário, só a aritmética das médias. Não executei testes, build nem pipeline; li código, testes e workflows. O desempenho é de laboratório (Chromium sem limitação de rede ou CPU, em localhost), sem dado de campo. O site é um retrato de 01/10/2026 (dados até 30/09/2026); a conferência com o ONS de 09/10/2026 mostra dados posteriores à captura, que tratei como defasagem e não como erro. Pelo que busquei no catálogo do ONS (limite, intercâmbio, restrição, transmissão, capacidade) não há conjunto público de limites de intercâmbio entre subsistemas. Acessibilidade e leitor de tela não fazem parte do meu papel."
+  "limites_da_avaliacao": "Consultei em fonte primária: dados abertos do ONS (CMO semanal e semi horário, balanço de energia por subsistema, intercâmbio entre subsistemas e dicionários), IBGE SIDRA (IPCA, tabela 1737, variável 2266) e as Regras de Comercialização da CCEE, módulo PLD v2025.1.0 (PDF só de imagem; li a maior parte das páginas e cito as 5, 6, 13 e 14; não sei se é a versão vigente). Não consegui abrir o portal de dados abertos da CCEE, o Planalto, a biblioteca de atos da ANEEL, o DOU nem o Internet Archive. Por isso o PLD horário foi conferido por coerência interna e por resumos qualitativos dos InfoPLD diários de 30/07, 19/08 e 01/09/2026 obtidos por busca (os PDFs excederam o limite de leitura); as horas de 28 a 30/09/2026 não têm conferência independente. Os limites de 2021 a 2026 foram corroborados por fontes secundárias (Cenário Energia e Brasil Energia, via busca) e pela razão constante de 2,0516 entre teto horário e estrutural, não pelo texto dos atos; não verifiquei a numeração dos artigos da REN 1.032/2022 e vi o art. 57 do Decreto 5.163/2004 só em site jurídico de terceiros e em texto da CCEE, sem o inciso V do § 1º. A semântica das variáveis val_cargaglobal e val_cargammgd da API de carga verificada do ONS não foi conferida em dicionário primário, só a aritmética das médias. Não executei testes, build nem pipeline; li código, testes e workflows. O desempenho é de laboratório (Chromium sem limitação de rede ou CPU, em localhost), sem dado de campo. O site é um retrato de 01/10/2026 (dados até 30/09/2026); a conferência com o ONS de 09/10/2026 mostra dados posteriores à captura, que tratei como defasagem e não como erro. Pelo que busquei no catálogo do ONS (limite, intercâmbio, restrição, transmissão, capacidade) não há conjunto público de limites de intercâmbio entre subsistemas. Acessibilidade e leitor de tela não fazem parte do meu papel."
 }
