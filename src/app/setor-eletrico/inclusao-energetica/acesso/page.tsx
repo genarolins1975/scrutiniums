@@ -5,8 +5,9 @@ import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
 import { InclusaoHistoricoPnad, InclusaoIsolados, InclusaoLpt, InclusaoMapaPnad, InclusaoRegioesPnad } from "@/components/energia/InclusaoAcesso";
+import { InclusaoPorIndicadorPnad } from "@/components/energia/InclusaoPorEstado";
+import { AcessoCartaoIndicador, AcessoResposta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
-import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -24,11 +25,8 @@ import {
   linhasLptAnual,
   mes,
   mudancaAcesso,
-  pctTexto,
-  respostaAcesso,
   rotaPainel,
   textoPrecisaoPnad,
-  vereditoAcesso,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -67,7 +65,6 @@ export default function AcessoPage() {
   const custeio = g.tarifa_social.custeio_cde;
   const si = a.sistemas_isolados;
   const lpt = a.universalizacao.luz_para_todos;
-  const brPnad = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
   const primeiroAno = a.pnad_serie[0]?.ano ?? "";
   const recursosCols: ColunaTabela[] = lpt
     ? [
@@ -124,21 +121,8 @@ export default function AcessoPage() {
           datas={<InclusaoDatas itens={datasMedidas(g).filter((d) => d.id === "pnad" || d.id === "pasi" || d.id === "lpt")} />}
           metricas={
             <FaixaMetricas colunas={3} rotulo="Indicadores de acesso" nota="Domicílio, pessoa e ligação do programa são unidades diferentes, de fontes e datas diferentes: os três números não se somam.">
-              <Numero
-                variante="faixa"
-                rotulo={`Domicílios sem energia de nenhuma fonte, ${a.ano_referencia}`}
-                natureza="ESTIMADO"
-                evidencia={a.evidencia_sem_energia}
-                casas={0}
-                unidade="mil domicílios"
-                cor="var(--cor-energia)"
-                motivoAusencia="Sem estimativa nesta publicação."
-                nota={
-                  brPnad
-                    ? `Domicílio: a moradia, com ou sem ligação à rede. ${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (coeficiente de variação de ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE).`
-                    : undefined
-                }
-                endereco={`${rotaPainel("p062")}#p062`}
+              <InclusaoPorIndicadorPnad
+                variantes={{ sem: <AcessoCartaoIndicador a={a} ind="sem" />, rede: <AcessoCartaoIndicador a={a} ind="rede" />, integral: <AcessoCartaoIndicador a={a} ind="integral" /> }}
               />
               <Numero
                 variante="faixa"
@@ -195,9 +179,9 @@ export default function AcessoPage() {
                 <InclusaoRegioesPnad
                   serie={serieRegioes}
                   resposta={
-                    <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
-                      {respostaAcesso(a)}
-                    </RespostaCurta>
+                    <InclusaoPorIndicadorPnad
+                      variantes={{ sem: <AcessoResposta a={a} ind="sem" />, rede: <AcessoResposta a={a} ind="rede" />, integral: <AcessoResposta a={a} ind="integral" /> }}
+                    />
                   }
                   recorte={
                     <InclusaoRecorte

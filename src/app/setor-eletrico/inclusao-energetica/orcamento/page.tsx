@@ -4,9 +4,9 @@ import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
 import { InclusaoOrcamentoPainel } from "@/components/energia/InclusaoOrcamento";
-import { OrcamentoComoInterpretar, OrcamentoNaoConcluir, OrcamentoPorQueImporta } from "@/components/energia/InclusaoTextos";
+import { InclusaoPorBasePof } from "@/components/energia/InclusaoPorEstado";
+import { OrcamentoComoInterpretar, OrcamentoFaixa, OrcamentoNaoConcluir, OrcamentoPorQueImporta, OrcamentoResposta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
-import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -17,7 +17,6 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import {
   classesRenda,
   codigoUf,
-  destaquesRendaPof,
   FONTE_POF,
   inteiro,
   minusculaInicial,
@@ -26,10 +25,7 @@ import {
   orcamentoBase,
   periodoPof,
   pctTexto,
-  respostaOrcamento,
   rotaPainel,
-  textoPofHistorica,
-  vereditoOrcamento,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -75,7 +71,6 @@ export default function OrcamentoPage() {
   const baseClasses = orcamentoBase(o, (l) => !codigoUf(l.territorio));
   const baseUfs = orcamentoBase(o, (l) => !!codigoUf(l.territorio));
   const classeBaixa = classesRenda(o)[0];
-  const destaques = destaquesRendaPof(baseClasses);
   const periodoMedidas = `POF ${periodo}`;
   const oQueMudou = mudancaOrcamento(o);
   const comoInterpretar = <OrcamentoComoInterpretar o={o} />;
@@ -101,48 +96,12 @@ export default function OrcamentoPage() {
             </>
           }
           metricas={
-            <FaixaMetricas colunas={3} rotulo="Peso da energia no orçamento das famílias" nota={textoPofHistorica(o, anoPublicacao)}>
-              <Numero
-                variante="faixa"
-                rotulo="Razão de médias, todas as famílias"
-                natureza="ESTIMADO"
-                evidencia={o.evidencias.razao_medias_brasil}
-                formato="pct"
-                casas={1}
-                unidade="da despesa total"
-                periodo={periodoMedidas}
-                cor="var(--cor-energia)"
-                endereco={`${rotaPainel("p061")}#p061`}
-              />
-              {destaques.baixa && (
-                <Numero
-                  variante="faixa"
-                  rotulo="Razão de médias, menor faixa de renda"
-                  natureza="ESTIMADO"
-                  valor={destaques.baixa.valor}
-                  formato="pct"
-                  casas={1}
-                  unidade="da despesa total"
-                  recorte={destaques.baixa.rotulo}
-                  periodo={periodoMedidas}
-                  motivoAusencia="Estimativa suprimida pela precisão."
-                />
-              )}
-              {destaques.alta && (
-                <Numero
-                  variante="faixa"
-                  rotulo="Razão de médias, maior faixa de renda"
-                  natureza="ESTIMADO"
-                  valor={destaques.alta.valor}
-                  formato="pct"
-                  casas={1}
-                  unidade="da despesa total"
-                  recorte={destaques.alta.rotulo}
-                  periodo={periodoMedidas}
-                  motivoAusencia="Estimativa suprimida pela precisão."
-                />
-              )}
-            </FaixaMetricas>
+            <InclusaoPorBasePof
+              variantes={{
+                despesa: <OrcamentoFaixa o={o} base="despesa" anoPublicacao={anoPublicacao} />,
+                renda: <OrcamentoFaixa o={o} base="renda" anoPublicacao={anoPublicacao} />,
+              }}
+            />
           }
         />
         <ModoProfundidade>
@@ -200,11 +159,7 @@ export default function OrcamentoPage() {
                       />
                     </FaixaMetricas>
                   }
-                  resposta={
-                    <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
-                      {respostaOrcamento(o)}
-                    </RespostaCurta>
-                  }
+                  resposta={<InclusaoPorBasePof variantes={{ despesa: <OrcamentoResposta o={o} base="despesa" />, renda: <OrcamentoResposta o={o} base="renda" /> }} />}
                   recorte={
                     <InclusaoRecorte
                       periodo={`${periodo}; ${o.referencia}`}

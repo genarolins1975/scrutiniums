@@ -3,6 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { InclusaoBaseLegal } from "@/components/energia/InclusaoTextos";
 import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
 import { InclusaoCoberturaUf, InclusaoMunicipiosCobertura, InclusaoSerieCobertura } from "@/components/energia/InclusaoCobertura";
 import { Numero } from "@/components/energia/Numero";
@@ -26,6 +27,7 @@ import {
   vereditoCobertura,
 } from "@/lib/energia/inclusao";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
+import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -38,6 +40,8 @@ export const metadata: Metadata = {
 export default function CoberturaPage() {
   const g = lerGold<InclusaoGold>("inclusao.json");
   if (!integra(g)) return <InclusaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
+  const regGold = lerGold<GoldRegulacao>("regulacao.json");
+  const reg = integra(regGold) ? regGold : null;
 
   const c = g.cobertura;
   const b = c.brasil;
@@ -236,6 +240,7 @@ export default function CoberturaPage() {
                       {c.regra_elegibilidade.fonte}
                     </a>
                     ). Base legal: {c.regra_elegibilidade.base_legal}
+                    <InclusaoBaseLegal reg={reg} className="mt-2" />
                   </p>
                   <ul className="space-y-1 text-sm text-carvao">
                     {c.regra_elegibilidade.criterios.map((cr) => (

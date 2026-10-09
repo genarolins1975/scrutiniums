@@ -7,22 +7,26 @@ import { InclusaoOpcoes } from "@/components/energia/InclusaoOpcoes";
 import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { quebrasQuantis } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
 import {
   COLUNAS_UFS_TSEE,
   ESQUEMA_TSEE,
   MEDIDA_MAPA_TSEE,
   MEDIDA_TSEE,
+  classificacaoMapaTsee,
   codigoUf,
   dadosHistoricoUf,
   dadosSerieTsee,
   linhasUfsTsee,
   mes,
   siglaDoCodigo,
+  textoDescontoNegativoHistorico,
+  textoDescontoNegativoMapa,
+  textoDescontoNegativoUf,
   textoLacunasHistorico,
   textoMesesIncompletosScs,
   valoresMapaTsee,
+  valoresTemNegativo,
   type MedidaHistUf,
   type MedidaMapaTsee,
   type MedidaTsee,
@@ -110,6 +114,8 @@ const OPCOES_HIST: readonly (readonly [MedidaHistUf, string])[] = [
   ["desconto", "Desconto das faturas (R$ milhões)"],
 ];
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
+/** Classe própria do valor negativo na fonte: cor fora da escala do desconto positivo. */
+const COR_NEGATIVA = "var(--escala-div-neg-1)";
 const CORES_COMP = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
 
 // uma só requisição por visita, compartilhada pelas instâncias; falha não fica em cache
@@ -139,7 +145,10 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
   const [aviso, setAviso] = useState("");
   const med = MEDIDA_MAPA_TSEE[v.mapa];
   const valores = useMemo(() => valoresMapaTsee(ufs, v.mapa), [ufs, v.mapa]);
-  const classes = useMemo(() => quebrasQuantis(Object.values(valores), CORES_MAPA.length, { casas: med.casas }), [valores, med.casas]);
+  const classes = useMemo(() => classificacaoMapaTsee(valores, med.casas), [valores, med.casas]);
+  const temNegativo = useMemo(() => valoresTemNegativo(valores), [valores]);
+  const notaMapa = textoDescontoNegativoMapa(ufs, v.mapa);
+  const notaTabela = textoDescontoNegativoUf(ufs);
   const linhas = useMemo(() => linhasUfsTsee(ufs), [ufs]);
   const escolhidas = v.ufs.filter((u) => ufs.some((x) => x.uf === u));
   const ultima = escolhidas.at(-1) ?? null;
@@ -165,7 +174,7 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
         titulo={`${med.rotulo} por UF, ${mes(mesMapa)} (Beneficiários da CDE)`}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
-        cores={CORES_MAPA}
+        cores={temNegativo ? [COR_NEGATIVA, ...CORES_MAPA] : CORES_MAPA}
         classificacao={classes}
         unidade={med.unidade}
         casas={med.casas}
@@ -174,7 +183,7 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
         onSelecionar={(id) => alternar(siglaDoCodigo(id))}
         rotulos
         periodo={mes(mesMapa)}
-        nota="Faturas, não UC nem famílias. Clique numa UF para incluí-la no histórico (até quatro); clique de novo para retirar."
+        nota={`Faturas, não UC nem famílias. Clique numa UF para incluí-la no histórico (até quatro); clique de novo para retirar.${notaMapa ? ` ${notaMapa}` : ""}`}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">
@@ -195,7 +204,12 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
         selecionado={ultima}
         onSelecionar={(id) => alternar(id)}
         dicaBusca="Nome ou sigla da UF"
-        nota="Faturas de faturamento com desconto da Tarifa Social (subclasses 3.2 a 3.6). A soma das UF mais as faturas sem município válido é o total nacional."
+        nota={
+          <>
+            Faturas de faturamento com desconto da Tarifa Social (subclasses 3.2 a 3.6). A soma das UF mais as faturas sem município válido é o total nacional.
+            {notaTabela && <span data-nota-desconto-negativo=""> {notaTabela}</span>}
+          </>
+        }
       />
     </div>
   );
@@ -237,6 +251,11 @@ export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: 
     [serieUf, escolhidas.join(","), v.hist, atingidas],
   );
   const nomeUf = (uf: string) => ufs.find((x) => x.uf === uf)?.nome ?? uf;
+  const notaNegativa = useMemo(
+    () => (serieUf ? textoDescontoNegativoHistorico(serieUf, escolhidas, nomeUf, atingidas) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
+    [serieUf, escolhidas.join(","), atingidas, ufs],
+  );
 
   return (
     <div className="space-y-4">
@@ -279,6 +298,11 @@ export function InclusaoHistoricoUfTsee({ ufs, serieUfUrl, atingidas, marcos }: 
             marcos={marcos}
             altura={300}
           />
+          {v.hist === "desconto" && notaNegativa && (
+            <p role="note" data-nota-desconto-negativo="" className="max-w-prose2 text-sm leading-relaxed text-carvao">
+              {notaNegativa}
+            </p>
+          )}
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoLacunasHistorico(escolhidas, atingidas, serieUf.meses)}</p>
         </>
       )}

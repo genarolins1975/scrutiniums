@@ -10,7 +10,7 @@ import PaginaCobertura from "@/app/setor-eletrico/inclusao-energetica/cobertura/
 import PaginaOrcamento from "@/app/setor-eletrico/inclusao-energetica/orcamento/page";
 import PaginaTarifa from "@/app/setor-eletrico/inclusao-energetica/tarifa-social/page";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
-import { pct } from "@/lib/energia/formato";
+import { dataBR, num, pct } from "@/lib/energia/formato";
 import {
   CODIGO_UF,
   ESQUEMA_COBERTURA,
@@ -60,12 +60,32 @@ import {
   valoresMapaPnad,
   valoresMapaPof,
   valoresMapaTsee,
+  NOTA_DESCONTO_NEGATIVO,
+  baseLegalTarifaSocial,
+  classificacaoMapaTsee,
+  destaquesParticipacaoRendaPof,
+  limiteTarifaSocial,
+  mesesComDescontoNegativo,
+  respostaOrcamentoRenda,
+  textoDescontoNegativoHistorico,
+  textoDescontoNegativoMapa,
+  textoDescontoNegativoUf,
+  textoEstimadorDestaque,
+  textoPofHistorica as textoPofHistoricaParaTeste,
+  ufsComDescontoNegativo,
+  vereditoAcessoIndicador,
+  vereditoOrcamentoRenda,
+  vereditoTarifaSocialMedida,
 } from "@/lib/energia/inclusao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
+import { quebrasQuantis } from "@/lib/energia/escalas";
 import { siglasNoTexto } from "@/lib/energia/siglas";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import type { InclusaoGold, SerieCdeUf, SerieCoberturaMensal } from "@/lib/energia/tipos-inclusao";
+import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
+import { InclusaoPorBasePof } from "@/components/energia/InclusaoPorEstado";
+import { AcessoCartaoIndicador, AcessoResposta, InclusaoBaseLegal, OrcamentoFaixa, OrcamentoResposta, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
 
 /**
  * Página Inclusão energética (P059 a P062): contrato da gold, equivalência entre
@@ -946,4 +966,301 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
   function rotuloDe(b: string): string {
     return /aria-label="([^"]*)"/.exec(b)?.[1] ?? "";
   }
+});
+
+
+/**
+ * Rodada 2: o desconto negativo da fonte, a frase e os cartões que acompanham o controle e a base legal lida da linha do tempo da
+ * Regulação. Cada regra vale para qualquer UF, mês, indicador ou base, lidos do dado; a gold de hoje é só um caso (o Espírito Santo
+ * e, em alguns meses de 2025, o Rio de Janeiro).
+ */
+describe("desconto negativo por UF e mês: a mesma nota junto do número e classe própria no mapa", () => {
+  const t = G.tarifa_social;
+  const mesMapa = t.mes_mapa ?? t.mes_referencia;
+  const linhasCsv = csv("inclusao_cde_mensal_uf.csv");
+  const valorCsv = (r: Record<string, string>) => n(r.desconto_faturas_reais);
+  const ufsSint = t.ufs.map((u) => (u.uf === "AM" ? { ...u, desconto_reais: -1_000_000, desconto_medio_por_fatura_reais: -3.5 } : u));
+  const semNegativo = t.ufs.map((u) => ({ ...u, desconto_reais: Math.abs(u.desconto_reais ?? 0), desconto_medio_por_fatura_reais: Math.abs(u.desconto_medio_por_fatura_reais ?? 0) }));
+
+  it("as UF com desconto negativo no mês do mapa saem do dado, conferidas contra o CSV publicado por outro caminho", () => {
+    const esperado = linhasCsv
+      .filter((r) => r.mes === mesMapa && r.territorio !== "BR" && (valorCsv(r) ?? 0) < 0)
+      .map((r) => r.territorio)
+      .sort();
+    expect(
+      ufsComDescontoNegativo(t.ufs)
+        .map((u) => u.uf)
+        .sort(),
+    ).toEqual(esperado);
+  });
+
+  it("regra geral: qualquer UF com desconto total ou médio por fatura negativo recebe a nota; sem negativo, nenhuma nota", () => {
+    expect(ufsComDescontoNegativo(ufsSint).map((u) => u.uf)).toContain("AM");
+    const nota = textoDescontoNegativoUf(ufsSint) ?? "";
+    expect(nota).toContain("Amazonas");
+    expect(nota).toContain(NOTA_DESCONTO_NEGATIVO);
+    expect(nota).toContain("a fonte não diz o motivo");
+    expect(nota).toContain("inferência e não está confirmado");
+    // só o desconto médio negativo, com o total positivo, também conta (e o inverso)
+    expect(ufsComDescontoNegativo(t.ufs.map((u) => (u.uf === "AC" ? { ...u, desconto_reais: 5, desconto_medio_por_fatura_reais: -1 } : u))).map((u) => u.uf)).toContain("AC");
+    expect(ufsComDescontoNegativo(t.ufs.map((u) => (u.uf === "AC" ? { ...u, desconto_reais: -5, desconto_medio_por_fatura_reais: 1 } : u))).map((u) => u.uf)).toContain("AC");
+    expect(ufsComDescontoNegativo(semNegativo)).toEqual([]);
+    expect(textoDescontoNegativoUf(semNegativo)).toBeNull();
+    expect(textoDescontoNegativoMapa(semNegativo, "medio")).toBeNull();
+    // a contagem de faturas não tem sinal: o mapa dela não leva a nota
+    expect(textoDescontoNegativoMapa(ufsSint, "faturas")).toBeNull();
+    for (const medida of ["medio", "desconto"] as const) expect(textoDescontoNegativoMapa(ufsSint, medida), medida).toContain(NOTA_DESCONTO_NEGATIVO);
+  });
+
+  it("o valor negativo tem classe própria no mapa e nunca define a escala do desconto positivo, qualquer que seja a sua grandeza", () => {
+    for (const medida of ["medio", "desconto"] as const) {
+      const valores = valoresMapaTsee(ufsSint, medida);
+      const c = classificacaoMapaTsee(valores, 2);
+      const negativos = Object.values(valores).filter((v) => typeof v === "number" && v < 0).length;
+      expect(negativos, medida).toBeGreaterThan(0);
+      expect(c.cortes[0], medida).toBe(0);
+      expect(c.classes[0].rotulo, medida).toBe("menos de 0");
+      expect(c.classes[0].contagem, `${medida}: só os negativos`).toBe(negativos);
+      const positivos = Object.values(valores).filter((v) => v === null || v >= 0);
+      expect(c.cortes.slice(1), `${medida}: a escala positiva sai só dos valores positivos`).toEqual(quebrasQuantis(positivos, 5, { casas: 2 }).cortes);
+      const cod = Object.keys(valores).find((k) => (valores[k] ?? 0) < 0)!;
+      expect(classificacaoMapaTsee({ ...valores, [cod]: -1e12 }, 2).cortes.slice(1), `${medida}: a grandeza do negativo não mexe na escala`).toEqual(c.cortes.slice(1));
+    }
+    const so = valoresMapaTsee(semNegativo, "medio");
+    expect(classificacaoMapaTsee(so, 2).cortes).toEqual(quebrasQuantis(Object.values(so), 5, { casas: 2 }).cortes);
+  });
+
+  it("histórico: qualquer UF e mês com desconto das faturas negativo leva a nota; mês sem ponto no gráfico não entra", () => {
+    const json = JSON.parse(ler("public/energia/series/inclusao_cde_mensal_uf.json")) as SerieCdeUf;
+    const atingidas = ufsAtingidasPorAusencia(t.cde_meses, t.distribuidoras);
+    const escolhidas = ["ES", "RJ", "SP"];
+    const esperado = escolhidas
+      .map((uf) => ({
+        uf,
+        meses: linhasCsv
+          .filter((r) => r.territorio === uf && (valorCsv(r) ?? 0) < 0 && (atingidas[r.mes]?.[uf]?.length ?? 0) === 0)
+          .map((r) => r.mes)
+          .sort(),
+      }))
+      .filter((x) => x.meses.length);
+    expect(mesesComDescontoNegativo(json, escolhidas, atingidas).map((x) => ({ uf: x.uf, meses: [...x.meses].sort() }))).toEqual(esperado);
+    const sint = { meses: ["2025-05", "2025-06", "2025-07"], ufs: ["AC", "AL"], desconto_faturas_reais: [[10, -5, 20], [1, 2, 3]] };
+    const nome = (u: string) => (u === "AC" ? "Acre" : "Alagoas");
+    expect(mesesComDescontoNegativo(sint, ["AC", "AL"])).toEqual([{ uf: "AC", meses: ["2025-06"], comValor: 3 }]);
+    const txt = textoDescontoNegativoHistorico(sint, ["AC", "AL"], nome) ?? "";
+    expect(txt).toContain("Acre em jun/2025");
+    expect(txt).toContain(NOTA_DESCONTO_NEGATIVO);
+    expect(txt).not.toContain("Alagoas");
+    expect(textoDescontoNegativoHistorico(sint, ["AL"], nome)).toBeNull();
+    expect(textoDescontoNegativoHistorico({ ...sint, desconto_faturas_reais: [[-1, -2, -3], [1, 2, 3]] }, ["AC"], nome)).toContain("Acre em todos os meses com valor");
+    expect(mesesComDescontoNegativo(sint, ["AC"], { "2025-06": { AC: ["XYZ"] } })).toEqual([]);
+  });
+
+  it("na página: a seção por UF traz a nota junto da tabela, a abertura diz o limite, e sem negativo no dado nada disso aparece", () => {
+    const h = renderToStaticMarkup(createElement(PaginaTarifa));
+    const neg = ufsComDescontoNegativo(t.ufs);
+    const secao = h.slice(h.indexOf('id="uf"'), h.indexOf('id="historico-uf"'));
+    expect(secao.length).toBeGreaterThan(0);
+    const limite = /data-limite=""[^>]*>([\s\S]*?)<\/p>/.exec(h)?.[1].replace(/<[^>]+>/g, " ") ?? "";
+    expect(limite).toContain("Não permite concluir");
+    expect(limite).toContain("unidades da conta");
+    expect(limiteTarifaSocial(semNegativo)).not.toContain("negativo");
+    if (neg.length) {
+      expect(secao).toContain(NOTA_DESCONTO_NEGATIVO);
+      for (const u of neg) {
+        expect(secao, u.nome).toContain(u.nome);
+        // o número negativo aparece na tabela da mesma seção que a nota
+        expect(secao, u.nome).toContain(num(u.desconto_medio_por_fatura_reais!, 2));
+        expect(limite, u.nome).toContain(u.nome);
+      }
+      expect(limite).toContain("desconto negativo na fonte, sem motivo informado");
+    } else {
+      expect(h).not.toContain(NOTA_DESCONTO_NEGATIVO);
+    }
+  });
+});
+
+describe("frase, cartões e ficha acompanham o controle do painel (base, indicador, medida)", () => {
+  const o = G.orcamento;
+  const a = G.acesso;
+  const t = G.tarifa_social;
+  const palavras = (x: string) => x.trim().split(/\s+/).filter(Boolean).length;
+  const numeros = (x: string) => (x.match(/\d[\d.,]*\d|\d/g) ?? []).length;
+  const texto = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim();
+  const baixa = o.classes[1];
+  const linha = (cod: string) => o.linhas.find((l) => l.territorio === "BR" && l.classe === cod)!;
+  /** Cada bloco data-metrica (medida da faixa), pela contagem de div abertos e fechados. */
+  function blocos(h: string): string[] {
+    const out: string[] = [];
+    const re = /<div role="group" aria-label="[^"]*" data-metrica=""[^>]*>/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(h))) {
+      let prof = 0;
+      const d = /<div\b|<\/div>/g;
+      d.lastIndex = m.index;
+      let r: RegExpExecArray | null;
+      while ((r = d.exec(h))) {
+        prof += r[0] === "</div>" ? -1 : 1;
+        if (prof === 0) {
+          out.push(h.slice(m.index, d.lastIndex));
+          break;
+        }
+      }
+    }
+    return out;
+  }
+
+  it("Orçamento, Na renda: a frase de resposta fala da renda, com os números da gold, e segue as regras de veredito", () => {
+    const base = orcamentoBase(o, (l) => !CODIGO_UF[l.territorio]);
+    const veredito = vereditoOrcamentoRenda(base);
+    const mediaBaixa = linha(baixa.codigo).microdados.media_razoes_renda_pct![0]!;
+    const mediaTotal = linha("7999").microdados.media_razoes_renda_pct![0]!;
+    expect(veredito).toContain(pct(mediaBaixa, 1));
+    expect(veredito).toContain(pct(mediaTotal, 1));
+    expect(veredito).toContain(`mediana ${pct(linha(baixa.codigo).microdados.mediana_renda_pct![0]!, 1)}`);
+    expect(veredito).toContain("na renda");
+    expect(veredito).not.toMatch(/despesa média total|razão de médias/);
+    expect(palavras(veredito)).toBeLessThanOrEqual(50);
+    expect(numeros(veredito)).toBeLessThanOrEqual(8);
+    expect(veredito).not.toMatch(/\bhoje\b|[—–]|\bporque\b|undefined|NaN/);
+    const completa = respostaOrcamentoRenda(base);
+    expect(completa).toContain(pct(mediaBaixa, 2));
+    expect(completa).toContain("não publica razão de médias");
+    const h = renderToStaticMarkup(createElement(OrcamentoResposta, { o, base: "renda" }));
+    expect(h).toContain('data-resposta="p061"');
+    expect(h).toContain('aria-live="polite"');
+    expect(texto(h)).toContain(veredito);
+    // a base despesa continua dizendo a razão de médias: 4,4% e 2,5% na gold de hoje
+    const despesa = renderToStaticMarkup(createElement(OrcamentoResposta, { o, base: "despesa" }));
+    expect(texto(despesa)).toContain(pct(linha(baixa.codigo).microdados.razao_medias_pct![0]!, 1));
+    expect(texto(despesa)).not.toContain("não publica razão de médias");
+  });
+
+  it("Orçamento, Na renda: os cartões trocam para a média das participações, a menor faixa traz a ficha e a nota diz qual estimador o destaque usa", () => {
+    const ano = G.gerado_em.slice(0, 4);
+    const renda = renderToStaticMarkup(createElement(OrcamentoFaixa, { o, base: "renda", anoPublicacao: ano }));
+    const desp = renderToStaticMarkup(createElement(OrcamentoFaixa, { o, base: "despesa", anoPublicacao: ano }));
+    const dr = destaquesParticipacaoRendaPof(orcamentoBase(o, (l) => !CODIGO_UF[l.territorio]));
+    const br = blocos(renda);
+    expect(br.length).toBe(3);
+    expect(br.map((b) => /aria-label="([^"]*)"/.exec(b)?.[1])).toEqual([
+      "Média das participações na renda, todas as famílias",
+      "Média das participações na renda, menor faixa de renda",
+      "Média das participações na renda, maior faixa de renda",
+    ]);
+    expect(texto(br[0])).toContain(pct(dr.total!, 1));
+    expect(texto(br[1])).toContain(pct(dr.baixa!.valor!, 1));
+    expect(texto(br[1])).toContain(dr.baixa!.rotulo);
+    expect(texto(br[2])).toContain(pct(dr.alta!.valor!, 1));
+    // a ficha que a gold publica para a média na renda da menor faixa vai com o cartão dela; os outros dois dizem a razão pela lista de medidas sem ficha própria
+    expect((renda.match(/Comprove este número/g) ?? []).length).toBe(1);
+    expect(br[1]).toContain("Comprove este número");
+    expect(texto(renda)).toContain(textoEstimadorDestaque(orcamentoBase(o, (l) => !CODIGO_UF[l.territorio]), "renda"));
+    expect(texto(renda)).toContain("mais sensível");
+    expect(texto(renda)).toContain(textoPofHistoricaParaTeste(o, ano));
+    // a despesa mantém a razão de médias, com a ficha do total, e diz que o destaque usa a razão de médias
+    expect(blocos(desp).map((b) => /aria-label="([^"]*)"/.exec(b)?.[1])[0]).toBe("Razão de médias, todas as famílias");
+    expect(texto(desp)).toContain("O destaque é a razão de médias");
+    expect(desp).toContain("Comprove este número");
+  });
+
+  it("Acesso: a frase e o primeiro cartão seguem o indicador (sem energia, ligados à rede geral, rede em tempo integral)", () => {
+    const br = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total")!;
+    const rede = texto(renderToStaticMarkup(createElement(AcessoResposta, { a, ind: "rede" })));
+    const integral = texto(renderToStaticMarkup(createElement(AcessoResposta, { a, ind: "integral" })));
+    const sem = texto(renderToStaticMarkup(createElement(AcessoResposta, { a, ind: "sem" })));
+    expect(rede).toContain(vereditoAcessoIndicador(a, "rede"));
+    expect(rede).toContain(pct(br.pct_rede_geral!, 1));
+    expect(rede).toContain("ligados à rede geral");
+    expect(integral).toContain(pct(br.pct_integral_entre_rede!, 1));
+    expect(integral).toContain("tempo integral");
+    expect(sem).toContain(vereditoAcessoIndicador(a, "sem"));
+    expect(sem).toContain("não tinham energia elétrica de nenhuma fonte");
+    for (const ind of ["rede", "integral"] as const) {
+      expect(vereditoAcessoIndicador(a, ind)).not.toContain("não tinham energia elétrica");
+      expect(vereditoAcessoIndicador(a, ind)).toContain("não se somam");
+    }
+    const cRede = renderToStaticMarkup(createElement(AcessoCartaoIndicador, { a, ind: "rede" }));
+    const cInt = renderToStaticMarkup(createElement(AcessoCartaoIndicador, { a, ind: "integral" }));
+    const cSem = renderToStaticMarkup(createElement(AcessoCartaoIndicador, { a, ind: "sem" }));
+    expect(texto(cRede)).toContain(pct(br.pct_rede_geral!, 1));
+    expect(texto(cRede)).toContain(`${a.ano_referencia}`);
+    expect(texto(cInt)).toContain(pct(br.pct_integral_entre_rede!, 1));
+    expect(texto(cInt)).toContain("não sobre todos os domicílios");
+    // a ficha que a gold publica é a do indicador sem energia; os outros dois cartões dizem o coeficiente de variação
+    expect(cSem).toContain("Comprove este número");
+    expect(cRede).not.toContain("Comprove este número");
+    expect(texto(cRede)).toContain("Coeficiente de variação");
+    expect(texto(cInt)).toContain("Coeficiente de variação");
+  });
+
+  it("Tarifa Social: a frase segue a medida da série (UC, participação nas residenciais, DMR) com os números dos KPIs", () => {
+    const k = t.kpis;
+    const uc = texto(renderToStaticMarkup(createElement(TarifaSocialResposta, { t, medida: "uc" })));
+    const part = texto(renderToStaticMarkup(createElement(TarifaSocialResposta, { t, medida: "part" })));
+    const dmr = texto(renderToStaticMarkup(createElement(TarifaSocialResposta, { t, medida: "dmr" })));
+    expect(uc).toContain(vereditoTarifaSocialMedida(t, "uc"));
+    expect(part).toContain(pct(k.participacao_pct.valor!, 1));
+    expect(part).toContain("UC residenciais");
+    expect(dmr).toContain("Diferença Mensal de Receita (DMR)");
+    expect(dmr).toContain(num(k.dmr_por_uc_reais.valor!, 2));
+    for (const medida of ["part", "dmr"] as const) {
+      const v = vereditoTarifaSocialMedida(t, medida);
+      expect(v, medida).not.toBe(vereditoTarifaSocialMedida(t, "uc"));
+      expect(palavras(v), medida).toBeLessThanOrEqual(50);
+      expect(numeros(v), medida).toBeLessThanOrEqual(8);
+      expect(v, medida).not.toMatch(/\bhoje\b|[—–]|\bporque\b|undefined|NaN/);
+    }
+  });
+
+  it("o componente de estado mostra a variante do estado padrão no servidor, e as duas variantes existem", () => {
+    const h = renderToStaticMarkup(createElement(InclusaoPorBasePof, { variantes: { despesa: createElement("p", null, "variante da despesa"), renda: createElement("p", null, "variante da renda") } }));
+    expect(h).toContain("variante da despesa");
+    expect(h).not.toContain("variante da renda");
+    // o orçamento e o acesso e a tarifa passam as variantes do estado ao componente, nunca um texto só
+    expect(ler("src/app/setor-eletrico/inclusao-energetica/orcamento/page.tsx")).toMatch(/InclusaoPorBasePof[\s\S]*renda:/);
+    expect(ler("src/app/setor-eletrico/inclusao-energetica/acesso/page.tsx")).toMatch(/InclusaoPorIndicadorPnad[\s\S]*integral:/);
+    expect(ler("src/app/setor-eletrico/inclusao-energetica/tarifa-social/page.tsx")).toMatch(/InclusaoPorMedidaTsee[\s\S]*dmr:/);
+  });
+});
+
+describe("base legal da regra de 80 kWh: o que a linha do tempo da Regulação do projeto traz", () => {
+  const REG = JSON.parse(ler("public/energia/gold/regulacao.json")) as GoldRegulacao;
+  const ev = (id: string) => REG.linha_do_tempo.eventos.find((e) => e.id === id)!;
+  const lei = ev("lei-15235-2025");
+  const mpv = ev("mpv-1300-2025");
+
+  it("os atos e a conversão saem da linha do tempo (por caminho independente: a gold da Regulação lida direto)", () => {
+    const b = baseLegalTarifaSocial(REG);
+    expect(b.lei?.id).toBe("lei-15235-2025");
+    expect(b.mpv?.id).toBe("mpv-1300-2025");
+    expect(b.ren?.id).toBe("ren-1147-2025");
+    expect(baseLegalTarifaSocial(null)).toEqual({ mpv: null, lei: null, ren: null });
+    expect(mpv.resumo).toContain("Convertida na Lei nº 15.235/2025");
+    expect(lei.resumo).toContain("Converte a Medida Provisória nº 1.300/2025");
+  });
+
+  it("a Tarifa Social e a Cobertura dizem o ato, a data de publicação e o que a lei faz, com o link para o evento, e a MPV vem expandida", () => {
+    for (const [nome, pagina] of [["Tarifa Social", PaginaTarifa], ["Cobertura", PaginaCobertura]] as const) {
+      const h = renderToStaticMarkup(createElement(pagina));
+      const trecho = /data-base-legal=""[^>]*>([\s\S]*?)<\/span><\/span>|data-base-legal=""[^>]*>([\s\S]*?)<\/span>/.exec(h);
+      expect(trecho, nome).toBeTruthy();
+      const t = (trecho![1] ?? trecho![2] ?? "").replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/\s+/g, " ");
+      expect(t, nome).toContain(mpv.ato!.replace("Medida Provisória", "Medida Provisória (MPV)"));
+      expect(t, nome).toContain(`foi convertida na ${lei.ato}`);
+      expect(t, nome).toContain(`publicada em ${dataBR(lei.data_publicacao!)}`);
+      expect(t, nome).toContain("isenta das quotas da CDE");
+      expect(t, nome).toContain("Cadastro Único");
+      expect(t, nome).not.toContain("CadÚnico");
+      expect(h, nome).toContain(`href="/setor-eletrico/regulacao/linha-do-tempo#evento-lei-15235-2025"`);
+    }
+    // o link cai num evento que a página da Regulação ancora com esse mesmo id
+    expect(ler("src/components/energia/RegulacaoLinhaTempo.tsx")).toContain("id={`evento-${e.id}`}");
+  });
+
+  it("sem a lei na linha do tempo, o texto não aparece e a página não quebra", () => {
+    expect(renderToStaticMarkup(createElement(InclusaoBaseLegal, { reg: null }))).toBe("");
+    const semLei = { ...REG, linha_do_tempo: { ...REG.linha_do_tempo, eventos: REG.linha_do_tempo.eventos.filter((e) => e.id !== "lei-15235-2025") } };
+    expect(renderToStaticMarkup(createElement(InclusaoBaseLegal, { reg: semLei }))).toBe("");
+  });
 });

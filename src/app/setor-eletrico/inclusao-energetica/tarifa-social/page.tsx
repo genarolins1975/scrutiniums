@@ -5,9 +5,10 @@ import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
+import { InclusaoPorMedidaTsee } from "@/components/energia/InclusaoPorEstado";
 import { InclusaoHistoricoUfTsee, InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
+import { InclusaoBaseLegal, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
-import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -25,6 +26,7 @@ import {
   FONTE_CDE,
   FONTE_SCS,
   inteiro,
+  limiteTarifaSocial,
   linhasDistribuidoras,
   linhasMesesCde,
   linhasTabelaSerieTsee,
@@ -34,14 +36,13 @@ import {
   numTexto,
   reaisGrandes,
   reaisTexto,
-  respostaTarifaSocial,
   rotaPainel,
   textoCusteioTarifaSocial,
   ufsAtingidasPorAusencia,
-  vereditoTarifaSocial,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
+import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -126,7 +127,14 @@ export default function TarifaSocialPage() {
       }))
     : [];
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
-  const oQueMudou = mudancaTarifaSocial(t);
+  const regGold = lerGold<GoldRegulacao>("regulacao.json");
+  const reg = integra(regGold) ? regGold : null;
+  const oQueMudou = (
+    <>
+      <InclusaoBaseLegal reg={reg} className="mb-2" />
+      {mudancaTarifaSocial(t)}
+    </>
+  );
   const comoInterpretar = (
     <>
       UC, unidade consumidora, é o ponto de ligação com conta própria e a unidade do SCS; fatura é cada conta emitida com desconto no mês e a unidade dos arquivos de Beneficiários da CDE (uma UC
@@ -155,6 +163,7 @@ export default function TarifaSocialPage() {
           lead="A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam."
           recorte={`UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`}
           fonte="ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)"
+          limite={limiteTarifaSocial(t.ufs)}
           referencia={
             <>
               SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
@@ -265,9 +274,9 @@ export default function TarifaSocialPage() {
                   serie={serie}
                   marcos={marcosScs}
                   resposta={
-                    <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
-                      {respostaTarifaSocial(t)}
-                    </RespostaCurta>
+                    <InclusaoPorMedidaTsee
+                      variantes={{ uc: <TarifaSocialResposta t={t} medida="uc" />, part: <TarifaSocialResposta t={t} medida="part" />, dmr: <TarifaSocialResposta t={t} medida="dmr" /> }}
+                    />
                   }
                   recorte={
                     <InclusaoRecorte
