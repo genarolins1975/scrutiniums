@@ -124,7 +124,7 @@ export function Numero({
         ) : (
           <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-left sm:text-[2.25rem]">
             {valorDestaque(v, formato, casas)}
-            {u && <span className="block pt-1 font-sans text-xs leading-tight text-carvao-muted sm:ml-1.5 sm:inline sm:pt-0 sm:text-sm">{u}</span>}
+            {u && <span className="block pt-1 font-sans text-xs leading-tight text-carvao-muted sm:ml-1.5 sm:inline sm:pt-0 sm:!text-sm">{u}</span>}
           </p>
         )}
         <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:mt-1.5">

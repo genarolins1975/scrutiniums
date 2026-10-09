@@ -265,6 +265,10 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
 /* Metadados do domínio Energia não ficam abaixo de 12 px (o utilitário global .rotulo é de 11,5 px e serve aos outros observatórios). */
 .dominio-energia .rotulo { font-size: 0.75rem; }
+/* Texto de apoio (notas, fontes, legendas, ressalvas) tem 13 px no domínio Energia: com 12 px ele era de 35% a 65% do texto das páginas nas avaliações
+   independentes, inclusive ressalvas que mudam a leitura do número. Quem declara a própria altura de linha (leading-*) a mantém. */
+.dominio-energia .text-xs { font-size: 0.8125rem; }
+.dominio-energia .text-xs:not([class*="leading-"]) { line-height: 1.2rem; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
 
