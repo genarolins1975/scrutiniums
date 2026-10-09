@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { decimal, inteiro, percentual, reaisCompleto, reaisExtenso } from "@/lib/eficiencia/formato";
+import { inteiro, percentual, reaisExtenso } from "@/lib/eficiencia/formato";
 import { composicao, composicaoAgregada, type CapitalPainel, type IndiceSaude, type LinhaComposicao } from "@/lib/eficiencia/saude/consulta";
 import { ROTA_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";

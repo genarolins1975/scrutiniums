@@ -251,6 +251,16 @@ def proveniencia(manif, obs):
     }
 
 
+MOTIVO_DF = ("O Distrito Federal não tem prefeitura e a saúde distrital é executada pelo Governo do Distrito Federal, que reúne competências de estado e de município. "
+             "A despesa com a função Saúde, os estabelecimentos do CNES, as equipes de atenção primária e as internações do Distrito Federal misturam as duas esferas. "
+             "Incluí-lo nas comparações das capitais municipais juntaria perímetros diferentes; a inclusão exige tratamento próprio, registrado como próxima etapa.")
+
+
+def _excluidos():
+    """Mesma lista de entes de Educação, com o motivo escrito para o perímetro da Saúde."""
+    return [{**e, "motivo": MOTIVO_DF} for e in entes.excluidos()]
+
+
 def constroi(gerado_em=None):
     catalogo = _catalogo()
     obs = P.todas()
@@ -268,7 +278,7 @@ def constroi(gerado_em=None):
                  "versao_codigo": base.versao_codigo(), "gerado_em": gerado_em or base.agora_utc(), "dados_capturados_ate": max(c for c in capturas if c),
                  "hash_dados": _hash_dados(obs), "observacoes": len(obs), "proveniencia": proveniencia(manif, obs)},
         "painel": catalogo["painel"],
-        "universo": {"capitais": entes.capitais(), "excluidos": entes.excluidos(), "regioes": entes.REGIOES},
+        "universo": {"capitais": entes.capitais(), "excluidos": _excluidos(), "regioes": entes.REGIOES},
         "periodos": {"financeiros": P.ANOS_FINANCEIROS, "resultados": P.ANOS_RESULTADOS, "dezembros": P.ANOS_FINANCEIROS, "retrato": "2026-10-09"},
         "subfuncoes": {k: v for k, v in __import__("pipeline.eficiencia_saude.fontes.siconfi", fromlist=["x"]).SUBFUNCOES_ROTULO.items()},
         "categorias_natureza": {"pessoal": "Pessoal e encargos sociais", "outras_correntes": "Outras despesas correntes", "capital": "Despesas de capital"},

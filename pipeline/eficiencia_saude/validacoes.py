@@ -365,7 +365,19 @@ def s15_razoes(obs):
               f"{n} observações com numerador e denominador registrados; {len(ruins)} fora da tolerância.", ruins[:20])
 
 
+def s16_nao_publicaveis(obs):
+    """Indicador avaliado e não publicável não tem observação, razão derivada nem arquivo de download."""
+    fichas = base.le_json(base.CATALOGO)["indicadores"]
+    nao = {f["id"] for f in fichas if f.get("estado") == "NAO_PUBLICAVEL"}
+    ruins = [{"indicador": o["indicador"], "ente": o["ente"], "ano": o["ano"]} for o in obs if o["indicador"] in nao]
+    ruins += [{"indicador": f["id"], "motivo": "ficha não publicável com arquivo de download"} for f in fichas if f["id"] in nao and f.get("download")]
+    sem_motivo = [f["id"] for f in fichas if f["id"] in nao and not f.get("motivo_nao_publicacao")]
+    ruins += [{"indicador": i, "motivo": "sem motivo registrado"} for i in sem_motivo]
+    return _v("S16", "Indicadores avaliados e não publicáveis: sem observação, sem arquivo e com o motivo registrado", "automatica", "aprovada" if not ruins else "reprovada",
+              f"{len(nao)} indicadores avaliados e não publicados ({', '.join(sorted(nao))}); nenhuma observação, razão ou arquivo deles na saída." if not ruins else f"{len(ruins)} ocorrências.", ruins[:20])
+
+
 def todas(obs):
     return [s01_entes(), s02_identidades_dca(), s03_dca_rreo(obs), s04_natureza(obs), m01_sinais_msc(), m02_ordem_estagios(), s05_asps(), s06_asps_percentual(obs),
             s07_por_fonte(obs), s08_aps(obs), m03_ubs_api_x_retrato(), s09_icsap(obs), m04_denominadores_icsap(obs), s10_ausencia_nao_zero(obs),
-            s11_elegibilidade(obs), s12_df_fora(obs), s13_unicidade(obs), s14_por_habitante(obs), s15_razoes(obs)]
+            s11_elegibilidade(obs), s12_df_fora(obs), s13_unicidade(obs), s14_por_habitante(obs), s15_razoes(obs), s16_nao_publicaveis(obs)]

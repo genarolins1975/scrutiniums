@@ -111,7 +111,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   const alternar = (col: Colunas) => definir({ ord: col, dir: s.ord === col && s.dir === "cres" ? "desc" : "cres" });
   const exportarTabela = () => {
     const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)})`), "Observações"];
-    const linhas = ordenadas.map(({ cap, cel }) => [cap.nome, cap.uf, ...cel.map(({ p, cobre }) => (p.valor === null ? "" : String(p.valor))), cel.map(({ p, cobre }, i) => (!cobre ? `${cols[i].rotuloCurto}: ${periodo} não coberto` : p.valor === null ? `${cols[i].rotuloCurto}: ${ROTULO_ESTADO[p.status]}` : !p.elegivel ? `${cols[i].rotuloCurto}: fora da comparação` : "")).filter(Boolean).join("; ")]);
+    const linhas = ordenadas.map(({ cap, cel }) => [cap.nome, cap.uf, ...cel.map(({ p }) => (p.valor === null ? "" : String(p.valor))), cel.map(({ p, cobre }, i) => (!cobre ? `${cols[i].rotuloCurto}: ${periodo} não coberto` : p.valor === null ? `${cols[i].rotuloCurto}: ${ROTULO_ESTADO[p.status]}` : !p.elegivel ? `${cols[i].rotuloCurto}: fora da comparação` : "")).filter(Boolean).join("; ")]);
     baixar(`saude_comparacao_${ano}.csv`, csv(cab, linhas));
   };
   const exportarMedida = () => baixar(`saude_${m.id}_${ano}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(ix, m, ano, o, c, periodo, `${ficha.nome_curto}. ${ficha.fontes.join("; ")}.`)));

@@ -4,14 +4,14 @@
   "painel": "saude-capitais",
   "versao_pipeline": "obee-saude-0.1.0",
   "versao_catalogo": "2026-10-09.1",
-  "versao_codigo": "gerador-db05de73bc2a",
-  "gerado_em": "2026-10-09T14:34:23Z",
+  "versao_codigo": "gerador-46c4eacd9e67",
+  "gerado_em": "2026-10-09T14:43:28Z",
   "dados_capturados_ate": "2026-10-09T14:32:35Z",
   "hash_dados": "f111efb2ef09c5407f9e680ac61dfa3311c4b47c6651b66f7dca83fcc41a17da",
   "observacoes": 8751,
   "proveniencia": {
    "codigo_gerador": {
-    "sha256": "db05de73bc2a13b7d6befa32437ff772846e59a4e9b2301e2bc2993d4dad256e",
+    "sha256": "46c4eacd9e673235d58876aa16448474673eb87eff9c70aa2db7fb72df21c563",
     "arquivos": 19,
     "escopo": "todos os .py de pipeline/eficiencia_saude (sem seed e sem testes), o catálogo de indicadores e as unidades compartilhadas base.py e entes.py de pipeline/eficiencia"
    },
@@ -25,7 +25,7 @@
     "observacoes": 8751
    },
    "git": {
-    "commit_de_partida": "4702e32ccf845d607ddf81195470649e9fa7c0e4",
+    "commit_de_partida": "b5d0da10fc193fda051e6e0dfe0fd6808d5a29cb",
     "codigo_com_mudanca_nao_commitada": false
    },
    "nota": "Reconstruir a gold com o mesmo seed e o mesmo código produz o mesmo hash_dados. O commit que incorpora a gold gerada é posterior à geração."
@@ -280,7 +280,7 @@
     "nome": "Brasília (Distrito Federal)",
     "uf": "DF",
     "tipo_ente": "DISTRITO_FEDERAL",
-    "motivo": "O Distrito Federal não tem prefeitura nem rede municipal. A rede pública de Brasília é mantida pelo Governo do Distrito Federal, registrada no Censo Escolar com dependência administrativa estadual, e a despesa distrital com educação reúne competências de estado e de município. Incluí-la neste recorte misturaria redes de natureza diferente."
+    "motivo": "O Distrito Federal não tem prefeitura e a saúde distrital é executada pelo Governo do Distrito Federal, que reúne competências de estado e de município. A despesa com a função Saúde, os estabelecimentos do CNES, as equipes de atenção primária e as internações do Distrito Federal misturam as duas esferas. Incluí-lo nas comparações das capitais municipais juntaria perímetros diferentes; a inclusão exige tratamento próprio, registrado como próxima etapa."
    }
   ],
   "regioes": {
@@ -3802,6 +3802,14 @@
    "tipo": "automatica",
    "resultado": "aprovada",
    "detalhe": "1.222 observações com numerador e denominador registrados; 0 fora da tolerância.",
+   "casos": []
+  },
+  {
+   "id": "S16",
+   "titulo": "Indicadores avaliados e não publicáveis: sem observação, sem arquivo e com o motivo registrado",
+   "tipo": "automatica",
+   "resultado": "aprovada",
+   "detalhe": "3 indicadores avaliados e não publicados (sau.aps.producao, sau.despesa.por_atendimento, sau.rede.profissionais_carga_horaria); nenhuma observação, razão ou arquivo deles na saída.",
    "casos": []
   }
  ],

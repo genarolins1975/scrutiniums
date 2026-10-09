@@ -44,9 +44,8 @@ export function Footer() {
             <li><Link href="/eficiencia-estatal" className="hover:text-bronze-soft">Eficiência Estatal</Link></li>
             <li><Link href="/eficiencia-estatal/educacao-municipal-capitais" className="hover:text-bronze-soft">Educação nas capitais</Link></li>
             <li><Link href="/eficiencia-estatal/saude-capitais" className="hover:text-bronze-soft">Saúde nas capitais</Link></li>
-            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/gastos" className="hover:text-bronze-soft">Gastos</Link></li>
-            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/comparar" className="hover:text-bronze-soft">Comparar capitais</Link></li>
-            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos</Link></li>
+            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos, Educação</Link></li>
+            <li><Link href="/eficiencia-estatal/saude-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos, Saúde</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">

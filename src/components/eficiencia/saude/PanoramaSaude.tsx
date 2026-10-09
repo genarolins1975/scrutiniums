@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { inteiro } from "@/lib/eficiencia/formato";
 import { IndiceSaude, anosDaMedida, comparar } from "@/lib/eficiencia/saude/consulta";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
 import { MEDIDAS_SAUDE, ROTULO_PERIODO, type MedidaSaudeId, type TemaSaude } from "@/lib/eficiencia/saude/medidas";
@@ -67,7 +66,7 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
             Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores?
           </p>
           <p className="mt-2 max-w-[46rem] text-[0.9375rem] leading-snug text-carvao-muted">
-            26 capitais estaduais, sem o Distrito Federal (motivo em Dados e métodos) · três perímetros diferentes, abaixo · o ano de cada medida está ao lado dela
+            26 capitais estaduais; o Distrito Federal fica fora porque a saúde distrital reúne competências de estado e de município (motivo completo em Dados e métodos) · três perímetros diferentes, abaixo · o ano de cada medida está ao lado dela
           </p>
         </div>
         <div className="lg:pt-3">

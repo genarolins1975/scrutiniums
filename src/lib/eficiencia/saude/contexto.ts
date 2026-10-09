@@ -25,6 +25,9 @@ export const VALIDACOES_DO_INDICADOR_SAUDE: Record<string, string[]> = {
   "sau.icsap.participacao": ["S09", "S10", "S13", "S15"],
   "sau.icsap.grupos": ["S09", "S10", "S13"],
   "sau.ctx.cobertura_planos": ["S10", "S13"],
+  "sau.aps.producao": ["S16"],
+  "sau.rede.profissionais_carga_horaria": ["S16"],
+  "sau.despesa.por_atendimento": ["S16"],
 };
 
 const ROTULO_FONTE: Record<string, string> = {
