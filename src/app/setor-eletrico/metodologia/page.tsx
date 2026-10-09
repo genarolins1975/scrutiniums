@@ -21,7 +21,7 @@ import { gold } from "@/lib/energia/gold";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS, catalogoDados } from "@/lib/energia/datasets";
 import { CSV_DADOS, URL_GOLD, afirmacoesConferidas, compactarLinhas, linhasMetricas, respostaRegras, resumoMetricas, ROTULO_ESTADO_DADOS } from "@/lib/energia/dados";
-import { contextoDoCatalogo, fichasDasFontes } from "@/lib/energia/dados-ficha";
+import { fichasDasFontes } from "@/lib/energia/dados-ficha";
 import { maiuscula, quadroDeDatas, resumirAcessoCcee, separaIdentificadores, textoChecagensReprovadas, textoDatasDaColetaCcee, textoMudancaRegras, textoVersaoDoCodigo, vereditoRegras } from "@/lib/energia/dados-leitor";
 import { acessoCceeDados, contagemNoCsvDoCatalogo, estadoDoArquivo, manifestoDados, metricasGeradoEm, metricasPublicadas, provenienciaDados, publicacaoDados, validacoesDosCsv, versoesDoCodigoDasBases } from "@/lib/energia/dados-servidor";
 import { carimbo, dataBR, num, rotuloRegra } from "@/lib/energia/formato";

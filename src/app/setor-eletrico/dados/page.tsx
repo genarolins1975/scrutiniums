@@ -74,7 +74,6 @@ export default function DadosCatalogoPage() {
   const baixaveis = Array.from(new Set(cat.entradas.filter((e) => e.slug && fichas.has(e.slug)).flatMap((e) => e.downloads ?? [])));
   const rotulosDosArquivos = Object.fromEntries(baixaveis.map((u) => [u, rotuloDoArquivo(u, COLUNAS_ARQUIVO[u])]));
   const nomesPortais = Object.entries(cat.portais);
-  const dataDaListagem = (iso: string | null) => (iso ? dataBR(iso.slice(0, 10)) : "sem coleta");
   const dias = Array.from(new Set(nomesPortais.map(([, p]) => p.colhido_em).filter((x): x is string => !!x).map((x) => carimbo(x).slice(0, 10))));
   const acessados = (o: string) => (cat.recursos[o]?.total ?? 0) - (cat.recursos[o]?.por_estado.CATALOGADO ?? 0);
   const portaisComRecursos = Object.entries(cat.recursos);

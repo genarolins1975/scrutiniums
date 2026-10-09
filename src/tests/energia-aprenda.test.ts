@@ -75,7 +75,8 @@ describe("P065: fontes primárias versionadas", () => {
       }
     }
     // MRE (InfoMercado), ACR, ACL, garantia física (três) e ESS (dois) no Decreto nº 5.163/2004; GSF (quatro),
-    // REE (seis) e constrained-off (quatro) nas capturas de 07/10/2026
+    // REE (seis) e constrained-off (quatro) nas capturas de 07/10/2026. Os seis verbetes de instituições e de escopo (ANEEL, ONS, CCEE,
+    // EPE, IBGE e Sistemas Isolados, capturas de 09/10/2026) têm teste próprio em energia-aprenda-instituicoes.test.ts.
     expect(conferidosNaCaptura).toBeGreaterThanOrEqual(22);
   });
 

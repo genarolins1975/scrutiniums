@@ -50,7 +50,7 @@ describe("registro das tabelas de Geração", () => {
     for (const id of IDS) {
       const p = REGISTRO_TABELAS_GERACAO[id].monta(g);
       if (p === null) continue;
-      const textos = [p.titulo, p.nota ?? "", ...p.colunas.map((c) => c.rotulo)];
+      const textos = [p.titulo, (p as { nota?: string }).nota ?? "", ...p.colunas.map((c) => c.rotulo)];
       for (const t of textos) expect(t, `${id}: ${t.slice(0, 60)}`).not.toMatch(campo);
     }
   });

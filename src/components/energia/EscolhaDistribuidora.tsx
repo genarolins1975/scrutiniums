@@ -19,6 +19,7 @@ export function EscolhaDistribuidora({
   ancora,
   rotulo,
   ano,
+  assunto,
 }: {
   opcoes: OpcaoDistribuidora[];
   destino: string;
@@ -27,6 +28,8 @@ export function EscolhaDistribuidora({
   rotulo: string;
   /** Ano do dado de cada distribuidora da lista (a lista só tem quem tem dado nele). */
   ano?: number | null;
+  /** Assunto da página de destino: distingue pelo nome os dois seletores da mesma página (a lista de cada um tem contagem própria). */
+  assunto?: string;
 }) {
   const [cnpj, setCnpj] = useState("");
   const id = useId();
@@ -37,7 +40,7 @@ export function EscolhaDistribuidora({
     <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
       <div className="min-w-0">
         <label htmlFor={`${id}-d`} className="block text-xs text-mineral">
-          Sua distribuidora ({opcoes.length} com dado{ano ? ` de ${ano}` : ""})
+          Sua distribuidora{assunto ? ` em ${assunto}` : ""} ({opcoes.length} com dado{ano ? ` de ${ano}` : ""})
         </label>
         <select
           id={`${id}-d`}

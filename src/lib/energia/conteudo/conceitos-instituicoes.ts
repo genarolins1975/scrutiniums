@@ -98,7 +98,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Pessoa jurídica de direito privado, sem fins lucrativos, fiscalizada e regulada pela ANEEL, que executa a coordenação e o controle da operação da geração e da transmissão de energia elétrica do Sistema Interligado Nacional (SIN) e, desde 1º de maio de 2017, a previsão de carga e o planejamento da operação dos sistemas isolados.",
     porQueImporta:
-      "A lei lista entre as atribuições do ONS o planejamento e a programação da operação e o despacho centralizado da geração, além da proposta de regras de operação da transmissão, que a ANEEL aprova. Conjuntos de dados abertos do ONS são a fonte dos números de reservatórios, carga, geração e intercâmbio no observatório.",
+      "A lei lista entre as atribuições do ONS o planejamento e a programação da operação e o despacho centralizado da geração, além da proposta de regras de operação da transmissão, que a ANEEL aprova. Conjuntos de dados abertos do ONS são fonte de números de reservatórios, carga, geração e intercâmbio no observatório.",
     relacoes: ["sin", "sistemas-isolados", "aneel", "ccee", "epe", "ear", "carga"],
     relacoesNotas: {
       sin: "A lei atribui ao ONS a coordenação e o controle da operação da geração e da transmissão integrantes do SIN.",
@@ -112,7 +112,7 @@ export const CONCEITOS: Conceito[] = [
         "Lei nº 9.648, de 27 de maio de 1998, art. 13",
         URL_L9648,
         "Art. 13. As atividades de coordenação e controle da operação da geração e da transmissão de energia elétrica integrantes do Sistema Interligado Nacional (SIN) e as atividades de previsão de carga e planejamento da operação do Sistema Isolado (Sisol) serão executadas, mediante autorização do poder concedente, pelo Operador Nacional do Sistema Elétrico (ONS), pessoa jurídica de direito privado, sem fins lucrativos, fiscalizada e regulada pela Aneel [...] Sem prejuízo de outras funções que lhe forem atribuídas pelo Poder Concedente, constituirão atribuições do ONS: [...] a) o planejamento e a programação da operação e o despacho centralizado da geração, com vistas a otimização dos sistemas eletroenergéticos interligados; [...] f) propor regras para a operação das instalações de transmissão da rede básica do SIN, a serem aprovadas pela ANEEL. [...] g) a partir de 1º de maio de 2017, a previsão de carga e o planejamento da operação do Sisol.",
-        "Em outras palavras: a lei diz que a coordenação e o controle da operação da geração e da transmissão do SIN, e a previsão de carga e o planejamento da operação do Sistema Isolado, são executados pelo ONS, associação privada sem fins lucrativos fiscalizada e regulada pela ANEEL. Entre as atribuições estão programar a operação e despachar a geração de forma centralizada e propor à ANEEL regras para a operação da transmissão; desde 1º de maio de 2017, também a previsão de carga e o planejamento da operação dos sistemas isolados.",
+        "Em outras palavras: a lei diz que a coordenação e o controle da operação da geração e da transmissão do SIN, e a previsão de carga e o planejamento da operação do Sistema Isolado, são executados pelo ONS, pessoa jurídica de direito privado sem fins lucrativos, fiscalizada e regulada pela ANEEL. Entre as atribuições estão programar a operação e despachar a geração de forma centralizada e propor à ANEEL regras para a operação da transmissão; desde 1º de maio de 2017, também a previsão de carga e o planejamento da operação dos sistemas isolados.",
       ),
       ons(
         "ONS, página institucional O que é ONS",
@@ -150,7 +150,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Pessoa jurídica de direito privado, sem fins lucrativos, sob autorização do Poder Concedente e regulação e fiscalização pela ANEEL, cuja criação a lei autorizou com a finalidade de viabilizar a comercialização de energia elétrica.",
     porQueImporta:
-      "O PLD é calculado pela CCEE e as operações do Mercado de Curto Prazo são contabilizadas por ela, como mostram as fontes dos verbetes PLD e MCP. Os dados abertos da CCEE são a fonte dos números de preço e de mercado do observatório.",
+      "O PLD é calculado pela CCEE e as operações do Mercado de Curto Prazo são contabilizadas por ela, como mostram as fontes dos verbetes PLD e MCP. Os dados abertos da CCEE são fonte de números de preço e de mercado no observatório.",
     relacoes: ["aneel", "ons", "pld", "mcp", "acl", "acr"],
     relacoesNotas: {
       aneel: "A lei põe a CCEE sob regulação e fiscalização da ANEEL.",
@@ -171,12 +171,12 @@ export const CONCEITOS: Conceito[] = [
       planalto(
         "Lei nº 15.269, de 24 de novembro de 2025, art. 24",
         URL_L15269,
-        "Art. 24. Esta Lei entra em vigor na data de sua publicação e produz efeitos: [...] IV - na data de sua publicação, quanto aos demais dispositivos.",
-        "Em outras palavras: a lei vale desde a publicação, e os dispositivos que não têm prazo próprio, como o que inclui o art. 4º-D, produzem efeitos na mesma data.",
+        "Art. 24. Esta Lei entra em vigor na data de sua publicação e produz efeitos: I - em 1º de janeiro de 2026, quanto ao: a) art. 14; b) ao inciso V do art. 23; II - em 90 (noventa) dias da data de sua publicação, quanto ao art. 9º, na parte que inclui o art. 3º-D na Lei nº 10.848, de 15 de março de 2024; III - em 1º de janeiro de 2027, quanto ao art. 6º, apenas na parte que acrescenta o art. 1º-A e nas que alteram os arts. 4º e 5º da Lei nº 9.991, de 24 de julho de 2000; e IV - na data de sua publicação, quanto aos demais dispositivos.",
+        "Em outras palavras: a lei vale desde a publicação e produz efeitos em data própria só para os dispositivos que lista (o art. 14, o inciso V do art. 23, a parte do art. 9º que inclui o art. 3º-D na Lei nº 10.848 e partes do art. 6º); os demais produzem efeitos na data da publicação.",
       ),
     ],
     limitacoes: [
-      "Nome: o art. 4º-D da Lei nº 10.848, incluído pela Lei nº 15.269, de 24 de novembro de 2025, manda chamar a CCEE de Câmara de Comercialização de Energia, sem Elétrica, a partir da entrada em vigor do artigo. O art. 24 da Lei nº 15.269 não dá prazo próprio a esse artigo, e o texto do Planalto indica a publicação no Diário Oficial de 25/11/2025. Este verbete e o resto do observatório usam o nome anterior, o mesmo que a descrição do PLD no portal de dados abertos da CCEE traz na leitura de 27/09/2026.",
+      "Nome: o art. 4º-D da Lei nº 10.848, incluído pela Lei nº 15.269, de 24 de novembro de 2025, manda chamar a CCEE de Câmara de Comercialização de Energia, sem Elétrica, a partir da entrada em vigor do artigo. O art. 24 da Lei nº 15.269 lista os dispositivos com data própria e o art. 4º-D não está entre eles, de modo que ele vale desde a publicação, que o texto do Planalto indica ser a do Diário Oficial de 25/11/2025. Este verbete e o resto do observatório usam o nome anterior, o mesmo que a descrição do PLD no portal de dados abertos da CCEE traz na leitura de 27/09/2026.",
       "O estatuto social da CCEE, a Convenção de Comercialização e as Regras e Procedimentos de Comercialização, que detalham como ela funciona, não foram lidos para este verbete.",
     ],
     detalheDaConferencia: [
@@ -242,7 +242,7 @@ export const CONCEITOS: Conceito[] = [
       ),
     ],
     limitacoes: [
-      "A lei é de 1973. O texto compilado do Planalto lido em 09/10/2026 não traz anotação de alteração nos arts. 1º a 3º, mas o estatuto atual do IBGE e as normas sobre a vinculação dele à administração federal não foram lidos.",
+      "A lei é de 1973. O texto compilado do Planalto lido em 09/10/2026 não traz anotação de alteração nos arts. 1º a 3º, mas o estatuto vigente do IBGE e as normas sobre a vinculação dele à administração federal não foram lidos.",
     ],
     detalheDaConferencia: [
       "O art. 1º da lei cita a supervisão de um ministro da época; o verbete não usa essa parte. O site do IBGE não foi consultado.",

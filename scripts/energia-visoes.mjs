@@ -45,7 +45,8 @@ const extrair = () => {
   for (const g of main.querySelectorAll('[data-grafico]')) {
     if (!visivel(g)) continue;
     const t = g.querySelector('[data-titulo-grafico]') || g.querySelector('svg title');
-    add('grafico', txt(t) || g.getAttribute('aria-label') || '', g, { forma: g.getAttribute('data-grafico'), orientacao: g.getAttribute('data-orientacao') || '', referencias: [...g.querySelectorAll('[data-referencia]')].map(r => r.getAttribute('data-referencia')).filter(Boolean).slice(0, 6) });
+    const grade = g.querySelector('ul[aria-label]:not([aria-label="Legenda"])');
+    add('grafico', txt(t) || g.getAttribute('aria-label') || (grade && grade.getAttribute('aria-label')) || '', g, { forma: g.getAttribute('data-grafico'), orientacao: g.getAttribute('data-orientacao') || '', referencias: [...g.querySelectorAll('[data-referencia]')].map(r => r.getAttribute('data-referencia')).filter(Boolean).slice(0, 6) });
   }
   for (const t of main.querySelectorAll('[data-componente="tabela-interativa"]')) {
     if (!visivel(t) && !t.closest('[data-recolhivel="fechada"]')) continue;
@@ -64,7 +65,7 @@ const extrair = () => {
     if (/^(Tabela\s*)?Abrir:/.test(s) && ok(bt)) add('tabela-sob-demanda', s.replace(/^Tabela\s*/, ''), bt);
     if (/^(Mostrar|Carregar|Ver) (o )?(mapa|gráfico|detalhe)/i.test(s) && ok(bt)) add('visao-sob-demanda', s, bt);
   }
-  for (const sv of main.querySelectorAll('svg[role="img"], svg[role="group"]')) {
+  for (const sv of main.querySelectorAll('svg[role="img"], svg[role="group"], div[role="img"]')) {
     if (sv.closest('[data-grafico]') || !visivel(sv) || sv.closest('.sr-only')) continue;
     const r = sv.getBoundingClientRect();
     if (r.width < 120 || r.height < 60) continue;
@@ -78,13 +79,16 @@ const extrair = () => {
   }
   for (const g of main.querySelectorAll('[role="radiogroup"], [role="tablist"], fieldset')) {
     if (!ok(g)) continue;
-    const rotulo = g.getAttribute('aria-label') || txt(g.querySelector('legend')) || '';
+    const porId = (g.getAttribute('aria-labelledby') || '').split(/\s+/).map(i => i && document.getElementById(i)).filter(Boolean).map(x => txt(x)).join(' ');
+    const rotulo = g.getAttribute('aria-label') || porId || txt(g.querySelector('legend')) || '';
     const opcoes = [...g.querySelectorAll('[role="radio"], [role="tab"], input[type="radio"], input[type="checkbox"], button[aria-pressed]')].map(o => txt(o) || (o.labels && o.labels[0] ? txt(o.labels[0]) : '')).filter(Boolean).slice(0, 12);
     if (opcoes.length) add('controle', rotulo, g, { opcoes });
   }
   for (const s of main.querySelectorAll('select, input[type="search"], input[type="range"], input[type="number"], input[type="date"], input[type="text"]')) {
     if (!ok(s) || s.closest('[data-componente="tabela-interativa"]')) continue;
-    const rot = (s.labels && s.labels[0] && txt(s.labels[0])) || s.getAttribute('aria-label') || s.getAttribute('placeholder') || '';
+    // o texto do rótulo sem as opções de uma seleção aninhada no próprio rótulo
+    const semOpcoes = (l) => { const c = l.cloneNode(true); c.querySelectorAll('select, option, input, textarea').forEach(x => x.remove()); return txt(c); };
+    const rot = (s.labels && s.labels[0] && (semOpcoes(s.labels[0]) || txt(s.labels[0]))) || s.getAttribute('aria-label') || s.getAttribute('placeholder') || '';
     add('controle', rot, s, { campo: s.tagName.toLowerCase() + (s.type ? ':' + s.type : '') });
   }
   for (const a of main.querySelectorAll('a[download], a[href$=".csv"], a[href$=".xlsx"], a[href$=".json"], a[href$=".zip"], a[href$=".parquet"]')) {

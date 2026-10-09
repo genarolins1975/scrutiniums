@@ -1,0 +1,58 @@
+{
+ "/setor-eletrico/agua-e-clima": [
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (5 linhas)",
+   "depois": "tabela|tabela equivalente: subsistemas e sin, ear do dia, faixa da data e variação. 5 de 5 linhas. o botão na coluna de nome seleciona a linha.",
+   "justificativa": "O gráfico de pontos pareados mantém a tabela própria no HTML, escondida por CSS; a tabela equivalente da página traz as mesmas cinco linhas e é a porta única (pedido agua-filhas.md, seção 6)."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/afluencia": [
+  {
+   "antes": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e de julho, desde 2000",
+   "depois": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho, desde 2000",
+   "justificativa": "Os subsistemas passaram a quatro painéis lado a lado (pequenos múltiplos, escala livre por painel), no Entender, com a tabela 'Dados dos painéis em tabela (27 linhas, 4 painéis)' (pedido agua-filhas.md, seção 6)."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/chuva-e-temperatura": [
+  {
+   "antes": "controle|temperatura",
+   "depois": null,
+   "justificativa": "As opções passaram de siglas (SE/CO, S, NE, N) para nomes por extenso (Sudeste/Centro-Oeste, Sul, Nordeste, Norte), pela regra de sigla explicada no primeiro uso; SIN segue como está e a lista de recortes é a mesma."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/reservatorios": [
+  {
+   "antes": "controle|subsistema da decomposição",
+   "depois": null,
+   "justificativa": "A opção SE/CO passou a Sudeste/Centro-Oeste, pela regra de sigla explicada no primeiro uso; os quatro subsistemas seguem na lista."
+  }
+ ],
+ "/setor-eletrico/conta-de-luz": [
+  {
+   "antes": "controle|perfil e leitura do ranking",
+   "depois": null,
+   "justificativa": "O rastreamento anterior contava o contêiner que reúne os dois grupos de opções; os dois grupos que o compõem, 'Perfil de consumo' (100, 200 e 300 kWh/mês) e 'Leitura do ranking' (custo do perfil e tarifa TE + TUSD), seguem presentes."
+  }
+ ],
+ "/setor-eletrico/pld": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título e sem conteúdo no rastreamento anterior (nenhuma figura, tabela, controle ou arquivo pertencia a ele)."
+  }
+ ],
+ "/setor-eletrico/pld/modelos": [
+  {
+   "antes": "controle|filtrar por resultado",
+   "depois": null,
+   "justificativa": "O resultado de cada controle automático (as mesmas 7 linhas) é escrito 'confere' e não 'aprovado', porque a verificação confere a integridade do cálculo do próprio observatório e não aprova nada (rótulo ROTULO_CONFERENCIA em pld/modelos/page.tsx)."
+  }
+ ],
+ "/setor-eletrico/territorio": [
+  {
+   "antes": "controle|filtrar por pertença",
+   "depois": null,
+   "justificativa": "O filtro passou a 'Pertença ao submercado (só a ressalva)': 'provado pela carga das áreas do ONS' (26 linhas) é escrito 'sem ressalva', para a coluna não repetir a mesma frase em quase toda linha, e a única exceção ('provado por uma das áreas') segue por extenso (src/lib/energia/territorio.ts)."
+  }
+ ]
+}

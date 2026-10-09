@@ -540,9 +540,9 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaPrioritaria; sinal: 
       {comEscolha ? (
         <>
           {p.porDistribuidora === "perdas" ? (
-            <EscolhaDistribuidora opcoes={escolhas.opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={escolhas.anoPerdas} />
+            <EscolhaDistribuidora opcoes={escolhas.opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={escolhas.anoPerdas} assunto="Perdas" />
           ) : (
-            <EscolhaDistribuidora opcoes={escolhas.opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" ano={escolhas.anoQualidade} />
+            <EscolhaDistribuidora opcoes={escolhas.opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" ano={escolhas.anoQualidade} assunto="Qualidade" />
           )}
           <p>{termo}</p>
         </>

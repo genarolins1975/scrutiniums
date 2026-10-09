@@ -569,8 +569,8 @@ describe("a página renderizada", () => {
 
   it("os dois seletores de distribuidora seguem na inicial, com o ano e a contagem no rótulo e uma opção padrão curta que cabe em 390 px", () => {
     const t = texto(html);
-    expect(t).toContain("Sua distribuidora (103 com dado de 2025)");
-    expect(t).toContain("Sua distribuidora (102 com dado de 2025)");
+    expect(t).toContain("Sua distribuidora em Perdas (103 com dado de 2025)");
+    expect(t).toContain("Sua distribuidora em Qualidade (102 com dado de 2025)");
     expect(html.match(/<option value="" selected="">Escolha a distribuidora<\/option>/g)).toHaveLength(2);
     expect(t).not.toContain("Escolha (103 distribuidoras");
   });

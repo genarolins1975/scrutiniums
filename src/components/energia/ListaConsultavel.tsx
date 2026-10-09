@@ -319,6 +319,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
             aberto={filtroAberto === c.id}
             onAlternar={(abrir) => setFiltroAberto(abrir ? c.id : null)}
             onMudar={mudarFiltro}
+            substantivo={p.substantivo}
           />
         ))}
         {p.renderNaBarra?.(ctx)}
@@ -332,6 +333,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
             aberto={filtroAberto === "__mais"}
             onAlternar={(abrir) => setFiltroAberto(abrir ? "__mais" : null)}
             onMudar={mudarFiltro}
+            substantivo={p.substantivo}
           />
         )}
         {opcoesOrdem.length > 0 && (
@@ -490,6 +492,7 @@ function FiltroPopover({
   aberto,
   onAlternar,
   onMudar,
+  substantivo,
 }: {
   id: string;
   rotulo: string;
@@ -499,6 +502,8 @@ function FiltroPopover({
   aberto: boolean;
   onAlternar: (abrir: boolean) => void;
   onMudar: (coluna: string, valores: string[]) => void;
+  /** O que a lista conta (conjunto, indicador): o leitor de tela ouve "77 conjuntos" e não "77 itens". */
+  substantivo: readonly [string, string];
 }) {
   const resumo = useRef<HTMLElement>(null);
   const marcadosNoGrupo = colunas.reduce((s, c) => s + (filtros[c.id]?.length ?? 0), 0);
@@ -549,7 +554,7 @@ function FiltroPopover({
                     <span className={`min-w-0 flex-1 ${o.valor === CHAVE_SEM_DADO ? "italic text-carvao-muted" : ""}`}>{o.rotulo}</span>
                     <span className="text-xs tabular-nums text-mineral">
                       {num(o.n, 0)}
-                      <span className="sr-only"> {o.n === 1 ? "item" : "itens"}</span>
+                      <span className="sr-only"> {o.n === 1 ? substantivo[0] : substantivo[1]}</span>
                     </span>
                   </label>
                 ))}

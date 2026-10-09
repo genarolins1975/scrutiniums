@@ -105,7 +105,7 @@ describe("verbetes de instituições: acervo", () => {
     expect(lim).toMatch(/usam o nome anterior/);
     // as duas fontes que sustentam a frase: o artigo que renomeia e o artigo da lei sobre a vigência
     expect(c.fontes.some((f) => /Art\. 4º-D\./.test(f.trecho ?? ""))).toBe(true);
-    const vigencia = c.fontes.find((f) => /Lei nº 15\.269/.test(f.documento))!;
+    const vigencia = c.fontes.find((f) => /l15269\.htm$/.test(f.url))!;
     expect(captura(vigencia.url)!.texto).toContain("Este texto não substitui o publicado no DOU de 25.11.2025");
   });
 

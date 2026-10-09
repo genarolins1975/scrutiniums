@@ -52,20 +52,22 @@ Composição e matriz (`/geracao`):
 - A soma exibida das 11 participações é 100,01% na janela de 30 dias do SIN e 99,99% na de 365 dias: dentro da tolerância de 0,05 ponto do controle publicado, dita na página (diferença de arredondamento de duas casas, não de dado).
 - Biomassa, óleo e outras térmicas têm cobertura reduzida na fonte (biomassa com 17 identificadores com valor em ago/2026 contra 63 em ago/2025): saem da comparação entre janelas e da variação de 365 dias, com o motivo dito e um bloco "Fora da comparação"; a participação delas continua publicada na composição completa, com a ressalva.
 - A MMGD estimada entra em abr/2023 por 2 dos 30 dias e em 2023 cobre 247 dos 365 dias; 2021 e 2022 não têm estimativa. A média anual publicada (`mwmed.solar_mmgd`) é a contribuição ao ano inteiro; a tabela anual agora traz os dias com estimativa, a presença da MMGD no ano, a contribuição à média anual e a média dos dias com estimativa (3.875,8 MWmed em 2023, calculada na página como média do ano × dias do ano ÷ dias com estimativa; a avaliação técnica refez 3.875,7, diferença de 0,1 que vem do arredondamento da média publicada).
-- Eólica do Nordeste e do Sul: nos dias 16/01/2026, 09/05/2026 e 07/03/2026 o Balanço fica abaixo de 10% da soma das usinas (listados em `reconciliacao_balanco.maiores_divergencias`). A página lista os dias; a faixa usual sem eles não foi recalculada (cálculo novo, fora do escopo de seletores). O percentil 22,4 que a avaliação refez sem esses dias não foi reproduzido.
 - A matriz horária publicada tem 8.760 linhas (365 dias) e a gold ainda rotula "últimos 366 dias" (pedido no item 8).
+- Reconciliação com o Balanço: os dias conciliados são 49,8% na térmica e 78,5% na solar (Auditar mostra as tabelas); por isso o texto da gold "igual ao do Balanço" passou a "próximo ao do Balanço, com divergências listadas em Auditar" (item 8).
 
 Térmica (`/geracao/termica`):
 
 - Parcelas com CVU 0,00: 11 de 101 (óleo 8 de 23, gás 2 de 52, outras 1 de 1). Ficam como publicadas, nunca como ausência; a comparação avisa quando uma usina escolhida tem CVU 0 e a mediana por combustível não os retira.
 - O universo pareado entre a térmica por motivo e a Geração por Usina cresce de 88 para 98 usinas (cobertura de 96,8% para 99,7%) ao longo da série; a nota "crescimento do universo" diz que a variação mensal mistura mudança de geração com entrada de usinas.
-- Há 8.033 MWmed de térmica despachada contra 8.587 MWmed da térmica da matriz no mesmo recorte: a ponte entre as duas está escrita na nota (nuclear e as térmicas Tipo III ficam em universos diferentes), sem somar uma à outra.
-- Usinas sem combustível identificado e o método de atribuição do combustível (CEG até 2025, campo próprio desde 2026) estão em notas visíveis; a energia sem combustível é 0,000x% da térmica.
+- O total da térmica por motivo (8.033 MWmed, 12 meses completos, térmicas despachadas pelo ONS com a nuclear) difere do da matriz efetiva (8.587 MWmed, 365 dias, categorias térmicas da Geração por Usina sem as térmicas Tipo III). A nota do painel diz a diferença de período e de universo e liga à composição da abertura; os dois totais não são somados nem confrontados como se fossem um só.
+- O "não classificado" (total verificado menos a soma dos motivos, com sinal, como a fonte publica) fica fora das barras e dentro da tabela, com nota visível. O método do combustível (CEG da usina até 2025; campo do próprio conjunto desde 2026, e os 12 meses misturam os dois) também está em nota visível.
+- Dias em que o Balanço registra a eólica de um subsistema abaixo de 10% da soma das usinas: 16/01/2026 (Nordeste), 07/03/2026 e 09/05/2026 (Nordeste e Sul), de `reconciliacao_balanco.maiores_divergencias`. As janelas de 7 dias que os incluem usam esse Balanço e podem ter a participação térmica distorcida; a página lista os dias junto da faixa usual e remete a Auditar. A faixa usual sem esses dias não foi recalculada (cálculo novo, fora do escopo de seletores) e o percentil 22,4 que a avaliação refez sem eles não foi reproduzido.
 
 Restrições (`/geracao/restricoes`):
 
 - Ressarcimento por restrição: o texto cita a norma lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025). Alterações posteriores indicadas em fontes secundárias (Lei 15.269/2025 e Portaria Normativa MME 140/2026) não foram verificadas aqui e o texto diz isso.
-- A taxa de restrição é estimativa do ONS (energia não gerada estimada sobre geração verificada mais a não gerada estimada). O universo de usinas eólicas e solares do detalhamento é menor que o de capacidade e a nota sob a resposta diz quantas usinas entram.
+- A taxa de restrição é estimativa do ONS (energia não gerada estimada sobre geração verificada mais a não gerada estimada), e a nota da faixa diz isso.
+- Eólica e fotovoltaica não são o mesmo universo nem o mesmo período (usinas e conjuntos, início da série): a nota sob a resposta traz os dois e avisa que as duas taxas não se comparam como se fossem do mesmo conjunto.
 - Base pequena: a tabela por subsistema avisa quando um subsistema tem poucas usinas.
 
 Capacidade (`/geracao/capacidade`):
@@ -79,28 +81,30 @@ Capacidade (`/geracao/capacidade`):
 
 Todas têm solução local, descrita em cada item; nenhuma bloqueia.
 
-1. Selo "misto" em `Natureza` (`src/lib/energia/tipos.ts`, linha 8: OBSERVADO, CALCULADO, ESTIMADO, PREVISTO, CENARIO). O total do SIN com a MMGD soma medição, previsão e estimativa e hoje usa CALCULADO na faixa, com a composição dita na nota ("soma três naturezas"). Proposta: um valor MISTO no tipo e no `SeloNatureza`, com o texto "medição, previsão e estimativa".
+1. Selo "misto" em `Natureza` (`src/lib/energia/tipos.ts`, linha 8: OBSERVADO, CALCULADO, ESTIMADO, PREVISTO, CENARIO). O total do SIN com a MMGD soma medição, previsão e estimativa e hoje usa CALCULADO na faixa, com a composição dita na seção "Quanto da energia é medição, previsão ou estimativa?" ("soma três naturezas"). Proposta: um valor MISTO no tipo e no `SeloNatureza`, com o texto "medição, previsão e estimativa".
 2. Descrição de coluna no dicionário do arquivo exportado. O dicionário do XLSX (`tabela.ts`, "Dicionário de colunas") traz só tipo, unidade e casas. Proposta: `descricao?: string` em `ColunaTabela`, que entra no dicionário e no cabeçalho de leitor de tela. Local: rótulos longos e descritivos nas colunas novas (por exemplo "MMGD estimada, média dos dias com estimativa").
 3. `Histograma` com `marcadores={["mediana"]}`: o resumo em texto continua listando P10 a P90. Proposta: o resumo seguir os marcadores pedidos. Local: a frase de quartis da capacidade vem escrita ao lado e não cita a mediana como quantil; o teste exige só "Quantis (Mediana)".
 4. Duas portas para a mesma tabela (`GraficoBarras`, `GraficoLinhas` e a `TabelaInterativa` da página): "Dados do gráfico em tabela (N linhas)" e "Ver a tabela completa (N linhas)", com precisão e colunas diferentes. Proposta: uma só porta, a tabela interativa, e a tabela do gráfico escondida (como Água e clima já faz com CSS).
 5. Hachura ou padrão por série (item 3 acima).
-6. "Sobre este dado" de Restrições descreve as duas fontes juntas (eólica e solar) e não acompanha o controle Fonte. Proposta: aceitar um parâmetro de fonte, ou duas instâncias.
+6. "Sobre este dado" de Restrições descreve sempre as eólicas (10/2021 a 08/2026), mesmo com Fotovoltaicas escolhida no controle Fonte; a ficha das fotovoltaicas vem por um chip separado ("Restrições das fotovoltaicas"). O painel é um componente de servidor e o controle vive na URL, no cliente. Proposta: `PainelEvidencia` aceitar a proveniência por valor do controle e trocar o chip principal, ou rotular os dois chips pela fonte.
 7. Verbetes de Aprenda para termos que a Geração usa com glosa local: despacho, ordem de mérito, inflexibilidade, razão elétrica, constrained-off, fator de capacidade e CVU. Local: lista visível do que cada motivo de despacho quer dizer (`GLOSA_MOTIVO`, em `geracao.ts`) e `Termo` nos demais.
-8. Recorte por subsistema e por UF em Capacidade e Térmica. A gold publica essas duas famílias só para o SIN (a matriz tem subsistemas com as janelas de 30 e 365 dias; o detalhe de restrições tem subsistema e UF). Local: a página diz que é SIN e não oferece recorte que a base não sustenta. Pedido de dado no item 8.
+8. Recorte por subsistema e por UF em Capacidade e Térmica. A gold publica a capacidade (por categoria) e a térmica por motivo e por combustível agregadas no SIN; só a matriz tem subsistemas (com as janelas de 30 e 365 dias) e só as restrições têm subsistema e UF. Local: as duas páginas dizem que o recorte é o SIN e não oferecem filtro que a base não sustenta. Pedido de dado no item 8.
 9. Marcas do mapa de usinas sem foco individual (a lista das 10 maiores ao lado cumpre o teclado: um tab stop, setas, Home e End, e o foco na lista mostra a dica no mapa). Agrupar marcas sobrepostas pediria um componente de mapa novo; fica como proposta.
 10. `CabecalhoModulo`: o bloco de fonte e datas ocupa linha própria (item 4).
-11. Deslocamento de layout (CLS) medido pelos avaliadores vem de componentes compartilhados; nas páginas da família as séries lidas sob demanda reservam 16 rem de altura e os gráficos têm altura fixa.
+11. Deslocamento de layout (CLS) medido pelos avaliadores: vem de componentes compartilhados e não foi tratado aqui. Nas páginas da família, as séries diária e horária lidas sob demanda reservam 16 rem de altura antes de chegar o dado.
+12. `Termo`: a sigla com link para Aprenda (por exemplo "ESS" em Restrições) tem alvo de toque de 26 por 17 px dentro da frase. Passa pela exceção de links em linha (WCAG 2.5.8), mas é pequeno no celular em frase densa. Proposta: `padding` vertical do link no toque, sem mexer na altura da linha.
 
 ## 8. Pedidos ao pipeline e à gold
 
 - Rótulo do arquivo horário: o CSV `geracao_matriz_horaria_12m.csv` tem 8.760 linhas (365 dias) e o `downloads[].rotulo` da gold diz "últimos 366 dias". `downloadsDoPainel` troca o texto na exibição (teste no arquivo da família). Corrigir na origem.
-- Vocabulário interno em textos publicados pela gold que o leitor vê em Analisar e Auditar: `id_ons`, `ressalvas_universo`, `natureza_pct`, `natureza_mensal_sin`, `outros_por_ceg`, `matriz.universo`, `'quebras'`, `ons_pct_da_aneel`, ids de categoria sem acento (`hidraulica`, `termica`, `eolica`) e a frase "igual ao do Balanço" (a reconciliação mostra 49,8% dos dias conciliados na térmica e 78,5% na solar). A página traduz na exibição por `emPortugues` (`geracao.ts`, com teste); a redação final deve vir da gold.
+- Vocabulário interno em textos publicados pela gold que o leitor vê em Analisar e Auditar: `id_ons`, `ressalvas_universo`, `natureza_pct`, `natureza_mensal_sin`, `outros_por_ceg`, `matriz.universo`, `'quebras'`, `ons_pct_da_aneel`, `mwh_dos_ausentes_mesmo_mes_ano_anterior`, ids de categoria sem acento (`hidraulica`, `termica`, `eolica`) e a frase "igual ao do Balanço" (a reconciliação mostra 49,8% dos dias conciliados na térmica e 78,5% na solar). A página traduz na exibição por `emPortugues` (`geracao.ts`, com teste); a redação final deve vir da gold.
 - Nomes das colunas do ONS (`val_verifinflexibilidade` e as demais) em texto de gold: na página só aparecem no dicionário de colunas dos motivos, em Auditar. As fórmulas das fichas "Comprove este número" (`Σ val_verifinflexibilidade ÷ Σ val_verifgeracao × 100`) seguem com os nomes das colunas, por serem a trilha de auditoria.
 - Fichas "Comprove": algumas mostram "recurso não identificado" e ficam sem citação; o texto vem da gold. Pedido: nome do recurso e citação no `evidencias`.
-- Perfil horário médio da restrição e CSV do maior corte simultâneo: a base publica o corte máximo por dia e por mês, mas não o perfil por hora do dia nem um arquivo do corte simultâneo. Local: gráficos diário e mensal do corte; sem perfil horário.
+- Perfil por hora do dia da restrição: a gold não o publica. Local: gráficos diário e mensal do corte, sem perfil horário.
+- Maior corte simultâneo por dia: os gráficos (diário e mensal) e a tabela mensal trazem o valor, e o CSV diário tem a coluna `potencia_max_cortada_mw` por região, razão e origem. Pedido: confirmar se essa coluna é o corte simultâneo que a página rotula ("numa meia hora") e, se for, dar a ela esse nome no cabeçalho; se não for, publicar a série do corte simultâneo.
 - Faixa usual da térmica sem os dias em que o Balanço difere das usinas: pedir à gold a coluna de dias conciliados na série de participação térmica de 7 dias.
 - Recorte por subsistema e UF em Capacidade e Térmica (item 7.8).
-- Descrição de coluna nos CSV estáticos (a página mostra o dicionário do XLSX com tipo, unidade e casas).
+- Descrição de coluna: os CSV estáticos de `public/energia/series` não trazem unidade nem descrição no cabeçalho, e o XLSX das tabelas tem dicionário só com tipo, unidade e casas (item 7.2).
 
 ## 9. Equivalências para a matriz de preservação
 

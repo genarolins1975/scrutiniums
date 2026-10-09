@@ -8,8 +8,10 @@ as dimensões, filtros e comparações; consolidar só com equivalência registr
 
 Como casa as visões, nesta ordem: (1) equivalência manual; (2) mesmo tipo e mesmo título; (3) mesmo tipo, mesmo painel (id) e título
 semelhante (razão de similaridade igual ou superior a 0,6); (4) mesmo tipo e título semelhante em qualquer painel da rota. Visão sem par é
-listada como "não localizada" e conta como perda a justificar. Também compara, por rota, os filtros (controles dentro de painel), os
-arquivos para baixar e as fichas "Comprove este número": a contagem depois não pode ser menor que antes sem justificativa.
+listada como "não localizada" e conta como perda a justificar. Também compara, por rota, os filtros (cada controle fora a barra de
+profundidade, pelo título e pelas opções sem a contagem de linhas), os arquivos para baixar (pelo nome do arquivo) e as fichas "Comprove
+este número" (soma por nível de profundidade): o que existia antes tem de existir depois, e o que falta entra em "A justificar". Os ids
+de painel não entram na comparação, porque o redesenho reparte um painel em vários.
 
 Uso:
   python3 scripts/energia_visoes_compara.py --antes docs/energia/redesign/dados/visoes_antes.json --depois <visoes_depois.json>
@@ -39,11 +41,68 @@ def nivel(v):
     return "Entender" if "entender" in n else ("Analisar" if "analisar" in n else "Auditar")
 
 
-def filtros_por_painel(visoes):
-    out = {}
+def sem_contagem(opcao):
+    return re.sub(r"\s*\d+ linhas?$", "", opcao or "").strip().lower()
+
+
+def titulo_controle(v):
+    t = re.sub(r"^(início|fim):.*$", r"\1", (v.get("titulo") or "").lower().strip())
+    if v.get("campo", "").startswith("select") and not v.get("opcoes") and len(t) > 55:
+        # coletas antigas gravaram o rótulo junto com as opções da seleção: o começo identifica o controle
+        t = t[:6]
+    return re.sub(r"\s*\((sin|[a-z ]+):[^)]*\)$", "", t)
+
+
+def controles(visoes):
+    """lista de controles (a barra de profundidade fica fora): título normalizado, tipo de campo e opções sem a contagem de linhas."""
+    out = []
     for v in visoes:
-        if v["tipo"] == "controle" and not (v.get("titulo") or "").lower().startswith("nível de profundidade"):
-            out.setdefault(v.get("painel"), set()).add((v.get("titulo") or "").lower())
+        if v["tipo"] != "controle" or (v.get("titulo") or "").lower().startswith("nível de profundidade"):
+            continue
+        out.append({"t": titulo_controle(v), "campo": v.get("campo", "").split(":")[0], "op": {sem_contagem(o) for o in v.get("opcoes", [])}})
+    return out
+
+
+def controles_sem_par(antes, depois):
+    """(controles que existiam e não têm correspondente, opções que sumiram de controle com o mesmo título).
+
+    Um controle anterior tem correspondente se existe depois um de mesmo título, ou com as mesmas opções (renomeado), ou, sem opções
+    (campo de texto, seleção, deslizador), de título parecido (razão de similaridade igual ou superior a 0,6) e mesmo tipo de campo.
+    """
+    ops_antes, campo_antes = {}, {}
+    for c in antes:
+        ops_antes.setdefault(c["t"], set()).update(c["op"])
+        campo_antes[c["t"]] = c["campo"]
+    ops_depois = {}
+    for c in depois:
+        ops_depois.setdefault(c["t"], set()).update(c["op"])
+    todas = set().union(*[c["op"] for c in depois]) if depois else set()
+    faltam, faltam_op = [], []
+    for t, ops in sorted(ops_antes.items()):
+        if t in ops_depois:
+            sumiram = (ops - ops_depois[t]) - todas
+            if sumiram:
+                faltam_op.append((t, sorted(sumiram)))
+            continue
+        if ops and any(ops <= c["op"] for c in depois):
+            continue
+        if not ops and any(c["campo"] == campo_antes[t] and not c["op"] and (c["t"].startswith(t) or semelhanca(t, c["t"]) >= 0.6) for c in depois):
+            continue
+        faltam.append(t)
+    return faltam, faltam_op
+
+
+def arquivos(visoes):
+    return {(v.get("href") or "").split("/")[-1] for v in visoes if v["tipo"] == "arquivo"}
+
+
+def fichas_por_nivel(visoes):
+    out = {"entender": 0, "analisar": 0, "auditar": 0}
+    for v in visoes:
+        if v["tipo"] == "comprove":
+            for n in v.get("niveis", []):
+                if n in out:
+                    out[n] += v.get("n", 0)
     return out
 
 
@@ -54,6 +113,7 @@ def main():
     ap.add_argument("--equivalencias")
     ap.add_argument("--saida", default=os.path.join(RAIZ, "docs", "energia", "redesign", "MATRIZ_PRESERVACAO.md"))
     ap.add_argument("--capturas-depois", default="docs/energia/redesign/capturas/depois")
+    ap.add_argument("--ignorar-ausentes", action="store_true", help="rodada parcial: rotas que ainda não foram coletadas depois não entram")
     a = ap.parse_args()
     antes = {r["rota"]: r for r in json.load(open(a.antes, encoding="utf-8"))["rotas"]}
     depois = {r["rota"]: r for r in json.load(open(a.depois, encoding="utf-8"))["rotas"]}
@@ -64,6 +124,8 @@ def main():
     for rota, ra in antes.items():
         rd = depois.get(rota)
         bloco = [f"\n## {rota.replace(P, '') or '/'}\n"]
+        if not rd and a.ignorar_ausentes:
+            continue
         if not rd:
             bloco.append("Rota ausente no rastreamento depois.\n")
             perdas.append((rota, "rota inteira", ""))
@@ -89,10 +151,26 @@ def main():
                     if i not in usados and chave(w) == e["depois"]:
                         par, como = i, "equivalência manual: " + e["justificativa"]
                         break
+                if par is None:
+                    # consolidação: duas visões anteriores com a mesma visão depois (a segunda não consome a visão nova)
+                    for i, w in enumerate(vd):
+                        if chave(w) == e["depois"]:
+                            usados.add(i)
+                            par, como = i, "equivalência manual (consolidada em visão já casada): " + e["justificativa"]
+                            break
             if par is None:
                 for i, w in enumerate(vd):
                     if i not in usados and chave(w) == k:
                         par, como = i, "mesmo tipo e mesmo título"
+                        break
+            if par is None and v["tipo"] == "painel":
+                # o redesenho põe a pergunta no título da página e dá ao painel o título da primeira figura: o id do painel segue o mesmo
+                h1 = ((rd.get("modos", {}).get("entender") or {}).get("h1") or "").lower().strip()
+                for i, w in enumerate(vd):
+                    if i in usados or w["tipo"] != "painel":
+                        continue
+                    if v.get("id") and v.get("id") == w.get("id"):
+                        par, como = i, "mesmo painel (id " + str(w.get("id")) + "), título renomeado" + (" e a pergunta passou a ser o título da página" if (v.get("titulo") or "").lower().strip() == h1 else "")
                         break
             if par is None:
                 melhor = (0.0, None)
@@ -120,19 +198,42 @@ def main():
         if novas > 0:
             bloco.append(f"\n{novas} visões novas ou desmembradas depois do redesenho (não contam como perda).")
         # filtros, arquivos e fichas por rota
-        fa, fd = filtros_por_painel(ra["visoes"]), filtros_por_painel(rd["visoes"])
-        sa = sum(len(s) for s in fa.values())
-        sd = sum(len(s) for s in fd.values())
-        ar_a = len({(v.get("href") or "").split("/")[-1] for v in ra["visoes"] if v["tipo"] == "arquivo"})
-        ar_d = len({(v.get("href") or "").split("/")[-1] for v in rd["visoes"] if v["tipo"] == "arquivo"})
-        co_a = sum(v.get("n", 0) for v in ra["visoes"] if v["tipo"] == "comprove")
-        co_d = sum(v.get("n", 0) for v in rd["visoes"] if v["tipo"] == "comprove")
-        bloco.append(f"\nFiltros distintos (controles em painel): antes {sa}, depois {sd}. Arquivos para baixar: antes {ar_a}, depois {ar_d}. Fichas Comprove este número: antes {co_a}, depois {co_d}.")
-        for nome, x, y in (("filtros", sa, sd), ("arquivos", ar_a, ar_d), ("fichas Comprove", co_a, co_d)):
-            if y < x:
-                perdas.append((rota, nome, f"{x} antes, {y} depois"))
+        ca, cd = controles(ra["visoes"]), controles(rd["visoes"])
+        faltam_ctrl, faltam_opc_l = controles_sem_par(ca, cd)
+        faltam_opc = [f"{t}: {', '.join(o)}" for t, o in faltam_opc_l]
+        fa_arq, fd_arq = arquivos(ra["visoes"]), arquivos(rd["visoes"])
+        faltam_arq = sorted(fa_arq - fd_arq)
+        co_a, co_d = fichas_por_nivel(ra["visoes"]), fichas_por_nivel(rd["visoes"])
+        bloco.append(
+            f"\nControles: antes {len(ca)}, depois {len(cd)}. Arquivos para baixar: antes {len(fa_arq)}, depois {len(fd_arq)}. "
+            f"Fichas Comprove este número por nível (Entender, Analisar, Auditar): antes {co_a['entender']}, {co_a['analisar']}, {co_a['auditar']}; "
+            f"depois {co_d['entender']}, {co_d['analisar']}, {co_d['auditar']}."
+        )
+        just = {e["antes"]: e["justificativa"] for e in equiv.get(rota, []) if e["antes"].startswith(("controle|", "arquivo|", "comprove|"))}
+        for t in faltam_ctrl:
+            if f"controle|{t}" in just:
+                bloco.append(f"- Controle `{t}` retirado de propósito: {just['controle|' + t]}")
+            else:
+                perdas.append((rota, "controle ausente depois", t))
+        for t in faltam_opc:
+            nome = t.split(":")[0]
+            if f"controle|{nome}" in just:
+                bloco.append(f"- Opções de `{nome}` mudaram de propósito: {just['controle|' + nome]}")
+            else:
+                perdas.append((rota, "opção de controle ausente depois", t))
+        for f in faltam_arq:
+            if f"arquivo|{f}" in just:
+                bloco.append(f"- Arquivo `{f}` retirado de propósito: {just['arquivo|' + f]}")
+            else:
+                perdas.append((rota, "arquivo para baixar ausente depois", f))
+        for n in ("entender", "analisar", "auditar"):
+            if co_d[n] < co_a[n]:
+                if f"comprove|{n}" in just:
+                    bloco.append(f"- Fichas Comprove em {n.capitalize()}: {co_a[n]} antes, {co_d[n]} depois. {just['comprove|' + n]}")
+                else:
+                    perdas.append((rota, f"fichas Comprove em {n.capitalize()}", f"{co_a[n]} antes, {co_d[n]} depois"))
         linhas_rotas.append("\n".join(bloco))
-    L.append(f"{casadas} de {total} visões anteriores têm correspondente ou equivalência registrada. **{len(perdas)} ocorrências a justificar** (visão sem par ou contagem menor de filtros, arquivos ou fichas).\n")
+    L.append(f"{casadas} de {total} visões anteriores têm correspondente ou equivalência registrada. **{len(perdas)} ocorrências a justificar** (visão sem par, controle, opção, arquivo ou ficha que existia antes e não existe depois).\n")
     if perdas:
         L.append("## A justificar\n")
         for rota, t, titulo in perdas:

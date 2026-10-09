@@ -20,7 +20,7 @@ const PASSOS: readonly Passo[] = [
   },
   {
     titulo: "O arquivo é guardado",
-    texto: "Cada coleta guarda uma cópia do arquivo, sem alterar nada, com a impressão digital dele.",
+    texto: "Cada coleta guarda uma cópia do arquivo, sem alterar nada, com a impressão digital dele: um código que muda se qualquer parte do arquivo mudar.",
     href: "/setor-eletrico/dados/reproducao",
     rotulo: "Conferir um arquivo",
     interno: true,
