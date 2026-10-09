@@ -92,7 +92,7 @@ export default function ClimaCalendarioPage() {
           rotulo="Carga · Clima e calendário"
           siglas={["MWmed", "SIN", "MMGD", "ONS", "IBGE"]}
           titulo={perguntaPainel("p027")}
-          lead="Quanto da diferença de carga entre duas janelas acompanha calendário, temperatura e estação do ano, segundo um modelo estatístico testado em dias que não viu. É associação, não causa."
+          lead="Quanto da diferença de carga entre duas janelas acompanha calendário, temperatura e estação do ano, segundo um modelo testado em dias que não viu. É associação, não causa."
           recorte={p ? `${dataBR(p.periodo_avaliacao.inicio)} a ${dataBR(p.periodo_avaliacao.fim)} · SIN e subsistemas · MWmed e %` : undefined}
           fonte="decomposição estatística do observatório sobre ONS, NASA POWER e IBGE"
           referencia={
@@ -126,7 +126,7 @@ export default function ClimaCalendarioPage() {
           <Bloco id="clima">
             <PainelEvidencia
               id="p027"
-              pergunta={p ? `A janela do achado, de ${dataBR(g.a07.referencia.inicio)} a ${dataBR(g.a07.referencia.fim)}, decomposta` : perguntaPainel("p027")}
+              pergunta={p ? `A janela de ${dataBR(g.a07.referencia.inicio)} a ${dataBR(g.a07.referencia.fim)} contra um ano antes, decomposta` : perguntaPainel("p027")}
               subtitulo="Decomposição estatística da carga diária, fora da amostra · MWmed, % e log × 100"
               natureza="ESTIMADO"
               porQueImporta={

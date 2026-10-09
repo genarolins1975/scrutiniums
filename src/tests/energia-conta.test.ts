@@ -1084,14 +1084,23 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
     }
   });
 
-  it("página filha: faixa de páginas irmãs com a atual marcada, sem a trilha antiga, e as quatro medidas na abertura, cada uma com a sua ficha", () => {
+  it("página filha: faixa de páginas irmãs com a atual marcada, sem a trilha antiga, e cada medida de destaque dentro do seu painel", () => {
     expect(htmlP050).toContain('data-navegacao-local="faixa"');
     expect(htmlP050).toMatch(/aria-current="page"[^>]*>Reajustes, bandeiras e subsídios</);
     expect(htmlP050).not.toContain('aria-label="Trilha"');
     expect(html).not.toContain('data-navegacao-local="faixa"');
-    const abertura = ateAProfundidade(htmlP050);
-    expect((abertura.match(/Comprove este número/g) ?? []).length).toBe(4);
-    expect((abertura.match(/data-metrica=/g) ?? []).length).toBe(4);
+    // a abertura da filha não leva faixa de métricas (as quatro medidas ficam nos painéis, e a primeira figura aparece na primeira tela)
+    expect(ateAProfundidade(htmlP050)).not.toContain("data-faixa-metricas");
+    const painel = (id: string) => htmlP050.indexOf(`id="${id}"`);
+    const dentro = (rotulo: string, de: string, ate: string | null) => {
+      const i = htmlP050.indexOf(rotulo);
+      expect(i, rotulo).toBeGreaterThan(painel(de));
+      if (ate) expect(i, rotulo).toBeLessThan(painel(ate));
+    };
+    dentro("Variação mediana da tarifa B1 em 12 meses", "reajustes", "bandeiras");
+    dentro("Adicional de amarela em set/2026", "bandeiras", "subsidios");
+    dentro("Subsídios tarifários em 2025", "subsidios", null);
+    dentro("Quotas nas receitas da CDE 2026", "subsidios", null);
     // o resumo da página principal é o caminho até a página filha (capítulos), uma vez só
     expect((html.match(/data-navegacao-local="capitulos"/g) ?? []).length).toBe(1);
   });

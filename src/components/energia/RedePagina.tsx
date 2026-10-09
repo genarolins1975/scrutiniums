@@ -37,7 +37,7 @@ export function RedeNavegacao({ atual }: { atual: PainelRede }) {
 
 /** Capítulos da abertura: as outras três páginas do módulo, cada uma com a pergunta que responde. */
 export function RedeCapitulos({ atual = "p028" }: { atual?: PainelRede }) {
-  return <NavegacaoLocal rotulo="Capítulos da rede" itens={ITENS_REDE} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a rede" />;
+  return <NavegacaoLocal rotulo="Capítulos da rede" itens={ITENS_REDE} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a rede" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */

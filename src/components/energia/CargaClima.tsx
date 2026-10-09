@@ -254,7 +254,7 @@ export function CargaClima({
             </div>
             {d.fim < achado.fim && (
               <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
-                Esta variante cobre {plural(d.dias, "dia", "dias")}, até {dataBR(d.fim)}, e não a janela inteira do achado
+                Esta variante cobre {plural(d.dias, "dia", "dias")}, até {dataBR(d.fim)}, e não a janela inteira ({dataBR(achado.inicio)} a {dataBR(achado.fim)})
                 {achado.motivo ? `: ${achado.motivo}` : ": dia sem temperatura não entra no modelo"}.
               </p>
             )}

@@ -60,6 +60,7 @@ import {
   textoContagemFotografias,
   ultimaConfiabilidade,
   vereditoCronograma,
+  provenienciasDoLeitor,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
@@ -77,7 +78,7 @@ export default function CronogramaPage() {
 
   const c = g.cronograma;
   const pa = c.previsoes_atuais;
-  const p = g.proveniencia;
+  const p = provenienciasDoLeitor(g);
   const ev = g.evidencias;
   const pp = painel("p041");
   const conf = linhasConfiabilidade(g);

@@ -58,6 +58,7 @@ export function PrevisoesAtual({
   versao,
   endereco,
   mediaDiaPaginaPld,
+  recorte,
   notas,
   aposPrincipal,
   noCorteGrafico,
@@ -73,7 +74,9 @@ export function PrevisoesAtual({
   endereco: string;
   /** Média das 24 horas do dia de origem que a página PLD mostra (pld.json), por submercado; null quando o dia da página PLD não é o da rodada. */
   mediaDiaPaginaPld?: Partial<Record<Submercado, number | null>> | null;
-  /** Notas do painel (NotasDoPainel), logo depois da figura principal e da grade. */
+  /** Período, universo e unidade do painel (PrevisoesRecorte), logo depois da figura principal e da grade. */
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois do recorte. */
   notas?: ReactNode;
   /** Conteúdo depois das notas (os capítulos do módulo), antes das seções complementares. */
   aposPrincipal?: ReactNode;
@@ -192,10 +195,11 @@ export function PrevisoesAtual({
         </table>
       </div>
 
+      {recorte}
       {notas}
       {aposPrincipal}
 
-      <SecaoDoPainel id="comparar" titulo="Quais submercados aparecem nos painéis?">
+      <SecaoDoPainel id="comparar" titulo="Quais submercados aparecem nos painéis?" nivel="analisar">
         <Comparador
           rotulo={`Submercados para comparar (até ${LIMITE_COMPARACAO})`}
           entidades={entidades}
@@ -311,7 +315,11 @@ export function PrevisoesAtual({
             />
           </FaixaMetricas>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{textoPublicadoNoCorte(publicado, v.sm)}</p>
-          {noCorteGrafico}
+          {noCorteGrafico && (
+            <div data-nivel="analisar" className="space-y-2" data-grafico-no-corte="">
+              {noCorteGrafico}
+            </div>
+          )}
         </SecaoDoPainel>
       )}
 

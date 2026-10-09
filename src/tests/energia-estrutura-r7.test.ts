@@ -29,8 +29,11 @@ describe("abas de seção: marcação comum às duas versões", () => {
     expect(ler("src/components/energia/NavegacaoLocal.tsx")).toContain('<ol className="nav-faixa flex flex-wrap');
   });
 
-  it("as três barras de Mercado, Perdas e Dados usam a variante de barra", () => {
-    for (const f of BARRAS) expect(ler(f), f).toContain('<ul className="nav-faixa-barra flex flex-wrap');
+  it("as três barras de Mercado, Perdas e Dados usam a variante de barra (própria ou a faixa compartilhada NavegacaoLocal)", () => {
+    for (const f of BARRAS) {
+      const t = ler(f);
+      expect(t.includes('<ul className="nav-faixa-barra flex flex-wrap') || t.includes("<NavegacaoLocal"), f).toBe(true);
+    }
   });
 
   it("a aba atual é trazida à vista só quando está cortada, pelo mesmo componente que cuida da faixa de módulos", () => {

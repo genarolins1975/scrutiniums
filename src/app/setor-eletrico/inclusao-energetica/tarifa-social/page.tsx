@@ -386,7 +386,8 @@ export default function TarifaSocialPage() {
                       ]}
                       unidade="% das UC com Tarifa Social"
                       casas={1}
-                      altura={280}
+                      orientacao="horizontal"
+                      rotulosValor
                     />
                   </div>
                 </SecaoDoPainel>

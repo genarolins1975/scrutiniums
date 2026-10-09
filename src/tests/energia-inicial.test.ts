@@ -96,7 +96,11 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
     expect(s.referencias[0]).not.toContain(`${Math.floor(a.dec!)} h ${String(a.dec).split(".")[1]} min`);
     // o apurado não é tudo: a soma com o que a regra exclui está junto do número
     expect(s.ressalva).toContain("não inclui as interrupções que a regra exclui");
-    expect(s.ressalva).toContain(`${a.dec_todas_parcelas!.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} h`);
+    // com as parcelas excluídas somadas ao apurado, o total é o dec_todas_parcelas (apurado + emergência + dia crítico + externa + ONS)
+    const p = a.parcelas_dec!;
+    expect(a.dec_todas_parcelas).toBeCloseTo(p.apurado! + p.emergencia! + p.dia_critico! + p.externa! + p.ons!, 1);
+    expect(s.ressalva).toContain(`com elas, o total é de ${a.dec_todas_parcelas!.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} h`);
+    expect(s.ressalva).not.toMatch(/que somadas dão/);
   });
 
   it("perdas: a taxa das concessionárias no ano de referência, a variação nas mesmas distribuidoras e o universo com as permissionárias fora", () => {

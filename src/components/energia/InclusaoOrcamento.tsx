@@ -67,7 +67,20 @@ const OPCOES_LIM: readonly (readonly [LimiarPof, string])[] = [
 
 const nomeTerritorio = (t: string) => NOME_TERRITORIO[t] ?? t;
 
-function InclusaoClassesPof({ orc, resposta, recorte, notas }: { orc: OrcamentoBase; resposta?: ReactNode; recorte?: ReactNode; notas?: ReactNode }) {
+function InclusaoClassesPof({
+  orc,
+  resposta,
+  medidas: destaques,
+  recorte,
+  notas,
+}: {
+  orc: OrcamentoBase;
+  resposta?: ReactNode;
+  /** Medidas que o gráfico desenha na segunda série (média das participações), com a ficha de prova de cada uma. */
+  medidas?: ReactNode;
+  recorte?: ReactNode;
+  notas?: ReactNode;
+}) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
@@ -91,8 +104,10 @@ function InclusaoClassesPof({ orc, resposta, recorte, notas }: { orc: OrcamentoB
         unidade="%"
         casas={2}
         referencias={refTotal !== null ? [{ valor: refTotal, rotulo: `${medidas[0].rotulo}, todas as famílias (${nomeTerritorio(principal)})` }] : []}
-        altura={320}
+        orientacao="horizontal"
+        rotulosValor
       />
+      {destaques}
       {recorte}
       {notas}
     </div>
@@ -127,7 +142,8 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
           series={ters.map((t, i) => ({ id: t, rotulo: nomeTerritorio(t), cor: CORES_TER[i % CORES_TER.length] }))}
           unidade="%"
           casas={2}
-          altura={320}
+          orientacao="horizontal"
+          rotulosValor
         />
       ) : (
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
@@ -161,7 +177,8 @@ function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string
         ]}
         unidade="% das famílias"
         casas={1}
-        altura={300}
+        orientacao="horizontal"
+        rotulosValor
       />
       <TabelaInterativa
         titulo={`Sensibilidade ao limiar de ${v.lim}%, ${nomeTerritorio(principal)}`}
@@ -271,6 +288,7 @@ export function InclusaoOrcamentoPainel({
   periodo,
   unidadeReais,
   resposta,
+  medidas,
   recorte,
   notas,
 }: {
@@ -282,12 +300,13 @@ export function InclusaoOrcamentoPainel({
   periodo: string;
   unidadeReais: string;
   resposta?: ReactNode;
+  medidas?: ReactNode;
   recorte?: ReactNode;
   notas?: ReactNode;
 }) {
   return (
     <div className="space-y-6">
-      <InclusaoClassesPof orc={classes} resposta={resposta} recorte={recorte} notas={notas} />
+      <InclusaoClassesPof orc={classes} resposta={resposta} medidas={medidas} recorte={recorte} notas={notas} />
 
       <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
         <InclusaoTerritoriosPof orc={classes} />

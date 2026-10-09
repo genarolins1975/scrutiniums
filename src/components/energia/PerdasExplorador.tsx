@@ -76,6 +76,11 @@ export type PerdasExploradorProps = {
   limitacaoMapa?: ReactNode;
 };
 
+/** Ressalva que muda a leitura das barras de uma medida, dita junto da figura (a definição da gold diz que a não técnica pode ser negativa). */
+const OBSERVACAO_MEDIDA: Partial<Record<IdMedida, string>> = {
+  pnt_bt: "A perda não técnica pode ser negativa quando a estimativa técnica supera a perda total medida; ela inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
+};
+
 const SELECT =
   "h-11 w-full border border-linha bg-superficie px-2 text-sm text-carvao focus:outline-none focus-visible:ring-2 focus-visible:ring-energia";
 
@@ -259,6 +264,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
           faixa={faixa}
           periodo={periodo.rotulo}
           escolhida={escolhida}
+          observacao={OBSERVACAO_MEDIDA[medida.id]}
         />
       ) : (
         <div role="status" className="flex min-h-[14rem] items-center justify-center border border-linha bg-superficie px-6 text-center text-sm text-carvao-muted">

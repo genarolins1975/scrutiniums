@@ -184,7 +184,7 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
         { id: "atualizadas", rotulo: "Por 100 famílias com cadastro atualizado", sigla: "Atualizadas", cor: "var(--cor-energia)" },
         { id: "cadastradas", rotulo: "Por 100 famílias cadastradas (todas)", sigla: "Cadastradas", cor: "var(--serie-referencia)", tracejada: true },
       ]}
-      banda={{ inferior: "cadastradas", superior: "atualizadas", rotulo: "Faixa de sensibilidade ao denominador (não é intervalo estatístico)" }}
+      banda={{ inferior: "cadastradas", superior: "atualizadas", rotulo: "Faixa de sensibilidade ao denominador (não é margem de erro)" }}
       unidade={unidade}
       casas={1}
       zeroNoEixo

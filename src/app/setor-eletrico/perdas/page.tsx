@@ -5,7 +5,7 @@ import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { Numero } from "@/components/energia/Numero";
@@ -15,7 +15,7 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { PerdasExplorador } from "@/components/energia/PerdasExplorador";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
-import { PERGUNTA_ABERTURA, PERGUNTA_COMPOSICAO, PerdasCapitulos, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, SeparacaoMetricas } from "@/components/energia/PerdasPainel";
+import { NotasDoPainelNomeadas, PERGUNTA_ABERTURA, PERGUNTA_COMPOSICAO, PerdasCapitulos, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, SeparacaoMetricas } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
@@ -263,7 +263,7 @@ export default function PerdasPage() {
                     {respostaGeral(g)}
                   </RespostaCurta>
                 }
-                notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                notas={<NotasDoPainelNomeadas painel="comparação entre distribuidoras" oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 aposPrincipal={<PerdasCapitulos />}
                 limitacaoMapa={
                   <>
@@ -350,7 +350,7 @@ export default function PerdasPage() {
                 limite={40}
                 csv="/energia/series/perdas_nacional.csv"
               />
-              <NotasDoPainel oQueMudou={oQueMudouEvolucao} comoInterpretar={comoInterpretarEvolucao} naoConcluir={naoConcluirEvolucao} />
+              <NotasDoPainelNomeadas painel="evolução da taxa das concessionárias" oQueMudou={oQueMudouEvolucao} comoInterpretar={comoInterpretarEvolucao} naoConcluir={naoConcluirEvolucao} />
               <PerdasSeguir
                 ancora="evolucao"
                 proxima={{ pergunta: "Como cada distribuidora evoluiu? Compare até quatro", href: "#perdas-comparar" }}

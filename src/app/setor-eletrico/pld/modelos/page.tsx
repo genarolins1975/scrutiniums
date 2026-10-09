@@ -175,6 +175,7 @@ export default function ModelosPage() {
   const amostra = linhasAmostra(g);
   const prospectivo = linhasProspectivo(g);
   const minimo = minimoCalibracao(g.definicoes.calibracao);
+  const estadosAmostra = Array.from(new Set(amostra.map((a) => a.estado)));
   const versao = g.gerado_em.slice(0, 10);
   const fonte = "Observatório, registro de modelos de previsão do PLD";
   const pubDes = g.publicacao_desempenho;
@@ -299,7 +300,7 @@ export default function ModelosPage() {
                 unidade={mm.emProducao.length === 1 ? "modelo" : "modelos"}
                 periodo={`registro de ${dataBR(dia)}`}
                 cor="var(--serie-referencia)"
-                nota="Produção é o estado que alimenta a previsão principal."
+                nota="Produção alimenta a previsão principal."
               />
               <Numero
                 variante="faixa"
@@ -311,7 +312,7 @@ export default function ModelosPage() {
                 unidade={mm.comNumero.length === 1 ? "modelo" : "modelos"}
                 periodo="arquivo de emissões"
                 cor="var(--cor-energia)"
-                nota={mm.comNumeroExperimental.length ? `${listaE(mm.comNumeroExperimental)}, só como referência experimental, sem aprovação.` : undefined}
+                nota={mm.comNumeroExperimental.length ? `${listaE(mm.comNumeroExperimental)}, como referência experimental.` : undefined}
               />
               <Numero
                 variante="faixa"
@@ -323,7 +324,7 @@ export default function ModelosPage() {
                 unidade={`de ${mm.avaliados.length} avaliados`}
                 periodo="teste fora da amostra"
                 cor="var(--serie-referencia)"
-                nota={mm.publicado ? undefined : "Números retidos até a liberação formal pelo responsável pela plataforma."}
+                nota={mm.publicado ? undefined : "Números retidos até a liberação formal."}
               />
             </FaixaMetricas>
           }
@@ -354,17 +355,6 @@ export default function ModelosPage() {
                 <PrevisoesResposta id="p014" veredito={vereditoP014(g)}>
                   {respostaP014(g)}
                 </PrevisoesResposta>
-                <PrevisoesRecorte
-                  periodo={
-                    <>
-                      Versões vigentes em {carimbo(g.gerado_em)}
-                      {ajuste ? `; pesos do ajuste de ${dataBR(ajuste)}` : ""}
-                    </>
-                  }
-                  universo={<>{fichas.map((f) => f.codigo).join(", ")}; sete horizontes e quatro submercados</>}
-                  unidade="R$/MWh nas previsões; coeficientes em R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável"
-                />
-
                 <section aria-labelledby="matriz-titulo" className="space-y-3" data-matriz-modelos="">
                   <h3 id="matriz-titulo" className="ed-h3 font-serif text-carvao">
                     {plural(fichas.length, "modelo registrado", "modelos registrados")}: situação, número publicado e protocolo
@@ -386,6 +376,18 @@ export default function ModelosPage() {
                     {g.definicoes.periodos.teste}; {g.definicoes.periodos.fronteira}. {semCodigosInternos(g.definicoes.cenario_de_elegibilidade)}
                   </PrevisoesLegenda>
                 </section>
+
+                <PrevisoesRecorte
+                  periodo={
+                    <>
+                      Versões vigentes em {carimbo(g.gerado_em)}
+                      {ajuste ? `; pesos do ajuste de ${dataBR(ajuste)}` : ""}
+                    </>
+                  }
+                  universo={<>{fichas.map((f) => f.codigo).join(", ")}; sete horizontes e quatro submercados</>}
+                  unidade="R$/MWh nas previsões; coeficientes em R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável"
+                />
+
 
                 <NotasDoPainel oQueMudou={oQueMudou14} comoInterpretar={comoInterpretar14} naoConcluir={naoConcluir14} />
 
@@ -511,20 +513,6 @@ export default function ModelosPage() {
                 <PrevisoesResposta id="p016" veredito={vereditoP016(g)}>
                   {respostaP016(g)}
                 </PrevisoesResposta>
-                <PrevisoesRecorte
-                  periodo={
-                    <>
-                      Origens de {dataBR(g.dados.origens.inicio)} a {dataBR(g.dados.origens.fim)}; {g.definicoes.periodos.desenvolvimento}; {g.definicoes.periodos.teste}
-                    </>
-                  }
-                  universo={
-                    <>
-                      Modelos avaliados: {avaliados.join(", ")}
-                      {naoAvaliados.length ? ` (sem avaliação: ${naoAvaliados.map((m) => m.codigo).join(", ")})` : ""}; sete horizontes; quatro submercados
-                    </>
-                  }
-                  unidade="Entregas distintas; R$/MWh nominais para erro e ganho"
-                />
                 {!pubDes.publicado && (
                   <Indisponivel
                     titulo="Desempenho fora da amostra: números retidos"
@@ -549,6 +537,21 @@ export default function ModelosPage() {
                     }
                   />
                 )}
+
+                <PrevisoesRecorte
+                  periodo={
+                    <>
+                      Origens de {dataBR(g.dados.origens.inicio)} a {dataBR(g.dados.origens.fim)}; {g.definicoes.periodos.desenvolvimento}; {g.definicoes.periodos.teste}
+                    </>
+                  }
+                  universo={
+                    <>
+                      Modelos avaliados: {avaliados.join(", ")}
+                      {naoAvaliados.length ? ` (sem avaliação: ${naoAvaliados.map((m) => m.codigo).join(", ")})` : ""}; sete horizontes; quatro submercados
+                    </>
+                  }
+                  unidade="Entregas distintas; R$/MWh nominais para erro e ganho"
+                />
 
                 {g.desempenho.publicado && desempenho.length > 0 && (
                   <SecaoDoPainel
@@ -600,19 +603,22 @@ export default function ModelosPage() {
                       unidadeDiferenca="entregas"
                       zeroNoEixo
                     />
-                    <TabelaInterativa
-                      titulo="Amostra de calibração por horizonte"
-                      colunas={COLUNAS_AMOSTRA}
-                      linhas={amostra}
-                      chaveLinha="id"
-                      colunaRotulo="horizonte"
-                      fonte={fonte}
-                      versao={versao}
-                      nomeArquivo="previsoes-pld-amostra-calibracao"
-                      nota="Contagem de entregas distintas do período de teste com faixas de incerteza, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
-                    />
+                    <div data-nivel="analisar">
+                      <TabelaInterativa
+                        titulo="Amostra de calibração por horizonte"
+                        colunas={COLUNAS_AMOSTRA}
+                        linhas={amostra}
+                        chaveLinha="id"
+                        colunaRotulo="horizonte"
+                        fonte={fonte}
+                        versao={versao}
+                        nomeArquivo="previsoes-pld-amostra-calibracao"
+                        nota="Contagem de entregas distintas do período de teste com faixas de incerteza, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
+                      />
+                    </div>
                     <PrevisoesLegenda>
-                      O círculo é o número de entregas distintas do teste em cada horizonte e o losango, o mínimo da regra de calibração; a diferença aparece escrita. Sem amostra
+                      O círculo é o número de entregas distintas do teste em cada horizonte e o losango, o mínimo da regra de calibração; a diferença aparece escrita. Estado da
+                      calibração: {estadosAmostra.length === 1 ? `${estadosAmostra[0]} em todos os horizontes` : amostra.map((a) => `${a.horizonte}, ${a.estado}`).join("; ")}. Sem amostra
                       mínima, a calibração não é avaliada: não se pode dizer que a faixa de algum modelo é confiável.
                     </PrevisoesLegenda>
                   </SecaoDoPainel>
@@ -639,18 +645,20 @@ export default function ModelosPage() {
                       casas={0}
                       empilhado
                       rotulosValor
-                      altura={240}
+                      altura={200}
                     />
-                    <TabelaInterativa
-                      titulo="Previsões registradas e apuradas por horizonte"
-                      colunas={COLUNAS_PROSPECTIVO}
-                      linhas={prospectivo}
-                      chaveLinha="id"
-                      colunaRotulo="horizonte"
-                      fonte={fonte}
-                      versao={versao}
-                      nomeArquivo="previsoes-pld-prospectivo"
-                    />
+                    <div data-nivel="analisar">
+                      <TabelaInterativa
+                        titulo="Previsões registradas e apuradas por horizonte"
+                        colunas={COLUNAS_PROSPECTIVO}
+                        linhas={prospectivo}
+                        chaveLinha="id"
+                        colunaRotulo="horizonte"
+                        fonte={fonte}
+                        versao={versao}
+                        nomeArquivo="previsoes-pld-prospectivo"
+                      />
+                    </div>
                     <PrevisoesLegenda>
                       Cada barra soma as previsões com número de um horizonte, separando as que já têm realizado das que aguardam o fim da entrega.
                     </PrevisoesLegenda>

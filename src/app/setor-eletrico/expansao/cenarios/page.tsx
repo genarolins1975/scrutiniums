@@ -38,6 +38,7 @@ import {
   painel,
   respostaCenarios,
   vereditoCenarios,
+  provenienciasDoLeitor,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
@@ -54,7 +55,7 @@ export default function CenariosPage() {
   if (!integra(g)) return <ExpansaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
 
   const c = g.cenarios;
-  const p = g.proveniencia;
+  const p = provenienciasDoLeitor(g);
   const ev = g.evidencias;
   const pp = painel("p043");
   const f325 = c.figuras.fig_3_25;

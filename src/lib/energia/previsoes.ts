@@ -1022,7 +1022,7 @@ const ehReferenciaExperimental = (rotulo: string) => /refer[eê]ncia experimenta
 export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">): string {
   const at = g.previsao_atual;
   const producao = g.modelos.filter((m) => m.estado === "PRODUCAO").map((m) => m.codigo);
-  const oficial = producao.length ? `Modelo em produção: ${producao.join(", ")}.` : "Nenhum modelo de previsão do PLD está aprovado.";
+  const oficial = producao.length ? `Modelo em produção: ${producao.join(", ")}.` : "Nenhum modelo está aprovado.";
   if (!temRodada(at)) return `${oficial} Nenhuma rodada com números está publicada.`;
   const linhas = linhasGrade(at.celulas);
   const valores = linhas.map((l) => l.previsao).filter((v): v is number => v !== null);
@@ -1031,9 +1031,9 @@ export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" |
   const maior = Math.max(...valores);
   const intervalo = menor === maior ? reaisMWh(menor) : `de ${reais(menor)} a ${reaisMWh(maior)}`;
   const comFaixa = linhas.filter((l) => l.p10 !== null && l.p90 !== null).length;
-  const faixa = comFaixa ? `Há faixa de incerteza em ${comFaixa} de ${linhas.length} células.` : "Não há faixa de incerteza.";
+  const faixa = comFaixa ? `Há faixa de incerteza em ${comFaixa} de ${linhas.length} células.` : "Sem faixa de incerteza.";
   const o_que = ehReferenciaExperimental(at.rotulo)
-    ? `A página mostra uma referência simples: repete o PLD médio do último período completo, ${intervalo} conforme submercado e prazo.`
+    ? `A referência simples B0 repete o PLD médio do último período completo, ${intervalo}.`
     : `A rodada de ${dataBR(at.origem)} publica ${intervalo} conforme submercado e prazo.`;
   return `${oficial} ${o_que} ${faixa}`;
 }
@@ -1728,7 +1728,7 @@ export function avisosDaRodada(
     out.push({
       id: "codigo",
       rotulo: "Reprodutibilidade",
-      texto: "O código executado não coincide com uma versão registrada: tinha alterações ainda não confirmadas (sufixo +alterado).",
+      texto: "O código executado tinha alterações ainda não registradas em versão (sufixo +alterado).",
     });
   } else if (!r.versao_codigo) {
     out.push({ id: "codigo", rotulo: "Reprodutibilidade", texto: "O registro não traz a versão do código que emitiu a rodada." });
@@ -1821,5 +1821,7 @@ export function resumoB0(linhas: readonly LinhaGrade[], sm: Submercado, freq: Fr
       com?.periodo_inicio && com.periodo_fim
         ? `Repete a média de ${dataBR(com.periodo_inicio)} a ${dataBR(com.periodo_fim)}, o último período completo elegível no corte.`
         : undefined,
+    /** O mesmo aviso em uma linha, para a faixa de métricas da abertura. */
+    usadoCurto: com?.periodo_inicio && com.periodo_fim ? `Repete a média de ${intervaloDias(com.periodo_inicio, com.periodo_fim)}.` : undefined,
   };
 }

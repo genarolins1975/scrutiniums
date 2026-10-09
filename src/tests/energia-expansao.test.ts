@@ -543,18 +543,47 @@ describe("páginas renderizadas no servidor", () => {
     }
   });
 
-  it("todo número de destaque tem 'Comprove este número' ou declara ausência", () => {
-    const MARCA = 'class="relative flex h-full flex-col border border-linha bg-superficie p-5"';
-    for (const [k, h] of Object.entries({ ...html, sintese })) {
-      let i = h.indexOf(MARCA);
-      let blocos = 0;
-      while (i >= 0) {
-        const trecho = h.slice(i, h.indexOf(MARCA, i + 1) > 0 ? h.indexOf(MARCA, i + 1) : i + 6000);
-        expect(trecho.includes("Comprove este número") || trecho.includes("sem dado"), `${k}: ${trecho.slice(0, 120)}`).toBe(true);
-        blocos++;
-        i = h.indexOf(MARCA, i + 1);
+  it("todo número de destaque tem 'Comprove este número' ou declara ausência; só as medidas derivadas sem evidência na gold ficam numa lista explícita", () => {
+    // A medida da abertura é o Numero variante="faixa" (data-metrica), no lugar do cartão antigo. A gold publica evidência só para parte
+    // delas; as outras são derivadas das mesmas tabelas (a etapa Construção, as datas convencionais, o cenário no início do horizonte)
+    // e entram aqui por nome, para que um número novo sem prova falhe o teste.
+    const SEM_FICHA: Record<string, RegExp[]> = {
+      sintese: [/^Em construção$/],
+      p040: [/^Em construção$/],
+      p041: [/^Prevista para o restante de \d{4}$/, /^Em datas convencionais em bloco$/, /^Com cronograma atrasado, segundo a fiscalização$/],
+      p042: [/^Transformação nova em obras em andamento$/],
+      p043: [/^Capacidade instalada nacional em [a-z]{3}\/\d{4}$/],
+    };
+    // grupos de medida com os <div> balanceados: o gatilho da prova e a ausência ficam dentro do próprio grupo
+    const grupos = (h: string) => {
+      const saida: { rotulo: string; html: string }[] = [];
+      const re = /<div role="group" aria-label="([^"]*)" data-metrica=""[^>]*>/g;
+      let m: RegExpExecArray | null;
+      while ((m = re.exec(h))) {
+        let prof = 0;
+        let fim = h.length;
+        for (const t of h.slice(m.index).matchAll(/<div\b|<\/div>/g)) {
+          prof += t[0] === "</div>" ? -1 : 1;
+          if (prof === 0) {
+            fim = m.index + t.index! + t[0].length;
+            break;
+          }
+        }
+        saida.push({ rotulo: m[1], html: h.slice(m.index, fim) });
       }
-      expect(blocos, k).toBeGreaterThan(0);
+      return saida;
+    };
+    for (const [k, h] of Object.entries({ ...html, sintese })) {
+      const g = grupos(h);
+      expect(g.length, k).toBeGreaterThan(0);
+      let comFicha = 0;
+      for (const { rotulo, html: trecho } of g) {
+        const prova = trecho.includes("Comprove este número");
+        if (prova) comFicha++;
+        const permitido = (SEM_FICHA[k] ?? []).some((r) => r.test(rotulo));
+        expect(prova || trecho.includes("sem dado") || permitido, `${k}: ${rotulo}`).toBe(true);
+      }
+      expect(comFicha, k).toBeGreaterThan(0);
     }
   });
 

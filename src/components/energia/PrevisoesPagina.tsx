@@ -164,15 +164,16 @@ export function PrevisoesAvisosRodada({ avisos, titulo = "Condições desta roda
   if (!avisos.length) return null;
   return (
     <section aria-label={titulo} data-avisos-rodada="" className="mt-3 border-l-2 border-aviso pl-4">
-      <p className="rotulo text-mineral">{titulo}</p>
-      <ul className={`mt-1 grid gap-x-8 gap-y-2 text-sm leading-relaxed text-carvao ${avisos.length >= 3 ? "md:grid-cols-3" : avisos.length === 2 ? "md:grid-cols-2" : ""}`}>
-        {avisos.map((a) => (
-          <li key={a.id} data-aviso={a.id}>
+      <p className="text-sm leading-relaxed text-carvao">
+        <span className="rotulo mr-2 text-mineral">{titulo}</span>
+        {avisos.map((a, i) => (
+          <span key={a.id} data-aviso={a.id}>
             <span className="font-medium">{a.rotulo}: </span>
             {a.texto}
-          </li>
+            {i < avisos.length - 1 ? " " : ""}
+          </span>
         ))}
-      </ul>
+      </p>
     </section>
   );
 }

@@ -6,6 +6,7 @@ import { GeracaoMapaUsinas } from "@/components/energia/GeracaoMapaUsinas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { carregaJson } from "@/lib/energia/carregaJson";
@@ -55,6 +56,11 @@ import type { RazaoRestricao, Restricao } from "@/lib/energia/tipos-geracao";
  * oficial do ONS (GWh); o maior corte simultâneo (MW) tem gráfico próprio. A taxa usa o
  * denominador da gold: não gerada ÷ (verificada + não gerada). A malha de UF é lida da
  * camada publicada quando o painel aparece; sem ela, a tabela traz as mesmas usinas.
+ *
+ * Ordem da página: o veredito e a figura principal (energia não gerada por razão oficial, mês a mês) lado a lado, o recorte como
+ * legenda e as notas do painel (`notas`); depois seções visíveis com pergunta própria: a taxa e o maior corte simultâneo (duas
+ * medidas, dois gráficos, cada um na sua unidade) e o mapa das usinas com a tabela. As medidas de abertura (12 meses, por fonte)
+ * ficam na faixa de métricas da página.
  */
 const ESQUEMA = {
   f: campo(tiposUrl.opcao(FONTES_RESTRICAO), "eolica" as FonteRestricao),
@@ -77,14 +83,14 @@ export function GeracaoRestricoes({
   restricoes,
   fonte,
   versao,
-  destaques,
+  notas,
   rotulosRazao,
 }: {
   restricoes: Partial<Record<FonteRestricao, RestricaoCliente>>;
   fonte: string;
   versao: string;
-  /** Números de destaque já montados no servidor para cada fonte (com a evidência). */
-  destaques: Partial<Record<FonteRestricao, ReactNode>>;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e do recorte. */
+  notas?: ReactNode;
   /** Rótulo oficial de cada razão (a gold publica; vai para a chave sob o gráfico mensal). */
   rotulosRazao?: Partial<Record<RazaoRestricao, string>>;
 }) {
@@ -146,18 +152,42 @@ export function GeracaoRestricoes({
 
   return (
     <div className="space-y-6">
-      {disponiveis.length > 1 && (
-        <GeracaoEscolha
-          legenda="Fonte"
-          opcoes={disponiveis.map((x) => ({ id: x, rotulo: NOME_FONTE_RESTRICAO[x] }))}
-          valor={f}
-          onEscolher={(x) => definir({ f: x, ru: "" })}
-        />
-      )}
-
-      <RespostaCurta id="p023" veredito={vereditoRestricao(restricoes) || respostaRestricao(r)}>
-        <span data-fonte={f}>{respostaRestricao(r)}</span>
-      </RespostaCurta>
+      <div className="grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start">
+        <div className="flex flex-col gap-4">
+          {disponiveis.length > 1 && (
+            <GeracaoEscolha
+              legenda="Fonte"
+              opcoes={disponiveis.map((x) => ({ id: x, rotulo: NOME_FONTE_RESTRICAO[x] }))}
+              valor={f}
+              onEscolher={(x) => definir({ f: x, ru: "" })}
+            />
+          )}
+          <RespostaCurta id="p023" veredito={vereditoRestricao(restricoes) || respostaRestricao(r)}>
+            <span data-fonte={f}>{respostaRestricao(r)}</span>
+          </RespostaCurta>
+        </div>
+        <div id="restricao-mensal" className="scroll-mt-28 space-y-3">
+          <GraficoBarras
+            titulo={`Energia não gerada estimada por razão, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}, SIN`}
+            dados={paraTabela(barras)}
+            chaveCategoria="id"
+            chaveRotulo="rotulo"
+            series={mensal.razoes.map((z) => ({ id: z, rotulo: CURTO_RAZAO[z], cor: COR_RAZAO[z] }))}
+            unidade="GWh"
+            casas={1}
+            empilhado
+            altura={300}
+          />
+          {ultimo?.parcial === "sim" && (
+            <GeracaoAviso>O último mês ({ultimo.mes}) é parcial: soma só os dias já publicados e não se compara com meses completos.</GeracaoAviso>
+          )}
+          {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes) && (
+            <p className="text-xs leading-relaxed text-carvao-muted" data-nota="razoes-restricao">
+              {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes)}
+            </p>
+          )}
+        </div>
+      </div>
 
       <GeracaoRecorte
         periodo={
@@ -180,12 +210,56 @@ export function GeracaoRestricoes({
         unidade="GWh (energia não gerada estimada); % de verificada mais não gerada (taxa); MW (maior corte simultâneo numa meia hora)"
       />
 
-      {destaques[f]}
+      {notas}
 
-      <div className="space-y-4" id="mapa-usinas">
-        <h3 className="font-serif text-lg text-carvao">
-          Onde estão as {num(r.usinas_12m_resumo.publicadas, 0)} usinas e conjuntos com mais energia não gerada ({num(r.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% do total)
-        </h3>
+      <SecaoDoPainel
+        id="taxa-e-corte"
+        titulo="Qual foi a taxa de restrição, e qual o maior corte simultâneo?"
+        lead="Duas medidas diferentes, cada uma na sua unidade: a taxa é uma parcela da energia (%), e o maior corte é uma potência (MW) numa única meia hora."
+      >
+        <div className="grid gap-x-8 gap-y-6 lg:grid-cols-2">
+          <GraficoLinhas
+            titulo="Taxa de restrição: não gerada ÷ (verificada + não gerada)"
+            dados={mensal.linhas.map((l) => ({ m: l.m, taxa: l.taxa_pct }))}
+            chaveX="m"
+            formatoX="mes"
+            series={[{ id: "taxa", rotulo: "Taxa de restrição", cor: COR_RAZAO.ENE, espessura: 2.5 }]}
+            unidade="%"
+            casas={1}
+            zeroNoEixo
+            altura={220}
+          />
+          <GraficoLinhas
+            titulo="Maior corte simultâneo numa meia hora do mês (potência, não energia)"
+            dados={mensal.linhas.map((l) => ({ m: l.m, potencia: l.potencia_mw }))}
+            chaveX="m"
+            formatoX="mes"
+            series={[{ id: "potencia", rotulo: "Maior corte simultâneo", cor: "var(--serie-referencia)", espessura: 2.5 }]}
+            unidade="MW"
+            casas={0}
+            zeroNoEixo
+            altura={220}
+          />
+        </div>
+        <TabelaInterativa
+          titulo="Tabela equivalente: energia não gerada, taxa e maior corte, mês a mês"
+          colunas={colunasRestricaoMensal(mensal.razoes).map((c) => (c.id === "mes" ? { ...c, id: "m", tipo: "data" as const } : c))}
+          linhas={paraTabela(mensal.linhas)}
+          chaveLinha="id"
+          colunaRotulo="m"
+          fonte={fonte}
+          versao={versao}
+          nomeArquivo={`geracao-restricao-mensal-${f}`}
+          chaveUrl="rm"
+          ordemInicial={{ coluna: "m", direcao: "desc" }}
+          nota="Razão sem energia em nenhum mês fica fora das colunas. A potência é o maior corte simultâneo do mês, não a soma dos cortes."
+        />
+      </SecaoDoPainel>
+
+      <SecaoDoPainel
+        id="mapa-usinas"
+        titulo={`Onde estão as ${num(r.usinas_12m_resumo.publicadas, 0)} usinas e conjuntos com mais energia não gerada (${num(r.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% do total)?`}
+      >
         {mapa ? (
           <GeracaoMapaUsinas
             titulo={`${NOME_FONTE_RESTRICAO[f]} com mais energia não gerada por restrição${u ? `, ${mesAno(u.inicio)} a ${mesAno(u.fim)}` : ""}`}
@@ -271,65 +345,7 @@ export function GeracaoRestricoes({
             )}
           </div>
         )}
-      </div>
-
-      <div className="space-y-4 border-t border-linha pt-5" id="restricao-mensal">
-        <h3 className="font-serif text-lg text-carvao">Mês a mês, por razão oficial do ONS</h3>
-        <GraficoBarras
-          titulo={`Energia não gerada estimada por razão, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}, SIN`}
-          dados={paraTabela(barras)}
-          chaveCategoria="id"
-          chaveRotulo="rotulo"
-          series={mensal.razoes.map((z) => ({ id: z, rotulo: CURTO_RAZAO[z], cor: COR_RAZAO[z] }))}
-          unidade="GWh"
-          casas={1}
-          empilhado
-          altura={300}
-        />
-        {ultimo?.parcial === "sim" && (
-          <GeracaoAviso>O último mês ({ultimo.mes}) é parcial: soma só os dias já publicados e não se compara com meses completos.</GeracaoAviso>
-        )}
-        {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes) && (
-          <p className="text-xs leading-relaxed text-carvao-muted" data-nota="razoes-restricao">
-            {notaRazoesRestricao(r, rotulosRazao ?? {}, mensal.razoes)}
-          </p>
-        )}
-        <GraficoLinhas
-          titulo="Taxa de restrição: não gerada ÷ (verificada + não gerada)"
-          dados={mensal.linhas.map((l) => ({ m: l.m, taxa: l.taxa_pct }))}
-          chaveX="m"
-          formatoX="mes"
-          series={[{ id: "taxa", rotulo: "Taxa de restrição", cor: COR_RAZAO.ENE, espessura: 2.5 }]}
-          unidade="%"
-          casas={1}
-          zeroNoEixo
-          altura={220}
-        />
-        <GraficoLinhas
-          titulo="Maior corte simultâneo numa meia hora do mês (potência, não energia)"
-          dados={mensal.linhas.map((l) => ({ m: l.m, potencia: l.potencia_mw }))}
-          chaveX="m"
-          formatoX="mes"
-          series={[{ id: "potencia", rotulo: "Maior corte simultâneo", cor: "var(--serie-referencia)", espessura: 2.5 }]}
-          unidade="MW"
-          casas={0}
-          zeroNoEixo
-          altura={220}
-        />
-        <TabelaInterativa
-          titulo="Tabela equivalente: energia não gerada, taxa e maior corte, mês a mês"
-          colunas={colunasRestricaoMensal(mensal.razoes).map((c) => (c.id === "mes" ? { ...c, id: "m", tipo: "data" as const } : c))}
-          linhas={paraTabela(mensal.linhas)}
-          chaveLinha="id"
-          colunaRotulo="m"
-          fonte={fonte}
-          versao={versao}
-          nomeArquivo={`geracao-restricao-mensal-${f}`}
-          chaveUrl="rm"
-          ordemInicial={{ coluna: "m", direcao: "desc" }}
-          nota="Razão sem energia em nenhum mês fica fora das colunas. A potência é o maior corte simultâneo do mês, não a soma dos cortes."
-        />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

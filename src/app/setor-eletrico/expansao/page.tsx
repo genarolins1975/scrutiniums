@@ -49,6 +49,7 @@ import {
   vereditoSintese,
   vereditoTransmissao,
   type MetricaEtapa,
+  provenienciasDoLeitor,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 
@@ -94,7 +95,7 @@ export default function ExpansaoPage() {
   const ref = g.referencias;
   const ev = g.evidencias;
   const r = g.estagios.ralie;
-  const p = g.proveniencia;
+  const p = provenienciasDoLeitor(g);
   const etapas = metricasEtapas(g);
   const dataSiga = dataTexto(g.estagios.data_referencia);
   const conf = ultimaConfiabilidade(g);

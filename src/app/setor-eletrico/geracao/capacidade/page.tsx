@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GeracaoCapacidadeAneel, GeracaoCapacidadeDistribuicao } from "@/components/energia/GeracaoCapacidade";
 import {
-  GeracaoAnalise,
-  GeracaoAuditoria,
   GeracaoAviso,
+  GeracaoDatas,
   GeracaoFrases,
   GeracaoIndisponivel,
   GeracaoNavegacao,
@@ -17,9 +17,10 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
@@ -77,38 +78,104 @@ export default function GeracaoCapacidadePage() {
   const periodo12 = u ? `${mesAno(u.inicio)} a ${mesAno(u.fim)}` : "12 meses";
   const linhas = linhasCapacidade(c);
   const retrato = [...c.retrato.por_categoria].sort((a, b) => (b.mw ?? 0) - (a.mw ?? 0));
-  const fc12 = linhas.filter((l) => l.fc_pct !== null).sort((a, b) => (b.fc_pct ?? 0) - (a.fc_pct ?? 0));
+  // as duas figuras seguem a mesma ordem de fontes (da maior potência para a menor): instalado e produzido lado a lado, linha com linha
+  const fcNaOrdem = retrato.map((x) => linhas.find((l) => l.id === x.categoria)).filter((l): l is NonNullable<typeof l> => !!l);
   const ocultas = CATEGORIAS_CAPACIDADE.filter((k) => !VISIVEIS_MENSAL.includes(k));
   const mmgd = c.contexto.mmgd;
   const siga = c.contexto.siga;
   const sigaHist = c.contexto.siga_historico;
   const par = c.pareamento;
 
+  const oQueMudou = <>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "o fator de capacidade mensal")}</>;
+  const comoInterpretar = (
+    <>
+      Fator de capacidade = geração do mês ÷ (potência em operação comercial média do mês × horas com dado), somado nos 12 meses como razão de energias, só nas usinas pareadas com a Capacidade
+      Instalada do ONS. A cobertura diz quanto da geração da categoria entrou no pareamento. O retrato é a potência de {dataBR(c.retrato.data)}; a série mensal usa a potência de cada mês.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Que a capacidade da ANEEL e a do ONS medem o mesmo universo: a ANEEL inclui usinas fora do despacho do ONS, e as duas nunca são somadas. Que a micro e minigeração distribuída cadastrada
+      tenha fator de capacidade calculável aqui: a geração dela é estimada pelo ONS e a razão entre as duas não é publicada. Por que uma usina tem fator de capacidade baixo ou alto: o painel não
+      separa causas como entrada em operação no período, manutenção ou restrição pelo ONS.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["MWmed", "SIGA", "CEG", "ANEEL", "ONS"]}
-          rotulo="Geração · Capacidade e utilização"
+        <GeracaoNavegacao atual="p024" />
+        <CabecalhoModulo
+          siglas={["MWmed", "SIGA", "CEG", "ANEEL", "ONS"]}
+          rotulo="Geração"
           titulo={perguntaPainel("p024")}
+          lead="A potência das usinas despachadas pelo ONS, por fonte, e quanto cada fonte produziu em relação ao máximo que essa potência permitiria (o fator de capacidade)."
+          recorte={`Retrato de ${dataBR(c.retrato.data)} · fator de capacidade de ${periodo12} (12 meses completos) · usinas despachadas pelo ONS · MW e %`}
+          fonte={FONTE}
           referencia={
             <>
               {FONTE}: retrato de {dataBR(c.retrato.data)} e meses até {ultimoMes ? mesAno(ultimoMes) : "mês não publicado"}; {FONTE_ANEEL} e cadastro de micro e minigeração distribuída da ANEEL;
               processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <GeracaoDatas
+              itens={[
+                { rotulo: "Potência instalada (ONS)", texto: `retrato de ${dataBR(c.retrato.data)}`, natureza: "OBSERVADO" },
+                { rotulo: "Fator de capacidade", texto: `até ${ultimoMes ? mesAno(ultimoMes) : "mês não publicado"} (último mês completo)`, natureza: "CALCULADO" },
+                ...(siga?.data_referencia ? [{ rotulo: "Capacidade da ANEEL (SIGA)", texto: `retrato de ${dataBR(siga.data_referencia)}`, natureza: "OBSERVADO" as const }] : []),
+                ...(mmgd?.data_cadastro ? [{ rotulo: "MMGD cadastrada na ANEEL", texto: `cadastro de ${dataBR(mmgd.data_cadastro)}`, natureza: "OBSERVADO" as const }] : []),
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas colunas={3} rotulo="Potência instalada e fator de capacidade" nota="Universo: usinas despachadas pelo ONS em operação comercial; a micro e minigeração distribuída fica fora.">
+              <Numero
+                variante="faixa"
+                rotulo="Potência das usinas despachadas pelo ONS"
+                natureza="OBSERVADO"
+                evidencia={ev.capacidade_retrato_total}
+                casas={0}
+                periodo={`Retrato de ${dataBR(c.retrato.data)}`}
+                cor="var(--cor-energia)"
+                endereco={`${rotaPainel("p024")}#p024`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Fator de capacidade das eólicas"
+                natureza="CALCULADO"
+                evidencia={ev.capacidade_12m_fc_eolica}
+                formato="pct"
+                casas={1}
+                unidade="do máximo que a potência permitiria"
+                cor={COR_CATEGORIA.eolica}
+                endereco={`${rotaPainel("p024")}#p024`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Fator de capacidade da solar centralizada"
+                natureza="CALCULADO"
+                evidencia={ev.capacidade_12m_fc_solar_centralizada}
+                formato="pct"
+                casas={1}
+                unidade="do máximo que a potência permitiria"
+                cor={COR_CATEGORIA.solar_centralizada}
+                endereco={`${rotaPainel("p024")}#p024`}
+              />
+            </FaixaMetricas>
+          }
         >
           Potência instalada diz quanto as usinas podem entregar; o fator de capacidade diz quanto entregaram, dividindo a geração pela
           potência em operação comercial ao longo de cada mês, nunca pela capacidade final aplicada ao histórico. A capacidade fiscalizada pela ANEEL e a micro e minigeração
           distribuída aparecem ao lado, nas mesmas datas, sem serem somadas à potência do ONS.
         </CabecalhoModulo>
-        <GeracaoNavegacao atual="p024" />
         <ModoProfundidade>
           <Bloco id="capacidade">
             <PainelEvidencia
               id="p024"
-              pergunta={perguntaPainel("p024")}
+              pergunta="Potência instalada e fator de capacidade, fonte por fonte"
               subtitulo="Potência em operação comercial e fator de capacidade por fonte · MW e %"
               natureza="CALCULADO"
               porQueImporta={
@@ -117,21 +184,10 @@ export default function GeracaoCapacidadePage() {
                   o despacho. Comparar instalado e produzido evita ler crescimento de capacidade como crescimento de geração na mesma proporção.
                 </>
               }
-              oQueMudou={<>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "o fator de capacidade mensal")}</>}
-              comoInterpretar={
-                <>
-                  Fator de capacidade = geração do mês ÷ (potência em operação comercial média do mês × horas com dado), somado nos 12 meses como razão de energias, só nas usinas
-                  pareadas com a Capacidade Instalada do ONS. A cobertura diz quanto da geração da categoria entrou no pareamento. O retrato é a potência de {dataBR(c.retrato.data)};
-                  a série mensal usa a potência de cada mês.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Que a capacidade da ANEEL e a do ONS medem o mesmo universo: a ANEEL inclui usinas fora do despacho do ONS, e as duas nunca são somadas. Que a micro e
-                  minigeração distribuída cadastrada tenha fator de capacidade calculável aqui: a geração dela é estimada pelo ONS e a razão entre as duas não é publicada. Por
-                  que uma usina tem fator de capacidade baixo ou alto: o painel não separa causas como entrada em operação no período, manutenção ou restrição pelo ONS.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.capacidade!}
             >
               <div className="space-y-6">
@@ -139,6 +195,48 @@ export default function GeracaoCapacidadePage() {
                 <RespostaCurta id="p024" veredito={vereditoCapacidade(c) || respostaCapacidade(c)}>
                   {respostaCapacidade(c)}
                 </RespostaCurta>
+
+                <div className="grid gap-x-10 gap-y-6 lg:grid-cols-2">
+                  <GraficoBarras
+                    titulo={`Potência em operação comercial por fonte, usinas despachadas pelo ONS, ${dataBR(c.retrato.data)}`}
+                    dados={retrato.map((x) => ({ id: x.categoria, rotulo: CURTO_CATEGORIA[x.categoria], mw: x.mw }))}
+                    chaveCategoria="id"
+                    chaveRotulo="rotulo"
+                    series={[{ id: "mw", rotulo: "Potência em operação", cor: "var(--cor-energia)" }]}
+                    unidade="MW"
+                    casas={0}
+                    orientacao="horizontal"
+                    alturaCategoria={44}
+                    rotulosValor
+                  />
+                  <GraficoBarras
+                    titulo={`Fator de capacidade por fonte, ${periodo12}`}
+                    dados={fcNaOrdem.map((l) => ({ id: l.id, rotulo: l.categoria, painel: l.fc_pct }))}
+                    chaveCategoria="id"
+                    chaveRotulo="rotulo"
+                    series={[{ id: "painel", rotulo: "Fator de capacidade (potência em operação de cada mês)", cor: "var(--cor-energia)" }]}
+                    unidade="%"
+                    casas={1}
+                    orientacao="horizontal"
+                    alturaCategoria={44}
+                    rotulosValor
+                  />
+                </div>
+                <p className="text-xs leading-relaxed text-carvao-muted">
+                  As duas figuras seguem a mesma ordem de fontes, da maior para a menor potência instalada, para a leitura lado a lado.
+                  {linhas.some((l) => l.fc_ons_pct !== null) && (
+                    <>
+                      {" "}
+                      O ONS publica fator de capacidade só para eólica e solar:{" "}
+                      {linhas
+                        .filter((l) => l.fc_ons_pct !== null && l.fc_pct !== null)
+                        .map((l) => `${l.categoria.toLowerCase()} ${num(l.fc_ons_pct, 1)}% contra ${num(l.fc_pct, 1)}% do painel`)
+                        .join("; ")}{" "}
+                      nos mesmos 12 meses. A conferência mês a mês está no modo Analisar.
+                    </>
+                  )}
+                </p>
+
                 <GeracaoRecorte
                   periodo={`retrato de ${dataBR(c.retrato.data)}; fator de capacidade de ${periodo12} (12 meses completos); série mensal de ${mesAno(c.mensal.meses[0])} a ${ultimoMes ? mesAno(ultimoMes) : "mês não publicado"}`}
                   universo={
@@ -149,66 +247,7 @@ export default function GeracaoCapacidadePage() {
                   }
                   unidade="MW (potência), % (fator de capacidade e parcela), MWmed (geração estimada da MMGD)"
                 />
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <Numero rotulo="Potência das usinas despachadas pelo ONS" natureza="OBSERVADO" evidencia={ev.capacidade_retrato_total} casas={0} tamanho="medio" endereco={`${rotaPainel("p024")}#p024`} />
-                  <Numero
-                    rotulo={`Fator de capacidade das eólicas, ${periodo12}`}
-                    natureza="CALCULADO"
-                    evidencia={ev.capacidade_12m_fc_eolica}
-                    formato="pct"
-                    casas={1}
-                    unidade="%"
-                    tamanho="medio"
-                    cor={COR_CATEGORIA.eolica}
-                    endereco={`${rotaPainel("p024")}#p024`}
-                  />
-                  <Numero
-                    rotulo={`Fator de capacidade da solar centralizada, ${periodo12}`}
-                    natureza="CALCULADO"
-                    evidencia={ev.capacidade_12m_fc_solar_centralizada}
-                    formato="pct"
-                    casas={1}
-                    unidade="%"
-                    tamanho="medio"
-                    cor={COR_CATEGORIA.solar_centralizada}
-                    endereco={`${rotaPainel("p024")}#p024`}
-                  />
-                </div>
 
-                <GraficoBarras
-                  titulo={`Potência em operação comercial por fonte, usinas despachadas pelo ONS, ${dataBR(c.retrato.data)}`}
-                  dados={retrato.map((x) => ({ id: x.categoria, rotulo: CURTO_CATEGORIA[x.categoria], mw: x.mw }))}
-                  chaveCategoria="id"
-                  chaveRotulo="rotulo"
-                  series={[{ id: "mw", rotulo: "Potência em operação", cor: "var(--cor-energia)" }]}
-                  unidade="MW"
-                  casas={0}
-                  orientacao="horizontal"
-                  alturaCategoria={44}
-                  rotulosValor
-                />
-                <GraficoBarras
-                  titulo={`Fator de capacidade por fonte, ${periodo12}`}
-                  dados={fc12.map((l) => ({ id: l.id, rotulo: l.categoria, painel: l.fc_pct }))}
-                  chaveCategoria="id"
-                  chaveRotulo="rotulo"
-                  series={[{ id: "painel", rotulo: "Fator de capacidade (potência em operação de cada mês)", cor: "var(--cor-energia)" }]}
-                  unidade="%"
-                  casas={1}
-                  orientacao="horizontal"
-                  alturaCategoria={44}
-                  rotulosValor
-                />
-                {fc12.some((l) => l.fc_ons_pct !== null) && (
-                  <p className="text-xs leading-relaxed text-carvao-muted">
-                    O ONS publica fator de capacidade só para eólica e solar:{" "}
-                    {fc12
-                      .filter((l) => l.fc_ons_pct !== null)
-                      .map((l) => `${l.categoria.toLowerCase()} ${num(l.fc_ons_pct, 1)}% contra ${num(l.fc_pct, 1)}% do painel`)
-                      .join("; ")}{" "}
-                    nos mesmos 12 meses. A conferência mês a mês está no modo Analisar.
-                  </p>
-                )}
                 <TabelaInterativa
                   titulo="Tabela equivalente: potência, fator de capacidade e capacidade da ANEEL por categoria"
                   colunas={colunasCapacidade(c)}
@@ -222,15 +261,15 @@ export default function GeracaoCapacidadePage() {
                   nota={`A coluna da ANEEL (SIGA) é outro universo, ao lado para contexto: não é somada nem comparada usina a usina. ${(siga?.nota_temporal ?? "").replace(/\s*\(contexto\.siga_historico\)/, "")}`}
                 />
 
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+
                 {u && (
-                  <div className="space-y-4 border-t border-linha pt-5" id="distribuicao">
-                    <h3 className="font-serif text-lg text-carvao">Distribuição por usina do fator de capacidade, {periodo12}</h3>
+                  <SecaoDoPainel id="distribuicao" titulo={`Quanto o fator de capacidade varia entre as usinas, ${periodo12}?`}>
                     <GeracaoCapacidadeDistribuicao ultimos12m={u} fonte={FONTE} versao={versao} />
-                  </div>
+                  </SecaoDoPainel>
                 )}
 
-                <div className="space-y-4 border-t border-linha pt-5" id="capacidade-mensal">
-                  <h3 className="font-serif text-lg text-carvao">Mês a mês: fator de capacidade e potência em operação</h3>
+                <SecaoDoPainel id="capacidade-mensal" titulo="Como o fator de capacidade e a potência em operação evoluíram, mês a mês?">
                   <GraficoLinhas
                     chaveUrl="fcm"
                     titulo="Fator de capacidade mensal por fonte"
@@ -261,12 +300,12 @@ export default function GeracaoCapacidadePage() {
                     altura={260}
                   />
                   <GeracaoAviso>
-                    A potência de cada mês vem do retrato atual da Capacidade Instalada, pelas datas de entrada e saída de cada unidade: usinas que já deixaram o despacho
+                    A potência de cada mês vem do retrato da Capacidade Instalada de {dataBR(c.retrato.data)}, pelas datas de entrada e saída de cada unidade: usinas que já deixaram o despacho
                     centralizado não aparecem, e repotenciações antigas não são reconstituídas.
                   </GeracaoAviso>
-                </div>
+                </SecaoDoPainel>
 
-                <GeracaoAnalise id="contexto-capacidade" titulo="Conferência com o ONS, a capacidade da ANEEL e a micro e minigeração distribuída">
+                <SecaoDoPainel nivel="analisar" id="contexto-capacidade" titulo="Conferência com o ONS, a capacidade da ANEEL e a micro e minigeração distribuída">
                   <GraficoLinhas
                     titulo="Fator de capacidade das eólicas: o do painel e o publicado pelo ONS, mês a mês"
                     dados={linhasFcConferencia(c, "eolica")}
@@ -343,9 +382,9 @@ export default function GeracaoCapacidadePage() {
                       />
                     </>
                   )}
-                </GeracaoAnalise>
+                </SecaoDoPainel>
 
-                <GeracaoAuditoria id="pareamento" titulo="Pareamento de usinas e controles">
+                <SecaoDoPainel nivel="auditar" id="pareamento" titulo="Pareamento de usinas e controles">
                   <p className="text-sm leading-relaxed text-carvao-muted">{par.regra}</p>
                   <p className="text-sm leading-relaxed text-carvao-muted">
                     Usina-meses por forma de pareamento:{" "}
@@ -389,12 +428,12 @@ export default function GeracaoCapacidadePage() {
                       .
                     </p>
                   )}
-                </GeracaoAuditoria>
+                </SecaoDoPainel>
 
-                <GeracaoAuditoria id="regras-capacidade" titulo="Regras e limitações">
+                <SecaoDoPainel nivel="auditar" id="regras-capacidade" titulo="Regras e limitações">
                   <GeracaoRegras regras={[{ rotulo: ROTULO_REGRA.capacidade, texto: g.regras.capacidade }]} />
                   <GeracaoFrases itens={g.proveniencia.capacidade?.limitacoes ?? []} />
-                </GeracaoAuditoria>
+                </SecaoDoPainel>
 
                 <GeracaoSeguir ancora="p024" proximo={{ href: `${rotaPainel("p021")}#p021`, pergunta: perguntaPainel("p021") }} downloads={downloadsDoPainel(g.downloads, "p024")} />
               </div>

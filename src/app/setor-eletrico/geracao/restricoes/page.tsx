@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import {
-  GeracaoAnalise,
-  GeracaoAuditoria,
   GeracaoAviso,
+  GeracaoDatas,
   GeracaoFrases,
   GeracaoIndisponivel,
   GeracaoNavegacao,
@@ -15,9 +14,10 @@ import {
 } from "@/components/energia/GeracaoPagina";
 import { GeracaoRestricoes, GeracaoRestricoesAnalise, type RestricaoAnaliseCliente, type RestricaoCliente } from "@/components/energia/GeracaoRestricoes";
 import { Numero } from "@/components/energia/Numero";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
@@ -50,6 +50,8 @@ export const metadata: Metadata = {
 };
 
 const FONTE = "ONS, Restrição de Operação por Constrained-off de Usinas Eólicas e Fotovoltaicas";
+/** Cor de identificação de cada fonte na faixa de métricas (o marcador antes do rótulo, nunca a cor do texto). */
+const COR_FONTE: Record<FonteRestricao, string> = { eolica: "var(--serie-eolica)", solar: "var(--serie-solar)" };
 
 export default function GeracaoRestricoesPage() {
   const g = lerGold<GoldGeracaoDetalhe>("geracao_detalhe.json");
@@ -76,63 +78,106 @@ export default function GeracaoRestricoesPage() {
   const versao = ultimoMes ?? g.dia_referencia;
   const prov = fontes[0] === "eolica" ? g.proveniencia.restricao_eolica : g.proveniencia.restricao_solar;
   const provSolar = fontes[0] === "eolica" ? g.proveniencia.restricao_solar : undefined;
+  const u12 = principal.ultimos_12m;
+  const ultimoDia = principal.diario_recente.dias.at(-1) ?? g.dia_referencia;
 
-  const destaques = Object.fromEntries(
-    fontes.map((f) => [
-      f,
-      <div key={f} className="grid gap-4 sm:grid-cols-2">
-        <Numero
-          rotulo={`Energia não gerada por restrição, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}, 12 meses`}
-          natureza="ESTIMADO"
-          evidencia={ev[`restricao_${f}_12m_energia`]}
-          valor={ev[`restricao_${f}_12m_energia`]?.valor_calculo != null ? (ev[`restricao_${f}_12m_energia`]!.valor_calculo as number) / 1e3 : null}
-          unidade="GWh"
-          casas={0}
-          tamanho="medio"
-          cor={COR_RAZAO.ENE}
-          endereco={`${rotaPainel("p023")}#p023`}
-        />
-        <Numero
-          rotulo={`Taxa de restrição, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}, 12 meses`}
-          natureza="ESTIMADO"
-          evidencia={ev[`restricao_${f}_12m_taxa`]}
-          formato="pct"
-          casas={1}
-          unidade="%"
-          tamanho="medio"
-          cor={COR_RAZAO.CNF}
-          nota="Denominador: geração verificada mais a não gerada estimada, nas mesmas usinas e meses."
-          endereco={`${rotaPainel("p023")}#p023`}
-        />
-      </div>,
-    ]),
-  ) as Partial<Record<FonteRestricao, ReactNode>>;
+  const oQueMudou = <>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "as restrições de eólicas e fotovoltaicas")}</>;
+  const comoInterpretar = (
+    <>
+      Energia não gerada = geração de referência estimada pelo ONS menos a verificada, só nas meias horas em que o ONS limitou a usina. Taxa = não gerada ÷ (verificada + não gerada), nas mesmas
+      usinas e meses: é o denominador documentado, não a capacidade instalada. O maior corte simultâneo é a soma dos cortes de todas as usinas numa mesma meia hora; mede potência, não energia, e
+      não se soma ao longo do mês.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Que a usina estava indisponível ou que faltou vento ou sol: meia hora sem limitação do ONS não entra, mesmo que a usina tenha gerado abaixo da referência. Que a energia não gerada foi medida: a
+      referência é estimativa do ONS. Que a usina no mapa é o lugar onde o corte foi decidido: a marca é a usina afetada, não o ponto da rede que limitou. Que toda razão dá direito a compensação: pela
+      regra lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de indisponibilidade externa dá direito a <Termo slug="ess">ESS</Termo>, como diz o verbete{" "}
+      <Link href="/setor-eletrico/aprenda/constrained-off" className="text-energia-dark underline underline-offset-4">
+        Constrained-off
+      </Link>
+      ; alterações posteriores do ressarcimento não foram verificadas.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["SIN", "MMGD", "ONS", "ANEEL", "REN", "ESS", "IBGE"]}
-          rotulo="Geração · Renováveis restringidas"
+        <GeracaoNavegacao atual="p023" />
+        <CabecalhoModulo
+          siglas={["SIN", "MMGD", "ONS", "ANEEL", "REN", "ESS", "IBGE"]}
+          rotulo="Geração"
           titulo={perguntaPainel("p023")}
+          lead={
+            <>
+              A energia que usinas eólicas e fotovoltaicas deixaram de gerar por limitação do ONS (<Termo slug="constrained-off">constrained-off</Termo>), estimada sobre a geração de referência, e o maior
+              corte simultâneo em MW.
+            </>
+          }
+          recorte={u12 ? `${mesAno(u12.inicio)} a ${mesAno(u12.fim)} (12 meses completos) · eólicas e fotovoltaicas despachadas ou programadas pelo ONS · GWh, % e MW` : undefined}
+          fonte={FONTE}
           referencia={
             <>
-              {FONTE}, até {ultimoMes ? mesAno(ultimoMes) : "mês não publicado"} (último mês completo) e dias até {dataBR(principal.diario_recente.dias.at(-1) ?? g.dia_referencia)}; processado em{" "}
-              {carimbo(g.gerado_em)}.
+              {FONTE}, até {ultimoMes ? mesAno(ultimoMes) : "mês não publicado"} (último mês completo) e dias até {dataBR(ultimoDia)}; processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <GeracaoDatas
+              itens={[
+                { rotulo: "Energia não gerada, por mês", texto: `até ${ultimoMes ? mesAno(ultimoMes) : "mês não publicado"} (último mês completo)`, natureza: "ESTIMADO" },
+                { rotulo: "Energia não gerada, por dia", texto: `até ${dataBR(ultimoDia)}`, natureza: "ESTIMADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={fontes.length > 1 ? 4 : 2}
+              rotulo="Energia não gerada e taxa de restrição, 12 meses completos"
+              nota="Denominador: geração verificada mais a não gerada estimada, nas mesmas usinas e meses. A energia não gerada e a taxa são estimativas do ONS, não medição."
+            >
+              {fontes.flatMap((f) => {
+                const energia = ev[`restricao_${f}_12m_energia`];
+                return [
+                  <Numero
+                    key={`${f}-energia`}
+                    variante="faixa"
+                    rotulo={`Energia não gerada, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}`}
+                    natureza="ESTIMADO"
+                    evidencia={energia}
+                    valor={energia?.valor_calculo != null ? (energia.valor_calculo as number) / 1e3 : null}
+                    unidade="GWh"
+                    casas={0}
+                    cor={COR_FONTE[f]}
+                    endereco={`${rotaPainel("p023")}#p023`}
+                  />,
+                  <Numero
+                    key={`${f}-taxa`}
+                    variante="faixa"
+                    rotulo={`Taxa de restrição, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}`}
+                    natureza="ESTIMADO"
+                    evidencia={ev[`restricao_${f}_12m_taxa`]}
+                    formato="pct"
+                    casas={1}
+                    cor={COR_FONTE[f]}
+                    endereco={`${rotaPainel("p023")}#p023`}
+                  />,
+                ];
+              })}
+            </FaixaMetricas>
           }
         >
           O ONS limita a geração de usinas eólicas e fotovoltaicas (o que ele chama de <Termo slug="constrained-off">constrained-off</Termo>) e registra a razão de cada limitação em quatro códigos oficiais: elétrica (indisponibilidade externa),
           confiabilidade, energética e parecer de acesso. Este painel estima quanto deixou de ser gerado nessas limitações e separa duas grandezas que costumam ser confundidas:
           a energia não gerada ao longo do tempo (GWh) e o maior corte simultâneo num instante (MW). Restrição não é indisponibilidade da usina nem falta de vento ou de sol.
         </CabecalhoModulo>
-        <GeracaoNavegacao atual="p023" />
         <ModoProfundidade>
           <Bloco id="restricoes">
             <PainelEvidencia
               id="p023"
-              pergunta={perguntaPainel("p023")}
+              pergunta="Energia não gerada por razão oficial do ONS"
               subtitulo="Energia não gerada por restrição do ONS · GWh, % da geração possível e MW"
               natureza="ESTIMADO"
               porQueImporta={
@@ -141,41 +186,31 @@ export default function GeracaoRestricoesPage() {
                   prevaleceu em cada caso. Com a expansão dessas fontes, a parcela restringida é um dado central para quem acompanha a operação e o planejamento.
                 </>
               }
-              oQueMudou={<>{textoSemComparacaoMensal(ultimoMes, g.gerado_em, "as restrições de eólicas e fotovoltaicas")}</>}
-              comoInterpretar={
-                <>
-                  Energia não gerada = geração de referência estimada pelo ONS menos a verificada, só nas meias horas em que o ONS limitou a usina. Taxa = não gerada ÷
-                  (verificada + não gerada), nas mesmas usinas e meses: é o denominador documentado, não a capacidade instalada. O maior corte simultâneo é a soma dos cortes de
-                  todas as usinas numa mesma meia hora; mede potência, não energia, e não se soma ao longo do mês.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Que a usina estava indisponível ou que faltou vento ou sol: meia hora sem limitação do ONS não entra, mesmo que a usina tenha gerado abaixo da referência. Que
-                  a energia não gerada foi medida: a referência é estimativa do ONS. Que a usina no mapa é o lugar onde o corte foi decidido: a marca é a usina afetada, não o
-                  ponto da rede que limitou. Que toda razão dá direito a compensação: pela regra lida (REN ANEEL nº 1.030/2022, em cópia de 08/01/2025), só a razão de
-                  indisponibilidade externa dá direito a <Termo slug="ess">ESS</Termo>, como diz o verbete{" "}
-                  <Link href="/setor-eletrico/aprenda/constrained-off" className="text-energia-dark underline underline-offset-4">
-                    Constrained-off
-                  </Link>
-                  ; alterações posteriores do ressarcimento não foram verificadas.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={prov!}
               complementares={provSolar ? [{ rotulo: "Restrições das fotovoltaicas", p: provSolar }] : []}
             >
               <div className="space-y-6">
                 {atual.defasada && <GeracaoAviso tipo="alerta">{atual.texto}</GeracaoAviso>}
-                <GeracaoRestricoes restricoes={painel} fonte={FONTE} versao={versao} destaques={destaques} rotulosRazao={Object.fromEntries(g.razoes.map((z) => [z.id, z.rotulo]))} />
+                <GeracaoRestricoes
+                  restricoes={painel}
+                  fonte={FONTE}
+                  versao={versao}
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  rotulosRazao={Object.fromEntries(g.razoes.map((z) => [z.id, z.rotulo]))}
+                />
 
-                <GeracaoAnalise id="analise-restricoes" titulo="Razões, origem, subsistemas, os últimos dias e o detalhamento publicado pelo ONS">
+                <SecaoDoPainel nivel="analisar" id="analise-restricoes" titulo="Razões, origem, subsistemas, os últimos dias e o detalhamento publicado pelo ONS">
                   <GeracaoRestricoesAnalise restricoes={analise} fonte={FONTE} versao={versao} />
-                </GeracaoAnalise>
+                </SecaoDoPainel>
 
                 {fontes.map((f) => {
                   const r = restricoes[f]!;
                   return (
-                    <GeracaoAuditoria key={f} id={`auditoria-${f}`} titulo={`${NOME_FONTE_RESTRICAO[f]}: controles da importação e conferência com o detalhamento por usina`}>
+                    <SecaoDoPainel nivel="auditar" key={f} id={`auditoria-${f}`} titulo={`${NOME_FONTE_RESTRICAO[f]}: controles da importação e conferência com o detalhamento por usina`}>
                       <GeracaoFrases itens={textoControlesRestricao(r)} />
                       <p className="text-sm text-carvao-muted">
                         Campo GNRa (geração não realizada apurada) presente em {num(r.gnra.meses_com_campo, 0)} meses desde{" "}
@@ -196,11 +231,11 @@ export default function GeracaoRestricoesPage() {
                           nota="O ONS publica o detalhamento por usina só para os meses mais recentes; a diferença compara as mesmas usinas e conjuntos nos dois arquivos."
                         />
                       )}
-                    </GeracaoAuditoria>
+                    </SecaoDoPainel>
                   );
                 })}
 
-                <GeracaoAuditoria id="regras-restricao" titulo="Regras e limitações">
+                <SecaoDoPainel nivel="auditar" id="regras-restricao" titulo="Regras e limitações">
                   <GeracaoRegras regras={[{ rotulo: ROTULO_REGRA.restricao, texto: g.regras.restricao }]} />
                   <GeracaoFrases itens={[...(g.proveniencia.restricao_eolica?.limitacoes ?? []), ...(g.proveniencia.restricao_solar?.limitacoes ?? []).filter((x) => !(g.proveniencia.restricao_eolica?.limitacoes ?? []).includes(x))]} />
                   <ul className="space-y-1 text-sm text-carvao-muted">
@@ -213,7 +248,7 @@ export default function GeracaoRestricoesPage() {
                   {restricoes.solar && (
                     <p className="text-sm text-carvao-muted">A série das fotovoltaicas começa em {mesAno(restricoes.solar.primeiro_mes)}: antes disso o ONS não publicava o conjunto.</p>
                   )}
-                </GeracaoAuditoria>
+                </SecaoDoPainel>
 
                 <GeracaoSeguir ancora="p023" proximo={{ href: `${rotaPainel("p024")}#p024`, pergunta: perguntaPainel("p024") }} downloads={downloadsDoPainel(g.downloads, "p023")} />
               </div>

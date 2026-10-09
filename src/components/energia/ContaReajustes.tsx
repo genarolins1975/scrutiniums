@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { ContaEscolha } from "@/components/energia/ContaControles";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -57,9 +57,11 @@ export type ContaReajustesProps = {
   ultimos: UltimoEvento[];
   dataReferencia: string;
   fonte: string;
+  /** Medida de destaque do painel (a variação mediana em 12 meses, com a ficha de prova), logo depois do gráfico. */
+  destaque?: ReactNode;
 };
 
-export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: ContaReajustesProps) {
+export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, destaque: medida }: ContaReajustesProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const janela = janelas.find((j) => String(j.meses) === v.janela) ?? janelas[0];
   const linhas = useMemo(() => (janela ? linhasJanela(janela) : []), [janela]);
@@ -68,6 +70,17 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
     if (id) definir({ dist: destacar(v.dist, id) });
     else if (destaque) definir({ dist: remover(v.dist, destaque) });
   };
+  // a lista mostra só parte das barras (rola dentro da caixa): a distribuidora que veio do link ou da outra página entra na parte visível
+  const lista = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!destaque) return;
+    const area = lista.current?.querySelector<HTMLElement>("[data-rolagem]");
+    const barra = area?.querySelector<SVGGElement>(`g[data-id="${destaque}"]`);
+    if (!area || !barra) return;
+    const a = area.getBoundingClientRect();
+    const b = barra.getBoundingClientRect();
+    if (b.top < a.top || b.bottom > a.bottom) area.scrollTop += b.top - a.top - (a.height - b.height) / 2;
+  }, [destaque, v.janela]);
   const ultimasLinhas = useMemo(
     () =>
       ultimos.map((u) => ({
@@ -98,43 +111,49 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
 
   return (
     <div className="space-y-5">
-      <ContaEscolha
-        legenda="Janela de comparação"
-        opcoes={janelas.map((j) => ({ id: String(j.meses) as "12" | "60" | "120", rotulo: `${j.meses} meses` }))}
-        valor={v.janela}
-        onEscolher={(id) => definir({ janela: id })}
-      />
-
-      <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela)}>
-        {respostaReajustes(janela)}
-      </RespostaCurta>
+      <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela)}>
+          {respostaReajustes(janela)}
+        </RespostaCurta>
+        <ContaEscolha
+          emLinha
+          legenda="Janela de comparação"
+          opcoes={janelas.map((j) => ({ id: String(j.meses) as "12" | "60" | "120", rotulo: `${j.meses} meses` }))}
+          valor={v.janela}
+          onEscolher={(id) => definir({ janela: id })}
+        />
+      </div>
 
       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="ordem-ranking">
         A lista começa pelas menores variações e segue até a maior ({linhas.length} no total). As primeiras barras ficam à esquerda do IPCA e da mediana: {janela.abaixo_ou_igual_ipca} distribuidoras
         ficaram abaixo da inflação ou iguais a ela, e {janela.acima_ipca} ficaram acima. Role a lista ou use &quot;Mostrar todas&quot; para ver as que ficaram acima.
       </p>
 
-      <GraficoBarras
-        titulo={`Variação da tarifa B1 residencial de ${dataBR(janela.de)} a ${dataBR(janela.ate)}, por distribuidora, com o IPCA do período`}
-        dados={linhas}
-        chaveCategoria="id"
-        chaveRotulo="sigla"
-        series={[
-          {
-            id: "variacao",
-            rotulo: "Variação da tarifa B1",
-            cor: "var(--cor-energia)",
-          },
-        ]}
-        unidade="%"
-        casas={2}
-        orientacao="horizontal"
-        referencias={refs}
-        selecionado={destaque}
-        onSelecionar={selecionar}
-        alturaCategoria={44}
-        alturaMaxima={520}
-      />
+      <div ref={lista}>
+        <GraficoBarras
+          titulo={`Variação da tarifa B1 residencial de ${dataBR(janela.de)} a ${dataBR(janela.ate)}, por distribuidora, com o IPCA do período`}
+          dados={linhas}
+          chaveCategoria="id"
+          chaveRotulo="sigla"
+          series={[
+            {
+              id: "variacao",
+              rotulo: "Variação da tarifa B1",
+              cor: "var(--cor-energia)",
+            },
+          ]}
+          unidade="%"
+          casas={2}
+          orientacao="horizontal"
+          referencias={refs}
+          selecionado={destaque}
+          onSelecionar={selecionar}
+          alturaCategoria={44}
+          alturaMaxima={520}
+        />
+      </div>
+
+      {medida}
 
       {(janela.excluidas_mudanca_perimetro.length > 0 || janela.excluidas_sem_tarifa_nas_duas_datas > 0) && (
         <div className="text-sm text-carvao-muted">

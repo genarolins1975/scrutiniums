@@ -5,7 +5,6 @@ import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
 import { ContaReajustes } from "@/components/energia/ContaReajustes";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -204,7 +203,7 @@ export default function ContaReajustesPage() {
           siglas={["REH", "PLD", "SIN", "TUSD", "TE", "ANEEL", "IPCA", "CDE", "SCEE"]}
           rotulo="Conta de luz"
           titulo="O que mudou e quem financia os benefícios?"
-          lead="Três leituras separadas: a variação da tarifa B1 de cada distribuidora diante da inflação (IPCA), os meses em que a bandeira teve acréscimo e quem custeia, pela CDE, os descontos tarifários e a Tarifa Social."
+          lead="A variação da tarifa B1 diante da inflação (IPCA), as bandeiras com acréscimo e quem custeia os descontos tarifários e a Tarifa Social pela CDE."
           recorte={`Variação até ${dataBR(janela12?.ate ?? ref)} · bandeiras até ${mesBandeira ?? "o último mês publicado"} · subsídios de ${sub.ultimo_ano_completo ?? "sem ano completo"} · orçamento da CDE de ${cde?.ultimo_ano ?? "sem dado"}`}
           fonte="ANEEL e IBGE"
           referencia={
@@ -224,58 +223,6 @@ export default function ContaReajustesPage() {
                 { rotulo: "Orçamento da CDE", texto: cde ? `de ${cde.ultimo_ano}` : "sem dado nesta publicação", natureza: "PREVISTO" },
               ]}
             />
-          }
-          metricas={
-            <FaixaMetricas colunas={4} rotulo="Indicadores de reajustes, bandeira e subsídios">
-              <Numero
-                variante="faixa"
-                rotulo="Variação mediana da tarifa B1 em 12 meses"
-                natureza="CALCULADO"
-                valor={janela12?.mediana_pct ?? null}
-                formato="pct"
-                casas={2}
-                evidencia={reaj.evidencia}
-                motivoAusencia="Sem IPCA ou sem tarifa nas duas datas da janela."
-                nota={janela12 ? `${janela12.n} distribuidoras. IPCA no mesmo período: ${pct(janela12.ipca_pct, 2)}.` : undefined}
-                endereco={`${ROTA_REAJUSTES}#reajustes`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={`Adicional de ${band.vigente?.bandeira ? minuscula(band.vigente.bandeira) : "bandeira"} em ${mesBandeira ?? "mês não publicado"}`}
-                natureza="OBSERVADO"
-                valor={adicionalVigente === null ? null : adicionalVigente / 1000}
-                formato="reais"
-                casas={5}
-                unidade="R$/kWh"
-                evidencia={band.evidencia}
-                nota={adicionalVigente !== null ? `${num(adicionalVigente, 2)} R$/MWh no arquivo da ANEEL, dividido por 1000.` : undefined}
-                endereco={`${ROTA_REAJUSTES}#bandeiras`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={`Subsídios tarifários em ${sub.ultimo_ano_completo ?? "último ano"}`}
-                natureza="CALCULADO"
-                valor={sub.evidencia && sub.evidencia.valor_calculo !== null ? sub.evidencia.valor_calculo / 1e9 : null}
-                formato="reais"
-                casas={1}
-                unidade="bilhões"
-                evidencia={sub.evidencia}
-                motivoAusencia="Sem ano completo publicado."
-                endereco={`${ROTA_REAJUSTES}#subsidios`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={`Quotas nas receitas da CDE ${cde?.ultimo_ano ?? ""}`.trim()}
-                natureza="PREVISTO"
-                valor={cde?.evidencia?.valor_calculo ?? null}
-                formato="pct"
-                casas={1}
-                evidencia={cde?.evidencia ?? null}
-                motivoAusencia="Orçamento não publicado."
-                nota="Orçamento aprovado ou previsto pela ANEEL, não execução."
-                endereco={`${ROTA_REAJUSTES}#subsidios`}
-              />
-            </FaixaMetricas>
           }
         >
           Três leituras separadas, com fontes e naturezas diferentes: quanto a tarifa B1 de cada distribuidora mudou diante da inflação, quando a bandeira encareceu a conta e quem
@@ -308,7 +255,28 @@ export default function ContaReajustesPage() {
               complementares={[{ rotulo: "IPCA (IBGE)", p: reaj.proveniencia_ipca }]}
             >
               <div className="space-y-6">
-                <ContaReajustes janelas={reaj.comparacao_inflacao?.janelas ?? []} ultimos={reaj.ultimos} dataReferencia={ref} fonte={FONTE_TARIFAS} />
+                <ContaReajustes
+                  janelas={reaj.comparacao_inflacao?.janelas ?? []}
+                  ultimos={reaj.ultimos}
+                  dataReferencia={ref}
+                  fonte={FONTE_TARIFAS}
+                  destaque={
+                    <div className="max-w-md border-t border-linha pt-4">
+                      <Numero
+                        variante="faixa"
+                        rotulo="Variação mediana da tarifa B1 em 12 meses"
+                        natureza="CALCULADO"
+                        valor={janela12?.mediana_pct ?? null}
+                        formato="pct"
+                        casas={2}
+                        evidencia={reaj.evidencia}
+                        motivoAusencia="Sem IPCA ou sem tarifa nas duas datas da janela."
+                        nota={janela12 ? `${janela12.n} distribuidoras. IPCA no mesmo período: ${pct(janela12.ipca_pct, 2)}.` : undefined}
+                        endereco={`${ROTA_REAJUSTES}#reajustes`}
+                      />
+                    </div>
+                  }
+                />
                 <Recorte
                   periodo={
                     <>
@@ -384,19 +352,33 @@ export default function ContaReajustesPage() {
                 </RespostaCurta>
                 <div className="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
                   <ContaBandeiras acionamento={band.acionamento} />
-                  <table className="h-fit w-full border-collapse text-sm tabular-nums">
-                    <caption className="text-left text-xs text-mineral">Patamares vigentes na data{mesBandeira ? ` (${mesBandeira})` : ""}</caption>
-                    <tbody>
-                      {band.patamares.map((p) => (
-                        <tr key={p.bandeira} className="border-b border-linha">
-                          <th scope="row" className="py-1.5 pr-2 text-left font-normal text-carvao">
-                            {p.bandeira}
-                          </th>
-                          <td className="py-1.5 text-right">{p.rs_kwh === null ? "sem valor" : p.rs_kwh === 0 ? "sem acréscimo" : `${reais(p.rs_kwh, 5)}/kWh`}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="min-w-0 space-y-4">
+                    <Numero
+                      variante="faixa"
+                      rotulo={`Adicional de ${band.vigente?.bandeira ? minuscula(band.vigente.bandeira) : "bandeira"} em ${mesBandeira ?? "mês não publicado"}`}
+                      natureza="OBSERVADO"
+                      valor={adicionalVigente === null ? null : adicionalVigente / 1000}
+                      formato="reais"
+                      casas={5}
+                      unidade="R$/kWh"
+                      evidencia={band.evidencia}
+                      nota={adicionalVigente !== null ? `${num(adicionalVigente, 2)} R$/MWh no arquivo da ANEEL, dividido por 1000.` : undefined}
+                      endereco={`${ROTA_REAJUSTES}#bandeiras`}
+                    />
+                    <table className="h-fit w-full border-collapse text-sm tabular-nums">
+                      <caption className="text-left text-xs text-mineral">Patamares vigentes na data{mesBandeira ? ` (${mesBandeira})` : ""}</caption>
+                      <tbody>
+                        {band.patamares.map((p) => (
+                          <tr key={p.bandeira} className="border-b border-linha">
+                            <th scope="row" className="py-1.5 pr-2 text-left font-normal text-carvao">
+                              {p.bandeira}
+                            </th>
+                            <td className="py-1.5 text-right">{p.rs_kwh === null ? "sem valor" : p.rs_kwh === 0 ? "sem acréscimo" : `${reais(p.rs_kwh, 5)}/kWh`}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <Recorte
                   periodo={
@@ -506,9 +488,39 @@ export default function ContaReajustesPage() {
               complementares={cde?.proveniencia ? [{ rotulo: "Orçamento da CDE", p: cde.proveniencia }] : []}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p050-subsidios" veredito={vereditoSubsidios(sub)}>
-                  {respostaSubsidios(sub)} {respostaCde(cde)}
-                </RespostaCurta>
+                <div className="grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-start">
+                  <RespostaCurta id="p050-subsidios" veredito={vereditoSubsidios(sub)}>
+                    {respostaSubsidios(sub)} {respostaCde(cde)}
+                  </RespostaCurta>
+                  <div className="space-y-4">
+                    <Numero
+                      variante="faixa"
+                      rotulo={`Subsídios tarifários em ${sub.ultimo_ano_completo ?? "último ano"}`}
+                      natureza="CALCULADO"
+                      valor={sub.evidencia && sub.evidencia.valor_calculo !== null ? sub.evidencia.valor_calculo / 1e9 : null}
+                      formato="reais"
+                      casas={1}
+                      unidade="bilhões"
+                      evidencia={sub.evidencia}
+                      motivoAusencia="Sem ano completo publicado."
+                      endereco={`${ROTA_REAJUSTES}#subsidios`}
+                    />
+                    <div className="border-t border-linha pt-4">
+                      <Numero
+                        variante="faixa"
+                        rotulo={`Quotas nas receitas da CDE ${cde?.ultimo_ano ?? ""}`.trim()}
+                        natureza="PREVISTO"
+                        valor={cde?.evidencia?.valor_calculo ?? null}
+                        formato="pct"
+                        casas={1}
+                        evidencia={cde?.evidencia ?? null}
+                        motivoAusencia="Orçamento não publicado."
+                        nota="Orçamento aprovado ou previsto pela ANEEL, não execução."
+                        endereco={`${ROTA_REAJUSTES}#subsidios`}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <GraficoBarras
                   titulo="Subsídios tarifários homologados por categoria e ano (repasses da CDE às distribuidoras)"
                   dados={linhasSub}

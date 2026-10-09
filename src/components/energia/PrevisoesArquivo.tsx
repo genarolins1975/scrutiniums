@@ -86,7 +86,6 @@ export function PrevisoesArquivo({
       <RespostaCurta id="p015" vivo veredito={vereditoP015(noDia, v.em, total)}>
         <span data-recorte={v.em || "tudo"}>{respostaP015(noDia, v.em, total)}</span>
       </RespostaCurta>
-      {recorte}
       <div className="flex flex-wrap items-end gap-4">
         <label className="flex flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Ver o arquivo como estava ao fim de</span>
@@ -168,6 +167,7 @@ export function PrevisoesArquivo({
         </SecaoDoPainel>
       )}
 
+      {recorte}
       {notas}
 
       <TabelaInterativa

@@ -140,7 +140,7 @@ export default function CoberturaPage() {
             <PainelEvidencia
               id="p060"
               pergunta="Faturas por 100 famílias do Cadastro Único, UF a UF"
-              subtitulo="Numerador: faturas com Tarifa Social · denominador: famílias com renda por pessoa até ½ salário mínimo, com cadastro atualizado ou todas as cadastradas · mesmo mês · proxy"
+              subtitulo="Numerador: faturas com Tarifa Social · denominador: famílias do Cadastro Único até ½ salário mínimo · proxy"
               natureza="CALCULADO"
               porQueImporta={
                 <>

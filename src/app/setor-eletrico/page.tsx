@@ -219,13 +219,13 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
             </Link>
           ))}
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <span className="rotulo text-mineral">Conceitos</span>
-          {conceitos}
-        </div>
         <details className="group">
-          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4 hover:text-carvao">Explicação do elo</summary>
-          <p className="pb-1">{no.explicacao}</p>
+          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4 hover:text-carvao">Explicação e conceitos do elo</summary>
+          <p>{no.explicacao}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 pb-1">
+            <span className="rotulo text-mineral">Conceitos</span>
+            {conceitos}
+          </div>
         </details>
       </>
     );
@@ -294,7 +294,7 @@ function CartaoDestino({ d }: { d: DestinoNavegacao }) {
   if (!c) return null;
   return (
     <article className="flex flex-col border border-linha bg-superficie p-5">
-      <h4 className="font-serif text-lg leading-snug text-carvao">{d.rotulo}</h4>
+      <h5 className="font-serif text-lg leading-snug text-carvao">{d.rotulo}</h5>
       <p className="mt-2 font-medium leading-snug text-carvao">{d.pergunta}</p>
       <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
         <span className="text-carvao">Para que serve:</span> {c.utilidade}
@@ -358,9 +358,9 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
       <span className="mt-0.5 block text-sm leading-snug text-carvao-muted">{d.pergunta}</span>
     </>
   );
-  if (estado === "preparacao") return <div className="py-2.5">{corpo}</div>;
+  if (estado === "preparacao") return <div className="py-2">{corpo}</div>;
   return (
-    <Link href={d.href} className="group block py-2.5">
+    <Link href={d.href} className="group block py-2">
       {corpo}
     </Link>
   );
@@ -446,36 +446,42 @@ type EscolhasDistribuidora = ReturnType<typeof escolhasDeDistribuidora>;
 
 /** Uma das seis perguntas: a pergunta, a medida de abertura e o caminho para a página que aprofunda (com "sua distribuidora" em perdas e qualidade). */
 function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaPrioritaria; sinal: SinalHome; escolhas: EscolhasDistribuidora }) {
-  const termo = CARTOES[p.slug]?.conceito;
+  const c = CARTOES[p.slug]?.conceito;
   const comEscolha =
     p.porDistribuidora === "perdas" ? escolhas.opcoesPerdas.length > 0 : p.porDistribuidora === "qualidade" ? escolhas.opcoesQualidade.length > 0 : false;
+  const termo = c && (
+    <span className="text-sm text-carvao">
+      <Termo slug={c.slug} alvo>
+        {c.rotulo}
+      </Termo>
+    </span>
+  );
   return (
     <article aria-labelledby={`pergunta-${p.id}`} className="min-w-0 border-t border-linha pb-2 pt-4" data-sinal={p.id} data-estado={sinal.estado}>
       <h3 id={`pergunta-${p.id}`} className="ed-h3 font-serif text-carvao lg:min-h-[2.5rem]">
         {p.pergunta}
       </h3>
       {sinal.estado === "disponivel" ? <MedidaDisponivel s={sinal} /> : <MedidaAusente s={sinal} />}
-      {termo && (
-        <p className="mt-1 text-sm text-carvao">
-          <Termo slug={termo.slug} alvo>
-            {termo.rotulo}
-          </Termo>
-        </p>
-      )}
-      <div className="pt-1">
-        {comEscolha && p.porDistribuidora === "perdas" ? (
-          <EscolhaDistribuidora opcoes={escolhas.opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={escolhas.anoPerdas} />
-        ) : comEscolha && p.porDistribuidora === "qualidade" ? (
-          <EscolhaDistribuidora opcoes={escolhas.opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" ano={escolhas.anoQualidade} />
-        ) : (
+      {comEscolha ? (
+        <>
+          {p.porDistribuidora === "perdas" ? (
+            <EscolhaDistribuidora opcoes={escolhas.opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" ano={escolhas.anoPerdas} />
+          ) : (
+            <EscolhaDistribuidora opcoes={escolhas.opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" ano={escolhas.anoQualidade} />
+          )}
+          <p>{termo}</p>
+        </>
+      ) : (
+        <div className="mt-1 flex flex-wrap items-center gap-x-6">
           <Link href={p.link.href} className={`rotulo ${link}`}>
             {p.link.rotulo}
             <span aria-hidden="true" className="ml-1.5">
               →
             </span>
           </Link>
-        )}
-      </div>
+          {termo}
+        </div>
+      )}
     </article>
   );
 }
@@ -671,7 +677,7 @@ export default function MapaDoObservatorio() {
                   if (!ds.length) return null;
                   return (
                     <div key={g.id}>
-                      <h3 className="font-serif text-xl text-carvao">{g.rotulo}</h3>
+                      <h4 className="font-serif text-xl text-carvao">{g.rotulo}</h4>
                       <p className="mt-1 text-sm text-carvao-muted">{g.resumo}</p>
                       <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {ds.map((d) => (
@@ -702,12 +708,14 @@ export default function MapaDoObservatorio() {
               faixas={ORDEM_FAIXAS.map((f) => ({ texto: FAIXAS_MAPA[f].rotulo, ...ROTULOS_FAIXA[f] }))}
             />
           </div>
-          {/* versão em texto: é o mapa no celular; no desktop fica para o leitor de tela, que não usa o desenho */}
-          <div className="md:sr-only">
+          {/* versão em texto: é o mapa no celular. No desktop ela some (display: none), porque cópia só para o leitor de tela deixava dezenas de paradas de Tab
+              em links e resumos invisíveis; lá o leitor de tela e o teclado usam os sete botões e o painel do elo, que trazem o mesmo conteúdo */}
+          <div className="md:hidden">
             <h3 className="mb-3 font-serif text-lg text-carvao">O mapa em texto</h3>
-            <p className="mb-4 text-sm leading-relaxed text-carvao-muted">
+            <p className="mb-2 text-sm leading-relaxed text-carvao-muted">
               Tipos de ligação: <TiposDeLigacao />
             </p>
+            <p className="mb-4 text-sm leading-relaxed text-carvao-muted">Cada ligação aparece uma vez, no elo de onde ela parte; o tipo vem antes do texto.</p>
             <MapaEmTexto />
           </div>
           <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
@@ -725,7 +733,7 @@ export default function MapaDoObservatorio() {
                 {TRANSVERSAIS.map((t) => (
                   <li key={t.titulo} className="border-t border-linha pt-2 text-sm">
                     <p className="font-serif text-base text-carvao">{t.titulo}</p>
-                    <p className="mt-1 leading-relaxed text-carvao-muted">{t.texto}</p>
+                    <p className="mt-0.5 leading-snug text-carvao-muted">{t.texto}</p>
                     <p className="flex flex-wrap gap-x-4">
                       {t.destinos.map((s) => (
                         <Link key={s} href={destino(s).href} className={link}>
@@ -749,7 +757,7 @@ export default function MapaDoObservatorio() {
                   {t.perfil}
                 </h3>
                 <p className="mt-1 text-sm leading-snug text-carvao-muted">{t.para}</p>
-                <p className="mt-1 text-xs text-mineral">Leitura estimada: cerca de {t.minutos} minutos (estimativa editorial).</p>
+                <p className="mt-1 text-xs text-mineral">Leitura estimada: cerca de {t.minutos} min (estimativa editorial).</p>
                 <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm marker:text-mineral">
                   {t.paradas.map((s) => (
                     <li key={`${t.id}-${s.href}-${s.rotulo}`}>

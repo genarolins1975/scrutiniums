@@ -159,6 +159,10 @@ describe("texto das células", () => {
     expect(textoCelula(null, colunas[2])).toBe("sem dado");
     expect(textoCelula("2025-12-31", colunas[4])).toBe("31/12/2025");
     expect(textoCelula("2025-12", colunas[4])).toBe("12/2025");
+    // o arquivo tira o ruído do ponto flutuante de um decimal curto, mas guarda inteiros os valores que usam todos os algarismos
+    const col: ColunaTabela[] = [{ id: "v", rotulo: "Valor", tipo: "numero", casas: 2 }];
+    const valores = [22.189999999999998, 15.950000000000001, 0.1 + 0.2, 1234567.891, 1 / 3, 200 / 3];
+    expect(gerarCsv(col, valores.map((v) => ({ v })), { bom: false })).toBe(`Valor\r\n22.19\r\n15.95\r\n0.3\r\n1234567.891\r\n${1 / 3}\r\n${200 / 3}\r\n`);
     // ano civil em coluna numérica não leva separador de milhar; contagem de anos e valores comuns continuam com ele
     const ano: ColunaTabela = { id: "ano", rotulo: "Ano", tipo: "numero", casas: 0 };
     expect(textoCelula(2026, ano)).toBe("2026");

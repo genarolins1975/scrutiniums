@@ -44,14 +44,14 @@ export function PrevisoesReexecucao({
           </thead>
           <tbody>
             {submercados.map((sm) => (
-              <tr key={sm} className="border-b border-linha align-top">
-                <th scope="row" className="px-2 py-2 text-left font-normal text-carvao first:pl-0">
+              <tr key={sm} className="border-b border-linha align-middle">
+                <th scope="row" className="px-2 py-1 text-left font-normal text-carvao first:pl-0">
                   {sm}
                 </th>
                 {(["semanal", "mensal"] as const).map((freq) => {
                   const r = celula(sm, freq);
                   return (
-                    <td key={freq} className="px-2 py-2 tabular-nums" data-reexec={r?.id}>
+                    <td key={freq} className="px-2 py-1 tabular-nums" data-reexec={r?.id}>
                       {r ? (
                         <>
                           {evidencias[r.id] ? <ComproveNumero variante="valor" evidencia={evidencias[r.id]} endereco={endereco} /> : "sem prova"}

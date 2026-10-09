@@ -27,7 +27,7 @@
  * nem garantia física), km é extensão de circuito ou de traçado, MVA é transformação,
  * R$ é dinheiro nominal: campos separados, nunca somados nem divididos entre si.
  */
-import type { Download } from "./tipos";
+import type { Download, Proveniencia } from "./tipos";
 import type {
   CamadaPde,
   ConfiabilidadeFotografia,
@@ -1614,9 +1614,25 @@ export function notaEtapa(m: MetricaEtapa): string {
 export const NOTA_ETAPAS =
   "Operação é potência fiscalizada; construção e obra não iniciada são potência outorgada. São medidas diferentes e não se somam.";
 
-/** O SIGA e o RALIE são retratos diferentes da carteira: a frase diz a data e a medida de cada um. */
+/**
+ * O SIGA e o RALIE são retratos diferentes da carteira: a frase diz a data e a medida de cada um e dá a escala do que já opera
+ * (potência fiscalizada no SIGA) ao lado do gráfico do RALIE, sem somar as duas camadas.
+ */
 export function notaRetratosSigaRalie(g: Pick<ExpansaoGold, "estagios">): string {
-  return `Os números do alto são do SIGA de ${dataTexto(g.estagios.data_referencia)}, que mede a potência outorgada por usina; este gráfico é do RALIE de ${dataTexto(g.estagios.ralie.data_ralie)}, que mede as unidades geradoras em implantação. São retratos de datas e medidas diferentes e não se somam.`;
+  const op = estagio(g, "operacao");
+  const siga = `de ${dataTexto(g.estagios.data_referencia)}, que mede a potência por usina`;
+  const escala = op && temValor(op.mw_fiscalizado) ? `Para escala, o que já opera soma ${mwTexto(op.mw_fiscalizado)} fiscalizados no SIGA ${siga}` : `Operação, construção e obra não iniciada vêm do SIGA ${siga}`;
+  return `${escala}; este gráfico é do RALIE de ${dataTexto(g.estagios.ralie.data_ralie)}, que mede as unidades geradoras em implantação. São retratos de datas e medidas diferentes, e as duas camadas não se somam.`;
+}
+
+/**
+ * Proveniência com o texto do leitor: "Parquet histórico" vira "arquivo histórico" nas limitações e nas transformações, o mesmo
+ * tratamento que ressalvaLegivel dá às ressalvas da validação. Fonte, fórmula, snapshot e contagens ficam como a gold os publica.
+ */
+export function provenienciasDoLeitor(g: Pick<ExpansaoGold, "proveniencia">): ExpansaoGold["proveniencia"] {
+  const limpa = (t: string) => t.replace(/Parquet histórico/g, "arquivo histórico");
+  const tira = (p: Proveniencia): Proveniencia => ({ ...p, limitacoes: p.limitacoes.map(limpa), transformacoes: p.transformacoes.map(limpa) });
+  return Object.fromEntries(Object.entries(g.proveniencia).map(([k, v]) => [k, v ? tira(v) : v])) as ExpansaoGold["proveniencia"];
 }
 
 /**

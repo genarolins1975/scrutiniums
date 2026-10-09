@@ -225,8 +225,13 @@ describe("página inicial: mapa didático (P001)", () => {
     // alternativa textual equivalente e versão de celular
     const t = ler(HOME);
     expect(t).toContain("O mapa em texto");
-    // uma só cópia: visível no celular, disponível ao leitor de tela no desktop (o desenho é aria-hidden)
-    expect(t).toMatch(/className="md:sr-only"[\s\S]*<MapaEmTexto \/>/);
+    // uma só cópia da versão em texto, visível no celular. No desktop ela sai do fluxo (display: none): cópia só para o leitor de tela
+    // deixava dezenas de paradas de Tab em links e resumos invisíveis (WCAG 2.4.7), e lá o leitor de tela e o teclado usam os sete botões
+    // e o painel do elo, que trazem o mesmo conteúdo (o desenho em si é aria-hidden)
+    expect(t).toMatch(/className="md:hidden"[\s\S]*<MapaEmTexto \/>/);
+    expect(t).not.toContain('className="md:sr-only"');
+    expect(ler("src/components/energia/MapaConceitual.tsx")).toContain("aria-pressed={sel}");
+    expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-live="polite"');
     expect(t.match(/<MapaEmTexto \/>/g)).toHaveLength(1);
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-hidden="true"');
   });

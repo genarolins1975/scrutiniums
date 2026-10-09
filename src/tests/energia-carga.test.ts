@@ -730,7 +730,7 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
     expect(h026).toContain(textoDiferencaHoraria(G.p026.compatibilidade.por_hora_sin_365d)!.slice(0, 40));
     expect(h026).toContain(`Pico de cada dia nos últimos ${G.p026.picos_90d.length} dias`);
     expect(h026).toContain(`Como o dia útil de agosto mudou desde ${G.p026.perfil_evolucao[0].mes.slice(0, 4)}`);
-    expect(h027).toContain(`A janela do achado, de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)}`);
+    expect(h027).toContain(`A janela de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)} contra um ano antes, decomposta`);
     expect(h027).toContain(`Últimos ${G.p027!.recente_sin.length} dias previstos`);
     const principal = decomposicaoEscolhida(G.a07, "SIN", "principal", "equivalente")!;
     if (principal.fim < ref.fim) expect(h027).toContain(`Esta variante cobre ${principal.dias} dias, até ${dataBR(principal.fim)}`);

@@ -92,6 +92,9 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         selecionado={linhaSel && linhaSel.situacao === "vigente" ? linhaSel.id : null}
         onSelecionar={selecionar}
       />
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-ordem="custo">
+        Ordem das barras: soma das três componentes de perdas, da maior para a menor. Só entram os processos vigentes na data da consulta; o processo com vigência encerrada fica na tabela, com a situação escrita.
+      </p>
       {arredondamento.exemplo && (
         <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-arredondamento="custo">
           O total na ponta de cada barra soma as três componentes já arredondadas em duas casas; a coluna Perdas da tabela soma antes de arredondar. A diferença é de no máximo 0,01 R$/MWh e aparece em{" "}

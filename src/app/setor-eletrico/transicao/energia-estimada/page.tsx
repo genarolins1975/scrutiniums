@@ -121,7 +121,7 @@ export default function EnergiaEstimadaPage() {
           siglas={["MMGD", "SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
           titulo="Energia da micro e minigeração distribuída no SIN"
-          lead="A energia que o ONS estima para a micro e minigeração distribuída no SIN, em MWmed e em participação na carga global. O cadastro da ANEEL mede capacidade, e esta página mostra energia estimada."
+          lead="Estimativa do ONS, em MWmed e em participação na carga global. Não é medição e não se soma à capacidade cadastrada pela ANEEL."
           recorte={`${data(o?.inicio_serie)} a ${data(o?.fim_serie)} · SIN · MWmed e % da carga global`}
           fonte="ONS, carga de energia verificada (parcela de MMGD)"
           referencia={
@@ -146,8 +146,7 @@ export default function EnergiaEstimadaPage() {
                 rotulo="Indicadores da energia estimada"
                 nota={
                   <>
-                    <Unidade u="MWmed" /> é a energia do período dividida pelas horas cobertas; TWh é energia; participação é o percentual da carga global. É estimativa publicada pelo ONS, não medição, e não se soma
-                    à capacidade cadastrada na ANEEL.
+                    <Unidade u="MWmed" /> é a energia do período dividida pelas horas cobertas; TWh é energia; participação é o percentual da carga global.
                   </>
                 }
               >

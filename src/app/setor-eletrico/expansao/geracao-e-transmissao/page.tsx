@@ -65,6 +65,7 @@ import {
   painel,
   respostaTransmissao,
   vereditoTransmissao,
+  provenienciasDoLeitor,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -88,7 +89,7 @@ export default function GeracaoTransmissaoPage() {
   const l = t.leiloes;
   const ca = t.contratos_assinados;
   const rede = t.rede_epe;
-  const p = g.proveniencia;
+  const p = provenienciasDoLeitor(g);
   const ev = g.evidencias;
   const pp = painel("p042");
   const serie = [...t.serie_anual].sort((a, b) => a.ano.localeCompare(b.ano));

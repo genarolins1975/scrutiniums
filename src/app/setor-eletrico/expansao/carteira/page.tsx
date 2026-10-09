@@ -69,6 +69,7 @@ import {
   semNomeDeCampo,
   vereditoCarteira,
   type MetricaEtapa,
+  provenienciasDoLeitor,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
 import { datasLegiveis } from "@/lib/energia/visao";
@@ -97,7 +98,7 @@ export default function CarteiraPage() {
   const e = g.estagios;
   const r = e.ralie;
   const enc = e.encerramentos;
-  const p = g.proveniencia;
+  const p = provenienciasDoLeitor(g);
   const ev = g.evidencias;
   const pp = painel("p040");
   const hist = dadosHistoricoCarteira(e.historico_mensal);

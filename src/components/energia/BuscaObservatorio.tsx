@@ -30,7 +30,7 @@ export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exe
         autoComplete="off"
         spellCheck={false}
         aria-describedby={`${id}-s`}
-        placeholder="Ex.: perdas, bandeira, CEMIG, reservatórios"
+        placeholder="Ex.: perdas, bandeira, CEMIG"
         className="mt-2 min-h-[44px] w-full border border-linha bg-superficie px-3 text-base text-carvao placeholder:text-mineral focus-visible:outline focus-visible:outline-2 focus-visible:outline-energia-dark"
       />
       <p id={`${id}-s`} aria-live="polite" className="mt-2 text-xs text-mineral">

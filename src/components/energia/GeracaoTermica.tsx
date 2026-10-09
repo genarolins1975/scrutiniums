@@ -76,6 +76,7 @@ export function GeracaoTermica({
   fonte,
   versao,
   notas,
+  contextoSemana,
 }: {
   /** A gold da térmica sem as partes que só a auditoria usa (CVU, universo, identidade), montadas no servidor. */
   termica: TermicaCliente;
@@ -83,6 +84,8 @@ export function GeracaoTermica({
   versao: string;
   /** Notas do painel (NotasDoPainel), logo depois da figura principal e da tabela. */
   notas?: ReactNode;
+  /** A participação térmica dos 7 dias em contexto (seção montada no servidor com a gold de operação), entre a série mensal e as usinas. */
+  contextoSemana?: ReactNode;
 }) {
   const t = termica;
   const [v, definir] = useEstadoUrl(ESQUEMA);
@@ -115,32 +118,35 @@ export function GeracaoTermica({
 
   return (
     <div className="space-y-6">
-      <RespostaCurta id="p022" veredito={vereditoTermica(t) || respostaTermica(t)}>
-        {respostaTermica(t)}
-      </RespostaCurta>
-
-      <GraficoBarras
-        titulo={`Geração térmica por combustível e motivo de despacho, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
-        dados={paraTabela(cruzadoLinhas)}
-        chaveCategoria="id"
-        chaveRotulo="combustivel"
-        series={cruzado.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
-        unidade="GWh"
-        casas={0}
-        orientacao="horizontal"
-        empilhado
-        rotulosValor
-      />
-      <div data-motivos="rotulos" className="space-y-1">
-        <p className="rotulo text-mineral">O que cada motivo quer dizer, com o rótulo da base publicada</p>
-        <ul className="grid gap-x-8 gap-y-0.5 text-sm leading-snug text-carvao-muted sm:grid-cols-2">
-          {motivosNoGrafico.map((m) => (
-            <li key={m.id} className="flex items-start gap-2">
-              <span aria-hidden="true" className="mt-[0.4em] inline-block h-2 w-2 shrink-0" style={{ background: COR_MOTIVO[m.id] }} />
-              <span>{m.rotulo}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start">
+        <RespostaCurta id="p022" veredito={vereditoTermica(t) || respostaTermica(t)}>
+          {respostaTermica(t)}
+        </RespostaCurta>
+        <div className="space-y-4">
+          <GraficoBarras
+            titulo={`Geração térmica por combustível e motivo de despacho, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
+            dados={paraTabela(cruzadoLinhas)}
+            chaveCategoria="id"
+            chaveRotulo="combustivel"
+            series={cruzado.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
+            unidade="GWh"
+            casas={0}
+            orientacao="horizontal"
+            empilhado
+            rotulosValor
+          />
+          <div data-motivos="rotulos" className="space-y-1">
+            <p className="rotulo text-mineral">O que cada motivo quer dizer, com o rótulo da base publicada</p>
+            <ul className="grid gap-x-8 gap-y-0.5 text-sm leading-snug text-carvao-muted sm:grid-cols-2">
+              {motivosNoGrafico.map((m) => (
+                <li key={m.id} className="flex items-start gap-2">
+                  <span aria-hidden="true" className="mt-[0.4em] inline-block h-2 w-2 shrink-0" style={{ background: COR_MOTIVO[m.id] }} />
+                  <span>{m.rotulo}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
       <GeracaoRecorte
@@ -196,6 +202,8 @@ export function GeracaoTermica({
           nota="Unit commitment só existe a partir de jan/2020 (entrada do DESSEM na programação, segundo o dicionário do ONS); antes disso a coluna fica vazia. Constrained-off térmico é restrição de geração, publicado à parte e fora da soma."
         />
       </SecaoDoPainel>
+
+      {contextoSemana}
 
       <SecaoDoPainel
         id="usinas"

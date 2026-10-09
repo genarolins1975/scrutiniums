@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 import type { Classificacao } from "@/lib/energia/escalas";
 import { FUNDO_SEM_DADO } from "@/lib/energia/mapa-calor";
 import { num, plural } from "@/lib/energia/formato";
@@ -30,11 +30,13 @@ export type PerdasDistribuicaoProps = {
   periodo: string;
   /** Distribuidora escolhida (mapa, tabela ou ?d=), com o valor dela e a faixa em que cai. */
   escolhida: { rotulo: string; valor: ValorMapa; classe: number | null } | null;
+  /** Ressalva da medida que muda a leitura das barras (ex.: a não técnica pode ser negativa), à vista sob as barras. */
+  observacao?: ReactNode;
 };
 
 const participacao = (k: number, n: number) => (n ? `${num((100 * k) / n, 1)}%` : "sem dado");
 
-export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, escolhida }: PerdasDistribuicaoProps) {
+export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, escolhida, observacao }: PerdasDistribuicaoProps) {
   const uid = useId().replace(/:/g, "");
   const maior = Math.max(1, ...classes.classes.map((c) => c.contagem));
   const universo = textoUniversoFaixa(faixa);
@@ -54,7 +56,7 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
             <li
               key={c.indice}
               data-faixa-classe={c.indice}
-              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 sm:grid-cols-[11rem_minmax(0,1fr)_7rem]"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 sm:grid-cols-[12.5rem_minmax(0,1fr)_7rem]"
             >
               <span className="text-sm text-carvao sm:order-1 sm:text-right">{c.rotulo}</span>
               <span className="text-right text-sm tabular-nums text-carvao sm:order-3 sm:text-left">
@@ -79,6 +81,12 @@ export function PerdasDistribuicao({ titulo, medida, classes, faixa, periodo, es
           );
         })}
       </ol>
+
+      {observacao && (
+        <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-faixa-observacao="">
+          {observacao}
+        </p>
+      )}
 
       <ul className="space-y-1.5 border-t border-dashed border-linha pt-3 text-xs text-carvao-muted" aria-label="Fora da distribuição">
         <li className="flex items-start gap-2" data-faixa-fora="">

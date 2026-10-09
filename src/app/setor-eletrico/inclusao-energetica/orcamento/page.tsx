@@ -168,32 +168,34 @@ export default function OrcamentoPage() {
                   medidas={
                     <FaixaMetricas colunas={2} rotulo="Média das participações, família a família">
                       <Numero
-                variante="faixa"
-                rotulo="Média das participações na despesa, todas as famílias"
-                natureza="ESTIMADO"
-                evidencia={o.evidencias.media_razoes_desp_brasil}
-                formato="pct"
-                casas={1}
-                unidade="da despesa total"
-                periodo={periodoMedidas}
-                endereco={`${rotaPainel("p061")}#p061`}
-              />
+                        variante="faixa"
+                        rotulo="Média das participações na despesa, todas as famílias"
+                        natureza="ESTIMADO"
+                        evidencia={o.evidencias.media_razoes_desp_brasil}
+                        formato="pct"
+                        casas={1}
+                        unidade="da despesa total"
+                        periodo={periodoMedidas}
+                        cor="var(--serie-comp-2)"
+                        endereco={`${rotaPainel("p061")}#p061`}
+                      />
                       <Numero
-                variante="faixa"
-                rotulo={`Média das participações na renda, faixa de renda ${classeBaixa ? minusculaInicial(classeBaixa.rotulo) : "mais baixa"}`}
-                natureza="ESTIMADO"
-                evidencia={o.evidencias.media_razoes_renda_classe_baixa}
-                formato="pct"
-                casas={1}
-                unidade="da renda"
-                periodo={periodoMedidas}
-                nota={
-                  classeBaixa && o.sensibilidade_media_razoes_renda[classeBaixa.codigo]
-                    ? `Mediana ${pctTexto(o.sensibilidade_media_razoes_renda[classeBaixa.codigo].mediana_renda_pct, 2)}: a média é sensível às famílias que declaram renda menor que a despesa com energia.`
-                    : undefined
-                }
-                endereco={`${rotaPainel("p061")}#p061`}
-              />
+                        variante="faixa"
+                        rotulo={`Média das participações na renda, faixa de renda ${classeBaixa ? minusculaInicial(classeBaixa.rotulo) : "mais baixa"}`}
+                        natureza="ESTIMADO"
+                        evidencia={o.evidencias.media_razoes_renda_classe_baixa}
+                        formato="pct"
+                        casas={1}
+                        unidade="da renda"
+                        periodo={periodoMedidas}
+                        cor="var(--serie-referencia)"
+                        nota={
+                          classeBaixa && o.sensibilidade_media_razoes_renda[classeBaixa.codigo]
+                            ? `Mediana ${pctTexto(o.sensibilidade_media_razoes_renda[classeBaixa.codigo].mediana_renda_pct, 2)}: a média é sensível às famílias que declaram renda menor que a despesa com energia.`
+                            : undefined
+                        }
+                        endereco={`${rotaPainel("p061")}#p061`}
+                      />
                     </FaixaMetricas>
                   }
                   resposta={

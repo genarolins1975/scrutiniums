@@ -845,7 +845,7 @@ describe.skipIf(!disponivel)("redesenho: seletores da abertura e dos painéis", 
     const t = textoParcelasAno(gold);
     for (const k of ["apurado", "emergencia", "dia_critico", "externa", "ons"] as const) expect(t, k).toContain(`${num(p[k], 2)} h`);
     expect(t).toContain(`${num(a.dec_todas_parcelas, 2)} h (${horasEMinutos(a.dec_todas_parcelas)})`);
-    expect(Object.values(p).reduce((s, v) => s + (v ?? 0), 0)).toBeCloseTo(a.dec_todas_parcelas!, 1);
+    expect(Object.values(p).reduce<number>((soma, v) => soma + (v ?? 0), 0)).toBeCloseTo(a.dec_todas_parcelas!, 1);
     expect(t).toMatch(/a parte comparada ao limite/);
     expect(t).toMatch(/expurgadas do apurado/);
     // parcela que a fonte não publica é dita como ausência, nunca como zero
@@ -993,7 +993,7 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     // cada gráfico diz a sua unidade (o FEC no título, o DEC em cada marca do eixo); as séries de DEC e de FEC nunca dividem o mesmo gráfico
     expect(html.slice(ate(fec), ate(fec) + 600)).toContain("em interrupções");
     expect(html.slice(ate(dec), ate(fec))).toMatch(/>\d+ h</);
-    expect(fonte).not.toMatch(/series=\{\[[^\]]*"dec"[^\]]*"fec"/s);
+    for (const arranjo of Array.from(fonte.matchAll(/series=\{\[([\s\S]*?)\]\}/g), (x) => x[1])) expect(/id: "dec"/.test(arranjo) && /id: "fec"/.test(arranjo)).toBe(false);
     expect(ate(fec)).toBeLessThan(ate('data-resposta="p051"'));
     // a mesma frase da função testada, na segunda camada
     expect(html).toContain(esc(vereditoP051(gold)));

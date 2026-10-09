@@ -607,38 +607,62 @@ describe("revisão de interface: textos e números vêm da gold", () => {
 describe("revisão de interface: páginas", () => {
   const paginas = { sintese: Sintese, p059: PaginaTarifa, p060: PaginaCobertura, p061: PaginaOrcamento, p062: PaginaAcesso };
   const html = Object.fromEntries(Object.entries(paginas).map(([k, p]) => [k, renderToStaticMarkup(createElement(p))]));
-  const MARCA_NUMERO = 'class="relative flex h-full flex-col border border-linha bg-superficie p-5"';
+  // o número de destaque tem duas formas: o cartão (variante padrão do Numero) e a medida da faixa de métricas (data-metrica), que é a das aberturas
+  const MARCAS_NUMERO = ['class="relative flex h-full flex-col border border-linha bg-superficie p-5"', 'data-metrica=""'];
 
-  /** Conteúdo de cada bloco Numero (div com a classe do componente), pela contagem de div abertos e fechados. */
+  /** Conteúdo de cada bloco Numero (cartão ou medida da faixa), pela contagem de div abertos e fechados. */
   function blocosNumero(h: string): string[] {
     const out: string[] = [];
-    let i = h.indexOf(MARCA_NUMERO);
-    while (i >= 0) {
-      const ini = h.lastIndexOf("<div", i);
-      let prof = 0;
-      let j = ini;
-      const re = /<div\b|<\/div>/g;
-      re.lastIndex = ini;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(h))) {
-        prof += mm[0] === "</div>" ? -1 : 1;
-        if (prof === 0) {
-          j = re.lastIndex;
-          break;
+    for (const marca of MARCAS_NUMERO) {
+      let i = h.indexOf(marca);
+      while (i >= 0) {
+        const ini = h.lastIndexOf("<div", i);
+        let prof = 0;
+        let j = ini;
+        const re = /<div\b|<\/div>/g;
+        re.lastIndex = ini;
+        let mm: RegExpExecArray | null;
+        while ((mm = re.exec(h))) {
+          prof += mm[0] === "</div>" ? -1 : 1;
+          if (prof === 0) {
+            j = re.lastIndex;
+            break;
+          }
         }
+        out.push(h.slice(ini, j));
+        i = h.indexOf(marca, j);
       }
-      out.push(h.slice(ini, j));
-      i = h.indexOf(MARCA_NUMERO, j);
     }
     return out;
   }
+  const rotuloDoBloco = (b: string) => /aria-label="([^"]*)"/.exec(b)?.[1] ?? "";
+  /**
+   * Medidas da faixa que a gold não publica com ficha própria: a razão de médias das faixas de renda extremas (a gold traz a ficha
+   * do total e da razão principal), a razão com todas as cadastradas e o denominador da proxy. Os valores saem da mesma linha que o
+   * gráfico, o mapa e a tabela leem, e estão na tabela equivalente e no CSV do painel; qualquer outra medida sem ficha reprova.
+   */
+  const SEM_FICHA_PROPRIA = [
+    /^Energia na despesa total, (menor|maior) faixa de renda$/,
+    /^Razão de médias, (menor|maior) faixa de renda$/,
+    /^Faturas por 100 famílias, todas as cadastradas \(proxy\)$/,
+    /^Denominador: famílias até ½ salário mínimo, cadastro atualizado$/,
+  ];
+  // fichas "Comprove este número" que cada página tinha antes do redesenho (inventário de visões): nenhuma pode sumir
+  const FICHAS_ANTES = { sintese: 4, p059: 4, p060: 1, p061: 3, p062: 3 } as const;
 
-  it("todo número de destaque tem 'Comprove este número' (ou declara ausência)", () => {
+  it("todo número de destaque tem 'Comprove este número', declara ausência ou é uma medida lida da mesma linha do gráfico, com a razão dita", () => {
     for (const [k, h] of Object.entries(html)) {
       const blocos = blocosNumero(h);
       expect(blocos.length, k).toBeGreaterThan(0);
-      for (const b of blocos) expect(b.includes("Comprove este número") || b.includes("sem dado"), `${k}: ${b.slice(0, 160)}`).toBe(true);
+      for (const b of blocos) {
+        const ok = b.includes("Comprove este número") || b.includes("sem dado") || SEM_FICHA_PROPRIA.some((r) => r.test(rotuloDoBloco(b)));
+        expect(ok, `${k}: ${rotuloDoBloco(b)}`).toBe(true);
+      }
     }
+  });
+
+  it("nenhuma ficha 'Comprove este número' se perdeu: cada página tem pelo menos as que tinha antes", () => {
+    for (const [k, minimo] of Object.entries(FICHAS_ANTES)) expect((html[k].match(/Comprove este número/g) ?? []).length, k).toBeGreaterThanOrEqual(minimo);
   });
 
   it("nenhum ano, período ou limite da fonte escrito à mão onde a gold o publica", () => {
@@ -666,3 +690,140 @@ describe("revisão de interface: páginas", () => {
   const principalDe = (h: string) => h.slice(h.indexOf("<main"));
 });
 
+
+/**
+ * Redesenho editorial da abertura e das páginas filhas: a pergunta social (despesa com energia por faixa de renda, com a pesquisa
+ * antiga dita junto do valor) vem antes de benefício e acesso, cada medida traz a sua unidade e a sua data, a proxy não vira taxa de
+ * atendimento nem o complemento vira exclusão, e há uma navegação local por página (capítulos na síntese, faixa nas filhas).
+ */
+describe("abertura editorial: pergunta social primeiro, unidades e datas próprias", () => {
+  const paginas = { sintese: Sintese, p059: PaginaTarifa, p060: PaginaCobertura, p061: PaginaOrcamento, p062: PaginaAcesso };
+  const html = Object.fromEntries(Object.entries(paginas).map(([k, p]) => [k, renderToStaticMarkup(createElement(p))])) as Record<keyof typeof paginas, string>;
+  const decodifica = (x: string) => x.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+  const texto = (h: string) => decodifica(h.slice(h.indexOf("<main")).replace(/<(script|style)[\s\S]*?<\/\1>/g, " ").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+  const h1 = (h: string) => decodifica(/<h1[^>]*>([\s\S]*?)<\/h1>/.exec(h)?.[1].replace(/<[^>]+>/g, "") ?? "").trim();
+  const palavras = (x: string) => x.split(/\s+/).filter(Boolean).length;
+  const o = G.orcamento;
+  const per = o.proveniencia.microdados.periodo_referencia;
+  const mesPt = (m: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
+
+  it("o título tem de 5 a 9 palavras em todas as páginas, e o da síntese é a pergunta social do painel de orçamento", () => {
+    for (const [k, h] of Object.entries(html)) {
+      const n = palavras(h1(h));
+      expect(n, `${k}: ${h1(h)}`).toBeGreaterThanOrEqual(5);
+      expect(n, `${k}: ${h1(h)}`).toBeLessThanOrEqual(9);
+    }
+    expect(h1(html.sintese)).toBe(o.pergunta);
+  });
+
+  it("síntese: a figura da despesa por faixa de renda vem antes de benefício e acesso, com a idade da pesquisa dita junto do valor", () => {
+    const h = html.sintese;
+    const grafico = h.indexOf('data-grafico="barras"');
+    expect(grafico).toBeGreaterThan(0);
+    expect(grafico).toBeLessThan(h.indexOf('id="sintese-p059"'));
+    expect(grafico).toBeLessThan(h.indexOf('id="sintese-p062"'));
+    // a faixa de métricas da abertura é só da pesquisa de orçamento, cada medida com o período da pesquisa (lido da gold)
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf("</section>", h.indexOf('data-faixa-metricas=""')));
+    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(3);
+    expect((faixa.match(new RegExp(`POF ${mesPt(per.inicio)} a ${mesPt(per.fim)}`, "g")) ?? []).length).toBe(3);
+    expect(faixa).toContain("Estatística histórica");
+    expect(faixa).not.toMatch(/Tarifa Social|faturas|domicílios/);
+    // as faixas de renda extremas e o conjunto saem dos números publicados
+    const base = orcamentoBase(o);
+    const baixa = linhaPof(base, "BR", o.classes[1].codigo)!;
+    expect(faixa).toContain(pct(estimativa(baixa, "razao_medias_pct")[0]!, 1));
+    expect(faixa).toContain(o.classes[1].rotulo);
+  });
+
+  it("síntese: SCS, CDE e PNAD têm cada um a sua data, e nenhum rótulo genérico de atualização vale para todos", () => {
+    const h = html.sintese;
+    const bloco = (rotulo: RegExp) => {
+      const todos = Array.from(h.matchAll(/<div role="group" aria-label="([^"]*)" data-metrica="">/g));
+      const m = todos.find((x) => rotulo.test(x[1]));
+      expect(m, String(rotulo)).toBeTruthy();
+      const ini = m!.index!;
+      return h.slice(ini, h.indexOf("</p></div>", ini) + 10);
+    };
+    expect(bloco(/^UC com Tarifa Social \(SCS\)$/)).toContain("05/2025");
+    expect(bloco(/^Faturas com desconto \(Beneficiários da CDE\)$/)).toContain("03/2026");
+    expect(bloco(/PNAD Contínua/)).toContain("2025");
+    expect(texto(h)).not.toMatch(/atualizad[oa]s? em|dados de \d{2}\/\d{2}\/\d{4}/i);
+    // a unidade de cada medida é dita junto dela
+    for (const [rotulo, definicao] of [
+      [/^UC com Tarifa Social \(SCS\)$/, "o ponto de ligação com conta própria"],
+      [/^Faturas com desconto \(Beneficiários da CDE\)$/, "cada conta emitida com desconto no mês"],
+      [/PNAD Contínua/, "a moradia, com ou sem ligação à rede"],
+      [/Pessoas em localidades isoladas/, "a população das localidades isoladas"],
+      [/^Faturas por 100 famílias do Cadastro Único/, "Família é a unidade do Cadastro Único e da POF"],
+    ] as const) expect(texto(bloco(rotulo)), String(rotulo)).toContain(definicao);
+  });
+
+  it("todas as medidas de uma faixa trazem o ano da própria data, e nenhuma medida da abertura herda a data de outra fonte", () => {
+    for (const [k, h] of Object.entries(html)) {
+      for (const b of blocosDaFaixa(h)) expect(texto(b), `${k}: ${rotuloDe(b)}`).toMatch(/\b(19|20)\d{2}\b/);
+    }
+  });
+
+  it("proxy é proxy: o denominador está declarado, a razão não é percentual de famílias atendidas e o complemento não é exclusão", () => {
+    for (const k of ["sintese", "p060"] as const) {
+      const t = texto(html[k]);
+      expect(t, k).toMatch(/proxy/i);
+      expect(t, k).toContain("renda por pessoa até meio salário mínimo");
+      expect(t, k).toContain("cadastro atualizado");
+      expect(t, k).not.toMatch(/\d[\d.,]*\s?%\s+(das|de)\s+famílias\s+(atendidas|elegíveis|beneficiadas)/i);
+      expect(t, k).not.toMatch(/exclu[ií]d/i);
+    }
+    // a pergunta do painel segue na página (nas ressalvas), e não como título do que a razão mede
+    expect(html.p060).toContain(G.cobertura.pergunta);
+    expect(html.p060).not.toContain(`id="p060-titulo" class="ed-h2 font-serif text-carvao">${G.cobertura.pergunta}`);
+  });
+
+  it("uma navegação local por página: capítulos na síntese (sem a faixa), faixa nas filhas (sem capítulos), com a página atual marcada", () => {
+    expect(html.sintese).toContain('data-navegacao-local="capitulos"');
+    expect(html.sintese).not.toContain('data-navegacao-local="faixa"');
+    for (const [k, rotulo] of [
+      ["p059", "Tarifa Social"],
+      ["p060", "Cobertura potencial"],
+      ["p061", "Peso no orçamento"],
+      ["p062", "Acesso e sistemas isolados"],
+    ] as const) {
+      expect(html[k], k).toContain('data-navegacao-local="faixa"');
+      expect(html[k], k).not.toContain('data-navegacao-local="capitulos"');
+      expect(html[k], k).toMatch(new RegExp(`aria-current="page"[^>]*>${rotulo}<`));
+    }
+    // os capítulos da síntese levam às páginas que aprofundam (a de orçamento é a própria figura principal, com link no texto)
+    for (const rota of ["/tarifa-social", "/cobertura", "/acesso", "/orcamento"]) expect(html.sintese).toContain(`href="/setor-eletrico/inclusao-energetica${rota}"`);
+  });
+
+  it("o texto das cinco páginas não traz 'hoje', 'agora', travessão, hífen como separador nem juízo de valor", () => {
+    for (const [k, h] of Object.entries(html)) {
+      const t = texto(h);
+      expect(t, k).not.toMatch(/\bhoje\b|\bagora\b|[—–]| - /i);
+      expect(t, k).not.toMatch(/\b(melhor|pior|ineficiente|ineficaz)\b/i);
+    }
+  });
+
+  /** Medidas da faixa de métricas de uma página: o conteúdo de cada bloco data-metrica. */
+  function blocosDaFaixa(h: string): string[] {
+    const out: string[] = [];
+    const re = /<div role="group" aria-label="[^"]*" data-metrica="">/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(h))) {
+      let prof = 0;
+      const d = /<div\b|<\/div>/g;
+      d.lastIndex = m.index;
+      let r: RegExpExecArray | null;
+      while ((r = d.exec(h))) {
+        prof += r[0] === "</div>" ? -1 : 1;
+        if (prof === 0) {
+          out.push(h.slice(m.index, d.lastIndex));
+          break;
+        }
+      }
+    }
+    return out;
+  }
+  function rotuloDe(b: string): string {
+    return /aria-label="([^"]*)"/.exec(b)?.[1] ?? "";
+  }
+});

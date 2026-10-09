@@ -359,7 +359,17 @@ function campoCsv(v: string): string {
 
 /** Número em formato de máquina: ponto decimal, hífen como sinal, sem separador de milhar. */
 function numeroMaquina(v: number): string {
-  return Object.is(v, -0) ? "0" : String(v);
+  if (Object.is(v, -0)) return "0";
+  const cru = String(v);
+  if (!Number.isFinite(v) || cru.length <= 12) return cru;
+  // Ruído de ponto flutuante: 22.189999999999998 e 0.30000000000000004 são, dentro de 4 ulp, um decimal curto (22.19 e 0.3).
+  // Só vira o decimal curto quando ele tem até 12 algarismos significativos; valores que usam todos os algarismos
+  // (1/3, 2/3) seguem completos, para o arquivo guardar o valor inteiro e não um arredondamento.
+  const curto = Number(v.toPrecision(15));
+  const texto = String(curto);
+  if (texto.includes("e")) return cru;
+  const algarismos = texto.replace(/\D/g, "").replace(/^0+/, "").length;
+  return algarismos <= 12 && Math.abs(curto - v) <= 4 * Math.abs(v) * Number.EPSILON ? texto : cru;
 }
 
 /** CSV com ";" e ponto decimal, CRLF, BOM UTF-8; ausência é campo vazio. */

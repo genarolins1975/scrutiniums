@@ -171,7 +171,7 @@ export function sinalQualidade(g: QualidadeGold | null = lerGold<QualidadeGold>(
     variacao,
     referencias: [`Equivale a ${horasEMinutos(a.dec)} por unidade consumidora.`],
     ressalva: `É o DEC apurado: não inclui as interrupções que a regra exclui (emergência, dia crítico, origem externa e cortes pedidos pelo ONS)${
-      todas !== null ? `, que somadas dão ${num(todas, 2)} h` : ""
+      todas !== null ? `; com elas, o total é de ${num(todas, 2)} h` : ""
     }.`,
     prova: ev && provaConfere(ev, a.dec, 2) ? prova("/energia/gold/qualidade.json", "evidencias.dec_brasil", MEDIDA_QUALIDADE, ev) : null,
     endereco: enderecoDe("qualidade"),

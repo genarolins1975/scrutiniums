@@ -452,7 +452,7 @@ export function RedeCirculacao({
       </SecaoDoPainel>
 
       <SecaoDoPainel id="subsistemas" titulo={`Quem exportou e quem importou em ${dataBR(diaSub)}`}>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p028-subsistemas">
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p028-subsistemas" data-resposta-depois="">
           {respostaSubsistemasDia(subsistemas, diaSub)}
         </p>
         <GraficoBarras

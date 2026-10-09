@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -142,6 +143,27 @@ export default function PrevisoesPage() {
       ? `Fonte defasada: a verificação de ${carimbo(g.rotina.verificado_em)} já tinha o prazo de ${dataBR(g.rotina.dias_vencidos_ate)} vencido, e a rodada mais recente é de ${comRodada ? dataBR(at.origem) : ""}, ${plural(atraso, "dia", "dias")} antes.`
       : `Na verificação de ${carimbo(g.rotina.verificado_em)}, nenhum prazo de rodada posterior a ${comRodada ? dataBR(at.origem) : "esta rodada"} tinha vencido.`;
 
+  const recorte13 = (
+    <PrevisoesRecorte
+      periodo={
+        linhas.length ? (
+          <>
+            Entregas de {dataBR(linhas.reduce((a, l) => (l.inicio < a ? l.inicio : a), linhas[0].inicio))} a{" "}
+            {dataBR(linhas.reduce((a, l) => (l.fim > a ? l.fim : a), linhas[0].fim))}; rodada de {comRodada ? dataBR(at.origem) : ""}, corte às 07h00 de Brasília
+          </>
+        ) : (
+          "sem rodada com células"
+        )
+      }
+      universo={
+        <>
+          Quatro <Termo slug="submercado">submercados</Termo> (SE/CO, Sul, Nordeste e Norte), sete horizontes (W1 a W4 e M1 a M3); modelo B0, referência experimental
+        </>
+      }
+      unidade="R$/MWh nominais"
+    />
+  );
+
   const oQueMudou13 = (
     <>
       {oQueMudouRodada(g)} {frasePrazo}
@@ -193,6 +215,29 @@ export default function PrevisoesPage() {
     </>
   );
 
+  const linhasAvaliacao: { rotulo: string; valores: ReactNode[] }[] = [
+    { rotulo: "Previsões com número", valores: avaliacao.map((a) => a.registradas) },
+    { rotulo: "Com realizado", valores: avaliacao.map((a) => a.apuradas) },
+    { rotulo: "Aguardando o fim da entrega", valores: avaliacao.map((a) => a.aguardando) },
+    { rotulo: "Primeira a terminar", valores: avaliacao.map((a) => (a.proxima ? `${a.proxima.entrega}, em ${dataBR(a.proxima.termina)}` : "nenhuma pendente")) },
+    {
+      rotulo: "Teste fora da amostra",
+      valores: avaliacao.map((a) =>
+        a.entregasTeste !== null
+          ? `${a.entregasTeste} entregas distintas${a.minimo !== null ? `, contra o mínimo de ${a.minimo} para calibrar a faixa (${a.estadoCalibracao})` : ""}`
+          : "sem dado",
+      ),
+    },
+    {
+      rotulo: "Faixa de incerteza",
+      valores: avaliacao.map((a) => {
+        const doGrupo = linhas.filter((l) => l.horizonte.startsWith(a.frequencia));
+        const comFaixa = doGrupo.filter((l) => l.p10 !== null && l.p90 !== null).length;
+        return comFaixa === 0 ? "nenhuma publicada" : `${comFaixa} de ${doGrupo.length} células`;
+      }),
+    },
+  ];
+
   return (
     <>
       <CabecalhoEnergia atual="pld-modelos" />
@@ -201,7 +246,7 @@ export default function PrevisoesPage() {
         <CabecalhoModulo
           siglas={["PLD", "SIN", "CCEE"]}
           titulo="O que foi publicado antes do resultado?"
-          lead="A referência simples B0 da rodada mais recente, por submercado e entrega, e o arquivo de todas as emissões guardadas antes do resultado."
+          lead="A referência simples B0, por submercado e entrega, e o arquivo das emissões registradas."
           recorte={
             comRodada
               ? `Rodada de ${dataBR(at.origem)} · corte às 07h00 de Brasília · 4 submercados · R$/MWh nominais`
@@ -245,7 +290,7 @@ export default function PrevisoesPage() {
                   casas={2}
                   unidade="R$/MWh"
                   periodo={semanal.periodo || undefined}
-                  nota={semanal.usado}
+                  nota={semanal.usadoCurto}
                   motivoAusencia="A rodada mais recente não tem número semanal para este submercado."
                   cor={COR_SM[smMetricas]}
                   endereco={`${ROTA_PREVISOES}#p013`}
@@ -260,7 +305,7 @@ export default function PrevisoesPage() {
                   casas={2}
                   unidade="R$/MWh"
                   periodo={mensal.periodo || undefined}
-                  nota={mensal.usado}
+                  nota={mensal.usadoCurto}
                   motivoAusencia="A rodada mais recente não tem número mensal para este submercado."
                   cor={COR_SM[smMetricas]}
                   endereco={`${ROTA_PREVISOES}#p013`}
@@ -275,7 +320,7 @@ export default function PrevisoesPage() {
                   unidade={emProducao.length === 1 ? "modelo" : "modelos"}
                   periodo={`registro de ${dataBR(dia)}`}
                   cor="var(--serie-referencia)"
-                  nota={emProducao.length ? `Em produção: ${emProducao.join(", ")}.` : "Não há previsão oficial do observatório: o B0 é referência experimental, sem aprovação."}
+                  nota={emProducao.length ? `Em produção: ${emProducao.join(", ")}.` : "Sem previsão oficial: o B0 é só referência experimental."}
                 />
                 <Numero
                   variante="faixa"
@@ -322,24 +367,6 @@ export default function PrevisoesPage() {
                 <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
                   {respostaP013(g)}
                 </PrevisoesResposta>
-                <PrevisoesRecorte
-                  periodo={
-                    linhas.length ? (
-                      <>
-                        Entregas de {dataBR(linhas.reduce((a, l) => (l.inicio < a ? l.inicio : a), linhas[0].inicio))} a{" "}
-                        {dataBR(linhas.reduce((a, l) => (l.fim > a ? l.fim : a), linhas[0].fim))}; rodada de {comRodada ? dataBR(at.origem) : ""}, corte às 07h00 de Brasília
-                      </>
-                    ) : (
-                      "sem rodada com células"
-                    )
-                  }
-                  universo={
-                    <>
-                      Quatro <Termo slug="submercado">submercados</Termo> (SE/CO, Sul, Nordeste e Norte), sete horizontes (W1 a W4 e M1 a M3); modelo B0, referência experimental
-                    </>
-                  }
-                  unidade="R$/MWh nominais"
-                />
                 {comRodada && linhas.length > 0 ? (
                   <PrevisoesAtual
                     linhas={linhas}
@@ -350,6 +377,7 @@ export default function PrevisoesPage() {
                     versao={versao}
                     endereco={enderecoPainel("p013")}
                     mediaDiaPaginaPld={mediaDiaPaginaPld}
+                    recorte={recorte13}
                     notas={<NotasDoPainel oQueMudou={oQueMudou13} comoInterpretar={comoInterpretar13} naoConcluir={naoConcluir13} />}
                     aposPrincipal={
                       <>
@@ -380,33 +408,36 @@ export default function PrevisoesPage() {
                         titulo="Como cada entrega será avaliada depois do resultado"
                         lead="Semanas e meses têm avaliação própria: os horizontes, as amostras do teste e as entregas que terminam primeiro são diferentes."
                       >
-                        <div className="grid gap-x-10 gap-y-6 md:grid-cols-2">
-                          {avaliacao.map((a) => {
-                            const doGrupo = linhas.filter((l) => l.horizonte.startsWith(a.frequencia));
-                            const comFaixa = doGrupo.filter((l) => l.p10 !== null && l.p90 !== null).length;
-                            return (
-                              <section key={a.frequencia} aria-labelledby={`avaliacao-${a.frequencia}`} data-avaliacao={a.frequencia}>
-                                <h4 id={`avaliacao-${a.frequencia}`} className="font-serif text-lg text-carvao">
-                                  {a.rotulo}, {a.horizontes[0]} a {a.horizontes[a.horizontes.length - 1]}
-                                </h4>
-                                <dl className="mt-1">
-                                  <PrevisoesFichaLinha rotulo="Previsões com número">{a.registradas}</PrevisoesFichaLinha>
-                                  <PrevisoesFichaLinha rotulo="Com realizado">{a.apuradas}</PrevisoesFichaLinha>
-                                  <PrevisoesFichaLinha rotulo="Aguardando o fim da entrega">{a.aguardando}</PrevisoesFichaLinha>
-                                  <PrevisoesFichaLinha rotulo="Primeira a terminar">
-                                    {a.proxima ? `${a.proxima.entrega}, em ${dataBR(a.proxima.termina)}` : "nenhuma pendente"}
-                                  </PrevisoesFichaLinha>
-                                  <PrevisoesFichaLinha rotulo="Teste fora da amostra">
-                                    {a.entregasTeste !== null ? `${a.entregasTeste} entregas distintas` : "sem dado"}
-                                    {a.minimo !== null ? `, contra o mínimo de ${a.minimo} para calibrar a faixa (${a.estadoCalibracao})` : ""}
-                                  </PrevisoesFichaLinha>
-                                  <PrevisoesFichaLinha rotulo="Faixa de incerteza">
-                                    {comFaixa === 0 ? "nenhuma publicada" : `${comFaixa} de ${doGrupo.length} células`}
-                                  </PrevisoesFichaLinha>
-                                </dl>
-                              </section>
-                            );
-                          })}
+                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Avaliação depois do resultado, semanas e meses (rolável)" data-avaliacao-frequencias="">
+                          <table className="w-full min-w-[28rem] border-collapse text-sm">
+                            <caption className="sr-only">Avaliação depois do resultado, com semanas e meses em colunas próprias</caption>
+                            <thead>
+                              <tr className="text-left text-xs text-mineral">
+                                <th scope="col" className="border-b-2 border-linha px-2 py-2 font-medium first:pl-0">
+                                  Medida
+                                </th>
+                                {avaliacao.map((a) => (
+                                  <th key={a.frequencia} scope="col" className="border-b-2 border-linha px-2 py-2 font-medium" data-avaliacao={a.frequencia}>
+                                    {a.rotulo}, {a.horizontes[0]} a {a.horizontes[a.horizontes.length - 1]}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {linhasAvaliacao.map((l) => (
+                                <tr key={l.rotulo} className="border-b border-linha align-top">
+                                  <th scope="row" className="px-2 py-2 text-left text-xs font-normal text-mineral first:pl-0">
+                                    {l.rotulo}
+                                  </th>
+                                  {l.valores.map((v, i) => (
+                                    <td key={avaliacao[i].frequencia} className="px-2 py-2 leading-snug text-carvao">
+                                      {v}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                         <PrevisoesLegenda>
                           {g.definicoes.realizado} Erro e viés só serão calculados com entregas terminadas; o desempenho fora da amostra está no painel de desempenho.
@@ -415,9 +446,12 @@ export default function PrevisoesPage() {
                     }
                   />
                 ) : (
-                  <PrevisoesAviso tipo="alerta">
-                    Nenhuma rodada com células está registrada nesta publicação{!comRodada ? `: ${at.motivo}` : ""}. A grade 4 × 7 aparece quando a primeira rodada for emitida.
-                  </PrevisoesAviso>
+                  <>
+                    <PrevisoesAviso tipo="alerta">
+                      Nenhuma rodada com células está registrada nesta publicação{!comRodada ? `: ${at.motivo}` : ""}. A grade 4 × 7 aparece quando a primeira rodada for emitida.
+                    </PrevisoesAviso>
+                    {recorte13}
+                  </>
                 )}
 
                 {comRodada && (
