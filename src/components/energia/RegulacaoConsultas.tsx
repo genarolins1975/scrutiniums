@@ -52,6 +52,8 @@ export function RegulacaoConsultas({
   versao,
   inicioHistorico = null,
   depoisDaResposta = null,
+  recorte = null,
+  notas = null,
 }: {
   consultas: Pick<Consultas, "itens" | "janela_dias" | "decisoes_sem_resultado_formal" | "atas_deliberadas_ate" | "atas_ate" | "atas_geradas_em" | "data_referencia">;
   /** Data do build (nunca anterior à data de referência da gold); o navegador troca pela de hoje. */
@@ -60,8 +62,12 @@ export function RegulacaoConsultas({
   versao: string;
   /** Ano de início do histórico no CSV, lido da proveniência da gold (null sem a data). */
   inicioHistorico?: string | null;
-  /** Recorte e cartões do painel: entram logo depois do veredito, para que a resposta seja a primeira coisa do painel. */
+  /** Onde contribuir: entra logo depois do veredito, para que a resposta seja a primeira coisa do painel. */
   depoisDaResposta?: ReactNode;
+  /** Período, universo e unidade como legenda, depois da figura e da tabela. */
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal, da tabela e do recorte. */
+  notas?: ReactNode;
 }) {
   const [hoje, setHoje] = useState(dataServidor);
   useEffect(() => {
@@ -285,11 +291,14 @@ export function RegulacaoConsultas({
         nota={`Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta. O histórico completo${inicioHistorico ? `, desde ${inicioHistorico},` : ""} está no CSV do painel.`}
       />
 
+      {recorte}
+      {notas}
+
       {(consultas.decisoes_sem_resultado_formal ?? []).length > 0 && (
-        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2 border-t border-linha pt-5" data-decisoes-sem-resultado="" data-nivel="analisar">
-          <h4 id="sem-resultado-formal-titulo" className="font-serif text-base text-carvao">
+        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2 border-t border-linha pt-6" data-decisoes-sem-resultado="" data-nivel="analisar">
+          <h3 id="sem-resultado-formal-titulo" className="ed-h3 font-serif text-carvao">
             Quais decisões de abertura ainda não têm resultado formal na ata (fora da contagem)?
-          </h4>
+          </h3>
           <ul className="space-y-2 text-sm text-carvao-muted">
             {(consultas.decisoes_sem_resultado_formal ?? []).map((d) => {
               const s = situacaoSeConfirmada(d, hoje);

@@ -39,6 +39,14 @@ import {
 /** Singular ou plural da palavra (o número fica no texto, ao lado). */
 const pl = (n: number, um: string, varios: string) => (n === 1 ? um : varios);
 
+/**
+ * Texto copiado de uma fonte, com o travessão que ela usa como pontuação trocado por vírgula, para entrar em frase do observatório
+ * ("Otimização – TEO" vira "Otimização, TEO"). O texto integral, sem mudança, continua em Analisar e no CSV.
+ */
+export function semTravessao(t: string): string {
+  return t.replace(/\s+[–—]\s*|\s*[–—]\s+/g, ", ");
+}
+
 /* ---------------------------------------------------------------- painéis e rotas */
 
 export type IdPainelRegulacao = "p044" | "p045" | "p046";
@@ -1320,9 +1328,13 @@ export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_refere
   return vereditoLimites(g, v.ano);
 }
 
-/** Painéis afetados de um evento, em texto ("que afeta A e B"); vazio sem painel indicado. */
+/**
+ * Painéis ligados a um evento, em texto ("ligada aos painéis A e B"); vazio sem painel indicado. A ligação é a da curadoria do ato
+ * (painéis em que o número passa a ser lido com a regra nova), não uma estimativa de efeito.
+ */
 function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
-  return e.paineis.length ? `, que afeta ${listaComE(e.paineis.map((p) => p.rotulo))}` : "";
+  if (!e.paineis.length) return "";
+  return e.paineis.length === 1 ? `, ligada ao painel ${e.paineis[0].rotulo}` : `, ligada aos painéis ${listaComE(e.paineis.map((p) => p.rotulo))}`;
 }
 
 /**

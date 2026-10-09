@@ -75,7 +75,7 @@ export default function RedeRestricoesPage() {
           titulo={perguntaPainel("p030")}
           lead="O que o ONS publica de limitação: horas em que fluxos acompanhados ficaram acima do limite estabelecido e cortes de carga. Os limites de cada fronteira não são públicos."
           recorte={`${m.fluxosAcima ? `ATLS de ${m.fluxosAcima.periodo}` : "ATLS"} · cortes de carga de ${dataBR(u12.inicio)} a ${dataBR(u12.fim)} · horas e MWh`}
-          fonte="ONS, Indicadores de confiabilidade da rede básica (ATLS) e Interrupção de Carga"
+          fonte="ONS, ATLS e Interrupção de Carga"
           referencia={
             <>
               ONS, indicador ATLS até {r.atls.ultimo_mes ? mesAno(r.atls.ultimo_mes) : "sem dado"} e interrupções de carga até {dataBR(r.interrupcoes.fim)}; processado em{" "}

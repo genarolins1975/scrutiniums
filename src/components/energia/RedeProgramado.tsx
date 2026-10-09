@@ -1,17 +1,19 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeEscolha } from "@/components/energia/RedeControles";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { dataBR, num } from "@/lib/energia/formato";
+import { dataBR, num, plural } from "@/lib/energia/formato";
 import {
   COLUNAS_MAIORES_DESVIOS,
   COLUNAS_PROGRAMA_REPETIDO,
@@ -30,6 +32,7 @@ import {
   linhasProgramaRepetido,
   linhasProgramadoDiario,
   linhasProgramadoMensal,
+  medidasProgramado,
   nomePar,
   paraTabela,
   respostaProgramado,
@@ -63,12 +66,100 @@ const OPCOES_BASE = [
   { id: "sem" as const, rotulo: "Sem dias rotulados", detalhe: "Distribuição sem os dias de programa repetido" },
 ];
 
+/**
+ * Faixa de métricas da abertura: o desvio absoluto médio e a mediana, as horas com desvio material e as horas no sentido oposto ao
+ * programa, para a fronteira ou o país e a base escolhidos. Lê da URL o mesmo par e a mesma base que o painel (por isso é cliente) e as
+ * linhas da distribuição (medidasProgramado), as mesmas da resposta, da faixa de desvios e da tabela: nenhum número é calculado aqui.
+ * Desvio é a diferença entre o verificado e o programado, nunca chamado de falha.
+ */
+export function RedeProgramadoMetricas({
+  programado,
+  evidencias,
+}: {
+  programado: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "inicio" | "fim">;
+  /** Fichas de prova do desvio absoluto médio por par (chave desvio_medio.<par>); a ficha prova a base com todos os dias. */
+  evidencias: Record<string, Evidencia>;
+}) {
+  const [v] = useEstadoUrl(ESQUEMA);
+  const par = v.par as ParProgramado;
+  const base = v.base as BaseDesvio;
+  const m = medidasProgramado(programado, par, base);
+  const ficha = base === "com" ? (evidencias[`desvio_medio.${par}`] ?? null) : null;
+  const periodo = m ? `${dataBR(m.inicio)} a ${dataBR(m.fim)}` : `${dataBR(programado.inicio)} a ${dataBR(programado.fim)}`;
+  const semHoras = "Sem horas com programado e verificado comparáveis nesta publicação.";
+  const deHoras = m ? `De ${num(m.horas, 0)} horas comparadas.` : undefined;
+  return (
+    <FaixaMetricas
+      colunas={4}
+      rotulo="Desvio do fluxo verificado em relação ao programado"
+      nota={`Desvio é a diferença entre o verificado e o programado na mesma hora; a fonte não informa o motivo.${base === "sem" ? " Base sem os dias rotulados por programa repetido: a ficha de prova cobre só a base com todos os dias." : ""}`}
+    >
+      <Numero
+        variante="faixa"
+        rotulo={`Desvio absoluto médio por hora, ${m?.nome ?? nomePar(par)}`}
+        natureza="CALCULADO"
+        valor={ficha ? undefined : (m?.desvio_abs_medio_mwmed ?? null)}
+        evidencia={ficha}
+        // mesmas casas do valor exibido na ficha de prova (a gold publica o desvio médio inteiro)
+        casas={0}
+        unidade="MWmed"
+        periodo={periodo}
+        cor={COR_PAR[par]}
+        nota={m ? `${deHoras}${m.dias_excluidos ? ` Sem ${plural(m.dias_excluidos, "dia rotulado", "dias rotulados")}.` : ""}` : undefined}
+        motivoAusencia={semHoras}
+        endereco="/setor-eletrico/rede/programado#p031"
+      />
+      <Numero
+        variante="faixa"
+        rotulo="Mediana do desvio absoluto por hora"
+        natureza="CALCULADO"
+        valor={m?.p50_abs_mwmed ?? null}
+        formato="num"
+        casas={1}
+        unidade="MWmed"
+        periodo={periodo}
+        cor="var(--serie-referencia)"
+        nota="Metade das horas teve desvio absoluto menor ou igual a este valor."
+        motivoAusencia={semHoras}
+      />
+      <Numero
+        variante="faixa"
+        rotulo={`Horas com desvio de ${num(programado.limiar_material_mwmed, 0)} MWmed ou mais`}
+        natureza="CALCULADO"
+        valor={m?.horas_materiais ?? null}
+        formato="num"
+        casas={0}
+        unidade="horas"
+        periodo={periodo}
+        cor="var(--serie-5)"
+        nota={deHoras}
+        motivoAusencia={semHoras}
+      />
+      <Numero
+        variante="faixa"
+        rotulo="Horas com o fluxo no sentido oposto ao programado"
+        natureza="CALCULADO"
+        valor={m?.horas_inversao ?? null}
+        formato="num"
+        casas={0}
+        unidade="horas"
+        periodo={periodo}
+        cor="var(--serie-3)"
+        nota={m ? `Verificado e programado com sinais contrários, os dois acima de ${num(LIMIAR_NULO_MWMED, 0)} MWmed. ${deHoras}` : undefined}
+        motivoAusencia={semHoras}
+      />
+    </FaixaMetricas>
+  );
+}
+
 export function RedeProgramado({
   programado,
   evidencias,
   fonte,
   versao,
   regraMaterialidade,
+  notas,
+  aposPrincipal,
 }: {
   /** Regra de materialidade publicada na gold (limiar, sensibilidade e o que o desvio não é). */
   regraMaterialidade: string;
@@ -77,6 +168,10 @@ export function RedeProgramado({
   evidencias: Record<string, Evidencia>;
   fonte: string;
   versao: string;
+  /** Notas do painel (NotasDoPainel: o que mudou e a ressalva essencial), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
+  /** Conteúdo depois das notas (os capítulos do módulo), antes das seções complementares. */
+  aposPrincipal?: ReactNode;
 }) {
   const p = programado;
   const justificativaLimiar = p.justificativa_limiar;
@@ -96,51 +191,13 @@ export function RedeProgramado({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <RedeEscolha legenda="Fronteira ou país" opcoes={OPCOES_PAR} valor={par} onEscolher={(x) => definir({ par: x })} />
-        <RedeEscolha legenda="Base" opcoes={OPCOES_BASE} valor={base} onEscolher={(x) => definir({ base: x })} />
-      </div>
-
-      <RespostaCurta id="p031" vivo veredito={vereditoProgramado(p, par, base)}>
-        {respostaProgramado(p, par, base)}
-      </RespostaCurta>
-
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            {dataBR(p.inicio)} a {dataBR(p.fim)}, hora a hora (a fonte não publica programado antes de {dataBR(p.inicio)}); série diária dos últimos {p.diario.dias.length} dias
-          </dd>
-        </div>
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">
-            {nomePar(par)}
-            {ehFronteira(par) ? `; positivo ${sentidoPositivo(par)}` : "; positivo é exportação do Brasil"}
-            {base === "sem" ? "; sem os dias rotulados por programa repetido" : "; todos os dias comparados"}
-          </dd>
-        </div>
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmed por hora (desvio = verificado − programado); MWh nas somas diárias e mensais</dd>
-        </div>
-      </dl>
-
-      <div className="grid gap-4 md:grid-cols-[minmax(0,20rem)_1fr]">
-        <Numero
-          rotulo={`Desvio absoluto médio entre verificado e programado, ${nomePar(par)} (todos os dias)`}
-          natureza="CALCULADO"
-          evidencia={evidencias[`desvio_medio.${par}`] ?? null}
-          // mesmas casas do valor exibido na ficha de prova (a gold publica o desvio médio inteiro); a resposta acima traz uma casa
-          casas={0}
-          tamanho="medio"
-          cor={COR_PAR[par]}
-          motivoAusencia="Sem horas com programado e verificado nesta publicação."
-          nota={base === "sem" ? "A ficha prova a base com todos os dias; a tabela abaixo traz a base sem os dias rotulados." : undefined}
-        />
-        <div className="space-y-2 text-sm leading-relaxed text-carvao-muted">
-          <p>{semCaminhosInternos(regraMaterialidade)}</p>
-          {justificativaLimiar && <p>{justificativaLimiar}</p>}
+      <div className="grid gap-y-4">
+        <RespostaCurta id="p031" vivo veredito={vereditoProgramado(p, par, base)}>
+          {respostaProgramado(p, par, base)}
+        </RespostaCurta>
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          <RedeEscolha legenda="Fronteira ou país" opcoes={OPCOES_PAR} valor={par} onEscolher={(x) => definir({ par: x })} />
+          <RedeEscolha legenda="Base" opcoes={OPCOES_BASE} valor={base} onEscolher={(x) => definir({ base: x })} />
         </div>
       </div>
 
@@ -177,6 +234,11 @@ export function RedeProgramado({
         nota={`Viés positivo: o verificado ficou, em média, mais no sentido positivo do par do que o programa. Sentido oposto: programa e verificado com sinais contrários, os dois acima de ${num(LIMIAR_NULO_MWMED, 0)} MWmed.`}
       />
 
+      <div className="max-w-prose2 space-y-2 text-sm leading-relaxed text-carvao-muted">
+        <p>{semCaminhosInternos(regraMaterialidade)}</p>
+        {justificativaLimiar && <p>{justificativaLimiar}</p>}
+      </div>
+
       <GraficoLinhas
         titulo={`Saldo programado e verificado por dia, ${nomePar(par)}`}
         dados={diario}
@@ -205,11 +267,36 @@ export function RedeProgramado({
         nota="Saldos do dia somados com sinal; a soma dos desvios absolutos usa o módulo de cada hora e por isso pode ser maior que a diferença entre os saldos."
       />
 
-      <div className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Os maiores desvios horários{base === "sem" ? ", fora dos dias rotulados" : ""}</h3>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          São as {maiores.length} horas em que o fluxo medido mais se afastou do programado, cada uma com o programado, o verificado e o desvio.
-        </p>
+      <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Período</dt>
+          <dd className="mt-0.5">
+            {dataBR(p.inicio)} a {dataBR(p.fim)}, hora a hora (a fonte não publica programado antes de {dataBR(p.inicio)}); série diária dos últimos {p.diario.dias.length} dias
+          </dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Universo</dt>
+          <dd className="mt-0.5">
+            {nomePar(par)}
+            {ehFronteira(par) ? `; positivo ${sentidoPositivo(par)}` : "; positivo é exportação do Brasil"}
+            {base === "sem" ? "; sem os dias rotulados por programa repetido" : "; todos os dias comparados"}
+          </dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Unidade</dt>
+          <dd className="mt-0.5">MWmed por hora (desvio = verificado − programado); MWh nas somas diárias e mensais</dd>
+        </div>
+      </dl>
+
+      {notas}
+
+      {aposPrincipal}
+
+      <SecaoDoPainel
+        id="maiores-desvios"
+        titulo={`Quais foram as horas de maior desvio${base === "sem" ? ", fora dos dias rotulados" : ""}?`}
+        lead={`São as ${maiores.length} horas em que o fluxo medido mais se afastou do programado, cada uma com o programado, o verificado e o desvio.`}
+      >
         <TabelaInterativa
           titulo={`Os ${maiores.length} maiores desvios absolutos${base === "sem" ? " fora dos dias rotulados" : ""}`}
           colunas={COLUNAS_MAIORES_DESVIOS}
@@ -222,10 +309,13 @@ export function RedeProgramado({
           chaveUrl="md"
           nota="Cada linha diz se a hora é de dia rotulado por programa repetido; nos países a regra não rotula dias (não se aplica). Troque a base para ver a lista sem esses dias."
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Mês a mês: horas materiais por fronteira e país</h3>
+      <SecaoDoPainel
+        id="mes-a-mes"
+        titulo="Em quantas horas por mês o desvio foi material?"
+        lead={`Horas com desvio de ${num(p.limiar_material_mwmed, 0)} MWmed ou mais, por mês, para até quatro fronteiras ou países na mesma escala.`}
+      >
         <Comparador
           rotulo={`Pares no gráfico (até ${LIMITE_COMPARACAO})`}
           entidades={PARES_PROGRAMADO.map((x) => ({ id: x, rotulo: nomePar(x), sinonimos: [curtoPar(x)] }))}
@@ -275,11 +365,10 @@ export function RedeProgramado({
           chaveUrl="mp.t"
           ordemInicial={{ coluna: "m", direcao: "desc" }}
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Programa repetido: dias rotulados</h3>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p031-repetido">
+      <SecaoDoPainel id="programa-repetido" nivel="analisar" titulo="Programa repetido: dias rotulados">
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p031-repetido" data-resposta-depois="">
           {textoProgramaRepetido(p)}
         </p>
         <p className="text-sm text-carvao-muted">{p.programa_repetido.regra}</p>
@@ -295,7 +384,7 @@ export function RedeProgramado({
           chaveUrl="rep"
           semLinhas="Nenhum dia rotulado por programa repetido."
         />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

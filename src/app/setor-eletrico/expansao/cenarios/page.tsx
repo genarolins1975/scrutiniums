@@ -86,7 +86,7 @@ export default function CenariosPage() {
           siglas={["PDE", "SIGA", "RALIE", "SIN", "CDE", "CVU"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="O plano decenal oficial é um cenário, com data-base e hipóteses da edição, e aparece em camada separada do realizado e da carteira."
+          lead="O plano decenal oficial é um cenário, em camada separada do realizado e da carteira."
           recorte={`${c.edicao} · data-base ${c.data_base_premissas} · horizonte ${c.horizonte} · GW`}
           fonte="EPE e MME, PDE; ANEEL, SIGA e RALIE"
           referencia={
@@ -109,7 +109,7 @@ export default function CenariosPage() {
             <FaixaMetricas
               colunas={2}
               rotulo="Capacidade nacional no cenário de referência"
-              nota="As duas medidas são do cenário e contam micro e minigeração distribuída, baterias e resposta da demanda; não são previsão nem o que já opera."
+              nota="Medidas do cenário, com MMGD, baterias e resposta da demanda; não são previsão nem o que já opera."
             >
               <Numero
                 variante="faixa"
@@ -145,7 +145,7 @@ export default function CenariosPage() {
             <PainelEvidencia
               id="p043"
               pergunta={`A matriz no cenário: ${f325 ? f325.linhas.map((l) => mesTexto(l.ref)).join(" e ") : "sem dado"}`}
-              subtitulo={`${c.edicao}, ${c.cenario} · GW (capacidade), com outras unidades por figura`}
+              subtitulo={`${c.edicao}, ${c.cenario}`}
               natureza="CENARIO"
               porQueImporta={
                 <>

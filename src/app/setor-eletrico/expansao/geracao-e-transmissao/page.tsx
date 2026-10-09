@@ -122,7 +122,7 @@ export default function GeracaoTransmissaoPage() {
           siglas={["RALIE", "RAP", "ANEEL", "EPE", "IBGE", "ONS"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="Onde a geração está sendo construída e onde a rede está sendo ampliada, lado a lado, por UF e por ano, cada uma na sua unidade."
+          lead="Geração e rede por UF e por ano, lado a lado, cada uma na sua unidade."
           recorte={`RALIE de ${dataRalie} · SIGET de ${dataSiget} · MW, km e MVA`}
           fonte="ANEEL, RALIE, SIGET e leilões; EPE, rede de transmissão"
           referencia={
@@ -142,7 +142,7 @@ export default function GeracaoTransmissaoPage() {
             />
           }
           metricas={
-            <FaixaMetricas colunas={4} rotulo="Indicadores de geração e transmissão" nota="MW de geração, km de circuito e MVA de transformação medem coisas diferentes: ficam lado a lado, sem soma nem divisão.">
+            <FaixaMetricas colunas={4} rotulo="Indicadores de geração e transmissão" nota="MW, km e MVA medem coisas diferentes: lado a lado, sem soma nem divisão.">
               <Numero
                 variante="faixa"
                 rotulo="Linhas novas em obras em andamento"
@@ -157,14 +157,14 @@ export default function GeracaoTransmissaoPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo="Transformação nova em obras em andamento"
+                rotulo="Transformação nova em obras"
                 natureza="CALCULADO"
                 valor={o.em_andamento.mva_tr_novos}
                 casas={0}
                 unidade="MVA"
                 periodo={`SIGET de ${dataSiget}`}
                 cor="var(--serie-comp-1)"
-                nota="Sem o transformador reserva, que fica à parte."
+                nota="Sem o transformador reserva."
               />
               <Numero
                 variante="faixa"
@@ -180,13 +180,13 @@ export default function GeracaoTransmissaoPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo={`Extensão contratada em leilão em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo aberto"}`}
+                rotulo={`Extensão leiloada em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo aberto"}`}
                 natureza="CALCULADO"
                 evidencia={ev.leiloes_ultimo_ano ?? null}
                 casas={1}
                 periodo="último ano do arquivo aberto"
                 cor="var(--serie-comp-3)"
-                nota="Os anos seguintes ao último leilão do arquivo aberto são ausência na fonte, não anos sem leilão."
+                nota="Anos depois do último leilão: ausência na fonte, não anos sem leilão."
                 endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
                 motivoAusencia="Sem o arquivo de leilões nesta publicação."
               />

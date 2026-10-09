@@ -132,7 +132,7 @@ export default function CarteiraPage() {
           siglas={["RALIE", "SIGA", "CEG", "ANEEL", "IBGE"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="Etapas do SIGA, carteira do RALIE e desfecho das usinas acompanhadas, em potência fiscalizada na operação e outorgada no restante."
+          lead="Etapas do SIGA, carteira do RALIE e desfecho das usinas acompanhadas, em MW."
           recorte={`SIGA de ${dataSiga} · RALIE de ${dataTexto(r.data_ralie)} · MW`}
           fonte="ANEEL, SIGA, RALIE e atos de outorga"
           referencia={
@@ -152,7 +152,7 @@ export default function CarteiraPage() {
             />
           }
           metricas={
-            <FaixaMetricas colunas={5} rotulo="Indicadores da carteira" nota={<>{NOTA_ETAPAS} {notaRalieSiga(g)}</>}>
+            <FaixaMetricas colunas={5} rotulo="Indicadores da carteira" nota={NOTA_ETAPAS}>
               {etapas.map((m) => (
                 <Numero
                   key={m.id}
@@ -180,13 +180,13 @@ export default function CarteiraPage() {
                 unidade="MW"
                 periodo={`RALIE de ${dataTexto(r.data_ralie)}`}
                 cor="var(--serie-referencia)"
-                nota="Outro retrato da carteira: unidades geradoras, não usinas."
+                nota="Unidades geradoras, não usinas."
                 motivoAusencia="Sem a fotografia do RALIE nesta publicação."
                 endereco="/setor-eletrico/expansao/carteira#p040"
               />
               <Numero
                 variante="faixa"
-                rotulo={`Em implantação em ${dataTexto(g.referencias.ralie_historico_desde)}, entrou em operação`}
+                rotulo={`Em operação, da carteira de ${dataTexto(g.referencias.ralie_historico_desde)}`}
                 natureza="CALCULADO"
                 evidencia={ev.coorte_inicial_operacao ?? null}
                 formato="pct"
@@ -194,7 +194,7 @@ export default function CarteiraPage() {
                 unidade="da potência"
                 periodo={`até ${dataTexto(g.referencias.ralie)}`}
                 cor="var(--serie-comp-4)"
-                nota="Coorte da primeira fotografia: o resto teve a outorga encerrada, segue em implantação ou saiu sem desfecho."
+                nota="Coorte da primeira fotografia do RALIE."
                 motivoAusencia="Sem o desfecho das coortes nesta publicação."
                 endereco="/setor-eletrico/expansao/carteira#p040"
               />
@@ -229,9 +229,6 @@ export default function CarteiraPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p040" veredito={vereditoCarteira(g) || respostaCarteira(g)}>
-                  {respostaCarteira(g)}
-                </RespostaCurta>
                 {estagio(g, "operacao") && (
                   <ExpansaoNota>
                     Em operação aparecem dois valores porque a medida muda: o cartão mostra a potência fiscalizada ({mwTexto(estagio(g, "operacao")?.mw_fiscalizado)}) e o gráfico, a outorgada ({mwTexto(estagio(g, "operacao")?.mw_outorgado)}),
@@ -249,6 +246,11 @@ export default function CarteiraPage() {
                   orientacao="horizontal"
                   rotulosValor
                 />
+                {/* a faixa de cima já traz os números das etapas; a resposta vem depois da figura para que ela comece na primeira tela */}
+                <RespostaCurta id="p040" depois veredito={vereditoCarteira(g) || respostaCarteira(g)}>
+                  {respostaCarteira(g)}
+                </RespostaCurta>
+                <ExpansaoNota>{notaRalieSiga(g)}</ExpansaoNota>
                 <ExpansaoNota>
                   A mesma medida nas três fases (potência outorgada) para que as etapas se comparem; a potência fiscalizada, que só existe para o que opera, está na tabela do gráfico. A
                   fase não é um funil com entrada garantida: desde {enc.desde}, {inteiro(enc.total.atos)} atos revogaram ou extinguiram outorgas de {inteiro(enc.total.usinas)} usinas (

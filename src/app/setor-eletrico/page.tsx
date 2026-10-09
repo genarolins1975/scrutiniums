@@ -19,8 +19,29 @@ import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { dataBR, carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { escolhasDeDistribuidora, estadoDoDestino, indiceBusca, linhasAtualidade, periodoLegivel, resumoAtualidade, type PublicacaoAtualidade } from "@/lib/energia/home";
-import { sinaisDaInicial, universoPerdas, type SinalAusente, type SinalDisponivel, type SinalHome } from "@/lib/energia/home-sinais";
+import {
+  escolhasDeDistribuidora,
+  estadoDoDestino,
+  indiceBusca,
+  linhasAtualidade,
+  nomeDoPeriodoEmCurso,
+  periodoLegivel,
+  refinosDePeriodo,
+  regraDeAtualidade,
+  resumoAtualidade,
+  type LinhaAtualidade,
+  type PublicacaoAtualidade,
+} from "@/lib/energia/home";
+import {
+  denominadorDePerdas,
+  descreverDenominador,
+  evidenciaComDenominadorNomeado,
+  sinaisDaInicial,
+  universoPerdas,
+  type SinalAusente,
+  type SinalDisponivel,
+  type SinalHome,
+} from "@/lib/energia/home-sinais";
 import {
   ANCORAS_VISAO_GERAL,
   CAMINHOS_INTENCAO,
@@ -43,6 +64,7 @@ import { metrica } from "@/lib/energia/metricas";
 import { DESTINOS_NAVEGACAO, GRUPOS_NAVEGACAO, destino, listaPorExtenso, type DestinoNavegacao } from "@/lib/energia/navegacao";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
+import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 import type { Natureza } from "@/lib/energia/tipos";
 import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
@@ -406,7 +428,7 @@ function MedidaDisponivel({ s }: { s: SinalDisponivel }) {
         <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:mt-1.5">
           <span>{s.periodo}</span>
           <SeloNatureza natureza={s.natureza} texto />
-          {s.prova && <ComproveNumero sobDemanda={s.prova} endereco={s.endereco} />}
+          {s.evidencia ? <ComproveNumero evidencia={s.evidencia} endereco={s.endereco} /> : s.prova && <ComproveNumero sobDemanda={s.prova} endereco={s.endereco} />}
         </div>
         {s.variacao && <Variacao v={s.variacao} />}
       </div>
@@ -490,6 +512,7 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaPrioritaria; sinal: 
 
 export default function MapaDoObservatorio() {
   const perdas = lerGold<PerdasGold>("perdas.json");
+  const qualidade = lerGold<QualidadeGold>("qualidade.json");
   const empresas = lerGold<EmpresasGold>("empresas.json");
   const pub = lerGold<PublicacaoAtualidade & { disponivel?: boolean; resumo?: { com_revisao?: number; observacoes_revisadas?: number; referencias_revisadas?: number } }>("publicacao.json");
 
@@ -501,8 +524,10 @@ export default function MapaDoObservatorio() {
     distribuidoras.map((d) => ({ slug: d.slug, sigla: d.sigla, nome: d.nome, cnpj: d.cnpj, ufs: d.ufs })),
   );
   const fichas = new Set(DATASETS_INTEGRADOS.map((d) => d.slug));
-  const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas);
+  // a publicação só conhece o ano do DEC e do FEC; o último mês com dado vem do módulo de Qualidade
+  const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas, refinosDePeriodo(qualidade));
   const resumoAtual = resumoAtualidade(atualidade);
+  const regraAtual = regraDeAtualidade(atualidade);
   const dataPublicacao = pub?.referencia?.hoje ?? null;
   const pubFontes = publicacaoDados();
   const orgaos = pubFontes ? orgaosDasFontes(pubFontes).map((o) => o.orgao) : [];
@@ -510,6 +535,9 @@ export default function MapaDoObservatorio() {
 
   // exemplo real da faixa "Como ler e conferir": um número publicado, com as suas datas e a ficha de prova
   const ev = integra(perdas) ? perdas.evidencias.taxa_nacional : null;
+  // o denominador da taxa, refeito pelo seletor: a ficha o descreve com a origem dele, e o parágrafo do exemplo diz a diferença
+  const denominador = denominadorDePerdas(perdas);
+  const evFicha = ev ? evidenciaComDenominadorNomeado(ev, denominador) : null;
   const natEv = (metrica("perdas_taxa_total_injetada")?.natureza_transformacao ?? null) as Natureza | null;
   const revisoes = pub?.resumo ?? null;
   // quantas distribuidoras há por trás de cada contagem da página: o total nacional usa só as concessionárias
@@ -572,7 +600,11 @@ export default function MapaDoObservatorio() {
                 </DetalheDoNivel>
               </div>
               <div className="mt-6">
-                <BuscaObservatorio itens={busca} exemplos={["perdas", "bandeira", "reservatórios", "Tarifa Social"]} />
+                <BuscaObservatorio
+                  itens={busca}
+                  exemplos={["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"]}
+                  regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                />
               </div>
             </div>
             <nav aria-label="Por onde começar" className="min-w-0 lg:border-l lg:border-linha lg:pl-8">
@@ -820,6 +852,7 @@ export default function MapaDoObservatorio() {
                       {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}: {ev.universo}.
                       {universo && ` Ao todo, ${universo.total} distribuidoras têm dado de ${universo.ano}; este total soma só as ${universo.concessionarias} concessionárias, e as ${universo.permissionarias} permissionárias ficam fora dele.`}
                     </p>
+                    {denominador && <p data-denominador="">{descreverDenominador(denominador).completa}</p>}
                     {natEv && (
                       <p className="flex flex-wrap items-center gap-2">
                         <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {conjuntoLegivel(ev.fonte.conjunto).texto}, da {ev.fonte.orgao}.</span>
@@ -846,8 +879,11 @@ export default function MapaDoObservatorio() {
                       <dd className="text-carvao">{dataBR(perdas!.gerado_em.slice(0, 10))}</dd>
                     </dl>
                     <div>
-                      <p>A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o seu código de verificação (sha256, que prova que é o mesmo arquivo), os testes e a citação pronta.</p>
-                      <ComproveNumero evidencia={ev} rotulo="Comprove este número" />
+                      <p>
+                        A ficha mostra a fórmula, o numerador, o denominador com a origem dele, o arquivo original com o seu código de verificação (sha256, que prova que é o mesmo arquivo), os testes e a citação
+                        pronta.
+                      </p>
+                      <ComproveNumero evidencia={evFicha ?? ev} rotulo="Comprove este número" />
                     </div>
                   </>
                 ) : (

@@ -37,7 +37,7 @@ export function EscolhaDistribuidora({
     <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
       <div className="min-w-0">
         <label htmlFor={`${id}-d`} className="block text-xs text-mineral">
-          Sua distribuidora
+          Sua distribuidora ({opcoes.length} com dado{ano ? ` de ${ano}` : ""})
         </label>
         <select
           id={`${id}-d`}
@@ -45,9 +45,7 @@ export function EscolhaDistribuidora({
           onChange={(e) => setCnpj(e.target.value)}
           className="mt-1 min-h-[44px] max-w-full border border-linha bg-superficie px-2 text-sm text-carvao"
         >
-          <option value="">
-            Escolha ({opcoes.length} distribuidoras{ano ? ` com dado de ${ano}` : ""})
-          </option>
+          <option value="">Escolha a distribuidora</option>
           {opcoes.map((o) => (
             // sigla e estados: o nome oficial da fonte vem em caixa alta e sem acento, e fica no title
             <option key={o.cnpj} value={o.cnpj} title={o.nome ?? undefined}>

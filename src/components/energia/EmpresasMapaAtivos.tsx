@@ -40,7 +40,7 @@ import type { AtivosMapa } from "@/lib/energia/tipos-empresas";
  * compartilhado abre já carregado. Filtros (fase, tipo, vínculo, grupo) e a usina escolhida
  * também ficam na URL: voltar e avançar desfazem e refazem.
  *
- * Interação: clique ou toque escolhe a usina mais próxima (raio de 12 px); a escolha acende a
+ * Interação: clique ou toque escolhe a usina mais próxima (raio de 12 px com mouse, 22 px no toque); a escolha acende a
  * linha na tabela (que leva à página dela) e aparece na ficha abaixo do mapa, numa região
  * aria-live. Pelo teclado, a escolha se faz na tabela, que acende o ponto no mapa.
  */
@@ -184,7 +184,9 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
     const s = r.width / vb.largura;
     const px = vb.x + (ev.clientX - r.left) / s;
     const py = vb.y + (ev.clientY - r.top) / s;
-    const raio = 12 / s;
+    // alvo de toque ampliado: com o dedo (pointer: coarse) a usina mais próxima vale até 22 px, e com o mouse, 12 px
+    const alvoPx = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)").matches ? 22 : 12;
+    const raio = alvoPx / s;
     let melhor = -1;
     let dist = raio * raio;
     for (const i of indices) {
@@ -341,6 +343,10 @@ export function EmpresasMapaAtivos({ urlAtivos, totalUsinas, dataSiga, fonte, ve
         </span>
         <span>Tamanho do ponto: até 30 MW, de 30 a 300 MW e acima de 300 MW (marca, não escala de área).</span>
       </div>
+
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-acesso-mapa="">
+        Pelo teclado ou com leitor de tela, escolha a usina na lista abaixo: a linha escolhida acende o ponto no mapa.
+      </p>
 
       {j && iSel >= 0 && (
         <div aria-live="polite" className="border border-energia bg-energia-fundo px-4 py-3 text-sm text-carvao">

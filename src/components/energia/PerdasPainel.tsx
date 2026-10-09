@@ -50,7 +50,7 @@ export function PerdasNavegacao({ atual }: { atual: IdPaginaPerdas }) {
 
 /** Capítulos da abertura: as outras três páginas do módulo, cada uma com a pergunta que responde. */
 export function PerdasCapitulos({ atual = "mapa" }: { atual?: IdPaginaPerdas }) {
-  return <NavegacaoLocal rotulo="Capítulos de perdas de energia" itens={ITENS_PERDAS} atual={atual} variante="capitulos" titulo="Outras perguntas sobre perdas" />;
+  return <NavegacaoLocal rotulo="Capítulos de perdas de energia" itens={ITENS_PERDAS} atual={atual} variante="capitulos" titulo="Outras perguntas sobre perdas" nivelTitulo={3} />;
 }
 
 /**

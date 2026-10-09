@@ -65,9 +65,9 @@ export function TabelaAdaptativa<T extends { id: string }>({
             <div className="text-base text-carvao">{titulo.celula(l)}</div>
             <dl className="mt-2 grid gap-y-2 text-sm">
               {demais.map((c) => (
-                <div key={c.id}>
-                  <dt className="rotulo text-mineral">{c.rotulo}</dt>
-                  <dd className="mt-0.5 leading-snug text-carvao">{c.celula(l)}</dd>
+                <div key={c.id} className="min-[360px]:grid min-[360px]:grid-cols-[7.5rem_minmax(0,1fr)] min-[360px]:gap-x-3">
+                  <dt className="rotulo text-mineral min-[360px]:pt-0.5">{c.rotulo}</dt>
+                  <dd className="mt-0.5 min-w-0 leading-snug text-carvao min-[360px]:mt-0">{c.celula(l)}</dd>
                 </div>
               ))}
             </dl>

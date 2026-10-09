@@ -124,7 +124,7 @@ export default function CronogramaPage() {
           siglas={["RALIE", "ANEEL"]}
           rotulo="Expansão"
           titulo={pp.pergunta}
-          lead="O cronograma que a fiscalização da ANEEL prevê, com a data de cada fotografia, separado das datas convencionais em bloco e contra o que foi liberado."
+          lead="Previsões datadas da fiscalização, separadas das datas convencionais em bloco."
           recorte={`RALIE de ${dataRalie} · liberações até ${dataTexto(g.referencias.liberacoes_ultima_data)} · MW e % da potência`}
           fonte="ANEEL, RALIE e liberações para operação comercial"
           referencia={
@@ -146,7 +146,7 @@ export default function CronogramaPage() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores do cronograma"
-              nota="O cronograma da fiscalização e as datas convencionais em bloco são medidas separadas: a segunda é uma data atribuída em lote, cerca de cinco anos depois da fotografia, e não cronograma de obra."
+              nota="O cronograma da fiscalização e as datas convencionais em bloco são medidas separadas."
             >
               {primeiro && (
                 <Numero
@@ -170,33 +170,33 @@ export default function CronogramaPage() {
                 unidade="MW"
                 periodo={`fotografia do RALIE de ${dataRalie}`}
                 cor="var(--serie-comp-3)"
-                nota={`${inteiro(sep.datas.length)} ${sep.datas.length === 1 ? "data" : "datas"} (${listaTexto(sep.datas.map(dataTexto))}), atribuídas em lote: não é cronograma de obra.`}
+                nota={`${inteiro(sep.datas.length)} ${sep.datas.length === 1 ? "data" : "datas"} (${listaTexto(sep.datas.map(dataTexto))}) em lote, não cronograma de obra.`}
               />
               <Numero
                 variante="faixa"
-                rotulo="Prevista para 12 meses e liberada no prazo"
+                rotulo="Prevista e liberada em 12 meses"
                 natureza="CALCULADO"
                 evidencia={ev.confiabilidade_ultima ?? null}
                 formato="pct"
                 casas={1}
                 unidade="da potência prevista"
-                periodo={ult ? `previsões de ${dataTexto(ult.ralie)}, janela até ${dataTexto(ult.fim_janela)}` : undefined}
+                periodo={ult ? `previsões de ${dataTexto(ult.ralie)}` : undefined}
                 cor="var(--serie-referencia)"
-                nota="Coorte passada: não é probabilidade para as previsões atuais."
+                nota="Coorte passada, não probabilidade."
                 motivoAusencia="Sem janela de 12 meses encerrada nesta publicação."
                 endereco="/setor-eletrico/expansao/cronograma#p041"
               />
               {atrasada && (
                 <Numero
                   variante="faixa"
-                  rotulo="Com cronograma atrasado, segundo a fiscalização"
+                  rotulo="Cronograma atrasado (fiscalização)"
                   natureza="CALCULADO"
                   valor={atrasada.mw_outorgado}
                   casas={1}
                   unidade="MW outorgados"
                   periodo={`fotografia do RALIE de ${dataRalie}`}
                   cor="var(--escala-div-neg-1)"
-                  nota={`${inteiro(atrasada.usinas)} ${atrasada.usinas === 1 ? "usina" : "usinas"}, na classificação da fiscalização.`}
+                  nota={`${inteiro(atrasada.usinas)} ${atrasada.usinas === 1 ? "usina" : "usinas"}.`}
                 />
               )}
             </FaixaMetricas>
@@ -229,9 +229,6 @@ export default function CronogramaPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p041" veredito={vereditoCronograma(g) || respostaCronograma(g)}>
-                  {respostaCronograma(g)}
-                </RespostaCurta>
                 <ExpansaoPrevisoes
                   porAno={linhasPrevisoesAno(g)}
                   porAnoSemBloco={sep.cronograma}
@@ -241,6 +238,10 @@ export default function CronogramaPage() {
                   fonte={FONTE_RALIE}
                   avisoBloco={avisoBloco ? <ExpansaoNota>{avisoBloco}</ExpansaoNota> : undefined}
                 />
+                {/* a faixa de cima já traz os números; a resposta vem depois dos gráficos para que a figura comece na primeira tela */}
+                <RespostaCurta id="p041" depois veredito={vereditoCronograma(g) || respostaCronograma(g)}>
+                  {respostaCronograma(g)}
+                </RespostaCurta>
                 <ExpansaoRecorte
                   periodo={
                     <>

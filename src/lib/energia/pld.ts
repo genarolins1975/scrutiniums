@@ -1898,7 +1898,7 @@ export function textoCmoFrenteAosLimites(sm: Submercado, decomp: number | null, 
   const tetos: string[] = [];
   if (acimaHorario) tetos.push(`o teto horário do ato vigente (${reais(lim.teto_horario)}/MWh, limite de cada hora do PLD)`);
   if (acimaEstrutural) tetos.push(`o teto estrutural (${reais(lim.teto_estrutural)}/MWh, limite da média diária do PLD)`);
-  return `O CMO semanal do DECOMP ${DO_SM[sm]}, ${reais(decomp)}/MWh, é maior que ${listaTexto(tetos)}. O CMO não tem esses limites e o PLD tem: nessa semana, a diferença entre os dois mede o limite, não a formação do preço.`;
+  return `O CMO semanal do DECOMP ${DO_SM[sm]}, ${reais(decomp)}/MWh, é maior que ${listaTexto(tetos)}. Os tetos valem para o PLD, não para o CMO que o ONS publica.`;
 }
 
 /** Piso e tetos vigentes em cada semana (pelo último dia da semana), para desenhar no gráfico semanal quando os valores os alcançam. */
@@ -1950,7 +1950,7 @@ export function inflacaoAcumulada(mensal: Pick<BlocoHistorico["mensal"], "meses"
 
 export function textoInflacao(i: { de: string; ate: string; frac: number } | null): string | null {
   if (!i) return null;
-  return `O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de ${mesAno(i.de)} a ${mesAno(i.ate)}: um preço nominal de ${mesAno(i.de)} equivale a mais em reais de hoje do que o mesmo número nominal de ${mesAno(i.ate)}.`;
+  return `O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de ${mesAno(i.de)} a ${mesAno(i.ate)}: R$ 100/MWh nominais de ${mesAno(i.de)} equivalem a cerca de R$ ${num(Math.round(100 * (1 + i.frac)), 0)}/MWh em ${mesAno(i.ate)}.`;
 }
 
 /** O menor valor horário do ano contra o piso do ato: em quantas combinações de ano e submercado conferidas os dois coincidem. */
@@ -1978,7 +1978,7 @@ export function semRessalvaDeLimitesNaoAuditados(texto: string): string {
 }
 
 /** A mesma troca em uma proveniência inteira (lista de limitações), sem alterar o objeto de origem. */
-export function proveniencia_semRessalvaDeLimites<T extends { limitacoes?: string[] }>(p: T): T {
+export function provenienciaSemRessalvaObsoleta<T extends { limitacoes?: string[] }>(p: T): T {
   return p.limitacoes ? { ...p, limitacoes: p.limitacoes.map(semRessalvaDeLimitesNaoAuditados) } : p;
 }
 
@@ -1989,7 +1989,7 @@ export function proveniencia_semRessalvaDeLimites<T extends { limitacoes?: strin
  */
 export function notaTetoComConfirmacaoEmpirica(nota: string): string {
   const i = nota.indexOf("A regra de aplicação não está");
-  return i < 0 ? nota : `${nota.slice(0, i).trim()} A regra está na norma citada abaixo; o padrão observado confirma a leitura.`;
+  return i < 0 ? nota : `${nota.slice(0, i).trim()} A regra está na norma citada nesta seção; o padrão observado confirma a leitura.`;
 }
 
 /* ---------- geração do Balanço do ONS (diagrama e ideia central) ---------- */

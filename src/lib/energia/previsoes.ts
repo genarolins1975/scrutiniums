@@ -40,7 +40,7 @@ export type PainelPrevisoes = { id: IdPainelPrevisoes; codigo: string; rotulo: s
 
 /**
  * Dois painéis por página: a previsão atual e o arquivo de emissões em /previsoes
- * (o que se prevê hoje e o que foi registrado antes do resultado), o registro de
+ * (o que se prevê na rodada mais recente e o que foi registrado antes do resultado), o registro de
  * modelos e o desempenho em /modelos (como cada número é calculado e se ele supera
  * as referências simples). A ordem da lista é a da navegação.
  */
@@ -774,7 +774,7 @@ export type LinhaModelo = {
   aprovacao: string;
 };
 
-/** Número que o modelo emite hoje no arquivo: referência experimental, só registro, ou nenhum. */
+/** Número que o modelo emite no arquivo, na rodada mais recente: referência experimental, só registro, ou nenhum. */
 export function emissaoDoModelo(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
   if (f.aprovacao.estado === "PRODUCAO") return "previsão principal";
   if (f.aprovacao.referencia_experimental) return "referência experimental publicada";

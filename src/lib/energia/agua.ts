@@ -899,8 +899,9 @@ export function textosMlt(mlt: AguaMlt, anoCorrente: string): string[] {
     );
   }
   for (const p of mlt.periodos_provisorios) {
+    // inferência do observatório (uma versão nova e ampla, desfeita depois por um retorno), não uma classificação do ONS
     t.push(
-      `De ${dataBR(p.inicio)} a ${dataBR(p.fim)} vigorou uma versão provisória (${plural(p.usinas_na_nova_versao, "usina mudou", "usinas mudaram")}); em ${dataBR(p.retorno_em)} ${plural(p.usinas_no_retorno, "usina voltou", "usinas voltaram")} aos valores vigentes em ${dataBR(p.versao_restaurada_igual_a_de)}.`,
+      `De ${dataBR(p.inicio)} a ${dataBR(p.fim)} vigorou uma versão inferida como provisória (a inferência é do observatório, não do ONS: uma versão nova foi desfeita depois por um retorno; ${plural(p.usinas_na_nova_versao, "usina mudou", "usinas mudaram")}); em ${dataBR(p.retorno_em)} ${plural(p.usinas_no_retorno, "usina voltou", "usinas voltaram")} aos valores vigentes em ${dataBR(p.versao_restaurada_igual_a_de)}.`,
     );
   }
   const pmo = mlt.pmo;
@@ -909,6 +910,10 @@ export function textosMlt(mlt: AguaMlt, anoCorrente: string): string[] {
     t.push(
       `O Relatório Executivo do PMO publica a MLT mensal por subsistema. Comparada com a MLT implícita do conjunto aberto (tolerância de ${num(pmo.tolerancia_pct, 2)}%, porque o PMO publica MWmed inteiros), ${pmo.meses_coincidentes.length ? `coincide nos meses ${listaTexto(pmo.meses_coincidentes.map(mesAno))}` : "não coincide em nenhum mês inteiro"}${dc.length ? `${pmo.meses_coincidentes.length ? " e" : ","} coincide nos dias de ${listaTexto(dc)}` : ""}; diverge em ${listaTexto(pmo.meses_divergentes.map(mesAno))}, com diferença de até ${num(pmo.maior_diferenca_pct, 2)}%.`,
     );
+    const sem = mesesSemPmo(mlt);
+    if (sem.length) {
+      t.push(`Sem comparação em ${listaMeses(sem)}: nenhum relatório do PMO desses meses entrou na coleta, e a MLT do conjunto aberto desses meses não foi conferida (a linha dos gráficos é interrompida).`);
+    }
   }
   t.push(
     `${plural(mlt.revisoes_no_mes.length, "mudança", "mudanças")} da MLT de usinas existentes fora do dia 1º: ${mlt.revisoes_no_mes
@@ -978,6 +983,122 @@ export function serieMltImplicita(mlt: AguaMlt): PontoMlt[] {
   return s.ano.map((a, i) => ({ x: `${a}-${String(s.mes[i]).padStart(2, "0")}`, SE: s.SE[i] ?? null, S: s.S[i] ?? null, NE: s.NE[i] ?? null, N: s.N[i] ?? null }));
 }
 
+const MESES_EXTENSO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/** "abril de 2026" a partir de "2026-04". */
+export function mesExtenso(anomes: string): string {
+  return `${MESES_EXTENSO[Number(anomes.slice(5, 7)) - 1]} de ${anomes.slice(0, 4)}`;
+}
+
+/** "abril, maio e junho de 2026"; meses de anos diferentes levam o ano cada um ("dezembro de 2025 e janeiro de 2026"). */
+export function listaMeses(meses: readonly string[]): string {
+  if (!meses.length) return "";
+  const anos = new Set(meses.map((m) => m.slice(0, 4)));
+  if (anos.size === 1) return `${listaTexto(meses.map((m) => MESES_EXTENSO[Number(m.slice(5, 7)) - 1]))} de ${meses[0].slice(0, 4)}`;
+  return listaTexto(meses.map(mesExtenso));
+}
+
+/** Todos os meses ("AAAA-MM") de um extremo ao outro, inclusive. */
+export function mesesEntre(inicio: string, fim: string): string[] {
+  const out: string[] = [];
+  let a = Number(inicio.slice(0, 4));
+  let m = Number(inicio.slice(5, 7));
+  const af = Number(fim.slice(0, 4));
+  const mf = Number(fim.slice(5, 7));
+  while ((a < af || (a === af && m <= mf)) && out.length < 600) {
+    out.push(`${a}-${String(m).padStart(2, "0")}`);
+    m += 1;
+    if (m > 12) {
+      m = 1;
+      a += 1;
+    }
+  }
+  return out;
+}
+
+/** Meses entre o primeiro e o último comparados com o PMO que não têm relatório coletado (a lacuna do eixo e o texto vêm daqui). */
+export function mesesSemPmo(mlt: AguaMlt): string[] {
+  const meses = Array.from(new Set(mlt.pmo.comparacao.map((c) => c.mes))).sort();
+  if (meses.length < 2) return [];
+  const com = new Set(meses);
+  return mesesEntre(meses[0], meses[meses.length - 1]).filter((m) => !com.has(m));
+}
+
+export type PontoMltMensal = { m: string; pmo: number | null; inicio: number | null; fim: number | null };
+
+/**
+ * MLT mensal de um subsistema no PMO e no conjunto aberto (início e fim do mês), com todos os meses do período no eixo: o mês sem
+ * relatório vira ausência (a linha se interrompe), e o eixo é de tempo real, não de categorias coladas.
+ */
+export function serieMltMensal(mlt: AguaMlt, sm: Submercado): PontoMltMensal[] {
+  const meses = Array.from(new Set(mlt.pmo.comparacao.map((c) => c.mes))).sort();
+  if (!meses.length) return [];
+  const por = new Map(mlt.pmo.comparacao.filter((c) => c.sm === sm).map((c) => [c.mes, c]));
+  return mesesEntre(meses[0], meses[meses.length - 1]).map((m) => {
+    const c = por.get(m);
+    return { m, pmo: c?.pmo_mwmed ?? null, inicio: c?.aberto_inicio_mwmed ?? null, fim: c?.aberto_fim_mwmed ?? null };
+  });
+}
+
+export type PontoDiferencaMlt = { m: string; tol_inf: number | null; tol_sup: number | null } & Record<Submercado, number | null>;
+
+/**
+ * Diferença da MLT do conjunto aberto contra a do PMO, em %, no início de cada mês, por subsistema, com a tolerância publicada (o PMO
+ * publica MWmed inteiros) como faixa em torno de zero. Os números são os `dif_inicio_pct` da gold; mês sem relatório é ausência.
+ */
+export function serieDiferencaMlt(mlt: AguaMlt): PontoDiferencaMlt[] {
+  const meses = Array.from(new Set(mlt.pmo.comparacao.map((c) => c.mes))).sort();
+  if (!meses.length) return [];
+  const tol = mlt.pmo.tolerancia_pct;
+  return mesesEntre(meses[0], meses[meses.length - 1]).map((m) => {
+    const l = { m, SE: null, S: null, NE: null, N: null, tol_inf: null, tol_sup: null } as PontoDiferencaMlt;
+    for (const c of mlt.pmo.comparacao) {
+      if (c.mes !== m) continue;
+      l[c.sm] = c.dif_inicio_pct;
+      l.tol_inf = -tol;
+      l.tol_sup = tol;
+    }
+    return l;
+  });
+}
+
+/**
+ * Meses em que a MLT do conjunto aberto mudou dentro do mês (a diferença no fim do mês não é a do início): a frase diz a diferença
+ * do fim, que o gráfico do início do mês não mostra. Vazia quando nenhum mês mudou.
+ */
+export function textoMudancaMltNoMes(mlt: AguaMlt): string {
+  const meses = Array.from(new Set(mlt.pmo.comparacao.filter((c) => c.dif_inicio_pct !== c.dif_fim_pct).map((c) => c.mes))).sort();
+  if (!meses.length) return "";
+  const partes = meses.map((m) => {
+    const dif = SUBSISTEMAS.map((sm) => mlt.pmo.comparacao.find((c) => c.mes === m && c.sm === sm))
+      .filter((c): c is NonNullable<typeof c> => !!c && c.dif_fim_pct !== null)
+      .map((c) => `${CURTO_REGIAO[c.sm]} ${sinal(c.dif_fim_pct, 3)}%`);
+    return `em ${mesExtenso(m)} a MLT do conjunto aberto mudou durante o mês, e no fim dele a diferença com o PMO foi de ${listaTexto(dif)}`;
+  });
+  return `${cap(partes.join("; "))}.`;
+}
+
+export type PontoMltJanJul = Record<string, string | number | null>;
+
+/**
+ * MLT implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho, uma coluna por subsistema e mês (`SE_1`, `SE_7`), uma
+ * linha por ano: janeiro e julho viram duas linhas por subsistema, e a mudança de versão aparece como degrau em cada uma.
+ */
+export function serieMltJanJul(mlt: AguaMlt): PontoMltJanJul[] {
+  const s = mlt.implicita_subsistemas;
+  const anos = Array.from(new Set(s.ano)).sort((a, b) => a - b);
+  return anos.map((ano) => {
+    const l: PontoMltJanJul = { x: String(ano) };
+    for (const sm of SUBSISTEMAS) for (const mes of [1, 7]) l[`${sm}_${mes}`] = null;
+    s.ano.forEach((a, i) => {
+      if (a !== ano) return;
+      const mes = s.mes[i];
+      for (const sm of SUBSISTEMAS) l[`${sm}_${mes}`] = s[sm][i] ?? null;
+    });
+    return l;
+  });
+}
+
 export const COLUNAS_MLT_ANOS: ColunaTabela[] = [
   { id: "ano", rotulo: "Ano", tipo: "numero", casas: 0 },
   { id: "mes", rotulo: "Mês", tipo: "texto", categorica: true },
@@ -1001,7 +1122,7 @@ export const COLUNAS_UNIDADE: ColunaTabela[] = [
   { id: "dias", rotulo: "Dias comparados", tipo: "numero", casas: 0 },
   { id: "dias_dentro", rotulo: "Dias dentro de 0,1%", tipo: "numero", casas: 0 },
   { id: "max_dif_rel_pct", rotulo: "Maior diferença", tipo: "percentual", casas: 3 },
-  { id: "dia", rotulo: "Exemplo: dia", tipo: "data" },
+  { id: "dia", rotulo: "Dia de exemplo", tipo: "data" },
   { id: "soma", rotulo: "Soma das usinas", tipo: "numero", unidade: "MWmed", casas: 3 },
   { id: "subsistema", rotulo: "Subsistema", tipo: "numero", unidade: "MWmed", casas: 3 },
 ];
@@ -1065,16 +1186,17 @@ export function respostaTemperatura(t: AguaTemperatura, base: string): string {
 }
 
 /**
- * Veredito da chuva do P019 em palavras simples: os milímetros dos 30 dias ao lado da média dos mesmos dias (a anomalia em %
- * sozinha engana quando a média é pequena). Percentis, janela preliminar e a correlação ficam em respostaChuva e textoAssociacao.
+ * Veredito da chuva do P019 em palavras simples: os milímetros dos 30 dias e a posição entre os mesmos dias de anos anteriores (o
+ * percentil), com a média ao lado. A anomalia em % sozinha engana quando a média é pequena (um período seco faz 70 mm virar +351%), por
+ * isso ela fica na nota do destaque e em respostaChuva, junto da cautela.
  */
 export function vereditoChuva(b: AguaPrecipitacaoBacia): string {
   const onde = `a bacia do ${nomeProprio(b.bacia)}`;
   if (b.mm_30d === null) return `Sem estimativa de chuva de 30 dias para ${onde} até ${dataBR(b.dia)}: algum dia da janela ficou abaixo de 80% de cobertura, e a soma nunca é feita com dia faltando.`;
-  const an = textoAnomaliaPct(b.anomalia_30d_pct);
-  const comparacao = an ? `, ${an} média dos mesmos dias (${num(b.media_30d_base, 1)} mm)` : "";
-  const prelim = b.preliminar_30d ? " A janela tem dias preliminares." : "";
-  return `Nos 30 dias até ${dataBR(b.dia)}, ${onde} recebeu ${num(b.mm_30d, 1)} mm de chuva (estimativa por satélite)${comparacao}.${prelim}`;
+  const pos = b.percentil_30d !== null ? `, no percentil ${num(b.percentil_30d, 0)} dos mesmos dias de anos anteriores` : "";
+  const media = b.media_30d_base !== null ? ` (média desses dias: ${num(b.media_30d_base, 1)} mm)` : "";
+  const prelim = b.preliminar_30d ? " A janela é preliminar." : "";
+  return `Nos 30 dias até ${dataBR(b.dia)}, ${onde} recebeu ${num(b.mm_30d, 1)} mm de chuva estimada por satélite${pos}${media}.${prelim}`;
 }
 
 /** Veredito da temperatura do P019: a média dos 30 dias ao lado da média dos mesmos dias. Percentil e produto da reanálise ficam em respostaTemperatura. */
@@ -1083,20 +1205,24 @@ export function vereditoTemperatura(t: AguaTemperatura): string {
   if (t.media_30d_c === null) return `Sem temperatura de 30 dias ${de} até ${dataBR(t.dia)}: falta dia com cobertura suficiente na janela.`;
   const an = textoAnomaliaGraus(t.anomalia_30d_c);
   const comparacao = an ? `, ${an} média dos mesmos dias (${num(t.media_30d_base_c, 2)} °C)` : "";
-  return `Nos 30 dias até ${dataBR(t.dia)}, a temperatura média ${de} foi de ${num(t.media_30d_c, 2)} °C${comparacao}. É estimativa de reanálise, não medida de estação.`;
+  const prelim = t.preliminar_30d ? " A janela é preliminar." : "";
+  return `Nos 30 dias até ${dataBR(t.dia)}, a temperatura média ${de} foi de ${num(t.media_30d_c, 2)} °C${comparacao}. É estimativa de reanálise, não medida de estação.${prelim}`;
 }
 
-/** Veredito da associação entre a chuva e a afluência da bacia: a correlação do mesmo mês, dita como associação e nunca como causa. */
+/**
+ * Veredito da associação entre a chuva e a afluência da bacia: a correlação de Pearson do mesmo mês, com o método dito na frase
+ * (anomalia percentual de chuva, sensível a meses secos) e como associação, nunca como causa.
+ */
 export function vereditoAssociacao(b: AguaPrecipitacaoBacia): string | null {
   const a = b.associacao_ena;
   if (!a || a.r_mesmo_mes === null) return null;
-  return `Na bacia do ${nomeProprio(b.bacia)}, de ${periodoBase(a.periodo)}, a correlação entre a chuva do mês e a afluência do mesmo mês é de ${num(a.r_mesmo_mes, 2)}, numa escala de −1 a 1. É associação, não causa.`;
+  return `Na bacia do ${nomeProprio(b.bacia)}, de ${periodoBase(a.periodo)}, a correlação de Pearson entre a anomalia percentual de chuva do mês e a ENA do mesmo mês é de ${num(a.r_mesmo_mes, 2)} (escala de −1 a 1), sensível a meses secos. É associação, não causa.`;
 }
 
 export function textoAssociacao(b: AguaPrecipitacaoBacia): string | null {
   const a = b.associacao_ena;
   if (!a || (a.r_mesmo_mes === null && a.r_mes_seguinte === null)) return null;
-  return `Associação, não causa: de ${periodoBase(a.periodo)}, a correlação entre a anomalia mensal de chuva e a ENA em % da MLT da bacia foi de ${num(a.r_mesmo_mes, 2)} no mesmo mês (${plural(a.n_mesmo_mes, "mês", "meses")}) e de ${num(a.r_mes_seguinte, 2)} com a ENA do mês seguinte (${plural(a.n_mes_seguinte, "mês", "meses")}).`;
+  return `Associação, não causa: de ${periodoBase(a.periodo)}, a correlação de Pearson entre a anomalia mensal percentual de chuva e a ENA em % da MLT da bacia foi de ${num(a.r_mesmo_mes, 2)} no mesmo mês (${plural(a.n_mesmo_mes, "mês", "meses")}) e de ${num(a.r_mes_seguinte, 2)} com a ENA do mês seguinte (${plural(a.n_mes_seguinte, "mês", "meses")}). A anomalia percentual é sensível a meses secos, em que a média é de poucos milímetros, e outros métodos de correlação podem dar outro valor.`;
 }
 
 /** Período do mapa: "30d" (janela até o último dia) ou um dos 12 meses completos publicados. */
@@ -1823,7 +1949,8 @@ export function textoMltNaoConcluir(mlt: AguaMlt): string {
   const div = mlt.pmo.meses_divergentes;
   const fim = "e versões antigas da MLT diferem da atual: o percentual não é comparável entre publicações e períodos longos sem esse cuidado.";
   if (!meses.length) return `A MLT dos relatórios do PMO não foi conferida nesta publicação, ${fim}`;
-  const per = `${mesAno(meses[0])} a ${mesAno(meses[meses.length - 1])}`;
+  const sem = mesesSemPmo(mlt);
+  const per = `${mesAno(meses[0])} a ${mesAno(meses[meses.length - 1])}${sem.length ? `, sem ${listaMeses(sem)}` : ""}`;
   if (!div.length) return `A MLT do conjunto aberto coincidiu com a dos relatórios do PMO nos ${meses.length} meses conferidos (${per}), ${fim}`;
   const quantos = div.length === meses.length ? `em todos os ${meses.length} meses conferidos` : `em ${plural(div.length, "mês", "meses")} dos ${meses.length} conferidos`;
   return `A MLT do conjunto aberto difere da dos relatórios do PMO ${quantos} (${per}, comparada no fim do mês), ${fim}`;
@@ -1857,4 +1984,36 @@ export function textoMudancaDecomposicao(ds: readonly AguaDecomposicaoEar[]): st
   const mesma = com.every((d) => d.inicio === com[0].inicio && d.fim === com[0].fim);
   const partes = com.map((d) => `${NOME_REGIAO[d.sm]} ${sinal(d.delta_ear_mwmes, 1)}${mesma ? "" : ` (${dataBR(d.inicio)} a ${dataBR(d.fim)})`}`);
   return `${mesma ? `De ${dataBR(com[0].inicio)} a ${dataBR(com[0].fim)}, a` : "A"} EAR variou, em MWmês: ${partes.join("; ")}.`;
+}
+
+/* ---------- revisões do ONS: o que as fichas e os destaques dizem sobre a ENA e o volume ---------- */
+
+/** Linha "Revisões" da ficha de um número que vem de uma única captura (reservatórios, chuva): o que é exato dizer. */
+export const REVISOES_CAPTURA_UNICA = "Ainda não é possível detectar revisões: há uma única captura.";
+
+/**
+ * Linha "Revisões" da ficha "Comprove este número" da ENA, montada das linhas da tabela de revisões da própria página (as mesmas que
+ * `linhasRevisoesCapturas` entrega), para a ficha não dizer "nenhuma revisão" onde a página mostra revisão.
+ */
+export function textoRevisoesFicha(rs: readonly AguaRevisaoCaptura[]): string {
+  const com = rs.filter((r) => r.dias_revisados > 0);
+  if (!com.length) return "Nenhum valor dos últimos 30 dias mudou entre as duas capturas mais recentes.";
+  const dias = com.map((r) => `${CURTO_REGIAO[r.sm]} ${r.dias_revisados}`);
+  const maior = [...com].sort((a, b) => Math.abs(b.diferenca ?? 0) - Math.abs(a.diferenca ?? 0))[0];
+  return `O ONS revisou a ENA bruta entre as duas capturas mais recentes, em dias dos últimos 30: ${listaTexto(dias)}. A maior diferença foi de ${sinal(maior.diferenca, 1)} MWmed no ${NOME_REGIAO[maior.sm]}, em ${dataBR(maior.dia_maior)}. O detalhe está na tabela de revisões do ONS desta página, em Auditar.`;
+}
+
+/**
+ * Nota de provisório dos destaques da ENA: os últimos dias ainda mudam, e a página mostra quanto mudaram entre as duas capturas
+ * mais recentes. Dita em palavras, sem cor de alerta.
+ */
+export function textoEnaProvisoria(rs: readonly AguaRevisaoCaptura[]): string {
+  const base = "A ENA dos últimos dias é provisória: o ONS a revisa depois de publicá-la";
+  const com = rs.filter((r) => r.dias_revisados > 0);
+  if (!com.length) return `${base}; entre as duas capturas mais recentes, nenhum valor dos últimos 30 dias mudou.`;
+  const n = com.map((r) => r.dias_revisados);
+  const menor = Math.min(...n);
+  const maior = Math.max(...n);
+  const quanto = menor === maior ? `${maior} dos 30 dias` : `de ${menor} a ${maior} dos 30 dias`;
+  return `${base}. Entre as duas capturas mais recentes, ele revisou ${quanto}, conforme o subsistema (detalhe na tabela de revisões, em Auditar).`;
 }

@@ -1684,6 +1684,52 @@ export function linhasDistribuicao(p: Pick<ProgramadoRede, "distribuicao">, base
   });
 }
 
+export type MedidasProgramado = {
+  par: ParProgramado;
+  nome: string;
+  inicio: string;
+  fim: string;
+  /** Horas com programado e verificado comparáveis na base escolhida. */
+  horas: number;
+  desvio_abs_medio_mwmed: number;
+  p50_abs_mwmed: number;
+  /** Limiar material publicado (MWmed) e as horas com desvio nesse limiar ou acima. */
+  limiar_mwmed: number;
+  horas_materiais: number | null;
+  /** Horas em que verificado e programado correram em sentidos opostos, os dois acima do limiar de zero. */
+  horas_inversao: number;
+  /** Dias rotulados por programa repetido que a base "sem" exclui (zero na base "com"). */
+  dias_excluidos: number;
+};
+
+/**
+ * Medidas da abertura do P031 para o par e a base escolhidos: o desvio absoluto médio e a mediana, as horas com desvio material e as horas
+ * no sentido oposto ao programa. São os mesmos campos da distribuição (distribuicaoDe) que alimentam a resposta, a faixa de desvios, a
+ * tabela e a exportação. Nulo quando o par não tem horas comparáveis.
+ */
+export function medidasProgramado(
+  p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed">,
+  par: ParProgramado,
+  base: BaseDesvio,
+): MedidasProgramado | null {
+  const d = distribuicaoDe(p, par, base);
+  if (!d) return null;
+  const completa = p.distribuicao[par];
+  return {
+    par,
+    nome: nomePar(par),
+    inicio: d.inicio,
+    fim: d.fim,
+    horas: d.horas,
+    desvio_abs_medio_mwmed: d.desvio_abs_medio_mwmed,
+    p50_abs_mwmed: d.p50_abs_mwmed,
+    limiar_mwmed: p.limiar_material_mwmed,
+    horas_materiais: d.horas_materiais[String(p.limiar_material_mwmed) as "1000"] ?? null,
+    horas_inversao: d.horas_inversao,
+    dias_excluidos: base === "sem" ? (completa?.dias_rotulados ?? 0) : 0,
+  };
+}
+
 /** Colunas da distribuição; os rótulos das contagens usam os limiares publicados na gold. */
 export function colunasDistribuicao(p: Pick<ProgramadoRede, "limiar_material_mwmed">): ColunaTabela[] {
   const rotulo = (l: number) => `Horas com desvio de ${num(l, 0)} MWmed ou mais${l === p.limiar_material_mwmed ? " (materiais)" : ""}`;

@@ -1,48 +1,49 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
 import { RegulacaoLimites } from "@/components/energia/RegulacaoLimites";
-import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import {
-  RegulacaoAnalise,
-  RegulacaoAuditoria,
+  FichaDoAto,
   RegulacaoAviso,
+  RegulacaoCapitulos,
+  RegulacaoDatas,
   RegulacaoIndisponivel,
-  RegulacaoLeitura,
   RegulacaoLinkExterno,
   RegulacaoNavegacao,
   RegulacaoRecorte,
-  RegulacaoSeguir,
 } from "@/components/energia/RegulacaoPagina";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num, reais } from "@/lib/energia/formato";
+import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   ALCANCE_LIMITE,
-  ARTIGO_LIMITE,
-  CAMPOS_LIMITE,
   COLUNAS_ATOS,
   COLUNAS_BANDEIRAS,
   COLUNAS_CONFERENCIAS_DETALHE,
   COLUNAS_CONTAGEM_CONFERENCIAS,
   COLUNAS_PROCEDIMENTOS,
+  COR_LIMITE,
   NOME_LIMITE,
+  CAMPOS_LIMITE,
   ROTA_REGULACAO,
-  ROTULO_CONFERENCIA,
-  ROTULO_RESULTADO_CONFERENCIA,
   SERIES_PROCEDIMENTOS,
   anosLimites,
   atosDoAno,
   avisoToleranciaIpca,
   contagemProcedimentos,
   downloadsDoPainel,
+  limitesVigentes,
   linhasAtos,
   linhasBandeiras,
   linhasConferenciasDetalhe,
@@ -57,14 +58,15 @@ import {
   respostaP044,
   respostaProcedimentos,
   rotaPainel,
+  semTravessao,
+  textoAtosDoAno,
   textoConferenciaAcionamento,
-  textoReuniao,
   vereditoLimites,
   vereditoP044,
   vigenteEm,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import type { AtoLimite, GoldRegulacao } from "@/lib/energia/tipos-regulacao";
+import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { snapshotLegivel } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
@@ -88,103 +90,7 @@ const COLUNAS_ACIONAMENTO: ColunaTabela[] = [
   { id: "motivo", rotulo: "Por que não há resolução", tipo: "texto", categorica: true },
 ];
 
-/**
- * Um ato de limites. Em Entender: o que fixou (com o que cada limite limita), quando saiu no Diário Oficial e desde quando
- * vale. A data do ato, o dispositivo, onde foi lido, as conferências feitas sobre o texto, o trecho literal e o documento
- * ficam em Analisar.
- */
-function CartaoAto({ a }: { a: AtoLimite }) {
-  const fixou = CAMPOS_LIMITE.filter((c) => a[c] !== null);
-  return (
-    <article className="min-w-0 border border-linha bg-superficie p-4 text-sm" data-ato={a.ato}>
-      <h4 className="font-serif text-base text-carvao">{a.ato}</h4>
-      <dl className="mt-2 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 [&_dd]:[overflow-wrap:anywhere]">
-        <dt className="text-carvao-muted">Fixou</dt>
-        <dd className="text-carvao">
-          {fixou.length ? (
-            <ul className="space-y-0.5">
-              {fixou.map((c) => (
-                <li key={c}>
-                  {ARTIGO_LIMITE[c].replace(/^o /, "")} {reais(a[c], 2)}/MWh <span className="text-carvao-muted">({ALCANCE_LIMITE[c]})</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            "nenhum dos três limites"
-          )}
-          {fixou.length < 3 && fixou.length > 0 ? <span className="block text-carvao-muted">Os demais limites do ano vêm de outro ato.</span> : null}
-        </dd>
-        <dt className="text-carvao-muted">Publicação</dt>
-        <dd className="text-carvao">
-          {a.data_publicacao ? <time dateTime={a.data_publicacao}>{dataBR(a.data_publicacao)}</time> : <span className="italic text-carvao-muted">não conferida (extrato do ato não acessível)</span>}
-        </dd>
-        <dt className="text-carvao-muted">Vigência</dt>
-        <dd className="tabular-nums text-carvao">
-          de {dataBR(a.vigencia_inicio)} a {dataBR(a.vigencia_fim)}
-        </dd>
-      </dl>
-      <div data-nivel="analisar" className="mt-3 space-y-2 border-t border-linha pt-3">
-        <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 [&_dd]:[overflow-wrap:anywhere]">
-          <dt className="text-carvao-muted">Data do ato</dt>
-          <dd className="tabular-nums text-carvao">{a.data_do_ato ? dataBR(a.data_do_ato) : "não informada"}</dd>
-          {a.dou ? (
-            <>
-              <dt className="text-carvao-muted">Diário Oficial</dt>
-              <dd className="text-carvao">{a.dou}</dd>
-            </>
-          ) : null}
-          <dt className="text-carvao-muted">Dispositivo</dt>
-          <dd className="text-carvao">{a.dispositivo}</dd>
-          <dt className="text-carvao-muted">Onde foi lido</dt>
-          <dd className="text-carvao">
-            {a.nivel_conferencia === "texto_do_ato" ? "no texto do próprio ato" : "em documento oficial do mesmo processo (o texto do ato não está acessível)"}
-            {a.documento_titulo ? `: ${a.documento_titulo}` : ""}
-            {a.pagina !== null ? `, página ${a.pagina}` : ""}
-          </dd>
-          {a.deliberacao && (
-            <>
-              <dt className="text-carvao-muted">Deliberação</dt>
-              <dd className="text-carvao">
-                reunião {textoReuniao(a.deliberacao.reuniao)} da Diretoria, em {dataBR(a.deliberacao.data)}
-                {a.deliberacao.processo ? `, processo ${a.deliberacao.processo}` : ""}
-              </dd>
-            </>
-          )}
-          {a.altera_ou_revoga && (
-            <>
-              <dt className="text-carvao-muted">Altera ou revoga</dt>
-              <dd className="text-carvao">{a.altera_ou_revoga}</dd>
-            </>
-          )}
-        </dl>
-        <ul className="space-y-0.5 text-xs text-carvao-muted" aria-label={`Conferências de ${a.ato}`}>
-          {a.conferencias.map((c, i) => (
-            <li key={`${c.conferencia}:${c.campo}:${i}`}>
-              <span className="text-carvao">{ROTULO_CONFERENCIA[c.conferencia] ?? c.conferencia}</span>
-              {c.campo && ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE] ? ` (${ARTIGO_LIMITE[c.campo as keyof typeof ARTIGO_LIMITE].replace(/^o /, "")})` : ""}: {ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}. {c.detalhe}
-            </li>
-          ))}
-        </ul>
-        <details className="text-xs">
-          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Trecho literal, documento e observações</summary>
-          <div className="mt-1 space-y-1.5 border-l-2 border-linha pl-3 text-carvao-muted">
-            <p>
-              <q>{a.trecho}</q>
-            </p>
-            {a.observacoes.map((o) => (
-              <p key={o}>{o}</p>
-            ))}
-            <p className="flex flex-wrap gap-x-4">
-              {a.url_oficial && <RegulacaoLinkExterno bloco href={a.url_oficial}>Endereço oficial (ANEEL)</RegulacaoLinkExterno>}
-              {a.copia_publica && <RegulacaoLinkExterno bloco href={a.copia_publica}>Cópia pública lida, conferida por sha256</RegulacaoLinkExterno>}
-            </p>
-            {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {a.sha256}</p>}
-          </div>
-        </details>
-      </div>
-    </article>
-  );
-}
+const maiuscula = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 export default function RegulacaoPage() {
   const g = lerGold<GoldRegulacao>("regulacao.json");
@@ -200,11 +106,7 @@ export default function RegulacaoPage() {
   const detalhes = Object.fromEntries(
     linhas.map((l) => [
       l.id,
-      <div key={l.id} className="grid gap-3 lg:grid-cols-2">
-        {atosDoAno(g, l.ano).map((a) => (
-          <CartaoAto key={a.ato} a={a} />
-        ))}
-      </div>,
+      atosDoAno(g, l.ano).map((a) => <FichaDoAto key={a.ato} a={a} />),
     ]),
   );
   const ev = g.evidencias.limites;
@@ -219,55 +121,127 @@ export default function RegulacaoPage() {
   const semPublicacao = Array.from(new Set(L.atos.filter((a) => !a.data_publicacao).map((a) => a.ano)));
   // anos em que nenhum ato foi lido no texto: o valor veio de documento oficial do mesmo processo
   const anosSemTexto = Array.from(new Set(L.atos.filter((a) => a.nivel_conferencia !== "texto_do_ato").map((a) => a.ano))).sort((a, b) => a - b);
+  const { vigencia, limites } = limitesVigentes(g);
+  const atosMaisRecente = L.atos.slice().sort((a, b) => (b.data_publicacao ?? b.vigencia_inicio).localeCompare(a.data_publicacao ?? a.vigencia_inicio))[0];
+  const dataRef = dataBR(g.data_referencia);
+
+  const oQueMudou = <>{oQueMudouLimites(g)}</>;
+  const comoInterpretar = (
+    <>
+      O teto horário limita cada hora; o teto estrutural limita a média diária dos preços horários, e a CCEE (Câmara de Comercialização de Energia Elétrica) ajusta o dia
+      quando a média passa dele; o piso vale para todas as horas. Os valores são os escritos no ato, conferidos no PDF guardado; quando o texto do ato não está acessível,
+      o valor foi lido em voto ou nota técnica do mesmo processo e isso aparece em cada ato.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Os valores são nominais: a diferença entre anos inclui a inflação, já que os tetos são atualizados pelo IPCA, e não mede aumento real. O menor PLD observado nunca
+      substitui o piso: sem ato, o campo fica vazio. Esta página não diz quantas horas o PLD ficou no piso ou nos tetos: isso está em{" "}
+      <a href={ROTA_PLD_LIMITES} className="text-energia-dark underline underline-offset-4">
+        limites, piso e tetos do PLD
+      </a>
+      . A versão que a página oficial do PRODIST ou do PRORET publica não prova que ela é a vigente quando há ato posterior que aprova outra.
+      {semPublicacao.length
+        ? ` A publicação no DOU de ${semPublicacao.join(", ")} não foi conferida, porque o extrato do ato não está acessível: a data fica vazia, nunca com a data de captura.`
+        : ""}{" "}
+      A leitura dos atos é do observatório: não é parecer jurídico, e o texto oficial de cada ato está em Analisar.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["PLD", "DOU", "ANEEL", "CCEE", "PRODIST", "PRORET"]}
-          rotulo="Regulação"
-          titulo="Que regras mudaram, quando e com qual efeito declarado?"
+        <RegulacaoNavegacao atual="p044" />
+        <CabecalhoModulo
+          siglas={["PLD", "DOU", "ANEEL", "CCEE", "PRODIST", "PRORET", "REN", "REH"]}
+          titulo={perguntaPainel("p044")}
+          lead="O piso e os dois tetos do preço de curto prazo (PLD, Preço de Liquidação das Diferenças) em cada ano, com o ato da ANEEL que os fixou e as datas de publicação e de vigência separadas."
+          recorte={`Vigência em ${dataRef} · limites de ${anos[0]} a ${anos[anos.length - 1]} · R$/MWh nominais`}
+          fonte="ANEEL, Agência Nacional de Energia Elétrica, atos anuais de limites do PLD"
           referencia={
             <>
-              ANEEL, atos de limites do PLD, recursos de bandeiras tarifárias e páginas oficiais do PRODIST e do PRORET; data de referência {dataBR(g.data_referencia)};
-              processado em {carimbo(g.gerado_em)}.
+              ANEEL, atos de limites do PLD, recursos de bandeiras tarifárias e páginas oficiais do PRODIST e do PRORET; data de referência {dataRef}; processado em{" "}
+              {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <RegulacaoDatas
+              itens={[
+                {
+                  rotulo: "Limites do PLD",
+                  texto: `${atosMaisRecente ? `ato mais recente publicado em ${dataBR(atosMaisRecente.data_publicacao ?? atosMaisRecente.vigencia_inicio)}; ` : ""}atos conferidos em ${dataBR(L.conferido_em)}`,
+                  natureza: "OBSERVADO",
+                },
+                { rotulo: "Bandeiras", texto: `adicionais gerados pela ANEEL em ${dataBR(band.gerado_pela_fonte_em)}`, natureza: "OBSERVADO" },
+                { rotulo: "PRODIST e PRORET", texto: `páginas verificadas em ${carimbo(proc.verificado_em.prodist)}`, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={3}
+              rotulo={`Limites do PLD vigentes em ${dataRef}`}
+              nota={
+                <>
+                  Valores vigentes em {dataRef}; não mudam com o ano escolhido no gráfico. {limites.length ? textoAtosDoAno(g, vig?.ano ?? 0) : ""} O teto estrutural e o teto horário se aplicam a objetos
+                  diferentes: o primeiro à média diária dos preços horários, o segundo a cada hora.
+                </>
+              }
+            >
+              {CAMPOS_LIMITE.map((c) => {
+                const l = limites.find((x) => x.campo === c);
+                return ev[c] && l ? (
+                  <Numero
+                    key={c}
+                    variante="faixa"
+                    rotulo={NOME_LIMITE[c]}
+                    natureza="OBSERVADO"
+                    evidencia={ev[c]}
+                    formato="reais"
+                    casas={2}
+                    periodo={`vigência de ${dataBR(l.inicio)} a ${dataBR(l.fim)}`}
+                    cor={COR_LIMITE[c]}
+                    nota={maiuscula(`${ALCANCE_LIMITE[c]}.`)}
+                    endereco={`${ROTA_REGULACAO}#p044`}
+                  />
+                ) : (
+                  <Numero
+                    key={c}
+                    variante="faixa"
+                    rotulo={NOME_LIMITE[c]}
+                    natureza="OBSERVADO"
+                    valor={null}
+                    cor={COR_LIMITE[c]}
+                    motivoAusencia={`Sem ato em vigor que fixe este limite em ${dataRef}.`}
+                  />
+                );
+              })}
+            </FaixaMetricas>
+          }
         >
-          Esta página tem três painéis. O primeiro, aberto agora, responde quais regras de preço valem em cada período e qual ato as fixou, com a data em que o ato saiu no Diário Oficial
-          e a data em que começou a valer em campos separados. Ele parte dos <Termo slug="limites-do-pld">limites</Termo> do <Termo slug="pld">PLD</Termo>, que a página do preço usa para dizer
-          se um valor está no piso ou no teto. O segundo painel é a linha do tempo do que mudou, e o terceiro traz as consultas abertas e a agenda da ANEEL.
+          Esta página responde quais regras de preço valem em cada período e qual ato as fixou, com a data em que o ato saiu no Diário Oficial e a data em que começou a valer
+          em campos separados. Ela parte dos <Termo slug="limites-do-pld">limites</Termo> do <Termo slug="pld">PLD</Termo>, que a página do preço usa para dizer se um valor
+          está no piso ou no teto. As outras duas páginas são a linha do tempo do que mudou e as consultas abertas e a agenda da ANEEL.
         </CabecalhoModulo>
-        <RegulacaoNavegacao atual="p044" />
         <ModoProfundidade>
           <Bloco id="limites">
             <PainelEvidencia
               id="p044"
-              pergunta={perguntaPainel("p044")}
+              pergunta="Quais são os limites de cada ano e qual ato os fixou?"
               subtitulo="Limites do PLD por ano, adicionais das bandeiras e versões do PRODIST e do PRORET · R$/MWh nominais"
               natureza="OBSERVADO"
               porQueImporta={
                 <>
-                  O piso e os tetos dizem até onde o PLD pode ir em cada hora e em cada dia; sem eles, um PLD no piso parece só um preço baixo. Saber qual ato
-                  vale, e desde quando, evita aplicar o limite de um ano a outro e confundir a data em que a regra foi publicada com a data em que passou a valer.
+                  O piso e os tetos dizem até onde o PLD pode ir em cada hora e em cada dia; sem eles, um PLD no piso parece só um preço baixo. Saber qual ato vale, e desde
+                  quando, evita aplicar o limite de um ano a outro e confundir a data em que a regra foi publicada com a data em que passou a valer.
                 </>
               }
-              oQueMudou={<>{oQueMudouLimites(g)}</>}
-              comoInterpretar={
-                <>
-                  O teto horário limita cada hora; o teto estrutural limita a média diária dos preços horários, e a CCEE ajusta o dia quando a média passa dele; o piso vale
-                  para todas as horas. Os valores são os escritos no ato, conferidos no PDF guardado; quando o texto do ato não está acessível, o valor foi lido em voto ou nota
-                  técnica do mesmo processo e isso aparece em cada ato.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Os valores são nominais: a diferença entre anos inclui a inflação, já que os tetos são atualizados pelo IPCA, e não mede aumento real. O menor PLD observado
-                  nunca substitui o piso: sem ato, o campo fica vazio. A versão que a página oficial do PRODIST ou do PRORET publica não prova que ela é a vigente quando há ato
-                  posterior que aprova outra.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.limites}
               complementares={[
                 { rotulo: "Adicionais das bandeiras tarifárias", p: g.proveniencia.bandeiras },
@@ -275,78 +249,148 @@ export default function RegulacaoPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p044" veredito={vereditoP044(g)}>
-                  {respostaP044(g)}
-                </RespostaCurta>
-                <RegulacaoRecorte
-                  periodo={
+                <RegulacaoLimites
+                  linhas={linhas}
+                  anoPadrao={anoPadrao}
+                  respostas={respostas}
+                  vereditos={vereditos}
+                  detalhes={detalhes}
+                  fonte={FONTE_LIMITES}
+                  versao={versao}
+                  legendaFigura={
                     <>
-                      {anos.length ? `${anos[0]} a ${anos[anos.length - 1]}, por ano civil de vigência` : "sem ato integrado"}; bandeiras de {dataBR(band.vigencias[0]?.vigencia_inicio ?? null)}{" "}
-                      em diante
-                    </>
-                  }
-                  universo="Limites do PLD fixados pela ANEEL para todos os submercados; adicionais das bandeiras; módulos do PRODIST e submódulos do PRORET"
-                  unidade="R$/MWh nominais, como escritos nos atos"
-                />
-                <div className="grid gap-4 sm:grid-cols-3">
-                  {(["pld_min", "pld_max_estrutural", "pld_max_horario"] as const).map((c) =>
-                    ev[c] ? (
-                      <Numero
-                        key={c}
-                        rotulo={`${NOME_LIMITE[c]} vigente`}
-                        natureza="OBSERVADO"
-                        evidencia={ev[c]}
-                        formato="reais"
-                        casas={2}
-                        tamanho="medio"
-                        cor={c === "pld_min" ? "var(--serie-referencia)" : c === "pld_max_estrutural" ? "var(--cor-energia)" : "var(--cor-energia-dark)"}
-                        endereco={`${ROTA_REGULACAO}#p044`}
-                      />
-                    ) : (
-                      <Numero key={c} rotulo={`${NOME_LIMITE[c]} vigente`} natureza="OBSERVADO" valor={null} motivoAusencia="sem ato em vigor que fixe este limite na data de referência" />
-                    ),
-                  )}
-                </div>
-
-                <RegulacaoLimites linhas={linhas} anoPadrao={anoPadrao} respostas={respostas} vereditos={vereditos} detalhes={detalhes} fonte={FONTE_LIMITES} versao={versao} />
-
-                <RegulacaoLeitura
-                  comoLer={
-                    <>
-                      Cada grupo de barras é um ano; as três barras partem do zero, então a altura compara valores. A tabela de vigências tem as mesmas linhas, com o ato de cada
-                      campo, a publicação no Diário Oficial e o início e o fim da vigência em colunas próprias. Escolha um ano no gráfico, na tabela ou no seletor para ver os
+                      Cada grupo de barras é um ano; as três barras partem do zero, então a altura compara valores. Escolha um ano no gráfico, na tabela ou no seletor para ver os
                       atos dele.
                     </>
                   }
-                  naoPermite={
-                    <>
-                      Não permite dizer quantas horas o PLD ficou no piso ou no teto (isso está em{" "}
-                      <a href={ROTA_PLD_LIMITES} className="text-energia-dark underline underline-offset-4">
-                        limites, piso e tetos do PLD
-                      </a>
-                      ) nem comparar anos em termos reais.
-                      {semPublicacao.length
-                        ? ` A publicação no DOU de ${semPublicacao.join(", ")} não foi conferida, porque o extrato do ato não está acessível: a coluna fica vazia, nunca com a data de captura.`
-                        : ""}
-                    </>
+                  avisos={
+                    <div className="space-y-3">
+                      {anosSemTexto.length > 0 && (
+                        <RegulacaoAviso>
+                          Os valores de {anosSemTexto.join(" e ")} foram lidos em documento oficial do mesmo processo, porque o texto do ato não estava acessível. O detalhe de cada
+                          limitação está em Analisar.
+                        </RegulacaoAviso>
+                      )}
+                      {g.limites_em_revisao.length > 0 && (
+                        <RegulacaoAviso>
+                          Em revisão na Agenda Regulatória: {g.limites_em_revisao.map((a) => `${a.codigo}, ${semTravessao(a.atividade.replace(/\.$/, ""))}, prevista para ${a.ano_previsto}`).join("; ")}. O ano é
+                          previsão da ANEEL.{" "}
+                          <a href={`${rotaPainel("p046")}#agenda`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                            Ver a agenda inteira
+                          </a>
+                        </RegulacaoAviso>
+                      )}
+                      {pendencias.length > 0 && (
+                        <div data-nivel="analisar">
+                          <RegulacaoAviso>
+                            Limitação declarada: {pendencias.map((p) => `${p.ano}: ${p.item} ${p.situacao}; ${p.efeito}`).join(" ")}
+                          </RegulacaoAviso>
+                        </div>
+                      )}
+                    </div>
                   }
+                  resposta={
+                    <RespostaCurta id="p044" depois veredito={vereditoP044(g)}>
+                      {respostaP044(g)}
+                    </RespostaCurta>
+                  }
+                  recorte={
+                    <RegulacaoRecorte
+                      periodo={
+                        <>
+                          {anos.length ? `${anos[0]} a ${anos[anos.length - 1]}, por ano civil de vigência` : "sem ato integrado"}; bandeiras de {dataBR(band.vigencias[0]?.vigencia_inicio ?? null)} em
+                          diante
+                        </>
+                      }
+                      universo="Limites do PLD fixados pela ANEEL para todos os submercados; adicionais das bandeiras; módulos do PRODIST e submódulos do PRORET"
+                      unidade="R$/MWh nominais, como escritos nos atos"
+                    />
+                  }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposPrincipal={<RegulacaoCapitulos />}
                 />
 
-                {anosSemTexto.length > 0 && (
-                  <RegulacaoAviso>
-                    Os valores de {anosSemTexto.join(" e ")} foram lidos em documento oficial do mesmo processo, porque o texto do ato não estava acessível. O detalhe de cada limitação está em Analisar.
-                  </RegulacaoAviso>
-                )}
-                {pendencias.length > 0 && (
-                  <div data-nivel="analisar">
-                    <RegulacaoAviso>
-                      Limitação declarada:{" "}
-                      {pendencias.map((p) => `${p.ano}: ${p.item} ${p.situacao}; ${p.efeito}`).join(" ")}
-                    </RegulacaoAviso>
-                  </div>
-                )}
+                <SecaoDoPainel
+                  id="bandeiras"
+                  titulo="Quanto cada bandeira tarifária acrescenta à tarifa, e desde quando?"
+                  lead={
+                    <>
+                      Quanto cada patamar de <Termo slug="bandeira-tarifaria">bandeira</Termo> acrescenta à tarifa, por resolução, em R$/MWh. O fim de cada valor é a véspera do valor
+                      seguinte do mesmo patamar, salvo quando o recurso de acionamento mensal mostra outro valor antes (fim conhecido só pelo mês) ou o patamar foi extinto.{" "}
+                      {textoConferenciaAcionamento(band.conferencia_acionamento)}
+                    </>
+                  }
+                >
+                  <GraficoBarras
+                    titulo="Adicional de cada patamar, desde a vigência de cada resolução"
+                    dados={linhasBandeiras(g)}
+                    chaveCategoria="id"
+                    chaveRotulo="rotulo"
+                    series={[{ id: "rs_mwh", rotulo: "Adicional", cor: "var(--cor-energia)" }]}
+                    unidade="R$/MWh"
+                    casas={2}
+                    orientacao="horizontal"
+                    rotulosValor
+                    alturaMaxima={520}
+                  />
+                  <TabelaInterativa
+                    titulo="Vigências dos adicionais das bandeiras"
+                    colunas={COLUNAS_BANDEIRAS}
+                    linhas={linhasBandeiras(g)}
+                    chaveLinha="id"
+                    colunaRotulo="patamar"
+                    fonte="ANEEL, Bandeiras Tarifárias (recursos Adicional e Acionamento)"
+                    versao={band.acionamento_gerado_pela_fonte_em ?? versao}
+                    nomeArquivo="regulacao-bandeiras-adicionais"
+                    chaveUrl="band"
+                    nota={`Recurso Adicional gerado pela ANEEL em ${dataBR(band.gerado_pela_fonte_em)}; recurso Acionamento com ${band.acionamento_meses} meses (${dataBR(band.acionamento_periodo?.inicio ?? null)} a ${dataBR(band.acionamento_periodo?.fim ?? null)}). A data de publicação das resoluções não é informada pela fonte.`}
+                  />
+                </SecaoDoPainel>
 
-                <RegulacaoAnalise id="regra" titulo="A regra dos limites e como os atos a aplicam">
+                <SecaoDoPainel
+                  id="procedimentos"
+                  titulo="Que versões do PRODIST e do PRORET as páginas oficiais publicam?"
+                  lead={
+                    <>
+                      PRODIST é o conjunto de Procedimentos de Distribuição de Energia Elétrica no Sistema Elétrico Nacional e PRORET, o de Procedimentos de Regulação Tarifária.{" "}
+                      <span data-resposta-procedimentos="">{respostaProcedimentos(proc)}</span>
+                    </>
+                  }
+                >
+                  <GraficoBarras
+                    titulo="Itens por conjunto e resultado da conferência"
+                    dados={contagemProcedimentos(proc.itens)}
+                    chaveCategoria="id"
+                    chaveRotulo="conjunto"
+                    series={SERIES_PROCEDIMENTOS}
+                    unidade="itens"
+                    casas={0}
+                    orientacao="horizontal"
+                    empilhado
+                    rotulosValor
+                  />
+                  <TabelaInterativa
+                    titulo="Módulos do PRODIST e submódulos do PRORET"
+                    colunas={COLUNAS_PROCEDIMENTOS}
+                    linhas={linhasProcedimentos(proc.itens)}
+                    chaveLinha="id"
+                    colunaRotulo="modulo"
+                    fonte="ANEEL, páginas oficiais do PRODIST e do PRORET, atas da Diretoria e Resoluções Normativas lidas"
+                    versao={(proc.verificado_em.prodist ?? versao).slice(0, 10)}
+                    nomeArquivo="regulacao-procedimentos"
+                    chaveUrl="proc"
+                    dicaBusca="Módulo, título ou ato"
+                    nota={
+                      <>
+                        Páginas verificadas em {carimbo(proc.verificado_em.prodist)} (PRODIST) e {carimbo(proc.verificado_em.proret)} (PRORET). O conteúdo dos módulos não foi lido: os PDFs
+                        estão num servidor da ANEEL que bloqueia acesso automatizado. <RegulacaoLinkExterno href={proc.paginas.PRODIST}>Página do PRODIST</RegulacaoLinkExterno>;{" "}
+                        <RegulacaoLinkExterno href={proc.paginas.PRORET}>página do PRORET</RegulacaoLinkExterno>.
+                      </>
+                    }
+                  />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="regra" nivel="analisar" titulo="A regra dos limites e como os atos a aplicam">
                   {regra ? (
                     <div className="space-y-2 text-sm leading-relaxed text-carvao-muted">
                       <p>
@@ -379,84 +423,10 @@ export default function RegulacaoPage() {
                     ) : (
                       <p className="mt-1 text-sm text-carvao-muted">Nenhuma atividade da agenda trata dos limites do PLD.</p>
                     )}
-                    <p className="mt-1 text-sm">
-                      <a href={`${rotaPainel("p046")}#agenda`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                        Ver a agenda inteira no painel de consultas e agenda
-                      </a>
-                    </p>
                   </div>
-                </RegulacaoAnalise>
+                </SecaoDoPainel>
 
-                <RegulacaoAnalise id="bandeiras" titulo="Adicionais das bandeiras tarifárias por resolução e vigência">
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Quanto cada patamar de <Termo slug="bandeira-tarifaria">bandeira</Termo> acrescenta à tarifa, por resolução, em R$/MWh. O fim de cada valor é a véspera do
-                    valor seguinte do mesmo patamar, salvo quando o recurso de acionamento mensal mostra outro valor antes (fim conhecido só pelo mês) ou o patamar foi
-                    extinto. {textoConferenciaAcionamento(band.conferencia_acionamento)}
-                  </p>
-                  <GraficoBarras
-                    titulo="Adicional de cada patamar por resolução"
-                    dados={linhasBandeiras(g)}
-                    chaveCategoria="id"
-                    chaveRotulo="rotulo"
-                    series={[{ id: "rs_mwh", rotulo: "Adicional", cor: "var(--cor-energia)" }]}
-                    unidade="R$/MWh"
-                    casas={2}
-                    orientacao="horizontal"
-                    rotulosValor
-                    alturaMaxima={520}
-                  />
-                  <TabelaInterativa
-                    titulo="Vigências dos adicionais das bandeiras"
-                    colunas={COLUNAS_BANDEIRAS}
-                    linhas={linhasBandeiras(g)}
-                    chaveLinha="id"
-                    colunaRotulo="patamar"
-                    fonte="ANEEL, Bandeiras Tarifárias (recursos Adicional e Acionamento)"
-                    versao={band.acionamento_gerado_pela_fonte_em ?? versao}
-                    nomeArquivo="regulacao-bandeiras-adicionais"
-                    chaveUrl="band"
-                    nota={`Recurso Adicional gerado pela ANEEL em ${dataBR(band.gerado_pela_fonte_em)}; recurso Acionamento com ${band.acionamento_meses} meses (${dataBR(band.acionamento_periodo?.inicio ?? null)} a ${dataBR(band.acionamento_periodo?.fim ?? null)}). A data de publicação das resoluções não é informada pela fonte.`}
-                  />
-                </RegulacaoAnalise>
-
-                <RegulacaoAnalise id="procedimentos" titulo="Versões vigentes do PRODIST e do PRORET, conferidas com os atos">
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-procedimentos="">
-                    {respostaProcedimentos(proc)}
-                  </p>
-                  <GraficoBarras
-                    titulo="Itens por conjunto e resultado da conferência"
-                    dados={contagemProcedimentos(proc.itens)}
-                    chaveCategoria="id"
-                    chaveRotulo="conjunto"
-                    series={SERIES_PROCEDIMENTOS}
-                    unidade="itens"
-                    casas={0}
-                    orientacao="horizontal"
-                    empilhado
-                    rotulosValor
-                  />
-                  <TabelaInterativa
-                    titulo="Módulos do PRODIST e submódulos do PRORET"
-                    colunas={COLUNAS_PROCEDIMENTOS}
-                    linhas={linhasProcedimentos(proc.itens)}
-                    chaveLinha="id"
-                    colunaRotulo="modulo"
-                    fonte="ANEEL, páginas oficiais do PRODIST e do PRORET, atas da Diretoria e Resoluções Normativas lidas"
-                    versao={(proc.verificado_em.prodist ?? versao).slice(0, 10)}
-                    nomeArquivo="regulacao-procedimentos"
-                    chaveUrl="proc"
-                    dicaBusca="Módulo, título ou ato"
-                    nota={
-                      <>
-                        Páginas verificadas em {carimbo(proc.verificado_em.prodist)} (PRODIST) e {carimbo(proc.verificado_em.proret)} (PRORET). O conteúdo dos módulos não foi
-                        lido: os PDFs estão num servidor da ANEEL que bloqueia acesso automatizado. <RegulacaoLinkExterno href={proc.paginas.PRODIST}>Página do PRODIST</RegulacaoLinkExterno>;{" "}
-                        <RegulacaoLinkExterno href={proc.paginas.PRORET}>página do PRORET</RegulacaoLinkExterno>.
-                      </>
-                    }
-                  />
-                </RegulacaoAnalise>
-
-                <RegulacaoAuditoria id="atos" titulo="Todos os atos de limites, com documento, página e sha256">
+                <SecaoDoPainel id="atos" nivel="auditar" titulo="Todos os atos de limites, com documento, página e sha256">
                   <TabelaInterativa
                     titulo="Atos de limites do PLD"
                     colunas={COLUNAS_ATOS}
@@ -468,9 +438,9 @@ export default function RegulacaoPage() {
                     nomeArquivo="regulacao-limites-pld-atos"
                     chaveUrl="atos"
                   />
-                </RegulacaoAuditoria>
+                </SecaoDoPainel>
 
-                <RegulacaoAuditoria id="conferencias" titulo="Conferências executadas a cada publicação">
+                <SecaoDoPainel id="conferencias" nivel="auditar" titulo="Conferências executadas a cada publicação">
                   <TabelaInterativa
                     titulo="Resultado das conferências por tipo"
                     colunas={COLUNAS_CONTAGEM_CONFERENCIAS}
@@ -506,9 +476,9 @@ export default function RegulacaoPage() {
                     chaveUrl="conf"
                   />
                   {L.metodo && <p className="text-sm leading-relaxed text-carvao-muted">{L.metodo}</p>}
-                </RegulacaoAuditoria>
+                </SecaoDoPainel>
 
-                <RegulacaoAuditoria id="bandeiras-acionamento" titulo="Valores do recurso Acionamento sem resolução no recurso Adicional">
+                <SecaoDoPainel id="bandeiras-acionamento" nivel="auditar" titulo="Valores do recurso Acionamento sem resolução no recurso Adicional">
                   <TabelaInterativa
                     titulo="Valores vistos só no recurso Acionamento"
                     colunas={COLUNAS_ACIONAMENTO}
@@ -530,9 +500,9 @@ export default function RegulacaoPage() {
                     semLinhas="Todos os meses acionados têm resolução correspondente."
                     nota={band.conferencia_acionamento.regra}
                   />
-                </RegulacaoAuditoria>
+                </SecaoDoPainel>
 
-                <RegulacaoAuditoria id="bloqueios" titulo="Fontes bloqueadas e o que foi feito">
+                <SecaoDoPainel id="bloqueios" nivel="auditar" titulo="Fontes bloqueadas e o que foi feito">
                   <ul className="space-y-2 text-sm text-carvao-muted">
                     {L.bloqueios.map((b) => (
                       <li key={b.fonte} className="[overflow-wrap:anywhere]">
@@ -550,12 +520,15 @@ export default function RegulacaoPage() {
                     ))}
                   </ul>
                   <p className="text-xs text-mineral">
-                    {num(L.atos.length, 0)} atos; conferências refeitas em {dataBR(L.conferido_em)}. Para reproduzir: python3 pipeline/energia/executar_modulo.py regulacao
-                    --sem-coleta.
+                    {num(L.atos.length, 0)} atos; conferências refeitas em {dataBR(L.conferido_em)}. Para reproduzir: python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta.
                   </p>
-                </RegulacaoAuditoria>
+                </SecaoDoPainel>
 
-                <RegulacaoSeguir ancora="p044" proximo={{ href: proximo.rota, pergunta: proximo.pergunta }} downloads={downloadsDoPainel(g, "p044")} />
+                <SeguirPainel
+                  ancora="p044"
+                  proximo={{ href: `${proximo.rota}#${proximo.id}`, pergunta: proximo.pergunta }}
+                  downloads={downloadsDoPainel(g, "p044").map((d) => ({ ...d, rotulo: `${d.rotulo} (CSV)` }))}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>

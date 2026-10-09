@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -53,7 +53,23 @@ const BASES: readonly BaseData[] = ["vigencia", "publicacao"];
 
 const pl = (n: number, um: string, varios: string) => (n === 1 ? um : varios);
 
-export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { eventos: EventoRegulatorio[]; paineis: PainelLink[]; fonte: string; versao: string }) {
+export function RegulacaoLinhaTempo({
+  eventos,
+  paineis,
+  fonte,
+  versao,
+  recorte,
+  notas,
+}: {
+  eventos: EventoRegulatorio[];
+  paineis: PainelLink[];
+  fonte: string;
+  versao: string;
+  /** Período, universo e unidade como legenda da figura, depois dela. */
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e do evento escolhido. */
+  notas?: ReactNode;
+}) {
   const slugs = useMemo(() => paineis.map((p) => slugPainel(p.href)), [paineis]);
   const ids = useMemo(() => eventos.map((e) => e.id), [eventos]);
   const esquema = useMemo(
@@ -98,7 +114,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
       <div role="group" aria-label="Filtros da linha do tempo" className="space-y-2 border-b border-linha pb-3">
         <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
           <label className="text-xs text-carvao-muted">
-            Quem é afetado (painel)
+            Painel ligado ao ato
             <select value={filtro.painel} onChange={(e) => definir({ painel: e.currentTarget.value })} className={campoData}>
               <option value="">Todos os painéis</option>
               {paineis.map((p) => (
@@ -214,15 +230,18 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
         </div>
       )}
 
+      {recorte}
+      {notas}
+
       {r.eventos.length > 0 && (
-        <section aria-labelledby="lista-curta-titulo" className="space-y-6" data-lista-curta="">
+        <section aria-labelledby="lista-curta-titulo" className="space-y-6 border-t border-linha pt-6" data-lista-curta="">
           <div>
-            <h3 id="lista-curta-titulo" className="font-serif text-lg text-carvao">
+            <h3 id="lista-curta-titulo" className="ed-h3 font-serif text-carvao">
               Quais foram os eventos mais recentes?
             </h3>
             <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-sem-impacto="">
               Do evento mais recente ao mais antigo. Sem impacto estimado nesta fonte: o observatório não estima o efeito de nenhum evento. O efeito que o próprio ato declara, o dispositivo e as conferências estão na lista completa, em
-              Analisar.
+              Analisar. Os resumos são do observatório, escritos a partir do texto do ato: não substituem o texto oficial e não são parecer jurídico.
             </p>
           </div>
 
@@ -261,7 +280,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                         </p>
                         <p className="mt-1.5 max-w-prose2 text-sm leading-relaxed text-carvao">{resumoCurtoEvento(e, datasLegiveis)}</p>
                         <p className="mt-1 text-sm text-carvao-muted">
-                          Afeta:{" "}
+                          Painéis ligados:{" "}
                           {e.paineis.length
                             ? e.paineis.map((p, i) => (
                                 <span key={p.href}>
@@ -326,8 +345,8 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
       )}
 
       {r.eventos.length > 0 && (
-        <div data-nivel="analisar" id="lista-completa" className="space-y-4 border-t border-linha pt-5">
-          <h3 className="font-serif text-lg text-carvao">Lista completa: cada evento com dispositivo, efeito declarado e evidência</h3>
+        <div data-nivel="analisar" id="lista-completa" className="space-y-4 border-t border-linha pt-6">
+          <h3 className="ed-h3 font-serif text-carvao">Lista completa: cada evento com dispositivo, efeito declarado e evidência</h3>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
             Sem impacto estimado nesta fonte, em nenhum dos eventos. {registros.length > 0 ? `${textoVaziosRegistros(registros)} Por isso esses campos não aparecem nos cartões dos registros.` : ""}
           </p>
@@ -369,7 +388,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                       </dd>
                       <dt className="text-carvao-muted">Dispositivo</dt>
                       <dd className="text-carvao">{e.dispositivo}</dd>
-                      <dt className="text-carvao-muted">Quem é afetado</dt>
+                      <dt className="text-carvao-muted">Painéis ligados</dt>
                       <dd className="text-carvao">
                         {e.paineis.length
                           ? e.paineis.map((p, i) => (
