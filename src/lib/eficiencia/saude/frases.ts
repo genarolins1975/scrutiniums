@@ -24,8 +24,9 @@ export function fraseAmplitude(itens: ItemFrase[], m: MedidaSaude, ano: number, 
   if (!itens.length) return `Nenhuma capital tem valor comparável para ${ROTULO_PERIODO[m.periodo](ano).toLowerCase()}.`;
   const min = Math.min(...itens.map((i) => i.valor));
   const max = Math.max(...itens.map((i) => i.valor));
-  const nomesMin = itens.filter((i) => i.valor === min);
-  const nomesMax = itens.filter((i) => i.valor === max);
+  const porNome = (a: ItemFrase, b: ItemFrase) => a.nome.localeCompare(b.nome, "pt-BR");
+  const nomesMin = itens.filter((i) => i.valor === min).sort(porNome);
+  const nomesMax = itens.filter((i) => i.valor === max).sort(porNome);
   const quando = cap1(QUANDO[m.periodo](ano));
   const med = mediana !== null ? ` A mediana das ${itens.length} capitais na comparação é ${m.formata(mediana)}.` : "";
   if (min === max) return `${quando}, as ${itens.length} capitais na comparação têm o mesmo valor, ${m.formata(min)}.`;

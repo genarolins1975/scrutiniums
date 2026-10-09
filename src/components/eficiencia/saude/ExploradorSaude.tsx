@@ -81,7 +81,8 @@ const TITULO_TEMA: Record<TemaSaude, { titulo: string; pergunta: string }> = {
 
 const ANOTACOES_COBERTURA: Anotacao[] = [
   { ano: 2021, texto: "dezembro de 2021 segue regra anterior de equipes e cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025." },
-  { ano: 2022, texto: "a população de referência de dezembro de 2022 é anterior ao Censo 2022; de dezembro de 2023 em diante a base é outra." },
+  { ano: 2022, texto: "a população de referência de dezembro de 2022 é anterior ao Censo 2022; a de dezembro de 2023 é a do Censo." },
+  { ano: 2025, texto: "a população de referência de dezembro de 2025 é a estimativa de 2024, posterior ao Censo; dezembro de 2023 e de 2024 usam a mesma população do Censo 2022." },
 ];
 const ANOTACOES_POPULACAO: Anotacao[] = [
   { ano: 2021, texto: "população de 2021: estimativa anterior ao Censo 2022." },
@@ -134,7 +135,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
 
   const pontosSerie = cap
     ? serie(ix, m, cap.cod, o)
-    : serieDaMediana(ix, m, o, regiao).map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "AUSENTE_NA_COLETA" : "OBSERVADO") as Ponto["status"], nota: null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
+    : serieDaMediana(ix, m, o, regiao).map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "NAO_COMPARAVEL" : "OBSERVADO") as Ponto["status"], nota: x.valor === null ? "Nenhuma capital entra na comparação neste período: os valores oficiais existem e ficam fora da mediana." : null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
   const medianaPorAno = serieDaMediana(ix, m, o, regiao);
   const referenciaSerie = cap ? medianaPorAno.map((x) => ({ ano: x.ano, valor: x.valor, n: x.n })) : undefined;
   const anotacoes: Anotacao[] = m.id === "cobertura_aps" ? ANOTACOES_COBERTURA : POR_POPULACAO.includes(m.id) || (m.id === "icsap_taxa" && s.den === "obee") ? ANOTACOES_POPULACAO : [];
@@ -302,7 +303,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           <ReferenciasExternasSaude itens={externas} m={m} valorCapital={pt?.valor ?? null} />
           {m.id === "asps_pct" && cap && pt?.valor !== null && pt?.valor !== undefined && (
             <p className="max-w-prose2 text-sm text-obee-tinta">
-              Distância do mínimo de {inteiro(15)}%: {pt.valor >= 15 ? "+" : "−"}{String(Math.abs(pt.valor - 15).toFixed(2)).replace(".", ",")} ponto percentual (referência normativa, não meta; a lei orgânica do município pode fixar mínimo maior, informado no demonstrativo).
+              Distância do mínimo de {inteiro(15)}%: {pt.valor >= 15 ? "+" : "−"}{String(Math.abs(pt.valor - 15).toFixed(2)).replace(".", ",")} {Math.abs(Math.abs(pt.valor - 15) - 1) < 0.005 ? "ponto percentual" : "pontos percentuais"} (referência normativa, não meta; a lei orgânica do município pode fixar mínimo maior, informado no demonstrativo).
             </p>
           )}
         </div>

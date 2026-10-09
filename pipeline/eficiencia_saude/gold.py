@@ -80,7 +80,11 @@ def trilhas(obs):
         if c:
             passos.append(f"Numerador: {_br(c['numerador'])} ({c['numerador_ref']}). Denominador: {_br(c['denominador'])} ({c['denominador_ref']}).")
         rotulo_comp = f", componente {alvo['componente']}" if alvo["componente"] else ""
-        passos.append(f"Valor publicado: {_br(alvo['valor'])} {unidades[ind]}{rotulo_comp} (estado {alvo['status']}).")
+        if unidades[ind].startswith("%") and alvo.get("participacao") is not None:
+            # indicador de composição: o valor da observação é em reais; a participação, em %
+            passos.append(f"Valor publicado: R$ {_br(alvo['valor'])}{rotulo_comp}, participação de {_br(alvo['participacao'])}% no total (estado {alvo['status']}).")
+        else:
+            passos.append(f"Valor publicado: {_br(alvo['valor'])} {unidades[ind]}{rotulo_comp} (estado {alvo['status']}).")
         out.append({"indicador": ind, "ente": alvo["ente"], "nome": nomes[alvo["ente"]], "ano": alvo["ano"], "componente": alvo["componente"], "passos": passos, "valor": alvo["valor"]})
     return out
 
@@ -93,7 +97,7 @@ def _br(v):
     """Número com separador de milhares em ponto e decimais em vírgula, sem zeros à direita."""
     if v is None:
         return "sem valor"
-    texto = f"{v:,.6f}".rstrip("0").rstrip(".") if isinstance(v, float) else f"{v:,}"
+    texto = f"{round(v, 4):,.4f}".rstrip("0").rstrip(".") if isinstance(v, float) else f"{v:,}"
     return texto.replace(",", "\u0000").replace(".", ",").replace("\u0000", ".")
 
 
@@ -160,7 +164,7 @@ DESCRICAO_CAMPOS = {
     "situacao_conferencia": "Resultado da conferência da despesa entre DCA, RREO e MSC.", "motivo_inelegibilidade": "Por que o valor oficial não entra na comparação, quando é o caso.",
     "nota": "Nota ou ressalva do dado nesta capital e período.", "nota_material": "'sim' quando a nota é uma restrição que precisa aparecer junto do dado.",
     "participacao_pct": "Participação da parte no total, em %, nos indicadores de composição.", "fonte": "Fontes combinadas no valor: instituição e conjunto de dados.",
-    "fonte_url": "Endereço da página ou do serviço de cada fonte (separados por espaço).", "data_captura": "Data da captura mais recente das fontes do valor (AAAA-MM-DD).",
+    "fonte_url": "Páginas oficiais das fontes (separadas por espaço). O endereço exato de cada coleta, com parâmetros, está no manifesto das capturas.", "data_captura": "Data da captura mais recente das fontes do valor (AAAA-MM-DD).",
     "registro": "Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido.", "versao_metodologica": "Versão metodológica do indicador.",
     "dados_gerados_em": "Data e hora de geração dos dados publicados.", "hash_dados": "Hash do conteúdo dos dados publicados; identifica a base exata da linha.",
     "numerador": "Numerador, nos indicadores em razão.", "denominador": "Denominador, nos indicadores em razão.",
@@ -181,14 +185,19 @@ def _num(v):
 
 
 def _mapa_fontes(fontes_gold):
-    """id da fonte → (descrição legível, endereço, data da última captura)."""
+    """id da fonte → (descrição legível, páginas oficiais, data da última captura). As páginas são endereços que uma pessoa abre; o endereço exato de cada coleta,
+    com parâmetros e marcadores, fica no manifesto das capturas."""
     out = {}
     for f in fontes_gold:
         caps = f["capturas"]
         c = caps[0]
         nome = f"{c['instituicao']}, {c['conjunto']}" if c.get("instituicao") and c.get("conjunto") else f["id"]
+        paginas = []
+        for x in caps:
+            if x.get("pagina") and x["pagina"] not in paginas:
+                paginas.append(x["pagina"])
         datas = [x.get("capturado_em") for x in caps if x.get("capturado_em")]
-        out[f["id"]] = (nome, c.get("url") or c.get("pagina") or "", (max(datas) if datas else "")[:10])
+        out[f["id"]] = (nome, " ".join(paginas), (max(datas) if datas else "")[:10])
     return out
 
 
@@ -259,6 +268,13 @@ DESCRICAO_REFERENCIAS = {
 }
 
 
+DESCRICAO_MATRIZ = {
+    "id": "Identificador da medida candidata: F (recursos), E (estrutura), R (resultados) e D (contexto demográfico), com número.", "medida": "Medida candidata avaliada.",
+    "fonte": "Fonte oficial testada.", "acesso_testado": "O que foi testado no acesso à fonte em 09/10/2026.", "cobertura": "Cobertura das 26 capitais e dos períodos na fonte.",
+    "periodo": "Período disponível.", "decisao": "publicar com ressalva, apenas contexto ou não publicar.", "fundamento": "Por que a decisão foi tomada, com as ressalvas.",
+}
+
+
 def _csv_dicionario(caminho):
     os.makedirs(os.path.dirname(caminho), exist_ok=True)
     buf = io.StringIO()
@@ -268,6 +284,8 @@ def _csv_dicionario(caminho):
         w.writerow(["sau_*.csv (um por indicador)", c, DESCRICAO_CAMPOS[c]])
     for c in CAMPOS_CSV_REFERENCIAS:
         w.writerow(["saude_referencias_capitais.csv", c, DESCRICAO_REFERENCIAS[c]])
+    for c in MF.CAMPOS:
+        w.writerow(["saude_matriz_de_fontes.csv", c, DESCRICAO_MATRIZ[c]])
     w.writerow(["", "(números)", "Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold."])
     w.writerow(["", "(leia antes de usar)", "Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."])
     w.writerow(["", "(perímetros)", "Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."])

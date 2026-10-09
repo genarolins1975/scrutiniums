@@ -359,9 +359,23 @@ ANO_INICIO_REGRA_VIGENTE = 2022
 """A fórmula da NT 2/2025 reproduz todas as linhas do serviço de 01/2022 em diante; em 2021 o serviço segue regra anterior de eAP e de
 cadastro (292 de 312 linhas divergem), então a cobertura de 2021 fica fora das comparações e das variações."""
 ANO_BASE_POPULACAO_PRE_CENSO = 2021
-"""Último ano base da população de referência do Ministério anterior ao Censo 2022 (estimativas calculadas a partir do Censo de 2010):
-dezembro de 2021 e de 2022 usam essa base; de dezembro de 2023 em diante a população de referência é a do Censo 2022 e das estimativas posteriores.
-Por isso a cobertura de dezembro de 2022 e a de 2023 não são comparáveis como variação."""
+ANO_BASE_POPULACAO_CENSO = 2023
+"""Bases da população de referência do Ministério na cobertura potencial, pelo ano base (o ano anterior ao da competência):
+até 2021 (dezembro de 2021 e de 2022): estimativa calculada a partir do Censo de 2010, anterior ao Censo 2022;
+2022 e 2023 (dezembro de 2023 e de 2024): a mesma população do Censo 2022 (a relação de 2023 repete a de 2022);
+2024 em diante (dezembro de 2025): estimativa de 2024, posterior ao Censo, com dois anos de crescimento populacional de uma vez.
+A marca de quebra de série alterna entre bases vizinhas (verdadeira, falsa, verdadeira): só dois meses consecutivos da mesma base têm variação comparável.
+Por isso as passagens de dezembro de 2022 para 2023 e de dezembro de 2024 para 2025 não medem só a cobertura."""
+
+
+def base_populacao_ms(ano_base):
+    """(rótulo, marca de quebra de série) da base da população de referência do Ministério para um ano base."""
+    ano_base = int(ano_base)
+    if ano_base <= ANO_BASE_POPULACAO_PRE_CENSO:
+        return "estimativa anterior ao Censo 2022", True
+    if ano_base <= ANO_BASE_POPULACAO_CENSO:
+        return "Censo 2022", False
+    return "estimativa de 2024, posterior ao Censo 2022", True
 
 
 def _seed_aps(cod):
@@ -417,6 +431,7 @@ def aps(pop_obs):
             cap_formula = l["qtEsf"] * PARAM_ESF + l["qtEap20"] * PARAM_EAP20 + l["qtEap30"] * PARAM_EAP30 + l["qtCadastroEquipeEsfrEcrEapp"]
             confere = abs(cap_formula - l["qtCapacidadeEquipe"]) <= 1 and l["qtPopulacao"] > 0 and abs(l["qtCapacidadeEquipe"] / l["qtPopulacao"] * 100 - l["qtCobertura"]) <= 0.01
             antes_regra = ano < ANO_INICIO_REGRA_VIGENTE
+            rotulo_base, marca_base = base_populacao_ms(l["nuAnoReferencia"])
             base_pre_censo = int(l["nuAnoReferencia"]) <= ANO_BASE_POPULACAO_PRE_CENSO
             notas = ["Cobertura Potencial Estimada: capacidade das equipes (eSF × 3.500, eAP 20 h × 1.750, eAP 30 h × 2.625, mais pessoas com cadastro vinculado de eCR, "
                      "eSFR e eAPP) dividida pela população que o Ministério adota (a do ano anterior ao da competência). Não é cadastro, atendimento nem pessoas "
@@ -428,15 +443,20 @@ def aps(pop_obs):
             if base_pre_censo and not antes_regra:
                 notas.append("A população de referência do Ministério neste mês é estimativa anterior ao Censo 2022 (ano base " + str(l["nuAnoReferencia"]) + "); de dezembro de 2023 em diante a base é outra "
                              "(Censo 2022 e estimativas posteriores). A variação entre esse mês e os seguintes mistura a mudança do denominador e não é uma medida direta da cobertura.")
+            elif int(l["nuAnoReferencia"]) > ANO_BASE_POPULACAO_CENSO:
+                notas.append("A população de referência do Ministério neste mês é a estimativa de " + str(l["nuAnoReferencia"]) + ", posterior ao Censo 2022; a de dezembro de 2023 e a de dezembro de 2024 é a mesma população do Censo 2022. "
+                             "A variação entre dezembro de 2024 e este mês mistura dois anos de crescimento populacional e não mede só a cobertura.")
+            elif not antes_regra:
+                notas.append("A população de referência do Ministério em dezembro de 2023 e em dezembro de 2024 é a mesma, a do Censo 2022: a variação entre os dois meses vem só da capacidade das equipes. "
+                             "A de dezembro de 2022 é anterior ao Censo e a de dezembro de 2025 é estimativa posterior; as passagens para esses meses mudam o denominador.")
             if not confere and not antes_regra:
                 obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, None, "INCONSISTENTE", "relatorio_aps_cobertura", reg, nota_material=True,
                                 nota="A capacidade informada não reproduz a fórmula da Nota Técnica nº 2/2025 ou a cobertura informada não é capacidade ÷ população."))
                 continue
             obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, float(l["qtCobertura"]), "OBSERVADO", "relatorio_aps_cobertura", reg,
-                            elegivel_comparacao=not antes_regra, nota_material=True, nota=" ".join(notas), quebra_serie=antes_regra or base_pre_censo,
+                            elegivel_comparacao=not antes_regra, nota_material=True, nota=" ".join(notas), quebra_serie=antes_regra or marca_base,
                             populacao_referencia_ms=int(l["qtPopulacao"]), ano_base_populacao_ms=l["nuAnoReferencia"], origem_populacao_ms=l.get("tpOrigemBasePopulacao"),
-                            base_populacional=("população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base " + str(l["nuAnoReferencia"]) + ")") if base_pre_censo
-                            else ("população de referência do Ministério: Censo 2022 e estimativas posteriores (ano base " + str(l["nuAnoReferencia"]) + ")"),
+                            base_populacional="população de referência do Ministério: " + rotulo_base + " (ano base " + str(l["nuAnoReferencia"]) + ")",
                             calculo={"numerador": float(l["qtCapacidadeEquipe"]), "denominador": float(l["qtPopulacao"]), "numerador_ref": "capacidade das equipes (Relatório APS)",
                                      "denominador_ref": "população de referência do Ministério da Saúde"}))
     return obs

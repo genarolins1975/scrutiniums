@@ -245,3 +245,167 @@ Severidades: bloqueante, alta, média, baixa. "Cap." indica captura em `evidenci
 * O contraste foi calculado para texto sobre o fundo da página e sobre os fundos opacos mais próximos; texto sobre a faixa sombreada do gráfico (azul claro) não foi medido ponto a ponto, e o axe o declarou "incompleto".
 * Não avaliei E, F, G e K como critérios com nota (fora do escopo desta tarefa); as observações da seção 7 são leitura de leitor, não nota.
 * As capturas foram feitas com a janela e os estados descritos; o conteúdo pode mudar com novas rodadas de correção.
+
+---
+
+## Reavaliação 1
+
+* **Data:** 09/10/2026 (UTC), depois das correções do executor. **Avaliador:** o mesmo agente de IA (Claude Sonnet 5.5), na condição de avaliador de experiência, sem acesso ao código das correções além do necessário para explicar causas, e sem confiar no mapa `CORRECOES.md` (lido apenas para saber o que verificar; cada ponto abaixo foi refeito no navegador).
+* **Natureza:** inspeção heurística de agente, novamente com Playwright 1.56.1 e Chromium 141 sobre o build final em `http://localhost:3111` (gold com `hash_dados` começando em `ce882081`). Não há usuários reais; as tarefas por perfil são papéis simulados, sem tempos nem taxas.
+* **Verificações repetidas:** razão agregada em 12 combinações de medida e ano, mais as 900 linhas do CSV de referências (276 com razão); composição por ano de 2021 a 2025; CSV de 10 estados (distribuição, tabela, evolução e comparar); tabela do Comparar em 320 e 390 px com teste de cobertura por `elementFromPoint`; teclado (24 paradas de Tab em Gastos, setas nos grupos de rádio); axe-core 4.12.1 em 28 execuções (0 violações); contraste calculado nas 8 páginas e estados (0 abaixo de AA, mínimo 4,92:1); zoom 200% e 400% em 6 rotas; overflow e alvos em 320, 390, 768 e 1440 px em 12 rotas e estados (0 px de rolagem horizontal da página); carga em laboratório (5 execuções por página).
+* **Evidências novas (prefixo `reaval_`, 15 arquivos em `evidencias/`):** RA01 `reaval_gastos_1440_evolucao-mediana-liga-2021-a-2023.png`; RA02 `reaval_gastos_1440_evolucao-sp-mediana-tracejada-atravessa-quebras.png`; RA03 `reaval_gastos_1440_evolucao-total-base-da-populacao.png`; RA04 `reaval_gastos_1440_marca-2-sobre-rotulo.png`; RA05 `reaval_gastos_1440_subfuncao-soma-de-25-de-26.png`; RA06 `reaval_comparar_390_tabela-rolada-coluna-opaca.png`; RA07 `reaval_gastos_320-390_ordem-no-celular.png`; RA08 `reaval_comparar_320-390_ordem-no-celular.png`; RA09 `reaval_rede_1440_cobertura-2021-estado-vazio.png`; RA10 `reaval_gastos_1440_ordem-maior-ao-menor.png`; RA11 `reaval_gastos_1440_2021-reais-aviso-do-periodo.png`; RA12 `reaval_panorama_1440_legenda-da-faixa.png`; RA13 `reaval_rede_1440_razao-agregada-1-89.png`; RA14 `reaval_resultados_1440_primeira-tela.png`; RA15 `reaval_metodos_1440_topo-com-resumo-por-perfil.png`. Códigos sem imagem como na seção 1 (AX, CT, RS, TB, CSV, DOM).
+
+### R1. Resultado em uma linha
+
+**Ainda não aprovado, mas muito melhor:** os 3 bloqueios da rodada anterior foram corrigidos e verificados (razão agregada, composição por subfunção, frase sobre planos); 1 bloqueio remanescente novo e visível (a mediana da Evolução liga ou atravessa anos de bases populacionais incompatíveis, contra a regra do próprio módulo); só 3 de 49 notas chegam a 9,0 e as médias por critério vão de 8,4 a 8,8.
+
+### R2. Estado dos bloqueios e dos problemas
+
+Legenda: **Corrigido** (reproduzi e não encontrei o defeito), **Parcial** (melhorou, com resíduo verificado), **Não corrigido**.
+
+| Item | Estado | Verificação no navegador e resíduo |
+|---|---|---|
+| Bloqueio 1 e P01, razão agregada | **Corrigido** | Gastos ASPS 21,8%; UBS 0,66; eSF 1,89; eAP 0,29; cobertura 72,6%; ICSAP 776, 14,4%; 2022: 713 e 0,68; R$ por habitante R$ 1.544. Todas dentro do mínimo e do máximo. CSV de referências: 276 linhas com razão, 0 fora de [mínimo, máximo], coluna `fator_razao` presente (10000, 100000, 100). Cap. RA13. |
+| Bloqueio 2 e P02, subfunção | **Corrigido** | Sem capital, o texto diz "Soma de 25 de 26 capitais em 2021 ... Fora da soma: Campo Grande (MS), valor oficial fora das comparações", 26 de 26 em 2022 a 2024, 25 de 26 em 2025 com Macapá nomeada. A soma das subfunções de 2025 (R$ 70,7 bi) bate com a soma da despesa total das 25 capitais. Natureza (21 a 26 capitais) e fonte (24 a 26) também dizem quantas e quais ficaram fora. Resíduo: a frase de apoio começa com "soma de ..." em minúscula depois de ponto (ver N6). Cap. RA05. |
+| Bloqueio 3 e P03, planos privados | **Corrigido** | A frase passou a "A cobertura de planos varia entre as capitais e é mostrada aqui como contexto, sem relação estabelecida com a taxa." Nenhuma ocorrência de "por esse motivo" ou "têm menos internações" na página, na ficha ou no Panorama. |
+| P04, CSV da Evolução | **Corrigido, com ressalva** | O botão passou a "Baixar CSV da série" e o arquivo é a série (5 linhas na capital, 5 na mediana, marca de base, mediana do ano, capitais na mediana, fonte, endereço, data, versão, hash, "Leia antes de usar"); o recorte da distribuição e da tabela é outro arquivo ("Baixar CSV do recorte"). A marca de base do CSV da mediana por habitante de Gastos está errada em 2021 (ver N1). |
+| P05, tabela do Comparar no celular | **Corrigido** | Coluna fixa com fundo opaco (branco) a 320 e 390 px; sem texto sobreposto ao rolar (captura com `scrollLeft` 320); cabeçalho em dois níveis (perímetro, depois medida, unidade e período). Cap. RA06. |
+| P06, reais de 2025 e 2021 | **Parcial** | Distribuição: explicação ao lado de "Valores" ("cada exercício corrigido pelo IPCA (média anual) para o poder de compra de 2025; em 2025 os dois valores coincidem") e aviso visível acima do gráfico (população de cada ano e por que vizinhos só são comparáveis na mesma base). Evolução: anotações 1 e 2 e ligação de 2022 a 2023 agora estão corretas na linha da capital, mas a linha da mediana contradiz o aviso (N1) e a despesa total usa a explicação errada (N2). Caps. RA11, RA01, RA02. |
+| P07, estado vazio da cobertura 2021 | **Corrigido, com resíduo** | Título "Nenhuma capital tem valor comparável para dezembro de 2021" e mensagem com o motivo (regra anterior que não reproduz a Nota Técnica nº 2/2025, valores oficiais à vista); sem o rótulo "Ausente na coleta"; capitais agrupadas (24 numa lista, Florianópolis e Teresina à parte). Resíduos: a mesma frase aparece duas vezes seguidas, o controle "Ordem das capitais" continua visível sem gráfico (N5). Cap. RA09. |
+| P08, denominador | **Corrigido** | "Em 2024 as duas populações coincidem nas 26 capitais, e as duas taxas são iguais." Em 2021 o texto explica a diferença e a nota do CSV passa a "Difere da taxa principal porque as populações diferem". |
+| P09, siglas | **Parcial** | Bloco "Siglas desta página" à vista em Gastos, Rede, Resultados e Comparar; seção "Siglas" em Dados e métodos (muito completa). Faltam: bloco no Panorama e na entrada (ASPS, UBS, eSF, SIOPS seguem sem expansão visível, só `abbr` em parte); no Comparar o bloco não traz DCA, RREO e MSC, usados no aviso de exclusão; em Rede o bloco não traz Siaps, Sisab, eCR, eSFR, eAPP (N7). |
+| P10, perímetro | **Corrigido** | "Perímetro" nomeado, com link "Os três perímetros", em Gastos, Rede, Resultados e Comparar; tabela do Comparar com cabeçalho por perímetro; Panorama e Dados e métodos já tinham. |
+| P11, legenda do Panorama | **Corrigido** | "Faixa clara: metade central das capitais, de R$ 1.124 a R$ 1.769" sob cada gráfico. Os rótulos de quartil continuam entre ticks irregulares (declarado como componente compartilhado, baixa). Cap. RA12. |
+| P12, ordem | **Corrigido** | "Ordem das capitais" (alfabética, maior ao menor, menor ao maior) em Distribuição e Tabela, com a nota de que é recurso de leitura; a ordem entra na URL (`ord=`), sobrevive à recarga e o CSV a acompanha; a capital fora da comparação fica no fim. Cap. RA10. |
+| P13, frases de diferença | **Corrigido** | "São Paulo tem 855 internações por 100 mil habitantes a menos que Porto Alegre ... (55% menor em valor relativo)"; "5,8 pontos percentuais a mais"; totais sem percentual; colunas de ICSAP em 2025 dizem "série até 2024". |
+| P14, percentual em totais | **Corrigido** | "São Paulo (SP): R$ 23,34 bilhões; mediana das 25 capitais: R$ 1,53 bilhão. É um total que depende do porte da capital." Percentual só para razões (por habitante) e pontos percentuais para parcelas. |
+| P15, CSV sem metadados | **Corrigido, com resíduo** | Colunas de numerador, denominador, mediana do grupo, capitais na comparação, fonte por extenso, endereço, data de captura, versão, hash, "Leia antes de usar"; decimal rotulado ("Valor numérico (ponto decimal)"). Resíduos: arquivo de 40 KB para 26 linhas (endereços repetidos); a célula "Endereço da fonte" junta 3 URLs separadas por espaço, com marcadores `<ano>` e `<código IBGE>` (N9). |
+| P16, celular, primeiro gráfico | **Não corrigido** | Cabeçalho compacto economiza 40 a 70 px, mas controles novos (perímetro, ajuda de valores, ordem) empurram o gráfico: a 390 px Gastos 1.317 para 1.348 px, Rede 1.275 para 1.232, Resultados 1.452 para 1.283, Comparar 1.244 para 1.591; a 320 px Gastos 1.480 para 1.615, Rede 1.444 para 1.490, Resultados 1.660 para 1.559, Comparar 1.363 para 1.774. No Comparar, definição e siglas ainda vêm antes do gráfico. Caps. RA07, RA08. |
+| P17, Dados e métodos | **Corrigido, com resíduo** | Altura de 13.036 para 8.728 px (1440) e de 26.521 para 17.125 px (320); "Quero entender / Sou jornalista / Sou gestor / Sou pesquisador" no topo; matriz de fontes recolhida por perímetro; blocos técnicos com `aria-label`; exemplo de reconstrução de São Paulo (ICSAP 2024: 83.391 ÷ 11.895.578, 701,025204); link do repositório; receita do hash. Resíduo: primeira tela sem visual (adaptação mantida). Cap. RA15. |
+| P18, abertura da Evolução | **Parcial** | A frase agora usa o último trecho da mesma base ("de R$ 1.256 em 2024 para R$ 1.354 em 2025. Os valores de 2021, 2022, 2023 usam outra base..."). Mas ver N1 (a linha ainda liga 2021 a 2023) e N2. |
+| P19, defeitos de texto | **Parcial** | "UBS" e "ICSAP" agora maiúsculos no início; "1 capitais" e "(de 26 a 26)" sumiram; fragmentos do Brasil refeitos. Resíduos: "soma de N de 26 capitais" em minúscula depois de ponto em 6 blocos (N6); "UBS públicas ativas por 10 mil habitantes vai de" (concordância). |
+| P20, "Atendimento" no título | **Corrigido** | Parágrafo visível: "nenhuma série de produção da atenção primária é publicada, porque a fonte oficial não oferece série municipal extraível e verificável", com link para as lacunas. |
+| P21, alvos de toque | **Parcial** | O link de decisões sobre fontes tem 44 px. Novos: "Os três perímetros" (123 por 17 px, link em linha) em todas as páginas do explorador e "Atendimento: o que não está..." (17 a 36 px). Rodapé (23 links, 17 px) e 22 links "Série completa em CSV" (17 px) continuam, declarados como compartilhados. |
+| P22, texto pequeno e seleção | **Parcial** | Seleção dos controles segmentados agora tem sublinhado marcado (corrigido). Texto: o corpo do módulo está em 12 px ou mais, mas rótulos `.rotulo` ficam em 11,52 px (um a 10,56) e texto SVG em 11,5, 11 e 10 px (Comparar). |
+| P23, foco e blocos roláveis | **Corrigido** | Clique em âncora de Dados e métodos move o foco para a seção (`SECTION#reproducao` etc.), a 96 px do topo; `pre` com `aria-label` ("Casos listados da validação S03, em formato técnico"). |
+| P24, carga | **Corrigido no módulo** | Sem pré-carga das rotas irmãs: 1,1 a 1,6 MB decodificados por página (antes 2,5 a 2,9 MB) e 20 a 27 requisições (antes 35 a 36). A entrada continua com 4,7 MB e 49 requisições. |
+| P25, trocar a medida reinicia o ano | **Corrigido** | ASPS 2024 para despesa total mantém 2024 e a URL (`?med=despesa&ano=2024`); Rede UBS 2023 para cobertura mantém 2023; Comparar ajusta para 2024 só quando a medida não tem 2025. |
+| P26, "motivo abaixo" | **Não alterado** | Em Gastos o aviso de exclusão ainda fica depois das 26 linhas; a frase acima do gráfico remete a "aviso abaixo" (baixa). |
+| P27, ano inválido na URL | **Parcial** | `?ano=1999`, `?ano=2025` em Resultados e `?ano=2019` em Rede são normalizados (parâmetro removido). Parâmetros inválidos de capital, medida e visão (`cap=xyz&med=foo&vis=bar`) e `ano=3000` no Comparar permanecem na URL, com a página em padrão (baixa). |
+| P28, redundância | **Parcial** | "Não é custo por usuário do SUS" ainda aparece duas vezes na tela de Gastos (coluna esquerda e bloco "Por habitante"); a frase do estado vazio da cobertura está duplicada. Melhorou a repetição das ressalvas de 2021 (agora uma explicação por capital). |
+
+### R3. Matriz de notas atualizada
+
+Avaliador: Claude Sonnet 5.5, agente independente de experiência, reavaliação 1. Formato: página | critério | nota nova (anterior) | justificativa curta quando mudou | evidência | correção necessária. Mesma adaptação declarada para a entrada (A sem visual principal; H como comunicação visual) e para Dados e métodos (H como estrutura de tabelas e listas). Notas com uma casa decimal; o que a evidência sustenta, sem negociação.
+
+| Página | Crit. | Nota (anterior) | Justificativa curta | Evidência | Correção necessária |
+|---|---|---|---|---|---|
+| Entrada | A | 8.8 (8.8) | Sem mudança; sem visual por natureza (adaptação). | E01 | Link Panorama sublinhado como página atual. |
+| Entrada | B | 8.5 (8.5) | Acrescentou "filas e tempo de espera (não pesquisados nesta rodada)"; ASPS, UBS, Ideb e Saeb seguem sem tradução. | DOM | Glossário ou expansão nos cartões. |
+| Entrada | C | 8.5 (8.5) | Sem mudança. | DOM | Atalhos por pergunta. |
+| Entrada | D | 8.9 (8.9) | Sem mudança. | E01 | Públicos e compartilhamento. |
+| Entrada | H (adapt.) | 8.4 (8.4) | Sem mudança. | E01 | Prévia visual opcional. |
+| Entrada | I | 9.0 (9.0) | 12 links respondem 200; clique de Saúde, Gastos abre em cerca de 150 ms. | DOM | `aria-current` e estilo do Panorama na entrada. |
+| Entrada | J | 9.0 (9.0) | axe 0 violações; sem overflow em 320 a 1440; 200% e 400% sem perda; rodapé compartilhado com 17 px. | AX, RS | Alvos do rodapé (compartilhado). |
+| Panorama | A | 8.6 (8.4) | Legenda sob cada gráfico, cabeçalho compacto; ticks do eixo ainda apertados; gráfico a cerca de 1.120 px a 390 px. | RA12 | Ticks regulares; ordem no celular. |
+| Panorama | B | 8.5 (8.4) | A legenda explica a faixa; o ASPS, UBS e eSF ainda sem expansão visível e sem bloco de siglas; "Oficial publicado" é jargão. | DOM | Bloco de siglas no Panorama. |
+| Panorama | C | 8.4 (8.3) | Referência do Brasil (99,1%, mesma fórmula) na cobertura; valor da capital excluída com a frase; sem grupo por região. | RA12, DOM | Motivo curto da exclusão; grupo por região. |
+| Panorama | D | 8.8 (8.8) | Sem mudança. | E02 | Convite a compartilhar. |
+| Panorama | H | 8.5 (8.2) | Faixa agora legendada com valores; segue só com três pontos nomeados e ticks irregulares. | RA12 | Opção de ver todos os pontos. |
+| Panorama | I | 8.8 (8.8) | Sem mudança relevante. | DOM | Ano e grupo no Panorama. |
+| Panorama | J | 8.9 (8.9) | axe 0; contraste mínimo 4,92:1; texto SVG de 11,5 px. | AX, CT | Mínimo de 12 px. |
+| Gastos | A | 8.6 (8.5) | Perímetro e ordem acrescentados e aviso do período acima do gráfico; a 1440 por 900 o gráfico começa mais abaixo (14 capitais na primeira tela); no celular o gráfico fica a 1.348 px (a 390) e 1.615 px (a 320). | RA10, RA07 | Controles recolhíveis no celular. |
+| Gastos | B | 8.7 (8.2) | Ajuda de "Reais de 2025", aviso de base populacional, universo da composição ("Soma de 25 de 26 capitais") e bloco de siglas; ainda "soma de" minúsculo, concordância e explicação errada na Evolução da despesa total (N2). | RA11, RA05, RA03 | Corrigir N2 e N6. |
+| Gastos | C | 8.4 (8.0) | Razão agregada e composição corrigidas; ordenação; CSV completo; mas a Evolução da mediana liga 2021 a 2023 e a tracejada atravessa quebras (N1). | RA01, RA02, CSV | Corrigir N1. |
+| Gastos | D | 8.9 (8.8) | Frase "É um total que depende do porte da capital" evita leitura de ranking por tamanho. | DOM | Convite a compartilhar. |
+| Gastos | H | 8.3 (8.2) | Distribuição ordenável mostra a forma da distribuição; Evolução com marcas, mas a mediana contradiz o aviso, o marcador "2" colide com o rótulo "R$ 1.843" (N3) e a 320 px os nomes ainda quebram. | RA01, RA02, RA04, E16 | Corrigir N1, N3; rótulos curtos em telas estreitas. |
+| Gastos | I | 8.6 (8.3) | CSV da série correto, ano preservado ao trocar medida, ordem na URL e no CSV; resíduos: parâmetros inválidos persistem. | CSV, DOM | Normalizar todos os parâmetros. |
+| Gastos | J | 8.9 (8.9) | axe 0 em 5 execuções; seleção agora marcada por sublinhado; foco de 2 px; 200% e 400% sem perda; novo link em linha de 17 px. | AX, TB, RS | Área de toque dos links em linha. |
+| Rede | A | 8.6 (8.4) | Perímetro, ordem, aviso do período; estado vazio melhor; gráfico a 1.232 px (390). | RA09 | Ordem no celular. |
+| Rede | B | 8.7 (8.4) | Perímetro nomeado, bloco de siglas, nota do estágio de população; zeros de eAP (6 capitais) ainda sem explicação; "soma de" minúsculo. | DOM | Explicar 0,00; siglas Siaps, Sisab, eCR. |
+| Rede | C | 8.4 (8.0) | Razão agregada correta (UBS 0,66, eSF 1,89, eAP 0,29, cobertura 72,6%); estado vazio com motivo; referência do Brasil; Evolução com a mediana tracejada atravessando quebras. | RA13, RA09 | Corrigir N1. |
+| Rede | D | 8.9 (8.9) | Sem mudança. | DOM | Lacuna de produção no topo. |
+| Rede | H | 8.4 (8.2) | Ordem por valor torna visível a distribuição; marca de base nas séries. | DOM | Igual a Gastos. |
+| Rede | I | 8.5 (8.2) | Estado vazio explicado, ano preservado; ainda "Ordem das capitais" sem gráfico (N5). | RA09 | Ocultar a ordem sem gráfico. |
+| Rede | J | 8.8 (8.8) | axe 0; sem overflow; tabelas focáveis e nomeadas. | AX, RS | Texto SVG de 11,5 px. |
+| Resultados | A | 8.5 (8.2) | Perímetro, ordem, parágrafo de atendimento, aviso de população; texto de ressalva ainda longo; gráfico a 1.283 px (390). | RA14 | Ordem no celular. |
+| Resultados | B | 8.6 (7.9) | Siglas à vista, perímetro, explicação do denominador, frase de planos reescrita, fragmentos refeitos; "mgdi_ms_qu3.csv.zip" ainda na fonte. | RA14, DOM | Nome de arquivo fora do corpo. |
+| Resultados | C | 8.5 (7.9) | Razão agregada 776, denominador explicado, frase de planos sem relação estabelecida, Brasil como referência separada. | CSV, DOM | Convite a compartilhar recortes. |
+| Resultados | D | 8.9 (8.8) | Parágrafo sobre produção não publicada torna a lacuna visível já no topo. | RA14 | Resumo em linguagem simples. |
+| Resultados | H | 8.4 (8.2) | Ordenável; Brasil tracejado; barras de grupos; Evolução com mediana tracejada sem rótulos e que atravessa a base quando o denominador é IBGE. | DOM | Rótulos da mediana. |
+| Resultados | I | 8.6 (8.2) | Ano normalizado na URL, CSV da série, ordem; ano 2025 forçado vira 2024 sem aviso na página. | DOM | Aviso do ano ajustado. |
+| Resultados | J | 8.8 (8.8) | axe 0; link "Atendimento: o que não está..." de 17 a 36 px. | AX, RS | Área de toque. |
+| Comparar | A | 8.5 (8.5) | Tabela com cabeçalho por perímetro e "série até 2024" ajudam; no celular o gráfico piorou (1.591 px a 390; 1.774 px a 320) e definição e siglas vêm antes. | RA08, RA06 | Reordenar no celular. |
+| Comparar | B | 8.6 (8.1) | Frases com unidade e pontos percentuais, perímetro nomeado, "série até 2024"; DCA, RREO, MSC fora do bloco de siglas. | DOM | Siglas completas. |
+| Comparar | C | 8.7 (8.5) | Mesma utilidade com exportações completas e tabela ordenável legível no celular. | CSV, RA06 | Ano padrão com todas as colunas. |
+| Comparar | D | 8.9 (8.8) | Totais sem percentual enganoso. | DOM | Convite a compartilhar. |
+| Comparar | H | 8.4 (8.2) | Tabela legível, itálico para fora da comparação, evolução com quebras corretas por capital; escala própria em cada gráfico. | RA06, DOM | Eixo comum opcional. |
+| Comparar | I | 8.7 (8.4) | Coluna fixa corrigida, URL completa; `ano=3000` e `cap=zzz` permanecem na URL. | RA06, DOM | Normalizar parâmetros. |
+| Comparar | J | 8.7 (8.0) | A sobreposição da coluna fixa desapareceu (0 linhas ilegíveis nas medições); axe 0; ainda 10 colunas com rolagem a 320 px e ordem ruim no celular. | RA06, AX | Cartões no celular. |
+| Métodos | A | 8.3 (7.6) | Altura quase pela metade, resumo por perfil, matriz recolhida; primeira tela sem visual. | RA15 | Visual ou índice gráfico no topo. |
+| Métodos | B | 8.4 (7.7) | Seção de siglas por extenso, política de referências, guias por perfil; ainda registro técnico denso nas fichas. | RA15, DOM | Resumos curtos nas fichas. |
+| Métodos | C | 9.0 (8.5) | Exemplo de reconstrução da ICSAP de São Paulo 2024 na própria página, receita do hash, repositório, manifesto, CSV completo e dicionário. Limite: reprodução total exige repositório e Python. | DOM, CSV | Nenhuma além do limite. |
+| Métodos | D | 8.6 (8.4) | Resumo por perfil permite ao leigo achar o caminho; conteúdo técnico permanece. | RA15 | Versão resumida. |
+| Métodos | H (adapt.) | 8.3 (7.8) | Matriz agrupada e recolhida, blocos nomeados. | DOM | Agrupamento visual. |
+| Métodos | I | 8.9 (8.7) | Foco vai para a seção após âncora, busca e filtros, links diretos. | TB, DOM | Link direto na seção Reprodução. |
+| Métodos | J | 8.8 (8.5) | `pre` nomeados, foco corrigido, axe 0; 22 links de CSV com 17 px (compartilhado). | AX, RS | Alvos dos links de CSV. |
+
+#### Médias por critério (7 páginas)
+
+| Critério | A | B | C | D | H | I | J |
+|---|---|---|---|---|---|---|---|
+| Média nova | 8.6 | 8.6 | 8.6 | 8.8 | 8.4 | 8.7 | 8.8 |
+| Média anterior | 8.3 | 8.2 | 8.2 | 8.8 | 8.2 | 8.5 | 8.7 |
+| Menor nota nova | 8.3 (Métodos) | 8.4 (Métodos) | 8.4 (Panorama, Gastos, Rede) | 8.6 (Métodos) | 8.3 (Gastos, Métodos) | 8.5 (Rede) | 8.7 (Comparar) |
+
+Notas de 9,5 ou mais continuam sem validação adicional que as sustente. Só três notas chegam a 9,0: entrada I, entrada J e Dados e métodos C.
+
+### R4. Bloqueios remanescentes
+
+1. **Comparação materialmente incompatível desenhada contra a regra do módulo (N1).** Na visão Evolução de Gastos, medida por habitante, nominais ou reais, sem capital escolhida, a linha da mediana liga 2021 (R$ 877) a 2022 (R$ 1.044) e a 2023 (R$ 1.173) como um só trecho e só interrompe entre 2023 e 2024. Mas a frase diz "Os valores de 2021, 2022, 2023 usam outra base e não entram nesta variação", a nota 1 diz que a população de 2021 é estimativa anterior ao Censo 2022, e todas as 26 capitais têm base de 2021 distinta da de 2022 (coluna `base_populacional` do CSV público). A causa observada no CSV da série: a marca de base da mediana de 2021 sai como "sim" (igual a 2022 e 2023), enquanto na série de São Paulo e na de eSF por 10 mil ela sai "nao". Com capital escolhida, a linha da capital se interrompe corretamente, mas a **mediana tracejada atravessa todas as quebras** (1 trecho contínuo de 2021 a 2025) em Gastos, Rede e Resultados (denominador IBGE). O leitor vê um salto de cerca de 19% de 2021 a 2022 que o próprio módulo declara não comparável. Caps. RA01, RA02. Correção: marca de base da mediana igual à das capitais do grupo e quebra da linha da mediana nas mesmas posições.
+
+Os bloqueios 1 a 3 da rodada anterior (valor incorreto, ressalva escondida, afirmação sem suporte) **não persistem**. Continuo sem encontrar despesa do município apresentada como gasto total, razão despesa por atendimento, ausência tratada como zero (os zeros de eAP em 6 capitais aparecem como "observado" e ainda sem explicação ao leitor, baixa), exclusão aplicada só ao gráfico (gráfico, tabela, referências e CSV batem), nota ou ranking de gestão, semáforo, Distrito Federal misturado, dado pessoal ou barreira que impeça tarefa essencial. A ordenação por valor traz a nota de que é recurso de leitura, não classificação.
+
+### R5. Tarefas por perfil refeitas
+
+Mesmo protocolo: navegador, sem consulta externa; sem tempos nem taxas. Abri arquivos baixados do site.
+
+* **T1 (cidadão ou conselheiro, jornalista): confirmada, sucesso.** Entrada, "Gastos", seleção da capital (2 ações): "Recife (PE): R$ 1.325; mediana das 25 capitais: R$ 1.354, 2% abaixo da mediana"; Macapá: "R$ 1.011. O valor oficial fica fora da comparação e das medianas (motivo no aviso abaixo)". Obstáculo (baixa): o aviso fica depois do gráfico.
+* **T2 (jornalista, gestor): confirmada, sucesso.** "Referências do grupo: 25 de 26 capitais", razão agregada R$ 1.544, grupo por região (São Paulo e Sudeste: mediana de 4 capitais R$ 1.667, faixa central não exibida por haver menos de 8, com o motivo); na Evolução de Resultados a nota diz "Em todos os anos a mediana usa as mesmas 26 capitais", e na de Gastos diz que o conjunto muda (de 25 a 26).
+* **T3 (cidadão ou conselheiro, pesquisador): era parcial, agora sucesso na distribuição e parcial na Evolução da mediana.** Passos: Gastos, "Reais de 2025" (ajuda ao lado do controle), exercício 2021 (aviso acima do gráfico: população de 2021 é estimativa anterior ao Censo 2022, "Dois exercícios vizinhos só têm variação por habitante comparável quando a base é a mesma"), Evolução com São Paulo (linha interrompida em 2021 a 2022 e 2023 a 2024, notas 1 e 2). Um leitor consegue explicar com as próprias palavras o que são reais de 2025 e por que 2021 usa outra base. Erros: na Evolução sem capital a linha da mediana liga 2021 a 2023 (N1), o que contradiz o aviso; na despesa total a explicação cita um denominador que não existe (N2). Intervenção externa: nenhuma.
+* **T4 (jornalista, pesquisador, cidadão): confirmada, sucesso com obstáculo.** Comparar: o cartão traz "valor oficial fora da comparação" e a ressalva em dois níveis; o segundo nível agora diz que a MSC de dezembro (sem modalidade 91) soma R$ 503.269.686,89, igual ao RREO, e que a DCA (R$ 495.269.686,89, menos 1,6%) é a única fonte com valor distinto; Campo Grande 2021: intraorçamentárias de R$ 74.451.127,64. Obstáculo: o primeiro nível usa DCA, RREO e "conferência pendente"; o bloco de siglas do Comparar não os traz.
+* **T5 (cidadão ou conselheiro, gestor): era parcial, agora sucesso.** Cada página nomeia o perímetro ("Perímetro Serviços localizados no território: cadastro de estabelecimentos e equipes situados na capital; não prova funcionamento nem acesso", "Perímetro População residente: internações dos moradores, onde quer que ocorram; não é produção da prefeitura"), com link "Os três perímetros"; a tabela do Comparar tem cabeçalho por perímetro; o Panorama e Métodos continuam claros.
+* **T6 (gestor, pesquisador): confirmada, sucesso.** Cobertura potencial de dezembro de 2025 (mediana 83,0%, Brasil 99,1% pela mesma fórmula, "Não é cadastro, atendimento nem pessoas atendidas") e ICSAP de 2024 sem mistura de períodos; Comparar em 2025 mostra "série até 2024" nas colunas de ICSAP; o estado vazio de dezembro de 2021 agora tem motivo próprio.
+* **T7 (jornalista, pesquisador): era parcial, agora sucesso.** `saude_despesa_hab_2025.csv` (40 KB, 22 colunas): valor formatado e valor numérico com ponto, numerador, denominador, mediana do grupo, capitais na comparação, fonte por extenso, endereço, data de captura (2026-10-09), versão 1.0, hash, e "Leia antes de usar" ("não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero"). A visão Evolução exporta a série (`..._serie_sao-paulo.csv`, com marca de base e mediana do ano). Obstáculos: arquivo pesado e endereço com 3 URLs numa célula; a marca de base da série da mediana de Gastos está errada em 2021 (N1).
+* **T8 (pesquisador, jornalista): confirmada, sucesso, agora com o exemplo pedido.** Panorama, "De onde vem cada medida...", Dados e métodos, Reprodução: o exemplo é de São Paulo (ICSAP 2024: numerador 83.391, denominador 11.895.578, valor 701,025204), mais CSV por indicador (`sau_icsap_taxa.csv`), manifesto com URL, data e SHA256, receita do hash e link do repositório. Não reconstruí o numerador a partir do arquivo bruto nem rodei o pipeline.
+
+### R6. Problemas remanescentes e novos
+
+Severidades: bloqueante, alta, média, baixa. "Cap." indica captura em `evidencias/` (códigos RA).
+
+1. **Bloqueante. N1, mediana da Evolução liga ou atravessa quebras de base (Gastos, Rede, Resultados).** Reproduzir: `/gastos?vis=evolucao` (sem capital): a linha liga 2021, 2022 e 2023; `/gastos?vis=evolucao&cap=sao-paulo`: a tracejada da mediana vai de 2021 a 2025 sem interrupção. Cap. RA01, RA02. Correção: marca de base da mediana como a das capitais do grupo (hoje 2021 sai "sim" no CSV da série); interromper a mediana tracejada onde a base muda ou rotular que ela atravessa.
+2. **Média. N2, Evolução da despesa total explica a quebra por um denominador que não existe.** Reproduzir: `/gastos?vis=evolucao&med=despesa`: "Os valores de 2021 usam outra base e não entram nesta variação: a base da população do denominador mudou entre os anos"; linha interrompida em 2021 a 2022. A despesa total não usa população. Cap. RA03. Correção: motivo próprio (por exemplo, perímetro de Campo Grande 2021) ou nenhuma quebra.
+3. **Média. P16, celular: o primeiro gráfico segue a 1.230 a 1.770 px.** Reproduzir: 320 ou 390 px, Gastos, Rede, Resultados, Comparar. No Comparar, definição e siglas precedem o gráfico. Caps. RA07, RA08. Correção: controles recolhíveis ("Ajustar recorte"), gráfico antes da definição em todas as páginas, siglas depois.
+4. **Média. P09, siglas incompletas.** Panorama e entrada sem bloco; Comparar sem DCA, RREO e MSC; Rede sem Siaps, Sisab, eCR, eSFR e eAPP. Correção: bloco de siglas completo em cada página, inclusive Panorama.
+5. **Baixa. N3, marcador de nota "2" sobre o rótulo "R$ 1.843".** Reproduzir: `/gastos?vis=evolucao&cap=sao-paulo`. Cap. RA04. Correção: deslocar o número da nota.
+6. **Baixa. N5, "Ordem das capitais" visível quando não há gráfico.** Reproduzir: Rede, cobertura potencial, dez. 2021. Cap. RA09. Correção: ocultar o controle no estado vazio; remover a frase duplicada.
+7. **Baixa. N6, defeitos de texto novos.** "soma de 25 de 26 capitais" em minúscula depois de ponto (6 blocos em Gastos, Rede e Resultados); "UBS públicas ativas ... vai de"; "equipes ... vai de 0,00 em Belo Horizonte (MG), Boa Vista (RR) e mais 4" sem dizer que 0,00 significa nenhuma equipe eAP registrada. Cap. RA05.
+8. **Baixa. N7 e P21 e P22, tamanhos.** Texto SVG de 10 a 11,5 px e `.rotulo` de 10,56 a 11,52 px; links em linha de 17 px ("Os três perímetros", "Atendimento: o que não está..."); rodapé e links de CSV de 17 px (compartilhados).
+9. **Baixa. N9, CSV pesado e repetitivo.** 40 KB para 26 linhas; "Endereço da fonte" com 3 URLs em uma célula, com marcadores `<ano>` e `<código IBGE>`. Correção: endereços em arquivo à parte (manifesto) e uma coluna curta.
+10. **Baixa. P27, P26 e P28, resíduos.** Parâmetros inválidos de capital, medida e visão permanecem na URL; aviso de exclusão abaixo do gráfico; "Não é custo por usuário do SUS" duas vezes em Gastos; Evolução: a mediana tracejada não tem rótulos de valor.
+
+### R7. Defeitos novos que procurei e não encontrei
+
+Dois blocos de colunas e ordem no celular (exceto P16); nova linha de ordem (funciona, preserva URL e CSV, só falha no estado vazio); avisos de período (não cobrem dados que não dependem de população, ver N2); glossário (seção de siglas de Métodos é correta e completa); matriz de fontes recolhida (abre e filtra, com 80 blocos recolhíveis no total e 0 abertos por padrão); cabeçalho compacto (sem perda de navegação, wordmark oculto a 320 e 390 px como antes); marcas de base na Evolução (funcionam na linha da capital); textos novos (sem linguagem avaliativa, sem hífen ou travessão como pontuação em prosa: 0 travessões e meias-riscas; o sinal de menos tipográfico aparece só dentro de valores negativos citados); console sem erros em 9 rotas e estados medidos.
+
+### R8. Desempenho percebido (laboratório, repetido)
+
+Mesmo protocolo (Chromium 141 sem estrangulamento, localhost, janela 1440 por 900, contexto novo, 5 execuções, mediana; não representa experiência real). FCP de 92 a 168 ms, LCP de 92 a 328 ms, CLS de 0,000 a 0,001, DOMContentLoaded de 30 a 190 ms, carga de 104 a 208 ms, 20 a 27 requisições nas páginas do módulo (49 na entrada), 1,1 a 1,6 MB decodificados nas páginas do módulo (4,7 MB na entrada), 0 erros de console. Troca de seletores segue sem espera perceptível.
+
+### R9. Limitações da reavaliação
+
+* Inspeção heurística de um agente; só Chromium 141; sem leitor de tela real, sem dispositivos físicos, sem usuários reais.
+* Não confrontei os dados com as fontes oficiais nem reconstruí o numerador do ICSAP a partir do arquivo bruto; as conferências foram internas ao módulo (CSV baixados do site e arquivos públicos de `/eficiencia/series`). A causa de N1 (marca de base da mediana de 2021) foi inferida do CSV da série e do comportamento do gráfico, não de leitura do código das correções.
+* Não repeti todas as combinações de medida, ano, capital e grupo; testei as listadas em R2 e R5. A medida "ICSAP (número)" e as séries de eAP foram verificadas só por amostra.
+* O contraste de texto sobre a faixa sombreada do gráfico segue não medido ponto a ponto (o axe a declara "incompleta").
+* E, F, G e K continuam sem nota nesta avaliação; as observações sobre elas são de leitor.

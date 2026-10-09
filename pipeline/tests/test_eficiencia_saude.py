@@ -363,11 +363,18 @@ class TestSaude(unittest.TestCase):
 
     def test_cobertura_potencial_marca_a_troca_de_base_populacional(self):
         qb = {ano: {self.v("sau.aps.cobertura_potencial", cod, ano)["quebra_serie"] for cod, _, _ in entes.CAPITAIS} for ano in P.ANOS_FINANCEIROS}
-        self.assertEqual(qb, {2021: {True}, 2022: {True}, 2023: {False}, 2024: {False}, 2025: {False}})
+        # bases: 2021 e 2022 estimativa anterior ao Censo; 2023 e 2024 a mesma população do Censo 2022; 2025 estimativa de 2024
+        self.assertEqual(qb, {2021: {True}, 2022: {True}, 2023: {False}, 2024: {False}, 2025: {True}})
         self.assertIn("anterior ao Censo 2022", self.v("sau.aps.cobertura_potencial", SP, 2022)["nota"])
+        self.assertIn("dois anos de crescimento populacional", self.v("sau.aps.cobertura_potencial", SP, 2025)["nota"])
+        pops = {a: {self.v("sau.aps.cobertura_potencial", c, a)["populacao_referencia_ms"] for c, _, _ in entes.CAPITAIS} for a in (2023, 2024)}
+        for c, _, _ in entes.CAPITAIS:
+            self.assertEqual(self.v("sau.aps.cobertura_potencial", c, 2023)["populacao_referencia_ms"], self.v("sau.aps.cobertura_potencial", c, 2024)["populacao_referencia_ms"], c)
         brasil = {e["ano"]: e for e in self.g["referencias_externas"] if e["indicador"] == "sau.aps.cobertura_potencial"}
         self.assertIn("anterior ao Censo 2022", brasil[2022]["escopo"])
         self.assertNotIn("anterior ao Censo 2022", brasil[2023]["escopo"])
+        self.assertNotIn("crescimento populacional", brasil[2024]["escopo"])
+        self.assertIn("dois anos de crescimento populacional", brasil[2025]["escopo"])
 
     def test_notas_de_natureza_distinguem_ausencia_de_valor_zero(self):
         sao_luis, rio, florianopolis = 2111300, 3304557, 4205407
@@ -382,8 +389,9 @@ class TestSaude(unittest.TestCase):
     def test_medicao_da_troca_de_base_da_cobertura_potencial(self):
         m05 = next(v for v in self.g["validacoes"] if v["id"] == "M05")
         self.assertEqual(m05["resultado"], "medicao")
-        self.assertIn("9,1 dos 14,6 pontos percentuais vêm só do denominador", m05["detalhe"])
-        self.assertEqual(len(m05["casos"]), 26 if len(m05["casos"]) < 30 else 30)
+        self.assertIn("a troca do denominador, sozinha, muda a mediana em +9,1 pontos percentuais", m05["detalhe"])
+        self.assertIn("a troca do denominador, sozinha, muda a mediana em −5,5 pontos percentuais", m05["detalhe"])
+        self.assertIn("De dezembro de 2023 para dezembro de 2024 a população de referência é a mesma", m05["detalhe"])
 
     def test_macapa_2025_explica_que_a_msc_confirma_o_rreo(self):
         c = self.v("sau.despesa.funcao_saude", MACAPA, 2025, "nominal")["conferencia"]
@@ -395,6 +403,14 @@ class TestSaude(unittest.TestCase):
         self.assertEqual(total, 125)
         self.assertEqual(self.v("sau.rede.ubs_retrato", 3304557, 2026, "gestao_municipal_nao_publica")["valor"], 52)
         self.assertEqual(self.v("sau.rede.ubs_retrato", SP, 2026, "gestao_municipal_nao_publica")["valor"], 38)
+
+    def test_trilhas_de_reconstrucao_com_unidade_certa(self):
+        for x in self.g["trilhas"]:
+            ultimo = x["passos"][-1]
+            self.assertNotRegex(ultimo, r"R\$ [\d.,]+ %")
+            self.assertNotRegex(ultimo, r",\d{5,}")
+        comp = [x for x in self.g["trilhas"] if x["indicador"] in ("sau.despesa.natureza", "sau.despesa.subfuncao")]
+        self.assertTrue(comp and all("participação de" in x["passos"][-1] and "R$" in x["passos"][-1] for x in comp))
 
     def test_textos_sem_causalidade_implicita_nem_numero_sem_fonte(self):
         causais = r"\b(por esse motivo|por isso mesmo|devido a|em razão de|em consequência|causad[oa]|1,07 a 2,79)\b"
@@ -411,6 +427,8 @@ class TestSaude(unittest.TestCase):
             self.assertNotIn("siconfi_dca", l["fonte"])
             self.assertIn("Siconfi", l["fonte"])
             self.assertTrue(l["fonte_url"].startswith("http"))
+            self.assertNotIn("<", l["fonte_url"])  # nenhum marcador de endereço de API (<ano>, <código IBGE>)
+            self.assertNotIn("IPCA", l["fonte"] if l["componente"] == "nominal" else "")
             self.assertRegex(l["data_captura"], r"^\d{4}-\d{2}-\d{2}$")
         series = os.path.join(RAIZ, "public", "eficiencia", "series")
         for nome in os.listdir(series):
@@ -424,6 +442,9 @@ class TestSaude(unittest.TestCase):
             self.assertIn(("sau_*.csv (um por indicador)", c), descritas)
         for c in gold.CAMPOS_CSV_REFERENCIAS:
             self.assertIn(("saude_referencias_capitais.csv", c), descritas)
+        from pipeline.eficiencia_saude import matriz_fontes as MF
+        for c in MF.CAMPOS:
+            self.assertIn(("saude_matriz_de_fontes.csv", c), descritas)
 
 
 class TestIsolamentoEPromocao(unittest.TestCase):

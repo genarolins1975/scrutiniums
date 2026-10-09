@@ -289,27 +289,36 @@ def m04_denominadores_icsap(obs):
 
 
 def m05_base_populacional_da_cobertura(obs):
-    """Troca de base da população de referência do Ministério entre dezembro de 2022 (anterior ao Censo 2022) e dezembro de 2023 (Censo 2022):
-    quanto da diferença da cobertura vem só do denominador. Medição que sustenta a marca de quebra de série da cobertura potencial."""
+    """Trocas de base da população de referência do Ministério na cobertura potencial: de dezembro de 2022 para dezembro de 2023 (da estimativa anterior ao
+    Censo 2022 para o Censo) e de dezembro de 2024 para dezembro de 2025 (do Censo para a estimativa de 2024). Em cada uma, quanto da diferença da cobertura
+    vem só do denominador. De dezembro de 2023 para dezembro de 2024 a população é a mesma e a variação vem só da capacidade. Sustenta a marca de quebra de série."""
     cob = {(o["ente"], o["ano"]): o for o in obs if o["indicador"] == "sau.aps.cobertura_potencial" and o["status"] == "OBSERVADO" and o.get("calculo")}
-    linhas = []
-    for cod, _, _ in entes.CAPITAIS:
-        a, b = cob.get((cod, 2022)), cob.get((cod, 2023))
-        if not a or not b:
-            continue
-        pop_a, pop_b, cap_b = a["calculo"]["denominador"], b["calculo"]["denominador"], b["calculo"]["numerador"]
-        linhas.append({"ente": cod, "nome": _nome(cod), "cobertura_2022": a["valor"], "cobertura_2023": b["valor"], "populacao_ref_2022": pop_a, "populacao_ref_2023": pop_b,
-                       "variacao_populacao_pct": round((pop_b / pop_a - 1) * 100, 2), "cobertura_2023_com_populacao_2022": round(cap_b / pop_a * 100, 2)})
-    if not linhas:
-        return _v("M05", "Cobertura potencial: troca da base da população de referência entre dezembro de 2022 e dezembro de 2023", "medicao", "medicao", "Sem pares para medir.")
     med = lambda xs: sorted(xs)[len(xs) // 2] if len(xs) % 2 else (sorted(xs)[len(xs) // 2 - 1] + sorted(xs)[len(xs) // 2]) / 2
-    m22, m23, m23_pop22 = med([l["cobertura_2022"] for l in linhas]), med([l["cobertura_2023"] for l in linhas]), med([l["cobertura_2023_com_populacao_2022"] for l in linhas])
-    dpop = sorted(l["variacao_populacao_pct"] for l in linhas)
     br = lambda v: f"{v:.1f}".replace(".", ",").replace("-", "−")
-    return _v("M05", "Cobertura potencial: troca da base da população de referência entre dezembro de 2022 e dezembro de 2023", "medicao", "medicao",
-              f"{len(linhas)} capitais. A população de referência do Ministério cai em mediana {br(abs(med(dpop)))}% (de {br(dpop[0])}% a {br(dpop[-1])}%) com a passagem da estimativa anterior ao Censo para o Censo 2022. "
-              f"A mediana da cobertura vai de {br(m22)}% a {br(m23)}%; recalculada com a população de 2022, a de 2023 seria {br(m23_pop22)}%: {br(m23 - m23_pop22)} dos {br(m23 - m22)} pontos percentuais vêm só do denominador. "
-              "Por isso dezembro de 2022 e dezembro de 2023 não são comparáveis como variação.", sorted(linhas, key=lambda l: l["variacao_populacao_pct"])[:30])
+    casos, frases = [], []
+    for a, b, rotulo in ((2022, 2023, "da estimativa anterior ao Censo 2022 para o Censo 2022"), (2024, 2025, "do Censo 2022 para a estimativa de 2024")):
+        linhas = []
+        for cod, _, _ in entes.CAPITAIS:
+            x, y = cob.get((cod, a)), cob.get((cod, b))
+            if not x or not y:
+                continue
+            pop_a, pop_b, cap_b = x["calculo"]["denominador"], y["calculo"]["denominador"], y["calculo"]["numerador"]
+            linhas.append({"transicao": f"dezembro de {a} para dezembro de {b}", "ente": cod, "nome": _nome(cod), "cobertura_antes": x["valor"], "cobertura_depois": y["valor"],
+                           "populacao_ref_antes": pop_a, "populacao_ref_depois": pop_b, "variacao_populacao_pct": round((pop_b / pop_a - 1) * 100, 2),
+                           "cobertura_depois_com_populacao_antes": round(cap_b / pop_a * 100, 2)})
+        if not linhas:
+            continue
+        m_a, m_b, m_b_pop_a = med([l["cobertura_antes"] for l in linhas]), med([l["cobertura_depois"] for l in linhas]), med([l["cobertura_depois_com_populacao_antes"] for l in linhas])
+        dpop = sorted(l["variacao_populacao_pct"] for l in linhas)
+        sinal = "cai" if med(dpop) < 0 else "sobe"
+        sg = lambda v: ("+" if v >= 0 else "−") + br(abs(v))
+        frases.append(f"De dezembro de {a} para dezembro de {b} ({rotulo}), a população de referência {sinal} em mediana {br(abs(med(dpop)))}% (de {br(dpop[0])}% a {br(dpop[-1])}%) e a mediana da cobertura vai de {br(m_a)}% a {br(m_b)}%, "
+                      f"uma variação de {sg(m_b - m_a)} pontos percentuais. Com a população de {a}, a cobertura de {b} seria {br(m_b_pop_a)}%: a troca do denominador, sozinha, muda a mediana em {sg(m_b - m_b_pop_a)} pontos percentuais.")
+        casos += sorted(linhas, key=lambda l: -abs(l["variacao_populacao_pct"]))[:15]
+    if not frases:
+        return _v("M05", "Cobertura potencial: trocas da base da população de referência (dezembro de 2022 para 2023 e de 2024 para 2025)", "medicao", "medicao", "Sem pares para medir.")
+    return _v("M05", "Cobertura potencial: trocas da base da população de referência (dezembro de 2022 para 2023 e de 2024 para 2025)", "medicao", "medicao",
+              " ".join(frases) + " De dezembro de 2023 para dezembro de 2024 a população de referência é a mesma. Por isso as duas trocas ficam marcadas como quebra de série e a variação entre as bases não é publicada como medida direta da cobertura.", casos)
 
 
 def s10_ausencia_nao_zero(obs):

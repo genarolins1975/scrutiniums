@@ -247,3 +247,127 @@ Conferência ao vivo de DCA, RREO e MSC só em 7 pares (os demais dependem do se
 * Os critérios A a D, H a J ficaram fora; a nota K trata de confiabilidade técnica, desempenho e testes, não de acessibilidade.
 * A pasta `evidencias/` é compartilhada com outro avaliador; os arquivos `dados_*` são meus e os demais não foram abertos.
 * Qualquer correção do executor exige nova rodada localizada; as notas acima não são negociáveis e valem apenas para o estado do repositório observado.
+
+## 8. Reavaliação 1
+
+Data: 09/10/2026, depois das correções do executor. Avaliador: o mesmo avaliador independente de dados e método (agente Claude, contexto limpo), sem leitura do `avaliador-experiencia.md` nem de `MATRIZ_DE_AVALIACAO.md`. Li `CORRECOES.md` (mapa do executor) e verifiquei cada linha de forma independente, no build servido em `http://localhost:3111` e nos arquivos. Estado verificado: gold `hash_dados` `ce882081d96f44d5`, 8.777 observações, `versao_codigo` `gerador-4b7d9bcad56f`.
+
+**Resultado em uma linha da reavaliação:** os quatro bloqueios da primeira rodada foram corrigidos em três e em parte no quarto; **resta 1 bloqueio** (a troca de base da população de referência da cobertura potencial entre dezembro de 2024 e dezembro de 2025, não sinalizada), mais 3 defeitos novos de gravidade média. Médias por critério: E 8,57; F 8,46; G 8,46; K 8,57 (antes 7,43; 7,53; 7,87; 7,43). Ficam abaixo de 9,0 vinte e cinco das 28 combinações de página e critério; chegam a 9,0 só Panorama K, Gastos E e Entrada K.
+
+### 8.1 Verificações de regressão
+
+| Verificação | Resultado |
+| --- | --- |
+| `python3 -m unittest pipeline.tests.test_eficiencia_saude` | 56 testes, OK (14,8 s) |
+| `npx vitest run src/tests/obee-saude.test.ts` | 67 testes, OK |
+| Reconstrução em cópia temporária fora do repositório (`python3 -m pipeline.eficiencia_saude.run`) | 8.777 observações, 21 validações com os mesmos resultados, `hash_dados` ce882081d96f44d5 reproduzido; todas as seções da gold iguais às publicadas, exceto `gerado_em`; `versao_codigo` agora igual (4b7d9bcad56f nos dois) |
+| Recomputação independente a partir do seed bruto (mesmo código da primeira rodada, todas as capitais e anos) | 8.135 checagens, 8.110 iguais, 25 diferentes e as mesmas explicadas (23 de cobertura 2021 pela fórmula da NT 2/2025 e 2 de natureza de Florianópolis); nenhum valor mudou (`evidencias/dados_reavaliacao1_recomputacao_resumo.csv`) |
+| Nova linha do retrato do CNES (`gestao_municipal_nao_publica`) contra o arquivo original do OpenDataSUS | 26 de 26 iguais; total 125, Rio de Janeiro 52, São Paulo 38 |
+| Referências de grupo da gold | Razão agregada = soma do numerador ÷ soma do denominador × fator, dentro de [mínimo, máximo], em 276 de 276 linhas (900 grupos conferidos); `fator_razao` 1, 100, 10.000 ou 100.000 por medida |
+| Hashes do manifesto | 682 de 682 recortes conferem no conteúdo descomprimido |
+| Desempenho em laboratório (7 rotas, 320, 390, 768 e 1440 px, 28 medições) | 0 erros ou avisos de console, 0 px de rolagem horizontal, CLS no máximo 0,0007, LCP de 72 a 212 ms |
+| Consistência entre superfícies | Páginas de exploração: 15 de 15 recortes com o mesmo n e a mesma mediana na gold, na tabela e no CSV do recorte. Comparar: 10 recortes, painel, CSV da medida e CSV da tabela iguais à gold, 260 de 260 valores. Exportações novas conferidas contra a gold sem divergência: 6 CSV de recorte, 2 CSV de série, 2 CSV da tabela de comparação (`dados_reavaliacao1_csv_exportados.csv`) |
+
+### 8.2 Estado de cada achado
+
+| Achado | Estado | Verificação independente |
+| --- | --- | --- |
+| B1 e P1: razão agregada em escala errada | Corrigido | 24 exibições (8 medidas, todos os anos de cada uma) iguais a soma do numerador ÷ soma do denominador × fator: eSF 2025 1,89; eAP 0,29; UBS 0,66; ICSAP 2024 776; participação 14,4%; ASPS 21,8%; cobertura 72,6%. CSV de referências com `fator_razao` e dicionário. `dados_reavaliacao1_razao_agregada_ui.csv` |
+| B2 e P2: composição por subfunção com 1 a 6 capitais | Corrigido | Soma de 25, 26, 26, 26 e 25 capitais de 2021 a 2025, escrita em texto normal com as capitais fora (Campo Grande 2021, Macapá 2025). Refiz a soma das subfunções a partir da DCA: percentuais e valores iguais nos cinco anos (diferenças só de arredondamento na exibição). Natureza (21, 21, 23, 26, 25) e fonte (24, 26, 26, 26, 26) também informam o n. `dados_reavaliacao1_composicao_agregada.csv` |
+| B3 e P3: frase causal sobre planos privados | Corrigido | Página: "As internações pagas por planos privados não entram na taxa ... sem relação estabelecida com a taxa"; ficha igual; busca de "por esse motivo", "devido a", "em razão de", "em consequência" e do trecho antigo sem ocorrência em página, catálogo, gold, código e documentos |
+| B4 e P4: troca de base da cobertura potencial | Corrigido em parte | Corrigida a passagem de dezembro de 2022 para dezembro de 2023: marcas de base em 2021 e 2022, aviso único na tela, nota na referência do Brasil, medição M05 (confere com meu recálculo: população de referência com mediana de queda de 8,5%, mediana 62,2% para 76,9%, 9,1 de 14,6 pontos percentuais só do denominador), linha interrompida e variação bloqueada. **Não corrigida a passagem de dezembro de 2024 para dezembro de 2025** (ver R1) |
+| P5: razão "1,07 a 2,79" sem fonte | Corrigido | Números fora da página, da matriz (R05) e das referências; R01 diz que a conferência com o espelho de terceiros não está guardada e que nenhum número publicado depende dela; os 104 pares do RIPSA reproduzem (já verificado). Resta uma frase qualitativa ("sobretudo em capitais que são polo regional"), plausível e sem número |
+| P6: notas de natureza | Corrigido | Três textos: "MSC sem linhas ... Não é um valor zero" (São Luís 2022 e 2023, Rio de Janeiro 2022); "MSC aberta ... não reproduz a DCA" com os valores certos; linhas sem natureza identificável (Florianópolis 2022 e 2023). Macapá 2025 agora diz que a MSC (503.269.686,89, que refiz ao vivo) é igual ao RREO e que a DCA é a única fonte com valor distinto |
+| P7: estágio do ASPS | Corrigido | Definição na página: "pela despesa empenhada (regra do último bimestre do demonstrativo)"; "O estágio empenhado difere do liquidado da despesa total: em alguns exercícios o valor aplicado supera a despesa liquidada na função Saúde"; ficha com Vitória 2021 e 2022 |
+| P8: exportações | Corrigido em parte | CSV do recorte, da série e da tabela trazem fonte por extenso, endereço, data de captura, versão, hash, numerador, denominador, mediana do grupo, ressalva geral, decimal declarado e período por medida. Defeitos novos no campo de endereço (ver N2) |
+| P9: UBS de gestão municipal não pública | Corrigido | Definição e ficha avisam; linha nova do retrato igual ao arquivo original |
+| P10: diferenças em percentual | Corrigido | "3,3 pontos percentuais"; "R$ 636 por habitante a mais ... (48% maior em valor relativo)"; total em reais sem percentual; "5,3 pontos percentuais abaixo da mediana" |
+| P11: composições sem n | Corrigido | Ver B2 |
+| P12: reprodução sem repositório, hash e receita | Corrigido em parte | Link para o repositório (público, conferido), nota de que o `sha256` do manifesto é do conteúdo descomprimido (682 de 682 conferem) e receita do `hash_dados`. A receita está incompleta: sem `ensure_ascii=False` o hash não reproduz (ver N5) |
+| P13: exemplo de ASPS | Corrigido | "19,756%" e "O SIOPS informa 19,75 (valor truncado)" |
+| P14: dicionário | Corrigido | 65 linhas, com o arquivo de cada coluna; cobrem as colunas dos CSV por indicador e do CSV de referências (incluindo `razao_agregada` e `fator_razao`). Resta a matriz de fontes sem entradas (N5) |
+| P15: tipos de período na tabela | Corrigido | Cabeçalho em dois níveis (perímetro; medida, unidade e período); CSV da tabela com tipo de período por coluna e "sem dado em 2025; a série vai até 2024" |
+| P16: política de referências | Corrigido | Seção "Como as referências são calculadas" (quem entra, mediana, média simples, razão agregada com unidade, quartis tipo 7, limiar de 8, empates, referência nacional, mínimo legal) |
+| P17: E01 contra M03, filas, Macapá | Corrigido | E01 diz "coincide em 21 das 26" (confere: Manaus, Palmas, Recife, São Luís e São Paulo diferem); a entrada diz que filas "não foram pesquisadas"; Macapá corrigido (P6) |
+| P18: `versao_codigo` da gold | Corrigido | A reconstrução em cópia gera o mesmo `versao_codigo` da gold |
+| P19: contagens da documentação | Corrigido em parte | 24 arquivos, 6,2 MB e 56 testes conferem. O link para `MATRIZ_DE_AVALIACAO.md` segue sem destino e o registro de progresso de `CONTINUIDADE.md` ainda diz "4 medições" (agora 5) |
+| P20: trilhas cruas | Corrigido em parte | Trilhas formatadas, com componente e unidade, para São Paulo. Três trilhas ganharam unidade errada (N3) |
+| P21: evolução por habitante | Corrigido | Marcas por base: 2022 e 2023 (mesma população do Censo 2022) conectadas; quebras entre 2021 e 2022 e entre 2023 e 2024; a frase usa o último trecho da mesma base ("de R$ 1.843 em 2024 para R$ 1.961 em 2025; os valores de 2021, 2022, 2023 usam outra base") |
+| P22: detalhes | Corrigido em parte | Corrigidos: "(de 26 a 26)", fragmentos das referências do Brasil, ponto flutuante nos CSV (nenhum artefato nos CSV estáticos), ano inválido normalizado na URL, soma só com capitais com valor, nota de Porto Velho 2023. Permanece: empates listados em ordem diferente na frase e no painel (eAP 2025: "Belo Horizonte, Boa Vista e mais 4" contra "Boa Vista, Macapá e mais 4"); "ponto percentual" no singular em "+4,75 ponto percentual" |
+
+### 8.3 Matriz de notas atualizada
+
+Avaliador: avaliador independente de dados e método (agente Claude, contexto limpo). Nenhuma nota chega a 9,5: não há validação adicional por pessoas ou especialistas.
+
+| Página | Critério | Nota anterior | Nota nova | Justificativa da mudança | Evidência |
+| --- | --- | --- | --- | --- | --- |
+| Panorama | E | 8,5 | 8,6 | Legenda da faixa central com valores; referências sem mudança de substância e iguais à gold | `dados_reavaliacao1_recomputacao_resumo.csv` |
+| Panorama | F | 8,3 | 8,8 | Definição do ASPS diz o estágio empenhado; aviso sobre UBS de gestão municipal não pública; exclusões e perímetros mantidos | P7, P9 verificados |
+| Panorama | G | 8,0 | 8,2 | Ficha e Dados e métodos com repositório, hash e receita; sem exportação nem link do repositório dentro da ficha da própria página | P12 |
+| Panorama | K | 8,8 | 9,0 | Todos os valores iguais à gold, desempenho de laboratório sem falha, testes agora cobrem razão, universo das composições e frases causais. Não é maior: sem validação externa | `dados_reavaliacao1_recomputacao_resumo.csv`; 56 e 67 testes |
+| Gastos | E | 6,5 | 9,0 | Razão agregada correta nas cinco medidas de exercício e nos cinco anos; composições com n e capitais fora, refeitas por mim; política de referências na página de métodos. Resta só a ordem dos empates (Baixa) | `dados_reavaliacao1_razao_agregada_ui.csv`; `dados_reavaliacao1_composicao_agregada.csv` |
+| Gastos | F | 7,0 | 8,9 | Estágio do ASPS dito e a exceção de Vitória registrada; notas de natureza corretas; composições sem agregado enganoso. Resta o singular "ponto percentual" e a generalidade de "fora da soma" (N4) | P6, P7 |
+| Gastos | G | 7,8 | 8,5 | CSV com fonte, endereço, data, versão, hash, numerador e denominador; dicionário completo; exemplo de ASPS certo. Descontos: endereço da população errado e vazio em 2023 e marcadores `<ano>` no endereço da DCA (N2) | `dados_reavaliacao1_csv_exportados.csv` |
+| Gastos | K | 6,0 | 8,9 | Erros de exibição corrigidos; 260 valores da tabela de comparação, 6 CSV de recorte e 2 de série iguais à gold. Desconto: N2 | idem |
+| Rede e APS | E | 6,0 | 7,5 | Razão agregada correta nas quatro medidas e aviso da passagem de 2022 para 2023. Reduz: série e frase da cobertura potencial comparam dezembro de 2023 com dezembro de 2025 sem sinalizar a troca de base de 2025 (R1) | `dados_reavaliacao1_cobertura_base_2024_2025.csv` |
+| Rede e APS | F | 6,5 | 7,3 | Aviso de UBS e de base de 2022 para 2023 corretos. Reduz: R1, que o próprio critério do executor (bloqueio por mudança de base) deveria cobrir | idem |
+| Rede e APS | G | 7,8 | 8,4 | Retrato do CNES com a nova linha conferida no arquivo original; E01 corrigido; mesmos descontos de endereço (N2) | P9, P17 |
+| Rede e APS | K | 5,5 | 7,3 | Erros de razão corrigidos; permanece comparação temporal incompatível na cobertura (R1) e o rótulo "Ausente na coleta" no ano sem mediana (N1) | R1, N1 |
+| Atendimento e resultados | E | 6,5 | 8,8 | Taxa agregada 776 ao lado do Brasil 1.026; referências do Brasil com texto limpo; composição por grupo com n; números sem fonte retirados | `dados_reavaliacao1_razao_agregada_ui.csv` |
+| Atendimento e resultados | F | 6,8 | 8,4 | Frase causal e razão sem fonte retiradas. Limita: escopo de COB.2.01 como denominador da participação continua não verificado, o que impede nota maior | P3, P5 |
+| Atendimento e resultados | G | 7,5 | 8,4 | Sem números de origem não rastreável; R01 honesto sobre a conferência; ICSAP reproduzida; soma por sexo e faixa só no manifesto; N2 | P5 |
+| Atendimento e resultados | K | 6,0 | 8,8 | Razão agregada e frases corrigidas; valores iguais ao arquivo do RIPSA (104 de 104) | `dados_reavaliacao1_recomputacao_resumo.csv` |
+| Comparar capitais | E | 8,0 | 8,8 | Diferenças em pontos percentuais, razões e totais sem ambiguidade; cabeçalho com perímetro e período; 260 de 260 valores iguais à gold | `dados_consistencia_comparar.csv` (refeito depois das correções, mesmos resultados) |
+| Comparar capitais | F | 7,5 | 8,4 | Mesmas correções; desconto: a evolução de cobertura potencial das capitais escolhidas herda R1 | R1 |
+| Comparar capitais | G | 7,0 | 8,4 | CSV da medida e da tabela com fonte, hash, versão, período por medida e ressalva geral; desconto N2 | `dados_reavaliacao1_csv_exportados.csv` |
+| Comparar capitais | K | 8,0 | 8,7 | Rótulo de período no CSV corrigido ("sem dado em 2025; a série vai até 2024"); valores exatos; R1 na evolução de cobertura | idem |
+| Dados e métodos | E | 8,0 | 8,8 | Seção "Como as referências são calculadas" completa e correta (confere com o código e com a gold) | P16 |
+| Dados e métodos | F | 8,2 | 8,6 | E01, R01, R05 e exemplo de ASPS corrigidos | P5, P13, P17 |
+| Dados e métodos | G | 8,3 | 8,5 | Repositório, hash do conteúdo, `versao_codigo` consistente, dicionário, trilhas de São Paulo. Descontos: receita do hash incompleta, trilhas com unidade errada, matriz de fontes sem entradas no dicionário, link da matriz de avaliação | N3, N5 |
+| Dados e métodos | K | 8,7 | 8,3 | Piora: três trilhas exibem valores em reais com a unidade "%" e ruído de ponto flutuante, defeito introduzido pela correção | N3 |
+| Entrada `/eficiencia-estatal` | E | 8,5 | 8,5 | Sem mudança | txt da entrada |
+| Entrada `/eficiencia-estatal` | F | 8,4 | 8,8 | Texto sobre filas corrigido ("não pesquisados nesta rodada") | P17 |
+| Entrada `/eficiencia-estatal` | G | 8,7 | 8,8 | Leva a Dados e métodos, que agora tem o repositório; sem lista de fontes na entrada | links 200 |
+| Entrada `/eficiencia-estatal` | K | 9,0 | 9,0 | Sem mudança: estática, sem erro, LCP 72 a 112 ms | `dados_desempenho_laboratorio.csv` |
+
+Médias: E 8,57 (antes 7,43); F 8,46 (7,53); G 8,46 (7,87); K 8,57 (7,43). Média por página: Panorama 8,65; Gastos 8,83; Rede e APS 7,63; Atendimento e resultados 8,60; Comparar 8,58; Dados e métodos 8,55; Entrada 8,78. Menor nota por página: Panorama 8,2; Gastos 8,5; Rede 7,3; Resultados 8,4; Comparar 8,4; Métodos 8,3; Entrada 8,5. A meta de 9,0 em cada critério e página não foi atingida.
+
+### 8.4 Bloqueios remanescentes
+
+**R1 (resto de B4). Bloqueante. Troca de base da população de referência da cobertura potencial entre dezembro de 2024 e dezembro de 2025, não sinalizada.**
+O Ministério usa como denominador a população do ano anterior ao da competência. Dezembro de 2023 e dezembro de 2024 usam a mesma população (a relação do Censo 2022, variação 0,0% em todas as capitais); dezembro de 2025 usa a estimativa de 2024, que sobe em mediana 6,2% (de 3,1% a 13,7%). A mediana de cobertura vai de 83,50% a 83,04% (queda de 0,46 ponto percentual), mas com a população de dezembro de 2024 seria 88,56%: a troca de base esconde 5,5 pontos percentuais de aumento da capacidade. O módulo trata dezembro de 2023, 2024 e 2025 como da mesma base (marca "nao" nos três), enquanto bloqueia o mesmo tipo de troca nas medidas por habitante (2023 para 2024, Censo para estimativa). A mesma lógica vale para a referência do Brasil (101,72% em 2024, 99,14% em 2025).
+Onde: `pipeline/eficiencia_saude/padroniza.py` (`ANO_BASE_POPULACAO_PRE_CENSO`, marcas só até 2022), `referencias_externas.py`, `validacoes.py` (M05 só trata 2022 para 2023), `consulta.ts` (`avisoDoPeriodo`).
+Reproduzir: `/eficiencia-estatal/saude-capitais/rede-e-atencao-primaria?cap=sao-paulo&med=cobertura_aps&vis=evolucao`: "de 58,4% em dez. 2023 para 59,5% em dez. 2025" com linha contínua de 2023 a 2025 (a população de referência de São Paulo passa de 11.451.999 para 11.895.578); `?med=cobertura_aps&vis=evolucao`: "de 76,9% em dez. 2023 para 83,0% em dez. 2025". Números em `evidencias/dados_reavaliacao1_cobertura_base_2024_2025.csv`.
+Correção sugerida: marcar três bases (dezembro de 2021 e 2022; dezembro de 2023 e 2024; dezembro de 2025), interromper a linha e bloquear a variação entre 2024 e 2025, estender M05 e a nota da referência do Brasil, e cobrir com teste a regra "população de referência igual em anos consecutivos".
+
+### 8.5 Problemas que permanecem ou são novos
+
+**N2. Média (novo). Endereço da fonte errado ou incompleto nas exportações.**
+Onde: coluna `fonte_url` dos CSV `sau_*` e coluna "Endereço da fonte" dos CSV baixados (`gold.py`, `consulta.ts`).
+Evidência: o endereço da população é o da consulta SIDRA 6579 para 2021 (`.../v/9324/p/2021`) em todas as linhas, inclusive 2022 (Censo, tabela 4714), 2024 e 2025; em 2023 (relação do DOU) está vazio; o endereço da DCA vem com marcadores `<ano>` e `<código IBGE>` (este com espaço, o que quebra a lista "separados por espaço" que o dicionário descreve); o IPCA aparece como fonte e com endereço em valores nominais. Reproduzir: `public/eficiencia/series/sau_ctx_populacao_residente.csv`, colunas `ano` e `fonte_url`.
+Correção: endereço por linha (ano e tabela corretos, ou texto "ver manifesto das capturas, chave X"), separador sem espaço dentro do endereço, e fonte do IPCA só para reais de 2025.
+
+**N3. Média (novo). Trilhas de reconstrução com unidade errada e ruído numérico.**
+Onde: Dados e métodos, "Exemplos de reconstrução passo a passo" (seção Reprodução); trilhas geradas em `gold.py`.
+Evidência: "Valor publicado: 2.284.588.849,15 % da despesa liquidada na função Saúde, componente pessoal" (é valor em reais), "2.637.769.742,32 % ... componente 122" e "0 % da despesa total empenhada ... recursos_ordinarios"; valores com cauda de ponto flutuante ("23.342.248.911,990002", "82.799.878.206,479996", "19.065.464.730,450001"), embora a DCA traga 23.342.248.911,99.
+Correção: usar a unidade do componente (reais) e não a da participação; arredondar a centavos antes de formatar; teste que compare cada trilha com a observação.
+
+**N1. Média (novo). "Ausente na coleta" para o ano sem mediana de cobertura (2021).**
+Onde: Evolução da mediana (legenda "○ no eixo: ano sem valor (2021: ausente na coleta)") e coluna "Estado do dado" do CSV da série (`consulta.ts`).
+Evidência: os valores de 2021 existem e estão fora das comparações; "ausente" sugere falha de coleta. Reproduzir: `/rede-e-atencao-primaria?med=cobertura_aps&vis=evolucao` e o CSV da série.
+Correção: "Fora das comparações (regra anterior)" e estado `NAO_COMPARAVEL`.
+
+**N4. Baixa (novo). Motivo genérico em "Fora da soma".**
+Nas composições de natureza, São Luís 2022 e 2023, Rio de Janeiro 2022 (MSC sem registros) e Florianópolis 2022 e 2023 (linhas sem natureza) aparecem com "abertura não publicada: não reproduz a DCA", diferente do texto correto da nota da capital. A nota de Florianópolis ainda compara dois valores iguais ("R$ 466.493.256,91 ... DCA (R$ 466.493.256,91)") sem dizer que as linhas sem natureza se compensam.
+
+**N5. Baixa (novo ou residual).**
+(a) A receita do `hash_dados` na página não diz `ensure_ascii=False`: com o padrão do Python o hash é bbd9cb7d143be643 e não ce882081d96f44d5. (b) O dicionário não tem entradas para as colunas de `saude_matriz_de_fontes.csv`. (c) `README.md` e `CONTINUIDADE.md` apontam para `MATRIZ_DE_AVALIACAO.md`, ainda inexistente, e o registro de progresso diz "4 medições". (d) Os exemplos de cobertura e de ICSAP do documento não trazem o termo 35.842 nem a soma por sexo e faixa etária. (e) Empates em ordem diferente e "ponto percentual" no singular (P22). (f) "Em todos os anos a mediana usa as mesmas 26 capitais" na cobertura, mas 2021 não tem mediana. (g) Texto qualitativo sobre capitais polo regional (R05 e página) sem fonte numérica.
+
+### 8.6 Limitações da reavaliação
+
+* Inspeção heurística de um agente, no build servido às 16h do dia 09/10/2026; desempenho de laboratório.
+* A recomputação independente usa o mesmo seed do executor; a independência de fonte vem das conferências ao vivo feitas na primeira rodada (que não repeti, pois o seed não mudou: os 682 hashes do manifesto conferem) e da recomputação da DCA, dos grupos de referência e do retrato do CNES a partir do arquivo original.
+* Não verificado: escopo de COB.2.01 usado como denominador da participação (por isso Resultados F fica em 8,4); suíte vitest completa (143 arquivos), `next build`, regressão de Educação; regras de negócio aceitas do documento do executor (contas da MSC, regra do último bimestre do Anexo 12); a nova explicação de "datas de referência diferentes" nas cinco capitais de M03 (as contagens diferem, a causa não foi confirmada).
+* Não avaliei A a D, H a J nem li o relatório do avaliador de experiência; as correções X1 a X28 só foram observadas quando afetam dados e método (CSV, textos, números).
+* Não houve usuários, especialistas nem revisão externa.
+* As notas valem para o estado observado; uma nova rodada localizada deve rever R1, N1, N2 e N3.

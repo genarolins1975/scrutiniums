@@ -17,6 +17,8 @@ const SEM_OBS: Ponto = { valor: null, status: "AUSENTE_NA_COLETA", nota: "Sem re
 export type PontoComCalculo = Ponto & { numerador: number | null; denominador: number | null; minimoPct: number | null };
 const VAZIO: PontoComCalculo = { ...SEM_OBS, numerador: null, denominador: null, minimoPct: null };
 
+const porNome = (a: { nome: string }, b: { nome: string }) => a.nome.localeCompare(b.nome, "pt-BR");
+
 export class IndiceSaude {
   private mapa = new Map<string, PontoComCalculo>();
   private refs = new Map<string, RefGrupo>();
@@ -26,7 +28,7 @@ export class IndiceSaude {
       const [i, k, a, g, noGrupo, comValor, n, media, med, minimo, maximo, q1, q3, qe, sn, sd, razao, cmin, cmax] = r;
       this.refs.set(IndiceSaude.chaveRef(d.indicadores[i], k < 0 ? null : d.componentes[k], a, GRUPOS_REF[g]), {
         noGrupo, comValor, n, media, mediana: med, minimo, maximo, q1, q3, quartisExibicao: qe === 1, somaNumerador: sn, somaDenominador: sd, razaoAgregada: razao,
-        capitaisMinimo: cmin.map((c) => d.capitais[c]), capitaisMaximo: cmax.map((c) => d.capitais[c]),
+        capitaisMinimo: cmin.map((c) => d.capitais[c]).sort(porNome), capitaisMaximo: cmax.map((c) => d.capitais[c]).sort(porNome),
       });
     }
     for (const o of d.obs) {
@@ -165,8 +167,15 @@ export function composicaoAgregada(ix: IndiceSaude, indicador: string, ano: numb
     const ps = categorias.map(([k]) => ix.ponto(indicador, cap.cod, ano, k));
     const observadas = ps.filter((p) => p.status === "OBSERVADO" && p.valor !== null);
     if (observadas.length === 0) {
-      const inconsistente = ps.some((p) => p.status === "INCONSISTENTE");
-      fora.push({ cap, motivo: inconsistente ? "abertura não publicada: não reproduz a DCA" : "sem abertura publicada" });
+      const nota = ps.find((p) => p.status === "INCONSISTENTE" && p.nota)?.nota ?? "";
+      const motivo = /nenhum registro/.test(nota)
+        ? "a MSC de dezembro não traz registros deste exercício"
+        : /sem natureza da despesa identificável/.test(nota)
+          ? "a MSC traz linhas sem natureza identificável"
+          : /não reproduz a DCA|difere do total/.test(nota)
+            ? "a abertura não reproduz a DCA"
+            : "sem abertura publicada";
+      fora.push({ cap, motivo });
       continue;
     }
     if (observadas.some((p) => !p.elegivel)) {
@@ -212,9 +221,10 @@ export function variacao(atual: Ponto, anterior: Ponto): { pct: number } | { blo
 export const RESSALVA_CSV = "Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. A mediana descreve as capitais na comparação e não é referência de desempenho.";
 
 /** Metadados que acompanham toda exportação: o arquivo precisa se explicar fora do site (fonte, endereço, captura, versão e hash). */
-export function metaCsv(ix: IndiceSaude, m: MedidaSaude) {
+export function metaCsv(ix: IndiceSaude, m: MedidaSaude, moeda: Moeda = "nominal") {
   const ficha = ix.d.fichas.find((f) => f.id === m.indicador);
-  const ids = ficha?.fontes ?? [];
+  // o IPCA só é fonte do valor quando a moeda escolhida é a de 2025
+  const ids = (ficha?.fontes ?? []).filter((i) => i !== "ibge_ipca" || (m.moeda && moeda === "real"));
   const fontes = ids.map((i) => ix.d.fontes[i]).filter(Boolean);
   const datas = fontes.map((f) => f.capturado_em).filter(Boolean).sort();
   return {
@@ -227,9 +237,9 @@ export function metaCsv(ix: IndiceSaude, m: MedidaSaude) {
   };
 }
 
-const CAUDA_META = ["Fonte", "Endereço da fonte", "Data de captura", "Versão metodológica", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
-const caudaMeta = (ix: IndiceSaude, m: MedidaSaude) => {
-  const x = metaCsv(ix, m);
+const CAUDA_META = ["Fonte", "Páginas oficiais da fonte", "Data de captura", "Versão metodológica", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
+const caudaMeta = (ix: IndiceSaude, m: MedidaSaude, moeda: Moeda) => {
+  const x = metaCsv(ix, m, moeda);
   return [x.fonte, x.url, x.captura, x.versao, x.geradoEm, x.hash, RESSALVA_CSV];
 };
 
@@ -239,7 +249,7 @@ export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number
   const regioes = ix.d.regioes;
   const fmt = (v: number) => m.formata(v);
   const mediana = c.ref?.mediana ?? null;
-  const cauda = caudaMeta(ix, m);
+  const cauda = caudaMeta(ix, m, o.moeda);
   const linha = (cap: CapitalPainel, p: PontoComCalculo, na: boolean) => [
     cap.nome, cap.uf, regioes[cap.regiao] ?? cap.regiao, m.rotulo, periodo, p.valor === null ? "" : fmt(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], na ? "sim" : "não",
     p.nota ?? "", p.numerador === null ? "" : String(p.numerador), p.denominador === null ? "" : String(p.denominador), mediana === null ? "" : String(mediana), c.ref ? String(c.ref.n) : "", ...cauda,
@@ -251,13 +261,13 @@ export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Per�
 
 /** Série mostrada na visão Evolução: um ano por linha, com a marca de base e a mediana do grupo no mesmo ano. */
 export function linhasCsvSerie(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, cap: CapitalPainel | null, regiao: string | null, periodoDe: (ano: number) => string): string[][] {
-  const cauda = caudaMeta(ix, m);
+  const cauda = caudaMeta(ix, m, o.moeda);
   const medianas = serieDaMediana(ix, m, o, regiao);
   const porAno = new Map(medianas.map((x) => [x.ano, x]));
   const nome = cap ? cap.nome : regiao ? `Mediana das capitais da região ${ix.d.regioes[regiao] ?? regiao}` : "Mediana das 26 capitais na comparação";
   const pontos = cap
     ? serie(ix, m, cap.cod, o)
-    : medianas.map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "AUSENTE_NA_COLETA" : "OBSERVADO") as StatusDado, nota: null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
+    : medianas.map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "NAO_COMPARAVEL" : "OBSERVADO") as StatusDado, nota: x.valor === null ? "Nenhuma capital entra na comparação neste período: os valores oficiais existem e ficam fora da mediana." : null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
   return pontos.map((p) => {
     const x = porAno.get(p.ano);
     return [
@@ -276,8 +286,9 @@ const POR_POPULACAO_DO_EXERCICIO: MedidaSaudeId[] = ["despesa_hab", "ubs_10mil",
 export function avisoDoPeriodo(m: MedidaSaude, ano: number, o: Opcoes, d: DadosSaude): string | null {
   if (m.id === "cobertura_aps") {
     if (ano === 2021) return "Dezembro de 2021 segue regra anterior de equipes e de cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025: os valores oficiais ficam à vista, fora das medianas e das comparações.";
-    if (ano === 2022) return "A população de referência de dezembro de 2022 é anterior ao Censo 2022; de dezembro de 2023 em diante a base é outra. A variação entre 2022 e 2023 não mede só a cobertura.";
-    return null;
+    if (ano === 2022) return "A população de referência de dezembro de 2022 é anterior ao Censo 2022; a de dezembro de 2023 é a do Censo. A variação entre 2022 e 2023 não mede só a cobertura.";
+    if (ano === 2023 || ano === 2024) return "Dezembro de 2023 e dezembro de 2024 usam a mesma população de referência, a do Censo 2022: a variação entre os dois meses vem só da capacidade das equipes. A de dezembro de 2025 é a estimativa de 2024, e a passagem para ela não mede só a cobertura.";
+    return "A população de referência de dezembro de 2025 é a estimativa de 2024, posterior ao Censo 2022; a de dezembro de 2023 e a de dezembro de 2024 é a do Censo. A variação entre dezembro de 2024 e dezembro de 2025 mistura dois anos de crescimento populacional e não mede só a cobertura.";
   }
   const porPopulacao = POR_POPULACAO_DO_EXERCICIO.includes(m.id) || (m.id === "icsap_taxa" && o.denominador === "obee");
   const base = d.basePopulacional[ano];

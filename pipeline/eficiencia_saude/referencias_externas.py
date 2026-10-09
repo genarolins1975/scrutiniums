@@ -42,9 +42,15 @@ def nacionais():
             comp = str(l["nuComp"])
             if comp.startswith("12/") and int(comp[3:]) in P.ANOS_FINANCEIROS:
                 ano = int(comp[3:])
-                pre_censo = ano - 1 <= P.ANO_BASE_POPULACAO_PRE_CENSO  # a população de referência é a do ano anterior ao da competência
-                nota_base = (" A população de referência desta competência é anterior ao Censo 2022 (ano base " + str(ano - 1) + "); de dezembro de 2023 em diante a base é outra, "
-                             "e a variação entre as duas bases não é uma medida direta da cobertura.") if pre_censo else ""
+                rotulo_base, marca_base = P.base_populacao_ms(ano - 1)  # a população de referência é a do ano anterior ao da competência
+                if ano - 1 <= P.ANO_BASE_POPULACAO_PRE_CENSO:
+                    nota_base = (" A população de referência desta competência é anterior ao Censo 2022 (ano base " + str(ano - 1) + "); de dezembro de 2023 em diante a base é outra, "
+                                 "e a variação entre as duas bases não é uma medida direta da cobertura.")
+                elif ano - 1 > P.ANO_BASE_POPULACAO_CENSO:
+                    nota_base = (" A população de referência desta competência é a estimativa de " + str(ano - 1) + ", posterior ao Censo 2022; a de dezembro de 2023 e a de dezembro de 2024 é a mesma população do Censo 2022. "
+                                 "A variação entre dezembro de 2024 e esta competência mistura dois anos de crescimento populacional e não é uma medida direta da cobertura.")
+                else:
+                    nota_base = ""
                 out.append({
                     "id": f"br.aps.cobertura_potencial.{ano}", "indicador": "sau.aps.cobertura_potencial", "componente": None, "ano": ano, "tipo": "nacional_oficial",
                     "rotulo": "Brasil (Relatório APS)", "valor": float(l["qtCobertura"]), "unidade": "% da população de referência",

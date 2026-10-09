@@ -213,15 +213,21 @@ describe("séries e quebras", () => {
     expect(fraseEvolucao(pts([false, false, false]), m2, "A", "x")).toMatch(/de .* em 2021 para .* em 2023\.$/);
   });
 
-  it("a cobertura potencial marca a troca de base da população de referência entre dezembro de 2022 e 2023", () => {
+  it("a cobertura potencial marca as duas trocas de base da população de referência: dezembro de 2022 para 2023 e de 2024 para 2025", () => {
     const sp = cap("São Paulo");
     const s = serie(ix, medida("cobertura_aps"), sp.cod, OPC);
-    expect(s.map((p) => p.quebraSerie)).toEqual([true, true, false, false, false]);
+    // 2021 e 2022: estimativa anterior ao Censo; 2023 e 2024: a mesma população do Censo 2022; 2025: estimativa de 2024
+    expect(s.map((p) => p.quebraSerie)).toEqual([true, true, false, false, true]);
     expect(variacao(s[2], s[1])).toEqual({ bloqueio: expect.stringMatching(/base populacional|fora das comparações/) });
     expect(variacao(s[3], s[2])).toHaveProperty("pct");
+    expect(variacao(s[4], s[3])).toEqual({ bloqueio: expect.stringMatching(/base populacional/) });
     expect(avisoDoPeriodo(medida("cobertura_aps"), 2022, OPC, d)).toMatch(/anterior ao Censo 2022/);
     expect(avisoDoPeriodo(medida("cobertura_aps"), 2021, OPC, d)).toMatch(/regra anterior/);
-    expect(avisoDoPeriodo(medida("cobertura_aps"), 2024, OPC, d)).toBeNull();
+    expect(avisoDoPeriodo(medida("cobertura_aps"), 2024, OPC, d)).toMatch(/mesma população de referência/);
+    expect(avisoDoPeriodo(medida("cobertura_aps"), 2025, OPC, d)).toMatch(/dois anos de crescimento populacional/);
+    const f = fraseEvolucao(s.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })), medida("cobertura_aps"), "SP", "a população de referência mudou de base");
+    expect(f).toMatch(/de .* em dez\. 2023 para .* em dez\. 2024/);
+    expect(f).toMatch(/dez\. 2022, dez\. 2025 usam outra base/);
   });
 
   it("a cobertura potencial de 2021 não entra nas comparações", () => {

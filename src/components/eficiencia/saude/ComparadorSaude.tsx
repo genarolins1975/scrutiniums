@@ -116,7 +116,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   const rotuloPeriodoMedida = (mm: (typeof cols)[number]) => (mm.periodo === "dezembro" ? `dezembro de ${ano}` : mm.periodo === "processamento" ? `ano de processamento ${ano}` : `exercício ${ano}`);
   const exportarTabela = () => {
     const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)}; ${rotuloPeriodoMedida(mm)}; valor numérico com ponto decimal)`), "Observações", "Fontes das medidas", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
-    const fontes = cols.map((mm) => `${mm.rotuloCurto}: ${metaCsv(ix, mm).fonte}`).join(" | ");
+    const fontes = cols.map((mm) => `${mm.rotuloCurto}: ${metaCsv(ix, mm, s.moeda).fonte}`).join(" | ");
     const linhas = ordenadas.map(({ cap, cel }) => [
       cap.nome,
       cap.uf,

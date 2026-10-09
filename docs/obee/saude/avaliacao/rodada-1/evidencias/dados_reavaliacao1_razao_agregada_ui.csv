@@ -1,0 +1,25 @@
+pagina,medida,ano,soma_numerador,soma_denominador,fator,razao_correta,texto_exibido_na_pagina,confere
+gastos,despesa_hab,2021,46053303033.77,46905712,1,981.8272,Razão agregada R$ 982,sim
+gastos,despesa_hab,2022,52806797659.93,43668447,1,1209.2667,Razão agregada R$ 1.209,sim
+gastos,despesa_hab,2023,59590704321.47,43668447,1,1364.617,Razão agregada R$ 1.365,sim
+gastos,despesa_hab,2024,67896862992.89,46192631,1,1469.8635,Razão agregada R$ 1.470,sim
+gastos,despesa_hab,2025,70738506692.94,45805974,1,1544.3074,Razão agregada R$ 1.544,sim
+gastos,asps_pct,2021,28711908962.45,137516507172.14,100,20.8789,"Razão agregada 20,9%",sim
+gastos,asps_pct,2022,33280413013.59,151981588581.3,100,21.8977,"Razão agregada 21,9%",sim
+gastos,asps_pct,2023,37476392753.22,165174472131.07,100,22.689,"Razão agregada 22,7%",sim
+gastos,asps_pct,2024,42086535949.82,187078682697.27002,100,22.4967,"Razão agregada 22,5%",sim
+gastos,asps_pct,2025,44277464905.6,202887680552.76,100,21.8236,"Razão agregada 21,8%",sim
+rede-e-atencao-primaria,ubs_10mil,2021,2942,47821713,10000,0.6152,"Razão agregada 0,62",sim
+rede-e-atencao-primaria,ubs_10mil,2025,3034,46295650,10000,0.6554,"Razão agregada 0,66",sim
+rede-e-atencao-primaria,esf_10mil,2021,7446,47821713,10000,1.557,"Razão agregada 1,56",sim
+rede-e-atencao-primaria,esf_10mil,2025,8737,46295650,10000,1.8872,"Razão agregada 1,89",sim
+rede-e-atencao-primaria,eap_10mil,2021,856,47821713,10000,0.179,"Razão agregada 0,18",sim
+rede-e-atencao-primaria,eap_10mil,2025,1323,46295650,10000,0.2858,"Razão agregada 0,29",sim
+rede-e-atencao-primaria,cobertura_aps,2022,29390331.0,47821713.0,100,61.4581,"Razão agregada 61,5%",sim
+rede-e-atencao-primaria,cobertura_aps,2023,30980871.0,43668435.0,100,70.9457,"Razão agregada 70,9%",sim
+rede-e-atencao-primaria,cobertura_aps,2024,32361135.0,43668435.0,100,74.1065,"Razão agregada 74,1%",sim
+rede-e-atencao-primaria,cobertura_aps,2025,33545137.0,46192631.0,100,72.6201,"Razão agregada 72,6%",sim
+atendimento-e-resultados,icsap_taxa,2021,280213,46169480,100000,606.9226,Razão agregada 607,sim
+atendimento-e-resultados,icsap_taxa,2024,358518,46192631,100000,776.1368,Razão agregada 776,sim
+atendimento-e-resultados,icsap_part,2021,280213,2207054,100,12.6962,"Razão agregada 12,7%",sim
+atendimento-e-resultados,icsap_part,2024,358518,2485163,100,14.4263,"Razão agregada 14,4%",sim

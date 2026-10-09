@@ -67,7 +67,7 @@ MATRIZ = [
     ("R04", "ICSAP recalculada do SIH/RD (espelho PySUS) e 2025 provisório", "Espelho de terceiros em Parquet", "1.620 de 1.620 arquivos de 2021 a 2025 responderam 200", "26 de 26", "2021 a 07/2026", CONTEXTO,
      "Usada só como conferência independente: espelho de terceiros hospedado fora do país, sem dicionário oficial. Os 12 meses mais recentes do SIH são provisórios; 2025 não entra."),
     ("R05", "ICSAP por local de internação", "SIH", "Não obtido", "Não aplicável", "Não aplicável", NAO,
-     "A série por local de internação não foi obtida. Em capitais que são polo regional, a ocorrência no município tende a diferir da residência dos moradores; o perímetro de residência é o adequado ao leitor e é o publicado. O módulo não apresenta razão entre os dois perímetros."),
+     "A série por local de internação não foi obtida. Em capitais que atendem pacientes de outros municípios, a ocorrência no município pode diferir da residência dos moradores; o perímetro de residência é o adequado ao leitor e é o publicado. O módulo não apresenta razão entre os dois perímetros."),
     ("R06", "Produção e atendimentos da APS (atendimentos individuais, procedimentos, visitas)", "Siaps e Sisab", "Consulta pública do Siaps: HTTP 400 sem corpo; Sisab: formulário JSF, sem API; cubos do Siaps na API: uma competência", "Não aplicável", "Não aplicável", NAO,
      "Sem série oficial documentada e estável por município. Atendimentos, procedimentos e pessoas atendidas não se somam como produtividade genérica."),
     ("R07", "Filas e tempo de espera", "Nenhuma comparável", "Não pesquisado nesta rodada", "Não aplicável", "Não aplicável", NAO,

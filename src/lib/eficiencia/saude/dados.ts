@@ -127,7 +127,8 @@ export function dadosSaude(g: GoldSaude, pagina: keyof typeof INDICADORES_DA_PAG
       g.fontes.map((f) => {
         const caps = f.capturas;
         const datas = caps.map((c) => c.capturado_em).filter((d): d is string => !!d).sort();
-        return [f.id, { nome: ROTULO_FONTE[f.id] ?? f.id, url: caps[0]?.url ?? caps[0]?.pagina ?? "", capturado_em: datas.length ? datas[datas.length - 1].slice(0, 10) : "" }];
+        const paginas = Array.from(new Set(caps.map((c) => c.pagina).filter((x): x is string => !!x)));
+        return [f.id, { nome: ROTULO_FONTE[f.id] ?? f.id, url: paginas.join(" "), capturado_em: datas.length ? datas[datas.length - 1].slice(0, 10) : "" }];
       }),
     ),
     meta: { gerado_em: g.meta.gerado_em, dados_capturados_ate: g.meta.dados_capturados_ate, hash_dados: g.meta.hash_dados, versao_catalogo: g.meta.versao_catalogo },

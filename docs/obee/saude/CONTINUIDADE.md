@@ -56,4 +56,4 @@ Os mesmos de Educação (cadeia fonte, seed, padronização, validações, gold 
 
 | Data | Entrega |
 | --- | --- |
-| 09/10/2026 | Módulo Saúde nas capitais: pipeline com seed de Siconfi, SIOPS, CNES, Relatório APS e RIPSA; 16 validações e 4 medições; catálogo de 23 fichas; seis páginas; entrada `/eficiencia-estatal` com Educação e Saúde; testes Python e vitest; documentação em `docs/obee/saude/`; avaliação interna independente |
+| 09/10/2026 | Módulo Saúde nas capitais: pipeline com seed de Siconfi, SIOPS, CNES, Relatório APS e RIPSA; 16 validações e 5 medições; catálogo de 23 fichas; seis páginas; entrada `/eficiencia-estatal` com Educação e Saúde; testes Python e vitest; documentação em `docs/obee/saude/`; avaliação interna independente |
