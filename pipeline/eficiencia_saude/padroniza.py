@@ -628,3 +628,14 @@ def rede_retrato():
             obs.append(_obs("sau.rede.ubs_retrato", cod, 2026, v, "OBSERVADO", "cnes_estabelecimentos", reg, componente=k, elegivel_comparacao=True,
                             nota=RESSALVA_UBS if k == "total_ativas" else None, nota_material=(k == "total_ativas")))
     return obs
+
+
+# ------------------------------------------------------------------ conjunto completo
+
+def todas():
+    """Todas as observações do módulo, em ordem estável."""
+    pop = populacao()
+    desp = despesa()
+    obs = (pop + desp + despesa_natureza(desp) + despesa_por_habitante(desp, pop) + asps() + despesa_por_fonte()
+           + rede_serie(pop) + rede_retrato() + aps(pop) + icsap(pop) + planos())
+    return obs

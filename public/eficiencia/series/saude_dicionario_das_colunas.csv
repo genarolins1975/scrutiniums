@@ -1,0 +1,36 @@
+coluna,descricao
+indicador_id,Identificador do indicador no catálogo do OBEE.
+indicador,Nome do indicador.
+codigo_ibge,Código do município no IBGE (7 dígitos).
+capital,Nome da capital.
+uf,Sigla da unidade da federação.
+periodo_tipo,"O que a coluna 'ano' representa: exercício financeiro, competência de dezembro, ano de processamento da AIH ou retrato de captura."
+ano,"Ano do exercício, da competência de dezembro, do processamento ou da captura do retrato (2026 marca o retrato de 09/10/2026)."
+componente,"Parte do indicador: base monetária (nominal ou real_2025), categoria (por exemplo, pessoal, ou uma fonte de recursos) ou tipo (por exemplo, esf)."
+valor,Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.
+unidade,Unidade do valor.
+base_monetaria,"Base monetária dos valores em reais, quando se aplica."
+universo,O que o indicador cobre e o que o numerador e o denominador incluem.
+status,"Estado do dado: OBSERVADO, AUSENTE_NA_COLETA, INCONSISTENTE etc."
+elegivel_comparacao,"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora."
+situacao_conferencia,"Resultado da conferência da despesa entre DCA, RREO e MSC."
+motivo_inelegibilidade,"Por que o valor oficial não entra na comparação, quando é o caso."
+nota,Nota ou ressalva do dado nesta capital e período.
+nota_material,'sim' quando a nota é uma restrição que precisa aparecer junto do dado.
+participacao_pct,"Participação da parte no total, em %, nos indicadores de composição."
+fonte,Fontes combinadas no valor.
+registro,"Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido."
+versao_metodologica,Versão metodológica do indicador.
+dados_gerados_em,Data e hora de geração dos dados publicados.
+hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+numerador,"Numerador, nos indicadores em razão."
+denominador,"Denominador, nos indicadores em razão."
+referencia_numerador,Referência de fonte do numerador.
+referencia_denominador,Referência de fonte do denominador.
+tipo_populacao,Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.
+data_referencia,Data de referência da população.
+quebra_serie,'sim' quando o valor usa base diferente da do ano anterior; a variação entre os dois lados não é comparável.
+minimo_pct,"Mínimo de aplicação em ASPS do município, em % da base, quando o demonstrativo o informa (15% pela LC 141/2012, ou o da lei orgânica quando maior)."
+(leia antes de usar),"Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
+(perímetros),"Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."
+(como citar),"Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Saúde nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."

@@ -11,7 +11,7 @@
    "versao_metodologica": "1.0",
    "natureza": "OBSERVADO",
    "correcao_monetaria": "Não se aplica.",
-   "download": "/eficiencia/series/ctx_populacao_residente.csv",
+   "download": "/eficiencia/series/sau_ctx_populacao_residente.csv",
    "granularidade": {
     "etapa": false,
     "anos": "exercicios"

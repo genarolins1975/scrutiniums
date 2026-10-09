@@ -147,34 +147,43 @@ def historico_estabelecimento(co_cnes):
             "linhas": saida, "sha256_resposta": None}
 
 
-def coleta_historico(pausa=0.2, limite=None):
-    """Histórico de cada estabelecimento de tipo 01 ou 02 do retrato (ativos e desabilitados). Retoma de onde parou."""
+def coleta_historico(pausa=0.1, limite=None, trabalhadores=5):
+    """Histórico de cada estabelecimento de tipo 01 ou 02 do retrato (ativos e desabilitados). Retoma de onde parou; usa poucas conexões
+    simultâneas (a API de dados abertos derruba o túnel com frequência e não declara limite de requisições)."""
+    from concurrent.futures import ThreadPoolExecutor
     recorte = base.le_csv_gz(os.path.join(base.SEED, "cnes", "estabelecimentos_aps_capitais.csv.gz"))
     alvo = sorted({r["CO_CNES"] for r in recorte if r["TP_UNIDADE"] in TIPOS_APS})
     if limite:
         alvo = alvo[:limite]
     destino = os.path.join(base.SEED, "cnes", "historico_aps_dezembros.json.gz")
     atual = base.le_json_gz(destino) if os.path.exists(destino) else {}
-    feitos = 0
-    for co in alvo:
-        if co in atual:
-            continue
+    pendentes = [co for co in alvo if co not in atual]
+
+    def um(co):
         try:
-            atual[co] = historico_estabelecimento(co)
+            r = historico_estabelecimento(co)
         except RuntimeError as e:
             print(f"CNES {co}: ERRO {e}", flush=True)
-            continue
-        feitos += 1
-        if feitos % 200 == 0:
-            base.grava_json_gz(destino, atual)
-            print(f"CNES histórico: {len(atual)} de {len(alvo)}", flush=True)
+            return co, None
         time.sleep(pausa)
+        return co, r
+
+    feitos = 0
+    with ThreadPoolExecutor(max_workers=trabalhadores) as ex:
+        for co, r in ex.map(um, pendentes):
+            if r is None:
+                continue
+            atual[co] = r
+            feitos += 1
+            if feitos % 200 == 0:
+                base.grava_json_gz(destino, atual)
+                print(f"CNES histórico: {len(atual)} de {len(alvo)}", flush=True)
     sha = base.grava_json_gz(destino, atual)
     base.registra_captura("cnes_historico_estabelecimentos", {
         "instituicao": "Ministério da Saúde (CNES, API de dados abertos)",
         "conjunto": "CNES, estabelecimentos por competência (família assistencia-a-saude/cnes-estabelecimentos), dezembro de 2021 a 2025 e competência mais recente",
         "pagina": DOC_API, "url": f"{API}/assistencia-a-saude/cnes-estabelecimentos?limit=1000&co_cnes=<7 dígitos>", "capturado_em": base.agora_utc(),
-        "recorte": os.path.relpath(destino, base.RAIZ), "sha256_recorte": sha, "estabelecimentos": len(atual),
+        "recorte": os.path.relpath(destino, base.RAIZ), "sha256_recorte": sha, "estabelecimentos": len(atual), "estabelecimentos_alvo": len(alvo),
         "parametros": ("estabelecimentos que, no retrato da captura, têm tipo 01 ou 02 (ativos e desabilitados) nas 26 capitais; só as competências "
                        "de dezembro e a mais recente; um estabelecimento hoje reclassificado ou renumerado não está no conjunto (viés declarado)."),
     })
