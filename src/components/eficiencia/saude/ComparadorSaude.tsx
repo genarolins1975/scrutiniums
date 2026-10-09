@@ -5,6 +5,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { inteiro } from "@/lib/eficiencia/formato";
 import { CABECALHO_CSV_COMPARACAO, IndiceSaude, ROTULO_ESTADO, anosDaMedida, comparar, componenteDe, csv, linhasCsvComparacao, serie, type Ponto } from "@/lib/eficiencia/saude/consulta";
+import { QUANDO } from "@/lib/eficiencia/saude/frases";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
 import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, type MedidaSaudeId, type Moeda } from "@/lib/eficiencia/saude/medidas";
 import type { ContextoFicha } from "../FichaConteudo";
@@ -84,7 +85,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   const diferenca = A && B && naComparacao(pa) && naComparacao(pb) && pa!.valor !== null && pb!.valor !== null ? (() => {
     const d = pa!.valor! - pb!.valor!;
     const rel = pb!.valor ? Math.abs(pa!.valor! / pb!.valor! - 1) * 100 : null;
-    return `${A.nome} tem ${m.formata(Math.abs(d))} ${d >= 0 ? "a mais" : "a menos"} que ${B.nome} em ${periodo.toLowerCase()}${rel !== null && Number.isFinite(rel) ? ` (${inteiro(Math.round(rel))}% ${d >= 0 ? "maior" : "menor"}, em valor)` : ""}. É diferença descritiva: não indica qual capital está melhor nem explica a causa.`;
+    return `${A.nome} tem ${m.formata(Math.abs(d))} ${d >= 0 ? "a mais" : "a menos"} que ${B.nome} ${QUANDO[m.periodo](ano)}${rel !== null && Number.isFinite(rel) ? ` (${inteiro(Math.round(rel))}% ${d >= 0 ? "maior" : "menor"}, em valor)` : ""}. É diferença descritiva: não classifica as capitais nem explica a causa.`;
   })() : A && B ? "Pelo menos uma das duas capitais tem o valor fora da comparação ou sem valor neste recorte; os motivos estão em cada cartão." : null;
 
   // tabela completa: todas as medidas no mesmo ano

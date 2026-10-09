@@ -63,7 +63,7 @@ export default function PaginaEntradaEficiencia() {
             Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente.
           </p>
           <p className="mt-3 max-w-[46rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
-            Cada número traz definição, fonte, período, perímetro e limitação. O observatório mostra valores e referências; o leitor tira as conclusões. Não há nota, ranking, semáforo ou recomendação.
+            Cada número traz definição, fonte, período, perímetro e limitação. O observatório mostra valores e referências; o leitor tira as conclusões. Não há nota, classificação das capitais, semáforo ou recomendação.
           </p>
         </section>
 

@@ -2,12 +2,14 @@ import { inteiro } from "../formato";
 import type { MedidaSaude } from "./medidas";
 import { ROTULO_PERIODO, type PeriodoTipo } from "./medidas";
 
-const QUANDO: Record<PeriodoTipo, (a: number) => string> = {
+export const QUANDO: Record<PeriodoTipo, (a: number) => string> = {
   exercicio: (a) => `no exercício de ${a}`,
   dezembro: (a) => `em dezembro de ${a}`,
   processamento: (a) => `no ano de processamento ${a}`,
 };
-const cap1 = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+export const cap1 = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+/** Primeira letra minúscula, preservando siglas como eSF e eAP no restante do texto. */
+export const minuscula = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
 
 export type ItemFrase = { nome: string; uf: string; valor: number };
 
@@ -27,7 +29,7 @@ export function fraseAmplitude(itens: ItemFrase[], m: MedidaSaude, ano: number, 
   const quando = cap1(QUANDO[m.periodo](ano));
   const med = mediana !== null ? ` A mediana das ${itens.length} capitais na comparação é ${m.formata(mediana)}.` : "";
   if (min === max) return `${quando}, as ${itens.length} capitais na comparação têm o mesmo valor, ${m.formata(min)}.`;
-  return `${quando}, ${m.rotulo.toLowerCase()} vai de ${m.formata(min)} em ${lista(nomesMin)} a ${m.formata(max)} em ${lista(nomesMax)}.${med}`;
+  return `${quando}, ${minuscula(m.rotulo)} vai de ${m.formata(min)} em ${lista(nomesMin)} a ${m.formata(max)} em ${lista(nomesMax)}.${med}`;
 }
 
 /** Frase da capital escolhida: posição numérica diante da mediana do grupo, sem classificação. */
