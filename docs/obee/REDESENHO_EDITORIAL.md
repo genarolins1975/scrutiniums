@@ -16,7 +16,7 @@ Branch `claude/obee-redesenho-editorial`, empilhada sobre a PR [#119](https://gi
 
 ## 2. Arquitetura em três camadas
 
-* **Panorama** (`/`): três capítulos curtos, cada um com pergunta, frase factual gerada dos dados, faixa de distribuição das capitais, referência e uma ação para aprofundar. Nenhuma capital vem selecionada. Capítulo 1: despesa por habitante; capítulo 2: alunos por turma nos anos iniciais; capítulo 3: Ideb dos anos iniciais. Os três usam medida normalizada, com 26 de 26 capitais comparáveis no período mais recente. A comparação do gasto absoluto está em Gastos.
+* **Panorama** (`/`): três capítulos curtos, com a pergunta como título e os números antes do desenho. Capítulo 01 Recursos, com abas Total, Por habitante e Por matrícula (a aba vive em `?med=`): menor valor, mediana e maior valor das capitais em números grandes, faixa de distribuição com a faixa central de 50%, e o contexto nacional separado. Capítulos 02 Atendimento (alunos por turma, anos iniciais) e 03 Resultados (Ideb, anos iniciais): a mediana das capitais ao lado do agregado nacional do INEP. Nenhuma capital vem selecionada. Os três usam o ano mais recente com 26 de 26 capitais comparáveis. A forma completa desta página está na seção 12.
 * **Exploração**: `/gastos`, `/atendimento` e `/resultados`, mais `/comparar`. Uma pergunta e uma visualização predominante por vez; controles locais junto do gráfico; ano e moeda onde pertinentes; etapa só onde a medida existe por etapa.
 * **Dados e métodos** (`/metodos`): como ler as medidas, fichas dos indicadores, matriz de referências, reconciliações, validações, fontes, reprodução e glossário.
 
@@ -36,7 +36,7 @@ Navegação persistente, igual no computador e no celular: Panorama, Gastos, Ate
 | "Passaporte" | "Sobre este dado" (a ficha de 16 campos permanece) |
 | Avisos repetidos | Uma ressalva por número; a primeira frase da ressalva material fica à vista, o resto abre por clique |
 
-Medida de tamanho (Chromium, 08/10/2026, build de produção): a página anterior media **24.851 px** de altura em 1440 px de largura e **43.231 px** em 390 px; o panorama novo mede **3.111 px** em 1440 px (2.748 px até o rodapé) e **4.838 px** em 390 px (3.606 px até o rodapé). O HTML do panorama pesa 138 kB; o da página anterior, cerca de 1,9 MB.
+Medida de tamanho (Chromium, 08/10/2026, build de produção): a página anterior media **24.851 px** de altura em 1440 px de largura e **43.231 px** em 390 px; o panorama da primeira versão do redesenho media **3.111 px** em 1440 px (2.748 px até o rodapé) e **4.838 px** em 390 px (3.606 px até o rodapé). O HTML do panorama pesa 138 kB; o da página anterior, cerca de 1,9 MB.
 
 ## 4. Frases factuais e linguagem
 
@@ -56,11 +56,11 @@ Não se afirma que a interface seja "a melhor" por critério externo; as decisõ
 
 ## 7. Componentes reutilizáveis
 
-`NavegacaoPainel`, `FaixaDistribuicao` (panorama), `DistribuicaoCapitais` (exploração e comparação), `ExploradorTema`, `ComparadorCapitais`, `PanoramaInterativo`, `SobreEsteDado`, `Alternancia` e `Selecao` (controles), `estados` (ausência, ressalva, exclusão da comparação), `ReferenciasPainel`, `DetalhesMedida`, `TabelaSimples`. Lógica pura em `src/lib/eficiencia/visao.ts`, `frases.ts` e `panorama.ts`.
+`NavegacaoPainel`, `FaixaResumo`, `ComparacaoReferencia` e `Abas` (panorama), `DistribuicaoCapitais` (exploração e comparação), `ExploradorTema`, `ComparadorCapitais`, `PanoramaInterativo`, `SobreEsteDado`, `Alternancia` e `Selecao` (controles), `estados` (ausência, ressalva, exclusão da comparação), `ReferenciasPainel`, `DetalhesMedida`, `TabelaSimples`. Lógica pura em `src/lib/eficiencia/visao.ts`, `frases.ts` e `panorama.ts`.
 
 ## 8. Carga e hidratação
 
-* O panorama é montado no servidor com os pontos de cada capítulo; o navegador recebe só isso (HTML de 138 kB), mais três gráficos e o seletor de capital como ilhas interativas.
+* O panorama é montado no servidor com os pontos de cada medida (as três escalas do gasto, alunos por turma e Ideb); o navegador recebe só isso (HTML de 169 kB depois da seção 12; era 138 kB), mais os gráficos, as abas e o seletor de capital como ilhas interativas.
 * Cada tema leva apenas as observações, estatísticas e referências dos indicadores que usa (`dadosPainelTema`): Gastos 408 kB de HTML (780 kB antes do recorte), Atendimento 393 kB, Resultados 381 kB; Comparar 632 kB. Testes comparam, para cada medida do tema, comparação, pontos, referências, ponte, composição e tabela completa contra a base inteira: valores idênticos.
 * Dados e métodos pesa 724 kB de HTML porque traz as fichas, a matriz e as validações; é a camada de auditoria, e não a de leitura.
 * Os gráficos desenham por `viewBox` até a primeira medida, de modo que o HTML do servidor não cria rolagem horizontal antes da hidratação.
@@ -88,7 +88,7 @@ As interações cobrem: abrir sem capital; seletor opcional e `?cap=` na URL; vo
 
 * **Sem teste com pessoas.** A revisão é avaliação da interface por roteiro e por inspeção das capturas; não houve observação de usuários reais, e o desenho não foi validado com leitor de tela real (o axe e a estrutura semântica foram verificados).
 * O rodapé do site (compartilhado com os outros observatórios) tem links de 17 px de altura; foi mantido e não entra na medição de alvos do painel.
-* O primeiro gráfico do panorama mostra as 26 capitais como marcas; a identificação de cada uma exige toque, ponteiro, teclado ou a tabela, por escolha de compacidade. O gráfico em linhas, com os nomes, está em Gastos, Atendimento, Resultados e Comparar.
+* No panorama, as 26 capitais não aparecem como marcas: o gráfico mostra o menor valor, a mediana, o maior valor e a faixa central, e os valores de cada capital estão na tabela (a um clique) e no gráfico em linhas de Gastos, Atendimento, Resultados e Comparar. É escolha da proposta visual da seção 12.
 * Os roteiros antigos (`interacoes.mjs`, `capturas-comparacoes.mjs`) valem para a interface anterior e estão marcados como obsoletos.
 * Escala logarítmica do eixo permanece só na despesa total.
 * O mapa de pontos das capitais não foi adicionado: a localização não acrescenta informação às perguntas do painel e os números não são geográficos.
@@ -97,3 +97,35 @@ As interações cobrem: abrir sem capital; seletor opcional e `?cap=` na URL; vo
 ## 11. Capturas
 
 `docs/obee/capturas/redesenho/`: `antes-*` (interface anterior, produção em 08/10/2026) e `depois-*` (primeira tela e página inteira em 1440 e 390 px; panorama, Gastos com tabela, Gastos com a ponte e Comparar em 1440, 1024, 768, 390 e 320 px).
+
+## 12. Página inicial conforme a proposta visual (09/10/2026)
+
+A proposta visual enviada em 09/10/2026 (`docs/obee/capturas/redesenho/proposta-visual-pagina-inicial.png`, com a marca "valores da captura fornecida") passou a ser a página inicial. Os valores exibidos saem dos mesmos dados elegíveis de antes; nada no pipeline, na gold, nas séries ou nos downloads mudou.
+
+**O que a proposta trouxe e como foi implementado**
+
+| Proposta | Implementação |
+| --- | --- |
+| Título, frase de proposta e uma linha de universo; seletor "Destacar capital" com "Todas as capitais" | `page.tsx`; a linha traz também "dados capturados até 08/10/2026", para o número manter a data de referência |
+| 01 Recursos, "Quanto se gasta por habitante?", com abas Total, Por habitante e Por matrícula | `CapituloRecursos` e `Abas` (papel de abas, setas, Início e Fim); a pergunta muda com a aba; a aba grava `?med=` |
+| Menor valor, mediana e maior valor em números grandes | três números por aba; empate nomeia todas as capitais (até dois nomes e "e mais N"), como a frase factual |
+| Faixa com mediana, menor e maior, faixa central de 50% tracejada, título do eixo e legenda | `FaixaResumo`; valores escritos sobre as marcas; rótulos escalonados quando colidem; ticks do eixo que colidem com os limites da faixa são omitidos |
+| Contexto nacional (R$ 2.125, mediana de 5.060 municípios) | bloco separado, sem diferença contra a capital; "Fonte e critérios" abre a ficha completa |
+| 02 Atendimento e 03 Resultados lado a lado, mediana das capitais contra Brasil | `CapituloReferencia` e `ComparacaoReferencia`; no celular, empilhados |
+| Menor, maior e média das capitais abaixo do gráfico | texto com valores e capitais, UF incluída |
+| Faixa "Entenda e confira os números" com três ações | Comparar capitais, Baixar dados (arquivo JSON da base completa, tamanho informado) e Fontes e metodologia |
+
+**Decisões onde a proposta e as regras do painel precisaram ser conciliadas**
+
+* As abas Total e Por matrícula trazem a ressalva essencial junto ao número ("Escala orçamentária... Depende do tamanho da cidade"; "Razão orçamentária, não custo do aluno"). Nenhuma das duas tem referência nacional comparável: o bloco de contexto nacional diz isso e o motivo, em vez de calar.
+* O gasto total usa escala logarítmica, declarada no título do eixo, porque a faixa vai de R$ 354,2 milhões a R$ 23,58 bilhões. As demais escalas são lineares.
+* O eixo da proposta tinha rótulos repetidos ("2.500" duas vezes) e sem as marcas intermediárias; o eixo real vem da escala dos dados.
+* Os gráficos de Atendimento e Resultados mostram a mediana e o agregado nacional, sem as 26 capitais; o Ideb usa o eixo de 0 a 10.
+* O agregado nacional do INEP vem rotulado como agregado, e a nota diz que não é média das capitais.
+* A capital destacada aparece como marca vazada com nome e valor (capítulo 1) e como terceira linha (capítulos 2 e 3), junto da frase com a diferença para a mediana em valores, sem adjetivo.
+* A frase factual de cada medida continua sendo gerada dos dados e virou a descrição acessível do gráfico (e a legenda da tabela).
+* O rodapé da proposta ("Proposta visual · valores da captura fornecida") era do desenho e não foi levado; vale o rodapé do site.
+* "Explorar gastos", "Explorar atendimento" e "Explorar resultados" levam às visões temáticas com a medida e o ano do capítulo (e a capital, se escolhida).
+
+**Medidas** (build de produção local, 09/10/2026): HTML do panorama 169 kB; altura 2.483 px em 1440 px e 4.949 px em 390 px (produção antes da mudança: 3.111 px e 4.856 px). Capturas `antes-pagina-inicial-*` (produção) e `depois-pagina-inicial-*` (cinco larguras).
+

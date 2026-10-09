@@ -24,19 +24,47 @@ const abre = async (q) => {
 
 /* ---------- panorama ---------- */
 await abre("");
-ok("panorama: título e frase de proposta", (await p.locator("h1").innerText()) === "Educação nas capitais" && (await p.locator("main").innerText()).includes("com referências para entender cada número"));
-ok("panorama: nenhuma capital selecionada ao abrir", (await p.locator("#panorama-cap").inputValue()) === "");
-const caps = await p.locator("main section > h2").allInnerTexts();
-ok("panorama: três capítulos com frase factual do conjunto", caps.length === 3 && caps.every((t) => /vai de .+ a .+ entre as 26 capitais/.test(t)), caps.join(" | "));
-ok("panorama: pergunta de cada capítulo", (await p.locator("main").innerText()).match(/QUANTO SE GASTA\?|Quanto se gasta\?/i) !== null);
-ok("panorama: uma faixa de distribuição por capítulo, com a mediana rotulada", (await p.locator("main svg").count()) >= 3 && (await p.locator("main svg text", { hasText: /Mediana/ }).count()) >= 3);
-ok("panorama: a primeira tela mostra o número (gráfico começa até 900 px)", await p.evaluate(() => { const s = document.querySelector("main svg"); return !!s && s.getBoundingClientRect().top < 900 + 400; }));
+ok("panorama: título e frase de proposta", (await p.locator("h1").innerText()) === "Educação nas capitais" && (await p.locator("main").innerText()).includes("Quanto se gasta, quem é atendido e quais resultados são observados."));
+ok("panorama: nenhuma capital selecionada ao abrir (Todas as capitais)", (await p.locator("#panorama-cap").inputValue()) === "" && (await p.locator("#panorama-cap option:checked").innerText()) === "Todas as capitais");
+const caps = await p.locator('main section[id^="capitulo-"] > h2, main section[id^="capitulo-"] > div:first-child h2').allInnerTexts();
+ok("panorama: três capítulos com a pergunta como título", caps.slice(0, 3).join(" | ") === "Quanto se gasta por habitante? | Quantos alunos por turma? | Qual é o Ideb?", caps.join(" | "));
+ok("panorama: rótulos 01 Recursos, 02 Atendimento e 03 Resultados", /01\s*\/?\s*RECURSOS/i.test(await p.locator("#capitulo-gastos").innerText()) && /02\s*\/?\s*ATENDIMENTO/i.test(await p.locator("#capitulo-atendimento").innerText()) && /03\s*\/?\s*RESULTADOS/i.test(await p.locator("#capitulo-resultados").innerText()));
+ok("panorama: números do capítulo 1 (menor, mediana e maior) antes do gráfico", await p.evaluate(() => { const t = document.querySelector("#capitulo-gastos dl")?.textContent ?? ""; return /Menor valor/.test(t) && /Mediana das capitais/.test(t) && /Maior valor/.test(t); }));
+ok("panorama: a primeira tela mostra a pergunta e os números", await p.evaluate(() => { const d = document.querySelector("#capitulo-gastos dl"); return !!d && d.getBoundingClientRect().top < 900 + 600; }));
+ok("panorama: faixa do capítulo 1 com a mediana rotulada e os dois gráficos de referência", (await p.locator("#capitulo-gastos svg text", { hasText: /^R\$ [\d.]+$/ }).count()) >= 3 && (await p.locator("#capitulo-atendimento svg").count()) === 1 && (await p.locator("#capitulo-resultados svg").count()) === 1);
+ok("panorama: contexto nacional separado, sem diferença contra a capital", (await p.locator('aside[aria-label="Contexto nacional"]').innerText()).includes("Universo diferente das capitais"));
+ok("panorama: Ideb nomeia as duas capitais empatadas no maior valor", (await p.locator("#capitulo-resultados").innerText()).includes("Maior: 6,9 · Curitiba (PR) e Teresina (PI)"));
+ok("panorama: Brasil como agregado nacional, não média das capitais", (await p.locator("#capitulo-atendimento").innerText()).includes("agregado nacional, não é média das capitais"));
+
+// abas do capítulo 1
+const abas = p.locator('#capitulo-gastos [role="tab"]');
+ok("abas: Total, Por habitante e Por matrícula, com a segunda selecionada", (await abas.allInnerTexts()).join("|") === "Total|Por habitante|Por matrícula" && (await abas.nth(1).getAttribute("aria-selected")) === "true");
+await abas.nth(2).click();
+await p.waitForTimeout(300);
+ok("abas: Por matrícula troca a pergunta, grava ?med= e traz a ressalva do número", (await p.locator("#capitulo-gastos > div:first-child h2").innerText()) === "Quanto se gasta por matrícula?" && busca("med") === "despesa_mat" && (await p.locator("#capitulo-gastos").innerText()).includes("Razão orçamentária, não custo do aluno"));
+ok("abas: medida sem referência nacional diz por quê, em vez de calar", /Sem referência nacional comparável/.test(await p.locator('aside[aria-label="Contexto nacional"]').innerText()));
+await abas.nth(0).click();
+await p.waitForTimeout(300);
+ok("abas: Total usa escala logarítmica declarada no eixo", (await p.locator("#capitulo-gastos svg text", { hasText: /escala logarítmica/ }).count()) === 1 && busca("med") === "despesa");
+await p.goBack();
+await p.waitForTimeout(300);
+ok("abas: voltar restaura a aba anterior", busca("med") === "despesa_mat" && (await abas.nth(2).getAttribute("aria-selected")) === "true");
+await abas.nth(2).focus();
+await p.keyboard.press("ArrowLeft");
+await p.waitForTimeout(300);
+ok("abas: setas do teclado percorrem as abas e movem o foco", (await abas.nth(1).getAttribute("aria-selected")) === "true" && (await p.evaluate(() => document.activeElement?.textContent)) === "Por habitante");
+await p.keyboard.press("Home");
+await p.waitForTimeout(300);
+ok("abas: Home vai à primeira", (await abas.nth(0).getAttribute("aria-selected")) === "true");
+await abas.nth(1).click();
+await p.waitForTimeout(300);
+ok("abas: voltar à aba padrão tira ?med= da URL", busca("med") === null || busca("med") === "despesa_hab");
 
 // seletor opcional
 await p.selectOption("#panorama-cap", "recife");
 await p.waitForTimeout(300);
 ok("panorama: escolher a capital grava ?cap= na URL", busca("cap") === "recife", p.url());
-ok("panorama: a capital escolhida é destacada com nome e valor", (await p.locator("main svg text", { hasText: /Recife \(PE\):/ }).count()) >= 3);
+ok("panorama: a capital escolhida aparece nos gráficos com nome e valor", (await p.locator("#capitulo-gastos svg text", { hasText: /Recife \(PE\) R\$/ }).count()) === 1 && (await p.locator("#capitulo-atendimento svg text", { hasText: /Recife \(PE\)/ }).count()) === 1);
 ok("panorama: frase da capital frente à mediana, sem juízo", (await p.locator("main").innerText()).includes("Recife (PE) registra R$"));
 await p.goBack();
 await p.waitForTimeout(300);
@@ -45,23 +73,21 @@ await p.goForward();
 await p.waitForTimeout(300);
 ok("panorama: avançar restaura a escolha", busca("cap") === "recife");
 
-// toque/ponteiro na faixa
-await p.locator("main svg").first().scrollIntoViewIfNeeded();
-await p.waitForTimeout(1500); // fontes e hidratação assentam antes de medir a posição do toque
-const marca = await p.locator("main svg circle").nth(3).boundingBox();
-if (marca) {
-  const x = marca.x + marca.width / 2;
-  const y = marca.y + marca.height / 2;
-  if (largura < 768) await p.touchscreen.tap(x, y);
-  else await p.mouse.click(x, y);
-  await p.waitForTimeout(200);
-  ok("panorama: toque ou clique numa marca mostra a capital e o valor numa linha visível", /: R\$/.test(await p.locator('main [role="status"]').first().innerText()), await p.locator('main [role="status"]').first().innerText());
-}
 // gráfico e tabela com o mesmo conjunto
-await p.locator('main label:has-text("Tabela")').first().click();
+await p.locator('#capitulo-gastos label:has-text("Tabela")').first().click();
 await p.waitForTimeout(200);
-const linhasPan = await p.locator("main table:visible tbody tr").count();
-ok("panorama: tabela alternativa traz as 26 capitais", linhasPan === 26, String(linhasPan));
+const linhasPan = await p.locator("#capitulo-gastos table:visible tbody tr").count();
+ok("panorama: tabela alternativa do capítulo 1 traz as 26 capitais", linhasPan === 26, String(linhasPan));
+await p.locator('#capitulo-gastos label:has-text("Gráfico")').first().click();
+await p.locator("#capitulo-atendimento summary").click();
+await p.waitForTimeout(200);
+ok("panorama: capítulos 2 e 3 trazem os valores de cada capital a um clique", (await p.locator("#capitulo-atendimento table:visible tbody tr").count()) === 26);
+// conferência
+ok("panorama: faixa Entenda e confira os números com três ações", await p.evaluate(() => { const s = document.querySelector("#conferir-titulo")?.closest("section"); const a = [...(s?.querySelectorAll("a") ?? [])].map((x) => x.textContent?.replace(/\s+/g, " ").trim()); return a.length === 3 && /Comparar capitais/.test(a[0]) && /Baixar dados/.test(a[1]) && /Fontes e metodologia/.test(a[2]); }));
+const baixa = p.waitForEvent("download", { timeout: 20000 }).catch(() => null);
+await p.locator("#conferir-titulo").locator("xpath=ancestor::section").locator("a", { hasText: "Baixar dados" }).click();
+const dlPanorama = await baixa;
+ok("panorama: Baixar dados entrega o arquivo da base completa", !!dlPanorama && /educacao_capitais\.json$/.test(dlPanorama.suggestedFilename()), dlPanorama ? dlPanorama.suggestedFilename() : "sem download");
 
 // navegação preserva a capital
 await p.locator('nav[aria-label="Visões do painel"] a', { hasText: "Gastos" }).click();
