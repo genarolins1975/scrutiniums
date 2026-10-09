@@ -5,13 +5,12 @@ import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
 import { ContaBarrasReais } from "@/components/energia/ContaBarrasReais";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
 import { ContaReajustes } from "@/components/energia/ContaReajustes";
-import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
+import { ContaTabelaSobDemanda } from "@/components/energia/ContaTabelaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -23,6 +22,8 @@ import {
   GRUPOS_RECEITA_CDE,
   categoriasSubsidio,
   comProcedimentoExterno,
+  compactarInfo,
+  compactarLinhasTabela,
   corSubsidio,
   fatoresReaisPorAno,
   linhasCde,
@@ -141,7 +142,7 @@ export default function ContaReajustesPage() {
       .at(-1) ?? null;
   const mesBandeira = band.vigente ? mesAno(`${band.vigente.mes}-01`) : null;
   // UF de cada distribuidora das janelas (a união das três): o nome na lista e na faixa de pontos leva a UF
-  const info = infoDasDistribuidoras(Array.from(new Set((reaj.comparacao_inflacao?.janelas ?? []).flatMap((j) => j.distribuidoras.map((d) => d[0])))));
+  const info = compactarInfo(infoDasDistribuidoras(Array.from(new Set((reaj.comparacao_inflacao?.janelas ?? []).flatMap((j) => j.distribuidoras.map((d) => d[0]))))));
   // subsídios e orçamento da CDE em reais do mês-base do IPCA (o mesmo da série da tarifa), com o fator de cada ano
   const ipca = lerIpca();
   const baseIpca = ultimoIpca;
@@ -438,26 +439,25 @@ export default function ContaReajustesPage() {
                       </tbody>
                     </table>
                   </div>
-                  <ContaSobDemanda chaveUrl="band" rotulo="a tabela mês a mês das bandeiras" detalhe={`${band.acionamento.length} meses`}>
-                    <TabelaInterativa
-                      iniciarAberta
-                      titulo="Bandeira acionada por mês"
-                      colunas={COLUNAS_BANDEIRAS}
-                      linhas={band.acionamento.map((a) => ({
+                  <ContaTabelaSobDemanda
+                    chaveUrl="band"
+                    rotulo="a tabela mês a mês das bandeiras"
+                    detalhe={`${band.acionamento.length} meses`}
+                    titulo="Bandeira acionada por mês"
+                    colunas={COLUNAS_BANDEIRAS}
+                    linhas={compactarLinhasTabela(COLUNAS_BANDEIRAS, band.acionamento.map((a) => ({
                         id: a.m,
                         m: a.m,
                         bandeira: a.bandeira,
                         rs_mwh: a.rs_mwh,
-                      }))}
-                      chaveLinha="id"
-                      colunaRotulo="m"
-                      fonte="ANEEL, Bandeiras Tarifárias"
-                      versao={band.vigente?.mes ?? ref}
-                      nomeArquivo="conta-bandeiras-mensal"
-                      chaveUrl="band"
-                      ordemInicial={{ coluna: "m", direcao: "desc" }}
-                    />
-                  </ContaSobDemanda>
+                      })))}
+                    chaveLinha="id"
+                    colunaRotulo="m"
+                    fonte="ANEEL, Bandeiras Tarifárias"
+                    versao={band.vigente?.mes ?? ref}
+                    nomeArquivo="conta-bandeiras-mensal"
+                    ordemInicial={{ coluna: "m", direcao: "desc" }}
+                  />
                 </div>
                 <Auditoria titulo="Conferência do acionamento contra a tabela de adicionais">
                   <p className="text-sm text-carvao-muted">
@@ -602,74 +602,122 @@ export default function ContaReajustesPage() {
                         />
                       </div>
                     )}
-                    <ContaSobDemanda chaveUrl="cde" rotulo="a tabela do orçamento da CDE por ano" detalhe={`${linhasCdeAno.length} anos, exportável`}>
-                      <TabelaInterativa
-                        iniciarAberta
-                        titulo="Orçamento da CDE por ano: despesas, receitas, quotas e Tarifa Social"
-                        colunas={[
+                    <ContaTabelaSobDemanda
+                      chaveUrl="cde"
+                      rotulo="a tabela do orçamento da CDE por ano"
+                      detalhe={`${linhasCdeAno.length} anos, exportável`}
+                      titulo="Orçamento da CDE por ano: despesas, receitas, quotas e Tarifa Social"
+                      colunas={[
                           { id: "ano", rotulo: "Ano", tipo: "texto" },
                           {
                             id: "despesa",
-                            rotulo: "Despesa",
+                      rotulo: "Despesa",
                             tipo: "numero",
                             unidade: "R$ bi",
                             casas: 2,
                           },
                           ...GRUPOS_DESPESA_CDE.map((id) => ({
                             id,
-                            rotulo: rotuloGrupoCde.get(id) ?? id,
+                      rotulo: rotuloGrupoCde.get(id) ?? id,
                             tipo: "numero" as const,
                             unidade: "R$ bi",
                             casas: 2,
                           })),
                           {
                             id: "receita",
-                            rotulo: "Receita",
+                      rotulo: "Receita",
                             tipo: "numero",
                             unidade: "R$ bi",
                             casas: 2,
                           },
                           {
                             id: "quotas_tarifa",
-                            rotulo: rotuloGrupoCde.get("quotas_tarifa") ?? "Quotas",
+                      rotulo: rotuloGrupoCde.get("quotas_tarifa") ?? "Quotas",
                             tipo: "numero",
                             unidade: "R$ bi",
                             casas: 2,
                           },
                           {
                             id: "outras_receitas",
-                            rotulo: rotuloGrupoCde.get("outras_receitas") ?? "Outras receitas",
+                      rotulo: rotuloGrupoCde.get("outras_receitas") ?? "Outras receitas",
                             tipo: "numero",
                             unidade: "R$ bi",
                             casas: 2,
                           },
                           {
                             id: "quotas_pct",
-                            rotulo: "Quotas nas receitas",
+                      rotulo: "Quotas nas receitas",
                             tipo: "percentual",
                             casas: 1,
                           },
                           {
                             id: "tarifa_social_pct",
-                            rotulo: "Tarifa Social nas despesas",
+                      rotulo: "Tarifa Social nas despesas",
                             tipo: "percentual",
                             casas: 1,
                           },
                         ]}
-                        linhas={linhasCdeAno.map((l) => ({
+                      linhas={compactarLinhasTabela([
+                          { id: "ano", rotulo: "Ano", tipo: "texto" },
+                          {
+                            id: "despesa",
+                      rotulo: "Despesa",
+                            tipo: "numero",
+                            unidade: "R$ bi",
+                            casas: 2,
+                          },
+                          ...GRUPOS_DESPESA_CDE.map((id) => ({
+                            id,
+                      rotulo: rotuloGrupoCde.get(id) ?? id,
+                            tipo: "numero" as const,
+                            unidade: "R$ bi",
+                            casas: 2,
+                          })),
+                          {
+                            id: "receita",
+                      rotulo: "Receita",
+                            tipo: "numero",
+                            unidade: "R$ bi",
+                            casas: 2,
+                          },
+                          {
+                            id: "quotas_tarifa",
+                      rotulo: rotuloGrupoCde.get("quotas_tarifa") ?? "Quotas",
+                            tipo: "numero",
+                            unidade: "R$ bi",
+                            casas: 2,
+                          },
+                          {
+                            id: "outras_receitas",
+                      rotulo: rotuloGrupoCde.get("outras_receitas") ?? "Outras receitas",
+                            tipo: "numero",
+                            unidade: "R$ bi",
+                            casas: 2,
+                          },
+                          {
+                            id: "quotas_pct",
+                      rotulo: "Quotas nas receitas",
+                            tipo: "percentual",
+                            casas: 1,
+                          },
+                          {
+                            id: "tarifa_social_pct",
+                      rotulo: "Tarifa Social nas despesas",
+                            tipo: "percentual",
+                            casas: 1,
+                          },
+                        ], linhasCdeAno.map((l) => ({
                           ...l,
                           id: l.ano,
-                        }))}
-                        chaveLinha="id"
-                        colunaRotulo="ano"
-                        fonte="ANEEL, CDE: custeio dos benefícios tarifários"
-                        versao={cde.ultimo_ano}
-                        nomeArquivo="conta-orcamento-cde"
-                        chaveUrl="cde"
-                        ordemInicial={{ coluna: "ano", direcao: "desc" }}
-                        nota={cde.natureza_valores}
-                      />
-                    </ContaSobDemanda>
+                        })))}
+                      chaveLinha="id"
+                      colunaRotulo="ano"
+                      fonte="ANEEL, CDE: custeio dos benefícios tarifários"
+                      versao={cde.ultimo_ano}
+                      nomeArquivo="conta-orcamento-cde"
+                      ordemInicial={{ coluna: "ano", direcao: "desc" }}
+                      nota={cde.natureza_valores}
+                    />
                     <dl className="grid gap-3 text-sm sm:grid-cols-2">
                       {cde.grupos.map((gr) => (
                         <div key={gr.id}>
@@ -699,23 +747,22 @@ export default function ContaReajustesPage() {
                 />
                 <NotasDoPainel oQueMudou={mudancaSubsidios(sub)} comoInterpretar={comoInterpretarSubsidios} naoConcluir={naoConcluirSubsidios} />
                 <div data-nivel="analisar" className="border-t border-linha pt-6">
-                  <ContaSobDemanda chaveUrl="sub" rotulo="os subsídios por distribuidora" detalhe={`${linhasSubDist.length} distribuidoras, exportável`}>
-                    <TabelaInterativa
-                      iniciarAberta
-                      titulo={`Subsídios tarifários por distribuidora em ${sub.ultimo_ano_completo ?? "último ano completo"}`}
-                      colunas={COLUNAS_SUB_DIST}
-                      linhas={linhasSubDist}
-                      chaveLinha="id"
-                      colunaRotulo="sigla"
-                      fonte="ANEEL, Subsídios Tarifários"
-                      versao={sub.ultimo_ano_completo ?? ref}
-                      nomeArquivo="conta-subsidios-por-distribuidora"
-                      chaveUrl="sub"
-                      ordemInicial={{ coluna: "total", direcao: "desc" }}
-                      dicaBusca="Sigla, razão social ou CNPJ"
-                      nota="Repasse homologado (previsão mais ajuste) somado nas competências do ano; por categoria no CSV de subsídios."
-                    />
-                  </ContaSobDemanda>
+                  <ContaTabelaSobDemanda
+                    chaveUrl="sub"
+                    rotulo="os subsídios por distribuidora"
+                    detalhe={`${linhasSubDist.length} distribuidoras, exportável`}
+                    titulo={`Subsídios tarifários por distribuidora em ${sub.ultimo_ano_completo ?? "último ano completo"}`}
+                    colunas={COLUNAS_SUB_DIST}
+                    linhas={compactarLinhasTabela(COLUNAS_SUB_DIST, linhasSubDist)}
+                    chaveLinha="id"
+                    colunaRotulo="sigla"
+                    fonte="ANEEL, Subsídios Tarifários"
+                    versao={sub.ultimo_ano_completo ?? ref}
+                    nomeArquivo="conta-subsidios-por-distribuidora"
+                    ordemInicial={{ coluna: "total", direcao: "desc" }}
+                    dicaBusca="Sigla, razão social ou CNPJ"
+                    nota="Repasse homologado (previsão mais ajuste) somado nas competências do ano; por categoria no CSV de subsídios."
+                  />
                 </div>
                 <Auditoria titulo="Conferências dos subsídios e do orçamento da CDE">
                   <p className="text-sm text-carvao-muted">

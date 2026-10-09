@@ -18,6 +18,7 @@ import {
   CAMPO_DIST,
   COLUNAS_JANELA,
   destacar,
+  expandirInfo,
   janelasNoMesmoConjunto,
   linhasJanela,
   remover,
@@ -26,7 +27,7 @@ import {
   textoJanelasNoMesmoConjunto,
   textoMunicipioReajuste,
   vereditoReajustes,
-  type InfoDistribuidora,
+  type InfoCompacta,
   type MunicipioEncontrado,
 } from "@/lib/energia/conta";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "@/lib/energia/tabela";
@@ -77,8 +78,8 @@ export type ContaReajustesProps = {
   ultimos: UltimoEvento[];
   dataReferencia: string;
   fonte: string;
-  /** UF de cada distribuidora (por CNPJ): o nome na lista e na faixa de pontos leva a UF. */
-  info: Record<string, InfoDistribuidora>;
+  /** UF de cada distribuidora: o nome na lista e na faixa de pontos leva a UF (`compactarInfo`). */
+  info: InfoCompacta;
   /** Ficha "Comprove este número" da mediana de 12 meses, a única que a gold publica. */
   evidencia: Evidencia | null;
   /** Página e âncora do cartão da mediana, para a citação. */
@@ -87,8 +88,9 @@ export type ContaReajustesProps = {
   aviso?: ReactNode;
 };
 
-export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info, evidencia, endereco, aviso }: ContaReajustesProps) {
+export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: infoCompacta, evidencia, endereco, aviso }: ContaReajustesProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const info = useMemo(() => expandirInfo(infoCompacta), [infoCompacta]);
   const janela = janelas.find((j) => String(j.meses) === v.janela) ?? janelas[0];
   const linhas = useMemo(() => (janela ? linhasJanela(janela) : []), [janela]);
   const comuns = useMemo(() => janelasNoMesmoConjunto(janelas), [janelas]);

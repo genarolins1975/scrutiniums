@@ -283,9 +283,9 @@ export function PldLimites({
       <SecaoDoPainel
         id="calendario"
         titulo="Em quais dos últimos dias o preço ficou no limite?"
-        lead={`Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário mostra sempre os dias mais recentes da publicação (${
+        lead={`Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário usa os dias mais recentes da publicação (${
           bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} a ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "sem dias"
-        }), qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`}
+        }), e a janela abaixo escolhe o último semestre ou todos eles, qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`}
       >
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <PldEscolha

@@ -18,6 +18,7 @@ import {
   respostaUf,
   respostaUsina,
   textoDefasagem,
+  textoDescontoLiquido,
   textoReferencia,
   type ChaveFonte,
   type DadosExplorador,
@@ -62,10 +63,11 @@ function Grao({ grao, titulo, dados, children, id, nota }: { grao: IdGraoTerrito
 
 function Item({ rotulo, valor, detalhe }: { rotulo: string; valor: ReactNode; detalhe?: ReactNode }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-0.5 text-sm">
-      <dt className="text-carvao-muted">{rotulo}</dt>
-      <dd className="text-right tabular-nums text-carvao">{valor}</dd>
-      {detalhe && <dd className="col-span-2 text-xs text-carvao-muted">{detalhe}</dd>}
+    // abaixo de 640 px o rótulo e o valor ficam um sobre o outro, cada um com a largura inteira e quebra só entre palavras; a partir daí, duas colunas
+    <div className="grid grid-cols-1 gap-y-0.5 text-sm sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-3">
+      <dt className="text-carvao-muted [overflow-wrap:normal] [word-break:normal] hyphens-none">{rotulo}</dt>
+      <dd className="tabular-nums text-carvao sm:text-right">{valor}</dd>
+      {detalhe && <dd className="text-xs text-carvao-muted sm:col-span-2">{detalhe}</dd>}
     </div>
   );
 }
@@ -112,11 +114,17 @@ function Links({ itens, titulo = "Na página de origem" }: { itens: LinkModulo[]
   );
 }
 
-function Cabeca({ rotulo, nome, resposta, tipo }: { rotulo: string; nome: string; resposta: string; tipo: string }) {
+/** Cabeçalho da ficha: o título recebe o foco quando a escolha muda (tabIndex -1), e a ação (limpar a escolha) fica junto dele. */
+function Cabeca({ rotulo, nome, resposta, tipo, acao }: { rotulo: string; nome: string; resposta: string; tipo: string; acao?: ReactNode }) {
   return (
     <header>
       <p className="rotulo text-mineral">{rotulo}</p>
-      <h3 className="mt-1 font-serif text-xl leading-snug text-carvao">{nome}</h3>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0">
+        <h3 tabIndex={-1} data-foco-ficha="" className="mt-1 font-serif text-xl leading-snug text-carvao focus:outline-none focus-visible:ring-2 focus-visible:ring-energia">
+          {nome}
+        </h3>
+        {acao}
+      </div>
       <p className="mt-2 text-sm leading-relaxed text-carvao" data-resposta-ficha={tipo}>
         {resposta}
       </p>
@@ -129,6 +137,7 @@ function Cabeca({ rotulo, nome, resposta, tipo }: { rotulo: string; nome: string
 export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDistribuidora; dados: DadosExplorador; compacto?: boolean }) {
   const defTsee = textoDefasagem(d.tsee_ref, dados.dataReferencia);
   return (
+    <>
     <dl className="space-y-2">
       <Item
         rotulo={`Perdas totais sobre a energia injetada${d.perdas_ano ? ` (${d.perdas_ano})` : ""}`}
@@ -155,12 +164,13 @@ export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDi
         valor={d.tsee_pct === null ? <Ausente motivo={d.tsee_motivo} /> : `${num(d.tsee_pct, 2)}% (${inteiro(d.tsee_uc)} unidades)`}
         detalhe={d.tsee_ref ? `referência ${textoReferencia(d.tsee_ref)}${defTsee ? `; ${defTsee}` : ""}` : undefined}
       />
-      {!compacto && (
-        <p className="text-xs text-mineral">
-          Fontes: ANEEL (SAMP Balanço, Indicadores de Continuidade, Tarifas de aplicação, Relação de MMGD, SCS), pelos módulos Perdas, Qualidade, Conta de luz, Transição e Inclusão.
-        </p>
-      )}
     </dl>
+    {!compacto && (
+      <p className="mt-2 text-xs text-mineral">
+        Fontes: ANEEL (SAMP Balanço, Indicadores de Continuidade, Tarifas de aplicação, Relação de MMGD, SCS), pelos módulos Perdas, Qualidade, Conta de luz, Transição e Inclusão.
+      </p>
+    )}
+    </>
   );
 }
 
@@ -169,6 +179,7 @@ export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDi
 export function BlocosSubmercado({ s, dados }: { s: LinhaSubmercado; dados: DadosExplorador }) {
   const def = textoDefasagem(s.mmgd_ons_ref, dados.dataReferencia);
   return (
+    <>
     <dl className="space-y-2">
       <Item rotulo={`PLD médio do dia${s.pld_dia_ref ? ` (${dataBR(s.pld_dia_ref)})` : ""}`} valor={valorOu(s.pld_dia, 2, "R$/MWh", s.pld_dia_motivo)} detalhe="média das 24 horas, não ponderada pela carga" />
       <Item
@@ -186,25 +197,37 @@ export function BlocosSubmercado({ s, dados }: { s: LinhaSubmercado; dados: Dado
         valor={valorOu(s.mmgd_ons, 0, "MWmed", s.mmgd_ons_motivo)}
         detalhe={def ?? "estimada pelo ONS, não medida"}
       />
-      <Fonte dados={dados} chave="pld_dia" />
-      <Fonte dados={dados} chave="ear" />
     </dl>
+    <Fonte dados={dados} chave="pld_dia" />
+    <Fonte dados={dados} chave="ear" />
+    </>
   );
 }
 
 export function BlocosUf({ u, dados }: { u: LinhaUf; dados: DadosExplorador }) {
   const def = textoDefasagem(u.tsee_ref, dados.dataReferencia);
+  const liquido = textoDescontoLiquido(u.tsee_desconto);
+  const registros = u.cap_registros ? `; mais ${inteiro(u.cap_registros)} ${u.cap_registros === 1 ? "registro" : "registros"} de até 10 kW, à parte` : "";
+  const reconcilia =
+    u.cap_usinas !== null && u.cap_um_municipio !== null && u.cap_multimunicipio !== null
+      ? `${inteiro(u.cap_um_municipio)} declaradas em um só município (as que a soma dos municípios conta)${u.cap_multimunicipio ? ` e ${inteiro(u.cap_multimunicipio)} em mais de um município ou sem município reconhecido` : ""}`
+      : null;
   return (
     <dl className="space-y-2">
       <Item
         rotulo="Capacidade em operação (UF principal da usina)"
-        valor={u.cap_mw === null ? <Ausente motivo={u.cap_motivo} /> : `${num(u.cap_mw, 1)} MW (${inteiro(u.cap_usinas)} usinas)`}
-        detalhe={u.cap_origem ?? undefined}
+        valor={u.cap_mw === null ? <Ausente motivo={u.cap_motivo} /> : `${num(u.cap_mw, 1)} MW${u.cap_usinas === null ? "" : ` (${inteiro(u.cap_usinas)} usinas${registros})`}`}
+        detalhe={[u.cap_origem, reconcilia, dados.notaMultiestadual].filter(Boolean).join(". ") || undefined}
       />
       <Item
         rotulo={`Faturas com Tarifa Social${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref)})` : ""}`}
         valor={valorOu(u.tsee_faturas, 0, "faturas", u.tsee_motivo)}
-        detalhe={u.tsee_desconto === null ? undefined : `desconto de R$ ${num(u.tsee_desconto, 2)} no mês${def ? `; ${def}` : ""}`}
+        detalhe="contagem de faturas do mês; cancelamentos e refaturamentos não entram nela"
+      />
+      <Item
+        rotulo={`Desconto líquido da Tarifa Social${u.tsee_ref ? ` (${textoReferencia(u.tsee_ref)})` : ""}`}
+        valor={u.tsee_desconto === null ? <Ausente motivo={u.tsee_motivo} /> : `R$ ${num(u.tsee_desconto, 2)}`}
+        detalhe={[liquido, def].filter(Boolean).join(" ") || undefined}
       />
       <Item
         rotulo={`Localidades em sistema isolado${u.isol_ref ? ` (ciclo ${u.isol_ref})` : ""}`}
@@ -225,6 +248,8 @@ export function FichaMunicipio({
   submercado,
   uf,
   onSelecionar,
+  onVerUsinas,
+  acao,
 }: {
   m: MunicipioT;
   dados: DadosExplorador;
@@ -233,12 +258,16 @@ export function FichaMunicipio({
   submercado: LinhaSubmercado | null;
   uf: LinhaUf | null;
   onSelecionar: (s: Selecao) => void;
+  /** Abre a camada Usinas já filtrada por este município. */
+  onVerUsinas?: (m: MunicipioT) => void;
+  /** Ação junto do título da ficha (limpar a escolha). */
+  acao?: ReactNode;
 }) {
   const ano = dados.referencias.populacao_ano;
   const defTsee = textoDefasagem(dados.referencias.tsee_mes_cde, dados.dataReferencia);
   return (
     <article className="space-y-4" aria-label={`Ficha do município ${m.nome}`}>
-      <Cabeca rotulo={`Município · ${m.uf} · IBGE ${m.ibge}`} nome={m.nome} resposta={respostaMunicipio(m, { distribuidoras: idx, populacaoAno: ano })} tipo="mun" />
+      <Cabeca rotulo={`Município · ${m.uf} · IBGE ${m.ibge}`} nome={m.nome} resposta={respostaMunicipio(m, { distribuidoras: idx, populacaoAno: ano })} tipo="mun" acao={acao} />
 
       <Grao grao="municipio" titulo="Do município" dados={dados}>
         <dl className="space-y-2">
@@ -261,7 +290,19 @@ export function FichaMunicipio({
           <Item
             rotulo="Usinas em operação declaradas só neste município"
             valor={`${inteiro(m.usi_op_n)}; ${num(m.usi_op_mw, 1)} MW`}
-            detalhe={`a construir: ${inteiro(m.usi_cart_n)} (${num(m.usi_cart_mw, 1)} MW outorgados)`}
+            detalhe={
+              <>
+                a construir: {inteiro(m.usi_cart_n)} ({num(m.usi_cart_mw, 1)} MW outorgados)
+                {onVerUsinas && (m.usi_op_n > 0 || m.usi_cart_n > 0 || m.usi_multi.length > 0) && (
+                  <>
+                    {". "}
+                    <button type="button" className={BOTAO_LINK} onClick={() => onVerUsinas(m)} data-ver-usinas="">
+                      Ver as usinas deste município
+                    </button>
+                  </>
+                )}
+              </>
+            }
           />
           <Item rotulo="Registros do SIGA de até 10 kW (à parte)" valor={`${inteiro(m.usi_reg_n)}; ${num(m.usi_reg_kw, 0)} kW`} />
           <Item
@@ -322,13 +363,13 @@ export function FichaMunicipio({
                     <th scope="row" className="px-1 py-1 text-left font-normal text-carvao">
                       {c.nome} <span className="text-carvao-muted">({c.distribuidora}, {c.ano})</span>
                     </th>
-                    <td className="px-1 py-1 text-right text-carvao">
+                    <td className="whitespace-nowrap px-1 py-1 text-right text-carvao">
                       {numTexto(c.dec_h, 2)} <span className="text-carvao-muted">/ {numTexto(c.dec_lim_h, 2)}</span>
                     </td>
-                    <td className="px-1 py-1 text-right text-carvao">
+                    <td className="whitespace-nowrap px-1 py-1 text-right text-carvao">
                       {numTexto(c.fec, 2)} <span className="text-carvao-muted">/ {numTexto(c.fec_lim, 2)}</span>
                     </td>
-                    <td className="px-1 py-1 text-right text-carvao">{inteiro(c.n_mun)}</td>
+                    <td className="whitespace-nowrap px-1 py-1 text-right text-carvao">{inteiro(c.n_mun)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -368,10 +409,10 @@ export function FichaMunicipio({
   );
 }
 
-export function FichaDistribuidora({ d, dados, onSelecionar }: { d: LinhaDistribuidora; dados: DadosExplorador; onSelecionar: (s: Selecao) => void }) {
+export function FichaDistribuidora({ d, dados, onSelecionar, acao }: { d: LinhaDistribuidora; dados: DadosExplorador; onSelecionar: (s: Selecao) => void; acao?: ReactNode }) {
   return (
     <article className="space-y-4" aria-label={`Ficha da distribuidora ${d.sigla}`}>
-      <Cabeca rotulo={`Distribuidora · CNPJ ${d.cnpj_formatado ?? d.id}`} nome={d.nome ? `${d.sigla}: ${d.nome}` : d.sigla} resposta={respostaDistribuidora(d)} tipo="dist" />
+      <Cabeca rotulo={`Distribuidora · CNPJ ${d.cnpj_formatado ?? d.id}`} nome={d.nome ? `${d.sigla}: ${d.nome}` : d.sigla} resposta={respostaDistribuidora(d)} tipo="dist" acao={acao} />
       <Grao grao="distribuidora" titulo="Área de atuação (relação oficial)" dados={dados} nota="Municípios inteiros que a relação oficial da ANEEL liga a esta distribuidora; não há polígono oficial de concessão acessível.">
         <dl className="space-y-2">
           <Item rotulo="Municípios" valor={inteiro(d.municipios)} detalhe={`${inteiro(d.confirmados)} confirmados; ${inteiro(d.so_mmgd)} só pelo cadastro de MMGD; ${inteiro(d.nao_confirmados)} sem confirmação`} />
@@ -399,10 +440,10 @@ export function FichaDistribuidora({ d, dados, onSelecionar }: { d: LinhaDistrib
   );
 }
 
-export function FichaSubmercado({ s, dados, onSelecionar }: { s: LinhaSubmercado; dados: DadosExplorador; onSelecionar: (s: Selecao) => void }) {
+export function FichaSubmercado({ s, dados, onSelecionar, acao }: { s: LinhaSubmercado; dados: DadosExplorador; onSelecionar: (s: Selecao) => void; acao?: ReactNode }) {
   return (
     <article className="space-y-4" aria-label={`Ficha do submercado ${s.nome}`}>
-      <Cabeca rotulo="Submercado" nome={s.nome} resposta={respostaSubmercado(s)} tipo="sm" />
+      <Cabeca rotulo="Submercado" nome={s.nome} resposta={respostaSubmercado(s)} tipo="sm" acao={acao} />
       <Grao grao="submercado" titulo="Do submercado inteiro" dados={dados} nota="Valores do submercado: não são de uma UF nem de um município.">
         <BlocosSubmercado s={s} dados={dados} />
       </Grao>
@@ -433,10 +474,10 @@ export function FichaSubmercado({ s, dados, onSelecionar }: { s: LinhaSubmercado
   );
 }
 
-export function FichaUf({ u, s, dados, onSelecionar }: { u: LinhaUf; s: LinhaSubmercado | null; dados: DadosExplorador; onSelecionar: (s: Selecao) => void }) {
+export function FichaUf({ u, s, dados, onSelecionar, acao }: { u: LinhaUf; s: LinhaSubmercado | null; dados: DadosExplorador; onSelecionar: (s: Selecao) => void; acao?: ReactNode }) {
   return (
     <article className="space-y-4" aria-label={`Ficha da UF ${u.nome ?? u.uf}`}>
-      <Cabeca rotulo={`UF · ${u.uf}`} nome={u.nome ?? u.uf} resposta={respostaUf(u)} tipo="uf" />
+      <Cabeca rotulo={`UF · ${u.uf}`} nome={u.nome ?? u.uf} resposta={respostaUf(u)} tipo="uf" acao={acao} />
       <Grao grao="uf" titulo="Da UF" dados={dados} nota="Valores da UF inteira.">
         <dl className="space-y-2">
           <Item rotulo="Municípios" valor={inteiro(u.municipios)} detalhe={`${inteiro(u.fora_do_sin)} fora do SIN; ${inteiro(u.com_localidade_isolada)} com localidade isolada`} />
@@ -459,11 +500,11 @@ export function FichaUf({ u, s, dados, onSelecionar }: { u: LinhaUf; s: LinhaSub
   );
 }
 
-export function FichaUsina({ u, dados, nomeMunicipio, onSelecionar }: { u: UsinaT; dados: DadosExplorador; nomeMunicipio: (ibge: string) => string; onSelecionar: (s: Selecao) => void }) {
+export function FichaUsina({ u, dados, nomeMunicipio, onSelecionar, acao }: { u: UsinaT; dados: DadosExplorador; nomeMunicipio: (ibge: string) => string; onSelecionar: (s: Selecao) => void; acao?: ReactNode }) {
   const pot = potenciaUsina(u);
   return (
     <article className="space-y-4" aria-label={`Ficha da usina ${u.nome}`}>
-      <Cabeca rotulo={`Usina · CEG ${u.ceg}`} nome={u.nome} resposta={respostaUsina(u, nomeMunicipio)} tipo="usi" />
+      <Cabeca rotulo={`Usina · CEG ${u.ceg}`} nome={u.nome} resposta={respostaUsina(u, nomeMunicipio)} tipo="usi" acao={acao} />
       <Grao grao="usina" titulo="Da usina (ponto)" dados={dados} nota="Ponto do SIGA (centróide aproximado). O submercado de uma usina depende do ponto de conexão, que o SIGA não publica.">
         <dl className="space-y-2">
           <Item rotulo="Tipo e outorga" valor={`${u.tipo}; ${u.outorga ?? "outorga sem dado"}`} />

@@ -1,12 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { CAMPO_PERFIL, notaFaixaTarifa, referenciasDoPerfil, type ComparacaoMesmoConjunto, type Perfil } from "@/lib/energia/conta";
+import { CAMPO_PERFIL, expandirVigentes, notaFaixaTarifa, referenciasDoPerfil, type ComparacaoMesmoConjunto, type Perfil, type VigenteCompacto } from "@/lib/energia/conta";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import { dataBR } from "@/lib/energia/formato";
-import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
+import type { ResumoTarifas } from "@/lib/energia/tipos-conta";
 
 /**
  * Faixa de métricas da abertura da Conta de luz: o menor, a mediana e o maior custo do perfil de consumo entre as distribuidoras com
@@ -30,7 +31,8 @@ export function ContaFaixa({
   evidenciaMediana,
   comparacao,
 }: {
-  vigentes: TarifaVigente[];
+  /** As distribuidoras do ranking em tuplas (`compactarVigentes`): a mesma lista, com a mesma referência, que o painel de tarifas recebe. */
+  vigentes: VigenteCompacto[];
   resumo: ResumoTarifas;
   dataReferencia: string;
   evidenciaMediana: Evidencia | null;
@@ -39,7 +41,8 @@ export function ContaFaixa({
 }) {
   const [v] = useEstadoUrl(ESQUEMA);
   const perfil = Number(v.perfil) as Perfil;
-  const r = referenciasDoPerfil(vigentes, resumo, perfil);
+  const todas = useMemo(() => expandirVigentes(vigentes), [vigentes]);
+  const r = referenciasDoPerfil(todas, resumo, perfil);
   const data = dataBR(dataReferencia);
   return (
     <FaixaMetricas colunas={4} rotulo={`Custo de ${perfil} kWh por mês e tarifa mediana`} nota={notaFaixaTarifa(resumo, comparacao)}>

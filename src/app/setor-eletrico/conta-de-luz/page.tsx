@@ -8,12 +8,11 @@ import { ContaHistorico } from "@/components/energia/ContaHistorico";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
 import { ContaSerieReal } from "@/components/energia/ContaSerieReal";
 import { ContaSimulador } from "@/components/energia/ContaSimulador";
-import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
+import { ContaTabelaSobDemanda } from "@/components/energia/ContaTabelaSobDemanda";
 import { ContaTarifas } from "@/components/energia/ContaTarifas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -21,6 +20,12 @@ import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   comProcedimentoExterno,
+  compactarLinhasTabela,
+  compactarComposicao,
+  compactarDistribuidorasSim,
+  compactarEntidades,
+  compactarInfo,
+  compactarVigentes,
   compararMesmoConjunto,
   linhasEvolucao,
   mudancaComposicaoEm,
@@ -137,7 +142,9 @@ export default function ContaDeLuzPage() {
   const comparacao = historico
     ? compararMesmoConjunto({ vigentes: t.vigentes, semVigente: t.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: g.data_referencia })
     : null;
-  const info = infoDasDistribuidoras(t.vigentes.map((v) => v.cnpj));
+  const info = compactarInfo(infoDasDistribuidoras(t.vigentes.map((v) => v.cnpj)));
+  // o que vai aos componentes de cliente viaja em tuplas, e a mesma lista de distribuidoras (a mesma referência) serve à faixa, ao painel de tarifas e à composição
+  const vigentesCompactos = compactarVigentes(t.vigentes);
   const tresValores = textoTresValoresTipicos(comp, t.resumo);
   const serieReal = resumoSerieReal(evolucao, reaj.comparacao_inflacao?.ultimo_ipca ?? null);
   const ultimoIpca = reaj.comparacao_inflacao?.ultimo_ipca ?? null;
@@ -145,20 +152,7 @@ export default function ContaDeLuzPage() {
   const fora = t.resumo.fora_vigencia_recente + t.resumo.fora_sem_tarifa_ha_mais_de_90_dias;
   const semCustoDisponibilidade = Math.min(...g.perfis_kwh) >= sim.regras.custo_disponibilidade_kwh.trifasico;
 
-  const entidades = [
-    ...t.vigentes.map((v) => ({
-      id: v.cnpj,
-      rotulo: rotuloDistribuidora(v.sigla, v.cnpj),
-      detalhe: v.nome ?? undefined,
-      sinonimos: [v.cnpj],
-    })),
-    ...t.sem_vigente.map((v) => ({
-      id: v.cnpj,
-      rotulo: rotuloDistribuidora(v.sigla, v.cnpj),
-      detalhe: `${v.nome ?? ""} (sem tarifa vigente)`.trim(),
-      sinonimos: [v.cnpj],
-    })),
-  ];
+  const entidades = compactarEntidades(t.vigentes, t.sem_vigente);
 
   const linhasSemVigente = t.sem_vigente.map((s) => ({
     id: s.cnpj,
@@ -283,7 +277,7 @@ export default function ContaDeLuzPage() {
               ]}
             />
           }
-          metricas={<ContaFaixa vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} />}
+          metricas={<ContaFaixa vigentes={vigentesCompactos} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} />}
         >
           A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras, mostra do que
           elas são feitas e estima a conta para um consumo; a variação contra a inflação, as bandeiras e quem paga os descontos estão em{" "}
@@ -325,7 +319,7 @@ export default function ContaDeLuzPage() {
             >
               <div className="space-y-6">
                 <ContaTarifas
-                  vigentes={t.vigentes}
+                  vigentes={vigentesCompactos}
                   resumo={t.resumo}
                   dataReferencia={ref}
                   fonte={FONTE_TARIFAS}
@@ -385,21 +379,20 @@ export default function ContaDeLuzPage() {
                     {num(g.universo_tarifas.fora_baixa_tensao_b1_b2_b3 ?? null, 0)} de outros subgrupos, {num(g.universo_tarifas.modalidade_nao_convencional ?? null, 0)} de outras modalidades,{" "}
                     {num(g.universo_tarifas.detalhe_especifico ?? null, 0)} com detalhe específico). {g.regras.zero_publicado} {g.regras.unidade}
                   </p>
-                  <ContaSobDemanda chaveUrl="semvig" rotulo="a lista de distribuidoras sem tarifa vigente" detalhe={`${linhasSemVigente.length} linhas`}>
-                    <TabelaInterativa
-                      iniciarAberta
-                      titulo="Distribuidoras com tarifa B1 no conjunto e sem vigência na data"
-                      colunas={COLUNAS_SEM_VIGENTE}
-                      linhas={linhasSemVigente}
-                      chaveLinha="id"
-                      colunaRotulo="sigla"
-                      fonte={FONTE_TARIFAS}
-                      versao={ref}
-                      nomeArquivo="conta-distribuidoras-sem-tarifa-vigente"
-                      chaveUrl="semvig"
-                      ordemInicial={{ coluna: "dias", direcao: "asc" }}
-                    />
-                  </ContaSobDemanda>
+                  <ContaTabelaSobDemanda
+                    chaveUrl="semvig"
+                    rotulo="a lista de distribuidoras sem tarifa vigente"
+                    detalhe={`${linhasSemVigente.length} linhas`}
+                    titulo="Distribuidoras com tarifa B1 no conjunto e sem vigência na data"
+                    colunas={COLUNAS_SEM_VIGENTE}
+                    linhas={compactarLinhasTabela(COLUNAS_SEM_VIGENTE, linhasSemVigente)}
+                    chaveLinha="id"
+                    colunaRotulo="sigla"
+                    fonte={FONTE_TARIFAS}
+                    versao={ref}
+                    nomeArquivo="conta-distribuidoras-sem-tarifa-vigente"
+                    ordemInicial={{ coluna: "dias", direcao: "asc" }}
+                  />
                   <p className="text-sm text-carvao-muted">
                     Vigências sobrepostas na fonte: {g.conflitos_fonte.total} casos no recorte, {g.conflitos_fonte.b1_residencial.length} na tarifa B1 residencial de aplicação.{" "}
                     {g.conflitos_fonte.regra}{" "}
@@ -484,9 +477,16 @@ export default function ContaDeLuzPage() {
             >
               <div className="space-y-6">
                 <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-start">
-                  <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
-                    {respostaComposicao(comp)}
-                  </RespostaCurta>
+                  <div className="min-w-0 space-y-4">
+                    <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
+                      {respostaComposicao(comp)}
+                    </RespostaCurta>
+                    {tresValores && (
+                      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="tres-valores-tipicos">
+                        {tresValores}
+                      </p>
+                    )}
+                  </div>
                   <div className="space-y-4">
                     {/* O destaque é o agregado, o mesmo número da frase de abertura: razão de somas das distribuidoras com componentes. A gold só
                         publica ficha de prova para a distribuidora de exemplo (abaixo), então o agregado diz de onde vem em vez de levar ficha. */}
@@ -519,24 +519,9 @@ export default function ContaDeLuzPage() {
                   {/* A parcela CDE média está na resposta acima e na linha "Dos encargos: componentes CDE" da
                       tabela de decomposição; a gold não traz evidência própria para ela, então não vira destaque. */}
                 </div>
-                {tresValores && (
-                  <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="tres-valores-tipicos">
-                    {tresValores}
-                  </p>
-                )}
                 <ContaComposicao
-                  composicao={{
-                    grupos: comp.grupos,
-                    distribuidoras: comp.distribuidoras,
-                    media: comp.media,
-                    mediana: comp.mediana,
-                    cde: comp.cde,
-                    creditos: comp.creditos,
-                  }}
-                  vigentes={t.vigentes.map((v) => ({
-                    cnpj: v.cnpj,
-                    posicao: v.posicao,
-                  }))}
+                  composicao={compactarComposicao(comp)}
+                  vigentes={vigentesCompactos}
                   referencia={sim.casos_referencia.cnpj}
                   dataReferencia={ref}
                   fonte="ANEEL, Componentes Tarifárias"
@@ -568,20 +553,19 @@ export default function ContaDeLuzPage() {
                     Classificação: {comp.classificacao}. Fora da tarifa homologada: {comp.excluidos.join(", ")}.
                   </p>
                   <p className="text-sm text-carvao-muted">Regra de atípico: {comp.regra_atipico}. Cada valor abaixo foi conferido no arquivo original da ANEEL e mantido.</p>
-                  <ContaSobDemanda chaveUrl="atip" rotulo="as componentes atípicas" detalhe={`${linhasAtipicas.length} linhas`}>
-                    <TabelaInterativa
-                      iniciarAberta
-                      titulo={`Componentes atípicas na vigência de ${dataBR(ref)}`}
-                      colunas={COLUNAS_ATIPICAS}
-                      linhas={linhasAtipicas}
-                      chaveLinha="id"
-                      colunaRotulo="sigla"
-                      fonte="ANEEL, Componentes Tarifárias"
-                      versao={ref}
-                      nomeArquivo="conta-componentes-atipicas"
-                      chaveUrl="atip"
-                    />
-                  </ContaSobDemanda>
+                  <ContaTabelaSobDemanda
+                    chaveUrl="atip"
+                    rotulo="as componentes atípicas"
+                    detalhe={`${linhasAtipicas.length} linhas`}
+                    titulo={`Componentes atípicas na vigência de ${dataBR(ref)}`}
+                    colunas={COLUNAS_ATIPICAS}
+                    linhas={compactarLinhasTabela(COLUNAS_ATIPICAS, linhasAtipicas)}
+                    chaveLinha="id"
+                    colunaRotulo="sigla"
+                    fonte="ANEEL, Componentes Tarifárias"
+                    versao={ref}
+                    nomeArquivo="conta-componentes-atipicas"
+                  />
                   <p className="text-sm text-carvao-muted">
                     Conferência das parcelas: {comp.reconciliacao.conferidas} distribuidoras com TE e TUSD iguais nos dois conjuntos da ANEEL,{" "}
                     {comp.reconciliacao.divergentes.length} divergentes, sem componentes: {comp.reconciliacao.sem_componentes.join(", ") || "nenhuma"}. Repetições no arquivo:{" "}
@@ -637,7 +621,7 @@ export default function ContaDeLuzPage() {
                     estado_regras: sim.estado_regras,
                     bandeiras: sim.bandeiras,
                     bandeira_vigente: sim.bandeira_vigente,
-                    distribuidoras: sim.distribuidoras,
+                    distribuidoras: compactarDistribuidorasSim(sim.distribuidoras),
                     rotulo: sim.rotulo,
                     formula: sim.formula,
                     chaves_tarifa: sim.chaves_tarifa,
@@ -702,20 +686,19 @@ export default function ContaDeLuzPage() {
                     Casos calculados pelo pipeline para {rotuloDistribuidora(sim.casos_referencia.sigla, sim.casos_referencia.cnpj)} ({sim.casos_referencia.criterio}); o simulador
                     desta página reproduz cada um (teste automatizado). Sem valor: simulação indisponível para a classe.
                   </p>
-                  <ContaSobDemanda chaveUrl="casos" rotulo="os casos de referência do simulador" detalhe={`${linhasCasos.length} casos`}>
-                    <TabelaInterativa
-                      iniciarAberta
-                      titulo="Casos de referência do simulador"
-                      colunas={COLUNAS_CASOS}
-                      linhas={linhasCasos}
-                      chaveLinha="id"
-                      colunaRotulo="classe"
-                      fonte={FONTE_TARIFAS}
-                      versao={ref}
-                      nomeArquivo="conta-simulador-casos-referencia"
-                      chaveUrl="casos"
-                    />
-                  </ContaSobDemanda>
+                  <ContaTabelaSobDemanda
+                    chaveUrl="casos"
+                    rotulo="os casos de referência do simulador"
+                    detalhe={`${linhasCasos.length} casos`}
+                    titulo="Casos de referência do simulador"
+                    colunas={COLUNAS_CASOS}
+                    linhas={compactarLinhasTabela(COLUNAS_CASOS, linhasCasos)}
+                    chaveLinha="id"
+                    colunaRotulo="classe"
+                    fonte={FONTE_TARIFAS}
+                    versao={ref}
+                    nomeArquivo="conta-simulador-casos-referencia"
+                  />
                 </Auditoria>
                 <Seguir
                   ancora="simulador"

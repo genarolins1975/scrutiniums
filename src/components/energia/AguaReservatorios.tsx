@@ -425,7 +425,7 @@ export function AguaReservatorios({
           )}
           <MedidasBalanco res={res} periodo={periodoJanela} semCadastro={semCadastro} ehPadrao={ehPadrao} evidenciaResiduo={evidenciaResiduo} endereco={enderecoBalanco} />
           <GraficoBarras
-            titulo={`Balanço hídrico de ${nomeRes}, ${periodoJanela}, em hm³ (${ROTULO_CONVENCAO[res.convencao_defluencia]})`}
+            titulo={`Balanço hídrico de ${nomeRes}, ${periodoJanela} (${ROTULO_CONVENCAO[res.convencao_defluencia]})`}
             dados={barrasBalancoTotais(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -435,7 +435,7 @@ export function AguaReservatorios({
             orientacao="horizontal"
           />
           <GraficoBarras
-            titulo={`Como a defluência de ${nomeRes} se divide, ${periodoJanela}, em hm³`}
+            titulo={`Como a defluência de ${nomeRes} se divide, ${periodoJanela}`}
             dados={barrasBalancoDefluencia(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -445,7 +445,7 @@ export function AguaReservatorios({
             orientacao="horizontal"
           />
           <GraficoBarras
-            titulo={`Resíduo e transferência de ${nomeRes}, ${periodoJanela}, em hm³ (régua própria, porque são pequenos)`}
+            titulo={`Resíduo e transferência de ${nomeRes}, ${periodoJanela} (régua própria, porque são pequenos)`}
             dados={barrasBalancoResiduo(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"

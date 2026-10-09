@@ -25,14 +25,15 @@ vi.mock("@/lib/energia/gold", async (original) => {
 });
 
 import PaginaTerritorio from "@/app/setor-eletrico/territorio/page";
-import { FichaDistribuidora, FichaMunicipio, FichaUsina } from "@/components/energia/TerritorioFicha";
+import { BlocosDistribuidora, BlocosSubmercado, BlocosUf, FichaDistribuidora, FichaMunicipio, FichaUsina } from "@/components/energia/TerritorioFicha";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { num } from "@/lib/energia/formato";
-import { matrizExportacao } from "@/lib/energia/tabela";
+import { buscarEntidades, matrizExportacao } from "@/lib/energia/tabela";
 import { CAMPOS_MUNICIPIO_TERRITORIO, type GoldTerritorio, type MunicipiosTerritorio, type UsinasTerritorio } from "@/lib/energia/tipos-territorio";
 import {
   CAMADAS,
   COLUNAS_DISTRIBUIDORAS,
+  COLUNAS_UFS_INDICADORES,
   COLUNAS_UFS_SUBMERCADO,
   COLUNAS_USINAS,
   ESQUEMA_TERRITORIO,
@@ -52,7 +53,10 @@ import {
   linhaUsina,
   mesesDeDefasagem,
   municipiosDoJson,
+  notaMultiestadual,
+  ordenarResultadosBusca,
   proximaPergunta,
+  quartisDistribuidoras,
   respostaDistribuidora,
   respostaMunicipio,
   respostaSubmercado,
@@ -62,8 +66,11 @@ import {
   situacaoVinculo,
   textoAtualidade,
   textoDefasagem,
+  textoDescontoLiquido,
   textoPeriodoPainel,
+  textoSemTarifa,
   textoUniverso,
+  usinasDaUf,
   usinasDoJson,
   valoresMedida,
   type MunicipioT,
@@ -554,7 +561,7 @@ describe("página renderizada no servidor", () => {
     expect(h).toContain(G.pergunta);
     expect(h).toContain('data-resposta="p002"');
     expect(h).toContain(respostaTerritorio(G).slice(0, 40));
-    for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel", "Regra de atribuição"]) {
+    for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados", "Regra de atribuição"]) {
       expect(h, parte).toContain(parte);
     }
     expect((h.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
@@ -592,5 +599,243 @@ describe("página renderizada no servidor", () => {
     expect(x).toContain("Minha região indisponível nesta publicação");
     expect(x).toContain("falha de teste na leitura");
     expect(x).not.toContain('data-resposta="p002"');
+  });
+});
+
+
+/* ================================================================ r10: usinas por UF, desconto líquido, ficha e busca */
+
+describe("r10: a contagem de usinas por UF segue a regra do município e reconcilia com ele", () => {
+  const DU = dadosExplorador(G, USI);
+  const doEstado = (uf: string) => DU.ufs.find((u) => u.uf === uf)!;
+
+  it("exclui os registros de até 10 kW da contagem por UF e os mostra à parte: a soma fecha com o total que a gold publica", () => {
+    const registros = USI.filter((u) => u.estagio === "operacao" && u.registro_ate_10kw).length;
+    expect(registros).toBe(G.resumo.usinas.registros_ate_10kw);
+    let somaRegistros = 0;
+    for (const u of G.ufs) {
+      const c = u.indicadores.capacidade;
+      if (!c.disponivel) continue;
+      const l = doEstado(u.uf);
+      expect(l.cap_usinas! + l.cap_registros!, u.uf).toBe(c.usinas);
+      somaRegistros += l.cap_registros!;
+    }
+    expect(somaRegistros).toBe(registros);
+    // antes: o Pará aparecia com 13.201 usinas e Minas Gerais com 943; depois, 100 e 936, com os registros à parte
+    const pa = G.ufs.find((u) => u.uf === "PA")!.indicadores.capacidade;
+    expect(pa.disponivel && pa.usinas).toBeGreaterThan(10000);
+    expect(doEstado("PA").cap_usinas).toBeLessThan(1000);
+    expect(doEstado("PA").cap_usinas! + doEstado("PA").cap_registros!).toBe(pa.disponivel ? pa.usinas : -1);
+  });
+
+  it("a soma dos municípios mais as usinas em mais de um município fecha com a contagem da UF, em todas as UFs", () => {
+    const somaMun = new Map<string, number>();
+    for (const m of MUN) somaMun.set(m.uf, (somaMun.get(m.uf) ?? 0) + (m.usi_op_n ?? 0));
+    for (const u of G.ufs) {
+      const l = doEstado(u.uf);
+      if (l.cap_usinas === null) continue;
+      expect(somaMun.get(u.uf) ?? 0, `${u.uf}: soma municipal`).toBe(l.cap_um_municipio);
+      expect((somaMun.get(u.uf) ?? 0) + l.cap_multimunicipio!, `${u.uf}: soma municipal mais as demais`).toBe(l.cap_usinas);
+    }
+  });
+
+  it("sem o arquivo de usinas a contagem fica sem dado, e nunca com o total misturado", () => {
+    for (const l of D.ufs) {
+      expect(l.cap_usinas).toBeNull();
+      expect(l.cap_registros).toBeNull();
+    }
+    const por = usinasDaUf(USI);
+    expect(por.get("PA")!.registros).toBe(doEstado("PA").cap_registros);
+  });
+
+  it("a nota diz que a usina em mais de uma UF entra inteira na UF principal, com as duas maiores", () => {
+    const ufPorCodigo = new Map(G.ufs.map((u) => [String(u.codigo), u.uf]));
+    const nota = notaMultiestadual(USI, ufPorCodigo)!;
+    expect(nota).toContain("mais de uma UF");
+    expect(nota).toContain("inteira");
+    expect(DU.notaMultiestadual).toBe(nota);
+    const multi = USI.filter((u) => u.estagio === "operacao" && !u.registro_ate_10kw && new Set(u.municipios.map((m) => ufPorCodigo.get(m.slice(0, 2)))).size > 1);
+    expect(multi.length).toBeGreaterThan(0);
+    const maior = [...multi].sort((a, b) => (b.mw_fiscalizado ?? 0) - (a.mw_fiscalizado ?? 0))[0];
+    expect(nota).toContain(maior.nome);
+    expect(nota).toContain(`${num(multi.length, 0)} `);
+  });
+
+  it("a resposta da UF e a ficha dizem as usinas sem os registros e os registros à parte", () => {
+    const pa = doEstado("PA");
+    const t = respostaUf(pa);
+    expect(t).toContain(`${num(pa.cap_usinas!, 0)} usinas em operação`);
+    expect(t).toContain(`mais ${num(pa.cap_registros!, 0)} registros de até 10 kW, à parte`);
+    const h = renderToStaticMarkup(createElement(BlocosUf, { u: pa, dados: DU }));
+    expect(h).toContain(`${num(pa.cap_usinas!, 0)} usinas`);
+    expect(h).toContain(`${num(pa.cap_registros!, 0)} registros de até 10 kW`);
+    expect(h).toContain("declaradas em um só município");
+    expect(COLUNAS_UFS_INDICADORES.map((c) => c.id)).toEqual(expect.arrayContaining(["cap_usinas", "cap_registros"]));
+  });
+});
+
+describe("r10: o desconto da Tarifa Social é líquido e a contagem de faturas fica à parte", () => {
+  const es = G.ufs.find((u) => u.uf === "ES")!;
+  const DU = dadosExplorador(G, USI);
+
+  it("o texto diz que cancelamentos e refaturamentos entram no desconto e não na contagem, e que o valor pode ser negativo", () => {
+    expect(es.indicadores.tsee.disponivel && (es.indicadores.tsee as { desconto_reais: number }).desconto_reais).toBeLessThan(0);
+    const neg = textoDescontoLiquido(-11456619.05)!;
+    expect(neg).toContain("Desconto líquido");
+    expect(neg).toContain("cancelamentos e refaturamentos");
+    expect(neg).toContain("não na contagem de faturas");
+    expect(neg).toContain("negativo");
+    expect(textoDescontoLiquido(10)!).not.toContain("negativo");
+    expect(textoDescontoLiquido(null)).toBeNull();
+  });
+
+  it("a ficha da UF tem dois itens, as faturas e o desconto líquido, e a coluna da tabela diz 'líquido'", () => {
+    const l = DU.ufs.find((u) => u.uf === "ES")!;
+    const h = renderToStaticMarkup(createElement(BlocosUf, { u: l, dados: DU }));
+    expect(h).toContain("Desconto líquido da Tarifa Social");
+    expect(h).toContain(`R$ ${num(l.tsee_desconto!, 2)}`);
+    expect(h).toContain("contagem de faturas do mês; cancelamentos e refaturamentos não entram nela");
+    expect(h).toContain("O valor é negativo");
+    expect(COLUNAS_UFS_INDICADORES.find((c) => c.id === "tsee_desconto")!.rotulo).toContain("líquido");
+    expect(colunasMunicipios("mmgd_w_hab").find((c) => c.id === "tsee_desconto")?.rotulo ?? "Desconto líquido").toContain("líquido");
+  });
+});
+
+describe("r10: ficha com lista de definição válida, rótulo e valor empilhados no celular, e conjunto sem quebra", () => {
+  const DU = dadosExplorador(G, USI);
+  /** Filhos diretos de cada <dl>: o axe exige div (com dt e dd), dt ou dd, e nunca p. */
+  function filhosDiretosDosDl(html: string): string[][] {
+    const out: string[][] = [];
+    for (const m of html.matchAll(/<dl[^>]*>([\s\S]*?)<\/dl>/g)) {
+      const filhos: string[] = [];
+      let prof = 0;
+      for (const t of m[1].matchAll(/<(\/?)([a-z0-9]+)[^>]*?(\/?)>/gi)) {
+        const tag = t[2].toLowerCase();
+        if (t[1]) prof--;
+        else {
+          if (prof === 0) filhos.push(tag);
+          if (!t[3] && !["br", "img", "input", "hr"].includes(tag)) prof++;
+        }
+      }
+      out.push(filhos);
+    }
+    return out;
+  }
+
+  it("nenhum <dl> da ficha tem <p> ou outro elemento solto como filho direto", () => {
+    const sm = DU.submercados[0];
+    const peças = [
+      renderToStaticMarkup(createElement(BlocosSubmercado, { s: sm, dados: DU })),
+      renderToStaticMarkup(createElement(BlocosDistribuidora, { d: distCnpj(CEMIG), dados: DU })),
+      renderToStaticMarkup(createElement(BlocosUf, { u: DU.ufs[0], dados: DU })),
+      renderToStaticMarkup(
+        createElement(FichaMunicipio, {
+          m: mun(SAO_PAULO),
+          dados: DU,
+          idx: IDX,
+          conjuntos: conjuntosDoMunicipio(mun(SAO_PAULO), IDX_ARQ.conjuntos.linhas, IDX),
+          submercado: DU.submercados.find((x) => x.id === mun(SAO_PAULO).sm) ?? null,
+          uf: DU.ufs.find((u) => u.uf === mun(SAO_PAULO).uf) ?? null,
+          onSelecionar: () => {},
+        }),
+      ),
+    ];
+    for (const h of peças) {
+      const dls = filhosDiretosDosDl(h);
+      expect(dls.length).toBeGreaterThan(0);
+      for (const filhos of dls) for (const f of filhos) expect(["div", "dt", "dd", "script", "template"], f).toContain(f);
+    }
+    // as fontes ficam depois da lista, e não dentro dela
+    const h = peças[0];
+    expect(h.indexOf("Fonte:")).toBeGreaterThan(h.lastIndexOf("</dl>"));
+    const d = peças[1];
+    expect(d.indexOf("Fontes: ANEEL")).toBeGreaterThan(d.lastIndexOf("</dl>"));
+  });
+
+  it("abaixo de 640 px o rótulo e o valor ficam um sobre o outro; a partir daí, em duas colunas", () => {
+    const h = renderToStaticMarkup(createElement(BlocosDistribuidora, { d: distCnpj(CEMIG), dados: DU }));
+    expect(h).toContain("grid-cols-1");
+    expect(h).toContain("sm:grid-cols-[minmax(0,1fr)_auto]");
+    // a grade de duas colunas só vale com o prefixo sm: (sem ele, abaixo de 640 px, seria a que quebra o rótulo em 43 px)
+    expect(h).not.toMatch(/class="[^"]*(?<![:\w-])grid-cols-\[minmax\(0,1fr\)_auto\][^"]*"/);
+    expect(h).toContain("sm:text-right");
+    const ficha = ler("src/components/energia/TerritorioFicha.tsx");
+    expect(ficha).toContain("whitespace-nowrap");
+  });
+});
+
+describe("r10: a busca põe o nome exato primeiro e depois o município maior, com UF e população", () => {
+  const ent = entidadesBusca(D, MUN);
+  const busca = (q: string) => ordenarResultadosBusca(buscarEntidades(ent, q, 200).itens, q);
+
+  it("'Campinas' abre Campinas (SP) antes de Campinas do Piauí, e 'São Paulo' põe a capital na frente", () => {
+    const camp = busca("Campinas");
+    expect(camp[0].rotulo).toBe("Campinas");
+    expect(camp[0].detalhe).toContain("SP");
+    const spIdx = camp.findIndex((e) => e.rotulo === "Campinas do Piauí");
+    expect(spIdx).toBeGreaterThan(0);
+    // "São Paulo" é também o nome da UF: os dois nomes exatos vêm primeiro (antes eram quatro opções de outros lugares), e a capital é um deles
+    const sp = busca("São Paulo");
+    expect(sp.slice(0, 2).every((e) => e.rotulo === "São Paulo")).toBe(true);
+    expect(sp.slice(0, 2).map((e) => e.id)).toContain(`mun:${SAO_PAULO}`);
+  });
+
+  it("cada município mostra a população ao lado, fora do que a busca compara", () => {
+    const c = ent.find((e) => e.id === `mun:${SAO_PAULO}`)!;
+    expect(c.populacao).toMatch(/mi hab\.$/);
+    expect(c.detalhe).not.toMatch(/hab\./);
+    // os municípios entram por população decrescente
+    const pops = ent.filter((e) => e.tipo === "mun").map((e) => e.pop ?? -1);
+    for (let i = 1; i < pops.length; i++) expect(pops[i]).toBeLessThanOrEqual(pops[i - 1]);
+  });
+});
+
+describe("r10: distribuidoras sem tarifa e como os indicadores se distribuem", () => {
+  it("diz quantas ficam sem tarifa B1 e por quê, a partir do motivo publicado", () => {
+    const sem = D.distribuidoras.filter((d) => d.tarifa === null);
+    const t = textoSemTarifa(D.distribuidoras)!;
+    expect(sem.length).toBeGreaterThan(0);
+    expect(t).toContain(`${num(sem.length, 0)} das ${num(D.distribuidoras.length, 0)} distribuidoras`);
+    expect(t).toContain("tarifa seguinte ainda não consta no arquivo da ANEEL");
+    expect(textoSemTarifa(D.distribuidoras.filter((d) => d.tarifa !== null))).toBeNull();
+  });
+
+  it("menor, quartis e maior de cada indicador, só entre as que têm o dado", () => {
+    const q = quartisDistribuidoras(D.distribuidoras);
+    const tarifa = q.find((x) => x.id === "tarifa")!;
+    expect(tarifa.n).toBe(D.distribuidoras.filter((d) => d.tarifa !== null).length);
+    for (const x of q) {
+      expect(x.min!, x.id).toBeLessThanOrEqual(x.p25!);
+      expect(x.p25!, x.id).toBeLessThanOrEqual(x.mediana!);
+      expect(x.mediana!, x.id).toBeLessThanOrEqual(x.p75!);
+      expect(x.p75!, x.id).toBeLessThanOrEqual(x.max!);
+    }
+  });
+});
+
+describe("r10: a página põe a busca e o limite logo abaixo do título", () => {
+  troca.gold = null;
+  const h = renderToStaticMarkup(createElement(PaginaTerritorio));
+
+  it("o limite fica junto do campo de busca, com ligação para o texto completo, e o painel não repete o título da página", () => {
+    expect(h).toContain("data-limite-busca");
+    expect(h).toContain('href="#territorio-limites"');
+    expect(h).toContain('id="territorio-limites"');
+    expect(h.indexOf("data-limite-busca")).toBeLessThan(h.indexOf('id="territorio-limites"'));
+    expect(h).toContain("Qual número vale para qual área?");
+  });
+
+  it("os 5.482 municípios com submercado provado são separados em provados e com prova parcial", () => {
+    const e = G.resumo.municipios_por_estado_submercado as Record<string, number>;
+    expect(e.provado + e.provado_com_area_sem_carga).toBe(G.evidencias.municipios_com_submercado.valor_calculo);
+    const texto = h.replace(/<[^>]+>/g, " ");
+    expect(texto).toContain(`${num(e.provado, 0)} provados pela carga das áreas do ONS e ${num(e.provado_com_area_sem_carga, 0)} com prova parcial`);
+  });
+
+  it("a Tarifa Social do município e da distribuidora dizem o mês de cada uma, e o acesso à EPE é dito em Auditar", () => {
+    const texto = h.replace(/<[^>]+>/g, " ");
+    expect(texto).toContain("Tarifa Social do município em mar/2026");
+    expect(texto).toContain("Token Required");
+    expect(texto).toContain("Como os indicadores das distribuidoras se distribuem entre elas");
   });
 });

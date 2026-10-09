@@ -15,6 +15,8 @@ import {
   curvaSimulacao,
   descricaoDaTarifa,
   destacar,
+  expandirDistribuidorasSim,
+  expandirInfo,
   igualdadeComResidencial,
   leiturasNaoConferidas,
   nomeLigacao,
@@ -27,7 +29,8 @@ import {
   simular,
   tarifaDaChave,
   vereditoSimulacao,
-  type InfoDistribuidora,
+  type DistribuidoraSimCompacta,
+  type InfoCompacta,
 } from "@/lib/energia/conta";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -70,17 +73,21 @@ const ROTULO_ESTADO: Record<EstadoRegra, string> = {
 };
 
 export type ContaSimuladorProps = {
-  simulador: Pick<Simulador, "classes" | "regras" | "regras_texto" | "estado_regras" | "bandeiras" | "bandeira_vigente" | "distribuidoras" | "rotulo" | "formula" | "chaves_tarifa"> & {
+  simulador: Pick<Simulador, "classes" | "regras" | "regras_texto" | "estado_regras" | "bandeiras" | "bandeira_vigente" | "rotulo" | "formula" | "chaves_tarifa"> & {
+    /** As distribuidoras com tarifa vigente em tuplas (`compactarDistribuidorasSim`); a tela as expande uma vez. */
+    distribuidoras: DistribuidoraSimCompacta[];
     referencia: { cnpj: string; sigla: string | null };
   };
   evidencia: Evidencia | null;
   dataReferencia: string;
-  /** UF de cada distribuidora (por CNPJ), para a lista de distribuidoras: quem não sabe a sigla reconhece o estado. */
-  info?: Record<string, InfoDistribuidora>;
+  /** UF de cada distribuidora, para a lista de distribuidoras: quem não sabe a sigla reconhece o estado (`compactarInfo`). */
+  info?: InfoCompacta;
 };
 
-export function ContaSimulador({ simulador: s, evidencia, dataReferencia, info = {} }: ContaSimuladorProps) {
+export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia, info: infoCompacta }: ContaSimuladorProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const info = useMemo(() => (infoCompacta ? expandirInfo(infoCompacta) : {}), [infoCompacta]);
+  const s = useMemo(() => ({ ...compacto, distribuidoras: expandirDistribuidorasSim(compacto.distribuidoras) }), [compacto]);
   const [texto, setTexto] = useState<string | null>(null);
   const [aviso, setAviso] = useState<string | null>(null);
   const porCnpj = useMemo(() => new Map(s.distribuidoras.map((d) => [d.cnpj, d])), [s.distribuidoras]);
@@ -342,7 +349,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia, info =
           {igualResidencial && igualResidencial.total > 0 && (
             <p className="mt-2 text-xs leading-relaxed text-carvao" data-nota="classe-igual-residencial">
               Na fonte, a tarifa de {classe.rotulo.split(" (")[0]} é igual à de Residencial em {num(igualResidencial.iguais, 0)} de {num(igualResidencial.total, 0)} distribuidoras do conjunto
-              {igualAqui ? `, inclusive na ${sigla}` : ""}; por isso o valor {igualResidencial.iguais === igualResidencial.total ? "é o mesmo" : "pode ser o mesmo"} da classe Residencial. O desconto rural não está incluído neste cálculo.
+              {igualAqui ? `, inclusive na ${sigla}` : ""}, e o valor {igualResidencial.iguais === igualResidencial.total ? "é o mesmo" : "pode ser o mesmo"} da classe Residencial. {v.classe === "rural" ? "O desconto rural não está incluído neste cálculo." : "Nenhum desconto de classe está incluído neste cálculo."}
             </p>
           )}
           {leituras.length > 0 && (

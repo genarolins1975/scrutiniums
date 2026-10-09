@@ -27,36 +27,62 @@ import { NOS_FORMACAO } from "@/lib/energia/conteudo/pld";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { dataBR, fracPct, num, reais } from "@/lib/energia/formato";
 import {
+  COLUNAS_AMPLITUDE,
   COLUNAS_MENSAIS,
   COLUNAS_PERMANENCIA,
+  COLUNAS_RELACAO,
   COLUNAS_SEMANAS,
   COLUNAS_SEPARACAO,
+  FAIXAS_DE_HORAS,
+  LIMIAR_SEPARACAO,
   PAINEIS_PLD,
   PARES,
   SUBMERCADOS,
+  agruparEmFaixasDeHoras,
   atualidadePld,
   calendarioLimite,
   diaAnterior,
+  diasNoLimite,
   diferencaTexto,
   documentosCitados,
   emPct,
   estadoHora,
+  estadoRenovaveisBalanco,
+  estadoTermicasBalanco,
   extremosMediaDiaria,
   horaDiaRecorte,
   horaPadrao,
+  horasPorSentidoNoDia,
+  inflacaoAcumulada,
+  intervaloSemanaOperativa,
   ligacoesFormacao,
+  limitesPorSemana,
+  limitesVigentesEm,
+  linhasAmplitude,
   linhasCalendario,
   linhasMatriz,
+  linhasMatrizDoPeriodo,
   linhasMediaDiaria,
   linhasMensais,
   linhasPermanencia,
   linhasSemanais,
   linhasSeparacao,
+  marcosNumerados,
+  matrizDoPeriodo,
   matrizRegional,
+  matrizRegionalDoPeriodo,
+  mediaNasHorasSeparadas,
   nomePar,
   nomesDosSubmercados,
+  notaSemNomeDeArquivo,
+  notaTetoComConfirmacaoEmpirica,
+  partesDistanciaSemanal,
+  perfilHoraMes,
   perguntaPainel,
+  pontesSeparacao,
+  provenienciaSemRessalvaObsoleta,
   proximoPainel,
+  quatroNoPisoPorAno,
   regimeVigenteEm,
   resumoLigacoes,
   respostaHora,
@@ -66,17 +92,36 @@ import {
   respostaP011,
   respostaP012,
   rotaPainel,
+  rotuloPeriodo,
+  semRessalvaDeLimitesNaoAuditados,
   serieSeparacaoHoraria,
+  textoCmoFrenteAosLimites,
   textoComparabilidade,
+  textoDiasNoLimite,
+  textoDistanciaSemanal,
   textoEmpatesMediaDiaria,
+  textoHidraulicaBalanco,
+  textoInflacao,
   textoLimitesVigentes,
+  textoMediaDaAmplitude,
+  textoMenorValorEPiso,
   textoMudancaMediaDiaria,
+  textoPicoFrenteAoLimite,
+  textoPonteLimiar,
+  textoQuatroNoPiso,
   textoReferenciaDistancia,
+  textoRegimesDistribuicao,
+  textoSentidoNoDia,
+  valoresAlcancamTeto,
   variacaoComumDoGrupo,
   vereditoMediaDiaria,
+  vereditoP012,
   type MediaDiariaSm,
   type PainelPld,
 } from "@/lib/energia/pld";
+import { CONTRASTES } from "@/lib/energia/conteudo/complementos";
+import { conceito } from "@/lib/energia/conteudo/conceitos";
+import { gold as goldDoObservatorio } from "@/lib/energia/gold";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import type { PldGold, RedeGold } from "@/lib/energia/tipos";
@@ -853,6 +898,72 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(h).toContain("Limites vigentes");
   });
 
+  it("a resposta em palavras vem depois do gráfico (a faixa de medidas já traz os números primeiro) e o gráfico fica antes dela", () => {
+    const tag = /<[^>]*data-resposta="hoje"[^>]*>/.exec(h)![0];
+    expect(tag).toContain("data-resposta-depois");
+    expect(pos('data-resposta="hoje"')).toBeGreaterThan(pos('data-grafico="barras"'));
+    expect(pos('data-resposta="hoje"')).toBeGreaterThan(pos("data-faixa-metricas"));
+    // as respostas de outros painéis não ganham a marca: ela é do primeiro quadro desta página
+    expect((h.match(/data-resposta-depois/g) ?? []).length).toBe(1);
+  });
+
+  it("'Há diferença entre submercados?' diz o limiar do cartão (R$ 1,00) e o das Diferenças regionais (R$ 0,01), com o caminho até lá", () => {
+    const c = /data-texto="criterio-da-diferenca"[^>]*>([\s\S]*?)<\/span>/.exec(h);
+    expect(c).not.toBeNull();
+    const texto = c![1].replace(/<[^>]+>/g, "");
+    expect(texto).toMatch(/diferem em mais de R\$\s*1,00\/MWh/);
+    expect(texto).toMatch(/acima de R\$\s*0,01\/MWh/);
+    expect(c![1]).toContain('href="/setor-eletrico/pld/diferencas-regionais"');
+    expect(texto).not.toMatch(SEM_TRAVESSAO);
+  });
+
+  it("'Não é a sua tarifa de energia' leva a frase do registro de contrastes e o caminho até a conta de luz", () => {
+    const contraste = CONTRASTES.find((x) => x.a === "pld" && x.b === "tarifa-te-tusd");
+    expect(contraste?.texto).toBeTruthy();
+    const bloco = /data-texto="pld-e-conta"[^>]*>([\s\S]*?)<\/div>/.exec(h);
+    expect(bloco).not.toBeNull();
+    expect(bloco![1]).toContain(escHtml(contraste!.texto));
+    expect(bloco![1]).toContain('href="/setor-eletrico/conta-de-luz"');
+    expect(bloco![1]).toContain("Ver como a conta de luz é formada");
+  });
+
+  it("o mapa dos submercados usa preço e fluxo do mesmo dia, diz isso, e conta as horas de cada fronteira em cada sentido", () => {
+    if (redeGold.dia_referencia !== pldGold.dia_referencia) {
+      const t = /data-texto="mapa-mesmo-dia"[^>]*>([\s\S]*?)<\/p>/.exec(h);
+      expect(t).not.toBeNull();
+      expect(t![1]).toContain(`O último dia com PLD é ${dataBR(pldGold.dia_referencia)}; o fluxo do ONS está publicado até ${dataBR(redeGold.dia_referencia)}.`);
+    }
+    const lista = /data-texto="horas-por-sentido"[^>]*>([\s\S]*?)<\/ul>/.exec(h);
+    expect(lista).not.toBeNull();
+    const sentidos = horasPorSentidoNoDia(rec, redeGold.dia_referencia).filter((x) => x.horas > 0);
+    expect(sentidos.length).toBeGreaterThan(0);
+    for (const x of sentidos) expect(lista![1]).toContain(`<li>${escHtml(textoSentidoNoDia(x)!)}</li>`);
+    expect(lista![1]).toContain(`Horas em cada sentido em ${dataBR(redeGold.dia_referencia)}`);
+  });
+
+  it("a ideia central diz a base do Balanço do ONS e a MMGD estimada; 'geração verificada' fica só no exemplo sintético de liquidação", () => {
+    const texto = textoHidraulicaBalanco(goldDoObservatorio.geracao())!;
+    expect(h).toContain(escHtml(texto));
+    const semExemplo = h.replace(/<section id="exemplo-liquidacao"[\s\S]*?<\/section>/, "");
+    expect(semExemplo).not.toMatch(/gera[çc][ãa]o verificada/i);
+    expect(h).toContain("Balanço de Energia nos Subsistemas do ONS");
+  });
+
+  it("a distribuição desde 2021 vem com a ressalva de que os valores são nominais e de anos com limites diferentes", () => {
+    const nota = /data-nota="nominal-e-regimes"[^>]*>([\s\S]*?)<\/p>/.exec(h);
+    expect(nota).not.toBeNull();
+    expect(nota![1]).toContain(escHtml(textoRegimesDistribuicao(lim)!));
+  });
+
+  it("as outras perguntas do PLD entram como capítulos num título de nível 3, dentro do painel, e não como um h2 solto", () => {
+    expect(h).toMatch(/<h3[^>]*>Outras perguntas sobre o preço<\/h3>/);
+    expect(h).not.toMatch(/<h2[^>]*>Outras perguntas sobre o preço<\/h2>/);
+  });
+
+  it("nenhum texto da página repete a ressalva antiga de que os limites não foram auditados", () => {
+    expect(h).not.toMatch(/não (foram|foi) auditados? nesta fase/);
+  });
+
   it("o que a abertura escreve de novo (cabeçalho, faixa e notas do painel) não usa hoje, agora, travessão nem data ISO solta", () => {
     const inicio = h.indexOf('<header class="cab-modulo"');
     expect(inicio).toBeGreaterThan(-1);
@@ -932,5 +1043,513 @@ describe("páginas filhas do PLD no sistema editorial", () => {
     expect(h).toContain("Teto estrutural <span class=\"text-xs\">(média do dia)</span>");
     expect(h).toContain("Piso <span class=\"text-xs\">(cada hora)</span>");
     expect(h).toContain("Teto horário <span class=\"text-xs\">(cada hora)</span>");
+  });
+
+  it("nenhuma página filha repete a ressalva antiga de que os limites não foram auditados nesta fase", () => {
+    for (const [id, h] of Object.entries(html)) expect(h, id).not.toMatch(/não (foram|foi) auditados? nesta fase/);
+  });
+
+  it("cmo-e-formacao: os quatro submercados na mesma semana ficam à vista, com a distância de cada produto e a ressalva de que a página descreve e não explica", () => {
+    const h = html.p009;
+    const a = atributosDaSecao(h, "quatro-submercados");
+    expect(a).not.toBeNull();
+    expect(a).not.toContain("data-nivel");
+    const p = partesDistanciaSemanal(gold.cmo_pld.semana_referencia)!;
+    expect(h).toContain('data-texto="distancia-semanal"');
+    expect(h).toContain(escHtml(p.introducao));
+    for (const item of p.itens) expect(h).toContain(escHtml(item));
+    expect(h).toContain(escHtml(p.ressalva));
+    expect(h).toContain("Sequências de 4 semanas seguidas ou mais com CMO semanal zero, por subsistema (desde 2005)");
+    // os títulos de seção e de figura não levam código de achado nem o nome interno da camada de dados (os controles automáticos, em Auditar, citam o nome do controle)
+    const titulos = Array.from(h.matchAll(/<h[2-4][^>]*>([\s\S]*?)<\/h[2-4]>/g)).map((m) => m[1].replace(/<[^>]+>/g, ""));
+    expect(titulos.length).toBeGreaterThan(5);
+    for (const t of titulos) expect(t).not.toMatch(/achado A0\d|\bA0\d\b|silver|gold|pipeline/i);
+    expect(h).toContain("ONS (CMO) e CCEE (PLD)");
+  });
+
+  it("limites: o calendário diz a janela de dias que mostra, a norma aparece com as passagens da REN 1.032/2022 e a nota do teto cita a regra", () => {
+    const h = html.p010;
+    expect(h).toContain("Em quais dos últimos dias o preço ficou no limite?");
+    expect(h).toContain(`${dataBR(lim.calendario.dias[0])} a ${dataBR(lim.calendario.dias[lim.calendario.dias.length - 1])}`);
+    expect(h).toContain("qualquer que seja o Ano escolhido acima");
+    // a lista por data aparece quando o calendário inicial (piso, Sudeste/Centro-Oeste) tem poucos dias no limite; com muitos, o calendário fala por si
+    const inicial = textoDiasNoLimite(diasNoLimite(lim.calendario, "SE", "piso", lim.calendario.dias.length), "piso", lim.calendario.dias.length);
+    if (inicial) expect(h).toContain(escHtml(inicial));
+    else expect(h).not.toContain('data-texto="dias-no-limite"');
+    expect(ler("src/components/energia/PldLimites.tsx")).toContain("textoDiasNoLimite(");
+    const passagens = (conceito("limites-do-pld")?.fontes ?? []).filter((f) => f.trecho && /1\.032/.test(f.documento));
+    expect(passagens.length).toBeGreaterThan(0);
+    expect(atributosDaSecao(h, "norma-limites")).toContain('data-nivel="auditar"');
+    for (const f of passagens) expect(h).toContain(escHtml(f.trecho!));
+    expect(h).toContain(escHtml(notaTetoComConfirmacaoEmpirica(lim.nota_teto_estrutural)));
+    expect(h).not.toContain("A regra de aplicação não está");
+  });
+
+  it("histórico: as marcas do gráfico mensal são numeradas, com a legenda em lista, e o mapa de calor tem a grade de 24 horas e as faixas de 4 horas", () => {
+    const h = html.p011;
+    const { marcos, legenda } = marcosNumerados(gold.historico);
+    const ol = /<ol[^>]*data-legenda="marcas-do-grafico"[^>]*>([\s\S]*?)<\/ol>/.exec(h);
+    expect(ol).not.toBeNull();
+    expect((ol![1].match(/<li/g) ?? []).length).toBe(legenda.length);
+    for (const l of legenda) expect(ol![1]).toContain(escHtml(l.texto));
+    expect(marcos.map((m) => m.rotulo)).toEqual(legenda.map((l) => String(l.n)));
+    // a troca entre grade larga e faixas é de CSS: as duas formas estão no HTML, e a grade de 24 horas da tela estreita só se monta ao abrir
+    // (o mapa hora × dia só se monta no cliente, ao entrar na tela; no HTML do servidor está o mapa hora × mês)
+    expect((h.match(/data-mapa-horas="largo"/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    expect((h.match(/data-mapa-horas="estreito"/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    expect(h).toContain("por faixa de quatro horas");
+    expect(h).toContain("Ver as 24 horas");
+    expect(h).toContain("a média simples dos quatro valores horários da faixa, sem pesos");
+  });
+
+  it("diferenças regionais: a matriz acompanha o período escolhido, o veredito dá os dois limiares e o gráfico de 168 horas ocupa a largura", () => {
+    const h = html.p012;
+    expect(h).toContain(escHtml(vereditoP012(gold.regional, "12m")));
+    expect(h).toContain(`Matriz do período: ${rotuloPeriodo(gold.regional, "12m")}`);
+    expect(h).toContain("qualquer que seja o Período");
+    const a12 = gold.regional.amplitude.find((x) => x.periodo === "12m")!;
+    expect(h).toContain(escHtml(textoMediaDaAmplitude(a12)!));
+    // a tabela de períodos ganhou a coluna com as horas dos quatro submercados no piso
+    expect(h).toContain("Horas com os quatro no piso");
+  });
+});
+
+/* ====================================================================== */
+/* Migração do PLD: pontes entre critérios, recortes e ressalvas          */
+/* (seletores puros; as páginas que os usam estão testadas acima)         */
+/* ====================================================================== */
+
+/** Zero negativo e positivo são o mesmo valor para quem lê a tabela: a comparação passa por JSON, que os iguala. */
+const semZeroNegativo = <T>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
+
+describe("critérios de diferença entre submercados: R$ 1,00 na abertura, R$ 0,01 nas diferenças regionais, e a ponte entre os dois", () => {
+  const r = gold.regional;
+  const a12 = r.amplitude.find((a) => a.periodo === "12m")!;
+  const ponte12 = pontesSeparacao(r)["12m"];
+
+  it("a ponte repete a contagem da gold regional para o mesmo período e diz os dois limiares na mesma frase", () => {
+    expect(LIMIAR_SEPARACAO).toBe(0.01);
+    expect(ponte12).toEqual({ horas: a12.horas, horas_separadas: a12.horas_com_separacao, frac: a12.frac_com_separacao });
+    expect(Object.keys(pontesSeparacao(r)).sort()).toEqual(r.amplitude.map((a) => a.periodo).sort());
+    const t = textoPonteLimiar(1, ponte12);
+    expect(t).toContain(`o maior e o menor preço diferem em mais de ${reais(1)}/MWh`);
+    expect(t).toContain(`toda hora com diferença acima de ${reais(0.01)}/MWh`);
+    expect(t).toContain(`${num(a12.horas_com_separacao, 0)} horas de ${num(a12.horas, 0)} (${fracPct(a12.frac_com_separacao, 1)})`);
+    expect(t).not.toMatch(SEM_TRAVESSAO);
+  });
+
+  it("sem o mesmo período na gold regional, a frase fica só com a regra, sem número de reserva", () => {
+    for (const ponte of [null, undefined, { horas: 0, horas_separadas: 0, frac: null }]) {
+      const t = textoPonteLimiar(1, ponte);
+      expect(t).toMatch(/acima de R\$\s*0,01\/MWh\.$/);
+      expect(t).not.toMatch(/\d{2}[.,]\d|NaN|undefined/);
+    }
+  });
+
+  it("o veredito regional dá a fração com um centavo, a fração com R$ 1,00 e a média sobre todas as horas, em no máximo 50 palavras", () => {
+    const v = vereditoP012(r, "12m");
+    expect(v).toContain(`em mais de um centavo em ${fracPct(a12.frac_com_separacao, 1)} das horas`);
+    expect(v).toContain(`em mais de ${reais(1)}/MWh em ${fracPct(a12.horas_acima_1 / a12.horas, 1)}`);
+    expect(v).toContain(`em média ${reais(a12.media!)}/MWh entre o maior e o menor, contando todas as horas`);
+    expect(v).toContain("A contagem não diz o motivo.");
+    expect(v.split(/\s+/).length).toBeLessThanOrEqual(50);
+    expect(v).not.toMatch(SEM_TRAVESSAO);
+    expect(vereditoP012(r, "sem-periodo")).toBe("Sem horas com os quatro submercados publicados neste período.");
+  });
+
+  it("a média da diferença cobre todas as horas; a média só das horas separadas aparece quando o arredondamento deixa a conta fechar", () => {
+    const m = mediaNasHorasSeparadas(a12);
+    expect(m).not.toBeNull();
+    // o valor tem de ser coerente com a gold: soma das diferenças dividida pelas horas separadas, dentro das margens de arredondamento
+    const soma = a12.media! * a12.horas;
+    expect(Math.abs((m as number) - soma / a12.horas_com_separacao)).toBeLessThanOrEqual(1);
+    const t = textoMediaDaAmplitude(a12)!;
+    expect(t).toContain(`Média sobre todas as ${num(a12.horas, 0)} horas do período, inclusive as ${num(a12.horas - a12.horas_com_separacao, 0)} sem separação`);
+    expect(t).toContain(`nas ${num(a12.horas_com_separacao, 0)} horas separadas, cerca de ${reais(m as number, 0)}/MWh`);
+    expect(t).toContain(`Mediana de todas as horas: ${reais(a12.p50!)}/MWh`);
+    // dois limites de arredondamento que dão inteiros diferentes: a conta não fecha, e a página não escreve o valor
+    expect(mediaNasHorasSeparadas({ horas: 10, horas_com_separacao: 1, media: 5.05 })).toBeNull();
+    expect(textoMediaDaAmplitude({ ...a12, horas: 10, horas_com_separacao: 1, media: 5.05, p50: null })).not.toContain("horas separadas, cerca de");
+    // sem horas separadas, sem média ou com mais separadas que horas: nada
+    expect(mediaNasHorasSeparadas({ horas: 100, horas_com_separacao: 0, media: 0 })).toBeNull();
+    expect(mediaNasHorasSeparadas({ horas: 100, horas_com_separacao: 5, media: null })).toBeNull();
+    expect(mediaNasHorasSeparadas({ horas: 100, horas_com_separacao: 101, media: 1 })).toBeNull();
+    expect(textoMediaDaAmplitude({ ...a12, media: null })).toBeNull();
+  });
+
+  it("a coluna de horas entre os limites com diferença de até R$ 1,00 mostra duas casas (a fração da gold tem três)", () => {
+    expect(COLUNAS_RELACAO.find((c) => c.id === "entre_ate_1")).toMatchObject({ tipo: "percentual", casas: 2 });
+  });
+});
+
+describe("matriz de diferenças por período e horas com os quatro submercados no piso", () => {
+  const r = gold.regional;
+
+  it("nos últimos 12 meses a matriz montada pelas linhas de separação é a matriz que a gold publica, célula a célula", () => {
+    for (const medida of ["dif_media", "frac_separadas"] as const) {
+      expect(semZeroNegativo(matrizRegionalDoPeriodo(r, medida, "12m"))).toEqual(semZeroNegativo(matrizRegional(r, medida)));
+    }
+    expect(semZeroNegativo(linhasMatrizDoPeriodo(r, "12m"))).toEqual(semZeroNegativo(linhasMatriz(r)));
+  });
+
+  it("em qualquer período: a célula (A, B) é a média da diferença do par, a simétrica leva o sinal trocado e a fração é a mesma nos dois lados", () => {
+    for (const periodo of r.periodos.map((p) => p.id)) {
+      const m = matrizDoPeriodo(r, periodo);
+      expect(m.periodo).toBe(periodo);
+      m.ordem.forEach((a, i) =>
+        m.ordem.forEach((b, j) => {
+          if (i >= j) return;
+          const s = r.separacao.find((x) => x.periodo === periodo && x.par === `${a}_${b}`);
+          expect(m.dif_media[i][j], `${periodo} ${a}_${b}`).toBe(s ? s.dif_media : null);
+          expect(m.frac_separadas[i][j]).toBe(s ? s.frac_separadas : null);
+          expect(m.frac_separadas[j][i]).toBe(m.frac_separadas[i][j]);
+          const direta = m.dif_media[i][j];
+          const inversa = m.dif_media[j][i];
+          if (direta === null) expect(inversa).toBeNull();
+          else expect((inversa as number) + direta).toBeCloseTo(0, 10);
+        }),
+      );
+    }
+    // período que a gold não tem: matriz inteira sem dado, e não a de outro período
+    expect(matrizDoPeriodo(r, "sem-periodo").dif_media.flat().every((v) => v === null)).toBe(true);
+  });
+
+  it("quatro submercados juntos no piso: horas por ano na gold de limites, ditas como motivo de a contagem de horas separadas ser menor", () => {
+    const q = quatroNoPisoPorAno(lim);
+    for (const e of lim.empates_piso) expect(q[String(e.ano)]).toEqual({ horas: e.horas_quatro_no_piso, frac: e.frac_quatro_no_piso, parcial: e.parcial });
+    const ano = lim.empates_piso.reduce((m, e) => (e.horas_quatro_no_piso > m.horas_quatro_no_piso ? e : m));
+    const t = textoQuatroNoPiso(q[String(ano.ano)], String(ano.ano))!;
+    expect(t).toContain(`Em ${ano.ano}, os quatro submercados ficaram juntos no piso em ${num(ano.horas_quatro_no_piso, 0)} horas`);
+    expect(t).toContain(`(${fracPct(ano.frac_quatro_no_piso, 1)} das horas)`);
+    expect(t).toContain("nessas horas os preços são iguais por regra");
+    expect(t).not.toMatch(SEM_TRAVESSAO);
+    expect(textoQuatroNoPiso(undefined, "2023")).toBeNull();
+    expect(textoQuatroNoPiso({ horas: 0, frac: 0, parcial: false }, "2023")).toBeNull();
+    expect(quatroNoPisoPorAno(null)).toEqual({});
+    // a tabela de períodos ganha a coluna só nos anos; os períodos móveis ficam sem valor
+    expect(COLUNAS_AMPLITUDE.some((c) => c.id === "quatro_piso")).toBe(true);
+    const linhas = linhasAmplitude(r, q);
+    expect(linhas.find((x) => x.id === String(ano.ano))!.quatro_piso).toBe(ano.horas_quatro_no_piso);
+    expect(linhas.find((x) => x.id === "12m")!.quatro_piso).toBeNull();
+    expect(linhasAmplitude(r).every((x) => x.quatro_piso === null)).toBe(true);
+  });
+});
+
+describe("calendário de limites e mapas de calor: dias no limite ditos por data e faixas de quatro horas", () => {
+  it("os dias no limite saem das mesmas horas do calendário e são ditos por data só quando são poucos", () => {
+    for (const sm of SUBMERCADOS) {
+      for (const [limite, serie] of [["piso", lim.calendario[sm].horas_piso], ["teto_horario", lim.calendario[sm].horas_teto_horario]] as const) {
+        const dias = diasNoLimite(lim.calendario, sm, limite);
+        expect(dias.reduce((s, d) => s + d.horas, 0), `${sm} ${limite}`).toBe(serie.reduce<number>((s, h) => s + (h ?? 0), 0));
+        expect(dias.every((d) => d.horas > 0)).toBe(true);
+      }
+    }
+    const cal = { dias: ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04"], SE: { horas_piso: [0, 3, null, 1], horas_teto_horario: [0, 0, 0, 0] } } as unknown as BlocoLimitesDisponivel["calendario"];
+    expect(diasNoLimite(cal, "SE", "piso")).toEqual([{ dia: "2026-03-02", horas: 3 }, { dia: "2026-03-04", horas: 1 }]);
+    expect(diasNoLimite(cal, "SE", "piso", 2)).toEqual([{ dia: "2026-03-04", horas: 1 }]);
+    expect(textoDiasNoLimite(diasNoLimite(cal, "SE", "piso"), "piso", 4)).toBe("4 horas no piso em 2 dias dos 4 do calendário: 02/03/2026 (3 horas) e 04/03/2026 (1 hora).");
+    expect(textoDiasNoLimite([], "teto_horario", 366)).toBe("Nenhuma hora no teto horário nos 366 dias do calendário.");
+    const muitos = Array.from({ length: 11 }, (_, k) => ({ dia: `2026-03-${String(k + 1).padStart(2, "0")}`, horas: 1 }));
+    expect(textoDiasNoLimite(muitos, "piso", 366)).toBeNull();
+    expect(textoDiasNoLimite(muitos, "piso", 366, 11)).not.toBeNull();
+  });
+
+  it("faixa de quatro horas é a média simples dos quatro valores e fica sem dado se qualquer hora estiver sem dado", () => {
+    expect(FAIXAS_DE_HORAS.map((f) => f.rotulo)).toEqual(["00h às 04h", "04h às 08h", "08h às 12h", "12h às 16h", "16h às 20h", "20h às 00h"]);
+    expect(FAIXAS_DE_HORAS.map((f) => f.curto)).toEqual(["0h", "4h", "8h", "12h", "16h", "20h"]);
+    const horas = Array.from({ length: 24 }, (_, h) => h);
+    expect(agruparEmFaixasDeHoras([horas])[0]).toEqual([1.5, 5.5, 9.5, 13.5, 17.5, 21.5]);
+    expect(agruparEmFaixasDeHoras([horas.map((v) => (v === 9 ? null : v))])[0]).toEqual([1.5, 5.5, null, 13.5, 17.5, 21.5]);
+    expect(agruparEmFaixasDeHoras([[1, 2, 3]])[0]).toEqual([null]);
+    const perfil = perfilHoraMes(gold.historico, "SE");
+    const faixas = agruparEmFaixasDeHoras(perfil.valores);
+    expect(faixas).toHaveLength(perfil.valores.length);
+    faixas.forEach((linha, i) => {
+      expect(linha).toHaveLength(6);
+      const quatro = perfil.valores[i].slice(0, 4);
+      if (quatro.every((v) => typeof v === "number")) expect(linha[0]).toBeCloseTo((quatro as number[]).reduce((a, b) => a + b, 0) / 4, 10);
+    });
+  });
+});
+
+describe("histórico: marcas numeradas, regimes de limites, inflação e a base nominal", () => {
+  it("cada mudança de perímetro da carga vira uma marca numerada no gráfico, com a legenda escrita à parte", () => {
+    const q = gold.historico.ponderacao.quebras;
+    const { marcos, legenda } = marcosNumerados(gold.historico);
+    expect(marcos).toEqual(q.map((x, i) => ({ x: x.mes, rotulo: String(i + 1) })));
+    expect(legenda.map((l) => l.n)).toEqual(q.map((_, i) => i + 1));
+    legenda.forEach((l, i) => {
+      expect(l.data).toBe(dataBR(q[i].data));
+      expect(l.texto).toBe(q[i].descricao.replace(/\.$/, ""));
+      expect(l.texto).not.toMatch(/\.$/);
+    });
+  });
+
+  it("a distribuição mistura anos com limites diferentes: o texto usa só o que a gold de limites publica", () => {
+    const pisos = lim.regimes.map((x) => x.pld_min).filter((v): v is number => typeof v === "number");
+    const t = textoRegimesDistribuicao(lim)!;
+    expect(t.startsWith("Os valores são nominais, sem correção pela inflação, e de anos com limites diferentes:")).toBe(true);
+    expect(t).toContain(`o piso foi de ${reais(Math.min(...pisos))} a ${reais(Math.max(...pisos))}/MWh`);
+    expect(t).toContain(`o teto horário teve ${new Set(lim.regimes.map((x) => x.pld_max_horario).filter((v) => v !== null)).size} valores diferentes`);
+    expect(t).not.toMatch(SEM_TRAVESSAO);
+    // um ano só: uma fração, e não "de 98,3% a 98,3%"
+    const um = textoRegimesDistribuicao({ regimes: lim.regimes, permanencia_anual: lim.permanencia_anual.filter((p) => p.ano === 2023) })!;
+    expect(um).toMatch(/em um ano \(2023\), 98,3% das horas do Sudeste\/Centro-Oeste ficaram no piso/);
+    expect(um).not.toMatch(/de 98,3% a 98,3%/);
+    expect(textoRegimesDistribuicao({ regimes: [], permanencia_anual: [] })).toBeNull();
+  });
+
+  it("a inflação acumulada vem da razão entre a série em moeda constante e a nominal, entre o primeiro e o último mês com as duas", () => {
+    const m = gold.historico.mensal;
+    const i = inflacaoAcumulada(m)!;
+    const k0 = m.meses.indexOf(i.de);
+    const k1 = m.meses.indexOf(i.ate);
+    expect(k0).toBeGreaterThanOrEqual(0);
+    expect(k1).toBeGreaterThan(k0);
+    const razao = (k: number) => (m.SE.real[k] as number) / (m.SE.temporal[k] as number);
+    expect(i.frac).toBeCloseTo(razao(k0) / razao(k1) - 1, 12);
+    // depois do último mês com as duas séries, nenhum mês tem as duas
+    for (let k = k1 + 1; k < m.meses.length; k++) expect(typeof m.SE.real[k] === "number" && typeof m.SE.temporal[k] === "number").toBe(false);
+    const t = textoInflacao(i)!;
+    expect(t).toContain(`O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de jan/2021 a ago/2026`);
+    expect(t).toContain(`R$ 100/MWh nominais de jan/2021 equivalem a cerca de R$ ${num(Math.round(100 * (1 + i.frac)), 0)}/MWh em ago/2026.`);
+    // conta de exemplo: preços 40% menores em moeda constante no primeiro mês e iguais no último
+    const sintetica = { meses: ["2021-01", "2026-08"], SE: { real: [140, 100], temporal: [100, 100] } } as unknown as Parameters<typeof inflacaoAcumulada>[0];
+    expect(inflacaoAcumulada(sintetica)!.frac).toBeCloseTo(0.4, 12);
+    expect(textoInflacao(inflacaoAcumulada(sintetica))).toBe("O IPCA acumulou cerca de 40% de jan/2021 a ago/2026: R$ 100/MWh nominais de jan/2021 equivalem a cerca de R$ 140/MWh em ago/2026.");
+    expect(inflacaoAcumulada({ meses: [], SE: { real: [], temporal: [] } } as unknown as Parameters<typeof inflacaoAcumulada>[0])).toBeNull();
+    expect(textoInflacao(null)).toBeNull();
+  });
+
+  it("o menor valor horário do ano contra o piso do ato: a frase conta as combinações conferidas e não diz que está tudo certo quando não está", () => {
+    const decididas = lim.conferencias.filter((c) => c.menor_igual_ao_piso !== null);
+    const iguais = decididas.filter((c) => c.menor_igual_ao_piso === true).length;
+    const t = textoMenorValorEPiso(lim.conferencias)!;
+    expect(t).toContain(iguais === decididas.length ? `nas ${decididas.length} combinações` : `em ${iguais} das ${decididas.length} combinações`);
+    const metade = lim.conferencias.map((c, k) => ({ ...c, menor_igual_ao_piso: k === 0 ? false : c.menor_igual_ao_piso }));
+    const decididas2 = metade.filter((c) => c.menor_igual_ao_piso !== null);
+    const iguais2 = decididas2.filter((c) => c.menor_igual_ao_piso === true).length;
+    expect(textoMenorValorEPiso(metade)).toContain(`em ${iguais2} das ${decididas2.length} combinações`);
+    expect(textoMenorValorEPiso([])).toBeNull();
+    expect(textoMenorValorEPiso(null)).toBeNull();
+  });
+});
+
+describe("limites vigentes diante dos valores: pico do gráfico, CMO acima dos tetos e limites desenhados só quando alguém os alcança", () => {
+  const sem = gold.cmo_pld.semana_referencia!;
+  const reg = regimeVigenteEm(lim.regimes, sem.fim)!;
+  const lv = limitesVigentesEm(lim.regimes, sem.fim)!;
+
+  it("os limites vigentes são os do ato que cobre a data, e fora de qualquer ato não há limite", () => {
+    expect(lv).toEqual({ piso: reg.pld_min, teto_horario: reg.pld_max_horario, teto_estrutural: reg.pld_max_estrutural });
+    expect(limitesVigentesEm(lim.regimes, "2000-01-01")).toBeNull();
+    expect(limitesPorSemana([sem.fim, "2000-01-01"], lim.regimes)).toEqual([lv, { piso: null, teto_horario: null, teto_estrutural: null }]);
+  });
+
+  it("o pico mostrado só é dito igual ao teto horário quando coincide, nos centavos, com o teto do ato da data do pico", () => {
+    const teto = reg.pld_max_horario as number;
+    const quando = `${sem.fim}T18:00`;
+    expect(textoPicoFrenteAoLimite(teto, quando, lim.regimes)).toBe(`igual ao teto horário vigente na data (${reais(teto)}/MWh)`);
+    expect(textoPicoFrenteAoLimite(teto - 0.5, quando, lim.regimes)).toBeNull();
+    // o teto de outro ano não vale para a data deste pico
+    const outro = lim.regimes.find((x) => x.inicio !== reg.inicio && x.pld_max_horario !== reg.pld_max_horario)!;
+    expect(textoPicoFrenteAoLimite(teto, `${outro.inicio}T10:00`, lim.regimes)).toBeNull();
+    expect(textoPicoFrenteAoLimite(null, quando, lim.regimes)).toBeNull();
+    expect(textoPicoFrenteAoLimite(teto, null, lim.regimes)).toBeNull();
+    expect(textoPicoFrenteAoLimite(teto, "2000-01-01T00:00", lim.regimes)).toBeNull();
+  });
+
+  it("CMO semanal acima dos tetos: diz qual teto passa, de que objeto ele é limite e que o teto não vale para o CMO", () => {
+    const acima = (lv.teto_horario as number) + 100;
+    const t = textoCmoFrenteAosLimites("N", acima, lv);
+    expect(t).toContain(`O CMO semanal do DECOMP do Norte, ${reais(acima)}/MWh, é maior que o teto horário do ato vigente (${reais(lv.teto_horario as number)}/MWh, limite de cada hora do PLD) e o teto estrutural (${reais(lv.teto_estrutural as number)}/MWh, limite da média diária do PLD).`);
+    expect(t).toContain("Os tetos valem para o PLD, não para o CMO que o ONS publica.");
+    expect(t).not.toMatch(SEM_TRAVESSAO);
+    // o valor publicado da semana de referência, no Norte, passa dos dois tetos: a frase sai com ele
+    const norte = sem.por_sm.find((x) => x.sm === "N")!;
+    if (typeof norte.decomp === "number" && norte.decomp > (lv.teto_horario as number)) expect(textoCmoFrenteAosLimites("N", norte.decomp, lv)).toContain(reais(norte.decomp));
+    const entreOsTetos = textoCmoFrenteAosLimites("SE", (lv.teto_estrutural as number) + 1, lv)!;
+    expect(entreOsTetos).toContain("é maior que o teto estrutural");
+    expect(entreOsTetos).not.toContain("teto horário");
+    expect(textoCmoFrenteAosLimites("SE", lv.teto_estrutural, lv)).toBeNull();
+    expect(textoCmoFrenteAosLimites("SE", 97.89, lv)).toBeNull();
+    expect(textoCmoFrenteAosLimites("SE", null, lv)).toBeNull();
+    expect(textoCmoFrenteAosLimites("SE", 5000, null)).toBeNull();
+  });
+
+  it("os limites só entram no gráfico semanal quando algum valor alcança o teto estrutural vigente na sua semana", () => {
+    const base = { fim: sem.fim, decomp: 100, dessem: 90, pld: 120 };
+    expect(valoresAlcancamTeto([base], lim.regimes)).toBe(false);
+    expect(valoresAlcancamTeto([{ ...base, dessem: lv.teto_estrutural }], lim.regimes)).toBe(true);
+    expect(valoresAlcancamTeto([{ ...base, pld: (lv.teto_estrutural as number) - 0.01 }], lim.regimes)).toBe(false);
+    expect(valoresAlcancamTeto([{ ...base, fim: "2000-01-01", decomp: 1e6 }], lim.regimes)).toBe(false);
+    expect(valoresAlcancamTeto([], lim.regimes)).toBe(false);
+    // com as semanas publicadas: o resultado é o de contar, semana a semana, os valores que chegam ao teto estrutural do ato da semana
+    for (const sm of SUBMERCADOS) {
+      const semanas = linhasSemanais(gold.cmo_pld, sm);
+      const esperado = semanas.some((l) => {
+        const teto = regimeVigenteEm(lim.regimes, l.fim)?.pld_max_estrutural;
+        return typeof teto === "number" && [l.decomp, l.dessem, l.pld].some((v) => v !== null && centavos(v) >= centavos(teto));
+      });
+      expect(valoresAlcancamTeto(semanas, lim.regimes), sm).toBe(esperado);
+    }
+    // a semana de referência do Norte tem DECOMP acima do teto estrutural: o gráfico do Norte desenha os limites
+    const norteRef = sem.por_sm.find((x) => x.sm === "N")!;
+    if (typeof norteRef.decomp === "number" && norteRef.decomp >= (lv.teto_estrutural as number)) expect(valoresAlcancamTeto(linhasSemanais(gold.cmo_pld, "N"), lim.regimes)).toBe(true);
+  });
+
+  it("a semana operativa que termina na data vai do sábado à sexta", () => {
+    expect(intervaloSemanaOperativa("2026-10-02")).toEqual({ inicio: "2026-09-26", fim: "2026-10-02" });
+    expect(intervaloSemanaOperativa(sem.fim)).toEqual({ inicio: sem.inicio, fim: sem.fim });
+    expect(intervaloSemanaOperativa("2026-03-01T00:00")).toEqual({ inicio: "2026-02-23", fim: "2026-03-01" });
+  });
+
+  it("distância semanal entre submercados: de quanto a quanto vai cada produto, em R$/MWh e sem razão, e sem explicar o motivo", () => {
+    const p = partesDistanciaSemanal(sem)!;
+    expect(p.introducao).toBe(`Entre os submercados, na semana de ${dataBR(sem.inicio)} a ${dataBR(sem.fim)}:`);
+    expect(p.itens).toHaveLength(3);
+    for (const [k, rotulo] of [["decomp", "O CMO semanal do DECOMP"], ["dessem", "A média do CMO do DESSEM"], ["pld", "A média do PLD"]] as const) {
+      const v = sem.por_sm.map((x) => x[k] as number);
+      const item = p.itens.find((x) => x.startsWith(rotulo))!;
+      expect(item, k).toContain(`de ${reais(Math.min(...v))}/MWh`);
+      expect(item, k).toContain(`a ${reais(Math.max(...v))}/MWh`);
+      expect(item, k).toContain(`distância de ${reais(Math.max(...v) - Math.min(...v))}/MWh`);
+      expect(item).not.toMatch(/vezes|×|razão/);
+    }
+    // os que empatam no extremo aparecem juntos, com "mesmo valor"
+    expect(p.itens[0]).toContain("(SE/CO, Sul e Nordeste, mesmo valor)");
+    expect(p.ressalva).toContain("não dizem por que os valores diferem");
+    expect(textoDistanciaSemanal(sem)).toBe(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`);
+    expect(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`).not.toMatch(SEM_TRAVESSAO);
+    const iguais = { ...sem, por_sm: sem.por_sm.map((x) => ({ ...x, decomp: 100 })) };
+    expect(partesDistanciaSemanal(iguais)!.itens[0]).toBe(`O CMO semanal do DECOMP foi igual nos quatro submercados, ${reais(100)}/MWh.`);
+    expect(partesDistanciaSemanal(null)).toBeNull();
+    expect(partesDistanciaSemanal({ ...sem, por_sm: [] })).toBeNull();
+    expect(textoDistanciaSemanal(undefined)).toBeNull();
+  });
+});
+
+describe("ressalvas de limites que a gold ainda traz desatualizadas: a troca é local, só mexe na cláusula e deixa de valer sozinha", () => {
+  it("a cláusula 'não foram auditados nesta fase' vira a indicação da página Limites; texto sem a cláusula volta igual", () => {
+    expect(semRessalvaDeLimitesNaoAuditados("piso e teto vêm do ato e não foram auditados nesta fase; veja a fonte.")).toBe(
+      "piso e teto vêm do ato; os valores vigentes em cada ano, conferidos nos atos da ANEEL, estão na página Limites; veja a fonte.",
+    );
+    expect(semRessalvaDeLimitesNaoAuditados("o limite oficial vigente não foi auditado nesta fase.")).toBe("o piso vigente é o do ato da ANEEL, conferido na página Limites.");
+    expect(semRessalvaDeLimitesNaoAuditados("texto sem a cláusula")).toBe("texto sem a cláusula");
+  });
+
+  it("na proveniência, só a lista de limitações muda, sem alterar o objeto de origem", () => {
+    const original = { limitacoes: ["a e não foram auditados nesta fase; b", "c"], outro: 1 };
+    const novo = provenienciaSemRessalvaObsoleta(original);
+    expect(original.limitacoes[0]).toContain("não foram auditados");
+    expect(novo.limitacoes[0]).not.toContain("não foram auditados");
+    expect(novo.limitacoes[1]).toBe("c");
+    expect(novo.outro).toBe(1);
+    const semLista = { x: 1 } as { limitacoes?: string[] };
+    expect(provenienciaSemRessalvaObsoleta(semLista)).toBe(semLista);
+  });
+
+  it("a nota do teto estrutural mantém a conferência empírica e troca só a frase final que dizia que a regra não estava citada", () => {
+    const nota = "A média diária passou do teto em 12 dias-submercado e ficou igual a ele. A regra de aplicação não está citada nos documentos integrados.";
+    expect(notaTetoComConfirmacaoEmpirica(nota)).toBe("A média diária passou do teto em 12 dias-submercado e ficou igual a ele. A regra está na norma citada nesta seção; o padrão observado confirma a leitura.");
+    expect(notaTetoComConfirmacaoEmpirica("sem a frase")).toBe("sem a frase");
+    expect(notaTetoComConfirmacaoEmpirica(lim.nota_teto_estrutural)).not.toContain("A regra de aplicação não está");
+  });
+
+  it("nome de arquivo sai do texto de Entender: o histórico horário vira o arquivo do painel", () => {
+    expect(notaSemNomeDeArquivo("o histórico horário inteiro está em pld_cmo_horario.csv")).toBe("o histórico horário inteiro está no arquivo horário de CMO e PLD (CSV, em Baixar os dados)");
+    expect(notaSemNomeDeArquivo("veja media_temporal/pld_mensal.csv e depois outro.json")).toBe("veja media_temporal/arquivo do painel e depois arquivo do painel");
+    expect(notaSemNomeDeArquivo("texto sem arquivo")).toBe("texto sem arquivo");
+  });
+});
+
+describe("geração do Balanço do ONS no diagrama e na ideia central: a MMGD estimada nunca é dita verificada", () => {
+  const ger = goldDoObservatorio.geracao()!;
+  const sin = ger.regioes.find((x) => x.rg === "SIN")!;
+
+  it("renováveis, térmicas e hidráulica dizem a base (Balanço de Energia nos Subsistemas do ONS), a MMGD estimada e o início do regime", () => {
+    expect(ger.disponivel).toBe(true);
+    expect(ger.inicio_regime_atual).toBeTruthy();
+    const ressalva = `a solar inclui a micro e minigeração distribuída (MMGD) estimada pelo ONS desde ${dataBR(ger.inicio_regime_atual!)}`;
+    const textos = [estadoRenovaveisBalanco(ger)!, estadoTermicasBalanco(ger)!, textoHidraulicaBalanco(ger)!];
+    for (const t of textos) {
+      expect(t).toContain("Balanço de Energia nos Subsistemas do ONS");
+      expect(t).toContain(ressalva);
+      expect(t).not.toMatch(/verificad|medi[çc][ãa]o direta/i);
+      expect(t).not.toMatch(SEM_TRAVESSAO);
+      expect(t).not.toMatch(/\bhoje\b|\bagora\b|undefined|NaN/i);
+    }
+    expect(textos[0]).toContain(`${num(sin["7d"].participacao.eolica, 1)}%`);
+    expect(textos[0]).toContain(`${num(sin["7d"].participacao.solar, 1)}%`);
+    expect(textos[1]).toContain(`${num(ger.termica_contexto.participacao_7d!, 1)}%`);
+    expect(textos[2]).toContain(`${num(sin["12m"].participacao.hidraulica, 1)}%`);
+    expect(textos[2]).toContain("Sistema Interligado Nacional (SIN)");
+    expect(textos[2]).toContain("a MMGD estimada entra no total");
+  });
+
+  it("sem a gold de geração, sem o período ou sem a participação, não há texto nem número de reserva; sem a data de início, ela não é inventada", () => {
+    for (const f of [estadoRenovaveisBalanco, estadoTermicasBalanco, textoHidraulicaBalanco]) {
+      expect(f(null)).toBeNull();
+      expect(f({ ...ger, disponivel: false })).toBeNull();
+    }
+    expect(estadoTermicasBalanco({ ...ger, termica_contexto: { ...ger.termica_contexto, participacao_7d: null } })).toBeNull();
+    expect(estadoRenovaveisBalanco({ ...ger, regioes: [] })).toBeNull();
+    const semInicio = { ...ger, inicio_regime_atual: undefined };
+    for (const t of [estadoRenovaveisBalanco(semInicio)!, estadoTermicasBalanco(semInicio)!, textoHidraulicaBalanco(semInicio)!]) {
+      expect(t).toContain("a solar inclui a micro e minigeração distribuída (MMGD) estimada pelo ONS");
+      expect(t).not.toMatch(/estimada pelo ONS desde/);
+    }
+  });
+
+  it("a página liga os dois estados do diagrama ao selo Estimado e a ideia central usa o mesmo texto", () => {
+    const fonte = ler("src/app/setor-eletrico/pld/page.tsx");
+    expect(fonte).toMatch(/renovaveis:[^\n]*estadoRenovaveisBalanco\(ger\)[^\n]*natureza: "ESTIMADO"/);
+    expect(fonte).toMatch(/termicas:[^\n]*estadoTermicasBalanco\(ger\)[^\n]*natureza: "ESTIMADO"/);
+    expect(fonte).toContain("textoHidraulicaBalanco(ger)");
+    expect(fonte).not.toMatch(/natureza: "OBSERVADO"[^\n]*(renovaveis|termicas)/);
+  });
+});
+
+describe("fluxo por hora no dia do mapa: o sentido de cada fronteira, só com as horas publicadas", () => {
+  const dia = "2026-09-28";
+  const conta = (fronteira: "N_NE" | "N_SE" | "NE_SE" | "S_SE") => {
+    let no_sentido = 0;
+    let contrario = 0;
+    let nulo = 0;
+    rec.t.forEach((t, i) => {
+      const v = rec.fluxo[fronteira][i];
+      if (!t.startsWith(dia) || typeof v !== "number") return;
+      if (Math.abs(v) <= 1) nulo++;
+      else if (v > 0) no_sentido++;
+      else contrario++;
+    });
+    return { no_sentido, contrario, nulo };
+  };
+
+  it("cada fronteira conta as horas no sentido da primeira para a segunda ponta, no sentido contrário e com fluxo nulo; o total é o das horas publicadas", () => {
+    const s = horasPorSentidoNoDia(rec, dia);
+    expect(s.map((x) => x.fronteira)).toEqual(["N_NE", "N_SE", "NE_SE", "S_SE"]);
+    for (const x of s) {
+      expect({ no_sentido: x.no_sentido, contrario: x.contrario, nulo: x.nulo }, x.fronteira).toEqual(conta(x.fronteira));
+      expect(x.horas).toBe(x.no_sentido + x.contrario + x.nulo);
+      expect(x.horas).toBeLessThanOrEqual(24);
+    }
+    const sSe = s.find((x) => x.fronteira === "S_SE")!;
+    expect(textoSentidoNoDia(sSe)).toBe(`Sul para SE/CO: ${sSe.no_sentido} de ${sSe.horas} horas; SE/CO para Sul: ${sSe.contrario}${sSe.nulo ? `; fluxo nulo: ${sSe.nulo}` : ""}`);
+  });
+
+  it("dia sem fluxo publicado não conta hora nenhuma (ausência não é zero) e não gera texto", () => {
+    for (const x of horasPorSentidoNoDia(rec, "2000-01-01")) {
+      expect(x.horas).toBe(0);
+      expect(textoSentidoNoDia(x)).toBeNull();
+    }
+    const dias = Array.from({ length: 24 }, (_, h) => `2026-09-28T${String(h).padStart(2, "0")}:00`);
+    const sintetico = {
+      t: dias,
+      fluxo: { N_NE: dias.map((_, h) => (h < 6 ? 0.5 : h < 12 ? -100 : h < 18 ? 100 : null)), N_SE: dias.map(() => null), NE_SE: dias.map(() => null), S_SE: dias.map(() => null) },
+    } as unknown as Parameters<typeof horasPorSentidoNoDia>[0];
+    const nne = horasPorSentidoNoDia(sintetico, "2026-09-28").find((x) => x.fronteira === "N_NE")!;
+    expect(nne).toMatchObject({ horas: 18, nulo: 6, contrario: 6, no_sentido: 6 });
+    expect(textoSentidoNoDia(nne)).toBe("Norte para Nordeste: 6 de 18 horas; Nordeste para Norte: 6; fluxo nulo: 6");
   });
 });

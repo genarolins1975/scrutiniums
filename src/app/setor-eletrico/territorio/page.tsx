@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { Numero } from "@/components/energia/Numero";
 import { TerritorioExplorador } from "@/components/energia/TerritorioExplorador";
-import {
-  TerritorioAnalise,
-  TerritorioAuditoria,
-  TerritorioAviso,
-  TerritorioIndisponivel,
-  TerritorioRecorte,
-  TerritorioSeguir,
-  TerritorioTabela,
-} from "@/components/energia/TerritorioPagina";
+import { TerritorioAviso, TerritorioIndisponivel, TerritorioRecorte, TerritorioTabela } from "@/components/energia/TerritorioPagina";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia, type ProvenienciaComplementar } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia, type ProvenienciaComplementar } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { lerGold } from "@/lib/energia/gold";
@@ -27,13 +22,16 @@ import {
   inteiro,
   numTexto,
   proximaPergunta,
+  quartisDistribuidoras,
   respostaTerritorio,
   textoAtualidade,
   textoPeriodoPainel,
+  textoReferencia,
   textoUniverso,
   vereditoTerritorio,
 } from "@/lib/energia/territorio";
 import type { GoldTerritorio } from "@/lib/energia/tipos-territorio";
+import { lerUsinasDoServidor } from "@/lib/energia/territorio-servidor";
 import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
@@ -79,7 +77,8 @@ export default function TerritorioPage() {
   const g = lerGold<GoldTerritorio>("territorio.json");
   if (!g || !g.disponivel || !g.proveniencia?.indice) return <TerritorioIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
 
-  const dados = dadosExplorador(g);
+  // as usinas do arquivo publicado separam, por UF, os registros de até 10 kW (a regra da contagem municipal) e contam as usinas em mais de uma UF
+  const dados = dadosExplorador(g, lerUsinasDoServidor(g.series.usinas, g.resumo.usinas.limite_registro_kw));
   const r = g.resumo;
   const u = r.usinas;
   const prox = proximaPergunta("distribuidora");
@@ -96,24 +95,34 @@ export default function TerritorioPage() {
       <CabecalhoEnergia atual="territorio" />
       <MarcaVisita secao="energia:territorio" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["DEC", "FEC"]}
-          rotulo="Minha região"
+        <CabecalhoModulo
+          siglas={["SIN", "PLD", "DEC", "FEC", "MMGD", "SIGA"]}
           titulo={g.pergunta}
-          referencia={
+          lead={
             <>
-              Publicação de {dataBR(g.data_referencia)}; processada em {carimbo(g.gerado_em)}. Malha territorial do IBGE{g.geometria.malha ? `, revisão de ${g.geometria.malha.revisao}` : ""}.
+              Preço, tarifa, perdas, continuidade e usinas de uma região, cada número na área da sua fonte: o <Termo slug="submercado">submercado</Termo> (divisão do{" "}
+              <Termo slug="sin">Sistema Interligado Nacional</Termo> com preço próprio), a distribuidora, o conjunto elétrico (subdivisão da área da distribuidora, com DEC e FEC próprios) ou o município.
+              Escolha uma região para ver o que vale para ela.
             </>
           }
-        >
-          Submercado é cada uma das divisões do sistema elétrico interligado com preço próprio; conjunto elétrico é a subdivisão da área de uma distribuidora em que a ANEEL acompanha o DEC e o FEC. Só o que a fonte publica por município aparece como do município.
-        </CabecalhoModulo>
+          recorte={`${dataBR(g.data_referencia)} · ${inteiro(g.resumo.municipios)} municípios · cada número na unidade e na data da sua fonte`}
+          fonte="ANEEL, ONS, CCEE, EPE e IBGE"
+          referencia={
+            <>
+              Publicação de {dataBR(g.data_referencia)}; processada em {carimbo(g.gerado_em)}. Malha territorial do IBGE{g.geometria.malha ? `, revisão de ${g.geometria.malha.revisao}` : ""}. Data de cada parte: PLD
+              {g.referencias.pld_dia ? ` até ${dataBR(g.referencias.pld_dia)}` : " sem dado"}; energia armazenada{g.referencias.ear_dia ? ` até ${dataBR(g.referencias.ear_dia)}` : " sem dado"}; tarifa B1
+              {g.referencias.tarifa_data ? ` vigente em ${dataBR(g.referencias.tarifa_data)}` : " sem dado"}; perdas e continuidade de {g.referencias.perdas_ano ?? "ano sem dado"} e{" "}
+              {g.referencias.qualidade_ano ?? "ano sem dado"}; MMGD{g.referencias.mmgd_data_cadastro ? ` no cadastro de ${dataBR(g.referencias.mmgd_data_cadastro)}` : " sem dado"}; Tarifa Social do município em{" "}
+              {textoReferencia(g.referencias.tsee_mes_cde)} (a da distribuidora tem o mês do SCS na ficha); usinas do SIGA de {g.referencias.siga_data ? dataBR(g.referencias.siga_data) : "data sem registro"}.
+            </>
+          }
+        />
 
         <ModoProfundidade>
-          <Bloco id="territorio">
             <PainelEvidencia
               id={ID_PAINEL}
-              pergunta={g.pergunta}
-              subtitulo="Preço, tarifa, perdas, continuidade e usinas de uma região · cada número na área e na unidade da fonte"
+              pergunta="Qual número vale para qual área?"
+              subtitulo="Preço, tarifa, perdas, continuidade e usinas, cada um na área e na unidade da sua fonte"
               natureza={g.proveniencia.indice.natureza}
               porQueImporta={
                 <>
@@ -137,11 +146,33 @@ export default function TerritorioPage() {
                   inteiros, sem os limites internos. Em que submercado está uma usina: depende do ponto de conexão, que o SIGA não publica. Associação entre camadas não é causa.
                 </>
               }
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.indice}
               complementares={complementares}
             >
               <div className="space-y-6">
-                <RespostaCurta id={ID_PAINEL} veredito={vereditoTerritorio(g)}>
+                <TerritorioExplorador dados={dados} />
+
+                <div id="territorio-limites" className="scroll-mt-28">
+                  <NotasDoPainel
+                    oQueMudou={textoAtualidade(g)}
+                    comoInterpretar={
+                      <>
+                        Escolha uma camada: submercado (cor da UF), distribuidoras (municípios inteiros da relação oficial), municípios (uma medida publicada por município) ou usinas (pontos do SIGA). A
+                        ficha diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência válida; onde não há, a página diz por quê.
+                      </>
+                    }
+                    naoConcluir={
+                      <>
+                        Que a tarifa, as perdas, o DEC ou o FEC sejam do município: são da distribuidora inteira (ou do conjunto inteiro) e não servem para comparar municípios da mesma distribuidora. Que o
+                        PLD ou a energia armazenada descrevam um município ou uma UF. Que a área de concessão tenha esses limites: ela é desenhada por municípios inteiros, sem os limites internos. Em que
+                        submercado está uma usina: depende do ponto de conexão, que o SIGA não publica. Associação entre camadas não é causa.
+                      </>
+                    }
+                  />
+                </div>
+
+                <RespostaCurta id={ID_PAINEL} veredito={vereditoTerritorio(g)} depois>
                   {respostaTerritorio(g)}
                 </RespostaCurta>
                 <TerritorioRecorte
@@ -170,7 +201,7 @@ export default function TerritorioPage() {
                       casas={0}
                       unidade="municípios"
                       tamanho="medio"
-                      nota={`Fora deles: ${inteiro(r.municipios_por_estado_submercado.com_localidade_isolada ?? 0)} com localidade isolada (submercado da UF com aviso) e ${inteiro(r.municipios_fora_do_sin.total)} fora do SIN.`}
+                      nota={`${inteiro(r.municipios_por_estado_submercado.provado ?? 0)} provados pela carga das áreas do ONS e ${inteiro(r.municipios_por_estado_submercado.provado_com_area_sem_carga ?? 0)} com prova parcial (a área sem carga nos dias conferidos, em Tocantins). Fora deles: ${inteiro(r.municipios_por_estado_submercado.com_localidade_isolada ?? 0)} com localidade isolada (submercado da UF com aviso) e ${inteiro(r.municipios_fora_do_sin.total)} fora do SIN.`}
                       endereco={`/setor-eletrico/territorio#${ID_PAINEL}`}
                     />
                   )}
@@ -189,9 +220,29 @@ export default function TerritorioPage() {
                 </div>
                 <TerritorioAviso rotulo="Regra de atribuição" nivel="analisar">{g.regra_granularidade}</TerritorioAviso>
 
-                <TerritorioExplorador dados={dados} />
+                <SecaoDoPainel nivel="analisar" titulo="Como os indicadores das distribuidoras se distribuem entre elas" id="territorio-quartis">
+                  <p className="max-w-prose2 text-sm text-carvao-muted">
+                    Menor valor, quartis e maior valor de cada indicador do quadro de distribuidoras, só entre as que têm o dado. Cada valor é o da área inteira da distribuidora; a distribuição não diz nada
+                    sobre um município.
+                  </p>
+                  <TerritorioTabela
+                    titulo={`Indicadores de ${inteiro(dados.distribuidoras.length)} distribuidoras com município na relação`}
+                    colunas={["Indicador", "Unidade", "Com dado", "Menor", "1º quartil", "Mediana", "3º quartil", "Maior"]}
+                    numericas={[2, 3, 4, 5, 6, 7]}
+                    linhas={quartisDistribuidoras(dados.distribuidoras).map((q) => [
+                      q.rotulo,
+                      q.unidade,
+                      inteiro(q.n),
+                      numTexto(q.min, q.casas),
+                      numTexto(q.p25, q.casas),
+                      numTexto(q.mediana, q.casas),
+                      numTexto(q.p75, q.casas),
+                      numTexto(q.max, q.casas),
+                    ])}
+                  />
+                </SecaoDoPainel>
 
-                <TerritorioAnalise titulo="Quando a escolha passa de uma camada para outra?" id="territorio-compatibilidade">
+                <SecaoDoPainel nivel="analisar" titulo="Quando a escolha passa de uma camada para outra?" id="territorio-compatibilidade">
                   <TerritorioTabela
                     titulo="Correspondências entre tipos de área declaradas na base"
                     colunas={["De", "Para", "Passa", "Regra", "Condição"]}
@@ -200,9 +251,9 @@ export default function TerritorioPage() {
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Par que não está na tabela não passa: a camada mostra só o contorno da UF quando ele ajuda a localizar a escolha, sem levar nenhum valor da UF para outro tipo de área.
                   </p>
-                </TerritorioAnalise>
+                </SecaoDoPainel>
 
-                <TerritorioAnalise titulo="Onde cada indicador mora (catálogo por tipo de área)" id="territorio-catalogo">
+                <SecaoDoPainel nivel="analisar" titulo="Onde cada indicador mora (catálogo por tipo de área)" id="territorio-catalogo">
                   <TerritorioTabela
                     titulo={`${inteiro(g.indicadores.length)} indicadores, cada um na tabela da sua área`}
                     colunas={["Indicador", "Tipo de área", "Unidade", "Natureza", "Como aparece na ficha do município", "Origem"]}
@@ -217,9 +268,9 @@ export default function TerritorioPage() {
                       </a>,
                     ])}
                   />
-                </TerritorioAnalise>
+                </SecaoDoPainel>
 
-                <TerritorioAnalise titulo="Distribuidoras sem município na relação vigente" id="territorio-sem-area">
+                <SecaoDoPainel nivel="analisar" titulo="Distribuidoras sem município na relação vigente" id="territorio-sem-area">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     {inteiro(semArea.length)} CNPJs aparecem nas bases publicadas de origem, mas nenhum município da relação de {g.referencias.relacao_distribuidoras_ano ?? "sem data"} os
                     liga a eles: ficam fora do mapa e das fichas, com o motivo de cada indicador.
@@ -235,9 +286,9 @@ export default function TerritorioPage() {
                       d.indicadores.tarifa.disponivel ? `R$ ${numTexto(d.indicadores.tarifa.total_rs_mwh, 2)}/MWh` : d.indicadores.tarifa.motivo,
                     ])}
                   />
-                </TerritorioAnalise>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="Como o submercado de cada UF foi provado" id="territorio-areas-carga">
+                <SecaoDoPainel nivel="auditar" titulo="Como o submercado de cada UF foi provado" id="territorio-areas-carga">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Hipótese: {g.areas_carga.hipotese_de}. {g.areas_carga.regra}
                   </p>
@@ -291,9 +342,9 @@ export default function TerritorioPage() {
                       {curto(g.areas_carga.fonte.dicionario_sha256)}.
                     </p>
                   )}
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="Controles executados nesta publicação" id="territorio-controles">
+                <SecaoDoPainel nivel="auditar" titulo="Controles executados nesta publicação" id="territorio-controles">
                   <TerritorioTabela
                     titulo={`${inteiro(g.controles.length)} controles (os críticos derrubam a publicação)`}
                     colunas={["Controle", "Resultado", "Crítico", "Detalhe"]}
@@ -306,9 +357,9 @@ export default function TerritorioPage() {
                       ))}
                     </ul>
                   )}
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="Vínculos com ressalva" id="territorio-vinculos">
+                <SecaoDoPainel nivel="auditar" titulo="Vínculos com ressalva" id="territorio-vinculos">
                   <TerritorioTabela
                     titulo={`Municípios em que a relação de Perdas (${g.referencias.relacao_distribuidoras_ano ?? "sem data"}) e os conjuntos de Qualidade (${g.referencias.qualidade_ano ?? "sem data"}) listam distribuidoras diferentes`}
                     colunas={["Município", "UF", "Código IBGE", "Relação (Perdas)", "Conjuntos (Qualidade)"]}
@@ -319,9 +370,9 @@ export default function TerritorioPage() {
                     {r.municipios_so_vinculo_nao_confirmado.join(", ") || "nenhum"}. Códigos da relação fora da malha do IBGE:{" "}
                     {r.codigos_da_relacao_fora_da_malha.map((x) => `${x.codigo} (${x.distribuidoras.map(sigla).join(", ")})`).join("; ") || "nenhum"}.
                   </p>
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="Usinas: municípios declarados e coordenadas" id="territorio-usinas">
+                <SecaoDoPainel nivel="auditar" titulo="Usinas: municípios declarados e coordenadas" id="territorio-usinas">
                   <TerritorioTabela
                     titulo={`Conferência das ${inteiro(u.total)} usinas do SIGA`}
                     colunas={["Conferência", "Usinas"]}
@@ -345,9 +396,9 @@ export default function TerritorioPage() {
                     numericas={[2]}
                     linhas={u.nomes_nao_reconhecidos.map((x) => [x.nome, x.uf ?? "sem UF", inteiro(x.citacoes)])}
                   />
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="O que não foi possível obter" id="territorio-bloqueios">
+                <SecaoDoPainel nivel="auditar" titulo="O que não foi possível obter" id="territorio-bloqueios">
                   {g.bloqueios.map((b) => (
                     <div key={b.item} className="space-y-1 text-sm">
                       <p className="font-medium text-carvao">{b.item}</p>
@@ -361,14 +412,22 @@ export default function TerritorioPage() {
                       </p>
                     </div>
                   ))}
+                  <div className="max-w-prose2 space-y-1 text-sm">
+                    <p className="font-medium text-carvao">Conferência da camada de subsistemas da EPE por quem lê</p>
+                    <p className="text-carvao-muted">
+                      A tabela de UF e subsistema vem da camada 24 do WebMap da EPE, capturada em {carimbo(g.referencias.subsistema_uf_epe_capturado_em)}, com data e sha256 registrados. O serviço da EPE pode
+                      responder que exige credencial (&quot;Token Required&quot;) a quem consulta a camada, e a recoleta pode falhar: a conferência por quem lê depende do acesso ao serviço, e a publicação mantém a última
+                      captura válida.
+                    </p>
+                  </div>
                   <ul className="max-w-prose2 list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     {g.limitacoes.map((x) => (
                       <li key={x}>{x}</li>
                     ))}
                   </ul>
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioAuditoria titulo="Arquivos lidos dos módulos de origem" id="territorio-insumos">
+                <SecaoDoPainel nivel="auditar" titulo="Arquivos lidos dos módulos de origem" id="territorio-insumos">
                   <TerritorioTabela
                     titulo={`${inteiro(g.insumos.length)} insumos com sha256 (o mesmo arquivo reproduz o mesmo índice)`}
                     colunas={["Módulo", "Arquivo", "Gerado em", "sha256"]}
@@ -377,12 +436,11 @@ export default function TerritorioPage() {
                   <p className="text-xs text-carvao-muted">
                     Geometria: {g.geometria.fonte ?? "sem fonte registrada"}, capturada em {carimbo(g.geometria.capturado_em)}, sha256 {curto(g.geometria.sha256)}.
                   </p>
-                </TerritorioAuditoria>
+                </SecaoDoPainel>
 
-                <TerritorioSeguir ancora={ID_PAINEL} href={prox.href} pergunta={prox.pergunta} downloads={g.downloads} />
+                <SeguirPainel ancora={ID_PAINEL} proximo={{ href: prox.href, pergunta: prox.pergunta }} downloads={g.downloads} />
               </div>
             </PainelEvidencia>
-          </Bloco>
         </ModoProfundidade>
       </main>
     </>

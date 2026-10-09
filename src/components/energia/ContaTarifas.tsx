@@ -21,6 +21,8 @@ import {
   ROTULO_TIPO,
   destacar,
   destaquesDoPerfil,
+  expandirInfo,
+  expandirVigentes,
   filtrarRanking,
   linhasRanking,
   referenciasDoPerfil,
@@ -34,12 +36,13 @@ import {
   ufsDoRanking,
   vereditoTarifa,
   type GrupoRanking,
-  type InfoDistribuidora,
+  type InfoCompacta,
   type MunicipioEncontrado,
   type Perfil,
+  type VigenteCompacto,
 } from "@/lib/energia/conta";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
-import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
+import type { ResumoTarifas } from "@/lib/energia/tipos-conta";
 
 /**
  * P047, "Quanto custa o mesmo consumo?": o mesmo consumo em cada distribuidora, pela tarifa B1 residencial de aplicação vigente.
@@ -72,20 +75,23 @@ const OPCOES_LEITURA: OpcaoConta<"perfil" | "tarifa">[] = [
 ];
 
 export type ContaTarifasProps = {
-  vigentes: TarifaVigente[];
+  /** As distribuidoras do ranking em tuplas (`compactarVigentes`). */
+  vigentes: VigenteCompacto[];
   resumo: ResumoTarifas;
   dataReferencia: string;
   fonte: string;
-  /** UF, tipo e UCs de cada distribuidora (por CNPJ), das golds de Território e de Qualidade. */
-  info: Record<string, InfoDistribuidora>;
+  /** UF, tipo e UCs de cada distribuidora, das golds de Território e de Qualidade, em tuplas (`compactarInfo`). */
+  info: InfoCompacta;
   /** Período, universo e unidade do painel, logo depois das figuras. */
   recorte?: ReactNode;
   /** Notas do painel (NotasDoPainel), depois das figuras e antes da tabela. */
   notas?: ReactNode;
 };
 
-export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte, info, recorte, notas }: ContaTarifasProps) {
+export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, fonte, info: infoCompacta, recorte, notas }: ContaTarifasProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
+  const info = useMemo(() => expandirInfo(infoCompacta), [infoCompacta]);
+  const vigentes = useMemo(() => expandirVigentes(compactos), [compactos]);
   const perfil = Number(v.perfil) as Perfil;
   const todas = useMemo(() => linhasRanking(vigentes, perfil, info), [vigentes, perfil, info]);
   const ufs = useMemo(() => ufsDoRanking(todas), [todas]);

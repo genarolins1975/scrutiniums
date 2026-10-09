@@ -1938,7 +1938,10 @@ export function textoRegimesDistribuicao(l: Pick<BlocoLimitesDisponivel, "regime
   const partes = [`o piso foi de ${reais(Math.min(...pisos))} a ${reais(Math.max(...pisos))}/MWh e o teto horário teve ${tetos} valores diferentes`];
   if (anos.length) {
     const fr = anos.map((a) => a.frac_piso as number);
-    partes.push(`em ${anos.length === 1 ? "um ano" : `${anos.length} anos`} (${listaTexto(anos.map((a) => String(a.ano)))}), de ${fracPct(Math.min(...fr), 1)} a ${fracPct(Math.max(...fr), 1)} das horas ${DO_SM[sm]} ficaram no piso`);
+    const menor = fracPct(Math.min(...fr), 1);
+    const maior = fracPct(Math.max(...fr), 1);
+    const faixa = menor === maior ? menor : `de ${menor} a ${maior}`;
+    partes.push(`em ${anos.length === 1 ? "um ano" : `${anos.length} anos`} (${listaTexto(anos.map((a) => String(a.ano)))}), ${faixa} das horas ${DO_SM[sm]} ficaram no piso`);
   }
   return `Os valores são nominais, sem correção pela inflação, e de anos com limites diferentes: ${partes.join("; ")}.`;
 }

@@ -70,6 +70,7 @@ import {
   notaEnaDoDia,
   notaOutraJanelaCurta,
   notaVazoesCoincidem,
+  periodoBase,
   periodoValidacao,
   periodosMapa,
   recortePadrao,
@@ -98,6 +99,8 @@ import {
   textoPreliminarChuva,
   textoPreliminarTemperatura,
   textoRevisoesFicha,
+  textoUltimoMesFinalChuva,
+  textoUltimoMesFinalTemperatura,
   textoVolumeForaDaFaixa,
   reservatorioDaParcela,
   reservatorioPadrao,
@@ -794,6 +797,15 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     const outro = clone(d);
     outro.delta_ear_mwmes = 1234.5;
     expect(respostaDecomposicao(outro)).toContain("+1.234,5 MWmês");
+    // o veredito diz o sentido, o tamanho e o reservatório que mais pesou, em uma frase curta; sem variação, o valor fica ausente
+    const v = vereditoDecomposicao(d);
+    expect(v).toMatch(/^De \d{2}\/\d{2}\/\d{4} a \d{2}\/\d{2}\/\d{4}, a energia armazenada /);
+    expect(v).toContain(d.delta_ear_mwmes! < 0 ? "caiu" : "subiu");
+    expect(v).toContain(d.delta_ear_mwmes! < 0 ? "a maior queda foi a de" : "a maior alta foi a de");
+    expect(v.split(/\s+/).length).toBeLessThanOrEqual(40);
+    const ausente = clone(d);
+    ausente.delta_ear_mwmes = null;
+    expect(vereditoDecomposicao(ausente)).toContain("o valor fica ausente, nunca zero");
   });
 
   it("balanço: outras estruturas fora da defluência quando a convenção as exclui; fechamento por construção dito assim", () => {
@@ -1361,6 +1373,21 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(h).toContain('data-cautela="temperatura"');
     expect(textoDe(h)).toContain(tc);
     expect(textoDe(h)).toContain(textoPreliminarTemperatura(t.dia, C.corte_merra2));
+    // a explicação da janela preliminar traz o último mês completo só com produto final, para ver uma anomalia sem dia preliminar
+    const padrao = C.precipitacao_bacias.find((x) => x.bacia === baciaPadraoChuva(G.armazenamento.bacias, C.precipitacao_bacias))!;
+    const ultimoChuva = textoUltimoMesFinalChuva(padrao, C.base_climatologica);
+    expect(ultimoChuva).toMatch(/^O último mês completo só com produto final é \p{L}+ de \d{4}: [\d.,]+ mm/u);
+    expect(ultimoChuva).toContain(`média do mês em ${periodoBase(C.base_climatologica)}`);
+    expect(textoDe(h)).toContain(ultimoChuva);
+    const ultimoTemp = textoUltimoMesFinalTemperatura(t, C.corte_merra2, C.base_climatologica);
+    expect(ultimoTemp).toMatch(/^O último mês completo só com MERRA-2 é \p{L}+ de \d{4}: [\d.,]+ °C/u);
+    expect(ultimoTemp).toContain(`média do mês em ${periodoBase(C.base_climatologica)}`);
+    expect(textoDe(h)).toContain(ultimoTemp);
+    // sem nenhum mês completo com o produto final, a frase não aparece
+    const semFinal = clone(padrao);
+    semFinal.mensal.preliminar_desde = semFinal.mensal.m[0];
+    expect(textoUltimoMesFinalChuva(semFinal, C.base_climatologica)).toBe("");
+    expect(textoUltimoMesFinalTemperatura(t, "1900-01-01", C.base_climatologica)).toBe("");
     expect(h).toContain("Média das máximas das células");
     expect(h).not.toContain(">Máxima do dia<");
     expect(textoDe(h)).toContain("* Mês com dias do GEOS-IT (preliminar)");
@@ -1422,6 +1449,9 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
       expect(visiveis[0].tipo, nome).toBe("texto");
       expect(visiveis.slice(1).some((c) => c.tipo === "numero" || c.tipo === "percentual"), nome).toBe(true);
     }
+    // afluência: nome, ENA em % da MLT e percentil (as três de 358 px); a posição por extenso fica em Analisar, e o arquivo leva as duas
+    expect(COLUNAS_AFLUENCIA.filter((c) => !c.nivel).map((c) => c.rotulo)).toEqual(["Recorte", "ENA de 30 dias", "Percentil"]);
+    expect(COLUNAS_AFLUENCIA.find((c) => c.id === "faixa")?.nivel).toBe("analisar");
     // o arquivo leva todas as colunas, as de Analisar também
     expect(matrizExportacao(COLUNAS_AFLUENCIA, linhasAfluencia(entidadesEna(G.afluencia).filter((e) => e.tipo === "subsistema"))).cabecalho.length).toBe(COLUNAS_AFLUENCIA.length);
     expect(matrizExportacao(COLUNAS_RESERVATORIOS, linhasReservatorios(R.lista)).cabecalho.length).toBe(COLUNAS_RESERVATORIOS.length);

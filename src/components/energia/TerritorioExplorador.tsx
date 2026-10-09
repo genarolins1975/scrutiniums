@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { FichaDistribuidora, FichaMunicipio, FichaSubmercado, FichaUf, FichaUsina } from "@/components/energia/TerritorioFicha";
@@ -48,6 +48,7 @@ import {
   linhaMunicipio,
   linhaUsina,
   municipiosDoJson,
+  ordenarResultadosBusca,
   potenciaUsina,
   descricaoCamada,
   proximaPergunta,
@@ -55,6 +56,7 @@ import {
   situacaoVinculo,
   textoDistribuidoras,
   textoQualidadeMalha,
+  textoSemTarifa,
   textoSubmercadoMunicipio,
   usinasDoJson,
   valoresMedida,
@@ -230,12 +232,39 @@ function Secao({ titulo, children, nivel, id }: { titulo: string; children: Reac
 
 /* ---------------------------------------------------------------- busca */
 
-function Busca({ entidades, carregando, onFoco, onEscolher }: { entidades: EntidadeTerritorio[]; carregando: boolean; onFoco: () => void; onEscolher: (e: EntidadeTerritorio) => void }) {
+function Busca({
+  entidades,
+  carregando,
+  onFoco,
+  onEscolher,
+  campoRef,
+  reinicio,
+}: {
+  entidades: EntidadeTerritorio[];
+  carregando: boolean;
+  onFoco: () => void;
+  onEscolher: (e: EntidadeTerritorio) => void;
+  campoRef: RefObject<HTMLInputElement>;
+  /** Muda quando a escolha é limpa: o campo volta a ficar vazio. */
+  reinicio: number;
+}) {
   const uid = useId().replace(/:/g, "");
   const [consulta, setConsulta] = useState("");
   const [aberta, setAberta] = useState(false);
   const [ativo, setAtivo] = useState(-1);
-  const res = useMemo(() => (consulta.trim() ? buscarEntidades(entidades, consulta, 30) : { itens: [], total: 0 }), [entidades, consulta]);
+  // nome exato primeiro; no resto, o município maior antes (as entidades já chegam por população); mostra até 30 e conta o total
+  const res = useMemo(() => {
+    if (!consulta.trim()) return { itens: [] as EntidadeTerritorio[], total: 0 };
+    const r = buscarEntidades(entidades, consulta, 200);
+    return { itens: ordenarResultadosBusca(r.itens, consulta).slice(0, 30), total: r.total };
+  }, [entidades, consulta]);
+  useEffect(() => {
+    if (reinicio > 0) {
+      setConsulta("");
+      setAberta(false);
+      setAtivo(-1);
+    }
+  }, [reinicio]);
   useEffect(() => {
     if (aberta && ativo >= 0) document.getElementById(`${uid}-op-${ativo}`)?.scrollIntoView?.({ block: "nearest" });
   }, [aberta, ativo, uid]);
@@ -253,6 +282,7 @@ function Busca({ entidades, carregando, onFoco, onEscolher }: { entidades: Entid
       </label>
       <input
         id={`${uid}-busca`}
+        ref={campoRef}
         type="text"
         role="combobox"
         aria-autocomplete="list"
@@ -298,6 +328,12 @@ function Busca({ entidades, carregando, onFoco, onEscolher }: { entidades: Entid
       <p id={`${uid}-ajuda`} className="mt-1 text-xs text-carvao-muted">
         {carregando ? "Carregando os 5.571 municípios do IBGE para a busca…" : "Digite parte do nome, a sigla da UF, o CNPJ ou o código IBGE. Setas percorrem a lista; Enter escolhe."}
       </p>
+      <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-limite-busca="">
+        Cada número é da área da sua fonte: tarifa, perdas, DEC e FEC são da distribuidora inteira, e preço e energia armazenada são do submercado, nunca do município.{" "}
+        <a href="#territorio-limites" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+          O que a página não permite concluir
+        </a>
+      </p>
       <ul
         id={`${uid}-lista`}
         role="listbox"
@@ -318,7 +354,10 @@ function Busca({ entidades, carregando, onFoco, onEscolher }: { entidades: Entid
             }`}
           >
             <span className="min-w-0">{e.rotulo}</span>
-            <span className="shrink-0 text-xs text-carvao-muted">{e.detalhe}</span>
+            <span className="shrink-0 text-xs text-carvao-muted">
+              {e.detalhe}
+              {e.populacao ? ` · ${e.populacao}` : ""}
+            </span>
           </li>
         ))}
         {res.total === 0 && (
@@ -343,6 +382,11 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   const [pedidoIndice, setPedidoIndice] = useState(false);
   const [pedidoMalha, setPedidoMalha] = useState(false);
   const [avisoCmp, setAvisoCmp] = useState("");
+  const campoBusca = useRef<HTMLInputElement>(null);
+  const fichaRef = useRef<HTMLElement>(null);
+  const [reinicioBusca, setReinicioBusca] = useState(0);
+  // a escolha feita pela pessoa (busca, mapa, tabela) leva a tela até a ficha e o foco ao título dela; a que vem do link não
+  const [pedidoFoco, setPedidoFoco] = useState(0);
   const cam = v.cam;
   const sel = v.sel;
 
@@ -391,7 +435,26 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     usina: selUsi,
   });
 
-  const selecionar = useCallback((s: Selecao) => definir({ sel: s }), [definir]);
+  const selecionar = useCallback(
+    (s: Selecao) => {
+      definir({ sel: s });
+      if (s) setPedidoFoco((n) => n + 1);
+    },
+    [definir],
+  );
+  /** Limpa a escolha e devolve o foco ao campo de busca, sem perder o ponto onde a pessoa estava. */
+  const limpar = useCallback(() => {
+    definir({ sel: null });
+    setReinicioBusca((n) => n + 1);
+    campoBusca.current?.focus();
+  }, [definir]);
+  /** "Ver as usinas deste município": abre a camada Usinas com a busca da tabela já no nome do município. */
+  const verUsinas = useCallback(
+    (m: MunicipioT) => {
+      definir({ cam: "usinas", usiq: `${m.nome} ${m.uf}` });
+    },
+    [definir],
+  );
   const idSel = (tipo: TipoSelecao) => (sel?.tipo === tipo ? sel.id : null);
 
   /* ---------------------------------------------------------------- montagem do mapa por camada */
@@ -762,6 +825,13 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
 
   /* ---------------------------------------------------------------- ficha */
 
+  const rotuloSel = selMun ? `${selMun.nome} (${selMun.uf})` : selDist ? selDist.sigla : selUf ? (selUf.nome ?? selUf.uf) : selSm ? selSm.nome : selUsi ? selUsi.nome : null;
+  const acaoLimpar = sel ? (
+    <button type="button" onClick={limpar} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao" data-limpar-escolha="">
+      Limpar a escolha
+    </button>
+  ) : undefined;
+
   let ficha: ReactNode;
   if (sel?.tipo === "mun") {
     ficha = selMun ? (
@@ -773,6 +843,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         submercado={selMun.sm && selMun.sm_estado !== "fora_do_sin" ? smPorId.get(selMun.sm) ?? null : null}
         uf={ufPorSigla.get(selMun.uf) ?? null}
         onSelecionar={selecionar}
+        onVerUsinas={verUsinas}
+        acao={acaoLimpar}
       />
     ) : cIndice.estado === "erro" ? (
       <Falha erro={cIndice.erro} arquivo={dados.arquivos.municipios} nome="o índice municipal" repetir={repetirIndice} />
@@ -782,14 +854,14 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       <Estado>Carregando o índice dos municípios para a ficha…</Estado>
     );
   } else if (sel?.tipo === "dist") {
-    ficha = selDist ? <FichaDistribuidora d={selDist} dados={dados} onSelecionar={selecionar} /> : <Estado alerta>O CNPJ {sel.id} não tem município na relação oficial vigente.</Estado>;
+    ficha = selDist ? <FichaDistribuidora d={selDist} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>O CNPJ {sel.id} não tem município na relação oficial vigente.</Estado>;
   } else if (sel?.tipo === "uf") {
-    ficha = selUf ? <FichaUf u={selUf} s={selUf.subsistema ? smPorId.get(selUf.subsistema) ?? null : null} dados={dados} onSelecionar={selecionar} /> : <Estado alerta>UF {sel.id} desconhecida.</Estado>;
+    ficha = selUf ? <FichaUf u={selUf} s={selUf.subsistema ? smPorId.get(selUf.subsistema) ?? null : null} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>UF {sel.id} desconhecida.</Estado>;
   } else if (sel?.tipo === "sm") {
-    ficha = selSm ? <FichaSubmercado s={selSm} dados={dados} onSelecionar={selecionar} /> : <Estado alerta>Submercado desconhecido.</Estado>;
+    ficha = selSm ? <FichaSubmercado s={selSm} dados={dados} onSelecionar={selecionar} acao={acaoLimpar} /> : <Estado alerta>Submercado desconhecido.</Estado>;
   } else if (sel?.tipo === "usi") {
     ficha = selUsi ? (
-      <FichaUsina u={selUsi} dados={dados} nomeMunicipio={nomeMunicipio} onSelecionar={selecionar} />
+      <FichaUsina u={selUsi} dados={dados} nomeMunicipio={nomeMunicipio} onSelecionar={selecionar} acao={acaoLimpar} />
     ) : cUsinas.estado === "erro" ? (
       <Falha erro={cUsinas.erro} arquivo={dados.arquivos.usinas} nome="as usinas" repetir={repetirUsinas} />
     ) : usinas ? (
@@ -810,21 +882,44 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
 
   const prox = proximaPergunta(cam);
 
+  const fichaPronta = Boolean(selMun || selDist || selUf || selSm || selUsi);
+  useEffect(() => {
+    if (pedidoFoco === 0 || !fichaPronta) return;
+    const caixa = fichaRef.current;
+    const titulo = caixa?.querySelector<HTMLElement>("[data-foco-ficha]");
+    if (!caixa || !titulo) return;
+    titulo.focus({ preventScroll: true });
+    const r = caixa.getBoundingClientRect();
+    const fora = r.top > window.innerHeight * 0.85 || r.bottom < 0;
+    if (fora) caixa.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pedidoFoco, fichaPronta]);
+
   /* ---------------------------------------------------------------- render */
 
   return (
     <div className="space-y-6">
       {/* busca e camada */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
-        <Busca
-          entidades={entidades}
-          carregando={querIndice && !municipios && cIndice.estado !== "erro"}
-          onFoco={() => setPedidoIndice(true)}
-          onEscolher={(e) => {
-            const s = selecaoDeId(e.id);
-            if (s) selecionar(s);
-          }}
-        />
+        <div className="min-w-0 flex-1">
+          <Busca
+            entidades={entidades}
+            carregando={querIndice && !municipios && cIndice.estado !== "erro"}
+            onFoco={() => setPedidoIndice(true)}
+            onEscolher={(e) => {
+              const s = selecaoDeId(e.id);
+              if (s) selecionar(s);
+            }}
+            campoRef={campoBusca}
+            reinicio={reinicioBusca}
+          />
+          {sel && rotuloSel && (
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-0 text-sm" data-escolha="">
+              <span className="border border-energia bg-energia-fundo px-2 py-0.5 text-carvao">Escolhido: {rotuloSel}</span>
+              {acaoLimpar}
+            </p>
+          )}
+        </div>
         <fieldset className="min-w-0">
           <legend className="rotulo mb-1 text-mineral">Camada do mapa</legend>
           <div className="flex flex-wrap gap-1.5">
@@ -960,13 +1055,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             </ul>
           )}
         </div>
-        <aside aria-label="Ficha da escolha" className="min-w-0 border border-linha bg-superficie p-4" data-ficha={sel ? sel.tipo : "nenhuma"}>
+        <aside ref={fichaRef} aria-label="Ficha da escolha" className="min-w-0 scroll-mt-24 border border-linha bg-superficie p-4" data-ficha={sel ? sel.tipo : "nenhuma"}>
           {ficha}
-          {sel && (
-            <button type="button" onClick={() => selecionar(null)} className="rotulo mt-3 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Limpar a escolha
-            </button>
-          )}
         </aside>
       </div>
 
@@ -1104,6 +1194,12 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           versao={dados.versao}
           nomeArquivo="territorio-ufs"
           chaveUrl="ter.ufi"
+          nota={
+            <>
+              Usinas em operação contadas na UF principal, sem os registros de até {num(dados.limiteRegistroKw, 0)} kW, que o município também deixa fora da contagem de usinas e que têm coluna própria; a capacidade em MW
+              soma todas. {dados.notaMultiestadual} Desconto líquido: soma dos descontos do mês com os cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas; um mês pode fechar negativo.
+            </>
+          }
           ordemInicial={{ coluna: "cap_mw", direcao: "desc" }}
           selecionado={idSel("uf")}
           onSelecionar={(id) => selecionar(id ? { tipo: "uf", id } : null)}
@@ -1123,7 +1219,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           selecionado={idSel("dist")}
           onSelecionar={(id) => selecionar(id ? { tipo: "dist", id } : null)}
           dicaBusca="Sigla, razão social, CNPJ ou UF"
-          nota="Valores da área inteira: não descrevem um município. Taxa de perdas de ano parcial não é comparável à de ano completo; taxa negativa está como o SAMP publica (ressalva na ficha)."
+          nota={`Valores da área inteira: não descrevem um município. Taxa de perdas de ano parcial não é comparável à de ano completo; taxa negativa está como o SAMP publica (ressalva na ficha). ${textoSemTarifa(dados.distribuidoras) ?? ""}`}
         />
       </Secao>
 

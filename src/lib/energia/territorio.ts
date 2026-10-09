@@ -21,6 +21,7 @@
  */
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { quebrasFixas, quebrasQuantis, type Classificacao, type ValorClassificavel } from "./escalas";
+import { resumo } from "./distribuicao";
 import { dataBR, num } from "./formato";
 import { destino } from "./navegacao";
 import { LIMITE_COMPARACAO, type ColunaTabela, type LinhaTabela } from "./tabela";
@@ -154,6 +155,8 @@ export const ESQUEMA_TERRITORIO = {
   est: campo(tiposUrl.lista(tiposUrl.opcao(ESTAGIOS_USINA)), [...ESTAGIOS_USINA] as EstagioUsina[], { param: "est" }),
   reg: campo(tiposUrl.booleano(), false, { param: "reg" }),
   cmp: campo(tiposUrl.lista(leitorIbge, { max: LIMITE_COMPARACAO }), [] as string[], { param: "cmp" }),
+  /** Busca da tabela de usinas (a mesma chave que a tabela lê): "Ver as usinas deste município" abre a camada com ela preenchida. */
+  usiq: campo(tiposUrl.texto({ max: 120 }), "", { param: "ter.usi.q", historico: "replace" }),
 };
 
 /* ================================================================ formatação */
@@ -294,6 +297,55 @@ export function usinasDoJson(arq: UsinasTerritorio, limiteKw: number): UsinaT[] 
     const u = o as Omit<UsinaT, "registro_ate_10kw">;
     return { ...u, registro_ate_10kw: ehRegistroPequeno(u, limiteKw) };
   });
+}
+
+/**
+ * Usinas em operação de cada UF, na UF principal da usina, com os registros de até 10 kW à parte: o município tem esses registros em coluna
+ * própria e fora da contagem de usinas, e a UF passa a contar do mesmo jeito. `usinas` + `registros` é o total que a gold publica por UF; o
+ * resto separa as usinas declaradas em um só município (as que a soma municipal conta), em mais de um e sem município reconhecido.
+ */
+export type UsinasDaUf = { usinas: number; registros: number; um_municipio: number; multimunicipio: number; sem_municipio: number };
+
+export function usinasDaUf(usinas: readonly Pick<UsinaT, "uf" | "estagio" | "registro_ate_10kw" | "municipios" | "n_declarados">[]): Map<string, UsinasDaUf> {
+  const por = new Map<string, UsinasDaUf>();
+  for (const u of usinas) {
+    if (u.estagio !== "operacao" || !u.uf) continue;
+    const x = por.get(u.uf) ?? { usinas: 0, registros: 0, um_municipio: 0, multimunicipio: 0, sem_municipio: 0 };
+    if (u.registro_ate_10kw) x.registros++;
+    else {
+      x.usinas++;
+      if (u.municipios.length === 1 && u.n_declarados === 1) x.um_municipio++;
+      else if (u.municipios.length > 1 || u.n_declarados > 1) x.multimunicipio++;
+      else x.sem_municipio++;
+    }
+    por.set(u.uf, x);
+  }
+  return por;
+}
+
+/**
+ * Usinas em operação declaradas em municípios de mais de uma UF: entram inteiras na UF principal, sem repartir a potência. O texto cita as
+ * duas maiores. O código IBGE do município começa pelo código da UF; `ufPorCodigo` traduz esse código na sigla.
+ */
+export function notaMultiestadual(usinas: readonly UsinaT[], ufPorCodigo: ReadonlyMap<string, string>): string | null {
+  const multi = usinas
+    .filter((u) => u.estagio === "operacao" && !u.registro_ate_10kw)
+    .map((u) => ({ u, ufs: Array.from(new Set(u.municipios.map((m) => ufPorCodigo.get(m.slice(0, 2))).filter((x): x is string => !!x))) }))
+    .filter((x) => x.ufs.length > 1);
+  if (!multi.length) return null;
+  const maiores = [...multi].sort((a, b) => (b.u.mw_fiscalizado ?? 0) - (a.u.mw_fiscalizado ?? 0)).slice(0, 2);
+  const exemplos = maiores.map((x) => `${x.u.nome} (${num(x.u.mw_fiscalizado ?? 0, 0)} MW, ${x.ufs.join(" e ")})`).join(" e ");
+  return `${inteiro(multi.length)} ${multi.length === 1 ? "usina em operação está declarada" : "usinas em operação estão declaradas"} em municípios de mais de uma UF e entra${multi.length === 1 ? "" : "m"} inteira${multi.length === 1 ? "" : "s"} na UF principal, sem repartir a potência (as duas maiores: ${exemplos}).`;
+}
+
+/**
+ * Desconto da Tarifa Social: o número que a fonte publica por UF e por município é o desconto líquido do mês, a soma dos descontos com os
+ * cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas. Nunca é lido como a soma de descontos concedidos.
+ */
+export function textoDescontoLiquido(desconto: number | null | undefined): string | null {
+  if (desconto === null || desconto === undefined) return null;
+  const base = "Desconto líquido: soma dos descontos do mês com os cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas.";
+  return desconto < 0 ? `${base} O valor é negativo porque, no mês, os cancelamentos e refaturamentos somaram mais que os descontos concedidos.` : base;
 }
 
 /** Grupo de fonte da usina pelo tipo do SIGA (cor no mapa e filtro). */
@@ -458,7 +510,13 @@ export type LinhaUf = LinhaTabela & {
   municipios: number;
   fora_do_sin: number;
   com_localidade_isolada: number;
+  /** Usinas em operação na UF principal, sem os registros de até 10 kW (a mesma regra da contagem municipal). */
   cap_usinas: number | null;
+  /** Registros de até 10 kW em operação na UF principal, à parte. */
+  cap_registros: number | null;
+  /** Das usinas contadas: declaradas em um só município (as que a soma municipal conta) e em mais de um. */
+  cap_um_municipio: number | null;
+  cap_multimunicipio: number | null;
   cap_mw: number | null;
   cap_ref: string | null;
   cap_origem: string | null;
@@ -484,7 +542,11 @@ export function textoAreasCarga(areas: readonly AreaCargaUf[]): string {
   return areas.map((a) => `${a.codigo} (${a.nome}): ${ROTULO_VEREDITO[a.veredito]}${a.submercado_hipotese ? ` no ${a.submercado_hipotese}` : ""}`).join("; ");
 }
 
-export function linhaUf(u: UfTerritorio): LinhaUf {
+/**
+ * A linha de uma UF. A gold publica `usinas` com os registros de até 10 kW dentro; com `separacao` (lida do arquivo de usinas), a contagem
+ * exclui esses registros e eles vão para a coluna ao lado. Sem o arquivo de usinas a contagem fica sem dado, nunca com o total misturado.
+ */
+export function linhaUf(u: UfTerritorio, separacao?: UsinasDaUf | null): LinhaUf {
   const { capacidade: c, tsee: t, isolados: i } = u.indicadores;
   return {
     id: u.uf,
@@ -498,7 +560,10 @@ export function linhaUf(u: UfTerritorio): LinhaUf {
     municipios: u.municipios,
     fora_do_sin: u.municipios_fora_do_sin,
     com_localidade_isolada: u.municipios_com_localidade_isolada,
-    cap_usinas: c.disponivel ? c.usinas : null,
+    cap_usinas: c.disponivel && separacao ? separacao.usinas : null,
+    cap_registros: c.disponivel && separacao ? separacao.registros : null,
+    cap_um_municipio: c.disponivel && separacao ? separacao.um_municipio : null,
+    cap_multimunicipio: c.disponivel && separacao ? separacao.multimunicipio + separacao.sem_municipio : null,
     cap_mw: c.disponivel ? c.mw_fiscalizado : null,
     cap_ref: c.disponivel ? c.periodo.fim : null,
     cap_origem:
@@ -607,14 +672,18 @@ export type DadosExplorador = {
   fontes: Partial<Record<ChaveFonte, FonteCurta>>;
   arquivos: { municipios: string; usinas: string; geoUf: string; geoMunicipios: string };
   limiteRegistroKw: number;
+  /** Usinas declaradas em mais de uma UF, que entram inteiras na UF principal; null sem o arquivo de usinas. */
+  notaMultiestadual: string | null;
   estadosVinculo: Record<string, string>;
   /** Municípios por estado do submercado (resumo da gold), para a legenda antes de o índice chegar. */
   estadosMunicipio: Partial<Record<EstadoSubmercadoMunicipio, number>>;
   versao: string;
 };
 
-export function dadosExplorador(g: GoldTerritorio): DadosExplorador {
+export function dadosExplorador(g: GoldTerritorio, usinas: readonly UsinaT[] | null = null): DadosExplorador {
   const fontes: Partial<Record<ChaveFonte, FonteCurta>> = {};
+  const porUf = usinas ? usinasDaUf(usinas) : null;
+  const vazia: UsinasDaUf = { usinas: 0, registros: 0, um_municipio: 0, multimunicipio: 0, sem_municipio: 0 };
   for (const k of CHAVES_FONTE) {
     const f = fonteCurta(g.proveniencia[k]);
     if (f) fontes[k] = f;
@@ -623,7 +692,7 @@ export function dadosExplorador(g: GoldTerritorio): DadosExplorador {
     dataReferencia: g.data_referencia,
     referencias: g.referencias,
     submercados: g.submercados.map(linhaSubmercado),
-    ufs: g.ufs.map(linhaUf),
+    ufs: g.ufs.map((u) => linhaUf(u, porUf ? (porUf.get(u.uf) ?? vazia) : null)),
     distribuidoras: g.distribuidoras.filter((d) => d.area.municipios > 0).map(linhaDistribuidora),
     compatibilidade: g.compatibilidade,
     graos: g.graos.map((x) => ({ id: x.id, rotulo: x.rotulo, rotulo_no_municipio: x.rotulo_no_municipio })),
@@ -631,6 +700,7 @@ export function dadosExplorador(g: GoldTerritorio): DadosExplorador {
     fontes,
     arquivos: { municipios: g.series.municipios, usinas: g.series.usinas, geoUf: g.geometria.uf, geoMunicipios: g.geometria.municipios },
     limiteRegistroKw: g.resumo.usinas.limite_registro_kw,
+    notaMultiestadual: usinas ? notaMultiestadual(usinas, new Map(g.ufs.filter((u) => u.codigo).map((u) => [String(u.codigo), u.uf]))) : null,
     estadosVinculo: { 0: ROTULO_VINCULO[0], 1: ROTULO_VINCULO[1], 2: ROTULO_VINCULO[2] },
     estadosMunicipio: g.resumo.municipios_por_estado_submercado,
     versao: g.data_referencia,
@@ -1062,7 +1132,13 @@ export function respostaSubmercado(s: LinhaSubmercado): string {
 export function respostaUf(u: LinhaUf): string {
   const sm = u.subsistema ? `está no submercado ${NOME_SUBMERCADO[u.subsistema]} (camada oficial da EPE; ${u.estado})` : "não tem submercado provado";
   const fora = u.fora_do_sin ? `, ${inteiro(u.fora_do_sin)} fora do SIN` : "";
-  const cap = u.cap_mw === null ? "capacidade sem dado" : `${inteiro(u.cap_usinas)} usinas em operação com ${num(u.cap_mw, 1)} MW fiscalizados pela UF principal`;
+  const regs = u.cap_registros ? ` (mais ${inteiro(u.cap_registros)} ${u.cap_registros === 1 ? "registro" : "registros"} de até 10 kW, à parte)` : "";
+  const cap =
+    u.cap_mw === null
+      ? "capacidade sem dado"
+      : u.cap_usinas === null
+        ? `${num(u.cap_mw, 1)} MW em operação fiscalizados pela UF principal`
+        : `${inteiro(u.cap_usinas)} usinas em operação${regs}, com ${num(u.cap_mw, 1)} MW fiscalizados pela UF principal`;
   return `${u.nome ?? u.uf} ${sm}. ${inteiro(u.municipios)} municípios${fora}; ${cap}.`;
 }
 
@@ -1139,10 +1215,11 @@ export const COLUNAS_UFS_SUBMERCADO: ColunaTabela[] = [
 export const COLUNAS_UFS_INDICADORES: ColunaTabela[] = [
   { id: "uf", rotulo: "UF", tipo: "texto" },
   { id: "submercado", rotulo: "Submercado", tipo: "texto", categorica: true },
-  { id: "cap_usinas", rotulo: "Usinas em operação (UF principal)", tipo: "numero", casas: 0 },
-  { id: "cap_mw", rotulo: "Capacidade em operação", tipo: "numero", unidade: "MW", casas: 1 },
-  { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social", tipo: "numero", unidade: "faturas no mês", casas: 0 },
-  { id: "tsee_desconto", rotulo: "Desconto da Tarifa Social", tipo: "numero", unidade: "R$ no mês", casas: 2 },
+  { id: "cap_usinas", rotulo: "Usinas em operação (UF principal, sem registros de até 10 kW)", tipo: "numero", casas: 0 },
+  { id: "cap_registros", rotulo: "Registros de até 10 kW em operação (UF principal)", tipo: "numero", casas: 0 },
+  { id: "cap_mw", rotulo: "Capacidade em operação (todas as usinas, em MW)", tipo: "numero", unidade: "MW", casas: 1 },
+  { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social (contagem do mês)", tipo: "numero", unidade: "faturas no mês", casas: 0 },
+  { id: "tsee_desconto", rotulo: "Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", tipo: "numero", unidade: "R$ líquidos no mês", casas: 2 },
   { id: "isol_localidades", rotulo: "Localidades isoladas", tipo: "numero", casas: 0 },
   { id: "isol_pop", rotulo: "População em localidades isoladas", tipo: "numero", casas: 0 },
 ];
@@ -1178,7 +1255,7 @@ export function colunasMunicipios(med: MedidaMunicipio | null): ColunaTabela[] {
     { id: "mmgd_kw", rotulo: "Potência de MMGD", tipo: "numero", unidade: "kW", casas: 0 },
     { id: "mmgd_w_hab", rotulo: "MMGD por habitante", tipo: "numero", unidade: "W/hab", casas: 1 },
     { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social", tipo: "numero", casas: 0 },
-    { id: "tsee_desconto", rotulo: "Desconto da Tarifa Social", tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "tsee_desconto", rotulo: "Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", tipo: "numero", unidade: "R$ líquidos", casas: 2 },
     { id: "tsee_proxy_pct", rotulo: "Tarifa Social por família do CadÚnico (proxy)", tipo: "percentual", casas: 1 },
     { id: "tsee_base_pequena", rotulo: "Menos de 50 famílias no CadÚnico", tipo: "texto", categorica: true },
     { id: "lpt_dom", rotulo: "Luz para Todos", tipo: "numero", unidade: "domicílios", casas: 0 },
@@ -1290,7 +1367,34 @@ export function conjuntosDoMunicipio(m: Pick<MunicipioT, "conj">, tabela: Record
 
 /* ================================================================ busca de entidades */
 
-export type EntidadeTerritorio = { id: string; rotulo: string; detalhe: string; sinonimos: string[]; tipo: TipoSelecao };
+export type EntidadeTerritorio = {
+  id: string;
+  rotulo: string;
+  detalhe: string;
+  sinonimos: string[];
+  tipo: TipoSelecao;
+  /** População do município, só para ordenar e para escrever ao lado da opção (não entra na busca). */
+  pop?: number | null;
+  populacao?: string;
+};
+
+/** População em poucas palavras para a opção da busca ("1,1 mi hab.", "52 mil hab.", "830 hab."). */
+export function textoPopulacao(pop: number | null | undefined): string | undefined {
+  if (pop === null || pop === undefined || !Number.isFinite(pop)) return undefined;
+  if (pop >= 1e6) return `${num(pop / 1e6, 1)} mi hab.`;
+  if (pop >= 1e3) return `${num(pop / 1e3, 0)} mil hab.`;
+  return `${num(pop, 0)} hab.`;
+}
+
+/**
+ * Resultados da busca com o nome exato primeiro (sem acento nem maiúscula) e, no resto, na ordem recebida: os municípios entram em
+ * `entidadesBusca` por população decrescente, então "Campinas" lista Campinas (SP) antes de Campinas do Piauí e "São Paulo" põe a capital na frente.
+ */
+export function ordenarResultadosBusca<E extends { rotulo: string }>(itens: readonly E[], consulta: string): E[] {
+  const norm = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  const q = norm(consulta);
+  return itens.map((e, i) => ({ e, i, exato: norm(e.rotulo) === q ? 0 : 1 })).sort((a, b) => a.exato - b.exato || a.i - b.i).map((x) => x.e);
+}
 
 /** Entidades buscáveis: submercados, UFs, distribuidoras e, depois de carregado o índice, municípios. */
 export function entidadesBusca(d: Pick<DadosExplorador, "submercados" | "ufs" | "distribuidoras">, municipios: readonly MunicipioT[] | null): EntidadeTerritorio[] {
@@ -1299,7 +1403,10 @@ export function entidadesBusca(d: Pick<DadosExplorador, "submercados" | "ufs" | 
   for (const u of d.ufs) out.push({ id: `uf:${u.uf}`, rotulo: u.nome ?? u.uf, detalhe: `UF ${u.uf}`, sinonimos: [u.uf], tipo: "uf" });
   for (const x of d.distribuidoras)
     out.push({ id: `dist:${x.id}`, rotulo: x.sigla, detalhe: `distribuidora · ${x.ufs}`, sinonimos: [x.nome ?? "", x.id, x.cnpj_formatado ?? ""], tipo: "dist" });
-  if (municipios) for (const m of municipios) out.push({ id: `mun:${m.ibge}`, rotulo: m.nome, detalhe: `município · ${m.uf}`, sinonimos: [m.ibge, m.uf], tipo: "mun" });
+  if (municipios)
+    // por população decrescente: nas homônimas e nas buscas por parte do nome, o município maior vem antes (o desempate da busca é a ordem recebida)
+    for (const m of [...municipios].sort((a, b) => (b.pop ?? -1) - (a.pop ?? -1)))
+      out.push({ id: `mun:${m.ibge}`, rotulo: m.nome, detalhe: `município · ${m.uf}`, sinonimos: [m.ibge, m.uf], tipo: "mun", pop: m.pop, populacao: textoPopulacao(m.pop) });
   return out;
 }
 
@@ -1317,6 +1424,47 @@ export function descricaoCamada(descricao: string): string {
 export function textoQualidadeMalha(qualidade: string): string {
   const ROTULO: Record<string, string> = { minima: "mínima, simplificada para desenhar", intermediaria: "intermediária", maxima: "máxima" };
   return ROTULO[qualidade] ?? qualidade;
+}
+
+/* ================================================================ distribuidoras: o que falta e como se distribuem */
+
+/**
+ * Por que algumas distribuidoras ficam sem tarifa B1 residencial no quadro: a vigência anterior terminou e a seguinte ainda não consta no
+ * arquivo da ANEEL, a distribuidora foi incorporada por outra, ou o arquivo não tem linha para ela. Escrito a partir do motivo que a gold publica
+ * para cada uma; null quando todas têm tarifa.
+ */
+export function textoSemTarifa(dist: readonly Pick<LinhaDistribuidora, "tarifa" | "tarifa_motivo">[]): string | null {
+  const sem = dist.filter((d) => d.tarifa === null);
+  if (!sem.length) return null;
+  const encerrada = sem.filter((d) => /vigência encerrada/i.test(d.tarifa_motivo ?? "")).length;
+  const incorporada = sem.filter((d) => !/vigência encerrada/i.test(d.tarifa_motivo ?? "") && /incorporada/i.test(d.tarifa_motivo ?? "")).length;
+  const outras = sem.length - encerrada - incorporada;
+  const partes = [
+    encerrada ? `${inteiro(encerrada)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL` : "",
+    incorporada ? `${inteiro(incorporada)} ${incorporada === 1 ? "foi incorporada" : "foram incorporadas"} por outra distribuidora` : "",
+    outras ? `${inteiro(outras)} ${outras === 1 ? "não tem" : "não têm"} linha de tarifa residencial no arquivo` : "",
+  ].filter(Boolean);
+  return `${inteiro(sem.length)} das ${inteiro(dist.length)} distribuidoras do quadro ficam sem tarifa B1 residencial: ${partes.join("; ")}.`;
+}
+
+export type QuartisIndicador = { id: string; rotulo: string; unidade: string; casas: number; n: number; min: number | null; p25: number | null; mediana: number | null; p75: number | null; max: number | null };
+
+/**
+ * Como os indicadores do quadro de distribuidoras se distribuem entre elas: menor, quartis e maior, só entre as que têm o valor (quantil tipo 7, o
+ * mesmo do pipeline). Cada valor é o da área inteira da distribuidora; a distribuição não diz nada sobre um município.
+ */
+export function quartisDistribuidoras(dist: readonly LinhaDistribuidora[]): QuartisIndicador[] {
+  const campos: { id: string; rotulo: string; unidade: string; casas: number; v: (d: LinhaDistribuidora) => number | null }[] = [
+    { id: "tarifa", rotulo: "Tarifa B1 residencial, sem tributos", unidade: "R$/MWh", casas: 2, v: (d) => d.tarifa },
+    { id: "perdas_pct", rotulo: "Perdas totais sobre a energia injetada", unidade: "%", casas: 2, v: (d) => d.perdas_pct },
+    { id: "dec_h", rotulo: "DEC da distribuidora", unidade: "h", casas: 2, v: (d) => d.dec_h },
+    { id: "fec", rotulo: "FEC da distribuidora", unidade: "interrupções", casas: 2, v: (d) => d.fec },
+    { id: "tsee_pct", rotulo: "Residenciais com Tarifa Social", unidade: "%", casas: 2, v: (d) => d.tsee_pct },
+  ];
+  return campos.map((c) => {
+    const r = resumo(dist.map(c.v));
+    return { id: c.id, rotulo: c.rotulo, unidade: c.unidade, casas: c.casas, n: r.n, min: r.min, p25: r.p25, mediana: r.mediana, p75: r.p75, max: r.max };
+  });
 }
 
 /* ================================================================ recorte do painel (seção 7.2, item 3) */

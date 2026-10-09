@@ -27,6 +27,7 @@ import type {
   ChaveTarifa,
   ClasseSimuladorId,
   Composicao,
+  ComposicaoDistribuidora,
   ContaGold,
   EventoB1,
   FinanciamentoCde,
@@ -35,6 +36,7 @@ import type {
   JanelaInflacao,
   Ligacao,
   PontoEvolucao,
+  PorGrupo,
   ResumoTarifas,
   SemVigente,
   Simulador,
@@ -379,7 +381,7 @@ export function maiorAjuste(linhas: readonly Pick<LinhaComposicao, "ajuste">[]):
  * da P047, ou decrescente pelo grupo escolhido (ausência no fim).
  */
 export function linhasComposicao(
-  comp: Composicao,
+  comp: Pick<ComposicaoDaTela, "distribuidoras">,
   vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[],
   unidade: UnidadeComposicao,
   ordem: "posicao" | GrupoComponenteId = "posicao",
@@ -418,7 +420,7 @@ export const ID_MEDIA = "media";
  * referência (tarifa mais próxima da mediana, a mesma da evidência), a de menor e a
  * de maior tarifa do ranking, só as que têm composição publicada.
  */
-export function idsComposicaoPadrao(comp: Composicao, vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[], referencia: string | null): string[] {
+export function idsComposicaoPadrao(comp: Pick<ComposicaoDaTela, "distribuidoras">, vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[], referencia: string | null): string[] {
   const com = new Set(comp.distribuidoras.map((d) => d.cnpj));
   const ord = [...vigentes].filter((v) => com.has(v.cnpj)).sort((a, b) => a.posicao - b.posicao);
   const ids = [referencia, ord[0]?.cnpj, ord[ord.length - 1]?.cnpj].filter((x): x is string => !!x && com.has(x));
@@ -430,7 +432,7 @@ export function idsComposicaoPadrao(comp: Composicao, vigentes: readonly Pick<Ta
  * distribuidoras pedidas, cada uma igual à sua linha na tabela completa.
  */
 export function linhasComposicaoGrafico(
-  comp: Composicao,
+  comp: Pick<ComposicaoDaTela, "distribuidoras" | "media">,
   vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[],
   unidade: UnidadeComposicao,
   ids: readonly string[],
@@ -503,7 +505,7 @@ export type LinhaGrupo = {
 };
 
 /** Tabela de decomposição: média (fecha com o total), mediana (não fecha) e a distribuidora em destaque. */
-export function linhasGrupos(comp: Composicao, cnpjDestaque: string | null): LinhaGrupo[] {
+export function linhasGrupos(comp: Pick<ComposicaoDaTela, "grupos" | "distribuidoras" | "media" | "mediana">, cnpjDestaque: string | null): LinhaGrupo[] {
   const d = cnpjDestaque ? (comp.distribuidoras.find((x) => x.cnpj === cnpjDestaque) ?? null) : null;
   const rotulo = new Map(comp.grupos.map((g) => [g.id, g.rotulo]));
   return ORDEM_GRUPOS.map((g) => ({
@@ -1775,12 +1777,11 @@ export function janelasNoMesmoConjunto(janelas: readonly JanelaInflacao[]): Jane
   };
 }
 
-/** Frase das janelas no mesmo conjunto: a mediana de cada janela entre as distribuidoras comuns às três, contra o IPCA do período. */
+/** Frase das janelas no mesmo conjunto: a mediana da variação em cada janela entre as distribuidoras comuns às três, contra o IPCA do período. */
 export function textoJanelasNoMesmoConjunto(c: JanelasNoMesmoConjunto): string {
-  const partes = c.itens.map((i) => `${i.meses} meses, ${pct(i.medianaPct, 2)} contra IPCA de ${pct(i.ipcaPct, 2)}`);
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
-  const universos = Array.from(new Set(c.itens.map((i) => i.nDaJanela)));
-  return `Nas ${c.n} distribuidoras com variação nas três janelas (cada janela, sozinha, tem ${universos.length > 1 ? universos.join(", ") : universos[0]}), a mediana é de ${lista}.`;
+  const partes = c.itens.map((i) => `${pct(i.medianaPct, 2)} em ${i.meses} meses (IPCA de ${pct(i.ipcaPct, 2)})`);
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0];
+  return `Nas ${c.n} distribuidoras com variação nas três janelas, a mediana da variação da tarifa B1 é de ${lista}.`;
 }
 
 /* ---------- simulador: tarifa usada, classes iguais à residencial e leituras não conferidas ---------- */
@@ -1875,4 +1876,182 @@ export function empilharPontos(pontos: readonly { id: string; x: number }[], rai
       }
     }
   });
+}
+
+/* ---------- props compactas: o que a página entrega aos componentes de cliente ---------- */
+
+/**
+ * O HTML de cada página leva, além do que desenha, as props dos componentes de cliente (o fluxo do servidor). Objetos com 14 chaves
+ * repetidas em cada uma das 81 distribuidoras pesavam mais que os valores. Aqui as listas grandes viajam como tuplas e voltam a objetos no
+ * navegador, sem perder nenhum campo que o componente usa (o teste confere a ida e a volta); os campos que o cliente nunca lê (as
+ * componentes de cada grupo, as bases econômicas de TE e TUSD, as conferências internas) não viajam.
+ */
+
+/** [CNPJ, sigla, razão social, início, fim, ato, TE, TUSD, total, base econômica total, custo de 100, 200 e 300 kWh, posição]. */
+export type VigenteCompacto = [string, string | null, string | null, string, string, string, number | null, number | null, number, number | null, number | null, number | null, number | null, number];
+
+export function compactarVigentes(v: readonly TarifaVigente[]): VigenteCompacto[] {
+  return v.map((x) => [x.cnpj, x.sigla, x.nome, x.inicio, x.fim, x.ato, x.te, x.tusd, x.total, x.be_total, x.perfis["100"], x.perfis["200"], x.perfis["300"], x.posicao]);
+}
+
+/** Volta ao objeto da gold; `be_te` e `be_tusd` (que nenhum componente de cliente lê) voltam como null. */
+export function expandirVigentes(c: readonly VigenteCompacto[]): TarifaVigente[] {
+  return c.map(([cnpj, sigla, nome, inicio, fim, ato, te, tusd, total, be_total, p100, p200, p300, posicao]) => ({
+    cnpj,
+    sigla,
+    nome,
+    inicio,
+    fim,
+    ato,
+    te,
+    tusd,
+    total,
+    be_te: null,
+    be_tusd: null,
+    be_total,
+    perfis: { "100": p100, "200": p200, "300": p300 },
+    posicao,
+  }));
+}
+
+/** A distribuidora da composição como a tela a usa: o total, as sete partes em R$/MWh e em %, a parte CDE e o que foi reclassificado. */
+export type DistribuidoraDaComposicao = Pick<ComposicaoDistribuidora, "cnpj" | "sigla" | "total" | "grupos" | "pct" | "cde" | "cde_pct"> & {
+  reclassificadas?: readonly { codigo: string; valor: number | null }[];
+};
+
+/** A composição como a tela a usa: um subconjunto da `Composicao` da gold (a gold inteira também serve). */
+export type ComposicaoDaTela = {
+  grupos: readonly { id: GrupoComponenteId; rotulo: string }[];
+  distribuidoras: readonly DistribuidoraDaComposicao[];
+  media: Composicao["media"];
+  mediana: Pick<Composicao["mediana"], "grupos_rs_mwh" | "mediana_do_total_rs_mwh" | "soma_das_medianas_rs_mwh">;
+  cde: Pick<Composicao["cde"], "mediana_rs_mwh" | "razao_de_somas_pct">;
+};
+
+/** [CNPJ, sigla, total, sete partes em R$/MWh, sete partes em %, CDE em R$/MWh, CDE em %, reclassificadas (só quando há)]. */
+export type DistribuidoraCompacta = [string, string | null, number, ...(number | null)[]];
+export type ComposicaoCompacta = Omit<ComposicaoDaTela, "distribuidoras"> & { distribuidoras: DistribuidoraCompacta[] };
+
+export function compactarComposicao(c: ComposicaoDaTela): ComposicaoCompacta {
+  return {
+    grupos: c.grupos.map((g) => ({ id: g.id, rotulo: g.rotulo })),
+    media: c.media,
+    mediana: { grupos_rs_mwh: c.mediana.grupos_rs_mwh, mediana_do_total_rs_mwh: c.mediana.mediana_do_total_rs_mwh, soma_das_medianas_rs_mwh: c.mediana.soma_das_medianas_rs_mwh },
+    cde: { mediana_rs_mwh: c.cde.mediana_rs_mwh, razao_de_somas_pct: c.cde.razao_de_somas_pct },
+    distribuidoras: c.distribuidoras.map((d) => {
+      const t: DistribuidoraCompacta = [d.cnpj, d.sigla, d.total, ...ORDEM_GRUPOS.map((g) => d.grupos[g]), ...ORDEM_GRUPOS.map((g) => d.pct[g]), d.cde, d.cde_pct];
+      if (d.reclassificadas?.length) (t as unknown[]).push(d.reclassificadas.map((r) => [r.codigo, r.valor]));
+      return t;
+    }),
+  };
+}
+
+export function expandirComposicao(c: ComposicaoCompacta): ComposicaoDaTela {
+  const n = ORDEM_GRUPOS.length;
+  return {
+    grupos: c.grupos,
+    media: c.media,
+    mediana: c.mediana,
+    cde: c.cde,
+    distribuidoras: c.distribuidoras.map((t) => {
+      const parte = (i: number) => t[i] as number | null;
+      const grupos = {} as PorGrupo<number | null>;
+      const pct = {} as PorGrupo<number | null>;
+      ORDEM_GRUPOS.forEach((g, k) => {
+        grupos[g] = parte(3 + k);
+        pct[g] = parte(3 + n + k);
+      });
+      const extra = t[3 + 2 * n + 2] as unknown as [string, number | null][] | undefined;
+      return {
+        cnpj: t[0],
+        sigla: t[1],
+        total: t[2],
+        grupos,
+        pct,
+        cde: parte(3 + 2 * n),
+        cde_pct: parte(4 + 2 * n),
+        ...(extra ? { reclassificadas: extra.map(([codigo, valor]) => ({ codigo, valor })) } : {}),
+      };
+    }),
+  };
+}
+
+/** Ordem das tarifas de cada distribuidora no simulador (o mesmo `ChaveTarifa` que a gold usa como chave). */
+export const ORDEM_CHAVES_TARIFA: ChaveTarifa[] = ["residencial", "ts1", "ts2", "ds1", "ds2", "rural", "demais"];
+
+/** [CNPJ, sigla, início, ato, [TE, TUSD] de cada tarifa na ordem de ORDEM_CHAVES_TARIFA, ou null quando a subclasse não tem vigência]. */
+export type DistribuidoraSimCompacta = [string, string | null, string, string, ([number | null, number | null] | null)[]];
+
+export function compactarDistribuidorasSim(d: Simulador["distribuidoras"]): DistribuidoraSimCompacta[] {
+  return d.map((x) => [x.cnpj, x.sigla, x.inicio, x.ato, ORDEM_CHAVES_TARIFA.map((k) => x.tarifas[k])]);
+}
+
+export function expandirDistribuidorasSim(c: readonly DistribuidoraSimCompacta[]): Simulador["distribuidoras"] {
+  return c.map(([cnpj, sigla, inicio, ato, t]) => ({
+    cnpj,
+    sigla,
+    inicio,
+    ato,
+    tarifas: Object.fromEntries(ORDEM_CHAVES_TARIFA.map((k, i) => [k, t[i] ?? null])) as Simulador["distribuidoras"][number]["tarifas"],
+  }));
+}
+
+/** [CNPJ, sigla, razão social, 1 quando tem tarifa vigente]: a lista de distribuidoras que o comparador do histórico busca. */
+export type EntidadeCompacta = [string, string | null, string | null, 0 | 1];
+
+export function compactarEntidades(vigentes: readonly Pick<TarifaVigente, "cnpj" | "sigla" | "nome">[], semVigente: readonly Pick<SemVigente, "cnpj" | "sigla" | "nome">[]): EntidadeCompacta[] {
+  return [...vigentes.map((v): EntidadeCompacta => [v.cnpj, v.sigla, v.nome, 1]), ...semVigente.map((v): EntidadeCompacta => [v.cnpj, v.sigla, v.nome, 0])];
+}
+
+export function expandirEntidades(c: readonly EntidadeCompacta[]): { id: string; rotulo: string; detalhe?: string; sinonimos: string[] }[] {
+  return c.map(([cnpj, sigla, nome, vigente]) => ({
+    id: cnpj,
+    rotulo: rotuloDistribuidora(sigla, cnpj),
+    detalhe: vigente ? (nome ?? undefined) : `${nome ?? ""} (sem tarifa vigente)`.trim(),
+    sinonimos: [cnpj],
+  }));
+}
+
+/** Uma linha de tabela em tupla: [id, valor de cada coluna na ordem das colunas]. */
+export type LinhaCompactaTabela = (string | number | null)[];
+
+/** As linhas da tabela como tuplas: só o identificador e o valor de cada coluna, sem repetir o nome da coluna em cada linha. */
+export function compactarLinhasTabela<C extends { id: string }>(colunas: readonly C[], linhas: readonly Record<string, string | number | null | undefined>[]): LinhaCompactaTabela[] {
+  return linhas.map((l) => [String(l.id ?? ""), ...colunas.map((c) => l[c.id] ?? null)]);
+}
+
+/** Volta às linhas com as chaves de cada coluna (a ausência continua null, nunca zero). */
+export function expandirLinhasTabela<C extends { id: string }>(colunas: readonly C[], linhas: readonly LinhaCompactaTabela[]): Record<string, string | number | null>[] {
+  return linhas.map((t) => {
+    const l: Record<string, string | number | null> = { id: t[0] };
+    colunas.forEach((c, i) => {
+      l[c.id] = t[i + 1] ?? null;
+    });
+    return l;
+  });
+}
+
+/** [CNPJ, UF, tipo (0 sem dado, 1 concessionária, 2 permissionária), UCs, ano das UCs só quando difere do ano comum]. */
+export type InfoCompacta = { ano: number | null; d: [string, string | null, 0 | 1 | 2, number | null, number?][] };
+
+export function compactarInfo(info: Readonly<Record<string, InfoDistribuidora>>): InfoCompacta {
+  const anos = Object.values(info).map((i) => i.anoUcs).filter((a): a is number => a !== null);
+  const ano = anos.length ? anos.sort((a, b) => anos.filter((x) => x === b).length - anos.filter((x) => x === a).length)[0] : null;
+  return {
+    ano,
+    d: Object.entries(info).map(([cnpj, i]) => {
+      const t: InfoCompacta["d"][number] = [cnpj, i.uf, i.tipo === "concessionaria" ? 1 : i.tipo === "permissionaria" ? 2 : 0, i.ucs];
+      if (i.anoUcs !== null && i.anoUcs !== ano) t.push(i.anoUcs);
+      return t;
+    }),
+  };
+}
+
+export function expandirInfo(c: InfoCompacta): Record<string, InfoDistribuidora> {
+  return Object.fromEntries(
+    c.d.map(([cnpj, uf, tipo, ucs, anoProprio]) => [
+      cnpj,
+      { uf, tipo: tipo === 1 ? "concessionaria" : tipo === 2 ? "permissionaria" : null, ucs, anoUcs: ucs === null ? null : (anoProprio ?? c.ano) },
+    ]),
+  ) as Record<string, InfoDistribuidora>;
 }

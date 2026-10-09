@@ -22,6 +22,18 @@ import {
   arredondar,
   buscarMunicipios,
   categoriasSubsidio,
+  compactarComposicao,
+  compactarDistribuidorasSim,
+  compactarEntidades,
+  compactarInfo,
+  compactarLinhasTabela,
+  compactarVigentes,
+  expandirComposicao,
+  expandirDistribuidorasSim,
+  expandirEntidades,
+  expandirInfo,
+  expandirLinhasTabela,
+  expandirVigentes,
   colunasComposicao,
   compararMesmoConjunto,
   comProcedimentoExterno,
@@ -56,6 +68,7 @@ import {
   linhasComposicao,
   linhasComposicaoGrafico,
   linhasEvolucao,
+  linhasGrupos,
   linhasHistorico,
   linhasJanela,
   linhasRanking,
@@ -753,6 +766,11 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
       "ContaReferencias",
       "ContaFaixa",
       "ContaSerieReal",
+      "ContaPontos",
+      "ContaSelecionadas",
+      "ContaBuscaMunicipio",
+      "ContaBarrasReais",
+      "ContaTabelaSobDemanda",
     ]) {
       expect(ler(`src/components/energia/${f}.tsx`), f).not.toMatch(/#[0-9a-fA-F]{6}\b/);
     }
@@ -762,9 +780,23 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     for (const f of ["page.tsx", "reajustes-e-subsidios/page.tsx"]) expect(ler(`src/app/setor-eletrico/conta-de-luz/${f}`)).toMatch(/export const dynamic = "force-static"/);
   });
 
-  it("peso: HTML do servidor de cada página bem abaixo da meta de 600 KB (sobra para o fluxo RSC das props)", () => {
-    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400_000);
-    expect(Buffer.byteLength(htmlP050, "utf-8")).toBeLessThan(400_000);
+  it("peso: o HTML estático e as props que as páginas entregam aos componentes de cliente (o fluxo do servidor) têm teto, medidos juntos", () => {
+    // o HTML servido é o markup mais o fluxo do servidor (cada texto de servidor e cada prop de cliente vão uma vez no markup e outra no
+    // fluxo); medir só o markup deixava a página passar de 600 KB sem o teste ver. Calibrado em 09/10/2026 contra o HTML servido por
+    // `next dev` (peso decodificado): principal 443 KB aqui para 681 KB servidos, reajustes 392 KB para 622 KB (fator de 1,54 a 1,59).
+    // O teto não é a meta de 600 KB do contrato, que as duas páginas ainda passam: é o piso do que foi medido, para o peso não voltar a crescer.
+    const medida = (pagina: () => unknown, markup: string) => {
+      const soma = new Map<string, number>();
+      propsDeCliente(pagina(), soma);
+      const props = Array.from(soma.values()).reduce((a, b) => a + b, 0);
+      return { props, total: Buffer.byteLength(markup, "utf-8") + props, porComponente: soma };
+    };
+    const a = medida(ContaDeLuzPage as () => unknown, html);
+    const b = medida(ContaReajustesPage as () => unknown, htmlP050);
+    // nenhum componente de cliente leva a lista inteira de distribuidoras em objetos: as listas grandes viajam em tuplas
+    for (const nome of ["ContaFaixa", "ContaTarifas", "ContaComposicao", "ContaSimulador", "ContaHistorico"]) expect(a.porComponente.get(nome) ?? 0, nome).toBeLessThan(30_000);
+    expect(a.total).toBeLessThan(LIMITE_PESO_PRINCIPAL);
+    expect(b.total).toBeLessThan(LIMITE_PESO_REAJUSTES);
   });
 });
 
@@ -1570,11 +1602,11 @@ describe.skipIf(!disponivel)("janelas de comparação no mesmo conjunto", () => 
     for (const i of c.itens) expect(c.n).toBeLessThanOrEqual(i.nDaJanela);
   });
 
-  it("a frase nomeia o conjunto, cada janela e o universo próprio de cada uma", () => {
+  it("a frase nomeia o conjunto e dá a mediana de cada janela contra o IPCA do período", () => {
     const t = textoJanelasNoMesmoConjunto(c);
     expect(t).toContain(`Nas ${c.n} distribuidoras com variação nas três janelas`);
-    for (const i of c.itens) expect(t).toContain(`${i.meses} meses, ${pct(i.medianaPct, 2)} contra IPCA de ${pct(i.ipcaPct, 2)}`);
-    expect(t).toContain(Array.from(new Set(c.itens.map((i) => i.nDaJanela))).join(", "));
+    for (const i of c.itens) expect(t).toContain(`${pct(i.medianaPct, 2)} em ${i.meses} meses (IPCA de ${pct(i.ipcaPct, 2)})`);
+    expect(t).not.toMatch(/\b(hoje|agora|atual|porque)\b/i);
     expect(janelasNoMesmoConjunto(janelas.slice(0, 1))).toBeNull();
   });
 });
@@ -1669,3 +1701,328 @@ describe("pontos de uma faixa: cada um no seu lugar, sem encostar", () => {
     expect(empilharPontos([], 3)).toEqual([]);
   });
 });
+
+describe.skipIf(!disponivel)("props compactas dos componentes de cliente: a ida e a volta não perdem nada que a tela usa", () => {
+  const json = (x: unknown) => Buffer.byteLength(JSON.stringify(x), "utf-8");
+
+  it("distribuidoras do ranking: todos os campos que os componentes leem voltam iguais, e os que ninguém lê não viajam", () => {
+    const compactas = compactarVigentes(gold.tarifas.vigentes);
+    const volta = expandirVigentes(compactas);
+    expect(volta.length).toBe(gold.tarifas.vigentes.length);
+    volta.forEach((v, i) => {
+      const o = gold.tarifas.vigentes[i];
+      expect({ ...v, be_te: o.be_te, be_tusd: o.be_tusd }).toEqual(o);
+      expect([v.be_te, v.be_tusd]).toEqual([null, null]);
+    });
+    // a linha do ranking, a referência do perfil e o destaque saem iguais com a lista que voltou
+    expect(linhasRanking(volta, 200)).toEqual(linhasRanking(gold.tarifas.vigentes, 200));
+    expect(referenciasDoPerfil(volta, gold.tarifas.resumo, 300)).toEqual(referenciasDoPerfil(gold.tarifas.vigentes, gold.tarifas.resumo, 300));
+    expect(json(compactas)).toBeLessThan(json(gold.tarifas.vigentes) * 0.62);
+  });
+
+  it("composição: cada distribuidora volta com total, partes em R$/MWh e em %, CDE e reclassificadas; as linhas do gráfico e da tabela não mudam", () => {
+    const c = gold.composicao;
+    const compacta = compactarComposicao(c);
+    const volta = expandirComposicao(compacta);
+    expect(volta.distribuidoras.length).toBe(c.distribuidoras.length);
+    volta.distribuidoras.forEach((d, i) => {
+      const o = c.distribuidoras[i];
+      expect({ cnpj: d.cnpj, sigla: d.sigla, total: d.total, grupos: d.grupos, pct: d.pct, cde: d.cde, cde_pct: d.cde_pct }).toEqual({ cnpj: o.cnpj, sigla: o.sigla, total: o.total, grupos: o.grupos, pct: o.pct, cde: o.cde, cde_pct: o.cde_pct });
+      expect((d.reclassificadas ?? []).map((r) => [r.codigo, r.valor])).toEqual(o.reclassificadas.map((r) => [r.codigo, r.valor]));
+    });
+    expect(volta.grupos.map((g) => [g.id, g.rotulo])).toEqual(c.grupos.map((g) => [g.id, g.rotulo]));
+    for (const u of ["rs", "pct"] as const) {
+      expect(linhasComposicao(volta, gold.tarifas.vigentes, u)).toEqual(linhasComposicao(c, gold.tarifas.vigentes, u));
+      expect(linhasComposicaoGrafico(volta, gold.tarifas.vigentes, u, [gold.simulador.casos_referencia.cnpj])).toEqual(linhasComposicaoGrafico(c, gold.tarifas.vigentes, u, [gold.simulador.casos_referencia.cnpj]));
+    }
+    expect(linhasGrupos(volta, c.distribuidoras[0].cnpj)).toEqual(linhasGrupos(c, c.distribuidoras[0].cnpj));
+    expect(idsComposicaoPadrao(volta, gold.tarifas.vigentes, gold.simulador.casos_referencia.cnpj)).toEqual(idsComposicaoPadrao(c, gold.tarifas.vigentes, gold.simulador.casos_referencia.cnpj));
+    expect(json(compacta)).toBeLessThan(json({ grupos: c.grupos, distribuidoras: c.distribuidoras, media: c.media, mediana: c.mediana, cde: c.cde, creditos: c.creditos }) * 0.45);
+  });
+
+  it("simulador: as tarifas de cada distribuidora voltam iguais, com null onde a subclasse não tem vigência, e o cálculo reproduz os casos de referência", () => {
+    const d = gold.simulador.distribuidoras;
+    const compactas = compactarDistribuidorasSim(d);
+    expect(expandirDistribuidorasSim(compactas)).toEqual(d);
+    expect(json(compactas)).toBeLessThan(json(d) * 0.7);
+    const ref = expandirDistribuidorasSim(compactas).find((x) => x.cnpj === gold.simulador.casos_referencia.cnpj)!;
+    for (const [classe, kwh, ligacao, bandeira, total] of gold.simulador.casos_referencia.casos.slice(0, 20)) {
+      const adicional = bandeira === "Amarela" ? (gold.simulador.bandeiras.find((b) => b.bandeira === "Amarela")?.rs_mwh ?? null) : 0;
+      const r = simular(ref.tarifas, classe, kwh, ligacao, adicional, gold.simulador.regras);
+      if (total === null) expect(r.disponivel).toBe(false);
+      else expect(r.disponivel && Math.abs(r.total - total) <= 0.005 + 1e-9).toBe(true);
+    }
+  });
+
+  it("entidades do histórico: a lista que a tela monta é a de antes (vigentes e depois as sem tarifa vigente, com o CNPJ como sinônimo)", () => {
+    const antes = [
+      ...gold.tarifas.vigentes.map((v) => ({ id: v.cnpj, rotulo: v.sigla && v.sigla.trim() ? v.sigla : `CNPJ ${v.cnpj}`, detalhe: v.nome ?? undefined, sinonimos: [v.cnpj] })),
+      ...gold.tarifas.sem_vigente.map((v) => ({ id: v.cnpj, rotulo: v.sigla && v.sigla.trim() ? v.sigla : `CNPJ ${v.cnpj}`, detalhe: `${v.nome ?? ""} (sem tarifa vigente)`.trim(), sinonimos: [v.cnpj] })),
+    ];
+    const compactas = compactarEntidades(gold.tarifas.vigentes, gold.tarifas.sem_vigente);
+    expect(expandirEntidades(compactas)).toEqual(antes);
+    expect(json(compactas)).toBeLessThan(json(antes) * 0.65);
+  });
+
+  it("UF, tipo e UCs: a ida e a volta guardam o ano comum uma vez e o ano de quem difere", () => {
+    const info = infoDistribuidoras(
+      gold.tarifas.vigentes.map((v) => v.cnpj),
+      qualidadeGold.distribuidoras,
+      territorioGold.distribuidoras,
+    );
+    const compacta = compactarInfo(info);
+    expect(expandirInfo(compacta)).toEqual(info);
+    expect(compacta.ano).toBe(qualidadeGold.distribuidoras[0].ano);
+    expect(json(compacta)).toBeLessThan(json(info) * 0.6);
+    const misto = {
+      a: { uf: "SP", tipo: "concessionaria" as const, ucs: 10, anoUcs: 2025 },
+      b: { uf: "PR", tipo: "permissionaria" as const, ucs: 5, anoUcs: 2024 },
+      c: { uf: null, tipo: null, ucs: null, anoUcs: null },
+    };
+    expect(expandirInfo(compactarInfo(misto))).toEqual(misto);
+  });
+
+  it("linhas de tabela: só o identificador e o valor de cada coluna viajam, e a ausência volta como ausência", () => {
+    const colunas = [{ id: "sigla" }, { id: "dias" }, { id: "motivo" }];
+    const linhas = [
+      { id: "1", sigla: "A", dias: 0, motivo: "x", sobra: "não viaja" },
+      { id: "2", sigla: "B", dias: null, motivo: undefined },
+    ];
+    const tuplas = compactarLinhasTabela(colunas, linhas);
+    expect(tuplas).toEqual([
+      ["1", "A", 0, "x"],
+      ["2", "B", null, null],
+    ]);
+    expect(expandirLinhasTabela(colunas, tuplas)).toEqual([
+      { id: "1", sigla: "A", dias: 0, motivo: "x" },
+      { id: "2", sigla: "B", dias: null, motivo: null },
+    ]);
+    // 0 continua 0 (dado) e null continua null (ausência)
+    expect(expandirLinhasTabela(colunas, tuplas)[0].dias).toBe(0);
+    expect(expandirLinhasTabela(colunas, tuplas)[1].dias).toBeNull();
+  });
+});
+
+describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram depois das avaliações de 09/10/2026", () => {
+  const html = renderToStaticMarkup(createElement(ContaDeLuzPage));
+  const htmlP050 = renderToStaticMarkup(createElement(ContaReajustesPage));
+  const entender = textoEntenderDe(html);
+  const entenderP050 = textoEntenderDe(htmlP050);
+  const completo = textoCompletoDe(html);
+  const completoP050 = textoCompletoDe(htmlP050);
+  const evolucao = linhasEvolucao(gold.tarifas.evolucao);
+  const cmp = compararMesmoConjunto({ vigentes: gold.tarifas.vigentes, semVigente: gold.tarifas.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: gold.data_referencia })!;
+
+  it("a mediana da primeira tela traz a variação nas mesmas distribuidoras e a ressalva diz quantas saíram do conjunto", () => {
+    const antes = semEspacoDuro(textoCompletoDe(ateAProfundidade(html).replace(/<details[\s\S]*?<\/details>/g, " ")));
+    expect(antes).toContain(`nas mesmas ${cmp.nComum} distribuidoras, de ${dataBR(cmp.de)} a ${dataBR(cmp.ate)}`);
+    expect(antes).toContain(`+${num(cmp.variacaoPct, 2)}%`);
+    expect(antes).toContain(`Em ${dataBR(cmp.de)} eram ${cmp.nDe}: ${cmp.saidas.n} saíram do conjunto`);
+    // o painel diz o mesmo com as medianas do mesmo conjunto e o limite de leitura
+    expect(entender).toContain(`Nas mesmas ${cmp.nComum} distribuidoras, a mediana`);
+    expect(entender).toContain(num(cmp.medianaDeComum, 2));
+    expect(entender).toContain(num(cmp.saidas.mediana, 2));
+    expect(entender).toContain("mistura conjuntos diferentes");
+  });
+
+  it("três valores típicos numa frase, e o destaque da composição é o agregado, com a distribuidora de exemplo rotulada como exemplo", () => {
+    expect(entender).toContain(textoTresValoresTipicos(gold.composicao, gold.tarifas.resumo));
+    const m = gold.composicao.media!;
+    expect(entender).toContain(`Encargos setoriais na tarifa média de ${m.n} distribuidoras`);
+    expect(entender).toContain(`${num(m.grupos_pct.encargos, 1)}%`);
+    expect(entender).toMatch(/Exemplo: encargos na /);
+    expect(entender).toContain(`${num(gold.composicao.evidencia!.valor_calculo, 1)}%`);
+    expect(entender).toContain("Uma distribuidora, não a média");
+    // o agregado não finge ficha: diz de onde vem
+    expect(entender).toContain("Sem ficha própria");
+  });
+
+  it("o ranking tem UF, tipo e UCs, filtros de grupo e de UF, busca por município, dica da fatura e a seleção à vista", () => {
+    for (const x of ["Tipo de distribuidora", "Estado (UF)", "Buscar pelo município", "Não sabe qual é a sua distribuidora? O nome dela está no alto da fatura de luz"]) expect(entender, x).toContain(x);
+    expect(html).toContain('role="combobox"');
+    expect(html).toContain("data-selecionadas");
+    for (const x of ["Concessionárias (51)", "Permissionárias (30)", "Todas (81)"]) expect(entender, x).toContain(x);
+    // a tabela do ranking tem as colunas novas, e a UF aparece no nome das barras
+    for (const x of ["Consumidores (UCs)", ">UF<", ">Tipo<"]) expect(html, x).toContain(x);
+    expect(html).toMatch(/DMED · MG/);
+  });
+
+  it("as distribuidoras aparecem todas numa faixa de pontos, com a mediana, os extremos e a legenda, na abertura do painel", () => {
+    expect((html.match(/data-grafico="pontos"/g) ?? []).length).toBe(1);
+    const pontos = (html.match(/data-ponto="/g) ?? []).length;
+    expect(pontos).toBe(gold.tarifas.resumo.n);
+    expect(html).toContain("Cada ponto é uma distribuidora.");
+    expect(html.indexOf('data-grafico="pontos"')).toBeLessThan(html.indexOf('data-grafico="barras"'));
+    // a resposta do painel vem antes da faixa de pontos (primeira tela)
+    expect(html.indexOf('data-resposta="p047"')).toBeLessThan(html.indexOf('data-grafico="pontos"'));
+    expect(entender).toContain("uma distribuidora");
+  });
+
+  it("composição: o total do gráfico é o publicado, a diferença de arredondamento é uma parte dita, e a nota diz o tamanho dela", () => {
+    expect(html).toContain('data-nota="arredondamento-composicao"');
+    const rs = maiorAjusteDaGold("rs");
+    const pc = maiorAjusteDaGold("pct");
+    expect(entender).toContain(`a soma delas difere da tarifa em até R$ ${num(rs, 2)}/MWh, ou ${num(pc, 2)} ponto percentual na leitura em %`);
+    expect(entender).toContain("Arredondamento das partes");
+    expect(entender).toContain("todo total é o publicado: o mesmo valor no gráfico, na tabela e no arquivo");
+    // a média do gráfico fecha no total publicado (859,08 na gold desta publicação), e a tabela de decomposição traz a linha do ajuste
+    expect(completo).toContain(num(gold.composicao.media!.total_rs_mwh, 2));
+  });
+
+  it("simulador: a tarifa usada (subgrupo e subclasse) fica ao lado do resultado e na memória de cálculo", () => {
+    expect(html).toContain('data-tarifa-usada=""');
+    expect(entender).toContain("Tarifa usada: subgrupo B1, subclasse Residencial");
+    expect(html).toContain('data-memoria-tarifa=""');
+    expect(entender).toMatch(/Tarifa usada: subgrupo B1, subclasse Residencial \(TE [\d,]+ \+ TUSD [\d,]+ R\$\/kWh\)/);
+    // na classe residencial não há selo de regra parcial; ele aparece nas classes que dependem de leitura declarada (componente, selo no cartão)
+    expect(html).not.toContain('data-selo="regra-parcial"');
+    const src = ler("src/components/energia/ContaSimulador.tsx");
+    expect(src).toContain('data-selo="regra-parcial"');
+    expect(src).toContain("Regra parcialmente conferida.");
+    expect(src).toContain('data-nota="classe-igual-residencial"');
+    expect(src).toContain("O desconto rural não está incluído neste cálculo.");
+    expect(src).toContain('aria-invalid={kwhInvalido || undefined}');
+    expect(entender).toContain("Bandeira do mês publicado: amarela de set/2026, a última que consta nos dados de 30/09/2026");
+  });
+
+  it("Entender não traz identificador técnico, comando interno nem texto de bastidor em nenhuma das duas páginas", () => {
+    for (const [nome, e] of [
+      ["principal", entender],
+      ["reajustes", entenderP050],
+    ] as const) {
+      for (const x of ["reconciliacao_externa", "bronze", "silver", "SAMP", "DscDetalheMercado", "dec_concessionarias", "NumCon", "TE_CFURH", "python3", "executar_modulo", "pipeline/", "sha256", "HTTP 403", "cf-mitigated"]) expect(e, `${nome}: ${x}`).not.toContain(x);
+    }
+    // o registro da coleta e o resto continuam na página, em Analisar e em Auditar
+    expect(completoP050).toContain("Registro da coleta");
+  });
+
+  it("reajustes: a primeira medida é a variação entre datas, o aviso do efeito médio fica logo abaixo da resposta e a faixa de pontos mostra as 102", () => {
+    expect(entenderP050).toContain("Variação da tarifa B1 residencial entre duas datas, contra o IPCA do mesmo período");
+    const i = htmlP050.indexOf('data-resposta="p050-reajustes"');
+    const a = htmlP050.indexOf('data-bloco="efeito-medio"');
+    const p = htmlP050.indexOf('data-grafico="pontos"');
+    expect(i).toBeGreaterThan(-1);
+    expect(a).toBeGreaterThan(i);
+    expect(p).toBeGreaterThan(a);
+    expect(entenderP050).toContain("nenhum valor de reserva foi usado no lugar");
+    expect(entenderP050).toContain("recusaram o acesso do observatório em 30/09/2026");
+    const j12 = gold.reajustes.comparacao_inflacao!.janelas.find((j) => j.meses === 12)!;
+    expect((htmlP050.match(/data-ponto="/g) ?? []).length).toBe(j12.n);
+    expect(entenderP050).toContain("IPCA do período: à direita da linha, a tarifa subiu mais que a inflação");
+  });
+
+  it("reajustes: a mediana de cada janela no mesmo conjunto fica ao lado do cartão, que acompanha a janela", () => {
+    const c = janelasNoMesmoConjunto(gold.reajustes.comparacao_inflacao!.janelas)!;
+    expect(entenderP050).toContain(textoJanelasNoMesmoConjunto(c));
+    expect(htmlP050).toContain('data-bloco="janelas-mesmo-conjunto"');
+    const src = ler("src/components/energia/ContaReajustes.tsx");
+    expect(src).toContain("`Variação mediana da tarifa B1 em ${janela.meses} meses`");
+    expect(src).toContain("evidencia={janela.meses === 12 ? evidencia : null}");
+    expect(src).toContain("A ficha de prova só está publicada para a janela de 12 meses");
+  });
+
+  it("subsídios: foram homologados para repasse (não é desembolso), CDE definida na primeira frase, alternância nominal e real, quotas com série e residual", () => {
+    const ano = gold.subsidios.anual.find((a) => a.ano === gold.subsidios.ultimo_ano_completo)!;
+    expect(semEspacoDuro(entenderP050)).toContain(semEspacoDuro(`foram homologados ${reais(ano.soma_categorias! / 1e9, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE)`));
+    expect(entenderP050).toContain("Não são desembolso realizado nem transferências a famílias");
+    expect(completo + completoP050).not.toMatch(/A CDE repassou/);
+    expect(entenderP050).toContain("Nominais (valores da época)");
+    expect(entenderP050).toContain(`Em reais de ${mesAno(`${gold.reajustes.comparacao_inflacao!.ultimo_ipca}-01`)}`);
+    expect(htmlP050).toContain('data-valores="nominal"');
+    expect(entenderP050).toContain("em reais nominais (valores da época)");
+    expect(entenderP050).toContain(textoResidualQuotas(gold.financiamento_cde)!);
+    expect(entenderP050).toContain("Antes: 87,6% em 2024 e 90,2% em 2025");
+    expect(htmlP050).toContain('data-bloco="quotas"');
+    expect(htmlP050).toMatch(/Participação das quotas nas receitas do orçamento da CDE, 2013 a 2026/);
+  });
+
+  it("a ficha de cada destaque indica o procedimento externo com data de corte, nunca o comando interno", () => {
+    for (const h of [completo, completoP050]) {
+      expect(h).not.toContain("executar_modulo");
+      expect(h).not.toContain("--sem-coleta");
+    }
+    const fontes = [ler("src/app/setor-eletrico/conta-de-luz/page.tsx"), ler("src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx"), ler("src/components/energia/ContaFaixa.tsx")].join("\n");
+    // as sete fichas da gold: tarifa mediana, composição, simulador, reajustes, bandeiras, subsídios e orçamento da CDE
+    expect((fontes.match(/comProcedimentoExterno\(/g) ?? []).length).toBeGreaterThanOrEqual(7);
+  });
+
+  it("quem escolhe pode ver e limpar a seleção, e o aviso do limite diz qual distribuidora saiu", () => {
+    for (const f of ["ContaTarifas", "ContaSimulador", "ContaReajustes"]) {
+      const src = ler(`src/components/energia/${f}.tsx`);
+      expect(src, f).toContain("<ContaSelecionadas");
+      expect(src, f).toContain("saiu da seleção para entrar");
+    }
+    const sel = ler("src/components/energia/ContaSelecionadas.tsx");
+    expect(sel).toContain("Limpar seleção");
+    expect(sel).toContain('aria-live="polite"');
+  });
+
+  it("as tabelas sob demanda abrem no primeiro clique", () => {
+    const comp = ler("src/components/energia/ContaTabelaSobDemanda.tsx");
+    expect(comp).toContain("iniciarAberta");
+    for (const f of ["src/components/energia/ContaComposicao.tsx", "src/components/energia/ContaReajustes.tsx"]) expect(ler(f), f).toContain("iniciarAberta");
+    // nenhuma tabela das páginas fica atrás de dois botões: toda ContaSobDemanda com tabela dentro nasce aberta
+    for (const f of ["src/app/setor-eletrico/conta-de-luz/page.tsx", "src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx"]) {
+      expect(ler(f), f).not.toMatch(/<ContaSobDemanda[\s\S]{0,400}<TabelaInterativa/);
+    }
+  });
+
+  it("a grade de bandeiras cabe no celular sem rolar de lado: doze colunas com a inicial do mês", () => {
+    const src = ler("src/components/energia/ContaBandeiras.tsx");
+    expect(src).toContain("min-w-[300px]");
+    expect(htmlP050).toContain('class="sm:hidden"');
+    for (const m of ["janeiro", "dezembro"]) expect(htmlP050).toContain(m);
+  });
+});
+
+/** Maior diferença de arredondamento das partes da composição, lida por laço próprio sobre a gold, em R$/MWh ou em pontos percentuais. */
+function maiorAjusteDaGold(u: "rs" | "pct"): number {
+  let maior = 0;
+  const alvo = (d: { total: number | null }) => (u === "rs" ? d.total : 100);
+  const linhas = [...gold.composicao.distribuidoras.map((d) => ({ partes: Object.values(u === "rs" ? d.grupos : d.pct), alvo: alvo(d) })), { partes: Object.values(u === "rs" ? gold.composicao.media!.grupos_rs_mwh : gold.composicao.media!.grupos_pct), alvo: u === "rs" ? gold.composicao.media!.total_rs_mwh : 100 }];
+  for (const l of linhas) {
+    if (l.alvo === null || l.partes.some((p) => p === null)) continue;
+    maior = Math.max(maior, Math.abs(Math.round((l.alvo - (l.partes as number[]).reduce((a, b) => a + b, 0)) * 100) / 100));
+  }
+  return maior;
+}
+
+/** Componentes que recebem props serializadas no fluxo do servidor (de cliente, ou de servidor que repassam a prova e a proveniência a um de cliente). */
+const COM_PROPS_NO_FLUXO = new Set(["ContaFaixa", "ContaTarifas", "ContaComposicao", "ContaSimulador", "ContaHistorico", "ContaReajustes", "ContaBarrasReais", "ContaTabelaSobDemanda", "GraficoLinhas", "GraficoBarras", "TabelaInterativa", "Numero", "PainelEvidencia"]);
+
+/** Soma, por componente, o tamanho em bytes das props que não são elementos nem funções (as de dado), percorrendo o que a página devolve sem renderizar. */
+function propsDeCliente(no: unknown, soma: Map<string, number>, vistos = new Set<unknown>()): void {
+  if (Array.isArray(no)) {
+    no.forEach((x) => propsDeCliente(x, soma, vistos));
+    return;
+  }
+  if (!no || typeof no !== "object") return;
+  const el = no as { $$typeof?: unknown; type?: unknown; props?: Record<string, unknown> };
+  if (!el.$$typeof) return;
+  const dados: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(el.props ?? {})) {
+    const ehElemento = (x: unknown) => !!x && typeof x === "object" && "$$typeof" in (x as object);
+    if (k === "children" || ehElemento(v) || (Array.isArray(v) && v.some(ehElemento))) {
+      propsDeCliente(v, soma, vistos);
+      continue;
+    }
+    if (typeof v === "function") continue;
+    dados[k] = v;
+  }
+  const nome = typeof el.type === "function" ? (el.type as { name: string }).name : "";
+  if (COM_PROPS_NO_FLUXO.has(nome)) {
+    // a mesma lista passada por referência a vários componentes vai uma vez no fluxo: não conta de novo
+    const proprios: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(dados)) {
+      if (v && typeof v === "object") {
+        if (vistos.has(v)) continue;
+        vistos.add(v);
+      }
+      proprios[k] = v;
+    }
+    soma.set(nome, (soma.get(nome) ?? 0) + Buffer.byteLength(JSON.stringify(proprios), "utf-8"));
+  }
+}
+
+const LIMITE_PESO_PRINCIPAL = 475_000;
+const LIMITE_PESO_REAJUSTES = 420_000;

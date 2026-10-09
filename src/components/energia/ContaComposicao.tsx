@@ -19,6 +19,7 @@ import {
   ajusteDeArredondamento,
   colunasComposicao,
   destacar,
+  expandirComposicao,
   idsComposicaoPadrao,
   linhasComposicao,
   linhasComposicaoGrafico,
@@ -26,8 +27,10 @@ import {
   maiorAjuste,
   remover,
   rotuloDistribuidora,
+  type ComposicaoCompacta,
+  type ComposicaoDaTela,
+  type VigenteCompacto,
 } from "@/lib/energia/conta";
-import type { Composicao, TarifaVigente } from "@/lib/energia/tipos-conta";
 
 /**
  * P048, "Para onde vai o valor da conta?": a tarifa B1 decomposta nos grupos de
@@ -57,16 +60,19 @@ const OPCOES_UNIDADE: OpcaoConta<"rs" | "pct">[] = [
 ];
 
 export type ContaComposicaoProps = {
-  composicao: Pick<Composicao, "grupos" | "distribuidoras" | "media" | "mediana" | "cde" | "creditos">;
-  vigentes: Pick<TarifaVigente, "cnpj" | "posicao">[];
+  /** A composição em tuplas (`compactarComposicao`): as 80 distribuidoras com as partes em R$/MWh e em %. */
+  composicao: ComposicaoCompacta;
+  /** As distribuidoras do ranking em tuplas, a mesma lista (e a mesma referência) que o painel de tarifas recebe: de cada uma só o CNPJ e a posição entram aqui. */
+  vigentes: VigenteCompacto[];
   referencia: string | null;
   dataReferencia: string;
   fonte: string;
 };
 
-export function ContaComposicao({ composicao, vigentes, referencia, dataReferencia, fonte }: ContaComposicaoProps) {
+export function ContaComposicao({ composicao, vigentes: compactos, referencia, dataReferencia, fonte }: ContaComposicaoProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
-  const comp = composicao as Composicao;
+  const comp = useMemo(() => expandirComposicao(composicao), [composicao]);
+  const vigentes = useMemo(() => compactos.map((x) => ({ cnpj: x[0], posicao: x[13] })), [compactos]);
   const comComposicao = useMemo(() => new Set(comp.distribuidoras.map((d) => d.cnpj)), [comp.distribuidoras]);
   const escolhidas = v.dist.filter((id) => comComposicao.has(id));
   const ids = escolhidas.length ? escolhidas : idsComposicaoPadrao(comp, vigentes, referencia);
@@ -244,8 +250,8 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
           {comp.media && comp.media.total_rs_mwh !== null ? `${reais(comp.media.total_rs_mwh / 1000, 4)}/kWh` : "sem dado"}; a participação é a razão de somas. As medianas são
           lidas grupo a grupo e não somam a tarifa mediana. Componentes CDE estão dentro dos encargos: não some à parte.
           {dDestaque &&
-            dDestaque.reclassificadas.length > 0 &&
-            ` Na ${nomeDestaque}, ${dDestaque.reclassificadas.map((r) => `${r.codigo} de ${num(r.valor, 2)} R$/MWh`).join(" e ")} saiu dos encargos e está em créditos (valor negativo em componente de custo).`}
+            (dDestaque.reclassificadas?.length ?? 0) > 0 &&
+            ` Na ${nomeDestaque}, ${(dDestaque.reclassificadas ?? []).map((r) => `${r.codigo} de ${num(r.valor, 2)} R$/MWh`).join(" e ")} saiu dos encargos e está em créditos (valor negativo em componente de custo).`}
         </p>
       </div>
 
@@ -275,8 +281,8 @@ function TabelaComposicao({
   dataReferencia,
   fonte,
 }: {
-  comp: Composicao;
-  vigentes: Pick<TarifaVigente, "cnpj" | "posicao">[];
+  comp: ComposicaoDaTela;
+  vigentes: { cnpj: string; posicao: number }[];
   emPct: boolean;
   rotulo: Map<string, string>;
   destaque: string | null;
