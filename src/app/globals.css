@@ -151,6 +151,25 @@ body {
   outline-offset: 2px;
 }
 
+/* Celular, Entender: a tabela estática com largura mínima de projeto (28 a 62 rem) encolhe até onde as palavras deixam, com letra menor e
+   células mais justas, e mostra mais colunas por tela; o que ainda passar da largura rola, com a sombra da borda. Palavra nunca é partida:
+   o encolhimento para na palavra mais larga de cada coluna. Mapas de calor e grades (border-separate, data-grade) e a comparação do
+   Território mantêm a largura que o desenho exige. */
+@media (max-width: 40rem) {
+  .modo-profundidade[data-modo="entender"] .tabela-scroll table.border-collapse[class*="min-w-"]:not([data-grade]):not([data-comparacao]) {
+    min-width: 0 !important;
+    font-size: 0.75rem;
+  }
+  .modo-profundidade[data-modo="entender"] .tabela-scroll table.border-collapse[class*="min-w-"]:not([data-grade]):not([data-comparacao]) :is(th, td) {
+    padding-left: 0.3rem !important;
+    padding-right: 0.3rem !important;
+  }
+  /* a coluna nunca fica mais estreita que a palavra: "Sudeste/Centro-Oeste" quebra no hífen, não em "Centr" e "o-Oeste"; o excesso rola */
+  .modo-profundidade[data-modo="entender"] .tabela-scroll :is(th, td) {
+    overflow-wrap: normal;
+  }
+}
+
 /* Profundidade progressiva (ModoProfundidade): mesma página, três níveis. */
 .modo-profundidade[data-modo="entender"] [data-nivel="analisar"],
 .modo-profundidade[data-modo="entender"] [data-nivel="auditar"],

@@ -215,8 +215,13 @@ export function TabelaInterativa({
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
   const recolhivel = recolher ?? (linhas.length > LINHAS_PARA_RECOLHER || colunas.length > COLUNAS_PARA_RECOLHER);
   const [aberta, setAberta] = useState(false);
-  const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || !!selecionado;
-  // quem chega por um link com busca, filtro, página ou linha escolhida precisa ver a tabela
+  // a linha já escolhida quando a página abre (o padrão da página, como a maior bacia) não é pedido do leitor: só uma escolha feita depois,
+  // no mapa ou no gráfico, abre a tabela. Sem isso, toda página com seleção padrão abria a tabela larga em Entender, que no celular
+  // mostrava duas colunas de doze.
+  const selecaoInicial = useRef(selecionado);
+  const selecaoNova = selecionado !== null && selecionado !== undefined && selecionado !== selecaoInicial.current;
+  const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || selecaoNova;
+  // quem chega por um link com busca, filtro ou página, ou escolhe uma linha depois, precisa ver a tabela
   useEffect(() => {
     if (comRecorte) setAberta(true);
   }, [comRecorte]);

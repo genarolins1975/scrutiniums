@@ -44,12 +44,42 @@ export function formatarX(v: string, f: FormatoX | undefined, longo = false): st
  */
 export function rotulosDoEixoX(valores: readonly string[], f: FormatoX | undefined): string[] {
   const curto = valores.map((v) => formatarX(v, f));
-  if (f !== "data") return curto;
   const unico = (l: string[]) => new Set(l).size === l.length;
+  // marcas de hora que cobrem mais de um dia ("23h" três vezes) passam a dizer o dia: "07/10 23h"
+  if (f === "hora") return unico(curto) ? curto : valores.map((v) => formatarX(v, f, true));
+  if (f !== "data") return curto;
   if (unico(curto)) return curto;
   const diaMes = valores.map((v) => (v ? `${v.slice(8, 10)}/${v.slice(5, 7)}` : ""));
   if (unico(diaMes)) return diaMes;
   return valores.map((v) => formatarX(v, f, true));
+}
+
+/* ---------- marcas do eixo X ---------- */
+
+/**
+ * Passos de calendário para as marcas do eixo X, por tipo de rótulo: dia (semana, quinzena, quatro semanas, trimestre, ano), hora (6, 12,
+ * 24 horas), mês (trimestre, semestre, ano) e texto (anos e categorias: 1, 2, 5, 10).
+ */
+const PASSOS_X: Record<string, readonly number[]> = {
+  data: [1, 2, 7, 14, 28, 91, 182, 365, 730, 1461],
+  hora: [1, 2, 3, 4, 6, 8, 12, 24, 48, 72, 168],
+  mes: [1, 2, 3, 4, 6, 12, 24, 36, 48, 60, 120],
+  texto: [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 50, 100],
+};
+
+/**
+ * Índices das marcas do eixo X com passo constante, contado a partir do último ponto (o dado mais recente sempre tem rótulo), com no
+ * máximo `maximo` marcas. Espaçar em partes iguais do total (0, 2, 3, 5, 7, 8, 10) dava anos e meses em intervalos irregulares
+ * (2015, 2017, 2018, 2020...); o passo constante dá 2015, 2017, 2019... ou trimestres inteiros, que o leitor reconhece.
+ */
+export function indicesDoEixoX(n: number, maximo: number, formato?: FormatoX): number[] {
+  if (n <= 1) return [0];
+  const max = Math.max(2, Math.min(maximo, n));
+  const passos = PASSOS_X[formato ?? "texto"] ?? PASSOS_X.texto;
+  const passo = passos.find((p) => Math.floor((n - 1) / p) + 1 <= max) ?? Math.ceil((n - 1) / (max - 1));
+  const out: number[] = [];
+  for (let i = n - 1; i >= 0; i -= passo) out.unshift(i);
+  return out;
 }
 
 /* ---------- intervalo (zoom) ---------- */

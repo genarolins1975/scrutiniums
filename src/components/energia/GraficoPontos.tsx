@@ -10,8 +10,10 @@ import {
   formatarDiferenca,
   formatarValor,
   ordenarPares,
+  pxCaractere12,
   rotuloTick,
   sentidoDiferenca,
+  ticksQueCabem,
   valido,
   type Direcao,
 } from "@/lib/energia/escalas";
@@ -84,13 +86,14 @@ export type GraficoPontosProps = {
 
 const LARGURA_SSR = 760;
 const PX_CARACTERE = 6.4; // largura média de um caractere a 12 px
+const LARGURA_ESTREITA = 520; // abaixo disto (celular): rótulo acima da trilha, com a largura toda para o texto
 const MEIA_DIAGONAL = 7.5; // losango maior que o círculo: continua visível quando os dois coincidem
 
 const r1 = (v: number) => Math.round(v * 10) / 10;
 
-function cabe(texto: string, largura: number): string {
-  if (texto.length * PX_CARACTERE <= largura) return texto;
-  const n = Math.floor(largura / PX_CARACTERE) - 1;
+function cabe(texto: string, largura: number, px = PX_CARACTERE): string {
+  if (texto.length * px <= largura) return texto;
+  const n = Math.floor(largura / px) - 1;
   return n >= 3 ? `${texto.slice(0, n).trimEnd()}…` : "";
 }
 
@@ -186,13 +189,19 @@ export function GraficoPontos({
   const w = largura;
   const hc = alturaLinha;
   const h = n * hc;
-  const colunaRotulo = Math.round(Math.min(200, Math.max(88, w * 0.3)));
-  const colunaDif = w < 520 ? 76 : 104;
+  // celular: o nome da entidade e a diferença ficam numa linha acima, e a trilha dos pontos usa a largura toda; a coluna lateral de 30%
+  // cortava o nome ("Sudeste/Cent…", "NEOENERGIA BR…") e deixava linhas indistinguíveis
+  const rotuloEmCima = w < LARGURA_ESTREITA;
+  const colunaRotulo = rotuloEmCima ? 0 : Math.round(Math.min(200, Math.max(88, w * 0.3)));
+  const colunaDif = w < LARGURA_ESTREITA ? 76 : 104;
   const dom = dominioBonito(
     lista.flatMap((p) => [p.valor, p.referencia]),
     { zero: zeroNoEixo },
   );
-  const x = escalaLinear([dom.min, dom.max], [colunaRotulo + 12, w - colunaDif - 12]);
+  // a trilha deixa 22 px nas pontas para o rótulo da primeira e da última marca ("74.000") não sair do gráfico
+  const x = escalaLinear([dom.min, dom.max], rotuloEmCima ? [22, w - 22] : [colunaRotulo + 12, w - colunaDif - 12]);
+  // marcas do eixo que cabem sem encostar na vizinha (a 390 px "500.000" e "1.000.000" saíam coladas)
+  const ticksEixo = ticksQueCabem(dom.ticks, x, (t) => rotuloTick(t, dom.passo).length * PX_CARACTERE, 10);
   const temAusencia = lista.some((p) => !valido(p.valor) || !valido(p.referencia));
 
   const ids = lista.map((p) => p.id);
@@ -235,7 +244,8 @@ export function GraficoPontos({
 
   const linhas = lista.map((p, i) => {
     const y0 = i * hc;
-    const cy = y0 + hc / 2;
+    const cy = rotuloEmCima ? y0 + 31 : y0 + hc / 2;
+    const yTexto = rotuloEmCima ? y0 + 14 : cy + 4;
     const sel = i === iSel;
     const temV = valido(p.valor);
     const temR = valido(p.referencia);
@@ -289,20 +299,20 @@ export function GraficoPontos({
       >
         {/* alvo de ponteiro e toque: a linha inteira */}
         <rect x="0" y={y0} width={w} height={hc} fill="transparent" />
-        <text x="4" y={r1(cy + 4)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}>
-          {cabe(p.rotulo, colunaRotulo - 8)}
+        <text x="4" y={r1(yTexto)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"} data-rotulo-categoria="true">
+          {rotuloEmCima ? cabe(p.rotulo, w - colunaDif - 12, pxCaractere12(p.rotulo)) : cabe(p.rotulo, colunaRotulo - 8)}
         </text>
         {temV && temR && Math.abs(xv - xr) > 0.5 && <line x1={r1(xv)} x2={r1(xr)} y1={r1(cy)} y2={r1(cy)} stroke="var(--cor-mineral-soft)" strokeWidth="2" strokeLinecap="round" />}
         {temR && <polygon data-forma="losango" points={losango(xr, cy)} fill="var(--cor-superficie)" stroke={corReferencia} strokeWidth="2" strokeLinejoin="round" />}
         {temV && <circle data-forma="circulo" cx={r1(xv)} cy={r1(cy)} r="5" fill={corValor} stroke="var(--cor-superficie)" strokeWidth="2" />}
         {!temV && !temR && (
-          <text data-estado="sem-dado" x={colunaRotulo + 12} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
+          <text data-estado="sem-dado" x={rotuloEmCima ? 12 : colunaRotulo + 12} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
             sem dado
           </text>
         )}
         <text
           x={w - 4}
-          y={r1(cy + 4)}
+          y={r1(yTexto)}
           textAnchor="end"
           fontSize="12"
           fontStyle={dif === null ? "italic" : undefined}
@@ -374,7 +384,7 @@ export function GraficoPontos({
   const ariaSort = (c: "nome" | "valor" | "diferenca") => (colunaOrdenada === c ? (ordem.direcao === "asc" ? "ascending" : "descending") : undefined);
 
   return (
-    <div ref={raiz} className="relative w-full" data-grafico="pontos">
+    <div ref={raiz} className="relative w-full" data-grafico="pontos" data-rotulos={rotuloEmCima ? "acima" : "lateral"}>
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
         {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
@@ -433,21 +443,26 @@ export function GraficoPontos({
         {instrucoes}
       </p>
       {/* eixo e cabeçalho da diferença fora da área rolável: continuam visíveis com muitas entidades */}
-      <svg width="100%" height="22" viewBox={`0 0 ${w} 22`} aria-hidden="true" className="block overflow-visible">
-        {dom.ticks.map((t) => {
-          const px = x(t);
-          return (
-            <g key={t}>
-              <text x={r1(px)} y="12" textAnchor="middle" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
-                {rotuloTick(t, dom.passo)}
-              </text>
-              <line x1={r1(px)} x2={r1(px)} y1="16" y2="22" stroke="var(--cor-grade)" strokeWidth="1" />
-            </g>
-          );
-        })}
-        <text x={w - 4} y="12" textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+      <svg width="100%" height={rotuloEmCima ? 36 : 22} viewBox={`0 0 ${w} ${rotuloEmCima ? 36 : 22}`} aria-hidden="true" className="block overflow-visible">
+        {/* celular: o cabeçalho da diferença ocupa a própria linha, para não encostar na última marca do eixo */}
+        <text x={w - 4} y="11" textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
           Diferença
         </text>
+        <g transform={rotuloEmCima ? "translate(0 14)" : undefined}>
+          {ticksEixo.map((t) => {
+            const px = x(t);
+            const rotulo = rotuloTick(t, dom.passo);
+            const meia = (rotulo.length * PX_CARACTERE) / 2;
+            return (
+              <g key={t}>
+                <text x={r1(px)} y={rotuloEmCima ? 12 : 12} textAnchor={px - meia < 0 ? "start" : px + meia > w ? "end" : "middle"} fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                  {rotulo}
+                </text>
+                <line x1={r1(px)} x2={r1(px)} y1="16" y2="22" stroke="var(--cor-grade)" strokeWidth="1" />
+              </g>
+            );
+          })}
+        </g>
       </svg>
       <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima && !todas ? "sim" : "nao"}>
         <div className="relative">
@@ -456,7 +471,7 @@ export function GraficoPontos({
             <g aria-hidden="true">
               {iSel >= 0 && <rect data-selecionada={ids[iSel]} x="0" y={iSel * hc} width={w} height={hc} fill="var(--cor-energia-fundo)" />}
               {iAtivo >= 0 && iAtivo !== iSel && <rect x="0" y={iAtivo * hc} width={w} height={hc} fill="var(--cor-grade)" opacity="0.55" />}
-              {dom.ticks.map((t) => (
+              {ticksEixo.map((t) => (
                 <line key={t} x1={r1(x(t))} x2={r1(x(t))} y1="0" y2={h} stroke="var(--cor-grade)" strokeWidth="1" />
               ))}
             </g>

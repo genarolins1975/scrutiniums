@@ -10,6 +10,7 @@ import {
   dominioLinhas,
   formatarX,
   indiceDoValorX,
+  indicesDoEixoX,
   indicesDoIntervalo,
   intervaloDosIndices,
   mesmaEscala,
@@ -331,8 +332,8 @@ export function GraficoLinhas({
   const yt = ticks(yMin, yMax);
   // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
   const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
-  const nx = Math.min(largura < ESTREITO ? 4 : 7, n);
-  const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
+  // marcas com passo constante a partir do último ponto (anos, trimestres, quinzenas), não em partes iguais do total
+  const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);
 
   const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX);
 

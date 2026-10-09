@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { dominioComZero, empilhar, escalaLinear, formatarDiferenca, formatarValor, rotuloTick, valido, type Pilha } from "@/lib/energia/escalas";
+import { dominioComZero, empilhar, escalaLinear, formatarDiferenca, formatarValor, pxCaractere12, rotuloTick, ticksQueCabem, valido, type Pilha } from "@/lib/energia/escalas";
 
 /**
  * Gráfico de barras SVG do Setor Elétrico, vertical ou horizontal, simples,
@@ -70,13 +70,15 @@ export type GraficoBarrasProps = {
 
 const LARGURA_SSR = 760;
 const PX_CARACTERE = 6.2; // largura média de um caractere a 11 px, para decidir se um rótulo cabe
+const LARGURA_ESTREITA = 520; // abaixo disto (celular): rótulo da categoria acima da barra, com a largura toda para o texto
+const ALTURA_ROTULO = 16; // linha do rótulo acima da barra, em px
 
 const r1 = (v: number) => Math.round(v * 10) / 10;
 
-/** Encurta o texto para caber na largura; "" quando nem três caracteres cabem. */
-function cabe(texto: string, largura: number): string {
-  if (texto.length * PX_CARACTERE <= largura) return texto;
-  const n = Math.floor(largura / PX_CARACTERE) - 1;
+/** Encurta o texto para caber na largura; "" quando nem três caracteres cabem. `px` é a largura média de um caractere. */
+function cabe(texto: string, largura: number, px = PX_CARACTERE): string {
+  if (texto.length * px <= largura) return texto;
+  const n = Math.floor(largura / px) - 1;
   return n >= 3 ? `${texto.slice(0, n).trimEnd()}…` : "";
 }
 
@@ -158,7 +160,11 @@ export function GraficoBarras({
     );
   }
 
-  const vertical = orientacao === "vertical";
+  // celular: coluna com rótulo longo (faixas de renda, "2013 (11 meses)") não cabe sob a barra e saía truncada; vira barra horizontal,
+  // com o rótulo acima. Rótulos curtos (meses, anos) e séries longas seguem em colunas.
+  const maiorRotulo = Math.max(0, ...nomes.map((t) => t.length));
+  const virouHorizontal = orientacao === "vertical" && largura < LARGURA_ESTREITA && maiorRotulo > 9 && n <= 16;
+  const vertical = orientacao === "vertical" && !virouHorizontal;
   const valor = (i: number, s: SerieBarra): number | null => {
     const v = dados[i][s.id];
     return valido(v) ? v : null;
@@ -184,8 +190,11 @@ export function GraficoBarras({
   let plot: { x0: number; x1: number; y0: number; y1: number };
   let colunaRotulo = 0;
   let hc = 0;
+  let rotuloEmCima = false;
   if (vertical) {
-    const L = w < 520 ? 44 : 56;
+    // o rótulo do eixo cabe inteiro: "100.000" passava 10 px da borda esquerda com a margem fixa de 44 px
+    const larguraEixo = Math.max(...dom.ticks.map((t) => rotuloTick(t, dom.passo).length)) * 6.4 + 14;
+    const L = Math.max(w < LARGURA_ESTREITA ? 44 : 56, Math.ceil(larguraEixo));
     const R = 12;
     const T = rotulosValor ? 22 : 12;
     const B = 32;
@@ -199,19 +208,28 @@ export function GraficoBarras({
     banda = (i) => ({ x: L + i * slot, y: 2, w: slot, h: h - 4 });
     barra = (i, j) => ({ pos: L + i * slot + (slot - grupo) / 2 + j * (esp + 2), esp });
   } else {
-    hc = alturaCategoria ?? Math.max(44, k * 14 + (k - 1) * 2 + 16);
-    colunaRotulo = Math.round(Math.min(200, Math.max(88, w * 0.3)));
-    const R = rotulosValor ? (w < 520 ? 64 : 80) : 16;
+    // celular: o rótulo da categoria vai numa linha acima da barra e usa a largura toda; a coluna lateral de 30% cortava o nome
+    // ("Recebimento p…" duas vezes) e deixava barras indistinguíveis
+    rotuloEmCima = w < LARGURA_ESTREITA;
+    const topo = rotuloEmCima ? ALTURA_ROTULO : 0;
+    hc = rotuloEmCima
+      ? Math.max(alturaCategoria ?? 0, 44, topo + k * 14 + (k - 1) * 2 + 10)
+      : (alturaCategoria ?? Math.max(44, k * 14 + (k - 1) * 2 + 16));
+    colunaRotulo = rotuloEmCima ? 0 : Math.round(Math.min(200, Math.max(88, w * 0.3)));
+    const R = rotulosValor ? (w < LARGURA_ESTREITA ? 64 : 80) : 16;
     const padNeg = rotulosValor && temNeg ? 56 : 0;
     h = n * hc;
     plot = { x0: colunaRotulo + 8, x1: w - R, y0: 0, y1: h };
     escala = escalaLinear([dom.min, dom.max], [colunaRotulo + 8 + padNeg, w - R]);
-    const grupo = Math.min(hc * 0.64, k * 20 + (k - 1) * 2);
+    const interno = hc - topo;
+    const grupo = Math.min(interno * (rotuloEmCima ? 0.8 : 0.64), k * 20 + (k - 1) * 2);
     const esp = Math.max(2, Math.min(24, (grupo - (k - 1) * 2) / k));
     banda = (i) => ({ x: 0, y: i * hc, w, h: hc });
-    barra = (i, j) => ({ pos: i * hc + (hc - grupo) / 2 + j * (esp + 2), esp });
+    barra = (i, j) => ({ pos: i * hc + topo + (interno - grupo) / 2 + j * (esp + 2), esp });
   }
   const zero = escala(0);
+  // barras que viraram horizontais no celular aparecem inteiras (até 16 categorias): rolar dentro de uma caixa de 480 px escondia categorias
+  const limiteAltura = virouHorizontal ? Math.max(alturaMaxima, h) : alturaMaxima;
 
   /** Retângulo de um intervalo de valores [a, b] na barra j da categoria i. */
   const ret = (i: number, j: number, a: number, b: number) => {
@@ -420,21 +438,40 @@ export function GraficoBarras({
         {marcas}
         {textos}
         {vertical
-          ? i % passoRotulo === 0 && (
+          ? i % passoRotulo === 0 &&
+            (() => {
+              const texto = cabe(nomes[i], b.w * passoRotulo - 4);
+              const centro = b.x + b.w / 2;
+              const meia = (texto.length * PX_CARACTERE) / 2;
+              // o último rótulo (por exemplo "set/2026") não passa da borda do gráfico: ancora na borda quando o centro não deixa espaço
+              const ancora = centro + meia > w - 2 ? "end" : centro - meia < 2 ? "start" : "middle";
+              return (
+                <text
+                  x={r1(ancora === "end" ? w - 2 : ancora === "start" ? 2 : centro)}
+                  y={h - 12}
+                  textAnchor={ancora}
+                  fontSize="11"
+                  fontWeight={sel ? 600 : 400}
+                  fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
+                >
+                  {texto}
+                </text>
+              );
+            })()
+          : (
               <text
-                x={r1(b.x + b.w / 2)}
-                y={h - 12}
-                textAnchor="middle"
-                fontSize="11"
+                x="4"
+                y={r1(rotuloEmCima ? b.y + 12 : b.y + hc / 2 + 4)}
+                fontSize="12"
                 fontWeight={sel ? 600 : 400}
                 fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
+                // acima da barra o texto atravessa a grade e a linha de referência: um halo na cor do fundo mantém o nome legível
+                stroke={rotuloEmCima ? (sel ? "var(--cor-energia-fundo)" : "var(--cor-superficie)") : undefined}
+                strokeWidth={rotuloEmCima ? 3 : undefined}
+                paintOrder={rotuloEmCima ? "stroke" : undefined}
+                data-rotulo-categoria="true"
               >
-                {cabe(nomes[i], b.w * passoRotulo - 4)}
-              </text>
-            )
-          : (
-              <text x="4" y={r1(b.y + hc / 2 + 4)} fontSize="12" fontWeight={sel ? 600 : 400} fill={sel ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}>
-                {cabe(nomes[i], colunaRotulo - 8)}
+                {rotuloEmCima ? cabe(nomes[i], w - 8, pxCaractere12(nomes[i])) : cabe(nomes[i], colunaRotulo - 8)}
               </text>
             )}
         {focoVisivel === i && (
@@ -475,7 +512,11 @@ export function GraficoBarras({
   }
 
   // ---------- grade, base e referências ----------
-  const grade = dom.ticks.map((t) =>
+  // marcas do eixo de valores: só as que cabem sem encostar na vizinha (a 390 px "25.000", "50.000" e "75.000" saíam coladas)
+  const ticksEixo = vertical
+    ? ticksQueCabem(dom.ticks, escala, () => 12, 6)
+    : ticksQueCabem(dom.ticks, escala, (t) => rotuloTick(t, dom.passo).length * PX_CARACTERE, 10);
+  const grade = ticksEixo.map((t) =>
     t === 0 ? null : vertical ? (
       <line key={t} x1={plot.x0} x2={plot.x1} y1={r1(escala(t))} y2={r1(escala(t))} stroke="var(--cor-grade)" strokeWidth="1" />
     ) : (
@@ -584,7 +625,7 @@ export function GraficoBarras({
     >
       <title id={`${uid}-t`}>{titulo}</title>
       {vertical &&
-        dom.ticks.map((t) => (
+        ticksEixo.map((t) => (
           <text key={t} x={plot.x0 - 8} y={r1(escala(t) + 4)} textAnchor="end" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums" aria-hidden="true">
             {rotuloTick(t, dom.passo)}
           </text>
@@ -611,7 +652,7 @@ export function GraficoBarras({
   );
 
   return (
-    <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={orientacao}>
+    <div ref={raiz} className="relative w-full" data-grafico="barras" data-orientacao={vertical ? "vertical" : "horizontal"} data-rotulos={vertical ? undefined : rotuloEmCima ? "acima" : "lateral"}>
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
         {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
@@ -663,11 +704,14 @@ export function GraficoBarras({
         <>
           {/* eixo de valores fora da área rolável: continua visível com muitas categorias */}
           <svg width="100%" height="22" viewBox={`0 0 ${w} 22`} aria-hidden="true" className="block overflow-visible">
-            {dom.ticks.map((t) => {
+            {ticksEixo.map((t) => {
               const x = escala(t);
+              const rotulo = rotuloTick(t, dom.passo);
+              const meia = (rotulo.length * PX_CARACTERE) / 2;
+              // o rótulo não passa da borda do gráfico: ancora na ponta quando o centro da marca não deixa espaço
               return (
-                <text key={t} x={r1(x)} y="14" textAnchor={x < plot.x0 + 12 ? "start" : x > w - 12 ? "end" : "middle"} fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
-                  {rotuloTick(t, dom.passo)}
+                <text key={t} x={r1(x)} y="14" textAnchor={x - meia < 0 ? "start" : x + meia > w ? "end" : "middle"} fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                  {rotulo}
                 </text>
               );
             })}
@@ -675,13 +719,13 @@ export function GraficoBarras({
               <line key={`${k}-${r.rotulo}`} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             ))}
           </svg>
-          <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima && !todas ? "sim" : "nao"}>
+          <div className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: limiteAltura }} data-rolagem={h > limiteAltura && !todas ? "sim" : "nao"}>
             <div className="relative">
               {svgBarras}
               {dica}
             </div>
           </div>
-          {h > alturaMaxima && (
+          {h > limiteAltura && (
             <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
               <span>{todas ? `Todas as ${n.toLocaleString("pt-BR")} categorias.` : `O gráfico mostra só parte das ${n.toLocaleString("pt-BR")} categorias, na ordem escolhida.`}</span>
               <button
