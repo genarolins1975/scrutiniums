@@ -53,7 +53,7 @@ export const COR = {
 export type Anotacao = { ano: number; texto: string };
 
 /** Mediana do grupo em cada ano, com o número de capitais na comparação: o grupo pode mudar de um ano para outro. */
-export type ReferenciaAnual = { ano: number; valor: number | null; n: number };
+export type ReferenciaAnual = { ano: number; valor: number | null; n: number; quebraSerie?: boolean };
 
 export function MiniSerie({
   titulo,
@@ -116,12 +116,23 @@ export function MiniSerie({
   // referência: linha tracejada só entre anos consecutivos que têm mediana
   const segsRef: string[] = [];
   let atualRef: string[] = [];
+  let anteriorRef: boolean | undefined;
   pontos.forEach((p, i) => {
-    const v = refPorAno.get(p.ano)?.valor ?? null;
+    const r = refPorAno.get(p.ano);
+    const v = r?.valor ?? null;
     if (v === null) {
       if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
       atualRef = [];
-    } else atualRef.push(`${atualRef.length ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+      anteriorRef = undefined;
+    } else {
+      // a mediana também se interrompe onde a base muda, quando a referência informa a marca de base de cada ano
+      if (atualRef.length && r?.quebraSerie !== undefined && anteriorRef !== undefined && anteriorRef !== r.quebraSerie) {
+        if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
+        atualRef = [];
+      }
+      atualRef.push(`${atualRef.length ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+      anteriorRef = r?.quebraSerie;
+    }
   });
   if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
   const mostrarRotulo = (i: number) => pontos.length <= 6 || i === 0 || i === pontos.length - 1 || i % 2 === 0;

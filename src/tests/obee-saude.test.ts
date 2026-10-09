@@ -155,7 +155,9 @@ describe("regras de comparação", () => {
     for (const l of linhas) {
       expect(l[col("Fonte")]).toContain("Siconfi");
       expect(l[col("Fonte")]).not.toMatch(/siconfi_dca/);
-      expect(l[col("Endereço da fonte")]).toMatch(/^https?:\/\//);
+      expect(l[col("Páginas oficiais")]).toMatch(/^https?:\/\//);
+      expect(l[col("Páginas oficiais")]).not.toContain("<");
+      expect(l[col("Fonte")]).not.toMatch(/IPCA/);
       expect(l[col("Data de captura")]).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(l[col("Hash dos dados")]).toBe(d.meta.hash_dados);
       expect(l[col("Mediana do grupo")]).toBe(String(c.ref!.mediana));
@@ -280,7 +282,10 @@ describe("composições", () => {
     expect(r.linhas.reduce((s, l) => s + l.participacao, 0)).toBeCloseTo(100, 1);
     const r25 = composicaoAgregada(gastos, "sau.despesa.natureza", 2025, NAT, { exigeTodas: true });
     expect(r25.fora.map((f) => f.cap.nome)).toContain("Macapá");
-    expect(r25.fora.find((f) => f.cap.nome === "Macapá")!.motivo).toMatch(/não publicada|fora das comparações/);
+    expect(r25.fora.find((f) => f.cap.nome === "Macapá")!.motivo).toMatch(/não reproduz a DCA|fora das comparações|MSC/);
+    const r22 = composicaoAgregada(gastos, "sau.despesa.natureza", 2022, NAT, { exigeTodas: true });
+    expect(r22.fora.find((f) => f.cap.nome === "Rio de Janeiro")!.motivo).toMatch(/MSC de dezembro não traz registros/);
+    expect(r22.fora.find((f) => f.cap.nome === "Florianópolis")!.motivo).toMatch(/sem natureza identificável/);
   });
 
   it("a composição agregada por subfunção usa as capitais comparáveis (25 ou 26), não 1 a 6, e reproduz o total das despesas somadas", () => {
@@ -325,6 +330,29 @@ describe("razão agregada e comparações na unidade da medida", () => {
     expect(fraseDiferenca({ nome: "A", valor: 3e9 }, { nome: "B", valor: 1e9 }, medida("despesa"), 2025)).not.toMatch(/%/);
     expect(posicaoNaMediana(23342248911, 1.6e8, medida("despesa"))).not.toMatch(/%/);
     expect(posicaoNaMediana(21.8, 20.5, asps)).toMatch(/pontos percentuais acima/);
+  });
+
+  it("a marca de base da mediana é a da maioria das capitais: o perímetro distinto de uma capital não troca a base do conjunto", () => {
+    const med = serieDaMediana(ix, medida("despesa_hab"), OPC, null);
+    expect(med.map((x) => x.quebraSerie)).toEqual([false, true, true, false, false]);
+    const cob = serieDaMediana(ix, medida("cobertura_aps"), OPC, null);
+    expect(cob.map((x) => x.quebraSerie)).toEqual([true, true, false, false, true]);
+    expect(serieDaMediana(ix, medida("despesa"), OPC, null).every((x) => !x.quebraSerie)).toBe(true);
+  });
+
+  it("o verbo da frase concorda com o rótulo: equipes e UBS vão, despesa vai", () => {
+    const itens = [{ nome: "A", uf: "AA", valor: 1 }, { nome: "B", uf: "BB", valor: 2 }];
+    expect(fraseAmplitude(itens, medida("esf_10mil"), 2025, 1.5)).toMatch(/ vão de /);
+    expect(fraseAmplitude(itens, medida("ubs_10mil"), 2025, 1.5)).toMatch(/ vão de /);
+    expect(fraseAmplitude(itens, medida("despesa_hab"), 2025, 1.5)).toMatch(/ vai de /);
+  });
+
+  it("empates são citados em ordem alfabética na frase e nas referências", () => {
+    const itens = [{ nome: "Zeta", uf: "ZZ", valor: 1 }, { nome: "Alfa", uf: "AA", valor: 1 }, { nome: "Meio", uf: "MM", valor: 5 }];
+    expect(fraseAmplitude(itens, medida("despesa_hab"), 2025, 1)).toMatch(/Alfa \(AA\) e Zeta \(ZZ\)/);
+    const r = ix.referencia("sau.aps.equipes_por_10mil", "eap", 2025, "todas")!;
+    const nomes = r.capitaisMinimo.map((c) => c.nome);
+    expect([...nomes].sort((a, b) => a.localeCompare(b, "pt-BR"))).toEqual(nomes);
   });
 
   it("a primeira letra minúscula preserva siglas: UBS e ICSAP não viram uBS e iCSAP", () => {

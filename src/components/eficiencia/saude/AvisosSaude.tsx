@@ -71,6 +71,8 @@ const SIGLAS_POR_TEMA: Record<string, [string, string][]> = {
     ["APS", "atenção primária à saúde"],
     ["eSF", "equipe de Saúde da Família"],
     ["eAP", "equipe de Atenção Primária"],
+    ["eCR, eSFR, eAPP", "equipes de Consultório na Rua, de Saúde da Família Ribeirinha e de Apoio à Atenção Primária"],
+    ["Siaps, Sisab", "sistemas de informação da atenção primária do Ministério da Saúde"],
   ],
   resultados: [
     ["ICSAP", "internações por condições sensíveis à atenção primária"],
@@ -81,12 +83,26 @@ const SIGLAS_POR_TEMA: Record<string, [string, string][]> = {
     ["SUS", "Sistema Único de Saúde"],
   ],
   comparar: [
+    ["DCA", "Declaração de Contas Anuais, enviada pelo município ao Tesouro Nacional"],
+    ["RREO", "Relatório Resumido da Execução Orçamentária"],
+    ["MSC", "Matriz de Saldos Contábeis"],
     ["ASPS", "ações e serviços públicos de saúde"],
     ["UBS", "unidade básica de saúde"],
     ["eSF", "equipe de Saúde da Família"],
     ["eAP", "equipe de Atenção Primária"],
     ["ICSAP", "internações por condições sensíveis à atenção primária"],
     ["APS", "atenção primária à saúde"],
+    ["RIPSA", "Rede Interagencial de Informações para a Saúde"],
+  ],
+  panorama: [
+    ["DCA", "Declaração de Contas Anuais, enviada pelo município ao Tesouro Nacional"],
+    ["SIOPS", "Sistema de Informações sobre Orçamentos Públicos em Saúde"],
+    ["ASPS", "ações e serviços públicos de saúde, base do mínimo de 15% da LC 141/2012"],
+    ["UBS", "unidade básica de saúde"],
+    ["eSF", "equipe de Saúde da Família"],
+    ["APS", "atenção primária à saúde"],
+    ["ICSAP", "internações por condições sensíveis à atenção primária"],
+    ["SUS", "Sistema Único de Saúde"],
   ],
 };
 
@@ -118,8 +134,9 @@ export function EtiquetaDePerimetro({ tema, href }: { tema: keyof typeof PERIMET
   const p = PERIMETRO_DO_TEMA[tema];
   return (
     <p className="mt-3 text-sm leading-snug text-carvao-muted">
-      <span className="rotulo text-mineral">Perímetro</span> <span className="font-semibold text-obee-tinta">{p.rotulo}</span>: {p.texto}.{" "}
-      <a href={href} className="whitespace-nowrap text-obee-dark underline underline-offset-4">Os três perímetros</a>
+      <span className="rotulo text-mineral">Perímetro</span> <span className="font-semibold text-obee-tinta">{p.rotulo}</span>
+      <span className="hidden sm:inline">: {p.texto}.</span>
+      <a href={href} className="inline-flex min-h-[44px] items-center whitespace-nowrap pl-2 text-obee-dark underline underline-offset-4 sm:pl-3">Os três perímetros</a>
     </p>
   );
 }
@@ -127,7 +144,8 @@ export function EtiquetaDePerimetro({ tema, href }: { tema: keyof typeof PERIMET
 export function AjudaMoeda() {
   return (
     <p className="mt-1.5 text-xs leading-snug text-carvao-muted">
-      Reais de 2025: cada exercício corrigido pelo IPCA (média anual) para o poder de compra de 2025; em 2025 os dois valores coincidem. Para comparar anos, use reais de 2025.
+      <span className="sm:hidden">Reais de 2025: valores corrigidos pelo IPCA (média anual); em 2025 coincidem com os nominais.</span>
+      <span className="hidden sm:inline">Reais de 2025: cada exercício corrigido pelo IPCA (média anual) para o poder de compra de 2025; em 2025 os dois valores coincidem. Para comparar anos, use reais de 2025.</span>
     </p>
   );
 }

@@ -142,11 +142,11 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <h1 id="titulo-comparar" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Comparar capitais</h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">Como cada capital se situa na mesma medida e no mesmo período?</p>
           <div className="mt-6 space-y-4">
-            <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, MEDIDAS_SAUDE[v as MedidaSaudeId], o).includes(ano) ? ano : 0 })} />
-            <Selecao id="cmp-ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="O mesmo período para as duas capitais." valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
+            <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." ajudaNoCelular={false} valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, MEDIDAS_SAUDE[v as MedidaSaudeId], o).includes(ano) ? ano : 0 })} />
+            <Selecao id="cmp-ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="O mesmo período para as duas capitais." ajudaNoCelular={false} valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
             <div className="grid grid-cols-2 gap-4">
-              <Selecao id="cmp-a" rotulo="Capital A" ajuda="A capital que aparece primeiro." valor={s.cap} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ cap: v })} />
-              <Selecao id="cmp-b" rotulo="Capital B" ajuda="Opcional: a capital de comparação." valor={s.vs} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ vs: v })} />
+              <Selecao id="cmp-a" rotulo="Capital A" ajuda="A capital que aparece primeiro." ajudaNoCelular={false} valor={s.cap} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ cap: v })} />
+              <Selecao id="cmp-b" rotulo="Capital B" ajuda="Opcional: a capital de comparação." ajudaNoCelular={false} valor={s.vs} opcoes={opcoesCapital("Nenhuma")} aoMudar={(v) => definir({ vs: v })} />
             </div>
             {m.moeda && (
               <div>
@@ -161,16 +161,6 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
               </div>
             )}
           </div>
-        </div>
-
-        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
-          <div className="border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
-            <p>{m.definicao}</p>
-            <p className="mt-2 text-carvao-muted">{m.naoE}</p>
-            <p className="mt-2 text-carvao-muted"><span className="font-semibold text-obee-tinta">Perímetro:</span> {PERIMETRO_DO_TEMA[m.tema].rotulo}. <a href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} className="text-obee-dark underline underline-offset-4">Os três perímetros</a></p>
-            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
-          </div>
-          <GlossarioDaPagina tema="comparar" />
         </div>
 
         <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
@@ -206,6 +196,16 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           </div>
           <div className="mt-5"><ForaDaComparacaoSaude itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} /></div>
         </div>
+        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+          <div className="border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
+            <p>{m.definicao}</p>
+            <p className="mt-2 text-carvao-muted">{m.naoE}</p>
+            <p className="mt-2 text-carvao-muted"><span className="font-semibold text-obee-tinta">Perímetro:</span> {PERIMETRO_DO_TEMA[m.tema].rotulo}. <a href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} className="text-obee-dark underline underline-offset-4">Os três perímetros</a></p>
+            <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
+          </div>
+          <GlossarioDaPagina tema="comparar" />
+        </div>
+
       </section>
 
       {(A || B) && (

@@ -137,9 +137,14 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
     ? serie(ix, m, cap.cod, o)
     : serieDaMediana(ix, m, o, regiao).map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "NAO_COMPARAVEL" : "OBSERVADO") as Ponto["status"], nota: x.valor === null ? "Nenhuma capital entra na comparação neste período: os valores oficiais existem e ficam fora da mediana." : null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
   const medianaPorAno = serieDaMediana(ix, m, o, regiao);
-  const referenciaSerie = cap ? medianaPorAno.map((x) => ({ ano: x.ano, valor: x.valor, n: x.n })) : undefined;
+  const referenciaSerie = cap ? medianaPorAno.map((x) => ({ ano: x.ano, valor: x.valor, n: x.n, quebraSerie: x.quebraSerie })) : undefined;
   const anotacoes: Anotacao[] = m.id === "cobertura_aps" ? ANOTACOES_COBERTURA : POR_POPULACAO.includes(m.id) || (m.id === "icsap_taxa" && s.den === "obee") ? ANOTACOES_POPULACAO : [];
-  const motivoQuebra = m.id === "cobertura_aps" ? "a população de referência do Ministério mudou de base" : "a base da população do denominador mudou entre os anos";
+  const motivoQuebra =
+    m.id === "cobertura_aps"
+      ? "a população de referência do Ministério mudou de base"
+      : POR_POPULACAO.includes(m.id) || (m.id === "icsap_taxa" && s.den === "obee")
+        ? "a base da população do denominador mudou entre os anos"
+        : "o perímetro do valor oficial é diferente entre os anos";
   const fraseSerie = fraseEvolucao(
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
     m,
@@ -148,6 +153,9 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
   );
   const comValorSerie = medianaPorAno.filter((x) => x.valor !== null);
   const conjuntoVaria = !cap && comValorSerie.length > 1 && new Set(comValorSerie.map((x) => x.n)).size > 1;
+
+  const zeros = c.incluidas.filter((i) => i.valor === 0).map((i) => `${i.cap.nome} (${i.cap.uf})`);
+  const notaZero = zeros.length ? `Valor zero observado em ${zeros.length === 1 ? "1 capital" : `${zeros.length} capitais`}: ${zeros.join(", ")}. A fonte informa zero, e não ausência de dado.` : null;
 
   const exportar = () => {
     if (s.vis === "evolucao") {
@@ -188,6 +196,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               id="med"
               rotulo="Medida"
               ajuda="O gráfico, a tabela e a evolução mostram a medida escolhida."
+              ajudaNoCelular={false}
               valor={s.med}
               opcoes={medidasOpcoes}
               aoMudar={(v) => {
@@ -197,8 +206,8 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               }}
             />
             <div className="grid grid-cols-2 gap-4">
-              <Selecao id="ano" rotulo={LEGENDA_PERIODO[m.periodo]} ajuda="Período do dado." valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
-              <Selecao id="cap" rotulo="Capital" ajuda="Opcional: destaca uma capital." valor={s.cap} opcoes={[{ v: "", t: "Nenhuma" }, ...dados.capitais.map((x) => ({ v: x.id, t: `${x.nome} (${x.uf})` }))]} aoMudar={(v) => definir({ cap: v, grp: "todas" })} />
+              <Selecao id="ano" rotulo={LEGENDA_PERIODO[m.periodo]} ajuda="Período do dado." ajudaNoCelular={false} valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
+              <Selecao id="cap" rotulo="Capital" ajuda="Opcional: destaca uma capital." ajudaNoCelular={false} valor={s.cap} opcoes={[{ v: "", t: "Nenhuma" }, ...dados.capitais.map((x) => ({ v: x.id, t: `${x.nome} (${x.uf})` }))]} aoMudar={(v) => definir({ cap: v, grp: "todas" })} />
             </div>
             {m.moeda && (
               <div>
@@ -223,7 +232,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               {s.vis === "evolucao" ? "Baixar CSV da série" : "Baixar CSV do recorte"}
             </button>
           </div>
-          {s.vis !== "evolucao" && (
+          {s.vis !== "evolucao" && c.incluidas.length > 0 && (
             <div className="mt-3">
               <Alternancia<Ordem> rotulo="Ordem das capitais" valor={s.ord} opcoes={ORDENS} aoMudar={(v) => definir({ ord: v })} />
               <p className="mt-1 text-xs text-carvao-muted">Ordenar por valor é recurso de leitura, não classificação.</p>
@@ -232,6 +241,13 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           <h2 className="mt-4 font-serif text-[1.3rem] leading-snug text-obee-tinta md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
           <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${[m.rotulo, unidadeNoTitulo].filter(Boolean).join(" · ")} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
           <AvisoDoPeriodo texto={aviso} />
+          {s.vis !== "evolucao" && notaZero && <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">{notaZero}</p>}
+          {s.vis !== "evolucao" && c.excluidas.length > 0 && (
+            <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
+              {c.excluidas.length <= 4 ? `Fora da comparação neste recorte: ${c.excluidas.map((x) => `${x.cap.nome} (${x.cap.uf})`).join(", ")}.` : `${c.excluidas.length} capitais fora da comparação neste recorte.`}{" "}
+              <a href="#fora-da-comparacao" className="text-obee-dark underline underline-offset-4">Motivo e detalhe abaixo</a>.
+            </p>
+          )}
           {fraseCap && s.vis !== "evolucao" && <p className="mt-2 text-sm leading-snug text-obee-tinta">{fraseCap}</p>}
 
           <div className="mt-4">

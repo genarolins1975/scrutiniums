@@ -19,7 +19,7 @@ sau_*.csv (um por indicador),nota,Nota ou ressalva do dado nesta capital e perí
 sau_*.csv (um por indicador),nota_material,'sim' quando a nota é uma restrição que precisa aparecer junto do dado.
 sau_*.csv (um por indicador),participacao_pct,"Participação da parte no total, em %, nos indicadores de composição."
 sau_*.csv (um por indicador),fonte,Fontes combinadas no valor: instituição e conjunto de dados.
-sau_*.csv (um por indicador),fonte_url,Endereço da página ou do serviço de cada fonte (separados por espaço).
+sau_*.csv (um por indicador),fonte_url,"Páginas oficiais das fontes (separadas por espaço). O endereço exato de cada coleta, com parâmetros, está no manifesto das capturas."
 sau_*.csv (um por indicador),data_captura,Data da captura mais recente das fontes do valor (AAAA-MM-DD).
 sau_*.csv (um por indicador),registro,"Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido."
 sau_*.csv (um por indicador),versao_metodologica,Versão metodológica do indicador.
@@ -60,6 +60,14 @@ saude_referencias_capitais.csv,politica_versao,Versão da política de referênc
 saude_referencias_capitais.csv,versao_metodologica,Versão metodológica do indicador.
 saude_referencias_capitais.csv,dados_gerados_em,Data e hora de geração dos dados publicados.
 saude_referencias_capitais.csv,hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+saude_matriz_de_fontes.csv,id,"Identificador da medida candidata: F (recursos), E (estrutura), R (resultados) e D (contexto demográfico), com número."
+saude_matriz_de_fontes.csv,medida,Medida candidata avaliada.
+saude_matriz_de_fontes.csv,fonte,Fonte oficial testada.
+saude_matriz_de_fontes.csv,acesso_testado,O que foi testado no acesso à fonte em 09/10/2026.
+saude_matriz_de_fontes.csv,cobertura,Cobertura das 26 capitais e dos períodos na fonte.
+saude_matriz_de_fontes.csv,periodo,Período disponível.
+saude_matriz_de_fontes.csv,decisao,"publicar com ressalva, apenas contexto ou não publicar."
+saude_matriz_de_fontes.csv,fundamento,"Por que a decisão foi tomada, com as ressalvas."
 ,(números),Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold.
 ,(leia antes de usar),"Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
 ,(perímetros),"Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."

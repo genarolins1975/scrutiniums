@@ -16,6 +16,7 @@ export function Selecao({
   opcoes,
   aoMudar,
   desabilitado,
+  ajudaNoCelular = true,
 }: {
   id: string;
   rotulo: string;
@@ -24,6 +25,8 @@ export function Selecao({
   opcoes: { v: string; t: string; desab?: boolean; grupo?: string }[];
   aoMudar: (v: string) => void;
   desabilitado?: boolean;
+  /** false: a ajuda sai da vista em telas estreitas (continua descrevendo o campo para leitores de tela) */
+  ajudaNoCelular?: boolean;
 }) {
   const grupos = Array.from(new Set(opcoes.map((o) => o.grupo ?? "")));
   const atual = opcoes.find((o) => o.v === valor)?.t ?? "";
@@ -69,7 +72,7 @@ export function Selecao({
           })}
         </select>
       </div>
-      <p id={`${id}-ajuda`} className="mt-1 text-xs leading-snug text-carvao-muted">
+      <p id={`${id}-ajuda`} className={`mt-1 text-xs leading-snug text-carvao-muted${ajudaNoCelular ? "" : " hidden sm:block"}`}>
         {ajuda}
       </p>
     </div>

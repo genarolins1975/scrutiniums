@@ -42,6 +42,8 @@ export type MedidaSaude = {
   formataEixo: (v: number) => string;
   /** a razão agregada tem sentido (numerador e denominador publicados) */
   razaoAgregada: boolean;
+  /** o rótulo da medida está no plural (concordância do verbo nas frases): equipes, UBS, internações */
+  plural?: boolean;
   /** escala: total que depende do porte; razao: valor por população (a diferença relativa tem sentido); percentual: parcela em % (a diferença é em pontos percentuais) */
   tipo: "escala" | "razao" | "percentual";
   /** diferença absoluta entre dois valores, com a unidade: nunca um percentual de outro percentual */
@@ -81,6 +83,7 @@ export const MEDIDAS_SAUDE: Record<MedidaSaudeId, MedidaSaude> = {
     pergunta: "Que percentual da receita o município informa ter aplicado em ASPS?", formata: (v) => percentual(v, 1), formataEixo: (v) => `${decimal(v, 0)}%`, razaoAgregada: true,
   },
   ubs_10mil: {
+    plural: true,
     tipo: "razao", difAbsoluta: (v) => `${decimal(v, 2)} UBS por 10 mil habitantes`,
     id: "ubs_10mil", tema: "rede", rotulo: "UBS públicas ativas por 10 mil habitantes", rotuloCurto: "UBS por 10 mil", indicador: "sau.rede.ubs_publicas_por_10mil",
     componente: () => "publicas", moeda: false, denominador: false, unidade: un("estabelecimentos por 10 mil habitantes"), periodo: "dezembro", zero: true,
@@ -90,6 +93,7 @@ export const MEDIDAS_SAUDE: Record<MedidaSaudeId, MedidaSaude> = {
     pergunta: "Quantas UBS públicas ativas há por 10 mil habitantes?", formata: (v) => decimal(v, 2), formataEixo: (v) => decimal(v, 1), razaoAgregada: true,
   },
   esf_10mil: {
+    plural: true,
     tipo: "razao", difAbsoluta: (v) => `${decimal(v, 2)} equipes por 10 mil habitantes`,
     id: "esf_10mil", tema: "rede", rotulo: "Equipes de Saúde da Família (eSF) por 10 mil habitantes", rotuloCurto: "eSF por 10 mil", indicador: "sau.aps.equipes_por_10mil",
     componente: () => "esf", moeda: false, denominador: false, unidade: un("equipes por 10 mil habitantes"), periodo: "dezembro", zero: true,
@@ -99,6 +103,7 @@ export const MEDIDAS_SAUDE: Record<MedidaSaudeId, MedidaSaude> = {
     pergunta: "Quantas equipes de Saúde da Família há por 10 mil habitantes?", formata: (v) => decimal(v, 2), formataEixo: (v) => decimal(v, 1), razaoAgregada: true,
   },
   eap_10mil: {
+    plural: true,
     tipo: "razao", difAbsoluta: (v) => `${decimal(v, 2)} equipes por 10 mil habitantes`,
     id: "eap_10mil", tema: "rede", rotulo: "Equipes de Atenção Primária (eAP, 20 h e 30 h) por 10 mil habitantes", rotuloCurto: "eAP por 10 mil", indicador: "sau.aps.equipes_por_10mil",
     componente: () => "eap", moeda: false, denominador: false, unidade: un("equipes por 10 mil habitantes"), periodo: "dezembro", zero: true,
@@ -117,6 +122,7 @@ export const MEDIDAS_SAUDE: Record<MedidaSaudeId, MedidaSaude> = {
     pergunta: "Que parcela da população as equipes registradas poderiam cobrir?", formata: (v) => percentual(v, 1), formataEixo: (v) => `${decimal(v, 0)}%`, razaoAgregada: true,
   },
   icsap_taxa: {
+    plural: true,
     tipo: "razao", difAbsoluta: (v) => `${inteiro(Math.round(v))} internações por 100 mil habitantes`,
     id: "icsap_taxa", tema: "resultados", rotulo: "Internações ICSAP por 100 mil habitantes", rotuloCurto: "Taxa de ICSAP", indicador: "sau.icsap.taxa",
     componente: (_, d) => (d === "obee" ? "populacao_ibge_obee" : "ripsa"), moeda: false, denominador: true, unidade: un("internações por 100 mil habitantes"), periodo: "processamento", zero: true,

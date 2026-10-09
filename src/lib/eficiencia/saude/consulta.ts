@@ -125,7 +125,10 @@ export function serieDaMediana(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, regia
   const comp = componenteDe(m, o);
   return anosDaMedida(ix, m, o).map((ano) => {
     const r = ix.referencia(m.indicador, comp, ano, regiao ?? "todas");
-    const quebra = ix.d.capitais.some((c) => ix.ponto(m.indicador, c.cod, ano, comp).quebraSerie);
+    // marca de base da mediana: a da maioria das capitais do grupo; o perímetro distinto de uma capital não troca a base das demais
+    const grupo = ix.d.capitais.filter((c) => (regiao ? c.regiao === regiao : true));
+    const marcas = grupo.map((c) => ix.ponto(m.indicador, c.cod, ano, comp)).filter((p) => p.valor !== null).map((p) => p.quebraSerie);
+    const quebra = marcas.filter(Boolean).length > marcas.length / 2;
     return { ano, valor: r?.mediana ?? null, n: r?.n ?? 0, quebraSerie: quebra };
   });
 }

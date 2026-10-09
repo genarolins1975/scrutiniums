@@ -69,3 +69,24 @@ Documento do **executor**. Não contém notas: as notas valem só quando atribu�
 * Eixo do gráfico de faixa do Panorama com rótulos de quartis entre marcas regulares: componente compartilhado.
 * Carga de 391 a 460 KB de HTML por página (payload de dados): sem alteração nesta rodada.
 * Educação: o marcador de quebra de série de Educação (que bloqueia 2022 para 2023) não foi mudado; a marca por base vale só para Saúde.
+
+## 5. Segundo ciclo de correções (achados da reavaliação 1)
+
+Depois da seção "Reavaliação 1" dos dois avaliadores. Gold: `hash_dados` `159b76024a953f4d`, 8.777 observações. Esta seção também é do executor e não contém notas.
+
+| Achado | Correção |
+| --- | --- |
+| R1 e B4 (dados): segunda troca de base da cobertura potencial, de dezembro de 2024 para 2025, sem sinalização | Três bases (anterior ao Censo, Censo 2022, estimativa de 2024) com marca alternada; nota na observação, na referência do Brasil, aviso e anotação na Evolução; M05 mede as duas trocas (+9,1 e −5,5 pontos percentuais da mediana vêm só do denominador); variação 2024 para 2025 bloqueada |
+| N1 (experiência), bloqueio: a mediana de 2021 aparecia com marca de base errada e a linha tracejada atravessava as quebras | A marca de base da mediana é a da maioria das capitais (o perímetro distinto de Campo Grande 2021 não troca a base do conjunto); a linha da mediana se interrompe onde a base muda, também com capital escolhida |
+| N2 (experiência): a despesa total explicava a quebra por um denominador que não tem | Motivo da quebra por medida: população de referência (cobertura), base da população (medidas por habitante) ou perímetro do valor oficial (demais) |
+| N1 (dados): ano sem mediana de cobertura rotulado "Ausente na coleta" | Estado "Fora da comparação", com a nota de que os valores oficiais existem |
+| N2 (dados): endereço da fonte com marcadores e IPCA em valores nominais | Páginas oficiais das fontes (o endereço exato de cada coleta fica no manifesto); IPCA só como fonte quando a moeda é de 2025 |
+| N3 (dados): trilhas com reais em % e ruído de ponto flutuante | Composições mostram o valor em reais e a participação em %; até 4 casas decimais |
+| N4 (dados): motivo genérico para capitais fora da soma de natureza | Três motivos: MSC sem registros, MSC com linhas sem natureza identificável e abertura que não reproduz a DCA |
+| N5 (dados): receita do hash, dicionário sem a matriz, "4 medições", singular, empates | Receita com "sem escape ASCII"; dicionário cobre a matriz de fontes; contagens corrigidas; "ponto" e "pontos percentuais" concordam; empates em ordem alfabética na frase e nas referências |
+| P9 (experiência): siglas incompletas | Bloco de siglas também no Panorama; Comparar com DCA, RREO e MSC; Rede com eCR, eSFR, eAPP, Siaps e Sisab; entrada sem siglas não expandidas |
+| P16 (experiência): celular, definição e siglas antes do gráfico no Comparar | Resultado antes da definição na ordem do celular; ajudas dos seletores só a partir de telas médias (continuam descrevendo o campo para leitores de tela); etiqueta de perímetro e ajuda de moeda mais curtas no celular |
+| N5, N6 (experiência): "Ordem das capitais" sem gráfico; "soma de N" em minúscula; "vai de" no plural; zeros de eAP | Controle só com gráfico; maiúscula depois de ponto; verbo concorda com o rótulo; nota de zero observado nomeia as capitais |
+| Outros: aviso de exclusão só abaixo do gráfico; "Não é custo por usuário" repetido em Gastos; "texto qualitativo sem fonte" | Linha com as capitais fora da comparação acima do gráfico, com link ao motivo; repetição removida; frases sobre ocorrência por local reescritas como possibilidade |
+
+Não alterado no segundo ciclo: marcador de nota "2" que encosta no rótulo de valor na Evolução de São Paulo (componente compartilhado); parâmetros inválidos de capital, medida e visão na URL (apenas o ano é normalizado); texto SVG de 10 a 11,5 px e `.rotulo` (classes e componentes compartilhados); CSV com ressalva repetida em cada linha (decisão: o arquivo precisa se explicar sozinho).

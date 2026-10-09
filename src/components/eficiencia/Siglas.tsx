@@ -30,6 +30,11 @@ export const SIGLAS: Record<string, string> = {
   UBS: "unidade básica de saúde",
   eSF: "equipe de Saúde da Família",
   eAP: "equipe de Atenção Primária",
+  eCR: "equipe de Consultório na Rua",
+  eSFR: "equipe de Saúde da Família Ribeirinha",
+  eAPP: "equipe de Apoio à Atenção Primária",
+  Siaps: "Sistema de Informação em Saúde para a Atenção Primária",
+  Sisab: "Sistema de Informação em Saúde para a Atenção Básica",
 };
 
 const PADRAO = new RegExp(`\\b(${Object.keys(SIGLAS).join("|")})\\b`, "g");

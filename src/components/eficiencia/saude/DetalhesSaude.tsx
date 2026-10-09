@@ -72,7 +72,7 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
   const cFon = cap ? composicao(ix, "sau.despesa.por_fonte", cap.cod, ano, fon) : null;
   const aFon = !cap ? composicaoAgregada(ix, "sau.despesa.por_fonte", ano, fon, { exigeTodas: true }) : null;
   const dca = cap ? ix.ponto("sau.despesa.funcao_saude", cap.cod, ano, "nominal") : null;
-  const escopo = (ag: ComposicaoAgregada | null) => (cap ? `${nomeCap}, exercício ${ano}` : ag ? `soma de ${ag.capitais} de ${ag.universo} capitais, exercício ${ano}` : `exercício ${ano}`);
+  const escopo = (ag: ComposicaoAgregada | null) => (cap ? `${nomeCap}, exercício ${ano}` : ag ? `Soma de ${ag.capitais} de ${ag.universo} capitais, exercício ${ano}` : `Exercício ${ano}`);
   return (
     <div className="space-y-12">
       <Bloco id="gastos-perimetro" titulo="O que a despesa inclui, e o que não inclui" subtitulo="Os recursos executados pelo município são um dos três perímetros do módulo.">
@@ -87,7 +87,7 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
             <span className="font-semibold">Transferências:</span> o repasse recebido do <Siglas texto="SUS" /> entra como receita e só aparece na despesa quando o município o executa. Receita recebida e despesa executada não se somam como gastos diferentes.
           </p>
           <p>
-            <span className="font-semibold">Por habitante:</span> divide a despesa pela população do território. Não é custo por usuário do <Siglas texto="SUS" />: inclui quem usa saúde suplementar e não separa o atendimento a moradores de outros municípios.
+            <span className="font-semibold">Por habitante:</span> divide a despesa pela população do território, que inclui quem usa saúde suplementar, e não separa o atendimento a moradores de outros municípios.
           </p>
         </div>
       </Bloco>
@@ -220,7 +220,7 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
     return [rot, inteiro(t)];
   });
   const cob = cap ? ix.ponto("sau.aps.cobertura_potencial", cap.cod, ano, null) : null;
-  const rotulo = cap ? `${cap.nome} (${cap.uf})` : `soma de ${capsComEquipe.length} de ${ix.d.capitais.length} capitais`;
+  const rotulo = cap ? `${cap.nome} (${cap.uf})` : `Soma de ${capsComEquipe.length} de ${ix.d.capitais.length} capitais`;
   return (
     <div className="space-y-12">
       <Bloco id="rede-conceitos" titulo="Estabelecimento, equipe, cobertura e pessoas atendidas são coisas diferentes" subtitulo="O módulo mostra cadastro e capacidade registrada, não atendimento efetivo.">
@@ -287,7 +287,7 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
   const cGr = cap ? composicao(ix, "sau.icsap.grupos", cap.cod, ano, grupos) : null;
   const aGr = !cap ? composicaoAgregada(ix, "sau.icsap.grupos", ano, grupos, { exigeTodas: true }) : null;
   const linhas = (cGr?.linhas ?? aGr?.linhas ?? []).slice().sort((a, b) => b.valor - a.valor);
-  const rotulo = cap ? `${cap.nome} (${cap.uf})` : aGr ? `soma de ${aGr.capitais} de ${aGr.universo} capitais` : "";
+  const rotulo = cap ? `${cap.nome} (${cap.uf})` : aGr ? `Soma de ${aGr.capitais} de ${aGr.universo} capitais` : "";
   const plano = cap ? ix.ponto("sau.ctx.cobertura_planos", cap.cod, ano, null) : null;
   const planosVals = ix.d.capitais.map((c) => ix.ponto("sau.ctx.cobertura_planos", c.cod, ano, null).valor).filter((v): v is number => v !== null).sort((a, b) => a - b);
   return (

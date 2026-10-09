@@ -30,7 +30,7 @@ export function fraseAmplitude(itens: ItemFrase[], m: MedidaSaude, ano: number, 
   const quando = cap1(QUANDO[m.periodo](ano));
   const med = mediana !== null ? ` A mediana das ${itens.length} capitais na comparação é ${m.formata(mediana)}.` : "";
   if (min === max) return `${quando}, as ${itens.length} capitais na comparação têm o mesmo valor, ${m.formata(min)}.`;
-  return `${quando}, ${minuscula(m.rotulo)} vai de ${m.formata(min)} em ${lista(nomesMin)} a ${m.formata(max)} em ${lista(nomesMax)}.${med}`;
+  return `${quando}, ${minuscula(m.rotulo)} ${m.plural ? "vão" : "vai"} de ${m.formata(min)} em ${lista(nomesMin)} a ${m.formata(max)} em ${lista(nomesMax)}.${med}`;
 }
 
 /** Frase da capital escolhida: posição numérica diante da mediana do grupo, sem classificação. A medida dita a comparação: relativa para razões, em pontos percentuais para parcelas, nenhuma para totais. */

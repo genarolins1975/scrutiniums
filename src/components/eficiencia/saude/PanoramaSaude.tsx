@@ -14,6 +14,7 @@ import { PanoramaFaixa } from "./PanoramaFaixa";
 import { Selecao } from "../controles";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Siglas } from "../Siglas";
+import { GlossarioDaPagina } from "./AvisosSaude";
 
 const GRUPOS: { id: string; titulo: string; pergunta: string; mostra: string; naoPresume: string; tema: TemaSaude; medidas: MedidaSaudeId[] }[] = [
   {
@@ -144,6 +145,10 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
           </section>
         ))}
       </div>
+
+      <section aria-label="Siglas do Panorama" className="mt-12 border-t border-linha pt-6">
+        <GlossarioDaPagina tema="panorama" />
+      </section>
 
       <section aria-labelledby="caminhos" className="mt-14 border-t border-linha pt-10">
         <h2 id="caminhos" className="font-serif text-[1.6rem] leading-snug text-obee-tinta">
