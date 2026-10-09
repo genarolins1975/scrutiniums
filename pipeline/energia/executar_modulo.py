@@ -47,6 +47,7 @@ def main(argv):
         status = mod.coletar(con, ctx)
         con.commit()
         print("[coleta]", json.dumps(status, ensure_ascii=False, default=str)[:4000])
+    guardados = base.guarda_arquivos(reg.get("arquivos") or {})
     try:
         g = mod.construir(con, ctx)
     except Exception as e:
@@ -55,6 +56,9 @@ def main(argv):
     anterior = base.le_gold(reg["gold"])
     if not (isinstance(g, dict) and g.get("disponivel") is True) and isinstance(anterior, dict) and anterior.get("disponivel") is True:
         print(f"[sentinela] {reg['gold']} regrediu: {g.get('motivo')}; a publicação anterior foi mantida")
+        refeitos = base.restaura_arquivos(guardados)
+        if refeitos:
+            print(f"[sentinela] {len(refeitos)} arquivo(s) baixável(is) voltaram ao que eram: {', '.join(os.path.basename(x) for x in refeitos)}")
     else:
         base.escreve_gold(reg["gold"], g)
     base.escreve_gold("metricas.json", {**c.cabecalho("metricas.json"), "metricas": metricas.todas()})

@@ -1113,6 +1113,12 @@ def validar_gold(b, mes_atual):
     ufs = [u["uf"] for u in ts["ufs"]]
     if len(ufs) != len(set(ufs)):
         crit.append("UF repetida no mapa da Tarifa Social")
+    # o arquivo da CDE pode trazer desconto líquido negativo numa UF no mês (a fonte não diz o motivo): o valor fica como publicado,
+    # sem correção, e a ressalva diz onde está para a página nunca mostrá-lo como um desconto comum
+    for u in ts["ufs"]:
+        for k, rotulo in (("desconto_reais", "desconto"), ("desconto_medio_por_fatura_reais", "desconto médio por fatura")):
+            if u.get(k) is not None and u[k] < 0:
+                ress.append(f"{u['uf']}: {rotulo} negativo no arquivo da CDE de {ts.get('mes_mapa')} ({u[k]}); mantido como publicado, sem correção")
     br = cob.get("brasil") or {}
     if br.get("razao_cadastradas_pct") is not None and br.get("razao_atualizadas_pct") is not None \
             and br["razao_cadastradas_pct"] > br["razao_atualizadas_pct"]:

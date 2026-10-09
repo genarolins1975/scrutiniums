@@ -109,7 +109,15 @@ def main(argv):
                     status_modulos[reg["id"]] = {"ok": False, "erro": str(e)[:300]}
                 con_f.commit()
             print(f"[energia] gold {nome}", flush=True)
+            # os CSV do módulo são gravados durante a construção, antes da validação da gold: se a construção regredir e a
+            # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
+            guardados = base.guarda_arquivos(reg.get("arquivos") or {})
+            n_regressoes = len(regressoes)
             g[nome] = publicar(nome, construir(nome, mod.construir, con_f, ctx), regressoes, falhas)
+            if len(regressoes) > n_regressoes:
+                refeitos = base.restaura_arquivos(guardados)
+                if refeitos:
+                    regressoes[-1]["arquivos_restaurados"] = [os.path.basename(x) for x in refeitos]
             for d in reg["datasets"]:
                 ds = d.get("dataset_silver")
                 if not ds:

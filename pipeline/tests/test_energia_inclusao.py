@@ -868,5 +868,42 @@ class Gold(unittest.TestCase):
         self.assertEqual(len(parciais), 1)
 
 
+class ValidacaoDaGold(unittest.TestCase):
+    """Caminho negativo da validação de publicação (seção 5.2 do contrato): crítico impede a publicação, ressalva fica visível."""
+
+    @staticmethod
+    def _blocos(**cde_mes):
+        mes = {"mes": "2026-03", "faturas_tsee": 100.0, "original_no_bronze": True, "faturas_municipio_invalido": 0,
+               "desconto_faturas_reais": 10.0}
+        mes.update(cde_mes)
+        return {
+            "tarifa_social": {
+                "serie_mensal": [], "distribuidoras": [], "mes_mapa": "2026-03", "cde_meses": [mes],
+                "ufs": [{"uf": "ES", "faturas_tsee": 100.0, "desconto_reais": 10.0, "desconto_medio_por_fatura_reais": 0.1}],
+                "_serie_cde_uf": {},
+            },
+            "cobertura": {"brasil": {}, "ufs": []},
+            "orcamento": {"linhas": []},
+            "acesso": {"pnad_serie": [], "pnad_situacao": [], "universalizacao": {}, "sistemas_isolados": {}},
+        }
+
+    def test_blocos_sem_defeito_nao_geram_critico_nem_ressalva(self):
+        self.assertEqual(mod.validar_gold(self._blocos(), "2026-10"), ([], []))
+
+    def test_total_mensal_negativo_e_critico(self):
+        crit, _ = mod.validar_gold(self._blocos(desconto_faturas_reais=-1.0), "2026-10")
+        self.assertTrue(any("desconto_faturas_reais negativo" in x for x in crit), crit)
+
+    def test_desconto_negativo_numa_uf_fica_como_publicado_com_ressalva(self):
+        b = self._blocos()
+        b["tarifa_social"]["ufs"][0]["desconto_reais"] = -11456619.05
+        b["tarifa_social"]["ufs"][0]["desconto_medio_por_fatura_reais"] = -41.84
+        crit, ress = mod.validar_gold(b, "2026-10")
+        self.assertEqual(crit, [])                       # a fonte publica o sinal; o pipeline não o corrige nem o descarta
+        self.assertEqual(len(ress), 2)
+        self.assertTrue(all(x.startswith("ES:") and "sem correção" in x for x in ress), ress)
+        self.assertEqual(b["tarifa_social"]["ufs"][0]["desconto_reais"], -11456619.05)
+
+
 if __name__ == "__main__":
     unittest.main()

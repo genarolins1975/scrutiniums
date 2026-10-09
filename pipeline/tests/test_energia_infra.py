@@ -145,6 +145,46 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class SentinelaDosArquivos(unittest.TestCase):
+    """Se a construção do módulo regride e a gold anterior é mantida, os CSV que ela gravou antes da validação voltam ao que eram."""
+
+    def test_arquivo_alterado_volta_ao_que_era_e_o_novo_sai(self):
+        with tempfile.TemporaryDirectory() as raiz:
+            serie = os.path.join(raiz, "public", "energia", "series")
+            os.makedirs(serie)
+            antigo = os.path.join(serie, "antigo.csv")
+            with open(antigo, "wb") as f:
+                f.write(b"a;b\n1;2\n")
+            urls = ["/energia/series/antigo.csv", "/energia/series/novo.csv"]
+            guardado = base.guarda_arquivos(urls, raiz=raiz)
+            # a construção regrava um e cria o outro, e depois a validação reprova a gold
+            with open(antigo, "wb") as f:
+                f.write(b"a;b\n9;9\n")
+            with open(os.path.join(serie, "novo.csv"), "wb") as f:
+                f.write(b"x\n1\n")
+            refeitos = base.restaura_arquivos(guardado)
+            self.assertEqual(sorted(os.path.basename(x) for x in refeitos), ["antigo.csv", "novo.csv"])
+            with open(antigo, "rb") as f:
+                self.assertEqual(f.read(), b"a;b\n1;2\n")
+            self.assertFalse(os.path.exists(os.path.join(serie, "novo.csv")))
+
+    def test_arquivo_intacto_nao_e_reescrito(self):
+        with tempfile.TemporaryDirectory() as raiz:
+            serie = os.path.join(raiz, "public", "energia", "series")
+            os.makedirs(serie)
+            with open(os.path.join(serie, "igual.csv"), "wb") as f:
+                f.write(b"a\n1\n")
+            guardado = base.guarda_arquivos(["/energia/series/igual.csv"], raiz=raiz)
+            self.assertEqual(base.restaura_arquivos(guardado), [])
+
+    def test_o_orquestrador_e_o_executor_restauram_na_regressao(self):
+        for nome in ("run.py", "executar_modulo.py"):
+            with open(os.path.join(base.RAIZ, "pipeline", "energia", nome), encoding="utf-8") as f:
+                fonte = f.read()
+            self.assertIn("base.guarda_arquivos(", fonte, nome)
+            self.assertIn("base.restaura_arquivos(", fonte, nome)
+
+
 class CsvDeDownload(unittest.TestCase):
     """O CSV que o leitor baixa precisa ter o número de colunas do cabeçalho em toda linha."""
 

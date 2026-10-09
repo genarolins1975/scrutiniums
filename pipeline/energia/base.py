@@ -465,6 +465,43 @@ def escreve_csv(nome, cabecalho, linhas, destino=None):
     return _escreve_atomico(os.path.join(base, nome), buf.getvalue())
 
 
+def guarda_arquivos(urls, raiz=None):
+    """Bytes de cada arquivo publicado em `urls` ('/energia/series/x.csv'), ou None se ainda não existe.
+    Chamada antes de construir um módulo: se a construção regredir (a sentinela mantém a gold anterior), os arquivos
+    baixáveis voltam ao que eram, e a gold e os CSV continuam da mesma publicação."""
+    pub = os.path.join(raiz or RAIZ, "public")
+    guardado = {}
+    for u in urls:
+        p = os.path.join(pub, u.lstrip("/"))
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                guardado[p] = f.read()
+        else:
+            guardado[p] = None
+    return guardado
+
+
+def restaura_arquivos(guardado):
+    """Devolve cada arquivo ao que `guarda_arquivos` registrou; o que não existia antes sai. Devolve os caminhos refeitos."""
+    refeitos = []
+    for p, dados in guardado.items():
+        atual = None
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                atual = f.read()
+        if atual == dados:
+            continue
+        if dados is None:
+            os.remove(p)
+        else:
+            tmp = f"{p}.{os.getpid()}.tmp"
+            with open(tmp, "wb") as f:
+                f.write(dados)
+            os.replace(tmp, p)
+        refeitos.append(p)
+    return refeitos
+
+
 def le_gold(nome, destino=None):
     caminho = os.path.join(destino or GOLD, nome)
     if not os.path.exists(caminho):
