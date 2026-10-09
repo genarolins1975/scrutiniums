@@ -26,6 +26,13 @@
   --cor-energia-soft: #5e98a3;
   --cor-energia-fundo: #e6eeee;
   --cor-superficie: #ffffff;
+  /* Observatório Brasileiro de Eficiência Estatal: acento de seleção (petróleo),
+     tinta azul muito escura e neutro dos pares. Seleção, nunca juízo de valor. */
+  --cor-obee: #00697f;
+  --cor-obee-dark: #0b4f5e;
+  --cor-obee-fundo: #e6eff0;
+  --cor-obee-tinta: #14243a;
+  --cor-obee-neutro: #858072;
   --cor-grade: #e5e0d5; /* grade de gráfico, recessiva */
   --cor-previsto: #5b3f8c; /* natureza PREVISTO (selo e ilustração) */
 
@@ -261,6 +268,31 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
 .termo:focus-within .termo-dica { display: block !important; }
 .termo.termo-fechada .termo-dica { display: none !important; }
 
+/* OBEE: foco no acento do domínio, algarismos alinhados e tabulares nas tabelas */
+.dominio-obee :focus-visible {
+  outline-color: var(--cor-obee);
+}
+.dominio-obee .font-serif { font-variant-numeric: lining-nums; }
+.dominio-obee table { font-variant-numeric: tabular-nums; }
+.dominio-obee { overflow-wrap: break-word; }
+.dominio-obee ::selection { background: var(--cor-obee); color: #ffffff; }
+
+/* Blocos que se abrem por clique: um indício visual (seta) em todo resumo, em vez de texto que parece estático. Os que já trazem
+   o próprio indício (classe list-none) ficam como estão. */
+.dominio-obee details > summary:not(.list-none) { list-style: none; }
+.dominio-obee details > summary:not(.list-none)::-webkit-details-marker { display: none; }
+.dominio-obee details > summary:not(.list-none)::after {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: -0.2rem 0 0 0.6rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+.dominio-obee details[open] > summary:not(.list-none)::after { margin-top: 0.2rem; transform: rotate(-135deg); }
+
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
@@ -272,6 +304,11 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
 .dominio-energia .text-xs:not([class*="leading-"]) { line-height: 1.2rem; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
+
+/* OBEE: link com recorte na URL esconde o conteúdo até o painel ler o recorte (ver LiberaRecorte); sem JavaScript nada se esconde */
+html[data-recorte="pendente"] #conteudo {
+  visibility: hidden;
+}
 
 /* Lista de módulos e faixas de seções que rolam na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel e FaixasDeSecao
    ligam --fade-esq e --fade-dir). O esmaecimento de 2 rem não deixa dúvida de que o último rótulo cortado é rolagem. */

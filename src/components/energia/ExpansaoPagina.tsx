@@ -11,6 +11,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { PAINEIS_EXPANSAO, PERGUNTA_EXPANSAO, ROTA_EXPANSAO, painel, proximoPainel, rotaPainel, type PainelExpansao } from "@/lib/energia/expansao";
 import { datasLegiveis, num } from "@/lib/energia/formato";
 import type { Download, Natureza } from "@/lib/energia/tipos";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 
 /**
  * Peças de servidor das páginas da Expansão da oferta e da rede (a abertura em
@@ -242,11 +243,11 @@ export function ExpansaoTabelaSimples({ titulo, cabecalho, linhas }: { titulo: s
               {l.map((c, j) =>
                 j === 0 ? (
                   <th key={j} scope="row" className="px-2 py-1.5 text-left font-normal">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </th>
                 ) : (
                   <td key={j} className="px-2 py-1.5">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </td>
                 ),
               )}

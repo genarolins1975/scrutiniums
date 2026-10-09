@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     siteName: "Scrutiniums",
     locale: "pt_BR",
     type: "website",
-    title: "Scrutiniums: Crédito e Setor Elétrico",
+    title: "Scrutiniums: Crédito, Setor Elétrico e Eficiência Estatal",
     description:
-      "Dois observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
+      "Três observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
   },
   alternates: { canonical: "/" },
 };

@@ -2,7 +2,7 @@
 
 Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. A **leitura do Observatório é aberta** — sem cadastro, indexável, compartilhável — para maximizar o uso e o alcance dos painéis. A **área de conta e os painéis personalizados** (`/app`) exigem cadastro — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada nessa área exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
 
-Desde setembro de 2026 a Scrutiniums é uma plataforma de **dois observatórios** sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito** e o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
+Desde setembro de 2026 a Scrutiniums é uma plataforma de **três observatórios** sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito**, o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`) e o **Observatório Brasileiro de Eficiência Estatal** (`/eficiencia-estatal`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
 
 ## Stack
 
@@ -93,6 +93,17 @@ python3 -m unittest discover -s pipeline/tests -t .
 ```
 
 A previsão do PLD segue governança explícita: modelos com estado (PESQUISA, VALIDAÇÃO, PRODUÇÃO, APOSENTADO) em `pipeline/energia/registro_modelos.json`, arquivo imutável em `pipeline/energia/previsoes/arquivo.jsonl` com sha256 por registro, e previsão principal exibida como indisponível, com motivo, enquanto nenhum modelo está em produção. Arquitetura, catálogo de fontes, modelo de auditabilidade e plano em [docs/observatorios/](./docs/observatorios/README.md).
+
+## Observatório Brasileiro de Eficiência Estatal (etapa inicial)
+
+Domínio `eficiencia`, em **`/eficiencia-estatal`**. Nesta etapa há um único painel publicado, **Educação municipal nas capitais** (`/eficiencia-estatal/educacao-municipal-capitais`): despesa liquidada na função Educação (Siconfi, DCA), matrículas da rede municipal e de escolas conveniadas (microdados do Censo Escolar), alunos por turma, aprovação, Ideb e Saeb (INEP), com passaporte de 16 campos por indicador, estados de dado explícitos e tabela auditável com exportação. O pipeline fica em `pipeline/eficiencia/` (biblioteca padrão; recortes versionados em `seed/` com sha256 e MD5 conferidos) e escreve `public/eficiencia/`:
+
+```bash
+python3 -m pipeline.eficiencia.run                   # reconstrói a gold a partir do seed (sem rede)
+python3 -m unittest pipeline.tests.test_eficiencia
+```
+
+Regra editorial do domínio: apresenta indicadores, não conclusões sobre governos. Documentação, inventário, metodologia, validação e continuidade em [docs/obee/](./docs/obee/README.md). O OBEE está no registro de domínios (`src/lib/dominios.ts`) e, por ele, na home, no seletor de observatórios, na escolha pós login, no cabeçalho público e no rodapé.
 
 ## Documentação
 

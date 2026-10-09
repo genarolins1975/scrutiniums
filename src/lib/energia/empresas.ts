@@ -880,7 +880,7 @@ export const COLUNAS_EVOLUCAO_QUALIDADE: ColunaTabela[] = [
 export const COLUNAS_EVOLUCAO_TARIFA: ColunaTabela[] = [
   { id: "inicio", rotulo: "Início da vigência", tipo: "data" },
   { id: "fim", rotulo: "Fim da vigência", tipo: "data" },
-  { id: "ato", rotulo: "Ato", tipo: "texto" },
+  { id: "ato", rotulo: "Ato", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
   { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "tusd", rotulo: "TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "total", rotulo: "Total", tipo: "numero", unidade: "R$/MWh", casas: 2 },

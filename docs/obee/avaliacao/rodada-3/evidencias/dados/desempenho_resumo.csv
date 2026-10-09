@@ -1,0 +1,28 @@
+perfil,rota,repeticoes,html_kB_comprimido,html_kB_descomprimido,js_kB_comprimido,js_kB_descomprimido,n_scripts,total_kB_transferido,fcp_ms_mediana,lcp_ms_mediana,lcp_ms_max,cls_mediana,cls_max,tbt_ms_mediana,tbt_ms_max,maior_tarefa_longa_ms_max,recorte_oculto_ms_mediana,recorte_oculto_ms_max,erros_console,cargas_com_rolagem_horizontal
+"desktop 1440x900, sem limitação",panorama,5,30.9,170,163,510,19,832,200,200,276,0,0,0,24,76,,,0,0
+"desktop 1440x900, sem limitação",gastos,5,80.7,407,163,510,19,761,240,240,268,0,0,11,31,81,,,0,0
+"desktop 1440x900, sem limitação",atendimento,5,65.1,392,163,510,19,761,244,244,316,0,0,0,6,78,,,0,0
+"desktop 1440x900, sem limitação",resultados,5,69.0,380,163,510,19,760,320,320,452,0,0,0,32,178,,,0,0
+"desktop 1440x900, sem limitação",comparar,5,113.2,661,163,510,19,761,352,352,472,0,0,10,81,152,,,0,0
+"desktop 1440x900, sem limitação",metodos,5,97.2,740,162,510,18,803,440,440,488,0,0,17,51,174,,,0,0
+"desktop 1440x900, sem limitação",gastos_recorte,5,80.7,407,163,510,19,830,168,456,472,0,0,19,27,77,346,385,0,0
+"desktop 1440x900, sem limitação",comparar_recorte_tabela,5,113.2,661,162,510,18,862,164,472,488,0,0,22,37,87,400,410,0,0
+"desktop 1440x900, sem limitação",resultados_recorte,5,69.0,380,163,510,19,818,152,396,424,0,0,18,31,73,314,356,0,0
+"móvel 390x844, CPU 4x",panorama,3,30.9,170,163,510,19,764,256,256,332,0,0,719,1068,480,,,0,0
+"móvel 390x844, CPU 4x",gastos,3,80.7,407,162,510,18,768,292,292,296,0,0,1087,1107,389,,,0,0
+"móvel 390x844, CPU 4x",atendimento,3,65.1,392,163,510,19,768,364,364,496,0,0,971,1122,402,,,0,0
+"móvel 390x844, CPU 4x",resultados,3,69.0,380,162,510,18,760,272,272,364,0,0,1046,1077,511,,,0,0
+"móvel 390x844, CPU 4x",comparar,3,113.2,661,162,510,18,768,324,324,400,0,0,942,1035,431,,,0,0
+"móvel 390x844, CPU 4x",metodos,3,97.2,740,162,510,18,803,424,424,464,0,0,1388,1487,434,,,0,0
+"móvel 390x844, CPU 4x",gastos_recorte,3,80.7,407,162,510,18,837,296,1800,2052,0,0,1247,1455,449,1667,1907,0,0
+"móvel 390x844, CPU 4x",comparar_recorte_tabela,3,113.2,661,162,510,18,870,340,1884,2172,0,0,1085,1095,370,1733,2003,0,0
+"móvel 390x844, CPU 4x",resultados_recorte,3,69.0,380,162,510,18,818,332,1720,1748,0,0,1142,1145,411,1602,1604,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",panorama,3,30.9,170,162,510,18,763,1256,1256,1464,0.033,0.033,312,357,355,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",gastos,3,80.7,407,162,510,18,761,1152,1152,1920,0,0,631,660,326,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",atendimento,3,65.1,392,162,510,18,760,1872,1872,1888,0,0,500,672,359,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",resultados,3,69.0,380,162,510,18,759,1228,1228,1808,0,0,634,1040,386,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",comparar,3,113.2,661,162,510,18,761,1172,1172,1184,0,0,1028,1057,490,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",metodos,3,97.2,740,162,510,18,795,2020,2020,2220,0,0,859,1169,774,,,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",gastos_recorte,3,80.7,407,162,510,18,830,1224,3748,3880,0,0,711,830,427,3620,3719,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",comparar_recorte_tabela,3,113.2,661,162,510,18,862,1120,4232,4364,0,0,1065,1115,407,4056,4140,0,0
+"móvel 390x844, CPU 4x, 1,6 Mbps e 150 ms",resultados_recorte,3,69.0,380,162,510,18,818,1144,3600,3928,0,0,703,973,317,3487,3712,0,0

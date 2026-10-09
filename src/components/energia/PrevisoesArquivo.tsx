@@ -88,7 +88,7 @@ export function PrevisoesArquivo({
         <span data-recorte={v.em || "tudo"}>{respostaP015(noDia, v.em, total)}</span>
       </RespostaCurta>
       <div className="flex flex-wrap items-end gap-4">
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Ver o arquivo como estava ao fim de</span>
           <input
             type="date"

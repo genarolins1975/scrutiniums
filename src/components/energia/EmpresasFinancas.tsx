@@ -2,6 +2,7 @@
 
 import { datasLegiveis } from "@/lib/energia/formato";
 import { useEffect, useMemo, useState } from "react";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { Comparador } from "@/components/energia/Comparador";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";

@@ -8,9 +8,9 @@ import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 
 /**
- * Regressão da plataforma de dois observatórios (docs/observatorios/MAPA_DE_ROTAS.md):
- * o Crédito continua intacto, o Setor Elétrico é um domínio da mesma
- * plataforma (mesma sessão, mesma telemetria, mesma superfície pública).
+ * Regressão da plataforma de observatórios (docs/observatorios/MAPA_DE_ROTAS.md):
+ * o Crédito continua intacto, o Setor Elétrico e a Eficiência Estatal são
+ * domínios da mesma plataforma (mesma sessão, mesma telemetria, mesma superfície pública).
  */
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -25,13 +25,44 @@ function paginas(dir: string, out: string[] = []): string[] {
 }
 
 describe("registro de domínios", () => {
-  it("dois observatórios, ids e rotas estáveis, acento próprio", () => {
-    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia"]);
-    const [c, e] = DOMINIOS;
+  it("três observatórios, ids e rotas estáveis, acento próprio", () => {
+    expect(DOMINIOS.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia"]);
+    const [c, e, f] = DOMINIOS;
     expect(c.rotaRaiz).toBe("/observatorio");
     expect(e.rotaRaiz).toBe("/setor-eletrico");
+    expect(f.rotaRaiz).toBe("/eficiencia-estatal/educacao-municipal-capitais");
     expect(c.acento).toBe("bronze");
     expect(e.acento).toBe("energia");
+    expect(f.acento).toBe("obee");
+  });
+
+  it("a rota de entrada da Eficiência Estatal existe e consta do sitemap", () => {
+    expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "educacao-municipal-capitais", "page.tsx"))).toBe(true);
+    expect(sitemap().map((u) => u.url)).toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+  });
+
+  it("a Eficiência Estatal está na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito", () => {
+    const rota = DOMINIOS[2].rotaRaiz;
+    expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
+    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("DOMINIOS.map");
+    expect(ler("src/components/layout/PublicHeader.tsx")).toContain(rota);
+    expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
+    expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);
+  });
+
+  it("os textos públicos da plataforma não falam mais em dois observatórios", () => {
+    for (const f of [
+      "src/app/page.tsx",
+      "src/app/layout.tsx",
+      "src/components/home/SecaoObservatorios.tsx",
+      "src/components/home/SecaoPlataforma.tsx",
+      "src/components/home/SecaoAcesso.tsx",
+      "src/components/layout/Footer.tsx",
+      "src/app/app/(foco)/observatorios/page.tsx",
+    ]) {
+      expect(ler(f), f).not.toMatch(/dois observat/i);
+    }
   });
 
   it("seção e caminho resolvem o domínio certo", () => {
@@ -39,6 +70,8 @@ describe("registro de domínios", () => {
     expect(dominioDaSecao("energia:pld")).toBe("energia");
     expect(dominioDoCaminho("/setor-eletrico/pld")).toBe("energia");
     expect(dominioDoCaminho("/observatorio/credit")).toBe("credito");
+    expect(dominioDaSecao("eficiencia:educacao")).toBe("eficiencia");
+    expect(dominioDoCaminho("/eficiencia-estatal/educacao-municipal-capitais")).toBe("eficiencia");
   });
 
   it("a descrição do Setor Elétrico não promete previsão enquanto nenhum modelo está em produção", () => {

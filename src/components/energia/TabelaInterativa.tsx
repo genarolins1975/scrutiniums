@@ -3,7 +3,10 @@
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { LiteralFonte } from "@/components/LiteralFonte";
+import { TextoComDatas } from "@/components/TextoComDatas";
+import { defLiteral } from "@/lib/literais-fonte";
+import { FUSO_SEM_OFFSET_ENERGIA, carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import {
   CHAVE_SEM_DADO,
   MIME_CSV,
@@ -531,7 +534,19 @@ export function TabelaInterativa({
                     {colunas.map((c) => {
                       const v = valorColuna(l, c);
                       const numerica = ehNumerica(c);
-                      const conteudo = v === null ? <SemDado sobreFundoAtivo={sel} /> : textoCelula(v, c);
+                      const conteudo =
+                        v === null ? (
+                          <SemDado sobreFundoAtivo={sel} />
+                        ) : c.literal && typeof v === "string" && defLiteral(c.literal.classe)?.padrao.test(v) ? (
+                          <LiteralFonte classe={c.literal.classe} origem={c.literal.origem}>
+                            {v}
+                          </LiteralFonte>
+                        ) : c.tipo === "texto" && typeof v === "string" ? (
+                          // texto do pipeline pode trazer competência ou data no meio da frase: legível, sem mudar o dia nem o fuso
+                          <TextoComDatas texto={textoCelula(v, c)} competencia="curta" fusoSemOffset={FUSO_SEM_OFFSET_ENERGIA} />
+                        ) : (
+                          textoCelula(v, c)
+                        );
                       if (c.id === colRot?.id) {
                         return (
                           <th

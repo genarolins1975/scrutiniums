@@ -1,0 +1,287 @@
+url,esperado,obtido,resultado,detalhe
+/gastos?med=despesa_hab&cap=aracaju&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=aracaju&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=aracaju&moeda=nominal&vis=evolucao,passou,passou,ok,2021=232207750.6 → 2025=566422643.48
+/gastos?med=despesa&cap=aracaju&moeda=real&vis=evolucao,passou,passou,ok,2021=290901856.44 → 2025=566422643.48
+/gastos?med=despesa_mat&cap=aracaju&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7460.347324 → 2025=16558.011434
+/gastos?med=despesa_mat&cap=aracaju&moeda=real&vis=evolucao,passou,passou,ok,2021=9346.06567 → 2025=16558.011434
+/atendimento?med=atu&cap=aracaju&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=23.3 → 2025=23.3
+/atendimento?med=matriculas&cap=aracaju&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=30804 → 2025=33933
+/resultados?med=aprovacao&cap=aracaju&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.2 → 2025=98.3
+/resultados?med=ideb&cap=aracaju&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.5 → 2025=4.4
+/resultados?med=saeb&cap=aracaju&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=162.2 → 2025=206.71
+/gastos?med=despesa&cap=belem&moeda=nominal&vis=evolucao,passou,passou,ok,2021=519663433.55 → 2025=980844819.25
+/gastos?med=despesa_hab&cap=belem&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=belem&moeda=real&vis=evolucao,passou,passou,ok,2021=651016415.91 → 2025=980844819.25
+/gastos?med=despesa_hab&cap=belem&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=belem&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7618.179244 → 2025=14461.820267
+/atendimento?med=atu&cap=belem&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=27.9 → 2025=24.9
+/atendimento?med=matriculas&cap=belem&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=66844 → 2025=58394
+/gastos?med=despesa_mat&cap=belem&moeda=real&vis=evolucao,passou,passou,ok,2021=9543.792053 → 2025=14461.820267
+/resultados?med=aprovacao&cap=belem&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=96.2 → 2025=98.5
+/gastos?med=despesa&cap=belo-horizonte&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1789994434.78 → 2025=3592502237.44
+/resultados?med=ideb&cap=belem&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.1 → 2025=4.6
+/resultados?med=saeb&cap=belem&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=159.4 → 2025=198.01
+/gastos?med=despesa&cap=belo-horizonte&moeda=real&vis=evolucao,passou,passou,ok,2021=2242443255.01 → 2025=3592502237.44
+/gastos?med=despesa_hab&cap=belo-horizonte&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=belo-horizonte&moeda=nominal&vis=evolucao,passou,passou,ok,2021=10457.232768 → 2025=21753.606806
+/gastos?med=despesa_hab&cap=belo-horizonte&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=belo-horizonte&moeda=real&vis=evolucao,passou,passou,ok,2021=13100.460331 → 2025=21753.606806
+/resultados?med=aprovacao&cap=belo-horizonte&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.0 → 2025=98.4
+/resultados?med=ideb&cap=belo-horizonte&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.7 → 2025=5.2
+/atendimento?med=matriculas&cap=belo-horizonte&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=163576 → 2025=160186
+/atendimento?med=atu&cap=belo-horizonte&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=23.7 → 2025=23.9
+/resultados?med=saeb&cap=belo-horizonte&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=183.6 → 2025=216.16
+/gastos?med=despesa&cap=boa-vista&moeda=real&vis=evolucao,passou,passou,ok,2021=514249671.43 → 2025=731974680.77
+/gastos?med=despesa_hab&cap=boa-vista&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=boa-vista&moeda=nominal&vis=evolucao,passou,passou,ok,2021=410491568.91 → 2025=731974680.77
+/gastos?med=despesa_mat&cap=boa-vista&moeda=real&vis=evolucao,passou,passou,ok,2021=11880.176356 → 2025=13766.760584
+/gastos?med=despesa_hab&cap=boa-vista&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=boa-vista&moeda=nominal&vis=evolucao,passou,passou,ok,2021=9483.160617 → 2025=13766.760584
+/atendimento?med=atu&cap=boa-vista&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=24.6 → 2025=24.3
+/resultados?med=aprovacao&cap=boa-vista&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=97.2 → 2025=98.9
+/resultados?med=ideb&cap=boa-vista&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=4.1 → 2007=4.5
+/atendimento?med=matriculas&cap=boa-vista&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=42782 → 2025=53093
+/resultados?med=saeb&cap=boa-vista&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=165.8 → 2025=211.8
+/gastos?med=despesa_hab&cap=campo-grande&moeda=nominal&vis=evolucao,passou,passou,ok,2022=1093.247023 → 2025=1689.160012
+/gastos?med=despesa&cap=campo-grande&moeda=nominal&vis=evolucao,passou,passou,ok,2022=981845151.05 → 2025=1626463459.42
+/gastos?med=despesa&cap=campo-grande&moeda=real&vis=evolucao,passou,passou,ok,2022=1125567832.68 → 2025=1626463459.42
+/gastos?med=despesa_hab&cap=campo-grande&moeda=real&vis=evolucao,passou,passou,ok,2022=1253.276732 → 2025=1689.160012
+/gastos?med=despesa_mat&cap=campo-grande&moeda=real&vis=evolucao,passou,passou,ok,2022=9984.019534 → 2025=14045.315556
+/atendimento?med=atu&cap=campo-grande&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=27.9 → 2025=26.2
+/gastos?med=despesa_mat&cap=campo-grande&moeda=nominal&vis=evolucao,passou,passou,ok,2022=8709.169615 → 2025=14045.315556
+/atendimento?med=matriculas&cap=campo-grande&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=107490 → 2025=111194
+/resultados?med=aprovacao&cap=campo-grande&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=96.8 → 2025=95.6
+/resultados?med=ideb&cap=campo-grande&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.7 → 2025=4.9
+/resultados?med=saeb&cap=campo-grande&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=191.2 → 2025=211.39
+/gastos?med=despesa&cap=cuiaba&moeda=nominal&vis=evolucao,passou,passou,ok,2021=443780118.89 → 2025=1013625098.13
+/gastos?med=despesa&cap=cuiaba&moeda=real&vis=evolucao,passou,passou,ok,2021=555952418.05 → 2025=1013625098.13
+/gastos?med=despesa_hab&cap=cuiaba&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=cuiaba&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=cuiaba&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7887.157736 → 2025=16646.032585
+/gastos?med=despesa_mat&cap=cuiaba&moeda=real&vis=evolucao,passou,passou,ok,2021=9880.759025 → 2025=16646.032585
+/atendimento?med=matriculas&cap=cuiaba&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=53602 → 2025=59411
+/atendimento?med=atu&cap=cuiaba&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.1 → 2025=25.6
+/resultados?med=saeb&cap=cuiaba&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=163.6 → 2025=209.78
+/resultados?med=aprovacao&cap=cuiaba&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.7 → 2025=99.9
+/resultados?med=ideb&cap=cuiaba&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.2 → 2025=4.8
+/gastos?med=despesa&cap=curitiba&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1169863324.18 → 2025=2172758525.83
+/gastos?med=despesa_hab&cap=curitiba&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=curitiba&moeda=real&vis=evolucao,passou,passou,ok,2021=1465564400.43 → 2025=2172758525.83
+/gastos?med=despesa_hab&cap=curitiba&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=curitiba&moeda=nominal&vis=evolucao,passou,passou,ok,2021=9518.909141 → 2025=18467.024116
+/atendimento?med=atu&cap=curitiba&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=27.7 → 2025=27.4
+/resultados?med=aprovacao&cap=curitiba&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=100.0 → 2025=99.9
+/atendimento?med=matriculas&cap=curitiba&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=122776 → 2025=116709
+/gastos?med=despesa_mat&cap=curitiba&moeda=real&vis=evolucao,passou,passou,ok,2021=11924.960874 → 2025=18467.024116
+/gastos?med=despesa&cap=florianopolis&moeda=real&vis=evolucao,passou,passou,ok,2021=684615869.19 → 2025=858963719.14
+/resultados?med=ideb&cap=curitiba&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=4.2 → 2025=5.4
+/gastos?med=despesa&cap=florianopolis&moeda=nominal&vis=evolucao,passou,passou,ok,2021=546483659.32 → 2025=858963719.14
+/resultados?med=saeb&cap=curitiba&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=186.2 → 2025=231.32
+/gastos?med=despesa_hab&cap=florianopolis&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=florianopolis&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=florianopolis&moeda=real&vis=evolucao,passou,passou,ok,2021=19430.663236 → 2025=23327.843584
+/gastos?med=despesa_mat&cap=florianopolis&moeda=nominal&vis=evolucao,passou,passou,ok,2021=15510.215912 → 2025=23327.843584
+/atendimento?med=matriculas&cap=florianopolis&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=33896 → 2025=35302
+/atendimento?med=atu&cap=florianopolis&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.2 → 2025=25.1
+/resultados?med=aprovacao&cap=florianopolis&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.1 → 2025=99.9
+/resultados?med=ideb&cap=florianopolis&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=4.0 → 2025=5.4
+/gastos?med=despesa&cap=fortaleza&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1771146425.03 → 2025=3064259154.43
+/gastos?med=despesa&cap=fortaleza&moeda=real&vis=evolucao,passou,passou,ok,2021=2218831118.84 → 2025=3064259154.43
+/resultados?med=saeb&cap=florianopolis&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=175.4 → 2025=226.41
+/gastos?med=despesa_hab&cap=fortaleza&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=fortaleza&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7109.430724 → 2025=13096.365169
+/gastos?med=despesa_mat&cap=fortaleza&moeda=real&vis=evolucao,passou,passou,ok,2021=8906.449464 → 2025=13096.365169
+/gastos?med=despesa_hab&cap=fortaleza&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=fortaleza&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=26.9 → 2025=25.7
+/resultados?med=ideb&cap=fortaleza&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.5 → 2025=5.2
+/resultados?med=aprovacao&cap=fortaleza&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.9 → 2025=99.8
+/atendimento?med=matriculas&cap=fortaleza&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=240428 → 2025=224060
+/resultados?med=saeb&cap=fortaleza&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=165.4 → 2025=218.89
+/gastos?med=despesa_hab&cap=goiania&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=goiania&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1146634214.95 → 2025=1903975496.37
+/gastos?med=despesa&cap=goiania&moeda=real&vis=evolucao,passou,passou,ok,2021=1436463774.03 → 2025=1903975496.37
+/gastos?med=despesa_hab&cap=goiania&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=goiania&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=24.6 → 2025=25.4
+/gastos?med=despesa_mat&cap=goiania&moeda=real&vis=evolucao,passou,passou,ok,2021=12741.768575 → 2025=16400.915329
+/gastos?med=despesa_mat&cap=goiania&moeda=nominal&vis=evolucao,passou,passou,ok,2021=10170.912815 → 2025=16400.915329
+/resultados?med=ideb&cap=goiania&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.9 → 2025=5.4
+/resultados?med=saeb&cap=goiania&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=175.4 → 2025=229.25
+/atendimento?med=matriculas&cap=goiania&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=101616 → 2025=101462
+/resultados?med=aprovacao&cap=goiania&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.8 → 2025=99.7
+/gastos?med=despesa&cap=joao-pessoa&moeda=real&vis=evolucao,passou,passou,ok,2021=495157009.62 → 2025=886110574.26
+/gastos?med=despesa_hab&cap=joao-pessoa&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=joao-pessoa&moeda=nominal&vis=evolucao,passou,passou,ok,2021=395251157.23 → 2025=886110574.26
+/gastos?med=despesa_hab&cap=joao-pessoa&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=joao-pessoa&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=26.0 → 2025=27.2
+/gastos?med=despesa_mat&cap=joao-pessoa&moeda=real&vis=evolucao,passou,passou,ok,2021=6986.589392 → 2025=11417.153538
+/atendimento?med=matriculas&cap=joao-pessoa&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=70762 → 2025=76947
+/gastos?med=despesa_mat&cap=joao-pessoa&moeda=nominal&vis=evolucao,passou,passou,ok,2021=5576.933152 → 2025=11417.153538
+/resultados?med=ideb&cap=joao-pessoa&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.4 → 2025=4.5
+/resultados?med=saeb&cap=joao-pessoa&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=163.2 → 2025=209.27
+/gastos?med=despesa&cap=macapa&moeda=nominal&vis=evolucao,passou,passou,ok,2021=246697463.63 → 2025=494077144.73
+/resultados?med=aprovacao&cap=joao-pessoa&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=94.2 → 2025=97.4
+/gastos?med=despesa_mat&cap=macapa&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7243.766436 → 2025=13831.567657
+/gastos?med=despesa&cap=macapa&moeda=real&vis=evolucao,passou,passou,ok,2021=309054068.88 → 2025=494077144.73
+/gastos?med=despesa_hab&cap=macapa&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=macapa&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=macapa&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.1 → 2025=24.1
+/resultados?med=aprovacao&cap=macapa&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=97.8 → 2025=98.3
+/atendimento?med=matriculas&cap=macapa&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=33380 → 2025=35555
+/gastos?med=despesa_mat&cap=macapa&moeda=real&vis=evolucao,passou,passou,ok,2021=9074.740608 → 2025=13831.567657
+/gastos?med=despesa&cap=maceio&moeda=real&vis=evolucao,passou,passou,ok,2021=484457997.52 → 2025=775950701.15
+/resultados?med=ideb&cap=macapa&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.1 → 2017=5.0
+/gastos?med=despesa&cap=maceio&moeda=nominal&vis=evolucao,passou,passou,ok,2021=386710842.07 → 2025=775950701.15
+/resultados?med=saeb&cap=macapa&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=160.4 → 2025=210.42
+/gastos?med=despesa_hab&cap=maceio&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=maceio&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=maceio&moeda=real&vis=evolucao,passou,passou,ok,2021=9408.778355 → 2025=11836.301658
+/gastos?med=despesa_mat&cap=maceio&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7510.406721 → 2025=11836.301658
+/atendimento?med=matriculas&cap=maceio&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=51490 → 2025=59315
+/atendimento?med=atu&cap=maceio&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=23.4 → 2025=23.0
+/resultados?med=aprovacao&cap=maceio&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=93.5 → 2025=95.9
+/resultados?med=ideb&cap=maceio&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.3 → 2025=4.3
+/gastos?med=despesa&cap=manaus&moeda=real&vis=evolucao,passou,passou,ok,2021=1954097892.22 → 2025=2854797327.2
+/gastos?med=despesa&cap=manaus&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1559827364.32 → 2025=2854797327.2
+/resultados?med=saeb&cap=maceio&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=163.6 → 2025=208.97
+/gastos?med=despesa_hab&cap=manaus&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=manaus&moeda=real&vis=evolucao,passou,passou,ok,2021=7717.837953 → 2025=11235.792521
+/gastos?med=despesa_mat&cap=manaus&moeda=nominal&vis=evolucao,passou,passou,ok,2021=6160.640611 → 2025=11235.792521
+/gastos?med=despesa_hab&cap=manaus&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=manaus&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=27.8 → 2025=26.5
+/atendimento?med=matriculas&cap=manaus&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=251271 → 2025=246325
+/resultados?med=ideb&cap=manaus&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.6 → 2025=5.3
+/resultados?med=aprovacao&cap=manaus&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.9 → 2025=99.9
+/resultados?med=saeb&cap=manaus&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=165.8 → 2025=220.11
+/gastos?med=despesa_hab&cap=natal&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=natal&moeda=nominal&vis=evolucao,passou,passou,ok,2021=407354585.81 → 2025=654608833.36
+/gastos?med=despesa&cap=natal&moeda=real&vis=evolucao,passou,passou,ok,2021=510319767.26 → 2025=654608833.36
+/gastos?med=despesa_hab&cap=natal&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=natal&moeda=real&vis=evolucao,passou,passou,ok,2021=8481.256846 → 2025=11600.580646
+/atendimento?med=atu&cap=natal&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.8 → 2025=25.4
+/atendimento?med=matriculas&cap=natal&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=57074 → 2025=54645
+/gastos?med=despesa_mat&cap=natal&moeda=nominal&vis=evolucao,passou,passou,ok,2021=6770.027522 → 2025=11600.580646
+/resultados?med=ideb&cap=natal&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.0 → 2025=3.7
+/resultados?med=aprovacao&cap=natal&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=89.0 → 2025=89.2
+/gastos?med=despesa&cap=palmas&moeda=nominal&vis=evolucao,passou,passou,ok,2021=368392851.11 → 2025=644229369.37
+/resultados?med=saeb&cap=natal&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=152.0 → 2025=197.22
+/gastos?med=despesa_hab&cap=palmas&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=palmas&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=palmas&moeda=nominal&vis=evolucao,passou,passou,ok,2021=6826.906605 → 2025=13785.445942
+/gastos?med=despesa&cap=palmas&moeda=real&vis=evolucao,passou,passou,ok,2021=461509850.6 → 2025=644229369.37
+/atendimento?med=atu&cap=palmas&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=29.1 → 2025=28.0
+/resultados?med=aprovacao&cap=palmas&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.8 → 2025=99.8
+/atendimento?med=matriculas&cap=palmas&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=42729 → 2025=43886
+/gastos?med=despesa_mat&cap=palmas&moeda=real&vis=evolucao,passou,passou,ok,2021=8552.512997 → 2025=13785.445942
+/resultados?med=saeb&cap=palmas&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=172.0 → 2025=216.54
+/gastos?med=despesa&cap=porto-alegre&moeda=real&vis=evolucao,passou,passou,ok,2021=842507625.54 → 2025=1229544915.38
+/resultados?med=ideb&cap=palmas&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.5 → 2025=5.2
+/gastos?med=despesa&cap=porto-alegre&moeda=nominal&vis=evolucao,passou,passou,ok,2021=672518226.54 → 2025=1229544915.38
+/gastos?med=despesa_mat&cap=porto-alegre&moeda=nominal&vis=evolucao,passou,passou,ok,2021=9321.654313 → 2025=17819.15323
+/gastos?med=despesa_hab&cap=porto-alegre&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=porto-alegre&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=porto-alegre&moeda=real&vis=evolucao,passou,passou,ok,2021=11677.846832 → 2025=17819.15323
+/atendimento?med=matriculas&cap=porto-alegre&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=48912 → 2025=44862
+/resultados?med=aprovacao&cap=porto-alegre&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.1 → 2025=93.4
+/atendimento?med=atu&cap=porto-alegre&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=24.8 → 2025=23.0
+/resultados?med=ideb&cap=porto-alegre&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.2 → 2025=4.2
+/gastos?med=despesa&cap=porto-velho&moeda=real&vis=evolucao,passou,passou,ok,2021=448184135.55 → 2025=594019947.68
+/resultados?med=saeb&cap=porto-alegre&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=167.8 → 2025=193.94
+/gastos?med=despesa&cap=porto-velho&moeda=nominal&vis=evolucao,passou,passou,ok,2021=357755812.37 → 2025=594019947.68
+/gastos?med=despesa_hab&cap=porto-velho&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=porto-velho&moeda=real&vis=evolucao,passou,passou,ok,2021=9278.883145 → 2025=12581.339386
+/gastos?med=despesa_hab&cap=porto-velho&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=porto-velho&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7406.719949 → 2025=12581.339386
+/atendimento?med=atu&cap=porto-velho&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=20.7 → 2025=22.7
+/resultados?med=ideb&cap=porto-velho&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.3 → 2025=3.7
+/resultados?med=aprovacao&cap=porto-velho&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.8 → 2025=97.9
+/atendimento?med=matriculas&cap=porto-velho&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=42533 → 2025=42802
+/resultados?med=saeb&cap=porto-velho&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=164.8 → 2025=207.73
+/gastos?med=despesa&cap=recife&moeda=real&vis=evolucao,passou,passou,ok,2021=1117145776.77 → 2025=1861910249.26
+/gastos?med=despesa_hab&cap=recife&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=recife&moeda=nominal&vis=evolucao,passou,passou,ok,2021=891743734.78 → 2025=1861910249.26
+/gastos?med=despesa_hab&cap=recife&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=recife&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=21.6 → 2025=20.5
+/gastos?med=despesa_mat&cap=recife&moeda=nominal&vis=evolucao,passou,passou,ok,2021=9596.874526 → 2025=18589.611092
+/gastos?med=despesa_mat&cap=recife&moeda=real&vis=evolucao,passou,passou,ok,2021=12022.633217 → 2025=18589.611092
+/atendimento?med=matriculas&cap=recife&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=92794 → 2025=94975
+/resultados?med=aprovacao&cap=recife&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.5 → 2025=99.3
+/resultados?med=ideb&cap=recife&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.8 → 2025=4.9
+/resultados?med=saeb&cap=recife&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=149.6 → 2025=206.66
+/gastos?med=despesa&cap=rio-branco&moeda=nominal&vis=evolucao,passou,passou,ok,2021=178136523.27 → 2025=354158021.6
+/gastos?med=despesa_hab&cap=rio-branco&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=rio-branco&moeda=real&vis=evolucao,passou,passou,ok,2021=223163288.84 → 2025=354158021.6
+/gastos?med=despesa_hab&cap=rio-branco&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=rio-branco&moeda=nominal&vis=evolucao,passou,passou,ok,2021=7757.870749 → 2025=15884.527916
+/atendimento?med=atu&cap=rio-branco&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.2 → 2025=24.0
+/atendimento?med=matriculas&cap=rio-branco&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=22119 → 2025=21858
+/resultados?med=aprovacao&cap=rio-branco&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=97.2 → 2025=98.9
+/gastos?med=despesa_mat&cap=rio-branco&moeda=real&vis=evolucao,passou,passou,ok,2021=9718.792749 → 2025=15884.527916
+/resultados?med=saeb&cap=rio-branco&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=181.6 → 2025=231.54
+/resultados?med=ideb&cap=rio-branco&moeda=nominal&etapa=anos_finais&vis=evolucao,um período,um período,ok,
+/gastos?med=despesa&cap=rio-de-janeiro&moeda=real&vis=evolucao,passou,passou,ok,2021=6506487998.59 → 2025=7164394219.78
+/gastos?med=despesa&cap=rio-de-janeiro&moeda=nominal&vis=evolucao,passou,passou,ok,2021=5193699899.18 → 2025=7164394219.78
+/gastos?med=despesa_hab&cap=rio-de-janeiro&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=rio-de-janeiro&moeda=nominal&vis=evolucao,passou,passou,ok,2023=9771.406466 → 2025=11390.721032
+/gastos?med=despesa_hab&cap=rio-de-janeiro&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=rio-de-janeiro&moeda=real&vis=evolucao,passou,passou,ok,2023=10709.786068 → 2025=11390.721032
+/resultados?med=aprovacao&cap=rio-de-janeiro&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.8 → 2025=99.5
+/atendimento?med=atu&cap=rio-de-janeiro&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=29.4 → 2025=28.4
+/atendimento?med=matriculas&cap=rio-de-janeiro&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=629689 → 2025=586022
+/resultados?med=ideb&cap=rio-de-janeiro&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.7 → 2025=5.2
+/gastos?med=despesa&cap=salvador&moeda=nominal&vis=evolucao,passou,passou,ok,2021=1372767717.07 → 2025=2438587342.31
+/resultados?med=saeb&cap=rio-de-janeiro&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=182.8 → 2025=213.78
+/gastos?med=despesa&cap=salvador&moeda=real&vis=evolucao,passou,passou,ok,2021=1719756021.59 → 2025=2438587342.31
+/gastos?med=despesa_hab&cap=salvador&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=salvador&moeda=nominal&vis=evolucao,passou,passou,ok,2021=8800.027587 → 2025=16654.910813
+/gastos?med=despesa_hab&cap=salvador&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=salvador&moeda=real&vis=evolucao,passou,passou,ok,2021=11024.370871 → 2025=16654.910813
+/atendimento?med=atu&cap=salvador&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.0 → 2025=23.6
+/resultados?med=aprovacao&cap=salvador&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.5 → 2025=99.1
+/atendimento?med=matriculas&cap=salvador&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=148421 → 2025=133485
+/resultados?med=ideb&cap=salvador&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.2 → 2025=4.5
+/resultados?med=saeb&cap=salvador&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=164.6 → 2025=203.61
+/gastos?med=despesa&cap=sao-luis&moeda=nominal&vis=evolucao,passou,passou,ok,2021=615396136.59 → 2025=1162822134.63
+/gastos?med=despesa&cap=sao-luis&moeda=real&vis=evolucao,passou,passou,ok,2021=770947042.54 → 2025=1162822134.63
+/gastos?med=despesa_hab&cap=sao-luis&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=sao-luis&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=sao-luis&moeda=real&vis=evolucao,passou,passou,ok,2021=8258.481285 → 2025=12537.509742
+/gastos?med=despesa_mat&cap=sao-luis&moeda=nominal&vis=evolucao,passou,passou,ok,2021=6592.200497 → 2025=12537.509742
+/atendimento?med=atu&cap=sao-luis&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=25.2 → 2025=24.7
+/resultados?med=ideb&cap=sao-luis&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=2.9 → 2025=4.4
+/atendimento?med=matriculas&cap=sao-luis&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=85578 → 2025=82545
+/resultados?med=aprovacao&cap=sao-luis&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=95.6 → 2025=99.0
+/resultados?med=saeb&cap=sao-luis&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=164.6 → 2025=214.21
+/gastos?med=despesa&cap=sao-paulo&moeda=real&vis=evolucao,passou,passou,ok,2021=17201283439.05 → 2025=23584096338.05
+/gastos?med=despesa_hab&cap=sao-paulo&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=sao-paulo&moeda=nominal&vis=evolucao,passou,passou,ok,2021=13730649173.95 → 2025=23584096338.05
+/gastos?med=despesa_hab&cap=sao-paulo&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/atendimento?med=atu&cap=sao-paulo&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=28.8 → 2025=29.5
+/gastos?med=despesa_mat&cap=sao-paulo&moeda=nominal&vis=evolucao,passou,passou,ok,2021=12704.385483 → 2025=23746.526072
+/gastos?med=despesa_mat&cap=sao-paulo&moeda=real&vis=evolucao,passou,passou,ok,2021=15915.615703 → 2025=23746.526072
+/atendimento?med=matriculas&cap=sao-paulo&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=735970 → 2025=702936
+/resultados?med=ideb&cap=sao-paulo&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=4.1 → 2025=4.9
+/resultados?med=aprovacao&cap=sao-paulo&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=98.6 → 2025=99.4
+/resultados?med=saeb&cap=sao-paulo&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=166.4 → 2025=205.72
+/gastos?med=despesa&cap=teresina&moeda=nominal&vis=evolucao,passou,passou,ok,2021=544083424.47 → 2025=1002773511.46
+/gastos?med=despesa_hab&cap=teresina&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa&cap=teresina&moeda=real&vis=evolucao,passou,passou,ok,2021=681608937.8 → 2025=1002773511.46
+/gastos?med=despesa_hab&cap=teresina&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=teresina&moeda=nominal&vis=evolucao,passou,passou,ok,2021=5789.190431 → 2025=11029.964693
+/atendimento?med=atu&cap=teresina&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=27.9 → 2025=26.8
+/gastos?med=despesa_mat&cap=teresina&moeda=real&vis=evolucao,passou,passou,ok,2021=7252.497986 → 2025=11029.964693
+/atendimento?med=matriculas&cap=teresina&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=92336 → 2025=89554
+/resultados?med=aprovacao&cap=teresina&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=99.6 → 2025=99.5
+/resultados?med=saeb&cap=teresina&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=174.8 → 2025=235.67
+/resultados?med=ideb&cap=teresina&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.9 → 2025=5.9
+/gastos?med=despesa&cap=vitoria&moeda=nominal&vis=evolucao,passou,passou,ok,2021=409221775.02 → 2025=810892059.61
+/gastos?med=despesa&cap=vitoria&moeda=real&vis=evolucao,passou,passou,ok,2021=512658917.46 → 2025=810892059.61
+/gastos?med=despesa_hab&cap=vitoria&moeda=real&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_hab&cap=vitoria&moeda=nominal&vis=evolucao,bloqueada,bloqueada,ok,
+/gastos?med=despesa_mat&cap=vitoria&moeda=nominal&vis=evolucao,passou,passou,ok,2021=8844.462185 → 2025=18882.036392
+/gastos?med=despesa_mat&cap=vitoria&moeda=real&vis=evolucao,passou,passou,ok,2021=11080.037002 → 2025=18882.036392
+/atendimento?med=matriculas&cap=vitoria&moeda=nominal&etapa=total&vis=evolucao,passou,passou,ok,2021=43788 → 2025=40913
+/resultados?med=aprovacao&cap=vitoria&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=97.9 → 2025=99.2
+/atendimento?med=atu&cap=vitoria&moeda=nominal&etapa=anos_iniciais&vis=evolucao,passou,passou,ok,2021=22.6 → 2025=23.2
+/resultados?med=ideb&cap=vitoria&moeda=nominal&etapa=anos_finais&vis=evolucao,passou,passou,ok,2005=3.5 → 2025=5.4
+/resultados?med=saeb&cap=vitoria&moeda=nominal&etapa=anos_iniciais&disc=portugues&vis=evolucao,passou,passou,ok,2005=178.2 → 2025=222.52

@@ -34,7 +34,7 @@ const CORES = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3
 
 const COLUNAS_EVENTOS: ColunaTabela[] = [
   { id: "data", rotulo: "Data", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
+  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
   {
     id: "antes",
     rotulo: "Antes (TE + TUSD)",

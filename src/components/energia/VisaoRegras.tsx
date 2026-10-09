@@ -6,6 +6,7 @@ import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
 import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, conjuntosLegiveis, datasLegiveis, enumLegivel, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 
 /**
  * Conteúdo de cada regra do "O que observar" (P007), montado no servidor e entregue ao
@@ -161,7 +162,7 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
         <ul data-nivel="auditar" className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
           {o.bloqueios_registrados.map((b) => (
             <li key={b.fonte + b.evidencia}>
-              Bloqueio registrado ({b.origem}): {b.fonte}. {b.evidencia}
+              Bloqueio registrado ({b.origem}): {b.fonte}. <TextoEnergia texto={b.evidencia} />
             </li>
           ))}
         </ul>

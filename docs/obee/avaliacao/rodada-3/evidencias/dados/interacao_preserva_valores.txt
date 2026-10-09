@@ -1,0 +1,10 @@
+gráfico: frase da capital 2023 | ok | Recife (PE) registra R$ 995; a mediana das 26 capitais é R$ 1.032 (R$ 37 abaixo).
+URL registra vis=tabela e mantém cap e ano | ok | cap=recife&ano=2023&vis=tabela
+tabela: Recife R$ 995 incluída | ok | Recife (PE) R$ 995 Incluída, com nota
+evolução mantém capital | ok | cap=recife&ano=2023&vis=evolucao
+evolução: frase da série de Recife (2021 e 2025 em bases diferentes) | ok | Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.
+moeda real na URL | ok | cap=recife&ano=2023&vis=evolucao&moeda=real
+gráfico em reais de 2023: valor de Recife = 995,30 × 1,0960 = R$ 1.091 | ok | Recife (PE) registra R$ 1.091; a mediana das 26 capitais é R$ 1.131 (R$ 40 abaixo).
+voltar restaura o estado anterior (evolução em reais) | ok | cap=recife&ano=2023&vis=evolucao&moeda=real
+o link reabre o mesmo recorte | ok | cap=recife&ano=2023&vis=evolucao&moeda=real
+sem erros de página ou de console | ok | 

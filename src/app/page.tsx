@@ -13,7 +13,7 @@ import { SecaoAcesso } from "@/components/home/SecaoAcesso";
 
 export const metadata: Metadata = {
   description:
-    "Da informação dispersa ao conhecimento verificável. Uma plataforma, dois observatórios: Crédito e Setor Elétrico, com bases públicas, registros oficiais e método declarado. Gratuita, com leitura aberta e sem cadastro.",
+    "Da informação dispersa ao conhecimento verificável. Uma plataforma, três observatórios: Crédito, Setor Elétrico e Eficiência Estatal, com bases públicas, registros oficiais e método declarado. Gratuita, com leitura aberta e sem cadastro.",
 };
 
 export default async function HomePage() {

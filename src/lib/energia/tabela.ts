@@ -23,6 +23,8 @@
  * texto numa coluna numérica é tratado como ausência, não convertido às cegas.
  */
 import { datasLegiveis, dataBR, num } from "@/lib/energia/formato";
+import type { ClasseLiteral } from "@/lib/literais-fonte";
+import { encontraDatas } from "@/lib/texto-datas";
 import { ordenarComNulos, valido, type Direcao } from "@/lib/energia/escalas";
 
 export type TipoColuna = "texto" | "numero" | "percentual" | "data";
@@ -45,6 +47,11 @@ export type ColunaTabela = {
   ordenavel?: boolean;
   /** Nível mínimo de profundidade em que a coluna aparece na tela (código, hash). O arquivo exportado leva todas as colunas. */
   nivel?: "analisar" | "auditar";
+  /**
+   * Valores desta coluna que casam com o padrão da classe são literais (identificador gerado
+   * ou valor da fonte) e saem identificados e intactos; os demais saem como texto comum.
+   */
+  literal?: { classe: ClasseLiteral; origem: string };
 };
 
 export type Ordem = { coluna: string; direcao: Direcao } | null;
@@ -73,6 +80,9 @@ export function valorColuna(l: LinhaTabela, c: ColunaTabela): string | number | 
 
 /** Data de referência como texto local: "2026-09-27" → 27/09/2026; "2026-09" → 09/2026; com hora, "27/09/2026 16:00". */
 export function textoData(v: string): string {
+  // data que o calendário não admite (2021-02-29, mês 13) não é "corrigida" nem repassada como se fosse válida: sai como veio
+  const achadas = encontraDatas(v);
+  if (achadas.length === 1 && achadas[0].inicio === 0 && !achadas[0].valida) return v;
   if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v)) return `${dataBR(v)} ${v.slice(11, 16)}`;
   if (/^\d{4}(-\d{2}){0,2}$/.test(v)) return dataBR(v);
   return v;

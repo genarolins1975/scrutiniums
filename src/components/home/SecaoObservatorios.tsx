@@ -14,11 +14,17 @@ const ACENTO: Record<Dominio["acento"], { filete: string; texto: string; chip: s
     chip: "border-energia/40 text-energia-dark",
     hover: "hover:border-energia",
   },
+  obee: {
+    filete: "bg-obee",
+    texto: "text-obee-dark",
+    chip: "border-obee/40 text-obee-dark",
+    hover: "hover:border-obee",
+  },
 };
 
 /**
- * "Uma plataforma. Dois observatórios.": a arquitetura de marca em uma dobra.
- * Dois cards editoriais do mesmo registro (src/lib/dominios.ts), cada um com o
+ * "Uma plataforma. Três observatórios.": a arquitetura de marca em uma dobra.
+ * Três cards editoriais do mesmo registro (src/lib/dominios.ts), cada um com o
  * acento do seu domínio; nenhum catálogo de funcionalidades.
  */
 export function SecaoObservatorios() {
@@ -30,26 +36,26 @@ export function SecaoObservatorios() {
           id="observatorios-titulo"
           className="mt-6 max-w-3xl font-serif text-[clamp(2rem,4.6vw,3.2rem)] leading-[1.1] text-carvao"
         >
-          Uma plataforma. Dois observatórios.
+          Uma plataforma. Três observatórios.
         </h2>
         <p className="mt-6 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
           A Scrutiniums organiza dados públicos, registros oficiais e séries setoriais para transformar
-          informação dispersa em conhecimento verificável. Hoje, essa infraestrutura sustenta dois
-          observatórios independentes: Crédito e Setor Elétrico.
+          informação dispersa em conhecimento verificável. Hoje, essa infraestrutura sustenta três
+          observatórios independentes: Crédito, Setor Elétrico e Eficiência Estatal.
         </p>
 
-        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
+        <ul className="mt-14 grid gap-6 lg:grid-cols-3">
           {DOMINIOS.map((d, i) => {
             const a = ACENTO[d.acento];
             return (
               <li key={d.id}>
                 <article
                   aria-labelledby={`obs-${d.id}-titulo`}
-                  className={`group relative flex h-full flex-col border border-linha bg-superficie p-8 transition-colors md:p-10 ${a.hover}`}
+                  className={`group relative flex h-full flex-col border border-linha bg-superficie p-8 transition-colors ${a.hover}`}
                 >
                   <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
                   <p className="rotulo text-mineral">
-                    Observatório {String(i + 1).padStart(2, "0")} · domínio {d.nomeCurto}
+                    Observatório {String(i + 1).padStart(2, "0")} · {d.nomeCurto}
                   </p>
                   <h3 id={`obs-${d.id}-titulo`} className="mt-5 font-serif text-2xl leading-snug text-carvao md:text-[1.75rem]">
                     {d.nome}

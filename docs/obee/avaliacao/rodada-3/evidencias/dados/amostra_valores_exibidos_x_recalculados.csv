@@ -1,0 +1,355 @@
+lote,id,campo,exibido_no_navegador,recalculado,resultado
+gastos,G|despesa_mat|2021|nominal|sao-paulo|regiao,ref_mediana,R$ 10.457,R$ 10.457,ok
+gastos,G|despesa|2022|real|palmas|regiao,ref_maior_valor,"R$ 2,23 bilhões","R$ 2,23 bilhões",ok
+gastos,G|despesa|2021|nominal|sao-paulo|regiao,ref_maior_valor,"R$ 13,73 bilhões","R$ 13,73 bilhões",ok
+gastos,G|despesa_mat|2022|real|sao-paulo|regiao,perimetro_intra,True,True,ok
+gastos,G|despesa|2025|real|porto-alegre|todas,ref_mediana,"R$ 1,01 bilhão","R$ 1,01 bilhão",ok
+gastos,G|despesa|2025|nominal|macapa|regiao,ref_menor_valor,"R$ 354,2 milhões","R$ 354,2 milhões",ok
+gastos,G|despesa|2024|real|sao-paulo|regiao,ref_maior_valor,"R$ 23,45 bilhões","R$ 23,45 bilhões",ok
+gastos,G|despesa|2023|nominal|palmas|regiao,ref_mediana,"R$ 525,2 milhões","R$ 525,2 milhões",ok
+gastos,G|despesa_mat|2022|real|porto-alegre|regiao,ref_mediana,R$ 16.267,R$ 16.267,ok
+gastos,G|despesa|2022|real|porto-alegre|todas,ref_media,"R$ 1,96 bilhão","R$ 1,96 bilhão",ok
+gastos,G|despesa_mat|2021|real|palmas|todas,ref_media,R$ 10.550,R$ 10.550,ok
+gastos,G|despesa_mat|2022|real|sao-paulo|regiao,ref_media,R$ 15.443,R$ 15.443,ok
+gastos,G|despesa_mat|2025|nominal|boa-vista|todas,ref_maior_valor,R$ 23.747,R$ 23.747,ok
+gastos,G|despesa_hab|2024|real|palmas|todas,ref_maior_valor,R$ 2.306,R$ 2.306,ok
+gastos,G|despesa|2022|real|recife|todas,ref_mediana,"R$ 791,5 milhões","R$ 791,5 milhões",ok
+gastos,G|despesa_hab|2025|real|recife|regiao,frase_amplitude,A despesa em Educação por habitante vai de R$ 780 em Maceió (AL) a R$ 1.188 em Fortaleza (CE) entre as 9 capitais com dado comparável em 2025.,A despesa em Educação por habitante vai de R$ 780 em Maceió (AL) a R$ 1.188 em Fortaleza (CE) entre as 9 capitais com dado comparável em 2025.,ok
+gastos,G|despesa_hab|2023|nominal|recife|todas,frase_capital,True,True,ok
+gastos,G|despesa|2021|real|recife|regiao,ref_maior_valor,"R$ 2,22 bilhões","R$ 2,22 bilhões",ok
+gastos,G|despesa|2021|real|recife|todas,ref_menor_valor,"R$ 223,2 milhões","R$ 223,2 milhões",ok
+gastos,G|despesa|2022|real|campo-grande|regiao,ref_mediana,"R$ 1,13 bilhão","R$ 1,13 bilhão",ok
+gastos,G|despesa|2024|real|porto-alegre|regiao,frase_amplitude,"A despesa total em Educação vai de R$ 892,5 milhões em Florianópolis (SC) a R$ 2,17 bilhões em Curitiba (PR) entre as 3 capitais com dado comparável em 2024.","A despesa total em Educação vai de R$ 892,5 milhões em Florianópolis (SC) a R$ 2,17 bilhões em Curitiba (PR) entre as 3 capitais com dado comparável em 2024.",ok
+gastos,G|despesa|2025|nominal|recife|todas,ref_mediana,"R$ 1,01 bilhão","R$ 1,01 bilhão",ok
+gastos,G|despesa_hab|2024|nominal|porto-alegre|regiao,frase_amplitude,A despesa em Educação por habitante vai de R$ 733 em Porto Alegre (RS) a R$ 1.475 em Florianópolis (SC) entre as 3 capitais com dado comparável em 2024.,A despesa em Educação por habitante vai de R$ 733 em Porto Alegre (RS) a R$ 1.475 em Florianópolis (SC) entre as 3 capitais com dado comparável em 2024.,ok
+gastos,G|despesa_hab|2025|real|boa-vista|regiao,perimetro_intra,True,True,ok
+gastos,G|despesa|2021|nominal|vitoria|todas,ref_menor_valor,"R$ 178,1 milhões","R$ 178,1 milhões",ok
+gastos,G|despesa_hab|2025|nominal|boa-vista|todas,perimetro_intra,True,True,ok
+gastos,G|despesa|2024|nominal|vitoria|todas,ref_mediana,"R$ 892,9 milhões","R$ 892,9 milhões",ok
+gastos,G|despesa_mat|2022|nominal|vitoria|regiao,ref_maior_valor,R$ 15.248,R$ 15.248,ok
+gastos,G|despesa_mat|2021|real||todas,ref_maior_valor,R$ 19.431,R$ 19.431,ok
+gastos,G|despesa_mat|2022|nominal|porto-alegre|todas,frase_capital,True,True,ok
+gastos,G|despesa_hab|2024|real|palmas|todas,ref_menor_valor,R$ 648,R$ 648,ok
+gastos,G|despesa_hab|2022|real|vitoria|regiao,ref_razao_agregada,Razão agregada R$ 1.393:,Razão agregada R$ 1.393:,ok
+gastos,G|despesa|2024|real|sao-paulo|todas,frase_amplitude,"A despesa total em Educação vai de R$ 355,1 milhões em Rio Branco (AC) a R$ 23,45 bilhões em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.","A despesa total em Educação vai de R$ 355,1 milhões em Rio Branco (AC) a R$ 23,45 bilhões em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.",ok
+gastos,G|despesa_hab|2023|nominal|vitoria|regiao,frase_amplitude,A despesa em Educação por habitante vai de R$ 1.034 em Rio de Janeiro (RJ) a R$ 1.997 em Vitória (ES) entre as 4 capitais com dado comparável em 2023.,A despesa em Educação por habitante vai de R$ 1.034 em Rio de Janeiro (RJ) a R$ 1.997 em Vitória (ES) entre as 4 capitais com dado comparável em 2023.,ok
+gastos,G|despesa_hab|2025|real|campo-grande|todas,ref_media,R$ 1.243,R$ 1.243,ok
+gastos,G|despesa|2025|real|sao-paulo|regiao,frase_capital,True,True,ok
+gastos,G|despesa_mat|2023|real|palmas|todas,perimetro_intra,True,True,ok
+gastos,G|despesa_mat|2024|real|sao-paulo|todas,ref_razao_agregada,Razão agregada R$ 15.803:,Razão agregada R$ 15.803:,ok
+gastos,G|despesa|2021|nominal|recife|regiao,perimetro_intra,True,True,ok
+gastos,G|despesa_mat|2023|nominal|boa-vista|todas,perimetro_intra,True,True,ok
+gastos,G|despesa_mat|2023|real|sao-paulo|regiao,frase_amplitude,A razão da despesa de aplicação direta por matrícula vai de R$ 10.710 em Rio de Janeiro (RJ) a R$ 21.342 em São Paulo (SP) entre as 4 capitais com dado comparável em 2023.,A razão da despesa de aplicação direta por matrícula vai de R$ 10.710 em Rio de Janeiro (RJ) a R$ 21.342 em São Paulo (SP) entre as 4 capitais com dado comparável em 2023.,ok
+gastos,G|despesa|2023|real|porto-alegre|todas,frase_capital,True,True,ok
+gastos,G|despesa_mat|2022|nominal|boa-vista|regiao,ref_menor_valor,R$ 7.995,R$ 7.995,ok
+gastos,G|despesa_hab|2023|nominal|recife|todas,ref_menor_valor,R$ 574,R$ 574,ok
+gastos,G|despesa_hab|2021|real|porto-alegre|todas,perimetro_intra,True,True,ok
+gastos,G|despesa|2025|real|sao-paulo|regiao,frase_amplitude,"A despesa total em Educação vai de R$ 810,9 milhões em Vitória (ES) a R$ 23,58 bilhões em São Paulo (SP) entre as 4 capitais com dado comparável em 2025.","A despesa total em Educação vai de R$ 810,9 milhões em Vitória (ES) a R$ 23,58 bilhões em São Paulo (SP) entre as 4 capitais com dado comparável em 2025.",ok
+gastos,G|despesa|2023|real|macapa|todas,ref_maior_valor,"R$ 21,03 bilhões","R$ 21,03 bilhões",ok
+gastos,G|despesa|2024|real|macapa|regiao,frase_amplitude,"A despesa total em Educação vai de R$ 355,1 milhões em Rio Branco (AC) a R$ 2,83 bilhões em Manaus (AM) entre as 7 capitais com dado comparável em 2024.","A despesa total em Educação vai de R$ 355,1 milhões em Rio Branco (AC) a R$ 2,83 bilhões em Manaus (AM) entre as 7 capitais com dado comparável em 2024.",ok
+gastos,G|despesa_mat|2023|nominal|boa-vista|regiao,ref_mediana,R$ 10.756,R$ 10.756,ok
+gastos,G|despesa_hab|2021|real|macapa|regiao,frase_amplitude,A despesa em Educação por habitante vai de R$ 432 em Belém (PA) a R$ 1.473 em Palmas (TO) entre as 7 capitais com dado comparável em 2021.,A despesa em Educação por habitante vai de R$ 432 em Belém (PA) a R$ 1.473 em Palmas (TO) entre as 7 capitais com dado comparável em 2021.,ok
+gastos,G|despesa|2022|real|porto-alegre|todas,ref_mediana,"R$ 791,5 milhões","R$ 791,5 milhões",ok
+gastos,G|despesa|2022|real|campo-grande|todas,ref_maior_valor,"R$ 18,49 bilhões","R$ 18,49 bilhões",ok
+gastos,G|despesa_hab|2022|nominal|palmas|todas,ref_media,R$ 937,R$ 937,ok
+gastos,G|despesa|2022|real|boa-vista|regiao,frase_capital,True,True,ok
+gastos,G|despesa_hab|2022|nominal|recife|regiao,ref_maior_valor,R$ 941,R$ 941,ok
+gastos,G|despesa_mat|2024|nominal|vitoria|regiao,ref_menor_valor,R$ 10.723,R$ 10.723,ok
+gastos,G|despesa_hab|2021|real|sao-paulo|todas,ref_razao_agregada,Razão agregada R$ 944:,Razão agregada R$ 944:,ok
+gastos,G|despesa_hab|2025|real|porto-alegre|todas,ref_razao_agregada,Razão agregada R$ 1.361:,Razão agregada R$ 1.361:,ok
+gastos,G|despesa|2025|real|campo-grande|todas,frase_capital,True,True,ok
+gastos,G|despesa_mat|2023|real|sao-paulo|regiao,ref_maior_valor,R$ 21.342,R$ 21.342,ok
+atendimento,A|matriculas|2021|eja||,ref_menor_valor,337,337,ok
+atendimento,A|conveniadas|2024|total||palmas,ref_mediana,2.007,2.007,ok
+atendimento,A|conveniadas|2025|anos_iniciais||sao-paulo,ref_menor_valor,0,0,ok
+atendimento,A|matriculas|2023|creche||sao-paulo,frase_capital,True,True,ok
+atendimento,A|conveniadas|2022|ensino_medio||rio-branco,ref_mediana,0,0,ok
+atendimento,A|matriculas|2022|anos_iniciais||,ref_menor_valor,7.788,7.788,ok
+atendimento,A|conveniadas|2025|ensino_medio||palmas,ref_maior_valor,464,464,ok
+atendimento,A|conveniadas|2021|creche||rio-branco,frase_amplitude,"O número de matrículas em escolas conveniadas com o município na creche vai de 0 em Boa Vista (RR), Fortaleza (CE) e mais 6 a 291.023 em São Paulo (SP) entre as 26 capitais com dado comparável em 2021.","O número de matrículas em escolas conveniadas com o município na creche vai de 0 em Boa Vista (RR), Fortaleza (CE) e mais 6 a 291.023 em São Paulo (SP) entre as 26 capitais com dado comparável em 2021.",ok
+atendimento,A|atu|2023|creche||sao-paulo,ref_maior_valor,"31,2","31,2",ok
+atendimento,A|atu|2022|anos_finais||recife,ref_maior_valor,"35,5","35,5",ok
+atendimento,A|conveniadas|2022|anos_iniciais||,ref_media,678,678,ok
+atendimento,A|atu|2021|pre_escola||rio-branco,ref_menor_valor,"11,8","11,8",ok
+atendimento,A|matriculas|2024|anos_iniciais||,ref_maior_valor,257.027,257.027,ok
+atendimento,A|atu|2025|anos_finais||rio-branco,ref_media,"29,4","29,4",ok
+atendimento,A|matriculas|2022|creche||palmas,frase_amplitude,O número de matrículas na rede municipal na creche vai de 1.239 em Macapá (AP) a 56.235 em Rio de Janeiro (RJ) entre as 26 capitais com dado comparável em 2022.,O número de matrículas na rede municipal na creche vai de 1.239 em Macapá (AP) a 56.235 em Rio de Janeiro (RJ) entre as 26 capitais com dado comparável em 2022.,ok
+atendimento,A|matriculas|2021|eja||sao-paulo,ref_mediana,3.841,3.841,ok
+atendimento,A|atu|2024|pre_escola||rio-branco,frase_amplitude,"A média de alunos por turma na pré-escola vai de 12,9 em Florianópolis (SC) a 31,5 em Palmas (TO) entre as 26 capitais com dado comparável em 2024.","A média de alunos por turma na pré-escola vai de 12,9 em Florianópolis (SC) a 31,5 em Palmas (TO) entre as 26 capitais com dado comparável em 2024.",ok
+atendimento,A|matriculas|2025|total||recife,frase_amplitude,O número de matrículas na rede municipal em toda a educação básica vai de 21.858 em Rio Branco (AC) a 702.936 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.,O número de matrículas na rede municipal em toda a educação básica vai de 21.858 em Rio Branco (AC) a 702.936 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.,ok
+atendimento,A|conveniadas|2021|total||palmas,ref_mediana,1.157,1.157,ok
+atendimento,A|matriculas|2022|anos_iniciais||rio-branco,ref_mediana,30.756,30.756,ok
+atendimento,A|matriculas|2025|total||palmas,ref_mediana,68.179,68.179,ok
+atendimento,A|matriculas|2022|eja||recife,ref_mediana,4.013,4.013,ok
+atendimento,A|conveniadas|2022|ensino_medio||sao-paulo,ref_mediana,0,0,ok
+atendimento,A|matriculas|2025|profissional||recife,ref_mediana,0,0,ok
+atendimento,A|conveniadas|2023|profissional||palmas,ref_mediana,0,0,ok
+atendimento,A|atu|2023|pre_escola||sao-paulo,ref_maior_valor,"32,2","32,2",ok
+atendimento,A|conveniadas|2022|anos_iniciais||rio-branco,ref_menor_valor,0,0,ok
+atendimento,A|matriculas|2023|eja||palmas,ref_maior_valor,26.273,26.273,ok
+atendimento,A|conveniadas|2022|anos_finais||rio-branco,ref_media,157,157,ok
+atendimento,A|conveniadas|2022|pre_escola||recife,frase_amplitude,"O número de matrículas em escolas conveniadas com o município na pré-escola vai de 0 em Fortaleza (CE), João Pessoa (PB) e mais 7 a 13.549 em Salvador (BA) entre as 26 capitais com dado comparável em 2022.","O número de matrículas em escolas conveniadas com o município na pré-escola vai de 0 em Fortaleza (CE), João Pessoa (PB) e mais 7 a 13.549 em Salvador (BA) entre as 26 capitais com dado comparável em 2022.",ok
+atendimento,A|matriculas|2024|ensino_medio||sao-paulo,frase_amplitude,"O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.","O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.",ok
+atendimento,A|atu|2024|anos_iniciais||sao-paulo,ref_mediana,"25,2","25,2",ok
+atendimento,A|matriculas|2025|ensino_medio||sao-paulo,ref_media,122,122,ok
+atendimento,A|atu|2025|anos_finais||,ref_menor_valor,"18,1","18,1",ok
+atendimento,A|atu|2025|creche||rio-branco,ref_menor_valor,"8,5","8,5",ok
+atendimento,A|atu|2023|anos_finais||rio-branco,ref_menor_valor,"20,6","20,6",ok
+atendimento,A|matriculas|2022|pre_escola||,ref_media,24.667,24.667,ok
+atendimento,A|atu|2022|anos_iniciais||,ref_mediana,"25,2","25,2",ok
+atendimento,A|atu|2023|pre_escola||sao-paulo,ref_mediana,"21,0","21,0",ok
+atendimento,A|matriculas|2023|profissional||palmas,ref_maior_valor,1.637,1.637,ok
+atendimento,A|conveniadas|2025|anos_iniciais||rio-branco,frase_capital,True,True,ok
+atendimento,A|matriculas|2025|pre_escola||recife,ref_maior_valor,182.882,182.882,ok
+atendimento,A|matriculas|2023|profissional||,ref_media,65,65,ok
+atendimento,A|conveniadas|2024|creche||recife,ref_media,15.891,15.891,ok
+atendimento,A|conveniadas|2022|ensino_medio||sao-paulo,frase_amplitude,"O número de matrículas em escolas conveniadas com o município no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 20 a 237 em Salvador (BA) entre as 26 capitais com dado comparável em 2022.","O número de matrículas em escolas conveniadas com o município no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 20 a 237 em Salvador (BA) entre as 26 capitais com dado comparável em 2022.",ok
+atendimento,A|matriculas|2025|eja||,ref_menor_valor,27,27,ok
+atendimento,A|atu|2023|anos_iniciais||rio-branco,frase_amplitude,"A média de alunos por turma nos anos iniciais vai de 20,9 em Recife (PE) a 29,3 em Rio de Janeiro (RJ) entre as 26 capitais com dado comparável em 2023.","A média de alunos por turma nos anos iniciais vai de 20,9 em Recife (PE) a 29,3 em Rio de Janeiro (RJ) entre as 26 capitais com dado comparável em 2023.",ok
+atendimento,A|atu|2025|pre_escola||recife,frase_amplitude,"A média de alunos por turma na pré-escola vai de 12,5 em Florianópolis (SC) a 31,7 em Palmas (TO) entre as 26 capitais com dado comparável em 2025.","A média de alunos por turma na pré-escola vai de 12,5 em Florianópolis (SC) a 31,7 em Palmas (TO) entre as 26 capitais com dado comparável em 2025.",ok
+atendimento,A|conveniadas|2025|eja||sao-paulo,ref_mediana,0,0,ok
+atendimento,A|matriculas|2024|profissional||,frase_amplitude,"O número de matrículas na rede municipal na educação profissional vai de 0 em Aracaju (SE), Belém (PA) e mais 23 a 1.614 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.","O número de matrículas na rede municipal na educação profissional vai de 0 em Aracaju (SE), Belém (PA) e mais 23 a 1.614 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.",ok
+atendimento,A|atu|2025|creche||sao-paulo,ref_media,"19,0","19,0",ok
+atendimento,A|conveniadas|2021|ensino_medio||palmas,frase_amplitude,"O número de matrículas em escolas conveniadas com o município no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 20 a 111 em Curitiba (PR) entre as 26 capitais com dado comparável em 2021.","O número de matrículas em escolas conveniadas com o município no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 20 a 111 em Curitiba (PR) entre as 26 capitais com dado comparável em 2021.",ok
+atendimento,A|matriculas|2021|profissional||sao-paulo,ref_media,58,58,ok
+atendimento,A|matriculas|2025|total||recife,ref_maior_valor,702.936,702.936,ok
+atendimento,A|matriculas|2021|anos_finais||sao-paulo,ref_menor_valor,0,0,ok
+atendimento,A|conveniadas|2021|anos_finais||rio-branco,ref_maior_valor,1.601,1.601,ok
+atendimento,A|conveniadas|2023|total||sao-paulo,ref_mediana,1.921,1.921,ok
+atendimento,A|matriculas|2025|ensino_medio||palmas,frase_amplitude,"O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 21 a 2.620 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.","O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belém (PA) e mais 21 a 2.620 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.",ok
+atendimento,A|matriculas|2022|creche||recife,ref_maior_valor,56.235,56.235,ok
+atendimento,A|matriculas|2024|ensino_medio||palmas,frase_amplitude,"O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.","O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.",ok
+resultados,R|saeb|2023|anos_finais|portugues|natal,ref_media,"253,39","253,39",ok
+resultados,R|saeb|2008|anos_finais|portugues|recife,frase_capital,True,True,ok
+resultados,R|ideb|2021|anos_finais||sao-paulo,ref_mediana,"5,0","5,0",ok
+resultados,R|saeb|2019|anos_finais|portugues|recife,ref_mediana,"253,28","253,28",ok
+resultados,R|saeb|2013|anos_finais|matematica|natal,ref_media,"241,99","241,99",ok
+resultados,R|saeb|2017|anos_finais|matematica|,ref_mediana,"245,70","245,70",ok
+resultados,R|ideb|2013|anos_finais||,frase_amplitude,"O Ideb nos anos finais vai de 3,0 em Salvador (BA) a 4,9 em Palmas (TO) entre as 23 capitais com dado comparável na edição 2013.","O Ideb nos anos finais vai de 3,0 em Salvador (BA) a 4,9 em Palmas (TO) entre as 23 capitais com dado comparável na edição 2013.",ok
+resultados,R|saeb|2005|anos_finais|matematica|sao-paulo,ref_maior_valor,"260,80","260,80",ok
+resultados,R|ideb|2013|anos_iniciais||recife,ref_menor_valor,"4,0","4,0",ok
+resultados,R|ideb|2025|anos_finais||sao-paulo,frase_amplitude,"O Ideb nos anos finais vai de 3,7 em Natal (RN) e Porto Velho (RO) a 5,9 em Teresina (PI) entre as 23 capitais com dado comparável na edição 2025.","O Ideb nos anos finais vai de 3,7 em Natal (RN) e Porto Velho (RO) a 5,9 em Teresina (PI) entre as 23 capitais com dado comparável na edição 2025.",ok
+resultados,R|saeb|2023|anos_finais|matematica|recife,ref_mediana,"246,14","246,14",ok
+resultados,R|saeb|2022|anos_iniciais|portugues|,frase_amplitude,"A proficiência média no Saeb em Língua Portuguesa nos anos iniciais vai de 180,47 em Natal (RN) a 223,82 em Teresina (PI) entre as 26 capitais com dado comparável na edição 2021.","A proficiência média no Saeb em Língua Portuguesa nos anos iniciais vai de 180,47 em Natal (RN) a 223,82 em Teresina (PI) entre as 26 capitais com dado comparável na edição 2021.",ok
+resultados,R|saeb|2005|anos_finais|matematica|natal,ref_media,"235,38","235,38",ok
+resultados,R|saeb|2025|anos_iniciais|matematica|natal,frase_capital,True,True,ok
+resultados,R|saeb|2015|anos_finais|matematica|natal,frase_capital,True,True,ok
+resultados,R|saeb|2025|anos_iniciais|matematica|sao-paulo,ref_media,"223,64","223,64",ok
+resultados,R|saeb|2013|anos_finais|portugues|natal,frase_capital,True,True,ok
+resultados,R|saeb|2011|anos_finais|matematica|natal,frase_capital,True,True,ok
+resultados,R|ideb|2022|anos_finais||recife,ref_mediana,"5,0","5,0",ok
+resultados,R|ideb|2012|anos_finais||recife,ref_maior_valor,"5,0","5,0",ok
+resultados,R|saeb|2020|anos_finais|matematica|recife,ref_maior_valor,"300,12","300,12",ok
+resultados,R|saeb|2019|anos_finais|matematica|recife,ref_mediana,"252,82","252,82",ok
+resultados,R|ideb|2007|anos_iniciais||natal,ref_media,"4,1","4,1",ok
+resultados,R|aprovacao|2024|anos_iniciais||sao-paulo,frase_capital,True,True,ok
+resultados,R|ideb|2009|anos_finais||recife,frase_amplitude,"O Ideb nos anos finais vai de 2,6 em Maceió (AL) a 5,0 em Palmas (TO) entre as 24 capitais com dado comparável na edição 2009.","O Ideb nos anos finais vai de 2,6 em Maceió (AL) a 5,0 em Palmas (TO) entre as 24 capitais com dado comparável na edição 2009.",ok
+resultados,R|ideb|2014|anos_finais||recife,ref_mediana,"4,1","4,1",ok
+resultados,R|ideb|2015|anos_finais||,ref_media,"4,3","4,3",ok
+resultados,R|saeb|2015|anos_iniciais|portugues|recife,ref_maior_valor,"220,60","220,60",ok
+resultados,R|saeb|2025|anos_finais|matematica|natal,ref_media,"249,70","249,70",ok
+resultados,R|aprovacao|2025|anos_iniciais||boa-vista,frase_amplitude,"A taxa de aprovação nos anos iniciais vai de 89,2% em Natal (RN) a 99,9% em Cuiabá (MT), Curitiba (PR) e mais 2 entre as 26 capitais com dado comparável em 2025.","A taxa de aprovação nos anos iniciais vai de 89,2% em Natal (RN) a 99,9% em Cuiabá (MT), Curitiba (PR) e mais 2 entre as 26 capitais com dado comparável em 2025.",ok
+resultados,R|saeb|2013|anos_iniciais|matematica|recife,ref_maior_valor,"229,85","229,85",ok
+resultados,R|saeb|2013|anos_iniciais|matematica|,ref_menor_valor,"179,89","179,89",ok
+resultados,R|saeb|2025|anos_finais|matematica|natal,frase_capital,True,True,ok
+resultados,R|saeb|2017|anos_finais|portugues|natal,ref_maior_valor,"280,33","280,33",ok
+resultados,R|saeb|2021|anos_finais|matematica|sao-paulo,frase_amplitude,"A proficiência média no Saeb em Matemática nos anos finais vai de 230,69 em São Luís (MA) a 269,03 em Teresina (PI) entre as 22 capitais com dado comparável na edição 2021.","A proficiência média no Saeb em Matemática nos anos finais vai de 230,69 em São Luís (MA) a 269,03 em Teresina (PI) entre as 22 capitais com dado comparável na edição 2021.",ok
+resultados,R|saeb|2005|anos_iniciais|matematica|natal,ref_mediana,"172,20","172,20",ok
+resultados,R|saeb|2023|anos_iniciais|portugues|,ref_menor_valor,"184,72","184,72",ok
+resultados,R|aprovacao|2021|anos_finais||sao-paulo,frase_capital,True,True,ok
+resultados,R|ideb|2009|anos_finais||natal,ref_media,"3,7","3,7",ok
+resultados,R|saeb|2022|anos_iniciais|matematica|,ref_menor_valor,"187,57","187,57",ok
+resultados,R|saeb|2005|anos_finais|portugues|,ref_mediana,"223,45","223,45",ok
+resultados,R|saeb|2010|anos_iniciais|portugues|,ref_media,"180,46","180,46",ok
+resultados,R|ideb|2009|anos_finais||,ref_mediana,"3,6","3,6",ok
+resultados,R|saeb|2007|anos_finais|matematica|,ref_maior_valor,"267,27","267,27",ok
+resultados,R|saeb|2015|anos_finais|portugues|natal,ref_menor_valor,"236,03","236,03",ok
+resultados,R|ideb|2015|anos_iniciais||sao-paulo,frase_amplitude,"O Ideb nos anos iniciais vai de 4,4 em Aracaju (SE), Macapá (AP) e mais 1 a 6,3 em Curitiba (PR) entre as 26 capitais com dado comparável na edição 2015.","O Ideb nos anos iniciais vai de 4,4 em Aracaju (SE), Macapá (AP) e mais 1 a 6,3 em Curitiba (PR) entre as 26 capitais com dado comparável na edição 2015.",ok
+resultados,R|saeb|2017|anos_iniciais|portugues|,ref_menor_valor,"183,74","183,74",ok
+resultados,R|aprovacao|2021|anos_iniciais||natal,ref_mediana,"98,6%","98,6%",ok
+resultados,R|saeb|2005|anos_finais|matematica|natal,ref_maior_valor,"260,80","260,80",ok
+resultados,R|saeb|2019|anos_finais|portugues|natal,ref_mediana,"253,28","253,28",ok
+resultados,R|ideb|2017|anos_finais||,ref_maior_valor,"6,0","6,0",ok
+resultados,R|saeb|2020|anos_iniciais|portugues|recife,ref_media,"209,38","209,38",ok
+resultados,R|ideb|2009|anos_iniciais||recife,ref_menor_valor,"3,5","3,5",ok
+resultados,R|saeb|2007|anos_finais|portugues|recife,ref_mediana,"226,09","226,09",ok
+resultados,R|ideb|2020|anos_iniciais||,ref_media,"5,7","5,7",ok
+resultados,R|saeb|2012|anos_iniciais|matematica|recife,ref_maior_valor,"228,13","228,13",ok
+resultados,R|ideb|2015|anos_finais||recife,ref_media,"4,3","4,3",ok
+resultados,R|saeb|2022|anos_iniciais|portugues|,ref_media,"200,61","200,61",ok
+resultados,R|saeb|2021|anos_finais|matematica|sao-paulo,ref_maior_valor,"269,03","269,03",ok
+resultados,R|aprovacao|2021|anos_iniciais||,ref_media,"97,8%","97,8%",ok
+comparar_grafico,CG|aprovacao|2022|anos_iniciais||,ref_mediana,"96,0%","96,0%",ok
+comparar_grafico,CG|conveniadas|2021|eja||S,ref_menor_valor,0,0,ok
+comparar_grafico,CG|conveniadas|2025|profissional||S,frase_amplitude,O número de matrículas em escolas conveniadas com o município na educação profissional é 0 nas 3 capitais com dado comparável em 2025.,O número de matrículas em escolas conveniadas com o município na educação profissional é 0 nas 3 capitais com dado comparável em 2025.,ok
+comparar_grafico,CG|despesa|2024|||S,ref_menor_valor,"R$ 849,9 milhões","R$ 849,9 milhões",ok
+comparar_grafico,CG|matriculas|2021|pre_escola||S,ref_maior_valor,26.284,26.284,ok
+comparar_grafico,CG|conveniadas|2022|eja||,ref_menor_valor,0,0,ok
+comparar_grafico,CG|conveniadas|2021|pre_escola||,ref_maior_valor,9.993,9.993,ok
+comparar_grafico,CG|matriculas|2024|ensino_medio||,frase_amplitude,"O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.","O número de matrículas na rede municipal no ensino médio vai de 0 em Aracaju (SE), Belo Horizonte (MG) e mais 20 a 2.348 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.",ok
+comparar_grafico,CG|despesa_hab|2025|||S,ref_media,R$ 1.178,R$ 1.178,ok
+comparar_grafico,CG|matriculas|2024|ensino_medio||,ref_menor_valor,0,0,ok
+comparar_grafico,CG|atu|2025|creche||,ref_mediana,"18,4","18,4",ok
+comparar_grafico,CG|despesa_mat|2023|||,ref_menor_valor,R$ 8.618,R$ 8.618,ok
+comparar_grafico,CG|despesa_mat|2024|||,ref_menor_valor,R$ 10.107,R$ 10.107,ok
+comparar_grafico,CG|saeb|2021|anos_finais||S,ref_menor_valor,"243,46","243,46",ok
+comparar_grafico,CG|atu|2021|creche||,frase_amplitude,"A média de alunos por turma na creche vai de 7,9 em Florianópolis (SC) a 31,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2021.","A média de alunos por turma na creche vai de 7,9 em Florianópolis (SC) a 31,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2021.",ok
+comparar_grafico,CG|despesa_mat|2021|||S,ref_maior_valor,R$ 15.510,R$ 15.510,ok
+comparar_grafico,CG|saeb|2024|anos_iniciais||S,ref_media,"212,33","212,33",ok
+comparar_grafico,CG|atu|2023|pre_escola||,frase_amplitude,"A média de alunos por turma na pré-escola vai de 12,9 em Florianópolis (SC) a 32,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2023.","A média de alunos por turma na pré-escola vai de 12,9 em Florianópolis (SC) a 32,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2023.",ok
+comparar_grafico,CG|saeb|2025|anos_iniciais||,ref_menor_valor,"201,31","201,31",ok
+comparar_grafico,CG|matriculas|2021|ensino_medio||S,ref_media,228,228,ok
+comparar_grafico,CG|matriculas|2021|eja||,ref_media,6.342,6.342,ok
+comparar_grafico,CG|ideb|2021|anos_finais||,ref_mediana,"5,0","5,0",ok
+comparar_grafico,CG|conveniadas|2025|ensino_medio||,ref_menor_valor,0,0,ok
+comparar_grafico,CG|atu|2024|creche||S,frase_amplitude,"A média de alunos por turma na creche vai de 8,0 em Florianópolis (SC) a 20,0 em Curitiba (PR) entre as 3 capitais com dado comparável em 2024.","A média de alunos por turma na creche vai de 8,0 em Florianópolis (SC) a 20,0 em Curitiba (PR) entre as 3 capitais com dado comparável em 2024.",ok
+comparar_grafico,CG|matriculas|2022|eja||,ref_menor_valor,343,343,ok
+comparar_grafico,CG|matriculas|2025|pre_escola||,ref_media,23.059,23.059,ok
+comparar_grafico,CG|atu|2023|creche||,frase_amplitude,"A média de alunos por turma na creche vai de 8,1 em Florianópolis (SC) a 31,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2023.","A média de alunos por turma na creche vai de 8,1 em Florianópolis (SC) a 31,2 em Palmas (TO) entre as 26 capitais com dado comparável em 2023.",ok
+comparar_grafico,CG|aprovacao|2023|anos_iniciais||,ref_media,"97,6%","97,6%",ok
+comparar_grafico,CG|conveniadas|2024|pre_escola||S,ref_mediana,2.334,2.334,ok
+comparar_grafico,CG|matriculas|2023|profissional||S,ref_menor_valor,0,0,ok
+comparar_grafico,CG|atu|2023|anos_iniciais||,ref_maior_valor,"29,3","29,3",ok
+comparar_grafico,CG|saeb|2024|anos_iniciais||,ref_mediana,"212,31","212,31",ok
+comparar_grafico,CG|saeb|2021|anos_finais||,ref_maior_valor,"269,03","269,03",ok
+comparar_grafico,CG|ideb|2024|anos_finais||,ref_media,"4,7","4,7",ok
+comparar_grafico,CG|matriculas|2023|ensino_medio||,ref_mediana,0,0,ok
+comparar_grafico,CG|saeb|2020|anos_iniciais||,frase_amplitude,"A proficiência média no Saeb em Matemática nos anos iniciais vai de 198,35 em Macapá (AP) a 261,46 em Teresina (PI) entre as 26 capitais com dado comparável na edição 2019.","A proficiência média no Saeb em Matemática nos anos iniciais vai de 198,35 em Macapá (AP) a 261,46 em Teresina (PI) entre as 26 capitais com dado comparável na edição 2019.",ok
+comparar_grafico,CG|conveniadas|2021|anos_iniciais||S,ref_menor_valor,0,0,ok
+comparar_grafico,CG|conveniadas|2023|ensino_medio||S,ref_media,51,51,ok
+comparar_grafico,CG|ideb|2022|anos_finais||S,frase_amplitude,"O Ideb nos anos finais vai de 4,8 em Porto Alegre (RS) a 5,3 em Curitiba (PR) entre as 3 capitais com dado comparável na edição 2021.","O Ideb nos anos finais vai de 4,8 em Porto Alegre (RS) a 5,3 em Curitiba (PR) entre as 3 capitais com dado comparável na edição 2021.",ok
+comparar_grafico,CG|ideb|2020|anos_finais||,frase_amplitude,"O Ideb nos anos finais vai de 3,5 em Natal (RN) a 6,3 em Teresina (PI) entre as 22 capitais com dado comparável na edição 2019.","O Ideb nos anos finais vai de 3,5 em Natal (RN) a 6,3 em Teresina (PI) entre as 22 capitais com dado comparável na edição 2019.",ok
+comparar_grafico,CG|conveniadas|2023|total||,ref_maior_valor,294.372,294.372,ok
+comparar_grafico,CG|conveniadas|2024|ensino_medio||S,ref_media,0,0,ok
+comparar_grafico,CG|atu|2022|pre_escola||S,ref_maior_valor,"24,9","24,9",ok
+comparar_grafico,CG|conveniadas|2025|total||,ref_maior_valor,285.770,285.770,ok
+comparar_grafico,CG|matriculas|2021|anos_iniciais||S,ref_media,35.062,35.062,ok
+comparar_grafico,CG|matriculas|2024|eja||,ref_media,4.418,4.418,ok
+comparar_grafico,CG|matriculas|2024|pre_escola||,frase_amplitude,O número de matrículas na rede municipal na pré-escola vai de 4.531 em Porto Alegre (RS) a 197.499 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.,O número de matrículas na rede municipal na pré-escola vai de 4.531 em Porto Alegre (RS) a 197.499 em São Paulo (SP) entre as 26 capitais com dado comparável em 2024.,ok
+comparar_grafico,CG|despesa_mat|2021|||,ref_mediana,R$ 7.688,R$ 7.688,ok
+comparar_grafico,CG|conveniadas|2022|creche||,ref_media,15.315,15.315,ok
+comparar_grafico,CG|despesa|2023|||S,ref_mediana,"R$ 893,9 milhões","R$ 893,9 milhões",ok
+comparar_grafico,CG|aprovacao|2021|anos_iniciais||S,ref_maior_valor,"100,0%","100,0%",ok
+comparar_grafico,CG|atu|2024|pre_escola||,ref_maior_valor,"31,5","31,5",ok
+comparar_grafico,CG|matriculas|2024|anos_iniciais||,ref_mediana,34.291,34.291,ok
+comparar_grafico,CG|aprovacao|2021|anos_iniciais||,frase_amplitude,"A taxa de aprovação nos anos iniciais vai de 89,0% em Natal (RN) a 100,0% em Curitiba (PR) entre as 26 capitais com dado comparável em 2021.","A taxa de aprovação nos anos iniciais vai de 89,0% em Natal (RN) a 100,0% em Curitiba (PR) entre as 26 capitais com dado comparável em 2021.",ok
+comparar_grafico,CG|matriculas|2024|creche||,ref_mediana,8.299,8.299,ok
+comparar_grafico,CG|despesa|2021|||S,ref_media,"R$ 796,3 milhões","R$ 796,3 milhões",ok
+comparar_grafico,CG|despesa_mat|2022|||,ref_mediana,R$ 11.285,R$ 11.285,ok
+comparar_grafico,CG|saeb|2019|anos_iniciais||S,ref_maior_valor,"237,52","237,52",ok
+comparar_grafico,CG|aprovacao|2025|anos_finais||S,ref_media,"96,0%","96,0%",ok
+comparar_grafico,CG|despesa_hab|2025|||S,ref_maior_valor,R$ 1.462,R$ 1.462,ok
+comparar_tabela,C|tab|2022|pre_escola|nominal|,cel_despesa_hab_Porto Velho,R$ 950,R$ 950,ok
+comparar_tabela,C|tab|2021|pre_escola|nominal|NE,cel_ideb_ausente_Natal,—,FORA,ok
+comparar_tabela,C|tab|2021|creche|nominal|,cel_saeb_ausente_Goiânia,—,FORA,ok
+comparar_tabela,C|tab|2022|anos_iniciais|nominal|,cel_despesa_mat_Vitória,R$ 8.844,R$ 8.844,ok
+comparar_tabela,C|tab|2022|ensino_medio|real|NE,cel_saeb_ausente_Aracaju,—,FORA,ok
+comparar_tabela,C|tab|2021|pre_escola|real|,cel_atu_Boa Vista,"22,0","22,0",ok
+comparar_tabela,C|tab|2024|total|nominal|NE,cel_atu_ausente_Teresina,—,FORA,ok
+comparar_tabela,C|tab|2022|pre_escola|real|,dif_Boa Vista,"+R$ 394 (+37,2%), acima da mediana","+R$ 394 (+37,2%), acima da mediana",ok
+comparar_tabela,C|tab|2022|anos_finais|nominal|NE,cel_atu_Aracaju,"31,1","31,1",ok
+comparar_tabela,C|tab|2025|total|nominal|,cel_saeb_ausente_Belo Horizonte,—,FORA,ok
+comparar_tabela,C|tab|2023|ensino_medio|nominal|NE,cel_despesa_hab_Salvador,R$ 879,R$ 879,ok
+comparar_tabela,C|tab|2022|creche|real|,cel_despesa_hab_Palmas,R$ 1.858,R$ 1.858,ok
+comparar_tabela,C|tab|2024|creche|nominal|NE,dif_Aracaju,"−R$ 89 (−9,4%), abaixo da mediana","−R$ 89 (−9,4%), abaixo da mediana",ok
+comparar_tabela,C|tab|2021|anos_finais|real|,cel_saeb_Fortaleza,"251,63","251,63",ok
+comparar_tabela,C|tab|2025|creche|real|NE,resumo_mediana_despesa_mat,R$ 12.538,R$ 12.538,ok
+comparar_tabela,C|tab|2020|anos_finais|nominal|,cel_despesa_mat_ausente_Porto Alegre,Sem registro,,ok
+comparar_tabela,C|tab|2024|pre_escola|real|,cel_despesa_mat_Belém,R$ 14.995,R$ 14.995,ok
+comparar_tabela,C|tab|2024|pre_escola|real|,cel_atu_Palmas,"31,5","31,5",ok
+comparar_tabela,C|tab|2023|anos_finais|real|NE,resumo_mediana_populacao,957.916,957.916,ok
+comparar_tabela,C|tab|2022|pre_escola|real|,cel_ideb_ausente_Porto Velho,—,FORA,ok
+comparar_tabela,C|tab|2025|anos_finais|nominal|,cel_ideb_Natal,"3,7","3,7",ok
+comparar_tabela,C|tab|2023|anos_finais|real|NE,resumo_mediana_aprovacao,"91,4%","91,4%",ok
+comparar_tabela,C|tab|2025|ensino_medio|nominal|,cel_despesa_hab_Belém,R$ 702,R$ 702,ok
+comparar_tabela,C|tab|2023|pre_escola|real|,cel_ideb_ausente_Goiânia,—,FORA,ok
+comparar_tabela,C|tab|2022|total|real|,dif_Vitória,"+R$ 913 (+86,2%), acima da mediana","+R$ 913 (+86,2%), acima da mediana",ok
+comparar_tabela,C|tab|2021|anos_iniciais|nominal|NE,cel_despesa_hab_João Pessoa,R$ 479,R$ 479,ok
+comparar_tabela,C|tab|2021|anos_iniciais|nominal|NE,resumo_mediana_populacao,1.031.597,1.031.597,ok
+comparar_tabela,C|tab|2024|ensino_medio|real|,cel_atu_ausente_Manaus,—,FORA,ok
+comparar_tabela,C|tab|2023|anos_iniciais|nominal|NE,resumo_mediana_matriculas,86.181,86.181,ok
+comparar_tabela,C|tab|2023|total|real|,dif_Curitiba,"−R$ 92 (−8,1%), abaixo da mediana","−R$ 92 (−8,1%), abaixo da mediana",ok
+comparar_tabela,C|tab|2023|anos_iniciais|nominal|,cel_ideb_Porto Alegre,"4,7","4,7",ok
+comparar_tabela,C|tab|2023|pre_escola|real|,cel_ideb_ausente_Rio de Janeiro,—,FORA,ok
+comparar_tabela,C|tab|2023|anos_finais|real|,cel_despesa_mat_Salvador,R$ 15.719,R$ 15.719,ok
+comparar_tabela,C|tab|2022|anos_finais|nominal|,cel_despesa_mat_Macapá,R$ 7.244,R$ 7.244,ok
+comparar_tabela,C|tab|2025|pre_escola|nominal|,dif_Natal,"−R$ 325 (−28,0%), abaixo da mediana","−R$ 325 (−28,0%), abaixo da mediana",ok
+comparar_tabela,C|tab|2021|creche|real|NE,cel_atu_Salvador,"18,9","18,9",ok
+comparar_tabela,C|tab|2025|total|nominal|,cel_saeb_ausente_Natal,—,FORA,ok
+comparar_tabela,C|tab|2024|ensino_medio|nominal|NE,dif_Teresina,"+R$ 70 (+7,3%), acima da mediana","+R$ 70 (+7,3%), acima da mediana",ok
+comparar_tabela,C|tab|2024|ensino_medio|nominal|,cel_ideb_ausente_Porto Alegre,—,FORA,ok
+comparar_tabela,C|tab|2021|anos_iniciais|real|NE,cel_saeb_João Pessoa,"198,87","198,87",ok
+comparar_tabela,C|tab|2021|pre_escola|nominal|,cel_ideb_ausente_Manaus,—,FORA,ok
+comparar_tabela,C|tab|2023|pre_escola|nominal|NE,dif_São Luís,igual à mediana,igual à mediana,ok
+comparar_tabela,C|tab|2025|pre_escola|nominal|,cel_ideb_ausente_Maceió,—,FORA,ok
+comparar_tabela,C|tab|2023|total|nominal|,cel_ideb_ausente_Natal,—,FORA,ok
+comparar_tabela,C|tab|2025|anos_finais|real|,cel_ideb_Goiânia,"5,4","5,4",ok
+comparar_tabela,C|tab|2022|anos_finais|nominal|,cel_despesa_hab_Campo Grande,R$ 1.125,R$ 1.125,ok
+comparar_tabela,C|tab|2021|anos_iniciais|real|,dif_Salvador,"−R$ 189 (−24,2%), abaixo da mediana","−R$ 189 (−24,2%), abaixo da mediana",ok
+comparar_tabela,C|tab|2022|pre_escola|real|NE,cel_atu_Recife,"18,3","18,3",ok
+comparar_tabela,C|tab|2022|total|real|NE,cel_saeb_ausente_Fortaleza,—,FORA,ok
+comparar_tabela,C|tab|2022|total|real|,cel_atu_ausente_Vitória,—,FORA,ok
+comparar_tabela,C|tab|2024|creche|nominal|,cel_atu_Rio de Janeiro,"22,3","22,3",ok
+comparar_tabela,C|tab|2023|anos_finais|nominal|,cel_despesa_hab_Goiânia,R$ 1.104,R$ 1.104,ok
+comparar_tabela,C|tab|2021|ensino_medio|nominal|,cel_saeb_ausente_Belo Horizonte,—,FORA,ok
+comparar_tabela,C|tab|2023|anos_iniciais|nominal|,cel_despesa_hab_Maceió,R$ 648,R$ 648,ok
+comparar_tabela,C|tab|2022|total|real|,cel_despesa_hab_Florianópolis,R$ 1.458,R$ 1.458,ok
+comparar_tabela,C|tab|2022|anos_finais|nominal|NE,cel_ideb_ausente_Aracaju,—,SEM_EDICAO,ok
+comparar_tabela,C|tab|2023|anos_finais|real|,cel_despesa_mat_Goiânia,R$ 15.754,R$ 15.754,ok
+comparar_tabela,C|tab|2022|pre_escola|real|NE,cel_ideb_ausente_Teresina,—,FORA,ok
+comparar_tabela,C|tab|2020|anos_iniciais|nominal|,cel_despesa_mat_ausente_Recife,Sem registro,,ok
+comparar_tabela,C|tab|2021|pre_escola|real|,dif_Palmas,"+R$ 691 (+88,2%), acima da mediana","+R$ 691 (+88,2%), acima da mediana",ok
+evolucao,GE|despesa_hab|real|campo-grande,frase_evolucao,"Em Campo Grande (MS), a despesa em Educação por habitante passou de R$ 1.253 em 2022 para R$ 1.689 em 2025.","Em Campo Grande (MS), a despesa em Educação por habitante passou de R$ 1.253 em 2022 para R$ 1.689 em 2025.",ok
+evolucao,GE|despesa_mat|real|sao-paulo,frase_evolucao,"Em São Paulo (SP), a razão da despesa de aplicação direta por matrícula passou de R$ 15.916 em 2021 para R$ 23.747 em 2025.","Em São Paulo (SP), a razão da despesa de aplicação direta por matrícula passou de R$ 15.916 em 2021 para R$ 23.747 em 2025.",ok
+evolucao,GE|despesa_hab|real|vitoria,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|nominal|sao-paulo,frase_evolucao,"Em São Paulo (SP), a despesa total em Educação passou de R$ 13,73 bilhões em 2021 para R$ 23,58 bilhões em 2025.","Em São Paulo (SP), a despesa total em Educação passou de R$ 13,73 bilhões em 2021 para R$ 23,58 bilhões em 2025.",ok
+evolucao,GE|despesa|nominal|porto-alegre,frase_evolucao,"Em Porto Alegre (RS), a despesa total em Educação passou de R$ 672,5 milhões em 2021 para R$ 1,23 bilhão em 2025.","Em Porto Alegre (RS), a despesa total em Educação passou de R$ 672,5 milhões em 2021 para R$ 1,23 bilhão em 2025.",ok
+evolucao,GE|despesa_mat|nominal|porto-alegre,frase_evolucao,"Em Porto Alegre (RS), a razão da despesa de aplicação direta por matrícula passou de R$ 9.322 em 2021 para R$ 17.819 em 2025.","Em Porto Alegre (RS), a razão da despesa de aplicação direta por matrícula passou de R$ 9.322 em 2021 para R$ 17.819 em 2025.",ok
+evolucao,GE|despesa_hab|real|palmas,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|nominal|,frase_evolucao,"Na mediana das capitais, a despesa total em Educação passou de R$ 544,1 milhões em 2021 para R$ 1,01 bilhão em 2025.","Na mediana das capitais, a despesa total em Educação passou de R$ 544,1 milhões em 2021 para R$ 1,01 bilhão em 2025.",ok
+evolucao,GE|despesa|nominal|macapa,frase_evolucao,"Em Macapá (AP), a despesa total em Educação passou de R$ 246,7 milhões em 2021 para R$ 494,1 milhões em 2025.","Em Macapá (AP), a despesa total em Educação passou de R$ 246,7 milhões em 2021 para R$ 494,1 milhões em 2025.",ok
+evolucao,GE|despesa|real|sao-paulo,frase_evolucao,"Em São Paulo (SP), a despesa total em Educação passou de R$ 17,20 bilhões em 2021 para R$ 23,58 bilhões em 2025.","Em São Paulo (SP), a despesa total em Educação passou de R$ 17,20 bilhões em 2021 para R$ 23,58 bilhões em 2025.",ok
+evolucao,GE|despesa|real|recife,frase_evolucao,"Em Recife (PE), a despesa total em Educação passou de R$ 1,12 bilhão em 2021 para R$ 1,86 bilhão em 2025.","Em Recife (PE), a despesa total em Educação passou de R$ 1,12 bilhão em 2021 para R$ 1,86 bilhão em 2025.",ok
+evolucao,GE|despesa_hab|nominal|vitoria,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_hab|real|macapa,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_hab|real|boa-vista,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|real|macapa,frase_evolucao,"Em Macapá (AP), a despesa total em Educação passou de R$ 309,1 milhões em 2021 para R$ 494,1 milhões em 2025.","Em Macapá (AP), a despesa total em Educação passou de R$ 309,1 milhões em 2021 para R$ 494,1 milhões em 2025.",ok
+evolucao,GE|despesa_hab|nominal|palmas,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_mat|real|macapa,frase_evolucao,"Em Macapá (AP), a razão da despesa de aplicação direta por matrícula passou de R$ 9.075 em 2021 para R$ 13.832 em 2025.","Em Macapá (AP), a razão da despesa de aplicação direta por matrícula passou de R$ 9.075 em 2021 para R$ 13.832 em 2025.",ok
+evolucao,GE|despesa_mat|nominal|palmas,frase_evolucao,"Em Palmas (TO), a razão da despesa de aplicação direta por matrícula passou de R$ 6.827 em 2021 para R$ 13.785 em 2025.","Em Palmas (TO), a razão da despesa de aplicação direta por matrícula passou de R$ 6.827 em 2021 para R$ 13.785 em 2025.",ok
+evolucao,GE|despesa_hab|nominal|sao-paulo,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_mat|real|recife,frase_evolucao,"Em Recife (PE), a razão da despesa de aplicação direta por matrícula passou de R$ 12.023 em 2021 para R$ 18.590 em 2025.","Em Recife (PE), a razão da despesa de aplicação direta por matrícula passou de R$ 12.023 em 2021 para R$ 18.590 em 2025.",ok
+evolucao,GE|despesa_mat|real|palmas,frase_evolucao,"Em Palmas (TO), a razão da despesa de aplicação direta por matrícula passou de R$ 8.553 em 2021 para R$ 13.785 em 2025.","Em Palmas (TO), a razão da despesa de aplicação direta por matrícula passou de R$ 8.553 em 2021 para R$ 13.785 em 2025.",ok
+evolucao,GE|despesa|real|palmas,frase_evolucao,"Em Palmas (TO), a despesa total em Educação passou de R$ 461,5 milhões em 2021 para R$ 644,2 milhões em 2025.","Em Palmas (TO), a despesa total em Educação passou de R$ 461,5 milhões em 2021 para R$ 644,2 milhões em 2025.",ok
+evolucao,GE|despesa_hab|real|recife,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|real|,frase_evolucao,"Na mediana das capitais, a despesa total em Educação passou de R$ 681,6 milhões em 2021 para R$ 1,01 bilhão em 2025.","Na mediana das capitais, a despesa total em Educação passou de R$ 681,6 milhões em 2021 para R$ 1,01 bilhão em 2025.",ok
+evolucao,GE|despesa_mat|nominal|boa-vista,frase_evolucao,"Em Boa Vista (RR), a razão da despesa de aplicação direta por matrícula passou de R$ 9.483 em 2021 para R$ 13.767 em 2025.","Em Boa Vista (RR), a razão da despesa de aplicação direta por matrícula passou de R$ 9.483 em 2021 para R$ 13.767 em 2025.",ok
+evolucao,GE|despesa_hab|nominal|porto-alegre,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_hab|nominal|macapa,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_mat|nominal|campo-grande,frase_evolucao,"Em Campo Grande (MS), a razão da despesa de aplicação direta por matrícula passou de R$ 8.709 em 2022 para R$ 14.045 em 2025.","Em Campo Grande (MS), a razão da despesa de aplicação direta por matrícula passou de R$ 8.709 em 2022 para R$ 14.045 em 2025.",ok
+evolucao,GE|despesa|real|vitoria,frase_evolucao,"Em Vitória (ES), a despesa total em Educação passou de R$ 512,7 milhões em 2021 para R$ 810,9 milhões em 2025.","Em Vitória (ES), a despesa total em Educação passou de R$ 512,7 milhões em 2021 para R$ 810,9 milhões em 2025.",ok
+evolucao,GE|despesa_hab|nominal|boa-vista,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_mat|real|vitoria,frase_evolucao,"Em Vitória (ES), a razão da despesa de aplicação direta por matrícula passou de R$ 11.080 em 2021 para R$ 18.882 em 2025.","Em Vitória (ES), a razão da despesa de aplicação direta por matrícula passou de R$ 11.080 em 2021 para R$ 18.882 em 2025.",ok
+evolucao,GE|despesa_mat|nominal|vitoria,frase_evolucao,"Em Vitória (ES), a razão da despesa de aplicação direta por matrícula passou de R$ 8.844 em 2021 para R$ 18.882 em 2025.","Em Vitória (ES), a razão da despesa de aplicação direta por matrícula passou de R$ 8.844 em 2021 para R$ 18.882 em 2025.",ok
+evolucao,GE|despesa|nominal|boa-vista,frase_evolucao,"Em Boa Vista (RR), a despesa total em Educação passou de R$ 410,5 milhões em 2021 para R$ 732,0 milhões em 2025.","Em Boa Vista (RR), a despesa total em Educação passou de R$ 410,5 milhões em 2021 para R$ 732,0 milhões em 2025.",ok
+evolucao,GE|despesa_mat|real|porto-alegre,frase_evolucao,"Em Porto Alegre (RS), a razão da despesa de aplicação direta por matrícula passou de R$ 11.678 em 2021 para R$ 17.819 em 2025.","Em Porto Alegre (RS), a razão da despesa de aplicação direta por matrícula passou de R$ 11.678 em 2021 para R$ 17.819 em 2025.",ok
+evolucao,GE|despesa_mat|nominal|macapa,frase_evolucao,"Em Macapá (AP), a razão da despesa de aplicação direta por matrícula passou de R$ 7.244 em 2021 para R$ 13.832 em 2025.","Em Macapá (AP), a razão da despesa de aplicação direta por matrícula passou de R$ 7.244 em 2021 para R$ 13.832 em 2025.",ok
+evolucao,GE|despesa_hab|nominal|campo-grande,frase_evolucao,"Em Campo Grande (MS), a despesa em Educação por habitante passou de R$ 1.093 em 2022 para R$ 1.689 em 2025.","Em Campo Grande (MS), a despesa em Educação por habitante passou de R$ 1.093 em 2022 para R$ 1.689 em 2025.",ok
+evolucao,GE|despesa|nominal|recife,frase_evolucao,"Em Recife (PE), a despesa total em Educação passou de R$ 891,7 milhões em 2021 para R$ 1,86 bilhão em 2025.","Em Recife (PE), a despesa total em Educação passou de R$ 891,7 milhões em 2021 para R$ 1,86 bilhão em 2025.",ok
+evolucao,GE|despesa_mat|nominal|sao-paulo,frase_evolucao,"Em São Paulo (SP), a razão da despesa de aplicação direta por matrícula passou de R$ 12.704 em 2021 para R$ 23.747 em 2025.","Em São Paulo (SP), a razão da despesa de aplicação direta por matrícula passou de R$ 12.704 em 2021 para R$ 23.747 em 2025.",ok
+evolucao,GE|despesa_mat|nominal|,frase_evolucao,"Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 7.688 em 2021 para R$ 14.254 em 2025.","Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 7.688 em 2021 para R$ 14.254 em 2025.",ok
+evolucao,GE|despesa_mat|real|campo-grande,frase_evolucao,"Em Campo Grande (MS), a razão da despesa de aplicação direta por matrícula passou de R$ 9.984 em 2022 para R$ 14.045 em 2025.","Em Campo Grande (MS), a razão da despesa de aplicação direta por matrícula passou de R$ 9.984 em 2022 para R$ 14.045 em 2025.",ok
+evolucao,GE|despesa|real|porto-alegre,frase_evolucao,"Em Porto Alegre (RS), a despesa total em Educação passou de R$ 842,5 milhões em 2021 para R$ 1,23 bilhão em 2025.","Em Porto Alegre (RS), a despesa total em Educação passou de R$ 842,5 milhões em 2021 para R$ 1,23 bilhão em 2025.",ok
+evolucao,GE|despesa_hab|nominal|recife,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|nominal|vitoria,frase_evolucao,"Em Vitória (ES), a despesa total em Educação passou de R$ 409,2 milhões em 2021 para R$ 810,9 milhões em 2025.","Em Vitória (ES), a despesa total em Educação passou de R$ 409,2 milhões em 2021 para R$ 810,9 milhões em 2025.",ok
+evolucao,GE|despesa|nominal|palmas,frase_evolucao,"Em Palmas (TO), a despesa total em Educação passou de R$ 368,4 milhões em 2021 para R$ 644,2 milhões em 2025.","Em Palmas (TO), a despesa total em Educação passou de R$ 368,4 milhões em 2021 para R$ 644,2 milhões em 2025.",ok
+evolucao,GE|despesa_hab|real|,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|nominal|campo-grande,frase_evolucao,"Em Campo Grande (MS), a despesa total em Educação passou de R$ 981,8 milhões em 2022 para R$ 1,63 bilhão em 2025.","Em Campo Grande (MS), a despesa total em Educação passou de R$ 981,8 milhões em 2022 para R$ 1,63 bilhão em 2025.",ok
+evolucao,GE|despesa_mat|real|boa-vista,frase_evolucao,"Em Boa Vista (RR), a razão da despesa de aplicação direta por matrícula passou de R$ 11.880 em 2021 para R$ 13.767 em 2025.","Em Boa Vista (RR), a razão da despesa de aplicação direta por matrícula passou de R$ 11.880 em 2021 para R$ 13.767 em 2025.",ok
+evolucao,GE|despesa_hab|real|sao-paulo,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa|real|campo-grande,frase_evolucao,"Em Campo Grande (MS), a despesa total em Educação passou de R$ 1,13 bilhão em 2022 para R$ 1,63 bilhão em 2025.","Em Campo Grande (MS), a despesa total em Educação passou de R$ 1,13 bilhão em 2022 para R$ 1,63 bilhão em 2025.",ok
+evolucao,GE|despesa_hab|real|porto-alegre,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+evolucao,GE|despesa_mat|real|,frase_evolucao,"Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 9.631 em 2021 para R$ 14.254 em 2025.","Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 9.631 em 2021 para R$ 14.254 em 2025.",ok
+evolucao,GE|despesa|real|boa-vista,frase_evolucao,"Em Boa Vista (RR), a despesa total em Educação passou de R$ 514,2 milhões em 2021 para R$ 732,0 milhões em 2025.","Em Boa Vista (RR), a despesa total em Educação passou de R$ 514,2 milhões em 2021 para R$ 732,0 milhões em 2025.",ok
+evolucao,GE|despesa_mat|nominal|recife,frase_evolucao,"Em Recife (PE), a razão da despesa de aplicação direta por matrícula passou de R$ 9.597 em 2021 para R$ 18.590 em 2025.","Em Recife (PE), a razão da despesa de aplicação direta por matrícula passou de R$ 9.597 em 2021 para R$ 18.590 em 2025.",ok
+evolucao,GE|despesa_hab|nominal|,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok

@@ -3,15 +3,18 @@ import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 
-// Navegação da plataforma: os dois observatórios primeiro, depois a superfície
+// Navegação da plataforma: os três observatórios primeiro, depois a superfície
 // citável de dados do Crédito. As demais páginas de cada domínio (resumo,
 // metodologia, glossário, aprenda) ficam no rodapé e dentro de cada observatório.
-const NAV = [
+// `soXl`: no cabeçalho de desktop o item só aparece a partir de 1280 px (com três observatórios a linha
+// não cabe em 1024 px); a navegação rolável do celular mostra todos.
+const NAV: { href: string; label: string; soXl?: boolean }[] = [
   { href: "/observatorio-do-credito", label: "Crédito" },
   { href: "/setor-eletrico", label: "Setor Elétrico" },
+  { href: "/eficiencia-estatal/educacao-municipal-capitais", label: "Eficiência Estatal" },
   { href: "/dados", label: "Dados do crédito" },
-  { href: "/#observatorios", label: "Plataforma" },
-  { href: "/#plataforma", label: "Método" },
+  { href: "/#observatorios", label: "Plataforma", soXl: true },
+  { href: "/#plataforma", label: "Método", soXl: true },
   { href: "/imprensa", label: "Imprensa" },
 ];
 
@@ -52,12 +55,12 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           <LogoWordmark />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-6 lg:flex xl:gap-8">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze"
+              className={`rotulo min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-bronze ${item.soXl ? "hidden xl:inline-flex" : "inline-flex"}`}
             >
               {item.label}
             </Link>

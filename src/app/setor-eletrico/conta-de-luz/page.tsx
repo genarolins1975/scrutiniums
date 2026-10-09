@@ -68,7 +68,7 @@ const COLUNAS_SEM_VIGENTE: ColunaTabela[] = [
   { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
   { id: "inicio", rotulo: "Início da última vigência", tipo: "data" },
   { id: "fim", rotulo: "Fim da última vigência", tipo: "data" },
-  { id: "ato", rotulo: "Ato", tipo: "texto" },
+  { id: "ato", rotulo: "Ato", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
   { id: "dias", rotulo: "Dias sem tarifa", tipo: "numero", casas: 0 },
   { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
   { id: "motivo", rotulo: "Motivo", tipo: "texto" },
