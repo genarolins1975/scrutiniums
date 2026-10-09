@@ -1202,9 +1202,10 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
          (((x["revisoes"] or {}).get("registros") or {}).get("conflitos_entre_recursos") or {}).get("campos"),
          x["validacao"]["resultado"], x["validacao"]["aprovadas"], x["validacao"]["ressalvas"], x["validacao"]["reprovadas"],
          (x["bronze"] or {}).get("ausentes"), (x["bronze"] or {}).get("sha256_divergentes")] for x in lista])
-    _csv(CSV["validacoes"], ["id", "alvo", "tipo", "resultado", "detalhe", "criterio", "verificados", "problemas", "exemplos"],
+    _csv(CSV["validacoes"], ["id", "alvo", "tipo", "resultado", "detalhe", "criterio", "verificados", "problemas", "exemplos", "sha256_julgado"],
          [[k["id"], k["alvo"], k["tipo"], k["resultado"], _limpa(k["detalhe"]), _limpa(k["criterio"]), k["verificados"],
-           k["problemas"], json.dumps(k["exemplos"], ensure_ascii=False, separators=(",", ":"), default=str).replace(";", ",") if k["exemplos"] else None]
+           k["problemas"], json.dumps(k["exemplos"], ensure_ascii=False, separators=(",", ":"), default=str).replace(";", ",") if k["exemplos"] else None,
+           k.get("sha256")]
           for k in todas_checagens])
     rev = []
     for x in lista:

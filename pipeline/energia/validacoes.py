@@ -29,6 +29,7 @@ Valor atípico não é descartado aqui: a checagem aponta, e a conferência é f
 arquivo original. Divergência da própria fonte (o total publicado pelo ONS que não
 fecha com as partes) é ressalva documentada, não erro da plataforma.
 """
+import hashlib
 import csv
 import json
 import math
@@ -107,10 +108,21 @@ def viola_horizonte(nome, gold, capturas):
 # ---------------------------------------------------------------- resultado
 
 
-def checagem(id_, alvo, tipo, resultado, detalhe, *, criterio, verificados=None, problemas=0, exemplos=None):
+def checagem(id_, alvo, tipo, resultado, detalhe, *, criterio, verificados=None, problemas=0, exemplos=None, sha256=None):
+    """`sha256`: impressão digital do arquivo que foi julgado (só nas checagens de arquivo). Com ela, quem lê o relatório sabe se o arquivo
+    publicado depois ainda é o que foi validado, também nos aprovados (antes só os reprovados guardavam a versão julgada)."""
     assert resultado in RESULTADOS, resultado
     return {"id": id_, "alvo": alvo, "tipo": tipo, "resultado": resultado, "detalhe": detalhe, "criterio": criterio,
-            "verificados": verificados, "problemas": problemas, "exemplos": list(exemplos or [])[:5]}
+            "verificados": verificados, "problemas": problemas, "exemplos": list(exemplos or [])[:5], "sha256": sha256}
+
+
+def sha256_arquivo(caminho, bloco=1 << 20):
+    """Impressão digital do arquivo, lida em blocos (o mesmo cálculo da lista de arquivos publicada)."""
+    h = hashlib.sha256()
+    with open(caminho, "rb") as fh:
+        for pedaco in iter(lambda: fh.read(bloco), b""):
+            h.update(pedaco)
+    return h.hexdigest()
 
 
 def veredito(checagens):
@@ -370,6 +382,7 @@ def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previs
     nome = os.path.basename(caminho)
     pref = f"csv:{nome}"
     tam = os.path.getsize(caminho)
+    sha = sha256_arquivo(caminho)
     out = []
     try:
         fh = open(caminho, encoding="utf-8", newline="")
@@ -377,7 +390,7 @@ def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previs
         cab = next(leitor)
     except Exception as e:
         return [checagem(f"{pref}:legivel", nome, "esquema", "reprovado", f"{type(e).__name__}: {e}"[:300],
-                         criterio="UTF-8, separador ';' e cabeçalho")]
+                         criterio="UTF-8, separador ';' e cabeçalho", sha256=sha)]
     repetidas = [c for c, n in Counter(cab).items() if n > 1]
     vazias = [i for i, c in enumerate(cab) if not c.strip()]
     ncol = len(cab)
@@ -420,7 +433,7 @@ def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previs
     out.append(checagem(f"{pref}:legivel", nome, "esquema", "reprovado" if (repetidas or vazias or ncol < 1) else "aprovado",
                         (f"Colunas repetidas {repetidas} ou sem nome" if (repetidas or vazias) else f"{ncol} colunas, {linhas} linhas"),
                         criterio="UTF-8, ';', cabeçalho com nomes únicos e não vazios", verificados=linhas,
-                        problemas=len(repetidas) + len(vazias)))
+                        problemas=len(repetidas) + len(vazias), sha256=sha))
     out.append(checagem(f"{pref}:colunas", nome, "esquema", "reprovado" if tortas else "aprovado",
                         f"{tortas} linhas com número de colunas diferente do cabeçalho" if tortas else "Todas as linhas têm o número de colunas do cabeçalho",
                         criterio="toda linha com o mesmo número de colunas do cabeçalho", verificados=linhas, problemas=tortas,

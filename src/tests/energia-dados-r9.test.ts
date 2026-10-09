@@ -17,9 +17,10 @@ import {
   linhasCatalogo,
   linhasMetricas,
   resumoCatalogo,
+  resumoSaude,
 } from "@/lib/energia/dados";
 import { contextoDoCatalogo, eTituloTecnico, fichasDasFontes } from "@/lib/energia/dados-ficha";
-import { textoChecagensReprovadas, textoEstadoDoArquivo, textoVersaoDoCodigo } from "@/lib/energia/dados-leitor";
+import { avisoDeSinal, textoChecagensReprovadas, textoEstadoDoArquivo, textoVersaoDoCodigo } from "@/lib/energia/dados-leitor";
 import {
   contagemNoCsvDoCatalogo,
   estadoDoArquivo,
@@ -331,5 +332,26 @@ describe("Avaliação: faixa de métricas, matriz antes das notas e tabelas curt
   it("a lista de páginas cabe em páginas curtas e o HTML fica abaixo da meta", () => {
     expect(h).toContain('data-nivel="analisar"');
     expect(Buffer.byteLength(h, "utf-8")).toBeLessThan(600 * 1024);
+  });
+});
+
+describe("aviso de troca de sinal na maior revisão", () => {
+  it("só aparece quando o valor anterior é negativo e o novo, positivo, e não decide qual captura está certa", () => {
+    const a = avisoDeSinal({ de: -668.879, para: 13984.696 });
+    expect(a).toContain("O valor anterior é negativo");
+    expect(a).toContain("pode ter vindo incompleta");
+    expect(a).toContain("as duas continuam guardadas");
+    expect(avisoDeSinal({ de: 10, para: 13 })).toBeNull();
+    expect(avisoDeSinal({ de: -3, para: -1 })).toBeNull();
+    expect(avisoDeSinal({ de: 3, para: -1 })).toBeNull();
+    expect(avisoDeSinal(null)).toBeNull();
+  });
+
+  it("a gold publicada traz a carga do Nordeste de 26/09/2026 com valor anterior negativo, e a Saúde diz isso na linha do conjunto", () => {
+    const comSinal = resumoSaude(pub).comRevisao.flatMap((c) => (c.revisoes?.maior_rel && avisoDeSinal(c.revisoes.maior_rel) ? [c] : []));
+    expect(comSinal.length).toBeGreaterThanOrEqual(1);
+    const ev = comSinal[0].revisoes!.maior_rel!;
+    expect(ev.de).toBeLessThan(0);
+    expect(ev.para).toBeGreaterThan(0);
   });
 });

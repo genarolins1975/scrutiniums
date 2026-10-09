@@ -21,6 +21,7 @@ import {
   limitacaoParaLeitor,
   primeiroDiaComRevisao,
   textoConciliacao,
+  avisoDeSinal,
   textoMudancaSaude,
   textoPrazos,
   tituloCurto,
@@ -128,6 +129,7 @@ export default function DadosSaudePage() {
                   maiorRevisao?.e ? (
                     <>
                       {tituloCurto(maiorRevisao.c.titulo)} ({maiorRevisao.c.orgao}), de {num(maiorRevisao.e.de, 1)} para {num(maiorRevisao.e.para, 1)} entre duas capturas do mesmo arquivo. Uma revisão grande não prova erro.
+                      {avisoDeSinal(maiorRevisao.e) ? ` ${avisoDeSinal(maiorRevisao.e)}` : ""}
                     </>
                   ) : (
                     <>entre duas capturas do mesmo arquivo</>
@@ -242,6 +244,7 @@ export default function DadosSaudePage() {
                               <p className="mt-1 text-sm leading-relaxed text-carvao-muted">
                                 Maior mudança relativa: de {num(ev.de, 2)} para {num(ev.para, 2)} ({ev.relativa_pct === null ? "valor anterior zero" : pct(ev.relativa_pct, 1)}), em {refLegivel(ev.ref)}. O valor anterior vem da captura de {carimbo(ev.capturado_de)} e o novo, da captura de{" "}
                                 {carimbo(ev.capturado_para)}; as duas continuam guardadas.
+                                {avisoDeSinal(ev) ? ` ${avisoDeSinal(ev)}` : ""}
                               </p>
                             )}
                             {rv.conflitos_entre_recursos && (

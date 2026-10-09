@@ -128,6 +128,17 @@ export function textoMudancaCatalogo(cat: Pick<CatalogoDados, "recursos">): stri
   return `${arquivos} O catálogo guarda só a situação da última coleta, por isso esta página não compara as contagens com a publicação anterior.`;
 }
 
+/**
+ * Aviso curto quando o maior salto troca o sinal do valor (de negativo para positivo). O observatório guarda as duas capturas como vieram; a
+ * página não decide qual está certa, mas diz o que um valor negativo implica: carga, geração e preço não são negativos na fonte, então a
+ * primeira captura pode ter vindo incompleta. Sem troca de sinal, não há aviso.
+ */
+export function avisoDeSinal(e: { de: number; para: number } | null | undefined): string | null {
+  return e && e.de < 0 && e.para > 0
+    ? "O valor anterior é negativo: se a grandeza não pode ser negativa (carga, por exemplo), a primeira captura pode ter vindo incompleta; as duas continuam guardadas."
+    : null;
+}
+
 /** P068: os valores que a fonte revisou e o maior salto relativo, com as duas capturas. */
 export function textoMudancaSaude(r: Pick<ResumoSaude, "comRevisao" | "observacoesRevisadas" | "referenciasRevisadas">): string {
   if (!r.comRevisao.length) return "Nenhuma revisão de valores já guardados foi detectada nesta publicação.";
@@ -139,7 +150,7 @@ export function textoMudancaSaude(r: Pick<ResumoSaude, "comRevisao" | "observaco
   if (!maior) return geral;
   const { c, e } = maior;
   const dia = (iso: string) => carimbo(iso).slice(0, 10);
-  return `${geral} O maior salto relativo está em ${c.titulo} (${c.orgao}), em ${refLegivel(e.ref)}: de ${num(e.de, 1)} para ${num(e.para, 1)}, entre as capturas de ${dia(e.capturado_de)} e ${dia(e.capturado_para)}. Uma revisão grande não prova erro da fonte nem do observatório.`;
+  return `${geral} O maior salto relativo está em ${c.titulo} (${c.orgao}), em ${refLegivel(e.ref)}: de ${num(e.de, 1)} para ${num(e.para, 1)}, entre as capturas de ${dia(e.capturado_de)} e ${dia(e.capturado_para)}. Uma revisão grande não prova erro da fonte nem do observatório.${avisoDeSinal(e) ? ` ${avisoDeSinal(e)}` : ""}`;
 }
 
 /** P069: a data da lista de arquivos e o que ela mede, sem fingir que há comparação com a lista anterior. */

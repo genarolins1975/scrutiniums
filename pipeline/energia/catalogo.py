@@ -730,7 +730,7 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         # mesmo instante da publicação que trouxe as evidências: o catálogo reconstruído
         # pelo orquestrador com as mesmas entradas sai idêntico
         "gerado_em": publicacao.get("gerado_em") or base.agora_utc(),
-        "versao_pipeline": base.VERSAO_PIPELINE, "disponivel": True,
+        "versao_pipeline": base.VERSAO_PIPELINE, "versao_codigo": base.versao_codigo(), "disponivel": True,
         "estados": ESTADOS, "definicoes_estado": DEFINICOES_ESTADO, "criterios_estado": CRITERIOS_ESTADO,
         "eixos": {"estado": "Até onde o conjunto chegou na escada catalogado → publicado, cada etapa com evidência.",
                   "uso": "Para que o conjunto é usado (indicador, entrada de modelo, conferência, contexto, histórico); "
