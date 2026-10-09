@@ -800,7 +800,7 @@ describe("abertura editorial da Rede: faixas lidas dos mesmos seletores das figu
     }
     // os rótulos das fronteiras (156 de largura) e as caixas ficam dentro da área do desenho
     const area = svg.match(/viewBox="0 0 (\d+) (\d+)"/)!;
-    for (const m of svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="([\d.]+)"/g)) {
+    for (const m of Array.from(svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="([\d.]+)"/g))) {
       expect(+m[1], "borda esquerda").toBeGreaterThanOrEqual(0);
       expect(+m[2], "borda de cima").toBeGreaterThanOrEqual(0);
       expect(+m[1] + +m[3], "borda direita").toBeLessThanOrEqual(+area[1]);
