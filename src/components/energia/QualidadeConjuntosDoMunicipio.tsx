@@ -108,12 +108,12 @@ export function QualidadeConjuntosDoMunicipio({
             <p className="text-sm text-carvao-muted">Nenhum dos conjuntos citados para {municipio} tem valor anual publicado em {ano}.</p>
           )}
           {textoMesesIncompletos(linhas) && (
-            <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-texto="meses-incompletos">
+            <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="meses-incompletos">
               {textoMesesIncompletos(linhas)}
             </p>
           )}
           {semValor.length > 0 && (
-            <p className="text-xs leading-relaxed text-carvao-muted">
+            <p className="text-sm leading-relaxed text-carvao-muted">
               {semValor.length === 1 ? "Um conjunto citado não tem" : `${semValor.length.toLocaleString("pt-BR")} conjuntos citados não têm`} valor anual publicado em {ano} (menos de 12 meses ou sem limite): {semValor.join(", ")}.
             </p>
           )}

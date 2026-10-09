@@ -15,6 +15,7 @@ import {
   destacar,
   paresLimites,
   respostaHistoricoDistribuidora,
+  respostaRecorteLimites,
   type AvisosFec,
   type Indicador,
   type ItemLimites,
@@ -125,7 +126,7 @@ export function QualidadeLimites({
           ))}
         </div>
       </div>
-      {semClasse > 0 && <p className="text-xs text-carvao-muted">{semClasse} distribuidoras sem classificação publicada ficam só na tabela.</p>}
+      {semClasse > 0 && <p className="text-sm text-carvao-muted">{semClasse} distribuidoras sem classificação publicada ficam só na tabela.</p>}
       {sel && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-carvao" data-selecao-distribuidora={sel}>
           <span className="rotulo text-mineral">Distribuidora escolhida</span>
@@ -133,8 +134,22 @@ export function QualidadeLimites({
           <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
             Limpar seleção
           </button>
-          {v.dist.length > 1 && <span className="text-xs text-carvao-muted">Mais {v.dist.length - 1} na comparação.</span>}
+          {v.dist.length > 1 && <span className="text-sm text-carvao-muted">Mais {v.dist.length - 1} na comparação.</span>}
         </div>
+      )}
+
+      {/* a frase acompanha o indicador e o grupo escolhidos acima: trocar para FEC ou para permissionárias muda o que ela diz. Fica depois dos controles
+          (por isso não leva data-resposta, que o CSS da página passa para a frente do bloco): o que muda de altura não empurra o controle que a pessoa acabou de usar */}
+      <p aria-live="polite" data-frase-recorte="limites" className="max-w-prose2 text-base leading-relaxed text-carvao">
+        {respostaRecorteLimites(todos, ind, classeEscolhida, ano, avisosFec)}
+      </p>
+      {avisosNoGrafico.length > 0 && (
+        <p data-legenda="asterisco-fec" className="text-sm leading-snug text-carvao">
+          <span aria-hidden="true" className="mr-1 font-medium">
+            *
+          </span>
+          FEC de cobertura parcial: em algum mês do ano, o valor não cobre todas as unidades consumidoras da distribuidora. A explicação de cada uma está abaixo do gráfico.
+        </p>
       )}
 
       <GraficoPontos

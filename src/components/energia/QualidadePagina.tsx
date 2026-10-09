@@ -56,21 +56,25 @@ export function QualidadeAviso({ children }: { children: ReactNode }) {
   );
 }
 
-/** Período, universo e unidade do painel, logo abaixo da figura principal: o que o número cobre, antes de qualquer conclusão. */
+/**
+ * Período, universo e unidade do painel, logo abaixo da figura principal: o que o número cobre, antes de qualquer conclusão. Três linhas
+ * de texto corrido (rótulo e frase na mesma linha), não três colunas: com os blocos de três colunas das notas do painel, a página repetia a
+ * mesma forma quatro vezes. O texto tem 14 px: é a leitura que diz o que o número cobre.
+ */
 export function QualidadeRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-xs leading-relaxed text-carvao-muted md:grid-cols-3">
+    <dl data-recorte-painel="" className="max-w-4xl space-y-1 border-t border-linha pt-3 text-sm leading-relaxed text-carvao-muted">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
-        <dd className="mt-0.5">{periodo}</dd>
+        <dt className="rotulo mr-2 inline text-mineral">Período</dt>
+        <dd className="inline">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
-        <dd className="mt-0.5">{universo}</dd>
+        <dt className="rotulo mr-2 inline text-mineral">Universo</dt>
+        <dd className="inline">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
-        <dd className="mt-0.5">{unidade}</dd>
+        <dt className="rotulo mr-2 inline text-mineral">Unidade</dt>
+        <dd className="inline">{unidade}</dd>
       </div>
     </dl>
   );

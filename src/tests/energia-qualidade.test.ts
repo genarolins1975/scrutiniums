@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import QualidadePage from "@/app/setor-eletrico/qualidade/page";
+import { QualidadeBuscaMunicipio } from "@/components/energia/QualidadeBuscaMunicipio";
 import { QualidadeComparador } from "@/components/energia/QualidadeComparador";
 import { QualidadeConjuntos } from "@/components/energia/QualidadeConjuntos";
 import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeConjuntosDoMunicipio";
@@ -12,7 +13,7 @@ import { QualidadeLimites } from "@/components/energia/QualidadeLimites";
 import { QualidadeMapa } from "@/components/energia/QualidadeMapa";
 import { lerEstado } from "@/lib/energia/estadoUrl";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
-import { mesAno, num } from "@/lib/energia/formato";
+import { mesAno, num, pct } from "@/lib/energia/formato";
 import {
   COBERTURA_MINIMA_FEC_MES,
   COLUNAS_COMP_ANUAL,
@@ -113,6 +114,19 @@ import {
   vereditoP052,
   vezes,
   type MunicipioQualidade,
+} from "@/lib/energia/qualidade";
+import {
+  anosDivulgados,
+  notaQuantidadeDivulgada,
+  orientacaoSemDado,
+  quebraCompensacao,
+  regimesCompensacao,
+  resumoMunicipio,
+  respostaRecorteLimites,
+  textoConcessionariasDesde,
+  textoParticipacaoUg,
+  textoQuebraCompensacao,
+  textoQuebraCompensacaoCurto,
 } from "@/lib/energia/qualidade";
 import { gerarCsv } from "@/lib/energia/tabela";
 import type {
@@ -780,8 +794,11 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     expect(conteudo).not.toMatch(/\bgold\b/i);
   });
 
-  it("peso do HTML do servidor abaixo da meta do contrato (600 KB)", () => {
-    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(600_000);
+  it("peso da marcação do servidor (sem o fluxo RSC) abaixo de 400 KB: é só parte do que o navegador baixa", () => {
+    // O HTML servido soma a marcação e o fluxo RSC (self.__next_f), que repete o conteúdo dos componentes de servidor e as props dos de cliente: em
+    // 09/10/2026, medidos no servidor, 407 KB de HTML e 339 KB de fluxo, 746 KB no total, contra a meta de 600 KB do contrato. Este teste vigia a
+    // marcação (não deixa a parte local crescer); a meta do contrato só se confere medindo o servidor (ver o relatório da rodada 2).
+    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400_000);
   });
 });
 
@@ -1062,9 +1079,10 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
       "distribuicao-dos-conjuntos": "entender",
       "ano-a-ano": "entender",
       "tipos-de-violacao": "entender",
-      "compensacao-entre-distribuidoras": "entender",
+      "compensacao-entre-distribuidoras": "analisar",
+      "compensacoes-por-ano": "analisar",
       "satisfacao-iasc": "entender",
-      "recuperacao-da-rede": "entender",
+      "recuperacao-da-rede": "analisar",
       mensal: "analisar",
       "tabela-distribuidoras": "analisar",
       "conjuntos-do-ano": "analisar",
@@ -1104,8 +1122,12 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
 
   it("as ressalvas vão para onde evitam a leitura errada: média por UC na abertura, conjunto no mapa, expurgo na figura, divulgado na compensação", () => {
     const lead = /<p class="ed-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
-    expect(lead).toMatch(/Médias, não o que cada consumidor viveu/);
-    expect(lead).toMatch(/cada uma na sua escala/);
+    // o lead diz o que a medida é e por que importa (limites, ranking e compensações partem dela); a ressalva vai na linha própria da abertura
+    expect(lead).toMatch(/DEC e FEC medem quantas horas e quantas vezes/);
+    expect(lead).toMatch(/Deles partem os limites, o ranking das distribuidoras e as compensações/);
+    const limite = /data-limite="">([\s\S]*?)<\/p>/.exec(html)?.[1] ?? "";
+    expect(limite).toContain("Não permite concluir");
+    expect(limite).toMatch(/o que cada consumidor viveu: DEC e FEC são médias por UC/);
     // o mapa diz que o valor é do conjunto, não do município, e que não há média municipal
     const mapa = html.slice(ate('id="mapa-municipios"'), ate('id="mensal"'));
     expect(mapa).toMatch(/Cada cor é o valor de um conjunto, não do município/);
@@ -1399,7 +1421,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: seletore
     expect(mudancaP051(gold)).toContain(`o de ${maiorPub.ano} (${num(maiorPub.dec, 2)} h)`);
     const t = textoQuebraApurado(gold);
     expect(t).toContain(`o de ${maiorPub.ano}, cruza regras diferentes do apurado`);
-    expect(t).toContain(`Antes de ${c.desde} a fonte usa outra desagregação`);
+    expect(t).toContain(`de ${c.desde} a ${c.uniforme! - 1} ele incluía, em parte dos conjuntos, interrupções de origem externa`);
     expect(t).toContain(`desde ${c.uniforme}, inclui só as internas`);
     expect(t).toContain(`o maior DEC foi o de ${listaPt(c.maiorMesmaDefinicao.anos.map(String))} (${num(maxIp, 2)} h), e ${ref} fechou com ${num(c.referencia.mesmaDefinicao, 2)} h`);
     // sem as regras de código (XN, XP, IP, IND) no texto do leitor
@@ -1411,7 +1433,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: seletore
     expect(textoQuebraApurado(g2)).toBe("");
     const g3 = copia();
     for (const x of g3.brasil.identidade_apurado) [x.pct_dec_igual_ip_mais_ind, x.pct_fec_igual_ip_mais_ind] = [90, 90];
-    expect(textoQuebraApurado(g3)).toContain(`Antes de ${c.desde} a fonte usa outra desagregação.`);
+    expect(textoQuebraApurado(g3)).toContain(`antes de ${c.desde} a fonte usa outra desagregação.`);
     expect(textoQuebraApurado(g3)).not.toContain("inclui só as internas");
   });
 
@@ -1433,8 +1455,8 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: seletore
 
   it("abertura: o cartão do DEC e o do FEC dizem o perímetro (concessionárias) e a diferença com o número que a ANEEL divulga; o das compensações, o total divulgado", () => {
     const a = brasil(gold, ref);
-    expect(notaPerimetroAbertura(gold, "dec")).toBe(`Só as concessionárias, o universo do número que a ANEEL divulga: ${num(a.dec_concessionarias, 2)} h.`);
-    expect(notaPerimetroAbertura(gold, "fec")).toBe(`Só as concessionárias, o universo do número que a ANEEL divulga: ${num(a.fec_concessionarias, 2)}.`);
+    expect(notaPerimetroAbertura(gold, "dec")).toBe(`Só as concessionárias, como a ANEEL divulga: ${num(a.dec_concessionarias, 2)} h.`);
+    expect(notaPerimetroAbertura(gold, "fec")).toBe(`Só as concessionárias, como a ANEEL divulga: ${num(a.fec_concessionarias, 2)}.`);
     // o número de todas as distribuidoras e o das concessionárias são os dois da gold, nunca o mesmo
     expect(a.dec).not.toBe(a.dec_concessionarias);
     const g2 = copia();
@@ -1621,7 +1643,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     expect(f).toContain(esc(DEFINICAO_CONJUNTO_CURTA));
     expect(f).not.toMatch(/expurgad/);
     // o quarto cartão diz com palavras o que soma
-    expect(f).toMatch(/Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do ONS/);
+    expect(f).toMatch(/Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do operador do sistema \(ONS\)/);
     // código do apurado só depois, na seção própria
     expect(f).not.toMatch(/IP \+ IND|XN|XP/);
     // o subtítulo do primeiro painel define "apurado" e usa a sigla de unidade consumidora já expandida no lead
@@ -1687,7 +1709,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     const mapa = secao('id="mapa-municipios"', 'id="mensal"');
     expect(mapa).toContain(esc(DEFINICAO_CONJUNTO));
     expect(mapa.indexOf(esc(DEFINICAO_CONJUNTO))).toBeLessThan(mapa.indexOf("Cada cor é o valor de um conjunto"));
-    expect(mapa).toMatch(/ver os conjuntos, com o limite de cada um, e as distribuidoras/);
+    expect(mapa).toMatch(/ver os conjuntos, o limite de cada um e as distribuidoras/);
     // a unidade que o mapa passa à dica e à linha de seleção (estado inicial: DEC, maior conjunto)
     expect(ler("src/components/energia/QualidadeMapa.tsx")).toContain('${v.med.endsWith("max") ? "maior" : "menor"} entre os conjuntos do município');
   });
@@ -1727,11 +1749,168 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     expect(pagina).toMatch(/<QualidadeMapa[\s\S]*avisosFec=\{avisos\}/);
   });
 
-  it("peso: o HTML do servidor segue abaixo da meta do contrato, e as props dos gráficos levam só as colunas que eles leem", () => {
-    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(600_000);
+  it("peso: a marcação do servidor não cresce, e as props dos gráficos levam só as colunas que eles leem (o fluxo RSC repete essas props)", () => {
+    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400_000);
     const pagina = ler("src/app/setor-eletrico/qualidade/page.tsx");
     // nenhum gráfico recebe a lista inteira de colunas de um seletor: cada um recebe um recorte
     for (const lista of ["anual", "mensal", "compMensal"]) expect(pagina, lista).not.toMatch(new RegExp(`dados=\\{${lista}\\}`));
     expect(pagina).not.toMatch(/dados=\{linhasHistoricoConjuntos\(c\)\}/);
   });
 });
+
+describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca na primeira tela, definições e orientação", () => {
+  const ref = gold.ano_referencia;
+  const html = renderToStaticMarkup(createElement(QualidadePage));
+  const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
+  const itens = itensLimites(gold);
+  const anoRef = () => gold.compensacoes.anual.find((x) => x.ano === gold.compensacoes.ano_referencia)!;
+
+  it("a frase do gráfico de limites acompanha o indicador e o grupo: a contagem sai dos itens, em centésimos, e cada recorte diz a sua", () => {
+    const avisos = avisosFec(gold);
+    const frases = new Set<string>();
+    for (const ind of ["dec", "fec"] as const) {
+      for (const classe of ["c", "p"] as const) {
+        const doGrupo = itens.filter((i) => i.classe === classe);
+        const pares = doGrupo.filter((i) => (ind === "dec" ? i.dec !== null && i.decLim !== null : i.fec !== null && i.fecLim !== null));
+        const acima = pares.filter((i) => comparaNaPrecisao(ind === "dec" ? i.dec! : i.fec!, ind === "dec" ? i.decLim! : i.fecLim!, 2) === "acima");
+        const t = respostaRecorteLimites(itens, ind, classe, ref, avisos);
+        const nome = ind === "dec" ? "DEC" : "FEC";
+        expect(t, `${ind} ${classe}`).toContain(`${nome} e limite`);
+        expect(t).toContain(classe === "c" ? "concessionárias" : "permissionárias");
+        expect(t).toContain(acima.length === 0 ? `nenhuma das ${num(pares.length, 0)}` : acima.length === pares.length && pares.length > 1 ? `todas as ${num(pares.length, 0)}` : `${num(acima.length, 0)} de ${num(pares.length, 0)}`);
+        if (doGrupo.length > pares.length) expect(t).toContain(`${num(doGrupo.length - pares.length, 0)} sem valor ou sem limite no ano`);
+        frases.add(t);
+      }
+    }
+    // quatro recortes, quatro frases: trocar para FEC ou para permissionárias muda o que ela diz
+    expect(frases.size).toBe(4);
+    // com itens à mão: contagem, a mais distante e quem fica fora; a ressalva de cobertura parcial só no FEC
+    const mini: ItemLimitesTeste[] = [
+      { id: "1", rotulo: "A", classe: "c", dec: 10, decLim: 8, fec: 9, fecLim: 4 },
+      { id: "2", rotulo: "B", classe: "c", dec: 7, decLim: 8, fec: 3, fecLim: 4 },
+      { id: "3", rotulo: "C", classe: "c", dec: null, decLim: null, fec: null, fecLim: null },
+    ];
+    const t = respostaRecorteLimites(mini, "dec", "c", 2025);
+    expect(t).toContain("1 de 2 concessionárias com DEC e limite ficou acima do limite agregado de DEC");
+    expect(t).toContain("A mais distante do limite é a A: 10,00 h para um limite de 8,00.");
+    expect(t).toContain("1 sem valor ou sem limite no ano fica só na tabela");
+    expect(respostaRecorteLimites(mini, "dec", "p", 2025)).toMatch(/Nenhuma das 0 permissionárias/);
+    const marcada = Object.values(avisos)[0];
+    if (marcada) {
+      const f = respostaRecorteLimites([{ ...mini[0], id: marcada.cnpj }, mini[1]], "fec", "c", 2025, avisos);
+      expect(f).toContain("(FEC de cobertura parcial, marcado com asterisco)");
+      expect(respostaRecorteLimites([{ ...mini[0], id: marcada.cnpj }, mini[1]], "dec", "c", 2025, avisos)).not.toContain("cobertura parcial");
+    }
+    // na página: a frase do estado inicial (DEC, concessionárias) e, no componente, a legenda do asterisco acima do gráfico
+    expect(html).toContain('data-frase-recorte="limites"');
+    // depois dos controles e antes do gráfico, na ordem do documento e na da tela
+    expect(html.indexOf('data-frase-recorte="limites"')).toBeGreaterThan(html.indexOf('aria-label="Grupo de distribuidoras"'));
+    expect(html.indexOf('data-frase-recorte="limites"')).toBeLessThan(html.indexOf('data-grafico="pontos"'));
+    expect(html).toContain(esc(respostaRecorteLimites(itens, "dec", "c", ref, avisos)));
+    expect(ler("src/components/energia/QualidadeLimites.tsx")).toContain('data-legenda="asterisco-fec"');
+  });
+
+  it("compensações: a quebra de regime sai da série (ano, tipos que somem, os dois lados), marca o gráfico, a frase e a tabela, sem sugerir queda real", () => {
+    const q = quebraCompensacao(gold)!;
+    const anos = gold.compensacoes.anual;
+    const comUc = (t: "trimestral" | "anual") => anos.filter((a) => a.completo && (a.por_tipo[t]?.valor_uc ?? 0) > 0).map((a) => a.ano);
+    expect(q.ano).toBe(Math.max(...comUc("trimestral")) + 1);
+    expect(q.somem).toEqual(["trimestral", "anual"]);
+    expect(q.antes).toEqual({ ano: q.ano - 1, valorUc: anos.find((a) => a.ano === q.ano - 1)!.valor_uc, quantidadeUc: anos.find((a) => a.ano === q.ano - 1)!.quantidade_uc });
+    expect(q.depois.ano).toBe(q.ano);
+    const t = textoQuebraCompensacao(gold);
+    expect(t).toContain(`Desde ${q.ano}, a fonte não publica mais as compensações trimestrais e anuais a unidades consumidoras`);
+    expect(t).toContain(`de ${num(q.antes.quantidadeUc! / 1e6, 1)} milhões em ${q.antes.ano} para ${num(q.depois.quantidadeUc! / 1e6, 1)} milhões em ${q.depois.ano}`);
+    expect(t).toContain("Não leia a diferença como queda das compensações");
+    expect(t).not.toMatch(/caiu|despencou|diminuiu|encolheu/);
+    // dois regimes no gráfico, cada ano numa série só; a situação de cada ano na tabela diz o regime
+    const regimes = regimesCompensacao(gold)!;
+    expect(regimes).toEqual({ ano: q.ano, antes: `Até ${q.antes.ano}: com as compensações trimestrais e anuais`, depois: `Desde ${q.ano}: sem as compensações trimestrais e anuais` });
+    for (const l of linhasCompensacaoAnual(gold)) expect(String(l.situacao), String(l.ano)).toContain(Number(l.ano) < q.ano ? "com as compensações trimestrais e anuais" : "sem as compensações trimestrais e anuais");
+    // na página: o aviso junto do gráfico, a legenda dos dois regimes e a frase do maior total com a quebra dita
+    expect(html).toContain('data-aviso="quebra-compensacoes"');
+    expect(html).toContain(esc(t));
+    expect(html).toContain(esc(regimes.antes));
+    expect(html).toContain(esc(regimes.depois));
+    expect(mudancaP053(gold)).toContain(textoQuebraCompensacaoCurto(gold));
+    // a tabela anual abre sob demanda, com a quebra na nota, e a nota por tipo traz a causa dos anos sem valor
+    expect(TABELAS_SOB_DEMANDA).toContain("comp-anual");
+    const def = tabelaQualidade("comp-anual", gold);
+    expect(def.linhas.length).toBe(anos.length);
+    expect(new Set(def.linhas.map((l) => l.id)).size).toBe(anos.length);
+    expect(def.nota).toContain(textoQuebraCompensacao(gold));
+    expect(notaTiposCompensacao(gold)).toContain(textoQuebraCompensacaoCurto(gold));
+    // sem tipo que some, nada disso aparece
+    const g2 = copia();
+    for (const a of g2.compensacoes.anual) for (const tp of ["trimestral", "anual"] as const) if (a.por_tipo[tp]) a.por_tipo[tp]!.valor_uc = 1_000_000;
+    expect(quebraCompensacao(g2)).toBeNull();
+    expect(textoQuebraCompensacao(g2)).toBe("");
+    expect(regimesCompensacao(g2)).toBeNull();
+    expect(String(linhasCompensacaoAnual(g2)[0].situacao)).not.toContain("compensações trimestrais");
+  });
+
+  it("divulgado e reconciliação: a linha das concessionárias diz de onde começa e até onde foi conferida; as geradoras e a quantidade divulgada aparecem junto do número", () => {
+    const conferido = anosDivulgados(gold)!;
+    const desde = gold.brasil.anual.find((x) => x.dec_concessionarias !== null)!.ano;
+    const t = textoConcessionariasDesde(gold, desde);
+    expect(t).toContain(`começa em ${desde}`);
+    expect(t).toContain(`cobre ${conferido.de} a ${conferido.ate}`);
+    expect(t).not.toMatch(/reproduz/);
+    expect(html).toContain(esc(t));
+    expect(textoConcessionariasDesde(gold, null)).toMatch(/não tem anos com todas as distribuidoras classificadas/);
+    const a = anoRef();
+    expect(textoParticipacaoUg(gold)).toBe(`As unidades geradoras somam ${pct((a.valor_ug! / a.valor!) * 100, 1)} do valor pago em ${a.ano}.`);
+    expect(html).toContain(esc(textoParticipacaoUg(gold)));
+    const nq = notaQuantidadeDivulgada(gold);
+    if (a.divulgado_aneel?.dentro_da_precisao_quantidade === false) {
+      expect(nq).toContain(`${num(a.divulgado_aneel.quantidade! / 1e6, 1)} milhões`);
+      expect(html).toContain(esc(nq));
+    } else expect(nq).toBe("");
+    const g2 = copia();
+    for (const x of g2.compensacoes.anual) x.divulgado_aneel = null;
+    expect(notaQuantidadeDivulgada(g2)).toBe("");
+    expect(anosDivulgados(g2)).toBeNull();
+    expect(textoConcessionariasDesde(g2, 2019)).not.toContain("conferência");
+  });
+
+  it("município: a busca está na primeira tela, o resumo traz o intervalo dos conjuntos e quem mora em área sem dado recebe a orientação", () => {
+    const m: MunicipioQualidade = { cod: "1100023", nome: "Ariquemes", uf: "RO", conjuntos: ["17332", "17335"], relacao: "varios_conjuntos", dec_min: 6.13, dec_max: 34.37, fec_min: 2.98, fec_max: 8.31, cnpjs: ["05914650000166"] };
+    expect(resumoMunicipio(m, 2025)).toContain(`de ${num(6.13, 2)} a ${num(34.37, 2)} h`);
+    expect(resumoMunicipio(m, 2025)).toMatch(/nenhuma média municipal/);
+    expect(resumoMunicipio({ ...m, relacao: "conjunto_compartilhado", conjuntos: ["1"], dec_min: 7, dec_max: 7 }, 2025)).toContain("valores do conjunto inteiro");
+    expect(resumoMunicipio({ ...m, relacao: "sem_relacao_na_fonte", conjuntos: [], dec_min: null, dec_max: null, fec_min: null, fec_max: null }, 2025)).toMatch(/não aparece na base da ANEEL/);
+    expect(resumoMunicipio({ ...m, relacao: "sem_conjunto_ativo", dec_min: null, dec_max: null }, 2025)).toMatch(/sem conjunto com DEC de 12 meses/);
+    // área sem dado: sem dado não é sem energia, e diz a quem perguntar; área com dado não leva a orientação
+    expect(orientacaoSemDado({ relacao: "sem_relacao_na_fonte" })).toMatch(/Sem dado não quer dizer sem energia/);
+    expect(orientacaoSemDado({ relacao: "sem_conjunto_ativo" })).toMatch(/distribuidora e, depois, à Ouvidoria da ANEEL/);
+    for (const r of ["conjunto_exclusivo", "conjunto_compartilhado", "varios_conjuntos"] as const) expect(orientacaoSemDado({ relacao: r })).toBe("");
+    // na página: depois do lead e da linha "Não permite concluir", antes da faixa de métricas; campo com rótulo, combobox e a ficha do mapa com âncora
+    const busca = html.indexOf("data-busca-municipio-topo");
+    expect(busca).toBeGreaterThan(html.indexOf('data-limite=""'));
+    expect(busca).toBeLessThan(html.indexOf("data-faixa-metricas"));
+    expect(html).toContain("Procure o seu município");
+    expect(html).toMatch(/role="combobox"/);
+    expect(html).toContain('id="municipio-escolhido"');
+    const isolado = renderToStaticMarkup(createElement(QualidadeBuscaMunicipio, { ano: ref, urlMunicipios: "/x.csv" }));
+    expect(isolado).not.toContain("data-resposta=\"municipio-topo\"");
+    // a lista de 600 KB só é baixada ao focar o campo (ou quando o link já traz um município), e o mapa reaproveita a mesma leitura
+    const fonte = ler("src/components/energia/QualidadeBuscaMunicipio.tsx");
+    expect(fonte).toMatch(/onFocus=\{iniciar\}/);
+    expect(fonte).toContain("carregarMunicipios(urlMunicipios)");
+    expect(ler("src/components/energia/QualidadeMapa.tsx")).toContain("carregarMunicipios(urlMunicipios)");
+  });
+
+  it("títulos e definições no ponto de uso: a distribuição não diz o contrário do que mostra, os painéis dizem DEC ou FEC e as siglas vêm por extenso", () => {
+    expect(html).toContain("A média esconde as caudas");
+    expect(html).not.toContain("As médias não escondem as caudas");
+    expect(html).toContain("Operador Nacional do Sistema (ONS)");
+    expect(html).toContain("P10 a P90 são percentis");
+    expect(ler("src/components/energia/QualidadeComparador.tsx")).toContain('${ind === "dec" ? "DEC" : "FEC"}');
+    expect(ler("src/components/energia/QualidadeMapa.tsx")).toContain('${rotuloCnpj(c)}, ${ind === "dec" ? "DEC" : "FEC"}');
+    // a abertura traz a linha "Não permite concluir" e a razão no lead; os avisos essenciais têm 14 px, não 12
+    expect(html).toContain('data-limite=""');
+    for (const arq of ["QualidadeLimites", "QualidadeMapa", "QualidadeConjuntosDoMunicipio"]) expect(ler(`src/components/energia/${arq}.tsx`), arq).not.toMatch(/<p className="[^"]*\btext-xs\b[^"]*">/);
+  });
+});
+
+type ItemLimitesTeste = Parameters<typeof respostaRecorteLimites>[0][number];

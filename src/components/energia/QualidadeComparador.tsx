@@ -66,7 +66,8 @@ export function QualidadeComparador({
   const paineis = (ind: "dec" | "fec") =>
     escolhidas.map((c) => ({
       id: c,
-      titulo: nomes.get(c) ?? `CNPJ ${c}`,
+      // o título do painel diz o indicador: a mesma distribuidora aparece uma vez no bloco do DEC e outra no do FEC
+      titulo: `${nomes.get(c) ?? `CNPJ ${c}`}, ${ind === "dec" ? "DEC" : "FEC"}`,
       series: [
         { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
         { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },

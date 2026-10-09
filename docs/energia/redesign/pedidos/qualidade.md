@@ -84,3 +84,53 @@ A conferência mecânica casa 58 das 60 visões comparáveis da rota por tipo e 
 ```
 
 Visões que o rastreador marca "nível mudou" para Auditar ou Analisar sem terem mudado (o mapa e a tabela de municípios) são o mapa que só carrega quando chega perto da tela: em Entender ele está à vista; a medição automática a 1440 px o perde quando o servidor está lento.
+
+## 13. Rodada 2 (CORRECOES_U09.md, `/qualidade`): o que mudou, o que fica pendente e o que depende de outro dono
+
+Tudo abaixo está em `src/app/setor-eletrico/qualidade/**`, `src/components/energia/Qualidade*.tsx`, `src/lib/energia/qualidade.ts` e `src/tests/energia-qualidade.test.ts` (96 testes). Medidas no servidor de desenvolvimento em 09/10/2026, 1440 e 390 px.
+
+### 13.1 Feito
+
+- Prioridade 1 (rolagem): reverificado no navegador em 1440 e 390 px. DEC e FEC, grupo de distribuidoras, Ordenar por, Escala, Cor do mapa, a busca da primeira tela e o clique no mapa não levam ao topo (variação de rolagem 0; o foco fica no controle). O que mexia na tela era a frase nova do painel de limites: o CSS da página (item 5) passa para a frente de qualquer `space-y-*` o que tem `data-resposta`, e a frase mudava de altura acima dos controles. Ela agora usa `data-frase-recorte` e fica depois dos controles: o controle não se move.
+- Busca do município na primeira tela (`QualidadeBuscaMunicipio`, depois da abertura e antes das métricas): combobox, lista de 600 kB só ao focar (ou quando o link traz `?mun=`), resumo de uma linha com o intervalo dos conjuntos e o caminho para a ficha (`#municipio-escolhido`); o mapa reaproveita a mesma leitura (`carregarMunicipios`) e mostra, sob o mapa, o caminho para a ficha. Área sem dado (Pinto Bandeira e 14 outros municípios) recebe orientação: sem dado não é sem energia, a distribuidora e depois a Ouvidoria da ANEEL, e o link para a Conta de luz.
+- Abertura: o lead diz a razão (limites, ranking e compensações partem do DEC e do FEC) e a linha `limite` diz o que não permite concluir.
+- Painel de limites: frase acima do gráfico que acompanha DEC ou FEC e concessionárias ou permissionárias (contagem em centésimos, a mais distante, quem fica fora); legenda do asterisco de cobertura parcial acima do gráfico; avisos de 14 px.
+- Compensações: quebra de 2022 (a fonte deixa de publicar os tipos trimestral e anual a UCs) lida da própria série; aviso junto do gráfico, gráfico com dois regimes na legenda, frase do maior total, situação de cada ano na tabela e causa na nota por tipo; sem sugerir queda (os dois números, quantidade e valor, e "não leia a diferença como queda").
+- Rigor: a linha das concessionárias diz que começa em 2019 e que a conferência com o divulgado cobre 2023 a 2025 (antes, "desde 2019 reproduz"); participação das unidades geradoras no valor por UC (1,0%); quantidade divulgada (21,6 milhões) junto do cartão da quantidade; regra de mês completo (99% do máximo dos 12 meses anteriores) visível no Período do primeiro painel.
+- Didática e leitura: título "A média esconde as caudas"; ONS por extenso, P10 a P90 e CHI definidos no ponto de uso; painéis dos pequenos múltiplos com "DEC" ou "FEC" no título (o H4 deixa de repetir a distribuidora); Período, Universo e Unidade em três linhas, não em três colunas.
+- Texto: 5.309 para 5.153 palavras visíveis em Entender (1440). Peso: 746.569 para 736.824 B servidos (fluxo 337 kB, HTML 400 kB); a marcação do servidor, o que o teste vigia, está em 385 kB (o teste agora diz que mede a marcação, com limite de 400 kB, e não o HTML servido).
+- Primeira tela: busca a 380 px (1440) e 491 px (390); a primeira figura foi de 769 para 969 px em 1440 (a busca, a linha "Não permite concluir" e o texto de apoio de 13 px do coordenador). Sem rolagem horizontal em 320, 390, 768 e 1440.
+
+### 13.2 Equivalências novas (matriz de preservação)
+
+Nada saiu da página; mudou de lugar de nível ou de título:
+
+```json
+{
+"/setor-eletrico/qualidade": [
+  { "antes": "tabela|eventos em situação de emergência com maior chi", "depois": "tabela|eventos em situação de emergência com maior chi (consumidores × horas interrompidas)", "justificativa": "mesma tabela, com a sigla CHI definida no título" },
+  { "antes": "grafico|compensações pagas a unidades consumidoras por ano", "depois": "grafico|compensações pagas a unidades consumidoras por ano", "justificativa": "mesmo gráfico; as barras passam a ter duas séries (antes e depois de 2022) para marcar a quebra de regime" }
+]
+}
+```
+
+Mudaram de Entender para Analisar (continuam na página, com o mesmo título): seção "Como a rede se recupera: emergências e dias críticos" (gráfico de barras de emergência e dia crítico, tabela de eventos), seção "Como o valor se distribui entre as distribuidoras em 2025?" (histograma de R$ por UC e tabela por distribuidora) e a tabela "Compensações por ano: unidades consumidoras e geradoras", que agora abre sob demanda (`comp-anual`, na seção nova `compensacoes-por-ano`). A seção de satisfação (IASC) e a de tipos de violação ficaram em Entender, na largura toda.
+
+### 13.3 Pedidos a quem é dono do compartilhado
+
+- `GraficoPontos`: desenhar no servidor só as primeiras N linhas (como o `limiteInicial` do `GraficoBarras`). Com 51 concessionárias são 55 kB de SVG e 17 kB de tabela equivalente, 72 kB do HTML (10% do servido), e o gráfico abre com 12 das 51 sem dizer quantas faltam: um contador "12 de 51" legível ajudaria.
+- `MapaCoropletico` e tokens: o tooltip persistente do município selecionado é cortado no topo do mapa, e as duas classes mais claras da escala (`--escala-seq-1` e `--escala-seq-2`) medem 1,31:1 e 1,90:1 contra o branco (abaixo dos 3:1 de elemento gráfico). Uma escala com as duas primeiras classes a 3:1 ou mais precisa ser validada para todos os mapas que usam a mesma sequência; a Qualidade segue com o token.
+- Peso: 12 diálogos "Sobre este dado" e 6 fichas "Comprove este número" (item 8) seguem montados no HTML e no fluxo; classes somam 127 kB do HTML. Sem isso a meta de 600 kB não se alcança localmente (736.824 B servidos hoje).
+- A ficha "Comprove este número" é menos clara que o "Sobre este dado" (avaliação de rastreabilidade): alinhar o texto das duas.
+- Atributo `data-resposta` (item 5): quem insere uma frase dinâmica dentro de um `space-y-*` a vê passar para a frente do bloco; uma exceção declarada evitaria o tropeço que a página teve.
+
+### 13.4 Pedidos ao pipeline (coordenador)
+
+- Gold publicada com árvore de código limpa (hoje `versao_codigo` aponta para código com alterações locais) e o bruto arquivado, não só o `sha256`: a reprodução por terceiros depende dos CSV intermediários.
+- Guardar mais de uma captura da ANEEL para mostrar revisões (hoje uma só).
+- A causa da quebra de 2022 nas compensações não está nos dados nem na documentação lida: a página diz só o que a fonte deixou de publicar. Se a ANEEL explicar, a frase pode dizer a causa.
+- `meses_fec` e `cobertura_fec` por distribuidora (item 11), e `fec_min` e `fec_max` por município com os conjuntos de 11 meses.
+
+### 13.5 Pendências declaradas da rodada
+
+Dispersão dos conjuntos de uma distribuidora específica (só pela tabela do município); leitura de desigualdade entre classes de consumidores (a base coletiva não traz corte por classe); leitor de tela real (depende de teste humano); alvos de 24 a 44 px do Comprove e dos eixos de 10 a 12 px (compartilhados); menos de 13 painéis só em parte (de 13 para 11 em Entender, com as notas de três colunas ainda em cada painel); o peso de 600 kB; o histórico de revisões; os itens de H do pipeline.

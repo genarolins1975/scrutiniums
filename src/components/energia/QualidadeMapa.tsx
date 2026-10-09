@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import LinkSemPrefetch from "@/components/energia/LinkSemPrefetch";
 import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeConjuntosDoMunicipio";
@@ -22,10 +23,11 @@ import {
   MEDIDAS_MAPA,
   ROTULO_MEDIDA,
   ROTULO_RELACAO,
+  carregarMunicipios,
   carregarUmaVez,
   linhasMunicipios,
   linhasSerieDistribuidoras,
-  municipiosDoCsv,
+  orientacaoSemDado,
   respostaMunicipio,
   textoCorDoMapa,
   valoresMapa,
@@ -130,8 +132,8 @@ export function QualidadeMapa({
     if (!ativo) return;
     let vivo = true;
     setCarga({ estado: "carregando" });
-    carregarUmaVez(urlMunicipios, (r) => r.text()).then(
-      (t) => vivo && setCarga({ estado: "pronto", municipios: municipiosDoCsv(t) }),
+    carregarMunicipios(urlMunicipios).then(
+      (municipios) => vivo && setCarga({ estado: "pronto", municipios }),
       (e: unknown) => vivo && setCarga({ estado: "erro", erro: e instanceof Error ? e.message : String(e) }),
     );
     return () => {
@@ -241,9 +243,19 @@ export function QualidadeMapa({
         )}
       </div>
 
-      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">{regra}</p>
+      {selecionado && (
+        <p className="text-sm text-carvao" data-ir-para-ficha="">
+          {selecionado.nome} ({selecionado.uf}) escolhido.{" "}
+          <a href="#municipio-escolhido" className="text-energia-dark underline underline-offset-4">
+            Ver os conjuntos, o limite de cada um e o histórico, logo abaixo
+          </a>
+          .
+        </p>
+      )}
 
-      <section aria-live="polite" aria-label="Município escolhido" className="border-t border-linha pt-4">
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{regra}</p>
+
+      <section id="municipio-escolhido" aria-live="polite" aria-label="Município escolhido" className="scroll-mt-28 border-t border-linha pt-4">
         {selecionado ? (
           <div className="space-y-3">
             <h4 className="font-serif text-lg text-carvao">
@@ -252,6 +264,15 @@ export function QualidadeMapa({
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="municipio">
               {respostaMunicipio(selecionado, ano)}
             </p>
+            {orientacaoSemDado(selecionado) && (
+              <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-orientacao="sem-dado">
+                {orientacaoSemDado(selecionado)}{" "}
+                <LinkSemPrefetch href="/setor-eletrico/conta-de-luz" className="text-energia-dark underline underline-offset-4">
+                  Abrir a Conta de luz
+                </LinkSemPrefetch>
+                .
+              </p>
+            )}
             {textoCorDoMapa(selecionado, v.med) && (
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-cor-mapa="">
                 {textoCorDoMapa(selecionado, v.med)}
@@ -282,7 +303,7 @@ export function QualidadeMapa({
               </button>
             </div>
             {foraDaComparacao > 0 && (
-              <p className="text-xs text-carvao-muted">
+              <p className="text-sm text-carvao-muted">
                 A comparação aceita até {LIMITE_COMPARACAO} distribuidoras: entram as {LIMITE_COMPARACAO} primeiras da lista; {foraDaComparacao}{" "}
                 {foraDaComparacao === 1 ? "fica" : "ficam"} só na lista acima.
               </p>
@@ -314,7 +335,7 @@ export function QualidadeMapa({
                       escala={escala}
                       paineis={cnpjsSel.map((c) => ({
                         id: c,
-                        titulo: rotuloCnpj(c),
+                        titulo: `${rotuloCnpj(c)}, ${ind === "dec" ? "DEC" : "FEC"}`,
                         series: [
                           { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
                           { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
@@ -344,7 +365,7 @@ export function QualidadeMapa({
                 {avisosFec[c].frase}
               </p>
             ))}
-            <p className="text-xs text-carvao-muted">
+            <p className="text-sm text-carvao-muted">
               O histórico é da distribuidora inteira (todos os seus conjuntos), não do município: a fonte não publica série municipal.
             </p>
           </div>
