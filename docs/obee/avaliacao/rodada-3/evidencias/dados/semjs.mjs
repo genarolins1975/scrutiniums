@@ -1,0 +1,12 @@
+import { createRequire } from "node:module";
+const require = createRequire("/opt/node-tools/node_modules/");
+const { chromium } = require("playwright");
+const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+const ctx = await b.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+const p = await ctx.newPage();
+await p.goto("http://localhost:3100/eficiencia-estatal/educacao-municipal-capitais/gastos?cap=recife&med=despesa_mat&ano=2024", { waitUntil: "load" });
+const t = await p.evaluate(() => document.querySelector("main").innerText);
+console.log("aviso sem JS:", /Sem JavaScript, o painel mostra o recorte padrão/.test(t));
+console.log("frase padrão visível:", (t.match(/A despesa em Educação por habitante vai de[^\n]*/)||[""])[0].slice(0,140));
+console.log("recorte pedido (por matrícula 2024) visível:", /razão da despesa de aplicação direta por matrícula/.test(t));
+await b.close();

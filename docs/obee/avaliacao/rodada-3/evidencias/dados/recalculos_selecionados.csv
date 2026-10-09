@@ -1,0 +1,36 @@
+recorte,campo,exibido_no_navegador,recalculado_so_com_a_gold,resultado
+G|despesa|2025|nominal||todas,frase_amplitude,"A despesa total em Educação vai de R$ 354,2 milhões em Rio Branco (AC) a R$ 23,58 bilhões em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.","A despesa total em Educação vai de R$ 354,2 milhões em Rio Branco (AC) a R$ 23,58 bilhões em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.",ok
+G|despesa_hab|2025|nominal|recife|todas,frase_capital,True,True,ok
+G|despesa_hab|2025|nominal|recife|todas,ref_mediana,R$ 1.160,R$ 1.160,ok
+G|despesa_hab|2025|nominal|recife|todas,ref_razao_agregada,Razão agregada R$ 1.361:,Razão agregada R$ 1.361:,ok
+G|despesa_hab|2025|real|recife|regiao,frase_capital,True,True,ok
+G|despesa_hab|2021|nominal|campo-grande|todas,frase_capital,True,True,ok
+G|despesa_hab|2021|nominal|campo-grande|todas,ref_n,25 de 26,25 de 26,ok
+G|despesa_mat|2024|nominal|boa-vista|todas,frase_capital,True,True,ok
+G|despesa_mat|2025|real|sao-paulo|todas,frase_amplitude,A razão da despesa de aplicação direta por matrícula vai de R$ 11.030 em Teresina (PI) a R$ 23.747 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.,A razão da despesa de aplicação direta por matrícula vai de R$ 11.030 em Teresina (PI) a R$ 23.747 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.,ok
+G|despesa_hab|2023|nominal|palmas|todas,ref_faixa,R$ 852 a R$ 1.134,R$ 852 a R$ 1.134,ok
+G|despesa_hab|2025|nominal|porto-alegre|regiao,ref_n,3 de 3,3 de 3,ok
+G|despesa|2022|real|vitoria|regiao,frase_capital,True,True,ok
+A|matriculas|2025|total||sao-paulo,frase_capital,True,True,ok
+A|atu|2025|anos_iniciais||recife,frase_amplitude,"A média de alunos por turma nos anos iniciais vai de 20,5 em Recife (PE) a 29,5 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.","A média de alunos por turma nos anos iniciais vai de 20,5 em Recife (PE) a 29,5 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.",ok
+A|atu|2022|pre_escola||palmas,ref_mediana,"21,1","21,1",ok
+A|conveniadas|2025|total||,frase_amplitude,"O número de matrículas em escolas conveniadas com o município em toda a educação básica vai de 0 em Boa Vista (RR), João Pessoa (PB) e mais 6 a 285.770 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.","O número de matrículas em escolas conveniadas com o município em toda a educação básica vai de 0 em Boa Vista (RR), João Pessoa (PB) e mais 6 a 285.770 em São Paulo (SP) entre as 26 capitais com dado comparável em 2025.",ok
+A|matriculas|2024|creche||rio-branco,frase_capital,True,True,ok
+R|ideb|2025|anos_iniciais||,frase_amplitude,"O Ideb nos anos iniciais vai de 4,8 em Natal (RN) a 6,9 em Curitiba (PR) e Teresina (PI) entre as 26 capitais com dado comparável na edição 2025.","O Ideb nos anos iniciais vai de 4,8 em Natal (RN) a 6,9 em Curitiba (PR) e Teresina (PI) entre as 26 capitais com dado comparável na edição 2025.",ok
+R|ideb|2024|anos_iniciais||recife,frase_capital,True,True,ok
+R|saeb|2023|anos_finais|portugues|natal,frase_capital,True,True,ok
+R|saeb|2013|anos_iniciais|matematica|sao-paulo,frase_capital,True,True,ok
+R|aprovacao|2025|anos_finais||boa-vista,frase_capital,True,True,ok
+R|ideb|2017|anos_iniciais||,ref_n,25 de 26,25 de 26,ok
+C|tab|2025|anos_iniciais|nominal|,cel_despesa_hab_Recife,R$ 1.172,R$ 1.172,ok
+C|tab|2025|anos_iniciais|nominal|,resumo_mediana_despesa_mat,R$ 14.254,R$ 14.254,ok
+C|tab|2023|anos_finais|real|NE,resumo_media_despesa,"R$ 1,25 bilhão","R$ 1,25 bilhão",ok
+C|tab|2022|pre_escola|nominal|,resumo_mediana_atu,"21,1","21,1",ok
+C|tab|2025|anos_iniciais|nominal|,cel_conveniadas_pct_Porto Alegre,"49,7%","49,7%",ok
+C|tab|2025|anos_iniciais|nominal|,cel_intra_pct_Porto Alegre,"32,2%","32,2%",ok
+C|tab|2025|total|nominal|,dif_São Paulo,"+R$ 821 (+70,8%), acima da mediana","+R$ 821 (+70,8%), acima da mediana",ok
+GE|despesa_hab|nominal|recife,frase_evolucao,"Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.","Entre 2021 e 2025 a população de referência muda de base (estimativa, Censo ou relação do DOU): os valores de 2021 e de 2025 não são diretamente comparáveis, e o gráfico marca onde a base muda.",ok
+GE|despesa_mat|real|,frase_evolucao,"Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 9.631 em 2021 para R$ 14.254 em 2025.","Na mediana das capitais, a razão da despesa de aplicação direta por matrícula passou de R$ 9.631 em 2021 para R$ 14.254 em 2025.",ok
+GE|despesa|nominal|campo-grande,frase_evolucao,"Em Campo Grande (MS), a despesa total em Educação passou de R$ 981,8 milhões em 2022 para R$ 1,63 bilhão em 2025.","Em Campo Grande (MS), a despesa total em Educação passou de R$ 981,8 milhões em 2022 para R$ 1,63 bilhão em 2025.",ok
+CG|ideb|2023|anos_finais||S,frase_amplitude,"O Ideb nos anos finais vai de 3,8 em Porto Alegre (RS) a 5,5 em Curitiba (PR) entre as 3 capitais com dado comparável na edição 2023.","O Ideb nos anos finais vai de 3,8 em Porto Alegre (RS) a 5,5 em Curitiba (PR) entre as 3 capitais com dado comparável na edição 2023.",ok
+CG|saeb|2021|anos_iniciais||,ref_media,"206,39","206,39",ok
