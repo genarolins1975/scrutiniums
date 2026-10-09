@@ -205,7 +205,7 @@ export function RedeEsquemaFluxos({
       </div>
 
       <svg
-        viewBox="0 0 620 570"
+        viewBox={`0 0 620 ${exterior && exterior.length ? 570 : 490}`}
         className="mx-auto hidden w-full max-w-2xl sm:block"
         role="group"
         aria-label={`${titulo}, ${periodo}: ${descricao}.${textoExterior ? ` ${textoExterior}.` : ""}${textoPrecos ? ` ${rotuloPrecos ?? "PLD"}: ${textoPrecos}.` : ""}`}

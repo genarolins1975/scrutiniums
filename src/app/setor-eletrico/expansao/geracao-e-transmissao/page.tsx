@@ -193,7 +193,7 @@ export default function GeracaoTransmissaoPage() {
             </FaixaMetricas>
           }
         >
-          Onde a geração está sendo construída e onde a rede está sendo ampliada, lado a lado, por UF e por ano. MW, km e MVA ficam em painéis separados: medem coisas diferentes.
+          A geração vem do RALIE, em MW. A rede vem do SIGET (obras, em km de circuito e MVA), dos leilões de transmissão (km e R$ nominais) e da rede da EPE (km de traçado).
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="geracao-e-transmissao">
