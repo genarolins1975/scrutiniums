@@ -28,3 +28,8 @@ O contrato diz que "Comprove este número" só existe onde a gold publica a evid
 ## 4. Pergunta do painel de energia estimada com 12 palavras
 
 `PERGUNTA_ONS` ("Quanta energia a MMGD entrega ao SIN, segundo a estimativa do ONS?", em `src/lib/energia/transicao.ts`) é o título do painel e fica com 12 palavras. O `h1` da página é outro texto, descritivo e curto ("Energia da geração distribuída no SIN", 6 palavras), e o título da figura não repete o dele. A pergunta continua como está porque `docs/observatorios/energia/modulos/transicao.md` e o inventário de visões a citam. Se a regra de 5 a 9 palavras valer também para a pergunta do painel, trocar a constante (e esses dois documentos).
+
+## 5. Pedidos ao pipeline (dados), sem efeito imediato sobre as páginas
+
+- Cronograma: o gráfico de previsão por ano deixa de fora 2031, o ano das três datas convencionais em bloco (52.652,0 MW de 54.928,7 MW), e a tabela do mesmo bloco traz todos os anos com a coluna "Inclui data em bloco". Os cerca de 2.276,7 MW de 2031 que não são data em bloco ficam fora do gráfico porque a gold não publica o ano por viabilidade sem as datas em bloco. Publicar `por_ano` sem as datas em bloco permitiria desenhar 2031 sem a data convencional.
+- Texto das proveniências do RALIE (limitações e transformações): traz "Parquet histórico" e o nome de campo da gold ("estagios.unidades_atipicas"). A página troca "Parquet histórico" por "arquivo histórico" na exibição (`provenienciasDoLeitor`, em `expansao.ts`); o nome do campo continua na ficha "Sobre este dado". Reescrever o texto na origem tira a troca da página.
