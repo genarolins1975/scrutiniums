@@ -5,6 +5,8 @@ import { MiniSerie } from "@/components/eficiencia/graficos";
 import { dadosPainel, dadosPainelTema, goldEducacao } from "@/lib/eficiencia/dados";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_TABELA_COMPARATIVA,
+  dicionarioExportacoes,
   Indice,
   comparar,
   intraDaCapital,
@@ -161,5 +163,32 @@ describe("evolução: lacunas e notas de período", () => {
     const p = [2019, 2021, 2023].map((ano) => ({ ano, valor: 5, elegivel: true, quebraSerie: false }));
     expect(fraseEvolucao(p, "ideb", "x", undefined, [{ ano: 2021, texto: "edição afetada pela pandemia." }])).toContain("Em 2021: edição afetada pela pandemia.");
     expect(fraseEvolucao(p, "ideb", "x", undefined, [{ ano: 2019, texto: "fora" }])).not.toContain("fora");
+  });
+});
+
+describe("dicionário das exportações", () => {
+  it("descreve toda coluna dos dois CSV e traz as ressalvas gerais e a citação", () => {
+    const dic = dicionarioExportacoes();
+    for (const [arquivo, cabecalho] of [["comparação de um indicador", CABECALHO_CSV_COMPARACAO], ["tabela comparativa", CABECALHO_CSV_TABELA_COMPARATIVA]] as const) {
+      for (const col of cabecalho) {
+        const linha = dic.find((l) => l[0] === arquivo && l[1] === col);
+        expect(linha, `${arquivo}: ${col}`).toBeDefined();
+        expect(linha![2].length, `${arquivo}: ${col}`).toBeGreaterThan(15);
+      }
+    }
+    expect(dic.filter((l) => l[0] === "todos").map((l) => l[1])).toEqual(["(leia antes de usar)", "(universo e período)", "(como citar)"]);
+    expect(dic.find((l) => l[1] === "(leia antes de usar)")![2]).toContain("Células vazias não são zero");
+  });
+
+  it("a versão metodológica da tabela comparativa vem do indicador de cada coluna", () => {
+    const t = tabelaComparativa(ix, 2025, "anos_iniciais", "nominal", "matematica", "todas", d.capitais[0], "despesa_hab");
+    const linhas = (async () => (await import("@/lib/eficiencia/consulta")).linhasCsvTabelaComparativa(d, t, 2025, "anos_iniciais", "nominal", "todas", d.capitais[0], "despesa_hab", ix, "matematica"))();
+    return linhas.then((l) => {
+      const iv = CABECALHO_CSV_TABELA_COMPARATIVA.indexOf("versao_metodologica");
+      const porColuna = new Map(l.map((r) => [r[CABECALHO_CSV_TABELA_COMPARATIVA.indexOf("coluna")], r[iv]]));
+      expect(porColuna.get("Despesa total na função Educação")).toBe(d.fichas.find((f) => f.id === "edu.despesa.funcao_educacao")!.versao_metodologica);
+      expect(porColuna.get("Despesa por matrícula")).toBe(d.fichas.find((f) => f.id === "edu.despesa.aplicacao_direta_por_matricula")!.versao_metodologica);
+      expect(new Set(porColuna.values()).size).toBeGreaterThan(1);
+    });
   });
 });

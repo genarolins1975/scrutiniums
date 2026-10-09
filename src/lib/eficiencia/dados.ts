@@ -12,6 +12,18 @@ const ARQUIVO = join(process.cwd(), "public", "eficiencia", "gold", "educacao_ca
 
 let cache: GoldEducacao | null | undefined;
 
+export type RevisaoCatalogo = { versao: string; data: string; resumo: string };
+
+/** Histórico de revisões metodológicas do catálogo (pipeline/eficiencia/catalogo_indicadores.json), lido na geração da página; vazio se o arquivo não estiver disponível. */
+export function historicoDoCatalogo(): RevisaoCatalogo[] {
+  try {
+    const c = JSON.parse(readFileSync(join(process.cwd(), "pipeline", "eficiencia", "catalogo_indicadores.json"), "utf-8")) as { historico?: RevisaoCatalogo[] };
+    return Array.isArray(c.historico) ? c.historico : [];
+  } catch {
+    return [];
+  }
+}
+
 export function goldEducacao(): GoldEducacao | null {
   if (cache !== undefined) return cache;
   try {

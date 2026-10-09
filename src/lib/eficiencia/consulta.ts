@@ -970,6 +970,21 @@ export const CABECALHO_CSV_TABELA_COMPARATIVA = [
   "diferenca_para_a_mediana", "versao_metodologica", "dados_gerados_em", "hash_dados",
 ];
 
+/** Indicador de cada coluna da tabela comparativa, para gravar no CSV a versão metodológica que vale para ela. */
+const INDICADOR_DA_COLUNA: Record<ColunaId, IndicadorId> = {
+  despesa: "edu.despesa.funcao_educacao",
+  populacao: "ctx.populacao.residente",
+  despesa_hab: "edu.despesa.por_habitante",
+  intra_pct: "edu.despesa.funcao_educacao",
+  matriculas: "edu.matriculas.rede_municipal",
+  despesa_mat: "edu.despesa.aplicacao_direta_por_matricula",
+  conveniadas_pct: "edu.matriculas.conveniadas_municipais",
+  atu: "edu.atu.rede_municipal",
+  aprovacao: "edu.aprovacao.rede_municipal",
+  ideb: "edu.ideb.rede_municipal",
+  saeb: "edu.saeb.rede_municipal",
+};
+
 const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   despesa: (m) => unidade("despesa", m),
   populacao: () => "habitantes",
@@ -1001,7 +1016,7 @@ export function linhasCsvTabelaComparativa(
         cel.ponto.status !== "OBSERVADO" || cel.foraDoEscopo ? "" : cel.elegivel ? "sim" : "nao",
         (cel.ponto.status === "OBSERVADO" ? (!cel.elegivel ? cel.ponto.motivo ?? cel.ponto.nota : cel.ponto.nota) : cel.ponto.nota) ?? "",
         MEDIDA[medida].rotulo, refSel?.mediana == null ? "" : String(refSel.mediana), refSel?.media == null ? "" : String(refSel.media), refSel ? String(refSel.n) : "",
-        c.id === colSel && l.diferenca ? l.diferenca.texto : "", "1.2", d.meta.gerado_em, d.meta.hash_dados,
+        c.id === colSel && l.diferenca ? l.diferenca.texto : "", ficha(d, INDICADOR_DA_COLUNA[c.id]).versao_metodologica, d.meta.gerado_em, d.meta.hash_dados,
       ]);
     }
   }
@@ -1077,6 +1092,71 @@ export function notasMateriais(comp: Comparacao): { texto: string; capitais: str
 /** Regiões com capitais no painel, na ordem do catálogo, com o número de capitais de cada uma. */
 export function regioesDoPainel(d: DadosPainel): { id: string; nome: string; n: number }[] {
   return Object.entries(d.regioes).map(([id, nome]) => ({ id, nome, n: d.capitais.filter((c) => c.regiao === id).length })).filter((r) => r.n > 0);
+}
+
+/* ------------------------------------------------------------------ dicionário das exportações */
+
+/**
+ * Dicionário de colunas dos dois CSV baixáveis (comparação de um indicador e tabela comparativa), com as ressalvas que valem para
+ * qualquer arquivo e a citação sugerida. Vai num arquivo à parte porque o CSV não admite comentários sem quebrar leitores de planilha.
+ */
+const DESCRICAO_COLUNA: Record<string, string> = {
+  indicador_id: "Identificador do indicador no catálogo do OBEE.",
+  indicador: "Nome do indicador.",
+  universo_do_indicador: "O que o indicador cobre: orçamento do município na função Educação, rede municipal de ensino etc.",
+  grupo_de_comparacao: "Conjunto de capitais em que a mediana e as demais estatísticas foram calculadas (todas as capitais estaduais ou as de uma região).",
+  periodo: "Exercício financeiro, ano do Censo Escolar ou edição bienal, conforme o indicador.",
+  etapa: "Etapa de ensino do recorte; 'Não se aplica' quando o indicador não varia por etapa.",
+  componente: "Base do valor: nominal (reais correntes), real (reais de 2025 pelo IPCA) ou, no Saeb, a disciplina.",
+  codigo_ibge: "Código do município no IBGE (7 dígitos).",
+  capital: "Nome da capital.",
+  uf: "Sigla da unidade da federação.",
+  valor_numerico: "Valor do indicador, em número, na unidade da coluna 'unidade'. Pode estar arredondado a 12 algarismos significativos; a série completa está na gold.",
+  valor_exibido: "O mesmo valor como aparece no painel.",
+  unidade: "Unidade do valor.",
+  estado_do_dado: "Observado, não divulgado, não aplicável, ausente na coleta, inconsistente etc. Valor vazio nunca significa zero.",
+  elegivel_comparacao: "'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora (perímetro distinto, conferência pendente).",
+  incluida_na_comparacao: "'sim' quando a capital entrou nas estatísticas do grupo neste recorte.",
+  conferencia: "Resultado da conferência da despesa entre DCA, RREO e MSC.",
+  motivo_exclusao: "Por que a capital ficou fora da comparação, quando ficou.",
+  nota: "Nota ou ressalva do dado nesta capital e período.",
+  mediana_das_incluidas: "Mediana das capitais incluídas no grupo.",
+  capitais_no_grupo: "Número de capitais do grupo.",
+  capitais_com_valor: "Capitais do grupo com valor oficial observado.",
+  capitais_incluidas: "Capitais do grupo que entraram nas estatísticas.",
+  versao_metodologica: "Versão metodológica do indicador (a da última revisão que o alterou).",
+  dados_gerados_em: "Data e hora de geração dos dados publicados.",
+  hash_dados: "Hash do conteúdo dos dados publicados; identifica a base exata de onde saiu a linha.",
+  fonte: "Fonte oficial e conjunto de dados.",
+  media_simples_das_incluidas: "Média simples (peso igual por capital) das capitais incluídas.",
+  minimo_das_incluidas: "Menor valor entre as capitais incluídas.",
+  maximo_das_incluidas: "Maior valor entre as capitais incluídas.",
+  primeiro_quartil: "Primeiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'.",
+  terceiro_quartil: "Terceiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'.",
+  quartis_exibidos: "'sim' quando há 8 ou mais valores e os quartis são mostrados.",
+  razao_agregada_do_grupo: "Soma dos numeradores ÷ soma dos denominadores das mesmas capitais (despesa por habitante e por matrícula); é diferente da média simples.",
+  politica_de_referencias: "Como as referências foram calculadas.",
+  parcela_intraorcamentaria_pct_da_funcao: "Despesa: parcela das operações intraorçamentárias na despesa liquidada da função Educação (RREO, 6º bimestre), em %, que fica fora do valor. Vazio nas demais medidas.",
+  etapa_dos_resultados: "Etapa de ensino que vale para as colunas de resultado e atendimento por etapa.",
+  coluna: "Medida a que a linha se refere.",
+  medida_de_referencia: "Medida usada nas colunas de mediana, média e diferença.",
+  mediana_do_grupo: "Mediana do grupo para a medida de referência.",
+  media_do_grupo: "Média simples do grupo para a medida de referência.",
+  capitais_na_referencia: "Número de capitais usado na referência.",
+  diferenca_para_a_mediana: "Diferença descritiva entre a capital e a mediana do grupo, na unidade da medida; não é avaliação.",
+  ano: "Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.",
+  nota_ou_ressalva: "Nota ou ressalva do dado.",
+};
+
+export function dicionarioExportacoes(): string[][] {
+  const arquivo = (nome: string, cols: string[]) => cols.map((c) => [nome, c, DESCRICAO_COLUNA[c] ?? ""]);
+  return [
+    ...arquivo("comparação de um indicador", CABECALHO_CSV_COMPARACAO),
+    ...arquivo("tabela comparativa", CABECALHO_CSV_TABELA_COMPARATIVA),
+    ["todos", "(leia antes de usar)", "Os valores descrevem o gasto, o atendimento e os resultados observados; não classificam governos, não indicam meta e não demonstram causa. Mediana e média descrevem o grupo de capitais e não são referência de desempenho. Células vazias não são zero."],
+    ["todos", "(universo e período)", "As 26 capitais estaduais, na rede municipal de ensino; a despesa de total e por habitante é do orçamento do município na função Educação, exceto operações intraorçamentárias. Gasto anual, Censo Escolar e Ideb têm períodos próprios e não devem ser alinhados sem cuidado."],
+    ["todos", "(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada."],
+  ];
 }
 
 /* ------------------------------------------------------------------ população e ponte da despesa por matrícula */

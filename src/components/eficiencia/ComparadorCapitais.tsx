@@ -15,6 +15,7 @@ import {
   comparar,
   componente,
   csv,
+  dicionarioExportacoes,
   ehDespesa,
   perimetroIntra,
   textoPerimetroIntra,
@@ -278,6 +279,9 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
           <button type="button" onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
             Copiar link deste recorte
           </button>
+            <button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+              Dicionário das colunas (CSV)
+            </button>
         </div>
         <p role="status" aria-live="polite" className="min-h-[1.25rem] text-sm text-obee-dark">
           {aviso}
@@ -332,7 +336,7 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
               aoSelecionar={alternarDestaque}
               aoBaixar={() =>
                 baixar(
-                  `obee_comparacao_capitais_${ano}.csv`,
+                  `obee_tabela_comparativa_${ano}_${etapa}${s.moeda === "real" ? "_real" : "_nominal"}${s.disc === "portugues" ? "_portugues" : ""}${s.reg ? `_regiao_${s.reg}` : ""}.csv`,
                   csv(CABECALHO_CSV_TABELA_COMPARATIVA, linhasCsvTabelaComparativa(dados, tabelaComparativa(ix, ano, etapa, s.moeda, s.disc, grupo, capGrupo, medida), ano, etapa, s.moeda, grupo, capGrupo, medida, ix, s.disc)),
                 )
               }

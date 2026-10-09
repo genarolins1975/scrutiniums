@@ -5,6 +5,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CABECALHO_CSV_COMPARACAO,
+  dicionarioExportacoes,
   Indice,
   MEDIDA,
   ROTULO_STATUS,
@@ -191,7 +192,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     }
   };
   const baixarCsv = () =>
-    baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
+    baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}${grupo === "regiao" && cap ? `_regiao_${cap.regiao}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
 
   const opcoesVisao: { v: Visao; t: string }[] = [
     { v: "grafico", t: "Gráfico" },
@@ -462,6 +463,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {visao === "grafico" || visao === "tabela" ? (
             <button type="button" onClick={baixarCsv} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
               Baixar estes valores (CSV)
+            </button>
+          ) : null}
+          {visao === "grafico" || visao === "tabela" ? (<button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+              Dicionário das colunas (CSV)
             </button>
           ) : null}
         </div>
