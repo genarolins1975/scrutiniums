@@ -62,6 +62,14 @@ export function PrevisoesFaixaFichas({ atual, fichas }: { atual: string; fichas:
   return <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />;
 }
 
+/**
+ * Envoltório de cada painel com o código do painel em atributo (data-painel): o código identifica o painel para os instrumentos de
+ * coleta e de teste, e nunca aparece como texto para o leitor.
+ */
+export function PrevisoesPainel({ id, children }: { id: IdPainelPrevisoes; children: ReactNode }) {
+  return <div data-painel={painelPrevisoes(id).codigo}>{children}</div>;
+}
+
 /** Gold ausente ou reprovada: a página diz o que falta, nunca mostra número de reserva. */
 export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
   return (

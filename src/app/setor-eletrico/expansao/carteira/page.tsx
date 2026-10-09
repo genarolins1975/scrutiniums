@@ -201,7 +201,7 @@ export default function CarteiraPage() {
             </FaixaMetricas>
           }
         >
-          O que está outorgado, o que está em obra, o que já opera e o que teve a outorga revogada ou extinta. Outorga não é obra, e obra não é entrada certa: por isso o desfecho das usinas
+          O que está outorgado, o que está em obra, o que já opera e o que teve a outorga revogada ou extinta. Outorga não é obra, e obra não é entrada certa; o desfecho das usinas
           acompanhadas pelo RALIE desde {dataTexto(g.referencias.ralie_historico_desde)} aparece ao lado da carteira.
         </CabecalhoModulo>
         <ModoProfundidade>

@@ -180,7 +180,7 @@ REGISTRO = {
     ],
     "arquivos": {
         "/energia/series/qualidade_distribuidoras_anual.csv": "cnpj; sigla; classificacao (concessionária ou permissionária, das manifestações ou do IASC); ano; meses (com DEC); dec_h e fec_interrupcoes (soma dos 12 meses; vazio se o ano não tem 12 meses); dec_limite_h e fec_limite_interrupcoes (média dos limites dos conjuntos ponderada pelas UCs médias); cobertura_limite (fração das UCs com limite); razao_dec e razao_fec (apurado ÷ limite); dgc_calculado (média das duas razões); dec_todas_parcelas_h e fec_todas_parcelas (soma de todas as parcelas publicadas, inclusive expurgadas); parcelas por grupo em horas e interrupções; ucs_media; conjuntos; quebra_perimetro (incorporação ou cessão de área detectada no ano: CNPJs das outras distribuidoras envolvidas; a série antes e depois não é do mesmo perímetro). Vazio = ausência.",
-        "/energia/series/qualidade_distribuidoras_mensal.csv": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem). DEC em horas e centésimos de hora, não minutos.",
+        "/energia/series/qualidade_distribuidoras_mensal.csv": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem); controle_fec (motivo quando os conjuntos com FEC cobrem menos de 95% das UCs do mês: o FEC do mês fica vazio, fora do FEC anual da distribuidora e do Brasil; ucs_fec mostra a cobertura que a fonte teve). DEC em horas e centésimos de hora, não minutos.",
         "/energia/series/qualidade_brasil.csv": "periodo (AAAA ou AAAA-MM); tipo (anual ou mensal); dec_h e fec_interrupcoes de todas as distribuidoras com indicadores publicados, inclusive permissionárias; dec_limite_h; fec_limite_interrupcoes; ucs; conjuntos; completo (1 = 12 meses ou mês com cobertura plena); dec_concessionarias_h e fec_concessionarias (só concessionárias, o universo do número divulgado pela ANEEL; vazio quando falta a classificação de alguma distribuidora do ano); distribuidoras_fora_numcon (distribuidoras do mês fora do agregado por NumCon implausível).",
         "/energia/series/qualidade_conjuntos_anual_2000_2009.csv": "Conjuntos de 2000 a 2009: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media; acima_limite_dec e acima_limite_fec (1 = apurado maior que o limite, comparados em centésimos, como publicados; 0 = igual ou abaixo; vazio sem 12 meses ou sem limite). DEC e FEC anuais somados em centésimos exatos.",
         "/energia/series/qualidade_conjuntos_anual_2010_2019.csv": "Conjuntos de 2010 a 2019: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media; acima_limite_dec e acima_limite_fec (1 = apurado maior que o limite, comparados em centésimos, como publicados; 0 = igual ou abaixo; vazio sem 12 meses ou sem limite). DEC e FEC anuais somados em centésimos exatos.",
@@ -914,6 +914,20 @@ def aplica_controle_numcon(mensal, suspeitos):
     return out
 
 
+def aplica_controle_fec(mensal, baixa_cobertura):
+    """Cópia do dicionário mensal da distribuidora sem o FEC (e o seu denominador) dos meses em que
+    o FEC cobre pouco das UCs (ver fq.controle_cobertura_fec). O DEC do mês e as UCs ficam: o
+    controle é só do FEC. Sem FEC no mês, o FEC anual da distribuidora fica vazio (nunca soma
+    parcial rotulada como ano) e o mês não entra no FEC do Brasil."""
+    if not baixa_cobertura:
+        return mensal
+    out = {k: dict(v) for k, v in mensal.items()}
+    for r in baixa_cobertura:
+        out.get("fec", {}).pop(r, None)
+        out.get("ucs_fec", {}).pop(r, None)
+    return out
+
+
 def agrega_de_distribuidoras(mensais, incluir=None):
     """Agregado mensal (Brasil ou um subconjunto de distribuidoras) a partir do DEC e do FEC
     mensais de cada distribuidora e dos seus denominadores: Σ_d DEC(d, m) × UC_dec(d, m) ÷
@@ -1148,7 +1162,7 @@ def validar_dados(*, br_m, conj_ano, limites, dist, comp_anual, iasc, ultimo_mes
 
 
 def controles_adicionais(*, identidade, ucs_iguais, numcon_suspeito, sigla, nie_maior, sem_grupo, parcelas,
-                         correspondencia, ico_acima_100, quebras, ico_identidade=(0, 0), conflitos_tel=0):
+                         correspondencia, ico_acima_100, quebras, ico_identidade=(0, 0), conflitos_tel=0, fec_baixa=None):
     """Controles de identidade, plausibilidade e correspondência (seção 11.7), com o mesmo
     formato de validar_dados. Cada veredito sai de uma conta feita nesta construção."""
     out = []
@@ -1169,6 +1183,13 @@ def controles_adicionais(*, identidade, ucs_iguais, numcon_suspeito, sigla, nie_
           + "; ".join(f"{sigla(c14) or c14} {r}: {m}" for (c14, r), m in susp[-6:])
           + (f"; e mais {len(susp) - 6}, o primeiro em {susp[0][0][1]} (lista completa na coluna controle_numcon do CSV mensal)"
              if len(susp) > 6 else "")) if susp else "nenhum mês suspeito")
+    baixa = sorted((fec_baixa or {}).items(), key=lambda kv: (kv[0][1], kv[0][0]))
+    item("Cobertura do FEC por distribuidora e mês (conjuntos com FEC cobrem ao menos 95% das UCs do mês)",
+         "aprovado" if not baixa else "ressalva", False,
+         (f"{len(baixa)} distribuidora-meses sem FEC da distribuidora e fora do FEC do Brasil: "
+          + "; ".join(f"{sigla(c14) or c14} {r}: {m}" for (c14, r), m in baixa[-6:])
+          + (f"; e mais {len(baixa) - 6} (lista completa na coluna controle_fec do CSV mensal)" if len(baixa) > 6 else ""))
+         if baixa else "nenhum mês abaixo do mínimo")
     nie = {a: v for a, v in sorted(nie_maior.items()) if v[1]}
     tot_nie = sum(v[0] for v in nie.values())
     item("Ocorrências emergenciais com interrupção (Nie) não maiores que o total de ocorrências (NumOcorr)",
@@ -1292,7 +1313,7 @@ def construir(con, ctx):
     # O NumCon é o peso de cada conjunto. Mês com NumCon implausível (CELESC, mar/2026:
     # NumCon = 1 nos 121 conjuntos) sai do Brasil e, com mais de um conjunto, também do DEC
     # e do FEC da distribuidora naquele mês (ver aplica_controle_numcon).
-    mensal_bruto, mensal_dist, numcon_suspeito = {}, {}, {}
+    mensal_bruto, mensal_dist, numcon_suspeito, fec_cobertura_baixa = {}, {}, {}, {}
     for chave, campos in d_obs.items():
         c14 = chave[1:]
         m = {k[2:]: v for k, v in campos.items() if k.startswith("m.")}
@@ -1302,7 +1323,11 @@ def construir(con, ctx):
         susp = fq.controle_numcon(m.get("ucs_total", {}), m.get("nconj_total", {}))
         for r, motivo in susp.items():
             numcon_suspeito[(c14, r)] = motivo
-        mensal_dist[c14] = aplica_controle_numcon(m, susp)
+        # FEC com cobertura baixa do mês (ELEKTRO, jun/2025): o mês sai do FEC da distribuidora e do Brasil
+        baixa = fq.controle_cobertura_fec(m.get("ucs_fec", {}), m.get("ucs_total", {}))
+        for r, motivo in baixa.items():
+            fec_cobertura_baixa[(c14, r)] = motivo
+        mensal_dist[c14] = aplica_controle_fec(aplica_controle_numcon(m, susp), baixa)
 
     # ---------------- Brasil a partir das distribuidoras ----------------
     # Identidade: o agregado das distribuidoras sem exclusões tem de reproduzir o agregado
@@ -1487,8 +1512,10 @@ def construir(con, ctx):
         for r in sorted(bruto["dec"]):
             u, ut = mensal.get("ucs", {}).get(r), mensal.get("ucs_total", {}).get(r)
             serie_csv_mensal.append([c14, sigla(c14), r, mensal.get("dec", {}).get(r), mensal.get("fec", {}).get(r), u,
-                                     mensal.get("ucs_fec", {}).get(r), ut, int(bruto.get("nconj", {}).get(r) or 0),
-                                     (u / ut) if u is not None and ut else None, numcon_suspeito.get((c14, r))])
+                                     (bruto if (c14, r) in fec_cobertura_baixa else mensal).get("ucs_fec", {}).get(r), ut,
+                                     int(bruto.get("nconj", {}).get(r) or 0),
+                                     (u / ut) if u is not None and ut else None, numcon_suspeito.get((c14, r)),
+                                     fec_cobertura_baixa.get((c14, r))])
         dist[c14] = {"serie": serie, "mensal": mensal}
 
     # ---------------- conjuntos no ano de referência (P052) ----------------
@@ -1842,7 +1869,8 @@ def construir(con, ctx):
         identidade=identidade, ucs_iguais=ucs_iguais, numcon_suspeito=numcon_suspeito, sigla=sigla,
         nie_maior=nie_maior, sem_grupo=sem_grupo, parcelas=br_parc_ok, correspondencia=correspondencia,
         ico_acima_100=ico_acima_100, quebras=quebras, ico_identidade=ico_identidade,
-        conflitos_tel=sum(int((x.get("detalhe") or {}).get("conflitos") or 0) for x in _controles(con) if x["dataset"] == DS_TEL))
+        conflitos_tel=sum(int((x.get("detalhe") or {}).get("conflitos") or 0) for x in _controles(con) if x["dataset"] == DS_TEL),
+        fec_baixa=fec_cobertura_baixa)
     criticas = [x for x in validacao if x["resultado"] == "reprovado" and x["critico"]]
     if criticas:
         return c.stub(GOLD, "validação crítica reprovada: " + "; ".join(f"{x['nome']}: {x['detalhe']}" for x in criticas))
@@ -1857,7 +1885,7 @@ def construir(con, ctx):
                      sorted(serie_csv_anual, key=lambda x: (x[0], x[3])))
     base.escreve_csv("qualidade_distribuidoras_mensal.csv",
                      ["cnpj", "sigla", "mes", "dec_h", "fec_interrupcoes", "ucs", "ucs_fec", "ucs_total", "conjuntos", "cobertura",
-                      "controle_numcon"],
+                      "controle_numcon", "controle_fec"],
                      sorted(serie_csv_mensal, key=lambda x: (x[0], x[2])))
     fora_mes = collections.Counter(r for (_, r) in numcon_suspeito)
     br_csv = [[x["ano"], "anual", x["dec"], x["fec"], x["dec_limite"], x["fec_limite"], x["ucs_media"], x["conjuntos"],
@@ -1940,7 +1968,8 @@ def construir(con, ctx):
         "mun_com_valor": mun_com_valor, "conj_mun": conj_mun, "recon": recon, "ucs_ano": ucs_ano,
         "atend": atend, "mun_csv": mun_csv, "tmae_br": tmae_br, "meses_ouv_ano": meses_ouv_ano,
         "meses_atend_ano": meses_atend_ano, "iguais_dec": iguais_dec, "linhas_conj_csv": conj_csv,
-        "numcon_suspeito": numcon_suspeito, "quebras": quebras, "correspondencia": correspondencia,
+        "numcon_suspeito": numcon_suspeito, "fec_cobertura_baixa": fec_cobertura_baixa, "quebras": quebras,
+        "correspondencia": correspondencia,
         "tel_ano": tel_ano, "tel_nac": tel_nac, "tel_meses_nac": tel_meses_nac, "divulgacao": _divulgacoes(con),
         "identidade": identidade, "manif": manif,
     }

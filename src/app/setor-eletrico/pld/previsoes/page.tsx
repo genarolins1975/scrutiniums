@@ -17,6 +17,7 @@ import {
   PrevisoesFichaLinha,
   PrevisoesIndisponivel,
   PrevisoesLegenda,
+  PrevisoesPainel,
   PrevisoesRecorte,
   PrevisoesResposta,
   PrevisoesSeguir,
@@ -345,288 +346,292 @@ export default function PrevisoesPage() {
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="atual">
-            <PainelEvidencia
-              id="p013"
-              pergunta={perguntaPainel("p013")}
-              subtitulo="Rodada mais recente · referência experimental B0 por submercado e entrega · R$/MWh nominais, média temporal simples das horas"
-              natureza="PREVISTO"
-              porQueImporta={
-                <>
-                  Quem compra, vende ou planeja consumo quer saber o preço das próximas semanas e meses. Um número de previsão só serve se vier com o que o produziu, a
-                  informação disponível no corte e o quanto se pode confiar nele; por isso o número publicado aqui é chamado de referência, não de previsão aprovada.
-                </>
-              }
-              oQueMudou={oQueMudou13}
-              comoInterpretar={comoInterpretar13}
-              naoConcluir={naoConcluir13}
-              naoConcluirNoCorpo
-              proveniencia={comRodada && at.proveniencia ? at.proveniencia : g.proveniencia}
-              complementares={pub ? [{ rotulo: "PLD já publicado no corte", p: pub.proveniencia }] : []}
-            >
-              <div className="space-y-6">
-                <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
-                  {respostaP013(g)}
-                </PrevisoesResposta>
-                {comRodada && linhas.length > 0 ? (
-                  <PrevisoesAtual
-                    linhas={linhas}
-                    origem={at.origem}
-                    evidencias={evidenciasAtual}
-                    publicado={pub ? { origem: pub.origem, submercados: pub.submercados } : null}
-                    fonte={fonteGrade}
-                    versao={versao}
-                    endereco={enderecoPainel("p013")}
-                    mediaDiaPaginaPld={mediaDiaPaginaPld}
-                    recorte={recorte13}
-                    notas={<NotasDoPainel oQueMudou={oQueMudou13} comoInterpretar={comoInterpretar13} naoConcluir={naoConcluir13} />}
-                    aposPrincipal={
-                      <>
-                        <PrevisoesAviso>
-                          {at.bandas} {at.candidatos.emitidos ? "" : at.candidatos.motivo}
-                        </PrevisoesAviso>
-                        <PrevisoesTermos itens={termos} />
-                        <PrevisoesCapitulos pagina="previsoes" />
-                      </>
-                    }
-                    noCorteGrafico={
-                      pub && publicadoNoCorte.length > 0 ? (
-                        <GraficoLinhas
-                          titulo={`PLD horário de ${dataBR(pub.origem)} já publicado no corte, por submercado`}
-                          dados={publicadoNoCorte}
-                          chaveX="h"
-                          formatoX="hora"
-                          series={SUBMERCADOS.filter((sm) => pub.submercados[sm]?.horas).map((sm) => ({ id: sm, rotulo: CURTO_SM[sm], cor: COR_SM[sm] }))}
-                          unidade="R$/MWh"
-                          casas={2}
-                          altura={260}
-                        />
-                      ) : null
-                    }
-                    avaliacao={
-                      <SecaoDoPainel
-                        id="avaliacao"
-                        titulo="Como cada entrega será avaliada depois do resultado"
-                        lead="Semanas e meses têm avaliação própria: os horizontes, as amostras do teste e as entregas que terminam primeiro são diferentes."
-                      >
-                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Avaliação depois do resultado, semanas e meses (rolável)" data-avaliacao-frequencias="">
-                          <table className="w-full min-w-[28rem] border-collapse text-sm">
-                            <caption className="sr-only">Avaliação depois do resultado, com semanas e meses em colunas próprias</caption>
-                            <thead>
-                              <tr className="text-left text-xs text-mineral">
-                                <th scope="col" className="border-b-2 border-linha px-2 py-2 font-medium first:pl-0">
-                                  Medida
-                                </th>
-                                {avaliacao.map((a) => (
-                                  <th key={a.frequencia} scope="col" className="border-b-2 border-linha px-2 py-2 font-medium" data-avaliacao={a.frequencia}>
-                                    {a.rotulo}, {a.horizontes[0]} a {a.horizontes[a.horizontes.length - 1]}
+            <PrevisoesPainel id="p013">
+              <PainelEvidencia
+                id="p013"
+                pergunta={perguntaPainel("p013")}
+                subtitulo="Rodada mais recente: referência experimental B0 por submercado e entrega · R$/MWh nominais, média temporal simples das horas"
+                natureza="PREVISTO"
+                porQueImporta={
+                  <>
+                    Quem compra, vende ou planeja consumo quer saber o preço das próximas semanas e meses. Um número de previsão só serve se vier com o que o produziu, a
+                    informação disponível no corte e o quanto se pode confiar nele; por isso o número publicado aqui é chamado de referência, não de previsão aprovada.
+                  </>
+                }
+                oQueMudou={oQueMudou13}
+                comoInterpretar={comoInterpretar13}
+                naoConcluir={naoConcluir13}
+                naoConcluirNoCorpo
+                proveniencia={comRodada && at.proveniencia ? at.proveniencia : g.proveniencia}
+                complementares={pub ? [{ rotulo: "PLD já publicado no corte", p: pub.proveniencia }] : []}
+              >
+                <div className="space-y-6">
+                  <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
+                    {respostaP013(g)}
+                  </PrevisoesResposta>
+                  {comRodada && linhas.length > 0 ? (
+                    <PrevisoesAtual
+                      linhas={linhas}
+                      origem={at.origem}
+                      evidencias={evidenciasAtual}
+                      publicado={pub ? { origem: pub.origem, submercados: pub.submercados } : null}
+                      fonte={fonteGrade}
+                      versao={versao}
+                      endereco={enderecoPainel("p013")}
+                      mediaDiaPaginaPld={mediaDiaPaginaPld}
+                      recorte={recorte13}
+                      notas={<NotasDoPainel oQueMudou={oQueMudou13} comoInterpretar={comoInterpretar13} naoConcluir={naoConcluir13} />}
+                      aposPrincipal={
+                        <>
+                          <PrevisoesAviso>
+                            {at.bandas} {at.candidatos.emitidos ? "" : at.candidatos.motivo}
+                          </PrevisoesAviso>
+                          <PrevisoesTermos itens={termos} />
+                          <PrevisoesCapitulos pagina="previsoes" />
+                        </>
+                      }
+                      noCorteGrafico={
+                        pub && publicadoNoCorte.length > 0 ? (
+                          <GraficoLinhas
+                            titulo={`PLD horário de ${dataBR(pub.origem)} já publicado no corte, por submercado`}
+                            dados={publicadoNoCorte}
+                            chaveX="h"
+                            formatoX="hora"
+                            series={SUBMERCADOS.filter((sm) => pub.submercados[sm]?.horas).map((sm) => ({ id: sm, rotulo: CURTO_SM[sm], cor: COR_SM[sm] }))}
+                            unidade="R$/MWh"
+                            casas={2}
+                            altura={260}
+                          />
+                        ) : null
+                      }
+                      avaliacao={
+                        <SecaoDoPainel
+                          id="avaliacao"
+                          titulo="Como cada entrega será avaliada depois do resultado"
+                          lead="Semanas e meses têm avaliação própria: os horizontes, as amostras do teste e as entregas que terminam primeiro são diferentes."
+                        >
+                          <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Avaliação depois do resultado, semanas e meses (rolável)" data-avaliacao-frequencias="">
+                            <table className="w-full min-w-[28rem] border-collapse text-sm">
+                              <caption className="sr-only">Avaliação depois do resultado, com semanas e meses em colunas próprias</caption>
+                              <thead>
+                                <tr className="text-left text-xs text-mineral">
+                                  <th scope="col" className="border-b-2 border-linha px-2 py-2 font-medium first:pl-0">
+                                    Medida
                                   </th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {linhasAvaliacao.map((l) => (
-                                <tr key={l.rotulo} className="border-b border-linha align-top">
-                                  <th scope="row" className="px-2 py-2 text-left text-xs font-normal text-mineral first:pl-0">
-                                    {l.rotulo}
-                                  </th>
-                                  {l.valores.map((v, i) => (
-                                    <td key={avaliacao[i].frequencia} className="px-2 py-2 leading-snug text-carvao">
-                                      {v}
-                                    </td>
+                                  {avaliacao.map((a) => (
+                                    <th key={a.frequencia} scope="col" className="border-b-2 border-linha px-2 py-2 font-medium" data-avaliacao={a.frequencia}>
+                                      {a.rotulo}, {a.horizontes[0]} a {a.horizontes[a.horizontes.length - 1]}
+                                    </th>
                                   ))}
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                        <PrevisoesLegenda>
-                          {g.definicoes.realizado} Erro e viés só serão calculados com entregas terminadas; o desempenho fora da amostra está no painel de desempenho.
-                        </PrevisoesLegenda>
-                      </SecaoDoPainel>
-                    }
-                  />
-                ) : (
-                  <>
-                    <PrevisoesAviso tipo="alerta">
-                      Nenhuma rodada com células está registrada nesta publicação{!comRodada ? `: ${at.motivo}` : ""}. A grade 4 × 7 aparece quando a primeira rodada for emitida.
-                    </PrevisoesAviso>
-                    {recorte13}
-                  </>
-                )}
+                              </thead>
+                              <tbody>
+                                {linhasAvaliacao.map((l) => (
+                                  <tr key={l.rotulo} className="border-b border-linha align-top">
+                                    <th scope="row" className="px-2 py-2 text-left text-xs font-normal text-mineral first:pl-0">
+                                      {l.rotulo}
+                                    </th>
+                                    {l.valores.map((v, i) => (
+                                      <td key={avaliacao[i].frequencia} className="px-2 py-2 leading-snug text-carvao">
+                                        {v}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          <PrevisoesLegenda>
+                            {g.definicoes.realizado} Erro e viés só serão calculados com entregas terminadas; o desempenho fora da amostra está no painel de desempenho.
+                          </PrevisoesLegenda>
+                        </SecaoDoPainel>
+                      }
+                    />
+                  ) : (
+                    <>
+                      <PrevisoesAviso tipo="alerta">
+                        Nenhuma rodada com células está registrada nesta publicação{!comRodada ? `: ${at.motivo}` : ""}. A grade 4 × 7 aparece quando a primeira rodada for emitida.
+                      </PrevisoesAviso>
+                      {recorte13}
+                    </>
+                  )}
 
-                {comRodada && (
-                  <PrevisoesAuditoria id="rodada" titulo="A rodada: corte, emissão, código e condições da referência experimental">
-                    <dl>
-                      <PrevisoesFichaLinha rotulo="Identificador">
-                        <span className="font-mono text-xs">{at.run_id}</span>
-                      </PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo="Corte e prazo">
-                        corte em {instanteBR(at.cutoff)}; prazo de emissão {at.prazo ? instanteBR(at.prazo) : "não registrado"} (Brasília)
-                      </PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo="Emissão">
-                        {textoEmissao(at)}. {at.alertas.length ? `Alertas registrados: ${textoAlertas(at.alertas)}.` : ""}
-                      </PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo="Versão do código">
-                        <span className="font-mono text-xs">{at.versao_codigo ?? "não registrada"}</span>
-                      </PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo="Referência experimental">
-                        {ref.autorizada ? "autorizada" : "não autorizada"} ({ref.fundamento}); verificada em {dataBR(ref.verificada_em)}. Não equivale a {ref.nao_equivale_a}.
-                      </PrevisoesFichaLinha>
-                      {ref.condicoes.map((c) => (
-                        <PrevisoesFichaLinha key={c.id} rotulo={`Condição: ${c.id.replace(/_/g, " ")}`}>
-                          {c.descricao}: {c.verificada ? "verificada" : "não verificada"}. {c.evidencia}
+                  {comRodada && (
+                    <PrevisoesAuditoria id="rodada" titulo="A rodada: corte, emissão, código e condições da referência experimental">
+                      <dl>
+                        <PrevisoesFichaLinha rotulo="Identificador">
+                          <span className="font-mono text-xs">{at.run_id}</span>
                         </PrevisoesFichaLinha>
-                      ))}
-                      <PrevisoesFichaLinha rotulo="Faixas">{ref.faixas}</PrevisoesFichaLinha>
-                      <PrevisoesFichaLinha rotulo="Reexecução">
-                        {reex.conferidas} {reex.conferidas === 1 ? "previsão refeita" : "previsões refeitas"} com o dado como estava no corte,{" "}
-                        {reex.divergentes.length ? `${reex.divergentes.length} com divergência` : "nenhuma divergente"} (tolerância {textoTolerancia(reex.tolerancia)}). É conferência
-                        do próprio observatório, não aprovação metodológica independente.
-                      </PrevisoesFichaLinha>
-                    </dl>
-                  </PrevisoesAuditoria>
-                )}
+                        <PrevisoesFichaLinha rotulo="Corte e prazo">
+                          corte em {instanteBR(at.cutoff)}; prazo de emissão {at.prazo ? instanteBR(at.prazo) : "não registrado"} (Brasília)
+                        </PrevisoesFichaLinha>
+                        <PrevisoesFichaLinha rotulo="Emissão">
+                          {textoEmissao(at)}. {at.alertas.length ? `Alertas registrados: ${textoAlertas(at.alertas)}.` : ""}
+                        </PrevisoesFichaLinha>
+                        <PrevisoesFichaLinha rotulo="Versão do código">
+                          <span className="font-mono text-xs">{at.versao_codigo ?? "não registrada"}</span>
+                        </PrevisoesFichaLinha>
+                        <PrevisoesFichaLinha rotulo="Referência experimental">
+                          {ref.autorizada ? "autorizada" : "não autorizada"} ({ref.fundamento}); verificada em {dataBR(ref.verificada_em)}. Não equivale a {ref.nao_equivale_a}.
+                        </PrevisoesFichaLinha>
+                        {ref.condicoes.map((c) => (
+                          <PrevisoesFichaLinha key={c.id} rotulo={`Condição: ${c.id.replace(/_/g, " ")}`}>
+                            {c.descricao}: {c.verificada ? "verificada" : "não verificada"}. {c.evidencia}
+                          </PrevisoesFichaLinha>
+                        ))}
+                        <PrevisoesFichaLinha rotulo="Faixas">{ref.faixas}</PrevisoesFichaLinha>
+                        <PrevisoesFichaLinha rotulo="Reexecução">
+                          {reex.conferidas} {reex.conferidas === 1 ? "previsão refeita" : "previsões refeitas"} com o dado como estava no corte,{" "}
+                          {reex.divergentes.length ? `${reex.divergentes.length} com divergência` : "nenhuma divergente"} (tolerância {textoTolerancia(reex.tolerancia)}). É conferência
+                          do próprio observatório, não aprovação metodológica independente.
+                        </PrevisoesFichaLinha>
+                      </dl>
+                    </PrevisoesAuditoria>
+                  )}
 
-                <PrevisoesSeguir ancora="p013" proximo={{ href: enderecoPainel(proximoPainel("p013").id), pergunta: proximoPainel("p013").pergunta }} downloads={downloadsDoPainel(g, "p013")} />
-              </div>
-            </PainelEvidencia>
+                  <PrevisoesSeguir ancora="p013" proximo={{ href: enderecoPainel(proximoPainel("p013").id), pergunta: proximoPainel("p013").pergunta }} downloads={downloadsDoPainel(g, "p013")} />
+                </div>
+              </PainelEvidencia>
+            </PrevisoesPainel>
           </Bloco>
 
           <Bloco id="arquivo">
-            <PainelEvidencia
-              id="p015"
-              pergunta={perguntaPainel("p015")}
-              subtitulo="Arquivo imutável de emissões · uma linha por célula, R$/MWh e minutos"
-              natureza="PREVISTO"
-              porQueImporta={
-                <>
-                  Só se mede uma previsão com o que foi registrado antes do resultado. Se um número pudesse ser trocado depois, qualquer modelo pareceria bom. Aqui cada
-                  emissão fica como saiu, com corte, horário, versão e motivo de falha; correção vira registro novo que aponta para o original.
-                </>
-              }
-              oQueMudou={oQueMudou15}
-              comoInterpretar={comoInterpretar15}
-              naoConcluir={naoConcluir15}
-              naoConcluirNoCorpo
-              proveniencia={g.proveniencia}
-            >
-              <div className="space-y-6">
-                {csv ? (
-                  <PrevisoesArquivo
-                    linhas={recorte.linhas}
-                    total={todas.length}
-                    omitidas={recorte.omitidas}
-                    fonte={fonteArquivo}
-                    versao={versao}
-                    avisos={avisosPorRodada}
-                    notas={<NotasDoPainel oQueMudou={oQueMudou15} comoInterpretar={comoInterpretar15} naoConcluir={naoConcluir15} />}
-                    recorte={
-                      <PrevisoesRecorte
-                        periodo={
-                          rodadasArquivo.length
-                            ? `Rodadas de ${dataBR(rodadasArquivo[0].origem)} a ${dataBR(rodadasArquivo[rodadasArquivo.length - 1].origem)}`
-                            : "sem rodada registrada"
-                        }
-                        universo="Todas as células emitidas, com e sem número, de todos os modelos registrados"
-                        unidade="R$/MWh nominais (previsão, faixa, realizado e erro); minutos (atraso)"
-                      />
-                    }
-                  />
-                ) : (
+            <PrevisoesPainel id="p015">
+              <PainelEvidencia
+                id="p015"
+                pergunta={perguntaPainel("p015")}
+                subtitulo="Arquivo de emissões: arquivo imutável, uma linha por célula · R$/MWh e minutos"
+                natureza="PREVISTO"
+                porQueImporta={
                   <>
-                    <p data-resposta="p015" className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">
-                      O arquivo de emissões não pôde ser lido nesta publicação ({CSV_EMISSOES}); nenhum registro é exibido em vez de um registro de reserva.
-                    </p>
-                    <PrevisoesRecorte periodo="sem leitura do arquivo" universo="células emitidas" unidade="R$/MWh nominais; minutos" />
+                    Só se mede uma previsão com o que foi registrado antes do resultado. Se um número pudesse ser trocado depois, qualquer modelo pareceria bom. Aqui cada
+                    emissão fica como saiu, com corte, horário, versão e motivo de falha; correção vira registro novo que aponta para o original.
                   </>
-                )}
-                {csv && csv.invalidas > 0 && (
-                  <PrevisoesAviso tipo="alerta">
-                    {csv.invalidas} {csv.invalidas === 1 ? "linha do CSV ficou fora" : "linhas do CSV ficaram fora"} por ter número de campos diferente do cabeçalho.
-                  </PrevisoesAviso>
-                )}
-
-                <PrevisoesAnalise id="revisoes" titulo="Revisão entre rodadas para a mesma entrega">
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    {revisoes.some((r) => r.rodadas > 1)
-                      ? "Para cada entrega e submercado, as previsões com número de cada rodada e a mudança da última sobre a anterior."
-                      : `Nenhuma das ${revisoes.length} entregas e submercados tem duas previsões com número: só a rodada mais recente tem números, então não há revisão a mostrar.`}
-                  </p>
-                  <TabelaInterativa
-                    titulo="Previsões por entrega e rodada"
-                    colunas={COLUNAS_REVISOES}
-                    linhas={revisoes}
-                    chaveLinha="id"
-                    colunaRotulo="entrega"
-                    fonte={fonteArquivo}
-                    versao={versao}
-                    nomeArquivo="previsoes-pld-revisoes-entre-rodadas"
-                    chaveUrl="rev"
-                    semLinhas="Nenhuma entrega tem previsão com número."
-                  />
-                </PrevisoesAnalise>
-
-                <PrevisoesAnalise id="rotina" titulo="Rotina diária: o que está escrito e o que já foi comprovado">
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{g.rotina.leitura}</p>
-                  <dl>
-                    <PrevisoesFichaLinha rotulo="Horários">{g.rotina.horarios}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Fuso">{g.rotina.fuso}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Execuções agendadas">
-                      {g.rotina.execucoes_agendadas} registradas: {g.rotina.no_prazo} no prazo, {g.rotina.atrasadas} atrasadas, {g.rotina.falhas} com falha;{" "}
-                      {g.rotina.dias_sem_rodada_total} {g.rotina.dias_sem_rodada_total === 1 ? "dia" : "dias"} sem rodada desde{" "}
-                      {g.rotina.inicio_operacao_agendada ? dataBR(g.rotina.inicio_operacao_agendada) : "o início da operação agendada, que ainda não aconteceu"}.
-                    </PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Critério">{g.rotina.criterio_comprovacao}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Comprovada">{g.rotina.comprovada ? "sim" : "não"}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Verificado em">
-                      {carimbo(g.rotina.verificado_em)}; prazos vencidos até {dataBR(g.rotina.dias_vencidos_ate)}
-                    </PrevisoesFichaLinha>
-                  </dl>
-                </PrevisoesAnalise>
-
-                <PrevisoesAuditoria id="imutabilidade" titulo="Imutabilidade, reexecução e achados">
-                  <p className="text-sm leading-relaxed text-carvao-muted">
-                    Registros novos entram em partições mensais encadeadas: cada registro guarda o sha256 do anterior, e qualquer alteração, remoção ou reordenação quebra a
-                    cadeia.{" "}
-                    {transcritas.length
-                      ? `${transcritas.map((r) => r.rotulo).join(", ")}: registros transcritos, incluídos no arquivo depois da emissão, no arquivo legado congelado.`
-                      : "Nenhum registro foi transcrito depois da emissão."}{" "}
-                    A reexecução refez {reex.conferidas} {reex.conferidas === 1 ? "previsão arquivada" : "previsões arquivadas"} com o dado como estava no corte:{" "}
-                    {reex.divergentes.length ? `${reex.divergentes.length} divergentes` : "nenhuma divergente"} (tolerância {textoTolerancia(reex.tolerancia)}).
-                  </p>
-                  {particoes.length > 0 && (
-                    <ul className="space-y-1 text-sm">
-                      {particoes.map((p) => (
-                        <li key={p.url}>
-                          <a href={p.url} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                            {datasLegiveis(p.rotulo)}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                }
+                oQueMudou={oQueMudou15}
+                comoInterpretar={comoInterpretar15}
+                naoConcluir={naoConcluir15}
+                naoConcluirNoCorpo
+                proveniencia={g.proveniencia}
+              >
+                <div className="space-y-6">
+                  {csv ? (
+                    <PrevisoesArquivo
+                      linhas={recorte.linhas}
+                      total={todas.length}
+                      omitidas={recorte.omitidas}
+                      fonte={fonteArquivo}
+                      versao={versao}
+                      avisos={avisosPorRodada}
+                      notas={<NotasDoPainel oQueMudou={oQueMudou15} comoInterpretar={comoInterpretar15} naoConcluir={naoConcluir15} />}
+                      recorte={
+                        <PrevisoesRecorte
+                          periodo={
+                            rodadasArquivo.length
+                              ? `Rodadas de ${dataBR(rodadasArquivo[0].origem)} a ${dataBR(rodadasArquivo[rodadasArquivo.length - 1].origem)}`
+                              : "sem rodada registrada"
+                          }
+                          universo="Todas as células emitidas, com e sem número, de todos os modelos registrados"
+                          unidade="R$/MWh nominais (previsão, faixa, realizado e erro); minutos (atraso)"
+                        />
+                      }
+                    />
+                  ) : (
+                    <>
+                      <p data-resposta="p015" className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">
+                        O arquivo de emissões não pôde ser lido nesta publicação ({CSV_EMISSOES}); nenhum registro é exibido em vez de um registro de reserva.
+                      </p>
+                      <PrevisoesRecorte periodo="sem leitura do arquivo" universo="células emitidas" unidade="R$/MWh nominais; minutos" />
+                    </>
                   )}
-                  <p className="text-sm leading-relaxed text-carvao-muted">
-                    {g.prospectivo.calibracao_regra_antiga.descricao} Registros afetados: {g.prospectivo.calibracao_regra_antiga.registros}; com estado de calibração diferente
-                    depois da correção: {g.prospectivo.calibracao_regra_antiga.status_diferente}.
-                  </p>
-                  <dl>
-                    <PrevisoesFichaLinha rotulo={`Achado A08 (${g.governanca.achados.A08.estado})`}>
-                      {g.governanca.achados.A08.diagnostico} Correção: {g.governanca.achados.A08.correcao} {g.governanca.achados.A08.confirmacao}
-                    </PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo={`Achado A09 (${g.governanca.achados.A09.estado})`}>{g.governanca.achados.A09.leitura}</PrevisoesFichaLinha>
-                  </dl>
-                  <p className="text-xs text-mineral">
-                    {num(todas.length, 0)} linhas no CSV; para reproduzir: python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta.
-                  </p>
-                </PrevisoesAuditoria>
+                  {csv && csv.invalidas > 0 && (
+                    <PrevisoesAviso tipo="alerta">
+                      {csv.invalidas} {csv.invalidas === 1 ? "linha do CSV ficou fora" : "linhas do CSV ficaram fora"} por ter número de campos diferente do cabeçalho.
+                    </PrevisoesAviso>
+                  )}
 
-                <PrevisoesSeguir
-                  ancora="p015"
-                  proximo={{ href: enderecoPainel(proximoPainel("p015").id), pergunta: proximoPainel("p015").pergunta }}
-                  downloads={[...downloadsDoPainel(g, "p015"), ...particoes]}
-                />
-              </div>
-            </PainelEvidencia>
+                  <PrevisoesAnalise id="revisoes" titulo="Revisão entre rodadas para a mesma entrega">
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                      {revisoes.some((r) => r.rodadas > 1)
+                        ? "Para cada entrega e submercado, as previsões com número de cada rodada e a mudança da última sobre a anterior."
+                        : `Nenhuma das ${revisoes.length} entregas e submercados tem duas previsões com número: só a rodada mais recente tem números, então não há revisão a mostrar.`}
+                    </p>
+                    <TabelaInterativa
+                      titulo="Previsões por entrega e rodada"
+                      colunas={COLUNAS_REVISOES}
+                      linhas={revisoes}
+                      chaveLinha="id"
+                      colunaRotulo="entrega"
+                      fonte={fonteArquivo}
+                      versao={versao}
+                      nomeArquivo="previsoes-pld-revisoes-entre-rodadas"
+                      chaveUrl="rev"
+                      semLinhas="Nenhuma entrega tem previsão com número."
+                    />
+                  </PrevisoesAnalise>
+
+                  <PrevisoesAnalise id="rotina" titulo="Rotina diária: o que está escrito e o que já foi comprovado">
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{g.rotina.leitura}</p>
+                    <dl>
+                      <PrevisoesFichaLinha rotulo="Horários">{g.rotina.horarios}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Fuso">{g.rotina.fuso}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Execuções agendadas">
+                        {g.rotina.execucoes_agendadas} registradas: {g.rotina.no_prazo} no prazo, {g.rotina.atrasadas} atrasadas, {g.rotina.falhas} com falha;{" "}
+                        {g.rotina.dias_sem_rodada_total} {g.rotina.dias_sem_rodada_total === 1 ? "dia" : "dias"} sem rodada desde{" "}
+                        {g.rotina.inicio_operacao_agendada ? dataBR(g.rotina.inicio_operacao_agendada) : "o início da operação agendada, que ainda não aconteceu"}.
+                      </PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Critério">{g.rotina.criterio_comprovacao}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Comprovada">{g.rotina.comprovada ? "sim" : "não"}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Verificado em">
+                        {carimbo(g.rotina.verificado_em)}; prazos vencidos até {dataBR(g.rotina.dias_vencidos_ate)}
+                      </PrevisoesFichaLinha>
+                    </dl>
+                  </PrevisoesAnalise>
+
+                  <PrevisoesAuditoria id="imutabilidade" titulo="Imutabilidade, reexecução e achados">
+                    <p className="text-sm leading-relaxed text-carvao-muted">
+                      Registros novos entram em partições mensais encadeadas: cada registro guarda o sha256 do anterior, e qualquer alteração, remoção ou reordenação quebra a
+                      cadeia.{" "}
+                      {transcritas.length
+                        ? `${transcritas.map((r) => r.rotulo).join(", ")}: registros transcritos, incluídos no arquivo depois da emissão, no arquivo legado congelado.`
+                        : "Nenhum registro foi transcrito depois da emissão."}{" "}
+                      A reexecução refez {reex.conferidas} {reex.conferidas === 1 ? "previsão arquivada" : "previsões arquivadas"} com o dado como estava no corte:{" "}
+                      {reex.divergentes.length ? `${reex.divergentes.length} divergentes` : "nenhuma divergente"} (tolerância {textoTolerancia(reex.tolerancia)}).
+                    </p>
+                    {particoes.length > 0 && (
+                      <ul className="space-y-1 text-sm">
+                        {particoes.map((p) => (
+                          <li key={p.url}>
+                            <a href={p.url} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                              {datasLegiveis(p.rotulo)}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <p className="text-sm leading-relaxed text-carvao-muted">
+                      {g.prospectivo.calibracao_regra_antiga.descricao} Registros afetados: {g.prospectivo.calibracao_regra_antiga.registros}; com estado de calibração diferente
+                      depois da correção: {g.prospectivo.calibracao_regra_antiga.status_diferente}.
+                    </p>
+                    <dl>
+                      <PrevisoesFichaLinha rotulo={`Achado A08 (${g.governanca.achados.A08.estado})`}>
+                        {g.governanca.achados.A08.diagnostico} Correção: {g.governanca.achados.A08.correcao} {g.governanca.achados.A08.confirmacao}
+                      </PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo={`Achado A09 (${g.governanca.achados.A09.estado})`}>{g.governanca.achados.A09.leitura}</PrevisoesFichaLinha>
+                    </dl>
+                    <p className="text-xs text-mineral">
+                      {num(todas.length, 0)} linhas no CSV; para reproduzir: python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta.
+                    </p>
+                  </PrevisoesAuditoria>
+
+                  <PrevisoesSeguir
+                    ancora="p015"
+                    proximo={{ href: enderecoPainel(proximoPainel("p015").id), pergunta: proximoPainel("p015").pergunta }}
+                    downloads={[...downloadsDoPainel(g, "p015"), ...particoes]}
+                  />
+                </div>
+              </PainelEvidencia>
+            </PrevisoesPainel>
           </Bloco>
         </ModoProfundidade>
       </main>

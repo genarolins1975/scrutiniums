@@ -46,6 +46,7 @@ import {
   linhasUfsTsee,
   localidadesDoJson,
   mudancaAcesso,
+  mudancaCobertura,
   mudancaTarifaSocial,
   municipiosDoCsv,
   orcamentoBase,
@@ -700,7 +701,7 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
   const paginas = { sintese: Sintese, p059: PaginaTarifa, p060: PaginaCobertura, p061: PaginaOrcamento, p062: PaginaAcesso };
   const html = Object.fromEntries(Object.entries(paginas).map(([k, p]) => [k, renderToStaticMarkup(createElement(p))])) as Record<keyof typeof paginas, string>;
   const decodifica = (x: string) => x.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
-  const texto = (h: string) => decodifica(h.slice(h.indexOf("<main")).replace(/<(script|style)[\s\S]*?<\/\1>/g, " ").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+  const texto = (h: string) => decodifica(h.slice(Math.max(0, h.indexOf("<main"))).replace(/<(script|style)[\s\S]*?<\/\1>/g, " ").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
   const h1 = (h: string) => decodifica(/<h1[^>]*>([\s\S]*?)<\/h1>/.exec(h)?.[1].replace(/<[^>]+>/g, "") ?? "").trim();
   const palavras = (x: string) => x.split(/\s+/).filter(Boolean).length;
   const o = G.orcamento;
@@ -738,19 +739,25 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
   it("síntese: SCS, CDE e PNAD têm cada um a sua data, e nenhum rótulo genérico de atualização vale para todos", () => {
     const h = html.sintese;
     const bloco = (rotulo: RegExp) => {
-      const todos = Array.from(h.matchAll(/<div role="group" aria-label="([^"]*)" data-metrica="">/g));
-      const m = todos.find((x) => rotulo.test(x[1]));
+      const m = blocosDaFaixa(h).find((b) => rotulo.test(rotuloDe(b)));
       expect(m, String(rotulo)).toBeTruthy();
-      const ini = m!.index!;
-      return h.slice(ini, h.indexOf("</p></div>", ini) + 10);
+      return m!;
     };
-    expect(bloco(/^UC com Tarifa Social \(SCS\)$/)).toContain("05/2025");
-    expect(bloco(/^Faturas com desconto \(Beneficiários da CDE\)$/)).toContain("03/2026");
-    expect(bloco(/PNAD Contínua/)).toContain("2025");
+    // cada medida traz o próprio período no cartão (mês do SCS, mês da CDE, ano da PNAD), lido da gold e nunca repetido de outra fonte
+    const scs = bloco(/^UC com Tarifa Social \(SCS\)$/);
+    const cde = bloco(/^Faturas com desconto \(Beneficiários da CDE\)$/);
+    const pnad = bloco(/PNAD Contínua/);
+    const mmaaaa = (m: string) => `${m.slice(5, 7)}/${m.slice(0, 4)}`;
+    const t = G.tarifa_social;
+    const datas = [mmaaaa(t.mes_referencia), mmaaaa(t.mes_mapa ?? t.mes_referencia), String(G.acesso.ano_referencia)];
+    expect(texto(scs)).toContain(` ${datas[0]} `);
+    expect(texto(cde)).toContain(` ${datas[1]} `);
+    expect(texto(pnad)).toContain(` ${datas[2]} `);
+    expect(new Set(datas).size, "SCS, CDE e PNAD não compartilham uma data genérica").toBe(3);
     expect(texto(h)).not.toMatch(/atualizad[oa]s? em|dados de \d{2}\/\d{2}\/\d{4}/i);
-    // a unidade de cada medida é dita junto dela
+    // a unidade de cada medida é dita junto dela, no cartão, e não antes da informação substantiva
     for (const [rotulo, definicao] of [
-      [/^UC com Tarifa Social \(SCS\)$/, "o ponto de ligação com conta própria"],
+      [/^UC com Tarifa Social \(SCS\)$/, "unidade consumidora: o ponto de ligação com conta própria"],
       [/^Faturas com desconto \(Beneficiários da CDE\)$/, "cada conta emitida com desconto no mês"],
       [/PNAD Contínua/, "a moradia, com ou sem ligação à rede"],
       [/Pessoas em localidades isoladas/, "a população das localidades isoladas"],
@@ -758,7 +765,7 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
     ] as const) expect(texto(bloco(rotulo)), String(rotulo)).toContain(definicao);
   });
 
-  it("todas as medidas de uma faixa trazem o ano da própria data, e nenhuma medida da abertura herda a data de outra fonte", () => {
+  it("toda medida de destaque, em qualquer página, traz um ano na própria data", () => {
     for (const [k, h] of Object.entries(html)) {
       for (const b of blocosDaFaixa(h)) expect(texto(b), `${k}: ${rotuloDe(b)}`).toMatch(/\b(19|20)\d{2}\b/);
     }
@@ -795,18 +802,60 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
     for (const rota of ["/tarifa-social", "/cobertura", "/acesso", "/orcamento"]) expect(html.sintese).toContain(`href="/setor-eletrico/inclusao-energetica${rota}"`);
   });
 
-  it("o texto das cinco páginas não traz 'hoje', 'agora', travessão, hífen como separador nem juízo de valor", () => {
+  it("em Entender, as cinco páginas não trazem 'hoje', 'agora', travessão, hífen como separador, juízo de valor nem causalidade", () => {
+    /** Trecho em volta da primeira ocorrência, para a falha dizer onde está o texto. */
+    const achado = (t: string, re: RegExp) => {
+      const m = re.exec(t);
+      return m ? t.slice(Math.max(0, m.index - 70), m.index + m[0].length + 70) : null;
+    };
     for (const [k, h] of Object.entries(html)) {
-      const t = texto(h);
-      expect(t, k).not.toMatch(/\bhoje\b|\bagora\b|[—–]| - /i);
-      expect(t, k).not.toMatch(/\b(melhor|pior|ineficiente|ineficaz)\b/i);
+      const t = entender(h);
+      expect(t.length, k).toBeGreaterThan(500);
+      expect(achado(t, /\b(hoje|agora|atualmente)\b|no momento|dados atuais|situação atual/i), `${k}: data relativa`).toBeNull();
+      expect(achado(t, /[—–]| - /), `${k}: travessão ou hífen separador`).toBeNull();
+      expect(achado(t, /\b(melhor|pior|ineficiente|ineficaz|preocupante|alarmante)\b/i), `${k}: juízo de valor`).toBeNull();
+      // o texto de "o que mudou" vem das funções da lib que outros testes de conteúdo fixam palavra por palavra (a conta das faixas do
+      // histograma municipal traz um "porque" aritmético): fica fora desta varredura, e a causalidade é vigiada no texto novo das páginas
+      const proprio = [mudancaAcesso(G.acesso), mudancaCobertura(G.cobertura), mudancaOrcamento(G.orcamento), mudancaTarifaSocial(G.tarifa_social)].reduce((x, f) => x.split(f).join(" "), t);
+      expect(achado(proprio, /\bporque\b|\bdevido a\b|\bem razão d[aeo]s?\b|\bgraças a\b/i), `${k}: causalidade`).toBeNull();
+      expect(achado(texto(h), /\b(hoje|undefined|NaN)\b|\[object Object\]/), `${k}: marca de erro`).toBeNull();
     }
   });
+
+  /** Texto de Entender: sem os blocos de Analisar e Auditar, sem diálogos, SVG, script e style (o que o leitor da camada simples não vê). */
+  function entender(h: string): string {
+    const VAZIOS = new Set(["br", "img", "input", "hr", "meta", "link", "path", "circle", "rect", "line", "polygon", "polyline", "use", "source", "wbr", "col"]);
+    const corpo = h.slice(h.indexOf("<main"));
+    const saida: string[] = [];
+    const ocultas: string[] = [];
+    const re = /<(\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?)>|([^<]+)/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(corpo))) {
+      if (m[5] !== undefined) {
+        if (!ocultas.length) saida.push(m[5]);
+        continue;
+      }
+      const [, fecha, tag, attrs, auto] = m;
+      const t = tag.toLowerCase();
+      if (VAZIOS.has(t) || auto) continue;
+      if (fecha) {
+        if (ocultas.length && ocultas[ocultas.length - 1] === t) ocultas.pop();
+        continue;
+      }
+      if (ocultas.length) {
+        if (ocultas[ocultas.length - 1] === t) ocultas.push(t);
+        continue;
+      }
+      if (/data-nivel="(?:analisar|auditar)"/.test(attrs) || ["dialog", "svg", "script", "style"].includes(t)) ocultas.push(t);
+      else saida.push(" ");
+    }
+    return decodifica(saida.join(" ")).replace(/\s+/g, " ").trim();
+  }
 
   /** Medidas da faixa de métricas de uma página: o conteúdo de cada bloco data-metrica. */
   function blocosDaFaixa(h: string): string[] {
     const out: string[] = [];
-    const re = /<div role="group" aria-label="[^"]*" data-metrica="">/g;
+    const re = /<div role="group" aria-label="[^"]*" data-metrica=""[^>]*>/g;
     let m: RegExpExecArray | null;
     while ((m = re.exec(h))) {
       let prof = 0;

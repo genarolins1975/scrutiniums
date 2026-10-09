@@ -192,11 +192,12 @@ export default function GeracaoCapacidadePage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <GeracaoAviso tipo="alerta">{atual.texto}</GeracaoAviso>}
+                <div className="grid gap-x-10 gap-y-6 xl:grid-cols-[minmax(0,17rem)_minmax(0,1fr)]">
                 <RespostaCurta id="p024" veredito={vereditoCapacidade(c) || respostaCapacidade(c)}>
                   {respostaCapacidade(c)}
                 </RespostaCurta>
 
-                <div className="grid gap-x-10 gap-y-6 lg:grid-cols-2">
+                <div className="grid gap-x-8 gap-y-6 lg:grid-cols-2">
                   <GraficoBarras
                     titulo={`Potência em operação comercial por fonte, usinas despachadas pelo ONS, ${dataBR(c.retrato.data)}`}
                     dados={retrato.map((x) => ({ id: x.categoria, rotulo: CURTO_CATEGORIA[x.categoria], mw: x.mw }))}
@@ -221,6 +222,7 @@ export default function GeracaoCapacidadePage() {
                     alturaCategoria={44}
                     rotulosValor
                   />
+                </div>
                 </div>
                 <p className="text-xs leading-relaxed text-carvao-muted">
                   As duas figuras seguem a mesma ordem de fontes, da maior para a menor potência instalada, para a leitura lado a lado.

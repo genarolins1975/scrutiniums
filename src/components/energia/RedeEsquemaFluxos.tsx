@@ -41,21 +41,53 @@ const POS: Record<Submercado | PaisSul, { x: number; y: number }> = {
   N: { x: 150, y: 80 },
   NE: { x: 480, y: 130 },
   SE: { x: 330, y: 300 },
-  S: { x: 210, y: 420 },
-  ARGENTINA: { x: 64, y: 480 },
-  URUGUAI: { x: 380, y: 490 },
+  S: { x: 210, y: 440 },
+  ARGENTINA: { x: 64, y: 510 },
+  URUGUAI: { x: 380, y: 520 },
 };
 const LARG_NO = 150;
 const ALT_NO = 52;
-const RECUO = 52;
+const LARG_PAIS = 112;
+const ALT_PAIS = 36;
+const FOLGA = 5;
 const LARG_ROTULO = 156;
 const ALT_LINHA = 15;
+/**
+ * Onde o rótulo de cada fronteira fica em relação ao meio do trecho: ao lado da linha, e não sobre ela, para que a linha e a ponta da seta
+ * apareçam inteiras. O rótulo de cima fica acima do trecho, o da esquerda à esquerda, o da direita à direita.
+ */
+const DESLOCA_ROTULO: Record<FronteiraRede, { dx: number; dy: number }> = {
+  N_NE: { dx: 0, dy: -58 },
+  N_SE: { dx: -112, dy: 0 },
+  NE_SE: { dx: 118, dy: 0 },
+  S_SE: { dx: -112, dy: -6 },
+};
 
-function trecho(a: { x: number; y: number }, b: { x: number; y: number }, recuoA = RECUO, recuoB = RECUO) {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
+/** Distância, a partir do centro, em que a reta centro a centro sai de um retângulo de meia largura `mw` e meia altura `mh`. */
+function saidaDoRetangulo(dx: number, dy: number, mw: number, mh: number) {
   const d = Math.hypot(dx, dy) || 1;
-  return { x1: a.x + (dx / d) * recuoA, y1: a.y + (dy / d) * recuoA, x2: b.x - (dx / d) * recuoB, y2: b.y - (dy / d) * recuoB };
+  const ux = Math.abs(dx) / d;
+  const uy = Math.abs(dy) / d;
+  return Math.min(ux > 1e-6 ? mw / ux : Infinity, uy > 1e-6 ? mh / uy : Infinity);
+}
+
+type Ponto = { x: number; y: number };
+type Caixa = { mw: number; mh: number };
+const CAIXA_NO: Caixa = { mw: LARG_NO / 2, mh: ALT_NO / 2 };
+const CAIXA_PAIS: Caixa = { mw: LARG_PAIS / 2, mh: ALT_PAIS / 2 };
+
+/**
+ * Trecho visível da linha do retângulo de origem ao de destino: começa e termina na borda de cada um, com uma folga. A ponta da seta
+ * avança além do fim da linha (0,9 vez a espessura, pelo tamanho do marcador), por isso o fim com seta recua `ponta` a mais, para a ponta
+ * não entrar no retângulo.
+ */
+function linha(origem: Ponto, caixaO: Caixa, destino: Ponto, caixaD: Caixa, ponta = 0) {
+  const dx = destino.x - origem.x;
+  const dy = destino.y - origem.y;
+  const d = Math.hypot(dx, dy) || 1;
+  const rO = saidaDoRetangulo(dx, dy, caixaO.mw, caixaO.mh) + FOLGA;
+  const rD = saidaDoRetangulo(dx, dy, caixaD.mw, caixaD.mh) + FOLGA + ponta;
+  return { x1: origem.x + (dx / d) * rO, y1: origem.y + (dy / d) * rO, x2: destino.x - (dx / d) * rD, y2: destino.y - (dy / d) * rD };
 }
 
 export function RedeEsquemaFluxos({
@@ -173,7 +205,7 @@ export function RedeEsquemaFluxos({
       </div>
 
       <svg
-        viewBox="0 0 560 530"
+        viewBox="0 0 620 570"
         className="mx-auto hidden w-full max-w-2xl sm:block"
         role="group"
         aria-label={`${titulo}, ${periodo}: ${descricao}.${textoExterior ? ` ${textoExterior}.` : ""}${textoPrecos ? ` ${rotuloPrecos ?? "PLD"}: ${textoPrecos}.` : ""}`}
@@ -188,9 +220,10 @@ export function RedeEsquemaFluxos({
         </defs>
 
         {(exterior ?? []).map((e) => {
-          const t = trecho(POS.S, POS[e.pais], RECUO, 30);
-          const exporta = (e.valor ?? 0) > 0;
-          const [x1, y1, x2, y2] = exporta || e.valor === null || e.valor === 0 ? [t.x1, t.y1, t.x2, t.y2] : [t.x2, t.y2, t.x1, t.y1];
+          const importa = (e.valor ?? 0) < 0;
+          // a seta termina no país (exportação) ou no Sul (importação); sem valor ou com zero não há seta
+          const ponta = e.valor ? 0.9 * largura(e.valor) : 0;
+          const { x1, y1, x2, y2 } = importa ? linha(POS[e.pais], CAIXA_PAIS, POS.S, CAIXA_NO, ponta) : linha(POS.S, CAIXA_NO, POS[e.pais], CAIXA_PAIS, ponta);
           return (
             <g key={e.pais} aria-hidden="true">
               <line
@@ -216,13 +249,16 @@ export function RedeEsquemaFluxos({
 
         {fluxos.map((f) => {
           const [a, b] = PONTAS[f.par];
-          const t = trecho(POS[a], POS[b]);
           const positivo = (f.valor ?? 0) >= 0;
-          const [x1, y1, x2, y2] = positivo ? [t.x1, t.y1, t.x2, t.y2] : [t.x2, t.y2, t.x1, t.y1];
+          const ponta = f.valor ? 0.9 * largura(f.valor) : 0;
+          // linha orientada (origem e destino do saldo) e trecho sem ponta, simétrico, para a área de toque
+          const { x1, y1, x2, y2 } = positivo ? linha(POS[a], CAIXA_NO, POS[b], CAIXA_NO, ponta) : linha(POS[b], CAIXA_NO, POS[a], CAIXA_NO, ponta);
+          const t = linha(POS[a], CAIXA_NO, POS[b], CAIXA_NO, 0);
           const ativo = selecionado === f.par;
           const apagado = selecionado !== null && !ativo;
-          const mx = (t.x1 + t.x2) / 2;
-          const my = (t.y1 + t.y2) / 2;
+          // o rótulo fica ao lado do meio da fronteira, não sobre a linha
+          const mx = (t.x1 + t.x2) / 2 + DESLOCA_ROTULO[f.par].dx;
+          const my = (t.y1 + t.y2) / 2 + DESLOCA_ROTULO[f.par].dy;
           const [o, d] = positivo ? [a, b] : [b, a];
           const rotuloAria =
             f.valor === null

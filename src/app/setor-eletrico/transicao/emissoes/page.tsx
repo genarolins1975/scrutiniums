@@ -121,7 +121,7 @@ export default function EmissoesPage() {
   const naoConcluir = (
     <>
       O efeito de consumir ou economizar um MWh a mais (o fator médio não é marginal); emissões em CO2 equivalente ou de ciclo de vida (só CO2 da operação); intensidade
-      por hora, por município ou por distribuidora: {g.regras.sem_intensidade_local.charAt(0).toLowerCase() + g.regras.sem_intensidade_local.slice(1)}
+      por hora, por município ou por distribuidora. {g.regras.sem_intensidade_local}
       {quebra ? ` Comparações que atravessam ${mes(quebra.data)} misturam bases de usinas diferentes.` : ""}
     </>
   );

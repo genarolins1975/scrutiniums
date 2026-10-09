@@ -17,6 +17,7 @@ import {
   PrevisoesFichaLinha,
   PrevisoesIndisponivel,
   PrevisoesLegenda,
+  PrevisoesPainel,
   PrevisoesRecorte,
   PrevisoesResposta,
   PrevisoesSeguir,
@@ -334,405 +335,409 @@ export default function ModelosPage() {
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="registro">
-            <PainelEvidencia
-              id="p014"
-              pergunta={perguntaPainel("p014")}
-              subtitulo="Registro de modelos: situação, número publicado e protocolo · entradas, fórmulas e pesos · reexecução do arquivo"
-              natureza="PREVISTO"
-              porQueImporta={
-                <>
-                  Um número de previsão sem a receita não pode ser conferido nem comparado. A ficha diz que informação entra, como é transformada, o que estava disponível no
-                  corte e quem aprovou o uso; a reexecução mostra que o número arquivado sai de novo do mesmo dado.
-                </>
-              }
-              oQueMudou={oQueMudou14}
-              comoInterpretar={comoInterpretar14}
-              naoConcluir={naoConcluir14}
-              naoConcluirNoCorpo
-              proveniencia={g.proveniencia}
-            >
-              <div className="space-y-6">
-                <PrevisoesResposta id="p014" veredito={vereditoP014(g)}>
-                  {respostaP014(g)}
-                </PrevisoesResposta>
-                <section aria-labelledby="matriz-titulo" className="space-y-3" data-matriz-modelos="">
-                  <h3 id="matriz-titulo" className="ed-h3 font-serif text-carvao">
-                    {plural(fichas.length, "modelo registrado", "modelos registrados")}: situação, número publicado e protocolo
-                  </h3>
-                  <TabelaAdaptativa
-                    legenda="Modelos de previsão do PLD: papel, situação, referência de comparação, número publicado e protocolo"
-                    colunas={COLUNAS_MATRIZ}
-                    linhas={matriz}
-                    nome="matriz-modelos"
+            <PrevisoesPainel id="p014">
+              <PainelEvidencia
+                id="p014"
+                pergunta={perguntaPainel("p014")}
+                subtitulo="Registro de modelos: situação, número publicado e protocolo · entradas, fórmulas e pesos · reexecução do arquivo"
+                natureza="PREVISTO"
+                porQueImporta={
+                  <>
+                    Um número de previsão sem a receita não pode ser conferido nem comparado. A ficha diz que informação entra, como é transformada, o que estava disponível no
+                    corte e quem aprovou o uso; a reexecução mostra que o número arquivado sai de novo do mesmo dado.
+                  </>
+                }
+                oQueMudou={oQueMudou14}
+                comoInterpretar={comoInterpretar14}
+                naoConcluir={naoConcluir14}
+                naoConcluirNoCorpo
+                proveniencia={g.proveniencia}
+              >
+                <div className="space-y-6">
+                  <PrevisoesResposta id="p014" veredito={vereditoP014(g)}>
+                    {respostaP014(g)}
+                  </PrevisoesResposta>
+                  <section aria-labelledby="matriz-titulo" className="space-y-3" data-matriz-modelos="">
+                    <h3 id="matriz-titulo" className="ed-h3 font-serif text-carvao">
+                      {plural(fichas.length, "modelo registrado", "modelos registrados")}: situação, número publicado e protocolo
+                    </h3>
+                    <TabelaAdaptativa
+                      legenda="Modelos de previsão do PLD: papel, situação, referência de comparação, número publicado e protocolo"
+                      colunas={COLUNAS_MATRIZ}
+                      linhas={matriz}
+                      nome="matriz-modelos"
+                    />
+                    <PrevisoesLegenda>
+                      <span className="font-medium text-carvao">Pesquisa</span>: o modelo está em estudo e não alimenta previsão.{" "}
+                      <span className="font-medium text-carvao">Referência experimental</span>: em pesquisa, com número publicado e identificado como tal, sem aprovação.{" "}
+                      <span className="font-medium text-carvao">Produção</span>: aprovado, alimenta a previsão principal. São situações diferentes, e o número de controles
+                      que passam não mede a capacidade de prever.
+                    </PrevisoesLegenda>
+                    <PrevisoesLegenda>
+                      Protocolo do teste fora da amostra, igual para os modelos avaliados: seleção com as {g.definicoes.periodos.desenvolvimento}; teste final com as{" "}
+                      {g.definicoes.periodos.teste}; {g.definicoes.periodos.fronteira}. {semCodigosInternos(g.definicoes.cenario_de_elegibilidade)}
+                    </PrevisoesLegenda>
+                  </section>
+
+                  <PrevisoesRecorte
+                    periodo={
+                      <>
+                        Versões vigentes em {carimbo(g.gerado_em)}
+                        {ajuste ? `; pesos do ajuste de ${dataBR(ajuste)}` : ""}
+                      </>
+                    }
+                    universo={<>{fichas.map((f) => f.codigo).join(", ")}; sete horizontes e quatro submercados</>}
+                    unidade="R$/MWh nas previsões; coeficientes em R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável"
                   />
-                  <PrevisoesLegenda>
-                    <span className="font-medium text-carvao">Pesquisa</span>: o modelo está em estudo e não alimenta previsão.{" "}
-                    <span className="font-medium text-carvao">Referência experimental</span>: em pesquisa, com número publicado e identificado como tal, sem aprovação.{" "}
-                    <span className="font-medium text-carvao">Produção</span>: aprovado, alimenta a previsão principal. São situações diferentes, e o número de controles
-                    que passam não mede a capacidade de prever.
-                  </PrevisoesLegenda>
-                  <PrevisoesLegenda>
-                    Protocolo do teste fora da amostra, igual para os modelos avaliados: seleção com as {g.definicoes.periodos.desenvolvimento}; teste final com as{" "}
-                    {g.definicoes.periodos.teste}; {g.definicoes.periodos.fronteira}. {semCodigosInternos(g.definicoes.cenario_de_elegibilidade)}
-                  </PrevisoesLegenda>
-                </section>
-
-                <PrevisoesRecorte
-                  periodo={
-                    <>
-                      Versões vigentes em {carimbo(g.gerado_em)}
-                      {ajuste ? `; pesos do ajuste de ${dataBR(ajuste)}` : ""}
-                    </>
-                  }
-                  universo={<>{fichas.map((f) => f.codigo).join(", ")}; sete horizontes e quatro submercados</>}
-                  unidade="R$/MWh nas previsões; coeficientes em R$/MWh de correção por R$/MWh (ou por ponto percentual) da variável"
-                />
 
 
-                <NotasDoPainel oQueMudou={oQueMudou14} comoInterpretar={comoInterpretar14} naoConcluir={naoConcluir14} />
+                  <NotasDoPainel oQueMudou={oQueMudou14} comoInterpretar={comoInterpretar14} naoConcluir={naoConcluir14} />
 
-                <PrevisoesCapitulos pagina="modelos" />
+                  <PrevisoesCapitulos pagina="modelos" />
 
-                <SecaoDoPainel id="entradas" titulo="O que cada modelo recebe e como calcula">
-                  <TabelaAdaptativa
-                    legenda="Entradas, fórmula em palavras e pesos de cada modelo registrado"
-                    colunas={COLUNAS_ENTRADAS}
-                    linhas={entradas}
-                    nome="entradas-formula"
-                  />
-                  {notaEntradas({ entradas: fichas.flatMap((f) => f.entradas ?? []) }) && (
-                    <PrevisoesLegenda>{notaEntradas({ entradas: fichas.flatMap((f) => f.entradas ?? []) })}</PrevisoesLegenda>
-                  )}
-                  <PrevisoesTermos itens={termos} />
-                </SecaoDoPainel>
-
-                {reexec.length > 0 && (
-                  <SecaoDoPainel
-                    id="reexecucao"
-                    titulo="Os números arquivados do B0 se repetem com o dado do corte?"
-                    lead="Cada valor abaixo é o número arquivado na rodada mais recente; a prova de cada um mostra as horas somadas, os arquivos da CCEE capturados até o corte e o resultado da reexecução."
-                  >
-                    <PrevisoesReexecucao linhas={reexec} evidencias={g.evidencias} endereco={enderecoPainel("p014")} tolerancia={tolerancia} />
+                  <SecaoDoPainel id="entradas" titulo="O que cada modelo recebe e como calcula">
+                    <TabelaAdaptativa
+                      legenda="Entradas, fórmula em palavras e pesos de cada modelo registrado"
+                      colunas={COLUNAS_ENTRADAS}
+                      linhas={entradas}
+                      nome="entradas-formula"
+                    />
+                    {notaEntradas({ entradas: fichas.flatMap((f) => f.entradas ?? []) }) && (
+                      <PrevisoesLegenda>{notaEntradas({ entradas: fichas.flatMap((f) => f.entradas ?? []) })}</PrevisoesLegenda>
+                    )}
+                    <PrevisoesTermos itens={termos} />
                   </SecaoDoPainel>
-                )}
 
-                <SecaoDoPainel id="pesos" titulo="Pesos do último ajuste dos candidatos C2, por segmento" nivel="analisar">
-                  <PrevisoesPesos
-                    coeficientes={coef}
-                    colunasCoeficientes={colunasCoeficientes(fichas)}
-                    segmentos={segmentos}
-                    barras={barras}
-                    textos={textos}
-                    segmentoPadrao={segmentos[0]?.id ?? ""}
-                    fonte={fonte}
-                    versao={versao}
+                  {reexec.length > 0 && (
+                    <SecaoDoPainel
+                      id="reexecucao"
+                      titulo="Os números arquivados do B0 se repetem com o dado do corte?"
+                      lead="Cada valor abaixo é o número arquivado na rodada mais recente; a prova de cada um mostra as horas somadas, os arquivos da CCEE capturados até o corte e o resultado da reexecução."
+                    >
+                      <PrevisoesReexecucao linhas={reexec} evidencias={g.evidencias} endereco={enderecoPainel("p014")} tolerancia={tolerancia} />
+                    </SecaoDoPainel>
+                  )}
+
+                  <SecaoDoPainel id="pesos" titulo="Pesos do último ajuste dos candidatos C2, por segmento" nivel="analisar">
+                    <PrevisoesPesos
+                      coeficientes={coef}
+                      colunasCoeficientes={colunasCoeficientes(fichas)}
+                      segmentos={segmentos}
+                      barras={barras}
+                      textos={textos}
+                      segmentoPadrao={segmentos[0]?.id ?? ""}
+                      fonte={fonte}
+                      versao={versao}
+                    />
+                    <PrevisoesLegenda>
+                      A barra à direita do zero soma ao B0 quando a variável é positiva, e à esquerda subtrai. A linha 1 marca o ponto a partir do qual a correção pela média dos 7
+                      dias amplia o desvio. Os coeficientes são do último ajuste e mudam a cada domingo.{" "}
+                      {acima.length
+                        ? `No último ajuste, ${plural(acima.length, "segmento passa", "segmentos passam")} de 1 na média dos 7 dias (${acima.map((a) => `${a.modelo} ${a.segmento}`).join(", ")}), um sinal de que a correção amplia o desvio recente em vez de reduzi-lo.`
+                        : "No último ajuste, nenhum segmento passa de 1 na média dos 7 dias."}
+                    </PrevisoesLegenda>
+                  </SecaoDoPainel>
+
+                  <SecaoDoPainel id="fichas" titulo="Como as fichas dos modelos se comparam lado a lado?" nivel="analisar">
+                    <PrevisoesFichas cartoes={cartoes} linhasModelos={linhasModelos(g)} fonte={fonte} versao={versao} />
+                  </SecaoDoPainel>
+
+                  <PrevisoesAuditoria id="configuracao" titulo="Configuração congelada, dados de entrada e pendências da governança">
+                    <dl>
+                      <PrevisoesFichaLinha rotulo="Configuração">
+                        sha256 <span className="font-mono text-xs">{g.dados.configuracao_sha256}</span>;{" "}
+                        {g.dados.configuracao_registrada_sha256 === g.dados.configuracao_sha256 ? "confere com a registrada no registro de modelos" : "diferente da registrada no registro de modelos"}.
+                      </PrevisoesFichaLinha>
+                      {Object.entries(g.dados.snapshots).map(([k, s]) => (
+                        <PrevisoesFichaLinha key={k} rotulo={`Dado ${k}`}>
+                          {s.id ? snapshotLegivel(s.id) : "sem identificador"}; última captura {carimbo(s.ultima_captura)}; {s.revisoes ?? 0} revisões detectadas
+                        </PrevisoesFichaLinha>
+                      ))}
+                      {(["ear", "ena"] as const).map((k) => (
+                        <PrevisoesFichaLinha key={k} rotulo={`Dicionário ONS (${k.toUpperCase()})`}>
+                          {g.dados.dicionarios_ons[k].leitura}{" "}
+                          <a href={g.dados.dicionarios_ons[k].url} className="text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                            dicionário em PDF
+                          </a>
+                        </PrevisoesFichaLinha>
+                      ))}
+                      <PrevisoesFichaLinha rotulo="Integrado até">
+                        PLD até {dataBR(g.dados.ultimo_dia_pld)}; <Termo slug="ear">EAR</Termo> até {dataBR(g.dados.ultimo_dia_ear)}; <Termo slug="ena">ENA</Termo> até{" "}
+                        {dataBR(g.dados.ultimo_dia_ena)}
+                      </PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Estados">{g.governanca.estados}</PrevisoesFichaLinha>
+                      {g.governanca.pendencias.map((p) => (
+                        <PrevisoesFichaLinha key={p.id} rotulo={`${p.id}: ${p.titulo}`}>
+                          {p.descricao} Encaminhamento: {p.encaminhamento} Responsável: {p.responsavel}. Estado: {p.estado.replace(/_/g, " ").toLowerCase()}.
+                        </PrevisoesFichaLinha>
+                      ))}
+                    </dl>
+                    <TabelaInterativa
+                      titulo="Decisões revisáveis e quem as toma"
+                      colunas={COLUNAS_DECISOES}
+                      linhas={decisoes}
+                      chaveLinha="id"
+                      colunaRotulo="item"
+                      fonte={fonte}
+                      versao={versao}
+                      nomeArquivo="previsoes-pld-decisoes-revisaveis"
+                    />
+                  </PrevisoesAuditoria>
+
+                  <PrevisoesSeguir
+                    ancora="p014"
+                    proximo={{ href: `#${proximoPainel("p014").id}`, pergunta: proximoPainel("p014").pergunta }}
+                    downloads={downloadsDoPainel(g, "p014")}
                   />
-                  <PrevisoesLegenda>
-                    A barra à direita do zero soma ao B0 quando a variável é positiva, e à esquerda subtrai. A linha 1 marca o ponto a partir do qual a correção pela média dos 7
-                    dias amplia o desvio. Os coeficientes são do último ajuste e mudam a cada domingo.{" "}
-                    {acima.length
-                      ? `No último ajuste, ${plural(acima.length, "segmento passa", "segmentos passam")} de 1 na média dos 7 dias (${acima.map((a) => `${a.modelo} ${a.segmento}`).join(", ")}), um sinal de que a correção amplia o desvio recente em vez de reduzi-lo.`
-                      : "No último ajuste, nenhum segmento passa de 1 na média dos 7 dias."}
-                  </PrevisoesLegenda>
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="fichas" titulo="Como as fichas dos modelos se comparam lado a lado?" nivel="analisar">
-                  <PrevisoesFichas cartoes={cartoes} linhasModelos={linhasModelos(g)} fonte={fonte} versao={versao} />
-                </SecaoDoPainel>
-
-                <PrevisoesAuditoria id="configuracao" titulo="Configuração congelada, dados de entrada e pendências da governança">
-                  <dl>
-                    <PrevisoesFichaLinha rotulo="Configuração">
-                      sha256 <span className="font-mono text-xs">{g.dados.configuracao_sha256}</span>;{" "}
-                      {g.dados.configuracao_registrada_sha256 === g.dados.configuracao_sha256 ? "confere com a registrada no registro de modelos" : "diferente da registrada no registro de modelos"}.
-                    </PrevisoesFichaLinha>
-                    {Object.entries(g.dados.snapshots).map(([k, s]) => (
-                      <PrevisoesFichaLinha key={k} rotulo={`Dado ${k}`}>
-                        {s.id ? snapshotLegivel(s.id) : "sem identificador"}; última captura {carimbo(s.ultima_captura)}; {s.revisoes ?? 0} revisões detectadas
-                      </PrevisoesFichaLinha>
-                    ))}
-                    {(["ear", "ena"] as const).map((k) => (
-                      <PrevisoesFichaLinha key={k} rotulo={`Dicionário ONS (${k.toUpperCase()})`}>
-                        {g.dados.dicionarios_ons[k].leitura}{" "}
-                        <a href={g.dados.dicionarios_ons[k].url} className="text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                          dicionário em PDF
-                        </a>
-                      </PrevisoesFichaLinha>
-                    ))}
-                    <PrevisoesFichaLinha rotulo="Integrado até">
-                      PLD até {dataBR(g.dados.ultimo_dia_pld)}; <Termo slug="ear">EAR</Termo> até {dataBR(g.dados.ultimo_dia_ear)}; <Termo slug="ena">ENA</Termo> até{" "}
-                      {dataBR(g.dados.ultimo_dia_ena)}
-                    </PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Estados">{g.governanca.estados}</PrevisoesFichaLinha>
-                    {g.governanca.pendencias.map((p) => (
-                      <PrevisoesFichaLinha key={p.id} rotulo={`${p.id}: ${p.titulo}`}>
-                        {p.descricao} Encaminhamento: {p.encaminhamento} Responsável: {p.responsavel}. Estado: {p.estado.replace(/_/g, " ").toLowerCase()}.
-                      </PrevisoesFichaLinha>
-                    ))}
-                  </dl>
-                  <TabelaInterativa
-                    titulo="Decisões revisáveis e quem as toma"
-                    colunas={COLUNAS_DECISOES}
-                    linhas={decisoes}
-                    chaveLinha="id"
-                    colunaRotulo="item"
-                    fonte={fonte}
-                    versao={versao}
-                    nomeArquivo="previsoes-pld-decisoes-revisaveis"
-                  />
-                </PrevisoesAuditoria>
-
-                <PrevisoesSeguir
-                  ancora="p014"
-                  proximo={{ href: `#${proximoPainel("p014").id}`, pergunta: proximoPainel("p014").pergunta }}
-                  downloads={downloadsDoPainel(g, "p014")}
-                />
-              </div>
-            </PainelEvidencia>
+                </div>
+              </PainelEvidencia>
+            </PrevisoesPainel>
           </Bloco>
 
           <Bloco id="desempenho">
-            <PainelEvidencia
-              id="p016"
-              pergunta={perguntaPainel("p016")}
-              subtitulo="Teste fora da amostra, acompanhamento depois da emissão e calibração das faixas · entregas e R$/MWh"
-              natureza="PREVISTO"
-              porQueImporta={
-                <>
-                  Um modelo só se distingue da referência simples se errar menos que repetir o último preço (B0) ou o do ano anterior (S0), em amostra que ele não viu e com a
-                  informação disponível em cada corte. Sem isso, um gráfico de previsão não diz nada sobre acerto.
-                </>
-              }
-              oQueMudou={oQueMudou16}
-              comoInterpretar={comoInterpretar16}
-              naoConcluir={naoConcluir16}
-              naoConcluirNoCorpo
-              proveniencia={g.proveniencia}
-            >
-              <div className="space-y-6">
-                <PrevisoesResposta id="p016" veredito={vereditoP016(g)}>
-                  {respostaP016(g)}
-                </PrevisoesResposta>
-                {!pubDes.publicado && (
-                  <Indisponivel
-                    titulo="Desempenho fora da amostra: números retidos"
-                    motivo={
+            <PrevisoesPainel id="p016">
+              <PainelEvidencia
+                id="p016"
+                pergunta={perguntaPainel("p016")}
+                subtitulo="Desempenho e calibração: teste fora da amostra, acompanhamento depois da emissão e calibração das faixas · entregas e R$/MWh"
+                natureza="PREVISTO"
+                porQueImporta={
+                  <>
+                    Um modelo só se distingue da referência simples se errar menos que repetir o último preço (B0) ou o do ano anterior (S0), em amostra que ele não viu e com a
+                    informação disponível em cada corte. Sem isso, um gráfico de previsão não diz nada sobre acerto.
+                  </>
+                }
+                oQueMudou={oQueMudou16}
+                comoInterpretar={comoInterpretar16}
+                naoConcluir={naoConcluir16}
+                naoConcluirNoCorpo
+                proveniencia={g.proveniencia}
+              >
+                <div className="space-y-6">
+                  <PrevisoesResposta id="p016" veredito={vereditoP016(g)}>
+                    {respostaP016(g)}
+                  </PrevisoesResposta>
+                  {!pubDes.publicado && (
+                    <Indisponivel
+                      titulo="Desempenho fora da amostra: números retidos"
+                      motivo={
+                        <>
+                          <p>
+                            <span className="font-medium">Por que não há números de desempenho aqui:</span> {partirInterno(pubDes.motivo).leitor || pubDes.motivo}
+                          </p>
+                          <p className="mt-2">
+                            <span className="font-medium">O que libera a publicação:</span> {liberacaoEmPalavras(pubDes.para_liberar)}
+                          </p>
+                          <p className="mt-2 text-carvao-muted">
+                            Quando liberados, o erro médio absoluto (MAE), o ganho sobre o B0 e a cobertura entram aqui por modelo e horizonte, nas mesmas células do B0 e com o
+                            número de entregas distintas de cada recorte.
+                          </p>
+                          <div data-nivel="analisar" className="mt-3 border-t border-linha pt-2 text-xs text-carvao-muted">
+                            <p className="rotulo text-mineral">Texto do registro, sem edição</p>
+                            <p className="mt-1">{pubDes.motivo}</p>
+                            <p className="mt-1">{pubDes.para_liberar}</p>
+                          </div>
+                        </>
+                      }
+                    />
+                  )}
+
+                  <PrevisoesRecorte
+                    periodo={
                       <>
-                        <p>
-                          <span className="font-medium">Por que não há números de desempenho aqui:</span> {partirInterno(pubDes.motivo).leitor || pubDes.motivo}
-                        </p>
-                        <p className="mt-2">
-                          <span className="font-medium">O que libera a publicação:</span> {liberacaoEmPalavras(pubDes.para_liberar)}
-                        </p>
-                        <p className="mt-2 text-carvao-muted">
-                          Quando liberados, o erro médio absoluto (MAE), o ganho sobre o B0 e a cobertura entram aqui por modelo e horizonte, nas mesmas células do B0 e com o
-                          número de entregas distintas de cada recorte.
-                        </p>
-                        <div data-nivel="analisar" className="mt-3 border-t border-linha pt-2 text-xs text-carvao-muted">
-                          <p className="rotulo text-mineral">Texto do registro, sem edição</p>
-                          <p className="mt-1">{pubDes.motivo}</p>
-                          <p className="mt-1">{pubDes.para_liberar}</p>
-                        </div>
+                        Origens de {dataBR(g.dados.origens.inicio)} a {dataBR(g.dados.origens.fim)}; {g.definicoes.periodos.desenvolvimento}; {g.definicoes.periodos.teste}
                       </>
                     }
+                    universo={
+                      <>
+                        Modelos avaliados: {avaliados.join(", ")}
+                        {naoAvaliados.length ? ` (sem avaliação: ${naoAvaliados.map((m) => m.codigo).join(", ")})` : ""}; sete horizontes; quatro submercados
+                      </>
+                    }
+                    unidade="Entregas distintas; R$/MWh nominais para erro e ganho"
                   />
-                )}
 
-                <PrevisoesRecorte
-                  periodo={
-                    <>
-                      Origens de {dataBR(g.dados.origens.inicio)} a {dataBR(g.dados.origens.fim)}; {g.definicoes.periodos.desenvolvimento}; {g.definicoes.periodos.teste}
-                    </>
-                  }
-                  universo={
-                    <>
-                      Modelos avaliados: {avaliados.join(", ")}
-                      {naoAvaliados.length ? ` (sem avaliação: ${naoAvaliados.map((m) => m.codigo).join(", ")})` : ""}; sete horizontes; quatro submercados
-                    </>
-                  }
-                  unidade="Entregas distintas; R$/MWh nominais para erro e ganho"
-                />
+                  {g.desempenho.publicado && desempenho.length > 0 && (
+                    <SecaoDoPainel
+                      id="desempenho-fora-da-amostra"
+                      titulo="Quanto cada modelo erra no teste final, contra o B0 nas mesmas células?"
+                      lead="Erro médio absoluto (MAE) por modelo e horizonte no período de teste, com o MAE do B0 nas mesmas células e o número de entregas distintas de cada recorte."
+                    >
+                      <GraficoPontos
+                        titulo="MAE no teste final por modelo e horizonte, contra o B0 nas mesmas células"
+                        itens={desempenho
+                          .filter((l) => l.periodo === "teste" && l.modelo !== "B0")
+                          .map((l) => ({ id: l.id, rotulo: `${l.modelo} ${l.horizonte}`, valor: l.mae, referencia: l.mae_b0, detalhe: `${l.entregas} entregas distintas` }))}
+                        unidade="R$/MWh"
+                        casas={2}
+                        rotuloValor="MAE do modelo"
+                        rotuloReferencia="MAE do B0"
+                      />
+                      <TabelaInterativa
+                        titulo="Métricas por modelo, horizonte e período"
+                        colunas={COLUNAS_DESEMPENHO}
+                        linhas={desempenho}
+                        chaveLinha="id"
+                        colunaRotulo="modelo"
+                        fonte={fonte}
+                        versao={versao}
+                        nomeArquivo="previsoes-pld-desempenho"
+                        chaveUrl="des"
+                      />
+                    </SecaoDoPainel>
+                  )}
 
-                {g.desempenho.publicado && desempenho.length > 0 && (
-                  <SecaoDoPainel
-                    id="desempenho-fora-da-amostra"
-                    titulo="Quanto cada modelo erra no teste final, contra o B0 nas mesmas células?"
-                    lead="Erro médio absoluto (MAE) por modelo e horizonte no período de teste, com o MAE do B0 nas mesmas células e o número de entregas distintas de cada recorte."
-                  >
-                    <GraficoPontos
-                      titulo="MAE no teste final por modelo e horizonte, contra o B0 nas mesmas células"
-                      itens={desempenho
-                        .filter((l) => l.periodo === "teste" && l.modelo !== "B0")
-                        .map((l) => ({ id: l.id, rotulo: `${l.modelo} ${l.horizonte}`, valor: l.mae, referencia: l.mae_b0, detalhe: `${l.entregas} entregas distintas` }))}
-                      unidade="R$/MWh"
-                      casas={2}
-                      rotuloValor="MAE do modelo"
-                      rotuloReferencia="MAE do B0"
-                    />
+                  {amostra.length > 0 && (
+                    <SecaoDoPainel
+                      id="calibracao"
+                      titulo="Há entregas suficientes para calibrar uma faixa de incerteza?"
+                      lead={
+                        minimo !== null
+                          ? `A regra pede pelo menos ${minimo} entregas distintas fora do ajuste em cada horizonte. Semanas (W1 a W4) e meses (M1 a M3) têm amostras diferentes.`
+                          : "Semanas (W1 a W4) e meses (M1 a M3) têm amostras diferentes."
+                      }
+                    >
+                      <GraficoPontos
+                        titulo="Entregas distintas do teste por horizonte, contra o mínimo para calibrar a faixa"
+                        itens={amostra.map((a) => ({ id: a.id, rotulo: a.horizonte, valor: a.entregas, referencia: a.minimo, detalhe: `estado: ${a.estado}` }))}
+                        unidade="entregas"
+                        casas={0}
+                        rotuloValor="Entregas no teste"
+                        rotuloReferencia={minimo !== null ? `Mínimo de ${minimo}` : "Mínimo para calibrar"}
+                        unidadeDiferenca="entregas"
+                        zeroNoEixo
+                      />
+                      <div data-nivel="analisar">
+                        <TabelaInterativa
+                          titulo="Amostra de calibração por horizonte"
+                          colunas={COLUNAS_AMOSTRA}
+                          linhas={amostra}
+                          chaveLinha="id"
+                          colunaRotulo="horizonte"
+                          fonte={fonte}
+                          versao={versao}
+                          nomeArquivo="previsoes-pld-amostra-calibracao"
+                          nota="Contagem de entregas distintas do período de teste com faixas de incerteza, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
+                        />
+                      </div>
+                      <PrevisoesLegenda>
+                        O círculo é o número de entregas distintas do teste em cada horizonte e o losango, o mínimo da regra de calibração; a diferença aparece escrita. Estado da
+                        calibração: {estadosAmostra.length === 1 ? `${estadosAmostra[0]} em todos os horizontes` : amostra.map((a) => `${a.horizonte}, ${a.estado}`).join("; ")}. Sem amostra
+                        mínima, a calibração não é avaliada: não se pode dizer que a faixa de algum modelo é confiável.
+                      </PrevisoesLegenda>
+                    </SecaoDoPainel>
+                  )}
+
+                  <NotasDoPainel oQueMudou={oQueMudou16} comoInterpretar={comoInterpretar16} naoConcluir={naoConcluir16} />
+
+                  {prospectivo.length > 0 && (
+                    <SecaoDoPainel
+                      id="acompanhamento"
+                      titulo="Quantas previsões em acompanhamento já têm resultado?"
+                      lead="Cada previsão com número só ganha realizado quando a entrega termina. A contagem de previsões apuradas não é medida de acerto."
+                    >
+                      <GraficoBarras
+                        titulo="Acompanhamento prospectivo: previsões com número por horizonte, com e sem realizado"
+                        dados={prospectivo}
+                        chaveCategoria="id"
+                        chaveRotulo="horizonte"
+                        series={[
+                          { id: "apuradas", rotulo: "com realizado", cor: "var(--cor-energia)" },
+                          { id: "aguardando", rotulo: "aguardando o fim da entrega", cor: "var(--cor-mineral-soft)" },
+                        ]}
+                        unidade="previsões"
+                        casas={0}
+                        empilhado
+                        rotulosValor
+                        altura={200}
+                      />
+                      <div data-nivel="analisar">
+                        <TabelaInterativa
+                          titulo="Previsões registradas e apuradas por horizonte"
+                          colunas={COLUNAS_PROSPECTIVO}
+                          linhas={prospectivo}
+                          chaveLinha="id"
+                          colunaRotulo="horizonte"
+                          fonte={fonte}
+                          versao={versao}
+                          nomeArquivo="previsoes-pld-prospectivo"
+                        />
+                      </div>
+                      <PrevisoesLegenda>
+                        Cada barra soma as previsões com número de um horizonte, separando as que já têm realizado das que aguardam o fim da entrega.
+                      </PrevisoesLegenda>
+                    </SecaoDoPainel>
+                  )}
+
+                  <PrevisoesAnalise id="metodo" titulo="Como o desempenho é medido">
+                    <dl>
+                      {(["alvo", "realizado", "entregas", "cenario_de_elegibilidade", "erro", "ganho", "perda_quantilica", "cobertura", "calibracao", "quantis"] as const).map((k) => (
+                        <PrevisoesFichaLinha key={k} rotulo={rotuloDefinicao(k)}>
+                          {g.definicoes[k]}
+                        </PrevisoesFichaLinha>
+                      ))}
+                      <PrevisoesFichaLinha rotulo="Fronteira entre períodos">{g.definicoes.periodos.fronteira}</PrevisoesFichaLinha>
+                      {naoAvaliados.map((m) => (
+                        <PrevisoesFichaLinha key={m.codigo} rotulo={`${m.codigo} sem avaliação`}>
+                          {semCaminhosDeArquivo(m.motivo_sem_avaliacao ?? "motivo não registrado")}
+                        </PrevisoesFichaLinha>
+                      ))}
+                    </dl>
+                  </PrevisoesAnalise>
+
+                  <PrevisoesAnalise id="controles" titulo="Controles do teste retrospectivo, executados a cada publicação">
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                      Os controles conferem a integridade do cálculo (datas, limites de preço, refazer o B0 por outro caminho). São verificações do próprio observatório: não medem a
+                      capacidade de prever e não substituem a revisão independente.
+                    </p>
                     <TabelaInterativa
-                      titulo="Métricas por modelo, horizonte e período"
-                      colunas={COLUNAS_DESEMPENHO}
-                      linhas={desempenho}
+                      titulo="Controles do teste e da rodada"
+                      colunas={COLUNAS_VALIDACOES}
+                      linhas={validacoes}
                       chaveLinha="id"
-                      colunaRotulo="modelo"
+                      colunaRotulo="nome"
                       fonte={fonte}
                       versao={versao}
-                      nomeArquivo="previsoes-pld-desempenho"
-                      chaveUrl="des"
+                      nomeArquivo="previsoes-pld-controles"
                     />
-                  </SecaoDoPainel>
-                )}
+                  </PrevisoesAnalise>
 
-                {amostra.length > 0 && (
-                  <SecaoDoPainel
-                    id="calibracao"
-                    titulo="Há entregas suficientes para calibrar uma faixa de incerteza?"
-                    lead={
-                      minimo !== null
-                        ? `A regra pede pelo menos ${minimo} entregas distintas fora do ajuste em cada horizonte. Semanas (W1 a W4) e meses (M1 a M3) têm amostras diferentes.`
-                        : "Semanas (W1 a W4) e meses (M1 a M3) têm amostras diferentes."
-                    }
-                  >
-                    <GraficoPontos
-                      titulo="Entregas distintas do teste por horizonte, contra o mínimo para calibrar a faixa"
-                      itens={amostra.map((a) => ({ id: a.id, rotulo: a.horizonte, valor: a.entregas, referencia: a.minimo, detalhe: `estado: ${a.estado}` }))}
-                      unidade="entregas"
-                      casas={0}
-                      rotuloValor="Entregas no teste"
-                      rotuloReferencia={minimo !== null ? `Mínimo de ${minimo}` : "Mínimo para calibrar"}
-                      unidadeDiferenca="entregas"
-                      zeroNoEixo
-                    />
-                    <div data-nivel="analisar">
-                      <TabelaInterativa
-                        titulo="Amostra de calibração por horizonte"
-                        colunas={COLUNAS_AMOSTRA}
-                        linhas={amostra}
-                        chaveLinha="id"
-                        colunaRotulo="horizonte"
-                        fonte={fonte}
-                        versao={versao}
-                        nomeArquivo="previsoes-pld-amostra-calibracao"
-                        nota="Contagem de entregas distintas do período de teste com faixas de incerteza, gravada em cada célula da rodada mais recente; a cobertura medida está retida com os demais números de desempenho."
-                      />
-                    </div>
-                    <PrevisoesLegenda>
-                      O círculo é o número de entregas distintas do teste em cada horizonte e o losango, o mínimo da regra de calibração; a diferença aparece escrita. Estado da
-                      calibração: {estadosAmostra.length === 1 ? `${estadosAmostra[0]} em todos os horizontes` : amostra.map((a) => `${a.horizonte}, ${a.estado}`).join("; ")}. Sem amostra
-                      mínima, a calibração não é avaliada: não se pode dizer que a faixa de algum modelo é confiável.
-                    </PrevisoesLegenda>
-                  </SecaoDoPainel>
-                )}
-
-                <NotasDoPainel oQueMudou={oQueMudou16} comoInterpretar={comoInterpretar16} naoConcluir={naoConcluir16} />
-
-                {prospectivo.length > 0 && (
-                  <SecaoDoPainel
-                    id="acompanhamento"
-                    titulo="Quantas previsões em acompanhamento já têm resultado?"
-                    lead="Cada previsão com número só ganha realizado quando a entrega termina. A contagem de previsões apuradas não é medida de acerto."
-                  >
-                    <GraficoBarras
-                      titulo="Acompanhamento prospectivo: previsões com número por horizonte, com e sem realizado"
-                      dados={prospectivo}
-                      chaveCategoria="id"
-                      chaveRotulo="horizonte"
-                      series={[
-                        { id: "apuradas", rotulo: "com realizado", cor: "var(--cor-energia)" },
-                        { id: "aguardando", rotulo: "aguardando o fim da entrega", cor: "var(--cor-mineral-soft)" },
-                      ]}
-                      unidade="previsões"
-                      casas={0}
-                      empilhado
-                      rotulosValor
-                      altura={200}
-                    />
-                    <div data-nivel="analisar">
-                      <TabelaInterativa
-                        titulo="Previsões registradas e apuradas por horizonte"
-                        colunas={COLUNAS_PROSPECTIVO}
-                        linhas={prospectivo}
-                        chaveLinha="id"
-                        colunaRotulo="horizonte"
-                        fonte={fonte}
-                        versao={versao}
-                        nomeArquivo="previsoes-pld-prospectivo"
-                      />
-                    </div>
-                    <PrevisoesLegenda>
-                      Cada barra soma as previsões com número de um horizonte, separando as que já têm realizado das que aguardam o fim da entrega.
-                    </PrevisoesLegenda>
-                  </SecaoDoPainel>
-                )}
-
-                <PrevisoesAnalise id="metodo" titulo="Como o desempenho é medido">
-                  <dl>
-                    {(["alvo", "realizado", "entregas", "cenario_de_elegibilidade", "erro", "ganho", "perda_quantilica", "cobertura", "calibracao", "quantis"] as const).map((k) => (
-                      <PrevisoesFichaLinha key={k} rotulo={rotuloDefinicao(k)}>
-                        {g.definicoes[k]}
+                  <PrevisoesAuditoria id="publicacao" titulo="Regra de publicação e decisão pendente">
+                    <dl>
+                      <PrevisoesFichaLinha rotulo="Regra">{pubDes.regra}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Decisão">
+                        {pubDes.decisao
+                          ? `${pubDes.decisao.estado.toLowerCase()}; decidido por ${pubDes.decisao.decidido_por ?? "ninguém registrado"} em ${pubDes.decisao.decidido_em ? dataBR(pubDes.decisao.decidido_em) : "data não registrada"}`
+                          : "nenhuma registrada"}
+                        {pubDes.decisao?.pergunta ? `. Pergunta: ${pubDes.decisao.pergunta}` : ""}
                       </PrevisoesFichaLinha>
-                    ))}
-                    <PrevisoesFichaLinha rotulo="Fronteira entre períodos">{g.definicoes.periodos.fronteira}</PrevisoesFichaLinha>
-                    {naoAvaliados.map((m) => (
-                      <PrevisoesFichaLinha key={m.codigo} rotulo={`${m.codigo} sem avaliação`}>
-                        {semCaminhosDeArquivo(m.motivo_sem_avaliacao ?? "motivo não registrado")}
+                      {pubDes.decisao?.registro && <PrevisoesFichaLinha rotulo="Registro">{pubDes.decisao.registro}</PrevisoesFichaLinha>}
+                      {!pubDes.publicado && <PrevisoesFichaLinha rotulo="Leitura do implementador">{pubDes.interpretacao_do_implementador}</PrevisoesFichaLinha>}
+                      <PrevisoesFichaLinha rotulo="Onde estão os resultados">{g.desempenho.publicado ? "nesta página" : g.desempenho.calculado}</PrevisoesFichaLinha>
+                      <PrevisoesFichaLinha rotulo="Linhas do teste">
+                        {g.dados.linhas_csv.semanal.toLocaleString("pt-BR")} semanais e {g.dados.linhas_csv.mensal.toLocaleString("pt-BR")} mensais; última entrega apurada no
+                        teste: {g.dados.ultima_entrega_apurada_teste ? dataBR(g.dados.ultima_entrega_apurada_teste) : "nenhuma"}
                       </PrevisoesFichaLinha>
-                    ))}
-                  </dl>
-                </PrevisoesAnalise>
+                      {Object.entries(g.dados.revisoes_hidrologia).map(([k, r]) => (
+                        <PrevisoesFichaLinha key={k} rotulo={`Revisões em ${k.split(":")[1] ?? k}`}>
+                          {r.observacoes_revisadas} observações revisadas pelo ONS entre capturas; maior revisão {r.maior_revisao === null ? "sem registro" : `${r.maior_revisao.toLocaleString("pt-BR")} p.p.`}.
+                          O teste retrospectivo do modelo com hidrologia usa o valor revisado.
+                        </PrevisoesFichaLinha>
+                      ))}
+                      <PrevisoesFichaLinha rotulo="Estado dos modelos">
+                        {g.modelos.map((m) => `${m.codigo} em ${rotuloEstadoModelo(m.estado)}`).join("; ")}
+                      </PrevisoesFichaLinha>
+                    </dl>
+                  </PrevisoesAuditoria>
 
-                <PrevisoesAnalise id="controles" titulo="Controles do teste retrospectivo, executados a cada publicação">
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Os controles conferem a integridade do cálculo (datas, limites de preço, refazer o B0 por outro caminho). São verificações do próprio observatório: não medem a
-                    capacidade de prever e não substituem a revisão independente.
-                  </p>
-                  <TabelaInterativa
-                    titulo="Controles do teste e da rodada"
-                    colunas={COLUNAS_VALIDACOES}
-                    linhas={validacoes}
-                    chaveLinha="id"
-                    colunaRotulo="nome"
-                    fonte={fonte}
-                    versao={versao}
-                    nomeArquivo="previsoes-pld-controles"
+                  <PrevisoesSeguir
+                    ancora="p016"
+                    proximo={{ href: enderecoPainel(proximoPainel("p016").id), pergunta: proximoPainel("p016").pergunta }}
+                    downloads={downloadsDoPainel(g, "p016")}
                   />
-                </PrevisoesAnalise>
-
-                <PrevisoesAuditoria id="publicacao" titulo="Regra de publicação e decisão pendente">
-                  <dl>
-                    <PrevisoesFichaLinha rotulo="Regra">{pubDes.regra}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Decisão">
-                      {pubDes.decisao
-                        ? `${pubDes.decisao.estado.toLowerCase()}; decidido por ${pubDes.decisao.decidido_por ?? "ninguém registrado"} em ${pubDes.decisao.decidido_em ? dataBR(pubDes.decisao.decidido_em) : "data não registrada"}`
-                        : "nenhuma registrada"}
-                      {pubDes.decisao?.pergunta ? `. Pergunta: ${pubDes.decisao.pergunta}` : ""}
-                    </PrevisoesFichaLinha>
-                    {pubDes.decisao?.registro && <PrevisoesFichaLinha rotulo="Registro">{pubDes.decisao.registro}</PrevisoesFichaLinha>}
-                    {!pubDes.publicado && <PrevisoesFichaLinha rotulo="Leitura do implementador">{pubDes.interpretacao_do_implementador}</PrevisoesFichaLinha>}
-                    <PrevisoesFichaLinha rotulo="Onde estão os resultados">{g.desempenho.publicado ? "nesta página" : g.desempenho.calculado}</PrevisoesFichaLinha>
-                    <PrevisoesFichaLinha rotulo="Linhas do teste">
-                      {g.dados.linhas_csv.semanal.toLocaleString("pt-BR")} semanais e {g.dados.linhas_csv.mensal.toLocaleString("pt-BR")} mensais; última entrega apurada no
-                      teste: {g.dados.ultima_entrega_apurada_teste ? dataBR(g.dados.ultima_entrega_apurada_teste) : "nenhuma"}
-                    </PrevisoesFichaLinha>
-                    {Object.entries(g.dados.revisoes_hidrologia).map(([k, r]) => (
-                      <PrevisoesFichaLinha key={k} rotulo={`Revisões em ${k.split(":")[1] ?? k}`}>
-                        {r.observacoes_revisadas} observações revisadas pelo ONS entre capturas; maior revisão {r.maior_revisao === null ? "sem registro" : `${r.maior_revisao.toLocaleString("pt-BR")} p.p.`}.
-                        O teste retrospectivo do modelo com hidrologia usa o valor revisado.
-                      </PrevisoesFichaLinha>
-                    ))}
-                    <PrevisoesFichaLinha rotulo="Estado dos modelos">
-                      {g.modelos.map((m) => `${m.codigo} em ${rotuloEstadoModelo(m.estado)}`).join("; ")}
-                    </PrevisoesFichaLinha>
-                  </dl>
-                </PrevisoesAuditoria>
-
-                <PrevisoesSeguir
-                  ancora="p016"
-                  proximo={{ href: enderecoPainel(proximoPainel("p016").id), pergunta: proximoPainel("p016").pergunta }}
-                  downloads={downloadsDoPainel(g, "p016")}
-                />
-              </div>
-            </PainelEvidencia>
+                </div>
+              </PainelEvidencia>
+            </PrevisoesPainel>
           </Bloco>
         </ModoProfundidade>
       </main>

@@ -125,7 +125,7 @@ export default function MmgdPage() {
       pelo IBGE, as duas somadas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de {m.ano_referencia - 1}. O ano
       de conexão vem da data publicada pela ANEEL, conferida com a data de conexão do recurso técnico. {g.regras.ano_referencia} Pelo Sistema de Compensação de Energia Elétrica (SCEE), a
       energia que a unidade injeta na rede vira crédito para abater o consumo, no mesmo local, em outra unidade do mesmo titular, entre condôminos ou entre os participantes de uma
-      geração compartilhada: por isso o mapa mostra onde está a unidade geradora, não onde o crédito é usado.
+      geração compartilhada.
     </>
   );
   const naoConcluir = (

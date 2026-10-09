@@ -800,7 +800,9 @@ describe.skipIf(!gold.disponivel)("páginas renderizadas no servidor", () => {
         expect(h.includes(`href="#${prox.id}"`) || h.includes(`href="${enderecoPainel(prox.id)}"`), `${id} -> ${prox.id}`).toBe(true);
         if (!naMesma) expect(h, id).toContain(`href="${enderecoPainel(prox.id)}"`);
       }
-      for (const parte of ["Período", "Universo", "Unidade", "Como ler", "O que não permite concluir", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel"])
+      // desenho editorial: "Como ler" virou legenda sob a figura e "O que não permite concluir" foi para "O que não é possível concluir"
+      // (as notas do painel junto da figura); os downloads do painel ficam em "Baixar os dados" (um arquivo, link direto; vários, bloco)
+      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados"])
         expect(h, parte).toContain(parte);
       expect(h).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h).toContain('data-nivel="analisar"');
