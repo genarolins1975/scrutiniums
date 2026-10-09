@@ -515,3 +515,116 @@ def planos():
                             nota=("Percentual da população com plano de saúde privado em dezembro. Contexto: o SIH cobre só internações pagas pelo SUS. Não serve para estimar "
                                   "usuários do SUS subtraindo beneficiários da população."), elegivel_comparacao=True, nota_material=False))
     return obs
+
+
+# ------------------------------------------------------------------ CNES: unidades básicas e postos de saúde (atenção primária)
+
+TIPOS_APS = ("01", "02")
+TIPOS_CONTEXTO = ("15", "32", "40", "71", "74")
+ROTULO_TIPO = {"01": "Posto de saúde", "02": "Centro de saúde/unidade básica", "15": "Unidade mista", "32": "Unidade móvel fluvial",
+               "40": "Unidade móvel terrestre", "71": "Centro de apoio à saúde da família", "74": "Polo academia da saúde"}
+RESSALVA_UBS = ("Estabelecimentos de tipo 01 (posto de saúde) e 02 (centro de saúde/unidade básica), ativos no CNES e de natureza jurídica pública, localizados na "
+                "capital. O cadastro não comprova funcionamento, acesso nem vaga disponível, e um estabelecimento situado na capital pode não ser municipal: "
+                "a gestão (municipal, estadual ou dupla) e a natureza jurídica são campos distintos do local.")
+RESSALVA_UBS_SERIE = (" A série de dezembro só acompanha os estabelecimentos que hoje têm tipo 01 ou 02: um estabelecimento que era unidade básica no ano e foi reclassificado "
+                      "ou renumerado não entra, e a contagem dos anos anteriores pode ficar abaixo da registrada na época.")
+
+
+def _tipo_codigo(txt):
+    t = str(txt or "").strip()
+    return t[:2] if t[:2].isdigit() else ""
+
+
+def rede_serie(pop_obs):
+    """UBS (tipos 01 e 02) ativas em dezembro de cada ano, pelo histórico mensal do CNES (API de dados abertos, família com competência).
+
+    Recorte: estabelecimentos que, no retrato da captura, têm tipo 01 ou 02 (ativos e desabilitados). Em cada dezembro conta-se o
+    estabelecimento pelo tipo, status e natureza que ele tinha naquela competência. Natureza pública é o grupo de natureza jurídica
+    PUBLICO; gestão é o campo de gestão do CNES (municipal, estadual ou dupla), que não equivale a propriedade."""
+    caminho = os.path.join(base.SEED, "cnes", "historico_aps_dezembros.json.gz")
+    hist = base.le_json_gz(caminho) if os.path.exists(caminho) else None
+    pop = _pop_por_ente(pop_obs)
+    m6 = {str(c)[:6]: c for c, _, _ in entes.CAPITAIS}
+    obs = []
+    if hist is None:
+        return obs
+    cont = {}
+    for co, h in hist.items():
+        for l in h["linhas"]:
+            cod = m6.get(str(l.get("co_ibge") or "").strip())
+            comp = str(l["nu_comp"])
+            if cod is None or not comp.endswith("12") or not comp[:4].isdigit():
+                continue
+            c = cont.setdefault((cod, int(comp[:4])), {"total_ativas": 0, "publicas": 0, "gestao_municipal": 0, "gestao_estadual": 0, "gestao_dupla": 0})
+            if _tipo_codigo(l.get("tp_unidade")) not in TIPOS_APS or str(l.get("ds_status") or "").strip().upper() != "ATIVO":
+                continue
+            c["total_ativas"] += 1
+            if str(l.get("no_grupo_nat_jur") or "").strip().upper() == "PUBLICO":
+                c["publicas"] += 1
+            g = str(l.get("tp_gestao") or "").strip().upper()
+            if g in ("MUNICIPAL", "ESTADUAL", "DUPLA"):
+                c["gestao_" + g.lower()] += 1
+    for cod, nome, uf in entes.CAPITAIS:
+        for ano in ANOS_FINANCEIROS:
+            c = cont.get((cod, ano))
+            reg = f"CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de {ano}"
+            if c is None:
+                obs.append(_obs("sau.rede.ubs_publicas", cod, ano, None, "AUSENTE_NA_COLETA", "cnes_historico_estabelecimentos", reg, componente="publicas",
+                                nota="Nenhum estabelecimento da capital com registro na competência no histórico coletado.", nota_material=True))
+                continue
+            comp_valores = {**c, "nao_publicas": c["total_ativas"] - c["publicas"]}
+            for k, v in comp_valores.items():
+                obs.append(_obs("sau.rede.ubs_publicas", cod, ano, v, "OBSERVADO", "cnes_historico_estabelecimentos", reg, componente=k,
+                                nota=RESSALVA_UBS + RESSALVA_UBS_SERIE if k == "publicas" else None, elegivel_comparacao=True, nota_material=(k == "publicas")))
+            p = pop.get((cod, ano))
+            if p is not None and p["status"] == "OBSERVADO" and p["valor"]:
+                obs.append(_obs("sau.rede.ubs_publicas_por_10mil", cod, ano, round(c["publicas"] / p["valor"] * 10000, 6), "OBSERVADO",
+                                "cnes_historico_estabelecimentos+ibge_populacao", reg + "; população: " + p["registro"], componente="publicas",
+                                nota=RESSALVA_UBS + RESSALVA_UBS_SERIE, elegivel_comparacao=True, nota_material=True, quebra_serie=bool(p.get("quebra_serie")),
+                                calculo={"numerador": c["publicas"], "denominador": p["valor"], "numerador_ref": "sau.rede.ubs_publicas", "denominador_ref": "ctx.populacao.residente",
+                                         "numerador_componente": "publicas"}))
+            else:
+                obs.append(_obs("sau.rede.ubs_publicas_por_10mil", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao", reg, componente="publicas",
+                                nota="População do exercício indisponível.", nota_material=True))
+    return obs
+
+
+def rede_retrato():
+    """Retrato do CNES em 09/10/2026 (arquivo diário do OpenDataSUS): UBS ativas por natureza, gestão e atendimento SUS, e outros tipos de unidade
+    de atenção primária como contexto. Sem competência: a data de captura é a única referência temporal (ano 2026 marca o retrato)."""
+    linhas = _seed_csv("cnes", "estabelecimentos_aps_capitais.csv.gz")
+    obs = []
+    m6 = {str(c)[:6]: c for c, _, _ in entes.CAPITAIS}
+    por_cap = {}
+    for r in linhas or []:
+        cod = m6.get(r["CO_IBGE"])
+        if cod is None or r["CO_MOTIVO_DESAB"]:
+            continue
+        c = por_cap.setdefault(cod, {k: 0 for k in ("tp01", "tp02", "total_ativas", "publicas", "publicas_sus", "nao_publicas", "gestao_municipal",
+                                                     "gestao_estadual", "gestao_dupla", "tp15", "tp32", "tp40", "tp71", "tp74")})
+        tp = r["TP_UNIDADE"]
+        if tp in TIPOS_CONTEXTO:
+            c["tp" + tp] += 1
+            continue
+        if tp not in TIPOS_APS:
+            continue
+        c["tp" + tp] += 1
+        c["total_ativas"] += 1
+        publico = r["CO_NATUREZA_JUR"].startswith("1")
+        c["publicas" if publico else "nao_publicas"] += 1
+        if publico and r["CO_AMBULATORIAL_SUS"].upper() in ("SIM", "S", "1"):
+            c["publicas_sus"] += 1
+        g = {"M": "gestao_municipal", "E": "gestao_estadual", "D": "gestao_dupla"}.get(r["TP_GESTAO"])
+        if g:
+            c[g] += 1
+    reg = "CNES, retrato do arquivo cnes_estabelecimentos_csv.zip do OpenDataSUS, capturado em 09/10/2026"
+    for cod, nome, uf in entes.CAPITAIS:
+        c = por_cap.get(cod)
+        if c is None:
+            obs.append(_obs("sau.rede.ubs_retrato", cod, 2026, None, "AUSENTE_NA_COLETA", "cnes_estabelecimentos", reg, componente="total_ativas",
+                            nota="Nenhum estabelecimento de tipo 01 ou 02 da capital no retrato.", nota_material=True))
+            continue
+        for k, v in c.items():
+            obs.append(_obs("sau.rede.ubs_retrato", cod, 2026, v, "OBSERVADO", "cnes_estabelecimentos", reg, componente=k, elegivel_comparacao=True,
+                            nota=RESSALVA_UBS if k == "total_ativas" else None, nota_material=(k == "total_ativas")))
+    return obs

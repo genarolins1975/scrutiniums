@@ -4652,6 +4652,214 @@
      "sha256_resposta": "aace7bc829fd78e696f3b8391fe9893a8c7281c9123dfd61b1f6d2a19ad41ea6",
      "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2024.json.gz",
      "sha256": "ec08c915b5aff706e39187276aa49c96783ab6990f453c0173e23ea7168f4fb1"
+    },
+    "1200401_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/12/120040/2025/2",
+     "capturado_em": "2026-10-09T12:07:04Z",
+     "linhas": 15,
+     "sha256_resposta": "af3708784ec377fc8c281bb8186ab63ac8ff535a77227c330871496e4672b197",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1200401_2025.json.gz",
+     "sha256": "75a24677276f22829713fb53622eeab6d66dfbee99169bc1694a1dc13f2ce23e"
+    },
+    "2704302_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/27/270430/2025/2",
+     "capturado_em": "2026-10-09T12:07:05Z",
+     "linhas": 15,
+     "sha256_resposta": "7d2e6062647f10e1e22501e7ccbbe3291168964dbd477756046799d92ec10855",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2704302_2025.json.gz",
+     "sha256": "bcc4662c8781ea5da3e6925e589e6a597839e674962f5505621b2bf610f6044c"
+    },
+    "1600303_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/16/160030/2025/2",
+     "capturado_em": "2026-10-09T12:07:06Z",
+     "linhas": 15,
+     "sha256_resposta": "897b37e2e838451f9fbcd31e778d041adafa1f9c302ff46ea3ef3b2a841eb15e",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1600303_2025.json.gz",
+     "sha256": "61f2660daa3ade69e8032eba9500198f4b6b03d7e97a40122181a9abeff30fc4"
+    },
+    "1302603_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/13/130260/2025/2",
+     "capturado_em": "2026-10-09T12:07:07Z",
+     "linhas": 15,
+     "sha256_resposta": "1ad46bd35b8e2de92e5d2bf7a21df85b9e4321f8137180b7efb9074f4cd15440",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1302603_2025.json.gz",
+     "sha256": "554e8c2edf900589feb11de336da2944df26089dce67cc3025e57172fb433c33"
+    },
+    "2927408_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/29/292740/2025/2",
+     "capturado_em": "2026-10-09T12:07:08Z",
+     "linhas": 15,
+     "sha256_resposta": "52c60963ef128830080f2ebfdc2321fde0171b4a1bf4ca89d0efbe9230f63eca",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2927408_2025.json.gz",
+     "sha256": "f9ab313edea72d1995c9b2a4a70500d7142df04b3351ea91bd4ad2cb9a697408"
+    },
+    "2304400_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/23/230440/2025/2",
+     "capturado_em": "2026-10-09T12:07:09Z",
+     "linhas": 15,
+     "sha256_resposta": "db2b34987e3752d0e178a32cccdbd62e8f8f72aceb2c3d15c76bf6dfecb5339b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2304400_2025.json.gz",
+     "sha256": "becd701fde38bb49adb0a9c287de11fc7e37d4dcf06d1cafe953a6d679ab99de"
+    },
+    "3205309_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/32/320530/2025/2",
+     "capturado_em": "2026-10-09T12:07:10Z",
+     "linhas": 15,
+     "sha256_resposta": "3d351f03e63259a281f1647edf4eec56781360f5c9238d21047269316328d1ef",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3205309_2025.json.gz",
+     "sha256": "e917412e613603ca7c5c4055a4cc92ef8511ddeb0c54860deae12ddcb1c0c757"
+    },
+    "5208707_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/52/520870/2025/2",
+     "capturado_em": "2026-10-09T12:07:11Z",
+     "linhas": 15,
+     "sha256_resposta": "6ec00789ad0b9f8768146ccfef56e681ce8294267cf6decc35b22b2ac9f46f0d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5208707_2025.json.gz",
+     "sha256": "4de4035102404248e10b3b76d38630dfefc0c4067497a9d7ee6c7bb5d1d7148d"
+    },
+    "2111300_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/21/211130/2025/2",
+     "capturado_em": "2026-10-09T12:07:12Z",
+     "linhas": 15,
+     "sha256_resposta": "8d6cb385c2716882c9e38bcf984adc750bb1889bd502005200fcfe9be0c1a8a2",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2111300_2025.json.gz",
+     "sha256": "60ca96fe94e74088e180403fb883c790ad3f694646e341e85d09ff95dcc5df1c"
+    },
+    "5103403_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/51/510340/2025/2",
+     "capturado_em": "2026-10-09T12:07:13Z",
+     "linhas": 15,
+     "sha256_resposta": "aec11f396c687e64ffa19da44118ba6cf4059dd40f1afd4d0753896b09b90235",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5103403_2025.json.gz",
+     "sha256": "da581d47477d0b26ae3389ffc5147ba429ecff94e9f54622b580c212f5f07820"
+    },
+    "5002704_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/50/500270/2025/2",
+     "capturado_em": "2026-10-09T12:07:14Z",
+     "linhas": 15,
+     "sha256_resposta": "13d7b8aadf2c54e5014dfe64e4c2ed7e6fc1a740290696ebd3d29362ed1014d4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5002704_2025.json.gz",
+     "sha256": "647199a9f933f455d29a9cb43fb9552708d5df66c118eda454279b3c3dfd0de9"
+    },
+    "3106200_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/31/310620/2025/2",
+     "capturado_em": "2026-10-09T12:07:15Z",
+     "linhas": 15,
+     "sha256_resposta": "811e68676134a0cd8075e41511fc1571d7cd41b5a0b14c13e622a1ecd395fc58",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3106200_2025.json.gz",
+     "sha256": "3399ca6e817bbda5730d1cf4d0830420b5d1c4785eb5318852b288bb6e5a67bf"
+    },
+    "1501402_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/15/150140/2025/2",
+     "capturado_em": "2026-10-09T12:07:16Z",
+     "linhas": 15,
+     "sha256_resposta": "3f790f912eb612ea7aeb7730a6c2438ed6c8b7c37c19263eb371bd36b3656a1f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1501402_2025.json.gz",
+     "sha256": "d9606ccb383cf92b079e2735a2ac142492c8d8e922a5230877e7109fa16f1af5"
+    },
+    "2507507_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/25/250750/2025/2",
+     "capturado_em": "2026-10-09T12:07:17Z",
+     "linhas": 15,
+     "sha256_resposta": "d9557839027349fddc0dba0ed04dbb249f0a7c330092929849a15aeb91e3ac91",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2507507_2025.json.gz",
+     "sha256": "ff41a366563c3fc265965286c8b4db2c398266bf01f6c822c865d99766b53e54"
+    },
+    "4106902_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/41/410690/2025/2",
+     "capturado_em": "2026-10-09T12:07:18Z",
+     "linhas": 15,
+     "sha256_resposta": "9a65efc62f865acf5dea514be4ca2c4f1094f271da4f3338338f023bd9e1a228",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4106902_2025.json.gz",
+     "sha256": "853000faeb30c09feec55400b6cfdd2de1f9259123c6ad6dd28257c5909c4a9f"
+    },
+    "2611606_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/26/261160/2025/2",
+     "capturado_em": "2026-10-09T12:07:19Z",
+     "linhas": 15,
+     "sha256_resposta": "1bde227e926c7a0cf82aaf201027d2f032651241e3cfacc9ce79d8b23af1138c",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2611606_2025.json.gz",
+     "sha256": "b67c1ad8b57d3aec5c48651ad07f0d7b16a9a3bec5ae94398bf791ec2b5d5785"
+    },
+    "2211001_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/22/221100/2025/2",
+     "capturado_em": "2026-10-09T12:07:20Z",
+     "linhas": 15,
+     "sha256_resposta": "e59f1e05c87b630b2bf5c314d47f34098d621f45b2034787333316d02dd2bf4b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2211001_2025.json.gz",
+     "sha256": "fe3a4b6ad8604a6f228c31c563b2d35562576cbf42b687578e134f09c8ffd5a6"
+    },
+    "3304557_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/33/330455/2025/2",
+     "capturado_em": "2026-10-09T12:07:21Z",
+     "linhas": 15,
+     "sha256_resposta": "666d7b4a979ce6e3faf23efdf9f0e6c82bfd906c41393b7ee6ee4ffc454dc4d7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3304557_2025.json.gz",
+     "sha256": "4265e07c2890ea7a8615198c0b6308ccbd2583c40a8ad8d35ebc8630e463659e"
+    },
+    "2408102_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/24/240810/2025/2",
+     "capturado_em": "2026-10-09T12:07:22Z",
+     "linhas": 15,
+     "sha256_resposta": "86ebbc7d7f27abd2e8db0a644b6b1d1eab28edf10bcc70fe3492e8e89d7b4733",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2408102_2025.json.gz",
+     "sha256": "b0aab94ae082f5c042cb0748cc4caeb94e2a7a7eccf241337ec02b455533fd40"
+    },
+    "4314902_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/43/431490/2025/2",
+     "capturado_em": "2026-10-09T12:07:36Z",
+     "linhas": 15,
+     "sha256_resposta": "f38cfbbf6eec0fd2868a077a1a809509fecc3e7e1daf7deede57b251b2d127ae",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4314902_2025.json.gz",
+     "sha256": "88e88ec089b804f8971f6aa3ce28f7881e523be4f62739e4a6b30f4c6125254a"
+    },
+    "1100205_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/11/110020/2025/2",
+     "capturado_em": "2026-10-09T12:07:37Z",
+     "linhas": 15,
+     "sha256_resposta": "16df7f11fc5d63076e65d4e8a8a3f1e0f19a0291c7732a55ddd98ab6972e3918",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1100205_2025.json.gz",
+     "sha256": "1f6df291b00831d3041a83f134a5ea13d22f9c3359dc007a911766bf0103ba87"
+    },
+    "1400100_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/14/140010/2025/2",
+     "capturado_em": "2026-10-09T12:07:38Z",
+     "linhas": 15,
+     "sha256_resposta": "ebcce519cdd2f33537cf39b4473ad2db99364085459d510446500c155f723e13",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1400100_2025.json.gz",
+     "sha256": "1cd1810e5c46239b1ae00aaac11c4fca8df10445bbc5c36e91e20272abd75690"
+    },
+    "4205407_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/42/420540/2025/2",
+     "capturado_em": "2026-10-09T12:07:52Z",
+     "linhas": 15,
+     "sha256_resposta": "6a97a53a45d7fdd3e3b9508fbbb865fbfd140ab4d71e7507123d36c4979f60ca",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4205407_2025.json.gz",
+     "sha256": "4a7350ab4644aedd6ab6aafeb8abd9113e442643a9bfb43fd4422017015e2442"
+    },
+    "3550308_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/35/355030/2025/2",
+     "capturado_em": "2026-10-09T12:07:53Z",
+     "linhas": 15,
+     "sha256_resposta": "0125ed1850bc6cbf99873b668c3cf67aa695a01451462b67ebfb5aa33eb5ef10",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3550308_2025.json.gz",
+     "sha256": "cca190d9e333ec73edee284d26b6a7e0afeb292429f2c8a1da72a1bb1e832bbb"
+    },
+    "2800308_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/28/280030/2025/2",
+     "capturado_em": "2026-10-09T12:07:54Z",
+     "linhas": 15,
+     "sha256_resposta": "9d15e2e40e66f787cdae6b02f0c52c211deb46d764e85a4a4b5fdb73c09a3725",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2800308_2025.json.gz",
+     "sha256": "7676959b160103e75a5e2d0f2038c62f9c32044b29d3ea04a9f537f4463f3891"
+    },
+    "1721000_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/17/172100/2025/2",
+     "capturado_em": "2026-10-09T12:07:55Z",
+     "linhas": 15,
+     "sha256_resposta": "84f08a2538604794c4e16b0e508422772e506967c71151b9f9957c0da78ffcd9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2025.json.gz",
+     "sha256": "e4a1cea2ac510770292ef3945efb2d240f059eeccb9161d9efe488c1b9792e00"
     }
    }
   },
