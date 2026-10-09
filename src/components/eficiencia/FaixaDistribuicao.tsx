@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { dominioBonito, escalaLinear } from "@/lib/energia/escalas";
+import { listaRotulos } from "@/lib/eficiencia/frases";
 import { COR, dimensoes, useLargura } from "./graficos";
 
 /**
@@ -60,15 +61,29 @@ export function FaixaDistribuicao({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ordenados, w, dom.min, dom.max]);
 
-  // rótulos do menor e do maior valor: se não cabem lado a lado, o do maior sobe uma linha, em vez de se sobrepor
-  const menor = ordenados[0];
-  const maior = ordenados[ordenados.length - 1];
+  if (!ordenados.length) return null;
+
+  // rótulos do menor e do maior valor: nomeiam todas as capitais empatadas (mesma regra da frase factual); se não cabem
+  // lado a lado, o do maior sobe uma linha, em vez de se sobrepor
+  const menorValor = ordenados[0].valor;
+  const maiorValor = ordenados[ordenados.length - 1].valor;
   const iMenor = 0;
   const iMaior = ordenados.length - 1;
+  const rotuloMenor = listaRotulos(ordenados.filter((p) => p.valor === menorValor).map((p) => p.rotulo));
+  const rotuloMaior = listaRotulos(ordenados.filter((p) => p.valor === maiorValor).map((p) => p.rotulo));
   const larguraRotulo = (v: number, nome: string) => (formata(v).length + nome.length + 1) * 6.7;
-  const fimMenor = posicoes[iMenor].px + larguraRotulo(menor.valor, menor.rotulo);
-  const iniMaior = posicoes[iMaior].px - larguraRotulo(maior.valor, maior.rotulo);
-  const sobe = ordenados.length > 1 && maior.valor !== menor.valor && fimMenor + 10 > iniMaior;
+  const lMenor = larguraRotulo(menorValor, rotuloMenor);
+  const lMaior = larguraRotulo(maiorValor, rotuloMaior);
+  // o texto fica sempre dentro da figura: ancora no lado em que cabe
+  const ancoraExtremo = (px: number, larg: number, preferida: "start" | "end"): "start" | "end" => {
+    if (preferida === "start") return px + larg > w - mb.r ? "end" : "start";
+    return px - larg < mb.l ? "start" : "end";
+  };
+  const ancMenor = ancoraExtremo(posicoes[iMenor].px, lMenor, "start");
+  const ancMaior = ancoraExtremo(posicoes[iMaior].px, lMaior, "end");
+  const fimMenor = ancMenor === "start" ? posicoes[iMenor].px + lMenor : posicoes[iMenor].px;
+  const iniMaior = ancMaior === "end" ? posicoes[iMaior].px - lMaior : posicoes[iMaior].px;
+  const sobe = ordenados.length > 1 && maiorValor !== menorValor && fimMenor + 10 > iniMaior;
   const m = { t: 40 + (sobe ? 18 : 0), ...mb };
   const alturaMarcas = Math.max(faixas * passo, estreito ? 90 : 120);
   const base = m.t + alturaMarcas + 8;
@@ -101,7 +116,6 @@ export function FaixaDistribuicao({
       return Math.max(0, Math.min(ordenados.length - 1, b + (e.key === "ArrowRight" ? 1 : -1)));
     });
   };
-  if (!ordenados.length) return null;
   const ancora = (px: number): "start" | "middle" | "end" => (px < 90 ? "start" : px > w - 90 ? "end" : "middle");
 
   return (
@@ -145,13 +159,13 @@ export function FaixaDistribuicao({
               strokeWidth={2}
             />
           ))}
-          {/* extremos nomeados, com valor */}
-          <text x={posicoes[iMenor].px} y={m.t - 18} textAnchor={ancora(posicoes[iMenor].px) === "middle" ? "start" : ancora(posicoes[iMenor].px)} fontSize={12} fill="var(--cor-obee-tinta)">
-            <tspan fontWeight={600}>{formata(menor.valor)}</tspan> {menor.rotulo}
+          {/* extremos nomeados, com valor; empates nomeiam todas as capitais, como a frase factual */}
+          <text x={posicoes[iMenor].px} y={m.t - 18} textAnchor={ancMenor} fontSize={12} fill="var(--cor-obee-tinta)">
+            <tspan fontWeight={600}>{formata(menorValor)}</tspan> {rotuloMenor}
           </text>
-          {ordenados.length > 1 && maior.valor !== menor.valor && (
-            <text x={posicoes[iMaior].px} y={m.t - (sobe ? 36 : 18)} textAnchor={ancora(posicoes[iMaior].px) === "middle" ? "end" : ancora(posicoes[iMaior].px)} fontSize={12} fill="var(--cor-obee-tinta)">
-              <tspan fontWeight={600}>{formata(maior.valor)}</tspan> {maior.rotulo}
+          {ordenados.length > 1 && maiorValor !== menorValor && (
+            <text x={posicoes[iMaior].px} y={m.t - (sobe ? 36 : 18)} textAnchor={ancMaior} fontSize={12} fill="var(--cor-obee-tinta)">
+              <tspan fontWeight={600}>{formata(maiorValor)}</tspan> {rotuloMaior}
             </text>
           )}
           {destacados.map(({ p, i }) => (

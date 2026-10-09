@@ -31,9 +31,16 @@ export function periodoCurto(m: MedidaId, ano: number): string {
 
 /** Até dois nomes por extenso; acima disso, "e mais N". Empates aparecem todos até esse limite, nunca um só por acaso. */
 export function listaNomes(itens: { nome: string; uf: string }[], max = 2): string {
-  const nomes = itens.map((i) => `${i.nome} (${i.uf})`);
-  if (nomes.length <= max) return nomes.length === 2 ? `${nomes[0]} e ${nomes[1]}` : nomes.join("");
-  return `${nomes.slice(0, max).join(", ")} e mais ${nomes.length - max}`;
+  return listaRotulos(
+    itens.map((i) => `${i.nome} (${i.uf})`),
+    max,
+  );
+}
+
+/** Mesma regra de listaNomes para rótulos já montados (os gráficos recebem "Nome (UF)" pronto), de modo que frase e gráfico nomeiem os mesmos empatados. */
+export function listaRotulos(rotulos: string[], max = 2): string {
+  if (rotulos.length <= max) return rotulos.length === 2 ? `${rotulos[0]} e ${rotulos[1]}` : rotulos.join("");
+  return `${rotulos.slice(0, max).join(", ")} e mais ${rotulos.length - max}`;
 }
 
 /** Etapa em linguagem natural, para a frase ("nos anos iniciais"). */
@@ -74,8 +81,10 @@ export function fraseAmplitude(itens: ItemFrase[], o: OpcoesFrase): string {
   if (!itens.length) return `Nenhuma capital tem dado comparável para esta medida ${per}.`;
   const min = Math.min(...itens.map((i) => i.valor));
   const max = Math.max(...itens.map((i) => i.valor));
-  const nMin = itens.filter((i) => i.valor === min);
-  const nMax = itens.filter((i) => i.valor === max);
+  // empatados em ordem alfabética: frase e gráfico citam as mesmas capitais quando o limite de nomes corta a lista
+  const porNome = (a: ItemFrase, b: ItemFrase) => `${a.nome} (${a.uf})`.localeCompare(`${b.nome} (${b.uf})`, "pt-BR");
+  const nMin = itens.filter((i) => i.valor === min).sort(porNome);
+  const nMax = itens.filter((i) => i.valor === max).sort(porNome);
   if (itens.length === 1) return `Só ${listaNomes(itens)} tem dado comparável ${per}: ${formata(o.medida, itens[0].valor)}.`;
   if (min === max) return `${suj} é ${formata(o.medida, min)} nas ${itens.length} capitais com dado comparável ${per}.`;
   return `${suj} vai de ${formata(o.medida, min)} em ${listaNomes(nMin)} a ${formata(o.medida, max)} em ${listaNomes(nMax)} entre as ${itens.length} capitais com dado comparável ${per}.`;
