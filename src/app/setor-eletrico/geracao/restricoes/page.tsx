@@ -136,7 +136,7 @@ export default function GeracaoRestricoesPage() {
             <FaixaMetricas
               colunas={fontes.length > 1 ? 4 : 2}
               rotulo="Energia não gerada e taxa de restrição, 12 meses completos"
-              nota="Denominador: geração verificada mais a não gerada estimada, nas mesmas usinas e meses. A energia não gerada e a taxa são estimativas do ONS, não medição."
+              nota="Taxa: não gerada ÷ (verificada + não gerada), nas mesmas usinas e meses. Energia e taxa são estimativas do ONS, não medição."
             >
               {fontes.flatMap((f) => {
                 const energia = ev[`restricao_${f}_12m_energia`];
@@ -161,6 +161,7 @@ export default function GeracaoRestricoesPage() {
                     evidencia={ev[`restricao_${f}_12m_taxa`]}
                     formato="pct"
                     casas={1}
+                    unidade="da geração possível"
                     cor={COR_FONTE[f]}
                     endereco={`${rotaPainel("p023")}#p023`}
                   />,

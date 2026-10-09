@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -113,22 +113,29 @@ export function RedeCirculacao({
   const [janela, setJanela] = useState<EstadoJanela>({ estado: "ocioso" });
   const escala = v.esc;
 
-  // a janela horária só é baixada quando a escala horária é pedida
+  // a janela horária só é baixada quando a escala horária é pedida. O efeito não depende do próprio estado de carregamento: se
+  // dependesse, mudar o estado para "carregando" encerraria o efeito que acabou de começar, e o resultado do download seria descartado
+  // (a escala horária ficaria em "carregando" para sempre). "Tentar de novo" muda `tentativa` e refaz o download.
+  const baixada = useRef(false);
+  const [tentativa, setTentativa] = useState(0);
   useEffect(() => {
-    if (escala !== "hora" || janela.estado !== "ocioso") return;
+    if (escala !== "hora" || baixada.current) return;
     let vivo = true;
     setJanela({ estado: "carregando" });
     fetch(c.janela_horaria.url)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`o servidor respondeu ${r.status}`))))
       .then((j: JanelaHorariaRede & { motivo?: string }) => {
         if (!j?.disponivel || !Array.isArray(j.horas) || !j.horas.length) throw new Error(j?.motivo ?? "arquivo sem horas publicadas");
-        if (vivo) setJanela({ estado: "pronto", dado: j });
+        if (vivo) {
+          baixada.current = true;
+          setJanela({ estado: "pronto", dado: j });
+        }
       })
       .catch((e: Error) => vivo && setJanela({ estado: "erro", erro: e.message }));
     return () => {
       vivo = false;
     };
-  }, [escala, janela.estado, c.janela_horaria.url]);
+  }, [escala, c.janela_horaria.url, tentativa]);
 
   const fr = (v.fr || null) as FronteiraRede | null;
   const frDetalhe = fr ?? fronteiraDestaque(c.resumo_30d);
@@ -267,7 +274,7 @@ export function RedeCirculacao({
               {janela.estado === "erro" ? (
                 <>
                   A janela horária não carregou ({janela.erro}).{" "}
-                  <button type="button" onClick={() => setJanela({ estado: "ocioso" })} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                  <button type="button" onClick={() => setTentativa((t) => t + 1)} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                     Tentar de novo
                   </button>
                 </>

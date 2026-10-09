@@ -10,6 +10,8 @@ Itens achados pelas avaliações independentes iniciais e pelos executores que n
 | D2 | `conta_subsidios_anual.csv` mistura linhas de categoria e de total: somar `valor_rs` de 2025 dá R$ 37,6 bilhões, o dobro dos R$ 18,82 bilhões da página | T-U09 | Coluna `eh_total` no arquivo (ou total em arquivo à parte) | pendente |
 | D3 | 12 de 243 custos por perfil diferem R$ 0,005 do arredondamento meio para cima (ENEL CE, 100 kWh: 70,17 exibido para 70,175 exato) | T-U09 | Arredondar em decimal, meio para cima, no pipeline e na interface | pendente |
 | D4 | Versão do código com `+alterado` no gold e no manifesto: o rótulo não identifica o commit que produziu o dado | T-U09 | Gerar a versão com árvore limpa antes da publicação final | pendente (fim) |
+| D6 | As fichas "Comprove" de EAR e ENA dizem "Nenhuma revisão detectada entre as capturas integradas" enquanto a tabela de revisões do ONS na mesma página mostra EAR e ENA revisadas entre duas capturas | T-U03 | Interface: `Numero` aceita `revisoes` e a página passa o texto montado com a tabela de revisões. Pipeline: o texto da ficha vem de `c.snapshot_de(...).get("revisoes")` em `agua_detalhe.py` (linhas 3314 a 3525); na próxima coleta, alimentar a ficha com a mesma comparação entre capturas que gera a tabela | interface com o executor de Água; pipeline pendente |
+| D7 | A limitação das caixas "Sobre este dado" do PLD diz que os limites regulatórios não foram auditados e que a regra do teto estrutural é conferência empírica, mas a REN ANEEL 1.032/2022 (art. 22 a 24) a escreve e o módulo Regulação a cita | T-U06 | Texto das limitações em `pld_detalhe.py`/`pld.py`; a página trata o texto visível | pipeline pendente (próxima coleta) |
 | D5 | O arquivo exportado trazia 22.189999999999998 e 15.950000000000001 para valores exibidos como 22,19 e 15,95 | P-U06 | `numeroMaquina` de `tabela.ts` tira o ruído de decimais curtos (até 12 algarismos significativos, dentro de 4 ulp) e mantém inteiros os valores que usam todos os algarismos | feito |
 
 ## Componentes e regras compartilhados
@@ -21,6 +23,7 @@ Itens achados pelas avaliações independentes iniciais e pelos executores que n
 | S3 | Título de capítulos dentro de painel era `h2` | `NavegacaoLocal` aceita `nivelTitulo={3}` | feito |
 | S4 | Regra de ordem pôs a resposta curta antes das figuras mesmo quando a faixa de métricas já traz o número | `RespostaCurta` aceita `depois` e `globals.css` respeita `data-resposta-depois` | feito |
 | S5 | Legenda interativa de `GraficoLinhas` gastava cerca de 90 px acima da figura | Botões de 32 px só em tela larga com ponteiro fino (44 px no toque e abaixo de 768 px) | feito |
+| S7 | Ficha "Comprove" com texto de revisões que contradiz a tabela da página | `Numero` aceita `revisoes?: string` e substitui só a linha "Revisões" da ficha | feito |
 | S6 | Cores diferentes para a mesma entidade entre gráficos da mesma página | Regra no guia dos executores (mesma cor por entidade); verificação na reavaliação | em curso |
 
 ## Arquivos sem uso para apagar no fim (com o servidor parado)

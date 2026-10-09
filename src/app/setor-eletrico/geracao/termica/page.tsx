@@ -128,7 +128,7 @@ export default function GeracaoTermicaPage() {
             <FaixaMetricas
               colunas={semNuc ? 3 : 2}
               rotulo="Indicadores da geração térmica, 12 meses completos"
-              nota="Inflexibilidade é a geração declarada pelo agente ou acima do despachado, inclusive a embutida no despacho por ordem de mérito, como o dicionário do ONS descreve. A nuclear é quase toda inflexível: a terceira medida mostra a parcela sem ela."
+              nota={`Inflexibilidade: geração declarada pelo agente ou acima do despachado, inclusive a embutida na ordem de mérito.${semNuc ? " A nuclear é quase toda inflexível; a terceira medida a exclui." : ""}`}
             >
               <Numero
                 variante="faixa"

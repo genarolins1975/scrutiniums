@@ -1283,13 +1283,47 @@ export const COLUNAS_AMPLITUDE: ColunaTabela[] = [
 
 export type MedidaMatriz = "dif_media" | "frac_separadas";
 
-/** Matriz de diferenças 4 × 4 (últimos 12 meses): diagonal "não se aplica"; fração em %. */
-export function matrizRegional(r: BlocoRegional, medida: MedidaMatriz): { eixo: { id: string; rotulo: string; curto: string }[]; valores: ValorCelula[][] } {
-  const m = r.matriz;
+type MatrizRegional = BlocoRegional["matriz"];
+
+function montarMatriz(m: MatrizRegional, medida: MedidaMatriz): { eixo: { id: string; rotulo: string; curto: string }[]; valores: ValorCelula[][] } {
   const eixo = m.ordem.map((sm) => ({ id: sm, rotulo: NOME_SM[sm], curto: CURTO_SM[sm] }));
   const fonte = medida === "dif_media" ? m.dif_media : m.frac_separadas;
   const valores = fonte.map((linha, i) => linha.map((v, j) => (i === j ? NAO_SE_APLICA : medida === "frac_separadas" ? emPct(v) : typeof v === "number" ? v : null)));
   return { eixo, valores };
+}
+
+/** Matriz de diferenças 4 × 4 (últimos 12 meses): diagonal "não se aplica"; fração em %. */
+export function matrizRegional(r: BlocoRegional, medida: MedidaMatriz): { eixo: { id: string; rotulo: string; curto: string }[]; valores: ValorCelula[][] } {
+  return montarMatriz(r.matriz, medida);
+}
+
+/**
+ * A mesma matriz para qualquer período que a gold publica por par (`separacao`): cada célula é a média da diferença e a fração de horas
+ * separadas do par naquele período, e a célula simétrica leva a média com o sinal trocado. Nada é recalculado, só reorganizado: para os
+ * últimos 12 meses o resultado é igual à matriz publicada (`matriz`), e o teste confere célula a célula. Par sem linha no período fica
+ * sem dado.
+ */
+export function matrizDoPeriodo(r: BlocoRegional, periodo: string): MatrizRegional {
+  const ordem = r.matriz.ordem;
+  const vazia = () => ordem.map(() => ordem.map((): number | null => null));
+  const dif = vazia();
+  const frac = vazia();
+  ordem.forEach((a, i) =>
+    ordem.forEach((b, j) => {
+      if (i >= j) return;
+      const s = r.separacao.find((x) => x.periodo === periodo && x.par === `${a}_${b}`);
+      if (!s) return;
+      dif[i][j] = s.dif_media;
+      dif[j][i] = s.dif_media === null ? null : s.dif_media === 0 ? 0 : -s.dif_media;
+      frac[i][j] = s.frac_separadas;
+      frac[j][i] = s.frac_separadas;
+    }),
+  );
+  return { periodo, ordem, dif_media: dif, frac_separadas: frac };
+}
+
+export function matrizRegionalDoPeriodo(r: BlocoRegional, medida: MedidaMatriz, periodo: string): { eixo: { id: string; rotulo: string; curto: string }[]; valores: ValorCelula[][] } {
+  return montarMatriz(matrizDoPeriodo(r, periodo), medida);
 }
 
 /**
@@ -1316,9 +1350,7 @@ export function extremosMatriz(m: { eixo: { id: string; rotulo: string; curto: s
   return `Maior diferença: ${m.eixo[maior.i].curto} acima de ${m.eixo[maior.j].curto} em ${reais(maior.v)}/MWh. Menor diferença: ${par(menor.i, menor.j)}, ${reais(Math.abs(menor.v))}/MWh.`;
 }
 
-/** Linhas da tabela equivalente da matriz (pares ordenados A, B), com os mesmos valores das células. */
-export function linhasMatriz(r: BlocoRegional): LinhaTabela[] {
-  const m = r.matriz;
+function linhasDaMatriz(m: MatrizRegional): LinhaTabela[] {
   const linhas: LinhaTabela[] = [];
   m.ordem.forEach((a, i) =>
     m.ordem.forEach((b, j) => {
@@ -1327,6 +1359,16 @@ export function linhasMatriz(r: BlocoRegional): LinhaTabela[] {
     }),
   );
   return linhas;
+}
+
+/** Linhas da tabela equivalente da matriz (pares ordenados A, B), com os mesmos valores das células. */
+export function linhasMatriz(r: BlocoRegional): LinhaTabela[] {
+  return linhasDaMatriz(r.matriz);
+}
+
+/** As mesmas linhas para o período escolhido (ver matrizDoPeriodo). */
+export function linhasMatrizDoPeriodo(r: BlocoRegional, periodo: string): LinhaTabela[] {
+  return linhasDaMatriz(matrizDoPeriodo(r, periodo));
 }
 
 export const COLUNAS_MATRIZ: ColunaTabela[] = [

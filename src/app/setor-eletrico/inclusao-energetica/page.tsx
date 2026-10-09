@@ -16,7 +16,6 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
-  classesRenda,
   codigoUf,
   dadosClassesPof,
   datasMedidas,

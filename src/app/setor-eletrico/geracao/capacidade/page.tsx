@@ -199,7 +199,7 @@ export default function GeracaoCapacidadePage() {
 
                 <div className="grid gap-x-8 gap-y-6 lg:grid-cols-2">
                   <GraficoBarras
-                    titulo={`Potência em operação comercial por fonte, usinas despachadas pelo ONS, ${dataBR(c.retrato.data)}`}
+                    titulo={`Potência em operação por fonte, ${dataBR(c.retrato.data)}`}
                     dados={retrato.map((x) => ({ id: x.categoria, rotulo: CURTO_CATEGORIA[x.categoria], mw: x.mw }))}
                     chaveCategoria="id"
                     chaveRotulo="rotulo"

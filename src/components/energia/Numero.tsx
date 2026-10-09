@@ -55,6 +55,12 @@ export type NumeroProps = {
   variante?: "cartao" | "faixa";
   /** Página e âncora do número, repassadas à citação. */
   endereco?: string;
+  /**
+   * Texto de revisões da própria página, para a ficha "Comprove este número" quando a página mostra revisões do mesmo dado
+   * (por exemplo a tabela de revisões do ONS na EAR e na ENA) e o texto da ficha, que vem da gold, diz outra coisa. Vale só
+   * para a linha "Revisões" da ficha; o resto da prova segue como está.
+   */
+  revisoes?: string;
 };
 
 export function Numero({
@@ -73,7 +79,9 @@ export function Numero({
   tamanho = "grande",
   variante = "cartao",
   endereco,
+  revisoes,
 }: NumeroProps) {
+  const ficha = evidencia && revisoes ? { ...evidencia, revisoes } : evidencia;
   const v = valor !== undefined ? valor : (evidencia?.valor_calculo ?? null);
   const ausente = v === null || !Number.isFinite(v);
   const u = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
@@ -110,7 +118,7 @@ export function Numero({
         <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:mt-1.5">
           {textoPer && <span>{textoPer}</span>}
           <SeloNatureza natureza={natureza} texto />
-          {evidencia && <ComproveNumero evidencia={evidencia} endereco={endereco} />}
+          {ficha && <ComproveNumero evidencia={ficha} endereco={endereco} />}
         </div>
         {ausente && motivoAusencia && <p className="col-start-1 mt-1 text-xs leading-relaxed text-carvao-muted">{motivoAusencia}</p>}
         {vari && (
@@ -162,9 +170,9 @@ export function Numero({
       )}
       {/* div, não p: a nota é ReactNode e pode trazer parágrafo ou lista (p dentro de p é HTML inválido) */}
       {nota && <div className="mt-3 border-t border-linha pt-3 text-xs leading-relaxed text-carvao-muted">{nota}</div>}
-      {evidencia && (
+      {ficha && (
         <div className="mt-auto pt-2">
-          <ComproveNumero evidencia={evidencia} endereco={endereco} />
+          <ComproveNumero evidencia={ficha} endereco={endereco} />
         </div>
       )}
     </div>

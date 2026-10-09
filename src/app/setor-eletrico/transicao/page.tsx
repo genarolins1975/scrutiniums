@@ -16,7 +16,6 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import {
   GRANDEZAS,
   LIGACAO_GERACAO,
-  PERGUNTA_ONS,
   PERGUNTA_TRANSICAO,
   conectadaNoAnoDeReferencia,
   dadosFatorAnual,

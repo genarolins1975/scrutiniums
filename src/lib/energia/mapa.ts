@@ -219,7 +219,7 @@ export const NOS_MAPA: NoMapa[] = [
     titulo: "Geração",
     curto: "As usinas que transformam os recursos em eletricidade.",
     explicacao:
-      "Hidrelétricas, eólicas, solares, térmicas e a micro e minigeração distribuída nas casas e empresas. O observatório mostra quanto cada fonte entregou, por que as térmicas foram acionadas, quanta energia eólica e solar deixou de ser gerada por restrição e como a geração mexe nas emissões.",
+      "Dois grupos entram aqui: as usinas centralizadas (hidrelétricas, eólicas, solares e térmicas), cuja geração o ONS verifica hora a hora, e a micro e minigeração distribuída, instalada em casas e empresas e ligada à rede de distribuição, que a ANEEL cadastra e o ONS estima. O observatório mostra quanto cada fonte entregou, por que as térmicas foram acionadas, quanta energia eólica e solar deixou de ser gerada por restrição e como a geração mexe nas emissões.",
     destinos: ["geracao", "transicao"],
     conceitos: [
       { slug: "geracao-centralizada", rotulo: "geração verificada" },
@@ -247,9 +247,12 @@ export const NOS_MAPA: NoMapa[] = [
     titulo: "Consumo (carga)",
     curto: "Quanto o sistema precisa atender, hora a hora.",
     explicacao:
-      "A carga é a energia que o sistema interligado atende. Ela muda com a hora do dia, o dia da semana, os feriados e a temperatura, e diminui na rede quando a micro e minigeração distribuída produz no próprio local.",
+      "A carga é a energia que o sistema interligado atende. Ela muda com a hora do dia, o dia da semana, os feriados e a temperatura. Segundo o ONS, a carga diária inclui, desde 29/04/2023, uma estimativa da micro e minigeração distribuída; na carga verificada (carga global), o ONS publica essa parcela à parte, e sem ela resta a carga líquida de MMGD. São leituras diferentes da carga, e a página de Carga as mostra separadas.",
     destinos: ["carga"],
-    conceitos: [{ slug: "carga", rotulo: "carga" }],
+    conceitos: [
+      { slug: "carga", rotulo: "carga" },
+      { slug: "carga-liquida-de-mmgd", rotulo: "carga líquida de MMGD" },
+    ],
     pos: { x: 875, y: 130 },
   },
   {
@@ -287,7 +290,7 @@ export const NOS_MAPA: NoMapa[] = [
     titulo: "Vida das pessoas",
     curto: "A conta, o serviço que chega e quem tem acesso.",
     explicacao:
-      "Para quem usa a energia, o setor aparece na conta de luz, na frequência e na duração das faltas de energia, no peso da conta no orçamento e no acesso, que ainda falta em parte do país. O observatório mostra a conta por distribuidora, a qualidade do serviço, a Tarifa Social e o acesso à energia.",
+      "Para quem usa a energia, o setor aparece na conta de luz, na frequência e na duração das faltas de energia, no peso da conta no orçamento e no acesso, que ainda falta em parte do país. O DEC e o FEC divulgados são os apurados: não incluem as interrupções que a regra exclui (emergência, dia crítico, origem externa e cortes pedidos pelo ONS), e o tempo total sem energia, somadas todas as origens, é maior. O observatório mostra a conta por distribuidora, a qualidade do serviço com as duas medidas, a Tarifa Social e o acesso à energia.",
     destinos: ["conta-de-luz", "qualidade", "inclusao-energetica"],
     conceitos: [
       { slug: "dec", rotulo: "DEC" },
@@ -301,7 +304,12 @@ export type Ligacao = { de: IdNo; para: IdNo; tipo: TipoLigacao; texto: string }
 
 export const LIGACOES: Ligacao[] = [
   { de: "recursos", para: "geracao", tipo: "fisico", texto: "A água, o vento, o sol e os combustíveis movem as usinas." },
-  { de: "geracao", para: "rede", tipo: "fisico", texto: "A energia gerada entra na rede de transmissão." },
+  {
+    de: "geracao",
+    para: "rede",
+    tipo: "fisico",
+    texto: "A energia gerada entra na rede de transmissão ou na de distribuição; a micro e minigeração distribuída entra pela distribuição.",
+  },
   { de: "rede", para: "consumo", tipo: "fisico", texto: "A rede entrega a energia ao consumo; parte se perde no caminho." },
   {
     de: "recursos",
