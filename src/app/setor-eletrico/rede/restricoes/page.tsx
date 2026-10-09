@@ -179,22 +179,22 @@ export default function RedeRestricoesPage() {
                     <div className="space-y-2 border border-dashed border-linha p-4">
                       <p className="rotulo text-mineral">Limites operativos de intercâmbio: sem fonte aberta</p>
                       <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{r.limites.conclusao}</p>
-                      <p className="text-sm text-carvao-muted" data-nivel="analisar">
-                        Estado da verificação: {a6.status}.
-                      </p>
-                      <div data-nivel="analisar">
-                        <TabelaInterativa
-                          titulo="Onde os limites foram procurados e o que se encontrou"
-                          colunas={COLUNAS_BUSCA}
-                          linhas={linhasBuscaLimites(r.limites.busca)}
-                          chaveLinha="id"
-                          colunaRotulo="onde"
-                          fonte="Busca do observatório em fontes públicas do ONS e da CCEE"
-                          versao={versao}
-                          nomeArquivo="rede-busca-limites"
-                          chaveUrl="bl"
-                        />
-                      </div>
+                    </div>
+                  }
+                  limitesDetalhe={
+                    <div data-nivel="analisar" className="space-y-3 border-l-2 border-linha pl-4">
+                      <p className="text-sm text-carvao-muted">Estado da verificação dos limites operativos: {a6.status}.</p>
+                      <TabelaInterativa
+                        titulo="Onde os limites foram procurados e o que se encontrou"
+                        colunas={COLUNAS_BUSCA}
+                        linhas={linhasBuscaLimites(r.limites.busca)}
+                        chaveLinha="id"
+                        colunaRotulo="onde"
+                        fonte="Busca do observatório em fontes públicas do ONS e da CCEE"
+                        versao={versao}
+                        nomeArquivo="rede-busca-limites"
+                        chaveUrl="bl"
+                      />
                     </div>
                   }
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}

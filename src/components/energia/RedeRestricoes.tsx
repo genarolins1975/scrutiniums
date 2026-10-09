@@ -65,6 +65,7 @@ export function RedeRestricoes({
   fonteInterrupcoes,
   versao,
   limites,
+  limitesDetalhe,
   notas,
   aposPrincipal,
   titulosDocumentos,
@@ -80,8 +81,10 @@ export function RedeRestricoes({
   fonteAtls: string;
   fonteInterrupcoes: string;
   versao: string;
-  /** Bloco do estado bloqueado (limites operativos sem fonte aberta), logo depois do veredito: sempre à vista. */
+  /** Bloco do estado bloqueado (limites operativos sem fonte aberta), ao lado do veredito: sempre à vista. */
   limites?: ReactNode;
+  /** O que a busca pelos limites encontrou (tabela), em Analisar, em largura inteira logo depois do veredito. */
+  limitesDetalhe?: ReactNode;
   /** Notas do painel (NotasDoPainel: o que mudou e a ressalva essencial), logo depois da figura principal e do histórico. */
   notas?: ReactNode;
   /** Conteúdo depois das notas (os capítulos do módulo), antes das seções complementares. */
@@ -112,12 +115,13 @@ export function RedeRestricoes({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-y-4">
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-start">
         <RespostaCurta id="p030" veredito={vereditoRestricoes(r)}>
           {respostaRestricoes(r)}
         </RespostaCurta>
         {limites}
       </div>
+      {limitesDetalhe}
 
       <GraficoBarras
         titulo={`Horas acima do limite em 12 meses, fluxos publicados em ${ultimo ? mesAno(ultimo) : "último mês"}`}
