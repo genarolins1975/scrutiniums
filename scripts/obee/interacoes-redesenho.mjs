@@ -138,7 +138,7 @@ ok("gastos: Esc fecha o diálogo e o recorte permanece", !(await p.locator("dial
 await p.locator('label:has-text("Tabela")').first().click();
 await p.waitForTimeout(300);
 const [dl] = await Promise.all([p.waitForEvent("download", { timeout: 5000 }).catch(() => null), p.locator("button", { hasText: "Baixar estes valores" }).click().catch(() => null)]);
-ok("gastos: download dos valores do recorte", dl !== null && /^obee_gastos_despesa_mat_2025\.csv$/.test(dl.suggestedFilename()), dl?.suggestedFilename() ?? "sem download");
+ok("gastos: download dos valores do recorte", dl !== null && /^obee_gastos_despesa_mat_2025_nominal\.csv$/.test(dl.suggestedFilename()), dl?.suggestedFilename() ?? "sem download");
 // teclado no gráfico
 await p.locator('label:has-text("Gráfico")').first().click();
 await p.waitForTimeout(300);
@@ -153,7 +153,7 @@ ok("link inválido volta ao padrão sem quebrar", (await p.locator("h1").innerTe
 await abre("/resultados?med=ideb&etapa=creche");
 ok("etapa sem a medida não produz filtro enganoso: cai numa etapa com dado", /anos iniciais|anos finais/i.test(await p.locator("#f-etapa").evaluate((e) => e.options[e.selectedIndex].text)));
 await abre("/gastos?med=despesa_hab&ano=2023&cap=manaus");
-ok("ano com população censitária: a ressalva material acompanha o número", /relação|Censo/i.test(await p.locator("main [role=note]").first().innerText().catch(() => "")), await p.locator("main [role=note]").first().innerText().catch(() => "sem nota"));
+ok("ano com população censitária: a ressalva material acompanha o número", /relação|Censo/i.test((await p.locator("main [role=note]").allInnerTexts()).join(" ")), (await p.locator("main [role=note]").allInnerTexts()).join(" ").slice(0, 200));
 
 /* ---------- comparar ---------- */
 await abre("/comparar");
@@ -174,6 +174,24 @@ ok("comparar: ordenação numérica só por pedido (sem pódio)", busca("ot") ==
 await abre("/metodos");
 const m = await p.locator("main").innerText();
 ok("métodos: fichas, matriz de referências, validações e reprodução em uma área", m.includes("Sobre cada dado") && m.includes("Matriz de referências") && m.includes("Como reproduzir"), "");
+
+/* ---------- lote 4: capitais fora da comparação, série em CSV, definições e ausências declaradas ---------- */
+await abre("/gastos?med=despesa_mat&ano=2022");
+const nFora = await p.locator("[data-fora-da-comparacao]").count();
+ok("gastos: capitais fora da comparação aparecem no gráfico e o bloco de motivos fica logo abaixo", nFora === 3 && (await p.locator("#fora-da-comparacao").count()) === 1);
+const yGrafico = await p.locator("#visao figure").first().evaluate((e) => e.getBoundingClientRect().bottom + scrollY);
+const yFora = await p.locator("#fora-da-comparacao").evaluate((e) => e.getBoundingClientRect().top + scrollY);
+ok("gastos: motivos a menos de 300 px do fim do gráfico", yFora - yGrafico >= 0 && yFora - yGrafico < 300, `${Math.round(yFora - yGrafico)} px`);
+ok("gastos: sem rolagem horizontal na página", (await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)));
+await abre("/gastos?med=despesa_hab&cap=recife&vis=evolucao");
+ok("evolução: aviso de reais correntes junto do gráfico", /reais correntes/i.test(await p.locator("#visao").innerText()));
+const [dl2] = await Promise.all([p.waitForEvent("download", { timeout: 5000 }).catch(() => null), p.locator("button", { hasText: "Baixar esta série" }).click().catch(() => null)]);
+ok("evolução: download da série em CSV", dl2 !== null && /^obee_gastos_despesa_hab_serie_recife.*\.csv$/.test(dl2.suggestedFilename()), dl2?.suggestedFilename() ?? "sem download");
+await abre("/resultados");
+ok("resultados: aviso próprio sobre efeito da gestão e periodicidade", /não mede o efeito da gestão/i.test(await p.locator("#refs-titulo").locator("xpath=..").innerText()));
+ok("resultados: seção sobre o que o painel não mostra", /O que este painel não mostra/.test(await p.locator("main").innerText()));
+await abre("/");
+ok("panorama: Ideb por extenso e nota de reais correntes", /Índice de Desenvolvimento da Educação Básica/.test(await p.locator("main").innerText()) && /reais correntes/i.test(await p.locator("main").innerText()));
 
 ok("sem erros de página", erros.length === 0, erros.join(" | "));
 await browser.close();

@@ -135,6 +135,9 @@ export function TabelaComparativa({
       {visao === "todas" && (
         <p className="mt-1 text-xs text-carvao-muted md:hidden">Em tela estreita, a visão Todas mostra as medidas centrais de gasto e matrículas. Escolha um grupo de colunas para ver população, atendimento e resultados.</p>
       )}
+      <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+        A tabela põe gasto, atendimento e resultado de cada capital na mesma linha para consulta; a leitura conjunta não indica causa nem efeito de um sobre o outro, e os períodos de cada coluna são os do cabeçalho.
+      </p>
       <p className="mt-1 text-xs text-carvao-muted" id="aviso-rolagem">
         A tabela rola na horizontal e na vertical dentro da caixa; a capital fica visível. Clique no título de uma coluna para ordenar; clique no nome da capital para destacá-la (ou retirar o destaque) no gráfico e na tabela.
       </p>
@@ -147,20 +150,20 @@ export function TabelaComparativa({
       >
         <table
           className="w-full min-w-[var(--mw-estreita)] border-collapse text-sm md:min-w-[var(--mw-larga)]"
-          style={{ "--mw-estreita": `${9 + colunas.filter((c) => esconde(c) === "").length * 9}rem`, "--mw-larga": `${14 + colunas.length * 9.5}rem` } as CSSProperties}
+          style={{ "--mw-estreita": `${6.25 + colunas.filter((c) => esconde(c) === "").length * 6.75}rem`, "--mw-larga": `${14 + colunas.length * 9.5}rem` } as CSSProperties}
         >
           <caption className="sr-only">
             Comparação entre as capitais, {ano}: despesa total, população, despesa por habitante, matrículas, despesa por matrícula e resultados da etapa escolhida
           </caption>
           <thead className="sticky top-0 z-20 bg-superficie">
             <tr>
-              <th scope="col" aria-sort={aria("alfabetica")} className="sticky left-0 z-30 min-w-[8.5rem] border-b border-r border-carvao-muted bg-superficie px-2.5 py-2 text-left align-bottom md:min-w-[10rem]">
+              <th scope="col" aria-sort={aria("alfabetica")} className="sticky left-0 z-30 min-w-[6.25rem] border-b border-r border-carvao-muted bg-superficie px-2 py-2 text-left align-bottom md:min-w-[10rem] md:px-2.5">
                 <button type="button" onClick={() => aoOrdenar("alfabetica")} className="inline-flex min-h-[44px] items-center gap-1 text-left font-semibold text-obee-tinta">
                   Capital{ordem === "alfabetica" ? <span aria-hidden="true"> ↓</span> : null}
                 </button>
               </th>
               {colunas.map((c) => (
-                <th key={c.id} scope="col" aria-sort={aria(c.id)} className={`${esconde(c)} min-w-[8.5rem] border-b border-carvao-muted px-2.5 py-2 text-right align-bottom ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
+                <th key={c.id} scope="col" aria-sort={aria(c.id)} className={`${esconde(c)} min-w-[6.75rem] border-b border-carvao-muted px-2 py-2 text-right md:min-w-[8.5rem] md:px-2.5 align-bottom ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                   <span className="block text-[0.66rem] font-normal uppercase tracking-wide text-carvao-muted">
                     {ROTULO_GRUPO[c.grupo]}
                     {c.porEtapa ? ` · ${nomeEtapa(dados, etapa)}` : ""}

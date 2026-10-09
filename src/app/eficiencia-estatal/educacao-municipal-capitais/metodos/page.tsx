@@ -494,7 +494,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               {g.trilhas.map((t) => (
                 <details key={t.indicador} className="text-sm">
                   <summary className="flex min-h-[44px] cursor-pointer items-center py-3 text-obee-tinta">
-                    {g.indicadores.find((i) => i.id === t.indicador)?.nome}: {t.nome}, {t.ano}
+                    {g.indicadores.find((i) => i.id === t.indicador)?.nome ?? t.indicador}: {t.nome}, {t.ano}
                   </summary>
                   <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed text-obee-tinta">
                     {t.passos.map((p) => (
@@ -517,6 +517,11 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               <li>
                 Reextrair os recortes do INEP a partir dos pacotes oficiais baixados: <code className="break-all font-mono text-[0.8rem]">--inep &lt;pasta&gt;</code>; as referências nacionais, de{" "}
                 <code className="break-all font-mono text-[0.8rem]">--inep-nacional &lt;pasta&gt;</code>.
+              </li>
+              <li>
+                Ao baixar os pacotes do INEP, o servidor <code className="break-all font-mono text-[0.8rem]">download.inep.gov.br</code> entrega a cadeia de certificados
+                incompleta (falta o intermediário da RNP). A coleta do OBEE obtém o intermediário pelo endereço do próprio certificado e nunca desliga a verificação TLS;
+                quem reproduzir por conta própria pode baixar o pacote pelo navegador, na página do INEP, e apontar a pasta com <code className="font-mono text-[0.8rem]">--inep</code>.
               </li>
               <li>
                 Recoletar a MSC, a população, a OCDE e o SIOPE examinado: <code className="break-all font-mono text-[0.8rem]">--coleta-msc</code>, <code className="break-all font-mono text-[0.8rem]">--coleta-populacao</code>,{" "}

@@ -77,7 +77,7 @@ function esquema(ids: string[], tema: Tema) {
     moeda: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal" as Moeda),
     disc: campo(tiposUrl.opcao(["matematica", "portugues"] as const), "matematica" as Disciplina),
     vis: campo(tiposUrl.opcao(["grafico", "tabela", "evolucao", "detalhe"] as const), "grafico" as Visao),
-    ord: campo(tiposUrl.opcao(["alfabetica", "valor"] as const), "alfabetica" as Ordem),
+    ord: campo(tiposUrl.opcao(["alfabetica", "valor", "valor_desc"] as const), "alfabetica" as Ordem),
     eixo: campo(tiposUrl.opcao(["linear", "log"] as const), "linear" as "linear" | "log"),
     grp: campo(tiposUrl.opcao(["todas", "regiao"] as const), "todas" as Grupo),
   };
@@ -123,7 +123,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     chave: x.cap.id,
     rotulo: `${x.cap.nome} (${x.cap.uf})`,
     valor: x.comValor ? x.ponto.valor : null,
-    texto: x.comValor ? "fora da comparação, motivo abaixo" : `${ROTULO_STATUS[x.status].toLowerCase()}, motivo abaixo`,
+    texto: x.comValor ? "fora da comparação (motivo abaixo)" : `${ROTULO_STATUS[x.status].toLowerCase()} (motivo abaixo)`,
     destacada: x.cap.id === cap?.id,
   }));
   const k = componente(medida, s.moeda, s.disc);
@@ -334,7 +334,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               aoMudar={(v) => definir({ grp: v as Grupo })}
             />
           </div>
-          {temEtapa(medida) && (
+          {temEtapa(medida) && visao !== "detalhe" && (
             <div className="w-full min-w-0 sm:w-72">
               <Selecao
                 id="f-etapa"
@@ -346,7 +346,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               />
             </div>
           )}
-          {ehDespesa(medida) && (
+          {ehDespesa(medida) && visao !== "detalhe" && (
             <Alternancia
               rotulo="Valores"
               valor={s.moeda}
@@ -379,11 +379,12 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               opcoes={[
                 { v: "alfabetica", t: "Ordem alfabética" },
                 { v: "valor", t: "Por valor, crescente" },
+                { v: "valor_desc", t: "Por valor, decrescente" },
               ]}
               aoMudar={(v) => definir({ ord: v })}
             />
           )}
-          {visao === "grafico" && s.ord === "valor" && <p className="max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
+          {visao === "grafico" && s.ord !== "alfabetica" && <p className="max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
           {visao === "grafico" && medida === "despesa" && (
             <Alternancia
               rotulo="Escala do eixo"

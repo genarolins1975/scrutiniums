@@ -69,6 +69,8 @@ export function DistribuicaoCapitais({
   const x = (v: number) => (log ? m.l + ((Math.log10(v) - Math.log10(dom.min)) / (Math.log10(dom.max) - Math.log10(dom.min))) * (w - m.r - m.l) : lin(v));
   const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
   const base = m.t + nLinhas * linhaH;
+  // faixa central e mediana cobrem só as capitais da comparação; as linhas fora dela ficam abaixo, sem atravessá-las
+  const baseComparadas = m.t + linhas.length * linhaH;
   const min = Math.min(...linhas.map((l) => l.valor));
   const max = Math.max(...linhas.map((l) => l.valor));
   // valor visível na própria linha: extremos (todos os empatados), capitais destacadas e a linha ativa
@@ -81,15 +83,21 @@ export function DistribuicaoCapitais({
     const i = rotulo.lastIndexOf(" (");
     return i > 0 ? [rotulo.slice(0, i), rotulo.slice(i + 1)] : [rotulo, null];
   };
-  // marcas do eixo sem sobreposição: descarta a que encosta na anterior, mantendo a última
-  const larguraMarca = (t: number) => formataEixo(t).length * 7 + 8;
-  const ticks: number[] = [];
+  // marcas do eixo sem sobreposição: cada rótulo é ancorado para caber na figura e a marca que encosta na anterior é descartada
+  const larguraMarca = (t: number) => formataEixo(t).length * 6.8;
+  const caixaMarca = (t: number) => {
+    const l = larguraMarca(t);
+    const ancora: "start" | "middle" | "end" = x(t) - l / 2 < 2 ? "start" : x(t) + l / 2 > w - 2 ? "end" : "middle";
+    const ini = ancora === "start" ? x(t) : ancora === "end" ? x(t) - l : x(t) - l / 2;
+    return { ancora, ini, fim: ini + l };
+  };
+  const ticks: { t: number; ancora: "start" | "middle" | "end" }[] = [];
   let fimAnterior = -Infinity;
   dom.ticks.forEach((t) => {
-    const ini = x(t) - larguraMarca(t) / 2;
-    if (ini < fimAnterior) return;
-    ticks.push(t);
-    fimAnterior = x(t) + larguraMarca(t) / 2;
+    const c = caixaMarca(t);
+    if (c.ini < fimAnterior + 8) return;
+    ticks.push({ t, ancora: c.ancora });
+    fimAnterior = c.fim;
   });
 
   const linhaDoPonteiro = (e: PointerEvent<SVGRectElement>) => {
@@ -119,18 +127,18 @@ export function DistribuicaoCapitais({
         className="outline-offset-4"
       >
         <svg {...dimensoes(medido, w, H)} aria-hidden="true" className="block">
-          {faixa && <rect x={x(faixa.q1)} y={m.t - 2} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={base - m.t + 2} fill="var(--cor-obee-fundo)" />}
-          {ticks.map((t, it) => (
+          {faixa && <rect x={x(faixa.q1)} y={m.t - 2} width={Math.max(1, x(faixa.q3) - x(faixa.q1))} height={baseComparadas - m.t + 2} fill="var(--cor-obee-fundo)" />}
+          {ticks.map(({ t, ancora }) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={m.t - 2} y2={base} stroke={COR.grade} strokeWidth={1} />
-              <text x={x(t)} y={base + 16} textAnchor={it === ticks.length - 1 && estreito ? "end" : it === 0 && estreito ? "start" : "middle"} fontSize={11.5} fill={COR.eixo}>
+              <text x={x(t)} y={base + 16} textAnchor={ancora} fontSize={11.5} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
           ))}
           {mediana !== null && (
             <g>
-              <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 8} y2={base} stroke="var(--cor-obee-tinta)" strokeWidth={1.75} />
+              <line x1={x(mediana)} x2={x(mediana)} y1={m.t - 8} y2={baseComparadas} stroke="var(--cor-obee-tinta)" strokeWidth={1.75} />
               <text
                 x={x(mediana)}
                 y={m.t - 14}
@@ -143,7 +151,7 @@ export function DistribuicaoCapitais({
               </text>
             </g>
           )}
-          {media !== null && <path d={`M${x(media)},${base - 1} l-5,-8 l10,0 z`} fill="var(--cor-obee-tinta)" />}
+          {media !== null && <path d={`M${x(media)},${baseComparadas - 1} l-5,-8 l10,0 z`} fill="var(--cor-obee-tinta)" />}
           {externa && (
             <g>
               <line x1={x(externa.valor)} x2={x(externa.valor)} y1={m.t - 2} y2={base + 22} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="2 3" strokeLinecap="round" />
@@ -195,7 +203,7 @@ export function DistribuicaoCapitais({
                   )}
                 </text>
                 <text x={m.l + 8} y={yc(i)} dy="0.32em" fontSize={fonte - 0.5} fontStyle="italic" fill="var(--cor-carvao-muted)">
-                  {l.texto}
+                  {larg(l.texto, fonte - 0.5) <= w - m.l - 14 ? l.texto : l.texto.replace(/ \(.*\)$/, "")}
                 </text>
               </g>
             );
@@ -245,6 +253,14 @@ export function DistribuicaoCapitais({
               <path d="M7,3 l5,9 l-10,0 z" fill="var(--cor-obee-tinta)" />
             </svg>
             Média simples: {formata(media)}
+          </span>
+        )}
+        {externa && (
+          <span className="inline-flex items-center gap-1.5">
+            <svg width="22" height="14" aria-hidden="true">
+              <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="2 3" strokeLinecap="round" />
+            </svg>
+            {externa.rotulo}: {formata(externa.valor)}
           </span>
         )}
         {faixa && (

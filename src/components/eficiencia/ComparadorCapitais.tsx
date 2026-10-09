@@ -72,7 +72,7 @@ function esquema(ids: string[], regioes: string[]) {
     moeda: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal" as Moeda),
     disc: campo(tiposUrl.opcao(["matematica", "portugues"] as const), "matematica" as Disciplina),
     vis: campo(tiposUrl.opcao(["grafico", "tabela"] as const), "grafico" as Visao),
-    ord: campo(tiposUrl.opcao(["alfabetica", "valor"] as const), "alfabetica" as Ordem),
+    ord: campo(tiposUrl.opcao(["alfabetica", "valor", "valor_desc"] as const), "alfabetica" as Ordem),
     dest: campo(tiposUrl.lista(tiposUrl.opcao(ids), { max: MAX_DESTAQUES }), [] as string[]),
     vc: campo(tiposUrl.opcao(["todas", "recursos", "atendimento", "resultado"] as const), "todas" as VisaoColunas),
     ot: campo(tiposUrl.opcao(["alfabetica", ...COLUNAS.map((c) => c.id)] as const), "alfabetica" as ColunaId | "alfabetica"),
@@ -115,7 +115,7 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
     chave: x.cap.id,
     rotulo: `${x.cap.nome} (${x.cap.uf})`,
     valor: x.comValor ? x.ponto.valor : null,
-    texto: x.comValor ? "fora da comparação, motivo abaixo" : `${ROTULO_STATUS[x.status].toLowerCase()}, motivo abaixo`,
+    texto: x.comValor ? "fora da comparação (motivo abaixo)" : `${ROTULO_STATUS[x.status].toLowerCase()} (motivo abaixo)`,
     destacada: destacadas.includes(x.cap.id),
   }));
   const k = componente(medida, s.moeda, s.disc);
@@ -280,6 +280,7 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
               opcoes={[
                 { v: "alfabetica", t: "Ordem alfabética" },
                 { v: "valor", t: "Por valor, crescente" },
+                { v: "valor_desc", t: "Por valor, decrescente" },
               ]}
               aoMudar={(v) => definir({ ord: v })}
             />

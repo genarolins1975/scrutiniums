@@ -200,9 +200,9 @@ describe("lote 4: série em CSV, avisos por tema e ausências declaradas", () =>
 
   it("o CSV da série tem uma linha por ano, mediana de referência e colunas descritas no dicionário", () => {
     const cap = d.capitais[0];
-    const pontos = serie(ix, "despesa_hab", cap.cod, "todas", "nominal", "matematica");
-    const medianas = serieDaMediana(ix, "despesa_hab", "todas", "nominal", "matematica");
-    const linhas = linhasCsvSerie(d, "despesa_hab", "todas", "nominal", "matematica", cap, pontos, medianas);
+    const pontos = serie(ix, "despesa_hab", cap.cod, "total", "nominal", "matematica");
+    const medianas = serieDaMediana(ix, "despesa_hab", "total", "nominal", "matematica");
+    const linhas = linhasCsvSerie(d, "despesa_hab", "total", "nominal", "matematica", cap, pontos, medianas);
     expect(linhas.length).toBe(pontos.length);
     for (const l of linhas) expect(l.length).toBe(CABECALHO_CSV_SERIE.length);
     const iv = CABECALHO_CSV_SERIE.indexOf("valor_numerico");
@@ -235,5 +235,44 @@ describe("lote 4: série em CSV, avisos por tema e ausências declaradas", () =>
   it("a definição do Ideb traduz a sigla e o Saeb", () => {
     expect(DEFINICAO_CURTA.ideb.texto).toContain("Índice de Desenvolvimento da Educação Básica");
     expect(DEFINICAO_CURTA.ideb.texto).toContain("Sistema de Avaliação da Educação Básica");
+  });
+});
+
+describe("trilhas de reprodução: população, despesa por habitante e por matrícula", () => {
+  const trilha = (id: string) => g.trilhas.find((t) => t.indicador === id)!;
+  const obs = (ind: string, ente: number, comp: string | null = "nominal", etapa: string | null = null) =>
+    g.observacoes.find((o) => o.indicador === ind && o.ente === ente && o.ano === 2025 && (comp === null || o.componente === comp) && o.etapa === etapa && o.status === "OBSERVADO")!;
+
+  it("cada indicador de despesa derivado tem trilha da mesma capital que a despesa total", () => {
+    const ids = g.trilhas.map((t) => t.indicador);
+    for (const id of ["ctx.populacao.residente", "edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula"]) expect(ids).toContain(id);
+    const cod = trilha("edu.despesa.funcao_educacao").ente;
+    for (const id of ["ctx.populacao.residente", "edu.despesa.por_habitante", "edu.despesa.aplicacao_direta_por_matricula"]) expect(trilha(id).ente).toBe(cod);
+  });
+
+  it("os números das trilhas fecham com a gold", () => {
+    const cod = trilha("edu.despesa.funcao_educacao").ente;
+    const desp = obs("edu.despesa.funcao_educacao", cod).valor!;
+    const pop = obs("ctx.populacao.residente", cod, null).valor!;
+    expect(trilha("edu.despesa.por_habitante").valor).toBeCloseTo(desp / pop, 4);
+    const ponte = (c: string) => obs("edu.despesa.ponte_matricula", cod, c).valor!;
+    const mat = obs("edu.matriculas.rede_municipal", cod, null, "total").valor!;
+    expect(trilha("edu.despesa.aplicacao_direta_por_matricula").valor).toBeCloseTo((ponte("ad_demais_elementos") + ponte("ad_beneficiario_indeterminado")) / mat, 4);
+    expect(trilha("ctx.populacao.residente").valor).toBe(pop);
+  });
+
+  it("a data de referência do Censo 2022 é uma só em toda a gold", () => {
+    const texto = JSON.stringify(g);
+    expect(texto).not.toMatch(/1º de agosto de 2022/);
+  });
+});
+
+describe("ordem por valor, crescente e decrescente", () => {
+  it("as duas ordens são espelhadas, com o nome desempatando", () => {
+    const asc = comparar(ix, "despesa_hab", 2025, "total", "nominal", "matematica", "todas", d.capitais[0], "valor").incluidas.map((i) => i.valor);
+    const desc = comparar(ix, "despesa_hab", 2025, "total", "nominal", "matematica", "todas", d.capitais[0], "valor_desc").incluidas.map((i) => i.valor);
+    expect(asc.length).toBeGreaterThan(20);
+    expect([...asc].sort((a, b) => a - b)).toEqual(asc);
+    expect([...asc].reverse()).toEqual(desc);
   });
 });

@@ -325,7 +325,7 @@ export function serieDaMediana(ix: Indice, m: MedidaId, etapa: EtapaId, moeda: M
 /* ------------------------------------------------------------------ comparação */
 
 export type Grupo = "todas" | "regiao";
-export type Ordem = "alfabetica" | "valor";
+export type Ordem = "alfabetica" | "valor" | "valor_desc";
 
 export type ItemComparacao = { cap: CapitalPainel; valor: number; ponto: Ponto };
 /** comValor: há valor oficial, mas fora da comparação (perímetro distinto ou conferência pendente). */
@@ -397,6 +397,7 @@ export function comparar(
     }
   }
   if (ordem === "valor") incluidas.sort((a, b) => a.valor - b.valor || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
+  if (ordem === "valor_desc") incluidas.sort((a, b) => b.valor - a.valor || a.cap.nome.localeCompare(b.cap.nome, "pt-BR"));
   const f = ficha(d, MEDIDA[m].indicador);
   const regiao = d.regioes[capSel.regiao];
   const recorte = [rotuloPeriodoMedida(m, ano), e ? nomeEtapa(d, e).toLowerCase() : null, m === "saeb" ? (disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
