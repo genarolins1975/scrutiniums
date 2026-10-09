@@ -149,8 +149,8 @@ export default function MetodologiaEnergia() {
           siglas={["ONS", "ANEEL", "CCEE", "IBGE", "ENA", "REE", "MLT", "CVU", "PLD", "CMO"]}
           titulo="Do arquivo ao número que você vê"
           lead="Siga o caminho de um número, da fonte à tela, e consulte a regra de cada indicador: o que ele mede, como é calculado, de onde vem e o que não permite concluir."
-          recorte={completo ? `${num(rm.total, 0)} indicadores em ${rm.modulos} módulos · regras da versão de ${dataRegras}` : "Regras por indicador indisponíveis nesta publicação"}
-          fonte="Scrutiniums, catálogo de indicadores dos módulos (o mesmo que o observatório usa para calcular)"
+          recorte={completo ? `${num(rm.total, 0)} indicadores em ${rm.modulos} módulos · regras de ${dataRegras}` : "Regras por indicador indisponíveis nesta publicação"}
+          fonte="Scrutiniums, catálogo de indicadores dos módulos"
           referencia={
             pub ? (
               <ReferenciaDados
@@ -165,9 +165,9 @@ export default function MetodologiaEnergia() {
             ) : undefined
           }
           metricas={
-            completo && pub ? (
-              <FaixaMetricas colunas={4} rotulo="Indicadores da metodologia" nota="Medidas do catálogo inteiro de indicadores: não mudam com a busca nem com os filtros da lista.">
-                <Numero variante="faixa" rotulo="Indicadores com regra publicada" natureza="CALCULADO" valor={rm.total} casas={0} unidade="indicadores" periodo={dataRegras} nota={<>Em {rm.modulos} módulos.</>} endereco={ENDERECO} />
+            completo ? (
+              <FaixaMetricas colunas={3} rotulo="Indicadores da metodologia" nota="Medidas do catálogo inteiro de indicadores: não mudam com a busca nem com os filtros da lista.">
+                <Numero variante="faixa" rotulo="Indicadores com regra publicada" natureza="CALCULADO" valor={rm.total} casas={0} unidade="indicadores" periodo={dataRegras} endereco={ENDERECO} />
                 <Numero
                   variante="faixa"
                   rotulo="Com fórmula publicada"
@@ -176,34 +176,18 @@ export default function MetodologiaEnergia() {
                   casas={0}
                   unidade="indicadores"
                   periodo={dataRegras}
-                  nota={<>Os demais têm definição e regra de agregação.</>}
+                  nota={<>Nos demais, definição e regra de agregação.</>}
                   endereco={ENDERECO}
                 />
                 <Numero
                   variante="faixa"
-                  rotulo="Afirmações de fonte integrada conferidas"
+                  rotulo="Com dado de origem observado"
                   natureza="CALCULADO"
-                  evidencia={evAfirm ?? null}
-                  valor={conferidas}
+                  valor={rm.observadas}
                   casas={0}
-                  unidade="afirmações"
-                  nota={<>De {num(afirm.length, 0)}, contra o estado real do catálogo.</>}
-                  motivoAusencia="Sem afirmações conferidas nesta publicação."
-                  endereco={ENDERECO}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo="Checagens automáticas reprovadas"
-                  natureza="CALCULADO"
-                  evidencia={evReprovadas ?? null}
-                  valor={reprovadas}
-                  casas={0}
-                  unidade="checagens"
-                  nota={
-                    <>
-                      De {num(pub.resumo.validacao.checagens, 0)}; {num(pub.resumo.validacao.ressalva, 0)} com ressalva. {notaReprovadas.curta}
-                    </>
-                  }
+                  unidade="indicadores"
+                  periodo={dataRegras}
+                  nota={<>Os outros {num(rm.total - rm.observadas, 0)} partem de dado estimado, calculado, previsto, de cenário ou misto.</>}
                   endereco={ENDERECO}
                 />
               </FaixaMetricas>
@@ -334,25 +318,54 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
                         )}
                       </SecaoDoPainel>
 
-                      {reprovadas > 0 && notaReprovadas.frase && (
-                        <SecaoDoPainel id="checagens" titulo={reprovadas === 1 ? "O que significa a checagem reprovada?" : `O que significam as ${reprovadas} checagens reprovadas?`}>
+                      <SecaoDoPainel id="checagens" titulo="Como o observatório confere as próprias afirmações e arquivos?">
+                        <FaixaMetricas colunas={2} rotulo="Conferências automáticas" nota="Medidas da publicação inteira: não mudam com a busca nem com os filtros da lista.">
+                          <Numero
+                            variante="faixa"
+                            rotulo="Afirmações de fonte integrada conferidas"
+                            natureza="CALCULADO"
+                            evidencia={evAfirm ?? null}
+                            valor={conferidas}
+                            casas={0}
+                            unidade="afirmações"
+                            nota={<>De {num(afirm.length, 0)}, contra o estado real do catálogo.</>}
+                            motivoAusencia="Sem afirmações conferidas nesta publicação."
+                            endereco={ENDERECO}
+                          />
+                          <Numero
+                            variante="faixa"
+                            rotulo="Checagens automáticas reprovadas"
+                            natureza="CALCULADO"
+                            evidencia={evReprovadas ?? null}
+                            valor={reprovadas}
+                            casas={0}
+                            unidade="checagens"
+                            nota={
+                              <>
+                                De {num(pub.resumo.validacao.checagens, 0)}; {num(pub.resumo.validacao.ressalva, 0)} com ressalva. {notaReprovadas.curta}
+                              </>
+                            }
+                            endereco={ENDERECO}
+                          />
+                        </FaixaMetricas>
+                        {reprovadas > 0 && notaReprovadas.frase && (
                           <DadosAviso>
                             <p>{notaReprovadas.frase}</p>
                           </DadosAviso>
-                          {notaReprovadas.tecnico && (
-                            <p data-nivel="analisar" className="max-w-prose2 break-words border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">
-                              {notaReprovadas.tecnico}
-                            </p>
-                          )}
-                          <p className="text-sm text-carvao-muted">
-                            O estado de cada arquivo publicado está em{" "}
-                            <Link href="/setor-eletrico/dados/reproducao#tabela" className="text-energia-dark underline underline-offset-4">
-                              Download e reprodução
-                            </Link>
-                            .
+                        )}
+                        {notaReprovadas.tecnico && (
+                          <p data-nivel="analisar" className="max-w-prose2 break-words border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">
+                            {notaReprovadas.tecnico}
                           </p>
-                        </SecaoDoPainel>
-                      )}
+                        )}
+                        <p className="text-sm text-carvao-muted">
+                          O estado de cada arquivo publicado está em{" "}
+                          <Link href="/setor-eletrico/dados/reproducao#tabela" className="text-energia-dark underline underline-offset-4">
+                            Download e reprodução
+                          </Link>
+                          .
+                        </p>
+                      </SecaoDoPainel>
                     </MetodologiaRegras>
 
                     <SecaoDoPainel id="afirmacoes" nivel="analisar" titulo="Afirmações sobre fontes integradas, conferidas com o catálogo">

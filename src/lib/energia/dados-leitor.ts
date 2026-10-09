@@ -352,10 +352,11 @@ export function textoChecagensReprovadas(arquivos: readonly EstadoDoArquivo[], c
   const relidos = reprovados.filter((e) => e.releitura && e.releitura.divergentes === 0).length;
   const tipos = Array.from(new Set(reprovados.reduce<string[]>((s, e) => s.concat(e.problemas.filter((p) => p.resultado === "reprovado").map((p) => p.tipo)), [])));
   const o = n === 1 ? "o arquivo" : `os ${n} arquivos`;
+  const reescritos = outra === 0 ? "nenhum foi reescrito" : outra === 1 ? "1 foi reescrito" : `${outra} foram reescritos`;
   const curta =
     outra === n
       ? `${n === 1 ? "É de um arquivo reescrito" : `São de ${n} arquivos reescritos`} depois da validação.`
-      : `${plural(n, "arquivo reprovado", "arquivos reprovados")}; ${outra === 0 ? "nenhum" : outra} reescrito${outra === 1 ? "" : "s"} depois da validação.`;
+      : `${plural(n, "arquivo reprovado", "arquivos reprovados")}; ${reescritos} depois da validação.`;
   const onde = checagens === n ? (n === 1 ? "A checagem reprovada é" : `As ${n} checagens reprovadas são`) : `As ${checagens} checagens reprovadas estão em ${n} arquivos`;
   const oQue = tipos.length === 1 && tipos[0] === "esquema" ? "linhas com número de colunas diferente do cabeçalho" : "problemas no formato do arquivo";
   const versao =

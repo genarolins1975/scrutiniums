@@ -147,7 +147,7 @@ export function CargaMetricas({
         periodo={BASE_CURTA[tipo]}
         evidencia={ficha}
         // a ficha de prova mostra o valor com uma casa; o cartão, com duas: dito aqui para os dois não parecerem divergir
-        nota={ficha ? `Na ficha de prova, o mesmo valor aparece com uma casa: ${ficha.valor_exibido}.` : undefined}
+        nota={ficha ? `Na ficha de prova: ${ficha.valor_exibido}, com uma casa.` : undefined}
 
         endereco={ficha ? (tipo === "equivalente" ? "/setor-eletrico/carga#p025" : "/setor-eletrico/carga#a07") : undefined}
         motivoAusencia={

@@ -196,7 +196,7 @@ export default function AvaliacaoPage() {
                     nomeArquivo="avaliacao-defeitos"
                     chaveUrl="def"
                     ordemInicial={{ coluna: "n_paginas", direcao: "desc" }}
-                    tamanhoPagina={12}
+                    tamanhoPagina={25}
                     dicaBusca="Descrição do defeito"
                     semLinhas="Nenhum defeito aberto nesta rodada."
                     nota="Severidade: crítico é dado errado, navegação quebrada, foco preso ou falha de operação; alto é violação séria de acessibilidade, erro de console, controle que não aciona ou rolagem horizontal; médio e baixo são os demais. Um defeito lista todas as páginas em que apareceu."

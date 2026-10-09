@@ -18,7 +18,7 @@ Nenhum arquivo foi apagado por este executor, conforme a regra do servidor de de
 
 1.4 Desempenho em celular emulado (achado técnico de CLS e TBT). O que cabia à página foi feito: o painel de séries diárias dos reservatórios reserva a altura antes de carregar (CLS de laboratório próximo de 0,0004 nas três filhas). O TBT vem do HTML (429 KB, 464 KB e 433 KB, com os três níveis de profundidade renderizados no servidor) e da hidratação dos gráficos; reduzir exigiria montar os níveis Analisar e Auditar só quando abertos (como o `SobreEsteDado` passou a fazer) ou desligar o `prefetch` dos links da faixa. É uma decisão do `ModoProfundidade` e do `NavegacaoLocal`, não da página.
 
-1.5 `Numero` e a ficha "Comprove": a linha "Revisões" por `revisoes` (S7) foi usada nas três páginas; nada mais a pedir.
+1.5 `Numero` e a ficha "Comprove": a linha "Revisões" por `revisoes` (S7) foi usada nas quatro páginas; nada mais a pedir.
 
 ## 2. Dado e pipeline (a página trata o caso, com a limitação dita; a solução é no dado)
 

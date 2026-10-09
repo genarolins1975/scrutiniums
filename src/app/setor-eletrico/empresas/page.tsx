@@ -353,7 +353,7 @@ export default function EmpresasPage() {
                       evidencia={ct.concentracao.evidencia}
                       casas={0}
                       unidade="pontos"
-                      nota={`${grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI é o ${SIGLAS.HHI}, de 0 a 10.000. O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`}
+                      nota={`${grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI é o ${SIGLAS.HHI}, de 0 a 10.000; as faixas são as do Guia do CADE (${SIGLAS.CADE}). O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`}
                       endereco={ancoraPainel("p039")}
                     />
                   ),

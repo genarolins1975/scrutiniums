@@ -205,9 +205,9 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <EmpresasNavegacao atual="ficha" />
         <CabecalhoModulo
-          rotulo="Empresas"
+          rotulo="Perfil da distribuidora"
           siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "REH"]}
-          titulo={`Perfil da ${d.sigla}: perdas, continuidade e tarifa`}
+          titulo={`${d.sigla}: perdas, continuidade e tarifa`}
           lead={`${d.nome ?? "Razão social sem registro"} · CNPJ (${SIGLAS.CNPJ}) ${cnpjFormatado(d.cnpj)} · ${d.classificacao ?? rotuloGrupo(d.grupo)} · ${d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} · ${d.ativa ? "ativa" : "inativa"}.`}
           recorte={`Perdas de ${p?.ano ?? "sem dado"} · continuidade de ${q?.ano ?? "sem dado"} · tarifa ${t && t.vigente ? `vigente de ${dataTexto(t.inicio)} a ${dataTexto(t.fim)}` : "sem vigência na data do arquivo de tarifas"}`}
           fonte="ANEEL, bases de perdas, continuidade e tarifas, pelo mesmo CNPJ"
@@ -228,7 +228,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
             />
           }
           metricas={
-            <FaixaMetricas colunas={4} rotulo={`Indicadores da ${d.sigla}`} nota="Medidas do último ano de referência de cada base, fixas: não mudam com a distribuidora escolhida nos pares. As perdas têm ficha de prova; DEC, FEC e tarifa são cópias das bases de Qualidade e de Conta de luz, que não publicam ficha por distribuidora.">
+            <FaixaMetricas colunas={4} rotulo={`Indicadores da ${d.sigla}`} nota="Medidas do último ano de cada base, fixas: não mudam com a distribuidora escolhida nos pares. Só as perdas têm ficha de prova; DEC, FEC e tarifa vêm das bases de Qualidade e de Conta de luz, sem ficha por distribuidora.">
               {evPerdas ? (
                 <Numero
                   variante="faixa"
@@ -462,7 +462,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                 <SecaoDoPainel id="controle" titulo={`Quem controla a ${d.sigla}?`}>
                   <p className="text-sm text-carvao">
                     {d.controle.topo
-                      ? `O topo da cadeia de controladores únicos declarada à ANEEL é ${nomeOuCnpj(d.controle.topo_nome, d.controle.topo)}; a cadeia para ali porque: ${motivoExplicado(d.controle.motivo_parada, motivos)}.`
+                      ? `O topo da cadeia de controladores únicos declarada à ANEEL é ${nomeOuCnpj(d.controle.topo_nome, d.controle.topo)}; motivo da parada: ${motivoExplicado(d.controle.motivo_parada, motivos)}.`
                       : `A própria ${d.sigla} é o topo da cadeia declarada: ${motivoExplicado(d.controle.motivo_parada, motivos)}.`}
                     {d.controle.acima ? ` Acima, sem CNPJ: ${d.controle.acima}.` : ""}
                   </p>

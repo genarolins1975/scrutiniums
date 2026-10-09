@@ -113,7 +113,7 @@ export default function PaginaP039() {
           rotulo="Empresas"
           siglas={["SIGA", "HHI", "CR4", "CR10", "ANEEL", "CADE"]}
           titulo={painel("p039").pergunta}
-          lead={`Quem está no topo da cadeia de controle que cada dono de usina declara à ANEEL (${SIGLAS.ANEEL}), quanta capacidade instalada cada grupo detém e controla, e quão concentrada ela está.`}
+          lead={`Grupos no topo da cadeia de controle declarada à ANEEL (${SIGLAS.ANEEL}): quanta capacidade detêm e controlam, e quão concentrada ela está.`}
           recorte={`Usinas em operação do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · declarações de ${janela} · MW, % e pontos de HHI`}
           fonte="ANEEL, SIGA e Composição Societária"
           referencia={
@@ -147,7 +147,7 @@ export default function PaginaP039() {
                 casas={0}
                 unidade="pontos"
                 cor={COR_MEDIDA.hhi}
-                nota={grupo?.faixa ? `${ROTULO_FAIXA[grupo.faixa]} nas faixas do Guia do CADE (${SIGLAS.CADE}).` : undefined}
+                nota={grupo?.faixa ? `Faixa no Guia do CADE (${SIGLAS.CADE}): ${ROTULO_FAIXA[grupo.faixa]}.` : undefined}
                 endereco={ancoraPainel("p039")}
               />
               <Numero
@@ -157,7 +157,7 @@ export default function PaginaP039() {
                 valor={grupo?.cr4 ?? null}
                 formato="pct"
                 casas={2}
-                unidade="da potência da fronteira"
+                unidade="da fronteira"
                 periodo={`SIGA de ${dataSiga}`}
                 motivoAusencia="Sem grupos com potência publicada nesta publicação."
               />
@@ -168,7 +168,7 @@ export default function PaginaP039() {
                 valor={grupo?.cr10 ?? null}
                 formato="pct"
                 casas={2}
-                unidade="da potência da fronteira"
+                unidade="da fronteira"
                 periodo={`SIGA de ${dataSiga}`}
                 motivoAusencia="Sem grupos com potência publicada nesta publicação."
               />

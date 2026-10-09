@@ -1477,7 +1477,7 @@ export function vereditoControle(c: Controle): string {
   const g = c.concentracao.grupo_proporcional;
   const maior = g?.maiores[0];
   const grupo = maior ? `O maior grupo de controle, ${nomeOuCnpj(maior.nome, maior.cnpj)}, tem ${pctTexto(maior.pct, 2)} da potência em operação.` : "Não há grupo de controle com potência publicada.";
-  const hhi = `O índice de concentração (HHI), de 0 a 10.000, é ${numTexto(g?.hhi, 0)}${g?.faixa ? `: ${ROTULO_FAIXA[g.faixa]} nas faixas do Guia do CADE (${SIGLAS.CADE})` : ""}.`;
+  const hhi = `O índice de concentração (HHI), de 0 a 10.000, é ${numTexto(g?.hhi, 0)}${g?.faixa ? `: ${ROTULO_FAIXA[g.faixa]} nas faixas do Guia do CADE` : ""}.`;
   return `${grupo} ${hhi} É capacidade instalada, não poder de mercado.`;
 }
 

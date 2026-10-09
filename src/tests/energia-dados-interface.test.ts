@@ -364,25 +364,37 @@ describe("páginas P067 a P070", () => {
   it("anatomia: resposta, recorte, prova, tabela, download, link e próxima pergunta; os três modos", () => {
     for (const [id, h] of Object.entries(paginas)) {
       expect(h, id).toContain(`data-resposta="${resposta[id as keyof typeof resposta]}"`);
-      for (const t of ["Período", "Universo", "Unidade", "Comprove este número", "Como interpretar", "O que não é possível concluir", "Copiar link deste painel", "Próxima pergunta", "Baixar os dados deste painel", "Baixar CSV"]) {
+      for (const t of ["Comprove este número", "Como interpretar", "O que não é possível concluir", "Copiar link deste painel", "Próxima pergunta", "Baixar CSV"]) {
         expect(h, `${id}: ${t}`).toContain(t);
       }
+      // os arquivos: no rodapé do painel ou, na Saúde, numa seção própria com o estado de cada um
+      expect(h, id).toMatch(/Baixar os dados|Quais arquivos posso baixar\?/);
+      // o recorte (período e universo) e a fonte ficam numa linha, logo abaixo do título e do lead
+      expect(h, id).toContain('data-recorte=""');
+      expect(textoDe(h), id).toMatch(/Fonte: /);
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
-      expect(h, id).toContain("Painéis de Dados e Metodologia");
       expect(h, id).not.toMatch(/\(em preparação\)/);
     }
   });
 
-  it("a navegação entre os quatro painéis aponta rotas que existem, e cada painel marca a sua página", () => {
-    for (const p of PAGINAS_DADOS) {
-      expect(rotaExiste(p.href), p.href).toBe(true);
-      for (const h of Object.values(paginas)) expect(h).toContain(`href="${p.href}"`);
+  it("a navegação de cada módulo aponta rotas que existem: a abertura mostra as outras páginas como capítulos e as filhas, a faixa com a página atual marcada", () => {
+    for (const p of PAGINAS_DADOS) expect(rotaExiste(p.href), p.href).toBe(true);
+    const aberturas = { catalogo: "dados", metodologia: "metodologia" } as const;
+    const atual = { catalogo: "/setor-eletrico/dados", saude: "/setor-eletrico/dados/saude", reproducao: "/setor-eletrico/dados/reproducao", metodologia: "/setor-eletrico/metodologia" } as const;
+    for (const [id, h] of Object.entries(paginas)) {
+      const modulo = id in aberturas ? aberturas[id as keyof typeof aberturas] : "dados";
+      for (const p of PAGINAS_DADOS.filter((x) => x.modulo === modulo && x.href !== atual[id as keyof typeof atual])) expect(h, `${id} → ${p.href}`).toContain(`href="${p.href}"`);
     }
-    expect(paginas.catalogo).toMatch(/aria-current="page"[^>]*>\s*Catálogo/);
+    // abertura: capítulos depois da figura principal, nunca a faixa; filhas: a faixa, com a página atual marcada
+    expect(paginas.catalogo).toContain('data-navegacao-local="capitulos"');
+    expect(paginas.catalogo).not.toContain('data-navegacao-local="faixa"');
+    expect(paginas.metodologia).toContain('data-navegacao-local="capitulos"');
+    expect(paginas.metodologia).not.toContain('data-navegacao-local="faixa"');
     expect(paginas.saude).toMatch(/aria-current="page"[^>]*>\s*Saúde e revisões/);
     expect(paginas.reproducao).toMatch(/aria-current="page"[^>]*>\s*Download e reprodução/);
-    expect(paginas.metodologia).toMatch(/aria-current="page"[^>]*>\s*Metodologia/);
+    expect(paginas.saude).not.toContain('data-navegacao-local="capitulos"');
+    expect(paginas.reproducao).not.toContain('data-navegacao-local="capitulos"');
     for (const s of ["energia:dados:saude", "energia:dados:reproducao"]) expect(VIEW_SECTIONS).toContain(s);
   });
 
@@ -404,16 +416,17 @@ describe("páginas P067 a P070", () => {
     for (const s of ESTADOS_ESCADA) expect(h).toContain(`data-estado="${s}"`);
     const r = resumoCatalogo(cat);
     expect((h.match(/data-lista="em-uso-abaixo"[\s\S]*?<\/ul>/)?.[0].match(/<li/g) ?? []).length).toBe(r.usadasAbaixo.length);
-    expect(h).toContain("Em uso, mas abaixo de publicado");
+    expect(h).toContain("Quais conjuntos estão em uso, mas abaixo de publicado?");
     expect((h.match(/data-lista="descontinuados"[\s\S]*?<\/ul>/)?.[0].match(/<li/g) ?? []).length).toBe(cat.descontinuados);
     expect(h).toContain("Recurso a recurso");
   });
 
   it("P068: calendário, revisões com as duas capturas, falhas e regras de SLA", () => {
     const h = paginas.saude;
-    expect(h).toContain("Calendário de atualização e mudanças");
+    expect(h).toContain("Quando a fonte publica e quando o observatório coleta?");
     expect((h.match(/data-lista="revisoes"[\s\S]*?<\/ul>/)?.[0].match(/<li/g) ?? []).length).toBe(conjuntosComRevisao(pub).length);
-    expect(h).toContain("Falhas de coleta: a data do dado não é renovada");
+    expect(h).toContain("O que falhou na coleta?");
+    expect(textoDe(h)).toContain("nunca renova a data do dado");
     expect(textoDe(h)).toContain("tolerância");
     expect(h).toContain("Regras de atualidade, completude e revisão");
   });

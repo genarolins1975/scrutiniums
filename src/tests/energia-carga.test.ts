@@ -764,8 +764,9 @@ describe("páginas renderizadas no servidor", () => {
     const h = html.p025;
     expect(h).toContain("MWmed, a potência média do dia (1 MWmed durante um dia equivale a 24 MWh)");
     expect(h).toContain("1 MWmed durante um dia equivale a 24 MWh");
-    // a ficha de prova arredonda a uma casa: o cartão diz isso, para 11,45% e +11,4% não parecerem divergir
-    expect(h).toContain(`Na ficha de prova, o mesmo valor aparece com uma casa: ${G.evidencias.p025_7d_equivalente!.valor_exibido}.`);
+    // a ficha de prova arredonda a uma casa: o cartão diz isso, para 11,45% e +11,4% não parecerem divergir (nos dois cartões)
+    expect(h).toContain(`Na ficha de prova: ${G.evidencias.p025_7d_equivalente!.valor_exibido}, com uma casa.`);
+    expect(h).toContain(`Na ficha de prova: ${G.evidencias.a07_reproducao!.valor_exibido}, com uma casa.`);
     // o cartão de Analisar nomeia a taxa em palavras do leitor (o texto da ficha, que vem da gold, segue como está)
     expect(h).toContain("a taxa que o observatório publicou antes");
   });

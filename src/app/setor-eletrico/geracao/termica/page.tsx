@@ -25,7 +25,6 @@ import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
   COR_COMBUSTIVEL,
   CURTO_COMBUSTIVEL,
-  DO_REGIAO,
   ROTULO_ORIGEM_COMBUSTIVEL,
   ROTULO_REGRA,
   combustiveisCvu,
@@ -35,7 +34,6 @@ import {
   linhasCvuMensal,
   inflexibilidadeSemNuclear,
   diasDoBalancoForaDoPadrao,
-  listaTexto,
   notaCrescimentoUniverso,
   notaCvuZero,
   notaNaoClassificado,
@@ -45,6 +43,7 @@ import {
   situacaoMensal,
   somaTermicaDaMatriz,
   textoCvu,
+  textoDiasDoBalancoForaDoPadrao,
   textoMudancaMensal,
   textoSemComparacaoMensal,
   textoTermica7d,
@@ -86,7 +85,6 @@ export default function GeracaoTermicaPage() {
   const sin12 = g.matriz.janelas.SIN["12m"];
   const somaMatriz = somaTermicaDaMatriz(sin12);
   const anomalos = diasDoBalancoForaDoPadrao(g.matriz.reconciliacao_balanco);
-  const doSm = (DO_REGIAO as Record<string, string>)[anomalos[0]?.sm ?? ""] ?? "de um subsistema";
   const crescimento = notaCrescimentoUniverso(universo);
   const notasUniverso = (
     <ul className="space-y-1 text-xs leading-relaxed text-carvao-muted" data-notas-universo="p022">
@@ -250,13 +248,7 @@ export default function GeracaoTermicaPage() {
                           <p className="text-sm text-carvao-muted">
                             Base diferente da do motivo de despacho: o Balanço de Energia do ONS, até {dataBR(op.dia_referencia)}, com a nuclear entre as térmicas e sem separar
                             combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior e vai de 0 (entre as menores participações) a 100 (entre as maiores); a faixa usual é do 10º ao 90º percentil dessas janelas, que reúnem todas as estações do ano, não só esta época.
-                            {anomalos.length > 0 && (
-                              <>
-                                {" "}
-                                No Balanço, a eólica {doSm} fica muito abaixo da soma das usinas em {listaTexto(anomalos.map((x) => dataBR(x.d)))} (por exemplo, {num(anomalos[0].balanco_mwh / 1000, 1)} GWh contra {num(anomalos[0].usinas_mwh / 1000, 1)} GWh em {dataBR(anomalos[0].d)}):
-                                as janelas de 7 dias que incluem esses dias usam esse Balanço e podem ter a participação térmica distorcida; a divergência está listada em Auditar.
-                              </>
-                            )}
+                            {anomalos.length > 0 && <> {textoDiasDoBalancoForaDoPadrao(anomalos)}</>}
                           </p>
                           {serie7d.length > 0 && (
                             <GraficoLinhas

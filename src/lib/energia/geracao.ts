@@ -2181,6 +2181,23 @@ export function diasDoBalancoForaDoPadrao(rec: Pick<Matriz["reconciliacao_balanc
     .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
 }
 
+/** Frase dos dias em que o Balanço registra a eólica muito abaixo da soma das usinas, por subsistema, com o maior caso como exemplo; vazia sem esses dias. */
+export function textoDiasDoBalancoForaDoPadrao(dias: readonly { d: string; sm: string; balanco_mwh: number; usinas_mwh: number }[]): string {
+  if (!dias.length) return "";
+  const nome = (sm: string) => (NOME_REGIAO as Record<string, string>)[sm] ?? sm;
+  const porDia: { d: string; sms: string[] }[] = [];
+  for (const x of dias) {
+    let e = porDia.find((p) => p.d === x.d);
+    if (!e) {
+      e = { d: x.d, sms: [] };
+      porDia.push(e);
+    }
+    e.sms.push(nome(x.sm));
+  }
+  const ex = [...dias].sort((a, b) => b.usinas_mwh - a.usinas_mwh)[0];
+  return `No Balanço, a eólica fica muito abaixo da soma das usinas em ${listaTexto(porDia.map((p) => `${dataBR(p.d)} (${listaTexto(p.sms)})`))}; por exemplo, ${num(ex.balanco_mwh / 1000, 1)} GWh contra ${num(ex.usinas_mwh / 1000, 1)} GWh no ${nome(ex.sm)} em ${dataBR(ex.d)}. As janelas de 7 dias que incluem esses dias usam esse Balanço e podem ter a participação térmica distorcida; a divergência está listada em Auditar.`;
+}
+
 /** Categorias em que a capacidade fiscalizada da ANEEL (SIGA) e a potência do ONS diferem em mais de 25%: outro universo e outra classificação. */
 export function diferencasAneelOns(linhas: readonly Pick<LinhaCapacidade, "id" | "categoria" | "mw" | "siga_mw">[]): { id: CategoriaCapacidade; categoria: string; aneel: number; ons: number }[] {
   return linhas

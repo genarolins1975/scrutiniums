@@ -244,7 +244,7 @@ export function AvaliacaoMatriz({ a }: { a: AvaliacaoGold }) {
     <figure className="space-y-2" data-matriz="aceite">
       <figcaption className="text-sm font-medium text-carvao">Média das páginas de cada entrega, por dimensão (nota de 0 a 10)</figcaption>
       <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Matriz de aceite e evidência (tabela rolável)">
-        <table className="w-full border-collapse text-sm tabular-nums">
+        <table className="w-full border-collapse text-sm tabular-nums [&_td]:px-2 [&_td]:py-1.5 [&_td]:text-center">
           <thead>
             <tr className="border-b border-linha text-left text-xs text-mineral">
               <th scope="col" className="sticky left-0 bg-superficie px-2 py-1.5 font-medium">
@@ -273,15 +273,15 @@ export function AvaliacaoMatriz({ a }: { a: AvaliacaoGold }) {
                   const d = m.dimensoes[i];
                   const f = faixa(d.media);
                   return (
-                    <td key={i} className={`px-2 py-1.5 text-center ${f ? f.texto : "text-mineral"}`} style={f ? { background: f.fundo } : undefined} data-dimensao={i}>
+                    <td key={i} className={f ? (f.indice === 3 ? "text-superficie" : undefined) : "text-mineral"} style={f ? { background: f.fundo } : undefined}>
                       {d.media === null ? (d.nao_avaliadas ? "n.av." : "n.ap.") : num(d.media, 1)}
                     </td>
                   );
                 })}
-                <td className={`px-2 py-1.5 text-center ${faixa(m.nota_ponderada)?.texto ?? "text-mineral"}`} style={faixa(m.nota_ponderada) ? { background: faixa(m.nota_ponderada)!.fundo } : undefined} data-coluna="ponderada">
+                <td className={faixa(m.nota_ponderada) ? (faixa(m.nota_ponderada)!.indice === 3 ? "text-superficie" : undefined) : "text-mineral"} style={faixa(m.nota_ponderada) ? { background: faixa(m.nota_ponderada)!.fundo } : undefined} data-coluna="ponderada">
                   {m.nota_ponderada === null ? "n.av." : num(m.nota_ponderada, 1)}
                 </td>
-                <td className="px-2 py-1.5 text-center">
+                <td>
                   {m.atendem_meta} de {m.paginas}
                 </td>
               </tr>

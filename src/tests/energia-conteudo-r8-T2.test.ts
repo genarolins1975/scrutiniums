@@ -725,7 +725,9 @@ describe("fichas: perda negativa, pares que mostram a própria empresa, DEC e FE
   it("motivo da parada da cadeia: a ficha usa a explicação que a gold publica, sem repetir o rótulo", () => {
     const motivos = GE.controle.cobertura.motivos_parada;
     const ambigua = motivos.find((m) => m.motivo === "ambigua")!.rotulo;
-    expect(textoEntender(htmlFicha["cemig-d"])).toContain(`a cadeia para ali porque: ${ambigua}`);
+    // "porque" é causalidade no vocabulário do guia editorial: a explicação da parada vem depois de "motivo da parada:"
+    expect(textoEntender(htmlFicha["cemig-d"])).toContain(`motivo da parada: ${ambigua}`);
+    expect(textoEntender(htmlFicha["cemig-d"])).not.toMatch(/\bporque\b/);
     const compart = motivos.find((m) => m.motivo === "compartilhado")!.rotulo;
     expect(textoEntender(htmlFicha["ambar-amazonas"])).toContain(compart);
     expect(textoEntender(htmlFicha["ambar-amazonas"])).not.toContain("controle compartilhado (mais de um sócio");

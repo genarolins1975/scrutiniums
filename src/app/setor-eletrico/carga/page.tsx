@@ -238,7 +238,7 @@ export default function CargaPage() {
                       casas={2}
                       tamanho="medio"
                       cor="var(--serie-referencia)"
-                      nota={`Variação maior que zero não indica, sozinha, mais atividade econômica.${ev.a07_reproducao ? ` Na ficha de prova, o mesmo valor aparece com uma casa: ${ev.a07_reproducao.valor_exibido}.` : ""}`}
+                      nota={`Variação maior que zero não indica, sozinha, mais atividade econômica.${ev.a07_reproducao ? ` Na ficha de prova: ${ev.a07_reproducao.valor_exibido}, com uma casa.` : ""}`}
                       endereco={`${rotaPainel("p025")}#a07`}
                     />
                   </div>
@@ -277,7 +277,7 @@ export default function CargaPage() {
                     nota={`Temperatura de ${dataBR(a.janela_modelo.inicio)} a ${dataBR(a.janela_modelo.fim)} (${a.janela_modelo.dias} de ${a.janela_modelo.dias_janela} dias)${a.janela_modelo.motivo ? `: ${a.janela_modelo.motivo}` : ""}.`}
                   />
                   <TabelaInterativa
-                    titulo="Real contra o previsto fora da amostra nas janelas do achado (SIN)"
+                    titulo="Real contra o previsto fora da amostra nas janelas da variação de 7 dias (SIN)"
                     colunas={COLUNAS_RESIDUOS}
                     linhas={paraTabela(residuosA07.map((r) => ({ ...r, id: `${r.sm}:${r.janela}`, regiao: NOME_REGIAO[r.sm], janela: ROTULO_JANELA_A07[r.janela] ?? r.janela })))}
                     chaveLinha="id"
@@ -303,7 +303,7 @@ export default function CargaPage() {
                 <SecaoDoPainel
                   id="a07-capturas"
                   nivel="auditar"
-                  titulo={`${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas no achado`}
+                  titulo={`${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`}
                 >
                   {a.por_captura_2026.map((cap) => (
                     <p key={cap.sha256} className="text-sm text-carvao-muted">

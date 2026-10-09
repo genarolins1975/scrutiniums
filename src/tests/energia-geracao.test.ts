@@ -762,7 +762,7 @@ describe("o que mudou, notas de universo e referências ao lado do dado", () => 
     for (let i = 1; i < lac.length; i++) expect(lac[i - 1].gwh).toBeGreaterThanOrEqual(lac[i].gwh);
     const linhas = linhasDozeMeses(c, G.matriz.janelas.SIN["12m"], G.matriz.universo);
     const hid = linhas.find((l) => l.id === "hidraulica")!;
-    expect(hid.lacuna_gwh).toBeCloseTo(G.matriz.universo.lacuna_ultimo_mes!.detalhe_por_categoria.hidraulica!.mwh_dos_ausentes_mesmo_mes_ano_anterior / 1000, 1);
+    expect(hid.lacuna_gwh!).toBeCloseTo(G.matriz.universo.lacuna_ultimo_mes!.detalhe_por_categoria.hidraulica!.mwh_dos_ausentes_mesmo_mes_ano_anterior! / 1000, 1);
     expect(linhasDozeMeses(c, G.matriz.janelas.SIN["12m"]).every((l) => l.lacuna_gwh === null)).toBe(true);
   });
 
@@ -823,7 +823,7 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("a sazonalidade (vento, sol e chuva variam ao longo do ano)");
     expect(abertura).toContain("data-termicas-somadas");
     expect(x).toContain("Térmicas pequenas no gráfico");
-    expect(x).toContain("Demais térmicas soma carvão mineral, óleo e diesel, biomassa, outras térmicas e térmicas Tipo III");
+    expect(x).toContain("Demais térmicas soma carvão mineral, óleo e diesel, biomassa, outras térmicas e térmicas tipo III");
     expect(x).toContain("Presença parcial da MMGD: abr/2023 tem estimativa em 2 de 30 dias");
     expect(x).toContain("Participação por ano, sem a MMGD, e a MMGD estimada à parte");
     // a tabela diz 'sem ressalva' em vez de 'sem dado' nas colunas de ressalva e de presença
@@ -861,7 +861,7 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("CVU 0,00 é valor publicado pela fonte");
     expect(x).toContain("nunca é tratado como ausência");
     expect(x).toContain("que reúnem todas as estações do ano, não só esta época");
-    expect(x).toContain("No Balanço, a eólica do Nordeste fica muito abaixo da soma das usinas em 16/01/2026, 07/03/2026 e 09/05/2026");
+    expect(x).toContain("No Balanço, a eólica fica muito abaixo da soma das usinas em 16/01/2026 (Nordeste), 07/03/2026 (Nordeste e Sul) e 09/05/2026 (Nordeste e Sul); por exemplo, 10,8 GWh contra 329,9 GWh no Nordeste em 16/01/2026");
     expect(x).toContain("podem ter a participação térmica distorcida");
     // o que mudou traz a variação mensal da térmica
     expect(x).toContain(`A geração das térmicas despachadas em ${mesAno(t.ultimo_mes_completo)}:`);

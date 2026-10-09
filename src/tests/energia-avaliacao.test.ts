@@ -233,9 +233,7 @@ describe.skipIf(!a)("página /setor-eletrico/metodologia/avaliacao", () => {
     for (const t of [
       "Como demonstrar que a qualidade evoluiu?",
       'data-resposta="P071"',
-      "Comprove a nota média",
-      "Comprove as páginas na meta",
-      "Comprove os defeitos",
+      "Comprove este número",
       'data-matriz="aceite"',
       "Matriz de aceite e evidência",
       "Período",
@@ -245,12 +243,19 @@ describe.skipIf(!a)("página /setor-eletrico/metodologia/avaliacao", () => {
       "O que não é possível concluir",
       "Copiar link deste painel",
       "Próxima pergunta",
-      "Baixar os dados deste painel",
-      "Painéis de Dados e Metodologia",
+      "Baixar os dados",
+      "Páginas de Metodologia",
       'data-nivel="analisar"',
       'data-nivel="auditar"',
     ])
       expect(html, t).toContain(t);
+  });
+
+  it("a faixa de métricas traz a prova de cada medida (nota média, páginas na meta e defeitos), com o nome do número para o leitor de tela", () => {
+    const botoes = html.match(/data-comprove=""[\s\S]*?<\/button>/g) ?? [];
+    expect(botoes.length).toBeGreaterThanOrEqual(3);
+    const lidos = textoDe(botoes.join(" "));
+    for (const ev of [a!.evidencias.nota_media, a!.evidencias.atendem_meta, a!.evidencias.defeitos]) expect(lidos, ev.indicador).toContain(ev.indicador);
   });
 
   it("a matriz tem uma linha por entrega e mostra n.av. só quando falta nota", () => {

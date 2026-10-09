@@ -154,7 +154,7 @@ export function AvaliacaoPaginas({ matriz, versao }: { matriz: MatrizLinhas; ver
         nomeArquivo="avaliacao-paginas"
         chaveUrl="ava"
         ordemInicial={{ coluna: "ponderada", direcao: "asc" }}
-        tamanhoPagina={12}
+        tamanhoPagina={25}
         dicaBusca="Nome ou rota da página"
         selecionado={escolhida ? String(escolhida.rota) : null}
         onSelecionar={(id) => definir({ pag: id ?? "" })}

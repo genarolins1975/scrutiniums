@@ -68,6 +68,8 @@ export default function PaginaP037() {
   const evTaxaNacional2 = evTaxaNacional ? comValorExibido(evTaxaNacional, pctTexto(evTaxaNacional.valor_calculo, 2)) : null;
   const perdasDestino = DESTINOS_NAVEGACAO.find((x) => x.slug === "perdas");
   const dataIndice = dataTexto(g.gerado_em.slice(0, 10));
+  // data do arquivo de tarifas da base publicada de Conta de luz: a vigência de cada tarifa é decidida nessa data
+  const dataTarifas = lerGold<{ data_referencia?: string }>("conta.json")?.data_referencia ?? null;
 
   const oQueMudou = (
     <>
@@ -94,7 +96,7 @@ export default function PaginaP037() {
           rotulo="Empresas"
           siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "ANEEL"]}
           titulo={painel("p037").pergunta}
-          lead={`Perdas, continuidade do serviço e tarifa residencial de cada distribuidora, pelo CNPJ (${SIGLAS.CNPJ}) que as bases reguladas da ANEEL (${SIGLAS.ANEEL}) publicam. Compare até quatro ou abra a ficha de uma.`}
+          lead={`Perdas, continuidade e tarifa residencial de cada distribuidora, pelo CNPJ (${SIGLAS.CNPJ}) das bases reguladas da ANEEL (${SIGLAS.ANEEL}).`}
           recorte={`Perdas de ${anoPerdas ?? "sem dado"} · continuidade de ${anoQualidade ?? "sem dado"} · tarifa vigente na data do arquivo de tarifas · % da energia injetada, horas, interrupções e R$/MWh`}
           fonte="ANEEL, bases de perdas, continuidade e tarifas, copiadas dos módulos de origem"
           referencia={
@@ -110,7 +112,7 @@ export default function PaginaP037() {
                 { rotulo: "Índice pelo CNPJ", texto: `de ${dataIndice}`, natureza: prov.distribuidoras.natureza },
                 { rotulo: "Perdas", texto: `${anoPerdas ?? "sem dado"}, base publicada de Perdas`, natureza: prov.distribuidoras_perdas?.natureza ?? "CALCULADO" },
                 { rotulo: "Continuidade", texto: `${anoQualidade ?? "sem dado"}, base publicada de Qualidade`, natureza: prov.distribuidoras_qualidade?.natureza ?? "OBSERVADO" },
-                { rotulo: "Tarifa B1", texto: "vigente na data do arquivo de tarifas, base publicada de Conta de luz", natureza: prov.distribuidoras_tarifa?.natureza ?? "OBSERVADO" },
+                { rotulo: "Tarifa B1", texto: `vigente na data do arquivo de tarifas${dataTarifas ? ` (${dataTexto(dataTarifas)})` : ""}, base publicada de Conta de luz`, natureza: prov.distribuidoras_tarifa?.natureza ?? "OBSERVADO" },
               ]}
             />
           }
@@ -134,13 +136,13 @@ export default function PaginaP037() {
               {evTaxaNacional2 && refPerdas ? (
                 <Numero
                   variante="faixa"
-                  rotulo="Referência: perdas totais na distribuição, Brasil"
+                  rotulo="Referência: perdas, Brasil"
                   natureza={prov.distribuidoras_perdas?.natureza ?? "CALCULADO"}
                   evidencia={evTaxaNacional2}
                   formato="pct"
                   casas={2}
                   unidade="da energia injetada"
-                  nota={`Concessionárias em conjunto (somas, não média das taxas): ${evTaxaNacional2.universo}.`}
+                  nota="Concessionárias em conjunto: somas, não média das taxas."
                   endereco={ancoraPainel("p037")}
                 />
               ) : (
@@ -171,7 +173,7 @@ export default function PaginaP037() {
                 formato="num"
                 casas={0}
                 unidade="distribuidoras"
-                periodo="tarifa B1, vigente na data do arquivo de tarifas"
+                periodo={`tarifa B1 no arquivo de tarifas de ${dataTarifas ? dataTexto(dataTarifas) : "data sem registro"}`}
               />
             </FaixaMetricas>
           }
@@ -229,6 +231,7 @@ export default function PaginaP037() {
                   universo={
                     <>
                       {inteiro(d.resumo.distribuidoras)} distribuidoras com CNPJ no SAMP ({SIGLAS.SAMP}), nos indicadores de continuidade ou nas tarifas ({inteiro(d.resumo.ativas)} ativas)
+                      {evTaxaNacional2 && refPerdas ? `; referência nacional de perdas: ${evTaxaNacional2.universo}` : ""}
                     </>
                   }
                   unidade="% da energia injetada; horas e interrupções por unidade consumidora; R$/MWh sem tributos"

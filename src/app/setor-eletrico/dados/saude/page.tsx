@@ -27,6 +27,7 @@ import {
   vereditoSaude,
 } from "@/lib/energia/dados-leitor";
 import { COLUNAS_ARQUIVO, catalogoDados } from "@/lib/energia/datasets";
+import { nomeDoConjunto } from "@/lib/energia/dados-ficha";
 import { manifestoDados, provenienciaDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { datasLegiveis } from "@/lib/energia/visao";
 
@@ -234,7 +235,7 @@ export default function DadosSaudePage() {
                         const ev = rv.maior_rel;
                         return (
                           <li key={c.id} className="border-b border-linha pb-4">
-                            <p className="font-medium text-carvao">{c.titulo}</p>
+                            <p className="font-medium text-carvao">{nomeDoConjunto(c).nome}</p>
                             <p className="mt-1 text-sm leading-relaxed text-carvao-muted">
                               {num(rv.observacoes ?? 0, 0)} valores revisados (pares de série e período), em {num(rv.referencias ?? 0, 0)} períodos e {plural(rv.series ?? 0, "série", "séries")}
                               {rv.ref_min && rv.ref_max ? `, de ${refLegivel(rv.ref_min)} a ${refLegivel(rv.ref_max)}` : ""}.
@@ -274,7 +275,7 @@ export default function DadosSaudePage() {
                       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted" data-lista="registros">
                         {mudancasCadastro.map((c) => (
                           <li key={c.id}>
-                            {c.titulo}: {plural(c.revisoes!.registros!.mudancas ?? 0, "campo mudou", "campos mudaram")} em {plural(c.revisoes!.registros!.chaves ?? 0, "chave", "chaves")}.
+                            {nomeDoConjunto(c).nome}: {plural(c.revisoes!.registros!.mudancas ?? 0, "campo mudou", "campos mudaram")} em {plural(c.revisoes!.registros!.chaves ?? 0, "chave", "chaves")}.
                           </li>
                         ))}
                       </ul>
@@ -296,7 +297,7 @@ export default function DadosSaudePage() {
                     <ul className="space-y-3" data-lista="falhas">
                       {r.comFalha.map((c) => (
                         <li key={c.id} className="border-b border-linha pb-3 text-sm leading-relaxed text-carvao-muted">
-                          <p className="font-medium text-carvao">{c.titulo}</p>
+                          <p className="font-medium text-carvao">{nomeDoConjunto(c).nome}</p>
                           <p>
                             {num(c.coleta.falhas, 0)} falhas em {plural(c.coleta.tentativas, "tentativa", "tentativas")}
                             {c.coleta.falhas_consecutivas ? `, ${c.coleta.falhas_consecutivas} seguidas` : ""}

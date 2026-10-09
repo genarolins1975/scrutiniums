@@ -22,6 +22,7 @@ import Ficha, { generateStaticParams } from "@/app/setor-eletrico/empresas/[enti
 import {
   COLUNAS_ATIVOS,
   COLUNAS_COMPANHIAS,
+  COR_MEDIDA,
   COLUNAS_DISTRIBUIDORAS,
   COLUNAS_GRUPOS,
   COLUNAS_PROPRIETARIOS,
@@ -38,6 +39,7 @@ import {
   comReferenciaNacional,
   dadosComparacao,
   dadosFinancas,
+  entidadesBuscaEmpresas,
   evolucaoPerdas,
   evolucaoQualidade,
   evolucaoTarifa,
@@ -51,8 +53,12 @@ import {
   linhasTipos,
   linhasTransmissao,
   padraoComparacao,
+  inteiro,
+  mwTexto,
+  nomeOuCnpj,
   padraoFinancas,
   paresPerdas,
+  passosVinculo,
   paresQualidade,
   projetar,
   reaisEscala,
@@ -72,13 +78,18 @@ import {
   textoPares,
   textoResumoAtivos,
   textoTipos,
+  vereditoCadastro,
+  vereditoControle,
+  vereditoDistribuidoras,
+  vereditoFicha,
+  vereditoFinancas,
   type ProjecaoMalha,
 } from "@/lib/energia/empresas";
 import { citacaoBase, comValorExibido, problemasEvidencia } from "@/lib/energia/evidencia";
 import { lerCaminho, pontoNaRegiao, type CamadaGeo } from "@/lib/energia/geo";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
-import { gerarCsv, matrizExportacao } from "@/lib/energia/tabela";
+import { buscarEntidades, gerarCsv, matrizExportacao } from "@/lib/energia/tabela";
 import { num, pct } from "@/lib/energia/formato";
 import type { AtivosMapa, CadeiaSocietaria, EmpresasGold, SeriesFinanceiras } from "@/lib/energia/tipos-empresas";
 
@@ -604,26 +615,29 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
 
 /* ================================================================ páginas */
 
-const MARCA_NUMERO = 'class="relative flex h-full flex-col border border-linha bg-superficie p-5"';
-function blocosNumero(h: string): string[] {
-  const out: string[] = [];
-  let i = h.indexOf(MARCA_NUMERO);
-  while (i >= 0) {
-    const ini = h.lastIndexOf("<div", i);
+/**
+ * Medidas da faixa (`Numero variante="faixa"`): cada bloco `<div role="group" ... data-metrica="">` até o fechamento. O atributo é o que o
+ * sistema editorial publica para instrumentos e testes; o cartão de antes (`border-linha bg-superficie`) não existe mais nestas páginas.
+ */
+function blocosMetrica(h: string): { rotulo: string; html: string; texto: string }[] {
+  const out: { rotulo: string; html: string; texto: string }[] = [];
+  const re = /<div role="group" aria-label="([^"]*)" data-metrica=""[^>]*>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(h))) {
     let prof = 0;
-    let j = ini;
-    const re = /<div\b|<\/div>/g;
-    re.lastIndex = ini;
+    let fim = m.index;
+    const fecha = /<div\b|<\/div>/g;
+    fecha.lastIndex = m.index;
     let mm: RegExpExecArray | null;
-    while ((mm = re.exec(h))) {
+    while ((mm = fecha.exec(h))) {
       prof += mm[0] === "</div>" ? -1 : 1;
       if (prof === 0) {
-        j = re.lastIndex;
+        fim = fecha.lastIndex;
         break;
       }
     }
-    out.push(h.slice(ini, j));
-    i = h.indexOf(MARCA_NUMERO, j);
+    const html = h.slice(m.index, fim);
+    out.push({ rotulo: m[1], html, texto: html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ") });
   }
   return out;
 }
@@ -734,10 +748,31 @@ describe("páginas renderizadas no servidor", () => {
     expect(fichas.ceb).toContain("inativa");
   });
 
-  it("todo número de destaque tem 'Comprove este número' (ou declara ausência)", () => {
-    for (const [k, h] of Object.entries({ ...html, sintese, ...fichas })) {
-      for (const b of blocosNumero(h)) expect(b.includes("Comprove este número") || b.includes("sem dado"), `${k}: ${b.slice(0, 160)}`).toBe(true);
+  it("toda medida da faixa tem natureza e período; sem ficha de prova, só as que a gold não publica, ou diz que não há dado", () => {
+    // medidas que a gold de Empresas não acompanha de ficha: contagens do cadastro, CR4, CR10 e fronteira (derivados da mesma base do HHI),
+    // contagens da CVM e do índice, DEC, FEC e tarifa (copiados das bases de Qualidade e de Conta de luz, que não publicam ficha por distribuidora)
+    const SEM_FICHA_NA_GOLD = [
+      /^Usinas em operação$/, /^Potência fiscalizada$/, /^Proprietários identificados$/, /^Quatro maiores grupos/, /^Dez maiores grupos/, /^Fronteira de usinas$/,
+      /^Distribuidoras pelo CNPJ$/, /^Com continuidade publicada$/, /^Com tarifa residencial vigente$/, /^Companhias abertas no cadastro$/, /^Com demonstrações anuais/,
+      /^Com informações trimestrais/, /^Valores reapresentados$/, /^Duração das interrupções/, /^Frequência das interrupções/, /^Tarifa residencial B1 vigente$/,
+    ];
+    const paginas = { sintese, ...html, ...fichas } as Record<string, string>;
+    for (const [k, h] of Object.entries(paginas)) {
+      const blocos = blocosMetrica(h);
+      expect(blocos.length, `${k}: medidas da faixa`).toBeGreaterThanOrEqual(4);
+      for (const b of blocos) {
+        expect(b.texto, `${k} ${b.rotulo}: natureza do dado`).toContain("Natureza do dado");
+        expect(/\d{4}|sem dado/.test(b.texto), `${k} ${b.rotulo}: período ou ausência`).toBe(true);
+        const prova = b.texto.includes("Comprove este número") || b.texto.includes("sem dado") || SEM_FICHA_NA_GOLD.some((r) => r.test(b.rotulo));
+        expect(prova, `${k} ${b.rotulo}: ficha de prova`).toBe(true);
+      }
     }
+    // as fichas que a gold publica aparecem: abertura (cadastro, transmissão, taxa nacional, receita, HHI), páginas filhas e ficha com perdas
+    const comprove = (h: string) => blocosMetrica(h).filter((b) => b.texto.includes("Comprove este número")).length;
+    expect(comprove(sintese)).toBeGreaterThanOrEqual(5);
+    expect(comprove(html.p036)).toBeGreaterThanOrEqual(2);
+    for (const id of ["p037", "p038", "p039"] as const) expect(comprove(html[id]), id).toBeGreaterThanOrEqual(1);
+    expect(comprove(fichas["cemig-d"])).toBeGreaterThanOrEqual(2);
   });
 
   it("sem estado de construção, sem hexadecimal solto e abaixo de 600 KB de HTML por página", () => {
@@ -794,5 +829,186 @@ describe("páginas renderizadas no servidor", () => {
       pct(G.cadastro.ativos.pct_mw_operacao_vinculado!, 2),
     ];
     for (const f of fontes) for (const x of numeros) expect(f, x).not.toContain(x);
+  });
+});
+
+/* ================================================================ sistema editorial */
+
+const palavras = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
+const textoDe = (h: string) => h.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+const tituloH1 = (h: string) => textoDe(/<h1\b[^>]*>([\s\S]*?)<\/h1>/.exec(h)?.[1] ?? "");
+const JUIZO = /\b(melhor(es)?|pior(es)?|eficiente|ineficiente|bom|ruim)\b/i;
+
+describe("Empresas no sistema editorial: abertura, páginas filhas e ficha", () => {
+  const abertura = renderToStaticMarkup(createElement(Sintese));
+  const filhas = { p036: PaginaAtivos, p037: PaginaDistribuidoras, p038: PaginaFinancas, p039: PaginaControle } as const;
+  const hf = Object.fromEntries(Object.entries(filhas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof filhas, string>;
+  const SLUGS = ["cemig-d", "emt", "ambar-amazonas", "cerbranorte", "certhil", "cpfl-piratining", "uhenpal"];
+  const fi = Object.fromEntries(SLUGS.map((s) => [s, renderToStaticMarkup(createElement(Ficha, { params: { entidade: s } }))]));
+
+  it("abertura: um só h1 com a pergunta da página, faixa com as medidas do cadastro, busca e os quatro caminhos antes do painel", () => {
+    expect(abertura).toContain('data-abertura="editorial"');
+    expect((abertura.match(/<h1\b/g) ?? []).length).toBe(1);
+    const titulo = tituloH1(abertura);
+    expect(titulo).toBe("Quem atua no setor elétrico?");
+    expect(palavras(titulo)).toBeGreaterThanOrEqual(5);
+    expect(palavras(titulo)).toBeLessThanOrEqual(9);
+    const a = G.cadastro.ativos;
+    const faixa = abertura.slice(abertura.indexOf("data-faixa-metricas"), abertura.indexOf("data-faixa-metricas") + 20000);
+    const txt = textoDe(faixa);
+    expect(txt).toContain(num(a.operacao.usinas, 0));
+    expect(txt).toContain(num(a.operacao.mw_fiscalizado!, 1));
+    expect(txt).toContain(num(a.proprietarios_cnpj, 0));
+    expect(txt).toContain("não é energia gerada");
+    // sem faixa de irmãs (os mesmos destinos são os capítulos) e a ordem: busca, caminhos, elos, medidas, próximos passos
+    expect(abertura).not.toContain('data-navegacao-local="faixa"');
+    const ordem = ["data-busca-empresa", 'data-navegacao-local="capitulos"', 'id="entrada"', "data-vinculo", 'id="medidas"', "data-seguir-painel"].map((x) => abertura.indexOf(x));
+    expect(ordem.every((i) => i > 0)).toBe(true);
+    expect([...ordem].sort((x, y) => x - y)).toEqual(ordem);
+    expect((abertura.match(/data-notas-painel=""/g) ?? []).length).toBe(1);
+    expect((abertura.match(/data-seguir-painel=""/g) ?? []).length).toBe(1);
+    for (const p of PAINEIS_EMPRESAS) expect(abertura).toContain(`id="sintese-${p.id}"`);
+  });
+
+  it("páginas filhas: faixa de irmãs antes do título, título com 5 a 9 palavras igual à pergunta do módulo e h2 do painel diferente", () => {
+    for (const p of PAINEIS_EMPRESAS) {
+      const h = hf[p.id];
+      expect((h.match(/<h1\b/g) ?? []).length, p.id).toBe(1);
+      expect(h.indexOf('data-navegacao-local="faixa"'), p.id).toBeGreaterThan(0);
+      expect(h.indexOf('data-navegacao-local="faixa"'), p.id).toBeLessThan(h.indexOf("<h1"));
+      const titulo = tituloH1(h);
+      expect(titulo, p.id).toBe(p.pergunta);
+      expect(palavras(titulo), p.id).toBeGreaterThanOrEqual(5);
+      expect(palavras(titulo), p.id).toBeLessThanOrEqual(9);
+      const h2 = textoDe(new RegExp(`<h2[^>]*id="${p.id}-titulo"[^>]*>([\\s\\S]*?)</h2>`).exec(h)?.[1] ?? "");
+      expect(h2, p.id).not.toBe("");
+      expect(h2, p.id).not.toBe(titulo);
+      expect((h.match(/data-notas-painel=""/g) ?? []).length, p.id).toBe(1);
+      expect((h.match(/data-seguir-painel=""/g) ?? []).length, p.id).toBe(1);
+      // a faixa traz os números; a resposta curta vem depois da figura principal, e o veredito continua fora de Analisar
+      expect(h, p.id).toContain('data-resposta-depois=""');
+      const figura = Math.min(...[h.indexOf('data-grafico="'), h.indexOf('role="img"')].filter((i) => i > 0));
+      expect(figura, p.id).toBeGreaterThan(0);
+      expect(h.indexOf('data-resposta-depois=""'), p.id).toBeGreaterThan(figura);
+      expect(h, p.id).toContain(`data-resposta="${p.id}"`);
+    }
+  });
+
+  it("ficha: título com a sigla e de 5 a 9 palavras, quatro medidas na faixa, a resposta e o aviso de ficha só nas perdas", () => {
+    for (const s of SLUGS) {
+      const d = G.distribuidoras.indice.find((x) => x.slug === s)!;
+      const h = fi[s];
+      const titulo = tituloH1(h);
+      expect(titulo, s).toBe(`${d.sigla}: perdas, continuidade e tarifa`);
+      expect(palavras(titulo), s).toBeGreaterThanOrEqual(5);
+      expect(palavras(titulo), s).toBeLessThanOrEqual(9);
+      expect(textoDe(h), s).toContain(cnpjFormatado(d.cnpj));
+      expect(h, s).toContain('data-resposta="ficha"');
+      expect(blocosMetrica(h).slice(0, 4).map((b) => b.rotulo), s).toEqual(["Perdas totais", "Duração das interrupções (DEC)", "Frequência das interrupções (FEC)", "Tarifa residencial B1 vigente"]);
+      expect(h, s).toContain("sem ficha por distribuidora");
+      // o título não repete o do primeiro gráfico nem a pergunta do painel
+      expect(h, s).toContain(`Como a ${d.sigla} atende sua área?`);
+      expect(titulo, s).not.toBe(`Como a ${d.sigla} atende sua área?`);
+    }
+  });
+
+  it("ficha: a leitura de cada medida fica ao lado da figura dela; a de uma medida sem série vem depois das seções", () => {
+    const h = fi["cemig-d"];
+    expect(h.indexOf('data-como-ler="perdas"')).toBeGreaterThan(h.indexOf('id="perdas"'));
+    expect(h.indexOf('data-como-ler="perdas"')).toBeLessThan(h.indexOf('id="continuidade"'));
+    expect(h.indexOf('data-como-ler="continuidade"')).toBeLessThan(h.indexOf('id="tarifa"'));
+    expect(h.indexOf('data-como-ler="tarifa"')).toBeLessThan(h.indexOf('id="pares"'));
+    // sem a série de uma medida, a explicação dela aparece mesmo assim (o número está na faixa)
+    const d = gold().distribuidoras.indice.find((x) => x.slug === "cemig-d")!;
+    expect(d).toBeTruthy();
+    const algumaSemSerie = Object.values(fi).filter((x) => !x.includes('id="tarifa"') || !x.includes('id="continuidade"') || !x.includes('id="perdas"'));
+    for (const x of algumaSemSerie) expect(x).toMatch(/data-como-ler="[a-z ]*"/);
+  });
+
+  it("busca da abertura: uma entidade por CNPJ, com o destino que serve a cada papel, e a ficha da distribuidora quando ela também é companhia aberta", () => {
+    const ents = entidadesBuscaEmpresas(G);
+    const ids = ents.map((e) => e.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    const cnpjs = new Set<string>([
+      ...G.distribuidoras.indice.map((d) => d.cnpj),
+      ...G.financas.companhias.map((c) => c.cnpj),
+      ...G.cadastro.proprietarios.map((p) => p.cnpj),
+      ...G.controle.grupos.map((x) => x.cnpj),
+    ]);
+    // uma companhia aberta que é distribuidora entra pela ficha dela (mesmo CNPJ ou a ligação pelo slug), então o total pode ser menor que a união dos CNPJ
+    expect(ids.length).toBeLessThanOrEqual(cnpjs.size);
+    expect(ids.length).toBeGreaterThan(G.distribuidoras.indice.length);
+    const cemig = G.distribuidoras.indice.find((d) => d.slug === "cemig-d")!;
+    const e = ents.find((x) => x.id === cemig.cnpj)!;
+    expect(e.rotulo).toBe("CEMIG-D");
+    expect(e.destinos[0]).toEqual({ rotulo: "Ficha da distribuidora", href: rotaEntidade("cemig-d") });
+    expect(e.sinonimos).toContain(cnpjFormatado(cemig.cnpj));
+    expect(e.detalhe).toContain(cnpjFormatado(cemig.cnpj));
+    const comp = G.financas.companhias.find((c) => !c.distribuidora_slug && !G.distribuidoras.indice.some((d) => d.cnpj === c.cnpj))!;
+    const ec = ents.find((x) => x.id === comp.cnpj)!;
+    expect(ec.destinos.some((x) => x.rotulo === "Demonstrações na CVM" && x.href.includes(`fin.sel=${comp.cnpj}`) && x.href.endsWith("#p038"))).toBe(true);
+    const dono = G.cadastro.proprietarios[0];
+    const ed = ents.find((x) => x.id === dono.cnpj)!;
+    expect(ed.destinos.some((x) => x.rotulo === "Árvore de controle" && x.href.includes(`ctl.e=${dono.cnpj}`))).toBe(true);
+    // a busca por CNPJ formatado e por sigla chega à mesma entidade
+    expect(buscarEntidades(ents, cnpjFormatado(cemig.cnpj), 3).itens[0].id).toBe(cemig.cnpj);
+    expect(buscarEntidades(ents, "cemig-d", 3).itens.map((x) => x.id)).toContain(cemig.cnpj);
+  });
+
+  it("elos entre empresa, participação, ativo e controle: contagens da gold, na ordem, com a preposição certa", () => {
+    const passos = passosVinculo(G);
+    expect(passos.map((p) => p.id)).toEqual(["empresa", "participacao", "ativo", "controle"]);
+    expect(passos[0].contagem).toContain(inteiro(G.cadastro.ativos.proprietarios_cnpj));
+    expect(passos[1].contagem).toContain(pct(G.cadastro.ativos.pct_mw_operacao_vinculado!, 2).replace("%", ""));
+    expect(passos[2].contagem).toContain(inteiro(G.cadastro.ativos.usinas));
+    for (const p of passos) {
+      expect(p.liga, p.id).toMatch(/^pel[oa] /);
+      expect(`Documentado ${p.liga}`, p.id).not.toMatch(/ por (o|a|os|as) /);
+    }
+    const g2 = gold();
+    g2.cadastro.ativos.proprietarios_cnpj = 1234;
+    expect(passosVinculo(g2)[0].contagem).toContain("1.234");
+  });
+
+  it("uma cor por medida, a mesma em todos os gráficos de Empresas, e todas tokens do sistema", () => {
+    const cores = Object.values(COR_MEDIDA);
+    expect(new Set(cores).size).toBe(cores.length);
+    for (const c of cores) expect(c).toMatch(/^var\(--serie-comp-\d\)$/);
+    for (const f of ["src/components/energia/EmpresasProprietarios.tsx", "src/components/energia/EmpresasControle.tsx", "src/app/setor-eletrico/empresas/controle/page.tsx", "src/app/setor-eletrico/empresas/ativos/page.tsx"]) {
+      expect(ler(f), f).not.toMatch(/#[0-9a-fA-F]{6}\b/);
+    }
+  });
+
+  it("os textos de resposta e de veredito não julgam a empresa nem a distribuidora", () => {
+    const d = G.distribuidoras.indice.find((x) => x.slug === "cemig-d")!;
+    const textos = [
+      vereditoCadastro(G.cadastro),
+      vereditoDistribuidoras(G.distribuidoras, 14.75, 2025),
+      vereditoFinancas(G.financas),
+      vereditoControle(G.controle),
+      ...G.distribuidoras.indice.map((x) => vereditoFicha(x, x.perdas?.completo ? 14.75 : null)),
+      respostaFicha(d),
+    ];
+    for (const t of textos) expect(t).not.toMatch(JUIZO);
+    // e nenhuma das páginas diz "melhor" ou "pior" no texto que o leitor vê
+    for (const h of [abertura, ...Object.values(hf), ...Object.values(fi)]) expect(textoDe(h)).not.toMatch(JUIZO);
+  });
+
+  it("o veredito do cadastro diz quem é o maior dono direto e muda quando o dado muda", () => {
+    const maior = G.cadastro.proprietarios.reduce((m, p) => ((p.mw_proporcional ?? 0) > (m.mw_proporcional ?? 0) ? p : m));
+    const v = vereditoCadastro(G.cadastro);
+    expect(v).toContain(nomeOuCnpj(maior.nome, maior.cnpj));
+    expect(v).toContain(mwTexto(maior.mw_proporcional));
+    expect(v).toContain(pct(G.cadastro.ativos.pct_mw_operacao_vinculado!, 2));
+    const c2 = gold().cadastro;
+    c2.proprietarios = [{ ...c2.proprietarios[0], nome: "EMPRESA NOVA S.A.", mw_proporcional: 99999.9 }, ...c2.proprietarios];
+    expect(vereditoCadastro(c2)).toContain("EMPRESA NOVA S.A.");
+    expect(vereditoCadastro(c2)).toContain(mwTexto(99999.9));
+    // sem proprietário com potência, o veredito não inventa um nome
+    c2.proprietarios = [];
+    expect(vereditoCadastro(c2)).not.toContain("O maior dono direto");
+    // limite da resposta curta: até 40 palavras e três frases
+    expect(palavras(v)).toBeLessThanOrEqual(40);
+    expect((v.match(/[.!?](?=\s|$)/g) ?? []).length).toBeLessThanOrEqual(3);
   });
 });

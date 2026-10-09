@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ConceitoPage from "@/app/setor-eletrico/aprenda/[conceito]/page";
 import AprendaPage from "@/app/setor-eletrico/aprenda/page";
+import { AprendaVerbete } from "@/components/energia/AprendaVerbete";
 import TrilhasPage from "@/app/setor-eletrico/aprenda/trilhas/page";
 import TrilhaPage from "@/app/setor-eletrico/aprenda/trilhas/[trilha]/page";
 import { AprendaProva } from "@/components/energia/AprendaProva";
@@ -358,5 +359,38 @@ describe("exemplo indisponível", () => {
     expect(t).toContain("Abrir o painel: PLD: CMO e formação do preço");
     // sem alternativa, só a frase
     expect(texto(renderToStaticMarkup(createElement(AprendaProva, { prova: null, volta: "verbete:pld" })))).not.toContain("Abrir o painel");
+  });
+});
+
+describe("ficha do verbete em preparação e sem pergunta escrita", () => {
+  it("em preparação: diz que está em preparação, não publica definição, pergunta, exemplo, unidade nem contraste, e mantém o painel e a fonte planejada", () => {
+    const h = renderToStaticMarkup(createElement(AprendaVerbete, { c: emPreparacao }));
+    const t = texto(h);
+    expect(t).toContain("○ verbete em preparação");
+    expect(t).toContain("A definição deste conceito ainda não foi conferida na fonte primária e por isso não é publicada.");
+    expect(t).toContain("Fonte primária planejada: Documento primário ainda a conferir.");
+    expect(h).toContain('role="status"');
+    for (const n of ["Em uma frase", "Exemplo real", "Exemplo sintético", "Não confundir com", "Por que importa", "Como é medido"]) expect(h, n).not.toContain(`>${n}<`);
+    expect(h).not.toContain("data-prova");
+    expect(h).not.toContain('data-unidade="true"');
+    expect(h).not.toContain("conferido na fonte primária em");
+    // sem pergunta (o lead não existe) e sem "Fonte:" de verbete conferido
+    expect(h).not.toContain("ed-lead");
+    expect(t).not.toContain("Fonte: ");
+    // o painel onde o conceito aparece continua à mão, sem o retorno (que só existe para verbete conferido)
+    expect(h).toContain('href="/setor-eletrico/mercado#livre-regulado"');
+    expect(h).not.toContain("volta=");
+    // o rótulo é do tipo de página, e a página continua sendo um verbete
+    expect(h).toContain('data-tipo-pagina="verbete"');
+  });
+
+  it("conferido sem pergunta escrita: a ficha abre normalmente, sem lead e sem frase quebrada", () => {
+    const h = renderToStaticMarkup(createElement(AprendaVerbete, { c: conferidoSemPergunta }));
+    const t = texto(h);
+    expect(t).toContain("Texto de definição que só a busca lê.");
+    expect(t).toContain("● conferido na fonte primária em 01/10/2026");
+    expect(h).not.toContain("ed-lead");
+    expect(t).not.toMatch(/undefined|NaN|\[object Object\]/);
+    expect(h).toContain('id="exemplo"');
   });
 });

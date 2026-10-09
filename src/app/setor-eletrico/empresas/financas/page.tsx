@@ -99,7 +99,7 @@ export default function PaginaP038() {
           rotulo="Empresas"
           siglas={["CVM", "DFP", "ITR", "ANEEL"]}
           titulo={painel("p038").pergunta}
-          lead={`Receita, resultado, dívida, patrimônio e caixa das companhias abertas do setor, como reportados à CVM (${SIGLAS.CVM}), com o consolidado e o individual separados. Nada se soma entre companhias.`}
+          lead={`Receita, resultado, dívida, patrimônio e caixa das companhias abertas do setor, como reportados à CVM (${SIGLAS.CVM}). Nada se soma entre companhias.`}
           recorte={`Exercícios de ${exercicios} (DFP) · trimestres até ${dataTexto(f.periodos.ultimo_trimestre)} (ITR) · R$ nominais, em R$ milhões`}
           fonte="CVM, Demonstrações Financeiras Padronizadas (DFP) e Informações Trimestrais (ITR)"
           referencia={
@@ -122,7 +122,7 @@ export default function PaginaP038() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores do universo de companhias abertas"
-              nota={`${f.universo.nota_cobertura} Contagens do universo inteiro, fixas: não mudam com as companhias, a conta, o escopo nem a frequência escolhidos.`}
+              nota={`${f.universo.nota_cobertura} Contagens fixas: não mudam com as escolhas do gráfico.`}
             >
               <Numero
                 variante="faixa"
@@ -163,8 +163,8 @@ export default function PaginaP038() {
                 formato="num"
                 casas={0}
                 unidade="valores"
-                periodo="no comparativo do ano seguinte"
-                nota={`${inteiro(f.revisoes.documentos_com_mais_de_uma_versao)} documentos têm mais de uma versão na CVM.`}
+                periodo={`exercícios de ${exercicios}`}
+                nota={`Reapresentados no comparativo do ano seguinte; ${inteiro(f.revisoes.documentos_com_mais_de_uma_versao)} documentos com mais de uma versão.`}
               />
             </FaixaMetricas>
           }
