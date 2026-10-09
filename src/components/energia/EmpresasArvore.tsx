@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { cnpjFormatado, nomeOuCnpj, textoArvore, textoSocios, type ArvoreSocietaria } from "@/lib/energia/empresas";
 import { num } from "@/lib/energia/formato";
 

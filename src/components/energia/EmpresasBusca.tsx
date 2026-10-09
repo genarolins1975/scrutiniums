@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { useId, useMemo, useState } from "react";
 import type { EntidadeEmpresa } from "@/lib/energia/empresas";
 import { num } from "@/lib/energia/formato";

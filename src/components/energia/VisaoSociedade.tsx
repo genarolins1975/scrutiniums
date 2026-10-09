@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR, mesAno, plural } from "@/lib/energia/formato";

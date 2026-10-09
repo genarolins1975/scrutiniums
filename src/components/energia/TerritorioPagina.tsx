@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { TerritorioLinkPainel } from "@/components/energia/TerritorioLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";

@@ -116,6 +116,7 @@ export default function AfluenciaPage() {
           siglas={["ENA", "MLT", "REE", "SIN", "MWmed", "EAR", "ONS", "PMO"]}
           titulo={perguntaPainel("p018")}
           lead="A energia natural afluente (ENA) de 30 dias, em % da média de longo termo (MLT)."
+          limite="Afluência alta não quer dizer reservatório cheio: o armazenamento depende também de quanto se gera, verte e transfere."
           recorte={`Até ${dataBR(g.dias_referencia.ena)} · SIN, REE e bacias · % da MLT`}
           fonte="ONS, ENA Diário"
           referencia={

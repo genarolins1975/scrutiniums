@@ -28,6 +28,7 @@ export function CabecalhoModulo({
   fonte,
   datas,
   metricas,
+  limite,
 }: {
   /** Rótulo acima do título (módulo ou seção). Omitido na abertura de módulo, onde repetiria a navegação; útil em página filha, como migalha. */
   rotulo?: string;
@@ -50,6 +51,12 @@ export function CabecalhoModulo({
   datas?: ReactNode;
   /** Faixa de métricas (FaixaMetricas) logo abaixo da abertura. */
   metricas?: ReactNode;
+  /**
+   * O que a página não permite concluir, em uma ou duas frases: a quarta resposta da abertura (o que estou vendo = título e lead; por que
+   * importa = o lead; com o que comparar = a faixa de métricas e a primeira figura; o que não permite concluir = esta linha; onde aprofundar
+   * = abas e níveis). Sempre à vista, abaixo do recorte e da fonte. Só na abertura editorial (com `lead`); não repete a nota do painel: é a versão curta.
+   */
+  limite?: ReactNode;
 }) {
   if (lead === undefined) {
     const abertura = children && <div className="cab-lead ed-lead max-w-prose2 text-carvao-muted">{children}</div>;
@@ -95,6 +102,12 @@ export function CabecalhoModulo({
               </DetalheDoNivel>
             )}
           </div>
+        )}
+        {limite && (
+          <p className="mt-2 max-w-3xl text-sm leading-snug text-carvao" data-limite="">
+            <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+            {limite}
+          </p>
         )}
         {!haBloco && <LegendaDeSiglas siglas={siglas} />}
       </header>

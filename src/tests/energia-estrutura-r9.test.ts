@@ -73,6 +73,27 @@ describe("abertura do módulo recolhida em Entender", () => {
     expect(fora).not.toContain("Texto longo de apresentação");
   });
 
+  it("com limite, a abertura diz à vista o que a página não permite concluir, depois do recorte e da fonte e fora do bloco recolhido", () => {
+    const e = renderToStaticMarkup(
+      createElement(CabecalhoModulo, {
+        titulo: "A água que chega está acima do normal?",
+        lead: "A ENA de 30 dias, em % da MLT.",
+        recorte: "29/09/2026 · SIN",
+        fonte: "ONS, ENA",
+        referencia: "ONS, até 29/09/2026",
+        limite: "Afluência alta não quer dizer reservatório cheio.",
+      }),
+    );
+    const bloco = e.match(/<details[^>]*data-sobre-pagina="true"[^>]*>[\s\S]*?<\/details>/)![0];
+    const fora = e.replace(bloco, "");
+    expect(fora).toContain('data-limite=""');
+    expect(fora).toContain("Não permite concluir");
+    expect(fora).toContain("Afluência alta não quer dizer reservatório cheio.");
+    expect(fora.indexOf("Fonte: ONS, ENA")).toBeLessThan(fora.indexOf("Não permite concluir"));
+    // sem limite, a linha não existe
+    expect(renderToStaticMarkup(createElement(CabecalhoModulo, { titulo: "T", lead: "L" }))).not.toContain("data-limite");
+  });
+
   it("com lead e rótulo, o rótulo continua acima do título (página filha usa como migalha)", () => {
     const e = renderToStaticMarkup(createElement(CabecalhoModulo, { rotulo: "Água e clima", titulo: "A água que chega está acima do normal?", lead: "Frase." }));
     expect(e).toContain("Água e clima");

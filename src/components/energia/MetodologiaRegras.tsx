@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ListaConsultavel } from "@/components/energia/ListaConsultavel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 
 /**

@@ -1,7 +1,7 @@
 "use client";
 
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ListaConsultavel, type ContextoLista } from "@/components/energia/ListaConsultavel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
