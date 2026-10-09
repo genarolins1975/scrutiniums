@@ -94,6 +94,8 @@ export type ContextoVisao = {
   cargaNoModulo: string | null;
   saldoRede: string | null;
   /** Carga do SIN em 7 dias como a frase a usa (carga.json): média, comparação e janelas. */
+  /** A carga nacional frente ao ano anterior em janelas maiores que o dia, com o critério do número em destaque (o mesmo dia da semana) e o das mesmas datas nos 7 dias. */
+  cargaJanelas: { semana7: number | null; dias28: number | null; semanas52: number | null; mesmasDatas7: number | null } | null;
   carga7d: { media: number | null; mediaAnterior: number | null; variacaoPct: number | null; inicio: string; fim: string; inicioAnterior: string; fimAnterior: string } | null;
   /** Participação térmica de 7 dias e a faixa dos 365 dias anteriores (geracao.json). */
   termica: { participacao: number | null; mediana: number | null; p10: number | null; p90: number | null; inicio: string | null; fim: string | null } | null;
@@ -185,6 +187,14 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
     : null;
   const sinDet = cargaDet?.p025.comparacoes.subsistemas.find((s) => s.sm === "SIN");
   const j7 = sinDet?.janelas["7d"];
+  const cargaJanelas = sinDet
+    ? {
+        semana7: j7?.equivalente?.variacao_pct ?? null,
+        dias28: sinDet.janelas["28d"]?.equivalente?.variacao_pct ?? null,
+        semanas52: sinDet.janelas["52_semanas"]?.equivalente?.variacao_pct ?? null,
+        mesmasDatas7: j7?.mesmas_datas?.variacao_pct ?? null,
+      }
+    : null;
   const cargaNoModulo = textoCargaNoModulo({
     mesmasDatasPct: j7?.mesmas_datas?.variacao_pct ?? null,
     mesmosDiasDaSemanaPct: j7?.equivalente?.variacao_pct ?? null,
@@ -231,6 +241,7 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
     aguaModulo: diaAgua && aguaSin && aguaSin.dia && aguaSin.dia !== diaAgua && typeof aguaSin.ear_pct === "number" ? { dia: aguaSin.dia, pct: aguaSin.ear_pct } : null,
     cargaNoModulo,
     saldoRede,
+    cargaJanelas,
     carga7d,
     termica,
     diasDosModulos: { agua: aguaSin?.dia ?? null, rede: redeDet?.referencia.dia ?? null },

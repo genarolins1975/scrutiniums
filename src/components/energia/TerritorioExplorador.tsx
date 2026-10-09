@@ -4,18 +4,18 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNod
 import { Comparador } from "@/components/energia/Comparador";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { FichaDistribuidora, FichaMunicipio, FichaSubmercado, FichaUf, FichaUsina } from "@/components/energia/TerritorioFicha";
-import { TerritorioMapa, type DicaMapa, type GrupoPontosMapa, type PoligonoDestaque, type SobreposicaoMapa } from "@/components/energia/TerritorioMapa";
+import { TerritorioMapa, type DicaMapa, type GrupoPontosMapa, type PoligonoDestaque, type RotuloMapa, type SobreposicaoMapa } from "@/components/energia/TerritorioMapa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { ROTULO_METODO, type ValorClassificavel } from "@/lib/energia/escalas";
 import { dataBR, num } from "@/lib/energia/formato";
-import { pontoRotulo, validaCamada, type CamadaGeo, type FeatureGeo, type Ponto } from "@/lib/energia/geo";
+import { caixaDoCaminho, pontoRotulo, validaCamada, type CamadaGeo, type ContornoGeo, type FeatureGeo, type Ponto } from "@/lib/energia/geo";
 import { coresParaClasses, descreveRegiao, moverNaLista, preenchimento } from "@/lib/energia/mapa-coropletico";
 import { LIMITE_COMPARACAO, alternarSelecao, buscarEntidades } from "@/lib/energia/tabela";
 import {
   CAMADAS,
   COLUNAS_DISTRIBUIDORAS,
   COLUNAS_ISOLADOS,
-  COLUNAS_SUBMERCADOS,
+  colunasSubmercados,
   COLUNAS_UFS_INDICADORES,
   COLUNAS_UFS_SUBMERCADO,
   COLUNAS_USINAS,
@@ -339,10 +339,20 @@ function Busca({
         {carregando ? "Carregando os 5.571 municípios do IBGE para a busca…" : "Digite parte do nome, a sigla da UF, o CNPJ ou o código IBGE. Setas percorrem a lista; Enter escolhe."}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-limite-busca="">
-        Cada número é da área da sua fonte: tarifa, perdas, DEC e FEC são da distribuidora inteira, e preço e energia armazenada são do submercado, nunca do município.{" "}
-        <a href="#territorio-limites" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+        <a href="#territorio-limites" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
           O que a página não permite concluir
         </a>
+      </p>
+      <p className="sr-only" role="status" aria-live="polite" data-anuncio-busca="">
+        {!aberta || consulta.trim() === ""
+          ? ""
+          : res.total === 0
+            ? carregando
+              ? "Os municípios ainda estão chegando; tente de novo em instantes."
+              : "Nenhum resultado para essa busca."
+            : res.total > res.itens.length
+              ? `${num(res.total, 0)} resultados; mostrando ${num(res.itens.length, 0)}. Refine a busca.`
+              : `${num(res.total, 0)} ${res.total === 1 ? "resultado" : "resultados"}.`}
       </p>
       <ul
         id={`${uid}-lista`}
@@ -371,7 +381,7 @@ function Busca({
           </li>
         ))}
         {res.total === 0 && (
-          <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
+          <li role="presentation" aria-hidden="true" className="px-3 py-2 text-xs text-carvao-muted">
             {carregando ? "Os municípios ainda estão chegando; tente de novo em instantes." : "Nenhum resultado para essa busca."}
           </li>
         )}
@@ -484,6 +494,10 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     falha: ReactNode;
     fills: string[];
     contornos: boolean;
+    /** Contorno de cada UF desenhado a partir das próprias UFs (camadas que pintam a UF inteira, sem a malha municipal). */
+    contornosUf: boolean;
+    /** Siglas das UFs sobre o mapa. */
+    rotulos: boolean;
     sobreposicoes: SobreposicaoMapa[];
     destaques: PoligonoDestaque[];
     pontos: GrupoPontosMapa[];
@@ -498,6 +512,17 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
 
   const ufDeFeature = useMemo(() => new Map((geoUf?.features ?? []).map((f) => [f.id, f.uf])), [geoUf]);
   const featPorUf = useMemo(() => new Map((geoUf?.features ?? []).map((f) => [f.uf, f])), [geoUf]);
+  // siglas das UFs sobre o mapa e o contorno de cada UF para as camadas que pintam a UF inteira
+  const rotulosUf = useMemo<RotuloMapa[]>(
+    () =>
+      (geoUf?.features ?? []).flatMap((f) => {
+        const p = pontoRotulo(f.d);
+        const c = caixaDoCaminho(f.d);
+        return p ? [{ id: f.id, texto: f.uf, x: p[0], y: p[1], peso: c ? c.largura * c.altura : 0 }] : [];
+      }),
+    [geoUf],
+  );
+  const contornosUf = useMemo<ContornoGeo[]>(() => (geoUf?.features ?? []).map((f) => ({ id: f.id, uf: f.uf, d: f.d })), [geoUf]);
   // ponto de rótulo (dentro da maior parte da região): centro do "Aproximar"
   const centro = (f: FeatureGeo | undefined): Ponto | null => (f ? pontoRotulo(f.d) : null);
 
@@ -522,6 +547,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
     falha: null,
     fills: [],
     contornos: false,
+    contornosUf: false,
+    rotulos: false,
     sobreposicoes: [],
     destaques: [],
     pontos: [],
@@ -557,7 +584,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         }
       }
       const destaques: PoligonoDestaque[] = [];
-      for (const u of dados.ufs.filter((x) => x.estado.startsWith("provado por uma"))) {
+      for (const u of dados.ufs.filter((x) => x.estado.startsWith("conferido por uma"))) {
         const f = featPorUf.get(u.uf);
         if (f) destaques.push({ id: `tracejado-${u.uf}`, d: f.d, estilo: "tracejado" });
       }
@@ -572,10 +599,11 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         ...vazio,
         geo: geoUf,
         fills,
+        rotulos: true,
         sobreposicoes,
         destaques,
         foco: centro(corr.uf ? featPorUf.get(corr.uf) : undefined),
-        titulo: "Submercado de cada UF (camada oficial da EPE, pertença provada pela carga do ONS)",
+        titulo: "Submercado de cada UF (camada oficial da EPE, pertença conferida pela carga do ONS em dois dias)",
         descricao: `Mapa das 27 UFs pintadas pelo submercado: ${SUBMERCADOS.map((s) => `${NOME_SUBMERCADO[s]} com ${contaUf(s)} UFs`).join(", ")}. A tabela abaixo do mapa traz as mesmas UFs.`,
         legenda: (
           <Legenda
@@ -583,7 +611,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             itens={[
               ...SUBMERCADOS.map((s) => ({ id: s, rotulo: `${NOME_SUBMERCADO[s]} (UFs)`, cor: fundoSubmercado(s), contagem: contaUf(s) })),
               { id: "fora", rotulo: "Município fora do SIN: submercado não se aplica", cor: COR_NAO_SE_APLICA, contagem: e.fora_do_sin ?? null },
-              { id: "isol", rotulo: "Município com localidade isolada (contorno tracejado)", cor: "var(--cor-superficie)", contagem: e.com_localidade_isolada ?? null, forma: "tracejado" },
+              { id: "isol", rotulo: "Município com localidade isolada, dentro do SIN (contorno tracejado)", cor: "var(--cor-superficie)", contagem: e.com_localidade_isolada ?? null, forma: "tracejado" },
               { id: "toco", rotulo: "UF com área de carga sem carga nos dias conferidos (contorno tracejado)", cor: "var(--cor-superficie)", forma: "tracejado" },
             ]}
             nota="A divisa é a da UF: o ONS não publica limite geográfico do submercado. Município fora do SIN não pertence ao submercado da cor da UF."
@@ -647,6 +675,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         ...vazio,
         geo: geoUf,
         fills: geoUf.features.map(() => "var(--cor-superficie)"),
+        contornosUf: true,
+        rotulos: true,
         destaques: destaquesBase(),
         pontos,
         pontoSelecionado: ponto,
@@ -775,6 +805,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
         geo: geoMun,
         fills,
         contornos: true,
+        rotulos: true,
         destaques: destaquesBase(),
         foco: centro(corr.municipio ? featMun.get(corr.municipio) : undefined),
         titulo: "Áreas das distribuidoras: municípios inteiros da relação oficial da ANEEL",
@@ -813,6 +844,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       geo: geoMun,
       fills,
       contornos: true,
+      rotulos: true,
       destaques,
       foco: centro(corr.municipio ? featMun.get(corr.municipio) : undefined),
       titulo: `${def.rotulo} por município (${def.unidade})`,
@@ -904,13 +936,18 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   const fichaPronta = Boolean(selMun || selDist || selUf || selSm || selUsi);
   useEffect(() => {
     if (pedidoFoco === 0 || !fichaPronta) return;
-    const caixa = fichaRef.current;
-    const titulo = caixa?.querySelector<HTMLElement>("[data-foco-ficha]");
-    if (!caixa || !titulo) return;
-    titulo.focus({ preventScroll: true });
-    const r = caixa.getBoundingClientRect();
-    const fora = r.top > window.innerHeight * 0.85 || r.bottom < 0;
-    if (fora) caixa.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    // um instante depois do gesto: no toque, o navegador entrega o mousedown de compatibilidade depois do pointerup que escolheu a região e leva o
+    // foco para o <main>; o foco do título da ficha só vale se vier depois dele
+    const espera = window.setTimeout(() => {
+      const caixa = fichaRef.current;
+      const titulo = caixa?.querySelector<HTMLElement>("[data-foco-ficha]");
+      if (!caixa || !titulo) return;
+      titulo.focus({ preventScroll: true });
+      const r = caixa.getBoundingClientRect();
+      const fora = r.top > window.innerHeight * 0.85 || r.bottom < 0;
+      if (fora) caixa.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }, 120);
+    return () => window.clearTimeout(espera);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pedidoFoco, fichaPronta]);
 
@@ -1020,7 +1057,8 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
               descricao={montagem.descricao}
               geo={montagem.geo}
               fills={montagem.fills}
-              contornos={montagem.contornos ? montagem.geo.contornos?.uf ?? null : null}
+              contornos={montagem.contornosUf ? contornosUf : montagem.contornos ? montagem.geo.contornos?.uf ?? null : null}
+              rotulos={montagem.rotulos ? rotulosUf : []}
               sobreposicoes={montagem.sobreposicoes}
               destaques={montagem.destaques}
               pontos={montagem.pontos}
@@ -1047,7 +1085,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
           {cam === "submercado" && !(geoMun && municipios) && cMalha.estado !== "carregando" && (
             <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3 text-sm text-carvao-muted">
               <p className="min-w-0 flex-[1_1_16rem]">
-                {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada. Para vê-los no mapa, a página carrega os municípios.
+                {inteiro(dados.estadosMunicipio.fora_do_sin ?? 0)} municípios estão fora do SIN e outros {inteiro(dados.estadosMunicipio.com_localidade_isolada ?? 0)} têm localidade isolada, mas ficam dentro do SIN. Para vê-los no mapa, a página carrega os municípios.
               </p>
               <button type="button" onClick={() => setPedidoMalha(true)} className="inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo">
                 Mostrar os municípios fora do SIN
@@ -1192,7 +1230,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
       <Secao titulo="Tabelas por tipo de área: cada número na tabela da sua área" nivel="analisar" id="territorio-graos">
         <TabelaInterativa
           titulo="Submercados: preço, armazenamento e MMGD estimada (valores do submercado inteiro)"
-          colunas={COLUNAS_SUBMERCADOS}
+          colunas={colunasSubmercados(dados.submercados.find((x) => x.mmgd_ons_ref)?.mmgd_ons_ref ?? null)}
           linhas={dados.submercados}
           chaveLinha="id"
           colunaRotulo="nome"

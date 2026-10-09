@@ -17,6 +17,7 @@ import {
   respostaSubmercado,
   respostaUf,
   respostaUsina,
+  SEM_SINAL_PERDAS,
   textoDefasagem,
   textoDescontoLiquido,
   textoReferencia,
@@ -63,11 +64,13 @@ function Grao({ grao, titulo, dados, children, id, nota }: { grao: IdGraoTerrito
 
 function Item({ rotulo, valor, detalhe }: { rotulo: string; valor: ReactNode; detalhe?: ReactNode }) {
   return (
-    // abaixo de 640 px o rótulo e o valor ficam um sobre o outro, cada um com a largura inteira e quebra só entre palavras; a partir daí, duas colunas
-    <div className="grid grid-cols-1 gap-y-0.5 text-sm sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-3">
-      <dt className="text-carvao-muted [overflow-wrap:normal] [word-break:normal] hyphens-none">{rotulo}</dt>
-      <dd className="tabular-nums text-carvao sm:text-right">{valor}</dd>
-      {detalhe && <dd className="text-xs text-carvao-muted sm:col-span-2">{detalhe}</dd>}
+    // Rótulo e valor ficam um sobre o outro abaixo de 640 px e na coluna estreita da ficha (24 rem, a partir de 1024 px); entre 640 e 1023 px, em duas colunas
+    // com largura mínima para o rótulo e quebra no valor: uma coluna "auto" deixava o valor longo ("sem dado: incorporada por...") tomar a linha e o rótulo
+    // escrever por cima dele.
+    <div className="grid grid-cols-1 gap-y-0.5 text-sm sm:grid-cols-[minmax(8rem,2fr)_minmax(0,3fr)] sm:gap-x-3 lg:grid-cols-1">
+      <dt className="min-w-0 text-carvao-muted [overflow-wrap:normal] [word-break:normal] hyphens-none">{rotulo}</dt>
+      <dd className="min-w-0 tabular-nums text-carvao [overflow-wrap:anywhere] sm:text-right lg:text-left">{valor}</dd>
+      {detalhe && <dd className="min-w-0 text-xs text-carvao-muted [overflow-wrap:anywhere] sm:col-span-2 lg:col-span-1">{detalhe}</dd>}
     </div>
   );
 }
@@ -84,9 +87,9 @@ function Fonte({ dados, chave, extra }: { dados: DadosExplorador; chave: ChaveFo
 
 function Ausente({ motivo }: { motivo: string | null }) {
   return (
-    <span className="inline-flex items-center gap-1.5 text-carvao-muted">
-      <span aria-hidden="true" className="inline-block h-3 w-3 border border-mineral" style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }} />
-      sem dado{motivo ? `: ${motivoLegivel(motivo)}` : ""}
+    <span className="inline-flex max-w-full items-start gap-1.5 text-left text-carvao-muted">
+      <span aria-hidden="true" className="mt-1 inline-block h-3 w-3 shrink-0 border border-mineral" style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }} />
+      <span className="min-w-0 [overflow-wrap:anywhere]">sem dado{motivo ? `: ${motivoLegivel(motivo)}` : ""}</span>
     </span>
   );
 }
@@ -140,9 +143,17 @@ export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDi
     <>
     <dl className="space-y-2">
       <Item
-        rotulo={`Perdas totais sobre a energia injetada${d.perdas_ano ? ` (${d.perdas_ano})` : ""}`}
+        rotulo={`Perdas totais${d.perdas_base && d.perdas_base !== "sem registro da base" ? ` sobre ${d.perdas_base}` : ""}${d.perdas_ano ? ` (${d.perdas_ano})` : ""}`}
         valor={valorOu(d.perdas_pct, 2, "%", d.perdas_motivo)}
-        detalhe={[d.perdas_situacao === "ano parcial" ? `ano parcial, ${d.perdas_meses} meses: não comparável a ano completo` : null, d.perdas_ressalvas].filter(Boolean).join(" ") || undefined}
+        detalhe={
+          [
+            d.perdas_pct_pub !== null ? `sobre a energia injetada publicada seria ${num(d.perdas_pct_pub, 2)}%` : null,
+            d.perdas_ressalvas ??
+              (d.perdas_sinal && d.perdas_sinal !== SEM_SINAL_PERDAS ? `taxa sinalizada pelo módulo Perdas (${d.perdas_sinal}): fica fora das comparações entre distribuidoras` : null),
+          ]
+            .filter(Boolean)
+            .join(". ") || undefined
+        }
       />
       <Item
         rotulo={`DEC e FEC${d.qual_ano ? ` (${d.qual_ano})` : ""}`}
@@ -152,7 +163,11 @@ export function BlocosDistribuidora({ d, dados, compacto = false }: { d: LinhaDi
       <Item
         rotulo="Tarifa B1 residencial (TE + TUSD, sem tributos)"
         valor={valorOu(d.tarifa, 2, "R$/MWh", d.tarifa_motivo)}
-        detalhe={d.tarifa === null ? undefined : `TE ${numTexto(d.te, 2)} e TUSD ${numTexto(d.tusd, 2)}; ${d.tarifa_ato ?? "ato sem número"}, vigência ${d.tarifa_vigencia ?? "sem data"}`}
+        detalhe={
+          d.tarifa === null
+            ? undefined
+            : `${num(d.tarifa / 1000, 4)} R$/kWh, a unidade da conta de luz; TE ${numTexto(d.te, 2)} e TUSD ${numTexto(d.tusd, 2)} R$/MWh; ${d.tarifa_ato ?? "ato sem número"}, vigência ${d.tarifa_vigencia ?? "sem data"}`
+        }
       />
       <Item
         rotulo="MMGD cadastrada na distribuidora"
@@ -383,7 +398,7 @@ export function FichaMunicipio({
       <Grao grao="submercado" titulo="Do submercado da UF" dados={dados}>
         {m.sm_estado === "fora_do_sin" || !m.sm || !submercado ? (
           <p className="text-sm text-carvao" data-nao-se-aplica="submercado">
-            Não se aplica: {m.sm_estado === "fora_do_sin" ? `${m.nome} está fora do SIN (${m.isol_sede ? "sede em localidade isolada" : "ao menos metade da população em localidades isoladas"}). PLD, energia armazenada e MMGD estimada do submercado não valem para o município.` : "sem submercado provado."}
+            Não se aplica: {m.sm_estado === "fora_do_sin" ? `${m.nome} está fora do SIN (${m.isol_sede ? "sede em localidade isolada" : "ao menos metade da população em localidades isoladas"}). PLD, energia armazenada e MMGD estimada do submercado não valem para o município.` : "sem submercado conferido."}
           </p>
         ) : (
           <>
@@ -480,7 +495,7 @@ export function FichaUf({ u, s, dados, onSelecionar, acao }: { u: LinhaUf; s: Li
       <Cabeca rotulo={`UF · ${u.uf}`} nome={u.nome ?? u.uf} resposta={respostaUf(u)} tipo="uf" acao={acao} />
       <Grao grao="uf" titulo="Da UF" dados={dados} nota="Valores da UF inteira.">
         <dl className="space-y-2">
-          <Item rotulo="Municípios" valor={inteiro(u.municipios)} detalhe={`${inteiro(u.fora_do_sin)} fora do SIN; ${inteiro(u.com_localidade_isolada)} com localidade isolada`} />
+          <Item rotulo="Municípios" valor={inteiro(u.municipios)} detalhe={`${inteiro(u.fora_do_sin)} fora do SIN; ${inteiro(u.com_localidade_isolada)} com localidade isolada e dentro do SIN`} />
           <Item rotulo="Áreas de carga do ONS" valor={u.subsistema ?? "sem submercado"} detalhe={u.areas} />
         </dl>
         <BlocosUf u={u} dados={dados} />

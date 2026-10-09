@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- varredura genérica da gold publicada */
 import { describe, expect, it, vi } from "vitest";
-import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -26,8 +28,10 @@ vi.mock("@/lib/energia/gold", async (original) => {
 
 import PaginaTerritorio from "@/app/setor-eletrico/territorio/page";
 import { BlocosDistribuidora, BlocosSubmercado, BlocosUf, FichaDistribuidora, FichaMunicipio, FichaUsina } from "@/components/energia/TerritorioFicha";
+import { TerritorioMapa } from "@/components/energia/TerritorioMapa";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { num } from "@/lib/energia/formato";
+import { lerPerdasDaFonte, situacaoDosInsumos } from "@/lib/energia/territorio-servidor";
 import { buscarEntidades, matrizExportacao } from "@/lib/energia/tabela";
 import { CAMPOS_MUNICIPIO_TERRITORIO, type GoldTerritorio, type MunicipiosTerritorio, type UsinasTerritorio } from "@/lib/energia/tipos-territorio";
 import {
@@ -54,6 +58,7 @@ import {
   mesesDeDefasagem,
   municipiosDoJson,
   notaMultiestadual,
+  medianaPonderada,
   ordenarResultadosBusca,
   proximaPergunta,
   quartisDistribuidoras,
@@ -63,8 +68,13 @@ import {
   respostaTerritorio,
   respostaUf,
   respostaUsina,
+  ROTULO_ESTADO_SM,
+  SEM_SINAL_PERDAS,
   situacaoVinculo,
   textoAtualidade,
+  textoBasesDePerdas,
+  textoLegivel,
+  textoTesteDeCarga,
   textoDefasagem,
   textoDescontoLiquido,
   textoPeriodoPainel,
@@ -752,12 +762,17 @@ describe("r10: ficha com lista de definição válida, rótulo e valor empilhado
     expect(d.indexOf("Fontes: ANEEL")).toBeGreaterThan(d.lastIndexOf("</dl>"));
   });
 
-  it("abaixo de 640 px o rótulo e o valor ficam um sobre o outro; a partir daí, em duas colunas", () => {
+  it("abaixo de 640 px o rótulo e o valor ficam um sobre o outro; de 640 a 1023 px, em duas colunas com piso; na ficha lateral (24 rem), empilhados de novo", () => {
     const h = renderToStaticMarkup(createElement(BlocosDistribuidora, { d: distCnpj(CEMIG), dados: DU }));
     expect(h).toContain("grid-cols-1");
-    expect(h).toContain("sm:grid-cols-[minmax(0,1fr)_auto]");
+    // a coluna do valor nunca é "auto": com ela, um valor longo toma a linha e o rótulo some atrás dele (texto sobreposto medido de 768 a 1440 px)
+    expect(h).toContain("sm:grid-cols-[minmax(8rem,2fr)_minmax(0,3fr)]");
+    expect(h).toContain("lg:grid-cols-1");
+    expect(h).not.toMatch(/grid-cols-\[[^\]]*\bauto\b[^\]]*\]/);
     // a grade de duas colunas só vale com o prefixo sm: (sem ele, abaixo de 640 px, seria a que quebra o rótulo em 43 px)
-    expect(h).not.toMatch(/class="[^"]*(?<![:\w-])grid-cols-\[minmax\(0,1fr\)_auto\][^"]*"/);
+    expect(h).not.toMatch(/class="[^"]*(?<![:\w-])grid-cols-\[minmax\(8rem,2fr\)_minmax\(0,3fr\)\][^"]*"/);
+    // o valor longo quebra dentro da própria coluna
+    expect(h).toContain("[overflow-wrap:anywhere]");
     expect(h).toContain("sm:text-right");
     const ficha = ler("src/components/energia/TerritorioFicha.tsx");
     expect(ficha).toContain("whitespace-nowrap");
@@ -825,11 +840,13 @@ describe("r10: a página põe a busca e o limite logo abaixo do título", () => 
     expect(h).toContain("Qual número vale para qual área?");
   });
 
-  it("os 5.482 municípios com submercado provado são separados em provados e com prova parcial", () => {
+  it("os 5.482 municípios com submercado conferido são separados em conferidos por todas as áreas e conferidos só por uma delas", () => {
     const e = G.resumo.municipios_por_estado_submercado as Record<string, number>;
     expect(e.provado + e.provado_com_area_sem_carga).toBe(G.evidencias.municipios_com_submercado!.valor_calculo);
-    const texto = h.replace(/<[^>]+>/g, " ");
-    expect(texto).toContain(`${num(e.provado, 0)} provados pela carga das áreas do ONS e ${num(e.provado_com_area_sem_carga, 0)} com prova parcial`);
+    const texto = h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(texto).toContain(`${num(e.provado, 0)} conferidos pela carga das áreas do ONS e ${num(e.provado_com_area_sem_carga, 0)} conferidos só por uma das áreas`);
+    // o teste que a palavra "conferido" resume vem escrito junto: dois dias, a tolerância e a ressalva de Tocantins
+    expect(texto).toContain(textoTesteDeCarga(G));
   });
 
   it("a Tarifa Social do município e da distribuidora dizem o mês de cada uma, e o acesso à EPE é dito em Auditar", () => {
@@ -837,5 +854,279 @@ describe("r10: a página põe a busca e o limite logo abaixo do título", () => 
     expect(texto).toContain("Tarifa Social do município em mar/2026");
     expect(texto).toContain("Token Required");
     expect(texto).toContain("Como os indicadores das distribuidoras se distribuem entre elas");
+  });
+});
+
+/* ================================================================ rodada 2 */
+
+describe("r2: o sha256 dos insumos é recalculado sobre o arquivo servido", () => {
+  const sha = (url: string) => createHash("sha256").update(readFileSync(join(raiz, "public", url.replace(/^\/+/, "")))).digest("hex");
+
+  it("para todas as golds e CSV citados, a situação confere com a comparação do sha256 declarado com o do arquivo servido", () => {
+    const sit = situacaoDosInsumos(G.insumos);
+    expect(sit).toHaveLength(G.insumos.length);
+    expect(G.insumos.length).toBeGreaterThanOrEqual(19);
+    G.insumos.forEach((x, i) => {
+      expect(existsSync(join(raiz, "public", x.url.replace(/^\/+/, ""))), x.url).toBe(true);
+      expect(sit[i].sha256Atual, x.url).toBe(sha(x.url));
+      expect(sit[i].confere, x.url).toBe(sha(x.url) === x.sha256);
+    });
+  });
+
+  it("a tabela da página diz, arquivo por arquivo, 'confere' ou 'o arquivo mudou depois do índice', na mesma conta, e não afirma o que não vale", () => {
+    troca.gold = null;
+    const h = renderToStaticMarkup(createElement(PaginaTerritorio));
+    const texto = h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    const sit = situacaoDosInsumos(G.insumos);
+    const mudaram = sit.filter((x) => x.confere === false).length;
+    const conferem = sit.filter((x) => x.confere === true).length;
+    expect(h.match(/data-situacao-insumo="mudou"/g)?.length ?? 0).toBe(mudaram);
+    expect(h.match(/data-situacao-insumo="confere"/g)?.length ?? 0).toBe(conferem);
+    expect(mudaram + conferem).toBe(G.insumos.length);
+    expect(texto).not.toContain("o mesmo arquivo reproduz o mesmo índice");
+    if (mudaram > 0) {
+      expect(texto).toContain(`${num(mudaram, 0)} de ${num(G.insumos.length, 0)} arquivos mudaram depois do índice`);
+      expect(texto).toContain("o arquivo mudou depois do índice (regerado em");
+      expect(texto).toContain("O índice só é regerado quando a rotina de geração dos dados roda de novo");
+    } else {
+      expect(texto).toContain("Todos conferem");
+    }
+  });
+
+  it("com arquivos de teste: o que bate confere, o que mudou diz quando foi regerado, o que falta não é lido", () => {
+    const raizTeste = mkdtempSync(join(tmpdir(), "insumos-"));
+    mkdirSync(join(raizTeste, "public", "energia", "gold"), { recursive: true });
+    const corpo = JSON.stringify({ dominio: "energia", gerado_em: "2026-10-03T08:11:00Z", dados: [1, 2, 3] });
+    writeFileSync(join(raizTeste, "public", "energia", "gold", "modulo.json"), corpo);
+    const base = { modulo: "teste", arquivo: "", bytes: corpo.length, gerado_em: "2026-10-01T07:00:00Z" };
+    const certo = createHash("sha256").update(corpo).digest("hex");
+    const r = situacaoDosInsumos(
+      [
+        { ...base, chave: "bate", url: "/energia/gold/modulo.json", sha256: certo },
+        { ...base, chave: "mudou", url: "/energia/gold/modulo.json", sha256: "0".repeat(64) },
+        { ...base, chave: "falta", url: "/energia/gold/nao-existe.json", sha256: certo },
+      ],
+      raizTeste,
+    );
+    expect(r[0]).toMatchObject({ confere: true, regeradoEm: null, sha256Atual: certo });
+    expect(r[1]).toMatchObject({ confere: false, regeradoEm: "2026-10-03T08:11:00Z", sha256Atual: certo });
+    expect(r[2]).toMatchObject({ confere: null, sha256Atual: null });
+  });
+});
+
+describe("r2: perdas por energia de referência, taxas sinalizadas à parte e cobertura em unidades consumidoras", () => {
+  const fonte = lerPerdasDaFonte(G.referencias.perdas_ano);
+  const DP = dadosExplorador(G, null, fonte);
+  const Q = quartisDistribuidoras(DP.distribuidoras);
+  const sinalizada = (d: { perdas_pct: number | null; perdas_sinal: string | null }) => d.perdas_pct !== null && d.perdas_sinal !== null && d.perdas_sinal !== SEM_SINAL_PERDAS;
+  // contagem independente, direto da gold
+  const comArea = G.distribuidoras.filter((d) => d.area.municipios > 0);
+  const comPerdas = comArea.filter((d) => d.indicadores.perdas.disponivel);
+  const sinaladasGold = comPerdas.filter((d) => {
+    const p = d.indicadores.perdas as any;
+    return p.alertas.length > 0 || p.parcial;
+  });
+
+  it("o arquivo anual de perdas por distribuidora traz a energia de referência de cada uma, e a linha só vale se a taxa dela confere com a da gold", () => {
+    expect(fonte).not.toBeNull();
+    const ok = DP.distribuidoras.filter((d) => d.perdas_pct !== null && d.perdas_base !== "sem registro da base");
+    expect(ok.length).toBe(DP.distribuidoras.filter((d) => d.perdas_pct !== null).length);
+    const permitidas = ["energia requerida", "energia injetada e requerida no mesmo ano", "energia injetada publicada"];
+    expect(ok.every((d) => permitidas.includes(d.perdas_base!))).toBe(true);
+    expect(ok.some((d) => d.perdas_base === "energia requerida")).toBe(true);
+    // sem o arquivo, a base não é inventada
+    const sem = dadosExplorador(G).distribuidoras.filter((d) => d.perdas_pct !== null);
+    expect(sem.every((d) => d.perdas_base === "sem registro da base" && d.perdas_pct_pub === null)).toBe(true);
+  });
+
+  it("as taxas sinalizadas saem das linhas por base e vão para uma linha própria, com o mesmo número que a gold sinaliza", () => {
+    expect(sinaladasGold.length).toBeGreaterThan(0);
+    const linhaSinal = Q.find((x) => x.id === "perdas_sinalizadas")!;
+    expect(linhaSinal.n).toBe(sinaladasGold.length);
+    expect(DP.distribuidoras.filter(sinalizada)).toHaveLength(sinaladasGold.length);
+    const porBase = Q.filter((x) => /^perdas_(requerida|publicada|mista|sem_base)$/.test(x.id));
+    expect(porBase.reduce((a, x) => a + x.n, 0) + linhaSinal.n).toBe(comPerdas.length);
+    // nenhuma linha por base traz taxa negativa nem fora de 0% a 100%; a linha sinalizada traz o menor valor negativo
+    for (const x of porBase) {
+      expect(x.min!, x.id).toBeGreaterThanOrEqual(0);
+      expect(x.max!, x.id).toBeLessThanOrEqual(100);
+    }
+    expect(linhaSinal.min!).toBeLessThan(0);
+    // nada de uma linha única "sobre a energia injetada" misturando as bases
+    expect(Q.some((x) => x.id === "perdas_pct")).toBe(false);
+  });
+
+  it("a nota diz as três energias, quantas distribuidoras há em cada uma e a maior diferença entre a base da distribuidora e a injetada publicada", () => {
+    const t = textoBasesDePerdas(DP.distribuidoras);
+    expect(t).toContain("energia injetada publicada");
+    expect(t).toContain("energia requerida (fornecida mais irregular mais perdas)");
+    expect(t).toContain("misturaria bases diferentes");
+    // a maior diferença, calculada aqui por outro caminho
+    let maior: { sigla: string; taxa: number; pub: number } | null = null;
+    for (const d of DP.distribuidoras) {
+      if (sinalizada(d) || d.perdas_pct === null || d.perdas_pct_pub === null) continue;
+      if (!maior || Math.abs(d.perdas_pct - d.perdas_pct_pub) > Math.abs(maior.taxa - maior.pub)) maior = { sigla: d.sigla, taxa: d.perdas_pct, pub: d.perdas_pct_pub };
+    }
+    expect(maior).not.toBeNull();
+    expect(t).toContain(`${maior!.sigla} tem ${num(maior!.taxa, 2)}% sobre a`);
+    expect(t).toContain(`${num(maior!.pub, 2)}% sobre a energia injetada publicada`);
+    expect(t).toContain(`As ${num(sinaladasGold.length, 0)} taxas que o módulo Perdas sinaliza`);
+    // o caso conhecido: a Energisa Mato Grosso, 14,43% sobre a requerida e 11,82% sobre a injetada publicada
+    const emt = DP.distribuidoras.find((d) => d.sigla === "EMT")!;
+    expect(emt.perdas_base).toBe("energia requerida");
+    expect(emt.perdas_pct).toBe(14.43);
+    expect(emt.perdas_pct_pub!).toBeCloseTo(11.82, 2);
+  });
+
+  it("a ficha da distribuidora diz sobre qual energia a taxa foi calculada e mostra a taxa sobre a injetada publicada", () => {
+    const emt = DP.distribuidoras.find((d) => d.sigla === "EMT")!;
+    const h = renderToStaticMarkup(createElement(BlocosDistribuidora, { d: emt, dados: DP })).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(h).toContain("Perdas totais sobre energia requerida (2025)");
+    expect(h).toContain("sobre a energia injetada publicada seria 11,82%");
+    const flagged = DP.distribuidoras.find((d) => sinalizada(d) && d.perdas_ressalvas === null)!;
+    const hf = renderToStaticMarkup(createElement(BlocosDistribuidora, { d: flagged, dados: DP })).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(hf).toContain("taxa sinalizada pelo módulo Perdas");
+    expect(hf).not.toMatch(/balanco_nao_fecha|perda_total_negativa|fornecida_maior_que_injetada/);
+  });
+
+  it("as colunas de unidades consumidoras: a parcela que as distribuidoras da linha reúnem e a mediana pesada, conferidas por outro caminho", () => {
+    const ucTotal = DP.distribuidoras.reduce((a, d) => a + (d.ucs ?? 0), 0);
+    expect(ucTotal).toBeGreaterThan(5e7);
+    const tarifa = Q.find((x) => x.id === "tarifa")!;
+    const comPeso = DP.distribuidoras.filter((d) => d.tarifa !== null && d.ucs);
+    const ord = comPeso.map((d) => ({ v: d.tarifa as number, w: d.ucs as number })).sort((a, b) => a.v - b.v);
+    const tot = ord.reduce((a, x) => a + x.w, 0);
+    let acc = 0;
+    let esperado = ord[0].v;
+    for (const x of ord) {
+      acc += x.w;
+      if (acc >= tot / 2) {
+        esperado = x.v;
+        break;
+      }
+    }
+    expect(tarifa.mediana_uc).toBe(esperado);
+    expect(tarifa.cobertura_uc_pct!).toBeCloseTo((100 * tot) / ucTotal, 6);
+    for (const x of Q) {
+      if (x.cobertura_uc_pct === null) continue;
+      expect(x.cobertura_uc_pct, x.id).toBeGreaterThan(0);
+      expect(x.cobertura_uc_pct, x.id).toBeLessThanOrEqual(100);
+    }
+    expect(Q.filter((x) => x.cobertura_uc_pct !== null).length).toBeGreaterThan(4);
+    // a mediana pesada é uma mediana: exemplos pequenos
+    expect(medianaPonderada([{ v: 1, w: 1 }, { v: 2, w: 1 }, { v: 3, w: 5 }])).toBe(3);
+    expect(medianaPonderada([{ v: 1, w: 5 }, { v: 2, w: 1 }])).toBe(1);
+    expect(medianaPonderada([])).toBeNull();
+    // a página diz que a mediana simples dá o mesmo peso a cada distribuidora e mostra as duas colunas
+    troca.gold = null;
+    const texto = renderToStaticMarkup(createElement(PaginaTerritorio)).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(texto).toContain("cada distribuidora conta uma vez");
+    expect(texto).toContain("UC reunidas (% do quadro)");
+    expect(texto).toContain("Mediana pesada pelas UC");
+  });
+});
+
+describe("r2: rótulos, textos e marcas do mapa", () => {
+  troca.gold = null;
+  const h = renderToStaticMarkup(createElement(PaginaTerritorio));
+  // sem os endereços dos arquivos (a tabela de insumos mostra "/energia/gold/..." como o arquivo se chama)
+  // o diálogo "Comprove este número" cita a prova como a base a escreveu; o resto da página é o texto da própria página
+  const texto = h
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<dialog[\s\S]*?<\/dialog>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\/energia\/[\w/.-]+/g, " ")
+    .replace(/\s+/g, " ");
+
+  it("'localidade isolada' conta 16 na legenda e na coluna da tabela de UFs; os 73 fora do SIN têm coluna própria", () => {
+    const e = G.resumo.municipios_por_estado_submercado as Record<string, number>;
+    expect(D.ufs.reduce((a, u) => a + u.com_localidade_isolada, 0)).toBe(e.com_localidade_isolada);
+    expect(D.ufs.reduce((a, u) => a + u.fora_do_sin, 0)).toBe(e.fora_do_sin);
+    expect(COLUNAS_UFS_SUBMERCADO.find((c) => c.id === "com_localidade_isolada")!.rotulo).toContain("dentro do SIN");
+    const explorador = ler("src/components/energia/TerritorioExplorador.tsx");
+    expect(explorador).toContain("Município com localidade isolada, dentro do SIN (contorno tracejado)");
+  });
+
+  it("a estimativa de MMGD do ONS entra no Período e no cabeçalho da coluna com o mês dela", () => {
+    const mes = (G.submercados[0].indicadores.mmgd_ons as any).periodo.fim as string;
+    expect(mes).toMatch(/^\d{4}-\d{2}$/);
+    const rotuloMes = textoPeriodoPainel(G).match(/estimativa de MMGD do ONS de ([a-zç]{3}\/\d{4})/);
+    expect(rotuloMes).not.toBeNull();
+    expect(texto).toContain(`estimativa de MMGD do ONS de ${rotuloMes![1]}`);
+    const explorador = ler("src/components/energia/TerritorioExplorador.tsx");
+    expect(explorador).toContain("colunasSubmercados(");
+  });
+
+  it("'provado' virou 'conferido' e o teste vem dito: dois dias, a tolerância de 15 MWmed e Tocantins só por uma das áreas", () => {
+    for (const v of Object.values(ROTULO_ESTADO_SM)) expect(v).not.toMatch(/provad/);
+    const t = textoTesteDeCarga(G);
+    expect(t).toContain("dois dias conferidos");
+    expect(t).toContain("15 MWmed");
+    expect(t).toContain("Tocantins");
+    expect(t).toContain("não a medida de uma fronteira");
+    expect(texto).not.toMatch(/\bprovad[oa]s?\b/);
+  });
+
+  it("Analisar e Auditar não mostram nome de campo, estado interno, 'gold', 'pipeline' nem o nome do serviço da EPE", () => {
+    for (const ruim of [/provado_com_area_sem_carga/, /com_localidade_isolada/, /fora_do_sin/, /estado 1 \(confirmado\)/, /estado 0/, /WMS_Webmap/, /pipeline/i, /\bgold\b/i, /parte_fora_do_sin/, /alternativas_que_fechariam/, /balanco_nao_fecha/]) {
+      expect(texto, String(ruim)).not.toMatch(ruim);
+    }
+    // a tradução faz o que diz
+    expect(textoLegivel("vínculo com estado 1 (confirmado) ou 2 (só pelo cadastro de MMGD); estado 0 aparece com ressalva")).toBe(
+      "vínculo confirmado ou só pelo cadastro de MMGD; o vínculo sem confirmação aparece com ressalva",
+    );
+    expect(textoLegivel("igual à da gold de Expansão")).toBe("igual à da base publicada de Expansão");
+    expect(textoLegivel("ligadas pelo nome: [('BH', 'BA')]")).toBe("ligadas pelo nome: BH lido como BA");
+    expect(textoLegivel("quem: ['COORSEL', 'CERMC']")).toBe("quem: COORSEL, CERMC");
+  });
+
+  it("'Cada número é da área da sua fonte' aparece uma vez, e a abertura traz o limite ('Não permite concluir') e a razão numa frase", () => {
+    expect(texto.match(/Cada número é da área da sua fonte/gi)?.length ?? 0).toBe(0);
+    expect(texto.match(/cada número aqui é da área da sua fonte/g)?.length ?? 0).toBe(1);
+    expect(h).toContain('data-limite=""');
+    expect(texto).toContain("Não permite concluir Tarifa, perdas, DEC e FEC são da distribuidora inteira");
+    expect(texto).toContain("Quem mora num município paga a tarifa da distribuidora da área");
+  });
+
+  it("a busca anuncia a quantidade e o vazio numa região viva fora da lista, e a tarifa vem também em R$/kWh", () => {
+    expect(h).toContain("data-anuncio-busca");
+    const explorador = ler("src/components/energia/TerritorioExplorador.tsx");
+    expect(explorador).toContain("Nenhum resultado para essa busca.");
+    const ficha = renderToStaticMarkup(createElement(BlocosDistribuidora, { d: distCnpj(CEMIG), dados: D })).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    const t = distCnpj(CEMIG).tarifa!;
+    expect(ficha).toContain(`${num(t, 2)} R$/MWh`);
+    expect(ficha).toContain(`${num(t / 1000, 4)} R$/kWh`);
+  });
+
+  it("o mapa desenha as siglas das UFs com o tamanho fixo na tela e sem colidir; a camada de usinas ganha o contorno das UFs", () => {
+    const geo = {
+      viewBox: "0 0 100 100",
+      features: [
+        { id: "15", nome: "Pará", uf: "PA", d: "M10 10 l40 0 l0 40 l-40 0 z" },
+        { id: "13", nome: "Amazonas", uf: "AM", d: "M55 10 l40 0 l0 40 l-40 0 z" },
+      ],
+      contornos: null,
+      malha: { revisao: 1, qualidade: "minima" },
+    } as any;
+    const m = renderToStaticMarkup(
+      createElement(TerritorioMapa, {
+        titulo: "Teste",
+        descricao: "Teste",
+        geo,
+        fills: ["var(--cor-superficie)", "var(--cor-superficie)"],
+        rotulos: [
+          { id: "15", texto: "PA", x: 30, y: 30, peso: 1600 },
+          { id: "13", texto: "AM", x: 75, y: 30, peso: 1600 },
+        ],
+        onClique: () => {},
+        dica: () => null,
+      }),
+    );
+    expect(m).toContain("data-rotulos-mapa");
+    expect(m).toMatch(/>PA</);
+    expect(m).toMatch(/>AM</);
+    const explorador = ler("src/components/energia/TerritorioExplorador.tsx");
+    expect(explorador).toContain("contornosUf: true");
+    expect(explorador).toContain("rotulos: true");
   });
 });

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -24,6 +25,8 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { partirBastidor } from "@/lib/energia/bastidor";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
+import { COLUNAS_ARQUIVO } from "@/lib/energia/datasets";
+import { manifestoDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { PAGINAS_MAPA } from "@/lib/energia/mapa";
 import type { IdFrase, IdRegra, RegraObservar, SinteseVisaoGold } from "@/lib/energia/tipos-visao";
 import {
@@ -53,7 +56,9 @@ import {
   respostaSistema,
   respostaSociedade,
   textoFrequenciaConjunta,
+  textoJanelaTermica,
   textoLinhaEstado,
+  textoMudouDeterminantes,
   trechosEstado,
   vereditoDeterminantes,
   vereditoObservar,
@@ -139,7 +144,7 @@ export default function VisaoGeralEnergia() {
   const beneficios = g.sociedade.itens.find((x) => x.id === "beneficios");
   const notaTS = beneficios ? notaTarifaSocial(beneficios, inclusao?.tarifa_social?.serie_mensal) : null;
   const notasRegras: Partial<Record<IdRegra, string | null>> = {
-    cmo_semana: cmo?.semana_referencia ? notaCmoNorte(cmo.serie, cmo.semana_referencia) : null,
+    cmo_semana: cmo?.semana_referencia ? `Resultado de modelo do ONS (DECOMP), não previsão da Scrutiniums. ${notaCmoNorte(cmo.serie, cmo.semana_referencia) ?? ""}`.trim() : null,
     atualidade_fontes: notaTS ? `${beneficios!.titulo}: ${notaTS}` : null,
   };
   // "percentil" como o painel de PLD o define (pld.json, regras.posicao_historica): o texto é o da própria gold
@@ -193,13 +198,17 @@ export default function VisaoGeralEnergia() {
     ctx.pldReferencia && ctx.pldReferencia.percentilMes !== null && ctx.pldReferencia.percentilTodos !== null
       ? `Mesmo mês dos anos anteriores: percentil ${num(ctx.pldReferencia.percentilMes, 1)}; todas as médias desde 2021: ${num(ctx.pldReferencia.percentilTodos, 1)}.`
       : null;
-  const refCarga =
-    ctx.carga7d && ctx.carga7d.variacaoPct !== null
-      ? `7 dias: ${num(Math.abs(ctx.carga7d.variacaoPct), 1)}% ${sentido(ctx.carga7d.variacaoPct)} das mesmas datas do ano anterior${
-          ctx.cargaModulo?.mesmosDiasDaSemanaPct != null ? `; a página Carga dá ${num(Math.abs(ctx.cargaModulo.mesmosDiasDaSemanaPct), 2)}%` : ""
-        }.`
-      : null;
-  const refTermica = ctx.termica && ctx.termica.p10 !== null && ctx.termica.p90 !== null ? `Faixa dos 365 dias anteriores: ${num(ctx.termica.p10, 1)}% a ${num(ctx.termica.p90, 1)}%.` : null;
+  // um critério só para o número em destaque (o mesmo dia da semana do ano anterior) e para as janelas ao lado dele; o outro critério (as mesmas datas) vem explicado, não misturado
+  const cj = ctx.cargaJanelas;
+  const acima = (v: number | null | undefined) => (v === null || v === undefined ? "sem dado" : `${num(Math.abs(v), 1)}% ${sentido(v)}`);
+  const refCarga = cj
+    ? `O destaque compara um dia. Mesmo critério (o mesmo dia da semana do ano anterior) em janelas maiores: 7 dias ${acima(cj.semana7)}; 28 dias ${acima(cj.dias28)}; 52 semanas ${acima(cj.semanas52)}.${
+        cj.mesmasDatas7 !== null ? ` Com as mesmas datas do ano anterior, em vez do mesmo dia da semana, os 7 dias ficam em ${acima(cj.mesmasDatas7)}.` : ""
+      }`
+    : null;
+  const refTermica =
+    ctx.termica && ctx.termica.p10 !== null && ctx.termica.p90 !== null ? `Faixa de ${num(ctx.termica.p10, 1)}% a ${num(ctx.termica.p90, 1)}% em 365 janelas de 7 dias anteriores à que termina no dia de referência, sem sobreposição com ela.` : null;
+  const notaJanelaTermica = ctx.termica ? textoJanelaTermica({ p10: ctx.termica.p10, p90: ctx.termica.p90 }, pGeracao?.data_referencia ?? null) : "";
   const refAgua = [
     typeof medianaNoDia === "number" ? `Mediana da data: ${num(medianaNoDia, 1)}%.` : "",
     ctx.aguaModulo ? `A página Água e clima traz ${num(ctx.aguaModulo.pct, 1)}% em ${dataBR(ctx.aguaModulo.dia)}.` : "",
@@ -208,12 +217,18 @@ export default function VisaoGeralEnergia() {
     .join(" ");
 
   /* ---------------- notas dos painéis */
-  const oQueMudouDeterminantes = m ? vereditoDeterminantes(m) : "Os determinantes alinhados não foram publicados nesta execução.";
+  const oQueMudouDeterminantes = m ? textoMudouDeterminantes(m) : "Os determinantes alinhados não foram publicados nesta execução.";
   const oQueMudouSistema = g.destaques.itens.length
     ? `${plural(g.destaques.itens.length, "regra sobre o sistema teve o alerta confirmado", "regras sobre o sistema tiveram o alerta confirmado")} nos últimos ${plural(g.destaques.novidade_dias, "dia", "dias")}: ${g.destaques.itens
         .map((d) => minuscula(d.titulo))
         .join("; ")}.`
     : (g.destaques.vazio ?? "Nenhum destaque nesta publicação.");
+  // a página não compara com a publicação anterior: diz o que vale para a leitura das regras e não repete a frase de abertura do painel
+  const oQueMudouObservar = `Sem comparação com a publicação anterior nesta página: o histórico das regras é reavaliado desde ${dataBR(g.historico_regras.inicio)} com os dados da data de processamento. ${
+    g.alertas_nao_confirmados.length
+      ? `${plural(g.alertas_nao_confirmados.length, "alerta publicado deixou", "alertas publicados deixaram")} de se confirmar depois de revisão da fonte.`
+      : "Nenhum alerta publicado deixou de se confirmar depois de revisão da fonte."
+  }`;
   const oQueMudouSociedade = g.sociedade.itens.length
     ? `Cada indicador tem período próprio: ${g.sociedade.itens.map((it) => `${minuscula(it.titulo)}, ${periodoCurto(it)}`).join("; ")}.`
     : "Nenhum indicador de energia e sociedade disponível nesta publicação.";
@@ -228,9 +243,15 @@ export default function VisaoGeralEnergia() {
           titulo={PAGINAS_MAPA["visao-geral"].pergunta}
           lead={
             <>
-              Preço, água, geração e carga do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo>, cada um com a data da sua fonte e uma referência ao lado do número.
+              Preço, água, geração e carga do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo> no mesmo calendário, cada um com a data da sua fonte e uma referência ao lado, para ver o que mudou nos
+              mesmos dias sem afirmar que uma medida explica outra. A ligação entre essas partes, da geração ao consumidor, está no{" "}
+              <Link href="/setor-eletrico#mapa-conceitual" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                mapa do sistema
+              </Link>
+              .
             </>
           }
+          limite="Alinhar as medidas pelo calendário não diz que uma determina a outra, e estar dentro da faixa de referência não diz que o valor é esperado ou desejável."
           recorte={todasAsDatas.length ? `${dataBR(todasAsDatas[0])} a ${dataBR(todasAsDatas[todasAsDatas.length - 1])} · SIN e submercados · cada medida com data e unidade próprias` : "sem data nesta publicação"}
           fonte="ONS, CCEE e ANEEL"
           referencia={
@@ -340,7 +361,7 @@ export default function VisaoGeralEnergia() {
           {/* P005 */}
           <PainelVisao
             id="determinantes"
-            porQueImporta="Preço, água armazenada, geração térmica, carga e fluxo entre regiões são cinco medidas que o observatório publica em módulos próprios. Lidas no mesmo calendário, mostram o que mudou nos mesmos dias, sem afirmar que uma explica a outra."
+            subtitulo="Preço, água armazenada, geração térmica, carga e fluxo entre regiões, que o observatório publica em módulos próprios, lidos no mesmo calendário"
             fonte={
               <>
                 Fontes: ONS (energia armazenada, carga, geração e rede) e CCEE (PLD), lidas dos módulos de origem
@@ -357,6 +378,7 @@ export default function VisaoGeralEnergia() {
                   notas={{
                     preco: ctx.doisCriteriosPld ? [ctx.doisCriteriosPld] : [],
                     agua: [ctx.capacidadeAgua, ctx.earNoModulo].filter((x): x is string => !!x),
+                    geracao: notaJanelaTermica ? [notaJanelaTermica] : [],
                     carga: [notaCarga({ frases: g.frases, multiplos: m }), ctx.cargaNoModulo].filter((x): x is string => !!x),
                     rede: [notaRede({ frases: g.frases, multiplos: m }), ctx.saldoRede].filter((x): x is string => !!x),
                   }}
@@ -370,6 +392,7 @@ export default function VisaoGeralEnergia() {
                   </ul>
                 </RespostaCurta>
                 <NotasDoPainel
+                  nome={P.determinantes.pergunta}
                   oQueMudou={oQueMudouDeterminantes}
                   comoInterpretar={
                     <>
@@ -390,15 +413,14 @@ export default function VisaoGeralEnergia() {
             <SeguirPainel
               ancora="determinantes"
               proximo={{ href: "#sistema", pergunta: P.sistema.pergunta }}
-              downloads={(m?.download ?? []).map((d) => ({ ...d, rotulo: "Determinantes alinhados, sempre os 90 dias publicados (CSV; não muda com a janela escolhida)" }))}
+              downloads={(m?.download ?? []).map((d) => ({ ...d, rotulo: "Determinantes alinhados, sempre os 90 dias publicados (CSV; não muda com a janela escolhida e não traz a mediana da água nem as faixas de referência do gráfico)" }))}
             />
           </PainelVisao>
 
           {/* P004 */}
           <PainelVisao
             id="sistema"
-            subtitulo="O sistema em 60 segundos · seis fatos, cada um na sua data e com a prova do número"
-            porQueImporta="Os fatos reúnem, em uma frase por indicador, onde estão os reservatórios, a água que chega a eles, a carga, a participação das térmicas, o preço e o fluxo entre regiões. A frase não explica a relação entre eles; a ligação conceitual entre essas partes está no mapa do observatório."
+            subtitulo="O sistema em 60 segundos: uma frase por indicador (reservatórios, afluência, carga, térmicas, preço e rede), cada uma na sua data e com a prova do número; a frase não explica a relação entre eles"
             fonte="Fontes: as bases publicadas dos módulos de origem, cada fato na data da sua fonte; a prova de cada número refaz o cálculo."
           >
             <RespostaCurta id="sistema" veredito={vereditoSistema(g)}>
@@ -416,6 +438,7 @@ export default function VisaoGeralEnergia() {
               <VisaoDestaques destaques={g.destaques} fatosEHipoteses={g.fatos_e_hipoteses} titulos={titulosRegras} />
             </div>
             <NotasDoPainel
+              nome={P.sistema.pergunta}
               oQueMudou={oQueMudouSistema}
               comoInterpretar={
                 <>
@@ -459,8 +482,7 @@ export default function VisaoGeralEnergia() {
           {/* P006 */}
           <PainelVisao
             id="sociedade"
-            subtitulo="Tarifa residencial, continuidade do fornecimento (DEC, a duração equivalente de interrupção por unidade consumidora), perdas na distribuição e Tarifa Social · período próprio de cada indicador"
-            porQueImporta="O que chega ao consumidor tem datas e universos próprios: a tarifa vale pela vigência, a continuidade e as perdas pelo ano completo, o alcance da Tarifa Social pelo mês publicado. Lidos juntos, mostram o custo e a qualidade que cada fonte registra, sem descrever o dia."
+            subtitulo="Tarifa residencial, continuidade do fornecimento (DEC, a duração equivalente de interrupção por unidade consumidora), perdas na distribuição e Tarifa Social: cada indicador tem data e universo próprios, e lidos juntos mostram o custo e a qualidade que cada fonte registra, sem descrever o dia"
             fonte={`Fontes: ANEEL (tarifas, continuidade, perdas e Tarifa Social), cada indicador no período da sua fonte; processado em ${dataBR(g.data_processamento)}.`}
           >
             <RespostaCurta id="sociedade" veredito={vereditoSociedade(g.sociedade, ctx.sociedade)}>
@@ -487,6 +509,7 @@ export default function VisaoGeralEnergia() {
             )}
             <VisaoLinhaTempo s={g.sociedade} dataProcessamento={g.data_processamento} />
             <NotasDoPainel
+              nome={P.sociedade.pergunta}
               oQueMudou={oQueMudouSociedade}
               comoInterpretar="Cada cartão traz o valor e a prova do módulo de origem, o período a que o número se refere, a defasagem até o processamento, a cobertura e a atualidade do conjunto. Conjunto atrasado no painel de saúde dos dados aparece marcado. A ressalva que muda a leitura do número está logo abaixo dele."
               naoConcluir="Um ano completo ou um mês de referência não descreve a situação do dia, e indicadores de universos diferentes (todas as distribuidoras, um conjunto de concessionárias, as unidades com Tarifa Social) não se somam nem se comparam entre si."
@@ -512,8 +535,7 @@ export default function VisaoGeralEnergia() {
           {/* P007 */}
           <PainelVisao
             id="observar"
-            subtitulo="Regras explícitas sobre os dados mais recentes · condição, limiar, duração mínima e histórico de cada uma"
-            porQueImporta="Cada regra tem condição, limiar, duração mínima para confirmar o alerta e regra de retorno à normalidade. Escrever a regra antes de olhar o dado evita que o alerta mude conforme o resultado."
+            subtitulo="Regras explícitas sobre os dados mais recentes, com condição, limiar, duração mínima e histórico de cada uma; a regra é escrita antes de olhar o dado, para o alerta não mudar conforme o resultado"
             fonte={`Fontes: as bases publicadas dos módulos de origem; histórico das regras reavaliado desde ${dataBR(g.historico_regras.inicio)} com os dados da data de processamento.`}
           >
             <RespostaCurta id="observar" veredito={vereditoObservar(g.observar)}>
@@ -529,13 +551,22 @@ export default function VisaoGeralEnergia() {
             )}
             <VisaoObservar itens={itens} comparaveis={comparaveis} padraoComparacao={padraoComparacao(g.observar, comparaveis)} dominio={dominio} />
             <NotasDoPainel
-              oQueMudou={respostaObservar(g.observar)}
+              nome={P.observar.pergunta}
+              oQueMudou={oQueMudouObservar}
               comoInterpretar="O estado do dia vem com o valor avaliado e os limiares, e a linha de estado mostra os últimos 365 dias. Em alerta sobre os dados significa que a própria publicação pede cautela (fonte atrasada, PLD sem atualização, revisão material). Em observação, a condição já existe, mas ainda não durou o mínimo para virar alerta."
               naoConcluir={`Um alerta descreve uma condição e nunca atribui causa. ${g.historico_regras.falso_alarme}`}
             />
             <SecaoDoPainel nivel="analisar" id="observar-historico" titulo="Frequência de disparo, sensibilidade e episódios">
               {freq && <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{freq}</p>}
               <VisaoTabelasSobDemanda conjunto="observar-analise" fonte={fonteTabelas} versao={g.data_processamento} downloads={[...dlPor("sintese_regras_diario"), ...dlPor("sintese_episodios")]} />
+              <p className="rotulo text-mineral">Arquivos para baixar e o estado de cada um</p>
+              <DadosArquivos
+                itens={itensDeArquivos([...dlPor("sintese_regras_diario"), ...dlPor("sintese_episodios")].map((d) => ({ rotulo: d.rotulo, url: d.url })), {
+                  pub: publicacaoDados(),
+                  manifesto: manifestoDados(),
+                  dicionario: COLUNAS_ARQUIVO,
+                })}
+              />
             </SecaoDoPainel>
             <SecaoDoPainel nivel="auditar" id="observar-auditoria" titulo="Registro das publicações, alertas não confirmados e origem das golds">
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">

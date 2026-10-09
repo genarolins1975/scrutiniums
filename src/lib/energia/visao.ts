@@ -375,6 +375,8 @@ export function seriesDeterminante(p: PainelGrafico, extras: readonly SerieExtra
       rotulo: c.rotulo,
       sigla: sm ? SIGLA_SM[sm] : p.id === "rede" ? c.id.replace(/^rede_/, "").replace("_", "→") : undefined,
       cor: COR_COLUNA[c.id] ?? COR_FRONTEIRA[i % COR_FRONTEIRA.length],
+      // quando os preços dos submercados coincidem, uma linha cobre a outra: a última (Norte) é tracejada para a principal continuar visível; na rede, as fronteiras alternam o traço
+      ...((c.id === "preco_N" || (p.id === "rede" && i % 2 === 1)) && { tracejada: true }),
     };
   });
   if (p.referencia.tipo === "serie") s.push({ id: p.referencia.coluna, rotulo: p.referencia.rotulo, cor: "var(--serie-referencia)", tracejada: true, espessura: 1.5 });
@@ -522,6 +524,25 @@ export function vereditoDeterminantes(m: MultiplosVisao): string {
   return partes.join(" ");
 }
 
+/**
+ * A janela da faixa de referência da participação térmica: 365 janelas de 7 dias, todas anteriores à atual e sem sobreposição com ela. A primeira termina 7
+ * dias antes do dia de referência e a 365ª, 371 dias antes; "dos 365 dias anteriores" é o número de janelas, não o intervalo que elas cobrem.
+ */
+export function textoJanelaTermica(t: { p10: number | null; p90: number | null; n?: number }, diaReferencia: string | null): string {
+  if (t.p10 === null || t.p90 === null) return "";
+  const n = t.n ?? 365;
+  const entre = diaReferencia ? `, entre ${dataBR(somaDias(diaReferencia, -(6 + n)))} e ${dataBR(somaDias(diaReferencia, -7))}` : "";
+  return `Faixa de ${num(t.p10, 1)}% a ${num(t.p90, 1)}%, do 10º ao 90º percentil de ${num(n, 0)} janelas de 7 dias que terminam de 7 a ${num(6 + n, 0)} dias antes do dia de referência${entre}, sem sobreposição com a janela de 7 dias que termina no dia de referência.`;
+}
+
+/** "O que mudou" dos determinantes sem repetir o veredito: o período dos cinco gráficos e a data de referência de cada painel. */
+export function textoMudouDeterminantes(m: MultiplosVisao): string {
+  const dias = [...m.dados].map((l) => l.d).sort();
+  const periodo = dias.length ? `Os gráficos cobrem ${plural(dias.length, "dia", "dias")} publicados, de ${dataBR(dias[0])} a ${dataBR(dias[dias.length - 1])}.` : "Nenhum dia publicado nesta execução.";
+  const datas = m.paineis.map((p) => `${minuscula(p.titulo)} ${dataBR(p.data_referencia)}`);
+  return `${periodo} A data de referência de cada painel é a da sua fonte: ${datas.join("; ")}.`;
+}
+
 /** Colunas da tabela equivalente aos pequenos múltiplos: a data e todas as colunas publicadas no recorte. */
 export function colunasMultiplos(m: MultiplosVisao): ColunaTabela[] {
   const cols: ColunaTabela[] = [{ id: "d", rotulo: "Data", tipo: "data" }];
@@ -629,9 +650,14 @@ export type DecDoAno = {
   limite: number | null;
   conjuntos: { total: number; acima: number; pct: number | null; pctUc: number | null } | null;
   quantis: { min: number | null; p25: number | null; p50: number | null; p75: number | null; max: number | null } | null;
+  /** Quem enviou DEC no ano: todas as distribuidoras, as que têm os 12 meses (entram no DEC anual) e as de ano parcial, com os conjuntos de cada grupo. */
+  universo: { distribuidoras: number; anuais: number; parciais: { sigla: string; meses: number }[]; conjuntosAnuais: number; conjuntosParciais: number } | null;
 };
 
-export function decDoAno(q: { brasil: { anual: readonly BrasilAnual[] }; conjuntos: Conjuntos } | null | undefined, ano: number): DecDoAno | null {
+export function decDoAno(
+  q: { brasil: { anual: readonly BrasilAnual[] }; conjuntos: Conjuntos; distribuidoras?: readonly { sigla: string | null; ano: number; meses: number; conjuntos: number | null }[] } | null | undefined,
+  ano: number,
+): DecDoAno | null {
   const a = q?.brasil.anual.find((x) => x.ano === ano);
   if (!q || !a || a.dec === null) return null;
   const p = a.parcelas_dec;
@@ -648,7 +674,30 @@ export function decDoAno(q: { brasil: { anual: readonly BrasilAnual[] }; conjunt
     limite: a.dec_limite,
     conjuntos: doAno ? { total: c.com_limite, acima: c.acima_limite_dec, pct: c.pct_acima_limite_dec, pctUc: c.pct_ucs_acima_limite_dec } : null,
     quantis: doAno ? { min: c.quantis_dec.min ?? null, p25: c.quantis_dec.p25 ?? null, p50: c.quantis_dec.p50 ?? null, p75: c.quantis_dec.p75 ?? null, max: c.quantis_dec.max ?? null } : null,
+    universo: universoDec(q.distribuidoras, ano),
   };
+}
+
+function universoDec(ds: readonly { sigla: string | null; ano: number; meses: number; conjuntos: number | null }[] | undefined, ano: number): DecDoAno["universo"] {
+  const doAno = (ds ?? []).filter((d) => d.ano === ano);
+  if (!doAno.length) return null;
+  const anuais = doAno.filter((d) => d.meses >= 12);
+  const parciais = doAno.filter((d) => d.meses < 12);
+  const soma = (xs: typeof doAno) => xs.reduce((a, d) => a + (d.conjuntos ?? 0), 0);
+  return { distribuidoras: doAno.length, anuais: anuais.length, parciais: parciais.map((d) => ({ sigla: d.sigla ?? "sem sigla", meses: d.meses })), conjuntosAnuais: soma(anuais), conjuntosParciais: soma(parciais) };
+}
+
+/**
+ * Quem entra no DEC anual, conciliado: a fonte mostra "3150 conjuntos de 98 distribuidoras", e a contagem dos conjuntos acima do limite usa 3.146. Os dois
+ * números são do mesmo universo: das distribuidoras que enviaram DEC no ano, as que têm os 12 meses somam os 3.146 conjuntos com limite, e as de ano parcial,
+ * que ficam fora do DEC anual, somam os outros.
+ */
+export function textoUniversoDec(d: DecDoAno): string {
+  const u = d.universo;
+  if (!u || !u.parciais.length) return "";
+  const nomes = listaEmPortugues(u.parciais.map((x) => `${x.sigla} (${x.meses} meses)`));
+  const outros = u.conjuntosParciais;
+  return `Universo do DEC de ${d.ano}: ${num(u.distribuidoras, 0)} distribuidoras enviaram DEC; ${num(u.anuais, 0)} têm os 12 meses e entram no DEC anual, com ${num(u.conjuntosAnuais, 0)} conjuntos (a contagem de conjuntos acima do limite usa esses). ${plural(u.parciais.length, "distribuidora enviou", "distribuidoras enviaram")} só parte do ano e ${u.parciais.length === 1 ? "fica" : "ficam"} fora do DEC anual: ${nomes}${outros ? `, com ${num(outros, 0)} ${outros === 1 ? "conjunto" : "conjuntos"}` : ""}.`;
 }
 
 /** A ressalva essencial do DEC, junto do número: o que "apurado" quer dizer, o que a regra deixa de fora e o total de todas as origens. */
@@ -676,7 +725,8 @@ export function textoLimiteAgregado(d: DecDoAno): string {
   const c = d.conjuntos;
   if (!c || c.pct === null) return base;
   const uc = c.pctUc === null ? "" : `, que reúnem ${num(c.pctUc, 1)}% das unidades consumidoras`;
-  return `${base} Em ${d.ano}, ${num(c.acima, 0)} de ${num(c.total, 0)} conjuntos (${num(c.pct, 1)}%${uc}) ficaram acima do próprio limite.`;
+  const universo = textoUniversoDec(d);
+  return `${base} Em ${d.ano}, ${num(c.acima, 0)} de ${num(c.total, 0)} conjuntos (${num(c.pct, 1)}%${uc}) ficaram acima do próprio limite.${universo ? ` ${universo}` : ""}`;
 }
 
 /** Dispersão do DEC apurado entre os conjuntos elétricos: a média nacional não mostra que o valor varia de conjunto para conjunto. */
@@ -800,8 +850,13 @@ export function coberturaTarifa(
   };
 }
 
+/** O que a mediana simples é: cada distribuidora pesa o mesmo, e o resultado muda com o conjunto que o arquivo da ANEEL tem na data. */
+const NOTA_MEDIANA_SIMPLES =
+  " A mediana é simples (cada distribuidora pesa o mesmo, qualquer que seja o número de consumidores) e muda se a ANEEL acrescentar distribuidoras ao arquivo; a tabela de quartis de Minha região traz também a mediana pesada pelas unidades consumidoras.";
+
 export function textoCoberturaTarifa(c: CoberturaTarifa): string {
-  if (c.fora === 0) return `Mediana das ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, todas as que constam no conjunto de dados.`;
+  if (c.fora === 0)
+    return `Mediana das ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, todas as que constam no conjunto de dados.${NOTA_MEDIANA_SIMPLES}`;
   const recentes =
     c.foraRecente > 0
       ? `${num(c.foraRecente, 0)} tiveram a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${dataBR(c.data)}${c.naVespera > 0 ? ` (${num(c.naVespera, 0)} delas com a vigência encerrada em ${dataBR(somaDias(c.data, -1))})` : ""}`
@@ -812,7 +867,7 @@ export function textoCoberturaTarifa(c: CoberturaTarifa): string {
       : "";
   return (
     `A tarifa de referência é a mediana de ${num(c.comTarifa, 0)} distribuidoras com tarifa B1 residencial vigente em ${dataBR(c.data)}, de ${num(c.cnpjs, 0)} com tarifa no conjunto de dados. ` +
-    `Ficaram fora ${num(c.fora, 0)}: ${[recentes, antigas].filter(Boolean).join("; ")}.`
+    `Ficaram fora ${num(c.fora, 0)}: ${[recentes, antigas].filter(Boolean).join("; ")}.${NOTA_MEDIANA_SIMPLES}`
   );
 }
 

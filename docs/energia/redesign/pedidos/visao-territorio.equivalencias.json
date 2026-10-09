@@ -1,0 +1,106 @@
+{
+  "/setor-eletrico/visao-geral": [
+    {
+      "antes": "controle|Por que isso importa (recolhido em cada um dos quatro painéis)",
+      "depois": "texto|subtítulo de cada painel e abertura da página",
+      "justificativa": "A razão de cada painel virou uma oração do subtítulo, à vista; a razão da página está no lead. O link 'Como as partes se ligam' subiu para a abertura, como 'mapa do sistema' (mesmo destino, /setor-eletrico#mapa-conceitual). Nada do conteúdo foi retirado."
+    },
+    {
+      "antes": "texto|código do painel (P004 a P007) em Analisar",
+      "depois": null,
+      "justificativa": "Nome interno de painel não é informação para o leitor; as âncoras (#sistema, #determinantes, #sociedade, #observar) e os títulos continuam."
+    },
+    {
+      "antes": "texto|O que mudou, de Determinantes, repetia o veredito do painel",
+      "depois": "texto|O que mudou: período dos cinco gráficos e data de referência de cada painel",
+      "justificativa": "O veredito (o que está dentro ou fora da faixa) continua na resposta curta do painel; a nota passou a dizer o período e as datas, sem repetir a frase. O mesmo vale para Regras: a nota diz que a página não compara com a publicação anterior e que o histórico é reavaliado a cada publicação."
+    },
+    {
+      "antes": "controle|Regiões O que mudou, Como interpretar e O que não é possível concluir com o mesmo nome nos quatro painéis",
+      "depois": "controle|as mesmas regiões, cada uma com o nome do painel no fim",
+      "justificativa": "Mesmo texto visível; o nome acessível leva a pergunta do painel (landmark-unique do axe)."
+    },
+    {
+      "antes": "texto|Faixa dos 365 dias anteriores (participação térmica)",
+      "depois": "texto|Faixa de 365 janelas de 7 dias que terminam de 7 a 371 dias antes do dia de referência, sem sobreposição com a janela do número",
+      "justificativa": "Descreve a janela como a gold a calcula; os percentis são os mesmos."
+    },
+    {
+      "antes": "texto|Carga: 7 dias frente às mesmas datas do ano anterior, com a página Carga dando outro valor",
+      "depois": "texto|Carga: destaque de um dia e janelas de 7 dias, 28 dias e 52 semanas com o mesmo critério (o mesmo dia da semana), e o outro critério explicado",
+      "justificativa": "Um critério por número; o valor das mesmas datas continua escrito, ao lado, como o outro critério."
+    },
+    {
+      "antes": "controle|link Ver no painel de origem, em linha no fim da nota do cartão",
+      "depois": "controle|link Ver no painel de origem, em linha própria com 44 px de altura",
+      "justificativa": "Mesmo destino; alvo de toque de 44 px."
+    },
+    {
+      "antes": "texto|Cobertura do DEC: 3150 conjuntos de 98 distribuidoras (só na gold, em Analisar)",
+      "depois": "texto|Universo do DEC: 102 distribuidoras enviaram, 98 com os 12 meses (3.146 conjuntos) e as de ano parcial nomeadas",
+      "justificativa": "O texto da gold continua em Analisar; a conciliação vem no cartão, lida de qualidade.json."
+    },
+    {
+      "antes": "controle|links de download de Regras (sem o estado da validação)",
+      "depois": "controle|lista Arquivos para baixar e o estado de cada um (Analisar), com o link de cada CSV",
+      "justificativa": "Os mesmos dois CSV, agora com o resultado da validação e a explicação do 'reprovado' de uma versão anterior junto do link."
+    }
+  ],
+  "/setor-eletrico/territorio": [
+    {
+      "antes": "texto|Cada número é da área da sua fonte (lead, subtítulo, recorte, parágrafo da busca e veredito)",
+      "depois": "texto|uma vez no lead, mais a linha Não permite concluir",
+      "justificativa": "A advertência estava em quatro lugares com palavras parecidas. O limite (tarifa, perdas, DEC e FEC são da distribuidora inteira; preço e energia armazenada, do submercado) está na linha 'Não permite concluir' da abertura e na nota do painel; sob a busca ficou só o link para o texto completo."
+    },
+    {
+      "antes": "controle|Perdas totais sobre a energia injetada (uma linha na tabela de quartis)",
+      "depois": "controle|linhas de perdas por energia de referência (requerida, injetada publicada, mista) e uma linha das taxas sinalizadas",
+      "justificativa": "As taxas sinalizadas (ano parcial, balanço que não fecha, valor fora de 0% a 100%) saem das linhas por base, como o módulo Perdas as deixa fora do total nacional; cada linha diz a energia sobre a qual a taxa foi calculada. Nenhum valor foi retirado: as 101 taxas continuam, em linhas diferentes."
+    },
+    {
+      "antes": "controle|tabela de quartis sem unidades consumidoras",
+      "depois": "controle|duas colunas a mais: UC reunidas (% do quadro) e Mediana pesada pelas UC",
+      "justificativa": "A mediana simples continua; as colunas novas mostram a cobertura em unidades consumidoras e a mediana pesada."
+    },
+    {
+      "antes": "texto|provado / provada pela carga das áreas do ONS",
+      "depois": "texto|conferido / conferida, com o teste dito (dois dias, tolerância de 15 MWmed, Tocantins só por uma das áreas)",
+      "justificativa": "A palavra 'provada' era mais forte que o teste. O identificador na base publicada não mudou."
+    },
+    {
+      "antes": "coluna|UFs: Com localidade isolada (89, inclui os fora do SIN)",
+      "depois": "coluna|UFs: Com localidade isolada, dentro do SIN (16), ao lado de Municípios fora do SIN (73)",
+      "justificativa": "A legenda do mapa contava 16 e a coluna, 89; agora as duas contam os 16 de dentro do SIN, e os 73 têm coluna própria."
+    },
+    {
+      "antes": "coluna|tabela de submercados: Carga atendida por MMGD (estimativa do ONS)",
+      "depois": "coluna|Carga atendida por MMGD (estimativa do ONS de ago/2026)",
+      "justificativa": "O mês da estimativa entra no cabeçalho e no parágrafo Período."
+    },
+    {
+      "antes": "tabela|insumos com sha256 (o mesmo arquivo reproduz o mesmo índice)",
+      "depois": "tabela|insumos com o sha256 do índice e a situação do arquivo servido (confere ou o arquivo mudou depois do índice)",
+      "justificativa": "A afirmação só valia se o arquivo servido fosse o lido pelo índice; a página agora recalcula o sha256 na montagem e diz a diferença."
+    },
+    {
+      "antes": "texto|nomes internos nos textos de Analisar e Auditar (estados da prova, fora_do_sin, estado 1, gold, pipeline, WMS_Webmap_EPE_Data)",
+      "depois": "texto|as mesmas frases em palavras comuns",
+      "justificativa": "Tradução em territorio.ts (textoLegivel); o endereço do serviço da EPE vira link com o nome do servidor."
+    },
+    {
+      "antes": "texto|Tarifa B1 residencial em R$/MWh na ficha",
+      "depois": "texto|R$/MWh e, no detalhe, a mesma tarifa em R$/kWh",
+      "justificativa": "As duas unidades, com a conversão, para casar com a conta de luz."
+    },
+    {
+      "antes": "controle|mapa sem texto",
+      "depois": "controle|siglas das UFs sobre o mapa (sem colisão, com o tamanho fixo na tela) e contorno das UFs na camada de usinas",
+      "justificativa": "Só acrescenta; cores, legenda e tabela equivalente seguem."
+    },
+    {
+      "antes": "texto|Nenhum resultado / quantidade de resultados da busca só visíveis",
+      "depois": "texto|os mesmos avisos numa região viva (leitor de tela)",
+      "justificativa": "O texto visível continua; o anúncio é novo."
+    }
+  ]
+}

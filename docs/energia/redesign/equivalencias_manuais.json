@@ -52,7 +52,7 @@
   {
    "antes": "controle|filtrar por pertença",
    "depois": null,
-   "justificativa": "O filtro passou a 'Pertença ao submercado (só a ressalva)': 'provado pela carga das áreas do ONS' (26 linhas) é escrito 'sem ressalva', para a coluna não repetir a mesma frase em quase toda linha, e a única exceção ('provado por uma das áreas') segue por extenso (src/lib/energia/territorio.ts)."
+   "justificativa": "O filtro passou a 'Pertença ao submercado (só a ressalva)': 'conferido pela carga das áreas do ONS' (26 linhas; a palavra era 'provado') é escrito 'sem ressalva', para a coluna não repetir a mesma frase em quase toda linha, e a única exceção ('conferido por uma das áreas') segue por extenso (src/lib/energia/territorio.ts)."
   }
  ]
 }

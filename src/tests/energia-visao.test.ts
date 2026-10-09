@@ -23,6 +23,10 @@ import {
   periodoDaJanela,
   textoCoberturaTarifa,
   textoDecApurado,
+  textoJanelaTermica,
+  textoMudouDeterminantes,
+  textoUniversoDec,
+  vereditoDeterminantes,
   textoDenominadorPerdas,
   textoLimiteAgregado,
   valorDoDiaNaSerie,
@@ -746,8 +750,10 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     }
     expect(html).toContain('data-marca-regra="ena_faixa"');
     expect(html).toContain("data-regras-normais");
-    expect(html).toContain("Como as partes se ligam");
+    // a ligação entre as partes (da geração ao consumidor) fica à vista na abertura, e o bloco recolhido "Por que isso importa" saiu dos painéis
+    expect(html).toContain("mapa do sistema");
     expect(html).toContain('href="/setor-eletrico#mapa-conceitual"');
+    expect(html).not.toContain("data-por-que-importa");
   });
 });
 
@@ -756,3 +762,123 @@ function dataBR30(iso: string): string {
   const [a, m, d] = iso.split("-");
   return `${d}/${m}/${a}`;
 }
+
+/* ---------- r2: landmarks únicos, "O que mudou" sem repetir a abertura, um critério por número e o universo do DEC conciliado ---------- */
+
+describe("r2: Visão geral", () => {
+  const html = renderToStaticMarkup(createElement(PaginaVisaoGeral));
+  const ctx = contextoVisao(G);
+  const texto = (h: string) => h.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ");
+  const T = texto(html);
+  const q = JSON.parse(ler("public/energia/gold/qualidade.json"));
+
+  it("as 12 regiões 'O que mudou', 'Como interpretar' e 'O que não é possível concluir' têm nome único: cada uma leva a pergunta do painel (axe landmark-unique)", () => {
+    const rotulos = Array.from(html.matchAll(/aria-label="(O que mudou|Como interpretar|O que não é possível concluir)(: [^"]*)?"/g)).map((m) => m[0]);
+    expect(rotulos).toHaveLength(12);
+    expect(new Set(rotulos).size).toBe(12);
+    for (const p of PAINEIS_VISAO) {
+      for (const base of ["O que mudou", "Como interpretar", "O que não é possível concluir"]) expect(html, `${base} ${p.id}`).toContain(`aria-label="${base}: ${p.pergunta}"`);
+    }
+  });
+
+  it("'O que mudou' de Determinantes e de Regras não repete a frase de abertura do painel", () => {
+    const m = G.multiplos!;
+    const mudou = textoMudouDeterminantes(m);
+    expect(mudou).not.toBe(vereditoDeterminantes(m));
+    expect(mudou).toContain("Os gráficos cobrem");
+    for (const p of m.paineis) expect(mudou).toContain(dataBR30(p.data_referencia));
+    // a abertura do painel (o veredito) aparece uma vez só, e o "O que mudou" traz o período dos gráficos
+    expect(T.split(vereditoDeterminantes(m)).length - 1).toBe(1);
+    expect(T.split(respostaObservar(G.observar)).length - 1).toBe(1);
+    expect(T).toContain("Sem comparação com a publicação anterior nesta página");
+  });
+
+  it("a abertura traz a razão numa frase, o caminho da geração ao consumidor à vista e a linha 'Não permite concluir'; o bloco recolhido saiu dos quatro painéis", () => {
+    expect(html).toContain('data-limite=""');
+    expect(T).toContain("Não permite concluir Alinhar as medidas pelo calendário não diz que uma determina a outra");
+    expect(T).toContain("no mesmo calendário, cada um com a data da sua fonte");
+    expect(T).toMatch(/A ligação entre essas partes, da geração ao consumidor, está no mapa do sistema\s*\./);
+    expect(html).not.toContain("data-por-que-importa");
+    expect(T).not.toContain("Por que isso importa");
+  });
+
+  it("Preço: o Norte é tracejado para não esconder o Sudeste/Centro-Oeste; Rede: as fronteiras alternam o traço e têm rótulo direto", () => {
+    const d = determinantesDaPagina(G.multiplos!, ctx.earSin, ctx.bandasAgua, ctx.medianaAgua.base);
+    const preco = d.leves.paineis.find((p) => p.id === "preco")!;
+    const sp = seriesDeterminante(preco);
+    expect(sp.find((x) => x.id === "preco_N")!.tracejada).toBe(true);
+    for (const x of sp.filter((x) => x.id !== "preco_N" && x.id.startsWith("preco_"))) expect(x.tracejada, x.id).toBeFalsy();
+    const rede = d.leves.paineis.find((p) => p.id === "rede")!;
+    const sr = seriesDeterminante(rede).slice(0, rede.colunas.length);
+    sr.forEach((x, i) => expect(Boolean(x.tracejada), x.id).toBe(i % 2 === 1));
+    expect(T).toContain("a do Norte é tracejada para a do Sudeste/Centro-Oeste continuar visível");
+    expect(ler("src/components/energia/VisaoDeterminantes.tsx")).toContain('rotulosDiretos={p.id === "rede"}');
+  });
+
+  it("DEC: as 102 distribuidoras que enviaram, as 98 com os 12 meses e os 3.146 conjuntos se conciliam, e as de ano parcial são nomeadas", () => {
+    const ano = ctx.dec!.ano;
+    const ds = (q.distribuidoras as { sigla: string; ano: number; meses: number; conjuntos: number }[]).filter((x) => x.ano === ano);
+    const anuais = ds.filter((x) => x.meses >= 12);
+    const parciais = ds.filter((x) => x.meses < 12);
+    const u = ctx.dec!.universo!;
+    expect(u.distribuidoras).toBe(ds.length);
+    expect(u.anuais).toBe(anuais.length);
+    expect(u.parciais.map((x) => x.sigla).sort()).toEqual(parciais.map((x) => x.sigla).sort());
+    expect(u.conjuntosAnuais).toBe(anuais.reduce((a, x) => a + x.conjuntos, 0));
+    // os conjuntos das distribuidoras de ano completo são os que têm limite: a conta de 810 de 3.146 usa esses
+    expect(u.conjuntosAnuais).toBe(q.conjuntos.com_limite);
+    const t = textoUniversoDec(ctx.dec!);
+    expect(t).toContain(`${num(ds.length, 0)} distribuidoras enviaram DEC`);
+    expect(t).toContain(`${num(anuais.length, 0)} têm os 12 meses`);
+    expect(t).toContain(`${num(u.conjuntosAnuais, 0)} conjuntos`);
+    for (const x of parciais) expect(t).toContain(`${x.sigla} (${x.meses} meses)`);
+    expect(T).toContain(t);
+  });
+
+  it("Carga: o destaque é de um dia e as janelas de 7 dias, 28 dias e 52 semanas vêm com o mesmo critério; o outro critério (mesmas datas) vem explicado", () => {
+    const c = JSON.parse(ler("public/energia/gold/carga_detalhe.json"));
+    const sin = c.p025.comparacoes.subsistemas.find((x: { sm: string }) => x.sm === "SIN").janelas;
+    const f = (v: number) => `${num(Math.abs(v), 1)}% ${v >= 0 ? "acima" : "abaixo"}`;
+    expect(T).toContain("O destaque compara um dia.");
+    expect(T).toContain(`7 dias ${f(sin["7d"].equivalente.variacao_pct)}`);
+    expect(T).toContain(`28 dias ${f(sin["28d"].equivalente.variacao_pct)}`);
+    expect(T).toContain(`52 semanas ${f(sin["52_semanas"].equivalente.variacao_pct)}`);
+    expect(T).toContain(`Com as mesmas datas do ano anterior, em vez do mesmo dia da semana, os 7 dias ficam em ${f(sin["7d"].mesmas_datas.variacao_pct)}`);
+    expect(ctx.cargaJanelas).toMatchObject({ semana7: sin["7d"].equivalente.variacao_pct, dias28: sin["28d"].equivalente.variacao_pct, semanas52: sin["52_semanas"].equivalente.variacao_pct });
+  });
+
+  it("Geração: a faixa térmica diz que são 365 janelas de 7 dias que terminam de 7 a 371 dias antes e não se sobrepõem à atual", () => {
+    const t = ctx.termica!;
+    const dia = G.multiplos!.paineis.find((p) => p.id === "geracao")!.data_referencia;
+    const txt = textoJanelaTermica({ p10: t.p10, p90: t.p90 }, dia);
+    expect(txt).toContain("365 janelas de 7 dias");
+    expect(txt).toContain("de 7 a 371 dias antes do dia de referência");
+    expect(txt).toContain(`entre ${dataBR30(somaDias(dia, -371))} e ${dataBR30(somaDias(dia, -7))}`);
+    expect(txt).toContain("sem sobreposição com a janela de 7 dias que termina no dia de referência");
+    expect(T).toContain(txt);
+    expect(T).not.toContain("Faixa dos 365 dias anteriores");
+  });
+
+  it("CMO: a natureza do dado (resultado de modelo, não previsão) fica à vista na regra do calendário", () => {
+    expect(T).toContain("Resultado de modelo do ONS (DECOMP), não previsão da Scrutiniums.");
+  });
+
+  it("os dois CSV de Regras mostram o estado da validação junto do link; o 'reprovado' de uma versão anterior vem explicado sem tocar na publicação", () => {
+    expect(html).toContain('data-arquivo="/energia/series/sintese_regras_diario.csv"');
+    expect(T).toContain("Arquivos para baixar e o estado de cada um");
+    expect(html).toContain('data-estado-arquivo="reprovado"');
+    expect(T).toContain("Validação automática: reprovada na versão de");
+    expect(T).toContain("o arquivo publicado é outra versão");
+    expect(T).toContain("Relido como CSV, o arquivo publicado tem");
+  });
+
+  it("o CSV do painel diz o que não traz, e a mediana de tarifa diz que é simples e que muda com o conjunto do arquivo", () => {
+    expect(T).toContain("não traz a mediana da água nem as faixas de referência do gráfico");
+    expect(textoCoberturaTarifa(ctx.tarifa!)).toContain("A mediana é simples (cada distribuidora pesa o mesmo");
+    expect(T).toContain("a tabela de quartis de Minha região traz também a mediana pesada pelas unidades consumidoras");
+  });
+
+  it("o código interno do painel (P004 a P007) não aparece em nenhum nível", () => {
+    expect(html).not.toMatch(/data-nivel="analisar"[^>]*>\s*P00[4-7]\s*</);
+  });
+});

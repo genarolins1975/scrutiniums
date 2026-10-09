@@ -121,7 +121,7 @@ function Cartao({
           banda={banda}
           zeroNoEixo={p.referencia.tipo === "zero"}
           altura={200}
-          rotulosDiretos={false}
+          rotulosDiretos={p.id === "rede"}
           legendaInterativa={multi}
           ocultas={multi ? ocultas : undefined}
           onOcultas={multi ? onOcultas : undefined}
@@ -135,7 +135,8 @@ function Cartao({
       )}
       {p.id === "preco" && (
         <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
-          Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}.
+          Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. Quando os preços coincidem, as linhas se sobrepõem: a do Norte é tracejada para a do
+          Sudeste/Centro-Oeste continuar visível.
         </p>
       )}
       <p data-nivel="analisar" className="mt-1 text-xs text-mineral">
@@ -152,11 +153,11 @@ function Cartao({
         </div>
       )}
       <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-        Referência: {p.referencia.rotulo}.{extras.length > 0 ? ` Linha tracejada: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}{" "}
-        <a href={p.href} className="text-energia-dark underline underline-offset-4">
-          Ver no painel de origem
-        </a>
+        Referência: {p.referencia.rotulo}.{extras.length > 0 ? ` Linha tracejada: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
       </p>
+      <a href={p.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+        Ver no painel de origem
+      </a>
     </section>
   );
 }

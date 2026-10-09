@@ -27,6 +27,8 @@ export type PoligonoDestaque = { id: string; d: string; estilo: "selecao" | "are
 export type SobreposicaoMapa = { id: string; features: readonly FeatureGeo[]; fill: string; tracejado?: boolean };
 export type GrupoPontosMapa = { id: string; cor: string; ponta: "round" | "square"; espessura: number; d: string; vazado?: boolean };
 export type DicaMapa = { titulo: string; linhas: string[] };
+/** Rótulo de texto sobre o mapa (a sigla da UF): posição na malha e peso (os de maior peso são colocados primeiro). */
+export type RotuloMapa = { id: string; texto: string; x: number; y: number; peso: number };
 
 /** Preenchimento especial: hachura de "sem dado" desenhada pelo próprio mapa. */
 export type PreenchimentoMapa = string;
@@ -75,6 +77,36 @@ const CamadaPontos = memo(function CamadaPontos({ grupos, upx }: { grupos: reado
   );
 });
 
+const TAMANHO_ROTULO = 11;
+
+/**
+ * Siglas sobre o mapa, na posição de rótulo de cada região, com o contorno da cor do fundo para ler sobre qualquer cor. O tamanho na tela é fixo (11 px):
+ * a cada aproximação cabem mais siglas, e a que colidiria com outra já colocada fica de fora até haver espaço. Só decoração: o mapa continua com o
+ * nome e a tabela equivalente, e o ponteiro passa direto para o polígono.
+ */
+function CamadaRotulos({ itens, vb, upx }: { itens: readonly RotuloMapa[]; vb: Caixa; upx: number }) {
+  const colocados: { x0: number; x1: number; y0: number; y1: number }[] = [];
+  const visiveis: RotuloMapa[] = [];
+  for (const r of [...itens].sort((a, b) => b.peso - a.peso)) {
+    if (r.x < vb.x || r.x > vb.x + vb.largura || r.y < vb.y || r.y > vb.y + vb.altura) continue;
+    const meiaLargura = ((r.texto.length * TAMANHO_ROTULO * 0.62 + 6) * upx) / 2;
+    const meiaAltura = ((TAMANHO_ROTULO + 4) * upx) / 2;
+    const c = { x0: r.x - meiaLargura, x1: r.x + meiaLargura, y0: r.y - meiaAltura, y1: r.y + meiaAltura };
+    if (colocados.some((o) => c.x1 > o.x0 && c.x0 < o.x1 && c.y1 > o.y0 && c.y0 < o.y1)) continue;
+    colocados.push(c);
+    visiveis.push(r);
+  }
+  return (
+    <g pointerEvents="none" aria-hidden="true" data-rotulos-mapa="" fontSize={TAMANHO_ROTULO * upx} fontWeight={600} textAnchor="middle" dominantBaseline="central">
+      {visiveis.map((r) => (
+        <text key={r.id} x={r.x} y={r.y} fill="var(--cor-carvao)" stroke="var(--cor-superficie)" strokeWidth={3 * upx} strokeLinejoin="round" paintOrder="stroke">
+          {r.texto}
+        </text>
+      ))}
+    </g>
+  );
+}
+
 export function TerritorioMapa({
   titulo,
   descricao,
@@ -85,6 +117,7 @@ export function TerritorioMapa({
   destaques = [],
   pontos = [],
   pontoSelecionado = null,
+  rotulos = [],
   foco = null,
   onClique,
   dica,
@@ -102,6 +135,8 @@ export function TerritorioMapa({
   destaques?: readonly PoligonoDestaque[];
   pontos?: readonly GrupoPontosMapa[];
   pontoSelecionado?: Ponto | null;
+  /** Siglas desenhadas sobre o mapa (a camada de UF), com a colocação sem colisão feita a cada zoom. */
+  rotulos?: readonly RotuloMapa[];
   /** Ponto que o "Aproximar" centraliza (a seleção atual). */
   foco?: Ponto | null;
   /** Clique ou toque: id do polígono sob o ponteiro (ou null), ponto na malha e tolerância de 12 px em unidades da malha. */
@@ -278,6 +313,7 @@ export function TerritorioMapa({
               </g>
             ),
           )}
+          {rotulos.length > 0 && <CamadaRotulos itens={rotulos} vb={vb} upx={upx} />}
           {pontos.length > 0 && <CamadaPontos grupos={pontos} upx={upx} />}
           {pontoSelecionado && (
             <g pointerEvents="none" aria-hidden="true">

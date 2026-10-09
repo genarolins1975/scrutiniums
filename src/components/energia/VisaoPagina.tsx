@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR } from "@/lib/energia/formato";
@@ -18,18 +17,19 @@ import { PAINEIS_VISAO, datasLegiveis, enumLegivel, type IdPainelVisao } from "@
  * 600 KB de HTML porque séries longas, históricos e as regras completas estão nos CSV de download e nos módulos de origem.
  */
 
-/** Painel da Visão geral: a pergunta em serifa, o subtítulo, o corpo, a motivação recolhida e a fonte. Mantém a âncora e `aria-labelledby` de sempre. */
+/**
+ * Painel da Visão geral: a pergunta em serifa, o subtítulo (que traz a razão do painel numa oração, à vista), o corpo e a fonte. Mantém a âncora e
+ * `aria-labelledby` de sempre. O bloco recolhido "Por que isso importa" saiu: a razão está no subtítulo e na abertura da página.
+ */
 export function PainelVisao({
   id,
   subtitulo,
-  porQueImporta,
   fonte,
   children,
 }: {
   id: IdPainelVisao;
-  /** Linha técnica sob a pergunta; omitida quando a abertura da página já a diz. */
+  /** Linha sob a pergunta: o que o painel mostra e por que ele existe. */
   subtitulo?: ReactNode;
-  porQueImporta: ReactNode;
   fonte: ReactNode;
   children: ReactNode;
 }) {
@@ -40,25 +40,9 @@ export function PainelVisao({
         <h2 id={`${id}-h`} className="ed-h2 font-serif text-carvao">
           {p.pergunta}
         </h2>
-        <p className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm text-carvao-muted">
-          <span data-nivel="analisar" className="font-serif text-lg text-energia">
-            {p.codigo}
-          </span>
-          {subtitulo && <span>{subtitulo}</span>}
-        </p>
+        {subtitulo && <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">{subtitulo}</p>}
       </header>
       <div className="mt-5 space-y-6">{children}</div>
-      <DetalheDoNivel resumo="Por que isso importa" abreEm="analisar" className="mt-1" dados={{ "data-por-que-importa": "" }}>
-        <div className="max-w-prose2 space-y-2 border-t border-linha pb-2 pt-3 text-sm leading-relaxed text-carvao-muted">
-          <div>{porQueImporta}</div>
-          <p>
-            <Link href="/setor-eletrico#mapa-conceitual" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Como as partes se ligam
-            </Link>{" "}
-            está no mapa conceitual do observatório.
-          </p>
-        </div>
-      </DetalheDoNivel>
       <footer className="mt-3 border-t border-linha pt-3">
         <p className="text-xs leading-relaxed text-carvao-muted">{fonte}</p>
       </footer>
