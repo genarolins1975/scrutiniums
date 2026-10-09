@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
+import { Siglas } from "@/components/eficiencia/Siglas";
 import { goldSaude } from "@/lib/eficiencia/saude/dados";
 import { metaEducacao } from "@/lib/eficiencia/dados";
 import { dataBr } from "@/lib/eficiencia/formato";
@@ -79,7 +80,7 @@ export default function PaginaEntradaEficiencia() {
               <dl className="mt-4 space-y-3 text-sm leading-snug">
                 <div><dt className="rotulo text-carvao-muted">O que mostra</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.escopo}</dd></div>
                 <div><dt className="rotulo text-carvao-muted">O que não inclui</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.naoInclui}</dd></div>
-                <div><dt className="rotulo text-carvao-muted">Fontes</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.fontes}</dd></div>
+                <div><dt className="rotulo text-carvao-muted">Fontes</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta"><Siglas texto={t.fontes} /></dd></div>
                 <div><dt className="rotulo text-carvao-muted">Última captura de dados</dt><dd className="mt-0.5 text-obee-tinta">{t.atualizacao ?? "não informada"}; os anos de referência estão em cada medida.</dd></div>
               </dl>
               <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-1">

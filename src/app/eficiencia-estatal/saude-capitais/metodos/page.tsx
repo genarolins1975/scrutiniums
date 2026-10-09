@@ -36,10 +36,10 @@ const Secao = ({ id, titulo, intro, children }: { id: string; titulo: string; in
 
 function Numero({ valor, rotulo }: { valor: string; rotulo: string }) {
   return (
-    <div className="border-t-2 border-obee pt-2">
+    <li className="border-t-2 border-obee pt-2">
       <p className="font-serif text-[1.8rem] leading-none text-obee-tinta">{valor}</p>
       <p className="mt-1 text-sm leading-snug text-carvao-muted">{rotulo}</p>
-    </div>
+    </li>
   );
 }
 
@@ -50,12 +50,12 @@ function ResumoDoModulo({ publicados, avaliados, decisoes, validacoes, observaco
   return (
     <section aria-labelledby="resumo-modulo" className="mt-8">
       <h2 id="resumo-modulo" className="sr-only">O módulo em números</h2>
-      <dl className="grid max-w-[64rem] grid-cols-2 gap-x-8 gap-y-5 md:grid-cols-4">
+      <ul className="grid max-w-[64rem] grid-cols-2 gap-x-8 gap-y-5 md:grid-cols-4">
         <Numero valor={String(publicados)} rotulo="indicadores publicados, todos com ressalvas na ficha" />
         <Numero valor={String(avaliados - publicados)} rotulo="indicadores avaliados e não publicados, com o motivo" />
         <Numero valor={inteiroBr(observacoes)} rotulo="observações, 26 capitais, 5 exercícios financeiros" />
         <Numero valor={String(validacoes.reduce((s, [, n]) => s + n, 0))} rotulo={validacoes.map(([r, n]) => `${n} ${r}`).join(", ")} />
-      </dl>
+      </ul>
       <div className="mt-6 max-w-[64rem]">
         <p className="rotulo text-carvao-muted">Decisão sobre as {total} medidas candidatas</p>
         <div className="mt-2 flex h-4 w-full overflow-hidden border border-linha" role="img" aria-label={decisoes.map(([d, n]) => `${n} ${d}`).join(", ")}>

@@ -1,0 +1,113 @@
+arquivo;linha_do_csv;ano;valor_no_csv;valor_recalculado_na_gold;valor_confere;marca_de_base;base_do_denominador_no_csv;base_igual_a_gold;capitais_na_mediana
+asps_pct_mediana;Mediana das capitais na comparação;2021;20.925;20.925;sim;nao;;sim;26
+asps_pct_mediana;Mediana das capitais na comparação;2022;20.595;20.595;sim;nao;;sim;26
+asps_pct_mediana;Mediana das capitais na comparação;2023;20.555;20.555;sim;nao;;sim;26
+asps_pct_mediana;Mediana das capitais na comparação;2024;20.63;20.630000000000003;sim;nao;;sim;26
+asps_pct_mediana;Mediana das capitais na comparação;2025;21.045;21.045;sim;nao;;sim;26
+asps_pct_sao-paulo;São Paulo;2021;20.57;20.57;sim;nao;;sim;26
+asps_pct_sao-paulo;São Paulo;2022;23.07;23.07;sim;nao;;sim;26
+asps_pct_sao-paulo;São Paulo;2023;24.41;24.41;sim;nao;;sim;26
+asps_pct_sao-paulo;São Paulo;2024;24.32;24.32;sim;nao;;sim;26
+asps_pct_sao-paulo;São Paulo;2025;23.02;23.02;sim;nao;;sim;26
+cobertura_aps_mediana;Mediana das capitais na comparação;2021;;;sim;sim;população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base 2020);sim;0
+cobertura_aps_mediana;Mediana das capitais na comparação;2022;62.215;62.215;sim;sim;população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base 2021);sim;26
+cobertura_aps_mediana;Mediana das capitais na comparação;2023;76.855;76.855;sim;nao;população de referência do Ministério: Censo 2022 (ano base 2022);sim;26
+cobertura_aps_mediana;Mediana das capitais na comparação;2024;83.5;83.5;sim;nao;população de referência do Ministério: Censo 2022 (ano base 2023);sim;26
+cobertura_aps_mediana;Mediana das capitais na comparação;2025;83.04;83.03999999999999;sim;sim;população de referência do Ministério: estimativa de 2024, posterior ao Censo 2022 (ano base 2024);sim;26
+cobertura_aps_sao-paulo;São Paulo;2021;47.04;47.04;sim;sim;população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base 2020);sim;0
+cobertura_aps_sao-paulo;São Paulo;2022;52.99;52.99;sim;sim;população de referência do Ministério: estimativa anterior ao Censo 2022 (ano base 2021);sim;26
+cobertura_aps_sao-paulo;São Paulo;2023;58.4;58.4;sim;nao;população de referência do Ministério: Censo 2022 (ano base 2022);sim;26
+cobertura_aps_sao-paulo;São Paulo;2024;60.64;60.64;sim;nao;população de referência do Ministério: Censo 2022 (ano base 2023);sim;26
+cobertura_aps_sao-paulo;São Paulo;2025;59.47;59.47;sim;sim;população de referência do Ministério: estimativa de 2024, posterior ao Censo 2022 (ano base 2024);sim;26
+despesa_hab_mediana;Mediana das capitais na comparação;2021;876.628965;876.628965;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;25
+despesa_hab_mediana;Mediana das capitais na comparação;2022;1043.764494;1043.764494;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+despesa_hab_mediana;Mediana das capitais na comparação;2023;1172.8477565;1172.8477564999998;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+despesa_hab_mediana;Mediana das capitais na comparação;2024;1255.6779695;1255.6779695;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+despesa_hab_mediana;Mediana das capitais na comparação;2025;1354.430959;1354.430959;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;25
+despesa_hab_moeda_real_mediana;Mediana das capitais na comparação;2021;1098.210514;1098.210514;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;25
+despesa_hab_moeda_real_mediana;Mediana das capitais na comparação;2022;1196.550941;1196.550941;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+despesa_hab_moeda_real_mediana;Mediana das capitais na comparação;2023;1285.4800995;1285.4800995;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+despesa_hab_moeda_real_mediana;Mediana das capitais na comparação;2024;1318.6722295;1318.6722295;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+despesa_hab_moeda_real_mediana;Mediana das capitais na comparação;2025;1354.430959;1354.430959;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;25
+despesa_hab_moeda_real_sao-paulo;São Paulo;2021;1475.359618;1475.359618;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;25
+despesa_hab_moeda_real_sao-paulo;São Paulo;2022;1672.960477;1672.960477;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+despesa_hab_moeda_real_sao-paulo;São Paulo;2023;1779.001224;1779.001224;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+despesa_hab_moeda_real_sao-paulo;São Paulo;2024;1935.837644;1935.837644;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+despesa_hab_moeda_real_sao-paulo;São Paulo;2025;1960.716118;1960.716118;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;25
+despesa_hab_sao-paulo;São Paulo;2021;1177.6822;1177.6822;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;25
+despesa_hab_sao-paulo;São Paulo;2022;1459.341751;1459.341751;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+despesa_hab_sao-paulo;São Paulo;2023;1623.127106;1623.127106;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+despesa_hab_sao-paulo;São Paulo;2024;1843.36079;1843.36079;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+despesa_hab_sao-paulo;São Paulo;2025;1960.716118;1960.716118;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;25
+despesa_mediana;Mediana das capitais na comparação;2021;1020801741.09;1020801741.09;sim;nao;;sim;25
+despesa_mediana;Mediana das capitais na comparação;2022;1161318906.835;1161318906.835;sim;nao;;sim;26
+despesa_mediana;Mediana das capitais na comparação;2023;1304414971.05;1304414971.0500002;sim;nao;;sim;26
+despesa_mediana;Mediana das capitais na comparação;2024;1406371727.665;1406371727.665;sim;nao;;sim;26
+despesa_mediana;Mediana das capitais na comparação;2025;1532777091.5;1532777091.5;sim;nao;;sim;25
+despesa_sao-paulo;São Paulo;2021;14598986643.15;14598986643.15;sim;nao;;sim;25
+despesa_sao-paulo;São Paulo;2022;16712380276.24;16712380276.24;sim;nao;;sim;26
+despesa_sao-paulo;São Paulo;2023;18588049995.7;18588049995.7;sim;nao;;sim;26
+despesa_sao-paulo;São Paulo;2024;21927842055.5;21927842055.5;sim;nao;;sim;26
+despesa_sao-paulo;São Paulo;2025;23342248911.99;23342248911.99;sim;nao;;sim;25
+eap_10mil_mediana;Mediana das capitais na comparação;2021;0.087138;0.087138;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+eap_10mil_mediana;Mediana das capitais na comparação;2022;0.104912;0.104912;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+eap_10mil_mediana;Mediana das capitais na comparação;2023;0.250876;0.250876;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+eap_10mil_mediana;Mediana das capitais na comparação;2024;0.122785;0.122785;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+eap_10mil_mediana;Mediana das capitais na comparação;2025;0.136825;0.13682499999999997;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+eap_10mil_sao-paulo;São Paulo;2021;0.00968;0.00968;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+eap_10mil_sao-paulo;São Paulo;2022;0.337932;0.337932;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+eap_10mil_sao-paulo;São Paulo;2023;0.362382;0.362382;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+eap_10mil_sao-paulo;São Paulo;2024;0.381654;0.381654;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+eap_10mil_sao-paulo;São Paulo;2025;0.416633;0.416633;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+esf_10mil_mediana;Mediana das capitais na comparação;2021;1.6649415;1.6649414999999999;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+esf_10mil_mediana;Mediana das capitais na comparação;2022;1.954611;1.9546109999999999;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+esf_10mil_mediana;Mediana das capitais na comparação;2023;2.062537;2.062537;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+esf_10mil_mediana;Mediana das capitais na comparação;2024;2.094988;2.094988;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+esf_10mil_mediana;Mediana das capitais na comparação;2025;2.192537;2.1925369999999997;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+esf_10mil_sao-paulo;São Paulo;2021;1.309254;1.309254;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+esf_10mil_sao-paulo;São Paulo;2022;1.439923;1.439923;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+esf_10mil_sao-paulo;São Paulo;2023;1.445163;1.445163;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+esf_10mil_sao-paulo;São Paulo;2024;1.426581;1.426581;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+esf_10mil_sao-paulo;São Paulo;2025;1.447296;1.447296;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+icsap_n_mediana;Mediana das capitais na comparação;2021;5578.5;5578.5;sim;nao;;sim;26
+icsap_n_mediana;Mediana das capitais na comparação;2022;6905.5;6905.5;sim;nao;;sim;26
+icsap_n_mediana;Mediana das capitais na comparação;2023;7235.5;7235.5;sim;nao;;sim;26
+icsap_n_mediana;Mediana das capitais na comparação;2024;7079.5;7079.5;sim;nao;;sim;26
+icsap_n_sao-paulo;São Paulo;2021;68543;68543;sim;nao;;sim;26
+icsap_n_sao-paulo;São Paulo;2022;77930;77930;sim;nao;;sim;26
+icsap_n_sao-paulo;São Paulo;2023;82382;82382;sim;nao;;sim;26
+icsap_n_sao-paulo;São Paulo;2024;83391;83391;sim;nao;;sim;26
+icsap_part_mediana;Mediana das capitais na comparação;2021;12.0007675;12.000767499999998;sim;nao;;sim;26
+icsap_part_mediana;Mediana das capitais na comparação;2022;13.3223345;13.3223345;sim;nao;;sim;26
+icsap_part_mediana;Mediana das capitais na comparação;2023;13.9694435;13.9694435;sim;nao;;sim;26
+icsap_part_mediana;Mediana das capitais na comparação;2024;13.48796;13.48796;sim;nao;;sim;26
+icsap_part_sao-paulo;São Paulo;2021;13.493992;13.493992;sim;nao;;sim;26
+icsap_part_sao-paulo;São Paulo;2022;15.164901;15.164901;sim;nao;;sim;26
+icsap_part_sao-paulo;São Paulo;2023;15.244549;15.244549;sim;nao;;sim;26
+icsap_part_sao-paulo;São Paulo;2024;14.762369;14.762369;sim;nao;;sim;26
+icsap_taxa_den_obee_mediana;Mediana das capitais na comparação;2021;582.000621;582.000621;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+icsap_taxa_den_obee_mediana;Mediana das capitais na comparação;2022;711.6301375;711.6301375;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+icsap_taxa_den_obee_mediana;Mediana das capitais na comparação;2023;825.860017;825.860017;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+icsap_taxa_den_obee_mediana;Mediana das capitais na comparação;2024;773.5560315;773.5560315;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+icsap_taxa_den_obee_sao-paulo;São Paulo;2021;552.927905;552.927905;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+icsap_taxa_den_obee_sao-paulo;São Paulo;2022;680.49255;680.49255;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+icsap_taxa_den_obee_sao-paulo;São Paulo;2023;719.367859;719.367859;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+icsap_taxa_den_obee_sao-paulo;São Paulo;2024;701.025204;701.025204;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+icsap_taxa_mediana;Mediana das capitais na comparação;2021;602.868252;602.868252;sim;nao;;sim;26
+icsap_taxa_mediana;Mediana das capitais na comparação;2022;664.784451;664.784451;sim;nao;;sim;26
+icsap_taxa_mediana;Mediana das capitais na comparação;2023;773.798525;773.7985249999999;sim;nao;;sim;26
+icsap_taxa_mediana;Mediana das capitais na comparação;2024;773.5560315;773.5560315;sim;nao;;sim;26
+icsap_taxa_sao-paulo;São Paulo;2021;571.826728;571.826728;sim;nao;;sim;26
+icsap_taxa_sao-paulo;São Paulo;2022;652.108134;652.108134;sim;nao;;sim;26
+icsap_taxa_sao-paulo;São Paulo;2023;690.495648;690.495648;sim;nao;;sim;26
+icsap_taxa_sao-paulo;São Paulo;2024;701.025204;701.025204;sim;nao;;sim;26
+ubs_10mil_mediana;Mediana das capitais na comparação;2021;0.8371385;0.8371385;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+ubs_10mil_mediana;Mediana das capitais na comparação;2022;0.9155365;0.9155365;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+ubs_10mil_mediana;Mediana das capitais na comparação;2023;0.9155365;0.9155365;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+ubs_10mil_mediana;Mediana das capitais na comparação;2024;0.8699665;0.8699665;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+ubs_10mil_mediana;Mediana das capitais na comparação;2025;0.879069;0.879069;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+ubs_10mil_sao-paulo;São Paulo;2021;0.381563;0.381563;sim;nao;estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010);sim;26
+ubs_10mil_sao-paulo;São Paulo;2022;0.420887;0.420887;sim;sim;Censo 2022, população de 31 de julho de 2022;sim;26
+ubs_10mil_sao-paulo;São Paulo;2023;0.422634;0.422634;sim;sim;Censo 2022, população de 31 de julho de 2022 (relação de 2023);sim;26
+ubs_10mil_sao-paulo;São Paulo;2024;0.416962;0.416962;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
+ubs_10mil_sao-paulo;São Paulo;2025;0.420833;0.420833;sim;nao;estimativa de 1º de julho posterior ao Censo 2022;sim;26
