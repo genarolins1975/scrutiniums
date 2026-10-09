@@ -10,7 +10,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
   COLUNAS_BALANCO_MENSAL,
   COLUNAS_EXTERIOR_12M,

@@ -205,12 +205,16 @@ export function ExpansaoAusencia({ titulo, children }: { titulo: string; childre
   );
 }
 
-/** Lista das limitações publicadas pela proveniência (texto da gold, sem reescrita). */
+/**
+ * Lista das limitações publicadas pela proveniência (texto da gold, sem reescrita). A mesma limitação costuma vir em mais de uma
+ * proveniência da página (a da carteira repete a do RALIE e a das coortes): cada texto aparece uma vez.
+ */
 export function ExpansaoLimitacoes({ itens }: { itens: readonly string[] }) {
-  if (!itens.length) return null;
+  const unicos = Array.from(new Set(itens));
+  if (!unicos.length) return null;
   return (
     <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
-      {itens.map((x) => (
+      {unicos.map((x) => (
         <li key={x}>{datasLegiveis(x)}</li>
       ))}
     </ul>

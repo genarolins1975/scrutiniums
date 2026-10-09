@@ -24,6 +24,7 @@ Itens achados pelas avaliações independentes iniciais e pelos executores que n
 | S4 | Regra de ordem pôs a resposta curta antes das figuras mesmo quando a faixa de métricas já traz o número | `RespostaCurta` aceita `depois` e `globals.css` respeita `data-resposta-depois` | feito |
 | S5 | Legenda interativa de `GraficoLinhas` gastava cerca de 90 px acima da figura | Botões de 32 px só em tela larga com ponteiro fino (44 px no toque e abaixo de 768 px) | feito |
 | S7 | Ficha "Comprove" com texto de revisões que contradiz a tabela da página | `Numero` aceita `revisoes?: string` e substitui só a linha "Revisões" da ficha | feito |
+| S8 | Barra de profundidade presa ao topo cobria o controle focado (WCAG 2.2, 2.4.11) e tinha fundo translúcido | `ModoProfundidade`: fundo opaco e, ao receber foco, a página rola o suficiente para o controle ficar abaixo da barra | feito |
 | S6 | Cores diferentes para a mesma entidade entre gráficos da mesma página | Regra no guia dos executores (mesma cor por entidade); verificação na reavaliação | em curso |
 
 ## Arquivos sem uso para apagar no fim (com o servidor parado)

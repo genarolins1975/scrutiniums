@@ -80,7 +80,7 @@ export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
           titulo="Previsões e modelos indisponíveis nesta publicação"
           motivo={
             motivo ??
-            "A gold das previsões (public/energia/gold/previsoes_desempenho.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados de previsões não foram gerados nesta publicação ou não passaram na validação; a última publicação válida é mantida quando existe."
           }
         />
         <p className="mt-6 text-sm">

@@ -3,10 +3,12 @@
  * busca do alto da página, o estado de cada destino e as opções de "sua distribuidora" das
  * perguntas de perdas e de qualidade. Nada aqui calcula indicador: a atualidade vem de
  * publicacao.json (módulo Dados), os destinos do conteúdo editorial (mapa.ts e navegacao.ts), os
- * verbetes conferidos de conteudo/conceitos.ts e as distribuidoras do índice de empresas.json.
- * Os números das seis perguntas prioritárias ficam em home-sinais.ts.
+ * verbetes conferidos de conteudo/conceitos.ts, o vocabulário leigo da busca (busca-sinonimos.ts) e
+ * as distribuidoras do índice de empresas.json. Os números das seis perguntas prioritárias ficam
+ * em home-sinais.ts.
  */
 import type { ItemBusca } from "./busca";
+import { sinonimosDe } from "./busca-sinonimos";
 import type { OpcaoDistribuidora } from "@/components/energia/EscolhaDistribuidora";
 import { CARTOES, FONTES_PRINCIPAIS, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS } from "./mapa";
 import type { DestinoNavegacao } from "./navegacao";
@@ -24,12 +26,23 @@ export type ConjuntoAtualidade = {
     cadencia?: string | null;
     ultimo_periodo?: string | null;
     fim_ultimo_periodo?: string | null;
+    /** O que a situação compara com o calendário da fonte: "periodo_de_referencia" (série regular) ou "publicacao_da_fonte" (arquivo anual, cadastro ou vigência). */
+    base?: string | null;
+    /** O último período disponível ainda não terminou (o ano corrente num arquivo anual). */
+    periodo_parcial?: boolean | null;
   } | null;
   /** Como o conjunto é publicado: "vigencia" traz datas de início e fim de cada tarifa ("início|fim|ato"), e não um período de referência. */
   dado?: { formato?: string | null; ref_max?: string | null } | null;
+  /** Data (UTC) em que a fonte informa ter publicado o arquivo; ausente quando ela não informa. */
+  capturas?: { ultima_publicacao_fonte?: string | null } | null;
 };
 
-export type PublicacaoAtualidade = { referencia: { hoje: string }; conjuntos: ConjuntoAtualidade[] };
+export type PublicacaoAtualidade = {
+  referencia: { hoje: string };
+  /** Tolerância, em dias, que cada cadência admite além do prazo (regras.sla de publicacao.json). */
+  regras?: { sla?: Record<string, { tolerancia_dias?: number | null } | undefined> | null } | null;
+  conjuntos: ConjuntoAtualidade[];
+};
 
 /**
  * Último período de referência em linguagem simples, no grão em que a fonte o publica:
@@ -70,6 +83,12 @@ export function vigenciaMaisRecente(dado: ConjuntoAtualidade["dado"]): string | 
   return inicio ? `vigência iniciada em ${inicio}` : null;
 }
 
+/**
+ * Mês mais recente que o módulo de origem publica para uma fonte cujo arquivo é anual: a publicação (publicacao.json) só conhece o
+ * ano, e o ano em curso aparece como "2026" mesmo quando o último mês com dado é outro. Só refina o mesmo ano; nunca troca um período por outro.
+ */
+export type RefinoDePeriodo = { periodo: string; rotulo: string };
+
 export type LinhaAtualidade = {
   tema: string;
   href: string;
@@ -79,14 +98,24 @@ export type LinhaAtualidade = {
   ultimo: string | null;
   /** O período ainda não terminou na data da publicação (mês ou ano em curso). */
   emCurso: boolean;
+  /** Último mês com dado, quando o período de referência é um ano em curso e o módulo de origem publica o mês ("jun/2026"). */
+  ultimoMes: string | null;
+  /** O que o mês é ("último mês nacional completo"). */
+  ultimoMesRotulo: string | null;
   cadencia: string | null;
   situacao: string | null;
   atrasado: boolean;
+  /** O que a situação compara com o calendário: o último período ("periodo") ou a data em que a fonte publicou o arquivo ("publicacao"). */
+  base: "periodo" | "publicacao" | null;
+  /** Data (dd/mm/aaaa) em que a fonte informa ter publicado o arquivo; null quando ela não informa. */
+  publicadoEm: string | null;
+  /** Dias de tolerância da cadência declarada, depois do prazo (regras.sla de publicacao.json). */
+  toleranciaDias: number | null;
   /** Ficha do conjunto em /setor-eletrico/dados/[slug], quando a página existe. */
   ficha: string | null;
 };
 
-export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: ReadonlySet<string>): LinhaAtualidade[] {
+export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: ReadonlySet<string>, refinos: Readonly<Record<string, RefinoDePeriodo>> = {}): LinhaAtualidade[] {
   const porId = new Map((pub?.conjuntos ?? []).map((c) => [c.id, c]));
   const hoje = pub?.referencia.hoje ?? null;
   return FONTES_PRINCIPAIS.flatMap((f) =>
@@ -94,20 +123,68 @@ export function linhasAtualidade(pub: PublicacaoAtualidade | null, fichas: Reado
       const c = porId.get(fc.id) ?? null;
       const a = c?.atualidade ?? null;
       const fim = a?.fim_ultimo_periodo ?? null;
+      const ultimo = periodoLegivel(a?.ultimo_periodo) ?? vigenciaMaisRecente(c?.dado);
+      const emCurso = Boolean(a?.periodo_parcial) || Boolean(fim && hoje && fim > hoje);
+      const refino = refinos[fc.id];
+      // o mês só vale para o ano em curso que a publicação já mostra: "jun/2026" refina "2026", e nada mais
+      const mes = emCurso && refino && ultimo && /^\d{4}$/.test(ultimo) && refino.periodo.endsWith(`/${ultimo}`) ? refino : null;
+      const cadencia = a?.cadencia ?? null;
+      const publicado = c?.capturas?.ultima_publicacao_fonte?.slice(0, 10) ?? null;
+      const tolerancia = cadencia ? pub?.regras?.sla?.[cadencia]?.tolerancia_dias : null;
       return {
         tema: f.tema,
         href: f.href,
         rotulo: fc.rotulo,
         orgao: c?.orgao ?? null,
-        ultimo: periodoLegivel(a?.ultimo_periodo) ?? vigenciaMaisRecente(c?.dado),
-        emCurso: Boolean(fim && hoje && fim > hoje),
-        cadencia: a?.cadencia ? (CADENCIA[a.cadencia] ?? a.cadencia) : null,
+        ultimo,
+        emCurso,
+        ultimoMes: mes?.periodo ?? null,
+        ultimoMesRotulo: mes?.rotulo ?? null,
+        cadencia: cadencia ? (CADENCIA[cadencia] ?? cadencia) : null,
         situacao: a?.situacao ? (SITUACAO[a.situacao] ?? a.situacao.toLowerCase()) : null,
         atrasado: a?.situacao === "ATRASADO",
+        base: a?.base === "publicacao_da_fonte" ? "publicacao" : a?.base === "periodo_de_referencia" ? "periodo" : null,
+        publicadoEm: periodoLegivel(publicado),
+        toleranciaDias: typeof tolerancia === "number" && Number.isFinite(tolerancia) ? tolerancia : null,
         ficha: c?.slug && fichas.has(c.slug) ? `/setor-eletrico/dados/${c.slug}` : null,
       };
     }),
   );
+}
+
+/**
+ * O refino de período que cada módulo sabe dar. Hoje só a Qualidade: o arquivo de DEC e FEC da ANEEL é anual e a fonte o reescreve
+ * todo mês, então a publicação mostra "2026"; o módulo sabe qual é o último mês nacional completo.
+ */
+export function refinosDePeriodo(qualidade: { disponivel?: boolean; ultimo_mes_completo?: string | null } | null): Record<string, RefinoDePeriodo> {
+  const mes = qualidade && qualidade.disponivel === true ? periodoLegivel(qualidade.ultimo_mes_completo) : null;
+  return mes ? { "aneel_qualidade/aneel_continuidade": { periodo: mes, rotulo: "último mês nacional completo" } } : {};
+}
+
+/** Em que palavras o período em curso se diz: o ano, o mês ou, no grão que não se reconhece, o período. */
+export function nomeDoPeriodoEmCurso(ultimo: string | null): string {
+  if (ultimo && /^\d{4}$/.test(ultimo)) return "ano em curso";
+  if (ultimo && /^[a-z]{3}\/\d{4}$/.test(ultimo)) return "mês em curso";
+  return "período em curso";
+}
+
+/** A regra por trás da coluna "Situação": as tolerâncias de cada cadência que aparece no quadro e as fontes avaliadas pela data de publicação do arquivo. */
+export type RegraDeAtualidade = {
+  tolerancias: { cadencia: string; dias: number }[];
+  pelaPublicacao: LinhaAtualidade[];
+  /** Fontes em dia pela publicação do arquivo cujo último mês com dado é anterior: a regra, em exemplo. */
+  comMesAtras: LinhaAtualidade[];
+};
+
+export function regraDeAtualidade(linhas: readonly LinhaAtualidade[]): RegraDeAtualidade {
+  const vistas = new Map<string, number>();
+  for (const l of linhas) if (l.cadencia && l.toleranciaDias !== null && !vistas.has(l.cadencia)) vistas.set(l.cadencia, l.toleranciaDias);
+  const pelaPublicacao = linhas.filter((l) => l.base === "publicacao");
+  return {
+    tolerancias: Array.from(vistas, ([cadencia, dias]) => ({ cadencia, dias })).sort((a, b) => a.dias - b.dias),
+    pelaPublicacao,
+    comMesAtras: pelaPublicacao.filter((l) => l.situacao === "em dia" && l.ultimoMes !== null && l.publicadoEm !== null),
+  };
 }
 
 /** Verbete no formato que a busca lê (só conferidos entram no índice). */
@@ -139,7 +216,7 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
   }
   for (const v of verbetes) {
     if (v.estado !== "CONFERIDO") continue;
-    itens.push({ tipo: "Conceito", titulo: v.sigla ? `${v.sigla} · ${v.nome}` : v.nome, detalhe: v.emUmaFrase, href: `/setor-eletrico/aprenda/${v.slug}` });
+    itens.push({ tipo: "Conceito", titulo: v.sigla ? `${v.sigla} · ${v.nome}` : v.nome, detalhe: v.emUmaFrase, href: `/setor-eletrico/aprenda/${v.slug}`, ...(v.sigla ? { sigla: v.sigla } : {}) });
   }
   for (const d of distribuidoras) {
     itens.push({
@@ -147,9 +224,14 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
       titulo: d.nome && d.nome !== d.sigla ? `${d.sigla} · ${d.nome}` : d.sigla,
       detalhe: `${d.ufs.join(", ")}${d.ufs.length ? " · " : ""}CNPJ ${cnpjFormatado(d.cnpj)}`,
       href: `/setor-eletrico/empresas/${d.slug}`,
+      sigla: d.sigla,
     });
   }
-  return itens;
+  // o vocabulário leigo entra por endereço: o mesmo nome vale para a página, o painel e a pergunta que levam ao mesmo lugar
+  return itens.map((i) => {
+    const s = sinonimosDe(i.href);
+    return s.length ? { ...i, sinonimos: [...s] } : i;
+  });
 }
 
 /** Opções do seletor "sua distribuidora": só quem tem dado na página de destino, em ordem de sigla. */

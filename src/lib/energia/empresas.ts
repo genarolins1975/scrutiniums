@@ -37,6 +37,7 @@ import type {
   DefinicaoConta,
   Distribuidora,
   Distribuidoras,
+  EmpresasGold,
   EscopoCvm,
   EstadoVinculo,
   FaixaHhi,
@@ -180,6 +181,18 @@ export function downloadsDe(todos: readonly Download[], urls: readonly string[])
 /** Leitor de CNPJ de 14 dígitos para a URL (identidade canônica do módulo). */
 export const leitorCnpj: Leitor<string> = { ler: (b) => (/^\d{14}$/.test(b) ? b : undefined), escrever: (v) => v };
 
+/**
+ * Cor de cada medida nos gráficos do módulo: a mesma medida leva a mesma cor em todas as páginas (capacidade proporcional em
+ * violeta, capacidade sob controle em verde, HHI em laranja, km de circuito em azul). Nunca é cor de texto, e o rótulo e a forma
+ * sempre acompanham a cor.
+ */
+export const COR_MEDIDA = {
+  proporcional: "var(--serie-comp-1)",
+  controle: "var(--serie-comp-3)",
+  hhi: "var(--serie-comp-2)",
+  circuito: "var(--serie-comp-4)",
+} as const;
+
 /* ================================================================ P036: cadastro e ativos */
 
 export const ROTULO_ESTADO_VINCULO: Readonly<Record<EstadoVinculo, string>> = {
@@ -209,7 +222,7 @@ export function respostaCadastro(c: Cadastro): string {
       `Na transmissão, o SIGET de ${dataTexto(t.data)} liga ${pctTexto(t.resumo.pct_modulos_com_cnpj)} dos ${inteiro(t.resumo.modulos)} módulos ao CNPJ de ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias, com ${numTexto(t.resumo.km_circuito_operacao)} km de circuito em operação.`,
     );
   } else {
-    partes.push("Os ativos de transmissão não estão nesta publicação: o SIGET faltou no silver do módulo.");
+    partes.push(`Os ativos de transmissão não estão nesta publicação: os dados do SIGET (${SIGLAS.SIGET}) não foram integrados.`);
   }
   return partes.join(" ");
 }
@@ -779,11 +792,11 @@ export function textoPares(sigla: string, medida: string, p: Pares | null, id?: 
   if (!p) return `Sem pares comparáveis para ${medida}: falta o grupo, o ano de referência ou o valor.`;
   const meu = p.itens.find((x) => (id ? x.id === id : x.rotulo === sigla))?.valor;
   const base = `Entre as ${inteiro(p.total)} ${p.regra}, a ${sigla} ocupa a posição ${posicaoTexto(p.posicao, p.total)} em ordem crescente de ${medida}`;
-  // a ordem é da menor para a maior: a 1ª tem o menor valor e a última, o maior (em perdas e em DEC, menor é melhor)
+  // a ordem é da menor para a maior: a 1ª tem o menor valor e a última, o maior; a posição descreve a ordem do valor, sem juízo de qualidade
   if (typeof meu === "number" && meu < 0)
     return `${base}. O valor é negativo na fonte, e por isso a posição não indica a menor perda.`;
   const sentido = p.posicao === p.total ? `: é o maior valor do grupo` : p.posicao === 1 ? `: é o menor valor do grupo` : "";
-  return `${base}${sentido}. Menor é melhor nessa medida.`;
+  return `${base}${sentido}. A ordem é do menor para o maior valor.`;
 }
 
 /* ---------------------------------------------------------------- P037: evolução própria */
@@ -1465,9 +1478,9 @@ export function vereditoControle(c: Controle): string {
 }
 
 /**
- * Ficha: perdas (com a média das concessionárias quando a página a traz), continuidade diante do limite da própria
+ * Ficha: perdas (com a taxa nacional das concessionárias quando a página a traz), continuidade diante do limite da própria
  * distribuidora e tarifa residencial. "Dentro" e "acima" só diante do limite que a ANEEL fixa para ela, decidido na
- * precisão exibida; "abaixo da média" só com a referência nacional do mesmo ano.
+ * precisão exibida; "abaixo da taxa nacional" só com a referência nacional do mesmo ano.
  */
 export function vereditoFicha(d: Distribuidora, nacional: number | null = null): string {
   const p = d.perdas;
@@ -1480,7 +1493,7 @@ export function vereditoFicha(d: Distribuidora, nacional: number | null = null):
       abertura = `Em ${p.ano}, a ${d.sigla} tem perda total negativa na fonte, de ${pct(p.taxa_total_pct, 2)}${incompleto}, que o observatório mostra sem corrigir`;
     } else {
       const s = temValor(nacional) ? sentidoLimite(p.taxa_total_pct, nacional) : null;
-      const comp = s === "abaixo" ? ", abaixo da média das concessionárias do Brasil" : s === "acima" ? ", acima da média das concessionárias do Brasil" : s === "igual" ? ", igual à média das concessionárias do Brasil" : "";
+      const comp = s === "abaixo" ? ", abaixo da taxa nacional das concessionárias" : s === "acima" ? ", acima da taxa nacional das concessionárias" : s === "igual" ? ", igual à taxa nacional das concessionárias" : "";
       abertura = `Em ${p.ano}, a ${d.sigla} perdeu ${pct(p.taxa_total_pct, 2)} da energia injetada${incompleto}${comp}`;
     }
   } else if (p) {
@@ -1575,6 +1588,109 @@ export function textoGruposNaTransmissao(t: Transmissao): string {
   if (!reunidos.length) return "";
   const frase = reunidos.map((x) => `${inteiro(x.n)} do grupo ${x.nome ?? SEM_DADO}`);
   return `Entre as ${inteiro(t.maiores.length)} maiores concessionárias, ${listaE(frase)}: empresas do mesmo grupo aparecem separadas no gráfico, e a tabela dos grupos, abaixo, as reúne.`;
+}
+
+/* ---------------------------------------------------------------- abertura: busca por empresa e passos do vínculo */
+
+/** Empresa da busca da abertura: uma por CNPJ, com os destinos úteis (ficha, demonstrações, árvore de controle). */
+export type EntidadeEmpresa = EntidadeBuscavel & { destinos: { rotulo: string; href: string }[] };
+
+/**
+ * Entidades da busca da abertura, uma por CNPJ, para que a busca leve à ficha útil e nunca a um relatório de cobertura: as
+ * distribuidoras (a ficha reúne perdas, continuidade, tarifa, controle e demonstrações), as companhias abertas do universo da CVM
+ * (demonstrações já com a companhia escolhida) e os maiores proprietários e grupos de controle da gold (árvore societária).
+ * Empresas fora dessas listas estão na busca da árvore de controle, que lê o arquivo inteiro da cadeia. Todo dado vem da gold.
+ */
+export function entidadesBuscaEmpresas(g: Pick<EmpresasGold, "distribuidoras" | "financas" | "cadastro" | "controle">): EntidadeEmpresa[] {
+  type Reg = { rotulo: string; razao: string | null; papeis: string[]; sinonimos: Set<string>; destinos: { rotulo: string; href: string }[] };
+  const m = new Map<string, Reg>();
+  const porSlug = new Map<string, string>();
+  const reg = (cnpj: string, rotulo: string, razao: string | null): Reg => {
+    let r = m.get(cnpj);
+    if (!r) {
+      r = { rotulo, razao, papeis: [], sinonimos: new Set([cnpjFormatado(cnpj)]), destinos: [] };
+      m.set(cnpj, r);
+    }
+    return r;
+  };
+  const papel = (r: Reg, p: string) => {
+    if (!r.papeis.includes(p)) r.papeis.push(p);
+  };
+  const destino = (r: Reg, rotulo: string, href: string) => {
+    if (!r.destinos.some((d) => d.href === href)) r.destinos.push({ rotulo, href });
+  };
+  for (const d of g.distribuidoras.indice) {
+    const r = reg(d.cnpj, d.sigla, d.nome);
+    papel(r, d.ativa ? "distribuidora" : "distribuidora inativa");
+    r.sinonimos.add(d.slug);
+    for (const s of d.siglas) r.sinonimos.add(s.sigla);
+    for (const s of d.slugs_alternativos) r.sinonimos.add(s);
+    if (d.ufs.length) r.sinonimos.add(d.ufs.join(" "));
+    destino(r, "Ficha da distribuidora", rotaEntidade(d.slug));
+    porSlug.set(d.slug, d.cnpj);
+  }
+  for (const c of g.financas.companhias) {
+    // a companhia que é distribuidora do índice já tem a ficha, que traz as demonstrações dela
+    const dono = c.distribuidora_slug ? porSlug.get(c.distribuidora_slug) : undefined;
+    const r = dono ? m.get(dono)! : reg(c.cnpj, nomeOuCnpj(c.nome, c.cnpj), c.nome);
+    r.sinonimos.add(cnpjFormatado(c.cnpj));
+    if (c.cd_cvm) r.sinonimos.add(c.cd_cvm);
+    if (c.nome) r.sinonimos.add(c.nome);
+    papel(r, c.situacao === "ATIVO" ? "companhia aberta" : "companhia aberta, registro cancelado ou suspenso");
+    if (!dono) destino(r, "Demonstrações na CVM", `${rotaPainel("p038")}?fin.sel=${c.cnpj}#p038`);
+  }
+  const controle = (cnpj: string, nome: string | null, p: string) => {
+    const r = reg(cnpj, nomeOuCnpj(nome, cnpj), nome);
+    papel(r, p);
+    destino(r, "Árvore de controle", `${rotaPainel("p039")}?ctl.e=${cnpj}#p039`);
+  };
+  for (const p of g.cadastro.proprietarios) controle(p.cnpj, p.nome, "dono direto de usinas");
+  for (const x of g.controle.grupos) controle(x.cnpj, x.nome, "grupo de controle");
+  return Array.from(m.entries()).map(([cnpj, r]) => ({
+    id: cnpj,
+    rotulo: r.rotulo,
+    detalhe: [r.razao && r.razao !== r.rotulo ? r.razao : null, `CNPJ ${cnpjFormatado(cnpj)}`, r.papeis.join(", ")].filter(Boolean).join(" · "),
+    sinonimos: Array.from(r.sinonimos),
+    destinos: r.destinos,
+  }));
+}
+
+export type PassoVinculo = { id: "empresa" | "participacao" | "ativo" | "controle"; titulo: string; liga: string; contagem: string };
+
+/**
+ * Os quatro elos que ligam empresa, ativo e controle, cada um com o identificador que o documenta e a contagem que a gold publica.
+ * Nenhum elo é feito por semelhança de nome: o CNPJ (ou o CEG, ou o módulo do SIGET) vem da própria fonte, no mesmo registro.
+ */
+export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "distribuidoras" | "financas">): PassoVinculo[] {
+  const a = g.cadastro.ativos;
+  const t = g.cadastro.transmissao;
+  const grupos = g.controle.concentracao.grupo_proporcional?.participantes;
+  return [
+    {
+      id: "empresa",
+      titulo: "Empresa",
+      liga: "o CNPJ de 14 dígitos que a fonte oficial publica no próprio registro",
+      contagem: `${inteiro(a.proprietarios_cnpj)} donos de usinas, ${inteiro(g.distribuidoras.resumo.distribuidoras)} distribuidoras e ${inteiro(g.financas.universo.companhias)} companhias abertas; as listas se sobrepõem`,
+    },
+    {
+      id: "participacao",
+      titulo: "Participação direta",
+      liga: "o percentual de cada dono no registro da usina",
+      contagem: `${pctTexto(a.pct_mw_operacao_vinculado, 2)} da potência em operação tem todos os donos identificados por CNPJ`,
+    },
+    {
+      id: "ativo",
+      titulo: "Ativo",
+      liga: "o CEG da usina e o módulo de transmissão do SIGET, com o CNPJ do contrato",
+      contagem: `${inteiro(a.usinas)} usinas${t ? ` e ${inteiro(t.resumo.modulos)} módulos de transmissão` : ""}`,
+    },
+    {
+      id: "controle",
+      titulo: "Controle declarado",
+      liga: "a cadeia de sócios controladores que cada agente declara à ANEEL",
+      contagem: `${inteiro(grupos)} grupos no topo das cadeias, pela capacidade proporcional`,
+    },
+  ];
 }
 
 /* ---------------------------------------------------------------- leitura das fichas */

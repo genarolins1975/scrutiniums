@@ -82,6 +82,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   const [modo, setModo] = useState<Modo | "todos">("todos");
   const rolarPendente = useRef(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
+  const barra = useRef<HTMLDivElement>(null);
 
   // escolha do visitante entra no histórico (voltar desfaz a troca de modo); ajustes
   // automáticos (modo elevado por âncora) só substituem a entrada atual
@@ -156,6 +157,25 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("hashchange", aoMudarHash);
   }, [gravaUrl]);
 
+  // WCAG 2.2, 2.4.11 (foco não obscurecido): a barra presa ao topo não pode cobrir o controle que recebeu o foco. O navegador só rola
+  // quando o controle sai da janela; um controle já visível sob a barra ficava escondido. Depois do foco, se a barra está presa e
+  // cobre o controle, a página rola o suficiente para ele aparecer logo abaixo dela.
+  useEffect(() => {
+    function aoFocar(e: FocusEvent) {
+      const alvo = e.target;
+      const b = barra.current;
+      if (!(alvo instanceof HTMLElement) || !b || b.contains(alvo)) return;
+      requestAnimationFrame(() => {
+        const caixaBarra = b.getBoundingClientRect();
+        const caixaAlvo = alvo.getBoundingClientRect();
+        if (caixaBarra.top > 1 || caixaAlvo.bottom <= 0) return; // barra solta no fluxo, ou controle fora da janela (o navegador já rola)
+        if (caixaAlvo.top < caixaBarra.bottom + 4) window.scrollBy({ top: caixaAlvo.top - caixaBarra.bottom - 8, behavior: "auto" });
+      });
+    }
+    document.addEventListener("focusin", aoFocar);
+    return () => document.removeEventListener("focusin", aoFocar);
+  }, []);
+
   // o nível escolhido acompanha o clique em link interno do observatório que não traz ?modo= próprio
   useEffect(() => {
     function aoClicar(e: MouseEvent) {
@@ -194,7 +214,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     <div data-modo={modo} className="modo-profundidade">
       <AbreDetalhesAoImprimir />
       <FaixasDeSecao />
-      <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-1.5 backdrop-blur supports-[backdrop-filter]:bg-papel/80">
+      <div ref={barra} data-barra-profundidade="" className="sticky top-0 z-30 border-b border-linha bg-papel py-1.5">
         <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-3">
           <span className="rotulo hidden text-mineral sm:inline">Profundidade</span>
           <div className="flex flex-1 sm:flex-none">

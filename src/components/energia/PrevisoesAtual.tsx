@@ -341,7 +341,7 @@ export function PrevisoesAtual({
           if (l) selecionar(l.submercado, l.horizonte);
         }}
         dicaBusca="Submercado, horizonte ou entrega"
-        nota="P10 e P90 vazios: nenhuma faixa publicada, porque nenhum segmento está calibrado. Último dia e fim do período usado são os últimos dias inteiros (o fim da entrega, às 00h do dia seguinte, fica excluído). Realizado e erro ficam sem dado até a entrega terminar."
+        nota="P10 e P90 vazios: nenhuma faixa publicada, pois nenhum segmento está calibrado. Último dia e fim do período usado são os últimos dias inteiros (o fim da entrega, às 00h do dia seguinte, fica excluído). Realizado e erro ficam sem dado até a entrega terminar."
       />
     </div>
   );

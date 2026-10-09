@@ -49,8 +49,8 @@ export type PainelRegulacao = { id: IdPainelRegulacao; codigo: string; rotulo: s
 
 /** Um painel por página: juntos, os três passariam da meta de cerca de 600 KB de HTML (contrato, seção 5.1). */
 export const PAINEIS_REGULACAO: PainelRegulacao[] = [
-  { id: "p044", codigo: "P044", rotulo: "Limites e regras de preço", rota: ROTA_REGULACAO, pergunta: "Quais regras de preço valem em cada período, e qual ato as fixou?" },
-  { id: "p045", codigo: "P045", rotulo: "Linha do tempo", rota: `${ROTA_REGULACAO}/linha-do-tempo`, pergunta: "O que mudou nas regras do setor, desde quando vale e quem é afetado?" },
+  { id: "p044", codigo: "P044", rotulo: "Limites e regras de preço", rota: ROTA_REGULACAO, pergunta: "Que regra vale em cada período?" },
+  { id: "p045", codigo: "P045", rotulo: "Linha do tempo", rota: `${ROTA_REGULACAO}/linha-do-tempo`, pergunta: "Que regras mudaram e quando passaram a valer?" },
   { id: "p046", codigo: "P046", rotulo: "Consultas e agenda", rota: `${ROTA_REGULACAO}/consultas-e-agenda`, pergunta: "Quais decisões da ANEEL estão abertas ou próximas?" },
 ];
 
@@ -168,6 +168,53 @@ function atoPorNome(g: Pick<GoldRegulacao, "limites_pld">, nome: string | null):
 /** "com publicação no DOU em 23/12/2025" ou a ausência declarada; nunca a data de captura. */
 export function textoPublicacao(data: string | null): string {
   return data ? `com publicação no DOU em ${dataBR(data)}` : "sem data de publicação no DOU conferida";
+}
+
+/** O limite de um campo na data de referência: valor, ato que o fixou, publicação e vigência, cada um no seu campo. */
+export type LimiteVigente = {
+  campo: CampoLimite;
+  valor: number | null;
+  ato: string | null;
+  /** Data no Diário Oficial; null quando não conferida (nunca a data de captura). */
+  publicacao: string | null;
+  inicio: string;
+  fim: string;
+};
+
+/**
+ * Os três limites na data de referência da gold, campo a campo (cada campo pode vir de um ato diferente, como em 2022).
+ * Sem trecho de vigência que cubra a data, devolve os três campos vazios: nenhum valor de reserva.
+ */
+export function limitesVigentes(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia">): { vigencia: { inicio: string; fim: string } | null; limites: LimiteVigente[] } {
+  const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
+  if (!v) return { vigencia: null, limites: [] };
+  return {
+    vigencia: { inicio: v.inicio, fim: v.fim },
+    limites: CAMPOS_LIMITE.map((campo) => {
+      const ato = v[ATO_CAMPO[campo]];
+      return { campo, valor: v[campo], ato, publicacao: atoPorNome(g, ato)?.data_publicacao ?? null, inicio: v.inicio, fim: v.fim };
+    }),
+  };
+}
+
+export type MarcoDoAto = { chave: "publicacao" | "inicio" | "fim"; rotulo: string; data: string | null; ausencia?: string };
+
+/**
+ * Os marcos de um ato de limites, em ordem de data: publicação no Diário Oficial, início da vigência e fim do intervalo registrado.
+ * Publicação não conferida fica dita (sem data), nunca a data de captura. Publicação depois do início da vigência (vigência
+ * retroativa, como na REH nº 3.167/2022) aparece na ordem cronológica real.
+ */
+export function marcosDoAto(a: Pick<AtoLimite, "data_publicacao" | "vigencia_inicio" | "vigencia_fim">): MarcoDoAto[] {
+  const datados: MarcoDoAto[] = [
+    { chave: "inicio", rotulo: "Início da vigência", data: a.vigencia_inicio },
+    { chave: "fim", rotulo: "Fim do intervalo registrado", data: a.vigencia_fim },
+  ];
+  if (a.data_publicacao) {
+    datados.push({ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: a.data_publicacao });
+    const peso = { publicacao: 0, inicio: 1, fim: 2 } as const;
+    return datados.sort((x, y) => (x.data as string).localeCompare(y.data as string) || peso[x.chave] - peso[y.chave]);
+  }
+  return [{ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: null, ausencia: "não conferida: o extrato do ato não está acessível" }, ...datados];
 }
 
 export type LinhaLimites = {
@@ -411,17 +458,28 @@ export const COLUNAS_CONFERENCIAS_DETALHE: ColunaTabela[] = [
   { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
 ];
 
-/** Pares publicado × esperado do encadeamento anual pelo IPCA (gráfico de pontos do modo Auditar). */
+/**
+ * Pares publicado × esperado do encadeamento anual pelo IPCA (gráfico de pontos do modo Auditar). Quando um ano tem mais de um ato
+ * que fixa o mesmo teto (2023: a REH nº 3.167/2022 e a retificação dela), cada par leva o ato no identificador e no rótulo, para o
+ * gráfico não repetir a mesma chave nem o mesmo rótulo; os valores são os da conferência, sem mudança.
+ */
 export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe: string }[] {
-  return g.limites_pld.conferencias_detalhe
-    .filter((c) => c.conferencia === "regra_ipca")
-    .map((c) => ({
-      id: `${c.ano}:${c.campo}`,
-      rotulo: `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`,
+  const conferencias = g.limites_pld.conferencias_detalhe.filter((c) => c.conferencia === "regra_ipca");
+  const vezes = new Map<string, number>();
+  for (const c of conferencias) vezes.set(`${c.ano}:${c.campo}`, (vezes.get(`${c.ano}:${c.campo}`) ?? 0) + 1);
+  return conferencias.map((c) => {
+    const chave = `${c.ano}:${c.campo}`;
+    const repetido = (vezes.get(chave) ?? 0) > 1;
+    const ato = c.ato ? abreviarAto(c.ato) : "ato não identificado";
+    const nome = `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`;
+    return {
+      id: repetido ? `${chave}:${c.ato ?? "sem-ato"}` : chave,
+      rotulo: repetido ? `${nome} (${ato})` : nome,
       valor: c.valor_ato,
       referencia: c.valor_esperado,
       detalhe: `${c.ato ?? "ato não identificado"}; tolerância ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
-    }));
+    };
+  });
 }
 
 /* ---------------------------------------------------------------- P044: bandeiras */
@@ -457,7 +515,8 @@ export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabel
     .sort((a, b) => pos(a.patamar) - pos(b.patamar) || a.vigencia_inicio.localeCompare(b.vigencia_inicio))
     .map((v) => ({
       id: `${v.patamar}:${v.vigencia_inicio}`,
-      rotulo: `${v.patamar} · ${v.ato ?? "ato não informado"} (${dataBR(v.vigencia_inicio)})`,
+      // rótulo curto para a coluna do gráfico (o ato e a vigência completa estão nas colunas da tabela)
+      rotulo: `${v.patamar}, desde ${dataBR(v.vigencia_inicio)}`,
       patamar: v.patamar,
       ato: v.ato,
       rs_mwh: v.rs_mwh,
@@ -667,6 +726,21 @@ export function contagemPaineisAfetados(eventos: readonly EventoRegulatorio[]): 
     m.set(k, x);
   }
   return Array.from(m.values()).sort((a, b) => b.n - a.n || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+}
+
+/** Órgãos que emitem os eventos da linha do tempo, do que tem mais eventos para o que tem menos (empate: ordem alfabética). */
+export function orgaosDosEventos(eventos: readonly Pick<EventoRegulatorio, "orgao">[]): string[] {
+  const m = new Map<string, number>();
+  for (const e of eventos) m.set(e.orgao, (m.get(e.orgao) ?? 0) + 1);
+  return Array.from(m.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR"))
+    .map(([orgao]) => orgao);
+}
+
+/** Atos e leis lidos no texto e registros do conjunto de dados de bandeiras, contados no recorte. */
+export function contagemPorOrigem(eventos: readonly Pick<EventoRegulatorio, "origem">[]): { atos: number; registros: number } {
+  const atos = eventos.filter((e) => origemEvento(e) === "ato").length;
+  return { atos, registros: eventos.length - atos };
 }
 
 /**

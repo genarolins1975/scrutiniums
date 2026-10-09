@@ -8,7 +8,10 @@ import { buscar, normalizarBusca, type ItemBusca } from "@/lib/energia/busca";
  * só sobre o que existe no observatório. O índice é montado no servidor a partir do
  * mesmo conteúdo que a página publica (páginas, perguntas, painéis, verbetes conferidos e
  * distribuidoras com ficha); a busca não inventa destino. Todas as palavras
- * digitadas precisam aparecer, sem diferença de acento ou maiúscula.
+ * digitadas precisam aparecer, sem diferença de acento ou maiúscula. A sigla digitada por inteiro
+ * leva ao verbete antes de qualquer outro item, e os nomes de quem não conhece a sigla ("preço da
+ * luz", "apagão", "congestionamento") levam à página que trata do assunto; nesse caso o resultado
+ * mostra o termo que casou (busca.ts e busca-sinonimos.ts).
  */
 
 export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exemplos: string[] }) {
@@ -30,7 +33,7 @@ export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exe
         autoComplete="off"
         spellCheck={false}
         aria-describedby={`${id}-s`}
-        placeholder="Ex.: perdas, bandeira, CEMIG"
+        placeholder="Ex.: preço da luz, DEC, CEMIG"
         className="mt-2 min-h-[44px] w-full border border-linha bg-superficie px-3 text-base text-carvao placeholder:text-mineral focus-visible:outline focus-visible:outline-2 focus-visible:outline-energia-dark"
       />
       <p id={`${id}-s`} aria-live="polite" className="mt-2 text-xs text-mineral">
@@ -52,6 +55,7 @@ export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exe
                   {i.titulo}
                 </span>
                 {i.detalhe && <span className="mt-0.5 text-xs leading-snug text-carvao-muted">{i.detalhe}</span>}
+                {i.viaSinonimo && <span className="mt-0.5 text-xs leading-snug text-mineral">Termo relacionado: {i.viaSinonimo}</span>}
               </a>
             </li>
           ))}

@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeBalanco } from "@/components/energia/RedeBalanco";
-import { RedeAnalise, RedeAuditoria, RedeAviso, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { RedeAviso, RedeCapitulos, RedeDatas, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
@@ -62,19 +64,100 @@ export default function RedeBalancoPage() {
   const downloads = g.downloads.filter((d) => /balanco|exterior/.test(d.url));
   const q = b.quebras[0];
   const dic = g.achados.dicionarios;
+  // horas conferidas de cada conta da faixa: o denominador das contagens de resíduo, lido das mesmas identidades da tabela
+  const horasDa = (id: string) => b.identidades.find((x) => x.id === id)?.horas ?? null;
+  const horasSin = horasDa("balanco.SIN");
+  const horasSul = horasDa("perimetro.S");
+  const ultimaHoraExterior = (["ARGENTINA", "URUGUAI", "PARAGUAI"] as const)
+    .map((p) => g.exterior.por_pais[p]?.ultima_hora)
+    .filter((h): h is string => !!h)
+    .sort()
+    .at(-1);
+  const mesesExterior = g.exterior.resumo_12m.ARGENTINA?.meses ?? null;
+  const oQueMudou = (
+    <>
+      {atual.texto} {textoMudancaBalanco(b)}
+      <span data-nivel="analisar"> Estado da verificação do balanço: {a.status}.</span>
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      {a.perimetro} {a.sinais} Uma conta fecha numa hora quando a diferença fica em até {num(b.tolerancia_mwmed, 1)} MWmed. Desde {dataBR(q?.dia)} a geração solar e a carga do
+      balanço incluem a MMGD estimada pelo ONS, sem a parcela separada.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A causa dos resíduos: a fonte não a informa, e nenhuma das contas tem termo de perdas. Também não se separa, no balanço, o que é medição do que é estimativa da MMGD desde{" "}
+      {dataBR(q?.dia)}, nem se comparam geração e carga mensais dos dois lados dessa data.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["MWmed", "SIN", "ONS", "CCEE"]}
+        <CabecalhoModulo
+          siglas={["MWmed", "SIN", "ONS", "CCEE", "MMGD"]}
           rotulo="Rede · Balanço e exterior"
           titulo={perguntaPainel("p029")}
+          lead="Em cada região, geração menos carga deve igualar o intercâmbio, e o intercâmbio, os fluxos das fronteiras e do exterior. Resíduo é a diferença que sobra quando a conta não fecha."
+          recorte={`${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}, hora a hora · SIN e subsistemas · horas e MWh`}
+          fonte="ONS, Balanço de Energia nos Subsistemas, intercâmbios e Itaipu"
           referencia={
             <>
               ONS, balanço de energia, intercâmbios e Itaipu, de {dataBR(periodo.inicio)} a {dataBR(periodo.fim)}; processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <RedeDatas
+              itens={[
+                { rotulo: "Balanço de energia", texto: `até ${dataBR(periodo.fim)}`, natureza: g.proveniencia.balanco.natureza },
+                { rotulo: "Intercâmbio com outros países", texto: ultimaHoraExterior ? `até ${horaLocal(ultimaHoraExterior)}` : null, natureza: g.proveniencia.exterior.natureza },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={3}
+              rotulo="Horas com resíduo no SIN e no Sul, e saldo do intercâmbio internacional"
+              nota="Valores do SIN e do Sul e do intercâmbio internacional, fixos: a região escolhida abaixo muda só a resposta, as barras e a série mensal. Resíduo não tem causa atribuída pela fonte."
+            >
+              <Numero
+                variante="faixa"
+                rotulo="Horas em que geração menos carga não fecha com o intercâmbio, SIN"
+                natureza="CALCULADO"
+                evidencia={ev.a05_balanco_sin ?? null}
+                casas={0}
+                periodo={`${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}`}
+                cor="var(--cor-energia)"
+                nota={horasSin !== null ? `De ${num(horasSin, 0)} horas conferidas. Causa não informada pela fonte.` : "Causa não informada pela fonte."}
+                endereco={`${rotaPainel("p029")}#p029`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Horas em que o intercâmbio do Sul difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior"
+                natureza="CALCULADO"
+                evidencia={ev.a05_perimetro_sul ?? null}
+                casas={0}
+                periodo={`${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}`}
+                cor="var(--serie-sm-s)"
+                nota={horasSul !== null ? `De ${num(horasSul, 0)} horas conferidas no perímetro do Sul, que inclui Argentina e Uruguai.` : undefined}
+                endereco={`${rotaPainel("p029")}#p029`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Saldo do intercâmbio internacional em 12 meses (positivo = exportação)"
+                natureza="CALCULADO"
+                evidencia={ev.exterior_12m ?? null}
+                casas={0}
+                periodo={mesesExterior ? `${mesAno(mesesExterior[0])} a ${mesAno(mesesExterior[1])}` : undefined}
+                cor="var(--serie-5)"
+                nota="Soma de Argentina e Uruguai; o Paraguai não tem hora publicada no período."
+                endereco={`${rotaPainel("p029")}#p029`}
+              />
+            </FaixaMetricas>
           }
         >
           O ONS publica, hora a hora, a geração, a carga e o <Termo slug="intercambio">intercâmbio</Termo> de cada região do <Termo slug="sin">SIN</Termo>, e publica à parte o fluxo
@@ -88,7 +171,7 @@ export default function RedeBalancoPage() {
           <Bloco id="balanco">
             <PainelEvidencia
               id="p029"
-              pergunta={perguntaPainel("p029")}
+              pergunta="As contas do balanço, conferidas hora a hora"
               subtitulo="Contas do balanço conferidas hora a hora, resíduos e intercâmbio internacional · horas e MWh"
               natureza="CALCULADO"
               porQueImporta={
@@ -97,24 +180,10 @@ export default function RedeBalancoPage() {
                   diferença. Saber onde e quando isso acontece evita atribuir a perdas ou ao exterior o que a fonte não explica.
                 </>
               }
-              oQueMudou={
-                <>
-                  {atual.texto} {textoMudancaBalanco(b)}
-                  <span data-nivel="analisar"> Estado da verificação do balanço: {a.status}.</span>
-                </>
-              }
-              comoInterpretar={
-                <>
-                  {a.perimetro} {a.sinais} Uma conta fecha numa hora quando a diferença fica em até {num(b.tolerancia_mwmed, 1)} MWmed. Desde {dataBR(q?.dia)} a geração solar e a
-                  carga do balanço incluem a MMGD estimada pelo ONS, sem a parcela separada.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A causa dos resíduos: a fonte não a informa, e nenhuma das contas tem termo de perdas. Também não se separa, no balanço, o que é medição do que é estimativa da
-                  MMGD desde {dataBR(q?.dia)}, nem se comparam geração e carga mensais dos dois lados dessa data.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={provenienciaLegivel(g.proveniencia.balanco)}
               complementares={[{ rotulo: "Intercâmbio internacional por país", p: provenienciaLegivel(g.proveniencia.exterior) }]}
             >
@@ -126,41 +195,11 @@ export default function RedeBalancoPage() {
                   periodo={periodo}
                   fonte={FONTE}
                   versao={versao}
-                  destaques={
-                    <div className="grid gap-4 sm:grid-cols-3">
-                      <Numero
-                        rotulo="Horas em que geração menos carga não fecha com o intercâmbio, SIN"
-                        natureza="CALCULADO"
-                        evidencia={ev.a05_balanco_sin ?? null}
-                        casas={0}
-                        tamanho="medio"
-                        cor="var(--cor-energia)"
-                        nota="Resíduo nas parcelas de geração ou carga do balanço; causa não informada pela fonte."
-                        endereco={`${rotaPainel("p029")}#p029`}
-                      />
-                      <Numero
-                        rotulo="Horas em que o intercâmbio do Sul no balanço difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior publicado"
-                        natureza="CALCULADO"
-                        evidencia={ev.a05_perimetro_sul ?? null}
-                        casas={0}
-                        tamanho="medio"
-                        cor="var(--serie-sm-s)"
-                        endereco={`${rotaPainel("p029")}#p029`}
-                      />
-                      <Numero
-                        rotulo="Saldo do intercâmbio internacional em 12 meses (positivo = exportação)"
-                        natureza="CALCULADO"
-                        evidencia={ev.exterior_12m ?? null}
-                        casas={0}
-                        tamanho="medio"
-                        cor="var(--serie-5)"
-                        endereco={`${rotaPainel("p029")}#p029`}
-                      />
-                    </div>
-                  }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposPrincipal={<RedeCapitulos atual="p029" />}
                 />
 
-                <RedeAnalise id="a05" titulo="Achado A05: o balanço dos intercâmbios, identidade por identidade">
+                <SecaoDoPainel id="a05" nivel="analisar" titulo="O balanço dos intercâmbios, identidade por identidade">
                   <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao" data-textos="a05">
                     {frasesA05(a).map((t) => (
                       <li key={t}>{t}</li>
@@ -169,10 +208,10 @@ export default function RedeBalancoPage() {
                   <p className="text-sm text-carvao-muted">
                     {datasLegiveis(a.exterior)} {datasLegiveis(a.perdas)}
                   </p>
-                </RedeAnalise>
+                </SecaoDoPainel>
 
                 {q && (
-                  <RedeAuditoria id="quebra-mmgd" titulo={`Quebra metodológica de ${dataBR(q.dia)}: MMGD estimada no balanço`}>
+                  <SecaoDoPainel id="quebra-mmgd" nivel="auditar" titulo={`Quebra metodológica de ${dataBR(q.dia)}: MMGD estimada no balanço`}>
                     <p className="text-sm text-carvao-muted">{semCaminhosInternos(q.descricao)}</p>
                     <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
                       Declaração do ONS ({q.declaracao.conjunto}, <a href={q.declaracao.url} className="text-energia-dark underline underline-offset-4">descrição do conjunto</a>
@@ -195,10 +234,10 @@ export default function RedeBalancoPage() {
                         {q.conferencia_arquivo && "erro" in q.conferencia_arquivo ? ` (${q.conferencia_arquivo.erro})` : ""}. {semCaminhosInternos(q.efeito)}
                       </p>
                     )}
-                  </RedeAuditoria>
+                  </SecaoDoPainel>
                 )}
 
-                <RedeAuditoria id="identidades" titulo="As onze identidades conferidas">
+                <SecaoDoPainel id="identidades" nivel="auditar" titulo="As onze identidades conferidas">
                   <RedeRegras regras={(["balanco", "tolerancia_balanco"] as const).map((k) => ({ rotulo: ROTULO_REGRA[k], texto: g.regras[k] }))} />
                   <TabelaInterativa
                     titulo="Todas as identidades, todas as regiões"
@@ -211,9 +250,9 @@ export default function RedeBalancoPage() {
                     nomeArquivo="rede-identidades"
                     chaveUrl="ids"
                   />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="cobertura-exterior" titulo="Cobertura das fontes e conferência com o outro coletor">
+                <SecaoDoPainel id="cobertura-exterior" nivel="auditar" titulo="Cobertura das fontes e conferência com o outro coletor">
                   <p className="text-sm text-carvao-muted">{textoCobertura("Exterior", g.cobertura.exterior, g.cobertura)}</p>
                   <TabelaInterativa
                     titulo="Dias sem as 24 horas no intercâmbio internacional"
@@ -230,11 +269,11 @@ export default function RedeBalancoPage() {
                   <p className="text-sm text-carvao-muted">{textoCobertura("Balanço", g.cobertura.balanco, g.cobertura)}</p>
                   <p className="text-sm text-carvao-muted">{textoConferenciaSilver("Intercâmbio do balanço", g.conferencia_silver_principal?.ons_rede_balanco)}</p>
                   <p className="text-sm text-carvao-muted">{textoIdentidadesItaipu(g.exterior.itaipu_identidades)}</p>
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="dicionarios" titulo="Dicionários de dados do ONS: sinal e definições">
+                <SecaoDoPainel id="dicionarios" nivel="auditar" titulo="Dicionários de dados do ONS: sinal e definições">
                   <RedeDicionarios dicionarios={[dic.ons_rede_balanco, dic.ons_rede_intercambio_internacional, dic.ons_rede_itaipu].filter(Boolean)} />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
                 <RedeSeguir ancora="p029" proximo={{ href: `${rotaPainel("p030")}#p030`, pergunta: perguntaPainel("p030") }} downloads={downloads} />
               </div>

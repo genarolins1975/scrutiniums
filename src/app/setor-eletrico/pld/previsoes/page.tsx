@@ -504,7 +504,7 @@ export default function PrevisoesPage() {
                 natureza="PREVISTO"
                 porQueImporta={
                   <>
-                    Só se mede uma previsão com o que foi registrado antes do resultado. Se um número pudesse ser trocado depois, qualquer modelo pareceria bom. Aqui cada
+                    Só se mede uma previsão com o que foi registrado antes do resultado. Se um número pudesse ser trocado depois, qualquer modelo pareceria acertar. Aqui cada
                     emissão fica como saiu, com corte, horário, versão e motivo de falha; correção vira registro novo que aponta para o original.
                   </>
                 }
@@ -539,7 +539,7 @@ export default function PrevisoesPage() {
                   ) : (
                     <>
                       <p data-resposta="p015" className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg">
-                        O arquivo de emissões não pôde ser lido nesta publicação ({CSV_EMISSOES}); nenhum registro é exibido em vez de um registro de reserva.
+                        O arquivo de emissões (CSV) não pôde ser lido nesta publicação; nenhum registro é exibido em vez de um registro de reserva.
                       </p>
                       <PrevisoesRecorte periodo="sem leitura do arquivo" universo="células emitidas" unidade="R$/MWh nominais; minutos" />
                     </>
