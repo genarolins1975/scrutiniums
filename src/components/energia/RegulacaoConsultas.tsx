@@ -135,8 +135,8 @@ export function RegulacaoConsultas({
           </RespostaCurta>
           {hoje !== consultas.data_referencia && (
             <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-recalculo="">
-              Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório. O número com a ficha Comprove ao lado se refere a {dataBR(consultas.data_referencia)}, a
-              data de referência da publicação. {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
+              Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório; o número com a ficha Comprove é o da data de referência.{" "}
+              {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
             </p>
           )}
         </div>
@@ -145,10 +145,10 @@ export function RegulacaoConsultas({
       {defas.defasada && notaAtas}
 
       <div role="group" aria-label="Filtros das consultas" className="space-y-1 border-b border-linha pb-3">
-        <fieldset className="flex flex-wrap items-center gap-x-3.5">
-          <legend className="rotulo float-left mr-3 text-mineral">Situação em {dataBR(hoje)}</legend>
+        <fieldset className="flex flex-wrap items-center gap-x-3.5 max-sm:gap-x-2">
+          <legend className="rotulo mr-3 text-mineral sm:float-left">Situação</legend>
           {situacoesComConsulta.map((s) => (
-            <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
+            <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao max-sm:basis-[calc(50%-0.25rem)]">
               <input type="checkbox" checked={sit.has(s)} onChange={() => alternar(s)} className="h-4 w-4 accent-energia" />
               {ROTULO_CURTO_SITUACAO[s]} <span className="tabular-nums text-mineral">({contagem[s]})</span>
             </label>
@@ -171,7 +171,7 @@ export function RegulacaoConsultas({
           </fieldset>
           <div className="flex flex-wrap items-center gap-x-4">
             <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
-              Mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
+              Em {dataBR(hoje)}, mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
               {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
             </p>
             <button

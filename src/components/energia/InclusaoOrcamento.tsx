@@ -106,6 +106,7 @@ function InclusaoClassesPof({
         referencias={refTotal !== null ? [{ valor: refTotal, rotulo: `${medidas[0].rotulo}, todas as famílias (${nomeTerritorio(principal)})` }] : []}
         orientacao="horizontal"
         rotulosValor
+        alturaMaxima={900}
       />
       {destaques}
       {recorte}
@@ -144,6 +145,7 @@ function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
           casas={2}
           orientacao="horizontal"
           rotulosValor
+          alturaMaxima={900}
         />
       ) : (
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
@@ -179,6 +181,7 @@ function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string
         casas={1}
         orientacao="horizontal"
         rotulosValor
+        alturaMaxima={900}
       />
       <TabelaInterativa
         titulo={`Sensibilidade ao limiar de ${v.lim}%, ${nomeTerritorio(principal)}`}

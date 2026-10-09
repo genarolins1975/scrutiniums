@@ -244,6 +244,11 @@ describe("página inicial: mapa didático (P001)", () => {
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain("aria-pressed={sel}");
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-live="polite"');
     expect(t.match(/<MapaVertical \/>/g)).toHaveLength(1);
+    // teclado: as setas, Home e End percorrem os sete elos (o foco já escolhe o elo); fora da seleção o traço da ligação segue legível (3:1)
+    const comp = ler("src/components/energia/MapaConceitual.tsx");
+    for (const x of ['"ArrowRight"', '"ArrowLeft"', '"Home"', '"End"', "id={`mapa-no-${n.id}`}", "onFocus={() => setAtual(n.id)}"]) expect(comp, x).toContain(x);
+    expect(comp).not.toContain("opacity-40");
+    expect(comp).toContain("text-mineral opacity-90");
     // a instrução do desenho (escolher um elo, a forma do traço) é só do desktop; no celular a instrução é outra
     expect(t).toContain('<span className="hidden md:inline">');
     expect(t).toContain("Leia os sete elos abaixo");

@@ -318,7 +318,12 @@ export default function PerdasPage() {
                       ? { valor: variacaoMesmas([acumConc.anterior.taxa_total_pct, acumConc.atual.taxa_total_pct]), casas: 2, sufixo: " p.p.", referencia: `contra o mesmo período de ${(g.acumulado?.ano ?? ref + 1) - 1}, nas mesmas ${acumConc.n_distribuidoras} concessionárias` }
                       : undefined
                   }
-                  nota={<>Ano aberto: não compete com os anos completos do gráfico.</>}
+                  nota={
+                    <>
+                      Ano aberto: não compete com os anos completos do gráfico.
+                      {mesFimAcum ? ` O recorte termina em ${mesFimAcum}, o último mês que ao menos 90% das distribuidoras válidas em ${ref} já publicaram sem lacuna desde janeiro.` : ""}
+                    </>
+                  }
                   cor="var(--serie-referencia)"
                   endereco="https://scrutiniums.com/setor-eletrico/perdas#evolucao"
                 />

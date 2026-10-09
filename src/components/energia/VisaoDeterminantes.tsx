@@ -86,32 +86,20 @@ function Cartao({
   return (
     <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
       <div id={ancoras?.painel} className="scroll-mt-28">
-        <h3 id={`p005-${p.id}-titulo`} className="ed-h3 font-serif text-carvao">
-          {p.titulo}
-        </h3>
-        <p className="mt-0.5 text-sm text-carvao-muted">{p.pergunta}</p>
-        <p className="mt-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
-          <span className="font-serif text-[1.625rem] leading-tight tabular-nums text-carvao" data-valor-atual={p.id}>
-            {p.valorTexto}
-          </span>
-          {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
-          <span className="text-xs text-carvao-muted">{p.id === "geracao" ? `7 dias até ${dataBR(p.dataReferencia)}` : dataBR(p.dataReferencia)}</span>
-        </p>
-        <p className="mt-1.5 text-sm leading-relaxed text-carvao">{p.leitura}</p>
-        {doDia.length > 0 && (
-          <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-referencia-do-dia={p.id}>
-            {doDia.map((x) => `${x.rotulo}: ${fmt(x.valor)}`).join("; ")}.
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0">
+          <h3 id={`p005-${p.id}-titulo`} className="ed-h3 font-serif text-carvao">
+            {p.titulo}
+          </h3>
+          <p className="text-xs text-carvao-muted">{p.pergunta}</p>
+        </div>
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
+          <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+            <span className="font-serif text-[1.625rem] leading-tight tabular-nums text-carvao" data-valor-atual={p.id}>
+              {p.valorTexto}
+            </span>
+            {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
+            <span className="text-xs text-carvao-muted">{p.id === "geracao" ? `7 dias até ${dataBR(p.dataReferencia)}` : dataBR(p.dataReferencia)}</span>
           </p>
-        )}
-        {p.id === "preco" && (
-          <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
-            Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}.
-          </p>
-        )}
-        <p data-nivel="analisar" className="mt-1 text-xs text-mineral">
-          {p.defasagem}
-        </p>
-        <div className="mt-0.5">
           {p.comprove ? (
             <ComproveNumero
               sobDemanda={{ url: URL_GOLD_VISAO, caminho: p.comprove.caminho, indicador: p.comprove.indicador, valorExibido: p.comprove.valorExibido }}
@@ -122,7 +110,7 @@ function Cartao({
           )}
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-1">
         <GraficoLinhas
           titulo={`${p.titulo}: ${p.colunas.map((c) => c.rotulo).join(", ")}`}
           dados={dados}
@@ -139,6 +127,20 @@ function Cartao({
           onOcultas={multi ? onOcultas : undefined}
         />
       </div>
+      <p className="mt-2 text-sm leading-relaxed text-carvao">{p.leitura}</p>
+      {doDia.length > 0 && (
+        <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-referencia-do-dia={p.id}>
+          {doDia.map((x) => `${x.rotulo}: ${fmt(x.valor)}`).join("; ")}.
+        </p>
+      )}
+      {p.id === "preco" && (
+        <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
+          Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}.
+        </p>
+      )}
+      <p data-nivel="analisar" className="mt-1 text-xs text-mineral">
+        {p.defasagem}
+      </p>
       {notas && notas.length > 0 && (
         <div className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
           {notas.map((n, i) => (
@@ -180,40 +182,33 @@ export function VisaoDeterminantes({
 
   return (
     <div className="space-y-4">
-      <fieldset className="min-w-0">
-        <legend className="rotulo text-mineral">Janela comum aos cinco gráficos</legend>
-        <div className="mt-1 flex flex-wrap gap-1.5">
-          {JANELAS_P005.map((j) => {
-            const ativo = j === v.dias;
-            return (
-              <label
-                key={j}
-                className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
-                  ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-                }`}
-              >
-                <input type="radio" name={nome} value={j} checked={ativo} onChange={() => definir({ dias: j })} className="sr-only" />
-                Últimos {j} dias
-              </label>
-            );
-          })}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+        <div role="radiogroup" aria-labelledby={`${nome}-rotulo`} className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+          <span id={`${nome}-rotulo`} className="rotulo text-mineral">
+            Janela dos cinco gráficos
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {JANELAS_P005.map((j) => {
+              const ativo = j === v.dias;
+              return (
+                <label
+                  key={j}
+                  className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
+                    ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+                  }`}
+                >
+                  <input type="radio" name={nome} value={j} checked={ativo} onChange={() => definir({ dias: j })} className="sr-only" />
+                  Últimos {j} dias
+                </label>
+              );
+            })}
+          </div>
         </div>
-      </fieldset>
-      <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-determinantes="" aria-live="polite">
-        <div>
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5 leading-relaxed">{periodoDaJanela(linhas)}</dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5 leading-relaxed">PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS</dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5 leading-relaxed">{d.paineis.map((p) => `${p.titulo.toLowerCase()} em ${p.unidade}`).join("; ")}</dd>
-        </div>
-      </dl>
-      <p className="text-xs leading-relaxed text-carvao-muted">O cursor de um gráfico marca a mesma data nos outros quatro.</p>
+        <p className="min-w-0 text-xs leading-relaxed text-carvao-muted" data-periodo-determinantes="" aria-live="polite">
+          <span className="rotulo mr-1.5 text-mineral">Período</span>
+          {periodoDaJanela(linhas)}
+        </p>
+      </div>
       <CursorSincronizado>
         <div className="grid gap-4 lg:grid-cols-2">
           {d.paineis.map((p) => (
@@ -231,6 +226,16 @@ export function VisaoDeterminantes({
           ))}
         </div>
       </CursorSincronizado>
+      <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-2" data-recorte-determinantes="">
+        <div>
+          <dt className="rotulo text-mineral">Universo</dt>
+          <dd className="mt-0.5 leading-relaxed">PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS. O cursor de um gráfico marca a mesma data nos outros quatro.</dd>
+        </div>
+        <div>
+          <dt className="rotulo text-mineral">Unidade</dt>
+          <dd className="mt-0.5 leading-relaxed">{d.paineis.map((p) => `${p.titulo.toLowerCase()} em ${p.unidade}`).join("; ")}</dd>
+        </div>
+      </dl>
       <SecaoDoPainel nivel="analisar" id="determinantes-tabela" titulo="Os cinco determinantes como tabela, dia a dia">
         <TabelaInterativa
           titulo={`Os cinco determinantes, dia a dia, de ${dataBR(inicio)} a ${dataBR(fim)}`}

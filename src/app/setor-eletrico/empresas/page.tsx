@@ -70,9 +70,9 @@ const MEDIDAS = [
 
 /**
  * Abertura de Empresas: a entrada para ativos, perfil da distribuidora, finanças e controle, unificados pelo CNPJ que a fonte oficial
- * publica. Na primeira tela, as medidas do cadastro de usinas com data e fonte, a busca por empresa (que leva à ficha útil) e os quatro
- * elos entre empresa, participação, ativo e controle; depois, uma página por pergunta, cada uma com a resposta curta, um número com a
- * ficha de prova e o limite da leitura. As medidas que não se somam vêm explicadas ao lado, e a página não repete os gráficos dos painéis.
+ * publica. Na primeira tela, as medidas do cadastro de usinas com data e fonte e a busca por empresa (que leva à ficha útil); logo
+ * depois, os quatro caminhos, cada um com a resposta curta, um número com a ficha de prova e o limite da leitura; só então os quatro
+ * elos entre empresa, participação, ativo e controle, o recorte e as medidas que não se somam. A página não repete os gráficos dos painéis.
  */
 export default function EmpresasPage() {
   const g = lerGold<EmpresasGold>("empresas.json");
@@ -137,7 +137,7 @@ export default function EmpresasPage() {
         <CabecalhoModulo
           siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR"]}
           titulo="Quem atua no setor elétrico?"
-          lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) que a fonte oficial publica no próprio registro.`}
+          lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) publicado pela fonte oficial.`}
           recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · demais fontes com datas próprias`}
           fonte={`ANEEL, ${SIGLAS.ANEEL} (cadastros de geração e de transmissão); CVM, ${SIGLAS.CVM} (demonstrações anuais e trimestrais)`}
           referencia={
@@ -225,6 +225,148 @@ export default function EmpresasPage() {
               </div>
             </section>
 
+            <EmpresasCapitulos
+              itens={[
+                {
+                  id: "p036",
+                  resposta: (
+                    <RespostaCurta id="p036" tamanho="sm" veredito={vereditoCadastro(c)}>
+                      {respostaCadastro(c)}
+                    </RespostaCurta>
+                  ),
+                  numero: t ? (
+                    <Numero
+                      variante="faixa"
+                      rotulo="Módulos de transmissão ligados ao CNPJ"
+                      natureza="CALCULADO"
+                      evidencia={comValorExibido(t.evidencia, pctTexto(t.evidencia.valor_calculo, 1))}
+                      formato="pct"
+                      casas={1}
+                      unidade="dos módulos"
+                      nota={`${inteiro(t.resumo.modulos_com_cnpj)} de ${inteiro(t.resumo.modulos)} módulos; ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias com módulos.`}
+                      endereco={ancoraPainel("p036")}
+                    />
+                  ) : (
+                    <Numero variante="faixa" rotulo="Módulos de transmissão ligados ao CNPJ" natureza="CALCULADO" valor={null} motivoAusencia="O SIGET não está integrado nesta publicação." />
+                  ),
+                  contexto: (
+                    <>
+                      Usinas do SIGA ({SIGLAS.SIGA}) de {dataSiga}, {inteiro(a.usinas)} em todas as fases; linhas do SIGET ({SIGLAS.SIGET}) de {dataTexto(t?.data)}. Potência fiscalizada em operação, em MW.
+                    </>
+                  ),
+                  limite: "a energia que as usinas geram, nem quem controla economicamente: capacidade instalada não é geração, e o dono direto não é o controlador (essa pergunta está na página de controle).",
+                },
+                {
+                  id: "p037",
+                  resposta: (
+                    <RespostaCurta id="p037" tamanho="sm" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}>
+                      {respostaDistribuidoras(d)}
+                    </RespostaCurta>
+                  ),
+                  numero:
+                    evTaxaNacional2 && refPerdas ? (
+                      <Numero
+                        variante="faixa"
+                        rotulo="Referência: perdas totais na distribuição, Brasil"
+                        natureza={prov.distribuidoras_perdas?.natureza ?? "CALCULADO"}
+                        evidencia={evTaxaNacional2}
+                        formato="pct"
+                        casas={2}
+                        nota={`Taxa das concessionárias em conjunto (perdas somadas sobre energia injetada somada, não a média das taxas): ${evTaxaNacional2.universo}. Número do módulo Perdas, a referência das barras de perdas no comparador.`}
+                        endereco={ancoraPainel("p037")}
+                      />
+                    ) : (
+                      <Numero
+                        variante="faixa"
+                        rotulo="Referência: perdas totais na distribuição, Brasil"
+                        natureza="CALCULADO"
+                        valor={null}
+                        motivoAusencia="A base publicada de Perdas não publica a taxa nacional do mesmo ano das perdas por distribuidora."
+                      />
+                    ),
+                  contexto: (
+                    <>
+                      {inteiro(d.resumo.distribuidoras)} distribuidoras pelo CNPJ; perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, o ano de referência de cada módulo de origem, e
+                      tarifa vigente na data do arquivo de tarifas.
+                    </>
+                  ),
+                  limite: "eficiência ou culpa da distribuidora: perdas, interrupções e tarifa dependem da área atendida, e anos de referência diferentes não se comparam.",
+                  extra:
+                    exemplos.length > 0 ? (
+                      <p className="text-sm text-carvao-muted">
+                        Fichas das distribuidoras com mais unidades consumidoras:{" "}
+                        {exemplos.map((x, i) => (
+                          <span key={x.href}>
+                            {i ? ", " : ""}
+                            <Link href={x.href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                              {x.rotulo}
+                            </Link>
+                          </span>
+                        ))}
+                        ; as demais estão no índice da página.
+                      </p>
+                    ) : undefined,
+                },
+                {
+                  id: "p038",
+                  resposta: (
+                    <RespostaCurta id="p038" tamanho="sm" veredito={vereditoFinancas(f)}>
+                      {respostaFinancas(f)}
+                    </RespostaCurta>
+                  ),
+                  numero: compPadrao ? (
+                    <Numero
+                      variante="faixa"
+                      rotulo={`Receita ${compPadrao.ultimo_exercicio ?? ""}: ${nomeOuCnpj(compPadrao.nome, compPadrao.cnpj)}`}
+                      natureza={compPadrao.alertas.includes("escala_corrigida") ? "ESTIMADO" : "OBSERVADO"}
+                      valor={emMilhoes(evReceita?.valor_calculo ?? null)}
+                      casas={1}
+                      unidade="R$ milhões"
+                      evidencia={evReceita}
+                      motivoAusencia="A receita do último exercício não tem ficha publicada."
+                      nota="A companhia ativa de maior ativo total sem controladora aberta acima dela; na página, escolha qualquer outra."
+                      endereco={ancoraPainel("p038")}
+                    />
+                  ) : (
+                    <Numero variante="faixa" rotulo="Receita do último exercício" natureza="OBSERVADO" valor={null} motivoAusencia="Nenhuma companhia ativa com ativo total publicado." />
+                  ),
+                  contexto: (
+                    <>
+                      Companhias abertas registradas na CVM ({SIGLAS.CVM}): {SIGLAS.DFP} (DFP) de {f.periodos.exercicios[0] ?? "sem dado"} a {f.periodos.ultimo_exercicio ?? "sem dado"} e {SIGLAS.ITR} (ITR)
+                      até {dataTexto(f.periodos.ultimo_trimestre)}, em R$ nominais.
+                    </>
+                  ),
+                  limite: "o desempenho do setor inteiro (só companhias abertas), nem soma entre companhias; as demonstrações regulatórias da ANEEL estão bloqueadas na fonte e não foram substituídas.",
+                },
+                {
+                  id: "p039",
+                  resposta: (
+                    <RespostaCurta id="p039" tamanho="sm" veredito={vereditoControle(ct)}>
+                      {respostaControle(ct)}
+                    </RespostaCurta>
+                  ),
+                  numero: (
+                    <Numero
+                      variante="faixa"
+                      rotulo="Concentração por grupo de controle (HHI)"
+                      natureza="CALCULADO"
+                      evidencia={ct.concentracao.evidencia}
+                      casas={0}
+                      unidade="pontos"
+                      nota={`${grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI é o ${SIGLAS.HHI}, de 0 a 10.000. O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`}
+                      endereco={ancoraPainel("p039")}
+                    />
+                  ),
+                  contexto: (
+                    <>
+                      SIGA de {dataTexto(ct.fronteira.data)} e declarações de composição societária à ANEEL de {janela}; usinas em operação com participações válidas. {textoFronteiraNoCadastro(ct.fronteira, a)}
+                    </>
+                  ),
+                  limite: "poder de mercado: a fronteira é capacidade instalada, não energia vendida nem mercado relevante, e a participação indireta não é calculada.",
+                },
+              ]}
+            />
+
             <PainelEvidencia
               id="entrada"
               pergunta="Como uma empresa se liga a ativos, grupos e demonstrações?"
@@ -268,149 +410,7 @@ export default function EmpresasPage() {
                 />
                 <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
 
-                <EmpresasCapitulos
-                  itens={[
-                    {
-                      id: "p036",
-                      resposta: (
-                        <RespostaCurta id="p036" tamanho="sm" veredito={vereditoCadastro(c)}>
-                          {respostaCadastro(c)}
-                        </RespostaCurta>
-                      ),
-                      numero: t ? (
-                        <Numero
-                          variante="faixa"
-                          rotulo="Módulos de transmissão ligados ao CNPJ"
-                          natureza="CALCULADO"
-                          evidencia={comValorExibido(t.evidencia, pctTexto(t.evidencia.valor_calculo, 1))}
-                          formato="pct"
-                          casas={1}
-                          unidade="dos módulos"
-                          nota={`${inteiro(t.resumo.modulos_com_cnpj)} de ${inteiro(t.resumo.modulos)} módulos; ${inteiro(t.resumo.cnpjs_com_modulos)} concessionárias com módulos.`}
-                          endereco={ancoraPainel("p036")}
-                        />
-                      ) : (
-                        <Numero variante="faixa" rotulo="Módulos de transmissão ligados ao CNPJ" natureza="CALCULADO" valor={null} motivoAusencia="O SIGET não está integrado nesta publicação." />
-                      ),
-                      contexto: (
-                        <>
-                          Usinas do SIGA ({SIGLAS.SIGA}) de {dataSiga}, {inteiro(a.usinas)} em todas as fases; linhas do SIGET ({SIGLAS.SIGET}) de {dataTexto(t?.data)}. Potência fiscalizada em operação, em MW.
-                        </>
-                      ),
-                      limite: "a energia que as usinas geram, nem quem controla economicamente: capacidade instalada não é geração, e o dono direto não é o controlador (essa pergunta está na página de controle).",
-                    },
-                    {
-                      id: "p037",
-                      resposta: (
-                        <RespostaCurta id="p037" tamanho="sm" veredito={vereditoDistribuidoras(d, refPerdas?.valor ?? null, anoPerdas)}>
-                          {respostaDistribuidoras(d)}
-                        </RespostaCurta>
-                      ),
-                      numero:
-                        evTaxaNacional2 && refPerdas ? (
-                          <Numero
-                            variante="faixa"
-                            rotulo="Referência: perdas totais na distribuição, Brasil"
-                            natureza={prov.distribuidoras_perdas?.natureza ?? "CALCULADO"}
-                            evidencia={evTaxaNacional2}
-                            formato="pct"
-                            casas={2}
-                            nota={`Taxa das concessionárias em conjunto (perdas somadas sobre energia injetada somada, não a média das taxas): ${evTaxaNacional2.universo}. Número do módulo Perdas, a referência das barras de perdas no comparador.`}
-                            endereco={ancoraPainel("p037")}
-                          />
-                        ) : (
-                          <Numero
-                            variante="faixa"
-                            rotulo="Referência: perdas totais na distribuição, Brasil"
-                            natureza="CALCULADO"
-                            valor={null}
-                            motivoAusencia="A base publicada de Perdas não publica a taxa nacional do mesmo ano das perdas por distribuidora."
-                          />
-                        ),
-                      contexto: (
-                        <>
-                          {inteiro(d.resumo.distribuidoras)} distribuidoras pelo CNPJ; perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, o ano de referência de cada módulo de origem, e
-                          tarifa vigente na data do arquivo de tarifas.
-                        </>
-                      ),
-                      limite: "eficiência ou culpa da distribuidora: perdas, interrupções e tarifa dependem da área atendida, e anos de referência diferentes não se comparam.",
-                      extra:
-                        exemplos.length > 0 ? (
-                          <p className="text-sm text-carvao-muted">
-                            Fichas das distribuidoras com mais unidades consumidoras:{" "}
-                            {exemplos.map((x, i) => (
-                              <span key={x.href}>
-                                {i ? ", " : ""}
-                                <Link href={x.href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-                                  {x.rotulo}
-                                </Link>
-                              </span>
-                            ))}
-                            ; as demais estão no índice da página.
-                          </p>
-                        ) : undefined,
-                    },
-                    {
-                      id: "p038",
-                      resposta: (
-                        <RespostaCurta id="p038" tamanho="sm" veredito={vereditoFinancas(f)}>
-                          {respostaFinancas(f)}
-                        </RespostaCurta>
-                      ),
-                      numero: compPadrao ? (
-                        <Numero
-                          variante="faixa"
-                          rotulo={`Receita ${compPadrao.ultimo_exercicio ?? ""}: ${nomeOuCnpj(compPadrao.nome, compPadrao.cnpj)}`}
-                          natureza={compPadrao.alertas.includes("escala_corrigida") ? "ESTIMADO" : "OBSERVADO"}
-                          valor={emMilhoes(evReceita?.valor_calculo ?? null)}
-                          casas={1}
-                          unidade="R$ milhões"
-                          evidencia={evReceita}
-                          motivoAusencia="A receita do último exercício não tem ficha publicada."
-                          nota="A companhia ativa de maior ativo total sem controladora aberta acima dela; na página, escolha qualquer outra."
-                          endereco={ancoraPainel("p038")}
-                        />
-                      ) : (
-                        <Numero variante="faixa" rotulo="Receita do último exercício" natureza="OBSERVADO" valor={null} motivoAusencia="Nenhuma companhia ativa com ativo total publicado." />
-                      ),
-                      contexto: (
-                        <>
-                          Companhias abertas registradas na CVM ({SIGLAS.CVM}): {SIGLAS.DFP} (DFP) de {f.periodos.exercicios[0] ?? "sem dado"} a {f.periodos.ultimo_exercicio ?? "sem dado"} e {SIGLAS.ITR} (ITR)
-                          até {dataTexto(f.periodos.ultimo_trimestre)}, em R$ nominais.
-                        </>
-                      ),
-                      limite: "o desempenho do setor inteiro (só companhias abertas), nem soma entre companhias; as demonstrações regulatórias da ANEEL estão bloqueadas na fonte e não foram substituídas.",
-                    },
-                    {
-                      id: "p039",
-                      resposta: (
-                        <RespostaCurta id="p039" tamanho="sm" veredito={vereditoControle(ct)}>
-                          {respostaControle(ct)}
-                        </RespostaCurta>
-                      ),
-                      numero: (
-                        <Numero
-                          variante="faixa"
-                          rotulo="Concentração por grupo de controle (HHI)"
-                          natureza="CALCULADO"
-                          evidencia={ct.concentracao.evidencia}
-                          casas={0}
-                          unidade="pontos"
-                          nota={`${grupo ? `${inteiro(grupo.participantes)} grupos; fronteira de ${mwTexto(ct.fronteira.mw)}. ` : ""}HHI é o ${SIGLAS.HHI}, de 0 a 10.000. O período vai do primeiro trimestre de declarações considerado (${inicioJanela}) à data do SIGA.`}
-                          endereco={ancoraPainel("p039")}
-                        />
-                      ),
-                      contexto: (
-                        <>
-                          SIGA de {dataTexto(ct.fronteira.data)} e declarações de composição societária à ANEEL de {janela}; usinas em operação com participações válidas. {textoFronteiraNoCadastro(ct.fronteira, a)}
-                        </>
-                      ),
-                      limite: "poder de mercado: a fronteira é capacidade instalada, não energia vendida nem mercado relevante, e a participação indireta não é calculada.",
-                    },
-                  ]}
-                />
-
-                <SecaoDoPainel id="medidas" titulo="Quais medidas não se somam?" lead="Quatro pares que parecem somáveis e não são. A página de cada caminho repete a regra junto do número.">
+                <SecaoDoPainel id="medidas" titulo="Quais medidas não se somam?" lead="Quatro pares que parecem somáveis e não são. Cada página repete a regra junto do número.">
                   <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
                     {MEDIDAS.map(([n, x]) => (
                       <li key={n} className="border-l-2 border-linha pl-4">

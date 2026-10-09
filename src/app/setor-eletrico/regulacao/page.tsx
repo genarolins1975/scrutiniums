@@ -62,6 +62,7 @@ import {
   semTravessao,
   textoAtosDoAno,
   textoConferenciaAcionamento,
+  textoVigenciaCurta,
   vereditoLimites,
   vereditoP044,
   vigenteEm,
@@ -186,8 +187,7 @@ export default function RegulacaoPage() {
               rotulo={`Limites do PLD vigentes em ${dataRef}`}
               nota={
                 <>
-                  Valores vigentes em {dataRef}; não mudam com o ano escolhido no gráfico. {limites.length ? textoAtosDoAno(g, vig?.ano ?? 0) : ""} O teto estrutural e o teto horário se aplicam a objetos
-                  diferentes: o primeiro à média diária dos preços horários, o segundo a cada hora.
+                  Valores vigentes em {dataRef}; não mudam com o ano escolhido no gráfico. {limites.length ? textoAtosDoAno(g, vig?.ano ?? 0) : ""}
                 </>
               }
             >
@@ -202,7 +202,7 @@ export default function RegulacaoPage() {
                     evidencia={ev[c]}
                     formato="reais"
                     casas={2}
-                    periodo={`vigência de ${dataBR(l.inicio)} a ${dataBR(l.fim)}`}
+                    periodo={textoVigenciaCurta(l.inicio, l.fim)}
                     cor={COR_LIMITE[c]}
                     nota={maiuscula(`${ALCANCE_LIMITE[c]}.`)}
                     endereco={`${ROTA_REGULACAO}#p044`}

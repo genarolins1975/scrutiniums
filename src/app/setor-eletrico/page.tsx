@@ -165,6 +165,14 @@ function nomeDoConceito(slug: string, rotulo: string): string | null {
   return c.nome;
 }
 
+/** Nome do conjunto da fonte sem sigla solta: "SAMP Balanço" vira "balanço do Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica (SAMP)". */
+function conjuntoPorExtenso(conjunto: string): string {
+  const texto = conjuntoLegivel(conjunto).texto;
+  const m = /^SAMP\s+(.+)$/.exec(texto);
+  if (!m) return texto;
+  return `${m[1].charAt(0).toLowerCase()}${m[1].slice(1)} do ${SIGLAS.SAMP.split(",")[0]} (SAMP)`;
+}
+
 /** "Concessionárias de distribuição (Brasil)" dentro de uma frase, sem parênteses dentro de parênteses: "concessionárias de distribuição do Brasil". */
 function entidadeEmFrase(e: string): string {
   const m = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(e.trim());
@@ -909,7 +917,7 @@ export default function MapaDoObservatorio() {
                     {denominador && <p data-denominador="">{descreverDenominador(denominador).completa}</p>}
                     {natEv && (
                       <p className="flex flex-wrap items-center gap-2">
-                        <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {conjuntoLegivel(ev.fonte.conjunto).texto}, da {ev.fonte.orgao}.</span>
+                        <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {conjuntoPorExtenso(ev.fonte.conjunto)}, da {ev.fonte.orgao}.</span>
                       </p>
                     )}
                     <dl className="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_auto]">
@@ -1045,7 +1053,7 @@ export default function MapaDoObservatorio() {
               <dd className="mt-1 text-sm leading-snug text-carvao">
                 {resumoAtual.semAvaliacao === resumoAtual.total
                   ? "Sem avaliação nesta publicação: o quadro de atualidade das fontes não foi processado."
-                  : `${resumoAtual.emDia} em dia, ${resumoAtual.atrasadas.length} atrasadas, ${resumoAtual.semCalendario} sem calendário declarado${resumoAtual.semAvaliacao ? ` e ${resumoAtual.semAvaliacao} sem avaliação` : ""}.`}
+                  : `${resumoAtual.emDia} em dia, ${resumoAtual.atrasadas.length} ${resumoAtual.atrasadas.length === 1 ? "atrasada" : "atrasadas"}, ${resumoAtual.semCalendario} sem calendário declarado${resumoAtual.semAvaliacao ? ` e ${resumoAtual.semAvaliacao} sem avaliação` : ""}.`}
               </dd>
             </div>
             <div>

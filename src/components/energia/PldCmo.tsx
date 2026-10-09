@@ -295,7 +295,7 @@ export function PldCmo({
           />
         ) : (
           <p className="text-sm text-carvao-muted">
-            A janela das últimas 168 horas (pld_horario_recente.json) não está nesta publicação; o histórico horário completo está no CSV horário.
+            A janela das últimas 168 horas não está nesta publicação; o histórico horário completo está no CSV horário, em Baixar os dados.
           </p>
         )}
         <p className="text-xs leading-relaxed text-carvao-muted">

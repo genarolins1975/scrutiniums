@@ -1670,7 +1670,7 @@ export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "d
     {
       id: "empresa",
       titulo: "Empresa",
-      liga: "pelo CNPJ de 14 dígitos que a fonte oficial publica no próprio registro",
+      liga: "pelo CNPJ de 14 dígitos",
       contagem: `${inteiro(a.proprietarios_cnpj)} donos de usinas, ${inteiro(g.distribuidoras.resumo.distribuidoras)} distribuidoras e ${inteiro(g.financas.universo.companhias)} companhias abertas; as listas se sobrepõem`,
     },
     {

@@ -237,7 +237,7 @@ export function PldRegional({
         </div>
         <div className="min-w-0 space-y-3">
           <PldEscolha
-            legenda={`Matriz de ${rotuloPer}`}
+            legenda={`Matriz do período: ${rotuloPer}`}
             opcoes={[
               { id: "frac_separadas" as MedidaMatriz, rotulo: "Horas separadas (%)" },
               { id: "dif_media" as MedidaMatriz, rotulo: "Diferença média (R$/MWh)" },
@@ -392,7 +392,7 @@ export function PldRegional({
             />
           </>
         ) : (
-          <p className="text-sm text-carvao-muted">A janela das últimas 168 horas (pld_horario_recente.json) não está nesta publicação; o histórico diário de separação e fluxo está no CSV diário.</p>
+          <p className="text-sm text-carvao-muted">A janela das últimas 168 horas não está nesta publicação; o histórico diário de separação e fluxo está no CSV diário, em Baixar os dados.</p>
         )}
       </SecaoDoPainel>
 

@@ -122,7 +122,7 @@ export default function PerdasRegulatorioPage() {
   const naoConcluir = (
     <>
       Que a distribuidora esteja acima ou abaixo da meta regulatória de perdas: a referência de não técnicas não está em base aberta. Que o percentual técnico seja perda física medida. Que a
-      perda reconhecida deva ser zero: a ANEEL reconhece perdas técnicas em toda rede, pois são inevitáveis no transporte da energia.
+      perda reconhecida deva ser zero: a ANEEL reconhece perdas técnicas em toda rede, e elas são inevitáveis no transporte da energia.
     </>
   );
 

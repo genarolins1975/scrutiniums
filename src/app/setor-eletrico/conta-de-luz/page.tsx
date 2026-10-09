@@ -387,6 +387,7 @@ export default function ContaDeLuzPage() {
                   </p>
                   <ContaSobDemanda chaveUrl="semvig" rotulo="a lista de distribuidoras sem tarifa vigente" detalhe={`${linhasSemVigente.length} linhas`}>
                     <TabelaInterativa
+                      iniciarAberta
                       titulo="Distribuidoras com tarifa B1 no conjunto e sem vigência na data"
                       colunas={COLUNAS_SEM_VIGENTE}
                       linhas={linhasSemVigente}
@@ -569,6 +570,7 @@ export default function ContaDeLuzPage() {
                   <p className="text-sm text-carvao-muted">Regra de atípico: {comp.regra_atipico}. Cada valor abaixo foi conferido no arquivo original da ANEEL e mantido.</p>
                   <ContaSobDemanda chaveUrl="atip" rotulo="as componentes atípicas" detalhe={`${linhasAtipicas.length} linhas`}>
                     <TabelaInterativa
+                      iniciarAberta
                       titulo={`Componentes atípicas na vigência de ${dataBR(ref)}`}
                       colunas={COLUNAS_ATIPICAS}
                       linhas={linhasAtipicas}
@@ -702,6 +704,7 @@ export default function ContaDeLuzPage() {
                   </p>
                   <ContaSobDemanda chaveUrl="casos" rotulo="os casos de referência do simulador" detalhe={`${linhasCasos.length} casos`}>
                     <TabelaInterativa
+                      iniciarAberta
                       titulo="Casos de referência do simulador"
                       colunas={COLUNAS_CASOS}
                       linhas={linhasCasos}

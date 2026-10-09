@@ -10,6 +10,7 @@ import { RegulacaoIndisponivel } from "@/components/energia/RegulacaoPagina";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import {
+  ALCANCE_LIMITE,
   CAMPOS_LIMITE,
   COLUNAS_CONSULTAS,
   COLUNAS_LIMITES,
@@ -69,6 +70,7 @@ import {
   textoDefasagemEvento,
   textoJanela,
   textoReuniao,
+  textoVigenciaCurta,
   vigenteEm,
 } from "@/lib/energia/regulacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
@@ -727,8 +729,9 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(faixa).toContain("vigência de 01/01/2026 a 31/12/2026");
     // a faixa é fixa na data de referência e diz isso; o teto horário e o estrutural são objetos distintos
     expect(faixa).toContain(`Valores vigentes em ${dBR(gold.data_referencia)}; não mudam com o ano escolhido no gráfico`);
-    expect(faixa).toContain("média diária");
-    expect(faixa).toContain("cada hora");
+    for (const c of CAMPOS_LIMITE) expect(faixa, `alcance de ${c}`).toContain(`${ALCANCE_LIMITE[c].charAt(0).toUpperCase()}${ALCANCE_LIMITE[c].slice(1)}.`);
+    expect(ALCANCE_LIMITE.pld_max_estrutural).toContain("média diária");
+    expect(ALCANCE_LIMITE.pld_max_horario).toContain("numa hora");
     expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(3);
     // a resposta do painel fica depois das figuras (a faixa já traz os números)
     expect(h).toContain("data-resposta-depois");
@@ -969,6 +972,16 @@ describe.skipIf(!disponivel)("seletores da migração editorial da Regulação",
     expect(avisoRevisaoAgenda(lida)).toBeNull();
     expect(avisoRevisaoAgenda({ ...gold.agenda, revisao: { ...r, atualizada_por: null } })).toBeNull();
     expect(avisoRevisaoAgenda({ ...gold.agenda, disponivel: false })).toBeNull();
+  });
+
+  it("vigência curta para a linha de contexto: ano cheio em poucas palavras, trecho menor com as duas datas", () => {
+    expect(textoVigenciaCurta("2026-01-01", "2026-12-31")).toBe("vigência em 2026");
+    expect(textoVigenciaCurta("2026-03-01", "2026-12-31")).toBe("vigência de 01/03/2026 a 31/12/2026");
+    expect(textoVigenciaCurta("2025-07-01", "2026-06-30")).toBe("vigência de 01/07/2025 a 30/06/2026");
+    // a data de referência da gold cai num ano cheio, e as duas datas inteiras seguem na nota da faixa
+    const { vigencia } = limitesVigentes(gold);
+    expect(textoVigenciaCurta(vigencia!.inicio, vigencia!.fim)).toBe("vigência em 2026");
+    expect(textoAtosDoAno(gold, 2026)).toContain("vigência de 01/01/2026 a 31/12/2026");
   });
 
   it("rótulo do arquivo para baixar: parênteses viram vírgula, o intervalo de anos ganha 'a' e o formato fecha o rótulo", () => {

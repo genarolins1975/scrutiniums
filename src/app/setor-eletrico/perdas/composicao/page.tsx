@@ -15,7 +15,7 @@ import { PerdasLevaEscolha } from "@/components/energia/PerdasLevaEscolha";
 import { PERGUNTA_COMPOSICAO, PERGUNTA_REGULATORIO, PerdasNavegacao, PerdasSeguir, Recorte, ReferenciaPerdas, Resposta, SeparacaoMetricas } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import {
   ANO_LEIAUTE_SAMP,
@@ -69,12 +69,12 @@ export default function PerdasComposicaoPage() {
   const grupoDe = new Map(g.distribuidoras.map((d) => [d.cnpj, d.grupo]));
   const nBarrasConc = composicao.linhas.filter((l) => grupoDe.get(l.id) === "concessionaria").length;
   const universoBarras = composicao.linhas.length
-    ? `as distribuidoras com a decomposição fechando (${nBarrasConc} concessionárias e ${composicao.linhas.length - nBarrasConc} permissionárias)`
+    ? `as distribuidoras com a decomposição fechando (${plural(nBarrasConc, "concessionária", "concessionárias")} e ${plural(composicao.linhas.length - nBarrasConc, "permissionária", "permissionárias")})`
     : null;
 
   const oQueMudou = (
     <>
-      Com o leiaute novo do SAMP, a partir de {ANO_LEIAUTE_SAMP}, menos distribuidoras publicam a separação: {cobertura ?? `sem linha nacional das concessionárias em ${ref}.`}{" "}
+      Desde {ANO_LEIAUTE_SAMP}, ano do leiaute novo do SAMP, menos distribuidoras publicam a separação: {cobertura ?? `sem linha nacional das concessionárias em ${ref}.`}{" "}
       {uf.anos.length > 1
         ? `Nas mesmas ${uf.n_distribuidoras} concessionárias de ${uf.anos[0]} a ${uf.anos[uf.anos.length - 1]}, a série de universo fixo mostra a tendência sem mudança de composição.`
         : "Sem série de universo fixo com mais de um ano."}
@@ -82,7 +82,7 @@ export default function PerdasComposicaoPage() {
   );
   const comoInterpretar = (
     <>
-      Técnica e não técnica sobre a mesma energia injetada somam a taxa total quando a decomposição fecha; por isso só essas distribuidoras estão nas barras. A não técnica sobre o mercado de
+      Técnica e não técnica sobre a mesma energia injetada somam a taxa total quando a decomposição fecha, e só essas distribuidoras estão nas barras. A não técnica sobre o mercado de
       baixa tensão (a base da regulação) tem outro denominador e nunca é somada à técnica. A técnica do SAMP é o percentual regulatório aplicado à injetada: estimativa, não medição.
     </>
   );

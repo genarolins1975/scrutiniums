@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
+import { ContaBarrasReais } from "@/components/energia/ContaBarrasReais";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
 import { ContaReajustes } from "@/components/energia/ContaReajustes";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -18,16 +20,22 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   COR_GRUPO_CDE,
   GRUPOS_DESPESA_CDE,
+  GRUPOS_RECEITA_CDE,
   categoriasSubsidio,
+  comProcedimentoExterno,
   corSubsidio,
+  fatoresReaisPorAno,
   linhasCde,
   linhasSubsidios,
   mudancaSubsidios,
+  notaQuotas,
   respostaBandeira,
   respostaCde,
   respostaSubsidios,
   minuscula,
   rotuloDistribuidora,
+  serieQuotas,
+  textoResidualQuotas,
   verboVariacao,
   vereditoBandeira,
   vereditoSubsidios,
@@ -36,6 +44,7 @@ import { carimbo, dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato"
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
+import { infoDasDistribuidoras, lerIpca } from "../dados";
 import { Auditoria, Datas, FONTE_TARIFAS, Navegacao, ROTA_CONTA, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "../partes";
 
 /**
@@ -131,12 +140,26 @@ export default function ContaReajustesPage() {
       .sort((a, b) => (a[0] < b[0] ? -1 : 1))
       .at(-1) ?? null;
   const mesBandeira = band.vigente ? mesAno(`${band.vigente.mes}-01`) : null;
+  // UF de cada distribuidora das janelas (a união das três): o nome na lista e na faixa de pontos leva a UF
+  const info = infoDasDistribuidoras(Array.from(new Set((reaj.comparacao_inflacao?.janelas ?? []).flatMap((j) => j.distribuidoras.map((d) => d[0])))));
+  // subsídios e orçamento da CDE em reais do mês-base do IPCA (o mesmo da série da tarifa), com o fator de cada ano
+  const ipca = lerIpca();
+  const baseIpca = ultimoIpca;
+  const anosValores = Array.from(new Set([...sub.anual.map((a) => a.ano), ...(cde?.anos ?? [])]));
+  const fatoresReais = ipca && baseIpca ? fatoresReaisPorAno(ipca, anosValores, baseIpca) : {};
+  const baseRotulo = ipca && baseIpca ? mesAno(`${baseIpca}-01`) : null;
+  const residualQuotas = textoResidualQuotas(cde);
+  const notaDasQuotas = notaQuotas(cde);
 
   // notas de cada painel: ficam logo depois das figuras do painel
   const oQueMudouReajustes = ultimoEvento ? (
     <>
       Mudança mais recente no arquivo: {rotuloDistribuidora(ultimoEvento[1], ultimoEvento[0])}, em {dataBR(ultimoEvento[2])} ({ultimoEvento[3]}), quando a tarifa B1{" "}
-      {verboVariacao(ultimoEvento[4])}; o IPCA desde a mudança anterior ({mesAno(`${ultimoEvento[6]}-01`)} a {mesAno(`${ultimoEvento[7]}-01`)}) foi {pct(ultimoEvento[5], 2)}.
+      {verboVariacao(ultimoEvento[4])}; o IPCA desde a mudança anterior ({mesAno(`${ultimoEvento[6]}-01`)} a {mesAno(`${ultimoEvento[7]}-01`)}) foi {pct(ultimoEvento[5], 2)}
+      {ultimoEvento[2].slice(0, 7) > ultimoEvento[7]
+        ? `, e o IPCA de ${mesAno(`${ultimoEvento[2].slice(0, 7)}-01`)}, mês da mudança, não consta nos dados: vale o último índice publicado, de ${mesAno(`${ultimoEvento[7]}-01`)}`
+        : ""}
+      .
     </>
   ) : (
     "Nenhuma mudança de tarifa no arquivo."
@@ -239,7 +262,7 @@ export default function ContaReajustesPage() {
             <PainelEvidencia
               id="reajustes"
               pergunta="A tarifa subiu mais que a inflação?"
-              subtitulo="Variação da tarifa B1 residencial de aplicação e IPCA no mesmo período · %"
+              subtitulo="Variação da tarifa B1 residencial entre duas datas, contra o IPCA do mesmo período · %"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -260,20 +283,20 @@ export default function ContaReajustesPage() {
                   ultimos={reaj.ultimos}
                   dataReferencia={ref}
                   fonte={FONTE_TARIFAS}
-                  destaque={
-                    <div className="max-w-md border-t border-linha pt-4">
-                      <Numero
-                        variante="faixa"
-                        rotulo="Variação mediana da tarifa B1 em 12 meses"
-                        natureza="CALCULADO"
-                        valor={janela12?.mediana_pct ?? null}
-                        formato="pct"
-                        casas={2}
-                        evidencia={reaj.evidencia}
-                        motivoAusencia="Sem IPCA ou sem tarifa nas duas datas da janela."
-                        nota={janela12 ? `${janela12.n} distribuidoras. IPCA no mesmo período: ${pct(janela12.ipca_pct, 2)}.` : undefined}
-                        endereco={`${ROTA_REAJUSTES}#reajustes`}
-                      />
+                  info={info}
+                  evidencia={comProcedimentoExterno(reaj.evidencia)}
+                  endereco={`${ROTA_REAJUSTES}#reajustes`}
+                  aviso={
+                    <div className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao" data-bloco="efeito-medio">
+                      <p className="rotulo text-mineral">Efeito médio do processo tarifário: não publicado</p>
+                      <p className="mt-1 leading-relaxed">
+                        O efeito médio de cada processo tarifário (todas as classes) e o calendário dos processos não estão no portal de dados abertos da ANEEL, e os endereços da ANEEL que os publicam recusaram o
+                        acesso do observatório{dataEfeitoMedio ? ` em ${dataEfeitoMedio}` : ""}. Este painel mostra a variação da tarifa B1 residencial entre duas datas, que é outra medida; nenhum valor de reserva
+                        foi usado no lugar.
+                      </p>
+                      <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                        Registro da coleta: {reaj.efeito_medio.motivo}
+                      </p>
                     </div>
                   }
                 />
@@ -287,16 +310,6 @@ export default function ContaReajustesPage() {
                   unidade="% de variação nominal; variação real na tabela"
                 />
                 <NotasDoPainel oQueMudou={oQueMudouReajustes} comoInterpretar={comoInterpretarReajustes} naoConcluir={naoConcluirReajustes} />
-                <div className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-                  <p className="rotulo text-mineral">Efeito médio do processo tarifário: não publicado</p>
-                  <p className="mt-1 leading-relaxed">
-                    O efeito médio de cada processo tarifário (todas as classes) e o calendário dos processos não estão no portal de dados abertos da ANEEL, e os endereços da ANEEL que os publicam recusaram o
-                    acesso do observatório{dataEfeitoMedio ? ` em ${dataEfeitoMedio}` : ""}. Este painel mostra a variação da tarifa B1 residencial, que é outra medida.
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
-                    Registro da coleta: {reaj.efeito_medio.motivo}
-                  </p>
-                </div>
                 <Auditoria titulo="Incorporações e conferência do IPCA">
                   <ul className="space-y-2 text-sm text-carvao-muted">
                     {g.incorporacoes.map((i) => (
@@ -361,7 +374,7 @@ export default function ContaReajustesPage() {
                       formato="reais"
                       casas={5}
                       unidade="R$/kWh"
-                      evidencia={band.evidencia}
+                      evidencia={comProcedimentoExterno(band.evidencia)}
                       nota={adicionalVigente !== null ? `${num(adicionalVigente, 2)} R$/MWh no arquivo da ANEEL, dividido por 1000.` : undefined}
                       endereco={`${ROTA_REAJUSTES}#bandeiras`}
                     />
@@ -427,6 +440,7 @@ export default function ContaReajustesPage() {
                   </div>
                   <ContaSobDemanda chaveUrl="band" rotulo="a tabela mês a mês das bandeiras" detalhe={`${band.acionamento.length} meses`}>
                     <TabelaInterativa
+                      iniciarAberta
                       titulo="Bandeira acionada por mês"
                       colunas={COLUNAS_BANDEIRAS}
                       linhas={band.acionamento.map((a) => ({
@@ -501,8 +515,9 @@ export default function ContaReajustesPage() {
                       formato="reais"
                       casas={1}
                       unidade="bilhões"
-                      evidencia={sub.evidencia}
+                      evidencia={comProcedimentoExterno(sub.evidencia)}
                       motivoAusencia="Sem ano completo publicado."
+                      nota="Valor homologado para repasse às distribuidoras, não desembolso realizado."
                       endereco={`${ROTA_REAJUSTES}#subsidios`}
                     />
                     <div className="border-t border-linha pt-4">
@@ -513,28 +528,30 @@ export default function ContaReajustesPage() {
                         valor={cde?.evidencia?.valor_calculo ?? null}
                         formato="pct"
                         casas={1}
-                        evidencia={cde?.evidencia ?? null}
+                        evidencia={comProcedimentoExterno(cde?.evidencia ?? null)}
                         motivoAusencia="Orçamento não publicado."
-                        nota="Orçamento aprovado ou previsto pela ANEEL, não execução."
+                        nota={notaDasQuotas ?? "Orçamento aprovado ou previsto pela ANEEL, não execução."}
                         endereco={`${ROTA_REAJUSTES}#subsidios`}
                       />
                     </div>
                   </div>
                 </div>
-                <GraficoBarras
+                <ContaBarrasReais
                   titulo="Subsídios tarifários homologados por categoria e ano (repasses da CDE às distribuidoras)"
-                  dados={linhasSub}
-                  chaveCategoria="ano"
-                  chaveRotulo="rotulo"
+                  linhas={linhasSub}
+                  chaves={["soma", "total_publicado", ...catsSub]}
                   series={catsSub.map((c) => ({
                     id: c,
                     rotulo: c,
                     cor: corSubsidio(c),
                   }))}
-                  empilhado
+                  fatores={fatoresReais}
+                  base={baseRotulo}
                   unidade="R$ bi"
                   casas={2}
                   altura={360}
+                  chaveCategoria="ano"
+                  chaveRotulo="rotulo"
                 />
                 <dl className="grid gap-3 text-sm sm:grid-cols-2">
                   {sub.categorias.map((c) => (
@@ -549,22 +566,45 @@ export default function ContaReajustesPage() {
                 </dl>
                 {cde && (
                   <SecaoDoPainel id="orcamento-cde" titulo={`Como o orçamento anual da CDE se divide, de ${cde.anos[0]} a ${cde.ultimo_ano}?`} lead={cde.natureza_valores.replace(/^./, (c) => c.toUpperCase())}>
-                    <GraficoBarras
+                    <ContaBarrasReais
                       titulo={`Orçamento anual da CDE por grupo de despesa, ${cde.anos[0]} a ${cde.ultimo_ano} (aprovado ou previsto pela ANEEL)`}
-                      dados={linhasCdeAno}
-                      chaveCategoria="ano"
+                      linhas={linhasCdeAno}
+                      chaves={["despesa", "receita", ...GRUPOS_DESPESA_CDE, ...GRUPOS_RECEITA_CDE]}
                       series={GRUPOS_DESPESA_CDE.map((id) => ({
                         id,
                         rotulo: rotuloGrupoCde.get(id) ?? id,
                         cor: COR_GRUPO_CDE[id],
                       }))}
-                      empilhado
+                      fatores={fatoresReais}
+                      base={baseRotulo}
                       unidade="R$ bi"
                       casas={2}
                       altura={340}
+                      chaveCategoria="ano"
                     />
+                    {residualQuotas && (
+                      <div className="space-y-3 border-t border-linha pt-4" data-bloco="quotas">
+                        <h3 className="ed-h3 font-serif text-carvao">Quanto das receitas vem das quotas, ano a ano?</h3>
+                        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-nota="quotas-residual">
+                          {residualQuotas}
+                        </p>
+                        <GraficoLinhas
+                          titulo={`Participação das quotas nas receitas do orçamento da CDE, ${cde.anos[0]} a ${cde.ultimo_ano} (aprovado ou previsto pela ANEEL)`}
+                          dados={serieQuotas(cde)}
+                          chaveX="ano"
+                          formatoX="texto"
+                          series={[{ id: "pct", rotulo: "Quotas nas receitas", cor: "var(--cor-energia)", espessura: 2.5 }]}
+                          unidade="%"
+                          casas={1}
+                          zeroNoEixo
+                          marcos={[{ x: cde.ultimo_ano, rotulo: "previsto" }]}
+                          altura={240}
+                        />
+                      </div>
+                    )}
                     <ContaSobDemanda chaveUrl="cde" rotulo="a tabela do orçamento da CDE por ano" detalhe={`${linhasCdeAno.length} anos, exportável`}>
                       <TabelaInterativa
+                        iniciarAberta
                         titulo="Orçamento da CDE por ano: despesas, receitas, quotas e Tarifa Social"
                         colunas={[
                           { id: "ano", rotulo: "Ano", tipo: "texto" },
@@ -655,12 +695,13 @@ export default function ContaReajustesPage() {
                       homologadas ficam fora)
                     </>
                   }
-                  unidade="R$ bilhões nominais"
+                  unidade={`R$ bilhões, nominais ou em reais de ${baseRotulo ?? "mês-base sem IPCA"} (a alternância está nos gráficos)`}
                 />
                 <NotasDoPainel oQueMudou={mudancaSubsidios(sub)} comoInterpretar={comoInterpretarSubsidios} naoConcluir={naoConcluirSubsidios} />
                 <div data-nivel="analisar" className="border-t border-linha pt-6">
                   <ContaSobDemanda chaveUrl="sub" rotulo="os subsídios por distribuidora" detalhe={`${linhasSubDist.length} distribuidoras, exportável`}>
                     <TabelaInterativa
+                      iniciarAberta
                       titulo={`Subsídios tarifários por distribuidora em ${sub.ultimo_ano_completo ?? "último ano completo"}`}
                       colunas={COLUNAS_SUB_DIST}
                       linhas={linhasSubDist}

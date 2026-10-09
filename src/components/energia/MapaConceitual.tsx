@@ -11,9 +11,10 @@ import type { IdNo, TipoLigacao } from "@/lib/energia/mapa";
  * explicação ao lado. Os elos estão em quatro faixas (caminho físico, coordenação
  * da operação, relações econômicas e experiência das pessoas): o nome de cada faixa
  * fica ao lado dos seus elos e no painel do elo escolhido. O desenho é decorativo
- * para leitor de tela (aria-hidden): o conteúdo equivalente está nos botões, no
- * painel de detalhe e na versão em texto que a página publica junto. No celular a
- * página mostra só a versão em texto; este componente aparece a partir de md.
+ * para leitor de tela (aria-hidden): o conteúdo equivalente está nos botões e no
+ * painel de detalhe. As setas, Home e End percorrem os elos na ordem de leitura. No
+ * celular a página mostra o mapa vertical (a mesma informação, de cima para baixo);
+ * este componente aparece a partir de md.
  */
 
 export type NoDiagrama = { id: IdNo; titulo: string; curto: string; faixa: string; pos: { x: number; y: number }; detalhe: ReactNode };
@@ -78,7 +79,20 @@ export function MapaConceitual({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-      <div role="group" aria-label={rotulo}>
+      <div
+        role="group"
+        aria-label={rotulo}
+        onKeyDown={(e) => {
+          // as setas percorrem os sete elos na ordem de leitura (o foco no elo já o escolhe); Tab continua passando por todos
+          const i = nos.findIndex((n) => `mapa-no-${n.id}` === (e.target as HTMLElement).id);
+          if (i < 0) return;
+          const prox =
+            e.key === "ArrowRight" || e.key === "ArrowDown" ? (i + 1) % nos.length : e.key === "ArrowLeft" || e.key === "ArrowUp" ? (i + nos.length - 1) % nos.length : e.key === "Home" ? 0 : e.key === "End" ? nos.length - 1 : -1;
+          if (prox < 0) return;
+          e.preventDefault();
+          document.getElementById(`mapa-no-${nos[prox].id}`)?.focus();
+        }}
+      >
         <div className="relative w-full" style={{ aspectRatio: `${LARGURA} / ${ALTURA}` }}>
           <svg viewBox={`0 0 ${LARGURA} ${ALTURA}`} className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
             <defs>
@@ -118,6 +132,7 @@ export function MapaConceitual({
             return (
               <button
                 key={n.id}
+                id={`mapa-no-${n.id}`}
                 type="button"
                 aria-pressed={sel}
                 aria-controls="mapa-conceitual-detalhe"

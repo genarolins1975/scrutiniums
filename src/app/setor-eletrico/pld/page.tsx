@@ -984,7 +984,7 @@ export default function PldPage() {
             ) : (
               <>
                 <PldAviso tipo="alerta">
-                  As passagens normativas conferidas (pld_detalhe.json) não estão nesta publicação: o diagrama abaixo mostra só as ligações do conteúdo editorial, com o estado de
+                  As passagens normativas conferidas não estão nesta publicação: o diagrama abaixo mostra só as ligações do conteúdo editorial, com o estado de
                   conferência de cada uma.
                 </PldAviso>
                 <PldFormacao nos={nos} ligacoes={Object.fromEntries(nos.map((n) => [n.id, n.relacaoSaida ? [{ de: n.id, para: n.relacaoSaida.para, tipo: n.relacaoSaida.tipo, texto: n.relacaoSaida.texto, estado: n.relacaoSaida.conferencia, bases: [], faltantes: [], baseTexto: n.relacaoSaida.fonte, origem: "conteudo" as const }] : []]))} />

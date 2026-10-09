@@ -2075,3 +2075,11 @@ export function textoSentidoNoDia(s: SentidoDoFluxoNoDia): string | null {
 export function intervaloSemanaOperativa(fim: string): { inicio: string; fim: string } {
   return { inicio: somaDias(fim.slice(0, 10), -6), fim: fim.slice(0, 10) };
 }
+
+/**
+ * Tira nome de arquivo de um texto de Entender: "o histórico horário inteiro está em pld_cmo_horario.csv" diz, em palavras, que o arquivo
+ * horário de CMO e PLD está entre os downloads do painel. Texto sem nome de arquivo volta igual.
+ */
+export function notaSemNomeDeArquivo(texto: string): string {
+  return texto.replace(/está em pld_cmo_horario\.csv/g, "está no arquivo horário de CMO e PLD (CSV, em Baixar os dados)").replace(/\b[\w-]+\.(?:csv|json|parquet)\b/g, "arquivo do painel");
+}

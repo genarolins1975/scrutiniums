@@ -206,6 +206,15 @@ export function limitesVigentes(g: Pick<GoldRegulacao, "limites_pld" | "data_ref
   };
 }
 
+/**
+ * Vigência em poucas palavras para a linha de contexto de um número: "vigência em 2026" quando vai de 1º de janeiro a 31 de dezembro
+ * do mesmo ano, e as duas datas quando o trecho é menor. As datas inteiras ficam na nota da faixa e na ficha do ato.
+ */
+export function textoVigenciaCurta(inicio: string, fim: string): string {
+  const anoCheio = inicio.slice(5) === "01-01" && fim.slice(5) === "12-31" && inicio.slice(0, 4) === fim.slice(0, 4);
+  return anoCheio ? `vigência em ${inicio.slice(0, 4)}` : `vigência de ${dataBR(inicio)} a ${dataBR(fim)}`;
+}
+
 export type MarcoDoAto = { chave: "publicacao" | "inicio" | "fim"; rotulo: string; data: string | null; ausencia?: string };
 
 /**

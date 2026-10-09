@@ -30,7 +30,7 @@ const ITENS_EMPRESAS = [
 
 /**
  * Faixa de páginas irmãs nas páginas filhas, com a atual marcada (na ficha de uma distribuidora, nenhuma). A abertura não leva a faixa:
- * mostra os mesmos destinos como capítulos depois da figura principal (EmpresasCapitulos), e o mesmo rótulo não aparece duas vezes.
+ * mostra os mesmos destinos como capítulos logo depois da busca (EmpresasCapitulos), e o mesmo rótulo não aparece duas vezes.
  */
 export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" }) {
   if (atual === "sintese") return null;
@@ -55,20 +55,23 @@ export type CapituloEmpresas = {
  * Capítulos da abertura: as quatro páginas do módulo, cada uma com o nome, a pergunta que responde, a resposta curta, um número com a
  * ficha de prova, o limite da leitura e o caminho para a página. Segue o desenho dos capítulos do sistema (nome, pergunta, link; a
  * página atual não entra), com a resposta no meio, porque a abertura responde às quatro perguntas antes de mandar o leitor adiante.
+ * Fica logo depois da busca, fora do painel (título de seção em h2 e uma pergunta por h3); dentro de um painel, `nivelTitulo={3}`.
  */
-export function EmpresasCapitulos({ itens }: { itens: CapituloEmpresas[] }) {
+export function EmpresasCapitulos({ itens, nivelTitulo = 2 }: { itens: CapituloEmpresas[]; nivelTitulo?: 2 | 3 }) {
+  const Titulo = nivelTitulo === 2 ? "h2" : "h3";
+  const TituloItem = nivelTitulo === 2 ? "h3" : "h4";
   return (
-    <nav aria-label="Capítulos de Empresas" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
-      <h3 className="ed-h3 font-serif text-carvao">Quatro caminhos, uma página para cada pergunta</h3>
+    <nav aria-label="Capítulos de Empresas" data-navegacao-local="capitulos" className="scroll-mt-28 pb-6" id="caminhos">
+      <Titulo className={`${nivelTitulo === 2 ? "ed-h2" : "ed-h3"} font-serif text-carvao`}>Quatro caminhos, uma página para cada pergunta</Titulo>
       <ol className="mt-4 grid gap-x-10 gap-y-10 md:grid-cols-2">
         {itens.map((c) => {
           const p = painel(c.id);
           return (
             <li key={c.id} id={`sintese-${c.id}`} aria-labelledby={`sintese-${c.id}-titulo`} className="flex min-w-0 scroll-mt-28 flex-col gap-2.5">
               <p className="rotulo text-mineral">{p.rotulo}</p>
-              <h4 id={`sintese-${c.id}-titulo`} className="ed-h3 font-serif text-carvao">
+              <TituloItem id={`sintese-${c.id}-titulo`} className="ed-h3 font-serif text-carvao">
                 {p.pergunta}
-              </h4>
+              </TituloItem>
               {c.resposta}
               {c.numero}
               <p className="text-xs leading-relaxed text-carvao-muted">{c.contexto}</p>

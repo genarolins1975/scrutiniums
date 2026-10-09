@@ -12,6 +12,7 @@ import type { Bandeiras } from "@/lib/energia/tipos-conta";
  */
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const NOMES_MES: Record<string, string> = { jan: "janeiro", fev: "fevereiro", mar: "março", abr: "abril", mai: "maio", jun: "junho", jul: "julho", ago: "agosto", set: "setembro", out: "outubro", nov: "novembro", dez: "dezembro" };
 
 export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["acionamento"] }) {
   const grade = gradeBandeiras(acionamento);
@@ -33,18 +34,25 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
         </li>
       </ul>
       <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Bandeira acionada por mês e ano">
-        <table className="w-full min-w-[560px] border-separate border-spacing-0.5 text-xs tabular-nums">
+        <table className="w-full min-w-[300px] border-separate border-spacing-0.5 text-xs tabular-nums sm:min-w-[560px]">
           <caption className="sr-only">
             Bandeira tarifária acionada em cada mês, de {grade[0]?.ano} a {grade.at(-1)?.ano}, com o adicional em R$/MWh
           </caption>
           <thead>
             <tr>
-              <th scope="col" className="py-1 pr-2 text-left font-normal text-mineral">
+              <th scope="col" className="py-1 pr-1 text-left font-normal text-mineral sm:pr-2">
                 Ano
               </th>
               {MESES.map((m) => (
-                <th key={m} scope="col" className="px-0.5 py-1 text-center font-normal text-mineral">
-                  {m}
+                <th key={m} scope="col" className="px-0 py-1 text-center font-normal text-mineral sm:px-0.5">
+                  {/* celular: a inicial do mês cabe nas doze colunas sem rolar de lado; o nome inteiro fica para quem lê por voz */}
+                  <span aria-hidden="true" className="sm:hidden">
+                    {m[0].toUpperCase()}
+                  </span>
+                  <span aria-hidden="true" className="hidden sm:inline">
+                    {m}
+                  </span>
+                  <span className="sr-only">{NOMES_MES[m]}</span>
                 </th>
               ))}
             </tr>
@@ -52,7 +60,7 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
           <tbody>
             {grade.map((linha) => (
               <tr key={linha.ano}>
-                <th scope="row" className="py-0.5 pr-2 text-left font-normal text-carvao">
+                <th scope="row" className="py-0.5 pr-1 text-left font-normal text-carvao sm:pr-2">
                   {linha.ano}
                 </th>
                 {linha.meses.map((c, i) =>

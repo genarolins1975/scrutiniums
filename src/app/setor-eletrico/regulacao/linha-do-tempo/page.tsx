@@ -101,9 +101,9 @@ export default function LinhaDoTempoPage() {
           rotulo="Regulação"
           siglas={["PLD", "REN", "REH", "DOU", "CDE", "PRODIST", "ANEEL", "MME"]}
           titulo={perguntaPainel("p045")}
-          lead="Os atos e as leis que mudam a leitura dos painéis do observatório, cada um com a data de publicação separada da data em que passou a valer."
+          lead="Os atos e as leis que mudam a leitura dos painéis, cada um com a publicação separada da vigência."
           recorte={`${eventos.length} eventos · vigências de ${vigencias.length ? dataBR(vigencias[0]) : "sem eventos"} a ${vigencias.length ? dataBR(vigencias[vigencias.length - 1]) : "sem eventos"} · seleção conferida em ${dataBR(T.conferido_em)}`}
-          fonte="ANEEL, Congresso Nacional, Presidência da República e MME, Ministério de Minas e Energia (atos lidos no texto)"
+          fonte="ANEEL, Congresso Nacional, Presidência da República e Ministério de Minas e Energia (MME)"
           referencia={
             <>
               Atos lidos no texto e conferidos em {dataBR(T.conferido_em)}; bandeiras do conjunto de dados da ANEEL; processado em {carimbo(g.gerado_em)}.

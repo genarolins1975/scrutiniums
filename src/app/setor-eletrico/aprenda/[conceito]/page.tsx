@@ -47,7 +47,7 @@ export function generateMetadata({ params }: { params: { conceito: string } }): 
  */
 function Campo({ rotulo, id, children, largo = false, lugar = "" }: { rotulo: string; id?: string; children: ReactNode; largo?: boolean; lugar?: string }) {
   return (
-    <section id={id} className={`scroll-mt-6 border-t border-linha py-6 ${largo ? "lg:col-span-2" : ""} ${lugar}`}>
+    <section id={id} className={`min-w-0 scroll-mt-6 border-t border-linha py-6 ${largo ? "lg:col-span-2" : ""} ${lugar}`}>
       <h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>
       <div className="mt-2 max-w-prose2 leading-relaxed text-carvao">{children}</div>
     </section>
@@ -231,7 +231,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           </div>
         ) : null}
 
-        <div className="mt-6 grid gap-x-12 lg:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-x-12 lg:grid-cols-2">
           {conferido && (
             <>
               <Campo rotulo="Em uma frase" lugar="lg:col-start-1 lg:row-start-1">
