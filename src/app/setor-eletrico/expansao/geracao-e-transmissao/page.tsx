@@ -29,7 +29,6 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
-import { textoComDatas } from "@/lib/texto-datas";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_CONTRATOS_ANO,

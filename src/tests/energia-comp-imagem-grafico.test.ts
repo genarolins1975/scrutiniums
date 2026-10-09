@@ -65,7 +65,7 @@ describe("nomeArquivoImagem", () => {
 
 describe("quebrarTexto", () => {
   const medir = (t: string) => t.length * 10; // 10 px por caractere
-  const op = { medir: (t: string, _tam: number, _neg: boolean) => medir(t) };
+  const op = { medir: (t: string) => medir(t) };
 
   it("quebra por palavra, cada linha cabe na largura e nenhuma palavra se perde", () => {
     const texto = "Fonte: ONS, ENA Diário por Subsistema; ENA Diário por REE";
@@ -410,9 +410,9 @@ describe("montarSvgImagem", () => {
   });
 
   it("usa o medidor recebido (a medida real do canvas) para decidir onde as linhas quebram", () => {
-    const larga = (_t: string) => 50; // cada caractere mede 50 px: tudo quebra a cada poucos caracteres
+    const larga = () => 50; // cada caractere mede 50 px: tudo quebra a cada poucos caracteres
     const normal = montarSvgImagem(entrada(760, { fonte: "Fonte: uma frase curta de teste." }), { tokens: TOKENS });
-    const apertada = montarSvgImagem(entrada(760, { fonte: "Fonte: uma frase curta de teste." }), { tokens: TOKENS, medir: (t) => larga(t) * t.length });
+    const apertada = montarSvgImagem(entrada(760, { fonte: "Fonte: uma frase curta de teste." }), { tokens: TOKENS, medir: (t) => larga() * t.length });
     expect(apertada.altura).toBeGreaterThan(normal.altura);
   });
 });

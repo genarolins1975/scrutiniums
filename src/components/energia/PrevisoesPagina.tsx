@@ -1,6 +1,5 @@
 import { datasLegiveis } from "@/lib/energia/formato";
 import type { ReactNode } from "react";
-import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
