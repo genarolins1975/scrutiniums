@@ -906,17 +906,24 @@ export function respostaClima(p: Pick<P027Pronto, "metricas" | "periodo_avaliaca
     m.mape_referencia_364d_pct === null
       ? ""
       : `; a referência ingênua (o mesmo dia da semana 364 dias antes) errou ${num(m.mape_referencia_364d_pct, 2)}%`;
-  const abaixo80 = m.cobertura_80_pct < 80;
-  const abaixo95 = m.cobertura_95_pct < 95;
-  const cobertura =
-    abaixo80 || abaixo95
-      ? ": abaixo do nominal, os intervalos são mais estreitos que a incerteza real"
-      : ", no nível nominal ou acima";
   return (
     `Fora da amostra (${plural(m.dias, "dia", "dias")} de ${dataBR(per.inicio)} a ${dataBR(per.fim)}, ${plural(m.origens, "origem mensal", "origens mensais")}), ` +
     `a decomposição por calendário, temperatura, sazonalidade e tendência errou em média ${num(m.mape_pct, 2)}% a carga diária ${DO_REGIAO[sm]}${ref}. ` +
-    `O intervalo de 80% cobriu ${num(m.cobertura_80_pct, 1)}% dos dias e o de 95%, ${num(m.cobertura_95_pct, 1)}%${cobertura}.`
+    `${textoCoberturaIntervalos(p, sm)}`
   );
+}
+
+/**
+ * Cobertura dos intervalos fora da amostra diante da nominal, em uma frase: os intervalos de 80% e de 95% só valem o que dizem se cobrem
+ * 80% e 95% dos dias. Abaixo disso, são mais estreitos que a incerteza observada. Vai junto de toda figura que desenha o intervalo,
+ * também em Entender. Vazia sem métricas fora da amostra para a região.
+ */
+export function textoCoberturaIntervalos(p: Pick<P027Pronto, "metricas">, sm: Regiao): string {
+  const m: MetricasModelo | undefined = p.metricas[sm];
+  if (!m) return "";
+  const abaixo = m.cobertura_80_pct < 80 || m.cobertura_95_pct < 95;
+  const cobertura = abaixo ? ": abaixo do nominal, os intervalos são mais estreitos que a incerteza real" : ", no nível nominal ou acima";
+  return `O intervalo de 80% cobriu ${num(m.cobertura_80_pct, 1)}% dos dias e o de 95%, ${num(m.cobertura_95_pct, 1)}%${cobertura}.`;
 }
 
 /** Defasagem da temperatura: a avaliação termina antes do último dia de carga quando a NASA POWER ainda não publicou. */
@@ -948,6 +955,8 @@ export type PartesDaDiferenca = {
   /** Parte da diferença que clima e calendário acompanham, e parte que o modelo não reproduz (null quando a diferença é nula). */
   proporcaoClima: number | null;
   proporcaoResto: number | null;
+  /** Parte que o modelo atribui a nível e tendência (as três proporções fecham a diferença, até o arredondamento das contribuições). */
+  proporcaoNivel: number | null;
 };
 
 /** As partes da diferença que o veredito e a faixa de métricas leem: uma só conta, sobre as contribuições publicadas. */
@@ -961,6 +970,7 @@ export function partesDaDiferenca(d: DecomposicaoA07): PartesDaDiferenca {
     residuo: d.residuo_log100,
     proporcaoClima: d.real_log100 === 0 ? null : clima / d.real_log100,
     proporcaoResto: d.real_log100 === 0 ? null : d.residuo_log100 / d.real_log100,
+    proporcaoNivel: d.real_log100 === 0 ? null : c.nivel_tendencia / d.real_log100,
   };
 }
 

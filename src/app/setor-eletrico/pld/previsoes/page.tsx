@@ -368,9 +368,11 @@ export default function PrevisoesPage() {
                 complementares={pub ? [{ rotulo: "PLD já publicado no corte", p: pub.proveniencia }] : []}
               >
                 <div className="space-y-6">
-                  <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
-                    {respostaP013(g)}
-                  </PrevisoesResposta>
+                  {!(comRodada && linhas.length > 0) && (
+                    <PrevisoesResposta id="p013" veredito={vereditoP013(g)}>
+                      {respostaP013(g)}
+                    </PrevisoesResposta>
+                  )}
                   {comRodada && linhas.length > 0 ? (
                     <PrevisoesAtual
                       linhas={linhas}
@@ -381,6 +383,11 @@ export default function PrevisoesPage() {
                       versao={versao}
                       endereco={enderecoPainel("p013")}
                       mediaDiaPaginaPld={mediaDiaPaginaPld}
+                      resposta={
+                        <PrevisoesResposta id="p013" veredito={vereditoP013(g)} depois>
+                          {respostaP013(g)}
+                        </PrevisoesResposta>
+                      }
                       recorte={recorte13}
                       notas={<NotasDoPainel oQueMudou={oQueMudou13} comoInterpretar={comoInterpretar13} naoConcluir={naoConcluir13} />}
                       aposPrincipal={

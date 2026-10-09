@@ -49,6 +49,7 @@ export function PrevisoesCapitulos({ pagina }: { pagina: "previsoes" | "modelos"
       itens={outros}
       atual=""
       variante="capitulos"
+      nivelTitulo={3}
       titulo={pagina === "modelos" ? "Outras perguntas sobre as previsões" : "Outras perguntas sobre os modelos"}
     />
   );
@@ -60,13 +61,7 @@ export function PrevisoesFaixaFichas({ atual, fichas }: { atual: string; fichas:
     { id: "registro", href: ROTA_MODELOS, rotulo: "Modelos" },
     ...fichas.map((f) => ({ id: slugModelo(f.codigo), href: rotaModelo(f.codigo), rotulo: f.codigo })),
   ];
-  // abaixo de 640 px o CSS da faixa pede duas páginas por linha (flex-basis de 50% menos 0,25 rem), mas o espaço de 1,5 rem entre colunas
-  // faz cada página ocupar uma linha inteira (seis linhas, mais de 260 px antes do título); com 0,25 rem de espaço, cabem duas por linha
-  return (
-    <div className="max-sm:[&_ol]:gap-x-1">
-      <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />
-    </div>
-  );
+  return <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />;
 }
 
 /**
@@ -104,9 +99,22 @@ export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
  * Resposta curta do painel em duas camadas (seção 7.2, item 2): o veredito em palavras simples fica à vista e a resposta completa,
  * derivada dos mesmos campos, fica em Analisar e Auditar. `vivo` anuncia a troca quando a resposta muda com a escolha do leitor.
  */
-export function PrevisoesResposta({ id, veredito, children, vivo = false }: { id: IdPainelPrevisoes; veredito: string; children: ReactNode; vivo?: boolean }) {
+export function PrevisoesResposta({
+  id,
+  veredito,
+  children,
+  vivo = false,
+  depois = false,
+}: {
+  id: IdPainelPrevisoes;
+  veredito: string;
+  children: ReactNode;
+  vivo?: boolean;
+  /** Mantém a resposta depois da figura principal, quando a faixa de métricas já traz os mesmos números (RespostaCurta `depois`). */
+  depois?: boolean;
+}) {
   return (
-    <RespostaCurta id={id} veredito={veredito} vivo={vivo} tamanho="base">
+    <RespostaCurta id={id} veredito={veredito} vivo={vivo} tamanho="base" depois={depois}>
       {children}
     </RespostaCurta>
   );

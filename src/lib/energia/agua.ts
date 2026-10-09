@@ -411,6 +411,33 @@ export function recorteEscolhido<E extends { id: string; tipo: TipoRecorte }>(li
   return lista.find((e) => e.tipo === tipo && e.id === id) ?? lista.find((e) => e.id === padrao) ?? null;
 }
 
+/**
+ * Variação da EAR máxima nos anos da base (do menor ao maior valor) acima da qual a posição frente à faixa em % deixa de ser dita: a
+ * faixa em % mistura capacidades de tamanhos muito diferentes. Abaixo disso a posição continua dita, com o aviso de que a capacidade mudou.
+ */
+export const LIMITE_VARIACAO_CAPACIDADE = 0.25;
+
+type CapacidadeNaBase = Pick<EntidadeEar, "ear_max_base_min_mwmes" | "ear_max_base_max_mwmes" | "capacidade_mudou_na_base" | "sem_armazenamento">;
+
+/** Menor e maior EAR máxima da base e a razão entre elas; null sem base ou sem armazenamento. */
+export function amplitudeCapacidade(e: CapacidadeNaBase): { min: number; max: number; razao: number } | null {
+  const min = e.ear_max_base_min_mwmes;
+  const max = e.ear_max_base_max_mwmes;
+  if (e.sem_armazenamento || min === null || max === null || min <= 0) return null;
+  return { min, max, razao: max / min };
+}
+
+/** A EAR máxima mudou na base além do limite: a faixa em % compara capacidades de tamanhos muito diferentes. */
+export function capacidadeMuitoAlterada(e: CapacidadeNaBase): boolean {
+  const a = amplitudeCapacidade(e);
+  return !!a && e.capacidade_mudou_na_base && a.razao - 1 > LIMITE_VARIACAO_CAPACIDADE;
+}
+
+/** "5,7 vezes" quando a EAR máxima mais que dobrou na base; senão a variação em % ("28%"). */
+export function textoAmplitude(razao: number): string {
+  return razao >= 2 ? `${num(razao, 1)} vezes` : `${num((razao - 1) * 100, 0)}%`;
+}
+
 export function respostaArmazenamento(e: EntidadeEar): string {
   const quem = artigoRecorte(e.tipo, e.nome);
   if (e.dia === null || e.ear_mwmes === null) return `${cap(quem)} não tem EAR publicada no dia de referência: o valor fica ausente, nunca zero.`;
@@ -418,8 +445,12 @@ export function respostaArmazenamento(e: EntidadeEar): string {
     return `${cap(quem)} não tem armazenamento: a EAR máxima é zero (só usinas a fio d'água), então percentual, faixa sazonal e percentil não se aplicam. A EAR publicada em ${dataBR(e.dia)} é ${mwmes(e.ear_mwmes)} MWmês.`;
   }
   const partes: string[] = [];
+  const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
   let p = `Em ${dataBR(e.dia)}, ${quem} guardava ${mwmes(e.ear_mwmes)} MWmês, ${pct(e.ear_pct, 1)} da EAR máxima de ${mwmes(e.ear_max_mwmes)} MWmês`;
-  if (e.faixa && e.p10 !== null && e.p90 !== null) {
+  if (amp && e.p10_mwmes !== null && e.p90_mwmes !== null && e.p10 !== null && e.p90 !== null) {
+    // capacidade de tamanhos muito diferentes na base: a posição em % não é dita; a faixa vai em MWmês e em %, para o leitor ler
+    p += `. A EAR máxima variou ${textoAmplitude(amp.razao)} nos anos da base (de ${mwmes(amp.min)} a ${mwmes(amp.max)} MWmês): a faixa em % compara capacidades de tamanhos diferentes, e a posição frente a ela não é dita. Em MWmês, a faixa do mesmo dia em ${periodoBase(e.periodo_base)} vai de ${mwmes(e.p10_mwmes)} (10º percentil) a ${mwmes(e.p90_mwmes)} (90º percentil), com mediana de ${mwmes(e.p50_mwmes)}; em %, de ${pct(e.p10, 1)} a ${pct(e.p90, 1)}.`;
+  } else if (e.faixa && e.p10 !== null && e.p90 !== null) {
     p += `, ${ROTULO_FAIXA[e.faixa]} da data (10º a 90º percentil do mesmo dia em ${periodoBase(e.periodo_base)}: ${pct(e.p10, 1)} a ${pct(e.p90, 1)}; percentil ${num(e.percentil_na_data, 1)}).`;
   } else {
     p += `; com ${plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos, não há faixa sazonal nem percentil.`;
@@ -430,7 +461,7 @@ export function respostaArmazenamento(e: EntidadeEar): string {
       `Em 30 dias, ${sinal(e.variacao_30d_mwmes, casasMwmes(e.variacao_30d_mwmes))} MWmês${e.variacao_30d_pp !== null ? ` (${sinal(e.variacao_30d_pp, 1)} p.p.)` : ""}.`,
     );
   }
-  if (e.capacidade_mudou_na_base) {
+  if (e.capacidade_mudou_na_base && !amp) {
     partes.push(
       `A EAR máxima mudou mais de 5% entre os anos da base (de ${mwmes(e.ear_max_base_min_mwmes)} a ${mwmes(e.ear_max_base_max_mwmes)} MWmês): a faixa em % compara capacidades diferentes, e a faixa em MWmês está na tabela.`,
     );
@@ -442,14 +473,16 @@ export function respostaArmazenamento(e: EntidadeEar): string {
 /**
  * Veredito do P017 em palavras simples: quanto da energia que os reservatórios comportam estava guardada no dia, a posição
  * diante da faixa usual da data e a variação em 30 dias. Os percentis, a EAR em MWmês, a EAR máxima e a mudança de perímetro
- * ficam em respostaArmazenamento.
+ * ficam em respostaArmazenamento. Quando a capacidade variou além do limite na base, a posição não é dita e a amplitude entra no lugar.
  */
 export function vereditoArmazenamento(e: EntidadeEar): string {
   const quem = artigoRecorte(e.tipo, e.nome);
   if (e.dia === null || e.ear_mwmes === null) return `${cap(quem)} não tem EAR publicada no dia de referência: o valor fica ausente, nunca zero.`;
   if (e.sem_armazenamento) return `${cap(quem)} não tem armazenamento, só usinas a fio d'água: percentual, faixa usual e percentil não se aplicam.`;
+  const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
   let t = `Em ${dataBR(e.dia)}, ${quem} guardava ${pct(e.ear_pct, 1)} da energia que os reservatórios comportam`;
-  if (e.faixa && e.p10 !== null && e.p90 !== null) t += `, ${ROTULO_FAIXA[e.faixa]} da data`;
+  if (amp) t += `; a capacidade variou ${textoAmplitude(amp.razao)} na base, e a posição frente à faixa usual não é dita`;
+  else if (e.faixa && e.p10 !== null && e.p90 !== null) t += `, ${ROTULO_FAIXA[e.faixa]} da data`;
   else t += `; com ${plural(e.anos_na_base, "ano", "anos")} na base, não há faixa usual`;
   if (e.variacao_30d_mwmes !== null) {
     t += `; em 30 dias, a energia armazenada ${e.variacao_30d_mwmes < 0 ? "caiu" : e.variacao_30d_mwmes > 0 ? "subiu" : "ficou igual"}${e.variacao_30d_mwmes === 0 ? "" : ` ${mwmes(Math.abs(e.variacao_30d_mwmes))} MWmês`}`;
@@ -457,7 +490,7 @@ export function vereditoArmazenamento(e: EntidadeEar): string {
     t += `; em 30 dias, a EAR ${e.variacao_30d_pp < 0 ? "caiu" : e.variacao_30d_pp > 0 ? "subiu" : "ficou igual"}${e.variacao_30d_pp === 0 ? "" : ` ${num(Math.abs(e.variacao_30d_pp), 1)} p.p.`}`;
   }
   t += ".";
-  if (e.capacidade_mudou_na_base) t += " A faixa compara capacidades que mudaram ao longo dos anos.";
+  if (e.capacidade_mudou_na_base && !amp) t += " A faixa compara capacidades que mudaram ao longo dos anos.";
   return t;
 }
 
@@ -465,27 +498,54 @@ export const COLUNAS_ARMAZENAMENTO: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
   { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
   { id: "dia", rotulo: "Dia", tipo: "data" },
-  { id: "ear_mwmes", rotulo: "EAR", tipo: "numero", unidade: "MWmês", casas: 1 },
+  { id: "ear_mwmes", rotulo: "EAR do dia", tipo: "numero", unidade: "MWmês", casas: 1 },
   { id: "ear_max_mwmes", rotulo: "EAR máxima", tipo: "numero", unidade: "MWmês", casas: 1 },
-  { id: "ear_pct", rotulo: "EAR", tipo: "percentual", casas: 2 },
+  { id: "ear_pct", rotulo: "EAR do dia", tipo: "percentual", casas: 2 },
   { id: "p10", rotulo: "10º percentil da data", tipo: "percentual", casas: 2 },
   { id: "p50", rotulo: "Mediana da data", tipo: "percentual", casas: 2 },
   { id: "p90", rotulo: "90º percentil da data", tipo: "percentual", casas: 2 },
   { id: "faixa", rotulo: "Posição", tipo: "texto", categorica: true },
   { id: "percentil_na_data", rotulo: "Percentil na data", tipo: "numero", casas: 1 },
   { id: "p10_mwmes", rotulo: "10º percentil", tipo: "numero", unidade: "MWmês", casas: 1 },
-  { id: "p50_mwmes", rotulo: "Mediana", tipo: "numero", unidade: "MWmês", casas: 1 },
+  { id: "p50_mwmes", rotulo: "Mediana da data", tipo: "numero", unidade: "MWmês", casas: 1 },
   { id: "p90_mwmes", rotulo: "90º percentil", tipo: "numero", unidade: "MWmês", casas: 1 },
   { id: "variacao_30d_mwmes", rotulo: "Variação em 30 dias", tipo: "numero", unidade: "MWmês", casas: 1 },
   { id: "variacao_30d_pp", rotulo: "Variação em 30 dias", tipo: "numero", unidade: "p.p.", casas: 2 },
   { id: "anos_na_base", rotulo: "Anos na base", tipo: "numero", casas: 0 },
   { id: "periodo_base", rotulo: "Período da base", tipo: "texto" },
+  { id: "ear_max_base_min_mwmes", rotulo: "Menor EAR máxima na base", tipo: "numero", unidade: "MWmês", casas: 1 },
+  { id: "ear_max_base_max_mwmes", rotulo: "Maior EAR máxima na base", tipo: "numero", unidade: "MWmês", casas: 1 },
   { id: "capacidade_mudou_na_base", rotulo: "Capacidade mudou na base", tipo: "texto", categorica: true },
   { id: "nome", rotulo: "Nome no ONS", tipo: "texto" },
 ];
 
-const ROTULO_POSICAO = (e: { faixa: FaixaUsual | null; sem_armazenamento?: boolean; anos_na_base: number }) =>
-  e.sem_armazenamento ? "não se aplica (sem armazenamento)" : e.faixa ? ROTULO_FAIXA[e.faixa] : `sem faixa (${plural(e.anos_na_base, "ano", "anos")} na base)`;
+/** Unidade da figura principal da abertura: % da EAR máxima do recorte ou energia em MWmês. */
+export type UnidadeEar = "pct" | "mwmes";
+export const OPCOES_UNIDADE_EAR: { id: UnidadeEar; rotulo: string }[] = [
+  { id: "pct", rotulo: "% da EAR máxima" },
+  { id: "mwmes", rotulo: "MWmês" },
+];
+
+const COLUNAS_ESSENCIAIS_EAR: Record<UnidadeEar, readonly string[]> = {
+  pct: ["rotulo", "ear_pct", "p50"],
+  mwmes: ["rotulo", "ear_mwmes", "p50_mwmes"],
+};
+
+/**
+ * Colunas da tabela equivalente na unidade da figura: em Entender, o recorte e os dois valores que o gráfico mostra (a EAR do dia e a
+ * mediana da data, na mesma unidade), que cabem em 360 px sem esconder número; as demais passam a Analisar. O arquivo leva todas.
+ */
+export function colunasArmazenamento(unidade: UnidadeEar): ColunaTabela[] {
+  const essenciais = COLUNAS_ESSENCIAIS_EAR[unidade];
+  return COLUNAS_ARMAZENAMENTO.map((c) => (essenciais.includes(c.id) ? c : { ...c, nivel: "analisar" as const }));
+}
+
+const ROTULO_POSICAO = (e: EntidadeEar) => {
+  if (e.sem_armazenamento) return "não se aplica (sem armazenamento)";
+  if (!e.faixa) return `sem faixa (${plural(e.anos_na_base, "ano", "anos")} na base)`;
+  const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
+  return amp ? `${ROTULO_FAIXA[e.faixa]}, em % (a capacidade variou ${textoAmplitude(amp.razao)} na base)` : ROTULO_FAIXA[e.faixa];
+};
 
 /** As linhas da tabela equivalente e do arquivo exportado (as mesmas do gráfico de pontos). */
 export function linhasArmazenamento(lista: readonly EntidadeEar[]): LinhaTabela[] {
@@ -509,25 +569,37 @@ export function linhasArmazenamento(lista: readonly EntidadeEar[]): LinhaTabela[
     variacao_30d_pp: e.variacao_30d_pp,
     anos_na_base: e.anos_na_base,
     periodo_base: e.periodo_base ? periodoBase(e.periodo_base) : null,
+    ear_max_base_min_mwmes: e.ear_max_base_min_mwmes,
+    ear_max_base_max_mwmes: e.ear_max_base_max_mwmes,
     capacidade_mudou_na_base: e.sem_armazenamento ? "não se aplica" : e.capacidade_mudou_na_base ? "sim" : "não",
     nome: e.nome,
   }));
 }
 
-/** Pontos pareados: EAR do dia contra a mediana da mesma data (recortes sem armazenamento ficam fora do gráfico e na tabela). */
-export function itensPontosArmazenamento(lista: readonly EntidadeEar[]) {
+/**
+ * Pontos pareados: EAR do dia contra a mediana da mesma data, na unidade escolhida (recortes sem armazenamento ficam fora do gráfico e
+ * na tabela). A dica de cada linha traz a faixa da data na mesma unidade; quando a capacidade variou além do limite, ela diz que a posição não é dita.
+ */
+export function itensPontosArmazenamento(lista: readonly EntidadeEar[], unidade: UnidadeEar = "pct") {
+  const emMw = unidade === "mwmes";
+  const fmt = (v: number | null) => (emMw ? `${mwmes(v)} MWmês` : pct(v, 1));
   return lista
     .filter((e) => !e.sem_armazenamento)
-    .map((e) => ({
-      id: e.id,
-      rotulo: e.rotulo,
-      valor: e.ear_pct,
-      referencia: e.p50,
-      detalhe:
-        e.faixa && e.p10 !== null && e.p90 !== null
-          ? `faixa da data ${pct(e.p10, 1)} a ${pct(e.p90, 1)} (${periodoBase(e.periodo_base)}); ${ROTULO_FAIXA[e.faixa]}`
-          : `sem faixa: ${plural(e.anos_na_base, "ano", "anos")} na base`,
-    }));
+    .map((e) => {
+      const [inf, sup] = emMw ? [e.p10_mwmes, e.p90_mwmes] : [e.p10, e.p90];
+      const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
+      const detalhe =
+        e.faixa && inf !== null && sup !== null
+          ? `faixa da data ${fmt(inf)} a ${fmt(sup)} (${periodoBase(e.periodo_base)}); ${amp ? `a capacidade variou ${textoAmplitude(amp.razao)} na base, e a posição não é dita` : emMw ? "posição em %: " + ROTULO_FAIXA[e.faixa] : ROTULO_FAIXA[e.faixa]}`
+          : `sem faixa: ${plural(e.anos_na_base, "ano", "anos")} na base`;
+      return {
+        id: e.id,
+        rotulo: e.rotulo,
+        valor: emMw ? e.ear_mwmes : e.ear_pct,
+        referencia: emMw ? e.p50_mwmes : e.p50,
+        detalhe,
+      };
+    });
 }
 
 export type PontoSemanal = { d: string; v: number | null; p10: number | null; p90: number | null };
@@ -2225,6 +2297,114 @@ export function textoForaDosPontos(lista: readonly EntidadeEar[]): string | null
   const fora = lista.filter((e) => e.sem_armazenamento);
   if (!fora.length) return null;
   return `Fora do gráfico, por não terem armazenamento (EAR máxima zero: percentual e faixa não se aplicam): ${listaTexto(fora.map((e) => e.rotulo))}. ${fora.length === 1 ? "Ele está" : "Estão"} na tabela equivalente, com a EAR em MWmês.`;
+}
+
+/* ---------- P017: textos e cores da abertura de armazenamento ---------- */
+
+/** Cor de um recorte em todos os gráficos da abertura: a do subsistema (o SIN inclusive); REE e bacias, a cor da energia. */
+export function corDoRecorte(e: Pick<EntidadeEar, "tipo" | "id">): string {
+  return e.tipo === "subsistema" ? COR_REGIAO[e.id as Regiao] : "var(--cor-energia)";
+}
+
+/** Período do recorte no rodapé da figura: o dia e a base da faixa, ou o motivo exato de não haver faixa. */
+export function textoPeriodoDoRecorte(e: Pick<EntidadeEar, "dia" | "sem_armazenamento" | "periodo_base" | "anos_na_base">): string {
+  if (!e.dia) return "sem dia de referência";
+  const dia = dataBR(e.dia);
+  if (e.sem_armazenamento) return `${dia}; sem faixa do mesmo dia: o recorte não tem armazenamento (EAR máxima zero)`;
+  if (!e.periodo_base) return `${dia}; sem faixa do mesmo dia: ${plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos`;
+  return `${dia}; faixa do mesmo dia do calendário nos anos completos de ${periodoBase(e.periodo_base)}`;
+}
+
+/** Rótulo da faixa na figura do último ano: o período da base só quando existe. */
+export function rotuloBandaDaFaixa(e: Pick<EntidadeEar, "periodo_base">): string {
+  return e.periodo_base ? `10º a 90º percentil da data (${periodoBase(e.periodo_base)})` : "10º a 90º percentil da data";
+}
+
+/**
+ * A faixa de cada ponto do último ano usa os anos completos anteriores a ele, então o ano do próprio ponto fica fora: com a base de
+ * 2001 a 2025, os pontos de 2025 comparam com 2001 a 2024 e os de 2026, com 2001 a 2025. Os anos saem do período da base e das datas da série.
+ */
+export function textoBaseDaFaixa(e: Pick<EntidadeEar, "periodo_base" | "semanal">): string {
+  const m = /^(\d{4})-(\d{4})$/.exec(e.periodo_base ?? "");
+  if (!m || !e.semanal) return "";
+  const ini = Number(m[1]);
+  const fim = Number(m[2]);
+  const anos = Array.from(new Set(diasRegulares(e.semanal.d0, e.semanal.passo_dias, e.semanal.v.length).map((d) => Number(d.slice(0, 4))))).sort((a, b) => a - b);
+  const partes = anos
+    .map((y) => ({ y, ate: Math.min(fim, y - 1) }))
+    .filter((x) => x.ate >= ini)
+    .map((x) => `${periodoBase(`${ini}-${x.ate}`)} nos pontos de ${x.y}`);
+  return partes.length ? `A faixa de cada ponto exclui o ano do próprio ponto: ${listaTexto(partes)}.` : "";
+}
+
+/**
+ * Quando a variação por reservatório (página de reservatórios) termina em outro dia que o da EAR desta página, uma frase diz isso para
+ * qualquer recorte; vazia quando os dias coincidem.
+ */
+export function textoJanelasDaVariacao(dia: string | null, ds: readonly AguaDecomposicaoEar[]): string {
+  const fins = Array.from(new Set(ds.filter((d) => d.delta_ear_mwmes !== null).map((d) => d.fim)));
+  if (!dia || !fins.length || fins.every((f) => f === dia)) return "";
+  return `A página de reservatórios mede a variação por reservatório numa janela que termina em ${listaTexto(fins.map(dataBR))}, o último dia com EAR por reservatório, e esta página termina em ${dataBR(dia)}: o valor de um mesmo subsistema difere entre as duas.`;
+}
+
+/** A EAR não é medição direta: o ONS a deriva (nota junto da etiqueta "Observado"). */
+export const TEXTO_EAR_DERIVADA =
+  "A EAR é derivada pelo ONS (a energia que a água armazenada produziria nas usinas, pela produtibilidade acumulada), não é medição direta.";
+
+/** Linha "Revisões" da ficha da capacidade: os eventos vêm de uma única captura por reservatório, e a tabela de revisões cobre só a EAR. */
+export const REVISOES_CAPACIDADE =
+  "Ainda não é possível detectar revisões nos eventos: a atribuição por reservatório vem de uma única captura, e a comparação entre capturas desta página cobre só a EAR dos últimos 30 dias.";
+
+/**
+ * Linha "Revisões" da ficha "Comprove este número" da EAR, montada das linhas da tabela de revisões da própria página (as mesmas que
+ * `linhasRevisoesCapturas` entrega), para a ficha não dizer "nenhuma revisão" onde a página mostra revisão.
+ */
+export function textoRevisoesFichaEar(rs: readonly AguaRevisaoCaptura[]): string {
+  const ear = rs.filter((r) => r.serie === "ear_mwmes");
+  const com = ear.filter((r) => r.dias_revisados > 0);
+  if (!com.length) return "Nenhum valor da EAR dos últimos 30 dias mudou entre as duas capturas mais recentes.";
+  const dias = com.map((r) => `${NOME_REGIAO[r.sm]} ${r.dias_revisados}`);
+  const maior = [...com].sort((a, b) => Math.abs(b.diferenca ?? 0) - Math.abs(a.diferenca ?? 0))[0];
+  return `O ONS revisou a EAR dos subsistemas entre as duas capturas mais recentes, em dias dos últimos 30: ${listaTexto(dias)}. A maior diferença foi de ${sinal(maior.diferenca, 1)} MWmês no ${NOME_REGIAO[maior.sm]}, em ${dataBR(maior.dia_maior)}. O detalhe está na tabela de revisões do ONS desta página, em Auditar.`;
+}
+
+/** Nota de provisório dos destaques da EAR: os últimos dias ainda mudam, e a página diz quantos dias mudaram entre as duas capturas mais recentes. */
+export function textoEarProvisoria(rs: readonly AguaRevisaoCaptura[]): string {
+  const base = "A EAR dos últimos dias é provisória: o ONS a revisa depois de publicá-la";
+  const com = rs.filter((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0);
+  if (!com.length) return `${base}; entre as duas capturas mais recentes, nenhum valor dos últimos 30 dias mudou.`;
+  const n = com.map((r) => r.dias_revisados);
+  const menor = Math.min(...n);
+  const maior = Math.max(...n);
+  const quanto = menor === maior ? `${maior} dos 30 dias` : `de ${menor} a ${maior} dos 30 dias`;
+  return `${base}. Entre as duas capturas mais recentes, ele revisou ${quanto}, conforme o subsistema (detalhe na tabela de revisões, em Auditar).`;
+}
+
+/* --- eventos de mudança da capacidade --- */
+
+/** O que "entrada", "saída" e "alteração" querem dizer para cada reservatório de um evento, e o que a fonte não diz. */
+export const TEXTO_TIPOS_DE_EVENTO =
+  "Cada reservatório de um evento entra (passa a contar na EAR máxima), sai (deixa de contar) ou é alterado (já contava, e a EAR máxima dele mudou naquele dia). A fonte não informa a causa de cada alteração; a EAR máxima é uma capacidade em energia e também muda quando entra uma usina a jusante, pela produtibilidade acumulada, mesmo sem mudança no volume do reservatório.";
+
+const TOLERANCIA_FINA_MWMES = 0.05;
+/** Dia em que a fonte passa de MWmês inteiros a três casas decimais (a tolerância dos eventos muda aí; regra em agua_detalhe.py). */
+const DIA_TRES_CASAS = "2018-01-01";
+
+/** Eventos que só fecham pela tolerância larga: resíduo acima da tolerância fina no dia da mudança de precisão da fonte ou depois dele. */
+export function eventosSoPelaToleranciaLarga(eventos: readonly AguaEventoCapacidade[]): AguaEventoCapacidade[] {
+  return eventos.filter((e) => e.fechado && e.residuo_mwmes !== null && Math.abs(e.residuo_mwmes) > TOLERANCIA_FINA_MWMES && e.data >= DIA_TRES_CASAS);
+}
+
+/** A regra da tolerância do resíduo com o dia anterior, e os eventos que só fecham por ela (dos dados). */
+export function textoToleranciaEventos(eventos: readonly AguaEventoCapacidade[]): string {
+  const regra =
+    "Tolerância do resíduo: 10 MWmês quando o dia anterior ainda tem valores inteiros na fonte (até 2017) e 0,05 MWmês depois.";
+  const csv = "A lista completa de reservatórios de cada evento está no CSV, que não traz a tolerância.";
+  const so = eventosSoPelaToleranciaLarga(eventos);
+  if (!so.length) return `${regra} ${csv}`;
+  const datas = Array.from(new Set(so.map((e) => e.data))).sort();
+  const lista = so.map((e) => `${NOME_REGIAO[e.sm as Regiao] ?? e.sm} ${sinal(e.residuo_mwmes, 3)}`);
+  return `${regra} Como o evento compara a EAR máxima do dia com a do dia anterior, o primeiro dia de valores com casas decimais ainda usa os 10 MWmês: em ${listaTexto(datas.map(dataBR))}, ${plural(so.length, "evento fecha", "eventos fecham")} só por essa regra, com resíduos de ${listaTexto(lista)} MWmês, acima dos 0,05. ${csv}`;
 }
 
 /** O que a comparação com o PMO impede de concluir, com a contagem de meses conferidos. */

@@ -208,7 +208,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
             </p>
           )}
         </div>
-        <div className="grid gap-3 sm:grid-cols-[16.5rem_minmax(0,1fr)]">
+        <div className="grid gap-3 md:grid-cols-[16.5rem_minmax(0,1fr)]">
           <div>
             <label htmlFor="perdas-periodo" className="rotulo mb-1 block text-mineral">
               Período

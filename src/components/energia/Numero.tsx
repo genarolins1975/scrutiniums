@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Natureza, Periodo } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { ComproveNumero, type ComproveNumeroProps } from "@/components/energia/ComproveNumero";
 import {
   descreverVariacao,
   textoPeriodo,
@@ -61,6 +61,12 @@ export type NumeroProps = {
    * para a linha "Revisões" da ficha; o resto da prova segue como está.
    */
   revisoes?: string;
+  /**
+   * Ficha "Comprove este número" lida só ao abrir (JSON publicado, caminho da evidência e o que o botão anuncia), no lugar de `evidencia`.
+   * Evita levar o objeto inteiro (de 3 a 4 kB por número) ao HTML e ao fluxo da página; com ela, `valor`, `unidade` e `periodo` vêm das
+   * props, e `revisoes` não se aplica (a ficha só é lida na abertura).
+   */
+  sobDemanda?: ComproveNumeroProps["sobDemanda"];
 };
 
 export function Numero({
@@ -80,8 +86,10 @@ export function Numero({
   variante = "cartao",
   endereco,
   revisoes,
+  sobDemanda,
 }: NumeroProps) {
   const ficha = evidencia && revisoes ? { ...evidencia, revisoes } : evidencia;
+  const prova = ficha ? <ComproveNumero evidencia={ficha} endereco={endereco} /> : sobDemanda ? <ComproveNumero sobDemanda={sobDemanda} endereco={endereco} /> : null;
   const v = valor !== undefined ? valor : (evidencia?.valor_calculo ?? null);
   const ausente = v === null || !Number.isFinite(v);
   const u = unidadeDestaque(unidade ?? evidencia?.unidade, formato);
@@ -118,7 +126,7 @@ export function Numero({
         <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:mt-1.5">
           {textoPer && <span>{textoPer}</span>}
           <SeloNatureza natureza={natureza} texto />
-          {ficha && <ComproveNumero evidencia={ficha} endereco={endereco} />}
+          {prova}
         </div>
         {ausente && motivoAusencia && <p className="col-start-1 mt-1 text-xs leading-relaxed text-carvao-muted">{motivoAusencia}</p>}
         {vari && (
@@ -170,11 +178,7 @@ export function Numero({
       )}
       {/* div, não p: a nota é ReactNode e pode trazer parágrafo ou lista (p dentro de p é HTML inválido) */}
       {nota && <div className="mt-3 border-t border-linha pt-3 text-xs leading-relaxed text-carvao-muted">{nota}</div>}
-      {ficha && (
-        <div className="mt-auto pt-2">
-          <ComproveNumero evidencia={ficha} endereco={endereco} />
-        </div>
-      )}
+      {prova && <div className="mt-auto pt-2">{prova}</div>}
     </div>
   );
 }

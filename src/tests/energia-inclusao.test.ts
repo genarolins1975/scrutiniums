@@ -825,6 +825,15 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
     }
   });
 
+  it("o benefício é definido em texto visível antes das medidas: a Tarifa Social, na abertura da página e na seção da síntese", () => {
+    const definicao = "desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC)";
+    for (const k of ["sintese", "p059"] as const) {
+      const t = entender(html[k]);
+      expect(t, k).toContain(definicao);
+      expect(t.indexOf(definicao), `${k}: a definição vem antes do primeiro cartão de UC`).toBeLessThan(t.indexOf("UC com Tarifa Social"));
+    }
+  });
+
   it("siglas fora do dicionário compartilhado (PNAD, PASI, MDS, CV) vêm expandidas no primeiro uso em Entender", () => {
     const EXPANSOES: [string, string][] = [
       ["PNAD", "Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua"],
@@ -836,8 +845,10 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
     for (const [k, h] of Object.entries(html)) {
       const t = entender(h);
       for (const [sigla, expansao] of EXPANSOES) {
-        const i = new RegExp(`(?<![\\p{L}\\p{N}_])${sigla}(?![\\p{L}\\p{N}_])`, "u").exec(t)?.index;
-        if (i === undefined) continue;
+        // palavra inteira, sem lookbehind nem flag u (o tsc do projeto usa ES5)
+        const m = new RegExp(`(^|[^A-Za-zÀ-ÿ0-9_])${sigla}(?![A-Za-zÀ-ÿ0-9_])`).exec(t);
+        if (!m) continue;
+        const i = m.index + m[1].length;
         achadas++;
         // a primeira aparição da sigla é a de dentro da própria expansão
         expect(t.indexOf(expansao) + expansao.indexOf(sigla), `${k}: ${sigla} usada antes de expandida`).toBe(i);

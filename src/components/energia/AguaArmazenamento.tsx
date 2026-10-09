@@ -2,59 +2,78 @@
 
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
+import { AguaFaixaDaData } from "@/components/energia/AguaFaixaDaData";
 import { Comparador } from "@/components/energia/Comparador";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
+import { Numero } from "@/components/energia/Numero";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
-  COLUNAS_ARMAZENAMENTO,
-  COR_COMPARACAO,
   COR_REGIAO,
   CURTO_REGIAO,
   NOME_REGIAO,
+  OPCOES_UNIDADE_EAR,
   ROTULO_TIPO_RECORTE,
   SUBSISTEMAS,
+  TEXTO_EAR_DERIVADA,
   TIPOS_RECORTE,
+  amplitudeCapacidade,
   anoInicial,
+  capacidadeMuitoAlterada,
+  casasMwmes,
+  colunasArmazenamento,
+  corDoRecorte,
   doRecorte,
   itensPontosArmazenamento,
   linhasArmazenamento,
   linhasMultiplos,
+  mwmes,
   periodoBase,
   recorteEscolhido,
   recortePadrao,
   respostaArmazenamento,
-  vereditoArmazenamento,
+  rotuloBandaDaFaixa,
   serieSemanal,
+  textoAmplitude,
+  textoBaseDaFaixa,
+  textoEarProvisoria,
   textoForaDosPontos,
+  textoOutraJanelaNaArmazenamento,
   textoPasso,
   textoPesoSubsistemas,
+  textoPeriodoDoRecorte,
+  textoRevisoesFichaEar,
+  vereditoArmazenamento,
   type EntidadeEar,
   type PontoMensalEar,
   type PontoRegioes,
   type TipoRecorte,
+  type UnidadeEar,
 } from "@/lib/energia/agua";
+import type { Evidencia } from "@/lib/energia/evidencia";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, plural } from "@/lib/energia/formato";
+import { dataBR, plural, sinal } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
-import type { Regiao } from "@/lib/energia/tipos";
+import type { AguaDecomposicaoEar, AguaRevisaoCaptura } from "@/lib/energia/tipos-agua";
 
 /**
- * P017, armazenamento: tipo de recorte (?rec=), recorte escolhido (?ent=), recortes
+ * P017, armazenamento: tipo de recorte (?rec=), recorte escolhido (?ent=), unidade da figura (?uni=), recortes
  * comparados nos pequenos múltiplos (?cmp=, até quatro), o intervalo do histórico
  * mensal (?de=, ?ate=) e o da série diária em MWmês (?dde=, ?date=) ficam na URL;
  * voltar e avançar refazem o recorte e o zoom. A resposta, os
- * pontos pareados, a tabela equivalente e a exportação usam as mesmas linhas
+ * pontos pareados, a faixa da data, os números do recorte, a tabela equivalente e a exportação usam as mesmas linhas
  * (linhasArmazenamento e itensPontosArmazenamento sobre a mesma lista), e a resposta é
- * refeita pela mesma regra quando o recorte muda. O padrão (subsistemas, SIN, os quatro
+ * refeita pela mesma regra quando o recorte muda. O padrão (subsistemas, SIN, % da EAR máxima, os quatro
  * subsistemas na comparação) não é gravado na URL.
  */
 const ESQUEMA = {
   rec: campo(tiposUrl.opcao(TIPOS_RECORTE), "subsistema"),
   ent: campo(tiposUrl.texto({ max: 60 }), ""),
+  uni: campo(tiposUrl.opcao(["pct", "mwmes"] as const), "pct"),
   cmp: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 }), { max: LIMITE_COMPARACAO }), [...SUBSISTEMAS] as string[]),
   de: campo(tiposUrl.mes(), ""),
   ate: campo(tiposUrl.mes(), ""),
@@ -70,6 +89,113 @@ const UNIVERSO: Record<TipoRecorte, string> = {
   bacia: "Bacias hidroenergéticas do ONS; bacias só com usinas a fio d'água não têm armazenamento (não se aplica)",
 };
 
+/**
+ * Números do recorte escolhido: a EAR do dia em % da EAR máxima, a mediana da mesma data, a energia armazenada em MWmês e a variação de
+ * 30 dias. Os valores são os campos da própria entidade (os mesmos do gráfico, da faixa da data, da tabela e da resposta): a faixa nunca
+ * calcula. A ficha "Comprove este número" é a do SIN, a única que a gold publica: outro recorte não a mostra. Os últimos dias são ditos
+ * provisórios, a ficha traz as revisões que a tabela de revisões da página mostra, e as duas janelas de 30 dias do mesmo subsistema
+ * (esta página e a de reservatórios) são ditas junto dos números.
+ */
+export function MedidasArmazenamento({
+  e,
+  revisoes,
+  decomposicoes,
+  evidencias,
+  endereco,
+}: {
+  e: EntidadeEar;
+  revisoes: AguaRevisaoCaptura[];
+  decomposicoes: AguaDecomposicaoEar[];
+  evidencias?: { earSin?: Evidencia | null; earSinMwmes?: Evidencia | null };
+  endereco?: string;
+}) {
+  // a ficha de prova é a do SIN: só ele a tem
+  const ehSin = e.tipo === "subsistema" && e.id === "SIN";
+  const revisoesFicha = textoRevisoesFichaEar(revisoes);
+  const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
+  const outraJanela = textoOutraJanelaNaArmazenamento(e, decomposicoes);
+  const semFaixa = e.sem_armazenamento
+    ? "Sem armazenamento (EAR máxima zero): faixa e percentual não se aplicam."
+    : `Sem faixa do mesmo dia: ${plural(e.anos_na_base, "ano", "anos")} na base, menos que os 5 exigidos.`;
+  return (
+    <div data-medidas-recorte="" className="space-y-2">
+      <p className="rotulo text-mineral">Números do recorte escolhido: {e.rotulo}</p>
+      <FaixaMetricas
+        colunas={4}
+        rotulo={`Indicadores do armazenamento: ${e.rotulo}`}
+        nota={
+          <div className="space-y-1.5">
+            <p>{textoEarProvisoria(revisoes)}</p>
+            {amp && (
+              <p data-texto="capacidade-alterada">
+                A EAR máxima variou {textoAmplitude(amp.razao)} na base (de {mwmes(amp.min)} a {mwmes(amp.max)} MWmês). Em %, a faixa compara capacidades de tamanhos diferentes; em MWmês, compara a energia
+                de anos com capacidades diferentes. Nas duas unidades, a posição frente à faixa não é dita.
+              </p>
+            )}
+            {outraJanela && <p data-texto="outra-janela">{outraJanela}</p>}
+          </div>
+        }
+      >
+        <Numero
+          variante="faixa"
+          rotulo="EAR do dia"
+          natureza="CALCULADO"
+          evidencia={ehSin ? evidencias?.earSin : undefined}
+          revisoes={ehSin ? revisoesFicha : undefined}
+          valor={e.ear_pct}
+          formato="pct"
+          casas={1}
+          unidade="da EAR máxima"
+          periodo={e.dia ? dataBR(e.dia) : undefined}
+          cor={corDoRecorte(e)}
+          motivoAusencia={e.sem_armazenamento ? "Sem armazenamento (EAR máxima zero): o percentual não se aplica." : "Sem EAR publicada no dia de referência."}
+          endereco={endereco}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Mediana da mesma data"
+          natureza="CALCULADO"
+          valor={e.p50}
+          formato="pct"
+          casas={1}
+          unidade="da EAR máxima"
+          periodo={e.periodo_base ? `mesmo dia do ano em ${periodoBase(e.periodo_base)}` : undefined}
+          cor="var(--serie-referencia)"
+          motivoAusencia={semFaixa}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Energia armazenada"
+          natureza="CALCULADO"
+          evidencia={ehSin ? evidencias?.earSinMwmes : undefined}
+          revisoes={ehSin ? revisoesFicha : undefined}
+          valor={e.ear_mwmes}
+          formato="num"
+          casas={casasMwmes(e.ear_mwmes)}
+          unidade="MWmês"
+          periodo={e.dia ? dataBR(e.dia) : undefined}
+          cor={corDoRecorte(e)}
+          nota={e.ear_max_mwmes !== null && !e.sem_armazenamento ? `EAR máxima de ${mwmes(e.ear_max_mwmes)} MWmês` : undefined}
+          motivoAusencia="Sem EAR publicada no dia de referência."
+          endereco={endereco}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Variação em 30 dias"
+          natureza="CALCULADO"
+          valor={e.variacao_30d_pp}
+          formato="num"
+          casas={1}
+          unidade="p.p. da EAR máxima"
+          periodo={e.dia ? `30 dias até ${dataBR(e.dia)}` : undefined}
+          nota={e.variacao_30d_mwmes !== null ? `${sinal(e.variacao_30d_mwmes, casasMwmes(e.variacao_30d_mwmes))} MWmês` : undefined}
+          motivoAusencia={e.sem_armazenamento ? "Sem armazenamento: a variação em p.p. não se aplica." : "Sem variação de 30 dias nesta publicação."}
+        />
+      </FaixaMetricas>
+    </div>
+  );
+}
+
 export function AguaArmazenamento({
   entidades,
   diaria,
@@ -80,6 +206,10 @@ export function AguaArmazenamento({
   notas,
   aposPrincipal,
   destaquesHistoria,
+  decomposicoes,
+  revisoes,
+  evidencias,
+  enderecoMedidas,
 }: {
   entidades: EntidadeEar[];
   /** EAR diária por subsistema e SIN nos últimos dias publicados na gold (MWmês). */
@@ -95,14 +225,25 @@ export function AguaArmazenamento({
   aposPrincipal?: ReactNode;
   /** Medida que acompanha a história mensal (mudanças da EAR máxima), com a ficha de prova. */
   destaquesHistoria?: ReactNode;
+  /** Variação da EAR por reservatório (página de reservatórios): a outra janela de 30 dias do mesmo subsistema. */
+  decomposicoes: AguaDecomposicaoEar[];
+  /** Revisões do ONS entre as duas capturas mais recentes (a mesma lista da tabela de revisões, em Auditar). */
+  revisoes: AguaRevisaoCaptura[];
+  /** Fichas de prova do SIN (EAR em % e em MWmês): aparecem só quando o recorte escolhido é o SIN. */
+  evidencias?: { earSin?: Evidencia | null; earSinMwmes?: Evidencia | null };
+  /** Página e âncora dos números, repassadas à citação da ficha. */
+  enderecoMedidas?: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const tipo = v.rec as TipoRecorte;
+  const unidade = v.uni as UnidadeEar;
+  const emMw = unidade === "mwmes";
   const padrao = useMemo(() => recortePadrao(entidades, tipo), [entidades, tipo]);
   const e = recorteEscolhido(entidades, tipo, v.ent || padrao, padrao);
   const doTipo = useMemo(() => entidades.filter((x) => x.tipo === tipo), [entidades, tipo]);
   const linhas = useMemo(() => linhasArmazenamento(doTipo), [doTipo]);
-  const itens = useMemo(() => itensPontosArmazenamento(doTipo), [doTipo]);
+  const colunas = useMemo(() => colunasArmazenamento(unidade), [unidade]);
+  const itens = useMemo(() => itensPontosArmazenamento(doTipo, unidade), [doTipo, unidade]);
   const semanal = useMemo(() => serieSemanal(e?.semanal ?? null), [e]);
   const comArmazenamento = useMemo(() => entidades.filter((x) => !x.sem_armazenamento && x.semanal), [entidades]);
   const escolhidas = useMemo(
@@ -112,21 +253,26 @@ export function AguaArmazenamento({
   const multiplos = useMemo(() => linhasMultiplos(escolhidas), [escolhidas]);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
   const intervaloDiario = v.dde && v.date ? { inicio: v.dde, fim: v.date } : null;
-  const cor = e && e.tipo === "subsistema" ? COR_REGIAO[e.id as Regiao] : "var(--cor-energia)";
+  // a cor de um recorte é a mesma em todos os gráficos da página: a do subsistema, ou a da energia
+  const cor = e ? corDoRecorte(e) : "var(--cor-energia)";
   // períodos e passos dos títulos saem das séries publicadas, nunca de número escrito aqui
   const passoMultiplos = escolhidas.find((x) => x.semanal)?.semanal?.passo_dias ?? null;
   const diasDiaria = plural(diaria.length, "dia", "dias");
   const anoMensal = anoInicial(mensal[0]?.m);
   const fora = textoForaDosPontos(doTipo);
   const peso = textoPesoSubsistemas(entidades);
+  const baseDaFaixa = e ? textoBaseDaFaixa(e) : "";
   const selecionar = (id: string | null) => id && definir({ ent: id === padrao ? "" : id });
 
   return (
     <div className="space-y-6">
       <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-        <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
-          {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
-        </RespostaCurta>
+        <div className="flex flex-col gap-3">
+          <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
+            {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
+          </RespostaCurta>
+          <AguaEscolha legenda="Unidade da figura" opcoes={OPCOES_UNIDADE_EAR} valor={unidade} onEscolher={(x) => definir({ uni: x })} />
+        </div>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <AguaEscolha legenda="Recorte" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ rec: x, ent: "" })} />
           <AguaLista
@@ -138,31 +284,38 @@ export function AguaArmazenamento({
         </div>
       </div>
 
-      <GraficoPontos
-        titulo={`EAR de cada recorte (${ROTULO_TIPO_RECORTE[tipo]}) no dia e a mediana da mesma data`}
-        itens={itens}
-        unidade="%"
-        casas={1}
-        rotuloValor="EAR do dia"
-        rotuloReferencia="Mediana da data nos anos da base"
-        corValor="var(--cor-energia)"
-        corReferencia="var(--serie-referencia)"
-        selecionado={e?.id ?? null}
-        onSelecionar={selecionar}
-        ordemInicial={{ por: "valor", direcao: "desc" }}
-      />
+      {/* a tabela equivalente da página é a única porta para estes dados: a do próprio gráfico repetiria as mesmas linhas */}
+      <div data-grafico-pontos="armazenamento" className="[&_details]:hidden">
+        <GraficoPontos
+          titulo={`EAR de cada recorte (${ROTULO_TIPO_RECORTE[tipo]}) no dia e a mediana da mesma data`}
+          itens={itens}
+          unidade={emMw ? "MWmês" : "%"}
+          casas={emMw && tipo === "subsistema" ? 0 : 1}
+          zeroNoEixo={emMw}
+          rotuloValor="EAR do dia"
+          rotuloReferencia="Mediana da data nos anos da base"
+          corValor="var(--cor-energia)"
+          corReferencia="var(--serie-referencia)"
+          selecionado={e?.id ?? null}
+          onSelecionar={selecionar}
+          ordemInicial={{ por: "valor", direcao: "desc" }}
+        />
+      </div>
       {fora && (
         <p className="text-sm text-carvao-muted" data-texto="fora-dos-pontos">
           {fora}
         </p>
       )}
+
+      {e && <AguaFaixaDaData e={e} unidade={unidade} />}
+
       {e && !e.sem_armazenamento && semanal.length > 0 ? (
         <GraficoLinhas
           titulo={`EAR ${doRecorte(e.tipo, e.nome)} no último ano, ${e.semanal ? textoPasso(e.semanal.passo_dias) : ""}, com a faixa do 10º ao 90º percentil da mesma data`}
           dados={semanal}
           chaveX="d"
           series={[{ id: "v", rotulo: e.rotulo, cor, espessura: 2.5 }]}
-          banda={{ inferior: "p10", superior: "p90", rotulo: `10º a 90º percentil da data (${periodoBase(e.periodo_base)})` }}
+          banda={{ inferior: "p10", superior: "p90", rotulo: rotuloBandaDaFaixa(e) }}
           unidade="%"
           casas={1}
         />
@@ -173,17 +326,23 @@ export function AguaArmazenamento({
             : "Sem série do último ano para este recorte nesta publicação."}
         </p>
       )}
+      {e && !e.sem_armazenamento && semanal.length > 0 && (
+        <p className="text-sm text-carvao-muted" data-texto="base-da-faixa">
+          {baseDaFaixa}
+          {emMw ? " A série do último ano e a faixa de cada data só existem em % da EAR máxima, a única unidade em que são publicadas; em MWmês, a faixa da data de referência está na figura acima." : ""}
+        </p>
+      )}
 
       <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
           <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            {e?.dia ? `${dataBR(e.dia)}; faixa do mesmo dia do calendário em ${periodoBase(e.periodo_base)}` : "sem dia de referência"}
-          </dd>
+          <dd className="mt-0.5">{e ? textoPeriodoDoRecorte(e) : "sem dia de referência"}</dd>
         </div>
         <div>
           <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">{UNIVERSO[tipo]}</dd>
+          <dd className="mt-0.5">
+            {UNIVERSO[tipo]}. {TEXTO_EAR_DERIVADA}
+          </dd>
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
@@ -193,10 +352,11 @@ export function AguaArmazenamento({
         </div>
       </dl>
 
+      {e && <MedidasArmazenamento e={e} revisoes={revisoes} decomposicoes={decomposicoes} evidencias={evidencias} endereco={enderecoMedidas} />}
 
       <TabelaInterativa
         titulo={`Tabela equivalente: ${ROTULO_TIPO_RECORTE[tipo]}, EAR do dia, faixa da data e variação`}
-        colunas={COLUNAS_ARMAZENAMENTO}
+        colunas={colunas}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="rotulo"
@@ -206,7 +366,7 @@ export function AguaArmazenamento({
         selecionado={e?.id ?? null}
         onSelecionar={selecionar}
         chaveUrl="arm"
-        nota="Recortes sem armazenamento aparecem com percentual vazio e posição “não se aplica”; com menos de 5 anos na base, não há faixa."
+        nota="Recortes sem armazenamento aparecem com percentual vazio e posição “não se aplica”; com menos de 5 anos na base, não há faixa. Em Analisar, a tabela traz a faixa da data em % e em MWmês, a variação de 30 dias e a EAR máxima da base."
       />
 
       {notas}
@@ -233,12 +393,13 @@ export function AguaArmazenamento({
             unidade="%"
             casas={1}
             colunas={escolhidas.length >= 4 ? 4 : escolhidas.length >= 3 ? 3 : 2}
-            paineis={escolhidas.map((x, i) => ({
+            paineis={escolhidas.map((x) => ({
               id: x.id,
               titulo: x.rotulo,
               nota: x.capacidade_mudou_na_base ? "EAR máxima mudou mais de 5% na base" : undefined,
+              // a cor é a do recorte, a mesma dos outros gráficos da página; os rótulos são iguais nos painéis, e a legenda os junta
               series: [
-                { id: x.id, rotulo: "EAR", cor: COR_COMPARACAO[i % COR_COMPARACAO.length], espessura: 2 },
+                { id: x.id, rotulo: "EAR", cor: corDoRecorte(x), espessura: 2 },
                 { id: `${x.id}·p10`, rotulo: "10º percentil da data", cor: "var(--serie-referencia)", tracejada: true, espessura: 1 },
                 { id: `${x.id}·p90`, rotulo: "90º percentil da data", cor: "var(--serie-referencia)", tracejada: true, espessura: 1 },
               ],

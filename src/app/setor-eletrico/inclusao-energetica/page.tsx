@@ -219,7 +219,11 @@ export default function InclusaoEnergeticaPage() {
               </p>
             </header>
 
-            <SecaoDoPainel id="sintese-p059" titulo={t.pergunta}>
+            <SecaoDoPainel
+              id="sintese-p059"
+              titulo={t.pergunta}
+              lead="A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC)."
+            >
               <div>
                 <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
                   {respostaTarifaSocial(t)}

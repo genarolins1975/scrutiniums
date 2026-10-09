@@ -34,6 +34,8 @@ import {
   COLUNAS_RESERVATORIOS_POR_ANO,
   COLUNAS_RESUMO,
   COLUNAS_REVISOES_CAPTURAS,
+  REVISOES_CAPACIDADE,
+  TEXTO_TIPOS_DE_EVENTO,
   anoInicial,
   entidadesEar,
   linhasCapturas,
@@ -50,12 +52,15 @@ import {
   serieMensalEar,
   serieRegioes,
   situacaoAtualidade,
+  textoJanelasDaVariacao,
   textoMesParcial,
   textoMudancaArmazenamento,
   textoQuebraRee,
   textoReconciliacaoEar,
   textoResumo,
   textoRevisoesCapturas,
+  textoRevisoesFichaEar,
+  textoToleranciaEventos,
 } from "@/lib/energia/agua";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
@@ -87,14 +92,21 @@ export default function AguaPage() {
   const sin = entidades.find((x) => x.tipo === "subsistema" && x.id === "SIN") ?? null;
   const atual = situacaoAtualidade(g.dias_referencia.ear, g.gerado_em, 3, "o ONS publica a EAR do dia anterior");
   const versao = g.dias_referencia.ear;
-  const downloads = g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u)));
+  const downloads = [
+    ...g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u))),
+    // a série diária completa, em %, que dá a faixa de cada data: o diário do painel começa depois (a base da faixa não cabe nele)
+    { rotulo: "EAR diária por subsistema e SIN em % da EAR máxima, série completa, a base da faixa usual (CSV)", url: "/energia/series/ear_diario.csv" },
+  ];
   const rec = g.reconciliacao_ear;
   const quebra = a.quebras_perimetro_ree[0] ?? null;
+  const decomposicoes = g.reservatorios.decomposicao_ear;
+  // as fichas da EAR dizem o que a tabela de revisões da própria página mostra
+  const revisoesEar = textoRevisoesFichaEar(rec.revisoes_entre_capturas_30d);
   // ano inicial da contagem de capacidade e base da faixa do SIN: lidos da gold, não escritos aqui
   const desdeCap = anoInicial(a.capacidade.inicio);
   const oQueMudouAgua = (
     <>
-                      {atual.texto} {textoMudancaArmazenamento(entidades)}
+                      {atual.texto} {textoMudancaArmazenamento(entidades)} {textoJanelasDaVariacao(sin?.dia ?? null, decomposicoes)}
                     </>
   );
   const comoInterpretarAgua = (

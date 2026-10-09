@@ -94,6 +94,11 @@ export type GraficoLinhasProps = {
   /** Abre a tabela equivalente já montada (ex.: modo Auditar). */
   tabelaAbertaInicial?: boolean;
   /**
+   * Para cartões que já trazem o próprio título: o título do gráfico fica só para leitor de tela (continua nomeando a figura e a tabela)
+   * e a unidade, que ia nele, passa para a legenda.
+   */
+  semTitulo?: boolean;
+  /**
    * Prefixo único na página dos parâmetros de URL (`<chave>.de`, `<chave>.ate` e `<chave>.oc`) que guardam o
    * intervalo e as séries ocultas quando o gráfico não é controlado: o link do painel e o F5 reabrem o mesmo
    * recorte. Com a chave, a URL é a fonte do estado (`intervaloInicial` e `ocultasIniciais` valem sem parâmetro).
@@ -149,6 +154,7 @@ export function GraficoLinhas({
   sincronizarCursor = true,
   grupoCursor,
   tabelaAbertaInicial = false,
+  semTitulo = false,
   chaveUrl,
 }: GraficoLinhasProps) {
   const uid = useId();
@@ -453,9 +459,9 @@ export function GraficoLinhas({
 
   return (
     <div ref={ref} className="relative w-full">
-      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+      <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
         {titulo}
-        {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
+        {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>, em {unidade}</span>}
       </p>
       {zoom && N > 2 && (
         <div role="group" aria-label={`Intervalo do gráfico: ${titulo}`} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
@@ -580,6 +586,11 @@ export function GraficoLinhas({
               {banda.rotulo}
             </li>
           )}
+          {semTitulo && (
+            <li className="text-mineral" data-legenda="unidade">
+              Valores em {unidade}
+            </li>
+          )}
         </ul>
       )}
       {(zoom || legendaInterativa) && (
@@ -604,155 +615,159 @@ export function GraficoLinhas({
         </p>
       )}
       {/* altura fixa em pixels: o HTML do servidor já reserva a altura final, e âncoras abaixo
-          do gráfico não se deslocam quando a largura real é medida no cliente */}
-      <svg
-        width="100%"
-        height={h}
-        viewBox={`0 0 ${w} ${h}`}
-        role="img"
-        aria-labelledby={`${uid}-t`}
-        aria-describedby={zoom ? `${uid}-d` : undefined}
-        tabIndex={0}
-        onKeyDown={teclado}
-        onBlur={() => setAtivo(null)}
-        className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
-      >
-        <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
-        {yt.map((v) => (
-          <g key={v}>
-            <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
-            <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
-              {rotuloTick(v, passoY)}
-              {unidadeNoEixo}
+          do gráfico não se deslocam quando a largura real é medida no cliente. A dica é posicionada em relação a este contêiner,
+          que envolve só a figura: antes ela era medida a partir do topo do componente e cobria o título e a legenda. */}
+      <div className="relative">
+        <svg
+          width="100%"
+          height={h}
+          viewBox={`0 0 ${w} ${h}`}
+          role="img"
+          aria-labelledby={`${uid}-t`}
+          aria-describedby={zoom ? `${uid}-d` : undefined}
+          tabIndex={0}
+          onKeyDown={teclado}
+          onBlur={() => setAtivo(null)}
+          className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+        >
+          <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
+          {yt.map((v) => (
+            <g key={v}>
+              <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
+              <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+                {rotuloTick(v, passoY)}
+                {unidadeNoEixo}
+              </text>
+            </g>
+          ))}
+          {xt.map((i, k) => (
+            <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
+              {rotulosX[k]}
             </text>
-          </g>
-        ))}
-        {xt.map((i, k) => (
-          <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
-            {rotulosX[k]}
-          </text>
-        ))}
-        {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
-        {marcosVisiveis.map(({ m, i, linha }) => (
-          <g key={m.x}>
-            <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-            {/* rótulo que não cabe à direita do marco passa para a esquerda: com 10 px a letra mede cerca de 5,4 px */}
-            <text
-              x={x(i) + (x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? -4 : 4)}
-              textAnchor={x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? "end" : "start"}
-              y={T + 10 + linha * 13}
-              fontSize="10"
-              fill="var(--cor-mineral)"
-            >
-              {m.rotulo}
-            </text>
-          </g>
-        ))}
-        {seriesVis.map((s, k) => (
-          <path
-            key={s.id}
-            d={caminhos[k]}
-            fill="none"
-            stroke={s.cor}
-            strokeWidth={s.espessura ?? 2}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            strokeDasharray={s.tracejada ? "5 4" : undefined}
-          />
-        ))}
-        {rotulosDiretos &&
-          finaisVisiveis.map((r) => {
-            const f = r.itens[0];
-            const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
-            const texto =
-              r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
-            // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
-            if (x(f.i) + 8 + texto.length * 6.2 > w - 2) return null;
-            return (
-              <g key={f.s.id}>
-                <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
-                <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
-                  {texto}
-                </text>
-              </g>
-            );
-          })}
-        {pontosSel && (
-          <rect
-            data-selecao="intervalo"
-            x={x(pontosSel[0])}
-            y={T}
-            width={Math.max(1, x(pontosSel[1]) - x(pontosSel[0]))}
-            height={Math.max(1, h - T - B)}
-            fill="color-mix(in srgb, var(--cor-energia) 12%, transparent)"
-            stroke="var(--cor-energia)"
-            strokeWidth="1"
-            pointerEvents="none"
-          />
-        )}
-        {iCruz !== null && (
-          <g pointerEvents="none" data-cursor={ativo !== null ? "local" : "sincronizado"}>
-            <line x1={cruzX} x2={cruzX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
-            {seriesVis.map((s) => {
-              const v = pCruz?.[s.id];
-              return typeof v === "number" && Number.isFinite(v) ? (
-                <circle key={s.id} cx={cruzX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
-              ) : null;
+          ))}
+          {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
+          {marcosVisiveis.map(({ m, i, linha }) => (
+            <g key={m.x}>
+              <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
+              {/* rótulo que não cabe à direita do marco passa para a esquerda: com 10 px a letra mede cerca de 5,4 px */}
+              <text
+                x={x(i) + (x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? -4 : 4)}
+                textAnchor={x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? "end" : "start"}
+                y={T + 10 + linha * 13}
+                fontSize="10"
+                fill="var(--cor-mineral)"
+              >
+                {m.rotulo}
+              </text>
+            </g>
+          ))}
+          {seriesVis.map((s, k) => (
+            <path
+              key={s.id}
+              d={caminhos[k]}
+              fill="none"
+              stroke={s.cor}
+              strokeWidth={s.espessura ?? 2}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray={s.tracejada ? "5 4" : undefined}
+            />
+          ))}
+          {rotulosDiretos &&
+            finaisVisiveis.map((r) => {
+              const f = r.itens[0];
+              const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
+              const texto =
+                r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
+              // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
+              if (x(f.i) + 8 + texto.length * 6.2 > w - 2) return null;
+              return (
+                <g key={f.s.id}>
+                  <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
+                  <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
+                    {texto}
+                  </text>
+                </g>
+              );
             })}
-          </g>
+          {pontosSel && (
+            <rect
+              data-selecao="intervalo"
+              x={x(pontosSel[0])}
+              y={T}
+              width={Math.max(1, x(pontosSel[1]) - x(pontosSel[0]))}
+              height={Math.max(1, h - T - B)}
+              fill="color-mix(in srgb, var(--cor-energia) 12%, transparent)"
+              stroke="var(--cor-energia)"
+              strokeWidth="1"
+              pointerEvents="none"
+            />
+          )}
+          {iCruz !== null && (
+            <g pointerEvents="none" data-cursor={ativo !== null ? "local" : "sincronizado"}>
+              <line x1={cruzX} x2={cruzX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
+              {seriesVis.map((s) => {
+                const v = pCruz?.[s.id];
+                return typeof v === "number" && Number.isFinite(v) ? (
+                  <circle key={s.id} cx={cruzX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
+                ) : null;
+              })}
+            </g>
+          )}
+          <rect
+            x={L}
+            y={T}
+            width={Math.max(1, w - L - R)}
+            height={Math.max(1, h - T - B)}
+            fill="transparent"
+            className={podeArrastar ? "cursor-crosshair" : undefined}
+            onPointerMove={mover}
+            onPointerDown={pressionar}
+            onPointerUp={soltar}
+            onPointerCancel={() => setArrasto(null)}
+            onPointerLeave={(ev) => {
+              // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
+              if (ev.pointerType === "mouse") setAtivo(null);
+              if (arrasto) soltar();
+            }}
+          />
+        </svg>
+        {pa && (
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute top-1 z-20 min-w-[11rem] max-w-[calc(100%-1rem)] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)] ${tipX > w / 2 ? "-translate-x-full" : ""}`}
+            // a dica abre ao lado da cruz (à direita na metade esquerda, à esquerda na metade direita) e deixa a cruz e os pontos à vista
+            style={{ left: tipX > w / 2 ? `max(12rem, calc(${(tipX / w) * 100}% - 0.75rem))` : `min(calc(${(tipX / w) * 100}% + 0.75rem), calc(100% - 12rem))` }}
+          >
+            <p className="rotulo text-mineral">{fmtX(String(pa[chaveX]), formatoX, true)}</p>
+            <ul className="mt-1 space-y-0.5">
+              {seriesVis.map((s) => (
+                <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
+                  <span className="flex items-center gap-1.5">
+                    <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
+                    {s.rotulo}
+                  </span>
+                  <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
+                </li>
+              ))}
+              {banda && typeof pa[banda.inferior] === "number" && (
+                <li className="flex justify-between gap-3 text-mineral">
+                  <span>{banda.rotulo}</span>
+                  <span className="tabular-nums">
+                    {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
         )}
-        <rect
-          x={L}
-          y={T}
-          width={Math.max(1, w - L - R)}
-          height={Math.max(1, h - T - B)}
-          fill="transparent"
-          className={podeArrastar ? "cursor-crosshair" : undefined}
-          onPointerMove={mover}
-          onPointerDown={pressionar}
-          onPointerUp={soltar}
-          onPointerCancel={() => setArrasto(null)}
-          onPointerLeave={(ev) => {
-            // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
-            if (ev.pointerType === "mouse") setAtivo(null);
-            if (arrasto) soltar();
-          }}
-        />
-      </svg>
+      </div>
       {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
       <p className="sr-only" aria-live="polite">
         {pa
           ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
           : ""}
       </p>
-      {pa && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-6 z-20 min-w-[11rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
-          style={{ left: `min(max(0px, calc(${(tipX / w) * 100}% - 5.5rem)), calc(100% - 12rem))` }}
-        >
-          <p className="rotulo text-mineral">{fmtX(String(pa[chaveX]), formatoX, true)}</p>
-          <ul className="mt-1 space-y-0.5">
-            {seriesVis.map((s) => (
-              <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
-                <span className="flex items-center gap-1.5">
-                  <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
-                  {s.rotulo}
-                </span>
-                <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
-              </li>
-            ))}
-            {banda && typeof pa[banda.inferior] === "number" && (
-              <li className="flex justify-between gap-3 text-mineral">
-                <span>{banda.rotulo}</span>
-                <span className="tabular-nums">
-                  {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
-                </span>
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {ampliado

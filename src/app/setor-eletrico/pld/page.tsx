@@ -733,7 +733,10 @@ export default function PldPage() {
                         <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{x.porque}</p>
                         {tarifa && (
                           <div className="mt-2" data-texto="pld-e-conta">
-                            <p className="text-sm leading-relaxed text-carvao-muted">{LIGACAO_COM_A_CONTA}</p>
+                            {/* a frase do registro de contrastes repete o que o cartão já diz (e não expande TE e TUSD): fica em Analisar, e o link fica à vista */}
+                            <p data-nivel="analisar" className="text-sm leading-relaxed text-carvao-muted">
+                              {LIGACAO_COM_A_CONTA}
+                            </p>
                             <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
                               Ver como a conta de luz é formada
                             </Link>

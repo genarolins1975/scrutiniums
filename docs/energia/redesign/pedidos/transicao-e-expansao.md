@@ -4,7 +4,7 @@ Rotas `/setor-eletrico/transicao` (e `/mmgd`, `/energia-estimada`, `/emissoes`) 
 
 ## 0. Arquivos sem uso, para o coordenador apagar no fim (com o servidor parado)
 
-Nenhum arquivo foi apagado por este executor.
+Nenhum componente foi apagado por este executor. Saíram só os testes temporários que ele mesmo criou (`zz-tmp-*.test.ts`), que nada importava.
 
 - `src/components/energia/ExpansaoLinkPainel.tsx`: nenhum import restante. O rodapé de cada painel passou a usar o `SeguirPainel` compartilhado (mesmo botão "Copiar link deste painel", mesmo endereço e mesma mensagem).
 - `src/components/energia/TransicaoLinkPainel.tsx`: idem. Ao apagar, tirar `"TransicaoLinkPainel"` da lista de arquivos da verificação de hexadecimal em `src/tests/energia-transicao.test.ts` (teste "sem estado de construção, sem hexadecimal solto...", o `for (const f of [...])` do fim), porque o teste lê o arquivo.
@@ -18,7 +18,7 @@ Na abertura de cada módulo, os capítulos precisam de nome, pergunta, resposta 
 
 O contrato diz que "Comprove este número" só existe onde a gold publica a evidência. As medidas abaixo estão na faixa de abertura, vêm do mesmo seletor que alimenta a tabela e o CSV, mas a gold não traz uma evidência com fórmula, numerador e denominador para elas. Ficam sem a ficha de prova; o teste de cada família as lista por nome (`SEM_FICHA`) para que um número novo sem prova falhe.
 
-- Expansão: "Em construção" (potência outorgada da fase Construção, 145 usinas); "Prevista para o restante do ano", "Em datas convencionais em bloco" e "Com cronograma atrasado, segundo a fiscalização" (cronograma); "Transformação nova em obras em andamento" (MVA do SIGET); "Capacidade instalada nacional" no início do horizonte do PDE (só o fim, dez/2035, tem evidência).
+- Expansão: "Em construção" (potência outorgada da fase Construção, 145 usinas); "Prevista para o restante do ano", "Em datas convencionais em bloco" e "Cronograma atrasado (fiscalização)" (cronograma); "Transformação nova em obras" (MVA do SIGET); "Capacidade instalada nacional" no início do horizonte do PDE (só o fim, dez/2035, tem evidência).
 - Transição: "MMGD conectada no ano" e "Potência por habitante no Brasil" (cadastro); "Participação na carga global", "MMGD estimada no último ano completo" e no primeiro ano completo (energia estimada); "Fator médio anual" do ano anterior e "Fator médio" do mesmo mês do ano anterior (emissões).
 
 ## 3. `PAGINAS_MAPA` e a pergunta da tela
@@ -32,4 +32,5 @@ O contrato diz que "Comprove este número" só existe onde a gold publica a evid
 ## 5. Pedidos ao pipeline (dados), sem efeito imediato sobre as páginas
 
 - Cronograma: o gráfico de previsão por ano deixa de fora 2031, o ano das três datas convencionais em bloco (52.652,0 MW de 54.928,7 MW), e a tabela do mesmo bloco traz todos os anos com a coluna "Inclui data em bloco". Os cerca de 2.276,7 MW de 2031 que não são data em bloco ficam fora do gráfico porque a gold não publica o ano por viabilidade sem as datas em bloco. Publicar `por_ano` sem as datas em bloco permitiria desenhar 2031 sem a data convencional.
-- Texto das proveniências do RALIE (limitações e transformações): traz "Parquet histórico" e o nome de campo da gold ("estagios.unidades_atipicas"). A página troca "Parquet histórico" por "arquivo histórico" na exibição (`provenienciasDoLeitor`, em `expansao.ts`); o nome do campo continua na ficha "Sobre este dado". Reescrever o texto na origem tira a troca da página.
+- Texto das proveniências do RALIE (limitações e transformações): traz "Parquet histórico" e o nome de campo da gold ("estagios.unidades_atipicas"). A página troca "Parquet histórico" por "arquivo histórico" na exibição (`provenienciasDoLeitor`, em `expansao.ts`), que vale quando o diálogo "Sobre este dado" é aberto; o nome do campo continua nessa ficha. Reescrever o texto na origem tira a troca da página.
+- Quebra de jan/2025 do fator de emissão: a descrição da gold diz "podem ser menores por causa da base, não só da operação" e a página a mostra como está, no aviso sob o gráfico anual. A regra editorial evita causalidade; reescrever na origem (por exemplo, "a base de usinas mudou em jan/2025: comparações que atravessam a data misturam bases") ou aceitar a frase da nota técnica do MCTI.

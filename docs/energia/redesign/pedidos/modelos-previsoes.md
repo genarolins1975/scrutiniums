@@ -11,12 +11,13 @@ Nenhum arquivo foi apagado por este executor, conforme a regra do servidor de de
 
 ## Mudanças em componentes compartilhados
 
-1. `src/components/energia/NavegacaoLocal.tsx` (faixa) com `.nav-faixa` de `src/app/globals.css`: abaixo de 640 px o CSS pede duas páginas por linha (`flex: 1 1 calc(50% - 0.25rem)`), mas o `gap-x-6` do `ol` soma 1,5 rem entre as colunas e nenhuma cabe ao lado da outra. Cada página ocupa uma linha inteira: nas fichas são seis linhas, mais de 260 px antes do título (em 390 px, o título da ficha começa em y 410). Vale para todas as filhas de todas as famílias. Sugestão: `gap-x-1 sm:gap-x-6` no `ol`. Nas fichas deste módulo apliquei uma correção local em `PrevisoesFaixaFichas` (`max-sm:[&_ol]:gap-x-1`), que pode sair quando o compartilhado mudar.
-2. `src/components/evidencia/ModoProfundidade.tsx`: os três botões (Entender, Analisar, Auditar) medem 40 px de altura no celular (120 por 40 em 390 px, 97 por 40 em 320 px). Pedido: 44 px (`min-h-[44px]`).
-3. `Numero` com `ComproveNumero` (faixa de métricas): o botão "Comprove este número" mede 103 por 32 px no celular. Pedido: alvo de 44 px no toque (padding vertical), sem mudar o tamanho do texto.
-4. `src/components/energia/TabelaInterativa.tsx` (linha 416): o rótulo "Recorte atual:" usa "atual" como estado. Sugestão: "Recorte:". Outras famílias já registraram o mesmo.
-5. `src/lib/energia/mapa.ts`, bloco `"pld-modelos"` (linha 483): o rótulo "Previsão atual por submercado e entrega" descreve o desenho antigo. A página agora responde "O que foi publicado antes do resultado?" e a rodada é "a mais recente", não "atual". Sugestão: "Rodada mais recente: referência B0 por submercado e entrega". As âncoras `#p013` a `#p016` existem e foram mantidas.
-6. `TabelaInterativa` (opcional): em tabelas curtas com texto longo (matriz de modelos, entradas e fórmulas) a rolagem horizontal no celular esconde colunas. Resolvi localmente com `src/components/energia/PrevisoesTabela.tsx` (`TabelaAdaptativa`: tabela a partir de 768 px, lista de blocos abaixo disso, com rótulo e valor lado a lado a partir de 360 px). Se o coordenador quiser o mesmo comportamento em outras famílias, o componente pode subir para o sistema.
+Adotei S3 (`nivelTitulo={3}` nos capítulos dentro de painel), S4 (`depois` na resposta curta de Previsões, que sobe a figura para a primeira tela) e S14 (faixa de abas em duas colunas, sem correção local nas fichas). Ainda abertos:
+
+1. `src/components/evidencia/ModoProfundidade.tsx`: os três botões (Entender, Analisar, Auditar) medem 40 px de altura no celular (120 por 40 em 390 px, 97 por 40 em 320 px). Pedido: 44 px (`min-h-[44px]`).
+2. `Numero` com `ComproveNumero` (faixa de métricas): o botão "Comprove este número" mede 103 por 32 px no celular. Pedido: alvo de 44 px no toque (padding vertical), sem mudar o tamanho do texto.
+3. `src/components/energia/TabelaInterativa.tsx` (linha 416): o rótulo "Recorte atual:" usa "atual" como estado. Sugestão: "Recorte:". Outras famílias já registraram o mesmo.
+4. `src/lib/energia/mapa.ts`, bloco `"pld-modelos"` (linha 483): o rótulo "Previsão atual por submercado e entrega" descreve o desenho antigo. A página agora responde "O que foi publicado antes do resultado?" e a rodada é "a mais recente", não "atual". Sugestão: "Rodada mais recente: referência B0 por submercado e entrega". As âncoras `#p013` a `#p016` existem e foram mantidas.
+5. `TabelaInterativa` (opcional): em tabelas curtas com texto longo (matriz de modelos, entradas e fórmulas) a rolagem horizontal no celular esconde colunas. Resolvi localmente com `src/components/energia/PrevisoesTabela.tsx` (`TabelaAdaptativa`: tabela a partir de 768 px, lista de blocos abaixo disso, com rótulo e valor lado a lado a partir de 360 px). Se o coordenador quiser o mesmo comportamento em outras famílias, o componente pode subir para o sistema.
 
 ## Equivalências para a matriz de preservação
 

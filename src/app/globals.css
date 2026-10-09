@@ -32,13 +32,15 @@
   /* Séries do domínio Energia, validadas por scripts/validate_palette (skill
      dataviz) sobre superfície clara: ordem fixa, CVD adjacente >= 8, visão
      normal >= 15. Solar fica abaixo de 3:1 e exige rótulo direto ou tabela.
-     Texto nunca usa a cor da série. */
+     Texto nunca usa a cor da série. O verde (eólica, Sul e a terceira cor de comparação) passou de #199e70 para #17966a: sobre o
+     fundo marfim #f3efe5 o anterior media 2,97:1, abaixo dos 3:1 de elemento gráfico (WCAG 1.4.11); o novo mede 3,26:1 e a distância
+     para o laranja (CIEDE2000, protanopia 14,6 e deuteranopia 18,4) e para o azul (tritanopia 10,5) segue acima de 8. */
   --serie-hidraulica: #256abf;
   --serie-termica: #d95926;
-  --serie-eolica: #199e70;
+  --serie-eolica: #17966a;
   --serie-solar: #c98500;
   --serie-sm-se: #4a3aa7;
-  --serie-sm-s: #199e70;
+  --serie-sm-s: #17966a;
   --serie-sm-ne: #d95926;
   --serie-sm-n: #2a78d6;
   --serie-referencia: #8a8578;
@@ -63,7 +65,7 @@
      validados das séries de submercado, com semântica própria dada pelo rótulo. */
   --serie-comp-1: #4a3aa7;
   --serie-comp-2: #d95926;
-  --serie-comp-3: #199e70;
+  --serie-comp-3: #17966a;
   --serie-comp-4: #2a78d6;
 
   /* Paleta categórica dos gráficos: bronze só como destaque */
@@ -155,9 +157,6 @@ body {
 .tabela-scroll[data-mais-direita="sim"] {
   -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
   mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
-}
-@media print {
-  .tabela-scroll[data-mais-direita="sim"] { -webkit-mask-image: none; mask-image: none; }
 }
 
 /* Celular, Entender: a tabela estática com largura mínima de projeto (28 a 62 rem) encolhe até onde as palavras deixam, com letra menor e
@@ -401,6 +400,8 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
 /* Impressão: só o conteúdo; endereços dos links externos por extenso e blocos de prova sem quebra no meio. */
 @media print {
   html { background: #fff; scroll-behavior: auto; }
+  /* a máscara que esmaece a borda de tabela larga no celular não vai ao papel */
+  .tabela-scroll[data-mais-direita="sim"] { -webkit-mask-image: none; mask-image: none; }
   /* cromo do site: cabeçalho, rodapé do observatório e rodapé institucional (por seletor, para não pesar o HTML de cada página) */
   header.border-b.bg-superficie, aside[aria-label^="Observatório Brasileiro"], footer.bg-carvao { display: none !important; }
   main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }

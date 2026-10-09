@@ -335,7 +335,11 @@ describe("r8 T1: Perdas", () => {
     const grupo = new Map(anual.filter((l) => l.ano === "2025").map((l) => [l.cnpj, l.classificacao]));
     const barras = P.linhasComposicao(GP.distribuidoras).linhas;
     const nConc = barras.filter((b) => grupo.get(b.id) === "Concessionária").length;
-    expect(COMPLETO.composicao).toContain(`as ${barras.length} barras são as distribuidoras com a decomposição fechando (${nConc} concessionárias e ${barras.length - nConc} permissionárias), outro conjunto`);
+    // singular quando a contagem é 1 ("1 permissionária"): a página concorda o número com o substantivo
+    const pl = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um : varios}`;
+    expect(COMPLETO.composicao).toContain(
+      `as ${barras.length} barras são as distribuidoras com a decomposição fechando (${pl(nConc, "concessionária", "concessionárias")} e ${pl(barras.length - nConc, "permissionária", "permissionárias")}), outro conjunto`,
+    );
     expect(COMPLETO.composicao).toContain("A linha tracejada é a taxa das 51 concessionárias válidas");
   });
 

@@ -152,7 +152,7 @@ export default function TarifaSocialPage() {
           siglas={["ANEEL", "UF", "MPV", "IBGE", "CCC"]}
           rotulo="Inclusão energética"
           titulo="Tarifa Social de Energia Elétrica"
-          lead="Quantas unidades consumidoras (UC) recebem a Tarifa Social, onde estão e quanto o desconto vale. UC e faturas vêm de fontes e meses diferentes e não se somam."
+          lead="A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam."
           recorte={`UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`}
           fonte="ANEEL: Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)"
           referencia={

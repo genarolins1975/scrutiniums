@@ -922,9 +922,11 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(contraste?.texto).toBeTruthy();
     const bloco = /data-texto="pld-e-conta"[^>]*>([\s\S]*?)<\/div>/.exec(h);
     expect(bloco).not.toBeNull();
-    expect(bloco![1]).toContain(escHtml(contraste!.texto));
+    // a frase do registro repete o que o cartão já diz sem expandir TE e TUSD: fica em Analisar; o link fica à vista em Entender
+    expect(bloco![1]).toMatch(new RegExp(`<p data-nivel="analisar"[^>]*>${escHtml(contraste!.texto).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</p>`));
     expect(bloco![1]).toContain('href="/setor-eletrico/conta-de-luz"');
     expect(bloco![1]).toContain("Ver como a conta de luz é formada");
+    expect(h).toContain("Tarifa de Energia (TE) e a Tarifa de Uso do Sistema de Distribuição (TUSD)");
   });
 
   it("o mapa dos submercados usa preço e fluxo do mesmo dia, diz isso, e conta as horas de cada fronteira em cada sentido", () => {

@@ -58,6 +58,7 @@ export function PrevisoesAtual({
   versao,
   endereco,
   mediaDiaPaginaPld,
+  resposta,
   recorte,
   notas,
   aposPrincipal,
@@ -74,6 +75,8 @@ export function PrevisoesAtual({
   endereco: string;
   /** Média das 24 horas do dia de origem que a página PLD mostra (pld.json), por submercado; null quando o dia da página PLD não é o da rodada. */
   mediaDiaPaginaPld?: Partial<Record<Submercado, number | null>> | null;
+  /** Resposta curta do painel (PrevisoesResposta com `depois`), logo depois da figura principal: a faixa de métricas já traz os números e a figura sobe para a primeira tela. */
+  resposta?: ReactNode;
   /** Período, universo e unidade do painel (PrevisoesRecorte), logo depois da figura principal e da grade. */
   recorte?: ReactNode;
   /** Notas do painel (NotasDoPainel), logo depois do recorte. */
@@ -148,6 +151,8 @@ export function PrevisoesAtual({
             : "Nenhuma entrega prevista terminou: o realizado aparece nestes painéis, como um losango, quando a entrega fecha."}
         </p>
       </section>
+
+      {resposta}
 
       <div className="space-y-2" data-grade-bloco="">
         {/* a legenda fica fora da região que rola: dentro da tabela ela ficaria mais larga que a janela e o texto sairia cortado no celular */}
