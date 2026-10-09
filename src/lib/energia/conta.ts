@@ -33,6 +33,7 @@ import type {
   FinanciamentoCde,
   GrupoCdeId,
   GrupoComponenteId,
+  HistoricoB1,
   JanelaInflacao,
   Ligacao,
   PontoEvolucao,
@@ -42,6 +43,7 @@ import type {
   Simulador,
   Subsidios,
   TarifaVigente,
+  UltimoEvento,
   VigenciaB1,
 } from "./tipos-conta";
 import type { Evidencia } from "./evidencia";
@@ -168,7 +170,19 @@ export type LinhaRanking = {
   uf: string | null;
   tipo: string | null;
   ucs: number | null;
+  /** Posição pela base econômica (1 = menor base TE + TUSD), a outra régua; null sem base. */
+  posicao_base: number | null;
+  /** Quanto a tarifa de aplicação fica acima (+) ou abaixo (−) da base econômica, em %; null sem base. */
+  dif_base_pct: number | null;
 };
+
+/** Diferença, em %, a partir da qual a tarifa de aplicação e a base econômica contam histórias diferentes (marca † no ranking). */
+export const LIMITE_DIFERENCA_BASE = 20;
+
+/** A tarifa de aplicação difere da base econômica em mais de `LIMITE_DIFERENCA_BASE` %: a ordem do ranking muda conforme a régua. */
+export function marcaBase(l: Pick<LinhaRanking, "dif_base_pct">): boolean {
+  return l.dif_base_pct !== null && Math.abs(l.dif_base_pct) > LIMITE_DIFERENCA_BASE;
+}
 
 /** Sigla exibida; o CNPJ entra quando a fonte não publica sigla (nunca uma sigla inventada). */
 export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: string): string {
@@ -180,10 +194,16 @@ export function rotuloDistribuidora(sigla: string | null | undefined, cnpj: stri
  * distribuidora (`infoDistribuidoras`); sem ele, as três colunas ficam sem dado.
  */
 export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil, info: Readonly<Record<string, InfoDistribuidora>> = {}): LinhaRanking[] {
+  // a outra régua: posição pela base econômica (a tarifa sem os componentes financeiros do processo tarifário), empate pela posição da aplicação
+  const pelaBase = [...vigentes]
+    .filter((v) => v.be_total !== null && v.be_total !== undefined)
+    .sort((a, b) => (a.be_total as number) - (b.be_total as number) || a.posicao - b.posicao);
+  const posicaoBase = new Map(pelaBase.map((v, k) => [v.cnpj, k + 1]));
   return [...vigentes]
     .sort((a, b) => a.posicao - b.posicao)
     .map((v) => {
       const i = info[v.cnpj];
+      const dif = v.be_total ? (v.total / v.be_total - 1) * 100 : null;
       return {
         id: v.cnpj,
         sigla: rotuloDistribuidora(v.sigla, v.cnpj),
@@ -203,6 +223,8 @@ export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil
         uf: i?.uf ?? null,
         tipo: i?.tipo ? ROTULO_TIPO[i.tipo] : null,
         ucs: i?.ucs ?? null,
+        posicao_base: posicaoBase.get(v.cnpj) ?? null,
+        dif_base_pct: dif === null ? null : Math.round(dif * 100) / 100,
       };
     });
 }
@@ -253,6 +275,8 @@ export const COLUNAS_RANKING: ColunaTabela[] = [
     unidade: "R$/MWh",
     casas: 2,
   },
+  { id: "posicao_base", rotulo: "Posição pela base econômica", tipo: "numero", casas: 0 },
+  { id: "dif_base_pct", rotulo: "Aplicação contra a base", tipo: "percentual", casas: 1 },
   { id: "inicio", rotulo: "Início da vigência", tipo: "data" },
   { id: "fim", rotulo: "Fim da vigência", tipo: "data" },
   { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
@@ -360,7 +384,7 @@ export type LinhaComposicao = {
 
 /** Série do ajuste de arredondamento no gráfico de composição: cinza neutro, sem o significado de nenhum grupo. */
 export const ID_AJUSTE = "ajuste";
-export const ROTULO_AJUSTE = "Arredondamento das partes";
+export const ROTULO_AJUSTE = "Ajuste de arredondamento (não é componente)";
 export const COR_AJUSTE = "var(--serie-5)";
 
 /** Ajuste de uma linha: o alvo (tarifa em R$/MWh ou 100 em %) menos a soma das partes; zero quando a diferença não aparece nas duas casas. */
@@ -833,8 +857,8 @@ export function respostaTarifa(dataReferencia: string, resumo: ResumoTarifas, vi
   if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
   return (
     `Em ${dataBR(dataReferencia)}, ${perfil} kWh no mês custam, só pela tarifa B1 residencial homologada (TE + TUSD, sem tributos e sem bandeira), ` +
-    `de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}); ` +
-    `a mediana entre ${resumo.n} distribuidoras é ${reais(resumo.perfis_mediana[chave])}, ou ${rsKwh(resumo.mediana)}.`
+    `de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}) entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo; ` +
+    `a mediana dessas ${resumo.n} é ${reais(resumo.perfis_mediana[chave])}, ou ${rsKwh(resumo.mediana)}.`
   );
 }
 
@@ -906,28 +930,67 @@ export function respostaBandeira(b: Bandeiras): string {
   return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`;
 }
 
+/**
+ * Valores nominais (a moeda da época, como a fonte publica) ou em reais do mês-base do IPCA: a escolha do leitor (?valores=) vale para o
+ * painel inteiro, então toda frase, número de destaque, tabela e exportação que traz dinheiro do painel de subsídios e da CDE passa por
+ * aqui e diz em que moeda está. `fatores` traz o fator de cada ano (`fatoresReaisPorAno`); ano sem fator não tem valor em reais, e o
+ * nominal nunca passa por real.
+ */
+export type ModoValores = "nominal" | "real";
+export const CAMPO_VALORES = campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal", { param: "valores" });
+export type ValoresDoPainel = { modo: ModoValores; base: string | null; fatores: Readonly<Record<string, FatorReal | null>> };
+export const VALORES_NOMINAIS: ValoresDoPainel = { modo: "nominal", base: null, fatores: {} };
+
+/** O valor (em R$) do ano na moeda escolhida: o nominal, ou o nominal vezes o fator do ano; null sem valor ou, em reais, sem fator do ano. */
+export function valorNoModo(rs: number | null | undefined, ano: string, v: ValoresDoPainel): number | null {
+  if (rs === null || rs === undefined || !Number.isFinite(rs)) return null;
+  if (v.modo === "nominal") return rs;
+  const f = v.fatores[ano] ?? null;
+  return f ? rs * f.fator : null;
+}
+
+/** "em reais de ago/2026" ou "nominais"; a frase de moeda que acompanha todo número do painel. */
+export function rotuloMoeda(v: ValoresDoPainel): string {
+  return v.modo === "real" && v.base ? `em reais de ${v.base}` : "nominais, na moeda da época";
+}
+
 /** P050: subsídios do último ano completo e a maior categoria. */
-export function respostaSubsidios(s: Subsidios): string {
+export function respostaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
   if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
+  const total = valorNoModo(ano.soma_categorias, ano.ano, v);
+  if (total === null) {
+    return `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano. O valor nominal, na moeda da época, é ${reais(ano.soma_categorias / BI, 2)} bilhões.`;
+  }
   const cats = Object.entries(ano.categorias)
     .filter((e): e is [string, number] => e[1] !== null)
     .sort((a, b) => b[1] - a[1]);
   const maior = cats[0];
-  const maiorTxt = maior ? `; a maior categoria foi ${maior[0]} (${reais(maior[1] / BI, 2)} bilhões)` : "";
+  const maiorTxt = maior ? `; a maior categoria foi ${maior[0]} (${reais((valorNoModo(maior[1], ano.ano, v) as number) / BI, 2)} bilhões)` : "";
+  const moeda =
+    v.modo === "real"
+      ? ` Valores ${rotuloMoeda(v)}, corrigidos pelo IPCA; o valor nominal, na moeda da época, é ${reais(ano.soma_categorias / BI, 2)} bilhões.`
+      : ` Valores ${rotuloMoeda(v)}.`;
   return (
-    `Em ${ano.ano}, foram homologados ${reais(ano.soma_categorias / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
-    `para cobrir descontos a categorias de usuários${maiorTxt}. É o valor homologado, não o desembolso realizado, e não são transferências a famílias.`
+    `Em ${ano.ano}, foram homologados ${reais(total / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
+    `para cobrir descontos a categorias de usuários${maiorTxt}. É o valor homologado, não o desembolso realizado, e não são transferências a famílias.${moeda}`
   );
 }
 
 /** P050: orçamento da CDE do último ano, peso das quotas e da Tarifa Social. */
-export function respostaCde(f: FinanciamentoCde | null): string {
+export function respostaCde(f: FinanciamentoCde | null, v: ValoresDoPainel = VALORES_NOMINAIS): string {
   if (!f) return "O orçamento da CDE não foi publicado nesta gold.";
   const t = f.totais.find((x) => x.ano === f.ultimo_ano);
   if (!t || t.despesa === null) return `Sem orçamento da CDE publicado para ${f.ultimo_ano}.`;
+  const despesa = valorNoModo(t.despesa, t.ano, v);
+  const valor =
+    despesa === null
+      ? `${reais(t.despesa / BI, 2)} bilhões nominais (o IPCA não cobre o ano, e sem ele não há valor em reais)`
+      : v.modo === "real"
+        ? `${reais(despesa / BI, 2)} bilhões ${rotuloMoeda(v)} (${reais(t.despesa / BI, 2)} bilhões nominais)`
+        : `${reais(despesa / BI, 2)} bilhões ${rotuloMoeda(v)}`;
   return (
-    `O orçamento aprovado ou previsto da CDE para ${t.ano} é de ${reais(t.despesa / BI, 2)} bilhões: ${pct(t.quotas_pct, 1)} das receitas vêm das quotas cobradas nas tarifas ` +
+    `O orçamento aprovado ou previsto da CDE para ${t.ano} é de ${valor}: ${pct(t.quotas_pct, 1)} das receitas vêm das quotas cobradas nas tarifas ` +
     `de todos os consumidores, e a Tarifa Social responde por ${pct(t.tarifa_social_pct, 1)} das despesas.`
   );
 }
@@ -944,7 +1007,7 @@ export function vereditoTarifa(dataReferencia: string, resumo: ResumoTarifas, vi
   const menor = ord[0];
   const maior = ord[ord.length - 1];
   if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
-  return `Em ${dataBR(dataReferencia)}, ${perfil} kWh no mês custam de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}), conforme a distribuidora, só pela tarifa.`;
+  return `Em ${dataBR(dataReferencia)}, entre as ${resumo.n} distribuidoras com tarifa vigente no arquivo, ${perfil} kWh no mês custam de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}), conforme a distribuidora, só pela tarifa.`;
 }
 
 /** Veredito do P048: os dois maiores grupos da tarifa B1 na média das distribuidoras, em %. Os demais grupos, os itens negativos e a CDE ficam na resposta completa. */
@@ -987,12 +1050,14 @@ export function vereditoBandeira(b: Bandeiras): string {
 }
 
 /** Veredito do P050 (subsídios): quanto foi homologado para repasse da CDE no último ano completo, com a ressalva de que não é desembolso nem transferência a famílias. O orçamento e a maior categoria ficam na resposta completa. */
-export function vereditoSubsidios(s: Subsidios): string {
+export function vereditoSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
   if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
+  const total = valorNoModo(ano.soma_categorias, ano.ano, v);
+  if (total === null) return `Em ${ano.ano}, o valor em reais de ${v.base ?? "mês-base"} não pode ser calculado: o IPCA não cobre o ano.`;
   return (
-    `Em ${ano.ano}, foram homologados ${reais(ano.soma_categorias / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
-    `para cobrir descontos a categorias de usuários. Não são desembolso realizado nem transferências a famílias.`
+    `Em ${ano.ano}, foram homologados ${reais(total / BI, 2)} bilhões para repasse da Conta de Desenvolvimento Energético (CDE) às distribuidoras, ` +
+    `para cobrir descontos a categorias de usuários (valores ${rotuloMoeda(v)}). Não são desembolso realizado nem transferências a famílias.`
   );
 }
 
@@ -1036,24 +1101,37 @@ export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evo
   return `${hoje}${antes}${motivo}`;
 }
 
+/**
+ * A última mudança da tarifa B1 de uma distribuidora, em uma frase: a data, o ato, a variação com o verbo e o IPCA desde a mudança anterior.
+ * É o dado que quem acompanha o reajuste procura (quando foi e quanto), ao lado da variação entre duas datas da janela.
+ */
+export function textoUltimaMudanca(u: UltimoEvento): string {
+  const nome = rotuloDistribuidora(u[1], u[0]);
+  const perimetro = u[8] ? ` É mudança de perímetro (${u[8]}): compara áreas diferentes.` : "";
+  return `${nome}: a última mudança da tarifa B1 foi em ${dataBR(u[2])} (${u[3]}), quando a tarifa ${verboVariacao(u[4])}; o IPCA desde a mudança anterior (${mesAno(`${u[6]}-01`)} a ${mesAno(`${u[7]}-01`)}) foi ${pct(u[5], 2)}.${perimetro}`;
+}
+
 /** P050, "o que mudou" nos subsídios: categoria com a maior variação absoluta entre os dois últimos anos completos. */
-export function mudancaSubsidios(s: Subsidios): string {
+export function mudancaSubsidios(s: Subsidios, v: ValoresDoPainel = VALORES_NOMINAIS): string {
   const completos = s.anual.filter((a) => !a.parcial);
   if (completos.length < 2) return "Menos de dois anos completos publicados: sem comparação anual.";
   const [a0, a1] = completos.slice(-2);
+  // cada ano na sua moeda: em reais, o fator do ano; a maior mudança é a da moeda escolhida
+  const de0 = (x: number | null | undefined) => valorNoModo(x, a0.ano, v);
+  const para1 = (x: number | null | undefined) => valorNoModo(x, a1.ano, v);
+  const moeda = ` Valores ${rotuloMoeda(v)}.`;
   let maior: { cat: string; de: number; para: number } | null = null;
   for (const cat of categoriasSubsidio(s)) {
-    const de = a0.categorias[cat];
-    const para = a1.categorias[cat];
-    if (de === null || de === undefined || para === null || para === undefined) continue;
+    const de = de0(a0.categorias[cat]);
+    const para = para1(a1.categorias[cat]);
+    if (de === null || para === null) continue;
     if (!maior || Math.abs(para - de) > Math.abs(maior.para - maior.de)) maior = { cat, de, para };
   }
-  const total =
-    a0.soma_categorias !== null && a1.soma_categorias !== null
-      ? ` O total passou de ${reais(a0.soma_categorias / BI, 2)} bilhões para ${reais(a1.soma_categorias / BI, 2)} bilhões.`
-      : "";
-  if (!maior) return `Sem categoria com valor nos dois anos (${a0.ano} e ${a1.ano}).${total}`;
-  return `De ${a0.ano} para ${a1.ano}, a maior mudança foi em ${maior.cat}: de ${reais(maior.de / BI, 2)} bilhões para ${reais(maior.para / BI, 2)} bilhões.${total}`;
+  const t0 = de0(a0.soma_categorias);
+  const t1 = para1(a1.soma_categorias);
+  const total = t0 !== null && t1 !== null ? ` O total passou de ${reais(t0 / BI, 2)} bilhões para ${reais(t1 / BI, 2)} bilhões.` : "";
+  if (!maior) return `Sem categoria com valor nos dois anos (${a0.ano} e ${a1.ano}).${total}${moeda}`;
+  return `De ${a0.ano} para ${a1.ano}, a maior mudança foi em ${maior.cat}: de ${reais(maior.de / BI, 2)} bilhões para ${reais(maior.para / BI, 2)} bilhões.${total}${moeda}`;
 }
 
 /**
@@ -1186,15 +1264,33 @@ export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
 }
 
 /**
- * Ressalva que acompanha a faixa de métricas da abertura: o que a tarifa não inclui e como a mediana é feita. O universo (quantas
- * distribuidoras) é o `n` do mesmo resumo que alimenta o ranking e a mediana.
+ * Ressalva que acompanha a faixa de métricas da abertura: o peso em consumidores da mediana, a cobertura do ranking (distribuidoras e UCs,
+ * piso de 99% das UCs) e o que mudaria nos extremos com a última tarifa das que faltam, e quantas saíram do conjunto desde o dia 1º. O que
+ * a tarifa não inclui (tributos, iluminação, bandeira) fica no limite da abertura, uma vez só. O universo (quantas distribuidoras) é o `n`
+ * do mesmo resumo que alimenta o ranking e a mediana.
  */
-export function notaFaixaTarifa(resumo: ResumoTarifas, comparacao: ComparacaoMesmoConjunto | null = null): string {
-  const base =
-    `Tarifa homologada (TE + TUSD), sem tributos (ICMS, PIS/Pasep e Cofins), iluminação pública e bandeira: não é o valor da fatura. ` +
-    `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente, sem ponderar por consumidores; não é o custo médio do país.`;
+export function notaFaixaTarifa(
+  resumo: ResumoTarifas,
+  comparacao: ComparacaoMesmoConjunto | null = null,
+  mais: {
+    perfil: Perfil;
+    /** Mediana do custo do perfil ponderada pelas UCs (`medianaPonderadaDoPerfil`); null sem UCs. */
+    ponderada: number | null;
+    cobertura: CoberturaRanking | null;
+    /** Menor e maior custo do perfil no ranking (e quem são), para dizer o que mudaria. */
+    extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null };
+  } | null = null,
+): string {
+  const chave = mais ? (String(mais.perfil) as "100" | "200" | "300") : null;
+  const simples = mais && chave ? resumo.perfis_mediana[chave] : null;
+  const pond =
+    mais && mais.ponderada !== null
+      ? `Ponderada pelas UCs de cada distribuidora, a mediana de ${mais.perfil} kWh é ${reais(mais.ponderada)}${simples !== null ? ` (a simples é ${reais(simples)})` : ""}.`
+      : `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente: cada uma conta uma vez, sem ponderar por consumidores.`;
+  const cobertura = mais?.cobertura ? ` ${textoCobertura(mais.cobertura, mais.perfil, mais.extremos)}` : "";
   // o ranking de 30/09 não é o conjunto de 1º/09: quantas saíram fica dito junto da mediana
-  return comparacao && comparacao.saidas.n > 0 ? `${base} Em ${dataBR(comparacao.de)} eram ${comparacao.nDe}: ${comparacao.saidas.n} saíram do conjunto.` : base;
+  const saiu = comparacao && comparacao.saidas.n > 0 ? ` Em ${dataBR(comparacao.de)} eram ${comparacao.nDe}: ${comparacao.saidas.n} saíram do conjunto.` : "";
+  return `${pond}${cobertura}${saiu}`;
 }
 
 export type ResumoSerieReal = {
@@ -1490,6 +1586,253 @@ export function textoResumoDoRanking(r: ResumoDoRanking, perfil: Perfil, grupo: 
   );
 }
 
+/* ---------- régua do ranking, peso em consumidores, cobertura e distribuidoras fora do ranking ---------- */
+
+/**
+ * Mediana ponderada: o menor valor em que a soma dos pesos, do menor valor para cima, chega à metade do peso total. Par sem peso (ou com
+ * peso zero) fica de fora; sem nenhum par com peso, não há mediana.
+ */
+export function medianaPonderada(pares: readonly (readonly [number, number | null | undefined])[]): number | null {
+  const v = pares.filter((p): p is readonly [number, number] => Number.isFinite(p[0]) && typeof p[1] === "number" && p[1] > 0).sort((a, b) => a[0] - b[0]);
+  const total = v.reduce((soma, p) => soma + p[1], 0);
+  if (!v.length || total <= 0) return null;
+  let acumulado = 0;
+  for (const [x, w] of v) {
+    acumulado += w;
+    if (acumulado * 2 >= total) return x;
+  }
+  return v[v.length - 1][0];
+}
+
+/** A mediana do custo do perfil entre as distribuidoras do ranking, ponderada pelas UCs de cada uma; `semUcs` conta as que ficaram sem peso. */
+export function medianaPonderadaDoPerfil(
+  vigentes: readonly Pick<TarifaVigente, "cnpj" | "perfis">[],
+  info: Readonly<Record<string, Pick<InfoDistribuidora, "ucs">>>,
+  perfil: Perfil,
+): { valor: number | null; semUcs: number } {
+  const chave = String(perfil) as "100" | "200" | "300";
+  const pares = vigentes.flatMap((v) => (v.perfis[chave] === null || v.perfis[chave] === undefined ? [] : [[v.perfis[chave] as number, info[v.cnpj]?.ucs ?? null] as const]));
+  return { valor: medianaPonderada(pares), semUcs: pares.filter((p) => !(typeof p[1] === "number" && p[1] > 0)).length };
+}
+
+/** "88,8 mil UCs", "5.835 UCs": o peso da distribuidora em consumidores, para ler o extremo ao lado do valor. */
+export function textoUcs(ucs: number | null | undefined): string {
+  if (ucs === null || ucs === undefined || !Number.isFinite(ucs)) return "UCs não informadas";
+  if (ucs < 1000) return `${num(ucs, 0)} UCs`;
+  return `${num(ucs / 1000, ucs >= 100000 ? 0 : 1)} mil UCs`;
+}
+
+export type ReguaDoRanking = {
+  /** Distribuidoras em que a tarifa de aplicação difere da base econômica em mais de `LIMITE_DIFERENCA_BASE` %. */
+  marcadas: number;
+  /** A de maior diferença entre as duas posições, dita como exemplo. */
+  exemplo: { sigla: string; posicao: number; posicaoBase: number; difPct: number } | null;
+};
+
+/** Quantas distribuidoras mudam de lugar conforme a régua (aplicação ou base econômica) e o caso de maior mudança. */
+export function reguaDoRanking(linhas: readonly Pick<LinhaRanking, "sigla" | "posicao" | "posicao_base" | "dif_base_pct">[]): ReguaDoRanking {
+  const marcadas = linhas.filter((l) => marcaBase(l));
+  const exemplo = marcadas
+    .filter((l) => l.posicao_base !== null && l.dif_base_pct !== null)
+    .reduce<(typeof marcadas)[number] | null>((m, l) => (m === null || Math.abs(l.posicao - (l.posicao_base as number)) > Math.abs(m.posicao - (m.posicao_base as number)) ? l : m), null);
+  return {
+    marcadas: marcadas.length,
+    exemplo: exemplo ? { sigla: exemplo.sigla, posicao: exemplo.posicao, posicaoBase: exemplo.posicao_base as number, difPct: exemplo.dif_base_pct as number } : null,
+  };
+}
+
+/** Diz qual régua ordena o ranking, onde está a outra e quantas distribuidoras mudam de lugar (marcadas com †). */
+export function textoReguaDoRanking(r: ReguaDoRanking): string {
+  const base =
+    "O ranking ordena pela tarifa de aplicação (TE + TUSD homologadas), a que a distribuidora cobra. A base econômica, que tira os componentes financeiros do processo tarifário, é a outra régua: aparece na tabela e na dica de cada ponto marcado.";
+  if (!r.marcadas) return `${base} As duas diferem em menos de ${LIMITE_DIFERENCA_BASE}% em todas as distribuidoras.`;
+  const ex = r.exemplo
+    ? ` Por exemplo, ${r.exemplo.sigla} é a ${r.exemplo.posicao}ª pela aplicação e a ${r.exemplo.posicaoBase}ª pela base, com a aplicação ${pct(Math.abs(r.exemplo.difPct), 1)} ${r.exemplo.difPct < 0 ? "abaixo" : "acima"} da base.`
+    : "";
+  return `${base} Em ${r.marcadas} distribuidoras, marcadas com †, as duas diferem em mais de ${LIMITE_DIFERENCA_BASE}%.${ex}`;
+}
+
+/** Dica de um ponto marcado: as duas posições e a diferença, em uma frase curta para o título do ponto. */
+export function dicaDaRegua(l: Pick<LinhaRanking, "posicao" | "posicao_base" | "dif_base_pct">): string | undefined {
+  if (!marcaBase(l) || l.posicao_base === null || l.dif_base_pct === null) return undefined;
+  return `${l.posicao}ª pela aplicação, ${l.posicao_base}ª pela base econômica (aplicação ${pct(Math.abs(l.dif_base_pct), 1)} ${l.dif_base_pct < 0 ? "abaixo" : "acima"} da base)`;
+}
+
+export type SituacaoForaDoRanking = "encerrada" | "incorporada" | "sem-tarifa";
+
+export type ForaDoRanking = {
+  id: string;
+  sigla: string;
+  situacao: SituacaoForaDoRanking;
+  /** O motivo escrito pela gold, com a data. */
+  motivo: string;
+  dias: number;
+  /** Fim da última vigência (AAAA-MM-DD). */
+  fim: string;
+  /** Custo de 100, 200 e 300 kWh pela última tarifa que a distribuidora teve (a última vigência do arquivo); null sem histórico. */
+  custos: [number | null, number | null, number | null] | null;
+};
+
+/** As distribuidoras do conjunto sem tarifa vigente na data: o motivo de cada uma e o custo pela última tarifa que tiveram. */
+export function foraDoRanking(semVigente: readonly SemVigente[], historico: HistoricoB1["distribuidoras"] | null): ForaDoRanking[] {
+  return semVigente.map((s) => {
+    const vigs = historico?.[s.cnpj]?.vigencias ?? [];
+    const v = vigs.find((x) => x[0] === s.ultima_vigencia.inicio) ?? vigs[vigs.length - 1] ?? null;
+    return {
+      id: s.cnpj,
+      sigla: rotuloDistribuidora(s.sigla, s.cnpj),
+      situacao: s.incorporada_por ? "incorporada" : s.dias_sem_tarifa <= 90 ? "encerrada" : "sem-tarifa",
+      motivo: s.motivo,
+      dias: s.dias_sem_tarifa,
+      fim: s.ultima_vigencia.fim,
+      custos: v ? [custoDoPerfil(v[5], 100), custoDoPerfil(v[5], 200), custoDoPerfil(v[5], 300)] : null,
+    };
+  });
+}
+
+const CODIGO_SITUACAO: SituacaoForaDoRanking[] = ["encerrada", "incorporada", "sem-tarifa"];
+
+/** [CNPJ, sigla, situação (0 vigência encerrada há até 90 dias, 1 incorporada, 2 sem tarifa há mais tempo), fim da última vigência, custo de 100, 200 e 300 kWh pela última tarifa]. */
+export type ForaCompacto = [string, string, 0 | 1 | 2, string, number | null, number | null, number | null];
+
+export function compactarFora(f: readonly ForaDoRanking[]): ForaCompacto[] {
+  return f.map((x) => [x.id, x.sigla, CODIGO_SITUACAO.indexOf(x.situacao) as 0 | 1 | 2, x.fim, x.custos?.[0] ?? null, x.custos?.[1] ?? null, x.custos?.[2] ?? null]);
+}
+
+export type ForaDoRankingDaTela = { id: string; sigla: string; situacao: SituacaoForaDoRanking; fim: string; custos: [number | null, number | null, number | null] | null };
+
+export function expandirFora(c: readonly ForaCompacto[]): ForaDoRankingDaTela[] {
+  return c.map((x) => ({ id: x[0], sigla: x[1], situacao: CODIGO_SITUACAO[x[2]], fim: x[3], custos: x[4] === null && x[5] === null && x[6] === null ? null : [x[4], x[5], x[6]] }));
+}
+
+/** O que a página diz de uma distribuidora escolhida que não está no ranking: o motivo, com a data, e o custo pela última tarifa que ela teve. */
+export function textoForaDoRanking(f: ForaDoRankingDaTela, perfil: Perfil, dataReferencia: string): string {
+  const custo = f.custos?.[perfil === 100 ? 0 : perfil === 200 ? 1 : 2] ?? null;
+  const motivo =
+    f.situacao === "encerrada"
+      ? `a vigência da tarifa B1 terminou em ${dataBR(f.fim)} e a tarifa seguinte ainda não consta no arquivo de ${dataBR(dataReferencia)}`
+      : f.situacao === "incorporada"
+        ? `a distribuidora foi incorporada por outra, e a tarifa dela deixou de ser publicada separada`
+        : `a última tarifa B1 terminou em ${dataBR(f.fim)}, há mais de 90 dias, e o arquivo não traz outra`;
+  const ultimo = custo === null ? "" : ` Pela última tarifa que teve, ${perfil} kWh custavam ${reais(custo)}; esse valor não entra no ranking nem na mediana.`;
+  return `${f.sigla} não está no ranking: ${motivo}.${ultimo}`;
+}
+
+/** Contagem por situação das que ficaram fora do ranking, para a linha de Entender; a data é a do fim da vigência que a maioria das encerradas tem. */
+export function resumoForaDoRanking(fora: readonly Pick<ForaDoRanking, "situacao" | "fim">[]): { total: number; encerradas: number; incorporadas: number; semTarifa: number; dataEncerramento: string | null } {
+  const encerradas = fora.filter((f) => f.situacao === "encerrada");
+  const freq = new Map<string, number>();
+  for (const f of encerradas) freq.set(f.fim, (freq.get(f.fim) ?? 0) + 1);
+  const dataEncerramento = Array.from(freq.entries()).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? 1 : -1))[0]?.[0] ?? null;
+  return { total: fora.length, encerradas: encerradas.length, incorporadas: fora.filter((f) => f.situacao === "incorporada").length, semTarifa: fora.filter((f) => f.situacao === "sem-tarifa").length, dataEncerramento };
+}
+
+/** A linha de Entender sobre quem ficou fora do ranking: a contagem e o motivo de cada grupo. A lista completa está em Auditar. */
+export function textoForaDoRankingLinha(r: ReturnType<typeof resumoForaDoRanking>): string | null {
+  if (!r.total) return null;
+  const plural = (n: number, um: string, varios: string) => `${num(n, 0)} ${n === 1 ? um : varios}`;
+  const partes = [
+    r.encerradas ? `${plural(r.encerradas, "teve", "tiveram")} a vigência encerrada${r.dataEncerramento ? ` em ${dataBR(r.dataEncerramento)}` : " há até 90 dias"} e a tarifa seguinte ainda não está no arquivo` : "",
+    r.incorporadas ? `${plural(r.incorporadas, "foi incorporada", "foram incorporadas")} por outra distribuidora` : "",
+    r.semTarifa ? `${plural(r.semTarifa, "está sem tarifa", "estão sem tarifa")} há mais de 90 dias` : "",
+  ].filter(Boolean);
+  return `Fora do ranking: ${plural(r.total, "distribuidora", "distribuidoras")}. ${partes.join("; ")}.`;
+}
+
+/** Piso de cobertura em UCs da regra de completude (a mesma de Qualidade: 99% das UCs). */
+export const PISO_COBERTURA_UCS = 0.99;
+
+export type CoberturaRanking = {
+  /** Distribuidoras com tarifa vigente (as do ranking) e o universo: elas mais as que acabaram de ter a vigência encerrada e ainda não têm a seguinte. */
+  n: number;
+  universo: number;
+  pctDistribuidoras: number;
+  /** UCs das do ranking, do universo e a razão; null quando a gold de Qualidade não traz as UCs. */
+  ucs: number | null;
+  ucsUniverso: number | null;
+  pctUcs: number | null;
+  semUcs: number;
+  piso: number;
+  /** A cobertura em UCs chega ao piso; null sem UCs para medir. */
+  atingePiso: boolean | null;
+  /** As que ficaram de fora do universo medido: quantas, UCs somadas e a maior delas. */
+  nFora: number;
+  pctUcsFora: number | null;
+  maiorFora: { sigla: string; ucs: number } | null;
+  /** O menor e o maior custo de cada perfil entre as de fora, pela última tarifa que tiveram: o que mudaria nos extremos se ela seguisse valendo. */
+  seMantidas: Record<"100" | "200" | "300", { menor: { sigla: string; valor: number } | null; maior: { sigla: string; valor: number } | null }>;
+};
+
+/**
+ * Regra de completude do ranking: o universo é o das distribuidoras com tarifa vigente mais as que tiveram a vigência encerrada há até 90 dias
+ * (a tarifa seguinte ainda não consta no arquivo); as incorporadas e as sem tarifa há mais tempo não contam. A cobertura é medida em
+ * distribuidoras e em UCs (Qualidade usa o piso de 99% das UCs). Abaixo do piso, a página não esconde o ranking: diz que o menor e o maior
+ * valem só para as que têm tarifa e que podem mudar. Acima, diz a cobertura e o que mudaria nos extremos com a última tarifa das que faltam.
+ */
+export function coberturaDoRanking(a: {
+  vigentes: readonly Pick<TarifaVigente, "cnpj">[];
+  fora: readonly ForaDoRanking[];
+  info: Readonly<Record<string, Pick<InfoDistribuidora, "ucs">>>;
+}): CoberturaRanking {
+  const encerradas = a.fora.filter((f) => f.situacao === "encerrada");
+  const ucsDe = (id: string) => {
+    const u = a.info[id]?.ucs;
+    return typeof u === "number" && u > 0 ? u : null;
+  };
+  const universo = a.vigentes.length + encerradas.length;
+  const ucs = a.vigentes.reduce((s, v) => s + (ucsDe(v.cnpj) ?? 0), 0);
+  const ucsFora = encerradas.reduce((s, f) => s + (ucsDe(f.id) ?? 0), 0);
+  const semUcs = a.vigentes.filter((v) => ucsDe(v.cnpj) === null).length + encerradas.filter((f) => ucsDe(f.id) === null).length;
+  const mediu = ucs > 0;
+  const pctUcs = mediu ? (ucs / (ucs + ucsFora)) * 100 : null;
+  const maior = encerradas.reduce<{ sigla: string; ucs: number } | null>((m, f) => {
+    const u = ucsDe(f.id);
+    return u !== null && (m === null || u > m.ucs) ? { sigla: f.sigla, ucs: u } : m;
+  }, null);
+  const extremos = (i: 0 | 1 | 2) => {
+    const com = encerradas.flatMap((f) => (f.custos && f.custos[i] !== null ? [{ sigla: f.sigla, valor: f.custos[i] as number }] : []));
+    return {
+      menor: com.length ? com.reduce((m, x) => (x.valor < m.valor ? x : m)) : null,
+      maior: com.length ? com.reduce((m, x) => (x.valor > m.valor ? x : m)) : null,
+    };
+  };
+  return {
+    n: a.vigentes.length,
+    universo,
+    pctDistribuidoras: universo ? (a.vigentes.length / universo) * 100 : 100,
+    ucs: mediu ? ucs : null,
+    ucsUniverso: mediu ? ucs + ucsFora : null,
+    pctUcs,
+    semUcs,
+    piso: PISO_COBERTURA_UCS,
+    atingePiso: pctUcs === null ? null : pctUcs >= PISO_COBERTURA_UCS * 100,
+    nFora: encerradas.length,
+    pctUcsFora: pctUcs === null ? null : 100 - pctUcs,
+    maiorFora: maior,
+    seMantidas: { "100": extremos(0), "200": extremos(1), "300": extremos(2) },
+  };
+}
+
+/**
+ * A frase da cobertura para a nota da faixa de métricas: quantas distribuidoras e que parte das UCs o ranking cobre, o piso, e o que
+ * mudaria no menor e no maior com a última tarifa das que faltam. Abaixo do piso, a frase vira o aviso de que os extremos valem só
+ * para as que têm tarifa.
+ */
+export function textoCobertura(c: CoberturaRanking, perfil: Perfil, extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null }): string {
+  const dist = `${c.n} de ${c.universo} distribuidoras (${num(c.pctDistribuidoras, 1)}%)`;
+  if (c.pctUcs === null) return `Cobertura: ${dist}; sem as UCs não há como medir o peso das que ficaram de fora, e o menor e o maior podem mudar quando elas publicarem a tarifa seguinte.`;
+  const base = `${dist} e ${num(c.pctUcs, 2)}% das UCs`;
+  const maiorFora = c.maiorFora ? `, a maior, ${c.maiorFora.sigla}, com ${textoUcs(c.maiorFora.ucs)}` : "";
+  const fora = `As ${c.nFora} que ficaram de fora, sem a tarifa seguinte no arquivo, somam ${num(c.pctUcsFora ?? 0, 2)}% das UCs${maiorFora}.`;
+  const se = c.seMantidas[String(perfil) as "100" | "200" | "300"];
+  const muda: string[] = [];
+  if (se.menor && extremos.menor !== null && se.menor.valor < extremos.menor) muda.push(`o menor custo de ${perfil} kWh seria ${reais(se.menor.valor)} (${se.menor.sigla}), e não ${reais(extremos.menor)}${extremos.siglaMenor ? ` (${extremos.siglaMenor})` : ""}`);
+  if (se.maior && extremos.maior !== null && se.maior.valor > extremos.maior) muda.push(`o maior seria ${reais(se.maior.valor)} (${se.maior.sigla}), e não ${reais(extremos.maior)}${extremos.siglaMaior ? ` (${extremos.siglaMaior})` : ""}`);
+  const efeito = muda.length ? `Com a última tarifa delas, ${muda.join("; ")}.` : "Com a última tarifa delas, o menor e o maior custo não mudariam.";
+  if (c.atingePiso) return `Cobertura: ${base}, acima do piso de ${num(c.piso * 100, 0)}% das UCs que Qualidade usa. ${fora} ${efeito}`;
+  return `Cobertura abaixo do piso de ${num(c.piso * 100, 0)}% das UCs que Qualidade usa: ${base}. O menor e o maior valem só para as ${c.n} com tarifa e podem mudar quando as demais publicarem. ${fora} ${efeito}`;
+}
+
 /**
  * O que a busca por município achou: a(s) distribuidora(s) que a relação oficial liga ao município, onde cada uma está no ranking e o
  * custo do perfil, e as que não têm tarifa B1 vigente na data. Município com mais de uma distribuidora diz que a da casa está na fatura.
@@ -1677,6 +2020,36 @@ export function emReaisDoMesBase<L extends Record<string, string | number | null
   });
 }
 
+export type ReaisDaTabela = {
+  /** Colunas de dinheiro (R$ bilhões nominais nas linhas recebidas). */
+  chaves: string[];
+  /** Mês-base do IPCA, "ago/2026". */
+  base: string | null;
+  /** Fator de cada ano, para tabela com uma linha por ano (coluna `chaveAno`). */
+  fatores?: Record<string, FatorReal | null>;
+  chaveAno?: string;
+  /** Um fator só, para tabela de um ano (subsídios por distribuidora do último ano completo). */
+  fatorUnico?: FatorReal | null;
+};
+
+/** A tabela tem versão em reais: há mês-base e ao menos um fator. */
+export function tabelaTemReal(r: ReaisDaTabela | undefined): boolean {
+  return !!r && r.base !== null && (r.fatorUnico != null || Object.values(r.fatores ?? {}).some((f) => f !== null));
+}
+
+/** As linhas de uma tabela de dinheiro em reais do mês-base: cada valor pelo fator do ano (ou o fator único); sem fator, null (nunca o nominal). */
+export function linhasEmReais<L extends Record<string, string | number | null | undefined>>(linhas: readonly L[], r: ReaisDaTabela): L[] {
+  return linhas.map((l) => {
+    const f = r.fatorUnico !== undefined ? r.fatorUnico : (r.fatores?.[String(l[r.chaveAno ?? "ano"])] ?? null);
+    const out: Record<string, string | number | null | undefined> = { ...l };
+    for (const c of r.chaves) {
+      const v = l[c];
+      out[c] = typeof v === "number" && f ? v * f.fator : null;
+    }
+    return out as L;
+  });
+}
+
 /* ---------- quotas da CDE: série e leitura do residual ---------- */
 
 export type PontoQuotas = { ano: string; pct: number | null };
@@ -1701,9 +2074,66 @@ export function receitasQueZeraram(f: FinanciamentoCde): ReceitaQueZerou[] {
     });
 }
 
+export type CategoriaQueZerou = {
+  categoria: string;
+  /** Maior valor da série de anos completos (R$ nominais) e o ano dele. */
+  pico: number;
+  anoDoPico: string;
+  /** Valor do último ano completo (R$ nominais) e o primeiro ano da sequência que termina nele com valor até a fração do pico. */
+  ultimo: number;
+  anoUltimo: string;
+  desde: string;
+};
+
 /**
- * Nota curta do destaque das quotas (ao lado do número): que o valor é orçamento, os dois anos anteriores e a quota como residual.
- * null sem orçamento ou sem a participação do último ano.
+ * Categorias de subsídio que caem a quase zero: nos anos completos, o valor do último ano é no máximo `fracao` do maior valor da
+ * série (que passou de `piso`, R$ nominais), e `desde` é o primeiro ano da sequência, até o último, em que o valor ficou nessa faixa
+ * (valores negativos entram). O controle existe para a queda não passar despercebida: a fonte publica o número e não diz o que mudou.
+ */
+export function categoriasQueZeraram(s: Subsidios, piso = 1e8, fracao = 0.05): CategoriaQueZerou[] {
+  const completos = s.anual.filter((a) => !a.parcial);
+  if (completos.length < 3) return [];
+  const ultimoAno = completos[completos.length - 1];
+  const achadas: CategoriaQueZerou[] = [];
+  for (const categoria of categoriasSubsidio(s)) {
+    const serie = completos.map((a) => ({ ano: a.ano, v: a.categorias[categoria] ?? null }));
+    const com = serie.filter((x): x is { ano: string; v: number } => x.v !== null);
+    if (!com.length) continue;
+    const pico = com.reduce((m, x) => (x.v > m.v ? x : m), com[0]);
+    const ultimo = serie[serie.length - 1].v;
+    if (ultimo === null || pico.v < piso || ultimo > pico.v * fracao) continue;
+    let i = serie.length - 1;
+    while (i > 0 && serie[i - 1].v !== null && (serie[i - 1].v as number) <= pico.v * fracao) i--;
+    achadas.push({ categoria, pico: pico.v, anoDoPico: pico.ano, ultimo, anoUltimo: ultimoAno.ano, desde: serie[i].ano });
+  }
+  return achadas;
+}
+
+/**
+ * A frase do controle: quais categorias caíram a quase zero e desde quando, com o maior valor da série e o último, na moeda escolhida,
+ * e o que a fonte diz (nada) sobre a mudança. null quando nenhuma categoria cai. Não afirma causa regulatória: o arquivo não traz.
+ */
+export function textoCategoriasQueZeraram(lista: readonly CategoriaQueZerou[], v: ValoresDoPainel = VALORES_NOMINAIS): string | null {
+  if (!lista.length) return null;
+  const nomes = lista.map((c) => c.categoria);
+  const juntos = nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0];
+  const unidade = (x: number) => (Math.abs(x) >= 2 ? "bilhões" : "bilhão");
+  const bi = (rs: number, ano: string) => {
+    const x = valorNoModo(rs, ano, v);
+    return x === null ? `${reais(rs / BI, 2)} ${unidade(rs / BI)} nominais` : `${reais(x / BI, 2)} ${unidade(x / BI)}`;
+  };
+  const detalhe = lista.map((c) => `${c.categoria}, de ${bi(c.pico, c.anoDoPico)} em ${c.anoDoPico} a ${bi(c.ultimo, c.anoUltimo)} em ${c.anoUltimo}`).join("; ");
+  const desde = Array.from(new Set(lista.map((c) => c.desde))).join(" e ");
+  return (
+    `${juntos} ${lista.length > 1 ? "ficam" : "fica"} em quase zero (até 5% do maior valor da série) desde ${desde}: ${detalhe}. ` +
+    `O arquivo da ANEEL traz esses valores, positivos, zero ou negativos, e não explica a mudança. Não é falta de dado, e o observatório não confirmou a causa regulatória. Valores ${rotuloMoeda(v)}.`
+  );
+}
+
+/**
+ * Nota curta do destaque das quotas (ao lado do número): que o valor é orçamento (aprovado ou previsto, nunca execução), a ressalva das
+ * receitas do último ano que ainda não têm valor, os dois anos anteriores e a quota como residual. null sem orçamento ou sem a
+ * participação do último ano.
  */
 export function notaQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | null {
   if (!f) return null;
@@ -1711,15 +2141,18 @@ export function notaQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | 
   const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
   if (i < 0 || serie[i].pct === null) return null;
   const anteriores = serie.slice(Math.max(0, i - anosAntes), i).filter((p) => p.pct !== null);
-  const historico = anteriores.length ? ` Antes: ${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}.` : "";
-  return `Orçamento aprovado ou previsto pela ANEEL, não execução.${historico} A quota é o residual do orçamento: cobre o que as demais receitas não cobrem.`;
+  const historico = anteriores.length ? ` Antes: ${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}, também orçamento.` : "";
+  const semValor = f.totais.find((t) => t.ano === f.ultimo_ano)?.rubricas_sem_valor ?? [];
+  const incompleta = receitasQueZeraram(f).length > 0 || semValor.length > 0;
+  const ressalva = incompleta ? ` Em ${f.ultimo_ano} há receitas ainda sem valor ou em zero: a participação de ${f.ultimo_ano} não é comparável à dos anos anteriores até elas entrarem.` : "";
+  return `Orçamento aprovado ou previsto pela ANEEL, não execução.${historico}${ressalva} A quota é o residual do orçamento: cobre o que as demais receitas não cobrem.`;
 }
 
 /**
  * A leitura do destaque das quotas: série dos anos anteriores, a quota como residual do orçamento e o que mudou nas outras receitas
  * do último ano. Tudo do orçamento publicado; o residual é a regra que a nota da gold cita (a quota cobre a diferença).
  */
-export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | null {
+export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2, v: ValoresDoPainel = VALORES_NOMINAIS): string | null {
   if (!f) return null;
   const serie = serieQuotas(f);
   const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
@@ -1732,7 +2165,7 @@ export function textoResidualQuotas(f: FinanciamentoCde | null, anosAntes = 2): 
   const outras =
     zeraram.length || semValor.length
       ? ` Em ${f.ultimo_ano}, ${[
-          zeraram.length ? `${lista(zeraram.map((z) => z.fonte))} ${zeraram.length > 1 ? "aparecem" : "aparece"} como zero (em ${zeraram[0].anoAnterior}: ${lista(zeraram.map((z) => `R$ ${num(z.anterior / BI, 2)} bi`))})` : "",
+          zeraram.length ? `${lista(zeraram.map((z) => z.fonte))} ${zeraram.length > 1 ? "aparecem" : "aparece"} como zero (em ${zeraram[0].anoAnterior}: ${lista(zeraram.map((z) => { const x = valorNoModo(z.anterior, z.anoAnterior, v); return x === null ? `R$ ${num(z.anterior / BI, 2)} bi nominais` : `R$ ${num(x / BI, 2)} bi${v.modo === "real" ? ` (${rotuloMoeda(v)})` : ""}`; }))})` : "",
           semValor.length ? `${semValor.length} ${semValor.length === 1 ? "rubrica está sem valor publicado" : "rubricas estão sem valor publicado"}` : "",
         ]
           .filter(Boolean)

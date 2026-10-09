@@ -27,10 +27,11 @@ const PAGINAS = [
 ] as const;
 
 /**
- * Faixa de páginas irmãs do módulo (a página atual marcada com aria-current), no alto da página filha. Tem a mesma marcação da
- * NavegacaoLocal do sistema, mas os links levam junto a escolha de distribuidoras (?dist=) feita na outra página, como a Conta de luz
- * sempre fez; a mudança pedida à NavegacaoLocal está em docs/energia/redesign/pedidos/conta-de-luz.md. A abertura do módulo não leva
- * a faixa: ela tem o seu próprio caminho para a página filha (o resumo "O que mudou e quem financia os benefícios?").
+ * Faixa de páginas irmãs do módulo (a página atual marcada com aria-current), no alto das duas páginas: quem chega pela página principal
+ * vê logo a aba da outra, sem rolar até o resumo. Tem a mesma marcação da NavegacaoLocal do sistema, mas os links levam junto a escolha
+ * de distribuidoras (?dist=) feita na outra página, como a Conta de luz sempre fez; a mudança pedida à NavegacaoLocal está em
+ * docs/energia/redesign/pedidos/conta-de-luz.md. O resumo "O que mudou e quem financia os benefícios?" segue na página principal, com
+ * a resposta de cada painel da página filha.
  */
 export function Navegacao({ atual }: { atual: (typeof PAGINAS)[number]["id"] }) {
   return (

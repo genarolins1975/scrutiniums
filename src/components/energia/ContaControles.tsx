@@ -8,7 +8,8 @@ import { useId } from "react";
  * histórico e o voltar desfaz. O grupo mantém o nome acessível de antes (role radiogroup, nome igual à legenda visível).
  */
 
-export type OpcaoConta<T extends string> = { id: T; rotulo: string; detalhe?: string };
+/** `grupo` junta opções vizinhas sob um título na lista de seleção (optgroup); só `ContaLista` o usa. */
+export type OpcaoConta<T extends string> = { id: T; rotulo: string; detalhe?: string; grupo?: string };
 
 export function ContaEscolha<T extends string>({
   legenda,
@@ -74,11 +75,29 @@ export function ContaLista({
         onChange={(e) => onEscolher(e.target.value)}
         className="mt-1 min-h-[44px] w-full border border-linha bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-energia"
       >
-        {opcoes.map((o) => (
-          <option key={o.id} value={o.id}>
-            {o.rotulo}
-          </option>
-        ))}
+        {opcoes.flatMap((o, i) => {
+          const opcao = (
+            <option key={o.id} value={o.id}>
+              {o.rotulo}
+            </option>
+          );
+          if (!o.grupo) return [opcao];
+          if (opcoes[i - 1]?.grupo === o.grupo) return [];
+          // as opções vizinhas do mesmo grupo entram juntas sob o título
+          const doGrupo = [];
+          for (let k = i; k < opcoes.length && opcoes[k].grupo === o.grupo; k++) {
+            doGrupo.push(
+              <option key={opcoes[k].id} value={opcoes[k].id}>
+                {opcoes[k].rotulo}
+              </option>,
+            );
+          }
+          return [
+            <optgroup key={`g-${o.grupo}`} label={o.grupo}>
+              {doGrupo}
+            </optgroup>,
+          ];
+        })}
       </select>
     </div>
   );

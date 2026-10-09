@@ -6,6 +6,7 @@ import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno, num, reais } from "@/lib/energia/formato";
 import {
@@ -200,10 +201,11 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
               <option key={d.cnpj} value={d.cnpj}>
                 {rotuloDistribuidora(d.sigla, d.cnpj)}
                 {info[d.cnpj]?.uf ? ` (${info[d.cnpj].uf})` : ""}
-                {d.cnpj === s.referencia.cnpj ? " · referência: tarifa mais próxima da mediana" : ""}
+                {d.cnpj === s.referencia.cnpj ? " · referência" : ""}
               </option>
             ))}
           </select>
+          {cnpj === s.referencia.cnpj && <span className="text-sm text-carvao-muted">Referência: a distribuidora de tarifa mais próxima da mediana.</span>}
         </label>
         <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Classe</span>
@@ -369,7 +371,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
         </div>
 
         <div>
-          <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Memória de cálculo da simulação">
+          <ContaRolavel rotulo="Memória de cálculo da simulação">
             <table className="w-full min-w-[520px] border-collapse text-sm tabular-nums">
               <caption className="mb-2 text-left font-serif text-lg text-carvao">
                 Memória de cálculo
@@ -434,7 +436,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
                 )}
               </tbody>
             </table>
-          </div>
+          </ContaRolavel>
           {notaArredondamento && (
             <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-nota="arredondamento">
               {notaArredondamento}
@@ -486,7 +488,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
       </p>
 
       {comparadas.length > 0 && (
-        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Mesma simulação nas distribuidoras escolhidas">
+        <ContaRolavel rotulo="Mesma simulação nas distribuidoras escolhidas">
           <table className="w-full min-w-[520px] border-collapse text-sm tabular-nums">
             <caption className="mb-2 text-left font-serif text-lg text-carvao">
               Mesma simulação nas distribuidoras escolhidas ({num(v.kwh, 0)} kWh, {minuscula(classe.rotulo)})
@@ -528,7 +530,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
               ))}
             </tbody>
           </table>
-        </div>
+        </ContaRolavel>
       )}
 
       <div id="regras-da-classe" className="scroll-mt-28">

@@ -19,7 +19,8 @@ import { dominioBonito, escalaLinear, rotuloTick, ticksQueCabem } from "@/lib/en
  * servidor desenha a 760 px, a mesma altura que o cliente reproduz depois de medir).
  */
 
-export type PontoFaixa = { id: string; valor: number; rotulo: string; apagado?: boolean };
+/** `dica` entra no título do ponto, depois do valor: o que o leitor precisa saber dele além do nome (a outra régua do ranking, por exemplo). */
+export type PontoFaixa = { id: string; valor: number; rotulo: string; apagado?: boolean; dica?: string };
 
 /** Marca da legenda da faixa de pontos (o mesmo desenho que a figura usa para cada elemento). */
 export function MarcaDaLegenda({ tipo }: { tipo: "ponto" | "extremo" | "mediana" | "referencia" | "destaque" | "faixa" | "vazado" }) {
@@ -175,7 +176,7 @@ export function ContaPontos({
           const tipo = ehEscolhido ? "losango" : ehExtremo ? "extremo" : "ponto";
           return (
             <g key={pt.id} data-id={pt.id} data-ponto={tipo} onClick={aoEscolher ? () => aoEscolher(pt.id) : undefined} style={aoEscolher ? { cursor: "pointer" } : undefined}>
-              <title>{`${pt.rotulo}: ${formatar(pt.valor)}`}</title>
+              <title>{`${pt.rotulo}: ${formatar(pt.valor)}${pt.dica ? `. ${pt.dica}` : ""}`}</title>
               {ehEscolhido ? (
                 <path d={`M${cx},${cy - 8}L${cx + 8},${cy}L${cx},${cy + 8}L${cx - 8},${cy}Z`} fill="var(--cor-superficie)" stroke="var(--cor-energia-dark)" strokeWidth="2.5" />
               ) : ehExtremo ? (

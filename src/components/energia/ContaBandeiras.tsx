@@ -1,3 +1,5 @@
+import { ContaGradeDica } from "@/components/energia/ContaGradeDica";
+import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { num } from "@/lib/energia/formato";
 import { COR_BANDEIRA, SIGLA_BANDEIRA, gradeBandeiras } from "@/lib/energia/conta";
 import type { Bandeiras } from "@/lib/energia/tipos-conta";
@@ -8,7 +10,8 @@ import type { Bandeiras } from "@/lib/energia/tipos-conta";
  * traz a sigla da bandeira escrita e o adicional em R$/MWh no texto para leitor
  * de tela; a cor só reforça (verde, amarela, vermelha patamar 1 e 2, escassez
  * hídrica). Mês não publicado fica vazio e dito como "não publicado", nunca
- * preenchido com o mês vizinho. Sem estado: renderiza no servidor.
+ * preenchido com o mês vizinho. A grade renderiza no servidor; a dica de cada mês
+ * (passar o mouse, focar, tocar, setas do teclado) é de ContaGradeDica.
  */
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -33,7 +36,8 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
           mês não publicado
         </li>
       </ul>
-      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Bandeira acionada por mês e ano">
+      <ContaGradeDica instrucao="Passe o mouse, toque ou use as setas sobre um mês para ver a bandeira e o adicional dele.">
+      <ContaRolavel rotulo="Bandeira acionada por mês e ano">
         <table className="w-full min-w-[300px] border-separate border-spacing-0.5 text-xs tabular-nums sm:min-w-[560px]">
           <caption className="sr-only">
             Bandeira tarifária acionada em cada mês, de {grade[0]?.ano} a {grade.at(-1)?.ano}, com o adicional em R$/MWh
@@ -85,7 +89,8 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
             ))}
           </tbody>
         </table>
-      </div>
+      </ContaRolavel>
+      </ContaGradeDica>
     </div>
   );
 }

@@ -24,9 +24,12 @@ import {
   compactarComposicao,
   compactarDistribuidorasSim,
   compactarEntidades,
+  compactarFora,
   compactarInfo,
   compactarVigentes,
   compararMesmoConjunto,
+  coberturaDoRanking,
+  foraDoRanking,
   linhasEvolucao,
   mudancaComposicaoEm,
   mudancaTarifa,
@@ -50,7 +53,7 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
 import { infoDasDistribuidoras, lerHistoricoB1 } from "./dados";
-import { Auditoria, Datas, FONTE_TARIFAS, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "./partes";
+import { Auditoria, Datas, FONTE_TARIFAS, Navegacao, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "./partes";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -142,7 +145,11 @@ export default function ContaDeLuzPage() {
   const comparacao = historico
     ? compararMesmoConjunto({ vigentes: t.vigentes, semVigente: t.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: g.data_referencia })
     : null;
-  const info = compactarInfo(infoDasDistribuidoras(t.vigentes.map((v) => v.cnpj)));
+  // a regra de completude do ranking: as distribuidoras que ficaram fora (com o motivo e a última tarifa) e a cobertura em distribuidoras e em UCs
+  const foraRank = foraDoRanking(t.sem_vigente, historico?.distribuidoras ?? null);
+  const infoDasTodas = infoDasDistribuidoras([...t.vigentes.map((v) => v.cnpj), ...t.sem_vigente.map((x) => x.cnpj)]);
+  const info = compactarInfo(infoDasTodas);
+  const cobertura = coberturaDoRanking({ vigentes: t.vigentes, fora: foraRank, info: infoDasTodas });
   // o que vai aos componentes de cliente viaja em tuplas, e a mesma lista de distribuidoras (a mesma referência) serve à faixa, ao painel de tarifas e à composição
   const vigentesCompactos = compactarVigentes(t.vigentes);
   const tresValores = textoTresValoresTipicos(comp, t.resumo);
@@ -255,10 +262,17 @@ export default function ContaDeLuzPage() {
       <CabecalhoEnergia atual="conta-de-luz" />
       <MarcaVisita secao="energia:conta-de-luz" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <Navegacao atual="tarifas" />
         <CabecalhoModulo
           siglas={["TE", "TUSD", "ANEEL", "IPCA", "CDE", "PLD", "REN"]}
           titulo="Quanto custa o mesmo consumo?"
-          lead="Quanto cada distribuidora cobra, só pela tarifa de energia (TE) e pela de uso da rede (TUSD), para o mesmo consumo mensal. Tributos, iluminação pública e bandeira ficam de fora."
+          lead="O mesmo consumo em quilowatt-hora (kWh) custa diferente conforme a distribuidora: cada área tem a sua tarifa de energia (TE) e de uso da rede (TUSD). Tributos, iluminação pública e bandeira ficam de fora."
+          limite={
+            <>
+              Não é a fatura: faltam ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira. O menor e o maior custo são das {t.resumo.n} distribuidoras com tarifa no arquivo de {dataBR(ref)} (de{" "}
+              {cobertura.universo}), e a mediana não pesa por consumidores.
+            </>
+          }
           recorte={`${dataBR(ref)} · ${t.resumo.n} distribuidoras · B1 residencial convencional · R$/mês e R$/kWh`}
           fonte="ANEEL, tarifas de aplicação das distribuidoras"
           referencia={
@@ -277,7 +291,7 @@ export default function ContaDeLuzPage() {
               ]}
             />
           }
-          metricas={<ContaFaixa vigentes={vigentesCompactos} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} />}
+          metricas={<ContaFaixa vigentes={vigentesCompactos} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} info={info} cobertura={cobertura} />}
         >
           A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras, mostra do que
           elas são feitas e estima a conta para um consumo; a variação contra a inflação, as bandeiras e quem paga os descontos estão em{" "}
@@ -324,6 +338,7 @@ export default function ContaDeLuzPage() {
                   dataReferencia={ref}
                   fonte={FONTE_TARIFAS}
                   info={info}
+                  fora={compactarFora(foraRank)}
                   recorte={
                     <Recorte
                       periodo={

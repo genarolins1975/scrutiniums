@@ -25,6 +25,7 @@ import {
   respostaReajustes,
   rotuloDistribuidora,
   textoJanelasNoMesmoConjunto,
+  textoUltimaMudanca,
   textoMunicipioReajuste,
   vereditoReajustes,
   type InfoCompacta,
@@ -161,7 +162,8 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
           },
         ]
       : []),
-    ...(janela.mediana_pct !== null ? [{ valor: janela.mediana_pct, rotulo: "Mediana das distribuidoras" }] : []),
+    // a mediana não vira segunda linha tracejada: IPCA e mediana, com o mesmo traço, só se distinguiam pela legenda; ela está na faixa de
+    // pontos acima, no cartão da janela e na tabela
   ];
   const marcas = [
     ...(janela.mediana_pct !== null ? [{ valor: janela.mediana_pct, rotulo: `Mediana ${pct(janela.mediana_pct, 2)}`, tipo: "mediana" as const }] : []),
@@ -259,6 +261,14 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte, info: 
             aviso={aviso1}
             limite={LIMITE_COMPARACAO}
           />
+          {v.dist.length > 0 && (
+            <ul className="max-w-prose2 space-y-1 text-sm leading-relaxed text-carvao" aria-label="Última mudança da tarifa das distribuidoras selecionadas" data-ultima-mudanca="">
+              {v.dist.map((id) => {
+                const u = ultimos.find((x) => x[0] === id);
+                return <li key={id}>{u ? textoUltimaMudanca(u) : `${rotulo(id)}: nenhuma mudança da tarifa B1 no arquivo.`}</li>;
+              })}
+            </ul>
+          )}
         </div>
       </div>
 

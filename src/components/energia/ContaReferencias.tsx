@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { ContaPontos, MarcaDaLegenda as Marcador, type PontoFaixa } from "@/components/energia/ContaPontos";
+import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { textoDestaquePerfil, textoReferenciasPerfil, type DestaquePerfil, type ReferenciasPerfil } from "@/lib/energia/conta";
 import { num, reais } from "@/lib/energia/formato";
 
@@ -155,7 +156,7 @@ export function ContaReferencias({
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           Dados do gráfico em tabela ({linhas.length.toLocaleString("pt-BR")} linhas)
         </summary>
-        <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+        <ContaRolavel rotulo={`${titulo}: dados em tabela (rolável)`} className="mt-2">
           <table className="w-full border-collapse tabular-nums">
             <caption className="sr-only">{`${titulo}, em R$/mês e em R$/MWh. Os ${r.n} pontos são as linhas da tabela do ranking.`}</caption>
             <thead>
@@ -183,7 +184,7 @@ export function ContaReferencias({
               ))}
             </tbody>
           </table>
-        </div>
+        </ContaRolavel>
         <p className="mt-1 text-carvao-muted">
           Os {r.n} pontos da figura são as {r.n} linhas da tabela do ranking, logo abaixo, com o mesmo custo de {num(r.perfil, 0)} kWh.
         </p>

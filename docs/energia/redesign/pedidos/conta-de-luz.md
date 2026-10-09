@@ -53,8 +53,7 @@ O que resta é compartilhado, em ordem de tamanho:
 
 - `GraficoBarras`: cerca de 560 B de SVG por barra (`g role="button"` com `aria-label`, `rect` transparente, `path` e `text`). O ranking de 81 barras soma 65,7 kB de DOM com legenda e tabela equivalente; o de 102, 82,8 kB. Proposta: `class` no lugar dos atributos repetidos, um só alvo de toque por barra e, com `alturaMaxima`, montar só as barras perto da janela de rolagem.
 - Props no fluxo de conteúdo que só aparece depois de abrir: `SobreEsteDado` (6 instâncias, 15,5 kB na principal), `DetalhesFechaveis` (8 instâncias, 11,4 kB) e `ComproveNumero` (10,7 kB na filha). Proposta: ler de um JSON estático na primeira abertura, como o histórico por distribuidora já faz.
-- `TabelaInterativa`: a tabela do ranking (17 colunas, 25 linhas por página) pesa 33 kB no HTML da principal, mesmo no nível Entender, em que fica oculta. É uma escolha local (`ContaTarifas.tsx`, seleção sincronizada com o gráfico): pode virar sob demanda com `ContaSobDemanda`, ao custo de um clique a mais no Analisar. Não foi feito, porque quem escolhe Analisar espera a tabela já aberta.
-- Decisões de produto, se a meta de 600 kB valer para as duas páginas, medidas sobre o HTML de hoje: ranking de barras sob demanda (um clique, como as tabelas), já que a faixa de pontos mostra todas as distribuidoras, tira 65,7 kB da principal e 82,8 kB da filha; com a tabela do ranking também sob demanda, a principal fica em torno de 582 kB e a filha em torno de 539 kB. Sem essas duas decisões, as páginas ficam em 681 kB e 622 kB (medida de 09/10/2026, depois das mudanças compartilhadas do último commit do coordenador).
+- Atualizado na rodada 2 (seção 9): a tabela do ranking passou a abrir só ao pedido (em Analisar já nasce aberta), e o ranking de barras desenha as 12 primeiras (`limiteInicial`, do coordenador). Os números desta seção são os de antes dessas duas mudanças.
 
 ## 7. Achados de conteúdo e de dado vistos e não corrigidos
 
@@ -113,3 +112,58 @@ Rota `/setor-eletrico/conta-de-luz/reajustes-e-subsidios`:
 | Conferências dos subsídios e do orçamento | "Conferências dos subsídios e do orçamento da CDE" | U |
 | Baixar CSV (reajustes, bandeiras, subsídios) e quatro fichas "Comprove" | "Baixar os dados" (3 e 2 arquivos) e uma ficha por número, com ficha só na janela de 12 meses | E |
 | Nível de profundidade | `ModoProfundidade` do sistema | todos |
+
+
+## 9. Rodada 2 (CORRECOES_U09.md): o que foi feito e o que fica pendente
+
+Retomada após o limite de uso: o usuário pediu para concluir sem exigir nota 9. Estado de cada item, com o que depende de outro dono.
+
+**Bloqueio (reajustes e subsídios): corrigido.** Com "Em reais" escolhido, o número de destaque, a frase de abertura e a resposta completa, o "o que mudou", a frase da CDE, a frase das quotas, a frase das categorias que caem a zero, o texto da unidade e as duas tabelas de dinheiro (orçamento da CDE por ano e subsídios por distribuidora, com título e nome de arquivo) falam em reais de ago/2026 (cada ano pelo seu fator), com o nominal dito ao lado. No modo nominal, tudo diz "nominais, na moeda da época". A ficha "Comprove este número" prova o valor nominal: em reais o número diz isso e manda escolher Nominais. Os arquivos para baixar trazem valores nominais, e o painel diz. Testes: `src/tests/energia-conta-reais.test.ts` renderiza a página inteira com o gancho da URL trocado por `?valores=real` (falharia com a página de antes, em que o número, a frase e o "o que mudou" não liam a escolha) e `energia-conta.test.ts` confere cada valor contra o gráfico, pela mesma conta feita por outro caminho.
+
+| Item | Estado |
+| --- | --- |
+| Principal J: tabela de 81 linhas abria sozinha ao escolher distribuidora | Corrigido: `ContaSobDemanda` com `abreEm="analisar"`; em Entender só abre por pedido |
+| Principal J: aba da página irmã ausente | Corrigido: `Navegacao` também na principal |
+| Principal J e C: 34 fora do ranking só em Auditar, fora do seletor | Corrigido: linha em Entender com contagem e motivo (22 encerradas em 29/09/2026, 11 incorporadas, 1 sem tarifa há mais de 90 dias), seletor com as 23 que têm tarifa anterior, motivo e custo pela última tarifa |
+| Principal F e G: universo incompleto, sem regra de completude | Corrigido: rótulo "entre as 81 com tarifa vigente", cobertura em distribuidoras (78,6%) e em UCs (99,76%, piso de 99% de Qualidade), o que muda nos extremos com a última tarifa das 22 (menor seria CODESAM, R$ 106,83); abaixo do piso a nota vira aviso (testado com dados sintéticos) |
+| Principal F: régua que ordena | Corrigido: o ranking diz que ordena pela tarifa de aplicação, a base econômica vai na tabela (posição pela base e diferença) e na dica dos 15 pontos que diferem mais de 20%, marcados com † |
+| Principal F: UCs de menor e maior; mediana sem peso | Corrigido: UCs ao lado do menor e do maior; mediana ponderada pelas UCs ao lado da simples |
+| Principal I: três tracejados iguais em TE e TUSD; mediana das 81 com filtro | Corrigido localmente: uma linha só ("Mediana das 81", "todas" com filtro); quartis na faixa de pontos e na tabela. Pedido ao GraficoBarras abaixo |
+| Principal I: legenda da composição lista o arredondamento como componente | Corrigido: "Ajuste de arredondamento (não é componente)" |
+| Principal A e K: sombra branca em contêiner que não rola | Corrigido: `ContaRolavel` liga a sombra só quando rola |
+| Principal K: rótulo truncado do seletor do simulador | Corrigido: "· referência", com a explicação sob o campo |
+| Principal B: abertura não diz por que importa | Corrigido: razão no lead e linha `limite` à vista (kWh, TE e TUSD expandidos no lead) |
+| Principal A e B: aviso repetido, blocos de três colunas, Entender de 3.950 palavras, REH, B1 e fio B sem definição | Pendente: o aviso saiu da nota da faixa (ficou no limite); os blocos de três colunas e as definições de REH, B1, fio B e "crédito lançado em componente de custo" não foram tratados |
+| Principal G: regras da Tarifa Social e do Desconto Social não conferidas; CFURH | Pendente: texto da REN indisponível (403); sensibilidade da CFURH (20,6% contra 18,7%) não mostrada |
+| Principal G: "tarifa média de 80" contra "tarifa média de fornecimento" | Pendente |
+| Principal D: desigualdade entre regiões e peso na renda | Pendente: exige dado de renda que a gold não traz |
+| Principal C: ranking só da classe B1 | Pendente: as demais classes existem só no simulador |
+| Principal L: peso | Parcial: medida de markup mais props caiu de 443 KB para 380 KB (principal) e de 392 KB para 348 KB (reajustes), cerca de 590 KB e 550 KB servidos pelo fator de 1,54 a 1,59; o HTML servido não foi medido depois (servidor fora do ar); tetos do teste baixados para 395 KB e 365 KB e comentário falso corrigido |
+| Filha J: ficha nas janelas de 60 e 120 meses | Pendente de pipeline (pedido abaixo); a página diz que só a de 12 meses tem ficha |
+| Filha C: data e percentual da última mudança no Entender | Corrigido: linha por distribuidora escolhida (data, ato, variação com o verbo, IPCA desde a anterior) |
+| Filha C, I e K: adicional de cada mês da grade só em texto oculto; células não focáveis | Corrigido: `ContaGradeDica` (mouse, foco, toque e setas, uma parada de tabulação, dica no `title` e em linha de estado) |
+| Filha E e D: bandeira sem o efeito em reais; ligação com 150 ou 200 kWh | Corrigido: tabela do que cada bandeira acrescenta à conta de 100, 200 e 300 kWh (antes de tributos) |
+| Filha I: IPCA e mediana com o mesmo traço | Corrigido localmente: o ranking de variações fica só com a linha do IPCA; a mediana está na faixa de pontos, no cartão da janela e na tabela |
+| Filha F: quotas de 2026 comparadas com anos fechados sem ressalva no cartão | Corrigido: o cartão diz que é orçamento, que os anos antes também são, e que as receitas de 2026 ainda têm rubricas sem valor ou em zero |
+| Filha G e L: Rural e Água zeram sem explicação; sem controle | Corrigido: `categoriasQueZeraram` acha as duas nos dados (desde 2024), a frase diz que a fonte não explica e que o observatório não confirmou a causa; testado com séries sintéticas |
+| Filha E: sem série anual de reajuste contra a inflação | Pendente |
+| Filha A: caixa do efeito médio antes do gráfico; lista de barras abre pelas menores variações | Pendente |
+| Filha G: tabela de adicionais sem 10 de 141 meses | Pendente: dito em Auditar |
+| Filha B, A, K: siglas e termos sem definição no ponto de uso, blocos repetidos, textos de 12 px | Pendente (parcial: o lead passou a expandir CDE) |
+| H e L, as duas páginas: bruto sem publicação, código com alterações, revisões, reconciliação por títulos de notícia, só laboratório | Pendente de pipeline ou de outro dono |
+
+Novos pedidos a componente compartilhado:
+
+- `GraficoBarras`: estilo e rótulo por linha de referência (cheia, tracejada, pontilhada, com o nome no eixo). Hoje todas saem iguais, e o ranking mostra uma linha por gráfico para não confundir.
+- `TabelaInterativa`: coluna do nome fixa em tabela larga (19 colunas, mais de 2.000 px em 390), e opção para não abrir sozinha quando a seleção vem de fora (a família a põe atrás de `ContaSobDemanda`).
+- `globals.css`, `.dominio-energia div.tabela-scroll`: as faixas brancas da sombra aparecem sobre o fundo bege quando nada rola; a família usa `ContaRolavel`.
+- `FaixaMetricas`: a nota fica em 12 px; a família passa um parágrafo de 14 px por dentro.
+
+Pedidos ao pipeline (a página já diz o que falta):
+
+- Tarifa seguinte das 22 distribuidoras com a vigência encerrada em 29/09/2026: recapturar e regerar a gold quando a ANEEL publicar os atos; hoje o ranking tem 81 de 103.
+- Ficha "Comprove este número" para as janelas de 60 e 120 meses, para o menor, a mediana e o maior do perfil, e para o agregado de encargos.
+- Rural e Água, esgoto e saneamento em quase zero desde 2024: nota regulatória ou estado da rubrica na fonte; SCEE e Lei 14.299/2022 nulos de 2013 a 2019 marcados como "não se aplica".
+- Efeito médio de cada processo tarifário (a fonte recusou a captura); código sem `+alterado`; histórico de revisões (uma captura só); publicação do bruto identificado por sha256.
+
+Equivalências novas: `docs/energia/redesign/pedidos/conta-de-luz.equivalencias.json`.

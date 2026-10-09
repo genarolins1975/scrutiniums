@@ -4,9 +4,8 @@ import { useMemo } from "react";
 import { ContaEscolha, type OpcaoConta } from "@/components/energia/ContaControles";
 import { GraficoBarras, type LinhaBarras, type SerieBarra } from "@/components/energia/GraficoBarras";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { num } from "@/lib/energia/formato";
-import { emReaisDoMesBase, type FatorReal } from "@/lib/energia/conta";
+import { CAMPO_VALORES, emReaisDoMesBase, type FatorReal } from "@/lib/energia/conta";
 
 /**
  * Barras por ano com a alternância entre valores nominais (a moeda da época, como a fonte publica) e valores em reais constantes do
@@ -19,7 +18,7 @@ import { emReaisDoMesBase, type FatorReal } from "@/lib/energia/conta";
  * (nunca o nominal passando por real). Sem nenhum fator, só os valores nominais, e a nota diz que falta o IPCA.
  */
 
-const ESQUEMA = { valores: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal", { param: "valores" }) };
+const ESQUEMA = { valores: CAMPO_VALORES };
 
 export function ContaBarrasReais({
   titulo,

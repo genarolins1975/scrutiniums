@@ -6,6 +6,7 @@ import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, num, pct, reais } from "@/lib/energia/formato";
 import {
@@ -149,7 +150,7 @@ export function ContaComposicao({ composicao, vigentes: compactos, referencia, d
 
       <div>
         <h3 className="font-serif text-lg text-carvao">Decomposição: média, mediana e {nomeDestaque ?? "distribuidora em destaque"}</h3>
-        <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label="Tabela de decomposição da tarifa B1">
+        <ContaRolavel rotulo="Tabela de decomposição da tarifa B1" className="mt-2">
           <table className="w-full min-w-[640px] border-collapse text-sm tabular-nums">
             <caption className="sr-only">Grupos de componentes: média simples das distribuidoras, participação, mediana e a distribuidora em destaque</caption>
             <thead>
@@ -244,7 +245,7 @@ export function ContaComposicao({ composicao, vigentes: compactos, referencia, d
               </tr>
             </tbody>
           </table>
-        </div>
+        </ContaRolavel>
         <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           A média é simples entre {comp.media?.n ?? "as"} distribuidoras (cada uma pesa igual) e fecha com a tarifa média de{" "}
           {comp.media && comp.media.total_rs_mwh !== null ? `${reais(comp.media.total_rs_mwh / 1000, 4)}/kWh` : "sem dado"}; a participação é a razão de somas. As medianas são
