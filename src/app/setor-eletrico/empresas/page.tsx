@@ -135,7 +135,7 @@ export default function EmpresasPage() {
       <MarcaVisita secao="energia:empresas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR"]}
+          siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR", "HHI", "CADE"]}
           titulo="Quem atua no setor elétrico?"
           lead={`Donos de usinas e de linhas, distribuidoras, companhias abertas e grupos de controle, ligados pelo CNPJ (${SIGLAS.CNPJ}) publicado pela fonte oficial.`}
           recorte={`Usinas do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · demais fontes com datas próprias`}

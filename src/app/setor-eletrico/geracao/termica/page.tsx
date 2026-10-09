@@ -327,13 +327,17 @@ export default function GeracaoTermicaPage() {
                 <SecaoDoPainel nivel="auditar" id="regras-termica" titulo="Regras e limitações">
                   <GeracaoRegras regras={[{ rotulo: ROTULO_REGRA.termica, texto: g.regras.termica }, { rotulo: ROTULO_REGRA.janelas, texto: g.regras.janelas }]} />
                   <GeracaoFrases itens={[...(g.proveniencia.termica?.limitacoes ?? []), ...(g.proveniencia.cvu?.limitacoes ?? [])]} />
-                  <ul className="space-y-1 text-sm text-carvao-muted">
-                    {t.motivos.map((mo) => (
-                      <li key={mo.id}>
-                        <span className="text-carvao">{mo.rotulo}</span>: campo {mo.campo} da fonte.
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="space-y-2" data-dicionario-de-campos="motivos">
+                    <p className="rotulo text-mineral">Dicionário: a coluna do arquivo do ONS que traz cada motivo</p>
+                    <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+                      {t.motivos.map((mo) => (
+                        <div key={mo.id} className="contents">
+                          <dt className="text-carvao">{mo.rotulo}</dt>
+                          <dd className="font-mono text-xs text-carvao-muted [overflow-wrap:anywhere]">{mo.campo}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
                 </SecaoDoPainel>
 
                 <GeracaoSeguir ancora="p022" proximo={painelPublicado("p023") ? { href: `${rotaPainel("p023")}#p023`, pergunta: perguntaPainel("p023") } : null} downloads={downloadsDoPainel(g.downloads, "p022")} />

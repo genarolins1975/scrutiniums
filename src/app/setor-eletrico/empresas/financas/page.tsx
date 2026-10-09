@@ -97,7 +97,7 @@ export default function PaginaP038() {
         <EmpresasNavegacao atual="p038" />
         <CabecalhoModulo
           rotulo="Empresas"
-          siglas={["CVM", "DFP", "ITR", "ANEEL"]}
+          siglas={["CVM", "DFP", "ITR", "ANEEL", "CNPJ"]}
           titulo={painel("p038").pergunta}
           lead={`Receita, resultado, dívida, patrimônio e caixa das companhias abertas do setor, como reportados à CVM (${SIGLAS.CVM}). Nada se soma entre companhias.`}
           recorte={`Exercícios de ${exercicios} (DFP) · trimestres até ${dataTexto(f.periodos.ultimo_trimestre)} (ITR) · R$ nominais, em R$ milhões`}
@@ -239,7 +239,7 @@ export default function PaginaP038() {
                 <SecaoDoPainel
                   id="companhias"
                   titulo="Quais companhias abertas estão no universo?"
-                  lead={`As ${inteiro(f.universo.companhias)} companhias do cadastro da CVM com setor de energia elétrica, com o último exercício de cada uma. Escolha uma linha para pô-la em primeiro lugar na comparação do alto da página.`}
+                  lead={`As ${inteiro(f.universo.companhias)} companhias do cadastro da CVM com setor de energia elétrica, cada uma pelo CNPJ (${SIGLAS.CNPJ}), com o último exercício de cada uma. Escolha uma linha para pô-la em primeiro lugar na comparação do alto da página.`}
                 >
                   <EmpresasTabelaCompanhias linhas={linhasCompanhias(f.companhias)} padrao={padraoFin} fonte={fonteCvm} versao={f.periodos.ultimo_trimestre ?? String(f.periodos.ultimo_exercicio ?? "")} />
                 </SecaoDoPainel>

@@ -92,7 +92,7 @@ export default function DadosSaudePage() {
         <CabecalhoModulo
           siglas={["SCS", "ONS"]}
           titulo="O que atrasou ou mudou?"
-          lead="Quais integrações passaram do prazo de atualização, quando a coleta falhou e quanto os valores já guardados mudaram entre uma captura e outra. A situação vale para a data de referência dos dados, não para o dia em que você lê."
+          lead="Quais integrações passaram do prazo, quando a coleta falhou e quanto os valores guardados mudaram entre capturas. A situação vale para a data de referência dos dados, não para o dia em que você lê."
           recorte={`situação em ${dataBR(r.hoje)} · calendário de ${dataBR(jan.inicio)} a ${dataBR(jan.fim)} (${janela} dias) · ${num(r.integracoes, 0)} integrações de conjuntos`}
           fonte="histórico de capturas do observatório"
           referencia={<ReferenciaDados processadoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Última captura registrada: {ultimaCaptura ? carimbo(ultimaCaptura) : "nenhuma"}.</>} />}
@@ -127,8 +127,7 @@ export default function DadosSaudePage() {
                 nota={
                   maiorRevisao?.e ? (
                     <>
-                      Entre {num(r.observacoesRevisadas, 0)} valores revisados em {plural(r.comRevisao.length, "conjunto", "conjuntos")}: {tituloCurto(maiorRevisao.c.titulo)} ({maiorRevisao.c.orgao}), de {num(maiorRevisao.e.de, 1)} para {num(maiorRevisao.e.para, 1)} entre duas capturas do mesmo
-                      arquivo. Uma revisão grande não prova erro.
+                      {tituloCurto(maiorRevisao.c.titulo)} ({maiorRevisao.c.orgao}), de {num(maiorRevisao.e.de, 1)} para {num(maiorRevisao.e.para, 1)} entre duas capturas do mesmo arquivo. Uma revisão grande não prova erro.
                     </>
                   ) : (
                     <>entre duas capturas do mesmo arquivo</>

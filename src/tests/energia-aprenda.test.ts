@@ -233,7 +233,10 @@ describe("P065: páginas dos verbetes", () => {
       expect(pos("Em uma frase"), c.slug).toBeGreaterThan(-1);
       expect(exemplo, c.slug).toBeGreaterThan(pos("Em uma frase"));
       expect(exemplo, c.slug).toBeLessThan(pos("Por que importa"));
-      expect(pos("Por que importa"), c.slug).toBeLessThan(pos("Como é medido"));
+      // instituição e escopo do sistema (ANEEL, ONS, CCEE, EPE, IBGE, Sistemas Isolados) não são grandeza: sem medida a ficha não tem "Como é medido"
+      const temMedida = !!(c.comoEMedido || c.comoEMedidoResumo || UNIDADE[c.slug]);
+      if (temMedida) expect(pos("Por que importa"), c.slug).toBeLessThan(pos("Como é medido"));
+      else expect(pos("Como é medido"), c.slug).toBe(-1);
       expect(h.indexOf('id="exemplo"'), c.slug).toBeLessThan(pos("Por que importa"));
     }
   });

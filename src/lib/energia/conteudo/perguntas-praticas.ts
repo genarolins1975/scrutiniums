@@ -28,6 +28,8 @@ export const PERGUNTA_PRATICA: Record<string, string> = {
 
   // Operação
   sin: "Qual é o nome do sistema elétrico interligado do país?",
+  ons: "Quem coordena e controla a operação da geração e da transmissão de energia?",
+  "sistemas-isolados": "Que sistemas de distribuição não estão ligados ao sistema interligado?",
   carga: "Quanta energia o sistema interligado atende por dia?",
   "geracao-centralizada": "Quanto as usinas geram hora a hora?",
   intercambio: "Quanta energia passa de um subsistema a outro?",
@@ -45,6 +47,7 @@ export const PERGUNTA_PRATICA: Record<string, string> = {
 
   // Mercado
   mcp: "Onde se contabilizam e se liquidam as diferenças de energia?",
+  ccee: "Quem viabiliza a comercialização de energia elétrica?",
   acl: "Onde a energia é comprada em contratos livremente negociados?",
   acr: "Como distribuidoras compram energia por licitação?",
   mre: "Como as hidrelétricas compartilham o risco hidrológico?",
@@ -77,8 +80,13 @@ export const PERGUNTA_PRATICA: Record<string, string> = {
 
   // Regulação
   "agenda-regulatoria": "Que normas a agência prevê editar no biênio?",
+  aneel: "Quem regula e fiscaliza o setor de energia elétrica?",
+
+  // Expansão
+  epe: "Quem faz os estudos que subsidiam o planejamento do setor energético?",
 
   // Fontes de dados
+  ibge: "Quem produz as informações estatísticas e geográficas do País?",
   imerg: "De onde vem a estimativa de chuva por satélite?",
   "merra-2": "De onde vem a temperatura estimada que os painéis usam?",
 };

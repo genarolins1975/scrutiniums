@@ -538,6 +538,12 @@ describe("abertura de Geração e despacho térmico renderizados", () => {
       expect(achado(texto, /\b(hoje|agora)\b/i), `${id}: data relativa`).toBeNull();
       expect(achado(texto, /\b(melhor|pior|ineficiente|excelente|péssim[oa])\b/i), `${id}: julgamento`).toBeNull();
       expect(achado(texto, /\bporque\b/i), `${id}: causalidade`).toBeNull();
+      // nome de campo (snake_case) não aparece em texto de leitor nem em nome acessível; o dicionário de colunas dos motivos da
+      // térmica (Auditar) é o único lugar dele
+      const semDicionario = h.slice(h.indexOf("<main"), h.indexOf("</main>")).replace(/<div[^>]*data-dicionario-de-campos[\s\S]*?<\/dl><\/div>/, " ");
+      const atributos = Array.from(semDicionario.matchAll(/(?:aria-label|title|alt)="([^"]*)"/g)).map((m) => m[1]).join(" ");
+      const visivel = `${semDicionario.replace(/<[^>]+>/g, " ")} ${atributos}`;
+      expect(achado(visivel, /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/), `${id}: nome de campo em texto de leitor`).toBeNull();
       // jargão de bastidor só fora de Entender: o texto de Analisar e Auditar cita a base e as regras publicadas
       const ini = h.indexOf("<main");
       const corte = h.slice(ini).search(/<section[^>]*data-nivel="(analisar|auditar)"/);
@@ -686,6 +692,18 @@ describe("texto da gold em português de leitor e o que a página corrige sozinh
   it("nenhum texto de gold exibido nas páginas traz nome de campo depois da tradução", () => {
     const textos = [...G.a11.tratamento, ...(G.proveniencia.matriz?.limitacoes ?? []), G.matriz.universo.regra, G.matriz.universo.regra_ressalvas, ...G.controles.map((x) => `${x.nome} ${x.detalhe}`)];
     for (const t of textos) expect(emPortugues(t), t.slice(0, 60)).not.toMatch(/\b(id_ons|ressalvas_universo|natureza_pct|natureza_mensal_sin|outros_por_ceg|matriz\.\w+|hidraulica|termica|eolica)\b/);
+  });
+
+  it("o nome de campo da comparação ANEEL e ONS vira o rótulo da coluna, e os motivos da térmica ganham um dicionário de colunas à parte", () => {
+    const regra = G.capacidade!.contexto.siga_historico!.regra;
+    expect(regra).toContain("ons_pct_da_aneel");
+    expect(emPortugues(regra)).toContain('a coluna "ONS como parcela da ANEEL"');
+    expect(emPortugues(regra)).not.toContain("ons_pct_da_aneel");
+    const termicaHtml = renderToStaticMarkup(createElement(GeracaoTermicaPage as never));
+    expect(termicaHtml).toContain('data-dicionario-de-campos="motivos"');
+    expect(termicaHtml).toContain("Dicionário: a coluna do arquivo do ONS que traz cada motivo");
+    expect(termicaHtml).not.toMatch(/: campo val_verif\w+ da fonte/);
+    for (const mo of G.termica!.motivos) expect(termicaHtml).toContain(mo.campo);
   });
 
   it("o rótulo do arquivo horário diz 365 dias, como as 8.760 linhas do CSV (o rótulo da gold ainda diz 366)", () => {

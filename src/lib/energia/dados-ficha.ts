@@ -422,9 +422,30 @@ export function rotuloDoArquivo(url: string, dicionario?: string | null): string
   if (dado) return dado;
   const antes = /^([^:;]{10,140}?)\.\s+Colunas:/.exec(dicionario ?? "")?.[1];
   if (antes) return antes.charAt(0).toUpperCase() + antes.slice(1);
-  const t = nomeDoArquivo(url).replace(/\.[a-z0-9]+$/i, "").replace(/_/g, " ");
+  const palavras = nomeDoArquivo(url).replace(/\.[a-z0-9]+$/i, "").split("_").map((w) => PALAVRA_DO_NOME[w.toLowerCase()] ?? w);
+  const t = palavras.join(" ");
   return t.charAt(0).toUpperCase() + t.slice(1);
 }
+
+/**
+ * Palavras dos nomes de arquivo que o leitor lê em maiúsculas (siglas) ou com acento: o nome do arquivo os escreve sem acento e em minúsculas,
+ * e a falta deles ("Regulacao limites pld") era o que a lista de arquivos mostrava quando nada descrevia o arquivo. O nome original continua
+ * em Analisar; palavra fora da lista fica como está.
+ */
+const PALAVRA_DO_NOME: Record<string, string> = {
+  // siglas
+  pld: "PLD", cmo: "CMO", ear: "EAR", ena: "ENA", mlt: "MLT", cvu: "CVU", mmgd: "MMGD", cde: "CDE", tsee: "TSEE", ipca: "IPCA", uf: "UF", dgc: "DGC", ralie: "RALIE",
+  siga: "SIGA", ccee: "CCEE", ons: "ONS", aneel: "ANEEL", cvm: "CVM", epe: "EPE", mme: "MME", mcti: "MCTI", pnad: "PNAD", pdo: "PDO", b1: "B1", bt: "BT", pde2035: "PDE 2035",
+  brasil: "Brasil",
+  // acentos
+  agua: "água", reservatorios: "reservatórios", mudancas: "mudanças", horario: "horário", horaria: "horária", diario: "diário", diaria: "diária", geracao: "geração",
+  regulacao: "regulação", regulatorias: "regulatórias", expansao: "expansão", inclusao: "inclusão", transicao: "transição", composicao: "composição", conferencia: "conferência",
+  conferencias: "conferências", vigencias: "vigências", previsao: "previsão", previsoes: "previsões", reconciliacao: "reconciliação", liberacoes: "liberações", leiloes: "leilões",
+  trajetorias: "trajetórias", tecnicas: "técnicas", municipio: "município", municipios: "municípios", proprietarios: "proprietários", financas: "finanças", territorio: "território",
+  restricao: "restrição", interrupcoes: "interrupções", telefonico: "telefônico", historico: "histórico", serie: "série", series: "séries", emergencia: "emergência",
+  subsidios: "subsídios", tipico: "típico", balanco: "balanço", rotulos: "rótulos", areas: "áreas", catalogo: "catálogo", transmissao: "transmissão", societaria: "societária",
+  compensacoes: "compensações", distribuicao: "distribuição", utilizacao: "utilização",
+};
 
 
 /* ---------------------------------------------------------------- descrição guardada */

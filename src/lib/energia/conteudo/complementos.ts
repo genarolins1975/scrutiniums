@@ -310,6 +310,42 @@ export const CONTRASTES: Contraste[] = [
     b: { rotulo: "norma publicada" },
     texto: "A agenda lista atividades com previsão de edição de norma no biênio. Estar na agenda não é ter norma editada.",
   },
+  {
+    a: "ons",
+    b: "ccee",
+    texto:
+      "O ONS coordena e controla a operação da geração e da transmissão do SIN; a CCEE tem a finalidade de viabilizar a comercialização de energia elétrica. Operar o sistema não é comercializar a energia, e as duas entidades mantêm acordo operacional entre si.",
+  },
+  {
+    a: "aneel",
+    b: "ons",
+    texto:
+      "A ANEEL regula e fiscaliza o setor elétrico; o ONS opera o sistema interligado e é fiscalizado e regulado por ela. O ONS propõe as regras de operação da transmissão, e quem as aprova é a ANEEL.",
+  },
+  {
+    a: "aneel",
+    b: "ccee",
+    texto:
+      "A ANEEL regula e fiscaliza, e aprova as regras e os procedimentos de comercialização de energia elétrica; a CCEE, que atua sob regulação e fiscalização da ANEEL, tem a finalidade de viabilizar a comercialização. São entidades diferentes: quem aprova as regras não é quem viabiliza a comercialização.",
+  },
+  {
+    a: "epe",
+    b: "ons",
+    texto:
+      "A EPE presta serviços de estudos e pesquisas que subsidiam o planejamento do setor energético, entre eles os planos de expansão da geração e da transmissão; o ONS coordena e controla a operação do sistema interligado e planeja essa operação. Planejar a expansão do setor e planejar a operação do sistema são tarefas diferentes.",
+  },
+  {
+    a: "sin",
+    b: "sistemas-isolados",
+    texto:
+      "O SIN é, segundo o ONS, o conjunto de quatro subsistemas: Sul, Sudeste/Centro-Oeste, Nordeste e a maior parte da região Norte. Os Sistemas Isolados são sistemas de distribuição que, em sua configuração normal, não estão conectados ao SIN. Um valor do SIN não descreve as localidades atendidas por Sistemas Isolados.",
+  },
+  {
+    a: "ibge",
+    b: "aneel",
+    texto:
+      "O IBGE produz informações estatísticas, geográficas, cartográficas e demográficas do País; quem regula e fiscaliza a energia elétrica é a ANEEL. Um número do IBGE, como o da POF ou o da PNAD Contínua, descreve famílias e domicílios, não o setor elétrico.",
+  },
 ];
 
 /**

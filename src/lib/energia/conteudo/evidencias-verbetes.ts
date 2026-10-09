@@ -223,6 +223,49 @@ export const EXEMPLO_EVIDENCIA: Record<string, FonteExemplo> = {
     painel: { rotulo: "Transição: micro e minigeração", href: "/setor-eletrico/transicao/mmgd#p063" },
     leitura: "Potência instalada da MMGD no cadastro da ANEEL: capacidade, não energia gerada.",
   },
+  // instituições e escopo do sistema (conceitos-instituicoes.ts): o exemplo é um número que a instituição produz ou publica e o painel mostra
+  ons: {
+    arquivo: "gold/carga_detalhe.json",
+    caminho: ["evidencias", "p026_pico_sin"],
+    natureza: "OBSERVADO",
+    painel: { rotulo: "Carga: perfil horário", href: "/setor-eletrico/carga/perfil-horario#p026" },
+    leitura: "Um dado de operação que o ONS mede e publica: a hora de maior carga do SIN no dia, lida da curva de carga horária.",
+  },
+  ccee: {
+    arquivo: "series/pld_evidencias.json",
+    caminho: ["evidencias", "pld_semana_SE"],
+    natureza: "CALCULADO",
+    painel: { rotulo: "PLD: CMO e formação do preço", href: "/setor-eletrico/pld/cmo-e-formacao#p009" },
+    leitura: "Um preço que a CCEE calcula para cada hora; aqui, a média do PLD do Sudeste/Centro-Oeste nas horas da semana operativa.",
+  },
+  aneel: {
+    arquivo: "gold/regulacao.json",
+    caminho: ["evidencias", "limites", "pld_max_horario"],
+    natureza: "OBSERVADO",
+    painel: { rotulo: "Regulação: limites do PLD", href: "/setor-eletrico/regulacao#p044" },
+    leitura: "Um ato da ANEEL lido no painel de Regulação: o teto horário do PLD vigente no ano, como escrito no ato.",
+  },
+  epe: {
+    arquivo: "gold/expansao.json",
+    caminho: ["evidencias", "pde_capacidade_2035"],
+    natureza: "CENARIO",
+    painel: { rotulo: "Expansão: cenários", href: "/setor-eletrico/expansao/cenarios#p043" },
+    leitura: "Um número do planejamento que a EPE publica: a capacidade instalada nacional em 2035 no Cenário de Referência do Plano Decenal de Expansão de Energia. É cenário, não previsão.",
+  },
+  ibge: {
+    arquivo: "gold/inclusao.json",
+    caminho: ["orcamento", "evidencias", "media_razoes_renda_classe_baixa"],
+    natureza: "ESTIMADO",
+    painel: { rotulo: "Inclusão: peso no orçamento", href: "/setor-eletrico/inclusao-energetica/orcamento#p061" },
+    leitura: "Um número calculado com microdados do IBGE: o peso da energia no orçamento das famílias de menor rendimento, na Pesquisa de Orçamentos Familiares de 2017 a 2018.",
+  },
+  "sistemas-isolados": {
+    arquivo: "gold/inclusao.json",
+    caminho: ["acesso", "sistemas_isolados", "evidencia_populacao"],
+    natureza: "OBSERVADO",
+    painel: { rotulo: "Inclusão: sistemas isolados", href: "/setor-eletrico/inclusao-energetica/acesso#isolados" },
+    leitura: "População das localidades de sistemas isolados que a EPE lista no ciclo mais recente do PASI, informada pelas distribuidoras; localidade sem população informada fica fora da soma.",
+  },
 };
 
 export type ExemploComEvidencia = FonteExemplo & {

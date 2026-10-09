@@ -7,6 +7,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { COLUNAS_GRUPOS, COR_MEDIDA, ESQUEMA_CONTROLE, ROTULO_MOTIVO, arvoreDe, carregarJson, cnpjFormatado, entidadesCadeia, inteiro, type ArvoreSocietaria } from "@/lib/energia/empresas";
+import { SIGLAS } from "@/lib/energia/siglas";
 import { buscarEntidades, type EntidadeBuscavel, type LinhaTabela } from "@/lib/energia/tabela";
 import type { CadeiaSocietaria } from "@/lib/energia/tipos-empresas";
 
@@ -83,8 +84,8 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
         onSelecionar={ir}
       />
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-universo-parcial="grupos">
-        O gráfico mostra {inteiro(barras.length)} dos {inteiro(linhasGrupos.length)} maiores grupos de controle{totalGrupos ? `, de ${inteiro(totalGrupos)} grupos na base` : ""}; a tabela abaixo traz os {inteiro(linhasGrupos.length)}, e a
-        lista inteira está no{" "}
+        O gráfico mostra {inteiro(barras.length)} dos {inteiro(linhasGrupos.length)} maiores grupos de controle{totalGrupos ? `, de ${inteiro(totalGrupos)} grupos na base` : ""}; cada grupo é identificado pelo CNPJ ({SIGLAS.CNPJ}) de quem está no topo da cadeia declarada. A tabela abaixo traz os{" "}
+        {inteiro(linhasGrupos.length)}, e a lista inteira está no{" "}
         {csv ? (
           <a href={csv.url} download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
             {csv.rotulo}

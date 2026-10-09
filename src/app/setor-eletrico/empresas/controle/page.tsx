@@ -111,10 +111,10 @@ export default function PaginaP039() {
         <EmpresasNavegacao atual="p039" />
         <CabecalhoModulo
           rotulo="Empresas"
-          siglas={["SIGA", "HHI", "CR4", "CR10", "ANEEL", "CADE"]}
+          siglas={["SIGA", "HHI", "CR4", "CR10", "ANEEL", "CADE", "CNPJ"]}
           titulo={painel("p039").pergunta}
           lead={`Grupos no topo da cadeia de controle declarada à ANEEL (${SIGLAS.ANEEL}): quanta capacidade detêm e controlam, e quão concentrada ela está.`}
-          recorte={`Usinas em operação do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · declarações de ${janela} · MW, % e pontos de HHI`}
+          recorte={`Usinas em operação do SIGA (${SIGLAS.SIGA}) de ${dataSiga} · declarações de ${janela} · MW, % e pontos do índice de concentração (HHI)`}
           fonte="ANEEL, SIGA e Composição Societária"
           referencia={
             <>

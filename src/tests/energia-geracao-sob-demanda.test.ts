@@ -45,6 +45,16 @@ describe("registro das tabelas de Geração", () => {
     }
   });
 
+  it("título, nota e cabeçalhos das tabelas não trazem nome de campo (snake_case)", () => {
+    const campo = /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/;
+    for (const id of IDS) {
+      const p = REGISTRO_TABELAS_GERACAO[id].monta(g);
+      if (p === null) continue;
+      const textos = [p.titulo, p.nota ?? "", ...p.colunas.map((c) => c.rotulo)];
+      for (const t of textos) expect(t, `${id}: ${t.slice(0, 60)}`).not.toMatch(campo);
+    }
+  });
+
   it("as linhas coincidem com a série publicada de cada tabela", () => {
     const m = g.matriz;
     expect(REGISTRO_TABELAS_GERACAO.diaria.monta(g)!.linhas.length).toBe(m.diario_sin_recente.dias.length);

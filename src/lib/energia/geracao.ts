@@ -95,6 +95,7 @@ const EM_PORTUGUES: readonly (readonly [RegExp, string])[] = [
   [/\bressalvas_universo\b/g, "ressalvas de universo"],
   [/\bnatureza_mensal_sin\b/g, "série mensal por natureza"],
   [/\bnatureza_pct\b/g, "parcela por natureza"],
+  [/\bons_pct_da_aneel\b/g, 'a coluna "ONS como parcela da ANEEL"'],
   [/\bid_ons\b/g, "código do ONS"],
   [/'quebras'/g, "a tabela de mudanças de universo e de rótulo"],
   [/\btermica_sem_combustivel\b/g, "térmicas Tipo III"],

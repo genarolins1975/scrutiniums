@@ -199,7 +199,7 @@ describe("mercado: seletores do estado honesto e da conciliação entre universo
     const horas = new Date(Date.UTC(Number(r.mes.slice(0, 4)), Number(r.mes.slice(5, 7)), 0)).getUTCDate() * 24;
     const cativo = Number(doMes.total_mwh) - Number(doMes.livre_mwh);
     expect(r.regulado).toBeCloseTo((ccee.acr_mwmed * horas) / cativo, 2);
-    expect(r.livre).toBeCloseTo((ccee.acl_mwmed * horas) / Number(doMes.livre_mwh), 2);
+    expect(r.livre).toBeCloseTo((ccee.acl_mwmed! * horas) / Number(doMes.livre_mwh), 2);
     expect(num(r.regulado, 2)).toBe("1,21");
     expect(num(r.livre, 2)).toBe("1,04");
     expect(textoRazaoUniversos(G)).toBe("em ago/2026 a CCEE mede 1,21 vez o consumo cativo da EPE no ambiente regulado e 1,04 vez o livre, ou seja, a diferença vem sobretudo do regulado");

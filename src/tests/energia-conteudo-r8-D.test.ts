@@ -592,7 +592,15 @@ describe("ficha de conjunto: licença, página oficial, formatos e arquivos", ()
 
   it("arquivo fora da tabela de nomes: a descrição do dicionário antes das colunas, ou o nome sem sublinhado", () => {
     expect(rotuloDoArquivo("/energia/series/agua_mlt_mudancas.csv", "Mudanças da MLT por usina (ONS, ENA por reservatório). Colunas: data; cod_reservatorio")).toBe("Mudanças da MLT por usina (ONS, ENA por reservatório)");
-    expect(rotuloDoArquivo("/energia/series/qualidade_brasil.csv", "periodo (AAAA ou AAAA-MM); tipo")).toBe("Qualidade brasil");
+    expect(rotuloDoArquivo("/energia/series/qualidade_brasil.csv", "periodo (AAAA ou AAAA-MM); tipo")).toBe("Qualidade Brasil");
+  });
+
+  it("o nome do arquivo sem descrição volta com siglas em maiúsculas e acento, e palavra desconhecida fica como está", () => {
+    expect(rotuloDoArquivo("/energia/series/regulacao_limites_pld_conferencias.csv")).toBe("Regulação limites PLD conferências");
+    expect(rotuloDoArquivo("/energia/series/pld_horario.csv")).toBe("PLD horário");
+    expect(rotuloDoArquivo("/energia/series/geracao_matriz_horaria_12m.csv")).toBe("Geração matriz horária 12m");
+    expect(rotuloDoArquivo("/energia/series/expansao_pde2035.csv")).toBe("Expansão PDE 2035");
+    expect(rotuloDoArquivo("/energia/series/zzz_palavra_nova.csv")).toBe("Zzz palavra nova");
   });
 
   it("citação: sem identificador técnico e com o título como a fonte o usa para o leitor", () => {

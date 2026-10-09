@@ -206,7 +206,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
         <EmpresasNavegacao atual="ficha" />
         <CabecalhoModulo
           rotulo="Perfil da distribuidora"
-          siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "REH"]}
+          siglas={["CNPJ", "ANEEL", "SAMP", "DEC", "FEC", "TE", "TUSD", "REH", "SIGA", "CVM", "DFP", "ITR"]}
           titulo={`${d.sigla}: perdas, continuidade e tarifa`}
           lead={
             <>
@@ -215,7 +215,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
             </>
           }
           recorte={`Perdas de ${p?.ano ?? "sem dado"} · continuidade de ${q?.ano ?? "sem dado"} · tarifa ${t && t.vigente ? `vigente de ${dataTexto(t.inicio)} a ${dataTexto(t.fim)}` : "sem vigência na data do arquivo de tarifas"}`}
-          fonte="ANEEL, bases de perdas, continuidade e tarifas, pelo mesmo CNPJ"
+          fonte={`ANEEL (${SIGLAS.ANEEL}), bases de perdas, continuidade e tarifas, pelo mesmo CNPJ`}
           referencia={
             <>
               Perdas de {p?.ano ?? "sem dado"} (base publicada de Perdas), continuidade de {q?.ano ?? "sem dado"} (base publicada de Qualidade), tarifas da base publicada de Conta de luz; cadeia de controle
@@ -482,6 +482,9 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   {companhia ? (
                     <>
                       <p className="text-sm text-carvao">{textoCompanhia(companhia, g.financas.contas)}</p>
+                      <p className="max-w-prose2 text-xs text-carvao-muted">
+                        CVM é a {SIGLAS.CVM}; os valores vêm das {SIGLAS.DFP} (DFP, anuais) e das {SIGLAS.ITR} (ITR, trimestrais).
+                      </p>
                       <div className="max-w-sm">
                         <Numero
                           variante="faixa"
@@ -542,7 +545,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                     </>
                   ) : (
                     <p className="text-sm text-carvao">
-                      A {d.sigla} não é companhia aberta registrada no setor elétrico da CVM: não publica DFP nem ITR padronizados.
+                      A {d.sigla} não é companhia aberta registrada no setor elétrico da CVM ({SIGLAS.CVM}): não publica DFP ({SIGLAS.DFP}) nem ITR ({SIGLAS.ITR}) padronizados.
                       {abertaAcima ? (
                         <>
                           {" "}
@@ -559,7 +562,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   )}
                   {d.geracao && (
                     <p className="text-sm text-carvao-muted">
-                      Também tem participação em {inteiro(d.geracao.usinas)} usinas do SIGA, com {mwTexto(d.geracao.mw_proporcional, 2)} de capacidade proporcional.
+                      Também tem participação em {inteiro(d.geracao.usinas)} usinas do SIGA ({SIGLAS.SIGA}), com {mwTexto(d.geracao.mw_proporcional, 2)} de capacidade proporcional.
                     </p>
                   )}
                 </SecaoDoPainel>
