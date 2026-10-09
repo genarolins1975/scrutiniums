@@ -74,10 +74,10 @@ export const DOMINIOS: Dominio[] = [
     pergunta:
       "Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente?",
     descricao:
-      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. Dois temas publicados nas 26 capitais: educação municipal (despesa total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb) e saúde (despesa, ações e serviços públicos de saúde, UBS, equipes e cobertura da atenção primária e internações por condições sensíveis à atenção primária). Mostra valores e referências, sem notas, rankings ou conclusões.",
+      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. Educação municipal e Saúde publicadas nas 26 capitais: educação municipal (despesa total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb) e saúde (despesa, ações e serviços públicos de saúde, UBS, equipes e cobertura da atenção primária e internações por condições sensíveis à atenção primária). Trabalho e Renda reúne indicadores do IBGE, emprego formal, Cadastro Único, cursos de aprendizagem autorizados e despesas municipais de Trabalho, nos recortes e períodos próprios de cada fonte. Mostra valores e referências, sem notas, rankings ou conclusões.",
     descricaoCurta:
-      "Educação e Saúde nas capitais: despesa, estrutura, atendimento e resultados a partir do Siconfi, SIOPS, CNES, Ministério da Saúde, IBGE e INEP.",
-    chips: ["Recursos", "Atendimento", "Resultados", "Educação", "Saúde"],
+      "Educação e Saúde nas capitais, Trabalho e Renda nos recortes das fontes: recursos públicos, serviços e condições de vida a partir de bases oficiais.",
+    chips: ["Recursos", "Atendimento", "Resultados", "Educação", "Saúde", "Trabalho e Renda"],
     rotaRaiz: "/eficiencia-estatal",
     rotaApresentacao: "/eficiencia-estatal",
     cta: "Explorar Eficiência Estatal",
