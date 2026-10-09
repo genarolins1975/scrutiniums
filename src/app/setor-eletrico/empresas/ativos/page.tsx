@@ -59,7 +59,7 @@ import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Quem opera quais ativos? Usinas e linhas por CNPJ",
+  title: "Quem são os donos dos ativos? Usinas e linhas por CNPJ",
   description:
     "Usinas do SIGA e ativos de transmissão do SIGET ligados ao CNPJ do proprietário publicado pela ANEEL, com a cobertura dos vínculos, o mapa das usinas, os maiores proprietários e as usinas sem vínculo completo.",
   alternates: { canonical: "/setor-eletrico/empresas/ativos" },

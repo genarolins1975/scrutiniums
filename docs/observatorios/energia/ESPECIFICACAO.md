@@ -246,7 +246,7 @@ Use o quadro abaixo como conteúdo mínimo. Melhore a redação sem mudar o sent
 | Expansão | O que está sendo construído e quando pode entrar? | Acompanhar oferta, rede, prazos e riscos de execução | Projetos, estágios, cronogramas e revisões |
 | Transição e ambiente | Como a transformação do setor se distribui e afeta as emissões? | Compreender mudanças tecnológicas e territoriais | MMGD, intensidade de emissões e contexto |
 | Regulação | Quais regras mudaram e desde quando valem? | Situar decisões, indicadores e mudanças de regime | Atos, vigências, consultas e efeitos declarados |
-| Aprenda | O que significam os conceitos e como se ligam aos números? | Aprender progressivamente com exemplos | Glossário, trilhas e explicações interativas |
+| Aprenda | O que cada conceito significa e onde aparece? | Aprender progressivamente com exemplos | Glossário, trilhas e explicações interativas |
 | Dados | De onde vêm os números e como reutilizá-los? | Localizar, baixar e reproduzir a informação | Catálogo, cobertura, revisões e downloads |
 | Metodologia | Como calculamos e quais são os limites da análise? | Avaliar o que uma medida permite concluir | Fórmulas, definições, validação e versões |
 

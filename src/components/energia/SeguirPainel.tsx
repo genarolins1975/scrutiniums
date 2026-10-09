@@ -30,7 +30,7 @@ export function SeguirPainel({
             </a>
           )}
           {downloads.length > 1 && (
-            <DetalheDoNivel resumo={`Baixar os dados (${downloads.length} arquivos)`} abreEm="nunca" className="[&[open]]:basis-full" dados={{ "data-downloads": "" }}>
+            <DetalheDoNivel resumo={`Baixar os dados (${downloads.length} arquivos)`} abreEm="analisar" className="[&[open]]:basis-full" dados={{ "data-downloads": "" }}>
               <ul className="flex flex-col gap-x-6 pb-2 md:flex-row md:flex-wrap">
                 {downloads.map((d) => (
                   <li key={d.url}>

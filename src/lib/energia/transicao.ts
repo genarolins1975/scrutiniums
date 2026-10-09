@@ -206,7 +206,7 @@ export function perguntaPainel(id: PainelTransicao): string {
  * /setor-eletrico/geracao, e uma âncora interna dela pode mudar quando aquele módulo
  * reorganizar os blocos.
  */
-export const LIGACAO_GERACAO = { href: "/setor-eletrico/geracao", pergunta: "Quais fontes atenderam a carga?" } as const;
+export const LIGACAO_GERACAO = { href: "/setor-eletrico/geracao", pergunta: "De onde vem a eletricidade?" } as const;
 
 export const FONTE_ANEEL = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída; IBGE, Estimativas de população (SIDRA 6579)";
 export const FONTE_ANEEL_CADASTRO = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída";
