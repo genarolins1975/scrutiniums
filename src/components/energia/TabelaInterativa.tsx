@@ -86,6 +86,11 @@ export type TabelaInterativaProps = {
    * de profundidade, a tabela aparece sempre aberta.
    */
   recolher?: boolean;
+  /**
+   * Tabela montada depois de um pedido do leitor ("Abrir: tabela..."): nasce aberta em Entender, porque ele acabou de pedir para vê-la.
+   * Sem isto, o leitor abria a tabela e ainda encontrava o botão "Ver a tabela completa".
+   */
+  iniciarAberta?: boolean;
 };
 
 const TAMANHOS = [25, 50, 100, 200] as const;
@@ -155,6 +160,7 @@ export function TabelaInterativa({
   semLinhas,
   nota,
   recolher,
+  iniciarAberta = false,
 }: TabelaInterativaProps) {
   const uid = useId();
   const buscaRef = useRef<HTMLInputElement>(null);
@@ -214,7 +220,7 @@ export function TabelaInterativa({
   const [anuncio, setAnuncio] = useState("");
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
   const recolhivel = recolher ?? (linhas.length > LINHAS_PARA_RECOLHER || colunas.length > COLUNAS_PARA_RECOLHER);
-  const [aberta, setAberta] = useState(false);
+  const [aberta, setAberta] = useState(iniciarAberta);
   // a linha já escolhida quando a página abre (o padrão da página, como a maior bacia) não é pedido do leitor: só uma escolha feita depois,
   // no mapa ou no gráfico, abre a tabela. Sem isso, toda página com seleção padrão abria a tabela larga em Entender, que no celular
   // mostrava duas colunas de doze.

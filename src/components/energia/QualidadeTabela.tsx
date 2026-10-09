@@ -98,6 +98,7 @@ export function QualidadeTabela({
       nota={def.nota}
       selecionado={selecionado}
       onSelecionar={onSelecionar}
+      iniciarAberta
     />
   );
 }

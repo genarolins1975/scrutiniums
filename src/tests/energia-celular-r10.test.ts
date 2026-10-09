@@ -163,6 +163,13 @@ describe("tabela de Entender", () => {
     expect(t).toContain("const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || selecaoNova;");
     expect(t).not.toMatch(/paginaPedida > 1 \|\| !!selecionado/);
   });
+
+  it("a tabela montada depois de um pedido do leitor ('Abrir: tabela...') nasce aberta, para ele não achar o botão de abrir de novo", () => {
+    expect(ler("src/components/energia/TabelaInterativa.tsx")).toContain("const [aberta, setAberta] = useState(iniciarAberta);");
+    for (const f of ["QualidadeTabela", "GeracaoTabelasSobDemanda", "MercadoTabelasSobDemanda", "VisaoTabelasSobDemanda"]) {
+      expect(ler(`src/components/energia/${f}.tsx`), f).toMatch(/iniciarAberta/);
+    }
+  });
 });
 
 describe("coluna com rótulo longo no celular", () => {

@@ -4,17 +4,18 @@
    Gráficos (`[data-grafico]`): rótulos de texto terminados em reticências (truncados), quantos deles são idênticos entre si no mesmo gráfico
    (indistinguíveis), pares de textos que se sobrepõem (marcas de eixo coladas, rótulo sobre rótulo) e textos que passam da borda do gráfico.
    Tabelas visíveis (fora de bloco recolhido): colunas, quantas cabem na largura do contêiner, se há rolagem horizontal, células de número ou
-   texto cortadas na borda do contêiner e células com palavra partida no meio (a palavra mais longa da célula, medida com a fonte da célula,
-   é mais larga que o conteúdo da célula).
+   texto cortadas na borda do contêiner e células com palavra partida no meio (dois caracteres vizinhos da mesma palavra, sem espaço nem
+   hífen entre eles, em linhas diferentes, medidos pelas caixas do texto no navegador).
 
    Uso:
      PW_CORE=/caminho/playwright-core node scripts/energia-graficos-celular.mjs <saida.json> [--modo entender|analisar|auditar]
-   (servidor em http://localhost:3100) */
+   (servidor em http://localhost:3100, ou o endereço da variável BASE) */
 import { createRequire } from 'module';
 import { readFileSync, writeFileSync } from 'fs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PW_CORE);
 const saidaArq = process.argv[2];
+const BASE = process.env.BASE || 'http://localhost:3100';
 const modo = process.argv.includes('--modo') ? process.argv[process.argv.indexOf('--modo') + 1] : 'entender';
 const rotas = readFileSync('docs/observatorios/energia/avaliacao/rotas.txt', 'utf8').split('\n').map(s => s.trim()).filter(Boolean);
 const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
@@ -23,7 +24,7 @@ const saida = [];
 for (const rota of rotas) {
   const p = await ctx.newPage();
   try {
-    await p.goto('http://localhost:3100' + rota + '?modo=' + modo, { waitUntil: 'networkidle', timeout: 60000 });
+    await p.goto(BASE + rota + '?modo=' + modo, { waitUntil: 'networkidle', timeout: 60000 });
     await p.waitForTimeout(400);
     const r = await p.evaluate(() => {
       // dentro de <details> fechado o navegador pode devolver caixas (a camada de conteúdo é só adiada): o que o leitor vê exclui esse conteúdo
@@ -35,7 +36,6 @@ for (const rota of rotas) {
         return false;
       };
       const visivel = e => e.getClientRects().length > 0 && !fechado(e);
-      const textoVisivel = c => { const k = c.cloneNode(true); k.querySelectorAll('.sr-only').forEach(x => x.remove()); return (k.textContent || '').trim(); };
       const graficos = [...document.querySelectorAll('main [data-grafico]')].filter(visivel).map(g => {
         const gr = g.getBoundingClientRect();
         const textos = [...g.querySelectorAll('svg text')].filter(t => visivel(t) && t.textContent.trim());
@@ -58,7 +58,6 @@ for (const rota of rotas) {
         const fora = foraL.length;
         return { tipo: g.getAttribute('data-grafico'), textos: caixas.length, truncados: truncados.length, repetidos, sobrepostos, fora, exemplos, trunc_exemplos: truncados.slice(0, 3).map(c => c.t), fora_exemplos: foraL.slice(0, 3).map(c => c.t + ' (' + Math.round(c.r.left - gr.left) + ',' + Math.round(c.r.right - gr.right) + ')') };
       });
-      const canvas = document.createElement('canvas').getContext('2d');
       const tabelas = [...document.querySelectorAll('main table')].filter(t => visivel(t) && !t.closest('.sr-only') && !t.closest('[data-recolhivel="fechada"]')).map(t => {
         const cont = t.closest('.tabela-scroll, [role="region"]') || t.parentElement;
         const cr = cont.getBoundingClientRect();
@@ -67,17 +66,32 @@ for (const rota of rotas) {
         const visiveis = cab.filter(c => { const r = c.getBoundingClientRect(); return r.left >= cr.left - 1 && r.right <= cr.right + 1; }).length;
         let partidas = 0, naBorda = 0;
         const exemplos = [];
+        // palavra partida no meio: dois caracteres vizinhos de uma mesma palavra (sem espaço nem hífen entre eles) em linhas diferentes
+        const quebraNoMeio = c => {
+          const w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT);
+          for (let n = w.nextNode(); n; n = w.nextNode()) {
+            if (n.parentElement && n.parentElement.closest('.sr-only')) continue;
+            const s = n.textContent;
+            const r = document.createRange();
+            let anterior = null;
+            for (let k = 0; k < s.length; k++) {
+              if (/\s/.test(s[k])) { anterior = null; continue; }
+              r.setStart(n, k); r.setEnd(n, k + 1);
+              const rects = r.getClientRects();
+              if (!rects.length) continue;
+              const topo = rects[0].top;
+              if (anterior && Math.abs(topo - anterior.topo) > 4 && anterior.c !== '-' && anterior.c !== '\u2011') return s.slice(Math.max(0, k - 6), k + 6).trim();
+              anterior = { topo, c: s[k] };
+            }
+          }
+          return null;
+        };
         for (const c of t.querySelectorAll('th, td')) {
           const rr = c.getBoundingClientRect();
           if (!rr.width) continue;
           if (rr.left < cr.right - 1 && rr.right > cr.right + 1) naBorda++;
-          const cs = getComputedStyle(c);
-          canvas.font = cs.font;
-          const util = rr.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth);
-          // trechos entre as oportunidades de quebra (espaço e hífen, que ficam no fim do trecho; a barra não é oportunidade de quebra no Chromium):
-          // só o trecho mais largo que a célula obriga a partir a palavra ("Sudeste/Centr o-Oeste")
-          const trecho = textoVisivel(c).split(/(?<=[\s\-])/).map(s => s.trim()).sort((a, z) => canvas.measureText(z).width - canvas.measureText(a).width)[0] || '';
-          if (trecho.length > 3 && canvas.measureText(trecho).width > util + 1) { partidas++; if (exemplos.length < 3) exemplos.push(trecho); }
+          const achado = quebraNoMeio(c);
+          if (achado) { partidas++; if (exemplos.length < 3) exemplos.push(achado); }
         }
         return { colunas, visiveis, rolagem: cont.scrollWidth > cont.clientWidth + 1, na_borda: naBorda, palavras_partidas: partidas, exemplos };
       });

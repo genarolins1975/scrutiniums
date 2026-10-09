@@ -77,7 +77,7 @@ export function VisaoTabelasSobDemanda({
     };
   }, [pedido, g]);
 
-  const comum = { fonte, versao, chaveLinha: "id" as const };
+  const comum = { fonte, versao, chaveLinha: "id" as const, iniciarAberta: true };
   return (
     <div ref={caixa} className="space-y-4" data-tabelas={conjunto}>
       {!g ? (

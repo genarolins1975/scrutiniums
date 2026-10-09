@@ -3533,7 +3533,7 @@
     "o transbordo medido caiu de 594 itens em 51 rotas (r8) para 15 em 1 rota (r9) porque 579 dos 594 itens da r8 eram abas e links das faixas que rolavam, que o instrumento conta como elementos fora da largura da tela; com as abas quebrando linha não há mais o que contar. A queda é efeito da mudança de desenho da faixa e não de ajuste do instrumento; os 15 restantes são textos da página raiz a 768 px, que já constavam na r8"
    ],
    "data": "2026-10-08",
-   "versao_codigo": "32d7a14a49ec+alterado",
+   "versao_codigo": "c41b9e6f1b95+alterado",
    "paginas": 94,
    "nota_ponderada_media": 8.4,
    "atendem_meta": 0,

@@ -104,6 +104,16 @@ export default {
       // o veredito do painel traz a data e o percentual do SIN; os MWmês ficam na resposta completa, em Analisar
       const sin = painel.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o SIN guardava ${D}% da energia que os reservatórios comportam`));
       j.afirmar(sin, "a frase de abertura do painel não traz data e percentual do SIN");
+      // em Entender a tabela longa vem recolhida (a linha escolhida pela própria página não a abre mais): o leitor abre o botão que a mostra
+      const fechada = p.locator("main [data-recolhivel='fechada']").filter({ has: p.locator("th", { hasText: "EAR (%)" }) }).first();
+      if (await fechada.count()) {
+        const botao = p.locator(`main button[aria-controls="${await fechada.getAttribute("id")}"]`);
+        if (await botao.isVisible()) {
+          await botao.scrollIntoViewIfNeeded();
+          await clicar(botao);
+          await j.esperar(300);
+        }
+      }
       const tabela = p.locator("table:visible", { hasText: "EAR (%)" }).first();
       await tabela.waitFor({ state: "visible", timeout: 10000 });
       const mesmoNumero = sin[1] === ear.data && sin[2] === ear.valor;

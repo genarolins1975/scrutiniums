@@ -65,7 +65,7 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
     };
   }, [pedido, g, erro]);
 
-  const comum = { versao, chaveLinha: "id" as const };
+  const comum = { versao, chaveLinha: "id" as const, iniciarAberta: true };
   return (
     <div ref={caixa} className="space-y-4" data-tabelas={conjunto}>
       {!g ? (

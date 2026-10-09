@@ -67,7 +67,7 @@ export function GeracaoTabelaSobDemanda({ tabela, versao }: { tabela: TabelaGera
     if (!p) return null;
     return (
       <div data-tabela-geracao={tabela}>
-        <TabelaInterativa {...p} versao={def.versao?.(g) || versao} chaveLinha={def.chaveLinha ?? "id"} chaveUrl={def.chaveUrl} />
+        <TabelaInterativa {...p} versao={def.versao?.(g) || versao} chaveLinha={def.chaveLinha ?? "id"} chaveUrl={def.chaveUrl} iniciarAberta />
       </div>
     );
   }
