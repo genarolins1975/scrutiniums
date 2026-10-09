@@ -241,12 +241,6 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           <h2 className="mt-4 font-serif text-[1.1rem] leading-snug text-obee-tinta sm:text-[1.3rem] md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
           <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${[m.rotulo, unidadeNoTitulo].filter(Boolean).join(" · ")} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
           <div className="flex flex-col">
-          {aviso && (
-            <p className="order-1 mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
-              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
-            </p>
-          )}
-          <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
           {s.vis !== "evolucao" && notaZero && <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">{notaZero}</p>}
           {s.vis !== "evolucao" && c.excluidas.length > 0 && (
             <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
@@ -255,8 +249,13 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
             </p>
           )}
           {fraseCap && s.vis !== "evolucao" && <p className="mt-2 text-sm leading-snug text-obee-tinta">{fraseCap}</p>}
+          {aviso && (
+            <p className="mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
+              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
+            </p>
+          )}
 
-          <div className="order-2 mt-4 lg:order-none">
+          <div className="mt-4">
             {s.vis === "grafico" && (
               c.incluidas.length > 0 ? (
                 <DistribuicaoCapitais
@@ -287,6 +286,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               </div>
             )}
           </div>
+          <div className="lg:order-first"><AvisoDoPeriodo texto={aviso} /></div>
           </div>
           <button type="button" onClick={exportar} className="rotulo mt-3 inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee lg:hidden">
             {s.vis === "evolucao" ? "Baixar CSV da série" : "Baixar CSV do recorte"}

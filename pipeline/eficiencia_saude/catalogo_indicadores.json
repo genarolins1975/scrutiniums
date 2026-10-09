@@ -37,7 +37,7 @@
    "fontes": [
     "ibge_populacao"
    ],
-   "localizacao_registro": "IBGE, SIDRA, tabelas 6579 (estimativas), 4714 (Censo 2022) e relação da população dos municípios de 2023 (Diário Oficial da União, 31/08/2023). Os valores são os mesmos do painel de Educação nas capitais.",
+   "localizacao_registro": "IBGE, SIDRA, tabelas 6579 (estimativas) e 4714 (Censo 2022); para 2023, a tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023), conferida com o SIDRA 4714 (a relação publicada no DOU em 31/08/2023 não foi obtida). Os valores são os mesmos do painel de Educação nas capitais.",
    "periodo": "Estimativa de 1º de julho (2021, 2024 e 2025); Censo 2022 com referência em 31 de julho de 2022 (2022 e 2023).",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -48,7 +48,7 @@
    "transformacoes": [
     "Valores reproduzidos sem recálculo a partir do seed de população do OBEE, compartilhado com o painel de Educação."
    ],
-   "comparacao": "Serve de denominador. Variações entre 2021 e os anos seguintes, e as que envolvem 2023, misturam mudança de base populacional.",
+   "comparacao": "Serve de denominador. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
    "universo_curto": "População residente do município.",
    "universo_rotulo": "população residente",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
@@ -147,7 +147,7 @@
     "ibge_populacao",
     "ibge_ipca"
    ],
-   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", Despesas Liquidadas. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023. Os dois valores são publicados na tabela e no CSV.",
+   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", Despesas Liquidadas. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023). Os dois valores são publicados na tabela e no CSV.",
    "periodo": "Exercício financeiro e população oficial do mesmo ano.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -573,7 +573,7 @@
     "cnes_historico_estabelecimentos",
     "ibge_populacao"
    ],
-   "localizacao_registro": "Numerador: CNES, API de dados abertos. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "Numerador: CNES, API de dados abertos. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -729,7 +729,7 @@
     "relatorio_aps_cobertura",
     "ibge_populacao"
    ],
-   "localizacao_registro": "Numerador: Relatório APS. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "Numerador: Relatório APS. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -888,7 +888,7 @@
     "ripsa_mrb402_icsap",
     "ibge_populacao"
    ],
-   "localizacao_registro": "RIPSA MRB.4.02: numerador e coluna Denominador - População estimada. Sensibilidade: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "RIPSA MRB.4.02: numerador e coluna Denominador - População estimada. Sensibilidade: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Ano de processamento, de 2021 a 2024.",
    "perimetro": {
     "territorial": "Município de residência do paciente.",
@@ -900,7 +900,7 @@
     "Divisão da contagem pela população do denominador, por 100 mil.",
     "Sensibilidade com a população do exercício do OBEE."
    ],
-   "comparacao": "A comparação usa o mesmo ano entre capitais, descritivamente. A população do Ministério é 2,6% a 10,1% maior que a do Censo 2022 nas capitais, e a taxa muda na mesma proporção conforme o denominador. Padronização por idade e ajuste por cobertura de planos exigiriam dados por faixa etária, população padrão e fórmula verificada, e não são calculados.",
+   "comparacao": "A comparação usa o mesmo ano entre capitais, descritivamente. A população do Ministério difere da do IBGE do exercício nas 26 capitais: de 10,7% menor a 5,9% maior em 2021 (frente à estimativa anterior ao Censo), de 2,6% a 10,1% maior em 2022, de 3,5% a 11,1% maior em 2023 e igual em 2024. A taxa muda na mesma proporção conforme o denominador. Padronização por idade e ajuste por cobertura de planos exigiriam dados por faixa etária, população padrão e fórmula verificada, e não são calculados.",
    "universo_curto": "Internações ICSAP de residentes ÷ população estimada, por 100 mil.",
    "universo_rotulo": "internações SUS ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",

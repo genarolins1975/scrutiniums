@@ -4,14 +4,14 @@
   "painel": "saude-capitais",
   "versao_pipeline": "obee-saude-0.1.0",
   "versao_catalogo": "2026-10-09.1",
-  "versao_codigo": "gerador-bc610c11ef07",
-  "gerado_em": "2026-10-09T17:57:12Z",
+  "versao_codigo": "gerador-3ae6e873eec5",
+  "gerado_em": "2026-10-09T18:42:20Z",
   "dados_capturados_ate": "2026-10-09T14:32:35Z",
-  "hash_dados": "6a4bac828fb3918d43d9793a79c51514c5dc7a66f9e6480f7a3ffe388d960591",
+  "hash_dados": "3797117fb0d670274e2f6124c4b0080ad3c72d96ced584b5fe8c1590e9f9b4ea",
   "observacoes": 8777,
   "proveniencia": {
    "codigo_gerador": {
-    "sha256": "bc610c11ef07ecac19729976176864986f4998f6f794f6adf999a785f841b075",
+    "sha256": "3ae6e873eec5a35cf67d599a91ff0141d16010b5fffa80ffb3c044a03e40b7c3",
     "arquivos": 20,
     "escopo": "todos os .py de pipeline/eficiencia_saude (sem seed e sem testes), o catálogo de indicadores e as unidades compartilhadas base.py e entes.py de pipeline/eficiencia"
    },
@@ -21,11 +21,11 @@
     "nota": "o manifesto registra o sha256 de cada arquivo do seed; alterar uma entrada altera este hash. População e IPCA vêm do seed de Educação (captura compartilhada)."
    },
    "saidas": {
-    "hash_dados": "6a4bac828fb3918d43d9793a79c51514c5dc7a66f9e6480f7a3ffe388d960591",
+    "hash_dados": "3797117fb0d670274e2f6124c4b0080ad3c72d96ced584b5fe8c1590e9f9b4ea",
     "observacoes": 8777
    },
    "git": {
-    "commit_de_partida": "8f034c07e4a33006944c9e69960fd97c1ef3c0d4",
+    "commit_de_partida": "28f7c5ec92c0e4b7492e784c56a4a3fa90e582ee",
     "codigo_com_mudanca_nao_commitada": false
    },
    "nota": "Reconstruir a gold com o mesmo seed e o mesmo código produz o mesmo hash_dados. O commit que incorpora a gold gerada é posterior à geração."
@@ -434,7 +434,7 @@
    "fontes": [
     "ibge_populacao"
    ],
-   "localizacao_registro": "IBGE, SIDRA, tabelas 6579 (estimativas), 4714 (Censo 2022) e relação da população dos municípios de 2023 (Diário Oficial da União, 31/08/2023). Os valores são os mesmos do painel de Educação nas capitais.",
+   "localizacao_registro": "IBGE, SIDRA, tabelas 6579 (estimativas) e 4714 (Censo 2022); para 2023, a tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023), conferida com o SIDRA 4714 (a relação publicada no DOU em 31/08/2023 não foi obtida). Os valores são os mesmos do painel de Educação nas capitais.",
    "periodo": "Estimativa de 1º de julho (2021, 2024 e 2025); Censo 2022 com referência em 31 de julho de 2022 (2022 e 2023).",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -445,7 +445,7 @@
    "transformacoes": [
     "Valores reproduzidos sem recálculo a partir do seed de população do OBEE, compartilhado com o painel de Educação."
    ],
-   "comparacao": "Serve de denominador. Variações entre 2021 e os anos seguintes, e as que envolvem 2023, misturam mudança de base populacional.",
+   "comparacao": "Serve de denominador. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
    "universo_curto": "População residente do município.",
    "universo_rotulo": "população residente",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
@@ -544,7 +544,7 @@
     "ibge_populacao",
     "ibge_ipca"
    ],
-   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", Despesas Liquidadas. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023. Os dois valores são publicados na tabela e no CSV.",
+   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", Despesas Liquidadas. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023). Os dois valores são publicados na tabela e no CSV.",
    "periodo": "Exercício financeiro e população oficial do mesmo ano.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -970,7 +970,7 @@
     "cnes_historico_estabelecimentos",
     "ibge_populacao"
    ],
-   "localizacao_registro": "Numerador: CNES, API de dados abertos. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "Numerador: CNES, API de dados abertos. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -1126,7 +1126,7 @@
     "relatorio_aps_cobertura",
     "ibge_populacao"
    ],
-   "localizacao_registro": "Numerador: Relatório APS. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "Numerador: Relatório APS. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
    "perimetro": {
     "territorial": "Município da capital.",
@@ -1285,7 +1285,7 @@
     "ripsa_mrb402_icsap",
     "ibge_populacao"
    ],
-   "localizacao_registro": "RIPSA MRB.4.02: numerador e coluna Denominador - População estimada. Sensibilidade: IBGE, SIDRA, tabelas 6579 e 4714 e relação de 2023.",
+   "localizacao_registro": "RIPSA MRB.4.02: numerador e coluna Denominador - População estimada. Sensibilidade: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
    "periodo": "Ano de processamento, de 2021 a 2024.",
    "perimetro": {
     "territorial": "Município de residência do paciente.",
@@ -1297,7 +1297,7 @@
     "Divisão da contagem pela população do denominador, por 100 mil.",
     "Sensibilidade com a população do exercício do OBEE."
    ],
-   "comparacao": "A comparação usa o mesmo ano entre capitais, descritivamente. A população do Ministério é 2,6% a 10,1% maior que a do Censo 2022 nas capitais, e a taxa muda na mesma proporção conforme o denominador. Padronização por idade e ajuste por cobertura de planos exigiriam dados por faixa etária, população padrão e fórmula verificada, e não são calculados.",
+   "comparacao": "A comparação usa o mesmo ano entre capitais, descritivamente. A população do Ministério difere da do IBGE do exercício nas 26 capitais: de 10,7% menor a 5,9% maior em 2021 (frente à estimativa anterior ao Censo), de 2,6% a 10,1% maior em 2022, de 3,5% a 11,1% maior em 2023 e igual em 2024. A taxa muda na mesma proporção conforme o denominador. Padronização por idade e ajuste por cobertura de planos exigiriam dados por faixa etária, população padrão e fórmula verificada, e não são calculados.",
    "universo_curto": "Internações ICSAP de residentes ÷ população estimada, por 100 mil.",
    "universo_rotulo": "internações SUS ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
@@ -4679,7 +4679,7 @@
      "chave": "ibge_populacao_relacao_2023",
      "instituicao": "Instituto Brasileiro de Geografia e Estatística (IBGE)",
      "conjunto": "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População de 22/12/2023 (a relação do DOU de 31/08/2023 não foi obtida)",
-     "pagina": "https://www.ibge.gov.br/estatisticas/sociais/populacao/37734-relacao-da-populacao-dos-municipios-para-publicacao-no-tcu.html",
+     "pagina": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Populacao_e_domicilios_Primeiros_resultados/Resultados_da_2a_apuracao_20231027/POP2022_Municipios_Primeiros_Resultados_20231222.pdf",
      "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Populacao_e_domicilios_Primeiros_resultados/Resultados_da_2a_apuracao_20231027/POP2022_Municipios_Primeiros_Resultados_20231222.pdf",
      "capturado_em": "2026-10-08T19:52:14Z",
      "parametros": "26 capitais; tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023); total nacional conferido (203080756); valores conferidos contra o SIDRA 4714; o arquivo da relação do DOU não foi baixado (ibge.gov.br responde 403)",
@@ -40167,7 +40167,7 @@
    "cobertura": "130 de 130",
    "periodo": "2021 a 2025",
    "decisao": "publicar com ressalva",
-   "fundamento": "A população de 2021 é estimativa pré Censo e a de 2023 é censitária; as variações que as envolvem são bloqueadas. O campo de população da própria DCA é de outra safra e não é usado."
+   "fundamento": "A população tem três bases: 2021 é estimativa anterior ao Censo, 2022 e 2023 usam a mesma população do Censo 2022, 2024 e 2025 são estimativas posteriores. Variações de 2021 para 2022 e de 2023 para 2024 são bloqueadas; as de 2022 para 2023 e de 2024 para 2025 não. O campo de população da própria DCA é de outra safra e não é usado."
   },
   {
    "id": "F03",
@@ -40452,12 +40452,12 @@
   {
    "id": "D01",
    "medida": "População residente por município",
-   "fonte": "IBGE, SIDRA 6579 e 4714 e relação de 2023",
+   "fonte": "IBGE, SIDRA 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023)",
    "acesso_testado": "HTTP 200; conferência ao vivo sem diferença",
    "cobertura": "26 de 26",
    "periodo": "2021 a 2025",
    "decisao": "publicar com ressalva",
-   "fundamento": "A população do RIPSA e da SVSA é a do Ministério da Saúde, 2,6% a 10,1% maior que a do Censo 2022 nas capitais; as duas taxas de ICSAP são publicadas. Aracaju 2025: o IBGE revisou a estimativa e a série do Ministério ainda não acompanhou."
+   "fundamento": "A população do RIPSA e da SVSA é a do Ministério da Saúde e difere da do IBGE do exercício (de 10,7% menor a 5,9% maior em 2021, 2,6% a 10,1% maior em 2022, 3,5% a 11,1% maior em 2023 e igual em 2024, nas 26 capitais); as duas taxas de ICSAP são publicadas. Aracaju 2025: o IBGE revisou a estimativa e a série do Ministério ainda não acompanhou."
   }
  ],
  "politica_conferencia": {
@@ -40531,10 +40531,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1200401, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -40626,10 +40626,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2704302, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -40721,10 +40721,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1600303, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -40816,10 +40816,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1302603, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -40911,10 +40911,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2927408, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41006,10 +41006,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2304400, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41101,10 +41101,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3205309, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41196,10 +41196,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5208707, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41291,10 +41291,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2111300, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41386,10 +41386,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5103403, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41481,10 +41481,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5002704, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41576,10 +41576,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3106200, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41671,10 +41671,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1501402, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41766,10 +41766,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2507507, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41861,10 +41861,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4106902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -41956,10 +41956,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2611606, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42051,10 +42051,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2211001, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42146,10 +42146,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3304557, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42241,10 +42241,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2408102, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42336,10 +42336,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4314902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42431,10 +42431,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1100205, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42526,10 +42526,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1400100, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42621,10 +42621,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4205407, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42716,10 +42716,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3550308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42811,10 +42811,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2800308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -42906,10 +42906,10 @@
    "fonte": "ibge_populacao_relacao_2023",
    "registro": "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1721000, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "tipo_populacao": "censo_relacao_dou_2023",
+   "tipo_populacao": "censo_2022_resultado_dez_2023",
    "data_referencia": "31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "publicacao_original": null,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)"
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)"
   },
   {
    "indicador": "ctx.populacao.residente",
@@ -70991,7 +70991,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 261263040.06,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71023,7 +71023,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 286352970.41,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71311,7 +71311,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1286780710.63,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71343,7 +71343,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1410354402.49,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71631,7 +71631,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 332735772.02,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71663,7 +71663,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 364689458.78,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71951,7 +71951,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1406614441.14,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -71983,7 +71983,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1541696151.7,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72271,7 +72271,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2329346926.19,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72303,7 +72303,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2553041606.19,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72591,7 +72591,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3132685718.89,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72623,7 +72623,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3433527607.89,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72911,7 +72911,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 380379779.01,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -72943,7 +72943,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 416908873.06,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73231,7 +73231,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1898340888.53,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73263,7 +73263,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2080644671.97,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73551,7 +73551,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1211676329.24,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73583,7 +73583,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1328037505.71,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73871,7 +73871,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1183817126.19,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -73903,7 +73903,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1297502893.75,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74191,7 +74191,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1672338596.7,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74223,7 +74223,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1832938652.89,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74511,7 +74511,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 4657073648.73,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74543,7 +74543,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 5104307415.35,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74831,7 +74831,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1322049231.47,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -74863,7 +74863,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1449009872.86,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75151,7 +75151,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1045766081.36,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75183,7 +75183,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1146194362.91,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75471,7 +75471,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2724702017.17,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75503,7 +75503,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2986363918.61,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75791,7 +75791,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1659837896.2,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -75823,7 +75823,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1819237469.9,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76111,7 +76111,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1501475726.55,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76143,7 +76143,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1645667271.57,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76431,7 +76431,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 6795149190.68,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76463,7 +76463,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 7447709230.85,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76751,7 +76751,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1172913052.74,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -76783,7 +76783,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1285551667.04,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77071,7 +77071,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2616254988.7,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77103,7 +77103,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2867502373.07,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77391,7 +77391,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 529753314.43,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77423,7 +77423,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 580627229.7,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77711,7 +77711,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 395091171.93,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -77743,7 +77743,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 433033048.38,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78031,7 +78031,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 524465670.09,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78063,7 +78063,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 574831795.86,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78351,7 +78351,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 18588049995.7,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78383,7 +78383,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 20373120243.84,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78671,7 +78671,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 613682463.32,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78703,7 +78703,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 672616364.8,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -78991,7 +78991,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 348460543.8,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -79023,7 +79023,7 @@
     "explicacao": "Igual ao RREO do 6º bimestre (diferença de até R$ 1,00)."
    },
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 381924330.99,
     "numerador_ref": "sau.despesa.funcao_saude",
@@ -108462,7 +108462,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1200401, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 61,
     "denominador": 364756,
@@ -108997,7 +108997,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2704302, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 81,
     "denominador": 957916,
@@ -109532,7 +109532,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1600303, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 54,
     "denominador": 442933,
@@ -110067,7 +110067,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1302603, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 220,
     "denominador": 2063689,
@@ -110602,7 +110602,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2927408, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 169,
     "denominador": 2417678,
@@ -111137,7 +111137,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2304400, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 129,
     "denominador": 2428708,
@@ -111672,7 +111672,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3205309, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 30,
     "denominador": 322869,
@@ -112207,7 +112207,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5208707, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 83,
     "denominador": 1437366,
@@ -112742,7 +112742,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2111300, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 69,
     "denominador": 1037775,
@@ -113277,7 +113277,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5103403, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 89,
     "denominador": 650877,
@@ -113812,7 +113812,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5002704, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 81,
     "denominador": 898100,
@@ -114347,7 +114347,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3106200, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 163,
     "denominador": 2315560,
@@ -114882,7 +114882,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1501402, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 101,
     "denominador": 1303403,
@@ -115417,7 +115417,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2507507, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 101,
     "denominador": 833932,
@@ -115952,7 +115952,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4106902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 121,
     "denominador": 1773718,
@@ -116487,7 +116487,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2611606, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 161,
     "denominador": 1488920,
@@ -117022,7 +117022,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2211001, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 92,
     "denominador": 866300,
@@ -117557,7 +117557,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3304557, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 242,
     "denominador": 6211223,
@@ -118092,7 +118092,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2408102, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 59,
     "denominador": 751300,
@@ -118627,7 +118627,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4314902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 143,
     "denominador": 1332845,
@@ -119162,7 +119162,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1100205, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 59,
     "denominador": 460434,
@@ -119697,7 +119697,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1400100, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 44,
     "denominador": 413486,
@@ -120232,7 +120232,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4205407, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 53,
     "denominador": 537211,
@@ -120767,7 +120767,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3550308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 484,
     "denominador": 11451999,
@@ -121302,7 +121302,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2800308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 48,
     "denominador": 602757,
@@ -121837,7 +121837,7 @@
    "fonte": "cnes_historico_estabelecimentos+ibge_populacao",
    "registro": "CNES, API de dados abertos (assistencia-a-saude/cnes-estabelecimentos), competência dezembro de 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1721000, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 36,
     "denominador": 302692,
@@ -127970,7 +127970,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 120040, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1200401, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 81,
     "denominador": 364756,
@@ -127993,7 +127993,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 120040, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1200401, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 21,
     "denominador": 364756,
@@ -128815,7 +128815,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 270430, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2704302, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 77,
     "denominador": 957916,
@@ -128838,7 +128838,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 270430, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2704302, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 36,
     "denominador": 957916,
@@ -129660,7 +129660,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 160030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1600303, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 87,
     "denominador": 442933,
@@ -129683,7 +129683,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 160030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1600303, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 16,
     "denominador": 442933,
@@ -130505,7 +130505,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 130260, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1302603, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 333,
     "denominador": 2063689,
@@ -130528,7 +130528,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 130260, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1302603, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 120,
     "denominador": 2063689,
@@ -131350,7 +131350,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 292740, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2927408, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 377,
     "denominador": 2417678,
@@ -131373,7 +131373,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 292740, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2927408, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 113,
     "denominador": 2417678,
@@ -132195,7 +132195,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 230440, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2304400, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 476,
     "denominador": 2428708,
@@ -132218,7 +132218,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 230440, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2304400, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 20,
     "denominador": 2428708,
@@ -133040,7 +133040,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 320530, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3205309, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 84,
     "denominador": 322869,
@@ -133063,7 +133063,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 320530, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3205309, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 18,
     "denominador": 322869,
@@ -133885,7 +133885,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 520870, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5208707, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 189,
     "denominador": 1437366,
@@ -133908,7 +133908,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 520870, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5208707, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 73,
     "denominador": 1437366,
@@ -134730,7 +134730,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 211130, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2111300, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 170,
     "denominador": 1037775,
@@ -134753,7 +134753,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 211130, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2111300, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 0,
     "denominador": 1037775,
@@ -135575,7 +135575,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 510340, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5103403, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 110,
     "denominador": 650877,
@@ -135598,7 +135598,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 510340, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5103403, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3,
     "denominador": 650877,
@@ -136420,7 +136420,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 500270, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5002704, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 198,
     "denominador": 898100,
@@ -136443,7 +136443,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 500270, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5002704, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 55,
     "denominador": 898100,
@@ -137265,7 +137265,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 310620, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3106200, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 596,
     "denominador": 2315560,
@@ -137288,7 +137288,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 310620, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3106200, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 0,
     "denominador": 2315560,
@@ -138110,7 +138110,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 150140, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1501402, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 282,
     "denominador": 1303403,
@@ -138133,7 +138133,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 150140, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1501402, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 34,
     "denominador": 1303403,
@@ -138955,7 +138955,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 250750, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2507507, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 203,
     "denominador": 833932,
@@ -138978,7 +138978,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 250750, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2507507, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 4,
     "denominador": 833932,
@@ -139800,7 +139800,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 410690, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4106902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 179,
     "denominador": 1773718,
@@ -139823,7 +139823,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 410690, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4106902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 215,
     "denominador": 1773718,
@@ -140645,7 +140645,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 261160, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2611606, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 304,
     "denominador": 1488920,
@@ -140668,7 +140668,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 261160, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2611606, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 4,
     "denominador": 1488920,
@@ -141490,7 +141490,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 221100, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2211001, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 264,
     "denominador": 866300,
@@ -141513,7 +141513,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 221100, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2211001, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 0,
     "denominador": 866300,
@@ -142335,7 +142335,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 330455, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3304557, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1294,
     "denominador": 6211223,
@@ -142358,7 +142358,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 330455, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3304557, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 41,
     "denominador": 6211223,
@@ -143180,7 +143180,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 240810, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2408102, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 147,
     "denominador": 751300,
@@ -143203,7 +143203,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 240810, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2408102, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 19,
     "denominador": 751300,
@@ -144025,7 +144025,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 431490, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4314902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 325,
     "denominador": 1332845,
@@ -144048,7 +144048,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 431490, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4314902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 64,
     "denominador": 1332845,
@@ -144870,7 +144870,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 110020, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1100205, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 85,
     "denominador": 460434,
@@ -144893,7 +144893,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 110020, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1100205, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 11,
     "denominador": 460434,
@@ -145715,7 +145715,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 140010, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1400100, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 141,
     "denominador": 413486,
@@ -145738,7 +145738,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 140010, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1400100, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 0,
     "denominador": 413486,
@@ -146560,7 +146560,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 420540, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4205407, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 154,
     "denominador": 537211,
@@ -146583,7 +146583,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 420540, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4205407, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 11,
     "denominador": 537211,
@@ -147405,7 +147405,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 355030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3550308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1655,
     "denominador": 11451999,
@@ -147428,7 +147428,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 355030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3550308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 415,
     "denominador": 11451999,
@@ -148250,7 +148250,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 280030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2800308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 142,
     "denominador": 602757,
@@ -148273,7 +148273,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 280030, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2800308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 15,
     "denominador": 602757,
@@ -149095,7 +149095,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 172100, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1721000, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 85,
     "denominador": 302692,
@@ -149118,7 +149118,7 @@
    "fonte": "relatorio_aps_cobertura+ibge_populacao",
    "registro": "Relatório APS, /cobertura/aps, município 172100, competência 12/2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1721000, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1,
     "denominador": 302692,
@@ -150260,7 +150260,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 120040, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1200401, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2616,
     "denominador": 364756,
@@ -151704,7 +151704,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 270430, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2704302, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 5092,
     "denominador": 957916,
@@ -153148,7 +153148,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 160030, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1600303, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3601,
     "denominador": 442933,
@@ -154592,7 +154592,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 130260, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1302603, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 19968,
     "denominador": 2063689,
@@ -156036,7 +156036,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 292740, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2927408, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 20835,
     "denominador": 2417678,
@@ -157480,7 +157480,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 230440, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2304400, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 24958,
     "denominador": 2428708,
@@ -158924,7 +158924,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 320530, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3205309, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 2708,
     "denominador": 322869,
@@ -160368,7 +160368,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 520870, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5208707, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 11505,
     "denominador": 1437366,
@@ -161812,7 +161812,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 211130, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2111300, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 6895,
     "denominador": 1037775,
@@ -163256,7 +163256,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 510340, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5103403, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3239,
     "denominador": 650877,
@@ -164700,7 +164700,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 500270, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 5002704, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 8160,
     "denominador": 898100,
@@ -166144,7 +166144,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 310620, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3106200, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 24494,
     "denominador": 2315560,
@@ -167588,7 +167588,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 150140, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1501402, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 10933,
     "denominador": 1303403,
@@ -169032,7 +169032,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 250750, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2507507, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 6208,
     "denominador": 833932,
@@ -170476,7 +170476,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 410690, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4106902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 16952,
     "denominador": 1773718,
@@ -171920,7 +171920,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 261160, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2611606, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 18256,
     "denominador": 1488920,
@@ -173364,7 +173364,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 221100, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2211001, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 7576,
     "denominador": 866300,
@@ -174808,7 +174808,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 330455, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3304557, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 30633,
     "denominador": 6211223,
@@ -176252,7 +176252,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 240810, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2408102, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3885,
     "denominador": 751300,
@@ -177696,7 +177696,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 431490, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4314902, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 22051,
     "denominador": 1332845,
@@ -179140,7 +179140,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 110020, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1100205, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 4394,
     "denominador": 460434,
@@ -180584,7 +180584,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 140010, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1400100, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 6196,
     "denominador": 413486,
@@ -182028,7 +182028,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 420540, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 4205407, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3989,
     "denominador": 537211,
@@ -183472,7 +183472,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 355030, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 3550308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 82382,
     "denominador": 11451999,
@@ -184916,7 +184916,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 280030, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 2800308, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 3656,
     "denominador": 602757,
@@ -186360,7 +186360,7 @@
    "fonte": "ripsa_mrb402_icsap+ibge_populacao",
    "registro": "RIPSA MRB.4.02, município de residência 172100, ano 2023; população: IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município 1721000, referência 31 de julho de 2022 (malha territorial de 30 de abril de 2023)",
    "quebra_serie": true,
-   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (relação de 2023)",
+   "base_populacional": "Censo 2022, população de 31 de julho de 2022 (repetida em 2023)",
    "calculo": {
     "numerador": 1262,
     "denominador": 302692,

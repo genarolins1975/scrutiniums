@@ -4,9 +4,9 @@ Para quem retoma o módulo. Ler antes: [ESCOPO_E_FONTES.md](./ESCOPO_E_FONTES.md
 
 ## 1. Estado em 09/10/2026
 
-Módulo funcional com dados oficiais: 20 indicadores publicados com ressalvas (despesa, subfunção, natureza, ASPS, despesa por fonte, UBS, equipes, cobertura potencial, ICSAP, planos privados, população), 3 avaliados e não publicados, 8.777 observações (`hash_dados` 6a4bac828fb3918d), 26 capitais, série financeira de 2021 a 2025 e resultados de 2021 a 2024. A entrada `/eficiencia-estatal` leva a Educação e a Saúde. Nada foi publicado em produção: o trabalho está na branch `claude/determined-knuth-21z58z` e em um PR aberto para revisão, sem merge.
+Módulo funcional com dados oficiais: 20 indicadores publicados com ressalvas (despesa, subfunção, natureza, ASPS, despesa por fonte, UBS, equipes, cobertura potencial, ICSAP, planos privados, população), 3 avaliados e não publicados, 8.777 observações (`hash_dados` 3797117fb0d67027), 26 capitais, série financeira de 2021 a 2025 e resultados de 2021 a 2024. A entrada `/eficiencia-estatal` leva a Educação e a Saúde. Nada foi publicado em produção: o trabalho está na branch `claude/determined-knuth-21z58z` e em um PR aberto para revisão, sem merge.
 
-A avaliação por critérios A a K é interna, feita por agentes distintos do executor, e consta de [MATRIZ_DE_AVALIACAO.md](./MATRIZ_DE_AVALIACAO.md). Não houve validação por pessoas, usuários reais nem especialistas externos.
+A avaliação por critérios A a K é interna, feita por agentes distintos do executor, e consta de [MATRIZ_DE_AVALIACAO.md](./MATRIZ_DE_AVALIACAO.md). Resultado: nenhum bloqueio, **mas a meta de 9,0 em cada critério e página não foi atingida** (30 de 77 combinações; média por critério de 8,7 a 9,1). Não houve validação por pessoas, usuários reais nem especialistas externos. O que impede 9,0 está agrupado por causa na seção 5 da matriz.
 
 ## 2. Lacunas que dependem de dado externo
 
@@ -57,3 +57,4 @@ Os mesmos de Educação (cadeia fonte, seed, padronização, validações, gold 
 | Data | Entrega |
 | --- | --- |
 | 09/10/2026 | Módulo Saúde nas capitais: pipeline com seed de Siconfi, SIOPS, CNES, Relatório APS e RIPSA; 16 validações e 5 medições; catálogo de 23 fichas; seis páginas; entrada `/eficiencia-estatal` com Educação e Saúde; testes Python e vitest; documentação em `docs/obee/saude/`; avaliação interna independente |
+| 09/10/2026 | Quatro ciclos de correção depois da avaliação independente (razão agregada, composição por subfunção, bases da população, marcas de base e de perímetro, fontes e referências nas exportações, histórico de revisões, celular) e fechamento de textos; matriz final em `MATRIZ_DE_AVALIACAO.md` |

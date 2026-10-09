@@ -90,7 +90,8 @@ def despesa():
 BASES_POPULACIONAIS = {
     "estimativa_pre_censo_2022": ("estimativa de 1º de julho anterior ao Censo 2022 (calculada a partir do Censo de 2010)", False),
     "censo": ("Censo 2022, população de 31 de julho de 2022", True),
-    "censo_relacao_dou_2023": ("Censo 2022, população de 31 de julho de 2022 (relação de 2023)", True),
+    "censo_relacao_dou_2023": ("Censo 2022, população de 31 de julho de 2022 (repetida em 2023)", True),
+    "censo_2022_resultado_dez_2023": ("Censo 2022, população de 31 de julho de 2022 (repetida em 2023)", True),
     "estimativa_pos_censo_2022": ("estimativa de 1º de julho posterior ao Censo 2022", False),
 }
 """Bases da população do exercício. A marca `quebra_serie` alterna entre bases vizinhas: dois exercícios consecutivos só têm variação por habitante
@@ -110,8 +111,11 @@ def populacao():
         if base_pop is None:
             continue
         o["base_populacional"], o["quebra_serie"] = base_pop
-        if o.get("tipo_populacao") == "censo_relacao_dou_2023" and o["status"] == "OBSERVADO":
-            _rotula_populacao_2023(o)
+        if o.get("tipo_populacao") == "censo_relacao_dou_2023":
+            o["tipo_populacao"] = "censo_2022_resultado_dez_2023"  # o arquivo usado é o dos Primeiros Resultados (22/12/2023), não a relação do DOU
+            o["base_populacional"] = BASES_POPULACIONAIS["censo_2022_resultado_dez_2023"][0]
+            if o["status"] == "OBSERVADO":
+                _rotula_populacao_2023(o)
     return obs
 
 
@@ -396,7 +400,7 @@ ANO_BASE_POPULACAO_PRE_CENSO = 2021
 ANO_BASE_POPULACAO_CENSO = 2023
 """Bases da população de referência do Ministério na cobertura potencial, pelo ano base (o ano anterior ao da competência):
 até 2021 (dezembro de 2021 e de 2022): estimativa calculada a partir do Censo de 2010, anterior ao Censo 2022;
-2022 e 2023 (dezembro de 2023 e de 2024): a mesma população do Censo 2022 (a relação de 2023 repete a de 2022);
+2022 e 2023 (dezembro de 2023 e de 2024): a mesma população do Censo 2022 (a população de 2023 repete a de 2022);
 2024 em diante (dezembro de 2025): estimativa de 2024, posterior ao Censo, com dois anos de crescimento populacional de uma vez.
 A marca de quebra de série alterna entre bases vizinhas (verdadeira, falsa, verdadeira): só dois meses consecutivos da mesma base têm variação comparável.
 Por isso as passagens de dezembro de 2022 para 2023 e de dezembro de 2024 para 2025 não medem só a cobertura."""

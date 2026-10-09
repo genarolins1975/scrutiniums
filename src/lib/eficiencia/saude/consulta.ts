@@ -262,7 +262,7 @@ export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number
   return [...c.incluidas.map((i) => linha(i.cap, i.ponto, true)), ...c.excluidas.map((x) => linha(x.cap, x.ponto, false))];
 }
 
-export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Marca de base (anos consecutivos só são comparáveis com a mesma marca)", "Base do denominador", "Nota", "Mediana das capitais no período", "Capitais na mediana", ...CAUDA_META];
+export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Marca de base (anos consecutivos só são comparáveis com a mesma marca)", "Perímetro da despesa distinto (sim quando difere dos demais anos)", "Base do denominador", "Nota", "Mediana das capitais no período", "Capitais na mediana", ...CAUDA_META];
 
 /** Base da população do denominador no ano, quando a medida tem denominador populacional; vazio nas demais. */
 function basesDoDenominador(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, ano: number): string {
@@ -283,7 +283,7 @@ export function linhasCsvSerie(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, cap: 
     const x = porAno.get(p.ano);
     return [
       nome, cap?.uf ?? "", m.rotulo, periodoDe(p.ano), p.valor === null ? "" : m.formata(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], p.elegivel ? "sim" : "não",
-      p.quebraSerie ? "sim" : "nao", basesDoDenominador(ix, m, o, p.ano), p.nota ?? "", x?.valor === null || x === undefined ? "" : String(x.valor), x ? String(x.n) : "", ...cauda,
+      p.quebraSerie ? "sim" : "nao", cap ? ((p as { quebraPerimetro?: boolean }).quebraPerimetro ? "sim" : "nao") : "", basesDoDenominador(ix, m, o, p.ano), p.nota ?? "", x?.valor === null || x === undefined ? "" : String(x.valor), x ? String(x.n) : "", ...cauda,
     ];
   });
 }

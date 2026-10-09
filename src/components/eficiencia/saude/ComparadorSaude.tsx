@@ -187,19 +187,18 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <p className="mt-1 text-[0.8125rem] leading-snug text-carvao-muted">{m.unidade(s.moeda)} · {c.ref ? `${c.ref.n} de ${c.noGrupo} capitais na comparação` : "sem capital na comparação"} · {m.universo}</p>
           <EtiquetaDePerimetro tema={m.tema} href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} />
           <div className="flex flex-col">
-          {aviso && (
-            <p className="order-1 mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
-              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
-            </p>
-          )}
-          <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
           {c.excluidas.length > 0 && (
             <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
               {c.excluidas.length <= 4 ? `Fora da comparação neste recorte: ${c.excluidas.map((x) => `${x.cap.nome} (${x.cap.uf})`).join(", ")}.` : `${c.excluidas.length} capitais fora da comparação neste recorte.`}{" "}
               <a href="#fora-da-comparacao" className="inline-block py-1 text-obee-dark underline underline-offset-4">Motivo e detalhe abaixo</a>.
             </p>
           )}
-          <div className="order-2 mt-3 lg:order-none">
+          {aviso && (
+            <p className="mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
+              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
+            </p>
+          )}
+          <div className="mt-3">
             {c.incluidas.length > 0 ? (
               <DistribuicaoCapitais
                 linhas={c.incluidas.map((i) => ({ chave: i.cap.id, rotulo: `${i.cap.nome} (${i.cap.uf})`, valor: i.valor, destacada: i.cap.id === A?.id || i.cap.id === B?.id }))}
@@ -215,6 +214,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
               <p className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">Nenhuma capital tem valor comparável para este recorte.</p>
             )}
           </div>
+          <div className="lg:order-first"><AvisoDoPeriodo texto={aviso} /></div>
           </div>
           <div className="mt-5"><ForaDaComparacaoSaude itens={c.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_ESTADO[x.status], motivo: x.motivo }))} /></div>
         </div>

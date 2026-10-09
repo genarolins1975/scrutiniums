@@ -177,11 +177,11 @@ export function RecorteRecolhivel({ id, resumo, children, rotulo = "Ajustar o re
   const script = `(function(){try{var d=document.getElementById(${JSON.stringify(id)});if(d&&window.matchMedia("(max-width: 1023px)").matches)d.open=false}catch(e){}})();`;
   return (
     <>
-      <details id={id} open className="mt-6">
+      <details id={id} open className="group mt-6">
         <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-2 border-y border-linha py-2 text-sm leading-snug text-obee-tinta lg:hidden">
           <span className="rotulo text-mineral">{rotulo}</span>
           <span className="min-w-0 flex-1 basis-[12rem]">{resumo}</span>
-          <span aria-hidden="true" className="text-obee-dark">▾</span>
+          <span aria-hidden="true" className="text-obee-dark group-open:rotate-180">▾</span>
         </summary>
         <div className="mt-4 space-y-4 lg:mt-0">{children}</div>
       </details>

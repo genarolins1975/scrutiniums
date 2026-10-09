@@ -679,3 +679,150 @@ O saldo líquido zero esconde R$ 24.464.371,33 (2022) e R$ 25.218.185,26 (2023) 
 * Não avaliei A a D, H a J nem li o relatório do avaliador de experiência; observei as correções de aparência só quando afetam dados e método.
 * Não houve usuários, especialistas nem revisão externa; as notas valem para o estado observado e nenhuma passa de 9,2.
 * Evidências: `evidencias/dados_reavaliacao3_*.csv` (recomputação, população contra o PDF do IBGE, CSV de série com a base do denominador, exportações, links de dados do Panorama e verificações do novo build).
+
+
+## 11. Reavaliação 4 (final)
+
+Data: 09/10/2026, depois do quarto ciclo de correções do executor (rodada 1, ciclo 4); as notas desta seção são as finais do módulo. Avaliador: o mesmo avaliador independente de dados e método (agente Claude, contexto limpo), sem leitura do `avaliador-experiencia.md`. Li a seção 7 de `CORRECOES.md` (mapa do executor, sem notas) só para saber o que procurar e verifiquei cada linha de forma independente, no build servido em `http://localhost:3111` (processo `next start` iniciado às 18h15 UTC, build das 18h15) e nos arquivos. Estado verificado: HEAD `28f7c5ec9`, gold `hash_dados` `6a4bac828fb3918d`, 8.777 observações, `versao_codigo` `gerador-bc610c11ef07`, `gerado_em` 2026-10-09T17:57:12Z, 21 validações (S01 a S16 e M01 a M05). Refiz todas as capturas contra esse processo.
+
+**Resultado em uma linha da reavaliação:** T4, T6 e T9 estão corrigidos; T1, T2, T3, T5 e T8 em parte; T7 não foi alterado (o executor o declarou); **não resta nenhum bloqueio** e **nenhum defeito de gravidade média**: sobram oito problemas baixos (U1 a U8), o mais relevante é que três trechos de texto sobre a troca de base da população ainda contradizem as marcas (U1). Médias por critério: E 8,97; F 8,91; G 8,99; K 9,09 (Reavaliação 3: 8,86; 8,83; 8,89; 8,99). Dezoito das 28 combinações de página e critério chegam a 9,0 ou mais; dez ficam entre 8,8 e 8,9 (seção 11.5 diz o que falta a cada uma). A meta de 9,0 em cada critério e página **não foi atingida**: em F cinco das sete páginas ficam abaixo de 9,0 (nenhuma passa de 9,1), e as pendências de F dependem de **revisão externa** (11.6).
+
+### 11.1 Verificações de regressão
+
+| Verificação | Resultado |
+| --- | --- |
+| `python3 -m unittest pipeline.tests.test_eficiencia_saude` | 62 testes, OK (15,6 s); eram 57 |
+| `npx vitest run src/tests/obee-saude.test.ts` | 79 testes, OK; eram 70 |
+| Suíte vitest completa e testes Python de Educação e Saúde | 143 arquivos, 2.772 testes aprovados e 1 ignorado; 159 testes Python: iguais ao que `VALIDACOES_E_REPRODUCAO.md` diz |
+| Reconstrução em cópia temporária fora do repositório (`python3 -m pipeline.eficiencia_saude.run`) | 8.777 observações, `hash_dados` 6a4bac828fb3918d reproduzido, `versao_codigo` igual; as 22 seções comparáveis da gold iguais às publicadas (só diferem os carimbos de tempo e o commit da proveniência); nos 24 CSV estáticos só a coluna `dados_gerados_em` difere (9.691 de 340.959 células) |
+| Receita do `hash_dados` da página | Reproduz 6a4bac828fb3918d; sem `ensure_ascii=False` sai 15e302efd8528717. Recalculei o hash das observações de cada uma das 7 versões da gold no git: igual ao do meta em 7 de 7 |
+| Recomputação independente a partir do seed bruto (todas as capitais e anos) | 8.135 checagens, 8.110 iguais, 25 diferentes e as mesmas explicadas (23 de cobertura 2021 pela NT 2/2025; 2 de natureza de Florianópolis). Nenhum valor mudou em relação ao ciclo 3: 188 observações com nota ou registro revisados, 0 com valor diferente (`evidencias/dados_reavaliacao4_recomputacao_resumo.csv`) |
+| Conferência da despesa e perímetro, refeitas do seed (DCA, RREO e MSC) | Situação e marca de perímetro iguais ao CSV nos 130 pares; só Campo Grande 2021 tem perímetro distinto (MSC com R$ 74.451.127,64 de intraorçamentárias) (`dados_reavaliacao4_conferencia_perimetro.csv`) |
+| Consistência entre superfícies | Páginas de exploração: 15 de 15 recortes sem divergência de n, mediana e capitais fora. Comparar: 10 recortes de painel e CSV da medida (260 células) e tabelas de 2021 a 2025 baixadas do site (5 × 26 × 10 = 1.300 células) iguais à gold, com células sem dado vazias. CSV de série: 24 arquivos, 112 linhas, valor, n e base do denominador iguais à gold |
+| Razão agregada exibida; composições agregadas | 24 de 24 combinações; 15 de 15 blocos |
+| Panorama: extremos, faixa central, n e exclusão em 7 cartões | 7 de 7 iguais à gold; a linha "Fora da comparação: Macapá (AP), conferência pendente ..." confere |
+| Trilhas de reconstrução de São Paulo | 20 de 20, mesmos valores já conferidos; 20 âncoras `trilha-...` existem |
+| Desempenho em laboratório (7 rotas, 320, 390, 768 e 1440 px, 28 medições) | 0 erros ou avisos de console, 0 px de rolagem horizontal, LCP de 72 a 220 ms, CLS no máximo 0,0037 (Panorama a 1440 px, repetível; ver U5) |
+| Links | 67 links internos sem quebra |
+| Consulta ao vivo nova | Relatório APS Brasil dez. 2021: 87,91%, capacidade 186.077.438, população 211.664.078, igual à referência nacional do CSV. A consulta ao SIOPS respondeu 500 neste ambiente: não verificada agora (a da primeira rodada vale) |
+
+Resumos em `evidencias/dados_reavaliacao4_verificacoes_novo_build.csv`.
+
+### 11.2 Estado de cada achado
+
+| Achado | Estado | Verificação independente |
+| --- | --- | --- |
+| **T1** frases sobre a troca de base | **Corrigido em parte** | Fichas de despesa por habitante, UBS por 10 mil, equipes por 10 mil e cobertura potencial reescritas e coerentes com as marcas da gold: despesa, UBS e equipes têm marcas falso, verdadeiro, verdadeiro, falso, falso em todas as 26 capitais, logo 2021 para 2022 e 2023 para 2024 são bloqueadas e 2022 para 2023 e 2024 para 2025 não; a cobertura tem verdadeiro, verdadeiro, falso, falso, verdadeiro, logo as três bases são dezembro de 2021 e 2022, dezembro de 2023 e 2024 e dezembro de 2025, como diz a ficha. Os avisos do período e as frases da Evolução na interface também coincidem. **Resta U1**: a ficha da população, a matriz de fontes F02 e a ficha da taxa de ICSAP ainda têm frases que contradizem as marcas. O teste novo exige duas frases nas fichas reescritas e proíbe três nas demais; não pega esses resíduos (`dados_reavaliacao4_frases_contra_as_marcas.csv`) |
+| **T2** procedência da população de 2023 | **Corrigido em parte** | O registro das 26 observações de 2023 diz "IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023 ..."; a nota diz que os valores são os dessa tabela, iguais ao SIDRA 4714 e à população de 2022, e que "a relação publicada no DOU em 31/08/2023 não foi obtida"; o nome da fonte no CSV estático também. Refiz contra o PDF do IBGE (ciclo 3): 26 de 26 iguais. **Resta U2**: rótulo "(relação de 2023)" na base, identificador `censo_relacao_dou_2023`, endereço da relação do DOU, ficha da população e documento |
+| **T3** marca de base e de perímetro | **Corrigido em parte** | Os 20 `sau_*.csv` têm `quebra_perimetro`. Campo Grande 2021: `quebra_serie` nao e `quebra_perimetro` sim; 2022: sim e nao; as demais capitais têm perímetro nao em todas as linhas. Nos 6.573 pares de anos consecutivos dos 20 arquivos, marcas iguais nunca coincidem com bases diferentes e nenhuma mudança de base fica sem marca diferente (`dados_reavaliacao4_marcas_base_e_perimetro.csv`). Em despesa por habitante a regra vale nas 260 linhas (26 capitais × 5 anos × 2 componentes). A interface não liga 2021 a 2022 em Campo Grande (nem em despesa total: a linha começa em 2022 e a frase diz "de R$ 1,62 bilhão em 2022 para R$ 1,82 bilhão em 2025"). **Resta U3** |
+| **T4** exemplo de ICSAP; links para a matriz | **Corrigido; link no estado em que está** | Exemplo de São Paulo 2024 refeito no `mgdi_ms_qu3.csv` original do RIPSA: 24 células (2 sexos × 12 faixas), numerador 83.391, denominador 11.895.578, taxa 701,0252; a coluna `celulas_sexo_faixa` do seed é 24. `MATRIZ_DE_AVALIACAO.md` **não existe** na hora da verificação; `README.md` (linha 12) e `CONTINUIDADE.md` (linha 9) apontam para ele, e `CORRECOES.md` diz "Matriz escrita". Registrado como está, a pedido: o arquivo será escrito depois desta reavaliação |
+| **T5** histórico de revisões | **Corrigido em parte** | Tabela "Histórico de revisões (6 versões dos dados)" em Dados e métodos, recolhida. Contra o git (7 commits tocaram a gold; o de 14h43 repete o hash do de 14h34): hash e número de observações iguais em 6 de 6 (8.721, 8.751, 8.777 × 4), horas conferem com `gerado_em`. As contagens citadas conferem (30 e 26 observações novas; 78, 6 e 188 alteradas). **Resta U4**: duas descrições imprecisas (`dados_reavaliacao4_historico_de_revisoes_vs_git.csv`) |
+| **T6** destino do link e CSV de referências nacionais | **Corrigido** | Em cada um dos 7 cartões do Panorama o link "Fonte e como reproduzir" leva a `/metodos#trilha-sau-...` da própria medida (7 de 7: âncora existe, a trilha abre e recebe foco, o título da trilha é o indicador do cartão). `saude_referencias_nacionais.csv`: 14 linhas (norma de 15%, 5 de cobertura do Brasil e 8 de ICSAP), valor igual à gold e ao meu recálculo do seed em 14 de 14 (cobertura contra os dezembros do Relatório APS do Brasil; ICSAP do Brasil e do Brasil sem as 26 capitais contra o MRB.4.02 nacional); fonte, registro e hash em todas, página oficial e data em 13 (a norma não tem); as 20 colunas estão no dicionário (94 linhas, todas as colunas dos 24 CSV cobertas). Link na página de Dados e métodos responde 200 |
+| **T7** OCDE na linha de Educação | **Não alterado** (declarado) | Conferi a linha "Cobertura" da entrada de Educação contra a gold de Educação (só leitura): 26 entes, despesa e matrículas de 2021 a 2025, Ideb de 2005 a 2025 bienal: igual. Não verifiquei se a OCDE aparece nas páginas de Educação |
+| **T8** CLS do Panorama; testes das mudanças | **Corrigido em parte** | Testes novos cobrem o histórico, o resumo do recorte, a cobertura da entrada, as trilhas, as marcas, as referências nacionais e as fichas (Python 62, vitest 79; suíte completa passa). O deslocamento de 46 px no Panorama a 1440 px **continua**: CLS 0,0037, o mesmo de antes (U5) |
+| **T9** valor bruto na nota de Florianópolis | **Corrigido** | Refiz no MSC do seed: 24 linhas (2022) e 30 (2023) sem natureza; créditos R$ 24.464.371,33 e R$ 25.218.185,26, débitos iguais, saldo R$ 0,00; 5,2% e 4,8% da DCA (R$ 466.493.256,91 e R$ 524.465.670,09). A nota traz esses números e que a abertura segue não verificável |
+| Entrada: linha "Cobertura" por tema | **Corrigido** | Saúde: "26 capitais, com o Distrito Federal fora e o motivo à vista; despesa e aplicação em ações e serviços públicos de saúde de 2021 a 2025; unidades, equipes e cobertura em dezembro de 2021 a 2025; internações por condições sensíveis à atenção primária de 2021 a 2024; 20 indicadores publicados com ressalvas": igual à gold (períodos financeiros e de dezembro 2021 a 2025, resultados 2021 a 2024, 20 indicadores publicáveis, 3 não). Educação: igual à gold de Educação |
+| D9 parâmetros inválidos na URL | **Não alterado** (declarado) | Como antes: `med=foo` e `cap=distrito-federal` seguem na URL, a página mostra o padrão sem NaN |
+
+### 11.3 Matriz de notas final
+
+Avaliador: avaliador independente de dados e método (agente Claude, contexto limpo). Inspeção heurística de um agente, sem usuários nem especialistas externos; nenhuma nota passa de 9,2.
+
+| Página | Critério | Nota anterior (Reavaliação 3) | Nota nova | Justificativa da mudança | Evidência |
+| --- | --- | --- | --- | --- | --- |
+| Panorama | E | 8,8 | 8,8 | Sem mudança | 11.1 |
+| Panorama | F | 8,8 | 8,9 | As fichas das medidas do cartão (despesa por habitante, UBS, equipes, cobertura) agora coincidem com as marcas; falta a da taxa de ICSAP (U1) | T1 |
+| Panorama | G | 8,8 | 9,0 | O link de cada cartão abre a trilha da própria medida (7 de 7); referências do Brasil exportáveis e conferidas (14 de 14); histórico de revisões; dicionário completo. Descontos: rótulo da população de 2023 e descrições do histórico (U2, U4) | `dados_reavaliacao4_panorama_trilhas.csv`; `dados_reavaliacao4_referencias_nacionais.csv` |
+| Panorama | K | 8,9 | 9,0 | Testes novos para as mudanças dos ciclos 3 e 4 e suíte completa aprovada; o deslocamento de 46 px (CLS 0,0037) continua e impede nota maior | U5 |
+| Gastos | E | 9,2 | 9,2 | Sem mudança | 11.1 |
+| Gastos | F | 9,0 | 9,1 | Ficha de despesa por habitante coerente com as marcas; marca de perímetro separada e refeita do seed nos 130 pares; nota de Florianópolis com o bruto, conferida. Resta a ficha da população (U1) e as regras aceitas sem validação externa | `dados_reavaliacao4_conferencia_perimetro.csv` |
+| Gastos | G | 9,0 | 9,1 | Procedência da população de 2023 corrigida no registro, na nota e na fonte do CSV; trilhas com âncora por medida; histórico; referências nacionais. Descontos pequenos: U2 e U4 | T2, T5, T6 |
+| Gastos | K | 9,0 | 9,1 | Tudo o que conferi igual à gold e testes novos para as colunas e textos do ciclo | 11.1 |
+| Rede e APS | E | 8,9 | 9,0 | Fichas de UBS, equipes e cobertura coerentes com as marcas; base do denominador por ano e marcas sem violação em 6.573 pares | `dados_reavaliacao4_marcas_base_e_perimetro.csv` |
+| Rede e APS | F | 8,8 | 8,9 | T1 fechado nas três fichas da Rede. Faltam a causa de M03, a regra de 2021 (NT 2/2025) e a validação externa | T1 |
+| Rede e APS | G | 8,9 | 9,0 | Histórico, referência do Brasil em CSV (cobertura 5 de 5 conferidas), âncora de trilha por medida | T5, T6 |
+| Rede e APS | K | 9,0 | 9,1 | Testes novos; sem erro | 11.1 |
+| Atendimento e resultados | E | 8,9 | 8,9 | Sem mudança; a participação de ICSAP segue sem referência nacional | 11.5 |
+| Atendimento e resultados | F | 8,8 | 8,8 | Sem mudança; a ficha da taxa traz o intervalo de 2,6% a 10,1% que vale só para 2022 (U1) e o universo de COB.2.01 segue não confirmado | U1 |
+| Atendimento e resultados | G | 8,9 | 9,0 | Exemplo de ICSAP com a soma das 24 células conferido no arquivo original; referências nacionais de ICSAP (8 de 8) em CSV com fonte e captura; trilha própria | T4, T6 |
+| Atendimento e resultados | K | 9,0 | 9,1 | Testes novos; 104 de 104 valores do RIPSA; sem erro | 11.1 |
+| Comparar capitais | E | 8,9 | 9,0 | O resíduo que eu apontava (T1 e T3) está fechado nas fichas e nas marcas; 1.300 e 260 células iguais à gold | T1, T3 |
+| Comparar capitais | F | 8,9 | 9,0 | A evolução das capitais escolhidas usa as marcas de base e de perímetro corretas; fichas coerentes | T3 |
+| Comparar capitais | G | 8,8 | 8,9 | Histórico e referências em CSV. Segue sem link de fonte e reprodução no corpo da página e sem fórmula na tabela | 11.5 |
+| Comparar capitais | K | 9,0 | 9,1 | Testes novos; sem divergência | 11.1 |
+| Dados e métodos | E | 8,8 | 8,9 | O dicionário agora explica as duas marcas (`quebra_serie` e `quebra_perimetro`) e a base por ano; falta o exemplo reprodutível de mediana e razão agregada | T3 |
+| Dados e métodos | F | 8,7 | 8,8 | Quatro fichas corrigidas; ainda trazem frases em desacordo a ficha da população, a matriz F02 (na própria página) e a ficha de ICSAP (U1) | U1 |
+| Dados e métodos | G | 8,9 | 9,0 | Histórico de revisões com hash e observações exatos; quadro, trilhas com âncora, dicionário de 94 linhas, CSV de referências nacionais. Descontos: U2, U4 e o link para a matriz, ainda sem arquivo | T4, T5 |
+| Dados e métodos | K | 9,0 | 9,1 | Testes novos; 28 medições limpas; 67 links sem quebra | 11.1 |
+| Entrada `/eficiencia-estatal` | E | 8,5 | 9,0 | A lacuna que eu apontava (universo, anos e número de indicadores) está fechada e conferida com as duas golds | `dados_reavaliacao4_verificacoes_novo_build.csv` |
+| Entrada `/eficiencia-estatal` | F | 8,8 | 8,9 | T1 em grande parte fechado; a entrada resume pendências externas (COB.2.01, M03) | 11.6 |
+| Entrada `/eficiencia-estatal` | G | 8,9 | 8,9 | Sem mudança líquida; a linha de Educação (T7) segue sem a OCDE e não conferida com o módulo de Educação | T7 |
+| Entrada `/eficiencia-estatal` | K | 9,0 | 9,1 | Teste da linha de cobertura; estática, sem erro, LCP de 72 a 112 ms | 11.1 |
+
+Médias: E 8,97 (Reavaliação 3: 8,86); F 8,91 (8,83); G 8,99 (8,89); K 9,09 (8,99). Média por página: Panorama 8,93 (8,83); Gastos 9,13 (9,05); Rede e APS 9,00 (8,90); Atendimento e resultados 8,95 (8,90); Comparar capitais 9,00 (8,90); Dados e métodos 8,95 (8,85); Entrada 8,98 (8,80). Menor nota por página: Panorama 8,8 (E); Gastos 9,1; Rede e APS 8,9 (F); Atendimento e resultados 8,8 (F); Comparar 8,9 (G); Métodos 8,8 (F); Entrada 8,9 (F e G). Combinações em 9,0 ou mais: 18 de 28.
+
+### 11.4 Bloqueios remanescentes
+
+**Nenhum.** Conferi de novo a lista da rubrica: valor incorreto (8.110 de 8.135 checagens iguais, as 25 diferenças explicadas e documentadas; nenhum valor mudou no ciclo); comparação materialmente incompatível (as três bases da população e da referência do Ministério estão marcadas e bloqueadas nas variações, na interface e nos CSV; U1 e U3 são imprecisões de texto e de marca, não comparação indevida); despesa do município como gasto total (não); razão despesa por atendimento ou usuário (não); ausência tratada como zero (não; células sem dado vazias nos 1.300 valores da tabela); exclusão no gráfico mas não no resumo ou CSV (15 recortes, 5 tabelas e 24 séries consistentes, e o Panorama mostra a exclusão com o motivo); ressalva essencial escondida (não); afirmação causal ou julgamento (nenhuma ocorrência nos textos novos); nota, ranking, semáforo, DEA, estimativa de desperdício ou recomendação de corte (nenhum); Distrito Federal misturado ou sem motivo (não); dado pessoal (nenhum); barreira a tarefa essencial (67 links e os downloads do Panorama respondem).
+
+### 11.5 Problemas que permanecem ou são novos
+
+Numeração própria desta reavaliação (U1 a U8). Gravidade máxima: baixa.
+
+**U1. Baixa (resíduo de T1). Três trechos ainda contradizem as marcas de base.**
+Onde: (a) ficha de `ctx.populacao.residente`, campo `comparacao` (`catalogo_indicadores.json`, linha 51), mostrada em Dados e métodos: "Variações entre 2021 e os anos seguintes, e as que envolvem 2023, misturam mudança de base populacional"; (b) matriz de fontes F02, campo `fundamento`: "A população de 2021 é estimativa pré Censo e a de 2023 é censitária; as variações que as envolvem são bloqueadas", presente em `matriz_fontes.py`, na gold, em `saude_matriz_de_fontes.csv`, em `CATALOGO_COBERTURA_FORMULAS.md` e na seção "Decisões sobre as fontes" da página; (c) ficha de `sau.icsap.taxa`: "A população do Ministério é 2,6% a 10,1% maior que a do Censo 2022 nas capitais".
+Evidência: a variação de 2022 para 2023 envolve 2023, usa a mesma população do Censo (marcas iguais) e não é bloqueada, em (a) e (b); em (c) o intervalo vale só para 2022: em 2023 é de 3,5% a 11,1%, em 2021 vai de −10,7% a +5,9% contra a estimativa anterior ao Censo e em 2024 é 0%. O teste novo exige duas frases nas fichas reescritas e proíbe três nas demais ("2021 ou 2023", "2021 e 2023 têm base populacional distinta" e "muda a cada janeiro"), e não acha esses trechos. Reproduzir: abrir Dados e métodos, seção Indicadores e Decisões sobre as fontes, e comparar com a linha contínua de 2022 a 2023 em `/gastos?med=despesa_hab&vis=evolucao`.
+Correção: (a) "Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma"; (b) o mesmo texto; (c) dizer o ano do intervalo ou dar o de cada ano; estender o teste para varrer todas as fichas e a matriz contra as marcas.
+
+**U2. Baixa (resíduo de T2). Procedência da população de 2023 ainda com marcas do rótulo antigo.**
+Onde: `base_populacional` "Censo 2022, população de 31 de julho de 2022 (relação de 2023)" (182 observações da gold e 182 linhas dos CSV estáticos, e o texto das páginas de 2023); `tipo_populacao` `censo_relacao_dou_2023`; `fonte_url` das 26 linhas de 2023 do CSV da população, que aponta a página da relação do DOU (37734) e não o arquivo usado; ficha da população, `localizacao_registro`: "... e relação da população dos municípios de 2023 (Diário Oficial da União, 31/08/2023)" sem dizer que não foi obtida; `VALIDACOES_E_REPRODUCAO.md` linha 44: "a relação do DOU de 2023 repete a de 2022 nas 26 capitais", afirmação sobre arquivo não obtido (a referência do Ministério, de origem DOU, difere do módulo em Porto Alegre: 1.332.833 contra 1.332.845). A página de Dados e métodos de Educação, com o mesmo seed, ainda diz "relação do DOU de 31/08/2023" e bloqueia a variação de 2022 para 2023 (regra própria de Educação; o texto de Educação não foi alterado e está fora do meu escopo).
+Correção: trocar o rótulo por "Censo 2022, resultado de 22/12/2023 (população de 2022 repetida em 2023)", renomear o tipo, apontar o endereço da página dos resultados do Censo, corrigir a ficha e a linha 44; registrar a diferença de Educação.
+
+**U3. Baixa (resíduo de T3). A marca de perímetro não está em todos os lugares em que ela se aplica.**
+Onde: (a) o CSV de série baixado pela interface tem "Marca de base" e "Base do denominador" mas não tem coluna de perímetro; para despesa total de Campo Grande todas as marcas são "nao" e só "Na comparação = não" e a nota em 2021 alertam; (b) `sau_despesa_subfuncao.csv` e `sau_despesa_natureza.csv` (valores em R$ da mesma DCA de Campo Grande 2021) têm `quebra_perimetro` nao e `elegivel_comparacao` nao, enquanto a despesa total e por habitante têm sim.
+Evidência: a regra do dicionário ("marcas iguais e `quebra_perimetro` igual") não é suficiente nesses dois arquivos de subfunção e natureza nem no CSV da interface; a elegibilidade protege.
+Correção: propagar a marca às linhas derivadas da DCA (subfunção, natureza) e acrescentar a coluna "Marca de perímetro" ao CSV de série.
+
+**U4. Baixa (resíduo de T5). Descrições imprecisas no histórico de revisões.**
+Onde: Dados e métodos, "Histórico de revisões", linhas 2, 3 e 6.
+Evidência: a linha 2 (14h34) diz "campos revisados em 661 observações de UBS", mas o que mudou foram os **valores** de 661 observações (531 contagens de UBS por componente, 125 razões por 10 mil e 5 com estado e elegibilidade; variação relativa mediana de 106%, por exemplo São Paulo 2023, gestão municipal, de 29 para 491); a linha 3 (16h06) diz "campos revisados em 1.025 observações (marcas de base, notas e registros)", mas foram 1.044 observações alteradas, em base populacional (1.014), marca de quebra (390), nota (164), nota material (9) e conferência (4), sem alteração de registro; a linha 6 não traz a hora (a gold é de 17h57 UTC). O hash e o número de observações de todas as linhas conferem.
+Correção: "valores corrigidos em 661 observações de UBS" na linha 2, contagem e campos certos na linha 3 e a hora na linha 6.
+
+**U5. Baixa (resíduo de T8). Deslocamento de layout no Panorama e teste estreito.**
+Onde: Panorama a 1440 px: o texto "Menor: ... Maior: ...", a linha de exclusão, os links de dados e o cartão seguinte sobem 46 px a cerca de 270 ms (altura do gráfico definida depois da montagem): CLS 0,0037, igual ao ciclo 3 (nas demais rotas, 0). O teste de fichas contra marcas é estreito (U1).
+Correção: reservar a altura do gráfico; ampliar o teste.
+
+**U6. Baixa (T7, não alterado). A linha "Fontes" de Educação não cita a OCDE.**
+O manifesto de Educação traz a OCDE (Education at a Glance) e o código usa as referências; não verifiquei o módulo de Educação nem se aparecem nas páginas. Se aparecem, a linha deve citá-la; a linha "Cobertura" de Educação também não menciona Saeb nem aprovação.
+
+**U7. Baixa (informativa). `MATRIZ_DE_AVALIACAO.md` ainda não existe.**
+`README.md` (linha 12) e `CONTINUIDADE.md` (linha 9) apontam para ele. A pedido da coordenação, registro o estado como está na verificação; o arquivo será escrito depois desta reavaliação.
+
+**U8. Baixa (cosmética). Linha da norma sem página oficial nem data no CSV de referências nacionais.**
+A linha `norma.minimo_asps_municipal` de `saude_referencias_nacionais.csv` tem `paginas_oficiais` e `data_captura` vazias (o endereço do Planalto está dentro de `fonte` e o registro diz "texto lido em 09/10/2026"). Correção: preencher os dois campos.
+
+#### O que falta para cada nota abaixo de 9,0
+
+| Página | Critério | Nota | O que falta para 9,0 |
+| --- | --- | --- | --- |
+| Panorama | E | 8,8 | Razão agregada e evolução da mediana por medida, ou atalho para a visão Evolução do recorte, ou registro expresso de por que o resumo só traz mediana e faixa |
+| Panorama | F | 8,9 | Corrigir a ficha da taxa de ICSAP e a matriz (U1); validação externa das regras aceitas e do universo de COB.2.01 |
+| Rede e APS | F | 8,9 | Explicar com a fonte a diferença de contagem de M03 em cinco capitais; checar a regra de 2021 (NT 2/2025) com a área técnica do Ministério; fechar a ficha da população (U1) |
+| Atendimento e resultados | E | 8,9 | Referência nacional para a participação de ICSAP (a fonte permite: 1.643.747 de 11.438.662 internações em 2021) |
+| Atendimento e resultados | F | 8,8 | Corrigir a ficha da taxa (U1); confirmar com a ficha técnica do RIPSA que o universo de internações de COB.2.01 é o de MRB.4.02 (mesmo tipo de AIH); revisão externa |
+| Comparar capitais | G | 8,9 | Link de fonte e reprodução no corpo da página, como no Panorama; fórmula e numerador e denominador no CSV da tabela ou aviso de onde estão |
+| Dados e métodos | E | 8,9 | Exemplo reproduzível de mediana e razão agregada de um recorte, com n e capitais |
+| Dados e métodos | F | 8,8 | Fechar U1 na ficha da população, na matriz F02 e na ficha de ICSAP; M03 e as regras aceitas com validação externa |
+| Entrada `/eficiencia-estatal` | F | 8,9 | Fechar U1 e as pendências externas que a entrada resume (COB.2.01, M03) |
+| Entrada `/eficiencia-estatal` | G | 8,9 | Conferir e completar a linha de Educação com o módulo de Educação (U6) |
+
+### 11.6 Limitações
+
+* Inspeção heurística de um agente, no build servido às 18h15 UTC do dia 09/10/2026 (HEAD `28f7c5ec9`); desempenho de laboratório, sem estrangulamento, no mesmo ambiente do servidor.
+* A recomputação independente usa o mesmo seed do executor (682 de 682 hashes do manifesto conferiram na Reavaliação 3, o seed não mudou); a independência de fonte vem dos arquivos originais e das consultas ao vivo: DCA, grupos de referência, retrato do CNES, MRB.4.02, COB.2.01 e COB.5.01 do RIPSA, PDF do Censo 2022 do IBGE, Relatório APS (Brasil e São Paulo) e SIDRA. A consulta ao SIOPS falhou nesta rodada (500).
+* **Não verificado, e que exige revisão externa** (nenhuma nota passa de 9,2 por isso): (1) que o universo de internações de COB.2.01 seja o de MRB.4.02 (conferi os números e a ordem de grandeza, não a ficha técnica; precisa do RIPSA ou do Ministério da Saúde); (2) a explicação de M03 para as cinco capitais com contagens diferentes do CNES (precisa do CNES); (3) as regras de negócio aceitas do documento do executor, contas da MSC e regra do último bimestre do Anexo 12 (precisa de especialista em contabilidade pública e do SIOPS); (4) a fórmula da NT 2/2025 e a regra de 2021 do Relatório APS (precisa da área técnica do Ministério); (5) a relação do DOU de 31/08/2023 e as duas páginas do IBGE citadas (403 com desafio anti robô; precisa do IBGE); (6) usabilidade com pessoas, que esta avaliação não cobre.
+* Não verificado por limite de escopo: `next build`, `tsc` e a regressão visual de Educação; o módulo de Educação além da linha "Cobertura" da entrada; a leitura integral das 23 fichas (li as quatro reescritas, a da população e a da taxa de ICSAP, e varri por expressão todo o texto da gold, do código e dos documentos).
+* Não avaliei A a D, H a J nem li o relatório do avaliador de experiência; observei as correções de aparência só quando afetam dados e método.
+* Por engano, rodei três scripts na raiz do repositório e criei ali `agg.log`, `cc.log` e `razao2.log` (ignorados pelo git); removi os três, e nenhum arquivo versionado fora de `docs/obee/saude/avaliacao/rodada-1/` foi alterado por mim.
+* Não houve usuários, especialistas nem revisão externa; as notas valem para o estado observado.
+* Evidências: `evidencias/dados_reavaliacao4_*.csv` (recomputação, conferência de perímetro, marcas de base e perímetro, frases contra as marcas, histórico contra o git, referências nacionais, trilhas do Panorama, exportações e verificações do novo build).

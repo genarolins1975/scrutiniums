@@ -475,6 +475,28 @@ describe("isolamento de Educação", () => {
   });
 });
 
+describe("ciclo 5: CSV de série com a marca de perímetro", () => {
+  it("a série de Campo Grande traz a marca de perímetro de 2021 e a série da mediana a deixa vazia", () => {
+    const cg = cap("Campo Grande");
+    const linhas = linhasCsvSerie(ix, medida("despesa_hab"), OPC, cg, null, (a) => String(a));
+    expect(linhas.every((l) => l.length === CABECALHO_CSV_SERIE.length)).toBe(true);
+    const iPer = CABECALHO_CSV_SERIE.findIndex((h) => h.startsWith("Perímetro da despesa distinto"));
+    const iBase = CABECALHO_CSV_SERIE.findIndex((h) => h.startsWith("Marca de base"));
+    expect(iPer).toBe(iBase + 1);
+    expect(linhas.map((l) => l[iPer])).toEqual(["sim", "nao", "nao", "nao", "nao"]);
+    expect(linhas.map((l) => l[iBase])).toEqual(["nao", "sim", "sim", "nao", "nao"]);
+    const mediana = linhasCsvSerie(ix, medida("despesa_hab"), OPC, null, null, (a) => String(a));
+    expect(mediana.every((l) => l[iPer] === "")).toBe(true);
+  });
+
+  it("o histórico descreve a versão atual e as fichas citam a população do Ministério por ano", () => {
+    expect(HISTORICO_REVISOES.at(-1)!.hash).toBe(g.meta.hash_dados.slice(0, 16));
+    const ficha = g.indicadores.find((f) => f.id === "sau.icsap.taxa")!.comparacao;
+    expect(ficha).toMatch(/igual em 2024/);
+    expect(JSON.stringify(g.matriz_fontes)).not.toMatch(/variações que as envolvem|2,6% a 10,1% maior que a do Censo 2022/);
+  });
+});
+
 describe("ciclo 4: marcas, histórico, resumo e entrada", () => {
   it("a marca de perímetro da despesa é separada da marca de base: Campo Grande 2021 bloqueia a variação por perímetro", () => {
     const cg = cap("Campo Grande");

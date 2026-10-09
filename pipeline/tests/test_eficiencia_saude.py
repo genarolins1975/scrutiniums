@@ -519,6 +519,58 @@ class TestSaude(unittest.TestCase):
             self.assertAlmostEqual(float(l["valor"]), bruto[l["referencia_id"]], places=6)
 
 
+    # ---------------------------------------------------------------- ciclo 5: resíduos de texto e marcas
+
+    def test_nenhum_texto_do_modulo_contradiz_as_marcas_de_base(self):
+        """Varre fichas, matriz de fontes e observações: as frases erradas sobre 2021 e 2023 e o intervalo único da população do Ministério não podem voltar."""
+        proibidas = ["2021 ou 2023", "2021 e 2023 têm base", "muda a cada janeiro", "as que envolvem 2023", "variações que as envolvem são bloqueadas",
+                     "2,6% a 10,1% maior que a do Censo 2022", "(relação de 2023)", "e relação de 2023", "relação da população dos municípios de 2023 (Diário Oficial"]
+        texto = json.dumps([self.g["indicadores"], self.g["matriz_fontes"]], ensure_ascii=False) + " ".join(
+            f"{o.get('nota') or ''} {o.get('registro') or ''} {o.get('base_populacional') or ''}" for o in self.obs)
+        for frase in proibidas:
+            self.assertNotIn(frase, texto, frase)
+
+    def test_intervalo_da_populacao_do_ministerio_por_ano_vem_dos_dados(self):
+        """O texto da ficha de ICSAP cita o intervalo de cada ano: ele tem de coincidir com a razão entre as duas populações nas 26 capitais."""
+        den = {(o["ente"], o["ano"], o["componente"]): o["calculo"]["denominador"] for o in self.obs if o["indicador"] == "sau.icsap.taxa" and o.get("calculo")}
+        faixas = {}
+        for (ente, ano, comp), v in den.items():
+            if comp == "ripsa" and den.get((ente, ano, "populacao_ibge_obee")):
+                faixas.setdefault(ano, []).append(100 * (v / den[(ente, ano, "populacao_ibge_obee")] - 1))
+        ficha = next(f for f in self.g["indicadores"] if f["id"] == "sau.icsap.taxa")["comparacao"]
+        def br(x):
+            return f"{abs(x):.1f}".replace(".", ",")
+        self.assertIn(f"de {br(min(faixas[2021]))}% menor a {br(max(faixas[2021]))}% maior em 2021", ficha)
+        self.assertIn(f"de {br(min(faixas[2022]))}% a {br(max(faixas[2022]))}% maior em 2022", ficha)
+        self.assertIn(f"de {br(min(faixas[2023]))}% a {br(max(faixas[2023]))}% maior em 2023", ficha)
+        self.assertEqual((round(min(faixas[2024]), 1), round(max(faixas[2024]), 1)), (0.0, 0.0))
+        self.assertIn("igual em 2024", ficha)
+
+    def test_populacao_2023_tem_tipo_e_base_proprios(self):
+        tipos = {o["tipo_populacao"] for o in self.obs if o["indicador"] == "ctx.populacao.residente" and o["ano"] == 2023}
+        self.assertEqual(tipos, {"censo_2022_resultado_dez_2023"})
+        pop22 = self.v("ctx.populacao.residente", SP, 2022)
+        pop23 = self.v("ctx.populacao.residente", SP, 2023)
+        self.assertEqual(pop22["valor"], pop23["valor"])
+        self.assertEqual(pop22["quebra_serie"], pop23["quebra_serie"])
+
+    def test_aberturas_da_dca_herdam_a_marca_de_perimetro(self):
+        for nome in ("sau_despesa_subfuncao.csv", "sau_despesa_natureza.csv", "sau_despesa_funcao_saude.csv", "sau_despesa_por_habitante.csv"):
+            with open(os.path.join(RAIZ, "public", "eficiencia", "series", nome), encoding="utf-8") as f:
+                linhas = [l for l in csv.DictReader(f) if l["codigo_ibge"] == str(CAMPO_GRANDE) and l["ano"] == "2021"]
+            self.assertTrue(linhas, nome)
+            self.assertTrue(all(l["quebra_perimetro"] == "sim" for l in linhas), nome)
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "sau_despesa_subfuncao.csv"), encoding="utf-8") as f:
+            outras = [l for l in csv.DictReader(f) if not (l["codigo_ibge"] == str(CAMPO_GRANDE) and l["ano"] == "2021")]
+        self.assertTrue(all(l["quebra_perimetro"] == "nao" for l in outras))
+
+    def test_norma_no_csv_de_referencias_tem_pagina_e_data(self):
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "saude_referencias_nacionais.csv"), encoding="utf-8") as f:
+            norma = next(l for l in csv.DictReader(f) if l["tipo"] == "normativa")
+        self.assertTrue(norma["paginas_oficiais"].startswith("https://www.planalto.gov.br"))
+        self.assertRegex(norma["data_captura"], r"^\d{4}-\d{2}-\d{2}$")
+
+
 class TestIsolamentoEPromocao(unittest.TestCase):
     """Saúde nunca escreve em arquivos de Educação, e uma gold reprovada não substitui a última válida."""
 

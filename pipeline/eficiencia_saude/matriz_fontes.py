@@ -15,7 +15,7 @@ MATRIZ = [
     ("F01", "Despesa liquidada na função 10, exceto intraorçamentárias (nominal e real)", "Siconfi, DCA Anexo I-E", "API de dados abertos, HTTP 200, 130 chamadas", "130 de 130", "2021 a 2025",
      RESSALVA, "Existe nos 130 pares, com cinco estágios. Política de conferência 1.2 com o RREO e a MSC: 125 conferem, 2 com diferença menor, 1 reconciliado pela MSC, 1 de perímetro distinto, 1 pendente. A DCA de 2025 já está entregue pelas 26 capitais."),
     ("F02", "Despesa em Saúde por habitante", "DCA e IBGE", "Mesmo acesso; IBGE conferido ao vivo no SIDRA (tabelas 6579 e 4714)", "130 de 130", "2021 a 2025", RESSALVA,
-     "A população de 2021 é estimativa pré Censo e a de 2023 é censitária; as variações que as envolvem são bloqueadas. O campo de população da própria DCA é de outra safra e não é usado."),
+     "A população tem três bases: 2021 é estimativa anterior ao Censo, 2022 e 2023 usam a mesma população do Censo 2022, 2024 e 2025 são estimativas posteriores. Variações de 2021 para 2022 e de 2023 para 2024 são bloqueadas; as de 2022 para 2023 e de 2024 para 2025 não. O campo de população da própria DCA é de outra safra e não é usado."),
     ("F03", "Composição por subfunção (301 a 306, 122 e demais)", "DCA Anexo I-E", "Mesmo acesso", "130 de 130 fecham com o total", "2021 a 2025", RESSALVA,
      "Publicada só se a soma reconcilia com o total. Linha ausente não vira zero (a subfunção 306 só tem linha em poucos pares)."),
     ("F04", "Composição por natureza (pessoal, outras correntes, capital)", "Siconfi, MSC de dezembro, função 10", "API de dados abertos, HTTP 200, 130 respostas", "116 de 130 reconciliam com a DCA", "2021 a 2025", RESSALVA,
@@ -75,8 +75,8 @@ MATRIZ = [
     ("R08", "Taxa de internação SUS por habitante (COB.2.01) e valor médio da AIH (REC.3.02)", "RIPSA", "HTTP 200", "26 de 26", "2000 a 2024", NAO,
      "A taxa geral é utilização de serviços e sofre do mesmo problema de planos privados; o denominador do valor médio da AIH é o dobro do total de internações, sem ficha que explique."),
     # contexto demográfico
-    ("D01", "População residente por município", "IBGE, SIDRA 6579 e 4714 e relação de 2023", "HTTP 200; conferência ao vivo sem diferença", "26 de 26", "2021 a 2025", RESSALVA,
-     "A população do RIPSA e da SVSA é a do Ministério da Saúde, 2,6% a 10,1% maior que a do Censo 2022 nas capitais; as duas taxas de ICSAP são publicadas. Aracaju 2025: o IBGE revisou a estimativa e a série do Ministério ainda não acompanhou."),
+    ("D01", "População residente por município", "IBGE, SIDRA 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023)", "HTTP 200; conferência ao vivo sem diferença", "26 de 26", "2021 a 2025", RESSALVA,
+     "A população do RIPSA e da SVSA é a do Ministério da Saúde e difere da do IBGE do exercício (de 10,7% menor a 5,9% maior em 2021, 2,6% a 10,1% maior em 2022, 3,5% a 11,1% maior em 2023 e igual em 2024, nas 26 capitais); as duas taxas de ICSAP são publicadas. Aracaju 2025: o IBGE revisou a estimativa e a série do Ministério ainda não acompanhou."),
 ]
 
 CAMPOS = ["id", "medida", "fonte", "acesso_testado", "cobertura", "periodo", "decisao", "fundamento"]

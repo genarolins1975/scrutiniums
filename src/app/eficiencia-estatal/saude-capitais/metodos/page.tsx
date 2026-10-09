@@ -226,7 +226,7 @@ export default function PaginaMetodos() {
                 <tbody className="divide-y divide-linha">
                   {HISTORICO_REVISOES.map((r) => (
                     <tr key={r.hash} className="align-top">
-                      <td className="py-2 pr-4 tabular-nums text-obee-tinta">{r.geradoEm}</td>
+                      <th scope="row" className="py-2 pr-4 text-left font-normal tabular-nums text-obee-tinta">{r.geradoEm}</th>
                       <td className="py-2 pr-4 font-mono text-[0.75rem] text-obee-tinta">{r.hash}</td>
                       <td className="py-2 pr-4 text-right tabular-nums text-obee-tinta">{inteiroBr(r.observacoes)}</td>
                       <td className="py-2 pr-4 text-carvao-muted">{ROTULO_TIPO_REVISAO[r.tipo]}</td>

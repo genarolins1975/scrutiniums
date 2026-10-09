@@ -14,6 +14,7 @@ export const SIGLAS: Record<string, string> = {
   OCDE: "Organização para a Cooperação e Desenvolvimento Econômico",
   DOU: "Diário Oficial da União",
   IBGE: "Instituto Brasileiro de Geografia e Estatística",
+  Ideb: "Índice de Desenvolvimento da Educação Básica",
   INEP: "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira",
   Siconfi: "Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro",
   SIDRA: "Sistema IBGE de Recuperação Automática",

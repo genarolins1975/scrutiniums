@@ -139,6 +139,7 @@ def fontes():
             if k == "ibge_populacao_relacao_2023":
                 # o arquivo usado é o dos Primeiros Resultados do Censo 2022 (22/12/2023); a relação do DOU não foi baixada (rótulo de Educação não é alterado)
                 c["conjunto"] = "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População de 22/12/2023 (a relação do DOU de 31/08/2023 não foi obtida)"
+                c["pagina"] = c["url"]  # o endereço aberto é o do arquivo realmente usado
             if "arquivos" in c:
                 arqs = c.pop("arquivos")
                 c["arquivos_capturados"] = len(arqs)
@@ -224,7 +225,11 @@ def _base_monetaria(o, ficha):
     return "R$ correntes do exercício" if ficha["unidade"].startswith("R$") else ""
 
 
-def _csv(obs, caminho, catalogo, meta, mapa_fontes=None):
+DERIVADOS_DA_DCA = ("sau.despesa.subfuncao", "sau.despesa.natureza")
+
+
+def _csv(obs, caminho, catalogo, meta, mapa_fontes=None, perimetros_dca=frozenset()):
+    """perimetros_dca: pares (ente, ano) cuja DCA tem perímetro distinto na conferência; as aberturas da mesma DCA (subfunção, natureza) herdam a marca."""
     os.makedirs(os.path.dirname(caminho), exist_ok=True)
     mapa_fontes = mapa_fontes or {}
     fichas = {i["id"]: i for i in catalogo["indicadores"]}
@@ -251,7 +256,7 @@ def _csv(obs, caminho, catalogo, meta, mapa_fontes=None):
             "numerador": "" if not o.get("calculo") else _num(o["calculo"]["numerador"]), "denominador": "" if not o.get("calculo") else _num(o["calculo"]["denominador"]),
             "referencia_numerador": "" if not o.get("calculo") else o["calculo"]["numerador_ref"] + (f" ({o['calculo']['numerador_componente']})" if o["calculo"].get("numerador_componente") else ""),
             "referencia_denominador": "" if not o.get("calculo") else o["calculo"]["denominador_ref"], "tipo_populacao": o.get("tipo_populacao") or "", "base_populacional": o.get("base_populacional") or "",
-            "data_referencia": o.get("data_referencia") or "", "quebra_serie": "sim" if o.get("quebra_serie") else "nao", "quebra_perimetro": "sim" if conf.get("quebra_serie") else "nao",
+            "data_referencia": o.get("data_referencia") or "", "quebra_serie": "sim" if o.get("quebra_serie") else "nao", "quebra_perimetro": "sim" if (conf.get("quebra_serie") or (o["indicador"] in DERIVADOS_DA_DCA and (o["ente"], o["ano"]) in perimetros_dca)) else "nao",
             "minimo_pct": _num(o.get("minimo_pct")),
         })
     with open(caminho, "w", encoding="utf-8", newline="") as fh:
@@ -336,6 +341,8 @@ def _csv_nacionais(refs_ext, caminho, catalogo, meta, mapa_fontes):
         f = fichas[r["indicador"]]
         chave = next((v for k, v in _FONTE_DA_REFERENCIA.items() if r["id"].startswith(k + ".")), None)
         _, paginas, data = _fonte_legivel(chave, mapa_fontes) if chave else ("", "", "")
+        if r["tipo"] == "normativa":
+            paginas, data = "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp141.htm", "2026-10-09"  # texto da norma lido na data do registro
         w.writerow({"referencia_id": r["id"], "indicador_id": r["indicador"], "indicador": f["nome"], "componente": r.get("componente") or "", "ano": r.get("ano") or "",
                     "tipo": r["tipo"], "rotulo": r["rotulo"], "valor": _num(r["valor"]), "unidade": r["unidade"], "escopo": r["escopo"], "fonte": r["fonte"], "paginas_oficiais": paginas,
                     "data_captura": data, "registro": r["registro"], "origem": r["origem"], "comparabilidade": r["comparabilidade"], "classe": r["classe"],
@@ -463,11 +470,12 @@ def publica(gold, raiz_publica=None):
     base.grava_json(arquivo, gold)
     catalogo = {"indicadores": gold["indicadores"]}
     mapa_fontes = _mapa_fontes(gold["fontes"])
+    perimetros = frozenset((o["ente"], o["ano"]) for o in gold["observacoes"] if o["indicador"] == "sau.despesa.funcao_saude" and (o.get("conferencia") or {}).get("quebra_serie"))
     for ind in gold["indicadores"]:
         if not ind.get("download"):
             continue
         sel = [o for o in gold["observacoes"] if o["indicador"] == ind["id"]]
-        _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), catalogo, gold["meta"], mapa_fontes)
+        _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), catalogo, gold["meta"], mapa_fontes, perimetros)
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "saude_referencias_capitais.csv"), catalogo, gold["meta"])
     _csv_nacionais(gold["referencias_externas"], os.path.join(raiz, "eficiencia", "series", "saude_referencias_nacionais.csv"), catalogo, gold["meta"], mapa_fontes)
     _csv_matriz(os.path.join(raiz, "eficiencia", "series", "saude_matriz_de_fontes.csv"))
