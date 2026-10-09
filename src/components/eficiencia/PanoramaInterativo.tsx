@@ -12,6 +12,7 @@ import { CAMINHO_COMPARAR, CAMINHO_METODOS, hrefTema, href, type Tema } from "@/
 import { Alternancia, Selecao } from "./controles";
 import type { ContextoFicha } from "./FichaConteudo";
 import { ComparacaoReferencia, FaixaResumo, type LinhaReferencia } from "./PanoramaGraficos";
+import { Siglas } from "./Siglas";
 import { SobreEsteDado } from "./SobreEsteDado";
 import { TabelaSimples } from "./TabelaSimples";
 
@@ -179,7 +180,7 @@ function CapituloRecursos({
               <Numero valor={fmt(ref!.mediana!)} legenda="Mediana das capitais" destaque />
               <Numero valor={fmt(r.maior!.valor)} legenda={`Maior valor · ${nomesDoExtremo(r.maior!)}`} />
             </dl>
-            <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
+            <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted"><Siglas texto={r.definicao} /></p>
             {ehDespesa(r.medida) && (
               <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-carvao-muted">
                 Valores em reais correntes: preços do próprio ano, sem correção pela inflação. A evolução em reais constantes está no painel Gastos.
@@ -188,7 +189,7 @@ function CapituloRecursos({
             )}
             {r.perimetro && (
               <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-obee-tinta" role="note">
-                <span className="font-semibold">Perímetro.</span> {r.perimetro}
+                <span className="font-semibold">Perímetro.</span> <Siglas texto={r.perimetro} />
               </p>
             )}
             <NotaCapital r={r} cap={cap} />
@@ -367,7 +368,7 @@ function CapituloReferencia({ c, cap, fichas }: { c: CapituloPanorama; cap: stri
         {r.pergunta}
       </h2>
       <p className="mt-1.5 text-[0.9375rem] text-carvao-muted">{r.contexto}</p>
-      <p className="mt-1.5 max-w-prose2 text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
+      <p className="mt-1.5 max-w-prose2 text-[0.8125rem] leading-snug text-carvao-muted"><Siglas texto={r.definicao} /></p>
       {vazio ? (
         <p className="mt-6 border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">
           Nenhuma capital tem dado comparável para esta medida neste período.

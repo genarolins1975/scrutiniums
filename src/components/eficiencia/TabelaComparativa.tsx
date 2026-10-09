@@ -84,6 +84,8 @@ export function TabelaComparativa({
   const colunas = COLUNAS.filter((c) => visao === "todas" || c.grupo === visao);
   const colSel = COLUNAS.find((c) => c.medida === medida)?.id;
   const nomeGrupo = grupo === "regiao" ? `capitais da região ${dados.regioes[capGrupo.regiao]}` : "todas as capitais estaduais";
+  /** a medida da coluna não existe na etapa escolhida (por exemplo, Ideb na creche); alunos por turma existe também em creche e pré-escola */
+  const semEscopo = (c: ColunaDef) => c.porEtapa && !!c.medida && !(MEDIDA[c.medida].etapas ?? []).includes(etapa);
   const resultadoSemEscopo = !["anos_iniciais", "anos_finais"].includes(etapa);
   /** em tela estreita, a visão "Todas" mostra só as medidas centrais; as demais aparecem ao escolher um grupo de colunas */
   const esconde = (c: ColunaDef) => (visao === "todas" && !c.central ? "hidden md:table-cell" : "");
@@ -203,7 +205,7 @@ export function TabelaComparativa({
                 </th>
                 {colunas.map((c) => {
                   const r = t.resumo[c.id];
-                  const sem = c.porEtapa && resultadoSemEscopo;
+                  const sem = semEscopo(c);
                   return (
                     <td key={c.id} className={`${esconde(c)} px-2.5 py-1.5 text-right tabular-nums text-obee-tinta ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                       {sem ? "—" : r ? fmtResumo(c, r[k]) : ""}
@@ -220,7 +222,7 @@ export function TabelaComparativa({
               </th>
               {colunas.map((c) => {
                 const r = t.resumo[c.id];
-                const sem = c.porEtapa && resultadoSemEscopo;
+                const sem = semEscopo(c);
                 return (
                   <td key={c.id} className={`${esconde(c)} px-2.5 py-1.5 text-right text-xs tabular-nums text-carvao-muted ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
                     {sem ? "—" : r ? `${r.comValor} com valor; ${r.n} na comparação (de ${r.noGrupo})` : c.medida === null && c.id !== "populacao" ? "não se aplica" : "sem valor no grupo"}

@@ -22,7 +22,7 @@ export type ReferenciasDistribuicao = {
   mediana: number | null;
   media: number | null;
   faixa: { q1: number; q3: number } | null;
-  externa?: { rotulo: string; valor: number } | null;
+  externa?: { rotulo: string; valor: number; nota?: string } | null;
 };
 
 export function DistribuicaoCapitais({
@@ -55,8 +55,8 @@ export function DistribuicaoCapitais({
   const fonte = estreito ? 11.5 : 12.5;
   const larg = (t: string, f: number) => t.length * f * 0.56;
   const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);
-  const margemDireita = Math.max(estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
-  const m = { t: 30, r: margemDireita, b: referencias.externa ? 52 : 34, l: estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
+  const margemDireita = Math.max(w < 360 ? 50 : estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
+  const m = { t: 30, r: margemDireita, b: referencias.externa ? 52 : 34, l: w < 360 ? 100 : estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
   const nLinhas = linhas.length + fora.length;
   const H = m.t + m.b + nLinhas * linhaH;
   const { mediana, media, faixa, externa = null } = referencias;
@@ -142,7 +142,7 @@ export function DistribuicaoCapitais({
               <text
                 x={x(mediana)}
                 y={m.t - 14}
-                textAnchor={x(mediana) > w - m.r - 90 ? "end" : x(mediana) < m.l + 60 ? "start" : "middle"}
+                textAnchor={x(mediana) + larg(`${rotuloMediana} ${formata(mediana)}`, 12) / 2 > w - 2 ? "end" : x(mediana) - larg(`${rotuloMediana} ${formata(mediana)}`, 12) / 2 < 2 ? "start" : "middle"}
                 fontSize={12}
                 fontWeight={600}
                 fill="var(--cor-obee-tinta)"
@@ -261,6 +261,7 @@ export function DistribuicaoCapitais({
               <line x1="2" x2="20" y1="7" y2="7" stroke={COR.referencia} strokeWidth="1.5" strokeDasharray="2 3" strokeLinecap="round" />
             </svg>
             {externa.rotulo}: {formata(externa.valor)}
+            {externa.nota ? ` (${externa.nota})` : ""}
           </span>
         )}
         {faixa && (
@@ -281,6 +282,11 @@ export function DistribuicaoCapitais({
           <p className="rotulo text-mineral">{linhas[ativo].rotulo}</p>
           <p className="mt-0.5 text-sm font-semibold text-obee-tinta">{formata(linhas[ativo].valor)}</p>
         </div>
+      )}
+      {!log && !zero && dom.min > 0 && (
+        <p className="mt-2 text-xs leading-snug text-carvao-muted" role="note">
+          O eixo não parte de zero (começa em {formataEixo(dom.min)}): compare a posição das capitais, não o comprimento das hastes.
+        </p>
       )}
       {log && (
         <p className="mt-2 text-xs leading-snug text-carvao-muted">

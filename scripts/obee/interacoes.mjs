@@ -77,7 +77,7 @@ ok("abrir o passaporte não altera o recorte", page.url() === urlAntes, page.url
 
 // 6. grupo regional e ordenação numérica
 await page.locator("label", { hasText: /^Região/ }).click();
-await page.locator("label", { hasText: "Por valor, crescente" }).click();
+await page.locator("label", { hasText: "Crescente" }).click();
 await page.waitForTimeout(300);
 const comp3 = await page.locator("#comparacao").innerText();
 ok("grupo regional aplicado", /região Sudeste/.test(comp3) && /grupo=regiao/.test(page.url()), comp3.slice(0, 160));

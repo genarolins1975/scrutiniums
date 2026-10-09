@@ -128,9 +128,40 @@ export function MiniSerie({
   const anot = new Map(anotacoes.map((a, i) => [a.ano, i + 1]));
   const ultimo = [...pontos].reverse().find((p) => p.valor !== null);
   const iUltimo = ultimo ? pontos.indexOf(ultimo) : -1;
-  // valor escrito em cada ponto quando cabe sem colidir com o vizinho (séries curtas); senão, só o último
-  const larguraMaior = Math.max(0, ...pontos.map((p) => (p.valor === null ? 0 : formata(p.valor).length * 6.8)));
-  const rotularTodos = pontos.length > 1 && pontos.length <= 8 && passoX >= larguraMaior + 8;
+  // valor escrito junto de cada ponto: acima ou abaixo, onde não encosta em outro marcador, na mediana de referência nem em outro
+  // rótulo; sem lugar livre, o valor fica só na tabela e no foco. O último ponto tem prioridade, depois o primeiro.
+  const larguraTexto = (t: string) => t.length * 6.6;
+  const rotulosPontos: { i: number; x0: number; y: number; texto: string }[] = [];
+  {
+    type Caixa = { x0: number; x1: number; y0: number; y1: number };
+    const ocupado: Caixa[] = [];
+    pontos.forEach((p, i) => {
+      if (p.valor !== null) ocupado.push({ x0: x(i) - 7, x1: x(i) + 7, y0: y(p.valor) - 7, y1: y(p.valor) + 7 });
+      const rv = refPorAno.get(p.ano)?.valor ?? null;
+      if (rv !== null) ocupado.push({ x0: x(i) - 6, x1: x(i) + 6, y0: y(rv) - 6, y1: y(rv) + 6 });
+    });
+    const bate = (c: Caixa, o: Caixa) => c.x0 < o.x1 && c.x1 > o.x0 && c.y0 < o.y1 && c.y1 > o.y0;
+    const ordem = pontos.map((_, i) => i).filter((i) => pontos[i].valor !== null);
+    ordem.sort((p, q) => (q === iUltimo ? 1 : 0) - (p === iUltimo ? 1 : 0) || (p === 0 ? -1 : 0) - (q === 0 ? -1 : 0) || p - q);
+    const limite = pontos.length <= 8 ? ordem.length : 1;
+    for (const i of ordem.slice(0, limite)) {
+      const v = pontos[i].valor as number;
+      const texto = formata(v);
+      const l = larguraTexto(texto);
+      const x0 = Math.min(Math.max(x(i) - l / 2, m.l - 2), w - 2 - l);
+      for (const abaixo of [false, true]) {
+        const base = abaixo ? y(v) + 19 : y(v) - 10;
+        const c: Caixa = { x0, x1: x0 + l, y0: base - 11, y1: base + 3 };
+        if (c.y0 < 2 || c.y1 > H - m.b + 2) continue;
+        // os marcadores do próprio ponto não contam contra o rótulo dele
+        const outros = ocupado.filter((o) => !(Math.abs((o.x0 + o.x1) / 2 - x(i)) < 1 && Math.abs((o.y0 + o.y1) / 2 - y(v)) < 1));
+        if (outros.some((o) => bate(c, o))) continue;
+        rotulosPontos.push({ i, x0, y: base, texto });
+        ocupado.push(c);
+        break;
+      }
+    }
+  }
 
   const teclado = (e: KeyboardEvent) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") return;
@@ -184,7 +215,7 @@ export function MiniSerie({
             <g key={`rp${pontos[i].ano}`}>
               <line x1={(x(i - 1) + x(i)) / 2} x2={(x(i - 1) + x(i)) / 2} y1={m.t} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.25} strokeDasharray="2 3" />
               {n === 0 && (
-                <text x={(x(i - 1) + x(i)) / 2} y={m.t - 3} textAnchor="middle" fontSize={10} fill={COR.referencia}>
+                <text x={Math.max((x(i - 1) + x(i)) / 2, m.l + 40)} y={m.t - 3} textAnchor="middle" fontSize={10} fill={COR.referencia}>
                   mudança de base
                 </text>
               )}
@@ -217,34 +248,21 @@ export function MiniSerie({
               />
             ),
           )}
-          {rotularTodos &&
-            pontos.map((p, i) =>
-              p.valor === null ? null : (
-                <text
-                  key={`v${p.ano}`}
-                  x={x(i)}
-                  y={y(p.valor) - 10}
-                  textAnchor={i === 0 && x(i) - larguraMaior / 2 < 0 ? "start" : i === pontos.length - 1 && x(i) + larguraMaior / 2 > w ? "end" : "middle"}
-                  fontSize={11.5}
-                  fontWeight={i === iUltimo ? 600 : 400}
-                  fill="var(--cor-obee-tinta)"
-                >
-                  {formata(p.valor)}
-                </text>
-              ),
-            )}
-          {!rotularTodos && ultimo && ultimo.valor !== null && ativo === null && (
+          {rotulosPontos.map((r) => (
             <text
-              x={Math.min(x(iUltimo), w - m.r)}
-              y={y(ultimo.valor) - 10}
-              textAnchor={iUltimo === pontos.length - 1 ? "end" : "middle"}
+              key={`v${pontos[r.i].ano}`}
+              x={r.x0}
+              y={r.y}
               fontSize={11.5}
-              fontWeight={600}
+              fontWeight={r.i === iUltimo ? 600 : 400}
               fill="var(--cor-obee-tinta)"
+              stroke="var(--cor-papel)"
+              strokeWidth={3}
+              paintOrder="stroke"
             >
-              {formata(ultimo.valor)}
+              {r.texto}
             </text>
-          )}
+          ))}
           {ativo !== null && <line x1={x(ativo)} x2={x(ativo)} y1={m.t} y2={H - m.b} stroke={COR.eixo} strokeWidth={1} />}
           <rect
             x={m.l - passoX / 2}
@@ -291,11 +309,13 @@ export function MiniSerie({
       </div>
       {(pontos.some((p) => p.valor === null || !p.elegivel) || anotacoes.length > 0 || segsRef.length > 0 || rupturas.length > 0) && (
         <ul className="mt-1 space-y-0.5 text-xs leading-snug text-carvao-muted">
-          {rupturas.map((i) => (
-            <li key={`mb${pontos[i].ano}`} className="text-obee-tinta">
-              <span aria-hidden="true">┆</span> Mudança de base entre {pontos[i - 1].ano} e {pontos[i].ano}: a linha se interrompe, porque os valores dos dois lados não são diretamente comparáveis.
+          {rupturas.length > 0 && (
+            <li className="text-obee-tinta">
+              <span aria-hidden="true">┆</span> Mudança de base{" "}
+              {rupturas.length === 1 ? `entre ${pontos[rupturas[0] - 1].ano} e ${pontos[rupturas[0]].ano}` : `entre ${rupturas.map((i) => `${pontos[i - 1].ano} e ${pontos[i].ano}`).join("; ")}`}: a linha se interrompe, porque os valores dos dois lados
+              não são diretamente comparáveis.
             </li>
-          ))}
+          )}
           {segsRef.length > 0 && (
             <li>
               <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano. O número de capitais na comparação pode mudar de um ano para outro (de{" "}

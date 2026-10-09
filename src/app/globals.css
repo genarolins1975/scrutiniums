@@ -203,3 +203,8 @@ body {
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
+
+/* OBEE: link com recorte na URL esconde o conteúdo até o painel ler o recorte (ver LiberaRecorte); sem JavaScript nada se esconde */
+html[data-recorte="pendente"] #conteudo {
+  visibility: hidden;
+}

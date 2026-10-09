@@ -692,6 +692,10 @@ export function linhasCsvComparacao(
 export type Diferenca = {
   /** diferença na escala da medida: reais, alunos por turma, pontos percentuais, pontos ou matrículas */
   abs: number;
+  /** diferença entre os valores como aparecem na tela (mesma precisão), em módulo; a exata só no total da despesa */
+  absExibida: number;
+  /** os dois valores aparecem iguais na tela, mas não são */
+  abaixoDaPrecisao: boolean;
   /** diferença relativa em %, só em escala de razão e com base diferente de zero; null quando bloqueada */
   pct: number | null;
   unidade: string;
@@ -744,7 +748,7 @@ export function diferenca(m: MedidaId, valor: number, referencia: number | null,
     const MENOS: Record<string, string> = { despesa_hab: "R$ 1", despesa_mat: "R$ 1", matriculas: "1 matrícula", conveniadas: "1 matrícula", atu: "0,1 aluno por turma", aprovacao: "0,1 ponto percentual", ideb: "0,1 ponto", saeb: "0,01 ponto" };
     txt = `${abs > 0 ? "+" : "−"}menos de ${MENOS[m]}`;
   }
-  return { abs, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
+  return { abs, absExibida: a, abaixoDaPrecisao, pct, unidade: unidadeD, sentido, texto: igual ? `igual à ${nomeRef}` : `${txt}, ${sentido} ${nomeRef}` };
 }
 
 /* ------------------------------------------------------------------ referências externas */
@@ -1097,11 +1101,13 @@ export function textoPerimetroIntra(p: PerimetroIntra | null, ano: number, medid
  * Referência que aparece como traço no gráfico das capitais: a nacional do mesmo universo, quando existe; senão a mediana nacional
  * calculada pelo OBEE (outro universo, rotulado). Gráfico e legenda dizem de onde vem.
  */
-export function referenciaExternaDoGrafico(d: DadosPainel, m: MedidaId, ano: number, etapa: EtapaId, comp: string | null): { rotulo: string; valor: number } | null {
+export function referenciaExternaDoGrafico(d: DadosPainel, m: MedidaId, ano: number, etapa: EtapaId, comp: string | null): { rotulo: string; valor: number; nota: string } | null {
   const mesmo = referenciasExternas(d, m, ano, etapa, comp).filter((x) => x.tipo === "nacional_mesmo_universo");
-  if (mesmo[0]) return { rotulo: "Brasil", valor: mesmo[0].valor };
+  if (mesmo[0]) return { rotulo: "Brasil", valor: mesmo[0].valor, nota: "agregado nacional da rede municipal (INEP), não é média das capitais" };
   const g = nacionalCalculada(d, m, ano)?.grupos.find((x) => x.id === "elegiveis");
-  return g && g.mediana !== null ? { rotulo: "Municípios do país", valor: g.mediana } : null;
+  return g && g.mediana !== null
+    ? { rotulo: "Municípios do país", valor: g.mediana, nota: `mediana de ${inteiro(g.n_municipios)} municípios elegíveis de todos os portes, outro universo: não é comparação direta com as capitais` }
+    : null;
 }
 
 /**

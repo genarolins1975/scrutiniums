@@ -49,6 +49,7 @@ import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesM
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
 import { ContextoInternacionalBloco, ReferenciaNacionalCalculadaBloco, ReferenciasDoGrupo, ReferenciasNacionais, SemReferencia } from "./ReferenciasPainel";
+import { Siglas } from "./Siglas";
 import { SobreEsteDado } from "./SobreEsteDado";
 import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
@@ -145,7 +146,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     unidade(medida, s.moeda),
     md.etapas ? nomeEtapa(dados, etapa) : null,
     medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
-    periodo,
+    visao === "evolucao" ? `série de ${anos[0]} a ${anos[anos.length - 1]}` : periodo,
     `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}, ${universoDaMedida(medida)}`,
   ]
     .filter(Boolean)
@@ -300,14 +301,14 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
         </p>
         {ehDespesa(medida) && (
           <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
-            <span className="font-semibold">Perímetro.</span> {textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)}
+            <span className="font-semibold">Perímetro.</span> <Siglas texto={textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} />
           </p>
         )}
         {fraseCap && visao !== "evolucao" && visao !== "detalhe" && <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">{fraseCap}</p>}
 
         {/* controles locais, junto do gráfico */}
         <div className="mt-6 flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div className="w-full min-w-0 sm:w-44">
+          <div className={`w-full min-w-0 sm:w-44 ${visao === "evolucao" ? "hidden" : ""}`}>
             <Selecao
               id="f-ano"
               rotulo={md.anos === "ideb" ? "Edição" : "Ano"}
@@ -374,12 +375,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {visao === "grafico" && (
             <Alternancia
               rotulo="Ordem das capitais"
-              rotuloVisivel={false}
-              valor={s.ord}
+                            valor={s.ord}
               opcoes={[
-                { v: "alfabetica", t: "Ordem alfabética" },
-                { v: "valor", t: "Por valor, crescente" },
-                { v: "valor_desc", t: "Por valor, decrescente" },
+                { v: "alfabetica", t: "Alfabética" },
+                { v: "valor", t: "Crescente" },
+                { v: "valor_desc", t: "Decrescente" },
               ]}
               aoMudar={(v) => definir({ ord: v })}
             />
@@ -450,7 +450,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               />
               {ehDespesa(medida) && s.moeda === "nominal" && (
                 <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted" role="note">
-                  Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Moeda.
+                  Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Valores.
                 </p>
               )}
               {!cap && <p className="mt-3 text-xs leading-snug text-carvao-muted">Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro.</p>}

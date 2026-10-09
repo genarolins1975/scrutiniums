@@ -46,6 +46,7 @@ import { ReferenciasDoGrupo } from "./ReferenciasPainel";
 import { TabelaComparativa, type VisaoColunas } from "./TabelaComparativa";
 import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
+import { Siglas } from "./Siglas";
 import { ForaDaComparacao, NotasMateriais, Ressalva } from "./estados";
 import type { ContextoFicha } from "./FichaConteudo";
 import { SobreEsteDado } from "./SobreEsteDado";
@@ -171,7 +172,7 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
         </p>
         {ehDespesa(medida) && (
           <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
-            <span className="font-semibold">Perímetro.</span> {textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)}
+            <span className="font-semibold">Perímetro.</span> <Siglas texto={textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} />
           </p>
         )}
 
@@ -275,12 +276,11 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
           {s.vis === "grafico" && (
             <Alternancia
               rotulo="Ordem das capitais"
-              rotuloVisivel={false}
               valor={s.ord}
               opcoes={[
-                { v: "alfabetica", t: "Ordem alfabética" },
-                { v: "valor", t: "Por valor, crescente" },
-                { v: "valor_desc", t: "Por valor, decrescente" },
+                { v: "alfabetica", t: "Alfabética" },
+                { v: "valor", t: "Crescente" },
+                { v: "valor_desc", t: "Decrescente" },
               ]}
               aoMudar={(v) => definir({ ord: v })}
             />

@@ -530,6 +530,13 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               <li>
                 Testes: <code className="break-all font-mono text-[0.8rem]">python3 -m unittest pipeline.tests.test_eficiencia pipeline.tests.test_eficiencia_comparacoes</code>.
               </li>
+              <li>
+                Arquivos públicos para quem reproduz fora do site:{" "}
+                <a href="/eficiencia/series/dicionario_das_colunas.csv" className="text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">dicionário das colunas dos CSV de séries</a>
+                {" "}e{" "}
+                <a href="/eficiencia/series/manifesto_das_capturas.json" className="text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">manifesto das capturas</a>
+                {" "}(endereço, data de captura e sha256 de cada insumo).
+              </li>
             </ol>
             <h3 id="versoes" className="mt-8 scroll-mt-24 font-serif text-xl text-obee-tinta">Versões e revisões</h3>
             <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">

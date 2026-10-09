@@ -10,6 +10,7 @@ import {
   dicionarioExportacoes,
   Indice,
   comparar,
+  diferenca,
   intraDaCapital,
   linhasCsvComparacao,
   linhasCsvSerie,
@@ -19,7 +20,7 @@ import {
   tabelaComparativa,
   textoPerimetroIntra,
 } from "@/lib/eficiencia/consulta";
-import { fraseEvolucao } from "@/lib/eficiencia/frases";
+import { fraseCapital, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { avisoDoGrupo, DEFINICAO_CURTA, NAO_MOSTRA, universoDaMedida } from "@/lib/eficiencia/visao";
 
 /**
@@ -109,8 +110,7 @@ describe("mudança de base na evolução", () => {
     // 2021 | 2022 | 2023 | 2024 a 2025: só 2024 a 2025 forma um trecho de linha
     expect(caminhos(h)).toBe(1);
     expect(h).toContain("mudança de base");
-    expect(h).toMatch(/Mudança de base entre 2021 e 2022/);
-    expect(h).toMatch(/Mudança de base entre 2023 e 2024/);
+    expect(h.replace(/<!-- -->/g, "")).toMatch(/Mudança de base entre 2021 e 2022; 2022 e 2023; 2023 e 2024/);
   });
 
   it("série sem mudança de base fica contínua e sem marca", () => {
@@ -274,5 +274,31 @@ describe("ordem por valor, crescente e decrescente", () => {
     expect(asc.length).toBeGreaterThan(20);
     expect([...asc].sort((a, b) => a - b)).toEqual(asc);
     expect([...asc].reverse()).toEqual(desc);
+  });
+});
+
+describe("frase da capital e diferença da tabela dizem o mesmo número", () => {
+  it("em despesa por habitante e Saeb, a diferença escrita é a dos valores exibidos", () => {
+    const casos = [
+      ["despesa_hab", 2025, "total", 0],
+      ["saeb", 2025, "anos_iniciais", 2],
+      ["ideb", 2025, "anos_iniciais", 1],
+    ] as const;
+    let n = 0;
+    for (const [m, ano, etapa, casas] of casos) {
+      const comp = comparar(ix, m, ano, etapa, "nominal", "matematica", "todas", d.capitais[0], "alfabetica");
+      const med = comp.ref!.mediana!;
+      for (const i of comp.incluidas) {
+        const dif = diferenca(m, i.valor, med)!;
+        if (dif.abaixoDaPrecisao || dif.abs === 0) continue;
+        const f = fraseCapital(i.cap.nome, i.cap.uf, i.valor, med, comp.ref!.n, m);
+        const esperado = Math.abs(Math.round(i.valor * 10 ** casas) / 10 ** casas - Math.round(med * 10 ** casas) / 10 ** casas);
+        expect(esperado).toBeCloseTo(dif.absExibida, 9);
+        const texto = (casas === 0 ? `R$ ${Math.round(esperado).toLocaleString("pt-BR")}` : esperado.toFixed(casas).replace(".", ","));
+        expect(f, `${m} ${i.cap.nome}`).toContain(`(${texto}`);
+        n++;
+      }
+    }
+    expect(n).toBeGreaterThan(40);
   });
 });

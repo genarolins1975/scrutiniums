@@ -107,7 +107,10 @@ export function fraseCapital(nome: string, uf: string, valor: number | null, med
   if (foraDaComparacao) return `${quem} registra ${formata(medida, valor)}, valor fora da comparação entre capitais (o motivo está logo abaixo do gráfico).`;
   if (mediana === null) return `${quem} registra ${formata(medida, valor)}.`;
   const d = diferenca(medida, valor, mediana);
-  const dif = d ? ` (${d.abs === 0 ? "igual à mediana" : `${diferencaCurta(medida, d.abs)} ${d.abs > 0 ? "acima" : "abaixo"}`})` : "";
+  // a diferença escrita é a da tabela e do CSV (valores na precisão exibida), para que a frase e a conta do leitor fechem
+  const dif = d
+    ? ` (${d.abs === 0 ? "igual à mediana" : d.abaixoDaPrecisao ? `diferença menor que a precisão exibida, ${d.abs > 0 ? "acima" : "abaixo"}` : `${diferencaCurta(medida, d.absExibida)} ${d.abs > 0 ? "acima" : "abaixo"}`})`
+    : "";
   return `${quem} registra ${formata(medida, valor)}; a mediana das ${n} capitais é ${formata(medida, mediana)}${dif}.`;
 }
 
@@ -157,7 +160,7 @@ export function fraseEvolucao(
   // a regra é a da variação do painel: dois períodos de bases diferentes não se comparam; um ponto intermediário com ruptura não impede a leitura dos extremos
   const quebra = a.quebraSerie !== b.quebraSerie;
   if (quebra) {
-    return `Entre ${a.ano} e ${b.ano} ${motivoQuebra}: os valores desses dois períodos não são diretamente comparáveis, e o gráfico marca a ruptura.`;
+    return `Entre ${a.ano} e ${b.ano} ${motivoQuebra}: os valores de ${a.ano} e de ${b.ano} não são diretamente comparáveis, e o gráfico marca onde a base muda.`;
   }
   // o sujeito diz qual medida e de quem: "Em Recife (PE), a despesa em Educação por habitante passou de ..."
   const suj = SUJEITO[medida][0].toLowerCase() + SUJEITO[medida].slice(1);
