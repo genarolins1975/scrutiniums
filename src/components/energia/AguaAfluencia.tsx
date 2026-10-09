@@ -73,6 +73,9 @@ const OPCOES_TIPO = TIPOS_RECORTE.map((t) => ({ id: t, rotulo: ROTULO_TIPO_RECOR
 
 // o universo dos REE cita os REE novos publicados na gold (datas e nomes não ficam escritos aqui); a sigla SIN e o REE vêm por extenso no uso
 const universo = (tipo: TipoRecorte, reeNovos: readonly { data: string; novos: string[] }[]): string =>
+  `${universoBase(tipo, reeNovos)}. A ENA é derivada pelo ONS (vazão natural reconstituída, convertida em energia), não é medição direta`;
+
+const universoBase = (tipo: TipoRecorte, reeNovos: readonly { data: string; novos: string[] }[]): string =>
   tipo === "subsistema"
     ? "Subsistemas do Sistema Interligado Nacional (SIN); o SIN soma as ENA e as MLT dos quatro, dia a dia"
     : tipo === "ree"

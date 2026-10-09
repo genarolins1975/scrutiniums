@@ -44,7 +44,7 @@ A avaliação de produto pede que a dica e a linha "Seleção" do mapa digam "ma
 
 ## 8. Peso da página (meta 600 kB): o que a página cortou e o que depende de componente compartilhado
 
-Medido no HTML servido, com o fluxo RSC (`self.__next_f`) dentro: 851.611 B na avaliação (versão anterior ao redesenho; fluxo de cerca de 381 kB), 865.282 B nesta versão antes dos cortes e **818.157 B** depois (fluxo de 337 kB, HTML de 481 kB). A página cortou o que é dela: a lista de pontos do painel de limites viaja numa lista só (de 26 kB para cerca de 10 kB no fluxo), cada gráfico recebe só as colunas que desenha (cerca de 26 kB) e o texto longo de cada fonte vem resumido (a descrição completa fica na página da fonte). A meta de 600 kB não se alcança sem tocar nos compartilhados, que somam mais de 250 kB:
+Medido no HTML servido, com o fluxo RSC (`self.__next_f`) dentro: 851.611 B na avaliação (versão anterior ao redesenho; fluxo de cerca de 381 kB), 865.282 B nesta versão antes dos cortes e **818.212 B** depois (fluxo de 337 kB, HTML de 481 kB). A página cortou o que é dela: a lista de pontos do painel de limites viaja numa lista só (de 26 kB para cerca de 10 kB no fluxo), cada gráfico recebe só as colunas que desenha (cerca de 26 kB) e o texto longo de cada fonte vem resumido (a descrição completa fica na página da fonte). A meta de 600 kB não se alcança sem tocar nos compartilhados, que somam mais de 250 kB:
 
 - 12 `dialog` "Sobre este dado" (`SobreEsteDado`): 87,5 kB de HTML e cerca de 33 kB de props no fluxo. O conteúdo de um diálogo só se vê depois de abri-lo (com JavaScript): montar o conteúdo na primeira abertura, em vez de no HTML e no fluxo, tira cerca de 120 kB.
 - 6 fichas "Comprove este número" (`ComproveNumero`): cerca de 33 kB de props no fluxo (cada objeto de evidência tem 5 kB). Mesma proposta: carregar a ficha na abertura.
@@ -69,3 +69,16 @@ A página já trata, sem mudar a gold: marca o FEC anual como de cobertura parci
 
 - `qualidade_conjuntos_anual_*.csv`: acrescentar `meses_fec` (hoje a razão de FEC fica vazia sem dizer por quê, e a página deduz "menos de 12 meses de FEC" de razão vazia com FEC e limite presentes: 132 conjuntos em 2025, 128 da ELEKTRO).
 - `qualidade_municipios.csv`: `fec_min` e `fec_max` usam só os conjuntos de 12 meses de FEC e deixam de fora os de 11 meses (35 municípios da área da ELEKTRO: em Aguaí, SP, o intervalo "4,71 a 5,28" ignora quatro dos seis conjuntos). A ficha do município agora lista todos os conjuntos citados e diz, em frase, quais ficam fora do intervalo.
+
+## 12. Equivalências para a matriz de preservação (`equivalencias.json`)
+
+A conferência mecânica casa 58 das 60 visões comparáveis da rota por tipo e título; as duas que sobram são os títulos dos dois primeiros painéis, que mudaram para a pergunta que a página passou a responder (as visões de dentro de cada painel continuam, com os mesmos gráficos, tabelas e controles):
+
+```json
+"/setor-eletrico/qualidade": [
+  { "antes": "painel|por quanto tempo e quantas vezes faltou luz?", "depois": "painel|duração e frequência das interrupções no brasil, ano a ano", "justificativa": "mesmo painel P051, título novo; DEC e FEC em gráficos próprios, parcelas, mapa e comparação continuam" },
+  { "antes": "painel|o serviço cumpriu o padrão?", "depois": "painel|cada distribuidora e cada conjunto diante do próprio limite", "justificativa": "mesmo painel P052, título em fato e não em julgamento; limites, razão, distribuição, caudas e DGC continuam" }
+]
+```
+
+Visões que o rastreador marca "nível mudou" para Auditar ou Analisar sem terem mudado (o mapa e a tabela de municípios) são o mapa que só carrega quando chega perto da tela: em Entender ele está à vista; a medição automática a 1440 px o perde quando o servidor está lento.

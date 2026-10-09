@@ -27,7 +27,8 @@ export function PainelVisao({
   children,
 }: {
   id: IdPainelVisao;
-  subtitulo: ReactNode;
+  /** Linha técnica sob a pergunta; omitida quando a abertura da página já a diz. */
+  subtitulo?: ReactNode;
   porQueImporta: ReactNode;
   fonte: ReactNode;
   children: ReactNode;
@@ -43,7 +44,7 @@ export function PainelVisao({
           <span data-nivel="analisar" className="font-serif text-lg text-energia">
             {p.codigo}
           </span>
-          <span>{subtitulo}</span>
+          {subtitulo && <span>{subtitulo}</span>}
         </p>
       </header>
       <div className="mt-5 space-y-6">{children}</div>
@@ -106,6 +107,15 @@ export function VisaoAtencao({
       </span>
     ));
   const nada = alertaSistema.length === 0 && observacao.length === 0;
+  // mais de uma regra sobre os dados vira contagem com ligação, para a tira caber numa linha
+  const dados =
+    alertaDados.length > 1 ? (
+      <Link href="#observar" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+        {alertaDados.length} regras
+      </Link>
+    ) : (
+      lista(alertaDados)
+    );
   return (
     <aside aria-label="Regras que pedem atenção" data-atencao="" className="space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
       {nada && <p>Nenhuma regra sobre o sistema está em alerta nem em observação.</p>}
@@ -118,12 +128,12 @@ export function VisaoAtencao({
       {observacao.length > 0 && (
         <p>
           <span className="rotulo mr-2 text-mineral">Em observação</span>
-          {lista(observacao)} <span className="text-carvao-muted">(condição presente, ainda sem a duração mínima de alerta)</span>.
+          {lista(observacao)} <span className="text-carvao-muted">(ainda sem a duração mínima de alerta)</span>.
           {alertaDados.length > 0 && (
             <>
               {" "}
               <span className="rotulo mx-2 text-mineral">Em alerta sobre os dados</span>
-              {lista(alertaDados)}.
+              {dados}.
             </>
           )}
         </p>
@@ -131,7 +141,7 @@ export function VisaoAtencao({
       {observacao.length === 0 && alertaDados.length > 0 && (
         <p>
           <span className="rotulo mr-2 text-mineral">Em alerta sobre os dados</span>
-          {lista(alertaDados)}.
+          {dados}.
         </p>
       )}
     </aside>

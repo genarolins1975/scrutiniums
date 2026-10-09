@@ -58,6 +58,8 @@ import {
   textoAssociacao,
   textoPreliminarChuva,
   textoPreliminarTemperatura,
+  textoUltimoMesFinalChuva,
+  textoUltimoMesFinalTemperatura,
   valoresMapaChuva,
   vereditoAssociacao,
   vereditoChuva,
@@ -247,9 +249,15 @@ export function AguaClima({
   const mes = bacia && ehMes ? dadosChuvaMes(bacia, per) : null;
   // a cautela fica numa frase junto da resposta; a explicação inteira (produto da base, recomendação da fonte) abre logo abaixo
   const resumoChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late (preliminar)." : "") : resumoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
-  const prelimChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late, sem calibração por pluviômetros, e a média do mês é de produto final." : "") : textoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
+  const prelimChuva = bacia
+    ? ehMes
+      ? mes?.preliminar
+        ? "O mês tem dias do IMERG Late, sem calibração por pluviômetros, e a média do mês é de produto final."
+        : ""
+      : [textoPreliminarChuva(bacia.dia, corteImergFinal), textoPreliminarChuva(bacia.dia, corteImergFinal) ? textoUltimoMesFinalChuva(bacia, base) : ""].filter(Boolean).join(" ")
+    : "";
   const resumoTemp = temp ? resumoPreliminarTemperatura(temp.dia, corteMerra2) : "";
-  const prelimTemp = temp ? textoPreliminarTemperatura(temp.dia, corteMerra2) : "";
+  const prelimTemp = temp ? [textoPreliminarTemperatura(temp.dia, corteMerra2), textoPreliminarTemperatura(temp.dia, corteMerra2) ? textoUltimoMesFinalTemperatura(temp, corteMerra2, base) : ""].filter(Boolean).join(" ") : "";
   const marcaTemp = useMemo(
     () => marcaPreliminarSerie(tDiaria.map((p) => p.d), corteMerra2, "GEOS-IT a partir daqui (preliminar)"),
     [tDiaria, corteMerra2],

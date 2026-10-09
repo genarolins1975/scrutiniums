@@ -2102,6 +2102,26 @@ export function textoPreliminarTemperatura(dia: string | null | undefined, corte
 }
 
 /**
+ * O último mês completo só com produto final (nenhum dia IMERG Late): os milímetros e a anomalia dele, para ver a anomalia de um período sem
+ * dia preliminar ao lado da janela dos 30 dias, que é toda preliminar. Vazio sem mês assim.
+ */
+export function textoUltimoMesFinalChuva(b: AguaPrecipitacaoBacia, base: string): string {
+  const desde = b.mensal.preliminar_desde;
+  const i = b.mensal.m.reduce((u, m, k) => (desde === null || m < desde ? k : u), -1);
+  if (i < 0 || b.mensal.mm[i] === null || b.mensal.mm[i] === undefined) return "";
+  const an = textoAnomaliaPct(b.mensal.anomalia_pct[i] ?? null);
+  return `O último mês completo só com produto final é ${mesExtenso(b.mensal.m[i])}: ${num(b.mensal.mm[i], 1)} mm${an ? `, ${an} média do mês em ${periodoBase(base)} (${num(b.mensal.media[i], 1)} mm)` : ""}.`;
+}
+
+/** O último mês completo só com MERRA-2 (nenhum dia GEOS-IT): a anomalia dele, para ver uma temperatura sem dia preliminar. Vazio sem mês assim. */
+export function textoUltimoMesFinalTemperatura(t: AguaTemperatura, corteMerra2: string | null | undefined, base: string): string {
+  const i = t.mensal.m.reduce((u, m, k) => (!mesPreliminar(m, corteMerra2) ? k : u), -1);
+  if (i < 0 || t.mensal.t[i] === null || t.mensal.t[i] === undefined) return "";
+  const an = textoAnomaliaGraus(t.mensal.anomalia_c[i] ?? null);
+  return `O último mês completo só com MERRA-2 é ${mesExtenso(t.mensal.m[i])}: ${num(t.mensal.t[i], 2)} °C${an ? `, ${an} média do mês em ${periodoBase(base)} (${num(t.mensal.media[i], 2)} °C)` : ""}.`;
+}
+
+/**
  * Marcas dos dias preliminares no eixo de uma série diária: o primeiro dia depois do corte, quando cai dentro da série (a linha mostra
  * onde o produto muda), ou a nota de que a série inteira é preliminar, quando começa depois do corte. Vazios quando não há dia preliminar.
  */

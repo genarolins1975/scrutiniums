@@ -191,11 +191,11 @@ export default function VisaoGeralEnergia() {
   const sentido = (v: number) => (v >= 0 ? "acima" : "abaixo");
   const refPreco =
     ctx.pldReferencia && ctx.pldReferencia.percentilMes !== null && ctx.pldReferencia.percentilTodos !== null
-      ? `Percentil ${num(ctx.pldReferencia.percentilMes, 1)} no mesmo mês dos anos anteriores; ${num(ctx.pldReferencia.percentilTodos, 1)} entre todas as médias desde 2021.`
+      ? `Mesmo mês dos anos anteriores: percentil ${num(ctx.pldReferencia.percentilMes, 1)}; todas as médias desde 2021: ${num(ctx.pldReferencia.percentilTodos, 1)}.`
       : null;
   const refCarga =
     ctx.carga7d && ctx.carga7d.variacaoPct !== null
-      ? `Média de 7 dias: ${num(Math.abs(ctx.carga7d.variacaoPct), 1)}% ${sentido(ctx.carga7d.variacaoPct)} das mesmas datas do ano anterior${
+      ? `7 dias: ${num(Math.abs(ctx.carga7d.variacaoPct), 1)}% ${sentido(ctx.carga7d.variacaoPct)} das mesmas datas do ano anterior${
           ctx.cargaModulo?.mesmosDiasDaSemanaPct != null ? `; a página Carga dá ${num(Math.abs(ctx.cargaModulo.mesmosDiasDaSemanaPct), 2)}%` : ""
         }.`
       : null;
@@ -253,13 +253,13 @@ export default function VisaoGeralEnergia() {
               <FaixaMetricas colunas={4} rotulo="Indicadores do sistema, cada um na data da sua fonte">
                 <Numero
                   variante="faixa"
-                  rotulo={`Preço de Liquidação das Diferenças (PLD), média do dia${pPreco.valor_atual.rotulo ? ` no ${pPreco.valor_atual.rotulo}` : ""}`}
+                  rotulo={`PLD (Preço de Liquidação das Diferenças)${pPreco.valor_atual.rotulo ? `, ${pPreco.valor_atual.rotulo}` : ""}`}
                   natureza={pPreco.natureza}
                   valor={pPreco.valor_atual.valor}
                   formato="reais"
                   casas={2}
                   unidade="R$/MWh"
-                  periodo={dataBR(pPreco.data_referencia)}
+                  periodo={`média do dia ${dataBR(pPreco.data_referencia)}`}
                   cor="var(--serie-sm-se)"
                   nota={
                     <>
@@ -340,7 +340,6 @@ export default function VisaoGeralEnergia() {
           {/* P005 */}
           <PainelVisao
             id="determinantes"
-            subtitulo="Cada painel na data da sua fonte e contra a sua referência"
             porQueImporta="Preço, água armazenada, geração térmica, carga e fluxo entre regiões são cinco medidas que o observatório publica em módulos próprios. Lidas no mesmo calendário, mostram o que mudou nos mesmos dias, sem afirmar que uma explica a outra."
             fonte={
               <>

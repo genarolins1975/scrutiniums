@@ -231,7 +231,7 @@ export default function PldLimitesPage() {
                           <a href={f.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
                             endereço oficial
                           </a>
-                          {f.parafrase ? ` ${f.parafrase}` : ""}
+                          .{f.parafrase ? <span className="mt-1 block">{f.parafrase}</span> : null}
                         </footer>
                       </blockquote>
                     ))}

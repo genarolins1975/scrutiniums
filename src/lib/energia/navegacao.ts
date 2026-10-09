@@ -28,9 +28,9 @@ export type ModuloEnergia = {
 };
 
 export const MODULOS_ENERGIA: ModuloEnergia[] = [
-  { slug: "mapa", href: "/setor-eletrico", rotulo: "Mapa", resumo: "Por onde começar: o que cada página responde, com que fonte e até quando.", integrado: true, secao: "energia:mapa" },
+  { slug: "mapa", href: "/setor-eletrico", rotulo: "Início", resumo: "Por onde começar: o que cada página responde, com que fonte e até quando.", integrado: true, secao: "energia:mapa" },
   { slug: "visao-geral", href: "/setor-eletrico/visao-geral", rotulo: "Visão geral", resumo: "O sistema elétrico em poucos minutos.", integrado: true, secao: "energia:visao-geral" },
-  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço horário por submercado: o que é, de onde vem, o que acontece agora e o estado da previsão.", integrado: true, secao: "energia:pld" },
+  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço horário por submercado: o que é, de onde vem, o que mostram os últimos dias e o estado da previsão.", integrado: true, secao: "energia:pld" },
   { slug: "agua-e-clima", href: "/setor-eletrico/agua-e-clima", rotulo: "Água e clima", resumo: "Energia armazenada e energia que chega aos reservatórios.", integrado: true, secao: "energia:agua-e-clima" },
   { slug: "geracao", href: "/setor-eletrico/geracao", rotulo: "Geração", resumo: "Com que fontes o sistema está atendendo a carga.", integrado: true, secao: "energia:geracao" },
   { slug: "carga", href: "/setor-eletrico/carga", rotulo: "Carga", resumo: "Quanto o sistema está consumindo e como isso se compara.", integrado: true, secao: "energia:carga" },
@@ -93,7 +93,7 @@ function doModulo(slug: string): Pick<DestinoNavegacao, "slug" | "href" | "resum
 /** A ordem desta lista é a ordem de exibição dentro de cada grupo. */
 export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   // 1. Comece aqui
-  { ...doModulo("mapa"), rotulo: "Mapa do observatório", grupo: "comece-aqui", publicado: true, pergunta: "Como compreender e explorar o setor usando este observatório?" },
+  { ...doModulo("mapa"), rotulo: "Início", grupo: "comece-aqui", publicado: true, pergunta: "Como compreender e explorar o setor usando este observatório?" },
   { ...doModulo("visao-geral"), rotulo: "Visão geral", grupo: "comece-aqui", publicado: true, pergunta: "O que está acontecendo no sistema elétrico?" },
   {
     slug: "territorio",
@@ -199,7 +199,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
 ];
 
 const DEFINICAO_GRUPOS: Omit<GrupoNavegacao, "destinos">[] = [
-  { id: "comece-aqui", n: 1, rotulo: "Comece aqui", resumo: "Por onde começar e o que está acontecendo agora." },
+  { id: "comece-aqui", n: 1, rotulo: "Comece aqui", resumo: "Por onde começar e o que os dados mostram nos últimos dias." },
   { id: "operacao", n: 2, rotulo: "Operação do sistema", resumo: "A água, a geração, o consumo e a rede que liga as regiões." },
   { id: "precos-e-mercado", n: 3, rotulo: "Preços e mercado", resumo: "O preço de curto prazo, as previsões e como a energia é contratada." },
   { id: "consumidor-e-territorio", n: 4, rotulo: "Consumidor e território", resumo: "O que chega a quem usa a energia: a conta, as perdas, a qualidade do serviço e o acesso." },

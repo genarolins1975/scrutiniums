@@ -360,7 +360,7 @@ export function AguaReservatorios({
       {dec && (
         <>
           <GraficoBarras
-            titulo={`Variação da EAR ${DO_REGIAO[dec.sm]} por reservatório, ${dataBR(dec.inicio)} a ${dataBR(dec.fim)}: maiores quedas e maiores altas, em MWmês`}
+            titulo={`Variação da EAR ${DO_REGIAO[dec.sm]} por reservatório, ${dataBR(dec.inicio)} a ${dataBR(dec.fim)}: maiores quedas e maiores altas`}
             dados={barrasDec.map((b) => ({ id: b.id, rotulo: b.rotulo, delta: b.delta }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"

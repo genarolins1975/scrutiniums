@@ -460,7 +460,7 @@ export const COLUNAS_RELACAO: ColunaTabela[] = [
   { id: "media_abs_dif", rotulo: "|PLD − CMO|, média (todas as horas)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "entre_media_dif", rotulo: "PLD − CMO, média (entre os limites)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "entre_mediana_abs", rotulo: "|PLD − CMO|, mediana (entre os limites)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "entre_ate_1", rotulo: "Horas entre os limites com |PLD − CMO| ≤ R$ 1,00/MWh", tipo: "percentual", casas: 1 },
+  { id: "entre_ate_1", rotulo: "Horas entre os limites com |PLD − CMO| ≤ R$ 1,00/MWh", tipo: "percentual", casas: 2 },
   { id: "piso_cmo_no_piso", rotulo: "Horas no piso com CMO no piso ou abaixo", tipo: "percentual", casas: 1 },
 ];
 

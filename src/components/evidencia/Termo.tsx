@@ -11,7 +11,13 @@ import { TermoDica } from "@/components/evidencia/TermoDica";
 export function Termo({ slug, children, alvo = false }: { slug: string; children: ReactNode; alvo?: boolean }) {
   const c = conceito(slug);
   if (!c) return <>{children}</>;
-  const dica = c.estado === "CONFERIDO" && c.emUmaFrase ? c.emUmaFrase : "Verbete em preparação: fonte primária ainda não conferida.";
+  // com a frase em palavras simples, ela vem primeiro e a definição literal da fonte logo depois; sem ela, só a definição da fonte
+  const dica =
+    c.estado === "CONFERIDO" && c.emUmaFrase
+      ? c.emPalavrasSimples
+        ? `${c.emPalavrasSimples} Na fonte: ${c.emUmaFrase}`
+        : c.emUmaFrase
+      : "Verbete em preparação: fonte primária ainda não conferida.";
   return (
     <TermoDica href={`/setor-eletrico/aprenda/${c.slug}`} rotulo={`${c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() ? `${c.sigla} · ` : ""}${c.nome}`} dica={dica} alvo={alvo}>
       {children}

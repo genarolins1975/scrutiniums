@@ -86,20 +86,10 @@ function Cartao({
   return (
     <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
       <div id={ancoras?.painel} className="scroll-mt-28">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
           <h3 id={`p005-${p.id}-titulo`} className="ed-h3 font-serif text-carvao">
             {p.titulo}
           </h3>
-          <p className="text-xs text-carvao-muted">{p.pergunta}</p>
-        </div>
-        <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
-          <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
-            <span className="font-serif text-[1.625rem] leading-tight tabular-nums text-carvao" data-valor-atual={p.id}>
-              {p.valorTexto}
-            </span>
-            {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
-            <span className="text-xs text-carvao-muted">{p.id === "geracao" ? `7 dias até ${dataBR(p.dataReferencia)}` : dataBR(p.dataReferencia)}</span>
-          </p>
           {p.comprove ? (
             <ComproveNumero
               sobDemanda={{ url: URL_GOLD_VISAO, caminho: p.comprove.caminho, indicador: p.comprove.indicador, valorExibido: p.comprove.valorExibido }}
@@ -109,6 +99,16 @@ function Cartao({
             <span className="text-xs text-aviso">Prova do valor não publicada nesta execução{p.semEvidencia ? `: ${p.semEvidencia}` : "."}</span>
           )}
         </div>
+        <p data-nivel="analisar" className="text-xs text-carvao-muted">
+          {p.pergunta}
+        </p>
+        <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+          <span className="font-serif text-[1.625rem] leading-tight tabular-nums text-carvao" data-valor-atual={p.id}>
+            {p.valorTexto}
+          </span>
+          {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
+          <span className="text-xs text-carvao-muted">{p.id === "geracao" ? `7 dias até ${dataBR(p.dataReferencia)}` : dataBR(p.dataReferencia)}</span>
+        </p>
       </div>
       <div className="mt-1">
         <GraficoLinhas
@@ -206,7 +206,7 @@ export function VisaoDeterminantes({
         </div>
         <p className="min-w-0 text-xs leading-relaxed text-carvao-muted" data-periodo-determinantes="" aria-live="polite">
           <span className="rotulo mr-1.5 text-mineral">Período</span>
-          {periodoDaJanela(linhas)}
+          {dataBR(inicio)} a {dataBR(fim)} ({linhas.length} dias)
         </p>
       </div>
       <CursorSincronizado>
@@ -226,7 +226,11 @@ export function VisaoDeterminantes({
           ))}
         </div>
       </CursorSincronizado>
-      <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-2" data-recorte-determinantes="">
+      <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-determinantes="">
+        <div>
+          <dt className="rotulo text-mineral">Período</dt>
+          <dd className="mt-0.5 leading-relaxed">{periodoDaJanela(linhas)}</dd>
+        </div>
         <div>
           <dt className="rotulo text-mineral">Universo</dt>
           <dd className="mt-0.5 leading-relaxed">PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS. O cursor de um gráfico marca a mesma data nos outros quatro.</dd>

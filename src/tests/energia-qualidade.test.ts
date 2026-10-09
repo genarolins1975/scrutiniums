@@ -1042,7 +1042,9 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     const secao = /<section id="expurgos"([^>]*)>/.exec(html)?.[1] ?? "";
     expect(secao).not.toContain("data-nivel");
     expect(html).toContain(esc(textoParcelasAno(gold)));
-    expect(html).toContain(esc(gold.regras.apurado));
+    // a regra do apurado escrita para o leitor: "não expurgável" vira "que a regra não exclui" (o resto do texto é o da gold)
+    expect(html).toContain(esc(paraLeitor(gold.regras.apurado)));
+    expect(paraLeitor(gold.regras.apurado)).not.toMatch(/expurgável/);
     expect(html).toContain("Parcelas do DEC do Brasil por origem");
     expect(html).toContain(esc(textoUniversoBrasil(gold)));
   });
@@ -1494,6 +1496,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: seletore
     expect(paraLeitor("Só concessionárias (dec_concessionarias, fec_concessionarias): o universo")).toBe("Só concessionárias: o universo");
     expect(paraLeitor("e vai em dec_concessionarias e fec_concessionarias")).toBe("e aparece à parte");
     expect(paraLeitor("Distribuidora-mês com NumCon implausível")).toBe("Distribuidora-mês com número de UCs informado implausível");
+    expect(paraLeitor("interna, não programada, não expurgável")).toBe("interna, não programada, que a regra não exclui");
     expect(paraLeitor("com Nie > NumOcorr")).toBe("com ocorrências com interrupção > total de ocorrências");
     expect(paraLeitor("ocorrências (Nie) e total (NumOcorr)")).toBe("ocorrências e total");
     expect(paraLeitor("(o silver tem uma única captura) e o bronze")).toBe("(a base tratada tem uma única captura) e o arquivo original");
@@ -1629,6 +1632,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     const texto = html.slice(html.indexOf("<main")).replace(/<svg[\s\S]*?<\/svg>/g, " ");
     expect(texto).not.toMatch(/\b(silver|bronze)\b/);
     expect(texto).not.toMatch(/NumCon|NumOcorr/);
+    expect(texto).not.toMatch(/\bexpurgável\b/);
     expect(texto).not.toMatch(/(dec|fec)_concessionarias/);
     expect(texto).not.toMatch(/__[^_\s][^_<]*__/);
     expect(texto).not.toMatch(/\((dec|fec)(, (dec|fec))?\)/);
