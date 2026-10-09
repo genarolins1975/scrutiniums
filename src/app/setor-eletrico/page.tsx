@@ -720,10 +720,10 @@ export default function MapaDoObservatorio() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-12">
         {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
         <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
-          <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
+          <div className="obs-hero grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <div className="min-w-0">
               <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>
-              <h1 className="ed-h1 mt-2 max-w-4xl font-serif text-carvao">Energia, do sistema à sua conta</h1>
+              <h1 className="mt-2 max-w-4xl font-serif">Energia, do sistema à sua conta</h1>
               <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
                 Entenda o que pesa na conta de luz e como o sistema elétrico funciona: compare regiões e confira cada número em dados públicos, com a fonte, o período e o método à vista.
               </p>
@@ -758,18 +758,12 @@ export default function MapaDoObservatorio() {
                   </div>
                 </DetalheDoNivel>
               </div>
-              <div className="mt-6">
-                <BuscaObservatorio
-                  itens={busca}
-                  exemplos={["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"]}
-                  regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
-                />
-              </div>
+
             </div>
             <nav aria-label="Por onde começar" className="min-w-0 lg:border-l lg:border-linha lg:pl-8">
               <p className="rotulo text-mineral">Por onde começar</p>
               <ol className="mt-1 divide-y divide-linha">
-                {CAMINHOS_INTENCAO.map((c) => {
+                {CAMINHOS_INTENCAO.slice(0, 3).map((c) => {
                   const [principal, ...apoio] = c.slugs.map(destino);
                   const aoTitulo = "inline-flex min-h-[44px] items-center gap-2 font-serif text-lg leading-snug text-energia-dark underline underline-offset-4 hover:text-carvao";
                   return (
@@ -810,8 +804,30 @@ export default function MapaDoObservatorio() {
               </p>
             </nav>
           </div>
+          <dl className="obs-metrics">
+            {[
+              [String(DESTINOS_NAVEGACAO.filter(d => d.publicado && d.slug !== "mapa").length), "páginas disponíveis", "Painéis, conhecimento e evidência"],
+              [String(GRUPOS_NAVEGACAO.length), "grupos de temas", "Do sistema à vida das pessoas"],
+              [String(orgaos.length), "órgãos nas fontes", "Dados públicos com procedência"],
+              ["3", "níveis de leitura", "Entender, analisar e auditar"],
+            ].map(([valor, rotulo, detalhe]) => <div key={rotulo}><dd>{valor}</dd><dt>{rotulo}</dt><dd>{detalhe}</dd></div>)}
+          </dl>
         </header>
+        <div className="obs-home-search">              <div className="mt-6">
+                <BuscaObservatorio
+                  itens={busca}
+                  exemplos={["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"]}
+                  regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                />
+              </div></div>
 
+        <nav aria-label="Conhecimento e fontes" className="mb-8 grid gap-4 sm:grid-cols-2">
+          {CAMINHOS_INTENCAO.slice(3).map(c => <div key={c.id} data-caminho={c.id} className="border-l-4 border-obee bg-superficie p-5">
+            <Link href={destino(c.slugs[0]).href} className="inline-flex min-h-[44px] items-center font-serif text-xl text-obee-tinta underline underline-offset-4">{c.titulo} →</Link>
+            <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.descricao}</p>
+            {c.slugs.slice(1).map(slug => <Link key={slug} href={destino(slug).href} className={link}>{destino(slug).rotulo}</Link>)}
+          </div>)}
+        </nav>
         {/* as seis perguntas, cada uma com a medida real, o período, a figura de referência e o link; a escolha da distribuidora é uma só */}
         <Secao
           id="perguntas"
@@ -933,7 +949,7 @@ export default function MapaDoObservatorio() {
           titulo="Todas as páginas, por tema"
           subtitulo={`Seis grupos e a pergunta que cada página responde. O ▾ de cada página abre para que ela serve, o que se encontra nela e o recorte. ${estadoDoIndice}`}
         >
-          <div className="grid gap-x-10 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
+          <div className="obs-catalogo grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {GRUPOS_NAVEGACAO.map((g) => {
               const ds = destinosDoIndice(g.destinos);
               if (!ds.length) return null;

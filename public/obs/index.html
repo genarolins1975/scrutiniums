@@ -20,8 +20,13 @@
 <link rel="preload" href="/obs/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/obs/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/obs/styles.css?v=0.108.0">
+<link rel="stylesheet" href="/observatorios.css?v=1">
 </head>
-<body>
+<body class="observatorio-credito">
+<header class="obs-brandbar">
+  <a class="obs-brand" href="/" aria-label="Scrutiniums: página inicial"><svg width="20" height="25" viewBox="0 0 40 50" fill="none" aria-hidden="true"><path d="M28 0 L10 0 C4 4 2 8 2 14 C2 20 6 24 13 26 L21 28 L21 14 C21 8 23 3 28 0 Z" fill="currentColor"/><path d="M12 50 L30 50 C36 46 38 42 38 36 C38 30 34 26 27 24 L19 22 L19 36 C19 42 17 47 12 50 Z" fill="#966B48"/></svg><span>Scrutiniums</span></a>
+  <nav aria-label="Observatórios da Scrutiniums" class="obs-dominios"><a href="/observatorio" aria-current="true">Crédito</a><a href="/setor-eletrico">Setor Elétrico</a><a href="/eficiencia-estatal">Eficiência Estatal</a></nav>
+</header>
 <a class="skip" href="#main">Ir para o conteúdo</a>
 <div class="shell">
   <header class="mobilebar">
@@ -42,7 +47,7 @@
       <summary aria-label="Observatório atual: Crédito. Trocar de observatório"><span class="obs-switcher-plat">Scrutiniums</span> Crédito <span aria-hidden="true">▾</span></summary>
       <div class="obs-switcher-menu">
         <span class="obs-switcher-rot">Observatórios</span>
-        <a href="/observatorio" aria-current="page"><span class="obs-dot obs-dot-credito" aria-hidden="true"></span>Observatório Brasileiro de Crédito<span class="sr-only"> (atual)</span></a>
+        <a href="/observatorio" aria-current="true"><span class="obs-dot obs-dot-credito" aria-hidden="true"></span>Observatório Brasileiro de Crédito<span class="sr-only"> (atual)</span></a>
         <a href="/setor-eletrico"><span class="obs-dot obs-dot-energia" aria-hidden="true"></span>Observatório Brasileiro do Setor Elétrico</a>
         <a href="/eficiencia-estatal"><span class="obs-dot obs-dot-eficiencia" aria-hidden="true"></span>Observatório Brasileiro de Eficiência Estatal</a>
         <a class="obs-switcher-conta" href="/app/observatorios">Escolher na minha conta →</a>
@@ -204,5 +209,6 @@
 </div>
 <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
 <script src="/obs/app.min.js?v=0.108.0"></script>
+<script src="/obs/editorial.js?v=1" defer></script>
 </body>
 </html>

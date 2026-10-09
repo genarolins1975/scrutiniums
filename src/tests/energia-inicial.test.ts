@@ -618,12 +618,12 @@ const secao = (id: string) => {
 };
 
 describe("a página renderizada", () => {
-  it("a primeira tela tem, nesta ordem, o título de 5 a 9 palavras, a frase, o limite, a busca e os cinco caminhos, antes das seis perguntas", () => {
+  it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca e conhecimento antes das seis perguntas", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
     expect(h1).toBe("Energia, do sistema à sua conta");
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
-    const ordem = [html.indexOf("<h1"), html.indexOf('type="search"'), html.indexOf('aria-label="Por onde começar"'), html.indexOf('<section id="perguntas"')];
+    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('aria-label="Conhecimento e fontes"'), html.indexOf('<section id="perguntas"')];
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice)
