@@ -1,4 +1,4 @@
-import type { FichaIndicador } from "@/lib/eficiencia/tipos";
+import type { FichaExibivel, FichaIndicador } from "@/lib/eficiencia/tipos";
 
 /**
  * Conteúdo de “Sobre este dado” (a ficha de um indicador): os dezesseis campos, na ordem, para
@@ -54,7 +54,7 @@ function Lista({ itens }: { itens: string[] }) {
   );
 }
 
-export function FichaConteudo({ f, ctx }: { f: FichaIndicador; ctx: ContextoFicha }) {
+export function FichaConteudo({ f, ctx }: { f: FichaExibivel; ctx: ContextoFicha }) {
   const publicado = f.estado !== "NAO_PUBLICAVEL";
   return (
     <dl className="[overflow-wrap:anywhere]">

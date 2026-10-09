@@ -76,6 +76,16 @@ export type FichaIndicador = {
   substitui?: IndicadorId | null;
 };
 
+/**
+ * Ficha exibível: o que o diálogo "Sobre este dado" e a seção de métodos precisam de uma ficha, sem amarrar o identificador
+ * ao catálogo de Educação. As fichas de Saúde (`sau.*`) e as de Educação (`edu.*`) são atribuíveis a este tipo.
+ */
+export type FichaExibivel = Omit<FichaIndicador, "id" | "familia" | "substitui"> & {
+  id: string;
+  familia: FichaIndicador["familia"] | "estrutura";
+  substitui?: string | null;
+};
+
 export type SituacaoConferencia = "CONFERE" | "DIFERENCA_MENOR" | "RECONCILIADA_MSC" | "PERIMETRO_INTRA_MSC" | "PENDENTE" | "NAO_CONFERIDO";
 
 export type Conferencia = {

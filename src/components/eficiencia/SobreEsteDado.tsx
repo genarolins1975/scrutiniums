@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef } from "react";
-import type { FichaIndicador } from "@/lib/eficiencia/tipos";
+import type { FichaExibivel } from "@/lib/eficiencia/tipos";
 import { FichaConteudo, type ContextoFicha } from "./FichaConteudo";
 
 /**
@@ -14,7 +14,7 @@ export function SobreEsteDado({
   ctx,
   rotulo = "Sobre este dado",
 }: {
-  f: FichaIndicador;
+  f: FichaExibivel;
   ctx: ContextoFicha;
   rotulo?: string;
 }) {
