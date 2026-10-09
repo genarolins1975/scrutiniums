@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
 import { LogoMark } from "@/components/ui/Logo";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
@@ -33,7 +34,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
   const { itens, grupoAtual } = menuNavegacao(atual);
   const paginaAtual = grupoAtual?.links.find((d) => d.slug === atual) ?? null;
   return (
-    <header className="border-b border-linha bg-superficie">
+    <header className="obs-identidade border-b border-linha bg-superficie">
       <div className="ed-pagina flex flex-wrap items-center justify-between gap-x-6">
         <div className="flex min-w-0 items-center gap-3">
           <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
@@ -43,6 +44,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           <span aria-hidden="true" className="h-5 w-px bg-linha" />
           <SwitcherObservatorio atual="energia" />
         </div>
+        <NavegacaoObservatorios atual="energia" />
         <div className="flex items-center gap-4 sm:gap-5">
           <Link
             href="/setor-eletrico/dados"
