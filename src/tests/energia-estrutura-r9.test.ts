@@ -101,6 +101,12 @@ describe("abas de seção quebram linha no celular", () => {
     expect(css).not.toMatch(/\.nav-faixa \{ margin: -3px 0; padding: 3px 0; \}/);
   });
 
+  it("no celular o espaço entre colunas da faixa cabe duas metades de linha (senão cada aba cai numa linha própria)", () => {
+    // duas metades de calc(50% - 0.25rem) somam 100% - 0.5rem: o gap-x-6 de 24 px da NavegacaoLocal as empurrava para uma coluna só
+    const bloco = css.match(/@media \(max-width: 40rem\) \{(\s*\.nav-faixa > li[\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(bloco).toMatch(/ol\.nav-faixa \{ column-gap: 0\.25rem; \}/);
+  });
+
   it("a faixa de módulos do cabeçalho do site também quebra linha abaixo de 768 px, sem máscara de esmaecimento", () => {
     expect(css).toMatch(/@media \(max-width: 47\.99rem\) \{\s*#modulos-energia \{ flex-wrap: wrap; overflow: visible; -webkit-mask-image: none; mask-image: none; \}/);
   });

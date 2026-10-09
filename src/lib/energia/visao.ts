@@ -1631,7 +1631,8 @@ export function determinantesDaPagina(
     rotuloValor: p.valor_atual.rotulo,
     leitura: leituraDeterminante(p, exato),
     defasagem: p.texto_defasagem,
-    nota: p.nota,
+    // sigla no primeiro uso: a nota do pipeline cita a MMGD sem dizer o que é
+    nota: expandeSiglas(p.nota, ["MMGD"]),
     href: p.href,
     comprove: p.evidencia
       ? { caminho: `multiplos.paineis[${k}].evidencia`, indicador: p.valor_atual.rotulo ? `${p.titulo} (${p.valor_atual.rotulo})` : p.titulo, valorExibido: p.evidencia.valor_exibido }

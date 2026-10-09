@@ -53,9 +53,9 @@ import type { BlocoLimitesDisponivel } from "@/lib/energia/tipos-pld";
  * mesma série diária da gold. Hora no limite é igualdade ao centavo, regra da gold;
  * o menor valor observado nunca aparece como piso.
  *
- * Ordem da página: resposta e escolha de submercado e ano, faixa de medidas do ano (com os
- * limites do trecho vigente e o objeto de cada um), figura principal (permanência por ano,
- * com o ano escolhido marcado), recorte, tabela, notas do painel e as três visões
+ * Ordem da página: resposta e escolha de submercado e ano, figura principal (permanência por ano,
+ * com o ano escolhido marcado), faixa de medidas do ano (com os limites do trecho vigente e o objeto
+ * de cada um; vem depois da figura para que ela apareça na primeira tela), recorte, tabela, notas do painel e as três visões
  * complementares (calendário dos dias, horas no piso por submercado e empates), visíveis em Entender.
  */
 const ROTULO_LIMITE: Record<LimiteHora, string> = { piso: "Horas no piso", teto_horario: "Horas no teto horário" };
@@ -145,6 +145,28 @@ export function PldLimites({
         </div>
       </div>
 
+      <div className="space-y-3">
+        <GraficoBarras
+          titulo={`Horas no piso e no teto horário por ano, ${NOME_SM[sm]} (% das horas com limite vigente)`}
+          dados={perm}
+          chaveCategoria="id"
+          chaveRotulo="rotulo"
+          series={[
+            { id: "piso_pct", rotulo: "no piso", cor: "var(--escala-seq-3)" },
+            { id: "teto_pct", rotulo: "no teto horário", cor: "var(--escala-div-neg-2)" },
+          ]}
+          unidade="%"
+          casas={2}
+          selecionado={String(ano)}
+          onSelecionar={(id) => id && definir({ ano: Number(id) })}
+        />
+        <p className="text-sm leading-relaxed text-carvao-muted">
+          Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
+          terminou e não se compara a anos completos sem essa ressalva.
+        </p>
+        {notaPermanencia ? <p className="text-sm leading-relaxed text-carvao-muted">{notaPermanencia}</p> : null}
+      </div>
+
       <FaixaMetricas colunas={4} rotulo={`Medidas de ${periodoAno}, ${NOME_SM[sm]}`}>
         <Numero
           variante="faixa"
@@ -221,28 +243,6 @@ export function PldLimites({
           )}
         </div>
       </FaixaMetricas>
-
-      <div className="space-y-3">
-        <GraficoBarras
-          titulo={`Horas no piso e no teto horário por ano, ${NOME_SM[sm]} (% das horas com limite vigente)`}
-          dados={perm}
-          chaveCategoria="id"
-          chaveRotulo="rotulo"
-          series={[
-            { id: "piso_pct", rotulo: "no piso", cor: "var(--escala-seq-3)" },
-            { id: "teto_pct", rotulo: "no teto horário", cor: "var(--escala-div-neg-2)" },
-          ]}
-          unidade="%"
-          casas={2}
-          selecionado={String(ano)}
-          onSelecionar={(id) => id && definir({ ano: Number(id) })}
-        />
-        <p className="text-sm leading-relaxed text-carvao-muted">
-          Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
-          terminou e não se compara a anos completos sem essa ressalva.
-        </p>
-        {notaPermanencia ? <p className="text-sm leading-relaxed text-carvao-muted">{notaPermanencia}</p> : null}
-      </div>
 
       <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>

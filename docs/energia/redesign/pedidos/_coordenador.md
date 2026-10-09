@@ -30,6 +30,8 @@ Itens achados pelas avaliações independentes iniciais e pelos executores que n
 | S11 | Dica do `Termo` trazia só a definição literal da fonte | Com `emPalavrasSimples`, a dica mostra a frase em palavras simples e depois "Na fonte: ..." | feito |
 | S12 | Rótulo "Mapa" e "Mapa do observatório" para a porta de entrada; a palavra "agora" nos resumos do menu | `navegacao.ts`: "Início" nos dois lugares e resumos sem "agora" | feito |
 | S13 | Verbete DEC não dizia que o divulgado é o apurado | `conceitos-qualidade.ts`: limitação sobre expurgos, sem número, com fatos que a página de Qualidade mostra com fonte | feito |
+| S14 | Faixa de abas (`NavegacaoLocal` e `.nav-faixa`) em 390 px ocupava uma aba por linha: 173 px para quatro abas e 216 px para cinco, acima do título, porque duas metades de linha mais o `gap-x-6` passam de 100% | `globals.css`: `ol.nav-faixa { column-gap: 0.25rem }` abaixo de 640 px; duas abas por linha (87 px para quatro, 132 px para cinco) | feito |
+| S15 | `PequenosMultiplos`: legenda com uma entrada por painel quando cada painel usa id de série próprio; bloco vazio na última linha com número ímpar de painéis | Legenda por rótulo e traço (amostra neutra e a linha "A cor identifica o painel" quando a cor muda entre painéis); linhas finas da grade por borda de célula, sem fundo entre as células | feito |
 | S6 | Cores diferentes para a mesma entidade entre gráficos da mesma página | Regra no guia dos executores (mesma cor por entidade); verificação na reavaliação | em curso |
 
 ## Arquivos sem uso para apagar no fim (com o servidor parado)

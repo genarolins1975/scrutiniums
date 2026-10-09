@@ -295,6 +295,9 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
   .nav-faixa-barra > li { flex: 1 1 calc(50% - 0.25rem); min-width: 0; }
   .nav-faixa a,
   .nav-faixa-barra a { width: 100%; justify-content: center; text-align: center; }
+  /* Duas metades de linha mais o espaço de 24 px entre colunas (gap-x-6) passavam de 100%: cada aba caía numa linha própria
+     (173 px para quatro abas, 216 px para cinco, acima do título). Com 4 px entre colunas as abas voltam a ficar duas por linha. */
+  ol.nav-faixa { column-gap: 0.25rem; }
 }
 @media (max-width: 47.99rem) {
   #modulos-energia { flex-wrap: wrap; overflow: visible; -webkit-mask-image: none; mask-image: none; }

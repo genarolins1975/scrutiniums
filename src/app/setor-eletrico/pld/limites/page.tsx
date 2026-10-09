@@ -133,7 +133,7 @@ export default function PldLimitesPage() {
               <PainelEvidencia
                 id="p010"
                 pergunta="Horas no piso e no teto horário, ano a ano"
-                subtitulo="Horas no piso e no teto horário, dias com média no teto estrutural · horas e % das horas"
+                subtitulo="Permanência do PLD nos limites do ano · horas e % das horas"
                 porQueImporta={
                   <>
                     No piso e nos tetos, o PLD deixa de acompanhar o custo e passa a ser o limite do ato. Saber quanto tempo o preço passou em cada limite muda a leitura de médias,

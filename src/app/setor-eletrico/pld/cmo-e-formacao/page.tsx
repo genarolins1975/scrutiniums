@@ -187,7 +187,7 @@ export default function PldCmoPage() {
             <PainelEvidencia
               id="p009"
               pergunta="Os três valores na mesma semana operativa"
-              subtitulo="CMO semanal do DECOMP, CMO do DESSEM e PLD na mesma semana operativa e na mesma hora · R$/MWh"
+              subtitulo="CMO do DECOMP, CMO do DESSEM e PLD, por semana e por hora · R$/MWh"
               porQueImporta={
                 <>
                   Pela norma, o PLD tem como base o custo marginal de operação e é limitado por piso e tetos. Ver o quanto o PLD se afasta do CMO publicado pelo ONS, no mesmo

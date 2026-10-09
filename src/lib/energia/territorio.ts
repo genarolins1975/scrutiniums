@@ -99,6 +99,11 @@ export const ROTULO_ESTADO_SM: Record<EstadoSubmercadoMunicipio, string> = {
   fora_do_sin: "fora do SIN (submercado não se aplica)",
 };
 
+/** Pertença nas tabelas: só a exceção é escrita por extenso; o caso comum (provado) vira "sem ressalva", para a coluna não repetir a mesma frase em quase toda linha. */
+export function estadoSubmercadoNaTabela(e: EstadoSubmercadoMunicipio): string {
+  return e === "provado" ? "sem ressalva" : ROTULO_ESTADO_SM[e];
+}
+
 export const ROTULO_VINCULO: Record<EstadoVinculo, string> = {
   1: "confirmado",
   0: "sem confirmação",
@@ -555,7 +560,7 @@ export function linhaUf(u: UfTerritorio, separacao?: UsinasDaUf | null): LinhaUf
     codigo: u.codigo,
     subsistema: u.subsistema,
     submercado: u.subsistema ? NOME_SUBMERCADO[u.subsistema] : "sem submercado",
-    estado: ROTULO_ESTADO_SM[u.estado_subsistema],
+    estado: estadoSubmercadoNaTabela(u.estado_subsistema),
     areas: textoAreasCarga(u.areas_carga),
     municipios: u.municipios,
     fora_do_sin: u.municipios_fora_do_sin,
@@ -793,7 +798,7 @@ export function linhaMunicipio(m: MunicipioT, idx: IndiceDistribuidoras): LinhaM
     municipio: m.nome,
     uf: m.uf,
     submercado: textoSubmercadoMunicipio(m),
-    estado_sm: m.sm_estado ? ROTULO_ESTADO_SM[m.sm_estado] : "sem estado",
+    estado_sm: m.sm_estado ? estadoSubmercadoNaTabela(m.sm_estado) : "sem estado",
     distribuidoras: textoDistribuidoras(m, idx),
     situacao: ROTULO_SITUACAO[situacaoVinculo(m)],
     conjuntos: m.conj.length,
@@ -834,9 +839,9 @@ export type DefinicaoMedida = {
 
 export const MEDIDA: Record<MedidaMunicipio, DefinicaoMedida> = {
   mmgd_w_hab: { rotulo: "MMGD por habitante", indicador: "mun_mmgd_w_hab", unidade: "W/hab", casas: 1, nota: "Sem população estimada, a razão fica sem dado (nunca zero)." },
-  mmgd_kw: { rotulo: "Potência de MMGD", indicador: "mun_mmgd_kw", unidade: "kW", casas: 0 },
-  mmgd_un: { rotulo: "Unidades de MMGD", indicador: "mun_mmgd_unidades", unidade: "unidades", casas: 0 },
-  tsee_faturas: { rotulo: "Faturas com Tarifa Social", indicador: "mun_tsee_faturas", unidade: "faturas no mês", casas: 0 },
+  mmgd_kw: { rotulo: "Potência de MMGD", indicador: "mun_mmgd_kw", unidade: "kW", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
+  mmgd_un: { rotulo: "Unidades de MMGD", indicador: "mun_mmgd_unidades", unidade: "unidades", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
+  tsee_faturas: { rotulo: "Faturas com Tarifa Social", indicador: "mun_tsee_faturas", unidade: "faturas no mês", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
   tsee_proxy_pct: {
     rotulo: "Tarifa Social por família do CadÚnico (proxy)",
     indicador: "mun_tsee_proxy",
@@ -845,9 +850,9 @@ export const MEDIDA: Record<MedidaMunicipio, DefinicaoMedida> = {
     nota: "Proxy, não cobertura: faturas com desconto divididas por famílias de baixa renda do Cadastro Único. Município com menos de 50 famílias no denominador tem razão instável (coluna própria na tabela).",
   },
   lpt_dom: { rotulo: "Luz para Todos (domicílios)", indicador: "mun_lpt", unidade: "domicílios", casas: 0, nota: "Município sem linha no arquivo do programa fica sem dado, não zero." },
-  usi_op_n: { rotulo: "Usinas em operação só no município", indicador: "mun_usinas_operacao", unidade: "usinas", casas: 0, cortes: [1, 2, 5, 10] },
-  usi_op_mw: { rotulo: "Potência em operação só no município", indicador: "mun_usinas_operacao", unidade: "MW", casas: 1, cortes: [1, 10, 100, 1000] },
-  usi_reg_n: { rotulo: "Registros de até 10 kW", indicador: "mun_registros_10kw", unidade: "registros", casas: 0, cortes: [1, 10, 100, 1000] },
+  usi_op_n: { rotulo: "Usinas em operação só no município", indicador: "mun_usinas_operacao", unidade: "usinas", casas: 0, cortes: [1, 2, 5, 10], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
+  usi_op_mw: { rotulo: "Potência em operação só no município", indicador: "mun_usinas_operacao", unidade: "MW", casas: 1, cortes: [1, 10, 100, 1000], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
+  usi_reg_n: { rotulo: "Registros de até 10 kW", indicador: "mun_registros_10kw", unidade: "registros", casas: 0, cortes: [1, 10, 100, 1000], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
   isol_n: { rotulo: "Localidades isoladas", indicador: "mun_isolados", unidade: "localidades", casas: 0, cortes: [1, 2, 4] },
 };
 
@@ -1205,7 +1210,7 @@ export const COLUNAS_UFS_SUBMERCADO: ColunaTabela[] = [
   { id: "uf", rotulo: "UF", tipo: "texto" },
   { id: "nome", rotulo: "Nome", tipo: "texto" },
   { id: "submercado", rotulo: "Submercado (cor no mapa)", tipo: "texto", categorica: true },
-  { id: "estado", rotulo: "Pertença", tipo: "texto", categorica: true },
+  { id: "estado", rotulo: "Pertença ao submercado (só a ressalva)", tipo: "texto", categorica: true },
   { id: "areas", rotulo: "Áreas de carga do ONS", tipo: "texto" },
   { id: "municipios", rotulo: "Municípios", tipo: "numero", casas: 0 },
   { id: "fora_do_sin", rotulo: "Municípios fora do SIN", tipo: "numero", casas: 0 },

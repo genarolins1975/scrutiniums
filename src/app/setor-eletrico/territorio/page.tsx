@@ -17,6 +17,7 @@ import {
   motivoLegivel,
   ID_PAINEL,
   NOME_SUBMERCADO,
+  ROTULO_ESTADO_SM,
   dadosExplorador,
   distribuidorasSemArea,
   inteiro,
@@ -135,7 +136,7 @@ export default function TerritorioPage() {
               comoInterpretar={
                 <>
                   Escolha uma camada: submercado (cor da UF), distribuidoras (municípios inteiros da relação oficial), municípios (uma medida publicada por município) ou usinas
-                  (pontos do SIGA). A ficha diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência
+                  (pontos do SIGA, o Sistema de Informações de Geração da ANEEL). A ficha diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência
                   válida; onde não há, a página diz por quê.
                 </>
               }
@@ -158,7 +159,7 @@ export default function TerritorioPage() {
                     oQueMudou={textoAtualidade(g)}
                     comoInterpretar={
                       <>
-                        Escolha uma camada: submercado (cor da UF), distribuidoras (municípios inteiros da relação oficial), municípios (uma medida publicada por município) ou usinas (pontos do SIGA). A
+                        Escolha uma camada: submercado (cor da UF), distribuidoras (municípios inteiros da relação oficial), municípios (uma medida publicada por município) ou usinas (pontos do SIGA, o Sistema de Informações de Geração da ANEEL). A
                         ficha diz de quem é cada valor. Ao trocar de camada, a escolha continua só onde há correspondência válida; onde não há, a página diz por quê.
                       </>
                     }
@@ -333,7 +334,7 @@ export default function TerritorioPage() {
                       g.areas_carga.mapeamento_epe[x.uf] ?? "sem registro",
                       g.areas_carga.mapeamento_agua[x.uf] ?? "sem registro",
                       g.areas_carga.mapeamento_carga[x.uf] ?? "sem registro",
-                      x.estado_subsistema.replace(/_/g, " "),
+                      ROTULO_ESTADO_SM[x.estado_subsistema],
                     ])}
                   />
                   {g.areas_carga.epe && (

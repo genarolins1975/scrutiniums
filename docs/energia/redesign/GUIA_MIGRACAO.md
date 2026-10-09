@@ -16,6 +16,7 @@ O commit que traz o sistema e a página de Água e clima é a referência. Estud
 2. Não rode `next build`, `next dev` nem `git commit`, `checkout`, `stash`, `reset` ou `push`. O servidor de desenvolvimento já está no ar em `http://localhost:3200` e compila a rota na primeira visita. Não toque em `.next`, `.next-dev`, `next.config.mjs` nem `tsconfig.json`.
 3. Não altere gold, pipeline, coleta, denominadores, elegibilidade nem a metodologia para resolver diferença visual. Pode criar seletores novos em `src/lib/energia/<módulo>.ts` quando a faixa de métricas ou uma frase precisar de um valor que já existe na gold; o seletor serve ao gráfico, à tabela e à exportação ao mesmo tempo. Erro material encontrado: pare, registre no relatório com evidência e não corrija em silêncio.
 4. Nenhuma dependência nova. Nenhuma biblioteca de gráficos.
+   O `tsc` do projeto usa o alvo padrão (ES5, sem `target` no `tsconfig.json`) e o `next build` checa também `src/tests`: não use a flag `u` ou `s` em expressão regular (`\p{L}`, ponto que atravessa linha; use `[A-Za-zÀ-ÿ]` e `[\s\S]`), nem `for (const [k, v] of mapa)` ou espalhamento de `Map` e `Set` (use `Array.from(mapa)` e `.forEach`). Antes de devolver, `flock -w 900 /tmp/energia-pesado.lock npx tsc --noEmit -p tsconfig.json 2>&1 | grep -E "arquivo-da-sua-familia"` não pode listar nada seu.
 5. Nenhum número da galeria de referência vai para o código: tudo vem dos contratos reais.
 
 ## Preservação (contrato de ouro)

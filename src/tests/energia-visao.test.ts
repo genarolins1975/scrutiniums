@@ -340,7 +340,8 @@ describe("P005: recorte, séries, posição e leitura dos determinantes", () => 
       }
       const s = seriesDeterminante(p);
       expect(s.length).toBeGreaterThanOrEqual(p.colunas.length);
-      for (const x of s) expect(x.cor).toMatch(/^var\(--/);
+      // só tokens do domínio: direto (var) ou misturados com preto para passar de 3:1 de contraste (o verde do Sul)
+      for (const x of s) expect(x.cor).toMatch(/^(var\(--[a-z0-9-]+\)|color-mix\(in srgb, var\(--[a-z0-9-]+\) \d+%, #000\))$/);
     }
   });
   it("a posição frente à referência usa a linha da data de referência do painel", () => {

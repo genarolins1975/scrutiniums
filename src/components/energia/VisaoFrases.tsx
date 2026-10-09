@@ -30,6 +30,10 @@ export function VisaoFrases({
   marcas?: Partial<Record<IdFrase, readonly MarcaDeRegra[]>>;
 }) {
   return (
+    <>
+    <p className="mb-2 text-xs leading-relaxed text-carvao-muted" data-termos-frases="">
+      p.p. quer dizer pontos percentuais; MWmed, megawatt médio.
+    </p>
     <ol className="divide-y divide-linha border-y border-linha" aria-label="Fatos do sistema, um por indicador">
       {frases.map((f, i) => {
         const componentes = textoComponentesFrase(f);
@@ -89,6 +93,7 @@ export function VisaoFrases({
         );
       })}
     </ol>
+    </>
   );
 }
 

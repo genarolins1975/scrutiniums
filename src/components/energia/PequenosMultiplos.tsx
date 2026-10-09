@@ -29,7 +29,11 @@ import { dominiosPaineis, formatarX, indiceDoValorX, painelSemDado, type EscalaP
  *   "sem dado no período", nunca uma linha em zero.
  * - Responsiva: uma coluna no celular, duas a partir de 640 px e o número
  *   pedido a partir de 1024 px. Altura fixa por painel (sem salto de layout) e
- *   largura padrão de servidor, como GraficoLinhas.
+ *   largura padrão de servidor, como GraficoLinhas. As linhas finas da grade
+ *   são bordas das células, não o fundo que aparece entre elas: com número
+ *   ímpar de painéis, o espaço que sobra na última linha fica vazio, sem bloco.
+ * - Legenda: uma entrada por rótulo e traço, mesmo quando cada painel usa um
+ *   id de série próprio; se a cor muda entre painéis, a amostra é neutra.
  * - Tabela equivalente com todos os painéis, recolhida e montada ao abrir.
  */
 export type PainelMultiplo = {
@@ -106,6 +110,17 @@ export function PequenosMultiplos({
     { escala, zero: zeroNoEixo },
   );
   const multiSeries = paineis.some((p) => seriesDe(p).length > 1);
+  // Legenda: uma entrada por rótulo e traço. Se a mesma série muda de cor entre painéis (cor da entidade), a amostra da legenda fica
+  // neutra e uma linha diz que a cor distingue o painel; o título de cada painel nomeia a entidade.
+  const grupos = new Map<string, { rotulo: string; cor: string; tracejada: boolean; mista: boolean }>();
+  for (const s of paineis.flatMap((p) => seriesDe(p))) {
+    const chave = `${s.rotulo}|${s.tracejada ? "t" : "c"}`;
+    const g = grupos.get(chave);
+    if (!g) grupos.set(chave, { rotulo: s.rotulo, cor: s.cor, tracejada: !!s.tracejada, mista: false });
+    else if (g.cor !== s.cor) g.mista = true;
+  }
+  const entradasLegenda = Array.from(grupos, ([chave, g]) => ({ chave, rotulo: g.rotulo, tracejada: g.tracejada, cor: g.mista ? "var(--cor-carvao)" : g.cor, mista: g.mista }));
+  const corPorPainel = entradasLegenda.some((e) => e.mista);
 
   const sinc = useCursorSincronizado(sincronizarCursor ? (grupoCursor ?? chaveX) : null);
   const publicar = sinc?.publicar;
@@ -183,14 +198,15 @@ export function PequenosMultiplos({
       )}
       <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
         {multiSeries &&
-          Array.from(new Map(paineis.flatMap((p) => seriesDe(p)).map((s) => [s.id, s])).values()).map((s) => (
-            <li key={s.id} className="flex items-center gap-1.5">
+          entradasLegenda.map((e) => (
+            <li key={e.chave} className="flex items-center gap-1.5">
               <svg width="18" height="8" aria-hidden="true">
-                <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
+                <line x1="0" y1="4" x2="18" y2="4" stroke={e.cor} strokeWidth="2.5" strokeDasharray={e.tracejada ? "4 3" : undefined} />
               </svg>
-              {s.rotulo}
+              {e.rotulo}
             </li>
           ))}
+        {multiSeries && corPorPainel && <li className="text-mineral">A cor identifica o painel</li>}
         <li className="text-mineral">Valores em {unidade}</li>
         <li className="text-mineral">Lacuna na linha: sem dado</li>
       </ul>
@@ -198,7 +214,7 @@ export function PequenosMultiplos({
         {instrucoes}
       </p>
       <ul
-        className={`grid grid-cols-1 gap-px border border-linha bg-linha ${COLUNAS[colunas]}`}
+        className={`grid grid-cols-1 border-l border-t border-linha ${COLUNAS[colunas]}`}
         aria-label={titulo}
         onBlur={(e) => {
           // o foco saiu da grade (não apenas de um painel para outro): o cursor some
@@ -209,7 +225,7 @@ export function PequenosMultiplos({
         }}
       >
         {paineis.map((p, k) => (
-          <li key={p.id} className="min-w-0 bg-superficie" data-painel={p.id}>
+          <li key={p.id} className="min-w-0 border-b border-r border-linha bg-superficie" data-painel={p.id}>
             <Painel
               painel={p}
               series={seriesDe(p)}

@@ -1045,6 +1045,24 @@ describe("páginas filhas do PLD no sistema editorial", () => {
     expect(h).toContain("Teto horário <span class=\"text-xs\">(cada hora)</span>");
   });
 
+  it("a resposta e a figura principal abrem o painel e a faixa de medidas vem depois da figura, para o começo dela caber na primeira tela", () => {
+    const primeiraFigura: Record<keyof typeof paginas, string> = {
+      p009: "CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa",
+      p010: 'data-grafico="barras"',
+      p011: 'id="sazonalidade"',
+      p012: 'data-grafico="barras"',
+    };
+    for (const id of Object.keys(paginas) as (keyof typeof paginas)[]) {
+      const h = html[id];
+      const resposta = h.indexOf(`data-resposta="${id}"`);
+      const figura = h.indexOf(primeiraFigura[id]);
+      const faixa = h.indexOf("data-faixa-metricas");
+      expect(resposta, id).toBeGreaterThan(-1);
+      expect(figura, `${id}: figura`).toBeGreaterThan(resposta);
+      expect(faixa, `${id}: faixa depois da figura`).toBeGreaterThan(figura);
+    }
+  });
+
   it("nenhuma página filha repete a ressalva antiga de que os limites não foram auditados nesta fase", () => {
     for (const [id, h] of Object.entries(html)) expect(h, id).not.toMatch(/não (foram|foi) auditados? nesta fase/);
   });

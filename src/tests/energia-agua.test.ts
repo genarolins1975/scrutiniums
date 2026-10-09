@@ -1376,11 +1376,11 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     // a explicação da janela preliminar traz o último mês completo só com produto final, para ver uma anomalia sem dia preliminar
     const padrao = C.precipitacao_bacias.find((x) => x.bacia === baciaPadraoChuva(G.armazenamento.bacias, C.precipitacao_bacias))!;
     const ultimoChuva = textoUltimoMesFinalChuva(padrao, C.base_climatologica);
-    expect(ultimoChuva).toMatch(/^O último mês completo só com produto final é \p{L}+ de \d{4}: [\d.,]+ mm/u);
+    expect(ultimoChuva).toMatch(/^O último mês completo só com produto final é [A-Za-zÀ-ÿ]+ de \d{4}: [\d.,]+ mm/);
     expect(ultimoChuva).toContain(`média do mês em ${periodoBase(C.base_climatologica)}`);
     expect(textoDe(h)).toContain(ultimoChuva);
     const ultimoTemp = textoUltimoMesFinalTemperatura(t, C.corte_merra2, C.base_climatologica);
-    expect(ultimoTemp).toMatch(/^O último mês completo só com MERRA-2 é \p{L}+ de \d{4}: [\d.,]+ °C/u);
+    expect(ultimoTemp).toMatch(/^O último mês completo só com MERRA-2 é [A-Za-zÀ-ÿ]+ de \d{4}: [\d.,]+ °C/);
     expect(ultimoTemp).toContain(`média do mês em ${periodoBase(C.base_climatologica)}`);
     expect(textoDe(h)).toContain(ultimoTemp);
     // sem nenhum mês completo com o produto final, a frase não aparece

@@ -287,7 +287,7 @@ export default function VisaoGeralEnergia() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo="Carga de energia do SIN"
+                  rotulo="Carga do SIN, em megawatts médios (MWmed)"
                   natureza={pCarga.natureza}
                   valor={pCarga.valor_atual.valor}
                   formato="num"

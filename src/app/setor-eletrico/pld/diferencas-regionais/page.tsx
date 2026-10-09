@@ -91,7 +91,7 @@ export default function PldRegionalPage() {
             <PainelEvidencia
               id="p012"
               pergunta="Horas separadas por par de submercados"
-              subtitulo="Horas com preços separados, diferença entre o maior e o menor PLD e separação por par, na mesma hora · horas, % e R$/MWh"
+              subtitulo="Separação entre os PLD dos submercados na mesma hora · horas, % e R$/MWh"
               porQueImporta={
                 <>
                   Com preços iguais, a energia vale o mesmo em todo o sistema; quando se separam, quem compra e vende em regiões diferentes fica exposto à diferença. Pela norma, o
@@ -107,17 +107,19 @@ export default function PldRegionalPage() {
             >
               <div className="space-y-6">
                 {atual.defasada && <PldAviso tipo="alerta">{atual.texto}</PldAviso>}
-                {passagens.length === 2 && (
-                  <PldAviso>
-                    Por que os preços se separam: o Decreto nº 5.163/2004 manda o cálculo do PLD observar as restrições de transmissão entre submercados (art. 57, § 1º, V) e define os
-                    submercados pela presença e duração de restrições relevantes de transmissão aos fluxos de energia no SIN (art. 57, § 4º).{" "}
-                    <Link href="/setor-eletrico/pld#submercados" className="text-energia-dark underline underline-offset-4">
-                      Ver como a página PLD explica a separação
-                    </Link>
-                    .
-                  </PldAviso>
-                )}
                 <PldRegional
+                  contexto={
+                    passagens.length === 2 ? (
+                      <PldAviso>
+                        Por que os preços se separam: o Decreto nº 5.163/2004 manda o cálculo do PLD observar as restrições de transmissão entre submercados (art. 57, § 1º, V) e define os
+                        submercados pela presença e duração de restrições relevantes de transmissão aos fluxos de energia no SIN (art. 57, § 4º).{" "}
+                        <Link href="/setor-eletrico/pld#submercados" className="text-energia-dark underline underline-offset-4">
+                          Ver como a página PLD explica a separação
+                        </Link>
+                        .
+                      </PldAviso>
+                    ) : null
+                  }
                   r={r}
                   rec={rec}
                   paresPadrao={paresPadrao}

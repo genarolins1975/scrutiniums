@@ -72,6 +72,52 @@ describe("PequenosMultiplos no servidor", () => {
     expect(html({ colunas: 2 })).not.toContain("lg:grid-cols");
   });
 
+  it("linhas finas da grade nas bordas das células: com número ímpar de painéis a célula que sobra não ganha fundo", () => {
+    const tres = html({ paineis: base.paineis.slice(0, 3) });
+    expect(tres).not.toMatch(/<ul class="grid [^"]*bg-linha/);
+    expect(tres).toMatch(/<ul class="grid grid-cols-1 border-l border-t border-linha /);
+    const celulas = tres.match(/<li [^>]*data-painel="[^"]+"/g) ?? [];
+    expect(celulas).toHaveLength(3);
+    for (const c of celulas) expect(c).toContain("border-b border-r border-linha");
+  });
+
+  it("legenda: uma entrada por rótulo e traço, mesmo com id de série próprio por painel", () => {
+    const dd = [
+      { d: "a", m1: 1, p1: 2, m2: 3, p2: 4 },
+      { d: "b", m1: 2, p1: 3, m2: 4, p2: 5 },
+    ];
+    const serie = (id: string, rotulo: string, cor: string, tracejada = false) => ({ id, rotulo, cor, tracejada });
+    const legendaDe = (m: string) => m.match(/<ul class="[^"]*" aria-label="Legenda">([\s\S]*?)<\/ul>/)?.[1] ?? "";
+
+    // cor da entidade diferente entre painéis: duas entradas (traço cheio e tracejado), amostra neutra e aviso de que a cor distingue o painel
+    const porEntidade = html({
+      dados: dd,
+      paineis: [
+        { id: "A", titulo: "Bacia A", series: [serie("m1", "Chuva no mês", "var(--cor-energia)"), serie("p1", "Média do mês", "var(--cor-energia)", true)] },
+        { id: "B", titulo: "Bacia B", series: [serie("m2", "Chuva no mês", "var(--cor-agua)"), serie("p2", "Média do mês", "var(--cor-agua)", true)] },
+      ],
+    });
+    const lg = legendaDe(porEntidade);
+    expect(lg.match(/Chuva no mês/g)).toHaveLength(1);
+    expect(lg.match(/Média do mês/g)).toHaveLength(1);
+    expect(lg).toContain("A cor identifica o painel");
+    expect(lg).toContain('stroke="var(--cor-carvao)"');
+    expect(lg).not.toContain("var(--cor-agua)");
+
+    // mesma cor em todos os painéis: a amostra leva a cor da série e não há aviso
+    const igual = html({
+      dados: dd,
+      paineis: [
+        { id: "A", titulo: "Bacia A", series: [serie("m1", "Chuva no mês", "var(--cor-energia)"), serie("p1", "Média do mês", "var(--cor-energia)", true)] },
+        { id: "B", titulo: "Bacia B", series: [serie("m2", "Chuva no mês", "var(--cor-energia)"), serie("p2", "Média do mês", "var(--cor-energia)", true)] },
+      ],
+    });
+    const li = legendaDe(igual);
+    expect(li.match(/Chuva no mês/g)).toHaveLength(1);
+    expect(li).toContain('stroke="var(--cor-energia)"');
+    expect(li).not.toContain("A cor identifica o painel");
+  });
+
   it("título por painel como cabeçalho, gráfico com role img rotulado pelo título e um só ponto de parada do Tab", () => {
     for (const t of ["Sudeste/Centro-Oeste", "Sul", "Nordeste", "Norte"]) expect(m).toMatch(new RegExp(`<h3 id="[^"]+" class="[^"]*">${t}</h3>`));
     expect(m.match(/role="img"/g)).toHaveLength(4);

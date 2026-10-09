@@ -6,7 +6,6 @@ import { ContaBarrasReais } from "@/components/energia/ContaBarrasReais";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
 import { ContaReajustes } from "@/components/energia/ContaReajustes";
 import { ContaTabelaSobDemanda } from "@/components/energia/ContaTabelaSobDemanda";
-import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";

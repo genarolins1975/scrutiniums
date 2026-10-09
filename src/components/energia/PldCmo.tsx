@@ -43,9 +43,9 @@ import type { BlocoCmoPld, RegimeLimites } from "@/lib/energia/tipos-pld";
  * na mesma escala (nunca dois eixos). Nenhuma diferença é calculada aqui: as da
  * semana de referência vêm prontas da gold, e as horárias por ano também.
  *
- * Ordem da página: resposta e escolha do submercado, faixa de medidas, figura principal
- * (a semana operativa; piso e tetos do ato entram quando algum valor os alcança), recorte, tabela (que segue o intervalo escolhido no
- * gráfico), os quatro submercados da semana lado a lado (`quatroSubmercados`), notas do painel (`notas`) e as duas comparações
+ * Ordem da página: resposta e escolha do submercado, figura principal
+ * (a semana operativa; piso e tetos do ato entram quando algum valor os alcança), faixa de medidas (depois da figura, para que ela apareça
+ * na primeira tela), recorte, tabela (que segue o intervalo escolhido no gráfico), os quatro submercados da semana lado a lado (`quatroSubmercados`), notas do painel (`notas`) e as duas comparações
  * complementares, visíveis em Entender, cada uma com a sua pergunta.
  */
 const ESQUEMA = {
@@ -143,6 +143,42 @@ export function PldCmo({
         </p>
       )}
 
+      <div className="space-y-3">
+        <GraficoLinhas
+          titulo={`CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa, ${NOME_SM[sm]}`}
+          dados={dadosGrafico}
+          chaveX="fim"
+          formatoX="data"
+          series={[
+            { id: "decomp", rotulo: "CMO semanal do DECOMP (ONS)", sigla: "DECOMP", cor: "var(--serie-referencia)", tracejada: true },
+            { id: "dessem", rotulo: "Média do CMO do DESSEM na semana (ONS)", sigla: "DESSEM", cor: "var(--serie-hidraulica)" },
+            { id: "pld", rotulo: "Média do PLD na semana (CCEE)", sigla: "PLD", cor: COR_SM[sm], espessura: 2.5 },
+            ...(comLimites
+              ? [
+                  { id: "teto_horario", rotulo: "Teto horário do PLD no ato vigente", sigla: "teto horário", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                  { id: "teto_estrutural", rotulo: "Teto estrutural do PLD no ato vigente", sigla: "teto estrutural", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                  { id: "piso", rotulo: "Piso do PLD no ato vigente", sigla: "piso", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                ]
+              : []),
+          ]}
+          unidade="R$/MWh"
+          casas={2}
+          zeroNoEixo
+          marcos={marcos}
+          zoom
+          intervalo={intervalo}
+          onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
+          legendaInterativa
+        />
+        <p className="text-xs leading-relaxed text-carvao-muted">
+          Cada ponto é uma semana operativa, marcada pela sexta-feira que a encerra (a data que o ONS publica). Semana com meia hora ou hora ausente fica sem média, e a linha
+          tem uma lacuna.
+          {comLimites && " As linhas tracejadas de cima e de baixo são o piso e os tetos do PLD no ato vigente em cada semana; elas aparecem quando algum valor do gráfico alcança o teto estrutural."}
+        </p>
+        {notaMarcos && <p className="text-xs leading-relaxed text-carvao-muted">{notaMarcos}</p>}
+        {avisoGrafico}
+      </div>
+
       <FaixaMetricas colunas={4} rotulo={`Medidas da semana de referência, ${NOME_SM[sm]}`}>
         <Numero
           variante="faixa"
@@ -195,42 +231,6 @@ export function PldCmo({
           nota="Diferença entre produtos diferentes no mesmo intervalo; não mede erro de nenhum deles."
         />
       </FaixaMetricas>
-
-      <div className="space-y-3">
-        <GraficoLinhas
-          titulo={`CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa, ${NOME_SM[sm]}`}
-          dados={dadosGrafico}
-          chaveX="fim"
-          formatoX="data"
-          series={[
-            { id: "decomp", rotulo: "CMO semanal do DECOMP (ONS)", sigla: "DECOMP", cor: "var(--serie-referencia)", tracejada: true },
-            { id: "dessem", rotulo: "Média do CMO do DESSEM na semana (ONS)", sigla: "DESSEM", cor: "var(--serie-hidraulica)" },
-            { id: "pld", rotulo: "Média do PLD na semana (CCEE)", sigla: "PLD", cor: COR_SM[sm], espessura: 2.5 },
-            ...(comLimites
-              ? [
-                  { id: "teto_horario", rotulo: "Teto horário do PLD no ato vigente", sigla: "teto horário", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
-                  { id: "teto_estrutural", rotulo: "Teto estrutural do PLD no ato vigente", sigla: "teto estrutural", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
-                  { id: "piso", rotulo: "Piso do PLD no ato vigente", sigla: "piso", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
-                ]
-              : []),
-          ]}
-          unidade="R$/MWh"
-          casas={2}
-          zeroNoEixo
-          marcos={marcos}
-          zoom
-          intervalo={intervalo}
-          onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
-          legendaInterativa
-        />
-        <p className="text-xs leading-relaxed text-carvao-muted">
-          Cada ponto é uma semana operativa, marcada pela sexta-feira que a encerra (a data que o ONS publica). Semana com meia hora ou hora ausente fica sem média, e a linha
-          tem uma lacuna.
-          {comLimites && " As linhas tracejadas de cima e de baixo são o piso e os tetos do PLD no ato vigente em cada semana; elas aparecem quando algum valor do gráfico alcança o teto estrutural."}
-        </p>
-        {notaMarcos && <p className="text-xs leading-relaxed text-carvao-muted">{notaMarcos}</p>}
-        {avisoGrafico}
-      </div>
 
       <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>

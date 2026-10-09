@@ -66,8 +66,9 @@ import type { BlocoRegional, Par, PldHorarioRecenteArquivo } from "@/lib/energia
  * leitura é descritiva (sem os limites de intercâmbio, nenhuma hora é chamada de
  * congestionada).
  *
- * Ordem da página: resposta e escolha de período e par, faixa de medidas, figura principal
- * (horas separadas por par e a matriz de diferenças, as duas no período escolhido), recorte, tabelas, notas do painel e o perfil
+ * Ordem da página: resposta e escolha de período e par, figura principal
+ * (horas separadas por par e a matriz de diferenças, as duas no período escolhido), faixa de medidas (depois
+ * da figura, para que ela apareça na primeira tela), recorte, tabelas, notas do painel e o perfil
  * horário da separação (só dos últimos 12 meses, e diz isso), visível em Entender. O preço e o fluxo na mesma hora e o sentido do
  * fluxo nas horas separadas ficam em Analisar.
  */
@@ -84,6 +85,7 @@ export function PldRegional({
   versao,
   horasAcimaLimiarPaginaPld,
   quatroNoPiso,
+  contexto,
   notas,
 }: {
   r: BlocoRegional;
@@ -98,6 +100,8 @@ export function PldRegional({
   horasAcimaLimiarPaginaPld?: number | null;
   /** Horas com os quatro submercados juntos no piso, por ano (gold de limites): em ano de piso, a separação cai por regra. */
   quatroNoPiso?: Record<string, QuatroNoPiso>;
+  /** Base normativa da separação (aviso do servidor), depois da figura e das medidas, para a figura abrir a página. */
+  contexto?: ReactNode;
   /** Notas do painel (NotasDoPainel), logo depois da figura principal e das tabelas. */
   notas?: ReactNode;
 }) {
@@ -157,6 +161,56 @@ export function PldRegional({
         </div>
       </div>
 
+      {avisoQuatroNoPiso && (
+        <p className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-texto="quatro-no-piso">
+          {avisoQuatroNoPiso}{" "}
+          <Link href={`${rotaPainel("p010")}#empates-piso`} className="text-energia-dark underline underline-offset-4">
+            Ver os empates no piso
+          </Link>
+          .
+        </p>
+      )}
+
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="min-w-0 space-y-3">
+          <GraficoBarras
+            titulo={`Horas separadas por par de submercados, ${rotuloPer} (%)`}
+            dados={barras}
+            chaveCategoria="id"
+            chaveRotulo="rotulo"
+            series={[{ id: "frac", rotulo: "horas separadas", cor: "var(--cor-energia)" }]}
+            unidade="%"
+            casas={1}
+            orientacao="horizontal"
+            selecionado={par}
+            onSelecionar={(id) => id && definir({ par: id as Par })}
+          />
+        </div>
+        <div className="min-w-0 space-y-3">
+          <PldEscolha
+            legenda={`Matriz do período: ${rotuloPer}`}
+            opcoes={[
+              { id: "frac_separadas" as MedidaMatriz, rotulo: "Horas separadas (%)" },
+              { id: "dif_media" as MedidaMatriz, rotulo: "Diferença média (R$/MWh)" },
+            ]}
+            valor={mat}
+            onEscolher={(m) => definir({ mat: m })}
+          />
+          <MapaCalor
+            titulo={mat === "dif_media" ? `Média de PLD da linha menos PLD da coluna, mesma hora, ${rotuloPer}` : `Horas em que o par se separou, ${rotuloPer}`}
+            linhas={matriz.eixo}
+            colunas={matriz.eixo}
+            nomeLinhas="Linha"
+            nomeColunas="Coluna"
+            valores={matriz.valores}
+            escala={mat === "dif_media" ? ESCALA_DIFERENCA : ESCALA_FRACAO}
+            unidade={mat === "dif_media" ? "R$/MWh" : "%"}
+            casas={mat === "dif_media" ? 2 : 1}
+            nota={`Diagonal com borda tracejada: um submercado com ele mesmo não se aplica. Na diferença, positivo é a linha mais cara que a coluna.${extremos ? ` ${extremos}` : ""}`}
+          />
+        </div>
+      </div>
+
       <FaixaMetricas colunas={4} rotulo={`Medidas de separação entre submercados, ${rotuloPer}`}>
         <Numero
           variante="faixa"
@@ -210,55 +264,7 @@ export function PldRegional({
         />
       </FaixaMetricas>
 
-      {avisoQuatroNoPiso && (
-        <p className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-texto="quatro-no-piso">
-          {avisoQuatroNoPiso}{" "}
-          <Link href={`${rotaPainel("p010")}#empates-piso`} className="text-energia-dark underline underline-offset-4">
-            Ver os empates no piso
-          </Link>
-          .
-        </p>
-      )}
-
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <div className="min-w-0 space-y-3">
-          <GraficoBarras
-            titulo={`Horas separadas por par de submercados, ${rotuloPer} (%)`}
-            dados={barras}
-            chaveCategoria="id"
-            chaveRotulo="rotulo"
-            series={[{ id: "frac", rotulo: "horas separadas", cor: "var(--cor-energia)" }]}
-            unidade="%"
-            casas={1}
-            orientacao="horizontal"
-            selecionado={par}
-            onSelecionar={(id) => id && definir({ par: id as Par })}
-          />
-        </div>
-        <div className="min-w-0 space-y-3">
-          <PldEscolha
-            legenda={`Matriz do período: ${rotuloPer}`}
-            opcoes={[
-              { id: "frac_separadas" as MedidaMatriz, rotulo: "Horas separadas (%)" },
-              { id: "dif_media" as MedidaMatriz, rotulo: "Diferença média (R$/MWh)" },
-            ]}
-            valor={mat}
-            onEscolher={(m) => definir({ mat: m })}
-          />
-          <MapaCalor
-            titulo={mat === "dif_media" ? `Média de PLD da linha menos PLD da coluna, mesma hora, ${rotuloPer}` : `Horas em que o par se separou, ${rotuloPer}`}
-            linhas={matriz.eixo}
-            colunas={matriz.eixo}
-            nomeLinhas="Linha"
-            nomeColunas="Coluna"
-            valores={matriz.valores}
-            escala={mat === "dif_media" ? ESCALA_DIFERENCA : ESCALA_FRACAO}
-            unidade={mat === "dif_media" ? "R$/MWh" : "%"}
-            casas={mat === "dif_media" ? 2 : 1}
-            nota={`Diagonal com borda tracejada: um submercado com ele mesmo não se aplica. Na diferença, positivo é a linha mais cara que a coluna.${extremos ? ` ${extremos}` : ""}`}
-          />
-        </div>
-      </div>
+      {contexto}
 
       <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>

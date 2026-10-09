@@ -706,10 +706,10 @@ describe("r10: ficha com lista de definição válida, rótulo e valor empilhado
   /** Filhos diretos de cada <dl>: o axe exige div (com dt e dd), dt ou dd, e nunca p. */
   function filhosDiretosDosDl(html: string): string[][] {
     const out: string[][] = [];
-    for (const m of html.matchAll(/<dl[^>]*>([\s\S]*?)<\/dl>/g)) {
+    for (const m of Array.from(html.matchAll(/<dl[^>]*>([\s\S]*?)<\/dl>/g))) {
       const filhos: string[] = [];
       let prof = 0;
-      for (const t of m[1].matchAll(/<(\/?)([a-z0-9]+)[^>]*?(\/?)>/gi)) {
+      for (const t of Array.from(m[1].matchAll(/<(\/?)([a-z0-9]+)[^>]*?(\/?)>/gi))) {
         const tag = t[2].toLowerCase();
         if (t[1]) prof--;
         else {
@@ -827,7 +827,7 @@ describe("r10: a página põe a busca e o limite logo abaixo do título", () => 
 
   it("os 5.482 municípios com submercado provado são separados em provados e com prova parcial", () => {
     const e = G.resumo.municipios_por_estado_submercado as Record<string, number>;
-    expect(e.provado + e.provado_com_area_sem_carga).toBe(G.evidencias.municipios_com_submercado.valor_calculo);
+    expect(e.provado + e.provado_com_area_sem_carga).toBe(G.evidencias.municipios_com_submercado!.valor_calculo);
     const texto = h.replace(/<[^>]+>/g, " ");
     expect(texto).toContain(`${num(e.provado, 0)} provados pela carga das áreas do ONS e ${num(e.provado_com_area_sem_carga, 0)} com prova parcial`);
   });

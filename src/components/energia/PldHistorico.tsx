@@ -57,9 +57,10 @@ import type { BlocoHistorico } from "@/lib/energia/tipos-pld";
  * marcados no gráfico e na tabela. A resposta, as medidas da faixa, o gráfico e a tabela
  * leem as mesmas linhas mensais da gold.
  *
- * Ordem da página: resposta e escolha do submercado, faixa de medidas (a média do dia e as três
- * médias do mês, cada uma com o nome e o peso declarados, e a definição de cada régua junto delas),
- * figura principal (a faixa sazonal: a pergunta da página é "está alto para esta época?"), as médias
+ * Ordem da página: resposta e escolha do submercado, figura principal (a faixa sazonal: a pergunta da
+ * página é "está alto para esta época?"), faixa de medidas (a média do dia e as três médias do mês, cada
+ * uma com o nome e o peso declarados, e a definição de cada régua junto delas, logo antes do gráfico das
+ * médias mensais, que é onde as réguas são comparadas), as médias
  * mensais em moeda nominal ou constante, tabela, notas do painel e as outras visões que dão a régua,
  * todas visíveis em Entender com a sua pergunta: distribuição por regime anual de limites, perfil por
  * hora e mês e mapa hora por dia (em tela estreita, por faixa de quatro horas). A comparação entre
@@ -156,6 +157,43 @@ export function PldHistorico({
         </RespostaCurta>
         <PldEscolha legenda="Submercado" opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: CURTO_SM[s], detalhe: NOME_SM[s] }))} valor={sm} onEscolher={(s) => definir({ sm: s })} />
       </div>
+
+      {/* a pergunta da página: onde a média do dia fica entre as médias diárias do mesmo mês nos anos anteriores */}
+      <SecaoDoPainel id="sazonalidade" titulo="Qual é a faixa das médias diárias nesta época do ano, em anos anteriores?">
+        <GraficoLinhas
+          titulo={`Médias diárias do PLD por mês do ano (anos anteriores a ${anoReferencia}) e média mensal de ${anoReferencia}, ${NOME_SM[sm]}`}
+          dados={sazonal}
+          chaveX="mes"
+          formatoX="texto"
+          series={[
+            { id: "p50", rotulo: "Mediana das médias diárias", sigla: "mediana", cor: "var(--serie-referencia)" },
+            { id: "ano", rotulo: `Média mensal de ${anoReferencia} (média das horas)`, sigla: String(anoReferencia), cor: COR_SM[sm], espessura: 2.5 },
+          ]}
+          banda={{ inferior: "p10", superior: "p90", rotulo: "percentil 10 a 90 das médias diárias" }}
+          unidade="R$/MWh"
+          casas={2}
+          zeroNoEixo
+        />
+        <div className="space-y-1.5 text-xs leading-relaxed text-carvao-muted" data-texto="sazonal-nominal">
+          <p>
+            A faixa é a distribuição das médias diárias do mesmo mês nos anos anteriores; a linha de {anoReferencia} é a média do mês inteiro, naturalmente menos dispersa que os
+            dias. {notasRegimes?.[sm] ?? "Os valores são nominais, e cada ano anterior teve piso e tetos próprios."}
+          </p>
+          {inflacao && <p>{inflacao}</p>}
+          <p>A série semanal do PLD de 2001 a 2020, que a CCEE também publica, tem outra granularidade e ainda não está integrada: a referência começa em janeiro de 2021.</p>
+        </div>
+        <TabelaInterativa
+          titulo={`Tabela equivalente: percentis das médias diárias por mês, ${NOME_SM[sm]}`}
+          colunas={COLUNAS_SAZONAL}
+          linhas={sazonalTabela}
+          chaveLinha="id"
+          colunaRotulo="mes"
+          fonte={fonte}
+          versao={versao}
+          nomeArquivo={`pld-sazonal-${sm}`}
+          chaveUrl="saz"
+        />
+      </SecaoDoPainel>
 
       <FaixaMetricas
         colunas={4}
@@ -260,43 +298,6 @@ export function PldHistorico({
           }
         />
       </FaixaMetricas>
-
-      {/* a pergunta da página: onde a média do dia fica entre as médias diárias do mesmo mês nos anos anteriores */}
-      <SecaoDoPainel id="sazonalidade" titulo="Qual é a faixa das médias diárias nesta época do ano, em anos anteriores?">
-        <GraficoLinhas
-          titulo={`Médias diárias do PLD por mês do ano (anos anteriores a ${anoReferencia}) e média mensal de ${anoReferencia}, ${NOME_SM[sm]}`}
-          dados={sazonal}
-          chaveX="mes"
-          formatoX="texto"
-          series={[
-            { id: "p50", rotulo: "Mediana das médias diárias", sigla: "mediana", cor: "var(--serie-referencia)" },
-            { id: "ano", rotulo: `Média mensal de ${anoReferencia} (média das horas)`, sigla: String(anoReferencia), cor: COR_SM[sm], espessura: 2.5 },
-          ]}
-          banda={{ inferior: "p10", superior: "p90", rotulo: "percentil 10 a 90 das médias diárias" }}
-          unidade="R$/MWh"
-          casas={2}
-          zeroNoEixo
-        />
-        <div className="space-y-1.5 text-xs leading-relaxed text-carvao-muted" data-texto="sazonal-nominal">
-          <p>
-            A faixa é a distribuição das médias diárias do mesmo mês nos anos anteriores; a linha de {anoReferencia} é a média do mês inteiro, naturalmente menos dispersa que os
-            dias. {notasRegimes?.[sm] ?? "Os valores são nominais, e cada ano anterior teve piso e tetos próprios."}
-          </p>
-          {inflacao && <p>{inflacao}</p>}
-          <p>A série semanal do PLD de 2001 a 2020, que a CCEE também publica, tem outra granularidade e ainda não está integrada: a referência começa em janeiro de 2021.</p>
-        </div>
-        <TabelaInterativa
-          titulo={`Tabela equivalente: percentis das médias diárias por mês, ${NOME_SM[sm]}`}
-          colunas={COLUNAS_SAZONAL}
-          linhas={sazonalTabela}
-          chaveLinha="id"
-          colunaRotulo="mes"
-          fonte={fonte}
-          versao={versao}
-          nomeArquivo={`pld-sazonal-${sm}`}
-          chaveUrl="saz"
-        />
-      </SecaoDoPainel>
 
       <SecaoDoPainel id="medias-mensais" titulo="Como as três médias do mês evoluíram desde 2021?">
         <div className="space-y-3">
