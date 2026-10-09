@@ -1,0 +1,35 @@
+coluna,descricao
+indicador_id,Identificador do indicador no catálogo do OBEE.
+indicador,Nome do indicador.
+codigo_ibge,Código do município no IBGE (7 dígitos).
+capital,Nome da capital.
+uf,Sigla da unidade da federação.
+periodo_tipo,"O que a coluna 'ano' representa: exercício financeiro, ano do Censo Escolar ou edição bienal."
+ano,"Ano do exercício, do Censo Escolar ou da edição do Ideb e do Saeb."
+etapa,Etapa de ensino do recorte; vazio quando o indicador não varia por etapa.
+componente,"Base do valor: nominal (reais correntes), real_2025 (reais de 2025 pelo IPCA) ou componente do indicador (por exemplo, disciplina do Saeb)."
+valor,Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.
+unidade,Unidade do valor.
+base_monetaria,"Base monetária dos valores em reais, quando se aplica."
+universo,O que o indicador cobre e o que o numerador e o denominador incluem.
+status,"Estado do dado: OBSERVADO, NAO_DIVULGADO, NAO_APLICAVEL, AUSENTE_NA_COLETA, INCONSISTENTE etc."
+elegivel_comparacao,"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora."
+situacao_conferencia,"Resultado da conferência da despesa entre DCA (Declaração de Contas Anuais), RREO (Relatório Resumido da Execução Orçamentária) e MSC (Matriz de Saldos Contábeis)."
+motivo_inelegibilidade,"Por que o valor oficial não entra na comparação, quando é o caso."
+nota,Nota ou ressalva do dado nesta capital e período.
+nota_material,'true' quando a nota é uma restrição que precisa aparecer junto do dado.
+participacao_pct,"Participação da parte no total, em %, nos indicadores de composição."
+fonte,Fontes combinadas no valor.
+registro,"Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido."
+versao_metodologica,Versão metodológica do indicador.
+dados_gerados_em,Data e hora de geração dos dados publicados.
+hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+numerador,"Descrição do numerador, nos indicadores em razão."
+denominador,"Descrição do denominador, nos indicadores em razão."
+referencia_numerador,Referência temporal e de fonte do numerador.
+referencia_denominador,Referência temporal e de fonte do denominador.
+tipo_populacao,Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.
+data_referencia,Data de referência da população.
+quebra_serie,'true' quando o valor usa base diferente da do ano anterior; a variação entre os dois lados não é comparável.
+(leia antes de usar),"Os valores descrevem gasto, atendimento e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
+(como citar),"Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."

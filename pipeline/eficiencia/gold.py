@@ -147,6 +147,7 @@ def trilhas(obs):
             num = ponte["ad_demais_elementos"] + ponte["ad_beneficiario_indeterminado"]
             out.append({"indicador": "edu.despesa.aplicacao_direta_por_matricula", "ente": cod, "nome": nomes[cod], "ano": 2025, "passos": [
                 f"Total da função 12 na DCA 2025: {P.brl(ponte['dca_total'])}; as intraorçamentárias ({P.brl(ponte.get('intra', 0))}) ficam fora do total.",
+                f"Consulta à API do Siconfi (MSC, saldo final de dezembro): {m['siconfi_msc_funcao12']['url'].replace('<código IBGE>', str(cod)).replace('<ano>', '2025')}.",
                 f"MSC de dezembro de 2025, função 12, contas 6.2.2.1.3.03, .04 e .07 (saldo líquido D e C): aplicação direta com beneficiário não indeterminado, "
                 f"{P.brl(ponte['ad_demais_elementos'])}; com beneficiário indeterminado, {P.brl(ponte['ad_beneficiario_indeterminado'])}.",
                 f"Numerador (soma das duas parcelas): {P.brl(num)}.",
@@ -265,6 +266,57 @@ CAMPOS_CSV = [
     "numerador", "denominador", "referencia_numerador", "referencia_denominador", "tipo_populacao", "data_referencia",
     "quebra_serie",
 ]
+
+
+DESCRICAO_CAMPOS = {
+    "indicador_id": "Identificador do indicador no catálogo do OBEE.",
+    "indicador": "Nome do indicador.",
+    "codigo_ibge": "Código do município no IBGE (7 dígitos).",
+    "capital": "Nome da capital.",
+    "uf": "Sigla da unidade da federação.",
+    "periodo_tipo": "O que a coluna 'ano' representa: exercício financeiro, ano do Censo Escolar ou edição bienal.",
+    "ano": "Ano do exercício, do Censo Escolar ou da edição do Ideb e do Saeb.",
+    "etapa": "Etapa de ensino do recorte; vazio quando o indicador não varia por etapa.",
+    "componente": "Base do valor: nominal (reais correntes), real_2025 (reais de 2025 pelo IPCA) ou componente do indicador (por exemplo, disciplina do Saeb).",
+    "valor": "Valor numérico com ponto decimal e a precisão da fonte. Vazio quando não há valor observado; vazio nunca significa zero.",
+    "unidade": "Unidade do valor.",
+    "base_monetaria": "Base monetária dos valores em reais, quando se aplica.",
+    "universo": "O que o indicador cobre e o que o numerador e o denominador incluem.",
+    "status": "Estado do dado: OBSERVADO, NAO_DIVULGADO, NAO_APLICAVEL, AUSENTE_NA_COLETA, INCONSISTENTE etc.",
+    "elegivel_comparacao": "'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora.",
+    "situacao_conferencia": "Resultado da conferência da despesa entre DCA (Declaração de Contas Anuais), RREO (Relatório Resumido da Execução Orçamentária) e MSC (Matriz de Saldos Contábeis).",
+    "motivo_inelegibilidade": "Por que o valor oficial não entra na comparação, quando é o caso.",
+    "nota": "Nota ou ressalva do dado nesta capital e período.",
+    "nota_material": "'true' quando a nota é uma restrição que precisa aparecer junto do dado.",
+    "participacao_pct": "Participação da parte no total, em %, nos indicadores de composição.",
+    "fonte": "Fontes combinadas no valor.",
+    "registro": "Registro de origem: documento, conjunto, conta ou coluna de onde o valor foi lido.",
+    "versao_metodologica": "Versão metodológica do indicador.",
+    "dados_gerados_em": "Data e hora de geração dos dados publicados.",
+    "hash_dados": "Hash do conteúdo dos dados publicados; identifica a base exata da linha.",
+    "numerador": "Descrição do numerador, nos indicadores em razão.",
+    "denominador": "Descrição do denominador, nos indicadores em razão.",
+    "referencia_numerador": "Referência temporal e de fonte do numerador.",
+    "referencia_denominador": "Referência temporal e de fonte do denominador.",
+    "tipo_populacao": "Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.",
+    "data_referencia": "Data de referência da população.",
+    "quebra_serie": "'true' quando o valor usa base diferente da do ano anterior; a variação entre os dois lados não é comparável.",
+}
+
+
+def _csv_dicionario(caminho):
+    """Dicionário das colunas dos CSV de séries por indicador; arquivo à parte porque o CSV não admite comentários."""
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(["coluna", "descricao"])
+    for c in CAMPOS_CSV:
+        w.writerow([c, DESCRICAO_CAMPOS[c]])
+    w.writerow(["(leia antes de usar)", "Os valores descrevem gasto, atendimento e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."])
+    w.writerow(["(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique dados_gerados_em e hash_dados da linha utilizada."])
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
+
 
 PERIODO_TIPO = {"exercicios": "exercício financeiro", "censo": "ano do Censo Escolar (referência em maio)",
                 "edicoes_ideb": "edição bienal do Ideb/Saeb"}
@@ -503,6 +555,9 @@ def publica(gold, raiz_publica=None):
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "referencias_educacao_capitais.csv"),
                      catalogo, gold["meta"])
     _csv_diagnostico(gold["diagnostico_pares_msc"], os.path.join(raiz, "eficiencia", "series", "edu_diagnostico_pares_msc.csv"), gold["meta"])
+    _csv_dicionario(os.path.join(raiz, "eficiencia", "series", "dicionario_das_colunas.csv"))
+    # manifesto das capturas: fonte, endereço, data de captura e sha256 de cada insumo, para quem reproduz fora do repositório
+    base.grava_json(os.path.join(raiz, "eficiencia", "series", "manifesto_das_capturas.json"), base.le_manifesto())
     for ref in gold["referencia_nacional_calculada"]:
         _csv_referencia_nacional(ref["ano"], os.path.join(raiz, "eficiencia", "series", f"referencia_nacional_despesa_habitante_{ref['ano']}.csv"), gold["meta"])
     return arquivo

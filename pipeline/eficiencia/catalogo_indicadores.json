@@ -263,7 +263,7 @@
    "versao_metodologica": "1.3",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
-    "Aplicação direta não é sinônimo de rede própria: pode incluir pagamento a prestadores privados de serviços que atendem alunos da rede (transporte, alimentação) e, em tese, vagas contratadas fora dela; a MSC não separa o beneficiário do serviço. O ID e o nome mudaram na rodada 6 (antes, \"por matrícula da rede própria\") justamente por isso; a série anterior não é reutilizada.",
+    "Aplicação direta não é sinônimo de rede própria: pode incluir pagamento a prestadores privados de serviços que atendem alunos da rede (transporte, alimentação) e, em tese, vagas contratadas fora dela; a MSC não separa o beneficiário do serviço. O ID e o nome mudaram na revisão 1.3 (antes, \"por matrícula da rede própria\") justamente por isso; a série anterior não é reutilizada.",
     "O Censo tem referência em maio e a despesa cobre o ano; uma rede que cresce ou encolhe ao longo do ano tem os dois períodos desalinhados.",
     "Herda as ressalvas da despesa total: Campo Grande 2021 não tem valor (a DCA inclui intraorçamentárias e a ponte não fecha); Boa Vista 2024 mantém a ressalva de reconciliação.",
     "Um estudante com mais de uma matrícula conta mais de uma vez; o denominador é matrícula, não pessoa."
@@ -684,7 +684,7 @@
   {
    "versao": "1.0",
    "data": "2026-10-08",
-   "resumo": "Primeira publicação (PR #117, commit 8ad77db)."
+   "resumo": "Primeira publicação do painel."
   },
   {
    "versao": "1.1",
@@ -699,7 +699,12 @@
   {
    "versao": "1.3",
    "data": "2026-10-08",
-   "resumo": "Rodada 6: despesa de aplicação direta por matrícula (novo ID, no lugar de \"por matrícula da rede própria\"), baldes da ponte pela norma da modalidade de aplicação, parcela de beneficiário indeterminado, política de conferência 1.2 (saldo líquido D/C da MSC), população de 2023 do Censo 2022, referência nacional calculada pelo OBEE, referências com origem e comparabilidade."
+   "resumo": "Despesa de aplicação direta por matrícula (novo ID, no lugar de \"por matrícula da rede própria\"), baldes da ponte pela norma da modalidade de aplicação, parcela de beneficiário indeterminado, política de conferência 1.2 (saldo líquido D/C da MSC), população de 2023 do Censo 2022 (a ficha da população continua na revisão 1.2: a fórmula não mudou), referência nacional calculada pelo OBEE, referências com origem e comparabilidade."
+  },
+  {
+   "versao": "1.4",
+   "data": "2026-10-09",
+   "resumo": "Sem mudança de fórmula, valor ou elegibilidade: trilhas de reprodução de população, despesa por habitante e por matrícula; data de referência do Censo 2022 padronizada em 31 de julho de 2022 (segunda apuração); referências à política de conferência 1.2 nas notas; texto da validação V18."
   }
  ]
 }
