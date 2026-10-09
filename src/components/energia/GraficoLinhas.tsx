@@ -129,8 +129,8 @@ function ticks(min: number, max: number, n = 4): number[] {
 /** Abaixo desta largura: rótulos curtos e, com zoom, sem arrasto (controles de período). */
 const ESTREITO = 520;
 const SEM_OCULTAS: string[] = [];
-/** Largura média de um caractere a 10 px, para decidir onde o rótulo de um marco quebra. */
-const PX_MARCO = 5.4;
+/** Largura média de um caractere a 12 px, para decidir onde o rótulo de um marco quebra. */
+const PX_MARCO = 6.5;
 
 /** Quebra o texto em até `maxLinhas` linhas de `maxChars` caracteres, por palavra; o que passar da última linha vira reticências. */
 function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): string[] {
@@ -256,7 +256,6 @@ export function GraficoLinhas({
   if (!seriesVis.length) seriesVis = series; // nunca um gráfico sem linha: todas ocultas equivale a nenhuma
   const temOcultas = seriesVis.length < series.length;
 
-  const L = largura < ESTREITO ? 44 : 56;
   const R = rotulosDiretos ? (largura < ESTREITO ? 92 : 124) : 16;
   const T = 14;
   const B = 30;
@@ -271,6 +270,16 @@ export function GraficoLinhas({
   const { yMin, yMax } = modoEscala === "ajustar" ? domVisiveis : domTodas;
   const escalaDasVisiveis = temOcultas && modoEscala === "ajustar" && !mesmaEscala(domVisiveis, domTodas);
   const escalaDoTrecho = ampliado && !mesmaEscala(domTodas, dominioLinhas(dados, [...series.map((s) => s.id), ...extras], zeroNoEixo));
+
+  // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
+  const unidadeNoEixo = unidade.length === 1 && unidade.trim() ? ` ${unidade}` : "";
+  const yt = ticks(yMin, yMax);
+  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
+  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
+  // margem esquerda: a de sempre, ampliada quando o maior rótulo do eixo (12 px, cerca de 6,8 px por caractere) não cabe nela; um rótulo
+  // como "−5.000.000" não pode sair cortado pela borda do gráfico
+  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY) + unidadeNoEixo).length), 0);
+  const L = Math.max(largura < ESTREITO ? 48 : 60, Math.ceil(maiorRotuloY * 6.8) + 12);
 
   const n = vis.length;
   const x = (i: number) => L + (n <= 1 ? 0 : (i / (n - 1)) * (w - L - R));
@@ -363,15 +372,10 @@ export function GraficoLinhas({
     const ancora: "start" | "end" = m.rotulo.length * PX_MARCO <= direita || direita >= esquerda ? "start" : "end";
     const linhas = quebraEmLinhas(m.rotulo, Math.floor(Math.max(24, ancora === "start" ? direita : esquerda) / PX_MARCO), 3);
     const anterior = marcosVisiveis.at(-1);
-    const topo = anterior && xi - x(anterior.i) < 110 ? anterior.topo + anterior.linhas.length * 12 + 1 : 0;
+    const topo = anterior && xi - x(anterior.i) < 110 ? anterior.topo + anterior.linhas.length * 14 + 1 : 0;
     marcosVisiveis.push({ m, i, topo, linhas, ancora });
   }
 
-  // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
-  const unidadeNoEixo = unidade.length === 1 && unidade.trim() ? ` ${unidade}` : "";
-  const yt = ticks(yMin, yMax);
-  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
-  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
   // marcas com passo constante a partir do último ponto (anos, trimestres, quinzenas), não em partes iguais do total
   const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);
 
@@ -672,14 +676,14 @@ export function GraficoLinhas({
           {yt.map((v) => (
             <g key={v}>
               <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
-              <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+              <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
                 {rotuloTick(v, passoY)}
                 {unidadeNoEixo}
               </text>
             </g>
           ))}
           {xt.map((i, k) => (
-            <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
+            <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
               {rotulosX[k]}
             </text>
           ))}
@@ -687,11 +691,11 @@ export function GraficoLinhas({
           {marcosVisiveis.map(({ m, i, topo, linhas, ancora }) => (
             <g key={m.x}>
               <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-              {/* com 10 px a letra mede cerca de 5,4 px: o texto quebra no espaço do lado escolhido */}
-              <text x={x(i) + (ancora === "start" ? 4 : -4)} textAnchor={ancora} y={T + 10 + topo} fontSize="10" fill="var(--cor-mineral)">
+              {/* com 12 px a letra mede cerca de 6,5 px: o texto quebra no espaço do lado escolhido */}
+              <text data-marco="" x={x(i) + (ancora === "start" ? 4 : -4)} textAnchor={ancora} y={T + 10 + topo} fontSize="12" fill="var(--cor-mineral)">
                 {linhas.length > 1
                   ? linhas.map((l, q) => (
-                      <tspan key={q} x={x(i) + (ancora === "start" ? 4 : -4)} dy={q ? 12 : 0}>
+                      <tspan key={q} x={x(i) + (ancora === "start" ? 4 : -4)} dy={q ? 14 : 0}>
                         {l}
                       </tspan>
                     ))
@@ -718,11 +722,11 @@ export function GraficoLinhas({
               const texto =
                 r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
               // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
-              if (x(f.i) + 8 + texto.length * 6.2 > w - 2) return null;
+              if (x(f.i) + 8 + texto.length * 6.8 > w - 2) return null;
               return (
                 <g key={f.s.id}>
                   <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
-                  <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
+                  <text x={x(f.i) + 8} y={r.yy + 4} fontSize="12" fill="var(--cor-carvao)">
                     {texto}
                   </text>
                 </g>

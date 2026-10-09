@@ -62,7 +62,7 @@ function painel(m: string, id: string): string {
   if (!r) throw new Error(`painel ${id} não encontrado`);
   return r[1];
 }
-const ticksDo = (p: string) => Array.from(p.matchAll(/text-anchor="end" font-size="10"[^>]*>([^<]+)</g)).map((t) => t[1]);
+const ticksDo = (p: string) => Array.from(p.matchAll(/text-anchor="end" font-size="12"[^>]*>([^<]+)</g)).map((t) => t[1]);
 
 describe("PequenosMultiplos no servidor", () => {
   const m = html();

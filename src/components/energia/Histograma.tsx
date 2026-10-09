@@ -108,7 +108,7 @@ export function Histograma({
   }, [classes, massas]);
 
   const estreito = largura < 520;
-  const L = estreito ? 44 : 52;
+  const L = estreito ? 48 : 56;
   const R = 16;
   const B = 44;
   const P = 10; // folga interna: barra própria na borda não sai da área
@@ -316,13 +316,13 @@ export function Histograma({
           {dy.marcas.map((v) => (
             <g key={`y${v}`}>
               <line x1={L} x2={w - R} y1={sy(v)} y2={sy(v)} stroke="var(--cor-grade)" strokeWidth="1" />
-              <text x={L - 8} y={sy(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+              <text x={L - 8} y={sy(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
                 {num(v, casasY)}
               </text>
             </g>
           ))}
           {bordasVisiveis.map((v) => (
-            <text key={`x${v}`} x={sx(v)} y={base + 16} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
+            <text key={`x${v}`} x={sx(v)} y={base + 16} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
               {num(v, casasX)}
             </text>
           ))}
@@ -359,7 +359,7 @@ export function Histograma({
                 x={esquerda[k] ? m.x - 4 : m.x + 4}
                 y={12 + fileiras[k] * 13}
                 textAnchor={esquerda[k] ? "end" : "start"}
-                fontSize="11"
+                fontSize="12"
                 fill="var(--cor-carvao)"
                 stroke="var(--cor-superficie)"
                 strokeWidth="3"
@@ -393,7 +393,7 @@ export function Histograma({
                   x={direita ? cx + 8 : cx - 8}
                   y={g.y + 10}
                   textAnchor={direita ? "start" : "end"}
-                  fontSize="11"
+                  fontSize="12"
                   fill="var(--cor-carvao)"
                   stroke="var(--cor-superficie)"
                   strokeWidth="3"

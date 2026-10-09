@@ -366,7 +366,7 @@ function Painel({
 
   const w = largura;
   const h = altura;
-  const L = 44;
+  const L = 50;
   const R = 12;
   const T = 8;
   const B = 22;
@@ -445,18 +445,18 @@ function Painel({
         {dom.ticks.map((t) => (
           <g key={t}>
             <line x1={L} x2={w - R} y1={y(t)} y2={y(t)} stroke="var(--cor-grade)" strokeWidth="1" />
-            <text x={L - 6} y={y(t) + 4} textAnchor="end" fontSize="10" fill="var(--cor-mineral)" className="tabular-nums">
+            <text x={L - 6} y={y(t) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
               {rotuloTick(t, dom.passo)}
             </text>
           </g>
         ))}
         {n > 0 && (
           <>
-            <text x={x(0)} y={h - 6} textAnchor="start" fontSize="10" fill="var(--cor-mineral)">
+            <text x={x(0)} y={h - 6} textAnchor="start" fontSize="12" fill="var(--cor-mineral)">
               {formatarX(xs[0], formatoX, true)}
             </text>
             {n > 1 && (
-              <text x={x(n - 1)} y={h - 6} textAnchor="end" fontSize="10" fill="var(--cor-mineral)">
+              <text x={x(n - 1)} y={h - 6} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
                 {formatarX(xs[n - 1], formatoX, true)}
               </text>
             )}

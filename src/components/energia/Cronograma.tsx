@@ -267,7 +267,7 @@ export function Cronograma({
         })}
         {sReal !== null && <circle data-forma="realizado" cx={r1(x(sReal))} cy={r1(cy)} r="5.5" fill="var(--cor-carvao)" stroke="var(--cor-superficie)" strokeWidth="1.5" />}
         {!ps.length && sReal === null && (
-          <text data-estado="sem-dado" x={colRotulo + 12} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
+          <text data-estado="sem-dado" x={colRotulo + 12} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
             sem dado
           </text>
         )}
@@ -409,14 +409,14 @@ export function Cronograma({
           <svg width="100%" height="22" viewBox={`0 0 ${w} 22`} aria-hidden="true" className="block overflow-visible">
             {marcasTempo.map((t) => (
               <g key={t.serial}>
-                <text x={r1(x(t.serial))} y="12" textAnchor="middle" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                <text x={r1(x(t.serial))} y="12" textAnchor="middle" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
                   {t.rotulo}
                 </text>
                 <line x1={r1(x(t.serial))} x2={r1(x(t.serial))} y1="16" y2="22" stroke="var(--cor-grade)" strokeWidth="1" />
               </g>
             ))}
             {comAtraso && (
-              <text x={w - 4} y="12" textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+              <text x={w - 4} y="12" textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
                 Atraso
               </text>
             )}

@@ -175,7 +175,7 @@ export function RegulacaoFaixas({
             {ticks.map((t) => (
               <g key={t.iso}>
                 <line x1={r1(x(t.serial))} x2={r1(x(t.serial))} y1={ALTURA_EIXO - 6} y2={ALTURA_EIXO} stroke="var(--cor-mineral-soft)" />
-                <text x={r1(x(t.serial))} y={ALTURA_EIXO - 10} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                <text x={r1(x(t.serial))} y={ALTURA_EIXO - 10} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
                   {t.rotulo}
                 </text>
               </g>
@@ -258,7 +258,7 @@ export function RegulacaoFaixas({
                     {f.inicio && marca(f.inicio, cy, f.cor, "a")}
                     {f.fim && marca(f.fim, cy, f.cor, "b")}
                     {!f.inicio && !f.fim && (
-                      <text data-estado="sem-data" x={x0} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
+                      <text data-estado="sem-data" x={x0} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
                         {cabe(`sem datas: ${f.ausencia ?? "não informadas"}`, x1 - x0, 5.8)}
                       </text>
                     )}

@@ -315,7 +315,7 @@ export function GraficoPontos({
         {temR && <polygon data-forma="losango" points={losango(xr, cy)} fill="var(--cor-superficie)" stroke={corReferencia} strokeWidth="2" strokeLinejoin="round" />}
         {temV && <circle data-forma="circulo" cx={r1(xv)} cy={r1(cy)} r="5" fill={corValor} stroke="var(--cor-superficie)" strokeWidth="2" />}
         {!temV && !temR && (
-          <text data-estado="sem-dado" x={rotuloEmCima ? 12 : colunaRotulo + 12} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
+          <text data-estado="sem-dado" x={rotuloEmCima ? 12 : colunaRotulo + 12} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
             sem dado
           </text>
         )}
@@ -457,7 +457,7 @@ export function GraficoPontos({
       {/* eixo e cabeçalho da diferença fora da área rolável: continuam visíveis com muitas entidades */}
       <svg width="100%" height={rotuloEmCima ? 36 : 22} viewBox={`0 0 ${w} ${rotuloEmCima ? 36 : 22}`} aria-hidden="true" className="block overflow-visible" data-svg-grafico="">
         {/* celular: o cabeçalho da diferença ocupa a própria linha, para não encostar na última marca do eixo */}
-        <text x={w - 4} y="11" textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+        <text x={w - 4} y="12" textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
           Diferença
         </text>
         <g transform={rotuloEmCima ? "translate(0 14)" : undefined}>
@@ -467,7 +467,7 @@ export function GraficoPontos({
             const meia = (rotulo.length * PX_CARACTERE) / 2;
             return (
               <g key={t}>
-                <text x={r1(px)} y={rotuloEmCima ? 12 : 12} textAnchor={px - meia < 0 ? "start" : px + meia > w ? "end" : "middle"} fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                <text x={r1(px)} y={rotuloEmCima ? 12 : 12} textAnchor={px - meia < 0 ? "start" : px + meia > w ? "end" : "middle"} fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
                   {rotulo}
                 </text>
                 <line x1={r1(px)} x2={r1(px)} y1="16" y2="22" stroke="var(--cor-grade)" strokeWidth="1" />

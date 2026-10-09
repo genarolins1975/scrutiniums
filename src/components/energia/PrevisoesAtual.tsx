@@ -377,7 +377,7 @@ function textoCelula(l: LinhaGrade): string {
 
 const L = 360;
 const A = 156;
-const M = { e: 46, d: 10, t: 18, b: 26 };
+const M = { e: 52, d: 10, t: 18, b: 26 };
 const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 /** Meia-noite do dia (AAAA-MM-DD) em dias desde 1970. */
 const dia = (s: string) => Date.parse(`${s}T00:00:00Z`) / 86_400_000;
@@ -526,20 +526,20 @@ function PainelFrequencia({
         {dom.ticks.map((t) => (
           <g key={t}>
             <line x1={M.e} x2={L - M.d} y1={y(t)} y2={y(t)} stroke="var(--cor-grade)" strokeWidth={1} />
-            <text x={M.e - 4} y={y(t) + 3.5} textAnchor="end" fontSize={11} fill="var(--cor-mineral)">
+            <text x={M.e - 4} y={y(t) + 3.5} textAnchor="end" fontSize={12} fill="var(--cor-mineral)">
               {rotuloTick(t, dom.passo)}
             </text>
           </g>
         ))}
         {marcas.map((m) => (
-          <text key={m.rotulo + m.x} x={m.x} y={A - M.b + 14} fontSize={11} fill="var(--cor-mineral)">
+          <text key={m.rotulo + m.x} x={m.x} y={A - M.b + 14} fontSize={12} fill="var(--cor-mineral)">
             {m.rotulo}
           </text>
         ))}
         {piso !== null && (
           <g>
             <line x1={M.e} x2={L - M.d} y1={y(piso)} y2={y(piso)} stroke="var(--serie-referencia)" strokeWidth={1.5} strokeDasharray="2 3" />
-            <text x={L - M.d} y={y(piso) - 4} textAnchor="end" fontSize={11} fill="var(--cor-carvao-muted)">
+            <text x={L - M.d} y={y(piso) - 4} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
               piso médio {num(piso, 2)}
             </text>
           </g>
@@ -547,7 +547,7 @@ function PainelFrequencia({
         {corte !== null && corte > x0 && corte < x1 && (
           <g>
             <line x1={x(corte)} x2={x(corte)} y1={M.t - 6} y2={A - M.b} stroke="var(--cor-carvao-muted)" strokeWidth={1} strokeDasharray="4 3" />
-            <text x={x(corte) - 3} y={M.t - 6} textAnchor="end" fontSize={11} fill="var(--cor-carvao-muted)">
+            <text x={x(corte) - 3} y={M.t - 6} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
               {`corte ${dataBR(origem).slice(0, 5)}`}
             </text>
           </g>

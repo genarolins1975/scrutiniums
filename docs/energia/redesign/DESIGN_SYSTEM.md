@@ -41,7 +41,7 @@ Séries de gráfico, escalas sequenciais e divergentes: variáveis `--serie-*` e
 | Frase de abertura | `ed-lead` | 16 px, 17 px a partir de 768 px |
 | Texto | `text-base` | 16 px |
 | Texto de apoio | `text-sm` | 14 px |
-| Metadado, fonte, contexto | `text-xs` | 12 px (mínimo do sistema) |
+| Metadado, fonte, contexto | `text-xs` | 13 px no domínio Energia (0,8125 rem, entrelinha de 1,2 rem); texto dentro de SVG não desce de 12 px |
 | Rótulo em caixa alta | `rotulo` | 12 px no domínio Energia |
 | Valor de métrica | `font-serif`, `tabular-nums` | 28 px no celular, 36 px no desktop |
 
@@ -83,6 +83,32 @@ Largura de leitura: `ed-pagina` (conteúdo de 1.160 px a partir de 1.240 px de j
 - **Como funciona:** no clique lê o DOM, clona os svgs marcados com `data-svg-grafico`, tira a cruz do cursor, a seleção de intervalo e os realces de passagem e de foco (`data-nao-exportar`), troca `var(--token)` pelos valores calculados da página, leva junto os padrões de hachura e desenha num canvas. Sem biblioteca, sem rede, sem imagem externa. Gráfico novo entra marcando seus svgs com `data-svg-grafico` e plugando `BaixarImagem` ao lado da legenda.
 - **Botão:** texto "Baixar imagem", `aria-label` com o título, 24 px em ponteiro fino e 44 px em ponteiro grosso, oculto na impressão, erro em região `aria-live` (sem `alert`). Só aparece depois da hidratação; o HTML do servidor traz um espaço invisível do mesmo tamanho, para o layout não saltar e para os testes de servidor lerem o mesmo HTML.
 - **Limites:** fonte do sistema (a imagem não carrega as fontes da página); sem interatividade (nada de dica, cruz ou foco); a imagem mostra o gráfico no momento do clique, então série oculta, intervalo ampliado, ordem e seleção valem como estão; imagem muito alta usa escala menor que 2x para ficar dentro do limite de pixels dos navegadores.
+
+### Acréscimos da rodada de melhoria
+
+Comportamentos e componentes que entraram depois da migração das aberturas, para que a próxima página já nasça com eles.
+
+| Item | Arquivo | O que faz e quando usar |
+| --- | --- | --- |
+| `CabecalhoModulo` com `limite` | `CabecalhoModulo.tsx` | Uma ou duas frases sob o recorte e a fonte, com o rótulo "Não permite concluir": é a quarta resposta da abertura (o que estou vendo, por que importa, com o que comparar, o que não permite concluir, onde aprofundar). Sempre à vista, nunca dentro do bloco recolhido. Modelo: `agua-e-clima/afluencia/page.tsx`. Não repete a nota do painel: é a versão curta dela. |
+| `LinkSemPrefetch` | `LinkSemPrefetch.tsx` | `next/link` com `prefetch={false}`. Usar em páginas com dezenas de ligações (inicial, catálogos, índices): a rolagem deixava de 20 a 47 pedidos de pré-busca, de 0,5 a 1,4 MB, só para ligações que o leitor talvez não abra. |
+| `MarcaRolagem` | `MarcaRolagem.tsx`, montado em `setor-eletrico/layout.tsx` | Grava `data-rolavel="sim"` em `div.tabela-scroll` que rola de fato; a sombra de borda só aparece nesses blocos (sombra em tabela que cabe inteira lia-se como conteúdo cortado). |
+| Legenda de siglas e de natureza | `LegendaSiglas.tsx`, `SeloNatureza.tsx` | A legenda do bloco "Fontes, datas e siglas" lista as siglas do texto à vista e, depois da hidratação, a definição em texto de cada natureza do dado (Observado, Calculado, Estimado, Previsto, Cenário) cujo selo está à vista. A dica do selo (`title`) não existe no toque nem para leitor de tela; o selo leva `data-natureza`. |
+| `GraficoBarras` | `GraficoBarras.tsx` | Série `opcional` (existe só em parte das categorias); `limiteInicial` (desenha as N primeiras, com escala, tabela e seleção do conjunto inteiro; seleção fora do limite desenha todas); rolagem até a barra selecionada; rótulo lateral em até duas linhas (coluna de até 42% e 260 px); linhas de base e de referência que pulam a faixa do rótulo e dos valores no celular; 12 px no celular. |
+| `GraficoLinhas` | `GraficoLinhas.tsx` | Rótulo de marco quebra em até três linhas dentro da área do gráfico; `semTitulo` e dica ao lado da cruz. |
+| `MapaCalor` | `MapaCalor.tsx` | `colunaInicial` abre a grade rolada até a coluna que importa (ex.: a hora do pico mais frequente) com borda que esmaece enquanto há colunas escondidas; classe de cor com menos de 3:1 contra o papel recebe contorno de 1 px na célula e na legenda (medido no navegador, pois a cor chega como token). |
+| `TabelaInterativa` | `TabelaInterativa.tsx` | `tamanhoPagina` aceita 10 ou 12 linhas; a primeira coluna fica fixa. |
+| `Numero recorte` | `Numero.tsx` | Diz o recorte do número (UF, classe, base) junto do período, na linha de contexto, sem depender do resto da página. |
+| `NavegacaoLocal atualEhSecao` | `NavegacaoLocal.tsx` | A página atual é filha do item (verbete dentro de seção, trilha): o item leva `aria-current="true"` e não `"page"`. |
+| `ModoProfundidade` | `evidencia/ModoProfundidade.tsx` | O foco em `main#conteudo` depois de clicar em área sem controle não rola mais a página ao topo; botões de nível com 44 px abaixo de 768 px. |
+| `SeguirPainel` | `SeguirPainel.tsx` | A lista "Baixar os dados (N arquivos)" abre sozinha em Analisar e Auditar. |
+
+Regras de texto que vieram da rodada:
+
+- `text-xs` no domínio Energia vale 13 px (0,8125 rem, entrelinha de 1,2 rem): 12 px lia-se pequeno em nota e fonte. O texto dentro de SVG não desce de 12 px.
+- Toda ressalva que muda o que o número permite concluir fica à vista, junto do número, nunca só em "Sobre este dado".
+- Valor negativo que a fonte publica onde o conceito não admite sinal (desconto negativo) fica como a fonte publicou, com nota ao lado e classe própria na escala; o observatório não corrige nem exclui.
+- Um número, um arredondamento: calcula-se uma vez, arredonda-se uma vez (meio para cima) e o mesmo valor serve ao gráfico, ao rótulo, à tabela, ao CSV, à frase e à ficha.
 
 ## 4. Receita de uma abertura temática
 
