@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/eficiencia-estatal" },
 };
 
-type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoInclui: string; entradas: { href: string; rotulo: string }[]; atualizacao: string | null };
+type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoInclui: string; fontes: string; entradas: { href: string; rotulo: string }[]; atualizacao: string | null };
 
 export default function PaginaEntradaEficiencia() {
   const edu = metaEducacao();
@@ -25,6 +25,7 @@ export default function PaginaEntradaEficiencia() {
       pergunta: "Quanto se gasta, quem é atendido e quais resultados são observados na rede municipal de ensino?",
       escopo: "Rede municipal das 26 capitais estaduais: despesa na função Educação (total, por habitante e razão por matrícula de aplicação direta), matrículas, alunos por turma, aprovação, Ideb e Saeb.",
       naoInclui: "Redes estaduais, federais e privadas na capital; custo por aluno; causa do resultado.",
+      fontes: "Tesouro Nacional (Siconfi), INEP (Censo Escolar, Ideb e Saeb) e IBGE (população e IPCA).",
       entradas: [
         { href: "/eficiencia-estatal/educacao-municipal-capitais", rotulo: "Panorama" },
         { href: "/eficiencia-estatal/educacao-municipal-capitais/gastos", rotulo: "Gastos" },
@@ -41,6 +42,7 @@ export default function PaginaEntradaEficiencia() {
       pergunta: "Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores?",
       escopo: "Três perímetros separados nas 26 capitais: recursos executados pelo município (despesa, aplicação em ações e serviços públicos de saúde, fonte de recursos), serviços localizados no território (unidades básicas de saúde, equipes e cobertura da atenção primária) e resultados por residência (internações por condições sensíveis à atenção primária, ICSAP).",
       naoInclui: "Gasto de União e estado no território; rede privada e filantrópica; produção da atenção primária, profissionais e custo por atendimento (avaliados e não publicados, com o motivo); filas e tempo de espera (não pesquisados nesta rodada).",
+      fontes: "Tesouro Nacional (Siconfi), Ministério da Saúde (SIOPS, CNES, Relatório APS e RIPSA) e IBGE (população e IPCA).",
       entradas: [
         { href: "/eficiencia-estatal/saude-capitais", rotulo: "Panorama" },
         { href: "/eficiencia-estatal/saude-capitais/gastos", rotulo: "Gastos" },
@@ -77,6 +79,7 @@ export default function PaginaEntradaEficiencia() {
               <dl className="mt-4 space-y-3 text-sm leading-snug">
                 <div><dt className="rotulo text-carvao-muted">O que mostra</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.escopo}</dd></div>
                 <div><dt className="rotulo text-carvao-muted">O que não inclui</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.naoInclui}</dd></div>
+                <div><dt className="rotulo text-carvao-muted">Fontes</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.fontes}</dd></div>
                 <div><dt className="rotulo text-carvao-muted">Última captura de dados</dt><dd className="mt-0.5 text-obee-tinta">{t.atualizacao ?? "não informada"}; os anos de referência estão em cada medida.</dd></div>
               </dl>
               <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-1">

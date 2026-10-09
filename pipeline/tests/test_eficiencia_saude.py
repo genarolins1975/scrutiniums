@@ -384,6 +384,7 @@ class TestSaude(unittest.TestCase):
             self.assertNotIn("R$ 0,00", nota)
         nota = self.v("sau.despesa.natureza", florianopolis, 2022, "pessoal")["nota"]
         self.assertIn("sem natureza da despesa identificável", nota)
+        self.assertIn("saldo líquido dessas linhas", nota)
         self.assertNotIn("diferença de R$ 0,00", nota)
 
     def test_medicao_da_troca_de_base_da_cobertura_potencial(self):

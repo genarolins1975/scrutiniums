@@ -1,6 +1,6 @@
 # Catálogo, cobertura e fórmulas: Saúde nas capitais
 
-Gerado de `public/eficiencia/gold/saude_capitais.json` (hash_dados `159b76024a953f4d`, catálogo 2026-10-09.1, pipeline obee-saude-0.1.0, dados capturados até 2026-10-09). Reexecute `python3 -m pipeline.eficiencia_saude.documenta` depois de reconstruir a gold.
+Gerado de `public/eficiencia/gold/saude_capitais.json` (hash_dados `ea1565fee6907c1a`, catálogo 2026-10-09.1, pipeline obee-saude-0.1.0, dados capturados até 2026-10-09). Reexecute `python3 -m pipeline.eficiencia_saude.documenta` depois de reconstruir a gold.
 
 Cobertura: capitais comparáveis sobre capitais do universo, por ano (`comparáveis/elegíveis`). Fora da comparação significa valor oficial disponível, mas excluído das medianas e variações, ou sem valor, conforme indicado.
 

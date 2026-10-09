@@ -181,9 +181,13 @@ def despesa_natureza(despesa_obs):
                 motivo = ("A MSC de dezembro deste ente e exercício não traz linhas da função 10 nas contas de despesa liquidada (nenhum registro): a abertura por natureza "
                           "não pode ser calculada. Não é um valor zero. A abertura não é publicada para este exercício e nenhuma categoria é estimada.")
             elif desconhecidos:
-                motivo = (f"A MSC traz linhas da função 10 sem natureza da despesa identificável ({', '.join(desconhecidos)}), de modo que a soma das categorias identificadas "
-                          f"({CF.brl(total)}) não pode ser conferida contra a DCA ({CF.brl(d['valor'])}) com segurança. A abertura por natureza não é publicada "
-                          "para este exercício e nenhuma categoria é estimada.")
+                sem_nat = [x for x in linhas_msc if str(x.get("funcao")) == "10" and str(x.get("conta_contabil", ""))[:7] in CF.MSC_CONTAS_LIQUIDADO
+                           and not (str(x.get("natureza_despesa") or "")[:2] in DV2.GRUPO_PARA_CATEGORIA or str(x.get("natureza_despesa") or "")[2:4] == "91")]
+                liquido_sem_nat = round(sum(CF.saldo_liquido(x) for x in sem_nat), 2)
+                relacao = "coincide com" if abs(total - d["valor"]) <= 1.0 else "difere de"
+                motivo = (f"A MSC traz {len(sem_nat)} linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas "
+                          f"(créditos menos débitos) é {CF.brl(liquido_sem_nat)}. A soma das categorias identificadas ({CF.brl(total)}) {relacao} a DCA ({CF.brl(d['valor'])}), "
+                          "mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")
             elif not DV2.reconcilia(soma, d["valor"]):
                 motivo = (f"A MSC aberta por natureza ({CF.brl(total)}, sem modalidade 91) não reproduz a DCA ({CF.brl(d['valor'])}); "
                           f"diferença de {CF.brl(round(total - d['valor'], 2))}. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")

@@ -137,6 +137,16 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                     </div>
                     <div className="min-w-0">
                       <PanoramaFaixa m={m} c={c} ano={ano} destaque={cap && ptCap && ptCap.valor !== null && ptCap.elegivel ? { rotulo: cap.nome, valor: ptCap.valor } : null} semDestaqueMotivo={cap && ptCap && ptCap.valor !== null && !ptCap.elegivel ? `${cap.nome} (${cap.uf}) tem valor oficial fora da comparação: ${m.formata(ptCap.valor)}.` : cap && ptCap && ptCap.valor === null ? `${cap.nome} (${cap.uf}) não tem valor para este recorte.` : null} />
+                      <div className="mt-1 flex flex-wrap items-center gap-x-5 text-[0.9375rem]">
+                        {ficha.download && (
+                          <a href={ficha.download} download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+                            Baixar a série completa (CSV)
+                          </a>
+                        )}
+                        <Link href={`${hrefSaude("/metodos")}#reproducao`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+                          Fonte e como reproduzir
+                        </Link>
+                      </div>
                     </div>
                   </li>
                 );

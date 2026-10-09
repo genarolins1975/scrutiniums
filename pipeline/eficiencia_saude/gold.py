@@ -198,15 +198,20 @@ def _mapa_fontes(fontes_gold):
                 paginas.append(x["pagina"])
         datas = [x.get("capturado_em") for x in caps if x.get("capturado_em")]
         out[f["id"]] = (nome, " ".join(paginas), (max(datas) if datas else "")[:10])
+        # as observações citam também a captura específica (por exemplo, a relação de população de 2023 ou o Relatório APS do Brasil)
+        for x in caps:
+            if x.get("chave") and x["chave"] not in out:
+                n2 = f"{x['instituicao']}, {x['conjunto']}" if x.get("instituicao") and x.get("conjunto") else x["chave"]
+                out[x["chave"]] = (n2, x.get("pagina") or "", (x.get("capturado_em") or "")[:10])
     return out
 
 
 def _fonte_legivel(ids, mapa):
     partes = [p for p in re.split(r"[+;]\s*", ids or "") if p]
     nomes = [mapa[p][0] if p in mapa else p for p in partes]
-    urls = [mapa[p][1] for p in partes if p in mapa and mapa[p][1]]
+    urls = list(dict.fromkeys(u for p in partes if p in mapa for u in mapa[p][1].split() if u))
     datas = [mapa[p][2] for p in partes if p in mapa and mapa[p][2]]
-    return "; ".join(nomes), " ".join(urls), (max(datas) if datas else "")
+    return "; ".join(dict.fromkeys(nomes)), " ".join(urls), (max(datas) if datas else "")
 
 
 def _base_monetaria(o, ficha):
@@ -228,7 +233,8 @@ def _csv(obs, caminho, catalogo, meta, mapa_fontes=None):
         f = fichas[o["indicador"]]
         conf = o.get("conferencia") or {}
         p = f["perimetro"]
-        fonte_txt, fonte_url, fonte_data = _fonte_legivel(o["fonte"], mapa_fontes)
+        ids_fonte = o["fonte"] + ("+ibge_ipca" if o["componente"] == "real_2025" and "ibge_ipca" not in o["fonte"] else "")  # reais de 2025 também vêm do IPCA
+        fonte_txt, fonte_url, fonte_data = _fonte_legivel(ids_fonte, mapa_fontes)
         w.writerow({
             "indicador_id": o["indicador"], "indicador": f["nome"], "codigo_ibge": o["ente"], "capital": nomes[o["ente"]], "uf": ufs[o["ente"]],
             "periodo_tipo": "ano de processamento da AIH" if o["indicador"].startswith("sau.icsap") else UNIDADE_PERIODO.get(f["granularidade"]["anos"], ""), "ano": o["ano"],

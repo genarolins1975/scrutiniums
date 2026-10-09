@@ -1,6 +1,6 @@
 # Saúde nas capitais: validações, reconciliações e reprodução
 
-Estado em 09/10/2026, depois da rodada 1 de correções. Gold: `hash_dados` `159b76024a953f4d`, catálogo 2026-10-09.1, pipeline `obee-saude-0.1.0`, 8.777 observações. Nenhuma validação reprovada.
+Estado em 09/10/2026, depois do segundo ciclo de correções. Gold: `hash_dados` `ea1565fee6907c1a`, catálogo 2026-10-09.1, pipeline `obee-saude-0.1.0`, 8.777 observações. Nenhuma validação reprovada.
 
 ## 1. Validações automáticas e medições
 
@@ -54,7 +54,7 @@ Todos usam só arquivos do repositório (`pipeline/eficiencia_saude/seed/`, gold
 
 **ICSAP, São Paulo, 2024.** RIPSA MRB.4.02, município de residência 355030, ano 2024: 83.391 internações. População estimada do indicador: 11.895.578. Taxa: 83.391 ÷ 11.895.578 × 100.000 = 701,03 por 100 mil habitantes. A soma dos 19 grupos de causa reproduz as 83.391 internações (validação S09).
 
-**Cobertura potencial da APS, São Paulo, dezembro de 2025.** Equipes registradas: 1.723 eSF, 336 eAP de 20 horas e 160 eAP de 30 horas, mais pessoas com cadastro vinculado de eCR e eAPP. Capacidade: 1.723 × 3.500 + 336 × 1.750 + 160 × 2.625 + cadastro vinculado = 7.074.342. População de referência do Ministério: 11.895.578. Cobertura potencial: 59,47%. É capacidade teórica das equipes, não pessoas atendidas, e o serviço não limita o valor a 100%.
+**Cobertura potencial da APS, São Paulo, dezembro de 2025.** Equipes registradas: 1.723 eSF, 336 eAP de 20 horas e 160 eAP de 30 horas, mais pessoas com cadastro vinculado de eCR e eAPP. Capacidade: 1.723 × 3.500 + 336 × 1.750 + 160 × 2.625 + 35.842 de cadastro vinculado (eCR, eSFR e eAPP) = 7.074.342. População de referência do Ministério: 11.895.578. Cobertura potencial: 59,47%. É capacidade teórica das equipes, não pessoas atendidas, e o serviço não limita o valor a 100%.
 
 **Percentual aplicado em ASPS, Recife, 2025.** SIOPS, RREO Anexo 12, 6º bimestre: valor aplicado em ASPS (XVI) R$ 1.111.965.826,08 ÷ receita de impostos e transferências (III) R$ 5.628.463.971,49 = 19,756%. O SIOPS informa 19,75 (valor truncado) e é esse o percentual publicado. O mínimo de 15% (LC 141/2012, art. 7º) é referência normativa, não meta.
 
@@ -78,7 +78,7 @@ Cada linha de cada CSV traz registro de origem, versão metodológica, `dados_ge
 | `src/tests/html-gerado.test.ts` | Com `EXIGIR_BUILD_HTML=1`: sem data ISO crua, `undefined` nem `NaN` nas seis páginas de Saúde e na entrada |
 | `src/tests/obee-educacao.test.ts`, `dois-observatorios.test.ts` | Regressão de Educação e da integração ao site |
 
-Estado verificado em 09/10/2026: suíte `vitest` completa (143 arquivos, 2.745 testes aprovados antes das últimas edições, 4 ignorados por exigirem build), testes Python de Educação e de Saúde aprovados (144), `tsc` e `lint` sem erros, `next build` concluído, gate de HTML aprovado.
+Estado verificado em 09/10/2026, depois do segundo ciclo de correções: suíte `vitest` completa aprovada (143 arquivos, 2.762 testes, 1 ignorado por exigir build), testes Python de Educação e de Saúde aprovados (154), `tsc` e `lint` sem erros, `next build` concluído, gate de HTML aprovado. A suíte Python inteira tem falhas apenas em módulos de Energia, por falta do `pyarrow` neste ambiente (o CI o instala).
 
 ## 5. Verificação visual e de interação
 

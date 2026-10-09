@@ -90,3 +90,26 @@ Depois da seção "Reavaliação 1" dos dois avaliadores. Gold: `hash_dados` `15
 | Outros: aviso de exclusão só abaixo do gráfico; "Não é custo por usuário" repetido em Gastos; "texto qualitativo sem fonte" | Linha com as capitais fora da comparação acima do gráfico, com link ao motivo; repetição removida; frases sobre ocorrência por local reescritas como possibilidade |
 
 Não alterado no segundo ciclo: marcador de nota "2" que encosta no rótulo de valor na Evolução de São Paulo (componente compartilhado); parâmetros inválidos de capital, medida e visão na URL (apenas o ano é normalizado); texto SVG de 10 a 11,5 px e `.rotulo` (classes e componentes compartilhados); CSV com ressalva repetida em cada linha (decisão: o arquivo precisa se explicar sozinho).
+
+## 6. Terceiro ciclo de correções (achados da reavaliação 2)
+
+Gold: `hash_dados` `ea1565fee6907c1a`, 8.777 observações. Seção do executor, sem notas.
+
+| Achado | Correção |
+| --- | --- |
+| P16 (experiência): celular, primeiro gráfico entre 1.085 e 1.558 px | Controles do recorte recolhidos sob o resumo "Ajustar o recorte" no celular (sempre à vista a partir de telas médias, sem o resumo); título do resultado menor; aviso do período depois do gráfico; links de CSV e de reprodução do Panorama sob o gráfico. Posição medida do primeiro gráfico a 390 px: Gastos 940, Rede 904, Resultados 945, Comparar 730; a 320 px: 1.109 a 1.131 e 819 |
+| N3 (experiência): número da nota sobre o rótulo de valor | O rótulo do ponto evita o espaço do número da nota (componente compartilhado, sem efeito nas demais séries) |
+| Comparar sem a linha de exclusão; foco no link "Motivo e detalhe abaixo"; link "Os três perímetros" solto e pequeno | Linha de capitais fora da comparação também no Comparar; o bloco do motivo recebe o foco; links em linha com altura de toque maior e na mesma linha do texto |
+| Etiqueta curta do perímetro no celular sem o limite | O limite curto acompanha o rótulo ("não é o gasto de União e estado", "cadastro, não funcionamento", "não é produção da prefeitura") |
+| Siglas faltantes: SUS, CNES, IPCA, IBGE | Incluídas nos blocos de Gastos, Rede, Panorama, Comparar e Resultados |
+| Dados e métodos sem visual (A, H e B) | Quadro "O módulo em números" e barra das decisões sobre as 31 medidas candidatas; guia por perfil com "páginas oficiais" |
+| D1 (dados): CSV de população de 2023 com identificador interno e sem endereço | O mapa de fontes passa a reconhecer a captura específica (relação de 2023, Relatório APS do Brasil) |
+| D2 (dados): CSV da tabela do Comparar sem páginas oficiais, data de captura e versão | Três colunas novas: páginas oficiais, data de captura mais recente e versões metodológicas por medida |
+| D3 (dados): reais de 2025 sem o IPCA na fonte | `fonte` e `fonte_url` das linhas `real_2025` incluem o IPCA |
+| D4 (dados): rótulo "Mediana das 26 capitais" | "Mediana das capitais na comparação", com o n em coluna própria |
+| D5 (dados): a marca de base não identifica a base | Coluna "Base do denominador" no CSV da série, por ano |
+| D6 (dados): nota de natureza de Florianópolis; legenda "em todos os anos" | A nota diz que o saldo líquido das linhas sem natureza é R$ 0,00 e por que mesmo assim a abertura não é verificável; a legenda passa a dizer "nos anos com mediana" |
+| D7 e D8 (dados): documentos desatualizados; endereços repetidos | Documentos corrigidos (gold de 6,3 MB, contagens de testes, termo de cadastro no exemplo da cobertura); páginas oficiais sem repetição e sem IBGE na taxa de ICSAP com a população do Ministério |
+| G (dados): Panorama e entrada sem fonte nem reprodução à vista | Links "Baixar a série completa (CSV)" e "Fonte e como reproduzir" em cada medida do Panorama; linha "Fontes" em cada tema da entrada |
+
+Não alterado: parâmetros inválidos de capital, medida e visão na URL (D9, componente compartilhado); texto SVG de 10 a 11,5 px e `.rotulo`; links "Série completa em CSV" e rodapé (compartilhados).

@@ -28,6 +28,8 @@ export type DadosSaude = {
   fontes: Record<string, { nome: string; url: string; capturado_em: string }>;
   /** base da população do exercício (estimativa anterior ao Censo, Censo 2022, estimativa posterior), por ano */
   basePopulacional: Record<number, string>;
+  /** base da população do denominador por indicador e componente ("indicador|componente") e ano: estimativa anterior ao Censo, Censo 2022, estimativa posterior */
+  basesDoDenominador: Record<string, Record<number, string>>;
   meta: { gerado_em: string; dados_capturados_ate: string; hash_dados: string; versao_catalogo: string };
 };
 

@@ -1,0 +1,23 @@
+verificacao;escopo;resultado
+testes Python do módulo (python3 -m unittest pipeline.tests.test_eficiencia_saude);57 testes;OK (15,8 s)
+testes vitest do módulo (npx vitest run src/tests/obee-saude.test.ts);70 testes;OK (1,2 s)
+testes Python de Educação e Saúde (test_eficiencia, test_eficiencia_comparacoes, test_eficiencia_saude);154 testes;OK (72 s)
+pipeline/tests inteiro (unittest discover);1.370 testes;1 falha e 69 erros, todos em módulos de energia (fora do escopo)
+reconstrução em cópia temporária fora do repositório;hash_dados 159b76024a953f4d, gerador-49a4de465bef;"igual à gold publicada; todas as seções iguais, exceto o carimbo gerado_em; nos CSV estáticos só a coluna dados_gerados_em difere (10.577 de 355.225 células)"
+receita do hash_dados da página (JSON, chaves ordenadas, separadores compactos, sem escape ASCII, UTF-8);159b76024a953f4d;"reproduz; sem ensure_ascii=False sai e078ebe2c1def20f"
+recomputação independente a partir do seed bruto;8.135 checagens;"8.110 iguais, 25 diferentes e explicadas (23 de cobertura 2021 pela fórmula da NT 2/2025; 2 de natureza de Florianópolis)"
+superfícies das páginas de exploração (gold x gráfico x tabela x CSV do recorte);15 recortes;0 divergências de n, mediana e capitais fora
+tabela de Comparar, CSV baixado vs gold;5 tabelas (2021 a 2025) x 26 capitais x 10 medidas = 1.300 células;"0 divergências; células sem dado vazias"
+Comparar, painel e CSV da medida;10 recortes;0 divergências
+CSV de série (3 de capital, 2 de mediana, 2 de capitais fora);35 linhas;0 divergências de valor e de elegibilidade
+razão agregada exibida vs soma do numerador / soma do denominador x fator;24 combinações (8 medidas, todos os anos);24 iguais no arredondamento exibido
+composições agregadas (subfunção, natureza, fonte) vs gold;15 blocos (5 anos x 3);"n igual em 15; soma das linhas igual ao total da gold em até 0,02%"
+desempenho em laboratório (7 rotas x 320, 390, 768, 1440 px);28 medições;0 erros ou avisos de console, 0 px de rolagem horizontal, CLS máximo 0,0007, LCP de 68 a 208 ms
+parâmetros de URL inválidos (9 casos);9 URLs;"nenhum NaN ou undefined; med=foo e cap=distrito-federal permanecem na URL com a página padrão"
+trilhas de reconstrução de São Paulo 2025 (20);20 trilhas;unidade, casas decimais e participações corretas; 20 de 20 valores iguais à recomputação do seed e do arquivo original do RIPSA (planos privados de São Paulo 2024: 48,306774)
+linhas dos gráficos de Evolução (SVG);9 gráficos;"segmentos só entre anos com a mesma marca; Macapá 2025 e Campo Grande 2021 sem segmento"
+RIPSA COB.2.01 (internações SUS por residência) no arquivo original;104 pares (26 capitais x 2021 a 2024);internações e população do denominador iguais no original, no seed e na gold; participação ICSAP ÷ COB.2.01 recalculada igual à gold nos 104
+RIPSA COB.5.01 (cobertura de planos privados, linha Total) no arquivo original;104 pares;iguais no original, no seed e na gold
+busca de expressões causais ou de julgamento (por esse motivo, devido a, em razão de, em consequência, desperdício, ineficiente, semáforo, ranking) nas sete páginas e no gold;7 páginas e 6 seções do gold;nenhuma ocorrência; "semáforo" e "recomendação" aparecem só em avisos de que não existem
+links internos das sete rotas;66 links;nenhum com status acima de 299
+endereços externos citados nas páginas (sem contar o LinkedIn);11 endereços (10 páginas oficiais e o repositório);10 respondem 200; a página do IBGE da relação de populações responde 403 por desafio anti robô neste ambiente, e a de estimativas (citada nos CSV) também (não verificado)

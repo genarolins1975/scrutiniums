@@ -4,14 +4,14 @@
   "painel": "saude-capitais",
   "versao_pipeline": "obee-saude-0.1.0",
   "versao_catalogo": "2026-10-09.1",
-  "versao_codigo": "gerador-49a4de465bef",
-  "gerado_em": "2026-10-09T16:39:56Z",
+  "versao_codigo": "gerador-b84de0984ebc",
+  "gerado_em": "2026-10-09T17:19:36Z",
   "dados_capturados_ate": "2026-10-09T14:32:35Z",
-  "hash_dados": "159b76024a953f4d6adabd4e73ca567830c37bb1d1ba28a133b187203522e9c3",
+  "hash_dados": "ea1565fee6907c1a430024b489a3fc11f093463b806fadb25c2b283cbb713c26",
   "observacoes": 8777,
   "proveniencia": {
    "codigo_gerador": {
-    "sha256": "49a4de465befe13b8a40b39b1875dc16dcdbab2ea4eb5c7943e2ac3c4297e5d0",
+    "sha256": "b84de0984ebc1131ef895de92c5a25dd024c46908b69f881dbb43c0af0da9cb2",
     "arquivos": 20,
     "escopo": "todos os .py de pipeline/eficiencia_saude (sem seed e sem testes), o catálogo de indicadores e as unidades compartilhadas base.py e entes.py de pipeline/eficiencia"
    },
@@ -21,11 +21,11 @@
     "nota": "o manifesto registra o sha256 de cada arquivo do seed; alterar uma entrada altera este hash. População e IPCA vêm do seed de Educação (captura compartilhada)."
    },
    "saidas": {
-    "hash_dados": "159b76024a953f4d6adabd4e73ca567830c37bb1d1ba28a133b187203522e9c3",
+    "hash_dados": "ea1565fee6907c1a430024b489a3fc11f093463b806fadb25c2b283cbb713c26",
     "observacoes": 8777
    },
    "git": {
-    "commit_de_partida": "00e81f3446087c538e5645b9489e5d108ca97fff",
+    "commit_de_partida": "ddae11449514aa2044a345a3b92f4f6c9306cff3",
     "codigo_com_mudanca_nao_commitada": false
    },
    "nota": "Reconstruir a gold com o mesmo seed e o mesmo código produz o mesmo hash_dados. O commit que incorpora a gold gerada é posterior à geração."
@@ -2895,13 +2895,13 @@
      "ente": 4205407,
      "nome": "Florianópolis",
      "ano": 2022,
-     "motivo": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 466.493.256,91) não pode ser conferida contra a DCA (R$ 466.493.256,91) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada."
+     "motivo": "A MSC traz 24 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 466.493.256,91) coincide com a DCA (R$ 466.493.256,91), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada."
     },
     {
      "ente": 4205407,
      "nome": "Florianópolis",
      "ano": 2023,
-     "motivo": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 524.465.670,09) não pode ser conferida contra a DCA (R$ 524.465.670,09) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada."
+     "motivo": "A MSC traz 30 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 524.465.670,09) coincide com a DCA (R$ 524.465.670,09), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada."
     },
     {
      "ente": 5002704,
@@ -70005,7 +70005,7 @@
    "componente": "pessoal",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 466.493.256,91) não pode ser conferida contra a DCA (R$ 466.493.256,91) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 24 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 466.493.256,91) coincide com a DCA (R$ 466.493.256,91), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",
@@ -70019,7 +70019,7 @@
    "componente": "outras_correntes",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 466.493.256,91) não pode ser conferida contra a DCA (R$ 466.493.256,91) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 24 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 466.493.256,91) coincide com a DCA (R$ 466.493.256,91), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",
@@ -70033,7 +70033,7 @@
    "componente": "capital",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 466.493.256,91) não pode ser conferida contra a DCA (R$ 466.493.256,91) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 24 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 466.493.256,91) coincide com a DCA (R$ 466.493.256,91), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",
@@ -70047,7 +70047,7 @@
    "componente": "pessoal",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 524.465.670,09) não pode ser conferida contra a DCA (R$ 524.465.670,09) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 30 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 524.465.670,09) coincide com a DCA (R$ 524.465.670,09), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",
@@ -70061,7 +70061,7 @@
    "componente": "outras_correntes",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 524.465.670,09) não pode ser conferida contra a DCA (R$ 524.465.670,09) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 30 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 524.465.670,09) coincide com a DCA (R$ 524.465.670,09), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",
@@ -70075,7 +70075,7 @@
    "componente": "capital",
    "valor": null,
    "status": "INCONSISTENTE",
-   "nota": "A MSC traz linhas da função 10 sem natureza da despesa identificável (sem natureza), de modo que a soma das categorias identificadas (R$ 524.465.670,09) não pode ser conferida contra a DCA (R$ 524.465.670,09) com segurança. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
+   "nota": "A MSC traz 30 linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas (créditos menos débitos) é R$ 0,00. A soma das categorias identificadas (R$ 524.465.670,09) coincide com a DCA (R$ 524.465.670,09), mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.",
    "nota_material": true,
    "elegivel_comparacao": false,
    "fonte": "siconfi_msc_funcao10",

@@ -224,15 +224,15 @@ export function variacao(atual: Ponto, anterior: Ponto): { pct: number } | { blo
 export const RESSALVA_CSV = "Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. A mediana descreve as capitais na comparação e não é referência de desempenho.";
 
 /** Metadados que acompanham toda exportação: o arquivo precisa se explicar fora do site (fonte, endereço, captura, versão e hash). */
-export function metaCsv(ix: IndiceSaude, m: MedidaSaude, moeda: Moeda = "nominal") {
+export function metaCsv(ix: IndiceSaude, m: MedidaSaude, o: Opcoes = { moeda: "nominal", denominador: "obee" }) {
   const ficha = ix.d.fichas.find((f) => f.id === m.indicador);
-  // o IPCA só é fonte do valor quando a moeda escolhida é a de 2025
-  const ids = (ficha?.fontes ?? []).filter((i) => i !== "ibge_ipca" || (m.moeda && moeda === "real"));
+  // o IPCA só é fonte do valor em reais de 2025; a população do IBGE só é fonte da taxa de ICSAP quando o denominador é o do exercício
+  const ids = (ficha?.fontes ?? []).filter((i) => (i !== "ibge_ipca" || (m.moeda && o.moeda === "real")) && (i !== "ibge_populacao" || m.id !== "icsap_taxa" || o.denominador === "obee"));
   const fontes = ids.map((i) => ix.d.fontes[i]).filter(Boolean);
   const datas = fontes.map((f) => f.capturado_em).filter(Boolean).sort();
   return {
     fonte: fontes.map((f) => f.nome).join("; "),
-    url: fontes.map((f) => f.url).filter(Boolean).join(" "),
+    url: Array.from(new Set(fontes.flatMap((f) => f.url.split(" ")).filter(Boolean))).join(" "),
     captura: datas.length ? datas[datas.length - 1] : "",
     versao: ficha?.versao_metodologica ?? "",
     geradoEm: ix.d.meta.gerado_em,
@@ -241,8 +241,8 @@ export function metaCsv(ix: IndiceSaude, m: MedidaSaude, moeda: Moeda = "nominal
 }
 
 const CAUDA_META = ["Fonte", "Páginas oficiais da fonte", "Data de captura", "Versão metodológica", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
-const caudaMeta = (ix: IndiceSaude, m: MedidaSaude, moeda: Moeda) => {
-  const x = metaCsv(ix, m, moeda);
+const caudaMeta = (ix: IndiceSaude, m: MedidaSaude, o: Opcoes) => {
+  const x = metaCsv(ix, m, o);
   return [x.fonte, x.url, x.captura, x.versao, x.geradoEm, x.hash, RESSALVA_CSV];
 };
 
@@ -252,7 +252,7 @@ export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number
   const regioes = ix.d.regioes;
   const fmt = (v: number) => m.formata(v);
   const mediana = c.ref?.mediana ?? null;
-  const cauda = caudaMeta(ix, m, o.moeda);
+  const cauda = caudaMeta(ix, m, o);
   const linha = (cap: CapitalPainel, p: PontoComCalculo, na: boolean) => [
     cap.nome, cap.uf, regioes[cap.regiao] ?? cap.regiao, m.rotulo, periodo, p.valor === null ? "" : fmt(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], na ? "sim" : "não",
     p.nota ?? "", p.numerador === null ? "" : String(p.numerador), p.denominador === null ? "" : String(p.denominador), mediana === null ? "" : String(mediana), c.ref ? String(c.ref.n) : "", ...cauda,
@@ -260,14 +260,20 @@ export function linhasCsvComparacao(ix: IndiceSaude, m: MedidaSaude, ano: number
   return [...c.incluidas.map((i) => linha(i.cap, i.ponto, true)), ...c.excluidas.map((x) => linha(x.cap, x.ponto, false))];
 }
 
-export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Marca de base do denominador (anos consecutivos só são comparáveis com a mesma marca)", "Nota", "Mediana das capitais no período", "Capitais na mediana", ...CAUDA_META];
+export const CABECALHO_CSV_SERIE = ["Capital ou conjunto", "UF", "Medida", "Período", "Valor (texto formatado)", "Valor numérico (ponto decimal)", "Unidade", "Estado do dado", "Na comparação", "Marca de base (anos consecutivos só são comparáveis com a mesma marca)", "Base do denominador", "Nota", "Mediana das capitais no período", "Capitais na mediana", ...CAUDA_META];
+
+/** Base da população do denominador no ano, quando a medida tem denominador populacional; vazio nas demais. */
+function basesDoDenominador(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, ano: number): string {
+  const comp = componenteDe(m, o);
+  return ix.d.basesDoDenominador[`${m.indicador}|${comp ?? ""}`]?.[ano] ?? "";
+}
 
 /** Série mostrada na visão Evolução: um ano por linha, com a marca de base e a mediana do grupo no mesmo ano. */
 export function linhasCsvSerie(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, cap: CapitalPainel | null, regiao: string | null, periodoDe: (ano: number) => string): string[][] {
-  const cauda = caudaMeta(ix, m, o.moeda);
+  const cauda = caudaMeta(ix, m, o);
   const medianas = serieDaMediana(ix, m, o, regiao);
   const porAno = new Map(medianas.map((x) => [x.ano, x]));
-  const nome = cap ? cap.nome : regiao ? `Mediana das capitais da região ${ix.d.regioes[regiao] ?? regiao}` : "Mediana das 26 capitais na comparação";
+  const nome = cap ? cap.nome : regiao ? `Mediana das capitais da região ${ix.d.regioes[regiao] ?? regiao}` : "Mediana das capitais na comparação";
   const pontos = cap
     ? serie(ix, m, cap.cod, o)
     : medianas.map((x) => ({ ano: x.ano, valor: x.valor, status: (x.valor === null ? "NAO_COMPARAVEL" : "OBSERVADO") as StatusDado, nota: x.valor === null ? "Nenhuma capital entra na comparação neste período: os valores oficiais existem e ficam fora da mediana." : null, notaMaterial: false, participacao: null, elegivel: x.valor !== null, situacao: null, motivo: null, quebraSerie: x.quebraSerie }));
@@ -275,7 +281,7 @@ export function linhasCsvSerie(ix: IndiceSaude, m: MedidaSaude, o: Opcoes, cap: 
     const x = porAno.get(p.ano);
     return [
       nome, cap?.uf ?? "", m.rotulo, periodoDe(p.ano), p.valor === null ? "" : m.formata(p.valor), p.valor === null ? "" : String(p.valor), m.unidade(o.moeda), ROTULO_ESTADO[p.status], p.elegivel ? "sim" : "não",
-      p.quebraSerie ? "sim" : "nao", p.nota ?? "", x?.valor === null || x === undefined ? "" : String(x.valor), x ? String(x.n) : "", ...cauda,
+      p.quebraSerie ? "sim" : "nao", basesDoDenominador(ix, m, o, p.ano), p.nota ?? "", x?.valor === null || x === undefined ? "" : String(x.valor), x ? String(x.n) : "", ...cauda,
     ];
   });
 }

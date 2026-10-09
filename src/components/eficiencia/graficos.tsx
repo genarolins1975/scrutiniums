@@ -337,7 +337,7 @@ export function MiniSerie({
                 const min = Math.min(...ns);
                 const max = Math.max(...ns);
                 return min === max
-                  ? ` Em todos os anos a mediana usa as mesmas ${max} capitais.`
+                  ? ` Nos anos com mediana, ela usa as mesmas ${max} capitais.`
                   : ` O número de capitais na comparação muda de um ano para outro (de ${min} a ${max}); a variação da linha não é a evolução de um grupo constante.`;
               })()}
             </li>

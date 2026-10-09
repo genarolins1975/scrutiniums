@@ -115,14 +115,22 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
   const alternar = (col: Colunas) => definir({ ord: col, dir: s.ord === col && s.dir === "cres" ? "desc" : "cres" });
   const rotuloPeriodoMedida = (mm: (typeof cols)[number]) => (mm.periodo === "dezembro" ? `dezembro de ${ano}` : mm.periodo === "processamento" ? `ano de processamento ${ano}` : `exercício ${ano}`);
   const exportarTabela = () => {
-    const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)}; ${rotuloPeriodoMedida(mm)}; valor numérico com ponto decimal)`), "Observações", "Fontes das medidas", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
-    const fontes = cols.map((mm) => `${mm.rotuloCurto}: ${metaCsv(ix, mm, s.moeda).fonte}`).join(" | ");
+    const cab = ["Capital", "UF", ...cols.map((mm) => `${mm.rotulo} (${mm.unidade(s.moeda)}; ${rotuloPeriodoMedida(mm)}; valor numérico com ponto decimal)`), "Observações", "Fontes das medidas", "Páginas oficiais das fontes", "Data de captura mais recente", "Versões metodológicas", "Dados gerados em", "Hash dos dados", "Leia antes de usar"];
+    const oo = { moeda: s.moeda, denominador: s.den };
+    const metas = cols.map((mm) => ({ mm, x: metaCsv(ix, mm, oo) }));
+    const fontes = metas.map(({ mm, x }) => `${mm.rotuloCurto}: ${x.fonte}`).join(" | ");
+    const paginas = Array.from(new Set(metas.flatMap(({ x }) => x.url.split(" ")).filter(Boolean))).join(" ");
+    const captura = metas.map(({ x }) => x.captura).filter(Boolean).sort().slice(-1)[0] ?? "";
+    const versoes = metas.map(({ mm, x }) => `${mm.rotuloCurto}: ${x.versao}`).join(" | ");
     const linhas = ordenadas.map(({ cap, cel }) => [
       cap.nome,
       cap.uf,
       ...cel.map(({ p }) => (p.valor === null ? "" : String(p.valor))),
       cel.map(({ p, cobre, ultimo }, i) => (!cobre ? `${cols[i].rotuloCurto}: sem dado em ${ano}; a série vai até ${ultimo}` : p.valor === null ? `${cols[i].rotuloCurto}: ${ROTULO_ESTADO[p.status]}` : !p.elegivel ? `${cols[i].rotuloCurto}: valor oficial fora da comparação` : "")).filter(Boolean).join("; "),
       fontes,
+      paginas,
+      captura,
+      versoes,
       dados.meta.gerado_em,
       dados.meta.hash_dados,
       RESSALVA_CSV,

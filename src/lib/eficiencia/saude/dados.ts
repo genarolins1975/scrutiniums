@@ -123,6 +123,15 @@ export function dadosSaude(g: GoldSaude, pagina: keyof typeof INDICADORES_DA_PAG
     basePopulacional: Object.fromEntries(
       g.observacoes.filter((o) => o.indicador === "ctx.populacao.residente" && o.base_populacional).map((o) => [o.ano, o.base_populacional as string]),
     ),
+    basesDoDenominador: (() => {
+      const mapa: Record<string, Record<number, string>> = {};
+      for (const o of g.observacoes) {
+        if (!o.base_populacional || o.indicador === "ctx.populacao.residente" || !incluidos.has(o.indicador)) continue;
+        const k = `${o.indicador}|${o.componente ?? ""}`;
+        (mapa[k] ??= {})[o.ano] ??= o.base_populacional;
+      }
+      return mapa;
+    })(),
     fontes: Object.fromEntries(
       g.fontes.map((f) => {
         const caps = f.capturas;
