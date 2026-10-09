@@ -1655,6 +1655,7 @@ export function entidadesBuscaEmpresas(g: Pick<EmpresasGold, "distribuidoras" | 
   }));
 }
 
+/** `liga` completa a frase "Documentado ...": já traz a preposição contraída ("pelo", "pela"). */
 export type PassoVinculo = { id: "empresa" | "participacao" | "ativo" | "controle"; titulo: string; liga: string; contagem: string };
 
 /**
@@ -1669,25 +1670,25 @@ export function passosVinculo(g: Pick<EmpresasGold, "cadastro" | "controle" | "d
     {
       id: "empresa",
       titulo: "Empresa",
-      liga: "o CNPJ de 14 dígitos que a fonte oficial publica no próprio registro",
+      liga: "pelo CNPJ de 14 dígitos que a fonte oficial publica no próprio registro",
       contagem: `${inteiro(a.proprietarios_cnpj)} donos de usinas, ${inteiro(g.distribuidoras.resumo.distribuidoras)} distribuidoras e ${inteiro(g.financas.universo.companhias)} companhias abertas; as listas se sobrepõem`,
     },
     {
       id: "participacao",
       titulo: "Participação direta",
-      liga: "o percentual de cada dono no registro da usina",
+      liga: "pelo percentual de cada dono no registro da usina",
       contagem: `${pctTexto(a.pct_mw_operacao_vinculado, 2)} da potência em operação tem todos os donos identificados por CNPJ`,
     },
     {
       id: "ativo",
       titulo: "Ativo",
-      liga: `o CEG (${SIGLAS.CEG}) da usina e o módulo de transmissão do SIGET (${SIGLAS.SIGET}), com o CNPJ do contrato`,
+      liga: `pelo CEG (${SIGLAS.CEG}) da usina e pelo módulo de transmissão do SIGET (${SIGLAS.SIGET}), com o CNPJ do contrato`,
       contagem: `${inteiro(a.usinas)} usinas${t ? ` e ${inteiro(t.resumo.modulos)} módulos de transmissão` : ""}`,
     },
     {
       id: "controle",
       titulo: "Controle declarado",
-      liga: "a cadeia de sócios controladores que cada agente declara à ANEEL",
+      liga: "pela cadeia de sócios controladores que cada agente declara à ANEEL",
       contagem: `${inteiro(grupos)} grupos no topo das cadeias, pela capacidade proporcional`,
     },
   ];

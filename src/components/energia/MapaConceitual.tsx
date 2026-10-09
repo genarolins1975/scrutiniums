@@ -94,10 +94,11 @@ export function MapaConceitual({
                   d={caminho(porId.get(l.de)!.pos, porId.get(l.para)!.pos)}
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth={ativa ? 2.6 : 1.6}
+                  strokeWidth={ativa ? 2.8 : 2}
                   strokeDasharray={tracos.get(l.tipo) || undefined}
                   markerEnd="url(#mapa-seta)"
-                  className={ativa ? "text-energia-dark" : "text-mineral opacity-40"}
+                  // fora da seleção o traço continua legível (contraste de objeto gráfico, 3:1): o tipo da ligação se lê pelo padrão do traço, e a seleção só o escurece e engrossa
+                  className={ativa ? "text-energia-dark" : "text-mineral opacity-90"}
                 />
               );
             })}

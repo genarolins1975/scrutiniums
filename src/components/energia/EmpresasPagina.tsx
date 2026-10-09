@@ -111,7 +111,7 @@ export function EmpresasPassosVinculo({ passos }: { passos: PassoVinculo[] }) {
                 </span>
               )}
             </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-carvao-muted">Documentado por {p.liga}.</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-carvao-muted">Documentado {p.liga}.</p>
             <p className="mt-1.5 text-sm leading-relaxed text-carvao">{p.contagem}.</p>
           </li>
         ))}
