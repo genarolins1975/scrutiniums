@@ -669,6 +669,16 @@ describe("a página renderizada: siglas, mapa no celular, atualidade e busca", (
     expect(f).toContain("●");
   });
 
+  it("o exemplo real não deixa a sigla do conjunto solta, e o resumo concorda o número de fontes atrasadas", () => {
+    const t = texto(html);
+    expect(t).toContain("calculada pela plataforma a partir de balanço do Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica (SAMP), da ANEEL.");
+    expect(t).not.toContain("SAMP Balanço");
+    const pub = gold<PublicacaoAtualidade & { disponivel?: boolean }>("publicacao.json");
+    const atrasadas = linhasAtualidade(pub, new Set()).filter((l) => l.atrasado).length;
+    expect(t).toContain(`${atrasadas} ${atrasadas === 1 ? "atrasada" : "atrasadas"}, `);
+    expect(t).not.toMatch(/\b1 atrasadas\b/);
+  });
+
   it("o peso do HTML da inicial fica abaixo do orçamento (avaliação técnica U01, critério L: a inicial não tinha teste de peso)", () => {
     // a página sozinha, sem o layout: 400 KB deixam folga para o índice crescer, e a inicial não carrega série nenhuma
     expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400 * 1024);
