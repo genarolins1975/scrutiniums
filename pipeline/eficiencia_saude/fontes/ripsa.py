@@ -73,12 +73,21 @@ def extrai_icsap():
     """Recorte agregado por capital e ano: total de ICSAP, 19 grupos e população do denominador (soma das células de sexo e faixa)."""
     caminho, sha, lm, etag = baixa("icsap")
     acc = {}
+    nac = {}
     linhas = 0
     f, r = _leitor(caminho, ARQUIVOS["icsap"][1])
     with f:
         for l in r:
             linhas += 1
             mun, ano = l["Municipio"], l["ano"]
+            if int(ano) in ANOS:
+                n = nac.setdefault(int(ano), {"total": 0.0, "pop": 0.0, "municipios": set(), "cap_total": 0.0, "cap_pop": 0.0})
+                n["total"] += _num(l["Numerador - Número internaçoes CSAP"])
+                n["pop"] += _num(l["Denominador - Populaçao estimada"])
+                n["municipios"].add(mun)
+                if mun in CAPITAIS6:
+                    n["cap_total"] += _num(l["Numerador - Número internaçoes CSAP"])
+                    n["cap_pop"] += _num(l["Denominador - Populaçao estimada"])
             if mun not in CAPITAIS6 or int(ano) not in ANOS:
                 continue
             a = acc.setdefault((mun, int(ano)), {"total": 0.0, "pop": 0.0, **{f"g{i}": 0.0 for i in range(1, 20)}, "celulas": 0})
@@ -94,14 +103,21 @@ def extrai_icsap():
                       "celulas_sexo_faixa": a["celulas"], **{f"grupo_{i}": int(a[f"g{i}"]) for i in range(1, 20)}})
     destino = os.path.join(base.SEED, "ripsa", "mrb402_icsap_capitais_2021_2024.csv.gz")
     sha_r = base.grava_csv_gz(destino, campos, saida)
+    # referência nacional: soma de todos os municípios do próprio arquivo (nada a mais é coletado); o "exceto capitais" é a diferença
+    nacional = [{"ano": a, "municipios": len(n["municipios"]), "icsap_total": int(n["total"]), "populacao_denominador": int(n["pop"]),
+                 "icsap_26_capitais": int(n["cap_total"]), "populacao_26_capitais": int(n["cap_pop"])} for a, n in sorted(nac.items())]
+    destino_nac = os.path.join(base.SEED, "ripsa", "mrb402_icsap_nacional_2021_2024.csv.gz")
+    sha_nac = base.grava_csv_gz(destino_nac, ["ano", "municipios", "icsap_total", "populacao_denominador", "icsap_26_capitais", "populacao_26_capitais"], nacional)
     base.registra_captura("ripsa_mrb402_icsap", {
         "instituicao": "Ministério da Saúde (RIPSA, indicador MRB.4.02)",
         "conjunto": "Taxa de internação hospitalar SUS por condições sensíveis à atenção primária (ICSAP), por município de residência",
         "pagina": PAGINA_MORBIDADE, "url": f"{BUCKET}/{ARQUIVOS['icsap'][0]}", "capturado_em": base.agora_utc(), "publicado_em": lm,
         "etag": etag, "sha256_original": sha, "linhas_arquivo_original": linhas, "recorte": os.path.relpath(destino, base.RAIZ),
         "sha256_recorte": sha_r, "linhas_recorte": len(saida),
+        "recorte_nacional": os.path.relpath(destino_nac, base.RAIZ), "sha256_recorte_nacional": sha_nac,
         "parametros": ("26 capitais; anos 2021 a 2024; somados os 3 sexos e as 13 faixas etárias (o arquivo traz uma linha por sexo e faixa); "
-                       "total e 19 grupos da Lista Brasileira (Portaria SAS/MS 221/2008); população do denominador do próprio arquivo."),
+                       "total e 19 grupos da Lista Brasileira (Portaria SAS/MS 221/2008); população do denominador do próprio arquivo. "
+                       "Referência nacional: soma de todos os municípios do mesmo arquivo, por ano."),
     })
     return len(saida)
 

@@ -232,6 +232,18 @@
     }
    }
   },
+  "relatorio_aps_cobertura_brasil": {
+   "instituicao": "Ministério da Saúde (SAPS, Relatório APS)",
+   "conjunto": "Cobertura Potencial Estimada da Atenção Primária à Saúde, Brasil, por competência mensal",
+   "pagina": "https://relatorioaps.saude.gov.br/",
+   "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=BRASIL&nuCompInicio=202101&nuCompFim=202607",
+   "capturado_em": "2026-10-09T12:22:19Z",
+   "sha256_resposta": "509c30b15fa73e7cd6383927411003e485ba35fb2a63d062b6072db3c4c09d3b",
+   "linhas": 67,
+   "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_brasil.json.gz",
+   "sha256": "429bc4d888cf8125f79ff9d59ecdbea8c0fbef3d6ea6de36e29b149459cdaa7b",
+   "parametros": "Brasil; competências 202101 a 202607; resposta integral"
+  },
   "ripsa_cob201_internacoes": {
    "instituicao": "Ministério da Saúde (RIPSA, indicador COB.2.01)",
    "conjunto": "Internações hospitalares SUS, por município de residência",
@@ -267,7 +279,7 @@
    "conjunto": "Taxa de internação hospitalar SUS por condições sensíveis à atenção primária (ICSAP), por município de residência",
    "pagina": "https://dadosabertos.saude.gov.br/dataset/ripsa-morbidade-dimensao-4-morbidade-hospitalar",
    "url": "https://demas-dados-abertos.s3.amazonaws.com/csv/mgdi_ms_qu3.csv.zip",
-   "capturado_em": "2026-10-09T12:05:26Z",
+   "capturado_em": "2026-10-09T12:23:26Z",
    "publicado_em": null,
    "etag": null,
    "sha256_original": "5fccaaa04121e5c8cd7484c2cc7abbb1226d5ec1a642e92d6412b5e8253dfc68",
@@ -275,7 +287,9 @@
    "recorte": "pipeline/eficiencia_saude/seed/ripsa/mrb402_icsap_capitais_2021_2024.csv.gz",
    "sha256_recorte": "bb5e772bff2d336b31273c219d5815e3ca98f918ff1b4be55d6d362a1bff20a6",
    "linhas_recorte": 104,
-   "parametros": "26 capitais; anos 2021 a 2024; somados os 3 sexos e as 13 faixas etárias (o arquivo traz uma linha por sexo e faixa); total e 19 grupos da Lista Brasileira (Portaria SAS/MS 221/2008); população do denominador do próprio arquivo."
+   "recorte_nacional": "pipeline/eficiencia_saude/seed/ripsa/mrb402_icsap_nacional_2021_2024.csv.gz",
+   "sha256_recorte_nacional": "702a874f5ae1ee60ea279b202faa7bf7ae2e1fdb38bbf0666071ef1dc39b57b4",
+   "parametros": "26 capitais; anos 2021 a 2024; somados os 3 sexos e as 13 faixas etárias (o arquivo traz uma linha por sexo e faixa); total e 19 grupos da Lista Brasileira (Portaria SAS/MS 221/2008); população do denominador do próprio arquivo. Referência nacional: soma de todos os municípios do mesmo arquivo, por ano."
   },
   "siconfi_dca_anexo_i_e": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",

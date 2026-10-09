@@ -58,3 +58,20 @@ def coleta(inicio="202101", fim="202607", pausa=1.0):
         "arquivos": arquivos,
     })
     return arquivos
+
+
+def coleta_brasil(inicio="202101", fim="202607"):
+    """Referência nacional oficial: a mesma cobertura potencial, publicada pelo serviço para o Brasil (unidadeGeografica=BRASIL)."""
+    url = f"{HOST}/cobertura/aps?unidadeGeografica=BRASIL&nuCompInicio={inicio}&nuCompFim={fim}"
+    capturado_em = base.agora_utc()
+    bruto = _get(url)
+    dados = json.loads(bruto.decode("utf-8"))
+    destino = os.path.join(base.SEED, "relatorio_aps", "cobertura_aps_brasil.json.gz")
+    sha = base.grava_json_gz(destino, dados)
+    base.registra_captura("relatorio_aps_cobertura_brasil", {
+        "instituicao": "Ministério da Saúde (SAPS, Relatório APS)",
+        "conjunto": "Cobertura Potencial Estimada da Atenção Primária à Saúde, Brasil, por competência mensal",
+        "pagina": PAGINA, "url": url, "capturado_em": capturado_em, "sha256_resposta": base.sha256_bytes(bruto), "linhas": len(dados),
+        "recorte": os.path.relpath(destino, base.RAIZ), "sha256": sha, "parametros": f"Brasil; competências {inicio} a {fim}; resposta integral",
+    })
+    return len(dados)
