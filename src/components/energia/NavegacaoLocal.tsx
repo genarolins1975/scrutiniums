@@ -27,6 +27,7 @@ export function NavegacaoLocal({
   variante = "faixa",
   titulo,
   nivelTitulo = 2,
+  atualEhSecao = false,
 }: {
   /** Nome acessível da navegação (ex.: "Páginas de Água e clima"). */
   rotulo: string;
@@ -38,6 +39,11 @@ export function NavegacaoLocal({
   titulo?: string;
   /** Nível do título (2 na página, 3 quando o bloco fica dentro de um painel, que já é h2). */
   nivelTitulo?: 2 | 3;
+  /**
+   * A página atual é filha da página do item (um verbete ou uma trilha dentro da seção): o item da seção leva `aria-current="true"`
+   * (a seção que contém a página) e não `"page"`, que o leitor de tela anuncia como a própria página.
+   */
+  atualEhSecao?: boolean;
 }) {
   if (variante === "capitulos") {
     const restantes = itens.filter((i) => i.id !== atual);
@@ -74,7 +80,7 @@ export function NavegacaoLocal({
             <li key={i.id}>
               <Link
                 href={i.href}
-                aria-current={ativo ? "page" : undefined}
+                aria-current={ativo ? (atualEhSecao ? "true" : "page") : undefined}
                 className={`-mb-px inline-flex min-h-[44px] items-center border-b-2 px-0.5 ${
                   ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:border-linha hover:text-carvao"
                 }`}

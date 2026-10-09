@@ -151,7 +151,7 @@ export function AprendaVerbete({ c }: { c: Conceito }) {
 
   return (
     <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="verbete" data-verbete={c.slug}>
-      <AprendaNavegacao atual="verbetes" />
+      <AprendaNavegacao atual="verbetes" neta />
       <AprendaCabecalho
         rotulo={`Verbete · ${c.grupo}`}
         titulo={

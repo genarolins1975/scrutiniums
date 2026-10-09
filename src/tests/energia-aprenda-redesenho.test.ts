@@ -293,13 +293,14 @@ describe("três tipos de página, cada um com a sua cara", () => {
   it("as páginas filhas levam a faixa das seções do Aprenda com a seção atual marcada; o índice, que é a abertura, não leva", () => {
     const atual = (h: string) => {
       const faixa = h.slice(h.indexOf('aria-label="Seções do Aprenda"'));
-      const a = /<a [^>]*aria-current="page"[^>]*>/.exec(faixa)?.[0] ?? "";
-      return /href="([^"]+)"/.exec(a)?.[1];
+      const a = /<a [^>]*aria-current="(?:page|true)"[^>]*>/.exec(faixa)?.[0] ?? "";
+      return { href: /href="([^"]+)"/.exec(a)?.[1], valor: /aria-current="([^"]+)"/.exec(a)?.[1] };
     };
     expect(indice).not.toContain('aria-label="Seções do Aprenda"');
-    expect(atual(trilhas)).toBe("/setor-eletrico/aprenda/trilhas");
-    expect(atual(trilha)).toBe("/setor-eletrico/aprenda/trilhas");
-    expect(atual(verbete)).toBe("/setor-eletrico/aprenda");
+    // a página da própria seção é "page"; um verbete ou uma trilha, que está dentro da seção, marca a seção com "true" (a seção que contém a página)
+    expect(atual(trilhas)).toEqual({ href: "/setor-eletrico/aprenda/trilhas", valor: "page" });
+    expect(atual(trilha)).toEqual({ href: "/setor-eletrico/aprenda/trilhas", valor: "true" });
+    expect(atual(verbete)).toEqual({ href: "/setor-eletrico/aprenda", valor: "true" });
   });
 
   it("o rótulo diz o tipo: trilha, verbete e o tema do verbete", () => {

@@ -146,7 +146,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda:trilhas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="trilha">
-        <AprendaNavegacao atual="trilhas" />
+        <AprendaNavegacao atual="trilhas" neta />
         <AprendaCabecalho
           rotulo="Trilha"
           titulo={t.titulo}

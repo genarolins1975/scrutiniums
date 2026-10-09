@@ -237,7 +237,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
                   onClick={() => escolher(m.id)}
                   onKeyDown={(e) => teclado(e, i)}
                   title={m.dica}
-                  className={`rotulo min-h-[40px] min-w-0 flex-1 basis-[5.5rem] border px-2 transition-colors sm:flex-none sm:px-5 [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
+                  className={`rotulo min-h-[40px] min-w-0 flex-1 basis-[5.5rem] border px-2 transition-colors sm:flex-none sm:px-5 max-md:min-h-[44px] [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
                     ativo ? "relative z-10 border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
                   }`}
                 >

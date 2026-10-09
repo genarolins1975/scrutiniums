@@ -30,8 +30,8 @@ const ITENS_APRENDA: ItemLocal[] = [
  * Faixa das páginas filhas do índice (trilhas e verbetes): as duas seções do módulo, com a que contém a página marcada. A abertura
  * (o índice) não leva a faixa, porque mostra as trilhas como capítulos (AprendaTrilhas).
  */
-export function AprendaNavegacao({ atual }: { atual: "verbetes" | "trilhas" }) {
-  return <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} />;
+export function AprendaNavegacao({ atual, neta = false }: { atual: "verbetes" | "trilhas"; /** Verbete ou trilha: a página é filha da seção marcada. */ neta?: boolean }) {
+  return <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} atualEhSecao={neta} />;
 }
 
 /** Descrição de uma trilha como capítulo: a pergunta que ela responde e quantos passos tem. */
