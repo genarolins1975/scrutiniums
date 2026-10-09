@@ -69,9 +69,9 @@ export default function PerdasRegulatorioPage() {
     },
     {
       id: "tecnico-realizado",
-      comparacao: "Perda técnica realizada contra o percentual regulatório",
-      estado: "nao-se-aplica",
-      motivo: <>A perda técnica do SAMP é o próprio percentual regulatório do processo tarifário aplicado à energia injetada publicada, e não uma medição: a diferença entre as duas seria zero por construção.</>,
+      comparacao: "Perda técnica informada no SAMP contra o percentual técnico regulatório homologado",
+      estado: "indisponivel",
+      motivo: <>O percentual técnico homologado de cada concessionária não está em base aberta acessível ao observatório. A perda técnica do SAMP é a informada no balanço de energia, uma estimativa e não uma medição, e pode diferir do percentual homologado: sem a referência, a página não diz quanto.</>,
     },
     ...(bloqueioRegulatorio
       ? [

@@ -5,7 +5,7 @@ import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
-import { anosSerieNacional, coberturaSeparacao, linhaNacional } from "@/lib/energia/perdas";
+import { anosSerieNacional, coberturaSeparacao, linhaNacional, nPublicaramTecnica } from "@/lib/energia/perdas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 
 /**
@@ -133,7 +133,7 @@ export function PerdasSeguir({
 export function SeparacaoMetricas({ g, endereco }: { g: PerdasGold; endereco: string }) {
   const ref = g.referencia.ano;
   const nac = linhaNacional(g, ref);
-  const cob = nac ? coberturaSeparacao(nac) : null;
+  const cob = nac ? coberturaSeparacao(nac, nPublicaramTecnica(g.distribuidoras)) : null;
   return (
     <FaixaMetricas
       colunas={2}
@@ -154,7 +154,7 @@ export function SeparacaoMetricas({ g, endereco }: { g: PerdasGold; endereco: st
         unidade="% da energia injetada de referência"
         periodo={nac ? `${ref} · ${nac.n_com_tecnica} de ${nac.n_distribuidoras} concessionárias` : String(ref)}
         motivoAusencia="Nenhuma concessionária válida publicou a técnica nos 12 meses."
-        nota={cob ? <>{cob.tecnica}. Estimativa da fonte: o percentual regulatório aplicado à energia injetada.</> : undefined}
+        nota={cob ? <>{cob.tecnica}. Estimativa informada pela distribuidora no balanço de energia (SAMP), não medição.</> : undefined}
         cor="var(--escala-seq-4)"
       />
       <Numero

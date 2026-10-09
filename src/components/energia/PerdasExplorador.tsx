@@ -147,7 +147,17 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   const resposta = valores ? respostaMapa({ periodo, medida, valores, rotulos, nacional: linhaNac, acumulado }) : null;
   const veredito = valores ? vereditoMapa({ periodo, medida, valores, rotulos, acumulado }) : null;
   // concessionárias que somam o agregado nacional do período (51 em 2025; as comparáveis nos dois períodos no acumulado)
-  const nSoma = periodo.tipo === "acumulado" ? acumulado?.agregados.find((x) => x.universo === "concessionarias")?.n_distribuidoras ?? null : linhaNac && !linhaNac.parcial ? linhaNac.n_distribuidoras : null;
+  // a soma da técnica e a da não técnica usam só as concessionárias que publicam a separação (18 em 2025): cada medida tem a sua contagem, lida da série nacional
+  const nSoma =
+    periodo.tipo === "acumulado"
+      ? acumulado?.agregados.find((x) => x.universo === "concessionarias")?.n_distribuidoras ?? null
+      : linhaNac && !linhaNac.parcial
+        ? medida.id === "tecnica"
+          ? linhaNac.n_com_tecnica
+          : medida.id === "pnt_bt"
+            ? linhaNac.n_com_pnt_bt
+            : linhaNac.n_distribuidoras
+        : null;
   const entidadesMapa = useMemo<EntidadeMapa[]>(
     () => distribuidoras.map((d) => ({ id: d.cnpj, rotulo: rotuloDistribuidora(d), nome: d.nome, ufs: d.territorio?.ufs.join("/") ?? "" })),
     [distribuidoras],
@@ -277,7 +287,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
         periodo={periodo.rotulo}
         universo={`${distribuidoras.length} distribuidoras com balanço no SAMP em algum ano${
           nComDado !== null && nComparaveis !== null
-            ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida${nSoma !== null && medida.id !== "variacao" ? `; a soma nacional usa só as ${nSoma} concessionárias comparáveis` : ""}`
+            ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida${nSoma !== null && medida.id !== "variacao" ? `; a soma nacional usa só as ${nSoma} concessionárias ${medida.id === "tecnica" || medida.id === "pnt_bt" ? "que publicam a separação e entram na soma" : "comparáveis"}` : ""}`
             : ""
         }.`}
         unidade={medida.unidade}

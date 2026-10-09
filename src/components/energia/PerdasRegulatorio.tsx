@@ -6,9 +6,9 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/PerdasSelecao";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
-import { dataBR, mesAno, num, sinal } from "@/lib/energia/formato";
+import { dataBR, mesAno } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import { degrausRegulatorio, rotuloResolucao, type LinhaRegulatorio } from "@/lib/energia/perdas";
+import { degrausRegulatorio, fraseSelecaoRegulatorio, linhasTrechosRegulatorio, rotuloResolucao, type LinhaRegulatorio } from "@/lib/energia/perdas";
 import type { SegmentoTecnico } from "@/lib/energia/tipos-perdas";
 
 /**
@@ -29,8 +29,9 @@ const COLUNAS: ColunaTabela[] = [
   { id: "inicio", rotulo: "Início do trecho", tipo: "data" },
   { id: "fim", rotulo: "Fim do trecho", tipo: "data" },
   { id: "meses", rotulo: "Meses", tipo: "numero", casas: 0 },
-  { id: "pct", rotulo: "Percentual técnico", tipo: "numero", unidade: "% da injetada publicada", casas: 3 },
-  { id: "troca_pp", rotulo: "Troca contra o trecho anterior", tipo: "numero", unidade: "p.p.", casas: 3 },
+  { id: "pct", rotulo: "Percentual técnico do trecho", tipo: "numero", unidade: "% da injetada publicada", casas: 3 },
+  { id: "pct_anterior", rotulo: "Percentual do trecho anterior de referência", tipo: "numero", unidade: "% da injetada publicada", casas: 3 },
+  { id: "diferenca", rotulo: "Diferença contra o trecho anterior de referência", tipo: "numero", unidade: "p.p.", casas: 3 },
   { id: "resolucao", rotulo: "Resolução homologatória associada", tipo: "texto" },
   { id: "inicio_vigencia", rotulo: "Início de vigência da resolução", tipo: "data" },
 ];
@@ -59,28 +60,11 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
         rotulo: l.rotulo,
         valor: l.atual,
         referencia: l.anterior,
-        detalhe: `trecho de ${mesAno(l.inicio)} a ${mesAno(l.fim)} (${l.meses} meses)${l.resolucao ? `; ${rotuloResolucao(l.resolucao)}, vigência em ${dataBR(l.inicio_vigencia)}` : ""}`,
+        detalhe: `trecho mais recente de ${mesAno(l.inicio)} a ${mesAno(l.fim)} (${l.meses} meses)${l.anterior_inicio && l.anterior_fim ? `; trecho anterior de referência de ${mesAno(l.anterior_inicio)} a ${mesAno(l.anterior_fim)}` : "; sem trecho anterior de referência"}${l.resolucao ? `; ${rotuloResolucao(l.resolucao)}, vigência em ${dataBR(l.inicio_vigencia)}` : ""}`,
       })),
     [linhas],
   );
-  const linhasTabela = useMemo(
-    () =>
-      Object.entries(segmentos).flatMap(([cnpj, segs]) =>
-        segs.map((s) => ({
-          id: `${cnpj}-${s.inicio}`,
-          cnpj,
-          rotulo: rotulos[cnpj] ?? cnpj,
-          inicio: s.inicio,
-          fim: s.fim,
-          meses: s.meses,
-          pct: s.pct,
-          troca_pp: s.troca_pp,
-          resolucao: s.reh?.resolucao ?? null,
-          inicio_vigencia: s.reh?.inicio_vigencia ?? null,
-        })),
-      ),
-    [segmentos, rotulos],
-  );
+  const linhasTabela = useMemo(() => linhasTrechosRegulatorio(segmentos, rotulos), [segmentos, rotulos]);
   const selTabela = sel ? linhasTabela.find((l) => l.cnpj === sel)?.id ?? null : null;
 
   return (
@@ -91,11 +75,12 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
         unidade="%"
         casas={3}
         rotuloValor="Trecho mais recente"
-        rotuloReferencia="Trecho anterior"
+        rotuloReferencia="Trecho anterior de referência"
         textoSentido={{ acima: "maior que no trecho anterior", abaixo: "menor que no trecho anterior", igual: "igual ao trecho anterior" }}
         selecionado={linhaSel ? linhaSel.id : null}
         onSelecionar={selecionar}
         ordemInicial={{ por: "valor", direcao: "desc" }}
+        chaveUrl="graf"
       />
 
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
@@ -105,12 +90,7 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
           <p>{rotulos[sel] ?? sel}: nenhum trecho de 6 meses ou mais com o mesmo percentual técnico foi identificado na série do SAMP (trechos curtos ficam só no arquivo para download).</p>
         ) : (
           <>
-            <p data-resposta="regulatorio-distribuidora">
-              {`${linhaSel.rotulo}: ${num(linhaSel.atual, 3)}% da energia injetada publicada de ${mesAno(linhaSel.inicio)} a ${mesAno(linhaSel.fim)} (${linhaSel.meses} meses)`}
-              {linhaSel.anterior !== null && linhaSel.troca_pp !== null ? `, ${sinal(linhaSel.troca_pp, 3)} p.p. em relação ao trecho anterior (${num(linhaSel.anterior, 3)}%)` : ""}
-              {linhaSel.resolucao ? `; a troca coincide com o início de vigência da ${rotuloResolucao(linhaSel.resolucao)} em ${dataBR(linhaSel.inicio_vigencia)}` : ""}.
-              {linhaSel.n_segmentos > (segmentos[sel]?.length ?? 0) ? ` A gold traz os ${segmentos[sel]?.length ?? 0} trechos mais recentes de ${linhaSel.n_segmentos}; os demais estão no arquivo para download.` : ""}
-            </p>
+            <p data-resposta="regulatorio-distribuidora">{fraseSelecaoRegulatorio(linhaSel, segmentos[sel]?.length ?? 0)}</p>
             <div className="mt-1">
               {prova.estado === "pronta" ? (
                 <ComproveNumero evidencia={prova.evidencia} rotulo="Comprove este percentual" endereco={`https://scrutiniums.com/setor-eletrico/perdas/regulatorio?d=${linhaSel.id}#regulatorio`} />
@@ -124,6 +104,11 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
                 </button>
               ) : null}
             </div>
+            {linhaSel.resolucao && (
+              <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota-ficha="">
+                A ficha cita a troca contra o trecho imediatamente anterior, curto ou não, que o observatório usa para associar a resolução; a diferença desta página é contra o trecho de referência anterior.
+              </p>
+            )}
             {degraus.length > 0 && (
               <div className="mt-3">
                 <GraficoLinhas
@@ -159,7 +144,13 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
         onSelecionar={(id) => selecionar(id ? linhasTabela.find((l) => l.id === id)?.cnpj ?? null : null)}
         ordemInicial={{ coluna: "pct", direcao: "desc" }}
         dicaBusca="Sigla ou nome"
-        nota={<>Inferência do observatório (natureza estimada): trecho de 6 meses ou mais com a mesma razão técnica ÷ injetada publicada. Não é a leitura do ato homologatório.</>}
+        nota={
+          <>
+            Inferência do observatório (natureza estimada): trecho de 6 meses ou mais com a mesma razão técnica ÷ injetada publicada. Não é a leitura do ato homologatório. A diferença é a mesma do gráfico: percentual do trecho
+            menos o do trecho de referência anterior da lista; fica sem dado no primeiro trecho de referência da série ou quando o anterior não consta na lista (o arquivo para baixar traz todos os trechos, e a coluna troca_pp dele é
+            contra o trecho imediatamente anterior, curto ou não, ou contra o mês anterior).
+          </>
+        }
       />
     </div>
   );

@@ -632,7 +632,7 @@ describe("revisão de interface: anos, ligações e ausência", () => {
     expect(marcaLeiauteSeparacao(g.nacional, "pnt_bt")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 31 de 51 com a separação fechando" }]);
     // contagens publicadas no lugar de "cerca de metade"
     expect(fraseCoberturaSeparacao(g.nacional, ref)).toBe(
-      "em 2023, 48 de 50 concessionárias válidas publicaram a técnica nos 12 meses e 46 tiveram a separação fechando; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
+      "em 2023, 48 de 50 concessionárias válidas entram na soma da técnica e 46, na da não técnica; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
     );
     // o texto da página diz as contagens; "cerca de metade" só resta na limitação escrita pelo pipeline na gold
     const comp = paginas["/setor-eletrico/perdas/composicao"].replace(/<[^>]+>/g, "");

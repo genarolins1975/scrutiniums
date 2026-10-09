@@ -33,7 +33,7 @@ import type {
   Territorio,
 } from "./tipos-perdas";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
-import { classeDe, quebrasFixas, type Classificacao } from "./escalas";
+import { classeDe, diferencaPar, formatarDiferenca, quebrasFixas, sentidoDiferenca, type Classificacao } from "./escalas";
 import { resumo as resumoDistribuicao } from "./distribuicao";
 import { dataBR, mesAno, num, plural } from "./formato";
 
@@ -91,7 +91,7 @@ export const ROTULO_DEFINICAO: Record<keyof PerdasGold["definicoes"], string> = 
   energia_injetada: "Energia injetada",
   mercado_bt: "Mercado de baixa tensão",
   residuo: "Resíduo do balanço",
-  tecnica_regulatoria: "Percentual técnico regulatório implícito",
+  tecnica_regulatoria: "Perda técnica informada, em trechos de razão constante (inferida pelo observatório)",
   custo_tarifa: "Custo das perdas na tarifa",
 };
 
@@ -414,7 +414,7 @@ export const MEDIDAS: Record<IdMedida, Medida> = {
     cortes: [4, 6, 8, 10],
     cores: SEQ,
     explicacao:
-      "Perdas técnicas sobre a energia injetada de referência. No SAMP, a técnica é o percentual regulatório do processo tarifário aplicado à energia injetada: estimativa, não medição.",
+      "Perdas técnicas sobre a energia injetada de referência. No SAMP, a técnica é a perda técnica informada no balanço de energia: estimativa, não medição, e pode diferir do percentual técnico regulatório homologado.",
     denominador: "energia injetada de referência",
     natureza: "ESTIMADO",
     soReferencia: false,
@@ -876,7 +876,7 @@ export function fraseCoberturaSeparacao(nacional: readonly LinhaNacional[], anoR
   if (!linhas.length) return null;
   const partes = linhas.map((l, i) =>
     i === 0
-      ? `em ${l.ano}, ${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a técnica nos 12 meses e ${num(l.n_com_pnt_bt, 0)} tiveram a separação fechando`
+      ? `em ${l.ano}, ${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas entram na soma da técnica e ${num(l.n_com_pnt_bt, 0)}, na da não técnica`
       : `em ${l.ano}, ${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} e ${num(l.n_com_pnt_bt, 0)}`,
   );
   return `${partes.join("; ")}.`;
@@ -1056,6 +1056,14 @@ export type LinhaComposicao = {
   tecnica: number;
   nao_tecnica: number;
   total: number;
+  /**
+   * Valores sem arredondar para desenhar as barras: a técnica exata e a não técnica como o que falta para a taxa total exata. A pilha do gráfico
+   * soma as duas partes, e a soma das partes já arredondadas pode diferir em 0,01 do total arredondado (NEOENERGIA BRASÍLIA: 7,64 + 6,58 contra
+   * 14,23). Com estes valores a soma da pilha é o total exato, que arredonda uma vez, meio para cima, no mesmo número da tabela; cada parte,
+   * arredondada, também é a da tabela (conferido para todas as linhas no teste da página).
+   */
+  tecnica_barra: number;
+  nao_tecnica_barra: number;
   pnt_bt: number | null;
   residuo_mwh: number | null;
   decomposicao: EstadoDecomposicao;
@@ -1082,12 +1090,15 @@ export function linhasComposicao(distribuidoras: readonly Distribuidora[]): { li
       fora++;
       continue;
     }
+    const exato = rf.injetada_mwh && rf.perdas_totais_mwh !== null && rf.perdas_tecnicas_mwh !== null ? { total: (100 * rf.perdas_totais_mwh) / rf.injetada_mwh, tecnica: (100 * rf.perdas_tecnicas_mwh) / rf.injetada_mwh } : null;
     linhas.push({
       id: d.cnpj,
       rotulo: rotuloDistribuidora(d),
       tecnica: rf.taxa_tecnica_pct,
       nao_tecnica: rf.pnt_injetada_pct,
       total: rf.taxa_total_pct,
+      tecnica_barra: exato ? exato.tecnica : rf.taxa_tecnica_pct,
+      nao_tecnica_barra: exato ? exato.total - exato.tecnica : rf.pnt_injetada_pct,
       pnt_bt: validoPntBt(rec) ? rf.pnt_bt_pct : null,
       residuo_mwh: rf.residuo_decomposicao_mwh,
       decomposicao: rf.decomposicao,
@@ -1128,11 +1139,26 @@ export function respostaComposicao(g: Pick<PerdasGold, "nacional" | "referencia"
 export type LinhaRegulatorio = {
   id: string;
   rotulo: string;
+  /** Percentual do trecho de referência mais recente (6 meses ou mais). */
   atual: number;
+  /** Percentual do trecho de referência imediatamente anterior; null quando a série só tem um trecho de referência. */
   anterior: number | null;
   inicio: string;
   fim: string;
   meses: number;
+  /** Período do trecho de referência anterior (null sem trecho anterior). */
+  anterior_inicio: string | null;
+  anterior_fim: string | null;
+  anterior_meses: number | null;
+  /**
+   * A diferença que a página mostra, com um só nome e uma só conta no gráfico, na frase, na tabela e no arquivo exportado: percentual do
+   * trecho mais recente menos o do trecho de referência anterior, em p.p. Null sem trecho anterior.
+   */
+  diferenca: number | null;
+  /**
+   * Do pipeline, e NÃO é a diferença acima: variação contra o trecho imediatamente anterior de 2 meses ou mais, curto ou não, ou, no primeiro
+   * trecho da série, contra a razão do mês anterior ao início. Serve só à associação da resolução homologatória; a página não a exibe.
+   */
   troca_pp: number | null;
   resolucao: string | null;
   inicio_vigencia: string | null;
@@ -1157,6 +1183,10 @@ export function linhasRegulatorio(distribuidoras: readonly Distribuidora[]): Lin
       inicio: ult.inicio,
       fim: ult.fim,
       meses: ult.meses,
+      anterior_inicio: ant ? ant.inicio : null,
+      anterior_fim: ant ? ant.fim : null,
+      anterior_meses: ant ? ant.meses : null,
+      diferenca: ant ? diferencaPar(ult.pct, ant.pct) : null,
       troca_pp: ult.troca_pp,
       resolucao: ult.reh?.resolucao ?? null,
       inicio_vigencia: ult.reh?.inicio_vigencia ?? null,
@@ -1205,6 +1235,81 @@ export function degrausRegulatorio(segmentos: readonly SegmentoTecnico[]): { m: 
   const valor = new Map<string, number>();
   for (const s of segs) for (const m of mesesEntre(s.inicio, s.fim)) valor.set(m, s.pct);
   return mesesEntre(segs[0].inicio, segs[segs.length - 1].fim).map((m) => ({ m, pct: valor.get(m) ?? null }));
+}
+
+/**
+ * Uma linha por trecho de referência publicado, para a tabela e o arquivo exportado: a diferença é a MESMA do gráfico e da frase (percentual do
+ * trecho menos o do trecho de referência imediatamente anterior da lista, pela mesma conta e arredondamento de `diferencaPar`). O primeiro trecho
+ * da lista fica sem diferença: ou é o primeiro da série, ou o anterior não consta na lista (a gold traz os três mais recentes).
+ */
+export type LinhaTrechoRegulatorio = {
+  id: string;
+  cnpj: string;
+  rotulo: string;
+  inicio: string;
+  fim: string;
+  meses: number;
+  pct: number;
+  pct_anterior: number | null;
+  diferenca: number | null;
+  resolucao: string | null;
+  inicio_vigencia: string | null;
+};
+
+export function linhasTrechosRegulatorio(segmentos: Readonly<Record<string, readonly SegmentoTecnico[]>>, rotulos: Readonly<Record<string, string>>): LinhaTrechoRegulatorio[] {
+  return Object.entries(segmentos).flatMap(([cnpj, segs]) => {
+    const ord = [...segs].sort((a, b) => a.inicio.localeCompare(b.inicio));
+    return ord.map((s, i) => {
+      const ant = i > 0 ? ord[i - 1] : null;
+      return {
+        id: `${cnpj}-${s.inicio}`,
+        cnpj,
+        rotulo: rotulos[cnpj] ?? cnpj,
+        inicio: s.inicio,
+        fim: s.fim,
+        meses: s.meses,
+        pct: s.pct,
+        pct_anterior: ant ? ant.pct : null,
+        diferenca: ant ? diferencaPar(s.pct, ant.pct) : null,
+        resolucao: s.reh?.resolucao ?? null,
+        inicio_vigencia: s.reh?.inicio_vigencia ?? null,
+      };
+    });
+  });
+}
+
+/**
+ * Frase da distribuidora escolhida no gráfico do percentual técnico: o trecho mais recente, o trecho de referência anterior e a diferença entre
+ * os dois valores que a própria frase mostra (a mesma do gráfico e da tabela). Nada vem de `troca_pp`, que é outra referência. `nListados` é
+ * quantos trechos de referência a gold traz para a distribuidora.
+ */
+export function fraseSelecaoRegulatorio(l: LinhaRegulatorio, nListados: number): string {
+  const base = `${l.rotulo}: ${num(l.atual, 3)}% da energia injetada publicada de ${mesAno(l.inicio)} a ${mesAno(l.fim)} (${plural(l.meses, "mês", "meses")})`;
+  const anterior =
+    l.anterior !== null && l.anterior_inicio && l.anterior_fim && l.anterior_meses !== null
+      ? `; trecho anterior de referência: ${num(l.anterior, 3)}% de ${mesAno(l.anterior_inicio)} a ${mesAno(l.anterior_fim)} (${plural(l.anterior_meses, "mês", "meses")}); diferença de ${formatarDiferenca(l.diferenca, 3, "p.p.")}`
+      : "; sem trecho anterior de referência para comparar";
+  const reh = l.resolucao
+    ? `; o início do trecho coincide com o início de vigência da ${rotuloResolucao(l.resolucao)}${l.inicio_vigencia ? ` em ${dataBR(l.inicio_vigencia)}` : ""} (coincidência de datas, não vínculo declarado pela fonte)`
+    : "";
+  const lista = l.n_segmentos > nListados ? `. A lista traz os ${nListados} trechos de referência mais recentes de ${l.n_segmentos}; os demais estão no arquivo para baixar.` : ".";
+  return `${base}${anterior}${reh}${lista}`;
+}
+
+/** Quantas distribuidoras têm o percentual do trecho mais recente maior, menor ou igual ao do anterior (na precisão exibida) e quantas não têm trecho anterior. */
+export function sinteseRegulatorio(linhas: readonly LinhaRegulatorio[]): { n: number; maior: number; menor: number; igual: number; semAnterior: number } {
+  let maior = 0;
+  let menor = 0;
+  let igual = 0;
+  let semAnterior = 0;
+  for (const l of linhas) {
+    const s = sentidoDiferenca(l.diferenca, 3);
+    if (s === "acima") maior++;
+    else if (s === "abaixo") menor++;
+    else if (s === "igual") igual++;
+    else semAnterior++;
+  }
+  return { n: linhas.length, maior, menor, igual, semAnterior };
 }
 
 export function respostaRegulatorio(linhas: readonly LinhaRegulatorio[]): string {
@@ -1280,7 +1385,7 @@ export function respostaCusto(linhas: readonly LinhaCusto[], consultadaEm: strin
   const pmin = porPart[0];
   const pmax = porPart[porPart.length - 1];
   const partes = [
-    `Na tarifa residencial B1 vigente em ${dataBR(consultadaEm)}, sem tributos, as componentes de perdas (técnicas, não técnicas e na Rede Básica) vão de ${num(porRs[0].perdas, 2)} R$/MWh (${porRs[0].rotulo}) a ${num(porRs[porRs.length - 1].perdas, 2)} R$/MWh (${porRs[porRs.length - 1].rotulo}) em ${plural(vig.length, "distribuidora", "distribuidoras")}; em participação na tarifa, de ${num(pmin.participacao_perdas_pct, 2)}% (${pmin.rotulo}) a ${num(pmax.participacao_perdas_pct, 2)}% (${pmax.rotulo}).`,
+    `Na base econômica da tarifa residencial B1 vigente em ${dataBR(consultadaEm)} (base de cálculo tarifário, não a tarifa de aplicação que aparece na conta), sem tributos, as componentes de perdas (técnicas, não técnicas e na Rede Básica) vão de ${num(porRs[0].perdas, 2)} R$/MWh (${porRs[0].rotulo}) a ${num(porRs[porRs.length - 1].perdas, 2)} R$/MWh (${porRs[porRs.length - 1].rotulo}) em ${plural(vig.length, "distribuidora", "distribuidoras")}; em participação na tarifa, de ${num(pmin.participacao_perdas_pct, 2)}% (${pmin.rotulo}) a ${num(pmax.participacao_perdas_pct, 2)}% (${pmax.rotulo}).`,
   ];
   const encAtivas = linhas.filter((l) => l.situacao === "vigencia_encerrada" && l.ativa).length;
   if (encAtivas)
@@ -1302,7 +1407,23 @@ export function vereditoCusto(linhas: readonly LinhaCusto[], consultadaEm: strin
   const porRs = [...vig].sort((a, b) => a.perdas - b.perdas || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
   const menor = porRs[0];
   const maior = porRs[porRs.length - 1];
-  return `Na tarifa residencial de ${dataBR(consultadaEm)}, a parte que remunera perdas, sem tributos, vai de ${num(menor.perdas, 2)} R$/MWh (${menor.rotulo}) a ${num(maior.perdas, 2)} R$/MWh (${maior.rotulo}), conforme a distribuidora.`;
+  return `Na base econômica da tarifa residencial B1 de ${dataBR(consultadaEm)} (base de cálculo tarifário, não a tarifa que aparece na conta), a parte que remunera perdas, sem tributos, vai de ${num(menor.perdas, 2)} R$/MWh (${menor.rotulo}) a ${num(maior.perdas, 2)} R$/MWh (${maior.rotulo}), conforme a distribuidora.`;
+}
+
+/**
+ * Valores de desenho das barras de custo. A pilha do gráfico soma as três componentes, e a soma das componentes já arredondadas em duas casas
+ * pode diferir em 0,01 da coluna Perdas, que soma antes de arredondar (CERPRO: 9,98 + 0,00 + 4,66 contra 14,65). Para o total no fim da barra, na
+ * dica, no texto para leitor de tela e na tabela do gráfico serem o MESMO número da tabela da página, cada componente não nula recebe a mesma fração
+ * (0,0034, abaixo de meio centésimo) no sentido da diferença: cada parte, arredondada, segue sendo a da tabela, e a soma arredonda uma vez, meio
+ * para cima, no total publicado. A diferença entre o total e a soma das partes arredondadas é de no máximo 0,01 (três partes que erram menos de
+ * meio centésimo cada), então duas ou três partes não nulas bastam; com uma só parte a diferença é sempre nula. O teste da página confere todas as linhas.
+ */
+export function componentesParaBarra(l: Pick<LinhaCusto, "pt" | "pnt" | "rede_basica" | "perdas">): { pt: number; pnt: number; rede_basica: number } {
+  const delta = Math.round((l.perdas - (l.pt + l.pnt + l.rede_basica)) * 100) / 100;
+  if (delta === 0) return { pt: l.pt, pnt: l.pnt, rede_basica: l.rede_basica };
+  const passo = delta > 0 ? 0.0034 : -0.0034;
+  const ajusta = (x: number) => (x > 0 ? x + passo : x);
+  return { pt: ajusta(l.pt), pnt: ajusta(l.pnt), rede_basica: ajusta(l.rede_basica) };
 }
 
 /**
@@ -1527,7 +1648,7 @@ export function linhasNacionais(nacional: readonly LinhaNacional[]): (string | n
         par && par[0] !== null && par[1] !== null ? `${num(par[0], 2)}% → ${num(par[1], 2)}% (${num(m!.n_total, 0)})` : null,
         Object.entries(l.excluidos)
           .map(([k, n]) => `${k === "ano_incompleto" ? "ano incompleto" : ROTULO_ALERTA[k as AlertaAnual] ?? k}: ${n}`)
-          .join("; ") || null,
+          .join("; ") || "nenhuma",
       ];
     });
 }
@@ -1684,11 +1805,24 @@ export function textoForaDaFaixa(f: Pick<FaixaComparacao, "fora" | "semDado">): 
  * estimativas publicadas por parte das concessionárias válidas, e cada uma tem a sua cobertura (injetada para a técnica, mercado de baixa
  * tensão para a não técnica). As frases saem destas mesmas contagens na abertura, na faixa da página de composição e na resposta.
  */
-export function coberturaSeparacao(l: LinhaNacional): { tecnica: string; pntBt: string } {
+export function coberturaSeparacao(l: LinhaNacional, publicaramTecnica?: number): { tecnica: string; pntBt: string } {
+  // a contagem da série nacional é a de quem entra na soma; quem publicou a técnica mas tem a decomposição quebrada fica fora dela
+  const fora = publicaramTecnica !== undefined && publicaramTecnica > l.n_com_tecnica ? publicaramTecnica - l.n_com_tecnica : 0;
+  const foraTexto = fora ? `. ${fora === 1 ? "Outra publicou" : `${num(fora, 0)} outras publicaram`} a técnica e ${fora === 1 ? "fica fora da soma: a decomposição dela não fecha" : "ficam fora da soma: a decomposição delas não fecha"}` : "";
   return {
-    tecnica: `${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a técnica nos 12 meses, ${pctOu(l.cobertura_tecnica_pct, 1)} da energia injetada das válidas`,
-    pntBt: `${num(l.n_com_pnt_bt, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas tiveram a separação fechando, ${pctOu(l.cobertura_bt_pct, 1)} do mercado de baixa tensão das válidas`,
+    tecnica: `${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas entram na soma da técnica (publicaram a técnica nos 12 meses, sem a decomposição quebrada), ${pctOu(l.cobertura_tecnica_pct, 1)} da energia injetada das válidas${foraTexto}`,
+    pntBt: `${num(l.n_com_pnt_bt, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas entram na soma da não técnica (a separação fecha com a total), ${pctOu(l.cobertura_bt_pct, 1)} do mercado de baixa tensão das válidas`,
   };
+}
+
+/** Concessionárias válidas do ano de referência que publicaram a perda técnica nos 12 meses, com a decomposição fechando ou não (a série nacional conta só as que entram na soma). */
+export function nPublicaramTecnica(distribuidoras: readonly Distribuidora[]): number {
+  return distribuidoras.filter((d) => {
+    if (d.grupo !== "concessionaria") return false;
+    const rec = recorteDaReferencia(d);
+    const pt = d.referencia?.perdas_tecnicas_mwh;
+    return !!rec && validoTotal(rec) && pt !== null && pt !== undefined;
+  }).length;
 }
 
 /* ------------------------------------------------------------------ elegibilidade da comparação regulatória */

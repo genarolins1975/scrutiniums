@@ -61,8 +61,9 @@ export default function PerdasCustoContextoPage() {
   );
   const comoInterpretarCusto = (
     <>
-      Valores por MWh, nominais e sem tributos, das componentes de perdas técnicas, não técnicas e na Rede Básica da tarifa B1 convencional; a participação divide a soma delas pela tarifa (TUSD +
-      TE). É o nível reconhecido por MWh, não o custo das perdas reais nem o total em reais.
+      Valores por MWh, nominais e sem tributos, das componentes de perdas técnicas, não técnicas e na Rede Básica da tarifa B1 convencional, na base econômica do arquivo de componentes tarifárias (base de
+      cálculo tarifário, não a tarifa de aplicação que aparece na conta; o arquivo para baixar traz as duas bases); a participação divide a soma delas pela tarifa da mesma base (TUSD + TE). É o nível reconhecido
+      por MWh, não o custo das perdas reais nem o total em reais.
     </>
   );
   const naoConcluirCusto = (
@@ -111,6 +112,7 @@ export default function PerdasCustoContextoPage() {
             </>
           }
           fonte="ANEEL, Componentes Tarifárias; IBGE, Censo"
+          limite="Os valores de tarifa são os da base econômica do arquivo de componentes tarifárias, uma base de cálculo tarifário: não são a tarifa que aparece na conta."
           referencia={<ReferenciaPerdas g={g} />}
         >
           As perdas reconhecidas no processo tarifário entram na tarifa de quem consome na área: o consumidor regular paga pela parte das{" "}
@@ -125,7 +127,7 @@ export default function PerdasCustoContextoPage() {
             <PainelEvidencia
               id="painel-custo"
               pergunta="Quanto da tarifa residencial remunera as perdas?"
-              subtitulo={`Componentes de perdas na tarifa residencial B1 · R$/MWh sem tributos · vigência conferida em ${dataBR(g.referencia.tarifa_consultada_em)}`}
+              subtitulo={`Componentes de perdas na tarifa residencial B1, base econômica · R$/MWh sem tributos · vigência conferida em ${dataBR(g.referencia.tarifa_consultada_em)}`}
               natureza="OBSERVADO"
               proveniencia={g.proveniencia.tarifa}
               porQueImporta={<>É a parte da tarifa residencial que remunera as perdas reconhecidas no processo tarifário de cada distribuidora: o consumidor regular paga por ela.</>}
@@ -142,7 +144,7 @@ export default function PerdasCustoContextoPage() {
                 <Recorte
                   periodo={custo.length ? `processos tarifários de ${dataBR(custo.map((l) => l.inicio).sort()[0])} até a consulta em ${dataBR(g.referencia.tarifa_consultada_em)}` : `nenhum processo na consulta de ${dataBR(g.referencia.tarifa_consultada_em)}`}
                   universo={`${custo.length} distribuidoras com tarifa residencial B1 nos arquivos de componentes tarifárias`}
-                  unidade="R$/MWh nominais, sem tributos"
+                  unidade="R$/MWh nominais, sem tributos, na base econômica"
                 />
                 {bloqueioRegulatorio && (
                   <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="custo-total">

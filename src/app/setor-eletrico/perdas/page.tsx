@@ -167,6 +167,13 @@ export default function PerdasPage() {
                   casas={2}
                   unidade="% da energia injetada"
                   periodo={nac ? `${ref} · ${num(nac.n_distribuidoras, 0)} concessionárias` : String(ref)}
+                  nota={
+                    nac && nac.injetada_mwh !== null ? (
+                      <>
+                        Denominador: energia injetada de referência, {num(nac.injetada_mwh / 1e6, 1)} TWh. A taxa pode diferir da que a ANEEL divulga no relatório, que pode usar outra energia injetada.
+                      </>
+                    ) : undefined
+                  }
                   cor="var(--cor-energia)"
                   endereco="https://scrutiniums.com/setor-eletrico/perdas#resumo"
                 />

@@ -7,7 +7,7 @@ import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/Perda
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataBR, num } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import { divergenciaArredondamentoCusto, pctOu, rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
+import { componentesParaBarra, pctOu, rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
 
 /**
  * Custo unitário das perdas na tarifa residencial B1 (P058): as três componentes de perdas
@@ -28,10 +28,10 @@ const COLUNAS: ColunaTabela[] = [
   { id: "pt", rotulo: "Perdas técnicas", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "pnt", rotulo: "Perdas não técnicas", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "rede_basica", rotulo: "Perdas na Rede Básica", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "perdas", rotulo: "Perdas (soma das componentes)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "total", rotulo: "Tarifa B1 (TUSD + TE)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "participacao_perdas_pct", rotulo: "Perdas na tarifa", tipo: "percentual", casas: 2 },
-  { id: "participacao_pnt_pct", rotulo: "Não técnicas na tarifa", tipo: "percentual", casas: 2 },
+  { id: "perdas", rotulo: "Perdas, base econômica (soma das componentes)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "total", rotulo: "Tarifa B1, base econômica (TUSD + TE)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "participacao_perdas_pct", rotulo: "Perdas na tarifa, base econômica", tipo: "percentual", casas: 2 },
+  { id: "participacao_pnt_pct", rotulo: "Não técnicas na tarifa, base econômica", tipo: "percentual", casas: 2 },
 ];
 
 export type PerdasCustoProps = {
@@ -49,7 +49,8 @@ export type PerdasCustoProps = {
 export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm, anosArquivos, versao }: PerdasCustoProps) {
   const [sel, selecionar] = useSelecaoPerdas(ids);
   const vigentes = useMemo(() => linhas.filter((l) => l.situacao === "vigente"), [linhas]);
-  const dados = useMemo(() => vigentes.map((l) => ({ id: l.id, rotulo: l.rotulo, pt: l.pt, pnt: l.pnt, rede_basica: l.rede_basica })), [vigentes]);
+  // valores de desenho (ver componentesParaBarra): o total no fim da barra, na dica e na tabela do gráfico é o mesmo número da coluna Perdas da tabela
+  const dados = useMemo(() => vigentes.map((l) => ({ id: l.id, rotulo: l.rotulo, ...componentesParaBarra(l) })), [vigentes]);
   const linhasTabela = useMemo(
     () =>
       linhas.map((l) => ({
@@ -70,12 +71,11 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
     [linhas],
   );
   const linhaSel = sel ? linhas.find((l) => l.id === sel) ?? null : null;
-  const arredondamento = useMemo(() => divergenciaArredondamentoCusto(linhas), [linhas]);
   const [prova, tentarProva] = useEvidenciaPerdas(urlEvidencias, linhaSel ? linhaSel.id : null);
   return (
     <div className="space-y-5">
       <GraficoBarras
-        titulo={`Componentes de perdas na tarifa residencial B1 vigente em ${dataBR(consultadaEm)}`}
+        titulo={`Componentes de perdas na tarifa residencial B1 (base econômica) vigente em ${dataBR(consultadaEm)}`}
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
@@ -95,12 +95,6 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-ordem="custo">
         Ordem das barras: soma das três componentes de perdas, da maior para a menor. Só entram os processos vigentes na data da consulta; o processo com vigência encerrada fica na tabela, com a situação escrita.
       </p>
-      {arredondamento.exemplo && (
-        <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-arredondamento="custo">
-          O total na ponta de cada barra soma as três componentes já arredondadas em duas casas; a coluna Perdas da tabela soma antes de arredondar. A diferença é de no máximo 0,01 R$/MWh e aparece em{" "}
-          {num(arredondamento.n, 0)} das {num(arredondamento.de, 0)} distribuidoras (por exemplo, {arredondamento.exemplo.rotulo}: {num(arredondamento.exemplo.barra, 2)} na barra e {num(arredondamento.exemplo.tabela, 2)} na tabela).
-        </p>
-      )}
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
         {!sel ? (
           <p className="text-carvao-muted">Escolha uma barra ou uma linha da tabela para ler a componente de perdas da tarifa de uma distribuidora.</p>
@@ -111,7 +105,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
           <p data-resposta="custo-distribuidora">
             {`${linhaSel.rotulo}, ${rotuloResolucao(linhaSel.resolucao) ?? "resolução não informada"} (${dataBR(linhaSel.inicio)} a ${dataBR(linhaSel.fim)}): `}
             {linhaSel.situacao === "vigente" ? "vigente na data da consulta. " : `vigência encerrada em ${dataBR(linhaSel.fim)}, sem processo seguinte no arquivo da fonte em ${dataBR(consultadaEm)}; não é a tarifa em vigor. `}
-            {`Técnicas ${num(linhaSel.pt, 2)}, não técnicas ${num(linhaSel.pnt, 2)} e Rede Básica ${num(linhaSel.rede_basica, 2)} R$/MWh: perdas de ${num(linhaSel.perdas, 2)} R$/MWh, ${pctOu(linhaSel.participacao_perdas_pct, 2)} da tarifa B1 sem tributos (${num(linhaSel.total, 2)} R$/MWh).`}
+            {`Na base econômica (base de cálculo tarifário, não a tarifa que aparece na conta): técnicas ${num(linhaSel.pt, 2)}, não técnicas ${num(linhaSel.pnt, 2)} e Rede Básica ${num(linhaSel.rede_basica, 2)} R$/MWh; perdas de ${num(linhaSel.perdas, 2)} R$/MWh, ${pctOu(linhaSel.participacao_perdas_pct, 2)} da tarifa B1 sem tributos (${num(linhaSel.total, 2)} R$/MWh).`}
           </p>
           <div className="mt-1">
             {prova.estado === "pronta" ? (
@@ -143,7 +137,7 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         onSelecionar={selecionar}
         ordemInicial={{ coluna: "perdas", direcao: "desc" }}
         dicaBusca="Sigla ou nome"
-        nota={<>Valores nominais, sem tributos, do último processo tarifário de cada distribuidora no arquivo da fonte. Processo vigente: início ≤ {dataBR(consultadaEm)} ≤ fim.</>}
+        nota={<>Valores nominais, sem tributos, da base econômica do último processo tarifário de cada distribuidora no arquivo da fonte (base de cálculo tarifário, não a tarifa de aplicação que aparece na conta; o arquivo para baixar traz as duas bases). Processo vigente: início ≤ {dataBR(consultadaEm)} ≤ fim.</>}
       />
     </div>
   );

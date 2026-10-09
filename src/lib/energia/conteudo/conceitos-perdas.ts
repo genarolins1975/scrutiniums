@@ -57,7 +57,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase: "Perdas inevitáveis do transporte de energia, como o aquecimento dos condutores (efeito joule) e as perdas nos núcleos dos transformadores.",
     porQueImporta: "Por serem inevitáveis em qualquer rede, os custos das perdas técnicas são considerados na tarifa, no nível que a ANEEL considera eficiente.",
     comoEMedido:
-      "A ANEEL estima o percentual de perdas técnicas eficientes sobre a energia injetada, com modelos por segmento de rede (Módulo 7 do Prodist). No SAMP, a perda técnica publicada é esse percentual aplicado à energia injetada: estimativa, não medição.",
+      "A ANEEL estima o percentual de perdas técnicas eficientes sobre a energia injetada, com modelos por segmento de rede (Módulo 7 do Prodist). No SAMP, a perda técnica é a informada no balanço de energia: estimativa, não medição, que pode diferir do percentual técnico regulatório homologado.",
     relacoes: ["perdas-de-energia", "perdas-nao-tecnicas", "percentual-regulatorio-de-perdas"],
     fontes: [
       s5(

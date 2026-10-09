@@ -353,7 +353,11 @@ describe("r8 T1: Perdas", () => {
     expect(Math.round(barra * 100) / 100).toBe(14.64);
     expect(Number(vigente.perdas)).toBeCloseTo(bruto, 3);
     expect(P.vereditoCusto(linhasCusto, GP.referencia.tarifa_consultada_em)).toContain("14,65 R$/MWh (CERPRO)");
-    expect(ENTENDER.custo).toContain("CERPRO: 14,64 na barra e 14,65 na tabela");
+    // um valor só para o mesmo item: a barra desenha o total da tabela (14,65) e nenhuma nota explica dois valores
+    expect(ENTENDER.custo).not.toContain("14,64 na barra");
+    const cerpro = linhasCusto.find((l) => l.rotulo === "CERPRO")!;
+    const desenho = P.componentesParaBarra(cerpro);
+    expect(arred(desenho.pt + desenho.pnt + desenho.rede_basica)).toBe(14.65);
     const d = P.divergenciaArredondamentoCusto(linhasCusto);
     expect(d.n).toBeGreaterThan(0);
     expect(d.de).toBe(80);

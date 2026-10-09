@@ -83,7 +83,7 @@ export default function PerdasComposicaoPage() {
   const comoInterpretar = (
     <>
       Técnica e não técnica sobre a mesma energia injetada somam a taxa total quando a decomposição fecha, e só essas distribuidoras estão nas barras. A não técnica sobre o mercado de
-      baixa tensão (a base da regulação) tem outro denominador e nunca é somada à técnica. A técnica do SAMP é o percentual regulatório aplicado à injetada: estimativa, não medição.
+      baixa tensão (a base da regulação) tem outro denominador e nunca é somada à técnica. A técnica do SAMP é a perda técnica informada no balanço de energia: estimativa, não medição.
     </>
   );
   const naoConcluir = (
@@ -120,7 +120,7 @@ export default function PerdasComposicaoPage() {
           metricas={<SeparacaoMetricas g={g} endereco="https://scrutiniums.com/setor-eletrico/perdas/composicao#composicao" />}
         >
           Pela definição da ANEEL, a perda total se divide em técnica, inevitável no transporte da energia, e não técnica, a diferença entre a total e a técnica. As duas são estimativas: a
-          técnica do SAMP é o percentual regulatório aplicado à energia injetada, e a não técnica herda essa estimativa.
+          técnica do SAMP é a perda técnica informada no balanço de energia, e a não técnica herda essa estimativa.
         </CabecalhoModulo>
         <PerdasNavegacao atual="composicao" />
 
