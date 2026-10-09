@@ -311,3 +311,207 @@ def despesa_por_fonte():
                                 elegivel_comparacao=True, nota_material=True, participacao=round(100 * vs[c] / total_rs, 4),
                                 total_siops=round(total_rs, 2)))
     return obs
+
+
+# ------------------------------------------------------------------ Relatório APS: equipes e cobertura potencial
+
+COMPETENCIA_DEZEMBRO = {ano: f"12/{ano}" for ano in ANOS_FINANCEIROS}
+PARAM_ESF, PARAM_EAP20, PARAM_EAP30 = 3500, 1750, 2625
+"""Parâmetros da Nota Técnica nº 2/2025 da SAPS/MS: pessoas cobertas por eSF, eAP de 20 h e eAP de 30 h."""
+ANO_INICIO_REGRA_VIGENTE = 2022
+"""A fórmula da NT 2/2025 reproduz todas as linhas do serviço de 01/2022 em diante; em 2021 o serviço segue regra anterior de eAP e de
+cadastro (292 de 312 linhas divergem), então a cobertura de 2021 fica fora das comparações e das variações."""
+
+
+def _seed_aps(cod):
+    caminho = os.path.join(base.SEED, "relatorio_aps", f"cobertura_aps_{cod}.json.gz")
+    return base.le_json_gz(caminho) if os.path.exists(caminho) else None
+
+
+def _pop_por_ente(pop_obs):
+    return {(o["ente"], o["ano"]): o for o in pop_obs}
+
+
+def aps(pop_obs):
+    """Equipes de atenção primária (eSF e eAP), por 10 mil habitantes, e Cobertura Potencial Estimada da APS, em dezembro de cada ano.
+
+    Equipe: contagem do serviço do Relatório APS (equipes financiadas, ativas no CNES e validadas), tipos mantidos separados. Cobertura
+    potencial: valor oficial do serviço, sem teto de 100%, com capacidade e população de referência do Ministério à vista. Equipes por
+    10 mil habitantes usam a população do exercício do OBEE (IBGE), não a do serviço, e dizem isso. Não é cobertura efetiva, cadastro
+    nem pessoas atendidas."""
+    pop = _pop_por_ente(pop_obs)
+    obs = []
+    for cod, nome, uf in entes.CAPITAIS:
+        linhas = _seed_aps(cod)
+        por_comp = {l["nuComp"]: l for l in (linhas or [])}
+        for ano in ANOS_FINANCEIROS:
+            comp = COMPETENCIA_DEZEMBRO[ano]
+            l = por_comp.get(comp)
+            reg = f"Relatório APS, /cobertura/aps, município {str(cod)[:6]}, competência {comp}"
+            if l is None:
+                for ind, c in (("sau.aps.equipes", None), ("sau.aps.cobertura_potencial", None)):
+                    obs.append(_obs(ind, cod, ano, None, "AUSENTE_NA_COLETA", "relatorio_aps_cobertura", reg, componente=c,
+                                    nota="Competência não encontrada na resposta do Relatório APS.", nota_material=True))
+                continue
+            tipos = [("esf", l["qtEsf"]), ("eap20", l["qtEap20"]), ("eap30", l["qtEap30"]), ("esfr", l["qtEsfr"]), ("ecr", l["qtEcr"]),
+                     ("eapp20", l["qtEapp20"]), ("eapp30", l["qtEapp30"])]
+            for comp_id, v in tipos:
+                obs.append(_obs("sau.aps.equipes", cod, ano, int(v), "OBSERVADO", "relatorio_aps_cobertura", reg, componente=comp_id,
+                                elegivel_comparacao=True, nota_material=False,
+                                nota=("Contagem de equipes do serviço do Relatório APS na competência de dezembro; não distingue equipes completas, "
+                                      "parciais ou com carga horária reduzida.") if comp_id == "esf" else None))
+            p = pop.get((cod, ano))
+            if p is not None and p["status"] == "OBSERVADO":
+                esf, eap = int(l["qtEsf"]), int(l["qtEap20"]) + int(l["qtEap30"])
+                for comp_id, num in (("esf", esf), ("eap", eap)):
+                    obs.append(_obs("sau.aps.equipes_por_10mil", cod, ano, round(num / p["valor"] * 10000, 6), "OBSERVADO",
+                                    "relatorio_aps_cobertura+ibge_populacao", reg + "; população: " + p["registro"], componente=comp_id,
+                                    elegivel_comparacao=True, nota_material=bool(p.get("nota_material")), quebra_serie=bool(p.get("quebra_serie")),
+                                    nota=p.get("nota") if p.get("nota_material") else None,
+                                    calculo={"numerador": num, "denominador": p["valor"], "numerador_ref": "sau.aps.equipes", "denominador_ref": "ctx.populacao.residente",
+                                             "numerador_componente": "esf" if comp_id == "esf" else "eap20+eap30"}))
+            else:
+                obs.append(_obs("sau.aps.equipes_por_10mil", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao", reg, nota="População do exercício indisponível.", nota_material=True))
+            # cobertura potencial: valor oficial; a fórmula é conferida linha a linha
+            cap_formula = l["qtEsf"] * PARAM_ESF + l["qtEap20"] * PARAM_EAP20 + l["qtEap30"] * PARAM_EAP30 + l["qtCadastroEquipeEsfrEcrEapp"]
+            confere = abs(cap_formula - l["qtCapacidadeEquipe"]) <= 1 and l["qtPopulacao"] > 0 and abs(l["qtCapacidadeEquipe"] / l["qtPopulacao"] * 100 - l["qtCobertura"]) <= 0.01
+            antes_regra = ano < ANO_INICIO_REGRA_VIGENTE
+            notas = ["Cobertura Potencial Estimada: capacidade das equipes (eSF × 3.500, eAP 20 h × 1.750, eAP 30 h × 2.625, mais pessoas com cadastro vinculado de eCR, "
+                     "eSFR e eAPP) dividida pela população que o Ministério adota (a do ano anterior ao da competência). Não é cadastro, atendimento nem pessoas "
+                     "atendidas, e o serviço não limita o valor a 100%."]
+            if l["qtCobertura"] > 100:
+                notas.append(f"Capacidade acima da população de referência ({l['qtCobertura']:.2f}%)".replace(".", ",") + ": o valor oficial passa de 100% e não é truncado.")
+            if antes_regra:
+                notas.append("Dezembro de 2021 segue regra anterior de equipes e de cadastro e não reproduz a fórmula da Nota Técnica nº 2/2025: fora das comparações e das variações.")
+            if not confere and not antes_regra:
+                obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, None, "INCONSISTENTE", "relatorio_aps_cobertura", reg, nota_material=True,
+                                nota="A capacidade informada não reproduz a fórmula da Nota Técnica nº 2/2025 ou a cobertura informada não é capacidade ÷ população."))
+                continue
+            obs.append(_obs("sau.aps.cobertura_potencial", cod, ano, float(l["qtCobertura"]), "OBSERVADO", "relatorio_aps_cobertura", reg,
+                            elegivel_comparacao=not antes_regra, nota_material=True, nota=" ".join(notas), quebra_serie=antes_regra,
+                            populacao_referencia_ms=int(l["qtPopulacao"]), ano_base_populacao_ms=l["nuAnoReferencia"], origem_populacao_ms=l.get("tpOrigemBasePopulacao"),
+                            calculo={"numerador": float(l["qtCapacidadeEquipe"]), "denominador": float(l["qtPopulacao"]), "numerador_ref": "capacidade das equipes (Relatório APS)",
+                                     "denominador_ref": "população de referência do Ministério da Saúde"}))
+    return obs
+
+
+# ------------------------------------------------------------------ RIPSA: ICSAP (MRB.4.02), internações SUS (COB.2.01) e planos privados (COB.5.01)
+
+ANOS_RESULTADOS = [2021, 2022, 2023, 2024]
+GRUPOS_ICSAP = {
+    1: "Doenças preveníveis por imunização e condições sensíveis",
+    2: "Gastroenterites infecciosas e complicações",
+    3: "Anemia",
+    4: "Deficiências nutricionais",
+    5: "Infecções de ouvido, nariz e garganta",
+    6: "Pneumonias bacterianas",
+    7: "Asma",
+    8: "Doenças pulmonares",
+    9: "Hipertensão",
+    10: "Angina",
+    11: "Insuficiência cardíaca",
+    12: "Doenças cerebrovasculares",
+    13: "Diabetes mellitus",
+    14: "Epilepsias",
+    15: "Infecção no rim e trato urinário",
+    16: "Infecção da pele e tecido subcutâneo",
+    17: "Doença inflamatória de órgãos pélvicos femininos",
+    18: "Úlcera gastrointestinal",
+    19: "Doenças relacionadas ao pré-natal e parto",
+}
+RESSALVA_ICSAP = ("Internações pagas pelo SUS (AIH tipo 1, sem hospital dia), por município de residência e ano de processamento da AIH. "
+                  "Não inclui internações custeadas por planos privados ou particulares e conta AIH, não pacientes. Não identifica falha de gestão nem de atenção primária: "
+                  "a taxa também depende de oferta de leitos, critérios de internação e registro.")
+
+
+def _cod7(cod6):
+    return {str(c)[:6]: c for c, _, _ in entes.CAPITAIS}[cod6]
+
+
+def _seed_csv(*partes):
+    caminho = os.path.join(base.SEED, *partes)
+    return base.le_csv_gz(caminho) if os.path.exists(caminho) else None
+
+
+def icsap(pop_obs):
+    """Internações por condições sensíveis à atenção primária (ICSAP), por residência: número, taxa por 100 mil, participação nas
+    internações SUS e composição pelos 19 grupos da Lista Brasileira (Portaria SAS/MS nº 221/2008).
+
+    Fonte: RIPSA MRB.4.02 (e COB.2.01 para o conjunto de internações). A taxa usa a população do próprio indicador (série do Ministério da
+    Saúde), publicada com a fonte declarada; a mesma contagem dividida pela população do exercício do OBEE (IBGE) entra como sensibilidade."""
+    icsap_linhas = _seed_csv("ripsa", "mrb402_icsap_capitais_2021_2024.csv.gz")
+    intern = _seed_csv("ripsa", "cob201_internacoes_capitais_2021_2024.csv.gz")
+    pop = _pop_por_ente(pop_obs)
+    obs = []
+    ic = {(int(r["codigo_ibge_6"]), int(r["ano"])): r for r in (icsap_linhas or [])}
+    it = {(int(r["codigo_ibge_6"]), int(r["ano"])): r for r in (intern or [])}
+    for cod, nome, uf in entes.CAPITAIS:
+        m6 = int(str(cod)[:6])
+        for ano in ANOS_RESULTADOS:
+            r = ic.get((m6, ano))
+            reg = f"RIPSA MRB.4.02, município de residência {m6}, ano {ano}"
+            fonte = "ripsa_mrb402_icsap"
+            if r is None:
+                for ind, c in (("sau.icsap.internacoes", None), ("sau.icsap.taxa", "ripsa"), ("sau.icsap.taxa", "populacao_ibge_obee"),
+                               ("sau.icsap.participacao", None), ("sau.icsap.grupos", None)):
+                    obs.append(_obs(ind, cod, ano, None, "AUSENTE_NA_COLETA", fonte, reg, componente=c, nota="Registro não encontrado no arquivo do RIPSA.", nota_material=True))
+                continue
+            total, pop_r = int(r["icsap_total"]), int(r["populacao_denominador"])
+            grupos = {i: int(r[f"grupo_{i}"]) for i in range(1, 20)}
+            soma_grupos = sum(grupos.values())
+            elegivel = True
+            obs.append(_obs("sau.icsap.internacoes", cod, ano, total, "OBSERVADO", fonte, reg, nota=RESSALVA_ICSAP, elegivel_comparacao=elegivel, nota_material=True))
+            if pop_r > 0:
+                taxa = total / pop_r * 100000
+                obs.append(_obs("sau.icsap.taxa", cod, ano, round(taxa, 6), "OBSERVADO", fonte, reg, componente="ripsa",
+                                nota=RESSALVA_ICSAP + " A taxa usa a população estimada do próprio indicador (série do Ministério da Saúde), que é maior que a do Censo 2022 nas capitais.",
+                                elegivel_comparacao=elegivel, nota_material=True,
+                                calculo={"numerador": total, "denominador": pop_r, "numerador_ref": "sau.icsap.internacoes", "denominador_ref": "população estimada do RIPSA MRB.4.02"}))
+            else:
+                obs.append(_obs("sau.icsap.taxa", cod, ano, None, "INCONSISTENTE", fonte, reg, componente="ripsa", nota="População do denominador nula.", nota_material=True))
+            p = pop.get((cod, ano))
+            if p is not None and p["status"] == "OBSERVADO" and p["valor"]:
+                obs.append(_obs("sau.icsap.taxa", cod, ano, round(total / p["valor"] * 100000, 6), "OBSERVADO", fonte + "+ibge_populacao", reg + "; população: " + p["registro"],
+                                componente="populacao_ibge_obee", nota=("Sensibilidade: a mesma contagem dividida pela população residente do exercício usada nos demais indicadores por habitante do OBEE "
+                                                                         "(IBGE). Difere da taxa principal porque os denominadores diferem. " + RESSALVA_ICSAP),
+                                elegivel_comparacao=elegivel, nota_material=True, quebra_serie=bool(p.get("quebra_serie")),
+                                calculo={"numerador": total, "denominador": p["valor"], "numerador_ref": "sau.icsap.internacoes", "denominador_ref": "ctx.populacao.residente"}))
+            else:
+                obs.append(_obs("sau.icsap.taxa", cod, ano, None, "AUSENTE_NA_COLETA", "ibge_populacao", reg, componente="populacao_ibge_obee", nota="População do exercício indisponível.", nota_material=True))
+            i = it.get((m6, ano))
+            if i is not None and int(i["internacoes_sus"]) > 0:
+                tot_i = int(i["internacoes_sus"])
+                obs.append(_obs("sau.icsap.participacao", cod, ano, round(total / tot_i * 100, 6), "OBSERVADO", "ripsa_mrb402_icsap+ripsa_cob201_internacoes",
+                                reg + f"; internações SUS por residência: RIPSA COB.2.01, ano {ano}",
+                                nota=("Parcela das internações SUS por residência classificadas como ICSAP. É composição do conjunto de internações, não medida de resultado: depende do que "
+                                      "o restante das internações contém (obstetrícia, cirurgias, oferta hospitalar). " + RESSALVA_ICSAP),
+                                elegivel_comparacao=elegivel, nota_material=True,
+                                calculo={"numerador": total, "denominador": tot_i, "numerador_ref": "sau.icsap.internacoes", "denominador_ref": "internações SUS por residência (RIPSA COB.2.01)"}))
+            else:
+                obs.append(_obs("sau.icsap.participacao", cod, ano, None, "AUSENTE_NA_COLETA", "ripsa_cob201_internacoes", reg, nota="Total de internações SUS não encontrado no arquivo do RIPSA.", nota_material=True))
+            if soma_grupos == total:
+                for g, v in grupos.items():
+                    obs.append(_obs("sau.icsap.grupos", cod, ano, v, "OBSERVADO", fonte, reg + f", grupo {g}", componente=f"g{g:02d}", elegivel_comparacao=elegivel,
+                                    nota_material=False, participacao=round(100 * v / total, 4) if total else None))
+            else:
+                obs.append(_obs("sau.icsap.grupos", cod, ano, None, "INCONSISTENTE", fonte, reg, nota_material=True,
+                                nota=f"A soma dos 19 grupos ({soma_grupos}) difere do total ({total})."))
+    return obs
+
+
+def planos():
+    """Cobertura de planos de saúde privados (ANS, via RIPSA COB.5.01), em dezembro: contexto da taxa de ICSAP, não ajuste."""
+    linhas = _seed_csv("ripsa", "cob501_planos_capitais_dezembro_2021_2024.csv.gz")
+    d = {(int(r["codigo_ibge_6"]), int(r["competencia"][:4])): r for r in (linhas or [])}
+    obs = []
+    for cod, nome, uf in entes.CAPITAIS:
+        for ano in ANOS_RESULTADOS:
+            r = d.get((int(str(cod)[:6]), ano))
+            reg = f"RIPSA COB.5.01 (base ANS), município {str(cod)[:6]}, dezembro de {ano}, categoria Total"
+            if r is None:
+                obs.append(_obs("sau.ctx.cobertura_planos", cod, ano, None, "AUSENTE_NA_COLETA", "ripsa_cob501_planos", reg, nota="Registro não encontrado.", nota_material=True))
+                continue
+            obs.append(_obs("sau.ctx.cobertura_planos", cod, ano, round(float(r["percentual"]), 6), "OBSERVADO", "ripsa_cob501_planos", reg,
+                            nota=("Percentual da população com plano de saúde privado em dezembro. Contexto: o SIH cobre só internações pagas pelo SUS. Não serve para estimar "
+                                  "usuários do SUS subtraindo beneficiários da população."), elegivel_comparacao=True, nota_material=False))
+    return obs

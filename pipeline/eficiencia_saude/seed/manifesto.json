@@ -1,5 +1,282 @@
 {
  "capturas": {
+  "cnes_estabelecimentos": {
+   "instituicao": "Ministério da Saúde (CNES, OpenDataSUS)",
+   "conjunto": "CNES, estabelecimentos de saúde: retrato atual (arquivo diário do OpenDataSUS)",
+   "pagina": "https://dadosabertos.saude.gov.br/dataset/cnes-cadastro-nacional-de-estabelecimentos-de-saude",
+   "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/CNES/cnes_estabelecimentos_csv.zip",
+   "capturado_em": "2026-10-09T12:00:37Z",
+   "publicado_em": "Fri, 09 Oct 2026 07:23:45 GMT",
+   "sha256_original": "9f646594921609786c5aaf5bb92030004b57844125b26f0b1b96abd723cde2c7",
+   "sha256_csv_interno": "8f7543a1e9ce476440addb9ce8c5cc4b53c02c23c23da41bc6828b39530035bd",
+   "linhas_arquivo_original": 638547,
+   "recorte": "pipeline/eficiencia_saude/seed/cnes/estabelecimentos_aps_capitais.csv.gz",
+   "sha256_recorte": "885ff6acef3e9f19972e9f65a691c526db969559896f56897087186cd33e1bf1",
+   "linhas_recorte": 4365,
+   "parametros": "26 capitais; tipos de unidade 01 e 02 (atenção primária) e 15, 32, 40, 71 e 74 (contexto); sem endereço, sem coordenadas, sem tipo 22. O arquivo substitui o anterior todo dia e não tem competência: a data de captura é a única referência temporal."
+  },
+  "relatorio_aps_cobertura": {
+   "instituicao": "Ministério da Saúde (SAPS, Relatório APS)",
+   "conjunto": "Cobertura Potencial Estimada da Atenção Primária à Saúde e equipes, por município e competência mensal",
+   "pagina": "https://relatorioaps.saude.gov.br/",
+   "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=<6 dígitos>&nuCompInicio=AAAAMM&nuCompFim=AAAAMM",
+   "parametros": "26 capitais; competências 202101 a 202607; resposta integral; definição na Nota Técnica nº 2/2025 da SAPS/MS (https://egestorab.saude.gov.br/image/?file=20250407_O_SEI0047071175NT022025)",
+   "arquivos": {
+    "1200401": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=120040&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:06Z",
+     "linhas": 67,
+     "sha256_resposta": "f8c98a1b6c6dfd24a0d3256c658c0cfb8c5274a981c141e21c3d17c281844340",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1200401.json.gz",
+     "sha256": "ed899f557060a7dff719a0537ac6a326792d92a0b82d5e9e47804291cf20dfca"
+    },
+    "2704302": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=270430&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:15Z",
+     "linhas": 67,
+     "sha256_resposta": "65b79339e67f4d37eb97a65cb716e6b1a5291803739a1a0bb16a42fed60bbecd",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2704302.json.gz",
+     "sha256": "8eeae4bc2c4d7cdd4afda601a8adddd5fe4db798aef9e16feeed615f6ab49fe1"
+    },
+    "1600303": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=160030&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:22Z",
+     "linhas": 67,
+     "sha256_resposta": "1a4ffdd6ac153561850048624dff6cb1f44bf2e543633e2f7f9131953c54f4b0",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1600303.json.gz",
+     "sha256": "22bf566c879d00e81eacb1d93fc8c5249299321656441976a4d2c0b6bbac4322"
+    },
+    "1302603": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=130260&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:25Z",
+     "linhas": 67,
+     "sha256_resposta": "1a5a03e65be393ef5e9306e95243cfec7b657cf3105dfa3aa237aa8609060235",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1302603.json.gz",
+     "sha256": "a1f914e7bc07dcac7ccf3b404da6567bf18914950f305000224da17251f597bc"
+    },
+    "2927408": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=292740&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:43Z",
+     "linhas": 67,
+     "sha256_resposta": "4b12fb0019b77e102ba37239fc27dcc312696aea12912b4c8bcfa0f27d55aae3",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2927408.json.gz",
+     "sha256": "b082dfd7f8733d09a1722b1f8e2e939a5725cdf1063007d9a8ff347da71314ef"
+    },
+    "2304400": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=230440&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:45Z",
+     "linhas": 67,
+     "sha256_resposta": "212ecd093af5e89c64e09be9ad4519ddea8dbae413767f15c4ecf8a79dc98c34",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2304400.json.gz",
+     "sha256": "93db41e36ade6cd433123c488f26cd3abd70efc10241009b11d12d7f27fe6439"
+    },
+    "3205309": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=320530&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:48Z",
+     "linhas": 67,
+     "sha256_resposta": "e7fcd65219dfc4844f9dd86e9df735fc2d8771b2a8842c587507114d1c76cb34",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_3205309.json.gz",
+     "sha256": "1a23211ca298a7a0f731f317e0520bad3c0826852689d752781fbae784120aff"
+    },
+    "5208707": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=520870&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:51Z",
+     "linhas": 67,
+     "sha256_resposta": "a487bfa7c9ffc90ef2299b12be9c224909464bc01b45967db272bb7ae9bb144d",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_5208707.json.gz",
+     "sha256": "5e6579acd7f299c4512afc4943b954980e7617b5aa9b9e643ae8eba59a06c9a9"
+    },
+    "2111300": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=211130&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:54Z",
+     "linhas": 67,
+     "sha256_resposta": "54b5cd6fd3321cf699c2c150b69a0155dd2be024cc6c2d5e5af6110e3de476dd",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2111300.json.gz",
+     "sha256": "aeefdffa5dbbb07305f2cf01fb60b760bbbbf241b6b2ae7f2e89f84265420f7d"
+    },
+    "5103403": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=510340&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:56Z",
+     "linhas": 67,
+     "sha256_resposta": "e58917dfa5c223e6187768c137801eccca3ce021db479cab97123406f722cac7",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_5103403.json.gz",
+     "sha256": "bab22c672705f386505c04c97756d922a6a12596732282eabdaf78c37d11a2c4"
+    },
+    "5002704": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=500270&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:02:59Z",
+     "linhas": 67,
+     "sha256_resposta": "757a81fd895b007c3f9011446f9a8d53658295f8916b93d349f16340f3a82781",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_5002704.json.gz",
+     "sha256": "b7c5fa5cb6fe2119fbaddd32c1c1f5bb25e8987e8bd95811778702b42394c08e"
+    },
+    "3106200": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=310620&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:02Z",
+     "linhas": 67,
+     "sha256_resposta": "c8e2ae3d125b536fa1517ec984f21b35659050032cd1274b22427969066553a9",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_3106200.json.gz",
+     "sha256": "5816d482fa0d8d1befebe016a29af95464574c0acda8bc8d683a7004f868433a"
+    },
+    "1501402": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=150140&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:07Z",
+     "linhas": 67,
+     "sha256_resposta": "46b3445c12187134f851db0411abf3377c8e224196a12c85c081da9d78fb587a",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1501402.json.gz",
+     "sha256": "035eedf5953c2c2bdd56d4fad14c92a1cd92f68352179385c435063baad32193"
+    },
+    "2507507": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=250750&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:10Z",
+     "linhas": 67,
+     "sha256_resposta": "2aa9085b302ac96f5f3a450a3ba104a9cf8fd99d3bcae2798de131fe053d57c9",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2507507.json.gz",
+     "sha256": "71ad8f9b6ac5484fae03c3cf762eeb3d1cc7a8dda5d13b26b0abcf18cab1dbe0"
+    },
+    "4106902": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=410690&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:13Z",
+     "linhas": 67,
+     "sha256_resposta": "5bdc004edf10c913d2eb9bcef76a0ab00dbae7ddc2cdd1d668dff06c9d01393b",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_4106902.json.gz",
+     "sha256": "2a59a472ee45a0c29e0a8cdccddcb72b40979551dd28128d53fbeef57d6052c5"
+    },
+    "2611606": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=261160&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:25Z",
+     "linhas": 67,
+     "sha256_resposta": "df317f191275df5a04f36c06194910b59933493631a10409c140fbba2ffebacb",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2611606.json.gz",
+     "sha256": "c548c6427baafe698e4c38f724b14bd1c2388237a249a8939076c4615d48c49c"
+    },
+    "2211001": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=221100&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:27Z",
+     "linhas": 67,
+     "sha256_resposta": "5c23330bd8617cf5159dc7cc59fb5151535276f00be84ca26774be04b02fb1d1",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2211001.json.gz",
+     "sha256": "bb6ebbaa94ef4466d5936670d3cb1a43b294673aa50d09461c616971ae3e1444"
+    },
+    "3304557": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=330455&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:32Z",
+     "linhas": 67,
+     "sha256_resposta": "ebdc7cdcb86a236e27acae0896358cd4c9084082712abf598d514548c33f81ee",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_3304557.json.gz",
+     "sha256": "a45ebdb15f94a0e842acc2c3f22480402d7d065484aae64fc2c8b0a33025e28c"
+    },
+    "2408102": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=240810&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:34Z",
+     "linhas": 67,
+     "sha256_resposta": "4537351e70305dd01ec7a91e0ae74c651e06cb6d9038e9c6522e6a7b90ddb869",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2408102.json.gz",
+     "sha256": "9ff63f598a3e2e7457d95ba283b513fd53440899bcb3302981a544a4557a8454"
+    },
+    "4314902": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=431490&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:37Z",
+     "linhas": 67,
+     "sha256_resposta": "8b7b6469b693c9e6869ea656500a6c76c089f13e96ad8c647201c4dc80c42a9a",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_4314902.json.gz",
+     "sha256": "764ec9cacaa445e5b675082d5e4e0c77f403ec33ea0de3d57808d2e619471e39"
+    },
+    "1100205": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=110020&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:39Z",
+     "linhas": 67,
+     "sha256_resposta": "fbde30e42653a2bca99299abe92dba6ac978e433cd6a6b9037637e81c4ccc927",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1100205.json.gz",
+     "sha256": "95b606d56c5df730e13c7afe4a0e68d8a1ade57c6d4a17712d76b42db029686e"
+    },
+    "1400100": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=140010&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:42Z",
+     "linhas": 67,
+     "sha256_resposta": "68eea813b5673f0490d6829a3f285bc76194e15e08e5fefb728652b04334c677",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1400100.json.gz",
+     "sha256": "2ddb9fcc988463d3f7b2606677653a0dcd814a226adecca90ebef6f041d0c26b"
+    },
+    "4205407": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=420540&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:46Z",
+     "linhas": 67,
+     "sha256_resposta": "da869433e2424d0aef7b32dcf806314e3162b206c17e2daa022d844f8b661d6d",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_4205407.json.gz",
+     "sha256": "28e42663264948c9d2eaba7115a8790a436810f25f5fe5128194af566786ab42"
+    },
+    "3550308": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=355030&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:49Z",
+     "linhas": 67,
+     "sha256_resposta": "16663841f476be50fab957e73aa26a2876ae38716d37ad5a0dff5ac264e61418",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_3550308.json.gz",
+     "sha256": "16ddcae7bfde481a89280984a5790b0782241fda1b34acc185613221c4dab368"
+    },
+    "2800308": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=280030&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:52Z",
+     "linhas": 67,
+     "sha256_resposta": "db1ca81610cd7da2a35096a14bab58eac276dbe452621992496ba795c16d105e",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_2800308.json.gz",
+     "sha256": "4c5ca0917b71f9d88933bb25dabedf5de7c2241d44d6202abbbbe912544c229f"
+    },
+    "1721000": {
+     "url": "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=172100&nuCompInicio=202101&nuCompFim=202607",
+     "capturado_em": "2026-10-09T12:03:54Z",
+     "linhas": 67,
+     "sha256_resposta": "dd1a05bc25c25dfadaf81196aa3361ed6740ef1b744241b4120bd08883770a09",
+     "recorte": "pipeline/eficiencia_saude/seed/relatorio_aps/cobertura_aps_1721000.json.gz",
+     "sha256": "9a16880694d69110ba1c94594ff7578a2b634938eb56f66693015b67bc92c893"
+    }
+   }
+  },
+  "ripsa_cob201_internacoes": {
+   "instituicao": "Ministério da Saúde (RIPSA, indicador COB.2.01)",
+   "conjunto": "Internações hospitalares SUS, por município de residência",
+   "pagina": "https://dadosabertos.saude.gov.br/dataset/ripsa-cobertura-dimensao-2-internacoes-hospitalares",
+   "url": "https://demas-dados-abertos.s3.amazonaws.com/csv/ripsa002cb.csv.zip",
+   "capturado_em": "2026-10-09T12:05:27Z",
+   "publicado_em": null,
+   "etag": null,
+   "sha256_original": "6f653daf79ea8097bbf2769d838c0a172cf349529fd533d739aeb7192e47957a",
+   "linhas_arquivo_original": 139258,
+   "recorte": "pipeline/eficiencia_saude/seed/ripsa/cob201_internacoes_capitais_2021_2024.csv.gz",
+   "sha256_recorte": "302be0378c7f60468b85c9de4fcf890ab4fbbf928c95fdb163a215cdf5f1e621",
+   "linhas_recorte": 104,
+   "parametros": "26 capitais; anos 2021 a 2024; total de internações"
+  },
+  "ripsa_cob501_planos": {
+   "instituicao": "Ministério da Saúde (RIPSA, indicador COB.5.01, base da ANS)",
+   "conjunto": "Cobertura de planos de saúde privados (percentual da população), total das categorias",
+   "pagina": "https://dadosabertos.saude.gov.br/dataset/ripsa-cobertura-dimensao-5-cobertura-por-planos-de-saude",
+   "url": "https://demas-dados-abertos.s3.amazonaws.com/csv/ripsa001cb.csv.zip",
+   "capturado_em": "2026-10-09T12:05:33Z",
+   "publicado_em": null,
+   "etag": null,
+   "sha256_original": "994503f97f250516eedcdd2cdaa2a383a47dcca55c45624ec91af392f640b1e7",
+   "linhas_arquivo_original": 796510,
+   "recorte": "pipeline/eficiencia_saude/seed/ripsa/cob501_planos_capitais_dezembro_2021_2024.csv.gz",
+   "sha256_recorte": "00455a834d44ec753a46ee98f74befbfbbc6f6acb445f46e14b046b890729e12",
+   "linhas_recorte": 104,
+   "parametros": "26 capitais; dezembro de 2021 a 2024; categoria TC (todas as categorias)"
+  },
+  "ripsa_mrb402_icsap": {
+   "instituicao": "Ministério da Saúde (RIPSA, indicador MRB.4.02)",
+   "conjunto": "Taxa de internação hospitalar SUS por condições sensíveis à atenção primária (ICSAP), por município de residência",
+   "pagina": "https://dadosabertos.saude.gov.br/dataset/ripsa-morbidade-dimensao-4-morbidade-hospitalar",
+   "url": "https://demas-dados-abertos.s3.amazonaws.com/csv/mgdi_ms_qu3.csv.zip",
+   "capturado_em": "2026-10-09T12:05:26Z",
+   "publicado_em": null,
+   "etag": null,
+   "sha256_original": "5fccaaa04121e5c8cd7484c2cc7abbb1226d5ec1a642e92d6412b5e8253dfc68",
+   "linhas_arquivo_original": 3342102,
+   "recorte": "pipeline/eficiencia_saude/seed/ripsa/mrb402_icsap_capitais_2021_2024.csv.gz",
+   "sha256_recorte": "bb5e772bff2d336b31273c219d5815e3ca98f918ff1b4be55d6d362a1bff20a6",
+   "linhas_recorte": 104,
+   "parametros": "26 capitais; anos 2021 a 2024; somados os 3 sexos e as 13 faixas etárias (o arquivo traz uma linha por sexo e faixa); total e 19 grupos da Lista Brasileira (Portaria SAS/MS 221/2008); população do denominador do próprio arquivo."
+  },
   "siconfi_dca_anexo_i_e": {
    "instituicao": "Secretaria do Tesouro Nacional (Siconfi)",
    "conjunto": "Declaração de Contas Anuais (DCA), Anexo I-E: Despesa por Função (função 10, Saúde)",
@@ -3537,6 +3814,847 @@
     }
    }
   },
+  "siops_despesas_por_fonte": {
+   "instituicao": "Ministério da Saúde (SIOPS)",
+   "conjunto": "Despesa total em Saúde por fonte de recursos e subfunção (estágio empenhado), 6º bimestre",
+   "pagina": "https://dadosabertos.saude.gov.br/dataset/siops",
+   "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/<UF>/<município 6 dígitos>/<ano>/2",
+   "parametros": "exercícios 2021 a 2025; 26 capitais; resposta integral gravada; dicionário em https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SIOPS/MetaDados.pdf",
+   "arquivos": {
+    "1200401_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/12/120040/2021/2",
+     "capturado_em": "2026-10-09T12:03:35Z",
+     "linhas": 15,
+     "sha256_resposta": "df51559bd45e7fe3e260996c0313bd60b9f7f3f97a0e1e949e87449d0dfa1be7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1200401_2021.json.gz",
+     "sha256": "0534ba658fc0d66491e4a52c4f7f1ef70035489c3f55279962a71a40897eda67"
+    },
+    "2704302_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/27/270430/2021/2",
+     "capturado_em": "2026-10-09T12:03:35Z",
+     "linhas": 15,
+     "sha256_resposta": "de2861231b06f32f34c91359ed4b7fc494f90b378f290d6fb1a075c82b309284",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2704302_2021.json.gz",
+     "sha256": "711a172f2d738966b1b9e911dfb5fdc615a34567ebbb6b0a1381fc86fb902f91"
+    },
+    "1600303_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/16/160030/2021/2",
+     "capturado_em": "2026-10-09T12:03:36Z",
+     "linhas": 15,
+     "sha256_resposta": "ecb444c30df53e24a5a662d6d4b0ce08ce1deb6579376690cfbd926f6b5a1367",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1600303_2021.json.gz",
+     "sha256": "196fd518effde15a37169ffd706adada208471985f3a3a286ae941adc3d7e5d8"
+    },
+    "1302603_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/13/130260/2021/2",
+     "capturado_em": "2026-10-09T12:03:37Z",
+     "linhas": 15,
+     "sha256_resposta": "b40c9dba483b685db0443e54d89e6473e4f9b27472241d067625c785784f5605",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1302603_2021.json.gz",
+     "sha256": "53cbe11f0f026420ea3b4f2bbb7a0cb2ab784070469e13d60514a5667b7b591b"
+    },
+    "2927408_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/29/292740/2021/2",
+     "capturado_em": "2026-10-09T12:03:38Z",
+     "linhas": 15,
+     "sha256_resposta": "7a514732fe67d7891d33ecb91a7823abf465016b97c41a80d8b837b1f930b9b9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2927408_2021.json.gz",
+     "sha256": "a6cf1a763b19d977e69abe5b49ba30610d3dc28ce4f1c2a9c3a7e0b9d95f249d"
+    },
+    "2304400_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/23/230440/2021/2",
+     "capturado_em": "2026-10-09T12:03:39Z",
+     "linhas": 15,
+     "sha256_resposta": "7595c8db39c190dd6ebd05a365542730b4e28aa5a4d120eddf90a9874c3f8012",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2304400_2021.json.gz",
+     "sha256": "5496fbd68a778e29d0ecda5e96b29f307897c595eb45f850ea6dcaaa99f33489"
+    },
+    "3205309_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/32/320530/2021/2",
+     "capturado_em": "2026-10-09T12:03:40Z",
+     "linhas": 15,
+     "sha256_resposta": "a7af368c356bc5bdce9a3f4cf50debda7945a3533b74ee2470d6e2adfa7560c1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3205309_2021.json.gz",
+     "sha256": "631aafe12ee670f4752a5110f6766da77f5ee36e8d6531724daf0df800f33fa4"
+    },
+    "5208707_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/52/520870/2021/2",
+     "capturado_em": "2026-10-09T12:03:41Z",
+     "linhas": 15,
+     "sha256_resposta": "80565f0e2d25a1802eda72a65beeafb58e35eab76e6724a9da9284faebeebcd9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5208707_2021.json.gz",
+     "sha256": "07e314b506a2da497e82299dad5d366209540397295c04c709d3a2e11beaf555"
+    },
+    "2111300_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/21/211130/2021/2",
+     "capturado_em": "2026-10-09T12:03:42Z",
+     "linhas": 15,
+     "sha256_resposta": "757601a5fcced5170345f228598d6f494b2f6f90c65fa0f54a600197a54df7e5",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2111300_2021.json.gz",
+     "sha256": "379f76442972bcf249db1ff5d458c933b7f53d0ee1f9d28c84f204262a89f70a"
+    },
+    "5103403_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/51/510340/2021/2",
+     "capturado_em": "2026-10-09T12:03:43Z",
+     "linhas": 15,
+     "sha256_resposta": "109bdd0b85ea523641e2d4a78fde0404598481d7da1c70ed0d94865fe17d28ec",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5103403_2021.json.gz",
+     "sha256": "1f23255f81fc5564b293e04d0645ca7401aee5ad2974f6a7c37f5cbca8c4df2a"
+    },
+    "5002704_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/50/500270/2021/2",
+     "capturado_em": "2026-10-09T12:03:44Z",
+     "linhas": 15,
+     "sha256_resposta": "66a1973aec18309761a926144d968f2fe6068bce6606a0628166f7a0de623dbb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5002704_2021.json.gz",
+     "sha256": "34b72ab840447861b7a67e3969348234aca59bb702dbb98f5c52fe83f0a32caf"
+    },
+    "3106200_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/31/310620/2021/2",
+     "capturado_em": "2026-10-09T12:03:45Z",
+     "linhas": 15,
+     "sha256_resposta": "168927780d7115e4ad826301bbdeec562aa90b9a94d397829b5ee6e6abc31b3b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3106200_2021.json.gz",
+     "sha256": "d0efb8099832aacc3f7dda98cf110e08c2367815f87e9ff62c91d62b558af476"
+    },
+    "1501402_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/15/150140/2021/2",
+     "capturado_em": "2026-10-09T12:03:46Z",
+     "linhas": 15,
+     "sha256_resposta": "c575e0856570e027fd7a8835ca22e75285e7ef98edd7cb00a81c93e74952335b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1501402_2021.json.gz",
+     "sha256": "57eb5b0551af0a35b8ff3b9ea9f9e62ae272440287d3731d9ad572605e346692"
+    },
+    "2507507_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/25/250750/2021/2",
+     "capturado_em": "2026-10-09T12:03:47Z",
+     "linhas": 15,
+     "sha256_resposta": "efb6a11a950dec3bedde45a3577d27ba8182cadddaa09b8094b2482a74d4c6e1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2507507_2021.json.gz",
+     "sha256": "c6a336db57a023e5afd7730c5ac10f2b223b0420de3663b741693088677c314a"
+    },
+    "4106902_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/41/410690/2021/2",
+     "capturado_em": "2026-10-09T12:04:01Z",
+     "linhas": 15,
+     "sha256_resposta": "d7fc9f6f17705039315f518e6c893c1ecd86d2c487b3a4b922d34be1de9f64f8",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4106902_2021.json.gz",
+     "sha256": "aaae89d453a5186585a328a4ff0fe307b21ffcb098c0b078b865b364faaac4ba"
+    },
+    "2611606_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/26/261160/2021/2",
+     "capturado_em": "2026-10-09T12:04:02Z",
+     "linhas": 15,
+     "sha256_resposta": "2868d306476233b6bd3d3c96bcf9bb5bb65abff51af85e0be6fff9b664bd3a91",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2611606_2021.json.gz",
+     "sha256": "c9a05712f0ffda114bf7d10bda7f978c11dd21e0c3fa8aae88521ab63d469f04"
+    },
+    "2211001_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/22/221100/2021/2",
+     "capturado_em": "2026-10-09T12:04:03Z",
+     "linhas": 15,
+     "sha256_resposta": "cada705aad5c0791009f6f8241a6c0c3c8d7f2b304ba9d13c1fd75bcc71dbec7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2211001_2021.json.gz",
+     "sha256": "895e2a00dafc0150c0fcfd31120bdf5e820f2fd4294b7d8a46ce57bac9ac14e9"
+    },
+    "3304557_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/33/330455/2021/2",
+     "capturado_em": "2026-10-09T12:04:04Z",
+     "linhas": 15,
+     "sha256_resposta": "c22b475106976e9e2d2d0f73724133f3b13635234f4cf2be168c60100ce4cbb7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3304557_2021.json.gz",
+     "sha256": "72a895873a38978e94b6917c2971ee3b6a46c33716ff55273a9274bc0b43897a"
+    },
+    "2408102_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/24/240810/2021/2",
+     "capturado_em": "2026-10-09T12:04:05Z",
+     "linhas": 15,
+     "sha256_resposta": "0e3395c6d4a447e7dd720e51326bf69c1d5478789e53c0af4835ab9632e07250",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2408102_2021.json.gz",
+     "sha256": "61a19765a0d8a9646382777dc965c9f5d86dbff9d15135e84bc865b2a02ddf01"
+    },
+    "4314902_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/43/431490/2021/2",
+     "capturado_em": "2026-10-09T12:04:06Z",
+     "linhas": 15,
+     "sha256_resposta": "54e1dfb963a7599ded03874fed14d864b479c4e0235dd965c34555e6122e4fcf",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4314902_2021.json.gz",
+     "sha256": "336621f43d073590340538767fb62178a81504de18c48562dd2cc55c2d567266"
+    },
+    "1100205_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/11/110020/2021/2",
+     "capturado_em": "2026-10-09T12:04:07Z",
+     "linhas": 15,
+     "sha256_resposta": "77d3b8d865bcc3e07a93d49eb1a4c2d554db405119fe83a38ff04a9531a8b7c4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1100205_2021.json.gz",
+     "sha256": "7212ae43c8bdc67982188568b75e42f1d240890667fac3c22d86abab2524872e"
+    },
+    "1400100_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/14/140010/2021/2",
+     "capturado_em": "2026-10-09T12:04:08Z",
+     "linhas": 15,
+     "sha256_resposta": "93f344a1138d49c55d77ef470aaa0ba7f5e98ca876ad7b1d7fd7b0d490a8e933",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1400100_2021.json.gz",
+     "sha256": "976e355fc6efaceafc65b43f84c1a6b93ab7e8066de78b4d9fce26f0909b047c"
+    },
+    "4205407_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/42/420540/2021/2",
+     "capturado_em": "2026-10-09T12:04:09Z",
+     "linhas": 15,
+     "sha256_resposta": "fccc0f4029a9ef76ac20bee5543aae31b08fda20e26608c78bb3bf8c548f1b6a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4205407_2021.json.gz",
+     "sha256": "6204371ac798f8b07d01b04e804d4038f5bac17bb093215c23feaf73aac3930a"
+    },
+    "3550308_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/35/355030/2021/2",
+     "capturado_em": "2026-10-09T12:04:10Z",
+     "linhas": 15,
+     "sha256_resposta": "db8658cbc653f400a0f60f38ed5d4eaf314c6d5987239c8110ae407508c8cd03",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3550308_2021.json.gz",
+     "sha256": "0a96179b07a1b098015c9fba7fc453ed1939478c5866c1528e986eef5a5b10ad"
+    },
+    "2800308_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/28/280030/2021/2",
+     "capturado_em": "2026-10-09T12:04:11Z",
+     "linhas": 15,
+     "sha256_resposta": "3a8ed319b67d8f419998ffaa42a4f1a5a0fc0de038eaf1842b3eb078101adccf",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2800308_2021.json.gz",
+     "sha256": "1d3be870c502257a998fe6c7db8e680259b119f42186b50219ab39e53b53557a"
+    },
+    "1721000_2021": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/17/172100/2021/2",
+     "capturado_em": "2026-10-09T12:04:12Z",
+     "linhas": 15,
+     "sha256_resposta": "267fa6c0bd1116b1069ff9d431f639e9eff9a1dd438c822265d34dea5827da0e",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2021.json.gz",
+     "sha256": "0ede9add88dda6716682c501ff26e046f0593396b82c63e3b6d166912ecf6ea6"
+    },
+    "1200401_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/12/120040/2022/2",
+     "capturado_em": "2026-10-09T12:04:13Z",
+     "linhas": 15,
+     "sha256_resposta": "5aae6b1b8a87a6a4bb91417bc174d7c4a4dab82a2ce6fd83774f079ca75b9469",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1200401_2022.json.gz",
+     "sha256": "114a9d1df518dab3a9a906f5512a9a645e7822040ff0428414a9aa5eb9c65d8c"
+    },
+    "2704302_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/27/270430/2022/2",
+     "capturado_em": "2026-10-09T12:04:14Z",
+     "linhas": 15,
+     "sha256_resposta": "4151e10ca9d6a4a80595313cdabfaf91344a8e74c3766facd1210a2733746af9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2704302_2022.json.gz",
+     "sha256": "0831f197796e3d779f4b023d9ac223ae2e5ac6057de878bb82f7f586b73d61d0"
+    },
+    "1600303_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/16/160030/2022/2",
+     "capturado_em": "2026-10-09T12:04:15Z",
+     "linhas": 15,
+     "sha256_resposta": "d8306722dfd0d0ba4d6f9e968a74b8b368c352a6bb94bea1c70460418a235695",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1600303_2022.json.gz",
+     "sha256": "1937b9f822132a999eb56bc55a98eca050e8ce1f4955c2042a827f9b487009d6"
+    },
+    "1302603_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/13/130260/2022/2",
+     "capturado_em": "2026-10-09T12:04:16Z",
+     "linhas": 15,
+     "sha256_resposta": "2820b69f38d5377cd21ac8f1faa94abea46a9cefcf24d72d73ffce66db59cff8",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1302603_2022.json.gz",
+     "sha256": "4e337a8b445d0c30b52d67cb2f4ff232bbb4df0c539c4b825513a15fc5758164"
+    },
+    "2927408_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/29/292740/2022/2",
+     "capturado_em": "2026-10-09T12:04:17Z",
+     "linhas": 15,
+     "sha256_resposta": "9ee069be0cfdd9b09705586ced778ee62d5380b3ec61b11ac0f3e767421358db",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2927408_2022.json.gz",
+     "sha256": "54d3e8d065c0b326f389daa26b2aa1a3ec92bf18ee76b183b353a64811c4e7e0"
+    },
+    "2304400_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/23/230440/2022/2",
+     "capturado_em": "2026-10-09T12:04:18Z",
+     "linhas": 15,
+     "sha256_resposta": "04334231894c9c8faf38f120aeb904aa3e6e3debfc7142cf4912dd084c623a48",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2304400_2022.json.gz",
+     "sha256": "61d2624e509b522870c2aaab91b1f8075d63c72c5f8a5722721f3507f7cabce8"
+    },
+    "3205309_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/32/320530/2022/2",
+     "capturado_em": "2026-10-09T12:04:19Z",
+     "linhas": 15,
+     "sha256_resposta": "9dce681db92c2bd6f4ce968635a8fe0c28dec12e647948ae0a98d5294125bd41",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3205309_2022.json.gz",
+     "sha256": "97026f29621d3a5e5b916f4e34c08c5bf3e6be21d0a449cefa19c4868317e431"
+    },
+    "5208707_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/52/520870/2022/2",
+     "capturado_em": "2026-10-09T12:04:20Z",
+     "linhas": 15,
+     "sha256_resposta": "159ab8bab9d628b86cf7f634ad60ec4241bb96de48f1ef2511d46b92bab794eb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5208707_2022.json.gz",
+     "sha256": "f44308c5e409e5fd3862c89a457146f7c155537f8ff13ec1458a0c605d3a820b"
+    },
+    "2111300_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/21/211130/2022/2",
+     "capturado_em": "2026-10-09T12:04:21Z",
+     "linhas": 15,
+     "sha256_resposta": "cffcf3d7056ba790c0e09cb33515b03e06c707969dcec1640f57182ede4abb8d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2111300_2022.json.gz",
+     "sha256": "1606f55e08d3e78505f6b4022aca795f7f4b7d0a083ab449936409458b7527d7"
+    },
+    "5103403_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/51/510340/2022/2",
+     "capturado_em": "2026-10-09T12:04:22Z",
+     "linhas": 15,
+     "sha256_resposta": "e3bd16870f52d3a76b382f4592e4db1eac056317eb98ad85919fa4eab76bd618",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5103403_2022.json.gz",
+     "sha256": "a1cf2c71ee957855e8dfebfe331ab8b4eee4205c7b201ade6ed01081699976cc"
+    },
+    "5002704_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/50/500270/2022/2",
+     "capturado_em": "2026-10-09T12:04:23Z",
+     "linhas": 15,
+     "sha256_resposta": "03d6af3cb8e443822e3f48a7c4e33a7c7e5b25f84944e8b416f00fa268a5ca49",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5002704_2022.json.gz",
+     "sha256": "b8d1748938fa5efe0e83e859785e61e96ab6d46d0accdf140c8a1a3de17658af"
+    },
+    "3106200_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/31/310620/2022/2",
+     "capturado_em": "2026-10-09T12:04:24Z",
+     "linhas": 15,
+     "sha256_resposta": "3b47d0147a6f940fddbc0781e393b5692442047ce00536464833377b72d17410",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3106200_2022.json.gz",
+     "sha256": "b220d167d66f2a3a599d21314a56c198f7e28cf8a5213f63b81a3d7e0bf40e32"
+    },
+    "1501402_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/15/150140/2022/2",
+     "capturado_em": "2026-10-09T12:04:25Z",
+     "linhas": 15,
+     "sha256_resposta": "04379e57509ca9518f50ff14d057cf0be3ae9d6874a113501b89c6711254c577",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1501402_2022.json.gz",
+     "sha256": "abd2ce77395853cf69fae0afb6f3da257e1d37e49894ac1c948608fff76ff0f1"
+    },
+    "2507507_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/25/250750/2022/2",
+     "capturado_em": "2026-10-09T12:04:26Z",
+     "linhas": 15,
+     "sha256_resposta": "c065ebd9d087f0c794948be620806401002ff5f17c0124f790878479ac7356c8",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2507507_2022.json.gz",
+     "sha256": "24ca20ab5cd1fbc2475aa02f7a6b65d07ca9b3cfce0cd648cac1f50feeeb186f"
+    },
+    "4106902_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/41/410690/2022/2",
+     "capturado_em": "2026-10-09T12:04:27Z",
+     "linhas": 15,
+     "sha256_resposta": "7010c159d6ea2239a4e08475af29066477de368bd8fbe0f70e3695b169d58d63",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4106902_2022.json.gz",
+     "sha256": "e4fde1fe4c2d89bd18e47c42d0edf597b0f3ad28a28079c814c91a1dfbab9b83"
+    },
+    "2611606_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/26/261160/2022/2",
+     "capturado_em": "2026-10-09T12:05:13Z",
+     "linhas": 15,
+     "sha256_resposta": "6ada0ee80cbe05a3b2ebfd17bea3755cf5a6bb26c7dbc5880ea976c731ca57af",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2611606_2022.json.gz",
+     "sha256": "ad4ab332685f368e05a0be5bc3b03df637a58cc57eeef148e56b5c0282d057eb"
+    },
+    "2211001_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/22/221100/2022/2",
+     "capturado_em": "2026-10-09T12:05:13Z",
+     "linhas": 15,
+     "sha256_resposta": "0f223f1df6e5912035bf810f8218272f2a95e9dd85c9333927ab630d3d140199",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2211001_2022.json.gz",
+     "sha256": "e056670a520db826864a196a2f3dd0ba4c6fe42296a11de0d0005baf66677d24"
+    },
+    "3304557_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/33/330455/2022/2",
+     "capturado_em": "2026-10-09T12:05:14Z",
+     "linhas": 15,
+     "sha256_resposta": "f7f9c5d711c6c81aa843a0413c3235c5a7934fa1c7814d7aab691801cbc391cf",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3304557_2022.json.gz",
+     "sha256": "98e17041e1f53aecf05a98e16160af15e3149e5e240c7772e766d2b2a8ea0ce8"
+    },
+    "2408102_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/24/240810/2022/2",
+     "capturado_em": "2026-10-09T12:05:15Z",
+     "linhas": 15,
+     "sha256_resposta": "cc467e969f5236f8bc01f3da67d6458b34089e44a5bb6f1c36c2ba041d92e999",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2408102_2022.json.gz",
+     "sha256": "83dab5498af67e9e06ffe9379b351bd95a349d1d9803261030999d885ad5376c"
+    },
+    "4314902_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/43/431490/2022/2",
+     "capturado_em": "2026-10-09T12:05:16Z",
+     "linhas": 15,
+     "sha256_resposta": "62cb512e66e6a374e46479bb0a1d9f44778afe925d7b9273a158f093aa4c4d02",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4314902_2022.json.gz",
+     "sha256": "2cf236989ddce5bbf5355112971d79eab6a279c7f13dd474f89b382de18787d1"
+    },
+    "1100205_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/11/110020/2022/2",
+     "capturado_em": "2026-10-09T12:05:17Z",
+     "linhas": 15,
+     "sha256_resposta": "9ff1dddfa0ca4bfb13b2f36d7f8f2ac0bd2620aa21d02ecd0b9fe318f66edcd7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1100205_2022.json.gz",
+     "sha256": "27bbb137c1c6ec26d862293a517c65f0a151860a8dff60b50696d8a60dbb2bd4"
+    },
+    "1400100_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/14/140010/2022/2",
+     "capturado_em": "2026-10-09T12:05:18Z",
+     "linhas": 15,
+     "sha256_resposta": "540ffc0566ca754ed27f0dc743e5e5201e16e6808664150c9d93a420ff3266d7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1400100_2022.json.gz",
+     "sha256": "d6aebe239cb365551deeeee16bb5a6b463ca8798d86375d8365b46ffb372659e"
+    },
+    "4205407_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/42/420540/2022/2",
+     "capturado_em": "2026-10-09T12:05:19Z",
+     "linhas": 15,
+     "sha256_resposta": "a1d117852bb5f98f6c5296542531d03270caa3ebf5af98673bf4988123814fb2",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4205407_2022.json.gz",
+     "sha256": "99d73aab3980b1971bdce8141741ef01ee57ae5e6a8296c608e45c20dc810a2f"
+    },
+    "3550308_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/35/355030/2022/2",
+     "capturado_em": "2026-10-09T12:05:20Z",
+     "linhas": 15,
+     "sha256_resposta": "0187a97c13c3b9fce9bac779e46482a44ccf4b6d0edc907ed01c640b5cf7fad0",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3550308_2022.json.gz",
+     "sha256": "c5685c986db7b983bef0e9b7ca55288249401828801ec56684a6f8663fca53b2"
+    },
+    "2800308_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/28/280030/2022/2",
+     "capturado_em": "2026-10-09T12:05:21Z",
+     "linhas": 15,
+     "sha256_resposta": "0b9f0f5533e3bc0a34ca5120b68895be0e1a44dbfc1cd53efc42abfd126e0fbe",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2800308_2022.json.gz",
+     "sha256": "ab25ae8e1f855df359536bb1db7805008a282d107668ed867cef3d2be586b280"
+    },
+    "1721000_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/17/172100/2022/2",
+     "capturado_em": "2026-10-09T12:05:22Z",
+     "linhas": 15,
+     "sha256_resposta": "e2b13fd21871c467e77ad7d2e73e16889cd5dcad27a32d9b943806079fa97138",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2022.json.gz",
+     "sha256": "6ef243addcd5934e88367e7049a11498bed2175f9deefa610762720559779d77"
+    },
+    "1200401_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/12/120040/2023/2",
+     "capturado_em": "2026-10-09T12:05:23Z",
+     "linhas": 15,
+     "sha256_resposta": "0677b10ca1616588c9ce71ee62c64a853710bac9edcd56abd4a12694e07dd7cc",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1200401_2023.json.gz",
+     "sha256": "d845cb9f756db8258b04db2f5428d77579f5b64932a57d79d759e1d45129f4e8"
+    },
+    "2704302_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/27/270430/2023/2",
+     "capturado_em": "2026-10-09T12:05:24Z",
+     "linhas": 15,
+     "sha256_resposta": "7193156dcfc4946dc890db9ac030c382e4c10dca8e4274a3065da397d2d45829",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2704302_2023.json.gz",
+     "sha256": "5ca0836fc7f7d7a430bdb1c35ce8beb911898c404e637371edfb996aaab33508"
+    },
+    "1600303_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/16/160030/2023/2",
+     "capturado_em": "2026-10-09T12:05:25Z",
+     "linhas": 15,
+     "sha256_resposta": "f10dc64e3977678c549d456429eb1382c476b303ea707acf29d93783d08be324",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1600303_2023.json.gz",
+     "sha256": "4053e04c0b16f9c847391b5df99ecafa5f13c3cf46b584654d42789dbc851faa"
+    },
+    "1302603_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/13/130260/2023/2",
+     "capturado_em": "2026-10-09T12:05:26Z",
+     "linhas": 15,
+     "sha256_resposta": "0937a8d6ffdd65036cd0465e5e149a0b8a67f1d709243eab4082d5d1397e676a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1302603_2023.json.gz",
+     "sha256": "64203af06131d430358d91bcefea01cbaccf8ef75d370311965a3dde6cf0efd5"
+    },
+    "2927408_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/29/292740/2023/2",
+     "capturado_em": "2026-10-09T12:05:27Z",
+     "linhas": 15,
+     "sha256_resposta": "8e1c06eb33bb5ae8162697297d032d4beea90ea299ca39c64844e8c7a7ca38a3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2927408_2023.json.gz",
+     "sha256": "c2da82e804bb6fd3bb9258e44fb923f55a03a126940680c08e7b0791925bcb4f"
+    },
+    "2304400_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/23/230440/2023/2",
+     "capturado_em": "2026-10-09T12:05:28Z",
+     "linhas": 15,
+     "sha256_resposta": "879f0f69e45c0bd6b18f1b3f8b971d1af98d88e96746aa1991f4a00a7da1bce9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2304400_2023.json.gz",
+     "sha256": "58ab390d446990d3aab46207b4e60cd95ba8d4db4e0f8d8b6037a68ccde6b72e"
+    },
+    "3205309_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/32/320530/2023/2",
+     "capturado_em": "2026-10-09T12:05:29Z",
+     "linhas": 15,
+     "sha256_resposta": "aafdcd8e05aa426b801a8baebcf81fa34ee843ae0680d75c7a172f74a52c6065",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3205309_2023.json.gz",
+     "sha256": "068099ee011d9ed9ee4b115da376aa3256b92b44e2b894c29a4e6581b40aaf87"
+    },
+    "5208707_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/52/520870/2023/2",
+     "capturado_em": "2026-10-09T12:05:30Z",
+     "linhas": 15,
+     "sha256_resposta": "6b95c6a2298f9de9843182665622d808f0f84d0a5532359e26c516c0450e5968",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5208707_2023.json.gz",
+     "sha256": "04eac0f3bd57bc83baffe431a6a758f6dfe4afbc5b3103224552d296407c1e58"
+    },
+    "2111300_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/21/211130/2023/2",
+     "capturado_em": "2026-10-09T12:05:31Z",
+     "linhas": 15,
+     "sha256_resposta": "36b7b040bf906e48ffd5c667ea812da6e1bee1c287b5984db924f932b5ad0144",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2111300_2023.json.gz",
+     "sha256": "37773dd27e9f5b05df9a448678a52035a165f2c6fa4cdfecef2e2d5859004e39"
+    },
+    "5103403_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/51/510340/2023/2",
+     "capturado_em": "2026-10-09T12:05:33Z",
+     "linhas": 15,
+     "sha256_resposta": "6ed310b7123d286abec8bd4c98bf1615fcb1e556629bc8ed4b3db076b9a51f88",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5103403_2023.json.gz",
+     "sha256": "6822868e69c8870455ed4a79726016224f704ef9547f98feae28f1cc6d1383bf"
+    },
+    "5002704_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/50/500270/2023/2",
+     "capturado_em": "2026-10-09T12:05:33Z",
+     "linhas": 15,
+     "sha256_resposta": "b71b16e820b12c45192c15fc9e6289d3b0258e37c0a9eb6eb55671b70f710a83",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5002704_2023.json.gz",
+     "sha256": "d6891de028683a25a54a42a7fb2980f33c6cbf0818670f0ab4bbf38a6611ccbf"
+    },
+    "3106200_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/31/310620/2023/2",
+     "capturado_em": "2026-10-09T12:05:34Z",
+     "linhas": 15,
+     "sha256_resposta": "b1b152222ab983c9e6fe34dbecc50768d2ba28719f5c3d9d66f18f224408f2b7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3106200_2023.json.gz",
+     "sha256": "d3108dbc0351d84424afc856493d35496d9df7f819d5a228fff3e3618898fd35"
+    },
+    "1501402_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/15/150140/2023/2",
+     "capturado_em": "2026-10-09T12:05:35Z",
+     "linhas": 15,
+     "sha256_resposta": "6f63f807863d27b998d1cb16f52307d4b1a2e043c1a730556e4a1845ca48f20a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1501402_2023.json.gz",
+     "sha256": "53bb0ef0c7563d562fb4cad305a63ea2a8b603dd5b6bbd31e2d08f99635f002d"
+    },
+    "2507507_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/25/250750/2023/2",
+     "capturado_em": "2026-10-09T12:05:59Z",
+     "linhas": 15,
+     "sha256_resposta": "f69a2996a8ddeb2e2fbcc8281b8b30817c663c582704b893888886bdfbb50746",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2507507_2023.json.gz",
+     "sha256": "0e934d4d81c9bfbb2e439bed37495a0d8212943410fefd483bf11cdc0e85c9e9"
+    },
+    "4106902_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/41/410690/2023/2",
+     "capturado_em": "2026-10-09T12:06:13Z",
+     "linhas": 15,
+     "sha256_resposta": "290a35b517a7870d8c91aa2641e87904ce2a9da3eb341633a6c0168fefb447ab",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4106902_2023.json.gz",
+     "sha256": "1030d7d78df7bc0de62660d2f6f454ccb0e6b38a124192ab1e7bbf4020cc325d"
+    },
+    "2611606_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/26/261160/2023/2",
+     "capturado_em": "2026-10-09T12:06:14Z",
+     "linhas": 15,
+     "sha256_resposta": "ee5e2a6249800944e08bf1605a1e09de005934869dfa378e85e68dbb8363812a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2611606_2023.json.gz",
+     "sha256": "7d54ec7694f822ead485ca4c91a2a9f624061eaa49919e0e54b0a73f58a55a33"
+    },
+    "2211001_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/22/221100/2023/2",
+     "capturado_em": "2026-10-09T12:06:15Z",
+     "linhas": 15,
+     "sha256_resposta": "15d975fb8f2ded94c43a073e92230d879cb28f115d4d0d0d68582337ff43df87",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2211001_2023.json.gz",
+     "sha256": "36df82b69526dd62061df5bc60cff233115238fc60f3bd0270361297e0cefc94"
+    },
+    "3304557_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/33/330455/2023/2",
+     "capturado_em": "2026-10-09T12:06:16Z",
+     "linhas": 15,
+     "sha256_resposta": "6f1670cc2b67d78430c8e9652e191f90962d634021f9b45428a01c9f938ee9cb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3304557_2023.json.gz",
+     "sha256": "71671d6e3ea2adfc926e02df91e2c205bee0e4291747a937111a43f105320670"
+    },
+    "2408102_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/24/240810/2023/2",
+     "capturado_em": "2026-10-09T12:06:17Z",
+     "linhas": 15,
+     "sha256_resposta": "2911f6597b6b81c4f5a508ed0689b47be4d1990fb1886dd0e9922c2aedba0fdd",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2408102_2023.json.gz",
+     "sha256": "aed4a0b98a5f42eb7ccc1cfbf66449759df43b2f64e22c62863fb3e20b360033"
+    },
+    "4314902_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/43/431490/2023/2",
+     "capturado_em": "2026-10-09T12:06:18Z",
+     "linhas": 15,
+     "sha256_resposta": "51c14978e55f16a6fc5e555a3e3846b4c255ee55e29a28fe90b899ef9048c25d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4314902_2023.json.gz",
+     "sha256": "d45669635a1fc995ddc63be0643f1372f2931f7765808824199bbc1d295b1e4e"
+    },
+    "1100205_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/11/110020/2023/2",
+     "capturado_em": "2026-10-09T12:06:19Z",
+     "linhas": 15,
+     "sha256_resposta": "c7b529c478de45303436ee0fd67e5f5065a2ce009e06521a3b4d10328cb91bb6",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1100205_2023.json.gz",
+     "sha256": "da198a41c3a088d76617538971df0da851f6657e67422c506236936d2ef387a1"
+    },
+    "1400100_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/14/140010/2023/2",
+     "capturado_em": "2026-10-09T12:06:20Z",
+     "linhas": 15,
+     "sha256_resposta": "8d44ccad82422b28e73c42ff277ac2de22abf037749b0162c447b218f7e41c4e",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1400100_2023.json.gz",
+     "sha256": "d6a38a7138a68f5e20cad6daa465109c50d3244904ee6f1e4874acff08b1ab5c"
+    },
+    "4205407_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/42/420540/2023/2",
+     "capturado_em": "2026-10-09T12:06:21Z",
+     "linhas": 15,
+     "sha256_resposta": "5ba815711fbef63f7da0b0dfa8c8efb7401492e1c8710a5f24a84aad486ffbf3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4205407_2023.json.gz",
+     "sha256": "971045806f1a10121305dcba3fe6d069855d71c53b12cd3bd9b4a13933264197"
+    },
+    "3550308_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/35/355030/2023/2",
+     "capturado_em": "2026-10-09T12:06:22Z",
+     "linhas": 15,
+     "sha256_resposta": "c4d31e3a9c372c3ac7eff204d46571ab3eddbd42ca56213a25fe85d266c1772f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3550308_2023.json.gz",
+     "sha256": "9478d0d6e76f74f12fa296420b402ef5f2359552b774158a400e89bcabe46013"
+    },
+    "2800308_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/28/280030/2023/2",
+     "capturado_em": "2026-10-09T12:06:23Z",
+     "linhas": 15,
+     "sha256_resposta": "6af5ebf318756b7659b7131c9c05d81a582ace5f4c93201a1bbeab8c89f1b5f3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2800308_2023.json.gz",
+     "sha256": "0378f228a27a7d5ded9670bc9380a10c7d3cfa481717360c7240db7324e3d265"
+    },
+    "1721000_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/17/172100/2023/2",
+     "capturado_em": "2026-10-09T12:06:24Z",
+     "linhas": 15,
+     "sha256_resposta": "89f35cb638242b18832e89c7393b598bd224bcb0156f2fa70cf1d9424ec8f333",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2023.json.gz",
+     "sha256": "5b6e2cabcf81fdd8cbe62474d278d108e99a16bbd900ba6d7d530f8ede607172"
+    },
+    "1200401_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/12/120040/2024/2",
+     "capturado_em": "2026-10-09T12:06:25Z",
+     "linhas": 15,
+     "sha256_resposta": "f537b16e9086bf8334312fa032ccc72b53370496e3da37517e40478f4184167f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1200401_2024.json.gz",
+     "sha256": "58608ff6d47d13f26677d54562bd373d4c214827448122ed9601fe20f660b4fb"
+    },
+    "2704302_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/27/270430/2024/2",
+     "capturado_em": "2026-10-09T12:06:26Z",
+     "linhas": 15,
+     "sha256_resposta": "7be902eea683ecbd5b19336fcd36a6e84473693ce9143a8bf535e3f16d120a7d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2704302_2024.json.gz",
+     "sha256": "261b3b85f52958aabe9052889dc066f5bc0026fe8a378d7b7d0ef13cab50c352"
+    },
+    "1600303_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/16/160030/2024/2",
+     "capturado_em": "2026-10-09T12:06:27Z",
+     "linhas": 15,
+     "sha256_resposta": "636b75235d85e2a2a53c1c462e2a548ab1c703fdc52185f7b64bee9ff97da6d1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1600303_2024.json.gz",
+     "sha256": "056449dd5318a2565ccca88051c2ac13b2f6e0c679f0b971beb5e6f515102470"
+    },
+    "1302603_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/13/130260/2024/2",
+     "capturado_em": "2026-10-09T12:06:28Z",
+     "linhas": 15,
+     "sha256_resposta": "bbb045107dfd7340900d8cd529ad833c3beb382a49abb41cd625fa0434f5a2ee",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1302603_2024.json.gz",
+     "sha256": "c779962bd8ebfb66455f94e139b5255a6a06c26f8214895d7b705e29dbad2c47"
+    },
+    "2927408_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/29/292740/2024/2",
+     "capturado_em": "2026-10-09T12:06:29Z",
+     "linhas": 15,
+     "sha256_resposta": "609cad7234ce16ed416fd933c307623e0c2c02dd86506c3a4e628028ab1a3ee3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2927408_2024.json.gz",
+     "sha256": "dd5c3aeacc7fe4d821b8f899e73076ed96bcd8747f0114f0f4c312f0bbf9b3e8"
+    },
+    "2304400_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/23/230440/2024/2",
+     "capturado_em": "2026-10-09T12:06:30Z",
+     "linhas": 15,
+     "sha256_resposta": "e76ea9b5597c6ff17c42c4cd4309fc547809eb7c3b106f93a2f705b1ef476f2c",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2304400_2024.json.gz",
+     "sha256": "0226ac3968c33c184c0415a3a33cdac575ed3354e6914c08df4edc0639f1e6ca"
+    },
+    "3205309_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/32/320530/2024/2",
+     "capturado_em": "2026-10-09T12:06:31Z",
+     "linhas": 15,
+     "sha256_resposta": "070f5419c69565caa23882b88b0834b0b8da6e0fac385e725667c4a4f9ac7b3f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3205309_2024.json.gz",
+     "sha256": "46ef88134f98f595f7385f98bf93947d03b199794f932c9f0a8fa7c682021159"
+    },
+    "5208707_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/52/520870/2024/2",
+     "capturado_em": "2026-10-09T12:06:32Z",
+     "linhas": 15,
+     "sha256_resposta": "22cd7e7bafe51aeaf7bcc923cc584ce186da6c63c45157b873a74ffeabbb72d6",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5208707_2024.json.gz",
+     "sha256": "5229b0d45cc5930c70ef6c49f417179cfad1496a6449c76d587a6e8622d54c98"
+    },
+    "2111300_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/21/211130/2024/2",
+     "capturado_em": "2026-10-09T12:06:46Z",
+     "linhas": 15,
+     "sha256_resposta": "15dde816925f4cdadf91ad52a81a21f1198222930a50a4bf303cb032d78c6c47",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2111300_2024.json.gz",
+     "sha256": "7079f0ed4c8d760c4c56397dd335b1b5cc29094ec5d0e9742f29af22ae98231c"
+    },
+    "5103403_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/51/510340/2024/2",
+     "capturado_em": "2026-10-09T12:06:47Z",
+     "linhas": 15,
+     "sha256_resposta": "8bc6e4c54e6fa9154ce70f3b71465dcbc5ed65b32b12ef839c05c85701cb7d9d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5103403_2024.json.gz",
+     "sha256": "88ebe20d93e4f6732e79eb6075456a37fd427dd707d3d750d91ddf331f5bf3a6"
+    },
+    "5002704_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/50/500270/2024/2",
+     "capturado_em": "2026-10-09T12:06:48Z",
+     "linhas": 15,
+     "sha256_resposta": "1d94f7a842f178cc205623e08d8003f8a2df6ff5c6a68fed7f3ef58979fe366a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/5002704_2024.json.gz",
+     "sha256": "e464a3796be78c79997c23b572dafb30816ed8f41dee31fc06ec10135da0c193"
+    },
+    "3106200_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/31/310620/2024/2",
+     "capturado_em": "2026-10-09T12:06:49Z",
+     "linhas": 15,
+     "sha256_resposta": "a21ce56b485f1285576708b08dc4f4c384742646c4d9b96bae1e9cbfeed08fb1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3106200_2024.json.gz",
+     "sha256": "186752f72fcb3b67b6f86bb25103435a0d9bca076d6e51de3cb4fe051b5a653e"
+    },
+    "1501402_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/15/150140/2024/2",
+     "capturado_em": "2026-10-09T12:06:50Z",
+     "linhas": 15,
+     "sha256_resposta": "24abe38481304ea14e819e2491b2ca1264eaa9be76cf519b1f930d3d001617c1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1501402_2024.json.gz",
+     "sha256": "84dc91ae08e3b53da6996b5bbc55a6cbc9313dc7ec4c77325b88395339defaf3"
+    },
+    "2507507_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/25/250750/2024/2",
+     "capturado_em": "2026-10-09T12:06:51Z",
+     "linhas": 15,
+     "sha256_resposta": "e98fd345d09fb32ac637c644c1a1c53568a89092d5c018fc931b930440464703",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2507507_2024.json.gz",
+     "sha256": "4736b92545e485ea91f9bbffacc9ee66107e02fa516222b3f8ae5765e4cba446"
+    },
+    "4106902_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/41/410690/2024/2",
+     "capturado_em": "2026-10-09T12:06:52Z",
+     "linhas": 15,
+     "sha256_resposta": "e16e0959b16ae6b1e7874ec685e6a381794b9e314511388632ffa10f61d375fc",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4106902_2024.json.gz",
+     "sha256": "9124489e878930107fb628c7368a6f7f664e1e1e5c05abbfe89ebc8d36ed84d6"
+    },
+    "2611606_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/26/261160/2024/2",
+     "capturado_em": "2026-10-09T12:06:53Z",
+     "linhas": 15,
+     "sha256_resposta": "6bd104acf0bcc8962281b0b71162c94e619fcd17931001e69a9c4e61e369352f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2611606_2024.json.gz",
+     "sha256": "e4f5eb7e58348f0fe575289c4383f7b643cfdabc59ce3e5ae8dfa3d60afec8f1"
+    },
+    "2211001_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/22/221100/2024/2",
+     "capturado_em": "2026-10-09T12:06:54Z",
+     "linhas": 15,
+     "sha256_resposta": "76f5a011e9ecea77272a5bf9099335e063484249cf0fe334f70ad6838ceca0b7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2211001_2024.json.gz",
+     "sha256": "08939b94e929087d57cf2427cdb6d52bcddbc8c8a9240211cfb671d5c92c8640"
+    },
+    "3304557_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/33/330455/2024/2",
+     "capturado_em": "2026-10-09T12:06:55Z",
+     "linhas": 15,
+     "sha256_resposta": "41925660a0b5e50c8785b20295b5abacf468b776e89e10b0bc3f8df1844d7ca8",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3304557_2024.json.gz",
+     "sha256": "97caad4f9ff20d35fa95b27aa601c05b5df8a4e85a0dc52e63d275c7d44ef8a6"
+    },
+    "2408102_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/24/240810/2024/2",
+     "capturado_em": "2026-10-09T12:06:56Z",
+     "linhas": 15,
+     "sha256_resposta": "05c007fd219c0e00ee5ea951ae6822a442ec561f862075e3bdc8120dc050dfe4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2408102_2024.json.gz",
+     "sha256": "6fb31ceccc7e46459c37bc94b416929ec4ef87764b5fdaad5b8a86685fd69b83"
+    },
+    "4314902_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/43/431490/2024/2",
+     "capturado_em": "2026-10-09T12:06:57Z",
+     "linhas": 15,
+     "sha256_resposta": "0bf178a1b4282af8ff8b57b535bd1fbbc918c612362bb51b21ba921b7d89b93a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4314902_2024.json.gz",
+     "sha256": "99331cd65e31d16d9bf5c14bc3ac6f800df770d5c23fb99abc9337dd1e1ee5a5"
+    },
+    "1100205_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/11/110020/2024/2",
+     "capturado_em": "2026-10-09T12:06:58Z",
+     "linhas": 15,
+     "sha256_resposta": "a20715d993d900edf6d3548e4d77b9d7f18fbfef06001f2e31cae732e6b84bce",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1100205_2024.json.gz",
+     "sha256": "7d0e8dab2735fb433e789110f5239dd8093e67414a5f56d5198038448a42ee8a"
+    },
+    "1400100_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/14/140010/2024/2",
+     "capturado_em": "2026-10-09T12:06:59Z",
+     "linhas": 15,
+     "sha256_resposta": "92e008a27e54766aaf38ebeaa88cfd4f7a3624498dc69b049cfff6265d8190b2",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1400100_2024.json.gz",
+     "sha256": "4902a10a95c53e9a75a945e88cbd36395d52c44b8c550c81a71d86d83d26dc5d"
+    },
+    "4205407_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/42/420540/2024/2",
+     "capturado_em": "2026-10-09T12:07:00Z",
+     "linhas": 15,
+     "sha256_resposta": "e3d0855e84e7e5ab4a7463350878b17803b37375c0fe09f9023dd99b55d91291",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/4205407_2024.json.gz",
+     "sha256": "7cce58be42fbb405a5488159cbb41c775674b996a422980d1915a164df3e60ee"
+    },
+    "3550308_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/35/355030/2024/2",
+     "capturado_em": "2026-10-09T12:07:01Z",
+     "linhas": 15,
+     "sha256_resposta": "c49ae303d542692ceddd08287559950834116459962f2310aa92c11fb9eb0e19",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/3550308_2024.json.gz",
+     "sha256": "4c33e71ac9d1cd8adb9eb3c3afc9fdc7bf8c058022fef38c4bd1ca7d32380b4b"
+    },
+    "2800308_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/28/280030/2024/2",
+     "capturado_em": "2026-10-09T12:07:02Z",
+     "linhas": 15,
+     "sha256_resposta": "9263726e875d8d8589e52b71b915c6da98a25061f2c72e88117b0e077a3a0da4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/2800308_2024.json.gz",
+     "sha256": "c8f27fd990fcfff3354eb9831eec77790d8695e602358278ec85fc9e5ca3c211"
+    },
+    "1721000_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/despesas-por-subfuncao/17/172100/2024/2",
+     "capturado_em": "2026-10-09T12:07:03Z",
+     "linhas": 15,
+     "sha256_resposta": "aace7bc829fd78e696f3b8391fe9893a8c7281c9123dfd61b1f6d2a19ad41ea6",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/despesas_por_fonte/1721000_2024.json.gz",
+     "sha256": "ec08c915b5aff706e39187276aa49c96783ab6990f453c0173e23ea7168f4fb1"
+    }
+   }
+  },
   "siops_rreo_anexo_12": {
    "instituicao": "Ministério da Saúde (SIOPS)",
    "conjunto": "RREO, Anexo 12 (Demonstrativo da Receita de Impostos e das Despesas Próprias com Ações e Serviços Públicos de Saúde), 6º bimestre",
@@ -3751,6 +4869,838 @@
      "sha256_resposta": "f084344552374e694e9b13bf3ef1075bbfdebc1e06fbae4fb46a7c7976c15d1c",
      "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1721000_2021.json.gz",
      "sha256": "cb209f3e98c8342462abf6eadfa28d0a0d01056591f28b82e02ca4eb49fcad3b"
+    },
+    "1200401_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/12/120040/2022/2",
+     "capturado_em": "2026-10-09T11:58:41Z",
+     "linhas": 115,
+     "sha256_resposta": "a6a12627f8617d55713acfcd47b0e13e89e2114cc37b9feae87ff83cab335082",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1200401_2022.json.gz",
+     "sha256": "69631aa2fc72b53fe9e3dfbc3d2451c14bb185d2923455d5dc9958fb14efea46"
+    },
+    "2704302_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/27/270430/2022/2",
+     "capturado_em": "2026-10-09T11:58:42Z",
+     "linhas": 115,
+     "sha256_resposta": "47e8915d8e3cf25ca9ae063b75f49ae4c8c4e39fb3889dc4670047abee2c0f64",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2704302_2022.json.gz",
+     "sha256": "bfd7192a49b3808ebac0f86776677175f0cf31379124e3a4120675884c37824c"
+    },
+    "1600303_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/16/160030/2022/2",
+     "capturado_em": "2026-10-09T11:58:43Z",
+     "linhas": 115,
+     "sha256_resposta": "088d39ec37d09ff9a6c3b38cec61d18e9ab489634e46c77a61ce7025f25783b0",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1600303_2022.json.gz",
+     "sha256": "e396098629149411394e6d41e04cebb49530dccf18c9e4ef3e641eff9c8880b4"
+    },
+    "1302603_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/13/130260/2022/2",
+     "capturado_em": "2026-10-09T11:58:44Z",
+     "linhas": 115,
+     "sha256_resposta": "fd8152c3fbea85eab19d36748866c6aca5661d6b5dc3731ea9702929e41bed9d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1302603_2022.json.gz",
+     "sha256": "91215e15cf8cb64e054f3f74ae3da70b8a29b4856124ed969308543c8e94eed1"
+    },
+    "2927408_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/29/292740/2022/2",
+     "capturado_em": "2026-10-09T11:58:46Z",
+     "linhas": 115,
+     "sha256_resposta": "3eaaab0a48c4f2681340af83ca71819b5be9b32178ecca50de806a3399ca3f85",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2927408_2022.json.gz",
+     "sha256": "0c969541e7b521ece0cf0c8c99899e9376833951eb180d896c2344f7b1856071"
+    },
+    "2304400_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/23/230440/2022/2",
+     "capturado_em": "2026-10-09T11:58:47Z",
+     "linhas": 115,
+     "sha256_resposta": "4835a3814a1d6fe5a6ed084ace5226f2fe99109a52c670900ae9f7d467df639b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2304400_2022.json.gz",
+     "sha256": "85e6ce97a72b6c363d4d341f38333b55a4430c3a99e01631db6d148ce50af327"
+    },
+    "3205309_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/32/320530/2022/2",
+     "capturado_em": "2026-10-09T11:58:48Z",
+     "linhas": 115,
+     "sha256_resposta": "f207f680bdda4a5d48f0e325fae56f8d0e0f6aefbf2873d6e04b1dd9461afbfe",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3205309_2022.json.gz",
+     "sha256": "0b0a5754a1f96e6d00e21efc7758cef5c4bcedcd3f418b274a83f9964630e6d7"
+    },
+    "5208707_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/52/520870/2022/2",
+     "capturado_em": "2026-10-09T11:58:49Z",
+     "linhas": 115,
+     "sha256_resposta": "34421e7566683e44113c987741021bbcafcb87981ac65832c079332891aed325",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5208707_2022.json.gz",
+     "sha256": "24cb91a553006bccec00525ffed4b18aa1d476d7eb71422895fe15bb12a3a9eb"
+    },
+    "2111300_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/21/211130/2022/2",
+     "capturado_em": "2026-10-09T11:58:50Z",
+     "linhas": 115,
+     "sha256_resposta": "fdc998256cd92b96ee815625186c1f4cc12ceffac7f79ff2c185679d06f19b7a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2111300_2022.json.gz",
+     "sha256": "24818231e0ed655f9292190043d255d0a7571cf16d458980ad9e9182fabb6073"
+    },
+    "5103403_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/51/510340/2022/2",
+     "capturado_em": "2026-10-09T11:58:51Z",
+     "linhas": 115,
+     "sha256_resposta": "f77e86983e7f64f479f1f8338a781cfe62f0042d53d01d96fc3cd7215112b40b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5103403_2022.json.gz",
+     "sha256": "f0546baacbc44443c36433488c1f64b9d1e0b94658e076a53659344dc5b66e5a"
+    },
+    "5002704_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/50/500270/2022/2",
+     "capturado_em": "2026-10-09T11:58:52Z",
+     "linhas": 115,
+     "sha256_resposta": "cc485a5e832a694a3a0c2cc34a730633135ea26a593b82838f8e3c79fa61a200",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5002704_2022.json.gz",
+     "sha256": "328f9d029c05e29c2e0ae03c008ffb3bf267aa3c4a43e704bf3ef5b89a4aedf8"
+    },
+    "3106200_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/31/310620/2022/2",
+     "capturado_em": "2026-10-09T11:58:53Z",
+     "linhas": 115,
+     "sha256_resposta": "e12a60d261024d2b35ceddf896f04a621ec8ab705d1cb54b64ba4aed242b943b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3106200_2022.json.gz",
+     "sha256": "1a69b642ce8e7b6a439768413cdf0f4733c9251d146f4cc4e5b7f7789e899467"
+    },
+    "1501402_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/15/150140/2022/2",
+     "capturado_em": "2026-10-09T11:58:54Z",
+     "linhas": 115,
+     "sha256_resposta": "e8ceca0767f32de0758c13c3218f03dbd40fde89387e4af0a731ee26a51587d3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1501402_2022.json.gz",
+     "sha256": "8c5df3c027671593d29fe20d03c7f1579241719ed44bf75af1091d3a7a852bbd"
+    },
+    "2507507_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/25/250750/2022/2",
+     "capturado_em": "2026-10-09T11:58:55Z",
+     "linhas": 115,
+     "sha256_resposta": "8adeb5acbb6c0d986da071a5e56b7add32781a157eb1ec7ed146f6df03031a50",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2507507_2022.json.gz",
+     "sha256": "753a6a255f32d7ee42a266e4acfba1a5dbbda4560b31f7fb1ea69c0a5afa9f32"
+    },
+    "4106902_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/41/410690/2022/2",
+     "capturado_em": "2026-10-09T11:59:10Z",
+     "linhas": 115,
+     "sha256_resposta": "c31a7a00b7f07daf2d9685e6aeff033d328c17dc04d6d2f8f3a4ba4962013270",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4106902_2022.json.gz",
+     "sha256": "1d3e973299a75864ededa8ab71560802049e24de5215fcc52887393b4875fec6"
+    },
+    "2611606_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/26/261160/2022/2",
+     "capturado_em": "2026-10-09T11:59:11Z",
+     "linhas": 115,
+     "sha256_resposta": "38cb58fc583f2ade89af363f30315c4b545d39a8d66866472ee4bfd57a0e07fc",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2611606_2022.json.gz",
+     "sha256": "bc447906e7c568ceedf82a76f72b761cdc6589d934dfd727ffd444a6d7200c7f"
+    },
+    "2211001_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/22/221100/2022/2",
+     "capturado_em": "2026-10-09T11:59:12Z",
+     "linhas": 115,
+     "sha256_resposta": "873d3249d228b8d1c6803db85321ae7d951950e90b85c3492521124b59f749b0",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2211001_2022.json.gz",
+     "sha256": "f776f6b858abb2443786ed6b76b42325689c13c5e8725e5a37c5a4fb09e2f2d3"
+    },
+    "3304557_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/33/330455/2022/2",
+     "capturado_em": "2026-10-09T11:59:13Z",
+     "linhas": 115,
+     "sha256_resposta": "b864fe4ee4f37e00654c42bbf8cde93585650c1de64c83f99be009b73a194c25",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3304557_2022.json.gz",
+     "sha256": "3d97475b9b7ac85e7a38750d45c965a11da2947c563e647afab4faabffcf0f73"
+    },
+    "2408102_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/24/240810/2022/2",
+     "capturado_em": "2026-10-09T11:59:14Z",
+     "linhas": 115,
+     "sha256_resposta": "329414e8377c404af0db664a9161fb37223bac9c74b720e6672d257c9f3a9ba0",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2408102_2022.json.gz",
+     "sha256": "2e281f1a8e9664dcd3e0bec96ee7d6548104b1de10f474588609c18acc77d601"
+    },
+    "4314902_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/43/431490/2022/2",
+     "capturado_em": "2026-10-09T11:59:16Z",
+     "linhas": 115,
+     "sha256_resposta": "2e07fe03169b44c8ff32510fcd287ed79ad3bcd667fc873cdd33ed8e994053ce",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4314902_2022.json.gz",
+     "sha256": "b98a6973466c41d2fe9d8a773b8f4e42d8dcf5746261c46006e11168c0e6f08f"
+    },
+    "1100205_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/11/110020/2022/2",
+     "capturado_em": "2026-10-09T11:59:17Z",
+     "linhas": 115,
+     "sha256_resposta": "cf6d82551e6ec5217b7d413053b68adbb6a9fa55c45cd2afb25091242db1f06f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1100205_2022.json.gz",
+     "sha256": "bc609c7fee764c1ce6934dffc010d4c95358d5f27571669eec6da23364848ee2"
+    },
+    "1400100_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/14/140010/2022/2",
+     "capturado_em": "2026-10-09T11:59:18Z",
+     "linhas": 115,
+     "sha256_resposta": "a0a2880905ddf7c330067e5dc74620ab14456b4ff3f3f8fdd86ec8e9a4eb661d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1400100_2022.json.gz",
+     "sha256": "ca63cdf86386cfa7b8c526019b03a3ac8d62e0c475c478a3e50d40450bf37092"
+    },
+    "4205407_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/42/420540/2022/2",
+     "capturado_em": "2026-10-09T11:59:19Z",
+     "linhas": 115,
+     "sha256_resposta": "8276b27e9d54185c97ea1fe4601443fafda3df816ca2b74351e1ab3a1ff1abd2",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4205407_2022.json.gz",
+     "sha256": "0fd839e3e0f90976c90d3cf7251d8a328e03ef0ec4fef06dbabbedf64443e9c3"
+    },
+    "3550308_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/35/355030/2022/2",
+     "capturado_em": "2026-10-09T11:59:23Z",
+     "linhas": 115,
+     "sha256_resposta": "7aeb40e43038ec6d07fd1b7dfaf86100952c3b31ba4abbc9d349012531917ebe",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3550308_2022.json.gz",
+     "sha256": "bc5fc34c45f0e64dc9502b33650043ba619549f9ae1ba35a357748c80d8a1c52"
+    },
+    "2800308_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/28/280030/2022/2",
+     "capturado_em": "2026-10-09T11:59:24Z",
+     "linhas": 115,
+     "sha256_resposta": "d1410f6d6b58b3d0ef17659633f2d80804ebd6ca6e2836070700167623974dcb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2800308_2022.json.gz",
+     "sha256": "5abe02dc0c6457ea26fc4dfaea65013d1d49bbf1835a8cc0ed84a9a9c1c6c3e4"
+    },
+    "1721000_2022": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/17/172100/2022/2",
+     "capturado_em": "2026-10-09T11:59:25Z",
+     "linhas": 115,
+     "sha256_resposta": "7cfae02aecfe7f3e5051ea12354974e45ffa9291e75d0c265bdb421d3f942f67",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1721000_2022.json.gz",
+     "sha256": "1e827777c79cb2edd82733d24c01235165804fc00517c0af4c70bad62fb0a689"
+    },
+    "1200401_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/12/120040/2023/2",
+     "capturado_em": "2026-10-09T11:59:26Z",
+     "linhas": 116,
+     "sha256_resposta": "b69d447b65547d07cfed62f51edff179548321bebff3646e66e4116c05a7ee82",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1200401_2023.json.gz",
+     "sha256": "9bb1311a0e5beb29aa8924b709990df340669c03d63d417345f8fde52bb472e4"
+    },
+    "2704302_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/27/270430/2023/2",
+     "capturado_em": "2026-10-09T11:59:27Z",
+     "linhas": 116,
+     "sha256_resposta": "cf0c9b20b1893d17e893a0b1d375059b0b9eb8ef6d893d19bcf55840912ea50d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2704302_2023.json.gz",
+     "sha256": "a17b4f51bca535163679eed4513389ce175f4bee4f896d6a19fd45110bb07596"
+    },
+    "1600303_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/16/160030/2023/2",
+     "capturado_em": "2026-10-09T11:59:36Z",
+     "linhas": 116,
+     "sha256_resposta": "874fabc4336d209904a81b20226c1acaa1c45f89b356fa3fa4f4ef84375c9917",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1600303_2023.json.gz",
+     "sha256": "2a3c4548527af02bed62b03d55a843c8cd8ff4fbd84ae94f49c7b38c24bcc5a8"
+    },
+    "1302603_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/13/130260/2023/2",
+     "capturado_em": "2026-10-09T11:59:37Z",
+     "linhas": 116,
+     "sha256_resposta": "321957e7a166f9269e1844e225b99312f80f25d0cee0e3b6248c34ca41eb1dfb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1302603_2023.json.gz",
+     "sha256": "4ddb408b4fd412f0c4bfad8138481be2acb58429434bb692138b22e9438205b0"
+    },
+    "2927408_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/29/292740/2023/2",
+     "capturado_em": "2026-10-09T11:59:38Z",
+     "linhas": 116,
+     "sha256_resposta": "b811b7b5025af0738482cde211257d385ecbd4396b20dd6d7470ef28e1aad456",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2927408_2023.json.gz",
+     "sha256": "5b87773e62ebdaa84fbfe196175aa24928b3a57df07c0ae2c3344e8b21b4a4ee"
+    },
+    "2304400_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/23/230440/2023/2",
+     "capturado_em": "2026-10-09T11:59:39Z",
+     "linhas": 116,
+     "sha256_resposta": "6f74bb297f6eaa38597e9b5b795622f1942d126006c723766437fb2d5d1d7db4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2304400_2023.json.gz",
+     "sha256": "16fc959fb9fc8c77ec736b075db0d0ceffbd9f133e726e90e60400a4b69126c4"
+    },
+    "3205309_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/32/320530/2023/2",
+     "capturado_em": "2026-10-09T11:59:40Z",
+     "linhas": 116,
+     "sha256_resposta": "2d34969f9c442d75a98803c93433fca403b1199f0744d09cc2247151a594e930",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3205309_2023.json.gz",
+     "sha256": "04bca46a519ad5e3e8e3d7c548692702dbe16954f900e96ebd5ab13308913ccc"
+    },
+    "5208707_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/52/520870/2023/2",
+     "capturado_em": "2026-10-09T11:59:41Z",
+     "linhas": 116,
+     "sha256_resposta": "f6b45af62d582451ff39b6ff9378eab22947d8a398f459f70fc5cd803da7a1ce",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5208707_2023.json.gz",
+     "sha256": "1280443843f6a3782bcf4dfaf37b3e184dff21560564f83095561bf66cadac56"
+    },
+    "2111300_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/21/211130/2023/2",
+     "capturado_em": "2026-10-09T11:59:43Z",
+     "linhas": 116,
+     "sha256_resposta": "551362e23a7c4d3d8ae03f55392a8643d7137cfbc4afddbcf49c9d69b71495e4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2111300_2023.json.gz",
+     "sha256": "0c8fdb97101efb5e294cf50c8a54285be76f08cf9eee46c82f27700e7da3b755"
+    },
+    "5103403_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/51/510340/2023/2",
+     "capturado_em": "2026-10-09T11:59:44Z",
+     "linhas": 116,
+     "sha256_resposta": "7b1842c1477b9acfbb0a487f7a6b476ab8fd761e8add3d0ac28a398a8ee76ab5",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5103403_2023.json.gz",
+     "sha256": "98e7673fbee7216b5fd98cb9c34a2d81abc28cb86891a63f62881ba20322477e"
+    },
+    "5002704_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/50/500270/2023/2",
+     "capturado_em": "2026-10-09T12:00:24Z",
+     "linhas": 116,
+     "sha256_resposta": "da1715bbc9f31078a64eea1725e1efa64a0fecc809380c25548265da85098fe0",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5002704_2023.json.gz",
+     "sha256": "abb737d93a3658af0b9a9979ea9e5de682b5000c74274e4fdf4e1bfeedb06f2d"
+    },
+    "3106200_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/31/310620/2023/2",
+     "capturado_em": "2026-10-09T12:00:38Z",
+     "linhas": 116,
+     "sha256_resposta": "3278f9ef36e00237f183c234d33d228e0e7b96eee3c09e643a1c7f692b09a77d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3106200_2023.json.gz",
+     "sha256": "fafb9734f9a6b2b118a0fe241f7c042d21d25d886e6aa90206096568ee073976"
+    },
+    "1501402_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/15/150140/2023/2",
+     "capturado_em": "2026-10-09T12:00:39Z",
+     "linhas": 116,
+     "sha256_resposta": "362c3e3239d7b200760e887c25d60ade52f8fed68388d71f57eb7e4189521858",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1501402_2023.json.gz",
+     "sha256": "d9e07906a804eb72d1cc98cf9080a6d26c7f19d659246c5d4882836baa65560b"
+    },
+    "2507507_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/25/250750/2023/2",
+     "capturado_em": "2026-10-09T12:00:40Z",
+     "linhas": 116,
+     "sha256_resposta": "9abaa2696c3f4013030186ff24207dd8c43b7018cca21e5c90452d703068e3ba",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2507507_2023.json.gz",
+     "sha256": "59ae74b4e6df71d17051d05e1ccff2577a6cd54d8fb49f35a5a6268dc108e2c0"
+    },
+    "4106902_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/41/410690/2023/2",
+     "capturado_em": "2026-10-09T12:00:49Z",
+     "linhas": 116,
+     "sha256_resposta": "c337b670309d33ac17074a2a61db58bdc6047c7262d9352658304c872daf1d71",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4106902_2023.json.gz",
+     "sha256": "beb9bad2b12b88f614e87050dbf59ea4814a3fb283153e5638991c066d3e87eb"
+    },
+    "2611606_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/26/261160/2023/2",
+     "capturado_em": "2026-10-09T12:00:50Z",
+     "linhas": 116,
+     "sha256_resposta": "b92a64d485f0727250a718a9daa1676ce10bd6c722243f1adb64b0e19c3b673b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2611606_2023.json.gz",
+     "sha256": "a2da6318dab650fcb9cc73bc5ed4922fc40c4ab1df69ac2b0c87d6bcc020023e"
+    },
+    "2211001_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/22/221100/2023/2",
+     "capturado_em": "2026-10-09T12:00:51Z",
+     "linhas": 116,
+     "sha256_resposta": "4d210997d557329af2d2b8a240b4d4e6ce1cf63d11a6b4789560d478e661214e",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2211001_2023.json.gz",
+     "sha256": "12e448f72adc1739fb94497fccd98148cd62632fb1f4aa3378fcca673360e45d"
+    },
+    "3304557_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/33/330455/2023/2",
+     "capturado_em": "2026-10-09T12:01:15Z",
+     "linhas": 116,
+     "sha256_resposta": "1ff2a345cdca7e8078eff31d489e594edf815adc3feb7b6a4e61296a59bc0b49",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3304557_2023.json.gz",
+     "sha256": "e9cb2c87e19ec31bfc3d677d51420d822501ef8db3227b41c673f10b073f9982"
+    },
+    "2408102_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/24/240810/2023/2",
+     "capturado_em": "2026-10-09T12:01:16Z",
+     "linhas": 116,
+     "sha256_resposta": "567eb6d82f698e72ad955ec906066afb6f33a7bf873f9b8cd23d0da05e5d7889",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2408102_2023.json.gz",
+     "sha256": "d9d13f7dd35c13136035ce80527e76626a670bfe700dbc99367d23341908d9d9"
+    },
+    "4314902_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/43/431490/2023/2",
+     "capturado_em": "2026-10-09T12:01:17Z",
+     "linhas": 116,
+     "sha256_resposta": "71ba1bd57534f9f8b6f22f7851f861feca98e34f2e8d2d1b036245a17acba48d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4314902_2023.json.gz",
+     "sha256": "fae8053e9e0545384b31276bf53c60649c9049a7097b2f85a58d9b0b9e8c0a48"
+    },
+    "1100205_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/11/110020/2023/2",
+     "capturado_em": "2026-10-09T12:01:18Z",
+     "linhas": 116,
+     "sha256_resposta": "c76716d5ac0ba04a8295c81b988e4bc52600bfe2f441a16764a8f38f77ccbdb3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1100205_2023.json.gz",
+     "sha256": "d3f53c1492281603a9a340d63e7c53bcdcec0c5e7435805998c759c383e81ad5"
+    },
+    "1400100_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/14/140010/2023/2",
+     "capturado_em": "2026-10-09T12:01:19Z",
+     "linhas": 116,
+     "sha256_resposta": "4c12c350db895087e27eeedcc3d8b2849a85ea04b0c459443e12e42e4d2e5d82",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1400100_2023.json.gz",
+     "sha256": "19e3f88a90bf2c7ff5512b5a1749af0c57c1d8ff46c0155129081650d4c64633"
+    },
+    "4205407_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/42/420540/2023/2",
+     "capturado_em": "2026-10-09T12:01:20Z",
+     "linhas": 116,
+     "sha256_resposta": "0ec464b13022f5c692e3f814dfebc089a47b74d6e803a7852a96dec9ee582dcb",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4205407_2023.json.gz",
+     "sha256": "144538a8f1d68bf44a2ea6e70d2053fa367c69e70855dc2905b6bc401dcad372"
+    },
+    "3550308_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/35/355030/2023/2",
+     "capturado_em": "2026-10-09T12:01:34Z",
+     "linhas": 116,
+     "sha256_resposta": "1d5dcb24cab5495cd9935ab0a91a47271ea155def83f01e6cc53d3a816588974",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3550308_2023.json.gz",
+     "sha256": "dcd28f60eb32989f28ade28c0bb6e21abff40d50e49f944618f4d09c858e5696"
+    },
+    "2800308_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/28/280030/2023/2",
+     "capturado_em": "2026-10-09T12:01:35Z",
+     "linhas": 116,
+     "sha256_resposta": "fb3433b486ef379488c3073189524ea67f329f00b6240c5fba0563de384f24a3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2800308_2023.json.gz",
+     "sha256": "71759a0dafa34c54c4d456407fb5bbda0c83c48bece7ecaf88b0eb24f4260bd6"
+    },
+    "1721000_2023": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/17/172100/2023/2",
+     "capturado_em": "2026-10-09T12:01:36Z",
+     "linhas": 116,
+     "sha256_resposta": "ac954a99335a79e131d88cdc78a151d163a78e1eebc248aba3a0bb5e83e2d1ca",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1721000_2023.json.gz",
+     "sha256": "d7ba6153c3ff05cb360474b36689e68671217bbac0ed9918e304278ee21fd2d4"
+    },
+    "1200401_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/12/120040/2024/2",
+     "capturado_em": "2026-10-09T12:01:37Z",
+     "linhas": 110,
+     "sha256_resposta": "fab53d5bc5c883c52226ad1eaa3b42290df0f13d2e337d77a954a79ca3565939",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1200401_2024.json.gz",
+     "sha256": "a628fa4d3f2f1dfb6dd5cd16359fd0402376ac9470ff14ca47c1f63944a5265f"
+    },
+    "2704302_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/27/270430/2024/2",
+     "capturado_em": "2026-10-09T12:01:47Z",
+     "linhas": 110,
+     "sha256_resposta": "a52c22e3a265a26fd28d2ae18f765765cd8299dedb4e7f4a699e9f0797f7e35b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2704302_2024.json.gz",
+     "sha256": "7a62c17902066e12c7a40c290445b06df64509eb948ecdac8e26874a3619b364"
+    },
+    "1600303_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/16/160030/2024/2",
+     "capturado_em": "2026-10-09T12:01:48Z",
+     "linhas": 110,
+     "sha256_resposta": "ff4f3989a1dc8bc723356e94713c2638f770bbe9274f1a7e20ca8478c51045d5",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1600303_2024.json.gz",
+     "sha256": "7d09c94b3728b8ddb9cfa3d8ad6faaab431158715cff97e0e0fd6361f63c9d94"
+    },
+    "1302603_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/13/130260/2024/2",
+     "capturado_em": "2026-10-09T12:01:49Z",
+     "linhas": 110,
+     "sha256_resposta": "ce9249eb1e69dc7af22812dd2dbce81695dbe8a31c44a0e713ba3c3490d66446",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1302603_2024.json.gz",
+     "sha256": "15e3130b934e5db38bd11f78f4482bf219f6d1b47b988f147b02167910cfb1af"
+    },
+    "2927408_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/29/292740/2024/2",
+     "capturado_em": "2026-10-09T12:01:50Z",
+     "linhas": 110,
+     "sha256_resposta": "a1103b95475e8b5bb6cfe951dc238b9b41e61b2ad35929269744c9cada29fbe1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2927408_2024.json.gz",
+     "sha256": "768612376fb22a72eb94c16f619bfbc4d033aa8d437c5c52c3d1b990fda5d611"
+    },
+    "2304400_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/23/230440/2024/2",
+     "capturado_em": "2026-10-09T12:01:51Z",
+     "linhas": 110,
+     "sha256_resposta": "b06ac6409113efe3e63eb193c0d395c3c17b1b84e8321bb00bb1cbba12539030",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2304400_2024.json.gz",
+     "sha256": "c5581fc24b90f94718a624c4a79d6b7bcf3bb4bda92e800a94077404c4c1283c"
+    },
+    "3205309_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/32/320530/2024/2",
+     "capturado_em": "2026-10-09T12:01:52Z",
+     "linhas": 110,
+     "sha256_resposta": "abdaf3f813dda1cb66e74737ac9d349662180bb0b8c2496e2a3da2161af79248",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3205309_2024.json.gz",
+     "sha256": "f9cf4277e3d5a06254596685638cf93db02ad5e7031297262a5255f207ff0c89"
+    },
+    "5208707_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/52/520870/2024/2",
+     "capturado_em": "2026-10-09T12:01:53Z",
+     "linhas": 110,
+     "sha256_resposta": "1f51ebb58dd7747e3eef352bdd907c9859a80573532af85e18b607a8b82beb4f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5208707_2024.json.gz",
+     "sha256": "05dadf664265bb1786fa6353355d6b9395da023763d10dc5ff703793511ddc53"
+    },
+    "2111300_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/21/211130/2024/2",
+     "capturado_em": "2026-10-09T12:01:54Z",
+     "linhas": 110,
+     "sha256_resposta": "6fd67b4483ffe2c979f5c75769f26d75eca17645d61ff581ae35241219ef75f8",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2111300_2024.json.gz",
+     "sha256": "e98abc7832299735f3ce1fbd413d3949fe2f2c5c0a2435fd4890e1ed200d22d2"
+    },
+    "5103403_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/51/510340/2024/2",
+     "capturado_em": "2026-10-09T12:02:08Z",
+     "linhas": 110,
+     "sha256_resposta": "bc56d662a57c443aa8dd3e77f08c4e49766fecb1fbe034a1e37d8bb684cfe645",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5103403_2024.json.gz",
+     "sha256": "1b37dfe00da4ec634d419d2651d36ab0de5a9cf972257c31e11c6548e125c1a6"
+    },
+    "5002704_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/50/500270/2024/2",
+     "capturado_em": "2026-10-09T12:02:17Z",
+     "linhas": 110,
+     "sha256_resposta": "46f80d32a4866164556abf61e0e8732e87c6e60c2d85bc41d6773f2e78f08b2c",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5002704_2024.json.gz",
+     "sha256": "ef13fdadfd2b9e025a54d4d86a6c8f640e2050b0a57841c86ce87e3127fdb594"
+    },
+    "3106200_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/31/310620/2024/2",
+     "capturado_em": "2026-10-09T12:02:27Z",
+     "linhas": 110,
+     "sha256_resposta": "482058cdae697fd9606e3d2d187d0af17318a8862d97982932eeb64af70905e1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3106200_2024.json.gz",
+     "sha256": "9b2a8da2707373f3affce7b2e356c30d34c344bfae7fe51ae64ae8ccf3a85024"
+    },
+    "1501402_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/15/150140/2024/2",
+     "capturado_em": "2026-10-09T12:02:28Z",
+     "linhas": 110,
+     "sha256_resposta": "5abb3bec9fa983099b8476accb7b563bcb8258f322d165b6e4dde6f9f974a2e4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1501402_2024.json.gz",
+     "sha256": "1823df0ded6a9e45d9ace848bf24864eda443f57a09294137ebaea24dbfd2987"
+    },
+    "2507507_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/25/250750/2024/2",
+     "capturado_em": "2026-10-09T12:02:29Z",
+     "linhas": 110,
+     "sha256_resposta": "e9cce5e2ae7320b16f1edb3e607deb0498a8eccd8a107b6af91d84010f773f37",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2507507_2024.json.gz",
+     "sha256": "8539d5ad99d0676c29beae942b80b688ab9fd6b5a4483a6f691c79346ac81f77"
+    },
+    "4106902_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/41/410690/2024/2",
+     "capturado_em": "2026-10-09T12:02:30Z",
+     "linhas": 110,
+     "sha256_resposta": "1302ab7caefcb7e3f15b17ad433c2528f4cbe62f02db0f6b201857cea140f2ed",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4106902_2024.json.gz",
+     "sha256": "9c05de2fb5635585ff65d040bbaab013171ead9e28c6fe82f8e2813b0981bcb0"
+    },
+    "2611606_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/26/261160/2024/2",
+     "capturado_em": "2026-10-09T12:02:31Z",
+     "linhas": 110,
+     "sha256_resposta": "0441099d70b9a47c573f4b005b2717e7fb7229cf6d91312b1956fc9e72265de3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2611606_2024.json.gz",
+     "sha256": "0d54fe6b70d37ee76e0f70fd8fef16e3426f1ba42a68f92d26f4336b22faaa48"
+    },
+    "2211001_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/22/221100/2024/2",
+     "capturado_em": "2026-10-09T12:02:32Z",
+     "linhas": 110,
+     "sha256_resposta": "0b392a536e8c00a477fb36946cd44e45d776a1bb8851d64b425f2418f8127b0c",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2211001_2024.json.gz",
+     "sha256": "20eb6a75b04b97246cf24d4a004ba048329010bbf61c729f592c35bae1110ffd"
+    },
+    "3304557_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/33/330455/2024/2",
+     "capturado_em": "2026-10-09T12:02:33Z",
+     "linhas": 110,
+     "sha256_resposta": "7ca82148991dab17c0616d173b62aed6b7b4a8ae2e40ff3bab4ec500c056c905",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3304557_2024.json.gz",
+     "sha256": "464713ec3c094094782a66e6a0db26ea48e0cc93874f142713e52fdc5ab2ca15"
+    },
+    "2408102_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/24/240810/2024/2",
+     "capturado_em": "2026-10-09T12:02:34Z",
+     "linhas": 110,
+     "sha256_resposta": "b47b0e3a2e09c55637842caf912447d1ba4aec35c7c8e2f7405fdd127c4f487f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2408102_2024.json.gz",
+     "sha256": "b4fceeb027a3a1e89d702a7af0f04bdc021b9e9d704c1bb30bff863e00aefdec"
+    },
+    "4314902_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/43/431490/2024/2",
+     "capturado_em": "2026-10-09T12:02:35Z",
+     "linhas": 110,
+     "sha256_resposta": "051f3b215c02b8eb77c947d96070d5cdfe2678a7edbaab653437fddf07f993ff",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4314902_2024.json.gz",
+     "sha256": "ee6e960c2da9e4b122452bf63ce5c92c2696be17579387339438a307ff1b3d6b"
+    },
+    "1100205_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/11/110020/2024/2",
+     "capturado_em": "2026-10-09T12:02:36Z",
+     "linhas": 110,
+     "sha256_resposta": "9c2be0a46fcb0fa2c0b3cff124d4d08679dd5c5ec1f298a15585c870e91d412f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1100205_2024.json.gz",
+     "sha256": "930ec32a506efd29330ebf9f39e5bacdeb9ea32275a2490dbde7c2b290f9342f"
+    },
+    "1400100_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/14/140010/2024/2",
+     "capturado_em": "2026-10-09T12:02:37Z",
+     "linhas": 110,
+     "sha256_resposta": "7d2c08c3909872b8ffb022bef7367b944be2078b5ce9a9ce2d0c5bad0d649241",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1400100_2024.json.gz",
+     "sha256": "4d941501af96bcbb22674c1f1e9649c54789a2812ff30ca0a1f63606cc44667c"
+    },
+    "4205407_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/42/420540/2024/2",
+     "capturado_em": "2026-10-09T12:02:38Z",
+     "linhas": 110,
+     "sha256_resposta": "fba1aa79417551321010d4fa5a74661c772d9951f9eb42574bf7e1c53e898cd1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4205407_2024.json.gz",
+     "sha256": "b3ad51b9388df5a4a0cddd9ea2ef2269e4087acef859532aeefc25cf60ac9e19"
+    },
+    "3550308_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/35/355030/2024/2",
+     "capturado_em": "2026-10-09T12:02:39Z",
+     "linhas": 110,
+     "sha256_resposta": "0aa17ed1efc96c8ec270657f8ba6138ebd1a28f7c260b81d3d7dea8aebe83275",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3550308_2024.json.gz",
+     "sha256": "98a5c7527a47192e4789304f26c19e32fe388080890ca8b55949ba826ce07e5d"
+    },
+    "2800308_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/28/280030/2024/2",
+     "capturado_em": "2026-10-09T12:02:40Z",
+     "linhas": 110,
+     "sha256_resposta": "19441529014b83482139d79feba84848451f74f0c4664feb909607d47b936c2a",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2800308_2024.json.gz",
+     "sha256": "fd3153d7eb6ac128547e9b69aebb9edad5745868c08ae2ee58b8db9a3f4ebf53"
+    },
+    "1721000_2024": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/17/172100/2024/2",
+     "capturado_em": "2026-10-09T12:02:41Z",
+     "linhas": 110,
+     "sha256_resposta": "7fbb6969ccc94954ebdbe716b3ca2ebff78e741b7dc5269131001d376fed0363",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1721000_2024.json.gz",
+     "sha256": "5cfab4f269d1b9bd81d1ae30244356c05fd9ef0fea2be0dd75a676bc7ce7acac"
+    },
+    "1200401_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/12/120040/2025/2",
+     "capturado_em": "2026-10-09T12:02:42Z",
+     "linhas": 111,
+     "sha256_resposta": "5e446f0b5f9e480037176c54ce85f8948bdbe2107cb2ff4cbd9ba09a7f5e3b33",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1200401_2025.json.gz",
+     "sha256": "ef4f22728bd08172cb2d93b926d3ec751f96bf4f7d77eceb912c3362f9151729"
+    },
+    "2704302_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/27/270430/2025/2",
+     "capturado_em": "2026-10-09T12:02:43Z",
+     "linhas": 111,
+     "sha256_resposta": "9e043f2ea3cb34ec1755fdeffd43ba494490416fc3d5bd33bbe703cf93dddd4d",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2704302_2025.json.gz",
+     "sha256": "e862d113ce5f13089a40178e5120caac6d1874f6899ec32994e3098171001926"
+    },
+    "1600303_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/16/160030/2025/2",
+     "capturado_em": "2026-10-09T12:02:44Z",
+     "linhas": 111,
+     "sha256_resposta": "bd887b5bdd19123f9a4a89c0b09b8e2ffd9fd02a86153866556436d699d3cc90",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1600303_2025.json.gz",
+     "sha256": "8119a7acdd0634bc580ce6808d02e5e68e7877c1365071d1a82534c411f39448"
+    },
+    "1302603_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/13/130260/2025/2",
+     "capturado_em": "2026-10-09T12:02:45Z",
+     "linhas": 111,
+     "sha256_resposta": "a2b020a8ebf27b96dda5d40ea7361403131db8a1523057117adba9e7fffd39b2",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1302603_2025.json.gz",
+     "sha256": "b41faf2e7efa8bd31d0884cf248b351166b8ba9dd238ada4a776680bc6bfe9e8"
+    },
+    "2927408_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/29/292740/2025/2",
+     "capturado_em": "2026-10-09T12:02:46Z",
+     "linhas": 111,
+     "sha256_resposta": "9fea78d9ac32ad8ab15a5b4f5a61af816c2cf9becfa60a37b55079f695dcdb52",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2927408_2025.json.gz",
+     "sha256": "ef22dd757089d087cc688c2055ac4e1e82a46875c770442e772ed91f7781f406"
+    },
+    "2304400_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/23/230440/2025/2",
+     "capturado_em": "2026-10-09T12:02:47Z",
+     "linhas": 111,
+     "sha256_resposta": "2d6e4ae24bef1f5ab23143fc79eabd690187e8b2391663b8661b170da1c5ab6f",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2304400_2025.json.gz",
+     "sha256": "34e5d2a6bd5e517fdbbf8c7e0afc4e83f753eff86da477438b3ad88d0638ebd9"
+    },
+    "3205309_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/32/320530/2025/2",
+     "capturado_em": "2026-10-09T12:02:48Z",
+     "linhas": 111,
+     "sha256_resposta": "896ae1c7e5d9669b046d87d780facc8753542a9c6202a5e6e03e1ae4506b8925",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3205309_2025.json.gz",
+     "sha256": "21f1dc3076c1141232c098d135e977a7911d72f879a93445d81b3a9bd7deb85f"
+    },
+    "5208707_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/52/520870/2025/2",
+     "capturado_em": "2026-10-09T12:02:49Z",
+     "linhas": 111,
+     "sha256_resposta": "5caf02ae6f2e417cdfdbeab73148ec2052a4f2a17590b867d5c5163c8f355573",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5208707_2025.json.gz",
+     "sha256": "fbc89f0c9d8a8ac2281fee86db106f6b85f58945d75edd38dd1ae67e48e85aab"
+    },
+    "2111300_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/21/211130/2025/2",
+     "capturado_em": "2026-10-09T12:02:50Z",
+     "linhas": 111,
+     "sha256_resposta": "f49e874bb8aeb93175aecb68f22172d46780a5b4669dbed1410db6b5b6784453",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2111300_2025.json.gz",
+     "sha256": "f019d0262935520238433e165d8fc6882f59b8d688699bf924168dd0fed506f6"
+    },
+    "5103403_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/51/510340/2025/2",
+     "capturado_em": "2026-10-09T12:03:04Z",
+     "linhas": 111,
+     "sha256_resposta": "1086c1b179a1cf5f8bbdd59c6dc62ccb4e922142fe7928422f209eab2d980b7b",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5103403_2025.json.gz",
+     "sha256": "30b1c10560af23a36e3446fab228a1008b97e3f485e3fd4de0cc13d793da8f60"
+    },
+    "5002704_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/50/500270/2025/2",
+     "capturado_em": "2026-10-09T12:03:05Z",
+     "linhas": 111,
+     "sha256_resposta": "7e924e4eaa93cfeb14a5060b7f38e7e2c69ba572ed8df87311f517e77578d9e4",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/5002704_2025.json.gz",
+     "sha256": "ffb4a0fc40cfa8ec9efa1ab872bea6779a9e336524e4d6110736528f8dc604d8"
+    },
+    "3106200_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/31/310620/2025/2",
+     "capturado_em": "2026-10-09T12:03:06Z",
+     "linhas": 111,
+     "sha256_resposta": "bf0dd1dfd89ed3ea59950863f93549a046abda728dc09cee72314938cfffc5c7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3106200_2025.json.gz",
+     "sha256": "ec705ba7007c06a75e33dd18b3e937c2cd07c0c88fae6d8468ccfb0279f29c48"
+    },
+    "1501402_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/15/150140/2025/2",
+     "capturado_em": "2026-10-09T12:03:07Z",
+     "linhas": 111,
+     "sha256_resposta": "a83fc6d5b7a2b6f8006eadb5ba78cc81b29b6577b3bcdcfdce2f794630debf25",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1501402_2025.json.gz",
+     "sha256": "67d18b5f4612bab2e4375f6fb81b43b6138dbdad61af3638513a52de58e220f0"
+    },
+    "2507507_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/25/250750/2025/2",
+     "capturado_em": "2026-10-09T12:03:08Z",
+     "linhas": 111,
+     "sha256_resposta": "2e9f61f3163f66bff1b4ab708017527dc482eb6edc38bdcd0cfed74c8e082b9c",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2507507_2025.json.gz",
+     "sha256": "67e882f9a6f8c41374138ee8e1f0cd1c8d285f35cf62fc96df38e062ecea4e24"
+    },
+    "4106902_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/41/410690/2025/2",
+     "capturado_em": "2026-10-09T12:03:09Z",
+     "linhas": 111,
+     "sha256_resposta": "f918e917734bc567ec37cee3c93fbebd7f8e11233055c5a27b4da0842480d752",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4106902_2025.json.gz",
+     "sha256": "c697b7b7155bd4d447ff3d14086777e56cc9e3a52e4544d098b87c010fc0fd37"
+    },
+    "2611606_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/26/261160/2025/2",
+     "capturado_em": "2026-10-09T12:03:10Z",
+     "linhas": 111,
+     "sha256_resposta": "069eb3c48e564a6f66c173ef84ad58493e631afdd6f5be7a2f2fb27311af4943",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2611606_2025.json.gz",
+     "sha256": "47c2f6123372fa55686ae688a4645aa874327aa1829fc32a1179c58035ab2d73"
+    },
+    "2211001_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/22/221100/2025/2",
+     "capturado_em": "2026-10-09T12:03:11Z",
+     "linhas": 111,
+     "sha256_resposta": "d86045671364c9ad6e05e470de37f1466bd2664318f79d660b850c5fd86efed1",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2211001_2025.json.gz",
+     "sha256": "c69aa2783eb41313a6174bd9ecc1c7b42f6aa68a19e04cc49832ab4175c54ed1"
+    },
+    "3304557_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/33/330455/2025/2",
+     "capturado_em": "2026-10-09T12:03:25Z",
+     "linhas": 111,
+     "sha256_resposta": "40748f8d8c9fd3a8f77ee77e75bec704fa1fa50e11edf4d5d572894bb0ffc379",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3304557_2025.json.gz",
+     "sha256": "2171a1186fa62f7f0d0f27f1b32296c4d3bb53b508820c0b926e6e2a8931f0e2"
+    },
+    "2408102_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/24/240810/2025/2",
+     "capturado_em": "2026-10-09T12:03:26Z",
+     "linhas": 111,
+     "sha256_resposta": "935c124a90e64056677ceebc2e02128692f8a1edd4e771e6fd720aa4ea9da722",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2408102_2025.json.gz",
+     "sha256": "5b13b304ce9423d84561d3a2f738c2610715023cce06e3f9ab6358cf6c38ea40"
+    },
+    "4314902_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/43/431490/2025/2",
+     "capturado_em": "2026-10-09T12:03:27Z",
+     "linhas": 111,
+     "sha256_resposta": "f059f6c14329d5f6f486a3be9b58cdd77f94dfa4ff988db0680acc9c632019a7",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4314902_2025.json.gz",
+     "sha256": "753711db2cdbbd1d58d11473974ca6c2bb746cf4e0416879d8ef2fc8eaf55845"
+    },
+    "1100205_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/11/110020/2025/2",
+     "capturado_em": "2026-10-09T12:03:28Z",
+     "linhas": 111,
+     "sha256_resposta": "bfcb93ac60d95abfe6f3285a1fa41d38220295dc5465a505cdd7585c57e7c1b3",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1100205_2025.json.gz",
+     "sha256": "796e887f23de157ad50c85839147515b542ff60c1e258e5677b1fa02966126b1"
+    },
+    "1400100_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/14/140010/2025/2",
+     "capturado_em": "2026-10-09T12:03:29Z",
+     "linhas": 111,
+     "sha256_resposta": "498d125452f26b7b22e4312a427a2b65475230f0202e26c1b67c36a2bec48f78",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1400100_2025.json.gz",
+     "sha256": "5f738ce01a30221408750abf0792c3ccf702a36a8e0d79af264e601dfa3b8707"
+    },
+    "4205407_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/42/420540/2025/2",
+     "capturado_em": "2026-10-09T12:03:30Z",
+     "linhas": 111,
+     "sha256_resposta": "152e7ad36ccc6324979414d5953cbdf507be34f0eb7bd1d21aae495d77a174ba",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/4205407_2025.json.gz",
+     "sha256": "3e8a638d499bf3f99c752f94c7571452545762f141fb2afe87dab543b8b4a422"
+    },
+    "3550308_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/35/355030/2025/2",
+     "capturado_em": "2026-10-09T12:03:31Z",
+     "linhas": 111,
+     "sha256_resposta": "e55681ddbf7351a016d827cef646cf2c3921a8d8890cdd771211ddafb8753767",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/3550308_2025.json.gz",
+     "sha256": "7eaf49d6bc6aec5049e9ec54e942ff63206dd3e082075845354c376ad8caa7b0"
+    },
+    "2800308_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/28/280030/2025/2",
+     "capturado_em": "2026-10-09T12:03:32Z",
+     "linhas": 111,
+     "sha256_resposta": "7ce1825bcf27a80bf3feb3ce736e528bf06fca3d8c152495ba28ee33e946bae9",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/2800308_2025.json.gz",
+     "sha256": "2c3a1d989eec45e2b711938189eccae396d0b4a0425a26aea003577d7933b9f2"
+    },
+    "1721000_2025": {
+     "url": "https://siops-consulta-publica-api.saude.gov.br/v1/rreo/municipal/17/172100/2025/2",
+     "capturado_em": "2026-10-09T12:03:34Z",
+     "linhas": 111,
+     "sha256_resposta": "c8bd1a8f5d4e90134c3707f43577e412bce86d71ea69fa1915cc52f379367d1e",
+     "recorte": "pipeline/eficiencia_saude/seed/siops/rreo_anexo_12/1721000_2025.json.gz",
+     "sha256": "11073a3090324eaf90d7e58fcc0deb7292d30d569ff1994bd44f8dcb74eed314"
     }
    }
   }
