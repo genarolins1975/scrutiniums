@@ -1,0 +1,674 @@
+[
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:39.211Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Trabalho e renda na vida das pessoas.",
+    "route": "/eficiencia-estatal/trabalho-renda",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:39.849Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Quem participa e quem encontra trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:40.491Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/ocupacoes",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Que ocupações aparecem no retrato do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/ocupacoes",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:24:04.997Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualificacao",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Onde encontrar cursos de aprendizagem?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualificacao",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:42.706Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Como estão as condições do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:43.433Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Quanto rende o trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:44.139Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-das-familias",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Como a renda se distribui entre os domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-das-familias",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:45.069Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/desigualdade",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Como a renda se distribui?",
+    "route": "/eficiencia-estatal/trabalho-renda/desigualdade",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:47.969Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/cadastro-unico",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Quem está inscrito no Cadastro Único?",
+    "route": "/eficiencia-estatal/trabalho-renda/cadastro-unico",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:48.785Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Que proteção da renda é declarada pelos domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:49.640Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/emprego-formal",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Como evoluem os vínculos formais no Brasil?",
+    "route": "/eficiencia-estatal/trabalho-renda/emprego-formal",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:50.167Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/recursos",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Quanto as capitais declaram na função Trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/recursos",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:51.121Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/comparar",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "Compare territórios com o mesmo contrato.",
+    "route": "/eficiencia-estatal/trabalho-renda/comparar",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:22:51.707Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/metodos",
+      "violations": [],
+      "width": 1440
+    },
+    "h1": "O que os dados permitem dizer.",
+    "route": "/eficiencia-estatal/trabalho-renda/metodos",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:12.372Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Trabalho e renda na vida das pessoas.",
+    "route": "/eficiencia-estatal/trabalho-renda",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:12.995Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Quem participa e quem encontra trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:13.633Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/ocupacoes",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Que ocupações aparecem no retrato do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/ocupacoes",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:14.703Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualificacao",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Onde encontrar cursos de aprendizagem?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualificacao",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:15.249Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Como estão as condições do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:15.833Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Quanto rende o trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:16.566Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-das-familias",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Como a renda se distribui entre os domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-das-familias",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:17.293Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/desigualdade",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Como a renda se distribui?",
+    "route": "/eficiencia-estatal/trabalho-renda/desigualdade",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:19.945Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/cadastro-unico",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Quem está inscrito no Cadastro Único?",
+    "route": "/eficiencia-estatal/trabalho-renda/cadastro-unico",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:20.571Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Que proteção da renda é declarada pelos domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:21.107Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/emprego-formal",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Como evoluem os vínculos formais no Brasil?",
+    "route": "/eficiencia-estatal/trabalho-renda/emprego-formal",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:21.527Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/recursos",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Quanto as capitais declaram na função Trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/recursos",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:22.326Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/comparar",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "Compare territórios com o mesmo contrato.",
+    "route": "/eficiencia-estatal/trabalho-renda/comparar",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:22.895Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/metodos",
+      "violations": [],
+      "width": 390
+    },
+    "h1": "O que os dados permitem dizer.",
+    "route": "/eficiencia-estatal/trabalho-renda/metodos",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:35.894Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Trabalho e renda na vida das pessoas.",
+    "route": "/eficiencia-estatal/trabalho-renda",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:36.416Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Quem participa e quem encontra trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:36.943Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/ocupacoes",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Que ocupações aparecem no retrato do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/ocupacoes",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:37.889Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualificacao",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Onde encontrar cursos de aprendizagem?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualificacao",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:38.381Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Como estão as condições do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:38.863Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Quanto rende o trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:39.477Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-das-familias",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Como a renda se distribui entre os domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-das-familias",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:40.086Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/desigualdade",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Como a renda se distribui?",
+    "route": "/eficiencia-estatal/trabalho-renda/desigualdade",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:42.795Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/cadastro-unico",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Quem está inscrito no Cadastro Único?",
+    "route": "/eficiencia-estatal/trabalho-renda/cadastro-unico",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:43.280Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Que proteção da renda é declarada pelos domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:43.722Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/emprego-formal",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Como evoluem os vínculos formais no Brasil?",
+    "route": "/eficiencia-estatal/trabalho-renda/emprego-formal",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:44.045Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/recursos",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Quanto as capitais declaram na função Trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/recursos",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:44.770Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/comparar",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "Compare territórios com o mesmo contrato.",
+    "route": "/eficiencia-estatal/trabalho-renda/comparar",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:45.199Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/metodos",
+      "violations": [],
+      "width": 320
+    },
+    "h1": "O que os dados permitem dizer.",
+    "route": "/eficiencia-estatal/trabalho-renda/metodos",
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:45.666Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Trabalho e renda na vida das pessoas.",
+    "route": "/eficiencia-estatal/trabalho-renda",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:46.062Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Quem participa e quem encontra trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:46.585Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/ocupacoes",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Que ocupações aparecem no retrato do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/ocupacoes",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:47.544Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualificacao",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Onde encontrar cursos de aprendizagem?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualificacao",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:48.054Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Como estão as condições do trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:48.532Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Quanto rende o trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:49.137Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/renda-das-familias",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Como a renda se distribui entre os domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/renda-das-familias",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:49.767Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/desigualdade",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Como a renda se distribui?",
+    "route": "/eficiencia-estatal/trabalho-renda/desigualdade",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:52.505Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/cadastro-unico",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Quem está inscrito no Cadastro Único?",
+    "route": "/eficiencia-estatal/trabalho-renda/cadastro-unico",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:52.997Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Que proteção da renda é declarada pelos domicílios?",
+    "route": "/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:53.413Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/emprego-formal",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Como evoluem os vínculos formais no Brasil?",
+    "route": "/eficiencia-estatal/trabalho-renda/emprego-formal",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:53.756Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/recursos",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Quanto as capitais declaram na função Trabalho?",
+    "route": "/eficiencia-estatal/trabalho-renda/recursos",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:54.464Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/comparar",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "Compare territórios com o mesmo contrato.",
+    "route": "/eficiencia-estatal/trabalho-renda/comparar",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "axe": {
+      "date": "2026-10-09T22:23:54.932Z",
+      "url": "http://127.0.0.1:3020/eficiencia-estatal/trabalho-renda/metodos",
+      "violations": [],
+      "width": 768
+    },
+    "h1": "O que os dados permitem dizer.",
+    "route": "/eficiencia-estatal/trabalho-renda/metodos",
+    "scroll": 753,
+    "width": 768
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "registrosConferidos": 90587,
+  "linhasOriginaisValidas": 90587,
+  "divergenciasCamposConferidos": 0,
+  "codigosDistintos": 55507,
+  "estados": {
+    "vigente": 90041,
+    "vencido": 546
+  },
+  "sha256ZipConfere": true,
+  "sha256CsvConfere": true,
+  "limite": "Campos de identificação, UF e datas reexecutados; não comprova turma aberta ou vaga. Notas de localidade e vigência necessárias."
+}
