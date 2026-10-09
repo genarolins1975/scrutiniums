@@ -107,7 +107,7 @@ export function VisaoAtencao({
     ));
   const nada = alertaSistema.length === 0 && observacao.length === 0;
   return (
-    <aside aria-label="Regras que pedem atenção" data-atencao="" className="max-w-prose2 space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
+    <aside aria-label="Regras que pedem atenção" data-atencao="" className="space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
       {nada && <p>Nenhuma regra sobre o sistema está em alerta nem em observação.</p>}
       {alertaSistema.length > 0 && (
         <p>
@@ -118,12 +118,20 @@ export function VisaoAtencao({
       {observacao.length > 0 && (
         <p>
           <span className="rotulo mr-2 text-mineral">Em observação</span>
-          {lista(observacao)}: a condição está presente, ainda sem a duração mínima para virar alerta.
+          {lista(observacao)} <span className="text-carvao-muted">(condição presente, ainda sem a duração mínima de alerta)</span>.
+          {alertaDados.length > 0 && (
+            <>
+              {" "}
+              <span className="rotulo mx-2 text-mineral">Em alerta sobre os dados</span>
+              {lista(alertaDados)}.
+            </>
+          )}
         </p>
       )}
-      {alertaDados.length > 0 && (
-        <p className="text-carvao-muted">
-          Sobre os próprios dados, {alertaDados.length === 1 ? "1 regra está" : `${alertaDados.length} regras estão`} em alerta: {lista(alertaDados)}.
+      {observacao.length === 0 && alertaDados.length > 0 && (
+        <p>
+          <span className="rotulo mr-2 text-mineral">Em alerta sobre os dados</span>
+          {lista(alertaDados)}.
         </p>
       )}
     </aside>

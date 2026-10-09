@@ -177,7 +177,7 @@ export default function VisaoGeralEnergia() {
   const comprove = (id: "preco" | "agua" | "geracao" | "carga" | "rede") => {
     const l = leve(id);
     return l?.comprove ? (
-      <div className="-mt-0.5">
+      <div className="-my-2.5">
         <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, ...l.comprove }} endereco={`${ROTA_VISAO}#${ANCORAS_DETERMINANTES[id].id}`} />
       </div>
     ) : null;
@@ -191,17 +191,21 @@ export default function VisaoGeralEnergia() {
   const sentido = (v: number) => (v >= 0 ? "acima" : "abaixo");
   const refPreco =
     ctx.pldReferencia && ctx.pldReferencia.percentilMes !== null && ctx.pldReferencia.percentilTodos !== null
-      ? `Percentil ${num(ctx.pldReferencia.percentilMes, 1)} no mesmo mês dos anos anteriores e ${num(ctx.pldReferencia.percentilTodos, 1)} entre todas as médias diárias desde 2021.`
+      ? `Percentil ${num(ctx.pldReferencia.percentilMes, 1)} no mesmo mês dos anos anteriores; ${num(ctx.pldReferencia.percentilTodos, 1)} entre todas as médias desde 2021.`
       : null;
-  const refCarga = ctx.carga7d && ctx.carga7d.variacaoPct !== null
-    ? `Média de 7 dias até ${dataBR(ctx.carga7d.fim)}: ${num(Math.abs(ctx.carga7d.variacaoPct), 1)}% ${sentido(ctx.carga7d.variacaoPct)} das mesmas datas do ano anterior${
-        ctx.cargaModulo?.mesmosDiasDaSemanaPct != null ? `; a página Carga compara com os mesmos dias da semana e dá ${num(Math.abs(ctx.cargaModulo.mesmosDiasDaSemanaPct), 2)}%` : ""
-      }.`
-    : null;
-  const refTermica =
-    ctx.termica && ctx.termica.p10 !== null && ctx.termica.p90 !== null
-      ? `Faixa dos 365 dias anteriores: ${num(ctx.termica.p10, 1)}% a ${num(ctx.termica.p90, 1)}%${ctx.termica.mediana !== null ? `, mediana ${num(ctx.termica.mediana, 1)}%` : ""}.`
+  const refCarga =
+    ctx.carga7d && ctx.carga7d.variacaoPct !== null
+      ? `Média de 7 dias: ${num(Math.abs(ctx.carga7d.variacaoPct), 1)}% ${sentido(ctx.carga7d.variacaoPct)} das mesmas datas do ano anterior${
+          ctx.cargaModulo?.mesmosDiasDaSemanaPct != null ? `; a página Carga dá ${num(Math.abs(ctx.cargaModulo.mesmosDiasDaSemanaPct), 2)}%` : ""
+        }.`
       : null;
+  const refTermica = ctx.termica && ctx.termica.p10 !== null && ctx.termica.p90 !== null ? `Faixa dos 365 dias anteriores: ${num(ctx.termica.p10, 1)}% a ${num(ctx.termica.p90, 1)}%.` : null;
+  const refAgua = [
+    typeof medianaNoDia === "number" ? `Mediana da data: ${num(medianaNoDia, 1)}%.` : "",
+    ctx.aguaModulo ? `A página Água e clima traz ${num(ctx.aguaModulo.pct, 1)}% em ${dataBR(ctx.aguaModulo.dia)}.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   /* ---------------- notas dos painéis */
   const oQueMudouDeterminantes = m ? vereditoDeterminantes(m) : "Os determinantes alinhados não foram publicados nesta execução.";
@@ -224,9 +228,7 @@ export default function VisaoGeralEnergia() {
           titulo={PAGINAS_MAPA["visao-geral"].pergunta}
           lead={
             <>
-              O <Termo slug="pld">Preço de Liquidação das Diferenças (PLD)</Termo>, a energia armazenada (<Termo slug="ear">EAR</Termo>), a geração térmica e a carga do{" "}
-              <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo>, cada um com a data da sua fonte e uma referência ao lado do número. Depois, o que chega ao
-              consumidor em custo e qualidade e as regras que dizem o que observar.
+              Preço, água, geração e carga do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo>, cada um com a data da sua fonte e uma referência ao lado do número.
             </>
           }
           recorte={todasAsDatas.length ? `${dataBR(todasAsDatas[0])} a ${dataBR(todasAsDatas[todasAsDatas.length - 1])} · SIN e submercados · cada medida com data e unidade próprias` : "sem data nesta publicação"}
@@ -251,7 +253,7 @@ export default function VisaoGeralEnergia() {
               <FaixaMetricas colunas={4} rotulo="Indicadores do sistema, cada um na data da sua fonte">
                 <Numero
                   variante="faixa"
-                  rotulo={`PLD médio do dia${pPreco.valor_atual.rotulo ? `, ${pPreco.valor_atual.rotulo}` : ""}`}
+                  rotulo={`Preço de Liquidação das Diferenças (PLD), média do dia${pPreco.valor_atual.rotulo ? ` no ${pPreco.valor_atual.rotulo}` : ""}`}
                   natureza={pPreco.natureza}
                   valor={pPreco.valor_atual.valor}
                   formato="reais"
@@ -268,7 +270,7 @@ export default function VisaoGeralEnergia() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo="Energia armazenada (EAR) no SIN"
+                  rotulo="Energia armazenada (EAR) nos reservatórios do SIN"
                   natureza={pAgua.natureza}
                   valor={pAgua.valor_atual.valor}
                   formato="pct"
@@ -278,8 +280,7 @@ export default function VisaoGeralEnergia() {
                   cor="var(--serie-hidraulica)"
                   nota={
                     <>
-                      {typeof medianaNoDia === "number" ? `Mediana da mesma data nos anos de ${ctx.medianaAgua.base ?? "referência"}: ${num(medianaNoDia, 1)}%. ` : ""}
-                      {ctx.earNoModulo}
+                      {refAgua}
                       {comprove("agua")}
                     </>
                   }
@@ -339,7 +340,7 @@ export default function VisaoGeralEnergia() {
           {/* P005 */}
           <PainelVisao
             id="determinantes"
-            subtitulo="Preço, água, geração, carga e rede · cada painel na data da sua fonte e contra a sua referência"
+            subtitulo="Cada painel na data da sua fonte e contra a sua referência"
             porQueImporta="Preço, água armazenada, geração térmica, carga e fluxo entre regiões são cinco medidas que o observatório publica em módulos próprios. Lidas no mesmo calendário, mostram o que mudou nos mesmos dias, sem afirmar que uma explica a outra."
             fonte={
               <>
@@ -350,14 +351,6 @@ export default function VisaoGeralEnergia() {
           >
             {m && det ? (
               <>
-                <RespostaCurta id="determinantes" veredito={vereditoDeterminantes(m)}>
-                  <ul className="space-y-1.5">
-                    {respostaDeterminantes(m).map((t, i) => (
-                      <li key={i}>{t}</li>
-                    ))}
-                  </ul>
-                </RespostaCurta>
-                <VisaoAviso tipo="alerta">{m.aviso_datas}</VisaoAviso>
                 <VisaoDeterminantes
                   d={det.leves}
                   ancoras={ANCORAS_DETERMINANTES}
@@ -369,6 +362,14 @@ export default function VisaoGeralEnergia() {
                     rede: [notaRede({ frases: g.frases, multiplos: m }), ctx.saldoRede].filter((x): x is string => !!x),
                   }}
                 />
+                <VisaoAviso tipo="alerta">{m.aviso_datas}</VisaoAviso>
+                <RespostaCurta id="determinantes" veredito={vereditoDeterminantes(m)} depois>
+                  <ul className="space-y-1.5">
+                    {respostaDeterminantes(m).map((t, i) => (
+                      <li key={i}>{t}</li>
+                    ))}
+                  </ul>
+                </RespostaCurta>
                 <NotasDoPainel
                   oQueMudou={oQueMudouDeterminantes}
                   comoInterpretar={

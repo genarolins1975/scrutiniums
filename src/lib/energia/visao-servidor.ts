@@ -89,6 +89,8 @@ export type ContextoVisao = {
   doisCriteriosPld: string | null;
   capacidadeAgua: string | null;
   earNoModulo: string | null;
+  /** A EAR do SIN na página Água e clima quando o dia dela difere do da Visão geral, para a linha de contexto da medida. */
+  aguaModulo: { dia: string; pct: number } | null;
   cargaNoModulo: string | null;
   saldoRede: string | null;
   /** Carga do SIN em 7 dias como a frase a usa (carga.json): média, comparação e janelas. */
@@ -226,6 +228,7 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
     doisCriteriosPld,
     capacidadeAgua,
     earNoModulo,
+    aguaModulo: diaAgua && aguaSin && aguaSin.dia && aguaSin.dia !== diaAgua && typeof aguaSin.ear_pct === "number" ? { dia: aguaSin.dia, pct: aguaSin.ear_pct } : null,
     cargaNoModulo,
     saldoRede,
     carga7d,

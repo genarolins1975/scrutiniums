@@ -286,8 +286,8 @@ export default function EmpresasPage() {
                     ),
                   contexto: (
                     <>
-                      {inteiro(d.resumo.distribuidoras)} distribuidoras pelo CNPJ; perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, o ano de referência de cada módulo de origem, e
-                      tarifa vigente na data do arquivo de tarifas.
+                      {inteiro(d.resumo.distribuidoras)} distribuidoras pelo CNPJ; perdas de {anoPerdas ?? "sem dado"} (balanço do SAMP, {SIGLAS.SAMP}) e continuidade de {anoQualidade ?? "sem dado"}, o ano de
+                      referência de cada módulo de origem, e tarifa vigente na data do arquivo de tarifas.
                     </>
                   ),
                   limite: "eficiência ou culpa da distribuidora: perdas, interrupções e tarifa dependem da área atendida, e anos de referência diferentes não se comparam.",
