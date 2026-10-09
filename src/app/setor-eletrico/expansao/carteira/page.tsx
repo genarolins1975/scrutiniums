@@ -94,7 +94,7 @@ export default function CarteiraPage() {
     <>
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao-carteira" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["RALIE", "SIGA", "CEG", "ANEEL", "IBGE"]}
           rotulo="Expansão"
           titulo="Carteira de projetos de geração"

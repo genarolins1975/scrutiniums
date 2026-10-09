@@ -88,7 +88,7 @@ export default function GeracaoCapacidadePage() {
     <>
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["MWmed", "SIGA", "CEG", "ANEEL", "ONS"]}
           rotulo="Geração · Capacidade e utilização"
           titulo={perguntaPainel("p024")}

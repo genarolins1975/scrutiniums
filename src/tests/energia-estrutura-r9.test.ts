@@ -25,7 +25,7 @@ describe("abertura do módulo recolhida em Entender", () => {
     expect(bloco, "bloco recolhido").not.toBeNull();
     expect(bloco![0]).not.toContain(" open");
     expect(bloco![1]).toContain("Ler a abertura da página");
-    expect(bloco![1]).toContain('class="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg"');
+    expect(bloco![1]).toContain('class="cab-lead ed-lead max-w-prose2 text-carvao-muted"');
     expect(bloco![1]).toContain("A carga é a energia atendida no sistema interligado.");
     // as fontes e as datas de referência não ficam atrás do toque (a J3 da r9 não achou até quando vão os dados)
     expect(bloco![1]).not.toContain("Fontes e datas de referência");
@@ -49,6 +49,34 @@ describe("abertura do módulo recolhida em Entender", () => {
   it("sem abertura não há bloco recolhido", () => {
     const t = renderToStaticMarkup(createElement(CabecalhoModulo, { rotulo: "X", titulo: "Pergunta?" }));
     expect(t).not.toContain("<details");
+  });
+
+  it("abertura editorial (com lead): título, duas frases, recorte e fonte curta à vista; fontes por extenso, datas e siglas num bloco único que continua no HTML", () => {
+    const e = renderToStaticMarkup(
+      createElement(
+        CabecalhoModulo,
+        { titulo: "Quanta energia está armazenada?", lead: "O armazenamento de cada região frente à mediana da mesma data.", recorte: "29/09/2026 · SIN", fonte: "ONS, EAR", referencia: "ONS, até 29/09/2026; processado em 01/10/2026", siglas: ["ONS", "SIN"] },
+        "Texto longo de apresentação da página.",
+      ),
+    );
+    expect(e).toContain('data-abertura="editorial"');
+    expect(e).toContain("<h1");
+    expect(e).not.toContain('class="rotulo text-mineral"'); // sem rótulo: a navegação já diz onde o leitor está
+    const bloco = e.match(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/);
+    expect(bloco, "bloco recolhido").not.toBeNull();
+    expect(bloco![0]).not.toContain(" open");
+    expect(bloco![1]).toContain("Fontes, datas e siglas");
+    expect(bloco![1]).toContain("Fontes e datas de referência");
+    expect(bloco![1]).toContain("Texto longo de apresentação da página.");
+    expect(bloco![1]).toContain('data-siglas="true"');
+    const fora = e.replace(bloco![0], "");
+    for (const t of ["O armazenamento de cada região frente à mediana da mesma data.", "29/09/2026 · SIN", "Fonte: ONS, EAR"]) expect(fora).toContain(t);
+    expect(fora).not.toContain("Texto longo de apresentação");
+  });
+
+  it("com lead e rótulo, o rótulo continua acima do título (página filha usa como migalha)", () => {
+    const e = renderToStaticMarkup(createElement(CabecalhoModulo, { rotulo: "Água e clima", titulo: "A água que chega está acima do normal?", lead: "Frase." }));
+    expect(e).toContain("Água e clima");
   });
 
   it("o cabeçalho do PLD, que tem marcação própria, recolhe do mesmo modo", () => {

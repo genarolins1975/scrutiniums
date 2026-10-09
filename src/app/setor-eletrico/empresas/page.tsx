@@ -123,7 +123,7 @@ export default function EmpresasPage() {
     <>
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR"]}
           rotulo="Empresas"
           titulo="Quem é dono de quê no setor elétrico?"

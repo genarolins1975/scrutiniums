@@ -19,7 +19,7 @@ export default function TrilhasPage() {
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda:trilhas" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <nav aria-label="Trilha de navegação" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] items-center underline underline-offset-4">
             Aprenda

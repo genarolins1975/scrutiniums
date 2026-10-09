@@ -64,7 +64,7 @@ export function VisaoRegraResumo({
       {le?.inicio && fim && trechos.length > 0 && (
         <div className="pt-1">
           <VisaoFaixaEstados trechos={trechos} inicio={le.inicio} fim={fim} rotulo={`Linha de estado de ${o.titulo}: ${textoLinhaEstado(o) ?? ""}`} />
-          <p className="mt-0.5 flex justify-between text-[11px] text-mineral" aria-hidden="true">
+          <p className="mt-0.5 flex justify-between text-xs text-mineral" aria-hidden="true">
             <span>{dataBR(le.inicio)}</span>
             <span>{dataBR(fim)}</span>
           </p>

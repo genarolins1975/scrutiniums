@@ -79,7 +79,7 @@ export default function MercadoAgentesPage() {
     <>
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado:agentes" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["CCEE", "EPE", "GSF", "SAMP", "ANEEL", "MRE", "ACL", "ACR"]} rotulo="Mercado de energia" titulo="Quem participa do mercado e como a composição mudou?" referencia={<ReferenciaMercado g={g} />}>
           Agente, perfil, parcela de carga e unidade consumidora são contagens diferentes e não se somam: um agente (a empresa, identificada pelo CNPJ) pode ter vários perfis na CCEE, uma parcela de carga pode reunir várias
           unidades consumidoras, e a EPE conta unidades, não empresas. As parcelas de carga contadas são as do mercado livre (<Termo slug="acl">ACL</Termo>); as das distribuidoras, que representam o mercado regulado

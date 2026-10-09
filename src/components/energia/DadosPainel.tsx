@@ -191,7 +191,7 @@ export function DadosIndisponivel({ atual, motivo }: { atual: "dados" | "metodol
   return (
     <>
       <CabecalhoEnergia atual={atual} />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Dados indisponíveis nesta publicação"
           motivo={motivo ?? "As golds do módulo Dados (catalogo.json, publicacao.json, manifesto.json) não foram geradas ou não passaram na validação; a última publicação válida é mantida quando existe."}

@@ -126,7 +126,7 @@ export function VisaoObservar({
                     <span aria-hidden="true">{GLIFO[o.estado]}</span>
                     <span>
                       {o.rotuloEstado}
-                      <span className="block font-sans text-[11px] normal-case tracking-normal text-mineral">
+                      <span className="block font-sans text-xs normal-case tracking-normal text-mineral">
                         {o.assunto === "dados" ? "sobre os dados" : o.tipo === "evento" ? "calendário" : "sobre o sistema"} · {dataBR(o.referencia)}
                       </span>
                     </span>
@@ -134,7 +134,7 @@ export function VisaoObservar({
                   <div className="min-w-0">
                     <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>
                       {o.titulo}
-                      <span data-nivel="analisar" className="ml-2 font-mono text-[11px] font-normal text-mineral">
+                      <span data-nivel="analisar" className="ml-2 font-mono text-xs font-normal text-mineral">
                         código {o.id}
                       </span>
                     </h3>
@@ -191,7 +191,7 @@ export function VisaoObservar({
                 <div className="min-w-0 space-y-1">
                   <p className="text-sm text-carvao">{c.rotulo}</p>
                   <VisaoFaixaEstados trechos={c.trechos} inicio={dominio.inicio} fim={dominio.fim} rotulo={`${c.rotulo}: ${c.texto}`} />
-                  <p className="flex justify-between text-[11px] text-mineral" aria-hidden="true">
+                  <p className="flex justify-between text-xs text-mineral" aria-hidden="true">
                     <span>{dataBR(dominio.inicio)}</span>
                     <span>{dataBR(dominio.fim)}</span>
                   </p>

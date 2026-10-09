@@ -95,7 +95,7 @@ export default function TerritorioPage() {
     <>
       <CabecalhoEnergia atual="territorio" />
       <MarcaVisita secao="energia:territorio" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["DEC", "FEC"]}
           rotulo="Minha região"
           titulo={g.pergunta}

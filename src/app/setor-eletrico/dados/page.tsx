@@ -75,7 +75,7 @@ export default function DadosCatalogoPage() {
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["ONS", "ANEEL", "CCEE"]}
           rotulo="Dados e metodologia"
           titulo="Quais dados estão de fato validados?"

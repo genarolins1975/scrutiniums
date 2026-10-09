@@ -60,7 +60,7 @@ export default function AvaliacaoPage() {
     <>
       <CabecalhoEnergia atual="metodologia" />
       <MarcaVisita secao="energia:dados:avaliacao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
           rotulo="Dados e metodologia"
           titulo="Como demonstrar que a qualidade evoluiu?"

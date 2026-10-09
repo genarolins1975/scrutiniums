@@ -194,35 +194,35 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     <div data-modo={modo} className="modo-profundidade">
       <AbreDetalhesAoImprimir />
       <FaixasDeSecao />
-      <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
-        <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-1.5 sm:gap-2">
-          <span className="rotulo mr-2 hidden text-mineral sm:inline">Profundidade</span>
-          {MODOS.map((m, i) => {
-            const ativo = modo === m.id;
-            return (
-              <button
-                key={m.id}
-                ref={(el) => {
-                  botoes.current[i] = el;
-                }}
-                type="button"
-                role="radio"
-                aria-checked={ativo}
-                tabIndex={i === ativoIdx ? 0 : -1}
-                onClick={() => escolher(m.id)}
-                onKeyDown={(e) => teclado(e, i)}
-                title={m.dica}
-                className={`rotulo min-h-[44px] flex-1 border px-2 transition-colors sm:flex-none sm:px-4 ${
-                  ativo ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
-                }`}
-              >
-                {m.rotulo}
-              </button>
-            );
-          })}
-          <span className="ml-1 hidden text-xs text-mineral md:inline">
-            {MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}
-          </span>
+      <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-1.5 backdrop-blur supports-[backdrop-filter]:bg-papel/80">
+        <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-3">
+          <span className="rotulo hidden text-mineral sm:inline">Profundidade</span>
+          <div className="flex flex-1 sm:flex-none">
+            {MODOS.map((m, i) => {
+              const ativo = modo === m.id;
+              return (
+                <button
+                  key={m.id}
+                  ref={(el) => {
+                    botoes.current[i] = el;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-checked={ativo}
+                  tabIndex={i === ativoIdx ? 0 : -1}
+                  onClick={() => escolher(m.id)}
+                  onKeyDown={(e) => teclado(e, i)}
+                  title={m.dica}
+                  className={`rotulo min-h-[40px] flex-1 border px-3 transition-colors sm:flex-none sm:px-5 [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
+                    ativo ? "relative z-10 border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
+                  }`}
+                >
+                  {m.rotulo}
+                </button>
+              );
+            })}
+          </div>
+          <span className="hidden text-xs text-carvao-muted md:inline">{MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}</span>
         </div>
       </div>
       {children}

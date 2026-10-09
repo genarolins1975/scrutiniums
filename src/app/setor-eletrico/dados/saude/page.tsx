@@ -77,7 +77,7 @@ export default function DadosSaudePage() {
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:saude" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["SCS", "ONS"]}
           rotulo="Dados e metodologia"
           titulo="O que atrasou ou mudou?"

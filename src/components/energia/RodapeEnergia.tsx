@@ -23,7 +23,7 @@ export function RodapeEnergia() {
   const link = "inline-flex min-h-[44px] items-center text-carvao underline-offset-4 hover:underline";
   return (
     <aside aria-label="Observatório Brasileiro do Setor Elétrico: mapa e fontes" className="border-t border-linha bg-papel">
-      <div className="mx-auto max-w-page px-6 py-4">
+      <div className="ed-pagina py-4">
         <details className="border-b border-linha pb-1">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
             <span className="rotulo text-mineral">Fontes deste observatório</span>

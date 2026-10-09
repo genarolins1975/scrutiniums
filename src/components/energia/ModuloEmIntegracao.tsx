@@ -45,7 +45,7 @@ export function ModuloEmIntegracao({
     <>
       <CabecalhoEnergia atual={atual} />
       <MarcaVisita secao={secao} />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <CabecalhoModulo recolher={false} rotulo={`${rotulo} · em integração`} titulo={titulo}>
           {escopo}
         </CabecalhoModulo>

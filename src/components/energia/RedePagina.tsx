@@ -47,7 +47,7 @@ export function RedeIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="rede" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 py-14 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 py-14 sm:px-6">
         <Indisponivel
           titulo="Rede indisponível nesta publicação"
           motivo={

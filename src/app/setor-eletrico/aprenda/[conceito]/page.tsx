@@ -77,7 +77,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <nav aria-label="Localização" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Aprenda</Link> · {c.grupo}
         </nav>

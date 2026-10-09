@@ -31,7 +31,7 @@ export default function PerdasCustoContextoPage() {
     return (
       <>
         <CabecalhoEnergia atual="perdas" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel titulo="Perdas indisponíveis" motivo={g?.motivo ?? "Os dados processados de perdas não foram gerados nesta publicação."} />
         </main>
       </>
@@ -54,7 +54,7 @@ export default function PerdasCustoContextoPage() {
     <>
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas:custo" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["SAMP", "TUSD", "TE", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia · custo e contexto"
           titulo="Qual é a dimensão econômica e territorial das perdas?"

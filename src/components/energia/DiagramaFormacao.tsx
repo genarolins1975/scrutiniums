@@ -13,9 +13,9 @@ export type NoComEstado = NoFormacao & { estado: EstadoNo };
 function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined }) {
   if (!estado) return null;
   return estado === "CONFERIDO" ? (
-    <span className="rotulo !text-[0.62rem] text-sucesso">● conferido na fonte</span>
+    <span className="rotulo !text-xs text-sucesso">● conferido na fonte</span>
   ) : (
-    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo !text-xs text-aviso">○ conferência documental pendente</span>
   );
 }
 
@@ -54,7 +54,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         } ${largo ? "md:items-center md:text-center" : ""}`}
       >
         <span className="text-sm font-medium leading-snug text-carvao">{n.titulo}</span>
-        {n.sigla && <span className={`rotulo !text-[0.62rem] ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
+        {n.sigla && <span className={`rotulo !text-xs ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
       </button>
     );
   };
@@ -62,7 +62,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
   const seta = (rotulo?: string) => (
     <div className="flex items-center justify-center gap-2 py-1.5 text-mineral" aria-hidden="true">
       <span className="text-lg leading-none">↓</span>
-      {rotulo && <span className="rotulo !text-[0.62rem]">{rotulo}</span>}
+      {rotulo && <span className="rotulo !text-xs">{rotulo}</span>}
     </div>
   );
 
@@ -75,7 +75,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
           <span aria-hidden="true" className="text-mineral">→</span>
           {botao("reservatorios")}
         </div>
-        <p className="rotulo mt-3 text-center !text-[0.62rem] text-mineral" aria-hidden="true">+ junto com</p>
+        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">+ junto com</p>
         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
           {botao("carga")}
           {botao("renovaveis")}

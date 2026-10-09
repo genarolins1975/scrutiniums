@@ -46,7 +46,7 @@ export default function PerdasComposicaoPage() {
     return (
       <>
         <CabecalhoEnergia atual="perdas" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel titulo="Perdas indisponíveis" motivo={g?.motivo ?? "Os dados processados de perdas não foram gerados nesta publicação."} />
         </main>
       </>
@@ -74,7 +74,7 @@ export default function PerdasComposicaoPage() {
     <>
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas:composicao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["SAMP", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia · técnicas e não técnicas"
           titulo="Qual parte das perdas é técnica e qual é não técnica?"

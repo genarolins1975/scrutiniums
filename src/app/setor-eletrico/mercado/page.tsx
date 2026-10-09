@@ -89,7 +89,7 @@ export default function MercadoPage() {
     <>
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["ACR", "ACL", "CCEE", "PLD", "MRE", "EPE", "GSF", "ANEEL", "SIN", "MWmed", "ONS", "SAMP"]} rotulo="Mercado de energia" titulo="Como a energia é contratada, alocada e liquidada?" referencia={<ReferenciaMercado g={g} />}>
           Parte do consumo compra energia da distribuidora a tarifa regulada (<Termo slug="acr">ACR</Termo>); a outra parte contrata no mercado livre (<Termo slug="acl">ACL</Termo>). As diferenças
           entre o contratado e o medido são liquidadas na CCEE ao <Termo slug="pld">PLD</Termo>, as hidrelétricas dividem o risco hidrológico no <Termo slug="mre">MRE</Termo> e os custos de operar o sistema

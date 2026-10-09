@@ -259,7 +259,7 @@ export function MercadoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="mercado" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Mercado indisponível nesta publicação"
           motivo={motivo ?? "A gold do módulo Mercado (public/energia/gold/mercado.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."}

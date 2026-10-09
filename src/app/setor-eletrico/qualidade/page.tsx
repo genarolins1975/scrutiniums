@@ -169,7 +169,7 @@ export default function QualidadePage() {
     return (
       <>
         <CabecalhoEnergia atual="qualidade" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel
             titulo="Qualidade do serviço indisponível nesta publicação"
             motivo={
@@ -233,7 +233,7 @@ export default function QualidadePage() {
     <>
       <CabecalhoEnergia atual="qualidade" />
       <MarcaVisita secao="energia:qualidade" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["DEC", "FEC", "DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
           rotulo="Qualidade do serviço"
           titulo="Com que frequência e por quanto tempo falta energia?"

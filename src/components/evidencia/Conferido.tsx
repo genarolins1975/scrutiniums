@@ -4,8 +4,8 @@
  */
 export function Conferido({ ok }: { ok: boolean }) {
   return ok ? (
-    <span className="rotulo !text-[0.62rem] text-sucesso">● conferido na fonte</span>
+    <span className="rotulo !text-xs text-sucesso">● conferido na fonte</span>
   ) : (
-    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo !text-xs text-aviso">○ conferência documental pendente</span>
   );
 }

@@ -87,7 +87,7 @@ export default function GeracaoPage() {
       <MarcaVisita secao="energia:geracao" />
       {/* o contexto térmico de 7 dias foi para o painel de despacho térmico; links antigos seguem para lá */}
       <RedirecionaAncoraAntiga ancoras={["termica", "termica-ctx"]} destino={rotaPainel("p022")} />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["ONS", "MWmed", "SIN", "CEG", "CVU", "SIGA", "ANEEL"]}
           rotulo="Geração"
           titulo={PERGUNTA_MODULO_GERACAO}

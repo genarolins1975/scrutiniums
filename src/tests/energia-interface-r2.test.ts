@@ -190,7 +190,7 @@ describe("I10, I11, I12, I13, I15, I16: regras de CSS e impressão", () => {
     expect(fora).not.toContain('[data-modo="todos"]');
   });
   it("a barra fixa de profundidade não cobre o foco: scroll-padding-top", () => {
-    expect(CSS).toMatch(/html:has\(\.modo-profundidade\)\s*\{\s*scroll-padding-top:\s*5rem/);
+    expect(CSS).toMatch(/html:has\(\.modo-profundidade\)\s*\{\s*scroll-padding-top:\s*4\.5rem/);
   });
   it("alto contraste: o selecionado ganha cor de sistema, borda grossa e sublinhado", () => {
     const bloco = /@media \(forced-colors: active\)\s*\{([\s\S]*?)\n\}/.exec(CSS)?.[1] ?? "";

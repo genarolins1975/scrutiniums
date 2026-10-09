@@ -104,7 +104,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
     return (
       <>
         <CabecalhoEnergia atual="empresas" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel titulo="Ficha da distribuidora indisponível nesta publicação" motivo={(g as { motivo?: string } | null)?.motivo ?? "A gold do módulo Empresas não foi gerada ou não passou na validação."} />
         </main>
       </>
@@ -167,7 +167,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
     <>
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-ficha" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
           <Link href={ROTA_EMPRESAS} className="inline-flex min-h-[44px] items-center underline underline-offset-4">
             Empresas

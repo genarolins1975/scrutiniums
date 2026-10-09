@@ -27,7 +27,7 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
       </a>
       <div className="flex-1">{children}</div>
       <RodapeEnergia />
-      <Footer />
+      <Footer compacto />
     </div>
   );
 }

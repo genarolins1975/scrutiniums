@@ -738,7 +738,10 @@ describe("páginas renderizadas no servidor", () => {
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
       for (const q of PAINEIS_AGUA) expect(h, `${id} -> ${q.id}`).toContain(`href="${rotaPainel(q.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${p.rotulo}<`));
+      // abertura (P017): os outros três painéis aparecem como capítulos depois da figura principal; nas filhas, a faixa de páginas irmãs
+      // traz a atual com aria-current. O mesmo rótulo não aparece nas duas formas na mesma página.
+      if (id === "p017") expect(h, id).toContain('data-navegacao-local="capitulos"');
+      else expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${p.rotulo}<`));
       expect(h.slice(h.indexOf("<main")), id).not.toMatch(/em breve|em constru|em integra/i);
     }
   });

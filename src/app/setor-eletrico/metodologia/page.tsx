@@ -101,7 +101,7 @@ export default function MetodologiaEnergia() {
     <>
       <CabecalhoEnergia atual="metodologia" />
       <MarcaVisita secao="energia:metodologia" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <CabecalhoModulo siglas={["ENA", "REE", "MLT", "CVU", "PLD", "CMO"]}
           rotulo="Metodologia"
           titulo="Quais interpretações são permitidas?"

@@ -85,7 +85,7 @@ export default function ContaReajustesPage() {
     return (
       <>
         <CabecalhoEnergia atual="conta-de-luz" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel
             titulo="Reajustes, bandeiras e subsídios indisponíveis nesta publicação"
             motivo={
@@ -134,7 +134,7 @@ export default function ContaReajustesPage() {
     <>
       <CabecalhoEnergia atual="conta-de-luz" />
       <MarcaVisita secao="energia:conta-de-luz:reajustes" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <nav aria-label="Trilha" className="pt-6 text-sm text-carvao-muted">
           <ContaLinkFiltros href={ROTA_CONTA} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
             Conta de luz

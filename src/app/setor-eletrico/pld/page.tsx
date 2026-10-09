@@ -173,7 +173,7 @@ export default function PldPage() {
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <header className="pb-6 pt-10 md:pt-14">
           <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
           <h1 className="mt-3 font-serif text-[clamp(2.6rem,6vw,4rem)] leading-none text-carvao">PLD</h1>

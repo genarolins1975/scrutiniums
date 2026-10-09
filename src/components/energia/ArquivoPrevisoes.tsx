@@ -86,7 +86,7 @@ export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] 
                     {r.motivo && <span className="block text-mineral">{MOTIVOS[r.motivo] ?? r.motivo}</span>}
                     {r.alertas?.map((a) => <span key={a} className="block text-aviso">{ALERTAS[a] ?? a}</span>)}
                   </td>
-                  <td className="break-all px-2 py-1.5 font-mono text-[0.62rem] text-mineral">{r.sha256.slice(0, 16)}…</td>
+                  <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{r.sha256.slice(0, 16)}…</td>
                 </tr>
               ))}
             </tbody>

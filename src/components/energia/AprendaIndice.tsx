@@ -27,7 +27,7 @@ function Cartao({ i }: { i: ItemIndice }) {
     <Link href={`/setor-eletrico/aprenda/${i.slug}`} className="group flex h-full flex-col border border-linha bg-superficie p-5 transition-colors hover:border-energia">
       <span className="flex items-baseline justify-between gap-3">
         <span className="font-serif text-lg text-carvao">{i.titulo}</span>
-        {i.selo && <span className="rotulo !text-[0.62rem] text-aviso">{i.selo}</span>}
+        {i.selo && <span className="rotulo !text-xs text-aviso">{i.selo}</span>}
       </span>
       {i.subtitulo && <span className="text-sm text-mineral">{i.subtitulo}</span>}
       <span className="mt-2 text-sm leading-relaxed text-carvao-muted">{i.texto}</span>

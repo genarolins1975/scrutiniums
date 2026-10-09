@@ -82,7 +82,7 @@ export default function MercadoEncargosPage() {
     <>
       <CabecalhoEnergia atual="mercado" />
       <MarcaVisita secao="energia:mercado:encargos" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["CCEE", "MME", "EPE", "GSF", "SAMP", "ANEEL", "REN", "MRE", "SIN", "PLD", "ACL", "ACR"]} rotulo="Mercado de energia" titulo="Quais custos públicos aparecem na liquidação do mercado de curto prazo?" referencia={<ReferenciaMercado g={g} />}>
           Operar o sistema com segurança tem custos que não estão no preço da energia: geração fora da ordem de mérito, serviços ancilares, energia de reserva. Eles viram encargos (
           <Termo slug="ess">ESS</Termo> e EER), apurados pela CCEE no mês de competência e pagos depois, na liquidação do mercado de curto prazo. O observatório não publica preço de contrato: só o que a CCEE e o MME publicam.

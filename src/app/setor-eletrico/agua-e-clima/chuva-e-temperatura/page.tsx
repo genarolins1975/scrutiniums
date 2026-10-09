@@ -85,7 +85,7 @@ export default function ClimaPage() {
     <>
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["SIN", "ENA", "MLT", "EAR", "ONS", "IBGE"]}
           rotulo="Água e clima"
           titulo="Chuva, temperatura e clima"

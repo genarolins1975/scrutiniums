@@ -70,7 +70,7 @@ export default function DadosReproducaoPage() {
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:reproducao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
           rotulo="Dados e metodologia"
           titulo="Consigo reproduzir este gráfico?"

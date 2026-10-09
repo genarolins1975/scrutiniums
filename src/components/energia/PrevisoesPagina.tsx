@@ -54,7 +54,7 @@ export function PrevisoesIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="pld-modelos" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 py-14 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 py-14 sm:px-6">
         <Indisponivel
           titulo="Previsões e modelos indisponíveis nesta publicação"
           motivo={

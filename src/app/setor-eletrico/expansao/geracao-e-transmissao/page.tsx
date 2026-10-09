@@ -103,7 +103,7 @@ export default function GeracaoTransmissaoPage() {
     <>
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao-geracao-e-transmissao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["RALIE", "RAP", "ANEEL", "EPE", "IBGE", "ONS"]}
           rotulo="Expansão"
           titulo="Geração e transmissão"

@@ -303,7 +303,7 @@ export default function MapaDoObservatorio() {
       <CabecalhoEnergia atual="mapa" />
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 pb-16 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 pb-16 sm:px-6">
         {/* A. propósito em uma tela */}
         <header id="proposito" className="scroll-mt-24 pb-10 pt-10 md:pt-14">
           <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>

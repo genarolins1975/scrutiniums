@@ -46,7 +46,7 @@ export default function CoberturaPage() {
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-cobertura" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["UC", "REN", "IBGE", "ANEEL", "MME"]}
           rotulo="Inclusão energética"
           titulo="Cobertura potencial da Tarifa Social"

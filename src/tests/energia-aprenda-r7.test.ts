@@ -278,7 +278,7 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
 
   it("F15: rótulos de campo e selo de natureza com corpo maior; a ficha explica o +alterado (F21)", () => {
     expect(ler("src/app/setor-eletrico/aprenda/[conceito]/page.tsx")).toContain('<h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>');
-    expect(ler("src/components/evidencia/SeloNatureza.tsx")).toContain("!text-[0.72rem]");
+    expect(ler("src/components/evidencia/SeloNatureza.tsx")).toContain("!text-xs");
     expect(ler("src/components/energia/ComproveNumero.tsx")).toContain("ainda não confirmadas em commit (sufixo +alterado)");
   });
 

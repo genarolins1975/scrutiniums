@@ -20,8 +20,13 @@ describe("abas de seção: marcação comum às duas versões", () => {
   const NAVEGACOES = ["Agua", "Carga", "Empresas", "Expansao", "Geracao", "Inclusao", "Pld", "Previsoes", "Rede", "Regulacao", "Transicao"].map((m) => `src/components/energia/${m}Pagina.tsx`);
   const BARRAS = ["MercadoPainel", "PerdasPainel", "DadosPainel"].map((m) => `src/components/energia/${m}.tsx`);
 
-  it("as onze navegações de seção com quebra de linha usam a faixa de seções", () => {
-    for (const f of NAVEGACOES) expect(ler(f), f).toContain('<ol className="nav-faixa flex flex-wrap gap-2 text-sm">');
+  it("as onze navegações de seção com quebra de linha usam a faixa de seções (própria ou a NavegacaoLocal compartilhada)", () => {
+    for (const f of NAVEGACOES) {
+      const t = ler(f);
+      expect(t.includes('<ol className="nav-faixa flex flex-wrap gap-2 text-sm">') || t.includes("<NavegacaoLocal"), f).toBe(true);
+    }
+    // a faixa compartilhada quebra linha e leva o marcador que o AtivoVisivel e o CSS do celular procuram
+    expect(ler("src/components/energia/NavegacaoLocal.tsx")).toContain('<ol className="nav-faixa flex flex-wrap');
   });
 
   it("as três barras de Mercado, Perdas e Dados usam a variante de barra", () => {
@@ -43,14 +48,13 @@ describe("resposta curta antes dos filtros", () => {
     expect(css).toMatch(/\[class\*="space-y-"\] > \[data-resposta\] \{ order: -1; margin-top: 0 !important; margin-bottom: 1\.5rem !important; \}/);
   });
 
-  it("o cabeçalho de módulo é mais baixo no celular e volta ao tamanho antigo a partir de 768 px", () => {
-    for (const f of ["src/components/energia/CabecalhoModulo.tsx", "src/components/energia/PldPagina.tsx"]) {
-      const t = ler(f);
-      expect(t, f).toContain('<header className="cab-modulo">');
-      expect(t, f).toContain('className="cab-lead max-w-prose2 leading-relaxed text-carvao-muted md:text-lg"');
-    }
-    expect(css).toMatch(/\.cab-modulo \{ padding-top: 1\.5rem; padding-bottom: 1rem; \}/);
-    expect(css).toMatch(/@media \(min-width: 768px\) \{\s*\.cab-modulo \{ padding-top: 3\.5rem; padding-bottom: 1\.5rem; \}/);
+  it("o cabeçalho de módulo é mais baixo no celular e mais folgado a partir de 768 px (abertura editorial)", () => {
+    const cab = ler("src/components/energia/CabecalhoModulo.tsx");
+    expect(cab).toContain('<header className="cab-modulo">');
+    expect(cab).toContain('<header className="cab-modulo" data-abertura="editorial">');
+    expect(ler("src/components/energia/PldPagina.tsx")).toContain('<header className="cab-modulo">');
+    expect(css).toMatch(/\.cab-modulo \{ padding-top: 1\.25rem; padding-bottom: 0\.5rem; \}/);
+    expect(css).toMatch(/@media \(min-width: 768px\) \{ \.cab-modulo \{ padding-top: 2rem; padding-bottom: 0\.75rem; \} \}/);
   });
 });
 

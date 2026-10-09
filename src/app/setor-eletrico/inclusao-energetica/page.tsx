@@ -106,7 +106,7 @@ export default function InclusaoEnergeticaPage() {
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-energetica" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["CDE", "SIN", "ANEEL"]}
           rotulo="Inclusão energética"
           titulo="Quem tem acesso adequado e para quem a energia pesa mais?"

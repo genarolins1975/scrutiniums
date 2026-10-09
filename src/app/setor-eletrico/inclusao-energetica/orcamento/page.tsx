@@ -76,7 +76,7 @@ export default function OrcamentoPage() {
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-orcamento" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["IBGE"]}
           rotulo="Inclusão energética"
           titulo="Peso da energia no orçamento das famílias"

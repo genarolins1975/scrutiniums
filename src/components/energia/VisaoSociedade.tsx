@@ -113,7 +113,7 @@ export function VisaoLinhaTempo({ s, dataProcessamento }: { s: SociedadeVisao; d
         Período de referência de cada número contra a data de processamento ({dataBR(dataProcessamento)})
       </figcaption>
       <div className="relative" role="img" aria-label={faixas.map((f) => `${f.rotulo}: ${f.texto}, ${plural(f.defasagemDias, "dia", "dias")} antes do processamento`).join("; ")}>
-        <div className="relative h-5 border-b border-linha text-[11px] text-mineral" aria-hidden="true">
+        <div className="relative h-5 border-b border-linha text-xs text-mineral" aria-hidden="true">
           <span className="absolute left-0">{dataBR(dom.inicio)}</span>
           {anos.map((a) => (
             <span key={a} className="absolute -translate-x-1/2" style={{ left: `${x(a)}%` }}>

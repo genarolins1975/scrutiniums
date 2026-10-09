@@ -84,7 +84,7 @@ export default function AcessoPage() {
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-acesso" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["CDE", "SIN", "EPE", "MME", "IBGE"]}
           rotulo="Inclusão energética"
           titulo="Acesso à energia e sistemas isolados"

@@ -107,7 +107,7 @@ export default function PrevisoesPage() {
     <>
       <CabecalhoEnergia atual="pld-modelos" />
       <MarcaVisita secao="energia:pld-previsoes" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 pb-16 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 pb-16 sm:px-6">
         <nav aria-label="Trilha" className="pt-6 text-sm text-mineral">
           <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">
             PLD

@@ -102,7 +102,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/dados" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Dados</Link> · {e.orgao}
         </nav>
@@ -339,7 +339,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                         <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
                         <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? "captura primária versionada" : "coleta direta"}</td>
                         <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? "vigente" : "substituída"}</td>
-                        <td className="break-all px-2 py-1.5 font-mono text-[0.68rem] text-mineral">{cpt.sha256}</td>
+                        <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{cpt.sha256}</td>
                       </tr>
                     ))}
                   </tbody>

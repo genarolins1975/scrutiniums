@@ -57,7 +57,7 @@ export function GeracaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 py-14 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 py-14 sm:px-6">
         <Indisponivel
           titulo="Geração indisponível nesta publicação"
           motivo={

@@ -80,7 +80,7 @@ export default function EmissoesPage() {
     return (
       <>
         <CabecalhoEnergia atual="transicao" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+        <main id="conteudo" tabIndex={-1} className="ed-pagina">
           <CabecalhoModulo siglas={["MCTI"]} rotulo="Transição e ambiente" titulo="Intensidade de emissões da geração no SIN" />
           <TransicaoNavegacao atual="p064" />
           <div className="py-6">
@@ -107,7 +107,7 @@ export default function EmissoesPage() {
     <>
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-emissoes" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
           rotulo="Transição e ambiente"
           titulo="Intensidade de emissões da geração no SIN"

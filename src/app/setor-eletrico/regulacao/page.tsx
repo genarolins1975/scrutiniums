@@ -224,7 +224,7 @@ export default function RegulacaoPage() {
     <>
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo siglas={["PLD", "DOU", "ANEEL", "CCEE", "PRODIST", "PRORET"]}
           rotulo="Regulação"
           titulo="Que regras mudaram, quando e com qual efeito declarado?"

@@ -77,7 +77,9 @@ export function AguaArmazenamento({
   textoMensal,
   fonte,
   versao,
-  destaques,
+  notas,
+  aposPrincipal,
+  destaquesHistoria,
 }: {
   entidades: EntidadeEar[];
   /** EAR diária por subsistema e SIN nos últimos dias publicados na gold (MWmês). */
@@ -87,7 +89,12 @@ export function AguaArmazenamento({
   textoMensal: string;
   fonte: string;
   versao: string;
-  destaques?: ReactNode;
+  /** Notas do painel (NotasDoPainel: o que mudou e a ressalva essencial), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
+  /** Conteúdo depois da figura principal e da tabela (os capítulos do módulo), antes das análises complementares. */
+  aposPrincipal?: ReactNode;
+  /** Medida que acompanha a história mensal (mudanças da EAR máxima), com a ficha de prova. */
+  destaquesHistoria?: ReactNode;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const tipo = v.rec as TipoRecorte;
@@ -116,58 +123,20 @@ export function AguaArmazenamento({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <AguaEscolha legenda="Recorte" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ rec: x, ent: "" })} />
-        <AguaLista
-          rotulo={tipo === "subsistema" ? "Subsistema" : tipo === "ree" ? "REE" : "Bacia"}
-          opcoes={doTipo.map((x) => ({ id: x.id, rotulo: x.sem_armazenamento ? `${x.rotulo} (sem armazenamento)` : x.rotulo }))}
-          valor={e?.id ?? padrao}
-          onEscolher={(x) => selecionar(x)}
-        />
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
+          {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
+        </RespostaCurta>
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          <AguaEscolha legenda="Recorte" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ rec: x, ent: "" })} />
+          <AguaLista
+            rotulo={tipo === "subsistema" ? "Subsistema" : tipo === "ree" ? "REE" : "Bacia"}
+            opcoes={doTipo.map((x) => ({ id: x.id, rotulo: x.sem_armazenamento ? `${x.rotulo} (sem armazenamento)` : x.rotulo }))}
+            valor={e?.id ?? padrao}
+            onEscolher={(x) => selecionar(x)}
+          />
+        </div>
       </div>
-
-      <RespostaCurta id="p017" vivo veredito={e ? vereditoArmazenamento(e) : "Recorte sem dado nesta publicação."}>
-        {e ? respostaArmazenamento(e) : "Recorte sem dado nesta publicação."}
-      </RespostaCurta>
-
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-        <div>
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            {e?.dia ? `${dataBR(e.dia)}; faixa do mesmo dia do calendário em ${periodoBase(e.periodo_base)}` : "sem dia de referência"}
-          </dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">{UNIVERSO[tipo]}</dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">
-            MWmês (energia armazenada; 1 MWmês = 720 MWh) e % da EAR máxima do próprio recorte; p.p., pontos percentuais: de 60% para 62% são 2 p.p.
-          </dd>
-        </div>
-      </dl>
-
-      {destaques}
-
-      {e && !e.sem_armazenamento && semanal.length > 0 ? (
-        <GraficoLinhas
-          titulo={`EAR ${doRecorte(e.tipo, e.nome)} no último ano, ${e.semanal ? textoPasso(e.semanal.passo_dias) : ""}, com a faixa do 10º ao 90º percentil da mesma data`}
-          dados={semanal}
-          chaveX="d"
-          series={[{ id: "v", rotulo: e.rotulo, cor, espessura: 2.5 }]}
-          banda={{ inferior: "p10", superior: "p90", rotulo: `10º a 90º percentil da data (${periodoBase(e.periodo_base)})` }}
-          unidade="%"
-          casas={1}
-        />
-      ) : (
-        <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
-          {e?.sem_armazenamento
-            ? "Este recorte não tem armazenamento (EAR máxima zero): não há série em % nem faixa sazonal; a EAR em MWmês, zero, está na tabela."
-            : "Sem série do último ano para este recorte nesta publicação."}
-        </p>
-      )}
 
       <GraficoPontos
         titulo={`EAR de cada recorte (${ROTULO_TIPO_RECORTE[tipo]}) no dia e a mediana da mesma data`}
@@ -187,6 +156,44 @@ export function AguaArmazenamento({
           {fora}
         </p>
       )}
+      {e && !e.sem_armazenamento && semanal.length > 0 ? (
+        <GraficoLinhas
+          titulo={`EAR ${doRecorte(e.tipo, e.nome)} no último ano, ${e.semanal ? textoPasso(e.semanal.passo_dias) : ""}, com a faixa do 10º ao 90º percentil da mesma data`}
+          dados={semanal}
+          chaveX="d"
+          series={[{ id: "v", rotulo: e.rotulo, cor, espessura: 2.5 }]}
+          banda={{ inferior: "p10", superior: "p90", rotulo: `10º a 90º percentil da data (${periodoBase(e.periodo_base)})` }}
+          unidade="%"
+          casas={1}
+        />
+      ) : (
+        <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
+          {e?.sem_armazenamento
+            ? "Este recorte não tem armazenamento (EAR máxima zero): não há série em % nem faixa sazonal; a EAR em MWmês, zero, está na tabela."
+            : "Sem série do último ano para este recorte nesta publicação."}
+        </p>
+      )}
+
+      <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
+        <div>
+          <dt className="rotulo text-mineral">Período</dt>
+          <dd className="mt-0.5">
+            {e?.dia ? `${dataBR(e.dia)}; faixa do mesmo dia do calendário em ${periodoBase(e.periodo_base)}` : "sem dia de referência"}
+          </dd>
+        </div>
+        <div>
+          <dt className="rotulo text-mineral">Universo</dt>
+          <dd className="mt-0.5">{UNIVERSO[tipo]}</dd>
+        </div>
+        <div>
+          <dt className="rotulo text-mineral">Unidade</dt>
+          <dd className="mt-0.5">
+            MWmês (energia armazenada; 1 MWmês = 720 MWh) e % da EAR máxima do próprio recorte; p.p., pontos percentuais: de 60% para 62% são 2 p.p.
+          </dd>
+        </div>
+      </dl>
+
+
       <TabelaInterativa
         titulo={`Tabela equivalente: ${ROTULO_TIPO_RECORTE[tipo]}, EAR do dia, faixa da data e variação`}
         colunas={COLUNAS_ARMAZENAMENTO}
@@ -202,8 +209,12 @@ export function AguaArmazenamento({
         nota="Recortes sem armazenamento aparecem com percentual vazio e posição “não se aplica”; com menos de 5 anos na base, não há faixa."
       />
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Até quatro recortes na mesma escala</h3>
+      {notas}
+
+      {aposPrincipal}
+
+      <div id="comparar" className="scroll-mt-28 space-y-4 border-t border-linha pt-6">
+        <h3 className="ed-h3 font-serif text-carvao">Até quatro recortes na mesma escala</h3>
         <Comparador
           rotulo={`Recortes comparados (até ${LIMITE_COMPARACAO})`}
           entidades={comArmazenamento.map((x) => ({ id: x.id, rotulo: x.rotulo, detalhe: ROTULO_TIPO_RECORTE[x.tipo], sinonimos: [x.nome] }))}
@@ -240,8 +251,8 @@ export function AguaArmazenamento({
         </p>
       </div>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Energia armazenada nos últimos {diasDiaria}, em MWmês</h3>
+      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-6">
+        <h3 className="ed-h3 font-serif text-carvao">Energia armazenada nos últimos {diasDiaria}, em MWmês</h3>
         <GraficoLinhas
           titulo={`EAR diária por subsistema nos últimos ${diasDiaria}`}
           dados={diaria}
@@ -257,8 +268,9 @@ export function AguaArmazenamento({
         {peso && <p className="text-sm text-carvao-muted">{peso}</p>}
       </div>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">{anoMensal ? `Desde ${anoMensal}: e` : "E"}nergia armazenada e capacidade no fim de cada mês</h3>
+      <div id="historia" className="scroll-mt-28 space-y-4 border-t border-linha pt-6">
+        <h3 className="ed-h3 font-serif text-carvao">{anoMensal ? `Desde ${anoMensal}: e` : "E"}nergia armazenada e capacidade no fim de cada mês</h3>
+        {destaquesHistoria}
         <GraficoLinhas
           titulo={`EAR do SIN e EAR máxima do SIN no último dia de cada mês${anoMensal ? `, desde ${anoMensal}` : ""}`}
           dados={mensal}
