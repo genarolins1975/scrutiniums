@@ -1,0 +1,80 @@
+﻿arquivo;coluna;descricao
+comparação de um indicador;indicador_id;Identificador do indicador no catálogo do OBEE.
+comparação de um indicador;indicador;Nome do indicador.
+comparação de um indicador;universo_do_indicador;O que o indicador cobre: orçamento do município na função Educação, rede municipal de ensino etc.
+comparação de um indicador;grupo_de_comparacao;Conjunto de capitais em que a mediana e as demais estatísticas foram calculadas (todas as capitais estaduais ou as de uma região).
+comparação de um indicador;periodo;Exercício financeiro, ano do Censo Escolar ou edição bienal, conforme o indicador.
+comparação de um indicador;etapa;"Etapa de ensino do recorte; 'Não se aplica' quando o indicador não varia por etapa."
+comparação de um indicador;componente;Base do valor: nominal (reais correntes), real (reais de 2025 pelo IPCA) ou, no Saeb, a disciplina.
+comparação de um indicador;codigo_ibge;Código do município no IBGE (7 dígitos).
+comparação de um indicador;capital;Nome da capital.
+comparação de um indicador;uf;Sigla da unidade da federação.
+comparação de um indicador;valor_numerico;"Valor do indicador, em número, na unidade da coluna 'unidade'. Pode estar arredondado a 12 algarismos significativos; a série completa está na gold."
+comparação de um indicador;valor_exibido;O mesmo valor como aparece no painel.
+comparação de um indicador;unidade;Unidade do valor.
+comparação de um indicador;estado_do_dado;Observado, não divulgado, não aplicável, ausente na coleta, inconsistente etc. Valor vazio nunca significa zero.
+comparação de um indicador;elegivel_comparacao;"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora (perímetro distinto, conferência pendente)."
+comparação de um indicador;incluida_na_comparacao;'sim' quando a capital entrou nas estatísticas do grupo neste recorte.
+comparação de um indicador;conferencia;Resultado da conferência da despesa entre DCA, RREO e MSC.
+comparação de um indicador;motivo_exclusao;Por que a capital ficou fora da comparação, quando ficou.
+comparação de um indicador;nota;Nota ou ressalva do dado nesta capital e período.
+comparação de um indicador;mediana_das_incluidas;Mediana das capitais incluídas no grupo.
+comparação de um indicador;capitais_no_grupo;Número de capitais do grupo.
+comparação de um indicador;capitais_com_valor;Capitais do grupo com valor oficial observado.
+comparação de um indicador;capitais_incluidas;Capitais do grupo que entraram nas estatísticas.
+comparação de um indicador;versao_metodologica;Versão metodológica do indicador (a da última revisão que o alterou).
+comparação de um indicador;dados_gerados_em;Data e hora de geração dos dados publicados.
+comparação de um indicador;hash_dados;"Hash do conteúdo dos dados publicados; identifica a base exata de onde saiu a linha."
+comparação de um indicador;fonte;Fonte oficial e conjunto de dados.
+comparação de um indicador;media_simples_das_incluidas;Média simples (peso igual por capital) das capitais incluídas.
+comparação de um indicador;minimo_das_incluidas;Menor valor entre as capitais incluídas.
+comparação de um indicador;maximo_das_incluidas;Maior valor entre as capitais incluídas.
+comparação de um indicador;primeiro_quartil;"Primeiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'."
+comparação de um indicador;terceiro_quartil;"Terceiro quartil (tipo 7); só vale quando 'quartis_exibidos' é 'sim'."
+comparação de um indicador;quartis_exibidos;'sim' quando há 8 ou mais valores e os quartis são mostrados.
+comparação de um indicador;razao_agregada_do_grupo;"Soma dos numeradores ÷ soma dos denominadores das mesmas capitais (despesa por habitante e por matrícula); é diferente da média simples."
+comparação de um indicador;politica_de_referencias;Como as referências foram calculadas.
+comparação de um indicador;parcela_intraorcamentaria_pct_da_funcao;Despesa: parcela das operações intraorçamentárias na despesa liquidada da função Educação (RREO, 6º bimestre), em %, que fica fora do valor. Vazio nas demais medidas.
+tabela comparativa;capital;Nome da capital.
+tabela comparativa;codigo_ibge;Código do município no IBGE (7 dígitos).
+tabela comparativa;uf;Sigla da unidade da federação.
+tabela comparativa;ano;Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.
+tabela comparativa;etapa_dos_resultados;Etapa de ensino que vale para as colunas de resultado e atendimento por etapa.
+tabela comparativa;grupo_de_comparacao;Conjunto de capitais em que a mediana e as demais estatísticas foram calculadas (todas as capitais estaduais ou as de uma região).
+tabela comparativa;coluna;Medida a que a linha se refere.
+tabela comparativa;valor_numerico;"Valor do indicador, em número, na unidade da coluna 'unidade'. Pode estar arredondado a 12 algarismos significativos; a série completa está na gold."
+tabela comparativa;valor_exibido;O mesmo valor como aparece no painel.
+tabela comparativa;unidade;Unidade do valor.
+tabela comparativa;estado_do_dado;Observado, não divulgado, não aplicável, ausente na coleta, inconsistente etc. Valor vazio nunca significa zero.
+tabela comparativa;elegivel_comparacao;"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora (perímetro distinto, conferência pendente)."
+tabela comparativa;nota_ou_ressalva;Nota ou ressalva do dado.
+tabela comparativa;medida_de_referencia;Medida usada nas colunas de mediana, média e diferença.
+tabela comparativa;mediana_do_grupo;Mediana do grupo para a medida de referência.
+tabela comparativa;media_do_grupo;Média simples do grupo para a medida de referência.
+tabela comparativa;capitais_na_referencia;Número de capitais usado na referência.
+tabela comparativa;diferenca_para_a_mediana;"Diferença descritiva entre a capital e a mediana do grupo, na unidade da medida; não é avaliação."
+tabela comparativa;versao_metodologica;Versão metodológica do indicador (a da última revisão que o alterou).
+tabela comparativa;dados_gerados_em;Data e hora de geração dos dados publicados.
+tabela comparativa;hash_dados;"Hash do conteúdo dos dados publicados; identifica a base exata de onde saiu a linha."
+série ao longo dos anos;indicador_id;Identificador do indicador no catálogo do OBEE.
+série ao longo dos anos;indicador;Nome do indicador.
+série ao longo dos anos;serie_de;Capital da série, ou a mediana das capitais quando nenhuma foi escolhida.
+série ao longo dos anos;etapa;"Etapa de ensino do recorte; 'Não se aplica' quando o indicador não varia por etapa."
+série ao longo dos anos;componente;Base do valor: nominal (reais correntes), real (reais de 2025 pelo IPCA) ou, no Saeb, a disciplina.
+série ao longo dos anos;ano;Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.
+série ao longo dos anos;valor_numerico;"Valor do indicador, em número, na unidade da coluna 'unidade'. Pode estar arredondado a 12 algarismos significativos; a série completa está na gold."
+série ao longo dos anos;valor_exibido;O mesmo valor como aparece no painel.
+série ao longo dos anos;unidade;Unidade do valor.
+série ao longo dos anos;estado_do_dado;Observado, não divulgado, não aplicável, ausente na coleta, inconsistente etc. Valor vazio nunca significa zero.
+série ao longo dos anos;elegivel_comparacao;"'sim' quando o valor entra em medianas, médias e comparações; 'nao' quando há valor oficial mas ele fica fora (perímetro distinto, conferência pendente)."
+série ao longo dos anos;mudanca_de_base;"'sim' quando o valor do ano usa outra base que o do ano anterior (população de referência, por exemplo); os dois lados não são diretamente comparáveis."
+série ao longo dos anos;mediana_das_capitais;Mediana das capitais com valor elegível no mesmo ano, para leitura ao lado da série.
+série ao longo dos anos;capitais_na_mediana;"Número de capitais usado na mediana do ano; pode mudar de um ano para outro."
+série ao longo dos anos;nota;Nota ou ressalva do dado nesta capital e período.
+série ao longo dos anos;versao_metodologica;Versão metodológica do indicador (a da última revisão que o alterou).
+série ao longo dos anos;dados_gerados_em;Data e hora de geração dos dados publicados.
+série ao longo dos anos;hash_dados;"Hash do conteúdo dos dados publicados; identifica a base exata de onde saiu a linha."
+série ao longo dos anos;fonte;Fonte oficial e conjunto de dados.
+todos;(leia antes de usar);"Os valores descrevem o gasto, o atendimento e os resultados observados; não classificam governos, não indicam meta e não demonstram causa. Mediana e média descrevem o grupo de capitais e não são referência de desempenho. Células vazias não são zero."
+todos;(universo e período);"As 26 capitais estaduais, na rede municipal de ensino; a despesa de total e por habitante é do orçamento do município na função Educação, exceto operações intraorçamentárias. Gasto anual, Censo Escolar e Ideb têm períodos próprios e não devem ser alinhados sem cuidado."
+todos;(como citar);Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada.

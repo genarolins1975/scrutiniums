@@ -57,7 +57,7 @@ const ESQUEMA = {
 const COLUNAS_ULTIMOS: ColunaTabela[] = [
   { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
   { id: "data", rotulo: "Data da última mudança", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
+  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto", literal: { classe: "ato-retificacao-sem-numero", origem: "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica" } },
   {
     id: "variacao",
     rotulo: "Variação da tarifa B1",

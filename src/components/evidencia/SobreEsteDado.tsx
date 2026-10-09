@@ -3,6 +3,8 @@
 import { useId, useRef, useState } from "react";
 import type { Proveniencia } from "@/lib/energia/tipos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
+import type { ClasseLiteral } from "@/lib/literais-fonte";
 
 /**
  * Drawer "Sobre este dado": o caminho número → série → transformação → fonte
@@ -63,6 +65,9 @@ function textoSemRevisao(rev: NonNullable<Proveniencia["revisoes_conhecidas"]>):
     return `Nenhuma revisão detectada: cada um dos ${rev.arquivos} arquivos integrados tem uma captura, e ${identicos} ${quando}.`;
   return `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas distintas de ${rev.arquivos ?? "todos os"} arquivos integrados.${identicos ? ` Além disso, ${identicos}` : ""} ${quando}.`;
 }
+
+/** Literais que o registro reconhece em texto de proveniência (descrição da fonte, limitações, transformações). */
+const LITERAIS_NA_PROVENIENCIA: ClasseLiteral[] = ["texto-direitos-camada", "marcador-ausencia-siga", "data-fim-fora-da-cronologia"];
 
 export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Proveniencia; rotulo?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -137,7 +142,9 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                 {p.transformacoes.length ? (
                   <ol className="list-decimal space-y-1 pl-5">
                     {p.transformacoes.map((t) => (
-                      <li key={t}>{t}</li>
+                      <li key={t}>
+                        <TextoEnergia texto={t} origem={p.fonte.url_dataset} literais={LITERAIS_NA_PROVENIENCIA} />
+                      </li>
                     ))}
                   </ol>
                 ) : (
@@ -183,14 +190,18 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               <Linha rotulo="Limitações">
                 <ul className="list-disc space-y-1.5 pl-5">
                   {p.limitacoes.map((l) => (
-                    <li key={l}>{l}</li>
+                    <li key={l}>
+                      <TextoEnergia texto={l} origem={p.fonte.url_dataset} literais={LITERAIS_NA_PROVENIENCIA} />
+                    </li>
                   ))}
                 </ul>
               </Linha>
               <Linha rotulo="Licença e condições de uso">{p.fonte.licenca}</Linha>
               {p.notas_fonte && (
                 <Linha rotulo="Descrição da fonte">
-                  <span className="whitespace-pre-line text-carvao-muted">{p.notas_fonte}</span>
+                  <span className="whitespace-pre-line text-carvao-muted">
+                    <TextoEnergia texto={p.notas_fonte} origem={p.fonte.url_dataset} literais={LITERAIS_NA_PROVENIENCIA} />
+                  </span>
                 </Linha>
               )}
             </dl>}

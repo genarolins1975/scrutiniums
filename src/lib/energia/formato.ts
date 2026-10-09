@@ -7,6 +7,13 @@
 const L = "pt-BR";
 export const AUSENTE = "–";
 
+/**
+ * Convenção documentada do domínio: horário que chega sem fuso é horário de Brasília (ver o
+ * cabeçalho deste arquivo e `dataHora` em SobreEsteDado). Só o domínio Energia usa; texto-datas
+ * não assume fuso sem que o chamador o informe.
+ */
+export const FUSO_SEM_OFFSET_ENERGIA = "Brasília";
+
 export function num(v: number | null | undefined, casas = 1): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
   // sinal de menos tipográfico (U+2212), o mesmo de sinal(), em vez do hífen

@@ -6,12 +6,12 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
   if (compacto) return <FooterCompacto />;
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid max-w-page gap-10 px-6 py-14 md:grid-cols-5">
-        <div className="md:col-span-2">
+      <div className="mx-auto grid max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="sm:col-span-2">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             Plataforma de inteligência analítica baseada em dados verificáveis.
-            Dois observatórios, leitura aberta, sem cadastro.
+            Três observatórios, leitura aberta, sem cadastro.
           </p>
           <p className="rotulo mt-6 text-bronze-soft">
             100% gratuito · sem assinatura · sem cobrança
@@ -37,6 +37,15 @@ export function Footer({ compacto = false }: { compacto?: boolean }) {
             <li><Link href="/setor-eletrico/dados" className="hover:text-bronze-soft">Dados e catálogo</Link></li>
             <li><Link href="/setor-eletrico/metodologia" className="hover:text-bronze-soft">Metodologia</Link></li>
             <li><Link href="/setor-eletrico/aprenda" className="hover:text-bronze-soft">Aprenda</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Observatório Brasileiro de Eficiência Estatal">
+          <p className="rotulo mb-4 text-mineral-soft">Eficiência Estatal</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais" className="hover:text-bronze-soft">Educação nas capitais</Link></li>
+            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/gastos" className="hover:text-bronze-soft">Gastos</Link></li>
+            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/comparar" className="hover:text-bronze-soft">Comparar capitais</Link></li>
+            <li><Link href="/eficiencia-estatal/educacao-municipal-capitais/metodos" className="hover:text-bronze-soft">Dados e métodos</Link></li>
           </ul>
         </nav>
         <nav aria-label="Institucional">

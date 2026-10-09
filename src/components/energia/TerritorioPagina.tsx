@@ -3,6 +3,7 @@ import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { TerritorioLinkPainel } from "@/components/energia/TerritorioLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 
 /**
  * Peças de servidor da página Minha região (/setor-eletrico/territorio, P002): estado de
@@ -102,7 +103,7 @@ export function TerritorioTabela({ titulo, colunas, linhas, numericas = [] }: { 
               {l.map((c, i) =>
                 i === 0 ? (
                   <th key={i} scope="row" className="px-2 py-1.5 text-left font-normal text-carvao">
-                    {c}
+                    {typeof c === "string" ? <TextoEnergia texto={c} competencia="curta" /> : c}
                   </th>
                 ) : (
                   <td key={i} className={numericas.includes(i) ? "text-right" : "text-left"}>

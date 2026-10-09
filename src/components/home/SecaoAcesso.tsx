@@ -16,9 +16,9 @@ export function SecaoAcesso() {
             A leitura é aberta. A conta é opcional.
           </h2>
           <p className="mx-auto mt-5 max-w-prose2 leading-relaxed text-carvao-muted">
-            Explore os dois observatórios sem cadastro: análises, séries e
+            Explore os três observatórios sem cadastro: análises, séries e
             metodologia abertas ao seu escrutínio. A conta gratuita guarda
-            preferências e vale para o Crédito e para o Setor Elétrico.
+            preferências e vale para o Crédito, o Setor Elétrico e a Eficiência Estatal.
           </p>
           <div className="mt-10 flex justify-center">
             <BotaoLink href="/cadastro">Criar acesso</BotaoLink>

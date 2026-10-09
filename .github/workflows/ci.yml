@@ -78,5 +78,17 @@ jobs:
           python3 -m unittest discover -s pipeline/tests -t .
           python3 -m unittest discover -s pesquisa/tests -t .
 
-      - name: Testes
+      - name: Build de produção
+        # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo
+        # job, sem credenciais de produção: as páginas são estáticas. Até 08/10/2026 este
+        # workflow não gerava build, e o teste que inspeciona o HTML (undefined, NaN, data
+        # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
+        run: npm run build
+
+      - name: Testes (inclui a verificação obrigatória do HTML gerado)
+        # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
+        # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
+        # (...): N páginas" quando a asserção realmente rodou.
+        env:
+          EXIGIR_BUILD_HTML: "1"
         run: npx vitest run

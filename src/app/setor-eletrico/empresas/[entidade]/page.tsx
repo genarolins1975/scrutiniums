@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";

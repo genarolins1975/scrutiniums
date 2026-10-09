@@ -3,16 +3,16 @@
  *
  * Fonte única de nome, pergunta, descrição, chips, rota e acento de cada
  * observatório. Home, tela "Escolha seu observatório", switcher do cabeçalho,
- * telemetria e sitemap leem daqui. Um terceiro observatório é uma entrada nova.
+ * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia";
+export type DominioId = "credito" | "energia" | "eficiencia";
 
 export type Dominio = {
   id: DominioId;
   /** Nome completo, como aparece em títulos. */
   nome: string;
-  /** Rótulo curto do switcher: "Crédito", "Setor Elétrico". */
+  /** Rótulo curto do switcher: "Crédito", "Setor Elétrico", "Eficiência Estatal". */
   nomeCurto: string;
   /** Pergunta editorial que o observatório responde. */
   pergunta: string;
@@ -26,8 +26,8 @@ export type Dominio = {
   /** Rota de apresentação editorial, quando existe separada da raiz. */
   rotaApresentacao: string;
   cta: string;
-  /** Token de cor de acento (tailwind): bronze para Crédito, energia para Setor Elétrico. */
-  acento: "bronze" | "energia";
+  /** Token de cor de acento (tailwind): bronze para Crédito, energia para Setor Elétrico, obee para Eficiência Estatal. */
+  acento: "bronze" | "energia" | "obee";
   /** Prefixos de seção de telemetria atribuídos ao domínio. */
   prefixosTelemetria: string[];
 };
@@ -67,6 +67,23 @@ export const DOMINIOS: Dominio[] = [
     acento: "energia",
     prefixosTelemetria: ["energia:"],
   },
+  {
+    id: "eficiencia",
+    nome: "Observatório Brasileiro de Eficiência Estatal",
+    nomeCurto: "Eficiência Estatal",
+    pergunta:
+      "Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente?",
+    descricao:
+      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. O primeiro painel compara a educação municipal nas 26 capitais: despesa total, por habitante e por matrícula, população, matrículas, alunos por turma, aprovação, Ideb e Saeb. Mostra valores e referências, sem notas, rankings ou conclusões.",
+    descricaoCurta:
+      "Educação municipal nas capitais: despesa, população, matrículas, alunos por turma, aprovação, Ideb e Saeb a partir do Siconfi, IBGE e INEP.",
+    chips: ["Recursos", "Atendimento", "Resultados", "Educação"],
+    rotaRaiz: "/eficiencia-estatal/educacao-municipal-capitais",
+    rotaApresentacao: "/eficiencia-estatal/educacao-municipal-capitais",
+    cta: "Explorar Eficiência Estatal",
+    acento: "obee",
+    prefixosTelemetria: ["eficiencia:"],
+  },
 ];
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
@@ -93,5 +110,6 @@ export function dominioDaSecao(secao: string): DominioId | "plataforma" {
 export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/credito" || caminho.startsWith("/observatorio")) return "credito";
   if (caminho.startsWith("/setor-eletrico")) return "energia";
+  if (caminho.startsWith("/eficiencia-estatal")) return "eficiencia";
   return null;
 }

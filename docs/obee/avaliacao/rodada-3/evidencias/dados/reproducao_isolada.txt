@@ -1,0 +1,20 @@
+Reprodução isolada da gold a partir do seed (avaliador de dados, rodada 3, 2026-10-09)
+
+Procedimento: cópia de pipeline/__init__.py e pipeline/eficiencia/ (com o seed versionado, 7,4 MB) para uma pasta de rascunho fora do
+repositório, com public/eficiencia/ vazio; execução de `python3 -m pipeline.eficiencia.run` nessa cópia, sem rede (22 s). O repositório
+não foi tocado.
+
+Resultado:
+* 9.137 observações; hash_dados = 326adb15ec058bd4... (igual ao publicado, 64 caracteres idênticos).
+* versao_codigo = gerador-ce6dd2df1dd5 (igual ao publicado).
+* Validações V01 a V19 e M01 a M04 com os mesmos resultados da gold publicada.
+* 16.299 linhas dos CSV de séries comparadas campo a campo: 0 diferenças, exceto a coluna dados_gerados_em (carimbo do momento da execução:
+  2026-10-09T09:43:45Z na reprodução, 2026-10-09T07:05:07Z na publicada). dicionario_das_colunas.csv, manifesto_das_capturas.json,
+  edu_diagnostico_pares_msc.csv e referencia_nacional_despesa_habitante_2025.csv saíram idênticos byte a byte.
+* meta.proveniencia.git difere (commit_de_partida e codigo_com_mudanca_nao_commitada): na publicada, commit_de_partida =
+  8322a6b409021c0a5594eededc5f4889d81eff9b e codigo_com_mudanca_nao_commitada = true; na reprodução, os campos ficam nulo/false por não haver repositório git na cópia.
+  O sha256 do código gerador é idêntico (ce6dd2df1dd5b5e8...), o que identifica o código pelo conteúdo.
+
+Verificação do hash: sha256 de json.dumps(observacoes, ensure_ascii=False, sort_keys=True, separators=(",", ":")) calculado fora do
+pipeline é igual a meta.hash_dados. O hash cobre só as observações, não as tabelas de referências, as referências externas, o
+catálogo nem o texto da página.

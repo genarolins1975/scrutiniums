@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DataDaFonte } from "@/components/energia/TextoEnergia";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -324,7 +325,7 @@ export default function EmissoesPage() {
                     nomeArquivo="transicao-mcti-fator-medio-mensal"
                     chaveUrl="em.mtab"
                     ordemInicial={{ coluna: "m", direcao: "desc" }}
-                    dicaBusca="Mês (2025-08) ou ano"
+                    dicaBusca="Mês (08/2025) ou ano"
                   />
                 </TransicaoAnalise>
 

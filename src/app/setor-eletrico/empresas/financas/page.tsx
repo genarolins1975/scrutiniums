@@ -1,6 +1,7 @@
 import { fraseDeRecusa } from "@/lib/energia/bastidor";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata } from "next";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasEvolucaoFinancas, EmpresasTabelaCompanhias } from "@/components/energia/EmpresasFinancas";
