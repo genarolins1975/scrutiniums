@@ -34,7 +34,7 @@ import {
 import { fraseAmplitude, fraseCapital, fraseCobertura, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { inteiro } from "@/lib/eficiencia/formato";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
-import { DEFINICAO_TEMA, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
+import { DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesMedida";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
@@ -54,30 +54,6 @@ import { MiniSerie, type Anotacao } from "./graficos";
 const ETAPAS: EtapaId[] = ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"];
 const PANDEMIA_IDEB: Anotacao = { ano: 2021, texto: "edição afetada pela pandemia de covid-19 (nota informativa do INEP sobre o Ideb 2021)." };
 const PANDEMIA_APROVACAO: Anotacao = { ano: 2021, texto: "ano letivo afetado pela pandemia de covid-19, com regras excepcionais de avaliação em muitas redes." };
-
-const DEFINICAO_CURTA: Record<MedidaId, { titulo: string; texto: string }> = {
-  despesa: { titulo: "Total", texto: "Escala orçamentária: volume da despesa liquidada na função Educação. Depende do tamanho da cidade." },
-  despesa_hab: { titulo: "Por habitante", texto: "Relação com a população do território: despesa liquidada ÷ população residente. Não é gasto por aluno." },
-  despesa_mat: { titulo: "Por matrícula", texto: "Despesa de aplicação direta ÷ matrículas da rede municipal. Razão orçamentária, não custo do aluno." },
-  matriculas: { titulo: "Matrículas na rede", texto: "Matrículas nas escolas municipais, por etapa. Uma matrícula não é uma pessoa." },
-  conveniadas: { titulo: "Em escolas conveniadas", texto: "Matrículas em escolas privadas conveniadas só com o município; contadas à parte da rede." },
-  atu: { titulo: "Alunos por turma", texto: "Tamanho médio das turmas na rede municipal, por etapa." },
-  aprovacao: { titulo: "Taxa de aprovação", texto: "Parcela dos estudantes aprovados ao fim do ano letivo, por etapa." },
-  ideb: { titulo: "Ideb", texto: "Índice de 0 a 10 que combina nota no Saeb e fluxo escolar; edições bienais." },
-  saeb: { titulo: "Proficiência no Saeb", texto: "Proficiência média em prova nacional, em escala própria por disciplina; edições bienais." },
-};
-
-const SEM_NACIONAL: Record<MedidaId, string> = {
-  despesa: "A despesa total é volume e depende do tamanho da cidade: não há referência nacional comparável.",
-  despesa_hab: "Não há indicador oficial de despesa municipal em Educação por habitante, e o cálculo do OBEE com dados do Siconfi/STN e do IBGE não está disponível para este exercício.",
-  despesa_mat: "Há o investimento público direto por estudante do INEP (todas as redes públicas e esferas), publicado só até 2021, de outro universo.",
-  matriculas: "A matrícula absoluta depende do tamanho da rede: não há referência nacional comparável.",
-  conveniadas: "A matrícula em escolas conveniadas depende do tamanho da rede e da política de parceria de cada município: não há referência nacional comparável.",
-  atu: "A referência nacional da rede municipal do INEP existe para creche, pré-escola e anos iniciais e finais.",
-  aprovacao: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais.",
-  ideb: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
-  saeb: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
-};
 
 type Visao = "grafico" | "tabela" | "evolucao" | "detalhe";
 

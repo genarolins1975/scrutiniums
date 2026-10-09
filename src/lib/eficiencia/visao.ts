@@ -61,6 +61,34 @@ export const ROTULO_NAVEGACAO: { id: "panorama" | Tema; rotulo: string; caminho:
   { id: "resultados", rotulo: "Resultados", caminho: "/resultados" },
 ];
 
+
+/** Nome curto e uma frase de definição de cada medida, para cartões, abas e legendas (a ressalva essencial acompanha o número). */
+export const DEFINICAO_CURTA: Record<MedidaId, { titulo: string; texto: string }> = {
+  despesa: { titulo: "Total", texto: "Escala orçamentária: volume da despesa liquidada na função Educação. Depende do tamanho da cidade." },
+  despesa_hab: { titulo: "Por habitante", texto: "Relação com a população do território: despesa liquidada ÷ população residente. Não é gasto por aluno." },
+  despesa_mat: { titulo: "Por matrícula", texto: "Despesa de aplicação direta ÷ matrículas da rede municipal. Razão orçamentária, não custo do aluno." },
+  matriculas: { titulo: "Matrículas na rede", texto: "Matrículas nas escolas municipais, por etapa. Uma matrícula não é uma pessoa." },
+  conveniadas: { titulo: "Em escolas conveniadas", texto: "Matrículas em escolas privadas conveniadas só com o município; contadas à parte da rede." },
+  atu: { titulo: "Alunos por turma", texto: "Tamanho médio das turmas na rede municipal, por etapa." },
+  aprovacao: { titulo: "Taxa de aprovação", texto: "Parcela dos estudantes aprovados ao fim do ano letivo, por etapa." },
+  ideb: { titulo: "Ideb", texto: "Índice de 0 a 10 que combina nota no Saeb e fluxo escolar; edições bienais." },
+  saeb: { titulo: "Proficiência no Saeb", texto: "Proficiência média em prova nacional, em escala própria por disciplina; edições bienais." },
+};
+
+
+/** Por que uma medida não tem referência nacional utilizável: dito em vez de calar. */
+export const SEM_NACIONAL: Record<MedidaId, string> = {
+  despesa: "A despesa total é volume e depende do tamanho da cidade: não há referência nacional comparável.",
+  despesa_hab: "Não há indicador oficial de despesa municipal em Educação por habitante, e o cálculo do OBEE com dados do Siconfi/STN e do IBGE não está disponível para este exercício.",
+  despesa_mat: "Há o investimento público direto por estudante do INEP (todas as redes públicas e esferas), publicado só até 2021, de outro universo.",
+  matriculas: "A matrícula absoluta depende do tamanho da rede: não há referência nacional comparável.",
+  conveniadas: "A matrícula em escolas conveniadas depende do tamanho da rede e da política de parceria de cada município: não há referência nacional comparável.",
+  atu: "A referência nacional da rede municipal do INEP existe para creche, pré-escola e anos iniciais e finais.",
+  aprovacao: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais.",
+  ideb: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
+  saeb: "A referência nacional da rede municipal do INEP existe para anos iniciais e anos finais, nas edições bienais.",
+};
+
 export const CAMINHO_COMPARAR = "/comparar";
 export const CAMINHO_METODOS = "/metodos";
 

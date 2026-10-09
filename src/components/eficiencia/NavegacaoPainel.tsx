@@ -31,7 +31,7 @@ export function NavegacaoPainel() {
   const atual = (c: string) => relativo === c;
   const params = cap ? { cap } : {};
   const classeAba = (ativa: boolean) =>
-    `inline-flex min-h-[44px] w-full items-center justify-center border-b-2 px-1 text-[0.8125rem] sm:px-3 sm:text-[0.9375rem] ${
+    `inline-flex min-h-[44px] w-full items-center justify-center border-b-2 px-1 text-[0.8125rem] max-[359px]:text-[0.75rem] sm:px-3 sm:text-[0.9375rem] ${
       ativa ? "border-obee font-semibold text-obee-tinta" : "border-transparent text-carvao-muted hover:border-linha hover:text-obee-tinta"
     }`;
   const classeAcao = (ativa: boolean) =>

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { statSync } from "node:fs";
+import { join } from "node:path";
 import { PanoramaInterativo, SeletorCapitalPanorama } from "@/components/eficiencia/PanoramaInterativo";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Indice } from "@/lib/eficiencia/consulta";
 import { contextos } from "@/lib/eficiencia/contexto";
 import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
-import { dataBr } from "@/lib/eficiencia/formato";
+import { dataBr, decimal } from "@/lib/eficiencia/formato";
 import { montaPanorama } from "@/lib/eficiencia/panorama";
-import { CAMINHO_METODOS, href } from "@/lib/eficiencia/visao";
 
 export const dynamic = "force-static";
 
@@ -17,7 +17,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/eficiencia-estatal/educacao-municipal-capitais" },
 };
 
-/** Panorama: a entrada padrão. Nenhuma capital vem selecionada; a primeira tela já traz um número, a pergunta e a referência. */
+const ARQUIVO_GOLD = "/eficiencia/gold/educacao_capitais.json";
+
+/** Tamanho do arquivo de dados completo, para quem decide baixar saber o que vem (lido na geração da página). */
+function tamanhoDoArquivo(): string {
+  try {
+    return `${decimal(statSync(join(process.cwd(), "public", ARQUIVO_GOLD)).size / 1_000_000, 1)} MB`;
+  } catch {
+    return "tamanho não verificado";
+  }
+}
+
+/** Panorama: a entrada padrão. Nenhuma capital vem selecionada; a primeira tela já traz a pergunta, os números e o gráfico. */
 export default function PaginaPanorama() {
   const g = goldEducacao();
   if (!g) {
@@ -32,32 +43,32 @@ export default function PaginaPanorama() {
   const dados = dadosPainel(g);
   const capitulos = montaPanorama(dados, new Indice(dados));
   const ctx = contextos(g);
-  const fichas = Object.fromEntries(capitulos.map((c) => [c.id, dados.fichas.find((f) => f.id === ({ gastos: "edu.despesa.por_habitante", atendimento: "edu.atu.rede_municipal", resultados: "edu.ideb.rede_municipal" } as const)[c.id])!]));
-  const contextosCap = Object.fromEntries(capitulos.map((c) => [c.id, ctx[fichas[c.id].id]]));
-  const fin = g.periodos.financeiros;
+  const usados = new Set(capitulos.flatMap((c) => c.medidas.map((m) => m.indicador)));
+  const fichas = Object.fromEntries(
+    dados.fichas.filter((f) => usados.has(f.id)).map((f) => [f.id, { ficha: f, ctx: ctx[f.id] }]),
+  );
   return (
     <div>
-      <section aria-labelledby="titulo-painel" className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end">
+      <section aria-labelledby="titulo-painel" className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-start">
         <div>
-          <h1 id="titulo-painel" className="font-serif text-[2.4rem] leading-[1.08] text-obee-tinta md:text-[3.2rem]">
+          <h1 id="titulo-painel" className="font-serif text-[2.6rem] leading-[1.05] tracking-tight text-obee-tinta md:text-[3.6rem]">
             Educação nas capitais
           </h1>
-          <p className="mt-3 max-w-[38rem] text-lg leading-relaxed text-obee-tinta">Recursos, atendimento e resultados da educação municipal, com referências para entender cada número.</p>
-          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            {g.universo.capitais.length} capitais estaduais, rede municipal · despesa de {fin[0]} a {fin[fin.length - 1]} · dados até {dataBr(g.meta.dados_capturados_ate)} ·{" "}
-            <Link href={href(CAMINHO_METODOS)} className="text-obee-dark underline underline-offset-4">
-              fontes e método
-            </Link>
+          <p className="mt-3 max-w-[40rem] font-serif text-[1.35rem] leading-snug text-obee-tinta md:text-[1.65rem]">Quanto se gasta, quem é atendido e quais resultados são observados.</p>
+          <p className="mt-3 max-w-[44rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
+            {g.universo.capitais.length} capitais estaduais · rede municipal · dados capturados até {dataBr(g.meta.dados_capturados_ate)} · anos de referência indicados em cada indicador
           </p>
         </div>
-        <SeletorCapitalPanorama capitais={dados.capitais.map((c) => ({ id: c.id, nome: c.nome, uf: c.uf }))} />
+        <div className="lg:pt-3">
+          <SeletorCapitalPanorama capitais={dados.capitais.map((c) => ({ id: c.id, nome: c.nome, uf: c.uf }))} />
+        </div>
       </section>
-      <div className="mt-8 border-t border-linha pt-8 md:mt-10 md:pt-10">
+      <div className="mt-8 border-t border-linha pt-10 md:mt-10 md:pt-12">
         <PanoramaInterativo
           capitulos={capitulos}
           capitais={dados.capitais.map((c) => ({ id: c.id, nome: c.nome, uf: c.uf }))}
           fichas={fichas}
-          contextos={contextosCap}
+          baixar={{ href: ARQUIVO_GOLD, detalhe: `arquivo JSON com todas as observações do painel, ${tamanhoDoArquivo()}` }}
         />
       </div>
     </div>
