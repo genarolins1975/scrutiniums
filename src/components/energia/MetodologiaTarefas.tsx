@@ -61,7 +61,7 @@ export function MetodologiaTarefas({ total, comFormula }: { total: number; comFo
               type="search"
               key={estado.busca}
               defaultValue={estado.busca}
-              placeholder="Por exemplo: perdas, preço ou reservatórios"
+              placeholder="Ex.: perdas, preço"
               autoComplete="off"
               spellCheck={false}
               className="min-h-[44px] min-w-0 flex-1 basis-40 border border-linha bg-superficie px-3 text-sm text-carvao placeholder:text-mineral hover:border-energia"

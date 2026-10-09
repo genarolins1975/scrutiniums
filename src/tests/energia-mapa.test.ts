@@ -410,6 +410,11 @@ describe("busca da página inicial", () => {
     const comp = ler("src/components/energia/BuscaObservatorio.tsx");
     expect(comp).toContain("Procura um município?");
     expect(ler(HOME)).toContain('destino("territorio")');
+    // o link leva o texto digitado (?busca=), e Minha região o lê ao abrir, preenche o campo e pede a lista de municípios
+    expect(comp).toContain("?busca=${encodeURIComponent(consulta.trim().slice(0, 80))}");
+    const explorador = ler("src/components/energia/TerritorioExplorador.tsx");
+    expect(explorador).toContain('new URLSearchParams(window.location.search).get("busca")');
+    expect(explorador).toContain("consultaDaUrl={buscaDaUrl}");
   });
 
   it("o vocabulário leigo só aponta para itens que existem, não repete o título e não afirma causa", () => {

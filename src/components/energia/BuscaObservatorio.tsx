@@ -119,7 +119,10 @@ export function BuscaObservatorio({ itens, exemplos, regiao }: { itens: ItemBusc
       {digitou && (
         <p className="mt-2 text-xs text-carvao-muted">
           Procura um município? A busca por cidade está em{" "}
-          <a href={regiao.href} className="inline-flex min-h-[24px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+          <a
+            href={`${regiao.href}?busca=${encodeURIComponent(consulta.trim().slice(0, 80))}`}
+            className="inline-flex min-h-[24px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:coarse)]:min-h-[44px]"
+          >
             {regiao.rotulo}
           </a>
           .

@@ -109,7 +109,7 @@ export function EmpresasPassosVinculo({ passos }: { passos: PassoVinculo[] }) {
             <p className="ed-h3 mt-1 font-serif text-carvao">
               {p.titulo}
               {i < passos.length - 1 && (
-                <span aria-hidden="true" className="ml-2 hidden text-energia-soft md:inline">
+                <span aria-hidden="true" className="ml-2 hidden text-carvao-muted md:inline">
                   →
                 </span>
               )}

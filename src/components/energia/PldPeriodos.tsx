@@ -117,7 +117,6 @@ export function PldPeriodos({
   limiar,
   ponte,
   regimes = [],
-  fonte,
   versao,
   notaMenorValor,
 }: {

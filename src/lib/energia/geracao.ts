@@ -1762,6 +1762,13 @@ export function histogramaFc(u: Capacidade12m): {
 }
 
 export function linhasExtremosFc(u: Capacidade12m) {
+  const n = u.distribuicao_usinas?.n ?? 0;
+  if (n > 0 && n < MINIMO_PARA_DISTRIBUICAO) {
+    // poucas observações: as menores e as maiores são as mesmas usinas, e cada uma entra uma vez
+    return observacoesFc(u)
+      .reverse()
+      .map((x) => ({ id: `todas:${x.id}`, grupo: "todas", nome: x.nome, fc_pct: x.fc_pct, potencia_media_mw: [...u.menores, ...u.maiores].find((y) => y.id === x.id)?.potencia_media_mw ?? null }));
+  }
   return [
     // o código do ONS (ceg:..., cju:...) é a chave da linha e do arquivo por usina e mês; a tabela do leitor mostra o nome
     ...u.menores.map((x) => ({ id: `menor:${x.id}`, grupo: "menores", nome: x.nome ?? "sem nome na fonte", fc_pct: x.fc_pct, potencia_media_mw: x.potencia_media_mw })),

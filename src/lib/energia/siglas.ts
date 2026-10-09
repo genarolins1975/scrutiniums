@@ -74,6 +74,11 @@ export const SIGLAS: Record<string, string> = {
   SIGET: "Sistema de Gestão da Transmissão",
   SCS: "Sistema de Controle de Subvenções e Programas Sociais",
   DMR: "Diferença Mensal de Receita",
+  // acrescentadas no redesenho: nomes que as páginas de Inclusão e Território já escrevem por extenso (pedido da família Inclusão)
+  PNAD: "Pesquisa Nacional por Amostra de Domicílios, do IBGE",
+  PASI: "Portal de Acompanhamento e Informações dos Sistemas Isolados, da EPE",
+  MDS: "Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome",
+  CV: "coeficiente de variação",
 };
 
 /** Padrão que reconhece cada sigla como palavra inteira no texto. */

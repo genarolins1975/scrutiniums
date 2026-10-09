@@ -35,14 +35,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/metodologia" },
 };
 
-/** Seção de página (fora do painel): título de nível 2 e texto em coluna de leitura. */
-function Secao({ id, titulo, children }: { id: string; titulo: string; children: ReactNode }) {
+/** Seção de página (fora do painel): título de nível 2 e texto em coluna de leitura; `larga` deixa a figura ocupar a largura da página e prende só os parágrafos à coluna. */
+function Secao({ id, titulo, children, larga = false }: { id: string; titulo: string; children: ReactNode; larga?: boolean }) {
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} className="scroll-mt-28 border-t border-linha py-8">
       <h2 id={`${id}-titulo`} className="ed-h2 font-serif text-carvao">
         {titulo}
       </h2>
-      <div className="mt-4 max-w-4xl space-y-4 leading-relaxed text-carvao">{children}</div>
+      <div className={`mt-4 space-y-4 leading-relaxed text-carvao ${larga ? "[&>p]:max-w-4xl [&>div]:max-w-4xl" : "max-w-4xl"}`}>{children}</div>
     </section>
   );
 }
@@ -81,6 +81,8 @@ function Regras({ titulo, regras }: { titulo: string; regras?: Record<string, st
 
 /** Campos de cada linha da lista de regras, na ordem em que viajam para o navegador (as chaves vão uma vez, não uma por linha). */
 const CHAVES_DAS_REGRAS = ["id", "n", "titulo", "pergunta", "modulo", "natureza_fonte", "natureza_calculo", "unidade", "grao_geografico", "grao_temporal", "formula", "paginas"];
+
+const LINK_DO_PASSO = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
 
 const SITUACOES = ["reconciliacao_aprovada", "controles_aprovados", "ressalva", "divergencia", "pendencia"] as const;
 
@@ -200,7 +202,7 @@ export default function MetodologiaEnergia() {
             <>
               <MetodologiaTarefas total={rm.total} comFormula={rm.comFormula} />
 
-              <Secao id="linhagem" titulo="Do arquivo da fonte ao número na tela">
+              <Secao id="linhagem" titulo="Do arquivo da fonte ao número na tela" larga>
                 <MetodologiaLinhagem />
                 <p>
                   Cada valor guarda de qual coleta veio. Quando a fonte revisa um valor (o ONS declara que seus dados passam por consistência recorrente), o observatório guarda a versão nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem ambiguidade de data) e é a que as variáveis de entrada de modelos em produção e os testes retrospectivos por versão devem usar. O teste retrospectivo da pesquisa atual foi feito sobre uma única cópia congelada dos dados, simulando o tempo real; a limitação está declarada em cada cartão de modelo.
@@ -270,14 +272,16 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
                         titulo="Como refazer um número, passo a passo?"
                         lead="O exemplo refaz, com o arquivo que você baixa, o número de conjuntos publicados no catálogo. O caminho é o mesmo para qualquer número que tenha a ficha Comprove este número."
                       >
-                        <ol className="max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao" data-passos="exemplo">
+                        <ol className="max-w-prose2 space-y-1 text-sm leading-relaxed text-carvao" data-passos="exemplo">
                           <li>
-                            <strong className="font-medium">1. Baixe o arquivo.</strong> O catálogo completo, com uma linha por conjunto.{" "}
-                            <a href={CSV_DADOS.catalogo.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                              Baixar o catálogo (CSV)
-                            </a>
+                            <strong className="font-medium">1. Baixe o arquivo.</strong> O catálogo completo, com uma linha por conjunto.
+                            <span className="block">
+                              <a href={CSV_DADOS.catalogo.url} download className={LINK_DO_PASSO}>
+                                Baixar o catálogo (CSV)
+                              </a>
+                            </span>
                           </li>
-                          <li>
+                          <li className="pb-2">
                             <strong className="font-medium">2. Conte.</strong> Cada linha diz até onde o conjunto chegou, de catalogado a publicado. Conte as linhas cujo estado é PUBLICADO.
                           </li>
                           <li>
@@ -291,15 +295,17 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
                               </>
                             ) : (
                               <>O resultado deve coincidir com Publicados no observatório, na primeira faixa da página Dados.</>
-                            )}{" "}
-                            <Link href="/setor-eletrico/dados#catalogo" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                              Abrir a página Dados
-                            </Link>
+                            )}
+                            <span className="block">
+                              <Link href="/setor-eletrico/dados#catalogo" className={LINK_DO_PASSO}>
+                                Abrir a página Dados
+                              </Link>
+                            </span>
                           </li>
                           <li>
                             <strong className="font-medium">4. Confira a origem.</strong> A ficha mostra a fórmula, a fonte, a versão e a impressão digital dos arquivos de origem.
                             {evPublicados && (
-                              <span className="ml-2 inline-block">
+                              <span className="block">
                                 <ComproveNumero evidencia={evPublicados} rotulo="Comprove os conjuntos publicados" endereco={ENDERECO} />
                               </span>
                             )}

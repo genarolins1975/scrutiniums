@@ -76,7 +76,7 @@ Os títulos dos painéis mudaram (o título da página é a pergunta; o do paine
 }
 ```
 
-Nenhuma visão foi retirada nem consolidada. Controles de data dos gráficos ("Início: ...", "Fim: ..."): o texto traz a data exibida, que muda porque o gráfico diário da P025 passou a abrir nos últimos 90 dias; a quantidade de controles é a mesma.
+Na P025, a tabela "Real contra o previsto fora da amostra nas janelas do achado (SIN)" passou a "... nas janelas da variação de 7 dias (SIN)" (semelhança de 0,8, sem equivalência manual). Nenhuma visão foi retirada nem consolidada. Controles de data dos gráficos ("Início: ...", "Fim: ..."): o texto traz a data exibida, que muda porque o gráfico diário da P025 passou a abrir nos últimos 90 dias; a quantidade de controles é a mesma.
 
 ## 4. Mapa das visões (visão anterior, nova localização, nível)
 

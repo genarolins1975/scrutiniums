@@ -239,6 +239,7 @@ function Busca({
   onEscolher,
   campoRef,
   reinicio,
+  consultaDaUrl = "",
 }: {
   entidades: EntidadeTerritorio[];
   carregando: boolean;
@@ -247,6 +248,8 @@ function Busca({
   campoRef: RefObject<HTMLInputElement>;
   /** Muda quando a escolha é limpa: o campo volta a ficar vazio. */
   reinicio: number;
+  /** Texto de `?busca=` (a busca da página inicial leva o que a pessoa digitou): preenche o campo e abre a lista ao chegar. */
+  consultaDaUrl?: string;
 }) {
   const uid = useId().replace(/:/g, "");
   const [consulta, setConsulta] = useState("");
@@ -265,6 +268,13 @@ function Busca({
       setAtivo(-1);
     }
   }, [reinicio]);
+  useEffect(() => {
+    if (consultaDaUrl) {
+      setConsulta(consultaDaUrl);
+      setAberta(true);
+      setAtivo(-1);
+    }
+  }, [consultaDaUrl]);
   useEffect(() => {
     if (aberta && ativo >= 0) document.getElementById(`${uid}-op-${ativo}`)?.scrollIntoView?.({ block: "nearest" });
   }, [aberta, ativo, uid]);
@@ -385,6 +395,15 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
   const campoBusca = useRef<HTMLInputElement>(null);
   const fichaRef = useRef<HTMLElement>(null);
   const [reinicioBusca, setReinicioBusca] = useState(0);
+  // `?busca=<texto>`, vindo da busca da página inicial: o campo já chega preenchido e a lista de municípios é pedida
+  const [buscaDaUrl, setBuscaDaUrl] = useState("");
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("busca")?.trim().slice(0, 80) ?? "";
+    if (q) {
+      setBuscaDaUrl(q);
+      setPedidoIndice(true);
+    }
+  }, []);
   // a escolha feita pela pessoa (busca, mapa, tabela) leva a tela até a ficha e o foco ao título dela; a que vem do link não
   const [pedidoFoco, setPedidoFoco] = useState(0);
   const cam = v.cam;
@@ -912,6 +931,7 @@ export function TerritorioExplorador({ dados }: { dados: DadosExplorador }) {
             }}
             campoRef={campoBusca}
             reinicio={reinicioBusca}
+            consultaDaUrl={buscaDaUrl}
           />
           {sel && rotuloSel && (
             <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-0 text-sm" data-escolha="">

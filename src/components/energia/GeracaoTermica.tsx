@@ -313,7 +313,8 @@ export function GeracaoTermica({
               {usinasComparadas
                 .map((x) => `${x.nome ?? x.id}, ${x.cvu_semana_vigente === null ? "um valor por parcela (tabela de parcelas)" : `${num(x.cvu_semana_vigente, 2)} R$/MWh`}`)
                 .join("; ")}
-              . Custo declarado para a programação, não custo realizado.
+              . Custo declarado para a programação, não custo realizado
+              {usinasComparadas.some((x) => x.cvu_semana_vigente === 0) ? "; CVU 0,00 é valor publicado pela fonte, mantido como publicado e nunca tratado como ausência" : ""}.
             </p>
             <TabelaInterativa
               titulo="Tabela equivalente: parcela de cada motivo por usina"

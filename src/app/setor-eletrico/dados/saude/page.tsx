@@ -91,7 +91,6 @@ export default function DadosSaudePage() {
         <DadosNavegacao atual="saude" />
         <CabecalhoModulo
           siglas={["SCS", "ONS"]}
-          rotulo="Dados"
           titulo="O que atrasou ou mudou?"
           lead="Quais integrações passaram do prazo de atualização, quando a coleta falhou e quanto os valores já guardados mudaram entre uma captura e outra. A situação vale para a data de referência dos dados, não para o dia em que você lê."
           recorte={`situação em ${dataBR(r.hoje)} · calendário de ${dataBR(jan.inicio)} a ${dataBR(jan.fim)} (${janela} dias) · ${num(r.integracoes, 0)} integrações de conjuntos`}

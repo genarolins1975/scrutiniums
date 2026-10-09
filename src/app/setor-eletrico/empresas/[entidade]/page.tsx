@@ -208,7 +208,12 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
           rotulo="Perfil da distribuidora"
           siglas={["SAMP", "DEC", "FEC", "TE", "TUSD", "REH"]}
           titulo={`${d.sigla}: perdas, continuidade e tarifa`}
-          lead={`${d.nome ?? "Razão social sem registro"} · CNPJ (${SIGLAS.CNPJ}) ${cnpjFormatado(d.cnpj)} · ${d.classificacao ?? rotuloGrupo(d.grupo)} · ${d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} · ${d.ativa ? "ativa" : "inativa"}.`}
+          lead={
+            <>
+              {d.nome ?? "Razão social sem registro"} · CNPJ ({SIGLAS.CNPJ}) <span className="whitespace-nowrap">{cnpjFormatado(d.cnpj)}</span> · {d.classificacao ?? rotuloGrupo(d.grupo)} ·{" "}
+              {d.ufs.length ? `área em ${d.ufs.join(", ")}` : "sem conjunto elétrico vigente (UF sem registro)"} · {d.ativa ? "ativa" : "inativa"}.
+            </>
+          }
           recorte={`Perdas de ${p?.ano ?? "sem dado"} · continuidade de ${q?.ano ?? "sem dado"} · tarifa ${t && t.vigente ? `vigente de ${dataTexto(t.inicio)} a ${dataTexto(t.fim)}` : "sem vigência na data do arquivo de tarifas"}`}
           fonte="ANEEL, bases de perdas, continuidade e tarifas, pelo mesmo CNPJ"
           referencia={

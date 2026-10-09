@@ -1860,7 +1860,8 @@ def _bloco_tarifa_social(con, scs):
                     "Linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE entram no total nacional mas não no mapa.",
                     "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período)."]
                    + ([_texto_maiores_diferencas(reconc, mes_conf)] if reconc and reconc.get("diferenca_pct") is not None else []),
-        download="/energia/series/inclusao_municipios.csv")
+        # a ficha cobre o mapa por município e a série mensal por UF: os dois arquivos, cada um com o que o nome diz
+        download=["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cde_mensal_uf.csv"])
     base.escreve_csv("inclusao_tsee_mensal.csv",
                      ["mes", "distribuidoras", "completo", "distribuidoras_faltantes", "uc_tsee_faltantes_ultimo_informe",
                       "uc_tsee", *[f"uc_{m}" for m in MODS], "uc_residencial",

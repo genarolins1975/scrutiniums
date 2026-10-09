@@ -810,7 +810,16 @@ describe("Síntese da Expansão e da Transição: o veredito vale também nas p�
 });
 
 describe("Mercado: 'As outras perguntas' mostram o veredito de cada painel, com a resposta da gold por trás", () => {
-  it.each(["mercado", "agentes", "mre-e-gsf", "encargos"] as const)("%s", (k) => {
+  // no sistema editorial só a abertura tem capítulos; as filhas levam a faixa de páginas irmãs (o bloco repetido nas quatro páginas era o desenho anterior)
+  it.each(["agentes", "mre-e-gsf", "encargos"] as const)("%s: a faixa de irmãs no lugar do bloco, com a página atual marcada", (k) => {
+    const h = HTML[k];
+    expect(h).not.toContain("As outras perguntas sobre o mercado");
+    expect(h).toContain('data-navegacao-local="faixa"');
+    const rotulo = { agentes: "Agentes e migração", "mre-e-gsf": "MRE e GSF", encargos: "Encargos e liquidação" }[k];
+    expect(h).toMatch(new RegExp(`aria-current="page"[^>]*>${rotulo}<`));
+  });
+
+  it.each(["mercado"] as const)("%s", (k) => {
     const h = HTML[k];
     const outras = h.slice(h.indexOf("As outras perguntas sobre o mercado"));
     expect((outras.match(/data-resposta-resumo="/g) ?? []).length).toBe(3);

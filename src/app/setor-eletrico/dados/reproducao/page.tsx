@@ -104,7 +104,6 @@ export default function DadosReproducaoPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <DadosNavegacao atual="reproducao" />
         <CabecalhoModulo
-          rotulo="Dados"
           titulo="Consigo reproduzir este gráfico?"
           lead="Todo número do observatório vem de um arquivo publicado, e cada arquivo tem uma impressão digital registrada numa lista, o manifesto. Aqui estão a lista, a versão do código de cada base, o caminho para refazer um número e a conferência de um arquivo que você baixou."
           recorte={`${num(m.totais.arquivos, 0)} arquivos · lista de ${dataBR(m.gerado_em.slice(0, 10))} · id da publicação ${m.id_publicacao.slice(0, 12)}`}

@@ -75,10 +75,12 @@ A página já trata, sem mudar a gold: marca o FEC anual como de cobertura parci
 A conferência mecânica casa 58 das 60 visões comparáveis da rota por tipo e título; as duas que sobram são os títulos dos dois primeiros painéis, que mudaram para a pergunta que a página passou a responder (as visões de dentro de cada painel continuam, com os mesmos gráficos, tabelas e controles):
 
 ```json
+{
 "/setor-eletrico/qualidade": [
   { "antes": "painel|por quanto tempo e quantas vezes faltou luz?", "depois": "painel|duração e frequência das interrupções no brasil, ano a ano", "justificativa": "mesmo painel P051, título novo; DEC e FEC em gráficos próprios, parcelas, mapa e comparação continuam" },
   { "antes": "painel|o serviço cumpriu o padrão?", "depois": "painel|cada distribuidora e cada conjunto diante do próprio limite", "justificativa": "mesmo painel P052, título em fato e não em julgamento; limites, razão, distribuição, caudas e DGC continuam" }
 ]
+}
 ```
 
 Visões que o rastreador marca "nível mudou" para Auditar ou Analisar sem terem mudado (o mapa e a tabela de municípios) são o mapa que só carrega quando chega perto da tela: em Entender ele está à vista; a medição automática a 1440 px o perde quando o servidor está lento.

@@ -74,9 +74,8 @@ export default function AvaliacaoPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <DadosNavegacao atual="avaliacao" />
         <CabecalhoModulo
-          rotulo="Metodologia"
           titulo="Como demonstrar que a qualidade evoluiu?"
-          lead="Cada página do observatório recebe uma nota de 0 a 10 em dez dimensões, e cada nota traz a medição, o teste ou a revisão que a sustenta. A escala é uma ferramenta de revisão do próprio observatório, não uma certificação externa: o que não foi testado aparece como não avaliado, nunca como nota."
+          lead="Cada página recebe uma nota de 0 a 10 em dez dimensões, e cada nota traz a prova que a sustenta. A escala é uma ferramenta de revisão do próprio observatório, não uma certificação externa; o que não foi testado fica como não avaliado, nunca como nota."
           recorte={`${num(r.paginas, 0)} páginas · rodada ${a.rodada.id} · inspeção de ${inspecao}`}
           fonte={`Scrutiniums, avaliação dos painéis (rubrica ${a.versao_rubrica})`}
           referencia={
@@ -87,7 +86,7 @@ export default function AvaliacaoPage() {
             />
           }
           metricas={
-            <FaixaMetricas colunas={4} rotulo="Indicadores da avaliação" nota="Medidas da rodada inteira: não mudam com a tabela de páginas, que está em Analisar. A data é a da inspeção, não a do dia em que você lê.">
+            <FaixaMetricas colunas={4} rotulo="Indicadores da avaliação" nota="Medidas da rodada inteira, na data da inspeção e não na do dia em que você lê; não mudam com a tabela de páginas.">
               <Numero variante="faixa" rotulo="Nota ponderada média" natureza="CALCULADO" evidencia={a.evidencias.nota_media} valor={r.nota_ponderada_media} casas={1} unidade="de 10" periodo={inspecao} nota={<>Média das {num(r.paginas, 0)} páginas.</>} motivoAusencia="Nenhuma página com nota." endereco={ENDERECO} />
               <Numero
                 variante="faixa"

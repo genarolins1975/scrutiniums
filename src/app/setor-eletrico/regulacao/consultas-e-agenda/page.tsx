@@ -239,7 +239,7 @@ export default function ConsultasEAgendaPage() {
                   lead={
                     <>
                       A <Termo slug="agenda-regulatoria">Agenda Regulatória</Termo> é o plano de atividades em que a ANEEL prevê editar norma no biênio. As que tratam dos limites do
-                      PLD (Preço de Liquidação das Diferenças, o preço de curto prazo da energia) aparecem também na página de limites e regras de preço.
+                      PLD (Preço de Liquidação das Diferenças) aparecem também na página de limites e regras de preço.
                     </>
                   }
                 >

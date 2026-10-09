@@ -159,7 +159,7 @@ export default function RegulacaoPage() {
         <CabecalhoModulo
           siglas={["PLD", "DOU", "ANEEL", "CCEE", "PRODIST", "PRORET", "REN", "REH"]}
           titulo={perguntaPainel("p044")}
-          lead="O piso e os dois tetos do preço de curto prazo (PLD, Preço de Liquidação das Diferenças) em cada ano, com o ato da ANEEL que os fixou e as datas de publicação e de vigência separadas."
+          lead="O piso e os dois tetos do Preço de Liquidação das Diferenças (PLD) em cada ano, com o ato da ANEEL que os fixou e as datas de publicação e de vigência separadas."
           recorte={`Vigência em ${dataRef} · limites de ${anos[0]} a ${anos[anos.length - 1]} · R$/MWh nominais`}
           fonte="ANEEL, Agência Nacional de Energia Elétrica, atos anuais de limites do PLD"
           referencia={

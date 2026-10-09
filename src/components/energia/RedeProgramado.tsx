@@ -155,7 +155,6 @@ export function RedeProgramadoMetricas({
 
 export function RedeProgramado({
   programado,
-  evidencias,
   fonte,
   versao,
   regraMaterialidade,

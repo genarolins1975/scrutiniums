@@ -27,7 +27,6 @@ import { semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { ModelosGold } from "@/lib/energia/tipos";
 import {
   GOLD_PREVISOES,
-  ROTA_MODELOS,
   VARIAVEL_D7,
   colunasCoeficientes,
   emissaoDoModelo,

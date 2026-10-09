@@ -57,7 +57,7 @@ export function LegendaDeSiglas({ siglas }: { siglas?: readonly string[] }) {
       </p>
       {resto.length > 0 && (
         <details className="mt-1">
-          <summary className="inline-flex min-h-[24px] cursor-pointer items-center text-energia-dark underline underline-offset-4">
+          <summary className="inline-flex min-h-[24px] cursor-pointer items-center text-energia-dark underline underline-offset-4 [@media(pointer:coarse)]:min-h-[44px]">
             Mais {resto.length} {resto.length === 1 ? "sigla" : "siglas"}
           </summary>
           <p>{resto.join("; ")}.</p>

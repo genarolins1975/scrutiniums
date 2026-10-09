@@ -37,6 +37,7 @@ import {
   linhasAnuais,
   linhasCapacidade,
   linhasDozeMeses,
+  linhasExtremosFc,
   linhasMmgdCapacidade,
   linhasRazoes12m,
   maioresFontes,
@@ -791,6 +792,13 @@ describe("o que mudou, notas de universo e referências ao lado do dado", () => 
     expect(nuclear.distribuicao_usinas!.n).toBeLessThan(MINIMO_PARA_DISTRIBUICAO);
     const obs = observacoesFc(nuclear);
     expect(obs).toHaveLength(nuclear.distribuicao_usinas!.n);
+    // a tabela de extremos lista cada usina uma vez (as menores e as maiores são as mesmas), e com 10 ou mais mantém menores e maiores
+    const ext = linhasExtremosFc(nuclear);
+    expect(ext).toHaveLength(nuclear.distribuicao_usinas!.n);
+    expect(new Set(ext.map((x) => x.nome)).size).toBe(ext.length);
+    expect(ext.every((x) => x.grupo === "todas")).toBe(true);
+    const eol = u12.por_categoria.find((x) => x.categoria === "eolica")!;
+    expect(linhasExtremosFc(eol).map((x) => x.grupo)).toEqual([...eol.menores.map(() => "menores"), ...eol.maiores.map(() => "maiores")]);
     for (let i = 1; i < obs.length; i++) expect(obs[i - 1].fc_pct).toBeGreaterThanOrEqual(obs[i].fc_pct);
     const pequena = renderToStaticMarkup(createElement(GeracaoCapacidadeDistribuicao, { ultimos12m: { ...u12, por_categoria: [nuclear] }, fonte: "f", versao: "v" }));
     expect(pequena).toContain("a figura mostra o valor de");
