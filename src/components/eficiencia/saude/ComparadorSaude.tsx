@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { CABECALHO_CSV_COMPARACAO, denominadoresIcsapIguais, IndiceSaude, RESSALVA_CSV, ROTULO_ESTADO, anosDaMedida, avisoDoPeriodo, comparar, componenteDe, csv, linhasCsvComparacao, metaCsv, serie, type Ponto } from "@/lib/eficiencia/saude/consulta";
-import { fraseDiferenca, posicaoNaMediana } from "@/lib/eficiencia/saude/frases";
+import { fraseDiferenca, posicaoNaMediana, resumoDoRecorte } from "@/lib/eficiencia/saude/frases";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
 import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, periodoCurto, type MedidaSaudeId, type Moeda } from "@/lib/eficiencia/saude/medidas";
 import { CAMINHO_METODOS, hrefSaude } from "@/lib/eficiencia/saude/rotas";
@@ -13,7 +13,7 @@ import { DistribuicaoCapitais } from "../DistribuicaoCapitais";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Alternancia, Selecao } from "../controles";
 import { Ressalva, SemValor } from "../estados";
-import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, ForaDaComparacaoSaude, GlossarioDaPagina, PERIMETRO_DO_TEMA, RecorteRecolhivel } from "./AvisosSaude";
+import { AjudaDenominador, AjudaMoeda, AvisoDoPeriodo, EtiquetaDePerimetro, ForaDaComparacaoSaude, GlossarioDaPagina, PERIMETRO_DO_TEMA, RecorteRecolhivel } from "./AvisosSaude";
 import { MiniSerie } from "../graficos";
 
 /**
@@ -149,7 +149,7 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <p className="rotulo text-mineral">Saúde nas capitais</p>
           <h1 id="titulo-comparar" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Comparar capitais</h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">Como cada capital se situa na mesma medida e no mesmo período?</p>
-          <RecorteRecolhivel id="recorte-cmp" resumo={`${m.rotuloCurto} · ${m.periodo === "dezembro" ? `dez. ${ano}` : ano}${m.moeda && s.moeda === "real" ? " · reais de 2025" : ""} · ${A ? A.nome : "sem capital A"}${B ? ` × ${B.nome}` : ""}`}>
+          <RecorteRecolhivel id="recorte-cmp" rotulo={A ? undefined : "Escolher as capitais"} resumo={resumoDoRecorte({ medida: m.id, periodo: m.periodo === "dezembro" ? `dez. ${ano}` : String(ano), real: m.moeda && s.moeda === "real", denominadorIbge: m.denominador && s.den === "obee", capital: A ? `${A.nome} (${A.uf})${B ? ` × ${B.nome} (${B.uf})` : ""}` : null, regiao: null, semCapital: "nenhuma capital escolhida" })}>
             <Selecao id="cmp-med" rotulo="Medida" ajuda="Vale para as duas capitais e para a distribuição." ajudaNoCelular={false} valor={s.med} opcoes={opcoesMedida} aoMudar={(v) => definir({ med: v as MedidaSaudeId, ano: anosDaMedida(ix, MEDIDAS_SAUDE[v as MedidaSaudeId], o).includes(ano) ? ano : 0 })} />
             <Selecao id="cmp-ano" rotulo={m.periodo === "dezembro" ? "Competência" : m.periodo === "processamento" ? "Ano de processamento" : "Exercício"} ajuda="O mesmo período para as duas capitais." ajudaNoCelular={false} valor={String(ano)} opcoes={anos.map((a) => ({ v: String(a), t: m.periodo === "dezembro" ? `dez. ${a}` : String(a) }))} aoMudar={(v) => definir({ ano: Number(v) })} />
             <div className="grid grid-cols-2 gap-4">
@@ -185,7 +185,13 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
             <button type="button" onClick={exportarMedida} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">Baixar CSV da medida</button>
           </div>
           <p className="mt-1 text-[0.8125rem] leading-snug text-carvao-muted">{m.unidade(s.moeda)} · {c.ref ? `${c.ref.n} de ${c.noGrupo} capitais na comparação` : "sem capital na comparação"} · {m.universo}</p>
+          <EtiquetaDePerimetro tema={m.tema} href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} />
           <div className="flex flex-col">
+          {aviso && (
+            <p className="order-1 mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
+              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
+            </p>
+          )}
           <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
           {c.excluidas.length > 0 && (
             <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">
@@ -216,7 +222,6 @@ export function ComparadorSaude({ dados, contextos }: { dados: DadosSaude; conte
           <div className="border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta">
             <p>{m.definicao}</p>
             <p className="mt-2 text-carvao-muted">{m.naoE}</p>
-            <p className="mt-2 text-carvao-muted"><span className="font-semibold text-obee-tinta">Perímetro:</span> {PERIMETRO_DO_TEMA[m.tema].rotulo}. <a href={`${hrefSaude(CAMINHO_METODOS)}#perimetros`} className="text-obee-dark underline underline-offset-4">Os três perímetros</a></p>
             <div className="mt-1"><SobreEsteDado f={ficha} ctx={contextos[ficha.id]} /></div>
           </div>
           <GlossarioDaPagina tema="comparar" />

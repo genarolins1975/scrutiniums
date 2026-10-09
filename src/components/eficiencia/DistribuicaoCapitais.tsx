@@ -54,12 +54,14 @@ export function DistribuicaoCapitais({
   const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
-  const linhaH = alturaLinha;
   const fonte = estreito ? 11.5 : 12.5;
   const larg = (t: string, f: number) => t.length * f * 0.56;
   const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);
   const margemDireita = Math.max(w < 360 ? 50 : estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
   const m = { t: 30, r: margemDireita, b: referencias.externa ? 52 : 34, l: w < 360 ? 100 : estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
+  // em tela estreita o nome longo ocupa duas linhas (nome e UF): com a altura padrão elas se tocam, então a linha cresce até caber
+  const emDuasLinhas = [...linhas, ...fora].some((l) => larg(l.rotulo, fonte) > m.l - 14);
+  const linhaH = estreito && emDuasLinhas ? Math.max(alturaLinha, 28) : alturaLinha;
   const nLinhas = linhas.length + fora.length;
   const H = m.t + m.b + nLinhas * linhaH;
   const { mediana, media, faixa, externa = null } = referencias;

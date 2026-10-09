@@ -136,6 +136,9 @@ def fontes():
             if not c:
                 continue
             c.pop("rotulos_colunas", None)
+            if k == "ibge_populacao_relacao_2023":
+                # o arquivo usado é o dos Primeiros Resultados do Censo 2022 (22/12/2023); a relação do DOU não foi baixada (rótulo de Educação não é alterado)
+                c["conjunto"] = "População dos municípios para o exercício de 2023: Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População de 22/12/2023 (a relação do DOU de 31/08/2023 não foi obtida)"
             if "arquivos" in c:
                 arqs = c.pop("arquivos")
                 c["arquivos_capturados"] = len(arqs)
@@ -150,7 +153,7 @@ def fontes():
 UNIDADE_PERIODO = {"exercicios": "exercício financeiro", "dezembros": "competência de dezembro", "retrato": "retrato do arquivo diário do CNES (data de captura)"}
 CAMPOS_CSV = ["indicador_id", "indicador", "codigo_ibge", "capital", "uf", "periodo_tipo", "ano", "componente", "valor", "unidade", "base_monetaria", "universo", "status",
               "elegivel_comparacao", "situacao_conferencia", "motivo_inelegibilidade", "nota", "nota_material", "participacao_pct", "fonte", "fonte_url", "data_captura", "registro", "versao_metodologica",
-              "dados_gerados_em", "hash_dados", "numerador", "denominador", "referencia_numerador", "referencia_denominador", "tipo_populacao", "base_populacional", "data_referencia", "quebra_serie", "minimo_pct"]
+              "dados_gerados_em", "hash_dados", "numerador", "denominador", "referencia_numerador", "referencia_denominador", "tipo_populacao", "base_populacional", "data_referencia", "quebra_serie", "quebra_perimetro", "minimo_pct"]
 DESCRICAO_CAMPOS = {
     "indicador_id": "Identificador do indicador no catálogo do OBEE.", "indicador": "Nome do indicador.", "codigo_ibge": "Código do município no IBGE (7 dígitos).",
     "capital": "Nome da capital.", "uf": "Sigla da unidade da federação.",
@@ -172,7 +175,8 @@ DESCRICAO_CAMPOS = {
     "tipo_populacao": "Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.",
     "base_populacional": "Base da população do denominador: estimativa anterior ao Censo 2022, Censo 2022 (2022 e 2023, mesma população) ou estimativa posterior ao Censo 2022. Variação entre exercícios de bases diferentes mistura a mudança do denominador.",
     "data_referencia": "Data de referência da população.",
-    "quebra_serie": "Marca a base do denominador: dois exercícios consecutivos só têm variação comparável quando a marca é a mesma (sim e sim, ou nao e nao). Marcas diferentes indicam mudança de base populacional ou de método entre os dois.",
+    "quebra_serie": "Marca a base do denominador (e, na cobertura potencial, o método): dois exercícios consecutivos só têm variação comparável quando a marca é a mesma (sim e sim, ou nao e nao) e quando a coluna quebra_perimetro também coincide. Marcas diferentes indicam mudança de base populacional ou de método entre os dois.",
+    "quebra_perimetro": "'sim' quando a conferência da despesa (DCA, RREO e MSC) mostra que o perímetro da despesa deste exercício difere do dos demais (por exemplo, despesas intraorçamentárias na função), e a variação com exercício de outro perímetro não é comparável. Independe da base da população.",
     "minimo_pct": "Mínimo de aplicação em ASPS do município, em % da base, quando o demonstrativo o informa (15% pela LC 141/2012, ou o da lei orgânica quando maior).",
 }
 
@@ -247,7 +251,7 @@ def _csv(obs, caminho, catalogo, meta, mapa_fontes=None):
             "numerador": "" if not o.get("calculo") else _num(o["calculo"]["numerador"]), "denominador": "" if not o.get("calculo") else _num(o["calculo"]["denominador"]),
             "referencia_numerador": "" if not o.get("calculo") else o["calculo"]["numerador_ref"] + (f" ({o['calculo']['numerador_componente']})" if o["calculo"].get("numerador_componente") else ""),
             "referencia_denominador": "" if not o.get("calculo") else o["calculo"]["denominador_ref"], "tipo_populacao": o.get("tipo_populacao") or "", "base_populacional": o.get("base_populacional") or "",
-            "data_referencia": o.get("data_referencia") or "", "quebra_serie": "sim" if (o.get("quebra_serie") or conf.get("quebra_serie")) else "nao",
+            "data_referencia": o.get("data_referencia") or "", "quebra_serie": "sim" if o.get("quebra_serie") else "nao", "quebra_perimetro": "sim" if conf.get("quebra_serie") else "nao",
             "minimo_pct": _num(o.get("minimo_pct")),
         })
     with open(caminho, "w", encoding="utf-8", newline="") as fh:
@@ -290,6 +294,8 @@ def _csv_dicionario(caminho):
         w.writerow(["sau_*.csv (um por indicador)", c, DESCRICAO_CAMPOS[c]])
     for c in CAMPOS_CSV_REFERENCIAS:
         w.writerow(["saude_referencias_capitais.csv", c, DESCRICAO_REFERENCIAS[c]])
+    for c in CAMPOS_CSV_NACIONAIS:
+        w.writerow(["saude_referencias_nacionais.csv", c, DESCRICAO_NACIONAIS[c]])
     for c in MF.CAMPOS:
         w.writerow(["saude_matriz_de_fontes.csv", c, DESCRICAO_MATRIZ[c]])
     w.writerow(["", "(números)", "Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold."])
@@ -303,6 +309,39 @@ def _csv_dicionario(caminho):
 CAMPOS_CSV_REFERENCIAS = ["indicador_id", "indicador", "componente", "ano", "grupo", "capitais_no_grupo", "capitais_com_valor", "capitais_na_comparacao", "media_simples", "mediana", "minimo",
                           "capitais_do_minimo", "maximo", "capitais_do_maximo", "primeiro_quartil", "terceiro_quartil", "quartis_exibidos", "soma_numerador", "soma_denominador", "fator_razao", "razao_agregada",
                           "pares_codigos_ibge", "politica_versao", "versao_metodologica", "dados_gerados_em", "hash_dados"]
+
+
+CAMPOS_CSV_NACIONAIS = ["referencia_id", "indicador_id", "indicador", "componente", "ano", "tipo", "rotulo", "valor", "unidade", "escopo", "fonte", "paginas_oficiais", "data_captura", "registro",
+                        "origem", "comparabilidade", "classe", "versao_metodologica", "dados_gerados_em", "hash_dados"]
+DESCRICAO_NACIONAIS = {
+    "referencia_id": "Identificador da referência (norma, Brasil oficial ou Brasil calculado pelo OBEE).", "indicador_id": "Identificador do indicador a que a referência se aplica.",
+    "indicador": "Nome do indicador.", "componente": "Parte do indicador, quando houver.", "ano": "Ano ou competência de dezembro da referência; vazio para norma.",
+    "tipo": "normativa (norma, não é meta), nacional_oficial (publicada pela fonte) ou nacional_calculado (calculada pelo OBEE sobre o arquivo oficial).",
+    "rotulo": "Nome da referência.", "valor": "Valor numérico com ponto decimal.", "unidade": "Unidade do valor.", "escopo": "O que a referência cobre e o que não é.",
+    "fonte": "Fonte e conjunto.", "paginas_oficiais": "Páginas oficiais para abrir a fonte (o endereço exato da coleta está no manifesto das capturas).", "data_captura": "Data da última captura da fonte.",
+    "registro": "Registro de origem do valor (competência, numerador e denominador).", "origem": "oficial_publicado, calculado ou norma.", "comparabilidade": "Quanto a referência se compara às capitais (direta ou com ressalva).",
+    "classe": "Rótulo de leitura: referência normativa, nacional oficial ou nacional calculada; nenhuma é meta.", "versao_metodologica": "Versão metodológica do indicador.",
+    "dados_gerados_em": "Momento da geração da gold.", "hash_dados": "Hash dos dados: cite com a data de geração.",
+}
+_FONTE_DA_REFERENCIA = {"br.aps": "relatorio_aps_cobertura", "br.icsap": "ripsa_mrb402_icsap", "br_sem_capitais.icsap": "ripsa_mrb402_icsap"}
+
+
+def _csv_nacionais(refs_ext, caminho, catalogo, meta, mapa_fontes):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    fichas = {i["id"]: i for i in catalogo["indicadores"]}
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=CAMPOS_CSV_NACIONAIS, lineterminator="\n")
+    w.writeheader()
+    for r in refs_ext:
+        f = fichas[r["indicador"]]
+        chave = next((v for k, v in _FONTE_DA_REFERENCIA.items() if r["id"].startswith(k + ".")), None)
+        _, paginas, data = _fonte_legivel(chave, mapa_fontes) if chave else ("", "", "")
+        w.writerow({"referencia_id": r["id"], "indicador_id": r["indicador"], "indicador": f["nome"], "componente": r.get("componente") or "", "ano": r.get("ano") or "",
+                    "tipo": r["tipo"], "rotulo": r["rotulo"], "valor": _num(r["valor"]), "unidade": r["unidade"], "escopo": r["escopo"], "fonte": r["fonte"], "paginas_oficiais": paginas,
+                    "data_captura": data, "registro": r["registro"], "origem": r["origem"], "comparabilidade": r["comparabilidade"], "classe": r["classe"],
+                    "versao_metodologica": f["versao_metodologica"], "dados_gerados_em": meta["gerado_em"], "hash_dados": meta["hash_dados"]})
+    with open(caminho, "w", encoding="utf-8", newline="") as fh:
+        fh.write(buf.getvalue())
 
 
 def _csv_referencias(refs, caminho, catalogo, meta):
@@ -430,6 +469,7 @@ def publica(gold, raiz_publica=None):
         sel = [o for o in gold["observacoes"] if o["indicador"] == ind["id"]]
         _csv(sel, os.path.join(raiz, ind["download"].lstrip("/")), catalogo, gold["meta"], mapa_fontes)
     _csv_referencias(gold["referencias"], os.path.join(raiz, "eficiencia", "series", "saude_referencias_capitais.csv"), catalogo, gold["meta"])
+    _csv_nacionais(gold["referencias_externas"], os.path.join(raiz, "eficiencia", "series", "saude_referencias_nacionais.csv"), catalogo, gold["meta"], mapa_fontes)
     _csv_matriz(os.path.join(raiz, "eficiencia", "series", "saude_matriz_de_fontes.csv"))
     _csv_dicionario(os.path.join(raiz, "eficiencia", "series", "saude_dicionario_das_colunas.csv"))
     base.grava_json(os.path.join(raiz, "eficiencia", "series", "saude_manifesto_das_capturas.json"), base.le_manifesto())

@@ -269,7 +269,7 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
               {ano === 2022 && <p className="mt-2 text-carvao-muted">A população de referência de dezembro de 2022 é anterior ao Censo 2022; a de dezembro de 2023 é a do Censo. A variação entre esses meses não é uma medida direta da cobertura.</p>}
               {(ano === 2023 || ano === 2024) && <p className="mt-2 text-carvao-muted">A população de referência de dezembro de 2023 e a de dezembro de 2024 são a mesma, a do Censo 2022: a variação entre os dois meses vem só da capacidade das equipes. A de dezembro de 2025 é a estimativa de 2024.</p>}
               {ano === 2025 && <p className="mt-2 text-carvao-muted">A população de referência de dezembro de 2025 é a estimativa de 2024, posterior ao Censo 2022. A variação entre dezembro de 2024 e este mês mistura dois anos de crescimento populacional e não é uma medida direta da cobertura.</p>}
-              <p className="mt-3 text-xs text-carvao-muted">A população de referência é a do ano anterior ao da competência e muda a cada janeiro: um salto entre dezembro e janeiro é efeito do denominador, não da capacidade.</p>
+              <p className="mt-3 text-xs text-carvao-muted">A população de referência é a que o Ministério adota para cada competência. Quando a base muda entre duas competências, a diferença é efeito do denominador, não da capacidade.</p>
             </div>
           )}
         </Bloco>

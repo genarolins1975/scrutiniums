@@ -25,7 +25,7 @@ import {
   type Ponto,
 } from "@/lib/eficiencia/saude/consulta";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
-import { fraseCapital, fraseEvolucao, fraseAmplitude } from "@/lib/eficiencia/saude/frases";
+import { fraseCapital, fraseEvolucao, fraseAmplitude, resumoDoRecorte } from "@/lib/eficiencia/saude/frases";
 import { MEDIDAS_SAUDE, ROTULO_PERIODO, TEMAS_SAUDE, type MedidaSaudeId, type Moeda, type TemaSaude } from "@/lib/eficiencia/saude/medidas";
 import { CAMINHO_COMPARAR, CAMINHO_METODOS, hrefSaude } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";
@@ -191,7 +191,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
           </h1>
           <p className="mt-3 text-[1.0625rem] leading-snug text-obee-tinta">{TITULO_TEMA[tema].pergunta}</p>
           <EtiquetaDePerimetro tema={tema} href={tituloMetodos} />
-          <RecorteRecolhivel id="recorte" resumo={`${m.rotuloCurto} · ${m.periodo === "dezembro" ? `dez. ${ano}` : ano}${m.moeda && s.moeda === "real" ? " · reais de 2025" : ""} · ${cap ? `${cap.nome} (${cap.uf})` : "todas as capitais"}`}>
+          <RecorteRecolhivel id="recorte" resumo={resumoDoRecorte({ medida: m.id, periodo: m.periodo === "dezembro" ? `dez. ${ano}` : String(ano), real: m.moeda && s.moeda === "real", denominadorIbge: m.denominador && s.den === "obee", capital: cap ? `${cap.nome} (${cap.uf})` : null, regiao: grupo === "regiao" && cap ? dados.regioes[cap.regiao] : null, ordem: s.vis !== "evolucao" && s.ord !== "alfabetica" ? (s.ord === "valor_desc" ? "do maior ao menor" : "do menor ao maior") : null })}>
             <Selecao
               id="med"
               rotulo="Medida"
@@ -222,25 +222,30 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
               </div>
             )}
             {cap && <Alternancia rotulo="Grupo de comparação" valor={grupo} opcoes={[{ v: "todas", t: "Todas as capitais" }, { v: "regiao", t: `Região ${dados.regioes[cap.regiao]}` }]} aoMudar={(v) => definir({ grp: v })} />}
+            {s.vis !== "evolucao" && c.incluidas.length > 0 && (
+              <div>
+                <Alternancia<Ordem> rotulo="Ordem das capitais" valor={s.ord} opcoes={ORDENS} aoMudar={(v) => definir({ ord: v })} />
+                <p className="mt-1 text-xs text-carvao-muted">Ordenar por valor é recurso de leitura, não classificação.</p>
+              </div>
+            )}
           </RecorteRecolhivel>
         </div>
 
         <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <Alternancia<Visao> rotulo="Visão" valor={s.vis} opcoes={[{ v: "grafico", t: "Distribuição" }, { v: "tabela", t: "Tabela" }, { v: "evolucao", t: "Evolução" }]} aoMudar={(v) => definir({ vis: v })} rotuloVisivel={false} />
-            <button type="button" onClick={exportar} className="rotulo inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee">
+            <button type="button" onClick={exportar} className="rotulo hidden min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee lg:inline-flex">
               {s.vis === "evolucao" ? "Baixar CSV da série" : "Baixar CSV do recorte"}
             </button>
           </div>
-          {s.vis !== "evolucao" && c.incluidas.length > 0 && (
-            <div className="mt-3">
-              <Alternancia<Ordem> rotulo="Ordem das capitais" valor={s.ord} opcoes={ORDENS} aoMudar={(v) => definir({ ord: v })} />
-              <p className="mt-1 text-xs text-carvao-muted">Ordenar por valor é recurso de leitura, não classificação.</p>
-            </div>
-          )}
           <h2 className="mt-4 font-serif text-[1.1rem] leading-snug text-obee-tinta sm:text-[1.3rem] md:text-[1.45rem]">{s.vis === "evolucao" ? fraseSerie : titulo}</h2>
           <p className="mt-1.5 text-[0.8125rem] leading-snug text-carvao-muted">{s.vis === "evolucao" ? `${[m.rotulo, unidadeNoTitulo].filter(Boolean).join(" · ")} · série de ${anos[0]} a ${anos[anos.length - 1]} · ${cap ? `${cap.nome} (${cap.uf})` : "mediana das capitais"}` : subtitulo}</p>
           <div className="flex flex-col">
+          {aviso && (
+            <p className="order-1 mt-2 text-sm leading-snug text-obee-tinta lg:hidden">
+              Este período tem ressalva de base: <a href="#aviso-do-periodo" className="inline-block py-1 text-obee-dark underline underline-offset-4">ver o aviso abaixo do gráfico</a>.
+            </p>
+          )}
           <div className="order-3 lg:order-none"><AvisoDoPeriodo texto={aviso} /></div>
           {s.vis !== "evolucao" && notaZero && <p className="mt-2 max-w-prose2 text-sm leading-snug text-obee-tinta">{notaZero}</p>}
           {s.vis !== "evolucao" && c.excluidas.length > 0 && (
@@ -283,6 +288,9 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
             )}
           </div>
           </div>
+          <button type="button" onClick={exportar} className="rotulo mt-3 inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-obee-dark hover:border-obee lg:hidden">
+            {s.vis === "evolucao" ? "Baixar CSV da série" : "Baixar CSV do recorte"}
+          </button>
           {pt && cap && <Ressalva ponto={pt} />}
           {pt && pt.valor === null && cap && <SemValor ponto={pt} />}
         </div>

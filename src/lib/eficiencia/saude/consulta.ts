@@ -14,8 +14,9 @@ export type { Ponto, PontoSerie, CapitalPainel, RefGrupo };
 
 const SEM_OBS: Ponto = { valor: null, status: "AUSENTE_NA_COLETA", nota: "Sem registro para este recorte", notaMaterial: true, participacao: null, elegivel: false, situacao: null, motivo: null, quebraSerie: false };
 
-export type PontoComCalculo = Ponto & { numerador: number | null; denominador: number | null; minimoPct: number | null };
-const VAZIO: PontoComCalculo = { ...SEM_OBS, numerador: null, denominador: null, minimoPct: null };
+/** quebraPerimetro: o perímetro da despesa difere do dos outros exercícios (conferência); quebraSerie é só a base populacional ou o método. A variação exige as duas marcas iguais. */
+export type PontoComCalculo = Ponto & { numerador: number | null; denominador: number | null; minimoPct: number | null; quebraPerimetro: boolean };
+const VAZIO: PontoComCalculo = { ...SEM_OBS, numerador: null, denominador: null, minimoPct: null, quebraPerimetro: false };
 
 const porNome = (a: { nome: string }, b: { nome: string }) => a.nome.localeCompare(b.nome, "pt-BR");
 
@@ -37,7 +38,7 @@ export class IndiceSaude {
       const comp = k < 0 ? null : d.componentes[k];
       this.mapa.set(IndiceSaude.chave(ind, d.capitais[c].cod, a, comp), {
         valor: v, status: d.status[s], nota: n < 0 ? null : d.notas[n], notaMaterial: mat === 1, participacao: p, elegivel: eleg === 1,
-        situacao: sit < 0 ? null : d.situacoes[sit], motivo: mot < 0 ? null : d.notas[mot], quebraSerie: qb === 1, numerador: num, denominador: den, minimoPct: extra,
+        situacao: sit < 0 ? null : d.situacoes[sit], motivo: mot < 0 ? null : d.notas[mot], quebraSerie: (qb & 1) === 1, quebraPerimetro: (qb & 2) === 2, numerador: num, denominador: den, minimoPct: extra,
       });
       const ck = `${ind}|${comp ?? ""}`;
       if (!this.anosPorChave.has(ck)) this.anosPorChave.set(ck, new Set());
@@ -213,10 +214,11 @@ export function notasMateriais(c: Comparacao): { texto: string; capitais: string
   return Array.from(por.entries()).map(([texto, capitais]) => ({ texto, capitais })).sort((a, b) => b.capitais.length - a.capitais.length);
 }
 
-export function variacao(atual: Ponto, anterior: Ponto): { pct: number } | { bloqueio: string } | null {
+export function variacao(atual: Ponto & { quebraPerimetro?: boolean }, anterior: Ponto & { quebraPerimetro?: boolean }): { pct: number } | { bloqueio: string } | null {
   if (atual.valor === null || anterior.valor === null || atual.status !== "OBSERVADO" || anterior.status !== "OBSERVADO") return null;
   if (!atual.elegivel || !anterior.elegivel) return { bloqueio: "um dos valores está fora das comparações" };
   if (atual.quebraSerie !== anterior.quebraSerie) return { bloqueio: "a base populacional ou o método mudou entre os dois anos" };
+  if (!!atual.quebraPerimetro !== !!anterior.quebraPerimetro) return { bloqueio: "o perímetro da despesa mudou entre os dois anos" };
   if (anterior.valor === 0) return { bloqueio: "o valor anterior é zero" };
   return { pct: (atual.valor / anterior.valor - 1) * 100 };
 }

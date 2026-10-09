@@ -160,7 +160,7 @@
     "Correção monetária opcional do numerador pelo mesmo fator do IPCA; a população não é corrigida.",
     "Herda a elegibilidade e as ressalvas do numerador e as da população."
    ],
-   "comparacao": "A comparação usa, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples dá o mesmo peso a cada capital; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. São grandezas distintas e vêm rotuladas. Variações que envolvem 2021 ou 2023 são bloqueadas: a base populacional muda.",
+   "comparacao": "A comparação usa, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples dá o mesmo peso a cada capital; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. São grandezas distintas e vêm rotuladas. A população tem três bases: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025). Variações entre bases diferentes (2021 para 2022 e 2023 para 2024) são bloqueadas; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
    "universo_curto": "Despesa do município na função Saúde ÷ população residente. Não é custo por usuário do SUS.",
    "universo_rotulo": "orçamento do município ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
@@ -585,13 +585,13 @@
     "Divisão da contagem pela população do exercício.",
     "Herda as ressalvas da contagem e as da população."
    ],
-   "comparacao": "A comparação usa a razão do mesmo exercício entre capitais. Variações que envolvem 2021 ou 2023 misturam mudança de base populacional.",
+   "comparacao": "A comparação usa a razão do mesmo exercício entre capitais. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
    "universo_curto": "UBS públicas ativas no território ÷ população residente.",
    "universo_rotulo": "estabelecimentos no território ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
     "Herda a ressalva de composição do conjunto da contagem.",
-    "2021 e 2023 têm base populacional distinta."
+    "A população usa três bases: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025)."
    ]
   },
   {
@@ -740,13 +740,13 @@
    "transformacoes": [
     "Divisão pela população do exercício do OBEE, não pela população de referência do Ministério (que é a do ano anterior)."
    ],
-   "comparacao": "A comparação usa a razão do mesmo tipo e exercício entre capitais. Variações que envolvem 2021 ou 2023 misturam mudança de base populacional.",
+   "comparacao": "A comparação usa a razão do mesmo tipo e exercício entre capitais. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
    "universo_curto": "Equipes registradas ÷ população residente do exercício.",
    "universo_rotulo": "equipes ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",
    "ressalvas": [
     "O serviço do Relatório APS não tem contrato publicado nem versão: o OBEE guarda a resposta integral com sha256 e valida o esquema a cada coleta.",
-    "Usa a população do exercício do OBEE, diferente da população de referência do Ministério; 2021 e 2023 têm base populacional distinta."
+    "Usa a população do exercício do OBEE, diferente da população de referência do Ministério; as bases são três: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025)."
    ]
   },
   {
@@ -792,7 +792,7 @@
     "Leitura do valor oficial.",
     "Conferência: capacidade = fórmula da nota técnica e cobertura = capacidade ÷ população, para 2022 em diante."
    ],
-   "comparacao": "A comparação usa dezembro do mesmo ano entre capitais. A população de referência é a do ano anterior e muda a cada janeiro (efeito do denominador, não da capacidade). Não se compara com cobertura de outro método.",
+   "comparacao": "A comparação usa dezembro do mesmo ano entre capitais. A população de referência é a que o Ministério adota para a competência, em três bases: anterior ao Censo (dezembro de 2021 e de 2022), Censo 2022 (dezembro de 2023 e de 2024) e estimativa de 2024 (dezembro de 2025). A variação entre bases diferentes é efeito do denominador, não da capacidade, e é bloqueada. Não se compara com cobertura de outro método.",
    "universo_curto": "Capacidade das equipes de atenção primária ÷ população de referência do Ministério da Saúde.",
    "universo_rotulo": "capacidade das equipes ÷ população",
    "estado": "PUBLICAVEL_COM_RESSALVAS",

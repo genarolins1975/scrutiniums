@@ -4,7 +4,7 @@ Para quem retoma o módulo. Ler antes: [ESCOPO_E_FONTES.md](./ESCOPO_E_FONTES.md
 
 ## 1. Estado em 09/10/2026
 
-Módulo funcional com dados oficiais: 20 indicadores publicados com ressalvas (despesa, subfunção, natureza, ASPS, despesa por fonte, UBS, equipes, cobertura potencial, ICSAP, planos privados, população), 3 avaliados e não publicados, 8.777 observações (`hash_dados` ea1565fee6907c1a), 26 capitais, série financeira de 2021 a 2025 e resultados de 2021 a 2024. A entrada `/eficiencia-estatal` leva a Educação e a Saúde. Nada foi publicado em produção: o trabalho está na branch `claude/determined-knuth-21z58z` e em um PR aberto para revisão, sem merge.
+Módulo funcional com dados oficiais: 20 indicadores publicados com ressalvas (despesa, subfunção, natureza, ASPS, despesa por fonte, UBS, equipes, cobertura potencial, ICSAP, planos privados, população), 3 avaliados e não publicados, 8.777 observações (`hash_dados` 6a4bac828fb3918d), 26 capitais, série financeira de 2021 a 2025 e resultados de 2021 a 2024. A entrada `/eficiencia-estatal` leva a Educação e a Saúde. Nada foi publicado em produção: o trabalho está na branch `claude/determined-knuth-21z58z` e em um PR aberto para revisão, sem merge.
 
 A avaliação por critérios A a K é interna, feita por agentes distintos do executor, e consta de [MATRIZ_DE_AVALIACAO.md](./MATRIZ_DE_AVALIACAO.md). Não houve validação por pessoas, usuários reais nem especialistas externos.
 

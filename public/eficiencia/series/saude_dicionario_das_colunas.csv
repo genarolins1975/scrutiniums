@@ -32,7 +32,8 @@ sau_*.csv (um por indicador),referencia_denominador,Referência de fonte do deno
 sau_*.csv (um por indicador),tipo_populacao,Tipo da população usada: estimativa de 1º de julho ou população do Censo 2022.
 sau_*.csv (um por indicador),base_populacional,"Base da população do denominador: estimativa anterior ao Censo 2022, Censo 2022 (2022 e 2023, mesma população) ou estimativa posterior ao Censo 2022. Variação entre exercícios de bases diferentes mistura a mudança do denominador."
 sau_*.csv (um por indicador),data_referencia,Data de referência da população.
-sau_*.csv (um por indicador),quebra_serie,"Marca a base do denominador: dois exercícios consecutivos só têm variação comparável quando a marca é a mesma (sim e sim, ou nao e nao). Marcas diferentes indicam mudança de base populacional ou de método entre os dois."
+sau_*.csv (um por indicador),quebra_serie,"Marca a base do denominador (e, na cobertura potencial, o método): dois exercícios consecutivos só têm variação comparável quando a marca é a mesma (sim e sim, ou nao e nao) e quando a coluna quebra_perimetro também coincide. Marcas diferentes indicam mudança de base populacional ou de método entre os dois."
+sau_*.csv (um por indicador),quebra_perimetro,"'sim' quando a conferência da despesa (DCA, RREO e MSC) mostra que o perímetro da despesa deste exercício difere do dos demais (por exemplo, despesas intraorçamentárias na função), e a variação com exercício de outro perímetro não é comparável. Independe da base da população."
 sau_*.csv (um por indicador),minimo_pct,"Mínimo de aplicação em ASPS do município, em % da base, quando o demonstrativo o informa (15% pela LC 141/2012, ou o da lei orgânica quando maior)."
 saude_referencias_capitais.csv,indicador_id,Identificador do indicador no catálogo do OBEE.
 saude_referencias_capitais.csv,indicador,Nome do indicador.
@@ -60,6 +61,26 @@ saude_referencias_capitais.csv,politica_versao,Versão da política de referênc
 saude_referencias_capitais.csv,versao_metodologica,Versão metodológica do indicador.
 saude_referencias_capitais.csv,dados_gerados_em,Data e hora de geração dos dados publicados.
 saude_referencias_capitais.csv,hash_dados,Hash do conteúdo dos dados publicados; identifica a base exata da linha.
+saude_referencias_nacionais.csv,referencia_id,"Identificador da referência (norma, Brasil oficial ou Brasil calculado pelo OBEE)."
+saude_referencias_nacionais.csv,indicador_id,Identificador do indicador a que a referência se aplica.
+saude_referencias_nacionais.csv,indicador,Nome do indicador.
+saude_referencias_nacionais.csv,componente,"Parte do indicador, quando houver."
+saude_referencias_nacionais.csv,ano,Ano ou competência de dezembro da referência; vazio para norma.
+saude_referencias_nacionais.csv,tipo,"normativa (norma, não é meta), nacional_oficial (publicada pela fonte) ou nacional_calculado (calculada pelo OBEE sobre o arquivo oficial)."
+saude_referencias_nacionais.csv,rotulo,Nome da referência.
+saude_referencias_nacionais.csv,valor,Valor numérico com ponto decimal.
+saude_referencias_nacionais.csv,unidade,Unidade do valor.
+saude_referencias_nacionais.csv,escopo,O que a referência cobre e o que não é.
+saude_referencias_nacionais.csv,fonte,Fonte e conjunto.
+saude_referencias_nacionais.csv,paginas_oficiais,Páginas oficiais para abrir a fonte (o endereço exato da coleta está no manifesto das capturas).
+saude_referencias_nacionais.csv,data_captura,Data da última captura da fonte.
+saude_referencias_nacionais.csv,registro,"Registro de origem do valor (competência, numerador e denominador)."
+saude_referencias_nacionais.csv,origem,"oficial_publicado, calculado ou norma."
+saude_referencias_nacionais.csv,comparabilidade,Quanto a referência se compara às capitais (direta ou com ressalva).
+saude_referencias_nacionais.csv,classe,"Rótulo de leitura: referência normativa, nacional oficial ou nacional calculada; nenhuma é meta."
+saude_referencias_nacionais.csv,versao_metodologica,Versão metodológica do indicador.
+saude_referencias_nacionais.csv,dados_gerados_em,Momento da geração da gold.
+saude_referencias_nacionais.csv,hash_dados,Hash dos dados: cite com a data de geração.
 saude_matriz_de_fontes.csv,id,"Identificador da medida candidata: F (recursos), E (estrutura), R (resultados) e D (contexto demográfico), com número."
 saude_matriz_de_fontes.csv,medida,Medida candidata avaliada.
 saude_matriz_de_fontes.csv,fonte,Fonte oficial testada.

@@ -4,8 +4,8 @@ import type { FichaExibivel, ReferenciaExternaSaude, StatusDado } from "./tipos"
 
 export const GRUPOS_REF = ["todas", "N", "NE", "SE", "S", "CO"] as const;
 
-/** [indicador, capital, ano, componente, valor, estado, nota, participação, elegível, nota material, situação, motivo, quebra, numerador, denominador, extra] */
-export type ObsC = [number, number, number, number, number | null, number, number, number | null, 0 | 1, 0 | 1, number, number, 0 | 1, number | null, number | null, number | null];
+/** [indicador, capital, ano, componente, valor, estado, nota, participação, elegível, nota material, situação, motivo, quebra (bit 1: base populacional ou método; bit 2: perímetro da despesa), numerador, denominador, extra] */
+export type ObsC = [number, number, number, number, number | null, number, number, number | null, 0 | 1, 0 | 1, number, number, 0 | 1 | 2 | 3, number | null, number | null, number | null];
 /** [indicador, componente, ano, grupo, capitais no grupo, com valor, n, média, mediana, mínimo, máximo, q1, q3, quartis exibidos, soma num., soma den., razão agregada, capitais do mínimo, capitais do máximo] */
 export type RefC = [number, number, number, number, number, number, number, number | null, number | null, number | null, number | null, number | null, number | null, 0 | 1, number | null, number | null, number | null, number[], number[]];
 

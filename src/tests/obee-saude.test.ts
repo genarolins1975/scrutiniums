@@ -19,7 +19,8 @@ import {
   variacao,
 } from "@/lib/eficiencia/saude/consulta";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
-import { fraseAmplitude, fraseCapital, fraseDiferenca, fraseEvolucao, minuscula, posicaoNaMediana } from "@/lib/eficiencia/saude/frases";
+import { fraseAmplitude, fraseCapital, fraseDiferenca, fraseEvolucao, minuscula, posicaoNaMediana, resumoDoRecorte } from "@/lib/eficiencia/saude/frases";
+import { HISTORICO_REVISOES } from "@/lib/eficiencia/saude/revisoes";
 import { MEDIDAS_ORDEM, MEDIDAS_SAUDE, TEMAS_SAUDE } from "@/lib/eficiencia/saude/medidas";
 import { ABAS_SAUDE, CAMINHO_COMPARAR, CAMINHO_METODOS, CAMINHO_TEMA, hrefSaude, ROTA_ENTRADA, ROTA_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import sitemap from "@/app/sitemap";
@@ -471,5 +472,77 @@ describe("isolamento de Educação", () => {
     const edu = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/gold/educacao_capitais.json"), "utf-8"));
     expect(edu.painel.id).not.toBe(g.painel.id);
     expect(edu.meta.hash_dados).not.toBe(g.meta.hash_dados);
+  });
+});
+
+describe("ciclo 4: marcas, histórico, resumo e entrada", () => {
+  it("a marca de perímetro da despesa é separada da marca de base: Campo Grande 2021 bloqueia a variação por perímetro", () => {
+    const cg = cap("Campo Grande");
+    const s = serie(ix, medida("despesa_hab"), cg.cod, OPC);
+    const p2021 = ix.ponto("sau.despesa.por_habitante", cg.cod, 2021, "nominal");
+    const p2022 = ix.ponto("sau.despesa.por_habitante", cg.cod, 2022, "nominal");
+    expect(s.length).toBe(5);
+    // 2021 é anterior ao Censo e tem perímetro distinto (intraorçamentárias): a base e o perímetro diferem de 2022
+    expect([p2021.quebraSerie, p2021.quebraPerimetro]).toEqual([false, true]);
+    expect([p2022.quebraSerie, p2022.quebraPerimetro]).toEqual([true, false]);
+    expect(variacao(p2022, p2021)).toEqual({ bloqueio: "um dos valores está fora das comparações" });
+  });
+
+  it("mesmas bases, perímetros diferentes: a variação é bloqueada pelo perímetro", () => {
+    const base = { valor: 10, status: "OBSERVADO", nota: null, notaMaterial: false, participacao: null, elegivel: true, situacao: null, motivo: null, quebraSerie: true } as const;
+    expect(variacao({ ...base, quebraPerimetro: true }, { ...base, quebraPerimetro: false })).toEqual({ bloqueio: "o perímetro da despesa mudou entre os dois anos" });
+    expect(variacao({ ...base, quebraPerimetro: false }, { ...base, quebraPerimetro: false })).toEqual({ pct: 0 });
+  });
+
+  it("o histórico de revisões termina na gold publicada e cada hash aparece uma vez", () => {
+    const h = HISTORICO_REVISOES;
+    expect(h.at(-1)!.hash).toBe(g.meta.hash_dados.slice(0, 16));
+    expect(h.at(-1)!.observacoes).toBe(g.meta.observacoes);
+    expect(new Set(h.map((r) => r.hash)).size).toBe(h.length);
+  });
+
+  it("o resumo do recorte no celular traz medida, período, moeda, denominador, capital e grupo", () => {
+    expect(resumoDoRecorte({ medida: "despesa_hab", periodo: "2025", real: false, denominadorIbge: false, capital: null, regiao: null })).toBe("Despesa por habitante · 2025 · todas as capitais");
+    expect(resumoDoRecorte({ medida: "icsap_taxa", periodo: "2024", real: false, denominadorIbge: true, capital: "Recife (PE)", regiao: "Nordeste" })).toBe(
+      "Taxa de ICSAP por 100 mil habitantes · 2024 · população do IBGE · Recife (PE), comparada à região Nordeste",
+    );
+    expect(resumoDoRecorte({ medida: "ubs_10mil", periodo: "2025", real: false, denominadorIbge: false, capital: null, regiao: null, ordem: "do maior ao menor" })).toBe("UBS por 10 mil habitantes · 2025 · todas as capitais · ordem do maior ao menor");
+    expect(resumoDoRecorte({ medida: "despesa", periodo: "2023", real: true, denominadorIbge: false, capital: null, regiao: null, semCapital: "nenhuma capital escolhida" })).toBe(
+      "Despesa total · 2023 · reais de 2025 · nenhuma capital escolhida",
+    );
+  });
+
+  it("a linha de cobertura da entrada concorda com as golds de Saúde e de Educação", () => {
+    const edu = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/gold/educacao_capitais.json"), "utf-8"));
+    expect(edu.periodos.financeiros[0]).toBe(2021);
+    expect(edu.periodos.financeiros.at(-1)).toBe(2025);
+    expect(edu.periodos.censo[0]).toBe(2021);
+    expect(edu.periodos.censo.at(-1)).toBe(2025);
+    expect(edu.periodos.ideb[0]).toBe(2005);
+    expect(edu.periodos.ideb.at(-1)).toBe(2025);
+    const pagina = readFileSync(join(process.cwd(), "src/app/eficiencia-estatal/page.tsx"), "utf-8");
+    expect(pagina).toContain("despesa e matrículas de 2021 a 2025; Ideb de 2005 a 2025");
+    expect(pagina).toContain("g.periodos.financeiros[0]");
+    expect(g.periodos.financeiros).toEqual([2021, 2022, 2023, 2024, 2025]);
+    expect(g.periodos.resultados).toEqual([2021, 2022, 2023, 2024]);
+  });
+
+  it("cada cartão do Panorama aponta para a trilha da própria medida, que existe em Dados e métodos", () => {
+    const pagina = readFileSync(join(process.cwd(), "src/components/eficiencia/saude/PanoramaSaude.tsx"), "utf-8");
+    expect(pagina).toContain('#trilha-${ficha.id.replace(/\\./g, "-")}');
+    const metodos = readFileSync(join(process.cwd(), "src/app/eficiencia-estatal/saude-capitais/metodos/page.tsx"), "utf-8");
+    expect(metodos).toContain('id={`trilha-${t.indicador.replace(/\\./g, "-")}`}');
+    const medidasDoPanorama = MEDIDAS_ORDEM.map((id) => MEDIDAS_SAUDE[id].indicador);
+    const trilhas = new Set<string>(g.trilhas.map((t) => t.indicador));
+    for (const ind of medidasDoPanorama) expect(trilhas.has(ind as string), ind).toBe(true);
+  });
+
+  it("as fichas não contradizem as marcas de base da gold", () => {
+    const texto = JSON.stringify(g.indicadores);
+    expect(texto).not.toMatch(/2021 ou 2023|2021 e 2023 têm base|muda a cada janeiro/);
+    // as variações bloqueadas pela base são 2021 para 2022 e 2023 para 2024; as duas outras têm a mesma base
+    const sp = cap("São Paulo");
+    const marcas = serie(ix, medida("despesa_hab"), sp.cod, OPC).map((p) => p.quebraSerie);
+    expect(marcas.map((m, i) => (i > 0 && m !== marcas[i - 1] ? `${2020 + i}-${2021 + i}` : null)).filter(Boolean)).toEqual(["2021-2022", "2023-2024"]);
   });
 });

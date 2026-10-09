@@ -113,3 +113,29 @@ Gold: `hash_dados` `ea1565fee6907c1a`, 8.777 observações. Seção do executor,
 | G (dados): Panorama e entrada sem fonte nem reprodução à vista | Links "Baixar a série completa (CSV)" e "Fonte e como reproduzir" em cada medida do Panorama; linha "Fontes" em cada tema da entrada |
 
 Não alterado: parâmetros inválidos de capital, medida e visão na URL (D9, componente compartilhado); texto SVG de 10 a 11,5 px e `.rotulo`; links "Série completa em CSV" e rodapé (compartilhados).
+
+## 7. Quarto ciclo de correções (achados da reavaliação 3)
+
+Gold: `hash_dados` `6a4bac828fb3918d`, 8.777 observações. Nenhum valor mudou: 188 observações tiveram registro ou nota revisados. Seção do executor, sem notas.
+
+| Achado | Correção |
+| --- | --- |
+| T1 (dados): fichas dizem que variações com 2021 ou 2023 são bloqueadas; "muda a cada janeiro" | Fichas de despesa por habitante, UBS e equipes por 10 mil e cobertura reescritas: as bases são três; 2021 para 2022 e 2023 para 2024 são bloqueadas; 2022 para 2023 e 2024 para 2025 têm a mesma base; na cobertura, dezembro de 2023 e de 2024 usam a mesma população. Teste compara o texto com as marcas da gold |
+| T2 (dados): população de 2023 rotulada como relação do DOU | Em Saúde, o registro, a nota e o nome da fonte citam o arquivo realmente usado (Primeiros Resultados do Censo 2022, 22/12/2023, conferido com o SIDRA 4714) e dizem que a relação do DOU não foi obtida. O texto de Educação não foi alterado |
+| T3 (dados): marca de base de Campo Grande 2021 igual à de 2022 | A marca do perímetro da despesa (conferência) é separada da marca de base: coluna `quebra_perimetro` no CSV e bit próprio no payload; a variação exige as duas marcas iguais |
+| T4 (dados): link para MATRIZ_DE_AVALIACAO.md; exemplo de ICSAP | Matriz escrita; exemplo de ICSAP traz a soma das 24 células de sexo e faixa etária (numerador e denominador) |
+| T5 (dados): sem histórico de revisões | Tabela "Histórico de revisões" em Dados e métodos, com data, hash, observações, tipo e o que mudou; teste exige que a última linha seja a gold publicada |
+| T6 (dados): destino único do link de reprodução; Brasil fora dos CSV | Cada cartão do Panorama aponta para a trilha da própria medida (a página abre o bloco e leva o foco); novo CSV `saude_referencias_nacionais.csv` com as 14 referências (norma, Brasil oficial e Brasil calculado), com fonte, páginas oficiais e data de captura, e entrada no dicionário |
+| T7 (dados): OCDE na linha de Educação | Não alterado: a linha de fontes de Educação foi conferida só contra o texto da entrada; a OCDE aparece em Educação como referência internacional, fora desta rodada |
+| T8 (dados): CLS no Panorama; testes das mudanças | Testes novos (histórico, resumo, cobertura da entrada, trilhas, marcas, referências nacionais, fichas contra as marcas); o deslocamento do Panorama foi medido de novo na reavaliação |
+| T9 (dados): valor bruto na nota de Florianópolis | A nota diz os créditos e os débitos sem natureza e o percentual da DCA |
+| Experiência 1: quadro "O módulo em números" falha no axe (definition-list) | `dl` trocado por lista; a barra das decisões ganha separador entre segmentos |
+| Experiência 2: gráfico abaixo da primeira tela no celular | Ordem das capitais passa para o painel recolhido; botão de CSV desce para depois do gráfico no celular. Gastos 837, Rede 801, Resultados 807 e Comparar 863 px a 390 px (antes 940, 904, 945 e 730); a 320 px, 988, 946, 919 e 971 |
+| Experiência 3: colisões de texto a 320 e 390 px | O rótulo "mudança de base" se desloca para onde não cobre o número de uma nota; as linhas dos gráficos de distribuição crescem quando o nome ocupa duas linhas |
+| Experiência 4: aviso do período depois do gráfico | Linha de ponteiro acima do gráfico, com link para o aviso, no celular |
+| Experiência 5: resumo do recorte incompleto | Resumo traz medida por extenso, período, moeda, denominador do IBGE, capital, grupo regional e ordem |
+| Experiência 6: Comparar esconde a escolha das capitais | O painel traz o rótulo "Escolher as capitais" enquanto não há capital; a etiqueta do perímetro, com o limite, vem antes do gráfico |
+| Experiência 7: siglas da linha "Fontes" da entrada | Siglas expandidas no próprio texto; linha "Cobertura" por tema (capitais, anos, indicadores) |
+| Experiência 9: Panorama no celular | Valores, gráfico e só depois a definição; um link de reprodução por medida |
+
+Não alterado: parâmetros inválidos de capital, medida e visão na URL; texto SVG de 10 a 11,5 px e `.rotulo`; links em linha, rodapé e links de CSV (compartilhados); escopo do COB.2.01 como denominador da participação; explicação do M03; revisão externa.

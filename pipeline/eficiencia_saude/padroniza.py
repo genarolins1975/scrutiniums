@@ -110,7 +110,29 @@ def populacao():
         if base_pop is None:
             continue
         o["base_populacional"], o["quebra_serie"] = base_pop
+        if o.get("tipo_populacao") == "censo_relacao_dou_2023" and o["status"] == "OBSERVADO":
+            _rotula_populacao_2023(o)
     return obs
+
+
+NOTA_POPULACAO_2023 = (
+    "População oficial do exercício de 2023: o IBGE adotou a população do Censo 2022 (segunda apuração), com referência em 31 de julho de 2022, "
+    "em lugar de uma estimativa de 2023. Os valores deste módulo são os da tabela municipal dos Primeiros Resultados de População do Censo 2022, "
+    "de 22/12/2023, iguais aos do SIDRA 4714 e à população de 2022. A relação publicada no DOU em 31/08/2023 não foi obtida (o site do IBGE "
+    "responde 403 a consultas automáticas). Não é estimativa de população em julho de 2023: é a mesma população de 2022. "
+    "A despesa por habitante de 2023 não acompanha o crescimento populacional posterior ao Censo e a variação entre 2022 e 2023 vem só da "
+    "despesa; a variação entre 2023 e 2024 mistura dois anos de crescimento populacional.")
+
+
+def _rotula_populacao_2023(o):
+    """Rótulo de procedência da população de 2023 no módulo de Saúde: o arquivo realmente usado é o PDF dos Primeiros Resultados do Censo 2022
+    (22/12/2023), conferido com o SIDRA; a relação do DOU não foi baixada. O texto de Educação (compartilhado) não é alterado."""
+    nota = NOTA_POPULACAO_2023
+    if "população judicial" in (o.get("nota") or ""):
+        nota += " A publicação do IBGE traz, para este município, uma população judicial (nota de rodapé), que não é a usada aqui."
+    o["nota"] = nota
+    o["registro"] = (f"IBGE, Censo Demográfico 2022 (segunda apuração), Primeiros Resultados de População, tabela municipal de 22/12/2023, município {o['ente']}, "
+                     f"referência {PE.DATA_REF_RELACAO_2023}")
 
 
 def _conf_resumo(conf):
@@ -154,6 +176,11 @@ def despesa_por_habitante(despesa_obs, pop_obs):
     return obs
 
 
+def _pct_da_dca(valor, dca):
+    """Percentual do valor sobre a despesa da DCA, com vírgula decimal, para a nota."""
+    return f"{100 * valor / dca:.1f}".replace(".", ",") + "%" if dca else "sem base"
+
+
 def despesa_natureza(despesa_obs):
     """Composição da despesa liquidada na função Saúde por categoria de natureza (pessoal, outras correntes e capital).
 
@@ -184,9 +211,12 @@ def despesa_natureza(despesa_obs):
                 sem_nat = [x for x in linhas_msc if str(x.get("funcao")) == "10" and str(x.get("conta_contabil", ""))[:7] in CF.MSC_CONTAS_LIQUIDADO
                            and not (str(x.get("natureza_despesa") or "")[:2] in DV2.GRUPO_PARA_CATEGORIA or str(x.get("natureza_despesa") or "")[2:4] == "91")]
                 liquido_sem_nat = round(sum(CF.saldo_liquido(x) for x in sem_nat), 2)
+                creditos_sem_nat = round(sum(float(x["valor"]) for x in sem_nat if x.get("natureza_conta") == "C"), 2)
+                debitos_sem_nat = round(sum(float(x["valor"]) for x in sem_nat if x.get("natureza_conta") == "D"), 2)
                 relacao = "coincide com" if abs(total - d["valor"]) <= 1.0 else "difere de"
                 motivo = (f"A MSC traz {len(sem_nat)} linhas da função 10 sem natureza da despesa identificável, que não podem ser classificadas em categoria; o saldo líquido dessas linhas "
-                          f"(créditos menos débitos) é {CF.brl(liquido_sem_nat)}. A soma das categorias identificadas ({CF.brl(total)}) {relacao} a DCA ({CF.brl(d['valor'])}), "
+                          f"(créditos menos débitos) é {CF.brl(liquido_sem_nat)}, mas os créditos somam {CF.brl(creditos_sem_nat)} e os débitos {CF.brl(debitos_sem_nat)} "
+                          f"({_pct_da_dca(creditos_sem_nat, d['valor'])} da DCA), sem natureza identificável. A soma das categorias identificadas ({CF.brl(total)}) {relacao} a DCA ({CF.brl(d['valor'])}), "
                           "mas a abertura completa não é verificável: se esses créditos e débitos pertencessem a categorias diferentes, a composição mudaria sem alterar o total. A abertura por natureza não é publicada para este exercício e nenhuma categoria é estimada.")
             elif not DV2.reconcilia(soma, d["valor"]):
                 motivo = (f"A MSC aberta por natureza ({CF.brl(total)}, sem modalidade 91) não reproduz a DCA ({CF.brl(d['valor'])}); "

@@ -50,7 +50,7 @@ export function ForaDaComparacaoSaude({ itens }: { itens: ItemFora[] }) {
 export function AvisoDoPeriodo({ texto }: { texto: string | null }) {
   if (!texto) return null;
   return (
-    <p className="mt-3 max-w-prose2 border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta" role="note">
+    <p id="aviso-do-periodo" tabIndex={-1} className="mt-3 max-w-prose2 scroll-mt-24 border-l-2 border-obee pl-3 text-sm leading-snug text-obee-tinta focus:outline focus:outline-2 focus:outline-obee" role="note">
       {texto}
     </p>
   );
@@ -173,13 +173,13 @@ export function AjudaDenominador({ iguais, total, ano }: { iguais: number; total
  * apareçam logo depois do título. O fechamento no celular acontece por um script logo após o elemento, antes da primeira pintura (sem JavaScript, o
  * painel fica aberto). A tela larga não tem o resumo e não permite fechar.
  */
-export function RecorteRecolhivel({ id, resumo, children }: { id: string; resumo: string; children: ReactNode }) {
+export function RecorteRecolhivel({ id, resumo, children, rotulo = "Ajustar o recorte" }: { id: string; resumo: string; children: ReactNode; rotulo?: string }) {
   const script = `(function(){try{var d=document.getElementById(${JSON.stringify(id)});if(d&&window.matchMedia("(max-width: 1023px)").matches)d.open=false}catch(e){}})();`;
   return (
     <>
       <details id={id} open className="mt-6">
         <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-2 border-y border-linha py-2 text-sm leading-snug text-obee-tinta lg:hidden">
-          <span className="rotulo text-mineral">Ajustar o recorte</span>
+          <span className="rotulo text-mineral">{rotulo}</span>
           <span className="min-w-0 flex-1 basis-[12rem]">{resumo}</span>
           <span aria-hidden="true" className="text-obee-dark">▾</span>
         </summary>

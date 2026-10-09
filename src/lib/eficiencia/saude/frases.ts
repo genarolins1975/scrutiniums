@@ -1,5 +1,5 @@
 import { inteiro } from "../formato";
-import type { MedidaSaude } from "./medidas";
+import type { MedidaSaude, MedidaSaudeId } from "./medidas";
 import { periodoCurto, ROTULO_PERIODO, type PeriodoTipo } from "./medidas";
 
 export const QUANDO: Record<PeriodoTipo, (a: number) => string> = {
@@ -105,4 +105,32 @@ export function fraseEvolucao(pontos: PontoFrase[], m: MedidaSaude, sujeito: str
   const base = `${sujeito}: de ${m.formata(a.valor!)} em ${quando(a)} para ${m.formata(b.valor!)} em ${quando(b)}.`;
   const fora = com.filter((p) => !ultimo.includes(p));
   return fora.length ? `${base} Os valores de ${fora.map(quando).join(", ")} usam outra base e não entram nesta variação: ${motivoQuebra}.` : base;
+}
+
+const ROTULO_RESUMO: Record<MedidaSaudeId, string> = {
+  despesa: "Despesa total",
+  despesa_hab: "Despesa por habitante",
+  asps_pct: "Aplicado em ASPS (%)",
+  ubs_10mil: "UBS por 10 mil habitantes",
+  esf_10mil: "eSF por 10 mil habitantes",
+  eap_10mil: "eAP por 10 mil habitantes",
+  cobertura_aps: "Cobertura potencial da APS",
+  icsap_taxa: "Taxa de ICSAP por 100 mil habitantes",
+  icsap_n: "Internações ICSAP (número)",
+  icsap_part: "ICSAP nas internações SUS (%)",
+};
+
+/**
+ * Resumo do recorte para o painel recolhido no celular: medida, período, moeda, denominador quando não é o padrão, capital e grupo de comparação.
+ * O leitor vê o que está escolhido sem abrir os controles.
+ */
+export function resumoDoRecorte(p: { medida: MedidaSaudeId; periodo: string; real: boolean; denominadorIbge: boolean; capital: string | null; regiao: string | null; semCapital?: string; ordem?: string | null }): string {
+  return [
+    ROTULO_RESUMO[p.medida],
+    p.periodo,
+    p.real ? "reais de 2025" : null,
+    p.denominadorIbge ? "população do IBGE" : null,
+    p.capital ? `${p.capital}${p.regiao ? `, comparada à região ${p.regiao}` : ""}` : p.semCapital ?? "todas as capitais",
+    p.ordem ? `ordem ${p.ordem}` : null,
+  ].filter(Boolean).join(" · ");
 }

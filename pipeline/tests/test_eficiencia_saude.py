@@ -443,9 +443,80 @@ class TestSaude(unittest.TestCase):
             self.assertIn(("sau_*.csv (um por indicador)", c), descritas)
         for c in gold.CAMPOS_CSV_REFERENCIAS:
             self.assertIn(("saude_referencias_capitais.csv", c), descritas)
+        for c in gold.CAMPOS_CSV_NACIONAIS:
+            self.assertIn(("saude_referencias_nacionais.csv", c), descritas)
         from pipeline.eficiencia_saude import matriz_fontes as MF
         for c in MF.CAMPOS:
             self.assertIn(("saude_matriz_de_fontes.csv", c), descritas)
+
+
+    # ---------------------------------------------------------------- ciclo 4: fichas, rótulos e marcas
+
+    def test_fichas_dizem_quais_variacoes_a_base_bloqueia(self):
+        """Um texto de ficha que contradiz a marca da gold engana o leitor: as frases têm de coincidir com as bases por exercício."""
+        bloqueadas = [(a, a + 1) for a in range(2021, 2025) if self.base_do_exercicio(a)[1] != self.base_do_exercicio(a + 1)[1]]
+        self.assertEqual(bloqueadas, [(2021, 2022), (2023, 2024)])
+        fichas = {i["id"]: i for i in self.g["indicadores"]}
+        for ind in ("sau.despesa.por_habitante", "sau.rede.ubs_publicas_por_10mil", "sau.aps.equipes_por_10mil"):
+            self.assertIn("2021 para 2022 e", fichas[ind]["comparacao"] + " ".join(fichas[ind]["ressalvas"]) + fichas[ind]["comparacao"])
+            self.assertIn("de 2022 para 2023 e de 2024 para 2025 a base é a mesma", fichas[ind]["comparacao"])
+        for f in fichas.values():
+            texto = json.dumps(f, ensure_ascii=False)
+            self.assertNotIn("2021 ou 2023", texto)
+            self.assertNotIn("2021 e 2023 têm base populacional distinta", texto)
+            self.assertNotIn("muda a cada janeiro", texto)
+
+    def base_do_exercicio(self, ano):
+        pop = next(o for o in self.obs if o["indicador"] == "ctx.populacao.residente" and o["ente"] == SP and o["ano"] == ano)
+        return pop["base_populacional"], bool(pop["quebra_serie"])
+
+    def test_populacao_2023_cita_o_arquivo_realmente_usado(self):
+        o = self.v("ctx.populacao.residente", SP, 2023)
+        self.assertIn("Primeiros Resultados", o["registro"])
+        self.assertIn("22/12/2023", o["nota"])
+        self.assertIn("não foi obtida", o["nota"])
+        self.assertNotIn("o IBGE publicou, em 31/08/2023", o["nota"])
+        rel = next(f for f in self.g["fontes"] if f["id"] == "ibge_populacao")
+        cap = next(c for c in rel["capturas"] if c["chave"] == "ibge_populacao_relacao_2023")
+        self.assertIn("não foi obtida", cap["conjunto"])
+
+    def test_csv_separa_marca_de_base_e_marca_de_perimetro(self):
+        """Campo Grande 2021 tem perímetro distinto (intraorçamentárias) e base anterior ao Censo; a marca de base não pode coincidir com a de 2022 por acaso."""
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "sau_despesa_por_habitante.csv"), encoding="utf-8") as f:
+            linhas = [l for l in csv.DictReader(f) if l["codigo_ibge"] == str(CAMPO_GRANDE) and l["componente"] == "nominal"]
+        por_ano = {int(l["ano"]): l for l in linhas}
+        self.assertEqual((por_ano[2021]["quebra_serie"], por_ano[2021]["quebra_perimetro"]), ("nao", "sim"))
+        self.assertEqual((por_ano[2022]["quebra_serie"], por_ano[2022]["quebra_perimetro"]), ("sim", "nao"))
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "sau_despesa_por_habitante.csv"), encoding="utf-8") as f:
+            for l in csv.DictReader(f):
+                # nenhuma capital troca de base sem a marca de base trocar
+                if l["ano"] in ("2021", "2024"):
+                    self.assertEqual(l["quebra_serie"], "nao", (l["capital"], l["ano"]))
+                if l["ano"] in ("2022", "2023"):
+                    self.assertEqual(l["quebra_serie"], "sim", (l["capital"], l["ano"]))
+
+    def test_nota_de_natureza_de_florianopolis_diz_o_valor_bruto(self):
+        FLORIANOPOLIS = 4205407
+        for ano in (2022, 2023):
+            o = self.v("sau.despesa.natureza", FLORIANOPOLIS, ano, "pessoal")
+            self.assertIn("os créditos somam R$", o["nota"])
+            self.assertIn("os débitos", o["nota"])
+
+    def test_referencias_nacionais_estao_em_csv_com_fonte(self):
+        with open(os.path.join(RAIZ, "public", "eficiencia", "series", "saude_referencias_nacionais.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f))
+        self.assertEqual(len(linhas), len(self.g["referencias_externas"]))
+        ids = {l["referencia_id"] for l in linhas}
+        self.assertIn("br.aps.cobertura_potencial.2025", ids)
+        self.assertIn("br_sem_capitais.icsap.taxa.2024", ids)
+        for l in linhas:
+            self.assertTrue(l["fonte"] and l["registro"] and l["hash_dados"])
+            if l["tipo"] != "normativa":
+                self.assertTrue(l["paginas_oficiais"].startswith("http"), l["referencia_id"])
+                self.assertRegex(l["data_captura"], r"^\d{4}-\d{2}-\d{2}$")
+        bruto = {r["id"]: r["valor"] for r in self.g["referencias_externas"]}
+        for l in linhas:
+            self.assertAlmostEqual(float(l["valor"]), bruto[l["referencia_id"]], places=6)
 
 
 class TestIsolamentoEPromocao(unittest.TestCase):

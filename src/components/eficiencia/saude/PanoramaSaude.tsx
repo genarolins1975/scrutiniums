@@ -110,7 +110,8 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                 const externas = ix.externas(m.indicador, m.componente("nominal", "ripsa"), ano).filter((e) => e.comparabilidade === "direta");
                 return (
                   <li key={id} className="grid gap-x-10 gap-y-3 py-5 md:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
-                    <div className="min-w-0">
+                    <div className="min-w-0 max-md:contents">
+                    <div className="min-w-0 max-md:order-1">
                       <h3 className="text-[1.0625rem] font-semibold leading-snug text-obee-tinta">{m.rotulo}</h3>
                       <p className="mt-0.5 text-[0.8125rem] leading-snug text-carvao-muted">
                         {m.unidade("nominal")} · {ROTULO_PERIODO[m.periodo](ano).toLowerCase()} · {c.ref ? `${c.ref.n} de ${c.noGrupo} capitais na comparação` : "sem capital na comparação"}
@@ -127,6 +128,8 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                           <span className="text-carvao-muted"> · {e.tipo === "normativa" ? "referência normativa, não meta" : e.classe}</span>
                         </p>
                       ))}
+                    </div>
+                    <div className="min-w-0 max-md:order-3">
                       <p className="mt-2 text-sm leading-snug text-carvao-muted"><Siglas texto={m.definicao} /></p>
                       <div className="mt-1 flex flex-wrap items-center gap-x-5">
                         <SobreEsteDado f={ficha} ctx={contextos[ficha.id]} />
@@ -135,7 +138,8 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                         </Link>
                       </div>
                     </div>
-                    <div className="min-w-0">
+                    </div>
+                    <div className="min-w-0 max-md:order-2">
                       <PanoramaFaixa m={m} c={c} ano={ano} destaque={cap && ptCap && ptCap.valor !== null && ptCap.elegivel ? { rotulo: cap.nome, valor: ptCap.valor } : null} semDestaqueMotivo={cap && ptCap && ptCap.valor !== null && !ptCap.elegivel ? `${cap.nome} (${cap.uf}) tem valor oficial fora da comparação: ${m.formata(ptCap.valor)}.` : cap && ptCap && ptCap.valor === null ? `${cap.nome} (${cap.uf}) não tem valor para este recorte.` : null} />
                       <div className="mt-1 flex flex-wrap items-center gap-x-5 text-[0.9375rem]">
                         {ficha.download && (
@@ -143,9 +147,9 @@ export function PanoramaSaude({ dados, contextos }: { dados: DadosSaude; context
                             Baixar a série completa (CSV)
                           </a>
                         )}
-                        <Link href={`${hrefSaude("/metodos")}#reproducao`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
-                          Fonte e como reproduzir
-                        </Link>
+                        <a href={`${hrefSaude("/metodos")}#trilha-${ficha.id.replace(/\./g, "-")}`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+                          Fonte e como reproduzir<span className="sr-only"> ({m.rotuloCurto})</span>
+                        </a>
                       </div>
                     </div>
                   </li>

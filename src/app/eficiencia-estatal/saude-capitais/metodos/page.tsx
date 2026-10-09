@@ -5,6 +5,8 @@ import { CatalogoIndicadores, ListaValidacoes, MatrizDeFontes } from "@/componen
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
 import { ARQUIVO_GOLD_SAUDE, goldSaude } from "@/lib/eficiencia/saude/dados";
+import { AbreAncora } from "@/components/eficiencia/saude/AbreAncora";
+import { HISTORICO_REVISOES, ROTULO_TIPO_REVISAO } from "@/lib/eficiencia/saude/revisoes";
 import { dataBr, decimal, rotuloVersaoCatalogo } from "@/lib/eficiencia/formato";
 import { SIGLAS } from "@/components/eficiencia/Siglas";
 import { REPOSITORIO } from "@/lib/energia/datasets";
@@ -60,7 +62,7 @@ function ResumoDoModulo({ publicados, avaliados, decisoes, validacoes, observaco
         <p className="rotulo text-carvao-muted">Decisão sobre as {total} medidas candidatas</p>
         <div className="mt-2 flex h-4 w-full overflow-hidden border border-linha" role="img" aria-label={decisoes.map(([d, n]) => `${n} ${d}`).join(", ")}>
           {decisoes.map(([d, n], i) => (
-            <div key={d} className={tons[i % tons.length]} style={{ width: `${(100 * n) / total}%` }} title={`${n} ${d}`} />
+            <div key={d} className={`${tons[i % tons.length]} ${i > 0 ? "border-l-2 border-superficie" : ""}`} style={{ width: `${(100 * n) / total}%` }} title={`${n} ${d}`} />
           ))}
         </div>
         <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-obee-tinta">
@@ -89,6 +91,7 @@ export default function PaginaMetodos() {
   const datas = g.fontes.map((f) => ({ id: f.id, papel: f.papel, ultima: f.capturas.map((c) => c.capturado_em ?? "").sort().slice(-1)[0], paginas: f.capturas.map((c) => ({ chave: c.chave, pagina: c.pagina, periodo: c.parametros ?? "" })) }));
   return (
     <div>
+      <AbreAncora />
       <section aria-labelledby="titulo-metodos">
         <p className="rotulo text-mineral">Saúde nas capitais</p>
         <h1 id="titulo-metodos" className="mt-2 font-serif text-[2.1rem] leading-[1.08] tracking-tight text-obee-tinta md:text-[2.6rem]">Dados e métodos</h1>
@@ -175,7 +178,7 @@ export default function PaginaMetodos() {
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Exemplos de reconstrução passo a passo (dado técnico)</summary>
             <ul className="mt-2 space-y-3 text-sm leading-snug text-obee-tinta">
               {g.trilhas.map((t) => (
-                <li key={t.indicador}>
+                <li key={t.indicador} id={`trilha-${t.indicador.replace(/\./g, "-")}`} className="scroll-mt-24 focus:outline focus:outline-2 focus:outline-obee">
                   <p className="font-mono text-[0.8rem] text-carvao-muted">{t.indicador} · {t.nome} · {t.ano}</p>
                   <ol className="mt-1 list-decimal space-y-1 pl-5">{t.passos.map((p, i) => <li key={i}>{p}</li>)}</ol>
                 </li>
@@ -190,6 +193,7 @@ export default function PaginaMetodos() {
               <li key={f.id}><a href={f.download!} download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">{f.nome_curto}<span className="sr-only"> (CSV)</span></a></li>
             ))}
             <li><a href="/eficiencia/series/saude_referencias_capitais.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Referências do grupo de capitais (CSV)</a></li>
+            <li><a href="/eficiencia/series/saude_referencias_nacionais.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Referências do Brasil e normativas (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_matriz_de_fontes.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Decisões sobre as fontes (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_dicionario_das_colunas.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Dicionário das colunas (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_manifesto_das_capturas.json" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Manifesto das capturas (JSON)</a></li>
@@ -201,6 +205,38 @@ export default function PaginaMetodos() {
           <p className="max-w-prose2 text-sm leading-relaxed text-obee-tinta">
             Versão do catálogo: {rotuloVersaoCatalogo(g.meta.versao_catalogo)}. Dados gerados em {dataBr(g.meta.gerado_em)}; última captura em {dataBr(g.meta.dados_capturados_ate)}. Hash dos dados: <code className="break-all font-mono text-[0.75rem]">{g.meta.hash_dados.slice(0, 16)}</code>.
           </p>
+          <details id="historico-revisoes" className="mt-4 max-w-[64rem]">
+            <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-0.5 font-semibold text-obee-tinta">
+              Histórico de revisões ({HISTORICO_REVISOES.length} versões dos dados)
+              <span className="sr-only">(abrir a tabela)</span>
+            </summary>
+            <p className="mt-1 text-sm leading-snug text-carvao-muted">Cada linha é uma geração dos dados. Horários em UTC. O módulo ainda não foi publicado em produção: as versões intermediárias existem só no repositório de desenvolvimento.</p>
+            <div role="region" aria-label="Histórico de revisões dos dados" tabIndex={0} className="mt-2 overflow-x-auto">
+              <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
+                <caption className="sr-only">Versões dos dados de Saúde, com o código de verificação e o que mudou</caption>
+                <thead>
+                  <tr className="border-b border-linha text-carvao-muted">
+                    <th scope="col" className="rotulo py-2 pr-4">Geração</th>
+                    <th scope="col" className="rotulo py-2 pr-4">Hash dos dados</th>
+                    <th scope="col" className="rotulo py-2 pr-4 text-right">Observações</th>
+                    <th scope="col" className="rotulo py-2 pr-4">Tipo</th>
+                    <th scope="col" className="rotulo py-2">O que mudou</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-linha">
+                  {HISTORICO_REVISOES.map((r) => (
+                    <tr key={r.hash} className="align-top">
+                      <td className="py-2 pr-4 tabular-nums text-obee-tinta">{r.geradoEm}</td>
+                      <td className="py-2 pr-4 font-mono text-[0.75rem] text-obee-tinta">{r.hash}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-obee-tinta">{inteiroBr(r.observacoes)}</td>
+                      <td className="py-2 pr-4 text-carvao-muted">{ROTULO_TIPO_REVISAO[r.tipo]}</td>
+                      <td className="max-w-prose2 py-2 leading-snug text-obee-tinta">{r.mudou}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
           <ul className="mt-4 divide-y divide-linha border-y border-linha text-sm">
             {datas.map((d) => (
               <li key={d.id} className="grid gap-x-6 gap-y-1 py-3 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_8rem]">

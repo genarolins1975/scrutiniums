@@ -76,7 +76,7 @@ export function dadosSaude(g: GoldSaude, pagina: keyof typeof INDICADORES_DA_PAG
       o.nota_material ? 1 : 0,
       o.conferencia ? idx(posSit, situacoes, o.conferencia.situacao) : -1,
       o.conferencia?.motivo_inelegibilidade ? idx(posNota, notas, o.conferencia.motivo_inelegibilidade) : -1,
-      o.quebra_serie || o.conferencia?.quebra_serie ? 1 : 0,
+      ((o.quebra_serie ? 1 : 0) | (o.conferencia?.quebra_serie ? 2 : 0)) as 0 | 1 | 2 | 3,
       o.calculo ? p12(o.calculo.numerador) : null,
       o.calculo ? p12(o.calculo.denominador) : null,
       o.minimo_pct ?? null,

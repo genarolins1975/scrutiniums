@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/eficiencia-estatal" },
 };
 
-type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoInclui: string; fontes: string; entradas: { href: string; rotulo: string }[]; atualizacao: string | null };
+type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoInclui: string; cobertura: string; fontes: string; entradas: { href: string; rotulo: string }[]; atualizacao: string | null };
 
 export default function PaginaEntradaEficiencia() {
   const edu = metaEducacao();
@@ -26,6 +26,7 @@ export default function PaginaEntradaEficiencia() {
       pergunta: "Quanto se gasta, quem é atendido e quais resultados são observados na rede municipal de ensino?",
       escopo: "Rede municipal das 26 capitais estaduais: despesa na função Educação (total, por habitante e razão por matrícula de aplicação direta), matrículas, alunos por turma, aprovação, Ideb e Saeb.",
       naoInclui: "Redes estaduais, federais e privadas na capital; custo por aluno; causa do resultado.",
+      cobertura: "26 capitais; despesa e matrículas de 2021 a 2025; Ideb de 2005 a 2025, a cada dois anos.",
       fontes: "Tesouro Nacional (Siconfi), INEP (Censo Escolar, Ideb e Saeb) e IBGE (população e IPCA).",
       entradas: [
         { href: "/eficiencia-estatal/educacao-municipal-capitais", rotulo: "Panorama" },
@@ -43,6 +44,9 @@ export default function PaginaEntradaEficiencia() {
       pergunta: "Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores?",
       escopo: "Três perímetros separados nas 26 capitais: recursos executados pelo município (despesa, aplicação em ações e serviços públicos de saúde, fonte de recursos), serviços localizados no território (unidades básicas de saúde, equipes e cobertura da atenção primária) e resultados por residência (internações por condições sensíveis à atenção primária, ICSAP).",
       naoInclui: "Gasto de União e estado no território; rede privada e filantrópica; produção da atenção primária, profissionais e custo por atendimento (avaliados e não publicados, com o motivo); filas e tempo de espera (não pesquisados nesta rodada).",
+      cobertura: g
+        ? `26 capitais, com o Distrito Federal fora e o motivo à vista; despesa e aplicação em ações e serviços públicos de saúde de ${g.periodos.financeiros[0]} a ${g.periodos.financeiros[g.periodos.financeiros.length - 1]}; unidades, equipes e cobertura em dezembro de ${g.periodos.dezembros[0]} a ${g.periodos.dezembros[g.periodos.dezembros.length - 1]}; internações por condições sensíveis à atenção primária de ${g.periodos.resultados[0]} a ${g.periodos.resultados[g.periodos.resultados.length - 1]}; ${g.indicadores.filter((f) => f.estado !== "NAO_PUBLICAVEL").length} indicadores publicados com ressalvas.`
+        : "Dados indisponíveis nesta publicação.",
       fontes: "Tesouro Nacional (Siconfi), Ministério da Saúde (SIOPS, CNES, Relatório APS e RIPSA) e IBGE (população e IPCA).",
       entradas: [
         { href: "/eficiencia-estatal/saude-capitais", rotulo: "Panorama" },
@@ -80,6 +84,7 @@ export default function PaginaEntradaEficiencia() {
               <dl className="mt-4 space-y-3 text-sm leading-snug">
                 <div><dt className="rotulo text-carvao-muted">O que mostra</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.escopo}</dd></div>
                 <div><dt className="rotulo text-carvao-muted">O que não inclui</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.naoInclui}</dd></div>
+                <div><dt className="rotulo text-carvao-muted">Cobertura</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta">{t.cobertura}</dd></div>
                 <div><dt className="rotulo text-carvao-muted">Fontes</dt><dd className="mt-0.5 max-w-prose2 text-obee-tinta"><Siglas texto={t.fontes} /></dd></div>
                 <div><dt className="rotulo text-carvao-muted">Última captura de dados</dt><dd className="mt-0.5 text-obee-tinta">{t.atualizacao ?? "não informada"}; os anos de referência estão em cada medida.</dd></div>
               </dl>
