@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { VisaoRegraDetalhe, VisaoRegraResumo } from "@/components/energia/VisaoRegras";
 import PaginaVisaoGeral from "@/app/setor-eletrico/visao-geral/page";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
+import { num } from "@/lib/energia/formato";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
 import type { CargaGold, GeracaoGold, HidrologiaGold, PldGold, RedeGold } from "@/lib/energia/tipos";
 import type { PainelDeterminante, RegraObservar, SinteseVisaoGold } from "@/lib/energia/tipos-visao";
@@ -15,6 +16,16 @@ import {
   ROTULO_FRASE,
   casasUnidade,
   colunasMultiplos,
+  corteEpisodios,
+  determinantesDaPagina,
+  expandeSiglas,
+  linhasDeColunas,
+  periodoDaJanela,
+  textoCoberturaTarifa,
+  textoDecApurado,
+  textoDenominadorPerdas,
+  textoLimiteAgregado,
+  valorDoDiaNaSerie,
   datasLegiveis,
   snapshotLegivel,
   comUnidade,
@@ -53,6 +64,7 @@ import {
   trechosEstado,
   valorSociedade,
 } from "@/lib/energia/visao";
+import { contextoVisao } from "@/lib/energia/visao-servidor";
 
 /**
  * Visão geral (P004 a P007): contrato da gold sintese.json, equivalência célula a célula
@@ -473,11 +485,12 @@ describe("página da Visão geral", () => {
   it("anatomia da seção 7.2: resposta, recorte, prova, tabela, download, link e próxima pergunta", () => {
     for (const f of G.frases) expect(html).toContain(f.texto.slice(0, 40));
     expect(html).toContain("Comprove este número");
-    expect(html).toContain("Como ler");
-    expect(html).toContain("O que não permite concluir");
+    // redesenho: as notas do painel são "Como interpretar" e "O que não é possível concluir", e o rodapé é o SeguirPainel
+    expect(html).toContain("Como interpretar");
+    expect(html).toContain("O que não é possível concluir");
     expect(html).toContain("Copiar link deste painel");
     expect(html).toContain("Próxima pergunta");
-    expect(html).toContain("Baixar os dados deste painel");
+    expect(html).toContain("Baixar os dados");
     expect(html).toContain('data-nivel="analisar"');
     expect(html).toContain('data-nivel="auditar"');
     expect(html).toContain(G.multiplos!.aviso_datas.slice(0, 60));
@@ -539,3 +552,206 @@ describe("bastidor das regras fora de Entender", () => {
     if (comConjuntos) expect(sem(renderToStaticMarkup(createElement(VisaoRegraDetalhe, { o: comConjuntos })), "auditar")).not.toContain("Conjuntos avaliados");
   });
 });
+
+
+/* ---------- r10: a ressalva essencial, o corte e a data de cada medida ---------- */
+
+describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva junto do número", () => {
+  const ctx = contextoVisao(G);
+  const html = renderToStaticMarkup(createElement(PaginaVisaoGeral));
+  const texto = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ");
+  const csv = (p: string) => {
+    const [cab, ...l] = ler(p).replace(/^\uFEFF/, "").trim().split(/\r?\n/).map((x) => x.split(";"));
+    return l.map((r) => Object.fromEntries(cab.map((c, i) => [c, r[i]])) as Record<string, string>);
+  };
+  const bloco = (atributo: string) => {
+    const i = html.indexOf(atributo);
+    expect(i, atributo).toBeGreaterThan(0);
+    return texto(html.slice(i, i + 4000));
+  };
+
+  it("o DEC apurado diz o que a regra exclui e o total de todas as origens, relidos de qualidade.json", () => {
+    const q = JSON.parse(ler("public/energia/gold/qualidade.json"));
+    const ano = Number(G.sociedade.itens.find((i) => i.id === "continuidade")!.periodo.fim.slice(0, 4));
+    const a = q.brasil.anual.find((x: { ano: number }) => x.ano === ano);
+    const p = a.parcelas_dec;
+    const excluido = p.emergencia + p.dia_critico + p.externa + p.ons;
+    // a reconciliação do pipeline: apurado mais excluído é o tempo de todas as origens
+    expect(Math.abs(a.dec + excluido - a.dec_todas_parcelas)).toBeLessThan(0.011);
+    expect(ctx.dec).not.toBeNull();
+    expect(ctx.dec!.apurado).toBe(a.dec);
+    expect(ctx.dec!.todasOrigens).toBe(a.dec_todas_parcelas);
+    expect(ctx.dec!.excluido).toBeCloseTo(excluido, 6);
+    const t = textoDecApurado(ctx.dec!);
+    expect(t).toContain(`${num(a.dec, 2)} h`);
+    expect(t).toContain(`${num(excluido, 2)} h`);
+    expect(t).toContain(`${num(a.dec_todas_parcelas, 2)} h`);
+    for (const rotulo of ["situação de emergência", "dia crítico", "origem externa", "racionamento ou alívio de carga pelo ONS"]) expect(t).toContain(rotulo);
+    // o texto está junto do cartão, em Entender, e o cartão leva à parte da Qualidade que explica os expurgos
+    const c = bloco('data-ressalva-sociedade="continuidade"');
+    expect(c).toContain(`${num(a.dec_todas_parcelas, 2)} h`);
+    expect(html).toContain('href="/setor-eletrico/qualidade#expurgos"');
+    expect(texto(html)).toContain("Continuidade do fornecimento (DEC apurado)");
+  });
+
+  it("o limite agregado de DEC não é um limite nacional e diz quantos conjuntos o ultrapassam", () => {
+    const q = JSON.parse(ler("public/energia/gold/qualidade.json"));
+    const t = textoLimiteAgregado(ctx.dec!);
+    expect(t).toContain("Não existe limite nacional de DEC");
+    expect(t).toContain(`${num(q.conjuntos.acima_limite_dec, 0)} de ${num(q.conjuntos.com_limite, 0)} conjuntos`);
+    expect(bloco('data-limite-agregado=""')).toContain(`${num(q.conjuntos.acima_limite_dec, 0)} de ${num(q.conjuntos.com_limite, 0)}`);
+    expect(bloco('data-dispersao="continuidade"')).toContain("metade dos conjuntos ficou entre");
+  });
+
+  it("a taxa de perdas nomeia o denominador: contagem relida do CSV por distribuidora, taxa com a injetada publicada e dispersão", () => {
+    const ano = Number(G.sociedade.itens.find((i) => i.id === "perdas")!.periodo.fim.slice(0, 4));
+    const linhas = csv("public/energia/series/perdas_distribuidoras.csv").filter((l) => l.ano === String(ano) && l.classificacao === "Concessionária" && l.completo === "1" && !l.alertas);
+    const mistas = linhas.filter((l) => l.origem_injetada === "requerida" || l.origem_injetada === "mista").length;
+    expect(ctx.perdas).not.toBeNull();
+    expect(ctx.perdas!.concessionarias).toBe(linhas.length);
+    expect(ctx.perdas!.requeridaOuMista).toBe(mistas);
+    const perdas = linhas.reduce((s, l) => s + Number(l.perdas_totais_mwh), 0);
+    const publicada = linhas.reduce((s, l) => s + Number(l.injetada_publicada_mwh), 0);
+    expect(ctx.perdas!.taxaPublicadaPct).toBeCloseTo((100 * perdas) / publicada, 6);
+    const t = textoDenominadorPerdas(ctx.perdas!);
+    expect(t).toContain(`${num(mistas, 0)} das ${num(linhas.length, 0)} concessionárias`);
+    expect(t).toContain(`${num(ctx.perdas!.taxaPublicadaPct, 1)}%`);
+    expect(bloco('data-ressalva-sociedade="perdas"')).toContain(`${num(mistas, 0)} das ${num(linhas.length, 0)}`);
+    const q = ctx.perdas!.dispersao!;
+    expect(q.min).toBeLessThanOrEqual(q.p25);
+    expect(q.p25).toBeLessThanOrEqual(q.mediana);
+    expect(q.mediana).toBeLessThanOrEqual(q.p75);
+    expect(q.p75).toBeLessThanOrEqual(q.max);
+  });
+
+  it("a tarifa de referência diz de quantas distribuidoras é a mediana e por que as demais ficaram fora", () => {
+    const conta = JSON.parse(ler("public/energia/gold/conta.json"));
+    const sem = conta.tarifas.sem_vigente as { dias_sem_tarifa: number | null }[];
+    expect(ctx.tarifa!.comTarifa).toBe(conta.tarifas.resumo.n);
+    expect(ctx.tarifa!.fora).toBe(sem.length);
+    expect(ctx.tarifa!.foraRecente + ctx.tarifa!.foraAntigas).toBe(sem.length);
+    expect(ctx.tarifa!.comTarifa + ctx.tarifa!.fora).toBe(ctx.tarifa!.cnpjs);
+    const t = textoCoberturaTarifa(ctx.tarifa!);
+    expect(t).toContain(`${num(ctx.tarifa!.comTarifa, 0)} distribuidoras`);
+    expect(t).toContain(`Ficaram fora ${num(sem.length, 0)}`);
+    const b = bloco('data-ressalva-sociedade="tarifa"');
+    expect(b).toContain(`${num(ctx.tarifa!.comTarifa, 0)} distribuidoras`);
+    // o cartão mostra R$/kWh e diz que é o mesmo valor que a página Conta de luz traz em R$/MWh
+    expect(b).toContain("R$/MWh");
+  });
+
+  it("a EAR do SIN é arredondada uma só vez: cartão, gráfico, tabela e arquivo leem a mesma célula", () => {
+    const serie = new Map(csv("public/energia/series/ear_diario.csv").map((l) => [l.data, Number(l.SIN_calculado)]));
+    const { leves, m } = determinantesDaPagina(M, ctx.earSin, ctx.bandasAgua, ctx.medianaAgua.base);
+    const linhas = linhasDeColunas(leves.campos, leves.linhas);
+    let trocadas = 0;
+    let comEar = 0;
+    for (const l of M.dados) {
+      const x = serie.get(l.d);
+      if (typeof l.agua_SIN !== "number" || x === undefined) continue;
+      comEar++;
+      // o defeito que a correção remove: arredondar 61,6473 a 61,65 e depois a 61,7
+      if (num(l.agua_SIN, 1) !== num(x, 1)) trocadas++;
+      const linha = linhas.find((r) => r.d === l.d)!;
+      expect(num(linha.agua_SIN as number, 1), l.d).toBe(num(x, 1));
+    }
+    expect(comEar).toBeGreaterThan(60);
+    expect(trocadas).toBeGreaterThan(0);
+    // o cartão e a tabela do dia de referência mostram o mesmo texto, na casa exibida
+    const agua = leves.paineis.find((p) => p.id === "agua")!;
+    const doDia = linhas.find((r) => r.d === agua.dataReferencia)!;
+    expect(agua.valorTexto).toBe(comUnidade(doDia.agua_SIN as number, agua.unidade, agua.casas));
+    expect(html).toContain(`data-valor-atual="agua">${agua.valorTexto}`);
+    // o gráfico (e a dica e o anúncio por teclado) recebe as mesmas linhas
+    const painel = m.paineis.find((p) => p.id === "agua")!;
+    const grafico = dadosDeterminante(agua, linhas, leves.extras.agua ?? []);
+    expect(grafico.find((r) => r.d === agua.dataReferencia)!.agua_SIN).toBe(doDia.agua_SIN);
+    expect(valorDoDiaNaSerie(painel, linhas)).toBe(doDia.agua_SIN);
+  });
+
+  it("a mediana da data da água é uma série desenhada, copiada de hidrologia.json, e a tabela a traz", () => {
+    const { leves } = determinantesDaPagina(M, ctx.earSin, ctx.bandasAgua, ctx.medianaAgua.base);
+    const linhas = linhasDeColunas(leves.campos, leves.linhas);
+    expect(leves.extras.agua?.[0].id).toBe("agua_p50");
+    expect(leves.colunasTabela.some((c) => c.id === "agua_p50")).toBe(true);
+    const dia = linhas[linhas.length - 1].d as string;
+    const md = dia.slice(5, 10);
+    const banda = HID.bandas_ear.find((b) => String(b.md) === md)!;
+    expect(linhas[linhas.length - 1].agua_p50).toBe((banda as unknown as { SIN_p50: number }).SIN_p50);
+    expect(seriesDeterminante({ id: "agua", colunas: leves.paineis[1].colunas, referencia: leves.paineis[1].referencia }, leves.extras.agua).some((x) => x.id === "agua_p50" && x.tracejada)).toBe(true);
+  });
+
+  it("o período dos determinantes segue a janela escolhida", () => {
+    const { leves } = determinantesDaPagina(M, ctx.earSin, ctx.bandasAgua, ctx.medianaAgua.base);
+    const todas = linhasDeColunas(leves.campos, leves.linhas);
+    const t30 = periodoDaJanela(todas.slice(-30));
+    const t90 = periodoDaJanela(todas);
+    expect(t30).toContain("30 dias");
+    expect(t90).toContain("90 dias");
+    expect(t30).toContain(dataBR30(todas.slice(-30)[0].d as string));
+    expect(t30).not.toBe(t90);
+  });
+
+  it("a tabela de episódios diz quantos episódios lista e quantos existem", () => {
+    const c = corteEpisodios(G.observar, G.historico_regras.inicio);
+    const listados = G.observar.reduce((s, o) => s + (o.historico?.ultimos_episodios.length ?? 0), 0);
+    const total = G.observar.reduce((s, o) => s + (o.historico?.episodios ?? 0), 0);
+    expect(c.listados).toBe(listados);
+    expect(c.total).toBe(total);
+    if (listados < total) expect(c.texto).toContain(`${num(listados, 0)} dos ${num(total, 0)} registrados`);
+    expect(ler("src/components/energia/VisaoTabelasSobDemanda.tsx")).toContain("corteEpisodios(g.observar, g.historico_regras.inicio)");
+  });
+
+  it("a regra do piso do PLD diz 'alerta com 24 horas', e não 'acima de 24 horas'", () => {
+    const regra = G.observar.find((o) => o.id === "pld_piso")!;
+    const t = textoValorRegra(regra)!;
+    expect(t).toContain("alerta com 24 horas");
+    expect(t).not.toContain("acima de 24");
+    const teto = G.observar.find((o) => o.id === "pld_teto")!;
+    expect(textoValorRegra(teto)!).toContain("alerta acima de");
+  });
+
+  it("a rede diz que o fluxo é o saldo líquido do dia e quantas horas foram contra o saldo, relidas de rede_detalhe.json", () => {
+    const r = JSON.parse(ler("public/energia/gold/rede_detalhe.json"));
+    const d = r.circulacao.diario;
+    const dia = M.paineis.find((p) => p.id === "rede")!.data_referencia;
+    const i = d.dias.indexOf(dia);
+    const sul = d.por_par.S_SE;
+    const contra = sul.liquido_mwh[i] >= 0 ? sul.horas_inverso[i] : sul.horas[i] - sul.horas_inverso[i];
+    expect(ctx.saldoRede).toContain(`Sul → Sudeste/Centro-Oeste, ${num(contra, 0)} de ${num(sul.horas[i], 0)}`);
+    expect(ctx.saldoRede).toContain("Saldo líquido do dia");
+    const rede = leituraDeterminante(M.paineis.find((p) => p.id === "rede")!, M);
+    expect(rede).toContain("saldo líquido do dia");
+    expect(html).toContain('data-nota-determinante="rede"');
+  });
+
+  it("siglas no primeiro uso e valores de enumeração em palavras comuns", () => {
+    const t = expandeSiglas("o conjunto SCS está atrasado; o SCS segue", ["SCS"]);
+    expect(t).toContain("SCS (Sistema de Controle de Subvenções e Programas Sociais) está atrasado");
+    expect(t.match(/Sistema de Controle de Subvenções/g)).toHaveLength(1);
+    expect(expandeSiglas(t, ["SCS"])).toBe(t);
+    const e = texto(html);
+    expect(e).not.toMatch(/\bATRASADO\b|\bEM DIA\b/);
+    expect(e).toContain("Alcance da Tarifa Social, mai/2025");
+  });
+
+  it("o topo cita as regras em observação, a frase leva a marca da regra e as regras normais ficam recolhidas", () => {
+    const obs = G.observar.filter((o) => o.tipo !== "evento" && o.estado === "em_observacao");
+    expect(obs.length).toBeGreaterThan(0);
+    const topo = bloco("data-atencao");
+    for (const o of obs) {
+      expect(topo).toContain(o.titulo);
+      expect(html).toContain(`href="#regra-${o.id}"`);
+    }
+    expect(html).toContain('data-marca-regra="ena_faixa"');
+    expect(html).toContain("data-regras-normais");
+    expect(html).toContain("Como as partes se ligam");
+    expect(html).toContain('href="/setor-eletrico#mapa-conceitual"');
+  });
+});
+
+/** Data dd/mm/aaaa de uma data ISO, para conferir o texto do período sem depender da função do módulo. */
+function dataBR30(iso: string): string {
+  const [a, m, d] = iso.split("-");
+  return `${d}/${m}/${a}`;
+}

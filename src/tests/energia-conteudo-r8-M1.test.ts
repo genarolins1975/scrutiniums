@@ -311,8 +311,8 @@ describe("nenhum identificador técnico no texto de Entender das 17 páginas", (
     const e = entender(h);
     for (const cod of ["agente_qtd_contabilizacao", "consumo_classe_agente", "mre_mensal", "encargo_ess_ancilar"]) for (const k of ["agentes", "mre-e-gsf", "encargos", "mercado"] as const) expect(entender(HTML[k]), `${k}: ${cod}`).not.toContain(cod);
     expect(e).toContain(M.NOME_CONJUNTO_CCEE.agente_qtd_contabilizacao);
-    // o código continua em Analisar e Auditar ("Sobre este dado" e recurso)
-    expect(tudo(h)).toContain("agente_qtd_contabilizacao");
+    // o código continua disponível ao leitor em "Sobre este dado" (diálogo montado ao abrir, fora do HTML da página) e no recurso da proveniência
+    expect(JSON.stringify(MG)).toContain("agente_qtd_contabilizacao");
   });
 
   it("a coluna de códigos do ONS (ceg:, CJU_) deixou as tabelas de usinas de Entender, e o nome da usina fica", () => {

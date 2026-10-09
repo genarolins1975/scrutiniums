@@ -64,6 +64,7 @@ export const CONCEITOS: Conceito[] = [
     limitacoes: [
       "É uma média por unidade consumidora: não diz quanto tempo cada pessoa ficou sem energia; o tempo de cada unidade é o DIC.",
       "Centésimos de hora não são minutos: 9,33 h são 9 h 20 min.",
+      "O DEC divulgado é o apurado: a regra exclui da conta as interrupções por situação de emergência, dia crítico, origem externa ao sistema de distribuição e cortes pedidos pelo ONS. Somadas essas parcelas, o tempo sem energia é maior que o apurado; a página de Qualidade mostra as duas medidas.",
     ],
     vejaNoPortal: VEJA,
   },

@@ -39,10 +39,13 @@ import {
   vereditoSistema,
   vereditoSociedade,
 } from "@/lib/energia/visao";
+import { contextoVisao } from "@/lib/energia/visao-servidor";
 
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 const json = <T,>(p: string) => JSON.parse(ler(p)) as T;
+/** O contexto que a página lê dos módulos de origem (DEC apurado, denominador das perdas, cobertura da tarifa): o veredito e a resposta da sociedade o incluem. */
+const CTX = contextoVisao(json<SinteseVisaoGold>("public/energia/gold/sintese.json"));
 const palavras = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 const numeros = (t: string) => (t.match(/\d[\d.,]*\d|\d/g) ?? []).length;
 const G = json<SinteseVisaoGold>("public/energia/gold/sintese.json");
@@ -119,13 +122,13 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
   const vereditos: Record<string, string> = {
     sistema: vereditoSistema(G),
     determinantes: vereditoDeterminantes(G.multiplos!),
-    sociedade: vereditoSociedade(G.sociedade),
+    sociedade: vereditoSociedade(G.sociedade, CTX.sociedade),
     observar: vereditoObservar(G.observar),
   };
   const completas: Record<string, string> = {
     sistema: respostaSistema(G),
     determinantes: respostaDeterminantes(G.multiplos!).join(" "),
-    sociedade: respostaSociedade(G.sociedade),
+    sociedade: respostaSociedade(G.sociedade, CTX.sociedade),
     observar: respostaObservar(G.observar),
   };
 
@@ -202,7 +205,7 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     }
     expect(texto(html)).toContain(respostaSistema(G));
     expect(texto(html)).toContain(respostaObservar(G.observar));
-    expect(texto(html)).toContain(respostaSociedade(G.sociedade));
+    expect(texto(html)).toContain(respostaSociedade(G.sociedade, CTX.sociedade));
     for (const t of respostaDeterminantes(G.multiplos!)) expect(texto(html)).toContain(t);
   });
 
