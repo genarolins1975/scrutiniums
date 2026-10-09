@@ -212,19 +212,19 @@ export function PldLimites({
           <p className="mb-1.5 text-[0.8125rem] leading-snug text-carvao-muted">Limites de {ano} (atos da ANEEL)</p>
           {reg ? (
             <dl className="space-y-1.5 text-sm tabular-nums text-carvao">
-              <div className="flex justify-between gap-3">
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
                   Piso <span className="text-xs">(cada hora)</span>
                 </dt>
                 <dd>{valorLimite(reg.pld_min)}</dd>
               </div>
-              <div className="flex justify-between gap-3">
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
                   Teto horário <span className="text-xs">(cada hora)</span>
                 </dt>
                 <dd>{valorLimite(reg.pld_max_horario)}</dd>
               </div>
-              <div className="flex justify-between gap-3">
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
                 <dt className="text-carvao-muted">
                   Teto estrutural <span className="text-xs">(média do dia)</span>
                 </dt>

@@ -109,7 +109,7 @@ export function PainelEvidencia({
         <div className="flex flex-wrap items-center gap-x-5">
           {r.proveniencia.download && (
             <a href={r.proveniencia.download} download className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
-              Baixar CSV
+              Baixar CSV da série completa
             </a>
           )}
           <SobreEsteDado p={r.proveniencia} />

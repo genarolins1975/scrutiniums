@@ -99,7 +99,7 @@ export function PldCmo({
   const relacao = useMemo(() => linhasRelacaoAnual(c as BlocoCmoPld, sm), [c, sm]);
   const ref = c.semana_referencia;
   const x = ref?.por_sm.find((p) => p.sm === sm) ?? null;
-  const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
+  const intervalo = useMemo(() => (v.de && v.ate ? { inicio: v.de, fim: v.ate } : null), [v.de, v.ate]);
   // piso e tetos do ato vigente em cada semana entram no gráfico quando algum valor semanal alcança o teto estrutural
   const comLimites = useMemo(() => valoresAlcancamTeto(linhas, regimes), [linhas, regimes]);
   const dadosGrafico = useMemo(() => {

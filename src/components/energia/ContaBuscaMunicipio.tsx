@@ -38,6 +38,8 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
   const [situacao, setSituacao] = useState<Situacao>("ocioso");
   const [aberto, setAberto] = useState(false);
   const [ativo, setAtivo] = useState(0);
+  // texto do município escolhido na lista: enquanto o campo mostra esse texto ("Nome (UF)"), não há "nenhum município" a avisar
+  const [escolhido, setEscolhido] = useState<string | null>(null);
   const preparado = useMemo(() => (indice ? prepararBuscaMunicipios(indice) : []), [indice]);
   const resultados = useMemo(() => (indice ? buscarMunicipios(indice, preparado, termo) : []), [indice, preparado, termo]);
   const mostrando = aberto && resultados.length > 0;
@@ -54,7 +56,9 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
   };
 
   const escolher = (m: MunicipioEncontrado) => {
-    setTermo(`${m.nome} (${m.uf})`);
+    const texto = `${m.nome} (${m.uf})`;
+    setTermo(texto);
+    setEscolhido(texto);
     setAberto(false);
     aoEscolher(m);
   };
@@ -64,7 +68,7 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
       ? "Carregando a lista de municípios."
       : situacao === "erro"
         ? "A lista de municípios não carregou. Escolha a distribuidora na lista ao lado."
-        : situacao === "pronto" && termo.trim().length >= 2 && !resultados.length
+        : situacao === "pronto" && termo.trim().length >= 2 && !resultados.length && termo !== escolhido
           ? "Nenhum município com esse nome."
           : "";
 
@@ -88,6 +92,7 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
         onFocus={iniciar}
         onChange={(e) => {
           setTermo(e.target.value);
+          setEscolhido(null);
           setAberto(true);
           setAtivo(0);
           iniciar();

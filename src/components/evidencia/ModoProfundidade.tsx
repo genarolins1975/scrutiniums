@@ -169,6 +169,9 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
         const caixaBarra = b.getBoundingClientRect();
         const caixaAlvo = alvo.getBoundingClientRect();
         if (caixaBarra.top > 1 || caixaAlvo.bottom <= 0) return; // barra solta no fluxo, ou controle fora da janela (o navegador já rola)
+        // contêiner alto que recebeu foco (o <main> com tabindex -1 recebe o foco quando o clique cai num rótulo ou num trecho sem controle):
+        // o foco ali não é de um controle escondido pela barra, e rolar para pôr o topo dele sob a barra levava a página ao topo
+        if (alvo.matches("main, [data-foco-conteudo]") || caixaAlvo.height > window.innerHeight * 0.5) return;
         if (caixaAlvo.top < caixaBarra.bottom + 4) window.scrollBy({ top: caixaAlvo.top - caixaBarra.bottom - 8, behavior: "auto" });
       });
     }

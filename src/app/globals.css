@@ -384,7 +384,7 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
 .modo-profundidade > .sticky + div > section[data-painel-evidencia]:first-child { border-top: 0; padding-top: 0.75rem; }
 
 /* Gatilho "Comprove este número" dentro da faixa: 32 px com ponteiro fino, 44 px no toque. */
-.ed-faixa [data-comprove] { min-height: 2rem; text-transform: none; letter-spacing: 0; font-size: 0.75rem; }
+.ed-faixa [data-comprove] { min-height: 2rem; text-transform: none; letter-spacing: 0; font-size: 0.75rem; font-family: var(--font-sans), system-ui, sans-serif; }
 @media (pointer: coarse) { .ed-faixa [data-comprove] { min-height: 2.75rem; } }
 
 /* Sem JavaScript o botão "Comprove este número" não abre nada (a ficha é um diálogo do cliente): fica escondido, e o link "Ver no painel"

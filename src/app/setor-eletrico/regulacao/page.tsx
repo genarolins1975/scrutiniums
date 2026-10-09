@@ -123,7 +123,7 @@ export default function RegulacaoPage() {
   const semPublicacao = Array.from(new Set(L.atos.filter((a) => !a.data_publicacao).map((a) => a.ano)));
   // anos em que nenhum ato foi lido no texto: o valor veio de documento oficial do mesmo processo
   const anosSemTexto = Array.from(new Set(L.atos.filter((a) => a.nivel_conferencia !== "texto_do_ato").map((a) => a.ano))).sort((a, b) => a - b);
-  const { vigencia, limites } = limitesVigentes(g);
+  const { limites } = limitesVigentes(g);
   const atosMaisRecente = L.atos.slice().sort((a, b) => (b.data_publicacao ?? b.vigencia_inicio).localeCompare(a.data_publicacao ?? a.vigencia_inicio))[0];
   const dataRef = dataBR(g.data_referencia);
 
