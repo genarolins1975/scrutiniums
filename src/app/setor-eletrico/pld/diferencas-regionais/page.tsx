@@ -11,7 +11,7 @@ import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, horaLocal } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
-import { PARES, atualidadePld, horaPadrao, perguntaPainel, proximoPainel } from "@/lib/energia/pld";
+import { PARES, atualidadePld, horaPadrao, perguntaPainel, proximoPainel, quatroNoPisoPorAno } from "@/lib/energia/pld";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import type { Par, PldDetalheGold } from "@/lib/energia/tipos-pld";
 
@@ -127,6 +127,7 @@ export default function PldRegionalPage() {
                   fonte={FONTE}
                   versao={versao}
                   horasAcimaLimiarPaginaPld={horasAcimaLimiarPaginaPld}
+                  quatroNoPiso={quatroNoPisoPorAno(g.limites.disponivel ? g.limites : null)}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
 

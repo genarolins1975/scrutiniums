@@ -81,6 +81,10 @@ export type ContextoVisao = {
   medianaAgua: { valor: number | null; base: string | null };
   /** Referência sazonal do PLD em uma linha, para a faixa de métricas. */
   sazonalPld: string | null;
+  /** Os dois percentis do PLD do dia (todas as médias desde 2021 e o mesmo mês dos anos anteriores), para a linha de contexto. */
+  pldReferencia: { percentilTodos: number | null; diasTodos: number; percentilMes: number | null; mes: number | null } | null;
+  /** Carga em 7 dias: o percentual desta página (mesmas datas do ano anterior) e o da página Carga (mesmos dias da semana). */
+  cargaModulo: { mesmasDatasPct: number | null; mesmosDiasDaSemanaPct: number | null } | null;
   /** Os dois critérios do PLD, com a ponte, para ler junto da frase. */
   doisCriteriosPld: string | null;
   capacidadeAgua: string | null;
@@ -217,6 +221,8 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
     bandasAgua,
     medianaAgua: { valor: hidSin?.ear.mediana_historica ?? null, base },
     sazonalPld: sazonal ? textoSazonalPld(sazonal) : null,
+    pldReferencia: cartaoSe ? { percentilTodos: cartaoSe.posicao.percentil, diasTodos: cartaoSe.posicao.n_dias, percentilMes: sazonal?.percentil ?? null, mes: sazonal?.mes ?? null } : null,
+    cargaModulo: sinDet ? { mesmasDatasPct: j7?.mesmas_datas?.variacao_pct ?? null, mesmosDiasDaSemanaPct: j7?.equivalente?.variacao_pct ?? null } : null,
     doisCriteriosPld,
     capacidadeAgua,
     earNoModulo,

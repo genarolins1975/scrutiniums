@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
 /**
- * Tabela curta que se reorganiza em lista no celular: a partir de 768 px é uma tabela comum (cabeçalho, uma linha por item, a
- * primeira coluna como cabeçalho de linha); abaixo disso, cada item vira um bloco com o título e os pares rótulo e valor, para
- * nenhuma coluna ficar cortada nem exigir rolagem para o lado. Serve às tabelas de poucas linhas e texto longo nas células (a matriz
- * de modelos, as entradas e fórmulas, as rodadas registradas). As duas formas levam o mesmo conteúdo, e a que não cabe na largura
+ * Tabela curta que se reorganiza em lista no celular e no tablet: a partir de 1024 px é uma tabela comum (cabeçalho, uma linha por
+ * item, a primeira coluna como cabeçalho de linha); abaixo disso, cada item vira um bloco com o título e os pares rótulo e valor
+ * (rótulo e valor lado a lado a partir de 360 px), para nenhuma coluna ficar cortada, espremida nem exigir rolagem para o lado. Serve
+ * às tabelas de poucas linhas e texto longo nas células (a matriz de modelos, as entradas e fórmulas, as rodadas registradas). As duas formas levam o mesmo conteúdo, e a que não cabe na largura
  * fica fora da árvore de acessibilidade (display: none), sem leitura duplicada.
  *
  * Sem estado nem efeito: renderiza no servidor e pode ser usada em componentes cliente.
@@ -33,7 +33,7 @@ export function TabelaAdaptativa<T extends { id: string }>({
   const [titulo, ...demais] = colunas;
   return (
     <div data-tabela-adaptativa={nome} className="min-w-0">
-      <table className="hidden w-full border-collapse text-sm md:table">
+      <table className="hidden w-full border-collapse text-sm lg:table">
         <caption className="sr-only">{legenda}</caption>
         <thead>
           <tr className="text-left text-xs text-mineral">
@@ -59,7 +59,7 @@ export function TabelaAdaptativa<T extends { id: string }>({
           ))}
         </tbody>
       </table>
-      <ul className="md:hidden" aria-label={legenda}>
+      <ul className="lg:hidden" aria-label={legenda}>
         {linhas.map((l) => (
           <li key={l.id} data-linha={l.id} className="border-b border-linha py-3 first:border-t">
             <div className="text-base text-carvao">{titulo.celula(l)}</div>

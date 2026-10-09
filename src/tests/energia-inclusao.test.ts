@@ -62,6 +62,7 @@ import {
   valoresMapaTsee,
 } from "@/lib/energia/inclusao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
+import { siglasNoTexto } from "@/lib/energia/siglas";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import type { InclusaoGold, SerieCdeUf, SerieCoberturaMensal } from "@/lib/energia/tipos-inclusao";
@@ -824,10 +825,67 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
     }
   });
 
-  /** Texto de Entender: sem os blocos de Analisar e Auditar, sem diálogos, SVG, script e style (o que o leitor da camada simples não vê). */
+  it("siglas fora do dicionário compartilhado (PNAD, PASI, MDS, CV) vêm expandidas no primeiro uso em Entender", () => {
+    const EXPANSOES: [string, string][] = [
+      ["PNAD", "Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua"],
+      ["PASI", "Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI)"],
+      ["MDS", "Ministério do Desenvolvimento e Assistência Social (MDS)"],
+      ["CV", "coeficiente de variação (CV)"],
+    ];
+    let achadas = 0;
+    for (const [k, h] of Object.entries(html)) {
+      const t = entender(h);
+      for (const [sigla, expansao] of EXPANSOES) {
+        const i = new RegExp(`(?<![\\p{L}\\p{N}_])${sigla}(?![\\p{L}\\p{N}_])`, "u").exec(t)?.index;
+        if (i === undefined) continue;
+        achadas++;
+        // a primeira aparição da sigla é a de dentro da própria expansão
+        expect(t.indexOf(expansao) + expansao.indexOf(sigla), `${k}: ${sigla} usada antes de expandida`).toBe(i);
+      }
+    }
+    expect(achadas, "o teste enxerga as siglas").toBeGreaterThanOrEqual(5);
+  });
+
+  it("toda sigla do dicionário que está à vista em Entender sem expansão no texto consta da legenda de siglas que o servidor entrega", () => {
+    for (const [k, h] of Object.entries(html)) {
+      const legenda = decodifica(/data-siglas="true"[^>]*>([\s\S]*?)<\/div>/.exec(h)?.[1].replace(/<[^>]+>/g, " ") ?? "").replace(/\s+/g, " ");
+      const visiveis = siglasNoTexto(entender(h), 14);
+      expect(visiveis.length, `${k}: siglas à vista`).toBeGreaterThan(0);
+      for (const s of visiveis) expect(legenda, `${k}: ${s}`).toContain(`${s}, `);
+    }
+  });
+
+  /** Troca cada <details> fechado pelo seu resumo: o corpo só aparece quando o leitor abre o bloco. */
+  function semDetailsFechados(h: string): string {
+    const re = /<details\b([^>]*)>|<\/details>/g;
+    let out = "";
+    let ultimo = 0;
+    let prof = 0;
+    let ini = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(h))) {
+      if (m[0] !== "</details>") {
+        if (prof > 0) prof++;
+        else if (!/\bopen\b/.test(m[1].replace(/"[^"]*"/g, '""'))) {
+          out += h.slice(ultimo, m.index);
+          ini = m.index + m[0].length;
+          prof = 1;
+        }
+      } else if (prof > 0 && --prof === 0) {
+        out += /<summary[\s\S]*?<\/summary>/.exec(h.slice(ini, m.index))?.[0] ?? "";
+        ultimo = m.index + m[0].length;
+      }
+    }
+    return out + h.slice(ultimo);
+  }
+
+  /**
+   * Texto de Entender: sem os blocos de Analisar e Auditar, sem o corpo de bloco fechado (details e tabela recolhida), sem diálogos, SVG, script
+   * e style: o que o leitor da camada simples vê.
+   */
   function entender(h: string): string {
     const VAZIOS = new Set(["br", "img", "input", "hr", "meta", "link", "path", "circle", "rect", "line", "polygon", "polyline", "use", "source", "wbr", "col"]);
-    const corpo = h.slice(h.indexOf("<main"));
+    const corpo = semDetailsFechados(h.slice(h.indexOf("<main")));
     const saida: string[] = [];
     const ocultas: string[] = [];
     const re = /<(\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?)>|([^<]+)/g;
@@ -848,7 +906,7 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
         if (ocultas[ocultas.length - 1] === t) ocultas.push(t);
         continue;
       }
-      if (/data-nivel="(?:analisar|auditar)"/.test(attrs) || ["dialog", "svg", "script", "style"].includes(t)) ocultas.push(t);
+      if (/data-nivel="(?:analisar|auditar)"|data-recolhivel="fechada"/.test(attrs) || ["dialog", "svg", "script", "style"].includes(t)) ocultas.push(t);
       else saida.push(" ");
     }
     return decodifica(saida.join(" ")).replace(/\s+/g, " ").trim();

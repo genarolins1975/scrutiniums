@@ -4,8 +4,6 @@ import { AguaClima } from "@/components/energia/AguaClima";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
-import { Numero } from "@/components/energia/Numero";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -18,17 +16,16 @@ import {
   COLUNAS_COBERTURA_TEMPERATURA,
   COLUNAS_VALIDACAO,
   baciaPadraoChuva,
+  baciasSemChuva,
   linhasCoberturaChuva,
   linhasCoberturaTemperatura,
   linhasValidacao,
-  notaAnomaliaTemperatura,
-  notaChuvaBacia,
   periodoBase,
   periodoValidacao,
   perguntaPainel,
   rotaPainel,
-  rotuloRecorte,
   situacaoAtualidade,
+  textoBaciasSemChuva,
   textoCobertura,
   textoValidacao,
 } from "@/lib/energia/agua";
@@ -58,8 +55,9 @@ export default function ClimaPage() {
   const atualTemp = situacaoAtualidade(g.dias_referencia.temperatura, g.gerado_em, 7, "a reanálise chega ao NASA POWER com alguns dias de atraso");
   const downloads = g.downloads.filter((d) => /clima_diario|agua_temperatura|agua_precipitacao|agua_previsao|agua_clima_pontos|agua_bacias_geo/.test(d.url));
   const baciaPadrao = c ? baciaPadraoChuva(g.armazenamento.bacias, c.precipitacao_bacias) : "";
-  const bPadrao = c?.precipitacao_bacias.find((b) => b.bacia === baciaPadrao) ?? null;
-  const tSin = c?.temperatura.find((t) => t.recorte === "SIN") ?? null;
+  const notaSemContorno = c ? textoBaciasSemChuva(baciasSemChuva(g.armazenamento.bacias, c.precipitacao_bacias)) : "";
+  // o ano em que começa o CSV diário público vem do rótulo do arquivo na gold ("desde AAAA"), não de um número escrito aqui
+  const inicioCsvDiario = /desde (\d{4})/.exec(g.downloads.find((d) => /agua_precipitacao_bacias_diario/.test(d.url))?.rotulo ?? "")?.[1] ?? null;
   const pendPrev = g.pendencias.filter((p) => /previs/i.test(p));
   // base climatológica e período da conferência com estações: lidos da gold, não escritos aqui
   const baseTxt = c ? periodoBase(c.base_climatologica) : null;
@@ -79,15 +77,17 @@ export default function ClimaPage() {
   );
   const comoInterpretar = (
     <>
-      A anomalia de chuva é a chuva do período dividida pela média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}, menos um; a de temperatura é a diferença em °C. No período seco,
-      médias de poucos milímetros produzem percentuais grandes: o mapa usa classes fixas e a tabela traz os milímetros. A correlação entre chuva e ENA é associação descritiva.
+      A anomalia de chuva é a chuva do período dividida pela média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}, menos um; a de temperatura é a diferença em °C. O percentil é a
+      posição do valor entre os mesmos dias dos anos da base. No período seco, médias de poucos milímetros produzem percentuais grandes: o mapa usa classes fixas e a tabela traz os
+      milímetros. A correlação entre chuva e ENA é associação descritiva.
     </>
   );
   const naoConcluir = (
     <>
       Chuva por satélite e temperatura de reanálise são estimativas, não medições de estação (o INMET não respondeu nas tentativas de coleta), com datas e fontes próprias: não
-      equivalem à afluência nem ao armazenamento. Chuva acima da média não garante afluência acima da média, e a correlação não identifica causa. A previsão é de um único
-      modelo e de uma rodada, sem avaliação de acerto ainda, e nenhum cenário climático de longo prazo é apresentado.
+      equivalem à afluência nem ao armazenamento. As janelas mais recentes são preliminares e a base de comparação é de produto final, então a anomalia pode mudar quando o produto
+      final chegar. Chuva acima da média não garante afluência acima da média, e a correlação não identifica causa. A previsão é de um único modelo e de uma rodada, sem avaliação de
+      acerto ainda, e nenhum cenário climático de longo prazo é apresentado.
     </>
   );
 
@@ -102,11 +102,7 @@ export default function ClimaPage() {
           siglas={["SIN", "ENA", "MLT", "EAR", "ONS", "IBGE", "UF"]}
           titulo={perguntaPainel("p019")}
           lead="Chuva e temperatura estimadas contra a média dos mesmos dias; a previsão fica à parte."
-          recorte={
-            c
-              ? `Chuva até ${dataBR(g.dias_referencia.precipitacao)} e temperatura até ${dataBR(g.dias_referencia.temperatura)} · ${c.precipitacao_bacias.length} bacias e ${c.temperatura.length} recortes de temperatura · mm, % e °C`
-              : undefined
-          }
+          recorte={c ? `Chuva até ${dataBR(g.dias_referencia.precipitacao)} · temperatura até ${dataBR(g.dias_referencia.temperatura)}` : undefined}
           fonte="NASA POWER (estimativas) e ECMWF (previsão)"
           referencia={
             <>
@@ -133,7 +129,7 @@ export default function ClimaPage() {
             <PainelEvidencia
               id="p019"
               pergunta="Onde a chuva estimada ficou acima ou abaixo da média?"
-              subtitulo={`Chuva por bacia (mm e anomalia em %) e temperatura por subsistema (°C) · estimativas contra ${baseTxt ?? "a climatologia publicada"} · previsão em bloco separado`}
+              subtitulo={`Chuva por bacia (mm) e temperatura por subsistema (°C), contra ${baseTxt ?? "a climatologia publicada"}`}
               natureza="ESTIMADO"
               porQueImporta={
                 <>
@@ -167,6 +163,12 @@ export default function ClimaPage() {
                     fonteTemperatura="NASA POWER (MERRA-2 e GEOS-IT), média por subsistema calculada pelo observatório"
                     versaoChuva={g.dias_referencia.precipitacao ?? g.gerado_em}
                     versaoTemperatura={g.dias_referencia.temperatura ?? g.gerado_em}
+                    corteImergFinal={c.corte_imerg_final}
+                    corteMerra2={c.corte_merra2}
+                    evidencias={{ chuva30d: ev.precipitacao_maior_bacia_30d, temperaturaSin30d: ev.temperatura_sin_30d }}
+                    enderecoMedidas={`${rotaPainel("p019")}#medidas`}
+                    notaSemContorno={notaSemContorno}
+                    inicioCsvDiario={inicioCsvDiario}
                     motivoSemPrevisao={
                       pendPrev.length
                         ? `Sem previsão publicada: ${pendPrev.join("; ")}. A previsão nunca é substituída por uma rodada velha nem pela média.`
@@ -174,43 +176,10 @@ export default function ClimaPage() {
                     }
                     notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                     aposNotas={
-                      <>
-                      <SecaoDoPainel
-                        id="medidas"
-                        titulo="Quanto a chuva e a temperatura de 30 dias se afastam da média?"
-                        lead="Chuva e temperatura são estimativas com datas e fontes próprias, e não equivalem à afluência nem ao armazenamento."
-                      >
-                        <FaixaMetricas colunas={2} rotulo="Medidas de 30 dias de chuva e de temperatura estimadas">
-                          <Numero
-                            variante="faixa"
-                            rotulo={`Chuva de 30 dias, ${bPadrao ? rotuloRecorte("bacia", bPadrao.bacia) : "sem bacia"} (a de maior EAR máxima)`}
-                            natureza="ESTIMADO"
-                            evidencia={ev.precipitacao_maior_bacia_30d}
-                            formato="num"
-                            casas={1}
-                            unidade="mm"
-                            cor="var(--serie-hidraulica)"
-                            nota={bPadrao ? notaChuvaBacia(bPadrao, c.base_climatologica) : undefined}
-                            endereco={`${rotaPainel("p019")}#medidas`}
-                          />
-                          <Numero
-                            variante="faixa"
-                            rotulo="Anomalia da temperatura do SIN em 30 dias"
-                            natureza="ESTIMADO"
-                            evidencia={ev.temperatura_sin_30d}
-                            formato="num"
-                            casas={1}
-                            unidade="°C"
-                            cor="var(--serie-termica)"
-                            nota={tSin ? notaAnomaliaTemperatura(tSin, c.base_climatologica) : undefined}
-                            endereco={`${rotaPainel("p019")}#temperatura`}
-                          />
-                        </FaixaMetricas>
-                      </SecaoDoPainel>
                       <SecaoDoPainel id="separacao" titulo="O que é observação, estimativa, previsão e cenário aqui?">
                         <dl className="grid gap-px border border-linha bg-linha sm:grid-cols-2" data-separacao="p019">
                           {separacao.map((x) => (
-                            <div key={x.rotulo} className="bg-superficie px-4 py-3">
+                            <div key={x.rotulo} data-nivel={x.natureza === "OBSERVADO" ? "analisar" : undefined} className="bg-superficie px-4 py-3">
                               <dt className="flex flex-wrap items-center gap-2">
                                 <span className="rotulo text-mineral">{x.rotulo}</span>
                                 <SeloNatureza natureza={x.natureza} compacto />
@@ -220,7 +189,6 @@ export default function ClimaPage() {
                           ))}
                         </dl>
                       </SecaoDoPainel>
-                      </>
                     }
                     fecho={
                       <SecaoDoPainel id="relacoes" titulo="Onde se mede a relação com a demanda e com a afluência?">
@@ -276,7 +244,7 @@ export default function ClimaPage() {
                       nota="Células mais populosas até metade da população da UF (no máximo 6). O mapeamento UF para subsistema é o de 2026 e vale para toda a série."
                     />
                     <p className="text-sm text-carvao-muted" data-texto="validacao">
-                      {textoValidacao(c.validacao_estacoes)}
+                      {textoValidacao(c.validacao_estacoes, c.corte_imerg_final)}
                     </p>
                     <TabelaInterativa
                       titulo={`IMERG contra estações por bacia${perVal ? `, ${perVal}` : ""}`}

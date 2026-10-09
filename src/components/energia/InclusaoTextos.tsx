@@ -24,8 +24,8 @@ export function OrcamentoComoInterpretar({ o }: { o: Orcamento }) {
       Razão de médias é a despesa média com energia dividida pela despesa média total (a &ldquo;distribuição&rdquo; que o IBGE publica). Média das participações calcula a participação em
       cada família e tira a média ponderada. As duas respondem a perguntas diferentes e aparecem lado a lado; a mediana mostra a família típica. Família é a unidade da POF e pode não ser
       a titular da conta de luz da casa em que mora.
-      {base ? ` As faixas de renda são as classes de rendimento total mensal da família, em reais de ${base}, a data de referência dos valores da pesquisa.` : ""} Precisão pelo plano
-      amostral (estrato e unidade primária): {textoPrecisaoPof(o.regra_precisao)}
+      {base ? ` As faixas de renda são as classes de rendimento total mensal da família, em reais de ${base}, a data de referência dos valores da pesquisa.` : ""} A precisão de cada estimativa vem do plano
+      amostral (estrato e unidade primária) e é medida pelo coeficiente de variação (CV): {textoPrecisaoPof(o.regra_precisao)}
     </>
   );
 }

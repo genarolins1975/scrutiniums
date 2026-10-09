@@ -13,6 +13,7 @@ import {
   ROTA_MODELOS,
   ROTA_PREVISOES,
   enderecoPainel,
+  minusculaInicial,
   painelPrevisoes,
   rotaModelo,
   slugModelo,
@@ -59,7 +60,13 @@ export function PrevisoesFaixaFichas({ atual, fichas }: { atual: string; fichas:
     { id: "registro", href: ROTA_MODELOS, rotulo: "Modelos" },
     ...fichas.map((f) => ({ id: slugModelo(f.codigo), href: rotaModelo(f.codigo), rotulo: f.codigo })),
   ];
-  return <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />;
+  // abaixo de 640 px o CSS da faixa pede duas páginas por linha (flex-basis de 50% menos 0,25 rem), mas o espaço de 1,5 rem entre colunas
+  // faz cada página ocupar uma linha inteira (seis linhas, mais de 260 px antes do título); com 0,25 rem de espaço, cabem duas por linha
+  return (
+    <div className="max-sm:[&_ol]:gap-x-1">
+      <NavegacaoLocal rotulo="Fichas dos modelos de previsão" itens={itens} atual={atual} />
+    </div>
+  );
 }
 
 /**
@@ -177,7 +184,7 @@ export function PrevisoesAvisosRodada({ avisos, titulo = "Condições desta roda
         {avisos.map((a, i) => (
           <span key={a.id} data-aviso={a.id}>
             <span className="font-medium">{a.rotulo}: </span>
-            {a.texto}
+            {minusculaInicial(a.texto)}
             {i < avisos.length - 1 ? " " : ""}
           </span>
         ))}

@@ -40,8 +40,6 @@ export default function AprendaPage() {
           grupos={grupos}
           trilhas={<AprendaTrilhas />}
           estados={estadosDoAcervo(resumo)}
-          comRessalva={resumo.comRessalva}
-          emPreparacao={resumo.pendentes}
         />
       </main>
     </>

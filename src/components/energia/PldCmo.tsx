@@ -21,14 +21,18 @@ import {
   CURTO_SM,
   NOME_SM,
   SUBMERCADOS,
+  limitesPorSemana,
+  limitesVigentesEm,
   linhasRelacaoAnual,
   linhasSemanais,
   respostaP009,
   rotaPainel,
+  textoCmoFrenteAosLimites,
+  valoresAlcancamTeto,
   vereditoP009,
 } from "@/lib/energia/pld";
 import type { Submercado } from "@/lib/energia/tipos";
-import type { BlocoCmoPld } from "@/lib/energia/tipos-pld";
+import type { BlocoCmoPld, RegimeLimites } from "@/lib/energia/tipos-pld";
 
 /**
  * P009, CMO e formação de preço: submercado (?sm=) e intervalo do gráfico semanal
@@ -40,8 +44,9 @@ import type { BlocoCmoPld } from "@/lib/energia/tipos-pld";
  * semana de referência vêm prontas da gold, e as horárias por ano também.
  *
  * Ordem da página: resposta e escolha do submercado, faixa de medidas, figura principal
- * (a semana operativa), recorte, tabela, notas do painel (`notas`, logo depois da figura)
- * e as duas comparações complementares, visíveis em Entender, cada uma com a sua pergunta.
+ * (a semana operativa; piso e tetos do ato entram quando algum valor os alcança), recorte, tabela (que segue o intervalo escolhido no
+ * gráfico), os quatro submercados da semana lado a lado (`quatroSubmercados`), notas do painel (`notas`) e as duas comparações
+ * complementares, visíveis em Entender, cada uma com a sua pergunta.
  */
 const ESQUEMA = {
   sm: campo(tiposUrl.opcao(SUBMERCADOS), "SE" as Submercado),
@@ -63,6 +68,9 @@ export function PldCmo({
   notasEntreLimites,
   notas,
   avisoGrafico,
+  quatroSubmercados,
+  notaMarcos,
+  regimes = [],
 }: {
   c: Pick<BlocoCmoPld, "semanal" | "semana_referencia" | "relacao_anual">;
   /** Últimas 168 horas (pld_horario_recente.json), só PLD e CMO; null quando o arquivo falta. */
@@ -77,6 +85,12 @@ export function PldCmo({
   notas?: ReactNode;
   /** Aviso sobre o recorte do gráfico semanal frente ao CSV, junto do gráfico. */
   avisoGrafico?: ReactNode;
+  /** Os quatro submercados da semana de referência lado a lado, com a nota descritiva (montada no servidor). */
+  quatroSubmercados?: ReactNode;
+  /** O que a marca vertical do gráfico semanal diz (sequência de semanas com CMO semanal zero). */
+  notaMarcos?: ReactNode;
+  /** Piso e tetos por trecho de vigência, para desenhar no gráfico semanal e comparar com o CMO da semana de referência. */
+  regimes?: RegimeLimites[];
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const sm = v.sm as Submercado;
@@ -86,6 +100,16 @@ export function PldCmo({
   const ref = c.semana_referencia;
   const x = ref?.por_sm.find((p) => p.sm === sm) ?? null;
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
+  // piso e tetos do ato vigente em cada semana entram no gráfico quando algum valor semanal alcança o teto estrutural
+  const comLimites = useMemo(() => valoresAlcancamTeto(linhas, regimes), [linhas, regimes]);
+  const dadosGrafico = useMemo(() => {
+    if (!comLimites) return linhas;
+    const lim = limitesPorSemana(linhas.map((l) => l.fim), regimes);
+    return linhas.map((l, k) => ({ ...l, piso: lim[k].piso, teto_horario: lim[k].teto_horario, teto_estrutural: lim[k].teto_estrutural }));
+  }, [comLimites, linhas, regimes]);
+  // a tabela e o arquivo dela seguem o intervalo escolhido no gráfico
+  const linhasTabela = useMemo(() => (intervalo ? linhas.filter((l) => l.fim >= intervalo.inicio && l.fim <= intervalo.fim) : linhas), [linhas, intervalo]);
+  const avisoLimites = ref ? textoCmoFrenteAosLimites(sm, x?.decomp ?? null, limitesVigentesEm(regimes, ref.fim)) : null;
   const horas = useMemo(
     () =>
       horario
@@ -112,6 +136,12 @@ export function PldCmo({
         </RespostaCurta>
         <PldEscolha legenda="Submercado" opcoes={OPCOES_SM} valor={sm} onEscolher={(s) => definir({ sm: s })} />
       </div>
+
+      {avisoLimites && (
+        <p className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao" data-texto="cmo-e-limites">
+          {avisoLimites}
+        </p>
+      )}
 
       <FaixaMetricas colunas={4} rotulo={`Medidas da semana de referência, ${NOME_SM[sm]}`}>
         <Numero
@@ -169,13 +199,20 @@ export function PldCmo({
       <div className="space-y-3">
         <GraficoLinhas
           titulo={`CMO semanal do DECOMP, média do DESSEM e média do PLD por semana operativa, ${NOME_SM[sm]}`}
-          dados={linhas}
+          dados={dadosGrafico}
           chaveX="fim"
           formatoX="data"
           series={[
             { id: "decomp", rotulo: "CMO semanal do DECOMP (ONS)", sigla: "DECOMP", cor: "var(--serie-referencia)", tracejada: true },
             { id: "dessem", rotulo: "Média do CMO do DESSEM na semana (ONS)", sigla: "DESSEM", cor: "var(--serie-hidraulica)" },
             { id: "pld", rotulo: "Média do PLD na semana (CCEE)", sigla: "PLD", cor: COR_SM[sm], espessura: 2.5 },
+            ...(comLimites
+              ? [
+                  { id: "teto_horario", rotulo: "Teto horário do PLD no ato vigente", sigla: "teto horário", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                  { id: "teto_estrutural", rotulo: "Teto estrutural do PLD no ato vigente", sigla: "teto estrutural", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                  { id: "piso", rotulo: "Piso do PLD no ato vigente", sigla: "piso", cor: "var(--cor-mineral)", tracejada: true, espessura: 1.25 },
+                ]
+              : []),
           ]}
           unidade="R$/MWh"
           casas={2}
@@ -189,7 +226,9 @@ export function PldCmo({
         <p className="text-xs leading-relaxed text-carvao-muted">
           Cada ponto é uma semana operativa, marcada pela sexta-feira que a encerra (a data que o ONS publica). Semana com meia hora ou hora ausente fica sem média, e a linha
           tem uma lacuna.
+          {comLimites && " As linhas tracejadas de cima e de baixo são o piso e os tetos do PLD no ato vigente em cada semana; elas aparecem quando algum valor do gráfico alcança o teto estrutural."}
         </p>
+        {notaMarcos && <p className="text-xs leading-relaxed text-carvao-muted">{notaMarcos}</p>}
         {avisoGrafico}
       </div>
 
@@ -214,18 +253,24 @@ export function PldCmo({
       </dl>
 
       <TabelaInterativa
-        titulo={`Tabela equivalente: semanas operativas de ${NOME_SM[sm]}`}
+        titulo={`Tabela equivalente: semanas operativas de ${NOME_SM[sm]}${intervalo ? " no intervalo escolhido no gráfico" : ""}`}
         colunas={COLUNAS_SEMANAS}
-        linhas={linhas}
+        linhas={linhasTabela}
         chaveLinha="id"
         colunaRotulo="fim"
         fonte={fonte}
         versao={versao}
-        nomeArquivo={`pld-cmo-semanal-${sm}`}
+        nomeArquivo={`pld-cmo-semanal-${sm}${intervalo ? `-${intervalo.inicio}-a-${intervalo.fim}` : ""}`}
         chaveUrl="sem"
         ordemInicial={{ coluna: "fim", direcao: "desc" }}
-        nota="O histórico desde 2021, com os quatro submercados, está no CSV semanal (download no rodapé do painel)."
+        nota={
+          intervalo
+            ? "A tabela e o arquivo dela trazem só as semanas do intervalo escolhido no gráfico; o histórico desde 2021, com os quatro submercados, está no CSV semanal (download no rodapé do painel)."
+            : "A tabela traz as semanas do gráfico; o histórico desde 2021, com os quatro submercados, está no CSV semanal (download no rodapé do painel)."
+        }
       />
+
+      {quatroSubmercados}
 
       {notas}
 
@@ -243,8 +288,8 @@ export function PldCmo({
               id: s,
               titulo: NOME_SM[s],
               series: [
-                { id: `pld_${s}`, rotulo: "PLD da hora", sigla: "PLD", cor: COR_SM[s], espessura: 2 },
-                { id: `cmo_${s}`, rotulo: "CMO do DESSEM na hora (média das duas meias horas)", sigla: "DESSEM", cor: "var(--serie-hidraulica)", tracejada: true },
+                { id: `pld_${s}`, rotulo: `PLD da hora, ${CURTO_SM[s]}`, sigla: "PLD", cor: COR_SM[s], espessura: 2 },
+                { id: `cmo_${s}`, rotulo: `CMO do DESSEM na hora, ${CURTO_SM[s]}`, sigla: "DESSEM", cor: "var(--serie-hidraulica)", tracejada: true },
               ],
             }))}
           />
@@ -289,7 +334,7 @@ export function PldCmo({
           versao={versao}
           nomeArquivo={`pld-relacao-cmo-${sm}`}
           chaveUrl="rel"
-          nota="Horas sem CMO publicado ficam fora das diferenças; o ano marcado como parcial ainda está em curso."
+          nota="As colunas de horas contam só as horas com PLD e CMO do DESSEM publicados; a página de limites conta todas as horas com PLD, por isso os totais de horas no piso podem ser maiores lá. Horas sem CMO publicado ficam fora das diferenças; o ano marcado como parcial ainda está em curso."
         />
       </SecaoDoPainel>
     </div>

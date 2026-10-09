@@ -104,8 +104,8 @@ export default function PerdasComposicaoPage() {
           titulo={PERGUNTA_COMPOSICAO}
           lead={
             <>
-              A perda <Termo slug="perdas-tecnicas">técnica</Termo> vem da física das redes; a <Termo slug="perdas-nao-tecnicas">não técnica</Termo> é a diferença entre a total e a técnica,
-              e inclui furto, fraude e erros de medição e de faturamento. As duas são estimativas, publicadas só por parte das distribuidoras.
+              A perda <Termo slug="perdas-tecnicas">técnica</Termo> vem da física das redes; a <Termo slug="perdas-nao-tecnicas">não técnica</Termo> é a diferença entre a total e a técnica.
+              As duas são estimativas, publicadas só por parte das distribuidoras.
             </>
           }
           recorte={
@@ -146,9 +146,6 @@ export default function PerdasComposicaoPage() {
               naoConcluirNoCorpo
             >
               <div className="space-y-6">
-                <Resposta id="composicao" veredito={vereditoComposicao(g)} prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>
-                  {respostaComposicao(g)}
-                </Resposta>
                 <PerdasComposicao
                   linhas={composicao.linhas}
                   ids={ids}
@@ -171,6 +168,9 @@ export default function PerdasComposicaoPage() {
                   universo={`concessionárias e permissionárias com o ano completo, sem alerta e com a decomposição fechando (${composicao.linhas.length} distribuidoras nas barras)`}
                   unidade="% da energia injetada de referência; não técnica também em % do mercado de baixa tensão medido"
                 />
+                <Resposta id="composicao" veredito={vereditoComposicao(g)} prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>
+                  {respostaComposicao(g)}
+                </Resposta>
                 <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
                 <SecaoDoPainel id="separacao-nacional" titulo={`Como a separação mudou desde ${inicioSerie}, e quantas concessionárias a publicam?`}>
                   <div className="grid gap-4 lg:grid-cols-2">

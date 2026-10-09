@@ -217,7 +217,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
       <div ref={barra} data-barra-profundidade="" className="sticky top-0 z-30 border-b border-linha bg-papel py-1.5">
         <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-3">
           <span className="rotulo hidden text-mineral sm:inline">Profundidade</span>
-          <div className="flex flex-1 sm:flex-none">
+          <div className="flex min-w-0 flex-1 flex-wrap sm:flex-none">
             {MODOS.map((m, i) => {
               const ativo = modo === m.id;
               return (
@@ -233,7 +233,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
                   onClick={() => escolher(m.id)}
                   onKeyDown={(e) => teclado(e, i)}
                   title={m.dica}
-                  className={`rotulo min-h-[40px] flex-1 border px-3 transition-colors sm:flex-none sm:px-5 [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
+                  className={`rotulo min-h-[40px] min-w-0 flex-1 basis-[5.5rem] border px-2 transition-colors sm:flex-none sm:px-5 [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
                     ativo ? "relative z-10 border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
                   }`}
                 >

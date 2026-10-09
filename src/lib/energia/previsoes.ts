@@ -14,7 +14,7 @@ import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
-import type { ModelosGold, Submercado } from "./tipos";
+import type { ModelosGold, Proveniencia, Submercado } from "./tipos";
 import type {
   Apuracao,
   CelulaAtual,
@@ -450,7 +450,7 @@ export function oQueMudouRodada(g: Pick<PrevisoesDesempenhoGold, "prospectivo">)
   const revistas = g.prospectivo.revisoes_entre_rodadas.filter((r) => r.sequencia.length > 1);
   const revisao = revistas.length
     ? ` ${plural(revistas.length, "entrega teve", "entregas tiveram")} previsão revista entre rodadas (detalhe no arquivo de emissões).`
-    : " Nenhuma entrega tem duas previsões com número, então ainda não há revisão entre rodadas a comparar.";
+    : " Nenhuma entrega tem duas previsões com número: ainda não há revisão entre rodadas a comparar.";
   return `${atual}${anterior}${revisao}`;
 }
 
@@ -943,6 +943,22 @@ export function paraLeitorPrevisoes(texto: string): string {
 }
 
 /**
+ * Frase do registro que explica a falta com "porque" ("28 células sem número, porque nenhum PLD ... havia sido capturado"): no texto de
+ * leitura o motivo vem como motivo gravado, sem afirmar causa. O texto original continua em Auditar.
+ */
+export function motivoGravado(texto: string): string {
+  return texto.replace(/,\s+porque\s+/g, "; motivo gravado: ");
+}
+
+/**
+ * Proveniência do painel para a leitura: o indicador vem do registro e chama a rodada de "atual" ("Referência experimental B0 da rodada
+ * atual"); o dado tem a própria data, e o rótulo da página é "rodada mais recente". O resto da proveniência fica como está.
+ */
+export function provenienciaParaLeitor<T extends Pick<Proveniencia, "indicador">>(p: T): T {
+  return typeof p.indicador === "string" && /\bda rodada atual\b/.test(p.indicador) ? { ...p, indicador: p.indicador.replace(/\bda rodada atual\b/, "da rodada mais recente") } : p;
+}
+
+/**
  * Separa as frases de um texto escrito para o registro entre as que o leitor lê e as que citam o bastidor da decisão ("implementador",
  * "validacao_observatorio.decisao_publicacao", "decidido_por"). As do bastidor ficam em Analisar e Auditar, na mesma ordem.
  */
@@ -1097,7 +1113,7 @@ export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total
     prevComNumero === 0
       ? ""
       : apurados === 0
-        ? " Nenhuma entrega prevista terminou, então ainda não há resultado para comparar."
+        ? " Nenhuma entrega prevista terminou: ainda não há resultado para comparar."
         : ` ${apurados} de ${prevComNumero} previsões com número já têm resultado.`;
   return `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}; ${quais}.${resultado}`;
 }
@@ -1134,7 +1150,7 @@ export function vereditoFicha(f: Ficha, resumo: string | null | undefined, g: Pi
   const estado = rotuloEstadoModelo(f.estado);
   const emite = emissaoDoModelo(f, g);
   const fim = !f.implementado_no_repositorio
-    ? `Está em ${estado} e não emite número: a configuração da pesquisa não foi publicada, então o modelo não pode ser refeito.`
+    ? `Está em ${estado} e não emite número: a configuração da pesquisa não foi publicada; o modelo não pode ser refeito.`
     : f.aprovacao.referencia_experimental
       ? `Está em ${estado}; é publicado só como referência experimental.`
       : emite === "não emite: número retido pela governança"
@@ -1527,7 +1543,7 @@ export type SituacaoModelo = {
 export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">): SituacaoModelo {
   switch (f.estado as EstadoModelo) {
     case "PRODUCAO":
-      return { id: "producao", rotulo: "Produção", definicao: "Aprovado: alimenta a previsão principal." };
+      return { id: "producao", rotulo: "Produção", definicao: "Aprovado; alimenta a previsão principal." };
     case "APOSENTADO":
       return { id: "aposentado", rotulo: "Aposentado", definicao: "Fora de uso; as previsões antigas ficam no arquivo." };
     case "VALIDACAO":
@@ -1535,7 +1551,7 @@ export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">): Situac
     default:
       return f.aprovacao.referencia_experimental
         ? { id: "experimental", rotulo: "Referência experimental", definicao: "Em pesquisa, com número publicado e identificado como experimental, sem aprovação." }
-        : { id: "pesquisa", rotulo: "Pesquisa", definicao: "Em estudo: não alimenta previsão." };
+        : { id: "pesquisa", rotulo: "Pesquisa", definicao: "Em estudo; não alimenta a previsão." };
   }
 }
 

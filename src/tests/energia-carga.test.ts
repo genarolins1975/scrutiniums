@@ -13,13 +13,17 @@ import {
   COLUNAS_COMPARACAO,
   COLUNAS_COMPARACOES_TODAS,
   COLUNAS_MENSAL,
+  BASE_CURTA,
+  EXPLICACAO_BASE,
   JANELAS,
   PAINEIS_CARGA,
   REGIOES,
+  TIPOS_COMPARACAO,
   barrasDecomposicao,
   decomposicaoEscolhida,
   diasNoAno,
   horaModal,
+  linhaDaJanela,
   linhasAnual,
   linhasComparacao,
   linhasComparacoesTodas,
@@ -33,8 +37,12 @@ import {
   linhasSensibilidade,
   marcosRegimes,
   matrizHoraPico,
+  mesmaDataAnoAnterior,
+  outraBase,
   paraTabela,
+  partesDaDiferenca,
   perfilEscolhido,
+  picoModalDoAno,
   respostaAcumulado,
   respostaClima,
   respostaDecomposicao,
@@ -58,10 +66,14 @@ import {
   regimeDoMes,
   textoAvisoRegimes,
   textoDiferencaHoraria,
+  textoEventosJanela,
   textoMesCorrente,
+  textoOutraBase,
   textoQuebraCurva,
+  vereditoClima,
+  vereditoNivel,
 } from "@/lib/energia/carga";
-import { dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, sinal } from "@/lib/energia/formato";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
@@ -253,6 +265,100 @@ describe("P025: gráfico, tabela e exportação usam as mesmas linhas", () => {
     expect(alvo.ref364).toBe(serieComReferencia(col, "SIN").find((p) => p.d === alvo.d)!.ref364);
   });
 
+  it("referência das mesmas datas: o mesmo dia do ano anterior, procurado pela data (29 de fevereiro não tem par), confere com carga_diaria.csv", () => {
+    expect(mesmaDataAnoAnterior("2026-09-22")).toBe("2025-09-22");
+    expect(mesmaDataAnoAnterior("2025-03-01")).toBe("2024-03-01");
+    expect(mesmaDataAnoAnterior("2024-02-29")).toBeNull();
+    const col = serieColunar(C.serie);
+    const diario = new Map(csv("carga_diaria.csv").map((r) => [r.data, r]));
+    let conferidos = 0;
+    for (const sm of ["SIN", "S"] as const) {
+      const s = serieComReferencia(col, sm);
+      for (const pt of s.slice(-400)) {
+        const par = mesmaDataAnoAnterior(pt.d);
+        if (!par) {
+          expect(pt.refDatas, `${sm} ${pt.d}`).toBeNull();
+          continue;
+        }
+        const linha = diario.get(par);
+        const esperado = linha ? n(sm === "SIN" ? linha.SIN_calculado : linha[sm]) : null;
+        if (esperado === null) continue;
+        // carga.json arredonda a MWmed inteiro; o CSV tem quatro casas
+        expect(Math.abs(pt.refDatas! - esperado), `${sm} ${pt.d} contra ${par}`).toBeLessThanOrEqual(0.5);
+        conferidos++;
+      }
+    }
+    expect(conferidos).toBeGreaterThan(600);
+    // as duas referências são dias diferentes: mesmas datas não é 364 dias antes (a diferença é de um ou dois dias de calendário)
+    const sin = serieComReferencia(col, "SIN");
+    const ult = sin[sin.length - 1];
+    expect(ult.refDatas).not.toBe(ult.ref364);
+  });
+
+  it("a base da comparação sincroniza a faixa, a resposta, a frase da outra base e as linhas da tabela (as mesmas linhas, para toda região, janela e base)", () => {
+    expect([...TIPOS_COMPARACAO].sort()).toEqual(["equivalente", "mesmas_datas"]);
+    expect(outraBase("equivalente")).toBe("mesmas_datas");
+    expect(outraBase("mesmas_datas")).toBe("equivalente");
+    for (const sm of REGIOES) {
+      for (const j of JANELAS) {
+        for (const tipo of TIPOS_COMPARACAO) {
+          const l = linhaDaJanela(P, sm, j, tipo);
+          // a faixa lê a linha que alimenta o gráfico de pontos, a tabela e a exportação
+          expect(l, `${sm} ${j} ${tipo}`).toEqual(linhasComparacao(P, sm, tipo).find((x) => x.janela === j) ?? null);
+          const resposta = respostaNivel(P, sm, j, tipo);
+          const veredito = vereditoNivel(P, sm, j, tipo);
+          if (l && l.variacao_pct !== null) {
+            expect(resposta, `${sm} ${j} ${tipo}`).toContain(num(Math.abs(l.variacao_pct), 2));
+            expect(veredito, `${sm} ${j} ${tipo}`).toContain(num(Math.abs(l.variacao_pct), 2));
+          }
+          // a frase que diz o que a outra base daria cita a variação da outra linha, com as datas dela
+          const outra = linhaDaJanela(P, sm, j, outraBase(tipo));
+          const frase = textoOutraBase(P, sm, j, tipo);
+          if (outra && outra.variacao_pct !== null && outra.inicio_ant && outra.fim_ant) {
+            expect(frase, `${sm} ${j} ${tipo}`).toContain(`${sinal(outra.variacao_pct, 2)}%`);
+            expect(frase, `${sm} ${j} ${tipo}`).toContain(`${dataBR(outra.inicio_ant)} a ${dataBR(outra.fim_ant)}`);
+            expect(frase, `${sm} ${j} ${tipo}`).toContain("bases diferentes");
+          } else {
+            expect(frase, `${sm} ${j} ${tipo}`).toContain("não tem variação publicada");
+          }
+        }
+      }
+    }
+    // a janela inexistente não tem frase nem linha
+    expect(textoOutraBase(P, "SIN", "10000d" as never, "equivalente")).toBe("");
+    expect(BASE_CURTA.equivalente).not.toBe(BASE_CURTA.mesmas_datas);
+    expect(EXPLICACAO_BASE.equivalente).toContain("364");
+    expect(EXPLICACAO_BASE.mesmas_datas).toContain("mesma data");
+  });
+
+  it("partes da diferença do P027: clima, nível e tendência e resíduo fecham com a diferença publicada (duas casas) e as proporções saem da mesma conta", () => {
+    let conferidas = 0;
+    for (const d of G.a07.decomposicao) {
+      const x = partesDaDiferenca(d);
+      expect(x.diferenca, `${d.sm} ${d.variante}`).toBe(d.real_log100);
+      expect(x.residuo, `${d.sm} ${d.variante}`).toBe(d.residuo_log100);
+      expect(Math.abs(x.clima + x.nivelTendencia + x.residuo - x.diferenca), `${d.sm} ${d.variante} ${d.comparacao}`).toBeLessThanOrEqual(0.03);
+      if (d.real_log100 === 0) {
+        expect(x.proporcaoClima).toBeNull();
+        expect(x.proporcaoResto).toBeNull();
+      } else {
+        expect(x.proporcaoClima).toBeCloseTo(x.clima / d.real_log100, 10);
+        expect(x.proporcaoResto).toBeCloseTo(d.residuo_log100 / d.real_log100, 10);
+        // o veredito lê as duas proporções desta mesma conta: arredondadas a inteiro quando positivas e, quando negativas, em palavras
+        // (parte contrária à diferença), nunca como percentual negativo
+        const v = vereditoClima(d, G.p027!, d.sm);
+        const rot = `${d.sm} ${d.variante} ${d.comparacao}`;
+        if (x.proporcaoClima! >= 0) expect(v, rot).toContain(`acompanham ${Math.round(x.proporcaoClima! * 100)}% dessa diferença`);
+        else expect(v, rot).toContain("puxam no sentido oposto à diferença");
+        if (x.proporcaoResto! >= 0) expect(v, rot).toContain(`o modelo não reproduz ${Math.round(x.proporcaoResto! * 100)}%`);
+        else expect(v, rot).toContain("o modelo previa uma diferença maior que a observada");
+        expect(v, rot).not.toMatch(/-\d+%|−\d+%/);
+        conferidas++;
+      }
+    }
+    expect(conferidas).toBeGreaterThan(10);
+  });
+
   it("mensal e anual: gráfico e tabela com as mesmas linhas; variação anual nula fora de ano completo no mesmo regime", () => {
     const m = linhasMensal(P);
     expect(m.length).toBe(P.mensal.length);
@@ -334,6 +440,31 @@ describe("P026: gráfico, tabela e exportação usam as mesmas linhas", () => {
     expect(r.valores).toEqual(m.valores.slice(m.anos.findIndex((a) => a.id === String(desde))));
     // ano incompleto (bissexto incluído) leva a contagem de dias no rótulo
     for (const a of m.anos) expect(a.rotulo.includes("dias"), a.id).toBe(a.dias < diasNoAno(Number(a.id)));
+  });
+
+  it("hora modal do pico no último ano: a da curva sai da recontagem de carga_pico_diario.csv e a da carga líquida, das contagens da gold (empate: a primeira hora)", () => {
+    const cont = Array(24).fill(0) as number[];
+    let anoMax = 0;
+    for (const r of csv("carga_pico_diario.csv")) if (r.submercado === "SIN" && r.hora_pico !== "") anoMax = Math.max(anoMax, Number(r.data.slice(0, 4)));
+    let dias = 0;
+    for (const r of csv("carga_pico_diario.csv")) {
+      if (r.submercado !== "SIN" || r.hora_pico === "" || Number(r.data.slice(0, 4)) !== anoMax) continue;
+      cont[Number(r.hora_pico)]++;
+      dias++;
+    }
+    const modaManual = (c: number[]) => c.reduce((m, v, h) => (v > c[m] ? h : m), 0);
+    const x = picoModalDoAno(P, "SIN")!;
+    expect(x.ano).toBe(anoMax);
+    expect(x.dias).toBe(dias);
+    expect(x.curva.hora).toBe(modaManual(cont));
+    expect(x.curva.dias).toBe(cont[modaManual(cont)]);
+    const api = P.hora_pico_api_sin_por_ano.find((a) => a.ano === anoMax)!;
+    expect(x.liquida!.hora).toBe(modaManual(api.contagem_liquida));
+    expect(x.liquida!.dias).toBe(api.contagem_liquida[modaManual(api.contagem_liquida)]);
+    // só o SIN tem a carga líquida da carga verificada; as outras regiões ficam sem ela, nunca com zero
+    for (const sm of REGIOES.filter((r) => r !== "SIN")) expect(picoModalDoAno(P, sm)?.liquida ?? null, sm).toBeNull();
+    // sem contagem publicada, sem pico
+    expect(picoModalDoAno({ hora_pico_por_ano: { ...P.hora_pico_por_ano, SIN: [] }, hora_pico_api_sin_por_ano: [] }, "SIN")).toBeNull();
   });
 
   it("MMGD mensal: razão de somas refeita de carga_verificada_diaria.csv (mês completo, até 0,01 ponto)", () => {
@@ -584,6 +715,39 @@ describe("páginas renderizadas no servidor", () => {
     expect((h.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(2);
     expect(h).toContain("Mesmo dia da semana, 364 dias antes");
     expect(h).toContain(respostaAcumulado(G.p025.acumulado_ano, "SIN").slice(0, 40));
+  });
+
+  it("a janela de sete dias do SIN: as duas bases dão taxas diferentes e a abertura diz que as bases são diferentes", () => {
+    const eq = linhaDaJanela(G.p025, "SIN", "7d", "equivalente")!;
+    const md = linhaDaJanela(G.p025, "SIN", "7d", "mesmas_datas")!;
+    // a mesma janela, duas janelas de comparação diferentes (364 dias antes e um ano de calendário antes)
+    expect(eq.inicio).toBe(md.inicio);
+    expect(eq.fim).toBe(md.fim);
+    expect(eq.inicio_ant).not.toBe(md.inicio_ant);
+    expect(eq.variacao_pct).not.toBeNull();
+    expect(md.variacao_pct).not.toBeNull();
+    expect(eq.variacao_pct).not.toBe(md.variacao_pct);
+    const h = html.p025;
+    const principal = h.slice(h.indexOf("<main"), h.indexOf("</main>"));
+    // a frase está na abertura, junto da faixa, com a taxa da outra base, as datas dela e a razão da diferença
+    expect(principal).toContain(`${sinal(md.variacao_pct!, 2)}%. As duas taxas usam bases diferentes`);
+    expect(principal).toContain(`${sinal(eq.variacao_pct!, 2)}%`);
+    // o controle das duas bases: duas opções à vista, cada uma com o que é, e uma só marcada
+    const i = principal.indexOf('data-controle="base-da-comparacao"');
+    expect(i).toBeGreaterThan(0);
+    const controle = principal.slice(i, principal.indexOf("</fieldset>", i));
+    expect((controle.match(/type="radio"/g) ?? []).length).toBe(2);
+    expect((controle.match(/checked=""/g) ?? []).length).toBe(1);
+    for (const t of TIPOS_COMPARACAO) expect(controle).toContain(EXPLICACAO_BASE[t]);
+    // a faixa vem antes do painel e traz os três números e o controle
+    expect(principal.indexOf('data-faixa-metricas=""')).toBeGreaterThan(0);
+    expect(principal.indexOf('data-faixa-metricas=""')).toBeLessThan(principal.indexOf('id="p025"'));
+    // o calendário das duas janelas fica logo abaixo dos pontos pareados, com a composição e os feriados de cada uma
+    const j = G.p025.comparacoes.janelas.find((x) => x.id === "7d")!;
+    expect(principal).toContain("data-calendario-janelas");
+    expect(principal).toContain(textoEventosJanela(j, "equivalente").slice(0, 40));
+    // as seções do P025 têm âncora e pergunta própria
+    for (const id of ["historico", "mensal", "anual"]) expect(principal, id).toContain(`id="${id}"`);
   });
 
   it("P026: conceitos de cada carga, natureza por série e as duas fontes em gráficos separados", () => {

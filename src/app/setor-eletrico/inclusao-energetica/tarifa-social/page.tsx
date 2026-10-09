@@ -149,12 +149,12 @@ export default function TarifaSocialPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <InclusaoNavegacao atual="p059" />
         <CabecalhoModulo
-          siglas={["UC", "SCS", "CDE", "DMR", "ANEEL", "UF"]}
+          siglas={["ANEEL", "UF", "MPV", "IBGE", "CCC"]}
           rotulo="Inclusão energética"
           titulo="Tarifa Social de Energia Elétrica"
           lead="Quantas unidades consumidoras (UC) recebem a Tarifa Social, onde estão e quanto o desconto vale. UC e faturas vêm de fontes e meses diferentes e não se somam."
-          recorte={`SCS ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · CDE ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · UC, faturas e R$ correntes`}
-          fonte="ANEEL, SCS e Beneficiários da CDE"
+          recorte={`UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`}
+          fonte="ANEEL: Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)"
           referencia={
             <>
               SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
@@ -208,7 +208,7 @@ export default function TarifaSocialPage() {
               />
               <Numero
                 variante="faixa"
-                rotulo="DMR do mês"
+                rotulo="Diferença Mensal de Receita (DMR) do mês"
                 natureza="OBSERVADO"
                 evidencia={k.dmr_mes_reais.evidencia}
                 formato="reais"

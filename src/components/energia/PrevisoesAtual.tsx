@@ -149,50 +149,54 @@ export function PrevisoesAtual({
         </p>
       </section>
 
-      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Grade 4 × 7 da referência B0 (rolável)">
-        <table className="w-full min-w-[34rem] border-collapse text-sm tabular-nums" data-grade="4x7">
-          <caption className="pb-2 text-left text-xs text-carvao-muted">
-            Grade 4 × 7: referência B0 por submercado e horizonte, em R$/MWh. Os mesmos números da tabela completa e dos painéis acima. Escolha uma célula para ver o detalhe.
-          </caption>
-          <thead>
-            <tr className="text-left text-xs text-mineral">
-              <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                Submercado
-              </th>
-              {HORIZONTES.map((h) => (
-                <th key={h} scope="col" className="border-b border-linha px-2 py-2 text-right font-medium">
-                  {h}
+      <div className="space-y-2" data-grade-bloco="">
+        {/* a legenda fica fora da região que rola: dentro da tabela ela ficaria mais larga que a janela e o texto sairia cortado no celular */}
+        <p id="grade-4x7-legenda" className="text-xs text-carvao-muted">
+          Grade 4 × 7: referência B0 por submercado e horizonte, em R$/MWh. Os mesmos números da tabela completa e dos painéis acima. Escolha uma célula para ver o detalhe.
+        </p>
+        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Grade 4 × 7 da referência B0 (rolável)">
+          <table className="w-full min-w-[34rem] border-collapse text-sm tabular-nums" data-grade="4x7" aria-describedby="grade-4x7-legenda">
+            <caption className="sr-only">Grade 4 × 7 da referência B0 por submercado e horizonte, em R$/MWh</caption>
+            <thead>
+              <tr className="text-left text-xs text-mineral">
+                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                  Submercado
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {matriz.map((r) => (
-              <tr key={r.submercado}>
-                <th scope="row" className="border-b border-linha px-2 py-1 text-left font-normal text-carvao">
-                  {CURTO_SM[r.submercado]}
-                </th>
-                {r.valores.map((x, i) => {
-                  const h = HORIZONTES[i];
-                  const ativo = v.sm === r.submercado && v.h === h;
-                  return (
-                    <td key={h} className="border-b border-linha p-0 text-right">
-                      <button
-                        type="button"
-                        onClick={() => selecionar(r.submercado, h)}
-                        aria-pressed={ativo}
-                        aria-label={`${h}, ${NOME_SM[r.submercado]}: ${x === null ? "sem número" : reaisMWh(x)}`}
-                        className={`min-h-[44px] w-full px-2 text-right ${ativo ? "bg-energia-fundo font-medium text-carvao" : "text-carvao hover:bg-papel"}`}
-                      >
-                        {x === null ? "sem número" : num(x, 2)}
-                      </button>
-                    </td>
-                  );
-                })}
+                {HORIZONTES.map((h) => (
+                  <th key={h} scope="col" className="border-b border-linha px-2 py-2 text-right font-medium">
+                    {h}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {matriz.map((r) => (
+                <tr key={r.submercado}>
+                  <th scope="row" className="border-b border-linha px-2 py-1 text-left font-normal text-carvao">
+                    {CURTO_SM[r.submercado]}
+                  </th>
+                  {r.valores.map((x, i) => {
+                    const h = HORIZONTES[i];
+                    const ativo = v.sm === r.submercado && v.h === h;
+                    return (
+                      <td key={h} className="border-b border-linha p-0 text-right">
+                        <button
+                          type="button"
+                          onClick={() => selecionar(r.submercado, h)}
+                          aria-pressed={ativo}
+                          aria-label={`${h}, ${NOME_SM[r.submercado]}: ${x === null ? "sem número" : reaisMWh(x)}`}
+                          className={`min-h-[44px] w-full px-2 text-right ${ativo ? "bg-energia-fundo font-medium text-carvao" : "text-carvao hover:bg-papel"}`}
+                        >
+                          {x === null ? "sem número" : num(x, 2)}
+                        </button>
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {recorte}

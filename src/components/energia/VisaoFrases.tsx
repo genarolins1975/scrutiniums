@@ -3,8 +3,8 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR, num, plural } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
-import type { DestaquesVisao, DestaqueVisao, FraseVisao, IdFrase } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, ROTULO_FRASE, URL_GOLD_VISAO, textoAtualidadeFrase, textoComponentesFrase } from "@/lib/energia/visao";
+import type { DestaquesVisao, DestaqueVisao, EstadoRegra, FraseVisao, IdFrase } from "@/lib/energia/tipos-visao";
+import { ROTA_VISAO, ROTULO_ESTADO, ROTULO_FRASE, URL_GOLD_VISAO, minuscula, textoAtualidadeFrase, textoComponentesFrase } from "@/lib/energia/visao";
 
 /**
  * "O sistema em 60 segundos" (P004): as frases da síntese, cada uma montada no pipeline
@@ -15,8 +15,20 @@ import { ROTA_VISAO, ROTULO_FRASE, URL_GOLD_VISAO, textoAtualidadeFrase, textoCo
  *
  * Componente de servidor: o texto é o da gold, sem reescrita. Trecho com link leva ao
  * painel de origem; o caminho do número na gold vai no title e na tabela de auditoria.
+ * A frase de um indicador que tem regra em alerta ou em observação leva a marca da regra,
+ * com ligação para ela no "O que observar": o leitor do topo não lê o número sem saber.
  */
-export function VisaoFrases({ frases, notas = {} }: { frases: FraseVisao[]; notas?: Partial<Record<IdFrase, string>> }) {
+export type MarcaDeRegra = { id: string; titulo: string; estado: EstadoRegra };
+
+export function VisaoFrases({
+  frases,
+  notas = {},
+  marcas = {},
+}: {
+  frases: FraseVisao[];
+  notas?: Partial<Record<IdFrase, string>>;
+  marcas?: Partial<Record<IdFrase, readonly MarcaDeRegra[]>>;
+}) {
   return (
     <ol className="divide-y divide-linha border-y border-linha" aria-label="Fatos do sistema, um por indicador">
       {frases.map((f, i) => {
@@ -44,6 +56,16 @@ export function VisaoFrases({ frases, notas = {} }: { frases: FraseVisao[]; nota
               {f.qualidade.texto_defasagem} {textoAtualidadeFrase(f)}
               {componentes ? ` Parte da série não é medição: ${componentes}.` : ""}
             </p>
+            {(marcas[f.id] ?? []).map((r) => (
+              <p key={r.id} className="mt-1.5 text-xs leading-relaxed text-carvao" data-marca-regra={r.id}>
+                <span className="rotulo mr-2 text-mineral">{ROTULO_ESTADO[r.estado]}</span>
+                A regra{" "}
+                <Link href={`#regra-${r.id}`} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                  {minuscula(r.titulo)}
+                </Link>{" "}
+                avalia este indicador{r.estado === "em_observacao" ? ": a condição está presente, ainda sem a duração mínima para virar alerta" : ""}.
+              </p>
+            ))}
             {notas[f.id] && (
               <p className="mt-1.5 text-xs leading-relaxed text-carvao" data-nota-frase={f.id}>
                 <span className="rotulo mr-2 text-mineral">Para ler junto</span>

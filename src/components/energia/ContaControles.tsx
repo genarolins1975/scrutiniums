@@ -64,7 +64,7 @@ export function ContaLista({
 }) {
   const id = useId();
   return (
-    <div className="min-w-0">
+    <div className="w-full min-w-0 sm:w-72">
       <label htmlFor={id} className="rotulo block text-mineral">
         {rotulo}
       </label>
@@ -72,7 +72,7 @@ export function ContaLista({
         id={id}
         value={valor}
         onChange={(e) => onEscolher(e.target.value)}
-        className="mt-1 min-h-[44px] w-full max-w-xs border border-linha bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-energia"
+        className="mt-1 min-h-[44px] w-full border border-linha bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-energia"
       >
         {opcoes.map((o) => (
           <option key={o.id} value={o.id}>

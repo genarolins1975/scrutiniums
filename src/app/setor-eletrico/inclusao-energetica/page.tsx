@@ -97,16 +97,16 @@ export default function InclusaoEnergeticaPage() {
       <MarcaVisita secao="energia:inclusao-energetica" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          siglas={["POF", "UC", "SCS", "CDE", "IBGE", "ANEEL", "SIN"]}
+          siglas={["IBGE", "ANEEL", "UF", "SIDRA", "DMR", "EPE", "MME", "SIN"]}
           titulo="Para quem a energia pesa mais?"
           lead="Quanto a energia elétrica pesa na despesa das famílias de cada faixa de renda (Pesquisa de Orçamentos Familiares, POF 2017-2018), e o que a Tarifa Social e o acesso à energia medem."
           recorte={`${periodoMedidas} · Brasil, famílias por faixa de renda · % da despesa total`}
-          fonte="IBGE, POF 2017-2018; ANEEL, Tarifa Social; IBGE, PNAD Contínua"
+          fonte="IBGE, POF 2017-2018 e Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua; ANEEL, Tarifa Social"
           referencia={
             <>
-              SCS da ANEEL até {mes(g.referencias.scs_ultimo_mes_no_arquivo)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}); Beneficiários da CDE até {mes(g.referencias.cde_mes_mais_recente)}; Cadastro Único de{" "}
-              {mes(c.brasil?.mes)}; {nomePof(o)}; PNAD Contínua {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"}; Luz para Todos até {mes(lpt?.ultimo_mes)}. Processado em{" "}
-              {carimbo(g.gerado_em)}.
+              SCS da ANEEL até {mes(g.referencias.scs_ultimo_mes_no_arquivo)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}); Beneficiários da CDE até {mes(g.referencias.cde_mes_mais_recente)}; Cadastro Único,
+              do Ministério do Desenvolvimento e Assistência Social (MDS), de {mes(c.brasil?.mes)}; {nomePof(o)}; PNAD Contínua {a.ano_referencia}; ciclo {si?.ciclo ?? "sem dado"} do Portal de Acompanhamento e
+              Informações dos Sistemas Isolados (PASI), da EPE; Luz para Todos, do MME, até {mes(lpt?.ultimo_mes)}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
           datas={<InclusaoDatas itens={datasMedidas(g)} />}
@@ -236,7 +236,7 @@ export default function InclusaoEnergeticaPage() {
                   cor="var(--cor-energia)"
                   nota={
                     <>
-                      UC, unidade consumidora: o ponto de ligação com conta própria. É a unidade do SCS, em que a distribuidora pede o reembolso do desconto. {t.distribuidoras.length} distribuidoras;
+                      UC, unidade consumidora: o ponto de ligação com conta própria. É a unidade do Sistema de Controle de Subvenções e Programas Sociais (SCS), em que a distribuidora pede o reembolso do desconto. {t.distribuidoras.length} distribuidoras;
                       último mês completo do SCS.
                     </>
                   }
@@ -251,7 +251,7 @@ export default function InclusaoEnergeticaPage() {
                   unidade="faturas"
                   cor="var(--serie-referencia)"
                   motivoAusencia="Nenhum arquivo da CDE com todas as distribuidoras."
-                  nota="Fatura: cada conta emitida com desconto no mês. É a unidade dos arquivos de Beneficiários da CDE; uma UC pode ter mais de uma fatura no arquivo."
+                  nota="Fatura: cada conta emitida com desconto no mês. É a unidade dos arquivos de Beneficiários da Conta de Desenvolvimento Energético (CDE); uma UC pode ter mais de uma fatura no arquivo."
                   endereco={`${rotaPainel("p059")}#p059`}
                 />
               </FaixaMetricas>
@@ -326,14 +326,14 @@ export default function InclusaoEnergeticaPage() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo={`Pessoas em localidades isoladas (PASI, ciclo ${si?.ciclo ?? "sem dado"})`}
+                  rotulo={`Pessoas em localidades isoladas (ciclo ${si?.ciclo ?? "sem dado"})`}
                   natureza="OBSERVADO"
                   evidencia={si?.evidencia_populacao ?? null}
                   casas={0}
                   unidade="pessoas"
                   cor="var(--serie-termica)"
                   motivoAusencia="PASI não processado nesta publicação."
-                  nota="Pessoa: a população das localidades isoladas, informada pelas distribuidoras ao PASI, o Portal de Acompanhamento e Informações dos Sistemas Isolados da EPE."
+                  nota="Pessoa: a população das localidades isoladas, informada pelas distribuidoras ao Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI), da EPE."
                   endereco={`${rotaPainel("p062")}#p062`}
                 />
                 <Numero

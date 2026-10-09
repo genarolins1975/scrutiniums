@@ -237,13 +237,25 @@ export function TabelaInterativa({
     const el = rolagemRef.current;
     if (!el) return;
     const medir = () => setMaisColunas(el.scrollWidth > el.clientWidth + 2);
+    // há mais colunas à direita: a borda direita esmaece (CSS), para que um número cortado no limite da janela não seja lido como completo
+    const marcar = () => {
+      el.dataset.maisDireita = el.scrollWidth > el.clientWidth + 2 && el.scrollLeft + el.clientWidth < el.scrollWidth - 2 ? "sim" : "nao";
+    };
     medir();
-    if (typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(medir);
+    marcar();
+    el.addEventListener("scroll", marcar, { passive: true });
+    if (typeof ResizeObserver === "undefined") return () => el.removeEventListener("scroll", marcar);
+    const ro = new ResizeObserver(() => {
+      medir();
+      marcar();
+    });
     ro.observe(el);
     const tabela = el.querySelector("table");
     if (tabela) ro.observe(tabela);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", marcar);
+    };
   }, [filtradas.length, colunas.length]);
 
   const atual = useRef({ filtradas, tamanho, pagina: pag.pagina });

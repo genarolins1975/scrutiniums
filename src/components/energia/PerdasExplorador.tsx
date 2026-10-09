@@ -189,9 +189,8 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   return (
     <div className="space-y-8">
       {/* consulta e respostas: o agregado das concessionárias (universo próprio) e a faixa entre distribuidoras da consulta */}
-      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <div className="grid gap-x-10 gap-y-4 xl:grid-cols-[minmax(0,1fr)_42rem] xl:items-start">
         <div className="flex min-w-0 flex-col gap-4">
-          {respostaGeral}
           {resposta && veredito ? (
             <RespostaCurta id="mapa" vivo veredito={veredito}>
               {resposta}
@@ -209,7 +208,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
             </p>
           )}
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+        <div className="grid gap-3 sm:grid-cols-[16.5rem_minmax(0,1fr)]">
           <div>
             <label htmlFor="perdas-periodo" className="rotulo mb-1 block text-mineral">
               Período
@@ -283,6 +282,9 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
         }.`}
         unidade={medida.unidade}
       />
+
+      {/* o agregado das concessionárias, em texto: a faixa de métricas do alto já traz os mesmos números, por isso a resposta vem depois da figura */}
+      {respostaGeral}
 
       {notas}
       {aposPrincipal}

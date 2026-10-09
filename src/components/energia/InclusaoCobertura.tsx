@@ -93,7 +93,7 @@ export function InclusaoCoberturaUf({
       <GraficoPontos
         titulo={`Faixa de sensibilidade ao denominador por UF, ${mes(mesRef)}`}
         itens={itens}
-        unidade="por 100 famílias"
+        unidade="faturas por 100 famílias"
         unidadeDiferenca="pontos"
         casas={1}
         rotuloValor="Por 100 famílias com cadastro atualizado"

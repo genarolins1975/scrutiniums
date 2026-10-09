@@ -1061,14 +1061,6 @@ export function textoAnosAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "it
 }
 
 /**
- * Contagem por situação das consultas com atividade recente numa data. Na faixa de métricas vale a data de referência da
- * publicação; no veredito e na resposta, a data de leitura. A regra é a mesma do gráfico, do filtro e da tabela.
- */
-export function contagemConsultasNaData(c: Pick<Consultas, "itens">, data: string): Record<SituacaoConsulta, number> {
-  return contarSituacoes(consultasNaData(c.itens, data));
-}
-
-/**
  * Aviso à vista quando a página oficial diz que a agenda foi atualizada por outra portaria e o texto da atualização não pôde ser
  * lido: os anos previstos são os da versão original. null quando não há atualização pendente de leitura. O detalhe da tentativa de
  * leitura (endereço, resposta do servidor) fica em Analisar.
@@ -1077,18 +1069,6 @@ export function avisoRevisaoAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | 
   const r = a.revisao;
   if (!a.disponivel || !r.atualizada_por || r.texto_lido) return null;
   return `A página oficial da agenda diz que ela foi ${r.trecho ?? `atualizada pela ${r.atualizada_por}`}. O texto dessa atualização não pôde ser lido, então os anos previstos são os da versão original e podem ter mudado.`;
-}
-
-/**
- * Nota da contagem de atividades da agenda: o ano é previsão da ANEEL e, quando a página oficial diz que a agenda foi atualizada por
- * outra portaria cujo texto não pôde ser lido, a contagem é a da versão original.
- */
-export function notaContagemAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | "disponivel">): string {
-  const r = a.revisao;
-  if (a.disponivel && r.atualizada_por && !r.texto_lido) {
-    return `Versão original da agenda. A ${r.atualizada_por}, que a atualiza, não pôde ser lida; o ano de cada atividade é previsão da ANEEL.`;
-  }
-  return "O ano de cada atividade é previsão da ANEEL e pode mudar.";
 }
 
 /**
@@ -1375,12 +1355,13 @@ export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_refere
 }
 
 /**
- * Painéis ligados a um evento, em texto ("ligada aos painéis A e B"); vazio sem painel indicado. A ligação é a da curadoria do ato
- * (painéis em que o número passa a ser lido com a regra nova), não uma estimativa de efeito.
+ * Painéis ligados a um evento, em texto ("ligada a A e B"); vazio sem painel indicado. A ligação é a da curadoria do ato
+ * (painéis em que o número passa a ser lido com a regra nova), não uma estimativa de efeito. Duas palavras de ligação, para o
+ * veredito caber nas 40 palavras mesmo quando o ato se liga a dois painéis.
  */
 function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
   if (!e.paineis.length) return "";
-  return e.paineis.length === 1 ? `, ligada ao painel ${e.paineis[0].rotulo}` : `, ligada aos painéis ${listaComE(e.paineis.map((p) => p.rotulo))}`;
+  return `, ligada a ${listaComE(e.paineis.map((p) => p.rotulo))}`;
 }
 
 /**

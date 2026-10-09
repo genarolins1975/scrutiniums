@@ -31,7 +31,12 @@ const ITENS_APRENDA: ItemLocal[] = [
  * (o índice) não leva a faixa, porque mostra as trilhas como capítulos (AprendaTrilhas).
  */
 export function AprendaNavegacao({ atual }: { atual: "verbetes" | "trilhas" }) {
-  return <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} />;
+  // duas seções cabem lado a lado no celular: o espaço entre colunas da faixa (24 px) somado às duas metades a empurraria para duas linhas
+  return (
+    <div className="max-sm:[&_.nav-faixa]:!gap-x-0">
+      <NavegacaoLocal rotulo="Seções do Aprenda" itens={ITENS_APRENDA} atual={atual} />
+    </div>
+  );
 }
 
 /** Descrição de uma trilha como capítulo: a pergunta que ela responde e quantos passos tem. */

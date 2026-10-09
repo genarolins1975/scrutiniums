@@ -1,6 +1,6 @@
 import { carimbo, dataBR, plural } from "./formato";
-import { fraseFrequencia, listaEmPortugues, partirLicenca, pelo, refLegivel } from "./dados";
-import type { Cadencia, ConjuntoIntegrado, EntradaDados } from "./tipos-dados";
+import { fraseFrequencia, listaEmPortugues, partirLicenca, pelo, refLegivel, type ContextoCatalogo } from "./dados";
+import type { Cadencia, CatalogoDados, ConjuntoIntegrado, EntradaDados, PublicacaoGold } from "./tipos-dados";
 
 /**
  * Ficha de um conjunto de dados em linguagem de leitor (rodada r8 de conteúdo). Tudo o que está aqui é função pura dos
@@ -103,6 +103,23 @@ export function nomesLegiveisDosTitulos(
     m.set(e.titulo.trim(), nomeDoConjunto(e, (e.integracoes ?? []).map((i) => porId.get(i.id)).filter((x): x is Pick<ConjuntoIntegrado, "id" | "titulo"> => !!x)).nome);
   }
   return m;
+}
+
+/**
+ * O que a lista do catálogo lê de fora do catálogo: o nome legível de cada conjunto (o mesmo que a ficha usa no título), o último período
+ * dos dados da primeira integração (o mesmo que a ficha chama de data de referência) e as fichas que existem. Só leitura dos campos
+ * publicados; conjunto sem integração fica sem período, nunca com um valor de reserva.
+ */
+export function contextoDoCatalogo(cat: Pick<CatalogoDados, "entradas">, pub: Pick<PublicacaoGold, "conjuntos"> | null, fichas: ReadonlySet<string>): ContextoCatalogo {
+  const porId = new Map((pub?.conjuntos ?? []).map((c) => [c.id, c]));
+  const nomes = new Map<string, string>();
+  const periodos = new Map<string, string | null>();
+  for (const e of cat.entradas) {
+    const integ = (e.integracoes ?? []).map((i) => porId.get(i.id)).filter((c): c is ConjuntoIntegrado => !!c);
+    nomes.set(e.id, nomeDoConjunto(e, integ).nome);
+    periodos.set(e.id, integ[0]?.atualidade.ultimo_periodo ?? null);
+  }
+  return { nomes, periodos, fichas };
 }
 
 /* ---------------------------------------------------------------- abertura */

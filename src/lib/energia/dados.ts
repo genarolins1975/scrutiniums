@@ -33,11 +33,11 @@ import type {
 /* ---------------------------------------------------------------- páginas */
 
 export const PAGINAS_DADOS = [
-  { id: "catalogo", href: "/setor-eletrico/dados", rotulo: "Catálogo", painel: "P067", pergunta: "Quais dados estão de fato validados?" },
-  { id: "saude", href: "/setor-eletrico/dados/saude", rotulo: "Saúde e revisões", painel: "P068", pergunta: "O que atrasou ou mudou?" },
-  { id: "reproducao", href: "/setor-eletrico/dados/reproducao", rotulo: "Download e reprodução", painel: "P069", pergunta: "Consigo reproduzir este gráfico?" },
-  { id: "regras", href: "/setor-eletrico/metodologia", rotulo: "Metodologia", painel: "P070", pergunta: "Quais interpretações são permitidas?" },
-  { id: "avaliacao", href: "/setor-eletrico/metodologia/avaliacao", rotulo: "Avaliação dos painéis", painel: "P071", pergunta: "Como demonstrar que a qualidade evoluiu?" },
+  { id: "catalogo", href: "/setor-eletrico/dados", rotulo: "Catálogo", painel: "P067", pergunta: "Quais dados estão de fato validados?", modulo: "dados" },
+  { id: "saude", href: "/setor-eletrico/dados/saude", rotulo: "Saúde e revisões", painel: "P068", pergunta: "O que atrasou ou mudou?", modulo: "dados" },
+  { id: "reproducao", href: "/setor-eletrico/dados/reproducao", rotulo: "Download e reprodução", painel: "P069", pergunta: "Consigo reproduzir este gráfico?", modulo: "dados" },
+  { id: "regras", href: "/setor-eletrico/metodologia", rotulo: "Metodologia", painel: "P070", pergunta: "Quais interpretações são permitidas?", modulo: "metodologia" },
+  { id: "avaliacao", href: "/setor-eletrico/metodologia/avaliacao", rotulo: "Avaliação dos painéis", painel: "P071", pergunta: "Como demonstrar que a qualidade evoluiu?", modulo: "metodologia" },
 ] as const;
 
 export type IdPaginaDados = (typeof PAGINAS_DADOS)[number]["id"];
@@ -142,15 +142,34 @@ function frequenciaLegivel(t: string | undefined): string {
   return s ? s[0].toUpperCase() + s.slice(1) : "não declarada";
 }
 
-/** Linhas do catálogo para a tabela interativa; `n` é a posição em entradas (a ficha lê a entrada completa sob demanda). */
-export function linhasCatalogo(cat: CatalogoDados): LinhaTabela[] {
+/** Formatos de referência temporal que a coluna de data aceita ("2026", "2026-09", "2026-09-29" e hora): o resto fica sem dado. */
+const REFERENCIA_ORDENAVEL = /^\d{4}(-\d{2}){0,2}(T\d{2}:\d{2})?$/;
+
+/**
+ * O que a lista do catálogo precisa de fora do próprio catálogo, já calculado pelo servidor: o nome legível de cada conjunto
+ * (o título da fonte é um identificador em alguns), o último período dos dados (só os conjuntos integrados o têm, em publicacao.json)
+ * e as fichas que existem (nem todo conjunto com endereço de ficha tem a página).
+ */
+export type ContextoCatalogo = {
+  nomes?: ReadonlyMap<string, string>;
+  periodos?: ReadonlyMap<string, string | null>;
+  fichas?: ReadonlySet<string>;
+};
+
+/**
+ * Linhas do catálogo para a lista e para a tabela; `n` é a posição em entradas (a ficha lê a entrada completa sob demanda).
+ * O estado de cada linha é o MAIS AVANÇADO que o conjunto alcançou; os anteriores continuam valendo (a escada é cumulativa) e
+ * aparecem no detalhe. Campo opcional sem valor fica ausente (sem dado), nunca zero.
+ */
+export function linhasCatalogo(cat: CatalogoDados, ctx: ContextoCatalogo = {}): LinhaTabela[] {
   return cat.entradas.map((e, n) => {
     const et = situacaoEtapas(e);
     const simnao = (s: SituacaoEtapa) => (s === "sim" ? "sim" : s === "falhou" ? "falhou" : "não");
+    const periodo = ctx.periodos?.get(e.id) ?? null;
     return {
       id: e.id,
       n,
-      titulo: e.titulo,
+      titulo: ctx.nomes?.get(e.id) ?? e.titulo,
       orgao: e.orgao,
       tema: rotuloTema(e.tema),
       estado: ROTULO_ESTADO_DADOS[e.estado],
@@ -162,9 +181,15 @@ export function linhasCatalogo(cat: CatalogoDados): LinhaTabela[] {
       uso: (e.papeis ?? []).length ? (e.papeis ?? []).map((p) => ROTULO_PAPEL[p] ?? p).join(" e ") : e.usado_em.length ? "indicador" : "sem uso declarado",
       ressalva: (e.ressalvas ?? []).length ? "sim" : "não",
       frequencia: frequenciaLegivel(e.frequencia_declarada),
+      periodo: periodo && REFERENCIA_ORDENAVEL.test(periodo) ? periodo : null,
       modificado: e.modificado_na_fonte ?? e.recursos_resumo?.ultimo_publicado ?? null,
       recursos: e.recursos_resumo?.total ?? null,
+      acessados: e.recursos_resumo ? (e.recursos_resumo.acessados ?? 0) : null,
       descontinuado: e.descontinuado ? "sim" : "não",
+      ficha: e.slug && ctx.fichas?.has(e.slug) ? "sim" : "não",
+      slug: e.slug && ctx.fichas?.has(e.slug) ? e.slug : null,
+      baixar: e.slug && ctx.fichas?.has(e.slug) && (e.downloads ?? []).length ? (e.downloads ?? []).length : null,
+      url: e.url ?? null,
       formatos: (e.formatos ?? []).join(", ") || null,
     };
   });
@@ -174,20 +199,59 @@ export const COLUNAS_CATALOGO: ColunaTabela[] = [
   { id: "titulo", rotulo: "Conjunto", tipo: "texto" },
   { id: "orgao", rotulo: "Órgão", tipo: "texto", categorica: true },
   { id: "tema", rotulo: "Tema", tipo: "texto", categorica: true },
-  { id: "estado", rotulo: "Estado alcançado", tipo: "texto", categorica: true },
+  { id: "estado", rotulo: "Estado mais avançado", tipo: "texto", categorica: true },
   { id: "etapas", rotulo: "Etapas cumpridas (de 5)", tipo: "numero", casas: 0 },
-  { id: "verificado", rotulo: "Recurso verificado", tipo: "texto", categorica: true },
-  { id: "integrado", rotulo: "Integrado", tipo: "texto", categorica: true },
-  { id: "validado", rotulo: "Validado", tipo: "texto", categorica: true },
-  { id: "publicado", rotulo: "Publicado", tipo: "texto", categorica: true },
+  { id: "verificado", rotulo: "Recurso verificado", tipo: "texto", categorica: true, buscavel: false },
+  { id: "integrado", rotulo: "Integrado", tipo: "texto", categorica: true, buscavel: false },
+  { id: "validado", rotulo: "Validado", tipo: "texto", categorica: true, buscavel: false },
+  { id: "publicado", rotulo: "Publicado", tipo: "texto", categorica: true, buscavel: false },
   { id: "uso", rotulo: "Uso declarado", tipo: "texto", categorica: true },
-  { id: "ressalva", rotulo: "Ressalva declarada", tipo: "texto", categorica: true },
-  { id: "descontinuado", rotulo: "Descontinuado pela fonte", tipo: "texto", categorica: true },
+  { id: "ressalva", rotulo: "Ressalva declarada", tipo: "texto", categorica: true, buscavel: false },
+  { id: "descontinuado", rotulo: "Descontinuado pela fonte", tipo: "texto", categorica: true, buscavel: false },
   { id: "frequencia", rotulo: "Frequência declarada pela fonte", tipo: "texto", categorica: true },
+  { id: "periodo", rotulo: "Último período dos dados", tipo: "data" },
   { id: "modificado", rotulo: "Modificado na fonte", tipo: "data" },
   { id: "recursos", rotulo: "Recursos (arquivos)", tipo: "numero", casas: 0 },
+  { id: "acessados", rotulo: "Arquivos acessados pelo observatório", tipo: "numero", casas: 0 },
+  { id: "ficha", rotulo: "Ficha no observatório", tipo: "texto", categorica: true, buscavel: false },
+  { id: "baixar", rotulo: "Arquivos para baixar", tipo: "numero", casas: 0 },
   { id: "formatos", rotulo: "Formatos", tipo: "texto", ordenavel: false },
 ];
+
+/** Colunas só de apoio à lista (endereço da ficha e da página oficial): não vão para a tabela nem para o arquivo exportado. */
+export const CAMPOS_DE_APOIO_DO_CATALOGO = ["n", "slug", "url"] as const;
+
+/** Estados da etapa dada em diante: a escada é cumulativa, então "chegou pelo menos a X" é a lista de X até o fim. */
+export const estadosAPartirDe = (e: EstadoDados): EstadoDados[] => ESTADOS_ESCADA.slice(rankEstado(e));
+
+/** Opções do filtro "chegou pelo menos a": o rótulo diz "ou além" nas etapas que incluem as seguintes. */
+export const ROTULO_ESTADO_ATE: Record<EstadoDados, string> = {
+  CATALOGADO: "Qualquer estado",
+  "RECURSO VERIFICADO": "Recurso verificado ou além",
+  INTEGRADO: "Integrado ou além",
+  VALIDADO: "Validado ou além",
+  PUBLICADO: "Publicado",
+};
+
+/** Cada etapa em uma frase curta, para o ponto de uso (o filtro e a legenda do estado); a definição técnica e o critério ficam em Analisar. */
+export const DEFINICAO_CURTA_ETAPA: Record<EstadoDados, string> = {
+  CATALOGADO: "Aparece na listagem oficial do portal da fonte ou no registro do observatório, com endereço e licença.",
+  "RECURSO VERIFICADO": "O observatório abriu pelo menos um arquivo do conjunto e conferiu o formato e o cabeçalho.",
+  INTEGRADO: "O observatório coleta o conjunto e guarda o arquivo original de cada coleta.",
+  VALIDADO: "Integrado, com conferências automáticas registradas e nenhuma reprovada.",
+  PUBLICADO: "Validado e alimentando uma base publicada do observatório.",
+};
+
+/** Matriz compacta: as chaves uma vez e uma lista de valores por linha. O HTML da página carrega cada linha sem repetir o nome dos campos. */
+export type MatrizLinhas = { chaves: string[]; valores: (string | number | null)[][] };
+
+export function compactarLinhas(linhas: readonly LinhaTabela[], chaves: readonly string[]): MatrizLinhas {
+  return { chaves: [...chaves], valores: linhas.map((l) => chaves.map((k) => (l[k] === undefined ? null : l[k]) as string | number | null)) };
+}
+
+export function expandirLinhas(m: MatrizLinhas): LinhaTabela[] {
+  return m.valores.map((v) => Object.fromEntries(m.chaves.map((k, i) => [k, v[i]])) as LinhaTabela);
+}
 
 /** Página oficial do conjunto: a URL da entrada ou a do portal seguida do nome (campo `compactacao` do catálogo). */
 export function urlOficial(e: Pick<EntradaDados, "id" | "orgao" | "url">, portais: CatalogoDados["portais"]): string | null {
@@ -692,12 +756,24 @@ export const COLUNAS_MANIFESTO: ColunaTabela[] = [
   { id: "colunas", rotulo: "Colunas", tipo: "numero", casas: 0 },
   { id: "dicionario", rotulo: "Dicionário publicado", tipo: "texto", categorica: true },
   { id: "parquet", rotulo: "Parquet equivalente", tipo: "texto", categorica: true },
+  { id: "validacao", rotulo: "Validação automática", tipo: "texto", categorica: true },
   { id: "sha256", rotulo: "sha256", tipo: "texto", ordenavel: false },
 ];
 
+/** Veredito da validação automática de um arquivo publicado (só os CSV são validados um a um; os demais não se aplicam). */
+export type VereditoDoArquivo = "aprovado" | "ressalva" | "reprovado" | "sem_validacao" | "nao_se_aplica";
+
+export const ROTULO_VEREDITO_ARQUIVO: Record<VereditoDoArquivo, string> = {
+  aprovado: "Aprovada",
+  ressalva: "Com ressalva",
+  reprovado: "Reprovada",
+  sem_validacao: "Sem validação registrada",
+  nao_se_aplica: "Não se aplica",
+};
+
 const ROTULO_TIPO_ARQUIVO: Record<ItemManifesto["tipo"], string> = { gold: "gold", serie: "série", parquet: "Parquet", geometria: "geometria" };
 
-export function linhasManifesto(m: ManifestoGold, dic: Record<string, { gold: string }>): LinhaTabela[] {
+export function linhasManifesto(m: ManifestoGold, dic: Record<string, { gold: string }>, vereditos: ReadonlyMap<string, VereditoDoArquivo> = new Map()): LinhaTabela[] {
   return m.arquivos.map((a) => ({
     id: a.caminho,
     caminho: a.caminho.replace(/^\/energia\//, ""),
@@ -708,6 +784,7 @@ export function linhasManifesto(m: ManifestoGold, dic: Record<string, { gold: st
     colunas: a.colunas ? a.colunas.length : null,
     dicionario: a.tipo === "serie" && a.caminho.endsWith(".csv") ? (a.dicionario ? "sim" : "não") : "não se aplica",
     parquet: a.parquet ? "sim" : a.caminho.endsWith(".csv") ? "não" : "não se aplica",
+    validacao: ROTULO_VEREDITO_ARQUIVO[vereditos.get(a.caminho) ?? "nao_se_aplica"],
     sha256: a.sha256,
   }));
 }
@@ -847,13 +924,14 @@ export function naturezaCurta(n: string): string {
 
 export const COLUNAS_METRICAS: ColunaTabela[] = [
   { id: "titulo", rotulo: "Indicador", tipo: "texto" },
+  { id: "pergunta", rotulo: "Pergunta que responde", tipo: "texto" },
   { id: "modulo", rotulo: "Módulo", tipo: "texto", categorica: true },
   { id: "natureza_fonte", rotulo: "Natureza do dado de origem", tipo: "texto", categorica: true },
   { id: "natureza_calculo", rotulo: "Natureza do resultado", tipo: "texto", categorica: true },
   { id: "unidade", rotulo: "Unidade", tipo: "texto" },
   { id: "grao_geografico", rotulo: "Recorte geográfico", tipo: "texto" },
   { id: "grao_temporal", rotulo: "Recorte temporal", tipo: "texto" },
-  { id: "formula", rotulo: "Tem fórmula publicada", tipo: "texto", categorica: true },
+  { id: "formula", rotulo: "Tem fórmula publicada", tipo: "texto", categorica: true, buscavel: false },
   { id: "paginas", rotulo: "Páginas", tipo: "numero", casas: 0 },
 ];
 
@@ -862,6 +940,7 @@ export function linhasMetricas(ms: readonly MetricaPublicada[]): LinhaTabela[] {
     id: m.id,
     n,
     titulo: m.titulo,
+    pergunta: m.pergunta,
     modulo: moduloDaGold(m.gold),
     natureza_fonte: naturezaCurta(m.natureza_fonte),
     natureza_calculo: naturezaCurta(m.natureza_transformacao),

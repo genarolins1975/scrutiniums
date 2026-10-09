@@ -150,6 +150,15 @@ body {
   outline: 2px solid var(--cor-energia);
   outline-offset: 2px;
 }
+/* Há mais colunas à direita (marcado por TabelaInterativa): a borda direita esmaece para que um número cortado no limite da janela
+   não seja lido como completo; o aviso em texto continua acima da tabela. */
+.tabela-scroll[data-mais-direita="sim"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+}
+@media print {
+  .tabela-scroll[data-mais-direita="sim"] { -webkit-mask-image: none; mask-image: none; }
+}
 
 /* Celular, Entender: a tabela estática com largura mínima de projeto (28 a 62 rem) encolhe até onde as palavras deixam, com letra menor e
    células mais justas, e mostra mais colunas por tela; o que ainda passar da largura rola, com a sombra da borda. Palavra nunca é partida:

@@ -28,7 +28,7 @@ import { linhasAtualidade, periodoLegivel, refinosDePeriodo } from "@/lib/energi
 import { num } from "@/lib/energia/formato";
 import { SIGLAS } from "@/lib/energia/siglas";
 import { lerCsv } from "@/lib/energia/qualidade";
-import { CARTOES, CAMINHOS_INTENCAO, ID_SINAIS, LIGACOES, NOS_MAPA, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS, TRANSVERSAIS, TRILHAS } from "@/lib/energia/mapa";
+import { CARTOES, CAMINHOS_INTENCAO, ID_SINAIS, LIGACOES, NOS_MAPA, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS, TIPOS_LIGACAO, TRANSVERSAIS, TRILHAS } from "@/lib/energia/mapa";
 import { DESTINOS_NAVEGACAO, destino } from "@/lib/energia/navegacao";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
@@ -485,24 +485,37 @@ describe("a página renderizada", () => {
     for (const d of DESTINOS_NAVEGACAO.filter((x) => x.slug !== "mapa")) expect(visivel.split(`href="${d.href}"`).length - 1, d.slug).toBe(1);
   });
 
-  it("o mapa conceitual está à vista (desenho no desktop, versão em texto no celular), com os tipos de ligação e 'O que o mapa não diz' junto", () => {
+  it("o mapa conceitual está à vista (desenho no desktop, mapa vertical no celular), com os tipos de ligação e 'O que o mapa não diz' junto", () => {
     const mapa = secao("mapa-conceitual").html;
-    // o sistema inteiro não está num acordeão: o que fica fora dos blocos recolhíveis já traz o desenho, as faixas, os elos, as ligações e os tipos
-    const aVista = mapa.replace(/<details[\s\S]*?<\/details>/g, "");
+    // fora dos blocos recolhíveis (só a linha do <summary> de cada elo fica): o sistema inteiro já está à vista, com o desenho, as faixas, os elos,
+    // o tipo e o destino de cada ligação e os tipos
+    const aVista = mapa.replace(/<details[^>]*>([\s\S]*?)<\/details>/g, (_m, dentro: string) => /<summary[\s\S]*?<\/summary>/.exec(dentro)?.[0] ?? "");
     expect(aVista).toContain('<svg viewBox="0 0 1000 680"');
-    expect(texto(aVista)).toContain("O mapa em texto");
+    expect(aVista).toContain("data-mapa-vertical");
     expect(texto(aVista)).toContain("O que o mapa não diz");
     for (const f of ["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]) expect(texto(aVista), f).toContain(f);
     for (const n of NOS_MAPA) {
       expect(texto(aVista), n.id).toContain(n.titulo);
       expect(texto(aVista), n.id).toContain(n.curto);
     }
-    // cada ligação aparece uma vez na versão em texto (no elo de onde parte), com o tipo, à vista
-    for (const l of LIGACOES) expect(texto(aVista), `${l.de} para ${l.para}`).toContain(l.texto);
     for (const t of ["fluxo físico", "decisão de operação", "regra de mercado", "componente de custo", "associação analítica"]) expect(texto(aVista), t).toContain(t);
-    // a explicação longa de cada elo está no HTML, num bloco recolhível do próprio elo
+    // cada ligação aparece à vista no mapa vertical, com o tipo e o destino: a seta entre elos seguidos da mesma faixa ou "Liga-se a"
+    const vertical = aVista.slice(aVista.indexOf("data-mapa-vertical"));
+    const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
+    for (const l of LIGACOES) {
+      const tipo = TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase();
+      const alvo = NOS_MAPA.find((n) => n.id === l.para)!;
+      expect(texto(vertical), `${l.de} para ${l.para}`).toContain(tipo);
+      const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const nome = esc(alvo.titulo.toLowerCase());
+      expect(texto(vertical), `${l.de} para ${l.para}`).toMatch(new RegExp(`(${tipo} para ${nome})|(${numero.get(l.para)}, ${nome} \\(${tipo}\\))`));
+    }
+    // a frase de cada ligação, a explicação longa, onde explorar e os conceitos de cada elo estão no HTML, no bloco do próprio elo (ao toque no celular)
+    for (const l of LIGACOES) expect(texto(mapa), `${l.de} para ${l.para}`).toContain(l.texto);
     for (const n of NOS_MAPA) expect(texto(mapa), n.id).toContain(n.explicacao);
     expect(mapa.match(/<details/g)).toHaveLength(NOS_MAPA.length);
+    // o painel do desktop mostra as ligações que saem e as que chegam; o mapa vertical, só as que saem (cada frase aparece uma vez no celular)
+    expect(mapa.match(/<details id="mapa-elo-/g)).toHaveLength(NOS_MAPA.length);
   });
 
   it("o que saiu do fluxo principal continua no HTML, em blocos recolhíveis, com todos os links", () => {
@@ -599,7 +612,7 @@ describe("a página renderizada: siglas, mapa no celular, atualidade e busca", (
     expect(texto(tabela)).not.toMatch(/\b(SAMP|SCS|RALIE)\b/);
   });
 
-  it("no celular a instrução é 'Leia os sete elos abaixo' e vem um resumo de uma tela; a instrução do desenho fica só para o desktop", () => {
+  it("no celular a instrução é 'Leia os sete elos abaixo' e o mapa vertical traz os sete elos em quatro faixas; a instrução do desenho fica só para o desktop", () => {
     const mapa = secao("mapa-conceitual").html;
     const semDesktop = mapa.replace(/<span class="hidden md:inline">[\s\S]*?<\/span>/, "");
     expect(mapa).toContain('<span class="hidden md:inline">');
@@ -607,25 +620,27 @@ describe("a página renderizada: siglas, mapa no celular, atualidade e busca", (
     expect(texto(semDesktop)).not.toContain("Escolha um elo");
     expect(texto(semDesktop)).not.toContain("A forma do traço diz o tipo da ligação");
     expect(texto(semDesktop)).toContain("Leia os sete elos abaixo");
-    // o resumo está no bloco do celular, antes do mapa em texto, e leva a cada elo
+    // o mapa vertical está no bloco do celular, depois dos tipos de ligação, e os elos abrem ao toque (cada um é um bloco recolhível com título e frase à vista)
     const mobile = mapa.slice(mapa.indexOf('<div class="md:hidden">'));
-    expect(mobile.indexOf("data-mapa-resumo")).toBeGreaterThan(0);
-    expect(mobile.indexOf("data-mapa-resumo")).toBeLessThan(mobile.indexOf("O mapa em texto"));
-    const resumo = mobile.slice(mobile.indexOf("data-mapa-resumo"), mobile.indexOf("O mapa em texto"));
+    expect(mobile.indexOf("Tipos de ligação")).toBeGreaterThan(0);
+    expect(mobile.indexOf("Tipos de ligação")).toBeLessThan(mobile.indexOf("data-mapa-vertical"));
     for (const n of NOS_MAPA) {
-      expect(resumo, n.id).toContain(`href="#mapa-elo-${n.id}"`);
-      expect(mapa.split(`id="mapa-elo-${n.id}"`).length - 1, n.id).toBe(1);
-      expect(texto(resumo), n.id).toContain(n.titulo);
+      expect(mobile, n.id).toContain(`<details id="mapa-elo-${n.id}"`);
+      const resumo = mobile.slice(mobile.indexOf(`<details id="mapa-elo-${n.id}"`));
+      const linha = resumo.slice(resumo.indexOf("<summary"), resumo.indexOf("</summary>"));
+      expect(texto(linha), n.id).toContain(n.titulo);
+      expect(texto(linha), n.id).toContain(n.curto);
     }
-    for (const f of ["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]) expect(texto(resumo), f).toContain(f);
-    // a seta entre dois elos seguidos da mesma faixa leva o tipo da ligação; as demais ligações vêm ditas em "Liga-se a"
+    // a seta entre dois elos seguidos da mesma faixa leva o tipo da ligação; as demais vêm ditas em "Liga-se a"
     const seguidos = LIGACOES.filter((l) => {
       const nos = NOS_MAPA.filter((n) => n.faixa === NOS_MAPA.find((x) => x.id === l.de)!.faixa);
       return nos[nos.findIndex((n) => n.id === l.de) + 1]?.id === l.para;
     });
     expect(seguidos.length).toBeGreaterThan(0);
-    expect(resumo.match(/↓/g)).toHaveLength(seguidos.length);
-    expect(texto(resumo)).toContain("Liga-se a");
+    expect(mobile.match(/↓/g)).toHaveLength(seguidos.length);
+    expect(texto(mobile)).toContain("Liga-se a");
+    // a lista longa de sete elos abertos deixou de existir no celular: o mapa não é mais a maior parte da página
+    expect(mobile).not.toContain("O mapa em texto");
   });
 
   it("a atualidade mostra o último mês nacional completo do DEC e do FEC, de onde vem o 'em dia' e a regra, e dá forma própria à fonte atrasada", () => {
@@ -652,6 +667,11 @@ describe("a página renderizada: siglas, mapa no celular, atualidade e busca", (
     expect(f.match(/◆/g)!.length).toBeGreaterThanOrEqual(atrasadas);
     expect(f).toContain("border border-carvao");
     expect(f).toContain("●");
+  });
+
+  it("o peso do HTML da inicial fica abaixo do orçamento (avaliação técnica U01, critério L: a inicial não tinha teste de peso)", () => {
+    // a página sozinha, sem o layout: 400 KB deixam folga para o índice crescer, e a inicial não carrega série nenhuma
+    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400 * 1024);
   });
 
   it("a busca do alto está no padrão combobox, sugere o vocabulário de quem não conhece a sigla e aponta para Minha região", () => {

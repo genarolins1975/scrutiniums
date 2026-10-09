@@ -36,6 +36,7 @@ import {
   PAINEIS_QUALIDADE,
   ROTULO_PARCELA_CURTO,
   DEFINICAO_CONJUNTO,
+  DEFINICAO_CONJUNTO_CURTA,
   DEFINICAO_LIMITES_INDIVIDUAIS,
   anoBrasil,
   arquivoConjuntosDoAno,
@@ -364,7 +365,7 @@ export default function QualidadePage() {
                   evidencia={ev.conjuntos_acima_limite ?? null}
                   nota={
                     <>
-                      {num(m.conjuntos.acima, 0)} de {num(m.conjuntos.comLimite, 0)} conjuntos. {DEFINICAO_CONJUNTO}
+                      {num(m.conjuntos.acima, 0)} de {num(m.conjuntos.comLimite, 0)} conjuntos. {DEFINICAO_CONJUNTO_CURTA}
                       {m.conjuntos.pctAnterior !== null && ` Em ${m.conjuntos.anoAnterior}: ${pct(m.conjuntos.pctAnterior, 1)}.`}
                     </>
                   }
@@ -384,7 +385,7 @@ export default function QualidadePage() {
                   nota={
                     m.decTodasOrigens !== null ? (
                       <>
-                        Cerca de {m.decTodasOrigensHorasMinutos}. Soma o apurado e o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do ONS.
+                        Cerca de {m.decTodasOrigensHorasMinutos}. Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do ONS.
                       </>
                     ) : undefined
                   }
@@ -405,7 +406,7 @@ export default function QualidadePage() {
             <PainelEvidencia
               id={p051.id}
               pergunta={p051.titulo}
-              subtitulo="Duração (DEC) e frequência (FEC) apuradas, o que a regra conta para comparar com o limite, no Brasil, nas distribuidoras e nos conjuntos elétricos · horas e interrupções por unidade consumidora"
+              subtitulo="DEC e FEC apurados, o que a regra conta para o limite, no Brasil, nas distribuidoras e nos conjuntos · horas e interrupções por UC"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -520,8 +521,8 @@ export default function QualidadePage() {
                     <dl className="space-y-3 text-sm">
                       {ORDEM_PARCELAS.map((p) => (
                         <div key={p}>
-                          <dt className="font-medium text-carvao">{g.parcelas.rotulos[p]}</dt>
-                          <dd className="text-carvao-muted">{g.parcelas.grupos[p].map((s) => `${s}: ${g.parcelas.definicao[s] ?? "sem definição no dicionário"}`).join("; ")}</dd>
+                          <dt className="font-medium text-carvao">{paraLeitor(g.parcelas.rotulos[p])}</dt>
+                          <dd className="text-carvao-muted">{g.parcelas.grupos[p].map((s) => `${s}: ${paraLeitor(g.parcelas.definicao[s] ?? "sem definição no dicionário")}`).join("; ")}</dd>
                         </div>
                       ))}
                     </dl>
@@ -690,7 +691,7 @@ export default function QualidadePage() {
                 <SecaoDoPainel
                   id="comparar-distribuidoras"
                   titulo="Como cada distribuidora se compara com o próprio limite, ano a ano?"
-                  lead={`Sem escolha no link, entram as quatro maiores distribuidoras em unidades consumidoras em ${ref}. Todos os painéis de cada indicador usam a mesma escala; a linha tracejada é o limite de cada ano. Incorporações mudam a área da distribuidora e aparecem na nota do painel.`}
+                  lead={`Sem escolha no link, entram as quatro maiores distribuidoras em unidades consumidoras em ${ref}. Por padrão, os painéis de cada indicador usam a mesma escala, e a linha tracejada é o limite de cada ano; com mais de uma distribuidora, dá para trocar para a escala própria de cada painel. Incorporações mudam a área da distribuidora e aparecem na nota do painel.`}
                 >
                   <QualidadeComparador entidades={entidades} padrao={maiores} urlSerie={URL_SERIE} avisosFec={avisos} />
                 </SecaoDoPainel>
@@ -704,7 +705,7 @@ export default function QualidadePage() {
                     casas={2}
                     contagem={{ singular: "conjunto", plural: "conjuntos" }}
                     periodo={String(c.ano)}
-                    valorAtual={{ valor: 1, rotulo: "Limite (razão 1)" }}
+                    valorAtual={{ valor: 1, rotulo: "Limite" }}
                     cor="var(--cor-energia)"
                     nota={`Faixas e quantis calculados no processamento sobre todos os conjuntos.${
                       ultimaFaixaRazao && ultimaFaixaRazao.ate === null && c.quantis_razao_dec.max !== null

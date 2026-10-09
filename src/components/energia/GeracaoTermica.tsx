@@ -153,7 +153,7 @@ export function GeracaoTermica({
         periodo={`${mesAno(u.inicio)} a ${mesAno(u.fim)} (12 meses completos, ${num(u.horas, 0)} horas); série mensal desde ${mesAno(t.primeiro_mes_na_gold)} e no arquivo desde ${mesAno(t.primeiro_mes)}`}
         universo={
           <>
-            Usinas térmicas despachadas pelo ONS <span data-nivel="analisar">(Tipo I e II-A) </span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
+            Usinas térmicas despachadas pelo ONS<span data-nivel="analisar"> (Tipo I e II-A)</span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
           </>
         }
         unidade="MWmed (média do período), GWh (energia) e % da geração térmica verificada; CVU em R$/MWh"

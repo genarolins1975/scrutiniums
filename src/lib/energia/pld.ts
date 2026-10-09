@@ -1848,24 +1848,33 @@ export function extremosPorSubmercado(itens: readonly ValorPorSubmercado[]): Ext
 /**
  * Os três valores da semana de referência lado a lado entre os submercados: para cada produto, de quanto a quanto vai e a distância entre
  * o maior e o menor, em R$/MWh (nunca como razão). Descrição, não explicação: os dados publicados não dizem por que os submercados
- * diferem.
+ * diferem. `partes` devolve a frase de abertura, um item por produto e a ressalva, para a página montar uma lista.
  */
-export function textoDistanciaSemanal(sem: Pick<SemanaReferencia, "inicio" | "fim" | "por_sm"> | null | undefined): string | null {
+export function partesDistanciaSemanal(sem: Pick<SemanaReferencia, "inicio" | "fim" | "por_sm"> | null | undefined): { introducao: string; itens: string[]; ressalva: string } | null {
   if (!sem) return null;
   const produtos = [
-    ["o CMO semanal do DECOMP", "decomp"],
-    ["a média do CMO do DESSEM", "dessem"],
-    ["a média do PLD", "pld"],
+    ["O CMO semanal do DECOMP", "decomp"],
+    ["A média do CMO do DESSEM", "dessem"],
+    ["A média do PLD", "pld"],
   ] as const;
   const quem = (x: ExtremoMediaDiaria) => `${nomesDosSubmercados(x.submercados)}${x.submercados.length > 1 && x.submercados.length < SUBMERCADOS.length ? ", mesmo valor" : ""}`;
-  const partes = produtos.flatMap(([rotulo, k]) => {
+  const itens = produtos.flatMap(([rotulo, k]) => {
     const e = extremosPorSubmercado(sem.por_sm.map((x) => ({ id: x.sm, valor: x[k] })));
     if (!e) return [];
-    if (e.distancia === 0) return [`${rotulo} foi igual nos quatro submercados, ${reais(e.menor.valor)}/MWh`];
-    return [`${rotulo} foi de ${reais(e.menor.valor)}/MWh (${quem(e.menor)}) a ${reais(e.maior.valor)}/MWh (${quem(e.maior)}), distância de ${reais(e.distancia)}/MWh`];
+    if (e.distancia === 0) return [`${rotulo} foi igual nos quatro submercados, ${reais(e.menor.valor)}/MWh.`];
+    return [`${rotulo} foi de ${reais(e.menor.valor)}/MWh (${quem(e.menor)}) a ${reais(e.maior.valor)}/MWh (${quem(e.maior)}), distância de ${reais(e.distancia)}/MWh.`];
   });
-  if (!partes.length) return null;
-  return `Entre os submercados, na semana de ${dataBR(sem.inicio)} a ${dataBR(sem.fim)}: ${partes.join("; ")}. Os dados publicados não dizem por que os valores diferem entre submercados; esta página descreve a diferença, não a explica.`;
+  if (!itens.length) return null;
+  return {
+    introducao: `Entre os submercados, na semana de ${dataBR(sem.inicio)} a ${dataBR(sem.fim)}:`,
+    itens,
+    ressalva: "Os dados publicados não dizem por que os valores diferem entre submercados; esta página descreve a diferença, não a explica.",
+  };
+}
+
+export function textoDistanciaSemanal(sem: Pick<SemanaReferencia, "inicio" | "fim" | "por_sm"> | null | undefined): string | null {
+  const p = partesDistanciaSemanal(sem);
+  return p ? `${p.introducao} ${p.itens.join(" ")} ${p.ressalva}` : null;
 }
 
 /* ---------- limites vigentes diante dos valores ---------- */

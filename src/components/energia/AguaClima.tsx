@@ -46,6 +46,8 @@ import {
   respostaChuvaMes,
   respostaPrevisao,
   respostaTemperatura,
+  resumoPreliminarChuva,
+  resumoPreliminarTemperatura,
   rotuloPeriodoMapa,
   rotuloRecorte,
   rotuloRodada,
@@ -93,6 +95,73 @@ const ESQUEMA = {
   rt: campo(tiposUrl.opcao(REGIOES), "SIN"),
   cmp: campo(tiposUrl.lista(tiposUrl.texto({ max: 40 }), { max: LIMITE_COMPARACAO }), ["GRANDE", "PARANAIBA", "SAO FRANCISCO", "TOCANTINS"]),
 };
+
+/**
+ * As duas medidas de 30 dias que acompanham a escolha: a chuva da bacia e do período do mapa (os milímetros, com o percentil e a cautela na
+ * nota) e a anomalia da temperatura do recorte escolhido. Os valores são os campos da própria bacia e do próprio recorte (os mesmos do mapa, da
+ * tabela e da resposta). A ficha de prova é a da bacia padrão em 30 dias e a do SIN, as únicas que a gold publica; o nome e o valor da ficha são os
+ * do cartão.
+ */
+export function MedidasClima({
+  bacia,
+  nomeBacia,
+  per,
+  base,
+  temp,
+  baciaPadrao,
+  evidencias,
+  endereco,
+}: {
+  bacia: AguaPrecipitacaoBacia;
+  nomeBacia: string;
+  per: string;
+  base: string;
+  temp: AguaTemperatura | null;
+  baciaPadrao: string;
+  evidencias?: { chuva30d?: Evidencia | null; temperaturaSin30d?: Evidencia | null };
+  endereco?: string;
+}) {
+  const ehMes = per !== "30d";
+  const mes = ehMes ? dadosChuvaMes(bacia, per) : null;
+  const valorChuva = ehMes ? (mes?.mm ?? null) : bacia.mm_30d;
+  const chuvaPadrao = bacia.bacia === baciaPadrao && !ehMes;
+  return (
+    <FaixaMetricas colunas={2} rotulo="Medidas de chuva e de temperatura estimadas">
+      <Numero
+        variante="faixa"
+        rotulo={`${ehMes ? "Chuva do mês" : "Chuva de 30 dias"}, ${nomeBacia}`}
+        natureza="ESTIMADO"
+        evidencia={chuvaPadrao && evidencias?.chuva30d ? evidenciaComNome(evidencias.chuva30d, `Chuva de 30 dias, ${nomeBacia}`, `${num(valorChuva, 1)} mm`) : undefined}
+        valor={valorChuva}
+        formato="num"
+        casas={1}
+        unidade="mm"
+        periodo={ehMes ? mesExtenso(per) : `30 dias até ${dataBR(bacia.dia)}`}
+        cor="var(--serie-hidraulica)"
+        nota={ehMes ? notaChuvaMes(bacia, per, base) : notaChuvaBacia(bacia, base)}
+        motivoAusencia="Sem estimativa de chuva nesta publicação: algum dia ficou abaixo de 80% de cobertura."
+        endereco={endereco}
+      />
+      {temp && (
+        <Numero
+          variante="faixa"
+          rotulo={`Anomalia da temperatura, ${NOME_REGIAO[temp.recorte]}, em 30 dias`}
+          natureza="ESTIMADO"
+          evidencia={temp.recorte === "SIN" ? evidencias?.temperaturaSin30d : undefined}
+          valor={temp.anomalia_30d_c}
+          formato="num"
+          casas={1}
+          unidade="°C"
+          periodo={`30 dias até ${dataBR(temp.dia)}`}
+          cor="var(--serie-termica)"
+          nota={`${notaAnomaliaTemperatura(temp, base)}${temp.preliminar_30d ? " A janela é preliminar." : ""}`}
+          motivoAusencia="Sem temperatura de 30 dias nesta publicação."
+          endereco={endereco}
+        />
+      )}
+    </FaixaMetricas>
+  );
+}
 
 export function AguaClima({
   precipitacao,
@@ -176,15 +245,15 @@ export function AguaClima({
   const mesesMultiplos = plural(multiplos.length, "mês completo", "meses completos");
 
   const mes = bacia && ehMes ? dadosChuvaMes(bacia, per) : null;
-  const prelimChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late (preliminar, sem calibração por pluviômetros)." : "") : textoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
+  // a cautela fica numa frase junto da resposta; a explicação inteira (produto da base, recomendação da fonte) abre logo abaixo
+  const resumoChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late (preliminar)." : "") : resumoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
+  const prelimChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late, sem calibração por pluviômetros, e a média do mês é de produto final." : "") : textoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
+  const resumoTemp = temp ? resumoPreliminarTemperatura(temp.dia, corteMerra2) : "";
   const prelimTemp = temp ? textoPreliminarTemperatura(temp.dia, corteMerra2) : "";
   const marcaTemp = useMemo(
     () => marcaPreliminarSerie(tDiaria.map((p) => p.d), corteMerra2, "GEOS-IT a partir daqui (preliminar)"),
     [tDiaria, corteMerra2],
   );
-  const chuvaPadrao = !!bacia && bacia.bacia === baciaPadrao && !ehMes;
-  const valorChuva = bacia ? (ehMes ? (mes?.mm ?? null) : bacia.mm_30d) : null;
-  const tempSin = !!temp && temp.recorte === "SIN";
 
   return (
     <div className="space-y-6">
@@ -198,9 +267,13 @@ export function AguaClima({
             {!bacia ? "Sem estimativa de chuva por bacia nesta publicação." : ehMes ? respostaChuvaMes(bacia, per, base) : respostaChuva(bacia, base)}
           </RespostaCurta>
           {bacia && (
-            <p data-cautela="chuva" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
-              {prelimChuva} Com média de poucos milímetros, o percentual de anomalia cresce muito: leia os milímetros e a posição entre os mesmos dias de anos anteriores.
-            </p>
+            <details data-cautela="chuva" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
+              <summary className="min-h-[44px] cursor-pointer py-1">
+                {resumoChuva} Com média de poucos milímetros, o percentual de anomalia cresce muito: leia os milímetros e o percentil.{" "}
+                {prelimChuva && <span className="text-energia-dark underline underline-offset-4">Por que a janela é preliminar</span>}
+              </summary>
+              {prelimChuva && <p className="pb-2">{prelimChuva}</p>}
+            </details>
           )}
         </div>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
@@ -263,40 +336,7 @@ export function AguaClima({
           titulo="Quanto a chuva e a temperatura escolhidas se afastam da média?"
           lead="A chuva é a da bacia e do período escolhidos no mapa; a temperatura é a do recorte escolhido na seção de temperatura. As duas são estimativas, com datas e fontes próprias, e não equivalem à afluência nem ao armazenamento."
         >
-          <FaixaMetricas colunas={2} rotulo="Medidas de chuva e de temperatura estimadas">
-            <Numero
-              variante="faixa"
-              rotulo={`${ehMes ? "Chuva do mês" : "Chuva de 30 dias"}, ${nomes[bacia.bacia]}`}
-              natureza="ESTIMADO"
-              evidencia={chuvaPadrao && evidencias?.chuva30d ? evidenciaComNome(evidencias.chuva30d, `Chuva de 30 dias, ${nomes[bacia.bacia]}`, `${num(valorChuva, 1)} mm`) : undefined}
-              valor={valorChuva}
-              formato="num"
-              casas={1}
-              unidade="mm"
-              periodo={ehMes ? mesExtenso(per) : `30 dias até ${dataBR(bacia.dia)}`}
-              cor="var(--serie-hidraulica)"
-              nota={ehMes ? notaChuvaMes(bacia, per, base) : notaChuvaBacia(bacia, base)}
-              motivoAusencia="Sem estimativa de chuva nesta publicação: algum dia ficou abaixo de 80% de cobertura."
-              endereco={enderecoMedidas}
-            />
-            {temp && (
-              <Numero
-                variante="faixa"
-                rotulo={`Anomalia da temperatura, ${NOME_REGIAO[temp.recorte]}, em 30 dias`}
-                natureza="ESTIMADO"
-                evidencia={tempSin ? evidencias?.temperaturaSin30d : undefined}
-                valor={temp.anomalia_30d_c}
-                formato="num"
-                casas={1}
-                unidade="°C"
-                periodo={`30 dias até ${dataBR(temp.dia)}`}
-                cor="var(--serie-termica)"
-                nota={`${notaAnomaliaTemperatura(temp, base)}${temp.preliminar_30d ? " A janela é preliminar." : ""}`}
-                motivoAusencia="Sem temperatura de 30 dias nesta publicação."
-                endereco={enderecoMedidas}
-              />
-            )}
-          </FaixaMetricas>
+          <MedidasClima bacia={bacia} nomeBacia={nomes[bacia.bacia]} per={per} base={base} temp={temp} baciaPadrao={baciaPadrao} evidencias={evidencias} endereco={enderecoMedidas} />
         </SecaoDoPainel>
       )}
 
@@ -374,9 +414,12 @@ export function AguaClima({
               {temp ? respostaTemperatura(temp, base) : "Sem temperatura estimada nesta publicação."}
             </RespostaCurta>
             {prelimTemp && (
-              <p data-cautela="temperatura" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
-                {prelimTemp}
-              </p>
+              <details data-cautela="temperatura" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
+                <summary className="min-h-[44px] cursor-pointer py-1">
+                  {resumoTemp} <span className="text-energia-dark underline underline-offset-4">Por que a janela é preliminar</span>
+                </summary>
+                <p className="pb-2">{prelimTemp}</p>
+              </details>
             )}
           </div>
           <AguaEscolha

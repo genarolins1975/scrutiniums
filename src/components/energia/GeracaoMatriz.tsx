@@ -319,6 +319,10 @@ export function GeracaoMatriz({
           selecionado={sel}
           onSelecionar={selecionar}
         />
+        <p className="text-sm leading-relaxed text-carvao-muted" data-sazonalidade="p021">
+          A janela de 365 dias cobre o ciclo inteiro do ano; a mais curta, só parte de uma estação. A diferença entre as duas barras de cada fonte inclui a sazonalidade (vento, sol e chuva variam ao
+          longo do ano) e, sozinha, não indica mudança de longo prazo.
+        </p>
         {comparacao.fora.length > 0 && (
           <div className="space-y-1 border-l-2 border-aviso pl-3 text-sm text-carvao" data-fora-da-comparacao="p021">
             <p className="rotulo text-mineral">Fora da comparação: cobertura da fonte alterada</p>

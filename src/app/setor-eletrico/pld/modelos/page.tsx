@@ -93,7 +93,7 @@ export const metadata: Metadata = {
 };
 
 const LINK_MODELO =
-  "inline-flex min-h-[44px] items-center font-serif text-lg text-energia-dark underline underline-offset-4 hover:text-carvao md:min-h-0";
+  "inline-flex min-h-[44px] items-center font-serif text-lg text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:fine)]:md:min-h-0";
 
 const COLUNAS_MATRIZ: ColunaAdaptativa<LinhaMatrizModelo>[] = [
   {

@@ -20,6 +20,8 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
+  comProcedimentoExterno,
+  compararMesmoConjunto,
   linhasEvolucao,
   mudancaComposicaoEm,
   mudancaTarifa,
@@ -32,6 +34,7 @@ import {
   resumoSerieReal,
   rotuloDistribuidora,
   textoSerieReal,
+  textoTresValoresTipicos,
   vereditoBandeira,
   vereditoComposicao,
   vereditoReajustes,
@@ -41,6 +44,7 @@ import { carimbo, dataBR, mesAno, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
+import { infoDasDistribuidoras, lerHistoricoB1 } from "./dados";
 import { Auditoria, Datas, FONTE_TARIFAS, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "./partes";
 
 export const dynamic = "force-static";
@@ -128,6 +132,13 @@ export default function ContaDeLuzPage() {
   const cde = g.financiamento_cde;
   const ref = g.data_referencia;
   const evolucao = linhasEvolucao(t.evolucao);
+  // a mediana do ranking contra a do dia 1º só vale no mesmo conjunto de distribuidoras: a comparação sai da linha do tempo de cada uma
+  const historico = lerHistoricoB1();
+  const comparacao = historico
+    ? compararMesmoConjunto({ vigentes: t.vigentes, semVigente: t.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: g.data_referencia })
+    : null;
+  const info = infoDasDistribuidoras(t.vigentes.map((v) => v.cnpj));
+  const tresValores = textoTresValoresTipicos(comp, t.resumo);
   const serieReal = resumoSerieReal(evolucao, reaj.comparacao_inflacao?.ultimo_ipca ?? null);
   const ultimoIpca = reaj.comparacao_inflacao?.ultimo_ipca ?? null;
   const janela12 = reaj.comparacao_inflacao?.janelas.find((j) => j.meses === 12) ?? null;
@@ -186,7 +197,7 @@ export default function ContaDeLuzPage() {
   }));
 
   // notas do painel de tarifas: ficam logo depois das figuras (o painel é composto e as passa ao corpo)
-  const oQueMudouTarifa = mudancaTarifa(ref, t.resumo, evolucao);
+  const oQueMudouTarifa = mudancaTarifa(ref, t.resumo, evolucao, comparacao);
   const comoInterpretarTarifa = (
     <>
       Cada barra é uma distribuidora (subgrupo B1, residencial, modalidade convencional, tarifa de aplicação). O custo do perfil é kWh × (TE + TUSD) ÷ 1000;{" "}
@@ -272,7 +283,7 @@ export default function ContaDeLuzPage() {
               ]}
             />
           }
-          metricas={<ContaFaixa vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={t.evidencia_mediana} />}
+          metricas={<ContaFaixa vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} />}
         >
           A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras, mostra do que
           elas são feitas e estima a conta para um consumo; a variação contra a inflação, as bandeiras e quem paga os descontos estão em{" "}
@@ -318,6 +329,7 @@ export default function ContaDeLuzPage() {
                   resumo={t.resumo}
                   dataReferencia={ref}
                   fonte={FONTE_TARIFAS}
+                  info={info}
                   recorte={
                     <Recorte
                       periodo={
@@ -344,7 +356,7 @@ export default function ContaDeLuzPage() {
                   <ContaSerieReal evolucao={evolucao} ultimoIpca={ultimoIpca} />
                   <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="serie-real">
                     {serieReal
-                      ? `Em cada mês a mediana é de ${serieReal.nMin === serieReal.nMax ? serieReal.nMin : `${serieReal.nMin} a ${serieReal.nMax}`} distribuidoras com tarifa no dia 1º, e o conjunto muda ao longo do tempo (fusões, incorporações, permissionárias que passam a ter tarifa própria); o ranking usa só as vigentes em ${dataBR(ref)}, então os dois números podem diferir. `
+                      ? `Em cada mês a mediana é de ${serieReal.nMin === serieReal.nMax ? serieReal.nMin : `${serieReal.nMin} a ${serieReal.nMax}`} distribuidoras com tarifa no dia 1º, e o conjunto muda ao longo do tempo (fusões, incorporações, permissionárias que passam a ter tarifa própria); o ranking usa só as vigentes em ${dataBR(ref)}, e os dois números podem diferir; a comparação no mesmo conjunto está nas notas do painel. `
                       : ""}
                     {serieReal?.base
                       ? `Em reais de ${mesAno(`${serieReal.base}-01`)}, cada mês é corrigido pela razão entre o índice do IPCA de ${mesAno(`${serieReal.base}-01`)} e o do mês. O IPCA mede preços ao consumidor em geral, não só a energia.`
@@ -474,20 +486,43 @@ export default function ContaDeLuzPage() {
                   <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
                     {respostaComposicao(comp)}
                   </RespostaCurta>
-                  <Numero
-                    variante="faixa"
-                    rotulo={`Encargos na tarifa da distribuidora de referência`}
-                    natureza="CALCULADO"
-                    evidencia={comp.evidencia}
-                    formato="pct"
-                    casas={1}
-                    motivoAusencia="Sem componentes para a distribuidora de referência."
-                    nota={comp.evidencia ? `${comp.evidencia.entidade}: ${comp.evidencia.universo}.` : undefined}
-                    endereco="/setor-eletrico/conta-de-luz#composicao"
-                  />
+                  <div className="space-y-4">
+                    {/* O destaque é o agregado, o mesmo número da frase de abertura: razão de somas das distribuidoras com componentes. A gold só
+                        publica ficha de prova para a distribuidora de exemplo (abaixo), então o agregado diz de onde vem em vez de levar ficha. */}
+                    <Numero
+                      variante="faixa"
+                      rotulo={`Encargos setoriais na tarifa média de ${comp.media?.n ?? comp.distribuidoras.length} distribuidoras`}
+                      natureza="CALCULADO"
+                      valor={comp.media?.grupos_pct.encargos ?? null}
+                      formato="pct"
+                      casas={1}
+                      evidencia={null}
+                      motivoAusencia="Sem composição média publicada."
+                      nota="Soma dos encargos de todas dividida pela soma das tarifas (razão de somas). Sem ficha própria: a prova publicada é a do exemplo abaixo, e o cálculo do agregado está na tabela de decomposição."
+                      endereco="/setor-eletrico/conta-de-luz#composicao"
+                    />
+                    <div className="border-t border-linha pt-4">
+                      <Numero
+                        variante="faixa"
+                        rotulo={`Exemplo: encargos na ${comp.evidencia?.entidade ?? "distribuidora de referência"}, de tarifa mais próxima da mediana`}
+                        natureza="CALCULADO"
+                        evidencia={comProcedimentoExterno(comp.evidencia)}
+                        formato="pct"
+                        casas={1}
+                        motivoAusencia="Sem componentes para a distribuidora de referência."
+                        nota={comp.evidencia ? `Uma distribuidora, não a média: ${comp.evidencia.universo}.` : undefined}
+                        endereco="/setor-eletrico/conta-de-luz#composicao"
+                      />
+                    </div>
+                  </div>
                   {/* A parcela CDE média está na resposta acima e na linha "Dos encargos: componentes CDE" da
                       tabela de decomposição; a gold não traz evidência própria para ela, então não vira destaque. */}
                 </div>
+                {tresValores && (
+                  <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="tres-valores-tipicos">
+                    {tresValores}
+                  </p>
+                )}
                 <ContaComposicao
                   composicao={{
                     grupos: comp.grupos,
@@ -603,13 +638,15 @@ export default function ContaDeLuzPage() {
                     distribuidoras: sim.distribuidoras,
                     rotulo: sim.rotulo,
                     formula: sim.formula,
+                    chaves_tarifa: sim.chaves_tarifa,
                     referencia: {
                       cnpj: sim.casos_referencia.cnpj,
                       sigla: sim.casos_referencia.sigla,
                     },
                   }}
-                  evidencia={sim.evidencia}
+                  evidencia={comProcedimentoExterno(sim.evidencia)}
                   dataReferencia={ref}
+                  info={info}
                 />
                 <Recorte
                   periodo={

@@ -20,6 +20,21 @@ import { dominioBonito, escalaLinear, rotuloTick, ticksQueCabem } from "@/lib/en
  */
 
 export type PontoFaixa = { id: string; valor: number; rotulo: string; apagado?: boolean };
+
+/** Marca da legenda da faixa de pontos (o mesmo desenho que a figura usa para cada elemento). */
+export function MarcaDaLegenda({ tipo }: { tipo: "ponto" | "extremo" | "mediana" | "referencia" | "destaque" | "faixa" | "vazado" }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false" className="shrink-0">
+      {tipo === "ponto" && <circle cx="7" cy="7" r="3.4" fill="var(--cor-energia)" fillOpacity="0.78" />}
+      {tipo === "vazado" && <circle cx="7" cy="7" r="3.4" fill="none" stroke="var(--cor-mineral-soft)" strokeWidth="1" />}
+      {tipo === "extremo" && <circle cx="7" cy="7" r="5.4" fill="var(--serie-1)" />}
+      {tipo === "mediana" && <rect x="5.75" y="0.5" width="2.5" height="13" fill="var(--cor-energia)" />}
+      {tipo === "referencia" && <line x1="7" y1="0.5" x2="7" y2="13.5" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="3 2" />}
+      {tipo === "destaque" && <path d="M7 1.5 12.5 7 7 12.5 1.5 7Z" fill="var(--cor-superficie)" stroke="var(--cor-energia-dark)" strokeWidth="2" />}
+      {tipo === "faixa" && <rect x="0.5" y="3.5" width="13" height="7" fill="var(--escala-seq-1)" stroke="var(--escala-seq-3)" />}
+    </svg>
+  );
+}
 export type MarcaFaixa = { valor: number; rotulo: string; tipo: "mediana" | "referencia" };
 
 const LARGURA_SSR = 760;

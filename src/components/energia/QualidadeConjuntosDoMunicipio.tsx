@@ -9,6 +9,7 @@ import {
   carregarUmaVez,
   conjuntosDoCsv,
   conjuntosDoMunicipio,
+  textoMesesIncompletos,
 } from "@/lib/energia/qualidade";
 import type { LinhaTabela } from "@/lib/energia/tabela";
 
@@ -101,10 +102,15 @@ export function QualidadeConjuntosDoMunicipio({
               ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
               dicaBusca="Nome ou código do conjunto, distribuidora"
               recolher={false}
-              nota="Valor e limite do conjunto inteiro, não do município. Comparação com o limite em centésimos, como a ANEEL publica: igual ao limite não é transgressão. FEC com menos de 12 meses não tem razão calculada e fica fora da contagem."
+              nota="Valor e limite do conjunto inteiro, não do município. Comparação com o limite em centésimos, como a ANEEL publica: igual ao limite não é transgressão. Conjunto com menos de 12 meses publicados mostra a soma dos meses que existem, sem razão nem comparação com o limite."
             />
           ) : (
             <p className="text-sm text-carvao-muted">Nenhum dos conjuntos citados para {municipio} tem valor anual publicado em {ano}.</p>
+          )}
+          {textoMesesIncompletos(linhas) && (
+            <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-texto="meses-incompletos">
+              {textoMesesIncompletos(linhas)}
+            </p>
           )}
           {semValor.length > 0 && (
             <p className="text-xs leading-relaxed text-carvao-muted">

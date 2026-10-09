@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { lerGold } from "./gold";
 import { provenienciaLegivel } from "./mercado";
-import type { ConferenciaManifesto, MetricaPublicada } from "./dados";
+import type { ConferenciaManifesto, MetricaPublicada, VereditoDoArquivo } from "./dados";
 import type { MercadoGold } from "./tipos-mercado";
 import type { ManifestoGold, PublicacaoGold } from "./tipos-dados";
 import type { Proveniencia } from "./tipos";
@@ -132,4 +132,108 @@ export function acessoCceeDados(): MercadoGold["acesso_ccee"] | null {
 export function metricasGeradoEm(): string | null {
   const g = lerGold<{ disponivel: boolean; gerado_em: string }>("metricas.json");
   return g && g.disponivel ? g.gerado_em : null;
+}
+
+/* ---------------------------------------------------------------- estado de cada arquivo publicado */
+
+export type ProblemaDoArquivo = { tipo: string; resultado: "ressalva" | "reprovado"; detalhe: string };
+
+export type ValidacaoDoCsv = { veredito: "aprovado" | "ressalva" | "reprovado"; problemas: ProblemaDoArquivo[] };
+
+const GRAVIDADE: Record<ValidacaoDoCsv["veredito"], number> = { aprovado: 0, ressalva: 1, reprovado: 2 };
+
+let cacheValidacoes: Map<string, ValidacaoDoCsv> | null = null;
+
+/**
+ * Veredito de cada CSV publicado, lido de dados_validacoes.csv (uma linha por checagem): o pior resultado das checagens do arquivo,
+ * por nome de arquivo. CSV que o relatório não cobre (publicado depois da validação) não está no mapa: o estado dele é "sem validação
+ * registrada", nunca "aprovado" por omissão.
+ */
+export function validacoesDosCsv(raiz = join(process.cwd(), "public")): Map<string, ValidacaoDoCsv> {
+  if (cacheValidacoes) return cacheValidacoes;
+  const m = new Map<string, ValidacaoDoCsv>();
+  try {
+    const linhas = lerCsvComAspas(readFileSync(join(raiz, "energia/series/dados_validacoes.csv"), "utf-8"));
+    const cab = linhas[0] ?? [];
+    const col = (n: string) => cab.indexOf(n);
+    const [iId, iAlvo, iTipo, iRes, iDet] = [col("id"), col("alvo"), col("tipo"), col("resultado"), col("detalhe")];
+    if ([iId, iAlvo, iTipo, iRes, iDet].some((i) => i < 0)) throw new Error("cabeçalho inesperado");
+    for (const l of linhas.slice(1)) {
+      if (!(l[iId] ?? "").startsWith("csv:")) continue;
+      const nome = l[iAlvo];
+      const r = l[iRes];
+      if (!nome || (r !== "aprovado" && r !== "ressalva" && r !== "reprovado")) continue;
+      const atual = m.get(nome) ?? { veredito: "aprovado" as const, problemas: [] };
+      if (GRAVIDADE[r] > GRAVIDADE[atual.veredito]) atual.veredito = r;
+      if (r !== "aprovado") atual.problemas.push({ tipo: l[iTipo], resultado: r, detalhe: l[iDet] });
+      m.set(nome, atual);
+    }
+  } catch {
+    // sem o CSV de validações, nenhum arquivo ganha veredito: todos ficam "sem validação registrada"
+  }
+  cacheValidacoes = m;
+  return m;
+}
+
+export type ReleituraDoCsv = { linhas: number; colunas: number; divergentes: number };
+
+/** Relê um CSV publicado com a leitura de aspas do projeto (ponto e vírgula dentro de campo entre aspas não separa coluna). */
+export function releituraDoCsv(caminho: string, raiz = join(process.cwd(), "public")): ReleituraDoCsv | null {
+  try {
+    const t = lerCsvComAspas(readFileSync(join(raiz, caminho), "utf-8"));
+    if (!t.length) return null;
+    const colunas = t[0].length;
+    return { linhas: t.length - 1, colunas, divergentes: t.slice(1).filter((l) => l.length !== colunas).length };
+  } catch {
+    return null;
+  }
+}
+
+export type EstadoDoArquivo = {
+  caminho: string;
+  veredito: VereditoDoArquivo;
+  problemas: ProblemaDoArquivo[];
+  /** Só nos CSV reprovados: o arquivo que está publicado relido agora, com a leitura que respeita aspas. */
+  releitura: ReleituraDoCsv | null;
+  /** Só nos CSV reprovados: a validação julgou outra versão do arquivo (impressão digital diferente da publicada). */
+  outraVersao: { julgada: string; publicada: string; julgadaEm: string | null } | null;
+};
+
+/**
+ * Estado de um arquivo publicado para quem baixa: o veredito da validação automática e, quando a validação reprova um CSV, o que a
+ * releitura do arquivo publicado diz e se a validação julgou a mesma versão (a impressão digital que a validação registra é comparada
+ * com a do manifesto). Nada é corrigido aqui: a página mostra os dois registros lado a lado.
+ */
+export function estadoDoArquivo(caminho: string, pub: PublicacaoGold | null, m: ManifestoGold | null, raiz = join(process.cwd(), "public")): EstadoDoArquivo {
+  const base: EstadoDoArquivo = { caminho, veredito: "nao_se_aplica", problemas: [], releitura: null, outraVersao: null };
+  if (!caminho.startsWith("/energia/series/") || !caminho.endsWith(".csv")) return base;
+  const v = validacoesDosCsv(raiz).get(caminho.split("/").pop() ?? "");
+  if (!v) return { ...base, veredito: "sem_validacao" };
+  const out: EstadoDoArquivo = { ...base, veredito: v.veredito, problemas: v.problemas };
+  if (v.veredito === "reprovado") {
+    out.releitura = releituraDoCsv(caminho, raiz);
+    const julgada = pub?.evidencias.checagens_reprovadas?.fonte.arquivos?.find((a) => a.recurso === caminho);
+    const publicada = m?.arquivos.find((a) => a.caminho === caminho)?.sha256;
+    if (julgada?.sha256 && publicada && julgada.sha256 !== publicada) out.outraVersao = { julgada: julgada.sha256, publicada, julgadaEm: julgada.capturado_em ?? null };
+  }
+  return out;
+}
+
+/* ---------------------------------------------------------------- versão do código de cada base */
+
+export type VersaoDoCodigo = { arquivo: string; geradoEm: string | null; versao: string | null };
+
+/**
+ * Versão do código (commit curto, com o sufixo "+alterado" quando havia mudança ainda não registrada) que gerou cada base publicada,
+ * lida do campo `versao_codigo` de cada gold da lista de arquivos. Base sem o campo fica com `versao` nula: a página diz que não registra.
+ */
+export function versoesDoCodigoDasBases(m: ManifestoGold): VersaoDoCodigo[] {
+  return m.arquivos
+    .filter((a) => a.tipo === "gold")
+    .map((a) => {
+      const nome = a.caminho.split("/").pop() ?? a.caminho;
+      const g = lerGold<{ versao_codigo?: string | null }>(nome);
+      return { arquivo: nome, geradoEm: a.gerado_em ?? null, versao: g?.versao_codigo ?? null };
+    })
+    .sort((x, y) => x.arquivo.localeCompare(y.arquivo));
 }

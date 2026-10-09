@@ -15,6 +15,7 @@ import {
   COLUNAS_LIMITES,
   COLUNAS_LINHA_TEMPO,
   FILTRO_LINHA_TEMPO_PADRAO,
+  NOME_LIMITE,
   PAINEIS_REGULACAO,
   abreviarAto,
   anoInicioHistorico,
@@ -22,7 +23,6 @@ import {
   avisoToleranciaIpca,
   consultasNaData,
   contagemAgendaPorPainel,
-  contagemConsultasNaData,
   contagemPaineisAfetados,
   contagemPorOrigem,
   contagemProcedimentos,
@@ -44,7 +44,6 @@ import {
   linhasProcedimentos,
   marcosDoAto,
   nomeAgenda,
-  notaContagemAgenda,
   oQueMudouLimites,
   orgaosDosEventos,
   ordenarConsultas,
@@ -70,6 +69,7 @@ import {
   textoDefasagemEvento,
   textoJanela,
   textoReuniao,
+  vigenteEm,
 } from "@/lib/energia/regulacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import { faseAtual, hojeBrasilia, situacaoConsulta, type FaseConsulta, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
@@ -711,6 +711,113 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });
 
+  const dBR = (d: string) => d.split("-").reverse().join("/");
+  const trecho = (h: string, de: string, ate: string) => {
+    const i = h.indexOf(de);
+    expect(i, de).toBeGreaterThan(-1);
+    const j = h.indexOf(ate, i + de.length);
+    return h.slice(i, j < 0 ? undefined : j);
+  };
+
+  it("P044: a faixa traz os três limites vigentes antes do painel, e os dois tetos dizem a que se aplicam", () => {
+    const h = conteudo(html.p044);
+    const faixa = trecho(h, "data-faixa-metricas", 'id="p044"');
+    expect((faixa.match(/data-metrica=/g) ?? []).length).toBe(3);
+    for (const c of CAMPOS_LIMITE) expect(faixa, c).toContain(`aria-label="${NOME_LIMITE[c]}"`);
+    expect(faixa).toContain("vigência de 01/01/2026 a 31/12/2026");
+    // a faixa é fixa na data de referência e diz isso; o teto horário e o estrutural são objetos distintos
+    expect(faixa).toContain(`Valores vigentes em ${dBR(gold.data_referencia)}; não mudam com o ano escolhido no gráfico`);
+    expect(faixa).toContain("média diária");
+    expect(faixa).toContain("cada hora");
+    expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(3);
+    // a resposta do painel fica depois das figuras (a faixa já traz os números)
+    expect(h).toContain("data-resposta-depois");
+  });
+
+  it("P044: a ficha dos atos do ano da data de referência separa publicação, início e fim da vigência em marcos", () => {
+    const h = conteudo(html.p044);
+    const ano = String(vigenteEm(gold.limites_pld.vigencias, gold.data_referencia)!.ano);
+    const detalhe = trecho(h, `data-detalhe-ano="${ano}"`, "</section>");
+    const atos = gold.limites_pld.atos.filter((a) => String(a.ano) === ano);
+    expect((detalhe.match(/data-ato="/g) ?? []).length).toBe(atos.length);
+    expect((detalhe.match(/data-marco="/g) ?? []).length).toBe(3 * atos.length);
+    for (const a of atos) {
+      expect(detalhe).toContain(`dateTime="${a.vigencia_inicio}"`);
+      if (a.data_publicacao) expect(detalhe).toContain(`dateTime="${a.data_publicacao}"`);
+    }
+  });
+
+  it("P045: a faixa de páginas irmãs abre a página, a pergunta é o h1 e o veredito abre o painel", () => {
+    const h = conteudo(html.p045);
+    expect(h).not.toContain("data-faixa-metricas");
+    expect(h.indexOf('data-navegacao-local="faixa"')).toBeLessThan(h.indexOf("<h1"));
+    expect(h.indexOf('id="p045"')).toBeLessThan(h.indexOf('data-resposta="p045"'));
+    expect(h.indexOf('data-resposta="p045"')).toBeLessThan(h.indexOf('data-grafico="faixas-tempo"'));
+    // os resumos do observatório não substituem o texto oficial
+    expect(h).toContain("não substituem o texto oficial e não são parecer jurídico");
+  });
+
+  it("P045: cada ato com publicação conferida tem dois marcos no gráfico, publicação vazada e vigência cheia; sem publicação, só a vigência", () => {
+    const h = html.p045;
+    for (const e of gold.linha_do_tempo.eventos) {
+      const m = new RegExp(`<g[^>]*data-faixa="${e.id}"[^>]*>([\\s\\S]*?)</g>`).exec(h);
+      expect(m, e.id).toBeTruthy();
+      const vazados = (m![1].match(/data-forma="vazado"/g) ?? []).length;
+      const vigencia = (m![1].match(/data-forma="(?:cheio|mes)"/g) ?? []).length;
+      expect(vazados, `${e.id}: publicação`).toBe(e.data_publicacao ? 1 : 0);
+      expect(vigencia, `${e.id}: vigência`).toBe(1);
+    }
+  });
+
+  it("P046: o veredito abre o painel e leva ao lado o número da data de referência com a ficha de prova", () => {
+    const h = conteudo(html.p046);
+    const ref = gold.consultas.data_referencia;
+    // a página é filha: a figura sobe e o número com a ficha divide a primeira linha do painel com o veredito
+    expect(h).not.toContain("data-faixa-metricas");
+    const iPainel = h.indexOf('id="p046"');
+    const iVeredito = h.indexOf('data-resposta="p046"');
+    expect(iVeredito).toBeGreaterThan(iPainel);
+    const abertura = trecho(h, "data-abertura-painel", 'aria-label="Filtros das consultas"');
+    expect(abertura).toContain('data-resposta="p046"');
+    expect((abertura.match(/Comprove este número/g) ?? []).length).toBe(1);
+    expect(abertura).toContain(`Contagem em ${dBR(ref)}, a data de referência da publicação`);
+    // o número é o da ficha de prova (contagem na data de referência), não o da data de leitura
+    const valor = new RegExp(`aria-label="Recebendo contribuições"[\\s\\S]*?tabular-nums[^>]*>(\\d+)`).exec(abertura)?.[1];
+    expect(valor).toBe(String(gold.evidencias.consultas_abertas!.valor_calculo));
+    // onde contribuir fica logo abaixo do gráfico, com o que a figura mostra
+    expect(h.indexOf("data-onde-contribuir")).toBeGreaterThan(h.indexOf('data-grafico="faixas-tempo"'));
+    // a ordem: veredito, depois o número, e só então os filtros, o gráfico e o recorte
+    expect(abertura.indexOf('data-resposta="p046"')).toBeLessThan(abertura.indexOf("Comprove este número"));
+    expect(iVeredito).toBeLessThan(h.indexOf('aria-label="Filtros das consultas"'));
+    expect(iVeredito).toBeLessThan(h.indexOf('data-grafico="faixas-tempo"'));
+    expect(iVeredito).toBeLessThan(h.indexOf(">Período<"));
+  });
+
+  it("P046: o gráfico diz que mostra parte do histórico e deixa baixar o histórico completo", () => {
+    const h = conteudo(html.p046);
+    const legenda = trecho(h, "data-legenda-figura", "</div>");
+    expect(legenda).toContain(`${gold.consultas.itens.length} consultas e audiências ${textoJanela(gold.consultas.janela_dias)}`);
+    expect(legenda).toContain(`histórico de ${gold.consultas.total_historico}`);
+    expect(legenda).toContain('href="/energia/series/regulacao_consultas.csv"');
+    expect(h.indexOf('data-grafico="faixas-tempo"')).toBeLessThan(h.indexOf("data-legenda-figura"));
+  });
+
+  it("P046: a Agenda aparece em Entender com resumo, gráfico por painel e aviso da atualização não lida; tabela e detalhe técnico ficam em Analisar", () => {
+    const h = conteudo(html.p046);
+    const abre = /<section[^>]*id="agenda-curta"[^>]*>/.exec(h)![0];
+    expect(abre).not.toContain("data-nivel");
+    const curta = trecho(h, 'id="agenda-curta"', 'id="agenda"');
+    expect(curta).toContain('data-grafico="barras"');
+    expect(curta).toContain('role="alert"');
+    expect(curta).toContain(esc(avisoRevisaoAgenda(gold.agenda)!));
+    expect(curta).not.toMatch(/HTTP Error|leis\.org|REGRAS_PAINEL|\.py/);
+    const analise = trecho(h, 'id="agenda"', 'id="historico"');
+    expect(/<section[^>]*id="agenda"[^>]*>/.exec(h)![0]).toContain('data-nivel="analisar"');
+    expect(analise).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
+    expect(analise).toContain(esc(gold.agenda.revisao.tentativa!.detalhe));
+    expect(analise).toContain(esc(gold.agenda.regra_paineis!));
+  });
+
   it("todo link interno aponta para página existente, e toda âncora para um id que existe", () => {
     const rotaDe: Record<string, keyof typeof html> = Object.fromEntries(PAINEIS_REGULACAO.map((p) => [p.rota, p.id]));
     const existePagina = (rota: string) => {
@@ -844,19 +951,7 @@ describe.skipIf(!disponivel)("seletores da migração editorial da Regulação",
     expect(atos).toBe(ev.filter((e) => e.origem === "curadoria").length);
   });
 
-  it("P046: a contagem por situação na data de referência fecha com o total e com a ficha de prova", () => {
-    const n = contagemConsultasNaData(gold.consultas, gold.consultas.data_referencia);
-    expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(gold.consultas.itens.length);
-    expect(n.aberta).toBe(gold.evidencias.consultas_abertas!.valor_calculo);
-    // a mesma regra do gráfico: nada de situação que a regra de situação não dá
-    expect(n).toEqual(contarSituacoes(consultasNaData(gold.consultas.itens, gold.consultas.data_referencia)));
-    // dez dias depois, as de prazo vencido saem das abertas e entram em encerradas
-    const depois = contagemConsultasNaData(gold.consultas, "2026-10-12");
-    expect(depois.aberta).toBeLessThan(n.aberta);
-    expect(depois.encerrada_aguardando).toBeGreaterThan(n.encerrada_aguardando);
-  });
-
-  it("P046: anos e nome da agenda saem da portaria, e a nota da contagem diz quando a atualização não foi lida", () => {
+  it("P046: anos e nome da agenda saem da portaria, e o aviso à vista diz quando a atualização não foi lida", () => {
     expect(textoAnosAgenda(gold.agenda)).toBe("2026 e 2027");
     expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
     expect(textoAnosAgenda({ por_ano: {}, itens: [] })).toBeNull();
@@ -869,11 +964,9 @@ describe.skipIf(!disponivel)("seletores da migração editorial da Regulação",
     expect(aviso).toContain("não pôde ser lido");
     expect(aviso).toContain("podem ter mudado");
     expect(aviso).not.toMatch(/HTTP|403|https?:/);
-    expect(notaContagemAgenda(gold.agenda)).toContain(`A ${r.atualizada_por}, que a atualiza, não pôde ser lida`);
     // texto lido ou sem atualização: sem aviso, e a nota volta à ressalva do ano
     const lida = { ...gold.agenda, revisao: { ...r, texto_lido: true } };
     expect(avisoRevisaoAgenda(lida)).toBeNull();
-    expect(notaContagemAgenda(lida)).toBe("O ano de cada atividade é previsão da ANEEL e pode mudar.");
     expect(avisoRevisaoAgenda({ ...gold.agenda, revisao: { ...r, atualizada_por: null } })).toBeNull();
     expect(avisoRevisaoAgenda({ ...gold.agenda, disponivel: false })).toBeNull();
   });

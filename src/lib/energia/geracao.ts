@@ -64,7 +64,7 @@ export const PERGUNTA_MODULO_GERACAO = "De onde vem a eletricidade e quais fonte
  */
 /** `publicado`: a rota do painel já existe no app; painel não publicado aparece como "em preparação", nunca como link. */
 export const PAINEIS_GERACAO: { id: PainelGeracao; rotulo: string; caminho: string; pergunta: string; publicado: boolean }[] = [
-  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "Quais fontes atenderam a carga?", publicado: true },
+  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "De onde vem a eletricidade?", publicado: true },
   { id: "p022", rotulo: "Despacho térmico", caminho: "/termica", pergunta: "Quanto as térmicas geraram e por que foram acionadas?", publicado: true },
   { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: true },
   { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: true },

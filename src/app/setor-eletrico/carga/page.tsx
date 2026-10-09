@@ -108,13 +108,13 @@ const COLUNAS_ESPERADOS: ColunaTabela[] = [
 const COLUNAS_AUSENTES: ColunaTabela[] = [
   { id: "sm", rotulo: "Subsistema", tipo: "texto", categorica: true },
   { id: "dia", rotulo: "Dia", tipo: "data" },
-  { id: "estado", rotulo: "Estado no arquivo atual da fonte", tipo: "texto", categorica: true },
-  { id: "valor_arquivo_atual", rotulo: "Valor no arquivo atual", tipo: "numero", unidade: "MWmed", casas: 3 },
+  { id: "estado", rotulo: "Estado no arquivo da última captura da fonte", tipo: "texto", categorica: true },
+  { id: "valor_arquivo_atual", rotulo: "Valor no arquivo da última captura", tipo: "numero", unidade: "MWmed", casas: 3 },
 ];
 const ROTULO_AUSENCIA: Record<string, string> = {
   celula_vazia_na_fonte: "célula vazia na fonte",
   linha_ausente_na_fonte: "linha ausente na fonte",
-  presente_no_arquivo_atual: "presente no arquivo atual",
+  presente_no_arquivo_atual: "presente no arquivo da última captura",
   nao_conferido: "não conferido",
 };
 
@@ -391,12 +391,12 @@ export default function CargaPage() {
                     chaveUrl="esp"
                   />
                   <TabelaInterativa
-                    titulo="Dias sem valor e o estado conferido no arquivo atual da fonte"
+                    titulo="Dias sem valor e o estado conferido no arquivo da última captura da fonte"
                     colunas={COLUNAS_AUSENTES}
                     linhas={val.ausentes.map((x) => ({ id: `${x.sm}:${x.dia}`, sm: x.sm, dia: x.dia, estado: ROTULO_AUSENCIA[x.estado] ?? x.estado, valor_arquivo_atual: x.valor_arquivo_atual }))}
                     chaveLinha="id"
                     colunaRotulo="dia"
-                    fonte="ONS, Carga de Energia Diária (arquivo atual)"
+                    fonte="ONS, Carga de Energia Diária (arquivo da última captura)"
                     versao={versao}
                     nomeArquivo="carga-dias-ausentes"
                     chaveUrl="aus"

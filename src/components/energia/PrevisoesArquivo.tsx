@@ -15,6 +15,7 @@ import {
   datasInclusao,
   instanteBR,
   linhasGraficoRodadas,
+  minusculaInicial,
   reaisMWh,
   respostaP015,
   resumoRodadas,
@@ -284,7 +285,7 @@ function colunasRodadas(
             {lista.map((a) => (
               <li key={a.id}>
                 <span className="font-medium">{a.rotulo}: </span>
-                {a.texto}
+                {minusculaInicial(a.texto)}
               </li>
             ))}
           </ul>

@@ -917,7 +917,12 @@ describe("páginas filhas do PLD no sistema editorial", () => {
 
   it("histórico: a faixa sazonal e a distribuição por regime anual dizem nominal, sazonalidade e limites próprios de cada ano", () => {
     const h = html.p011;
-    expect(h).toContain("Valores nominais, e cada ano anterior teve piso e tetos próprios.");
+    // a ressalva ficou mais forte que a frase antiga: nominal, sem correção pela inflação, anos com limites diferentes, com o piso e os tetos de cada regime
+    expect(h).toContain("Os valores são nominais, sem correção pela inflação, e de anos com limites diferentes");
+    expect(h).toMatch(/o piso foi de R\$\s*49,77 a R\$\s*69,04\/MWh e o teto horário teve 6 valores diferentes/);
+    expect(h).toMatch(/em 3 anos \(2022, 2023 e 2024\), de 63,6% a 98,3% das horas do Sudeste\/Centro-Oeste ficaram no piso/);
+    expect(h).toMatch(/O IPCA acumulou cerca de 37% de jan\/2021 a ago\/2026/);
+    expect(h).toContain("A série semanal do PLD de 2001 a 2020, que a CCEE também publica, tem outra granularidade e ainda não está integrada");
     expect(h).toContain("Média diária frente ao mesmo mês e à mesma semana de anos anteriores");
     expect(h).toContain("As três médias mensais usam");
   });

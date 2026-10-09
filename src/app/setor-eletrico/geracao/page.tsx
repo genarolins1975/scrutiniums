@@ -27,12 +27,11 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
+import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { URL_GOLD_GERACAO_DETALHE } from "@/lib/energia/geracao-tabelas";
 import {
   COR_CATEGORIA,
   COR_NATUREZA,
-  CURTO_CATEGORIA,
   CURTO_NATUREZA,
   NATUREZAS,
   ROTULO_JANELA,
@@ -57,15 +56,15 @@ import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Geração: quais fontes atenderam a carga",
+  title: "Geração: de onde vem a eletricidade",
   description:
     "Matriz efetiva do SIN e dos subsistemas pela Geração por Usina do ONS: hidráulica, eólica, solar centralizada, MMGD estimada, nuclear, gás, carvão, óleo, biomassa e demais térmicas, em energia e participação, com e sem a MMGD, a quebra de 29/04/2023 conferida na fonte, ressalvas de universo e a reconciliação com o Balanço de Energia.",
   alternates: { canonical: "/setor-eletrico/geracao" },
 };
 
 const FONTE = "ONS, Geração por Usina em Base Horária";
-/** Título da abertura (a pergunta do módulo na galeria). O texto do menu fica em navegacao.ts. */
-const TITULO = "De onde vem a eletricidade?";
+/** Título da abertura: a pergunta do módulo na galeria, a mesma do registro dos painéis (o texto do menu fica em navegacao.ts). */
+const TITULO = perguntaPainel("p021");
 
 export default function GeracaoPage() {
   const g = lerGold<GoldGeracaoDetalhe>("geracao_detalhe.json");
@@ -194,8 +193,8 @@ export default function GeracaoPage() {
           <Bloco id="matriz">
             <PainelEvidencia
               id="p021"
-              pergunta={perguntaPainel("p021")}
-              subtitulo="Geração por categoria e participação, SIN e subsistemas · MWmed e %"
+              pergunta="Participação de cada fonte na geração"
+              subtitulo="Geração por categoria e participação, SIN e subsistemas, com e sem a MMGD estimada · MWmed e %"
               natureza="CALCULADO"
               porQueImporta={
                 <>

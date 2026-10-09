@@ -1,6 +1,7 @@
 import { leitor } from "./bastidor";
-import { carimbo, dataBR, num, plural } from "./formato";
+import { carimbo, datasLegiveis, dataBR, num, plural } from "./formato";
 import { listaEmPortugues, refLegivel, type ConferenciaManifesto, type ResumoCatalogo, type ResumoMetricas, type ResumoSaude } from "./dados";
+import type { EstadoDoArquivo, VersaoDoCodigo } from "./dados-servidor";
 import type { Afirmacao, CatalogoDados, ConjuntoIntegrado, DiaCalendario, ManifestoGold, PublicacaoGold } from "./tipos-dados";
 
 /**
@@ -298,3 +299,70 @@ export function textoDatasDaColetaCcee(a: ResumoAcessoCcee, referencia: string, 
   if (!a.conjuntosCapturadosDepois) return base;
   return `${base} A coleta autorizada é posterior ao processamento de ${carimbo(processadoEm)}: ${plural(a.conjuntosCapturadosDepois, "fonte da CCEE (conjuntos abertos e InfoMercado) foi capturada", "fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas")} depois dele (a última captura é de ${carimbo(a.ultimaCaptura)}). A página Mercado já usa essas capturas; as contagens do catálogo e da saúde só as incluem na próxima atualização.`;
 }
+
+/* ---------------------------------------------------------------- estado de cada arquivo para baixar */
+
+/** O que o validador diz de cada tipo de problema de um CSV, em palavras de leitor (o texto exato da checagem fica em Analisar). */
+function problemaEmPalavras(tipo: string, detalhe: string): string {
+  if (tipo === "datas_futuras") return "há datas depois da data de referência da publicação, porque o arquivo traz valores previstos";
+  if (tipo === "chaves_unicas") return detalhe.replace(/a chave inferida/g, "a mesma chave");
+  return datasLegiveis(detalhe);
+}
+
+/**
+ * O estado de um arquivo para baixar em duas camadas: `frase`, que cabe em Entender (sem nome de campo, de arquivo nem data crua), e
+ * `tecnico`, para Analisar e Auditar (a checagem exatamente como o validador a escreve e as impressões digitais comparadas). Quando a
+ * validação reprova um CSV que foi reescrito depois dela, a frase diz as duas coisas: o que a validação julgou e o que a releitura do
+ * arquivo publicado mostra. Nada é corrigido: o veredito da publicação continua sendo o que o relatório registra.
+ */
+export function textoEstadoDoArquivo(e: EstadoDoArquivo): { frase: string; tecnico: string } {
+  if (e.veredito === "nao_se_aplica") return { frase: "", tecnico: "" };
+  if (e.veredito === "sem_validacao") return { frase: "Validação automática: o relatório desta publicação não cobre este arquivo.", tecnico: "" };
+  if (e.veredito === "aprovado") return { frase: "Validação automática: aprovada.", tecnico: "" };
+  const detalhes = e.problemas.map((p) => `${p.tipo}: ${datasLegiveis(p.detalhe)}`).join("; ");
+  if (e.veredito === "ressalva") {
+    const frase = e.problemas.map((p) => problemaEmPalavras(p.tipo, p.detalhe)).join("; ");
+    return { frase: `Validação automática: aprovada com ressalva (${frase}).`, tecnico: `Checagens com ressalva: ${detalhes}.` };
+  }
+  // reprovado
+  const r = e.releitura;
+  const reprovou = e.problemas.map((p) => problemaEmPalavras(p.tipo, p.detalhe)).join("; ");
+  const relida = r && r.divergentes === 0 ? ` Relido como CSV, o arquivo publicado tem ${num(r.colunas, 0)} colunas em todas as ${num(r.linhas, 0)} linhas.` : r ? ` Relido como CSV, o arquivo publicado tem ${plural(r.divergentes, "linha", "linhas")} com número de colunas diferente do cabeçalho, entre ${num(r.linhas, 0)}.` : "";
+  const dia = e.outraVersao?.julgadaEm ? carimbo(e.outraVersao.julgadaEm).slice(0, 10) : null;
+  const frase = e.outraVersao
+    ? `Validação automática: reprovada na versão de ${dia ?? "uma execução anterior"} (${reprovou}); o arquivo publicado é outra versão.${relida}`
+    : `Validação automática: reprovada (${reprovou}).${relida}`;
+  const tecnico = e.outraVersao
+    ? `Checagem: ${detalhes}. Impressão digital julgada pela validação: ${e.outraVersao.julgada}. Impressão digital do arquivo na lista de arquivos: ${e.outraVersao.publicada}.`
+    : `Checagem: ${detalhes}.`;
+  return { frase, tecnico };
+}
+
+/* ---------------------------------------------------------------- versão do código das bases */
+
+/**
+ * O sufixo "+alterado" da versão do código, explicado: o que ele quer dizer, o que muda na reprodução e quantas bases o levam. Lê só o campo
+ * versao_codigo de cada base; base sem o campo é dita sem versão registrada.
+ */
+export function textoVersaoDoCodigo(v: readonly VersaoDoCodigo[]): { resumo: string; sufixo: string; alterado: number; limpas: number; semVersao: number } {
+  const alterado = v.filter((x) => x.versao?.endsWith("+alterado")).length;
+  const semVersao = v.filter((x) => !x.versao).length;
+  const limpas = v.length - alterado - semVersao;
+  const resumo =
+    `Das ${num(v.length, 0)} bases publicadas, ${alterado} ${alterado === 1 ? "foi gerada" : "foram geradas"} com código que tinha mudanças ainda não registradas (sufixo +alterado)` +
+    `${limpas ? `, ${limpas} com o código todo registrado` : ""}${semVersao ? ` e ${semVersao} sem versão de código registrada` : ""}.`;
+  return {
+    resumo,
+    sufixo:
+      "A versão do código é o identificador curto da versão registrada no repositório quando a base foi gerada. O sufixo +alterado quer dizer que, nesse momento, o código tinha mudanças ainda não registradas: a base não corresponde exatamente à versão indicada, e refazê-la a partir dela pode dar um resultado diferente do publicado. O sufixo desaparece quando a base é gerada de novo com o código todo registrado.",
+    alterado,
+    limpas,
+    semVersao,
+  };
+}
+
+/* ---------------------------------------------------------------- revisões: duas leituras da mesma pergunta */
+
+/** A ponte entre a revisão da Saúde (capturas consecutivas do mesmo arquivo) e a de Água e clima (histórico principal contra uma recaptura). */
+export const TEXTO_PONTE_REVISOES =
+  "A Saúde compara capturas consecutivas do mesmo arquivo e conta cada par de série e período uma vez. A página Água e clima compara, nos últimos 30 dias, o valor do histórico principal com o de uma recaptura. São critérios diferentes para a mesma pergunta, então as contagens de dias e de valores revisados não coincidem.";

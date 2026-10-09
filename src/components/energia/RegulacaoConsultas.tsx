@@ -50,7 +50,8 @@ export function RegulacaoConsultas({
   dataServidor,
   fonte,
   versao,
-  depoisDaResposta = null,
+  cartao = null,
+  ondeContribuir = null,
   legendaFigura = null,
   recorte = null,
   notas = null,
@@ -60,8 +61,10 @@ export function RegulacaoConsultas({
   dataServidor: string;
   fonte: string;
   versao: string;
-  /** Onde contribuir: entra logo depois do veredito, para que a resposta seja a primeira coisa do painel. */
-  depoisDaResposta?: ReactNode;
+  /** Número da data de referência com a ficha de prova (Numero), ao lado do veredito. */
+  cartao?: ReactNode;
+  /** Onde contribuir: fica logo abaixo do gráfico, com o que a figura mostra e a data das atas. */
+  ondeContribuir?: ReactNode;
   /** O que a figura mostra do universo e onde baixar o resto (histórico completo), logo abaixo dela. */
   legendaFigura?: ReactNode;
   /** Período, universo e unidade como legenda, depois da figura e da tabela. */
@@ -108,28 +111,41 @@ export function RegulacaoConsultas({
     definir({ sit: ORDEM_SITUACAO.filter((x) => novo.has(x)) });
   }
 
+  const notaAtas = (
+    <p
+      role={defas.defasada ? "alert" : undefined}
+      className={`border-l-2 pl-3 text-sm leading-relaxed ${defas.defasada ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
+      data-defasagem-atas={defas.dias ?? ""}
+    >
+      {defas.defasada ? "Fonte defasada: " : ""}
+      As atas integradas trazem resultados deliberados até a reunião de {dataBR(consultas.atas_deliberadas_ate ?? null)} (pauta registrada até {dataBR(consultas.atas_ate ?? null)}), no
+      arquivo gerado pela ANEEL em {dataBR(consultas.atas_geradas_em ?? null)}
+      {defas.dias !== null ? `, ${defas.dias} ${defas.dias === 1 ? "dia" : "dias"} antes de ${dataBR(hoje)}` : ""}. Resultado deliberado depois disso não aparece: uma
+      consulta encerrada pode já ter sido decidida.
+    </p>
+  );
+
   return (
     <div className="space-y-6">
-      <RespostaCurta id="p046" vivo veredito={vereditoConsultas(consultas, hoje)}>
-        <span data-resposta-hoje={hoje}>{respostaConsultas(consultas, hoje)}</span>
-      </RespostaCurta>
-      {hoje !== consultas.data_referencia && (
-        <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-recalculo="">
-          Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório. O número com a ficha Comprove acima se refere a {dataBR(consultas.data_referencia)}, a data de
-          referência da publicação. {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
-        </p>
-      )}
-      {depoisDaResposta}
-      <p role={defas.defasada ? "alert" : undefined} className={`border-l-2 pl-3 text-sm leading-relaxed ${defas.defasada ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`} data-defasagem-atas={defas.dias ?? ""}>
-        {defas.defasada ? "Fonte defasada: " : ""}
-        As atas integradas trazem resultados deliberados até a reunião de {dataBR(consultas.atas_deliberadas_ate ?? null)} (pauta registrada até {dataBR(consultas.atas_ate ?? null)}), no
-        arquivo gerado pela ANEEL em {dataBR(consultas.atas_geradas_em ?? null)}
-        {defas.dias !== null ? `, ${defas.dias} ${defas.dias === 1 ? "dia" : "dias"} antes de ${dataBR(hoje)}` : ""}. Resultado deliberado depois disso não aparece: uma
-        consulta encerrada pode já ter sido decidida.
-      </p>
+      {/* a resposta à esquerda e, ao lado, o número com a ficha de prova e onde contribuir: o gráfico começa mais perto do topo */}
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-start" data-abertura-painel="">
+        <div className="space-y-3">
+          <RespostaCurta id="p046" vivo veredito={vereditoConsultas(consultas, hoje)}>
+            <span data-resposta-hoje={hoje}>{respostaConsultas(consultas, hoje)}</span>
+          </RespostaCurta>
+          {hoje !== consultas.data_referencia && (
+            <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-recalculo="">
+              Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório. O número com a ficha Comprove ao lado se refere a {dataBR(consultas.data_referencia)}, a
+              data de referência da publicação. {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
+            </p>
+          )}
+        </div>
+        {cartao && <div className="lg:border-l lg:border-linha lg:pl-6">{cartao}</div>}
+      </div>
+      {defas.defasada && notaAtas}
 
-      <div role="group" aria-label="Filtros das consultas" className="space-y-2 border-b border-linha pb-3">
-        <fieldset className="flex flex-wrap items-center gap-x-4">
+      <div role="group" aria-label="Filtros das consultas" className="space-y-1 border-b border-linha pb-3">
+        <fieldset className="flex flex-wrap items-center gap-x-3.5">
           <legend className="rotulo float-left mr-3 text-mineral">Situação em {dataBR(hoje)}</legend>
           {situacoesComConsulta.map((s) => (
             <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
@@ -143,28 +159,30 @@ export function RegulacaoConsultas({
             Sem consultas nesta data em: {situacoesSemConsulta.map((s) => ROTULO_CURTO_SITUACAO[s]).join("; ")}.
           </p>
         )}
-        <fieldset className="flex flex-wrap items-center gap-x-4">
-          <legend className="rotulo float-left mr-3 text-mineral">Modalidade</legend>
-          {MODALIDADES.map((m) => (
-            <label key={m || "todas"} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
-              <input type="radio" name="regulacao-modalidade" checked={v.mod === m} onChange={() => definir({ mod: m })} className="h-4 w-4 accent-energia" />
-              {NOME_MODALIDADE[m]}
-            </label>
-          ))}
-        </fieldset>
-        <div className="flex flex-wrap items-center gap-x-4">
-          <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
-            Mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
-            {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
-          </p>
-          <button
-            type="button"
-            aria-disabled={filtroPadrao}
-            onClick={() => !filtroPadrao && definir({ sit: SITUACOES_PADRAO, mod: "" })}
-            className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${!filtroPadrao ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
-          >
-            Voltar ao padrão
-          </button>
+        <div className="flex flex-wrap items-center gap-x-6">
+          <fieldset className="flex flex-wrap items-center gap-x-4">
+            <legend className="rotulo float-left mr-3 text-mineral">Modalidade</legend>
+            {MODALIDADES.map((m) => (
+              <label key={m || "todas"} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
+                <input type="radio" name="regulacao-modalidade" checked={v.mod === m} onChange={() => definir({ mod: m })} className="h-4 w-4 accent-energia" />
+                {NOME_MODALIDADE[m]}
+              </label>
+            ))}
+          </fieldset>
+          <div className="flex flex-wrap items-center gap-x-4">
+            <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
+              Mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
+              {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
+            </p>
+            <button
+              type="button"
+              aria-disabled={filtroPadrao}
+              onClick={() => !filtroPadrao && definir({ sit: SITUACOES_PADRAO, mod: "" })}
+              className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${!filtroPadrao ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
+            >
+              Voltar ao padrão
+            </button>
+          </div>
         </div>
       </div>
 
@@ -196,7 +214,13 @@ export function RegulacaoConsultas({
         }
       />
 
-      {legendaFigura && <div className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-legenda-figura="">{legendaFigura}</div>}
+      {(legendaFigura || ondeContribuir || !defas.defasada) && (
+        <div className="max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao-muted">
+          {legendaFigura && <p data-legenda-figura="">{legendaFigura}</p>}
+          {ondeContribuir}
+          {!defas.defasada && notaAtas}
+        </div>
+      )}
 
       {selecionada && (
         <section className="space-y-2 border border-energia bg-superficie p-4 text-sm" data-consulta-selecionada={selecionada.id} aria-labelledby="consulta-selecionada-titulo">

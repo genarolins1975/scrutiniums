@@ -1195,6 +1195,7 @@ describe.skipIf(!disponivel)("aritmética e medianas novas", () => {
 
   it("a mediana mensal da gold sai da linha do tempo de cada distribuidora no dia 1º, com o mesmo n (a regra da evolução)", () => {
     let comparados = 0;
+    let divergentes = 0;
     for (const [m, n, publicada] of gold.tarifas.evolucao) {
       const xs = Object.values(historico.distribuidoras)
         .map((d) => tarifaDeFora(d.vigencias, `${m}-01`))
@@ -1202,11 +1203,21 @@ describe.skipIf(!disponivel)("aritmética e medianas novas", () => {
       expect(xs.length, m).toBe(n);
       if (publicada === null) continue;
       comparados++;
-      expect(arredondar(medianaDeFora(xs), 2), m).toBe(publicada);
+      const exata = medianaDeFora(xs);
       // a função da página faz o mesmo cálculo
-      expect(arredondar(mediana(xs) as number, 2), m).toBe(publicada);
+      expect(mediana(xs), m).toBe(exata);
+      // o pipeline arredonda o empate exato (média de dois valores que diferem por um número ímpar de centavos) pelo valor binário e a
+      // página, pela regra do meio para cima sobre o decimal: só nesses meses a diferença existe, e é de R$ 0,01
+      const empate = Math.abs(exata * 1000 - Math.round(exata * 1000)) < 1e-6 && Math.round(exata * 1000) % 10 === 5;
+      if (arredondar(exata, 2) !== publicada) {
+        expect(empate, m).toBe(true);
+        expect(Math.abs(arredondar(exata, 2) - publicada), m).toBeLessThanOrEqual(0.0100001);
+        divergentes++;
+      }
     }
     expect(comparados).toBeGreaterThan(100);
+    // fora dos empates a página reproduz o número publicado: a divergência é minoria
+    expect(divergentes).toBeLessThan(comparados / 4);
   });
 
   it("janelas: a mediana publicada de cada janela é a mediana das suas linhas (o método vale para o conjunto inteiro)", () => {

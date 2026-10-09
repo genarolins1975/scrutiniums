@@ -23,7 +23,6 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
   COLUNAS_DETALHE,
-  COR_RAZAO,
   CURTO_RAZAO,
   FONTES_RESTRICAO,
   NOME_FONTE_RESTRICAO,
@@ -61,7 +60,7 @@ export default function GeracaoRestricoesPage() {
   if (rs?.solar) restricoes.solar = rs.solar;
   const fontes = FONTES_RESTRICAO.filter((f) => restricoes[f]);
   if (!integra(g) || !fontes.length) {
-    return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "As restrições de eólicas e fotovoltaicas não foram publicadas nesta gold." : undefined)} />;
+    return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "As restrições de eólicas e fotovoltaicas não estão na base publicada nesta atualização." : undefined)} />;
   }
   const ev = g.evidencias;
   const principal = restricoes[fontes[0]]!;

@@ -91,7 +91,19 @@ export function DadosConferirArquivo({ itens, idPublicacao, commit }: { itens: M
 
 type Ficha = { estado: "carregando" } | { estado: "erro"; motivo: string } | { estado: "ok"; colunas: string[] | null; dicionario: string | null };
 
-function FichaArquivo({ caminho, commit, dicionarioOperacao, parquets }: { caminho: string; commit: string | null; dicionarioOperacao: Record<string, string>; parquets: Record<string, ParquetEquivalente> }) {
+function FichaArquivo({
+  caminho,
+  commit,
+  dicionarioOperacao,
+  parquets,
+  estados,
+}: {
+  caminho: string;
+  commit: string | null;
+  dicionarioOperacao: Record<string, string>;
+  parquets: Record<string, ParquetEquivalente>;
+  estados: Record<string, string>;
+}) {
   const [f, setF] = useState<Ficha>({ estado: "carregando" });
   const [item, setItem] = useState<ItemManifesto | null>(null);
   useEffect(() => {
@@ -135,6 +147,11 @@ function FichaArquivo({ caminho, commit, dicionarioOperacao, parquets }: { camin
           </li>
         )}
       </ul>
+      {estados[caminho] && (
+        <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-estado-arquivo="">
+          {estados[caminho]}
+        </p>
+      )}
       {pq && (
         <p className="text-xs leading-relaxed text-carvao-muted">
           Parquet: {pq.linhas !== null ? `${num(pq.linhas, 0)} linhas, ` : ""}
@@ -181,12 +198,15 @@ export function DadosManifesto({
   commit,
   dicionarioOperacao,
   parquets,
+  estados,
 }: {
   linhas: LinhaTabela[];
   versao: string;
   commit: string | null;
   dicionarioOperacao: Record<string, string>;
   parquets: Record<string, ParquetEquivalente>;
+  /** Estado da validação automática de cada CSV, em uma frase (o que a validação disse e o que a releitura do arquivo publicado mostra). */
+  estados: Record<string, string>;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const escolhida = v.a ? linhas.find((l) => l.id === v.a) : undefined;
@@ -207,7 +227,7 @@ export function DadosManifesto({
         dicaBusca="Nome do arquivo ou módulo"
         selecionado={escolhida ? String(escolhida.id) : null}
         onSelecionar={(id) => definir({ a: id ?? "" })}
-        nota="A impressão digital de cada arquivo (última coluna) é a do arquivo inteiro, como publicado: calcular a impressão digital do arquivo baixado dá o mesmo valor. Linhas e colunas só existem para CSV; em JSON, Parquet e malhas geográficas, sem dado quer dizer que a medida não se aplica. Dicionário publicado é o texto que explica cada coluna. A tabela de cada painel exporta as linhas filtradas; o arquivo completo de origem é o que aparece aqui."
+        nota="A impressão digital de cada arquivo (última coluna) é a do arquivo inteiro, como publicado: calcular a impressão digital do arquivo baixado dá o mesmo valor. Linhas e colunas só existem para CSV; em JSON, Parquet e malhas geográficas, sem dado quer dizer que a medida não se aplica. Dicionário publicado é o texto que explica cada coluna. Validação automática é o veredito do relatório da publicação, só para CSV: escolha uma linha para ver o que ele diz de cada arquivo. A tabela de cada painel exporta as linhas filtradas; o arquivo completo de origem é o que aparece aqui."
       />
       <section aria-labelledby="ficha-arq-h" aria-live="polite" className="border border-linha bg-papel p-4 md:p-5">
         <h3 id="ficha-arq-h" className="rotulo text-mineral">
@@ -215,10 +235,10 @@ export function DadosManifesto({
         </h3>
         {escolhida ? (
           <div className="mt-3">
-            <FichaArquivo caminho={String(escolhida.id)} commit={commit} dicionarioOperacao={dicionarioOperacao} parquets={parquets} />
+            <FichaArquivo caminho={String(escolhida.id)} commit={commit} dicionarioOperacao={dicionarioOperacao} parquets={parquets} estados={estados} />
           </div>
         ) : (
-          <p className="mt-2 text-sm text-carvao-muted">Escolha um arquivo da tabela para baixá-lo, abrir a versão permanente no GitHub e ver o dicionário e as colunas.</p>
+          <p className="mt-2 text-sm text-carvao-muted">Escolha um arquivo da tabela para baixá-lo, abrir a versão permanente no GitHub e ver o dicionário, as colunas e a validação do arquivo.</p>
         )}
       </section>
     </div>

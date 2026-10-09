@@ -1,44 +1,54 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
-import { VisaoLinkPainel } from "@/components/energia/VisaoLinkPainel";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { carimbo } from "@/lib/energia/formato";
 import { PAGINAS_DADOS, type IdPaginaDados } from "@/lib/energia/dados";
 
 /**
- * Peças de servidor das páginas de Dados e Metodologia (P067 a P070): navegação entre os
- * quatro painéis, linha de referência, resposta curta, recorte, avisos, blocos dos modos
- * Analisar e Auditar e o rodapé do painel (downloads, link compartilhável, próxima pergunta).
+ * Peças de servidor das páginas de Dados e de Metodologia (P067 a P071): navegação local de cada módulo, linha de referência, resposta
+ * curta, recorte, avisos, seções dos níveis Analisar e Auditar e o rodapé do painel (downloads, link com o recorte, próxima pergunta).
  *
- * Quatro páginas e não uma: o catálogo (415 conjuntos), a saúde (151), o manifesto (269
- * arquivos) e as regras (276 indicadores) são tabelas grandes; juntas passariam da meta de cerca
- * de 600 KB de HTML (seção 5.1 do contrato dos módulos).
+ * Dois módulos, cada um com a sua abertura: Dados (catálogo, saúde e reprodução) e Metodologia (regras e avaliação). Na abertura, as
+ * outras páginas do módulo viram capítulos depois da figura principal; nas páginas filhas, uma faixa de irmãs no alto. Nunca as duas.
+ *
+ * Quatro páginas e não uma: o catálogo (415 conjuntos), a saúde (151), o manifesto (270 arquivos) e as regras (276 indicadores) são
+ * listas grandes; juntas passariam da meta de cerca de 600 KB de HTML (seção 5.1 do contrato dos módulos).
  */
 
-const LINK = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
+type ModuloDados = "dados" | "metodologia";
 
+const itensDoModulo = (modulo: ModuloDados): ItemLocal[] =>
+  PAGINAS_DADOS.filter((p) => p.modulo === modulo).map((p) => ({ id: p.id, href: p.href, rotulo: p.rotulo, descricao: p.pergunta }));
+
+/** A página que abre cada módulo: nela não há faixa, porque os capítulos mostram os mesmos destinos depois da figura principal. */
+const ABERTURA: Record<ModuloDados, IdPaginaDados> = { dados: "catalogo", metodologia: "regras" };
+
+const moduloDe = (id: IdPaginaDados): ModuloDados => PAGINAS_DADOS.find((p) => p.id === id)?.modulo ?? "dados";
+
+/** Faixa de páginas irmãs nas páginas filhas de cada módulo; a abertura do módulo não leva faixa. */
 export function DadosNavegacao({ atual }: { atual: IdPaginaDados }) {
+  const modulo = moduloDe(atual);
+  if (atual === ABERTURA[modulo]) return null;
+  return <NavegacaoLocal rotulo={modulo === "dados" ? "Páginas de Dados" : "Páginas de Metodologia"} itens={itensDoModulo(modulo)} atual={atual} />;
+}
+
+/** Capítulos da abertura de cada módulo: as outras páginas, cada uma com a pergunta que responde. */
+export function DadosCapitulos({ atual }: { atual: IdPaginaDados }) {
+  const modulo = moduloDe(atual);
   return (
-    <nav aria-label="Painéis de Dados e Metodologia" className="border-y border-linha bg-superficie">
-      <ul className="nav-faixa-barra flex flex-wrap gap-x-1 gap-y-0 px-2">
-        {PAGINAS_DADOS.map((p) => {
-          const ativo = p.id === atual;
-          return (
-            <li key={p.id}>
-              <Link
-                href={p.href}
-                aria-current={ativo ? "page" : undefined}
-                className={`flex min-h-[44px] items-center gap-1.5 px-3 text-sm ${ativo ? "bg-energia-fundo text-carvao shadow-[inset_0_-3px_0_var(--cor-energia)]" : "text-carvao-muted hover:text-carvao"}`}
-              >
-                {p.rotulo}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+    <NavegacaoLocal
+      rotulo={modulo === "dados" ? "Capítulos de Dados" : "Capítulos de Metodologia"}
+      itens={itensDoModulo(modulo)}
+      atual={atual}
+      variante="capitulos"
+      titulo={modulo === "dados" ? "Outras perguntas sobre os dados" : "Outra pergunta sobre o método"}
+      nivelTitulo={3}
+    />
   );
 }
 
@@ -68,19 +78,20 @@ export function ReferenciaDados({ processadoEm, geradoEm, referencia, manifestoE
 /**
  * Resposta do painel. Com `veredito`, em duas camadas: o veredito à vista e a resposta completa em Analisar e Auditar; as provas
  * (Comprove este número) ficam fora das duas camadas. Sem `veredito`, a resposta completa à vista (página de avaliação).
+ * `depois` mantém a resposta na ordem do documento, depois das figuras, quando a faixa de métricas já traz os mesmos números.
  */
-export function DadosResposta({ painel, veredito, children, prova }: { painel: string; veredito?: string; children: ReactNode; prova?: ReactNode }) {
+export function DadosResposta({ painel, veredito, children, prova, depois = false }: { painel: string; veredito?: string; children: ReactNode; prova?: ReactNode; depois?: boolean }) {
   if (veredito === undefined) {
     return (
-      <div className="mb-5 border-l-2 border-energia pl-4" data-resposta={painel}>
+      <div className="border-l-2 border-energia pl-4" data-resposta={painel}>
         <p className="text-base leading-relaxed text-carvao md:text-lg">{children}</p>
         {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
       </div>
     );
   }
   return (
-    <div className="mb-5 border-l-2 border-energia pl-4">
-      <RespostaCurta id={painel} veredito={veredito}>
+    <div className="border-l-2 border-energia pl-4">
+      <RespostaCurta id={painel} veredito={veredito} depois={depois}>
         {children}
       </RespostaCurta>
       {prova && <div className="mt-1 flex flex-wrap items-center gap-x-5">{prova}</div>}
@@ -90,7 +101,7 @@ export function DadosResposta({ painel, veredito, children, prova }: { painel: s
 
 export function DadosRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="mb-4 grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5 leading-relaxed">{periodo}</dd>
@@ -110,35 +121,35 @@ export function DadosRecorte({ periodo, universo, unidade }: { periodo: ReactNod
 /** Aviso que muda a leitura (data de referência, lacuna, divergência publicada). */
 export function DadosAviso({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <div id={id} className="my-3 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
+    <div id={id} className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
       {children}
     </div>
   );
 }
 
+/** Seção de Analisar: tabela completa, regra por extenso, comparação. Mesma estrutura de SecaoDoPainel, com o nível fixo. */
 export function DadosAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
   return (
-    <div id={id} data-nivel="analisar" className="mt-6 scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
+    <SecaoDoPainel id={id} titulo={titulo} nivel="analisar">
       {children}
-    </div>
+    </SecaoDoPainel>
   );
 }
 
+/** Seção de Auditar: fórmula, versões, arquivos, hashes, controles e limitações. */
 export function DadosAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
   return (
-    <div id={id} data-nivel="auditar" className="mt-6 scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
+    <SecaoDoPainel id={id} titulo={titulo} nivel="auditar">
       {children}
-    </div>
+    </SecaoDoPainel>
   );
 }
 
-/** Limitações do painel: as de leitor sempre; as `tecnicas` (nome de banco, commit, arquivo) só em Analisar e Auditar. */
+/** Limitações do painel: as de leitor sempre; as `tecnicas` (nome de banco, versão do código, arquivo) só em Analisar e Auditar. */
 export function DadosLimitacoes({ itens, tecnicas = [] }: { itens: readonly ReactNode[]; tecnicas?: readonly ReactNode[] }) {
   if (!itens.length && !tecnicas.length) return null;
   return (
-    <div className="mt-4">
+    <div>
       <p className="rotulo text-mineral">Limitações declaradas</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
         {itens.map((l, i) => (
@@ -154,36 +165,10 @@ export function DadosLimitacoes({ itens, tecnicas = [] }: { itens: readonly Reac
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e próxima pergunta (seção 7.2, itens 8 a 10). */
-export function DadosSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: readonly { rotulo: string; url: string }[] }) {
+/** Rodapé do painel: downloads, link com o recorte e próxima pergunta, numa linha (SeguirPainel). */
+export function DadosSeguir({ ancora, proximo, downloads, extra }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: readonly { rotulo: string; url: string }[]; extra?: ReactNode }) {
   const unicos = downloads.filter((d, i) => downloads.findIndex((x) => x.url === d.url) === i);
-  return (
-    <div className="mt-6 space-y-3 border-t border-linha pt-3">
-      {unicos.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {unicos.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className={LINK}>
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <VisaoLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className={LINK}>
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={unicos} extra={extra} />;
 }
 
 /** Gold ausente: a página diz o que falta, nunca mostra número de reserva. */

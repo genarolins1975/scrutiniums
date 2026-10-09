@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 
 import type { Classificacao, ValorClassificavel } from "@/lib/energia/escalas";
 import { carimbo, num, plural } from "@/lib/energia/formato";
 import { URL_GEO, caixaDoCaminho, comFolga, lerViewBox, pontoRotulo, textoViewBox, validaCamada, type CamadaGeo, type Ponto } from "@/lib/energia/geo";
+import { vizinhaNoMapa, type DirecaoMapa } from "@/lib/energia/agua";
 import { descreveRegiao, preenchimento, validaCores } from "@/lib/energia/mapa-coropletico";
 
 /**
@@ -73,8 +74,6 @@ function fonteSemArquivo(fonte: string): string {
 function arquivoDaFonte(fonte: string): string | null {
   return /\(([^()]*\.(?:zip|csv|json|parquet))\)/i.exec(fonte)?.[1] ?? null;
 }
-
-type Direcao = "direita" | "esquerda" | "cima" | "baixo";
 
 export function AguaMapaBacias({
   titulo,
@@ -172,27 +171,8 @@ export function AguaMapaBacias({
   const semPoligono = Object.keys(valores).filter((id) => geo && !geo.features.some((f) => f.id === id));
   const comValor = Object.values(valores).filter((v) => v !== null && Number.isFinite(v)).length;
 
-  /** A bacia mais próxima na direção da seta, pelo ponto de rótulo (o ângulo pesa mais que a distância ao longo do eixo). */
-  function vizinha(id: string, dir: Direcao): string | null {
-    const a = geometria.get(id)?.p;
-    if (!a) return null;
-    let melhor: string | null = null;
-    let melhorNota = Infinity;
-    for (const [outro, g] of Array.from(geometria.entries())) {
-      if (outro === id) continue;
-      const dx = g.p[0] - a[0];
-      const dy = g.p[1] - a[1];
-      const ao = dir === "direita" ? dx : dir === "esquerda" ? -dx : dir === "baixo" ? dy : -dy;
-      if (ao <= 0) continue;
-      const lateral = dir === "direita" || dir === "esquerda" ? Math.abs(dy) : Math.abs(dx);
-      const nota = ao + 2 * lateral;
-      if (nota < melhorNota) {
-        melhorNota = nota;
-        melhor = outro;
-      }
-    }
-    return melhor;
-  }
+  const pontosRotulo = useMemo(() => Object.fromEntries(Array.from(geometria.entries()).map(([id, g]) => [id, g.p])), [geometria]);
+  const vizinha = (id: string, dir: DirecaoMapa) => vizinhaNoMapa(pontosRotulo, id, dir);
 
   function irPara(id: string | null) {
     if (!id) return;

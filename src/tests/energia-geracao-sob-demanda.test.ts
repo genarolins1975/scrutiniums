@@ -5,6 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import GeracaoPage from "@/app/setor-eletrico/geracao/page";
 import GeracaoTermicaPage from "@/app/setor-eletrico/geracao/termica/page";
+import { GeracaoSerieRecente } from "@/components/energia/GeracaoSerieRecente";
 import { GeracaoTabelaSobDemanda } from "@/components/energia/GeracaoTabelasSobDemanda";
 import { REGISTRO_TABELAS_GERACAO, URL_GOLD_GERACAO_DETALHE, type TabelaGeracao } from "@/lib/energia/geracao-tabelas";
 import { lerGold } from "@/lib/energia/gold";
@@ -13,7 +14,9 @@ import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 /**
  * Tabelas dos níveis Analisar e Auditar de Geração (P021) e da Térmica (P022) lidas sob demanda: o HTML e as props da
  * página não carregam as linhas (/geracao tinha 1.045,5 kB e /geracao/termica 646,3 kB em 08/10/2026, contra 600 kB do
- * contrato, seção 5.1); o navegador lê geracao_detalhe.json quando a tabela chega perto da janela.
+ * contrato, seção 5.1); o navegador lê geracao_detalhe.json quando a tabela chega perto da janela. As séries diária (60 dias)
+ * e horária (72 horas) de Analisar seguem o mesmo caminho (GeracaoSerieRecente): com elas no HTML a abertura passava de
+ * 615 kB depois de ganhar a composição completa e as cinco maiores fontes.
  */
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -98,6 +101,60 @@ describe("páginas sem as linhas no HTML", () => {
     expect(html).toContain("lida da base publicada quando aparece na tela");
     expect(html).toContain("Carregar a tabela");
     expect(html).toContain("arquivos CSV do painel");
+  });
+});
+
+describe("séries diária e horária do SIN lidas sob demanda", () => {
+  const geracao = renderToStaticMarkup(createElement(GeracaoPage as never));
+
+  it("cada série leva um marcador com o botão e o aviso de onde estão os arquivos, sem o gráfico nem as linhas", () => {
+    for (const tipo of ["diaria", "horaria"] as const) {
+      const html = renderToStaticMarkup(createElement(GeracaoSerieRecente, { tipo }));
+      expect(html, tipo).toContain(`data-grafico-sob-demanda="${tipo}"`);
+      expect(html, tipo).toContain(`A série ${tipo === "diaria" ? "diária" : "horária"} é lida da base publicada quando aparece na tela`);
+      expect(html, tipo).toContain("Carregar a série");
+      expect(html, tipo).toContain("arquivos CSV do painel");
+      expect(html, tipo).not.toContain("data-grafico=");
+      expect(html, tipo).toContain('aria-live="polite"');
+    }
+    expect(geracao).toContain('data-grafico-sob-demanda="diaria"');
+    expect(geracao).toContain('data-grafico-sob-demanda="horaria"');
+  });
+
+  it("a página não passa as séries aos componentes cliente e o gráfico lido depois mantém as chaves de URL dos links já compartilhados", () => {
+    const pagina = ler("src/app/setor-eletrico/geracao/page.tsx");
+    expect(pagina).not.toContain("linhasRecentes");
+    expect(pagina).not.toContain("diario_sin_recente.categorias");
+    expect(pagina).toContain('<GeracaoSerieRecente tipo="diaria" />');
+    expect(pagina).toContain('<GeracaoSerieRecente tipo="horaria" />');
+    const t = ler("src/components/energia/GeracaoSerieRecente.tsx");
+    expect(t).toContain('tipo === "diaria" ? "dia" : "hor"');
+    expect(t).toContain("useGoldGeracaoSobDemanda()");
+    expect(t).toContain("linhasRecentes(eixo, serie)");
+    // o estado do gráfico na URL (intervalo, séries ocultas) pede a leitura de imediato, como nas tabelas
+    expect(t).toContain("k.startsWith(prefixo)");
+    // o gráfico lido é o mesmo componente de linhas, com legenda interativa e zero no eixo
+    expect(t).toContain("legendaInterativa");
+    expect(t).toContain("zeroNoEixo");
+  });
+
+  it("a leitura é um hook compartilhado com as tabelas: um pedido, uma leitura da gold, e o erro tem nova tentativa", () => {
+    const tabelas = ler("src/components/energia/GeracaoTabelasSobDemanda.tsx");
+    expect(tabelas).toContain("export function useGoldGeracaoSobDemanda()");
+    expect(tabelas).toContain("useGoldGeracaoSobDemanda()");
+    const serie = ler("src/components/energia/GeracaoSerieRecente.tsx");
+    expect(serie).toContain("A série não pôde ser lida da base publicada");
+    expect(serie).toContain("Tentar de novo");
+    // os arquivos CSV das duas séries continuam no fim do painel (downloads do P021)
+    expect(g.downloads.some((d) => /matriz/.test(d.url))).toBe(true);
+  });
+
+  it("as séries publicadas que o gráfico lê existem na gold: 60 dias e 72 horas, com as mesmas categorias da tabela equivalente", () => {
+    const m = g.matriz;
+    expect(m.diario_sin_recente.dias.length).toBeGreaterThan(30);
+    expect(m.horario_sin_recente.horas.length).toBe(72);
+    expect(m.diario_sin_recente.categorias.length).toBeGreaterThan(5);
+    expect(m.horario_sin_recente.categorias).toEqual(m.diario_sin_recente.categorias);
   });
 });
 

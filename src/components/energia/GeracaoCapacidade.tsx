@@ -45,7 +45,7 @@ export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao }: { u
     <div className="space-y-4" data-categoria={u.categoria}>
       <GeracaoLista
         rotulo="Categoria"
-        opcoes={comDistribuicao.map((x) => ({ id: x.categoria, rotulo: `${CURTO_CATEGORIA[x.categoria]} (${num(x.distribuicao_usinas!.n, 0)} grupos)` }))}
+        opcoes={comDistribuicao.map((x) => ({ id: x.categoria, rotulo: `${CURTO_CATEGORIA[x.categoria]} (${num(x.distribuicao_usinas!.n, 0)} usinas e conjuntos)` }))}
         valor={u.categoria}
         onEscolher={(x) => definir({ cat: x })}
       />
@@ -63,6 +63,7 @@ export function GeracaoCapacidadeDistribuicao({ ultimos12m, fonte, versao }: { u
           casas={1}
           contagem={{ singular: "usina ou conjunto", plural: "usinas e conjuntos" }}
           periodo={periodo}
+          marcadores={["mediana"]}
           valorAtual={{ valor: u.fator_capacidade_pct, rotulo: "Agregado da categoria" }}
           cor="var(--cor-energia-soft)"
           nota="Cada observação é uma usina (mesmo CEG) ou um conjunto com relacionamento vigente, pareados com a Capacidade Instalada do ONS. Classes de 10 pontos publicadas pelo observatório."

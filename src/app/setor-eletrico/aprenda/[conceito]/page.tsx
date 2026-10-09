@@ -39,13 +39,15 @@ export function generateMetadata({ params }: { params: { conceito: string } }): 
 }
 
 /**
- * Um campo da ficha do verbete: o rótulo em caixa alta e o conteúdo logo abaixo. Em tela larga os campos se agrupam em pares na mesma
- * linha (definição e exemplo, por que importa e como é medido, o que não confundir e o que não concluir, relações e caminhos); campo que
- * fica sozinho na linha ocupa a largura toda (`largo`). Em tela estreita a ordem do documento é a ordem da leitura.
+ * Um campo da ficha do verbete: o rótulo em caixa alta e o conteúdo logo abaixo. Em tela larga (1024 px em diante) o texto corre numa
+ * coluna e o exemplo fica ao lado, na outra (a pergunta, a definição e o número à vista juntos); os campos seguintes se agrupam em pares
+ * (o que não confundir e o que não concluir; as relações e os caminhos), e o que fica sozinho na linha ocupa a largura toda (`largo`).
+ * Em tela estreita, e para quem navega por teclado ou leitor de tela, vale a ordem do documento: definição, exemplo, por que importa,
+ * como é medido. `lugar` só posiciona o campo na grade e nunca troca essa ordem.
  */
-function Campo({ rotulo, id, children, largo = false }: { rotulo: string; id?: string; children: ReactNode; largo?: boolean }) {
+function Campo({ rotulo, id, children, largo = false, lugar = "" }: { rotulo: string; id?: string; children: ReactNode; largo?: boolean; lugar?: string }) {
   return (
-    <section id={id} className={`scroll-mt-6 border-t border-linha py-6 ${largo ? "lg:col-span-2" : ""}`}>
+    <section id={id} className={`scroll-mt-6 border-t border-linha py-6 ${largo ? "lg:col-span-2" : ""} ${lugar}`}>
       <h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>
       <div className="mt-2 max-w-prose2 leading-relaxed text-carvao">{children}</div>
     </section>
@@ -67,7 +69,8 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   const outrosPaineis = c.vejaNoPortal.filter((v) => v.href !== destinoDoExemplo);
   const limitacoes = c.limitacoes ?? [];
   const relacoes = c.relacoes.filter((r) => conceito(r));
-  const orgaos = Array.from(new Set(c.fontes.map((f) => f.orgao)));
+  // órgãos da fonte em forma curta para a linha de contexto: "MME, GT Modernização do Setor Elétrico (coordenação da CCEE)" vira MME, "MME e EPE" vira dois
+  const orgaos = Array.from(new Set(c.fontes.flatMap((f) => f.orgao.replace(/\s*\(.*$/, "").split(",")[0].split(/\s+e\s+/).map((o) => o.trim()))));
   const comSigla = !!c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase();
   // siglas do texto principal (sem as da fonte citada, que o leitor abre se quiser) que o texto não expande
   const siglas = conferido
@@ -231,7 +234,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
         <div className="mt-6 grid gap-x-12 lg:grid-cols-2">
           {conferido && (
             <>
-              <Campo rotulo="Em uma frase">
+              <Campo rotulo="Em uma frase" lugar="lg:col-start-1 lg:row-start-1">
                 {c.emPalavrasSimples ? (
                   <>
                     <p className="rotulo text-mineral">Em palavras simples</p>
@@ -243,7 +246,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                   <p className="font-serif text-xl leading-relaxed">{c.emUmaFrase}</p>
                 )}
               </Campo>
-              <Campo rotulo={sintetico ? "Exemplo sintético" : "Exemplo real"} id="exemplo">
+              <Campo rotulo={sintetico ? "Exemplo sintético" : "Exemplo real"} id="exemplo" lugar="lg:col-start-2 lg:row-span-3 lg:row-start-1">
                 {prova ? (
                   <AprendaProva prova={prova} volta={`verbete:${c.slug}`} />
                 ) : sintetico ? (
@@ -258,8 +261,8 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                   <AprendaProva prova={null} volta={`verbete:${c.slug}`} alternativa={destinoNoPainel(c)} />
                 )}
               </Campo>
-              <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
-              <Campo rotulo="Como é medido">
+              <Campo rotulo="Por que importa" lugar="lg:col-start-1 lg:row-start-2">{c.porQueImporta}</Campo>
+              <Campo rotulo="Como é medido" lugar="lg:col-start-1 lg:row-start-3">
                 {c.comoEMedidoResumo ? (
                   <>
                     <p>{c.comoEMedidoResumo}</p>

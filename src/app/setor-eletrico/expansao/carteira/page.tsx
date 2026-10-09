@@ -231,7 +231,7 @@ export default function CarteiraPage() {
               <div className="space-y-6">
                 {estagio(g, "operacao") && (
                   <ExpansaoNota>
-                    Em operação aparecem dois valores porque a medida muda: o cartão mostra a potência fiscalizada ({mwTexto(estagio(g, "operacao")?.mw_fiscalizado)}) e o gráfico, a outorgada ({mwTexto(estagio(g, "operacao")?.mw_outorgado)}),
+                    Em operação aparecem dois valores, de medidas diferentes: o cartão mostra a potência fiscalizada ({mwTexto(estagio(g, "operacao")?.mw_fiscalizado)}) e o gráfico, a outorgada ({mwTexto(estagio(g, "operacao")?.mw_outorgado)}),
                     a mesma das outras duas fases.
                   </ExpansaoNota>
                 )}
@@ -285,7 +285,7 @@ export default function CarteiraPage() {
                     rotulosValor
                   />
                   <ExpansaoNota>
-                    Coorte é o grupo de usinas que entrou no acompanhamento do RALIE no mesmo ano; a primeira é o estoque da primeira fotografia. Coortes recentes tiveram menos tempo para chegar à operação: a parcela que segue em implantação é maior nelas por construção, não por pior desempenho. Percentuais
+                    Coorte é o grupo de usinas que entrou no acompanhamento do RALIE no mesmo ano; a primeira é o estoque da primeira fotografia. Coortes recentes tiveram menos tempo para chegar à operação e têm parcela maior em implantação: compare coortes de idade parecida. Percentuais
                     arredondados a uma casa; a soma de cada barra pode diferir de 100 por arredondamento. Das usinas que saíram sem desfecho,{" "}
                     {e.sem_desfecho_no_siga.map((s) => `${inteiro(s.usinas)} ${s.situacao_siga === "ausente do SIGA" ? "estão fora do arquivo aberto do SIGA" : `estão na fase ${s.situacao_siga} do SIGA`} (${mwTexto(s.mw_outorgado)} outorgados)`).join("; ")}.
                   </ExpansaoNota>

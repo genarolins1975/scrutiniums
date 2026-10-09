@@ -8,7 +8,11 @@ import PaginaArmazenamento from "@/app/setor-eletrico/agua-e-clima/page";
 import PaginaAfluencia from "@/app/setor-eletrico/agua-e-clima/afluencia/page";
 import PaginaClima from "@/app/setor-eletrico/agua-e-clima/chuva-e-temperatura/page";
 import PaginaReservatorios from "@/app/setor-eletrico/agua-e-clima/reservatorios/page";
+import { MedidasAfluencia } from "@/components/energia/AguaAfluencia";
+import { MedidasClima } from "@/components/energia/AguaClima";
+import { AguaLista } from "@/components/energia/AguaControles";
 import { AguaIndisponivel } from "@/components/energia/AguaPagina";
+import { MedidasBalanco, MedidasDecomposicao } from "@/components/energia/AguaReservatorios";
 import {
   ANCORAS_AFLUENCIA,
   CORES_ANOMALIA,
@@ -17,11 +21,26 @@ import {
   COLUNAS_CHUVA,
   COLUNAS_RESERVATORIOS,
   PAINEIS_AGUA,
+  COLUNAS_DECOMPOSICAO,
+  COLUNAS_PREVISAO_CHUVA,
+  COLUNAS_PREVISAO_TEMPERATURA,
+  COLUNAS_TEMPERATURA,
   PONTUACAO_PROIBIDA,
+  REGRA_CAPTURA_ENA,
+  REGRA_FAIXA_ENA,
+  REVISOES_CAPTURA_UNICA,
   baciaPadraoChuva,
+  baciasSemChuva,
   barrasBalanco,
+  barrasBalancoDefluencia,
+  barrasBalancoResiduo,
+  barrasBalancoTotais,
   barrasDecomposicao,
+  barrasDecomposicaoComRestante,
   classificacaoChuva,
+  dadosChuvaMes,
+  diasPreliminares,
+  ehGrupoOns,
   entidadesEar,
   entidadesEna,
   itensPontosAfluencia,
@@ -38,12 +57,48 @@ import {
   linhasReservatorios,
   linhasResumo,
   linhasTemperatura,
+  listaMeses,
+  marcaPreliminarSerie,
+  mesPreliminar,
+  mesesSemPmo,
   modeloCurto,
+  motivoSemBalanco,
+  motivoSemEna30d,
   nomeProprio,
+  notaChuvaBacia,
+  notaChuvaMes,
   notaEnaDoDia,
+  notaOutraJanelaCurta,
+  notaVazoesCoincidem,
   periodoValidacao,
   periodosMapa,
   recortePadrao,
+  restanteDecomposicao,
+  rotuloRecorte,
+  serieDiferencaMlt,
+  serieMltJanJul,
+  serieMltMensal,
+  ultimoDiaDoMes,
+  vereditoAfluencia,
+  vereditoAssociacao,
+  vereditoBalancoReservatorio,
+  vereditoChuva,
+  vereditoChuvaMes,
+  vereditoDecomposicao,
+  vereditoTemperatura,
+  vizinhaNoMapa,
+  volumeForaDaFaixa,
+  textoBaciasSemChuva,
+  textoCobertura,
+  textoEnaProvisoria,
+  textoFaixaJanela,
+  textoMudancaMltNoMes,
+  textoOutraJanelaNaArmazenamento,
+  textoParcelasFaltantes,
+  textoPreliminarChuva,
+  textoPreliminarTemperatura,
+  textoRevisoesFicha,
+  textoVolumeForaDaFaixa,
   reservatorioDaParcela,
   reservatorioPadrao,
   respostaAfluencia,
@@ -382,6 +437,121 @@ describe("P018: gráfico, tabela e exportação usam as mesmas linhas", () => {
     expect(l.length).toBe(G.afluencia.mlt.pmo.comparacao.length);
     for (const x of l) expect(String(x.relatorio)).toMatch(/^RELATORIO-PMO-/);
   });
+
+  it("MLT e PMO: o eixo é de tempo real, o mês sem relatório é lacuna, e a diferença plotada é a da gold com a tolerância publicada", () => {
+    const mlt = G.afluencia.mlt;
+    const comp = mlt.pmo.comparacao;
+    const meses = Array.from(new Set(comp.map((c) => c.mes))).sort();
+    const sem = mesesSemPmo(mlt);
+    // abril a junho de 2026 não têm relatório: são os meses que faltam entre o primeiro e o último comparados
+    expect(sem).toEqual(["2026-04", "2026-05", "2026-06"]);
+    expect(listaMeses(sem)).toBe("abril, maio e junho de 2026");
+    expect(listaMeses(["2025-12", "2026-01"])).toBe("dezembro de 2025 e janeiro de 2026");
+    const nivel = serieMltMensal(mlt, "SE");
+    expect(nivel.length).toBe(meses.length + sem.length);
+    for (const m of sem) expect(nivel.find((x) => x.m === m)).toEqual({ m, pmo: null, inicio: null, fim: null });
+    for (const c of comp.filter((x) => x.sm === "SE")) expect(nivel.find((x) => x.m === c.mes)).toEqual({ m: c.mes, pmo: c.pmo_mwmed, inicio: c.aberto_inicio_mwmed, fim: c.aberto_fim_mwmed });
+    // a diferença é a do início do mês, por subsistema, com a tolerância em todos os meses (a faixa é referência, não dado)
+    const dif = serieDiferencaMlt(mlt);
+    expect(dif.length).toBe(nivel.length);
+    for (const l of dif) {
+      expect(l.tol_sup).toBe(mlt.pmo.tolerancia_pct);
+      expect(l.tol_inf).toBe(-mlt.pmo.tolerancia_pct);
+    }
+    for (const c of comp) expect(dif.find((x) => x.m === c.mes)![c.sm]).toBe(c.dif_inicio_pct);
+    for (const m of sem) expect(dif.find((x) => x.m === m)).toMatchObject({ SE: null, S: null, NE: null, N: null });
+    // a mudança dentro do mês (janeiro) é dita com a diferença do fim, que o gráfico do início não mostra
+    const t = textoMudancaMltNoMes(mlt);
+    for (const c of comp.filter((x) => x.dif_inicio_pct !== x.dif_fim_pct)) expect(t).toContain(`${c.dif_fim_pct! > 0 ? "+" : "−"}${Math.abs(c.dif_fim_pct!).toFixed(3).replace(".", ",")}%`);
+    expect(t).toContain("janeiro de 2026");
+    const sem2 = clone(mlt);
+    for (const c of sem2.pmo.comparacao) c.dif_fim_pct = c.dif_inicio_pct;
+    expect(textoMudancaMltNoMes(sem2)).toBe("");
+    // os textos de Analisar dizem a lacuna e que a versão provisória é inferência do observatório
+    const textos = textosMlt(mlt, "2026").join(" ");
+    expect(textos).toContain("Sem comparação em abril, maio e junho de 2026");
+    expect(textos).toContain("versão inferida como provisória");
+    expect(textos).toContain("a inferência é do observatório, não do ONS");
+    expect(textoMltNaoConcluir(mlt)).toContain("sem abril, maio e junho de 2026");
+  });
+
+  it("MLT implícita de janeiro e de julho: duas linhas por subsistema, uma por mês, com os valores da gold", () => {
+    const mlt = G.afluencia.mlt;
+    const linhas = serieMltJanJul(mlt);
+    const anos = Array.from(new Set(mlt.implicita_subsistemas.ano));
+    expect(linhas.map((l) => l.x)).toEqual(anos.map(String));
+    mlt.implicita_subsistemas.ano.forEach((ano, i) => {
+      const l = linhas.find((x) => x.x === String(ano))!;
+      for (const sm of ["SE", "S", "NE", "N"] as const) expect(l[`${sm}_${mlt.implicita_subsistemas.mes[i]}`], `${sm} ${ano}`).toBe(mlt.implicita_subsistemas[sm][i]);
+    });
+  });
+
+  it("sem ENA de 30 dias: o motivo exato, o rótulo do grupo do ONS e a faixa sem a expressão quebrada", () => {
+    const ents = entidadesEna(G.afluencia);
+    const grupos = ents.filter((e) => e.tipo === "bacia" && ehGrupoOns(e.nome));
+    expect(grupos.length).toBe(2);
+    for (const g of grupos) {
+      expect(g.rotulo).toMatch(/^Outras do (Sul|Sudeste) \(grupo do ONS\)$/);
+      expect(rotuloRecorte("bacia", g.nome)).toBe(g.rotulo);
+      expect(motivoSemEna30d(g)).toBe("o ONS publica essas afluências agrupadas sem MLT, e sem MLT não há percentual");
+      const v = vereditoAfluencia(g);
+      expect(v).toMatch(/^Sem ENA de 30 dias do grupo Outras do (Sul|Sudeste) até 29\/09\/2026: o ONS publica essas afluências agrupadas sem MLT/);
+      expect(respostaAfluencia(g)).toContain("o ONS publica essas afluências agrupadas sem MLT");
+      expect(textoFaixaJanela(g)).toBe("sem faixa da mesma janela, porque o recorte não tem ENA de 30 dias");
+      expect(String(linhasAfluencia([g])[0].rotulo)).not.toMatch(/Bacia do Outras/);
+    }
+    // recorte comum sem ENA: a causa vem dos campos (falta ENA em algum dia, ou falta a MLT)
+    const bacia = clone(ents.find((e) => e.tipo === "bacia" && !ehGrupoOns(e.nome))!);
+    bacia.pct_mlt_30d = null;
+    bacia.ena_30d_soma_mwmed_dia = null;
+    expect(motivoSemEna30d(bacia)).toContain("falta ENA em algum dia da janela de 30 dias");
+    bacia.ena_30d_soma_mwmed_dia = 10;
+    bacia.mlt_30d_soma_mwmed_dia = null;
+    expect(motivoSemEna30d(bacia)).toContain("não há MLT publicada para o recorte");
+    // com ENA e sem faixa (poucos anos na base): o texto diz quantos anos e o mínimo, e o período da base só vale com faixa
+    const smv = ents.find((e) => e.nome === "SANTA MARIA VIT")!;
+    expect(smv.faixa_30d).toBeNull();
+    expect(textoFaixaJanela(smv)).toBe("sem faixa da mesma janela: 2 anos na base, e o mínimo é 5");
+    expect(textoFaixaJanela(ents.find((e) => e.id === "SIN")!)).toBe("faixa da mesma janela em 2001 a 2025");
+    for (const e of ents) expect(textoFaixaJanela(e), e.id).not.toContain("sem base");
+    // o veredito diz "média de longo termo", como o lead e a sigla
+    expect(vereditoAfluencia(ents.find((e) => e.id === "SIN")!)).toContain("média de longo termo (MLT)");
+  });
+
+  it("revisões do ONS: a ficha da ENA diz o que a tabela da página mostra, e os destaques dizem que os últimos dias são provisórios", () => {
+    const rev = G.afluencia.revisoes_entre_capturas_30d;
+    const f = textoRevisoesFicha(rev);
+    const nome = { SE: "Sudeste/Centro-Oeste", S: "Sul", NE: "Nordeste", N: "Norte" } as const;
+    for (const r of rev.filter((x) => x.dias_revisados > 0)) expect(f).toContain(`${nome[r.sm]} ${r.dias_revisados}`);
+    expect(f).toContain("O ONS revisou a ENA bruta entre as duas capturas mais recentes");
+    expect(f).toContain("tabela de revisões do ONS desta página, em Auditar");
+    expect(f).not.toContain("Nenhuma revisão");
+    const nenhuma = rev.map((r) => ({ ...r, dias_revisados: 0 }));
+    expect(textoRevisoesFicha(nenhuma)).toBe("Nenhum valor dos últimos 30 dias mudou entre as duas capturas mais recentes.");
+    const p = textoEnaProvisoria(rev);
+    expect(p).toContain("A ENA dos últimos dias é provisória: o ONS a revisa depois de publicá-la");
+    const dias = rev.map((r) => r.dias_revisados);
+    expect(p).toContain(`de ${Math.min(...dias)} a ${Math.max(...dias)} dos 30 dias`);
+    expect(textoEnaProvisoria(nenhuma)).toContain("nenhum valor dos últimos 30 dias mudou");
+    // reservatórios e chuva vêm de uma captura só: a ficha diz que ainda não dá para detectar revisões
+    expect(REVISOES_CAPTURA_UNICA).toBe("Ainda não é possível detectar revisões: há uma única captura.");
+  });
+
+  it("mapa das bacias: a seta vai à bacia mais próxima na direção, pelo ponto de rótulo; sem bacia na direção, o foco fica", () => {
+    // y cresce para baixo, como no SVG
+    const pontos = { A: [0, 0], B: [10, -1], C: [12, 30], D: [-10, 0], E: [0, -10] } as const;
+    expect(vizinhaNoMapa(pontos, "A", "direita")).toBe("B");
+    expect(vizinhaNoMapa(pontos, "A", "esquerda")).toBe("D");
+    expect(vizinhaNoMapa(pontos, "A", "cima")).toBe("E");
+    expect(vizinhaNoMapa(pontos, "A", "baixo")).toBe("C");
+    // o ângulo pesa: à direita de A, B está alinhado e C, na diagonal, não
+    expect(vizinhaNoMapa(pontos, "A", "direita")).not.toBe("C");
+    expect(vizinhaNoMapa(pontos, "D", "esquerda")).toBeNull();
+    expect(vizinhaNoMapa(pontos, "inexistente", "direita")).toBeNull();
+    // com os pontos reais do mapa de bacias, toda bacia alcança alguma outra com ao menos duas setas
+    const ids = GEO.features.map((f) => f.id);
+    expect(ids.length).toBe(22);
+  });
 });
 
 /* ---------- P019 ---------- */
@@ -459,19 +629,46 @@ describe("P019: mapa, tabela, histórico e exportação usam os mesmos valores",
 /* ---------- P020 ---------- */
 
 describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas", () => {
-  it("barras e tabela da decomposição: mesmas parcelas, ligadas ao reservatório pelo código da usina", () => {
+  it("barras e tabela da decomposição: mesmas parcelas, ligadas ao reservatório pelo código da usina, e uma barra para a soma dos demais", () => {
     for (const d of R.decomposicao_ear) {
       const b = barrasDecomposicao(d);
+      const comRestante = barrasDecomposicaoComRestante(d);
       const l = linhasDecomposicao(d);
-      expect(l.map((x) => x.id), d.sm).toEqual(b.map((x) => x.id));
-      expect(l.map((x) => x.delta), d.sm).toEqual(b.map((x) => x.delta));
-      // ordenadas da maior queda à maior alta
+      // o gráfico e a tabela têm as mesmas linhas, e a soma dos demais é a última
+      expect(l.map((x) => x.id), d.sm).toEqual(comRestante.map((x) => x.id));
+      expect(l.map((x) => x.delta), d.sm).toEqual(comRestante.map((x) => x.delta));
+      expect(comRestante.slice(0, b.length).map((x) => x.id), d.sm).toEqual(b.map((x) => x.id));
+      // as parcelas listadas vão da maior queda à maior alta
       for (let i = 1; i < b.length; i++) expect((b[i].delta ?? 0) >= (b[i - 1].delta ?? 0), d.sm).toBe(true);
       expect(Math.abs((d.delta_ear_mwmes ?? 0) - (d.soma_reservatorios_mwmes ?? 0) - (d.residuo_mwmes ?? 0)), d.sm).toBeLessThanOrEqual(0.1);
+      // com a barra dos demais, as barras somam a soma publicada dos reservatórios (a identidade fecha por construção) e contam todas as parcelas
+      const soma = comRestante.reduce((t, x) => t + (x.delta ?? 0), 0);
+      // cada parcela e o total vêm arredondados a uma casa: sem a barra dos demais, a soma das parcelas difere do total por arredondamento
+      expect(Math.abs(soma - (d.soma_reservatorios_mwmes ?? 0)), d.sm).toBeLessThan(0.05 * b.length + 0.05);
+      const rest = restanteDecomposicao(d);
+      expect(b.length + (rest?.nRestantes ?? 0), d.sm).toBe(d.n_reservatorios);
+      expect(comRestante.length, d.sm).toBe(b.length + (rest ? 1 : 0));
     }
     const se = R.decomposicao_ear.find((d) => d.sm === "SE")!;
     const ligadas = barrasDecomposicao(se).map((b) => reservatorioDaParcela(R.lista, b.cod)).filter(Boolean);
     expect(ligadas.length).toBeGreaterThanOrEqual(8);
+    // a barra dos demais não é um reservatório: não se liga a nenhum
+    const demais = barrasDecomposicaoComRestante(se).at(-1)!;
+    expect(demais.cod).toBe("");
+    expect(reservatorioDaParcela(R.lista, demais.cod)).toBeNull();
+    expect(demais.rotulo).toContain("Demais 35 reservatórios");
+    expect(demais.delta!).toBeCloseTo(-1912.3, 1);
+    // o subsistema com todas as parcelas no gráfico não ganha a barra
+    const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
+    expect(restanteDecomposicao(norte)).toBeNull();
+    expect(textoParcelasFaltantes(norte)).toBe("");
+    // a frase diz o que falta: a soma dos demais é por diferença e as variações individuais não estão publicadas
+    const f = textoParcelasFaltantes(se);
+    expect(f).toContain("10 das 45 parcelas");
+    expect(f).toContain("por diferença");
+    expect(f).toContain("não estão publicadas");
+    // a coluna do valor vem logo depois do nome (cabe em 360 px)
+    expect(COLUNAS_DECOMPOSICAO.slice(0, 2).map((c) => c.id)).toEqual(["rotulo", "delta"]);
   });
 
   it("balanço: a tabela é a do CSV publicado e a identidade fecha com o resíduo publicado (arredondamento de 2 casas)", () => {
@@ -635,7 +832,7 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
       ...C.temperatura.map((t) => respostaTemperatura(t, C.base_climatologica)),
       ...C.previsao!.bacias.map((b) => respostaPrevisao(C.previsao!, b.bacia)),
       ...R.decomposicao_ear.map(respostaDecomposicao),
-      ...R.lista.map((r) => respostaBalanco(r, janela)),
+      ...R.lista.map((r) => respostaBalanco(r, janela, R.sem_cadastro)),
       ...textosMlt(G.afluencia.mlt, "2026"),
       ...textoReconciliacaoEar(G.reconciliacao_ear),
       respostaCapacidade(G.armazenamento.capacidade, G.armazenamento.dia),
@@ -648,6 +845,25 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
       textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena, "1991-2020"),
       textoMltNaoConcluir(G.afluencia.mlt),
       textoValidacao(C.validacao_estacoes),
+      textoValidacao(C.validacao_estacoes, C.corte_imerg_final),
+      textoCobertura(C),
+      textoBaciasSemChuva(baciasSemChuva(G.armazenamento.bacias, C.precipitacao_bacias)),
+      textoPreliminarChuva(C.precipitacao_bacias[0].dia, C.corte_imerg_final),
+      textoPreliminarTemperatura(C.temperatura[0].dia, C.corte_merra2),
+      ...C.precipitacao_bacias.map(vereditoChuva),
+      ...C.precipitacao_bacias.map((b) => notaChuvaBacia(b, C.base_climatologica)),
+      ...C.precipitacao_bacias.map((b) => vereditoAssociacao(b) ?? ""),
+      ...C.precipitacao_bacias.map((b) => vereditoChuvaMes(b, b.mensal.m[b.mensal.m.length - 1])),
+      ...C.precipitacao_bacias.map((b) => notaChuvaMes(b, b.mensal.m[b.mensal.m.length - 1], C.base_climatologica)),
+      ...entidadesEna(G.afluencia).map(vereditoAfluencia),
+      textoRevisoesFicha(G.afluencia.revisoes_entre_capturas_30d),
+      textoEnaProvisoria(G.afluencia.revisoes_entre_capturas_30d),
+      textoMudancaMltNoMes(G.afluencia.mlt),
+      textoVolumeForaDaFaixa(R.lista),
+      textoParcelasFaltantes(R.decomposicao_ear[0]),
+      REGRA_FAIXA_ENA,
+      REGRA_CAPTURA_ENA,
+      ...R.lista.map((r) => vereditoBalancoReservatorio(r, janela, R.sem_cadastro)),
       textoReeNovos(G.afluencia.ree_novos_por_data),
       textoPesoSubsistemas(ents) ?? "",
       textoForaDosPontos(ents.filter((e) => e.tipo === "bacia")) ?? "",
@@ -741,7 +957,13 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     expect(nomeProprio("SAO FRANCISCO")).toBe("São Francisco");
     expect(nomeProprio("SERRA DA MESA")).toBe("Serra da Mesa");
     expect(nomeProprio("RONDON II")).toBe("Rondon II");
-    expect(nomeProprio("C.BRANCO-1")).toBe("C.Branco-1");
+    // o dicionário local dá acento e nome por extenso aos que o ONS publica sem acento ou abreviados
+    expect(nomeProprio("C.BRANCO-1")).toBe("Capim Branco I");
+    expect(nomeProprio("SAO ROQUE")).toBe("São Roque");
+    expect(nomeProprio("TUCURUI")).toBe("Tucuruí");
+    expect(nomeProprio("S.DO FACÃO")).toBe("Serra do Facão");
+    expect(nomeProprio("CURUA-UNA")).toBe("Curuá-Una");
+    for (const r of R.lista) expect(nomeProprio(r.nome), r.nome).not.toMatch(/\b(Sao|Tucurui|Curua)\b|S\.Do|A\. Vermelha/);
     expect(linhasArmazenamento(ents.filter((e) => e.tipo === "bacia")).map((l) => l.nome)).toContain("SAO FRANCISCO");
   });
 });
@@ -859,6 +1081,7 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
   const html = Object.fromEntries(Object.entries(filhas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof filhas, string>;
   const dataBr = (iso: string) => iso.split("-").reverse().join("/");
   const faixaMetricas = (h: string) => /<section[^>]*data-faixa-metricas=""[^>]*>[\s\S]*?<\/section>/.exec(h)?.[0] ?? "";
+  const faixas = (h: string) => Array.from(h.matchAll(/<section[^>]*data-faixa-metricas=""[^>]*>[\s\S]*?<\/section>/g)).map((m) => m[0]);
   const secao = (h: string, id: string) => new RegExp(`<section id="${id}"[^>]*>`).exec(h)?.[0] ?? null;
   const textoDe = (h: string) => h.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
@@ -899,12 +1122,19 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     }
   });
 
-  it("afluência: faixa com a ENA em % da MLT e em MWmed, cada uma com a sua data, acima do seletor de profundidade; a régua da MLT não se compara com a da EAR", () => {
+  it("afluência: a faixa de números fica logo abaixo da figura, com a ENA em % da MLT e em MWmed, cada uma com a sua data; a régua da MLT não se compara com a da EAR e os últimos dias são provisórios", () => {
     const h = html.p018;
     const faixa = faixaMetricas(h);
     const sinEna = entidadesEna(G.afluencia).find((e) => e.id === "SIN")!;
     expect(faixa.match(/data-metrica=""/g)?.length).toBe(4);
-    expect(h.indexOf('data-faixa-metricas=""')).toBeLessThan(h.indexOf('role="radiogroup" aria-label="Nível de profundidade"'));
+    // a resposta e a figura abrem o painel; a faixa vem depois da figura e da legenda, antes da tabela; nenhuma faixa acima do seletor de profundidade
+    const seletor = h.indexOf('role="radiogroup" aria-label="Nível de profundidade"');
+    const iFaixa = h.indexOf('data-faixa-metricas=""');
+    expect(iFaixa).toBeGreaterThan(seletor);
+    expect(iFaixa).toBeGreaterThan(h.indexOf('data-resposta="p018"'));
+    expect(iFaixa).toBeGreaterThan(h.indexOf("data-recorte-painel"));
+    expect(iFaixa).toBeLessThan(h.indexOf("Tabela equivalente: ENA de 30 dias"));
+    expect(h.slice(Math.max(0, seletor - 4000), seletor)).not.toContain('data-faixa-metricas=""');
     const t = textoDe(faixa);
     expect(t).toContain(`${sinEna.pct_mlt_30d!.toFixed(1).replace(".", ",")}`);
     expect(t).toContain(`${sinEna.p50_30d!.toFixed(1).replace(".", ",")}`);
@@ -916,13 +1146,45 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(t).toContain(dataBr(G.dias_referencia.ena));
     expect(t).toContain(sinEna.periodo_base!.replace("-", " a "));
     // outra régua: dito junto do número e nas notas, sem comparar os dois percentuais
-    expect(t).toContain("outra régua que o da EAR");
+    expect(t).toContain("outra régua que o da energia armazenada (EAR)");
     expect(textoDe(h)).toMatch(/outra\s+régua que o da energia armazenada \(EAR\), e os dois não se comparam/);
-    // as duas fichas "Comprove este número" da abertura (ENA bruta e ENA armazenável) continuam na faixa
+    // provisório, em palavras: o ONS revisa os últimos dias, e a página diz quantos dias ele revisou entre as duas capturas
+    expect(t).toContain(textoEnaProvisoria(G.afluencia.revisoes_entre_capturas_30d));
+    expect(t).toContain("provisória");
+    // as duas fichas "Comprove este número" (ENA bruta e ENA armazenável) continuam na faixa, e são as do SIN
     expect(faixa.match(/Comprove este número/g)?.length).toBe(2);
   });
 
-  it("afluência: a MLT e a evolução em 30 dias são seções visíveis com pergunta própria; só as tabelas e o texto de método ficam em Analisar", () => {
+  it("afluência: a faixa acompanha o recorte escolhido, e a ficha de prova é só a do SIN", () => {
+    const ents = entidadesEna(G.afluencia);
+    const evid = { ena30d: G.evidencias.ena_30d_sin, enaArm30d: G.evidencias.ena_arm_30d_sin };
+    const rev = G.afluencia.revisoes_entre_capturas_30d;
+    const medidas = (id: string) => renderToStaticMarkup(createElement(MedidasAfluencia, { e: ents.find((x) => x.id === id)!, revisoes: rev, evidencias: evid }));
+    const virg = (v: number) => v.toFixed(1).replace(".", ",");
+    // outro subsistema: os números são os dele, com o nome dele, e sem a ficha do SIN
+    const sul = ents.find((x) => x.id === "S")!;
+    const hSul = textoDe(medidas("S"));
+    expect(hSul).toContain("Números do recorte escolhido: Sul");
+    expect(hSul).toContain(virg(sul.pct_mlt_30d!));
+    expect(hSul).toContain(virg(sul.p50_30d!));
+    expect(hSul).not.toContain(virg(ents.find((x) => x.id === "SIN")!.pct_mlt_30d!));
+    expect(medidas("S")).not.toContain("Comprove este número");
+    expect(medidas("SIN").match(/Comprove este número/g)?.length).toBe(2);
+    // REE e bacia: só três medidas (a ENA armazenável existe só nos subsistemas)
+    const ree = ents.find((x) => x.tipo === "ree")!;
+    expect(medidas(ree.id).match(/data-metrica=""/g)?.length).toBe(3);
+    expect(textoDe(medidas(ree.id))).toContain(ree.rotulo);
+    // grupo de afluências agrupadas: o motivo exato da ausência, sem a expressão quebrada nem "Bacia do Outras"
+    const outras = ents.find((x) => x.tipo === "bacia" && ehGrupoOns(x.nome))!;
+    const hOutras = textoDe(medidas(outras.id));
+    expect(hOutras).toContain(outras.rotulo);
+    expect(outras.rotulo).toMatch(/^Outras do (Sul|Sudeste) \(grupo do ONS\)$/);
+    expect(hOutras).toContain("O ONS publica essas afluências agrupadas sem MLT, e sem MLT não há percentual");
+    expect(hOutras).not.toMatch(/em sem base|Bacia do Outras/);
+    expect(hOutras).not.toContain("falta dia na janela ou não há MLT");
+  });
+
+  it("afluência: a MLT e a evolução em 30 dias são seções visíveis com pergunta própria; a diferença contra o PMO e a MLT de janeiro e julho estão à vista, e o gráfico dos níveis, as tabelas e o texto de método ficam em Analisar", () => {
     const h = html.p018;
     for (const id of ["evolucao", "mlt"]) {
       const tag = secao(h, id);
@@ -932,16 +1194,32 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(secao(h, "mlt-detalhes")).toContain('data-nivel="analisar"');
     expect(secao(h, "unidade")).toContain('data-nivel="auditar"');
     expect(secao(h, "regras-p018")).toContain('data-nivel="auditar"');
-    // as duas figuras da MLT estão na seção visível; as três tabelas estão na seção de Analisar
+    // as figuras da MLT visíveis: a diferença contra o PMO (com a lacuna dita) e a MLT implícita de janeiro e de julho; as tabelas ficam em Analisar
     const iMlt = h.indexOf('<section id="mlt"');
     const iDet = h.indexOf('<section id="mlt-detalhes"');
     const visivel = h.slice(iMlt, iDet);
-    expect(visivel).toContain("MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto");
-    expect(visivel).toContain("MLT implícita de cada subsistema");
+    expect(visivel).toContain("Diferença da MLT do conjunto aberto contra a do PMO no início de cada mês");
+    expect(visivel).toContain("MLT implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho");
     expect(visivel).not.toContain("<table");
+    expect(textoDe(visivel)).toContain(`Sem relatório do PMO coletado em ${listaMeses(mesesSemPmo(G.afluencia.mlt))}`);
+    expect(textoDe(visivel)).toContain(textoMudancaMltNoMes(G.afluencia.mlt));
+    expect(textoDe(visivel)).toContain("Programa Mensal de Operação (PMO)");
     const detalhes = h.slice(iDet, h.indexOf('<section id="unidade"'));
     expect((detalhes.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(3);
     expect(detalhes).toContain('data-textos="mlt"');
+    // o gráfico dos níveis (PMO, início e fim do mês) fica em Analisar, com a lacuna
+    expect(detalhes).toContain("MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto, mês a mês");
+    // regras do Auditar escritas para a ENA, sem repetir a regra da EAR nem citar nomes internos
+    const bloco = h.slice(h.indexOf('<section id="regras-p018"'));
+    const regras = textoDe(bloco.slice(0, bloco.indexOf("</dl>")));
+    expect(regras).toContain(REGRA_FAIXA_ENA);
+    expect(regras).toContain(REGRA_CAPTURA_ENA);
+    expect(regras).not.toMatch(/EAR máxima zero|periodo_base|silver/);
+    // a legenda da grade de janeiro e julho tem as oito linhas, cada uma com o subsistema, sem rótulo repetido
+    for (const sm of ["SE/CO", "S", "NE", "N"]) {
+      expect(visivel).toContain(`${sm}, 15 de janeiro`);
+      expect(visivel).toContain(`${sm}, 15 de julho`);
+    }
   });
 
   it("chuva e temperatura: sem faixa no alto; duas medidas estimadas em seção própria, com data e selo de estimativa; separação visível e previsão rotulada", () => {
@@ -972,30 +1250,360 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(h.indexOf("data-recorte-painel")).toBeGreaterThan(h.indexOf('data-resposta="p019"'));
   });
 
-  it("reservatórios: faixa de balanço acima do seletor de profundidade; decomposição primeiro, conta da água e série diária em seções visíveis, comparação em Analisar", () => {
+  it("chuva e temperatura: a faixa acompanha a bacia, o período e o recorte escolhidos, com o percentil e a cautela na nota; a ficha de prova é só a da bacia padrão e a do SIN", () => {
+    const baciaPadrao = baciaPadraoChuva(G.armazenamento.bacias, C.precipitacao_bacias);
+    const evid = { chuva30d: G.evidencias.precipitacao_maior_bacia_30d, temperaturaSin30d: G.evidencias.temperatura_sin_30d };
+    const medidas = (bac: string, per: string, rt: string) => {
+      const b = C.precipitacao_bacias.find((x) => x.bacia === bac)!;
+      return renderToStaticMarkup(
+        createElement(MedidasClima, {
+          bacia: b,
+          nomeBacia: rotuloRecorte("bacia", bac),
+          per,
+          base: C.base_climatologica,
+          temp: C.temperatura.find((x) => x.recorte === rt)!,
+          baciaPadrao,
+          evidencias: evid,
+        }),
+      );
+    };
+    const virg = (v: number, c = 1) => v.toFixed(c).replace(".", ",");
+    const pad = C.precipitacao_bacias.find((x) => x.bacia === baciaPadrao)!;
+    // bacia padrão em 30 dias e SIN: os milímetros, o percentil antes da anomalia, a cautela, e as duas fichas
+    const padrao = medidas(baciaPadrao, "30d", "SIN");
+    const tp = textoDe(padrao);
+    expect(tp).toContain(`${virg(pad.mm_30d!)}`);
+    expect(tp).toContain(`Percentil ${Math.round(pad.percentil_30d!)} entre os mesmos dias de anos anteriores`);
+    expect(tp.indexOf("Percentil")).toBeLessThan(tp.indexOf("% acima"));
+    expect(tp).toContain("leia os milímetros e o percentil");
+    expect(padrao.match(/Comprove este número/g)?.length).toBe(2);
+    // o rótulo da ficha usa o mesmo nome e o mesmo arredondamento do cartão
+    expect(padrao).toContain(`Chuva de 30 dias, Bacia do ${nomeProprio(baciaPadrao)}`);
+    expect(padrao).toContain(`${virg(pad.mm_30d!)} mm`);
+    expect(padrao).not.toMatch(/bacia PARANAIBA|, 70 mm/);
+    // outra bacia e outro recorte de temperatura: os números são os deles, sem as fichas
+    const outraBacia = C.precipitacao_bacias.find((x) => x.bacia !== baciaPadrao && x.mm_30d !== null)!;
+    const outra = medidas(outraBacia.bacia, "30d", "S");
+    expect(textoDe(outra)).toContain(`${virg(outraBacia.mm_30d!)}`);
+    expect(textoDe(outra)).toContain(`Anomalia da temperatura, Sul`);
+    expect(outra).not.toContain("Comprove este número");
+    // um mês do mapa: os milímetros e a faixa do mês, com o nome do mês, sem a ficha de 30 dias
+    const mes = pad.mensal.m[pad.mensal.m.length - 1];
+    const dm = dadosChuvaMes(pad, mes)!;
+    const mesHtml = textoDe(medidas(baciaPadrao, mes, "SIN"));
+    expect(mesHtml).toContain("Chuva do mês");
+    expect(mesHtml).toContain(`${virg(dm.mm!)}`);
+    expect(medidas(baciaPadrao, mes, "SIN").match(/Comprove este número/g)?.length).toBe(1);
+  });
+
+  it("veredito da chuva: os milímetros e o percentil abrem a frase, com a média ao lado; o percentual de anomalia fica na nota e na resposta completa", () => {
+    const b = C.precipitacao_bacias.find((x) => x.bacia === baciaPadraoChuva(G.armazenamento.bacias, C.precipitacao_bacias))!;
+    const v = vereditoChuva(b);
+    expect(v).toContain(`${b.mm_30d!.toFixed(1).replace(".", ",")} mm de chuva estimada por satélite`);
+    expect(v).toContain(`no percentil ${Math.round(b.percentil_30d!)} dos mesmos dias de anos anteriores`);
+    expect(v).toContain(`média desses dias: ${b.media_30d_base!.toFixed(1).replace(".", ",")} mm`);
+    expect(v).not.toContain(`${b.anomalia_30d_pct!.toFixed(1).replace(".", ",")}%`);
+    expect(notaChuvaBacia(b, C.base_climatologica)).toContain(`${b.anomalia_30d_pct!.toFixed(1).replace(".", ",")}% acima`);
+    expect(respostaChuva(b, C.base_climatologica)).toContain(`${b.anomalia_30d_pct!.toFixed(1).replace(".", ",")}% acima`);
+    // mudar o dado muda a frase; sem percentil, a frase não o inventa
+    const outro = clone(b);
+    outro.percentil_30d = null;
+    expect(vereditoChuva(outro)).not.toContain("percentil");
+    // um mês: milímetros, média e faixa do mês (o percentil do mês não é publicado)
+    const mes = b.mensal.m[b.mensal.m.length - 1];
+    const d = dadosChuvaMes(b, mes)!;
+    const vm = vereditoChuvaMes(b, mes);
+    expect(vm).toContain(`${d.mm!.toFixed(1).replace(".", ",")} mm de chuva estimada por satélite`);
+    expect(vm).toContain(`do 10º ao 90º percentil, vai de ${d.p10!.toFixed(1).replace(".", ",")} a ${d.p90!.toFixed(1).replace(".", ",")} mm`);
+    expect(notaChuvaMes(b, mes, C.base_climatologica)).toContain("leia os milímetros e a faixa do mês");
+    expect(vereditoChuvaMes(b, "1999-01")).toContain("Sem estimativa de chuva");
+    // temperatura: o veredito diz que a janela é preliminar
+    const t = C.temperatura.find((x) => x.recorte === "SIN")!;
+    expect(vereditoTemperatura(t)).toContain("A janela é preliminar.");
+    // a correlação diz o método e que é sensível a meses secos
+    const a = vereditoAssociacao(b)!;
+    expect(a).toContain("correlação de Pearson");
+    expect(a).toContain("sensível a meses secos");
+    expect(a).toContain("É associação, não causa.");
+    expect(textoAssociacao(b)).toContain("correlação de Pearson");
+  });
+
+  it("janelas preliminares: todos os dias da janela são preliminares quando começam depois do produto final, com a recomendação da fonte; os gráficos de temperatura marcam o GEOS-IT", () => {
+    const b = C.precipitacao_bacias.find((x) => x.preliminar_30d)!;
+    expect(diasPreliminares(b.dia, C.corte_imerg_final)).toEqual({ n: 30, todos: true });
+    const tc = textoPreliminarChuva(b.dia, C.corte_imerg_final);
+    expect(tc).toContain("Todos os 30 dias da janela são preliminares");
+    expect(tc).toContain("IMERG Late");
+    expect(tc).toContain(`IMERG Final, já calibrado, que vai até ${C.corte_imerg_final.split("-").reverse().join("/")}`);
+    expect(tc).toContain("documentação do NASA POWER recomenda");
+    // parte da janela: a frase diz quantos dias, não "todos"
+    const meio = textoPreliminarChuva(b.dia, menosDias(b.dia, 9));
+    expect(meio).toContain("9 dos 30 dias da janela são preliminares");
+    expect(textoPreliminarChuva(b.dia, b.dia)).toBe("");
+    const t = C.temperatura.find((x) => x.recorte === "SIN")!;
+    expect(textoPreliminarTemperatura(t.dia, C.corte_merra2)).toContain("Todos os 30 dias da janela vêm do GEOS-IT");
+    expect(textoPreliminarTemperatura(t.dia, t.dia)).toBe("");
+    // marca no eixo: série inteira depois do corte é só nota; corte dentro da série vira marca vertical no primeiro dia depois dele
+    const serie = serieDiariaTemperatura(t).map((p) => p.d);
+    expect(marcaPreliminarSerie(serie, C.corte_merra2, "GEOS-IT").todaPreliminar).toBe(true);
+    const corte = serie[10];
+    const parcial = marcaPreliminarSerie(serie, corte, "GEOS-IT");
+    expect(parcial.todaPreliminar).toBe(false);
+    expect(parcial.marcos).toEqual([{ x: serie[11], rotulo: "GEOS-IT" }]);
+    expect(marcaPreliminarSerie(serie, serie[serie.length - 1], "GEOS-IT")).toEqual({ marcos: [], todaPreliminar: false });
+    // barras mensais: o mês com dias depois do corte leva a marca
+    expect(ultimoDiaDoMes("2026-08")).toBe("2026-08-31");
+    expect(mesPreliminar("2026-08", C.corte_merra2)).toBe(true);
+    expect(mesPreliminar("2026-07", C.corte_merra2)).toBe(false);
+    // na página: cautela junto da resposta (uma frase, com a explicação inteira logo abaixo), rótulo da série e nota do mês preliminar
+    const h = html.p019;
+    expect(h).toContain('data-cautela="chuva"');
+    expect(h).toContain('data-cautela="temperatura"');
+    expect(textoDe(h)).toContain(tc);
+    expect(textoDe(h)).toContain(textoPreliminarTemperatura(t.dia, C.corte_merra2));
+    expect(h).toContain("Média das máximas das células");
+    expect(h).not.toContain(">Máxima do dia<");
+    expect(textoDe(h)).toContain("* Mês com dias do GEOS-IT (preliminar)");
+    expect(textoDe(h)).toContain("Todos os dias deste gráfico vêm do GEOS-IT, preliminar");
+    // o IMERG, o MERRA-2, o GEOS-IT, a reanálise e o UTC são ditos por extenso no ponto de uso
+    const visivel = textoDe(h.slice(h.indexOf("<main")));
+    expect(visivel).toContain("IMERG, produto de chuva da NASA calibrado por pluviômetros");
+    expect(visivel).toContain("reanálise (MERRA-2, da NASA: um modelo da atmosfera ajustado a observações");
+    expect(visivel).toContain("dias UTC, o horário universal");
+    expect(visivel).toContain("SIN: Sistema Interligado Nacional");
+  });
+
+  it("mapa e cobertura: a bacia sem contorno é dita, os totais únicos e as somas das tabelas são explicados, e a média não se reproduz só com o CSV diário", () => {
+    const sem = baciasSemChuva(G.armazenamento.bacias, C.precipitacao_bacias);
+    expect(sem).toEqual(["SANTA MARIA VIT"]);
+    const nota = textoBaciasSemChuva(sem);
+    expect(nota).toContain("Santa Maria da Vitória");
+    expect(nota).toContain("sem chuva estimada");
+    expect(textoBaciasSemChuva([])).toBe("");
+    expect(textoDe(html.p019)).toContain(nota);
+    // os totais únicos (580 pontos e 97 células) contra as somas das tabelas por bacia e por UF
+    const somaPontos = C.cobertura_precipitacao.reduce((t, x) => t + x.pontos, 0);
+    const somaCelulas = C.cobertura_temperatura.reduce((t, x) => t + x.celulas, 0);
+    expect(somaPontos).toBeGreaterThan(C.totais.pontos_precipitacao);
+    const cob = textoCobertura(C);
+    expect(cob).toContain(`as linhas da tabela por bacia somam ${somaPontos} pontos`);
+    expect(cob).toContain("um ponto dentro de dois contornos conta nas duas bacias");
+    expect(cob).toContain(`as da tabela por UF somam ${somaCelulas} células`);
+    // sem sobra, sem explicação
+    const igual = clone(C);
+    igual.totais = { pontos_precipitacao: somaPontos, celulas_temperatura: somaCelulas };
+    expect(textoCobertura(igual)).not.toContain("Totais únicos");
+    // a conferência com estações diz que agrupa meses e bacias e que o período é de IMERG Final
+    const val = textoValidacao(C.validacao_estacoes, C.corte_imerg_final);
+    expect(val).toContain("inclui o ciclo sazonal");
+    expect(val).toContain("Os meses comparados são de IMERG Final");
+    expect(val).toMatch(/o viés por bacia vai de [−+]\d/);
+    // a nota da tabela da chuva diz que a média usa a base e que o CSV diário público começa depois
+    const h = textoDe(html.p019);
+    const inicio = /desde (\d{4})/.exec(G.downloads.find((d) => /agua_precipitacao_bacias_diario/.test(d.url))!.rotulo)![1];
+    expect(h).toContain(`mas o CSV diário público começa em ${inicio}`);
+    expect(h).toContain("não se reproduz só com esse arquivo");
+  });
+
+  it("tabelas de Água: em Entender cabem em 360 px (nome, números e no máximo uma coluna de texto), e o arquivo exportado leva todas as colunas", () => {
+    const tabelas = [
+      ["afluência", COLUNAS_AFLUENCIA],
+      ["chuva", COLUNAS_CHUVA],
+      ["temperatura", COLUNAS_TEMPERATURA],
+      ["previsão de chuva", COLUNAS_PREVISAO_CHUVA],
+      ["previsão de temperatura", COLUNAS_PREVISAO_TEMPERATURA],
+      ["balanço dos reservatórios", COLUNAS_RESERVATORIOS],
+      ["decomposição", COLUNAS_DECOMPOSICAO],
+    ] as const;
+    for (const [nome, colunas] of tabelas) {
+      const visiveis = colunas.filter((c) => !c.nivel);
+      // nome (fixo à esquerda, 112 px) e duas colunas de 112 px cabem em 358 px; mais que isso força a rolagem e corta o número
+      expect(visiveis.length, nome).toBeLessThanOrEqual(3);
+      expect(visiveis[0].tipo, nome).toBe("texto");
+      expect(visiveis.slice(1).some((c) => c.tipo === "numero" || c.tipo === "percentual"), nome).toBe(true);
+    }
+    // o arquivo leva todas as colunas, as de Analisar também
+    expect(matrizExportacao(COLUNAS_AFLUENCIA, linhasAfluencia(entidadesEna(G.afluencia).filter((e) => e.tipo === "subsistema"))).cabecalho.length).toBe(COLUNAS_AFLUENCIA.length);
+    expect(matrizExportacao(COLUNAS_RESERVATORIOS, linhasReservatorios(R.lista)).cabecalho.length).toBe(COLUNAS_RESERVATORIOS.length);
+    // os cabeçalhos da previsão de temperatura são curtos
+    for (const c of COLUNAS_PREVISAO_TEMPERATURA.slice(1)) expect(c.rotulo.length, c.rotulo).toBeLessThanOrEqual(22);
+  });
+
+
+  it("reservatórios: nenhuma faixa acima do seletor de profundidade; a soma das parcelas, a conta da água e a qualidade do balanço têm faixa própria, e a página segue a ordem decomposição, conta da água, qualidade e série diária", () => {
     const h = html.p020;
-    const faixa = faixaMetricas(h);
-    expect(faixa.match(/data-metrica=""/g)?.length).toBe(3);
-    expect(h.indexOf('data-faixa-metricas=""')).toBeLessThan(h.indexOf('role="radiogroup" aria-label="Nível de profundidade"'));
-    const t = textoDe(faixa);
-    expect(t).toContain(`${R.n_com_balanco}`);
-    expect(t).toContain(`de ${R.n_reservatorios} nos dados hidráulicos`);
-    expect(t).toContain(`${R.n_fecham_por_construcao}`);
-    expect(t).toContain(`de ${R.n_com_balanco} com balanço`);
-    expect(t).toContain("−1,95");
-    expect(t).toContain("hm³");
-    expect(faixa.match(/Comprove este número/g)?.length).toBe(2);
-    // ordem: veredito da decomposição, figura, notas, conta da água, série diária
-    const ordem = [`data-resposta="p020"`, 'data-notas-painel=""', '<section id="balanco"', '<section id="serie-diaria"'].map((x) => h.indexOf(x));
+    const seletor = h.indexOf('role="radiogroup" aria-label="Nível de profundidade"');
+    expect(h.slice(Math.max(0, seletor - 5000), seletor)).not.toContain('data-faixa-metricas=""');
+    const todas = faixas(h);
+    expect(todas.length).toBe(3);
+    // 1) a variação do subsistema, a soma das parcelas do gráfico e a soma dos demais (por diferença), logo depois da figura
+    expect(todas[0].match(/data-metrica=""/g)?.length).toBe(3);
+    const se = R.decomposicao_ear.find((d) => d.sm === "SE")!;
+    const t0 = textoDe(todas[0]);
+    expect(t0).toContain("Variação da EAR do subsistema");
+    expect(t0).toContain("−3.188,7");
+    expect(t0).toContain("Soma das 10 parcelas do gráfico");
+    expect(t0).toContain("Soma dos demais 35 reservatórios");
+    expect(t0).toContain("−1.912,3");
+    expect(t0).toContain("Por diferença");
+    // as duas janelas de 30 dias do mesmo subsistema ficam lado a lado, cada uma com o seu dia
+    expect(t0).toContain(notaOutraJanelaCurta(se, entidadesEar(G.armazenamento)));
+    // 2) a conta da água do reservatório padrão: quatro números em hm³, com a ficha do resíduo
+    expect(todas[1].match(/data-metrica=""/g)?.length).toBe(4);
+    const t1 = textoDe(todas[1]);
+    expect(t1).toContain("−1,95");
+    expect(t1).toContain("hm³");
+    expect(t1).toContain("reservatório Serra da Mesa: variação observada menos afluência mais defluência");
+    expect(todas[1].match(/Comprove este número/g)?.length).toBe(1);
+    // 3) a qualidade do balanço, em bloco próprio, com os dois universos ditos (153 de 177 e a lista menor)
+    expect(todas[2].match(/data-metrica=""/g)?.length).toBe(2);
+    const t2 = textoDe(todas[2]);
+    expect(t2).toContain(`${R.n_com_balanco}`);
+    expect(t2).toContain(`de ${R.n_reservatorios} nos dados hidráulicos`);
+    expect(t2).toContain(`${R.n_fecham_por_construcao}`);
+    expect(t2).toContain(`de ${R.n_com_balanco} com balanço`);
+    expect(todas[2].match(/Comprove este número/g)?.length).toBe(1);
+    expect(textoDe(secao(h, "qualidade") ? h.slice(h.indexOf('<section id="qualidade"'), h.indexOf('<section id="serie-diaria"')) : "")).toContain(`A lista desta página é menor, os reservatórios com EAR máxima positiva`);
+    // ordem: veredito da decomposição, figura, faixa, notas, conta da água, qualidade, série diária
+    const ordem = [`data-resposta="p020"`, "Soma dos demais", 'data-notas-painel=""', '<section id="balanco"', '<section id="qualidade"', '<section id="serie-diaria"'].map((x) => h.indexOf(x));
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
-    for (const id of ["balanco", "serie-diaria"]) expect(secao(h, id), id).not.toContain("data-nivel");
+    for (const id of ["balanco", "qualidade", "serie-diaria"]) expect(secao(h, id), id).not.toContain("data-nivel");
     for (const id of ["comparar", "decomposicao"]) expect(secao(h, id), id).toContain('data-nivel="analisar"');
     expect(secao(h, "regras-p020")).toContain('data-nivel="auditar"');
     // a resposta da conta da água vem depois do título da seção e não antes dele (a resposta não sobe para fora da seção)
     expect(h.indexOf('data-resposta="p020-balanco"')).toBeGreaterThan(h.indexOf('<section id="balanco"'));
     // o "O que mudou" traz a variação de cada subsistema na mesma unidade
     expect(textoDe(h)).toContain(textoMudancaDecomposicao(R.decomposicao_ear));
+    // o subtítulo do painel não carrega os termos antes da definição, e os termos da conta da água são ditos num bloco visível
+    const subtitulo = /<h2 id="p020-titulo"[^>]*>[^<]*<\/h2><p[^>]*><span>([^<]*)<\/span>/.exec(h)?.[1] ?? "";
+    expect(subtitulo).not.toMatch(/defluência|turbinado|vertido|transferência/);
+    const termos = textoDe(h.slice(h.indexOf('data-termos="balanco"')));
+    for (const t of ["Afluência:", "Defluência:", "turbinado", "vertido", "Resíduo:", "Transferência:", "Convenção da defluência:"]) expect(termos, t).toContain(t);
+    // o texto da decomposição define a parte própria e a parte a jusante
+    expect(textoDe(h)).toContain("na parte própria, a energia que a água do reservatório produz na própria usina");
+  });
+
+  it("reservatórios: a faixa da decomposição e a conta da água acompanham a escolha, e o estado sem balanço diz o motivo exato", () => {
+    const ents = entidadesEar(G.armazenamento);
+    const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
+    const hNorte = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: norte, armazenamento: ents })));
+    expect(hNorte).toContain("Todas as 5 parcelas estão no gráfico e somam a variação da EAR do subsistema");
+    const sul = R.decomposicao_ear.find((d) => d.sm === "S")!;
+    const hSul = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: sul, armazenamento: ents })));
+    expect(hSul).toContain("Soma das 7 parcelas do gráfico");
+    expect(hSul).toContain("Soma dos demais 9 reservatórios");
+    const evid = G.evidencias.balanco_maior_reservatorio;
+    const periodo = `${R.inicio} a ${R.fim}`;
+    const conta = (id: string, padrao = false) =>
+      renderToStaticMarkup(createElement(MedidasBalanco, { res: R.lista.find((r) => r.id === id)!, periodo, semCadastro: R.sem_cadastro, ehPadrao: padrao, evidenciaResiduo: evid }));
+    // reservatório com balanço que não é o padrão: os números dele, sem a ficha do padrão
+    const outro = R.lista.find((r) => r.balanco_calculado && r.id !== reservatorioPadrao(R.lista))!;
+    expect(textoDe(conta(outro.id))).toContain(`reservatório ${nomeProprio(outro.nome)}: variação observada menos afluência mais defluência`);
+    expect(conta(outro.id)).not.toContain("Comprove este número");
+    expect(conta(reservatorioPadrao(R.lista), true).match(/Comprove este número/g)?.length).toBe(1);
+    // sem balanço: o motivo exato, lido de sem_cadastro, e não as três causas possíveis
+    const sem = R.lista.filter((r) => !r.balanco_calculado);
+    expect(sem.length).toBeGreaterThanOrEqual(5);
+    for (const r of sem) {
+      expect(R.sem_cadastro).toContain(r.id);
+      expect(motivoSemBalanco(r, R.sem_cadastro)).toBe("o reservatório não tem correspondência no cadastro do ONS, que traz o volume útil");
+      const v = vereditoBalancoReservatorio(r, R, R.sem_cadastro);
+      expect(v).toContain("porque o reservatório não tem correspondência no cadastro do ONS");
+      expect(v).not.toContain("falta volume ou vazão na janela, ou volume útil no cadastro");
+      expect(textoDe(conta(r.id))).toContain("O reservatório não tem correspondência no cadastro do ONS");
+    }
+    // sem a lista do cadastro, a causa vem do volume útil ausente
+    const billings = clone(sem[0]);
+    expect(motivoSemBalanco(billings)).toBe("o cadastro do ONS não informa o volume útil");
+    billings.vol_util_total_hm3 = 100;
+    expect(motivoSemBalanco(billings)).toBe("falta volume ou vazão na janela");
+    // a lista da conta da água marca quem não tem balanço e agrupa por subsistema (optgroup), e o reservatório vale em qualquer subsistema
+    const hp = html.p020;
+    expect(hp).toContain('<optgroup label="Sudeste/Centro-Oeste">');
+    expect(hp).toContain('<optgroup label="Norte">');
+    for (const r of sem) expect(hp).toContain(`${nomeProprio(r.nome)} (sem balanço)`);
+    const lista = renderToStaticMarkup(
+      createElement(AguaLista, { rotulo: "Reservatório", valor: "a", onEscolher: () => undefined, opcoes: [{ id: "a", rotulo: "A", grupo: "Sul" }, { id: "b", rotulo: "B", grupo: "Sul" }, { id: "c", rotulo: "C" }], dica: "Troca a conta." }),
+    );
+    expect(lista).toContain('<optgroup label="Sul"><option value="a"');
+    expect(lista).toContain("aria-describedby");
+    expect(lista).toContain("Troca a conta.");
+  });
+
+  it("reservatórios: o volume fora de 0 a 100% do volume útil é marcado na tabela, no veredito e na nota, com o nome legível", () => {
+    const fora = R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null);
+    expect(fora.length).toBe(6);
+    expect(volumeForaDaFaixa(100)).toBeNull();
+    expect(volumeForaDaFaixa(0)).toBeNull();
+    expect(volumeForaDaFaixa(100.01)).toBe("acima");
+    expect(volumeForaDaFaixa(-0.5)).toBe("abaixo");
+    expect(volumeForaDaFaixa(null)).toBeNull();
+    const linhas = linhasReservatorios(R.lista, R.sem_cadastro);
+    for (const r of fora) {
+      const l = linhas.find((x) => x.id === r.id)!;
+      expect(String(l.rotulo), r.id).toContain("(volume acima de 100%)");
+      expect(String(l.motivo), r.id).toContain("Valor da fonte, acima do volume máximo normal do reservatório");
+    }
+    // quem está dentro da faixa não leva a marca
+    const dentro = linhas.find((x) => x.id === R.lista.find((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null && r.balanco_calculado)!.id)!;
+    expect(String(dentro.rotulo)).not.toContain("volume acima");
+    expect(dentro.motivo).toBeNull();
+    // a nota da tabela cita quantos terminam fora e os maiores desvios
+    const nota = textoVolumeForaDaFaixa(R.lista);
+    expect(nota).toContain("6 reservatórios terminam a janela fora de 0 a 100% do volume útil");
+    expect(nota).toContain("Garibaldi 165,13%");
+    expect(textoVolumeForaDaFaixa(R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null))).toBe("");
+    // a resposta do reservatório fora da faixa diz que o valor é da fonte; o veredito de abertura não muda
+    const janela = { inicio: R.inicio, fim: R.fim, periodo_fecham_por_construcao: R.periodo_fecham_por_construcao };
+    const gari = R.lista.find((r) => r.nome === "GARIBALDI")!;
+    expect(respostaBalanco(gari, janela)).toContain("terminou em 165,13% do volume útil (valor da fonte, acima do volume máximo normal do reservatório)");
+    expect(vereditoBalancoReservatorio(gari, janela)).not.toContain("165,13");
+    // a página mostra a nota e os nomes legíveis (sem "Sao Roque")
+    const h = textoDe(html.p020);
+    expect(h).toContain(nota);
+    expect(h).toContain("São Roque");
+    expect(h).not.toMatch(/Sao Roque|Tucurui\b/);
+  });
+
+  it("reservatórios: a conta da água separa totais, partes da defluência e resíduo, cada grupo na sua régua; vazões que coincidem são ditas", () => {
+    const r = R.lista.find((x) => x.id === reservatorioPadrao(R.lista))!;
+    const grupos = [...barrasBalancoTotais(r), ...barrasBalancoDefluencia(r), ...barrasBalancoResiduo(r)];
+    // os três grupos juntos são os componentes de sempre, sem repetir nem perder nenhum
+    expect(grupos.map((b) => b.id).sort()).toEqual(barrasBalanco(r).map((b) => b.id).sort());
+    expect(new Set(grupos.map((b) => b.id)).size).toBe(grupos.length);
+    expect(barrasBalancoResiduo(r).map((b) => b.id)).toEqual(["res", "transf"]);
+    expect(barrasBalancoTotais(r).find((b) => b.id === "nat")!.rotulo).toBe("Vazão natural (fora do balanço)");
+    // rótulo curto o bastante para caber ao lado da barra
+    for (const b of grupos) expect(b.rotulo.length, b.rotulo).toBeLessThanOrEqual(34);
+    const h = html.p020;
+    expect(h).toContain(`Balanço hídrico de Serra da Mesa, ${R.inicio.split("-").reverse().join("/")} a ${R.fim.split("-").reverse().join("/")}`);
+    expect(h).toContain("Como a defluência de Serra da Mesa se divide");
+    expect(h).toContain("Resíduo e transferência de Serra da Mesa");
+    expect(h).toContain("régua própria, porque são pequenos");
+    // defluente e turbinada coincidem quando nada é vertido: a nota diz isso; sem coincidência, não diz nada
+    const serie = serieReservatorio(S45.reservatorios.find((x) => x.id === r.id));
+    const igual = serie.map((p) => ({ ...p, defl: 100, turb: 100, vert: 0 }));
+    expect(notaVazoesCoincidem(igual)).toContain("a defluência é igual à vazão que passa pelas turbinas, porque nada foi vertido");
+    const dif = igual.map((p, i) => ({ ...p, defl: 100 + i }));
+    expect(notaVazoesCoincidem(dif)).toBe("");
+    expect(notaVazoesCoincidem([])).toBe("");
+  });
+
+  it("reservatórios: o arquivo e a lista dizem o que falta (variações individuais dos demais reservatórios) e as janelas de 30 dias do mesmo subsistema nas duas páginas", () => {
+    const ents = entidadesEar(G.armazenamento);
+    const se = ents.find((e) => e.id === "SE")!;
+    const dec = R.decomposicao_ear.find((d) => d.sm === "SE")!;
+    // da página de armazenamento para a de reservatórios: a mesma explicação, escrita para quem lê a outra página
+    const frase = textoOutraJanelaNaArmazenamento(se, R.decomposicao_ear);
+    expect(frase).toContain("A página de reservatórios mostra −3.188,7 MWmês do Sudeste/Centro-Oeste de 29/08/2026 a 28/09/2026");
+    expect(frase).toContain("Aqui a janela é de 30 dias até 29/09/2026, e a variação é −3.297,8 MWmês");
+    const mesmo = { ...se, dia: dec.fim };
+    expect(textoOutraJanelaNaArmazenamento(mesmo, R.decomposicao_ear)).toBe("");
+    expect(notaOutraJanelaCurta(dec, ents)).toContain("Na página de armazenamento, −3.297,8 MWmês em 30 dias até 29/09/2026");
+    expect(notaOutraJanelaCurta(dec, ents.map((e) => (e.id === "SE" ? { ...e, dia: dec.fim } : e)))).toBe("");
+    // a página diz que as variações dos demais reservatórios não estão publicadas
+    expect(textoDe(html.p020)).toContain("As variações de cada um dos demais não estão publicadas");
   });
 
   it("o recorte é legenda da figura (depois dela), e o texto novo não usa 'hoje' nem 'agora' como data", () => {

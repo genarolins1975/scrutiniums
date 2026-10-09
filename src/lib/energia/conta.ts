@@ -348,7 +348,30 @@ export type LinhaComposicao = {
   posicao: number | null;
   total: number | null;
   cde: number | null;
+  /**
+   * Diferença entre o total publicado (a tarifa, ou 100 em %) e a soma das partes, cada uma arredondada em separado (±0,01 a 0,02
+   * R$/MWh, ±0,01 ponto percentual): o gráfico a desenha como a última parte da pilha, para que a pilha termine no total publicado,
+   * o mesmo da tabela e do arquivo, em vez de num total refeito por soma de partes arredondadas. null quando falta alguma parte.
+   */
+  ajuste: number | null;
 } & Record<GrupoComponenteId, number | null>;
+
+/** Série do ajuste de arredondamento no gráfico de composição: cinza neutro, sem o significado de nenhum grupo. */
+export const ID_AJUSTE = "ajuste";
+export const ROTULO_AJUSTE = "Arredondamento das partes";
+export const COR_AJUSTE = "var(--serie-5)";
+
+/** Ajuste de uma linha: o alvo (tarifa em R$/MWh ou 100 em %) menos a soma das partes; zero quando a diferença não aparece nas duas casas. */
+export function ajusteDeArredondamento(partes: readonly (number | null)[], alvo: number | null): number | null {
+  if (alvo === null || partes.some((p) => p === null)) return null;
+  const a = arredondar(alvo - (partes as number[]).reduce((x, y) => x + y, 0), 2);
+  return Math.abs(a) < 0.005 ? 0 : a;
+}
+
+/** Maior diferença, em módulo, entre as linhas (para a nota de arredondamento); 0 quando nenhuma linha tem diferença. */
+export function maiorAjuste(linhas: readonly Pick<LinhaComposicao, "ajuste">[]): number {
+  return linhas.reduce((m, l) => (l.ajuste === null ? m : Math.max(m, Math.abs(l.ajuste))), 0);
+}
 
 /**
  * Uma linha por distribuidora com composição, na unidade pedida: R$/MWh (os grupos
@@ -372,6 +395,7 @@ export function linhasComposicao(
       cde: unidade === "rs" ? d.cde : d.cde_pct,
     } as LinhaComposicao;
     for (const g of ORDEM_GRUPOS) l[g] = fonte[g];
+    l.ajuste = ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => fonte[g]), unidade === "rs" ? d.total : 100);
     return l;
   });
   const chave = (l: LinhaComposicao): number | null => (ordem === "posicao" ? l.posicao : l[ordem]);
@@ -424,6 +448,7 @@ export function linhasComposicaoGrafico(
       cde: unidade === "rs" ? m.cde_rs_mwh : m.cde_pct,
     } as LinhaComposicao;
     for (const g of ORDEM_GRUPOS) l[g] = unidade === "rs" ? m.grupos_rs_mwh[g] : m.grupos_pct[g];
+    l.ajuste = ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => l[g]), unidade === "rs" ? m.total_rs_mwh : 100);
     out.push(l);
   }
   for (const id of ids) {
@@ -437,7 +462,8 @@ export function linhasComposicaoGrafico(
 export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: boolean): ColunaTabela[] {
   const tipo: ColunaTabela["tipo"] = emPct ? "percentual" : "numero";
   const unidade = emPct ? undefined : "R$/MWh";
-  const casas = emPct ? 1 : 2;
+  // as partes são publicadas com duas casas nas duas unidades: mostrar menos casas arredondaria de novo o que já foi arredondado
+  const casas = 2;
   return [
     { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
     { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
@@ -1426,6 +1452,8 @@ export type ResumoDoRanking = {
   /** Mediana simples do custo do perfil e da tarifa TE + TUSD entre as linhas. */
   mediana: number | null;
   medianaTarifa: number | null;
+  /** Mediana dos consumidores (UCs) das distribuidoras com UCs conhecidas; null sem nenhuma. */
+  ucsMediana: number | null;
 };
 
 /** Menor, maior e mediana do custo do perfil entre as linhas dadas (o ranking inteiro ou um grupo de pares). */
@@ -1433,12 +1461,14 @@ export function resumoDoRanking(linhas: readonly LinhaRanking[]): ResumoDoRankin
   const ord = [...linhas].filter((l) => l.custo !== null).sort((a, b) => (a.custo as number) - (b.custo as number) || a.posicao - b.posicao);
   const m = mediana(ord.map((l) => l.custo as number));
   const mt = mediana(linhas.map((l) => l.total));
+  const mu = mediana(linhas.map((l) => l.ucs).filter((x): x is number => x !== null));
   return {
     n: linhas.length,
     menor: ord[0] ?? null,
     maior: ord[ord.length - 1] ?? null,
     mediana: m === null ? null : arredondar(m, 2),
     medianaTarifa: mt === null ? null : arredondar(mt, 2),
+    ucsMediana: mu === null ? null : Math.round(mu),
   };
 }
 
@@ -1451,10 +1481,30 @@ export function rotuloGrupo(grupo: GrupoRanking, uf: string): string {
 export function textoResumoDoRanking(r: ResumoDoRanking, perfil: Perfil, grupo: GrupoRanking, uf: string): string {
   const nome = rotuloGrupo(grupo, uf);
   if (!r.n || !r.menor || !r.maior || r.mediana === null) return `Nenhuma das ${nome} tem tarifa B1 residencial vigente na data.`;
+  const ucs = r.ucsMediana === null ? "" : ` A mediana é de ${num(r.ucsMediana, 0)} consumidores (UCs) por distribuidora.`;
   return (
     `Entre as ${r.n} ${nome}, ${perfil} kWh no mês custam de ${reais(r.menor.custo)} (${r.menor.sigla}) a ${reais(r.maior.custo)} (${r.maior.sigla}); ` +
-    `a mediana simples do grupo é ${reais(r.mediana)}.`
+    `a mediana simples do grupo é ${reais(r.mediana)}.${ucs}`
   );
+}
+
+/**
+ * O que a busca por município achou: a(s) distribuidora(s) que a relação oficial liga ao município, onde cada uma está no ranking e o
+ * custo do perfil, e as que não têm tarifa B1 vigente na data. Município com mais de uma distribuidora diz que a da casa está na fatura.
+ */
+export function textoMunicipioEncontrado(m: MunicipioEncontrado, linhas: readonly LinhaRanking[], perfil: Perfil, dataReferencia: string): string {
+  const validos = m.vinculos.filter((v) => v.estado !== 0);
+  const usados = validos.length ? validos : m.vinculos;
+  const porId = new Map(linhas.map((l) => [l.id, l]));
+  const partes = usados.map((v) => {
+    const l = porId.get(v.cnpj);
+    const sem = v.estado === 0 ? ", vínculo sem confirmação na relação da ANEEL" : "";
+    return l ? `${l.sigla} (posição ${l.posicao} de ${linhas.length}; ${reais(l.custo)} para ${perfil} kWh${sem})` : `${v.sigla || `CNPJ ${v.cnpj}`} (sem tarifa B1 vigente em ${dataBR(dataReferencia)}, fora do ranking${sem})`;
+  });
+  if (!partes.length) return `${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`;
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
+  const varias = usados.length > 1 ? " O município tem mais de uma distribuidora; a da sua casa está no alto da fatura." : "";
+  return `${m.nome} (${m.uf}): atendido por ${lista}.${varias}`;
 }
 
 /* ---------- busca por município ---------- */
@@ -1564,6 +1614,25 @@ export function buscarMunicipios(indice: IndiceMunicipios, preparado: readonly s
   });
 }
 
+/**
+ * O que a busca por município achou na comparação com o IPCA: a variação da tarifa B1 de cada distribuidora do município na janela
+ * escolhida, ou a razão de ela não ter variação na janela. Mesma regra de vínculo do ranking (o sem confirmação só entra sem outro).
+ */
+export function textoMunicipioReajuste(m: MunicipioEncontrado, linhas: readonly LinhaJanela[], janela: Pick<JanelaInflacao, "meses" | "ipca_pct">): string {
+  const validos = m.vinculos.filter((v) => v.estado !== 0);
+  const usados = validos.length ? validos : m.vinculos;
+  const porId = new Map(linhas.map((l) => [l.id, l]));
+  const partes = usados.map((v) => {
+    const l = porId.get(v.cnpj);
+    return l && l.variacao !== null
+      ? `${l.sigla} (tarifa B1 ${verboVariacao(l.variacao)} em ${janela.meses} meses, contra IPCA de ${pct(janela.ipca_pct, 2)})`
+      : `${v.sigla || `CNPJ ${v.cnpj}`} (sem variação nesta janela: sem tarifa B1 nas duas datas ou com a área alterada por incorporação)`;
+  });
+  if (!partes.length) return `${m.nome} (${m.uf}): a relação da ANEEL não liga o município a uma distribuidora.`;
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join("; ")} e ${partes[partes.length - 1]}` : partes[0];
+  return `${m.nome} (${m.uf}): atendido por ${lista}.${usados.length > 1 ? " O município tem mais de uma distribuidora; a da sua casa está no alto da fatura." : ""}`;
+}
+
 /* ---------- valores nominais e em reais constantes (subsídios e orçamento da CDE) ---------- */
 
 export type FatorReal = { fator: number; meses: number };
@@ -1628,6 +1697,20 @@ export function receitasQueZeraram(f: FinanciamentoCde): ReceitaQueZerou[] {
       const antes = r.valores[i - 1];
       return atual === 0 && typeof antes === "number" && antes > 0 ? [{ fonte: r.fonte, anterior: antes, ano: f.ultimo_ano, anoAnterior: f.anos[i - 1] }] : [];
     });
+}
+
+/**
+ * Nota curta do destaque das quotas (ao lado do número): que o valor é orçamento, os dois anos anteriores e a quota como residual.
+ * null sem orçamento ou sem a participação do último ano.
+ */
+export function notaQuotas(f: FinanciamentoCde | null, anosAntes = 2): string | null {
+  if (!f) return null;
+  const serie = serieQuotas(f);
+  const i = serie.findIndex((p) => p.ano === f.ultimo_ano);
+  if (i < 0 || serie[i].pct === null) return null;
+  const anteriores = serie.slice(Math.max(0, i - anosAntes), i).filter((p) => p.pct !== null);
+  const historico = anteriores.length ? ` Antes: ${anteriores.map((p) => `${pct(p.pct, 1)} em ${p.ano}`).join(" e ")}.` : "";
+  return `Orçamento aprovado ou previsto pela ANEEL, não execução.${historico} A quota é o residual do orçamento: cobre o que as demais receitas não cobrem.`;
 }
 
 /**

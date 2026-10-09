@@ -56,7 +56,7 @@ function Amostra({ tipo }: { tipo: TipoLigacao }) {
 }
 
 /** Um passo: à esquerda o que ele ensina (título, verbetes, texto); à direita o número publicado que o ilustra, com a ficha e o link ao painel. */
-function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: PassoTrilha; ordem: number; total: number }) {
+function Passo({ trilhaId, passo, ordem, total, defineTipo }: { trilhaId: string; passo: PassoTrilha; ordem: number; total: number; defineTipo: boolean }) {
   const prova = provaDoPasso(passo.prova);
   const nota = passo.nota?.(prova) ?? null;
   // sem número publicado, o passo ainda leva ao painel de origem
@@ -79,7 +79,7 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
                 return c ? (
                   <li key={s}>
                     <Link href={`${ROTA_APRENDA}/${s}`} className="inline-flex min-h-[44px] items-center gap-2 border border-linha px-3 text-carvao hover:border-energia">
-                      <span className="rotulo">{c.sigla ?? c.nome}</span>
+                      <span className={c.sigla ? "rotulo" : "text-sm"}>{c.sigla ?? c.nome}</span>
                       {c.sigla && c.sigla.toLowerCase() !== c.nome.toLowerCase() && <span className="text-sm text-carvao-muted">{c.nome}</span>}
                     </Link>
                   </li>
@@ -102,10 +102,21 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
       {passo.ligacao && (
         <div className="flex gap-4 py-1 pl-6" data-ligacao={passo.ligacao.tipo}>
           <Traco tipo={passo.ligacao.tipo} />
-          <p className="self-center py-2 text-sm leading-relaxed text-carvao-muted">
-            <span className="rotulo mr-2 text-carvao">{TIPOS_LIGACAO[passo.ligacao.tipo].rotulo}</span>
-            {passo.ligacao.texto}
-          </p>
+          <div className="self-center py-2 text-sm leading-relaxed text-carvao-muted">
+            <p>
+              <span className="rotulo mr-2 text-carvao">{TIPOS_LIGACAO[passo.ligacao.tipo].rotulo}</span>
+              {passo.ligacao.texto}
+            </p>
+            {/* o tipo de ligação é definido onde aparece pela primeira vez, ao lado do traço que o representa */}
+            {defineTipo && (
+              <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs" data-tipo-ligacao={passo.ligacao.tipo}>
+                <Amostra tipo={passo.ligacao.tipo} />
+                <span>
+                  <strong className="font-medium text-carvao">{TIPOS_LIGACAO[passo.ligacao.tipo].rotulo}</strong>: {TIPOS_LIGACAO[passo.ligacao.tipo].definicao}
+                </span>
+              </p>
+            )}
+          </div>
         </div>
       )}
     </li>
@@ -115,7 +126,15 @@ function Passo({ trilhaId, passo, ordem, total }: { trilhaId: string; passo: Pas
 export default function TrilhaPage({ params }: { params: { trilha: string } }) {
   const t = acharTrilha(params.trilha);
   if (!t) notFound();
-  const tipos = Array.from(new Set(t.passos.flatMap((p) => (p.ligacao ? [p.ligacao.tipo] : []))));
+  // o passo cuja ligação é a primeira de um tipo define o tipo; as seguintes só o nomeiam
+  const vistos = new Set<TipoLigacao>();
+  const definem = new Set<string>();
+  for (const p of t.passos) {
+    if (p.ligacao && !vistos.has(p.ligacao.tipo)) {
+      vistos.add(p.ligacao.tipo);
+      definem.add(p.id);
+    }
+  }
   const outra = TRILHAS_APRENDA.find((x) => x.id !== t.id);
   const verbetes = new Set(t.passos.flatMap((p) => p.conceitos)).size;
   // o exemplo sintético fica logo depois do passo que ele explica; os passos seguintes continuam a numeração
@@ -135,9 +154,8 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           contexto={
             <>
               <span>
-                {plural(t.passos.length, "passo", "passos")} · {plural(verbetes, "verbete", "verbetes")}
+                {plural(t.passos.length, "passo", "passos")} · {plural(verbetes, "verbete", "verbetes")} · órgão, conjunto e data de cada número na ficha do passo
               </span>
-              <span>Fonte: órgão, conjunto e data de cada número, na ficha do passo</span>
             </>
           }
           siglas={params.trilha === "agua-operacao-preco" ? ["ENA", "EAR", "MWmed", "CMO", "PLD"] : ["CDE", "TUSD", "TE", "SIN", "BPC"]}
@@ -146,12 +164,17 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
           {t.resumo}
         </p>
 
-        <nav aria-label="Passos da trilha" className="mt-6 border-y border-linha py-3" data-percurso="">
-          <ol className="grid grid-cols-2 gap-x-4 text-sm sm:flex sm:flex-wrap sm:items-center sm:gap-x-2">
+        <nav aria-label="Passos da trilha" className="mt-6 border-y border-linha py-1" data-percurso="">
+          <ol className="flex flex-wrap items-center gap-x-1 text-sm sm:gap-x-2">
             {t.passos.map((p, i) => (
-              <li key={p.id} className="flex items-center gap-2">
-                <a href={`#passo-${p.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                  {i + 1}. {p.titulo}
+              <li key={p.id} className="flex items-center gap-1 sm:gap-2">
+                {/* no celular o passo é só o número (o título está logo abaixo); o nome acessível traz sempre "n. título" */}
+                <a
+                  href={`#passo-${p.id}`}
+                  className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 max-sm:min-w-[44px] max-sm:justify-center max-sm:border max-sm:border-linha max-sm:no-underline"
+                >
+                  <span>{i + 1}</span>
+                  <span className="max-sm:sr-only">. {p.titulo}</span>
                 </a>
                 {i < t.passos.length - 1 && (
                   <span aria-hidden="true" className="hidden text-mineral sm:inline">
@@ -161,21 +184,11 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
               </li>
             ))}
           </ol>
-          <div role="group" className="mt-2 flex flex-col gap-x-6 gap-y-2 text-xs text-carvao-muted sm:flex-row sm:flex-wrap" aria-label="Tipos de ligação nesta trilha">
-            {tipos.map((x) => (
-              <span key={x} className="inline-flex items-center gap-2">
-                <Amostra tipo={x} />
-                <span>
-                  <strong className="font-medium text-carvao">{TIPOS_LIGACAO[x].rotulo}</strong>: {TIPOS_LIGACAO[x].definicao}
-                </span>
-              </span>
-            ))}
-          </div>
         </nav>
 
         <ol className="mt-4" aria-label={`Passos 1 a ${idxSimulacao + 1}: ${t.titulo}`}>
           {antes.map((p, i) => (
-            <Passo key={p.id} trilhaId={t.id} passo={p} ordem={i + 1} total={t.passos.length} />
+            <Passo key={p.id} trilhaId={t.id} passo={p} ordem={i + 1} total={t.passos.length} defineTipo={definem.has(p.id)} />
           ))}
         </ol>
 
@@ -189,7 +202,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
         {depois.length > 0 && (
           <ol start={idxSimulacao + 2} aria-label={`Passos ${idxSimulacao + 2} a ${t.passos.length}: ${t.titulo}`}>
             {depois.map((p, i) => (
-              <Passo key={p.id} trilhaId={t.id} passo={p} ordem={idxSimulacao + 2 + i} total={t.passos.length} />
+              <Passo key={p.id} trilhaId={t.id} passo={p} ordem={idxSimulacao + 2 + i} total={t.passos.length} defineTipo={definem.has(p.id)} />
             ))}
           </ol>
         )}

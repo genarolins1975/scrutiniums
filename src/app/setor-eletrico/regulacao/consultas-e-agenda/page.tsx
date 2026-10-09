@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
@@ -25,19 +24,16 @@ import {
   anoInicioHistorico,
   avisoRevisaoAgenda,
   contagemAgendaPorPainel,
-  contagemConsultasNaData,
   downloadsDoPainel,
   linhasAgenda,
   linhasHistoricoSituacao,
   nomeAgenda,
-  notaContagemAgenda,
   paresCobertura,
   perguntaPainel,
   proximoPainel,
   respostaAgenda,
   rotaPainel,
   rotuloDownload,
-  textoAnosAgenda,
   textoCoberturaFaixa,
   textoJanela,
   vereditoAgenda,
@@ -73,14 +69,11 @@ export default function ConsultasEAgendaPage() {
   // sem a janela na gold, o período diz que ela não foi informada: nenhum número de reserva
   const inicioJanela = typeof C.janela_dias === "number" ? somarDias(C.data_referencia, -C.janela_dias) : null;
   const agenda = nomeAgenda(A);
-  const anosAgenda = textoAnosAgenda(A);
   const anoHistorico = anoInicioHistorico(g);
   const totalHistorico = typeof C.total_historico === "number" ? num(C.total_historico, 0) : null;
   const semResultadoFormal = (C.decisoes_sem_resultado_formal ?? []).length;
   const testes = g.evidencias.consultas_abertas?.testes ?? [];
   const anosSoAudiencia = C.cobertura.filter((x) => !x.parcial && x.nas_atas === 0 && x.total_anual_aneel > 0 && x.audiencias_nas_atas > 0).map((x) => x.ano);
-  // a faixa de métricas vale para a data de referência da publicação; o veredito e o gráfico, para a data de leitura
-  const naReferencia = contagemConsultasNaData(C, C.data_referencia);
   const csvHistorico = downloadsDoPainel(g, "p046").find((d) => /consultas/.test(d.url));
   const avisoRevisao = avisoRevisaoAgenda(A);
   const limitesEmRevisao = g.limites_em_revisao;
@@ -119,9 +112,9 @@ export default function ConsultasEAgendaPage() {
           siglas={["MMGD", "PLD", "REN", "ANEEL", "DOU"]}
           rotulo="Regulação"
           titulo={perguntaPainel("p046")}
-          lead="As consultas e audiências públicas da Agência Nacional de Energia Elétrica (ANEEL) que recebem contribuições ou esperam resultado, e as atividades que a agência prevê decidir. A situação de cada consulta é recalculada no dia em que a página é lida."
-          recorte={`Data de referência ${dataRef} · ${C.itens.length} consultas e audiências ${textoJanela(C.janela_dias)} · ${agenda}`}
-          fonte="ANEEL, Agência Nacional de Energia Elétrica, atas das reuniões públicas da Diretoria e Agenda Regulatória"
+          lead="As consultas e audiências públicas da Agência Nacional de Energia Elétrica (ANEEL) que recebem contribuições ou esperam resultado, e as atividades que a agência prevê decidir."
+          recorte={`Referência ${dataRef} · ${C.itens.length} consultas e audiências ${textoJanela(C.janela_dias)}`}
+          fonte="ANEEL, atas da Diretoria e Agenda Regulatória"
           referencia={
             <>
               ANEEL, atas da Diretoria (arquivo gerado em {dataBR(C.atas_geradas_em ?? null)}) e {agenda}; data de referência {dataRef}; processado em {carimbo(g.gerado_em)}.
@@ -143,83 +136,6 @@ export default function ConsultasEAgendaPage() {
                 },
               ]}
             />
-          }
-          metricas={
-            <FaixaMetricas
-              colunas={3}
-              rotulo={`Consultas e agenda da ANEEL em ${dataRef}`}
-              nota={
-                <>
-                  Contagem em {dataRef}, a data de referência da publicação: os filtros do gráfico e a data de leitura não a mudam. A situação de cada consulta no dia da leitura está
-                  na resposta abaixo.
-                </>
-              }
-            >
-              {g.evidencias.consultas_abertas ? (
-                <Numero
-                  variante="faixa"
-                  rotulo="Recebendo contribuições"
-                  natureza="CALCULADO"
-                  evidencia={g.evidencias.consultas_abertas}
-                  formato="num"
-                  casas={0}
-                  unidade="consultas e audiências"
-                  periodo={`em ${dataRef}`}
-                  cor="var(--cor-energia)"
-                  endereco={`${rotaPainel("p046")}#p046`}
-                />
-              ) : (
-                <Numero
-                  variante="faixa"
-                  rotulo="Recebendo contribuições"
-                  natureza="CALCULADO"
-                  valor={null}
-                  motivoAusencia="As atas da Diretoria não foram integradas nesta publicação, por isso a contagem fica sem valor."
-                />
-              )}
-              {g.evidencias.consultas_abertas ? (
-                <Numero
-                  variante="faixa"
-                  rotulo="Encerradas, sem resultado nas atas"
-                  natureza="CALCULADO"
-                  valor={naReferencia.encerrada_aguardando}
-                  formato="num"
-                  casas={0}
-                  unidade="consultas e audiências"
-                  periodo={`em ${dataRef}`}
-                  nota={`O prazo terminou e nenhuma decisão aparece nas atas até a reunião de ${dataBR(C.atas_deliberadas_ate ?? null)}; ela pode ter saído depois.`}
-                />
-              ) : (
-                <Numero
-                  variante="faixa"
-                  rotulo="Encerradas, sem resultado nas atas"
-                  natureza="CALCULADO"
-                  valor={null}
-                  motivoAusencia="As atas da Diretoria não foram integradas nesta publicação, por isso a contagem fica sem valor."
-                />
-              )}
-              {A.disponivel ? (
-                <Numero
-                  variante="faixa"
-                  rotulo="Atividades previstas na Agenda Regulatória"
-                  natureza="OBSERVADO"
-                  valor={A.itens.length}
-                  formato="num"
-                  casas={0}
-                  unidade="atividades"
-                  periodo={anosAgenda ? `biênio ${anosAgenda}` : undefined}
-                  nota={notaContagemAgenda(A)}
-                />
-              ) : (
-                <Numero
-                  variante="faixa"
-                  rotulo="Atividades previstas na Agenda Regulatória"
-                  natureza="OBSERVADO"
-                  valor={null}
-                  motivoAusencia={`A Agenda Regulatória não está disponível nesta publicação: ${A.motivo ?? "motivo não informado"}.`}
-                />
-              )}
-            </FaixaMetricas>
           }
         >
           O período de cada consulta é lido na decisão que a ata da reunião pública da Diretoria registra, e a situação (recebendo contribuições, a abrir, encerrada sem
@@ -252,8 +168,33 @@ export default function ConsultasEAgendaPage() {
                   dataServidor={dataServidor}
                   fonte={fonte}
                   versao={C.data_referencia}
-                  depoisDaResposta={
-                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-onde-contribuir="">
+                  cartao={
+                    g.evidencias.consultas_abertas ? (
+                      <Numero
+                        variante="faixa"
+                        rotulo="Recebendo contribuições"
+                        natureza="CALCULADO"
+                        evidencia={g.evidencias.consultas_abertas}
+                        formato="num"
+                        casas={0}
+                        unidade="consultas e audiências"
+                        periodo={`em ${dataRef}`}
+                        cor="var(--cor-energia)"
+                        endereco={`${rotaPainel("p046")}#p046`}
+                        nota={`Contagem em ${dataRef}, a data de referência da publicação.`}
+                      />
+                    ) : (
+                      <Numero
+                        variante="faixa"
+                        rotulo="Recebendo contribuições"
+                        natureza="CALCULADO"
+                        valor={null}
+                        motivoAusencia="As atas da Diretoria não foram integradas nesta publicação, por isso a contagem fica sem valor."
+                      />
+                    )
+                  }
+                  ondeContribuir={
+                    <p data-onde-contribuir="">
                       <span className="font-medium text-carvao">Onde contribuir.</span> As atas não trazem o endereço de cada consulta. A ANEEL recebe contribuições pelas
                       páginas oficiais de <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.consultas}>consultas públicas</RegulacaoLinkExterno> e de{" "}
                       <RegulacaoLinkExterno href={PAGINAS_PARTICIPACAO.audiencias}>audiências públicas</RegulacaoLinkExterno>; procure pelo número da consulta.

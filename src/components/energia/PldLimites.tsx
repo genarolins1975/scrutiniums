@@ -27,6 +27,7 @@ import {
   NOME_SM,
   SUBMERCADOS,
   calendarioLimite,
+  diasNoLimite,
   emPct,
   linhasCalendario,
   linhasEmpates,
@@ -35,6 +36,7 @@ import {
   regimesDoAno,
   respostaP010,
   rotaPainel,
+  textoDiasNoLimite,
   vereditoP010,
   type JanelaCalendario,
   type LimiteHora,
@@ -120,6 +122,8 @@ export function PldLimites({
     }));
   }, [bloco, anos, escolhidos]);
   const dias = bloco.calendario.dias.slice(-nDias);
+  // os dias com hora no limite, ditos por data quando são poucos, em todo o calendário publicado (a grade de uma janela sem eventos é uniforme)
+  const textoDias = textoDiasNoLimite(diasNoLimite(bloco.calendario, sm, lim), lim, bloco.calendario.dias.length);
   const endereco = `${rotaPainel("p010")}#p010`;
   const ficha = fichas[`piso_${ano}_${sm}`] ?? null;
   const periodoAno = p?.parcial ? `${ano} até ${dataBR(diaReferencia)}` : String(ano);
@@ -276,7 +280,13 @@ export function PldLimites({
 
       {notas}
 
-      <SecaoDoPainel id="calendario" titulo="Em quais dias o preço ficou no limite?" lead="Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido.">
+      <SecaoDoPainel
+        id="calendario"
+        titulo="Em quais dos últimos dias o preço ficou no limite?"
+        lead={`Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário mostra sempre os dias mais recentes da publicação (${
+          bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} a ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "sem dias"
+        }), qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`}
+      >
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <PldEscolha
             legenda="Calendário"
@@ -294,6 +304,11 @@ export function PldLimites({
             onEscolher={(x) => definir({ cal: x })}
           />
         </div>
+        {textoDias && (
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="dias-no-limite">
+            {textoDias}
+          </p>
+        )}
         <MapaCalor
           titulo={`${ROTULO_LIMITE[lim]} por dia, ${NOME_SM[sm]}, últimos ${plural(dias.length, "dia", "dias")}`}
           linhas={cal.linhas}

@@ -90,8 +90,8 @@ export default function AcessoPage() {
   const oQueMudou = mudancaAcesso(a);
   const comoInterpretar = (
     <>
-      Três dimensões, três fontes: a Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua estima domicílios sem energia de nenhuma fonte e o fornecimento em tempo integral entre os
-      ligados à rede geral; o Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI), da EPE, lista as localidades atendidas por sistemas isolados; o Luz para Todos conta domicílios
+      Três dimensões, três fontes: a PNAD Contínua estima domicílios sem energia de nenhuma fonte e o fornecimento em tempo integral entre os
+      ligados à rede geral; o PASI, da EPE, lista as localidades atendidas por sistemas isolados; o Luz para Todos conta domicílios
       ligados por ano do atendimento. Elas não se somam. O percentual em tempo integral é sobre os ligados à rede, não sobre todos os domicílios.
     </>
   );
@@ -109,15 +109,15 @@ export default function AcessoPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <InclusaoNavegacao atual="p062" />
         <CabecalhoModulo
-          siglas={["CDE", "CCC", "SIN", "EPE", "MME", "IBGE"]}
+          siglas={["IBGE", "EPE", "MME", "UC", "UF", "CDE", "CCC", "ANEEL"]}
           rotulo="Inclusão energética"
           titulo="Acesso à energia e sistemas isolados"
-          lead="Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação à rede e quem vive fora do Sistema Interligado Nacional (SIN). Cada fonte conta uma unidade diferente."
-          recorte={`PNAD ${primeiroAno} a ${a.ano_referencia} · PASI ciclo ${si?.ciclo ?? "sem dado"} · Luz para Todos até ${mes(lpt?.ultimo_mes)} · domicílios, pessoas e ligações`}
-          fonte="IBGE, PNAD Contínua; EPE, PASI; MME, Luz para Todos"
+          lead="Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação à rede e quem vive fora do Sistema Interligado Nacional (SIN). Cada fonte conta uma unidade diferente: domicílios, pessoas ou ligações."
+          recorte={`Domicílios ${primeiroAno} a ${a.ano_referencia} · pessoas, ciclo ${si?.ciclo ?? "sem dado"} · ligações até ${mes(lpt?.ultimo_mes)}`}
+          fonte="IBGE, Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua; EPE, Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI); MME, Luz para Todos"
           referencia={
             <>
-              IBGE, Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua) anual até {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"} (EPE); Luz para Todos até{" "}
+              IBGE, PNAD Contínua anual até {a.ano_referencia}; PASI, ciclo {si?.ciclo ?? "sem dado"} (EPE); Luz para Todos até{" "}
               {mes(lpt?.ultimo_mes)} (MME); custeio da CDE até {custeio?.linhas.at(-1)?.ano ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -135,7 +135,7 @@ export default function AcessoPage() {
                 motivoAusencia="Sem estimativa nesta publicação."
                 nota={
                   brPnad
-                    ? `Domicílio: a moradia, com ou sem ligação à rede. ${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (CV ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE, no CSV da PNAD).`
+                    ? `Domicílio: a moradia, com ou sem ligação à rede. ${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (coeficiente de variação de ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE).`
                     : undefined
                 }
                 endereco={`${rotaPainel("p062")}#p062`}

@@ -189,18 +189,17 @@ function TiposDeLigacao() {
 }
 
 /**
- * Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. O painel do desenho mostra tudo do elo
- * escolhido, com as ligações que saem e as que chegam. Na versão em texto (`compacto`, o mapa do celular) cada ligação aparece uma vez, no elo
- * de onde ela parte; a frase do elo fica à vista, "onde explorar" e os conceitos seguem numa linha cada, e a explicação longa vem num bloco
- * recolhível do próprio elo (o mapa, as ligações e os tipos ficam sempre à vista).
+ * Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. O painel do desenho (desktop) mostra tudo
+ * do elo escolhido, com as ligações que saem e as que chegam. No celular (`celular`), o elo é um bloco do mapa vertical e este conteúdo abre
+ * ao toque; cada ligação aparece uma vez, no elo de onde ela parte (o tipo e o destino de todas ficam à vista no próprio mapa vertical).
  */
-function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean }) {
+function DetalheNo({ no, celular = false }: { no: NoMapa; celular?: boolean }) {
   const saem = LIGACOES.filter((l) => l.de === no.id);
-  const chegam = compacto ? [] : LIGACOES.filter((l) => l.para === no.id);
+  const chegam = celular ? [] : LIGACOES.filter((l) => l.para === no.id);
   const destinos = no.destinos.map((s) => destino(s));
   const conceitos = no.conceitos.map((c) => (
     <span key={c.slug} className="text-carvao">
-      <Termo slug={c.slug} alvo={!compacto}>
+      <Termo slug={c.slug} alvo={!celular}>
         {c.rotulo}
       </Termo>
       {nomeDoConceito(c.slug, c.rotulo) && <span className="ml-1 text-carvao-muted">({nomeDoConceito(c.slug, c.rotulo)})</span>}
@@ -209,7 +208,7 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
   const ligacoes = (saem.length > 0 || chegam.length > 0) && (
     <div>
       <p className="rotulo text-mineral">Ligações</p>
-      <ul className={compacto ? "mt-1 space-y-1.5" : "space-y-2"}>
+      <ul className={celular ? "mt-1 space-y-1.5" : "space-y-2"}>
         {saem.map((l) => (
           <li key={`s-${l.para}`}>
             <span className="text-carvao">
@@ -229,30 +228,6 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
       </ul>
     </div>
   );
-  if (compacto) {
-    return (
-      <>
-        <p className="text-carvao">{no.curto}</p>
-        {ligacoes}
-        <div className="flex flex-wrap items-center gap-x-4">
-          <span className="rotulo text-mineral">Onde explorar</span>
-          {destinos.map((d) => (
-            <Link key={d.slug} href={d.href} className={`${linkTexto} inline-flex min-h-[32px] items-center`}>
-              {d.rotulo}
-            </Link>
-          ))}
-        </div>
-        <details className="group">
-          <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4 hover:text-carvao">Explicação e conceitos do elo</summary>
-          <p>{no.explicacao}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 pb-1">
-            <span className="rotulo text-mineral">Conceitos</span>
-            {conceitos}
-          </div>
-        </details>
-      </>
-    );
-  }
   return (
     <>
       <p>{no.explicacao}</p>
@@ -261,7 +236,7 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
         <ul className="flex flex-wrap gap-x-4">
           {destinos.map((d) => (
             <li key={d.slug}>
-              <Link href={d.href} className={link}>
+              <Link href={d.href} className={celular ? `${linkTexto} inline-flex min-h-[32px] items-center` : link}>
                 {d.rotulo}
               </Link>
             </li>
@@ -282,92 +257,72 @@ function DetalheNo({ no, compacto = false }: { no: NoMapa; compacto?: boolean })
 }
 
 /**
- * O mapa do celular em uma tela: as quatro faixas na ordem do desenho, os sete elos numerados como links para o texto de cada um, a seta e o
- * tipo da ligação entre os elos da mesma faixa, e, em cada elo, as ligações que saem dele para outras faixas. Tudo vem de NOS_MAPA e LIGACOES:
- * é o mesmo grafo do desenho, lido de cima para baixo.
+ * O mapa no celular, na vertical: as quatro faixas na ordem do desenho, os sete elos numerados (o título e a frase de cada um à vista), a seta
+ * com o tipo da ligação entre os elos seguidos da mesma faixa e, sob cada elo, as ligações que saem dele para outros lugares, com o tipo. Ao
+ * toque, o elo abre a explicação, onde explorar, os conceitos e a frase de cada ligação. Tudo vem de NOS_MAPA e LIGACOES: é o mesmo grafo do
+ * desenho do desktop, lido de cima para baixo.
  */
-function ResumoDoMapa() {
+function MapaVertical() {
   const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
   return (
-    <section aria-labelledby="mapa-resumo" className="mb-6 border border-linha bg-superficie p-4" data-mapa-resumo="">
-      <h3 id="mapa-resumo" className="font-serif text-lg text-carvao">
-        O mapa em uma tela
-      </h3>
-      <ol className="mt-3 space-y-4">
-        {ORDEM_FAIXAS.map((f) => {
-          const nos = NOS_MAPA.filter((n) => n.faixa === f);
-          return (
-            <li key={f}>
-              <p className="rotulo text-mineral">{FAIXAS_MAPA[f].rotulo}</p>
-              <ol className="mt-1.5">
-                {nos.map((n, i) => {
-                  const proximo = nos[i + 1];
-                  const seguinte = proximo ? LIGACOES.find((l) => l.de === n.id && l.para === proximo.id) : undefined;
-                  // as ligações que saem do elo e não são a seta para o elo de baixo
-                  const outras = LIGACOES.filter((l) => l.de === n.id && l !== seguinte);
-                  return (
-                    <li key={n.id}>
-                      <a href={`#mapa-elo-${n.id}`} className="flex min-h-[44px] items-center gap-3 border border-linha px-3 py-2 text-sm leading-snug text-carvao">
-                        <span className="tabular-nums text-mineral">{numero.get(n.id)}</span>
-                        {n.titulo}
-                      </a>
-                      {outras.length > 0 && (
-                        <p className="mt-1 pl-3 text-xs leading-snug text-carvao-muted">
-                          Liga-se a{" "}
-                          {outras.map((l, k) => (
-                            <span key={l.para}>
-                              {k > 0 && "; "}
-                              {numero.get(l.para)}, {porId.get(l.para)!.titulo.toLowerCase()} ({TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()})
-                            </span>
-                          ))}
-                          .
-                        </p>
-                      )}
-                      {proximo && seguinte && (
-                        <p className="py-1 pl-3 text-xs text-carvao-muted">
-                          <span aria-hidden="true">↓</span> {TIPOS_LIGACAO[seguinte.tipo].rotulo.toLowerCase()}
-                          <span className="sr-only"> para {proximo.titulo.toLowerCase()}</span>
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-            </li>
-          );
-        })}
-      </ol>
-    </section>
-  );
-}
-
-/** A versão do mapa em texto: as quatro faixas na ordem do desenho, cada elo com a explicação, onde explorar, conceitos e as ligações que partem dele. */
-function MapaEmTexto() {
-  const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
-  return (
-    <div className="space-y-8">
-      {ORDEM_FAIXAS.map((f) => (
-        <section key={f} aria-labelledby={`mapa-faixa-${f}`}>
-          <h4 id={`mapa-faixa-${f}`} className="font-serif text-xl text-carvao">
-            {FAIXAS_MAPA[f].rotulo}
-          </h4>
-          <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{FAIXAS_MAPA[f].resumo}</p>
-          <ol className="mt-3 space-y-5">
-            {NOS_MAPA.filter((n) => n.faixa === f).map((n) => (
-              <li key={n.id} id={`mapa-elo-${n.id}`} className="scroll-mt-24 border-t border-linha pt-3">
-                <h5 className="font-serif text-lg leading-snug text-carvao">
-                  <span className="mr-2 text-mineral">{numero.get(n.id)}.</span>
-                  {n.titulo}
-                </h5>
-                <div className="mt-2 space-y-3 text-sm leading-relaxed text-carvao-muted">
-                  <DetalheNo no={n} compacto />
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))}
-    </div>
+    <ol className="space-y-5" data-mapa-vertical="">
+      {ORDEM_FAIXAS.map((f) => {
+        const nos = NOS_MAPA.filter((n) => n.faixa === f);
+        return (
+          <li key={f} aria-labelledby={`mapa-faixa-${f}`}>
+            <h4 id={`mapa-faixa-${f}`} className="rotulo text-mineral">
+              {FAIXAS_MAPA[f].rotulo}
+            </h4>
+            <p className="mt-1 text-xs leading-snug text-carvao-muted">{FAIXAS_MAPA[f].resumo}</p>
+            <ol className="mt-2">
+              {nos.map((n, i) => {
+                const proximo = nos[i + 1];
+                const seguinte = proximo ? LIGACOES.find((l) => l.de === n.id && l.para === proximo.id) : undefined;
+                // as ligações que saem do elo e não são a seta para o elo de baixo
+                const outras = LIGACOES.filter((l) => l.de === n.id && l !== seguinte);
+                return (
+                  <li key={n.id}>
+                    <details id={`mapa-elo-${n.id}`} className="group scroll-mt-24 border border-linha bg-superficie">
+                      <summary className="flex min-h-[44px] cursor-pointer list-none items-start gap-3 px-3 py-2 [&::-webkit-details-marker]:hidden">
+                        <span className="tabular-nums leading-snug text-mineral">{numero.get(n.id)}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-serif text-base leading-snug text-carvao">{n.titulo}</span>
+                          <span className="block text-xs leading-snug text-carvao-muted">{n.curto}</span>
+                        </span>
+                        <span aria-hidden="true" className="shrink-0 pt-1 text-xs text-carvao-muted motion-safe:transition-transform group-open:rotate-180">
+                          ▾
+                        </span>
+                      </summary>
+                      <div className="space-y-3 border-t border-linha px-3 pb-3 pt-2 text-sm leading-relaxed text-carvao-muted">
+                        <DetalheNo no={n} celular />
+                      </div>
+                    </details>
+                    {outras.length > 0 && (
+                      <p className="mt-1 pl-3 text-xs leading-snug text-carvao-muted">
+                        Liga-se a{" "}
+                        {outras.map((l, k) => (
+                          <span key={l.para}>
+                            {k > 0 && "; "}
+                            {numero.get(l.para)}, {porId.get(l.para)!.titulo.toLowerCase()} ({TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()})
+                          </span>
+                        ))}
+                        .
+                      </p>
+                    )}
+                    {proximo && seguinte && (
+                      <p className="py-1 pl-3 text-xs text-carvao-muted">
+                        <span aria-hidden="true">↓</span> {TIPOS_LIGACAO[seguinte.tipo].rotulo.toLowerCase()}
+                        <span className="sr-only"> para {proximo.titulo.toLowerCase()}</span>
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </li>
+        );
+      })}
+    </ol>
   );
 }
 
@@ -687,7 +642,7 @@ export default function MapaDoObservatorio() {
                       </a>
                       .
                     </p>
-                    <LegendaDeSiglas siglas={["ANEEL", "ONS", "CCEE", "SIN", "PLD", "DEC", "EAR"]} />
+                    <LegendaDeSiglas siglas={["SIN", "PLD", "DEC", "EAR"]} />
                   </div>
                 </DetalheDoNivel>
               </div>
@@ -827,7 +782,7 @@ export default function MapaDoObservatorio() {
               <span className="hidden md:inline">
                 Escolha um elo para ver o que ele é, onde explorá-lo e com que tipo de ligação ele se conecta aos outros. A forma do traço diz o tipo da ligação.
               </span>
-              <span className="md:hidden">Leia os sete elos abaixo, um a um; o resumo mostra o caminho em uma tela.</span>
+              <span className="md:hidden">Leia os sete elos abaixo, de cima para baixo; toque em um elo para ver o que ele é, onde explorá-lo e como se liga aos outros.</span>
             </>
           }
         >
@@ -841,16 +796,13 @@ export default function MapaDoObservatorio() {
               faixas={ORDEM_FAIXAS.map((f) => ({ texto: FAIXAS_MAPA[f].rotulo, ...ROTULOS_FAIXA[f] }))}
             />
           </div>
-          {/* versão em texto: é o mapa no celular. No desktop ela some (display: none), porque cópia só para o leitor de tela deixava dezenas de paradas de Tab
+          {/* mapa vertical: é o mapa no celular. No desktop ele some (display: none), porque cópia só para o leitor de tela deixava dezenas de paradas de Tab
               em links e resumos invisíveis; lá o leitor de tela e o teclado usam os sete botões e o painel do elo, que trazem o mesmo conteúdo */}
           <div className="md:hidden">
-            <ResumoDoMapa />
-            <h3 className="mb-3 font-serif text-lg text-carvao">O mapa em texto</h3>
-            <p className="mb-2 text-sm leading-relaxed text-carvao-muted">
+            <p className="mb-3 text-sm leading-relaxed text-carvao-muted">
               Tipos de ligação: <TiposDeLigacao />
             </p>
-            <p className="mb-4 text-sm leading-relaxed text-carvao-muted">Cada ligação aparece uma vez, no elo de onde ela parte; o tipo vem antes do texto.</p>
-            <MapaEmTexto />
+            <MapaVertical />
           </div>
           <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
             <div className="border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao-muted">

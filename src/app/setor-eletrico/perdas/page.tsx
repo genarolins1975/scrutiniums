@@ -143,15 +143,14 @@ export default function PerdasPage() {
           titulo={PERGUNTA_ABERTURA}
           lead={
             <>
-              <Termo slug="perdas-de-energia">Perda</Termo> é a energia que entra na rede da distribuidora e não chega como consumo medido. Aqui, a taxa e o volume das concessionárias somadas e de cada
-              distribuidora.
+              <Termo slug="perdas-de-energia">Perda</Termo> é a energia que entra na rede e não chega como consumo medido. Aqui, a taxa e o volume das concessionárias somadas e de cada distribuidora.
             </>
           }
           recorte={
             <>
               {ref}, ano completo
-              {nac ? ` · ${num(nac.n_distribuidoras, 0)} concessionárias no agregado` : ""}
-              {faixaRef ? ` e ${num(faixaRef.n, 0)} distribuidoras na comparação` : ""} · % da energia injetada de referência e TWh
+              {nac ? ` · ${num(nac.n_distribuidoras, 0)} concessionárias somadas` : ""}
+              {faixaRef ? ` e ${num(faixaRef.n, 0)} distribuidoras comparadas` : ""} · % da energia injetada de referência e TWh
             </>
           }
           fonte="ANEEL, SAMP Balanço"
@@ -173,7 +172,7 @@ export default function PerdasPage() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo={`Energia perdida pelas concessionárias, ${ref}`}
+                  rotulo={`Energia perdida, ${ref}`}
                   natureza="OBSERVADO"
                   evidencia={ev.perdas_nacional}
                   valor={ev.perdas_nacional.valor_calculo === null ? null : ev.perdas_nacional.valor_calculo / 1e6}
@@ -186,7 +185,7 @@ export default function PerdasPage() {
                 />
                 <Numero
                   variante="faixa"
-                  rotulo="Variação da taxa nas mesmas concessionárias"
+                  rotulo="Variação da taxa de perdas"
                   natureza="CALCULADO"
                   valor={variacaoMesmas(parTaxa)}
                   formato="variacao"
@@ -259,7 +258,7 @@ export default function PerdasPage() {
                 versao={versao}
                 anoRelacao={g.mapa.ano_relacao}
                 respostaGeral={
-                  <RespostaCurta id="geral" veredito={vereditoGeral(g)}>
+                  <RespostaCurta id="geral" veredito={vereditoGeral(g)} depois>
                     {respostaGeral(g)}
                   </RespostaCurta>
                 }

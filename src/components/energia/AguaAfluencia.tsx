@@ -81,6 +81,100 @@ const universo = (tipo: TipoRecorte, reeNovos: readonly { data: string; novos: s
 
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
+/**
+ * Números do recorte escolhido: a ENA de 30 dias em % da MLT, a mediana da mesma janela, a ENA do dia em MWmed e, nos subsistemas, a ENA
+ * armazenável. Os valores são os campos da própria entidade (os mesmos do gráfico, da tabela e da resposta), a faixa nunca calcula. A ficha
+ * "Comprove este número" é a do SIN, a única que a gold publica: outro recorte não a mostra. Os últimos dias são ditos provisórios, e a ficha
+ * traz as revisões que a tabela de revisões da página mostra.
+ */
+export function MedidasAfluencia({
+  e,
+  revisoes,
+  evidencias,
+  endereco,
+}: {
+  e: EntidadeEna;
+  revisoes: AguaRevisaoCaptura[];
+  evidencias?: { ena30d?: Evidencia | null; enaArm30d?: Evidencia | null };
+  endereco?: string;
+}) {
+  // a ficha de prova é a do SIN: só ele a tem
+  const ehSin = e.tipo === "subsistema" && e.id === "SIN";
+  const comArmazenavel = e.pct_mlt_arm_30d !== undefined;
+  const revisoesFicha = textoRevisoesFicha(revisoes);
+  return (
+    <div data-medidas-recorte="" className="space-y-2">
+      <p className="rotulo text-mineral">Números do recorte escolhido: {e.rotulo}</p>
+      <FaixaMetricas
+        colunas={comArmazenavel ? 4 : 3}
+        rotulo={`Indicadores da afluência: ${e.rotulo}`}
+        nota={
+          <>
+            {textoEnaProvisoria(revisoes)} O percentual da MLT é outra régua que o da energia armazenada (EAR): os dois não se comparam.
+          </>
+        }
+      >
+        <Numero
+          variante="faixa"
+          rotulo="ENA bruta de 30 dias"
+          natureza="CALCULADO"
+          evidencia={ehSin ? evidencias?.ena30d : undefined}
+          revisoes={ehSin ? revisoesFicha : undefined}
+          valor={e.pct_mlt_30d}
+          formato="pct"
+          casas={1}
+          unidade="da MLT"
+          periodo={`30 dias até ${dataBR(e.dia)}`}
+          cor="var(--cor-energia)"
+          motivoAusencia={cap(motivoSemEna30d(e))}
+          endereco={endereco}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Mediana da mesma janela"
+          natureza="CALCULADO"
+          valor={e.p50_30d}
+          formato="pct"
+          casas={1}
+          unidade="da MLT"
+          periodo={e.faixa_30d && e.periodo_base ? `mesma janela em ${periodoBase(e.periodo_base)}` : undefined}
+          cor="var(--serie-referencia)"
+          motivoAusencia={cap(textoFaixaJanela(e))}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="ENA do dia"
+          natureza="CALCULADO"
+          valor={e.ena_mwmed_dia}
+          formato="num"
+          casas={0}
+          unidade="MWmed"
+          periodo={dataBR(e.dia)}
+          nota={notaEnaDoDia(e) ?? undefined}
+          motivoAusencia="Sem ENA do dia nesta publicação."
+        />
+        {comArmazenavel && (
+          <Numero
+            variante="faixa"
+            rotulo="ENA armazenável de 30 dias"
+            natureza="CALCULADO"
+            evidencia={ehSin ? evidencias?.enaArm30d : undefined}
+            revisoes={ehSin ? revisoesFicha : undefined}
+            valor={e.pct_mlt_arm_30d ?? null}
+            formato="pct"
+            casas={1}
+            unidade="da MLT"
+            periodo={`30 dias até ${dataBR(e.dia)}`}
+            motivoAusencia="Sem ENA armazenável de 30 dias completa nesta publicação."
+            nota="Em % da MLT armazenável: vazões naturais menos as vertidas."
+            endereco={endereco}
+          />
+        )}
+      </FaixaMetricas>
+    </div>
+  );
+}
+
 export function AguaAfluencia({
   entidades,
   serie,
@@ -123,10 +217,6 @@ export function AguaAfluencia({
   const selecionar = (id: string | null) => id && definir({ ent: id === padrao ? "" : id });
   const inicio = serie[0]?.d;
   const fim = serie[serie.length - 1]?.d;
-  // a ficha de prova é a do SIN: só ele a tem
-  const ehSin = e?.tipo === "subsistema" && e.id === "SIN";
-  const comArmazenavel = !!e && e.pct_mlt_arm_30d !== undefined;
-  const revisoesFicha = useMemo(() => textoRevisoesFicha(revisoes), [revisoes]);
 
   return (
     <div className="space-y-6">
@@ -166,77 +256,7 @@ export function AguaAfluencia({
         unidade="% da MLT: soma da ENA bruta dos 30 dias (MWmed·dia: a média de cada dia, em MWmed, o megawatt médio, somada ao longo dos dias) dividida pela soma da MLT vigente em cada dia. p.p.: ponto percentual, a diferença entre dois percentuais"
       />
 
-      {e && (
-        <div data-medidas-recorte="" className="space-y-2">
-          <p className="rotulo text-mineral">Números do recorte escolhido: {e.rotulo}</p>
-          <FaixaMetricas
-            colunas={comArmazenavel ? 4 : 3}
-            rotulo={`Indicadores da afluência: ${e.rotulo}`}
-            nota={
-              <>
-                {textoEnaProvisoria(revisoes)} O percentual da MLT é outra régua que o da energia armazenada (EAR): os dois não se comparam.
-              </>
-            }
-          >
-            <Numero
-              variante="faixa"
-              rotulo="ENA bruta de 30 dias"
-              natureza="CALCULADO"
-              evidencia={ehSin ? evidencias?.ena30d : undefined}
-              revisoes={ehSin ? revisoesFicha : undefined}
-              valor={e.pct_mlt_30d}
-              formato="pct"
-              casas={1}
-              unidade="da MLT"
-              periodo={`30 dias até ${dataBR(e.dia)}`}
-              cor="var(--cor-energia)"
-              motivoAusencia={cap(motivoSemEna30d(e))}
-              endereco={enderecoMedidas}
-            />
-            <Numero
-              variante="faixa"
-              rotulo="Mediana da mesma janela"
-              natureza="CALCULADO"
-              valor={e.p50_30d}
-              formato="pct"
-              casas={1}
-              unidade="da MLT"
-              periodo={e.faixa_30d && e.periodo_base ? `mesma janela em ${periodoBase(e.periodo_base)}` : undefined}
-              cor="var(--serie-referencia)"
-              motivoAusencia={cap(textoFaixaJanela(e))}
-            />
-            <Numero
-              variante="faixa"
-              rotulo="ENA do dia"
-              natureza="CALCULADO"
-              valor={e.ena_mwmed_dia}
-              formato="num"
-              casas={0}
-              unidade="MWmed"
-              periodo={dataBR(e.dia)}
-              nota={notaEnaDoDia(e) ?? undefined}
-              motivoAusencia="Sem ENA do dia nesta publicação."
-            />
-            {comArmazenavel && (
-              <Numero
-                variante="faixa"
-                rotulo="ENA armazenável de 30 dias"
-                natureza="CALCULADO"
-                evidencia={ehSin ? evidencias?.enaArm30d : undefined}
-                revisoes={ehSin ? revisoesFicha : undefined}
-                valor={e.pct_mlt_arm_30d ?? null}
-                formato="pct"
-                casas={1}
-                unidade="da MLT"
-                periodo={`30 dias até ${dataBR(e.dia)}`}
-                motivoAusencia="Sem ENA armazenável de 30 dias completa nesta publicação."
-                nota="Em % da MLT armazenável: vazões naturais menos as vertidas."
-                endereco={enderecoMedidas}
-              />
-            )}
-          </FaixaMetricas>
-        </div>
-      )}
+      {e && <MedidasAfluencia e={e} revisoes={revisoes} evidencias={evidencias} endereco={enderecoMedidas} />}
 
       <TabelaInterativa
         titulo={`Tabela equivalente: ENA de 30 dias, ${ROTULO_TIPO_RECORTE[tipo]}`}

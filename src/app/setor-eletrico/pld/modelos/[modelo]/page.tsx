@@ -38,10 +38,12 @@ import {
   linhasCoeficientes,
   linhasReexecucao,
   minusculaInicial,
+  motivoGravado,
   notaEntradas,
   papelCurto,
   paraLeitorPrevisoes,
   perguntaPainel,
+  provenienciaParaLeitor,
   reexecucaoCurta,
   respostaFicha,
   rotaModelo,
@@ -102,7 +104,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
   const registro = lerGold<ModelosGold>("modelos.json");
   const resumoModelo = integra(registro) ? registro.modelos.find((x) => x.codigo === f.codigo) : undefined;
   const downloads = g.downloads.filter((d) => (coef.length ? /previsoes_ajustes_c2|previsoes_emissoes/ : /previsoes_emissoes/).test(d.url));
-  const proveniencia = f.aprovacao.referencia_experimental && "proveniencia" in g.previsao_atual && g.previsao_atual.proveniencia ? g.previsao_atual.proveniencia : g.proveniencia;
+  const proveniencia = provenienciaParaLeitor(f.aprovacao.referencia_experimental && "proveniencia" in g.previsao_atual && g.previsao_atual.proveniencia ? g.previsao_atual.proveniencia : g.proveniencia);
   const impl = f.implementacao as { codigo?: string; versao?: string; mesma_definicao_da_pesquisa?: boolean; diferencas?: string[]; restricao_preco?: string } | null;
   const situacao = situacaoDoModelo(f);
   const resumo = resumoModelo?.resumo?.trim();
@@ -122,7 +124,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
   );
   const comoInterpretar = (
     <>
-      {situacao.rotulo}: {situacao.definicao}
+      {situacao.rotulo}: {minusculaInicial(situacao.definicao)}
       {f.formula && <span data-nivel="analisar"> Fórmula no registro: {f.formula}</span>}
     </>
   );
@@ -302,7 +304,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
                       {f.falhas_conhecidas?.length ? (
                         <ul className="list-disc space-y-0.5 pl-5">
                           {f.falhas_conhecidas.map((x) => (
-                            <li key={x}>{semCodigosInternos(x)}</li>
+                            <li key={x}>{motivoGravado(semCodigosInternos(x))}</li>
                           ))}
                         </ul>
                       ) : (

@@ -56,6 +56,15 @@ function rotuloDoModulo(href: string): string | null {
 }
 
 /**
+ * Nome do painel para o link do índice: o rótulo que o verbete ou a ficha dá, quando já tem a forma "Módulo: painel" ("Carga: perfil
+ * horário"); rótulo solto ("Como estamos gerando", "Simulador da conta") deixa de ser nome de painel, e vale o nome da página de destino.
+ */
+function rotuloDoPainel(rotulo: string | undefined, href: string): string {
+  if (rotulo?.includes(":")) return rotulo;
+  return rotuloDoModulo(href) ?? rotulo ?? "Painel";
+}
+
+/**
  * Painel onde o conceito aparece, para o link direto do índice. É o mesmo painel do exemplo do verbete (ficha publicada ou texto lido
  * da base); sem exemplo, o primeiro painel que o verbete aponta. O rótulo vem do painel (ficha), do verbete ou da página de destino.
  * Verbete conferido leva ?volta=verbete:<slug>; em preparação não, porque o botão de retorno só existe para verbete conferido.
@@ -68,9 +77,9 @@ export function destinoNoPainel(c: Conceito): DestinoNoPainel | null {
     destino = { rotulo: prova.dado.painel.rotulo, href: prova.dado.painel.href };
   } else if (prova?.tipo === "texto") {
     const href = prova.href;
-    destino = { rotulo: c.vejaNoPortal.find((v) => v.href === href)?.rotulo ?? rotuloDoModulo(href) ?? "Painel", href };
+    destino = { rotulo: rotuloDoPainel(c.vejaNoPortal.find((v) => v.href === href)?.rotulo, href), href };
   } else if (c.vejaNoPortal[0]) {
-    destino = { rotulo: c.vejaNoPortal[0].rotulo, href: c.vejaNoPortal[0].href };
+    destino = { rotulo: rotuloDoPainel(c.vejaNoPortal[0].rotulo, c.vejaNoPortal[0].href), href: c.vejaNoPortal[0].href };
   }
   if (!destino) return null;
   return conferido ? { rotulo: destino.rotulo, href: comVolta(destino.href, `verbete:${c.slug}`) } : destino;
@@ -143,14 +152,21 @@ export function recorteDoAcervo(r: ResumoDoAcervo): string {
   return `${plural(r.total, "verbete", "verbetes")}: ${r.conferidos} conferidos na fonte primária${quando} e ${r.pendentes} em preparação`;
 }
 
-/** Frase de estado da lista: o que cada marca ao lado do verbete quer dizer e quantos verbetes têm cada estado. */
+/**
+ * Frase de estado da lista: quantos verbetes estão conferidos e o que cada marca ao lado do verbete quer dizer (◐ conferido com ressalva
+ * declarada, ○ em preparação). Verbete sem marca é verbete conferido sem ressalva; a frase só cita a marca que existe na lista.
+ */
 export function estadosDoAcervo(r: ResumoDoAcervo): string {
-  if (r.pendentes === 0) {
-    const ressalva =
-      r.comRessalva > 0
-        ? `; ${r.comRessalva} ${r.comRessalva === 1 ? "deles traz uma ressalva declarada" : "deles trazem uma ressalva declarada"} no próprio verbete: a fonte que define o termo não foi lida ou não o define`
-        : "";
-    return `${r.total === 1 ? "O verbete está conferido" : `Os ${r.total} verbetes estão conferidos`} na fonte primária${ressalva}.`;
+  const partes: string[] = [];
+  if (r.pendentes === 0) partes.push(r.total === 1 ? "O verbete está conferido na fonte primária." : `Os ${r.total} verbetes estão conferidos na fonte primária.`);
+  else partes.push(`${r.conferidos} de ${r.total} verbetes estão conferidos na fonte primária.`);
+  if (r.comRessalva > 0) {
+    const sujeito = r.comRessalva === 1 ? "O verbete marcado" : `Os ${r.comRessalva} verbetes marcados`;
+    partes.push(`${sujeito} com ◐ ${r.comRessalva === 1 ? "traz" : "trazem"} uma ressalva declarada no próprio verbete: a fonte que define o termo não foi lida ou não o define.`);
   }
-  return `${r.conferidos} de ${r.total} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem definição, com o que já foi consultado e o que falta.`;
+  if (r.pendentes > 0) {
+    const sujeito = r.pendentes === 1 ? "O verbete marcado" : `Os ${r.pendentes} verbetes marcados`;
+    partes.push(`${sujeito} com ○ ${r.pendentes === 1 ? "está" : "estão"} em preparação, sem definição publicada, com o que já foi consultado e o que falta.`);
+  }
+  return partes.join(" ");
 }

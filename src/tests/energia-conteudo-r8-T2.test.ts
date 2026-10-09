@@ -242,7 +242,8 @@ describe("vereditos novos: curtos, com poucos números, sem identificador e meno
     d.qualidade!.dec = 12;
     expect(E.vereditoFicha(d, NACIONAL)).toContain("acima do limite de duração e dentro do limite de frequência");
     d.perdas!.taxa_total_pct = 20;
-    expect(E.vereditoFicha(d, NACIONAL)).toContain("acima da média das concessionárias do Brasil");
+    // a referência é a taxa nacional das concessionárias em conjunto (perdas somadas sobre energia injetada somada), não a média simples das taxas
+    expect(E.vereditoFicha(d, NACIONAL)).toContain("acima da taxa nacional das concessionárias");
   });
 });
 
@@ -617,8 +618,9 @@ describe("conciliação (vi): finanças remete ao aviso de fonte indisponível, 
     expect(h).not.toContain("bloqueio abaixo");
     expect(h).toContain("ver o aviso \u201cFonte indisponível\u201d, acima");
     expect(h.indexOf("Fonte indisponível")).toBeLessThan(h.indexOf("O que não é possível concluir"));
-    // os dados vêm antes dos avisos de método
-    expect(h.indexOf("Companhias abertas do setor elétrico na CVM")).toBeLessThan(h.indexOf("Fonte indisponível"));
+    // os dados vêm antes dos avisos de método: a figura principal (gráfico e tabela equivalente) abre o painel, e a tabela de todas as companhias é uma seção própria depois dele
+    expect(h.indexOf("Valores do gráfico (tabela equivalente)")).toBeLessThan(h.indexOf("Fonte indisponível"));
+    expect(h.indexOf("Companhias abertas do setor elétrico na CVM")).toBeGreaterThan(h.indexOf("Fonte indisponível"));
     expect(textoEntender(h)).not.toContain("Decisão de método");
     expect(h).toContain("Decisão de método");
   });
@@ -756,9 +758,12 @@ describe("fichas: perda negativa, pares que mostram a própria empresa, DEC e FE
 
 describe("síntese de Empresas: a resposta vem primeiro, as medidas depois, e os termos são explicados no ponto de uso", () => {
   const h = htmlEmp.sintese;
-  it("as quatro respostas abrem a página; 'Medidas que não se somam' vem depois dos cartões", () => {
-    expect(h.indexOf('id="sintese-p036"')).toBeLessThan(h.indexOf("Medidas que não se somam"));
-    expect(h.indexOf('id="sintese-p039"')).toBeLessThan(h.indexOf("Medidas que não se somam"));
+  it("as quatro respostas abrem a página; 'Quais medidas não se somam?' vem depois dos capítulos", () => {
+    const iMedidas = h.indexOf('id="medidas"');
+    expect(iMedidas).toBeGreaterThan(0);
+    expect(h.indexOf('id="sintese-p036"')).toBeLessThan(iMedidas);
+    expect(h.indexOf('id="sintese-p039"')).toBeLessThan(iMedidas);
+    expect(h).toContain("Quais medidas não se somam?");
     for (const id of ["p036", "p037", "p038", "p039"]) expect(h).toContain(`data-resposta="${id}"`);
   });
   it("CNPJ, DFP e ITR entram na linha de siglas da síntese, com o nome por extenso de siglas.ts", () => {

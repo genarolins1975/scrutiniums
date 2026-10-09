@@ -284,7 +284,7 @@ export const COR_PARCELA: Record<GrupoParcela, string> = {
   ons: "var(--serie-referencia)",
 };
 export const ROTULO_PARCELA_CURTO: Record<GrupoParcela, string> = {
-  apurado: "Apurado (interna, IP + IND)",
+  apurado: "Apurado (parcelas internas)",
   emergencia: "Situação de emergência",
   dia_critico: "Dia crítico",
   externa: "Origem externa",
@@ -641,8 +641,8 @@ export const COLUNAS_LIMITES: ColunaTabela[] = [
   { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
   { id: "dgc_calculado", rotulo: "DGC calculado", tipo: "numero", casas: 3 },
   { id: "dgc_publicado", rotulo: "DGC no ranking da ANEEL", tipo: "numero", casas: 2 },
-  { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
-  { id: "porte", rotulo: "Porte no ranking", tipo: "texto", categorica: true },
+  { id: "posicao", rotulo: "Posição no ranking da ANEEL", tipo: "numero", casas: 0 },
+  { id: "porte", rotulo: "Porte no ranking da ANEEL", tipo: "texto", categorica: true },
   { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
   { id: "cobertura_limite", rotulo: "UCs com limite", tipo: "percentual", casas: 0 },
   { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
@@ -784,7 +784,9 @@ export function conjuntosDoCsv(texto: string, ano: number): LinhaTabela[] {
   return lerCsv(texto)
     .filter((l) => Number(l.ano) === ano)
     .map((l) => {
-      const acima = l.acima_limite_dec === "1" ? "acima do limite" : l.acima_limite_dec === "0" ? "até o limite" : "sem limite ou sem 12 meses";
+      // sem a marca do limite: ou o conjunto tem menos de 12 meses de DEC (o valor do arquivo é a soma dos meses publicados, não um ano), ou não tem limite
+      const meses = numeroOuNulo(l.meses);
+      const acima = l.acima_limite_dec === "1" ? "acima do limite" : l.acima_limite_dec === "0" ? "até o limite" : meses !== null && meses < 12 ? "menos de 12 meses publicados" : "sem limite publicado";
       return {
         id: l.conjunto,
         conjunto: l.conjunto,
@@ -1873,9 +1875,9 @@ const centesimos = (x: number) => Math.round(x * 100);
 /** Campos que a gold pode passar a trazer por distribuidora e ano (próxima coleta): lidos quando existem, nunca exigidos. */
 type CamposCoberturaFec = { meses_fec?: number | null; cobertura_fec?: number | null };
 
-function fraseAvisoFec(rotulo: string, ano: number, fec: number, parcelas: number | null, meses: MesFecParcial[]): { frase: string; marca: string } {
+function fraseAvisoFec(rotulo: string, ano: number, fec: number, parcelas: number | null, meses: MesFecParcial[], diverge: boolean): { frase: string; marca: string } {
   const cobertura = (m: MesFecParcial) => pct(m.cobertura * 100, 2);
-  const refeito = parcelas !== null ? `; pela soma das parcelas internas, programada e não programada (FECIP + FECIND), o anual é ${num(parcelas, 2)}, contra ${num(fec, 2)} apurado` : "";
+  const refeito = parcelas !== null && diverge ? `; pela soma das parcelas internas, programada e não programada (FECIP + FECIND), o anual é ${num(parcelas, 2)}, contra ${num(fec, 2)} apurado` : "";
   let frase: string;
   let marca: string;
   if (meses.length === 1) {
@@ -1884,7 +1886,7 @@ function fraseAvisoFec(rotulo: string, ano: number, fec: number, parcelas: numbe
   } else if (meses.length > 1) {
     frase = `O FEC cobre menos de ${pct(COBERTURA_MINIMA_FEC_MES * 100, 0)} das UCs em ${listaPt(meses.map((m) => `${mesAno(m.mes)} (${cobertura(m)})`))}${refeito}.`;
     marca = `parcial: ${meses.length} meses com menos de ${pct(COBERTURA_MINIMA_FEC_MES * 100, 0)} das UCs`;
-  } else if (parcelas !== null) {
+  } else if (parcelas !== null && diverge) {
     frase = `O FEC apurado (${num(fec, 2)}) difere da soma das parcelas internas, programada e não programada (FECIP + FECIND), ${num(parcelas, 2)}.`;
     marca = `parcial: difere em ${num(Math.abs(fec - parcelas), 2)} das parcelas internas`;
   } else {
@@ -1912,7 +1914,7 @@ export function fecComCoberturaParcial(g: QualidadeGold, mesesPorCnpj: Readonly<
     if (!diverge && !porCampo) continue;
     const meses = [...(mesesPorCnpj[d.cnpj] ?? [])].sort((a, b) => a.mes.localeCompare(b.mes));
     const rotulo = rotuloDistribuidora(d);
-    const { frase, marca } = fraseAvisoFec(rotulo, d.ano, d.fec, parcelas, meses);
+    const { frase, marca } = fraseAvisoFec(rotulo, d.ano, d.fec, parcelas, meses, diverge);
     out.push({
       cnpj: d.cnpj,
       rotulo,
@@ -1963,8 +1965,9 @@ export const COLUNAS_FEC_COBERTURA: ColunaTabela[] = [
 export function camposFecDaDistribuidora(d: Distribuidora, avisos: AvisosFec): { fec_cobertura: string; fec_parcelas: number | null } {
   const aviso = avisos[d.cnpj];
   const parcelas = d.parcelas_fec?.apurado ?? null;
+  const confere = parcelas !== null && d.fec !== null ? Math.abs(centesimos(d.fec) - centesimos(parcelas)) <= LIMITE_FEC_PARCIAL_CENTESIMOS : null;
   return {
-    fec_cobertura: aviso ? aviso.marca : parcelas === null || d.fec === null ? "sem parcelas para conferir" : "confere com as parcelas internas",
+    fec_cobertura: aviso ? aviso.marca : confere === null ? "sem parcelas para conferir" : confere ? "confere com as parcelas internas" : "difere das parcelas internas",
     fec_parcelas: parcelas,
   };
 }
@@ -2217,6 +2220,8 @@ export function taxaNaBaseDaOuvidoria(porMilUcs: number | null | undefined): num
 /* ---------------------------------------------------------------- definições no ponto de uso (texto visível) */
 
 export const DEFINICAO_CONJUNTO = "Conjunto elétrico é uma subdivisão da área de uma distribuidora para a qual a ANEEL fixa limites de DEC e de FEC.";
+/** A mesma definição em poucas palavras, para o cartão da faixa de métricas (onde cada linha custa altura da primeira tela). */
+export const DEFINICAO_CONJUNTO_CURTA = "Conjunto elétrico: subdivisão da área de uma distribuidora, com limites próprios.";
 export const DEFINICAO_LIMITES_INDIVIDUAIS =
   "Os limites individuais valem para cada unidade consumidora: DIC (duração de interrupção individual), FIC (frequência de interrupção individual), DMIC (duração máxima de interrupção contínua), DICRI (duração da interrupção individual ocorrida em dia crítico) e DISE (duração da interrupção individual ocorrida em situação de emergência).";
 
@@ -2231,6 +2236,7 @@ const TERMOS_INTERNOS: [RegExp, string][] = [
   [/\bdec_concessionarias\b/g, "DEC das concessionárias"],
   [/\bfec_concessionarias\b/g, "FEC das concessionárias"],
   [/\bNumCon\b/g, "número de UCs informado"],
+  [/\bnão expurgável\b/g, "que a regra não exclui"],
   [/\bNumOcorr\b/g, "total de ocorrências"],
   [/\bNie\b/g, "ocorrências com interrupção"],
   [/\bo silver\b/g, "a base tratada"],
@@ -2246,7 +2252,7 @@ const TERMOS_INTERNOS: [RegExp, string][] = [
 export function paraLeitor(texto: string): string {
   let t = texto;
   t = t.replace(/__([^_\n]+?)__/g, "$1").replace(/(^|[\s(])_([^_\n]+?)_(?=[\s).,;:]|$)/g, "$1$2");
-  t = t.replace(/\s*\n\s*\*\s+/g, (m, pos: number, todo: string) => (/[;:,]\s*$/.test(todo.slice(0, pos)) ? " " : "; "));
+  t = t.replace(/\s*\n\s*\*\s+/g, (m, pos: number, todo: string) => (/(?:[;:,]|\s(?:e|ou))\s*$/.test(todo.slice(0, pos)) ? " " : "; "));
   t = t.replace(/\s*\n+\s*/g, " ");
   for (const [de, para] of TERMOS_INTERNOS) t = t.replace(de, para);
   return t.replace(/\s{2,}/g, " ").trim();
@@ -2274,17 +2280,21 @@ export function limpaProveniencia<T extends Proveniencia>(p: T): T {
 
 /* ---------------------------------------------------------------- conjuntos do município (ficha do mapa) */
 
-/** Colunas da tabela dos conjuntos que atendem o município escolhido: DEC, FEC, o limite de cada um e a razão. */
+/**
+ * Colunas da tabela dos conjuntos que atendem o município escolhido: os números primeiro (no celular a tabela rola para o lado e a primeira
+ * coluna fica fixa), com os meses publicados logo depois do nome, para a soma parcial de um conjunto de menos de 12 meses não passar por anual.
+ */
 export const COLUNAS_CONJUNTOS_MUNICIPIO: ColunaTabela[] = [
   { id: "nome", rotulo: "Conjunto", tipo: "texto" },
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
-  { id: "situacao_dec", rotulo: "DEC diante do limite", tipo: "texto", categorica: true },
+  { id: "meses", rotulo: "Meses publicados", tipo: "numero", casas: 0 },
   { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
   { id: "dec_limite", rotulo: "Limite de DEC", tipo: "numero", unidade: "h", casas: 2 },
   { id: "razao_dec", rotulo: "DEC ÷ limite", tipo: "numero", casas: 3 },
   { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
   { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
   { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
+  { id: "situacao_dec", rotulo: "DEC diante do limite", tipo: "texto", categorica: true },
   { id: "situacao_fec", rotulo: "FEC diante do limite", tipo: "texto", categorica: true },
   { id: "conjunto", rotulo: "Código", tipo: "texto" },
 ];
@@ -2326,4 +2336,16 @@ export function textoFecBrasilConfere(g: QualidadeGold): string {
   return centesimos(a.fec) === centesimos(parcelas)
     ? `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) e a soma das parcelas internas coincidem nas duas casas: a ressalva não muda o número nacional.`
     : `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) difere da soma das parcelas internas (${num(parcelas, 2)}).`;
+}
+
+/**
+ * Na ficha do município: conjuntos citados com menos de 12 meses de DEC ou de FEC. O arquivo de municípios calcula o intervalo de DEC e de FEC
+ * só com os conjuntos de 12 meses; a tabela mostra todos os citados, e esta frase diz quais ficam fora do intervalo (nunca o valor parcial como se fosse anual).
+ */
+export function textoMesesIncompletos(linhas: readonly LinhaTabela[]): string {
+  const dec = linhas.filter((l) => typeof l.meses === "number" && l.meses < 12).length;
+  const fec = linhas.filter((l) => typeof l.situacao_fec === "string" && /meses de FEC/.test(l.situacao_fec)).length;
+  if (!dec && !fec) return "";
+  const partes = [dec ? `${num(dec, 0)} com menos de 12 meses de DEC` : null, fec ? `${num(fec, 0)} com menos de 12 meses de FEC` : null].filter((x): x is string => !!x);
+  return `Dos ${num(linhas.length, 0)} conjuntos da tabela, ${listaPt(partes)}: mostram a soma dos meses publicados, sem razão, e não entram no intervalo de ${dec && fec ? "DEC e de FEC" : dec ? "DEC" : "FEC"} da frase acima.`;
 }

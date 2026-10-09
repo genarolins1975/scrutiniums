@@ -56,7 +56,7 @@ const FONTE_CVU = "ONS, CVU das Usinas Térmicas";
 
 export default function GeracaoTermicaPage() {
   const g = lerGold<GoldGeracaoDetalhe>("geracao_detalhe.json");
-  if (!integra(g) || !g.termica) return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "A térmica por motivo de despacho não foi publicada nesta gold." : undefined)} />;
+  if (!integra(g) || !g.termica) return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "A térmica por motivo de despacho não está na base publicada nesta atualização." : undefined)} />;
   const t = g.termica;
   const ev = g.evidencias;
   const op = gold.geracao();

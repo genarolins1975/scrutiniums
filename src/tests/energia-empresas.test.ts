@@ -346,10 +346,12 @@ describe("P037: índice, comparador e ficha usam os mesmos números das golds de
     const neg = textoPares("CERTHIL", "taxa de perdas", pares([["CERTHIL", -17.31], ["A", 3], ["B", 8]], 1));
     expect(neg).toContain("O valor é negativo");
     expect(neg).toContain("não indica a menor perda");
-    expect(neg).not.toContain("Menor é melhor");
+    expect(neg).not.toMatch(/melhor|pior/i);
     const pior = textoPares("AMBAR", "taxa de perdas", pares([["A", 3], ["B", 8], ["AMBAR", 43.19]], 3));
     expect(pior).toContain("é o maior valor do grupo");
-    expect(pior).toContain("Menor é melhor nessa medida.");
+    // a posição descreve a ordem do valor, sem juízo de qualidade ("melhor" e "pior" não são ditos)
+    expect(pior).toContain("A ordem é do menor para o maior valor.");
+    expect(pior).not.toMatch(/melhor|pior/i);
     const meio = textoPares("B", "taxa de perdas", pares([["A", 3], ["B", 8], ["C", 9]], 2));
     expect(meio).not.toContain("do grupo");
   });
@@ -663,7 +665,8 @@ describe("páginas renderizadas no servidor", () => {
   });
 
   it("a síntese de Empresas oferece os dez arquivos do módulo para baixar", () => {
-    expect(sintese).toContain("Baixar os dados do módulo");
+    // os próximos passos ficam numa linha (SeguirPainel): vários arquivos, num bloco recolhível com a contagem
+    expect(sintese).toContain(`Baixar os dados (${G.downloads.length} arquivos)`);
     for (const x of G.downloads) expect(sintese).toContain(`href="${x.url}"`);
     expect((sintese.match(/download=""/g) ?? []).length).toBeGreaterThanOrEqual(G.downloads.length);
   });
@@ -703,7 +706,7 @@ describe("páginas renderizadas no servidor", () => {
   });
 
   it("a síntese traz as quatro perguntas, respostas, números com prova e links para as páginas dos painéis", () => {
-    expect(sintese).toContain("Quem é dono de quê no setor elétrico?");
+    expect(sintese).toContain("Quem atua no setor elétrico?");
     for (const p of PAINEIS_EMPRESAS) {
       expect(sintese).toContain(p.pergunta);
       expect(sintese).toContain(`data-resposta="${p.id}"`);

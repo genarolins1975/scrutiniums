@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -43,9 +43,11 @@ export type PerdasRegulatorioProps = {
   ids: string[];
   rotulos: Record<string, string>;
   versao: string;
+  /** Encaixe da página entre a figura (com a distribuidora escolhida) e a tabela: o estado de cada comparação que a página poderia fazer. */
+  aposFigura?: ReactNode;
 };
 
-export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotulos, versao }: PerdasRegulatorioProps) {
+export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotulos, versao, aposFigura }: PerdasRegulatorioProps) {
   const [sel, selecionar] = useSelecaoPerdas(ids);
   const linhaSel = sel ? linhas.find((l) => l.id === sel) ?? null : null;
   const [prova, tentarProva] = useEvidenciaPerdas(urlEvidencias, linhaSel ? linhaSel.id : null);
@@ -139,6 +141,8 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
           </>
         )}
       </div>
+
+      {aposFigura}
 
       <TabelaInterativa
         titulo="Trechos de referência do percentual técnico"

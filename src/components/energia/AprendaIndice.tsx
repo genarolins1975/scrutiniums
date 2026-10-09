@@ -151,16 +151,12 @@ export function AprendaIndice({
   grupos,
   trilhas,
   estados,
-  comRessalva,
-  emPreparacao,
 }: {
   grupos: GrupoDoIndice[];
   /** Bloco das trilhas, montado no servidor; aparece só quando não há busca. */
   trilhas: ReactNode;
-  /** Frase do acervo: quantos verbetes estão conferidos e quantos têm ressalva (lida do acervo, nunca escrita aqui). */
+  /** Frase do acervo: quantos verbetes estão conferidos e o que cada marca quer dizer (lida do acervo, nunca escrita aqui). */
   estados: string;
-  comRessalva: number;
-  emPreparacao: number;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const campoBusca = useRef<HTMLInputElement>(null);
@@ -278,11 +274,6 @@ export function AprendaIndice({
             </h2>
             <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-estados-do-acervo="">
               {estados}
-            </p>
-            <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-legenda-estados="">
-              Verbete sem marca: conferido na fonte primária.
-              {comRessalva > 0 && " ◐ com ressalva: conferido, com a ressalva declarada no próprio verbete."}
-              {emPreparacao > 0 && " ○ em preparação: sem definição publicada, com o que já foi consultado e o que falta."}
             </p>
             <div className="mt-4">
               <ListaPorTema grupos={grupos} />

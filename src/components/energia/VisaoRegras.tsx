@@ -4,7 +4,7 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, conjuntosLegiveis, datasLegiveis, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, conjuntosLegiveis, datasLegiveis, enumLegivel, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 
 /**
@@ -30,7 +30,7 @@ export function VisaoRegraResumo({
   titulosConjuntos?: Readonly<Record<string, string>>;
 }) {
   const valor = textoValorRegra(o);
-  const evidencia = conjuntosLegiveis(datasLegiveis(o.evidencia), titulosConjuntos);
+  const evidencia = conjuntosLegiveis(enumLegivel(datasLegiveis(o.evidencia)), titulosConjuntos);
   const le = o.linha_estado;
   const trechos = trechosEstado(le);
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;

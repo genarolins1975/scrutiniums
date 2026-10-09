@@ -218,14 +218,17 @@ export function PldHistorico({
           endereco={endereco}
           nota={
             <>
-              Peso estimado: inclui a MMGD estimada pelo ONS desde 2023. O peso é a carga horária do Balanço de Energia nos Subsistemas do ONS
+              Peso estimado: inclui a MMGD estimada pelo ONS desde 2023.
               {urlBalanco ? (
                 <>
                   {" "}
-                  (<a href={urlBalanco} target="_blank" rel="noopener noreferrer" className={linkArquivo}>conjunto de dados no ONS</a>)
+                  A carga do balanço está no{" "}
+                  <a href={urlBalanco} target="_blank" rel="noopener noreferrer" className={linkArquivo}>
+                    conjunto de dados do ONS
+                  </a>
+                  .
                 </>
               ) : null}
-              , que não vai nos arquivos desta página: para refazer a média, baixe-a na fonte.
             </>
           }
         />
@@ -242,11 +245,11 @@ export function PldHistorico({
           endereco={endereco}
           nota={
             <>
-              Mesma base de carga em toda a série: a carga verificada pelo ONS, sem a MMGD.
+              Mesma base de carga em toda a série.
               {urlCargaVerificada ? (
                 <>
                   {" "}
-                  A carga por hora, com e sem MMGD, está neste site em{" "}
+                  A carga por hora, com e sem MMGD, está em{" "}
                   <a href={urlCargaVerificada} download className={linkArquivo}>
                     arquivo da carga verificada (CSV)
                   </a>
@@ -348,7 +351,7 @@ export function PldHistorico({
             {nominal && (
               <span data-texto="escala-das-tres-medias">
                 {" "}
-                A escala vai de zero ao maior preço da série, e por isso as três linhas parecem juntas; a diferença entre elas no último mês completo está em O que mudou, logo
+                A escala vai de zero ao maior preço da série, e por isso as três linhas parecem juntas; a diferença entre elas no último mês completo está em O que mudou, mais
                 abaixo.
               </span>
             )}

@@ -491,7 +491,7 @@ export default function PldPage() {
                           />
                           {diarioDoFluxo && rede.dia_referencia !== pld.dia_referencia && (
                             <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="mapa-mesmo-dia">
-                              O último dia com PLD é {dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até {dataBR(rede.dia_referencia)}. O mapa usa o dia {dataBR(rede.dia_referencia)}
+                              O último dia com PLD é {dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até {dataBR(rede.dia_referencia)}. O mapa usa o dia {dataBR(rede.dia_referencia)}{" "}
                               para o preço e para o fluxo, e as setas mostram o sentido da média do dia.
                             </p>
                           )}
@@ -732,12 +732,12 @@ export default function PldPage() {
                         <p className="font-medium text-carvao">{x.titulo}</p>
                         <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{x.porque}</p>
                         {tarifa && (
-                          <p className="mt-2 text-sm leading-relaxed text-carvao-muted" data-texto="pld-e-conta">
-                            {LIGACAO_COM_A_CONTA}{" "}
-                            <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                          <div className="mt-2" data-texto="pld-e-conta">
+                            <p className="text-sm leading-relaxed text-carvao-muted">{LIGACAO_COM_A_CONTA}</p>
+                            <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
                               Ver como a conta de luz é formada
                             </Link>
-                          </p>
+                          </div>
                         )}
                         <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
                           {x.base} <Conferido ok={x.conferencia === "CONFERIDO"} />

@@ -12,6 +12,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
@@ -26,6 +27,7 @@ import {
   linhasAtos,
   linhasConferencias,
   linhasRegimes,
+  notaTetoComConfirmacaoEmpirica,
   perguntaPainel,
   proximoPainel,
 } from "@/lib/energia/pld";
@@ -66,6 +68,8 @@ export default function PldLimitesPage() {
       </>
     ) : null;
   const passagensLimites = g.conceito.fontes_textuais.filter((f) => ["d5163_art57_p1", "d5163_art57_p2", "d5163_art57_p3", "ren957_art78"].includes(f.id) && f.texto);
+  // a regra dos tetos e do piso está na Resolução Normativa ANEEL nº 1.032/2022 (arts. 22 a 24), nas passagens do verbete dos limites do PLD
+  const passagensRen1032 = (conceito("limites-do-pld")?.fontes ?? []).filter((f) => f.trecho && /1\.032/.test(f.documento));
 
   const ultimo = l.disponivel ? l.regimes[l.regimes.length - 1] : null;
   const oQueMudou = (
@@ -75,7 +79,8 @@ export default function PldLimitesPage() {
   );
   const comoInterpretar = (
     <>
-      Hora no piso é a hora em que o PLD é igual ao piso do ato ao centavo; o mesmo para o teto horário. O teto estrutural é conferido sobre a média das 24 horas do dia. Um centavo
+      Hora no piso é a hora em que o PLD é igual ao piso do ato ao centavo; o mesmo para o teto horário. O teto estrutural vale para a média das 24 horas do dia: pela Resolução
+      Normativa ANEEL nº 1.032/2022 (art. 23, § 3º), se a média diária dos PLDs horários passa dele, a CCEE ajusta a série horária até que a média seja igual ao teto. Um centavo
       acima do piso já é outro preço e fica contado à parte. Cada ano é comparado com o próprio piso.
     </>
   );
@@ -218,10 +223,22 @@ export default function PldLimitesPage() {
                   </SecaoDoPainel>
 
                   <SecaoDoPainel id="norma-limites" titulo="O que a norma diz sobre os limites" nivel="auditar">
+                    {passagensRen1032.map((f) => (
+                      <blockquote key={f.trecho} className="border-l-2 border-energia pl-3 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
+                        <p>“{f.trecho}”</p>
+                        <footer className="mt-1 text-xs text-carvao-muted">
+                          {f.documento}.{" "}
+                          <a href={f.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
+                            endereço oficial
+                          </a>
+                          {f.parafrase ? ` ${f.parafrase}` : ""}
+                        </footer>
+                      </blockquote>
+                    ))}
                     {passagensLimites.map((p) => (
                       <PldPassagem key={p.id} p={p} />
                     ))}
-                    <PldAviso>{l.nota_teto_estrutural}</PldAviso>
+                    <PldAviso>{notaTetoComConfirmacaoEmpirica(l.nota_teto_estrutural)}</PldAviso>
                   </SecaoDoPainel>
 
                   <SecaoDoPainel id="tolerancia" titulo="Tolerância monetária: por que igualdade ao centavo" nivel="auditar">

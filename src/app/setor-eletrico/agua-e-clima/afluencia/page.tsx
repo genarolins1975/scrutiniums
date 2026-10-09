@@ -79,7 +79,7 @@ export default function AfluenciaPage() {
   // o arquivo diário de 2000 em diante é a base da faixa: o CSV do painel começa em 2022, então a base entra à parte
   const downloads = [
     ...g.downloads.filter((d) => /agua_subsistemas_diario|agua_ear_recortes|agua_mlt_mudancas/.test(d.url)),
-    { rotulo: "ENA diária por subsistema e SIN desde 2000, a base da faixa usual (CSV)", url: "/energia/series/ena_diario.csv" },
+    { rotulo: "ENA diária por subsistema e SIN, série completa, a base da faixa usual (CSV)", url: "/energia/series/ena_diario.csv" },
   ];
   const conf = f.conferencia_bacias_sin;
   const implicita = serieMltImplicita(f.mlt);
@@ -116,8 +116,8 @@ export default function AfluenciaPage() {
           siglas={["ENA", "MLT", "REE", "SIN", "MWmed", "EAR", "ONS", "PMO"]}
           titulo={perguntaPainel("p018")}
           lead="A energia natural afluente (ENA) de 30 dias, em % da média de longo termo (MLT)."
-          recorte={`Até ${dataBR(g.dias_referencia.ena)} · SIN, subsistemas, REE e bacias · % da MLT e MWmed`}
-          fonte="Operador Nacional do Sistema Elétrico (ONS), ENA Diário"
+          recorte={`Até ${dataBR(g.dias_referencia.ena)} · SIN, REE e bacias · % da MLT`}
+          fonte="ONS, ENA Diário"
           referencia={
             <>
               ONS, ENA Diário por Subsistema, por REE e por Bacia, até {dataBR(g.dias_referencia.ena)}; MLT do Relatório Executivo do PMO; processado em {carimbo(g.gerado_em)}.
@@ -209,8 +209,9 @@ export default function AfluenciaPage() {
                       id: sm,
                       titulo: NOME_REGIAO[sm],
                       series: [
-                        { id: `${sm}_1`, rotulo: "15 de janeiro", cor: COR_REGIAO[sm], espessura: 2 },
-                        { id: `${sm}_7`, rotulo: "15 de julho", cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
+                        // o rótulo leva o subsistema: a legenda da grade lista as oito linhas, cada uma na cor do seu subsistema
+                        { id: `${sm}_1`, rotulo: `${CURTO_REGIAO[sm]}, 15 de janeiro`, cor: COR_REGIAO[sm], espessura: 2 },
+                        { id: `${sm}_7`, rotulo: `${CURTO_REGIAO[sm]}, 15 de julho`, cor: COR_REGIAO[sm], tracejada: true, espessura: 2 },
                       ],
                     }))}
                   />

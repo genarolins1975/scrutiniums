@@ -214,14 +214,23 @@ export function EmpresasNota({ children }: { children: ReactNode }) {
  * siglas do observatório.
  */
 export function EmpresasComoLer() {
+  const perdas = conceito("perdas-de-energia")?.emUmaFrase;
   const dec = conceito("dec")?.emUmaFrase;
   const fec = conceito("fec")?.emUmaFrase;
+  // conversão de centésimos de hora em minutos, como o verbete do DEC a publica (sem número escrito aqui)
+  const horas = conceito("dec")?.limitacoes?.find((x) => x.startsWith("Centésimos de hora"));
   return (
     <div className="space-y-1.5 border-l-2 border-linha pl-3 text-sm leading-relaxed text-carvao-muted" data-como-ler="continuidade-e-tarifa">
-      <p className="rotulo text-mineral">Como ler continuidade e tarifa</p>
+      <p className="rotulo text-mineral">Como ler perdas, continuidade e tarifa</p>
+      {perdas && (
+        <p>
+          <span className="text-carvao">Perdas totais (SAMP, {SIGLAS.SAMP}).</span> {perdas} A taxa é a perda total medida, em % da energia injetada na rede da própria distribuidora.
+        </p>
+      )}
       {dec && (
         <p>
           <span className="text-carvao">DEC ({SIGLAS.DEC}).</span> {dec}
+          {horas ? ` ${horas}` : ""}
         </p>
       )}
       {fec && (

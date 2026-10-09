@@ -234,18 +234,45 @@ describe("página inicial: mapa didático (P001)", () => {
       expect(ROTULOS_FAIXA[f].x, f).toBeGreaterThan(0);
     }
     expect(NOS_MAPA.filter((n) => n.faixa === "fisico").map((n) => n.id)).toEqual(["recursos", "geracao", "rede", "consumo"]);
-    // alternativa textual equivalente e versão de celular
+    // alternativa textual equivalente e versão de celular: o mapa vertical, com as faixas, os sete elos e as ligações à vista e o conteúdo de cada elo ao toque
     const t = ler(HOME);
-    expect(t).toContain("O mapa em texto");
-    // uma só cópia da versão em texto, visível no celular. No desktop ela sai do fluxo (display: none): cópia só para o leitor de tela
+    // uma só cópia da versão vertical, visível no celular. No desktop ela sai do fluxo (display: none): cópia só para o leitor de tela
     // deixava dezenas de paradas de Tab em links e resumos invisíveis (WCAG 2.4.7), e lá o leitor de tela e o teclado usam os sete botões
     // e o painel do elo, que trazem o mesmo conteúdo (o desenho em si é aria-hidden)
-    expect(t).toMatch(/className="md:hidden"[\s\S]*<MapaEmTexto \/>/);
+    expect(t).toMatch(/className="md:hidden"[\s\S]*<MapaVertical \/>/);
     expect(t).not.toContain('className="md:sr-only"');
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain("aria-pressed={sel}");
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-live="polite"');
-    expect(t.match(/<MapaEmTexto \/>/g)).toHaveLength(1);
+    expect(t.match(/<MapaVertical \/>/g)).toHaveLength(1);
+    // a instrução do desenho (escolher um elo, a forma do traço) é só do desktop; no celular a instrução é outra
+    expect(t).toContain('<span className="hidden md:inline">');
+    expect(t).toContain("Leia os sete elos abaixo");
     expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-hidden="true"');
+  });
+
+  it("o mapa não esquece a distribuição, a diferença entre carga global e carga líquida de MMGD nem os expurgos do DEC (avaliação técnica U01)", () => {
+    const no = (id: string) => NOS_MAPA.find((n) => n.id === id)!;
+    // a geração entra na transmissão ou na distribuição, e a MMGD entra pela distribuição; o elo separa as usinas centralizadas da MMGD
+    const gr = LIGACOES.find((l) => l.de === "geracao" && l.para === "rede")!;
+    expect(gr.texto).toContain("rede de transmissão ou na de distribuição");
+    expect(gr.texto).toContain("micro e minigeração distribuída entra pela distribuição");
+    expect(gr.texto).not.toMatch(/^A energia gerada entra na rede de transmissão\.$/);
+    expect(no("geracao").explicacao).toMatch(/usinas centralizadas/);
+    expect(no("geracao").explicacao).toMatch(/ligada à rede de distribuição/);
+    // a carga publicada inclui a estimativa da MMGD desde 29/04/2023 (carga global); sem ela é a carga líquida de MMGD; nada de "diminui na rede"
+    const c = no("consumo").explicacao;
+    expect(c).toContain("carga global");
+    expect(c).toContain("carga líquida de MMGD");
+    expect(c).toContain("29/04/2023");
+    expect(c).not.toMatch(/diminui na rede/);
+    expect(no("consumo").conceitos.map((x) => x.slug)).toContain("carga-liquida-de-mmgd");
+    // o DEC e o FEC divulgados são os apurados: a regra exclui parcelas, e o total de todas as origens é maior
+    const p = no("pessoas").explicacao;
+    expect(p).toMatch(/DEC e o FEC divulgados são os apurados/);
+    for (const x of ["emergência", "dia crítico", "origem externa", "cortes pedidos pelo ONS"]) expect(p, x).toContain(x);
+    expect(p).toMatch(/somadas todas as origens, é maior/);
+    // texto editorial do mapa sem número da gold: o valor do DEC apurado e o das parcelas vêm da Qualidade, pelos seletores
+    expect(p).not.toMatch(/\d+,\d+\s*h\b/);
   });
 
   it("links antigos com âncora da visão geral seguem para a nova página, e a home não reusa essas âncoras", () => {

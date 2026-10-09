@@ -53,6 +53,7 @@ import {
   perguntaPainel,
   primeiraEntregaAMaturar,
   proximoPainel,
+  provenienciaParaLeitor,
   resumoB0,
   resumoRodadas,
   respostaP013,
@@ -322,7 +323,7 @@ export default function PrevisoesPage() {
                   unidade={emProducao.length === 1 ? "modelo" : "modelos"}
                   periodo={`registro de ${dataBR(dia)}`}
                   cor="var(--serie-referencia)"
-                  nota={emProducao.length ? `Em produção: ${emProducao.join(", ")}.` : "Sem previsão oficial: o B0 é só referência experimental."}
+                  nota={emProducao.length ? `Em produção: ${emProducao.join(", ")}.` : "Sem previsão oficial: o B0 é referência."}
                 />
                 <Numero
                   variante="faixa"
@@ -332,7 +333,7 @@ export default function PrevisoesPage() {
                   formato="num"
                   casas={0}
                   unidade={`de ${g.prospectivo.apuracoes.length} com número`}
-                  periodo="acompanhamento depois da emissão"
+                  periodo="após a emissão"
                   cor="var(--serie-referencia)"
                   nota={proxima ? `A primeira entrega termina em ${dataBR(proxima.termina)}.` : undefined}
                 />
@@ -363,7 +364,7 @@ export default function PrevisoesPage() {
                 comoInterpretar={comoInterpretar13}
                 naoConcluir={naoConcluir13}
                 naoConcluirNoCorpo
-                proveniencia={comRodada && at.proveniencia ? at.proveniencia : g.proveniencia}
+                proveniencia={provenienciaParaLeitor(comRodada && at.proveniencia ? at.proveniencia : g.proveniencia)}
                 complementares={pub ? [{ rotulo: "PLD já publicado no corte", p: pub.proveniencia }] : []}
               >
                 <div className="space-y-6">
@@ -555,7 +556,7 @@ export default function PrevisoesPage() {
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                       {revisoes.some((r) => r.rodadas > 1)
                         ? "Para cada entrega e submercado, as previsões com número de cada rodada e a mudança da última sobre a anterior."
-                        : `Nenhuma das ${revisoes.length} entregas e submercados tem duas previsões com número: só a rodada mais recente tem números, então não há revisão a mostrar.`}
+                        : `Nenhuma das ${revisoes.length} entregas e submercados tem duas previsões com número: só a rodada mais recente tem números: não há revisão a mostrar.`}
                     </p>
                     <TabelaInterativa
                       titulo="Previsões por entrega e rodada"

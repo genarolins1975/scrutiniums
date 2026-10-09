@@ -12,6 +12,7 @@ import {
   COLUNAS_VALORES_FRASES,
   COLUNAS_VERSOES,
   URL_GOLD_VISAO,
+  corteEpisodios,
   linhasAlternativas,
   linhasEpisodios,
   linhasRegras,
@@ -147,6 +148,7 @@ export function VisaoTabelasSobDemanda({
             nomeArquivo="visao-geral-episodios"
             chaveUrl="p007.e"
             ordemInicial={{ coluna: "inicio", direcao: "desc" }}
+            nota={corteEpisodios(g.observar, g.historico_regras.inicio).texto}
           />
           <TabelaInterativa
             {...comum}

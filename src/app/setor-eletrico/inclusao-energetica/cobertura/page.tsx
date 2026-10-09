@@ -55,8 +55,8 @@ export default function CoberturaPage() {
   );
   const naoConcluir = (
     <>
-      Não é a proporção de famílias elegíveis atendidas e não diz quantas famílias estão fora: fatura não é família, a família pode não ser titular da conta, o numerador inclui quem recebe pelo
-      BPC ou por equipamento médico (o que permite à razão passar de 100 sem erro de cálculo) e famílias sem ligação à rede contam só no denominador. A pergunta &ldquo;{c.pergunta}&rdquo; não
+      Não é a proporção de famílias elegíveis atendidas e não diz quantas famílias estão fora: fatura não é família, a família pode não ser titular da conta, o numerador inclui quem recebe o
+      Benefício de Prestação Continuada (BPC) ou usa equipamento médico (o que permite à razão passar de 100 sem erro de cálculo) e famílias sem ligação à rede contam só no denominador. A pergunta &ldquo;{c.pergunta}&rdquo; não
       tem resposta nesta razão.
     </>
   );
@@ -68,15 +68,15 @@ export default function CoberturaPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <InclusaoNavegacao atual="p060" />
         <CabecalhoModulo
-          siglas={["UC", "CDE", "REN", "IBGE", "ANEEL", "MME"]}
+          siglas={["UF", "ANEEL", "IBGE", "UC", "SCS"]}
           rotulo="Inclusão energética"
           titulo="Cobertura potencial da Tarifa Social"
           lead="Faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo. É uma proxy: fatura não é família."
           recorte={`${mes(mesCob)} · ${c.ufs.length} UF e municípios · faturas por 100 famílias`}
-          fonte="ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)"
+          fonte="ANEEL, Beneficiários da Conta de Desenvolvimento Energético (CDE); Ministério do Desenvolvimento e Assistência Social (MDS), Cadastro Único no serviço MI Social"
           referencia={
             <>
-              Faturas com desconto dos arquivos de Beneficiários da CDE de {mes(g.tarifa_social.mes_mapa)}; Cadastro Único (MI Social) de {mes(b?.mes)}; série nacional com o SCS até{" "}
+              Faturas com desconto dos arquivos de Beneficiários da CDE de {mes(g.tarifa_social.mes_mapa)}; Cadastro Único, no serviço MI Social, de {mes(b?.mes)}; série nacional com o SCS até{" "}
               {mes(c.serie_mensal_ultimo?.m)}. Regra de elegibilidade conferida em {dataBR(c.regra_elegibilidade.consultado_em)}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -188,11 +188,11 @@ export default function CoberturaPage() {
 
                 {b && (
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    As famílias cadastradas por município estão em{" "}
+                    As famílias cadastradas de cada município estão no{" "}
                     <a href="/energia/series/inclusao_municipios.csv" download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-                      famílias cadastradas por município (CSV)
+                      arquivo de municípios (CSV)
                     </a>
-                    , que soma o total nacional ({inteiro(b.familias_cadastradas)} famílias).
+                    , que soma o total nacional de {inteiro(b.familias_cadastradas)} famílias.
                   </p>
                 )}
 

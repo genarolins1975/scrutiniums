@@ -46,6 +46,9 @@ const ESQUEMA = {
 
 const GLIFO: Record<EstadoRegra, string> = { ativo: "◉", em_retorno: "◉", em_observacao: "◎", normal: "○", sem_dado: "–", evento: "◇" };
 
+/** Estados cujas regras aparecem abertas: o que pede atenção e o calendário. Normal e sem dado ficam recolhidos num grupo. */
+const ESTADOS_ABERTOS: ReadonlySet<EstadoRegra> = new Set<EstadoRegra>(["ativo", "em_retorno", "em_observacao", "evento"]);
+
 export function VisaoObservar({
   itens,
   comparaveis,
@@ -60,6 +63,15 @@ export function VisaoObservar({
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const nome = useId();
   const visiveis = filtraRegras(itens, v.filtro);
+  // as regras que pedem atenção (alerta, observação) e os eventos do calendário ficam abertas; as normais e sem dado ficam num grupo recolhido
+  const abertasNaLista = visiveis.filter((o) => ESTADOS_ABERTOS.has(o.estado));
+  const quietas = visiveis.filter((o) => !ESTADOS_ABERTOS.has(o.estado));
+  const [grupoAberto, setGrupoAberto] = useState<boolean>(false);
+  // um link para uma regra do grupo recolhido (?p007.regra=...) abre o grupo e a regra
+  const regraNoGrupo = !!v.regra && quietas.some((o) => o.id === v.regra);
+  useEffect(() => {
+    if (regraNoGrupo) setGrupoAberto(true);
+  }, [regraNoGrupo]);
   const porId = new Map(comparaveis.map((c) => [c.id, c]));
   // regras abertas e a gold lida sob demanda para os detalhes
   const [abertas, setAbertas] = useState<Set<string>>(() => new Set(v.regra ? [v.regra] : []));
@@ -81,6 +93,60 @@ export function VisaoObservar({
     };
   }, [precisaGold, gold]);
   const regraDaGold = (id: string): RegraObservar | undefined => gold?.observar.find((o) => o.id === id);
+
+  const item = (o: ItemObservar) => {
+    const destaque = o.estado === "ativo" || o.estado === "em_retorno";
+    return (
+      <li key={o.id} id={`regra-${o.id}`} className="scroll-mt-28 py-4">
+        <div className="grid gap-2 md:grid-cols-[10rem_1fr]">
+          <p className={`rotulo flex items-start gap-2 ${destaque ? "text-carvao" : "text-mineral"}`}>
+            <span aria-hidden="true">{GLIFO[o.estado]}</span>
+            <span>
+              {o.rotuloEstado}
+              <span className="block font-sans text-xs normal-case tracking-normal text-mineral">
+                {o.assunto === "dados" ? "sobre os dados" : o.tipo === "evento" ? "calendário" : "sobre o sistema"} · {dataBR(o.referencia)}
+              </span>
+            </span>
+          </p>
+          <div className="min-w-0">
+            <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>
+              {o.titulo}
+              <span data-nivel="analisar" className="ml-2 font-mono text-xs font-normal text-mineral">
+                código {o.id}
+              </span>
+            </h3>
+            <div className="mt-1">{o.resumo}</div>
+            <details
+              className="mt-2"
+              open={v.regra === o.id || undefined}
+              onToggle={(e) => {
+                const aberto = (e.currentTarget as HTMLDetailsElement).open;
+                if (aberto) setAbertas((s) => (s.has(o.id) ? s : new Set(s).add(o.id)));
+                if (aberto && v.regra !== o.id) definir({ regra: o.id });
+                if (!aberto && v.regra === o.id) definir({ regra: "" });
+              }}
+            >
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">Regra, limiares e histórico</summary>
+              <div className="mt-2">
+                {o.detalhe ??
+                  (abertas.has(o.id) ? (
+                    (() => {
+                      const r = regraDaGold(o.id);
+                      if (r) return <VisaoRegraDetalhe o={r} />;
+                      return (
+                        <p role="status" aria-live="polite" className={`text-sm ${erroGold ? "text-aviso" : "text-carvao-muted"}`}>
+                          {erroGold ? `O detalhe da regra não pôde ser lido da base publicada: ${erroGold}` : gold ? "Regra ausente da base publicada." : "Lendo o detalhe da regra na base publicada…"}
+                        </p>
+                      );
+                    })()
+                  ) : null)}
+              </div>
+            </details>
+          </div>
+        </div>
+      </li>
+    );
+  };
 
   return (
     <div className="space-y-5">
@@ -116,61 +182,18 @@ export function VisaoObservar({
       {visiveis.length === 0 ? (
         <p className="text-sm text-carvao-muted">Nenhuma regra neste recorte nesta publicação.</p>
       ) : (
-        <ul className="divide-y divide-linha border-y border-linha">
-          {visiveis.map((o) => {
-            const destaque = o.estado === "ativo" || o.estado === "em_retorno";
-            return (
-              <li key={o.id} id={`regra-${o.id}`} className="scroll-mt-28 py-4">
-                <div className="grid gap-2 md:grid-cols-[10rem_1fr]">
-                  <p className={`rotulo flex items-start gap-2 ${destaque ? "text-carvao" : "text-mineral"}`}>
-                    <span aria-hidden="true">{GLIFO[o.estado]}</span>
-                    <span>
-                      {o.rotuloEstado}
-                      <span className="block font-sans text-xs normal-case tracking-normal text-mineral">
-                        {o.assunto === "dados" ? "sobre os dados" : o.tipo === "evento" ? "calendário" : "sobre o sistema"} · {dataBR(o.referencia)}
-                      </span>
-                    </span>
-                  </p>
-                  <div className="min-w-0">
-                    <h3 className={`font-medium ${destaque ? "text-carvao" : "text-carvao-muted"}`}>
-                      {o.titulo}
-                      <span data-nivel="analisar" className="ml-2 font-mono text-xs font-normal text-mineral">
-                        código {o.id}
-                      </span>
-                    </h3>
-                    <div className="mt-1">{o.resumo}</div>
-                    <details
-                      className="mt-2"
-                      open={v.regra === o.id || undefined}
-                      onToggle={(e) => {
-                        const aberto = (e.currentTarget as HTMLDetailsElement).open;
-                        if (aberto) setAbertas((s) => (s.has(o.id) ? s : new Set(s).add(o.id)));
-                        if (aberto && v.regra !== o.id) definir({ regra: o.id });
-                        if (!aberto && v.regra === o.id) definir({ regra: "" });
-                      }}
-                    >
-                      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">Regra, limiares e histórico</summary>
-                      <div className="mt-2">
-                        {o.detalhe ??
-                          (abertas.has(o.id) ? (
-                            (() => {
-                              const r = regraDaGold(o.id);
-                              if (r) return <VisaoRegraDetalhe o={r} />;
-                              return (
-                                <p role="status" aria-live="polite" className={`text-sm ${erroGold ? "text-aviso" : "text-carvao-muted"}`}>
-                                  {erroGold ? `O detalhe da regra não pôde ser lido da base publicada: ${erroGold}` : gold ? "Regra ausente da base publicada." : "Lendo o detalhe da regra na base publicada…"}
-                                </p>
-                              );
-                            })()
-                          ) : null)}
-                      </div>
-                    </details>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="space-y-4">
+          {abertasNaLista.length > 0 && <ul className="divide-y divide-linha border-y border-linha">{abertasNaLista.map(item)}</ul>}
+          {abertasNaLista.length === 0 && v.filtro !== "todas" && <p className="text-sm text-carvao-muted">Nenhuma regra em alerta, em observação ou de calendário neste recorte.</p>}
+          {quietas.length > 0 && (
+            <details open={grupoAberto} onToggle={(e) => setGrupoAberto((e.currentTarget as HTMLDetailsElement).open)} data-regras-normais="">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4">
+                {quietas.length === 1 ? "1 regra em estado normal ou sem dado" : `${quietas.length} regras em estado normal ou sem dado`}: ver a lista e o histórico
+              </summary>
+              <ul className="mt-2 divide-y divide-linha border-y border-linha">{quietas.map(item)}</ul>
+            </details>
+          )}
+        </div>
       )}
 
       {dominio && comparaveis.length > 0 && (

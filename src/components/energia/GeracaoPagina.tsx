@@ -23,7 +23,7 @@ import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 
 /**
  * Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel (a mesma do Anexo A).
- * Painel ainda não publicado não é link: sai da lista (hoje os quatro estão publicados).
+ * Painel ainda não publicado não é link: sai da lista (os quatro estão publicados).
  */
 const ITENS_GERACAO = PAINEIS_GERACAO.filter((p) => p.publicado).map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
 
@@ -52,7 +52,7 @@ export function GeracaoIndisponivel({ motivo }: { motivo?: string | null }) {
           titulo="Geração indisponível nesta publicação"
           motivo={
             motivo ??
-            "A gold de detalhe da geração (public/energia/gold/geracao_detalhe.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados de detalhe da geração não foram gerados ou não passaram na validação da publicação; a última publicação válida é mantida quando existe."
           }
         />
         <p className="mt-6 text-sm">

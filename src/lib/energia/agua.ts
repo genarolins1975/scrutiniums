@@ -157,7 +157,7 @@ const NOMES: Record<string, string> = {
   "G. P. SOUZA": "Governador Parigot de Souza",
   "M. MORAES": "Mascarenhas de Moraes",
   "GOV JAYME CANET JR": "Governador Jayme Canet Júnior",
-  "SANTA CLARA-PR": "Santa Clara (PR)",
+  "SANTA CLARA-PR": "Santa Clara (Paraná)",
   CACU: "Caçu",
   IRAPE: "Irapé",
 };
@@ -1068,7 +1068,7 @@ export function textoMudancaMltNoMes(mlt: AguaMlt): string {
   const partes = meses.map((m) => {
     const dif = SUBSISTEMAS.map((sm) => mlt.pmo.comparacao.find((c) => c.mes === m && c.sm === sm))
       .filter((c): c is NonNullable<typeof c> => !!c && c.dif_fim_pct !== null)
-      .map((c) => `${CURTO_REGIAO[c.sm]} ${sinal(c.dif_fim_pct, 3)}%`);
+      .map((c) => `${NOME_REGIAO[c.sm]} ${sinal(c.dif_fim_pct, 3)}%`);
     return `em ${mesExtenso(m)} a MLT do conjunto aberto mudou durante o mês, e no fim dele a diferença com o PMO foi de ${listaTexto(dif)}`;
   });
   return `${cap(partes.join("; "))}.`;
@@ -2068,6 +2068,20 @@ export function mesPreliminar(m: string, corte: string | null | undefined): bool
   return !!corte && ultimoDiaDoMes(m) > corte;
 }
 
+/** Uma frase: quantos dias da janela de chuva são do IMERG Late (preliminar). Vazia quando a janela é toda de produto final. */
+export function resumoPreliminarChuva(dia: string | null | undefined, corteFinal: string | null | undefined, janela = 30): string {
+  const { n, todos } = diasPreliminares(dia, corteFinal, janela);
+  if (!n) return "";
+  return todos ? `Os ${janela} dias da janela são todos preliminares (IMERG Late).` : `${n} dos ${janela} dias da janela são preliminares (IMERG Late).`;
+}
+
+/** Uma frase: quantos dias da janela de temperatura são do GEOS-IT (preliminar). Vazia quando nenhum dia é preliminar. */
+export function resumoPreliminarTemperatura(dia: string | null | undefined, corteMerra2: string | null | undefined, janela = 30): string {
+  const { n, todos } = diasPreliminares(dia, corteMerra2, janela);
+  if (!n) return "";
+  return todos ? `Os ${janela} dias da janela são todos do GEOS-IT, preliminar.` : `${n} dos ${janela} dias da janela são do GEOS-IT, preliminar.`;
+}
+
 /**
  * Chuva dos 30 dias: quantos dias são do IMERG Late (sem calibração por pluviômetros) contra a média do IMERG Final, e o que a fonte
  * recomenda para tendência de clima. Vazio quando a janela é toda de produto final.
@@ -2248,7 +2262,7 @@ export const REVISOES_CAPTURA_UNICA = "Ainda não é possível detectar revisõe
 export function textoRevisoesFicha(rs: readonly AguaRevisaoCaptura[]): string {
   const com = rs.filter((r) => r.dias_revisados > 0);
   if (!com.length) return "Nenhum valor dos últimos 30 dias mudou entre as duas capturas mais recentes.";
-  const dias = com.map((r) => `${CURTO_REGIAO[r.sm]} ${r.dias_revisados}`);
+  const dias = com.map((r) => `${NOME_REGIAO[r.sm]} ${r.dias_revisados}`);
   const maior = [...com].sort((a, b) => Math.abs(b.diferenca ?? 0) - Math.abs(a.diferenca ?? 0))[0];
   return `O ONS revisou a ENA bruta entre as duas capturas mais recentes, em dias dos últimos 30: ${listaTexto(dias)}. A maior diferença foi de ${sinal(maior.diferenca, 1)} MWmed no ${NOME_REGIAO[maior.sm]}, em ${dataBR(maior.dia_maior)}. O detalhe está na tabela de revisões do ONS desta página, em Auditar.`;
 }
@@ -2312,3 +2326,33 @@ export const REGRA_FAIXA_ENA =
 /** Captura usada: a recaptura feita pelo observatório vale mais que a captura principal, e as revisões entre as duas são publicadas. */
 export const REGRA_CAPTURA_ENA =
   "Para cada ano vale a captura mais recente do arquivo anual do ONS por subsistema, entre a captura principal do observatório e a recaptura feita para esta página. As revisões entre as duas nos últimos 30 dias são publicadas na tabela de revisões, nesta seção.";
+
+/* ---------- mapa das bacias: navegação por setas ---------- */
+
+export type DirecaoMapa = "direita" | "esquerda" | "cima" | "baixo";
+
+/**
+ * A bacia mais próxima na direção da seta, a partir do ponto de rótulo de cada contorno (a coordenada y cresce para baixo, como no SVG).
+ * O ângulo pesa mais que a distância ao longo do eixo: a seta para a direita vai à bacia que está à direita e mais alinhada, não à
+ * mais próxima na diagonal. Sem bacia naquela direção, null (o foco fica onde está).
+ */
+export function vizinhaNoMapa(pontos: Readonly<Record<string, readonly [number, number]>>, id: string, dir: DirecaoMapa): string | null {
+  const a = pontos[id];
+  if (!a) return null;
+  let melhor: string | null = null;
+  let melhorNota = Infinity;
+  for (const outro of Object.keys(pontos)) {
+    if (outro === id) continue;
+    const dx = pontos[outro][0] - a[0];
+    const dy = pontos[outro][1] - a[1];
+    const ao = dir === "direita" ? dx : dir === "esquerda" ? -dx : dir === "baixo" ? dy : -dy;
+    if (ao <= 0) continue;
+    const lateral = dir === "direita" || dir === "esquerda" ? Math.abs(dy) : Math.abs(dx);
+    const nota = ao + 2 * lateral;
+    if (nota < melhorNota) {
+      melhorNota = nota;
+      melhor = outro;
+    }
+  }
+  return melhor;
+}

@@ -10,7 +10,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, horaLocal, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
@@ -22,6 +22,7 @@ import {
   notaHorasEntreLimites,
   perguntaPainel,
   proximoPainel,
+  partesDistanciaSemanal,
 } from "@/lib/energia/pld";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -83,6 +84,53 @@ export default function PldCmoPage() {
   const n = c.semanal.fim.length;
   const limitesDisponiveis = g.limites.disponivel ? g.limites : null;
   const notasEntreLimites = Object.fromEntries(SUBMERCADOS.map((sm) => [sm, notaHorasEntreLimites(c, limitesDisponiveis, sm)]));
+  const distanciaSemanal = partesDistanciaSemanal(ref);
+  const seqZeros = a02.sequencia_comum_mais_longa;
+  const notaMarcos = seqZeros ? (
+    <>
+      A marca vertical indica a maior sequência, comum aos quatro subsistemas, de semanas seguidas com CMO semanal zero publicado pelo ONS: {num(seqZeros.semanas, 0)} semanas, de{" "}
+      {dataBR(seqZeros.inicio)} a {dataBR(seqZeros.fim)} (datas das sextas-feiras que encerram as semanas). A fonte não informa o motivo dos zeros, e esta página não atribui causa.
+    </>
+  ) : null;
+  // os quatro submercados da semana de referência lado a lado, com a distância entre eles escrita
+  const quatroSubmercados = ref ? (
+    <SecaoDoPainel id="quatro-submercados" titulo="Os quatro submercados na mesma semana" lead={`Semana operativa de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)}, em R$/MWh nominais.`}>
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Os três valores da semana de referência nos quatro submercados (tabela rolável)">
+        <table className="w-full border-collapse text-sm tabular-nums sm:min-w-[28rem]">
+          <caption className="sr-only">CMO semanal do DECOMP, média do CMO do DESSEM e média do PLD na semana de referência, por submercado, R$/MWh</caption>
+          <thead>
+            <tr className="border-b border-linha text-left text-xs text-mineral">
+              <th scope="col" className="py-2 pr-3 font-normal">Submercado</th>
+              <th scope="col" className="py-2 pr-3 text-right font-normal">CMO semanal (DECOMP)</th>
+              <th scope="col" className="py-2 pr-3 text-right font-normal">Média do DESSEM</th>
+              <th scope="col" className="py-2 text-right font-normal">Média do PLD</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ref.por_sm.map((x) => (
+              <tr key={x.sm} className="border-b border-linha">
+                <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">{NOME_SM[x.sm]}</th>
+                <td className="py-2 pr-3 text-right">{reais(x.decomp)}</td>
+                <td className="py-2 pr-3 text-right">{reais(x.dessem)}</td>
+                <td className="py-2 text-right">{reais(x.pld)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {distanciaSemanal && (
+        <div className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="distancia-semanal">
+          <p className="text-carvao">{distanciaSemanal.introducao}</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5">
+            {distanciaSemanal.itens.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <p className="mt-2">{distanciaSemanal.ressalva}</p>
+        </div>
+      )}
+    </SecaoDoPainel>
+  ) : null;
 
   const oQueMudou = (
     <>
@@ -115,12 +163,12 @@ export default function PldCmoPage() {
           titulo={perguntaPainel("p009")}
           lead={
             <>
-              O <Termo slug="cmo">custo marginal de operação</Termo> (CMO) que o ONS publica por semana e por meia hora e o PLD que a CCEE calcula para cada hora: três produtos
-              diferentes, comparados só no mesmo intervalo.
+              O <Termo slug="cmo">custo marginal de operação</Termo> (CMO) que o ONS publica por semana (modelo <Termo slug="decomp">DECOMP</Termo>) e por meia hora (modelo{" "}
+              <Termo slug="dessem">DESSEM</Termo>) e o PLD que a CCEE calcula para cada hora: três produtos diferentes, comparados só no mesmo intervalo.
             </>
           }
           recorte={ref ? `semana operativa de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)} · quatro submercados · R$/MWh nominais` : "quatro submercados · R$/MWh nominais"}
-          fonte={FONTE}
+          fonte="ONS (CMO) e CCEE (PLD)"
           referencia={
             <>
               ONS (CMO semanal até a semana de {dataBR(g.referencia.ultima_semana_decomp)}; CMO semi-horário até {horaLocal(g.referencia.ultima_meia_hora_cmo)}) e CCEE (PLD até{" "}
@@ -167,6 +215,9 @@ export default function PldCmoPage() {
                   fonte={FONTE}
                   versao={versao}
                   notasEntreLimites={notasEntreLimites}
+                  quatroSubmercados={quatroSubmercados}
+                  notaMarcos={notaMarcos}
+                  regimes={limitesDisponiveis?.regimes ?? []}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                   avisoGrafico={
                     <PldAviso>
@@ -228,7 +279,7 @@ export default function PldCmoPage() {
                   </div>
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="a02" titulo="A sequência de CMO semanal igual a zero (achado A02)" nivel="analisar">
+                <SecaoDoPainel id="a02" titulo="A sequência de semanas com CMO semanal igual a zero" nivel="analisar">
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-textos="a02">
                     {a02.texto ?? `Situação: ${a02.status}.`}
                   </p>
@@ -239,7 +290,7 @@ export default function PldCmoPage() {
                   )}
                   {a02.observacao_formato && <p className="text-xs text-carvao-muted">{a02.observacao_formato}</p>}
                   <TabelaInterativa
-                    titulo="Sequências de semanas com CMO semanal zero, por subsistema (desde 2005)"
+                    titulo="Sequências de 4 semanas seguidas ou mais com CMO semanal zero, por subsistema (desde 2005)"
                     colunas={COLUNAS_SEQUENCIAS}
                     linhas={SUBMERCADOS.flatMap((sm) => a02.sequencias_por_sm[sm].map((s) => ({ id: `${sm}:${s.inicio}`, sm: NOME_SM[sm], inicio: s.inicio, fim: s.fim, semanas: s.semanas })))}
                     chaveLinha="id"
@@ -251,7 +302,7 @@ export default function PldCmoPage() {
                   />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="a02-arquivos" titulo="A02: os zeros no arquivo original" nivel="auditar">
+                <SecaoDoPainel id="a02-arquivos" titulo="Os zeros no arquivo original do ONS" nivel="auditar">
                   <TabelaInterativa
                     titulo="Arquivos anuais do CMO semanal relidos (CSV e Parquet oficiais)"
                     colunas={COLUNAS_A02_ARQUIVOS}
@@ -272,7 +323,7 @@ export default function PldCmoPage() {
                     nomeArquivo="pld-a02-arquivos"
                   />
                   <p className="text-sm text-carvao-muted">
-                    Silver principal contra a releitura do arquivo original: {num(a02.reconciliacao_silver_principal.iguais, 0)} semanas-subsistema iguais,{" "}
+                    A base publicada pelo observatório contra a releitura do arquivo original: {num(a02.reconciliacao_silver_principal.iguais, 0)} semanas-subsistema iguais,{" "}
                     {num(a02.reconciliacao_silver_principal.diferentes, 0)} diferentes. {a02.reconciliacao_silver_principal.nota}
                   </p>
                   {a02.dicionario_permite && (
@@ -282,7 +333,7 @@ export default function PldCmoPage() {
                   )}
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="a03" titulo="Unidade do CMO semanal (achado A03)" nivel="auditar">
+                <SecaoDoPainel id="a03" titulo="Unidade do CMO semanal" nivel="auditar">
                   <p className="text-sm leading-relaxed text-carvao">{a03.decisao}</p>
                   <p className="text-sm text-carvao-muted">
                     Dicionário: média semanal em {a03.unidade_media_semanal_no_dicionario ?? "unidade não informada"}; patamares em {a03.unidade_patamares_no_dicionario ?? "unidade não informada"};
@@ -291,7 +342,7 @@ export default function PldCmoPage() {
                   </p>
                 </SecaoDoPainel>
 
-                <SecaoDoPainel id="alinhamento" titulo="Alinhamento: convenções conferidas nos dados (achado A01)" nivel="auditar">
+                <SecaoDoPainel id="alinhamento" titulo="Alinhamento: convenções conferidas nos dados" nivel="auditar">
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     <li>{c.alinhamento.hora}</li>
                     <li>{c.alinhamento.semana}</li>

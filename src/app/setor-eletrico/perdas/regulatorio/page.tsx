@@ -178,8 +178,15 @@ export default function PerdasRegulatorioPage() {
                 <Resposta id="regulatorio" veredito={vereditoRegulatorio(regulatorio)}>
                   {respostaRegulatorio(regulatorio)}
                 </Resposta>
-                <EstadoDaComparacao titulo="O que esta página compara e o que não compara" itens={comparacoes} />
-                <PerdasRegulatorio linhas={regulatorio} urlEvidencias={g.series.evidencias_tecnica} segmentos={segmentos} ids={ids} rotulos={rotulos} versao={versao} />
+                <PerdasRegulatorio
+                  linhas={regulatorio}
+                  urlEvidencias={g.series.evidencias_tecnica}
+                  segmentos={segmentos}
+                  ids={ids}
+                  rotulos={rotulos}
+                  versao={versao}
+                  aposFigura={<EstadoDaComparacao titulo="O que esta página compara e o que não compara" itens={comparacoes} />}
+                />
                 <Recorte
                   periodo={`trechos de ${mesAno(refTecnica.inicio)} a ${mesAno(refTecnica.fim)}; até ${num(maxTrechos, 0)} mais recentes de cada distribuidora (os demais no CSV)`}
                   universo={`${regulatorio.length} distribuidoras com ao menos um trecho de 6 meses ou mais`}

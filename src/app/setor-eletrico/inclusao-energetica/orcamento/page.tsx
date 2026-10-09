@@ -88,7 +88,7 @@ export default function OrcamentoPage() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <InclusaoNavegacao atual="p061" />
         <CabecalhoModulo
-          siglas={["POF", "IBGE", "SIDRA"]}
+          siglas={["UF", "IBGE", "SIDRA"]}
           rotulo="Inclusão energética"
           titulo="Peso da energia no orçamento das famílias"
           lead="Quanto da despesa e da renda das famílias vai para a energia elétrica, por faixa de renda, na Pesquisa de Orçamentos Familiares (POF) 2017-2018. Cada estimativa traz a sua precisão."

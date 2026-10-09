@@ -14,7 +14,7 @@ import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   COLUNAS_DECOMPOSICAO_SUBSISTEMAS,
-  entidadeLegivel,
+  REVISOES_CAPTURA_UNICA,
   entidadesEar,
   linhasDecomposicaoSubsistemas,
   nomeProprio,
@@ -49,6 +49,11 @@ export default function ReservatoriosPage() {
   const atual = situacaoAtualidade(g.dias_referencia.reservatorios, g.gerado_em, 3, "o ONS publica os dados hidráulicos do dia anterior");
   const downloads = g.downloads.filter((d) => /agua_reservatorios|agua_capacidade/.test(d.url));
   const fimEar = r?.decomposicao_ear[0]?.fim ?? null;
+  // nomes legíveis dos reservatórios sem cadastro quando estão na lista; os demais ficam com o identificador do ONS
+  const semCadastroNomes = r?.sem_cadastro.map((id) => {
+    const x = r.lista.find((y) => y.id === id);
+    return x ? `${nomeProprio(x.nome)} (${id})` : id;
+  });
   const oQueMudou = (
     <>
       {atual.texto} {r ? textoMudancaDecomposicao(r.decomposicao_ear) : ""}
@@ -67,6 +72,40 @@ export default function ReservatoriosPage() {
       explica só pela ENA, e nenhum balanço é fechado por ajuste: o resíduo fica visível. A convenção da defluência foi detectada nos dados e pode mudar sem aviso.
     </>
   );
+  const qualidade = r ? (
+    <SecaoDoPainel
+      id="qualidade"
+      titulo="O balanço dos reservatórios fecha por construção?"
+      lead={`Dos ${r.n_reservatorios} reservatórios dos dados hidráulicos do ONS, ${r.n_com_balanco} têm balanço de 30 dias, e ${r.n_fecham_por_construcao} desses fecham por construção: a afluência publicada sai do próprio balanço, e o fechamento não é prova independente. A lista desta página é menor, os reservatórios com EAR máxima positiva.`}
+    >
+      <FaixaMetricas colunas={2} rotulo="Qualidade do balanço dos reservatórios">
+        <Numero
+          variante="faixa"
+          rotulo="Reservatórios com balanço de 30 dias"
+          natureza="CALCULADO"
+          valor={r.n_com_balanco}
+          formato="num"
+          casas={0}
+          unidade={`de ${r.n_reservatorios} nos dados hidráulicos`}
+          periodo={`${dataBR(r.inicio)} a ${dataBR(r.fim)}`}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Reservatórios que fecham o balanço por construção"
+          natureza="CALCULADO"
+          evidencia={ev.fecham_por_construcao}
+          revisoes={REVISOES_CAPTURA_UNICA}
+          valor={r.n_fecham_por_construcao}
+          formato="num"
+          casas={0}
+          unidade={`de ${r.n_com_balanco} com balanço`}
+          periodo={r.periodo_fecham_por_construcao ?? undefined}
+          nota="Nesses, a afluência publicada sai do próprio balanço: o fechamento não é prova independente."
+          endereco={`${rotaPainel("p020")}#qualidade`}
+        />
+      </FaixaMetricas>
+    </SecaoDoPainel>
+  ) : null;
 
   return (
     <>
@@ -78,9 +117,9 @@ export default function ReservatoriosPage() {
           rotulo="Água e clima"
           siglas={["EAR", "ENA", "MWmed", "ONS"]}
           titulo={perguntaPainel("p020")}
-          lead="A variação de 30 dias da energia armazenada (EAR) de cada subsistema, repartida por reservatório, e a conta da água de cada um, em hm³ (milhões de metros cúbicos)."
-          recorte={r ? `EAR até ${dataBR(fimEar)} · balanço até ${dataBR(r.fim)} · reservatórios do ONS · MWmês e hm³` : undefined}
-          fonte="ONS, EAR por reservatório e dados hidráulicos por reservatório"
+          lead="A variação de 30 dias da energia armazenada (EAR) de cada subsistema, repartida por reservatório, e a conta da água de cada um."
+          recorte={r ? `EAR até ${dataBR(fimEar)} · balanço até ${dataBR(r.fim)} · MWmês e hm³` : undefined}
+          fonte="ONS, EAR e dados hidráulicos por reservatório"
           referencia={
             <>
               ONS, EAR Diário por Reservatório e Dados Hidráulicos por Reservatório, até {dataBR(g.dias_referencia.reservatorios)}; processado em {carimbo(g.gerado_em)}.
@@ -89,50 +128,10 @@ export default function ReservatoriosPage() {
           datas={
             <AguaDatas
               itens={[
-                { rotulo: "EAR por reservatório", dia: fimEar, natureza: "OBSERVADO" },
-                { rotulo: "Dados hidráulicos", dia: g.dias_referencia.reservatorios, natureza: "OBSERVADO" },
+                { rotulo: "EAR por reservatório (energia derivada pelo ONS)", dia: fimEar, natureza: "OBSERVADO" },
+                { rotulo: "Dados hidráulicos (afluência e defluência derivadas pelo ONS)", dia: g.dias_referencia.reservatorios, natureza: "OBSERVADO" },
               ]}
             />
-          }
-          metricas={
-            r ? (
-              <FaixaMetricas colunas={3} rotulo="Indicadores do balanço dos reservatórios">
-                <Numero
-                  variante="faixa"
-                  rotulo="Reservatórios com balanço de 30 dias"
-                  natureza="CALCULADO"
-                  valor={r.n_com_balanco}
-                  formato="num"
-                  casas={0}
-                  unidade={`de ${r.n_reservatorios} nos dados hidráulicos`}
-                  periodo={`${dataBR(r.inicio)} a ${dataBR(r.fim)}`}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo="Reservatórios que fecham o balanço por construção"
-                  natureza="CALCULADO"
-                  evidencia={ev.fecham_por_construcao}
-                  valor={r.n_fecham_por_construcao}
-                  formato="num"
-                  casas={0}
-                  unidade={`de ${r.n_com_balanco} com balanço`}
-                  periodo={r.periodo_fecham_por_construcao ?? undefined}
-                  nota="Nesses, a afluência publicada sai do próprio balanço: o fechamento não é prova independente."
-                  endereco={`${rotaPainel("p020")}#p020`}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo="Resíduo do balanço no reservatório de maior volume útil"
-                  natureza="CALCULADO"
-                  evidencia={ev.balanco_maior_reservatorio}
-                  formato="num"
-                  casas={2}
-                  unidade="hm³"
-                  nota={ev.balanco_maior_reservatorio ? `${entidadeLegivel(ev.balanco_maior_reservatorio.entidade)}: variação observada menos afluência mais defluência.` : undefined}
-                  endereco={`${rotaPainel("p020")}#p020`}
-                />
-              </FaixaMetricas>
-            ) : undefined
           }
         >
           A <Termo slug="ear">EAR</Termo> de um subsistema é a soma da energia guardada em cada reservatório, em <Unidade u="MWmês" />; a parte &ldquo;própria&rdquo; de um reservatório é a energia que a
@@ -145,7 +144,7 @@ export default function ReservatoriosPage() {
             <PainelEvidencia
               id="p020"
               pergunta="Quais reservatórios pesaram na variação da energia armazenada?"
-              subtitulo="Variação da EAR por reservatório (MWmês) e balanço hídrico de 30 dias (hm³) · afluência, defluência, turbinado, vertido, transferência e resíduo"
+              subtitulo="Variação da EAR por reservatório, em MWmês, e a conta da água de cada um"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -173,6 +172,10 @@ export default function ReservatoriosPage() {
                     fonte={FONTE}
                     versao={r.fim}
                     notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                    qualidade={qualidade}
+                    semCadastro={r.sem_cadastro}
+                    evidenciaResiduo={ev.balanco_maior_reservatorio}
+                    enderecoBalanco={`${rotaPainel("p020")}#balanco`}
                   />
                 ) : (
                   <>
@@ -206,7 +209,7 @@ export default function ReservatoriosPage() {
                 {r && (
                   <SecaoDoPainel id="regras-p020" nivel="auditar" titulo="Regras, cobertura, fontes e arquivos">
                     <AguaRegras regras={g.regras} chaves={["balanco_reservatorio", "decomposicao_ear", "capacidade"]} />
-                    <p className="text-sm text-carvao-muted">{textoSemCadastro(r.sem_cadastro.map(nomeProprio))}</p>
+                    <p className="text-sm text-carvao-muted">{textoSemCadastro(semCadastroNomes ?? [])}</p>
                     <p className="text-sm text-carvao-muted">{r.criterio_lista}.</p>
                     <AguaFontes provs={[prov.balanco, prov.capacidade]} />
                   </SecaoDoPainel>

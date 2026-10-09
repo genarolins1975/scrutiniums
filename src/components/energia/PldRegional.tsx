@@ -37,18 +37,22 @@ import {
   linhasAmplitude,
   linhasFluxos,
   linhasJanelaHoraria,
-  linhasMatriz,
+  linhasMatrizDoPeriodo,
   linhasSeparacao,
-  matrizRegional,
+  matrizRegionalDoPeriodo,
   nomePar,
   respostaHora,
   respostaP012,
   rotaPainel,
   serieSeparacaoHoraria,
   textoHora,
+  textoMediaDaAmplitude,
+  textoQuatroNoPiso,
   vereditoP012,
   type MedidaMatriz,
+  type QuatroNoPiso,
 } from "@/lib/energia/pld";
+import Link from "next/link";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { BlocoRegional, Par, PldHorarioRecenteArquivo } from "@/lib/energia/tipos-pld";
 
@@ -63,9 +67,9 @@ import type { BlocoRegional, Par, PldHorarioRecenteArquivo } from "@/lib/energia
  * congestionada).
  *
  * Ordem da página: resposta e escolha de período e par, faixa de medidas, figura principal
- * (horas separadas por par e matriz dos últimos 12 meses), recorte, tabelas, notas do painel e o perfil
- * horário da separação, visível em Entender. O preço e o fluxo na mesma hora e o sentido do fluxo nas
- * horas separadas ficam em Analisar.
+ * (horas separadas por par e a matriz de diferenças, as duas no período escolhido), recorte, tabelas, notas do painel e o perfil
+ * horário da separação (só dos últimos 12 meses, e diz isso), visível em Entender. O preço e o fluxo na mesma hora e o sentido do
+ * fluxo nas horas separadas ficam em Analisar.
  */
 const MEDIDAS_MATRIZ: readonly MedidaMatriz[] = ["dif_media", "frac_separadas"];
 
@@ -79,6 +83,7 @@ export function PldRegional({
   fonte,
   versao,
   horasAcimaLimiarPaginaPld,
+  quatroNoPiso,
   notas,
 }: {
   r: BlocoRegional;
@@ -91,6 +96,8 @@ export function PldRegional({
   versao: string;
   /** Horas dos últimos 30 dias com diferença acima do limiar na página PLD (pld.json), para conferir com a linha "Últimos 30 dias" daqui. */
   horasAcimaLimiarPaginaPld?: number | null;
+  /** Horas com os quatro submercados juntos no piso, por ano (gold de limites): em ano de piso, a separação cai por regra. */
+  quatroNoPiso?: Record<string, QuatroNoPiso>;
   /** Notas do painel (NotasDoPainel), logo depois da figura principal e das tabelas. */
   notas?: ReactNode;
 }) {
@@ -115,10 +122,11 @@ export function PldRegional({
   const a = r.amplitude.find((x) => x.periodo === per) ?? null;
   const s = r.separacao.find((x) => x.periodo === per && x.par === par) ?? null;
   const sep = useMemo(() => linhasSeparacao(r, per), [r, per]);
-  const amp = useMemo(() => linhasAmplitude(r), [r]);
+  const amp = useMemo(() => linhasAmplitude(r, quatroNoPiso), [r, quatroNoPiso]);
   const flx = useMemo(() => linhasFluxos(r, per), [r, per]);
-  const matriz = useMemo(() => matrizRegional(r, mat), [r, mat]);
-  const matTabela = useMemo(() => linhasMatriz(r), [r]);
+  // a matriz e a tabela dela seguem o período escolhido, como as barras por par
+  const matriz = useMemo(() => matrizRegionalDoPeriodo(r, mat, per), [r, mat, per]);
+  const matTabela = useMemo(() => linhasMatrizDoPeriodo(r, per), [r, per]);
   const perfil = useMemo(() => serieSeparacaoHoraria(r), [r]);
   const janela = useMemo(() => (rec ? linhasJanelaHoraria(rec) : []), [rec]);
   const hora = rec ? estadoHora(rec, v.h as string) : null;
@@ -134,6 +142,8 @@ export function PldRegional({
         : `A página PLD conta ${plural(horasAcimaLimiarPaginaPld, "hora", "horas")} nos últimos 30 dias com o mesmo limiar; aqui, Últimos 30 dias dá ${plural(a30.horas_acima_1, "hora", "horas")}.`
       : "Limiar de R$ 1,00/MWh, o mesmo da página PLD.";
   const extremos = extremosMatriz(matriz, mat);
+  const mediaDaAmplitude = a ? textoMediaDaAmplitude(a) : null;
+  const avisoQuatroNoPiso = textoQuatroNoPiso(quatroNoPiso?.[per], rotuloPer);
 
   return (
     <div className="space-y-6">
@@ -182,6 +192,7 @@ export function PldRegional({
           unidade="R$/MWh"
           periodo={rotuloPer}
           motivoAusencia="Sem horas no período."
+          nota={mediaDaAmplitude ?? undefined}
         />
         <Numero
           variante="faixa"
@@ -198,6 +209,16 @@ export function PldRegional({
           nota={ficha ? undefined : "A ficha Comprove é publicada para os últimos 12 meses; os demais períodos estão na tabela e no CSV diário."}
         />
       </FaixaMetricas>
+
+      {avisoQuatroNoPiso && (
+        <p className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-texto="quatro-no-piso">
+          {avisoQuatroNoPiso}{" "}
+          <Link href={`${rotaPainel("p010")}#empates-piso`} className="text-energia-dark underline underline-offset-4">
+            Ver os empates no piso
+          </Link>
+          .
+        </p>
+      )}
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="min-w-0 space-y-3">
@@ -216,7 +237,7 @@ export function PldRegional({
         </div>
         <div className="min-w-0 space-y-3">
           <PldEscolha
-            legenda="Matriz dos últimos 12 meses"
+            legenda={`Matriz de ${rotuloPer}`}
             opcoes={[
               { id: "frac_separadas" as MedidaMatriz, rotulo: "Horas separadas (%)" },
               { id: "dif_media" as MedidaMatriz, rotulo: "Diferença média (R$/MWh)" },
@@ -225,11 +246,11 @@ export function PldRegional({
             onEscolher={(m) => definir({ mat: m })}
           />
           <MapaCalor
-            titulo={mat === "dif_media" ? "Média de PLD da linha menos PLD da coluna, mesma hora, últimos 12 meses" : "Horas em que o par se separou, últimos 12 meses"}
+            titulo={mat === "dif_media" ? `Média de PLD da linha menos PLD da coluna, mesma hora, ${rotuloPer}` : `Horas em que o par se separou, ${rotuloPer}`}
             linhas={matriz.eixo}
             colunas={matriz.eixo}
-            nomeLinhas="Submercado A (linha)"
-            nomeColunas="Submercado B (coluna)"
+            nomeLinhas="Linha"
+            nomeColunas="Coluna"
             valores={matriz.valores}
             escala={mat === "dif_media" ? ESCALA_DIFERENCA : ESCALA_FRACAO}
             unidade={mat === "dif_media" ? "R$/MWh" : "%"}
@@ -244,7 +265,7 @@ export function PldRegional({
           <dt className="rotulo text-mineral">Período</dt>
           <dd className="mt-0.5">
             {rotuloPer}
-            {a ? `, ${dataBR(a.inicio)} a ${dataBR(a.fim)}` : ""}; matriz e perfil horário dos últimos 12 meses
+            {a ? `, ${dataBR(a.inicio)} a ${dataBR(a.fim)}` : ""}; a matriz segue o período; o perfil horário é dos últimos 12 meses, qualquer que seja o período
           </dd>
         </div>
         <div>
@@ -275,20 +296,24 @@ export function PldRegional({
         nota="Diferenças de exatamente um centavo ficam contadas à parte e não entram na separação."
       />
       <TabelaInterativa
-        titulo="Tabela equivalente da matriz: pares ordenados, últimos 12 meses"
+        titulo={`Tabela equivalente da matriz: pares ordenados, ${rotuloPer}`}
         colunas={COLUNAS_MATRIZ}
         linhas={matTabela}
         chaveLinha="id"
         colunaRotulo="a"
         fonte={fonte}
         versao={versao}
-        nomeArquivo="pld-matriz-12m"
+        nomeArquivo={`pld-matriz-${per}`}
         chaveUrl="mat.t"
       />
 
       {notas}
 
-      <SecaoDoPainel id="perfil-horario" titulo="Em que horas do dia cada par se separa?" lead="Fração das horas separadas em cada hora do dia, nos últimos 12 meses, na mesma escala.">
+      <SecaoDoPainel
+        id="perfil-horario"
+        titulo="Em que horas do dia cada par se separa?"
+        lead="Fração das horas separadas em cada hora do dia, nos últimos 12 meses (qualquer que seja o Período escolhido acima), na mesma escala."
+      >
         <Comparador
           rotulo={`Pares nos gráficos (até ${LIMITE_COMPARACAO})`}
           entidades={PARES.map((p) => ({ id: p, rotulo: nomePar(p), sinonimos: [curtoPar(p)] }))}
@@ -321,31 +346,35 @@ export function PldRegional({
       <SecaoDoPainel id="hora-a-hora" titulo="Preço e fluxo na mesma hora, últimas 168 horas" nivel="analisar">
         {rec && hora ? (
           <>
-            <PldLista rotulo="Hora no esquema" opcoes={rec.t.map((t) => ({ id: t, rotulo: textoHora(t) }))} valor={hora.t} onEscolher={(t) => definir({ h: t })} />
-            <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p012-hora" aria-live="polite">
-              {respostaHora(hora)}
-            </p>
-            <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="min-w-0">
-                <MapaSubmercados fluxos={hora.fluxos} precos={hora.precos} diaFluxo={textoHora(hora.t)} diaPreco={`${textoHora(hora.t)} (valor da hora)`} />
+            <div className="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
+              <div className="min-w-0 space-y-3">
+                <PldLista rotulo="Hora no esquema" opcoes={rec.t.map((t) => ({ id: t, rotulo: textoHora(t) }))} valor={hora.t} onEscolher={(t) => definir({ h: t })} />
+                <p className="text-xs leading-relaxed text-carvao-muted" data-texto="hora-aberta">
+                  A hora que abre selecionada é a de maior diferença entre o maior e o menor preço entre as horas com fluxo publicado nas quatro fronteiras (em empate, a mais
+                  recente).
+                </p>
+                <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p012-hora" aria-live="polite">
+                  {respostaHora(hora)}
+                </p>
                 {ultimaHoraFluxo && hora.t > ultimaHoraFluxo && (
-                  <p className="mt-2 text-xs text-carvao-muted">O fluxo do ONS integrado vai até {textoHora(ultimaHoraFluxo)}; nesta hora o fluxo é ausência, não zero.</p>
+                  <p className="text-xs text-carvao-muted">O fluxo do ONS integrado vai até {textoHora(ultimaHoraFluxo)}; nesta hora o fluxo é ausência, não zero.</p>
                 )}
               </div>
               <div className="min-w-0">
-                <GraficoLinhas
-                  titulo="PLD dos quatro submercados, hora a hora"
-                  dados={janela}
-                  chaveX="t"
-                  formatoX="hora"
-                  series={SUBMERCADOS.map((sm) => ({ id: sm, rotulo: NOME_SM[sm], sigla: CURTO_SM[sm], cor: COR_SM[sm] }))}
-                  unidade="R$/MWh"
-                  casas={2}
-                  marcos={[{ x: hora.t, rotulo: `hora no esquema: ${textoHora(hora.t)}` }]}
-                  legendaInterativa
-                />
+                <MapaSubmercados fluxos={hora.fluxos} precos={hora.precos} diaFluxo={textoHora(hora.t)} diaPreco={`${textoHora(hora.t)} (valor da hora)`} />
               </div>
             </div>
+            <GraficoLinhas
+              titulo="PLD dos quatro submercados, hora a hora"
+              dados={janela}
+              chaveX="t"
+              formatoX="hora"
+              series={SUBMERCADOS.map((sm) => ({ id: sm, rotulo: NOME_SM[sm], sigla: CURTO_SM[sm], cor: COR_SM[sm], tracejada: sm === "S" || sm === "N" }))}
+              unidade="R$/MWh"
+              casas={2}
+              marcos={[{ x: hora.t, rotulo: `hora no esquema: ${textoHora(hora.t)}` }]}
+              legendaInterativa
+            />
             <TabelaInterativa
               titulo="Tabela equivalente: PLD, diferença e fluxo na mesma hora"
               colunas={COLUNAS_JANELA_HORARIA}

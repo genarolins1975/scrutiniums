@@ -10,7 +10,9 @@
  * comparam com a referência publicada e escrevem a frase por regra fixa (seção 7.4). Ausência
  * é null e vira "sem dado", nunca zero. Testadas em src/tests/energia-visao.test.ts.
  */
+import { resumo } from "./distribuicao";
 import { dataBR, mesAno, num, plural } from "./formato";
+import { PADRAO_SIGLA, SIGLAS } from "./siglas";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import type { BrasilAnual, Conjuntos } from "./tipos-qualidade";
 import type {
@@ -24,6 +26,7 @@ import type {
   LinhaMultiplos,
   MultiplosVisao,
   PainelDeterminante,
+  ReferenciaPainel,
   RegraObservar,
   SinteseVisaoGold,
   SociedadeVisao,
@@ -344,13 +347,27 @@ const COR_COLUNA: Record<string, string> = {
   geracao_termica_7d: "var(--serie-termica)",
   carga_SIN: "var(--cor-energia)",
 };
-const COR_FRONTEIRA = ["var(--serie-comp-1)", "var(--serie-comp-2)", "var(--serie-comp-3)", "var(--serie-comp-4)"];
+/** Fronteiras da rede em tons neutros: a cor de cada submercado do preço (roxo, laranja, verde, azul) não é reaproveitada para outra entidade na mesma página. */
+const COR_FRONTEIRA = ["var(--serie-1)", "var(--serie-3)", "var(--serie-4)", "var(--serie-2)"];
 const SIGLA_SM: Record<string, string> = { SE: "SE/CO", S: "S", NE: "NE", N: "N" };
 
 export type SerieDeterminante = { id: string; rotulo: string; sigla?: string; cor: string; tracejada?: boolean; espessura?: number };
 
-/** Séries do gráfico de um painel: as colunas publicadas e, na carga, a referência do ano anterior tracejada. */
-export function seriesDeterminante(p: PainelDeterminante): SerieDeterminante[] {
+/** Referência de um painel sem o caminho na gold de origem (o que o gráfico e o cliente precisam). */
+export type ReferenciaLeve =
+  | { tipo: "faixa_constante"; rotulo: string; inferior: number; superior: number }
+  | { tipo: "faixa_por_data"; rotulo: string; inferior: string; superior: string }
+  | { tipo: "serie"; rotulo: string; coluna: string }
+  | { tipo: "zero"; rotulo: string };
+
+/** O mínimo de um painel para desenhar o gráfico: serve ao painel completo da gold e ao painel leve que o cliente recebe. */
+export type PainelGrafico = { id: IdPainelMultiplo; colunas: { id: string; rotulo: string }[]; referencia: ReferenciaLeve };
+
+/** Uma série a mais desenhada no gráfico de um painel (por exemplo a mediana da data da água), com a coluna que a alimenta. */
+export type SerieExtra = { id: string; rotulo: string };
+
+/** Séries do gráfico de um painel: as colunas publicadas, a referência do ano anterior tracejada (carga) e as séries extras tracejadas. */
+export function seriesDeterminante(p: PainelGrafico, extras: readonly SerieExtra[] = []): SerieDeterminante[] {
   const s: SerieDeterminante[] = p.colunas.map((c, i) => {
     const sm = c.id.startsWith("preco_") ? c.id.slice(6) : null;
     return {
@@ -361,11 +378,12 @@ export function seriesDeterminante(p: PainelDeterminante): SerieDeterminante[] {
     };
   });
   if (p.referencia.tipo === "serie") s.push({ id: p.referencia.coluna, rotulo: p.referencia.rotulo, cor: "var(--serie-referencia)", tracejada: true, espessura: 1.5 });
+  for (const e of extras) s.push({ id: e.id, rotulo: e.rotulo, cor: "var(--serie-referencia)", tracejada: true, espessura: 1.5 });
   return s;
 }
 
 /** Faixa de referência desenhada como banda (colunas da gold ou colunas constantes). */
-export function bandaDeterminante(p: PainelDeterminante): { inferior: string; superior: string; rotulo: string } | undefined {
+export function bandaDeterminante(p: PainelGrafico): { inferior: string; superior: string; rotulo: string } | undefined {
   if (p.referencia.tipo === "faixa_por_data") return { inferior: p.referencia.inferior, superior: p.referencia.superior, rotulo: p.referencia.rotulo };
   if (p.referencia.tipo === "faixa_constante") return { inferior: `${p.id}_ref_inf`, superior: `${p.id}_ref_sup`, rotulo: p.referencia.rotulo };
   return undefined;
@@ -376,8 +394,9 @@ export function bandaDeterminante(p: PainelDeterminante): { inferior: string; su
  * do recorte sem alteração; a faixa constante entra como duas colunas com os limites
  * publicados (a mesma faixa em todas as datas, como a gold a define).
  */
-export function dadosDeterminante(p: PainelDeterminante, linhas: readonly LinhaMultiplos[]): Record<string, string | number | null>[] {
+export function dadosDeterminante(p: PainelGrafico, linhas: readonly LinhaMultiplos[], extras: readonly SerieExtra[] = []): Record<string, string | number | null>[] {
   const cols = p.colunas.map((c) => c.id);
+  for (const e of extras) cols.push(e.id);
   const ref = p.referencia;
   if (ref.tipo === "faixa_por_data") cols.push(ref.inferior, ref.superior);
   if (ref.tipo === "serie") cols.push(ref.coluna);
@@ -446,17 +465,19 @@ export function leituraDeterminante(p: PainelDeterminante, m: MultiplosVisao): s
   const valor = valorAtualTexto(p);
   const fmt = (x: number | null) => comUnidade(x, p.unidade, p.casas);
   const ref = p.referencia;
+  // o rótulo da referência já traz parênteses (anos da base, regime metodológico): dentro da leitura eles viram vírgulas
+  const rotulo = minuscula(ref.rotulo).replace(/\s*\(([^()]*)\)/g, ", $1");
   if (ref.tipo === "faixa_constante" || ref.tipo === "faixa_por_data") {
     if (pos.situacao === "sem_referencia") return `${p.titulo}: ${valor}${quem} ${quando}; sem faixa de referência publicada para a data.`;
     const onde = pos.situacao === "dentro" ? "dentro da" : pos.situacao === "acima" ? "acima da" : "abaixo da";
-    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde} faixa de referência (${minuscula(ref.rotulo)}: ${fmt(pos.inferior)} a ${fmt(pos.superior)}).`;
+    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde} faixa de referência (${rotulo}: ${fmt(pos.inferior)} a ${fmt(pos.superior)}).`;
   }
   if (ref.tipo === "serie") {
     if (pos.situacao === "sem_referencia")
-      return `${p.titulo}: ${valor}${quem} ${quando}; sem referência comparável (${minuscula(ref.rotulo)}): o dia do ano anterior não tem valor ou está em outro regime metodológico.`;
+      return `${p.titulo}: ${valor}${quem} ${quando}; sem referência comparável (${rotulo}): o dia do ano anterior não tem valor ou está em outro regime metodológico.`;
     const pctTxt = pos.variacao_pct === null ? "" : `${num(Math.abs(pos.variacao_pct), 1)}% `;
     const onde = pos.situacao === "acima" ? "acima" : pos.situacao === "abaixo" ? "abaixo" : "igual";
-    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde === "igual" ? "igual à" : `${pctTxt}${onde} da`} referência (${minuscula(ref.rotulo)}: ${fmt(pos.referencia)}).`;
+    return `${p.titulo}: ${valor}${quem} ${quando}, ${onde === "igual" ? "igual à" : `${pctTxt}${onde} da`} referência (${rotulo}: ${fmt(pos.referencia)}).`;
   }
   // rede: o sinal dá o sentido; não há referência de capacidade
   const v = pos.valor ?? 0;
@@ -680,6 +701,8 @@ export type DenominadorPerdas = {
   perdasTwh: number;
   taxaReferenciaPct: number;
   taxaPublicadaPct: number;
+  /** Taxa publicada de cada concessionária do universo (perdas ÷ injetada de referência): menor, quartis e maior. */
+  dispersao: { min: number; p25: number; mediana: number; p75: number; max: number } | null;
 };
 
 /** Linha da série `perdas_distribuidoras.csv` (campos do arquivo, como texto). */
@@ -703,6 +726,8 @@ export function denominadorPerdas(
   const perdas = soma("perdas_totais_mwh");
   if (Math.abs(referencia - nacional.injetada_mwh) > 2 || Math.abs(perdas - nacional.perdas_totais_mwh) > 2 || publicada <= 0 || referencia <= 0) return null;
   const mista = doAno.filter((l) => l.origem_injetada === "requerida" || l.origem_injetada === "mista").length;
+  const r = resumo(doAno.map((l) => (l.taxa_total_pct === "" || l.taxa_total_pct === undefined ? null : Number(l.taxa_total_pct))));
+  const dispersao = r.n === doAno.length && r.min !== null && r.p25 !== null && r.mediana !== null && r.p75 !== null && r.max !== null ? { min: r.min, p25: r.p25, mediana: r.mediana, p75: r.p75, max: r.max } : null;
   return {
     ano,
     concessionarias: doAno.length,
@@ -713,6 +738,7 @@ export function denominadorPerdas(
     perdasTwh: perdas / 1e6,
     taxaReferenciaPct: (100 * perdas) / referencia,
     taxaPublicadaPct: (100 * perdas) / publicada,
+    dispersao,
   };
 }
 
@@ -722,6 +748,13 @@ export function textoDenominadorPerdas(d: DenominadorPerdas): string {
     `(fornecida mais irregular mais perdas, leiaute de 2024 da ANEEL) ou uma mistura dos dois leiautes, e não a linha de energia injetada publicada. ` +
     `Com a injetada publicada (${num(d.publicadaTwh, 2)} TWh), a mesma perda de ${num(d.perdasTwh, 2)} TWh daria ${num(d.taxaPublicadaPct, 1)}%, e não ${num(d.taxaReferenciaPct, 1)}%.`
   );
+}
+
+/** Dispersão da taxa entre as concessionárias: a taxa nacional não mostra que ela varia muito de uma distribuidora para outra. */
+export function textoDispersaoPerdas(d: DenominadorPerdas): string {
+  const q = d.dispersao;
+  if (!q) return "";
+  return `A taxa de cada uma das ${num(d.concessionarias, 0)} concessionárias em ${d.ano} vai de ${num(q.min, 1)}% a ${num(q.max, 1)}%; metade ficou entre ${num(q.p25, 1)}% e ${num(q.p75, 1)}%, com mediana de ${num(q.mediana, 1)}%.`;
 }
 
 export function textoDenominadorPerdasCurto(d: DenominadorPerdas): string {
@@ -795,10 +828,35 @@ export function tituloSociedade(it: Pick<ItemSociedade, "id" | "titulo">): strin
   return it.id === "continuidade" ? `${it.titulo} (DEC apurado)` : it.titulo;
 }
 
+/** Título do cartão: o indicador mensal leva o mês no cabeçalho (a Tarifa Social de maio de 2025 não é a de outro mês). */
+export function tituloCartaoSociedade(it: Pick<ItemSociedade, "id" | "titulo" | "periodo">): string {
+  const t = tituloSociedade(it);
+  return it.periodo.tipo === "mensal" ? `${t}, ${periodoCurto(it)}` : t;
+}
+
+/** A tarifa em R$/MWh, a unidade do conjunto de dados e da página Conta de luz, para quem compara com o cartão em R$/kWh. */
+export function textoUnidadeTarifa(valorMwh: number): string {
+  return `O cartão mostra a tarifa em R$/kWh; em R$/MWh, a unidade da página Conta de luz, é o mesmo valor multiplicado por 1.000: R$ ${num(valorMwh, 2)}/MWh.`;
+}
+
 /** Pergunta de cada indicador como a página a escreve; a do DEC diz que só as interrupções apuradas entram. */
 export const PERGUNTA_SOCIEDADE: Partial<Record<IdSociedade, string>> = {
   continuidade: "Quanto tempo e quantas vezes, em média, cada consumidor ficou sem energia no ano, contadas só as interrupções que a regra apura?",
 };
+
+/**
+ * Sigla com o nome por extenso no primeiro uso: "SCS" vira "SCS (Sistema de Controle de Subvenções e Programas Sociais)". Só a primeira
+ * ocorrência de cada sigla da lista, e só se o texto ainda não a expande. O nome vem do dicionário de siglas do observatório.
+ */
+export function expandeSiglas(texto: string, siglas: readonly string[]): string {
+  let out = texto;
+  for (const sigla of siglas) {
+    const nome = SIGLAS[sigla];
+    if (!nome || out.includes(`${sigla} (${nome}`)) continue;
+    out = out.replace(PADRAO_SIGLA(sigla), `${sigla} (${nome})`);
+  }
+  return out;
+}
 
 /** Valor de enumeração da gold ("ATRASADO", "EM DIA") escrito como palavra comum no texto corrido. */
 export function enumLegivel(texto: string): string {
@@ -1373,11 +1431,18 @@ export function periodoDaJanela(linhas: readonly Pick<LinhaMultiplos, "d">[]): s
   return `${dataBR(linhas[0].d)} a ${dataBR(linhas[linhas.length - 1].d)} (${plural(linhas.length, "dia", "dias")} alinhados pelo calendário); cada gráfico termina na data de referência da sua fonte`;
 }
 
-/** Valor do painel no dia de referência lido da própria série exibida (a mesma célula da tabela), com o do cartão como reserva. */
-export function valorDoDiaNaSerie(p: Pick<PainelDeterminante, "colunas" | "data_referencia" | "valor_atual">, linhas: readonly LinhaMultiplos[]): number | null {
-  const col = p.colunas[0]?.id;
-  const x = linhas.find((l) => l.d === p.data_referencia)?.[col];
-  return typeof x === "number" ? x : p.valor_atual.valor;
+/**
+ * Valor do painel no dia de referência lido da própria série exibida (a mesma célula do gráfico e da tabela). A coluna é a do rótulo do
+ * valor do painel (na rede, a fronteira de maior fluxo; no preço, o Sudeste/Centro-Oeste) ou, sem rótulo igual, a primeira. A série só
+ * substitui o valor da gold quando os dois coincidem na casa em que a gold o publica (a gold guarda a EAR do cartão com uma casa e a da
+ * série com duas ou quatro); diferença maior mantém o valor da gold, e dia sem valor continua sem valor.
+ */
+export function valorDoDiaNaSerie(p: Pick<PainelDeterminante, "colunas" | "data_referencia" | "valor_atual" | "casas">, linhas: readonly LinhaMultiplos[]): number | null {
+  const gold = p.valor_atual.valor;
+  const col = (p.colunas.find((c) => c.rotulo === p.valor_atual.rotulo) ?? p.colunas[0])?.id;
+  const x = col ? linhas.find((l) => l.d === p.data_referencia)?.[col] : undefined;
+  if (typeof x !== "number" || gold === null) return gold;
+  return Math.abs(x - gold) <= 0.5 * 10 ** -p.casas + 1e-9 ? x : gold;
 }
 
 /* ---------------------------------------------------------------- r10: regras de cada frase */
@@ -1488,7 +1553,7 @@ export type PainelLeve = {
   unidade: string;
   casas: number;
   colunas: { id: string; rotulo: string }[];
-  referencia: { tipo: ReferenciaPainelTipo; rotulo: string; inferior?: number | string; superior?: number | string; coluna?: string };
+  referencia: ReferenciaLeve;
   dataReferencia: string;
   /** Valor do dia de referência lido da mesma célula do gráfico e da tabela, escrito com uma só passagem de arredondamento. */
   valorTexto: string;
@@ -1503,7 +1568,13 @@ export type PainelLeve = {
   semEvidencia: string | null;
 };
 
-type ReferenciaPainelTipo = PainelDeterminante["referencia"]["tipo"];
+/** A referência do painel sem o caminho na gold e sem o campo `valor` do zero. */
+function referenciaLeve(r: ReferenciaPainel): ReferenciaLeve {
+  if (r.tipo === "faixa_constante") return { tipo: r.tipo, rotulo: r.rotulo, inferior: r.inferior, superior: r.superior };
+  if (r.tipo === "faixa_por_data") return { tipo: r.tipo, rotulo: r.rotulo, inferior: r.inferior, superior: r.superior };
+  if (r.tipo === "serie") return { tipo: r.tipo, rotulo: r.rotulo, coluna: r.coluna };
+  return { tipo: "zero", rotulo: r.rotulo };
+}
 
 /** Determinantes como o cliente os recebe: linhas em colunas (sem repetir o nome de cada campo 90 vezes) e painéis leves. */
 export type DeterminantesLeves = {
@@ -1513,6 +1584,8 @@ export type DeterminantesLeves = {
   campos: string[];
   linhas: (string | number | null)[][];
   colunasTabela: ColunaTabela[];
+  /** Séries a mais desenhadas em alguns painéis (a mediana da data na água), com a coluna que as alimenta. */
+  extras: Partial<Record<IdPainelMultiplo, SerieExtra[]>>;
   paineis: PainelLeve[];
 };
 
@@ -1526,7 +1599,7 @@ export function determinantesDaPagina(
   bandas: readonly { md: string; SIN_p50?: number | null }[],
   periodoMediana: string | null,
 ): { m: MultiplosVisao; leves: DeterminantesLeves } {
-  const dados = comMedianaAgua(comEarPrecisa(m.dados, ear), bandas);
+  const dados = comMedianaAgua(comEarPrecisa(m.dados, ear), bandas).sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
   const temMediana = dados.some((l) => typeof l.agua_p50 === "number");
   const paineis = m.paineis.map((p) => {
     const v = valorDoDiaNaSerie(p, dados);
@@ -1537,6 +1610,7 @@ export function determinantesDaPagina(
   const campos = Array.from(new Set(dados.flatMap((l) => Object.keys(l))));
   campos.sort((a, b) => (a === "d" ? -1 : b === "d" ? 1 : 0));
   const colunasTabela = colunasMultiplos(exato);
+  const extras: Partial<Record<IdPainelMultiplo, SerieExtra[]>> = temMediana ? { agua: [{ id: "agua_p50", rotulo: `Mediana da data${periodoMediana ? ` (${periodoMediana})` : ""}` }] } : {};
   if (temMediana) {
     const i = colunasTabela.findIndex((c) => c.id === "agua_p10");
     const agua = paineis.find((p) => p.id === "agua");
@@ -1550,13 +1624,7 @@ export function determinantesDaPagina(
     unidade: p.unidade,
     casas: p.casas,
     colunas: p.colunas,
-    referencia: {
-      tipo: p.referencia.tipo,
-      rotulo: p.referencia.rotulo,
-      ...(p.referencia.tipo === "faixa_constante" ? { inferior: p.referencia.inferior, superior: p.referencia.superior } : {}),
-      ...(p.referencia.tipo === "faixa_por_data" ? { inferior: p.referencia.inferior, superior: p.referencia.superior } : {}),
-      ...(p.referencia.tipo === "serie" ? { coluna: p.referencia.coluna } : {}),
-    },
+    referencia: referenciaLeve(p.referencia),
     dataReferencia: p.data_referencia,
     valorTexto: valorAtualTexto(p),
     rotuloValor: p.valor_atual.rotulo,
@@ -1578,6 +1646,7 @@ export function determinantesDaPagina(
       campos,
       linhas: dados.map((l) => campos.map((c) => (l[c] as string | number | null | undefined) ?? null)),
       colunasTabela,
+      extras,
       paineis: leves,
     },
   };

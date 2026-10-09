@@ -7,6 +7,7 @@ import GeracaoPage from "@/app/setor-eletrico/geracao/page";
 import GeracaoRestricoesPage from "@/app/setor-eletrico/geracao/restricoes/page";
 import GeracaoCapacidadePage from "@/app/setor-eletrico/geracao/capacidade/page";
 import GeracaoTermicaPage from "@/app/setor-eletrico/geracao/termica/page";
+import { BarraNatureza, BarrasPorFonte, type ItemBarraFonte } from "@/components/energia/GeracaoBarrasFontes";
 import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import { lerCaminho, pontoNaRegiao, type CamadaGeo } from "@/lib/energia/geo";
 import {
@@ -54,6 +55,7 @@ const raiz = process.cwd();
 const G: GoldGeracaoDetalhe = JSON.parse(readFileSync(join(raiz, "public/energia/gold/geracao_detalhe.json"), "utf-8"));
 const UF: CamadaGeo = JSON.parse(readFileSync(join(raiz, "public/energia/geo/uf.json"), "utf-8"));
 const clone = <T,>(x: T): T => structuredClone(x);
+const ocorrencias = (h: string, t: string) => h.split(t).length - 1;
 const eol = G.restricoes.eolica!;
 const cap = G.capacidade!;
 
@@ -350,7 +352,7 @@ describe("P021 na abertura: composição completa, recorte das cinco maiores e c
     expect(d.find((x) => x.rotulo === "Potência instalada")!.natureza).toBe("OBSERVADO");
     expect(d.find((x) => x.rotulo === "Fator de capacidade")).toBeDefined();
     // sem o bloco térmico a parte some, em vez de aparecer vazia
-    expect(datasDoModulo({ ...G, termica: undefined }).map((x) => x.rotulo)).not.toContain("Despacho térmico");
+    expect(datasDoModulo({ ...G, termica: null }).map((x) => x.rotulo)).not.toContain("Despacho térmico");
   });
 
   it("a cobertura mensal lista as categorias que a fonte passou a publicar com outro número de usinas, com os meses e o último", () => {
@@ -375,7 +377,6 @@ describe("abertura de Geração e despacho térmico renderizados", () => {
     const i = h.indexOf("data-faixa-metricas");
     return h.slice(i, h.indexOf("</section>", i));
   };
-  const ocorrencias = (h: string, t: string) => h.split(t).length - 1;
   /** Linhas (<li>) da lista de barras cujo título começa com o texto dado. */
   const linhasDaLista = (h: string, inicioDoTitulo: string) => {
     const i = h.indexOf(`aria-label="${inicioDoTitulo}`);
@@ -523,6 +524,60 @@ describe("abertura de Geração e despacho térmico renderizados", () => {
       expect(achado(entender, /\bgold\b|\bsilver\b|\bpipeline\b/i), `${id}: jargão de bastidor em Entender`).toBeNull();
       expect(achado(entender, /\bP0\d\d\b/), `${id}: código de painel em Entender`).toBeNull();
     }
+  });
+});
+
+describe("barras por fonte: lista com um único tab stop, valor em texto e natureza distinta na forma", () => {
+  const itens: ItemBarraFonte[] = [
+    { id: "hidraulica", rotulo: "Hidráulica", valor: 50, texto: "50,0%", auxiliar: "1.000 MWmed", natureza: "medicao" },
+    { id: "solar_mmgd", rotulo: "Solar MMGD", valor: 10, texto: "10,0%", natureza: "estimativa" },
+    { id: "termica_sem_combustivel", rotulo: "Térmicas Tipo III", valor: 4, texto: "4,0%", natureza: "previsao" },
+    { id: "biomassa", rotulo: "Biomassa", valor: 1, texto: "1,0%", natureza: "medicao", cobertura: true },
+  ];
+
+  it("com seleção, só uma barra entra na ordem do Tab e cada linha é botão com estado; sem seleção, é lista de leitura", () => {
+    const h = renderToStaticMarkup(createElement(BarrasPorFonte, { titulo: "Cinco maiores", itens, onSelecionar: () => undefined, selecionado: "solar_mmgd" }));
+    expect((h.match(/tabindex="0"/g) ?? []).length).toBe(1);
+    expect((h.match(/tabindex="-1"/g) ?? []).length).toBe(itens.length - 1);
+    expect((h.match(/aria-pressed="true"/g) ?? []).length).toBe(1);
+    expect(h).toContain('data-grafico="barras"');
+    expect(h).toContain('data-orientacao="horizontal"');
+    expect(h).toContain('aria-label="Cinco maiores"');
+    const leitura = renderToStaticMarkup(createElement(BarrasPorFonte, { titulo: "Cinco maiores", itens }));
+    expect(leitura).not.toContain("<button");
+    expect(leitura).not.toContain("tabindex");
+  });
+
+  it("o valor e a energia estão em texto, a estimativa e a previsão do ONS têm selo, texto e barra vazada, e a cobertura alterada é dita", () => {
+    const h = renderToStaticMarkup(createElement(BarrasPorFonte, { titulo: "Composição", itens }));
+    expect(h).toContain("50,0%");
+    expect(h).toContain("1.000 MWmed");
+    expect(ocorrencias(h, "pelo ONS, não medição")).toBe(2);
+    expect(h).toContain("Estimado");
+    expect(h).toContain("Previsto");
+    expect(ocorrencias(h, "border-dashed")).toBe(2);
+    expect(ocorrencias(h, "cobertura da fonte alterada")).toBe(1);
+    // medição é barra cheia: a única barra sem contorno tracejado por categoria é a de medição
+    expect(ocorrencias(h, "bg-energia border border-energia")).toBe(2);
+  });
+
+  it("sem categoria com dado a lista diz isso e não desenha barra de valor zero; a barra de natureza nomeia cada parte para o leitor de tela", () => {
+    const vazio = renderToStaticMarkup(createElement(BarrasPorFonte, { titulo: "Composição", itens: [] }));
+    expect(vazio).toContain("Nenhuma categoria com dado nesta janela");
+    expect(vazio).not.toContain("<li");
+    const n = renderToStaticMarkup(
+      createElement(BarraNatureza, {
+        titulo: "Natureza da energia",
+        partes: [
+          { id: "verificada", rotulo: "Medição", pct: 80, texto: "80,0%" },
+          { id: "grupo_mmgd", rotulo: "Estimativa do ONS (MMGD)", pct: 20, texto: "20,0%" },
+        ],
+      }),
+    );
+    expect(n).toContain('role="img"');
+    expect(n).toContain("Natureza da energia: Medição 80,0%; Estimativa do ONS (MMGD) 20,0%");
+    expect(n).toContain("width:80%");
+    expect(n).toContain("width:20%");
   });
 });
 

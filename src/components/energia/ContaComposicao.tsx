@@ -10,15 +10,20 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, num, pct, reais } from "@/lib/energia/formato";
 import {
   CAMPO_DIST,
+  COR_AJUSTE,
   COR_GRUPO,
+  ID_AJUSTE,
   ID_MEDIA,
   ORDEM_GRUPOS,
+  ROTULO_AJUSTE,
+  ajusteDeArredondamento,
   colunasComposicao,
   destacar,
   idsComposicaoPadrao,
   linhasComposicao,
   linhasComposicaoGrafico,
   linhasGrupos,
+  maiorAjuste,
   remover,
   rotuloDistribuidora,
 } from "@/lib/energia/conta";
@@ -71,16 +76,29 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
   // eslint-disable-next-line react-hooks/exhaustive-deps -- a chave resume a lista de ids
   const grafico = useMemo(() => linhasComposicaoGrafico(comp, vigentes, v.unidade, ids), [comp, vigentes, v.unidade, chaveIds]);
   const rotulo = useMemo(() => new Map(comp.grupos.map((g) => [g.id, g.rotulo])), [comp.grupos]);
-  const series = ORDEM_GRUPOS.map((g) => ({
-    id: g,
-    rotulo: rotulo.get(g) ?? g,
-    cor: COR_GRUPO[g],
-  }));
+  const temAjuste = grafico.some((l) => l.ajuste !== null && l.ajuste !== 0);
+  const series = [
+    ...ORDEM_GRUPOS.map((g) => ({
+      id: g as string,
+      rotulo: rotulo.get(g) ?? g,
+      cor: COR_GRUPO[g],
+    })),
+    // a pilha termina no total publicado: a diferença de arredondamento das partes é a última parte, e o total do gráfico é o da tabela
+    ...(temAjuste ? [{ id: ID_AJUSTE, rotulo: ROTULO_AJUSTE, cor: COR_AJUSTE }] : []),
+  ];
+  const maiorRs = useMemo(() => maiorAjuste(linhasComposicao(comp, vigentes, "rs")), [comp, vigentes]);
+  const maiorPct = useMemo(() => maiorAjuste(linhasComposicao(comp, vigentes, "pct")), [comp, vigentes]);
   const destaque = escolhidas[0] ?? null;
   const pedida = v.dist[0] ?? null;
   const dDestaque = destaque ? (comp.distribuidoras.find((d) => d.cnpj === destaque) ?? null) : null;
   const grupos = useMemo(() => linhasGrupos(comp, destaque), [comp, destaque]);
   const nomeDestaque = dDestaque ? rotuloDistribuidora(dDestaque.sigla, dDestaque.cnpj) : null;
+  // diferença de arredondamento de cada coluna da decomposição (média e destaque, em R$/MWh e em %): a linha só aparece quando existe
+  const ajMediaRs = comp.media ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => comp.media!.grupos_rs_mwh[g]), comp.media.total_rs_mwh) : null;
+  const ajMediaPct = comp.media ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => comp.media!.grupos_pct[g]), 100) : null;
+  const ajDestRs = dDestaque ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => dDestaque.grupos[g]), dDestaque.total) : null;
+  const ajDestPct = dDestaque ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => dDestaque.pct[g]), 100) : null;
+  const mostrarAjuste = [ajMediaRs, ajMediaPct, ajDestRs, ajDestPct].some((a) => a !== null && a !== 0);
   const selecionar = (id: string | null) => {
     if (id === ID_MEDIA) return;
     if (id) definir({ dist: destacar(v.dist, id) });
@@ -105,12 +123,17 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
         series={series}
         empilhado
         unidade={unidade}
-        casas={emPct ? 1 : 2}
+        casas={2}
         orientacao="horizontal"
         selecionado={destaque}
         onSelecionar={selecionar}
         alturaCategoria={56}
       />
+
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="arredondamento-composicao">
+        As partes são publicadas com duas casas, cada uma arredondada em separado: a soma delas difere da tarifa em até R$ {num(maiorRs, 2)}/MWh, ou {num(maiorPct, 2)} ponto percentual na leitura em %.
+        {temAjuste ? ` O gráfico mostra essa diferença como "${ROTULO_AJUSTE}"` : " Nesta seleção a soma das partes fecha com a tarifa"}, e todo total é o publicado: o mesmo valor no gráfico, na tabela e no arquivo.
+      </p>
 
       {pedida && !destaque && (
         <p role="status" className="text-sm text-carvao-muted">
@@ -157,29 +180,45 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                     {g.grupo}
                   </th>
                   <td className="py-2 pr-3 text-right">{num(g.media_rs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{pct(g.media_pct, 1)}</td>
+                  <td className="py-2 pr-3 text-right">{pct(g.media_pct, 2)}</td>
                   <td className="py-2 pr-3 text-right text-carvao-muted">{num(g.mediana_rs, 2)}</td>
                   {dDestaque && (
                     <>
                       <td className="py-2 pr-3 text-right">{num(g.dist_rs, 2)}</td>
-                      <td className="py-2 text-right">{pct(g.dist_pct, 1)}</td>
+                      <td className="py-2 text-right">{pct(g.dist_pct, 2)}</td>
                     </>
                   )}
                 </tr>
               ))}
+              {mostrarAjuste && (
+                <tr className="border-b border-linha text-carvao-muted">
+                  <th scope="row" className="py-2 pr-3 text-left font-normal">
+                    {ROTULO_AJUSTE}
+                  </th>
+                  <td className="py-2 pr-3 text-right">{num(ajMediaRs, 2)}</td>
+                  <td className="py-2 pr-3 text-right">{pct(ajMediaPct, 2)}</td>
+                  <td className="py-2 pr-3 text-right" />
+                  {dDestaque && (
+                    <>
+                      <td className="py-2 pr-3 text-right">{num(ajDestRs, 2)}</td>
+                      <td className="py-2 text-right">{pct(ajDestPct, 2)}</td>
+                    </>
+                  )}
+                </tr>
+              )}
               <tr className="border-b border-linha font-medium">
                 <th scope="row" className="py-2 pr-3 text-left text-carvao">
                   Tarifa (TE + TUSD)
                 </th>
                 <td className="py-2 pr-3 text-right">{num(comp.media?.total_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right">{comp.media ? pct(100, 1) : "sem dado"}</td>
+                <td className="py-2 pr-3 text-right">{comp.media ? pct(100, 2) : "sem dado"}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">
                   {num(comp.mediana.mediana_do_total_rs_mwh, 2)} (soma das medianas: {num(comp.mediana.soma_das_medianas_rs_mwh, 2)})
                 </td>
                 {dDestaque && (
                   <>
                     <td className="py-2 pr-3 text-right">{num(dDestaque.total, 2)}</td>
-                    <td className="py-2 text-right">{pct(100, 1)}</td>
+                    <td className="py-2 text-right">{pct(100, 2)}</td>
                   </>
                 )}
               </tr>
@@ -188,12 +227,12 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                   Dos encargos: componentes CDE
                 </th>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.media?.cde_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 1)}</td>
+                <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 2)}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.cde.mediana_rs_mwh, 2)}</td>
                 {dDestaque && (
                   <>
                     <td className="py-2 pr-3 text-right text-carvao-muted">{num(dDestaque.cde, 2)}</td>
-                    <td className="py-2 text-right text-carvao-muted">{pct(dDestaque.cde_pct, 1)}</td>
+                    <td className="py-2 text-right text-carvao-muted">{pct(dDestaque.cde_pct, 2)}</td>
                   </>
                 )}
               </tr>
@@ -262,6 +301,7 @@ function TabelaComposicao({
       selecionado={destaque}
       onSelecionar={onSelecionar}
       dicaBusca="Sigla ou CNPJ"
+      iniciarAberta
       nota="Grupos pela classificação do observatório a partir do código da componente; tributos e iluminação pública não fazem parte da tarifa homologada e ficam fora. Clique numa linha para levá-la ao gráfico."
     />
   );
