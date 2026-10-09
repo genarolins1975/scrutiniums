@@ -3,6 +3,8 @@
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
 import { AguaLegenda } from "@/components/energia/AguaLegenda";
+import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
+import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -10,17 +12,18 @@ import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   COLUNAS_AFLUENCIA,
   COR_REGIAO,
   CURTO_REGIAO,
   NOME_REGIAO,
+  NOTA_ENA_ARMAZENAVEL,
   REGIOES,
   ROTULO_TIPO_RECORTE,
   SUBSISTEMAS,
   TIPOS_RECORTE,
+  evidenciaEnaArmazenavel,
   itensPontosAfluencia,
   linhasAfluencia,
   motivoSemEna30d,
@@ -31,6 +34,7 @@ import {
   respostaAfluencia,
   textoEnaProvisoria,
   textoFaixaJanela,
+  textoMedianaEMlt,
   textoPasso,
   textoReeNovos,
   textoRevisoesFicha,
@@ -88,7 +92,8 @@ const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
  * Números do recorte escolhido: a ENA de 30 dias em % da MLT, a mediana da mesma janela, a ENA do dia em MWmed e, nos subsistemas, a ENA
  * armazenável. Os valores são os campos da própria entidade (os mesmos do gráfico, da tabela e da resposta), a faixa nunca calcula. A ficha
  * "Comprove este número" é a do SIN, a única que a gold publica: outro recorte não a mostra. Os últimos dias são ditos provisórios, e a ficha
- * traz as revisões que a tabela de revisões da página mostra.
+ * traz as revisões que a tabela de revisões da página mostra. A ENA armazenável é dita em % da MLT da ENA bruta (o ONS não publica uma MLT
+ * própria da armazenável), na nota do número e na ficha. Os dois "normais" (a MLT, 100%, e a mediana da janela) ficam lado a lado na nota.
  */
 export function MedidasAfluencia({
   e,
@@ -112,9 +117,10 @@ export function MedidasAfluencia({
         colunas={comArmazenavel ? 4 : 3}
         rotulo={`Indicadores da afluência: ${e.rotulo}`}
         nota={
-          <>
-            {textoEnaProvisoria(revisoes)} O percentual da MLT é outra régua que o da energia armazenada (EAR): os dois não se comparam.
-          </>
+          <div className="space-y-1.5 text-sm">
+            <p>{textoEnaProvisoria(revisoes)}</p>
+            {textoMedianaEMlt(e) && <p data-texto="mediana-e-mlt">{textoMedianaEMlt(e)}</p>}
+          </div>
         }
       >
         <Numero
@@ -161,7 +167,7 @@ export function MedidasAfluencia({
             variante="faixa"
             rotulo="ENA armazenável de 30 dias"
             natureza="CALCULADO"
-            evidencia={ehSin ? evidencias?.enaArm30d : undefined}
+            evidencia={ehSin && evidencias?.enaArm30d ? evidenciaEnaArmazenavel(evidencias.enaArm30d) : undefined}
             revisoes={ehSin ? revisoesFicha : undefined}
             valor={e.pct_mlt_arm_30d ?? null}
             formato="pct"
@@ -169,7 +175,7 @@ export function MedidasAfluencia({
             unidade="da MLT"
             periodo={`30 dias até ${dataBR(e.dia)}`}
             motivoAusencia="Sem ENA armazenável de 30 dias completa nesta publicação."
-            nota="Em % da MLT armazenável: vazões naturais menos as vertidas."
+            nota={NOTA_ENA_ARMAZENAVEL}
             endereco={endereco}
           />
         )}
@@ -235,6 +241,7 @@ export function AguaAfluencia({
             valor={e?.id ?? padrao}
             onEscolher={(x) => selecionar(x)}
           />
+          <AguaRestaurar />
         </div>
       </div>
 
@@ -251,17 +258,18 @@ export function AguaAfluencia({
         selecionado={e?.id ?? null}
         onSelecionar={selecionar}
         ordemInicial={{ por: "valor", direcao: "desc" }}
+        chaveUrl="pts"
       />
 
       <AguaLegenda
         periodo={e ? `30 dias até ${dataBR(e.dia)}; ${textoFaixaJanela(e)}` : "sem janela"}
         universo={universo(tipo, reeNovos)}
-        unidade="% da MLT: soma da ENA bruta dos 30 dias (MWmed·dia: a média de cada dia, em MWmed, o megawatt médio, somada ao longo dos dias) dividida pela soma da MLT vigente em cada dia. Percentil: a posição da ENA entre as dos mesmos dias de anos anteriores. p.p.: ponto percentual, a diferença entre dois percentuais"
+        unidade="% da MLT: a soma da ENA bruta dos 30 dias dividida pela soma da MLT vigente em cada dia (cada dia em MWmed, o megawatt médio, a potência média do dia). Percentil: a posição da ENA entre as dos mesmos dias de anos anteriores. p.p.: ponto percentual, a diferença entre dois percentuais"
       />
 
       {e && <MedidasAfluencia e={e} revisoes={revisoes} evidencias={evidencias} endereco={enderecoMedidas} />}
 
-      <TabelaInterativa
+      <AguaTabela
         titulo={`Tabela equivalente: ENA de 30 dias, ${ROTULO_TIPO_RECORTE[tipo]}`}
         colunas={COLUNAS_AFLUENCIA}
         linhas={linhas}
@@ -311,8 +319,9 @@ export function AguaAfluencia({
         )}
         <p className="text-sm text-carvao-muted">
           Cada ponto é a janela de 30 dias que termina naquele dia. A linha de 100% é a própria MLT, que muda de versão: em comparações longas, o percentual mistura
-          versões da referência (veja a seção sobre a MLT, mais abaixo). A faixa usual de cada data, do 10º ao 90º percentil, não é publicada para esta série: só a da
-          janela mais recente existe, no gráfico de pontos, na tabela e no texto.
+          versões da referência (a seção sobre a MLT, mais abaixo, e as comparações de Analisar tratam disso). A faixa usual de cada data, do 10º ao 90º percentil, não é
+          publicada para esta série: só a da janela mais recente existe, no gráfico de pontos, na tabela e no texto, e o gráfico não diz se cada semana esteve fora do usual. A
+          escolha das regiões é independente do recorte da figura principal: trocar uma não troca a outra.
         </p>
       </SecaoDoPainel>
     </div>

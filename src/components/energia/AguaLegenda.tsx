@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
  */
 export function AguaLegenda({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-sm text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>

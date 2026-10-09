@@ -26,17 +26,11 @@ import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
 const ITENS_AGUA = PAINEIS_AGUA.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
 
 /**
- * Navegação entre os quatro painéis: faixa de páginas irmãs nas páginas filhas; a abertura (armazenamento) não leva a faixa, porque
- * mostra os mesmos destinos como capítulos depois da figura principal (AguaCapitulos), e o mesmo rótulo não aparece duas vezes.
+ * Navegação entre os quatro painéis: a faixa de páginas irmãs no alto de todas elas, a abertura inclusive (a atual vem marcada). A abertura
+ * já mostrou os destinos como capítulos no meio da página, a mais de 2.600 px do alto; a faixa no alto os põe à vista antes do título.
  */
 export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
-  if (atual === "p017") return null;
   return <NavegacaoLocal rotulo="Painéis de água e clima" itens={ITENS_AGUA} atual={atual} />;
-}
-
-/** Capítulos da abertura: os outros três painéis do módulo, cada um com a pergunta que responde. */
-export function AguaCapitulos({ atual = "p017" }: { atual?: PainelAgua }) {
-  return <NavegacaoLocal rotulo="Capítulos de água e clima" itens={ITENS_AGUA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a água" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -75,7 +69,7 @@ export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: s
 /** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
 export function AguaRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl className="grid gap-x-6 gap-y-1 text-sm text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>
@@ -166,7 +160,7 @@ export function AguaFontes({ provs }: { provs: (Proveniencia | undefined)[] }) {
 /** Datas de referência de cada parte da gold: cada número diz o seu dia, sem sugerir simultaneidade. */
 export function AguaDatas({ itens }: { itens: { rotulo: string; dia: string | null; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-carvao-muted" aria-label="Datas de referência de cada parte">
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>

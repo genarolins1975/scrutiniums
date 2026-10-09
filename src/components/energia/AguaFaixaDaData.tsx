@@ -61,12 +61,12 @@ export function AguaFaixaDaData({ e, unidade }: { e: EntidadeEar; unidade: Unida
             style={{ left: x(ear), background: cor, boxShadow: "0 0 0 1px var(--cor-carvao)" }}
           />
         </div>
-        <div aria-hidden="true" className="mt-0.5 flex justify-between text-xs tabular-nums text-mineral">
+        <div aria-hidden="true" className="mt-0.5 flex justify-between text-sm tabular-nums text-carvao-muted">
           <span>0</span>
           <span>{emMw ? `${mwmes(teto)} MWmês` : "100%"}</span>
         </div>
       </div>
-      <ul className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted tabular-nums">
+      <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-carvao-muted tabular-nums">
         <li className="inline-flex items-center gap-1.5">
           <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: cor, boxShadow: "0 0 0 1px var(--cor-carvao)" }} />
           EAR do dia: {formatar(ear)}

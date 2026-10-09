@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AguaClima } from "@/components/energia/AguaClima";
+import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -101,7 +101,8 @@ export default function ClimaPage() {
           rotulo="Água e clima"
           siglas={["SIN", "ENA", "MLT", "EAR", "ONS", "IBGE", "UF"]}
           titulo={perguntaPainel("p019")}
-          lead="Chuva e temperatura estimadas contra a média dos mesmos dias; a previsão fica à parte."
+          lead="Chuva e temperatura estimadas frente à média dos mesmos dias, para ler a água que chega aos reservatórios e a demanda por energia; a previsão fica à parte."
+          limite="São estimativas, não medições de estação, e os dias mais recentes são preliminares. A relação com a afluência e a carga é medida em outros painéis."
           recorte={c ? `Chuva até ${dataBR(g.dias_referencia.precipitacao)} · temperatura até ${dataBR(g.dias_referencia.temperatura)}` : undefined}
           fonte="NASA POWER (estimativas) e ECMWF (previsão)"
           referencia={
@@ -143,10 +144,14 @@ export default function ClimaPage() {
               naoConcluir={naoConcluir}
               naoConcluirNoCorpo
               proveniencia={prov.precipitacao!}
-              complementares={[
-                ...(prov.temperatura ? [{ rotulo: "Temperatura por subsistema", p: prov.temperatura }] : []),
-                ...(prov.previsao ? [{ rotulo: "Previsão (uma rodada)", p: prov.previsao }] : []),
-              ]}
+              complementares={prov.temperatura ? [{ rotulo: "Temperatura por subsistema", p: prov.temperatura }] : []}
+              extraFonte={
+                prov.previsao ? (
+                  <>
+                    Previsão (outra natureza, na própria seção): {prov.previsao.fonte.orgao}, modelo ECMWF IFS 0,25° (referência até {dataBR(prov.previsao.periodo_referencia.fim)}).
+                  </>
+                ) : undefined
+              }
             >
               <div className="space-y-6">
                 {atualChuva.defasada && <AguaAviso tipo="alerta">{atualChuva.texto}</AguaAviso>}
@@ -156,6 +161,8 @@ export default function ClimaPage() {
                     precipitacao={c.precipitacao_bacias}
                     temperatura={c.temperatura}
                     previsao={c.previsao}
+                    provPrevisao={prov.previsao}
+                    validacao={c.validacao_estacoes}
                     base={c.base_climatologica}
                     baciaPadrao={baciaPadrao}
                     urlGeo={URL_GEO_BACIAS}
@@ -177,9 +184,9 @@ export default function ClimaPage() {
                     notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                     aposNotas={
                       <SecaoDoPainel id="separacao" titulo="O que é observação, estimativa, previsão e cenário aqui?">
-                        <dl className="grid gap-px border border-linha bg-linha sm:grid-cols-2" data-separacao="p019">
+                        <dl className="grid gap-3 sm:grid-cols-2" data-separacao="p019">
                           {separacao.map((x) => (
-                            <div key={x.rotulo} data-nivel={x.natureza === "OBSERVADO" ? "analisar" : undefined} className="bg-superficie px-4 py-3">
+                            <div key={x.rotulo} className="border border-linha bg-superficie px-4 py-3">
                               <dt className="flex flex-wrap items-center gap-2">
                                 <span className="rotulo text-mineral">{x.rotulo}</span>
                                 <SeloNatureza natureza={x.natureza} compacto />
@@ -191,19 +198,25 @@ export default function ClimaPage() {
                       </SecaoDoPainel>
                     }
                     fecho={
-                      <SecaoDoPainel id="relacoes" titulo="Onde se mede a relação com a demanda e com a afluência?">
-                        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                          A relação entre temperatura e carga é medida no painel de carga, com a sua própria série de temperatura (NASA POWER nas capitais, ponderadas pela
-                          população; outra seleção de células, então os graus não são os desta página):{" "}
-                          <Link href="/setor-eletrico/carga/clima-e-calendario#p027" className="text-energia-dark underline underline-offset-4">
-                            quanto da variação da carga é compatível com clima e calendário
-                          </Link>
-                          . A chuva se compara com a afluência:{" "}
-                          <Link href={`${rotaPainel("p018")}#p018`} className="text-energia-dark underline underline-offset-4">
-                            a água que chega está acima do normal?
-                          </Link>
-                        </p>
-                      </SecaoDoPainel>
+                      <AguaPontes
+                        itens={[
+                          {
+                            slug: "agua-e-clima",
+                            rotulo: "Afluência",
+                            href: `${rotaPainel("p018")}#p018`,
+                            assunto: "A energia das vazões que chegam aos reservatórios, em % da média de longo termo: a água que chega está acima do normal?",
+                          },
+                          {
+                            slug: "carga",
+                            rotulo: "Carga, clima e calendário",
+                            href: "/setor-eletrico/carga/clima-e-calendario#p027",
+                            assunto:
+                              "Quanto da variação da carga é compatível com clima e calendário, com a sua própria série de temperatura (NASA POWER nas capitais, ponderadas pela população: outra seleção de células, então os graus não são os desta página).",
+                          },
+                          { slug: "pld", assunto: "O preço de curto prazo por submercado: outro painel, com outra fonte de dados." },
+                          { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
+                        ]}
+                      />
                     }
                   />
                 ) : (

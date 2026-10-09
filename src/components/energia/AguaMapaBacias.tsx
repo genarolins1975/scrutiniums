@@ -248,7 +248,7 @@ export function AguaMapaBacias({
                 ))}
               </g>
             )}
-            <g stroke="var(--cor-superficie)" strokeWidth={0.75}>
+            <g stroke="var(--cor-mineral)" strokeWidth={0.75}>
               {geo.features.map((f) => {
                 const d = descricao(f.id);
                 return (
@@ -357,7 +357,7 @@ export function AguaMapaBacias({
           )}
         </p>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-carvao" aria-label={`Legenda: ${unidade}`}>
+        <div role="group" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-carvao" aria-label={`Legenda: ${unidade}`}>
           <span className="rotulo text-mineral">{unidade}</span>
           {classificacao.classes.map((c, i) => (
             <span key={c.indice} className="inline-flex items-center gap-1.5">
@@ -375,23 +375,26 @@ export function AguaMapaBacias({
           </span>
         </div>
 
-        <div className="space-y-1 text-xs leading-relaxed text-carvao-muted">
+        <div className="space-y-2 text-sm leading-relaxed text-carvao-muted">
           <p className="tabular-nums">
             {plural(Object.keys(valores).length, "bacia", "bacias")} com estimativa: {num(comValor, 0)} com valor e {num(Object.keys(valores).length - comValor, 0)} sem dado (hachura).
-            Classes por quebras fixas, as mesmas em todos os períodos: a cor de um mês compara com a de outro.
+            As classes são fixas: a cor de um período compara com a de outro.
           </p>
+          {nota && <p>{nota}</p>}
           {notaSemContorno && <p data-nota-sem-contorno="">{notaSemContorno}</p>}
           {geo && semPoligono.length > 0 && <p>Sem polígono nesta camada: {semPoligono.map((id) => nomes[id] ?? id).join(", ")}.</p>}
           {geo && (
-            <p>
-              {fonteSemArquivo(geo.fonte)}
-              {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome}, simplificação de{" "}
-              {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
-              {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só para
-              orientação.
-            </p>
+            <details data-fonte-do-mapa="">
+              <summary className="min-h-[44px] cursor-pointer py-2 text-energia-dark underline underline-offset-4">Fonte e projeção do mapa</summary>
+              <p className="pb-2">
+                {fonteSemArquivo(geo.fonte)}
+                {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção{" "}
+                {geo.projecao.nome}, simplificação de {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
+                {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só
+                para orientação.
+              </p>
+            </details>
           )}
-          {nota && <p>{nota}</p>}
         </div>
       </div>
     </figure>

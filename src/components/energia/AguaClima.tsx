@@ -4,6 +4,8 @@ import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
 import { AguaLegenda } from "@/components/energia/AguaLegenda";
 import { AguaMapaBacias } from "@/components/energia/AguaMapaBacias";
+import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
+import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -13,6 +15,8 @@ import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   COLUNAS_CHUVA,
@@ -28,12 +32,14 @@ import {
   classificacaoChuva,
   dadosChuvaMes,
   evidenciaComNome,
+  evidenciaTemperaturaComMedias,
   linhasChuva,
   linhasMultiplosChuva,
   linhasPrevisaoChuva,
   linhasPrevisaoTemperatura,
   linhasTemperatura,
   marcaPreliminarSerie,
+  mediaDiariaImerg,
   mesExtenso,
   mesPreliminar,
   nomeProprio,
@@ -56,8 +62,11 @@ import {
   serieMensalTemperatura,
   seriePrevisao,
   textoAssociacao,
+  textoClasseCentralEViesImerg,
+  textoMesesAcimaDaMedia,
   textoPreliminarChuva,
   textoPreliminarTemperatura,
+  textoRevisoesFichaClima,
   textoUltimoMesFinalChuva,
   textoUltimoMesFinalTemperatura,
   valoresMapaChuva,
@@ -70,8 +79,8 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
-import type { Regiao } from "@/lib/energia/tipos";
-import type { AguaPrecipitacaoBacia, AguaPrevisao, AguaTemperatura } from "@/lib/energia/tipos-agua";
+import type { Proveniencia, Regiao } from "@/lib/energia/tipos";
+import type { AguaClima as DadosClima, AguaPrecipitacaoBacia, AguaPrevisao, AguaTemperatura } from "@/lib/energia/tipos-agua";
 
 /**
  * P019, chuva, temperatura e clima: bacia escolhida (?bac=), período do mapa (?per=, a
@@ -113,6 +122,8 @@ export function MedidasClima({
   baciaPadrao,
   evidencias,
   endereco,
+  corteImergFinal,
+  corteMerra2,
 }: {
   bacia: AguaPrecipitacaoBacia;
   nomeBacia: string;
@@ -122,6 +133,9 @@ export function MedidasClima({
   baciaPadrao: string;
   evidencias?: { chuva30d?: Evidencia | null; temperaturaSin30d?: Evidencia | null };
   endereco?: string;
+  /** Último dia com IMERG Final e com MERRA-2: com eles, a linha "Revisões" da ficha diz que a troca do produto preliminar pelo final é uma revisão certa. */
+  corteImergFinal?: string;
+  corteMerra2?: string;
 }) {
   const ehMes = per !== "30d";
   const mes = ehMes ? dadosChuvaMes(bacia, per) : null;
@@ -134,6 +148,7 @@ export function MedidasClima({
         rotulo={`${ehMes ? "Chuva do mês" : "Chuva de 30 dias"}, ${nomeBacia}`}
         natureza="ESTIMADO"
         evidencia={chuvaPadrao && evidencias?.chuva30d ? evidenciaComNome(evidencias.chuva30d, `Chuva de 30 dias, ${nomeBacia}`, `${num(valorChuva, 1)} mm`) : undefined}
+        revisoes={chuvaPadrao && corteImergFinal ? textoRevisoesFichaClima(bacia.dia, corteImergFinal, { preliminar: "IMERG Late", final: "IMERG Final" }) : undefined}
         valor={valorChuva}
         formato="num"
         casas={1}
@@ -149,7 +164,8 @@ export function MedidasClima({
           variante="faixa"
           rotulo={`Anomalia da temperatura, ${NOME_REGIAO[temp.recorte]}, em 30 dias`}
           natureza="ESTIMADO"
-          evidencia={temp.recorte === "SIN" ? evidencias?.temperaturaSin30d : undefined}
+          evidencia={temp.recorte === "SIN" && evidencias?.temperaturaSin30d ? evidenciaTemperaturaComMedias(evidencias.temperaturaSin30d, temp, base) : undefined}
+          revisoes={temp.recorte === "SIN" && corteMerra2 ? textoRevisoesFichaClima(temp.dia, corteMerra2, { preliminar: "GEOS-IT", final: "MERRA-2" }) : undefined}
           valor={temp.anomalia_30d_c}
           formato="num"
           casas={1}
@@ -169,6 +185,8 @@ export function AguaClima({
   precipitacao,
   temperatura,
   previsao,
+  provPrevisao,
+  validacao,
   base,
   baciaPadrao,
   urlGeo,
@@ -190,6 +208,10 @@ export function AguaClima({
   precipitacao: AguaPrecipitacaoBacia[];
   temperatura: AguaTemperatura[];
   previsao: AguaPrevisao | null;
+  /** Proveniência da previsão: a ficha dela mora na seção da previsão, e não no cabeçalho do mapa (que só tem estimativa). */
+  provPrevisao?: Proveniencia | null;
+  /** Conferência do IMERG com estações: o erro conhecido entra na nota do mapa, diante da classe central. */
+  validacao?: DadosClima["validacao_estacoes"];
   base: string;
   baciaPadrao: string;
   urlGeo: string;
@@ -246,6 +268,8 @@ export function AguaClima({
   const mesesHistorico = plural(historico.length, "mês completo", "meses completos");
   const mesesMultiplos = plural(multiplos.length, "mês completo", "meses completos");
 
+  const viesImerg = validacao ? textoClasseCentralEViesImerg(validacao) : "";
+  const mediaImerg = previsao && bacia ? mediaDiariaImerg(previsao, bacia.bacia) : null;
   const mes = bacia && ehMes ? dadosChuvaMes(bacia, per) : null;
   // a cautela fica numa frase junto da resposta; a explicação inteira (produto da base, recomendação da fonte) abre logo abaixo
   const resumoChuva = bacia ? (ehMes ? (mes?.preliminar ? "O mês tem dias do IMERG Late (preliminar)." : "") : resumoPreliminarChuva(bacia.dia, corteImergFinal)) : "";
@@ -292,6 +316,7 @@ export function AguaClima({
             valor={per}
             onEscolher={(x) => definir({ per: x })}
           />
+          <AguaRestaurar />
         </div>
       </div>
 
@@ -307,17 +332,19 @@ export function AguaClima({
         selecionado={bacia?.bacia ?? null}
         onSelecionar={selecionar}
         periodo={rotuloPeriodoMapa(per, dia30)}
-        nota={`Anomalia = chuva do período ÷ média dos mesmos dias (ou do mesmo mês) em ${baseTxt} − 1. No período seco, médias pequenas geram percentuais grandes: confira os milímetros na tabela.`}
+        nota={`Anomalia = chuva do período ÷ média dos mesmos dias (ou do mesmo mês) em ${baseTxt} − 1. No período seco, médias pequenas geram percentuais grandes: confira os milímetros na tabela.${
+          viesImerg ? ` ${viesImerg}` : ""
+        }`}
         notaSemContorno={notaSemContorno}
       />
 
       <AguaLegenda
         periodo={`Chuva: ${rotuloPeriodoMapa(per, dia30)}; média da base em ${baseTxt}`}
-        universo="Chuva estimada por satélite (IMERG, produto de chuva da NASA calibrado por pluviômetros): média dos pontos de grade dentro do contorno de cada bacia do Operador Nacional do Sistema Elétrico (ONS), ponderada pela área"
+        universo="Chuva estimada por satélite (IMERG, produto de chuva da NASA: a versão Final é calibrada por pluviômetros, e a Late, dos dias mais recentes, não é): média dos pontos de grade dentro do contorno de cada bacia do Operador Nacional do Sistema Elétrico (ONS), ponderada pela área"
         unidade="mm de chuva acumulada; anomalia em % da média da base; percentil: a posição da chuva entre as dos mesmos dias de anos anteriores"
       />
 
-      <TabelaInterativa
+      <AguaTabela
         titulo={`Tabela equivalente ao mapa: chuva por bacia, ${rotuloPeriodoMapa(per, dia30)}`}
         colunas={COLUNAS_CHUVA}
         linhas={linhas}
@@ -344,7 +371,18 @@ export function AguaClima({
           titulo="Quanto a chuva e a temperatura escolhidas se afastam da média?"
           lead="A chuva é a da bacia e do período escolhidos no mapa; a temperatura é a do recorte escolhido na seção de temperatura. As duas são estimativas, com datas e fontes próprias, e não equivalem à afluência nem ao armazenamento."
         >
-          <MedidasClima bacia={bacia} nomeBacia={nomes[bacia.bacia]} per={per} base={base} temp={temp} baciaPadrao={baciaPadrao} evidencias={evidencias} endereco={enderecoMedidas} />
+          <MedidasClima
+            bacia={bacia}
+            nomeBacia={nomes[bacia.bacia]}
+            per={per}
+            base={base}
+            temp={temp}
+            baciaPadrao={baciaPadrao}
+            evidencias={evidencias}
+            endereco={enderecoMedidas}
+            corteImergFinal={corteImergFinal}
+            corteMerra2={corteMerra2}
+          />
         </SecaoDoPainel>
       )}
 
@@ -380,7 +418,7 @@ export function AguaClima({
         </SecaoDoPainel>
       )}
 
-      <SecaoDoPainel id="comparar-bacias" titulo="Como a chuva mensal se compara entre bacias?">
+      <SecaoDoPainel id="comparar-bacias" nivel="analisar" titulo="Como a chuva mensal se compara entre bacias?">
         <Comparador
           rotulo={`Bacias comparadas (até ${LIMITE_COMPARACAO})`}
           entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia] }))}
@@ -415,7 +453,11 @@ export function AguaClima({
         )}
       </SecaoDoPainel>
 
-      <SecaoDoPainel id="temperatura" titulo="Como a temperatura estimada se compara com a média dos mesmos dias?">
+      <SecaoDoPainel
+        id="temperatura"
+        titulo="Como a temperatura estimada se compara com a média dos mesmos dias?"
+        lead="O recorte da temperatura se escolhe aqui e não depende da bacia do mapa; os dois entram juntos nos números de destaque, acima."
+      >
         <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="flex flex-col gap-3">
             <RespostaCurta id="p019-temperatura" vivo depois veredito={temp ? vereditoTemperatura(temp) : "Sem temperatura estimada nesta publicação."}>
@@ -474,6 +516,11 @@ export function AguaClima({
                 * Mês com dias do GEOS-IT (preliminar): a barra mistura MERRA-2 e GEOS-IT e pode mudar quando o MERRA-2 chegar.
               </p>
             )}
+            {textoMesesAcimaDaMedia(temp, base) && (
+              <p className="text-sm text-carvao-muted" data-nota="temperatura-tendencia">
+                {textoMesesAcimaDaMedia(temp, base)}
+              </p>
+            )}
           </>
         )}
         <AguaLegenda
@@ -481,7 +528,7 @@ export function AguaClima({
           universo="Temperatura estimada por reanálise (MERRA-2, da NASA: um modelo da atmosfera ajustado a observações; nos dias mais recentes, GEOS-IT, ainda preliminar): células mais populosas de cada UF, ponderadas pela população, somadas por subsistema"
           unidade="°C e anomalia em °C; percentil: a posição da temperatura entre as dos mesmos dias de anos anteriores"
         />
-        <TabelaInterativa
+        <AguaTabela
           titulo="Tabela equivalente: temperatura de 30 dias por recorte"
           colunas={COLUNAS_TEMPERATURA}
           linhas={linhasTemp}
@@ -501,18 +548,26 @@ export function AguaClima({
           id="previsao"
           tracejada
           titulo="O que a previsão de uma rodada mostra para os próximos dias?"
-          lead="Previsão meteorológica: uma rodada de um modelo, não observação. Os dias são dias UTC, o horário universal, três horas à frente de Brasília."
+          lead={
+            <>
+              <span className="mr-2 inline-block align-middle">
+                <SeloNatureza natureza="PREVISTO" />
+              </span>
+              Previsão meteorológica: uma rodada de um modelo, não observação. O modelo é o IFS, do Centro Europeu de Previsão do Tempo a Médio Prazo (ECMWF). Os dias são dias UTC, o
+              horário universal, três horas à frente de Brasília.
+            </>
+          }
         >
           {previsao ? (
             <>
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="previsao">
                 {bacia ? respostaPrevisao(previsao, bacia.bacia) : ""}
               </p>
-              <p className="text-xs text-carvao-muted">
+              <p className="text-sm leading-relaxed text-carvao-muted">
                 Rodada de {rotuloRodada(previsao.emitida_em)}, capturada em {carimbo(previsao.capturada_em)}
-                {previsao.idade_horas !== null ? `, com ${num(previsao.idade_horas, 0)} horas no processamento` : ""}. {previsao.comparabilidade} ECMWF: Centro Europeu de
-                Previsão do Tempo a Médio Prazo; IFS: o modelo global dele.
+                {previsao.idade_horas !== null ? `, com ${num(previsao.idade_horas, 0)} horas no processamento` : ""}. {previsao.comparabilidade}
               </p>
+              {provPrevisao && <SobreEsteDado p={provPrevisao} rotulo="Sobre a previsão" />}
               {bacia && (
                 <GraficoBarras
                   titulo={`Chuva prevista por dia na bacia do ${nomeProprio(bacia.bacia)} (dia UTC)`}
@@ -520,6 +575,9 @@ export function AguaClima({
                   chaveCategoria="d"
                   chaveRotulo="rotulo"
                   series={[{ id: "mm", rotulo: "Chuva prevista", cor: "var(--cor-previsto)" }]}
+                  referencias={
+                    mediaImerg !== null ? [{ valor: mediaImerg, rotulo: "Média do IMERG nos mesmos dias, por dia (outro produto: só ordem de grandeza)" }] : []
+                  }
                   unidade="mm"
                   casas={1}
                 />
@@ -532,7 +590,7 @@ export function AguaClima({
                 unidade="°C"
                 casas={1}
               />
-              <TabelaInterativa
+              <AguaTabela
                 titulo="Chuva prevista por bacia e a média IMERG dos mesmos dias"
                 colunas={COLUNAS_PREVISAO_CHUVA}
                 linhas={linhasPrevisaoChuva(previsao)}

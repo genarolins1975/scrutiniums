@@ -103,7 +103,7 @@ export function AguaLista<T extends string>({
         ))}
       </select>
       {dica && (
-        <p id={`${id}-dica`} className="mt-1 max-w-xs text-xs leading-snug text-carvao-muted">
+        <p id={`${id}-dica`} className="mt-1 max-w-xs text-sm leading-snug text-carvao-muted">
           {dica}
         </p>
       )}

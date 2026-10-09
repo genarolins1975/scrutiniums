@@ -544,7 +544,9 @@ const ROTULO_POSICAO = (e: EntidadeEar) => {
   if (e.sem_armazenamento) return "não se aplica (sem armazenamento)";
   if (!e.faixa) return `sem faixa (${plural(e.anos_na_base, "ano", "anos")} na base)`;
   const amp = capacidadeMuitoAlterada(e) ? amplitudeCapacidade(e) : null;
-  return amp ? `${ROTULO_FAIXA[e.faixa]}, em % (a capacidade variou ${textoAmplitude(amp.razao)} na base)` : ROTULO_FAIXA[e.faixa];
+  // a mesma regra da frase, da dica e da figura: com a EAR máxima variando além do limite na base, a posição frente à faixa não é dita,
+  // nem na tabela nem no arquivo (os valores da faixa, em % e em MWmês, seguem nas colunas ao lado)
+  return amp ? `não dita: a EAR máxima variou ${textoAmplitude(amp.razao)} na base` : ROTULO_FAIXA[e.faixa];
 };
 
 /** As linhas da tabela equivalente e do arquivo exportado (as mesmas do gráfico de pontos). */
@@ -867,6 +869,43 @@ export function textoFaixaJanela(e: Pick<EntidadeEna, "periodo_base" | "anos_na_
   return `sem faixa da mesma janela: ${plural(e.anos_na_base_30d, "ano", "anos")} na base, e o mínimo é 5`;
 }
 
+/**
+ * A referência da ENA armazenável: o ONS publica o percentual da armazenável sobre a MLT da ENA bruta (a MLT diária que sai da razão
+ * armazenável ÷ percentual é a mesma da bruta) e não publica uma MLT própria da armazenável. Dito junto do número, para 100% não ser lido
+ * como o normal da energia armazenável.
+ */
+export const TEXTO_SEM_MLT_ARMAZENAVEL = "o ONS não publica uma MLT própria da armazenável, e 100% não é o normal dela";
+
+/** Nota do número da ENA armazenável de 30 dias, com o que ela é e qual é a referência (a unidade do cartão segue "da MLT", como a dos vizinhos, para não quebrar linha). */
+export const NOTA_ENA_ARMAZENAVEL = `Em % da MLT da ENA bruta (vazões naturais menos as vertidas): ${TEXTO_SEM_MLT_ARMAZENAVEL}.`;
+
+type FichaComRazao = { indicador: string; valor_exibido: string; unidade: string; formula: string; denominador?: { descricao: string } | null };
+
+/**
+ * A mesma ficha de prova da ENA armazenável com o nome certo da referência. A gold a chama de "% da MLT armazenável" e de "soma das MLT
+ * armazenáveis implícitas", mas o denominador é a MLT diária da ENA bruta (no SIN, 1.096.498,51 e 1.096.498,46 MWmed·dia: a mesma soma,
+ * até o arredondamento do percentual). A prova (valores, arquivos, passos) segue como está; só o nome e a fórmula dizem a referência.
+ */
+export function evidenciaEnaArmazenavel<E extends FichaComRazao>(ev: E): E {
+  return {
+    ...ev,
+    indicador: ev.indicador.replace(/ do SIN$/, " do SIN, em % da MLT da ENA bruta"),
+    valor_exibido: ev.valor_exibido.replace("da MLT armazenável", "da MLT da ENA bruta"),
+    unidade: "% da MLT da ENA bruta",
+    formula: `${ev.formula.split(",")[0].replace(/MLTarm/g, "MLT")}, com MLT(d) = ENAarm(d) ÷ (percentual da MLT que o ONS publica para a armazenável) × 100. Essa MLT diária é a da ENA bruta: ${TEXTO_SEM_MLT_ARMAZENAVEL}.`,
+    denominador: ev.denominador ? { ...ev.denominador, descricao: "soma das MLT diárias implícitas, que são as da ENA bruta (MWmed·dia)" } : ev.denominador,
+  };
+}
+
+/**
+ * Os dois "normais" da afluência lado a lado: 100% é a MLT (a média de longo termo que o ONS calcula) e a mediana da janela é o valor do
+ * meio entre os mesmos dias dos anos da base. Sem faixa na base, a mediana não existe e a frase não é escrita.
+ */
+export function textoMedianaEMlt(e: Pick<EntidadeEna, "p50_30d" | "periodo_base">): string | null {
+  if (e.p50_30d === null || !e.periodo_base) return null;
+  return `Há dois “normais”: 100% é a MLT, a média de longo termo que o ONS calcula; ${pct(e.p50_30d, 1)} é a mediana da mesma janela em ${periodoBase(e.periodo_base)}, o valor do meio entre os anos da base. Uma média pode ficar acima da mediana quando poucos anos muito úmidos a puxam para cima.`;
+}
+
 export function respostaAfluencia(e: EntidadeEna): string {
   const de = doRecorte(e.tipo, e.nome);
   if (e.pct_mlt_30d === null) {
@@ -881,7 +920,9 @@ export function respostaAfluencia(e: EntidadeEna): string {
   }
   partes.push(p);
   if (e.pct_mlt_dia !== null) partes.push(`No dia ${dataBR(e.dia)}, ${pct(e.pct_mlt_dia, 1)} da MLT do dia.`);
-  if (e.pct_mlt_arm_30d !== undefined && e.pct_mlt_arm_30d !== null) partes.push(`A ENA armazenável, com a mesma regra, ficou em ${pct(e.pct_mlt_arm_30d, 1)} da sua MLT.`);
+  if (e.pct_mlt_arm_30d !== undefined && e.pct_mlt_arm_30d !== null) {
+    partes.push(`A ENA armazenável (as vazões naturais menos as vertidas), com a mesma regra de 30 dias, ficou em ${pct(e.pct_mlt_arm_30d, 1)} da MLT da ENA bruta: ${TEXTO_SEM_MLT_ARMAZENAVEL}.`);
+  }
   return partes.join(" ");
 }
 
@@ -1489,6 +1530,17 @@ export function linhasPrevisaoTemperatura(pv: AguaPrevisao): LinhaTabela[] {
     .map((t) => ({ id: t.recorte, rotulo: NOME_REGIAO[t.recorte], t_7d: t.t_media_7d_c, merra2_7d: t.merra2_media_7d_c }));
 }
 
+/**
+ * A média do IMERG dos mesmos dias, por dia, para desenhar uma linha de referência no gráfico da chuva prevista por dia: o total da média
+ * (publicado para todos os dias da previsão) dividido pelo número de dias dele. É outro produto (satélite, não modelo) e uma média plana
+ * de dias diferentes, então o gráfico a rotula como ordem de grandeza. Null sem bacia, sem média ou sem dias.
+ */
+export function mediaDiariaImerg(pv: Pick<AguaPrevisao, "bacias" | "n_dias">, bacia: string): number | null {
+  const b = pv.bacias.find((x) => x.bacia === bacia);
+  if (!b || b.imerg_media_total_mm === null || !(pv.n_dias > 0)) return null;
+  return b.imerg_media_total_mm / pv.n_dias;
+}
+
 /** Previsão diária (mm) da bacia escolhida e temperatura média prevista por recorte (°C), por dia UTC. */
 export function seriePrevisao(pv: AguaPrevisao, bacia: string): ({ d: string; mm: number | null } & Partial<Record<Regiao, number | null>>)[] {
   const b = pv.bacias.find((x) => x.bacia === bacia);
@@ -1556,11 +1608,39 @@ export const ROTULO_CONVENCAO: Record<AguaConvencaoDefluencia, string> = {
   indeterminada: "convenção indeterminada",
 };
 
+/**
+ * Nome da parcela de um reservatório na decomposição de um subsistema: a parte a jusante diz que é a parte do reservatório que gera noutro
+ * subsistema. O mesmo reservatório aparece, por exemplo, na decomposição do Sudeste/Centro-Oeste pela parte própria e na do Norte pela parte
+ * a jusante, e sem a palavra "jusante" a frase do Norte pareceria falar de um reservatório do Norte.
+ */
+export function nomeDaParcela(x: { nome: string | null; cod: string; parte: string }): string {
+  return `${nomeProprio(x.nome ?? x.cod)}${x.parte === "jusante" ? ", parte a jusante" : ""}`;
+}
+
+/**
+ * O que são a parte própria e a parte a jusante de um reservatório na EAR de um subsistema (dicionário do ONS e regra da gold: a EAR do
+ * reservatório se divide entre o subsistema da usina e o subsistema a jusante). O exemplo vem da própria decomposição publicada: o primeiro
+ * reservatório que aparece pela parte a jusante num subsistema que não é o dele. Sem exemplo, só a definição.
+ */
+export function textoPartesDaEar(ds: readonly AguaDecomposicaoEar[], lista: readonly Pick<AguaReservatorio, "cod" | "subsistema">[]): string {
+  const base =
+    "Parte própria: a energia que a água do reservatório produz nas usinas do subsistema em que ele fica. Parte a jusante: a que a mesma água produz nas usinas de outro subsistema, rio abaixo.";
+  for (const d of ds) {
+    const p = [...d.maiores_quedas, ...d.maiores_altas].find((x) => x.parte === "jusante");
+    const r = p ? lista.find((x) => x.cod === p.cod) : undefined;
+    const dele = r?.subsistema ? NOME_REGIAO[r.subsistema as Regiao] : undefined;
+    if (p && r && dele && r.subsistema !== d.sm) {
+      return `${base} Exemplo: ${nomeProprio(p.nome ?? p.cod)}, do ${dele}, também entra na decomposição ${DO_REGIAO[d.sm]}, pela parte a jusante.`;
+    }
+  }
+  return base;
+}
+
 export function respostaDecomposicao(d: AguaDecomposicaoEar): string {
   const de = DO_REGIAO[d.sm];
-  const fmt = (x: { nome: string | null; cod: string; delta_mwmes: number | null }) => `${nomeProprio(x.nome ?? x.cod)} (${sinal(x.delta_mwmes, 1)})`;
+  const fmt = (x: { nome: string | null; cod: string; parte: string; delta_mwmes: number | null }) => `${nomeDaParcela(x)} (${sinal(x.delta_mwmes, 1)})`;
   const partes = [
-    `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, a EAR ${de} variou ${sinal(d.delta_ear_mwmes, 1)} MWmês. A soma das variações dos ${d.n_reservatorios} reservatórios que contam no subsistema (parte própria e parte a jusante) dá ${sinal(d.soma_reservatorios_mwmes, 1)} MWmês, com resíduo de ${num(d.residuo_mwmes, 3)} MWmês.`,
+    `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, a EAR ${de} variou ${sinal(d.delta_ear_mwmes, 1)} MWmês. A soma das variações dos ${d.n_reservatorios} reservatórios que contam no subsistema (a parte própria de cada um, nas usinas do subsistema dele, e a parte a jusante, nas usinas de outro subsistema, rio abaixo) dá ${sinal(d.soma_reservatorios_mwmes, 1)} MWmês, com resíduo de ${num(d.residuo_mwmes, 3)} MWmês.`,
   ];
   const quedas = d.maiores_quedas.filter((x) => (x.delta_mwmes ?? 0) < 0).slice(0, 3);
   const altas = d.maiores_altas.filter((x) => (x.delta_mwmes ?? 0) > 0).slice(0, 3);
@@ -1588,7 +1668,10 @@ export function vereditoDecomposicao(d: AguaDecomposicaoEar): string {
   const lista = queda ? d.maiores_quedas : d.maiores_altas;
   const maior = lista.find((x) => (queda ? (x.delta_mwmes ?? 0) < 0 : (x.delta_mwmes ?? 0) > 0));
   const mudou = d.delta_ear_mwmes === 0 ? "ficou igual" : `${queda ? "caiu" : "subiu"} ${num(Math.abs(d.delta_ear_mwmes), 1)} MWmês`;
-  const principal = maior ? `; ${queda ? "a maior queda" : "a maior alta"} foi a de ${nomeProprio(maior.nome ?? maior.cod)} (${num(Math.abs(maior.delta_mwmes ?? 0), 1)} MWmês)` : "";
+  const nome = maior ? nomeProprio(maior.nome ?? maior.cod) : "";
+  // a parte a jusante é de um reservatório de outro subsistema: a frase diz que a água dele gera aqui, para não parecer um reservatório de cá
+  const quem = maior?.parte === "jusante" ? `a da parte a jusante de ${nome}, a água dele que gera neste subsistema` : `a de ${nome}`;
+  const principal = maior ? `; ${queda ? "a maior queda" : "a maior alta"} foi ${quem} (${num(Math.abs(maior.delta_mwmes ?? 0), 1)} MWmês)` : "";
   return `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, a energia armazenada ${de} ${mudou}${principal}.`;
 }
 
@@ -1642,7 +1725,7 @@ export function barrasDecomposicaoComRestante(d: AguaDecomposicaoEar): BarraParc
 export function textoParcelasFaltantes(d: AguaDecomposicaoEar): string {
   const r = restanteDecomposicao(d);
   if (!r) return "";
-  return `O gráfico mostra ${r.nListadas} das ${d.n_reservatorios} parcelas, que somam ${sinal(r.somaListadas, 1)} MWmês; os demais ${plural(r.nRestantes, "reservatório soma", "reservatórios somam")} ${sinal(r.somaRestantes, 1)} MWmês, por diferença entre a soma publicada e a das parcelas listadas. As variações de cada um dos demais não estão publicadas.`;
+  return `O gráfico mostra ${r.nListadas} das ${d.n_reservatorios} parcelas; a soma dos demais ${plural(r.nRestantes, "reservatório", "reservatórios")} sai por diferença entre a soma publicada e a das parcelas listadas, e a variação de cada um deles não está publicada.`;
 }
 
 /** Em Entender: o reservatório, a variação da EAR (junto do nome) e a parte; o código da usina vai para Analisar. */
@@ -1690,6 +1773,18 @@ export function linhasDecomposicaoSubsistemas(ds: readonly AguaDecomposicaoEar[]
 export function reservatorioPadrao(lista: readonly AguaReservatorio[]): string {
   const x = [...lista].filter((r) => r.balanco_calculado).sort((a, b) => (b.vol_util_total_hm3 ?? -1) - (a.vol_util_total_hm3 ?? -1))[0];
   return x?.id ?? lista[0]?.id ?? "";
+}
+
+/**
+ * Reservatórios que abrem a comparação de volume: os quatro de maior volume útil com balanço calculado (o primeiro é o padrão da conta da
+ * água). Sem eles a comparação abria vazia e pedia uma escolha antes de mostrar qualquer figura; o leitor remove ou troca à vontade.
+ */
+export function reservatoriosPadraoComparacao(lista: readonly AguaReservatorio[], n = 4): string[] {
+  return [...lista]
+    .filter((r) => r.balanco_calculado)
+    .sort((a, b) => (b.vol_util_total_hm3 ?? -1) - (a.vol_util_total_hm3 ?? -1) || a.nome.localeCompare(b.nome))
+    .slice(0, n)
+    .map((r) => r.id);
 }
 
 /** O reservatório de uma parcela da decomposição, pelo código da usina (nunca pelo nome). */
@@ -2144,14 +2239,16 @@ export function mesPreliminar(m: string, corte: string | null | undefined): bool
 export function resumoPreliminarChuva(dia: string | null | undefined, corteFinal: string | null | undefined, janela = 30): string {
   const { n, todos } = diasPreliminares(dia, corteFinal, janela);
   if (!n) return "";
-  return todos ? `Os ${janela} dias da janela são todos preliminares (IMERG Late).` : `${n} dos ${janela} dias da janela são preliminares (IMERG Late).`;
+  const o = "vêm do IMERG Late, a versão rápida do produto de chuva por satélite, ainda sem calibração por pluviômetros";
+  return todos ? `Os ${janela} dias da janela são todos preliminares: ${o}.` : `${n} dos ${janela} dias da janela são preliminares: ${o}.`;
 }
 
 /** Uma frase: quantos dias da janela de temperatura são do GEOS-IT (preliminar). Vazia quando nenhum dia é preliminar. */
 export function resumoPreliminarTemperatura(dia: string | null | undefined, corteMerra2: string | null | undefined, janela = 30): string {
   const { n, todos } = diasPreliminares(dia, corteMerra2, janela);
   if (!n) return "";
-  return todos ? `Os ${janela} dias da janela são todos do GEOS-IT, preliminar.` : `${n} dos ${janela} dias da janela são do GEOS-IT, preliminar.`;
+  const o = "do GEOS-IT, a versão preliminar da reanálise, que o MERRA-2 troca quando chega";
+  return todos ? `Os ${janela} dias da janela são todos ${o}.` : `${n} dos ${janela} dias da janela são ${o}.`;
 }
 
 /**
@@ -2162,7 +2259,7 @@ export function textoPreliminarChuva(dia: string | null | undefined, corteFinal:
   const { n, todos } = diasPreliminares(dia, corteFinal, janela);
   if (!n || !corteFinal) return "";
   const quanto = todos ? `Todos os ${janela} dias da janela são preliminares` : `${n} dos ${janela} dias da janela são preliminares`;
-  return `${quanto}: vêm do IMERG Late, sem calibração por pluviômetros, e a média usada para comparar é do IMERG Final, já calibrado, que vai até ${dataBR(corteFinal)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 3,5 meses antes do tempo quase real.`;
+  return `${quanto}: vêm do IMERG Late, sem calibração por pluviômetros, e a média usada para comparar é do IMERG Final, já calibrado, que vai até ${dataBR(corteFinal)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 3,5 meses antes do tempo quase real. Esta publicação não estima o viés entre o Late e o Final.`;
 }
 
 /** Temperatura dos 30 dias: quantos dias são do GEOS-IT (ainda não trocados pelo MERRA-2) contra a média do MERRA-2. Vazio quando não há dia preliminar. */
@@ -2170,7 +2267,7 @@ export function textoPreliminarTemperatura(dia: string | null | undefined, corte
   const { n, todos } = diasPreliminares(dia, corteMerra2, janela);
   if (!n || !corteMerra2) return "";
   const quanto = todos ? `Todos os ${janela} dias da janela` : `${n} dos ${janela} dias da janela`;
-  return `${quanto} vêm do GEOS-IT, ainda preliminar, e a média usada para comparar é do MERRA-2, que vai até ${dataBR(corteMerra2)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 2 meses antes do tempo quase real.`;
+  return `${quanto} vêm do GEOS-IT, ainda preliminar, e a média usada para comparar é do MERRA-2, que vai até ${dataBR(corteMerra2)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 2 meses antes do tempo quase real. Esta publicação não estima o viés entre o GEOS-IT e o MERRA-2.`;
 }
 
 /**
@@ -2205,6 +2302,61 @@ export function marcaPreliminarSerie(dias: readonly string[], corte: string | nu
   if (primeiro > corte) return { marcos: [], todaPreliminar: true };
   const depois = somarDias(corte, 1);
   return { marcos: depois && dias.includes(depois) ? [{ x: depois, rotulo }] : [], todaPreliminar: false };
+}
+
+/**
+ * Linha "Revisões" da ficha da chuva (ou da temperatura): a troca do produto preliminar pelo final é uma revisão certa do dado, e a ficha
+ * da gold, que só compara capturas já integradas, diz "nenhuma revisão detectada". Os dois dizem o que é exato: o que já foi comparado e o
+ * que ainda vai mudar. Sem dia preliminar na janela, só a primeira parte.
+ */
+export function textoRevisoesFichaClima(
+  dia: string | null | undefined,
+  corte: string | null | undefined,
+  produtos: { preliminar: string; final: string },
+  janela = 30,
+): string {
+  const { n } = diasPreliminares(dia, corte, janela);
+  const comparado = "Entre as capturas já integradas, nenhuma revisão foi detectada.";
+  if (!n) return `${comparado} A janela é toda de produto final.`;
+  return `${n} dos ${janela} dias da janela são do ${produtos.preliminar} e serão trocados pelo ${produtos.final} quando ele chegar: a troca é uma revisão certa do número. ${comparado}`;
+}
+
+type FichaComFormula = { formula: string };
+
+/**
+ * A mesma ficha da anomalia de temperatura com as duas médias da conta escritas na fórmula (a média dos 30 dias e a da mesma janela na
+ * base, lidas da gold). A ficha da gold traz só a regra e o valor da diferença, já arredondado; com as duas médias, o leitor refaz a
+ * subtração (22,87 − 22,78 = 0,09, que a gold publica como 0,1 °C).
+ */
+export function evidenciaTemperaturaComMedias<E extends FichaComFormula>(ev: E, t: Pick<AguaTemperatura, "media_30d_c" | "media_30d_base_c">, base: string): E {
+  if (t.media_30d_c === null || t.media_30d_base_c === null) return ev;
+  return {
+    ...ev,
+    formula: `média dos 30 dias (${num(t.media_30d_c, 2)} °C) − média da mesma janela em ${periodoBase(base)} (${num(t.media_30d_base_c, 2)} °C); a diferença é publicada já arredondada em 0,1 °C`,
+  };
+}
+
+/**
+ * Quantos dos meses completos da série de temperatura ficam acima da média do mês na base: a média da base cobre vários anos e não separa a
+ * tendência de longo prazo da anomalia de cada mês. Vazio sem meses.
+ */
+export function textoMesesAcimaDaMedia(t: Pick<AguaTemperatura, "mensal" | "anos_base">, base: string): string {
+  const an = t.mensal.anomalia_c.filter((x): x is number => x !== null && x !== undefined && Number.isFinite(x));
+  if (!an.length) return "";
+  const acima = an.filter((x) => x > 0).length;
+  return `${plural(acima, "mês ficou", "meses ficaram")} acima da média do mês em ${periodoBase(base)} entre os ${an.length} da série. Essa média cobre ${plural(t.anos_base, "ano", "anos")} e não separa a tendência de longo prazo da anomalia de cada mês.`;
+}
+
+/**
+ * O erro conhecido do IMERG contra estações diante da classe central do mapa de chuva (de −10% a +10%): em quantas bacias conferidas o viés
+ * passa dela, para o leitor não ler diferença de cor entre classes vizinhas como diferença de chuva medida. Vazio quando nenhuma passa.
+ */
+export function textoClasseCentralEViesImerg(v: AguaClima["validacao_estacoes"]): string {
+  const meia = CORTES_ANOMALIA[2];
+  const vies = v.bacias.map((b) => b.vies_pct).filter((x): x is number => x !== null && Number.isFinite(x));
+  const passa = vies.filter((x) => Math.abs(x) > meia).length;
+  if (!vies.length || !passa) return "";
+  return `O viés do IMERG contra estações passa de ${meia}% (para mais ou para menos) em ${passa} das ${vies.length} bacias conferidas, de ${sinal(Math.min(...vies), 0)}% a ${sinal(Math.max(...vies), 0)}%: a classe central do mapa, de −${meia}% a +${meia}%, é mais estreita que esse erro.`;
 }
 
 /** Bacias do ONS com energia armazenada (EAR) que ficam sem chuva estimada, por não terem contorno na camada usada no mapa. */
@@ -2351,6 +2503,13 @@ export function textoJanelasDaVariacao(dia: string | null, ds: readonly AguaDeco
 export const TEXTO_EAR_DERIVADA =
   "A EAR é derivada pelo ONS (a energia que a água armazenada produziria nas usinas, pela produtibilidade acumulada), não é medição direta.";
 
+/**
+ * A unidade da EAR com a conversão para MWh e a fonte dela: um mês de 30 dias de 24 horas, como no glossário do ONS (Dados Relevantes 2010).
+ * A conversão não é medida nem calculada pela página: é a convenção da unidade que o ONS publica.
+ */
+export const TEXTO_UNIDADE_MWMES =
+  "MWmês, a energia de um megawatt médio durante um mês de 30 dias (1 MWmês = 720 MWh, conversão do glossário do ONS em Dados Relevantes 2010)";
+
 /** Linha "Revisões" da ficha da capacidade: os eventos vêm de uma única captura por reservatório, e a tabela de revisões cobre só a EAR. */
 export const REVISOES_CAPACIDADE =
   "Ainda não é possível detectar revisões nos eventos: a atribuição por reservatório vem de uma única captura, e a comparação entre capturas desta página cobre só a EAR dos últimos 30 dias.";
@@ -2434,7 +2593,7 @@ export function textoReeNovos(novos: readonly { data: string; novos: string[] }[
  */
 export function notaEnaDoDia(e: Pick<EntidadeEna, "pct_mlt_dia" | "mlt_mwmed_dia">): string | null {
   if (e.pct_mlt_dia === null || e.mlt_mwmed_dia === null) return null;
-  return `${pct(e.pct_mlt_dia, 1)} da MLT do dia, de ${num(e.mlt_mwmed_dia, 0)} MWmed.`;
+  return `${pct(e.pct_mlt_dia, 1)} da MLT do dia, de ${num(e.mlt_mwmed_dia, 0)} MWmed (megawatt médio: a potência média do dia).`;
 }
 
 /**
@@ -2456,6 +2615,13 @@ export function textoMudancaDecomposicao(ds: readonly AguaDecomposicaoEar[]): st
 export const REVISOES_CAPTURA_UNICA = "Ainda não é possível detectar revisões: há uma única captura.";
 
 /**
+ * Aviso de provisório dos dados hidráulicos (volume, afluência e defluência), com a mesma estrutura dos avisos da EAR e da ENA: o ONS revisa
+ * os dias recentes depois de publicá-los. A publicação tem uma só captura desses dados, e a página diz que por isso não mostra a revisão.
+ */
+export const TEXTO_HIDRAULICOS_PROVISORIOS =
+  "O volume e as vazões dos últimos dias são provisórios: o ONS os revisa depois de publicá-los. Esta publicação tem uma única captura dos dados hidráulicos, então a revisão não aparece aqui.";
+
+/**
  * Linha "Revisões" da ficha "Comprove este número" da ENA, montada das linhas da tabela de revisões da própria página (as mesmas que
  * `linhasRevisoesCapturas` entrega), para a ficha não dizer "nenhuma revisão" onde a página mostra revisão.
  */
@@ -2465,6 +2631,31 @@ export function textoRevisoesFicha(rs: readonly AguaRevisaoCaptura[]): string {
   const dias = com.map((r) => `${NOME_REGIAO[r.sm]} ${r.dias_revisados}`);
   const maior = [...com].sort((a, b) => Math.abs(b.diferenca ?? 0) - Math.abs(a.diferenca ?? 0))[0];
   return `O ONS revisou a ENA bruta entre as duas capturas mais recentes, em dias dos últimos 30: ${listaTexto(dias)}. A maior diferença foi de ${sinal(maior.diferenca, 1)} MWmed no ${NOME_REGIAO[maior.sm]}, em ${dataBR(maior.dia_maior)}. O detalhe está na tabela de revisões do ONS desta página, em Auditar.`;
+}
+
+type ProvComRevisoes = {
+  revisoes_conhecidas: { detectado_em: string; total: number; vintages_comparadas?: number; arquivos?: number; recapturas_sem_mudanca?: number; ultimo_download_ok?: string | null; exemplos: { serie: string; ref: string; valores: number }[] } | null;
+};
+
+/**
+ * A mesma proveniência com as revisões que a tabela de revisões da página mostra. A da gold conta as capturas integradas do arquivo
+ * principal ("há uma única captura de cada arquivo") e não vê a recaptura feita para a página, então "Sobre este dado" dizia que não é
+ * possível detectar revisões onde a página mostra dias revisados. Aqui o total é a soma dos dias revisados da tabela, e cada exemplo é o
+ * dia da maior diferença de um subsistema, do mais recente ao mais antigo. Sem dia revisado, a proveniência fica como veio.
+ */
+export function provenienciaComRevisoesDaPagina<P extends ProvComRevisoes>(p: P, rs: readonly AguaRevisaoCaptura[], oQue: string): P {
+  const com = rs.filter((r) => r.dias_revisados > 0);
+  if (!p.revisoes_conhecidas || !com.length) return p;
+  return {
+    ...p,
+    revisoes_conhecidas: {
+      ...p.revisoes_conhecidas,
+      total: com.reduce((t, r) => t + r.dias_revisados, 0),
+      exemplos: [...com]
+        .sort((a, b) => b.dia_maior.localeCompare(a.dia_maior))
+        .map((r) => ({ serie: `maior revisão ${oQue} ${DO_REGIAO[r.sm]} (${plural(r.dias_revisados, "dia revisado", "dias revisados")})`, ref: r.dia_maior, valores: r.dias_revisados })),
+    },
+  };
 }
 
 /**

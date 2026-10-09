@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AguaAfluencia } from "@/components/energia/AguaAfluencia";
+import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -38,6 +39,7 @@ import {
   mesesSemPmo,
   nomeProprio,
   perguntaPainel,
+  provenienciaComRevisoesDaPagina,
   rotaPainel,
   serieDiferencaMlt,
   serieMltImplicita,
@@ -115,7 +117,7 @@ export default function AfluenciaPage() {
           rotulo="Água e clima"
           siglas={["ENA", "MLT", "REE", "SIN", "MWmed", "EAR", "ONS", "PMO"]}
           titulo={perguntaPainel("p018")}
-          lead="A energia natural afluente (ENA) de 30 dias, em % da média de longo termo (MLT)."
+          lead="A energia natural afluente (ENA) é a energia das vazões que chegam aos reservatórios e poderá ser guardada ou gerada; aqui, em 30 dias e em % da média de longo termo (MLT) do ONS."
           limite="Afluência alta não quer dizer reservatório cheio: o armazenamento depende também de quanto se gera, verte e transfere."
           recorte={`Até ${dataBR(g.dias_referencia.ena)} · SIN, REE e bacias · % da MLT`}
           fonte="ONS, ENA Diário"
@@ -135,7 +137,7 @@ export default function AfluenciaPage() {
             <PainelEvidencia
               id="p018"
               pergunta="Cada região frente à mediana da mesma janela"
-              subtitulo="ENA de 30 dias em % da MLT, contra a faixa da mesma janela"
+              subtitulo="ENA derivada pelo ONS, de 30 dias, em % da MLT, contra a faixa da mesma janela"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -147,7 +149,7 @@ export default function AfluenciaPage() {
               comoInterpretar={comoInterpretar}
               naoConcluir={naoConcluir}
               naoConcluirNoCorpo
-              proveniencia={prov.ena_30d!}
+              proveniencia={provenienciaComRevisoesDaPagina(prov.ena_30d!, f.revisoes_entre_capturas_30d.filter((r) => r.serie === "ena_bruta_mwmed"), "da ENA bruta")}
               complementares={[
                 ...(prov.ena_30d_ree ? [{ rotulo: "ENA de 30 dias por REE", p: prov.ena_30d_ree }] : []),
                 ...(prov.ena_30d_bacia ? [{ rotulo: "ENA de 30 dias por bacia", p: prov.ena_30d_bacia }] : []),
@@ -172,7 +174,19 @@ export default function AfluenciaPage() {
                 <SecaoDoPainel
                   id="mlt"
                   titulo="Qual MLT? A referência muda de versão"
-                  lead="A MLT é o 100% desta página. As figuras mostram quanto a MLT dos arquivos abertos do ONS difere da publicada no relatório mensal do Programa Mensal de Operação (PMO) e como a MLT implícita de cada subsistema variou."
+                  lead="A MLT, o 100% desta página, não é fixa: muda quando usinas entram ou saem e quando o ONS troca a versão dela. Por isso o percentual de 30 dias de épocas diferentes pode misturar referências diferentes."
+                >
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="mlt-resumo">
+                    Em Analisar: a MLT dos arquivos de ENA do ONS contra a do relatório mensal do Programa Mensal de Operação (PMO), a MLT de cada subsistema em 15 de janeiro e
+                    em 15 de julho, em que cada degrau é uma troca de versão, e as mudanças por usina.
+                  </p>
+                </SecaoDoPainel>
+
+                <SecaoDoPainel
+                  id="mlt-detalhes"
+                  nivel="analisar"
+                  titulo="Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam"
+                  lead="Conjunto aberto: os arquivos de ENA que o ONS publica abertos, de onde a página lê a MLT. PMO: o Programa Mensal de Operação, relatório mensal do ONS. MLT implícita: a MLT que sai da ENA dividida pelo percentual da MLT, os dois lidos desses arquivos."
                 >
                   <GraficoLinhas
                     titulo="Diferença da MLT do conjunto aberto contra a do PMO no início de cada mês, por subsistema, em %"
@@ -221,9 +235,6 @@ export default function AfluenciaPage() {
                     usinas e muda quando o ONS troca a versão da referência; janeiro e julho mostram a estação chuvosa e a seca, e cada degrau é uma mudança de versão.{" "}
                     {f.mlt.anos_regra}.
                   </p>
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="mlt-detalhes" nivel="analisar" titulo="Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam">
                   <GraficoLinhas
                     titulo="MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto, mês a mês"
                     dados={serieMltMensal(f.mlt, "SE")}
@@ -335,6 +346,20 @@ export default function AfluenciaPage() {
                   <AguaRegras regras={{ ...g.regras, faixa_sazonal: REGRA_FAIXA_ENA, captura: REGRA_CAPTURA_ENA }} chaves={["ena_30d", "mlt", "faixa_sazonal", "captura"]} />
                   <AguaFontes provs={[prov.ena_30d, prov.ena_30d_ree, prov.ena_30d_bacia, prov.mlt]} />
                 </SecaoDoPainel>
+
+                <AguaPontes
+                  itens={[
+                    {
+                      slug: "agua-e-clima",
+                      rotulo: "Conferência com a Visão geral e o PLD",
+                      href: `${rotaPainel("p017")}#conferencia-resumo`,
+                      assunto: "Se a Visão geral ou o PLD mostram outro valor de ENA ou de EAR, a página de armazenamento (em Auditar) põe os dois lado a lado, cada um com o seu dia.",
+                    },
+                    { slug: "geracao", assunto: "Quanto cada fonte gerou, a hidrelétrica inclusive: outro painel, com outra fonte de dados." },
+                    { slug: "pld", assunto: "O preço de curto prazo por submercado: outro painel, com outra fonte de dados." },
+                    { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
+                  ]}
+                />
 
                 <AguaSeguir ancora="p018" proximo={{ href: `${rotaPainel("p019")}#p019`, pergunta: perguntaPainel("p019") }} downloads={downloads} />
               </div>
