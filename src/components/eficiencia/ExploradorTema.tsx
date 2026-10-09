@@ -146,9 +146,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
 
   // referências externas válidas
   const extComp = referenciasExternas(dados, medida, ano, etapa, k);
-  const extMesmo = extComp.filter((x) => x.tipo === "nacional_mesmo_universo");
   const nacCalc = nacionalCalculada(dados, medida, ano);
-  const gNac = nacCalc?.grupos.find((g) => g.id === "elegiveis");
   const intl = internacionaisDa(dados, medida, etapa);
   const externaGrafico = referenciaExternaDoGrafico(dados, medida, ano, etapa, k);
   const notas = notasMateriais(comp);
