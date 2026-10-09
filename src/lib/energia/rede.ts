@@ -1399,6 +1399,29 @@ export function nomeFluxo(f: Pick<FluxoAtls, "fluxo" | "definicao">): string {
   return f.definicao ?? f.fluxo;
 }
 
+export type MedidasRestricoes = {
+  /** Fluxos publicados no último mês que passaram alguma hora acima do limite nos 12 meses, e o total de publicados. Nulo sem fluxo publicado. */
+  fluxosAcima: { valor: number; de: number; periodo: string } | null;
+  /** O fluxo publicado com mais horas acima do limite nos 12 meses (a ficha de prova existe para os publicados no último mês). Nulo sem fluxo. */
+  maisHoras: { fluxo: string; nome: string; horas: number; periodo: string } | null;
+};
+
+/**
+ * Medidas da abertura do P030: quantos dos fluxos acompanhados passaram algum tempo acima do limite estabelecido nos 12 meses e qual teve
+ * mais horas. São os mesmos campos do arquivo do ATLS que alimentam o gráfico de barras, a tabela e a exportação (fluxosAtivos).
+ */
+export function medidasRestricoes(r: Pick<RestricoesRede, "atls">): MedidasRestricoes {
+  const ativos = fluxosAtivos(r.atls);
+  const janela = ativos[0]?.ultimos_12_meses ?? null;
+  if (!ativos.length || !janela) return { fluxosAcima: null, maisHoras: null };
+  const periodo = `${mesAno(janela.inicio)} a ${mesAno(janela.fim)}`;
+  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  return {
+    fluxosAcima: { valor: com.length, de: ativos.length, periodo },
+    maisHoras: { fluxo: ativos[0].fluxo, nome: nomeFluxo(ativos[0]), horas: janela.horas_violacao, periodo },
+  };
+}
+
 export type LinhaAtls = {
   id: string;
   /** Nome legível (a definição conferida; sem ela, a própria sigla). */

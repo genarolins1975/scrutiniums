@@ -1,47 +1,126 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { EmpresasLinkPainel } from "@/components/energia/EmpresasLinkPainel";
+import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
-import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, rotaPainel, type PainelEmpresas } from "@/lib/energia/empresas";
+import { PAINEIS_EMPRESAS, ROTA_EMPRESAS, painel, rotaPainel, type PainelEmpresas, type PassoVinculo } from "@/lib/energia/empresas";
 import { SIGLAS } from "@/lib/energia/siglas";
+import type { Natureza } from "@/lib/energia/tipos";
 
 /**
- * Peças de servidor das páginas do módulo Empresas (a síntese em /setor-eletrico/empresas, um
- * painel por página em /ativos, /distribuidoras, /financas e /controle, e a ficha de cada
- * distribuidora em /[entidade]): navegação entre as páginas, recorte (período, universo e
- * unidade), rodapé com downloads, link compartilhável e próxima pergunta, avisos de bloqueio e
- * os blocos dos modos Analisar e Auditar.
+ * Peças de servidor das páginas do módulo Empresas: a abertura (/setor-eletrico/empresas), um painel por página em /ativos,
+ * /distribuidoras, /financas e /controle, e a ficha de cada distribuidora em /[entidade]. Aqui ficam a navegação local (faixa de
+ * irmãs nas páginas filhas, capítulos na abertura), o recorte (período, universo e unidade) junto da figura principal, as datas de cada
+ * fonte, os avisos de bloqueio, o diagrama dos elos entre empresa, ativo e controle e o rodapé com downloads, link com o recorte e
+ * próxima pergunta.
  *
- * Por que um painel por página: cada painel tem tabelas de dezenas de linhas, gráficos com a
- * tabela equivalente e fichas de prova; juntos, os quatro passavam de 650 KB de HTML, acima da
- * meta de cerca de 600 KB por página (contrato, seção 5.1). O mapa das usinas, a árvore
- * societária e as séries financeiras de outras companhias vêm de arquivos lidos no navegador só
- * quando a pessoa pede.
+ * Por que um painel por página: cada painel tem tabelas de dezenas de linhas, gráficos com a tabela equivalente e fichas de prova;
+ * juntos, os quatro passavam de 650 KB de HTML, acima da meta de cerca de 600 KB por página (contrato, seção 5.1). O mapa das usinas, a
+ * árvore societária e as séries financeiras de outras companhias vêm de arquivos lidos no navegador só quando a pessoa pede.
  */
 
-/** Navegação entre a síntese e as quatro páginas de painel; a atual leva aria-current (na ficha, nenhuma). */
+/** A abertura e as quatro páginas de painel como itens da navegação local; a descrição de cada uma é a pergunta que ela responde. */
+const ITENS_EMPRESAS = [
+  { id: "sintese", href: ROTA_EMPRESAS, rotulo: "Síntese", descricao: "Quem atua no setor elétrico?" },
+  ...PAINEIS_EMPRESAS.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
+];
+
+/**
+ * Faixa de páginas irmãs nas páginas filhas, com a atual marcada (na ficha de uma distribuidora, nenhuma). A abertura não leva a faixa:
+ * mostra os mesmos destinos como capítulos depois da figura principal (EmpresasCapitulos), e o mesmo rótulo não aparece duas vezes.
+ */
 export function EmpresasNavegacao({ atual }: { atual: PainelEmpresas | "sintese" | "ficha" }) {
-  const itens = [{ href: ROTA_EMPRESAS, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_EMPRESAS.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
+  if (atual === "sintese") return null;
+  return <NavegacaoLocal rotulo="Páginas do módulo Empresas" itens={ITENS_EMPRESAS} atual={atual} />;
+}
+
+export type CapituloEmpresas = {
+  id: PainelEmpresas;
+  /** Resposta curta da página (RespostaCurta), com o veredito à vista e os números por trás em Analisar. */
+  resposta: ReactNode;
+  /** Número de abertura da página com a ficha de prova. */
+  numero: ReactNode;
+  /** Datas, fontes e universo da resposta. */
+  contexto: ReactNode;
+  /** O que a resposta não permite concluir, como complemento de "Não permite concluir". */
+  limite: ReactNode;
+  /** Atalhos para as fichas de entidades que a página reúne. */
+  extra?: ReactNode;
+};
+
+/**
+ * Capítulos da abertura: as quatro páginas do módulo, cada uma com o nome, a pergunta que responde, a resposta curta, um número com a
+ * ficha de prova, o limite da leitura e o caminho para a página. Segue o desenho dos capítulos do sistema (nome, pergunta, link; a
+ * página atual não entra), com a resposta no meio, porque a abertura responde às quatro perguntas antes de mandar o leitor adiante.
+ */
+export function EmpresasCapitulos({ itens }: { itens: CapituloEmpresas[] }) {
   return (
-    <nav aria-label="Páginas do módulo Empresas" className="pb-4">
-      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
-        {itens.map((i) => (
-          <li key={i.id}>
-            <Link
-              href={i.href}
-              aria-current={i.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                i.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {i.rotulo}
-            </Link>
+    <nav aria-label="Capítulos de Empresas" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
+      <h3 className="ed-h3 font-serif text-carvao">Quatro caminhos, uma página para cada pergunta</h3>
+      <ol className="mt-4 grid gap-x-10 gap-y-10 md:grid-cols-2">
+        {itens.map((c) => {
+          const p = painel(c.id);
+          return (
+            <li key={c.id} id={`sintese-${c.id}`} aria-labelledby={`sintese-${c.id}-titulo`} className="flex min-w-0 scroll-mt-28 flex-col gap-2.5">
+              <p className="rotulo text-mineral">{p.rotulo}</p>
+              <h4 id={`sintese-${c.id}-titulo`} className="ed-h3 font-serif text-carvao">
+                {p.pergunta}
+              </h4>
+              {c.resposta}
+              {c.numero}
+              <p className="text-xs leading-relaxed text-carvao-muted">{c.contexto}</p>
+              <p className="text-sm leading-relaxed text-carvao-muted">
+                <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+                {c.limite}
+              </p>
+              {c.extra}
+              <Link href={rotaPainel(c.id)} className="inline-flex min-h-[44px] items-center self-start text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
+                Abrir {p.rotulo}
+                <span className="sr-only">: gráficos, tabelas, dados e evidências</span>
+                <span aria-hidden="true" className="ml-1.5">
+                  →
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+/**
+ * Os quatro elos entre empresa, participação, ativo e controle: o identificador que documenta cada um e a contagem que a base publica.
+ * Nenhum elo é feito por semelhança de nome. Lista ordenada (a ordem é a do vínculo), com a seta só como marca visual.
+ */
+export function EmpresasPassosVinculo({ passos }: { passos: PassoVinculo[] }) {
+  return (
+    <figure data-vinculo="" className="space-y-2">
+      <ol className="grid gap-x-0 gap-y-5 md:grid-cols-4">
+        {passos.map((p, i) => (
+          <li key={p.id} className={`min-w-0 md:pr-5 ${i > 0 ? "md:border-l md:border-linha md:pl-5" : ""}`}>
+            <p className="rotulo text-mineral">Elo {i + 1}</p>
+            <p className="ed-h3 mt-1 font-serif text-carvao">
+              {p.titulo}
+              {i < passos.length - 1 && (
+                <span aria-hidden="true" className="ml-2 hidden text-energia-soft md:inline">
+                  →
+                </span>
+              )}
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-carvao-muted">Documentado por {p.liga}.</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-carvao">{p.contagem}.</p>
           </li>
         ))}
       </ol>
-    </nav>
+      <figcaption className="max-w-prose2 pt-1 text-xs leading-relaxed text-carvao-muted">
+        Cada elo usa o identificador que a própria fonte publica no mesmo registro; nenhum é feito por semelhança de nome. As contagens são de universos
+        diferentes e não se somam.
+      </figcaption>
+    </figure>
   );
 }
 
@@ -55,7 +134,7 @@ export function EmpresasIndisponivel({ motivo }: { motivo?: string | null }) {
           titulo="Empresas indisponível nesta publicação"
           motivo={
             motivo ??
-            "A gold do módulo Empresas (public/energia/gold/empresas.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados do módulo Empresas não foram gerados ou não passaram na validação desta publicação. A última publicação válida é mantida quando existe, e nenhum número de reserva é exibido."
           }
         />
       </main>
@@ -63,10 +142,10 @@ export function EmpresasIndisponivel({ motivo }: { motivo?: string | null }) {
   );
 }
 
-/** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
+/** Período, universo e unidade do painel, logo abaixo da figura principal: o recorte que o leitor precisa para ler a medida. */
 export function EmpresasRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-2 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>
@@ -83,90 +162,56 @@ export function EmpresasRecorte({ periodo, universo, unidade }: { periodo: React
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Datas de referência de cada fonte: cada número diz o seu dia, sem sugerir simultaneidade (bloco "Fontes, datas e siglas"). */
+export function EmpresasDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
+  return (
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada fonte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.texto}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Rodapé do painel: downloads, link compartilhável com o recorte e a próxima pergunta, numa linha (SeguirPainel). */
 export function EmpresasSeguir({
   ancora,
   proximo,
   downloads,
+  extra,
 }: {
   ancora: string;
   proximo: { href: string; pergunta: string };
   downloads: { rotulo: string; url: string }[];
+  extra?: ReactNode;
 }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <EmpresasLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} extra={extra} />;
 }
 
 /** Aviso de limitação que muda a leitura (bloqueio de fonte, fonte defasada, medida não publicada). */
 export function EmpresasAviso({ rotulo, children }: { rotulo: string; children: ReactNode }) {
   return (
-    <div className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
+    <div role="note" className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
       <p className="rotulo text-mineral">{rotulo}</p>
       <div className="mt-1">{children}</div>
     </div>
   );
 }
 
-export function EmpresasAuditoria({ titulo, children }: { titulo: string; children: ReactNode }) {
-  return (
-    <div data-nivel="auditar" className="space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function EmpresasAnalise({ titulo, children }: { titulo: string; children: ReactNode }) {
-  return (
-    <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function EmpresasSubtitulo({ children }: { children: ReactNode }) {
-  return <h3 className="font-serif text-lg text-carvao">{children}</h3>;
-}
-
-/** Resposta curta derivada dos dados, marcada para o teste (data-resposta). */
-export function EmpresasResposta({ id, children }: { id: PainelEmpresas | "ficha"; children: ReactNode }) {
-  return (
-    <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta={id}>
-      {children}
-    </p>
-  );
+/** Nota curta de leitura junto de uma figura, sem caixa: a visualização domina. */
+export function EmpresasNota({ children }: { children: ReactNode }) {
+  return <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{children}</p>;
 }
 
 /**
- * Como ler os números de continuidade e a tarifa, junto dos números (não só no fim da página): DEC e FEC com a frase que os
- * verbetes publicam, o sentido da diferença diante do limite e o que é a tarifa B1. Nenhuma definição é escrita aqui: as frases
- * vêm dos verbetes (conferidos) e das siglas do observatório.
+ * Como ler os números de continuidade e a tarifa, junto dos números: DEC e FEC com a frase que os verbetes publicam, o sentido da
+ * diferença diante do limite e o que é a tarifa B1. Nenhuma definição é escrita aqui: as frases vêm dos verbetes (conferidos) e das
+ * siglas do observatório.
  */
 export function EmpresasComoLer() {
   const dec = conceito("dec")?.emUmaFrase;

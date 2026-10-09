@@ -22,9 +22,10 @@ import { dataBR, fracPct, mesAno, num, plural, reais } from "@/lib/energia/forma
 import type { EventoDatado } from "@/lib/energia/linha-do-tempo";
 import type { EscalaCores, ValorCelula } from "@/lib/energia/mapa-calor";
 import type { ColunaTabela, LinhaTabela } from "@/lib/energia/tabela";
-import type { PldCartao, Submercado } from "@/lib/energia/tipos";
+import type { GeracaoGold, PldCartao, Submercado } from "@/lib/energia/tipos";
 import type {
   AchadoA02,
+  AmplitudePeriodo,
   AtoLimite,
   BlocoCmoPld,
   BlocoHistorico,
@@ -42,6 +43,7 @@ import type {
   PldHorarioRecenteArquivo,
   PosicaoReferencia,
   RegimeLimites,
+  SemanaReferencia,
   SensibilidadePeso,
 } from "@/lib/energia/tipos-pld";
 
@@ -1188,8 +1190,11 @@ export function respostaP012(r: BlocoRegional, periodo: string): string {
   const partes = [
     `${per.rotulo}, ${dataBR(a.inicio)} a ${dataBR(a.fim)}: em ${num(a.horas_com_separacao, 0)} de ${plural(a.horas, "hora", "horas")} com os quatro submercados (${fracPct(a.frac_com_separacao, 1)}), o maior e o menor PLD da mesma hora diferiram em mais de R$ 0,01/MWh; em ${num(a.horas_acima_1, 0)} horas a diferença passou de R$ 1,00/MWh e em ${num(a.horas_acima_10, 0)}, de R$ 10,00/MWh.`,
   ];
-  if (a.media !== null && a.max !== null)
+  if (a.media !== null && a.max !== null) {
     partes.push(`A diferença entre o maior e o menor preço teve média de ${reais(a.media)}/MWh no período e chegou a ${reais(a.max)}/MWh em ${dataBR(a.quando_max)} às ${a.quando_max.slice(11, 13)}h.`);
+    const base = textoMediaDaAmplitude(a);
+    if (base) partes.push(base);
+  }
   const pares = r.separacao.filter((s) => s.periodo === periodo && s.frac_separadas !== null).sort((x, y) => (y.frac_separadas ?? 0) - (x.frac_separadas ?? 0));
   if (pares.length >= 2) {
     const mais = pares[0];
@@ -1210,8 +1215,10 @@ export function vereditoP012(r: BlocoRegional, periodo: string): string {
   if (!a || !per) return "Sem horas com os quatro submercados publicados neste período.";
   const quando =
     periodo === "12m" ? "Nos últimos 12 meses" : periodo === "30d" ? "Nos últimos 30 dias" : /parcial/i.test(per.rotulo) ? `Em ${per.rotulo.replace(/\s*\(parcial\)/i, "")} (até ${dataBR(a.fim)})` : `Em ${per.rotulo}`;
-  const media = a.media === null ? "" : `, em média ${reais(a.media)}/MWh entre o maior e o menor`;
-  return `${quando}, os preços dos quatro submercados diferiram em mais de um centavo em ${fracPct(a.frac_com_separacao, 1)} das horas${media}. A contagem descreve quando os preços diferem, não o motivo.`;
+  // os dois critérios lado a lado: um centavo (o da página) e R$ 1,00 (o da página PLD); a média vale para todas as horas do período
+  const acima1 = a.horas > 0 ? ` e em mais de ${reais(1)}/MWh em ${fracPct(a.horas_acima_1 / a.horas, 1)}` : "";
+  const media = a.media === null ? "" : `; em média ${reais(a.media)}/MWh entre o maior e o menor, contando todas as horas`;
+  return `${quando}, os preços dos quatro submercados diferiram em mais de um centavo em ${fracPct(a.frac_com_separacao, 1)} das horas${acima1}${media}. A contagem não diz o motivo.`;
 }
 
 export function linhasSeparacao(r: BlocoRegional, periodo: string): LinhaTabela[] {
@@ -1250,7 +1257,7 @@ export const COLUNAS_SEPARACAO: ColunaTabela[] = [
   { id: "quando", rotulo: "Hora da maior diferença", tipo: "texto" },
 ];
 
-export function linhasAmplitude(r: BlocoRegional): LinhaTabela[] {
+export function linhasAmplitude(r: BlocoRegional, quatroNoPiso?: Record<string, QuatroNoPiso>): LinhaTabela[] {
   return r.amplitude.map((a) => ({
     id: a.periodo,
     periodo: a.rotulo,
@@ -1264,6 +1271,7 @@ export function linhasAmplitude(r: BlocoRegional): LinhaTabela[] {
     p95: a.p95,
     max: a.max,
     quando: a.quando_max,
+    quatro_piso: quatroNoPiso?.[a.periodo]?.horas ?? null,
   }));
 }
 
@@ -1279,6 +1287,7 @@ export const COLUNAS_AMPLITUDE: ColunaTabela[] = [
   { id: "p95", rotulo: "Amplitude, percentil 95", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "max", rotulo: "Amplitude máxima", tipo: "numero", unidade: "R$/MWh", casas: 2 },
   { id: "quando", rotulo: "Hora da máxima", tipo: "texto" },
+  { id: "quatro_piso", rotulo: "Horas com os quatro no piso (só anos)", tipo: "numero", casas: 0 },
 ];
 
 export type MedidaMatriz = "dif_media" | "frac_separadas";
@@ -1686,4 +1695,374 @@ export function textoReferenciaDistancia(
 ): string | null {
   if (!resumo || resumo.dia !== dia || resumo.media_30d === null) return null;
   return `Média dos 30 dias até ${dataBR(resumo.dia)}: ${reais(resumo.media_30d)}/MWh; maior distância do período: ${reais(resumo.maior_30d.valor)}/MWh em ${dataBR(resumo.maior_30d.dia)}.`;
+}
+
+/* ====================================================================== */
+/* Pontes entre critérios, recortes e ressalvas                            */
+/* ====================================================================== */
+
+/**
+ * Exceções declaradas à regra de que nenhum número é recalculado aqui. Cada uma é uma conta de uma linha sobre números já publicados,
+ * com a regra escrita na página e conferida em teste: a distância entre as médias diárias (maior menos menor), a média simples das
+ * horas de uma faixa na grade estreita dos mapas de calor, a média nas horas separadas (com limites de erro, só exibida quando o
+ * arredondamento não muda) e a inflação acumulada entre o primeiro e o último mês da série em moeda constante (razão entre as duas
+ * séries mensais publicadas). Fora delas, vale o que o cabeçalho diz.
+ */
+
+/** Limiar de "separação" nas diferenças regionais: |PLD A − PLD B| > R$ 0,01/MWh (regra da gold regional). */
+export const LIMIAR_SEPARACAO = 0.01;
+
+export type PonteSeparacao = { horas: number; horas_separadas: number; frac: number | null };
+
+/** Contagem de separação (R$ 0,01/MWh) por período da gold regional, para ligar os dois critérios na página PLD. */
+export function pontesSeparacao(r: BlocoRegional): Record<string, PonteSeparacao> {
+  return Object.fromEntries(r.amplitude.map((a) => [a.periodo, { horas: a.horas, horas_separadas: a.horas_com_separacao, frac: a.frac_com_separacao }]));
+}
+
+/**
+ * O critério do cartão "Há diferença entre submercados?" e, ao lado, o das diferenças regionais para o mesmo período. As duas páginas
+ * contam coisas diferentes (acima de R$ 1,00/MWh aqui, acima de R$ 0,01/MWh lá); quando a gold regional tem o mesmo período, a frase dá
+ * a contagem do segundo critério.
+ */
+export function textoPonteLimiar(limiar: number, ponte: PonteSeparacao | null | undefined): string {
+  const base = `Aqui conta só a hora em que o maior e o menor preço diferem em mais de ${reais(limiar)}/MWh. A página Diferenças regionais conta toda hora com diferença acima de ${reais(LIMIAR_SEPARACAO)}/MWh`;
+  if (!ponte || ponte.frac === null) return `${base}.`;
+  return `${base}: neste período, ${plural(ponte.horas_separadas, "hora", "horas")} de ${num(ponte.horas, 0)} (${fracPct(ponte.frac, 1)}).`;
+}
+
+/**
+ * Média da diferença entre o maior e o menor preço nas horas separadas, em reais inteiros. A gold publica a média sobre todas as horas
+ * do período (duas casas) e o número de horas separadas; cada hora sem separação soma no máximo R$ 0,01. Com essas duas margens (o
+ * arredondamento da média e as horas sem separação), o valor só é devolvido quando o limite de baixo e o de cima dão o mesmo inteiro.
+ */
+export function mediaNasHorasSeparadas(a: Pick<AmplitudePeriodo, "horas" | "horas_com_separacao" | "media">): number | null {
+  const sep = a.horas_com_separacao;
+  if (a.media === null || a.horas <= 0 || sep <= 0 || sep > a.horas) return null;
+  const soma = a.media * a.horas;
+  const folga = 0.005 * a.horas;
+  const maximo = (soma + folga) / sep;
+  const minimo = (soma - folga - LIMIAR_SEPARACAO * (a.horas - sep)) / sep;
+  const inteiro = Math.round(maximo);
+  return Math.round(Math.max(0, minimo)) === inteiro ? inteiro : null;
+}
+
+/**
+ * O que a média da diferença entre o maior e o menor preço cobre: todas as horas do período, as separadas e as que não se separaram.
+ * Dá a mediana de todas as horas (da gold) e, quando o arredondamento permite, a média nas horas separadas.
+ */
+export function textoMediaDaAmplitude(a: AmplitudePeriodo): string | null {
+  if (a.media === null) return null;
+  const semSeparacao = a.horas - a.horas_com_separacao;
+  let t = `Média sobre todas as ${num(a.horas, 0)} horas do período, inclusive as ${num(semSeparacao, 0)} sem separação`;
+  const m = mediaNasHorasSeparadas(a);
+  if (m !== null) t += `; nas ${num(a.horas_com_separacao, 0)} horas separadas, cerca de ${reais(m, 0)}/MWh (soma das diferenças dividida pelas horas separadas)`;
+  if (a.p50 !== null) t += `. Mediana de todas as horas: ${reais(a.p50)}/MWh`;
+  return `${t}.`;
+}
+
+/** Horas com os quatro submercados juntos no piso, por ano (a gold de limites só tem anos civis). */
+export type QuatroNoPiso = { horas: number; frac: number | null; parcial: boolean };
+
+export function quatroNoPisoPorAno(l: Pick<BlocoLimitesDisponivel, "empates_piso"> | null | undefined): Record<string, QuatroNoPiso> {
+  return Object.fromEntries((l?.empates_piso ?? []).map((e) => [String(e.ano), { horas: e.horas_quatro_no_piso, frac: e.frac_quatro_no_piso, parcial: e.parcial }]));
+}
+
+/** Frase do ano em que os quatro submercados ficaram juntos no piso: nessas horas o preço é igual por regra, e a separação não mede o custo. */
+export function textoQuatroNoPiso(q: QuatroNoPiso | null | undefined, rotuloAno: string): string | null {
+  if (!q || q.horas <= 0) return null;
+  return `Em ${rotuloAno}, os quatro submercados ficaram juntos no piso em ${plural(q.horas, "hora", "horas")}${q.frac === null ? "" : ` (${fracPct(q.frac, 1)} das horas)`}: nessas horas os preços são iguais por regra, e isso reduz a contagem de horas separadas.`;
+}
+
+/* ---------- calendário de limites ---------- */
+
+export type DiaNoLimite = { dia: string; horas: number };
+
+/** Dias da janela com pelo menos uma hora no limite escolhido, com a contagem de horas de cada um (as mesmas do calendário). */
+export function diasNoLimite(cal: BlocoLimitesDisponivel["calendario"], sm: Submercado, limite: LimiteHora, ultimosDias?: number): DiaNoLimite[] {
+  const ini = ultimosDias ? Math.max(0, cal.dias.length - ultimosDias) : 0;
+  const serie = limite === "piso" ? cal[sm].horas_piso : cal[sm].horas_teto_horario;
+  return cal.dias.slice(ini).flatMap((dia, k) => {
+    const h = serie[ini + k];
+    return typeof h === "number" && h > 0 ? [{ dia, horas: h }] : [];
+  });
+}
+
+/**
+ * Os dias no limite ditos por data quando são poucos (até `maximo`): o calendário de uma janela sem eventos ou com poucos fica uma grade
+ * uniforme, e a lista por data diz onde estão. Com mais dias que o máximo, devolve null e o calendário fala por si.
+ */
+export function textoDiasNoLimite(dias: readonly DiaNoLimite[], limite: LimiteHora, janelaDias: number, maximo = 10): string | null {
+  const objeto = limite === "piso" ? "no piso" : "no teto horário";
+  if (!dias.length) return `Nenhuma hora ${objeto} nos ${num(janelaDias, 0)} dias do calendário.`;
+  if (dias.length > maximo) return null;
+  const total = dias.reduce((s, d) => s + d.horas, 0);
+  return `${plural(total, "hora", "horas")} ${objeto} em ${plural(dias.length, "dia", "dias")} dos ${num(janelaDias, 0)} do calendário: ${listaTexto(dias.map((d) => `${dataBR(d.dia)} (${plural(d.horas, "hora", "horas")})`))}.`;
+}
+
+/* ---------- faixas de horas na grade estreita ---------- */
+
+/** Seis faixas de quatro horas (cada coluna começa na hora indicada), para os mapas de calor em tela estreita. */
+export const FAIXAS_DE_HORAS: { id: string; rotulo: string; curto: string }[] = [0, 4, 8, 12, 16, 20].map((h) => ({
+  id: String(h).padStart(2, "0"),
+  rotulo: `${String(h).padStart(2, "0")}h às ${String((h + 4) % 24).padStart(2, "0")}h`,
+  curto: `${h}h`,
+}));
+
+/**
+ * Agrupa as 24 colunas de hora em faixas de quatro horas: cada valor é a média simples dos quatro valores horários da faixa (sem
+ * pesos). Faixa com qualquer hora sem dado fica sem dado: nunca é média de menos horas.
+ */
+export function agruparEmFaixasDeHoras(valores: readonly (readonly ValorCelula[])[], passo = 4): ValorCelula[][] {
+  return valores.map((linha) =>
+    Array.from({ length: Math.ceil(linha.length / passo) }, (_, g) => {
+      const trecho = linha.slice(g * passo, g * passo + passo);
+      const completo = trecho.length === passo && trecho.every((v) => typeof v === "number" && Number.isFinite(v));
+      return completo ? (trecho as number[]).reduce((a, b) => a + b, 0) / passo : null;
+    }),
+  );
+}
+
+/* ---------- marcas numeradas do gráfico mensal ---------- */
+
+/** As mudanças de perímetro da carga como marcas numeradas (1, 2) no gráfico, com a legenda escrita à parte: o texto longo não cabe sobre o desenho. */
+export function marcosNumerados(h: Pick<BlocoHistorico, "ponderacao">): { marcos: { x: string; rotulo: string }[]; legenda: { n: number; data: string; texto: string }[] } {
+  const q = h.ponderacao.quebras;
+  return {
+    marcos: q.map((x, i) => ({ x: x.mes, rotulo: String(i + 1) })),
+    legenda: q.map((x, i) => ({ n: i + 1, data: dataBR(x.data), texto: x.descricao.replace(/\.$/, "") })),
+  };
+}
+
+/* ---------- distância entre submercados na semana de referência ---------- */
+
+export type ValorPorSubmercado = { id: Submercado; valor: number | null };
+
+/** Menor e maior valor entre os submercados, com os empates (igualdade nos centavos) e a distância entre eles; a mesma regra da média diária. */
+export function extremosPorSubmercado(itens: readonly ValorPorSubmercado[]): ExtremosMediaDiaria | null {
+  const linhas: MediaDiariaSm[] = itens.flatMap((x) =>
+    typeof x.valor === "number" && Number.isFinite(x.valor) ? [{ id: x.id, nome: NOME_SM[x.id], rotulo: CURTO_SM[x.id], media: x.valor, variacao: null }] : [],
+  );
+  return extremosMediaDiaria(linhas);
+}
+
+/**
+ * Os três valores da semana de referência lado a lado entre os submercados: para cada produto, de quanto a quanto vai e a distância entre
+ * o maior e o menor, em R$/MWh (nunca como razão). Descrição, não explicação: os dados publicados não dizem por que os submercados
+ * diferem.
+ */
+export function textoDistanciaSemanal(sem: Pick<SemanaReferencia, "inicio" | "fim" | "por_sm"> | null | undefined): string | null {
+  if (!sem) return null;
+  const produtos = [
+    ["o CMO semanal do DECOMP", "decomp"],
+    ["a média do CMO do DESSEM", "dessem"],
+    ["a média do PLD", "pld"],
+  ] as const;
+  const quem = (x: ExtremoMediaDiaria) => `${nomesDosSubmercados(x.submercados)}${x.submercados.length > 1 && x.submercados.length < SUBMERCADOS.length ? ", mesmo valor" : ""}`;
+  const partes = produtos.flatMap(([rotulo, k]) => {
+    const e = extremosPorSubmercado(sem.por_sm.map((x) => ({ id: x.sm, valor: x[k] })));
+    if (!e) return [];
+    if (e.distancia === 0) return [`${rotulo} foi igual nos quatro submercados, ${reais(e.menor.valor)}/MWh`];
+    return [`${rotulo} foi de ${reais(e.menor.valor)}/MWh (${quem(e.menor)}) a ${reais(e.maior.valor)}/MWh (${quem(e.maior)}), distância de ${reais(e.distancia)}/MWh`];
+  });
+  if (!partes.length) return null;
+  return `Entre os submercados, na semana de ${dataBR(sem.inicio)} a ${dataBR(sem.fim)}: ${partes.join("; ")}. Os dados publicados não dizem por que os valores diferem entre submercados; esta página descreve a diferença, não a explica.`;
+}
+
+/* ---------- limites vigentes diante dos valores ---------- */
+
+/** Limites do ato vigente na data (null onde o ato integrado não traz o valor). */
+export type LimitesVigentes = { piso: number | null; teto_horario: number | null; teto_estrutural: number | null };
+
+export function limitesVigentesEm(regimes: readonly RegimeLimites[], dia: string): LimitesVigentes | null {
+  const r = regimeVigenteEm(regimes, dia);
+  return r ? { piso: r.pld_min, teto_horario: r.pld_max_horario, teto_estrutural: r.pld_max_estrutural } : null;
+}
+
+/** "igual ao teto horário vigente (R$ X/MWh)" quando o máximo mostrado coincide, nos centavos, com o teto horário do ato vigente na data do máximo. */
+export function textoPicoFrenteAoLimite(max: number | null, quando: string | null | undefined, regimes: readonly RegimeLimites[]): string | null {
+  if (max === null || !quando) return null;
+  const lim = limitesVigentesEm(regimes, quando.slice(0, 10));
+  if (!lim || lim.teto_horario === null) return null;
+  return emCentavos(max) === emCentavos(lim.teto_horario) ? `igual ao teto horário vigente na data (${reais(lim.teto_horario)}/MWh)` : null;
+}
+
+/**
+ * Quando o CMO semanal do DECOMP passa dos limites do PLD vigentes na semana, a página diz: o CMO não é limitado, o PLD é. Devolve null
+ * quando o CMO está dentro dos dois tetos ou o ato vigente não traz o valor.
+ */
+export function textoCmoFrenteAosLimites(sm: Submercado, decomp: number | null, lim: LimitesVigentes | null): string | null {
+  if (decomp === null || !lim) return null;
+  const acimaHorario = lim.teto_horario !== null && emCentavos(decomp) > emCentavos(lim.teto_horario);
+  const acimaEstrutural = lim.teto_estrutural !== null && emCentavos(decomp) > emCentavos(lim.teto_estrutural);
+  if (!acimaHorario && !acimaEstrutural) return null;
+  const tetos: string[] = [];
+  if (acimaHorario) tetos.push(`o teto horário do ato vigente (${reais(lim.teto_horario)}/MWh, limite de cada hora do PLD)`);
+  if (acimaEstrutural) tetos.push(`o teto estrutural (${reais(lim.teto_estrutural)}/MWh, limite da média diária do PLD)`);
+  return `O CMO semanal do DECOMP ${DO_SM[sm]}, ${reais(decomp)}/MWh, é maior que ${listaTexto(tetos)}. O CMO não tem esses limites e o PLD tem: nessa semana, a diferença entre os dois mede o limite, não a formação do preço.`;
+}
+
+/** Piso e tetos vigentes em cada semana (pelo último dia da semana), para desenhar no gráfico semanal quando os valores os alcançam. */
+export function limitesPorSemana(fins: readonly string[], regimes: readonly RegimeLimites[]): LimitesVigentes[] {
+  return fins.map((fim) => limitesVigentesEm(regimes, fim) ?? { piso: null, teto_horario: null, teto_estrutural: null });
+}
+
+/** Algum valor semanal (DECOMP, DESSEM ou PLD) alcança o teto estrutural vigente na sua semana: só então os limites entram no gráfico. */
+export function valoresAlcancamTeto(linhas: readonly Pick<LinhaSemana, "fim" | "decomp" | "dessem" | "pld">[], regimes: readonly RegimeLimites[]): boolean {
+  return linhas.some((l) => {
+    const lim = limitesVigentesEm(regimes, l.fim);
+    if (!lim || lim.teto_estrutural === null) return false;
+    return [l.decomp, l.dessem, l.pld].some((v) => v !== null && emCentavos(v) >= emCentavos(lim.teto_estrutural as number));
+  });
+}
+
+/* ---------- nominal, regimes e inflação ---------- */
+
+/**
+ * O que a distribuição de preços desde 2021 mistura: preços nominais de anos com limites diferentes. Usa só o que a gold de limites
+ * publica: a faixa dos pisos, o número de tetos horários diferentes e os anos com mais da metade das horas do submercado no piso.
+ */
+export function textoRegimesDistribuicao(l: Pick<BlocoLimitesDisponivel, "regimes" | "permanencia_anual">, sm: Submercado = "SE"): string | null {
+  const pisos = l.regimes.map((r) => r.pld_min).filter((v): v is number => typeof v === "number");
+  if (!pisos.length) return null;
+  const tetos = new Set(l.regimes.map((r) => r.pld_max_horario).filter((v) => v !== null)).size;
+  const anos = l.permanencia_anual.filter((p) => p.sm === sm && p.frac_piso !== null && p.frac_piso > 0.5).sort((a, b) => a.ano - b.ano);
+  const partes = [`o piso foi de ${reais(Math.min(...pisos))} a ${reais(Math.max(...pisos))}/MWh e o teto horário teve ${tetos} valores diferentes`];
+  if (anos.length) {
+    const fr = anos.map((a) => a.frac_piso as number);
+    partes.push(`em ${anos.length === 1 ? "um ano" : `${anos.length} anos`} (${listaTexto(anos.map((a) => String(a.ano)))}), de ${fracPct(Math.min(...fr), 1)} a ${fracPct(Math.max(...fr), 1)} das horas ${DO_SM[sm]} ficaram no piso`);
+  }
+  return `Os valores são nominais, sem correção pela inflação, e de anos com limites diferentes: ${partes.join("; ")}.`;
+}
+
+/** Inflação acumulada entre o primeiro mês da série em moeda constante e o mês-base, pela razão entre a série real e a nominal do mesmo mês. */
+export function inflacaoAcumulada(mensal: Pick<BlocoHistorico["mensal"], "meses" | "SE">): { de: string; ate: string; frac: number } | null {
+  const real = mensal.SE.real;
+  const nom = mensal.SE.temporal;
+  const i = real.findIndex((v, k) => typeof v === "number" && typeof nom[k] === "number" && nom[k] !== 0);
+  const f = real.map((v, k) => (typeof v === "number" && typeof nom[k] === "number" && nom[k] !== 0 ? k : -1)).filter((k) => k >= 0);
+  if (i < 0 || !f.length) return null;
+  const ultimo = f[f.length - 1];
+  // a razão real/nominal de cada mês é o índice do mês-base dividido pelo índice do mês: a inflação entre dois meses é a razão entre elas
+  const razaoPrimeiro = (real[i] as number) / (nom[i] as number);
+  const razaoUltimo = (real[ultimo] as number) / (nom[ultimo] as number);
+  return { de: mensal.meses[i], ate: mensal.meses[ultimo], frac: razaoPrimeiro / razaoUltimo - 1 };
+}
+
+export function textoInflacao(i: { de: string; ate: string; frac: number } | null): string | null {
+  if (!i) return null;
+  return `O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de ${mesAno(i.de)} a ${mesAno(i.ate)}: um preço nominal de ${mesAno(i.de)} equivale a mais em reais de hoje do que o mesmo número nominal de ${mesAno(i.ate)}.`;
+}
+
+/** O menor valor horário do ano contra o piso do ato: em quantas combinações de ano e submercado conferidas os dois coincidem. */
+export function textoMenorValorEPiso(conferencias: BlocoLimitesDisponivel["conferencias"] | null | undefined): string | null {
+  if (!conferencias?.length) return null;
+  const decididas = conferencias.filter((c) => c.menor_igual_ao_piso !== null);
+  if (!decididas.length) return null;
+  const iguais = decididas.filter((c) => c.menor_igual_ao_piso === true).length;
+  return iguais === decididas.length
+    ? `O menor valor horário observado no ano é igual ao piso do ato vigente nas ${decididas.length} combinações de ano e submercado conferidas.`
+    : `O menor valor horário observado no ano é igual ao piso do ato vigente em ${iguais} das ${decididas.length} combinações de ano e submercado conferidas.`;
+}
+
+/* ---------- texto atualizado das ressalvas sobre limites ---------- */
+
+/**
+ * Algumas limitações e regras da gold dizem que os limites "não foram auditados nesta fase". A página de limites mostra os atos da ANEEL
+ * conferidos, de modo que a frase ficou desatualizada. Esta troca só mexe nessa cláusula e devolve o texto igual quando ela não existe
+ * (quando a gold for regerada com a frase nova, a troca deixa de valer sozinha).
+ */
+export function semRessalvaDeLimitesNaoAuditados(texto: string): string {
+  return texto
+    .replace(/ e não foram auditados nesta fase;/, "; os valores vigentes em cada ano, conferidos nos atos da ANEEL, estão na página Limites;")
+    .replace(/o limite oficial vigente não foi auditado nesta fase\./, "o piso vigente é o do ato da ANEEL, conferido na página Limites.");
+}
+
+/** A mesma troca em uma proveniência inteira (lista de limitações), sem alterar o objeto de origem. */
+export function proveniencia_semRessalvaDeLimites<T extends { limitacoes?: string[] }>(p: T): T {
+  return p.limitacoes ? { ...p, limitacoes: p.limitacoes.map(semRessalvaDeLimitesNaoAuditados) } : p;
+}
+
+/**
+ * Nota sobre o teto estrutural na gold: a conferência empírica (quantos dias-submercado a média diária ficou no teto) continua valendo
+ * como confirmação, mas a frase final diz que a regra não está citada, e a Resolução Normativa ANEEL nº 1.032/2022 (art. 23) a escreve.
+ * Tira só essa frase final.
+ */
+export function notaTetoComConfirmacaoEmpirica(nota: string): string {
+  const i = nota.indexOf("A regra de aplicação não está");
+  return i < 0 ? nota : `${nota.slice(0, i).trim()} A regra está na norma citada abaixo; o padrão observado confirma a leitura.`;
+}
+
+/* ---------- geração do Balanço do ONS (diagrama e ideia central) ---------- */
+
+const BASE_BALANCO = "geração do Balanço de Energia nos Subsistemas do ONS";
+
+function ressalvaMmgd(g: GeracaoGold): string {
+  const desde = g.inicio_regime_atual ? ` desde ${dataBR(g.inicio_regime_atual)}` : "";
+  return `a solar inclui a micro e minigeração distribuída (MMGD) estimada pelo ONS${desde}`;
+}
+
+/** Eólica e solar do SIN em 7 dias, ditas como parcelas do Balanço do ONS, com a ressalva da MMGD estimada na solar (nunca "verificada"). */
+export function estadoRenovaveisBalanco(g: GeracaoGold | null): string | null {
+  if (!g?.disponivel) return null;
+  const m = g.regioes.find((r) => r.rg === "SIN")?.["7d"];
+  if (!m) return null;
+  return `Nos 7 dias até ${dataBR(m.fim)}, a eólica respondeu por ${num(m.participacao.eolica, 1)}% e a solar por ${num(m.participacao.solar, 1)}% da ${BASE_BALANCO}; ${ressalvaMmgd(g)}.`;
+}
+
+export function estadoTermicasBalanco(g: GeracaoGold | null): string | null {
+  if (!g?.disponivel) return null;
+  const t = g.termica_contexto;
+  if (t.participacao_7d === null) return null;
+  return `As térmicas responderam por ${num(t.participacao_7d, 1)}% da ${BASE_BALANCO} nos 7 dias até ${dataBR(g.dia_referencia)} (mediana dos 12 meses anteriores: ${num(t.mediana_365d, 1)}%); ${ressalvaMmgd(g)}, e a MMGD entra no total em que a participação é medida. O custo variável unitário por usina está catalogado e ainda não integrado.`;
+}
+
+/** A ideia central do capítulo: parcela da hidráulica na geração do Balanço do ONS em 12 meses, com a ressalva da MMGD no total. */
+export function textoHidraulicaBalanco(g: GeracaoGold | null): string | null {
+  if (!g?.disponivel) return null;
+  const m = g.regioes.find((r) => r.rg === "SIN")?.["12m"];
+  if (!m) return null;
+  return `Nos 12 meses até ${dataBR(m.fim)}, a geração hidráulica respondeu por ${num(m.participacao.hidraulica, 1)}% da ${BASE_BALANCO}; ${ressalvaMmgd(g)}, e a MMGD estimada entra no total.`;
+}
+
+/* ---------- fluxo por hora no dia do mapa ---------- */
+
+export type SentidoDoFluxoNoDia = { fronteira: Fronteira; de: Submercado; para: Submercado; horas: number; no_sentido: number; contrario: number; nulo: number };
+
+/**
+ * Para cada fronteira, quantas das horas do dia o fluxo publicado foi no sentido de `de` para `para`, no sentido contrário, ou nulo
+ * (|fluxo| até 1 MWmed). Só conta as horas com fluxo publicado (ausência não é zero). O sinal é o do arquivo: positivo da primeira para a
+ * segunda ponta da fronteira.
+ */
+export function horasPorSentidoNoDia(rec: Pick<PldHorarioRecenteArquivo, "t" | "fluxo">, dia: string): SentidoDoFluxoNoDia[] {
+  const idx = rec.t.map((t, i) => (t.startsWith(dia) ? i : -1)).filter((i) => i >= 0);
+  return FRONTEIRAS.map((f) => {
+    const { de, para } = pontasFronteira(f);
+    let no_sentido = 0;
+    let contrario = 0;
+    let nulo = 0;
+    for (const i of idx) {
+      const v = rec.fluxo[f][i];
+      if (typeof v !== "number" || !Number.isFinite(v)) continue;
+      if (Math.abs(v) <= 1) nulo++;
+      else if (v > 0) no_sentido++;
+      else contrario++;
+    }
+    return { fronteira: f, de, para, horas: no_sentido + contrario + nulo, no_sentido, contrario, nulo };
+  });
+}
+
+export function textoSentidoNoDia(s: SentidoDoFluxoNoDia): string | null {
+  if (s.horas === 0) return null;
+  const dePara = `${CURTO_SM[s.de]} para ${CURTO_SM[s.para]}`;
+  const paraDe = `${CURTO_SM[s.para]} para ${CURTO_SM[s.de]}`;
+  const partes = [`${dePara}: ${s.no_sentido} de ${s.horas} horas`, `${paraDe}: ${s.contrario}`];
+  if (s.nulo > 0) partes.push(`fluxo nulo: ${s.nulo}`);
+  return partes.join("; ");
+}
+
+/* ---------- semana operativa do CMO ---------- */
+
+/** Semana operativa (sábado a sexta) que termina na data: início e fim por extenso. */
+export function intervaloSemanaOperativa(fim: string): { inicio: string; fim: string } {
+  return { inicio: somaDias(fim.slice(0, 10), -6), fim: fim.slice(0, 10) };
 }

@@ -666,7 +666,7 @@ describe("páginas renderizadas no servidor", () => {
       while ((m = re.exec(h))) {
         let prof = 0;
         let fim = h.length;
-        for (const t of h.slice(m.index).matchAll(/<div\b|<\/div>/g)) {
+        for (const t of Array.from(h.slice(m.index).matchAll(/<div\b|<\/div>/g))) {
           prof += t[0] === "</div>" ? -1 : 1;
           if (prof === 0) {
             fim = m.index + t.index! + t[0].length;

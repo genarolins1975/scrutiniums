@@ -112,7 +112,7 @@ export default function GeracaoCapacidadePage() {
           rotulo="Geração"
           titulo={perguntaPainel("p024")}
           lead="A potência das usinas despachadas pelo ONS, por fonte, e quanto cada fonte produziu em relação ao máximo que essa potência permitiria (o fator de capacidade)."
-          recorte={`Retrato de ${dataBR(c.retrato.data)} · fator de capacidade de ${periodo12} (12 meses completos) · usinas despachadas pelo ONS · MW e %`}
+          recorte={`Retrato de ${dataBR(c.retrato.data)} · fator de capacidade de ${periodo12} · MW e %`}
           fonte={FONTE}
           referencia={
             <>

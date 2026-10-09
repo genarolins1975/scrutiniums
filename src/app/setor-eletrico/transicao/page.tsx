@@ -106,7 +106,7 @@ export default function TransicaoPage() {
         <CabecalhoModulo
           siglas={["MMGD", "MWmed", "SIN", "ANEEL", "ONS", "MCTI", "IBGE"]}
           titulo={PERGUNTA_TRANSICAO}
-          lead="Capacidade de geração distribuída adicionada a cada ano e intensidade das emissões do SIN, em séries separadas e cada uma na sua unidade."
+          lead="Capacidade de geração distribuída adicionada por ano e intensidade das emissões do SIN."
           recorte={`MMGD até ${data(m.data_cadastro)} · energia estimada até ${mes(mesOns?.m)} · emissões anuais até ${e?.ultimo_ano?.ano ?? "sem dado"}`}
           fonte="ANEEL, ONS e MCTI"
           referencia={
@@ -128,7 +128,7 @@ export default function TransicaoPage() {
             <FaixaMetricas
               colunas={4}
               rotulo="Indicadores da transição"
-              nota="Cada medida tem a sua unidade: capacidade em MW (ANEEL), energia estimada em MWmed (ONS) e intensidade de emissões em tCO2/MWh (MCTI). Não se somam nem se convertem entre si."
+              nota="Cada medida na sua unidade: MW (ANEEL), MWmed (ONS) e tCO2/MWh (MCTI). Não se somam nem se convertem."
             >
               <Numero
                 variante="faixa"
@@ -210,7 +210,7 @@ export default function TransicaoPage() {
               <div className="space-y-6">
                 <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2">
                   <div className="min-w-0 space-y-3">
-                    <h3 className="ed-h3 font-serif text-carvao">Capacidade de MMGD adicionada por ano</h3>
+                    <h3 className="sr-only">Capacidade de MMGD adicionada por ano</h3>
                     <GraficoBarras
                       titulo={`Potência de MMGD conectada por ano de conexão, Brasil (cadastro de ${data(m.data_cadastro)})`}
                       dados={anual}
@@ -225,7 +225,7 @@ export default function TransicaoPage() {
                   </div>
                   {e ? (
                     <div className="min-w-0 space-y-3">
-                      <h3 className="ed-h3 font-serif text-carvao">Intensidade de emissões da geração no SIN</h3>
+                      <h3 className="sr-only">Intensidade de emissões da geração no SIN</h3>
                       <GraficoBarras
                         titulo="Fator médio anual de emissão de CO2 do SIN"
                         dados={dadosFatorAnual(e)}

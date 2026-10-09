@@ -141,7 +141,33 @@ const NOMES: Record<string, string> = {
   "SANTA MARIA VIT": "Santa Maria da Vitória",
   "OUTRAS - SUL": "Outras do Sul",
   "OUTRAS- SUDESTE": "Outras do Sudeste",
+  // reservatórios: o ONS publica sem acento ou abreviado; o nome original continua no identificador e nos arquivos
+  "SAO ROQUE": "São Roque",
+  TUCURUI: "Tucuruí",
+  "CURUA-UNA": "Curuá-Una",
+  "S.DO FACÃO": "Serra do Facão",
+  CORUMBA: "Corumbá",
+  "CORUMBA-3": "Corumbá III",
+  "CORUMBA-4": "Corumbá IV",
+  "C.BRANCO-1": "Capim Branco I",
+  "A. VERMELHA": "Água Vermelha",
+  "B. BONITA": "Barra Bonita",
+  "I. SOLTEIRA": "Ilha Solteira",
+  "G. B. MUNHOZ": "Governador Bento Munhoz",
+  "G. P. SOUZA": "Governador Parigot de Souza",
+  "M. MORAES": "Mascarenhas de Moraes",
+  "GOV JAYME CANET JR": "Governador Jayme Canet Júnior",
+  "SANTA CLARA-PR": "Santa Clara (PR)",
+  CACU: "Caçu",
+  IRAPE: "Irapé",
 };
+
+/** Afluências que o ONS publica agrupadas ("Outras do Sul", "Outras do Sudeste"): não são uma bacia, e não têm MLT publicada. */
+const GRUPOS_ONS = new Set(["OUTRAS - SUL", "OUTRAS- SUDESTE"]);
+
+export function ehGrupoOns(nome: string | null | undefined): boolean {
+  return !!nome && GRUPOS_ONS.has(nome.trim());
+}
 const MINUSCULAS = new Set(["da", "de", "do", "das", "dos", "e"]);
 const ROMANOS = /^(ii|iii|iv|vi|vii|viii|ix|xi|xii)$/i;
 
@@ -190,27 +216,32 @@ export function lerIdRecorte(id: string): { tipo: TipoRecorte; nome: string } | 
   return m ? { tipo: m[1] as TipoRecorte, nome: m[2] } : null;
 }
 
-/** "SIN", "Sudeste/Centro-Oeste", "REE Paraná", "Bacia do Grande". */
+/**
+ * "SIN", "Sudeste/Centro-Oeste", "REE Paraná", "Bacia do Grande", "Outras do Sul (grupo do ONS)". Os dois grupos de afluências
+ * agrupadas do ONS não são uma bacia: o rótulo diz isso, em vez de "Bacia do Outras do Sul".
+ */
 export function rotuloRecorte(tipo: TipoRecorte, nome: string): string {
   if (tipo === "subsistema") return ehRegiao(nome) ? NOME_REGIAO[nome] : nome;
+  if (tipo === "bacia" && ehGrupoOns(nome)) return `${nomeProprio(nome)} (grupo do ONS)`;
   return tipo === "ree" ? `REE ${nomeProprio(nome)}` : `Bacia do ${nomeProprio(nome)}`;
 }
 
-/** Com artigo: "o SIN", "o Sul", "o REE Paraná", "a bacia do Grande". */
+/** Com artigo: "o SIN", "o Sul", "o REE Paraná", "a bacia do Grande", "o grupo Outras do Sul". */
 export function artigoRecorte(tipo: TipoRecorte, nome: string): string {
-  if (tipo === "bacia") return `a bacia do ${nomeProprio(nome)}`;
+  if (tipo === "bacia") return ehGrupoOns(nome) ? `o grupo ${nomeProprio(nome)}` : `a bacia do ${nomeProprio(nome)}`;
   return `o ${tipo === "ree" ? `REE ${nomeProprio(nome)}` : rotuloRecorte(tipo, nome)}`;
 }
 
-/** Contração com "a": "ao SIN", "ao REE Paraná", "à bacia do Grande". */
+/** Contração com "a": "ao SIN", "ao REE Paraná", "à bacia do Grande", "ao grupo Outras do Sul". */
 export function aoRecorte(tipo: TipoRecorte, nome: string): string {
-  if (tipo === "bacia") return `à bacia do ${nomeProprio(nome)}`;
+  if (tipo === "bacia") return ehGrupoOns(nome) ? `ao grupo ${nomeProprio(nome)}` : `à bacia do ${nomeProprio(nome)}`;
   return `ao ${tipo === "ree" ? `REE ${nomeProprio(nome)}` : rotuloRecorte(tipo, nome)}`;
 }
 
-/** Contração: "do SIN", "do REE Paraná", "da bacia do Grande". */
+/** Contração: "do SIN", "do REE Paraná", "da bacia do Grande", "do grupo Outras do Sul". */
 export function doRecorte(tipo: TipoRecorte, nome: string): string {
   if (tipo === "subsistema") return ehRegiao(nome) ? DO_REGIAO[nome] : `de ${nome}`;
+  if (tipo === "bacia" && ehGrupoOns(nome)) return `do grupo ${nomeProprio(nome)}`;
   return tipo === "ree" ? `do REE ${nomeProprio(nome)}` : `da bacia do ${nomeProprio(nome)}`;
 }
 
@@ -746,10 +777,28 @@ export function recortePadraoEna(lista: readonly EntidadeEna[], tipo: TipoRecort
   return maior?.id ?? "SIN";
 }
 
+/**
+ * Por que não há ENA de 30 dias em % da MLT, dito pela causa exata e lida dos campos da gold: as afluências que o ONS publica agrupadas
+ * ("Outras do Sul", "Outras do Sudeste") não têm MLT; nos demais recortes, falta ENA em algum dia da janela ou falta a MLT.
+ */
+export function motivoSemEna30d(e: Pick<EntidadeEna, "nome" | "tipo" | "ena_30d_soma_mwmed_dia" | "mlt_30d_soma_mwmed_dia">): string {
+  if (e.tipo === "bacia" && ehGrupoOns(e.nome)) return "o ONS publica essas afluências agrupadas sem MLT, e sem MLT não há percentual";
+  if (e.ena_30d_soma_mwmed_dia === null) return "falta ENA em algum dia da janela de 30 dias, e a razão nunca é calculada com dia faltando";
+  if (e.mlt_30d_soma_mwmed_dia === null) return "não há MLT publicada para o recorte, e sem MLT não há percentual";
+  return "algum dia da janela ficou sem dado, e a razão nunca é calculada com dia faltando";
+}
+
+/** O período da faixa usual da janela, sem a expressão quebrada "em sem base" quando o recorte não tem base: "faixa da mesma janela em 2001 a 2025". */
+export function textoFaixaJanela(e: Pick<EntidadeEna, "periodo_base" | "anos_na_base_30d" | "pct_mlt_30d">): string {
+  if (e.periodo_base) return `faixa da mesma janela em ${periodoBase(e.periodo_base)}`;
+  if (e.pct_mlt_30d === null) return "sem faixa da mesma janela, porque o recorte não tem ENA de 30 dias";
+  return `sem faixa da mesma janela: ${plural(e.anos_na_base_30d, "ano", "anos")} na base, e o mínimo é 5`;
+}
+
 export function respostaAfluencia(e: EntidadeEna): string {
   const de = doRecorte(e.tipo, e.nome);
   if (e.pct_mlt_30d === null) {
-    return `Sem ENA de 30 dias ${de} até ${dataBR(e.dia)}: falta dia na janela ou não há MLT publicada, e a razão nunca é calculada com dia faltando.`;
+    return `Sem ENA de 30 dias ${de} até ${dataBR(e.dia)}: ${motivoSemEna30d(e)}.`;
   }
   const partes: string[] = [];
   let p = `Nos 30 dias até ${dataBR(e.dia)}, a ENA bruta ${de} somou ${num(e.ena_30d_soma_mwmed_dia, 0)} MWmed·dia, ${pct(e.pct_mlt_30d, 1)} da MLT do mesmo período (${num(e.mlt_30d_soma_mwmed_dia, 0)} MWmed·dia)`;
@@ -765,32 +814,36 @@ export function respostaAfluencia(e: EntidadeEna): string {
 }
 
 /**
- * Veredito do P018 em palavras simples: a água que chegou em 30 dias contra a média de longo prazo e contra a faixa usual da
+ * Veredito do P018 em palavras simples: a água que chegou em 30 dias contra a média de longo termo e contra a faixa usual da
  * janela. As somas em MWmed·dia, o percentil e a ENA armazenável ficam em respostaAfluencia.
  */
 export function vereditoAfluencia(e: EntidadeEna): string {
-  if (e.pct_mlt_30d === null) return `Sem ENA de 30 dias ${doRecorte(e.tipo, e.nome)} até ${dataBR(e.dia)}: falta dia na janela ou não há MLT publicada, e a razão nunca é calculada com dia faltando.`;
-  const base = `Nos 30 dias até ${dataBR(e.dia)}, a água que chegou ${aoRecorte(e.tipo, e.nome)} (ENA) foi ${pct(e.pct_mlt_30d, 1)} da média de longo prazo (MLT) do período`;
+  if (e.pct_mlt_30d === null) return `Sem ENA de 30 dias ${doRecorte(e.tipo, e.nome)} até ${dataBR(e.dia)}: ${motivoSemEna30d(e)}.`;
+  const base = `Nos 30 dias até ${dataBR(e.dia)}, a água que chegou ${aoRecorte(e.tipo, e.nome)} (ENA) foi ${pct(e.pct_mlt_30d, 1)} da média de longo termo (MLT) do período`;
   if (e.faixa_30d && e.p10_30d !== null && e.p90_30d !== null) return `${base}, ${ROTULO_FAIXA[e.faixa_30d]} da mesma janela.`;
   return `${base}; com ${plural(e.anos_na_base_30d, "ano", "anos")} na base da janela, não há faixa usual.`;
 }
 
+/**
+ * Colunas da tabela equivalente da afluência. Em Entender ficam o recorte, a ENA de 30 dias e a posição (cabem em 360 px, com o número
+ * junto do nome); as demais vão para Analisar. O arquivo exportado sempre leva todas.
+ */
 export const COLUNAS_AFLUENCIA: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Recorte", tipo: "texto" },
-  { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true },
-  { id: "dia", rotulo: "Último dia", tipo: "data" },
+  { id: "tipo", rotulo: "Tipo", tipo: "texto", categorica: true, nivel: "analisar" },
+  { id: "dia", rotulo: "Último dia", tipo: "data", nivel: "analisar" },
   { id: "pct_mlt_30d", rotulo: "ENA de 30 dias", tipo: "numero", unidade: "% da MLT", casas: 1 },
-  { id: "ena_30d_soma_mwmed_dia", rotulo: "Soma da ENA", tipo: "numero", unidade: "MWmed·dia", casas: 1 },
-  { id: "mlt_30d_soma_mwmed_dia", rotulo: "Soma da MLT", tipo: "numero", unidade: "MWmed·dia", casas: 1 },
-  { id: "p10_30d", rotulo: "10º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1 },
-  { id: "p50_30d", rotulo: "Mediana da janela", tipo: "numero", unidade: "% da MLT", casas: 1 },
-  { id: "p90_30d", rotulo: "90º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1 },
+  { id: "ena_30d_soma_mwmed_dia", rotulo: "Soma da ENA", tipo: "numero", unidade: "MWmed·dia", casas: 1, nivel: "analisar" },
+  { id: "mlt_30d_soma_mwmed_dia", rotulo: "Soma da MLT", tipo: "numero", unidade: "MWmed·dia", casas: 1, nivel: "analisar" },
+  { id: "p10_30d", rotulo: "10º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
+  { id: "p50_30d", rotulo: "Mediana da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
+  { id: "p90_30d", rotulo: "90º percentil da janela", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
   { id: "faixa", rotulo: "Posição", tipo: "texto", categorica: true },
-  { id: "percentil_30d", rotulo: "Percentil", tipo: "numero", casas: 1 },
-  { id: "anos_na_base_30d", rotulo: "Anos na base", tipo: "numero", casas: 0 },
-  { id: "periodo_base", rotulo: "Período da base", tipo: "texto" },
-  { id: "pct_mlt_dia", rotulo: "ENA do dia", tipo: "numero", unidade: "% da MLT", casas: 1 },
-  { id: "nome", rotulo: "Nome no ONS", tipo: "texto" },
+  { id: "percentil_30d", rotulo: "Percentil", tipo: "numero", casas: 1, nivel: "analisar" },
+  { id: "anos_na_base_30d", rotulo: "Anos na base", tipo: "numero", casas: 0, nivel: "analisar" },
+  { id: "periodo_base", rotulo: "Período da base", tipo: "texto", nivel: "analisar" },
+  { id: "pct_mlt_dia", rotulo: "ENA do dia", tipo: "numero", unidade: "% da MLT", casas: 1, nivel: "analisar" },
+  { id: "nome", rotulo: "Nome no ONS", tipo: "texto", nivel: "analisar" },
 ];
 
 export function linhasAfluencia(lista: readonly EntidadeEna[]): LinhaTabela[] {

@@ -1611,8 +1611,7 @@ export function notaEtapa(m: MetricaEtapa): string {
   return `Potência ${m.medida}${usinas}.`;
 }
 /** As etapas não se somam: a frase que acompanha a faixa de métricas diz a medida de cada uma. */
-export const NOTA_ETAPAS =
-  "Operação é potência fiscalizada; construção e obra não iniciada são potência outorgada. São medidas diferentes e não se somam.";
+export const NOTA_ETAPAS = "Operação é potência fiscalizada; construção e obra não iniciada, potência outorgada. Medidas diferentes, sem soma.";
 
 /**
  * O SIGA e o RALIE são retratos diferentes da carteira: a frase diz a data e a medida de cada um e dá a escala do que já opera

@@ -7,6 +7,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeEscolha } from "@/components/energia/RedeControles";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -63,7 +64,9 @@ export function RedeRestricoes({
   fonteAtls,
   fonteInterrupcoes,
   versao,
-  destaques,
+  limites,
+  notas,
+  aposPrincipal,
   titulosDocumentos,
   criterioCorte,
 }: {
@@ -77,7 +80,12 @@ export function RedeRestricoes({
   fonteAtls: string;
   fonteInterrupcoes: string;
   versao: string;
-  destaques?: ReactNode;
+  /** Bloco do estado bloqueado (limites operativos sem fonte aberta), logo depois do veredito: sempre à vista. */
+  limites?: ReactNode;
+  /** Notas do painel (NotasDoPainel: o que mudou e a ressalva essencial), logo depois da figura principal e do histórico. */
+  notas?: ReactNode;
+  /** Conteúdo depois das notas (os capítulos do módulo), antes das seções complementares. */
+  aposPrincipal?: ReactNode;
 }) {
   const r = restricoes;
   const [v, definir] = useEstadoUrl(ESQUEMA);
@@ -104,32 +112,12 @@ export function RedeRestricoes({
 
   return (
     <div className="space-y-6">
-      <RespostaCurta id="p030" veredito={vereditoRestricoes(r)}>
-        {respostaRestricoes(r)}
-      </RespostaCurta>
-
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            ATLS: {ativos[0]?.ultimos_12_meses ? `${mesAno(ativos[0].ultimos_12_meses.inicio)} a ${mesAno(ativos[0].ultimos_12_meses.fim)}` : "sem janela"} (mensal, último mês{" "}
-            {ultimo ? mesAno(ultimo) : "sem dado"}); interrupções: {dataBR(r.interrupcoes.ultimos_12_meses.inicio)} a {dataBR(r.interrupcoes.ultimos_12_meses.fim)}
-          </dd>
-        </div>
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">
-            Fluxos sistêmicos que o ONS acompanha no ATLS ({ativos.length} publicados no último mês, {r.atls.fluxos.length} no histórico); perturbações com corte de carga
-            registradas pelo ONS
-          </dd>
-        </div>
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">Horas acima do limite (h); energia não suprida em MWh</dd>
-        </div>
-      </dl>
-
-      {destaques}
+      <div className="grid gap-y-4">
+        <RespostaCurta id="p030" veredito={vereditoRestricoes(r)}>
+          {respostaRestricoes(r)}
+        </RespostaCurta>
+        {limites}
+      </div>
 
       <GraficoBarras
         titulo={`Horas acima do limite em 12 meses, fluxos publicados em ${ultimo ? mesAno(ultimo) : "último mês"}`}
@@ -247,8 +235,33 @@ export function RedeRestricoes({
         />
       </div>
 
-      <div className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Cortes de carga por ano</h3>
+
+      <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Período</dt>
+          <dd className="mt-0.5">
+            ATLS: {ativos[0]?.ultimos_12_meses ? `${mesAno(ativos[0].ultimos_12_meses.inicio)} a ${mesAno(ativos[0].ultimos_12_meses.fim)}` : "sem janela"} (mensal, último mês{" "}
+            {ultimo ? mesAno(ultimo) : "sem dado"}); interrupções: {dataBR(r.interrupcoes.ultimos_12_meses.inicio)} a {dataBR(r.interrupcoes.ultimos_12_meses.fim)}
+          </dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Universo</dt>
+          <dd className="mt-0.5">
+            Fluxos sistêmicos que o ONS acompanha no ATLS ({ativos.length} publicados no último mês, {r.atls.fluxos.length} no histórico); perturbações com corte de carga
+            registradas pelo ONS
+          </dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="rotulo text-mineral">Unidade</dt>
+          <dd className="mt-0.5">Horas acima do limite (h); energia não suprida em MWh</dd>
+        </div>
+      </dl>
+
+      {notas}
+
+      {aposPrincipal}
+
+      <SecaoDoPainel id="cortes-de-carga" titulo="Quanta energia deixou de ser entregue em cortes de carga, por ano?">
         <RedeEscolha legenda="Região" opcoes={OPCOES_REGIAO} valor={smi} onEscolher={(x) => definir({ smi: x })} />
         <GraficoBarras
           titulo={`Energia não suprida em cortes de carga por ano, ${smi === "SIN" ? "SIN" : NOME_SM[smi]}`}
@@ -275,10 +288,9 @@ export function RedeRestricoes({
           chaveUrl="int"
           ordemInicial={{ coluna: "ano", direcao: "desc" }}
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Perturbações: as maiores e as mais recentes</h3>
+      <SecaoDoPainel id="perturbacoes" nivel="analisar" titulo="Perturbações: as maiores e as mais recentes">
         <TabelaInterativa
           titulo={`As ${r.interrupcoes.maiores_perturbacoes.length} perturbações com mais energia não suprida desde ${dataBR(r.interrupcoes.inicio)}`}
           colunas={COLUNAS_PERTURBACOES}
@@ -304,10 +316,9 @@ export function RedeRestricoes({
           ordemInicial={{ coluna: "inicio", direcao: "desc" }}
           nota={`${num(r.interrupcoes.registros_abaixo_de_100mw, 0)} dos ${num(r.interrupcoes.registros, 0)} registros têm carga interrompida abaixo de 100 MW${criterioCorte ? `, embora a descrição do conjunto diga “${criterioCorte}”` : ""}; os registros são publicados como vieram.`}
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="auditar" className="space-y-3 border-t border-dashed border-linha pt-4">
-        <h3 className="font-serif text-lg text-carvao">Todos os fluxos do arquivo do ATLS, inclusive os encerrados</h3>
+      <SecaoDoPainel id="atls-todos-os-fluxos" nivel="auditar" titulo="Todos os fluxos do arquivo do ATLS, inclusive os encerrados">
         <TabelaInterativa
           titulo="Fluxos do ATLS no arquivo do ONS"
           colunas={COLUNAS_ATLS}
@@ -322,7 +333,7 @@ export function RedeRestricoes({
           onSelecionar={selecionar}
           nota={`Unidade publicada: ${r.atls.unidade_publicada}. Fluxo encerrado tem a janela de 12 meses terminada no seu último mês publicado.`}
         />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

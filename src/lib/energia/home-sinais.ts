@@ -15,11 +15,13 @@
  *
  * Cada seletor aceita a gold por parâmetro, para o teste exercitar a ausência com golds sintéticas.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { lerGold, integra } from "./gold";
 import { dataBR, num, pct, reais } from "./formato";
 import { valorDestaque, type Evidencia, type FormatoNumero, type Variacao } from "./evidencia";
 import { ID_SINAIS, PERGUNTAS_PRIORITARIAS, type IdSinal } from "./mapa";
-import { horasEMinutos, anoBrasil } from "./qualidade";
+import { horasEMinutos, anoBrasil, lerCsv } from "./qualidade";
 import { linhaNacional, variacaoMesmas } from "./perdas";
 import { entidadesEar, periodoBase } from "./agua";
 import { NOME_SM, SUBMERCADOS } from "./pld";
@@ -27,7 +29,7 @@ import { estagio, inteiro, mwTexto, dataTexto, temValor } from "./expansao";
 import type { Natureza, PldGold } from "./tipos";
 import type { ContaGold } from "./tipos-conta";
 import type { QualidadeGold } from "./tipos-qualidade";
-import type { PerdasGold } from "./tipos-perdas";
+import type { OrigemInjetada, PerdasGold } from "./tipos-perdas";
 import type { AguaDetalheGold } from "./tipos-agua";
 import type { ExpansaoGold } from "./tipos-expansao";
 import type { SinteseVisaoGold } from "./tipos-visao";
@@ -63,6 +65,8 @@ export type SinalDisponivel = Base & {
   ressalva: string;
   /** Ficha de prova sob demanda; null quando a gold não publica a evidência deste número. */
   prova: ProvaSinal | null;
+  /** Ficha completa, no lugar da sob demanda, quando a inicial precisa descrever o número melhor que a gold (hoje só o denominador das perdas). */
+  evidencia?: Evidencia;
   /** Onde o número está no módulo de origem: a citação da ficha aponta para lá. */
   endereco: string;
 };
@@ -192,7 +196,134 @@ export function universoPerdas(g: PerdasGold | null): { ano: number; total: numb
   return concessionarias && permissionarias ? { ano, total: com.length, concessionarias, permissionarias } : null;
 }
 
-export function sinalPerdas(g: PerdasGold | null = lerGold<PerdasGold>("perdas.json")): SinalHome {
+/** Texto de um CSV de public/energia/series, lido no build; arquivo ausente ou ilegível devolve null (a página mostra só o que as golds dão). */
+function lerSerieCsv(nome: string): string | null {
+  try {
+    return readFileSync(join(process.cwd(), "public", "energia", "series", nome), "utf-8");
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * O denominador da taxa nacional de perdas. A taxa é a soma das perdas sobre a "energia injetada de referência" de cada concessionária, e essa
+ * referência não é a mesma coisa em todas: onde a ANEEL publica a linha de energia injetada, é ela; onde o leiaute de 2024 deixou de fechar o
+ * balanço com a perda calculada pela fonte, é a energia requerida (fornecida mais irregular mais perdas), ou uma mistura dos dois no ano.
+ * Este seletor conta quantas concessionárias do total estão em cada caso (campo `origem_injetada` da gold) e, com o arquivo anual por
+ * distribuidora que a plataforma publica, soma a energia injetada publicada das mesmas concessionárias e refaz a taxa sobre ela.
+ *
+ * Só devolve valor quando o que lê concorda: a regra de entrada reproduz o total da gold, e cada linha do arquivo confere com a gold. Se não
+ * concorda, não há comparação (null); se o arquivo falta, ficam as contagens e `publicadaTwh` é null.
+ */
+export type DenominadorDePerdas = {
+  ano: number;
+  /** Concessionárias que entram no total nacional. */
+  n: number;
+  /** Quantas têm a linha de energia injetada publicada pela ANEEL como referência, quantas a energia requerida e quantas uma mistura dos dois no ano. */
+  nPublicada: number;
+  nRequerida: number;
+  nMista: number;
+  /** Soma da energia injetada de referência (o denominador da taxa), em TWh. */
+  referenciaTwh: number;
+  /** Soma da energia injetada publicada pela fonte nas mesmas concessionárias, em TWh; null quando o arquivo não a traz para todas. */
+  publicadaTwh: number | null;
+  /** A taxa do número da página (sobre a referência), em %. */
+  taxaPct: number;
+  /** A mesma soma de perdas sobre a energia injetada publicada, em %. */
+  taxaComPublicadaPct: number | null;
+};
+
+export function denominadorDePerdas(g: PerdasGold | null = lerGold<PerdasGold>("perdas.json"), csv: string | null = lerSerieCsv("perdas_distribuidoras.csv")): DenominadorDePerdas | null {
+  if (!integra(g)) return null;
+  const ano = g.referencia.ano;
+  const nac = linhaNacional(g, ano);
+  if (!nac || !temValor(nac.taxa_total_pct) || !temValor(nac.injetada_mwh) || !temValor(nac.perdas_totais_mwh)) return null;
+  const entram = g.distribuidoras.filter((d) => {
+    const r = d.referencia;
+    return d.grupo === "concessionaria" && !!r && r.ano === ano && r.completo && r.alertas.length === 0 && temValor(r.injetada_mwh) && temValor(r.perdas_totais_mwh);
+  });
+  // a regra de entrada precisa reproduzir o total da gold; se não reproduz, não há o que comparar
+  if (entram.length !== nac.n_distribuidoras) return null;
+  const conta = (o: OrigemInjetada) => entram.filter((d) => d.referencia?.origem_injetada === o).length;
+
+  let publicada: number | null = null;
+  if (csv) {
+    const porCnpj = new Map(lerCsv(csv).filter((r) => r.ano === String(ano)).map((r) => [r.cnpj, r]));
+    let soma = 0;
+    let concorda = true;
+    for (const d of entram) {
+      const r = porCnpj.get(d.cnpj);
+      const pub = r && r.injetada_publicada_mwh !== "" ? Number(r.injetada_publicada_mwh) : NaN;
+      const ref = r && r.injetada_referencia_mwh !== "" ? Number(r.injetada_referencia_mwh) : NaN;
+      // cada linha do arquivo precisa ser a da mesma publicação: a referência dela confere com a da gold (que a guarda em MWh inteiros)
+      if (!Number.isFinite(pub) || !Number.isFinite(ref) || Math.abs(ref - d.referencia!.injetada_mwh!) > 1) {
+        concorda = false;
+        break;
+      }
+      soma += pub;
+    }
+    if (concorda && soma > 0) publicada = soma;
+  }
+  return {
+    ano,
+    n: entram.length,
+    nPublicada: conta("publicada"),
+    nRequerida: conta("requerida"),
+    nMista: conta("mista"),
+    referenciaTwh: nac.injetada_mwh / 1e6,
+    publicadaTwh: publicada === null ? null : publicada / 1e6,
+    taxaPct: nac.taxa_total_pct,
+    taxaComPublicadaPct: publicada === null ? null : (100 * nac.perdas_totais_mwh) / publicada,
+  };
+}
+
+/** O denominador em palavras, em três tamanhos: uma frase para o sinal, o parágrafo do exemplo e o rótulo que a ficha mostra. */
+export function descreverDenominador(d: DenominadorDePerdas): { curta: string; completa: string; rotuloDaFicha: string } {
+  const fora = d.nRequerida + d.nMista;
+  const twh = (v: number) => `${num(v, 2)} TWh`;
+  const ponto = (x: number) => (Math.abs(x) < 2 ? "ponto percentual" : "pontos percentuais");
+  const dif = d.taxaComPublicadaPct === null ? null : d.taxaPct - d.taxaComPublicadaPct;
+  const comPublicada = d.taxaComPublicadaPct === null ? null : `${num(d.taxaComPublicadaPct, 2)}%`;
+  const curta =
+    fora === 0
+      ? `Em todas as ${d.n} concessionárias a energia injetada de referência é a linha que a ANEEL publica.`
+      : `Em ${fora} das ${d.n} concessionárias, a energia injetada de referência (o denominador) é a energia requerida, ou uma mistura dela com a linha publicada, e não a energia injetada publicada${
+          comPublicada ? `; sobre a publicada, a taxa seria de ${comPublicada}` : ""
+        }.`;
+  const completa =
+    fora === 0
+      ? `O denominador é a energia injetada de referência, ${twh(d.referenciaTwh)} nas ${d.n} concessionárias, e em todas elas é a linha de energia injetada que a ANEEL publica.`
+      : `O denominador é a energia injetada de referência: ${twh(d.referenciaTwh)} nas ${d.n} concessionárias. Em ${d.nPublicada} delas é a linha de energia injetada que a ANEEL publica. Nas outras ${fora} essa linha deixou de fechar o balanço com a perda calculada pela fonte, a causa não é atribuída, e a referência é a energia requerida, isto é, fornecida mais irregular mais perdas${
+          d.nMista ? ` (em ${d.nMista} delas o ano mistura meses dos dois leiautes)` : ""
+        }.${
+          d.publicadaTwh !== null && comPublicada !== null && dif !== null
+            ? ` Sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a mesma soma de perdas daria ${comPublicada}, e não ${num(d.taxaPct, 2)}%: uma diferença de ${num(Math.abs(dif), 2)} ${ponto(dif)}.`
+            : " A energia injetada publicada, que daria outra taxa, não está disponível nesta publicação."
+        }`;
+  const rotuloDaFicha =
+    fora === 0
+      ? `a linha de energia injetada publicada pela ANEEL nas ${d.n} concessionárias`
+      : `em ${d.nPublicada} concessionárias, a linha de energia injetada publicada pela ANEEL; nas outras ${fora}, a energia requerida (fornecida + irregular + perdas)${
+          d.publicadaTwh !== null && comPublicada ? `; sobre a energia injetada publicada, ${twh(d.publicadaTwh)}, a taxa seria de ${comPublicada}` : ""
+        }`;
+  return { curta, completa, rotuloDaFicha };
+}
+
+/**
+ * A ficha do número com o denominador nomeado. A evidência que a gold publica descreve o denominador só como "energia injetada de referência";
+ * na inicial a descrição ganha a origem dele. O valor, o numerador, a fórmula, os testes e o arquivo da fonte ficam como a gold os publica, e
+ * a troca só acontece quando o denominador da ficha é a mesma soma que o seletor refez (nunca por aproximação grosseira).
+ */
+export function evidenciaComDenominadorNomeado<E extends Evidencia>(ev: E, d: DenominadorDePerdas | null): E {
+  const den = ev.denominador;
+  if (!d || !den || !temValor(den.valor) || Math.abs(den.valor / 1e6 - d.referenciaTwh) > 0.005) return ev;
+  return { ...ev, denominador: { ...den, descricao: `${den.descricao}: ${descreverDenominador(d).rotuloDaFicha}` } };
+}
+
+export function sinalPerdas(
+  g: PerdasGold | null = lerGold<PerdasGold>("perdas.json"),
+  csv: string | null = lerSerieCsv("perdas_distribuidoras.csv"),
+): SinalHome {
   if (!integra(g)) return ausente("perdas", MEDIDA_PERDAS, motivoDaGold(g, "A base publicada de Perdas não foi processada nesta publicação."), null, "indisponivel");
   const ano = g.referencia.ano;
   const nac = linhaNacional(g, ano);
@@ -204,6 +335,8 @@ export function sinalPerdas(g: PerdasGold | null = lerGold<PerdasGold>("perdas.j
   const dif = mesmas ? variacaoMesmas(mesmas.taxa_total_pct) : null;
   const variacao: Variacao | null = mesmas && dif !== null ? { valor: dif, casas: 2, sufixo: " p.p.", referencia: `contra ${ano - 1}, nas mesmas ${num(mesmas.n_total, 0)} concessionárias` } : null;
   const ev = g.evidencias?.taxa_nacional ?? null;
+  const confere = !!ev && provaConfere(ev, nac.taxa_total_pct, 2);
+  const den = denominadorDePerdas(g, csv);
   return {
     id: "perdas",
     estado: "disponivel",
@@ -219,9 +352,11 @@ export function sinalPerdas(g: PerdasGold | null = lerGold<PerdasGold>("perdas.j
       u ? `; das ${num(u.total, 0)} distribuidoras com dado no ano, as ${num(u.permissionarias, 0)} permissionárias ficam fora deste total` : "; as permissionárias ficam fora deste total"
     }.`,
     variacao,
-    referencias: [],
+    referencias: den ? [descreverDenominador(den).curta] : [],
     ressalva: "Soma perdas técnicas e não técnicas; perda não técnica não é sinônimo de furto.",
-    prova: ev && provaConfere(ev, nac.taxa_total_pct, 2) ? prova("/energia/gold/perdas.json", "evidencias.taxa_nacional", MEDIDA_PERDAS, ev) : null,
+    prova: confere ? prova("/energia/gold/perdas.json", "evidencias.taxa_nacional", MEDIDA_PERDAS, ev!) : null,
+    // com o denominador refeito, a ficha vai completa e com ele nomeado; sem ele, vale a ficha lida sob demanda como a gold a publica
+    ...(confere && den && ev!.denominador ? { evidencia: evidenciaComDenominadorNomeado(ev as unknown as Evidencia, den) } : {}),
     endereco: enderecoDe("perdas"),
   };
 }

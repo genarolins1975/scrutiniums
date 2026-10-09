@@ -1621,7 +1621,7 @@ export function entidadesBuscaEmpresas(g: Pick<EmpresasGold, "distribuidoras" | 
   };
   for (const d of g.distribuidoras.indice) {
     const r = reg(d.cnpj, d.sigla, d.nome);
-    papel(r, d.ativa ? "distribuidora" : "distribuidora inativa");
+    papel(r, `${d.ativa ? "distribuidora" : "distribuidora inativa"}${d.ufs.length ? ` em ${d.ufs.join(", ")}` : ""}`);
     r.sinonimos.add(d.slug);
     for (const s of d.siglas) r.sinonimos.add(s.sigla);
     for (const s of d.slugs_alternativos) r.sinonimos.add(s);

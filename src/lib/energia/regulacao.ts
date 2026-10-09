@@ -131,10 +131,11 @@ export function textoReuniao(r: string | null | undefined): string {
   return r.trim().replace(/^(\S+)\s+[-–—]\s+(\S+)$/, "$1 ($2)");
 }
 
+/** Uma cor por limite em toda a página (gráfico, comparação e faixa de métricas). Os dois tetos têm tons de famílias diferentes porque são objetos distintos. */
 export const COR_LIMITE: Record<CampoLimite, string> = {
   pld_min: "var(--serie-referencia)",
   pld_max_estrutural: "var(--cor-energia)",
-  pld_max_horario: "var(--cor-energia-dark)",
+  pld_max_horario: "var(--serie-3)",
 };
 
 const ATO_CAMPO: Record<CampoLimite, "ato_pld_min" | "ato_pld_max_estrutural" | "ato_pld_max_horario"> = {
@@ -289,6 +290,19 @@ export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: numb
   const frase1 =
     `Em ${ano}, o PLD não pode ficar abaixo de ${val("pld_min")} em nenhuma hora (piso) nem passar de ${val("pld_max_horario")} numa hora (teto horário); ` +
     `a média diária dos preços horários fica limitada a ${val("pld_max_estrutural")} (teto estrutural).`;
+  const frase2 = textoAtosDoAno(g, ano);
+  return frase2 ? `${frase1} ${frase2}` : frase1;
+}
+
+/**
+ * Que ato fixou cada limite de um ano, com a publicação no DOU de cada um e a vigência, sempre em campos ditos separadamente:
+ * "Os três limites foram fixados pelo Despacho ANEEL nº 3.850/2025, com publicação no DOU em 23/12/2025; vigência de 01/01/2026 a
+ * 31/12/2026." Vazio quando nenhum ato fixa limite no ano.
+ */
+export function textoAtosDoAno(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
+  const vs = vigenciasDoAno(g, ano);
+  if (!vs.length) return "";
+  const v = vs[vs.length - 1];
   const campoPorAto = new Map<string, CampoLimite[]>();
   for (const c of CAMPOS_LIMITE) {
     const a = v[ATO_CAMPO[c]];
@@ -301,8 +315,7 @@ export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: numb
     return i === 0 ? texto.charAt(0).toUpperCase() + texto.slice(1) : texto;
   });
   const vig = vs.length > 1 ? vs.map((x) => `de ${dataBR(x.inicio)} a ${dataBR(x.fim)}`).join(" e ") : `de ${dataBR(v.inicio)} a ${dataBR(v.fim)}`;
-  const frase2 = atos.length ? ` ${atos.join("; ")}; vigência ${vig}.` : "";
-  return frase1 + frase2;
+  return atos.length ? `${atos.join("; ")}; vigência ${vig}.` : "";
 }
 
 /**

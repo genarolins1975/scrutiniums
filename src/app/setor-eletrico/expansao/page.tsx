@@ -123,7 +123,7 @@ export default function ExpansaoPage() {
         <CabecalhoModulo
           siglas={["SIGA", "RALIE", "PDE", "ANEEL", "EPE", "SIGET"]}
           titulo={PERGUNTA_EXPANSAO}
-          lead="Operação, obras e obra não iniciada aparecem em etapas separadas: o que opera é potência fiscalizada, e o restante é potência outorgada."
+          lead="Operação, obras e obra não iniciada em etapas separadas, cada uma na sua medida."
           recorte={`SIGA de ${dataSiga} · RALIE de ${dataTexto(r.data_ralie)} · MW`}
           fonte="ANEEL, SIGA e RALIE"
           referencia={
@@ -169,15 +169,15 @@ export default function ExpansaoPage() {
               ))}
               <Numero
                 variante="faixa"
-                rotulo="Prevista para 12 meses e liberada no prazo"
+                rotulo="Prevista e liberada em 12 meses"
                 natureza="CALCULADO"
                 evidencia={ev.confiabilidade_ultima ?? null}
                 formato="pct"
                 casas={1}
                 unidade="da potência prevista"
-                periodo={conf ? `previsões de ${dataTexto(conf.ralie)}, janela até ${dataTexto(conf.fim_janela)}` : undefined}
+                periodo={conf ? `previsões de ${dataTexto(conf.ralie)}` : undefined}
                 cor="var(--serie-referencia)"
-                nota="Coorte passada: não é probabilidade para a carteira atual."
+                nota="Coorte passada, não probabilidade."
                 motivoAusencia="Sem janela de 12 meses encerrada nesta publicação."
                 endereco={`${rotaPainel("p041")}#p041`}
               />
@@ -212,9 +212,6 @@ export default function ExpansaoPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="sintese" veredito={vereditoSintese(g) || respostaSintese(g)}>
-                  {respostaSintese(g)}
-                </RespostaCurta>
                 <div className="grid gap-x-8 gap-y-5 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:items-start">
                   <Numero
                     variante="faixa"
@@ -241,6 +238,10 @@ export default function ExpansaoPage() {
                     rotulosValor
                   />
                 </div>
+                {/* a faixa de cima já traz os números; a resposta vem depois da figura para que ela comece na primeira tela */}
+                <RespostaCurta id="sintese" depois veredito={vereditoSintese(g) || respostaSintese(g)}>
+                  {respostaSintese(g)}
+                </RespostaCurta>
                 <ExpansaoNota>{notaRetratosSigaRalie(g)}</ExpansaoNota>
                 <ExpansaoRecorte
                   periodo={
