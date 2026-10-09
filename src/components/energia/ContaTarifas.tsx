@@ -99,18 +99,21 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte, recorte,
   }, [destaque, naRanking, v.leitura]);
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+    <div className="space-y-5">
+      <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <RespostaCurta id="p047" vivo veredito={vereditoTarifa(dataReferencia, resumo, vigentes, perfil)}>
           {resposta}
         </RespostaCurta>
-        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-          <ContaEscolha legenda="Perfil de consumo" opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />
-          <ContaLista rotulo="Distribuidora em destaque" opcoes={opcoesDistribuidora} valor={naRanking && destaque ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
-        </div>
+        <ContaEscolha emLinha legenda="Perfil de consumo" opcoes={OPCOES_PERFIL} valor={v.perfil} onEscolher={(p) => definir({ perfil: p })} />
       </div>
 
-      <ContaReferencias referencias={referencias} destaques={destaques} />
+      <ContaReferencias
+        referencias={referencias}
+        destaques={destaques}
+        seletor={
+          <ContaLista rotulo="Distribuidora em destaque" opcoes={opcoesDistribuidora} valor={naRanking && destaque ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
+        }
+      />
 
       <div ref={ranking}>
         <SecaoDoPainel id="ranking" titulo="Todas as distribuidoras, da mais barata à mais cara">

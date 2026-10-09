@@ -577,7 +577,7 @@ export function textoDozeMeses(c: ComparacaoDozeMeses): string {
   const base = `Total sem MMGD de ${dataBR(c.atual.inicio)} a ${dataBR(c.atual.fim)} contra os 365 dias anteriores: ${c.variacao_total_sem_mmgd_pct === null ? "sem variação publicada" : `${c.variacao_total_sem_mmgd_pct > 0 ? "+" : c.variacao_total_sem_mmgd_pct < 0 ? "−" : ""}${num(Math.abs(c.variacao_total_sem_mmgd_pct), 1)}%`}.`;
   const regime = c.mesmo_regime_mmgd ? " As duas janelas são posteriores a 29/04/2023, e a MMGD se compara com ela mesma." : " As janelas atravessam 29/04/2023: a MMGD não entra na comparação.";
   const s = sup.length
-    ? ` ${inicial(listaTexto(sup.map((k) => FRASE_CATEGORIA[k])))}: variação suprimida, porque o número de usinas com dado na fonte mudou dentro das janelas comparadas.`
+    ? ` ${inicial(listaTexto(sup.map((k) => FRASE_CATEGORIA[k])))}: variação suprimida: o número de usinas com dado na fonte mudou dentro das janelas comparadas.`
     : "";
   // com categorias suprimidas, o total das demais é o que se compara: o total completo muda também pelo cadastro de usinas da fonte
   const v = c.variacao_total_comparavel_pct;

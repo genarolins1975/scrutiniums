@@ -26,6 +26,7 @@ export function NavegacaoLocal({
   atual,
   variante = "faixa",
   titulo,
+  nivelTitulo = 2,
 }: {
   /** Nome acessível da navegação (ex.: "Páginas de Água e clima"). */
   rotulo: string;
@@ -35,13 +36,16 @@ export function NavegacaoLocal({
   variante?: "faixa" | "capitulos";
   /** Título visível da seção de capítulos; sem título, a forma `capitulos` leva só o rótulo acessível. */
   titulo?: string;
+  /** Nível do título (2 na página, 3 quando o bloco fica dentro de um painel, que já é h2). */
+  nivelTitulo?: 2 | 3;
 }) {
   if (variante === "capitulos") {
     const restantes = itens.filter((i) => i.id !== atual);
     if (restantes.length === 0) return null;
+    const Titulo = nivelTitulo === 3 ? "h3" : "h2";
     return (
       <nav aria-label={rotulo} data-navegacao-local="capitulos" className="border-t border-linha pt-6">
-        {titulo && <h2 className="ed-h3 font-serif text-carvao">{titulo}</h2>}
+        {titulo && <Titulo className="ed-h3 font-serif text-carvao">{titulo}</Titulo>}
         <ol className={`grid gap-x-8 gap-y-6 sm:grid-cols-2 ${restantes.length >= 3 ? "lg:grid-cols-3" : ""} ${titulo ? "mt-4" : ""}`}>
           {restantes.map((i) => (
             <li key={i.id} className="min-w-0">

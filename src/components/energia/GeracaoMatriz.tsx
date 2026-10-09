@@ -11,7 +11,7 @@ import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { mesAno, num, pct, plural } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, pct, plural } from "@/lib/energia/formato";
 import {
   CATEGORIAS,
   COR_CATEGORIA,
@@ -85,6 +85,9 @@ const ESQUEMA = {
 const OPCOES_REGIAO = REGIOES.map((r) => ({ id: r, rotulo: r === "SE" ? "SE/CO" : r === "SIN" ? "SIN" : NOME_REGIAO[r], detalhe: NOME_REGIAO[r] }));
 const OPCOES_PERIMETRO = PERIMETROS.map((p) => ({ id: p, rotulo: ROTULO_PERIMETRO[p] }));
 const MAIORES = 5;
+
+/** "31/08/2026 a 29/09/2026" ou "29/09/2026" (janela de um dia), sem repetir a contagem de dias que o rótulo da janela já traz. */
+const periodoCurto = (x: { inicio: string; fim: string }) => (x.inicio === x.fim ? dataBR(x.inicio) : `${dataBR(x.inicio)} a ${dataBR(x.fim)}`);
 
 export function GeracaoMatriz({
   janelas,
@@ -306,8 +309,8 @@ export function GeracaoMatriz({
           chaveCategoria="id"
           chaveRotulo="curto"
           series={[
-            { id: "participacao", rotulo: mix ? `${ROTULO_JANELA[janela]} (${periodoMix(mix)})` : ROTULO_JANELA[janela], cor: "var(--cor-energia)" },
-            { id: "participacao_ref", rotulo: mixRef ? `${ROTULO_JANELA[ref]} (${periodoMix(mixRef)})` : ROTULO_JANELA[ref], cor: "var(--serie-referencia)" },
+            { id: "participacao", rotulo: mix ? `${ROTULO_JANELA[janela]}: ${periodoCurto(mix)}` : ROTULO_JANELA[janela], cor: "var(--cor-energia)" },
+            { id: "participacao_ref", rotulo: mixRef ? `${ROTULO_JANELA[ref]}: ${periodoCurto(mixRef)}` : ROTULO_JANELA[ref], cor: "var(--serie-referencia)" },
           ]}
           unidade="%"
           casas={1}
@@ -327,7 +330,7 @@ export function GeracaoMatriz({
               ))}
             </ul>
             <p className="text-carvao-muted">
-              A participação de cada janela está na composição completa e na tabela. A diferença entre as duas não mede mudança na geração, porque a fonte passou a publicar outro número de usinas com dado.
+              A participação de cada janela está na composição completa e na tabela. A diferença entre as duas não mede mudança na geração: a fonte passou a publicar outro número de usinas com dado.
             </p>
           </div>
         )}

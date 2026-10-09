@@ -37,7 +37,7 @@ export function CargaNavegacao({ atual }: { atual: PainelCarga }) {
 
 /** Capítulos da abertura: as outras duas páginas do módulo, cada uma com a pergunta que responde. */
 export function CargaCapitulos({ atual = "p025" }: { atual?: PainelCarga }) {
-  return <NavegacaoLocal rotulo="Capítulos da carga" itens={ITENS_CARGA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a carga" />;
+  return <NavegacaoLocal rotulo="Capítulos da carga" itens={ITENS_CARGA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a carga" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */

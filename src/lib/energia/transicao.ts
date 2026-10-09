@@ -1447,3 +1447,30 @@ export function periodoFatorAnual(e: Pick<BlocoEmissoes, "medio_anual">): { inic
   const a = e.medio_anual;
   return a.length ? { inicio: a[0].ano, fim: a[a.length - 1].ano } : null;
 }
+
+/**
+ * O mesmo mês do ano anterior ao último mês publicado (a sazonalidade é a mesma) e se os dois meses estão na mesma base de usinas:
+ * a comparação atravessa a quebra declarada pela fonte quando o mês antigo é anterior a ela e o último é posterior.
+ */
+export function fatorDoMesmoMesDoAnoAnterior(e: Pick<BlocoEmissoes, "medio_mensal" | "ultimo_mes" | "quebras">): { m: string; valor: number; mesmaBase: boolean } | null {
+  const um = e.ultimo_mes;
+  if (!um) return null;
+  const mAnt = `${Number(um.m.slice(0, 4)) - 1}${um.m.slice(4)}`;
+  const ant = e.medio_mensal.find((x) => x.m === mAnt);
+  if (!ant) return null;
+  const q = e.quebras[0]?.data;
+  const atravessa = q ? ant.m < q && um.m >= q : false;
+  return { m: ant.m, valor: ant.valor, mesmaBase: !atravessa };
+}
+
+/** Fator médio anual do ano anterior ao último ano publicado e se os dois anos estão na mesma base de usinas (a quebra cai entre eles ou no último). */
+export function fatorAnualDoAnoAnterior(e: Pick<BlocoEmissoes, "medio_anual" | "ultimo_ano" | "quebras">): { ano: number; valor: number; mesmaBase: boolean } | null {
+  const ua = e.ultimo_ano;
+  if (!ua) return null;
+  const ant = e.medio_anual.find((x) => x.ano === ua.ano - 1);
+  if (!ant) return null;
+  const q = e.quebras[0];
+  const anoQuebra = q ? Number(q.data.slice(0, 4)) : null;
+  const atravessa = anoQuebra !== null && anoQuebra > ant.ano && anoQuebra <= ua.ano;
+  return { ano: ant.ano, valor: ant.valor, mesmaBase: !atravessa };
+}

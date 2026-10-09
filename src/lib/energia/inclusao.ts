@@ -1396,7 +1396,7 @@ export function destaquesRendaPof(orc: OrcamentoBase): {
 
 /** Frase que declara a idade da pesquisa junto do valor: o ano da publicação vem da própria gold, nunca escrito à mão. */
 export function textoPofHistorica(orc: Pick<OrcamentoBase, "referencia">, anoPublicacao: string): string {
-  return `Estatística histórica: a POF mais recente publicada pelo IBGE é a ${nomePof(orc)}. O painel mostra o que ela mediu e não projeta o resultado para ${anoPublicacao}.`;
+  return `Estatística histórica: a POF mais recente publicada pelo IBGE é a ${nomePof(orc)}; o resultado não é projetado para ${anoPublicacao}.`;
 }
 
 /** Uma medida da abertura com a sua data, a sua unidade e a sua natureza: cada fonte tem calendário próprio e nenhum rótulo genérico de atualização. */

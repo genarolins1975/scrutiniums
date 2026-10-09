@@ -2,6 +2,10 @@
 
 Rota `/setor-eletrico/qualidade`. Cada pedido diz o que mudar, por que e em que arquivo. Nenhum deles bloqueia a página: ela segue com a melhor solução local, descrita em cada item.
 
+## 0. Arquivo sem uso para apagar no fim (regra do coordenador: não apagar componente com o servidor no ar)
+
+- `src/components/energia/QualidadeLinkPainel.tsx`: nenhum arquivo o importa mais. O rodapé de cada painel passou a usar o `SeguirPainel` compartilhado, com o mesmo botão "Copiar link deste painel", o mesmo endereço e a mesma mensagem de cópia. O arquivo chegou a ser apagado durante a migração, antes da regra, e foi restaurado com o conteúdo original (56 linhas); nenhum teste depende dele.
+
 ## 1. Âncoras que apontam para o painel errado (defeito já existente, achado na migração)
 
 Os painéis da página são P051 (duração e frequência), P052 (limites), P053 (compensações) e P054 (atendimento). Três arquivos compartilhados citam as âncoras `#p051` a `#p054` com os nomes trocados em uma casa:

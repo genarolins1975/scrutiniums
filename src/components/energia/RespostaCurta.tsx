@@ -16,6 +16,7 @@ export function RespostaCurta({
   vivo = false,
   atributo = "data-resposta",
   tamanho = "base",
+  depois = false,
 }: {
   id: string;
   veredito: string;
@@ -23,8 +24,10 @@ export function RespostaCurta({
   vivo?: boolean;
   atributo?: string;
   tamanho?: "base" | "sm";
+  /** Mantém a resposta na ordem do documento, depois das figuras, em vez de passá-la à frente (ver globals.css). */
+  depois?: boolean;
 }) {
-  const marca = { [atributo]: id } as Record<string, string>;
+  const marca = { [atributo]: id, ...(depois ? { "data-resposta-depois": "" } : {}) } as Record<string, string>;
   return (
     <div {...marca} aria-live={vivo ? "polite" : undefined} className="max-w-prose2">
       <p className={tamanho === "sm" ? "text-sm leading-relaxed text-carvao" : "text-base leading-relaxed text-carvao"}>{veredito}</p>

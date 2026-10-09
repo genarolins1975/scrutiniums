@@ -45,7 +45,7 @@ describe("abas de seção: marcação comum às duas versões", () => {
 describe("resposta curta antes dos filtros", () => {
   it("o contêiner de espaçamento vertical com a resposta como filho direto a põe em primeiro lugar, sem mexer na ordem do DOM", () => {
     expect(css).toContain('[class*="space-y-"]:has(> [data-resposta]) { display: flex; flex-direction: column; }');
-    expect(css).toMatch(/\[class\*="space-y-"\] > \[data-resposta\] \{ order: -1; margin-top: 0 !important; margin-bottom: 1\.5rem !important; \}/);
+    expect(css).toMatch(/\[class\*="space-y-"\] > \[data-resposta\]:not\(\[data-resposta-depois\]\) \{ order: -1; margin-top: 0 !important; margin-bottom: 1\.5rem !important; \}/);
   });
 
   it("o cabeçalho de módulo é mais baixo no celular e mais folgado a partir de 768 px (abertura editorial)", () => {

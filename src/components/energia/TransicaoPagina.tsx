@@ -59,13 +59,13 @@ export type CapituloTransicao = {
 export function TransicaoCapitulos({ itens }: { itens: CapituloTransicao[] }) {
   return (
     <nav aria-label="Capítulos da transição e ambiente" data-navegacao-local="capitulos" id="grandezas" className="scroll-mt-28 border-t border-linha pt-6">
-      <h2 className="ed-h3 font-serif text-carvao">Uma página para cada pergunta, cada uma na sua unidade</h2>
+      <h3 className="ed-h3 font-serif text-carvao">Uma página para cada pergunta, cada uma na sua unidade</h3>
       <ol className="mt-4 grid gap-x-10 gap-y-9 md:grid-cols-3">
         {itens.map((c) => {
           const p = PAINEIS_TRANSICAO.find((x) => x.id === c.id)!;
           return (
             <li key={c.id} id={`sintese-${c.id}`} className="flex min-w-0 scroll-mt-28 flex-col gap-2.5">
-              <h3 className="ed-h3 font-serif text-carvao">{p.rotulo}</h3>
+              <h4 className="ed-h3 font-serif text-carvao">{p.rotulo}</h4>
               <p className="text-sm font-medium leading-snug text-carvao">{p.pergunta}</p>
               {c.resposta}
               <p className="text-sm leading-relaxed text-carvao-muted">

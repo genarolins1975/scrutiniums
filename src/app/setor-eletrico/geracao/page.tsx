@@ -47,7 +47,6 @@ import {
   marcosMensais,
   nomesCategorias,
   perguntaPainel,
-  primeiroMesDaNatureza,
   rotaPainel,
   situacaoAtualidade,
   textoA11,
@@ -93,7 +92,6 @@ export default function GeracaoPage() {
   const lac = m.universo.lacuna_ultimo_mes;
   const seq = m.universo.sequencias_zero_identificadores;
   const serieCats = (cats: readonly (keyof typeof COR_CATEGORIA)[]) => cats.map((c) => ({ id: c, rotulo: CURTO_CATEGORIA[c], cor: COR_CATEGORIA[c] }));
-  const inicioTipo3 = primeiroMesDaNatureza(m.natureza_mensal_sin, "grupo_tipo3");
   const oQueMudou = (
     <>
       {atual.texto} {m.comparacao_12m ? textoDozeMeses(m.comparacao_12m) : "Sem duas janelas de 365 dias comparáveis nesta publicação."}
@@ -149,7 +147,7 @@ export default function GeracaoPage() {
           }
           datas={<GeracaoDatas itens={datasDoModulo(g)} />}
           metricas={
-            <FaixaMetricas colunas={3} rotulo="Indicadores da geração no SIN, em 30 dias" nota="Perímetro: SIN, energia gerada com a MMGD estimada pelo ONS.">
+            <FaixaMetricas colunas={3} rotulo="Indicadores da geração no SIN, em 30 dias" nota="Perímetro: SIN, energia gerada com a MMGD estimada pelo ONS, que é estimativa com previsão meteorológica, não medição.">
               <Numero
                 variante="faixa"
                 rotulo="Geração média do SIN, com a MMGD estimada"
@@ -184,7 +182,6 @@ export default function GeracaoPage() {
                 unidade="da geração"
                 periodo={periodo30}
                 cor={COR_CATEGORIA.solar_mmgd}
-                nota="Estimativa do ONS com previsão meteorológica, não medição."
                 endereco={`${rotaPainel("p021")}#p021`}
               />
             </FaixaMetricas>
@@ -192,7 +189,7 @@ export default function GeracaoPage() {
         >
           A <Termo slug="geracao-centralizada">geração verificada</Termo> de cada usina, conjunto e grupo de pequenas usinas que o ONS publica hora a hora, somada por fonte e combustível, em{" "}
           <Unidade u="MWmed" /> e em participação. Desde 29/04/2023 a mesma base inclui a estimativa do ONS para a{" "}
-          <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo>, conferida na documentação da fonte; por isso a matriz sai em dois perímetros, com e sem ela. As outras páginas
+          <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo>, conferida na documentação da fonte; a matriz sai em dois perímetros, com e sem ela. As outras páginas
           respondem por que as térmicas foram acionadas, quanto da eólica e da solar foi restringido e quanto está instalado.
         </CabecalhoModulo>
         <GeracaoNavegacao atual="p021" />
@@ -239,9 +236,8 @@ export default function GeracaoPage() {
                   }
                   naturezaIntro={
                     <>
-                      A geração publicada soma três naturezas: medição das usinas com relacionamento com o ONS, previsão do ONS para grupos de pequenas usinas Tipo III
-                      {inicioTipo3 ? ` (desde ${mesAno(inicioTipo3)})` : ""} e estimativa do ONS para a MMGD{a11.primeiro_dia_mmgd ? ` (desde ${dataBR(a11.primeiro_dia_mmgd)})` : ""}. Mês sem a natureza fica
-                      vazio.
+                      A geração publicada soma três naturezas: medição das usinas com relacionamento com o ONS, previsão do ONS para grupos de pequenas usinas Tipo III e estimativa do ONS para a MMGD
+                      {a11.primeiro_dia_mmgd ? ` (desde ${dataBR(a11.primeiro_dia_mmgd)})` : ""}. Mês sem a natureza fica vazio.
                     </>
                   }
                   naturezaMensal={

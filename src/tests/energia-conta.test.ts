@@ -837,3 +837,279 @@ describe.skipIf(!disponivel)("revisão da interface: defeitos corrigidos não vo
     }
   });
 });
+
+/**
+ * Redesenho da Conta de luz (sistema editorial). O que estes casos protegem:
+ *  - as referências do perfil (menor, mediana, maior e quartis) saem dos mesmos números que o ranking e o CSV publicado, para cada perfil;
+ *  - a faixa de métricas da abertura diz o universo (quantas distribuidoras) pelo mesmo resumo e traz a ressalva junto do valor;
+ *  - a série em reais tem data-base e deflator ditos, e os números do texto são os da série;
+ *  - na primeira tela não há conteúdo de Analisar ou Auditar (o CSS só o esconde dentro do seletor de profundidade) e o bastidor da
+ *    tarifa média de fornecimento sai de Entender, que fica com um estado curto e honesto, sem nome de campo.
+ */
+describe.skipIf(!disponivel)("abertura: referências do perfil, faixa de métricas e série em reais", () => {
+  const { resumo, vigentes } = gold.tarifas;
+  const csvVigentes = lerCsv(ler("public/energia/series/conta_tarifas_b1_vigentes.csv"));
+  const PERFIS = [100, 200, 300] as const;
+
+  it("custo do perfil: kWh × tarifa ÷ 1000 em centavos, meio centavo exato sobe e ausência continua ausência", () => {
+    expect(custoDoPerfil(821.18, 200)).toBe(164.24);
+    expect(custoDoPerfil(759.75, 200)).toBe(151.95);
+    expect(custoDoPerfil(759.75, 100)).toBe(75.98);
+    expect(custoDoPerfil(903.29, 200)).toBe(180.66);
+    expect(custoDoPerfil(null, 200)).toBeNull();
+    expect(custoDoPerfil(Number.NaN, 200)).toBeNull();
+  });
+
+  it("menor, mediana e maior de cada perfil são os do CSV de tarifas vigentes, lido por outro caminho", () => {
+    for (const p of PERFIS) {
+      const custos = csvVigentes.map((l) => Number(l[`custo_${p}kwh_rs`])).sort((a, b) => a - b);
+      const r = referenciasDoPerfil(vigentes, resumo, p);
+      expect(r.n, `${p} kWh`).toBe(csvVigentes.length);
+      expect(r.menor!.valor, `${p} kWh`).toBe(custos[0]);
+      expect(r.maior!.valor, `${p} kWh`).toBe(custos[custos.length - 1]);
+      // n ímpar: a mediana é o elemento do meio; com n par, a média dos dois do meio
+      const meio = custos.length % 2 ? custos[(custos.length - 1) / 2] : (custos[custos.length / 2 - 1] + custos[custos.length / 2]) / 2;
+      expect(r.mediana!, `${p} kWh`).toBeCloseTo(meio, 2);
+      // os nomes são os das linhas de menor e maior posição
+      const porPosicao = [...csvVigentes].sort((a, b) => Number(a.posicao) - Number(b.posicao));
+      expect(r.menor!.sigla).toBe(porPosicao[0].sigla);
+      expect(r.maior!.sigla).toBe(porPosicao[porPosicao.length - 1].sigla);
+    }
+  });
+
+  it("1º e 3º quartil do perfil são a tarifa do quartil publicada, convertida pela fórmula do perfil", () => {
+    const tarifas = csvVigentes.map((l) => Number(l.total_rs_mwh)).sort((a, b) => a - b);
+    const n = tarifas.length;
+    // percentil por interpolação linear: com 81 distribuidoras, os quartis caem em elementos exatos
+    const quartil = (q: number) => {
+      const pos = q * (n - 1);
+      const i = Math.floor(pos);
+      return tarifas[i] + (tarifas[Math.min(i + 1, n - 1)] - tarifas[i]) * (pos - i);
+    };
+    expect(resumo.p25!).toBeCloseTo(quartil(0.25), 2);
+    expect(resumo.p75!).toBeCloseTo(quartil(0.75), 2);
+    for (const p of PERFIS) {
+      const r = referenciasDoPerfil(vigentes, resumo, p);
+      expect(r.p25).toBe(custoDoPerfil(resumo.p25, p));
+      expect(r.p75).toBe(custoDoPerfil(resumo.p75, p));
+      expect(r.p25!).toBeLessThan(r.mediana!);
+      expect(r.mediana!).toBeLessThan(r.p75!);
+      expect(r.tarifa).toEqual({ menor: r.menor!.tarifa, p25: resumo.p25, mediana: resumo.mediana, p75: resumo.p75, maior: r.maior!.tarifa });
+    }
+  });
+
+  it("distribuidora em destaque: custo, posição e diferença para a mediana saem da mesma linha do ranking; fora do ranking não aparece", () => {
+    const v = vigentes.find((x) => x.posicao === 40)!;
+    const [d] = destaquesDoPerfil(vigentes, resumo, 200, [v.cnpj]);
+    expect(d.valor).toBe(v.perfis["200"]);
+    expect(d.posicao).toBe(40);
+    expect(d.n).toBe(resumo.n);
+    expect(d.diferenca).toBeCloseTo(v.perfis["200"]! - resumo.perfis_mediana["200"]!, 2);
+    const t = textoDestaquePerfil(d);
+    expect(t).toContain(reais(d.valor));
+    expect(t).toContain(`posição 40 de ${resumo.n}`);
+    expect(t).toMatch(/acima da mediana|abaixo da mediana|igual à mediana/);
+    expect(destaquesDoPerfil(vigentes, resumo, 200, ["00000000000000", v.cnpj]).map((x) => x.cnpj)).toEqual([v.cnpj]);
+    expect(destaquesDoPerfil(vigentes, resumo, 200, [])).toEqual([]);
+    // a ordem do link é a ordem da escolha
+    const outro = vigentes.find((x) => x.posicao === 7)!;
+    expect(destaquesDoPerfil(vigentes, resumo, 200, [outro.cnpj, v.cnpj]).map((x) => x.cnpj)).toEqual([outro.cnpj, v.cnpj]);
+  });
+
+  it("a frase da figura nomeia o menor, a mediana e o maior do perfil, com o universo e a metade central", () => {
+    for (const p of PERFIS) {
+      const r = referenciasDoPerfil(vigentes, resumo, p);
+      const t = textoReferenciasPerfil(r);
+      for (const x of [reais(r.menor!.valor), reais(r.mediana), reais(r.maior!.valor), r.menor!.sigla, r.maior!.sigla, `${r.n} distribuidoras`, reais(r.p25), reais(r.p75)]) expect(t, `${p} kWh`).toContain(x);
+      expect(t).not.toMatch(/—|undefined|NaN/);
+    }
+    expect(textoReferenciasPerfil({ ...referenciasDoPerfil(vigentes, resumo, 200), menor: null })).toMatch(/Sem referências/);
+  });
+
+  it("a ressalva da faixa diz o que a tarifa não inclui e que a mediana é simples, com o universo do mesmo resumo", () => {
+    const t = notaFaixaTarifa(resumo);
+    for (const x of ["TE + TUSD", "ICMS", "PIS/Pasep", "Cofins", "iluminação pública", "bandeira", "não é o valor da fatura", `${resumo.n} distribuidoras`, "Mediana simples", "sem ponderar por consumidores", "custo médio do país"]) expect(t, x).toContain(x);
+    expect(t).not.toMatch(/conta final|—|hoje/i);
+    // mudar o universo muda o texto: o número não está escrito na frase
+    expect(notaFaixaTarifa({ ...resumo, n: 12 })).toContain("12 distribuidoras");
+  });
+
+  it("o parâmetro do perfil é um só, lido pela faixa de métricas e pelo painel de tarifas", () => {
+    const esquema = { perfil: CAMPO_PERFIL };
+    expect(lerEstado(esquema, "?perfil=300").perfil).toBe("300");
+    expect(lerEstado(esquema, "?perfil=250").perfil).toBe("200");
+    expect(lerEstado(esquema, "").perfil).toBe("200");
+    expect(ler("src/components/energia/ContaFaixa.tsx")).toContain("CAMPO_PERFIL");
+    expect(ler("src/components/energia/ContaTarifas.tsx")).toContain("CAMPO_PERFIL");
+  });
+
+  it("série em reais: mês-base e deflator ditos, e os números do texto são os da série", () => {
+    const linhas = linhasEvolucao(gold.tarifas.evolucao);
+    const ultimoIpca = gold.reajustes.comparacao_inflacao!.ultimo_ipca;
+    const r = resumoSerieReal(linhas, ultimoIpca)!;
+    expect(r.base).toBe(ultimoIpca);
+    expect(r.inicio).toBe(linhas[0].m);
+    expect(r.primeira.nominal).toBe(linhas[0].mediana);
+    expect(r.primeira.real).toBe(linhas[0].real);
+    // no mês-base o valor em reais é o próprio valor da época (o fator de correção é 1)
+    expect(r.ultimaComReal!.m).toBe(ultimoIpca);
+    expect(r.ultimaComReal!.real).toBe(r.ultimaComReal!.nominal);
+    // meses depois do último IPCA publicado ficam sem valor em reais, nunca com o último índice repetido
+    for (const m of r.semReal) expect(m > ultimoIpca, m).toBe(true);
+    const n = linhas.filter((p) => p.mediana !== null).map((p) => p.n);
+    expect([r.nMin, r.nMax]).toEqual([Math.min(...n), Math.max(...n)]);
+    const t = textoSerieReal(r);
+    for (const x of [mesAno(`${r.inicio}-01`), num(r.primeira.nominal, 2), num(r.primeira.real, 2), mesAno(`${ultimoIpca}-01`), "valores da época"]) expect(t, x).toContain(x);
+    for (const m of r.semReal) expect(t).toContain(mesAno(`${m}-01`));
+    expect(t).not.toMatch(/—|undefined|NaN|porque/);
+    expect(textoSerieReal(null)).toMatch(/Sem mediana/);
+    // sem IPCA publicado, a série em valores da época continua e o texto não inventa reais
+    const semIpca = textoSerieReal(resumoSerieReal(linhas.map((p) => ({ ...p, real: null })), null));
+    expect(semIpca).toContain("valores da época");
+    expect(semIpca).not.toContain("em reais de");
+  });
+
+  it("a mudança de créditos fala da vigência pela data, não por 'atual', e mantém o resto do texto", () => {
+    const c = gold.composicao;
+    const m = mudancaComposicaoEm(c, gold.data_referencia);
+    expect(m).toContain(`na vigência de ${dataBR(gold.data_referencia)}`);
+    expect(m).not.toMatch(/\batual\b/);
+    expect(m.replace(`na vigência de ${dataBR(gold.data_referencia)}`, "na vigência atual")).toBe(mudancaComposicao(c));
+    expect(mudancaComposicaoEm({ ...c, creditos: { ...c.creditos, distribuidoras: [] } }, gold.data_referencia)).toBe(`Nenhum valor negativo em componente de custo na vigência de ${dataBR(gold.data_referencia)}.`);
+  });
+});
+
+const ESPACOS = /[\s ]+/g;
+const decodifica = (t: string) => t.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+const normaliza = (t: string) => t.replace(ESPACOS, " ").trim();
+const VAZIAS = new Set(["br", "img", "input", "hr", "meta", "link", "path", "circle", "rect", "line", "polygon", "polyline", "use", "source", "wbr", "col"]);
+
+/** Texto de Entender: sem os blocos de Analisar e de Auditar, sem diálogos, svg, script e style (a mesma regra dos testes de conteúdo). */
+function textoEntenderDe(html: string): string {
+  const corpo = html.slice(html.indexOf("<main"));
+  const saida: string[] = [];
+  const ocultas: string[] = [];
+  const re = /<(\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?)>|([^<]+)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(corpo))) {
+    if (m[5] !== undefined) {
+      if (!ocultas.length) saida.push(m[5]);
+      continue;
+    }
+    const [, fecha, tag, attrs, auto] = m;
+    const t = tag.toLowerCase();
+    if (VAZIAS.has(t) || auto) continue;
+    if (fecha) {
+      if (ocultas.length && ocultas[ocultas.length - 1] === t) ocultas.pop();
+      continue;
+    }
+    if (ocultas.length) {
+      if (ocultas[ocultas.length - 1] === t) ocultas.push(t);
+      continue;
+    }
+    if (/data-nivel="(?:analisar|auditar)"/.test(attrs) || ["dialog", "svg", "script", "style"].includes(t)) ocultas.push(t);
+    else saida.push(" ");
+  }
+  return normaliza(decodifica(saida.join(" ")));
+}
+const textoCompletoDe = (html: string) => normaliza(decodifica(html.slice(html.indexOf("<main")).replace(/<(script|style)[\s\S]*?<\/\1>/g, " ").replace(/<[^>]+>/g, " ")));
+/** HTML da página até o seletor de profundidade: o que não está dentro dele nunca é escondido pelo CSS dos níveis. */
+const ateAProfundidade = (html: string) => html.slice(html.indexOf("<main"), html.indexOf('class="modo-profundidade"'));
+const semEspacoDuro = (t: string) => t.replace(/\s/g, " ");
+
+describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade e estados honestos", () => {
+  const html = renderToStaticMarkup(createElement(ContaDeLuzPage));
+  const htmlP050 = renderToStaticMarkup(createElement(ContaReajustesPage));
+  const { resumo, vigentes } = gold.tarifas;
+
+  it("nenhum conteúdo de Analisar ou de Auditar fica fora do seletor de profundidade (o CSS dos níveis só vale dentro dele)", () => {
+    for (const h of [html, htmlP050]) {
+      expect(h).toContain('class="modo-profundidade"');
+      expect(ateAProfundidade(h)).not.toContain("data-nivel=");
+    }
+  });
+
+  it("a abertura traz o preço do mesmo consumo e a ressalva junto do valor, com o universo do resumo", () => {
+    const antes = semEspacoDuro(textoCompletoDe(ateAProfundidade(html).replace(/<details[\s\S]*?<\/details>/g, " ")));
+    const r = referenciasDoPerfil(vigentes, resumo, 200);
+    expect(ateAProfundidade(html)).toContain("<h1");
+    expect(antes).toContain("Quanto custa o mesmo consumo?");
+    for (const x of [r.menor!.valor, r.mediana!, r.maior!.valor]) expect(antes).toContain(semEspacoDuro(reais(x)));
+    expect(antes).toContain(`Mediana simples de ${resumo.n} distribuidoras`);
+    expect(antes).toContain(semEspacoDuro(escapar("Tarifa mediana, TE + TUSD")).replace(/&amp;/g, "&"));
+    expect(antes).toContain(notaFaixaTarifa(resumo).replace(/\s/g, " "));
+    // a abertura fala de preço para o mesmo consumo, nunca de conta final
+    expect(antes).not.toMatch(/conta final/i);
+    expect(antes).not.toMatch(/\b(hoje|agora|atual)\b/i);
+    // a ficha "Comprove este número" acompanha a tarifa mediana, a evidência que a gold publica
+    expect(ateAProfundidade(html)).toContain("Comprove este número");
+  });
+
+  it("a figura das três referências vem antes do ranking, com tabela equivalente, e o título dela não repete o da página", () => {
+    const i = html.indexOf('data-grafico="referencias"');
+    const j = html.indexOf('data-grafico="barras"');
+    expect(i).toBeGreaterThan(-1);
+    expect(j).toBeGreaterThan(i);
+    expect(html).toContain("Dados do gráfico em tabela (5 linhas)");
+    const h1 = /<h1[^>]*>([^<]*)<\/h1>/.exec(html)![1];
+    const h2 = /<h2 id="p047-titulo"[^>]*>([^<]*)<\/h2>/.exec(html)![1];
+    expect(h1).not.toBe(h2);
+    expect(h1.split(" ").length).toBeGreaterThanOrEqual(5);
+    expect(h1.split(" ").length).toBeLessThanOrEqual(9);
+  });
+
+  it("o bastidor da tarifa média (nome de campo e motivo da coleta) sai de Entender, que fica com um estado curto e honesto", () => {
+    const e = textoEntenderDe(html);
+    const c = textoCompletoDe(html);
+    expect(e).toContain("Tarifa média de fornecimento (não publicada)");
+    expect(e).toContain("Indisponível nesta publicação");
+    for (const x of ["Motivo da coleta", "DscDetalheMercado", "SAMP", "conferência de atípicos", "erro de ordem de grandeza"]) expect(e, x).not.toContain(x);
+    // o conteúdo continua na página, em Analisar e em Auditar
+    expect(c).toContain("Motivo da coleta");
+    expect(c).toContain("DscDetalheMercado");
+    // as três definições seguem à vista, com a homologada, a média e a simulada
+    for (const x of ["Tarifa homologada (usada aqui)", "Conta simulada (estimativa)", gold.definicoes.tarifa_homologada, gold.definicoes.conta_simulada]) expect(e, x).toContain(x);
+    expect(html.indexOf("Três números que costumam ser chamados de conta de luz")).toBeGreaterThan(html.indexOf('id="p047"'));
+  });
+
+  it("texto de Entender sem palavra de tempo relativo, travessão, undefined ou NaN", () => {
+    for (const [nome, h] of [
+      ["principal", html],
+      ["reajustes", htmlP050],
+    ] as const) {
+      // "Recorte atual" é o rótulo da tabela interativa compartilhada (fora desta família): relatado, não alterado
+      const e = textoEntenderDe(h).replace(/Recorte atual/g, "");
+      expect(e, nome).not.toMatch(/\b(hoje|agora|atual|atuais)\b/i);
+      expect(e, nome).not.toMatch(/—|–|\bundefined\b|\bNaN\b/);
+    }
+  });
+
+  it("página filha: faixa de páginas irmãs com a atual marcada, sem a trilha antiga, e as quatro medidas na abertura, cada uma com a sua ficha", () => {
+    expect(htmlP050).toContain('data-navegacao-local="faixa"');
+    expect(htmlP050).toMatch(/aria-current="page"[^>]*>Reajustes, bandeiras e subsídios</);
+    expect(htmlP050).not.toContain('aria-label="Trilha"');
+    expect(html).not.toContain('data-navegacao-local="faixa"');
+    const abertura = ateAProfundidade(htmlP050);
+    expect((abertura.match(/Comprove este número/g) ?? []).length).toBe(4);
+    expect((abertura.match(/data-metrica=/g) ?? []).length).toBe(4);
+    // o resumo da página principal é o caminho até a página filha (capítulos), uma vez só
+    expect((html.match(/data-navegacao-local="capitulos"/g) ?? []).length).toBe(1);
+  });
+
+  it("o simulador, o ranking e a tabela continuam à vista em Entender, com o mesmo texto de antes", () => {
+    const e = textoEntenderDe(html);
+    expect(e).toContain("Memória de cálculo");
+    expect(e).toContain(`A lista começa pela distribuidora mais barata e segue até a mais cara (${vigentes.length} no total)`);
+    expect(e).toContain("As parcelas somam R$ 126,01 e o total é R$ 126,00");
+  });
+
+  it("os destaques de ContaFaixa sem ficha são só os três do perfil, e a tarifa mediana leva a evidência da gold", () => {
+    const src = ler("src/components/energia/ContaFaixa.tsx");
+    const blocos = Array.from(src.matchAll(/<Numero\b[\s\S]*?\/>/g)).map((m) => m[0]);
+    expect(blocos.length).toBe(4);
+    const semFicha = blocos.filter((b) => !/\bevidencia=\{/.test(b));
+    expect(semFicha.length).toBe(3);
+    for (const b of semFicha) expect(b).toMatch(/formato="reais"[\s\S]*unidade="R\$\/mês"/);
+    expect(blocos.filter((b) => /evidencia=\{evidenciaMediana\}/.test(b)).length).toBe(1);
+  });
+});

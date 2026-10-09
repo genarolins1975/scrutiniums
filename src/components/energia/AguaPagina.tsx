@@ -36,7 +36,7 @@ export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
 
 /** Capítulos da abertura: os outros três painéis do módulo, cada um com a pergunta que responde. */
 export function AguaCapitulos({ atual = "p017" }: { atual?: PainelAgua }) {
-  return <NavegacaoLocal rotulo="Capítulos de água e clima" itens={ITENS_AGUA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a água" />;
+  return <NavegacaoLocal rotulo="Capítulos de água e clima" itens={ITENS_AGUA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a água" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */

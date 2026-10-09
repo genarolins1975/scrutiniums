@@ -189,8 +189,7 @@ export default function QualidadePage() {
   const comoInterpretarP052 = (
     <>
       No gráfico de pontos, o círculo é o apurado e o losango o limite da distribuidora (limites dos conjuntos ponderados pelas UCs médias do ano); a diferença está escrita.{" "}
-      {g.regras.limite_centesimos} O histograma mostra todos os conjuntos pela razão apurado ÷ limite: à direita de 1, acima do limite. {tabelaQualidade("limites", g).nota} A tabela
-      traz o DGC calculado aqui ao lado do DGC publicado no ranking da ANEEL, cada um com a sua origem.
+      {g.regras.limite_centesimos} O histograma mostra todos os conjuntos pela razão apurado ÷ limite: à direita de 1, acima do limite.
     </>
   );
   const naoConcluirP052 = (
@@ -379,7 +378,6 @@ export default function QualidadePage() {
                       unidade="h"
                       casas={2}
                       zeroNoEixo
-                      legendaInterativa
                       marcos={marcos}
                     />
                     <GraficoLinhas
@@ -395,7 +393,6 @@ export default function QualidadePage() {
                       unidade="interrupções"
                       casas={2}
                       zeroNoEixo
-                      legendaInterativa
                       marcos={marcos}
                     />
                   </QualidadePar>
@@ -476,9 +473,9 @@ export default function QualidadePage() {
                   titulo="Que conjuntos atendem cada município?"
                   lead={
                     <>
-                      {num(g.mapa.municipios_com_valor, 0)} municípios com valor em {g.mapa.ano}. A cor é do conjunto, não do município: um conjunto pode atender vários municípios e um
-                      município pode ter vários conjuntos, e a base não informa quantas unidades de cada conjunto ficam no município, então não há média municipal. Escolha o maior ou o
-                      menor valor entre os conjuntos que atendem a cidade; clique num município, ou busque pelo nome, para ver os conjuntos e as distribuidoras.
+                      {num(g.mapa.municipios_com_valor, 0)} municípios com valor em {g.mapa.ano}. Cada cor é o valor de um conjunto, não do município: um conjunto pode atender vários municípios e
+                      um município pode ter vários conjuntos, por isso não há média municipal. Escolha o maior ou o menor valor entre eles; clique num município, ou busque pelo nome, para
+                      ver os conjuntos e as distribuidoras.
                     </>
                   }
                 >
@@ -613,7 +610,12 @@ export default function QualidadePage() {
                       {num(c.com_limite, 0)} conjuntos com 12 meses e limite; {g.distribuidoras.length} distribuidoras com indicadores de continuidade ({g.distribuidoras.filter((d) => d.dec === null).length} sem valor anual); as encerradas ou absorvidas, listadas em Perdas e em Minha região, não têm
                     </>
                   }
-                  unidade="horas (DEC), interrupções (FEC) e razão apurado ÷ limite (adimensional)"
+                  unidade={
+                    <>
+                      horas (DEC), interrupções (FEC) e razão apurado ÷ limite (adimensional). DGC, o desempenho global de continuidade: média simples de DEC ÷ limite e FEC ÷ limite, calculada
+                      aqui e publicada no ranking da ANEEL, lado a lado na tabela.
+                    </>
+                  }
                 />
 
                 <NotasDoPainel oQueMudou={mudancaP052(c)} comoInterpretar={comoInterpretarP052} naoConcluir={naoConcluirP052} />

@@ -84,6 +84,9 @@ export default function AcessoPage() {
     : [];
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
   const acessoPnad = { ano_referencia: a.ano_referencia, pnad_serie: a.pnad_serie, pnad_situacao: a.pnad_situacao };
+  // as figuras de série leem só Brasil e grandes regiões (o histórico por UF vem do CSV publicado): enviar as UF delas só pesaria no HTML
+  const serieRegioes = a.pnad_serie.filter((l) => l.territorio === "BR" || l.territorio.startsWith("RG-"));
+  const serieBrasil = a.pnad_serie.filter((l) => l.territorio === "BR");
   const oQueMudou = mudancaAcesso(a);
   const comoInterpretar = (
     <>
@@ -190,7 +193,7 @@ export default function AcessoPage() {
             >
               <div className="space-y-6">
                 <InclusaoRegioesPnad
-                  serie={a.pnad_serie}
+                  serie={serieRegioes}
                   resposta={
                     <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
                       {respostaAcesso(a)}
@@ -216,7 +219,7 @@ export default function AcessoPage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="pnad-historico" titulo={`Como as UF escolhidas evoluíram desde ${primeiroAno}?`}>
-                  <InclusaoHistoricoPnad acesso={acessoPnad} csvUrl="/energia/series/inclusao_acesso_pnad.csv" />
+                  <InclusaoHistoricoPnad serieBr={serieBrasil} csvUrl="/energia/series/inclusao_acesso_pnad.csv" />
                 </SecaoDoPainel>
 
                 {si && (

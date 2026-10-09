@@ -75,7 +75,12 @@ const ESQUEMA = {
 };
 
 const OPCOES_REGIAO = REGIOES.map((sm) => ({ id: sm, rotulo: sm === "SE" ? "SE/CO" : NOME_REGIAO[sm], detalhe: NOME_REGIAO[sm] }));
-const OPCOES_BASE = TIPOS_COMPARACAO.map((t) => ({ id: t, rotulo: t === "equivalente" ? "Mesmos dias da semana" : "Mesmas datas", explicacao: EXPLICACAO_BASE[t] }));
+const OPCOES_BASE = TIPOS_COMPARACAO.map((t) => ({
+  id: t,
+  rotulo: t === "equivalente" ? "Mesmos dias da semana" : "Mesmas datas",
+  resumo: t === "equivalente" ? "52 semanas antes (364 dias)" : "mesma data do ano anterior",
+  explicacao: EXPLICACAO_BASE[t],
+}));
 
 /**
  * Faixa de métricas da abertura: a carga média da janela escolhida, a média da janela de comparação e a variação, com a base da

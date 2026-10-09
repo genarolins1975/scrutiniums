@@ -219,8 +219,8 @@ export default function MmgdPage() {
             </FaixaMetricas>
           }
         >
-          Onde estão e quanto crescem as unidades de <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastradas na ANEEL, por UF, município,
-          distribuidora e perfil. O cadastro mede capacidade instalada; a energia que essas unidades entregam ao SIN está na página da energia estimada pelo ONS, sem nunca ser somada ao cadastro.
+          A energia que essas unidades entregam ao SIN está na página da energia estimada pelo ONS, sem nunca ser somada ao cadastro. Unidades, potência e potência por habitante são lidas por UF,
+          município, distribuidora e perfil, com a data do cadastro e a população do IBGE ao lado de cada medida.
         </CabecalhoModulo>
         {g.pendencias.length > 0 && (
           <div className="pb-4">

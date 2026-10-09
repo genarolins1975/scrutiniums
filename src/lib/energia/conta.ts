@@ -1138,8 +1138,8 @@ export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
  */
 export function notaFaixaTarifa(resumo: ResumoTarifas): string {
   return (
-    `Tarifa homologada de aplicação (TE + TUSD): não inclui tributos (ICMS, PIS/Pasep e Cofins), contribuição de iluminação pública nem bandeira, então não é o valor da fatura. ` +
-    `A mediana é simples entre as ${resumo.n} distribuidoras com tarifa vigente na data, cada uma com o mesmo peso; não é o custo médio do país nem é ponderada por consumidores.`
+    `Tarifa homologada (TE + TUSD), sem tributos (ICMS, PIS/Pasep e Cofins), iluminação pública e bandeira: não é o valor da fatura. ` +
+    `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente, sem ponderar por consumidores; não é o custo médio do país.`
   );
 }
 

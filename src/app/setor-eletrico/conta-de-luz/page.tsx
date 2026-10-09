@@ -253,7 +253,7 @@ export default function ContaDeLuzPage() {
         <CabecalhoModulo
           siglas={["TE", "TUSD", "ANEEL", "IPCA", "CDE", "PLD", "REN"]}
           titulo="Quanto custa o mesmo consumo?"
-          lead="Quanto cada distribuidora cobra, só pela tarifa de energia (TE) e pela tarifa de uso da rede (TUSD), para um mesmo consumo mensal. Tributos, iluminação pública e bandeira ficam de fora: o valor não é o da fatura."
+          lead="Quanto cada distribuidora cobra, só pela tarifa de energia (TE) e pela de uso da rede (TUSD), para o mesmo consumo mensal. Tributos, iluminação pública e bandeira ficam de fora."
           recorte={`${dataBR(ref)} · ${t.resumo.n} distribuidoras · B1 residencial convencional · R$/mês e R$/kWh`}
           fonte="ANEEL, tarifas de aplicação das distribuidoras"
           referencia={

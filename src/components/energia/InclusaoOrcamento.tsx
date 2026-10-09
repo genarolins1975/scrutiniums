@@ -5,6 +5,7 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { InclusaoOpcoes } from "@/components/energia/InclusaoOpcoes";
 import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasQuantis } from "@/lib/energia/escalas";
@@ -35,17 +36,18 @@ import {
 import type { MedidaPof } from "@/lib/energia/tipos-inclusao";
 
 /**
- * P061, peso no orçamento (POF 2017-2018). A página reparte o painel em figuras com pergunta própria, e todas leem o mesmo
- * estado da URL (useEstadoUrl avisa as instâncias entre si):
- *  - InclusaoClassesPof: a figura principal, a despesa com energia por classe de rendimento (a razão de médias, que é a
- *    "distribuição" do IBGE, ao lado da média das participações família a família e da mediana, porque uma não substitui a
- *    outra), com a base da participação (despesa total ou renda). Recebe a resposta, o recorte e as notas já prontos, para a
- *    figura vir primeiro e a ressalva ficar junto dela;
- *  - InclusaoTerritoriosPof: até quatro territórios (Brasil e grandes regiões, os domínios que a amostra sustenta por classe) na
- *    mesma escala; o primeiro território escolhido detalha a figura principal;
- *  - InclusaoLimiaresPof: famílias acima de 3%, 5% ou 10% da renda e da despesa, como sensibilidade;
- *  - InclusaoMapaUfsPof e InclusaoTabelaUfsPof: as UF só no total, com a precisão de cada estimativa;
- *  - InclusaoTabelaPof: todas as medidas do território principal, com o coeficiente de variação de cada uma.
+ * P061, peso no orçamento (POF 2017-2018). O painel é repartido em figuras com pergunta própria, e todas leem o mesmo estado da
+ * URL (useEstadoUrl avisa as instâncias entre si). InclusaoOrcamentoPainel reúne as figuras num só componente de cliente: os dados
+ * da pesquisa (Brasil e regiões por classe, e as UF) chegam uma vez só ao cliente, e não uma vez por figura.
+ *  - A figura principal é a despesa com energia por classe de rendimento (a razão de médias, que é a "distribuição" do IBGE, ao lado
+ *    da média das participações família a família e da mediana, porque uma não substitui a outra), com a base da participação
+ *    (despesa total ou renda). Recebe a resposta, o recorte e as notas já prontos, para a figura vir primeiro e a ressalva ficar
+ *    junto dela;
+ *  - até quatro territórios (Brasil e grandes regiões, os domínios que a amostra sustenta por classe) na mesma escala: o primeiro
+ *    território escolhido detalha a figura principal;
+ *  - famílias acima de 3%, 5% ou 10% da renda e da despesa, como sensibilidade;
+ *  - as UF só no total (mapa em Entender, tabela em Analisar), com a precisão de cada estimativa;
+ *  - todas as medidas do território principal, com o coeficiente de variação de cada uma (Analisar).
  *
  * Valor suprimido pela precisão (CV acima de 30%) chega nulo e é desenhado como ausência, nunca como zero. Nada municipal: a POF
  * não permite.
@@ -65,7 +67,7 @@ const OPCOES_LIM: readonly (readonly [LimiarPof, string])[] = [
 
 const nomeTerritorio = (t: string) => NOME_TERRITORIO[t] ?? t;
 
-export function InclusaoClassesPof({ orc, resposta, recorte, notas }: { orc: OrcamentoBase; resposta?: ReactNode; recorte?: ReactNode; notas?: ReactNode }) {
+function InclusaoClassesPof({ orc, resposta, recorte, notas }: { orc: OrcamentoBase; resposta?: ReactNode; recorte?: ReactNode; notas?: ReactNode }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
@@ -97,7 +99,7 @@ export function InclusaoClassesPof({ orc, resposta, recorte, notas }: { orc: Orc
   );
 }
 
-export function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
+function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const medidas = MEDIDAS_BASE[v.base];
@@ -136,7 +138,7 @@ export function InclusaoTerritoriosPof({ orc }: { orc: OrcamentoBase }) {
   );
 }
 
-export function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
@@ -177,7 +179,7 @@ export function InclusaoLimiaresPof({ orc, fonte }: { orc: OrcamentoBase; fonte:
   );
 }
 
-export function InclusaoTabelaPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+function InclusaoTabelaPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
   const [v] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
@@ -207,7 +209,7 @@ const OPCOES_MAPA: readonly (readonly [MedidaMapaPof, string])[] = [
 ];
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 
-export function InclusaoMapaUfsPof({ orc, periodo, unidadeReais }: { orc: OrcamentoBase; periodo: string; unidadeReais: string }) {
+function InclusaoMapaUfsPof({ orc, periodo, unidadeReais }: { orc: OrcamentoBase; periodo: string; unidadeReais: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const valores = useMemo(() => valoresMapaPof(orc, v.mapa), [orc, v.mapa]);
   const ehReais = v.mapa === "energia_media";
@@ -237,7 +239,7 @@ export function InclusaoMapaUfsPof({ orc, periodo, unidadeReais }: { orc: Orcame
   );
 }
 
-export function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const linhas = useMemo(() => linhasUfsPof(orc), [orc]);
   const colunas = useMemo(() => colunasUfsPof(orc), [orc]);
@@ -259,5 +261,53 @@ export function InclusaoTabelaUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte
       dicaBusca="Nome ou sigla da UF"
       nota={`${textoPrecisaoPof(orc.regra_precisao)} A coluna de precisão diz o estado de cada valor.`}
     />
+  );
+}
+
+export function InclusaoOrcamentoPainel({
+  classes,
+  ufs,
+  fonte,
+  periodo,
+  unidadeReais,
+  resposta,
+  recorte,
+  notas,
+}: {
+  /** Brasil e grandes regiões por classe de rendimento. */
+  classes: OrcamentoBase;
+  /** As UF, só no total das famílias. */
+  ufs: OrcamentoBase;
+  fonte: string;
+  periodo: string;
+  unidadeReais: string;
+  resposta?: ReactNode;
+  recorte?: ReactNode;
+  notas?: ReactNode;
+}) {
+  return (
+    <div className="space-y-6">
+      <InclusaoClassesPof orc={classes} resposta={resposta} recorte={recorte} notas={notas} />
+
+      <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
+        <InclusaoTerritoriosPof orc={classes} />
+      </SecaoDoPainel>
+
+      <SecaoDoPainel id="limiares" titulo="Quantas famílias passam de um limiar de comprometimento?">
+        <InclusaoLimiaresPof orc={classes} fonte={fonte} />
+      </SecaoDoPainel>
+
+      <SecaoDoPainel id="ufs" titulo="E por UF, no total das famílias?" lead="O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.">
+        <InclusaoMapaUfsPof orc={ufs} periodo={periodo} unidadeReais={unidadeReais} />
+      </SecaoDoPainel>
+
+      <SecaoDoPainel id="todas-medidas" nivel="analisar" titulo="Todas as medidas do território, com a precisão de cada uma">
+        <InclusaoTabelaPof orc={classes} fonte={fonte} />
+      </SecaoDoPainel>
+
+      <SecaoDoPainel id="tabela-ufs" nivel="analisar" titulo="Por UF, só no total das famílias">
+        <InclusaoTabelaUfsPof orc={ufs} fonte={fonte} />
+      </SecaoDoPainel>
+    </div>
   );
 }

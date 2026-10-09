@@ -126,7 +126,7 @@ export const REGISTRO_TABELAS_GERACAO = {
       colunaRotulo: "ano",
       fonte: FONTE,
       nomeArquivo: "geracao-anual",
-      nota: "O ano em curso é parcial e não se compara com anos completos sem esse aviso. A MMGD não entra na participação anual porque só existe a partir de 29/04/2023; ela aparece em MWmed, na coluna própria.",
+      nota: "O ano em curso é parcial e não se compara com anos completos sem esse aviso. A MMGD não entra na participação anual: só existe a partir de 29/04/2023; ela aparece em MWmed, na coluna própria.",
     }),
   },
   a11: {

@@ -162,7 +162,7 @@ export default function CargaPage() {
         <CabecalhoModulo
           siglas={["MWmed", "MMGD", "SIN", "ONS"]}
           titulo={perguntaPainel("p025")}
-          lead="A carga média do sistema interligado (SIN) em uma janela de dias, ao lado da janela equivalente de um ano antes. Mesmos dias da semana e mesmas datas são bases diferentes e dão taxas diferentes para a mesma janela."
+          lead="A carga média do sistema interligado (SIN) numa janela de dias, ao lado da janela de um ano antes. Mesmos dias da semana e mesmas datas dão taxas diferentes."
           recorte={`até ${dataBR(g.dia_referencia)} · SIN e subsistemas · MWmed e %`}
           fonte="ONS, Carga de Energia Diária"
           referencia={

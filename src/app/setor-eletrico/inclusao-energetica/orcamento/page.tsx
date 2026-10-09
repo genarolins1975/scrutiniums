@@ -3,14 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
-import {
-  InclusaoClassesPof,
-  InclusaoLimiaresPof,
-  InclusaoMapaUfsPof,
-  InclusaoTabelaPof,
-  InclusaoTabelaUfsPof,
-  InclusaoTerritoriosPof,
-} from "@/components/energia/InclusaoOrcamento";
+import { InclusaoOrcamentoPainel } from "@/components/energia/InclusaoOrcamento";
 import { OrcamentoComoInterpretar, OrcamentoNaoConcluir, OrcamentoPorQueImporta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -193,8 +186,12 @@ export default function OrcamentoPage() {
               complementares={[{ rotulo: "Tabela 6715 (SIDRA)", p: o.proveniencia.sidra }]}
             >
               <div className="space-y-6">
-                <InclusaoClassesPof
-                  orc={baseClasses}
+                <InclusaoOrcamentoPainel
+                  classes={baseClasses}
+                  ufs={baseUfs}
+                  fonte={FONTE_POF}
+                  periodo={periodo}
+                  unidadeReais={unidadeReais}
                   resposta={
                     <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
                       {respostaOrcamento(o)}
@@ -213,26 +210,6 @@ export default function OrcamentoPage() {
                   }
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
-
-                <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
-                  <InclusaoTerritoriosPof orc={baseClasses} />
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="limiares" titulo="Quantas famílias passam de um limiar de comprometimento?">
-                  <InclusaoLimiaresPof orc={baseClasses} fonte={FONTE_POF} />
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="ufs" titulo="E por UF, no total das famílias?" lead="O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.">
-                  <InclusaoMapaUfsPof orc={baseUfs} periodo={periodo} unidadeReais={unidadeReais} />
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="todas-medidas" nivel="analisar" titulo="Todas as medidas do território, com a precisão de cada uma">
-                  <InclusaoTabelaPof orc={baseClasses} fonte={FONTE_POF} />
-                </SecaoDoPainel>
-
-                <SecaoDoPainel id="tabela-ufs" nivel="analisar" titulo="Por UF, só no total das famílias">
-                  <InclusaoTabelaUfsPof orc={baseUfs} fonte={FONTE_POF} />
-                </SecaoDoPainel>
 
                 <SecaoDoPainel id="conferencia-6715" nivel="auditar" titulo="Conferência com a tabela 6715 e sensibilidade da média na renda">
                   <p className="text-sm text-carvao-muted">

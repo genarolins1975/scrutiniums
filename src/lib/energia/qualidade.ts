@@ -1714,16 +1714,13 @@ export function anoApuradoUniforme(g: QualidadeGold): number | null {
 }
 
 /**
- * Marcos do eixo dos anos nos gráficos de DEC e FEC: o ano em que a fonte passa a publicar as parcelas em separado e o ano em que o
- * apurado passa a ser só IP + IND. Os anos saem da série e da identidade do apurado, nunca de número escrito à mão.
+ * Marco do eixo dos anos nos gráficos de DEC e FEC: o ano a partir do qual o apurado passa a ser só IP + IND (antes, o apurado de parte
+ * dos conjuntos incluía as externas não críticas). É a quebra que importa para comparar um ano com outro; o ano vem da identidade do
+ * apurado, nunca de número escrito à mão. O início das parcelas em separado aparece no gráfico das parcelas, que começa nele.
  */
 export function marcosHistoriaApurado(g: QualidadeGold): { x: string; rotulo: string }[] {
-  const marcos: { x: string; rotulo: string }[] = [];
-  const inicioParcelas = linhasParcelas(g)[0]?.ano ?? null;
-  if (inicioParcelas) marcos.push({ x: String(inicioParcelas), rotulo: `${inicioParcelas}: parcelas em separado` });
   const uniforme = anoApuradoUniforme(g);
-  if (uniforme !== null) marcos.push({ x: String(uniforme), rotulo: `${uniforme}: apurado sem externas não críticas` });
-  return marcos;
+  return uniforme === null ? [] : [{ x: String(uniforme), rotulo: `${uniforme}: muda o que entra no apurado` }];
 }
 
 /** Compensações do ano de referência para a faixa do P053: totais em milhões, unidades consumidoras e geradoras sempre separadas. */

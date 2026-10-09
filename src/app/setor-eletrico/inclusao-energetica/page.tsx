@@ -23,7 +23,6 @@ import {
   destaquesRendaPof,
   inteiro,
   mes,
-  minusculaInicial,
   mudancaOrcamento,
   nomePof,
   numTexto,
@@ -101,7 +100,7 @@ export default function InclusaoEnergeticaPage() {
         <CabecalhoModulo
           siglas={["POF", "UC", "SCS", "CDE", "IBGE", "ANEEL", "SIN"]}
           titulo="Para quem a energia pesa mais?"
-          lead="Quanto a energia elétrica pesa na despesa das famílias de cada faixa de renda, na Pesquisa de Orçamentos Familiares (POF) 2017-2018. Abaixo, a Tarifa Social e o acesso à energia, cada medida na sua unidade e na sua data."
+          lead="Quanto a energia elétrica pesa na despesa das famílias de cada faixa de renda (Pesquisa de Orçamentos Familiares, POF 2017-2018), e o que a Tarifa Social e o acesso à energia medem."
           recorte={`${periodoMedidas} · Brasil, famílias por faixa de renda · % da despesa total`}
           fonte="IBGE, POF 2017-2018; ANEEL, Tarifa Social; IBGE, PNAD Contínua"
           referencia={
@@ -129,26 +128,26 @@ export default function InclusaoEnergeticaPage() {
               {destaques.baixa && (
                 <Numero
                   variante="faixa"
-                  rotulo={`Energia na despesa total, faixa de renda ${minusculaInicial(destaques.baixa.rotulo)}`}
+                  rotulo="Energia na despesa total, menor faixa de renda"
                   natureza="ESTIMADO"
                   valor={destaques.baixa.valor}
                   formato="pct"
                   casas={1}
                   unidade="da despesa total"
-                  periodo={periodoMedidas}
+                  periodo={`${destaques.baixa.rotulo} · ${periodoMedidas}`}
                   motivoAusencia="Estimativa suprimida pela precisão."
                 />
               )}
               {destaques.alta && (
                 <Numero
                   variante="faixa"
-                  rotulo={`Energia na despesa total, faixa de renda ${minusculaInicial(destaques.alta.rotulo)}`}
+                  rotulo="Energia na despesa total, maior faixa de renda"
                   natureza="ESTIMADO"
                   valor={destaques.alta.valor}
                   formato="pct"
                   casas={1}
                   unidade="da despesa total"
-                  periodo={periodoMedidas}
+                  periodo={`${destaques.alta.rotulo} · ${periodoMedidas}`}
                   motivoAusencia="Estimativa suprimida pela precisão."
                 />
               )}
@@ -174,9 +173,11 @@ export default function InclusaoEnergeticaPage() {
             complementares={[{ rotulo: "Tabela 6715 (SIDRA)", p: o.proveniencia.sidra }]}
           >
             <div className="space-y-6">
-              <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
-                {respostaOrcamento(o)}
-              </RespostaCurta>
+              <div>
+                <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
+                  {respostaOrcamento(o)}
+                </RespostaCurta>
+              </div>
               <GraficoBarras
                 titulo={`Energia elétrica na despesa total das famílias, por faixa de renda, Brasil (${nomePof(baseClasses)})`}
                 dados={dadosClassesPof(baseClasses, "BR", "despesa")}
@@ -220,9 +221,11 @@ export default function InclusaoEnergeticaPage() {
             </header>
 
             <SecaoDoPainel id="sintese-p059" titulo={t.pergunta}>
-              <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
-                {respostaTarifaSocial(t)}
-              </RespostaCurta>
+              <div>
+                <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
+                  {respostaTarifaSocial(t)}
+                </RespostaCurta>
+              </div>
               <FaixaMetricas colunas={2} rotulo="Tarifa Social: unidades consumidoras e faturas">
                 <Numero
                   variante="faixa"
@@ -265,9 +268,11 @@ export default function InclusaoEnergeticaPage() {
                 <span className="rotulo">Proxy</span>
                 <span>medida indireta, com denominador elegível só pelo critério de renda</span>
               </p>
-              <RespostaCurta id="p060" veredito={vereditoCobertura(c)}>
-                {respostaCobertura(c)}
-              </RespostaCurta>
+              <div>
+                <RespostaCurta id="p060" veredito={vereditoCobertura(c)}>
+                  {respostaCobertura(c)}
+                </RespostaCurta>
+              </div>
               <FaixaMetricas colunas={2} rotulo="Cobertura potencial da Tarifa Social (proxy)">
                 <Numero
                   variante="faixa"
@@ -297,9 +302,11 @@ export default function InclusaoEnergeticaPage() {
             </SecaoDoPainel>
 
             <SecaoDoPainel id="sintese-p062" titulo={a.pergunta}>
-              <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
-                {respostaAcesso(a)}
-              </RespostaCurta>
+              <div>
+                <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
+                  {respostaAcesso(a)}
+                </RespostaCurta>
+              </div>
               <FaixaMetricas colunas={3} rotulo="Acesso à energia, sistemas isolados e Luz para Todos">
                 <Numero
                   variante="faixa"

@@ -857,7 +857,7 @@ describe.skipIf(!disponivel)("redesenho: seletores da abertura e dos painéis", 
     expect(textoParcelasAno(g2)).toBe("");
   });
 
-  it("ano em que o apurado passa a ser só IP + IND: lido da identidade do apurado, e os marcos dos gráficos saem dele e da série de parcelas", () => {
+  it("ano em que o apurado passa a ser só IP + IND: lido da identidade do apurado, e o marco dos gráficos sai dele", () => {
     const id = gold.brasil.identidade_apurado;
     const ultimoQueFalha = [...id].reverse().find((x) => x.pct_dec_igual_ip_mais_ind !== 100 || x.pct_fec_igual_ip_mais_ind !== 100)!;
     const uniforme = anoApuradoUniforme(gold)!;
@@ -866,16 +866,16 @@ describe.skipIf(!disponivel)("redesenho: seletores da abertura e dos painéis", 
     expect(gold.regras.apurado).toContain(`desde ${uniforme}`);
     const marcos = marcosHistoriaApurado(gold);
     const anosDoGrafico = new Set(linhasBrasilAnual(gold).map((l) => l.ano));
-    const inicioParcelas = linhasParcelas(gold)[0].ano;
-    expect(marcos.map((x) => x.x)).toEqual([inicioParcelas, String(uniforme)]);
-    for (const x of marcos) {
-      expect(anosDoGrafico.has(x.x), x.x).toBe(true);
-      expect(x.rotulo.startsWith(`${x.x}: `)).toBe(true);
-    }
+    expect(marcos.map((x) => x.x)).toEqual([String(uniforme)]);
+    expect(anosDoGrafico.has(marcos[0].x)).toBe(true);
+    expect(marcos[0].rotulo).toBe(`${uniforme}: muda o que entra no apurado`);
+    // rótulo curto: dois marcos de rótulo longo se sobrepõem no gráfico de meia largura
+    expect(marcos[0].rotulo.length).toBeLessThanOrEqual(36);
     // sem quebra: identidade exata desde o primeiro ano, ou nunca exata, não há ano para marcar
     const g2 = copia();
     for (const x of g2.brasil.identidade_apurado) [x.pct_dec_igual_ip_mais_ind, x.pct_fec_igual_ip_mais_ind] = [100, 100];
     expect(anoApuradoUniforme(g2)).toBeNull();
+    expect(marcosHistoriaApurado(g2)).toEqual([]);
     for (const x of g2.brasil.identidade_apurado) [x.pct_dec_igual_ip_mais_ind, x.pct_fec_igual_ip_mais_ind] = [90, 90];
     expect(anoApuradoUniforme(g2)).toBeNull();
     // identidade que volta a falhar depois: o ano é o primeiro da sequência final de 100%
@@ -990,9 +990,9 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     expect(a).toBeTruthy();
     expect(ate(dec)).toBeGreaterThan(0);
     expect(ate(dec)).toBeLessThan(ate(fec));
-    // cada gráfico diz a sua unidade na legenda; as séries de DEC e de FEC nunca dividem o mesmo gráfico
-    expect(html).toContain("Valores em h<");
-    expect(html).toContain("Valores em interrupções<");
+    // cada gráfico diz a sua unidade (o FEC no título, o DEC em cada marca do eixo); as séries de DEC e de FEC nunca dividem o mesmo gráfico
+    expect(html.slice(ate(fec), ate(fec) + 600)).toContain("em interrupções");
+    expect(html.slice(ate(dec), ate(fec))).toMatch(/>\d+ h</);
     expect(fonte).not.toMatch(/series=\{\[[^\]]*"dec"[^\]]*"fec"/s);
     expect(ate(fec)).toBeLessThan(ate('data-resposta="p051"'));
     // a mesma frase da função testada, na segunda camada
@@ -1069,11 +1069,15 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     expect(lead).toMatch(/cada uma na sua escala/);
     // o mapa diz que o valor é do conjunto, não do município, e que não há média municipal
     const mapa = html.slice(ate('id="mapa-municipios"'), ate('id="mensal"'));
-    expect(mapa).toMatch(/A cor é do conjunto, não do município/);
+    expect(mapa).toMatch(/Cada cor é o valor de um conjunto, não do município/);
     expect(mapa).toMatch(/não há média municipal/);
     expect(mapa).toContain(esc(gold.mapa.regra));
     // a conversão de horas decimais vem junto da unidade do gráfico
     expect(html).toContain(esc(gold.regras.centesimos));
+    // o DGC diz a sua origem (calculado aqui e publicado pela ANEEL) na unidade do painel de limites
+    const limites = html.slice(ate('id="limites"'), ate('id="compensacoes"'));
+    expect(limites).toMatch(/DGC, o desempenho global de continuidade/);
+    expect(limites).toMatch(/calculada\s+aqui e publicada no ranking da ANEEL/);
     // o total divulgado pela ANEEL, quando difere além da precisão, está na leitura da compensação (e não só em Auditar)
     const divulgado = textoDivulgadoAno(gold);
     if (divulgado) expect(html.slice(ate('id="compensacoes"'), ate('id="atendimento"'))).toContain(esc(divulgado));

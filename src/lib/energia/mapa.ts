@@ -179,8 +179,8 @@ export const FAIXAS_MAPA: Record<FaixaMapa, { rotulo: string; resumo: string }> 
 export const ROTULOS_FAIXA: Record<FaixaMapa, { x: number; y: number; alinha: "esq" | "centro" }> = {
   fisico: { x: 27, y: 34, alinha: "esq" },
   operacao: { x: 27, y: 348, alinha: "esq" },
-  economia: { x: 250, y: 650, alinha: "centro" },
-  pessoas: { x: 750, y: 650, alinha: "centro" },
+  economia: { x: 250, y: 652, alinha: "centro" },
+  pessoas: { x: 750, y: 652, alinha: "centro" },
 };
 
 export type NoMapa = {
@@ -388,7 +388,7 @@ export type ItemCartao = { texto: string; href: string };
 export type CartaoDestino = {
   /** Para que a resposta é útil. */
   utilidade: string;
-  /** Dois a quatro recursos concretos, cada um com a âncora do painel que o entrega. */
+  /** Dois a cinco recursos concretos, cada um com a âncora do painel que o entrega. */
   encontra: ItemCartao[];
   /** Recorte disponível, sem prometer geografia que a fonte não tem. */
   recorte: string;
@@ -517,8 +517,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
     encontra: [
       { texto: "DEC e FEC do Brasil, das distribuidoras e dos conjuntos", href: "/setor-eletrico/qualidade#p051" },
       { texto: "Distribuidoras diante do próprio limite", href: "/setor-eletrico/qualidade#p052" },
-      { texto: "Quanto as regras tiram do tempo apurado", href: "/setor-eletrico/qualidade#p053" },
-      { texto: "Compensações e atendimento", href: "/setor-eletrico/qualidade#p054" },
+      { texto: "Quanto as regras tiram do tempo apurado", href: "/setor-eletrico/qualidade#expurgos" },
+      { texto: "Compensações pagas por violação de limite", href: "/setor-eletrico/qualidade#p053" },
+      { texto: "Atendimento e recuperação da rede", href: "/setor-eletrico/qualidade#p054" },
     ],
     recorte: "Brasil, distribuidora e conjunto elétrico; mensal e anual.",
     conceito: { slug: "dec", rotulo: "o que é DEC" },

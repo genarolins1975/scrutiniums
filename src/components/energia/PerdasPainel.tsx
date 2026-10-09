@@ -174,3 +174,59 @@ export function SeparacaoMetricas({ g, endereco }: { g: PerdasGold; endereco: st
     </FaixaMetricas>
   );
 }
+
+/**
+ * Estado de cada comparação que a página poderia fazer: o que é comparado, se a comparação está disponível, não se aplica ou está
+ * indisponível nesta publicação, e a razão, dita junto do dado (estados de disponibilidade do sistema: o texto do estado e o tipo de
+ * borda dizem o estado, nunca só a cor). Serve à referência regulatória, onde o perímetro compatível, a elegibilidade e o bloqueio da
+ * comparação precisam estar à vista antes da figura. O detalhe da coleta (evidência, endereços tentados) fica em Analisar.
+ */
+export type ItemEstadoComparacao = {
+  id: string;
+  comparacao: ReactNode;
+  estado: "disponivel" | "nao-se-aplica" | "indisponivel";
+  motivo: ReactNode;
+  /** Só para Analisar e Auditar: evidência da coleta, dependência e endereços tentados. */
+  detalhe?: ReactNode;
+  /** Atributos data-* de identificação para testes e coleta. */
+  dados?: Record<string, string>;
+};
+
+const ROTULO_ESTADO: Record<ItemEstadoComparacao["estado"], string> = {
+  disponivel: "Disponível",
+  "nao-se-aplica": "Não se aplica",
+  indisponivel: "Indisponível nesta publicação",
+};
+const BORDA_ESTADO: Record<ItemEstadoComparacao["estado"], string> = {
+  disponivel: "border-solid border-energia text-energia-dark",
+  "nao-se-aplica": "border-dotted border-mineral text-carvao-muted",
+  indisponivel: "border-dashed border-mineral text-carvao",
+};
+
+export function EstadoDaComparacao({ titulo, itens }: { titulo: string; itens: ItemEstadoComparacao[] }) {
+  return (
+    <section aria-label={titulo} data-estado-comparacao="" className="border-t border-linha">
+      <h3 className="rotulo pt-3 text-mineral">{titulo}</h3>
+      <ul className="divide-y divide-linha">
+        {itens.map((i) => (
+          <li key={i.id} data-comparacao={i.id} {...i.dados} className="grid gap-x-8 gap-y-2 py-3 md:grid-cols-[17rem_minmax(0,1fr)]">
+            <div>
+              <p className="text-sm font-medium leading-snug text-carvao">{i.comparacao}</p>
+              <p className={`mt-1.5 inline-block border px-2 py-0.5 text-xs ${BORDA_ESTADO[i.estado]}`} data-estado-da-comparacao={i.estado}>
+                {ROTULO_ESTADO[i.estado]}
+              </p>
+            </div>
+            <div className="min-w-0 text-sm leading-relaxed text-carvao-muted">
+              <p>{i.motivo}</p>
+              {i.detalhe && (
+                <div data-nivel="analisar" className="mt-2 space-y-1 text-xs leading-relaxed">
+                  {i.detalhe}
+                </div>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}

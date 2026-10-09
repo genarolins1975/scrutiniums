@@ -16,6 +16,7 @@ import {
   ESQUEMA_ACESSO,
   INDICADOR_PNAD,
   NOME_TERRITORIO,
+  UFS,
   codigoUf,
   dadosHistoricoPnadCsv,
   dadosLptAnual,
@@ -35,7 +36,7 @@ import {
   type SituacaoPnad,
 } from "@/lib/energia/inclusao";
 import { LIMITE_COMPARACAO, alternarSelecao, type ColunaTabela } from "@/lib/energia/tabela";
-import type { Acesso, LuzParaTodos, SistemasIsolados } from "@/lib/energia/tipos-inclusao";
+import type { Acesso, LinhaPnad, LuzParaTodos, SistemasIsolados } from "@/lib/energia/tipos-inclusao";
 
 /**
  * P062, acesso e sistemas isolados. Três dimensões que não se somam e não se
@@ -194,14 +195,16 @@ export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte:
   );
 }
 
-/** Histórico das UF escolhidas (até quatro) ao lado do Brasil; o CSV da PNAD só é baixado quando alguma UF é escolhida, aqui, no mapa ou na tabela. */
-export function InclusaoHistoricoPnad({ acesso, csvUrl }: { acesso: AcessoPnad; csvUrl: string }) {
+/**
+ * Histórico das UF escolhidas (até quatro) ao lado do Brasil; o CSV da PNAD só é baixado quando alguma UF é escolhida, aqui, no mapa ou
+ * na tabela. Recebe só as linhas do Brasil: as UF vêm do CSV, e o conjunto de UF é o das 27 da federação.
+ */
+export function InclusaoHistoricoPnad({ serieBr, csvUrl }: { serieBr: LinhaPnad[]; csvUrl: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
   const [csv, setCsv] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const ind = INDICADOR_PNAD[v.ind];
-  const linhas = useMemo(() => linhasUfsPnad(acesso, v.sit), [acesso, v.sit]);
-  const escolhidas = v.ufs.filter((u) => linhas.some((l) => l.uf === u));
+  const escolhidas = v.ufs.filter((u) => UFS.includes(u));
   const precisa = escolhidas.length > 0;
 
   useEffect(() => {
@@ -218,14 +221,14 @@ export function InclusaoHistoricoPnad({ acesso, csvUrl }: { acesso: AcessoPnad; 
   }, [precisa, csv, csvUrl]);
 
   const historico = useMemo(() => {
-    const br = dadosSeriePnad(acesso.pnad_serie, ["BR"], v.ind);
+    const br = dadosSeriePnad(serieBr, ["BR"], v.ind);
     if (!csv || !escolhidas.length) return br;
     const ufs = dadosHistoricoPnadCsv(csv, escolhidas, v.ind);
     const porAno = new Map(ufs.map((l) => [l.ano, l]));
     return br.map((l) => ({ ...l, ...(porAno.get(l.ano as string) ?? {}) }));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
-  }, [acesso.pnad_serie, csv, escolhidas.join(","), v.ind]);
-  const entidades = useMemo(() => linhas.map((l) => ({ id: String(l.uf), rotulo: String(l.uf) })), [linhas]);
+  }, [serieBr, csv, escolhidas.join(","), v.ind]);
+  const entidades = useMemo(() => UFS.map((u) => ({ id: u, rotulo: u })), []);
 
   return (
     <div className="space-y-4">

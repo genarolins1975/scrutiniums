@@ -31,20 +31,27 @@ export type ItemBarraFonte = {
   cobertura?: boolean;
 };
 
+/** O selo diz "Estimado" ou "Previsto"; o texto ao lado diz por quem e que não é medição. */
 const TEXTO_NATUREZA: Record<Exclude<NaturezaDaFonte, "medicao">, string> = {
-  estimativa: "estimativa do ONS, não medição",
-  previsao: "previsão do ONS, não medição",
+  estimativa: "pelo ONS, não medição",
+  previsao: "pelo ONS, não medição",
 };
 
-/** Mesma grade nas linhas e no eixo: nome, barra e valor. No celular o nome e o valor ficam numa linha e a barra vai abaixo. */
+/**
+ * Mesma grade nas linhas e no eixo: nome, barra e valor. No celular o nome e o valor ficam numa linha e a barra vai abaixo. As
+ * linhas são enxutas de propósito: o estilo comum mora na lista (seletores filhos), para a marcação de cada linha não repetir as
+ * classes (a página tem de caber em cerca de 600 KB de HTML).
+ */
 const GRADE = "grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_6.5rem]";
+const LISTA =
+  "mt-2 text-sm leading-snug text-carvao [&>li>*]:grid [&>li>*]:min-h-[44px] [&>li>*]:w-full [&>li>*]:grid-cols-[minmax(0,1fr)_auto] [&>li>*]:items-center [&>li>*]:gap-x-4 [&>li>*]:px-2 [&>li>*]:py-1.5 [&>li>*]:text-left sm:[&>li>*]:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_6.5rem] [&>li>button:hover]:bg-energia-fundo [&>li>button:focus-visible]:outline [&>li>button:focus-visible]:outline-2 [&>li>button:focus-visible]:-outline-offset-2 [&>li>button:focus-visible]:outline-energia";
 
-function estiloDaBarra(natureza: NaturezaDaFonte, pct: number): React.CSSProperties {
-  const base: React.CSSProperties = { width: `${Math.max(pct, 0)}%`, minWidth: pct > 0 ? 3 : 0, forcedColorAdjust: "none" };
-  return natureza === "medicao"
-    ? { ...base, background: "var(--cor-energia)" }
-    : { ...base, background: "color-mix(in srgb, var(--cor-energia) 20%, var(--cor-superficie))", border: "2px dashed var(--cor-energia)" };
-}
+/** Medição é barra cheia com contorno; estimativa e previsão do ONS, barra vazada com contorno tracejado (o contorno também aparece em alto contraste). */
+const BARRA: Record<NaturezaDaFonte, string> = {
+  medicao: "bg-energia border border-energia",
+  estimativa: "bg-energia/20 border-2 border-dashed border-energia",
+  previsao: "bg-energia/20 border-2 border-dashed border-energia",
+};
 
 export function BarrasPorFonte({
   titulo,
@@ -103,35 +110,35 @@ export function BarrasPorFonte({
         <span className="font-normal text-mineral">, em {unidade}</span>
       </p>
       {subtitulo && <p className="mt-0.5 text-xs leading-relaxed text-carvao-muted">{subtitulo}</p>}
-      <ol className="mt-2" aria-label={titulo}>
+      <ol className={LISTA} aria-label={titulo}>
         {itens.map((it, i) => {
           const sel = it.id === selecionado;
           const conteudo = (
             <>
-              <span className="min-w-0 text-left">
-                <span className="block text-sm leading-snug text-carvao [overflow-wrap:anywhere]">{it.rotulo}</span>
+              <span className="min-w-0">
+                <span className="block [overflow-wrap:anywhere]">{it.rotulo}</span>
                 {it.natureza !== "medicao" && (
-                  <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs leading-snug text-carvao-muted">
+                  <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-carvao-muted">
                     <SeloNatureza natureza={it.natureza === "estimativa" ? "ESTIMADO" : "PREVISTO"} texto />
                     <span>{TEXTO_NATUREZA[it.natureza]}</span>
                   </span>
                 )}
-                {it.cobertura && <span className="mt-0.5 block text-xs leading-snug text-carvao-muted">cobertura da fonte alterada</span>}
+                {it.cobertura && <span className="mt-0.5 block text-xs text-carvao-muted">cobertura da fonte alterada</span>}
               </span>
-              <span className="text-right text-sm tabular-nums leading-snug text-carvao sm:order-3">
+              <span className="text-right tabular-nums sm:order-3">
                 <span className="block font-medium">{it.texto}</span>
-                {it.auxiliar && <span className="block text-xs font-normal text-carvao-muted">{it.auxiliar}</span>}
+                {it.auxiliar && <span className="block text-xs text-carvao-muted">{it.auxiliar}</span>}
               </span>
-              <span aria-hidden="true" className="relative col-span-2 mt-1.5 block h-4 bg-[color-mix(in_srgb,var(--cor-grade)_55%,transparent)] sm:order-2 sm:col-span-1 sm:mt-0">
-                {ticks.map((t) => (
-                  <i key={t} className="absolute inset-y-0 w-px bg-superficie" style={{ left: `${(t / teto) * 100}%` }} />
-                ))}
-                <span className="absolute inset-y-0 left-0 box-border block" style={estiloDaBarra(it.natureza, (it.valor / teto) * 100)} />
+              <span aria-hidden="true" className="relative col-span-2 mt-1.5 block h-4 bg-linha/40 sm:order-2 sm:col-span-1 sm:mt-0">
+                <span
+                  className={`absolute inset-y-0 left-0 box-border block ${BARRA[it.natureza]}`}
+                  style={{ width: `${Math.max((it.valor / teto) * 100, 0).toFixed(2)}%`, minWidth: it.valor > 0 ? 3 : 0 }}
+                />
               </span>
             </>
           );
           return (
-            <li key={it.id} className={sel ? "bg-energia-fundo" : ""}>
+            <li key={it.id} className={sel ? "bg-energia-fundo" : undefined}>
               {onSelecionar ? (
                 <button
                   type="button"
@@ -143,12 +150,11 @@ export function BarrasPorFonte({
                   onFocus={() => setCursor(i)}
                   onKeyDown={(e) => teclado(e, i)}
                   onClick={() => onSelecionar(sel ? null : it.id)}
-                  className={`${GRADE} min-h-[44px] w-full items-center px-2 py-1.5 text-left hover:bg-energia-fundo focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-energia`}
                 >
                   {conteudo}
                 </button>
               ) : (
-                <div className={`${GRADE} min-h-[44px] items-center px-2 py-1.5`}>{conteudo}</div>
+                <div>{conteudo}</div>
               )}
             </li>
           );

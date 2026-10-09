@@ -26,7 +26,7 @@ const LARGURA = 1000;
 const ALTURA = 680;
 /** Meia largura e meia altura do cartão, em unidades do viewBox. */
 const MW = 98;
-const MH = 50;
+const MH = 56;
 const FOLGA = 7;
 
 /** Ponto onde o segmento entre os centros sai do retângulo do cartão (com folga para a seta). */
@@ -122,7 +122,7 @@ export function MapaConceitual({
                 aria-controls="mapa-conceitual-detalhe"
                 onClick={() => setAtual(n.id)}
                 onFocus={() => setAtual(n.id)}
-                className={`absolute flex flex-col items-start justify-center overflow-hidden border px-2.5 py-1.5 text-left leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-energia-dark ${
+                className={`absolute flex flex-col items-start justify-center overflow-hidden border px-2.5 py-1 text-left leading-tight transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-energia-dark ${
                   sel ? "border-energia bg-energia-fundo" : "border-linha bg-superficie hover:border-energia"
                 }`}
                 style={{
@@ -132,7 +132,7 @@ export function MapaConceitual({
                   height: pct(2 * MH, ALTURA),
                 }}
               >
-                <span className="font-serif text-[0.82rem] text-carvao lg:text-sm">{n.titulo}</span>
+                <span className="font-serif text-[0.8125rem] text-carvao xl:text-sm">{n.titulo}</span>
                 <span className="sr-only">: {n.curto}</span>
               </button>
             );

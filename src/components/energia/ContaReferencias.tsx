@@ -38,17 +38,17 @@ function Marcador({ tipo }: { tipo: "extremo" | "mediana" | "destaque" | "faixa"
 function Rotulo({ alinhar, marcador, titulo, valor }: { alinhar: "left" | "center" | "right"; marcador: "extremo" | "mediana"; titulo: ReactNode; valor: string }) {
   const lado = alinhar === "left" ? "justify-start text-left" : alinhar === "center" ? "justify-center text-center" : "justify-end text-right";
   return (
-    <div className={`min-w-0 ${alinhar === "left" ? "text-left" : alinhar === "center" ? "text-center" : "text-right"}`}>
-      <p className={`flex items-center gap-1.5 text-xs leading-snug text-carvao-muted ${lado}`}>
+    <p className={`flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-0 ${lado}`}>
+      <span className="inline-flex items-center gap-1.5 text-xs leading-snug text-carvao-muted">
         <Marcador tipo={marcador} />
         <span className="min-w-0 break-words">{titulo}</span>
-      </p>
-      <p className="mt-0.5 font-serif text-[1.375rem] leading-tight tabular-nums text-carvao md:text-[1.625rem]">{valor}</p>
-    </div>
+      </span>
+      <span className="font-serif text-[1.375rem] leading-tight tabular-nums text-carvao md:text-[1.5rem]">{valor}</span>
+    </p>
   );
 }
 
-export function ContaReferencias({ referencias: r, destaques }: { referencias: ReferenciasPerfil; destaques: DestaquePerfil[] }) {
+export function ContaReferencias({ referencias: r, destaques, seletor }: { referencias: ReferenciasPerfil; destaques: DestaquePerfil[]; seletor?: ReactNode }) {
   const raiz = useRef<HTMLDivElement>(null);
   const [largura, setLargura] = useState(LARGURA_SSR);
   useEffect(() => {
@@ -163,22 +163,25 @@ export function ContaReferencias({ referencias: r, destaques }: { referencias: R
         </li>
         <li className="text-mineral">Valores em R$/mês para {num(r.perfil, 0)} kWh</li>
       </ul>
-      {destaques.length > 0 ? (
-        <ul className="mt-2 space-y-1 text-sm text-carvao" aria-label="Distribuidoras em destaque" aria-live="polite" data-destaques-perfil="">
-          {destaques.map((d, i) => (
-            <li key={d.cnpj} className="flex items-start gap-2">
-              <span className="mt-1">
-                <Marcador tipo="destaque" />
-              </span>
-              <span className={i === 0 ? "font-medium" : ""}>{textoDestaquePerfil(d)}</span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-2 text-sm text-carvao-muted" data-destaques-perfil="">
-          Escolha uma distribuidora no seletor, no ranking ou na tabela para ver onde ela fica entre o menor e o maior custo.
-        </p>
-      )}
+      <div className="mt-3 grid gap-x-8 gap-y-3 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:items-start">
+        {seletor}
+        {destaques.length > 0 ? (
+          <ul className="space-y-1 text-sm text-carvao" aria-label="Distribuidoras em destaque" aria-live="polite" data-destaques-perfil="">
+            {destaques.map((d, i) => (
+              <li key={d.cnpj} className="flex items-start gap-2">
+                <span className="mt-1">
+                  <Marcador tipo="destaque" />
+                </span>
+                <span className={i === 0 ? "font-medium" : ""}>{textoDestaquePerfil(d)}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-carvao-muted md:pt-6" data-destaques-perfil="">
+            Escolha uma distribuidora para ver onde ela fica entre o menor e o maior custo. Vale também clicar numa barra do ranking ou numa linha da tabela.
+          </p>
+        )}
+      </div>
       <details className="mt-2 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           Dados do gráfico em tabela ({linhas.length.toLocaleString("pt-BR")} linhas)

@@ -296,7 +296,14 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
    a resposta como filho direto; a ordem no DOM e o foco por teclado não mudam. A margem de cima do espaçamento vertical passa
    para baixo, porque a resposta agora é o primeiro item visual. */
 [class*="space-y-"]:has(> [data-resposta]) { display: flex; flex-direction: column; }
-[class*="space-y-"] > [data-resposta] { order: -1; margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+[class*="space-y-"] > [data-resposta]:not([data-resposta-depois]) { order: -1; margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+
+/* Legenda interativa dos gráficos de linhas: em tela larga com ponteiro fino os botões têm 32 px (a figura começa mais acima);
+   no toque e abaixo de 768 px ficam com 44 px. */
+@media (pointer: fine) and (min-width: 48rem) {
+  .dominio-energia ul[aria-label^="Legenda: ative"] > li,
+  .dominio-energia ul[aria-label^="Legenda: ative"] button { min-height: 2rem; }
+}
 
 /* ==========================================================================================================================
    Sistema editorial do domínio Energia (redesenho). Tokens de escala e composição, sem alterar as cores globais, que são

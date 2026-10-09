@@ -15,19 +15,22 @@ export function ContaEscolha<T extends string>({
   opcoes,
   valor,
   onEscolher,
+  emLinha = false,
 }: {
   legenda: string;
   opcoes: readonly OpcaoConta<T>[];
   valor: T;
   onEscolher: (v: T) => void;
+  /** Legenda ao lado das opções (a partir de 640 px), para o controle gastar uma linha só em vez de duas. */
+  emLinha?: boolean;
 }) {
   const uid = useId();
   return (
-    <div role="radiogroup" aria-labelledby={`${uid}-legenda`} className="min-w-0">
+    <div role="radiogroup" aria-labelledby={`${uid}-legenda`} className={`min-w-0 ${emLinha ? "sm:flex sm:flex-wrap sm:items-center sm:gap-x-3" : ""}`}>
       <p id={`${uid}-legenda`} className="rotulo text-mineral">
         {legenda}
       </p>
-      <div className="mt-1 flex flex-wrap gap-1.5">
+      <div className={`flex flex-wrap gap-1.5 ${emLinha ? "mt-1 sm:mt-0" : "mt-1"}`}>
         {opcoes.map((o) => {
           const ativo = o.id === valor;
           return (

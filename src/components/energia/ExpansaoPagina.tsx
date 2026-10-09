@@ -74,13 +74,13 @@ export type CapituloExpansao = {
 export function ExpansaoCapitulos({ itens }: { itens: CapituloExpansao[] }) {
   return (
     <nav aria-label="Capítulos da expansão" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
-      <h2 className="ed-h3 font-serif text-carvao">Uma página para cada pergunta</h2>
+      <h3 className="ed-h3 font-serif text-carvao">Uma página para cada pergunta</h3>
       <ol className="mt-4 grid gap-x-10 gap-y-9 md:grid-cols-2">
         {itens.map((c) => {
           const p = painel(c.id);
           return (
             <li key={c.id} id={`sintese-${c.id}`} className="flex min-w-0 scroll-mt-28 flex-col gap-2.5">
-              <h3 className="ed-h3 font-serif text-carvao">{p.rotulo}</h3>
+              <h4 className="ed-h3 font-serif text-carvao">{p.rotulo}</h4>
               <p className="text-sm font-medium leading-snug text-carvao">{p.pergunta}</p>
               {c.resposta}
               {c.numero}
