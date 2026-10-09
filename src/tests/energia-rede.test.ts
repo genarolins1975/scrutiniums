@@ -11,6 +11,7 @@ import PaginaCirculacao from "@/app/setor-eletrico/rede/page";
 import PaginaBalanco from "@/app/setor-eletrico/rede/balanco-e-exterior/page";
 import PaginaRestricoes from "@/app/setor-eletrico/rede/restricoes/page";
 import PaginaProgramado from "@/app/setor-eletrico/rede/programado/page";
+import { RedeEsquemaFluxos } from "@/components/energia/RedeEsquemaFluxos";
 import { RedeIndisponivel } from "@/components/energia/RedePagina";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
@@ -350,6 +351,11 @@ describe("respostas escritas por regra a partir dos números", () => {
     const zerado = copia(G.balanco);
     for (const x of zerado.identidades) Object.assign(x, { horas_fecham: x.horas, horas_residuo: 0 });
     expect(R.respostaBalanco(zerado, "SIN", per)).not.toContain("A fonte não informa a causa");
+    // frase de leitor antes da contagem: a menor parcela de horas que fecha, arredondada para baixo
+    expect(R.respostaBalanco(zerado, "SIN", per)).toContain("fecham entre si em todas as horas conferidas");
+    const sin = G.balanco.identidades.filter((x) => x.id.endsWith(".SIN") && x.horas > 0);
+    const menor = Math.floor(Math.min(...sin.map((x) => x.horas_fecham / x.horas)) * 100);
+    expect(R.respostaBalanco(G.balanco, "SIN", per)).toContain(`em pelo menos ${menor}% das horas conferidas`);
   });
 
   it("restrições: contagem de fluxos e cortes de carga lidos da gold; nunca utilização", () => {
@@ -404,7 +410,7 @@ describe("respostas escritas por regra a partir dos números", () => {
       "src/components/energia/RedeBalanco.tsx",
       "src/components/energia/RedeRestricoes.tsx",
       "src/components/energia/RedeProgramado.tsx",
-      "src/components/energia/RedeMapaFluxos.tsx",
+      "src/components/energia/RedeEsquemaFluxos.tsx",
       "src/components/energia/RedePagina.tsx",
       "src/lib/energia/rede.ts",
     ];
@@ -448,8 +454,11 @@ describe("páginas renderizadas no servidor", () => {
       expect(h, id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
+      // navegação entre as páginas: na abertura (P028) as outras três aparecem como capítulos depois da figura principal; nas filhas, a faixa de
+      // páginas irmãs traz a atual com aria-current. O mesmo rótulo não aparece nas duas formas na mesma página.
       for (const p of R.PAINEIS_REDE) expect(h, `${id} -> ${p.id}`).toContain(`href="${R.rotaPainel(p.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${R.PAINEIS_REDE.find((p) => p.id === id)!.rotulo}<`));
+      if (id === "p028") expect(h, id).toContain('data-navegacao-local="capitulos"');
+      else expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${R.PAINEIS_REDE.find((p) => p.id === id)!.rotulo}<`));
       expect(h.length, id).toBeLessThan(600_000);
       const m = principal(h);
       expect(m, id).not.toMatch(/em breve|em integração|em construção|indisponíve/i);
@@ -457,9 +466,10 @@ describe("páginas renderizadas no servidor", () => {
     }
   });
 
-  it("P028: título do módulo, esquema de fluxos com lista no celular e o painel do último ano com PLD", () => {
+  it("P028: título da página, esquema de fluxos com lista no celular e o painel do último ano com PLD", () => {
     const h = html.p028;
-    expect(h).toContain(R.PERGUNTA_MODULO_REDE);
+    // o título da abertura é a pergunta do painel (a pergunta do módulo, mais longa, segue no menu: ver o teste do destino Rede)
+    expect(h).toContain(`>${R.perguntaPainel("p028")}</h1>`);
     expect(h).toContain("Esquema sem escala geográfica");
     expect(h).toContain('role="group"');
     expect((h.match(/aria-pressed="false"/g) ?? []).length).toBeGreaterThanOrEqual(8);
@@ -470,7 +480,7 @@ describe("páginas renderizadas no servidor", () => {
   it("P029 e P030: frases do A05, bloqueio dos limites e documentos conferidos visíveis", () => {
     expect(html.p029).toContain('data-textos="a05"');
     expect(html.p029).toContain(escapa(R.frasesA05(G.achados.A05)[0].slice(0, 40)));
-    expect(html.p030).toContain("bloqueio documentado (achado A06)");
+    expect(html.p030).toContain("Limites operativos de intercâmbio: sem fonte aberta");
     expect(html.p030).toContain(escapa(G.restricoes.limites.conclusao.slice(0, 60)));
     for (const b of G.restricoes.limites.busca) expect(html.p030).toContain(escapa(b.resultado.slice(0, 40)));
   });
@@ -618,5 +628,291 @@ describe("revisão da interface: defeitos corrigidos ficam cobertos", () => {
       const t = ler(a);
       expect(t, a).not.toMatch(/\d{2}\/\d{2}\/20\d\d|desde 20\d\d/);
     }
+  });
+});
+
+/* ---------------------------------------------------------------- abertura editorial (faixa de métricas, esquema e carregamento da janela horária) */
+
+describe("abertura editorial da Rede: faixas lidas dos mesmos seletores das figuras, e o esquema com as setas visíveis", () => {
+  const paginas = { p028: PaginaCirculacao, p029: PaginaBalanco, p030: PaginaRestricoes, p031: PaginaProgramado } as const;
+  const html = Object.fromEntries(Object.entries(paginas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof paginas, string>;
+  const principal = (h: string) => h.slice(h.indexOf("<main"), h.indexOf("</main>"));
+  const escapa = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+
+  it("cada página abre com a pergunta do painel como título (5 a 9 palavras), uma faixa de métricas e a figura depois da barra de profundidade", () => {
+    for (const id of ["p028", "p029", "p030", "p031"] as const) {
+      const h = html[id];
+      expect(h, id).toContain(`>${R.perguntaPainel(id)}</h1>`);
+      expect(R.perguntaPainel(id).split(/\s+/).length, id).toBeGreaterThanOrEqual(5);
+      expect(R.perguntaPainel(id).split(/\s+/).length, id).toBeLessThanOrEqual(9);
+      expect((h.match(/data-faixa-metricas=""/g) ?? []).length, id).toBe(1);
+      // a faixa vem antes da barra de profundidade, e o painel (a figura principal) depois dela
+      expect(h.indexOf('data-faixa-metricas=""'), id).toBeLessThan(h.indexOf('aria-label="Nível de profundidade"'));
+      expect(h.indexOf('aria-label="Nível de profundidade"'), id).toBeLessThan(h.indexOf(`id="${id}"`));
+      // o título da primeira figura não repete o da página
+      expect(h, id).not.toContain(`id="${id}-titulo" class="ed-h2 font-serif text-carvao">${escapa(R.perguntaPainel(id))}<`);
+      // nenhuma página chama o esquema de mapa
+      expect(principal(h), id).not.toMatch(/\bmapa\b/i);
+    }
+  });
+
+  it("P028: a faixa traz o saldo de cada fronteira em 30 dias, com o sentido no rótulo e o que passou no sentido contrário; o resumo confere com as horas do CSV", () => {
+    const m = R.medidasFronteiras30d(G.circulacao.resumo_30d);
+    expect(m.map((x) => x.par)).toEqual([...R.FRONTEIRAS]);
+    for (const x of m) {
+      const r = G.circulacao.resumo_30d.find((y) => y.par === x.par)!;
+      expect(x.valor, x.par).toBe(Math.abs(r.liquido_mwh));
+      expect(x.periodo, x.par).toBe(`${dataBR(r.inicio)} a ${dataBR(r.fim)}`);
+      expect(x.rotulo, x.par).toContain(`Saldo em ${r.dias} dias, ${R.textoSentidoSaldo(x.par, r.liquido_mwh)}`);
+      // o saldo nunca aparece sozinho: ou diz o que passou no sentido contrário, ou que o fluxo foi num só sentido
+      if (r.horas_canonico > 0 && r.horas_inverso > 0) expect(x.nota, x.par).toContain(`No sentido contrário: ${num(r.contra_saldo_mwh, 0)} MWh`);
+      else expect(x.nota, x.par).toContain("Fluxo num só sentido");
+      if (r.dias_com_reversao > 0) expect(x.nota, x.par).toContain(`Troca de sentido em ${r.dias_com_reversao} de ${r.dias} dias`);
+      // as mesmas contas refeitas das horas do CSV do ano (outro arquivo): saldo, energia em cada sentido e o que o saldo esconde
+      const horas = HORARIO_2026.filter((l) => l.data_hora.slice(0, 10) >= r.inicio && l.data_hora.slice(0, 10) <= r.fim).map((l) => n(l[`fluxo_${x.par}`])).filter((v): v is number => v !== null);
+      expect(horas.length, x.par).toBe(r.horas);
+      const pos = horas.filter((v) => v > 0).reduce((a, v) => a + v, 0);
+      const neg = -horas.filter((v) => v < 0).reduce((a, v) => a + v, 0);
+      expect(Math.abs(pos - neg - r.liquido_mwh), x.par).toBeLessThan(2);
+      expect(Math.abs(Math.min(pos, neg) - r.contra_saldo_mwh), x.par).toBeLessThan(2);
+    }
+    // as quatro fronteiras na faixa, com a unidade de energia
+    const h = html.p028;
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf('aria-label="Nível de profundidade"'));
+    for (const x of m) expect(faixa).toContain(escapa(x.rotulo));
+    expect(faixa).toContain("MWh");
+    expect(faixa).toContain("limites operativos não são públicos");
+    // sem fluxo publicado, ausência com motivo, nunca zero
+    const vazio = R.medidasFronteiras30d([]);
+    for (const x of vazio) expect(x.valor).toBeNull();
+  });
+
+  it("P029: a faixa lê as mesmas identidades da tabela (horas com resíduo, horas conferidas) e o saldo internacional de 12 meses", () => {
+    const h = html.p029;
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf('aria-label="Nível de profundidade"'));
+    const sin = G.balanco.identidades.find((x) => x.id === "balanco.SIN")!;
+    const sul = G.balanco.identidades.find((x) => x.id === "perimetro.S")!;
+    expect(G.evidencias.a05_balanco_sin!.valor_calculo).toBe(sin.horas_residuo);
+    expect(G.evidencias.a05_perimetro_sul!.valor_calculo).toBe(sul.horas_residuo);
+    expect(faixa).toContain(`De ${num(sin.horas, 0)} horas conferidas`);
+    expect(faixa).toContain(`; de ${num(sul.horas, 0)} horas conferidas`);
+    expect(faixa).toContain(escapa(G.evidencias.exterior_12m!.valor_exibido));
+    expect((faixa.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
+    // o perímetro está dito em palavras à vista: a segunda conta (intercâmbio contra fronteiras e exterior) tem nome e fórmula
+    const corpo = principal(h);
+    expect(corpo).toContain("intercâmbio menos as fronteiras e o exterior");
+    expect(corpo).toContain("Resíduo é a diferença");
+    // exterior, horas com resíduo por região e Itaipu continuam na página, com âncora
+    for (const id of ["residuo-mensal", "residuo-horas", "exterior", "itaipu", "a05", "quebra-mmgd", "identidades", "cobertura-exterior", "dicionarios"]) expect(corpo, id).toContain(`id="${id}"`);
+  });
+
+  it("P030: a faixa conta os fluxos acima do limite e o de mais horas pelo mesmo arquivo do gráfico; os limites sem fonte aberta ficam à vista", () => {
+    const m = R.medidasRestricoes(G.restricoes);
+    const ativos = R.fluxosAtivos(G.restricoes.atls);
+    expect(m.fluxosAcima!.de).toBe(ativos.length);
+    expect(m.fluxosAcima!.valor).toBe(ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0).length);
+    expect(m.maisHoras!.fluxo).toBe(ativos[0].fluxo);
+    // refeito do CSV mensal do ATLS: soma dos 12 últimos meses publicados do fluxo de mais horas
+    const linhas = csv("rede_atls.csv").filter((l) => l.fluxo === m.maisHoras!.fluxo && l.periodicidade === "ME");
+    const meses = linhas.map((l) => l.mes).sort();
+    const ultimos = new Set(meses.slice(-12));
+    const soma = linhas.filter((l) => ultimos.has(l.mes)).reduce((a, l) => a + (n(l.horas_violacao) ?? 0), 0);
+    expect(Math.abs(soma - m.maisHoras!.horas)).toBeLessThan(0.05);
+    // o veredito diz a mesma contagem
+    expect(R.vereditoRestricoes(G.restricoes)).toContain(`${m.fluxosAcima!.valor} dos ${m.fluxosAcima!.de} fluxos`);
+    // o estado bloqueado: o bloco fica à vista, sem número de utilização inventado
+    const h = html.p030;
+    expect(h).toContain("Limites operativos de intercâmbio: sem fonte aberta");
+    expect(principal(h)).not.toMatch(/\d+\s?% de utilização|utilização de \d/i);
+    // sem fluxo publicado no último mês, a faixa não inventa contagem
+    const sem = R.medidasRestricoes({ atls: { ...G.restricoes.atls, fluxos: G.restricoes.atls.fluxos.map((f) => ({ ...f, ativo: false })) } });
+    expect(sem.fluxosAcima).toBeNull();
+    expect(sem.maisHoras).toBeNull();
+  });
+
+  it("P031: a faixa acompanha o par e a base: desvio médio, mediana, horas materiais e sentido oposto refeitos das horas do CSV", () => {
+    const lim = G.programado.limiar_material_mwmed;
+    for (const par of ["N_NE", "S_SE"] as const) {
+      const linhas = HORARIO_2026.filter((l) => n(l[`fluxo_${par}`]) !== null && n(l[`prog_${par}`]) !== null);
+      const f = linhas.map((l) => n(l[`fluxo_${par}`])!);
+      const p = linhas.map((l) => n(l[`prog_${par}`])!);
+      const desvio = f.map((v, i) => Math.abs(v - p[i]));
+      const ordenado = [...desvio].sort((a, b) => a - b);
+      const mediana = ordenado.length % 2 ? ordenado[(ordenado.length - 1) / 2] : (ordenado[ordenado.length / 2 - 1] + ordenado[ordenado.length / 2]) / 2;
+      const m = R.medidasProgramado(G.programado, par, "com")!;
+      expect(m.horas, par).toBe(linhas.length);
+      expect(Math.abs(m.desvio_abs_medio_mwmed - desvio.reduce((a, v) => a + v, 0) / desvio.length), par).toBeLessThan(0.5);
+      expect(Math.abs(m.p50_abs_mwmed - mediana), par).toBeLessThan(0.5);
+      expect(m.horas_materiais, par).toBe(desvio.filter((d) => d >= lim).length);
+      expect(m.horas_inversao, par).toBe(f.filter((v, i) => Math.abs(v) > R.LIMIAR_NULO_MWMED && Math.abs(p[i]) > R.LIMIAR_NULO_MWMED && Math.sign(v) !== Math.sign(p[i])).length);
+      expect(m.limiar_mwmed).toBe(lim);
+      expect(m.dias_excluidos).toBe(0);
+      // a base sem os dias rotulados exclui horas, nunca soma: menos horas, e os dias excluídos vêm da gold
+      const s = R.medidasProgramado(G.programado, par, "sem")!;
+      expect(s.horas, par).toBeLessThanOrEqual(m.horas);
+      expect(s.dias_excluidos, par).toBe(G.programado.distribuicao[par]?.dias_rotulados ?? 0);
+    }
+    // o par sem horas comparáveis não vira zero
+    const vazio = copia(G.programado);
+    delete (vazio.distribuicao as Record<string, unknown>).N_NE;
+    expect(R.medidasProgramado(vazio, "N_NE", "com")).toBeNull();
+    // a faixa da página lê a mesma distribuição: quatro medidas, com a ressalva de que desvio não é falha
+    const h = html.p031;
+    const faixa = h.slice(h.indexOf('data-faixa-metricas=""'), h.indexOf('aria-label="Nível de profundidade"'));
+    expect((faixa.match(/ed-faixa-grade/g) ?? []).length).toBe(1);
+    expect(faixa).toContain("a fonte não informa o motivo");
+    expect(faixa).toContain("Comprove este número");
+    expect(faixa).toContain("Horas com o fluxo no sentido oposto ao programado");
+  });
+
+  it("P028: o título, o zero escondido e o intercâmbio com outros países ficam explicados no ponto de uso", () => {
+    const h = html.p028;
+    // cada cartão de energia escondida diz o sentido do saldo; o zero não parece ausência de fluxo
+    for (const par of R.FRONTEIRAS) {
+      const r = G.circulacao.resumo_30d.find((x) => x.par === par)!;
+      const contra = r.liquido_mwh >= 0 ? r.horas_inverso : r.horas_canonico;
+      const sentido = R.textoSentidoSaldo(par, r.liquido_mwh);
+      if (contra === 0) expect(h, par).toContain(`Fluxo sempre ${sentido} nas ${num(r.horas, 0)} horas: nada passou no sentido contrário.`);
+      else expect(h, par).toContain(`${num(contra, 0)} de ${num(r.horas, 0)} horas no sentido contrário ao saldo (saldo ${sentido}).`);
+    }
+    // a linha de universo leva ao exterior, que fica na página de balanço
+    expect(h).toContain(`O intercâmbio com outros países está em <a href="${R.rotaPainel("p029")}"`);
+  });
+
+  it("P029: a pergunta não sugere causa, as barras usam nomes curtos, o veredito diz em que ano estão as horas com resíduo e o último dia de cada país fica dito", () => {
+    expect(R.perguntaPainel("p029")).toBe("As contas do balanço de energia fecham?");
+    const periodo = { inicio: G.cobertura.inicio, fim: G.cobertura.fim };
+    const anos = (id: string) => Object.entries(G.balanco.identidades.find((x) => x.id === id)!.horas_residuo_por_ano).filter(([, n]) => n > 0).map(([a]) => a);
+    const todos = Array.from(new Set(["balanco.SIN", "perimetro.SIN", "soma_sin"].flatMap(anos)));
+    const v = R.vereditoBalanco(G.balanco, "SIN", periodo);
+    if (todos.length === 1) expect(v).toContain(`As horas com resíduo estão todas em ${todos[0]}.`);
+    // com resíduo em dois anos, a frase não afirma um só
+    const dois = copia(G.balanco);
+    const sin = dois.identidades.find((x) => x.id === "balanco.SIN")!;
+    sin.horas_residuo_por_ano = { ...sin.horas_residuo_por_ano, "2023": 5 };
+    sin.horas_residuo = Object.values(sin.horas_residuo_por_ano).reduce((a, n) => a + n, 0);
+    const antigos = anos("balanco.SIN");
+    expect(R.vereditoBalanco(dois, "SIN", periodo)).not.toContain("estão todas em");
+    expect(antigos.length).toBeGreaterThan(0);
+    // sem resíduo, sem a frase de causa nem de ano
+    const limpo = copia(G.balanco);
+    for (const i of limpo.identidades) {
+      i.horas_residuo = 0;
+      i.horas_fecham = i.horas;
+      i.horas_residuo_por_ano = {};
+    }
+    expect(R.vereditoBalanco(limpo, "SIN", periodo)).toContain("todas as horas conferidas");
+    expect(R.vereditoBalanco(limpo, "SIN", periodo)).not.toContain("estão todas em");
+    // as barras usam o nome curto da conta; a tabela segue com o longo
+    const linhas = R.linhasIdentidades(R.identidadesDa(G.balanco, "SIN"));
+    expect(linhas.map((l) => l.identidade_curta)).toEqual(["Balanço interno", "Perímetro", "Soma dos subsistemas"]);
+    expect(linhas[0].identidade).toContain("geração − carga − intercâmbio");
+    const h = html.p029;
+    expect(h).toContain(`>${R.perguntaPainel("p029")}</h1>`);
+    // a marca da quebra no eixo é curta (cabe em 390 px); a explicação inteira vem no parágrafo sob o gráfico
+    expect(R.marcosQuebras(G.balanco)[0].rotulo.length).toBeLessThan(25);
+    expect(h).toContain("desde essa data, a MMGD estimada pelo ONS entra na geração solar e na carga");
+    // Paraguai: o fim da linha do gráfico é ausência, e a página diz até quando o país publicou (a nota aparece com o país escolhido)
+    expect(G.exterior.por_pais.PARAGUAI.ultima_hora).not.toBeNull();
+    expect(G.exterior.por_pais.PARAGUAI.ultima_hora! < G.exterior.por_pais.ARGENTINA.ultima_hora!).toBe(true);
+    const t = ler("src/components/energia/RedeBalanco.tsx");
+    expect(t).toContain("a última hora publicada é {horaLocal(ultimaHoraPais)}; depois dela há ausência de dado, não zero.");
+  });
+
+  it("P030: ATLS definido na abertura, sigla sem definição marcada no gráfico, ano parcial dito no título do gráfico e nota de revisão com título descritivo", () => {
+    const h = html.p030;
+    expect(principal(h)).toContain("indicador ATLS, Atendimento aos Limites Sistêmicos");
+    expect(h).toContain("ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga");
+    const sem = G.restricoes.atls.fluxos.filter((f) => f.ativo && !f.definicao).map((f) => f.fluxo);
+    expect(sem.length).toBeGreaterThan(0);
+    // o eixo do gráfico leva asterisco nas siglas sem definição pública, e a legenda diz o que o asterisco quer dizer
+    for (const f of sem) expect(h).toContain(`${f}*`);
+    expect(h).toContain("* Sigla do ONS sem definição em documento público conferido");
+    for (const f of G.restricoes.atls.fluxos.filter((x) => x.ativo && x.definicao)) expect(h).not.toContain(`${R.nomeFluxo(f)}*`);
+    // ano parcial: o título do gráfico dos cortes por ano diz qual barra é parcial (o eixo pode omitir o rótulo dela)
+    const anosParciais = G.restricoes.interrupcoes.anual.anos.filter((_, k) => G.restricoes.interrupcoes.anual.parcial[k]);
+    if (anosParciais.length > 0) expect(h).toContain(`(${anosParciais.join(", ")} ${anosParciais.length === 1 ? "é parcial, a última barra" : "são parciais, as últimas barras"})`);
+    expect(h).toContain("Nota de revisão sobre a página de metodologia");
+    expect(h).not.toContain("Correção pedida na página de metodologia");
+  });
+
+  it("P031: o dia rotulado é explicado junto da base, o sinal do saldo vai numa linha sob o gráfico diário e as cinco maiores horas de desvio ficam à vista", () => {
+    const h = html.p031;
+    expect(h).toContain(`Dia rotulado é um dia em que o mesmo valor programado se repetiu por ${G.programado.programa_repetido.minimo_horas} horas seguidas ou mais`);
+    // o título do gráfico fica como era (o comparador de visões casa por título); o sinal vai numa linha logo abaixo
+    expect(h).toContain("Saldo programado e verificado por dia, Norte → Nordeste<span");
+    expect(h).toContain(`Saldo positivo: ${R.sentidoPositivo("N_NE")}; negativo: ${R.sentidoNegativo("N_NE")}.`);
+    // as cinco primeiras linhas da lista são as cinco primeiras da tabela das maiores horas de desvio (mesma variável)
+    const maiores = R.linhasMaioresDesvios(G.programado.maiores_desvios).slice(0, 5);
+    const i = h.indexOf("data-maiores-desvios");
+    expect(i).toBeGreaterThan(0);
+    const lista = h.slice(i, h.indexOf("</ol>", i));
+    expect((lista.match(/<li>/g) ?? []).length).toBe(5);
+    for (const l of maiores) expect(lista).toContain(`desvio de ${num(l.desvio_mwmed, 1)} MWmed`);
+    if (maiores.some((l) => l.dia_rotulado === "sim")) expect(lista).toContain("dia rotulado por programa repetido");
+  });
+
+  it("esquema de fluxos: toda seta termina fora dos retângulos e à vista, o rótulo traz o sentido, o saldo e o contrário, e nada sai da área do desenho", () => {
+    const fluxos = [
+      { par: "N_NE" as const, valor: -94244, rotuloValor: "94.244 MWh", linhas: ["contrário: 0 MWh"] },
+      { par: "N_SE" as const, valor: 36511, rotuloValor: "36.511 MWh", linhas: ["contrário: 3.077 MWh", "1 troca de sentido"] },
+      { par: "NE_SE" as const, valor: 140730, rotuloValor: "140.730 MWh", linhas: ["contrário: 0 MWh"] },
+      { par: "S_SE" as const, valor: 25528, rotuloValor: "25.528 MWh", linhas: ["contrário: 25.729 MWh", "2 trocas de sentido"] },
+    ];
+    const svg = renderToStaticMarkup(
+      createElement(RedeEsquemaFluxos, {
+        titulo: "Saldo de cada fronteira no dia",
+        periodo: "29/09/2026",
+        unidade: "MWh",
+        fluxos,
+        exterior: [
+          { pais: "ARGENTINA" as const, valor: 138, rotuloValor: "138 MWmed" },
+          { pais: "URUGUAI" as const, valor: -40, rotuloValor: "40 MWmed" },
+        ],
+        selecionado: null,
+        onSelecionar: () => {},
+      }),
+    );
+    const caixas = Array.from(svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="(150|112)" height="(52|36)"/g)).map((m) => ({ x: +m[1], y: +m[2], w: +m[3], h: +m[4] }));
+    // quatro subsistemas e dois países
+    expect(caixas.length).toBe(6);
+    const linhasComSeta = Array.from(svg.matchAll(/<line x1="([\d.-]+)" y1="([\d.-]+)" x2="([\d.-]+)" y2="([\d.-]+)"[^>]*marker-end="url\(#rede-seta[^)]*\)"/g)).map((m) => ({ x2: +m[3], y2: +m[4] }));
+    // uma seta por fronteira com saldo e uma por país com fluxo
+    expect(linhasComSeta.length).toBe(6);
+    for (const l of linhasComSeta) {
+      for (const c of caixas) {
+        const dentro = l.x2 > c.x && l.x2 < c.x + c.w && l.y2 > c.y && l.y2 < c.y + c.h;
+        expect(dentro, `ponta da seta em (${l.x2.toFixed(0)}, ${l.y2.toFixed(0)}) dentro de um retângulo`).toBe(false);
+      }
+    }
+    // os rótulos das fronteiras (156 de largura) e as caixas ficam dentro da área do desenho
+    const area = svg.match(/viewBox="0 0 (\d+) (\d+)"/)!;
+    for (const m of Array.from(svg.matchAll(/<rect x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="([\d.]+)"/g))) {
+      expect(+m[1], "borda esquerda").toBeGreaterThanOrEqual(0);
+      expect(+m[2], "borda de cima").toBeGreaterThanOrEqual(0);
+      expect(+m[1] + +m[3], "borda direita").toBeLessThanOrEqual(+area[1]);
+      expect(+m[2] + +m[4], "borda de baixo").toBeLessThanOrEqual(+area[2]);
+    }
+    // sentido por siglas, saldo e contrário escritos no rótulo; trocas de sentido à vista
+    expect(svg).toContain("NE → N");
+    expect(svg).toContain("N → SE/CO");
+    expect(svg).toContain("S → SE/CO");
+    expect(svg).toContain("contrário: 25.729 MWh");
+    expect(svg).toContain("2 trocas de sentido");
+    // esquema, não mapa: a legenda diz que não há escala geográfica nem capacidade
+    const fig = svg.slice(svg.indexOf("<figcaption"), svg.indexOf("</figcaption>"));
+    expect(fig).toContain("Esquema sem escala geográfica");
+    expect(fig).toContain("não indica capacidade nem proximidade de limite");
+    expect(svg).not.toMatch(/\bmapa\b/i);
+  });
+
+  it("a janela horária não cancela o próprio download: o efeito não depende do estado de carregamento e há 'Tentar de novo'", () => {
+    const t = ler("src/components/energia/RedeCirculacao.tsx");
+    // um efeito que dependesse de janela.estado seria refeito ao mudar para "carregando", e o resultado do download seria descartado
+    const efeito = t.slice(t.indexOf("useEffect(() => {"), t.indexOf("const fr = (v.fr"));
+    expect(efeito).toContain("[escala, c.janela_horaria.url, tentativa]");
+    expect(efeito).not.toMatch(/\[[^\]]*janela\.estado[^\]]*\]/);
+    expect(efeito).toContain("baixada.current = true");
+    expect(t).toContain("setTentativa((t) => t + 1)");
   });
 });

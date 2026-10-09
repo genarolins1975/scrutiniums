@@ -15434,7 +15434,7 @@
    "natureza": "OBSERVADO",
    "fonte": {
     "orgao": "ANEEL",
-    "dataset": "SAMP Balanço, indicadores de continuidade e tarifas de aplicação (via golds dos módulos)",
+    "dataset": "SAMP Balanço, indicadores de continuidade e tarifas de aplicação (via bases publicadas dos módulos)",
     "recurso": "perdas.json, qualidade.json, conta.json",
     "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/samp-balanco",
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica",
@@ -15467,10 +15467,10 @@
     "A sigla de exibição segue a prioridade tarifas, continuidade, SAMP, cadastro de agentes; todas as siglas publicadas ficam em 'siglas'."
    ],
    "download": "/energia/series/empresas_distribuidoras.csv",
-   "notas_fonte": "Sem captura própria: CNPJ, siglas e classificação vêm das golds perdas.json, qualidade.json e conta.json na geração indicada em golds_origem; o sha256 do snapshot é o do JSON canônico (chaves ordenadas) dessas três golds como foram lidas, e a data de captura é a mais recente entre as capturas declaradas pelas proveniências de origem (taxas de Perdas, distribuidoras de Qualidade, tarifas de Conta de luz). Os números de perdas, continuidade e tarifa têm proveniência própria (distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade, distribuidoras_tarifa), com a natureza herdada da gold de origem."
+   "notas_fonte": "Sem captura própria: CNPJ, siglas e classificação vêm das golds perdas.json, qualidade.json e conta.json na geração indicada em golds_origem; o sha256 do snapshot é o do JSON canônico (chaves ordenadas) dessas três golds como foram lidas, e a data de captura é a mais recente entre as capturas declaradas pelas proveniências de origem (taxas de Perdas, distribuidoras de Qualidade, tarifas de Conta de luz). Os números de perdas, continuidade e tarifa têm proveniência própria (distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade, distribuidoras_tarifa), com a natureza herdada da base publicada de origem."
   },
   "distribuidoras_perdas": {
-   "indicador": "Taxa de perdas totais da distribuidora (cópia da gold de Perdas)",
+   "indicador": "Taxa de perdas totais da distribuidora (cópia da base publicada de Perdas)",
    "natureza": "CALCULADO",
    "fonte": {
     "orgao": "ANEEL",
@@ -15505,13 +15505,13 @@
    "versao_codigo": "333150d9bc6a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
-    "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
+    "Valor copiado da base publicada de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na base publicada de origem)."
    ],
    "download": "/energia/series/perdas_distribuidoras.csv",
    "notas_fonte": null
   },
   "distribuidoras_pnt": {
-   "indicador": "Perdas não técnicas sobre o mercado de baixa tensão (cópia da gold de Perdas)",
+   "indicador": "Perdas não técnicas sobre o mercado de baixa tensão (cópia da base publicada de Perdas)",
    "natureza": "ESTIMADO",
    "fonte": {
     "orgao": "ANEEL",
@@ -15546,13 +15546,13 @@
    "versao_codigo": "333150d9bc6a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
-    "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
+    "Valor copiado da base publicada de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na base publicada de origem)."
    ],
    "download": "/energia/series/perdas_distribuidoras.csv",
    "notas_fonte": null
   },
   "distribuidoras_qualidade": {
-   "indicador": "DEC, FEC e limites anuais da distribuidora (cópia da gold de Qualidade)",
+   "indicador": "DEC, FEC e limites anuais da distribuidora (cópia da base publicada de Qualidade)",
    "natureza": "CALCULADO",
    "fonte": {
     "orgao": "ANEEL",
@@ -15587,13 +15587,13 @@
    "versao_codigo": "333150d9bc6a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
-    "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
+    "Valor copiado da base publicada de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na base publicada de origem)."
    ],
    "download": "/energia/series/qualidade_distribuidoras_anual.csv",
    "notas_fonte": null
   },
   "distribuidoras_tarifa": {
-   "indicador": "Tarifa B1 residencial convencional vigente (cópia da gold de Conta de luz)",
+   "indicador": "Tarifa B1 residencial convencional vigente (cópia da base publicada de Conta de luz)",
    "natureza": "CALCULADO",
    "fonte": {
     "orgao": "ANEEL",
@@ -15628,7 +15628,7 @@
    "versao_codigo": "333150d9bc6a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
-    "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
+    "Valor copiado da base publicada de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na base publicada de origem)."
    ],
    "download": "/energia/series/conta_tarifas_b1_vigentes.csv",
    "notas_fonte": null

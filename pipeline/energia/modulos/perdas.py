@@ -1762,7 +1762,7 @@ def construir(con, ctx):
                                                                    if y == 2024 and grupos.get(cnpj) == "concessionaria"
                                                                    and _valido_para_agregado(a)) / 1e9, 1) if rel2024 else None,
                                  "base": "medida"},
-        "leitura": "A injetada de referência de 2024 cai no intervalo implícito no relatório; a taxa total medida fica acima da faturada do relatório porque o mercado faturado inclui o custo de disponibilidade (a própria ANEEL registra essa diferença ao migrar para o mercado medido em 2025).",
+        "leitura": "A injetada de referência de 2024 cai no intervalo implícito no relatório; a taxa total medida fica acima da faturada do relatório; a ANEEL registra que o mercado faturado inclui o custo de disponibilidade e que a diferença aparece ao migrar para o mercado medido em 2025.",
     }
 
     aviso = None
@@ -1789,7 +1789,7 @@ def construir(con, ctx):
                                     "não técnica só das que têm a separação publicada e fechando"),
                        "campos_pontos": ["cnpj", "renda_media_pc_confirmados", "pnt_bt_pct", "taxa_total_pct", "cobertura_exclusivos_pct"],
                        "pontos": pontos,
-                       "leitura": "Associação descritiva entre áreas, não causa: renda municipal média não descreve cada unidade consumidora e perdas dependem também de gestão, rede e fiscalização. Perda não técnica não é atribuída às famílias da área."},
+                       "leitura": "Associação descritiva entre áreas, não causa: renda municipal média não descreve cada unidade consumidora, e a associação entre áreas não isola outros fatores que também variam entre elas. Perda não técnica não é atribuída às famílias da área."},
         "mapa": {"ano_relacao": (rel or {}).get("ano"), "municipios": len(municipios),
                  "municipios_compartilhados": sum(1 for m in municipios.values() if m["n_confirmadas"] > 1),
                  "vinculos": sum(len(m["dist"]) for m in municipios.values()),

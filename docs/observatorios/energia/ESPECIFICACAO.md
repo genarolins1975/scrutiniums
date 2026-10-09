@@ -239,14 +239,14 @@ Use o quadro abaixo como conteúdo mínimo. Melhore a redação sem mudar o sent
 | Previsões e modelos | O que se projeta para o PLD e como a previsão tem se saído? | Examinar cenários probabilísticos e qualidade preditiva | Horizonte, intervalos, histórico de emissões e erros |
 | Mercado | Como a energia é contratada, alocada e liquidada? | Compreender os mecanismos comerciais | ACL/ACR, agentes, MRE/GSF e encargos públicos |
 | Conta de luz | Quanto custa a energia ao consumidor e o que compõe a conta? | Comparar perfis e entender mudanças de custo | Tarifas, componentes, bandeiras e simulação |
-| Perdas | Onde se perde energia, quanto e com que efeito econômico? | Comparar desempenho e dimensionar o problema | Técnicas, não técnicas, realizado e regulatório |
+| Perdas | Onde a energia se perde? | Comparar desempenho e dimensionar o problema | Técnicas, não técnicas, percentual técnico regulatório e custo na tarifa |
 | Qualidade | Com que frequência e por quanto tempo falta energia? | Comparar o serviço recebido e sua evolução | DEC, FEC, limites, parcelas e compensações |
 | Inclusão energética | Quem tem acesso adequado e para quem a energia pesa mais? | Examinar acesso, benefícios e desigualdade | Tarifa Social, universalização e orçamento familiar |
 | Empresas | Quem participa do setor e como atua? | Relacionar agentes, ativos e resultados públicos | Cadastro, portfólio, distribuidoras e finanças |
 | Expansão | O que está sendo construído e quando pode entrar? | Acompanhar oferta, rede, prazos e riscos de execução | Projetos, estágios, cronogramas e revisões |
 | Transição e ambiente | Como a transformação do setor se distribui e afeta as emissões? | Compreender mudanças tecnológicas e territoriais | MMGD, intensidade de emissões e contexto |
 | Regulação | Quais regras mudaram e desde quando valem? | Situar decisões, indicadores e mudanças de regime | Atos, vigências, consultas e efeitos declarados |
-| Aprenda | Como entender os conceitos e ligar uma coisa à outra? | Aprender progressivamente com exemplos | Glossário, trilhas e explicações interativas |
+| Aprenda | O que cada conceito significa e onde aparece? | Aprender progressivamente com exemplos | Glossário, trilhas e explicações interativas |
 | Dados | De onde vêm os números e como reutilizá-los? | Localizar, baixar e reproduzir a informação | Catálogo, cobertura, revisões e downloads |
 | Metodologia | Como calculamos e quais são os limites da análise? | Avaliar o que uma medida permite concluir | Fórmulas, definições, validação e versões |
 

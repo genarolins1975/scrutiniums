@@ -113,7 +113,7 @@ export function MapaSubmercados({
           return (
             <g key={s}>
               <rect x={p.x - 66} y={p.y - 28} width="132" height="56" fill="var(--cor-superficie)" stroke="var(--cor-carvao)" strokeWidth="1" rx="3" />
-              <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
+              <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
                 {p.nome.length > 14 ? "Sudeste/C.-Oeste" : p.nome}
               </text>
               <text x={p.x} y={p.y + 12} textAnchor="middle" fontSize="15" fill="var(--cor-carvao)" fontWeight="600" className="tabular-nums">

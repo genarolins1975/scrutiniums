@@ -22,7 +22,7 @@
  * undefined, NaN, texto vazio) e texto. Coluna numérica só aceita número:
  * texto numa coluna numérica é tratado como ausência, não convertido às cegas.
  */
-import { dataBR, num } from "@/lib/energia/formato";
+import { datasLegiveis, dataBR, num } from "@/lib/energia/formato";
 import type { ClasseLiteral } from "@/lib/literais-fonte";
 import { encontraDatas } from "@/lib/texto-datas";
 import { ordenarComNulos, valido, type Direcao } from "@/lib/energia/escalas";
@@ -45,6 +45,8 @@ export type ColunaTabela = {
   buscavel?: boolean;
   /** Pode ser ordenada (padrão: sim). */
   ordenavel?: boolean;
+  /** Nível mínimo de profundidade em que a coluna aparece na tela (código, hash). O arquivo exportado leva todas as colunas. */
+  nivel?: "analisar" | "auditar";
   /**
    * Valores desta coluna que casam com o padrão da classe são literais (identificador gerado
    * ou valor da fonte) e saem identificados e intactos; os demais saem como texto comum.
@@ -87,12 +89,19 @@ export function textoData(v: string): string {
 }
 
 /** Texto exibido na célula (pt-BR, sinal de menos tipográfico); ausência é "sem dado", nunca "0". */
+/** Coluna numérica que guarda um ano civil ("Ano", "Ano de operação"): o ano nunca leva separador de milhar ("2026", não "2.026"). */
+export function ehColunaDeAno(c: ColunaTabela): boolean {
+  return c.tipo === "numero" && (c.casas ?? 1) === 0 && /^ano(\s|$)/i.test(c.rotulo);
+}
+
 export function textoCelula(v: string | number | null, c: ColunaTabela): string {
   if (v === null) return TEXTO_SEM_DADO;
-  if (typeof v === "number") return num(v, c.casas ?? 1);
+  if (typeof v === "number") return ehColunaDeAno(c) && Number.isInteger(v) ? String(v) : num(v, c.casas ?? 1);
   if (c.tipo === "data") return textoData(v);
   // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
   if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v);
+  // data ISO dentro de um texto (um ato "DSP-RET 2016-11-24", uma nota) também sai no formato do site
+  if (c.tipo === "texto") return datasLegiveis(v);
   return v;
 }
 
@@ -128,10 +137,12 @@ function ehBuscavel(c: ColunaTabela): boolean {
  * Texto normalizado de cada linha nas colunas buscáveis, calculado uma vez por
  * linha (cache por objeto): com ~6.000 linhas, digitar não refaz a normalização.
  * Datas entram no formato ISO e no brasileiro; números, no bruto e no exibido.
+ * A coluna de rótulo da linha é buscável mesmo sendo data ou número; as demais colunas de data e número só com buscavel: true.
  */
-export function criarIndiceBusca(colunas: readonly ColunaTabela[]): (l: LinhaTabela) => string {
+export function criarIndiceBusca(colunas: readonly ColunaTabela[], colunaRotulo?: string): (l: LinhaTabela) => string {
   const cache = new WeakMap<LinhaTabela, string>();
-  const buscaveis = colunas.filter(ehBuscavel);
+  // a coluna que rotula a linha (mês, dia, ano) entra sempre: quem lê "09/2026" na tela espera achá-lo digitando
+  const buscaveis = colunas.filter((c) => ehBuscavel(c) || c.id === colunaRotulo);
   return (l) => {
     let t = cache.get(l);
     if (t === undefined) {
@@ -229,10 +240,26 @@ export function opcoesFiltro(linhas: readonly LinhaTabela[], c: ColunaTabela, ba
 /* ---------- ordenação e consulta ---------- */
 
 /** Cópia ordenada, estável, com ausência sempre no fim. Sem ordem (ou coluna desconhecida), mantém a ordem original. */
+const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+/**
+ * Chave de ordenação da célula: o valor da coluna, com o mês escrito como na página
+ * ("set/2025", "set/2025 (parcial)") trocado por AAAA-MM, para a ordem ser a do calendário
+ * e não a alfabética ("ago" antes de "set" do ano anterior). Só a ordem muda: a célula, a
+ * busca e o arquivo baixado seguem com o texto publicado.
+ */
+export function chaveOrdenacao(l: LinhaTabela, c: ColunaTabela): string | number | null {
+  const v = valorColuna(l, c);
+  if (typeof v !== "string") return v;
+  const m = /^([a-zç]{3})\/(\d{4})(.*)$/.exec(v);
+  const k = m ? MESES_CURTOS.indexOf(m[1]) : -1;
+  return m && k >= 0 ? `${m[2]}-${String(k + 1).padStart(2, "0")}${m[3]}` : v;
+}
+
 export function ordenarLinhas(linhas: readonly LinhaTabela[], colunas: readonly ColunaTabela[], ordem: Ordem): LinhaTabela[] {
   const c = ordem ? colunas.find((x) => x.id === ordem.coluna) : undefined;
   if (!ordem || !c) return linhas.slice();
-  return ordenarComNulos(linhas, (l) => valorColuna(l, c), ordem.direcao);
+  return ordenarComNulos(linhas, (l) => chaveOrdenacao(l, c), ordem.direcao);
 }
 
 /** Recorte completo: ordena e filtra. É a fonte única da tela e dos arquivos. */
@@ -342,7 +369,17 @@ function campoCsv(v: string): string {
 
 /** Número em formato de máquina: ponto decimal, hífen como sinal, sem separador de milhar. */
 function numeroMaquina(v: number): string {
-  return Object.is(v, -0) ? "0" : String(v);
+  if (Object.is(v, -0)) return "0";
+  const cru = String(v);
+  if (!Number.isFinite(v) || cru.length <= 12) return cru;
+  // Ruído de ponto flutuante: 22.189999999999998 e 0.30000000000000004 são, dentro de 4 ulp, um decimal curto (22.19 e 0.3).
+  // Só vira o decimal curto quando ele tem até 12 algarismos significativos; valores que usam todos os algarismos
+  // (1/3, 2/3) seguem completos, para o arquivo guardar o valor inteiro e não um arredondamento.
+  const curto = Number(v.toPrecision(15));
+  const texto = String(curto);
+  if (texto.includes("e")) return cru;
+  const algarismos = texto.replace(/\D/g, "").replace(/^0+/, "").length;
+  return algarismos <= 12 && Math.abs(curto - v) <= 4 * Math.abs(v) * Number.EPSILON ? texto : cru;
 }
 
 /** CSV com ";" e ponto decimal, CRLF, BOM UTF-8; ausência é campo vazio. */

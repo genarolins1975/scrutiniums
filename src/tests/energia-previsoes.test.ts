@@ -54,6 +54,9 @@ import {
   matrizGrade,
   minimoCalibracao,
   minusculaInicial,
+  motivoGravado,
+  provenienciaParaLeitor,
+  semCodigoDeEstado,
   oQueMudouRodada,
   perguntaPainel,
   proximoPainel,
@@ -800,7 +803,9 @@ describe.skipIf(!gold.disponivel)("páginas renderizadas no servidor", () => {
         expect(h.includes(`href="#${prox.id}"`) || h.includes(`href="${enderecoPainel(prox.id)}"`), `${id} -> ${prox.id}`).toBe(true);
         if (!naMesma) expect(h, id).toContain(`href="${enderecoPainel(prox.id)}"`);
       }
-      for (const parte of ["Período", "Universo", "Unidade", "Como ler", "O que não permite concluir", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel"])
+      // desenho editorial: "Como ler" virou legenda sob a figura e "O que não permite concluir" foi para "O que não é possível concluir"
+      // (as notas do painel junto da figura); os downloads do painel ficam em "Baixar os dados" (um arquivo, link direto; vários, bloco)
+      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados"])
         expect(h, parte).toContain(parte);
       expect(h).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h).toContain('data-nivel="analisar"');
@@ -925,5 +930,21 @@ describe("texto citado da gold depois de dois-pontos", () => {
     expect(minusculaInicial("Nenhum modelo")).toBe("nenhum modelo");
     expect(minusculaInicial("CCEE publica")).toBe("CCEE publica");
     expect(minusculaInicial("B0 repete")).toBe("B0 repete");
+  });
+  it("o código do estado de calibração em maiúsculas vira rótulo em palavras; o resto da frase não muda", () => {
+    expect(semCodigoDeEstado("Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste.")).toBe("Sem faixa: nenhum segmento do B0 está calibrado no período de teste.");
+    expect(semCodigoDeEstado("estado AMOSTRA_INSUFICIENTE em W1; DESCALIBRADO em M1")).toBe("estado amostra insuficiente em W1; descalibrado em M1");
+    expect(semCodigoDeEstado("CCEE publica o PLD")).toBe("CCEE publica o PLD");
+  });
+  it("a explicação com porque vira motivo gravado, e a proveniência deixa de chamar a rodada de atual", () => {
+    expect(motivoGravado("28 células sem número, porque nenhum PLD havia sido capturado; emissão depois do prazo.")).toBe(
+      "28 células sem número; motivo gravado: nenhum PLD havia sido capturado; emissão depois do prazo.",
+    );
+    expect(motivoGravado("Sem número e sem motivo explícito.")).toBe("Sem número e sem motivo explícito.");
+    const p = { indicador: "Referência experimental B0 (persistência) da rodada atual", natureza: "PREVISTO" };
+    expect(provenienciaParaLeitor(p).indicador).toBe("Referência experimental B0 (persistência) da rodada mais recente");
+    expect(provenienciaParaLeitor(p).natureza).toBe("PREVISTO");
+    const q = { indicador: "PLD horário" };
+    expect(provenienciaParaLeitor(q)).toBe(q);
   });
 });

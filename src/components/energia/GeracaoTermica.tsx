@@ -5,6 +5,8 @@ import { Comparador } from "@/components/energia/Comparador";
 import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energia/GeracaoControles";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -18,6 +20,7 @@ import {
   COR_MOTIVO,
   CURTO_COMBUSTIVEL,
   CURTO_MOTIVO,
+  GLOSA_MOTIVO,
   JANELAS_TERMICA,
   ROTULO_ORIGEM_COMBUSTIVEL,
   colunasCombustivelMotivo,
@@ -29,10 +32,14 @@ import {
   linhasParcelas,
   linhasTermicaMensal,
   linhasUsinasTermicas,
+  maioresUsinasTermicas,
+  minusculaPalavras,
   motivoPrincipal,
   paraTabela,
   respostaTermica,
+  usinasPadraoComparacao,
   usinaTermicaEscolhida,
+  vereditoTermica,
   type TermicaCliente,
 } from "@/lib/energia/geracao";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
@@ -49,6 +56,10 @@ import type { CategoriaCombustivel } from "@/lib/energia/tipos-geracao";
  * combustível, e a soma dos motivos de cada barra fecha com a geração verificada do
  * combustível, a menos da parcela "não classificada" publicada na tabela. Nada é inferido
  * do preço.
+ *
+ * Ordem da página: o veredito, a figura principal (combustível por motivo) com a legenda dos motivos e do recorte, a
+ * tabela equivalente e as notas do painel (`notas`); depois seções visíveis com pergunta própria (o motivo mês a mês e
+ * as usinas) e, em Analisar, o combustível mês a mês. As medidas de abertura (12 meses) ficam na faixa de métricas da página.
  */
 const ESQUEMA = {
   us: campo(tiposUrl.texto({ max: 40 }), ""),
@@ -68,13 +79,20 @@ export function GeracaoTermica({
   termica,
   fonte,
   versao,
-  destaques,
+  notas,
+  notasUniverso,
+  contextoSemana,
 }: {
   /** A gold da térmica sem as partes que só a auditoria usa (CVU, universo, identidade), montadas no servidor. */
   termica: TermicaCliente;
   fonte: string;
   versao: string;
-  destaques?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
+  /** Notas de universo e de método que valem para a figura principal (não classificado, combustível, universo que cresce, ponte com a matriz), sob o recorte. */
+  notasUniverso?: ReactNode;
+  /** A participação térmica dos 7 dias em contexto (seção montada no servidor com a gold de operação), entre a série mensal e as usinas. */
+  contextoSemana?: ReactNode;
 }) {
   const t = termica;
   const [v, definir] = useEstadoUrl(ESQUEMA);
@@ -92,7 +110,12 @@ export function GeracaoTermica({
 
   const conhecidas = new Set(t.usinas_12m.map((x) => x.id));
   const comparadas = (v.cmp as string[]).filter((id) => conhecidas.has(id));
-  const usinasComparadas = (comparadas.length ? comparadas : usina ? [usina.id] : []).map((id) => t.usinas_12m.find((x) => x.id === id)!).filter(Boolean);
+  // sem escolha na tabela nem no comparador, a comparação abre com a maior usina de cada um de três combustíveis
+  const padrao = useMemo(() => usinasPadraoComparacao(t.usinas_12m, 3), [t]);
+  const comparacaoPadrao = comparadas.length === 0 && !v.us;
+  const idsComparados = comparadas.length ? comparadas : comparacaoPadrao ? padrao.map((x) => x.id) : usina ? [usina.id] : [];
+  const usinasComparadas = idsComparados.map((id) => t.usinas_12m.find((x) => x.id === id)!).filter(Boolean);
+  const maiores = useMemo(() => maioresUsinasTermicas(t.usinas_12m, 10), [t]);
   const motivosUsinas = linhasMotivosUsinas(usinasComparadas);
 
   const comSerie = combustiveisComSerie(t);
@@ -103,32 +126,55 @@ export function GeracaoTermica({
   const combustivelMensal = useMemo(() => linhasCombustivelMensal(t, noHistorico), [t, chaveHistorico]);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
 
+  const motivosNoGrafico = t.motivos.filter((m) => cruzado.motivos.includes(m.id));
+
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p022">
-        {respostaTermica(t)}
-      </p>
+      <div className="grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start">
+        <RespostaCurta id="p022" veredito={vereditoTermica(t) || respostaTermica(t)}>
+          {respostaTermica(t)}
+        </RespostaCurta>
+        <div className="space-y-4">
+          <GraficoBarras
+            titulo={`Geração térmica por combustível e motivo de despacho, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
+            dados={paraTabela(cruzadoLinhas)}
+            chaveCategoria="id"
+            chaveRotulo="combustivel"
+            series={cruzado.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
+            unidade="GWh"
+            casas={0}
+            orientacao="horizontal"
+            empilhado
+            rotulosValor
+          />
+          <div data-motivos="rotulos" className="space-y-1">
+            <p className="rotulo text-mineral">O que cada motivo quer dizer, com o rótulo da base publicada</p>
+            <p className="text-xs leading-relaxed text-carvao-muted">Térmica despachada é a que o ONS manda gerar na programação da operação; o motivo é a classificação que o ONS publica para essa geração.</p>
+            <ul className="grid gap-x-8 gap-y-1.5 text-sm leading-snug text-carvao-muted sm:grid-cols-2">
+              {motivosNoGrafico.map((m) => (
+                <li key={m.id} className="flex items-start gap-2">
+                  <span aria-hidden="true" className="mt-[0.4em] inline-block h-2 w-2 shrink-0" style={{ background: COR_MOTIVO[m.id] }} />
+                  <span>
+                    <span className="text-carvao">{m.rotulo}</span>
+                    <span className="block text-xs">{GLOSA_MOTIVO[m.id]}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <GeracaoRecorte
         periodo={`${mesAno(u.inicio)} a ${mesAno(u.fim)} (12 meses completos, ${num(u.horas, 0)} horas); série mensal desde ${mesAno(t.primeiro_mes_na_gold)} e no arquivo desde ${mesAno(t.primeiro_mes)}`}
-        universo={`Usinas térmicas despachadas pelo ONS (Tipo I e II-A), inclusive nucleares; ${num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período`}
+        universo={
+          <>
+            Usinas térmicas despachadas pelo ONS<span data-nivel="analisar"> (Tipo I e II-A)</span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
+          </>
+        }
         unidade="MWmed (média do período), GWh (energia) e % da geração térmica verificada; CVU em R$/MWh"
       />
-
-      {destaques}
-
-      <GraficoBarras
-        titulo={`Geração térmica por combustível e motivo de despacho, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
-        dados={paraTabela(cruzadoLinhas)}
-        chaveCategoria="id"
-        chaveRotulo="combustivel"
-        series={cruzado.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
-        unidade="GWh"
-        casas={0}
-        orientacao="horizontal"
-        empilhado
-        rotulosValor
-      />
+      {notasUniverso}
       <TabelaInterativa
         titulo="Tabela equivalente: geração por combustível e motivo, 12 meses"
         colunas={colunasCombustivelMotivo(cruzado.motivos)}
@@ -142,14 +188,15 @@ export function GeracaoTermica({
         nota="Motivo sem geração no período fica fora das colunas (zero em todos os combustíveis). Não classificado é o total verificado menos a soma dos motivos, com sinal, como a fonte publica."
       />
 
-      <div className="space-y-4 border-t border-linha pt-5" id="motivos-mensal">
-        <h3 className="font-serif text-lg text-carvao">Por que as térmicas geraram, mês a mês</h3>
+      {notas}
+
+      <SecaoDoPainel id="motivos-mensal" titulo="Por que as térmicas geraram, mês a mês?">
         <GeracaoEscolha legenda="Período" opcoes={OPCOES_JANELA} valor={v.jt} onEscolher={(x) => definir({ jt: x })} />
         <GraficoBarras
           titulo={`Geração térmica média do SIN por motivo de despacho, ${mensal[0] ? mesAno(mensal[0].m) : ""} a ${ultimoMensal ? mesAno(ultimoMensal.m) : ""}`}
           dados={paraTabela(mensal)}
           chaveCategoria="id"
-          chaveRotulo="mes"
+          chaveRotulo="rotulo"
           series={mensalEscolhido.motivos.map((m) => ({ id: m, rotulo: CURTO_MOTIVO[m], cor: COR_MOTIVO[m] }))}
           unidade="MWmed"
           casas={0}
@@ -171,12 +218,28 @@ export function GeracaoTermica({
           chaveUrl="tm"
           nota="Unit commitment só existe a partir de jan/2020 (entrada do DESSEM na programação, segundo o dicionário do ONS); antes disso a coluna fica vazia. Constrained-off térmico é restrição de geração, publicado à parte e fora da soma."
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div className="space-y-4 border-t border-linha pt-5" id="usinas">
-        <h3 className="font-serif text-lg text-carvao">
-          As {num(t.usinas_12m_resumo.publicadas, 0)} usinas com mais geração ({num(t.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% da energia térmica)
-        </h3>
+      {contextoSemana}
+
+      <SecaoDoPainel
+        id="usinas"
+        titulo={`Quais usinas mais geraram? As ${num(t.usinas_12m_resumo.publicadas, 0)} com mais geração somam ${num(t.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% da energia térmica`}
+      >
+        <GraficoBarras
+          titulo={`As ${maiores.length} usinas térmicas com mais geração, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
+          dados={maiores.map((x) => ({ id: x.id, rotulo: `${x.nome ?? x.id} (${minusculaPalavras(CURTO_COMBUSTIVEL[x.categoria])})`, gwh: x.mwh === null ? null : x.mwh / 1000 }))}
+          chaveCategoria="id"
+          chaveRotulo="rotulo"
+          series={[{ id: "gwh", rotulo: "Geração em 12 meses", cor: "var(--serie-termica)" }]}
+          unidade="GWh"
+          casas={0}
+          orientacao="horizontal"
+          alturaCategoria={44}
+          rotulosValor
+          selecionado={sel}
+          onSelecionar={selecionar}
+        />
         <TabelaInterativa
           titulo="Usinas térmicas: geração, motivo principal, combustível e CVU"
           colunas={COLUNAS_USINAS_TERMICAS}
@@ -191,7 +254,7 @@ export function GeracaoTermica({
           onSelecionar={selecionar}
           ordemInicial={{ coluna: "gwh", direcao: "desc" }}
           dicaBusca="Nome da usina ou CEG"
-          nota={`A lista completa, mês a mês e com todas as usinas, está no arquivo para download. Combustível pela autoridade publicada (${Object.values(ROTULO_ORIGEM_COMBUSTIVEL).slice(0, 3).join("; ")}...); nunca pelo nome.`}
+          nota={`A lista completa, mês a mês e com todas as usinas, está no CSV para download, no fim do painel. Combustível pela autoridade publicada (${Object.values(ROTULO_ORIGEM_COMBUSTIVEL).slice(0, 3).join("; ")}...); nunca pelo nome.`}
         />
         {usina && (
           <div className="space-y-3" data-usina={usina.id}>
@@ -222,7 +285,13 @@ export function GeracaoTermica({
           selecionadas={comparadas}
           onMudar={(ids) => definir({ cmp: ids })}
           dicaBusca="Angra, Pecém, Santa Cruz"
-          vazio={usina ? `Mostrando ${usina.nome ?? usina.id}. Escolha até quatro usinas para comparar.` : "Escolha até quatro usinas."}
+          vazio={
+            comparacaoPadrao && usinasComparadas.length
+              ? `Mostrando ${usinasComparadas.map((x) => x.nome ?? x.id).join(", ")}, a maior usina de cada um de ${usinasComparadas.length} combustíveis. Escolha até quatro usinas para comparar.`
+              : usina
+                ? `Mostrando ${usina.nome ?? usina.id}. Escolha até quatro usinas para comparar.`
+                : "Escolha até quatro usinas."
+          }
         >
           {() => null}
         </Comparador>
@@ -239,6 +308,14 @@ export function GeracaoTermica({
               orientacao="horizontal"
               rotulosValor
             />
+            <p className="text-xs leading-relaxed text-carvao-muted" data-cvu-comparadas="">
+              CVU da semana vigente:{" "}
+              {usinasComparadas
+                .map((x) => `${x.nome ?? x.id}, ${x.cvu_semana_vigente === null ? "um valor por parcela (tabela de parcelas)" : `${num(x.cvu_semana_vigente, 2)} R$/MWh`}`)
+                .join("; ")}
+              . Custo declarado para a programação, não custo realizado
+              {usinasComparadas.some((x) => x.cvu_semana_vigente === 0) ? "; CVU 0,00 é valor publicado pela fonte, mantido como publicado e nunca tratado como ausência" : ""}.
+            </p>
             <TabelaInterativa
               titulo="Tabela equivalente: parcela de cada motivo por usina"
               colunas={[{ id: "motivo", rotulo: "Motivo", tipo: "texto" }, ...usinasComparadas.map((x) => ({ id: x.id, rotulo: x.nome ?? x.id, tipo: "percentual" as const, casas: 2 }))]}
@@ -253,10 +330,9 @@ export function GeracaoTermica({
             />
           </>
         )}
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5" id="combustiveis-mensal">
-        <h3 className="font-serif text-lg text-carvao">Geração térmica por combustível, mês a mês (até {LIMITE_COMPARACAO} na mesma escala)</h3>
+      <SecaoDoPainel nivel="analisar" id="combustiveis-mensal" titulo={`Geração térmica por combustível, mês a mês (até ${LIMITE_COMPARACAO} na mesma escala)`}>
         <Comparador
           rotulo={`Combustíveis (até ${LIMITE_COMPARACAO}); sem escolha, os três com mais geração na série`}
           entidades={comSerie.map((c) => ({ id: c, rotulo: CURTO_COMBUSTIVEL[c] }))}
@@ -293,7 +369,7 @@ export function GeracaoTermica({
           ordemInicial={{ coluna: "m", direcao: "desc" }}
           nota="Até 2025 o combustível vem pelo CEG da usina em outros conjuntos do ONS; desde 2026, do campo do próprio conjunto. As térmicas Tipo III sem combustível só aparecem na matriz efetiva."
         />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

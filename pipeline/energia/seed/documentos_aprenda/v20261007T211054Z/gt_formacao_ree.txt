@@ -1,0 +1,89 @@
+[PDF, página 12]
+2.2.1 Aprimoramentos em desenvolvimento dos modelos atuais
+A CPAMP - Comissão Permanente para Análise de Metodologias e Programas
+Computacionais do Setor Elétrico tem a finalidade de garantir a coerência e a integração
+das metodologias e programas computacionais utilizados pelo MME, pela EPE, pelo
+ONS e pela CCEE. Essa Comissão pode constituir Grupos de Trabalhos para realização
+de estudos específicos.
+Com o propósito de avaliar e propor aprimoramentos relacionados a cadeia de
+modelos usados oficialmente no setor elétrico brasileiro, para planejamento da operação
+e expansão e formação de preços foi criado pela CPAMP o Grupo Técnico de
+Metodologias (GT Metodologia), que está sob coordenação da EPE. Assim, os
+aprimoramentos e desenvolvimentos sob coordenação desse GT, ao longo do ciclo
+2018-2019, são apresentados com mais detalhes ao longo dessa seção.
+No âmbito dos aperfeiçoamentos dos modelos, está em andamento a Consulta
+Pública nº 74/2019 do Ministério de Minas e Energia, com os estudos elaborados pelo
+Grupo de Trabalho de Metodologia da CPAMP. Dentre os aprimoramentos destacam-se:
+i.
+
+ii.
+
+iii.
+
+iv.
+
+Mecanismo adicional de segurança denominado de Volume Mínimo Operativo
+(VminOp), que deve ser considerado em todos os meses do período de
+planejamento, por meio de restrições de níveis mínimos nos reservatórios
+equivalentes de energia – REE. Esse mecanismo tem por objetivo aumentar a
+segurança operativa do sistema;
+O uso do centroide, como representante no processo de agregação de ruídos,
+que resulta na redução na variabilidade amostral, em relação às variações da
+semente para a geração de cenários backward;
+A melhor representação da árvore de cenários forward no modelo NEWAVE, com
+o método de reamostragem de cenários, que leva a uma menor variabilidade
+amostral e as melhores estimativas em direção ao valor ótimo teórico do
+problema;
+A utilização de correlação espacial de ENAs, nos modelos NEWAVE e GEVAZP,
+entre os reservatórios equivalentes de energia (REE), em base mensal, em
+substituição à anual. Essa representação é mais aderente à realidade,
+capturando a diversidade hidrológica entre as diferentes bacias.
+
+Adicionalmente, está em desenvolvimento o aprimoramento da formação de preço,
+em base ex-ante. Trata-se da adoção do modelo DESSSEM na cadeia de modelos
+usados para a programação da operação, que passaria a ter um despacho semi-horário,
+bem como para o cálculo do PLD, realizado pela CCEE, que passaria a ser horária.
+Para este fim, desde abril de 2018 está em andamento a operação sombra do
+modelo DESSEM, que tem por propósito antecipar ao mercado os eventuais impactos
+da adoção do preço horário. Há a expectativa do uso oficial do modelo DESSEM nas
+etapas de programação da operação e formação de preço, a partir de janeiro de 2020.
+9
+
+[PDF, página 41]
+5
+
+Propostas de aprimoramentos
+
+Este documento apresentou um mapeamento e avaliação de diferentes arranjos de
+mercado e mecanismos de formação de preço, principalmente a formação de preço por
+custos (ou modelo) e formação de preço por oferta.
+A formação de preços por oferta apresenta-se como uma alternativa que pode trazer
+uma eficiência econômica dos preços e uma melhor relação entre oscilações entre oferta
+e demanda. Entretanto, uma série de preocupações foram explorada, destacando-se a
+preocupação com: (i) definição de uma regulamentação forte e mecanismos bem
+definidos para o monitoramento e controle do poder de mercado; (ii) definição de um
+mecanismo de oferta de preço que possa conviver harmoniosamente com o despacho
+físico das usinas hidrelétricas; (iii) obtenção de uma operação segura do sistema, no que
+se refere a níveis mínimos de confiabilidade de suprimento energético; (iv) definição de
+instrumentos capazes de induzir a adequada resposta da demanda em função do
+comportamento do preço.
+Por outro lado, a formação de preço por custo (ou modelo) tem evoluído
+significativamente nos últimos anos, especialmente com relação a internalização nos
+modelos do mecanismo de aversão ao risco CV@R, bem como o aumento do número
+de Reservatórios Equivalentes em Energia (REEs), passando de 4 REEs para 12 REEs,
+e do aperfeiçoamento da Função de Produção Hidráulica (FPH).
+Recentemente, a CPAMP vem trabalhando em outros aprimoramentos dos modelos,
+com destaque para a reamostragem dos cenários hidrológicos e a funcionalidade do
+Volume mínimo Operativo (VMinOp). Outra mudança significativa em desenvolvimento
+é a implantação do preço horário utilizando o modelo DESSEM, o que pode trazer um
+avanço importante na direção de um mercado mais competitivo.
+Dessa maneira, é fundamental que sejam aprofundados os estudos com relação ao
+mecanismo de formação de preço por oferta, com o objetivo de se obter as soluções
+mais adequadas para as questões apresentadas, especialmente voltadas à realidade do
+mercado brasileiro. Concomitantemente, deve-se continuar com os estudos conduzidos
+pela CPAMP para o desenvolvimento metodológico da cadeia de modelos
+computacionais para a formação de preço por custo, bem como manter o
+acompanhamento do desenvolvimento metodológico que vem sendo feito por
+universidades, centros de pesquisa e consultorias.
+
+38

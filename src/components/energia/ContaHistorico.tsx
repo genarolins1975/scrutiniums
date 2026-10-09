@@ -7,7 +7,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno } from "@/lib/energia/formato";
-import { CAMPO_DIST, linhasEventos, linhasHistorico, respostaHistorico, rotuloDistribuidora, type LinhaEvolucao } from "@/lib/energia/conta";
+import { CAMPO_DIST, expandirEntidades, linhasEventos, linhasHistorico, respostaHistorico, rotuloDistribuidora, type EntidadeCompacta, type LinhaEvolucao } from "@/lib/energia/conta";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { HistoricoB1 } from "@/lib/energia/tipos-conta";
 
@@ -82,24 +82,18 @@ function carregar(url: string): Promise<HistoricoB1> {
   return promessa;
 }
 
-export type EntidadeHistorico = {
-  id: string;
-  rotulo: string;
-  detalhe?: string;
-  /** O CNPJ entra como sinônimo: a busca do comparador acha a distribuidora pelo número. */
-  sinonimos?: string[];
-};
-
 export type ContaHistoricoProps = {
   evolucao: LinhaEvolucao[];
-  entidades: EntidadeHistorico[];
+  /** As distribuidoras que o comparador busca, em tuplas (`compactarEntidades`): o CNPJ entra como sinônimo, e a busca acha a distribuidora pelo número. */
+  entidades: EntidadeCompacta[];
   historicoUrl: string;
   ultimoIpca: string | null;
   fonte: string;
   dataReferencia: string;
 };
 
-export function ContaHistorico({ evolucao, entidades, historicoUrl, ultimoIpca, fonte, dataReferencia }: ContaHistoricoProps) {
+export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, ultimoIpca, fonte, dataReferencia }: ContaHistoricoProps) {
+  const entidades = useMemo(() => expandirEntidades(compactas), [compactas]);
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [hist, setHist] = useState<HistoricoB1 | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -216,7 +210,7 @@ export function ContaHistorico({ evolucao, entidades, historicoUrl, ultimoIpca, 
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
           Não foi possível carregar o histórico ({erro}). O gráfico mostra só a mediana; o arquivo completo está em{" "}
           <a href={historicoUrl} download className="text-energia-dark underline underline-offset-4">
-            conta_historico_b1.json
+            histórico da tarifa B1 por distribuidora (JSON)
           </a>
           .
         </p>

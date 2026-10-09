@@ -1,0 +1,643 @@
+{
+ "avaliador": "T-U09",
+ "papel": "tecnico",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8 (HEAD avaliado), site em http://localhost:3100; dados congelados em 30/09/2026 (conta de luz) e 01/10/2026 (qualidade)",
+ "paginas": {
+  "/setor-eletrico/conta-de-luz": {
+   "paineis": [
+    "P047",
+    "P048",
+    "P049"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.0,
+     "evidencia": [
+      "Lidos texto_entender, texto_auditar e visoes.json: ranking de 81 distribuidoras em 3 perfis, mediana e quartis, série mensal nominal e real, composição em 7 grupos, simulador de 5 classes e resumo de reajustes, bandeiras e CDE.",
+      "Tabela do ranking (14 colunas) conferida no navegador: nenhuma coluna de UF, tipo de distribuidora ou UCs, e sem busca por município, embora qualidade_municipios.csv e qualidade_atendimento.csv do mesmo observatório tragam a ligação e as UCs.",
+      "Universo conferido: 81 de 115 CNPJs com tarifa B1; 34 fora do ranking, listados com motivo no modo Auditar."
+     ],
+     "atendidos": [
+      "Nível atual, evolução (nominal e real), composição e referência pela mediana presentes",
+      "Distribuição visível: as 81 distribuidoras aparecem ordenadas e a série traz a faixa do 1º ao 3º quartil",
+      "Relações com reajustes, bandeiras e CDE, e separação explícita entre PLD e tarifa",
+      "Limitações e cobertura declaradas: universo, 34 excluídas, tributos e tarifa média fora"
+     ],
+     "problemas": [
+      "Sem dimensão territorial: o ranking não tem UF, região nem busca por município, e o leitor precisa conhecer a sigla da distribuidora.",
+      "Sem grupos de pares nem peso: concessionárias e dezenas de cooperativas rurais entram igualmente no ranking e na mediana, sem coluna de tipo ou de UCs.",
+      "Tributos, iluminação pública e tarifa média de fornecimento ausentes por bloqueio declarado (sem base estruturada); a conta final não tem resposta numérica."
+     ],
+     "justificativa": "Cobre nível, evolução, composição, simulação e limitações com rigor, mas falta a leitura territorial e por pares: o ranking mistura cooperativas e grandes distribuidoras sem UF, tipo ou peso por consumidores. Conta final com tributos é bloqueio declarado, que não eleva a nota."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Mediana refeita do CSV (821,18 R$/MWh, n=81) e do bruto da ANEEL de 08/10/2026: 81 de 81 tarifas iguais; a fonte já traz 20 distribuidoras iniciadas em 30/09 e o mesmo critério dá 814,24 (n=101).",
+      "Histórico refeito: 1º/09/2026 dá 795,97 (n=102) como na página; nas 81 do ranking a mediana de 1º/09 é 819,75, então a variação de mesmo conjunto é 0,17%, não 3,2%; as 21 que saíram tinham 746,92.",
+      "Série mensal conferida em 7 meses (mediana, quartis, valor real pelo IPCA): idêntica; IPCA de ago/2026 igual ao SIDRA (índice 7633,23; 4,22%).",
+      "Composição refeita: média 859,08, mediana do total 820,46, soma das medianas 861,53, participações 30,5, 12,3, 32,8, 7,6 e 20,6%; a página avisa que as medianas não somam."
+     ],
+     "atendidos": [
+      "Mesma classe, modalidade, base e perfil de consumo para todas as distribuidoras",
+      "Ponderação declarada: cada distribuidora pesa igual; razão de somas na composição média",
+      "Série real com deflator IPCA e mês base, vazia quando falta o índice",
+      "Extremos tratados como observados e nomeados (DMED e CERES); nenhum benchmark internacional enganoso"
+     ],
+     "problemas": [
+      "O texto 'O que mudou' contrapõe 821,18 (81 distribuidoras) e 795,97 (102) sem a variação de mesmo conjunto; quase toda a diferença de 3,2% é composição, e o ranking de 30/09 perde as mais baratas (21 com vigência encerrada em 29/09).",
+      "A data de referência é a do arquivo (30/09), quando 22 distribuidoras ainda não têm a tarifa seguinte: a cobertura cai a 81 das 102 com tarifa em 1º/09 e nenhuma regra escolhe a data pela cobertura.",
+      "Mediana sem pares nem peso por consumidores: não há mediana ponderada por UC nem recorte por tipo, embora as UCs existam no observatório.",
+      "O destaque da composição (encargos 21,6%) é de uma só distribuidora (CERIPa, a mais próxima da mediana), enquanto o agregado de 80 é 20,6%; três valores típicos convivem (820,46, 821,18 e 859,08)."
+     ],
+     "justificativa": "Referências e pesos explícitos e valores reproduzidos, mas a mediana nacional depende de cobertura parcial na data escolhida, a comparação do 'O que mudou' usa conjuntos distintos e não há pares nem ponderação por consumidores. As limitações estão declaradas, o que impede nota menor."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Simulador reproduzido de forma independente: 100 de 100 casos de referência (CERIPa) iguais; mais 6 combinações de classe, ligação e bandeira no navegador deram o valor da fórmula publicada.",
+      "Lei 15.235/2025 no portal da Câmara (100% até 80 kWh e 0% acima; isenção das quotas da CDE até 120 kWh desde 1º/1/2026) e páginas da ANEEL de Tarifa Social e Bandeiras confirmam as citações da página.",
+      "Composição fecha com TE + TUSD em 80 de 80; CFURH: 1.636 vigências até 2024 entre menos 5,38 e 4,44, e 15 distribuidoras com crédito de 13,09 a 267,43 R$/MWh, como na página.",
+      "Vigências sobrepostas: 16 casos na B1 residencial no CSV e 16 no arquivo bruto atual; zero publicado, ausência e 'não se aplica' tratados como estados distintos."
+     ],
+     "atendidos": [
+      "TE, TUSD, tarifa homologada, tarifa média e conta simulada separadas; PLD vezes consumo declarado como não sendo conta",
+      "R$/MWh convertido a R$/kWh, com a unidade trocada do adicional de bandeira corrigida e dita",
+      "Estimado, calculado e observado rotulados; simulador com memória de cálculo e exclusões",
+      "Ausência, zero publicado e vigências sobrepostas com regra publicada"
+     ],
+     "problemas": [
+      "Três regras do simulador são leitura sem texto oficial (REN 1.000/2021 respondeu 403 também a mim): mínimo da Tarifa Social acima de 80 kWh, bandeira só acima de 80 kWh na Tarifa Social e Desconto Social por parcela; a bandeira sobre consumo medido abaixo do mínimo também não foi verificada. Estado parcial declarado.",
+      "Crédito de CFURH reclassificado de encargos para créditos é inferência (PRORET não lido): com a regra os encargos são 20,6% da tarifa média, sem ela 18,7%.",
+      "A pergunta 'Para onde vai o valor da conta?' é respondida com participação na tarifa sem tributos, em média simples de 80 distribuidoras; na fatura a fatia de cada grupo é menor.",
+      "Custo por perfil: 12 de 243 valores diferem R$ 0,005 do arredondamento meio para cima (ENEL CE, 100 kWh: exibido 70,17 para 70,175 exato)."
+     ],
+     "justificativa": "Valores principais e simulador reproduzidos sem divergência material, com unidades, ausência e vigências bem tratadas. Abaixo de 9 porque regras regulatórias do simulador e a reclassificação do CFURH são leituras declaradas, não conferidas no texto oficial, e o título da composição não fala da fatura."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Reproduzido do arquivo bruto da ANEEL (90 MB, 08/10/2026) com só os filtros da ficha Comprove: 81 de 81 tarifas iguais e 16 sobreposições iguais ao CSV de conflitos.",
+      "No navegador, a tabela do ranking e a tabela do gráfico (81 linhas cada) igualam o CSV baixado em TE, TUSD, total, custo de 100, 200 e 300 kWh e CNPJ.",
+      "A ficha Comprove traz fonte, arquivo, sha256, fórmula, filtros, universo 81 de 115, testes e citação; o manifesto de publicação confere (sha256 e bytes) com os 22 CSV de conta e qualidade servidos, 0 diferenças."
+     ],
+     "atendidos": [
+      "Fonte específica com recurso, datas de publicação e de captura e sha256",
+      "Fórmula, variáveis, unidades, filtros e exclusões publicados",
+      "Tabela, gráfico, texto e CSV com o mesmo contrato (81 de 81 linhas)",
+      "Limitações declaradas, inclusive o que não foi possível ler (REN 1.000/2021, PRORET)"
+     ],
+     "problemas": [
+      "A versão do código é '3e7ff0a36fba+alterado' (árvore alterada) e não identifica um commit: o gold foi gerado em 30/09 às 23:56 e só foi commitado às 00:07 (8a3a41296).",
+      "A reprodução da ficha é um comando interno do pipeline (executar_modulo.py conta, só gold) que exige o silver local; o bruto capturado não é publicado e o arquivo da ANEEL mudou (sha256 não confere), então a reprodução externa depende de refazer o filtro.",
+      "Sem histórico de revisões: uma única captura por arquivo; a detecção só começa na segunda captura.",
+      "Normas do simulador e atos de incorporação vêm de páginas oficiais parciais ou de fontes secundárias (REN 1.000/2021 e PRORET não lidos; ato da EMR marcado como provável)."
+     ],
+     "justificativa": "Rastreabilidade ampla e reproduzida: 81 de 81 tarifas saem do arquivo bruto com os filtros da ficha, e tabela, gráfico e CSV coincidem. Não chega a 9 porque a versão do código é de árvore alterada, não há histórico de revisões e a reprodução da ficha é interna."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições (320 a 1440 px; Entender e Auditar) sem erro de console nem falha de rede, carga de 0,87 a 1,03 s, 13 controles sem falha; no meu navegador também zero erros e CLS de 0,04 a 0,07.",
+      "Testes lidos sem executar: 37 de interface e 45 do pipeline (paridade com CSV, 100 casos do simulador, ausência versus zero, vigências sobrepostas, MWh); validação crítica reprovada vira stub e mantém a gold anterior.",
+      "HTML bruto de 663.043 B (gzip 122.650 B), acima da meta de 600 KB do contrato; o teste de peso mede renderToStaticMarkup com limite de 400 KB e não vê o fluxo RSC."
+     ],
+     "atendidos": [
+      "Sem erros materiais de console ou de rede em seis medições e nas minhas interações",
+      "Cálculos corretos no simulador e no ranking, conferidos no navegador",
+      "Testes orientados a risco e bloqueio de publicação por validação crítica",
+      "Protocolos de laboratório documentados (D11, D12) e distinção entre laboratório e campo declarada"
+     ],
+     "problemas": [
+      "HTML bruto de 663 KB acima da meta de 600 KB (AVALIACAO_PAGINAS.md registra páginas acima da meta como defeito baixo, D026 a D033) e teste de peso cego ao fluxo RSC.",
+      "A validação não protege a cobertura do ranking: a queda de 102 distribuidoras com tarifa em 1º/09 para 81 em 30/09 passou sem ressalva automática; tarifa fora de 200 a 3.000 R$/MWh é só ressalva.",
+      "Desempenho só de laboratório (Chromium headless, sem limitação de rede ou CPU), sem dado de campo; leitor de tela não testado.",
+      "Dados congelados em 30/09: a ANEEL já publicou a bandeira de out/2026 (verde) e 20 tarifas de 30/09, e o simulador oferece 'do mês publicado: amarela'; o aviso de fonte defasada só aparece acima de 60 dias."
+     ],
+     "justificativa": "Sem erros de console ou de rede, interações e cálculos corretos, testes amplos e bloqueio crítico de publicação. Abaixo de 9 porque o HTML excede a própria meta com teste que não mede o servido, a cobertura do ranking não é validada e só há medida de laboratório."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "conta_mediana_cobertura_30set",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G",
+      "L"
+     ],
+     "onde": "P047, 'O que mudou', universo e mediana do destaque (81 das 102 com tarifa em 1º/09)",
+     "descricao": "A mediana de 30/09 (821,18; 81 distribuidoras) é contraposta à de 1º/09 (795,97; 102). Refeito: nas mesmas 81, a mediana de 1º/09 é 819,75 e a variação até 30/09 é 0,17%. As 21 que saíram (vigência encerrada em 29/09, quase todas cooperativas) tinham mediana 746,92, então o ranking de 30/09 fica enviesado para cima. A fonte de 08/10 já traz 20 delas e a mediana do mesmo critério é 814,24 (n=101).",
+     "sugestao": "Escolher a data de referência pela cobertura (por exemplo o último dia com pelo menos 90% das ativas) ou mostrar mediana de conjunto fixo e a variação de mesmo conjunto; criar ressalva automática quando a cobertura do ranking cair."
+    },
+    {
+     "id": "conta_sem_territorio_pares_peso",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "P047, tabela e gráfico do ranking",
+     "descricao": "O ranking mistura concessionárias e dezenas de cooperativas rurais com peso igual; as 14 colunas não trazem UF, tipo nem UCs, e não há busca por município. UCs por distribuidora e a ligação município distribuidora já existem no observatório (qualidade_atendimento.csv e qualidade_municipios.csv).",
+     "sugestao": "Acrescentar UF, tipo e UCs, filtro por grupo de pares, mediana ponderada por UC como segunda referência e busca por município."
+    },
+    {
+     "id": "conta_kpi_composicao_caso_unico",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "P048, destaque 'Encargos setoriais 21,6%' e tabela de decomposição",
+     "descricao": "O destaque é de uma distribuidora (CERIPa, tarifa mais próxima da mediana); o agregado nacional de 80 distribuidoras é 20,6% (razão de somas) e a frase de abertura usa o agregado. Três valores típicos convivem: média 859,08, mediana do total 820,46 e mediana do ranking 821,18.",
+     "sugestao": "Destacar o agregado e apresentar a distribuidora de referência como exemplo; explicar em uma linha por que há três números."
+    },
+    {
+     "id": "conta_cfurh_credito_inferencia",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "P048, grupo 'Créditos tarifários' e 'O que mudou'",
+     "descricao": "Valores negativos de TE_CFURH (15 distribuidoras, de 13,09 a 267,43 R$/MWh em módulo) foram reclassificados de encargos para créditos por inferência (PRORET não lido; origem 'provável' na repactuação da UBP). Refeito: encargos 20,6% com a regra e 18,7% sem ela. A página declara a leitura.",
+     "sugestao": "Mostrar as duas leituras da participação dos encargos até que o PRORET seja lido."
+    },
+    {
+     "id": "conta_regras_simulador_nao_conferidas",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "P049, 'Regras aplicadas a esta classe'",
+     "descricao": "Mínimo da Tarifa Social acima de 80 kWh, bandeira só acima de 80 kWh na Tarifa Social, Desconto Social por parcela e bandeira sobre consumo medido (não faturado) abaixo do mínimo são leituras sem texto oficial: a REN 1.000/2021 respondeu 403 também na minha consulta e a página de bandeiras da ANEEL não menciona o custo de disponibilidade. Estado parcial declarado na página.",
+     "sugestao": "Obter a REN 1.000/2021 por arquivo manual versionado e promover ou corrigir as regras; até lá manter o aviso ao lado do resultado."
+    },
+    {
+     "id": "conta_arredondamento_meio_centavo",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "P047, colunas de custo por perfil",
+     "descricao": "12 de 243 valores de custo por perfil diferem R$ 0,005 do arredondamento meio para cima (ENEL CE, 100 kWh: exibido 70,17 para 70,175 exato). Sem efeito material.",
+     "sugestao": "Arredondar em decimal, meio para cima, no pipeline e no front."
+    },
+    {
+     "id": "conta_versao_codigo_alterado",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "'Sobre este dado' e fichas Comprove, campo versão do processamento",
+     "descricao": "A versão é '3e7ff0a36fba+alterado': o gold foi gerado em 30/09 às 23:56 com árvore alterada e só foi commitado às 00:07 (8a3a41296), então o rótulo não identifica o código que produziu o dado.",
+     "sugestao": "Gravar a versão só com árvore limpa ou o hash da árvore, e bloquear a publicação com a marca 'alterado'."
+    },
+    {
+     "id": "conta_reproducao_interna_e_defasagem",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "L"
+     ],
+     "onde": "Fichas Comprove (reprodução) e bandeira do mês do simulador",
+     "descricao": "A reprodução indicada é um comando interno que exige o silver local, e o arquivo bruto citado (sha256 de 30/09) já foi substituído na ANEEL (332.165 linhas hoje, com 20 tarifas novas iniciadas em 30/09). A bandeira de out/2026 (verde) já foi publicada e o simulador oferece 'do mês publicado: amarela'.",
+     "sugestao": "Publicar o procedimento externo com data de corte e filtros, arquivar o bruto capturado e avisar quando a fonte tiver dado mais novo que a captura."
+    },
+    {
+     "id": "conta_peso_html_teste_cego",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "HTML da rota e teste de peso em energia-conta.test.ts",
+     "descricao": "HTML bruto de 663.043 B (gzip 122.650 B) acima da meta de 600 KB; o teste usa renderToStaticMarkup com limite de 400 KB e não enxerga o fluxo RSC, de modo que passa com a página acima da meta. AVALIACAO_PAGINAS.md (D026 a D033) registra páginas acima da meta como defeito baixo.",
+     "sugestao": "Testar o HTML servido pelo build e reduzir as props enviadas aos componentes cliente."
+    }
+   ],
+   "nao_verificado": [
+    "Texto da REN 1.000/2021 (custo de disponibilidade e bandeira abaixo do mínimo) e do PRORET 7.1 (classificação das componentes): 403 também para mim.",
+    "Composição refeita do CSV publicado, não do Parquet de componentes tarifárias (milhões de linhas).",
+    "Alíquotas de ICMS e carga tributária: fora do escopo da página, sem fonte consultada.",
+    "Experiência real de carga (dados de campo), leitor de tela e CLS em celular real."
+   ]
+  },
+  "/setor-eletrico/conta-de-luz/reajustes-e-subsidios": {
+   "paineis": [
+    "P050"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 7.5,
+     "evidencia": [
+      "Lidos os textos e visoes.json: variação da tarifa B1 em 12, 60 e 120 meses contra o IPCA, grade de bandeiras de 2015 a 2026 com adicionais, subsídios por categoria e orçamento da CDE por grupo, com tabelas por distribuidora.",
+      "O efeito médio de cada processo tarifário, que a ANEEL divulga como reajuste, não está na página; calculostarifarios.aneel.gov.br respondeu 403 também na minha consulta.",
+      "Tabelas e CSV cobrem 102 distribuidoras, 141 meses e 14 anos, sem UF, região ou tipo de distribuidora."
+     ],
+     "atendidos": [
+      "Distribuição entre distribuidoras (102 barras com mediana e IPCA) e janelas de 12, 60 e 120 meses",
+      "Evolução longa de bandeiras e de subsídios, com composição por categoria e por grupo de despesa",
+      "Relação com a conta (CDE dentro da tarifa, PLD distinto da tarifa) e com o IPCA",
+      "Limitações e cobertura declaradas: ano parcial, mês não publicado, universo por janela"
+     ],
+     "problemas": [
+      "O reajuste oficial (efeito médio por processo, tipo de ato e calendário) está bloqueado e ausente; a variação entre duas datas é outra medida e mistura o crédito da UBP (desde 13/12/2025) e componentes financeiros.",
+      "Bandeiras: só a grade e os adicionais por kWh; sem contagem de meses por patamar e por ano nem exemplo do efeito na conta de um perfil de consumo.",
+      "Subsídios e CDE só em R$ nominais, sem série real, e sem recorte territorial ou por classe de consumidor que paga."
+     ],
+     "justificativa": "Boa cobertura de distribuição, evolução e composição, com limitações honestas. Mas faltam a medida oficial de reajuste (efeito médio, bloqueado por acesso), o efeito da bandeira na conta, a série real dos subsídios e qualquer recorte territorial; painel incompleto não vira excelente por declarar o bloqueio."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "IPCA do CSV pela razão dos índices: 4,2234% contra 4,22% publicado; SIDRA (tabela 1737) confirma 7633,23 em ago/2026, 7323,91 em ago/2025 e 4,22%.",
+      "Variações refeitas das vigências: medianas 11,18%, 36,17% e 81,15% contra IPCA de 4,22%, 29,90% e 61,15%; acima do IPCA em 87 de 102, 62 de 100 e 64 de 83; cada distribuidora igual ao CSV (0 divergências acima de 0,01 ponto).",
+      "CDE refeita do CSV: quotas 87,6% (2024), 90,2% (2025) e 96,4% (2026 previsto); Tarifa Social 19,8% da despesa de 2026."
+     ],
+     "atendidos": [
+      "Deflator apropriado à pergunta (IPCA), com razão de índices conferida contra o IBGE",
+      "Distribuidoras com mudança de perímetro retiradas da janela e contadas à parte",
+      "Nominal e real lado a lado na tabela da janela; orçamento declarado como previsto e não execução",
+      "Universo por janela visível (102, 100 e 83 distribuidoras)"
+     ],
+     "problemas": [
+      "Sem a referência oficial de reajuste (efeito médio por processo), a comparação com o IPCA usa a variação entre 31/08 de dois anos, que não é o reajuste concedido.",
+      "As medianas de janelas diferentes têm universos diferentes (102, 100 e 83 distribuidoras), e a contagem acima ou abaixo do IPCA é simples, sem peso por consumidores.",
+      "Subsídios e orçamento em R$ nominais de 2013 a 2026: de 2014 a 2025 a soma de subsídios multiplica por 4,3 em nominal e por cerca de 2,35 em R$ de 2025 (IPCA médio anual); a página avisa que é nominal, mas não oferece a série real.",
+      "O destaque de 96,4% de quotas em 2026 (previsto) vem sem a série dos anos anteriores e sem dizer que a quota é o residual do orçamento (saldo anterior e P&D zerados em 2026)."
+     ],
+     "justificativa": "Referência correta (IPCA conferido no IBGE), universo por janela e perímetro tratados. Abaixo de 9 porque falta o efeito médio oficial, as janelas têm universos distintos sem peso, e subsídios e CDE ficam só em reais nominais, o que quase dobra a leitura de crescimento."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Bandeiras: 141 meses idênticos ao arquivo da ANEEL (geração de 05/10/2026), 74 não verdes, 10 que não conferem com a tabela de adicionais por falta de resoluções intermediárias; adicionais por kWh iguais à página oficial.",
+      "Subsídios refeitos do CSV: 2025 R$ 18,818 bi, 2024 R$ 12,729 bi, SCEE de 0,92 para 4,39 bi, Consumidor Fonte Incentivada 12,02 bi; 2013 e 2026 marcados como parciais; 481 competências futuras fora.",
+      "CDE 2026: despesa 52,66 bi, quotas 96,36%, Tarifa Social 19,82%; quatro rubricas sem valor tratadas como ausência, não zero."
+     ],
+     "atendidos": [
+      "R$/MWh e R$/kWh, nominal e real, ano parcial e mês não publicado tratados com regra explícita",
+      "Previsto, calculado e observado rotulados; orçamento separado de execução",
+      "Subsídios e orçamento da CDE declarados como não somáveis; subsídios não tratados como transferência a famílias",
+      "Variação real calculada como (1 + variação) dividido por (1 + IPCA) menos 1, conferida no CSV"
+     ],
+     "problemas": [
+      "A abertura diz que 'a CDE repassou R$ 18,82 bilhões', mas o montante é o Total homologado (previsão mais ajuste); a ressalva 'não são desembolso realizado' está no 'Sobre este dado' e na documentação, não na frase.",
+      "A variação entre vigências inclui o crédito de UBP lançado em CFURH em 15 distribuidoras (13,09 a 267,43 R$/MWh) e componentes financeiros, sem isolamento nem alerta junto às barras.",
+      "Dez meses de bandeira não conferem com a tabela de adicionais; a lista completa só aparece no modo Auditar."
+     ],
+     "justificativa": "Valores e unidades reproduzidos, incluindo a armadilha de R$/MWh versus R$/kWh e a distinção entre homologado, previsto e execução. Abaixo de 9 porque a frase de abertura chama de repasse o valor homologado e a variação mistura efeitos pontuais de crédito sem sinalização nas barras."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refeito das vigências do CSV histórico e do IPCA: 102 de 102 variações de 12 meses iguais ao CSV da página; bandeiras iguais ao arquivo da ANEEL; IPCA igual ao SIDRA; subsídios e CDE somados do CSV publicado sem divergência.",
+      "Fichas com fonte, captura, fórmula, sha256 e limitações; CSV por painel (conta_reajustes_b1, conta_bandeiras, conta_subsidios_anual); tabela da janela exportável.",
+      "Reconciliação externa do orçamento da CDE usa só títulos de notícias da ANEEL (o corpo exige autenticação) e a ficha do IPCA diz 'publicado pela fonte em: não informado'."
+     ],
+     "atendidos": [
+      "Fonte específica e período em cada painel, com data de captura e de validação",
+      "Fórmulas do IPCA, da variação real e do ano de competência publicadas",
+      "CSV e tabela com o mesmo contrato; excluídas por incorporação listadas com o ato",
+      "Limitações da fonte (campo com unidade trocada, dicionário que descreve outra coisa) declaradas"
+     ],
+     "problemas": [
+      "Versão de código de árvore alterada ('3e7ff0a36fba+alterado') e reprodução por comando interno; sem histórico de revisões (uma captura por arquivo).",
+      "Números dos atos de incorporação vêm de fontes secundárias (um marcado como provável) e a reconciliação do orçamento da CDE depende de títulos de notícia.",
+      "O CSV de subsídios mistura linhas de detalhe e de total: somar a coluna de 2025 dá R$ 37,6 bilhões em vez de 18,82; a regra (somar categorias, a linha Total só confere) está na ficha, mas o arquivo não separa os dois."
+     ],
+     "justificativa": "Números reproduzidos a partir dos CSV publicados e das fontes primárias, com ficha, sha256 e limitações. Fica abaixo de 9 por versão de código de árvore alterada, ausência de histórico de revisões, reconciliações apoiadas em fonte secundária e um CSV que mistura linhas de detalhe e de total."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, carga de 0,90 a 1,04 s, 11 controles sem falha; no meu navegador as janelas de 12, 60 e 120 meses trocaram frase, universo e tabela sem erro.",
+      "HTML bruto de 584.943 B (gzip 90.651 B), dentro da meta de 600 KB, mas só por 15 KB; CLS de laboratório de 0,001 a 0,003.",
+      "Testes de conta (37 de interface e 45 do pipeline) cobrem bandeira sem adicional como ausência, soma dos subsídios pelo CSV, grade de bandeiras e orçamento; validação crítica bloqueia a gold."
+     ],
+     "atendidos": [
+      "Interações e cálculos corretos nas três janelas, sem erro de console",
+      "Peso dentro da meta e estabilidade visual boa",
+      "Testes de paridade (CSV, gráfico, tabela) e bloqueio de publicação",
+      "Medição de laboratório documentada e separada da experiência real"
+     ],
+     "problemas": [
+      "O teste de peso mede renderToStaticMarkup (limite de 400 KB) e passa com as outras duas páginas da unidade acima da meta de 600 KB; esta tem só 15 KB de folga e o teste não a protegeria.",
+      "Apenas medida de laboratório (Chromium headless, sem limitação), sem dado de campo e sem leitor de tela.",
+      "Dados congelados em 30/09/2026: a bandeira de out/2026 (verde) já foi publicada e a grade mostra 'não publicado', sem aviso de que a fonte tem dado mais novo."
+     ],
+     "justificativa": "Sem erros de console ou de rede, cálculos e interações corretos, testes de paridade e bloqueio crítico. Abaixo de 9 porque o teste de peso não enxerga o HTML servido (as outras duas páginas da unidade estouram a meta), a medida é só de laboratório e há fonte mais nova."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "reaj_efeito_medio_ausente",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Painel 'A tarifa subiu mais que a inflação?', bloco 'Efeito médio do processo tarifário: não publicado'",
+     "descricao": "O reajuste oficial (efeito médio por processo tarifário, tipo de ato e calendário) não está na página: a página diz que calculostarifarios.aneel.gov.br e git.aneel.gov.br respondem 403, e confirmei o primeiro. A variação entre 31/08 de dois anos é outra medida e inclui o crédito de UBP lançado em CFURH desde 13/12/2025 (15 distribuidoras) e componentes financeiros.",
+     "sugestao": "Capturar o efeito médio por arquivo manual versionado ou por canal permitido e ligar a variação B1 de cada distribuidora ao processo que a causou."
+    },
+    {
+     "id": "reaj_series_nominais_cde",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Gráficos de subsídios por categoria e de orçamento da CDE por grupo (2013 a 2026)",
+     "descricao": "Subsídios e orçamento da CDE em R$ nominais, sem série real, embora a página avise. De 2014 a 2025 a soma de subsídios multiplica por 4,3 em nominal e por cerca de 2,35 em R$ de 2025 (IPCA médio anual; IPCA de dez/2013 a dez/2025: 94,0%). A tarifa B1 da mesma família tem série real.",
+     "sugestao": "Oferecer a alternância nominal e real com IPCA e mês base, como na série da tarifa."
+    },
+    {
+     "id": "reaj_repassou_vs_homologado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Resposta de abertura e destaque 'Subsídios tarifários em 2025'",
+     "descricao": "'A CDE repassou R$ 18,82 bilhões' resume o montante Total (previsão mais ajuste) homologado. A ressalva 'não são desembolso realizado' está no 'Sobre este dado' e na documentação do módulo, não na frase.",
+     "sugestao": "Escrever 'foram homologados R$ 18,82 bilhões para repasse' ou levar a ressalva para a frase."
+    },
+    {
+     "id": "reaj_quota_2026_residual",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Destaque 'Quotas nas receitas da CDE 2026: 96,4%'",
+     "descricao": "O destaque (previsto) vem sem a série (87,6% em 2024 e 90,2% em 2025) e sem dizer que a quota é o residual do orçamento: em 2026 saldo anterior e P&D aparecem como zero e quatro rubricas estão sem valor.",
+     "sugestao": "Mostrar a série da participação das quotas desde 2013 e a nota do residual."
+    },
+    {
+     "id": "reaj_bandeiras_sem_efeito_na_conta",
+     "gravidade": "baixa",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Painel 'Quando a bandeira encareceu a conta?'",
+     "descricao": "A resposta é a grade mensal e os adicionais por kWh; faltam a contagem de meses por patamar e por ano e um exemplo do acréscimo na fatura de um perfil (100, 200 e 300 kWh).",
+     "sugestao": "Acrescentar meses por patamar e por ano e o acréscimo em R$ por perfil."
+    },
+    {
+     "id": "reaj_csv_subsidios_detalhe_e_total",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "conta_subsidios_anual.csv (9.789 linhas)",
+     "descricao": "O arquivo mistura linhas de categoria e linhas de total: somar a coluna valor_rs de 2025 dá R$ 37,6 bilhões, o dobro dos 18,82 da página. A regra (somar categorias; a linha Total só confere) está na ficha.",
+     "sugestao": "Separar o total em outro arquivo ou acrescentar uma coluna 'é total'."
+    },
+    {
+     "id": "reaj_janelas_universos_diferentes",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Seletor de janela de 12, 60 e 120 meses",
+     "descricao": "As janelas têm 102, 100 e 83 distribuidoras (32 fora na de 120 meses por falta de tarifa ou mudança de perímetro), então a mediana de 120 meses não é comparável à de 12. O universo está dito, mas não há conjunto comum.",
+     "sugestao": "Mostrar a mediana das distribuidoras comuns às três janelas."
+    }
+   ],
+   "nao_verificado": [
+    "Efeito médio dos processos tarifários (403 nos endereços da ANEEL).",
+    "Subsídios refeitos do CSV publicado, não do arquivo bruto de 77 MB; dicionário PDF do conjunto de subsídios não lido.",
+    "Corpo das notícias dos orçamentos da CDE (exige autenticação) e atos das incorporações (fontes secundárias).",
+    "Dados de campo de desempenho e leitor de tela."
+   ]
+  },
+  "/setor-eletrico/qualidade": {
+   "paineis": [
+    "P051",
+    "P052",
+    "P053",
+    "P054"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Lidos texto_entender, texto_auditar e visoes.json: Brasil anual 2001 a 2025 e mensal, parcelas expurgadas, mapa de 5.571 municípios, limites por conjunto, histograma de 3.146 conjuntos, compensações por ano, mês, tipo e distribuidora, reclamações, IASC, telefone, emergências e tabela de 102 distribuidoras.",
+      "Município escolhido no navegador (Manaus): o painel dá a faixa de DEC (11,39 a 102,73 h) e de FEC de 22 conjuntos, lista só os códigos e mostra o histórico da distribuidora inteira, sem DEC, FEC e limite de cada conjunto.",
+      "Explorador de conjuntos (2,1 MB sob demanda) lista 3.150 conjuntos de 2025 com DEC, limite, razão e FEC; a razão máxima 3,351 confere (VILA CORUMBA, Equatorial GO)."
+     ],
+     "atendidos": [
+      "Nível atual, evolução longa, distribuição (histogramas e quantis), composição por origem e cobertura presentes",
+      "Referência regulatória (limite por conjunto e ano) e relação com compensações e atendimento",
+      "Território por município, com a ressalva de que o valor é do conjunto e não do município",
+      "Limitações, ano parcial e meses incompletos tratados na própria página"
+     ],
+     "problemas": [
+      "A tarefa T3 pede o limite do próprio conjunto e a dispersão entre conjuntos da área da distribuidora: o painel do município não traz DEC, FEC e limite por conjunto, e a dispersão dentro de uma distribuidora só sai filtrando o explorador.",
+      "Sem síntese por UF ou região (só filtro de UF na tabela e o mapa).",
+      "Evolução por conjunto só trocando o ano no explorador; não há série por conjunto na página."
+     ],
+     "justificativa": "Cobertura analítica ampla: série longa, expurgos, distribuição de conjuntos, limites, compensações e atendimento, com limitações claras. Falta fechar a tarefa de área: o município não mostra DEC, FEC e limite de cada conjunto nem a dispersão dentro da distribuidora, e não há síntese por UF."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Limites de 2025 dos 3.146 conjuntos comparados com o arquivo bruto de limites da ANEEL (26 MB, vigência do ano): 0 diferenças em DEC e em FEC; contagem refeita no Parquet e nos limites brutos: 810 de 3.146 acima em DEC e 341 de 3.016 em FEC.",
+      "Quantis da razão DEC por limite refeitos (P10 0,50, mediana 0,83, P90 1,33, máximo 3,35); fração acima do limite de 2001 a 2025 refeita: máximo de 59,8% em 2015 e 25,7% em 2025.",
+      "Série das concessionárias (9,30 h e 4,66) igual ao divulgado pela ANEEL em 15/04/2026 (reportagem sobre a divulgação); DGC calculado de 2025 dentro de 0,01 do publicado em 50 de 51 distribuidoras."
+     ],
+     "atendidos": [
+      "Limite do conjunto e do ano, comparado em centésimos, com 'igual ao limite não é transgressão'",
+      "Peso por UC declarado, universo com e sem permissionárias e linha que reproduz o número da ANEEL",
+      "Quantis e histograma em lugar de média, com cauda e extremos nomeados",
+      "Parcelas expurgadas separadas do apurado; razão do Brasil dita como não oficial"
+     ],
+     "problemas": [
+      "A fração de conjuntos acima do limite de 2001 a 2025 compara universos que mudam (5.733 conjuntos em 2001, 2.869 em 2011, 3.146 em 2025) e limites que mudam; o texto avisa só do limite.",
+      "'O maior DEC apurado foi o de 2012 (18,85 h)' cruza regimes: em 2010 a 2021 parte do apurado incluía XN e XP (0,72 h em 2012), desde 2022 só IP e IND, e antes de 2010 há outro expurgo (a série salta de 16,65 h em 2008 para 18,76 h em 2009); a quebra está no gráfico e em 'Como ler', não na frase.",
+      "O DGC calculado diverge do publicado em anos anteriores sem explicação (ELETROCAR 2021, 0,21; EQUATORIAL GO 2022, 0,44; ELETROCAR 2025, 0,09), o que mostra que o limite agregado da página não é o oficial da distribuidora em todos os casos.",
+      "O mapa pinta cada município pelo maior (ou menor) DEC entre os conjuntos, sem medida central, porque a fonte não traz UCs por município; está dito, mas o padrão do mapa é o extremo.",
+      "Números de abertura diferem do divulgado sem reconciliar na primeira tela: 9,33 h (todas as distribuidoras) contra 9,30 h (concessionárias) e compensações de R$ 1.007,2 milhões contra R$ 1.002 milhões da ANEEL."
+     ],
+     "justificativa": "Referências regulatórias exatas, quantis em lugar de média e universos declarados, com 3.146 limites iguais ao bruto. Abaixo de 9 por séries que cruzam mudanças de universo e de definição sem repetir o aviso na frase, DGC com divergências sem explicação e abertura que não reconcilia com o divulgado."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "DEC e FEC do Brasil refeitos do Parquet bruto da ANEEL (2020 a 2029, ponderados por UC): 9,334 h e 4,690; parcelas 9,33, 5,87, 1,70, 0,24 e 0,06, somando 17,20 h; todas iguais à página.",
+      "Do CSV: compensações de 2025 R$ 1.007.210.666,63 e 21.778.667, de 2024 R$ 1.121.865.123,53 e de 2026 parcial R$ 542,2 milhões; reclamações 400,9, interrupção 334,7, Ouvidoria 197,3, IASC mediano 68,6, TMAE 437 min e 239 eventos: todos conferem.",
+      "Defeito achado: em jun/2025 o FEC da ELEKTRO cobre 0,74% das UCs (22.562 de 3.036.447) e entra no FEC anual 3,2462 como mês completo; refeito por FECIP + FECIND, o anual seria 3,38; 128 conjuntos têm FEC de 11 meses com 'meses 12'."
+     ],
+     "atendidos": [
+      "DEC e FEC separados, centésimos de hora não lidos como minutos, apurado diferenciado dos expurgos",
+      "Média ponderada por UC, controle de NumCon, mês incompleto fora das somas e do ano corrente",
+      "Compensação não derivada do DEC do conjunto; reclamação por exposição (por mil e por 100 mil UCs)",
+      "Ausência tratada (2026 sem taxa, tipos sem valor, municípios sem dado) e quebra de perímetro marcada"
+     ],
+     "problemas": [
+      "Cobertura parcial do FEC não é validada: o FEC de jun/2025 da ELEKTRO (0,1231) vem de 0,74% das UCs e o anual dela (3,25) fica 4% abaixo do valor refeito por FECIP + FECIND (3,38), sem marca; a validação checa NumCon e DEC, não ucs_fec sobre ucs.",
+      "'341 passaram do limite de FEC' não diz o denominador: só 3.016 conjuntos têm 12 meses de FEC (não 3.146), e dois da ELEKTRO com FEC parcial já acima do limite (5,44 contra 5,00 e 7,73 contra 7,00) ficam fora; o valor correto é de pelo menos 343.",
+      "'Valor ÷ UCs' (R$ 10,98 por UC em 2025) usa compensações de UC mais UG no numerador (R$ 1.016,99 milhões), enquanto a coluna ao lado é só UC (R$ 1.007,21 milhões, que dá 10,87).",
+      "A frase das cinco maiores (44,5%) usa o total UC mais UG, enquanto o texto vizinho trata só de UC (44,7% do total de UC)."
+     ],
+     "justificativa": "Números principais reproduzidos do Parquet e dos CSV, com parcelas e unidades corretas. Nota 8,0 porque há defeito não declarado: o FEC de jun/2025 da ELEKTRO usa 0,74% das UCs como mês completo, e a contagem de FEC acima do limite tem denominador implícito e omite dois conjuntos."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Reproduzido do Parquet bruto da ANEEL (30 MB, gerado em 05/10/2026) e do arquivo de limites (26 MB): DEC anual dos 3.146 conjuntos igual ao CSV (0 divergências), limites iguais (0), 810 acima do limite, DEC e FEC do Brasil e parcelas iguais.",
+      "Paridade: contagem 810, 25,7%, quantis e total de compensações iguais entre CSV, gold e texto; o explorador lê o CSV anual por década e a primeira linha confere.",
+      "Fichas com fonte, arquivos Parquet, sha256, fórmula, transformação, 22 controles de validação, 27 arquivos de bronze com sha256 e 8 CSV; ranking com 9 capturas e nenhuma revisão detectada."
+     ],
+     "atendidos": [
+      "Fonte específica por painel (Parquet, limite, IndQual, IASC, ouvidoria) com captura, publicação e sha256",
+      "Fórmula, pesos, filtros, exclusões e controles listados (mês completo a 99%, NumCon)",
+      "Gráfico, tabela, texto e CSV com o mesmo contrato",
+      "Documento do módulo com números conferidos contra a fonte e testes que releem o Parquet"
+     ],
+     "problemas": [
+      "Versão de código '802c51897680+alterado' (árvore alterada) e reprodução por comando interno do pipeline.",
+      "Sem histórico de revisões para a continuidade: uma captura por arquivo, embora a ANEEL possa revisar meses já publicados.",
+      "Compensações de 2025 (R$ 1,007 bilhão contra 1,002) e 9 de 232 comparações do DGC com diferença acima de 0,01 divergem do divulgado sem explicação verificada, dita só em Auditar.",
+      "O ranking da continuidade é HTML sem CNPJ e sem data de publicação, ligado às distribuidoras por tabela de nomes."
+     ],
+     "justificativa": "Rastreabilidade forte e reproduzida: do Parquet e dos limites brutos saem os mesmos DEC, limites e contagens, com fichas, sha256 e controles. Não alcança 9 por versão de código de árvore alterada, falta de histórico de revisões e divergências com o divulgado sem explicação."
+    },
+    "L": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, carga de laboratório de 1,03 a 1,26 s, 11 controles exercitados sem falha; no meu navegador município, grupos de distribuidoras, indicador FEC e explorador de 3.150 conjuntos também rodaram sem erro.",
+      "HTML bruto de 851.611 B (gzip 136.636 B; fluxo RSC de cerca de 381 KB), 42% acima da meta de 600 KB; o teste de peso usa renderToStaticMarkup. CLS de laboratório de 0,097 a 0,189 a 1440 px em cinco execuções (0,02 a 390 px).",
+      "Testes lidos sem executar: 66 do pipeline e 46 de interface (Parquet bruto, centésimos, mês ausente, NumCon, paridade com CSV, ausência versus zero); validação crítica reprovada vira stub."
+     ],
+     "atendidos": [
+      "Sem erros materiais de console ou de rede; interações corretas",
+      "Dados pesados sob demanda (explorador de 2,1 MB, mapa e séries por distribuidora)",
+      "Testes que releem o Parquet e validação crítica que bloqueia a publicação",
+      "Protocolos de laboratório documentados e distinção de campo declarada"
+     ],
+     "problemas": [
+      "HTML bruto 42% acima da meta, com teste de peso cego ao fluxo RSC; CLS de laboratório perto ou acima de 0,10 (deslocamento de 0,097 no topo, quando o texto reflui, mais 0,03 quando o mapa monta).",
+      "A validação não tem controle de cobertura do FEC (ucs_fec sobre ucs): o caso da ELEKTRO passou sem ressalva.",
+      "Só medida de laboratório; leitor de tela e dados de campo ausentes.",
+      "Dados congelados em 01/10/2026 e arquivos da ANEEL atualizados depois; aviso de defasagem só acima de 60 dias."
+     ],
+     "justificativa": "Interações, console e rede limpos, dados pesados sob demanda, testes que releem o bruto e bloqueio crítico. Abaixo de 9 por HTML 42% acima da meta com teste cego, CLS de laboratório perto do limite e controle de cobertura do FEC ausente, além de só haver medida de laboratório."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "valor incorreto",
+     "descricao": "FEC anual de 2025 apresentado como completo com cobertura parcial: em jun/2025 o arquivo da ANEEL (05/10) não traz a linha FEC dos 130 conjuntos da ELEKTRO, que têm FECIP e FECIND; o FEC mensal 0,1231 da página vem de 22.562 de 3.036.447 UCs (0,74%) e entra no anual 3,2462 da distribuidora, que refeito por FECIP + FECIND seria 3,3836 (subestimado em 4,1%); 128 conjuntos mostram FEC de 11 meses com meses 12; a contagem acima do limite de FEC (341) omite dois já acima (13481: 5,44 contra 5,00; 13508: 7,73 contra 7,00). Baixa materialidade: uma distribuidora, 2 em 343 na contagem, Brasil inalterado em duas casas.",
+     "evidencia": "qualidade_distribuidoras_mensal.csv (ELEKTRO, 2025-06: ucs 3036447, ucs_fec 22562, fec 0,1231); qualidade_conjuntos_mensal.csv (128 conjuntos sem FEC em 2025-06); Parquet bruto da ANEEL 2020 a 2029 (sem linha FEC de jun/2025 nos 130 conjuntos da ELEKTRO, com FECIP e FECIND; FEC = FECIP + FECIND em 1.430 de 1.430 conjunto-meses da ELEKTRO com FEC; 3.016 conjuntos com 12 meses de FEC); qualidade_conjuntos_anual_2020_2029.csv (razao_fec e acima_limite_fec vazios nos conjuntos 13481 e 13508, FEC 5,44 e 7,73)."
+    }
+   ],
+   "achados": [
+    {
+     "id": "qual_fec_cobertura_elektro",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "L"
+     ],
+     "onde": "P051 e P052: FEC anual 2025 da ELEKTRO, FEC por conjunto e contagem 'passaram do limite de FEC'",
+     "descricao": "Em jun/2025 o arquivo da ANEEL de 05/10 não traz a linha FEC dos 130 conjuntos da ELEKTRO (traz FECIP e FECIND), e o CSV da página (captura de 30/09) tem FEC em só 2 deles: o FEC mensal da distribuidora (0,1231) vem de 22.562 de 3.036.447 UCs (0,74%) e vai ao anual (3,2462) sem marca; 128 conjuntos mostram FEC de 11 meses com 'meses 12'. Refeito por FECIP + FECIND, identidade válida em 1.430 de 1.430 conjunto-meses da ELEKTRO com FEC, o anual seria 3,38 (a página subestima 4,1%). Razão e 'acima do limite' ficam vazios, e dois conjuntos já acima do limite (5,44 contra 5,00; 7,73 contra 7,00) saem da contagem de 341, que passa a ser de pelo menos 343. Os controles checam NumCon e DEC, não ucs_fec sobre ucs.",
+     "sugestao": "Tratar o mês como ausente para o FEC quando a cobertura de UCs ficar abaixo de 99%, ou reconstruir por FECIP + FECIND com marca de derivado; marcar o ano como parcial para FEC, declarar o denominador do FEC (3.016) e criar o controle ucs_fec sobre ucs."
+    },
+    {
+     "id": "qual_municipio_sem_dados_do_conjunto",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "J"
+     ],
+     "onde": "Painel do município escolhido (P051)",
+     "descricao": "Para Manaus (22 conjuntos, DEC de 11,39 a 102,73 h) o painel lista só os códigos dos conjuntos e o histórico da distribuidora inteira. DEC, FEC e limite de cada conjunto e a dispersão entre eles exigem abrir o explorador do modo Analisar e buscar cada código, o que enfraquece a tarefa T3.",
+     "sugestao": "Mostrar no painel do município a tabela dos conjuntos com DEC, FEC, limite e razão do ano, com ligação ao explorador."
+    },
+    {
+     "id": "qual_serie_fracao_conjuntos_particao",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "P052, gráfico 'Conjuntos acima do limite de DEC, 2001 a 2025'",
+     "descricao": "A fração compara universos de conjuntos diferentes (5.733 em 2001, 2.869 em 2011, 3.146 em 2025) e limites que mudam; o texto avisa só da mudança do limite. A linha de % das UCs ameniza, mas não resolve.",
+     "sugestao": "Dizer na frase que o número de conjuntos mudou e destacar a série em UCs como leitura principal."
+    },
+    {
+     "id": "qual_quebra_apurado_maior_dec_2012",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "P051, 'O que mudou' e gráfico do DEC do Brasil",
+     "descricao": "'O maior DEC apurado nacional foi o de 2012 (18,85 h)' cruza regimes: de 2010 a 2021 parte do apurado incluía XN e XP (0,72 h em 2012), desde 2022 só IP e IND, e o documento do módulo diz que 2000 a 2009 usam outros critérios de expurgo; a série salta de 16,65 h (2008) para 18,76 h (2009), antes do marco de 2010 desenhado.",
+     "sugestao": "Repetir o aviso de quebra na frase e comparar 2025 com a série refeita pela mesma definição (IP + IND) desde 2010."
+    },
+    {
+     "id": "qual_r_por_uc_numerador_uc_ug",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "P053, coluna 'Valor ÷ UCs' e histograma por distribuidora; frase das cinco maiores",
+     "descricao": "O R$ por UC (10,98 em 2025) usa compensações de UC mais UG no numerador (R$ 1.016,99 milhões), enquanto a coluna vizinha é só UC (R$ 1.007,21 milhões, que dá 10,87). A concentração das cinco maiores (44,5%) usa o mesmo total UC mais UG, e sobre o total de UC seria 44,7%.",
+     "sugestao": "Usar só compensações de UC no numerador e no total da concentração, ou rotular o perímetro."
+    },
+    {
+     "id": "qual_abertura_vs_divulgado",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "H"
+     ],
+     "onde": "Destaques da primeira tela (DEC, FEC e compensações de 2025)",
+     "descricao": "A abertura traz 9,33 h e 4,69 (todas as distribuidoras) e R$ 1.007,2 milhões de compensações; a ANEEL divulgou 9,30 h, 4,66 e R$ 1,002 bilhão (21,6 milhões de compensações contra 21,78 milhões na página). A reconciliação do DEC e do FEC está no modo Analisar e a diferença de 2025 nas compensações só no Auditar (2024 confere).",
+     "sugestao": "Levar à primeira tela a nota de perímetro (concessionárias contra todas) e a diferença com o divulgado."
+    },
+    {
+     "id": "qual_dgc_divergencias",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "H"
+     ],
+     "onde": "P052, reconciliação do DGC (modo Auditar)",
+     "descricao": "O DGC calculado de 2025 fica dentro de 0,01 do publicado em 50 de 51 distribuidoras (ELETROCAR 0,79 contra 0,696), mas em anos anteriores há diferenças de 0,21 (ELETROCAR 2021) e 0,44 (EQUATORIAL GO 2022) sem explicação. O limite agregado da página não coincide com o oficial em todos os casos.",
+     "sugestao": "Explicar caso a caso (nota técnica do limite, decisão judicial ou revisão) ou marcar a distribuidora no gráfico de pontos."
+    },
+    {
+     "id": "qual_html_cls",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "HTML da rota, teste de peso e estabilidade visual a 1440 px",
+     "descricao": "HTML bruto de 851.611 B (gzip 136.636 B) contra meta de 600 KB, com cerca de 381 KB de fluxo RSC; o teste usa renderToStaticMarkup. CLS de laboratório de 0,097 a 0,189 em cinco execuções a 1440 px, com um deslocamento de 0,097 no topo (o texto das fontes e datas reflui e empurra 'Como ler as unidades').",
+     "sugestao": "Testar o HTML servido, reduzir as props enviadas aos componentes cliente e reservar altura para a linha de fontes e datas."
+    }
+   ],
+   "nao_verificado": [
+    "Compensações, reclamações, IASC, TMAE e Ouvidoria refeitos dos CSV publicados, não dos Parquet brutos.",
+    "Total divulgado pela ANEEL e DEC e FEC oficiais conferidos por reportagem sobre a divulgação de 15/04/2026, não pela notícia oficial.",
+    "Base IndQual Município (ligação conjunto e município) e malha do IBGE não conferidas contra a fonte.",
+    "Dados de campo de desempenho e leitor de tela."
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "A versão do código vem com árvore alterada nas fichas das três páginas ('3e7ff0a36fba+alterado' em conta de luz, '802c51897680+alterado' em qualidade) e no manifesto de publicação ('c41b9e6f1b95+alterado'), e não identifica um commit.",
+  "Sem histórico de revisões: uma única captura por arquivo quase em toda ficha (exceto o ranking de continuidade); a reprodução indicada é um comando interno que depende do silver local, e os brutos citados com sha256 (tarifas, continuidade e limites) já foram substituídos na ANEEL, com hash diferente do capturado.",
+  "Cobertura parcial só é tratada onde havia controle previsto: o ranking de tarifas perde 21 distribuidoras na data escolhida sem ressalva automática (conta) e o FEC de jun/2025 da ELEKTRO cobre 0,74% das UCs sem marca (qualidade); as validações checam NumCon, DEC e faixa de tarifa, não cobertura.",
+  "Números de abertura sem reconciliação na primeira tela com o oficial ou com o conjunto anterior: 9,33 h contra 9,30 h e R$ 1.007,2 milhões contra 1.002 (qualidade), 821,18 contra 795,97 de conjuntos distintos (conta).",
+  "Séries monetárias nominais longas sem série real: subsídios e CDE de 2013 a 2026 e compensações de 2011 a 2025, embora a tarifa B1 tenha série real com IPCA e mês base.",
+  "Sem recorte por UF, região ou tipo de distribuidora nas tabelas de tarifa, reajuste e subsídio; o município só aparece em qualidade, e o painel do município não traz os dados de cada conjunto.",
+  "HTML bruto acima da meta de 600 KB em duas das três páginas (663 KB e 852 KB; gzip de 123 KB e 137 KB), com testes que medem o markup estático e não o servido; CLS de laboratório perto ou acima de 0,10 em qualidade a 1440 px.",
+  "Ressalvas essenciais ficam em 'Sobre este dado' ou no modo Auditar e não na frase de abertura: 'não são desembolso realizado' nos subsídios e a diferença de R$ 5 milhões nas compensações de 2025."
+ ],
+ "limites_da_avaliacao": "Avaliei o commit 51747baf8 servido em localhost:3100, sem executar build, testes nem pipeline. Refiz números a partir dos CSV e do gold do repositório e, quando possível, de fontes primárias consultadas em 09/10/2026: arquivo de tarifas da ANEEL (08/10), bandeiras (05/10), Parquet de continuidade de 2020 a 2029 e arquivo de limites (05/10), SIDRA do IBGE, Lei 15.235/2025 no portal da Câmara e páginas da ANEEL de Tarifa Social e de Bandeiras. As fontes foram atualizadas depois das capturas de 30/09 e 01/10, então comparei valores e não sha256. Não consegui ler a REN 1.000/2021, o PRORET e calculostarifarios.aneel.gov.br (403), o dicionário PDF dos subsídios nem o corpo das notícias de orçamento da CDE; o DEC e o FEC oficiais das concessionárias e o total de compensações divulgados vieram de reportagem sobre a divulgação da ANEEL de 15/04/2026. Composição, subsídios, compensações, reclamações, IASC e TMAE foram refeitos dos CSV publicados, não dos arquivos brutos. Desempenho é de laboratório (Chromium headless, uma máquina, sem limitação de rede ou CPU); não medi dados de campo nem testei leitor de tela. Inspeção heurística por agente, sem revisão humana especializada."
+}

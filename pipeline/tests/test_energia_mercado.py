@@ -864,7 +864,7 @@ class DatasECobertura(unittest.TestCase):
         self.assertIn("data de modificação de 01/09/2026 informada pelo portal", t)
 
 
-class AcessoCceePendente(unittest.TestCase):
+class AcessoCcee(unittest.TestCase):
     def test_sem_autorizacao_nenhuma_requisicao(self):
         from pipeline.energia import base
 
@@ -873,23 +873,37 @@ class AcessoCceePendente(unittest.TestCase):
         con = base.conecta(":memory:")
         st = cm.coleta(con, baixar_meta=proibido, baixador=proibido, autorizada=False)
         self.assertEqual(st["coleta"], "suspensa")
+        self.assertIn("ENERGIA_CCEE_COLETA", st["motivo"])
         st = cm.coleta_infomercado(con, baixador=proibido, baixar_pagina=proibido, autorizada=False)
         self.assertEqual(st["coleta"], "suspensa")
         self.assertFalse(cm.coleta_autorizada({}))
+        self.assertFalse(cm.coleta_autorizada({"ENERGIA_CCEE_COLETA": "sim"}))
         self.assertTrue(cm.coleta_autorizada({"ENERGIA_CCEE_COLETA": "1"}))
 
-    def test_paineis_que_dependem_da_ccee_ficam_pendentes(self):
+    def test_decisao_autorizada_e_paineis_pelo_criterio(self):
         import json
-        with open(os.path.join(os.path.dirname(DADOS), "..", "..", "..", "public", "energia", "gold", "mercado.json"), encoding="utf-8") as f:
+        raiz = os.path.join(os.path.dirname(DADOS), "..", "..", "..")
+        with open(os.path.join(raiz, "public", "energia", "gold", "mercado.json"), encoding="utf-8") as f:
             g = json.load(f)
-        self.assertEqual(g["acesso_ccee"]["decisao"]["situacao"], "pendente")
+        dec = g["acesso_ccee"]["decisao"]
+        self.assertEqual(dec["situacao"], "autorizada")
+        self.assertEqual(dec["decidida_em"], "2026-10-06")
+        self.assertEqual(dec, {**cm.DECISAO_ACESSO, "coleta_neste_ambiente": dec["coleta_neste_ambiente"]})
         for p in g["paineis"]:
             self.assertTrue(p["depende_da_ccee"], p["id"])
+            self.assertEqual(p["estado_dados"], p["estado_criterio"], p["id"])
+            self.assertFalse(any(l.startswith("Decisão sobre o acesso à CCEE pendente") for l in p["limitacoes"]), p["id"])
+        # se a decisão voltar a pendente, todo painel que depende da CCEE volta a ficar pendente
+        for p in mod.paineis(g, pendencia_ccee=True):
             self.assertEqual(p["estado_dados"], "pendente_decisao_acesso", p["id"])
+            self.assertTrue(p["limitacoes"][0].startswith("Decisão sobre o acesso à CCEE pendente"), p["id"])
         self.assertEqual(len(cm.CONJUNTOS), 17)
-        with open(os.path.join(os.path.dirname(DADOS), "..", "..", "..", "docs", "observatorios", "energia", "modulos", "mercado.md"), encoding="utf-8") as f:
+        with open(os.path.join(raiz, "docs", "observatorios", "energia", "modulos", "mercado.md"), encoding="utf-8") as f:
             doc = f.read()
         self.assertTrue("17 conjuntos" in doc and "19 conjuntos" not in doc, "o documento deve dizer 17 conjuntos abertos da CCEE")
+        # o ambiente que coleta (GitHub Actions) define a variável no passo do pipeline
+        with open(os.path.join(raiz, ".github", "workflows", "atualizar-energia.yml"), encoding="utf-8") as f:
+            self.assertIn('ENERGIA_CCEE_COLETA: "1"', f.read())
 
 
 if __name__ == "__main__":

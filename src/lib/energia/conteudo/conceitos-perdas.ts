@@ -57,7 +57,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase: "Perdas inevitáveis do transporte de energia, como o aquecimento dos condutores (efeito joule) e as perdas nos núcleos dos transformadores.",
     porQueImporta: "Por serem inevitáveis em qualquer rede, os custos das perdas técnicas são considerados na tarifa, no nível que a ANEEL considera eficiente.",
     comoEMedido:
-      "A ANEEL estima o percentual de perdas técnicas eficientes sobre a energia injetada, com modelos por segmento de rede (Módulo 7 do Prodist). No SAMP, a perda técnica publicada é esse percentual aplicado à energia injetada: estimativa, não medição.",
+      "A ANEEL estima o percentual de perdas técnicas eficientes sobre a energia injetada, com modelos por segmento de rede (Módulo 7 do Prodist). No SAMP, a perda técnica é a informada no balanço de energia: estimativa, não medição, que pode diferir do percentual técnico regulatório homologado.",
     relacoes: ["perdas-de-energia", "perdas-nao-tecnicas", "percentual-regulatorio-de-perdas"],
     fontes: [
       s5(
@@ -104,7 +104,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase: "Percentuais de perdas técnicas e não técnicas que a ANEEL define para cada concessionária na revisão tarifária periódica e que a tarifa reconhece.",
     porQueImporta: "É a referência contra a qual se mede quanto da perda realizada a tarifa cobre; o que passa do nível regulatório não é repassado quando a ANEEL observa ineficiência.",
     comoEMedido:
-      "Técnico: modelos do Módulo 7 do Prodist sobre a rede de cada distribuidora. Não técnico: comparação de desempenho entre distribuidoras (Submódulo 2.6 do Proret). O observatório só consegue inferir o técnico da série do SAMP; o não técnico não está em base aberta acessível.",
+      "Técnico: modelos do Módulo 7 do Prodist (Procedimentos de Distribuição de Energia Elétrica no Sistema Elétrico Nacional) sobre a rede de cada distribuidora. Não técnico: comparação de desempenho entre distribuidoras (Submódulo 2.6 do Proret, os Procedimentos de Regulação Tarifária). O observatório só consegue inferir o técnico da série do SAMP; o não técnico não está em base aberta acessível.",
     relacoes: ["perdas-tecnicas", "perdas-nao-tecnicas"],
     fontes: [
       s5("A ANEEL define os percentuais regulatórios das perdas técnicas e não técnicas das concessionárias na Revisão Tarifária Periódica, que ocorre a cada 4 ou 5 anos."),
@@ -114,7 +114,11 @@ export const CONCEITOS: Conceito[] = [
         "Em outras palavras: o limite de perdas não técnicas de cada distribuidora sai de uma comparação com as demais, que leva em conta eficiência e as características socioeconômicas da área.",
       ),
     ],
-    limitacoes: ["Parâmetro regulatório não é perda realizada nem obrigação de perda zero."],
+    limitacoes: [
+      "Parâmetro regulatório não é perda realizada nem obrigação de perda zero.",
+      "O observatório mostra só o percentual técnico, inferido da própria série do SAMP onde a razão fica constante por 6 meses ou mais; não é o percentual lido do ato da ANEEL.",
+      "O percentual regulatório não técnico não está em base aberta acessível, e por isso não é mostrado.",
+    ],
     vejaNoPortal: [{ rotulo: "Realizado e regulatório", href: "/setor-eletrico/perdas/regulatorio#regulatorio" }],
   },
 ];

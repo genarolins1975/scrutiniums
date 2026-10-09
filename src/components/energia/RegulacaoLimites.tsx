@@ -3,6 +3,7 @@
 import { useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -10,30 +11,50 @@ import { dataBR, reais } from "@/lib/energia/formato";
 import { CAMPOS_LIMITE, COLUNAS_LIMITES, COR_LIMITE, NOME_LIMITE, SERIES_LIMITES, type LinhaLimites } from "@/lib/energia/regulacao";
 
 /**
- * P044, limites do PLD por ano: gráfico de barras agrupadas (piso, teto estrutural e
- * teto horário de cada ano, todas a partir do zero), a tabela de vigências com as
- * mesmas linhas (publicação no DOU e vigência em colunas distintas) e o detalhe do
- * ano escolhido. O ano mora em `?ano=` (clicar na barra, na linha da tabela ou no
- * seletor muda os três; o voltar desfaz); sem ano no link vale o ano da data de
+ * P044, limites do PLD por ano: gráfico de barras agrupadas (piso, teto estrutural e teto horário de cada ano, todas a partir do
+ * zero), a ficha dos atos do ano escolhido (o que fixou, publicação e vigência em marcos separados), a tabela de vigências com as
+ * mesmas linhas (publicação no DOU e vigência em colunas distintas) e, em Analisar, a comparação de até quatro anos. O ano mora em
+ * `?ano=` (clicar na barra, na linha da tabela ou no seletor muda os três; o voltar desfaz); sem ano no link vale o ano da data de
  * referência da gold. A comparação de até quatro anos mora em `?anos=`.
  *
- * A resposta e o detalhe de cada ano chegam prontos do servidor (respostaLimites e o
- * bloco dos atos): este componente só escolhe qual mostrar, sem refazer conta.
+ * A resposta e a ficha de cada ano chegam prontas do servidor (vereditoLimites, respostaLimites e o bloco dos atos): este
+ * componente só escolhe qual mostrar, sem refazer conta. O veredito do ano fica à vista; a resposta completa dele é a segunda
+ * camada. A ordem é a da leitura: seletor e veredito do ano, figura, ficha dos atos, tabela, resposta do painel, recorte, notas e
+ * capítulos (os quatro últimos chegam do servidor como `resposta`, `recorte`, `notas` e `aposPrincipal`).
  */
 export function RegulacaoLimites({
   linhas,
   anoPadrao,
   respostas,
+  vereditos,
   detalhes,
   fonte,
   versao,
+  legendaFigura,
+  resposta,
+  recorte,
+  notas,
+  aposPrincipal,
+  avisos,
 }: {
   linhas: LinhaLimites[];
   anoPadrao: string;
   respostas: Record<string, string>;
+  vereditos: Record<string, string>;
   detalhes: Record<string, ReactNode>;
   fonte: string;
   versao: string;
+  /** Como ler a figura, em duas frases, logo abaixo dela. */
+  legendaFigura?: ReactNode;
+  /** Resposta do painel na data de referência, já com o veredito e a resposta completa (RespostaCurta com `depois`). */
+  resposta?: ReactNode;
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel): o que mudou, como interpretar e o que não é possível concluir. */
+  notas?: ReactNode;
+  /** Conteúdo depois da figura principal, da tabela e das notas (os capítulos do módulo). */
+  aposPrincipal?: ReactNode;
+  /** Avisos que mudam a leitura da figura (valores lidos fora do texto do ato). */
+  avisos?: ReactNode;
 }) {
   const anos = useMemo(() => linhas.map((l) => l.id), [linhas]);
   const esquema = useMemo(() => ({ ano: campo(tiposUrl.opcao(anos), anoPadrao, { param: "ano" }) }), [anos.join(","), anoPadrao]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -46,7 +67,7 @@ export function RegulacaoLimites({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
+      <div className="grid gap-x-8 gap-y-3 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
         <label className="flex flex-wrap items-center gap-3 text-sm text-carvao">
           <span className="rotulo text-mineral">Ano</span>
           <select
@@ -61,9 +82,15 @@ export function RegulacaoLimites({
             ))}
           </select>
         </label>
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" aria-live="polite" data-resposta-ano={ano}>
-          {ano === anoPadrao ? "Ano da data de referência: os limites dele estão na resposta acima; escolha outro ano para comparar." : respostas[ano]}
-        </p>
+        <RespostaCurta
+          id={ano}
+          atributo="data-resposta-ano"
+          vivo
+          tamanho="sm"
+          veredito={ano === anoPadrao ? "Este é o ano da data de referência. Escolha outro ano para ver os limites e o ato dele." : vereditos[ano]}
+        >
+          {respostas[ano]}
+        </RespostaCurta>
       </div>
 
       <GraficoBarras
@@ -78,6 +105,19 @@ export function RegulacaoLimites({
         onSelecionar={(id) => id && selecionar(id)}
         altura={320}
       />
+      {legendaFigura && <div className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{legendaFigura}</div>}
+      {avisos}
+
+      <section aria-labelledby="detalhe-ano-titulo" className="space-y-3 border-t border-linha pt-5" data-detalhe-ano={ano}>
+        <h3 id="detalhe-ano-titulo" className="ed-h3 font-serif text-carvao">
+          O que cada ato de {porId.get(ano)?.rotulo ?? ano} fixou, quando saiu e desde quando vale?
+        </h3>
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          Publicação é a data em que o ato saiu no Diário Oficial da União (DOU). Vigência é o período em que o ato passa a valer. As duas datas são diferentes e
+          aparecem separadas.
+        </p>
+        <div className="grid gap-x-8 gap-y-5 lg:grid-cols-2">{detalhes[ano]}</div>
+      </section>
 
       <TabelaInterativa
         titulo="Tabela de vigências dos limites do PLD"
@@ -94,15 +134,13 @@ export function RegulacaoLimites({
         nota="Publicação no Diário Oficial e início de vigência são colunas distintas. Data de publicação vazia quer dizer que o extrato do ato não pôde ser lido; nunca é a data de captura."
       />
 
-      <section aria-labelledby="detalhe-ano-titulo" className="space-y-3 border-t border-linha pt-4" data-detalhe-ano={ano}>
-        <h3 id="detalhe-ano-titulo" className="font-serif text-lg text-carvao">
-          Atos de {porId.get(ano)?.rotulo ?? ano}: o que cada um fixou, quando saiu e desde quando vale
-        </h3>
-        {detalhes[ano]}
-      </section>
+      {resposta}
+      {recorte}
+      {notas}
+      {aposPrincipal}
 
-      <section data-nivel="analisar" aria-labelledby="comparar-anos-titulo" className="space-y-3 border-t border-linha pt-5">
-        <h3 id="comparar-anos-titulo" className="font-serif text-lg text-carvao">
+      <section data-nivel="analisar" aria-labelledby="comparar-anos-titulo" className="space-y-3 border-t border-linha pt-6">
+        <h3 id="comparar-anos-titulo" className="ed-h3 font-serif text-carvao">
           Comparar até quatro anos na mesma escala
         </h3>
         <p className="max-w-prose2 text-sm text-carvao-muted">

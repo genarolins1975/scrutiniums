@@ -1,14 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
+import { FaixasDeSecao } from "@/components/energia/AtivoVisivel";
 
 /**
  * Três níveis de profundidade sobre a MESMA página (nunca três páginas):
  * Entender (padrão), Analisar, Auditar. Blocos marcados com data-nivel
  * aparecem a partir do seu nível. Sem JavaScript, tudo aparece em ordem.
- * O modo fica na URL (?modo=) para ser compartilhável.
+ * O modo fica na URL (?modo=) para ser compartilhável. Quem escolhe Analisar ou Auditar
+ * segue nesse nível ao trocar de painel: o clique em link interno do observatório, sem
+ * ?modo= próprio, leva o nível junto (abas do módulo, "Abrir o painel", "Próxima pergunta").
  *
- * Âncoras: o HTML chega com todos os níveis visíveis; ao aplicar o modo, blocos
+ * Âncoras: antes da hidratação o HTML ainda não sabe o modo (data-modo="todos": o CSS mostra tudo
+ * sem JavaScript e só Entender com JavaScript); ao aplicar o modo, blocos
  * acima do alvo somem e a rolagem se perde. Por isso, depois de aplicar o modo
  * (e a cada troca de #hash), o alvo é rolado de novo até a vista; se ele estiver
  * num nível mais profundo que o atual, o modo sobe até esse nível.
@@ -37,10 +43,46 @@ function alvoDoHash(): HTMLElement | null {
   return h ? document.getElementById(h) : null;
 }
 
+/** Destinos que não têm seletor de profundidade: o nível não viaja para lá. */
+function destinoSemNivel(caminho: string): boolean {
+  return caminho === "/setor-eletrico" || caminho === "/setor-eletrico/" || caminho.startsWith("/setor-eletrico/aprenda");
+}
+
+/**
+ * Endereço de destino com o nível atual (?modo=) quando o clique em `href` deve levá-lo junto; null quando não deve:
+ * nível Entender (o padrão não vai para a URL), outra origem, fora do observatório, mesma página, destino sem seletor
+ * de profundidade (hub e Aprenda) ou link que já traz ?modo= próprio.
+ */
+export function urlComNivel(href: string, atual: { origin: string; pathname: string; search: string }): string | null {
+  const nivel = new URLSearchParams(atual.search).get("modo");
+  if (nivel !== "analisar" && nivel !== "auditar") return null;
+  let url: URL;
+  try {
+    url = new URL(href, `${atual.origin}${atual.pathname}${atual.search}`);
+  } catch {
+    return null;
+  }
+  if (url.origin !== atual.origin || !url.pathname.startsWith("/setor-eletrico")) return null;
+  if (url.pathname === atual.pathname || destinoSemNivel(url.pathname) || url.searchParams.has("modo")) return null;
+  url.searchParams.set("modo", nivel);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Roteador do app; null onde ele não está montado (renderização de teste), sem derrubar a página. */
+function useRoteadorOuNulo() {
+  try {
+    return useRouter();
+  } catch {
+    return null;
+  }
+}
+
 export function ModoProfundidade({ children }: { children: ReactNode }) {
+  const router = useRoteadorOuNulo();
   const [modo, setModo] = useState<Modo | "todos">("todos");
   const rolarPendente = useRef(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
+  const barra = useRef<HTMLDivElement>(null);
 
   // escolha do visitante entra no histórico (voltar desfaz a troca de modo); ajustes
   // automáticos (modo elevado por âncora) só substituem a entrada atual
@@ -115,6 +157,46 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("hashchange", aoMudarHash);
   }, [gravaUrl]);
 
+  // WCAG 2.2, 2.4.11 (foco não obscurecido): a barra presa ao topo não pode cobrir o controle que recebeu o foco. O navegador só rola
+  // quando o controle sai da janela; um controle já visível sob a barra ficava escondido. Depois do foco, se a barra está presa e
+  // cobre o controle, a página rola o suficiente para ele aparecer logo abaixo dela.
+  useEffect(() => {
+    function aoFocar(e: FocusEvent) {
+      const alvo = e.target;
+      const b = barra.current;
+      if (!(alvo instanceof HTMLElement) || !b || b.contains(alvo)) return;
+      requestAnimationFrame(() => {
+        const caixaBarra = b.getBoundingClientRect();
+        const caixaAlvo = alvo.getBoundingClientRect();
+        if (caixaBarra.top > 1 || caixaAlvo.bottom <= 0) return; // barra solta no fluxo, ou controle fora da janela (o navegador já rola)
+        // contêiner alto que recebeu foco (o <main> com tabindex -1 recebe o foco quando o clique cai num rótulo ou num trecho sem controle):
+        // o foco ali não é de um controle escondido pela barra, e rolar para pôr o topo dele sob a barra levava a página ao topo
+        if (alvo.matches("main, [data-foco-conteudo]") || caixaAlvo.height > window.innerHeight * 0.5) return;
+        if (caixaAlvo.top < caixaBarra.bottom + 4) window.scrollBy({ top: caixaAlvo.top - caixaBarra.bottom - 8, behavior: "auto" });
+      });
+    }
+    document.addEventListener("focusin", aoFocar);
+    return () => document.removeEventListener("focusin", aoFocar);
+  }, []);
+
+  // o nível escolhido acompanha o clique em link interno do observatório que não traz ?modo= próprio
+  useEffect(() => {
+    function aoClicar(e: MouseEvent) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target instanceof Element ? e.target.closest("a[href]") : null;
+      if (!(a instanceof HTMLAnchorElement) || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      if (!router) return;
+      const destino = urlComNivel(a.href, window.location);
+      if (!destino) return;
+      e.preventDefault();
+      router.push(destino);
+    }
+    document.addEventListener("click", aoClicar, true);
+    return () => document.removeEventListener("click", aoClicar, true);
+  }, [router]);
+
+  // clique e seta do teclado criam uma entrada no histórico: o Voltar desfaz a troca de nível (seção 7.3 da especificação).
+  // Substituir a entrada nas setas fazia o Voltar pular para o nível anterior ao último clique (a r6 mediu 69 páginas assim).
   function escolher(m: Modo) {
     setModo(m);
     gravaUrl(m, true);
@@ -131,39 +213,52 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   }
 
   const ativoIdx = Math.max(0, MODOS.findIndex((m) => m.id === modo));
+  const nivelAtual = MODOS.find((m) => m.id === modo);
   return (
     <div data-modo={modo} className="modo-profundidade">
-      <div className="sticky top-0 z-30 -mx-6 border-b border-linha bg-papel/95 px-6 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
-        <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-1.5 sm:gap-2">
-          <span className="rotulo mr-2 hidden text-mineral sm:inline">Profundidade</span>
-          {MODOS.map((m, i) => {
-            const ativo = modo === m.id;
-            return (
-              <button
-                key={m.id}
-                ref={(el) => {
-                  botoes.current[i] = el;
-                }}
-                type="button"
-                role="radio"
-                aria-checked={ativo}
-                tabIndex={i === ativoIdx ? 0 : -1}
-                onClick={() => escolher(m.id)}
-                onKeyDown={(e) => teclado(e, i)}
-                title={m.dica}
-                className={`rotulo min-h-[44px] flex-1 border px-2 transition-colors sm:flex-none sm:px-4 ${
-                  ativo ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
-                }`}
-              >
-                {m.rotulo}
-              </button>
-            );
-          })}
-          <span className="ml-1 hidden text-xs text-mineral md:inline">
-            {MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}
-          </span>
+      <AbreDetalhesAoImprimir />
+      <FaixasDeSecao />
+      <div ref={barra} data-barra-profundidade="" className="sticky top-0 z-30 border-b border-linha bg-papel py-1.5">
+        <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-3">
+          <span className="rotulo hidden text-mineral sm:inline">Profundidade</span>
+          <div className="flex min-w-0 flex-1 flex-wrap sm:flex-none">
+            {MODOS.map((m, i) => {
+              const ativo = modo === m.id;
+              return (
+                <button
+                  key={m.id}
+                  ref={(el) => {
+                    botoes.current[i] = el;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-checked={ativo}
+                  tabIndex={i === ativoIdx ? 0 : -1}
+                  onClick={() => escolher(m.id)}
+                  onKeyDown={(e) => teclado(e, i)}
+                  title={m.dica}
+                  className={`rotulo min-h-[40px] min-w-0 flex-1 basis-[5.5rem] border px-2 transition-colors sm:flex-none sm:px-5 max-md:min-h-[44px] [@media(pointer:coarse)]:min-h-[44px] ${i > 0 ? "-ml-px" : ""} ${
+                    ativo ? "relative z-10 border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"
+                  }`}
+                >
+                  {m.rotulo}
+                </button>
+              );
+            })}
+          </div>
+          <span className="hidden text-xs text-carvao-muted md:inline">{MODOS.find((m) => m.id === modo)?.dica ?? "Todos os níveis visíveis"}</span>
         </div>
       </div>
+      {/* abaixo de 768 px a barra só tem os três botões; o que o nível escolhido acrescenta fica numa linha sob ela, fora da barra presa */}
+      <p className="pt-1.5 text-xs text-carvao-muted md:hidden print:hidden" data-descricao-nivel="">
+        {nivelAtual ? (
+          <>
+            <span className="font-medium text-carvao">{nivelAtual.rotulo}:</span> {nivelAtual.dica.charAt(0).toLowerCase() + nivelAtual.dica.slice(1)}.
+          </>
+        ) : (
+          "Todos os níveis visíveis."
+        )}
+      </p>
       {children}
     </div>
   );

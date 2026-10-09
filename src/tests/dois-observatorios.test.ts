@@ -4,6 +4,7 @@ import { join } from "node:path";
 import sitemap from "@/app/sitemap";
 import { DOMINIOS, dominioDaSecao, dominioDoCaminho } from "@/lib/dominios";
 import { isViewSection } from "@/lib/telemetry";
+import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 
 /**
@@ -173,8 +174,13 @@ describe("sitemap", () => {
     }
   });
 
-  it("verbete em preparação e área logada ficam fora", () => {
+  it("verbete em preparação e área logada ficam fora; verbete conferido entra", () => {
     expect(urls.some((u) => u.startsWith("/app"))).toBe(false);
-    expect(urls).not.toContain("/setor-eletrico/aprenda/gsf");
+    for (const c of CONCEITOS) {
+      const rota = `/setor-eletrico/aprenda/${c.slug}`;
+      if (c.estado === "PENDENTE") expect(urls, rota).not.toContain(rota);
+      else expect(urls, rota).toContain(rota);
+    }
+    expect(urls).toContain("/setor-eletrico/aprenda/gsf");
   });
 });

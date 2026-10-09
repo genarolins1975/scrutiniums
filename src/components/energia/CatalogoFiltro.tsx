@@ -94,7 +94,7 @@ export function CatalogoFiltro({ itens }: { itens: ItemCatalogo[] }) {
               {!i.verificado && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
               {i.descontinuado && <span className="ml-2 text-xs text-mineral">descontinuado na fonte</span>}
             </span>
-            <span className={`rotulo !text-[0.62rem] ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
+            <span className={`rotulo !text-xs ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
             <a href={i.url} target="_blank" rel="noopener noreferrer" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">fonte ↗</a>
           </li>
         ))}

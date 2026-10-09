@@ -4,9 +4,10 @@
  * Regra: nenhuma definição escrita de memória. Cada verbete aponta o documento
  * primário e o estado de conferência:
  * - CONFERIDO: o texto foi escrito a partir do documento acessado na data indicada;
- * - PENDENTE: a fonte primária não foi acessada nesta fase (Regras de
- *   Comercialização da CCEE e legislação no site do Planalto não acessadas). Verbete
- *   pendente aparece como "em preparação", sem definição.
+ * - PENDENTE: a fonte primária que define o termo ainda não foi acessada (as Regras
+ *   de Comercialização da CCEE, por exemplo) ou as consultadas não o definem; o campo
+ *   fontePlanejada diz o que falta e o que já foi consultado. Verbete pendente aparece
+ *   como "em preparação", sem definição.
  */
 
 import { CONCEITOS_MODULOS } from "./conceitos-modulos";
@@ -26,7 +27,8 @@ export type GrupoConceito =
   | "Empresas"
   | "Expansão"
   | "Regulação"
-  | "Transição";
+  | "Transição"
+  | "Fontes de dados";
 
 export type FonteOficial = {
   orgao: string;
@@ -45,15 +47,39 @@ export type Conceito = {
   grupo: GrupoConceito;
   estado: EstadoConferencia;
   conferidoEm?: string;
+  /** Última revisão do texto, quando posterior à conferência (ex.: integração de um conjunto citado em "como é medido"). */
+  revisadoEm?: string;
   emUmaFrase?: string;
   porQueImporta?: string;
   comoEMedido?: string;
   relacoes: string[];
   fontes: FonteOficial[];
   limitacoes?: string[];
+  /**
+   * Detalhe técnico da conferência que o leitor comum não precisa (o código da resposta de um servidor, o que foi tentado):
+   * a página o mostra recolhido, depois das limitações. A limitação em si diz em palavras comuns que a fonte não foi lida e por quê.
+   */
+  detalheDaConferencia?: string[];
   vejaNoPortal: { rotulo: string; href: string }[];
   /** Fonte planejada para verbetes pendentes. */
   fontePlanejada?: string;
+  /**
+   * Ressalva de um verbete CONFERIDO cuja fonte definidora não foi lida ou não existe: aparece junto do selo
+   * de conferência, para o selo não dizer mais do que o verbete prova.
+   */
+  ressalva?: string;
+  /**
+   * Leitura em linguagem direta do que o texto da fonte já diz, mostrada antes dele quando a definição literal é jurídica ou
+   * técnica demais para abrir o verbete. Só usa o que os trechos literais do verbete sustentam; não é definição nova.
+   */
+  emPalavrasSimples?: string;
+  /**
+   * Resumo de duas linhas de "Como é medido", mostrado aberto; o texto completo (a norma, a curva, o cálculo do observatório)
+   * fica logo abaixo, recolhido, sob "Detalhe técnico". Parágrafos de `comoEMedido` separam-se por linha em branco.
+   */
+  comoEMedidoResumo?: string;
+  /** Uma frase por relação, escrita só com o que os trechos literais do verbete dizem (relações sem frase seguem como atalho). */
+  relacoesNotas?: Record<string, string>;
 };
 
 const ONS = (id: string, titulo: string, trecho?: string): FonteOficial => ({
@@ -90,9 +116,9 @@ const CCEE_MCP: FonteOficial = {
     "Portal de dados abertos, conjuntos PLD_HORARIO_SUBMERCADO e SUMARIO_BE_HORARIO_SUBMERCADO (descrição dos recursos), capturados em 28/09/2026",
   url: "https://dadosabertos.ccee.org.br/dataset/sumario_be_horario_submercado",
   trecho:
-    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
+    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”. [...]",
   parafrase:
-    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. A CCEE define, para cada perfil de agente, submercado e hora, o balanço de energia (positivo ou negativo) e o resultado nesse mercado; o conjunto publica esses valores somados por submercado e hora.",
+    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. A CCEE define, para cada perfil de agente, submercado e hora, o balanço de energia (positivo ou negativo) e o resultado nesse mercado; o conjunto publica esses valores por submercado e hora.",
 };
 
 const CCEE_MCP_MENSAL: FonteOficial = {
@@ -104,6 +130,16 @@ const CCEE_MCP_MENSAL: FonteOficial = {
   parafrase: "Em outras palavras: no consolidado do mês, a CCEE publica por submercado o resultado de venda e o de compra no Mercado de Curto Prazo.",
 };
 
+const REN_957: FonteOficial = {
+  orgao: "ANEEL",
+  documento: "Resolução Normativa nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), art. 2º, inciso XIII, e art. 5º, § 4º (texto compilado, lido na cópia do Internet Archive de 01/06/2025)",
+  url: "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+  trecho:
+    "XIII – Mercado de Curto Prazo – MCP: denominação do processo em que se procede à contabilização e liquidação financeira das diferenças apuradas entre os montantes de energia elétrica seguintes: a) contratados, registrados e validados pelos agentes da CCEE, cujo registro tenha sido efetivado pela Câmara; e b) de geração ou de consumo efetivamente verificados e atribuídos aos respectivos agentes da CCEE; [...] § 4º As operações realizadas no MCP serão contabilizadas pela CCEE de acordo com as Regras e Procedimentos de Comercialização, [...] devendo as exposições dos agentes da CCEE serem valoradas ao PLD.",
+  parafrase:
+    "Em outras palavras: o Mercado de Curto Prazo é o processo em que a CCEE contabiliza e liquida financeiramente as diferenças entre a energia contratada e registrada pelos agentes e a energia de geração ou de consumo efetivamente verificada, e as exposições dos agentes são valoradas ao PLD.",
+};
+
 const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "pld",
@@ -112,16 +148,20 @@ const CONCEITOS_BASE: Conceito[] = [
     grupo: "Preço",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
+    revisadoEm: "2026-10-07",
     emUmaFrase:
-      "Preço do Mercado de Curto Prazo, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
+      "Preço do Mercado de Curto Prazo, ao qual a CCEE valora as exposições dos agentes, isto é, as diferenças entre a energia contratada e a efetivamente verificada. É calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
-      "No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço energético em MWh (positivo ou negativo) e um resultado em R$; o PLD é o preço desse mercado. Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado e como o resultado é liquidado está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
+      "No Mercado de Curto Prazo, a CCEE contabiliza as diferenças entre a energia que cada agente contratou e a que efetivamente gerou ou consumiu, e as exposições são valoradas ao PLD (REN ANEEL nº 957/2021). Para cada perfil de agente, submercado e hora, a CCEE apura um balanço energético em MWh (positivo ou negativo) e um resultado em R$. O PLD tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado em detalhe está nas Regras de Comercialização da CCEE, que o observatório não consultou.",
+    comoEMedidoResumo:
+      "Em reais por megawatt-hora (R$/MWh), com um valor por hora e por submercado, publicado pela CCEE. Médias diárias, semanais ou mensais são agregações dessas horas.",
     comoEMedido:
       "Em reais por megawatt-hora (R$/MWh), unidade usual de preço de energia; a descrição do conjunto na CCEE registra a unidade apenas como R$. Um valor por hora e por submercado, no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
     relacoes: ["cmo", "submercado", "newave", "decomp", "dessem"],
     fontes: [
       CCEE_PLD,
       CCEE_MCP,
+      REN_957,
       ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL),
       {
         orgao: "ANEEL",
@@ -147,18 +187,22 @@ const CONCEITOS_BASE: Conceito[] = [
     grupo: "Mercado",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
+    revisadoEm: "2026-10-07",
     emUmaFrase:
-      "Mercado cujo preço é o PLD, segundo a CCEE. Nele, a CCEE define o balanço de energia (MWh) e o resultado (R$) de cada perfil de agente por submercado e hora.",
+      "Processo em que a CCEE contabiliza e liquida financeiramente as diferenças entre a energia contratada e registrada pelos agentes e a energia de geração ou de consumo efetivamente verificada, com as exposições valoradas ao PLD. A CCEE define o balanço de energia (MWh) e o resultado (R$) de cada perfil de agente por submercado e hora.",
     porQueImporta:
       "É onde o PLD é usado como preço. A CCEE publica, por hora e submercado, os totais de balanço positivo e negativo e o resultado no MCP; no consolidado do mês, o resultado de venda e o de compra.",
     comoEMedido:
-      "Em MWh (balanço) e R$ (resultado), somados por submercado e período de comercialização de uma hora (SUMARIO_BE_HORARIO_SUBMERCADO) e por mês (SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO); conjuntos ainda não integrados a este observatório.",
+      "Em MWh (balanço) e R$ (resultado), somados por submercado e período de comercialização de uma hora (SUMARIO_BE_HORARIO_SUBMERCADO) e por mês (SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO). O observatório integra o resumo mensal por submercado e a liquidação mensal (SUMARIO_MENSAL_LIQUIDACAO) no módulo Mercado; o resumo horário ainda não.",
     relacoes: ["pld", "submercado"],
-    fontes: [CCEE_MCP, CCEE_MCP_MENSAL],
+    fontes: [REN_957, CCEE_MCP, CCEE_MCP_MENSAL],
     limitacoes: [
-      "Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado está nas Regras de Comercialização da CCEE, não conferidas nesta fase.",
+      "Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado, em detalhe, está nas Regras de Comercialização da CCEE, que este verbete não lê.",
     ],
-    vejaNoPortal: [{ rotulo: "O PLD no Mercado de Curto Prazo", href: "/setor-eletrico/pld#o-que-e" }],
+    vejaNoPortal: [
+      { rotulo: "O PLD no Mercado de Curto Prazo", href: "/setor-eletrico/pld#o-que-e" },
+      { rotulo: "Mercado: encargos e liquidação", href: "/setor-eletrico/mercado/encargos" },
+    ],
   },
   {
     slug: "cmo",
@@ -191,7 +235,7 @@ const CONCEITOS_BASE: Conceito[] = [
     emUmaFrase:
       "Cada uma das quatro divisões do SIN para as quais a CCEE calcula um PLD próprio: Norte, Nordeste, Sul e Sudeste (esta plataforma usa o rótulo Sudeste/Centro-Oeste para o último).",
     porQueImporta:
-      "Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, cuja conferência documental está pendente nesta fase: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.",
+      "Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, que este verbete não lê: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.",
     comoEMedido:
       "O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos conjuntos do ONS usados aqui, o campo de região é o subsistema, identificado por SE, S, NE e N.",
     relacoes: ["pld", "intercambio"],
@@ -228,7 +272,7 @@ const CONCEITOS_BASE: Conceito[] = [
         trecho: "Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).",
       },
     ],
-    limitacoes: ["A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS nesta fase."],
+    limitacoes: ["A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS."],
     vejaNoPortal: [{ rotulo: "Visão geral do sistema", href: "/setor-eletrico/visao-geral" }],
   },
   {
@@ -238,18 +282,23 @@ const CONCEITOS_BASE: Conceito[] = [
     grupo: "Preço",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
+    revisadoEm: "2026-10-06",
     emUmaFrase:
-      "Valor atribuído a cada usina térmica que o ONS considera no Programa Mensal da Operação e na execução dos modelos NEWAVE, DECOMP e DESSEM. A fonte descreve o CVU pelo uso; o que compõe esse custo não foi conferido nesta fase.",
+      "Valor atribuído a cada usina térmica que o ONS considera no Programa Mensal da Operação e na execução dos modelos NEWAVE, DECOMP e DESSEM. A fonte descreve o CVU pelo uso; o que compõe esse custo não foi conferido.",
     porQueImporta:
       "Segundo o ONS, é usado na execução dos modelos NEWAVE, DECOMP e DESSEM, nas decisões de programação e no acompanhamento dos custos da operação.",
-    comoEMedido: "Valor por usina térmica, publicado pelo ONS no conjunto CVU das Usinas Térmicas; a unidade será conferida no dicionário de dados quando o conjunto for integrado.",
+    comoEMedido:
+      "Em R$/MWh, por usina térmica e parcela, para cada semana operativa do Programa Mensal da Operação (sábado a sexta), no conjunto CVU das Usinas Térmicas do ONS (dicionário de dados versão 2.0, de 24/09/2025). O observatório publica o CVU da semana vigente por usina e a mediana mensal por combustível no painel de despacho térmico da Geração.",
     relacoes: ["cmo", "newave", "decomp", "dessem"],
     fontes: [
       ONS("cvu-usitermica", "CVU das Usina Térmicas",
         "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na execução do modelo NEWAVE, DECOMP, DESSEM, além de seu uso nas decisões de programação e acompanhamentos dos custos da operação."),
     ],
-    limitacoes: ["O conjunto de CVU está catalogado e ainda não integrado ao portal."],
-    vejaNoPortal: [{ rotulo: "Catálogo de dados", href: "/setor-eletrico/dados" }],
+    limitacoes: [
+      "É o valor considerado no Programa Mensal da Operação para a semana: o conjunto não informa o custo realizado nem o preço do combustível.",
+      "O que compõe esse custo não foi conferido.",
+    ],
+    vejaNoPortal: [{ rotulo: "Geração: despacho térmico", href: "/setor-eletrico/geracao/termica#p022" }],
   },
   {
     slug: "ear",
@@ -306,7 +355,7 @@ const CONCEITOS_BASE: Conceito[] = [
         "A Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios. [...] os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação."),
     ],
     limitacoes: ["O conjunto não informa o período de referência da MLT."],
-    vejaNoPortal: [{ rotulo: "Quanta água está chegando", href: "/setor-eletrico/agua-e-clima#ena" }],
+    vejaNoPortal: [{ rotulo: "Quanta água está chegando", href: "/setor-eletrico/agua-e-clima/afluencia#p018" }],
   },
   {
     slug: "mlt",
@@ -329,7 +378,7 @@ const CONCEITOS_BASE: Conceito[] = [
       },
     ],
     limitacoes: ["O método de cálculo e o período de referência da MLT não são informados no conjunto de dados; leituras de \"acima ou abaixo do usual\" usam a distribuição histórica publicada pela plataforma, não a MLT."],
-    vejaNoPortal: [{ rotulo: "ENA em % da MLT", href: "/setor-eletrico/agua-e-clima#ena" }],
+    vejaNoPortal: [{ rotulo: "ENA em % da MLT", href: "/setor-eletrico/agua-e-clima/afluencia#p018" }],
   },
   {
     slug: "ree",
@@ -339,7 +388,8 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "PENDENTE",
     relacoes: ["ear", "ena"],
     fontes: [ONS("ear-diario-por-ree-reservatorio-equivalente-de-energia", "EAR Diário por REE")],
-    fontePlanejada: "Procedimentos de Rede do ONS e documentação dos modelos de planejamento.",
+    fontePlanejada:
+      "Procedimentos de Rede do ONS e documentação dos modelos de planejamento. Consultado em 06/10/2026 sem definição do termo: o dicionário de dados do conjunto EAR Diário por REE do ONS, que usa o termo sem defini-lo.",
     vejaNoPortal: [{ rotulo: "Catálogo de dados", href: "/setor-eletrico/dados" }],
   },
   {
@@ -432,8 +482,9 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "PENDENTE",
     relacoes: ["geracao-centralizada"],
     fontes: [ONS("restricao_coff_eolica_usi", "Restrição de Operação por Constrained-off de Usinas Eólicas")],
-    fontePlanejada: "Regulamentação da ANEEL sobre restrições de operação e apuração do ONS.",
-    vejaNoPortal: [{ rotulo: "Catálogo de dados", href: "/setor-eletrico/dados" }],
+    fontePlanejada:
+      "Regulamentação da ANEEL sobre restrições de operação e a rotina operacional RO-AO.BR.13 do ONS. Consultados em 06/10/2026 sem definição do termo: a descrição e o dicionário de dados do conjunto de restrição de eólicas do ONS, que descrevem a apuração e as razões da restrição, não o termo.",
+    vejaNoPortal: [{ rotulo: "Geração: renováveis restringidas", href: "/setor-eletrico/geracao/restricoes" }],
   },
   {
     slug: "newave",
@@ -443,15 +494,15 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase: "Um dos três modelos computacionais citados pela CCEE no cálculo do PLD, ao lado do DECOMP e do DESSEM.",
-    porQueImporta: "A CCEE informa que o cálculo do PLD é realizado por modelos computacionais, entre eles o NEWAVE. O papel de cada modelo na cadeia está pendente de conferência documental.",
-    comoEMedido: "Modelo computacional; não é uma grandeza. Descrição de horizonte e formulação pendente de conferência documental.",
+    porQueImporta: "A CCEE informa que o cálculo do PLD é realizado por modelos computacionais, entre eles o NEWAVE. O papel de cada modelo na cadeia não foi conferido em documento técnico.",
+    comoEMedido: "Modelo computacional; não é uma grandeza. Horizonte e formulação não foram conferidos em documento técnico.",
     relacoes: ["decomp", "dessem", "cmo", "pld"],
     fontes: [
       CCEE_PLD,
       ONS("cvu-usitermica", "CVU das Usina Térmicas",
         "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na execução do modelo NEWAVE, DECOMP, DESSEM, além de seu uso nas decisões de programação e acompanhamentos dos custos da operação."),
     ],
-    limitacoes: ["A documentação técnica do modelo não foi acessada nesta fase."],
+    limitacoes: ["A documentação técnica do modelo não foi lida."],
     vejaNoPortal: [{ rotulo: "De onde vem o preço", href: "/setor-eletrico/pld#formacao" }],
   },
   {
@@ -476,9 +527,15 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO em base semi-horária para cada barra do sistema, segundo o ONS.",
-    porQueImporta: "Sua saída publicada tem resolução semi-horária, mais fina que a do CMO semanal; a CCEE o cita entre os modelos do cálculo do PLD.",
-    comoEMedido: "Modelo computacional; sua saída publicada pelo ONS é o CMO semi-horário por barra e por subsistema.",
+    porQueImporta:
+      "A CCEE cita o DESSEM entre os modelos do cálculo do PLD, que sai por hora. O CMO que o ONS publica a partir dele é semi-horário, mais fino que o CMO semanal do DECOMP.",
+    comoEMedido:
+      "Modelo computacional, não uma grandeza. O ONS publica o CMO que ele estima a cada meia hora, por barra; o CMO do subsistema é a média dos CMOs das barras ponderada pelas cargas. No exemplo, o observatório usa o CMO do subsistema e faz a média dele nas meias horas da semana operativa.",
     relacoes: ["cmo", "decomp", "pld"],
+    limitacoes: [
+      "A fonte descreve o DESSEM só pelo CMO que ele estima; a documentação técnica do modelo não foi lida.",
+      "O CMO semi-horário não é o PLD: o PLD aplica limites regulatórios e é calculado pela CCEE em base horária.",
+    ],
     fontes: [ONS("cmo-semi-horario", "CMO Semi-Horário", TRECHO_CMO_SEMI), CCEE_PLD],
     vejaNoPortal: [{ rotulo: "De onde vem o preço", href: "/setor-eletrico/pld#formacao" }],
   },
@@ -491,7 +548,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["acr", "pld"],
     fontes: [],
     fontePlanejada: "Lei nº 10.848/2004, Decreto nº 5.163/2004 e documentação da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: livre e regulado", href: "/setor-eletrico/mercado" }],
   },
   {
     slug: "acr",
@@ -502,7 +559,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["acl"],
     fontes: [],
     fontePlanejada: "Lei nº 10.848/2004, Decreto nº 5.163/2004 e documentação da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: livre e regulado", href: "/setor-eletrico/mercado" }],
   },
   {
     slug: "mre",
@@ -513,7 +570,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["gsf", "garantia-fisica"],
     fontes: [],
     fontePlanejada: "Regras de Comercialização da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
   {
     slug: "gsf",
@@ -523,8 +580,9 @@ const CONCEITOS_BASE: Conceito[] = [
     estado: "PENDENTE",
     relacoes: ["mre", "garantia-fisica"],
     fontes: [],
-    fontePlanejada: "Regras de Comercialização da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    fontePlanejada:
+      "Regras de Comercialização da CCEE (módulo do MRE). Consultados em 06/10/2026 sem definição do fator: o Decreto nº 5.163/2004, a Lei nº 10.848/2004 e o glossário do InfoMercado Nº 229 da CCEE, que usa a expressão \"fator de ajuste do MRE\" sem defini-la.",
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
   {
     slug: "ess",
@@ -535,7 +593,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["pld"],
     fontes: [],
     fontePlanejada: "Regras de Comercialização da CCEE e regulamentação da ANEEL.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: encargos e liquidação", href: "/setor-eletrico/mercado/encargos" }],
   },
   {
     slug: "garantia-fisica",
@@ -545,7 +603,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["mre", "gsf"],
     fontes: [],
     fontePlanejada: "Decreto nº 5.163/2004 e portarias do MME.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
 ];
 
@@ -579,4 +637,5 @@ export const GRUPOS: GrupoConceito[] = [
   "Expansão",
   "Transição",
   "Regulação",
+  "Fontes de dados",
 ].filter((g) => CONCEITOS.some((c) => c.grupo === g)) as GrupoConceito[];

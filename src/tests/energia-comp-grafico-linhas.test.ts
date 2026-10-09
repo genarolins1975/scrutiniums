@@ -10,6 +10,7 @@ import {
   intervaloDosIndices,
   mesmaEscala,
   periodosProntos,
+  rotulosDoEixoX,
 } from "@/lib/energia/series-temporais";
 import { somarDias, somarMeses } from "@/lib/energia/calendario";
 
@@ -183,7 +184,7 @@ describe("GraficoLinhas no servidor, sem as props novas (compatibilidade)", () =
     // valores de 0 a 9 com folga de 6%: passo 2,5 (ticks 0; 2,5; 5; 7,5)
     const dados = X10.map((d, i) => ({ d, a: i }));
     const g = html({ titulo: "Passo 2,5", dados, chaveX: "d", series: [{ id: "a", rotulo: "A", cor: "var(--serie-1)" }], unidade: "MW" });
-    const ticks = Array.from(g.matchAll(/text-anchor="end" font-size="11" fill="var\(--cor-mineral\)">([^<]+)</g)).map((t) => t[1]);
+    const ticks = Array.from(g.matchAll(/text-anchor="end" font-size="12" fill="var\(--cor-mineral\)">([^<]+)</g)).map((t) => t[1]);
     expect(ticks).toEqual(["0,0", "2,5", "5,0", "7,5"]);
   });
 });
@@ -239,7 +240,7 @@ describe("legenda interativa", () => {
     expect(m).toContain("Escala mantida com todas as séries, inclusive as ocultas.");
     expect(m).not.toContain("Escala ajustada");
     // mesmo eixo do gráfico com as duas séries: o maior tick continua o de B
-    const ticks = (s: string) => Array.from(s.matchAll(/text-anchor="end" font-size="11" fill="var\(--cor-mineral\)">([^<]+)</g)).map((t) => t[1]);
+    const ticks = (s: string) => Array.from(s.matchAll(/text-anchor="end" font-size="12" fill="var\(--cor-mineral\)">([^<]+)</g)).map((t) => t[1]);
     expect(ticks(m)).toEqual(ticks(html(base)));
   });
 
@@ -282,5 +283,64 @@ describe("cursor sincronizado", () => {
 
   it("sem provedor, nenhum cursor externo", () => {
     expect(html(base)).not.toContain("data-cursor");
+  });
+});
+
+
+describe("rótulos do eixo X", () => {
+  it("em poucas semanas, o formato data passa para dia e mês em vez de repetir o mês", () => {
+    const dias = ["2026-09-01", "2026-09-08", "2026-09-15", "2026-09-22", "2026-09-30"];
+    expect(rotulosDoEixoX(dias, "data")).toEqual(["01/09", "08/09", "15/09", "22/09", "30/09"]);
+  });
+  it("em meses diferentes, mantém mês e ano; em anos diferentes com o mesmo dia e mês, escreve o ano", () => {
+    expect(rotulosDoEixoX(["2026-01-15", "2026-04-15", "2026-09-15"], "data")).toEqual(["jan/26", "abr/26", "set/26"]);
+    expect(rotulosDoEixoX(["2025-09-30", "2026-09-30"], "data")).toEqual(["set/25", "set/26"]);
+    expect(rotulosDoEixoX(["2025-09-01", "2025-09-20", "2026-09-01", "2026-09-20"], "data")).toEqual(["01/09/2025", "20/09/2025", "01/09/2026", "20/09/2026"]);
+  });
+  it("outros formatos seguem como estavam", () => {
+    expect(rotulosDoEixoX(["2026-08", "2026-09"], "mes")).toEqual(["ago/26", "set/26"]);
+    expect(rotulosDoEixoX(["x", "y"], undefined)).toEqual(["x", "y"]);
+  });
+});
+
+describe("rótulo de marco dentro da área do gráfico", () => {
+  const longo = "29/04/2023: a MMGD entrou na curva de carga e a série passa a incluir a geração distribuída estimada pelo ONS";
+
+  it("marco perto da borda direita com texto longo vai para a esquerda e quebra em até três linhas, sem passar da área", () => {
+    const m = html({ ...base, marcos: [{ x: serie10[8].d as string, rotulo: longo }] });
+    const texto = m.match(/<text[^>]*data-marco=""[^>]*text-anchor="end"[^>]*>([\s\S]*?)<\/text>/)?.[1] ?? "";
+    const linhas = Array.from(texto.matchAll(/<tspan[^>]*>([^<]*)<\/tspan>/g)).map((l) => l[1]);
+    expect(linhas.length).toBeGreaterThan(1);
+    expect(linhas.length).toBeLessThanOrEqual(3);
+    // a esquerda do traço de x ≈ 8/9 da largura há cerca de 600 px: nenhuma linha passa disso (cerca de 6,5 px por caractere)
+    for (const l of linhas) expect(l.length * 6.5).toBeLessThanOrEqual(640);
+    // o que sobra do texto fica em reticências na última linha, e o começo é preservado
+    expect(linhas.join(" ")).toContain("29/04/2023: a MMGD");
+  });
+
+  it("texto curto continua numa linha só, à direita do traço quando cabe", () => {
+    const m = html({ ...base, marcos: [{ x: serie10[1].d as string, rotulo: "Troca de regra" }] });
+    expect(m).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="start"[^>]*>Troca de regra<\/text>/);
+  });
+
+  it("com rótulos diretos, o marco não escreve na margem direita; sem eles, o texto curto continua à direita", () => {
+    // perto da borda, o texto (cerca de 72 px) caberia entre o traço e a borda do SVG, mas parte dessa faixa é dos rótulos finais das séries
+    const comRotulos = html({ ...base, marcos: [{ x: serie10[8].d as string, rotulo: "Troca regra" }] });
+    expect(comRotulos).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="end"[^>]*>Troca regra<\/text>/);
+    const semRotulos = html({ ...base, rotulosDiretos: false, marcos: [{ x: serie10[8].d as string, rotulo: "Troca regra" }] });
+    expect(semRotulos).toMatch(/<text[^>]*data-marco=""[^>]*text-anchor="start"[^>]*>Troca regra<\/text>/);
+  });
+
+  it("marcos próximos se empilham pela altura de cada um (sem sobrepor o texto do anterior)", () => {
+    const m = html({
+      ...base,
+      marcos: [
+        { x: serie10[2].d as string, rotulo: longo },
+        { x: serie10[3].d as string, rotulo: "Outro marco" },
+      ],
+    });
+    const ys = Array.from(m.matchAll(/<text[^>]*data-marco=""[^>]*y="([\d.]+)"/g)).map((r) => Number(r[1]));
+    expect(ys.length).toBeGreaterThanOrEqual(2);
+    expect(ys[1]).toBeGreaterThanOrEqual(ys[0] + 14);
   });
 });

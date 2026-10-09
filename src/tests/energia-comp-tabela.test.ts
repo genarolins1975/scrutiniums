@@ -1,6 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { crc32 as crcZlib } from "node:zlib";
 import {
   CHAVE_SEM_DADO,
@@ -84,6 +86,16 @@ describe("ordenação", () => {
     expect(valorColuna(l[5], colunas[2])).toBeNull();
   });
 
+  it("mês escrito como na página ordena pelo calendário, não pelo alfabeto; o texto exibido não muda", () => {
+    const col: ColunaTabela[] = [{ id: "mes", rotulo: "Mês", tipo: "texto" }];
+    const meses: LinhaTabela[] = ["set/2025", "ago/2026", "out/2025", "dez/2024", "mar/2026 (parcial)"].map((m) => ({ id: m, mes: m }));
+    expect(ordenarLinhas(meses, col, { coluna: "mes", direcao: "desc" }).map((l) => l.mes)).toEqual(["ago/2026", "mar/2026 (parcial)", "out/2025", "set/2025", "dez/2024"]);
+    expect(ordenarLinhas(meses, col, { coluna: "mes", direcao: "asc" }).map((l) => l.mes)).toEqual(["dez/2024", "set/2025", "out/2025", "mar/2026 (parcial)", "ago/2026"]);
+    // texto comum segue a collation pt-BR
+    const nomes: LinhaTabela[] = ["setor", "agosto"].map((m) => ({ id: m, mes: m }));
+    expect(ordenarLinhas(nomes, col, { coluna: "mes", direcao: "asc" }).map((l) => l.mes)).toEqual(["agosto", "setor"]);
+  });
+
   it("sem ordem ou com coluna desconhecida, mantém a ordem recebida (cópia, não a mesma lista)", () => {
     const r = ordenarLinhas(linhas, colunas, { coluna: "nao-existe", direcao: "asc" });
     expect(ids(r)).toEqual(["a", "b", "c", "d", "e"]);
@@ -147,6 +159,16 @@ describe("texto das células", () => {
     expect(textoCelula(null, colunas[2])).toBe("sem dado");
     expect(textoCelula("2025-12-31", colunas[4])).toBe("31/12/2025");
     expect(textoCelula("2025-12", colunas[4])).toBe("12/2025");
+    // o arquivo tira o ruído do ponto flutuante de um decimal curto, mas guarda inteiros os valores que usam todos os algarismos
+    const col: ColunaTabela[] = [{ id: "v", rotulo: "Valor", tipo: "numero", casas: 2 }];
+    const valores = [22.189999999999998, 15.950000000000001, 0.1 + 0.2, 1234567.891, 1 / 3, 200 / 3];
+    expect(gerarCsv(col, valores.map((v) => ({ v })), { bom: false })).toBe(`Valor\r\n22.19\r\n15.95\r\n0.3\r\n1234567.891\r\n${1 / 3}\r\n${200 / 3}\r\n`);
+    // ano civil em coluna numérica não leva separador de milhar; contagem de anos e valores comuns continuam com ele
+    const ano: ColunaTabela = { id: "ano", rotulo: "Ano", tipo: "numero", casas: 0 };
+    expect(textoCelula(2026, ano)).toBe("2026");
+    expect(textoCelula(2010, { ...ano, rotulo: "Ano de operação" })).toBe("2010");
+    expect(textoCelula(2026, { ...ano, rotulo: "Anos na base" })).toBe("2.026");
+    expect(textoCelula(2026, { ...ano, rotulo: "Unidades consumidoras" })).toBe("2.026");
     expect(textoCelula("2025-12-31T16:00", colunas[4])).toBe("31/12/2025 16:00");
   });
 });
@@ -431,6 +453,40 @@ const html = (p: Partial<TabelaInterativaProps> = {}) =>
   );
 const texto = (h: string) => h.replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 const corpo = (h: string) => h.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1] ?? "";
+
+describe("TabelaInterativa: recolher em Entender", () => {
+  const muitas = Array.from({ length: 13 }, (_, i) => ({ id: `l${i}`, nome: `Linha ${i}`, uf: "SP", perda: i, pct: i, ref: "2025-12-31" }));
+
+  it("tabela com mais de 12 linhas traz o botão que a abre e começa fechada", () => {
+    const h = html({ linhas: muitas });
+    expect(h).toMatch(/<button type="button" aria-expanded="false" aria-controls="[^"]+-conteudo" class="tabela-recolher-btn">Ver a tabela completa \(13 linhas\)<\/button>/);
+    expect(h).toContain('data-recolhivel="fechada"');
+  });
+
+  it("tabela com mais de 6 colunas também começa fechada em Entender, mesmo curta", () => {
+    const extras: ColunaTabela[] = [1, 2].map((i) => ({ id: `x${i}`, rotulo: `Extra ${i}`, tipo: "texto" }));
+    const seis = html({ colunas: [...colunas, extras[0]] });
+    expect(seis).not.toContain("tabela-recolher-btn");
+    const sete = html({ colunas: [...colunas, ...extras] });
+    expect(sete).toMatch(/Ver a tabela completa \(5 linhas\)/);
+    expect(sete).toContain('data-recolhivel="fechada"');
+    expect(html({ colunas: [...colunas, ...extras], recolher: false })).not.toContain("tabela-recolher-btn");
+  });
+
+  it("tabela curta, ou com recolher desligado, fica sempre aberta e sem o botão", () => {
+    expect(html()).not.toContain("tabela-recolher-btn");
+    expect(html()).not.toContain("data-recolhivel");
+    expect(html({ linhas: muitas, recolher: false })).not.toContain("tabela-recolher-btn");
+    expect(html({ recolher: true })).toContain('data-recolhivel="fechada"');
+  });
+
+  it("a barra só aparece em Entender; nos outros modos a tabela completa segue à vista", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+    expect(css).toMatch(/\.tabela-recolher\s*\{[^}]*display:\s*none/);
+    expect(css).toMatch(/\.modo-profundidade\[data-modo="entender"\]\s+\.tabela-recolher\s*\{[^}]*display:\s*block/);
+    expect(css).toMatch(/\.modo-profundidade\[data-modo="entender"\]\s+\[data-recolhivel="fechada"\]\s*\{[^}]*display:\s*none/);
+  });
+});
 
 describe("TabelaInterativa no servidor", () => {
   it("tabela dentro de região rolável com foco, legenda e cabeçalhos de coluna", () => {

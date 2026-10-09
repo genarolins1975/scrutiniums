@@ -132,7 +132,7 @@ REGISTRO = {
         _url(CSV_COMP): "cnpj; sigla; inicio; fim; ato; TE; TUSD; e uma coluna por código de componente (R$/MWh, arredondados a quatro casas decimais pelo escritor de CSV; a fonte publica até nove). Tarifa de aplicação B1 residencial convencional; o grupo de cada código está em conta.json (composicao.grupos; valor negativo de TE_CFURH vai para o grupo créditos, composicao.creditos). Vazio = componente não publicada na vigência.",
         _url(CSV_REAJ): "cnpj; sigla; data; ato; mesmo_ato; total_antes_rs_mwh; total_depois_rs_mwh; variacao_pct; te_variacao_pct; tusd_variacao_pct; ipca_desde_evento_anterior_pct; meses_ipca; mudanca_perimetro (ato da incorporação quando o evento compara a tarifa da área antiga com a da área somada; vazio nos demais). Mudanças da tarifa B1 residencial de aplicação na linha do tempo resolvida.",
         _url(CSV_BAND): "mes; bandeira; adicional_rs_mwh; adicional_tabela_rs_mwh; confere. Bandeira acionada por mês de competência e conferência com a tabela de adicionais.",
-        _url(CSV_SUBS): "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses. Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
+        _url(CSV_SUBS): "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses; eh_total (sim na linha da categoria Total, que reúne as demais categorias da mesma distribuidora e ano: somar valor_rs sem filtrar eh_total conta cada real duas vezes). Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
         _url(CSV_IPCA): "mes; indice (dez/1993 = 100); variacao_12m_pct_publicada. IPCA do IBGE usado nas comparações.",
         _url(CSV_CONF): "cnpj; sigla; subgrupo; subclasse; base; de; ate; escolhido_inicio; escolhido_fim; escolhido_ato; escolhido_te; escolhido_tusd; alternativas (inicio/fim/ato/te/tusd separados por |). Vigências sobrepostas com valores diferentes publicadas pela fonte e a escolha feita pela regra.",
         _url(CSV_JAN): "janela_meses (12, 60, 120); de; ate (últimos dias dos meses inicial e final do IPCA); cnpj; sigla; ato_de; tarifa_de_rs_mwh; ato_ate; tarifa_ate_rs_mwh (TE + TUSD B1 residencial de aplicação vigente em cada data); variacao_pct; ipca_pct (razão de números-índice nos mesmos meses); variacao_real_pct = (1 + variação) ÷ (1 + IPCA) − 1. Só distribuidoras com tarifa nas duas datas e sem mudança de perímetro (incorporação) dentro da janela.",
@@ -838,6 +838,16 @@ def em(linha, dia):
         if p["inicio"] <= dia <= p["fim"]:
             return p
     return None
+
+
+COLUNAS_CSV_SUBS = ["ano", "cnpj", "sigla", "categoria", "montante", "valor_rs", "meses", "eh_total"]
+
+
+def linhas_csv_subsidios(csv_s, sigla):
+    """Linhas do CSV de subsídios por ano, distribuidora e categoria. `eh_total` marca a linha da categoria "Total" (a que a fonte
+    publica reunindo as demais): somar valor_rs sem filtrar essa coluna conta cada real duas vezes. Valores em R$ com meio para cima."""
+    return [[a, cn, sigla.get(cn) or "", cat, mt, c.r(v[0], 2), v[1], "sim" if cat == "Total" else "nao"]
+            for (a, cn, cat, mt), v in sorted(csv_s.items())]
 
 
 def custo_perfil(total, kwh):
@@ -1905,8 +1915,7 @@ def construir(con, ctx):
                 "comparacoes": int(uni_s["total_vs_previsao_mais_ajuste_comparacoes"]),
                 "divergem": int(uni_s.get("total_vs_previsao_mais_ajuste_divergem", 0)),
                 "nota": "conferido na ingestão, com todas as competências do arquivo; o silver guarda só o montante Total"}
-    base.escreve_csv(CSV_SUBS, ["ano", "cnpj", "sigla", "categoria", "montante", "valor_rs", "meses"],
-                     [[a, cn, sigla.get(cn) or "", cat, mt, round(v[0], 2), v[1]] for (a, cn, cat, mt), v in sorted(csv_s.items())])
+    base.escreve_csv(CSV_SUBS, COLUNAS_CSV_SUBS, linhas_csv_subsidios(csv_s, sigla))
     anos = sorted({a for cat in anual.values() for a in cat})
     subsidios_anual = []
     for a in anos:

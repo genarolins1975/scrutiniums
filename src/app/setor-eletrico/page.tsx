@@ -1,40 +1,77 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
-import { EscolhaDistribuidora } from "@/components/energia/EscolhaDistribuidora";
+import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
+import { LinkPorDistribuidora, SuaDistribuidora } from "@/components/energia/EscolhaDistribuidora";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { MapaConceitual } from "@/components/energia/MapaConceitual";
 import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
+import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { LINKEDIN_URL } from "@/lib/contato";
-import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { indiceBusca, linhasAtualidade, opcoesDistribuidora, periodoLegivel, type PublicacaoAtualidade } from "@/lib/energia/home";
+import {
+  escolhasDeDistribuidora,
+  estadoDoDestino,
+  indiceBusca,
+  linhasAtualidade,
+  nomeDoPeriodoEmCurso,
+  periodoLegivel,
+  refinosDePeriodo,
+  regraDeAtualidade,
+  resumoAtualidade,
+  type LinhaAtualidade,
+  type PublicacaoAtualidade,
+} from "@/lib/energia/home";
+import {
+  denominadorDePerdas,
+  descreverDenominador,
+  evidenciaComDenominadorNomeado,
+  sinaisDaInicial,
+  sinaisDeInclusao,
+  universoPerdas,
+  type FiguraReferencia,
+  type SinalAusente,
+  type SinalDisponivel,
+  type SinalHome,
+} from "@/lib/energia/home-sinais";
 import {
   ANCORAS_VISAO_GERAL,
+  CAMINHOS_INTENCAO,
   CARTOES,
+  FAIXAS_MAPA,
   LIGACOES,
   NOS_MAPA,
   O_QUE_O_MAPA_NAO_DIZ,
+  ORDEM_FAIXAS,
   PERGUNTAS_COTIDIANAS,
-  SECOES_HOME,
+  PERGUNTAS_DE_INCLUSAO,
+  PERGUNTAS_PRIORITARIAS,
+  ROTULOS_FAIXA,
   TIPOS_LIGACAO,
   TRANSVERSAIS,
   TRILHAS,
   type NoMapa,
+  type PerguntaPrioritaria,
 } from "@/lib/energia/mapa";
 import { metrica } from "@/lib/energia/metricas";
-import { DESTINOS_NAVEGACAO, GRUPOS_NAVEGACAO, destino, type DestinoNavegacao } from "@/lib/energia/navegacao";
+import { DESTINOS_NAVEGACAO, GRUPOS_NAVEGACAO, destino, listaPorExtenso, type DestinoNavegacao } from "@/lib/energia/navegacao";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
+import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 import type { Natureza } from "@/lib/energia/tipos";
+import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
+import { SIGLAS, legendaDeSiglas } from "@/lib/energia/siglas";
+import { publicacaoDados } from "@/lib/energia/dados-servidor";
 
 export const dynamic = "force-static";
 
@@ -86,252 +123,779 @@ const NOMES_E_REGUAS: [string, ReactNode][] = [
   ],
 ];
 
-function Secao({ id, letra, rotulo, titulo, subtitulo, children }: { id: string; letra: string; rotulo: string; titulo: string; subtitulo: string; children: ReactNode }) {
+/* ------------------------------------------------------------------ peças da página */
+
+/** Seção da página: linha fina em cima, título em serifa e o conteúdo. O id é a âncora que outras páginas usam. */
+function Secao({ id, titulo, subtitulo, children }: { id: string; titulo: string; subtitulo?: ReactNode; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-24 border-t border-linha py-12 md:py-16">
-      <p className="rotulo flex items-center gap-3 text-mineral">
-        <span aria-hidden="true" className="font-serif text-lg normal-case tracking-normal text-energia">
-          {letra}
-        </span>
-        {rotulo}
-      </p>
-      <h2 id={`${id}-h`} className="mt-2 max-w-3xl font-serif text-2xl leading-snug text-carvao md:text-3xl">
+    <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-24 border-t border-linha py-8 md:py-10">
+      <h2 id={`${id}-h`} className="ed-h2 max-w-3xl font-serif text-carvao">
         {titulo}
       </h2>
-      <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{subtitulo}</p>
-      <div className="mt-8">{children}</div>
+      {subtitulo && <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{subtitulo}</p>}
+      <div className="mt-6">{children}</div>
     </section>
   );
 }
 
-function Cartao({ titulo, children }: { titulo: string; children: ReactNode }) {
+/**
+ * Bloco recolhível (<details> nativo): o título e uma linha de dica ficam à vista, e o texto inteiro fica no HTML do servidor, aberto por
+ * clique, toque ou teclado. Sem JavaScript funciona do mesmo jeito.
+ */
+function Recolhivel({ id, titulo, dica, children }: { id?: string; titulo: string; dica?: string; children: ReactNode }) {
   return (
-    <article className="border border-linha bg-superficie p-6">
-      <h3 className="font-serif text-lg leading-snug text-carvao">{titulo}</h3>
-      <div className="mt-3 space-y-3 text-sm leading-relaxed text-carvao-muted">{children}</div>
-    </article>
+    <details id={id} className="group scroll-mt-24 border-b border-linha">
+      <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0">
+          <span className="block font-serif text-lg leading-snug text-carvao">{titulo}</span>
+          {dica && <span className="block text-xs leading-snug text-carvao-muted">{dica}</span>}
+        </span>
+        <span aria-hidden="true" className="shrink-0 text-xs text-carvao-muted motion-safe:transition-transform group-open:rotate-180">
+          ▾
+        </span>
+      </summary>
+      <div className="space-y-3 pb-4 pt-1 text-sm leading-relaxed text-carvao-muted">{children}</div>
+    </details>
   );
 }
 
 const porId = new Map(NOS_MAPA.map((n) => [n.id, n]));
 
-/** Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. */
-function DetalheNo({ no }: { no: NoMapa }) {
+/** Nome do verbete quando o chip mostra só a sigla ou uma forma curta; null quando o chip já é o nome. */
+function nomeDoConceito(slug: string, rotulo: string): string | null {
+  const c = conceito(slug);
+  if (!c || c.nome.toLowerCase() === rotulo.toLowerCase()) return null;
+  return c.nome;
+}
+
+/** Nome do conjunto da fonte sem sigla solta: "SAMP Balanço" vira "balanço do Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica (SAMP)". */
+function conjuntoPorExtenso(conjunto: string): string {
+  const texto = conjuntoLegivel(conjunto).texto;
+  const m = /^SAMP\s+(.+)$/.exec(texto);
+  if (!m) return texto;
+  return `${m[1].charAt(0).toLowerCase()}${m[1].slice(1)} do ${SIGLAS.SAMP.split(",")[0]} (SAMP)`;
+}
+
+/** "Concessionárias de distribuição (Brasil)" dentro de uma frase, sem parênteses dentro de parênteses: "concessionárias de distribuição do Brasil". */
+function entidadeEmFrase(e: string): string {
+  const m = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(e.trim());
+  const base = (m ? m[1] : e).trim();
+  const minuscula = /^[A-ZÀ-Þ][a-zß-ÿ]/.test(base) ? base.charAt(0).toLowerCase() + base.slice(1) : base;
+  if (!m) return minuscula;
+  return m[2].toLowerCase() === "brasil" ? `${minuscula} do Brasil` : `${minuscula} (${m[2]})`;
+}
+
+/** Os cinco tipos de ligação do mapa, em uma frase: o nome de cada um e o que ele quer dizer. */
+function TiposDeLigacao() {
+  const ids = Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[];
+  return (
+    <>
+      {ids.map((t, i) => (
+        <span key={t}>
+          <strong className="font-medium text-carvao">{TIPOS_LIGACAO[t].rotulo.toLowerCase()}</strong> ({TIPOS_LIGACAO[t].definicao.replace(/\.$/, "")}){i < ids.length - 1 ? "; " : "."}
+        </span>
+      ))}
+    </>
+  );
+}
+
+/**
+ * Conteúdo de um elo do mapa: explicação, onde explorar, conceitos e ligações com o tipo de cada uma. O painel do desenho (desktop) mostra tudo
+ * do elo escolhido, com as ligações que saem e as que chegam. No celular (`celular`), o elo é um bloco do mapa vertical e este conteúdo abre
+ * ao toque; cada ligação aparece uma vez, no elo de onde ela parte (o tipo e o destino de todas ficam à vista no próprio mapa vertical).
+ */
+function DetalheNo({ no, celular = false }: { no: NoMapa; celular?: boolean }) {
   const saem = LIGACOES.filter((l) => l.de === no.id);
-  const chegam = LIGACOES.filter((l) => l.para === no.id);
+  const chegam = celular ? [] : LIGACOES.filter((l) => l.para === no.id);
+  const destinos = no.destinos.map((s) => destino(s));
+  const conceitos = no.conceitos.map((c) => (
+    <span key={c.slug} className="text-carvao">
+      <Termo slug={c.slug} alvo={!celular}>
+        {c.rotulo}
+      </Termo>
+      {nomeDoConceito(c.slug, c.rotulo) && <span className="ml-1 text-carvao-muted">({nomeDoConceito(c.slug, c.rotulo)})</span>}
+    </span>
+  ));
+  const ligacoes = (saem.length > 0 || chegam.length > 0) && (
+    <div>
+      <p className="rotulo text-mineral">Ligações</p>
+      <ul className={celular ? "mt-1 space-y-1.5" : "space-y-2"}>
+        {saem.map((l) => (
+          <li key={`s-${l.para}`}>
+            <span className="text-carvao">
+              Para {porId.get(l.para)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
+            </span>{" "}
+            {l.texto}
+          </li>
+        ))}
+        {chegam.map((l) => (
+          <li key={`c-${l.de}`}>
+            <span className="text-carvao">
+              De {porId.get(l.de)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
+            </span>{" "}
+            {l.texto}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
   return (
     <>
       <p>{no.explicacao}</p>
       <div>
         <p className="rotulo text-mineral">Onde explorar</p>
         <ul className="flex flex-wrap gap-x-4">
-          {no.destinos.map((s) => {
-            const d = destino(s);
-            return (
-              <li key={s}>
-                <Link href={d.href} className={link}>
-                  {d.rotulo}
-                </Link>
-              </li>
-            );
-          })}
+          {destinos.map((d) => (
+            <li key={d.slug}>
+              <Link href={d.href} className={celular ? `${linkTexto} inline-flex min-h-[44px] items-center` : link}>
+                {d.rotulo}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div>
         <p className="rotulo text-mineral">Conceitos</p>
-        <ul className="flex flex-wrap gap-x-3 text-carvao">
-          {no.conceitos.map((c) => (
-            <li key={c.slug}>
-              <Termo slug={c.slug} alvo>
-                {c.rotulo}
-              </Termo>
-            </li>
+        <ul className="flex flex-wrap gap-x-3">
+          {conceitos.map((c, i) => (
+            <li key={no.conceitos[i].slug}>{c}</li>
           ))}
         </ul>
       </div>
-      <div>
-        <p className="rotulo text-mineral">Ligações</p>
-        <ul className="space-y-2">
-          {saem.map((l) => (
-            <li key={`s-${l.para}`}>
-              <span className="text-carvao">
-                Para {porId.get(l.para)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
-              </span>{" "}
-              {l.texto}
-            </li>
-          ))}
-          {chegam.map((l) => (
-            <li key={`c-${l.de}`}>
-              <span className="text-carvao">
-                De {porId.get(l.de)!.titulo.toLowerCase()} · {TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()}:
-              </span>{" "}
-              {l.texto}
-            </li>
-          ))}
-        </ul>
+      {ligacoes}
+    </>
+  );
+}
+
+/**
+ * O mapa no celular, na vertical: as quatro faixas na ordem do desenho, os sete elos numerados (o título e a frase de cada um à vista), a seta
+ * com o tipo da ligação entre os elos seguidos da mesma faixa e, sob cada elo, as ligações que saem dele para outros lugares, com o tipo. Ao
+ * toque, o elo abre a explicação, onde explorar, os conceitos e a frase de cada ligação. Tudo vem de NOS_MAPA e LIGACOES: é o mesmo grafo do
+ * desenho do desktop, lido de cima para baixo.
+ */
+function MapaVertical() {
+  const numero = new Map(NOS_MAPA.map((n, i) => [n.id, i + 1]));
+  return (
+    <ol className="space-y-5" data-mapa-vertical="">
+      {ORDEM_FAIXAS.map((f) => {
+        const nos = NOS_MAPA.filter((n) => n.faixa === f);
+        return (
+          <li key={f} aria-labelledby={`mapa-faixa-${f}`}>
+            <h3 id={`mapa-faixa-${f}`} className="rotulo text-mineral">
+              {FAIXAS_MAPA[f].rotulo}
+            </h3>
+            <p className="mt-1 text-xs leading-snug text-carvao-muted">{FAIXAS_MAPA[f].resumo}</p>
+            <ol className="mt-2">
+              {nos.map((n, i) => {
+                const proximo = nos[i + 1];
+                const seguinte = proximo ? LIGACOES.find((l) => l.de === n.id && l.para === proximo.id) : undefined;
+                // as ligações que saem do elo e não são a seta para o elo de baixo
+                const outras = LIGACOES.filter((l) => l.de === n.id && l !== seguinte);
+                return (
+                  <li key={n.id}>
+                    <details id={`mapa-elo-${n.id}`} className="group scroll-mt-24 border border-linha bg-superficie">
+                      <summary className="flex min-h-[44px] cursor-pointer list-none items-start gap-3 px-3 py-2 [&::-webkit-details-marker]:hidden">
+                        <span className="tabular-nums leading-snug text-mineral">{numero.get(n.id)}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-serif text-base leading-snug text-carvao">{n.titulo}</span>
+                          <span className="block text-xs leading-snug text-carvao-muted">{n.curto}</span>
+                        </span>
+                        <span aria-hidden="true" className="shrink-0 pt-1 text-xs text-carvao-muted motion-safe:transition-transform group-open:rotate-180">
+                          ▾
+                        </span>
+                      </summary>
+                      <div className="space-y-3 border-t border-linha px-3 pb-3 pt-2 text-sm leading-relaxed text-carvao-muted">
+                        <DetalheNo no={n} celular />
+                      </div>
+                    </details>
+                    {outras.length > 0 && (
+                      <p className="mt-1 pl-3 text-xs leading-snug text-carvao-muted">
+                        Liga-se a{" "}
+                        {outras.map((l, k) => (
+                          <span key={l.para}>
+                            {k > 0 && "; "}
+                            {numero.get(l.para)}, {porId.get(l.para)!.titulo.toLowerCase()} ({TIPOS_LIGACAO[l.tipo].rotulo.toLowerCase()})
+                          </span>
+                        ))}
+                        .
+                      </p>
+                    )}
+                    {proximo && seguinte && (
+                      <p className="py-1 pl-3 text-xs text-carvao-muted">
+                        <span aria-hidden="true">↓</span> {TIPOS_LIGACAO[seguinte.tipo].rotulo.toLowerCase()}
+                        <span className="sr-only"> para {proximo.titulo.toLowerCase()}</span>
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+type CartaoDaPagina = NonNullable<(typeof CARTOES)[string]>;
+
+/**
+ * O detalhe de uma página dentro do próprio item do índice, num botão de 44 px à direita do item: para que serve, o que se encontra (com o
+ * link de cada painel), o recorte e o conceito principal. É o que antes ficava numa segunda lista de todas as páginas, "Detalhe de cada
+ * página": o índice é um só, e o detalhe abre no lugar. O texto fica no HTML do servidor, aberto por clique, toque ou teclado.
+ */
+function DetalhesDoDestino({ d, c }: { d: DestinoNavegacao; c: CartaoDaPagina }) {
+  return (
+    <details className="group/d" data-detalhe-do-destino={d.slug}>
+      <summary
+        aria-label={`Para que serve e o que se encontra em ${d.rotulo}`}
+        className="absolute right-0 top-1 flex h-11 w-11 cursor-pointer list-none items-center justify-center text-xs text-carvao-muted hover:text-carvao [&::-webkit-details-marker]:hidden"
+      >
+        <span aria-hidden="true" className="motion-safe:transition-transform group-open/d:rotate-180">
+          ▾
+        </span>
+      </summary>
+      <div className="space-y-2 pb-3 pr-2 text-sm leading-relaxed text-carvao-muted">
+        <p>
+          <span className="text-carvao">Para que serve:</span> {c.utilidade}
+        </p>
+        {d.integrado ? (
+          <div>
+            <p className="rotulo text-mineral">O que você encontra</p>
+            <ul>
+              {c.encontra.map((e) => (
+                <li key={e.texto}>
+                  <Link href={e.href} className={link}>
+                    {e.texto}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>
+            <span className="rotulo mr-1 text-mineral">Em integração</span> A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.
+          </p>
+        )}
+        <p className="text-xs text-mineral">Recorte: {c.recorte}</p>
+        {c.conceito && (
+          <p className="text-carvao [&_a]:min-h-[44px]">
+            <Termo slug={c.conceito.slug} alvo>
+              {c.conceito.rotulo}
+            </Termo>
+          </p>
+        )}
+      </div>
+    </details>
+  );
+}
+
+/** Item do índice: o nome da página, a pergunta que ela responde, o estado (quando não publica números) e o botão com o detalhe dela. */
+function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
+  const estado = estadoDoDestino(d);
+  const c = CARTOES[d.slug];
+  const corpo = (
+    <>
+      <span className="flex flex-wrap items-baseline gap-x-2">
+        <span className={estado === "preparacao" ? "text-base text-carvao" : "text-base text-energia-dark underline underline-offset-4 group-hover:text-carvao"}>{d.rotulo}</span>
+        {estado === "integracao" && (
+          <span className="rotulo text-mineral">
+            Em integração<span className="sr-only">: a página mostra o escopo e as fontes catalogadas, sem números publicados</span>
+          </span>
+        )}
+        {estado === "preparacao" && (
+          <span className="rotulo text-mineral">
+            Em preparação<span className="sr-only">: ainda sem página</span>
+          </span>
+        )}
+      </span>
+      <span className="mt-0.5 block text-sm leading-snug text-carvao-muted">{d.pergunta}</span>
+    </>
+  );
+  if (estado === "preparacao") return <div className="py-2">{corpo}</div>;
+  return (
+    <div className="relative">
+      <Link href={d.href} className={`group block min-h-[44px] py-2 ${c && d.publicado ? "pr-12" : ""}`}>
+        {corpo}
+      </Link>
+      {c && d.publicado && <DetalhesDoDestino d={d} c={c} />}
+    </div>
+  );
+}
+
+/** Leitura de uma variação com glifo e palavra (a cor nunca é o único sinal), no estilo da faixa de métricas. */
+function Variacao({ v }: { v: NonNullable<SinalDisponivel["variacao"]> }) {
+  const d = descreverVariacao(v);
+  return (
+    <p className="col-span-2 mt-1 text-xs tabular-nums text-carvao-muted sm:col-auto sm:row-start-4 sm:mt-1.5">
+      <span aria-hidden="true">
+        {d.glifo && <span className="mr-1">{d.glifo}</span>}
+        {d.texto} {v.referencia}
+      </span>
+      <span className="sr-only">{d.leitura}</span>
+    </p>
+  );
+}
+
+/**
+ * A situação de uma fonte com forma própria: a cor nunca é o único sinal, e nenhuma forma aprova ou reprova. Círculo cheio para "em dia",
+ * losango com moldura para "atrasada" (a única que pede atenção do leitor) e círculo vazio para a fonte sem calendário declarado ou sem avaliação.
+ */
+function Situacao({ l }: { l: LinhaAtualidade }) {
+  const texto = l.situacao ?? "sem avaliação";
+  if (l.atrasado) {
+    return (
+      <span className="inline-flex items-center gap-1.5 border border-carvao px-1.5 py-0.5 font-medium text-carvao">
+        <span aria-hidden="true">◆</span>
+        {texto}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span aria-hidden="true">{l.situacao === "em dia" ? "●" : "○"}</span>
+      {texto}
+    </span>
+  );
+}
+
+/** O que a situação comparou com o calendário da fonte, em palavras; null quando a publicação não diz. */
+function baseDaSituacao(l: LinhaAtualidade): string | null {
+  if (l.base === "publicacao") return `pela publicação do arquivo${l.publicadoEm ? `, em ${l.publicadoEm}` : ""}`;
+  if (l.base === "periodo") return "pelo último período";
+  return null;
+}
+
+/** Ficha "Comprove este número" no tamanho da faixa de métricas: texto de 12 px sem caixa alta, 32 px de altura (44 px no toque). */
+const COMPROVE_COMPACTO =
+  "[&_[data-comprove]]:min-h-[2rem] [&_[data-comprove]]:text-xs [&_[data-comprove]]:normal-case [&_[data-comprove]]:tracking-normal [@media(pointer:coarse)]:[&_[data-comprove]]:min-h-[2.75rem]";
+
+/**
+ * A figura de referência de um número: a faixa observada (linha fina entre dois traços), a metade central (caixa), a mediana (traço) e o valor do
+ * cartão (losango), com a legenda dos números embaixo. É uma ilustração de posição, sem juízo de valor: a escala vai do menor ao maior dos pontos
+ * desenhados, com uma folga nas pontas. O desenho é invisível para o leitor de tela (aria-hidden); a legenda diz tudo com palavras.
+ */
+function FaixaDeReferencia({ f }: { f: FiguraReferencia }) {
+  const pontos = [f.extremos[0], f.extremos[1], f.valor, ...(f.marca ? [f.marca.valor] : [])];
+  const menor = Math.min(...pontos);
+  const maior = Math.max(...pontos);
+  const folga = (maior - menor) * 0.05 || 1;
+  const a = menor - folga;
+  const b = maior + folga;
+  const x = (v: number) => `${((100 * (v - a)) / (b - a)).toFixed(2)}%`;
+  const largura = (de: number, ate: number) => `${((100 * (ate - de)) / (b - a)).toFixed(2)}%`;
+  return (
+    <figure data-faixa="" className="m-0">
+      <div aria-hidden="true" className="relative h-6">
+        <span className="absolute top-1/2 border-t-2 border-mineral" style={{ left: x(f.extremos[0]), width: largura(f.extremos[0], f.extremos[1]) }} />
+        <span className="absolute top-1/2 h-3 -translate-y-1/2 border-l-2 border-mineral" style={{ left: x(f.extremos[0]) }} />
+        <span className="absolute top-1/2 h-3 -translate-y-1/2 border-l-2 border-mineral" style={{ left: x(f.extremos[1]) }} />
+        {f.caixa && <span className="absolute top-1/2 h-3.5 -translate-y-1/2 border-2 border-mineral bg-energia-fundo" style={{ left: x(f.caixa[0]), width: largura(f.caixa[0], f.caixa[1]) }} />}
+        {f.mediana !== undefined && <span className="absolute top-1/2 h-5 -translate-y-1/2 border-l-2 border-carvao" style={{ left: x(f.mediana) }} />}
+        {f.marca && <span className="absolute top-0 h-6 border-l-2 border-dashed border-carvao" style={{ left: x(f.marca.valor) }} />}
+        <span className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-2 border-energia-dark bg-energia-dark" style={{ left: x(f.valor) }} />
+      </div>
+      <figcaption className="mt-1 text-xs leading-snug text-carvao-muted">{f.legenda}</figcaption>
+    </figure>
+  );
+}
+
+/**
+ * A medida de abertura de uma pergunta: o que se mede, o valor, o período, o selo de natureza, a ficha de prova, a variação, a figura de
+ * referência, as referências, o universo e a ressalva. No celular a medida é uma linha de lista (rótulo e contexto à esquerda, valor e unidade à
+ * direita), como na faixa de métricas das aberturas; a partir de 640 px o valor vem abaixo do rótulo. O cartão que a contém é um subgrid da
+ * grade das perguntas: cada linha (título, para que serve, rótulo, valor, período, variação, figura, texto, ação) tem a mesma altura nos cartões
+ * lado a lado, e o número fica alinhado entre as colunas mesmo quando o título ocupa uma ou duas linhas.
+ */
+function MedidaDisponivel({ s }: { s: SinalDisponivel }) {
+  return (
+    <>
+      <div
+        role="group"
+        aria-label={s.medida}
+        data-medida={s.id}
+        className={`mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:row-span-4 sm:row-start-3 sm:grid-cols-1 sm:grid-rows-subgrid sm:items-start sm:gap-y-0 ${COMPROVE_COMPACTO}`}
+      >
+        <p className="text-[0.8125rem] leading-snug text-carvao-muted sm:row-start-1 sm:mb-1.5">{s.medida}</p>
+        <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:col-start-1 sm:row-span-1 sm:row-start-2 sm:text-left sm:text-[2.25rem]">
+          {s.valorTexto}
+          <span className="block pt-1 font-sans text-xs leading-tight text-carvao-muted sm:!text-sm">{s.unidade}</span>
+        </p>
+        <div className="col-start-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-snug text-carvao-muted sm:row-start-3 sm:mt-1.5">
+          <span>{s.periodo}</span>
+          <SeloNatureza natureza={s.natureza} texto />
+          {s.evidencia ? <ComproveNumero evidencia={s.evidencia} endereco={s.endereco} /> : s.prova && <ComproveNumero sobDemanda={s.prova} endereco={s.endereco} />}
+        </div>
+        {s.variacao && <Variacao v={s.variacao} />}
+      </div>
+      {s.figura && (
+        <div className="mt-3 sm:row-start-7">
+          <FaixaDeReferencia f={s.figura} />
+        </div>
+      )}
+      <div className="mt-3 space-y-2 sm:row-start-8">
+        {s.referencias.length > 0 && (
+          <ul className="space-y-1 text-sm leading-snug text-carvao">
+            {s.referencias.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        )}
+        <p className="text-xs leading-relaxed text-carvao-muted">
+          {s.universo} {s.ressalva}
+        </p>
+        {s.semFicha && (
+          <p className="text-xs leading-relaxed text-carvao-muted" data-sem-ficha="">
+            {s.semFicha}
+          </p>
+        )}
       </div>
     </>
   );
 }
 
-function MapaEmTexto() {
+/** Ausência é um estado, com o motivo: hachura e "sem dado" (ou "indisponível nesta publicação"), nunca um zero. */
+function MedidaAusente({ s }: { s: SinalAusente }) {
   return (
-    <ol className="space-y-4">
-      {NOS_MAPA.map((n, i) => (
-        <li key={n.id} className="border border-linha bg-superficie p-5">
-          <h3 className="font-serif text-lg leading-snug text-carvao">
-            <span className="mr-2 text-mineral">{i + 1}.</span>
-            {n.titulo}
-          </h3>
-          <div className="mt-2 space-y-3 text-sm leading-relaxed text-carvao-muted">
-            <DetalheNo no={n} />
-          </div>
-        </li>
-      ))}
-    </ol>
+    <div role="group" aria-label={s.medida} data-medida={s.id} className="mt-3 sm:row-span-4 sm:row-start-3">
+      <p className="text-[0.8125rem] leading-snug text-carvao-muted">{s.medida}</p>
+      <p className="mt-1.5 inline-flex items-center gap-2 font-serif text-xl leading-none text-carvao-muted">
+        <span
+          aria-hidden="true"
+          className="inline-block h-4 w-4 border border-mineral"
+          style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
+        />
+        {s.estado === "indisponivel" ? "indisponível nesta publicação" : "sem dado"}
+      </p>
+      {s.periodo && <p className="mt-1.5 text-xs text-carvao-muted">{s.periodo}</p>}
+      <p className="mt-2 text-xs leading-relaxed text-carvao-muted">{s.motivo}</p>
+    </div>
   );
 }
 
-function CartaoDestino({ d }: { d: DestinoNavegacao }) {
-  const c = CARTOES[d.slug];
-  if (!c) return null;
+type EscolhasDistribuidora = ReturnType<typeof escolhasDeDistribuidora>;
+
+/** A pergunta de um cartão: as seis prioritárias e as duas de acesso e desigualdade (que não têm resposta por distribuidora). */
+type PerguntaDoCartao = Omit<PerguntaPrioritaria, "id"> & { id: string };
+
+/** Uma das perguntas: o título, para que serve, a medida de abertura e o caminho para a página que aprofunda (com a "sua distribuidora" em conta, qualidade e perdas). */
+function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaDoCartao; sinal: SinalHome; escolhas: EscolhasDistribuidora }) {
+  const c = CARTOES[p.slug]?.conceito;
+  // o link do verbete tem 44 px de altura de toque (o componente compartilhado entrega 24 px dentro de uma área de 44), e a dica do termo continua
+  const termo = c && (
+    <span className="text-sm text-carvao [&_a]:min-h-[44px]">
+      <Termo slug={c.slug} alvo>
+        {c.rotulo}
+      </Termo>
+    </span>
+  );
+  const por = p.porDistribuidora;
+  const [destinoPagina, ancora] = p.link.href.split("#");
+  // quem tem o dado de cada pergunta, e o que dizer da escolhida que não o tem
+  const dados = por
+    ? {
+        conta: { comDado: escolhas.comDado.conta, emParte: [] as string[], semDado: "{sigla} não tem tarifa em vigor na data.", emParteTexto: undefined as string | undefined },
+        qualidade: {
+          comDado: escolhas.comDado.qualidade,
+          emParte: escolhas.comDado.qualidadeParcial,
+          semDado: `{sigla} não enviou DEC de ${escolhas.anoQualidade}.`,
+          emParteTexto: `{sigla} enviou só parte de ${escolhas.anoQualidade} e não tem DEC anual.` as string | undefined,
+        },
+        perdas: { comDado: escolhas.comDado.perdas, emParte: [] as string[], semDado: `{sigla} não tem dado de perdas em ${escolhas.anoPerdas}.`, emParteTexto: undefined as string | undefined },
+      }[por.tema]
+    : null;
   return (
-    <article className="flex flex-col border border-linha bg-superficie p-5">
-      <h4 className="font-serif text-lg leading-snug text-carvao">{d.rotulo}</h4>
-      <p className="mt-2 font-medium leading-snug text-carvao">{d.pergunta}</p>
-      <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
-        <span className="text-carvao">Para que serve:</span> {c.utilidade}
+    <article
+      aria-labelledby={`pergunta-${p.id}`}
+      className="grid min-w-0 content-start border-t border-linha pb-6 pt-4 sm:row-span-9 sm:grid-rows-subgrid"
+      data-sinal={p.id}
+      data-estado={sinal.estado}
+    >
+      <h3 id={`pergunta-${p.id}`} className="ed-h3 font-serif text-carvao sm:row-start-1">
+        {p.pergunta}
+      </h3>
+      <p className="mt-1 text-sm leading-snug text-carvao-muted sm:row-start-2" data-importa="">
+        {p.importa}
       </p>
-      {d.integrado ? (
-        <div className="mt-3">
-          <p className="rotulo text-mineral">O que você encontra</p>
-          <ul className="mt-1 space-y-1 text-sm">
-            {c.encontra.map((e) => (
-              <li key={e.texto}>
-                <Link href={e.href} className={linkTexto}>
-                  {e.texto}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p className="mt-3 text-sm leading-relaxed text-carvao-muted">
-          <span className="rotulo mr-1 text-mineral">Em integração</span> A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.
-        </p>
-      )}
-      <p className="mt-3 text-xs leading-relaxed text-mineral">Recorte: {c.recorte}</p>
-      <div className="mt-auto flex flex-wrap items-center gap-x-5 pt-3">
-        <Link href={d.href} className={`rotulo ${link}`}>
-          Explorar <span className="sr-only">{d.rotulo}</span>
-          <span aria-hidden="true" className="ml-1.5">
-            →
-          </span>
-        </Link>
-        {c.conceito && (
-          <span className="text-sm text-carvao">
-            <Termo slug={c.conceito.slug} alvo>
-              {c.conceito.rotulo}
-            </Termo>
-          </span>
+      {sinal.estado === "disponivel" ? <MedidaDisponivel s={sinal} /> : <MedidaAusente s={sinal} />}
+      <div className="mt-3 sm:row-start-9">
+        {por && dados ? (
+          <div className="flex flex-col items-start">
+            <LinkPorDistribuidora
+              destino={destinoPagina}
+              parametro={por.parametro}
+              ancora={ancora}
+              rotuloPadrao={p.link.rotulo}
+              rotuloEscolhida={por.rotuloEscolhida}
+              comDado={dados.comDado}
+              emParte={dados.emParte}
+              semDado={dados.semDado}
+              emParteTexto={dados.emParteTexto}
+              className={`rotulo ${link}`}
+            />
+            {termo}
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center gap-x-6">
+            <Link href={p.link.href} className={`rotulo ${link}`}>
+              {p.link.rotulo}
+              <span aria-hidden="true" className="ml-1.5">
+                →
+              </span>
+            </Link>
+            {termo}
+          </div>
         )}
       </div>
     </article>
   );
 }
 
+/* ------------------------------------------------------------------ a página */
+
 export default function MapaDoObservatorio() {
   const perdas = lerGold<PerdasGold>("perdas.json");
+  const qualidade = lerGold<QualidadeGold>("qualidade.json");
   const empresas = lerGold<EmpresasGold>("empresas.json");
   const pub = lerGold<PublicacaoAtualidade & { disponivel?: boolean; resumo?: { com_revisao?: number; observacoes_revisadas?: number; referencias_revisadas?: number } }>("publicacao.json");
 
-  const distribuidoras = integra(empresas) ? empresas.distribuidoras.indice : [];
-  const opcoesPerdas = opcoesDistribuidora(distribuidoras, (d) => d.perdas !== null);
-  const opcoesQualidade = opcoesDistribuidora(distribuidoras, (d) => d.qualidade !== null);
+  const distribuidoras = empresas && integra(empresas) ? empresas.distribuidoras.indice : [];
+  const escolhas = escolhasDeDistribuidora(distribuidoras, integra(perdas) ? perdas.referencia.ano : null);
   const busca = indiceBusca(
     DESTINOS_NAVEGACAO,
     CONCEITOS,
-    distribuidoras.map((d) => ({ slug: d.slug, sigla: d.sigla, nome: d.nome, cnpj: d.cnpj, ufs: d.ufs })),
+    distribuidoras.map((d) => ({ slug: d.slug, sigla: d.sigla, nome: d.nome, cnpj: d.cnpj, ufs: d.ufs, grupo: d.controle?.topo_nome ?? null })),
   );
   const fichas = new Set(DATASETS_INTEGRADOS.map((d) => d.slug));
-  const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas);
-  const hojePub = pub?.referencia?.hoje ?? null;
+  // a publicação só conhece o ano do DEC e do FEC; o último mês com dado vem do módulo de Qualidade
+  const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas, refinosDePeriodo(qualidade));
+  const resumoAtual = resumoAtualidade(atualidade);
+  const regraAtual = regraDeAtualidade(atualidade);
+  // os órgãos que a tabela cita, com o nome por extenso: o rótulo de cada fonte traz só a sigla
+  const orgaosDaTabela = Array.from(new Set(atualidade.map((l) => l.orgao).filter((o): o is string => !!o)));
+  const dataPublicacao = pub?.referencia?.hoje ?? null;
+  const pubFontes = publicacaoDados();
+  const orgaos = pubFontes ? orgaosDasFontes(pubFontes).map((o) => o.orgao) : [];
+  const sinais = sinaisDaInicial();
+  const sinaisInclusao = sinaisDeInclusao();
+  // a frase do "sua distribuidora": quantas há em cada página, com a contagem do DEC que fecha com a da Visão geral e as de parte do ano à parte
+  const nParciais = escolhas.comDado.qualidadeParcial.length;
+  const descricaoDaEscolha = `Vale para as três perguntas com resposta por distribuidora e fica guardada só neste navegador. Conta de luz: ${escolhas.comDado.conta.length} com tarifa em vigor. Qualidade: ${escolhas.comDado.qualidade.length} com DEC anual de ${escolhas.anoQualidade}${
+    nParciais > 0 ? `, mais ${nParciais} com dado de parte do ano e sem DEC anual` : ""
+  }. Perdas: ${escolhas.comDado.perdas.length} com dado de ${escolhas.anoPerdas}.`;
+  // os arquivos CSV de cada número, os mesmos que a ficha Comprove lista
+  const tituloDe = new Map<string, string>([...PERGUNTAS_PRIORITARIAS, ...PERGUNTAS_DE_INCLUSAO].map((q) => [q.id, q.pergunta]));
+  const baixaveis = [...sinais, ...sinaisInclusao].flatMap((x) => (x.estado === "disponivel" && x.downloads.length > 0 ? [{ id: x.id, pergunta: tituloDe.get(x.id) ?? x.medida, arquivos: x.downloads }] : []));
 
-  // exemplo real da seção F: um número publicado, com as suas datas e a ficha de prova
+  // exemplo real da faixa "Como ler e conferir": um número publicado, com as suas datas e a ficha de prova
   const ev = integra(perdas) ? perdas.evidencias.taxa_nacional : null;
+  // o denominador da taxa, refeito pelo seletor: a ficha o descreve com a origem dele, e o parágrafo do exemplo diz a diferença
+  const denominador = denominadorDePerdas(perdas);
+  const evFicha = ev ? evidenciaComDenominadorNomeado(ev, denominador) : null;
   const natEv = (metrica("perdas_taxa_total_injetada")?.natureza_transformacao ?? null) as Natureza | null;
   const revisoes = pub?.resumo ?? null;
+  // quantas distribuidoras há por trás de cada contagem da página: o total nacional usa só as concessionárias
+  const universo = universoPerdas(perdas);
 
-  const destinosComCartao = (ds: DestinoNavegacao[]) => ds.filter((d) => d.publicado && d.slug !== "mapa" && CARTOES[d.slug]);
+  // o índice: todos os destinos publicados e em integração, menos a própria inicial; o estado de cada um vem de navegacao.ts
+  const destinosDoIndice = (ds: DestinoNavegacao[]) => ds.filter((d) => d.slug !== "mapa");
+  const todos = destinosDoIndice(DESTINOS_NAVEGACAO);
+  const emIntegracao = todos.filter((d) => estadoDoDestino(d) === "integracao").map((d) => d.rotulo);
+  const emPreparacao = todos.filter((d) => estadoDoDestino(d) === "preparacao").map((d) => d.rotulo);
+  const estadoDoIndice =
+    emIntegracao.length === 0 && emPreparacao.length === 0
+      ? `As ${todos.length} páginas publicam números.`
+      : [
+          emIntegracao.length ? `${listaPorExtenso(emIntegracao)} ${emIntegracao.length === 1 ? "está" : "estão"} em integração: ${emIntegracao.length === 1 ? "mostra" : "mostram"} o escopo e as fontes catalogadas, sem números.` : "",
+          emPreparacao.length ? `${listaPorExtenso(emPreparacao)} ${emPreparacao.length === 1 ? "está" : "estão"} em preparação, sem página.` : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
 
   return (
     <>
       <CabecalhoEnergia atual="mapa" />
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 pb-16 sm:px-6">
-        {/* A. propósito em uma tela */}
-        <header id="proposito" className="scroll-mt-24 pb-10 pt-10 md:pt-14">
-          <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>
-          <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2.1rem,5vw,3.4rem)] leading-[1.08] text-carvao">Entenda a energia que move o Brasil</h1>
-          <p className="mt-5 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
-            O observatório liga a operação do sistema elétrico, os preços, as empresas e o que chega à vida das pessoas, com dados públicos que você pode conferir número a
-            número: de que fonte vem, a que período se refere e como foi calculado.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <a href="#perguntas" className="rotulo inline-flex min-h-[44px] items-center bg-carvao px-6 text-marfim hover:bg-carvao-soft">
-              Explorar por pergunta <span aria-hidden="true" className="ml-2">↓</span>
-            </a>
-            <Link href="/setor-eletrico/visao-geral" className={`rotulo ${link}`}>
-              Ver a situação do sistema
-            </Link>
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-12">
+        {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
+        <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
+          <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
+            <div className="min-w-0">
+              <p className="rotulo text-mineral">Observatório Brasileiro do Setor Elétrico</p>
+              <h1 className="ed-h1 mt-2 max-w-4xl font-serif text-carvao">Energia, do sistema à sua conta</h1>
+              <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
+                Entenda o que pesa na conta de luz e como o sistema elétrico funciona: compare regiões e confira cada número em dados públicos, com a fonte, o período e o método à vista.
+              </p>
+              <p className="mt-2 max-w-3xl text-sm leading-snug text-carvao" data-limite="">
+                <span className="rotulo mr-2 text-mineral">Não permite concluir</span>
+                As medidas de abertura são nacionais ou do sistema inteiro: não dizem quanto vai custar a fatura de uma casa, nem se vai faltar energia, nem como está a sua distribuidora.
+              </p>
+              <div className="ed-meta mt-1 items-center text-xs text-carvao-muted" data-recorte="">
+                <span>Cada número informa o próprio período e universo</span>
+                {orgaos.length > 0 && (
+                  <span>
+                    Fonte: {orgaos.length} órgãos, entre eles {listaEmPortugues(orgaos.slice(0, 3).map((o) => (SIGLAS[o] ? `${SIGLAS[o]} (${o})` : o)))}
+                  </span>
+                )}
+                <DetalheDoNivel resumo="Fontes, datas e siglas" abreEm="nunca" className="[&[open]]:basis-full">
+                  <div className="max-w-prose2 space-y-3 pb-2 pt-1 text-sm leading-relaxed text-carvao-muted">
+                    {pubFontes && (
+                      <p className="text-xs text-mineral">
+                        <span className="font-medium text-carvao-muted">Fontes e datas de referência: </span>
+                        {listaEmPortugues(orgaos)}; catálogo publicado em {carimbo(pubFontes.gerado_em)}. Cada painel mostra a data de referência dos próprios dados.
+                      </p>
+                    )}
+                    <p>
+                      O observatório liga a operação do sistema elétrico, os preços, as empresas e o que chega à vida das pessoas, com dados públicos que você pode conferir número a número: de que
+                      fonte vem, a que período se refere e como foi calculado. A atualidade de cada fonte está em{" "}
+                      <a href="#aprofundar" className={linkTexto}>
+                        Fontes e atualidade
+                      </a>
+                      .
+                    </p>
+                    <LegendaDeSiglas siglas={["SIN", "PLD", "DEC", "EAR"]} />
+                  </div>
+                </DetalheDoNivel>
+              </div>
+              <div className="mt-6">
+                <BuscaObservatorio
+                  itens={busca}
+                  exemplos={["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"]}
+                  regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                />
+              </div>
+            </div>
+            <nav aria-label="Por onde começar" className="min-w-0 lg:border-l lg:border-linha lg:pl-8">
+              <p className="rotulo text-mineral">Por onde começar</p>
+              <ol className="mt-1 divide-y divide-linha">
+                {CAMINHOS_INTENCAO.map((c) => {
+                  const [principal, ...apoio] = c.slugs.map(destino);
+                  const aoTitulo = "inline-flex min-h-[44px] items-center gap-2 font-serif text-lg leading-snug text-energia-dark underline underline-offset-4 hover:text-carvao";
+                  return (
+                    <li key={c.id} className="py-3" data-caminho={c.id}>
+                      {c.ancora || !principal ? (
+                        <a href={c.ancora ?? "#proposito"} className={aoTitulo}>
+                          {c.titulo}
+                          <span aria-hidden="true">↓</span>
+                        </a>
+                      ) : (
+                        <Link href={principal.href} className={aoTitulo}>
+                          {c.titulo}
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                      )}
+                      <p className="text-sm leading-snug text-carvao-muted">{c.descricao}</p>
+                      {apoio.length > 0 && (
+                        <p className="flex flex-wrap items-center gap-x-3 text-sm text-carvao-muted">
+                          <span>Como se calcula:</span>
+                          {apoio.map((d) => (
+                            <Link key={d.slug} href={d.href} className={link}>
+                              {d.rotulo}
+                            </Link>
+                          ))}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className="border-t border-linha pt-1">
+                <a href="#destinos" className={link}>
+                  Ver todas as páginas, por tema
+                  <span aria-hidden="true" className="ml-1.5">
+                    ↓
+                  </span>
+                </a>
+              </p>
+            </nav>
           </div>
-          <div className="mt-10">
-            <BuscaObservatorio itens={busca} exemplos={["perdas", "bandeira", "reservatórios", "Tarifa Social"]} />
-          </div>
-          <nav aria-label="Nesta página" className="mt-10 border-t border-linha pt-4">
-            <p className="rotulo text-mineral">Nesta página</p>
-            <ul className="mt-1 flex flex-wrap gap-x-6 text-sm">
-              {SECOES_HOME.filter((s) => s.id !== "proposito").map((s) => (
-                <li key={s.id}>
-                  <a href={`#${s.id}`} className={link}>
-                    {s.rotulo}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </header>
 
-        {/* B. mapa conceitual navegável */}
+        {/* as seis perguntas, cada uma com a medida real, o período, a figura de referência e o link; a escolha da distribuidora é uma só */}
+        <Secao
+          id="perguntas"
+          titulo="Seis perguntas para começar"
+          subtitulo="Cada resposta abre com uma medida, o período e a referência; a página de destino traz o resto. Escolha a sua distribuidora uma vez: as perguntas sobre a conta, a falta de energia e as perdas abrem a página dela já com a distribuidora selecionada."
+        >
+          <SuaDistribuidora opcoes={escolhas.opcoes} descricao={descricaoDaEscolha} />
+          <p className="mb-6 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-como-ler="">
+            <span className="font-medium text-carvao">Como ler. </span>
+            Nos gráficos de referência, a linha fina é a faixa observada, a caixa é a metade central dos casos, o traço fino é a mediana e o losango é o valor do cartão. Unidades: MW é a potência, a capacidade num
+            instante; MWh é a energia; MWmed é o MWh dividido pelas horas do período.
+          </p>
+          <section aria-label="Seis perguntas, cada uma com a medida de abertura, o período e a referência" className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3" data-seis-perguntas="">
+            {PERGUNTAS_PRIORITARIAS.map((p) => (
+              <BlocoPergunta key={p.id} p={p} sinal={sinais.find((s) => s.id === p.id)!} escolhas={escolhas} />
+            ))}
+          </section>
+          <section aria-label="Acesso e desigualdade, duas perguntas, cada uma com a medida de abertura" className="mt-6" data-inclusao="">
+            <p className="rotulo text-mineral">Acesso e desigualdade</p>
+            <div className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {PERGUNTAS_DE_INCLUSAO.map((p) => (
+                <BlocoPergunta key={p.id} p={{ ...p, slug: "inclusao-energetica" }} sinal={sinaisInclusao.find((s) => s.id === p.id)!} escolhas={escolhas} />
+              ))}
+              <div className="border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted sm:col-span-2 lg:col-span-1" data-nota-inclusao="">
+                <p>Estes dois números vêm da página Inclusão energética, que mostra também o peso da conta no orçamento das famílias, a cobertura por município e os sistemas isolados.</p>
+                <Link href="/setor-eletrico/inclusao-energetica" className={link}>
+                  Ver Inclusão energética
+                </Link>
+              </div>
+            </div>
+          </section>
+          <div className="mt-6">
+            <Recolhivel id="mais-perguntas" titulo="Outras perguntas do dia a dia" dica="Nove perguntas comuns e a página que responde a cada uma">
+              <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
+                {PERGUNTAS_COTIDIANAS.map((p) => (
+                  <li key={p.pergunta}>
+                    <p className="font-serif text-base leading-snug text-carvao">{p.pergunta}</p>
+                    <p className="mt-1">{p.resposta}</p>
+                    <p className="mt-1 flex flex-wrap gap-x-5">
+                      {p.destinos.map((d) => (
+                        <Link key={d.href} href={d.href} className={link}>
+                          {d.rotulo}
+                        </Link>
+                      ))}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Recolhivel>
+          </div>
+        </Secao>
+
+        {/* mapa conceitual: o desenho a partir de md, a versão em texto no celular (e para o leitor de tela no desktop) */}
         <Secao
           id="mapa-conceitual"
-          letra="B"
-          rotulo="Mapa conceitual"
           titulo="Como as partes do setor elétrico se ligam"
-          subtitulo="Sete elos, da água à vida das pessoas. Escolha um elo para ver o que ele é, onde explorá-lo e com que tipo de ligação ele se conecta aos outros. A forma do traço diz o tipo da ligação."
+          subtitulo={
+            <>
+              Sete elos, da água à vida das pessoas, em quatro faixas: o caminho físico, a coordenação da operação, as relações econômicas e a experiência das pessoas.{" "}
+              {/* o desenho e os botões só existem a partir de md: no celular a instrução é outra */}
+              <span className="hidden md:inline">
+                Escolha um elo para ver o que ele é, onde explorá-lo e com que tipo de ligação ele se conecta aos outros. A forma do traço e da ponta diz o tipo da ligação.
+              </span>
+              <span className="md:hidden">Leia os sete elos abaixo, de cima para baixo; toque em um elo para ver o que ele é, onde explorá-lo e como se liga aos outros.</span>
+            </>
+          }
         >
           <div className="hidden md:block">
             <MapaConceitual
               rotulo="Mapa conceitual do setor elétrico: escolha um elo para ver a explicação e as ligações"
               inicial="recursos"
-              nos={NOS_MAPA.map((n) => ({ id: n.id, titulo: n.titulo, curto: n.curto, pos: n.pos, detalhe: <DetalheNo no={n} /> }))}
+              nos={NOS_MAPA.map((n) => ({ id: n.id, titulo: n.titulo, curto: n.curto, faixa: FAIXAS_MAPA[n.faixa].rotulo, pos: n.pos, detalhe: <DetalheNo no={n} /> }))}
               ligacoes={LIGACOES.map((l) => ({ de: l.de, para: l.para, tipo: l.tipo }))}
               tipos={(Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]).map((id) => ({ id, ...TIPOS_LIGACAO[id] }))}
+              faixas={ORDEM_FAIXAS.map((f) => ({ texto: FAIXAS_MAPA[f].rotulo, ...ROTULOS_FAIXA[f] }))}
             />
           </div>
-          {/* versão em texto: é o mapa no celular; no desktop fica para o leitor de tela, que não usa o desenho */}
-          <div className="md:sr-only">
-            <h3 className="mb-3 font-serif text-lg text-carvao">O mapa em texto</h3>
-            <p className="mb-4 text-sm leading-relaxed text-carvao-muted">
-              Tipos de ligação:{" "}
-              {(Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]).map((t, i, a) => (
-                <span key={t}>
-                  <strong className="font-medium text-carvao">{TIPOS_LIGACAO[t].rotulo.toLowerCase()}</strong> ({TIPOS_LIGACAO[t].definicao.replace(/\.$/, "")}){i < a.length - 1 ? "; " : "."}
-                </span>
-              ))}
+          {/* mapa vertical: é o mapa no celular. No desktop ele some (display: none), porque cópia só para o leitor de tela deixava dezenas de paradas de Tab
+              em links e resumos invisíveis; lá o leitor de tela e o teclado usam os sete botões e o painel do elo, que trazem o mesmo conteúdo */}
+          <div className="md:hidden">
+            <p className="mb-3 text-sm leading-relaxed text-carvao-muted">
+              Tipos de ligação: <TiposDeLigacao />
             </p>
-            <MapaEmTexto />
+            <MapaVertical />
           </div>
           <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
             <div className="border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao-muted">
@@ -344,12 +908,12 @@ export default function MapaDoObservatorio() {
             </div>
             <div>
               <p className="rotulo text-mineral">Atravessam todos os elos</p>
-              <ul className="mt-2 grid gap-3 sm:grid-cols-2">
+              <ul className="mt-2 grid gap-x-6 gap-y-4 sm:grid-cols-2">
                 {TRANSVERSAIS.map((t) => (
-                  <li key={t.titulo} className="border border-linha bg-superficie p-4 text-sm">
+                  <li key={t.titulo} className="border-t border-linha pt-2 text-sm">
                     <p className="font-serif text-base text-carvao">{t.titulo}</p>
-                    <p className="mt-1 leading-relaxed text-carvao-muted">{t.texto}</p>
-                    <p className="mt-1 flex flex-wrap gap-x-4">
+                    <p className="mt-0.5 leading-snug text-carvao-muted">{t.texto}</p>
+                    <p className="flex flex-wrap gap-x-4">
                       {t.destinos.map((s) => (
                         <Link key={s} href={destino(s).href} className={link}>
                           {destino(s).rotulo}
@@ -363,317 +927,423 @@ export default function MapaDoObservatorio() {
           </div>
         </Secao>
 
-        {/* C. para que serve cada página */}
+        {/* índice completo, agrupado nos seis grupos de navegação: um só, com o detalhe de cada página aberto no próprio item */}
         <Secao
           id="destinos"
-          letra="C"
-          rotulo="Destinos"
-          titulo="Para que serve cada página"
-          subtitulo="Cada página responde a uma pergunta. O cartão diz para que serve a resposta, o que você encontra lá e o recorte disponível."
+          titulo="Todas as páginas, por tema"
+          subtitulo={`Seis grupos e a pergunta que cada página responde. O ▾ de cada página abre para que ela serve, o que se encontra nela e o recorte. ${estadoDoIndice}`}
         >
-          <div className="space-y-10">
+          <div className="grid gap-x-10 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
             {GRUPOS_NAVEGACAO.map((g) => {
-              const ds = destinosComCartao(g.destinos);
+              const ds = destinosDoIndice(g.destinos);
               if (!ds.length) return null;
               return (
                 <div key={g.id}>
-                  <h3 className="font-serif text-xl text-carvao">{g.rotulo}</h3>
-                  <p className="mt-1 text-sm text-carvao-muted">{g.resumo}</p>
-                  <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <h3 className="ed-h3 font-serif text-carvao">{g.rotulo}</h3>
+                  <p className="mt-1 border-b border-linha pb-2 text-sm leading-snug text-carvao-muted">{g.resumo}</p>
+                  <ul className="divide-y divide-linha">
                     {ds.map((d) => (
-                      <CartaoDestino key={d.slug} d={d} />
+                      <li key={d.slug}>
+                        <ItemDoIndice d={d} />
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               );
             })}
           </div>
         </Secao>
 
-        {/* D. explore pela sua pergunta */}
-        <Secao
-          id="perguntas"
-          letra="D"
-          rotulo="Perguntas"
-          titulo="Explore pela sua pergunta"
-          subtitulo="Perguntas do dia a dia e a página que responde a cada uma. Nas perguntas sobre a sua distribuidora, escolha-a e a página abre com ela selecionada."
-        >
-          <ul className="grid gap-4 md:grid-cols-2">
-            {PERGUNTAS_COTIDIANAS.map((p) => (
-              <li key={p.pergunta} className="border border-linha bg-superficie p-5">
-                <p className="font-serif text-lg leading-snug text-carvao">{p.pergunta}</p>
-                <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.resposta}</p>
-                {p.porDistribuidora === "perdas" && opcoesPerdas.length > 0 ? (
-                  <EscolhaDistribuidora opcoes={opcoesPerdas} destino="/setor-eletrico/perdas" parametro="d" ancora="painel-mapa" rotulo="Ver em Perdas" />
-                ) : p.porDistribuidora === "qualidade" && opcoesQualidade.length > 0 ? (
-                  <EscolhaDistribuidora opcoes={opcoesQualidade} destino="/setor-eletrico/qualidade" parametro="dist" ancora="p051" rotulo="Ver em Qualidade" />
-                ) : (
-                  <p className="mt-2 flex flex-wrap gap-x-5 text-sm">
-                    {p.destinos.map((d) => (
-                      <Link key={d.href} href={d.href} className={link}>
-                        {d.rotulo}
-                      </Link>
-                    ))}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </Secao>
-
-        {/* E. trilhas por interesse */}
-        <Secao
-          id="trilhas"
-          letra="E"
-          rotulo="Trilhas"
-          titulo="Trilhas por interesse"
-          subtitulo="Percursos curtos, em ordem, com o que se aprende em cada parada. O tempo de leitura é uma estimativa editorial, não uma medida de uso."
-        >
-          <div className="grid gap-4 md:grid-cols-2">
+        {/* trilhas de leitura: a sequência de paradas à vista, o que se aprende em cada uma recolhido */}
+        <Secao id="trilhas" titulo="Trilhas de leitura" subtitulo="Percursos curtos, em ordem, que ligam os temas. O tempo de leitura é uma estimativa editorial, não uma medida de uso.">
+          <div className="grid gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-4">
             {TRILHAS.map((t) => (
-              <section key={t.id} aria-labelledby={`trilha-${t.id}`} className="border border-linha bg-superficie p-5">
-                <h3 id={`trilha-${t.id}`} className="font-serif text-xl text-carvao">
+              <section key={t.id} aria-labelledby={`trilha-${t.id}`} className="flex min-w-0 flex-col border-t border-linha pt-4">
+                <h3 id={`trilha-${t.id}`} className="ed-h3 font-serif text-carvao">
                   {t.perfil}
                 </h3>
-                <p className="mt-1 text-sm text-carvao-muted">{t.para}</p>
-                <p className="mt-1 text-xs text-mineral">Leitura estimada: cerca de {t.minutos} minutos (estimativa editorial).</p>
-                <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm marker:text-mineral">
+                <p className="mt-1 text-sm leading-snug text-carvao-muted">{t.para}</p>
+                <p className="mt-1 text-xs text-mineral">Leitura estimada: cerca de {t.minutos} min (estimativa editorial).</p>
+                <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm marker:text-mineral">
                   {t.paradas.map((s) => (
                     <li key={`${t.id}-${s.href}-${s.rotulo}`}>
-                      <Link href={s.href} className={linkTexto}>
+                      <Link href={s.href} className={`${linkTexto} inline-flex min-h-[44px] items-center`}>
                         {s.rotulo}
                       </Link>
-                      <span className="block text-carvao-muted">Você aprende {s.aprende}</span>
                     </li>
                   ))}
                 </ol>
+                <details className="group mt-2 text-sm">
+                  <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4 hover:text-carvao">O que se aprende em cada parada</summary>
+                  <ol className="list-decimal space-y-2 pb-1 pl-5 text-carvao-muted marker:text-mineral">
+                    {t.paradas.map((s) => (
+                      <li key={`${t.id}-${s.href}-${s.rotulo}-aprende`}>
+                        <span className="text-carvao">{s.rotulo}:</span> você aprende {s.aprende}
+                      </li>
+                    ))}
+                  </ol>
+                </details>
               </section>
             ))}
           </div>
         </Secao>
 
-        {/* F. como confiar e como ler */}
+        {/* como ler e conferir: blocos recolhíveis de uma linha, com o conteúdo inteiro no HTML */}
         <Secao
           id="como-confiar"
-          letra="F"
-          rotulo="Confiança"
-          titulo="Como confiar e como ler"
-          subtitulo="O que cada selo significa, por que cada número tem várias datas, o que é uma revisão da fonte e como provar um número. Os detalhes técnicos estão na Metodologia."
+          titulo="Como ler e conferir"
+          subtitulo="O que cada selo significa, por que cada número tem várias datas, o que é uma revisão da fonte e como provar um número. O método completo está na Metodologia."
         >
-          <div className="grid gap-4 md:grid-cols-2">
-            <Cartao titulo="Cinco naturezas de número">
-              <ul className="space-y-2">
-                {ORDEM_NATUREZAS.map((n) => (
-                  <li key={n} className="grid gap-1 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-3">
-                    <span className="self-start">
-                      <SeloNatureza natureza={n} />
-                    </span>
-                    <span>{NATUREZAS[n].definicao}</span>
-                  </li>
-                ))}
-              </ul>
-              <p>As naturezas nunca se confundem: um cálculo não aparece como medição, e um cenário não é previsão. O selo muda de forma, não só de cor.</p>
-            </Cartao>
+          <p className="mb-3">
+            <Link href="/setor-eletrico/metodologia" className={link}>
+              Ler a Metodologia completa
+              <span aria-hidden="true" className="ml-1.5">
+                →
+              </span>
+            </Link>
+          </p>
+          <div className="grid gap-x-10 lg:grid-cols-2">
+            <div className="border-t border-linha">
+              <Recolhivel titulo="Cinco naturezas de número" dica="Observado, calculado, estimado, previsto e cenário, cada um com a sua forma">
+                <ul className="space-y-2">
+                  {ORDEM_NATUREZAS.map((n) => (
+                    <li key={n} className="grid gap-1 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-3">
+                      <span className="self-start">
+                        <SeloNatureza natureza={n} />
+                      </span>
+                      <span>{NATUREZAS[n].definicao}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p>As naturezas nunca se confundem: um cálculo não aparece como medição, e um cenário não é previsão. O selo muda de forma, não só de cor.</p>
+              </Recolhivel>
 
-            <Cartao titulo="Um número real, do arquivo à página">
-              {ev ? (
-                <>
-                  <p>
-                    <span className="font-serif text-2xl text-carvao">{ev.valor_exibido}</span> é a taxa de perdas totais das distribuidoras ({ev.entidade.toLowerCase()}) de{" "}
-                    {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}, com {ev.universo}.
-                  </p>
-                  {natEv && (
-                    <p className="flex flex-wrap items-center gap-2">
-                      <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {ev.fonte.conjunto}, da {ev.fonte.orgao}.</span>
+              <Recolhivel titulo="Um número real, do arquivo à página" dica="Um número publicado, com as suas datas e a ficha de prova">
+                {ev ? (
+                  <>
+                    <p>
+                      <span className="font-serif text-2xl text-carvao">{valorDestaque(ev.valor_calculo, "pct", 1)}</span> é a taxa de perdas totais das {entidadeEmFrase(ev.entidade)}, de{" "}
+                      {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}: {ev.universo}.
+                      {universo && ` Ao todo, ${universo.total} distribuidoras têm dado de ${universo.ano}; este total soma só as ${universo.concessionarias} concessionárias, e as ${universo.permissionarias} permissionárias ficam fora dele.`}
                     </p>
-                  )}
-                  <dl className="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_auto]">
-                    <dt>Período a que o dado se refere</dt>
-                    <dd className="text-carvao">
-                      {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}
-                    </dd>
-                    {ev.fonte.publicado_em && (
-                      <>
-                        <dt>Arquivo publicado pela fonte em</dt>
-                        <dd className="text-carvao">{dataBR(ev.fonte.publicado_em.slice(0, 10))}</dd>
-                      </>
+                    {denominador && <p data-denominador="">{descreverDenominador(denominador).completa}</p>}
+                    {natEv && (
+                      <p className="flex flex-wrap items-center gap-2">
+                        <SeloNatureza natureza={natEv} /> <span>calculada pela plataforma a partir de {conjuntoPorExtenso(ev.fonte.conjunto)}, da {ev.fonte.orgao}.</span>
+                      </p>
                     )}
-                    {ev.fonte.capturado_em && (
-                      <>
-                        <dt>Capturado pela plataforma em</dt>
-                        <dd className="text-carvao">{dataBR(ev.fonte.capturado_em.slice(0, 10))}</dd>
-                      </>
-                    )}
-                    <dt>Processado em</dt>
-                    <dd className="text-carvao">{dataBR(perdas!.gerado_em.slice(0, 10))}</dd>
-                  </dl>
-                  <div>
-                    <p>A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o sha256, os testes e a citação pronta.</p>
-                    <ComproveNumero evidencia={ev} rotulo="Comprove este número" />
-                  </div>
-                </>
-              ) : (
-                <p className="text-mineral">Exemplo indisponível nesta publicação: a gold de Perdas não foi processada.</p>
-              )}
-            </Cartao>
+                    <dl className="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_auto]">
+                      <dt>Período a que o dado se refere</dt>
+                      <dd className="text-carvao">
+                        {periodoLegivel(ev.periodo.inicio)} a {periodoLegivel(ev.periodo.fim)}
+                      </dd>
+                      {ev.fonte.publicado_em && (
+                        <>
+                          <dt>Arquivo publicado pela fonte em</dt>
+                          <dd className="text-carvao">{dataBR(ev.fonte.publicado_em.slice(0, 10))}</dd>
+                        </>
+                      )}
+                      {ev.fonte.capturado_em && (
+                        <>
+                          <dt>Capturado pela plataforma em</dt>
+                          <dd className="text-carvao">{dataBR(ev.fonte.capturado_em.slice(0, 10))}</dd>
+                        </>
+                      )}
+                      <dt>Processado em</dt>
+                      <dd className="text-carvao">{dataBR(perdas!.gerado_em.slice(0, 10))}</dd>
+                    </dl>
+                    <div>
+                      <p>
+                        A ficha mostra a fórmula, o numerador, o denominador com a origem dele, o arquivo original com o seu código de verificação (sha256, que prova que é o mesmo arquivo), os testes e a citação
+                        pronta.
+                      </p>
+                      <ComproveNumero evidencia={evFicha ?? ev} rotulo="Comprove este número" />
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-mineral">Exemplo indisponível nesta publicação: a base publicada de Perdas não foi processada.</p>
+                )}
+              </Recolhivel>
 
-            <Cartao titulo="Cada data diz uma coisa">
-              <p>
-                <strong className="font-medium text-carvao">Período de referência</strong> é o tempo a que o dado se refere. <strong className="font-medium text-carvao">Publicação</strong> é quando a
-                fonte divulgou o arquivo, se ela informa. <strong className="font-medium text-carvao">Captura</strong> é quando a plataforma o baixou.{" "}
-                <strong className="font-medium text-carvao">Processamento</strong> é quando a página foi gerada.
-              </p>
-              <p>
-                Cada fonte tem o seu calendário: preço e água são diários, perdas e tarifas são mensais ou por vigência, pesquisas são anuais. As páginas mostram a data de cada fonte, e a data de
-                captura nunca substitui a data do dado.
-              </p>
-            </Cartao>
-
-            <Cartao titulo="Dados revisados">
-              <p>
-                A fonte pode corrigir um número já publicado. A plataforma guarda cada versão capturada, compara as capturas do mesmo arquivo e registra a revisão em vez de sobrescrevê-la em silêncio.
-              </p>
-              {revisoes && typeof revisoes.com_revisao === "number" && hojePub && (
-                <p className="text-carvao">
-                  Na publicação de {dataBR(hojePub)}, {revisoes.com_revisao} {revisoes.com_revisao === 1 ? "conjunto tinha" : "conjuntos tinham"} valores revisados pela fonte entre capturas.
+              <Recolhivel titulo="Cada data diz uma coisa" dica="Período de referência, publicação, captura e processamento">
+                <p>
+                  <strong className="font-medium text-carvao">Período de referência</strong> é o tempo a que o dado se refere. <strong className="font-medium text-carvao">Publicação</strong> é quando a fonte
+                  divulgou o arquivo, se ela informa. <strong className="font-medium text-carvao">Captura</strong> é quando a plataforma o baixou.{" "}
+                  <strong className="font-medium text-carvao">Processamento</strong> é quando a página foi gerada.
                 </p>
-              )}
-              <p>
-                O estado de cada conjunto, com as revisões, está em{" "}
-                <Link href="/setor-eletrico/dados" className={linkTexto}>
-                  Dados
-                </Link>
-                .
-              </p>
-            </Cartao>
+                <p>
+                  Cada fonte tem o seu calendário: preço e água são diários, perdas e tarifas são mensais ou por vigência, pesquisas são anuais. As páginas mostram a data de cada fonte, e a data de
+                  captura nunca substitui a data do dado.
+                </p>
+              </Recolhivel>
 
-            <Cartao titulo="Nomes e réguas que se confundem">
-              <dl className="space-y-2">
-                {NOMES_E_REGUAS.map(([t, d]) => (
-                  <div key={t}>
-                    <dt className="font-medium text-carvao">{t}</dt>
-                    <dd>{d}</dd>
-                  </div>
-                ))}
-              </dl>
-            </Cartao>
+              <Recolhivel titulo="Dados revisados" dica="O que a plataforma faz quando a fonte corrige um número">
+                <p>A fonte pode corrigir um número já publicado. A plataforma guarda cada versão capturada, compara as capturas do mesmo arquivo e registra a revisão em vez de sobrescrevê-la em silêncio.</p>
+                {revisoes && typeof revisoes.com_revisao === "number" && dataPublicacao && (
+                  <p className="text-carvao">
+                    Na publicação de {dataBR(dataPublicacao)}, {revisoes.com_revisao} {revisoes.com_revisao === 1 ? "conjunto tinha" : "conjuntos tinham"} valores revisados pela fonte entre capturas.
+                  </p>
+                )}
+                <p>
+                  O estado de cada conjunto, com as revisões, está em{" "}
+                  <Link href="/setor-eletrico/dados" className={linkTexto}>
+                    Dados
+                  </Link>
+                  .
+                </p>
+              </Recolhivel>
+            </div>
 
-            <Cartao titulo="Ausência nunca vira zero">
-              <p>
-                Quando a fonte não publicou, o acesso foi bloqueado ou o processamento falhou, a página diz o que falta e por quê, em vez de mostrar zero ou uma estimativa. Nas tabelas a ausência
-                aparece como &quot;sem dado&quot;; nos arquivos CSV, como campo vazio.
-              </p>
-              <p>
-                As páginas de módulo trazem três profundidades sobre a mesma informação: <strong className="font-medium text-carvao">Entender</strong>, o essencial;{" "}
-                <strong className="font-medium text-carvao">Analisar</strong>, séries e comparações; <strong className="font-medium text-carvao">Auditar</strong>, regras, versões e arquivos.
-              </p>
-            </Cartao>
+            <div className="lg:border-t lg:border-linha">
+              <Recolhivel titulo="Nomes e réguas que se confundem" dica="PLD e tarifa, CMO e PLD, subsistema e submercado, EAR e ENA, MWmed, MWh e MW">
+                <dl className="space-y-2">
+                  {NOMES_E_REGUAS.map(([t, d]) => (
+                    <div key={t}>
+                      <dt className="font-medium text-carvao">{t}</dt>
+                      <dd>{d}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </Recolhivel>
 
-            <Cartao titulo="Correções e sugestões">
-              <p>
-                Encontrou um número, uma data ou um texto que não confere com a fonte? Diga a página e o trecho pela{" "}
-                <Link href="/observatorio/suggestions" className={linkTexto}>
-                  página de sugestões
-                </Link>{" "}
-                da plataforma ou ao{" "}
-                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={linkTexto}>
-                  responsável pela plataforma no LinkedIn
-                </a>
-                .
-              </p>
-              <p>
-                O método completo está na{" "}
-                <Link href="/setor-eletrico/metodologia" className={linkTexto}>
-                  Metodologia
-                </Link>
-                .
-              </p>
-            </Cartao>
+              <Recolhivel titulo="Ausência nunca vira zero" dica="O que a página mostra quando falta dado, e os três níveis de leitura">
+                <p>
+                  Quando a fonte não publicou, o acesso foi bloqueado ou o processamento falhou, a página diz o que falta e por quê, em vez de mostrar zero ou uma estimativa. Nas tabelas a ausência
+                  aparece como &quot;sem dado&quot;; nos arquivos CSV, como campo vazio.
+                </p>
+                <p>
+                  As páginas de módulo trazem três profundidades sobre a mesma informação: <strong className="font-medium text-carvao">Entender</strong>, o essencial;{" "}
+                  <strong className="font-medium text-carvao">Analisar</strong>, séries e comparações; <strong className="font-medium text-carvao">Auditar</strong>, regras, versões e arquivos.
+                </p>
+              </Recolhivel>
+
+              <Recolhivel titulo="Correções e sugestões" dica="Como avisar de um número, uma data ou um texto que não confere com a fonte">
+                <p>
+                  Encontrou um número, uma data ou um texto que não confere com a fonte? Diga a página e o trecho pela{" "}
+                  <Link href="/observatorio/suggestions" className={linkTexto}>
+                    página de sugestões
+                  </Link>{" "}
+                  da plataforma ou ao{" "}
+                  <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={linkTexto}>
+                    responsável pela plataforma no LinkedIn
+                  </a>
+                  .
+                </p>
+                <p>
+                  O método completo está na{" "}
+                  <Link href="/setor-eletrico/metodologia" className={linkTexto}>
+                    Metodologia
+                  </Link>
+                  .
+                </p>
+              </Recolhivel>
+            </div>
           </div>
         </Secao>
 
-        {/* G. onde aprofundar e atualidade */}
+        {/* fontes e atualidade em resumo, com acesso à lista completa */}
         <Secao
           id="aprofundar"
-          letra="G"
-          rotulo="Atualidade"
-          titulo="Onde aprofundar e até quando vão os dados"
-          subtitulo="O último período disponível de cada fonte principal, no calendário da própria fonte. Nada aqui é tempo real: cada fonte publica no seu ritmo."
+          titulo="Fontes e atualidade"
+          subtitulo="O último período de cada fonte principal, no calendário da própria fonte. Nada aqui é tempo real: cada fonte publica no seu ritmo."
         >
-          <ul className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { href: "/setor-eletrico/visao-geral", rotulo: "Visão geral", texto: "O que está acontecendo agora, com a evidência de cada frase." },
-              { href: "/setor-eletrico/dados", rotulo: "Catálogo de dados", texto: "Todos os conjuntos, o estado de cada um e os arquivos para baixar." },
-              { href: "/setor-eletrico/metodologia", rotulo: "Metodologia", texto: "Naturezas, unidades, linhagem e limitações." },
-              { href: "/setor-eletrico/aprenda", rotulo: "Aprenda", texto: "Os conceitos, com a definição da fonte oficial." },
-            ].map((x) => (
-              <li key={x.href} className="border border-linha bg-superficie p-4 text-sm">
-                <Link href={x.href} className={`font-serif text-base ${linkTexto}`}>
-                  {x.rotulo}
-                </Link>
-                <p className="mt-1 leading-relaxed text-carvao-muted">{x.texto}</p>
-              </li>
-            ))}
-          </ul>
-
-          {/* no celular, uma ficha por fonte; a partir de md, a tabela */}
-          <ul className="space-y-3 md:hidden">
-            {atualidade.map((l) => (
-              <li key={`${l.tema}-${l.rotulo}`} className="border border-linha bg-superficie p-4 text-sm">
-                <p className="rotulo text-mineral">
-                  <Link href={l.href} className={linkTexto}>
-                    {l.tema}
-                  </Link>
-                </p>
-                <p className="mt-1 text-carvao">{l.ficha ? <Link href={l.ficha} className={linkTexto}>{l.rotulo}</Link> : l.rotulo}</p>
-                <p className="mt-1 text-carvao-muted">
-                  Último período: <span className="text-carvao">{l.ultimo ?? "sem período nesta publicação"}</span>
-                  {l.emCurso ? " (período em curso)" : ""}
-                  {l.cadencia ? ` · atualização ${l.cadencia}` : ""}
-                  {l.situacao ? ` · ${l.situacao}` : ""}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <div className="tabela-scroll hidden border border-linha bg-superficie md:block" tabIndex={0} role="region" aria-label="Atualidade das fontes principais (tabela rolável)">
-            <table className="w-full min-w-[44rem] border-collapse text-sm">
-              <caption className="sr-only">Fontes principais de cada tema e o último período de referência publicado</caption>
-              <thead>
-                <tr className="text-left text-mineral">
-                  {["Tema", "Fonte", "Último período de referência", "Atualização da fonte", "Situação"].map((c) => (
-                    <th key={c} scope="col" className="rotulo border-b border-linha px-3 py-2 font-medium">
-                      {c}
-                    </th>
+          <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4" data-resumo-atualidade="">
+            {pubFontes && (
+              <div>
+                <dt className="rotulo text-mineral">Órgãos e integrações</dt>
+                <dd className="mt-1 text-sm leading-snug text-carvao">
+                  {orgaos.length} órgãos, {pubFontes.conjuntos.length} integrações de conjuntos de dados abertos.
+                </dd>
+              </div>
+            )}
+            <div>
+              <dt className="rotulo text-mineral">Fontes principais</dt>
+              <dd className="mt-1 text-sm leading-snug text-carvao">{resumoAtual.total} fontes em {new Set(atualidade.map((l) => l.tema)).size} temas.</dd>
+            </div>
+            <div>
+              <dt className="rotulo text-mineral">Situação pelo calendário da fonte</dt>
+              <dd className="mt-1 text-sm leading-snug text-carvao">
+                {resumoAtual.semAvaliacao === resumoAtual.total
+                  ? "Sem avaliação nesta publicação: o quadro de atualidade das fontes não foi processado."
+                  : `${resumoAtual.emDia} em dia, ${resumoAtual.atrasadas.length} ${resumoAtual.atrasadas.length === 1 ? "atrasada" : "atrasadas"}, ${resumoAtual.semCalendario} sem calendário declarado${resumoAtual.semAvaliacao ? ` e ${resumoAtual.semAvaliacao} sem avaliação` : ""}.`}
+              </dd>
+            </div>
+            <div>
+              <dt className="rotulo text-mineral">Atrasadas</dt>
+              <dd className="mt-1 text-sm leading-snug text-carvao">
+                {resumoAtual.atrasadas.length === 0 ? (
+                  "Nenhuma fonte principal atrasada pelo calendário que declara."
+                ) : (
+                  <ul className="space-y-1">
+                    {resumoAtual.atrasadas.map((l) => (
+                      <li key={`${l.tema}-${l.rotulo}`}>
+                        <Link href={l.href} className={link}>
+                          {l.rotulo}
+                        </Link>
+                        {l.ultimo ? `: último período ${l.ultimo}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-4 flex flex-wrap gap-x-6 text-sm">
+            <Link href="/setor-eletrico/dados" className={link}>
+              Catálogo completo de dados
+            </Link>
+            <Link href="/setor-eletrico/dados/saude" className={link}>
+              Saúde das fontes
+            </Link>
+            <Link href="/setor-eletrico/dados/reproducao" className={link}>
+              Download e reprodução
+            </Link>
+          </p>
+          <div className="mt-2">
+            <Recolhivel id="dados-dos-numeros" titulo="Baixar os dados dos números das perguntas" dica="Os arquivos CSV de cada número da abertura, os mesmos que a ficha Comprove lista">
+              {baixaveis.length > 0 ? (
+                <ul className="grid gap-x-10 gap-y-4 md:grid-cols-2">
+                  {baixaveis.map((b) => (
+                    <li key={b.id}>
+                      <p className="font-serif text-base leading-snug text-carvao">{b.pergunta}</p>
+                      <ul>
+                        {b.arquivos.map((a) => (
+                          <li key={a.url}>
+                            <a href={a.url} download className={link}>
+                              {a.rotulo}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
+                </ul>
+              ) : (
+                <p>Nenhum arquivo listado nesta publicação.</p>
+              )}
+              <p>
+                O dicionário das colunas e a reprodução passo a passo estão em{" "}
+                <Link href="/setor-eletrico/dados/reproducao" className={linkTexto}>
+                  Download e reprodução
+                </Link>
+                .
+              </p>
+            </Recolhivel>
+          </div>
+          <div className="mt-2">
+            <Recolhivel id="atualidade-por-fonte" titulo="Atualidade por fonte" dica={`Último período, atualização e situação de cada uma das ${resumoAtual.total} fontes principais`}>
+              {/* no celular, uma ficha por fonte; a partir de md, a tabela */}
+              <ul className="space-y-3 md:hidden">
                 {atualidade.map((l) => (
-                  <tr key={`${l.tema}-${l.rotulo}`} className="border-b border-linha align-top last:border-b-0">
-                    <td className="px-3 py-2">
+                  <li key={`${l.tema}-${l.rotulo}`} className="border border-linha bg-superficie p-4 text-sm">
+                    <p className="rotulo text-mineral">
                       <Link href={l.href} className={linkTexto}>
                         {l.tema}
                       </Link>
-                    </td>
-                    <td className="px-3 py-2 text-carvao">{l.ficha ? <Link href={l.ficha} className={linkTexto}>{l.rotulo}</Link> : l.rotulo}</td>
-                    <td className="px-3 py-2 text-carvao">
-                      {l.ultimo ?? <span className="text-mineral">sem período nesta publicação</span>}
-                      {l.emCurso && <span className="block text-xs text-mineral">período em curso</span>}
-                    </td>
-                    <td className="px-3 py-2 text-carvao-muted">{l.cadencia ?? "não declarada"}</td>
-                    <td className={`px-3 py-2 ${l.atrasado ? "text-carvao" : "text-carvao-muted"}`}>{l.situacao ?? "sem avaliação"}</td>
-                  </tr>
+                    </p>
+                    <p className="mt-1 text-carvao">
+                      {l.ficha ? (
+                        <Link href={l.ficha} className={linkTexto}>
+                          {l.rotulo}
+                        </Link>
+                      ) : (
+                        l.rotulo
+                      )}
+                    </p>
+                    <p className="mt-1 text-carvao-muted">
+                      Último período: <span className="text-carvao">{l.ultimoMes ?? l.ultimo ?? "sem período nesta publicação"}</span>
+                      {l.ultimoMes ? ` (${l.ultimoMesRotulo}; o arquivo é anual, e ${l.ultimo} está em curso)` : l.emCurso ? ` (${nomeDoPeriodoEmCurso(l.ultimo)})` : ""}
+                      {l.cadencia ? ` · atualização ${l.cadencia}` : ""}
+                    </p>
+                    <p className="mt-1 text-carvao-muted">
+                      <Situacao l={l} />
+                      {baseDaSituacao(l) ? ` ${baseDaSituacao(l)}` : ""}
+                    </p>
+                  </li>
                 ))}
-              </tbody>
-            </table>
+              </ul>
+              <div className="tabela-scroll hidden border border-linha bg-superficie md:block" tabIndex={0} role="region" aria-label="Atualidade das fontes principais (tabela rolável)">
+                <table className="w-full min-w-[44rem] border-collapse text-sm">
+                  <caption className="sr-only">Fontes principais de cada tema e o último período de referência publicado</caption>
+                  <thead>
+                    <tr className="text-left text-mineral">
+                      {["Tema", "Fonte", "Último período de referência", "Atualização da fonte", "Situação"].map((c) => (
+                        <th key={c} scope="col" className="rotulo border-b border-linha px-3 py-2 font-medium">
+                          {c}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {atualidade.map((l) => (
+                      <tr key={`${l.tema}-${l.rotulo}`} className="border-b border-linha align-top last:border-b-0">
+                        <td className="px-3 py-2">
+                          <Link href={l.href} className={linkTexto}>
+                            {l.tema}
+                          </Link>
+                        </td>
+                        <td className="px-3 py-2 text-carvao">
+                          {l.ficha ? (
+                            <Link href={l.ficha} className={linkTexto}>
+                              {l.rotulo}
+                            </Link>
+                          ) : (
+                            l.rotulo
+                          )}
+                        </td>
+                        <td className="px-3 py-2 text-carvao">
+                          {l.ultimoMes ?? l.ultimo ?? <span className="text-mineral">sem período nesta publicação</span>}
+                          {l.ultimoMes ? (
+                            <span className="block text-xs text-mineral">
+                              {l.ultimoMesRotulo}; o arquivo é anual, e {l.ultimo} está em curso
+                            </span>
+                          ) : (
+                            l.emCurso && <span className="block text-xs text-mineral">{nomeDoPeriodoEmCurso(l.ultimo)}</span>
+                          )}
+                        </td>
+                        <td className="px-3 py-2 text-carvao-muted">{l.cadencia ?? "não declarada"}</td>
+                        <td className={`px-3 py-2 ${l.atrasado ? "text-carvao" : "text-carvao-muted"}`}>
+                          <Situacao l={l} />
+                          {baseDaSituacao(l) && <span className="block text-xs text-mineral">{baseDaSituacao(l)}</span>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="max-w-prose2" data-nota-atualidade="regra">
+                <strong className="font-medium text-carvao">Como a situação é medida.</strong> Quando a fonte publica uma série por período (dia, semana, mês), compara-se o fim do último período com o calendário que
+                ela declara, mais uma tolerância. Quando publica um arquivo anual, um cadastro ou uma vigência e o reescreve no ritmo declarado, compara-se a data em que ela publicou o arquivo. Por isso uma fonte
+                pode estar em dia mesmo quando o último mês com dado ficou para trás
+                {regraAtual.comMesAtras.length > 0 &&
+                  `: ${regraAtual.comMesAtras.map((l) => `em ${l.tema}, o arquivo foi publicado em ${l.publicadoEm} e o ${l.ultimoMesRotulo} é ${l.ultimoMes}`).join("; ")}`}
+                .{regraAtual.tolerancias.length > 0 && ` Tolerância depois do prazo, por atualização: ${regraAtual.tolerancias.map((x) => `${x.cadencia}, ${x.dias} dias`).join("; ")}.`}
+              </p>
+              {orgaosDaTabela.length > 0 && (
+                <p className="max-w-prose2 text-xs" data-orgaos="">
+                  <span className="font-medium text-carvao-muted">Órgãos: </span>
+                  {legendaDeSiglas(orgaosDaTabela)}.
+                </p>
+              )}
+              {atualidade.some((l) => l.situacao === "sem calendário declarado") && (
+                <p className="max-w-prose2" data-nota-atualidade="sem-calendario">
+                  Sem calendário declarado: a fonte não informa de quanto em quanto tempo atualiza, e por isso o observatório não diz se está em dia ou atrasada; mostra só o último período que ela publicou.
+                </p>
+              )}
+              {atualidade.some((l) => l.ultimo?.startsWith("vigência")) && (
+                <p className="max-w-prose2" data-nota-atualidade="vigencia">
+                  Nas tarifas, a fonte publica vigências (a data em que cada tarifa passa a valer), e não um período de referência: o que aparece é o início da vigência mais recente. A situação vem da frequência de atualização que a fonte declara.
+                </p>
+              )}
+              <p className="max-w-prose2">
+                {dataPublicacao ? `Situação avaliada na publicação de ${dataBR(dataPublicacao)}, pela frequência que a própria fonte declara. ` : ""}A data de captura de cada arquivo fica na ficha do conjunto, em{" "}
+                <Link href="/setor-eletrico/dados" className={linkTexto}>
+                  Dados
+                </Link>
+                : ela registra quando a plataforma baixou o arquivo e nunca é apresentada como data do dado.
+              </p>
+            </Recolhivel>
           </div>
-          <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            {hojePub ? `Situação avaliada na publicação de ${dataBR(hojePub)}, pela frequência que a própria fonte declara. ` : ""}A data de captura de cada arquivo fica na ficha do conjunto, em{" "}
-            <Link href="/setor-eletrico/dados" className={linkTexto}>
-              Dados
-            </Link>
-            : ela registra quando a plataforma baixou o arquivo e nunca é apresentada como data do dado.
-          </p>
         </Secao>
       </main>
     </>

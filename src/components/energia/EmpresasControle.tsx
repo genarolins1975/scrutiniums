@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
 import { EmpresasArvore } from "@/components/energia/EmpresasArvore";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { COLUNAS_GRUPOS, ESQUEMA_CONTROLE, arvoreDe, carregarJson, cnpjFormatado, entidadesCadeia, type ArvoreSocietaria } from "@/lib/energia/empresas";
+import { COLUNAS_GRUPOS, COR_MEDIDA, ESQUEMA_CONTROLE, ROTULO_MOTIVO, arvoreDe, carregarJson, cnpjFormatado, entidadesCadeia, inteiro, type ArvoreSocietaria } from "@/lib/energia/empresas";
+import { SIGLAS } from "@/lib/energia/siglas";
 import { buscarEntidades, type EntidadeBuscavel, type LinhaTabela } from "@/lib/energia/tabela";
 import type { CadeiaSocietaria } from "@/lib/energia/tipos-empresas";
 
@@ -27,11 +29,19 @@ export type EmpresasControleProps = {
   padrao: string;
   arvoreInicial: ArvoreSocietaria | null;
   urlCadeia: string;
+  /** Motivos de parada da cadeia com a explicação que a gold publica (controle.cobertura.motivos_parada). */
+  motivos: { motivo: string; rotulo: string; proprietarios: number }[];
+  /** Grupos de controle da base inteira, para dizer quantos o gráfico e a tabela deixam de fora. */
+  totalGrupos: number | null;
+  /** Arquivo com a lista inteira dos grupos. */
+  csv: { rotulo: string; url: string } | null;
+  /** Recorte e notas do painel, logo depois do gráfico e da tabela dos grupos (a figura principal) e antes da árvore. */
+  aposFigura?: ReactNode;
   fonte: string;
   versao: string;
 };
 
-export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvoreInicial, urlCadeia, fonte, versao }: EmpresasControleProps) {
+export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvoreInicial, urlCadeia, motivos, totalGrupos, csv, aposFigura, fonte, versao }: EmpresasControleProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA_CONTROLE);
   const alvo = v.e || padrao;
   const [cadeia, setCadeia] = useState<CadeiaSocietaria | null>(null);
@@ -62,16 +72,29 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
         chaveCategoria="id"
         chaveRotulo="rotulo"
         series={[
-          { id: "mw_proporcional", rotulo: "Capacidade proporcional", cor: "var(--serie-comp-1)" },
-          { id: "mw_controle", rotulo: "Capacidade sob controle", cor: "var(--serie-comp-3)" },
+          { id: "mw_proporcional", rotulo: "Capacidade proporcional", cor: COR_MEDIDA.proporcional },
+          { id: "mw_controle", rotulo: "Capacidade sob controle", cor: COR_MEDIDA.controle },
         ]}
         unidade="MW"
         casas={1}
         orientacao="horizontal"
         alturaCategoria={56}
+        alturaMaxima={barras.length * 56}
         selecionado={alvo}
         onSelecionar={ir}
       />
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-universo-parcial="grupos">
+        O gráfico mostra {inteiro(barras.length)} dos {inteiro(linhasGrupos.length)} maiores grupos de controle{totalGrupos ? `, de ${inteiro(totalGrupos)} grupos na base` : ""}; cada grupo é identificado pelo CNPJ ({SIGLAS.CNPJ}) de quem está no topo da cadeia declarada. A tabela abaixo traz os{" "}
+        {inteiro(linhasGrupos.length)}, e a lista inteira está no{" "}
+        {csv ? (
+          <a href={csv.url} download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+            {csv.rotulo}
+          </a>
+        ) : (
+          "CSV de grupos"
+        )}
+        . Capacidade proporcional soma as participações diretas das empresas do grupo; capacidade sob controle conta a usina inteira quando o dono majoritário está no grupo. As duas não se somam.
+      </p>
       <TabelaInterativa
         titulo={`Os ${linhasGrupos.length} maiores grupos de controle por capacidade proporcional`}
         colunas={COLUNAS_GRUPOS}
@@ -88,11 +111,21 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
         dicaBusca="Nome ou CNPJ"
         nota="Escolher uma linha abre a árvore societária do grupo abaixo. A lista inteira está no CSV de grupos."
       />
+      <details className="text-sm" data-legenda-motivos="">
+        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">O que significa cada motivo em &ldquo;Por que a cadeia para aqui&rdquo;</summary>
+        <dl className="mt-1 space-y-1 border-l-2 border-linha pl-3 text-carvao-muted">
+          {motivos.map((m) => (
+            <div key={m.motivo}>
+              <dt className="inline font-medium text-carvao">{ROTULO_MOTIVO[m.motivo as keyof typeof ROTULO_MOTIVO] ?? m.motivo}: </dt>
+              <dd className="inline">{m.rotulo}.</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
 
-      <section aria-labelledby="arvore-titulo" className="space-y-3 border border-linha bg-superficie p-4">
-        <h4 id="arvore-titulo" className="font-serif text-base text-carvao">
-          Árvore societária declarada à ANEEL
-        </h4>
+      {aposFigura}
+
+      <SecaoDoPainel id="arvore" titulo="Qual é a árvore societária declarada à ANEEL?">
         <BuscaEntidade
           opcoes={opcoes}
           aoEscolher={ir}
@@ -108,8 +141,8 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
             {cadeia ? `O CNPJ ${cnpjFormatado(alvo)} não aparece na composição societária declarada na janela vigente.` : "Carregando o arquivo da cadeia societária…"}
           </p>
         )}
-        {arvore && <EmpresasArvore a={arvore} ir={ir} />}
-      </section>
+        {arvore && <EmpresasArvore a={arvore} ir={ir} motivos={motivos} />}
+      </SecaoDoPainel>
     </div>
   );
 }

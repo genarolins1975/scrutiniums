@@ -1,27 +1,31 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { LiteralFonte } from "@/components/LiteralFonte";
-import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { datasLegiveis, dataBR } from "@/lib/energia/formato";
 import { ROTULO_BASE, type BaseData } from "@/lib/energia/linha-do-tempo";
 import {
   COLUNAS_LINHA_TEMPO,
   ROTULO_NIVEL_EVENTO,
   ROTULO_ORIGEM_EVENTO,
+  agruparRegistros,
   faixasLinhaTempo,
   filtrarLinhaTempo,
   linhasLinhaTempo,
   origemEvento,
   respostaLinhaTempo,
+  resumoCurtoEvento,
   slugPainel,
   textoDefasagemEvento,
   textoPublicacao,
   textoReuniao,
+  textoVaziosRegistros,
+  vereditoLinhaTempo,
   type OrigemEvento,
 } from "@/lib/energia/regulacao";
 import type { EventoRegulatorio, PainelLink } from "@/lib/energia/tipos-regulacao";
@@ -31,8 +35,14 @@ import type { EventoRegulatorio, PainelLink } from "@/lib/energia/tipos-regulaca
  * origem do evento (`?origem=`: ato lido no texto ou registro do conjunto de dados de
  * bandeiras), a data que filtra e ordena (`?base=`, publicação ou vigência), o período
  * (`?de=` e `?ate=`) e o evento escolhido (`?ev=`). Filtro e seleção criam entrada no
- * histórico (o voltar desfaz). O gráfico de faixas, a lista e a tabela equivalente usam
+ * histórico (o voltar desfaz). O gráfico de faixas, as listas e a tabela equivalente usam
  * a mesma lista filtrada (filtrarLinhaTempo), na mesma ordem.
+ *
+ * Duas camadas de lista. Em Entender, uma lista curta: um item compacto por ato ou lei (título, ato,
+ * datas, a primeira frase do resumo e os painéis afetados) e um cartão por tipo de registro de bandeiras,
+ * com a quantidade e o período; o que falta em todos os registros (data de publicação, efeito declarado,
+ * texto do ato) e o fato de nenhum evento ter impacto estimado são ditos uma vez, não em cada cartão. Em
+ * Analisar, a lista completa de cada evento, com dispositivo, efeito declarado, evidência e documento.
  *
  * Cada evento separa o resumo editorial do observatório, o efeito que o próprio ato
  * declara (literal) e o impacto estimado, que fica sempre vazio: o observatório não
@@ -42,7 +52,25 @@ import type { EventoRegulatorio, PainelLink } from "@/lib/energia/tipos-regulaca
 const ORIGENS: readonly ("" | OrigemEvento)[] = ["", "ato", "registro"];
 const BASES: readonly BaseData[] = ["vigencia", "publicacao"];
 
-export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { eventos: EventoRegulatorio[]; paineis: PainelLink[]; fonte: string; versao: string }) {
+const pl = (n: number, um: string, varios: string) => (n === 1 ? um : varios);
+
+export function RegulacaoLinhaTempo({
+  eventos,
+  paineis,
+  fonte,
+  versao,
+  recorte,
+  notas,
+}: {
+  eventos: EventoRegulatorio[];
+  paineis: PainelLink[];
+  fonte: string;
+  versao: string;
+  /** Período, universo e unidade como legenda da figura, depois dela. */
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e do evento escolhido. */
+  notas?: ReactNode;
+}) {
   const slugs = useMemo(() => paineis.map((p) => slugPainel(p.href)), [paineis]);
   const ids = useMemo(() => eventos.map((e) => e.id), [eventos]);
   const esquema = useMemo(
@@ -65,6 +93,12 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
   const selecionado = r.eventos.find((e) => e.id === v.ev) ?? null;
   const selecionar = (id: string | null) => definir({ ev: id ?? "" });
   const nomePainel = paineis.find((p) => slugPainel(p.href) === filtro.painel)?.rotulo;
+  const atos = r.eventos.filter((e) => origemEvento(e) === "ato");
+  const registros = r.eventos.filter((e) => origemEvento(e) === "registro");
+  const grupos = agruparRegistros(r.eventos);
+  const dataDe = (e: EventoRegulatorio) => (filtro.base === "publicacao" ? e.data_publicacao : e.vigencia_inicio);
+  const vigenciaTexto = (e: EventoRegulatorio) => dataBR(e.vigencia_grao === "mes" ? e.vigencia_inicio.slice(0, 7) : e.vigencia_inicio);
+  const rotuloAno = (e: EventoRegulatorio) => (dataDe(e) ? (dataDe(e) as string).slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`);
 
   const resumo = [
     nomePainel ? `afeta ${nomePainel}` : "",
@@ -81,7 +115,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
       <div role="group" aria-label="Filtros da linha do tempo" className="space-y-2 border-b border-linha pb-3">
         <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
           <label className="text-xs text-carvao-muted">
-            Quem é afetado (painel)
+            Painel ligado ao ato
             <select value={filtro.painel} onChange={(e) => definir({ painel: e.currentTarget.value })} className={campoData}>
               <option value="">Todos os painéis</option>
               {paineis.map((p) => (
@@ -101,7 +135,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
             ))}
           </fieldset>
         </div>
-        <fieldset className="flex flex-wrap items-end gap-x-4 gap-y-1">
+        <fieldset data-nivel="analisar" className="flex flex-wrap items-end gap-x-4 gap-y-1">
           <legend className="rotulo float-left mr-3 self-center text-mineral">Período e ordem por data de</legend>
           {BASES.map((b) => (
             <label key={b} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
@@ -111,11 +145,11 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
           ))}
           <label className="text-xs text-carvao-muted">
             De
-            <input type="date" value={filtro.de} onChange={(e) => definir({ de: e.currentTarget.value })} className={campoData} />
+            <input type="date" lang="pt-BR" value={filtro.de} onChange={(e) => definir({ de: e.currentTarget.value })} className={campoData} />
           </label>
           <label className="text-xs text-carvao-muted">
             Até
-            <input type="date" value={filtro.ate} onChange={(e) => definir({ ate: e.currentTarget.value })} className={campoData} />
+            <input type="date" lang="pt-BR" value={filtro.ate} onChange={(e) => definir({ ate: e.currentTarget.value })} className={campoData} />
           </label>
         </fieldset>
         <div className="flex flex-wrap items-center gap-x-4">
@@ -134,10 +168,10 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
       </div>
 
       {ativo && (
-        // a resposta do recorte inteiro já está acima do filtro; com filtro, a frase do recorte
-        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-filtro="p045" aria-live="polite">
+        // a resposta do recorte inteiro já está acima do filtro; com filtro, o veredito do recorte e, por trás, a resposta completa dele
+        <RespostaCurta id="p045" atributo="data-resposta-filtro" vivo tamanho="sm" veredito={vereditoLinhaTempo(r.eventos, eventos.length, filtro.base, versao)}>
           {respostaLinhaTempo(r.eventos, eventos.length, filtro.base)}
-        </p>
+        </RespostaCurta>
       )}
 
       <RegulacaoFaixas
@@ -152,7 +186,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
               <svg width="14" height="14" aria-hidden="true">
                 <circle cx="7" cy="7" r="5" fill="var(--cor-superficie)" stroke="var(--cor-carvao-muted)" strokeWidth="2" />
               </svg>
-              publicação no DOU
+              publicação no Diário Oficial
             </li>
             <li className="inline-flex items-center gap-1.5">
               <svg width="14" height="14" aria-hidden="true">
@@ -183,12 +217,12 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
           <p className="rotulo text-energia-dark">Evento selecionado</p>
           <p className="mt-1 font-serif text-lg text-carvao">{selecionado.titulo}</p>
           <p className="mt-1 text-carvao-muted">
-            {selecionado.ato ?? selecionado.tipo_ato}; {textoPublicacao(selecionado.data_publicacao)}; vigência a partir de{" "}
-            {dataBR(selecionado.vigencia_grao === "mes" ? selecionado.vigencia_inicio.slice(0, 7) : selecionado.vigencia_inicio)} ({textoDefasagemEvento(selecionado)}).
+            {selecionado.ato ?? selecionado.tipo_ato}; {textoPublicacao(selecionado.data_publicacao)}; vigência a partir de {vigenciaTexto(selecionado)} ({textoDefasagemEvento(selecionado)}).
           </p>
           <p className="mt-2 flex flex-wrap gap-x-4">
-            <a href={`#evento-${selecionado.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-              Ver o evento completo na lista
+            {/* o ato tem item na lista curta (Entender); o registro de bandeiras só aparece na lista completa (Analisar) */}
+            <a href={origemEvento(selecionado) === "ato" ? `#resumo-${selecionado.id}` : `#evento-${selecionado.id}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+              Ver o evento na lista
             </a>
             <button type="button" onClick={() => selecionar(null)} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
               Remover seleção
@@ -197,136 +231,262 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
         </div>
       )}
 
+      {recorte}
+      {notas}
+
       {r.eventos.length > 0 && (
-        <ol aria-label="Eventos da linha do tempo no recorte" className="ml-1.5 border-l border-linha">
-          {r.eventos.map((e, k) => {
-            const data = filtro.base === "publicacao" ? e.data_publicacao : e.vigencia_inicio;
-            const ano = data ? data.slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`;
-            const anterior = k > 0 ? (filtro.base === "publicacao" ? r.eventos[k - 1].data_publicacao : r.eventos[k - 1].vigencia_inicio) : undefined;
-            const anoAnterior = k === 0 ? null : anterior ? anterior.slice(0, 4) : `sem data de ${ROTULO_BASE[filtro.base]}`;
-            const sel = selecionado?.id === e.id;
-            return (
-              <li key={e.id} id={`evento-${e.id}`} data-evento={e.id} className="relative scroll-mt-28 pb-7 pl-6 last:pb-1">
-                <span aria-hidden="true" className={`absolute -left-[6px] top-1.5 h-[11px] w-[11px] rounded-full border-2 ${sel ? "border-energia-dark bg-energia" : "border-energia bg-superficie"}`} />
-                {ano !== anoAnterior && (
-                  <p aria-hidden="true" className="rotulo mb-1 text-mineral">
-                    {ano}
-                  </p>
-                )}
-                <article aria-labelledby={`evento-${e.id}-titulo`} className={sel ? "bg-energia-fundo p-3" : undefined}>
-                  <p className="rotulo text-energia-dark">
-                    {ROTULO_ORIGEM_EVENTO[origemEvento(e)]} · {e.orgao}
-                  </p>
-                  <h4 id={`evento-${e.id}-titulo`} className="mt-0.5 font-serif text-lg leading-snug text-carvao">
-                    {e.titulo}
-                  </h4>
-                  <dl className="mt-1.5 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 text-sm [&_dd]:[overflow-wrap:anywhere]">
-                    <dt className="text-carvao-muted">Ato</dt>
-                    <dd className="text-carvao">{e.ato ?? `${e.tipo_ato} (número não informado pela fonte)`}</dd>
-                    <dt className="text-carvao-muted">Publicação</dt>
-                    <dd className="tabular-nums text-carvao">
-                      {e.data_publicacao ? <time dateTime={e.data_publicacao}>{dataBR(e.data_publicacao)}</time> : <span className="italic text-mineral">não informada pela fonte</span>}
-                    </dd>
-                    <dt className="text-carvao-muted">Vigência</dt>
-                    <dd className="tabular-nums text-carvao">
-                      a partir de <time dateTime={e.vigencia_inicio}>{dataBR(e.vigencia_grao === "mes" ? e.vigencia_inicio.slice(0, 7) : e.vigencia_inicio)}</time>
-                      <span className="block text-xs text-carvao-muted">{textoDefasagemEvento(e)}</span>
-                    </dd>
-                    <dt className="text-carvao-muted">Dispositivo</dt>
-                    <dd className="text-carvao">{e.dispositivo}</dd>
-                    <dt className="text-carvao-muted">Quem é afetado</dt>
-                    <dd className="text-carvao">
-                      {e.paineis.length
-                        ? e.paineis.map((p, i) => (
-                            <span key={p.href}>
-                              {i > 0 && ", "}
-                              <a href={p.href} className="text-energia-dark underline underline-offset-4">
-                                {p.rotulo}
-                              </a>
-                            </span>
-                          ))
-                        : "nenhum painel indicado"}
-                    </dd>
-                  </dl>
-                  <div className="mt-2 space-y-1.5 text-sm leading-relaxed">
-                    <p className="text-carvao-muted">
-                      <span className="rotulo mr-1.5 text-mineral">Resumo do observatório</span>
-                      <TextoEnergia texto={e.resumo} />
+        <section aria-labelledby="lista-curta-titulo" className="space-y-6 border-t border-linha pt-6" data-lista-curta="">
+          <div>
+            <h3 id="lista-curta-titulo" className="ed-h3 font-serif text-carvao">
+              Quais foram os eventos mais recentes?
+            </h3>
+            <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-sem-impacto="">
+              Do evento mais recente ao mais antigo. Sem impacto estimado nesta fonte: o observatório não estima o efeito de nenhum evento. O efeito que o próprio ato declara, o dispositivo e as conferências estão na lista completa, em
+              Analisar. Os resumos são do observatório, escritos a partir do texto do ato: não substituem o texto oficial e não são parecer jurídico.
+            </p>
+          </div>
+
+          {atos.length > 0 && (
+            <div>
+              <h4 className="rotulo text-mineral">
+                Atos e leis lidos no texto ({atos.length})
+              </h4>
+              <ol aria-label="Atos e leis no recorte" className="ml-1.5 mt-2 border-l border-linha">
+                {atos.map((e, k) => {
+                  const sel = selecionado?.id === e.id;
+                  const ano = rotuloAno(e);
+                  const anterior = k > 0 ? rotuloAno(atos[k - 1]) : null;
+                  return (
+                    <li key={e.id} id={`resumo-${e.id}`} data-resumo-evento={e.id} className="relative scroll-mt-28 pb-6 pl-6 last:pb-1">
+                      <span aria-hidden="true" className={`absolute -left-[6px] top-1.5 h-[11px] w-[11px] rounded-full border-2 ${sel ? "border-energia-dark bg-energia" : "border-energia bg-superficie"}`} />
+                      {ano !== anterior && (
+                        <p aria-hidden="true" className="rotulo mb-1 text-mineral">
+                          {ano}
+                        </p>
+                      )}
+                      <article aria-labelledby={`resumo-${e.id}-titulo`} className={sel ? "bg-energia-fundo p-3" : undefined}>
+                        <h5 id={`resumo-${e.id}-titulo`} className="font-serif text-lg leading-snug text-carvao">
+                          {e.titulo}
+                        </h5>
+                        <p className="mt-0.5 text-sm text-carvao-muted [overflow-wrap:anywhere]">{e.ato ?? `${e.tipo_ato} (número não informado pela fonte)`}</p>
+                        <p className="mt-0.5 text-sm tabular-nums text-carvao">
+                          {e.data_publicacao ? (
+                            <>
+                              Publicação <time dateTime={e.data_publicacao}>{dataBR(e.data_publicacao)}</time>
+                            </>
+                          ) : (
+                            <span className="italic text-carvao-muted">Publicação não informada pela fonte</span>
+                          )}
+                          ; vigência a partir de <time dateTime={e.vigencia_inicio}>{vigenciaTexto(e)}</time>
+                        </p>
+                        <p className="mt-1.5 max-w-prose2 text-sm leading-relaxed text-carvao">{resumoCurtoEvento(e, datasLegiveis)}</p>
+                        <p className="mt-1 text-sm text-carvao-muted">
+                          Painéis ligados:{" "}
+                          {e.paineis.length
+                            ? e.paineis.map((p, i) => (
+                                <span key={p.href}>
+                                  {i > 0 && ", "}
+                                  <a href={p.href} className="text-energia-dark underline underline-offset-4">
+                                    {p.rotulo}
+                                  </a>
+                                </span>
+                              ))
+                            : "nenhum painel indicado"}
+                        </p>
+                        <button
+                          type="button"
+                          aria-pressed={sel}
+                          onClick={() => selecionar(sel ? null : e.id)}
+                          className="rotulo mt-1 inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao"
+                        >
+                          {sel ? "Remover seleção" : "Destacar no gráfico"}
+                        </button>
+                      </article>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
+
+          {registros.length > 0 && (
+            <div>
+              <h4 className="rotulo text-mineral">
+                Registros do conjunto de dados de bandeiras ({registros.length})
+              </h4>
+              <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-vazios-registros="">
+                {textoVaziosRegistros(registros)}
+              </p>
+              <ul aria-label="Registros de bandeiras por tipo de ato" className="mt-2 grid gap-3 md:grid-cols-2">
+                {grupos.map((gr) => (
+                  <li key={gr.tipo} data-grupo-registros={gr.tipo} className="min-w-0 border border-linha bg-superficie p-4 text-sm">
+                    <p className="rotulo text-energia-dark">{gr.tipo}</p>
+                    <p className="mt-1 font-serif text-base leading-snug text-carvao">
+                      {gr.n} {pl(gr.n, "registro", "registros")}: {gr.titulos.join("; ")}
                     </p>
-                    <p className="text-carvao">
-                      <span className="rotulo mr-1.5 text-mineral">Efeito declarado pelo ato</span>
-                      {e.efeito_declarado ? <q>{e.efeito_declarado}</q> : <span className="italic text-carvao-muted">o conjunto de dados não traz efeito declarado; o ato não foi lido</span>}
+                    <p className="mt-1 tabular-nums text-carvao-muted">
+                      {gr.n === 1 ? `Em ${vigenciaTexto(gr.ultimo)}.` : `De ${vigenciaTexto(gr.primeiro)} a ${vigenciaTexto(gr.ultimo)}.`}
                     </p>
-                    <p className="text-carvao-muted">
-                      <span className="rotulo mr-1.5 text-mineral">Impacto estimado</span>
-                      {e.impacto_estimado ?? "não estimado pelo observatório"}
+                    {gr.ultimo.vigencia_grao === "mes" && <p className="mt-1 text-carvao-muted">Vigência conhecida só pelo mês: a fonte não informa o dia.</p>}
+                    {gr.ultimo.vigencia_grao === "dia" && (
+                      <p className="mt-1.5 leading-relaxed text-carvao">
+                        {gr.n === 1 ? "O registro" : "O mais recente"}
+                        {gr.ultimo.ato ? ` (${gr.ultimo.ato})` : ""}: {resumoCurtoEvento(gr.ultimo, datasLegiveis)}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">
+                As {registros.length} datas, com o valor de cada patamar, estão na lista completa, em Analisar.
+              </p>
+            </div>
+          )}
+        </section>
+      )}
+
+      {r.eventos.length > 0 && (
+        <div data-nivel="analisar" id="lista-completa" className="space-y-4 border-t border-linha pt-6">
+          <h3 className="ed-h3 font-serif text-carvao">Lista completa: cada evento com dispositivo, efeito declarado e evidência</h3>
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+            Sem impacto estimado nesta fonte, em nenhum dos eventos. {registros.length > 0 ? `${textoVaziosRegistros(registros)} Por isso esses campos não aparecem nos cartões dos registros.` : ""}
+          </p>
+          <ol aria-label="Eventos da linha do tempo no recorte" className="ml-1.5 border-l border-linha">
+            {r.eventos.map((e, k) => {
+              const ano = rotuloAno(e);
+              const anoAnterior = k === 0 ? null : rotuloAno(r.eventos[k - 1]);
+              const sel = selecionado?.id === e.id;
+              return (
+                <li key={e.id} id={`evento-${e.id}`} data-evento={e.id} className="relative scroll-mt-28 pb-7 pl-6 last:pb-1">
+                  <span aria-hidden="true" className={`absolute -left-[6px] top-1.5 h-[11px] w-[11px] rounded-full border-2 ${sel ? "border-energia-dark bg-energia" : "border-energia bg-superficie"}`} />
+                  {ano !== anoAnterior && (
+                    <p aria-hidden="true" className="rotulo mb-1 text-mineral">
+                      {ano}
                     </p>
-                  </div>
-                  <details className="mt-2 text-sm" open={sel}>
-                    <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Evidência: trecho literal, conferências e documento</summary>
-                    <div className="mt-1 space-y-1.5 border-l-2 border-linha pl-3 text-carvao-muted">
-                      <p>
-                        <span className="text-carvao">Onde foi lido:</span> {ROTULO_NIVEL_EVENTO[e.nivel_conferencia] ?? e.nivel_conferencia}
-                        {e.trecho_confere === null ? "; conferência do trecho não executada" : e.trecho_confere ? "; trecho encontrado no documento guardado" : "; trecho não encontrado no documento"}.
+                  )}
+                  <article aria-labelledby={`evento-${e.id}-titulo`} className={sel ? "bg-energia-fundo p-3" : undefined}>
+                    <p className="rotulo text-energia-dark">
+                      {ROTULO_ORIGEM_EVENTO[origemEvento(e)]} · {e.orgao}
+                    </p>
+                    <h4 id={`evento-${e.id}-titulo`} className="mt-0.5 font-serif text-lg leading-snug text-carvao">
+                      {e.titulo}
+                    </h4>
+                    <dl className="mt-1.5 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 text-sm [&_dd]:[overflow-wrap:anywhere]">
+                      <dt className="text-carvao-muted">Ato</dt>
+                      <dd className="text-carvao">{e.ato ?? `${e.tipo_ato} (número não informado pela fonte)`}</dd>
+                      {(e.data_publicacao || origemEvento(e) === "ato") && (
+                        <>
+                          <dt className="text-carvao-muted">Publicação</dt>
+                          <dd className="tabular-nums text-carvao">
+                            {e.data_publicacao ? <time dateTime={e.data_publicacao}>{dataBR(e.data_publicacao)}</time> : <span className="italic text-mineral">não informada pela fonte</span>}
+                          </dd>
+                        </>
+                      )}
+                      <dt className="text-carvao-muted">Vigência</dt>
+                      <dd className="tabular-nums text-carvao">
+                        a partir de <time dateTime={e.vigencia_inicio}>{vigenciaTexto(e)}</time>
+                        <span className="block text-xs text-carvao-muted">{textoDefasagemEvento(e)}</span>
+                      </dd>
+                      <dt className="text-carvao-muted">Dispositivo</dt>
+                      <dd className="text-carvao">{e.dispositivo}</dd>
+                      <dt className="text-carvao-muted">Painéis ligados</dt>
+                      <dd className="text-carvao">
+                        {e.paineis.length
+                          ? e.paineis.map((p, i) => (
+                              <span key={p.href}>
+                                {i > 0 && ", "}
+                                <a href={p.href} className="text-energia-dark underline underline-offset-4">
+                                  {p.rotulo}
+                                </a>
+                              </span>
+                            ))
+                          : "nenhum painel indicado"}
+                      </dd>
+                    </dl>
+                    <div className="mt-2 space-y-1.5 text-sm leading-relaxed">
+                      <p className="text-carvao-muted">
+                        <span className="rotulo mr-1.5 text-mineral">Resumo do observatório</span>
+                        {datasLegiveis(e.resumo)}
                       </p>
-                      {e.conferencia_publicacao && (
-                        <p>
-                          <span className="text-carvao">Data de publicação conferida:</span> {e.conferencia_publicacao.resultado === "aprovado" ? "aprovada" : e.conferencia_publicacao.resultado}; {e.conferencia_publicacao.detalhe}.
+                      {e.efeito_declarado && (
+                        <p className="text-carvao">
+                          <span className="rotulo mr-1.5 text-mineral">Efeito declarado pelo ato</span>
+                          <q>{e.efeito_declarado}</q>
                         </p>
                       )}
-                      <p>
-                        <span className="text-carvao">Regra de vigência:</span> <q>{e.vigencia_regra}</q>
-                        {e.vigencia_calculada ? " (data calculada pela LC nº 95/1998, art. 8º, § 1º)" : ""}
-                      </p>
-                      {e.trecho && e.origem === "conjunto_de_dados" && e.url_oficial && (
-                        <p>
-                          <span className="text-carvao">Registro no conjunto de dados:</span>{" "}
-                          <LiteralFonte classe="registro-composto-bandeiras" origem={e.url_oficial}>
-                            {e.trecho}
-                          </LiteralFonte>
+                      {e.impacto_estimado && (
+                        <p className="text-carvao-muted">
+                          <span className="rotulo mr-1.5 text-mineral">Impacto estimado</span>
+                          {e.impacto_estimado}
                         </p>
                       )}
-                      {e.trecho && !(e.origem === "conjunto_de_dados" && e.url_oficial) && (
-                        <p>
-                          <span className="text-carvao">Trecho:</span> <q>{e.trecho}</q>
-                        </p>
-                      )}
-                      {e.deliberacao && (
-                        <p>
-                          Deliberado na reunião {textoReuniao(e.deliberacao.reuniao)} da Diretoria da ANEEL, em {dataBR(e.deliberacao.data)}.
-                        </p>
-                      )}
-                      {e.observacoes.map((o) => (
-                        <p key={o}>{o}</p>
-                      ))}
-                      <p className="flex flex-wrap gap-x-4">
-                        {e.url_oficial && (
-                          <a href={e.url_oficial} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                            Endereço oficial do documento<span className="sr-only"> (abre em nova aba)</span>
-                          </a>
-                        )}
-                        {e.copia_publica && (
-                          <a href={e.copia_publica} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
-                            Cópia pública conferida por sha256<span className="sr-only"> (abre em nova aba)</span>
-                          </a>
-                        )}
-                      </p>
-                      {e.sha256 && <p className="text-xs [overflow-wrap:anywhere]">sha256 {e.sha256}</p>}
                     </div>
-                  </details>
-                  <button
-                    type="button"
-                    aria-pressed={sel}
-                    onClick={() => selecionar(sel ? null : e.id)}
-                    className="rotulo mt-1 inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao"
-                  >
-                    {sel ? "Remover seleção" : "Destacar no gráfico e na tabela"}
-                  </button>
-                </article>
-              </li>
-            );
-          })}
-        </ol>
+                    <details className="mt-2 text-sm" open={sel}>
+                      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Evidência: trecho literal, conferências e documento</summary>
+                      <div className="mt-1 space-y-1.5 border-l-2 border-linha pl-3 text-carvao-muted">
+                        <p>
+                          <span className="text-carvao">Onde foi lido:</span> {ROTULO_NIVEL_EVENTO[e.nivel_conferencia] ?? e.nivel_conferencia}
+                          {e.trecho_confere === null ? "; conferência do trecho não executada" : e.trecho_confere ? "; trecho encontrado no documento guardado" : "; trecho não encontrado no documento"}.
+                        </p>
+                        {e.conferencia_publicacao && (
+                          <p>
+                            <span className="text-carvao">Data de publicação conferida:</span> {e.conferencia_publicacao.resultado === "aprovado" ? "aprovada" : e.conferencia_publicacao.resultado}; {e.conferencia_publicacao.detalhe}.
+                          </p>
+                        )}
+                        <p>
+                          <span className="text-carvao">Regra de vigência:</span> <q>{e.vigencia_regra}</q>
+                          {e.vigencia_calculada ? " (data calculada pela LC nº 95/1998, art. 8º, § 1º)" : ""}
+                        </p>
+                        {e.trecho && e.origem === "conjunto_de_dados" && e.url_oficial && (
+                          <p>
+                            <span className="text-carvao">Registro no conjunto de dados:</span>{" "}
+                            <LiteralFonte classe="registro-composto-bandeiras" origem={e.url_oficial}>
+                              {e.trecho}
+                            </LiteralFonte>
+                          </p>
+                        )}
+                        {e.trecho && !(e.origem === "conjunto_de_dados" && e.url_oficial) && (
+                          <p>
+                            <span className="text-carvao">Trecho:</span> <q><code className="font-sans">{e.trecho}</code></q>
+                          </p>
+                        )}
+                        {e.deliberacao && (
+                          <p>
+                            Deliberado na reunião {textoReuniao(e.deliberacao.reuniao)} da Diretoria da ANEEL, em {dataBR(e.deliberacao.data)}.
+                          </p>
+                        )}
+                        {e.observacoes.map((o) => (
+                          <p key={o}>{o}</p>
+                        ))}
+                        <p className="flex flex-wrap gap-x-4">
+                          {e.url_oficial && (
+                            <a href={e.url_oficial} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                              Endereço oficial do documento<span className="sr-only"> (abre em nova aba)</span>
+                            </a>
+                          )}
+                          {e.copia_publica && (
+                            <a href={e.copia_publica} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                              Cópia pública conferida por sha256<span className="sr-only"> (abre em nova aba)</span>
+                            </a>
+                          )}
+                        </p>
+                        {e.sha256 && <p className="text-xs [overflow-wrap:anywhere]">sha256 {e.sha256}</p>}
+                      </div>
+                    </details>
+                    <button
+                      type="button"
+                      aria-pressed={sel}
+                      onClick={() => selecionar(sel ? null : e.id)}
+                      className="rotulo mt-1 inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao"
+                    >
+                      {sel ? "Remover seleção" : "Destacar no gráfico e na tabela"}
+                    </button>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       )}
 
       <TabelaInterativa
@@ -342,7 +502,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
         selecionado={selecionado?.id ?? null}
         onSelecionar={selecionar}
         semLinhas="Nenhum evento no recorte atual."
-        nota="Mesmas linhas, na mesma ordem, do gráfico e da lista. Impacto estimado fica vazio em todos os eventos: o observatório não estima efeito de norma."
+        nota="Mesmas linhas, na mesma ordem, do gráfico e da lista. Sem impacto estimado nesta fonte: a coluna de impacto fica vazia em todos os eventos, porque o observatório não estima efeito de norma."
       />
     </div>
   );

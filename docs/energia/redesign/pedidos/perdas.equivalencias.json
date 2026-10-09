@@ -1,0 +1,30 @@
+{
+  "/perdas": [
+    {
+      "antes": "painel|onde estão as perdas e como evoluíram?",
+      "depois": "painel|como variam as perdas entre as distribuidoras?",
+      "justificativa": "Mesmo painel (id painel-mapa, nível Entender): o título passou a ser a pergunta da figura de distribuição por faixa, que abre o painel; o mapa, a escolha da distribuidora, o comparador e a tabela seguem nas seções perdas-territorio, perdas-selecao, perdas-comparar e perdas-tabela."
+    }
+  ],
+  "/perdas/composicao": [
+    {
+      "antes": "painel|qual parte das perdas é técnica e qual é não técnica?",
+      "depois": "painel|a perda de cada distribuidora dividida em técnica e não técnica",
+      "justificativa": "Mesmo painel (id painel-composicao, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1)."
+    }
+  ],
+  "/perdas/custo-e-contexto": [
+    {
+      "antes": "painel|qual é a dimensão econômica das perdas na tarifa?",
+      "depois": "painel|quanto da tarifa residencial remunera as perdas?",
+      "justificativa": "Mesmo painel (id painel-custo, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1). O título do gráfico ganhou '(base econômica)', o que não muda a visão."
+    }
+  ],
+  "/perdas/regulatorio": [
+    {
+      "antes": "painel|como mudou o percentual regulatório de perdas técnicas de cada distribuidora?",
+      "depois": "painel|o percentual técnico de cada distribuidora, trecho a trecho",
+      "justificativa": "Mesmo painel (id painel-regulatorio, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1). A coluna 'Troca contra o trecho anterior' da tabela virou 'Diferença contra o trecho anterior de referência' (a do gráfico), com o percentual do trecho anterior ao lado; a troca do pipeline segue no arquivo para baixar."
+    }
+  ]
+}

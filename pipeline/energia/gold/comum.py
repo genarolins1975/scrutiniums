@@ -23,12 +23,14 @@ LICENCA_CCEE = "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal 
 
 
 def r(v, casas=2):
-    """Arredonda preservando None (ausência não vira zero)."""
+    """Arredonda em decimal, meio para cima, preservando None (ausência não vira zero).
+
+    A regra é a da interface (base.arredonda_meio_para_cima): o `round()` do Python levava 70,175 a 70,17."""
     if v is None:
         return None
     if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
         return None
-    return round(float(v), casas)
+    return base.arredonda_meio_para_cima(v, casas)
 
 
 def media(xs):

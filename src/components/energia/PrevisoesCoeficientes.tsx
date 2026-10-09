@@ -6,13 +6,13 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { num } from "@/lib/energia/formato";
-import type { LinhaCoeficiente } from "@/lib/energia/previsoes";
+import { VARIAVEL_D7, type LinhaCoeficiente } from "@/lib/energia/previsoes";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 
 /**
  * Ficha de um candidato C2: o coeficiente de uma variável em todos os segmentos
- * (horizonte × submercado) do último ajuste, com a referência 1 do achado G23-R1,
- * e a tabela com todas as variáveis. A variável mora em `?var=` e o segmento em
+ * (horizonte × submercado) do último ajuste, com a linha em 1 na média dos 7 dias
+ * (acima dela a correção amplia o desvio recente), e a tabela com todas as variáveis. A variável mora em `?var=` e o segmento em
  * `?seg=` (barra e linha da tabela sincronizadas; o voltar desfaz).
  */
 export function PrevisoesCoeficientes({
@@ -48,6 +48,13 @@ export function PrevisoesCoeficientes({
   const acima = dados.filter((d) => typeof d.valor === "number" && d.valor > 1);
   const negativos = dados.filter((d) => typeof d.valor === "number" && d.valor < 0);
   const sel = linhas.find((l) => l.segmento === v.seg) ?? null;
+  const ehD7 = v.var === VARIAVEL_D7;
+  // o registro só diz a unidade do coeficiente e, para a média dos 7 dias, o que passar de 1 quer dizer; nas outras variáveis a frase só descreve o que a barra mostra
+  const leituraBarra = `Cada barra mostra o coeficiente estimado de “${variavel?.rotulo ?? v.var}” em um segmento (horizonte e submercado), no último ajuste.${
+    ehD7
+      ? " Nesta variável, um coeficiente c soma ao B0 c vezes a diferença entre a média dos 7 últimos dias e o B0; acima de 1, a correção passa da própria diferença e amplia o desvio recente."
+      : ""
+  }`;
 
   return (
     <div className="space-y-4">
@@ -71,6 +78,9 @@ export function PrevisoesCoeficientes({
         }; ${negativos.length ? `negativo em ${negativos.length}` : "nenhum negativo"}.`}
         {sel ? ` Segmento escolhido, ${sel.horizonte} ${sel.sm}: λ ${sel.lambda}, ${sel.entregas_treino ?? "sem contagem de"} entregas de treino.` : ""}
       </p>
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-leitura-coeficiente={v.var}>
+        {leituraBarra}
+      </p>
       <GraficoBarras
         titulo={`${variavel?.rotulo ?? v.var}: coeficiente do ${modelo} por segmento, último ajuste`}
         dados={dados}
@@ -81,7 +91,7 @@ export function PrevisoesCoeficientes({
         casas={2}
         orientacao="horizontal"
         rotulosValor
-        referencias={[{ valor: 1, rotulo: "1: acima, a correção amplia o desvio (G23-R1)" }]}
+        referencias={ehD7 ? [{ valor: 1, rotulo: "1: acima disso, a correção amplia o desvio recente" }] : []}
         selecionado={v.seg || null}
         onSelecionar={(id) => definir({ seg: id && id !== v.seg ? id : "" })}
         alturaMaxima={560}

@@ -976,6 +976,27 @@ def calendario(lista, hoje):
     return agregado, linhas
 
 
+def bloco_avaliacao():
+    """Ponteiro da avaliação dos painéis (P071) em publicacao.json. O arquivo avaliacao.json é gerado por
+    scripts/energia_avaliacao.py a partir da inspeção, das jornadas e da revisão; sem ele, a página declara
+    a ausência e não mostra nota."""
+    caminho = os.path.join(base.GOLD, "avaliacao.json")
+    existe = os.path.exists(caminho)
+    r = {"arquivo": "/energia/gold/avaliacao.json" if existe else None, "caminho_previsto": "public/energia/gold/avaliacao.json", "existe": existe}
+    if not existe:
+        r["rodada"] = None
+        r["nota"] = ("A avaliação dos painéis (P071) só existe depois da inspeção final; enquanto o arquivo não existir, "
+                     "a página declara a ausência e não exibe nota.")
+        return r
+    a = base.le_gold("avaliacao.json") or {}
+    res, rod = a.get("resumo", {}), a.get("rodada", {})
+    r["rodada"] = {"id": rod.get("id"), "data_inspecao": rod.get("data_inspecao"), "paginas": res.get("paginas"),
+                   "nota_ponderada_media": res.get("nota_ponderada_media")}
+    r["nota"] = ("Avaliação publicada: nota só com medição, teste ou revisão registrada; dimensão sem teste aparece como não avaliada. "
+                 "A página /setor-eletrico/metodologia/avaliacao mostra a evidência de cada nota.")
+    return r
+
+
 def _eh_proveniencia(o):
     return isinstance(o, dict) and "natureza" in o and "fonte" in o and "limitacoes" in o
 
@@ -1004,6 +1025,31 @@ def fichas_com_proveniencia(o, ctx=None, out=None):
         for v in o:
             fichas_com_proveniencia(v, ctx, out)
     return out
+
+
+def fichas_externas(g, raiz=None):
+    """Fichas que a gold guarda em arquivo à parte: ela publica só o índice e aponta
+    `evidencias.arquivo` (o PLD faz assim para o HTML não carregar as 27 fichas). Sem este
+    passo, uma gold cujas fichas têm todas testes e reconciliação aparecia com zero fichas
+    na publicação. O arquivo precisa estar sob public/ e ser JSON; qualquer outra coisa
+    devolve lista vazia, nunca um erro de publicação."""
+    ev_ = g.get("evidencias") if isinstance(g, dict) else None
+    arq = ev_.get("arquivo") if isinstance(ev_, dict) else None
+    if not isinstance(arq, str) or not arq.startswith("/energia/"):
+        return []
+    publico = os.path.realpath(os.path.join(raiz or base.RAIZ, "public"))
+    caminho = os.path.realpath(os.path.join(publico, arq.lstrip("/")))
+    if not caminho.startswith(publico + os.sep) or not os.path.isfile(caminho):
+        return []
+    try:
+        with open(caminho, encoding="utf-8") as f:
+            corpo = json.load(f)
+    except (OSError, ValueError):
+        return []
+    fichas = corpo.get("evidencias") if isinstance(corpo, dict) else None
+    if not isinstance(fichas, dict):
+        return []
+    return [e for e in fichas.values() if isinstance(e, dict) and "valor_exibido" in e and "testes" in e and "fonte" in e]
 
 
 def situacao_validacao(e):
@@ -1041,7 +1087,7 @@ def eixos(golds_res):
                 p_ = g["proveniencia"].get(k)
                 if isinstance(e_, dict) and _eh_proveniencia(p_):
                     por_chave[id(e_)] = p_.get("natureza")
-        for e, prov in fichas_com_proveniencia(g):
+        for e, prov in fichas_com_proveniencia(g) + [(x, None) for x in fichas_externas(g)]:
             s = situacao_validacao(e)
             sits[s] += 1
             # prov = proveniência no mesmo objeto da ficha (fichas_com_proveniencia), nunca
@@ -1156,9 +1202,10 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
          (((x["revisoes"] or {}).get("registros") or {}).get("conflitos_entre_recursos") or {}).get("campos"),
          x["validacao"]["resultado"], x["validacao"]["aprovadas"], x["validacao"]["ressalvas"], x["validacao"]["reprovadas"],
          (x["bronze"] or {}).get("ausentes"), (x["bronze"] or {}).get("sha256_divergentes")] for x in lista])
-    _csv(CSV["validacoes"], ["id", "alvo", "tipo", "resultado", "detalhe", "criterio", "verificados", "problemas", "exemplos"],
+    _csv(CSV["validacoes"], ["id", "alvo", "tipo", "resultado", "detalhe", "criterio", "verificados", "problemas", "exemplos", "sha256_julgado"],
          [[k["id"], k["alvo"], k["tipo"], k["resultado"], _limpa(k["detalhe"]), _limpa(k["criterio"]), k["verificados"],
-           k["problemas"], json.dumps(k["exemplos"], ensure_ascii=False, separators=(",", ":"), default=str).replace(";", ",") if k["exemplos"] else None]
+           k["problemas"], json.dumps(k["exemplos"], ensure_ascii=False, separators=(",", ":"), default=str).replace(";", ",") if k["exemplos"] else None,
+           k.get("sha256")]
           for k in todas_checagens])
     rev = []
     for x in lista:
@@ -1543,7 +1590,7 @@ def proveniencias(con, lista, cat, hoje, agora):
 def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
     """Fichas 'Comprove este número' dos números principais da página. Cada teste
     confere o número por um caminho diferente do que o calculou (relatório de
-    checagens, golds publicadas, vintages do silver), não repete a fórmula."""
+    checagens, bases publicadas, vintages do silver), não repete a fórmula."""
     fichas = {}
     golds_res = golds_res or {}
     vint = _fonte_catalogo(con)
@@ -1959,7 +2006,7 @@ def construir(con, ctx):
                       "fica preservada no silver (append only) e no bronze com sha256."),
             "completude": ("Completude interna de uma série = referências distintas presentes ÷ esperadas entre a primeira e a "
                            "última, no passo modal do conjunto. Cobertura do último período = séries com valor no último período "
-                           "disponível até hoje (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano "
+                           "disponível até a data de referência da publicação (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano "
                            "seguinte, cenário ou programação, não conta) comparada com as séries no período anterior a ele."),
             "revisao": ("Revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo "
                         "(recurso); a mesma referência com valores diferentes em arquivos diferentes é conflito entre recursos, "
@@ -2030,11 +2077,7 @@ def construir(con, ctx):
         "calendario": cal_agregado,
         "silver_nao_declarados": nao_declarados,
         "eixos": eix,
-        "avaliacao": {"arquivo": "/energia/gold/avaliacao.json" if os.path.exists(os.path.join(base.GOLD, "avaliacao.json")) else None,
-                      "caminho_previsto": "public/energia/gold/avaliacao.json",
-                      "existe": os.path.exists(os.path.join(base.GOLD, "avaliacao.json")),
-                      "nota": ("A avaliação dos painéis (P071) só existe depois da inspeção final; enquanto o arquivo não existir, "
-                               "a página declara a ausência e não exibe nota.")},
+        "avaliacao": bloco_avaliacao(),
         "reproducao": {
             "repositorio": pub.REPOSITORIO,
             "url_versao_modelo": pub.REPOSITORIO + "/blob/{commit}/public{caminho}",

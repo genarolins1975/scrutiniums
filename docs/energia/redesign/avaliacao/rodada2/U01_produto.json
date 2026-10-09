@@ -1,0 +1,1009 @@
+{
+  "avaliador": "P2-U01-produto",
+  "papel": "produto",
+  "rodada": "reavaliacao 2",
+  "versao_avaliada": "http://localhost:3100, build de produção local do commit d616ae877, estado recebido em 09/10/2026",
+  "paginas": {
+    "/setor-eletrico": {
+      "paineis": [],
+      "criterios": {
+        "A": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_dobra.png e 390_dobra.png: título, busca e quatro entradas na primeira tela, sem rolagem.",
+            "Playwright 1440: a seção 'Como as partes do setor elétrico se ligam' começa em y 3.050 de 6.220 px; as únicas âncoras do topo são #destinos e #conteudo.",
+            "Medição própria: 35% (1440) e 42% (390) dos caracteres em 12 px; sem rolagem horizontal em 320, 390, 768, 1024 e 1440."
+          ],
+          "atendidos": [
+            "Pergunta e entradas reconhecíveis na primeira tela",
+            "Hierarquia da síntese (seis perguntas) ao aprofundamento (trilhas, como ler, fontes)",
+            "Números grandes com unidade, data e selo legíveis",
+            "Celular preserva o essencial: o mapa vira lista numerada com o tipo de ligação",
+            "Espaço usado com função, sem vazio decorativo"
+          ],
+          "problemas": [
+            "As mesmas páginas são listadas no menu, em 'Todas as páginas, por tema', em 'Detalhe de cada página', nas trilhas e em dois rodapés.",
+            "O mapa do sistema (resposta a T1) fica a 3,4 telas da dobra, depois de seis cartões e do índice de páginas, sem atalho no topo.",
+            "Números dos seis cartões desalinhados entre colunas, porque os títulos ocupam uma ou duas linhas.",
+            "Um terço do texto de apoio está em 12 px."
+          ],
+          "justificativa": "Primeira tela clara e hierarquia boa. Perde pontos pela navegação repetida, pelo mapa do sistema depois de seis cartões e do índice de páginas, e pelo texto pequeno. O celular preserva o essencial."
+        },
+        "B": {
+          "nota": 8.5,
+          "evidencia": [
+            "texto_entender.txt, seis perguntas: 'não é o valor da fatura', 'não é a tarifa que a distribuidora cobra', 'MW é potência, e não energia'.",
+            "1440_inteira_03de03.png e 390_inteira_06de09.png: mapa de sete elos em quatro faixas, cinco tipos de ligação e o bloco 'O que o mapa não diz'.",
+            "Blocos recolhidos abertos por script: 'Nomes e réguas que se confundem' (PLD e tarifa, CMO e PLD, MWmed, MWh e MW) e as cinco naturezas de número."
+          ],
+          "atendidos": [
+            "Siglas traduzidas na abertura e glossário por foco ou passagem do mouse",
+            "Distinção entre potência, energia, preço e tarifa",
+            "Separação entre caminho físico, operação, contratos e pessoas no mapa",
+            "Exemplo visual útil (mapa conceitual com textos equivalentes)",
+            "Cada cartão traz referência e o que a medida não permite concluir"
+          ],
+          "problemas": [
+            "A explicação do sistema não é anunciada na abertura nem nos quatro atalhos do topo.",
+            "Cartões de perdas e DEC trazem quatro a cinco parágrafos técnicos (energia requerida, 3.150 conjuntos) para leitor leigo.",
+            "O porquê da medida fica implícito no título da pergunta, sem frase própria.",
+            "As distinções de unidade (MW, MWh, MWmed) ficam em bloco recolhido."
+          ],
+          "justificativa": "Didática forte: conceitos, limites e conexões presentes e bem separados. Não chega a 9 porque o mapa que ensina o sistema está longe da abertura, os cartões de perdas e DEC são técnicos para o público consumidor e o porquê da medida não é dito."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "T1 por busca: 'falta de energia' devolve oito itens e Enter abre /qualidade#p051 em dois passos (Playwright).",
+            "Mapa de elos: cada clique mostra o que é o elo, onde explorar e as ligações; sete elos exigem sete cliques.",
+            "137 links internos do main respondem 200; o seletor de distribuidora gera ?dist=CNPJ e o destino abre com CEMIG-D."
+          ],
+          "atendidos": [
+            "Escolha de página por pergunta, tema, trilha e busca",
+            "Busca acha página, pergunta, painel, conceito e distribuidora",
+            "Cartões respondem perguntas reais com medida, data e referência",
+            "Destino abre com a distribuidora escolhida"
+          ],
+          "problemas": [
+            "O cartão de tarifa responde 'numa residência' com a mediana nacional e não tem seletor de distribuidora.",
+            "Nenhum dos quatro atalhos do topo leva ao caminho da geração ao consumo.",
+            "Busca sem alias de marca ('enel' não acha ELETROPAULO) e sem 'racionamento'; 'Belo Horizonte' devolve a cooperativa de Novo Horizonte como parcial, com aviso para Minha região.",
+            "O sexto cartão (usinas em construção) não tem botão Comprove."
+          ],
+          "justificativa": "A tarefa se cumpre por várias vias e a busca funciona. O caminho mais curto para entender o sistema exige rolar muito, e a pergunta mais pessoal, o preço na minha casa, recebe só a mediana nacional."
+        },
+        "D": {
+          "nota": 8.0,
+          "evidencia": [
+            "Cartões de custo, continuidade e perdas com ressalvas ('não é o valor da fatura'; 52 permissionárias fora do total de perdas).",
+            "Trilha 'Sou consumidor' e busca por Tarifa Social e por distribuidora devolvem resultados.",
+            "Bloco Fontes e atualidade lista 'Tarifa Social por distribuidora (ANEEL): último período jun/2025' como atrasada."
+          ],
+          "atendidos": [
+            "Foco em custo, continuidade e perdas para o consumidor",
+            "Rota para recorte territorial (distribuidora, Minha região)",
+            "Lacunas visíveis (fonte atrasada, universo parcial)",
+            "Perguntas em linguagem do dia a dia"
+          ],
+          "problemas": [
+            "Acesso e desigualdade só são apontados, não mostrados, na própria página.",
+            "Sem copiar link ou exportar; só a ficha Comprove oferece citação.",
+            "A escolha da distribuidora não persiste e não vale para o cartão de tarifa."
+          ],
+          "justificativa": "Boa orientação ao consumidor e lacunas declaradas. A página aponta acesso e desigualdade sem mostrá-los, não oferece compartilhar nem exportar e pede a distribuidora duas vezes. O impacto é potencial, sem uso observado."
+        },
+        "I": {
+          "nota": 8.5,
+          "evidencia": [
+            "Mapa conceitual: SVG decorativo com lista de botões e texto de ligações equivalente; em 390 vira lista numerada com o tipo de ligação.",
+            "Legenda com cinco traços (contínuo, ponto e traço, tracejado longo, tracejado curto, pontilhado), sem cor de aprovação ou reprovação.",
+            "Cartões usam ▲ e ▼ em cor neutra e selos que mudam de forma, não só de cor."
+          ],
+          "atendidos": [
+            "Diagrama escolhido para relações, não para séries",
+            "Alternativa textual equivalente e operação por teclado",
+            "Sem cor que julgue a variação",
+            "Forma, e não só cor, distingue a natureza do dado"
+          ],
+          "problemas": [
+            "Cinco tipos de ligação separados só por padrão de traço; 'decisão de operação' e 'associação analítica' são parecidos.",
+            "Os seis números vêm sem apoio visual de referência (faixa ou minigráfico); a comparação está só em texto."
+          ],
+          "justificativa": "Para uma página de entrada, o diagrama certo, acessível e sem julgamento. Faltam traços mais distintos e um apoio visual de referência para os números dos cartões."
+        },
+        "J": {
+          "nota": 8.0,
+          "evidencia": [
+            "Combobox: setas, Esc e Enter funcionam; a contagem é anunciada; o vazio diz 'Nada no observatório para...' e 'Procura um município? A busca por cidade está em Minha região'.",
+            "O seletor de distribuidora muda o link para ?dist=CNPJ#p051; os dois seletores são independentes e o recarregamento zera.",
+            "Páginas listadas em seis lugares (menu, 'Todas as páginas', 'Detalhe de cada página', trilhas, dois rodapés), com links repetidos entre os rodapés."
+          ],
+          "atendidos": [
+            "Busca funcional por teclado e com estado vazio compreensível",
+            "Destinos levam a seleção da distribuidora",
+            "Menu de celular em lista única de 44 px",
+            "Recolhidos e mapa operáveis por teclado"
+          ],
+          "problemas": [
+            "Dois seletores 'Sua distribuidora' sem sincronia nem memória.",
+            "Páginas listadas em seis lugares, o que dilui o caminho.",
+            "Busca sem sinônimos de marca nem 'racionamento'.",
+            "Sem seletor de profundidade: coerente com conteúdo igual nos três níveis, mas a página não oferece Analisar nem Auditar."
+          ],
+          "justificativa": "Busca e destinos funcionam bem. Os dois seletores de distribuidora não se sincronizam nem lembram a escolha e há índices repetidos. A ausência do seletor de profundidade é coerente com uma inicial de conteúdo igual nos três níveis."
+        },
+        "K": {
+          "nota": 8.5,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360, 390, 768 e 1440; foco visível; Esc fecha Comprove. Meu axe com boas práticas: ordem de títulos em 390 (#mapa-faixa-fisico).",
+            "Tab: 'Pular para o conteúdo' primeiro, contorno de 2 px; contraste mínimo medido 4,92 em 26 combinações de texto.",
+            "Em 390, 37 de 131 alvos visíveis têm menos de 44 px e 3 links em linha medem 17 px; texto a 200% faz o rodapé transbordar (405 px)."
+          ],
+          "atendidos": [
+            "Teclado e foco visíveis em toda a página",
+            "Semântica de combobox, diálogo e acordeões",
+            "Contraste acima de 4,5 em todas as combinações medidas",
+            "Sem rolagem horizontal em 320, 390, 768, 1024 e 1440",
+            "Movimento reduzido e alto contraste tratados no CSS"
+          ],
+          "problemas": [
+            "Links de lista com 24 a 28 px de altura e três links em linha com 17 px em 390.",
+            "Rodapé do site transborda com texto a 200%.",
+            "Ordem de títulos inválida na faixa do mapa em 390.",
+            "Um terço do texto em 12 px.",
+            "Leitor de tela real não testado."
+          ],
+          "justificativa": "Teclado, foco, contraste e semântica estão bem resolvidos e confirmados por medição. Ficam alvos de toque abaixo de 44 px, rodapé que não reflui com texto ampliado, ordem de títulos em 390 e leitor de tela sem teste."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "ini_mapa_distante",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "B",
+            "C",
+            "J"
+          ],
+          "onde": "Seção 'Como as partes do setor elétrico se ligam' (id mapa-conceitual), y 3.050 em 1440 e tela 5 de 9 em 390",
+          "descricao": "O mapa que responde à tarefa T1 vem depois de seis cartões, de 'Outras perguntas', de 'Todas as páginas, por tema' e de 'Detalhe de cada página'. Nenhum link do topo aponta para ele; a única âncora de seção é #destinos.",
+          "sugestao": "Incluir 'Como a energia chega até a conta' entre os atalhos de 'Por onde começar' ou subir a seção para logo depois dos seis cartões."
+        },
+        {
+          "id": "ini_indices_repetidos",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "J"
+          ],
+          "onde": "Menu superior, 'Todas as páginas, por tema', 'Detalhe de cada página', trilhas, rodapé do observatório e rodapé escuro do site",
+          "descricao": "As mesmas páginas são listadas em seis lugares, com links repetidos (Mapa do Observatório, Metodologia, Aprenda, Dados e catálogo aparecem nos dois rodapés).",
+          "sugestao": "Manter um índice por tema, deixar 'Detalhe de cada página' como recolhido único e unificar os rodapés."
+        },
+        {
+          "id": "ini_tarifa_sem_distribuidora",
+          "gravidade": "media",
+          "criterios": [
+            "C",
+            "D",
+            "J"
+          ],
+          "onde": "Cartão 'Quanto custa a energia numa residência?' e os cartões de DEC e perdas",
+          "descricao": "A pergunta é pessoal, mas o cartão mostra a mediana nacional (R$ 0,8212 por kWh) e não tem seletor de distribuidora. Os cartões de DEC e perdas têm seletores independentes, sem memória (recarregar zera).",
+          "sugestao": "Um único seletor 'Sua distribuidora' acima dos cartões, guardado na URL, aplicado a tarifa, DEC e perdas."
+        },
+        {
+          "id": "ini_cartoes_tecnicos",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "A"
+          ],
+          "onde": "Cartões de perdas ('energia requerida', 14,30%) e DEC (3.150 conjuntos, média ponderada)",
+          "descricao": "Quatro a cinco parágrafos de método antes do seletor, para o público consumidor, empurram o botão e o link de destino para baixo.",
+          "sugestao": "Manter a medida, a data, uma ressalva e o link visíveis; levar o método para a ficha Comprove ou para um recolhido."
+        },
+        {
+          "id": "ini_sexto_cartao_sem_prova",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "J"
+          ],
+          "onde": "Cartão 'O que está sendo construído?' (9.030,8 MW)",
+          "descricao": "Cinco dos seis cartões têm 'Comprove este número'; o de usinas em construção não tem, embora a abertura prometa conferir cada número.",
+          "sugestao": "Adicionar a ficha de prova ao sexto cartão."
+        },
+        {
+          "id": "ini_busca_alias",
+          "gravidade": "baixa",
+          "criterios": [
+            "C",
+            "J"
+          ],
+          "onde": "Campo de busca da Inicial",
+          "descricao": "'enel' e 'enel sp' devolvem ENEL CE, ENEL RJ e EDP SP, mas não ELETROPAULO, nome com que a distribuidora de São Paulo está indexada; 'racionamento' não retorna nada; 'Belo Horizonte' devolve a cooperativa de Novo Horizonte como parcial (há o aviso 'Procura um município? ... Minha região').",
+          "sugestao": "Alias de marca (Enel SP igual a Eletropaulo), sinônimos como racionamento e envio do texto digitado para Minha região quando for município."
+        },
+        {
+          "id": "ini_alvos_texto_390",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "390 px: listas de 'Todas as páginas', trilhas, 'o que é DEC'; rodapé com texto a 200%",
+          "descricao": "37 de 131 alvos visíveis têm menos de 44 px; links de lista medem 24 a 28 px e três links em linha medem 17 px. Com texto a 200%, o rodapé gera rolagem horizontal (405 px em 390; 1191 px em 1024).",
+          "sugestao": "Altura mínima de 44 px nos links de lista e glossário; rodapé em coluna única quando o texto cresce."
+        },
+        {
+          "id": "ini_ordem_titulos_390",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "#mapa-faixa-fisico em 390 px (axe heading-order, boa prática)",
+          "descricao": "No acordeão do mapa em 390 px o nível do título da faixa salta em relação ao h2 da seção.",
+          "sugestao": "Usar h3 para as faixas e h4 só dentro delas."
+        },
+        {
+          "id": "ini_tracos_mapa",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Legenda e linhas do mapa conceitual em 1440",
+          "descricao": "Cinco tipos de ligação distinguidos só por padrão de traço; 'decisão de operação' (tracejado curto) e 'associação analítica' (tracejado longo) se parecem à distância.",
+          "sugestao": "Acrescentar rótulo curto nas ligações ou diferenciar também a espessura e a ponta da seta."
+        },
+        {
+          "id": "ini_texto_12px",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "K"
+          ],
+          "onde": "Notas de cartões, fontes e referências",
+          "descricao": "35% (1440) e 42% (390) dos caracteres estão em 12 px, incluindo ressalvas essenciais dos cartões.",
+          "sugestao": "Subir o texto de ressalva para 14 px e deixar 12 px só para rótulos."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real (NVDA, VoiceOver, TalkBack).",
+        "Teclado virtual e lista de resultados em celular real; toque foi emulado.",
+        "Tooltips do glossário em dispositivo de toque.",
+        "Contraste de elementos não textuais e simulação de daltonismo no mapa conceitual.",
+        "Identificador de painel da Inicial: não aparece na página, por isso 'paineis' ficou vazio.",
+        "Fatias 390 02, 03, 05, 07 e 08 de 09 não vieram no pacote; usei capturas próprias do mesmo servidor."
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T1",
+          "perfil": "consumidor (com passos de jornalista ou professor para conceitos)",
+          "passos": [
+            "Abrir /setor-eletrico em 1440 e 390 e ler título, subtítulo e os quatro atalhos 'Por onde começar'.",
+            "Procurar a explicação do caminho da geração ao consumo: nenhum atalho no topo; rolar até 'Como as partes do setor elétrico se ligam' (y 3.050).",
+            "Clicar em Geração, Rede e Consumo para ler o que é, onde explorar e as ligações; em 390 abrir os elos do acordeão.",
+            "Digitar 'falta de energia' na busca e abrir 'Qualidade do serviço' (2 passos); digitar 'light' e 'CEMIG' e conferir que a distribuidora aparece com link para a ficha em /empresas.",
+            "Escolher CEMIG-D no cartão de DEC e seguir 'Ver em Qualidade: CEMIG-D'; digitar 'Belo Horizonte' e seguir o aviso para Minha região."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "O mapa do sistema só se encontra rolando mais de três telas; o topo não o anuncia.",
+            "O cartão de tarifa não tem seletor de distribuidora; a escolha nos outros cartões não persiste.",
+            "Busca por município devolve resultado parcial irrelevante, com aviso para Minha região."
+          ],
+          "erros": [
+            "Nenhum erro de console nem link quebrado nos 137 links internos testados."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/territorio": {
+      "paineis": [
+        "P002"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 7.5,
+          "evidencia": [
+            "Playwright 1024, 1280 e 1440 (captura própria prod_u01/shots/terr_UF_ficha_1440.png): na ficha, a linha 'Capacidade em operação (UF principal da usina)' tem o rótulo espremido a cerca de 30 px e o valor 25.257,3 MW sobreposto às letras.",
+            "Ficha de Nova Friburgo, bloco ENF, em 768 e 1440 (terr_enf_1440.png): rótulos 'Perdas totais...', 'Tarifa B1...' e 'Residenciais com Tarifa Social' colidem com as mensagens 'sem dado'.",
+            "1440_dobra.png: mapa abaixo da primeira tela; 65% dos caracteres da ficha em 12 px."
+          ],
+          "atendidos": [
+            "Pergunta como título, busca e camadas na primeira tela",
+            "Hierarquia mapa, ficha e tabelas por profundidade",
+            "Celular empilha mapa, ficha e tabelas com dica de rolagem lateral",
+            "Sem rolagem horizontal da página em 320 a 1440"
+          ],
+          "problemas": [
+            "Texto sobreposto na ficha, a saída principal, de 768 a 1440 px.",
+            "Mapa fora da primeira tela e introdução de quatro linhas em 1440 (doze em 390).",
+            "'Cada número é da área da sua fonte' aparece de três a quatro vezes na página, com palavras parecidas.",
+            "Ficha com cerca de 3.000 px de altura ao lado de um mapa que fica para trás.",
+            "65% do texto da ficha em 12 px."
+          ],
+          "justificativa": "Estrutura coerente com a tarefa, mas a ficha tem texto sobreposto em larguras de computador e nas linhas de ausência, o mapa fica abaixo da dobra e a mesma advertência se repete. Defeito visível na saída principal impede nota alta."
+        },
+        "B": {
+          "nota": 8.5,
+          "evidencia": [
+            "texto_entender.txt: a abertura define submercado e conjunto elétrico no próprio texto; submercado e SIN têm dica ao focar; DEC e FEC são traduzidos em 'Fontes, datas e siglas'.",
+            "Ficha separa 'Do município', 'Da distribuidora', 'Dos conjuntos elétricos', 'Do submercado da UF' e 'Da UF', cada uma dizendo de quem é o valor.",
+            "Tabatinga: 'Não se aplica: fora do SIN'; Nova Friburgo lista EMR, ENEL RJ e ENF com ressalva, sem escolher uma."
+          ],
+          "atendidos": [
+            "Conceitos definidos antes de serem necessários",
+            "Distinção de grão (município, distribuidora, conjunto, submercado, UF)",
+            "Ausência explicada com motivo, não como zero",
+            "Conexão com Perdas, Qualidade e Conta de luz por links",
+            "A frase 'O que não é possível concluir' é visível no Entender"
+          ],
+          "problemas": [
+            "O parágrafo de abertura concentra cinco termos técnicos em quatro linhas.",
+            "'Por que isso importa' fica recolhido no Entender.",
+            "Analisar e Auditar exibem identificadores internos (provado_com_area_sem_carga, fora_do_sin, gold, pipeline) e 'estado 1 (confirmado)'.",
+            "Tarifa em R$/MWh na ficha (903,29) e em R$/kWh nos números que o consumidor vê na Inicial e na Visão geral."
+          ],
+          "justificativa": "O princípio central, cada número no seu grão, é ensinado e cumprido na ficha. Fica abaixo de 9 pela abertura carregada de termos, pelo porquê recolhido, por identificadores internos nos níveis técnicos e pela unidade da tarifa diferente da que o consumidor conhece."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "Busca por município, distribuidora, UF, submercado, CNPJ e código IBGE gera a ficha com cinco grãos (Belo Horizonte, Nova Friburgo, Tabatinga).",
+            "Comparar até quatro municípios usa só valores do próprio município e lista distribuidora e submercado como referência sem valor.",
+            "Atalhos 'Levar esta distribuidora para' Perdas, Qualidade e Conta de luz abrem com ?d= e ?dist= da distribuidora."
+          ],
+          "atendidos": [
+            "Localiza município, distribuidora, UF e submercado",
+            "Cada indicador no grão da fonte, sem descer dado de distribuidora ao município",
+            "Município com mais de uma distribuidora lista todas sem escolher",
+            "Município fora do SIN diz que o submercado não se aplica",
+            "Camada de usinas com filtros de fonte e estágio"
+          ],
+          "problemas": [
+            "Clique no mapa rola a página ao topo e tira mapa e ficha da tela.",
+            "Usinas do município: o mapa nacional não aproxima e a lista só existe em Analisar.",
+            "Polígono de concessão indisponível (registrado em Auditar), então a área é a união de municípios.",
+            "Texto sobreposto na ficha atrapalha a leitura das ausências."
+          ],
+          "justificativa": "T3 cumprida com rigor: localiza, mostra o grão de cada número e não atribui dado de distribuidora ao município. Perde pelo salto de rolagem no mapa, pela lista de usinas do município escondida em Analisar e pelo defeito de leitura na ficha."
+        },
+        "D": {
+          "nota": 8.5,
+          "evidencia": [
+            "Ficha traz tarifa B1, perdas, DEC e FEC com limites, Tarifa Social, Luz para Todos, sistemas isolados e MMGD (Belo Horizonte, Tabatinga).",
+            "Copiar link leva ?sel=mun:3106200&cam=usinas&modo=analisar; CSV e XLSX seguem busca e ordem e o nome do arquivo registra o filtro.",
+            "Lacunas: 'sem dado' com motivo na ficha; 'O que não é possível concluir' cita a área de concessão no Entender; Analisar e Auditar listam 19 distribuidoras sem município e o que não foi possível obter."
+          ],
+          "atendidos": [
+            "Custo, continuidade, benefícios e acesso no recorte territorial certo",
+            "Comparação de até quatro municípios",
+            "Compartilhar por link com o estado e exportar com filtro",
+            "Lacunas relevantes visíveis",
+            "Útil a consumidor, jornalista, gestor e pesquisador"
+          ],
+          "problemas": [
+            "Não há exportação ou citação só da ficha; só o link do painel.",
+            "Linguagem técnica na ficha (MMGD, TE e TUSD, REH, vínculo confirmado) para o leitor leigo.",
+            "CSV com ponto e vírgula e ponto decimal (12.12) não foi aberto em planilha em português.",
+            "Impacto é potencial; nenhum uso real foi observado."
+          ],
+          "justificativa": "Cobre custo, continuidade, benefícios e acesso no recorte correto, com lacunas explícitas e compartilhamento por link com o estado. Perde por linguagem técnica na ficha e por não exportar a ficha. O impacto é só potencial."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "Mapa de 27 UFs (EPE), municípios (IBGE 2025, áreas iguais) e pontos do SIGA; título, descrição e tabelas equivalentes de 27 e 5.571 linhas.",
+            "SVG sem nenhum elemento de texto (0); nomes só no hover ou na tabela; zoom pelos botões + e −, sem arrastar nem roda do mouse.",
+            "Municípios por quantis com hachura em 'sem dado'; usinas com cor por fonte e forma por estágio."
+          ],
+          "atendidos": [
+            "Geometria e unidade territorial corretas em cada camada",
+            "Alternativa textual e tabela equivalente",
+            "Nenhum mapa atribui dado de distribuidora a município",
+            "Escala sequencial por quantis com 'sem dado' marcado",
+            "Interação por clique, busca e tabela, além do hover"
+          ],
+          "problemas": [
+            "Mapa sem rótulos de UF ou submercado.",
+            "Quatro tons pastel de submercado e cores de fonte das usinas (laranja e verde) dependem da legenda; daltonismo não testado.",
+            "Zoom sem pan nem roda; mapa fora do teclado, com busca e tabela como alternativa.",
+            "Camada de usinas sem contorno de UF ao aproximar, o que dificulta se localizar."
+          ],
+          "justificativa": "Mapas corretos, honestos e com tabela equivalente. Faltam rótulos no mapa, pan no zoom e teste de daltonismo, e achar o lugar pelo mapa depende de hover ou clique."
+        },
+        "J": {
+          "nota": 8.0,
+          "evidencia": [
+            "Seleção por busca, mapa, tabela ou link grava sel, cam e modo na URL; 'Limpar a escolha' retorna; Entender, Analisar e Auditar em radiogroup com setas e persistência ao recarregar.",
+            "Clique na UF: scrollY 962 para 70 em 1440 e para 25 em 390, com foco no main em 390; escolhendo pela busca em 390, a ficha aparece.",
+            "CSV e XLSX seguem busca e ordem; comparador de quatro municípios; camadas carregam sob demanda em cerca de 1,7 s."
+          ],
+          "atendidos": [
+            "Busca por quatro tipos de entidade com teclado",
+            "Seleção sincroniza ficha, mapa, URL e tabela",
+            "Comparação de entidades e limpeza de seleção",
+            "Estado preservado na URL e downloads úteis",
+            "Estados vazios e 'não se aplica' compreensíveis"
+          ],
+          "problemas": [
+            "Clique ou toque na UF do mapa joga a página ao topo e esconde mapa e ficha; pela busca não acontece.",
+            "Lista da busca sem aviso de quantidade; 'Nenhum resultado' fora de região viva.",
+            "Zoom sem arrastar nem roda.",
+            "No comparador, a lista de 50 municípios de RO abre sozinha mesmo com o limite de 4 atingido."
+          ],
+          "justificativa": "Interação rica e bem sincronizada, com estado na URL, comparação e exportação filtrada. O salto de rolagem ao clicar no mapa, a busca sem aviso de resultados e o zoom sem pan limitam a nota."
+        },
+        "K": {
+          "nota": 7.5,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360 a 1440, foco visível, 63 a 70 paradas por Tab sem armadilha; meu axe em seis estados (Entender, ficha, camadas, Analisar, Auditar) também sem violações.",
+            "Sobreposição de texto na ficha de 768 a 1440 px; 65% dos caracteres da ficha em 12 px; contraste mínimo 4,92.",
+            "Busca sem região viva de resultados; em 390 o toque no mapa leva o foco ao main e a página ao topo."
+          ],
+          "atendidos": [
+            "Teclado: busca, camadas, profundidade, tabelas e botões de linha operáveis",
+            "Semântica de combobox, radiogroup e tabelas com legenda e escopo",
+            "Contraste acima de 4,5 medido",
+            "Sem rolagem horizontal em 320 a 1440; tabelas rolam em contêiner rotulado",
+            "Mapa com título, descrição e tabela equivalente"
+          ],
+          "problemas": [
+            "Texto sobreposto na ficha compromete a leitura em 768 a 1440 px.",
+            "65% do texto da ficha em 12 px.",
+            "Foco vai ao main e a página sobe ao topo após tocar o mapa em 390.",
+            "Busca sem anúncio de quantidade e vazio sem anúncio.",
+            "Leitor de tela real não testado."
+          ],
+          "justificativa": "Base de acessibilidade boa (axe limpo, teclado, contraste), mas texto sobreposto na ficha, texto pequeno dominante e foco que salta ao tocar o mapa pesam. Sem teste com leitor de tela."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "ter_ficha_sobreposicao",
+          "gravidade": "alta",
+          "criterios": [
+            "A",
+            "K",
+            "B"
+          ],
+          "onde": "Ficha à direita do mapa: linha 'Capacidade em operação (UF principal da usina)' (1024 a 1440) e linhas 'sem dado' do bloco de distribuidora sem confirmação, ex.: ENF em Nova Friburgo (768 a 1440)",
+          "descricao": "Rótulo e valor ficam lado a lado e o rótulo é espremido a cerca de 30 px, de modo que as letras invadem o valor (25.257,3 MW) ou a mensagem 'sem dado: ...'. Em 390 as linhas empilham e ficam legíveis. Não classifiquei como bloqueio porque os valores aparecem também nas tabelas e a mensagem de ausência segue decifrável, mas é defeito visível na saída principal e atinge justamente as ausências explicadas.",
+          "sugestao": "Empilhar rótulo e valor quando o valor tiver mais de uma linha, ou usar grade com coluna de rótulo de largura mínima e quebra do valor."
+        },
+        {
+          "id": "ter_clique_mapa_salta",
+          "gravidade": "media",
+          "criterios": [
+            "J",
+            "K",
+            "A"
+          ],
+          "onde": "Clique ou toque numa UF do mapa (camada Submercados), 1440 e 390",
+          "descricao": "A seleção funciona (?sel=uf:MG), mas a página rola ao topo: scrollY 962 para 70 em 1440 e para 25 em 390, onde o foco vai ao main. Mapa e ficha saem da tela. Pela busca, em 390, a ficha aparece corretamente.",
+          "sugestao": "Levar a ficha à vista sem sair do mapa (ficha fixa ao lado em 1440; rolar até o título da ficha e focá-lo em 390)."
+        },
+        {
+          "id": "ter_mapa_sem_rotulos",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "B"
+          ],
+          "onde": "SVG do mapa em todas as camadas",
+          "descricao": "Nenhum elemento de texto no mapa: siglas de UF e nomes de submercado só aparecem no hover, no clique ou na tabela. Os quatro submercados são tons pastel que dependem da legenda.",
+          "sugestao": "Siglas de UF no mapa, rótulo do submercado e textura além da cor."
+        },
+        {
+          "id": "ter_texto_12px",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "K"
+          ],
+          "onde": "Ficha e notas de rodapé de painel",
+          "descricao": "65% dos caracteres com a ficha aberta estão em 12 px, inclusive as ressalvas de cada valor.",
+          "sugestao": "Subir ressalvas para 13 ou 14 px e reduzir o texto por linha."
+        },
+        {
+          "id": "ter_zoom_sem_pan",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "J"
+          ],
+          "onde": "Botões + e − do mapa",
+          "descricao": "O zoom dobra a escala em torno da seleção ou do centro; arrastar e roda do mouse não mudam o viewBox, e não há controle de deslocamento.",
+          "sugestao": "Permitir arrastar, setas e roda com Ctrl; ou aproximar sempre na seleção e avisar."
+        },
+        {
+          "id": "ter_busca_sem_aviso",
+          "gravidade": "baixa",
+          "criterios": [
+            "K",
+            "J"
+          ],
+          "onde": "Lista da busca 'Encontre a sua região'",
+          "descricao": "A lista não anuncia a quantidade de resultados (a busca da Inicial anuncia) e 'Nenhum resultado para essa busca' está em item role=presentation, fora de região viva.",
+          "sugestao": "Região aria-live polite com 'N resultados' e 'Nenhum resultado'."
+        },
+        {
+          "id": "ter_mapa_abaixo_dobra",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Primeira tela em 1440 por 900 e em 390",
+          "descricao": "A primeira tela traz título, introdução de quatro linhas (doze em 390), seletor de profundidade e busca; o mapa começa abaixo.",
+          "sugestao": "Encurtar a introdução e subir camadas e mapa."
+        },
+        {
+          "id": "ter_advertencia_repetida",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Introdução, texto sob a busca, frase de resposta e bloco 'O que não é possível concluir'",
+          "descricao": "A ideia 'cada número é da área da sua fonte' aparece de três a quatro vezes com palavras parecidas.",
+          "sugestao": "Manter uma vez no topo e remeter ao bloco de limites."
+        },
+        {
+          "id": "ter_por_que_recolhido",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Bloco 'Por que isso importa' no Entender",
+          "descricao": "A pergunta 2 da abertura (por que a medida importa) só é respondida num bloco recolhido.",
+          "sugestao": "Deixar a primeira frase do 'Por que isso importa' visível sob o título."
+        },
+        {
+          "id": "ter_identificadores_internos",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Tabelas 'Quando a escolha passa de uma camada para outra?', 'Onde cada indicador mora' e controles, em Analisar e Auditar",
+          "descricao": "Aparecem provado_com_area_sem_carga, com_localidade_isolada, fora_do_sin, area.fora_do_sin, gold, WMS_Webmap_EPE_Data e pipeline, além de 'estado 1 (confirmado)', sem tradução.",
+          "sugestao": "Traduzir os estados para frases e deixar os nomes de campo em coluna técnica recolhida."
+        },
+        {
+          "id": "ter_unidade_tarifa",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Ficha da distribuidora: 'Tarifa B1 residencial 903,29 R$/MWh'",
+          "descricao": "A Inicial e a Visão geral mostram a tarifa em R$/kWh; a ficha usa R$/MWh sem equivalência, o que obriga o consumidor a multiplicar ou dividir por mil.",
+          "sugestao": "Mostrar 'R$ 0,9033 por kWh' ao lado do valor em R$/MWh."
+        },
+        {
+          "id": "ter_usinas_do_municipio",
+          "gravidade": "baixa",
+          "criterios": [
+            "C",
+            "I"
+          ],
+          "onde": "Botão 'Ver as usinas deste município' no Entender",
+          "descricao": "Troca a camada para Usinas e filtra a tabela (visível só em Analisar), mas o mapa continua nacional e as 31 usinas de Belo Horizonte não se distinguem sem aproximar.",
+          "sugestao": "Aproximar o mapa ao município e listar as usinas no Entender."
+        },
+        {
+          "id": "ter_csv_decimal",
+          "gravidade": "baixa",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Exportação CSV das tabelas",
+          "descricao": "Separador ponto e vírgula com ponto decimal (12.12), enquanto a tela usa vírgula; a abertura em planilha em português pode tratar como texto. O XLSX é alternativa. Não abri em planilha.",
+          "sugestao": "Oferecer CSV com vírgula decimal ou avisar ao lado do botão."
+        },
+        {
+          "id": "ter_comparador_lista_aberta",
+          "gravidade": "baixa",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Comparador 'Municípios para comparar (até 4)'",
+          "descricao": "Com quatro escolhidos, a lista suspensa abre ao focar o campo e mostra 50 municípios de RO, sem filtro e sem efeito.",
+          "sugestao": "Fechar ou desabilitar a lista ao atingir o limite."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real (NVDA, VoiceOver, TalkBack).",
+        "Teclado virtual e lista de busca em celular real; o toque foi emulado.",
+        "Abertura do CSV e do XLSX em planilha em português.",
+        "Simulação de daltonismo nas camadas do mapa e contraste dos elementos gráficos.",
+        "Seleção da distribuidora nas páginas de destino fora da unidade, além de confirmar que ?dist= e ?d= carregam a distribuidora."
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T3",
+          "perfil": "consumidor (com passos de jornalista ou professor e de gestor público)",
+          "passos": [
+            "Abrir a página em 1440 e 390: título, busca e quatro camadas na primeira tela.",
+            "Digitar 'Belo Horizonte', seta para baixo e Enter: URL ganha ?sel=mun:3106200 e a ficha mostra CEMIG-D (vínculo confirmado), submercado Sudeste/Centro-Oeste, DEC 8,98 h com limite 9,50 h, tarifa 903,29 R$/MWh e 31 usinas.",
+            "Repetir com Nova Friburgo (EMR, ENEL RJ e ENF com ressalva, sem escolher uma) e Tabatinga (fora do SIN, submercado não se aplica).",
+            "Trocar para Distribuidoras, Municípios e Usinas; usar 'Ver as usinas deste município', o botão + e a tabela equivalente; filtrar a tabela de distribuidoras e baixar CSV e XLSX.",
+            "Comparar quatro municípios; clicar na UF MG no mapa; copiar o link do painel."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "Texto sobreposto na ficha (linha de capacidade da UF e linhas 'sem dado').",
+            "Clique ou toque no mapa leva a página ao topo e tira ficha e mapa da tela.",
+            "A lista das usinas do município só aparece em Analisar; o polígono de concessão não existe (registrado como indisponível)."
+          ],
+          "erros": [
+            "Nenhum erro de console durante a inspeção."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/visao-geral": {
+      "paineis": [
+        "P004",
+        "P005",
+        "P006",
+        "P007"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_dobra.png: título como pergunta, quatro números com data, natureza e referência, faixa de alertas e seletor de profundidade na primeira tela.",
+            "texto_entender.txt linhas 135 e 137: 'Preço, água e geração estão dentro da faixa...' aparece duas vezes seguidas; o 'O que mudou' do P004 repete a linha anterior.",
+            "Medição: 52% dos caracteres em 12 px; 11.699 px em 1440 e 22.407 em 390; cartão de Rede sozinho na grade de duas colunas."
+          ],
+          "atendidos": [
+            "Pergunta e quatro números principais na primeira tela",
+            "Hierarquia: números do topo, cinco gráficos, fatos, consumidor, regras",
+            "Números, unidades e datas legíveis nos cartões e gráficos",
+            "Celular empilha tudo sem rolagem horizontal",
+            "Selos de natureza por forma, não só por cor"
+          ],
+          "problemas": [
+            "'O que mudou' repete a frase de abertura em P005 e P004, e o trio O que mudou, Como interpretar, O que não é possível concluir aparece quatro vezes.",
+            "O cartão de Preço tem 851 px de altura e o gráfico ocupa 200; o resto é texto.",
+            "Metade do texto em 12 px.",
+            "Página com 22.407 px no celular e cartão de Rede órfão no computador."
+          ],
+          "justificativa": "Primeira tela excelente e hierarquia coerente. A repetição literal de frases, o texto miúdo dominante e o excesso de explicação abaixo de gráficos pequenos mantêm a nota em 8."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "KPIs com siglas desdobradas: 'PLD (Preço de Liquidação das Diferenças)', 'Energia armazenada (EAR)', 'MWmed' e 'p.p. quer dizer pontos percentuais'.",
+            "Preço: 'não é a tarifa do consumidor'; Carga: 'inclui a estimativa de MMGD... temperatura e calendário não são ajustados'; Rede: 'fluxo alto não indica congestionamento'.",
+            "Cartão do PLD traz percentil 38,7 e 60,3; Carga traz +14,6%, 10,5% e 11,45%; Água traz 61,6% e 61,5%, explicados em 'Para ler junto'."
+          ],
+          "atendidos": [
+            "Siglas traduzidas e limites de leitura ao lado do número",
+            "Distinção entre preço e tarifa, MW e MWmed, EAR percentual",
+            "'O que não é possível concluir' visível em cada painel",
+            "Conexão com os módulos por 'Ver no painel de origem'",
+            "Abertura traz o que é, a referência e onde aprofundar"
+          ],
+          "problemas": [
+            "Para o mesmo número convivem dois ou três critérios na mesma tela (percentil 38,7 e 60,3; 14,6%, 10,5% e 11,45%), explicados só em notas longas.",
+            "'Por que isso importa' recolhido no Entender, com o link para o mapa conceitual dentro dele.",
+            "A página não explica o caminho da geração ao consumo (T1).",
+            "Identificadores internos em Analisar e Auditar (código ena_faixa, P005, gold, ena_bruta_pct_mlt)."
+          ],
+          "justificativa": "Honestidade didática rara, com limites e referências ao lado de cada número. O custo é a sobrecarga: critérios concorrentes na mesma tela, porquê recolhido e nenhuma explicação do caminho físico, que fica no mapa da Inicial."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "Primeira tela cobre preço, água, carga e geração com data e referência; 'Ver no painel de origem' e 'Ver no módulo' levam à origem.",
+            "T5: o gráfico de Água mostra EAR, mediana da data e faixa de 10º a 90º percentil; a janela de 30, 60 e 90 dias atualiza gráficos e tabelas.",
+            "Consumidor (tarifa, DEC, perdas, Tarifa Social) começa em y 6.515 de 11.699 px (1440) e 11.823 de 22.407 (390)."
+          ],
+          "atendidos": [
+            "Quatro números principais com data e referência no topo",
+            "Cinco gráficos alinhados pelo calendário com tabela e janela",
+            "Fatos do sistema com prova de cada número",
+            "Rotas para o módulo de origem e para a distribuidora do município"
+          ],
+          "problemas": [
+            "O consumidor, parte da tarefa, só aparece depois de cinco gráficos e seis fatos, sem número no topo.",
+            "T1 parcial: o caminho da geração ao consumo só aparece como link recolhido para a Inicial.",
+            "Muitos números por tela (29 fichas Comprove) para 'poucos minutos'."
+          ],
+          "justificativa": "Cumpre bem o resumo diário de preço, água, carga e geração com referência e rota de origem. O lado do consumidor está longe do topo, T1 só é atendida por link recolhido e a quantidade de números exige disciplina do leitor."
+        },
+        "D": {
+          "nota": 8.5,
+          "evidencia": [
+            "P006: tarifa mediana de 81 distribuidoras, DEC 9,33 h (17,20 h com todas as origens), perdas com denominador e Tarifa Social atrasada em 367 dias.",
+            "'Entre os conjuntos: 0,01 h a 102,73 h' mostra a dispersão; 'Ver a distribuidora do seu município' leva ao recorte local.",
+            "Copiar link com janela e filtro (?p005.dias=30&p007.filtro=atencao); CSV de determinantes e de revisões."
+          ],
+          "atendidos": [
+            "Custo, continuidade, perdas e Tarifa Social no mesmo bloco",
+            "Dispersão entre conjuntos e não só média nacional",
+            "Lacunas relevantes visíveis (Tarifa Social de mai/2025, DEC parcial)",
+            "Compartilhar por link com o estado e baixar CSV"
+          ],
+          "problemas": [
+            "Recorte territorial só por link; a página não mostra diferença entre regiões do consumidor.",
+            "Linguagem técnica nos cartões de consumidor (denominador, leiaute de 2024, NumCon).",
+            "O CSV fixo não acompanha a janela e não traz a mediana da EAR."
+          ],
+          "justificativa": "O bloco do consumidor traz custo, qualidade, perdas e benefício com dispersão e lacunas à vista, e o estado se compartilha por link. Falta recorte regional na própria página e há linguagem técnica nos cartões."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "Captura própria prod_u01/shots/vg_card_preco_1440.png: quatro séries quase coincidentes; a linha azul de Norte cobre a roxa de Sudeste/Centro-Oeste, que é a do número e da frase.",
+            "Captura própria vg_rede_svg_2x.png: preto, cinza escuro, cinza claro e marrom; preto e cinza escuro se aproximam e a linha de zero é grade igual às outras.",
+            "Água com mediana tracejada e faixa de 10º a 90º; Carga contra o mesmo dia do ano anterior; legenda ligável ('Norte (oculta)'); cursor comum aos cinco gráficos."
+          ],
+          "atendidos": [
+            "Linhas para séries diárias, com referência visível em cada painel",
+            "Tabela alternativa recolhida e rolável com rótulo em cada gráfico",
+            "Interação além do hover: setas, legenda ligável e janela",
+            "Nenhuma cor que julgue; eixos próprios declarados",
+            "Valores em branco onde não há dado, nunca zero"
+          ],
+          "problemas": [
+            "Preço esconde por padrão a série principal sob outra quase idêntica.",
+            "Rede: tons escuros próximos, sem rótulo direto e com zero pouco destacado.",
+            "Faixas de referência de Preço e Geração ocupam quase toda a área do gráfico, então 'dentro da faixa' quase sempre vale.",
+            "Gráficos de 538 por 200 px para 90 pontos."
+          ],
+          "justificativa": "Gráficos certos para a tarefa, com referência, tabela e teclado. Sobreposição de séries em Preço, cores pouco distintas em Rede e faixas muito largas reduzem a leitura, embora a legenda ligável mitigue."
+        },
+        "J": {
+          "nota": 8.5,
+          "evidencia": [
+            "Janela de 30, 60 e 90 dias atualiza eixos dos cinco gráficos, rótulos '(30 linhas)', 'Período', tabela de Analisar e seu CSV (30 linhas de dados) e grava ?p005.dias=30.",
+            "Filtro das regras grava ?p007.filtro=atencao; 'Copiar link' copia a URL com o estado e avisa 'Copiado para a área de transferência'.",
+            "O CSV do painel é sempre de 90 dias (declarado no próprio link) e tem cabeçalhos curtos (d, preco_SE, agua_p10)."
+          ],
+          "atendidos": [
+            "Janela e período sincronizados em gráficos, tabelas e textos de período",
+            "Estado na URL e link copiável",
+            "Comparação de até quatro regras na mesma escala",
+            "Seletor de profundidade com setas e persistência",
+            "Estados vazios explicados ('vazia é o normal')"
+          ],
+          "problemas": [
+            "O CSV do painel não acompanha a janela (declarado) e omite a mediana da EAR e as faixas que o gráfico mostra.",
+            "Sem seleção de entidade; a comparação é só entre regras.",
+            "Quatro painéis repetem as mesmas ações (Copiar link, Baixar, Próxima pergunta, Por que isso importa)."
+          ],
+          "justificativa": "Sincronização exemplar entre janela, gráficos, tabelas e URL, com avisos claros. A exportação do painel não segue o recorte e falta a mediana plotada, o que impede subir mais."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360 a 1440 e teclado sem foco invisível; meu axe com boas práticas: landmark-unique em 3 regiões repetidas nos quatro painéis.",
+            "Gráficos focáveis com setas e anúncio 'Data: valores' em região viva; a tabela do gráfico é região rolável com rótulo.",
+            "52% dos caracteres em 12 px; contraste mínimo 4,87; em 390, 28 de 141 alvos com menos de 44 px, entre eles links em linha de 15 a 17 px."
+          ],
+          "atendidos": [
+            "Teclado e foco visíveis, ordem lógica painel a painel",
+            "Gráficos com título, descrição, setas e tabela alternativa",
+            "Contraste acima de 4,5 medido",
+            "Sem rolagem horizontal em 320, 390, 768, 1024 e 1440",
+            "Movimento reduzido e alto contraste tratados no CSS"
+          ],
+          "problemas": [
+            "Regiões 'O que mudou', 'Como interpretar' e 'O que não é possível concluir' repetem o mesmo nome nos quatro painéis (axe landmark-unique).",
+            "Rede distingue séries quase só por tons escuros e legenda.",
+            "Metade do texto em 12 px.",
+            "Links em linha de 15 a 17 px em 390.",
+            "Leitor de tela real não testado."
+          ],
+          "justificativa": "Gráficos operáveis por teclado, tabelas alternativas e contraste bons, com axe limpo nas regras A e AA. Rótulos de região repetidos, cores pouco distintas em Rede, texto miúdo e alvos pequenos em 390 mantêm a nota em 8, com leitor de tela sem teste."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "vg_preco_sobreposto",
+          "gravidade": "media",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Gráfico Preço (P005), 1440 e 390",
+          "descricao": "As quatro séries quase coincidem e a de Norte (azul) é desenhada por último, cobrindo a de Sudeste/Centro-Oeste (roxa), que é a do número e da frase. A legenda ligável ajuda, mas o padrão esconde a série principal.",
+          "sugestao": "Desenhar a série do número por último e mais grossa, ou mostrar as diferenças em relação a ela."
+        },
+        {
+          "id": "vg_rede_cores",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "K"
+          ],
+          "onde": "Gráfico Rede (P005)",
+          "descricao": "Quatro fluxos em preto, cinza escuro, cinza claro e marrom; preto e cinza escuro são próximos e as linhas se cruzam em julho. O zero é uma grade igual às demais, apesar de ser a referência do sentido.",
+          "sugestao": "Rótulo direto nas pontas, padrões de traço e linha de zero destacada."
+        },
+        {
+          "id": "vg_criterios_concorrentes",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "A"
+          ],
+          "onde": "KPIs de PLD, Água e Carga e 'Para ler junto'",
+          "descricao": "O PLD mostra percentil 38,7 e 60,3; a Carga mostra +14,6%, 10,5% e 11,45%; a Água mostra 61,6% (28/09) e remete a 61,5% (29/09). Cada par é explicado, o que é honesto, mas pesa no nível Entender.",
+          "sugestao": "Mostrar um critério por número no Entender e deixar o segundo, com a explicação, em Analisar."
+        },
+        {
+          "id": "vg_texto_repetido",
+          "gravidade": "media",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Blocos 'O que mudou' de P005, P004 e P006",
+          "descricao": "Em P005 a frase de abertura aparece duas vezes seguidas (texto_entender linhas 135 e 137); em P004 'Nenhuma regra de sistema com alerta confirmado...' repete a linha anterior; em P006 a lista de períodos se repete. O trio O que mudou, Como interpretar, O que não é possível concluir surge quatro vezes.",
+          "sugestao": "Tirar 'O que mudou' quando repetir a abertura e unificar o trio em um bloco por página."
+        },
+        {
+          "id": "vg_consumidor_distante",
+          "gravidade": "media",
+          "criterios": [
+            "C",
+            "A"
+          ],
+          "onde": "Seção 'Como custo e qualidade chegam ao consumidor?' (y 6.515 em 1440; 11.823 em 390)",
+          "descricao": "A tarefa pede preço, água, geração, carga e consumidor, mas só os quatro primeiros têm número no topo. O consumidor surge depois de cinco gráficos e seis fatos, sem atalho.",
+          "sugestao": "Um número de consumidor (tarifa mediana ou DEC) entre os KPIs do topo ou um atalho âncora."
+        },
+        {
+          "id": "vg_csv_fixo",
+          "gravidade": "baixa",
+          "criterios": [
+            "J",
+            "I"
+          ],
+          "onde": "Link 'Baixar os dados: Determinantes alinhados' (sintese_multiplos.csv)",
+          "descricao": "O CSV é sempre de 90 dias (declarado), usa cabeçalhos curtos (d, preco_SE, agua_p10) e não traz a mediana da EAR plotada nem as faixas de Preço e Geração. O CSV da tabela em Analisar acompanha a janela e inclui a mediana.",
+          "sugestao": "Alinhar colunas e nomes do CSV fixo com a tabela e dizer no rótulo quais séries de referência ele leva."
+        },
+        {
+          "id": "vg_texto_12px",
+          "gravidade": "media",
+          "criterios": [
+            "K",
+            "A"
+          ],
+          "onde": "'Para ler junto', 'Referência', 'Período, Universo e Unidade'",
+          "descricao": "52% dos caracteres estão em 12 px, inclusive notas que mudam a leitura do número.",
+          "sugestao": "Subir notas essenciais para 14 px."
+        },
+        {
+          "id": "vg_landmarks_repetidos",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Quatro painéis (axe landmark-unique, boa prática)",
+          "descricao": "Três regiões com o mesmo nome ('O que mudou', 'Como interpretar', 'O que não é possível concluir') repetidas em cada painel não se distinguem na navegação por regiões.",
+          "sugestao": "Incluir o nome do painel no rótulo de cada região."
+        },
+        {
+          "id": "vg_por_que_recolhido",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "'Por que isso importa' nos quatro painéis",
+          "descricao": "O porquê e o link para o mapa conceitual ficam em bloco recolhido no Entender.",
+          "sugestao": "Deixar a frase inicial visível."
+        },
+        {
+          "id": "vg_card_orfao",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Grade dos cinco gráficos em 1440",
+          "descricao": "O cartão de Rede ocupa sozinho a coluna esquerda e deixa o lado direito vazio.",
+          "sugestao": "Ocupar a largura inteira ou agrupar com um painel de apoio."
+        },
+        {
+          "id": "vg_codigos_internos",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Analisar e Auditar: títulos de regras e tabelas",
+          "descricao": "Aparecem 'código ena_faixa', 'P005', 'gold', 'ena_bruta_pct_mlt', 'carga_mwmed' e 'serie_sin'.",
+          "sugestao": "Trocar por rótulos legíveis e deixar os nomes de campo na coluna técnica."
+        },
+        {
+          "id": "vg_faixas_largas",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Faixas de referência de Preço (R$ 61,07 a 225,70) e Geração (9,2% a 17,4%)",
+          "descricao": "As faixas ocupam quase toda a área do gráfico, então 'dentro da faixa' quase sempre vale e a referência discrimina pouco.",
+          "sugestao": "Mostrar também a mediana ou o percentil do dia, como na Água."
+        },
+        {
+          "id": "vg_pagina_longa_celular",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Página em 390 px",
+          "descricao": "22.407 px no Entender (quase 29 telas) para um resumo que se propõe a ser lido em poucos minutos.",
+          "sugestao": "Recolher fatos e regras no celular, deixando KPIs e gráficos."
+        },
+        {
+          "id": "vg_alvos_390",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Links em linha em 390 px",
+          "descricao": "'Ver no painel de origem' mede 15 px de altura e '2 regras' 17 px; 28 de 141 alvos têm menos de 44 px.",
+          "sugestao": "Aumentar a área de toque dos links de origem."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real (NVDA, VoiceOver, TalkBack).",
+        "Teclado virtual e toque em aparelho real; o toque foi emulado.",
+        "Contraste das linhas dos gráficos contra o fundo e simulação de daltonismo nas séries.",
+        "Fatias 390 02 a 05, 07 a 09, 11 a 14 de 15 não vieram no pacote; usei capturas próprias dos cartões e das seções.",
+        "Correção numérica dos valores (competência do avaliador técnico); só conferi coerência visível entre KPI, gráfico, tabela e Inicial."
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T1",
+          "perfil": "jornalista ou professor",
+          "passos": [
+            "Ler os quatro números do topo e a faixa de alertas.",
+            "Procurar a explicação do caminho da geração ao consumo: não há na página; abrir 'Por que isso importa' (recolhido) e achar o link 'Como as partes se ligam' para /setor-eletrico#mapa-conceitual.",
+            "Abrir o mapa na Inicial e ler os elos."
+          ],
+          "resultado": "parcial",
+          "obstaculos": [
+            "A página mostra o estado dos cinco determinantes, não o caminho; o único link para o mapa está em blocos recolhidos."
+          ],
+          "erros": [
+            "Nenhum erro de console."
+          ]
+        },
+        {
+          "tarefa": "T5",
+          "perfil": "analista de empresas e gestor público ou conselho",
+          "passos": [
+            "Ler o KPI de Água (61,6% da EAR máxima, mediana da data 49,3%).",
+            "No gráfico de Água, ler EAR, mediana tracejada e faixa de 10º a 90º; mudar a janela para 30 e 60 dias; percorrer pontos com as setas; abrir a tabela de 90 linhas.",
+            "Ler 'Para ler junto' (EAR máxima variou de 236.566 a 292.145 MWmês; Água e clima traz 61,5% em 29/09/2026) e seguir 'Ver no painel de origem'."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "A diferença entre 61,6% (28/09) e 61,5% (29/09) entre páginas só aparece em nota.",
+            "O gráfico não traz marcador do ano de comparação; a referência é a mediana da data de 2001 a 2025."
+          ],
+          "erros": [
+            "Nenhum erro de console."
+          ]
+        }
+      ]
+    }
+  },
+  "achados_entre_paginas": [
+    "Texto de apoio em 12 px domina as três páginas (Inicial 35% a 42%, Visão geral 52%, ficha da Território 65% dos caracteres), inclusive ressalvas que mudam a leitura do número.",
+    "Advertências e blocos repetidos: 'cada número é da área da sua fonte' três a quatro vezes na Território; 'O que mudou' idêntico à abertura na Visão geral; o trio O que mudou, Como interpretar, O que não é possível concluir quatro vezes.",
+    "Índices de páginas duplicados na Inicial (menu, 'Todas as páginas, por tema', 'Detalhe de cada página', trilhas, dois rodapés).",
+    "Leituras diferentes do mesmo tema entre páginas, explicadas só em nota: EAR 61,5% (29/09) na Inicial e 61,6% (28/09) na Visão geral; perdas 14,75% e 14,7%; tarifa em R$/kWh na Inicial e na Visão geral e em R$/MWh na Território; 22.798 usinas em operação na Inicial e 6.763 no mapa de usinas, que exclui registros de até 10 kW.",
+    "'Por que isso importa' recolhido no Entender na Território e na Visão geral, o que esconde a pergunta 2 da abertura.",
+    "Identificadores internos visíveis em Analisar e Auditar (código ena_faixa, P005, gold, provado_com_area_sem_carga, WMS_Webmap_EPE_Data).",
+    "Gráficos e mapas sem rótulo direto: séries por legenda e tons próximos na Visão geral (Preço, Rede) e mapa sem nenhum texto na Território.",
+    "Seleção sem memória ou com salto de rolagem: dois seletores de distribuidora independentes na Inicial; clique no mapa rola a Território ao topo."
+  ],
+  "limites_da_avaliacao": "Leitor de tela real não foi testado. Não houve teste com pessoas: todas as tarefas são inspeções heurísticas por script em Chromium (Playwright) em 320, 390, 768, 1024, 1280 e 1440 px, com toque emulado e sem aparelho real nem teclado virtual. Daltonismo não foi simulado e o contraste de elementos gráficos não foi medido, só o de texto (26 a 33 combinações por página). As fatias 390 recebidas eram parciais (4 de 9 na Inicial, 4 de 15 na Visão geral); completei com capturas próprias do mesmo servidor, e usei as 4 fatias da Território recebidas. Não abri os CSV e XLSX em planilha. Não avaliei as páginas de destino fora da unidade além de confirmar que os links respondem e carregam a distribuidora. A correção numérica dos valores é do avaliador técnico; conferi só a coerência visível entre KPI, gráfico, tabela e páginas. Os scripts de medição ficaram no scratchpad, fora do repositório, e nenhum arquivo do repositório foi alterado."
+}

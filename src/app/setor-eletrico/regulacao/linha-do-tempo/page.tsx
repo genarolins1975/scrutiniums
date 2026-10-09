@@ -3,19 +3,13 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RegulacaoLinhaTempo } from "@/components/energia/RegulacaoLinhaTempo";
-import {
-  RegulacaoAnalise,
-  RegulacaoAuditoria,
-  RegulacaoIndisponivel,
-  RegulacaoLeitura,
-  RegulacaoNavegacao,
-  RegulacaoRecorte,
-  RegulacaoResposta,
-  RegulacaoSeguir,
-} from "@/components/energia/RegulacaoPagina";
+import { RegulacaoDatas, RegulacaoIndisponivel, RegulacaoNavegacao, RegulacaoRecorte } from "@/components/energia/RegulacaoPagina";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -23,6 +17,7 @@ import {
   FILTRO_LINHA_TEMPO_PADRAO,
   ROTULO_NIVEL_EVENTO,
   contagemPaineisAfetados,
+  contagemPorOrigem,
   defasagemDias,
   downloadsDoPainel,
   filtrarLinhaTempo,
@@ -32,6 +27,8 @@ import {
   respostaLinhaTempo,
   rotaPainel,
   rotuloCurtoEvento,
+  rotuloDownload,
+  vereditoLinhaTempo,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
@@ -40,7 +37,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Regulação: linha do tempo das mudanças de regra no setor elétrico",
   description:
-    "Atos, leis e mudanças das bandeiras tarifárias com a data de publicação separada do início de vigência, o dispositivo de origem, o efeito declarado pelo próprio ato e os painéis afetados, sem estimar impacto nem sugerir causa.",
+    "Atos, leis e mudanças das bandeiras tarifárias com a data de publicação separada do início de vigência, o dispositivo de origem, o efeito declarado pelo próprio ato e os painéis ligados, sem estimar impacto nem sugerir causa.",
   alternates: { canonical: rotaPainel("p045") },
 };
 
@@ -61,7 +58,7 @@ export default function LinhaDoTempoPage() {
   // "o evento mais recente" da resposta e do "O que mudou" não dependa da ordem do arquivo
   const eventos = filtrarLinhaTempo(T.eventos, FILTRO_LINHA_TEMPO_PADRAO).eventos;
   const vigencias = eventos.map((e) => e.vigencia_inicio).sort();
-  const atos = eventos.filter((e) => origemEvento(e) === "ato").length;
+  const { atos, registros } = contagemPorOrigem(eventos);
   const quem = contagemPaineisAfetados(eventos);
   const comDefasagem = eventos
     .filter((e) => origemEvento(e) === "ato")
@@ -72,108 +69,110 @@ export default function LinhaDoTempoPage() {
   const versao = T.conferido_em;
   const fonte = "ANEEL, Congresso Nacional, Presidência da República e MME (atos lidos no texto) e ANEEL, Bandeiras Tarifárias";
 
+  const oQueMudou = (
+    <>
+      O evento mais recente é &ldquo;{eventos[0]?.titulo}&rdquo;, com vigência a partir de {dataBR(eventos[0]?.vigencia_inicio ?? null)}. A lista foi conferida em {dataBR(T.conferido_em)} e não
+      inclui o que foi publicado depois disso. É uma seleção editorial de marcos que mudam a leitura dos painéis, não um repositório de todos os atos.
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      O círculo vazado é a publicação no Diário Oficial; o cheio, o início de vigência; o traço entre eles é a espera até a regra valer. O resumo é texto do observatório, conferido no
+      documento; o efeito declarado, que está em Analisar, é o que o ato diz de si mesmo, citado literalmente; o impacto estimado fica vazio. Os painéis ligados são aqueles em que a regra
+      muda a leitura do número; a ligação vem da curadoria do ato, não de estimativa de efeito. Filtre por painel ligado ou por origem para separar atos lidos de registros do conjunto de
+      dados; em Analisar, o período vale para a data que você escolher (publicação ou vigência), e eventos sem essa data ficam fora do recorte, com a contagem dita.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Uma data desta lista perto de um movimento num gráfico não é evidência de causa. O observatório não estima o efeito das normas aqui, nem quanto uma norma mudou a conta de alguém, e
+      os resumos não são parecer jurídico. A ausência de um ato aqui não quer dizer que nada mudou: a lista não é completa. Eventos de bandeira vêm do conjunto de dados da ANEEL, sem
+      leitura do ato nem data de publicação.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <RegulacaoNavegacao atual="p045" />
         <CabecalhoModulo
           rotulo="Regulação"
-          titulo="Linha do tempo das regras"
+          siglas={["PLD", "REN", "REH", "DOU", "CDE", "PRODIST", "ANEEL", "MME"]}
+          titulo={perguntaPainel("p045")}
+          lead="Atos e leis que mudam a leitura dos painéis, com a publicação separada da vigência."
+          recorte={`${eventos.length} eventos · vigências de ${vigencias.length ? dataBR(vigencias[0]) : "sem eventos"} a ${vigencias.length ? dataBR(vigencias[vigencias.length - 1]) : "sem eventos"}`}
+          fonte="ANEEL, Congresso Nacional, Presidência da República e Ministério de Minas e Energia (MME)"
           referencia={
             <>
               Atos lidos no texto e conferidos em {dataBR(T.conferido_em)}; bandeiras do conjunto de dados da ANEEL; processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <RegulacaoDatas
+              itens={[
+                { rotulo: "Atos e leis", texto: `lidos no texto e conferidos em ${dataBR(T.conferido_em)}`, natureza: "OBSERVADO" },
+                { rotulo: "Registros de bandeiras", texto: `conjunto de dados da ANEEL gerado em ${dataBR(g.bandeiras.gerado_pela_fonte_em)}`, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
         >
-          O que mudou nas regras que os painéis do observatório usam, desde quando vale e quem é afetado. Cada evento traz a data em que saiu no Diário Oficial e a data em
-          que passou a valer, o dispositivo que sustenta a mudança, o efeito que o próprio ato declara e os painéis em que a leitura muda.
+          O que mudou nas regras que os painéis do observatório usam, desde quando vale e em quais painéis a leitura muda. Cada ato traz a data em que passou a valer, o resumo do observatório e
+          os painéis ligados; a data de publicação no Diário Oficial, o dispositivo, o efeito que o próprio ato declara e as conferências estão em Analisar.
         </CabecalhoModulo>
-        <RegulacaoNavegacao atual="p045" />
         <ModoProfundidade>
           <Bloco id="linha-do-tempo">
             <PainelEvidencia
               id="p045"
-              pergunta={perguntaPainel("p045")}
-              subtitulo="Eventos regulatórios com publicação, vigência, dispositivo e efeito declarado · data"
+              pergunta="Publicação e início da vigência de cada evento"
+              subtitulo="Atos, leis e registros de bandeiras com data de publicação e de vigência, resumo e painéis ligados · data"
               natureza="OBSERVADO"
               porQueImporta={
                 <>
-                  Uma série muda de leitura quando a regra muda: a Tarifa Social, o cálculo das perdas, o PLD horário e as bandeiras alteram o que um número significa. Saber a
-                  data exata em que a regra passou a valer evita atribuir à norma o que aconteceu antes dela, ou o contrário.
+                  Uma série muda de leitura quando a regra muda: a Tarifa Social, o cálculo das perdas, o PLD horário e as bandeiras alteram o que um número significa. Saber a data
+                  exata em que a regra passou a valer evita atribuir à norma o que aconteceu antes dela, ou o contrário.
                 </>
               }
-              oQueMudou={
-                <>
-                  O evento mais recente é &ldquo;{eventos[0]?.titulo}&rdquo;, com vigência a partir de {dataBR(eventos[0]?.vigencia_inicio ?? null)}. A linha do tempo é
-                  uma seleção editorial de marcos que mudam a leitura dos painéis, não um repositório de todos os atos.
-                </>
-              }
-              comoInterpretar={
-                <>
-                  O círculo vazado é a publicação no Diário Oficial; o cheio, o início de vigência; o traço entre eles é a espera até a regra valer. O resumo é texto do
-                  observatório, conferido no documento; o efeito declarado é o que o ato diz de si mesmo, citado literalmente; o impacto estimado fica vazio.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Uma data desta lista perto de um movimento num gráfico não é evidência de causa. O observatório não estima o efeito das normas aqui. Eventos de bandeira vêm
-                  do conjunto de dados da ANEEL, sem leitura do ato nem data de publicação.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.linha_do_tempo}
               complementares={[{ rotulo: "Adicionais das bandeiras tarifárias", p: g.proveniencia.bandeiras }]}
             >
               <div className="space-y-6">
-                <RegulacaoResposta id="p045">{respostaLinhaTempo(eventos, eventos.length)}</RegulacaoResposta>
-                <RegulacaoRecorte
-                  periodo={vigencias.length ? `vigências de ${dataBR(vigencias[0])} a ${dataBR(vigencias[vigencias.length - 1])}` : "sem eventos"}
-                  universo={`${eventos.length} eventos: ${atos} atos e leis lidos no texto e ${eventos.length - atos} registros do conjunto de dados de bandeiras`}
-                  unidade="evento datado (publicação e início de vigência)"
+                <RespostaCurta id="p045" veredito={vereditoLinhaTempo(eventos, eventos.length, "vigencia", T.conferido_em)}>
+                  {respostaLinhaTempo(eventos, eventos.length)}
+                </RespostaCurta>
+
+                <RegulacaoLinhaTempo
+                  eventos={eventos}
+                  paineis={T.paineis}
+                  fonte={fonte}
+                  versao={versao}
+                  recorte={
+                    <RegulacaoRecorte
+                      periodo={vigencias.length ? `vigências de ${dataBR(vigencias[0])} a ${dataBR(vigencias[vigencias.length - 1])}` : "sem eventos"}
+                      universo={`${eventos.length} eventos: ${atos} atos e leis lidos no texto e ${registros} registros do conjunto de dados de bandeiras`}
+                      unidade="evento datado (publicação e início de vigência)"
+                    />
+                  }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
 
-                <RegulacaoLinhaTempo eventos={eventos} paineis={T.paineis} fonte={fonte} versao={versao} />
-
-                <RegulacaoLeitura
-                  comoLer={
+                <SecaoDoPainel
+                  id="defasagem"
+                  titulo="Quanto tempo passa entre a publicação e a vigência?"
+                  lead={
                     <>
-                      Filtre por painel afetado para ver só o que muda a leitura daquele painel, ou por origem para separar atos lidos de registros do conjunto de dados. O
-                      período vale para a data que você escolher (publicação ou vigência); eventos sem essa data ficam fora do recorte e a contagem diz quantos.
+                      Dias entre a publicação no Diário Oficial e o início de vigência de cada ato lido. Zero é vigência na data da publicação.
+                      {semPublicacao.length
+                        ? ` ${semPublicacao.length === 1 ? "Fica de fora 1 ato" : `Ficam de fora ${semPublicacao.length} atos`} sem data de publicação conferida (${semPublicacao.map((e) => e.ato ?? e.titulo).join("; ")}).`
+                        : ""}
                     </>
                   }
-                  naoPermite={
-                    <>
-                      Não permite dizer que uma norma causou a mudança de um indicador, nem quanto ela mudou a conta de alguém. A ausência de um ato aqui não quer dizer que nada
-                      mudou: a lista não é completa.
-                    </>
-                  }
-                />
-
-                <RegulacaoAnalise id="quem-e-afetado" titulo="Quem é afetado: eventos por painel do observatório">
-                  <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Um evento pode afetar mais de um painel, por isso a soma das barras passa do número de eventos. Os painéis vêm da curadoria de cada ato, não de inferência
-                    sobre efeito.
-                  </p>
-                  <GraficoBarras
-                    titulo="Eventos da linha do tempo por painel afetado"
-                    dados={quem.map((q) => ({ id: q.href, rotulo: q.rotulo, n: q.n }))}
-                    chaveCategoria="id"
-                    chaveRotulo="rotulo"
-                    series={[{ id: "n", rotulo: "Eventos", cor: "var(--cor-energia)" }]}
-                    unidade="eventos"
-                    casas={0}
-                    orientacao="horizontal"
-                    rotulosValor
-                  />
-                </RegulacaoAnalise>
-
-                <RegulacaoAnalise id="defasagem" titulo="Quanto tempo entre a publicação e a vigência">
-                  <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Dias entre a publicação no Diário Oficial e o início de vigência de cada ato lido. Zero é vigência na data da publicação.
-                    {semPublicacao.length
-                      ? ` ${semPublicacao.length === 1 ? "Fica de fora 1 ato" : `Ficam de fora ${semPublicacao.length} atos`} sem data de publicação conferida (${semPublicacao.map((e) => e.ato ?? e.titulo).join("; ")}).`
-                      : ""}
-                  </p>
+                >
                   <GraficoBarras
                     titulo="Dias entre publicação e vigência, por ato"
                     dados={comDefasagem}
@@ -185,12 +184,30 @@ export default function LinhaDoTempoPage() {
                     orientacao="horizontal"
                     rotulosValor
                   />
-                </RegulacaoAnalise>
+                </SecaoDoPainel>
 
-                <RegulacaoAuditoria id="conferencia-publicacao" titulo="Data de publicação conferida por caminho independente">
+                <SecaoDoPainel
+                  id="quem-e-afetado"
+                  titulo="Em que painéis a leitura muda?"
+                  lead="Um evento pode estar ligado a mais de um painel, por isso a soma das barras passa do número de eventos. Os painéis vêm da curadoria de cada ato, não de inferência sobre efeito."
+                >
+                  <GraficoBarras
+                    titulo="Eventos da linha do tempo por painel ligado"
+                    dados={quem.map((q) => ({ id: q.href, rotulo: q.rotulo, n: q.n }))}
+                    chaveCategoria="id"
+                    chaveRotulo="rotulo"
+                    series={[{ id: "n", rotulo: "Eventos", cor: "var(--cor-energia)" }]}
+                    unidade="eventos"
+                    casas={0}
+                    orientacao="horizontal"
+                    rotulosValor
+                  />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="conferencia-publicacao" nivel="auditar" titulo="Data de publicação conferida por caminho independente">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Leis e medida provisória: data da publicação original nos metadados abertos do Senado. Atos da ANEEL: data escrita no próprio PDF guardado. Divergência
-                    reprova a publicação da gold.
+                    Leis e medida provisória: data da publicação original nos metadados abertos do Senado. Atos da ANEEL: data escrita no próprio PDF guardado. Divergência reprova a
+                    publicação da gold.
                   </p>
                   <TabelaInterativa
                     titulo="Conferência da data de publicação dos atos lidos"
@@ -226,9 +243,13 @@ export default function LinhaDoTempoPage() {
                     ))}
                   </ul>
                   <p className="text-sm leading-relaxed text-carvao-muted">{T.nota}</p>
-                </RegulacaoAuditoria>
+                </SecaoDoPainel>
 
-                <RegulacaoSeguir ancora="p045" proximo={{ href: proximo.rota, pergunta: proximo.pergunta }} downloads={downloadsDoPainel(g, "p045")} />
+                <SeguirPainel
+                  ancora="p045"
+                  proximo={{ href: `${proximo.rota}#${proximo.id}`, pergunta: proximo.pergunta }}
+                  downloads={downloadsDoPainel(g, "p045").map((d) => ({ ...d, rotulo: rotuloDownload(d.rotulo) }))}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>

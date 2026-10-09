@@ -409,7 +409,7 @@ export type PublicacaoGold = Cabecalho & {
   silver_nao_declarados: { familia: string; dataset: string; vintages: number; observacoes: boolean; registros: boolean }[];
   eixos: Eixos;
   /** Avaliação dos painéis (P071): só existe depois da inspeção final; sem arquivo, nenhuma nota. */
-  avaliacao: { arquivo: string | null; caminho_previsto: string; existe: boolean; nota: string };
+  avaliacao: { arquivo: string | null; caminho_previsto: string; existe: boolean; nota: string; rodada: { id: string | null; data_inspecao: string | null; paginas: number | null; nota_ponderada_media: number | null } | null };
   reproducao: {
     repositorio: string;
     /** Substitua {commit} pelo commit do build e {caminho} pelo caminho público (/energia/...). */

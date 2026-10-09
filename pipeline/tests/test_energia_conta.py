@@ -880,5 +880,37 @@ class CatalogoDeMetricas(unittest.TestCase):
             self.assertEqual(m["gold"], "conta.json")
 
 
+class LinhasCsvSubsidios(unittest.TestCase):
+    """O CSV de subsídios traz a linha da categoria Total além das categorias: eh_total a identifica, e somar valor_rs sem o filtro
+    dobra o valor (R$ 37,6 bilhões em vez de R$ 18,8 bilhões em 2025, achado da avaliação independente)."""
+
+    csv_s = {
+        (2025, "01229747000189", "Rural", "Total"): [100.005, 3],
+        (2025, "01229747000189", "Irrigação e Aquicultura", "Total"): [50.0, 3],
+        (2025, "01229747000189", "Total", "Total"): [150.005, 3],
+    }
+
+    def test_coluna_eh_total_marca_so_a_categoria_total(self):
+        linhas = conta.linhas_csv_subsidios(self.csv_s, {"01229747000189": "CERGAPA"})
+        self.assertEqual(len(conta.COLUNAS_CSV_SUBS), len(linhas[0]))
+        self.assertEqual(conta.COLUNAS_CSV_SUBS[-1], "eh_total")
+        marcadas = {l[3]: l[-1] for l in linhas}
+        self.assertEqual(marcadas, {"Irrigação e Aquicultura": "nao", "Rural": "nao", "Total": "sim"})
+
+    def test_soma_filtrando_eh_total_nao_dobra(self):
+        linhas = conta.linhas_csv_subsidios(self.csv_s, {})
+        sem_filtro = sum(l[5] for l in linhas)
+        so_categorias = sum(l[5] for l in linhas if l[-1] == "nao")
+        so_total = sum(l[5] for l in linhas if l[-1] == "sim")
+        self.assertAlmostEqual(sem_filtro, 2 * so_total, places=2)
+        self.assertAlmostEqual(so_categorias, so_total, places=2)
+
+    def test_valor_em_reais_com_meio_para_cima(self):
+        # 100,005 é guardado como 100,00499999999999545: o round() do Python dava 100,0
+        linhas = conta.linhas_csv_subsidios(self.csv_s, {})
+        rural = next(l for l in linhas if l[3] == "Rural")
+        self.assertEqual(rural[5], 100.01)
+
+
 if __name__ == "__main__":
     unittest.main()

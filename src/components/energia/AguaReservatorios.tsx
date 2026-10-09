@@ -2,38 +2,61 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
+import { AguaLegenda } from "@/components/energia/AguaLegenda";
+import { AguaRestaurar } from "@/components/energia/AguaRestaurar";
+import { AguaTabela } from "@/components/energia/AguaTabela";
 import { Comparador } from "@/components/energia/Comparador";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { Numero } from "@/components/energia/Numero";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   COLUNAS_DECOMPOSICAO,
   COLUNAS_RESERVATORIOS,
-  COR_COMPARACAO,
   COR_REGIAO,
   DO_REGIAO,
   NOME_REGIAO,
+  REVISOES_CAPTURA_UNICA,
   ROTULO_CONVENCAO,
   SUBSISTEMAS,
-  barrasBalanco,
-  barrasDecomposicao,
+  TEXTO_HIDRAULICOS_PROVISORIOS,
+  TEXTO_UNIDADE_MWMES,
+  barrasBalancoDefluencia,
+  barrasBalancoResiduo,
+  barrasBalancoTotais,
+  barrasDecomposicaoComRestante,
   linhasDecomposicao,
   linhasMultiplosVolume,
   linhasReservatorios,
+  motivoSemBalanco,
   nomeProprio,
+  notaVazoesCoincidem,
   reservatorioDaParcela,
   reservatorioPadrao,
+  reservatoriosPadraoComparacao,
   respostaBalanco,
   respostaDecomposicao,
+  restanteDecomposicao,
   serieReservatorio,
+  textoOutraJanelaDaEar,
+  textoParcelasFaltantes,
+  textoPartesDaEar,
+  textoVolumeForaDaFaixa,
+  vereditoBalancoReservatorio,
+  vereditoDecomposicao,
+  volumeForaDaFaixa,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, plural } from "@/lib/energia/formato";
+import type { Evidencia } from "@/lib/energia/evidencia";
+import { dataBR, pct, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Submercado } from "@/lib/energia/tipos";
+import type { EntidadeEar } from "@/lib/energia/agua";
 import type { AguaDecomposicaoEar, AguaReservatorio, AguaReservatorios45d } from "@/lib/energia/tipos-agua";
 
 /**
@@ -44,52 +67,226 @@ import type { AguaDecomposicaoEar, AguaReservatorio, AguaReservatorios45d } from
  * e as tabelas usam as mesmas linhas da gold. As séries diárias (45 dias na publicação
  * atual; o número exibido vem da gold) vêm de agua_reservatorios_45d.json, buscado só
  * quando a seção chega perto da tela.
+ *
+ * Composição (redesenho): a figura principal (variação da EAR do subsistema por reservatório,
+ * com uma barra para a soma dos demais) vem logo depois da resposta e do controle de
+ * subsistema, com o recorte como legenda; abaixo dela, a soma das parcelas do gráfico e a dos
+ * demais ao lado da variação do subsistema; as notas do painel vêm junto da figura. A conta da
+ * água do reservatório escolhido (com a lista de reservatórios ao lado do que ela controla), a
+ * qualidade do balanço e a série diária são seções visíveis com pergunta própria; a comparação
+ * de até quatro reservatórios fica em Analisar. Os números de cada faixa acompanham a escolha.
  */
 const ESQUEMA = {
   sm: campo(tiposUrl.opcao(SUBSISTEMAS), "SE"),
   res: campo(tiposUrl.texto({ max: 20 }), ""),
-  cmp: campo(tiposUrl.lista(tiposUrl.texto({ max: 20 }), { max: LIMITE_COMPARACAO }), [] as string[]),
 };
 
+/** A comparação abre com os quatro reservatórios de maior volume útil (o padrão vem dos dados); o leitor troca ou esvazia à vontade. */
+const esquemaCom = (padraoCmp: string[]) => ({ ...ESQUEMA, cmp: campo(tiposUrl.lista(tiposUrl.texto({ max: 20 }), { max: LIMITE_COMPARACAO }), padraoCmp) });
+
 type Series = { estado: "espera" | "carregando" | "pronto" | "erro"; dados: AguaReservatorios45d | null; erro: string };
+
+/**
+ * A variação da EAR do subsistema escolhido, parcela por parcela: a variação, a soma das parcelas do gráfico e a soma dos demais reservatórios
+ * (por diferença, porque a gold não publica a variação de cada um dos demais). A outra janela de 30 dias do mesmo subsistema (a da página de
+ * armazenamento, quando termina em outro dia) é dita uma vez, no parágrafo sob o bloco, e não também no cartão e na frase. Com todas as
+ * parcelas no gráfico, uma frase diz isso.
+ */
+export function MedidasDecomposicao({ dec }: { dec: AguaDecomposicaoEar }) {
+  const restante = restanteDecomposicao(dec);
+  const periodo = `${dataBR(dec.inicio)} a ${dataBR(dec.fim)}`;
+  if (!restante) {
+    return (
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="parcelas-completas">
+        Todas as {dec.n_reservatorios} parcelas estão no gráfico e somam a variação da EAR do subsistema.
+      </p>
+    );
+  }
+  return (
+    <div data-medidas-recorte="" className="space-y-2">
+      <p className="rotulo text-mineral">Variação da EAR {DO_REGIAO[dec.sm]}, parcela por parcela</p>
+      <FaixaMetricas colunas={3} rotulo={`Variação da EAR ${DO_REGIAO[dec.sm]} e a soma das parcelas`} nota={<p className="text-sm">{textoParcelasFaltantes(dec)}</p>}>
+        <Numero
+          variante="faixa"
+          rotulo="Variação da EAR do subsistema"
+          natureza="CALCULADO"
+          valor={dec.delta_ear_mwmes}
+          formato="num"
+          casas={1}
+          unidade="MWmês"
+          periodo={periodo}
+          cor={COR_REGIAO[dec.sm]}
+          motivoAusencia="Sem variação da EAR nesta publicação."
+        />
+        <Numero
+          variante="faixa"
+          rotulo={`Soma das ${restante.nListadas} parcelas do gráfico`}
+          natureza="CALCULADO"
+          valor={restante.somaListadas}
+          formato="num"
+          casas={1}
+          unidade="MWmês"
+          periodo={periodo}
+          nota="As maiores quedas e altas publicadas."
+        />
+        <Numero
+          variante="faixa"
+          rotulo={`Soma dos demais ${plural(restante.nRestantes, "reservatório", "reservatórios")}`}
+          natureza="CALCULADO"
+          valor={restante.somaRestantes}
+          formato="num"
+          casas={1}
+          unidade="MWmês"
+          periodo={periodo}
+          nota="Por diferença; as variações de cada um não estão publicadas."
+        />
+      </FaixaMetricas>
+    </div>
+  );
+}
+
+/**
+ * A conta da água do reservatório escolhido em quatro números (variação do volume, afluência, defluência e resíduo), todos campos do próprio
+ * reservatório. Sem balanço, os números ausentes dizem o motivo exato. A ficha de prova do resíduo é a do reservatório de maior volume útil,
+ * a única que a gold publica, e diz que ainda não é possível detectar revisões, porque há uma única captura.
+ */
+export function MedidasBalanco({
+  res,
+  periodo,
+  semCadastro,
+  ehPadrao,
+  evidenciaResiduo,
+  endereco,
+}: {
+  res: AguaReservatorio;
+  periodo: string;
+  semCadastro?: readonly string[];
+  ehPadrao: boolean;
+  evidenciaResiduo?: Evidencia | null;
+  endereco?: string;
+}) {
+  const nomeRes = nomeProprio(res.nome);
+  const motivo = !res.balanco_calculado ? motivoSemBalanco(res, semCadastro) : "";
+  const textoMotivo = motivo ? `${motivo.charAt(0).toUpperCase()}${motivo.slice(1)}.` : undefined;
+  return (
+    <FaixaMetricas colunas={4} rotulo={`Conta da água de ${nomeRes}`} nota={<p className="text-sm">{TEXTO_HIDRAULICOS_PROVISORIOS}</p>}>
+      <Numero variante="faixa" rotulo="Variação observada do volume" natureza="CALCULADO" valor={res.dv_obs_hm3} formato="num" casas={2} unidade="hm³" periodo={periodo} motivoAusencia={textoMotivo} />
+      <Numero
+        variante="faixa"
+        rotulo="Afluência"
+        natureza="OBSERVADO"
+        valor={res.afluencia_hm3}
+        formato="num"
+        casas={2}
+        unidade="hm³"
+        periodo={periodo}
+        cor="var(--serie-hidraulica)"
+        nota="Derivada pelo ONS, na maioria dos reservatórios a partir do próprio balanço: não é medição direta, e por isso um resíduo perto de zero não confirma a vazão."
+        motivoAusencia="Sem afluência na janela nesta publicação."
+      />
+      <Numero
+        variante="faixa"
+        rotulo="Defluência"
+        natureza="OBSERVADO"
+        valor={res.defluencia_hm3}
+        formato="num"
+        casas={2}
+        unidade="hm³"
+        periodo={periodo}
+        cor="var(--cor-carvao)"
+        nota="Derivada pelo ONS a partir das vazões turbinada, vertida e das outras estruturas: não é medição direta."
+        motivoAusencia="Sem defluência na janela nesta publicação."
+      />
+      <Numero
+        variante="faixa"
+        rotulo="Resíduo do balanço"
+        natureza="CALCULADO"
+        evidencia={ehPadrao ? evidenciaResiduo : undefined}
+        revisoes={ehPadrao ? REVISOES_CAPTURA_UNICA : undefined}
+        valor={res.residuo_hm3}
+        formato="num"
+        casas={2}
+        unidade="hm³"
+        periodo={periodo}
+        nota={`reservatório ${nomeRes}: variação observada menos afluência mais defluência.`}
+        motivoAusencia={textoMotivo}
+        endereco={endereco}
+      />
+    </FaixaMetricas>
+  );
+}
 
 export function AguaReservatorios({
   lista,
   decomposicao,
   janela,
+  armazenamento,
   urlSeries,
   diasSeries,
   fonte,
   versao,
-  destaques,
+  notas,
+  qualidade,
+  semCadastro,
+  evidenciaResiduo,
+  enderecoBalanco,
 }: {
   lista: AguaReservatorio[];
   decomposicao: AguaDecomposicaoEar[];
   janela: { inicio: string; fim: string; periodo_fecham_por_construcao: { inicio: string; fim: string } | null };
+  /** Variação de 30 dias de cada subsistema na página de armazenamento (para dizer por que o número difere da decomposição). */
+  armazenamento: Pick<EntidadeEar, "id" | "tipo" | "dia" | "variacao_30d_mwmes">[];
   urlSeries: string;
   /** Dias de cada série diária do arquivo sob demanda (gold: reservatorios.series_45d.dias). */
   diasSeries: number;
   fonte: string;
   versao: string;
-  destaques?: ReactNode;
+  /** Notas do painel (NotasDoPainel: o que mudou, como interpretar e o que não é possível concluir), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
+  /** Seção da qualidade do balanço (fechamento por construção), que vem logo depois da conta da água. */
+  qualidade?: ReactNode;
+  /** Identificadores dos reservatórios sem correspondência no cadastro do ONS (gold: sem_cadastro): o motivo exato de não terem balanço. */
+  semCadastro?: string[];
+  /** Ficha de prova do resíduo do reservatório de maior volume útil: aparece só quando é ele o reservatório escolhido. */
+  evidenciaResiduo?: Evidencia | null;
+  /** Página e âncora dos números da conta da água, repassadas à citação da ficha. */
+  enderecoBalanco?: string;
 }) {
-  const [v, definir] = useEstadoUrl(ESQUEMA);
+  const padraoCmp = useMemo(() => reservatoriosPadraoComparacao(lista), [lista]);
+  const esquema = useMemo(() => esquemaCom(padraoCmp), [padraoCmp]);
+  const [v, definir] = useEstadoUrl(esquema);
   const sm = v.sm as Submercado;
   const dec = decomposicao.find((d) => d.sm === sm) ?? decomposicao[0] ?? null;
   const padrao = useMemo(() => reservatorioPadrao(lista), [lista]);
   const res = lista.find((r) => r.id === v.res) ?? lista.find((r) => r.id === padrao) ?? null;
-  const barrasDec = useMemo(() => (dec ? barrasDecomposicao(dec) : []), [dec]);
+  const barrasDec = useMemo(() => (dec ? barrasDecomposicaoComRestante(dec) : []), [dec]);
   const barraSel = res ? (barrasDec.find((b) => b.cod === res.cod)?.id ?? null) : null;
   const linhasDec = useMemo(() => (dec ? linhasDecomposicao(dec) : []), [dec]);
-  const linhasRes = useMemo(() => linhasReservatorios(lista), [lista]);
-  const barrasBal = useMemo(() => (res ? barrasBalanco(res) : []), [res]);
+  const linhasRes = useMemo(() => linhasReservatorios(lista, semCadastro), [lista, semCadastro]);
   const selecionar = (id: string | null) => id && definir({ res: id === padrao ? "" : id });
   const selecionarParcela = (id: string | null) => {
     const b = barrasDec.find((x) => x.id === id);
-    const r = b ? reservatorioDaParcela(lista, b.cod) : null;
+    const r = b && b.cod ? reservatorioDaParcela(lista, b.cod) : null;
     if (r) selecionar(r.id);
   };
   const escolhidos = (v.cmp as string[]).filter((id) => lista.some((r) => r.id === id));
+  const outraJanela = textoOutraJanelaDaEar(dec, armazenamento);
+  const foraDaFaixa = res ? volumeForaDaFaixa(res.vol_util_pct_fim) : null;
+  const opcoesRes = useMemo(
+    () =>
+      [...lista]
+        .sort((a, b) => {
+          const ia = SUBSISTEMAS.indexOf((a.subsistema ?? "") as Submercado);
+          const ib = SUBSISTEMAS.indexOf((b.subsistema ?? "") as Submercado);
+          return (ia < 0 ? 9 : ia) - (ib < 0 ? 9 : ib) || nomeProprio(a.nome).localeCompare(nomeProprio(b.nome), "pt-BR");
+        })
+        .map((r) => ({
+          id: r.id,
+          rotulo: `${nomeProprio(r.nome)}${r.balanco_calculado ? "" : " (sem balanço)"}`,
+          grupo: r.subsistema && (SUBSISTEMAS as readonly string[]).includes(r.subsistema) ? NOME_REGIAO[r.subsistema as Submercado] : undefined,
+        })),
+    [lista],
+  );
 
   // séries de 45 dias: buscadas quando a seção chega perto da tela (carregamento progressivo)
   const alvo = useRef<HTMLDivElement>(null);
@@ -132,6 +329,9 @@ export function AguaReservatorios({
   const multiplos = useMemo(() => linhasMultiplosVolume(seriesComp), [seriesComp]);
   const nomeRes = res ? nomeProprio(res.nome) : "";
   const dias = plural(diasSeries, "dia", "dias");
+  const periodoJanela = `${dataBR(janela.inicio)} a ${dataBR(janela.fim)}`;
+  const ehPadrao = !!res && res.id === padrao;
+  const coincidem = serieSel.length ? notaVazoesCoincidem(serieSel) : "";
 
   const estadoSeries =
     series.estado === "erro" ? (
@@ -153,64 +353,58 @@ export function AguaReservatorios({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <AguaEscolha
-          legenda="Subsistema da decomposição"
-          opcoes={SUBSISTEMAS.map((s) => ({ id: s, rotulo: s === "SE" ? "SE/CO" : NOME_REGIAO[s], detalhe: NOME_REGIAO[s] }))}
-          valor={sm}
-          onEscolher={(x) => definir({ sm: x })}
-        />
-        <AguaLista
-          rotulo="Reservatório"
-          opcoes={[...lista].sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")).map((r) => ({ id: r.id, rotulo: nomeProprio(r.nome) }))}
-          valor={res?.id ?? ""}
-          onEscolher={(x) => selecionar(x)}
-        />
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <RespostaCurta id="p020" vivo veredito={dec ? vereditoDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}>
+          {dec ? respostaDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}
+        </RespostaCurta>
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          <AguaEscolha
+            legenda="Subsistema da decomposição"
+            opcoes={SUBSISTEMAS.map((s) => ({ id: s, rotulo: NOME_REGIAO[s] }))}
+            valor={sm}
+            onEscolher={(x) => definir({ sm: x })}
+          />
+          <AguaRestaurar />
+        </div>
       </div>
-
-      <div className="max-w-prose2 space-y-2 text-base leading-relaxed text-carvao" data-resposta="p020" aria-live="polite">
-        <p>{dec ? respostaDecomposicao(dec) : "Sem decomposição da EAR nesta publicação."}</p>
-        <p>{res ? respostaBalanco(res, janela) : "Sem reservatório com balanço nesta publicação."}</p>
-      </div>
-
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-        <div>
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            Decomposição: {dec ? `${dataBR(dec.inicio)} a ${dataBR(dec.fim)}` : "sem janela"} (último dia da EAR por reservatório); balanço: {dataBR(janela.inicio)} a{" "}
-            {dataBR(janela.fim)} (vazões do dia, volume inicial do dia anterior)
-          </dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">
-            {dec ? `${dec.n_reservatorios} reservatórios que contam na EAR ${DO_REGIAO[dec.sm]} (parte própria e parte a jusante)` : ""}; no balanço, {lista.length} reservatórios
-            com EAR máxima positiva (todos os do ONS estão no CSV)
-          </dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">MWmês na decomposição da EAR; hm³ no balanço (m³/s × 86.400 s ÷ 10⁶ por dia); m³/s e % do volume útil nas séries diárias</dd>
-        </div>
-      </dl>
-
-      {destaques}
 
       {dec && (
         <>
           <GraficoBarras
             titulo={`Variação da EAR ${DO_REGIAO[dec.sm]} por reservatório, ${dataBR(dec.inicio)} a ${dataBR(dec.fim)}: maiores quedas e maiores altas`}
-            dados={barrasDec.map((b) => ({ id: b.id, rotulo: b.rotulo, delta: b.delta }))}
+            // a soma dos demais não é um reservatório: vai em série própria (cor diferente e entrada na legenda). Cada categoria tem um só
+            // valor, então empilhar não soma nada; é o jeito de dar à barra agregada outra cor na mesma régua
+            dados={barrasDec.map((b) => ({ id: b.id, rotulo: b.rotulo, delta: b.parte === "restante" ? null : b.delta, demais: b.parte === "restante" ? b.delta : null }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
-            series={[{ id: "delta", rotulo: "Variação da EAR no reservatório", cor: COR_REGIAO[dec.sm] }]}
+            series={[
+              { id: "delta", rotulo: "Variação da EAR no reservatório", cor: COR_REGIAO[dec.sm], opcional: true },
+              ...(barrasDec.some((b) => b.parte === "restante")
+                ? [{ id: "demais", rotulo: "Soma dos demais reservatórios, por diferença (não é um reservatório)", cor: "var(--serie-referencia)", opcional: true }]
+                : []),
+            ]}
+            empilhado
             unidade="MWmês"
             casas={1}
             orientacao="horizontal"
             selecionado={barraSel}
             onSelecionar={selecionarParcela}
           />
-          <TabelaInterativa
+          <AguaLegenda
+            periodo={`${dataBR(dec.inicio)} a ${dataBR(dec.fim)}, o último dia da EAR por reservatório. A EAR dos últimos dias é provisória: o ONS a revisa depois de publicá-la.`}
+            universo={`${dec.n_reservatorios} reservatórios que contam na EAR ${DO_REGIAO[dec.sm]}. ${textoPartesDaEar(decomposicao, lista)}`}
+            unidade={`${TEXTO_UNIDADE_MWMES}; a EAR e a variação dos reservatórios usam esta unidade`}
+          />
+          <p className="text-sm text-carvao-muted">
+            Escolher uma barra troca o reservatório da conta da água, mais abaixo (
+            <a href="#balanco" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+              ir para a conta da água
+            </a>
+            ).
+          </p>
+          <MedidasDecomposicao dec={dec} />
+          {outraJanela && <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">{outraJanela}</p>}
+          <AguaTabela
             titulo={`Tabela equivalente: parcelas da variação da EAR ${DO_REGIAO[dec.sm]}`}
             colunas={COLUNAS_DECOMPOSICAO}
             linhas={linhasDec}
@@ -221,19 +415,70 @@ export function AguaReservatorios({
             nomeArquivo={`agua-decomposicao-ear-${dec.sm}`}
             selecionado={barraSel}
             onSelecionar={selecionarParcela}
-            nota={`O gráfico mostra as maiores quedas e altas publicadas; a soma de todos os ${dec.n_reservatorios} reservatórios e o resíduo estão na resposta acima e na tabela dos subsistemas.`}
+            recolher
+            nota={`O gráfico mostra as maiores quedas e altas publicadas e a soma dos demais; a soma de todos os ${dec.n_reservatorios} reservatórios e o resíduo estão na resposta completa (modo Analisar) e na tabela dos subsistemas.`}
           />
         </>
       )}
 
+      {notas}
+
       {res && (
-        <div className="space-y-3 border-t border-linha pt-5">
-          <h3 className="font-serif text-lg text-carvao">
-            {nomeRes}: componentes do balanço de 30 dias, em hm³ ({ROTULO_CONVENCAO[res.convencao_defluencia]})
-          </h3>
+        <SecaoDoPainel
+          id="balanco"
+          titulo={`Como foi a conta da água em ${nomeRes}?`}
+          lead="A conta de 30 dias, em hm³ (milhões de metros cúbicos): o que entrou (afluência), o que saiu (defluência, pelas turbinas, pelos vertedouros e por outras estruturas) e o resíduo, a diferença que sobra quando a conta não fecha."
+        >
+          <AguaLista
+            rotulo="Reservatório da conta da água"
+            opcoes={opcoesRes}
+            valor={res.id}
+            onEscolher={(x) => selecionar(x)}
+            dica="Troca a conta da água e as séries diárias abaixo, em qualquer subsistema."
+          />
+          {/* depois: a resposta fica na ordem do documento, abaixo do título e da lista, e não antes do título da seção */}
+          <RespostaCurta id="p020-balanco" vivo depois veredito={vereditoBalancoReservatorio(res, janela, semCadastro)}>
+            {respostaBalanco(res, janela, semCadastro)}
+          </RespostaCurta>
+          {foraDaFaixa && (
+            <p data-aviso="volume-fora-da-faixa" className="max-w-prose2 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao-muted">
+              O volume no fim da janela é {pct(res.vol_util_pct_fim, 2)} do volume útil: valor da fonte, {foraDaFaixa === "acima" ? "acima do volume máximo normal do reservatório" : "abaixo de zero"}. A conta
+              da água o usa como veio.
+            </p>
+          )}
+          {/* o glossário vem antes dos números e dos gráficos que usam os termos */}
+          <dl className="grid gap-x-6 gap-y-2 text-sm leading-relaxed text-carvao-muted sm:grid-cols-2" data-termos="balanco">
+            <div>
+              <dt className="inline font-medium text-carvao">Afluência: </dt>
+              <dd className="inline">a água que entra no reservatório.</dd>
+            </div>
+            <div>
+              <dt className="inline font-medium text-carvao">Defluência: </dt>
+              <dd className="inline">a água que sai, pelas turbinas (turbinado, que gera energia), pelos vertedouros (vertido, que não gera) ou por outras estruturas.</dd>
+            </div>
+            <div>
+              <dt className="inline font-medium text-carvao">Resíduo: </dt>
+              <dd className="inline">a diferença que sobra quando a conta não fecha: variação observada menos afluência mais defluência.</dd>
+            </div>
+            <div>
+              <dt className="inline font-medium text-carvao">Transferência: </dt>
+              <dd className="inline">volume que o ONS publica à parte; a convenção do sinal dele não está documentada.</dd>
+            </div>
+            <div className="sm:col-span-2">
+              <dt className="inline font-medium text-carvao">Defluência com ou sem as outras estruturas: </dt>
+              <dd className="inline">
+                o ONS não diz se o número publicado de defluência inclui as outras estruturas; o observatório deduz isso dos dados de cada reservatório (ver o título do gráfico).
+              </dd>
+            </div>
+          </dl>
+          <p className="text-sm text-carvao-muted">
+            A conta da água: variação observada = afluência − defluência + resíduo. Turbinado, vertido, outras estruturas e defluência não discriminada são partes da defluência
+            conforme esse critério; a vazão natural é reconstituída e não entra na conta. Componente sem dado aparece como &ldquo;sem dado&rdquo;, nunca como zero.
+          </p>
+          <MedidasBalanco res={res} periodo={periodoJanela} semCadastro={semCadastro} ehPadrao={ehPadrao} evidenciaResiduo={evidenciaResiduo} endereco={enderecoBalanco} />
           <GraficoBarras
-            titulo={`Balanço hídrico de ${nomeRes}, ${dataBR(janela.inicio)} a ${dataBR(janela.fim)}`}
-            dados={barrasBal.map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
+            titulo={`Balanço hídrico de ${nomeRes}, ${periodoJanela} (${ROTULO_CONVENCAO[res.convencao_defluencia]})`}
+            dados={barrasBalancoTotais(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
             series={[{ id: "v", rotulo: "hm³ na janela", cor: "var(--serie-hidraulica)" }]}
@@ -241,61 +486,113 @@ export function AguaReservatorios({
             casas={2}
             orientacao="horizontal"
           />
-          <p className="text-sm text-carvao-muted">
-            Identidade: variação observada = afluência − defluência + resíduo. Turbinado, vertido, outras estruturas e defluência não discriminada são partes da defluência
-            conforme a convenção do reservatório; a vazão natural é reconstituída e não entra no balanço. Componente sem dado aparece como &ldquo;sem dado&rdquo;, nunca como zero.
-          </p>
-        </div>
+          <GraficoBarras
+            titulo={`Como a defluência de ${nomeRes} se divide, ${periodoJanela} (régua própria)`}
+            dados={barrasBalancoDefluencia(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
+            chaveCategoria="id"
+            chaveRotulo="rotulo"
+            series={[{ id: "v", rotulo: "hm³ na janela", cor: "var(--cor-carvao)" }]}
+            unidade="hm³"
+            casas={2}
+            orientacao="horizontal"
+          />
+          <GraficoBarras
+            titulo={`Resíduo e transferência de ${nomeRes}, ${periodoJanela} (régua própria, porque são pequenos)`}
+            dados={barrasBalancoResiduo(res).map((b) => ({ id: b.id, rotulo: b.rotulo, v: b.v }))}
+            chaveCategoria="id"
+            chaveRotulo="rotulo"
+            series={[{ id: "v", rotulo: "hm³ na janela", cor: "var(--cor-mineral)" }]}
+            unidade="hm³"
+            casas={2}
+            orientacao="horizontal"
+          />
+          <AguaLegenda
+            periodo={`${periodoJanela}, com as vazões do dia e o volume inicial do dia anterior`}
+            universo={`${lista.length} reservatórios com EAR máxima positiva (todos os do ONS estão no CSV)`}
+            unidade="hm³: hectômetro cúbico, um milhão de metros cúbicos, com a vazão do dia convertida por m³/s × 86.400 s ÷ 10⁶; m³/s e % do volume útil nas séries diárias"
+          />
+          <AguaTabela
+            titulo={`Balanço de 30 dias dos ${lista.length} reservatórios com EAR máxima positiva`}
+            colunas={COLUNAS_RESERVATORIOS}
+            linhas={linhasRes}
+            chaveLinha="id"
+            colunaRotulo="rotulo"
+            fonte={fonte}
+            versao={versao}
+            nomeArquivo="agua-reservatorios-balanco"
+            selecionado={res.id}
+            onSelecionar={selecionar}
+            chaveUrl="res"
+            dicaBusca="Nome, bacia ou identificador"
+            recolher
+            nota={`Sem balanço: ${plural(lista.filter((r) => !r.balanco_calculado).length, "reservatório", "reservatórios")} nesta lista, com o motivo exato na coluna Observação (modo Analisar) e no CSV. Nada é preenchido; o resíduo nunca é zerado por ajuste. ${textoVolumeForaDaFaixa(lista)}`}
+          />
+        </SecaoDoPainel>
       )}
 
-      <div ref={alvo} className="space-y-4 border-t border-linha pt-5" data-series={series.estado}>
-        <h3 className="font-serif text-lg text-carvao">{nomeRes ? `${nomeRes}: volume e vazões dia a dia nos últimos ${dias}` : "Volume e vazões dia a dia"}</h3>
-        {estadoSeries}
-        {series.estado === "pronto" &&
-          (serieSel.length ? (
-            <CursorSincronizado>
-              <GraficoLinhas
-                titulo={`Volume útil de ${nomeRes}`}
-                dados={serieSel}
-                chaveX="d"
-                series={[{ id: "vol", rotulo: "Volume útil", cor: "var(--serie-hidraulica)", espessura: 2.5 }]}
-                unidade="% do volume útil"
-                casas={2}
-                marcos={[{ x: janela.inicio, rotulo: "início da janela do balanço" }]}
-                altura={220}
-              />
-              <GraficoLinhas
-                titulo={`Vazões de ${nomeRes}`}
-                dados={serieSel}
-                chaveX="d"
-                series={[
-                  { id: "afl", rotulo: "Afluente", cor: "var(--serie-hidraulica)", espessura: 2 },
-                  { id: "defl", rotulo: "Defluente", cor: "var(--cor-carvao)" },
-                  { id: "turb", rotulo: "Turbinada", cor: "var(--serie-eolica)", tracejada: true },
-                  { id: "vert", rotulo: "Vertida", cor: "var(--serie-termica)", tracejada: true },
-                ]}
-                unidade="m³/s"
-                casas={0}
-                marcos={[{ x: janela.inicio, rotulo: "início da janela do balanço" }]}
-                legendaInterativa
-              />
-            </CursorSincronizado>
-          ) : (
-            <p role="status" className="text-sm text-carvao-muted">
-              Sem série diária publicada para este reservatório.
-            </p>
-          ))}
+      {qualidade}
 
+      <div ref={alvo} data-series={series.estado}>
+        <SecaoDoPainel
+          id="serie-diaria"
+          titulo={nomeRes ? `Como o volume e as vazões variaram dia a dia em ${nomeRes}?` : "Como o volume e as vazões variaram dia a dia?"}
+          lead={`Últimos ${dias}, em % do volume útil e em m³/s; o balanço de 30 dias começa na marca da janela.`}
+        >
+          {/* espaço reservado até as séries chegarem: as duas figuras ocupam a mesma altura que o aviso, e a página não salta */}
+          <div className={series.estado === "pronto" ? undefined : "min-h-[640px]"}>
+            {estadoSeries}
+            {series.estado === "pronto" &&
+              (serieSel.length ? (
+                <div className="space-y-4">
+                  <CursorSincronizado>
+                    <GraficoLinhas
+                      titulo={`Volume útil de ${nomeRes}`}
+                      dados={serieSel}
+                      chaveX="d"
+                      series={[{ id: "vol", rotulo: "Volume útil", cor: "var(--serie-hidraulica)", espessura: 2.5 }]}
+                      unidade="% do volume útil"
+                      casas={2}
+                      marcos={[{ x: janela.inicio, rotulo: "início da janela do balanço" }]}
+                      altura={220}
+                    />
+                    <GraficoLinhas
+                      titulo={`Vazões de ${nomeRes}`}
+                      dados={serieSel}
+                      chaveX="d"
+                      series={[
+                        { id: "afl", rotulo: "Afluente", cor: "var(--serie-hidraulica)", espessura: 2 },
+                        { id: "defl", rotulo: "Defluente (linha grossa)", cor: "var(--cor-carvao)", espessura: 5 },
+                        { id: "turb", rotulo: "Turbinada (tracejada, por cima)", cor: "var(--serie-eolica)", tracejada: true, espessura: 1.5 },
+                        { id: "vert", rotulo: "Vertida", cor: "var(--serie-termica)", tracejada: true },
+                      ]}
+                      unidade="m³/s"
+                      casas={0}
+                      marcos={[{ x: janela.inicio, rotulo: "início da janela do balanço" }]}
+                      legendaInterativa
+                    />
+                  </CursorSincronizado>
+                  {coincidem && (
+                    <p className="text-sm text-carvao-muted" data-nota="vazoes-coincidem">
+                      {coincidem}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p role="status" className="text-sm text-carvao-muted">
+                  Sem série diária publicada para este reservatório.
+                </p>
+              ))}
+          </div>
+        </SecaoDoPainel>
       </div>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Até quatro reservatórios na mesma escala</h3>
+      <SecaoDoPainel id="comparar" nivel="analisar" titulo="Até quatro reservatórios na mesma escala">
         <Comparador
           rotulo={`Reservatórios comparados (até ${LIMITE_COMPARACAO})`}
           entidades={lista.map((r) => ({ id: r.id, rotulo: nomeProprio(r.nome), detalhe: r.subsistema ?? undefined, sinonimos: [r.nome, r.id] }))}
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ cmp: ids })}
-          dicaBusca="Serra da Mesa, Furnas, Sobradinho"
+          dicaBusca="Buscar, por exemplo Serra da Mesa, Furnas, Sobradinho"
           vazio={`Nenhum reservatório escolhido. Escolha até ${LIMITE_COMPARACAO} para ver o volume útil dos últimos ${dias} na mesma escala.`}
         >
           {() => null}
@@ -307,32 +604,18 @@ export function AguaReservatorios({
             chaveX="d"
             unidade="%"
             casas={2}
+            nivelTitulo={4}
             colunas={escolhidos.length >= 4 ? 4 : escolhidos.length >= 3 ? 3 : 2}
-            paineis={seriesComp.map((s, i) => ({
+            // a mesma grandeza (volume útil) tem a mesma cor em todos os painéis e na série do reservatório escolhido; o nome do reservatório é o do painel
+            paineis={seriesComp.map((s) => ({
               id: s.id,
               titulo: nomeProprio(s.nome),
-              series: [{ id: s.id, rotulo: "Volume útil", cor: COR_COMPARACAO[i % COR_COMPARACAO.length], espessura: 2 }],
+              series: [{ id: s.id, rotulo: "Volume útil", cor: "var(--serie-hidraulica)", espessura: 2 }],
             }))}
           />
         )}
         {escolhidos.length > 0 && series.estado !== "pronto" && estadoSeries}
-      </div>
-
-      <TabelaInterativa
-        titulo={`Balanço de 30 dias dos ${lista.length} reservatórios com EAR máxima positiva`}
-        colunas={COLUNAS_RESERVATORIOS}
-        linhas={linhasRes}
-        chaveLinha="id"
-        colunaRotulo="rotulo"
-        fonte={fonte}
-        versao={versao}
-        nomeArquivo="agua-reservatorios-balanco"
-        selecionado={res?.id ?? null}
-        onSelecionar={selecionar}
-        chaveUrl="res"
-        dicaBusca="Nome, bacia ou identificador"
-        nota="Sem balanço: falta volume ou vazão na janela, ou volume útil no cadastro (motivo no CSV). Nada é preenchido; o resíduo nunca é zerado por ajuste."
-      />
+      </SecaoDoPainel>
     </div>
   );
 }

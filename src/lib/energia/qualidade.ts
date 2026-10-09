@@ -34,6 +34,7 @@ import type {
   RelacaoMunicipio,
   TipoCompensacao,
 } from "./tipos-qualidade";
+import type { Proveniencia } from "./tipos";
 
 /* ---------------------------------------------------------------- unidades */
 
@@ -200,6 +201,25 @@ export function respostaP051(g: QualidadeGold): string {
   );
 }
 
+/**
+ * Veredito do P051: o DEC e o FEC do Brasil no ano de referência, com a comparação ao ano anterior (a mesma precisão da
+ * resposta completa) e o limite de leitura: o número não inclui as interrupções que a regra exclui do apurado.
+ */
+export function vereditoP051(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  if (!a || a.dec === null || a.fec === null) return `Sem DEC e FEC nacionais para ${ref}: o ano não tem os 12 meses nacionais completos publicados.`;
+  const ant = anoBrasil(g, ref - 1);
+  let comparacao = "";
+  if (ant && ant.dec !== null && ant.fec !== null) {
+    const sd = comparaNaPrecisao(a.dec, ant.dec, 2);
+    const sf = comparaNaPrecisao(a.fec, ant.fec, 2);
+    const rel = (x: "abaixo" | "acima" | "igual") => (x === "igual" ? "igual ao" : x === "abaixo" ? "menor que o" : "maior que o");
+    comparacao = sd === sf ? (sd === "igual" ? `, o mesmo de ${ref - 1}` : `, ${sd === "abaixo" ? "menos" : "mais"} que em ${ref - 1}`) : `; a duração ficou ${rel(sd)} de ${ref - 1} e a frequência ficou ${rel(sf)} dele`;
+  }
+  return `Em ${ref}, cada unidade consumidora ficou em média ${num(a.dec, 2)} horas sem energia (${horasEMinutos(a.dec)}) e teve ${num(a.fec, 2)} interrupções${comparacao}.${a.dec_todas_parcelas !== null ? " O número não inclui as interrupções que a regra exclui do apurado." : ""}`;
+}
+
 /** Acumulado do ano corrente: só meses nacionais completos nos dois anos; nunca comparado a ano cheio. */
 export function respostaParcial(p: ParcialAno | null): string {
   if (!p || p.dec === null || p.dec_mesmos_meses_ano_anterior === null) return "";
@@ -209,18 +229,17 @@ export function respostaParcial(p: ParcialAno | null): string {
   return ` Em ${p.ano}, somando ${meses}${fora}, foram ${num(p.dec, 2)} h, ${s === "igual" ? "iguais às" : s === "abaixo" ? "abaixo das" : "acima das"} ${num(p.dec_mesmos_meses_ano_anterior, 2)} h dos mesmos meses de ${p.ano - 1}.`;
 }
 
-/** P051, "o que mudou": a série longa e a parte expurgada do ano de referência. */
+/**
+ * P051, "o que mudou": o maior DEC da série e o ano de referência. O DEC de todas as origens (o que a regra exclui do apurado, somado) está
+ * na faixa de métricas e na seção dos expurgos, logo abaixo; repeti-lo aqui só alongava a nota.
+ */
 export function mudancaP051(g: QualidadeGold): string {
   const ref = g.ano_referencia;
   const a = anoBrasil(g, ref);
   const completos = g.brasil.anual.filter((x) => x.completo && x.dec !== null);
   if (!a || a.dec === null || !completos.length) return "Sem série anual completa publicada.";
   const maior = completos.reduce((m, x) => ((x.dec ?? -1) > (m.dec ?? -1) ? x : m));
-  const expurgo =
-    a.dec_todas_parcelas !== null
-      ? ` Somando as interrupções que a regra exclui do apurado (emergência, dia crítico, origem externa e cortes pedidos pelo ONS), cada unidade ficou ${num(a.dec_todas_parcelas, 2)} h sem energia em ${ref}.`
-      : "";
-  return `De ${completos[0].ano} a ${ref}, o maior DEC apurado nacional foi o de ${maior.ano} (${num(maior.dec, 2)} h); ${ref} fechou com ${num(a.dec, 2)} h.${expurgo}`;
+  return `De ${completos[0].ano} a ${ref}, o maior DEC apurado nacional foi o de ${maior.ano} (${num(maior.dec, 2)} h); ${ref} fechou com ${num(a.dec, 2)} h.`;
 }
 
 /** Linhas anuais do Brasil (2001 em diante): gráfico, tabela e exportação usam esta lista. */
@@ -264,7 +283,7 @@ export const COR_PARCELA: Record<GrupoParcela, string> = {
   ons: "var(--serie-referencia)",
 };
 export const ROTULO_PARCELA_CURTO: Record<GrupoParcela, string> = {
-  apurado: "Apurado (interna, IP + IND)",
+  apurado: "Apurado (parcelas internas)",
   emergencia: "Situação de emergência",
   dia_critico: "Dia crítico",
   externa: "Origem externa",
@@ -535,6 +554,19 @@ export function respostaP052(g: QualidadeGold): string {
   return partes.join(" ");
 }
 
+/**
+ * Veredito do P052: que fração dos conjuntos com limite passou do limite anual de DEC e como estava no ano anterior. Os
+ * conjuntos em número, o peso em unidades consumidoras, o Brasil diante do limite agregado e as caudas ficam na resposta completa.
+ */
+export function vereditoP052(g: QualidadeGold): string {
+  const c = g.conjuntos;
+  const ant = c.historico.find((h) => h.ano === c.ano - 1);
+  const contra = ant && ant.pct_acima_limite_dec !== null ? `, contra ${pct(ant.pct_acima_limite_dec, 1)} em ${ant.ano}` : "";
+  const q = c.quantis_razao_dec;
+  const pontas = q.p90 !== null && q.p90 > 1 ? " A média do Brasil esconde as pontas: há conjuntos bem acima do próprio limite." : "";
+  return `Em ${c.ano}, ${pct(c.pct_acima_limite_dec, 1)} dos conjuntos com limite ficaram acima do limite anual de DEC${contra}.${pontas}`;
+}
+
 /** P052, "o que mudou": trajetória da fração de conjuntos acima do limite. */
 export function mudancaP052(c: Conjuntos): string {
   const h = c.historico.filter((x) => x.pct_acima_limite_dec !== null);
@@ -608,8 +640,8 @@ export const COLUNAS_LIMITES: ColunaTabela[] = [
   { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
   { id: "dgc_calculado", rotulo: "DGC calculado", tipo: "numero", casas: 3 },
   { id: "dgc_publicado", rotulo: "DGC no ranking da ANEEL", tipo: "numero", casas: 2 },
-  { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
-  { id: "porte", rotulo: "Porte no ranking", tipo: "texto", categorica: true },
+  { id: "posicao", rotulo: "Posição no ranking da ANEEL", tipo: "numero", casas: 0 },
+  { id: "porte", rotulo: "Porte no ranking da ANEEL", tipo: "texto", categorica: true },
   { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
   { id: "cobertura_limite", rotulo: "UCs com limite", tipo: "percentual", casas: 0 },
   { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
@@ -733,11 +765,27 @@ export const COLUNAS_CAUDA: ColunaTabela[] = [
 /* ---------------------------------------------------------------- explorador de conjuntos (CSV sob demanda) */
 
 /** Linhas dos conjuntos de um ano, lidas do CSV anual por década (o mesmo arquivo de download). */
+/**
+ * O FEC de um conjunto diante do limite. A razão e a marca "acima do limite" só existem com os 12 meses de FEC publicados; com menos meses
+ * (e FEC e limite publicados) o conjunto fica fora da contagem, e a frase diz se ele já passa do limite com os meses que existem.
+ */
+export function situacaoFecDoConjunto(l: { acima: string; fec: number | null; limite: number | null; razao: number | null; mesesFec?: number | null }): string {
+  if (l.acima === "1") return "acima do limite";
+  if (l.acima === "0") return "até o limite";
+  if (l.fec !== null && l.limite !== null && l.razao === null) {
+    const meses = l.mesesFec !== null && l.mesesFec !== undefined && l.mesesFec < 12 ? `${l.mesesFec} meses de FEC` : "menos de 12 meses de FEC";
+    return comparaNaPrecisao(l.fec, l.limite, 2) === "acima" ? `${meses}, já acima do limite` : meses;
+  }
+  return "sem FEC ou sem limite de FEC";
+}
+
 export function conjuntosDoCsv(texto: string, ano: number): LinhaTabela[] {
   return lerCsv(texto)
     .filter((l) => Number(l.ano) === ano)
     .map((l) => {
-      const acima = l.acima_limite_dec === "1" ? "acima do limite" : l.acima_limite_dec === "0" ? "até o limite" : "sem limite ou sem 12 meses";
+      // sem a marca do limite: ou o conjunto tem menos de 12 meses de DEC (o valor do arquivo é a soma dos meses publicados, não um ano), ou não tem limite
+      const meses = numeroOuNulo(l.meses);
+      const acima = l.acima_limite_dec === "1" ? "acima do limite" : l.acima_limite_dec === "0" ? "até o limite" : meses !== null && meses < 12 ? "menos de 12 meses publicados" : "sem limite publicado";
       return {
         id: l.conjunto,
         conjunto: l.conjunto,
@@ -752,6 +800,13 @@ export function conjuntosDoCsv(texto: string, ano: number): LinhaTabela[] {
         razao_fec: numeroOuNulo(l.razao_fec),
         ucs: numeroOuNulo(l.ucs_media),
         situacao_dec: acima,
+        situacao_fec: situacaoFecDoConjunto({
+          acima: l.acima_limite_fec ?? "",
+          fec: numeroOuNulo(l.fec_interrupcoes),
+          limite: numeroOuNulo(l.fec_limite_interrupcoes),
+          razao: numeroOuNulo(l.razao_fec),
+          mesesFec: numeroOuNulo(l.meses_fec),
+        }),
       };
     });
 }
@@ -768,6 +823,7 @@ export const COLUNAS_CONJUNTOS: ColunaTabela[] = [
   { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
   { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
   { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "situacao_fec", rotulo: "FEC diante do limite", tipo: "texto", categorica: true },
   { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
 ];
 
@@ -803,11 +859,26 @@ export function respostaP053(g: QualidadeGold): string {
   }
   const qt = a.quantidade_uc !== null ? ` em ${num(a.quantidade_uc / 1e6, 1)} milhões de compensações` : "";
   const ug = a.valor_ug !== null ? ` Unidades geradoras receberam ${reaisMilhoes(a.valor_ug, 2)} à parte.` : "";
-  const conc = c.concentracao_5_maiores_pct !== null ? ` As cinco distribuidoras que mais pagaram somam ${pct(c.concentracao_5_maiores_pct, 1)} do total do ano.` : "";
+  // a concentração é calculada sobre o valor de unidades consumidoras e geradoras somadas (o "valor" de cada distribuidora), não sobre o total só de UC
+  const conc = c.concentracao_5_maiores_pct !== null ? ` As cinco distribuidoras que mais pagaram somam ${pct(c.concentracao_5_maiores_pct, 1)} do total do ano de unidades consumidoras e geradoras somadas.` : "";
   return `Em ${a.ano}, as distribuidoras informaram ${reaisMilhoes(a.valor_uc)} pagos a unidades consumidoras${qt}, por violação de limites individuais de continuidade (valores nominais da competência)${comp}.${ug}${conc}`;
 }
 
-/** P053, "o que mudou": maior ano da série e o acumulado do ano corrente, marcado como parcial. */
+/** Veredito do P053: o total pago a unidades consumidoras no ano de referência e a comparação ao ano anterior completo. */
+export function vereditoP053(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  if (!a || a.valor_uc === null) return `Sem total de compensações para ${c.ano_referencia}: o ano não tem os 12 meses informados pelas distribuidoras.`;
+  const ant = c.anual.find((x) => x.ano === c.ano_referencia - 1 && x.completo);
+  let comp = "";
+  if (ant && ant.valor_uc !== null) {
+    const s = comparaNaPrecisao(a.valor_uc / 1e6, ant.valor_uc / 1e6, 1);
+    comp = s === "igual" ? `, o mesmo de ${ant.ano}` : `, ${s === "abaixo" ? "menos" : "mais"} que os ${reaisMilhoes(ant.valor_uc)} de ${ant.ano}`;
+  }
+  return `Em ${a.ano}, as distribuidoras pagaram ${reaisMilhoes(a.valor_uc)} a unidades consumidoras que tiveram limites individuais de continuidade violados${comp}.`;
+}
+
+/** P053, "o que mudou": maior ano da série (com a quebra de regime de 2022 dita junto) e o acumulado do ano corrente, marcado como parcial. */
 export function mudancaP053(g: QualidadeGold): string {
   const c = g.compensacoes;
   const completos = c.anual.filter((x) => x.completo && x.valor_uc !== null);
@@ -815,14 +886,20 @@ export function mudancaP053(g: QualidadeGold): string {
   const maior = completos.reduce((m, x) => ((x.valor_uc ?? -1) > (m.valor_uc ?? -1) ? x : m));
   const parcial = c.anual.find((x) => !x.completo);
   const p = parcial && c.ultimo_mes_completo ? ` Em ${parcial.ano}, até ${mesAno(c.ultimo_mes_completo)}: ${reaisMilhoes(parcial.valor_uc)} a unidades consumidoras, soma parcial que não se compara a um ano cheio.` : "";
-  return `Na série desde ${completos[0].ano}, o maior total pago a unidades consumidoras foi o de ${maior.ano} (${reaisMilhoes(maior.valor_uc)}), em reais de cada ano, sem correção pela inflação.${p}`;
+  const quebra = textoQuebraCompensacaoCurto(g);
+  return `Na série desde ${completos[0].ano}, o maior total pago a unidades consumidoras foi o de ${maior.ano} (${reaisMilhoes(maior.valor_uc)}), em reais de cada ano, sem correção pela inflação.${quebra ? ` ${quebra}` : ""}${p}`;
 }
 
-/** Anos completos de compensação (gráfico, tabela e exportação): unidades consumidoras e geradoras separadas. */
+/**
+ * Anos de compensação (gráfico, tabela e exportação): unidades consumidoras e geradoras separadas. A situação diz também o regime da fonte
+ * (com ou sem os tipos que deixam de ser publicados), para a linha de antes e a de depois da quebra não passarem por comparáveis.
+ */
 export function linhasCompensacaoAnual(g: QualidadeGold): LinhaTabela[] {
+  const q = quebraCompensacao(g);
+  const regime = (ano: number) => (q ? `, ${ano < q.ano ? "com" : "sem"} as compensações ${tiposQueSomem(q)}` : "");
   return g.compensacoes.anual.map((a) => ({
     ano: String(a.ano),
-    situacao: a.completo ? "ano completo" : `parcial até ${g.compensacoes.ultimo_mes_completo ? mesAno(g.compensacoes.ultimo_mes_completo) : "mês não informado"}`,
+    situacao: (a.completo ? "ano completo" : `parcial até ${g.compensacoes.ultimo_mes_completo ? mesAno(g.compensacoes.ultimo_mes_completo) : "mês não informado"}`) + regime(a.ano),
     valor_uc_mi: a.completo && a.valor_uc !== null ? a.valor_uc / 1e6 : null,
     valor_uc: a.valor_uc,
     quantidade_uc: a.quantidade_uc,
@@ -839,7 +916,7 @@ export const COLUNAS_COMP_ANUAL: ColunaTabela[] = [
   { id: "quantidade_uc", rotulo: "Compensações a unidades consumidoras", tipo: "numero", casas: 0 },
   { id: "valor_ug", rotulo: "Valor a unidades geradoras", tipo: "numero", unidade: "R$", casas: 2 },
   { id: "quantidade_ug", rotulo: "Compensações a unidades geradoras", tipo: "numero", casas: 0 },
-  { id: "valor_por_uc", rotulo: "Valor ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
+  { id: "valor_por_uc", rotulo: "Valor (UC e UG) ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
 ];
 
 /** Meses de compensação: mês ainda incompleto fica fora do gráfico (o valor publicado segue na tabela, marcado). */
@@ -913,7 +990,8 @@ export function notaTiposCompensacao(g: QualidadeGold): string {
     const txt = trechosDeAnos(com).map(([i, f]) => (f === ultimo && i !== f ? `desde ${i}` : i === f ? String(i) : `de ${i} a ${f}`));
     return `${ROTULO_TIPO_CURTO[t]} ${listaPt(txt)}`;
   });
-  return `Valores pagos a unidades consumidoras. Tipo sem valor publicado no ano é ausência, não zero. Anos com valor por tipo: ${partes.join("; ")}. Unidades geradoras na última coluna, somadas.`;
+  const causa = textoQuebraCompensacaoCurto(g);
+  return `Valores pagos a unidades consumidoras. Tipo sem valor publicado no ano é ausência, não zero. Anos com valor por tipo: ${partes.join("; ")}.${causa ? ` ${causa}` : ""} Unidades geradoras na última coluna, somadas.`;
 }
 
 /**
@@ -964,7 +1042,7 @@ export function colunasCompensacaoDistribuidoras(rotulos: Record<TipoCompensacao
     { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
     { id: "valor", rotulo: "Valor no ano (UC e UG)", tipo: "numero", unidade: "R$", casas: 2 },
     { id: "quantidade", rotulo: "Compensações no ano (UC e UG)", tipo: "numero", casas: 0 },
-    { id: "valor_por_uc", rotulo: "Valor ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
+    { id: "valor_por_uc", rotulo: "Valor (UC e UG) ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
     { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
     ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: `${rotulos[t]}, só UC`, tipo: "numero" as const, unidade: "R$", casas: 2 })),
   ];
@@ -995,6 +1073,15 @@ export function respostaP054(g: QualidadeGold): string {
   }
   if (tmae && tmae.tmae_min !== null) partes.push(`O atendimento a uma ocorrência emergencial levou em média ${num(tmae.tmae_min, 0)} minutos (${horasEMinutos(tmae.tmae_min / 60)}) da reclamação ao restabelecimento.`);
   return partes.join(" ") || "Sem indicadores de atendimento publicados para o ano de referência.";
+}
+
+/** Veredito do P054: reclamações por mil unidades consumidoras nas distribuidoras e quantas foram sobre interrupção. */
+export function vereditoP054(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const rec = g.atendimento.reclamacoes_distribuidora.find((x) => x.ano === ref);
+  if (!rec || rec.por_ucs === null) return rec ? `Reclamações nas distribuidoras em ${ref}: sem taxa (${rec.motivo_ausencia ?? "universo vazio"}).` : "Sem indicadores de atendimento publicados para o ano de referência.";
+  const interrupcao = rec.interrupcao_por_mil_uc !== null ? `, ${num(rec.interrupcao_por_mil_uc, 1)} delas sobre interrupção` : "";
+  return `Em ${ref}, as distribuidoras registraram ${num(rec.por_ucs, 1)} reclamações por mil unidades consumidoras${interrupcao}.`;
 }
 
 /** P054, "o que mudou": evolução das taxas (anos completos) e o ano corrente sem taxa. */
@@ -1240,6 +1327,7 @@ export const TABELAS_SOB_DEMANDA = [
   "cauda-razao",
   "cauda-dec",
   "dgc",
+  "comp-anual",
   "comp-tipo",
   "comp-dist",
   "divulgado",
@@ -1320,35 +1408,43 @@ const COLUNAS_ARQUIVOS: ColunaTabela[] = [
 
 const simNao = (v: boolean | null) => (v === null ? "sem divulgação" : v ? "sim" : "não");
 
-/** Definição (colunas, linhas, fonte, arquivo) de cada tabela aberta sob demanda. */
-export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela {
+/**
+ * Definição (colunas, linhas, fonte, arquivo) de cada tabela aberta sob demanda. `avisos` traz a marca de cobertura parcial do FEC
+ * (a página manda a versão com os meses lidos do CSV mensal; sem ela, a regra é refeita aqui só com a gold).
+ */
+export function tabelaQualidade(id: IdTabela, g: QualidadeGold, avisos: AvisosFec = avisosFec(g)): DefinicaoTabela {
   const ref = String(g.ano_referencia);
   const c = g.conjuntos;
   const comp = g.compensacoes;
+  const dist = new Map(g.distribuidoras.map((d) => [d.cnpj, d]));
+  const comFec = (l: LinhaTabela): LinhaTabela => {
+    const d = dist.get(String(l.id));
+    return d ? { ...l, ...camposFecDaDistribuidora(d, avisos) } : l;
+  };
   switch (id) {
     case "dist-p051":
       return {
-        colunas: COLUNAS_DIST_P051,
-        linhas: linhasDistribuidorasP051(g),
+        colunas: comColunasFec(COLUNAS_DIST_P051),
+        linhas: linhasDistribuidorasP051(g).map(comFec),
         colunaRotulo: "sigla",
         fonte: FONTE_CONTINUIDADE,
         versao: ref,
         nomeArquivo: "qualidade-distribuidoras",
         ordemInicial: { coluna: "dec", direcao: "desc" },
         dicaBusca: "Sigla ou CNPJ",
-        nota: "Distribuidora com menos de 12 meses publicados fica sem valor anual (ausência, nunca soma de meses).",
+        nota: `Distribuidora com menos de 12 meses publicados fica sem valor anual (ausência, nunca soma de meses). ${notaFecCobertura(avisos)}`,
       };
     case "limites":
       return {
-        colunas: COLUNAS_LIMITES,
-        linhas: linhasLimites(g),
+        colunas: comColunasFec(COLUNAS_LIMITES),
+        linhas: linhasLimites(g).map(comFec),
         colunaRotulo: "sigla",
         fonte: FONTE_CONTINUIDADE,
         versao: ref,
         nomeArquivo: "qualidade-limites-distribuidoras",
         ordemInicial: { coluna: "razao_dec", direcao: "desc" },
         dicaBusca: "Sigla ou CNPJ",
-        nota: "DGC (desempenho global de continuidade) = média simples de DEC ÷ limite e FEC ÷ limite, como no ranking da ANEEL; o publicado tem duas casas.",
+        nota: `DGC (desempenho global de continuidade) = média simples de DEC ÷ limite e FEC ÷ limite, como no ranking da ANEEL; o publicado tem duas casas. Posição, porte e DGC publicado são do ranking da ANEEL; as demais colunas são calculadas aqui. ${notaFecCobertura(avisos)}`,
       };
     case "mensal":
       return {
@@ -1412,6 +1508,20 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
         versao: ref,
         nomeArquivo: "qualidade-reconciliacao-dgc",
       };
+    case "comp-anual": {
+      const inicioUg = comp.anual.find((x) => x.valor_ug !== null)?.ano ?? null;
+      const quebra = textoQuebraCompensacao(g);
+      return {
+        colunas: COLUNAS_COMP_ANUAL,
+        linhas: linhasCompensacaoAnual(g).map((l) => ({ ...l, id: String(l.ano) })),
+        colunaRotulo: "ano",
+        fonte: FONTE_COMPENSACOES,
+        versao: comp.ultimo_mes_completo ?? String(comp.ano_referencia),
+        nomeArquivo: "qualidade-compensacoes-anual",
+        ordemInicial: { coluna: "ano", direcao: "desc" },
+        nota: `Unidade geradora sem linha na fonte${inicioUg ? ` (antes de ${inicioUg})` : ""} é ausência, não zero. O ano corrente é parcial e fica fora do gráfico.${quebra ? ` ${quebra}` : ""}`,
+      };
+    }
     case "comp-tipo":
       return {
         colunas: [
@@ -1493,7 +1603,7 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
     case "validacao":
       return {
         colunas: COLUNAS_VALIDACAO,
-        linhas: g.validacao.map((x, i) => ({ id: String(i), nome: x.nome, resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: x.detalhe })),
+        linhas: g.validacao.map((x, i) => ({ id: String(i), nome: paraLeitor(x.nome), resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: paraLeitor(x.detalhe) })),
         colunaRotulo: "nome",
         fonte: "Pipeline do observatório (pipeline/energia/modulos/qualidade.py)",
         versao: g.gerado_em.slice(0, 10),
@@ -1517,4 +1627,958 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
         nomeArquivo: "qualidade-arquivos",
       };
   }
+}
+
+/* ---------------------------------------------------------------- redesenho: painéis, abertura e arquivos */
+
+/**
+ * Os quatro painéis da página: âncora do bloco, nome curto, título do painel e a pergunta que cada um responde (a descrição dos
+ * capítulos e a "próxima pergunta" de cada rodapé saem daqui, o mesmo texto nos dois lugares).
+ */
+export const PAINEIS_QUALIDADE = [
+  {
+    id: "p051",
+    ancora: "duracao",
+    rotulo: "Duração e frequência",
+    titulo: "Duração e frequência das interrupções no Brasil, ano a ano",
+    descricao: "Por quanto tempo e quantas vezes falta energia, no Brasil, nas distribuidoras e nos conjuntos?",
+  },
+  {
+    id: "p052",
+    ancora: "limites",
+    rotulo: "Limites",
+    titulo: "Cada distribuidora e cada conjunto diante do próprio limite",
+    descricao: "Quantos conjuntos passam do limite de DEC e como cada distribuidora fica diante do próprio limite?",
+  },
+  {
+    id: "p053",
+    ancora: "compensacoes",
+    rotulo: "Compensações",
+    titulo: "Quais compensações foram pagas?",
+    descricao: "Quanto foi pago a quem teve um limite individual de continuidade violado?",
+  },
+  {
+    id: "p054",
+    ancora: "atendimento",
+    rotulo: "Atendimento",
+    titulo: "Como o consumidor é atendido e como a rede se recupera?",
+    descricao: "Como o consumidor é atendido, o que ele responde na pesquisa de satisfação e como a rede se recupera?",
+  },
+] as const;
+export type PainelQualidade = (typeof PAINEIS_QUALIDADE)[number]["id"];
+export const painelQualidade = (id: PainelQualidade) => PAINEIS_QUALIDADE.find((p) => p.id === id)!;
+
+/**
+ * Valores da faixa de métricas da abertura. São os mesmos que a resposta, o gráfico e a tabela do P051 e do P052 leem (o ano de
+ * referência da gold e o anterior); a faixa não calcula nada, só escolhe e converte a unidade de exibição (horas e minutos).
+ */
+export type MetricasAbertura = {
+  ano: number;
+  anoAnterior: number | null;
+  dec: number | null;
+  decAnterior: number | null;
+  /** O DEC em horas e minutos (9,33 h são 9 h 20 min), nunca por leitura literal dos centésimos. */
+  decHorasMinutos: string;
+  fec: number | null;
+  fecAnterior: number | null;
+  /** DEC de todas as origens publicadas: o apurado mais as parcelas expurgadas. */
+  decTodasOrigens: number | null;
+  decTodasOrigensHorasMinutos: string;
+  conjuntos: {
+    ano: number;
+    acima: number;
+    comLimite: number;
+    pct: number | null;
+    anoAnterior: number | null;
+    pctAnterior: number | null;
+  };
+};
+
+export function metricasAbertura(g: QualidadeGold): MetricasAbertura {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  const ant = anoBrasil(g, ref - 1);
+  const anterior = ant && ant.dec !== null && ant.fec !== null ? ant : null;
+  const c = g.conjuntos;
+  const antC = c.historico.find((h) => h.ano === c.ano - 1) ?? null;
+  return {
+    ano: ref,
+    anoAnterior: anterior ? anterior.ano : null,
+    dec: a?.dec ?? null,
+    decAnterior: anterior?.dec ?? null,
+    decHorasMinutos: horasEMinutos(a?.dec),
+    fec: a?.fec ?? null,
+    fecAnterior: anterior?.fec ?? null,
+    decTodasOrigens: a?.dec_todas_parcelas ?? null,
+    decTodasOrigensHorasMinutos: horasEMinutos(a?.dec_todas_parcelas),
+    conjuntos: {
+      ano: c.ano,
+      acima: c.acima_limite_dec,
+      comLimite: c.com_limite,
+      pct: c.pct_acima_limite_dec,
+      anoAnterior: antC && antC.pct_acima_limite_dec !== null ? antC.ano : null,
+      pctAnterior: antC?.pct_acima_limite_dec ?? null,
+    },
+  };
+}
+
+/** Universo do DEC e do FEC nacionais, para o recorte: quantas distribuidoras e conjuntos entram e o recorte das concessionárias. */
+export function textoUniversoBrasil(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  if (!a) return "Sem ano nacional completo publicado.";
+  const distribuidoras = g.distribuidoras.filter((d) => d.dec !== null).length;
+  const base = `Todas as distribuidoras com indicadores publicados, inclusive permissionárias: ${num(distribuidoras, 0)} distribuidoras e ${num(a.conjuntos, 0)} conjuntos em ${a.ano}.`;
+  if (a.dec_concessionarias === null || a.fec_concessionarias === null || a.concessionarias === null) return base;
+  return `${base} Só as ${num(a.concessionarias, 0)} concessionárias, o universo do número que a ANEEL divulga: ${num(a.dec_concessionarias, 2)} h e ${num(a.fec_concessionarias, 2)} interrupções.`;
+}
+
+const FRASE_PARCELA: Record<GrupoParcela, string> = {
+  apurado: "no apurado, a parte comparada ao limite",
+  emergencia: "em situação de emergência",
+  dia_critico: "em dia crítico",
+  externa: "de origem externa ao sistema de distribuição",
+  ons: "de racionamento ou alívio de carga pelo ONS",
+};
+
+/**
+ * As parcelas do DEC do ano de referência por extenso: o que entra no apurado e o que a regra expurga, com a soma de todas as origens.
+ * O que a fonte não publica (parcela nula) é dito como ausência, nunca como zero. Vazio sem parcelas publicadas.
+ */
+export function textoParcelasAno(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  const p = a?.parcelas_dec ?? null;
+  if (!a || !p || a.dec_todas_parcelas === null) return "";
+  const itens = ORDEM_PARCELAS.map((k) => (p[k] === null ? `sem valor publicado ${FRASE_PARCELA[k]}` : `${num(p[k], 2)} h ${FRASE_PARCELA[k]}`));
+  return `Em ${a.ano}, o DEC de todas as origens foi de ${num(a.dec_todas_parcelas, 2)} h (${horasEMinutos(a.dec_todas_parcelas)}): ${listaPt(itens)}. As quatro últimas parcelas são expurgadas do apurado.`;
+}
+
+/**
+ * Primeiro ano a partir do qual o DEC e o FEC apurados são, em todos os conjunto-meses, a soma das parcelas internas programada e não
+ * programada (IP + IND): antes disso o apurado de parte dos conjuntos incluía também as externas não críticas. Lido da tabela de
+ * identidade do apurado, nunca escrito à mão; null quando a identidade vale desde o primeiro ano publicado ou nunca fecha.
+ */
+export function anoApuradoUniforme(g: QualidadeGold): number | null {
+  const id = g.brasil.identidade_apurado;
+  let ano: number | null = null;
+  for (let i = id.length - 1; i >= 0; i--) {
+    const x = id[i];
+    if (x.pct_dec_igual_ip_mais_ind === 100 && x.pct_fec_igual_ip_mais_ind === 100) ano = x.ano;
+    else break;
+  }
+  return ano !== null && ano > (id[0]?.ano ?? ano) ? ano : null;
+}
+
+/**
+ * Marco do eixo dos anos nos gráficos de DEC e FEC: o ano a partir do qual o apurado passa a ser só IP + IND (antes, o apurado de parte
+ * dos conjuntos incluía as externas não críticas). É a quebra que importa para comparar um ano com outro; o ano vem da identidade do
+ * apurado, nunca de número escrito à mão. O início das parcelas em separado aparece no gráfico das parcelas, que começa nele.
+ */
+export function marcosHistoriaApurado(g: QualidadeGold): { x: string; rotulo: string }[] {
+  const uniforme = anoApuradoUniforme(g);
+  return uniforme === null ? [] : [{ x: String(uniforme), rotulo: `${uniforme}: muda o que entra no apurado` }];
+}
+
+/** Compensações do ano de referência para a faixa do P053: totais em milhões, unidades consumidoras e geradoras sempre separadas. */
+export function metricasCompensacao(g: QualidadeGold) {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia) ?? null;
+  const ant = c.anual.find((x) => x.ano === c.ano_referencia - 1 && x.completo) ?? null;
+  const milhoes = (v: number | null | undefined) => (v === null || v === undefined ? null : v / 1e6);
+  return {
+    ano: c.ano_referencia,
+    valorUcMilhoes: milhoes(a?.valor_uc),
+    valorUcAnteriorMilhoes: milhoes(ant?.valor_uc),
+    anoAnterior: ant && ant.valor_uc !== null ? ant.ano : null,
+    quantidadeUcMilhoes: milhoes(a?.quantidade_uc),
+    valorUgMilhoes: milhoes(a?.valor_ug),
+  };
+}
+
+/**
+ * O total que a ANEEL divulga para o ano de referência, quando a soma dos dados abertos difere dele além da precisão divulgada
+ * (a conferência fica marcada e a diferença não foi explicada). Vazio quando não há divulgação ou quando ela confere.
+ */
+export function textoDivulgadoAno(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  const d = a?.divulgado_aneel ?? null;
+  if (!a || !d || d.valor === null || a.valor_uc === null || d.dentro_da_precisao_valor !== false) return "";
+  return `A ANEEL divulga ${reaisMilhoes(d.valor, 0)} para ${a.ano}, e a soma dos dados abertos é ${reaisMilhoes(a.valor_uc)}: a diferença passa da precisão divulgada e não foi explicada (a conferência está em Auditar).`;
+}
+
+/* ---- arquivos para baixar: nome legível para o leitor, o nome do arquivo só em Auditar */
+
+const ROTULO_ARQUIVO: Record<string, string> = {
+  "qualidade_brasil.csv": "DEC e FEC do Brasil, por ano e por mês",
+  "qualidade_distribuidoras_anual.csv": "DEC, FEC e limites de cada distribuidora, por ano",
+  "qualidade_distribuidoras_mensal.csv": "DEC e FEC de cada distribuidora, por mês",
+  "qualidade_conjuntos_mensal.csv": "DEC e FEC de cada conjunto, por mês",
+  "qualidade_municipios.csv": "Conjuntos que atendem cada município, com o DEC e o FEC deles",
+  "qualidade_mapa.json": "Mapa por município (JSON)",
+  "qualidade_distribuidoras_serie.json": "Série anual de cada distribuidora (JSON)",
+  "qualidade_reconciliacao_dgc.csv": "DGC calculado e DGC publicado no ranking da ANEEL",
+  "qualidade_compensacoes.csv": "Compensações por distribuidora, mês e tipo de violação",
+  "qualidade_atendimento.csv": "Reclamações, Ouvidoria, IASC e atendimento emergencial por distribuidora",
+  "qualidade_atendimento_telefonico.csv": "Atendimento telefônico por distribuidora e mês",
+  "qualidade_eventos_emergencia.csv": "Eventos em situação de emergência",
+};
+
+/** Nome legível do arquivo publicado (o conjunto anual por década diz o seu período, lido do nome do arquivo). */
+export function rotuloArquivo(url: string): string {
+  const nome = url.split("/").at(-1) ?? url;
+  const decada = /^qualidade_conjuntos_anual_(\d{4})_(\d{4})\.csv$/.exec(nome);
+  if (decada) return `DEC, FEC e limites de cada conjunto, por ano, de ${decada[1]} a ${decada[2]}`;
+  return ROTULO_ARQUIVO[nome] ?? "Arquivo de dados";
+}
+
+const ARQUIVOS_DO_PAINEL: Record<PainelQualidade, (string | RegExp)[]> = {
+  p051: ["qualidade_brasil.csv", "qualidade_distribuidoras_anual.csv", "qualidade_distribuidoras_mensal.csv", "qualidade_conjuntos_mensal.csv", "qualidade_municipios.csv"],
+  p052: ["qualidade_distribuidoras_anual.csv", /^qualidade_conjuntos_anual_\d{4}_\d{4}\.csv$/, "qualidade_reconciliacao_dgc.csv"],
+  p053: ["qualidade_compensacoes.csv"],
+  p054: ["qualidade_atendimento.csv", "qualidade_atendimento_telefonico.csv", "qualidade_eventos_emergencia.csv"],
+};
+
+/** Arquivos de um painel, com nome legível, entre os que a gold publica (um arquivo que a publicação não traz não aparece). */
+export function downloadsDoPainel(g: QualidadeGold, painel: PainelQualidade): { rotulo: string; url: string }[] {
+  const quer = ARQUIVOS_DO_PAINEL[painel];
+  return g.downloads
+    .filter((d) => {
+      const nome = d.url.split("/").at(-1) ?? "";
+      return quer.some((q) => (typeof q === "string" ? q === nome : q.test(nome)));
+    })
+    .map((d) => ({ rotulo: rotuloArquivo(d.url), url: d.url }));
+}
+
+/* ================================================================ ressalvas das avaliações independentes, no ponto de uso */
+
+/*
+ * O que há abaixo nasceu das avaliações técnica e de produto da versão anterior: cada seletor devolve texto ou valor derivado dos
+ * campos da gold (e dos CSV publicados com ela), nunca um número escrito à mão, e nenhum deles refaz um indicador. Quando a gold
+ * é reconstruída, as frases se refazem sozinhas; quando o dado de que a frase depende falta, a função devolve vazio ou a frase sem
+ * aquele trecho.
+ */
+
+/* ---------------------------------------------------------------- FEC de cobertura parcial */
+
+/**
+ * Diferença, em centésimos de interrupção, entre o FEC anual de uma distribuidora e a soma das parcelas internas (FECIP + FECIND, o grupo
+ * "apurado" das parcelas) acima da qual o FEC do ano é marcado como de cobertura parcial. Desde o ano em que o apurado é uniforme (IP + IND
+ * em todos os conjunto-meses) as duas contas têm de fechar; quando não fecham, algum mês entrou no anual com parte das unidades consumidoras
+ * sem FEC publicado.
+ */
+export const LIMITE_FEC_PARCIAL_CENTESIMOS = 2;
+/** Fração das UCs com número de unidades que o FEC de um mês precisa cobrir (a mesma regra de 99% do mês completo do DEC). */
+export const COBERTURA_MINIMA_FEC_MES = 0.99;
+
+/** Mês cujo FEC cobre menos que o mínimo das unidades consumidoras (colunas ucs_fec e ucs_total do CSV mensal por distribuidora). */
+export type MesFecParcial = { mes: string; ucsFec: number; ucsTotal: number; cobertura: number };
+
+export type AvisoFec = {
+  cnpj: string;
+  rotulo: string;
+  ano: number;
+  fec: number;
+  /** FEC anual pela soma das parcelas internas (FECIP + FECIND); null quando a gold não traz as parcelas. */
+  fecPelasParcelas: number | null;
+  /** FEC apurado menos FEC pelas parcelas, em interrupções. */
+  diferenca: number | null;
+  /** Meses do ano com cobertura abaixo do mínimo, lidos do CSV mensal; vazio quando o arquivo não foi lido. */
+  meses: MesFecParcial[];
+  /** A frase completa, no ponto de uso do valor. */
+  frase: string;
+  /** A marca curta, para célula de tabela. */
+  marca: string;
+};
+export type AvisosFec = Record<string, AvisoFec>;
+
+const centesimos = (x: number) => Math.round(x * 100);
+
+/** Campos que a gold pode passar a trazer por distribuidora e ano (próxima coleta): lidos quando existem, nunca exigidos. */
+type CamposCoberturaFec = { meses_fec?: number | null; cobertura_fec?: number | null };
+
+function fraseAvisoFec(rotulo: string, ano: number, fec: number, parcelas: number | null, meses: MesFecParcial[], diverge: boolean): { frase: string; marca: string } {
+  const cobertura = (m: MesFecParcial) => pct(m.cobertura * 100, 2);
+  const refeito = parcelas !== null && diverge ? `; pela soma das parcelas internas, programada e não programada (FECIP + FECIND), o anual é ${num(parcelas, 2)}, contra ${num(fec, 2)} apurado` : "";
+  let frase: string;
+  let marca: string;
+  if (meses.length === 1) {
+    frase = `O FEC de ${mesAno(meses[0].mes)} cobre ${cobertura(meses[0])} das UCs${refeito}.`;
+    marca = `parcial: ${mesAno(meses[0].mes)} cobre ${cobertura(meses[0])} das UCs`;
+  } else if (meses.length > 1) {
+    frase = `O FEC cobre menos de ${pct(COBERTURA_MINIMA_FEC_MES * 100, 0)} das UCs em ${listaPt(meses.map((m) => `${mesAno(m.mes)} (${cobertura(m)})`))}${refeito}.`;
+    marca = `parcial: ${meses.length} meses com menos de ${pct(COBERTURA_MINIMA_FEC_MES * 100, 0)} das UCs`;
+  } else if (parcelas !== null && diverge) {
+    frase = `O FEC apurado (${num(fec, 2)}) difere da soma das parcelas internas, programada e não programada (FECIP + FECIND), ${num(parcelas, 2)}.`;
+    marca = `parcial: difere em ${num(Math.abs(fec - parcelas), 2)} das parcelas internas`;
+  } else {
+    frase = `O FEC apurado (${num(fec, 2)}) não cobre todas as unidades consumidoras em todos os meses do ano.`;
+    marca = "parcial: nem todas as UCs em todos os meses";
+  }
+  return { frase: `${rotulo}, cobertura parcial do FEC em ${ano}. ${frase}`, marca };
+}
+
+/**
+ * Distribuidoras cujo FEC anual do ano de referência é de cobertura parcial: o FEC difere da soma das parcelas internas em mais de
+ * LIMITE_FEC_PARCIAL_CENTESIMOS (só em ano de apurado uniforme, onde as duas contas têm de fechar) ou a gold passa a dizer, em campo
+ * próprio (`meses_fec` ou `cobertura_fec`), que o FEC do ano não cobre os 12 meses. O valor do anual na gold não muda: a marca e o valor
+ * pelas parcelas vão ao lado dele. `mesesPorCnpj` (opcional) traz os meses de cobertura baixa, lidos do CSV mensal.
+ */
+export function fecComCoberturaParcial(g: QualidadeGold, mesesPorCnpj: Readonly<Record<string, readonly MesFecParcial[]>> = {}): AvisoFec[] {
+  const uniforme = anoApuradoUniforme(g);
+  const out: AvisoFec[] = [];
+  for (const d of g.distribuidoras) {
+    if (d.fec === null) continue;
+    const parcelas = d.parcelas_fec?.apurado ?? null;
+    const diverge = uniforme !== null && d.ano >= uniforme && parcelas !== null && Math.abs(centesimos(d.fec) - centesimos(parcelas)) > LIMITE_FEC_PARCIAL_CENTESIMOS;
+    const extra = d as Distribuidora & CamposCoberturaFec;
+    const porCampo = (typeof extra.meses_fec === "number" && extra.meses_fec < d.meses) || (typeof extra.cobertura_fec === "number" && extra.cobertura_fec < COBERTURA_MINIMA_FEC_MES);
+    if (!diverge && !porCampo) continue;
+    const meses = [...(mesesPorCnpj[d.cnpj] ?? [])].sort((a, b) => a.mes.localeCompare(b.mes));
+    const rotulo = rotuloDistribuidora(d);
+    const { frase, marca } = fraseAvisoFec(rotulo, d.ano, d.fec, parcelas, meses, diverge);
+    out.push({
+      cnpj: d.cnpj,
+      rotulo,
+      ano: d.ano,
+      fec: d.fec,
+      fecPelasParcelas: parcelas,
+      diferenca: parcelas === null ? null : (centesimos(d.fec) - centesimos(parcelas)) / 100,
+      meses,
+      frase,
+      marca,
+    });
+  }
+  return out.sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+}
+
+/** O mesmo, indexado pelo CNPJ (o que os gráficos, as tabelas e os pequenos múltiplos consultam). */
+export function avisosFec(g: QualidadeGold, mesesPorCnpj: Readonly<Record<string, readonly MesFecParcial[]>> = {}): AvisosFec {
+  return Object.fromEntries(fecComCoberturaParcial(g, mesesPorCnpj).map((a) => [a.cnpj, a]));
+}
+
+/**
+ * Meses de um ano em que o FEC de cada distribuidora pedida cobre menos que COBERTURA_MINIMA_FEC_MES das unidades consumidoras, lidos
+ * do CSV mensal por distribuidora (colunas cnpj, mes, ucs_fec e ucs_total). Só as linhas das distribuidoras pedidas são lidas.
+ */
+export function mesesComFecParcial(csv: string, cnpjs: readonly string[], ano: number): Record<string, MesFecParcial[]> {
+  const out: Record<string, MesFecParcial[]> = {};
+  if (!cnpjs.length || !csv) return out;
+  const linhas = csv.replace(/^﻿/, "").split(/\r?\n/);
+  const querem = cnpjs.map((c) => `${c};`);
+  const escolhidas = [linhas[0] ?? "", ...linhas.slice(1).filter((l) => querem.some((q) => l.startsWith(q)))];
+  for (const l of lerCsv(escolhidas.join("\n"))) {
+    const ucsFec = numeroOuNulo(l.ucs_fec);
+    const ucsTotal = numeroOuNulo(l.ucs_total);
+    if (ucsFec === null || ucsTotal === null || ucsTotal <= 0 || !l.mes?.startsWith(`${ano}-`)) continue;
+    const cobertura = ucsFec / ucsTotal;
+    if (cobertura < COBERTURA_MINIMA_FEC_MES) (out[l.cnpj] ??= []).push({ mes: l.mes, ucsFec, ucsTotal, cobertura });
+  }
+  return out;
+}
+
+/** Colunas que a marca acrescenta às tabelas por distribuidora: a cobertura e o FEC refeito pelas parcelas, ao lado do FEC apurado. */
+export const COLUNAS_FEC_COBERTURA: ColunaTabela[] = [
+  { id: "fec_cobertura", rotulo: "Cobertura do FEC no ano", tipo: "texto", categorica: true },
+  { id: "fec_parcelas", rotulo: "FEC pelas parcelas internas (FECIP + FECIND)", tipo: "numero", unidade: "interrupções", casas: 2 },
+];
+
+/** Valores das duas colunas para uma distribuidora: a marca, quando há; senão, se o FEC confere com as parcelas ou se falta o que conferir. */
+export function camposFecDaDistribuidora(d: Distribuidora, avisos: AvisosFec): { fec_cobertura: string; fec_parcelas: number | null } {
+  const aviso = avisos[d.cnpj];
+  const parcelas = d.parcelas_fec?.apurado ?? null;
+  const confere = parcelas !== null && d.fec !== null ? Math.abs(centesimos(d.fec) - centesimos(parcelas)) <= LIMITE_FEC_PARCIAL_CENTESIMOS : null;
+  return {
+    fec_cobertura: aviso ? aviso.marca : confere === null ? "sem parcelas para conferir" : confere ? "confere com as parcelas internas" : "difere das parcelas internas",
+    fec_parcelas: parcelas,
+  };
+}
+
+/** Insere as colunas da cobertura do FEC logo depois da coluna do FEC apurado (junto do valor que elas qualificam). */
+export function comColunasFec(colunas: readonly ColunaTabela[]): ColunaTabela[] {
+  const i = colunas.findIndex((c) => c.id === "fec");
+  return i < 0 ? [...colunas, ...COLUNAS_FEC_COBERTURA] : [...colunas.slice(0, i + 1), ...COLUNAS_FEC_COBERTURA, ...colunas.slice(i + 1)];
+}
+
+/** Nota de rodapé das tabelas por distribuidora: o que a marca quer dizer e quais distribuidoras a têm. */
+export function notaFecCobertura(avisos: AvisosFec): string {
+  const lista = Object.values(avisos);
+  const regra = `A cobertura parcial do FEC vale também para a razão de FEC e para o DGC calculado da distribuidora; o valor da tabela segue como está na base, e o FEC pelas parcelas internas vai ao lado. Marca: FEC do ano que difere em mais de ${num(LIMITE_FEC_PARCIAL_CENTESIMOS / 100, 2)} da soma das parcelas internas.`;
+  return lista.length ? `${lista.map((a) => a.frase).join(" ")} ${regra}` : regra;
+}
+
+/**
+ * Uma distribuidora para o painel de limites, com DEC e FEC e os dois limites do ano de referência. É o que viaja ao navegador: uma lista só
+ * (em vez de uma por indicador, cada uma repetindo CNPJ e nome), com a classe em uma letra e as notas só onde existem.
+ */
+export type ItemLimites = {
+  id: string;
+  rotulo: string;
+  /** c: concessionária; p: permissionária; s: sem classificação publicada. */
+  classe: "c" | "p" | "s";
+  dec: number | null;
+  decLim: number | null;
+  fec: number | null;
+  fecLim: number | null;
+  /** Notas do ano (meses publicados, cobertura do limite, perímetro). */
+  det?: string;
+  /** DGC calculado que difere do publicado pela ANEEL no ano de referência. */
+  dgc?: string;
+};
+
+export function itensLimites(g: QualidadeGold): ItemLimites[] {
+  const fec = new Map(itensLimite(g, "fec").map((i) => [i.id, i]));
+  const dgc = detalheDgcDoAno(g);
+  const classe = new Map(g.distribuidoras.map((d) => [d.cnpj, d.classificacao === "Concessionária" ? "c" : d.classificacao === "Permissionária" ? "p" : "s"] as const));
+  return itensLimite(g, "dec").map((i) => {
+    const f = fec.get(i.id);
+    const item: ItemLimites = { id: i.id, rotulo: i.rotulo, classe: classe.get(i.id) ?? "s", dec: i.valor, decLim: i.referencia, fec: f?.valor ?? null, fecLim: f?.referencia ?? null };
+    if (i.detalhe) item.det = i.detalhe;
+    if (dgc[i.id]) item.dgc = dgc[i.id];
+    return item;
+  });
+}
+
+/**
+ * Pares realizado × limite de um indicador para o gráfico de pontos, com as ressalvas da avaliação: no FEC, a distribuidora de cobertura
+ * parcial leva um asterisco no nome e a frase na dica; nos dois indicadores, a distribuidora cujo DGC calculado difere do publicado no
+ * ano de referência leva a diferença na dica. O valor de cada ponto é o da gold.
+ */
+export function paresLimites(itens: readonly ItemLimites[], ind: Indicador, avisos: AvisosFec): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string }[] {
+  return itens.map((i) => {
+    const aviso = ind === "fec" ? avisos[i.id] : undefined;
+    const notas = [i.det, aviso ? aviso.frase.replace(/\.$/, "") : null, i.dgc].filter((x): x is string => !!x);
+    const par: { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string } = {
+      id: i.id,
+      rotulo: aviso ? `${i.rotulo} *` : i.rotulo,
+      valor: ind === "dec" ? i.dec : i.fec,
+      referencia: ind === "dec" ? i.decLim : i.fecLim,
+    };
+    if (notas.length) par.detalhe = notas.join("; ");
+    return par;
+  });
+}
+
+/** Só as colunas pedidas de cada linha (o que um gráfico lê): o resto não viaja ao navegador. Ausência continua nula. */
+export function recorteColunas(linhas: readonly LinhaTabela[], ids: readonly string[]): LinhaTabela[] {
+  return linhas.map((l) => Object.fromEntries(ids.map((k) => [k, l[k] ?? null])));
+}
+
+/* ---- conjuntos acima do limite de FEC: a contagem é um mínimo */
+
+export type ResumoSemRazaoFec = {
+  ano: number;
+  /** Conjuntos com FEC e limite de FEC publicados, mas sem razão (menos de 12 meses de FEC): ficam fora da contagem. */
+  total: number;
+  porDistribuidora: { sigla: string; n: number }[];
+  /** Os que já passam do limite com os meses publicados, comparados em centésimos. */
+  acima: { conjunto: string; nome: string; sigla: string; fec: number; limite: number }[];
+};
+
+/** Resumo dos conjuntos do ano sem razão de FEC, a partir das linhas do CSV anual (conjuntosDoCsv). */
+export function resumoSemRazaoFec(linhas: readonly LinhaTabela[], ano: number): ResumoSemRazaoFec {
+  const sem = linhas.filter((l) => typeof l.fec === "number" && typeof l.fec_limite === "number" && (l.razao_fec === null || l.razao_fec === undefined));
+  const por = new Map<string, number>();
+  for (const l of sem) {
+    const sigla = String(l.sigla || "distribuidora sem sigla");
+    por.set(sigla, (por.get(sigla) ?? 0) + 1);
+  }
+  return {
+    ano,
+    total: sem.length,
+    porDistribuidora: Array.from(por, ([sigla, n]) => ({ sigla, n })).sort((a, b) => b.n - a.n || a.sigla.localeCompare(b.sigla, "pt-BR")),
+    acima: sem
+      .filter((l) => comparaNaPrecisao(l.fec as number, l.fec_limite as number, 2) === "acima")
+      .map((l) => ({ conjunto: String(l.conjunto), nome: String(l.nome), sigla: String(l.sigla), fec: l.fec as number, limite: l.fec_limite as number })),
+  };
+}
+
+/**
+ * A contagem de conjuntos acima do limite de FEC (da gold) só inclui conjuntos com os 12 meses de FEC publicados: é um mínimo. Com o resumo dos
+ * conjuntos sem razão, a frase diz quantos ficam fora, de quem são e quais já passam do limite com os meses publicados.
+ */
+export function textoContagemFec(g: QualidadeGold, resumo: ResumoSemRazaoFec | null): string {
+  const n = g.conjuntos.acima_limite_fec;
+  const base = `A contagem de FEC é de pelo menos ${num(n, 0)}: só entram os conjuntos com os 12 meses de FEC publicados.`;
+  if (!resumo || resumo.total === 0 || !resumo.porDistribuidora.length) return base;
+  const [maior] = resumo.porDistribuidora;
+  const outros = resumo.total - maior.n;
+  const quem = `${num(maior.n, 0)} da ${maior.sigla}${outros > 0 ? ` e ${num(outros, 0)} de ${outros === 1 ? "outra distribuidora" : "outras distribuidoras"}` : ""}`;
+  const acima = resumo.acima.length
+    ? ` ${resumo.acima.length === 1 ? "Um deles já passa" : `${num(resumo.acima.length, 0)} deles já passam`} do limite com os meses publicados: ${listaPt(resumo.acima.map((x) => `${x.nome}, conjunto ${x.conjunto} (FEC ${num(x.fec, 2)} contra limite de ${num(x.limite, 2)})`))}.`
+    : "";
+  return `${base} ${num(resumo.total, 0)} ${resumo.total === 1 ? "conjunto com limite de FEC tem menos meses e fica" : "conjuntos com limite de FEC têm menos meses e ficam"} fora (${quem}).${acima}`;
+}
+
+/* ---------------------------------------------------------------- fração de conjuntos: o universo muda */
+
+/**
+ * O número de conjuntos com limite muda ao longo da série (e o limite de cada um também): a fração de conjuntos acima do limite mistura
+ * desempenho, meta e mudança de universo. A frase diz os números (primeiro ano, o menor, o último) e aponta a fração das unidades
+ * consumidoras, que pesa cada conjunto pelo tamanho, como a leitura principal.
+ */
+export function textoUniversosConjuntos(g: QualidadeGold): string {
+  const h = g.conjuntos.historico.filter((x) => x.com_limite > 0);
+  if (h.length < 2) return "";
+  const primeiro = h[0];
+  const ultimo = h[h.length - 1];
+  const menor = h.reduce((m, x) => (x.com_limite < m.com_limite ? x : m));
+  const itens = [`${num(primeiro.com_limite, 0)} em ${primeiro.ano}`];
+  if (menor.ano !== primeiro.ano && menor.ano !== ultimo.ano) itens.push(`${num(menor.com_limite, 0)} em ${menor.ano}`);
+  itens.push(`${num(ultimo.com_limite, 0)} em ${ultimo.ano}`);
+  return `O número de conjuntos com limite foi de ${listaPt(itens)}, e o limite de cada um também muda: a fração de conjuntos mistura desempenho, meta e mudança de universo. A fração das unidades consumidoras que estão em conjuntos acima do limite pesa cada conjunto pelo seu tamanho e é a leitura principal.`;
+}
+
+/* ---------------------------------------------------------------- o maior DEC apurado cruza regras do apurado */
+
+export type ComparacaoApurado = {
+  /** Primeiro ano com a parcela apurada (IP + IND) publicada. */
+  desde: number;
+  /** Primeiro ano em que o apurado publicado é, em todos os conjunto-meses, só IP + IND. */
+  uniforme: number | null;
+  maiorPublicado: { ano: number; dec: number };
+  maiorMesmaDefinicao: { anos: number[]; dec: number };
+  referencia: { ano: number; publicado: number; mesmaDefinicao: number };
+};
+
+/**
+ * Compara o DEC apurado publicado com a parcela apurada refeita pela regra única de hoje (IP + IND, o grupo "apurado" das parcelas), que a
+ * gold traz desde o primeiro ano com parcelas. Nulo quando faltam as parcelas.
+ */
+export function comparacaoApurado(g: QualidadeGold): ComparacaoApurado | null {
+  const todos = g.brasil.anual.filter((x) => x.completo && x.dec !== null);
+  const comParcela = todos.filter((x) => x.parcelas_dec && x.parcelas_dec.apurado !== null);
+  const ref = comParcela.find((x) => x.ano === g.ano_referencia);
+  if (comParcela.length < 2 || !ref || ref.dec === null) return null;
+  const maiorPub = todos.reduce((m, x) => ((x.dec ?? -1) > (m.dec ?? -1) ? x : m));
+  const maxIp = Math.max(...comParcela.map((x) => x.parcelas_dec!.apurado!));
+  return {
+    desde: comParcela[0].ano,
+    uniforme: anoApuradoUniforme(g),
+    maiorPublicado: { ano: maiorPub.ano, dec: maiorPub.dec! },
+    maiorMesmaDefinicao: { anos: comParcela.filter((x) => centesimos(x.parcelas_dec!.apurado!) === centesimos(maxIp)).map((x) => x.ano), dec: maxIp },
+    referencia: { ano: ref.ano, publicado: ref.dec, mesmaDefinicao: ref.parcelas_dec!.apurado! },
+  };
+}
+
+/**
+ * Aviso de quebra para a frase "o maior DEC apurado foi o de ...": o apurado publicado mudou de regra ao longo da série, e a comparação com
+ * o ano de referência feita pela mesma definição (a parcela apurada, desde o primeiro ano com parcelas) vai na frase. Vazio sem parcelas.
+ */
+export function textoQuebraApurado(g: QualidadeGold): string {
+  const c = comparacaoApurado(g);
+  if (!c) return "";
+  const regras =
+    c.uniforme !== null
+      ? `O maior valor publicado, o de ${c.maiorPublicado.ano}, cruza regras diferentes do apurado: de ${c.desde} a ${c.uniforme - 1} ele incluía, em parte dos conjuntos, interrupções de origem externa; desde ${c.uniforme}, inclui só as internas.`
+      : `O maior valor publicado, o de ${c.maiorPublicado.ano}, cruza regras diferentes do apurado: antes de ${c.desde} a fonte usa outra desagregação.`;
+  const anos = listaPt(c.maiorMesmaDefinicao.anos.map(String));
+  return `${regras} Pela regra de ${c.uniforme ?? c.referencia.ano} aplicada desde ${c.desde}, o maior DEC foi o de ${anos} (${num(c.maiorMesmaDefinicao.dec, 2)} h), e ${c.referencia.ano} fechou com ${num(c.referencia.mesmaDefinicao, 2)} h.`;
+}
+
+/* ---------------------------------------------------------------- DGC: divergências com o ranking da ANEEL */
+
+export type DivergenciaDgc = { ano: number; rotulo: string; cnpj: string | null; publicado: number | null; calculado: number | null; diferenca: number | null };
+
+/** Comparações em que o DGC calculado difere do publicado além da tolerância, de todos os anos da reconciliação. */
+export function divergenciasDgc(g: QualidadeGold): DivergenciaDgc[] {
+  return g.reconciliacao.dgc.flatMap((r) =>
+    r.divergentes.map((d) => ({ ano: r.ano, rotulo: d.sigla_ranking ?? d.empresa, cnpj: d.cnpj, publicado: d.dgc_publicado, calculado: d.dgc_calculado, diferenca: d.diferenca })),
+  );
+}
+
+/** A reconciliação do DGC em uma frase: quantas comparações, quantas divergem e quais, sem explicar o que a base não explica. */
+export function textoDivergenciasDgc(g: QualidadeGold): string {
+  const r = g.reconciliacao.dgc;
+  if (!r.length) return "";
+  const comparados = r.reduce((s, x) => s + x.comparados, 0);
+  const d = divergenciasDgc(g);
+  const periodo = `${r[0].ano} a ${r[r.length - 1].ano}`;
+  if (!d.length) return `De ${periodo}, ${num(comparados, 0)} comparações entre o DGC publicado pela ANEEL e o calculado aqui ficaram dentro da tolerância de 0,01.`;
+  const lista = listaPt(d.map((x) => `${x.rotulo} em ${x.ano} (publicado ${num(x.publicado, 2)}, calculado ${num(x.calculado, 2)})`));
+  return `De ${periodo}, ${num(d.length, 0)} de ${num(comparados, 0)} comparações entre o DGC publicado pela ANEEL e o calculado aqui diferem em mais de 0,01: ${lista}. Nesses casos o limite agregado calculado não coincide com o da ANEEL; a causa não está nos dados publicados, e revisão posterior dos indicadores, decisão judicial ou limite diferente na nota técnica são hipóteses não verificadas.`;
+}
+
+/** Dica do gráfico de pontos: a distribuidora cujo DGC calculado difere do publicado no ano de referência (por CNPJ). */
+export function detalheDgcDoAno(g: QualidadeGold): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const x of divergenciasDgc(g)) {
+    if (x.ano !== g.ano_referencia || !x.cnpj || x.publicado === null || x.calculado === null) continue;
+    out[x.cnpj] = `DGC calculado ${num(x.calculado, 3)} difere do publicado pela ANEEL, ${num(x.publicado, 2)}`;
+  }
+  return out;
+}
+
+/* ---------------------------------------------------------------- abertura: perímetro e divulgado */
+
+/**
+ * Nota do cartão do DEC e do FEC sobre o perímetro: o número da abertura é de todas as distribuidoras, e a ANEEL divulga o das concessionárias.
+ * Vazio quando o ano não tem o recorte das concessionárias.
+ */
+export function notaPerimetroAbertura(g: QualidadeGold, ind: Indicador): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  const v = ind === "dec" ? a?.dec_concessionarias : a?.fec_concessionarias;
+  if (!a || v === null || v === undefined) return "";
+  const un = ind === "dec" ? " h" : "";
+  return `Só as concessionárias, como a ANEEL divulga: ${num(v, 2)}${un}.`;
+}
+
+/** Nota curta do cartão de compensações: o total divulgado pela ANEEL, quando a soma dos dados abertos difere além da precisão divulgada. */
+export function notaDivulgadoCartao(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  const d = a?.divulgado_aneel ?? null;
+  if (!a || !d || d.valor === null || d.dentro_da_precisao_valor !== false) return "";
+  return `A ANEEL divulga ${reaisMilhoes(d.valor, 0)}: a diferença passa da precisão divulgada e não foi explicada.`;
+}
+
+/* ---------------------------------------------------------------- reclamações: duas bases */
+
+/** Taxa por mil UCs escrita na base de 100 mil UCs da Ouvidoria (só a base de exibição muda; a taxa da gold é a mesma). */
+export function taxaNaBaseDaOuvidoria(porMilUcs: number | null | undefined): number | null {
+  return porMilUcs === null || porMilUcs === undefined || !Number.isFinite(porMilUcs) ? null : porMilUcs * 100;
+}
+
+/* ---------------------------------------------------------------- definições no ponto de uso (texto visível) */
+
+export const DEFINICAO_CONJUNTO = "Conjunto elétrico é uma subdivisão da área de uma distribuidora para a qual a ANEEL fixa limites de DEC e de FEC.";
+/** A mesma definição em poucas palavras, para o cartão da faixa de métricas (onde cada linha custa altura da primeira tela). */
+export const DEFINICAO_CONJUNTO_CURTA = "Conjunto elétrico: subdivisão da área de uma distribuidora, com limites próprios.";
+export const DEFINICAO_LIMITES_INDIVIDUAIS =
+  "Os limites individuais valem para cada unidade consumidora: DIC (duração de interrupção individual), FIC (frequência de interrupção individual), DMIC (duração máxima de interrupção contínua), DICRI (duração da interrupção individual ocorrida em dia crítico) e DISE (duração da interrupção individual ocorrida em situação de emergência).";
+
+/* ---------------------------------------------------------------- texto para o leitor: sem marcação crua nem nome interno */
+
+/** Nomes de campo e termos internos que não são palavras do leitor, e o que vai no lugar. */
+const TERMOS_INTERNOS: [RegExp, string][] = [
+  // "(dec, fec)" e "(dec_concessionarias, fec_concessionarias)": só nomes de campo entre parênteses
+  [/\s*\(\s*(?:(?:dec|fec)(?:_[a-z]+)?)(?:\s*,\s*(?:dec|fec)(?:_[a-z]+)?)*\s*\)/g, ""],
+  [/\s*\((?:Nie|NumOcorr)\)/g, ""],
+  [/vai em dec_concessionarias e fec_concessionarias/g, "aparece à parte"],
+  [/\bdec_concessionarias\b/g, "DEC das concessionárias"],
+  [/\bfec_concessionarias\b/g, "FEC das concessionárias"],
+  [/\bNumCon\b/g, "número de UCs informado"],
+  [/\bnão expurgável\b/g, "que a regra não exclui"],
+  [/\bNumOcorr\b/g, "total de ocorrências"],
+  [/\bNie\b/g, "ocorrências com interrupção"],
+  [/\bo silver\b/g, "a base tratada"],
+  [/\bsilver\b/g, "base tratada"],
+  [/\bbronze\b/g, "arquivo original"],
+  [/\bhoje (\d{4}-\d{2}-\d{2})/g, "processamento em $1"],
+];
+
+/**
+ * Texto de uma fonte ou de uma regra escrito para o leitor: tira a marcação copiada da fonte (__negrito__, _itálico_, itens com asterisco e
+ * quebras de linha) e troca nomes de campo e termos internos (silver, bronze, NumCon, dec_concessionarias) por palavras comuns. Idempotente.
+ */
+export function paraLeitor(texto: string): string {
+  let t = texto;
+  t = t.replace(/__([^_\n]+?)__/g, "$1").replace(/(^|[\s(])_([^_\n]+?)_(?=[\s).,;:]|$)/g, "$1$2");
+  t = t.replace(/\s*\n\s*\*\s+/g, (m, pos: number, todo: string) => (/(?:[;:,]|\s(?:e|ou))\s*$/.test(todo.slice(0, pos)) ? " " : "; "));
+  t = t.replace(/\s*\n+\s*/g, " ");
+  for (const [de, para] of TERMOS_INTERNOS) t = t.replace(de, para);
+  return t.replace(/\s{2,}/g, " ").trim();
+}
+
+/** Corta um texto longo no fim de uma frase, com o aviso de que ele foi resumido (a descrição completa fica na página da fonte). */
+export function resumirTexto(texto: string, max = 700): string {
+  if (texto.length <= max) return texto;
+  const corte = texto.slice(0, max);
+  const fim = Math.max(corte.lastIndexOf(". "), corte.lastIndexOf("; "));
+  const base = fim >= max * 0.4 ? corte.slice(0, fim + 1) : corte.slice(0, corte.lastIndexOf(" ")).replace(/[,;:\s]+$/, "") + "…";
+  return `${base} (texto resumido; a descrição completa está na página da fonte)`;
+}
+
+/** Ficha de origem com os textos escritos para o leitor (sem marcação crua nem termo interno) e a descrição longa da fonte resumida. */
+export function limpaProveniencia<T extends Proveniencia>(p: T): T {
+  return {
+    ...p,
+    notas_fonte: p.notas_fonte ? resumirTexto(paraLeitor(p.notas_fonte)) : p.notas_fonte,
+    limitacoes: p.limitacoes.map(paraLeitor),
+    transformacoes: p.transformacoes.map(paraLeitor),
+    formula: p.formula ? paraLeitor(p.formula) : p.formula,
+  };
+}
+
+/* ---------------------------------------------------------------- conjuntos do município (ficha do mapa) */
+
+/**
+ * Colunas da tabela dos conjuntos que atendem o município escolhido: os números primeiro (no celular a tabela rola para o lado e a primeira
+ * coluna fica fixa), com os meses publicados logo depois do nome, para a soma parcial de um conjunto de menos de 12 meses não passar por anual.
+ */
+export const COLUNAS_CONJUNTOS_MUNICIPIO: ColunaTabela[] = [
+  { id: "nome", rotulo: "Conjunto", tipo: "texto" },
+  { id: "meses", rotulo: "Meses publicados", tipo: "numero", casas: 0 },
+  { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dec_limite", rotulo: "Limite de DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "razao_dec", rotulo: "DEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
+  { id: "situacao_dec", rotulo: "DEC diante do limite", tipo: "texto", categorica: true },
+  { id: "situacao_fec", rotulo: "FEC diante do limite", tipo: "texto", categorica: true },
+  { id: "conjunto", rotulo: "Código", tipo: "texto" },
+];
+
+/**
+ * Linhas do ano (conjuntosDoCsv) dos conjuntos citados para o município, na ordem em que a base os cita, e os códigos que a base cita
+ * mas que não têm valor anual nesse ano (nunca preenchidos com zero).
+ */
+export function conjuntosDoMunicipio(linhasAno: readonly LinhaTabela[], codigos: readonly string[]): { linhas: LinhaTabela[]; semValor: string[] } {
+  const porCodigo = new Map(linhasAno.map((l) => [String(l.conjunto), l]));
+  const linhas: LinhaTabela[] = [];
+  const semValor: string[] = [];
+  for (const c of codigos) {
+    const l = porCodigo.get(c);
+    if (l) linhas.push(l);
+    else semValor.push(c);
+  }
+  return { linhas, semValor };
+}
+
+/** O que o mapa pinta num município com vários conjuntos: o maior ou o menor deles, com o número de conjuntos que a base cita. */
+export function textoCorDoMapa(m: MunicipioQualidade, medida: MedidaMapa): string {
+  const maior = medida.endsWith("max");
+  const valor = m[medida];
+  if (valor === null || !m.conjuntos.length) return "";
+  const un = medida.startsWith("dec") ? `${num(valor, 2)} h` : `${num(valor, 2)} interrupções`;
+  if (m.conjuntos.length === 1) return `Cor do mapa: o valor do único conjunto citado, ${un}.`;
+  return `Cor do mapa: ${maior ? "o maior" : "o menor"} valor entre os ${num(m.conjuntos.length, 0)} conjuntos citados, ${un}.`;
+}
+
+/**
+ * O efeito da cobertura parcial do FEC no número nacional: o FEC do ano de referência e a soma das parcelas internas, comparados nas duas
+ * casas publicadas. Vazio sem as duas.
+ */
+export function textoFecBrasilConfere(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  const parcelas = a?.parcelas_fec?.apurado ?? null;
+  if (!a || a.fec === null || parcelas === null) return "";
+  return centesimos(a.fec) === centesimos(parcelas)
+    ? `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) e a soma das parcelas internas coincidem nas duas casas: a ressalva não muda o número nacional.`
+    : `No Brasil, o FEC de ${a.ano} (${num(a.fec, 2)}) difere da soma das parcelas internas (${num(parcelas, 2)}).`;
+}
+
+/**
+ * Na ficha do município: conjuntos citados com menos de 12 meses de DEC ou de FEC. O arquivo de municípios calcula o intervalo de DEC e de FEC
+ * só com os conjuntos de 12 meses; a tabela mostra todos os citados, e esta frase diz quais ficam fora do intervalo (nunca o valor parcial como se fosse anual).
+ */
+export function textoMesesIncompletos(linhas: readonly LinhaTabela[]): string {
+  const dec = linhas.filter((l) => typeof l.meses === "number" && l.meses < 12).length;
+  const fec = linhas.filter((l) => typeof l.situacao_fec === "string" && /meses de FEC/.test(l.situacao_fec)).length;
+  if (!dec && !fec) return "";
+  const partes = [dec ? `${num(dec, 0)} com menos de 12 meses de DEC` : null, fec ? `${num(fec, 0)} com menos de 12 meses de FEC` : null].filter((x): x is string => !!x);
+  return `Dos ${num(linhas.length, 0)} conjuntos da tabela, ${listaPt(partes)}: mostram a soma dos meses publicados, sem razão, e não entram no intervalo de ${dec && fec ? "DEC e de FEC" : dec ? "DEC" : "FEC"} da frase acima.`;
+}
+
+/* ================================================================ rodada 2: o que a segunda avaliação pediu */
+
+/* ---------------------------------------------------------------- painel de limites: a frase acompanha o recorte */
+
+/**
+ * Frase do gráfico de limites que acompanha o recorte escolhido (indicador e grupo de distribuidoras). O painel tem um veredito nacional
+ * dos conjuntos em DEC; esta frase diz o que o gráfico mostra agora: quantas distribuidoras do grupo passaram do limite agregado do
+ * indicador e qual ficou mais longe dele. Compara em centésimos, como a ANEEL publica; quem não tem valor ou limite no ano fica fora da
+ * conta e é contada à parte. Com FEC, a distribuidora de cobertura parcial (marca com asterisco) é dita, porque o valor dela tem ressalva.
+ */
+export function respostaRecorteLimites(itens: readonly ItemLimites[], ind: Indicador, classe: "c" | "p", ano: number, avisos: AvisosFec = {}): string {
+  const nome = ind === "dec" ? "DEC" : "FEC";
+  const un = ind === "dec" ? "h" : "interrupções";
+  const grupo = classe === "c" ? "concessionárias" : "permissionárias";
+  const doGrupo = itens.filter((i) => i.classe === classe);
+  const pares = doGrupo
+    .map((i) => ({ i, v: ind === "dec" ? i.dec : i.fec, l: ind === "dec" ? i.decLim : i.fecLim }))
+    .filter((x): x is { i: ItemLimites; v: number; l: number } => x.v !== null && x.l !== null);
+  if (!pares.length) return `Nenhuma das ${num(doGrupo.length, 0)} ${grupo} tem ${nome} e limite publicados em ${ano}.`;
+  const acima = pares.filter((x) => comparaNaPrecisao(x.v, x.l, 2) === "acima");
+  const total = pares.length;
+  const quantas =
+    acima.length === 0
+      ? `Em ${ano}, nenhuma das ${num(total, 0)} ${grupo} com ${nome} e limite ficou acima do limite agregado de ${nome}.`
+      : acima.length === total && total > 1
+        ? `Em ${ano}, todas as ${num(total, 0)} ${grupo} com ${nome} e limite ficaram acima do limite agregado de ${nome}.`
+        : `Em ${ano}, ${num(acima.length, 0)} de ${num(total, 0)} ${grupo} com ${nome} e limite ${acima.length === 1 ? "ficou" : "ficaram"} acima do limite agregado de ${nome}.`;
+  let maior = "";
+  if (acima.length) {
+    const m = acima.reduce((a, x) => (x.v - x.l > a.v - a.l ? x : a));
+    const parcial = ind === "fec" && avisos[m.i.id] ? " (FEC de cobertura parcial, marcado com asterisco)" : "";
+    maior = ` A mais distante do limite é a ${m.i.rotulo}${parcial}: ${num(m.v, 2)} ${un} para um limite de ${num(m.l, 2)}.`;
+  }
+  const comMarca = ind === "fec" ? acima.filter((x) => avisos[x.i.id]).length : 0;
+  const marca = comMarca > 1 ? ` ${num(comMarca, 0)} delas têm FEC de cobertura parcial, marcado com asterisco.` : "";
+  const sem = doGrupo.length - total;
+  const fora = sem > 0 ? ` ${num(sem, 0)} sem valor ou sem limite no ano ${sem === 1 ? "fica" : "ficam"} só na tabela.` : "";
+  return `${quantas}${maior}${marca}${fora}`;
+}
+
+/* ---------------------------------------------------------------- compensações: o que a fonte deixou de publicar em 2022 */
+
+export type QuebraCompensacao = {
+  /** Primeiro ano do regime novo da fonte (o seguinte ao último ano em que os tipos que somem tinham valor para unidades consumidoras). */
+  ano: number;
+  /** Tipos de compensação que a fonte deixa de publicar para unidades consumidoras nesse ano. */
+  somem: TipoCompensacao[];
+  antes: { ano: number; valorUc: number | null; quantidadeUc: number | null };
+  depois: { ano: number; valorUc: number | null; quantidadeUc: number | null };
+};
+
+/**
+ * Quebra de regime da série de compensações: tipos que tinham valor para unidades consumidoras e deixam de tê-lo, enquanto a série
+ * continua. O ano vem da própria série (o último ano com valor mais um), nunca escrito à mão; tipo que só aparece no fim (DISE, no ano
+ * corrente) não é quebra. Nulo quando nenhum tipo some ou quando falta um ano completo de cada lado.
+ */
+export function quebraCompensacao(g: QualidadeGold): QuebraCompensacao | null {
+  const anual = g.compensacoes.anual;
+  const completos = anual.filter((a) => a.completo);
+  if (!completos.length) return null;
+  const ultimoCompleto = Math.max(...completos.map((a) => a.ano));
+  const ultimoComValor = (t: TipoCompensacao): number | null => {
+    const anos = completos.filter((a) => (a.por_tipo[t]?.valor_uc ?? 0) > 0).map((a) => a.ano);
+    return anos.length ? Math.max(...anos) : null;
+  };
+  const somem = ORDEM_TIPOS.filter((t) => {
+    const u = ultimoComValor(t);
+    return u !== null && u < ultimoCompleto;
+  });
+  if (!somem.length) return null;
+  const ano = Math.min(...somem.map((t) => (ultimoComValor(t) as number) + 1));
+  const antes = completos.find((a) => a.ano === ano - 1);
+  const depois = completos.find((a) => a.ano === ano);
+  if (!antes || !depois) return null;
+  const cor = (a: typeof antes) => ({ ano: a.ano, valorUc: a.valor_uc, quantidadeUc: a.quantidade_uc });
+  return { ano, somem: somem.filter((t) => (ultimoComValor(t) as number) + 1 === ano), antes: cor(antes), depois: cor(depois) };
+}
+
+/** Os tipos que somem, por extenso ("trimestrais e anuais"), para a frase e a legenda. */
+function tiposQueSomem(q: QuebraCompensacao): string {
+  const plural: Record<TipoCompensacao, string> = { mensal: "mensais", trimestral: "trimestrais", anual: "anuais", dicri: "de DICRI", dise: "de DISE" };
+  return listaPt(q.somem.map((t) => plural[t]));
+}
+
+/**
+ * Aviso da quebra de 2022 junto do gráfico anual e da frase do maior total: o que a fonte deixou de publicar, o salto da quantidade e do
+ * valor ao cruzar o ano (neutro: os dois números, sem dizer que houve queda ou alta real) e o que isso impede, comparar anos dos dois
+ * regimes. Vazio quando a série não tem a quebra.
+ */
+export function textoQuebraCompensacao(g: QualidadeGold): string {
+  const q = quebraCompensacao(g);
+  if (!q) return "";
+  const qa = q.antes.quantidadeUc;
+  const qd = q.depois.quantidadeUc;
+  const numeros =
+    qa !== null && qd !== null
+      ? ` A quantidade vai de ${num(qa / 1e6, 1)} milhões em ${q.antes.ano} para ${num(qd / 1e6, 1)} milhões em ${q.depois.ano}, e o valor de ${reaisMilhoes(q.antes.valorUc)} para ${reaisMilhoes(q.depois.valorUc)}.`
+      : "";
+  return `Desde ${q.ano}, a fonte não publica mais as compensações ${tiposQueSomem(q)} a unidades consumidoras: a série muda de regime.${numeros} Não leia a diferença como queda das compensações; anos de antes e de depois de ${q.ano} não se comparam.`;
+}
+
+/** Versão de uma linha, para a legenda do gráfico e a nota da tabela. */
+export function textoQuebraCompensacaoCurto(g: QualidadeGold): string {
+  const q = quebraCompensacao(g);
+  return q ? `Desde ${q.ano} a fonte não publica as compensações ${tiposQueSomem(q)} a unidades consumidoras: antes e depois não se comparam.` : "";
+}
+
+/** Rótulos dos dois regimes do gráfico anual de compensações (a legenda diz onde a série muda), ou null sem a quebra. */
+export function regimesCompensacao(g: QualidadeGold): { ano: number; antes: string; depois: string } | null {
+  const q = quebraCompensacao(g);
+  if (!q) return null;
+  return {
+    ano: q.ano,
+    antes: `Até ${q.antes.ano}: com as compensações ${tiposQueSomem(q)}`,
+    depois: `Desde ${q.ano}: sem as compensações ${tiposQueSomem(q)}`,
+  };
+}
+
+/** Participação das unidades geradoras no total pago no ano de referência (o valor por UC divide UC e UG somadas). Vazio sem os dois valores. */
+export function textoParticipacaoUg(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  if (!a || a.valor_ug === null || a.valor === null || a.valor <= 0) return "";
+  return `As unidades geradoras somam ${pct((a.valor_ug / a.valor) * 100, 1)} do valor pago em ${a.ano}.`;
+}
+
+/**
+ * A quantidade de compensações que a ANEEL divulga para o ano de referência, quando a soma dos dados abertos difere dela além da precisão
+ * divulgada (a diferença não foi explicada). Vazio quando não há divulgação ou quando ela confere.
+ */
+export function notaQuantidadeDivulgada(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  const d = a?.divulgado_aneel ?? null;
+  if (!a || !d || d.quantidade === null || a.quantidade_uc === null || d.dentro_da_precisao_quantidade !== false) return "";
+  return `A ANEEL divulga ${num(d.quantidade / 1e6, 1)} milhões; a soma dos dados abertos é ${num(a.quantidade_uc / 1e6, 2)} milhões, diferença não explicada.`;
+}
+
+/* ---------------------------------------------------------------- conferência com o número divulgado: os anos que a conferência cobre */
+
+/** Primeiro e último ano em que a gold confere o total de compensações com o que a ANEEL divulga (a conferência do DEC e do FEC nacionais cobre os mesmos anos). */
+export function anosDivulgados(g: QualidadeGold): { de: number; ate: number } | null {
+  const anos = g.compensacoes.anual.filter((a) => a.divulgado_aneel !== null).map((a) => a.ano);
+  return anos.length ? { de: Math.min(...anos), ate: Math.max(...anos) } : null;
+}
+
+/**
+ * A linha das concessionárias desde o primeiro ano em que todas as distribuidoras do ano têm classificação publicada, e os anos em que ela
+ * foi conferida com o número que a ANEEL divulga (só esses): o universo é o mesmo nos anos anteriores, mas a conferência não vai tão longe.
+ */
+export function textoConcessionariasDesde(g: QualidadeGold, desde: number | null): string {
+  const conferido = anosDivulgados(g);
+  const ate = conferido ? ` A conferência com o número que a ANEEL divulga cobre ${conferido.de === conferido.ate ? conferido.de : `${conferido.de} a ${conferido.ate}`}.` : "";
+  if (desde === null) return "A linha só das concessionárias não tem anos com todas as distribuidoras classificadas nesta publicação.";
+  return `A linha das concessionárias começa em ${desde}, o primeiro ano com todas as distribuidoras classificadas, e usa o universo do número que a ANEEL divulga.${ate}`;
+}
+
+/* ---------------------------------------------------------------- município sem dado: para onde ir */
+
+/**
+ * Orientação para quem mora num município que o mapa deixa sem valor: sem dado não quer dizer sem energia, e a pessoa precisa saber a quem
+ * perguntar. Vazio quando o município tem valor. O link para a página Conta de luz (que acha a distribuidora pelo município) fica no componente.
+ */
+export function orientacaoSemDado(m: Pick<MunicipioQualidade, "relacao">): string {
+  if (m.relacao !== "sem_relacao_na_fonte" && m.relacao !== "sem_conjunto_ativo") return "";
+  return "Sem dado não quer dizer sem energia: a base da ANEEL não traz um conjunto com DEC no ano para este município. Para saber qual distribuidora atende você, veja a sua conta de luz ou use a busca da página Conta de luz. Reclamações sobre falta de energia vão primeiro à distribuidora e, depois, à Ouvidoria da ANEEL.";
+}
+
+/* ---------------------------------------------------------------- busca por município na primeira tela */
+
+/** Município do CSV como a busca de regiões o lê (id, nome e UF), sem copiar o resto. */
+export function regiaoDoMunicipio(m: Pick<MunicipioQualidade, "cod" | "nome" | "uf">): { id: string; nome: string; uf: string } {
+  return { id: m.cod, nome: m.nome, uf: m.uf };
+}
+
+/**
+ * Resumo de uma linha do município escolhido na primeira tela: o intervalo dos conjuntos (nunca um DEC "do município") e o que fazer a
+ * seguir. A ficha completa, com o limite de cada conjunto e o histórico, está na seção do mapa.
+ */
+export function resumoMunicipio(m: MunicipioQualidade, ano: number): string {
+  const lugar = `${m.nome} (${m.uf})`;
+  const dec = m.dec_min === m.dec_max ? `${num(m.dec_max, 2)} h` : `de ${num(m.dec_min, 2)} a ${num(m.dec_max, 2)} h`;
+  const fec = m.fec_min === m.fec_max ? `${num(m.fec_max, 2)} interrupções` : `de ${num(m.fec_min, 2)} a ${num(m.fec_max, 2)} interrupções`;
+  switch (m.relacao) {
+    case "sem_relacao_na_fonte":
+      return `${lugar} não aparece na base da ANEEL: sem valor em ${ano}.`;
+    case "sem_conjunto_ativo":
+      return `${lugar} é citado na base da ANEEL, mas sem conjunto com DEC de 12 meses em ${ano}.`;
+    case "conjunto_exclusivo":
+    case "conjunto_compartilhado":
+      return `${lugar}: um conjunto atende o município, com DEC de ${dec} e FEC de ${fec} em ${ano}${m.relacao === "conjunto_compartilhado" ? " (valores do conjunto inteiro)" : ""}.`;
+    default:
+      return `${lugar}: ${num(m.conjuntos.length, 0)} conjuntos atendem o município; em ${ano}, o DEC deles vai ${dec} e o FEC ${fec} (nenhuma média municipal).`;
+  }
+}
+
+const municipiosLidos = new Map<string, Promise<MunicipioQualidade[]>>();
+
+/**
+ * Os municípios do CSV publicado, lidos e interpretados uma vez por visita: a busca da primeira tela e o mapa pedem o mesmo arquivo e
+ * compartilham a mesma leitura, em vez de baixar e interpretar duas vezes. Falha não fica em cache.
+ */
+export function carregarMunicipios(url: string): Promise<MunicipioQualidade[]> {
+  let p = municipiosLidos.get(url);
+  if (!p) {
+    p = carregarUmaVez(url, (r) => r.text()).then(municipiosDoCsv);
+    municipiosLidos.set(url, p);
+    p.catch(() => municipiosLidos.delete(url));
+  }
+  return p;
 }

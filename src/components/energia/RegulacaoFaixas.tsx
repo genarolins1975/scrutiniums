@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { diaSerial, isoDoDia, somarMeses, ticksTempo } from "@/lib/energia/calendario";
-import { escalaLinear } from "@/lib/energia/escalas";
+import { escalaLinear, pxCaractere12 } from "@/lib/energia/escalas";
 import { dataBR } from "@/lib/energia/formato";
 import { dominioFaixas, type FaixaTempo, type MarcaTempo, type ReferenciaTempo } from "@/lib/energia/regulacao";
 
@@ -47,9 +47,9 @@ const PX_CARACTERE = 6.4;
 const ALTURA_EIXO = 30;
 const r1 = (v: number) => Math.round(v * 10) / 10;
 
-function cabe(texto: string, largura: number): string {
-  if (texto.length * PX_CARACTERE <= largura) return texto;
-  const n = Math.floor(largura / PX_CARACTERE) - 1;
+function cabe(texto: string, largura: number, px = PX_CARACTERE): string {
+  if (texto.length * px <= largura) return texto;
+  const n = Math.floor(largura / px) - 1;
   return n >= 3 ? `${texto.slice(0, n).trimEnd()}…` : "";
 }
 
@@ -100,8 +100,10 @@ export function RegulacaoFaixas({
 
   const dom = dominio ?? dominioFaixas(faixas, referencias);
   const w = largura;
-  const colRotulo = Math.round(Math.min(184, Math.max(88, w * 0.26)));
-  const x0 = colRotulo + 10;
+  // celular: o rótulo da linha vai numa linha acima da faixa e usa a largura toda (a coluna lateral de 26% cortava o nome do evento)
+  const emCima = w < 520;
+  const colRotulo = emCima ? 0 : Math.round(Math.min(184, Math.max(88, w * 0.26)));
+  const x0 = emCima ? 12 : colRotulo + 10;
   const x1 = w - 12;
   const x = escalaLinear(dom ? [dom.min, dom.max] : [0, 1], [x0, x1]);
   const ticks = dom ? ticksTempo(dom.min, dom.max, w < 520 ? 3 : 6) : [];
@@ -160,7 +162,7 @@ export function RegulacaoFaixas({
   const iAtiva = ativa ? faixas.indexOf(ativa) : -1;
 
   return (
-    <div ref={raiz} className="relative w-full" data-grafico="faixas-tempo">
+    <div ref={raiz} className="relative w-full" data-grafico="faixas-tempo" data-rotulos={emCima ? "acima" : "lateral"}>
       <p id={`${uid}-instr`} className="sr-only">
         {`${faixas.length} ${faixas.length === 1 ? "linha" : "linhas"}. Use Tab para entrar no gráfico, as setas para percorrer, Home e End para ir ao início e ao fim${onSelecionar ? " e Enter ou Espaço para selecionar" : ""}. A tabela com os mesmos dados está logo abaixo.`}
       </p>
@@ -173,7 +175,7 @@ export function RegulacaoFaixas({
             {ticks.map((t) => (
               <g key={t.iso}>
                 <line x1={r1(x(t.serial))} x2={r1(x(t.serial))} y1={ALTURA_EIXO - 6} y2={ALTURA_EIXO} stroke="var(--cor-mineral-soft)" />
-                <text x={r1(x(t.serial))} y={ALTURA_EIXO - 10} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)" className="tabular-nums">
+                <text x={r1(x(t.serial))} y={ALTURA_EIXO - 10} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)" className="tabular-nums">
                   {t.rotulo}
                 </text>
               </g>
@@ -187,7 +189,7 @@ export function RegulacaoFaixas({
               ))}
               {faixas.map((f, i) => {
                 const y0 = i * alturaLinha;
-                const cy = y0 + alturaLinha / 2;
+                const cy = emCima ? y0 + 31 : y0 + alturaLinha / 2;
                 const sA = f.inicio ? diaSerial(f.inicio.data) : null;
                 const sB = f.fim ? diaSerial(f.fim.data) : null;
                 const sel = selecionado === f.id;
@@ -236,8 +238,8 @@ export function RegulacaoFaixas({
                   >
                     <rect x="0" y={y0} width={w} height={alturaLinha} fill={sel ? "var(--cor-selecao)" : "transparent"} />
                     <line x1="0" x2={w} y1={y0 + alturaLinha - 0.5} y2={y0 + alturaLinha - 0.5} stroke="var(--cor-grade)" />
-                    <text x="6" y={r1(cy + 4)} fontSize="12" fontWeight={sel ? 600 : 400} fill="var(--cor-carvao)">
-                      {cabe(f.rotulo, colRotulo - 10)}
+                    <text x="6" y={r1(emCima ? y0 + 14 : cy + 4)} fontSize="12" fontWeight={sel ? 600 : 400} fill="var(--cor-carvao)" data-rotulo-categoria="true">
+                      {emCima ? cabe(f.rotulo, w - 12, pxCaractere12(f.rotulo)) : cabe(f.rotulo, colRotulo - 10)}
                     </text>
                     {f.traco !== "nenhum" && sA !== null && sB !== null && (
                       <line
@@ -256,8 +258,8 @@ export function RegulacaoFaixas({
                     {f.inicio && marca(f.inicio, cy, f.cor, "a")}
                     {f.fim && marca(f.fim, cy, f.cor, "b")}
                     {!f.inicio && !f.fim && (
-                      <text data-estado="sem-data" x={x0} y={r1(cy + 4)} fontSize="11" fontStyle="italic" fill="var(--cor-carvao-muted)">
-                        {cabe(`sem datas: ${f.ausencia ?? "não informadas"}`, x1 - x0)}
+                      <text data-estado="sem-data" x={x0} y={r1(cy + 4)} fontSize="12" fontStyle="italic" fill="var(--cor-carvao-muted)">
+                        {cabe(`sem datas: ${f.ausencia ?? "não informadas"}`, x1 - x0, 5.8)}
                       </text>
                     )}
                     {focoVisivel === f.id && <rect x="1" y={y0 + 1} width={Math.max(0, w - 2)} height={alturaLinha - 2} fill="none" stroke="var(--cor-energia)" strokeWidth="2" rx="2" />}
@@ -283,6 +285,11 @@ export function RegulacaoFaixas({
               </div>
             )}
           </div>
+          {h > alturaMaxima && (
+            <p className="mt-1 text-xs text-carvao-muted" data-aviso-rolagem="true">
+              O gráfico mostra {Math.floor(alturaMaxima / alturaLinha)} das {faixas.length} linhas por vez; role dentro dele para ver as demais.
+            </p>
+          )}
           {refs.length > 0 && (
             <p className="mt-1 text-xs text-carvao-muted">
               Linha tracejada vertical: {refs.map((r) => `${r.rotulo} (${dataBR(r.data)})`).join("; ")}.

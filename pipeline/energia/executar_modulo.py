@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base, metricas, modulos  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
+from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
 
 def main(argv):
@@ -46,6 +47,7 @@ def main(argv):
         status = mod.coletar(con, ctx)
         con.commit()
         print("[coleta]", json.dumps(status, ensure_ascii=False, default=str)[:4000])
+    guardados = base.guarda_arquivos(reg.get("arquivos") or {})
     try:
         g = mod.construir(con, ctx)
     except Exception as e:
@@ -54,6 +56,9 @@ def main(argv):
     anterior = base.le_gold(reg["gold"])
     if not (isinstance(g, dict) and g.get("disponivel") is True) and isinstance(anterior, dict) and anterior.get("disponivel") is True:
         print(f"[sentinela] {reg['gold']} regrediu: {g.get('motivo')}; a publicação anterior foi mantida")
+        refeitos = base.restaura_arquivos(guardados)
+        if refeitos:
+            print(f"[sentinela] {len(refeitos)} arquivo(s) baixável(is) voltaram ao que eram: {', '.join(os.path.basename(x) for x in refeitos)}")
     else:
         base.escreve_gold(reg["gold"], g)
     base.escreve_gold("metricas.json", {**c.cabecalho("metricas.json"), "metricas": metricas.todas()})
@@ -62,6 +67,8 @@ def main(argv):
         for url, desc in (m.REGISTRO.get("arquivos") or {}).items():
             arquivos[url] = {"colunas": desc, "modulo": m.REGISTRO["id"], "gold": m.REGISTRO["gold"]}
     base.escreve_gold("arquivos.json", {**c.cabecalho("arquivos.json"), "arquivos": arquivos})
+    # o manifesto acompanha os arquivos publicados: depois de reescrever uma gold, o sha256 dela muda
+    modulo_dados.escreve_manifesto(final=True)
     con.close()
     con_p.close()
     tam = os.path.getsize(os.path.join(base.GOLD, reg["gold"])) if os.path.exists(os.path.join(base.GOLD, reg["gold"])) else 0

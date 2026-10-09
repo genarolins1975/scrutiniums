@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef } from "react";
+import { useId, useRef, useState } from "react";
 import type { Proveniencia } from "@/lib/energia/tipos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
@@ -72,13 +72,18 @@ const LITERAIS_NA_PROVENIENCIA: ClasseLiteral[] = ["texto-direitos-camada", "mar
 export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Proveniencia; rotulo?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   const tituloId = useId();
+  // o corpo do diálogo só se vê depois de abri-lo: monta na primeira abertura e não pesa no HTML de cada página (cerca de 7 kB por diálogo)
+  const [montado, setMontado] = useState(false);
   const n = NATUREZAS[p.natureza];
   const rev = p.revisoes_conhecidas;
   return (
     <>
       <button
         type="button"
-        onClick={() => ref.current?.showModal()}
+        onClick={() => {
+          setMontado(true);
+          ref.current?.showModal();
+        }}
         className="rotulo inline-flex min-h-[44px] items-center gap-1.5 text-energia-dark underline decoration-energia/40 underline-offset-4 hover:text-carvao"
         aria-haspopup="dialog"
       >
@@ -111,7 +116,7 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
             </button>
           </header>
           <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={`Proveniência: ${p.indicador}`}>
-            <dl>
+            {montado && <dl>
               <Linha rotulo="Natureza">
                 <strong>{n.rotulo}.</strong> {n.definicao}
               </Linha>
@@ -162,7 +167,13 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               </Linha>
               <Linha rotulo="Versão do processamento">
                 {p.versao_pipeline}
-                {p.versao_codigo && <span className="text-mineral"> · código {p.versao_codigo}</span>}
+                {p.versao_codigo && (
+                  <span className="text-mineral">
+                    {" "}
+                    · código {p.versao_codigo}
+                    {p.versao_codigo.endsWith("+alterado") ? " (o código tinha mudanças ainda não registradas quando a base foi gerada)" : ""}
+                  </span>
+                )}
               </Linha>
               <Linha rotulo="Revisões conhecidas">
                 {!rev ? (
@@ -193,10 +204,10 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                   </span>
                 </Linha>
               )}
-            </dl>
+            </dl>}
           </div>
           <footer className="flex flex-wrap gap-3 border-t border-linha px-6 py-4">
-            {p.download && (
+            {montado && p.download && (
               <a
                 href={p.download}
                 download
@@ -205,14 +216,16 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                 Baixar série (CSV)
               </a>
             )}
-            <a
-              href={p.fonte.url_dataset}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rotulo inline-flex min-h-[44px] items-center border border-linha px-4 text-carvao hover:border-carvao"
-            >
-              Abrir fonte primária ↗
-            </a>
+            {montado && (
+              <a
+                href={p.fonte.url_dataset}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rotulo inline-flex min-h-[44px] items-center border border-linha px-4 text-carvao hover:border-carvao"
+              >
+                Abrir fonte primária ↗
+              </a>
+            )}
           </footer>
         </div>
       </dialog>

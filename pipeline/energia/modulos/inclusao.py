@@ -1113,6 +1113,12 @@ def validar_gold(b, mes_atual):
     ufs = [u["uf"] for u in ts["ufs"]]
     if len(ufs) != len(set(ufs)):
         crit.append("UF repetida no mapa da Tarifa Social")
+    # o arquivo da CDE pode trazer desconto líquido negativo numa UF no mês (a fonte não diz o motivo): o valor fica como publicado,
+    # sem correção, e a ressalva diz onde está para a página nunca mostrá-lo como um desconto comum
+    for u in ts["ufs"]:
+        for k, rotulo in (("desconto_reais", "desconto"), ("desconto_medio_por_fatura_reais", "desconto médio por fatura")):
+            if u.get(k) is not None and u[k] < 0:
+                ress.append(f"{u['uf']}: {rotulo} negativo no arquivo da CDE de {ts.get('mes_mapa')} ({u[k]}); mantido como publicado, sem correção")
     br = cob.get("brasil") or {}
     if br.get("razao_cadastradas_pct") is not None and br.get("razao_atualizadas_pct") is not None \
             and br["razao_cadastradas_pct"] > br["razao_atualizadas_pct"]:
@@ -1860,7 +1866,8 @@ def _bloco_tarifa_social(con, scs):
                     "Linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE entram no total nacional mas não no mapa.",
                     "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período)."]
                    + ([_texto_maiores_diferencas(reconc, mes_conf)] if reconc and reconc.get("diferenca_pct") is not None else []),
-        download="/energia/series/inclusao_municipios.csv")
+        # a ficha cobre o mapa por município e a série mensal por UF: os dois arquivos, cada um com o que o nome diz
+        download=["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cde_mensal_uf.csv"])
     base.escreve_csv("inclusao_tsee_mensal.csv",
                      ["mes", "distribuidoras", "completo", "distribuidoras_faltantes", "uc_tsee_faltantes_ultimo_informe",
                       "uc_tsee", *[f"uc_{m}" for m in MODS], "uc_residencial",

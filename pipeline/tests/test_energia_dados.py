@@ -601,6 +601,39 @@ class TestValidador(unittest.TestCase):
         _, linhas2 = dados.eixos({"g.json": {"_gold": gold2}})
         self.assertEqual(linhas2[0]["natureza"], "OBSERVADO")
 
+    def test_fichas_guardadas_em_arquivo_a_parte_entram_na_contagem(self):
+        # o PLD publica só o índice em pld_detalhe.json e as 27 fichas em series/pld_evidencias.json
+        with open(os.path.join(base.RAIZ, "public", "energia", "gold", "pld_detalhe.json"), encoding="utf-8") as f:
+            gold = json.load(f)
+        self.assertIn("arquivo", gold["evidencias"])
+        self.assertEqual(len(dados.fichas_externas(gold)), len(gold["evidencias"]["indice"]))
+        eix, linhas = dados.eixos({"pld_detalhe.json": {"_gold": gold}})
+        self.assertEqual(eix["por_gold"]["pld_detalhe.json"]["fichas"], len(gold["evidencias"]["indice"]))
+        self.assertGreater(eix["por_gold"]["pld_detalhe.json"]["situacoes"].get("reconciliacao_aprovada", 0), 0)
+        self.assertEqual(sum(1 for x in linhas if x["gold"] == "pld_detalhe.json"), len(gold["evidencias"]["indice"]))
+
+    def test_ficha_externa_so_vale_sob_public_e_como_json(self):
+        raiz = tempfile.mkdtemp()
+        try:
+            serie = os.path.join(raiz, "public", "energia", "series")
+            os.makedirs(serie)
+            ficha = {"indicador": "x", "valor_exibido": "1", "fonte": {"orgao": "CCEE"}, "testes": [ev.teste("a", "aprovado", "")]}
+            with open(os.path.join(serie, "x_evidencias.json"), "w", encoding="utf-8") as f:
+                json.dump({"evidencias": {"k": ficha, "lixo": "texto", "sem_teste": {"valor_exibido": "2", "fonte": {}}}}, f)
+            with open(os.path.join(serie, "torto.json"), "w", encoding="utf-8") as f:
+                f.write("{nao e json")
+            with open(os.path.join(raiz, "segredo.json"), "w", encoding="utf-8") as f:
+                json.dump({"evidencias": {"k": ficha}}, f)
+            ok = {"evidencias": {"arquivo": "/energia/series/x_evidencias.json", "indice": {}}}
+            self.assertEqual(len(dados.fichas_externas(ok, raiz=raiz)), 1)
+            for arquivo in ("/energia/series/torto.json", "/energia/series/nao_existe.json", "/energia/../segredo.json",
+                            "/energia/series/../../segredo.json", "series/x_evidencias.json", None, 3):
+                self.assertEqual(dados.fichas_externas({"evidencias": {"arquivo": arquivo}}, raiz=raiz), [], arquivo)
+            self.assertEqual(dados.fichas_externas({"evidencias": {"k": ficha}}, raiz=raiz), [])
+            self.assertEqual(dados.fichas_externas([], raiz=raiz), [])
+        finally:
+            shutil.rmtree(raiz)
+
     def test_snapshot_composto_cita_cada_conjunto(self):
         # ids reais de mercado.json em 01/10/2026
         self.assertEqual(dados.datasets_do_snapshot("epe_consumo_mensal+epe_consumo_classe@2026-10-01T00:33:34Z"),

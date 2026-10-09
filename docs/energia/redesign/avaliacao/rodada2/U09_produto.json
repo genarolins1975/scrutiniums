@@ -1,0 +1,944 @@
+{
+  "avaliador": "P2-U09",
+  "papel": "produto",
+  "rodada": "reavaliacao 2",
+  "versao_avaliada": "Build de produção local do commit d616ae877, servido em http://localhost:3100",
+  "paginas": {
+    "/setor-eletrico/conta-de-luz": {
+      "paineis": [
+        "P047",
+        "P048",
+        "P049"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_dobra.png e 390_dobra.png: H1 em forma de pergunta, lede, quatro KPIs com unidade, data e natureza do dado, aviso 'não é o valor da fatura' e seletor de profundidade já na primeira tela",
+            "texto_entender.txt: 3.947 palavras; cada painel repete o bloco Período, Universo e Unidade e os três blocos O que mudou, Como interpretar e O que não é possível concluir",
+            "Playwright em 1440: a altura passa de 9.563 para 12.345 px ao escolher uma distribuidora, porque a tabela de 81 linhas abre sozinha"
+          ],
+          "atendidos": [
+            "Pergunta e resposta principal (R$ 123,51 a R$ 313,85 para 200 kWh; mediana R$ 164,24) reconhecíveis na primeira tela",
+            "Hierarquia entre síntese (KPIs), comparação (faixa de pontos e ranking) e aprofundamento (seletor de profundidade fixo no topo)",
+            "Números, unidades e datas legíveis; tipografia e espaçamento consistentes",
+            "Celular preserva gráficos, avisos e simulador, sem rolagem horizontal da página em 320, 390 e 768 px"
+          ],
+          "problemas": [
+            "O aviso de que a tarifa não é a fatura aparece sob os KPIs, em O que não é possível concluir, em Três números e no simulador",
+            "Blocos analíticos de três colunas se repetem em todos os painéis e alongam o nível Entender",
+            "A tabela de 17 colunas abre sozinha ao escolher uma distribuidora e acrescenta cerca de 2.800 px",
+            "Sombra de rolagem em branco no canto de Memória de cálculo parece uma mancha"
+          ],
+          "justificativa": "Primeira tela responde à pergunta e a hierarquia é clara, inclusive no celular. Repetição de avisos e de blocos analíticos em todos os painéis, tabela que abre sozinha e página longa mantêm a nota abaixo de 9."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "Lede define TE e TUSD e exclui tributos, iluminação e bandeira; a seção Três números que costumam ser chamados de conta de luz separa tarifa homologada, tarifa média (não publicada) e conta simulada (texto_entender.txt)",
+            "Cada painel traz O que não é possível concluir e Como interpretar; 'PLD vezes consumo não é conta de luz' (1440_inteira_02de04.png)",
+            "Por que isso importa só existe recolhido ao fim de cada painel; a lista de siglas fica dentro de Fontes, datas e siglas, também recolhida"
+          ],
+          "atendidos": [
+            "Conceitos explicados antes de serem necessários (TE, TUSD, perfil de kWh, mediana simples)",
+            "Distinção entre tarifa homologada, tarifa média e conta simulada, com o PLD fora da conta",
+            "Limites de leitura na primeira tela (não é a fatura, não é a média do país)",
+            "Caminho do consumidor: nome da distribuidora no alto da fatura e busca por município"
+          ],
+          "problemas": [
+            "A abertura não responde por que a medida importa: o texto está em Por que isso importa, recolhido",
+            "Termos como REH, B1, fio B e 'créditos tarifários lançados em componente de custo' aparecem no Entender sem definição no ponto de uso",
+            "O Entender tem cerca de 3.950 palavras e não cumpre 'o essencial em poucos minutos'"
+          ],
+          "justificativa": "Didática forte nos limites e nas distinções entre tarifa, média e conta simulada. Perde por esconder por que a medida importa, por termos técnicos sem definição no ponto de uso e pelo volume de texto no Entender."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "Playwright em 1440: município Belo Horizonte seleciona CEMIG-D (R$ 180,66, posição 61 de 81, R$ 16,42 acima da mediana); perfil 100, 200 e 300 kWh atualiza KPIs, frase, faixa de pontos e ranking",
+            "Ijuí seleciona DEMEI e CERILUZ com o aviso de mais de uma distribuidora e o simulador mostra a mesma simulação lado a lado (150 kWh: R$ 117,45 e R$ 100,21); Garopaba informa CERPALO fora do ranking e CELESC na posição 21",
+            "Exportar CSV com o filtro Permissionárias gera 30 linhas; o link copiado reproduz perfil, dist, grupo, uf, skwh e sclasse"
+          ],
+          "atendidos": [
+            "T2 cumprida em poucos passos: município, destaque, perfil e simulador",
+            "Comparação do mesmo perfil, classe e modalidade, com mediana, quartis e extremos",
+            "Composição e simulador com hipóteses e exclusões explícitas",
+            "Distribuidora fora do ranking e simulação indisponível explicadas no ponto de uso"
+          ],
+          "problemas": [
+            "34 de 115 distribuidoras ficam fora do ranking (22 com vigência encerrada há até 90 dias, 21 delas em 29/09/2026); a lista só aparece em Auditar e o seletor traz apenas 81",
+            "O ranking e a faixa de pontos cobrem só a classe B1 convencional; as demais classes existem apenas no simulador",
+            "Saltos ao topo e a tabela que abre sozinha interrompem o fluxo da tarefa"
+          ],
+          "justificativa": "Resolve T2 de ponta a ponta, com bons casos de borda e exportação com contexto. Não chega a 9 porque 34 distribuidoras ficam fora do ranking com a lista escondida em Auditar e porque o fluxo é interrompido por saltos de página."
+        },
+        "D": {
+          "nota": 8.5,
+          "evidencia": [
+            "Foco em custo ao consumidor, com Tarifa Social e Desconto Social no simulador (70 kWh na Tarifa Social resulta em R$ 0,00 com o aviso 'Regra parcialmente conferida')",
+            "Recorte territorial por município e por UF, com aviso de mais de uma distribuidora por área (Ijuí, Garopaba)",
+            "Copiar link com recorte, CSV e XLSX filtrados; limites declarados (sem tributos, sem iluminação pública)"
+          ],
+          "atendidos": [
+            "Custo e benefícios sociais (Tarifa Social e Desconto Social) tratados",
+            "Recorte territorial pertinente e leitura por não especialista por meio do município",
+            "Compartilhar e exportar com contexto",
+            "Lacunas visíveis: tributos fora, tarifa média não publicada, distribuidoras sem vigência"
+          ],
+          "problemas": [
+            "A fatura final, onde pesam ICMS e iluminação pública, não pode ser estimada; o impacto no bolso fica parcial por falta de base oficial (declarado)",
+            "Não há leitura de desigualdade entre regiões nem do peso da conta na renda",
+            "Texto longo e técnico reduz o alcance entre leitores não especializados"
+          ],
+          "justificativa": "Tema de custo bem servido, com benefícios sociais, território e exportação com contexto. A ausência declarada de tributos, a falta de leitura de desigualdade e a densidade impedem 9."
+        },
+        "I": {
+          "nota": 8.5,
+          "evidencia": [
+            "Faixa de pontos com extremos, mediana e faixa interquartil rotulados; ranking com linha de mediana; TE e TUSD empilhadas; evolução nominal e em reais de ago/2026 (1440_inteira_01de04 a 03de04)",
+            "Teclado na série: ArrowLeft e Home anunciam 'jun/26: Valores da época 781,25 R$/MWh; Em reais de ago/2026 779,30 R$/MWh' em aria-live; a tabela Dados do gráfico (81 linhas) confere com as 81 barras e com o CSV estático",
+            "Na leitura TE e TUSD há três linhas tracejadas iguais para 1º quartil, mediana e 3º quartil, distinguíveis só pela legenda"
+          ],
+          "atendidos": [
+            "Formas adequadas à tarefa (pontos, barras, empilhado, linhas, decomposição com valores negativos)",
+            "Referências visíveis e eixos coerentes (mediana, quartis, data base do IPCA)",
+            "Alternativa textual, tabela e teclado além do hover",
+            "Sem eixo duplo, sem mapa indevido, sem cor de aprovação ou reprovação"
+          ],
+          "problemas": [
+            "No modo TE e TUSD as linhas de 1º quartil, mediana e 3º quartil têm o mesmo traço e só a ordem da legenda as separa",
+            "Com filtro de grupo ativo, a linha 'Mediana entre distribuidoras: 164,24' segue sendo a das 81 e a frase traz outra mediana (174,61), sem rótulo que distinga",
+            "O ranking abre com 12 das 81 barras; a legenda da composição lista 'Arredondamento das partes' como se fosse um componente"
+          ],
+          "justificativa": "Gráficos bem escolhidos, com referências, alternativas e teclado. Pequenas ambiguidades de referência (linhas iguais, mediana das 81 com filtro ativo) e o corte inicial do ranking impedem a nota 9."
+        },
+        "J": {
+          "nota": 7.0,
+          "evidencia": [
+            "Playwright: clicar em Leitura do ranking, Tipo de distribuidora, Unidade da composição ou num ponto da faixa leva scrollY de 1.225, 1.225, 4.242 e 711 para cerca de 70 em 1440; em 390 até o perfil de consumo salta (968 para 25)",
+            "Depois de escolher município válido, 'Nenhum município com esse nome.' permanece sob o campo (Belo Horizonte, Ijuí, Garopaba)",
+            "Estado completo na URL e em Copiar link; Limpar seleção; até 4 distribuidoras; estados vazios claros (AC sem permissionária com tarifa; simulação indisponível para ÂMBAR ENERGIA RR no Desconto Social)"
+          ],
+          "atendidos": [
+            "Estado na URL e link com o recorte",
+            "Busca por município funcional, inclusive com várias distribuidoras",
+            "Seleção, comparação de até 4 e limpeza",
+            "Exportação segue filtros, busca e ordem",
+            "Estados vazios e bloqueados compreensíveis"
+          ],
+          "problemas": [
+            "Vários controles (Leitura, Tipo, Unidade, ponto da faixa) e, no celular, o perfil devolvem o leitor ao topo, e o resultado fica fora da tela",
+            "Mensagem de erro obsoleta sob o campo de município depois de uma escolha válida",
+            "Escolher distribuidora abre sozinha a tabela de 81 linhas (cerca de 2.800 px a mais)",
+            "A aba da página irmã (Reajustes, bandeiras e subsídios) não aparece no topo desta página",
+            "As distribuidoras fora do ranking não aparecem no seletor de destaque"
+          ],
+          "justificativa": "Estado, compartilhamento e casos de borda são exemplares, mas o retorno ao topo ao acionar filtros centrais, a mensagem de erro obsoleta e a tabela que abre sozinha prejudicam a interação. A nota fica limitada por defeitos recorrentes."
+        },
+        "K": {
+          "nota": 8.5,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360, 390, 768 e 1440 (entender) e em 390 e 1440 (auditar); 70 paradas de teclado sem foco invisível; sem rolagem horizontal; nenhum alvo menor que 24 px",
+            "Playwright: 45 tabulações com contorno visível, link Pular para o conteúdo, radiogroups nomeados, setas na profundidade, modal que fecha com Esc e devolve o foco; 320 px sem transbordo da página",
+            "Contraste do texto cinza 4,92:1 sobre o fundo; CSS global prefers-reduced-motion; cerca de 13.400 caracteres em 12 px em 390"
+          ],
+          "atendidos": [
+            "Teclado, foco visível e ordem lógica",
+            "Semântica, rótulos e anúncio de valores nos gráficos",
+            "Alternativas à cor (formas, tracejado, siglas)",
+            "320, 390, 768 e 1440 sem perda de informação e sem rolagem horizontal da página",
+            "Alvos de toque de 44 px nos controles principais"
+          ],
+          "problemas": [
+            "Leitor de tela real não testado",
+            "Boa parte do texto explicativo usa 12 px, inclusive o aviso de que a tarifa não é a fatura",
+            "A mensagem 'Nenhum município com esse nome.' obsoleta pode ser anunciada como estado",
+            "Tabela de 2.038 px em 390 sem coluna fixa; seletores truncam rótulos ('CERIPa (SP) · referência: tarifa mais p…')"
+          ],
+          "justificativa": "Boa base de acessibilidade, medida por axe e verificada por teclado. Sem leitor de tela real, com texto pequeno e tabela larga no celular, não há evidência para 9."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "c1-salto-ao-topo",
+          "gravidade": "alta",
+          "criterios": [
+            "J",
+            "K"
+          ],
+          "onde": "Painéis P047 (Leitura do ranking, Tipo de distribuidora, ponto da faixa de pontos) e P048 (Unidade da composição), em 1440 e 390",
+          "descricao": "Esses controles atualizam a URL e rolam a página para o topo (scrollY de 1.225 para 70, de 4.242 para 70 e de 711 para 70 em 1440; de 2.106, 6.854 e 1.157 para 25 em 390; em 390 também o perfil, de 968 para 25). O leitor perde o gráfico que acabou de alterar.",
+          "sugestao": "Atualizar a URL sem rolar (scroll false) e manter a posição e o foco no controle."
+        },
+        {
+          "id": "c1-mensagem-municipio-obsoleta",
+          "gravidade": "media",
+          "criterios": [
+            "J",
+            "K",
+            "B"
+          ],
+          "onde": "Campo Buscar pelo município, abaixo do campo, depois de escolher Belo Horizonte, Ijuí, Garopaba ou Praia Grande, em 1440",
+          "descricao": "A frase 'Nenhum município com esse nome.' continua visível (e anunciável) logo abaixo do campo preenchido com 'Ijuí (RS)', ao lado da frase correta que lista as distribuidoras.",
+          "sugestao": "Limpar a mensagem quando houver município selecionado e restringi-la a buscas sem resultado."
+        },
+        {
+          "id": "c1-tabela-abre-sozinha",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "J"
+          ],
+          "onde": "Painel do ranking, após escolher distribuidora por seletor, município, barra ou ponto (1440 e 390)",
+          "descricao": "A tabela de 81 linhas e 17 colunas abre sem aviso na página da distribuidora escolhida e a página cresce de 9.563 para 12.345 px em 1440 (de 16.281 para 19.484 px em 390). Existe o botão Ocultar a tabela, mas o leitor não pediu a tabela.",
+          "sugestao": "Manter a tabela fechada e só destacar a linha quando o leitor abri-la."
+        },
+        {
+          "id": "c1-fora-do-ranking",
+          "gravidade": "media",
+          "criterios": [
+            "C",
+            "J"
+          ],
+          "onde": "Painel P047, Universo (34 fora do ranking) e seletor Distribuidora em destaque",
+          "descricao": "Ficam fora 34 distribuidoras (22 com vigência encerrada há até 90 dias, 21 delas em 29/09/2026 sem a tarifa seguinte no arquivo, e 12 sem tarifa há mais de 90 dias). A lista só aparece em Auditar e o seletor tem só 81 opções; o leitor dessas áreas descobre pelo município ou pelo texto.",
+          "sugestao": "Listar no Entender, em uma linha, quem está sem tarifa vigente e por quê, com link para a lista."
+        },
+        {
+          "id": "c1-tabela-390",
+          "gravidade": "media",
+          "criterios": [
+            "K",
+            "A"
+          ],
+          "onde": "Tabela Tarifas B1 residenciais vigentes e custo por perfil, 390 px",
+          "descricao": "Tabela com 17 colunas e 2.038 px de largura, sem coluna fixa, com linhas de 120 px ou mais por causa de Razão social; as colunas de custo ficam à direita, fora da primeira tela.",
+          "sugestao": "Fixar a coluna Distribuidora, esconder razão social e CNPJ no celular ou oferecer lista em cartões com o custo do perfil."
+        },
+        {
+          "id": "c1-referencias-ambiguas",
+          "gravidade": "media",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Ranking, leitura Tarifa TE + TUSD (1º quartil, mediana, 3º quartil) e linha de mediana com filtro de grupo",
+          "descricao": "Três linhas tracejadas iguais só se distinguem pela ordem da legenda; com Permissionárias ativo a linha 'Mediana entre distribuidoras: 164,24' é a das 81 enquanto a frase traz a mediana do grupo (174,61).",
+          "sugestao": "Rotular cada linha no gráfico e escrever 'mediana das 81' ou trocar a referência pelo grupo filtrado."
+        },
+        {
+          "id": "c1-repeticao-e-extensao",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "B"
+          ],
+          "onde": "Todos os painéis do Entender; seção Três números; cabeçalho dos KPIs",
+          "descricao": "3.947 palavras no Entender; o bloco de três colunas Período, Universo e Unidade e o bloco O que mudou, Como interpretar, O que não é possível concluir se repetem por painel; o aviso de que não é a fatura aparece em quatro pontos; Por que isso importa fica recolhido.",
+          "sugestao": "Levar os blocos analíticos para Analisar e subir uma linha de por que importa para a abertura de cada painel."
+        },
+        {
+          "id": "c1-aba-irma",
+          "gravidade": "baixa",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Topo da página 1 em 1440 e 390",
+          "descricao": "A página Reajustes, bandeiras e subsídios tem abas locais para a irmã, mas a página 1 não mostra a aba da irmã no topo; o acesso é pelo teaser no fim (cerca de 8.700 px em 1440 e 14.400 px em 390) ou por link dentro de Fontes, datas e siglas, recolhido.",
+          "sugestao": "Repetir as abas locais nas duas páginas."
+        },
+        {
+          "id": "c1-mancha-branca",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Canto superior direito de Memória de cálculo (1440 e 390)",
+          "descricao": "Retângulo branco em degradê, restante de sombra de rolagem, aparece em contêiner que não rola e parece uma mancha sobre o cabeçalho.",
+          "sugestao": "Mostrar a sombra só quando houver rolagem horizontal."
+        },
+        {
+          "id": "c1-jargao-e-versao-no-auditar",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "H"
+          ],
+          "onde": "Auditar: Componentes de cada grupo (regra de atípico) e linha final Gerado por energia-0.1.0",
+          "descricao": "O texto usa o nome interno 'creditos.codigos' e a linha de versão termina em 'código 3e7ff0a36fba+alterado', o que indica geração com código alterado e não registrado; a leitura de reprodutibilidade fica comprometida (para o avaliador técnico).",
+          "sugestao": "Trocar nomes internos por texto legível e gerar a publicação a partir de código registrado."
+        },
+        {
+          "id": "c1-12px-e-selects",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Avisos sob os KPIs e seletores do simulador em 390 e 320",
+          "descricao": "Cerca de 13.400 caracteres do Entender usam 12 px, inclusive o aviso essencial sob os KPIs; os seletores Distribuidora e Bandeira truncam o rótulo na tela (opções abrem completas).",
+          "sugestao": "Usar 14 px para avisos essenciais e quebrar linha nos rótulos longos dos seletores."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real (NVDA, JAWS, VoiceOver)",
+        "Conteúdo do XLSX e dos quatro arquivos de Baixar os dados (foram abertos só o CSV da tabela filtrada e o CSV estático de tarifas)",
+        "Movimento reduzido em animações feitas por script (só o CSS global foi conferido)",
+        "Firefox, Safari e aparelho móvel real; toque foi emulado no Chromium",
+        "Correção numérica de tarifas, quartis e composição (competência do avaliador técnico)"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T2",
+          "perfil": "consumidor",
+          "passos": [
+            "Abrir a página e ler a primeira tela (R$ 123,51 a R$ 313,85 para 200 kWh, mediana R$ 164,24, aviso de que não é a fatura)",
+            "Digitar Belo Horizonte em Buscar pelo município: CEMIG-D fica em destaque (R$ 180,66, posição 61 de 81, R$ 16,42 acima da mediana)",
+            "Trocar o perfil para 100 kWh e conferir KPIs, frase, faixa de pontos e ranking",
+            "Descer ao simulador: CEMIG-D, 150 kWh, R$ 138,32 sem tributos, com memória de cálculo",
+            "Repetir com Ijuí (DEMEI e CERILUZ) e Garopaba (CERPALO fora do ranking, CELESC na posição 21)"
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "Salto ao topo ao usar Leitura, Tipo e Unidade e ao clicar em ponto da faixa",
+            "Mensagem 'Nenhum município com esse nome.' obsoleta depois da escolha",
+            "Tabela de 81 linhas abre sozinha ao escolher a distribuidora",
+            "34 distribuidoras sem tarifa vigente ficam fora do ranking"
+          ],
+          "erros": [
+            "Nenhum erro de console; apenas requisições de prefetch (/?_rsc) abortadas, sem efeito visível"
+          ]
+        },
+        {
+          "tarefa": "T2",
+          "perfil": "gestor público ou conselho",
+          "passos": [
+            "Filtrar Permissionárias (30) e UF MG: a frase passa a falar do grupo (mediana R$ 174,61 entre 30 permissionárias)",
+            "Filtrar Permissionárias e UF AC: estado vazio 'Nenhuma das permissionárias com área em AC tem tarifa B1 residencial vigente'",
+            "Exportar CSV com filtro (30 linhas) e copiar o link do painel com o recorte",
+            "Abrir Comprove este número da mediana (fonte, arquivo, sha256, fórmula) e fechar com Esc"
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "Salto ao topo a cada troca de grupo",
+            "A linha de mediana do gráfico não acompanha o grupo filtrado e não diz que é a das 81"
+          ],
+          "erros": [
+            "Nenhum erro de console"
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/conta-de-luz/reajustes-e-subsidios": {
+      "paineis": [
+        "P050"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.5,
+          "evidencia": [
+            "1440_dobra.png: H1, lede, seletor de profundidade, pergunta, frase com 87 de 102, janela de comparação e caixa 'Efeito médio do processo tarifário: não publicado'; a faixa de pontos começa no limite inferior da tela",
+            "1440_inteira_02de03.png e 390_inteira_04de09.png: grade de 141 meses com sigla e cor, legenda e patamares de set/2026 legíveis em 1440 e 390",
+            "texto_entender.txt: 3.608 palavras; três painéis e três gráficos de subsídios e orçamento"
+          ],
+          "atendidos": [
+            "Pergunta e informação principal reconhecíveis na primeira tela",
+            "Hierarquia clara entre três perguntas (tarifa e IPCA, bandeira, quem financia)",
+            "Grade de bandeiras compacta e legível, inclusive no celular",
+            "Números, unidades e rótulos Calculado, Observado e Previsto consistentes"
+          ],
+          "problemas": [
+            "Caixa tracejada de três linhas sobre o efeito do processo tarifário antecede o gráfico e empurra a faixa de pontos para o limite da primeira tela em 1440",
+            "A lista de barras abre com as 12 menores variações, algumas negativas, e só Mostrar todas as 102 revela o resto",
+            "Sombra de rolagem esmaece a última coluna (dez) da grade de bandeiras",
+            "Repetição do bloco de três colunas e de Por que isso importa em cada painel"
+          ],
+          "justificativa": "Página mais enxuta que a primeira, com grade de bandeiras muito legível e hierarquia clara. A caixa de aviso antes do gráfico, a lista que abre pelas menores variações e a repetição dos blocos analíticos impedem 9."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "O que não é possível concluir em cada painel: variação entre duas datas não é efeito do processo tarifário; valores da CDE não são transferências a famílias; orçamento não é gasto (texto_entender.txt)",
+            "Definições de cada categoria de subsídio e de cada rubrica do orçamento logo abaixo dos gráficos (1440_inteira_02de03.png e 03de03.png)",
+            "Siglas REH, SCEE, PLD e IPCA aparecem no texto sem expansão no ponto de uso; a lista fica em Fontes, datas e siglas, recolhido"
+          ],
+          "atendidos": [
+            "Conceitos de CDE, bandeira e subsídio explicados junto dos números",
+            "Distinções entre homologado e desembolsado, nominal e real, previsto e executado",
+            "Limite de leitura visível em cada painel",
+            "Ligação com o resto do sistema por Próxima pergunta (o PLD não é a tarifa da conta)"
+          ],
+          "problemas": [
+            "A abertura não diz por que a medida importa; o texto está em Por que isso importa, recolhido",
+            "Siglas e termos (REH, SCEE, rubrica, quotas, homologado) sem definição no ponto de uso",
+            "O Entender tem 3.608 palavras e blocos de três colunas por painel, o que reduz o 'essencial em poucos minutos'"
+          ],
+          "justificativa": "Bom esforço de limites e definições, mas a resposta a por que importa fica recolhida, há siglas e termos regulatórios sem definição no ponto de uso e o volume de texto é alto para o nível Entender."
+        },
+        "C": {
+          "nota": 8.0,
+          "evidencia": [
+            "Playwright: janelas de 12, 60 e 120 meses atualizam frase, mediana (11,18%, 36,17% e 81,15%), IPCA (4,22%, 29,90% e 61,15%) e gráfico; Campinas indica CPFL-PAULISTA com 65,35% em 120 meses contra IPCA de 61,15%",
+            "Bandeira de set/2026 amarela a R$ 0,01885/kWh e 74 de 141 meses sem verde; subsídios de R$ 18,82 bilhões em 2025 e quotas de 96,4% em 2026 (previsto)",
+            "A última mudança de cada distribuidora só existe no modo Analisar; o efeito médio do processo tarifário está declarado como não publicado (acesso recusado pela ANEEL)"
+          ],
+          "atendidos": [
+            "Comparar a variação da tarifa com o IPCA em três janelas, com o universo próprio de cada janela explicado",
+            "Acompanhar bandeiras mês a mês desde 2015, com o adicional atual",
+            "Entender quem financia descontos e o que os valores não são (não são transferências a famílias)",
+            "Achar a própria distribuidora pelo município"
+          ],
+          "problemas": [
+            "No Entender não há data nem percentual da última mudança de tarifa da distribuidora escolhida, só a variação entre duas datas",
+            "Nas janelas de 60 e 120 meses o botão Comprove este número some e a prova fica restrita a 12 meses",
+            "O adicional de cada mês da grade só aparece em texto para leitor de tela e no modo Analisar"
+          ],
+          "justificativa": "Atende bem bandeiras e subsídios e dá comparação sólida contra o IPCA. Para acompanhar reajustes falta a última mudança da distribuidora no Entender, e o efeito do processo tarifário depende de dado inacessível (declarado)."
+        },
+        "D": {
+          "nota": 8.5,
+          "evidencia": [
+            "Painel Quem financia: R$ 18,82 bilhões homologados em 2025, 'não são desembolso realizado nem transferências a famílias', quotas de 96,4% pagas nas tarifas",
+            "Busca por município com mais de uma distribuidora (Garopaba: CERPALO e CELESC), com o aviso de que a da casa está na fatura",
+            "Copiar link com janela e valores; CSV por painel; categorias sem dado hachuradas como ausência, não zero"
+          ],
+          "atendidos": [
+            "Atenção a custo (reajuste contra inflação e bandeira) e a quem financia os benefícios",
+            "Recorte territorial por município para a variação da tarifa",
+            "Compartilhar e exportar com o recorte",
+            "Lacunas visíveis (ausência hachurada, ano parcial, previsto)"
+          ],
+          "problemas": [
+            "Subsídios e bandeiras não têm recorte territorial nem leitura de quem recebe, então desigualdades ficam fora",
+            "Texto técnico (rubricas, homologação, quotas) limita o alcance entre leitores não especializados",
+            "Falta ligação direta da bandeira com o efeito na conta de 150 ou 200 kWh"
+          ],
+          "justificativa": "Relevante para custo e financiamento, com território na tarifa e lacunas visíveis. Sem recorte territorial para subsídios, sem ligação da bandeira com a conta e com vocabulário regulatório pesado, fica em 8,5."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "Faixa de pontos com linha do IPCA, mediana e faixa interquartil; grade de bandeiras com sigla e cor; barras empilhadas com hachura 'sem dado' e tooltip 'Total: incompleto' (1440_inteira_02de03.png)",
+            "?valores=real: o total de 2025 no gráfico e na tabela passa de 18,82 para 19,68 R$ bi, enquanto o KPI, a frase e O que mudou seguem em 18,82 sem rótulo de nominal",
+            "A lista de barras inicia por CERMOFUL (variação negativa de 12,8%) e as 12 menores variações; IPCA e mediana são duas linhas tracejadas distinguidas só pela legenda"
+          ],
+          "atendidos": [
+            "Formas adequadas à tarefa e escalas coerentes (zero visível, IPCA como referência)",
+            "Séries nominais e reais com deflator e data base explicados",
+            "Ausência hachurada e ano parcial marcados; categorias completas",
+            "Alternativas textuais, tabelas dos dados e teclado nos gráficos"
+          ],
+          "problemas": [
+            "No modo reais o gráfico muda e o KPI, a frase e O que mudou ficam nominais sem rótulo, o que gera 19,68 contra 18,82 no mesmo painel",
+            "A grade de bandeiras mostra só a sigla; o adicional de cada mês não aparece para quem enxerga, nem ao passar o mouse ou focar",
+            "A lista de barras abre pelas menores variações e a linha do IPCA e a da mediana se distinguem só pela legenda"
+          ],
+          "justificativa": "Gráficos bem escolhidos e honestos com ausência e previsão. A divergência entre gráfico em reais e KPI nominal, a grade sem valor visível por mês e a lista que abre pelas menores variações impedem a nota 9."
+        },
+        "J": {
+          "nota": 6.5,
+          "evidencia": [
+            "Playwright: Em reais de ago/2026 leva scrollY de 3.837 para 70 em 1440 e de 6.095 para 25 em 390; a janela de 60 meses em 390 vai de 453 para 25; clicar num ponto da faixa vai de 704 para 70 em 1440",
+            "Município válido (Campinas) deixa 'Nenhum município com esse nome.' sob o campo, acima de 'Campinas (SP): atendido por CPFL-PAULISTA'",
+            "Janela, município, valores e profundidade ficam na URL (?jan=120&dist=...&valores=real&modo=analisar) e Copiar link reproduz o recorte"
+          ],
+          "atendidos": [
+            "Estado preservado na URL e link com o recorte",
+            "Busca por município funcional, com várias distribuidoras",
+            "Janela de 12, 60 e 120 meses sincroniza frase, mediana, IPCA, gráfico e universo",
+            "Estados bloqueados explicados (efeito do processo tarifário não publicado; prova só para 12 meses)"
+          ],
+          "problemas": [
+            "Alternar Valores, clicar num ponto e, no celular, trocar a janela devolvem o leitor ao topo e o gráfico atualizado fica fora da tela",
+            "O seletor Nominais ou Em reais atualiza gráficos e tabelas, mas não o KPI, a frase nem O que mudou",
+            "Mensagem 'Nenhum município com esse nome.' obsoleta após escolha válida",
+            "Sem Comprove este número nas janelas de 60 e 120 meses"
+          ],
+          "justificativa": "Estado em URL, link com recorte e busca por município são bons. O retorno ao topo ao alternar valores, o seletor de real e nominal que não chega ao KPI nem à frase e a mensagem obsoleta mantêm a nota baixa."
+        },
+        "K": {
+          "nota": 8.5,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360, 390, 768 e 1440; teclado com 70 paradas e nenhum foco invisível; sem rolagem horizontal; nenhum alvo menor que 24 px",
+            "Playwright: 45 tabulações com contorno visível; a grade de bandeiras é região focável com o texto 'Amarela, 18,85 R$/MWh' para leitor de tela; 320 px sem transbordo",
+            "Contraste do cinza 4,92:1; CSS global prefers-reduced-motion; cerca de 13.800 caracteres em 12 px em 390"
+          ],
+          "atendidos": [
+            "Teclado, foco visível e ordem lógica",
+            "Semântica, rótulos e alternativas textuais (texto oculto na grade de bandeiras)",
+            "Alternativas à cor (siglas V, A, P1, P2 e EH; hachura; tracejado)",
+            "320, 390, 768 e 1440 sem perda de informação e sem rolagem horizontal"
+          ],
+          "problemas": [
+            "Leitor de tela real não testado",
+            "Texto explicativo e avisos essenciais em 12 px",
+            "As células da grade de bandeiras não são focáveis individualmente nem trazem dica visual; o valor mensal só existe em texto oculto",
+            "A mensagem de município obsoleta pode ser anunciada como estado"
+          ],
+          "justificativa": "Base sólida: axe limpo, teclado completo, foco visível e leitura em 320 px. Sem leitor de tela real, com texto pequeno e grade sem dica visual por célula, não há evidência para 9."
+        }
+      },
+      "bloqueios": [
+        {
+          "tipo": "divergência entre gráfico, tabela e exportação",
+          "descricao": "Com o seletor Em reais de ago/2026 ativo (?valores=real), o gráfico e a tabela de subsídios mostram R$ 19,68 bi em 2025, enquanto o KPI Subsídios tarifários em 2025 (R$ 18,8 bilhões), a frase 'R$ 18,82 bilhões' e O que mudou (total de 12,73 para 18,82; SCEE de 0,92 para 4,39) permanecem nominais, sem rótulo de nominal. A divergência é entre gráfico e tabela de um lado e KPI e frases do mesmo painel de outro.",
+          "evidencia": "Playwright em 1440: abrir ?valores=real, abrir Dados do gráfico em tabela (14 linhas) e ler a linha 2025, Total 19,68; no mesmo painel o KPI e a frase mostram 18,8 e 18,82; em 2024 a tabela mostra 13,98 contra 12,73 no texto"
+        }
+      ],
+      "achados": [
+        {
+          "id": "c2-real-nominal",
+          "gravidade": "alta",
+          "criterios": [
+            "I",
+            "J"
+          ],
+          "onde": "Painel Quem financia os descontos e benefícios da conta?, seletor Valores, KPI, frase de abertura e O que mudou",
+          "descricao": "Em Em reais de ago/2026 só os gráficos e as tabelas mudam; o KPI (R$ 18,8 bilhões), a frase (R$ 18,82 bilhões) e O que mudou continuam nominais sem rótulo. O leitor vê 19,68 no gráfico e 18,82 no texto do mesmo painel.",
+          "sugestao": "Rotular o KPI e as frases como valores da época ou sincronizá-los com o seletor."
+        },
+        {
+          "id": "c2-salto-ao-topo",
+          "gravidade": "alta",
+          "criterios": [
+            "J",
+            "K"
+          ],
+          "onde": "Seletor Valores (1440 e 390), janela de comparação (390) e clique em ponto da faixa de pontos (1440 e 390)",
+          "descricao": "Esses controles atualizam a URL e levam a página ao topo (de 3.837 para 70 em 1440 e de 6.095 para 25 em 390 nos Valores; de 453 para 25 na janela em 390; de 704 para 70 e de 1.072 para 25 no ponto). O leitor perde o gráfico que alterou.",
+          "sugestao": "Atualizar a URL sem rolar e manter posição e foco."
+        },
+        {
+          "id": "c2-mensagem-municipio-obsoleta",
+          "gravidade": "media",
+          "criterios": [
+            "J",
+            "K"
+          ],
+          "onde": "Campo Buscar pelo município, 1440",
+          "descricao": "Depois de escolher Campinas ou Garopaba, 'Nenhum município com esse nome.' continua sob o campo, acima da frase correta que lista a distribuidora.",
+          "sugestao": "Limpar a mensagem quando houver seleção válida."
+        },
+        {
+          "id": "c2-reajuste-da-distribuidora",
+          "gravidade": "media",
+          "criterios": [
+            "C"
+          ],
+          "onde": "Painel A tarifa subiu mais que a inflação?, nível Entender",
+          "descricao": "A distribuidora escolhida mostra só a variação entre duas datas; a data e o percentual da última mudança de tarifa só aparecem na tabela Mostrar a última mudança de cada distribuidora, no modo Analisar. O efeito médio do processo tarifário é declarado como não publicado (acesso recusado pela ANEEL).",
+          "sugestao": "Levar para a frase da distribuidora escolhida a data e o percentual da última mudança registrada no arquivo."
+        },
+        {
+          "id": "c2-grade-sem-valor",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "B"
+          ],
+          "onde": "Painel Quando a bandeira encareceu a conta?, grade de 141 meses",
+          "descricao": "As células mostram sigla e cor; o adicional em R$/MWh de cada mês só existe em texto para leitor de tela e na tabela do Analisar. Passar o mouse ou focar não revela nada, e a legenda traz só os patamares de set/2026 (os valores mudaram ao longo do tempo).",
+          "sugestao": "Mostrar mês, bandeira e adicional ao passar, focar ou tocar na célula."
+        },
+        {
+          "id": "c2-prova-so-12-meses",
+          "gravidade": "baixa",
+          "criterios": [
+            "C",
+            "J"
+          ],
+          "onde": "Painel A tarifa subiu mais que a inflação?, janelas de 60 e 120 meses",
+          "descricao": "O botão Comprove este número existe só para 12 meses; nas outras janelas o texto remete à tabela, de forma honesta mas com menos prova.",
+          "sugestao": "Publicar fichas de prova para 60 e 120 meses."
+        },
+        {
+          "id": "c2-lista-abre-pelas-menores",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Lista de barras por distribuidora, 1440 e 390",
+          "descricao": "A lista abre com as 12 menores variações (várias negativas) e as linhas do IPCA e da mediana, ambas tracejadas, só se distinguem pela legenda; o resto exige Mostrar todas as 102. A faixa de pontos acima mostra o conjunto.",
+          "sugestao": "Rotular as linhas no gráfico e, com distribuidora escolhida, abrir a lista já centrada nela."
+        },
+        {
+          "id": "c2-jargao-interno-auditar",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Auditar: Conferências dos subsídios e do orçamento da CDE",
+          "descricao": "O texto usa 'bronze' e 'reconciliacao_externa', termos internos do pipeline, no meio de frases voltadas ao leitor.",
+          "sugestao": "Substituir por 'arquivo de origem guardado' e 'conferência com fonte externa'."
+        },
+        {
+          "id": "c2-aviso-antes-do-grafico",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Primeira tela em 1440",
+          "descricao": "A caixa tracejada de três linhas sobre o efeito do processo tarifário ocupa o espaço entre a frase e o gráfico, e a faixa de pontos só começa no limite da tela.",
+          "sugestao": "Reduzir a caixa a uma linha com link para o texto completo."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real",
+        "Pinça e arraste nos gráficos em aparelho real (toque foi emulado)",
+        "Correção numérica das variações, do IPCA e dos subsídios (competência do avaliador técnico)",
+        "Conteúdo dos arquivos baixados em Baixar os dados (3 e 2 arquivos)",
+        "Tabelas do modo Auditar (incorporações e conferências), lidas só em texto"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T2",
+          "perfil": "jornalista ou professor",
+          "passos": [
+            "Ler A tarifa subiu mais que a inflação?: 87 de 102 distribuidoras acima do IPCA de 4,22% em 12 meses, mediana de 11,18%",
+            "Trocar a janela para 60 e 120 meses (mediana de 36,17% contra IPCA de 29,90%; 81,15% contra 61,15%) e ler a nota sobre universos distintos",
+            "Buscar Campinas: CPFL-PAULISTA com 65,35% em 120 meses contra IPCA de 61,15%",
+            "Ler a grade de bandeiras: set/2026 amarela a R$ 0,01885/kWh; 74 de 141 meses sem verde",
+            "Ler Quem financia: R$ 18,82 bilhões homologados em 2025, quotas de 96,4% em 2026 (previsto); alternar para reais de ago/2026"
+          ],
+          "resultado": "parcial",
+          "obstaculos": [
+            "Sem data nem percentual da última mudança da distribuidora no Entender",
+            "Efeito médio do processo tarifário não publicado",
+            "KPI e frase nominais divergem do gráfico em reais",
+            "Salto ao topo ao alternar Valores",
+            "Ficha de prova só para 12 meses"
+          ],
+          "erros": [
+            "Nenhum erro de console; apenas requisições de prefetch (/?_rsc) abortadas, sem efeito visível"
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/qualidade": {
+      "paineis": [
+        "P051",
+        "P052",
+        "P053",
+        "P054"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 7.5,
+          "evidencia": [
+            "1440_dobra.png e 390_dobra.png: H1 em pergunta, lede com DEC e FEC, quatro KPIs com conversões (9,33 h são 9 h 20 min), seletor de profundidade e início do gráfico",
+            "Playwright: altura de cerca de 14.000 px em 1440 e 26.000 px em 390; 13 painéis, mais de 20 gráficos e um mapa no Entender; 6.339 palavras",
+            "A busca por município e o mapa, ferramenta central de T3, começam a cerca de 2.900 px do topo em 1440 e 5.700 px em 390; o tooltip persistente do município selecionado (Manaus) fica cortado pela moldura do mapa"
+          ],
+          "atendidos": [
+            "Pergunta e números principais (DEC 9,33 h, FEC 4,69, 25,7% dos conjuntos acima do limite) na primeira tela",
+            "Hierarquia por H2 e H3 e cartões Nesta página, as outras perguntas",
+            "Unidades e conversões legíveis; DEC e FEC em gráficos separados, cada um na sua escala",
+            "Celular preserva gráficos, mapa e avisos"
+          ],
+          "problemas": [
+            "Página muito longa e densa para o essencial: quatro temas (Brasil, limites, compensações, atendimento) na mesma rota",
+            "A ferramenta para achar a própria área fica no terceiro bloco e não aparece na primeira tela nem nos cartões de atalho",
+            "O mapa ocupa cerca de 40% da moldura de 1.160 px e as duas classes mais claras têm contraste de 1,31:1 e 1,90:1 com o fundo branco",
+            "O tooltip persistente do município selecionado é cortado no topo do mapa",
+            "Blocos de três colunas repetidos em cada painel"
+          ],
+          "justificativa": "A primeira tela é boa, mas a rota reúne quatro temas, 13 painéis e 6.300 palavras, e o caminho para achar a própria área fica enterrado. Há detalhes do mapa e repetição de blocos. A nota fica em 7,5."
+        },
+        "B": {
+          "nota": 7.5,
+          "evidencia": [
+            "Lede e KPIs definem DEC e FEC e dão exemplos ('10,50 h são 10 horas e 30 minutos'; 'Médias, não o que cada consumidor viveu'); conjunto elétrico é definido ao lado do número",
+            "O gráfico de parcelas explica o que a regra tira do apurado (emergência, dia crítico, origem externa, ONS) e a legenda decodifica IP, IND, INE, INC, IPC, XN, XP, XNC, XPC e INO",
+            "O título 'Como os conjuntos se distribuem diante do limite? As médias não escondem as caudas' contradiz a mensagem da página ('A média do Brasil esconde as pontas')"
+          ],
+          "atendidos": [
+            "Conceitos explicados perto do uso (DEC, FEC, conjunto, expurgo, limite agregado)",
+            "Limites de leitura em todos os painéis (compensação não se calcula a partir do DEC; reclamações incluem ligações sobre falta de energia)",
+            "Exemplos de conversão e comparação com 2024 e com concessionárias",
+            "Caminho entre perguntas por Próxima pergunta e cartões Limites, Compensações e Atendimento"
+          ],
+          "problemas": [
+            "A abertura não responde por que a medida importa; o texto está em Por que isso importa, recolhido",
+            "Códigos de parcela (IP, IND, INE, INC, IPC, XN, XP, XNC, XPC, INO) e termos (DGC, quantis P10 a P90, 'altura é densidade', CHI, ONS) aparecem no Entender sem definição no ponto de uso",
+            "Título contraditório sobre as caudas",
+            "O Entender tem 6.339 palavras e 13 painéis, leitura longa para quem só quer a sua área"
+          ],
+          "justificativa": "Explicações boas e exemplos de conversão, mas o vocabulário regulatório (códigos de parcela, DGC, quantis), o título contraditório e o volume de texto do Entender dificultam a vida do leitor não especializado."
+        },
+        "C": {
+          "nota": 8.0,
+          "evidencia": [
+            "Playwright: a busca Manaus lista 22 conjuntos com DEC de 11,39 a 102,73 h, limite de DEC e de FEC, razão e situação de cada um; Comparar esta distribuidora com o próprio limite leva ao gráfico da Âmbar Amazonas",
+            "Gráfico de pontos por distribuidora (CEMIG-D: 8,98 h para limite de 9,50 h), pequenos múltiplos de até 4 distribuidoras na mesma escala e histograma de 3.146 conjuntos com quantis",
+            "Compensações: R$ 1.007,2 milhões em 2025, por tipo de violação e por distribuidora (histograma e tabela de 101 linhas); aviso 'Não se calcula o crédito de um consumidor'"
+          ],
+          "atendidos": [
+            "T3 cumprida por busca: município, conjuntos, limite do próprio conjunto e ano",
+            "Distribuidora diante do próprio limite, ano a ano, com escala compartilhada ou própria",
+            "Dispersão entre conjuntos (histograma, quantis, pontas) e compensações com limites de leitura",
+            "Estados sem dado e ano parcial hachurados"
+          ],
+          "problemas": [
+            "O caminho do mapa para o resultado é interrompido: o clique no mapa devolve a página ao topo, longe da tabela de conjuntos",
+            "A dispersão entre conjuntos de uma distribuidora específica só aparece pela tabela do município; o histograma é nacional",
+            "Ao trocar para FEC ou Permissionárias, a frase acima do gráfico continua falando de DEC nacional"
+          ],
+          "justificativa": "Resolve T3 de forma poderosa pela busca de município, com limite por conjunto e comparação com a distribuidora. O clique no mapa interrompe o fluxo, a dispersão por distribuidora só vem pelo município e a frase não acompanha o recorte."
+        },
+        "D": {
+          "nota": 8.5,
+          "evidencia": [
+            "Mapa de 5.571 municípios com quatro modos de cor e hachura para 16 sem dado; Manaus com 102,73 h contra 2,38 h no outro extremo",
+            "Compensações pagas (R$ 1.007,2 milhões; 21,8 milhões de compensações), reclamações por mil UCs e IASC com 29.624 entrevistas e aviso de amostra",
+            "CSV com contexto no nome do arquivo (qualidade-limites-distribuidoras_busca-cemig_ordem-razao-dec-desc_v2025.csv) e Copiar link com o recorte"
+          ],
+          "atendidos": [
+            "Continuidade, acesso e compensação ao consumidor tratados",
+            "Diferenças territoriais pertinentes, com aviso de que o valor é do conjunto, não do município",
+            "Meios de compartilhar e exportar com contexto",
+            "Lacunas relevantes visíveis (sem dado, ano parcial, cobertura parcial da ELEKTRO)"
+          ],
+          "problemas": [
+            "Quem mora numa área sem dado (por exemplo Pinto Bandeira) recebe só 'sem dado', sem orientação de onde procurar",
+            "Vocabulário técnico e extensão limitam o alcance entre leitores não especializados",
+            "Não há leitura de desigualdade entre classes de consumidores nem de impacto social além da descrição territorial"
+          ],
+          "justificativa": "Tema de continuidade bem servido por mapa, compensações e atendimento, com lacunas expostas e exportação com contexto. A falta de orientação para área sem dado, o vocabulário técnico e a ausência de leitura de desigualdade seguram a nota."
+        },
+        "I": {
+          "nota": 8.5,
+          "evidencia": [
+            "DEC e FEC separados, com limite agregado tracejado e marca 'muda o que entra no apurado' em 2022; parcelas empilhadas; mapa com classes fixas e hachura; círculo e losango para apurado e limite (1440_inteira_01de05.png e 02de05.png)",
+            "Pequenos múltiplos de até 4 distribuidoras com escala compartilhada ou própria; histograma com quantis e nota 'altura é densidade'; barras hachuradas para ausência (capturas próprias q1440_s3a e s3b)",
+            "Asterisco 'ELEKTRO *' sem legenda visível; rótulos Limite e P75 encostados no histograma; tooltip do município selecionado cortado no topo"
+          ],
+          "atendidos": [
+            "Gráfico escolhido pela tarefa, sem eixo duplo, com DEC e FEC em escalas próprias",
+            "Referências visíveis (limite agregado, limite de cada distribuidora, quantis)",
+            "Mapa com unidade territorial correta e aviso de que o valor é do conjunto",
+            "Alternativas textuais, tabelas e teclado (busca em combobox, setas, aria-live)",
+            "Ausência e ano parcial hachurados"
+          ],
+          "problemas": [
+            "O asterisco de cobertura parcial (ELEKTRO) só se explica no tooltip; a legenda não o descreve",
+            "Mapa pequeno na moldura, duas classes mais claras com 1,31:1 e 1,90:1 de contraste com o fundo e tooltip persistente cortado no topo",
+            "O gráfico de pontos abre com 12 das 51 distribuidoras"
+          ],
+          "justificativa": "Conjunto de visualizações muito completo e honesto, com referências, escalas escolhidas e alternativas. Detalhes do mapa, asterisco sem legenda e rótulos encostados impedem a nota 9."
+        },
+        "J": {
+          "nota": 6.5,
+          "evidencia": [
+            "Playwright em 1440: DEC/FEC, Permissionárias e Ordenar por Nome levam scrollY de 4.039 para 70; Cor do mapa de 2.792 para 70; Escala própria de 5.624 para 70; clique no mapa de 3.142 para 70. Em 390: de 7.094, 5.550, 9.697 e 6.160 para 25",
+            "Busca de município por teclado (combobox, ArrowDown e Enter) e Inverter ordem mantêm a posição; a URL guarda ?mun, ?ind, ?cls e ?dist; o CSV segue busca e ordem",
+            "Com FEC ou Permissionárias ativos, a frase 'Em 2025, 25,7% dos conjuntos ... DEC' não muda; a contagem de FEC acima do limite só aparece em Analisar"
+          ],
+          "atendidos": [
+            "Estado na URL e link com recorte",
+            "Busca de município funcional e acessível por teclado, com detalhe dos conjuntos e do limite",
+            "Comparação de até 4 distribuidoras com escala compartilhada ou própria, com limpeza e retorno",
+            "Tabelas com busca, filtros e exportação que seguem o recorte",
+            "Estados vazios (sem dado, ano parcial) compreensíveis"
+          ],
+          "problemas": [
+            "Cinco grupos de controles (DEC e FEC, Tipo, Ordenar por, Cor do mapa, Escala) e o clique no mapa devolvem o leitor ao topo; em 390 ele perde de 5.500 a 9.700 px de contexto",
+            "A frase de leitura do painel de limites não acompanha FEC nem Permissionárias",
+            "O mapa pede clique, mas o resultado fica abaixo e longe da tela após o salto",
+            "Atalhos do topo não incluem buscar a minha cidade, ferramenta central da tarefa"
+          ],
+          "justificativa": "Estado, busca por teclado, comparação e exportação são fortes. Mas o retorno ao topo em cinco grupos de controles e no clique do mapa, mais a frase que não acompanha o recorte, comprometem a interação numa página de 14 mil pixels."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360, 390, 768 e 1440; 70 paradas de teclado sem foco invisível; sem rolagem horizontal; nenhum alvo menor que 24 px, mas 23 menores que 44 px em 1440",
+            "Playwright: a busca do mapa é combobox com aria-activedescendant; setas e Enter selecionam; os gráficos anunciam valores em aria-live; 320 e 360 sem transbordo; contraste do cinza 4,92:1",
+            "Mapa em 390: municípios pequenos demais para o dedo, com zoom e busca como alternativas; texto de 10 e 11 px nos eixos; tabela de 5.571 linhas em 223 páginas"
+          ],
+          "atendidos": [
+            "Teclado, foco visível e ordem lógica",
+            "Semântica e rótulos; mapa com alternativa por busca e por tabela",
+            "Alternativas à cor (círculo e losango, hachura, classes por legenda)",
+            "320, 390, 768 e 1440 sem perda de informação"
+          ],
+          "problemas": [
+            "Leitor de tela real não testado",
+            "O mapa depende de ponteiro para escolher região; a alternativa por teclado e toque fica na busca e numa tabela de 223 páginas",
+            "Textos de 10 a 12 px em eixos, legendas e avisos; cabeçalhos H4 repetidos (CEMIG-D, ELETROPAULO, COELBA e COPEL-DIS duas vezes) sem distinguir DEC e FEC",
+            "Vários alvos entre 24 e 44 px no desktop (Comprove este número com 32 px)",
+            "As duas classes mais claras do mapa têm 1,31:1 e 1,90:1 de contraste com o fundo, abaixo dos 3:1 desejáveis para elementos gráficos"
+          ],
+          "justificativa": "Boa base (axe limpo, teclado, combobox acessível, aria-live). Sem leitor de tela real, com mapa centrado em ponteiro, texto pequeno e títulos H4 repetidos, a evidência fica abaixo de 9."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "c3-salto-ao-topo",
+          "gravidade": "alta",
+          "criterios": [
+            "J",
+            "K",
+            "C"
+          ],
+          "onde": "Painéis P051 (Cor do mapa, clique no mapa), P052 (DEC e FEC, Tipo, Ordenar por, Escala vertical), em 1440 e 390",
+          "descricao": "Os controles atualizam a URL e levam a página ao topo (1440: de 4.039, 2.792, 5.624 e, no clique no mapa, 3.142 para cerca de 70; 390: de 7.094, 5.550, 9.697 e, no toque no mapa, 6.160 para 25). O resultado de tocar no mapa fica milhares de pixels abaixo da tela.",
+          "sugestao": "Atualizar a URL sem rolar, manter posição e foco, e rolar ao detalhe do município quando o clique vier do mapa."
+        },
+        {
+          "id": "c3-caminho-ate-a-area",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "C",
+            "B"
+          ],
+          "onde": "Primeira tela e cartões Nesta página, as outras perguntas",
+          "descricao": "A ferramenta que cumpre T3 (buscar o município e ver os conjuntos com o limite de cada um) fica no terceiro bloco, a cerca de 2.900 px em 1440 e 5.700 px em 390. A lede e os cartões Limites, Compensações e Atendimento não a mencionam.",
+          "sugestao": "Incluir na primeira tela um campo ou link Encontre a sua cidade e um cartão de atalho para o mapa."
+        },
+        {
+          "id": "c3-frase-nao-acompanha",
+          "gravidade": "media",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Painel P052, frase 'Em 2025, 25,7% dos conjuntos com limite ficaram acima do limite anual de DEC'",
+          "descricao": "A frase fica igual ao trocar para FEC ou Permissionárias; a contagem de conjuntos de FEC acima do limite (341, no mínimo) só existe em Analisar. Na página 1 a frase equivalente acompanha o filtro.",
+          "sugestao": "Gerar a frase a partir do indicador e do grupo escolhidos."
+        },
+        {
+          "id": "c3-extensao-vocabulario",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "B"
+          ],
+          "onde": "Todo o Entender",
+          "descricao": "13 painéis, mais de 20 gráficos, 6.339 palavras e, na legenda das parcelas, códigos IP, IND, INE, INC, IPC, XN, XP, XNC, XPC e INO; DGC, quantis, CHI e ONS sem definição no ponto de uso; blocos de três colunas repetidos.",
+          "sugestao": "Separar Compensações e Atendimento em rotas próprias ou mover códigos e blocos analíticos para Analisar."
+        },
+        {
+          "id": "c3-dispersao-por-distribuidora",
+          "gravidade": "media",
+          "criterios": [
+            "C"
+          ],
+          "onde": "Painel P052, histograma de 3.146 conjuntos e pequenos múltiplos",
+          "descricao": "A dispersão entre conjuntos exibida no Entender é nacional; para uma distribuidora específica só há a tabela de conjuntos do município selecionado ou, em Analisar, o carregamento de 2,1 MB.",
+          "sugestao": "Mostrar a distribuição dos conjuntos da distribuidora escolhida, com seus limites, ao lado do gráfico de pontos."
+        },
+        {
+          "id": "c3-quebra-contagem-compensacoes",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "I"
+          ],
+          "onde": "Tabela Ver a tabela completa (16 linhas) do painel P053, coluna Compensações a unidades consumidoras",
+          "descricao": "A quantidade cai de 80.276.821 (2021) para 20.105.493 (2022) enquanto o valor sobe de R$ 723 milhões para R$ 767 milhões, sem nota sobre mudança de série; o gráfico mostra só o valor. Parece quebra de série (verificar com o avaliador técnico).",
+          "sugestao": "Marcar a quebra de série ou explicar a mudança de contagem junto da tabela."
+        },
+        {
+          "id": "c3-titulo-caudas",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Título do painel Como os conjuntos se distribuem diante do limite?",
+          "descricao": "'As médias não escondem as caudas' afirma o contrário do que a página mostra ('A média do Brasil esconde as pontas').",
+          "sugestao": "Trocar por 'As médias escondem as caudas' ou 'Para que as médias não escondam as caudas'."
+        },
+        {
+          "id": "c3-mapa-detalhes",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "A"
+          ],
+          "onde": "Mapa Que conjuntos atendem cada município?, 1440 e 390",
+          "descricao": "O tooltip persistente do município selecionado (Manaus) é cortado na moldura; o mapa ocupa cerca de 40% da largura de 1.160 px; as classes 'menos de 5 h' (1,31:1) e '5 a menos de 10 h' (1,90:1) quase somem contra o fundo branco; em 390 os municípios são pequenos para o toque.",
+          "sugestao": "Escalar o mapa à moldura, reposicionar o tooltip e escurecer as duas classes mais claras ou delimitá-las com contorno."
+        },
+        {
+          "id": "c3-asterisco-sem-legenda",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Gráfico de pontos por distribuidora, modo FEC (ELEKTRO *)",
+          "descricao": "O asterisco de cobertura parcial do FEC só é explicado no tooltip; a legenda visível não o menciona.",
+          "sugestao": "Acrescentar à legenda 'asterisco: cobertura parcial do FEC no ano'."
+        },
+        {
+          "id": "c3-area-sem-dado",
+          "gravidade": "baixa",
+          "criterios": [
+            "D",
+            "J"
+          ],
+          "onde": "Detalhe de município sem dado (Pinto Bandeira)",
+          "descricao": "O leitor recebe 'Pinto Bandeira (RS): sem dado', sem dizer o que fazer (procurar o nome do conjunto na fatura ou perguntar à distribuidora, como o texto faz para os demais).",
+          "sugestao": "Repetir a orientação de procurar o conjunto na fatura e indicar a distribuidora provável, se conhecida."
+        }
+      ],
+      "nao_verificado": [
+        "Leitor de tela real com o mapa e com as tabelas de 5.571 linhas",
+        "Arraste e pinça no mapa em aparelho real (toque foi emulado)",
+        "Carregamento de Carregar os conjuntos de 2025 (2,1 MB) e conteúdo do modo Auditar além do texto",
+        "1440_inteira_03de05.png não existia na pasta; as seções correspondentes foram vistas em capturas próprias",
+        "Correção numérica de DEC, FEC, limites, compensações e IASC (competência do avaliador técnico)"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T3",
+          "perfil": "consumidor",
+          "passos": [
+            "Ler a primeira tela: DEC 9,33 h (9 h 20 min), FEC 4,69 e 25,7% dos conjuntos acima do limite em 2025",
+            "Rolar cerca de 2.900 px até Que conjuntos atendem cada município? e buscar Manaus",
+            "Ler os 22 conjuntos de Manaus, com DEC de 11,39 a 102,73 h, limite de cada conjunto, razão e situação",
+            "Abrir Comparar esta distribuidora com o próprio limite (Âmbar Amazonas) e ler a distância ao limite ano a ano",
+            "Consultar compensações de 2025 (R$ 1.007,2 milhões; tabela por distribuidora)"
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "A ferramenta de busca fica no terceiro bloco, fora da primeira tela e dos atalhos",
+            "Município sem dado (Pinto Bandeira) recebe só 'sem dado'"
+          ],
+          "erros": [
+            "Nenhum erro de console"
+          ]
+        },
+        {
+          "tarefa": "T3",
+          "perfil": "gestor público ou conselho",
+          "passos": [
+            "Clicar numa região do mapa em 1440 e em 390 (toque): a URL recebe ?mun e a página volta ao topo",
+            "Escolher CEMIG-D no gráfico de pontos (DEC anual e limite ano a ano) e ver os pequenos múltiplos de 4 distribuidoras com o limite de cada ano",
+            "Trocar para FEC (ELEKTRO aparece com asterisco de cobertura parcial) e depois para Permissionárias: o gráfico muda, a frase continua em DEC nacional",
+            "Ler o histograma de 3.146 conjuntos (mediana 0,83 vez o limite; P90 1,33) e exportar a tabela de limites filtrada por busca"
+          ],
+          "resultado": "parcial",
+          "obstaculos": [
+            "Salto ao topo em clique no mapa, DEC e FEC, Tipo, Ordenar por e Escala",
+            "Frase de leitura não acompanha FEC nem Permissionárias",
+            "Dispersão entre conjuntos de uma distribuidora específica só pela tabela de município ou por Analisar"
+          ],
+          "erros": [
+            "Nenhum erro de console; apenas requisições de prefetch (/?_rsc) abortadas, sem efeito visível"
+          ]
+        }
+      ]
+    }
+  },
+  "achados_entre_paginas": [
+    "Retorno ao topo ao acionar radios, pontos de gráficos e o mapa. Página 1: Leitura, Tipo, Unidade e ponto da faixa (em 390 também o perfil). Página 2: Valores e ponto (em 390 também a janela). Página 3: DEC e FEC, Tipo, Ordenar por, Cor do mapa, Escala e clique no mapa. Em 390 o salto chega a 9.700 px; busca por teclado, selects e Inverter ordem não saltam.",
+    "A mensagem 'Nenhum município com esse nome.' permanece sob o campo depois de uma escolha válida nas páginas 1 e 2 (mesmo componente de busca por município).",
+    "Entender extenso e repetitivo (3.947, 3.608 e 6.339 palavras): cada painel repete blocos de três colunas, e Por que isso importa e a lista de siglas ficam recolhidos, de modo que a abertura não responde por que a medida importa nem expande siglas.",
+    "Tabelas largas: 17 colunas e 2.038 px em 390 sem coluna fixa; na página 1 a tabela de 81 linhas abre sozinha ao escolher uma distribuidora e acrescenta cerca de 2.800 px.",
+    "Referências de gráfico sem rótulo próprio: três tracejados iguais (página 1, TE e TUSD), IPCA e mediana tracejados quase iguais (página 2) e asterisco de cobertura parcial sem legenda (página 3).",
+    "Texto explicativo e avisos essenciais em 12 px (de 13.400 a 13.800 caracteres por página em 390), além de 10 e 11 px nos eixos.",
+    "Atalhos para a tarefa principal fora do topo: a página 1 não mostra a aba da página irmã (a página 2 mostra) e a página 3 não oferece entrada para buscar a própria cidade.",
+    "Sombra de rolagem em branco sobre contêineres que não rolam (Memória de cálculo na página 1, última coluna da grade de bandeiras na página 2) parece uma mancha."
+  ],
+  "limites_da_avaliacao": "Inspeção heurística por agente, sem participantes, sem tempos medidos e sem leitor de tela real (NVDA, JAWS e VoiceOver não foram testados); o comportamento por teclado foi verificado por Playwright e por leitura do DOM e das regiões aria-live. Só Chromium headless (Playwright): sem Firefox, Safari ou aparelho móvel real, e o toque foi emulado. objetivo.json trouxe 360, 390, 768 e 1440 px e não 320; medi 320 px por conta própria (transbordo da página e capturas de seções). A fatia 1440_inteira_03de05.png da página de qualidade não existia na pasta e os trechos de 390 vieram em amostra, então capturei as seções restantes das três páginas por conta própria; as imagens de 1440 fornecidas estão reduzidas a 50%. Não conferi valores contra as fontes (correção numérica é do avaliador técnico), não abri o conteúdo do XLSX nem dos arquivos de Baixar os dados além do CSV filtrado e do CSV estático de tarifas, e movimento reduzido foi conferido só no CSS global. Os saltos de rolagem foram medidos em Chromium com clique real do mouse e toque emulado e se repetem em três execuções; a causa provável (atualização de URL com rolagem) não foi confirmada no código. Uma busca por texto no repositório exibiu por engano algumas linhas de um arquivo de avaliação de rodada anterior (identificadores de painel e trechos do campo onde); não usei esse conteúdo como evidência nem como referência de nota."
+}

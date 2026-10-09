@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { ExpansaoMarcas, ExpansaoOpcoes } from "@/components/energia/ExpansaoOpcoes";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -24,9 +24,14 @@ import type { LinhaTabela } from "@/lib/energia/tabela";
  * P041, cronograma e revisões.
  *
  * Previsões atuais: a escolha de viabilidade (cro.via na URL) muda as séries das barras
- * empilhadas por ano e por mês; a pilha continua aditiva, porque as viabilidades são
+ * empilhadas por mês e por ano; a pilha continua aditiva, porque as viabilidades são
  * partes disjuntas da mesma potência. A data-base (fotografia do RALIE) está em todo
  * título: previsão sem a data em que foi feita não é publicada.
+ *
+ * Cronograma da fiscalização separado das datas convencionais: o gráfico dos próximos 24
+ * meses não toca as datas em bloco (elas caem anos depois da fotografia); o gráfico por ano
+ * deixa de fora o ano que contém essas datas, que sai à parte, com o total publicado do ano
+ * e a potência das datas em bloco; a tabela por ano mantém todos os anos e marca esse ano.
  *
  * Revisões: confiabilidade (o que cada fotografia previa para 12 meses e o que foi
  * liberado) e deslizamento (como a previsão da mesma unidade mudou em 12 meses)
@@ -43,7 +48,26 @@ const OPCOES_BLOCO = [
 
 type LinhaPrev = LinhaTabela & { id: string };
 
-export function ExpansaoPrevisoes({ porAno, proximos, dataRalie, fonte }: { porAno: LinhaPrev[]; proximos: LinhaPrev[]; dataRalie: string; fonte: string }) {
+export function ExpansaoPrevisoes({
+  porAno,
+  porAnoSemBloco,
+  anosEmBloco,
+  proximos,
+  dataRalie,
+  fonte,
+  avisoBloco,
+}: {
+  /** Todos os anos publicados (a tabela e a exportação). */
+  porAno: LinhaPrev[];
+  /** Os anos do gráfico: sem o ano que contém as datas em bloco. */
+  porAnoSemBloco: LinhaPrev[];
+  anosEmBloco: string[];
+  proximos: LinhaPrev[];
+  dataRalie: string;
+  fonte: string;
+  /** Frase que diz o que ficou fora do gráfico por ano e onde está. */
+  avisoBloco?: ReactNode;
+}) {
   const [v, definir] = useEstadoUrl(ESQUEMA_CRONOGRAMA);
   const series = useMemo(
     () => IDS_VIABILIDADE.filter((id) => (v.via as readonly string[]).includes(id)).map((id) => ({ id, rotulo: `Viabilidade ${VIABILIDADE_DO_ID[id].toLocaleLowerCase("pt-BR")}`, cor: COR_VIABILIDADE[id] })),
@@ -51,21 +75,10 @@ export function ExpansaoPrevisoes({ porAno, proximos, dataRalie, fonte }: { porA
   );
   const todas = series.length === IDS_VIABILIDADE.length;
   const sufixo = todas ? "" : ` (só ${series.map((s) => s.rotulo.toLocaleLowerCase("pt-BR")).join(" e ")})`;
+  const semBloco = anosEmBloco.length ? `, sem ${anosEmBloco.join(" e ")}, que ${anosEmBloco.length === 1 ? "contém" : "contêm"} as datas em bloco` : "";
   return (
     <div className="space-y-6">
       <ExpansaoMarcas rotulo="Viabilidade (fiscalização)" opcoes={OPCOES_VIA} valor={v.via as IdViabilidade[]} onMudar={(via) => definir({ via })} />
-      <GraficoBarras
-        titulo={`Potência com previsão de operação comercial por ano, fotografia do RALIE de ${dataRalie}${sufixo} (MW)`}
-        dados={porAno}
-        chaveCategoria="id"
-        chaveRotulo="ano"
-        series={series}
-        unidade="MW"
-        casas={1}
-        empilhado
-        rotulosValor
-        altura={320}
-      />
       <GraficoBarras
         titulo={`Previsões dos próximos 24 meses, fotografia do RALIE de ${dataRalie}${sufixo} (MW)`}
         dados={proximos}
@@ -77,6 +90,19 @@ export function ExpansaoPrevisoes({ porAno, proximos, dataRalie, fonte }: { porA
         empilhado
         altura={300}
       />
+      <GraficoBarras
+        titulo={`Potência com previsão de operação comercial por ano, fotografia do RALIE de ${dataRalie}${sufixo}${semBloco} (MW)`}
+        dados={porAnoSemBloco}
+        chaveCategoria="id"
+        chaveRotulo="ano"
+        series={series}
+        unidade="MW"
+        casas={1}
+        empilhado
+        rotulosValor
+        altura={320}
+      />
+      {avisoBloco}
       <TabelaInterativa
         titulo={`Previsões por ano, fotografia de ${dataRalie}`}
         colunas={COLUNAS_PREVISOES_ANO}
@@ -87,7 +113,7 @@ export function ExpansaoPrevisoes({ porAno, proximos, dataRalie, fonte }: { porA
         versao={dataRalie}
         nomeArquivo="expansao-previsoes-ano"
         chaveUrl="cro.tab"
-        nota="Data-base de todas as linhas: a fotografia indicada. As colunas de viabilidade somam a potência prevista do ano."
+        nota="Data-base de todas as linhas: a fotografia indicada. As colunas de viabilidade somam a potência prevista do ano. A coluna de data em bloco marca o ano que contém datas convencionais, que o gráfico por ano deixa de fora."
       />
     </div>
   );

@@ -1,56 +1,141 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { VisaoLinkPainel } from "@/components/energia/VisaoLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { PAINEIS_VISAO, type IdPainelVisao } from "@/lib/energia/visao";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { dataBR } from "@/lib/energia/formato";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { ControleVisao } from "@/lib/energia/tipos-visao";
+import { PAINEIS_VISAO, datasLegiveis, enumLegivel, type IdPainelVisao } from "@/lib/energia/visao";
 
 /**
- * Peças de servidor da Visão geral (/setor-eletrico/visao-geral): sumário dos quatro
- * painéis, resposta curta, recorte (período, universo e unidade), avisos de ausência e
- * defasagem, rodapé com downloads, link compartilhável e próxima pergunta, e os blocos
- * dos modos Analisar e Auditar.
+ * Peças de servidor da Visão geral (/setor-eletrico/visao-geral): o painel (pergunta, subtítulo, "Por que isso importa" recolhido
+ * e fonte curta), a tira das regras que pedem atenção, as datas de cada parte, o recorte (período, universo e unidade), os avisos
+ * de ausência e defasagem, os controles da publicação e o estado de ausência da gold inteira.
  *
- * Os quatro painéis ficam numa página só porque a Visão geral é o resumo de poucos minutos
- * (seção 9.1); o peso fica abaixo da meta de cerca de 600 KB de HTML porque séries longas,
- * históricos e as regras completas estão nos CSV de download e nos módulos de origem.
+ * Os quatro painéis ficam numa página só porque a Visão geral é o resumo de poucos minutos; o peso fica abaixo da meta de cerca de
+ * 600 KB de HTML porque séries longas, históricos e as regras completas estão nos CSV de download e nos módulos de origem.
  */
 
-/** Sumário dos painéis com a pergunta de cada um; o atual (se houver) leva aria-current. */
-export function VisaoNavegacao() {
+/**
+ * Painel da Visão geral: a pergunta em serifa, o subtítulo (que traz a razão do painel numa oração, à vista), o corpo e a fonte. Mantém a âncora e
+ * `aria-labelledby` de sempre. O bloco recolhido "Por que isso importa" saiu: a razão está no subtítulo e na abertura da página.
+ */
+export function PainelVisao({
+  id,
+  subtitulo,
+  fonte,
+  children,
+}: {
+  id: IdPainelVisao;
+  /** Linha sob a pergunta: o que o painel mostra e por que ele existe. */
+  subtitulo?: ReactNode;
+  fonte: ReactNode;
+  children: ReactNode;
+}) {
+  const p = PAINEIS_VISAO.find((x) => x.id === id)!;
   return (
-    <nav aria-label="Painéis da visão geral" className="pb-4">
-      <ol className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
-        {PAINEIS_VISAO.map((p) => (
-          <li key={p.id}>
-            <a
-              href={`#${p.id}`}
-              className="flex min-h-[44px] flex-col justify-center border border-linha bg-superficie px-3 py-2 text-carvao-muted hover:border-energia hover:text-carvao"
-            >
-              <span className="rotulo text-mineral">{p.rotulo}</span>
-              <span className="mt-0.5 text-carvao">{p.pergunta}</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </nav>
+    <section id={id} aria-labelledby={`${id}-h`} data-painel-evidencia="" className="scroll-mt-28 border-t border-linha pt-6">
+      <header>
+        <h2 id={`${id}-h`} className="ed-h2 font-serif text-carvao">
+          {p.pergunta}
+        </h2>
+        {subtitulo && <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">{subtitulo}</p>}
+      </header>
+      <div className="mt-5 space-y-6">{children}</div>
+      <footer className="mt-3 border-t border-linha pt-3">
+        <p className="text-xs leading-relaxed text-carvao-muted">{fonte}</p>
+      </footer>
+    </section>
   );
 }
 
-/** Resposta factual curta do painel (seção 7.2, item 2), sempre derivada da gold. */
-export function VisaoResposta({ painel, children }: { painel: IdPainelVisao; children: ReactNode }) {
+/** Data de referência de cada parte da página, na forma de uma lista curta (dentro do bloco "Fontes, datas e siglas" da abertura). */
+export function VisaoDatas({ itens }: { itens: { rotulo: string; texto: string; natureza?: Natureza }[] }) {
   return (
-    <div data-resposta={painel} className="border-l-2 border-energia pl-4 text-base leading-relaxed text-carvao md:text-lg">
-      {children}
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.texto}
+          </span>
+          {x.natureza && <SeloNatureza natureza={x.natureza} compacto />}
+        </li>
+      ))}
+    </ul>
   );
 }
 
-/** Período, universo e unidade do painel, logo abaixo da resposta (seção 7.2, item 3). */
+type RegraDaTira = { id: string; titulo: string };
+
+/**
+ * Tira do topo com as regras que pedem atenção: as que estão em alerta sobre o sistema, as em observação (a condição existe, mas ainda
+ * sem a duração mínima) e quantas estão em alerta sobre os próprios dados. Sem regra nessa situação, diz isso. Cada título leva à regra.
+ */
+export function VisaoAtencao({
+  alertaSistema,
+  observacao,
+  alertaDados,
+}: {
+  alertaSistema: readonly RegraDaTira[];
+  observacao: readonly RegraDaTira[];
+  alertaDados: readonly RegraDaTira[];
+}) {
+  const lista = (xs: readonly RegraDaTira[]) =>
+    xs.map((x, i) => (
+      <span key={x.id}>
+        {i > 0 && "; "}
+        <Link href={`#regra-${x.id}`} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+          {x.titulo}
+        </Link>
+      </span>
+    ));
+  const nada = alertaSistema.length === 0 && observacao.length === 0;
+  // mais de uma regra sobre os dados vira contagem com ligação, para a tira caber numa linha
+  const dados =
+    alertaDados.length > 1 ? (
+      <Link href="#observar" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+        {alertaDados.length} regras
+      </Link>
+    ) : (
+      lista(alertaDados)
+    );
+  return (
+    <aside aria-label="Regras que pedem atenção" data-atencao="" className="space-y-1 border-l-2 border-aviso pl-3 text-sm leading-relaxed text-carvao">
+      {nada && <p>Nenhuma regra sobre o sistema está em alerta nem em observação.</p>}
+      {alertaSistema.length > 0 && (
+        <p>
+          <span className="rotulo mr-2 text-mineral">Em alerta sobre o sistema</span>
+          {lista(alertaSistema)}.
+        </p>
+      )}
+      {observacao.length > 0 && (
+        <p>
+          <span className="rotulo mr-2 text-mineral">Em observação</span>
+          {lista(observacao)} <span className="text-carvao-muted">(ainda sem a duração mínima de alerta)</span>.
+          {alertaDados.length > 0 && (
+            <>
+              {" "}
+              <span className="rotulo mx-2 text-mineral">Em alerta sobre os dados</span>
+              {dados}.
+            </>
+          )}
+        </p>
+      )}
+      {observacao.length === 0 && alertaDados.length > 0 && (
+        <p>
+          <span className="rotulo mr-2 text-mineral">Em alerta sobre os dados</span>
+          {dados}.
+        </p>
+      )}
+    </aside>
+  );
+}
+
+/** Período, universo e unidade do painel (o recorte que a abertura da página dá para o conjunto, repetido por painel). */
 export function VisaoRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-painel="">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5 leading-relaxed">{periodo}</dd>
@@ -72,58 +157,8 @@ export function VisaoAviso({ children, tipo = "nota" }: { children: ReactNode; t
   return (
     <div
       role={tipo === "alerta" ? "note" : undefined}
-      className={`border-l-2 pl-3 text-sm leading-relaxed ${tipo === "alerta" ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
+      className={`max-w-prose2 border-l-2 pl-3 text-sm leading-relaxed ${tipo === "alerta" ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
     >
-      {children}
-    </div>
-  );
-}
-
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
-export function VisaoSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  const unicos = downloads.filter((d, i) => downloads.findIndex((x) => x.url === d.url) === i);
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {unicos.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {unicos.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <VisaoLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export function VisaoAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="analisar" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function VisaoAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="auditar" className="scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
       {children}
     </div>
   );
@@ -136,7 +171,7 @@ export function VisaoControles({ controles }: { controles: ControleVisao[] }) {
     <ul className="space-y-1.5 text-sm text-carvao-muted">
       {controles.map((c) => (
         <li key={c.nome} className="leading-relaxed [overflow-wrap:anywhere]">
-          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>: {c.nome}. {c.detalhe}
+          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>: {c.nome}. {enumLegivel(datasLegiveis(c.detalhe))}
         </li>
       ))}
     </ul>
@@ -148,7 +183,7 @@ export function VisaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="visao-geral" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Visão geral indisponível nesta publicação"
           motivo={
@@ -164,4 +199,9 @@ export function VisaoIndisponivel({ motivo }: { motivo?: string | null }) {
       </main>
     </>
   );
+}
+
+/** Data na forma da página, para os textos de datas das partes. */
+export function dataDaParte(dia: string | null): string {
+  return dia ? dataBR(dia) : "sem dado nesta publicação";
 }

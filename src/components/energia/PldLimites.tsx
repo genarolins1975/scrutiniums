@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MapaCalor } from "@/components/energia/MapaCalor";
 import { Numero } from "@/components/energia/Numero";
 import { PldEscolha, PldLista } from "@/components/energia/PldControles";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
@@ -24,6 +27,7 @@ import {
   NOME_SM,
   SUBMERCADOS,
   calendarioLimite,
+  diasNoLimite,
   emPct,
   linhasCalendario,
   linhasEmpates,
@@ -32,6 +36,8 @@ import {
   regimesDoAno,
   respostaP010,
   rotaPainel,
+  textoDiasNoLimite,
+  vereditoP010,
   type JanelaCalendario,
   type LimiteHora,
 } from "@/lib/energia/pld";
@@ -42,14 +48,21 @@ import type { BlocoLimitesDisponivel } from "@/lib/energia/tipos-pld";
 /**
  * P010, limites, piso e tetos: submercado (?sm=), ano (?ano=) e limite do
  * calendário (?lim=) ficam na URL; busca, ordem e filtros das tabelas também
- * (prefixos cal, perm e emp). A resposta, os números, as barras de permanência e a
+ * (prefixos cal, perm e emp). A resposta, as medidas da faixa, as barras de permanência e a
  * tabela leem as mesmas linhas (linhasPermanencia); o calendário e a sua tabela, a
  * mesma série diária da gold. Hora no limite é igualdade ao centavo, regra da gold;
  * o menor valor observado nunca aparece como piso.
+ *
+ * Ordem da página: resposta e escolha de submercado e ano, figura principal (permanência por ano,
+ * com o ano escolhido marcado), faixa de medidas do ano (com os limites do trecho vigente e o objeto
+ * de cada um; vem depois da figura para que ela apareça na primeira tela), recorte, tabela, notas do painel e as três visões
+ * complementares (calendário dos dias, horas no piso por submercado e empates), visíveis em Entender.
  */
 const ROTULO_LIMITE: Record<LimiteHora, string> = { piso: "Horas no piso", teto_horario: "Horas no teto horário" };
 
 export type LimitesP010 = Pick<BlocoLimitesDisponivel, "permanencia_anual" | "regimes" | "empates_piso" | "calendario" | "tolerancia">;
+
+const valorLimite = (v: number | null) => (v === null ? "sem valor integrado" : `${reais(v)}/MWh`);
 
 export function PldLimites({
   l,
@@ -58,6 +71,8 @@ export function PldLimites({
   fichas,
   fonte,
   versao,
+  notaPermanencia,
+  notas,
 }: {
   l: LimitesP010;
   anos: number[];
@@ -65,6 +80,10 @@ export function PldLimites({
   fichas: Record<string, Evidencia>;
   fonte: string;
   versao: string;
+  /** Contexto de anos com muitas horas no piso que o dado publicado sustenta (ver o achado A02, na página CMO e formação de preço). */
+  notaPermanencia?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
 }) {
   const ultimo = anos[anos.length - 1] ?? Number(diaReferencia.slice(0, 4));
   const esquema = useMemo(
@@ -103,27 +122,129 @@ export function PldLimites({
     }));
   }, [bloco, anos, escolhidos]);
   const dias = bloco.calendario.dias.slice(-nDias);
+  // os dias com hora no limite, ditos por data quando são poucos, em todo o calendário publicado (a grade de uma janela sem eventos é uniforme)
+  const textoDias = textoDiasNoLimite(diasNoLimite(bloco.calendario, sm, lim), lim, bloco.calendario.dias.length);
   const endereco = `${rotaPainel("p010")}#p010`;
   const ficha = fichas[`piso_${ano}_${sm}`] ?? null;
   const periodoAno = p?.parcial ? `${ano} até ${dataBR(diaReferencia)}` : String(ano);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <PldEscolha legenda="Submercado" opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: CURTO_SM[s], detalhe: NOME_SM[s] }))} valor={sm} onEscolher={(s) => definir({ sm: s })} />
-        <PldLista
-          rotulo="Ano"
-          opcoes={anos.map((a) => ({ id: String(a), rotulo: permanencia(bloco, a, sm)?.parcial ? `${a} (parcial)` : String(a) }))}
-          valor={String(ano)}
-          onEscolher={(a) => definir({ ano: Number(a) })}
-        />
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <RespostaCurta id="p010" vivo veredito={vereditoP010(bloco, ano, sm, diaReferencia)}>
+          {respostaP010(bloco, ano, sm, diaReferencia)}
+        </RespostaCurta>
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          <PldEscolha legenda="Submercado" opcoes={SUBMERCADOS.map((s) => ({ id: s, rotulo: CURTO_SM[s], detalhe: NOME_SM[s] }))} valor={sm} onEscolher={(s) => definir({ sm: s })} />
+          <PldLista
+            rotulo="Ano"
+            opcoes={anos.map((a) => ({ id: String(a), rotulo: permanencia(bloco, a, sm)?.parcial ? `${a} (parcial)` : String(a) }))}
+            valor={String(ano)}
+            onEscolher={(a) => definir({ ano: Number(a) })}
+          />
+        </div>
       </div>
 
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p010" aria-live="polite">
-        {respostaP010(bloco, ano, sm, diaReferencia)}
-      </p>
+      <div className="space-y-3">
+        <GraficoBarras
+          titulo={`Horas no piso e no teto horário por ano, ${NOME_SM[sm]} (% das horas com limite vigente)`}
+          dados={perm}
+          chaveCategoria="id"
+          chaveRotulo="rotulo"
+          series={[
+            { id: "piso_pct", rotulo: "no piso", cor: "var(--escala-seq-3)" },
+            { id: "teto_pct", rotulo: "no teto horário", cor: "var(--escala-div-neg-2)" },
+          ]}
+          unidade="%"
+          casas={2}
+          selecionado={String(ano)}
+          onSelecionar={(id) => id && definir({ ano: Number(id) })}
+        />
+        <p className="text-sm leading-relaxed text-carvao-muted">
+          Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
+          terminou e não se compara a anos completos sem essa ressalva.
+        </p>
+        {notaPermanencia ? <p className="text-sm leading-relaxed text-carvao-muted">{notaPermanencia}</p> : null}
+      </div>
 
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+      <FaixaMetricas colunas={4} rotulo={`Medidas de ${periodoAno}, ${NOME_SM[sm]}`}>
+        <Numero
+          variante="faixa"
+          rotulo="Horas no piso"
+          natureza="CALCULADO"
+          valor={emPct(p?.frac_piso)}
+          evidencia={ficha}
+          formato="pct"
+          casas={2}
+          unidade="das horas com limite"
+          periodo={periodoAno}
+          motivoAusencia="Sem permanência publicada para o ano e o submercado."
+          cor={COR_SM[sm]}
+          endereco={endereco}
+          nota={ficha ? undefined : "A ficha Comprove é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário."}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Horas no teto horário"
+          natureza="CALCULADO"
+          valor={p?.horas_teto_horario ?? null}
+          formato="num"
+          casas={0}
+          unidade="horas"
+          periodo={periodoAno}
+          motivoAusencia="Sem permanência publicada."
+          cor={COR_SM[sm]}
+        />
+        <Numero
+          variante="faixa"
+          rotulo="Dias com média no teto estrutural"
+          natureza="CALCULADO"
+          valor={p?.dias_teto_estrutural ?? null}
+          formato="num"
+          casas={0}
+          unidade="dias"
+          periodo={periodoAno}
+          motivoAusencia="Sem permanência publicada."
+          cor={COR_SM[sm]}
+          nota="Conferido sobre a média das 24 horas do dia."
+        />
+        <div role="group" aria-label={`Limites vigentes em ${ano}`} data-metrica="" className="min-w-0">
+          <p className="mb-1.5 text-[0.8125rem] leading-snug text-carvao-muted">Limites de {ano} (atos da ANEEL)</p>
+          {reg ? (
+            <dl className="space-y-1.5 text-sm tabular-nums text-carvao">
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
+                <dt className="text-carvao-muted">
+                  Piso <span className="text-xs">(cada hora)</span>
+                </dt>
+                <dd>{valorLimite(reg.pld_min)}</dd>
+              </div>
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
+                <dt className="text-carvao-muted">
+                  Teto horário <span className="text-xs">(cada hora)</span>
+                </dt>
+                <dd>{valorLimite(reg.pld_max_horario)}</dd>
+              </div>
+              <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
+                <dt className="text-carvao-muted">
+                  Teto estrutural <span className="text-xs">(média do dia)</span>
+                </dt>
+                <dd>{valorLimite(reg.pld_max_estrutural)}</dd>
+              </div>
+            </dl>
+          ) : (
+            <p className="text-sm text-carvao-muted">{regs.length ? "Mais de um trecho de vigência no ano: veja a tabela de limites." : "Sem ato vigente integrado para o ano."}</p>
+          )}
+          {reg && (
+            <p className="mt-1.5 text-xs leading-snug text-carvao-muted">
+              {reg.ato_pld_min === reg.ato_pld_max_horario && reg.ato_pld_min === reg.ato_pld_max_estrutural
+                ? `Piso e tetos: ${reg.ato_pld_min ?? "ato não identificado"}.`
+                : `Piso: ${reg.ato_pld_min ?? "ato não identificado"}; teto horário: ${reg.ato_pld_max_horario ?? "ato não identificado"}; teto estrutural: ${reg.ato_pld_max_estrutural ?? "ato não identificado"}.`}
+            </p>
+          )}
+        </div>
+      </FaixaMetricas>
+
+      <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
         <div>
           <dt className="rotulo text-mineral">Período</dt>
           <dd className="mt-0.5">
@@ -136,76 +257,36 @@ export function PldLimites({
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">horas e % das horas; limites em R$/MWh nominais; hora no limite = igualdade ao centavo (|PLD − limite| ≤ R$ {String(bloco.tolerancia.hora).replace(".", ",")}/MWh)</dd>
+          <dd className="mt-0.5">
+            horas e % das horas; limites em R$/MWh nominais; hora no limite = preço igual ao limite, ao centavo
+            <span data-nivel="analisar"> (|PLD − limite| ≤ R$ {String(bloco.tolerancia.hora).replace(".", ",")}/MWh)</span>
+          </dd>
         </div>
       </dl>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Numero
-          rotulo="Horas no piso"
-          natureza="CALCULADO"
-          valor={emPct(p?.frac_piso)}
-          evidencia={ficha}
-          formato="pct"
-          casas={2}
-          unidade="das horas com limite"
-          periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada para o ano e o submercado."
-          tamanho="medio"
-          cor={COR_SM[sm]}
-          endereco={endereco}
-          nota={ficha ? undefined : "A ficha de prova é publicada para o ano de referência; os demais anos estão na tabela e no CSV diário."}
-        />
-        <Numero
-          rotulo="Horas no teto horário"
-          natureza="CALCULADO"
-          valor={p?.horas_teto_horario ?? null}
-          formato="num"
-          casas={0}
-          unidade="horas"
-          periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada."
-          tamanho="medio"
-          cor={COR_SM[sm]}
-        />
-        <Numero
-          rotulo="Dias com média no teto estrutural"
-          natureza="CALCULADO"
-          valor={p?.dias_teto_estrutural ?? null}
-          formato="num"
-          casas={0}
-          unidade="dias"
-          periodo={periodoAno}
-          motivoAusencia="Sem permanência publicada."
-          tamanho="medio"
-          cor={COR_SM[sm]}
-          nota="Conferido sobre a média das 24 horas do dia (ver a nota do teto estrutural)."
-        />
-        <div role="group" aria-label={`Limites vigentes em ${ano}`} className="flex h-full flex-col border border-linha bg-superficie p-5">
-          <p className="rotulo text-mineral">Limites de {ano} (atos da ANEEL)</p>
-          {reg ? (
-            <dl className="mt-2 space-y-1 text-sm tabular-nums text-carvao">
-              <div className="flex justify-between gap-3">
-                <dt className="text-carvao-muted">Piso</dt>
-                <dd>{reais(reg.pld_min)}/MWh</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-carvao-muted">Teto horário</dt>
-                <dd>{reais(reg.pld_max_horario)}/MWh</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-carvao-muted">Teto estrutural</dt>
-                <dd>{reais(reg.pld_max_estrutural)}/MWh</dd>
-              </div>
-            </dl>
-          ) : (
-            <p className="mt-2 text-sm text-carvao-muted">{regs.length ? "Mais de um trecho de vigência no ano: veja a tabela de limites." : "Sem ato vigente integrado para o ano."}</p>
-          )}
-          {reg && <p className="mt-2 text-xs text-mineral">Piso: {reg.ato_pld_min ?? "ato não identificado"}; tetos: {reg.ato_pld_max_horario ?? "ato não identificado"}.</p>}
-        </div>
-      </div>
+      <TabelaInterativa
+        titulo={`Tabela equivalente: permanência nos limites por ano, ${NOME_SM[sm]}`}
+        colunas={COLUNAS_PERMANENCIA}
+        linhas={perm}
+        chaveLinha="id"
+        colunaRotulo="rotulo"
+        fonte={fonte}
+        versao={versao}
+        nomeArquivo={`pld-permanencia-${sm}`}
+        chaveUrl="perm"
+        selecionado={String(ano)}
+        onSelecionar={(id) => id && definir({ ano: Number(id) })}
+      />
 
-      <div className="space-y-3">
+      {notas}
+
+      <SecaoDoPainel
+        id="calendario"
+        titulo="Em quais dos últimos dias o preço ficou no limite?"
+        lead={`Cada célula é um dia e cada linha é uma semana; o valor é o número de horas do dia no limite escolhido. O calendário usa os dias mais recentes da publicação (${
+          bloco.calendario.dias.length ? `${dataBR(bloco.calendario.dias[0])} a ${dataBR(bloco.calendario.dias[bloco.calendario.dias.length - 1])}` : "sem dias"
+        }), e a janela abaixo escolhe o último semestre ou todos eles, qualquer que seja o Ano escolhido acima: o histórico de cada ano está nas barras e no arquivo diário de limites.`}
+      >
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <PldEscolha
             legenda="Calendário"
@@ -223,6 +304,11 @@ export function PldLimites({
             onEscolher={(x) => definir({ cal: x })}
           />
         </div>
+        {textoDias && (
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="dias-no-limite">
+            {textoDias}
+          </p>
+        )}
         <MapaCalor
           titulo={`${ROTULO_LIMITE[lim]} por dia, ${NOME_SM[sm]}, últimos ${plural(dias.length, "dia", "dias")}`}
           linhas={cal.linhas}
@@ -249,45 +335,9 @@ export function PldLimites({
           ordemInicial={{ coluna: "dia", direcao: "desc" }}
           nota="O histórico diário desde 2021, com os limites vigentes de cada dia, está no CSV de limites (download no rodapé do painel)."
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div className="space-y-3 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Permanência por ano: {NOME_SM[sm]}</h3>
-        <GraficoBarras
-          titulo={`Horas no piso e no teto horário por ano, ${NOME_SM[sm]} (% das horas com limite vigente)`}
-          dados={perm}
-          chaveCategoria="id"
-          chaveRotulo="rotulo"
-          series={[
-            { id: "piso_pct", rotulo: "no piso", cor: "var(--escala-seq-3)" },
-            { id: "teto_pct", rotulo: "no teto horário", cor: "var(--escala-div-neg-2)" },
-          ]}
-          unidade="%"
-          casas={2}
-          selecionado={String(ano)}
-          onSelecionar={(id) => id && definir({ ano: Number(id) })}
-        />
-        <p className="text-sm leading-relaxed text-carvao-muted">
-          Cada ano tem o próprio piso e os próprios tetos: a barra mede quanto tempo o preço passou no limite daquele ano, não o nível do preço. O ano parcial ainda não
-          terminou e não se compara a anos completos sem essa ressalva.
-        </p>
-        <TabelaInterativa
-          titulo={`Tabela equivalente: permanência nos limites por ano, ${NOME_SM[sm]}`}
-          colunas={COLUNAS_PERMANENCIA}
-          linhas={perm}
-          chaveLinha="id"
-          colunaRotulo="rotulo"
-          fonte={fonte}
-          versao={versao}
-          nomeArquivo={`pld-permanencia-${sm}`}
-          chaveUrl="perm"
-          selecionado={String(ano)}
-          onSelecionar={(id) => id && definir({ ano: Number(id) })}
-        />
-      </div>
-
-      <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Comparar submercados: horas no piso por ano</h3>
+      <SecaoDoPainel id="piso-por-submercado" titulo="Quantas horas no piso, por ano e por submercado?">
         <Comparador
           rotulo={`Submercados no gráfico (até ${LIMITE_COMPARACAO})`}
           entidades={SUBMERCADOS.map((s) => ({ id: s, rotulo: NOME_SM[s], sinonimos: [CURTO_SM[s]] }))}
@@ -315,10 +365,9 @@ export function PldLimites({
           Os quatro submercados têm o mesmo piso em cada ano; diferenças entre as barras de um ano vêm das horas em que os preços se separaram (painel de diferenças
           regionais), não de pisos diferentes.
         </p>
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Empates no piso: quantos submercados no piso na mesma hora</h3>
+      <SecaoDoPainel id="empates-piso" titulo="Em quantas horas vários submercados ficaram no piso ao mesmo tempo?">
         <GraficoBarras
           titulo="Horas de cada ano pelo número de submercados no piso na mesma hora"
           dados={empates}
@@ -350,7 +399,7 @@ export function PldLimites({
           nomeArquivo="pld-empates-piso"
           chaveUrl="emp"
         />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

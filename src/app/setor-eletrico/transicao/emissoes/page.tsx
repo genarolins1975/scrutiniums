@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
-import { DataDaFonte } from "@/components/energia/TextoEnergia";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoCompararAnos, TransicaoFatorMensal } from "@/components/energia/TransicaoEmissoes";
 import {
   TransicaoAnalise,
   TransicaoAuditoria,
   TransicaoAviso,
+  TransicaoDatas,
   TransicaoDocumento,
   TransicaoIndisponivel,
   TransicaoNavegacao,
@@ -20,7 +23,7 @@ import {
 } from "@/components/energia/TransicaoPagina";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
@@ -38,19 +41,25 @@ import {
   data,
   estadoAcessoMcti,
   fator,
+  fatorAnualDoAnoAnterior,
+  fatorDoMesmoMesDoAnoAnterior,
   inteiro,
+  kgPorMwh,
   linhasFatorAnual,
   linhasFatorMensal,
   mes,
   mudancaEmissoes,
   numTexto,
   pctTexto,
+  periodoFatorAnual,
   perguntaPainel,
   referenciaAnual,
   respostaEmissoes,
   rotaPainel,
+  vereditoEmissoes,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -77,9 +86,9 @@ export default function EmissoesPage() {
     return (
       <>
         <CabecalhoEnergia atual="transicao" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-          <CabecalhoModulo rotulo="Transição e ambiente" titulo="Intensidade de emissões da geração no SIN" />
+        <main id="conteudo" tabIndex={-1} className="ed-pagina">
           <TransicaoNavegacao atual="p064" />
+          <CabecalhoModulo siglas={["MCTI"]} rotulo="Transição e ambiente" titulo={perguntaPainel("p064")} />
           <div className="py-6">
             <Indisponivel
               titulo="Fatores de emissão do MCTI ausentes nesta publicação"
@@ -97,33 +106,122 @@ export default function EmissoesPage() {
   const anos = anosDoFatorMensal(e);
   const padraoAnos = anos.slice(-3);
   const primeiroMes = e.medio_mensal[0]?.m ?? null;
+  const periodoAnual = periodoFatorAnual(e);
   const docFatorMedio = e.documentos.find((d) => /Fator médio/i.test(d.titulo)) ?? null;
   const docMargem = e.documentos.find((d) => /Margem de operação/i.test(d.titulo)) ?? null;
+  const anoAnterior = fatorAnualDoAnoAnterior(e);
+  const mesAnterior = fatorDoMesmoMesDoAnoAnterior(e);
+  const oQueMudou = mudancaEmissoes(e);
+  const comoInterpretar = (
+    <>
+      Fator médio = emissões de CO2 da geração despachada no SIN ÷ energia gerada no SIN, calculado e publicado pelo MCTI; a plataforma não recalcula nada. O anual é
+      publicado pela fonte e fica perto da média dos meses (controle na coluna &ldquo;Anual × meses&rdquo; da tabela anual). {g.regras.fator_medio_nao_marginal}
+    </>
+  );
+  const naoConcluir = (
+    <>
+      O efeito de consumir ou economizar um MWh a mais (o fator médio não é marginal); emissões em CO2 equivalente ou de ciclo de vida (só CO2 da operação); intensidade
+      por hora, por município ou por distribuidora. {g.regras.sem_intensidade_local}
+      {quebra ? ` Comparações que atravessam ${mes(quebra.data)} misturam bases de usinas diferentes.` : ""}
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-emissoes" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <TransicaoNavegacao atual="p064" />
         <CabecalhoModulo
+          siglas={["MCTI", "SIN", "MDL"]}
           rotulo="Transição e ambiente"
-          titulo="Intensidade de emissões da geração no SIN"
+          titulo={perguntaPainel("p064")}
+          lead="Quantas toneladas de CO2 a geração do SIN emite, em média, por MWh, ano a ano e mês a mês, como o MCTI publica. É CO2 da operação das usinas, não CO2 equivalente."
+          recorte={`Anual de ${periodoAnual?.inicio ?? "sem dado"} a ${periodoAnual?.fim ?? "sem dado"} · mensal de ${mes(primeiroMes)} a ${mes(e.ultimo_mes?.m)} · tCO2/MWh`}
+          fonte="MCTI, fatores de emissão de CO2 da geração no SIN"
           referencia={
             <>
-              Fator médio do MCTI de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)} (mensal) e de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (anual), planilha{" "}
-              {e.ultimo_mes?.arquivo ?? "sem dado"}; listagem da página do MCTI capturada em {carimbo(e.pagina_vigente?.listagem_capturada_em)}. Processado em {carimbo(g.gerado_em)}.
+              Fator médio do MCTI de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)} (mensal) e de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (anual)
+              <span data-nivel="auditar">, planilha {e.ultimo_mes?.arquivo ?? "sem dado"}</span>; listagem da página do MCTI capturada em {carimbo(e.pagina_vigente?.listagem_capturada_em)}. Processado em{" "}
+              {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <TransicaoDatas
+              itens={[
+                { rotulo: "Fator médio mensal", texto: `${mes(primeiroMes)} a ${mes(e.ultimo_mes?.m)}`, natureza: "ESTIMADO" },
+                { rotulo: "Fator médio anual", texto: `${periodoAnual?.inicio ?? "sem dado"} a ${periodoAnual?.fim ?? "sem dado"}`, natureza: "ESTIMADO" },
+                { rotulo: "Página do MCTI", texto: `listagem capturada em ${carimbo(e.pagina_vigente?.listagem_capturada_em)}`, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={4}
+              rotulo="Indicadores do fator de emissão"
+              nota="tCO2/MWh é a tonelada de CO2 por MWh gerado no SIN: só CO2 da operação, não CO2 equivalente nem de ciclo de vida."
+            >
+              <Numero
+                variante="faixa"
+                rotulo={`Fator médio anual de ${e.ultimo_ano?.ano ?? "sem dado"}`}
+                natureza="ESTIMADO"
+                evidencia={e.evidencia}
+                casas={4}
+                unidade="tCO2/MWh"
+                periodo="ano completo"
+                cor="var(--serie-termica)"
+                nota={`Em kg: ${kgPorMwh(e.ultimo_ano?.valor)}.`}
+                motivoAusencia="Nenhum ano completo publicado nesta versão."
+                endereco={`${rotaPainel("p064")}#p064`}
+              />
+              {anoAnterior && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Fator médio anual de ${anoAnterior.ano}`}
+                  natureza="ESTIMADO"
+                  valor={anoAnterior.valor}
+                  casas={4}
+                  unidade="tCO2/MWh"
+                  periodo="ano completo"
+                  cor="var(--serie-referencia)"
+                  nota={anoAnterior.mesmaBase ? "Mesma base de usinas do último ano." : `Base anterior a ${mes(quebra?.data)}: comparar com ${e.ultimo_ano?.ano} mistura bases.`}
+                />
+              )}
+              <Numero
+                variante="faixa"
+                rotulo={`Fator médio do último mês (${mes(e.ultimo_mes?.m)})`}
+                natureza="ESTIMADO"
+                evidencia={e.evidencia_mensal}
+                casas={4}
+                unidade="tCO2/MWh"
+                cor="var(--serie-termica)"
+                nota={`Mês isolado, não o fator anual. Em kg: ${kgPorMwh(e.ultimo_mes?.valor)}.`}
+                motivoAusencia="Nenhum mês publicado nesta versão."
+                endereco={`${rotaPainel("p064")}#p064`}
+              />
+              {mesAnterior && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Fator médio de ${mes(mesAnterior.m)}`}
+                  natureza="ESTIMADO"
+                  valor={mesAnterior.valor}
+                  casas={4}
+                  unidade="tCO2/MWh"
+                  periodo="mesmo mês do ano anterior"
+                  cor="var(--serie-referencia)"
+                  nota={mesAnterior.mesmaBase ? "Mesma sazonalidade e base de usinas." : `Base anterior a ${mes(quebra?.data)}: comparar com o último mês mistura bases.`}
+                />
+              )}
+            </FaixaMetricas>
+          }
         >
-          Quantas toneladas de CO2 a geração do SIN emite, em média, por MWh, mês a mês e ano a ano, como o MCTI publica. O fator médio serve a inventários e não é o efeito de consumir ou
-          economizar um MWh a mais.
+          O <Termo slug="fator-de-emissao">fator médio de emissão</Termo> serve para contabilizar as emissões da eletricidade consumida e não é o efeito de consumir ou economizar um MWh a mais.
         </CabecalhoModulo>
-        <TransicaoNavegacao atual="p064" />
         <ModoProfundidade>
           <Bloco id="emissoes">
             <PainelEvidencia
               id="p064"
-              pergunta={perguntaPainel("p064")}
+              pergunta="O fator médio ano a ano e mês a mês"
               subtitulo="Fator médio de emissão de CO2 do SIN (inventários, MCTI) · tCO2/MWh"
               natureza="ESTIMADO"
               porQueImporta={
@@ -132,20 +230,10 @@ export default function EmissoesPage() {
                   que consomem. Como é a média de todas as usinas em operação, muda com a composição da geração de cada mês.
                 </>
               }
-              oQueMudou={mudancaEmissoes(e)}
-              comoInterpretar={
-                <>
-                  Fator médio = emissões de CO2 da geração despachada no SIN ÷ energia gerada no SIN, calculado e publicado pelo MCTI; a plataforma não recalcula nada. O anual é
-                  publicado pela fonte e fica perto da média dos meses (controle na coluna &ldquo;Anual × meses&rdquo; da tabela anual). {g.regras.fator_medio_nao_marginal}
-                </>
-              }
-              naoConcluir={
-                <>
-                  O efeito de consumir ou economizar um MWh a mais (o fator médio não é marginal); emissões em CO2 equivalente ou de ciclo de vida (só CO2 da operação); intensidade
-                  por hora, por município ou por distribuidora: {g.regras.sem_intensidade_local.charAt(0).toLowerCase() + g.regras.sem_intensidade_local.slice(1)}
-                  {quebra ? ` Comparações que atravessam ${mes(quebra.data)} misturam bases de usinas diferentes.` : ""}
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={e.proveniencia.medio}
               complementares={[{ rotulo: "Fatores do MDL (margens)", p: e.proveniencia.mdl }]}
             >
@@ -155,54 +243,6 @@ export default function EmissoesPage() {
                     {acesso.texto}
                   </TransicaoAviso>
                 )}
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="p064">
-                  {respostaEmissoes(e)}
-                </p>
-                <TransicaoRecorte
-                  periodo={
-                    <>
-                      Mensal de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)}; anual de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (o ano corrente não tem
-                      fator anual)
-                    </>
-                  }
-                  universo="Geração despachada no SIN (sistemas isolados e geração fora do despacho do ONS ficam fora)"
-                  unidade={`${e.unidade}, ${e.gas}: não é CO2 equivalente`}
-                />
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Numero
-                    rotulo={`Fator médio anual de ${e.ultimo_ano?.ano ?? "sem dado"}`}
-                    natureza="ESTIMADO"
-                    evidencia={e.evidencia}
-                    casas={4}
-                    unidade="tCO2/MWh"
-                    tamanho="medio"
-                    cor="var(--serie-termica)"
-                    motivoAusencia="Nenhum ano completo publicado nesta versão."
-                    nota="Estimado e publicado pelo MCTI, sem alteração."
-                    endereco={`${rotaPainel("p064")}#p064`}
-                  />
-                  <Numero
-                    rotulo={`Fator médio do último mês publicado (${mes(e.ultimo_mes?.m)})`}
-                    natureza="ESTIMADO"
-                    evidencia={e.evidencia_mensal}
-                    casas={4}
-                    unidade="tCO2/MWh"
-                    tamanho="medio"
-                    motivoAusencia="Nenhum mês publicado nesta versão."
-                    nota="Um mês isolado não equivale ao fator anual; compare com o mesmo mês de outros anos."
-                    endereco={`${rotaPainel("p064")}#p064`}
-                  />
-                </div>
-                <TransicaoAviso rotulo="Fator médio, não marginal">
-                  {docFatorMedio ? `Nas palavras do MCTI: "${docFatorMedio.trecho}" ` : ""}
-                  Para o efeito de uma decisão de consumo, o fator relevante seria marginal, e os fatores de margem do MCTI são de uso exclusivo em projetos de MDL.
-                </TransicaoAviso>
-                {!acesso.defasada && <p className="text-xs text-carvao-muted">{acesso.texto}</p>}
-
-                <TransicaoFatorMensal
-                  dados={dadosFatorMensal(e)}
-                  marcos={quebra ? [{ x: quebra.data, rotulo: "Base de usinas ampliada (MCTI)" }] : []}
-                />
                 <GraficoBarras
                   titulo="Fator médio anual de emissão de CO2 do SIN"
                   dados={dadosFatorAnual(e)}
@@ -214,12 +254,20 @@ export default function EmissoesPage() {
                   referencias={referenciaAnual(e)}
                   altura={300}
                 />
+                {/* a faixa de cima já traz os números e o aviso da quebra de base; a resposta vem depois do gráfico para que ele comece na primeira tela */}
+                <RespostaCurta id="p064" depois veredito={vereditoEmissoes(e) || respostaEmissoes(e)}>
+                  {respostaEmissoes(e)}
+                </RespostaCurta>
                 {quebra && (
                   <TransicaoAviso rotulo={`Quebra de ${mes(quebra.data)}`}>
                     {quebra.descricao}
                     {quebra.no_dado ? ` No dado: ${quebra.no_dado.descricao}, ${numTexto(quebra.no_dado.energia_2024_mwh, 0)} MWh no ano anterior e ${numTexto(quebra.no_dado.energia_2025_mwh, 0)} MWh no ano da quebra (${pctTexto(quebra.no_dado.variacao_pct, 1)}).` : ""}
                   </TransicaoAviso>
                 )}
+                <TransicaoFatorMensal
+                  dados={dadosFatorMensal(e)}
+                  marcos={quebra ? [{ x: quebra.data, rotulo: "Base de usinas ampliada (MCTI)" }] : []}
+                />
                 <TabelaInterativa
                   titulo="Fator médio anual e fatores do MDL por ano"
                   colunas={COLUNAS_FATOR_ANUAL}
@@ -234,13 +282,37 @@ export default function EmissoesPage() {
                   dicaBusca="Ano"
                   nota={`Valores como o MCTI publica, com 4 casas. As colunas do MDL servem só a projetos de MDL e não substituem o fator médio. O controle compara o anual publicado com a média simples dos 12 meses${e.evidencia?.reconciliacao?.tolerancia ? ` (tolerância de ${e.evidencia.reconciliacao.tolerancia})` : ""}.`}
                 />
+                <TransicaoRecorte
+                  periodo={
+                    <>
+                      Mensal de {mes(primeiroMes)} a {mes(e.ultimo_mes?.m)}; anual de {e.medio_anual[0]?.ano ?? "sem dado"} a {e.ultimo_ano?.ano ?? "sem dado"} (o ano corrente não tem
+                      fator anual)
+                    </>
+                  }
+                  universo="Geração despachada no SIN (sistemas isolados e geração fora do despacho do ONS ficam fora)"
+                  unidade={`${e.unidade}, ${e.gas}: não é CO2 equivalente`}
+                />
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+                <TransicaoAviso rotulo="Fator médio, não marginal">
+                  {docFatorMedio ? `Nas palavras do MCTI: "${docFatorMedio.trecho}" ` : ""}
+                  Para o efeito de uma decisão de consumo, o fator relevante seria marginal, e os fatores de margem do MCTI são de uso exclusivo em projetos de MDL.
+                </TransicaoAviso>
+                {!acesso.defasada && (
+                  <p className="text-xs text-carvao-muted">
+                    {acesso.texto}
+                    {acesso.detalhe && <span data-nivel="auditar"> Listagem: {acesso.detalhe}.</span>}
+                  </p>
+                )}
 
-                <TransicaoAnalise titulo="Mês a mês: compare até quatro anos">
+                <SecaoDoPainel id="mes-a-mes" titulo="Como os meses de anos diferentes se comparam?">
                   <TransicaoCompararAnos medioMensal={e.medio_mensal} anos={anos} padrao={padraoAnos} />
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Mesma escala para todos os anos escolhidos. Mês ainda não publicado fica em branco, nunca em zero.
                     {quebra ? ` Anos a partir de ${quebra.data.slice(0, 4)} estão na base ampliada de usinas.` : ""}
                   </p>
+                </SecaoDoPainel>
+
+                <TransicaoAnalise titulo="Fator médio mensal, tabela completa">
                   <TabelaInterativa
                     titulo="Fator médio mensal"
                     colunas={COLUNAS_FATOR_MENSAL}
@@ -325,7 +397,7 @@ export default function EmissoesPage() {
                     titulo="Mesmo período com valor diferente na página vigente e no site anterior do MCTI (vale a vigente)"
                     colunas={["Série", "Período", "Página vigente", "Site anterior"]}
                     numericas={[2, 3]}
-                    linhas={e.divergencias_entre_publicacoes.map((x) => [x.rotulo, x.periodo, fator(x.valor_vigente), fator(x.valor_site_anterior)])}
+                    linhas={e.divergencias_entre_publicacoes.map((x) => [x.rotulo, datasLegiveis(x.periodo), fator(x.valor_vigente), fator(x.valor_site_anterior)])}
                   />
                   {e.conflitos_entre_arquivos.length > 0 ? (
                     <TransicaoTabela
@@ -340,7 +412,7 @@ export default function EmissoesPage() {
                     titulo="Valores descartados na leitura"
                     colunas={["Data na planilha", "Valor", "Motivo", "Planilha"]}
                     numericas={[1]}
-                    linhas={e.descartes.map((x) => [<DataDaFonte key={`${x.arquivo}-${x.data}`} valor={x.data} classe="data-planilha-inexistente" origem={e.acesso.url} />, fator(x.valor), x.motivo, x.arquivo])}
+                    linhas={e.descartes.map((x) => [datasLegiveis(x.data), fator(x.valor), x.motivo, x.arquivo])}
                   />
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     {e.problemas_de_leitura.map((x) => (

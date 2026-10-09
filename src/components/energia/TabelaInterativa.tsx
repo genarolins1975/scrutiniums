@@ -75,16 +75,31 @@ export type TabelaInterativaProps = {
   /** Busca da página no servidor (buscaDeParametros(searchParams)), para o HTML já sair com o recorte do link. */
   buscaInicial?: string;
   ordemInicial?: Ordem;
-  tamanhoPagina?: 25 | 50 | 100 | 200;
+  /** Linhas por página na abertura. 10 e 12 servem a tabelas que abrem curtas (menos HTML); a lista de tamanhos ganha esse valor no início. */
+  tamanhoPagina?: 10 | 12 | 25 | 50 | 100 | 200;
   /** Exemplo do que se pode buscar ("Nome, código ou UF"). */
   dicaBusca?: string;
   /** Texto do estado vazio quando não há nenhuma linha publicada. */
   semLinhas?: ReactNode;
   /** Nota extra no rodapé (limitação que muda a leitura). */
   nota?: ReactNode;
+  /**
+   * Em Entender, a tabela longa ou larga fica atrás do botão "Ver a tabela completa": o essencial da página é a
+   * resposta, e a tabela serve a quem quer conferir. Padrão: tabelas com mais de 12 linhas ou mais de 6 colunas (no
+   * celular, mais que isso não cabe sem esconder os números). Em Analisar e Auditar, e fora de uma página com níveis
+   * de profundidade, a tabela aparece sempre aberta.
+   */
+  recolher?: boolean;
+  /**
+   * Tabela montada depois de um pedido do leitor ("Abrir: tabela..."): nasce aberta em Entender, porque ele acabou de pedir para vê-la.
+   * Sem isto, o leitor abria a tabela e ainda encontrava o botão "Ver a tabela completa".
+   */
+  iniciarAberta?: boolean;
 };
 
-const TAMANHOS = [25, 50, 100, 200] as const;
+const TAMANHOS: readonly number[] = [25, 50, 100, 200];
+const LINHAS_PARA_RECOLHER = 12;
+const COLUNAS_PARA_RECOLHER = 6;
 const FILTRO = "f:";
 
 /** Esquema da URL: busca e página substituem a entrada do histórico; ordem e filtros criam entrada nova. */
@@ -148,9 +163,14 @@ export function TabelaInterativa({
   dicaBusca,
   semLinhas,
   nota,
+  recolher,
+  iniciarAberta = false,
 }: TabelaInterativaProps) {
   const uid = useId();
   const buscaRef = useRef<HTMLInputElement>(null);
+  // a tabela só avisa da rolagem quando de fato é mais larga que a área visível
+  const rolagemRef = useRef<HTMLDivElement>(null);
+  const [maisColunas, setMaisColunas] = useState(false);
   const filtrosRef = useRef<HTMLDivElement>(null);
 
   // o esquema só depende de ids, categorias e ordenabilidade: colunas recriadas a cada render não o recriam
@@ -176,7 +196,8 @@ export function TabelaInterativa({
 
   // digitação responde já; a filtragem das ~6.000 linhas acompanha logo depois
   const buscaAdiada = useDeferredValue(busca);
-  const indice = useMemo(() => criarIndiceBusca(colunas), [colunas]);
+  const idRotulo = (colunas.find((c) => c.id === colunaRotulo) ?? colunas[0])?.id;
+  const indice = useMemo(() => criarIndiceBusca(colunas, idRotulo), [colunas, idRotulo]);
   const ordenadas = useMemo(() => ordenarLinhas(linhas, colunas, ordem), [linhas, colunas, ordem]);
   const filtradas = useMemo(
     () => filtrarLinhas(ordenadas, colunas, { busca: buscaAdiada, filtros }, indice),
@@ -192,6 +213,7 @@ export function TabelaInterativa({
   }, [categoricas, linhas, colunas, buscaAdiada, filtros, indice]);
 
   const [tamanho, setTamanho] = useState<number>(tamanhoPagina);
+  const tamanhos = tamanhoPagina < TAMANHOS[0] ? [tamanhoPagina, ...TAMANHOS] : TAMANHOS;
   const pag = paginar(filtradas.length, paginaPedida, tamanho);
   const visiveis = filtradas.slice(pag.inicio, pag.fim);
   const colRot = colunas.find((c) => c.id === colunaRotulo) ?? colunas[0];
@@ -202,8 +224,45 @@ export function TabelaInterativa({
   const itensFiltro = recorte.filter((r) => r.tipo !== "ordem");
   const [anuncio, setAnuncio] = useState("");
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
+  const recolhivel = recolher ?? (linhas.length > LINHAS_PARA_RECOLHER || colunas.length > COLUNAS_PARA_RECOLHER);
+  const [aberta, setAberta] = useState(iniciarAberta);
+  // a linha já escolhida quando a página abre (o padrão da página, como a maior bacia) não é pedido do leitor: só uma escolha feita depois,
+  // no mapa ou no gráfico, abre a tabela. Sem isso, toda página com seleção padrão abria a tabela larga em Entender, que no celular
+  // mostrava duas colunas de doze.
+  const selecaoInicial = useRef(selecionado);
+  const selecaoNova = selecionado !== null && selecionado !== undefined && selecionado !== selecaoInicial.current;
+  const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || selecaoNova;
+  // quem chega por um link com busca, filtro ou página, ou escolhe uma linha depois, precisa ver a tabela
+  useEffect(() => {
+    if (comRecorte) setAberta(true);
+  }, [comRecorte]);
 
   // seleção vinda de fora (mapa, gráfico): leva à página da linha; paginar depois não devolve a ela
+  useEffect(() => {
+    const el = rolagemRef.current;
+    if (!el) return;
+    const medir = () => setMaisColunas(el.scrollWidth > el.clientWidth + 2);
+    // há mais colunas à direita: a borda direita esmaece (CSS), para que um número cortado no limite da janela não seja lido como completo
+    const marcar = () => {
+      el.dataset.maisDireita = el.scrollWidth > el.clientWidth + 2 && el.scrollLeft + el.clientWidth < el.scrollWidth - 2 ? "sim" : "nao";
+    };
+    medir();
+    marcar();
+    el.addEventListener("scroll", marcar, { passive: true });
+    if (typeof ResizeObserver === "undefined") return () => el.removeEventListener("scroll", marcar);
+    const ro = new ResizeObserver(() => {
+      medir();
+      marcar();
+    });
+    ro.observe(el);
+    const tabela = el.querySelector("table");
+    if (tabela) ro.observe(tabela);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", marcar);
+    };
+  }, [filtradas.length, colunas.length]);
+
   const atual = useRef({ filtradas, tamanho, pagina: pag.pagina });
   atual.current = { filtradas, tamanho, pagina: pag.pagina };
   useEffect(() => {
@@ -263,7 +322,10 @@ export function TabelaInterativa({
   }
 
   function exportar(formato: "csv" | "xlsx") {
-    if (!filtradas.length) return;
+    if (!filtradas.length) {
+      setAnuncio("Nenhuma linha para exportar: o recorte atual não tem resultado. Limpe a busca ou os filtros.");
+      return;
+    }
     const nome = nomeArquivo(baseArquivo, recorte, formato, versao);
     if (formato === "csv") baixar(nome, gerarCsv(colunas, filtradas), MIME_CSV);
     else {
@@ -282,6 +344,20 @@ export function TabelaInterativa({
 
   return (
     <div className="min-w-0 max-w-full" data-componente="tabela-interativa">
+      {recolhivel && (
+        <div className="tabela-recolher">
+          <button
+            type="button"
+            aria-expanded={aberta}
+            aria-controls={`${uid}-conteudo`}
+            onClick={() => setAberta((a) => !a)}
+            className="tabela-recolher-btn"
+          >
+            {aberta ? "Ocultar a tabela" : `Ver a tabela completa (${plural(linhas.length, "linha", "linhas")})`}
+          </button>
+        </div>
+      )}
+      <div id={`${uid}-conteudo`} data-recolhivel={recolhivel ? (aberta ? "aberta" : "fechada") : undefined}>
       <div>
         <label htmlFor={`${uid}-busca`} className="rotulo block text-mineral">
           Buscar na tabela
@@ -354,7 +430,7 @@ export function TabelaInterativa({
           {linhas.length === 1 ? "linha" : "linhas"}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-carvao-muted">Recorte atual:</span>
+          <span className="text-xs text-carvao-muted">Linhas mostradas:</span>
           {(["csv", "xlsx"] as const).map((f) => (
             <button
               key={f}
@@ -371,14 +447,19 @@ export function TabelaInterativa({
 
       {selecionadaFora && (
         <p className="mt-2 text-sm text-carvao-muted">
-          A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot)}) está fora do recorte atual.{" "}
+          A linha selecionada ({textoCelula(valorColuna(selecionadaFora, colRot), colRot)}) está fora dos filtros aplicados.{" "}
           <button type="button" onClick={limparTudo} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
             Mostrar todas as linhas
           </button>
         </p>
       )}
 
-      <div className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={`${titulo} (tabela rolável)`}>
+      {maisColunas && (
+        <p className="mt-2 text-xs text-mineral" data-dica-rolagem="true">
+          A tabela é mais larga que a tela: role para o lado para ver todas as colunas.
+        </p>
+      )}
+      <div ref={rolagemRef} className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={`${titulo} (tabela rolável)`}>
         <table id={`${uid}-tabela`} className="w-full border-collapse text-sm tabular-nums">
           <caption className="sr-only">
             {`${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`}
@@ -396,10 +477,11 @@ export function TabelaInterativa({
                   <th
                     key={c.id}
                     scope="col"
+                    data-nivel={c.nivel}
                     aria-sort={ativa && ordem ? (ordem.direcao === "asc" ? "ascending" : "descending") : undefined}
                     className={`border-b-2 border-linha bg-superficie px-2 align-bottom font-medium ${numerica ? "min-w-[7rem] text-right" : "text-left"} ${
                       ativa ? "text-carvao" : "text-mineral"
-                    } ${fixa ? "sticky left-0 z-20" : ""}`}
+                    } ${fixa ? "sticky left-0 z-20 min-w-[7rem] max-w-[11rem] sm:min-w-[9rem] sm:max-w-[20rem]" : ""}`}
                   >
                     {c.ordenavel !== false ? (
                       <button
@@ -470,7 +552,7 @@ export function TabelaInterativa({
                           <th
                             key={c.id}
                             scope="row"
-                            className={`sticky left-0 z-10 bg-inherit px-2 font-normal text-carvao ${numerica ? "text-right" : "text-left"} ${
+                            className={`sticky left-0 z-10 min-w-[7rem] max-w-[11rem] whitespace-normal bg-inherit px-2 font-normal text-carvao [overflow-wrap:anywhere] sm:min-w-[9rem] sm:max-w-[20rem] ${numerica ? "text-right" : "text-left"} ${
                               sel ? "shadow-[inset_4px_0_0_var(--cor-energia)]" : ""
                             }`}
                           >
@@ -493,7 +575,7 @@ export function TabelaInterativa({
                         );
                       }
                       return (
-                        <td key={c.id} className={`px-2 py-2 text-carvao ${numerica ? "whitespace-nowrap text-right" : c.tipo === "data" ? "whitespace-nowrap" : "min-w-[8rem]"}`}>
+                        <td key={c.id} data-nivel={c.nivel} className={`tc ${numerica ? "tc-n" : c.tipo === "data" ? "tc-d" : "tc-t"}`}>
                           {conteudo}
                         </td>
                       );
@@ -506,7 +588,7 @@ export function TabelaInterativa({
         </table>
       </div>
 
-      {filtradas.length > TAMANHOS[0] && (
+      {filtradas.length > tamanhos[0] && (
         <nav aria-label={`Paginação: ${titulo}`} className="mt-3 flex flex-wrap items-center gap-2">
           <button type="button" className={botaoPagina} aria-disabled={pag.pagina === 1 || undefined} onClick={() => irPara(1)}>
             <span aria-hidden="true">«</span> Primeira
@@ -528,12 +610,15 @@ export function TabelaInterativa({
             <select
               value={tamanho}
               onChange={(e) => {
-                setTamanho(Number(e.target.value));
+                const novo = Number(e.target.value);
+                setTamanho(novo);
                 definir({ pagina: 1 });
+                const alvo = paginar(filtradas.length, 1, novo);
+                setAnuncio(`${novo} linhas por página: ${plural(alvo.paginas, "página", "páginas")}. Página 1: linhas ${num(alvo.inicio + 1, 0)} a ${num(alvo.fim, 0)} de ${num(filtradas.length, 0)}.`);
               }}
               className="min-h-[44px] border border-linha bg-superficie px-2 text-carvao"
             >
-              {TAMANHOS.map((t) => (
+              {tamanhos.map((t) => (
                 <option key={t} value={t}>
                   {t}
                 </option>
@@ -553,6 +638,7 @@ export function TabelaInterativa({
       <p className="sr-only" aria-live="polite">
         {anuncio}
       </p>
+      </div>
     </div>
   );
 }

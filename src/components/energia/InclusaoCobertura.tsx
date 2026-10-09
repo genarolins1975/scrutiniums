@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { InclusaoOpcoes } from "@/components/energia/InclusaoOpcoes";
@@ -46,7 +46,22 @@ const OPCOES_DEN: readonly (readonly [Denominador, string])[] = [
   ["cadastradas", "Todas as famílias cadastradas"],
 ];
 
-export function InclusaoCoberturaUf({ ufs, mes: mesRef, fonte }: { ufs: CoberturaUf[]; mes: string; fonte: string }) {
+export function InclusaoCoberturaUf({
+  ufs,
+  mes: mesRef,
+  fonte,
+  resposta,
+  recorte,
+  notas,
+}: {
+  ufs: CoberturaUf[];
+  mes: string;
+  fonte: string;
+  /** Resposta curta do painel, ao lado do denominador do mapa (a figura vem primeiro, e a ressalva fica junto dela). */
+  resposta?: ReactNode;
+  recorte?: ReactNode;
+  notas?: ReactNode;
+}) {
   const [v, definir] = useEstadoUrl(ESQUEMA_COBERTURA);
   const sel = ufs.some((u) => u.uf === v.uf) ? v.uf : null;
   const valores = useMemo(() => valoresMapaCobertura(ufs, v.den), [ufs, v.den]);
@@ -56,7 +71,10 @@ export function InclusaoCoberturaUf({ ufs, mes: mesRef, fonte }: { ufs: Cobertur
   const selecionar = (uf: string | null) => definir({ uf: uf ?? "" });
   return (
     <div className="space-y-6">
-      <InclusaoOpcoes rotulo="Denominador do mapa" nome="inclusao-cob-den" opcoes={OPCOES_DEN} valor={v.den} onMudar={(den) => definir({ den })} />
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        {resposta}
+        <InclusaoOpcoes rotulo="Denominador do mapa" nome="inclusao-cob-den" opcoes={OPCOES_DEN} valor={v.den} onMudar={(den) => definir({ den })} />
+      </div>
       <MapaCoropletico
         titulo={`Faturas com Tarifa Social por 100 famílias até ½ salário mínimo (${v.den === "atualizadas" ? "cadastro atualizado" : "todas as cadastradas"}), por UF, ${mes(mesRef)}`}
         fonteGeometria={URL_GEO.uf}
@@ -75,7 +93,7 @@ export function InclusaoCoberturaUf({ ufs, mes: mesRef, fonte }: { ufs: Cobertur
       <GraficoPontos
         titulo={`Faixa de sensibilidade ao denominador por UF, ${mes(mesRef)}`}
         itens={itens}
-        unidade="por 100 famílias"
+        unidade="faturas por 100 famílias"
         unidadeDiferenca="pontos"
         casas={1}
         rotuloValor="Por 100 famílias com cadastro atualizado"
@@ -103,6 +121,8 @@ export function InclusaoCoberturaUf({ ufs, mes: mesRef, fonte }: { ufs: Cobertur
         dicaBusca="Nome ou sigla da UF"
         nota="Numerador e denominador do mesmo mês. Famílias atualizadas: cadastro dentro do prazo de atualização exigido para a concessão (requisitos na regra de elegibilidade, modo Auditar)."
       />
+      {recorte}
+      {notas}
     </div>
   );
 }
@@ -141,7 +161,7 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
         Não foi possível carregar a série mensal ({erro}). O mesmo dado está em{" "}
         <a href="/energia/series/inclusao_cobertura_mensal.csv" download className="text-energia-dark underline underline-offset-4">
-          inclusao_cobertura_mensal.csv
+          série mensal da cobertura (CSV)
         </a>
         .
       </p>
@@ -164,7 +184,7 @@ export function InclusaoSerieCobertura({ url, unidade }: { url: string; unidade:
         { id: "atualizadas", rotulo: "Por 100 famílias com cadastro atualizado", sigla: "Atualizadas", cor: "var(--cor-energia)" },
         { id: "cadastradas", rotulo: "Por 100 famílias cadastradas (todas)", sigla: "Cadastradas", cor: "var(--serie-referencia)", tracejada: true },
       ]}
-      banda={{ inferior: "cadastradas", superior: "atualizadas", rotulo: "Faixa de sensibilidade ao denominador (não é intervalo estatístico)" }}
+      banda={{ inferior: "cadastradas", superior: "atualizadas", rotulo: "Faixa de sensibilidade ao denominador (não é margem de erro)" }}
       unidade={unidade}
       casas={1}
       zeroNoEixo
@@ -244,7 +264,7 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
       <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
         Não foi possível carregar o mapa municipal ({erro}). Os mesmos números estão em{" "}
         <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-          inclusao_municipios.csv
+          famílias e faturas por município (CSV)
         </a>
         .
       </p>

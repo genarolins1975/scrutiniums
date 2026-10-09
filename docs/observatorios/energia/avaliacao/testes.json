@@ -1,0 +1,791 @@
+{
+ "gerado_em": "2026-10-09T03:07:47Z",
+ "vitest": {
+  "admin": {
+   "total": 11,
+   "falhas": 0
+  },
+  "ampliado-data": {
+   "total": 12,
+   "falhas": 0
+  },
+  "avaliacao-set26": {
+   "total": 23,
+   "falhas": 0
+  },
+  "backtest-publicado": {
+   "total": 7,
+   "falhas": 0
+  },
+  "bets-data": {
+   "total": 21,
+   "falhas": 0
+  },
+  "bndes-data": {
+   "total": 9,
+   "falhas": 0
+  },
+  "boletim": {
+   "total": 12,
+   "falhas": 0
+  },
+  "captacao-modelo": {
+   "total": 10,
+   "falhas": 0
+  },
+  "cenario-basileia": {
+   "total": 7,
+   "falhas": 0
+  },
+  "central-alertas": {
+   "total": 24,
+   "falhas": 0
+  },
+  "cobranca-data": {
+   "total": 7,
+   "falhas": 0
+  },
+  "conceitos": {
+   "total": 6,
+   "falhas": 0
+  },
+  "conduta-data": {
+   "total": 6,
+   "falhas": 0
+  },
+  "consignado-data": {
+   "total": 72,
+   "falhas": 0
+  },
+  "consorcios-data": {
+   "total": 8,
+   "falhas": 0
+  },
+  "coop-interconexao": {
+   "total": 5,
+   "falhas": 0
+  },
+  "cpf-perfil": {
+   "total": 7,
+   "falhas": 0
+  },
+  "crypto": {
+   "total": 9,
+   "falhas": 0
+  },
+  "custos-ti": {
+   "total": 6,
+   "falhas": 0
+  },
+  "dados-publicos": {
+   "total": 7,
+   "falhas": 0
+  },
+  "desenrola-data": {
+   "total": 35,
+   "falhas": 0
+  },
+  "design-tokens-energia": {
+   "total": 31,
+   "falhas": 0
+  },
+  "dois-observatorios": {
+   "total": 13,
+   "falhas": 0
+  },
+  "embed-permalink": {
+   "total": 5,
+   "falhas": 0
+  },
+  "emprego-data": {
+   "total": 12,
+   "falhas": 0
+  },
+  "energia-agua": {
+   "total": 54,
+   "falhas": 0
+  },
+  "energia-aprenda-r7": {
+   "total": 29,
+   "falhas": 0
+  },
+  "energia-aprenda": {
+   "total": 29,
+   "falhas": 0
+  },
+  "energia-avaliacao": {
+   "total": 28,
+   "falhas": 0
+  },
+  "energia-bastidor": {
+   "total": 11,
+   "falhas": 0
+  },
+  "energia-carga": {
+   "total": 49,
+   "falhas": 0
+  },
+  "energia-celular-r10": {
+   "total": 26,
+   "falhas": 0
+  },
+  "energia-comp-comparador": {
+   "total": 11,
+   "falhas": 0
+  },
+  "energia-comp-cronograma": {
+   "total": 18,
+   "falhas": 0
+  },
+  "energia-comp-dispersao": {
+   "total": 14,
+   "falhas": 0
+  },
+  "energia-comp-distribuicao": {
+   "total": 18,
+   "falhas": 0
+  },
+  "energia-comp-escalas": {
+   "total": 36,
+   "falhas": 0
+  },
+  "energia-comp-estado-url": {
+   "total": 38,
+   "falhas": 0
+  },
+  "energia-comp-evidencia": {
+   "total": 25,
+   "falhas": 0
+  },
+  "energia-comp-grafico-barras": {
+   "total": 13,
+   "falhas": 0
+  },
+  "energia-comp-grafico-linhas": {
+   "total": 26,
+   "falhas": 0
+  },
+  "energia-comp-grafico-pontos": {
+   "total": 12,
+   "falhas": 0
+  },
+  "energia-comp-histograma": {
+   "total": 8,
+   "falhas": 0
+  },
+  "energia-comp-integracao": {
+   "total": 321,
+   "falhas": 0
+  },
+  "energia-comp-linha-do-tempo": {
+   "total": 14,
+   "falhas": 0
+  },
+  "energia-comp-mapa-calor": {
+   "total": 16,
+   "falhas": 0
+  },
+  "energia-comp-mapa-coropletico": {
+   "total": 32,
+   "falhas": 0
+  },
+  "energia-comp-navegacao": {
+   "total": 16,
+   "falhas": 0
+  },
+  "energia-comp-pequenos-multiplos": {
+   "total": 11,
+   "falhas": 0
+  },
+  "energia-comp-tabela": {
+   "total": 40,
+   "falhas": 0
+  },
+  "energia-conta": {
+   "total": 38,
+   "falhas": 0
+  },
+  "energia-conteudo-conferido": {
+   "total": 10,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-D": {
+   "total": 51,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-M1": {
+   "total": 140,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-M2": {
+   "total": 52,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-P": {
+   "total": 55,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-R": {
+   "total": 35,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-T1": {
+   "total": 32,
+   "falhas": 0
+  },
+  "energia-conteudo-r8-T2": {
+   "total": 54,
+   "falhas": 0
+  },
+  "energia-conteudo-r8": {
+   "total": 14,
+   "falhas": 0
+  },
+  "energia-dados-interface": {
+   "total": 38,
+   "falhas": 0
+  },
+  "energia-empresas": {
+   "total": 51,
+   "falhas": 0
+  },
+  "energia-estrutura-r7": {
+   "total": 26,
+   "falhas": 0
+  },
+  "energia-estrutura-r9": {
+   "total": 10,
+   "falhas": 0
+  },
+  "energia-expansao": {
+   "total": 37,
+   "falhas": 0
+  },
+  "energia-ficha-leitor": {
+   "total": 14,
+   "falhas": 0
+  },
+  "energia-geracao-sob-demanda": {
+   "total": 11,
+   "falhas": 0
+  },
+  "energia-geracao": {
+   "total": 18,
+   "falhas": 0
+  },
+  "energia-gold-contrato": {
+   "total": 32,
+   "falhas": 0
+  },
+  "energia-governanca": {
+   "total": 12,
+   "falhas": 0
+  },
+  "energia-inclusao": {
+   "total": 45,
+   "falhas": 0
+  },
+  "energia-interface-r2": {
+   "total": 25,
+   "falhas": 0
+  },
+  "energia-mapa": {
+   "total": 15,
+   "falhas": 0
+  },
+  "energia-mercado-pagina": {
+   "total": 16,
+   "falhas": 0
+  },
+  "energia-mercado": {
+   "total": 14,
+   "falhas": 0
+  },
+  "energia-perdas": {
+   "total": 45,
+   "falhas": 0
+  },
+  "energia-pld": {
+   "total": 31,
+   "falhas": 0
+  },
+  "energia-previsoes": {
+   "total": 46,
+   "falhas": 0
+  },
+  "energia-qualidade": {
+   "total": 46,
+   "falhas": 0
+  },
+  "energia-reauditoria": {
+   "total": 27,
+   "falhas": 0
+  },
+  "energia-rede": {
+   "total": 43,
+   "falhas": 0
+  },
+  "energia-regulacao": {
+   "total": 51,
+   "falhas": 0
+  },
+  "energia-siglas": {
+   "total": 5,
+   "falhas": 0
+  },
+  "energia-territorio": {
+   "total": 34,
+   "falhas": 0
+  },
+  "energia-transicao": {
+   "total": 42,
+   "falhas": 0
+  },
+  "energia-visao": {
+   "total": 35,
+   "falhas": 0
+  },
+  "epae-data": {
+   "total": 14,
+   "falhas": 0
+  },
+  "estados-data": {
+   "total": 7,
+   "falhas": 0
+  },
+  "exportacao-universal": {
+   "total": 14,
+   "falhas": 0
+  },
+  "fase2-clientes": {
+   "total": 10,
+   "falhas": 0
+  },
+  "fidc-data": {
+   "total": 9,
+   "falhas": 0
+  },
+  "focus-cenarios": {
+   "total": 4,
+   "falhas": 0
+  },
+  "folha-data": {
+   "total": 12,
+   "falhas": 0
+  },
+  "format": {
+   "total": 11,
+   "falhas": 0
+  },
+  "fraudes-data": {
+   "total": 17,
+   "falhas": 0
+  },
+  "funding-data": {
+   "total": 7,
+   "falhas": 0
+  },
+  "fusao-antecedentes": {
+   "total": 7,
+   "falhas": 0
+  },
+  "glossario": {
+   "total": 6,
+   "falhas": 0
+  },
+  "golds-contrato": {
+   "total": 16,
+   "falhas": 0
+  },
+  "guia-navegacao": {
+   "total": 6,
+   "falhas": 0
+  },
+  "guidance-data": {
+   "total": 9,
+   "falhas": 0
+  },
+  "hhi-piso": {
+   "total": 7,
+   "falhas": 0
+  },
+  "historico-ifdata": {
+   "total": 4,
+   "falhas": 0
+  },
+  "ifdata-lacunas": {
+   "total": 6,
+   "falhas": 0
+  },
+  "inst-listada": {
+   "total": 7,
+   "falhas": 0
+  },
+  "instituicoes-leve": {
+   "total": 4,
+   "falhas": 0
+  },
+  "judicial-data": {
+   "total": 14,
+   "falhas": 0
+  },
+  "juros-data": {
+   "total": 8,
+   "falhas": 0
+  },
+  "kit-padronizado": {
+   "total": 5,
+   "falhas": 0
+  },
+  "linhagem-mapa": {
+   "total": 7,
+   "falhas": 0
+  },
+  "mapa-menu": {
+   "total": 4,
+   "falhas": 0
+  },
+  "migracao-npl": {
+   "total": 8,
+   "falhas": 0
+  },
+  "moradia-data": {
+   "total": 54,
+   "falhas": 0
+  },
+  "novidades-presets": {
+   "total": 8,
+   "falhas": 0
+  },
+  "observatorio-publico": {
+   "total": 30,
+   "falhas": 0
+  },
+  "onboarding": {
+   "total": 16,
+   "falhas": 0
+  },
+  "operacional-data": {
+   "total": 34,
+   "falhas": 0
+  },
+  "p0-correcoes": {
+   "total": 20,
+   "falhas": 0
+  },
+  "p1-dados": {
+   "total": 7,
+   "falhas": 0
+  },
+  "p1-didatico": {
+   "total": 21,
+   "falhas": 0
+  },
+  "p1-tecnico": {
+   "total": 5,
+   "falhas": 0
+  },
+  "p2-rodada1": {
+   "total": 6,
+   "falhas": 0
+  },
+  "password": {
+   "total": 10,
+   "falhas": 0
+  },
+  "penetracao-data": {
+   "total": 45,
+   "falhas": 0
+  },
+  "pgfn-data": {
+   "total": 26,
+   "falhas": 0
+  },
+  "phone": {
+   "total": 8,
+   "falhas": 0
+  },
+  "pilar3-data": {
+   "total": 7,
+   "falhas": 0
+  },
+  "pipeline-0709": {
+   "total": 6,
+   "falhas": 0
+  },
+  "pix-data": {
+   "total": 16,
+   "falhas": 0
+  },
+  "prazo-data": {
+   "total": 8,
+   "falhas": 0
+  },
+  "presenca-mun": {
+   "total": 8,
+   "falhas": 0
+  },
+  "prestamista-data": {
+   "total": 6,
+   "falhas": 0
+  },
+  "products-data": {
+   "total": 10,
+   "falhas": 0
+  },
+  "produtos-segmento": {
+   "total": 3,
+   "falhas": 0
+  },
+  "pulso-transformacoes": {
+   "total": 8,
+   "falhas": 0
+  },
+  "ratelimit": {
+   "total": 7,
+   "falhas": 0
+  },
+  "recordes-data": {
+   "total": 4,
+   "falhas": 0
+  },
+  "regimes-data": {
+   "total": 5,
+   "falhas": 0
+  },
+  "regra-nominal": {
+   "total": 9,
+   "falhas": 0
+  },
+  "regulacao-timeline": {
+   "total": 8,
+   "falhas": 0
+  },
+  "remuneracao-data": {
+   "total": 5,
+   "falhas": 0
+  },
+  "resiliencia-gold": {
+   "total": 8,
+   "falhas": 0
+  },
+  "rural-data": {
+   "total": 18,
+   "falhas": 0
+  },
+  "score-observado": {
+   "total": 5,
+   "falhas": 0
+  },
+  "session-cookie": {
+   "total": 6,
+   "falhas": 0
+  },
+  "setorial-pms-pmc": {
+   "total": 8,
+   "falhas": 0
+  },
+  "sfn-data": {
+   "total": 10,
+   "falhas": 0
+  },
+  "split-bundle": {
+   "total": 5,
+   "falhas": 0
+  },
+  "state-machine": {
+   "total": 3,
+   "falhas": 0
+  },
+  "subnacional-camada2": {
+   "total": 8,
+   "falhas": 0
+  },
+  "subnacional-data": {
+   "total": 8,
+   "falhas": 0
+  },
+  "telemetry-adminstats": {
+   "total": 7,
+   "falhas": 0
+  },
+  "twilio-dev": {
+   "total": 6,
+   "falhas": 0
+  },
+  "vitrine-publica": {
+   "total": 8,
+   "falhas": 0
+  },
+  "wcag-contraste": {
+   "total": 42,
+   "falhas": 0
+  }
+ },
+ "python": {
+  "test_curadoria": {
+   "total": 3,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia": {
+   "total": 37,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_agua": {
+   "total": 83,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_avaliacao": {
+   "total": 57,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_carga": {
+   "total": 58,
+   "falhas": 1,
+   "ignorados": 0
+  },
+  "test_energia_conta": {
+   "total": 45,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_dados": {
+   "total": 73,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_empresas": {
+   "total": 74,
+   "falhas": 0,
+   "ignorados": 1
+  },
+  "test_energia_evidencia": {
+   "total": 20,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_expansao": {
+   "total": 46,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_geo": {
+   "total": 24,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_geracao": {
+   "total": 57,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_inclusao": {
+   "total": 64,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_infra": {
+   "total": 11,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_mercado": {
+   "total": 65,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_perdas": {
+   "total": 69,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_pld": {
+   "total": 86,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_previsoes": {
+   "total": 59,
+   "falhas": 0,
+   "ignorados": 3
+  },
+  "test_energia_qualidade": {
+   "total": 66,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_rede": {
+   "total": 55,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_regulacao": {
+   "total": 84,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_territorio": {
+   "total": 68,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_transicao": {
+   "total": 74,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_energia_visao": {
+   "total": 68,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_regra_nominal": {
+   "total": 13,
+   "falhas": 0,
+   "ignorados": 0
+  },
+  "test_report": {
+   "total": 8,
+   "falhas": 0,
+   "ignorados": 0
+  }
+ },
+ "falha_simulada": {
+  "home": 0,
+  "visao-geral": 6,
+  "agua-e-clima": 2,
+  "carga": 3,
+  "rede": 0,
+  "pld": 10,
+  "geracao": 1,
+  "mercado": 2,
+  "conta-de-luz": 1,
+  "perdas": 0,
+  "qualidade": 2,
+  "inclusao-energetica": 1,
+  "transicao": 4,
+  "empresas": 1,
+  "expansao": 1,
+  "regulacao": 3,
+  "territorio": 2,
+  "aprenda": 0,
+  "dados": 7
+ },
+ "vitest_falhas": [],
+ "python_falhas": [
+  "test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis"
+ ],
+ "tsc": {
+  "ok": true
+ },
+ "lint": {
+  "ok": true,
+  "saida": "✔ No ESLint warnings or errors"
+ },
+ "resumo_regressao": "Vitest: 3275 testes em 155 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis).",
+ "resumo_build": "tsc: sem erro; next lint: sem aviso nem erro; next build de 09/10/2026 concluído sem erro. Vitest: 3275 testes em 155 arquivos, 0 falhas. Python: 1367 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis)."
+}

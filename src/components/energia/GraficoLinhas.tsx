@@ -1,16 +1,22 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { BaixarImagem } from "@/components/energia/BaixarImagem";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { rotuloTick } from "@/lib/energia/escalas";
+import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import {
   dominioLinhas,
   formatarX,
   indiceDoValorX,
+  indicesDoEixoX,
   indicesDoIntervalo,
   intervaloDosIndices,
   mesmaEscala,
   periodosProntos,
+  rotulosDoEixoX,
   type FormatoX,
   type IntervaloX,
 } from "@/lib/energia/series-temporais";
@@ -88,6 +94,17 @@ export type GraficoLinhasProps = {
   grupoCursor?: string;
   /** Abre a tabela equivalente já montada (ex.: modo Auditar). */
   tabelaAbertaInicial?: boolean;
+  /**
+   * Para cartões que já trazem o próprio título: o título do gráfico fica só para leitor de tela (continua nomeando a figura e a tabela)
+   * e a unidade, que ia nele, passa para a legenda.
+   */
+  semTitulo?: boolean;
+  /**
+   * Prefixo único na página dos parâmetros de URL (`<chave>.de`, `<chave>.ate` e `<chave>.oc`) que guardam o
+   * intervalo e as séries ocultas quando o gráfico não é controlado: o link do painel e o F5 reabrem o mesmo
+   * recorte. Com a chave, a URL é a fonte do estado (`intervaloInicial` e `ocultasIniciais` valem sem parâmetro).
+   */
+  chaveUrl?: string;
 };
 
 const fmtX = formatarX;
@@ -112,6 +129,33 @@ function ticks(min: number, max: number, n = 4): number[] {
 /** Abaixo desta largura: rótulos curtos e, com zoom, sem arrasto (controles de período). */
 const ESTREITO = 520;
 const SEM_OCULTAS: string[] = [];
+/** Largura média de um caractere a 12 px, para decidir onde o rótulo de um marco quebra. */
+const PX_MARCO = 6.5;
+
+/** Quebra o texto em até `maxLinhas` linhas de `maxChars` caracteres, por palavra; o que passar da última linha vira reticências. */
+function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): string[] {
+  const largura = Math.max(8, maxChars);
+  const linhas: string[] = [];
+  let atual = "";
+  const palavras = texto.split(" ");
+  for (let k = 0; k < palavras.length; k++) {
+    const candidata = atual ? `${atual} ${palavras[k]}` : palavras[k];
+    if (candidata.length <= largura || !atual) {
+      atual = candidata;
+      continue;
+    }
+    linhas.push(atual);
+    atual = palavras[k];
+    if (linhas.length === maxLinhas - 1) {
+      atual = palavras.slice(k).join(" ");
+      break;
+    }
+  }
+  linhas.push(atual);
+  const ultima = linhas[linhas.length - 1];
+  if (ultima.length > largura) linhas[linhas.length - 1] = `${ultima.slice(0, Math.max(1, largura - 1)).trimEnd()}…`;
+  return linhas;
+}
 
 export function GraficoLinhas({
   titulo,
@@ -138,6 +182,8 @@ export function GraficoLinhas({
   sincronizarCursor = true,
   grupoCursor,
   tabelaAbertaInicial = false,
+  semTitulo = false,
+  chaveUrl,
 }: GraficoLinhasProps) {
   const uid = useId();
   const [largura, setLargura] = useState(760);
@@ -149,6 +195,27 @@ export function GraficoLinhas({
   const [arrasto, setArrasto] = useState<{ a: number; b: number } | null>(null);
   const [aviso, setAviso] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+
+  // recorte na URL (só com chaveUrl e sem controle externo): o esquema é estável enquanto a chave e as ocultas iniciais não mudam
+  const chaveOcultasIniciais = ocultasIniciais.join(",");
+  const esquemaUrl = useMemo(
+    () => ({
+      de: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.de` }),
+      ate: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.ate` }),
+      oc: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 })), chaveOcultasIniciais ? chaveOcultasIniciais.split(",") : [], { param: `${chaveUrl}.oc` }),
+    }),
+    [chaveUrl, chaveOcultasIniciais],
+  );
+  const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
+  const usaUrl = !!chaveUrl;
+
+  // impressão: a tabela do gráfico só é montada com o details aberto, e o toggle chega depois do layout da impressão;
+  // montá-la aqui, de forma síncrona, é o que a leva ao papel (AbreDetalhesAoImprimir abre o details; fechá-lo desmonta de novo)
+  useEffect(() => {
+    const montar = () => flushSync(() => setTabelaAberta(true));
+    window.addEventListener("beforeprint", montar);
+    return () => window.removeEventListener("beforeprint", montar);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -177,18 +244,18 @@ export function GraficoLinhas({
     () => (zoom ? periodosProntos(xsTodos, formatoX).map((p) => ({ ...p, indices: indicesDoIntervalo(xsTodos, p) })) : []),
     [zoom, xsTodos, formatoX],
   );
-  const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : intervaloInterno) : null;
+  const intervaloDaUrl: IntervaloX | null = vUrl.de && vUrl.ate ? { inicio: vUrl.de, fim: vUrl.ate } : intervaloInicial;
+  const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : usaUrl ? intervaloDaUrl : intervaloInterno) : null;
   const [i0, i1] = zoom ? indicesDoIntervalo(xsTodos, ivAtual) : [0, N - 1];
   const ampliado = zoom && N > 0 && (i0 > 0 || i1 < N - 1);
   const vis = ampliado ? dados.slice(i0, i1 + 1) : dados;
 
   /* ---------- séries visíveis (legenda interativa) ---------- */
-  const ocultasLista = legendaInterativa ? (ocultasControladas ?? ocultasInternas) : SEM_OCULTAS;
+  const ocultasLista = legendaInterativa ? (ocultasControladas ?? (usaUrl ? vUrl.oc : ocultasInternas)) : SEM_OCULTAS;
   let seriesVis = ocultasLista.length ? series.filter((s) => !ocultasLista.includes(s.id)) : series;
   if (!seriesVis.length) seriesVis = series; // nunca um gráfico sem linha: todas ocultas equivale a nenhuma
   const temOcultas = seriesVis.length < series.length;
 
-  const L = largura < ESTREITO ? 44 : 56;
   const R = rotulosDiretos ? (largura < ESTREITO ? 92 : 124) : 16;
   const T = 14;
   const B = 30;
@@ -203,6 +270,16 @@ export function GraficoLinhas({
   const { yMin, yMax } = modoEscala === "ajustar" ? domVisiveis : domTodas;
   const escalaDasVisiveis = temOcultas && modoEscala === "ajustar" && !mesmaEscala(domVisiveis, domTodas);
   const escalaDoTrecho = ampliado && !mesmaEscala(domTodas, dominioLinhas(dados, [...series.map((s) => s.id), ...extras], zeroNoEixo));
+
+  // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
+  const unidadeNoEixo = unidade.length === 1 && unidade.trim() ? ` ${unidade}` : "";
+  const yt = ticks(yMin, yMax);
+  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
+  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
+  // margem esquerda: a de sempre, ampliada quando o maior rótulo do eixo (12 px, cerca de 6,8 px por caractere) não cabe nela; um rótulo
+  // como "−5.000.000" não pode sair cortado pela borda do gráfico
+  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY) + unidadeNoEixo).length), 0);
+  const L = Math.max(largura < ESTREITO ? 48 : 60, Math.ceil(maiorRotuloY * 6.8) + 12);
 
   const n = vis.length;
   const x = (i: number) => L + (n <= 1 ? 0 : (i / (n - 1)) * (w - L - R));
@@ -280,24 +357,31 @@ export function GraficoLinhas({
   // do gráfico; o que não cabe fica identificado pela legenda
   const finaisVisiveis = rotulos.filter((r) => Math.abs(r.yy - r.alvo) <= 10 && r.yy <= h - B - 4 && r.yy >= T + 4);
 
-  // marcos só dentro do intervalo exibido; rótulos próximos são desempilhados
+  // marcos só dentro do intervalo exibido. O rótulo vai para o lado do traço com mais espaço, quebra em até três linhas dentro da área do
+  // gráfico (nunca passa da borda nem entra no eixo) e os de marcos próximos se empilham pela altura real de cada um.
+  // Com rótulos diretos, a margem direita é deles: o texto do marco para onde a área do gráfico termina
   const x0 = String(vis[0]?.[chaveX] ?? "");
   const x1 = String(vis[n - 1]?.[chaveX] ?? "");
-  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; linha: number }[] = [];
+  const limiteDireito = (rotulosDiretos ? w - R : w) - 4;
+  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; topo: number; linhas: string[]; ancora: "start" | "end" }[] = [];
   for (const m of marcos) {
     if (!n || m.x < x0 || m.x > x1) continue;
     const i = vis.findIndex((d) => String(d[chaveX]) >= m.x);
     if (i < 0) continue;
+    const xi = x(i);
+    const direita = limiteDireito - (xi + 4);
+    const esquerda = xi - 4 - L;
+    const ancora: "start" | "end" = m.rotulo.length * PX_MARCO <= direita || direita >= esquerda ? "start" : "end";
+    const linhas = quebraEmLinhas(m.rotulo, Math.floor(Math.max(24, ancora === "start" ? direita : esquerda) / PX_MARCO), 3);
     const anterior = marcosVisiveis.at(-1);
-    const linha = anterior && x(i) - x(anterior.i) < 110 ? anterior.linha + 1 : 0;
-    marcosVisiveis.push({ m, i, linha });
+    const topo = anterior && xi - x(anterior.i) < 110 ? anterior.topo + anterior.linhas.length * 14 + 1 : 0;
+    marcosVisiveis.push({ m, i, topo, linhas, ancora });
   }
 
-  const yt = ticks(yMin, yMax);
-  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
-  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
-  const nx = Math.min(largura < ESTREITO ? 4 : 7, n);
-  const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
+  // marcas com passo constante a partir do último ponto (anos, trimestres, quinzenas), não em partes iguais do total
+  const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);
+
+  const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX);
 
   /* ---------- interação ---------- */
   const podeArrastar = zoom && largura >= ESTREITO && n > 2;
@@ -339,7 +423,10 @@ export function GraficoLinhas({
 
   function aplicarIndices(a: number, b: number) {
     const novo = intervaloDosIndices(xsTodos, a, b);
-    if (intervaloControlado === undefined) setIntervaloInterno(novo);
+    if (intervaloControlado === undefined) {
+      if (usaUrl) definirUrl({ de: novo?.inicio ?? "", ate: novo?.fim ?? "" });
+      else setIntervaloInterno(novo);
+    }
     onIntervalo?.(novo);
     setAtivo(null);
     setAviso("");
@@ -356,7 +443,10 @@ export function GraficoLinhas({
       atual.add(id);
     }
     const lista = series.map((s) => s.id).filter((i) => atual.has(i));
-    if (ocultasControladas === undefined) setOcultasInternas(lista);
+    if (ocultasControladas === undefined) {
+      if (usaUrl) definirUrl({ oc: lista });
+      else setOcultasInternas(lista);
+    }
     onOcultas?.(lista);
     setAviso("");
   }
@@ -409,6 +499,10 @@ export function GraficoLinhas({
 
   return (
     <div ref={ref} className="relative w-full">
+      <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
+        {titulo}
+        {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>, em {unidade}</span>}
+      </p>
       {zoom && N > 2 && (
         <div role="group" aria-label={`Intervalo do gráfico: ${titulo}`} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
           {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">Período</span>}
@@ -477,63 +571,71 @@ export function GraficoLinhas({
           </details>
         </div>
       )}
-      {legendaInterativa ? (
-        <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label="Legenda: ative ou oculte séries">
-          {series.map((s) => {
-            const visivel = seriesVis.includes(s);
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  aria-pressed={visivel}
-                  onClick={() => alternarSerie(s.id)}
-                  className={`inline-flex min-h-[44px] items-center gap-1.5 px-1.5 underline-offset-4 hover:underline ${visivel ? "text-carvao-muted" : "text-mineral"}`}
-                >
-                  <svg width="18" height="8" aria-hidden="true">
-                    <line
-                      x1="0"
-                      y1="4"
-                      x2="18"
-                      y2="4"
-                      stroke={visivel ? s.cor : "var(--cor-mineral-soft)"}
-                      strokeWidth="2.5"
-                      strokeDasharray={s.tracejada ? "4 3" : visivel ? undefined : "1 3"}
-                    />
-                  </svg>
-                  {s.rotulo}
-                  {!visivel && <span className="italic">(oculta)</span>}
-                </button>
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        {legendaInterativa ? (
+          <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label="Legenda: ative ou oculte séries">
+            {series.map((s) => {
+              const visivel = seriesVis.includes(s);
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    aria-pressed={visivel}
+                    onClick={() => alternarSerie(s.id)}
+                    className={`inline-flex min-h-[44px] items-center gap-1.5 px-1.5 underline-offset-4 hover:underline ${visivel ? "text-carvao-muted" : "text-mineral"}`}
+                  >
+                    <svg width="18" height="8" aria-hidden="true">
+                      <line
+                        x1="0"
+                        y1="4"
+                        x2="18"
+                        y2="4"
+                        stroke={visivel ? s.cor : "var(--cor-mineral-soft)"}
+                        strokeWidth="2.5"
+                        strokeDasharray={s.tracejada ? "4 3" : visivel ? undefined : "1 3"}
+                      />
+                    </svg>
+                    {s.rotulo}
+                    {!visivel && <span className="italic">(oculta)</span>}
+                  </button>
+                </li>
+              );
+            })}
+            {banda && (
+              <li className="flex min-h-[44px] items-center gap-1.5 px-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
               </li>
-            );
-          })}
-          {banda && (
-            <li className="flex min-h-[44px] items-center gap-1.5 px-1.5">
-              <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
-              {banda.rotulo}
+            )}
+            <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
+              Valores em {unidade}
             </li>
-          )}
-          <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
-            Valores em {unidade}
-          </li>
-        </ul>
-      ) : (
-        <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
-          {series.map((s) => (
-            <li key={s.id} className="flex items-center gap-1.5">
-              <svg width="18" height="8" aria-hidden="true">
-                <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
-              </svg>
-              {s.rotulo}
-            </li>
-          ))}
-          {banda && (
-            <li className="flex items-center gap-1.5">
-              <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
-              {banda.rotulo}
-            </li>
-          )}
-        </ul>
-      )}
+          </ul>
+        ) : (
+          <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
+            {series.map((s) => (
+              <li key={s.id} className="flex items-center gap-1.5">
+                <svg width="18" height="8" aria-hidden="true">
+                  <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
+                </svg>
+                {s.rotulo}
+              </li>
+            ))}
+            {banda && (
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
+              </li>
+            )}
+            {semTitulo && (
+              <li className="text-mineral" data-legenda="unidade">
+                Valores em {unidade}
+              </li>
+            )}
+          </ul>
+        )}
+        <BaixarImagem raiz={ref} titulo={titulo} unidade={unidade} />
+      </div>
       {(zoom || legendaInterativa) && (
         <div className="mb-2 flex min-h-[1.25rem] flex-wrap items-center gap-x-3 px-1">
           <p className="text-xs text-carvao-muted" aria-live="polite" data-estado-grafico="">
@@ -556,147 +658,160 @@ export function GraficoLinhas({
         </p>
       )}
       {/* altura fixa em pixels: o HTML do servidor já reserva a altura final, e âncoras abaixo
-          do gráfico não se deslocam quando a largura real é medida no cliente */}
-      <svg
-        width="100%"
-        height={h}
-        viewBox={`0 0 ${w} ${h}`}
-        role="img"
-        aria-labelledby={`${uid}-t`}
-        aria-describedby={zoom ? `${uid}-d` : undefined}
-        tabIndex={0}
-        onKeyDown={teclado}
-        onBlur={() => setAtivo(null)}
-        className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
-      >
-        <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
-        {yt.map((v) => (
-          <g key={v}>
-            <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
-            <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
-              {rotuloTick(v, passoY)}
+          do gráfico não se deslocam quando a largura real é medida no cliente. A dica é posicionada em relação a este contêiner,
+          que envolve só a figura: antes ela era medida a partir do topo do componente e cobria o título e a legenda. */}
+      <div className="relative">
+        <svg
+          width="100%"
+          height={h}
+          viewBox={`0 0 ${w} ${h}`}
+          role="img"
+          aria-labelledby={`${uid}-t`}
+          aria-describedby={zoom ? `${uid}-d` : undefined}
+          tabIndex={0}
+          onKeyDown={teclado}
+          onBlur={() => setAtivo(null)}
+          className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+          data-svg-grafico=""
+        >
+          <title id={`${uid}-t`}>{`${titulo}. Use as setas para percorrer os pontos.`}</title>
+          {yt.map((v) => (
+            <g key={v}>
+              <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
+              <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
+                {rotuloTick(v, passoY)}
+                {unidadeNoEixo}
+              </text>
+            </g>
+          ))}
+          {xt.map((i, k) => (
+            <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
+              {rotulosX[k]}
             </text>
-          </g>
-        ))}
-        {xt.map((i) => (
-          <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
-            {fmtX(String(vis[i]?.[chaveX] ?? ""), formatoX)}
-          </text>
-        ))}
-        {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
-        {marcosVisiveis.map(({ m, i, linha }) => (
-          <g key={m.x}>
-            <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-            <text x={x(i) + 4} y={T + 10 + linha * 13} fontSize="10" fill="var(--cor-mineral)">
-              {m.rotulo}
-            </text>
-          </g>
-        ))}
-        {seriesVis.map((s, k) => (
-          <path
-            key={s.id}
-            d={caminhos[k]}
-            fill="none"
-            stroke={s.cor}
-            strokeWidth={s.espessura ?? 2}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            strokeDasharray={s.tracejada ? "5 4" : undefined}
-          />
-        ))}
-        {rotulosDiretos &&
-          finaisVisiveis.map((r) => {
-            const f = r.itens[0];
-            const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
-            const texto =
-              r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
-            // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
-            if (x(f.i) + 8 + texto.length * 6.2 > w - 2) return null;
-            return (
-              <g key={f.s.id}>
-                <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
-                <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
-                  {texto}
-                </text>
-              </g>
-            );
-          })}
-        {pontosSel && (
-          <rect
-            data-selecao="intervalo"
-            x={x(pontosSel[0])}
-            y={T}
-            width={Math.max(1, x(pontosSel[1]) - x(pontosSel[0]))}
-            height={Math.max(1, h - T - B)}
-            fill="color-mix(in srgb, var(--cor-energia) 12%, transparent)"
-            stroke="var(--cor-energia)"
-            strokeWidth="1"
-            pointerEvents="none"
-          />
-        )}
-        {iCruz !== null && (
-          <g pointerEvents="none" data-cursor={ativo !== null ? "local" : "sincronizado"}>
-            <line x1={cruzX} x2={cruzX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
-            {seriesVis.map((s) => {
-              const v = pCruz?.[s.id];
-              return typeof v === "number" && Number.isFinite(v) ? (
-                <circle key={s.id} cx={cruzX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
-              ) : null;
+          ))}
+          {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
+          {marcosVisiveis.map(({ m, i, topo, linhas, ancora }) => (
+            <g key={m.x}>
+              <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
+              {/* com 12 px a letra mede cerca de 6,5 px: o texto quebra no espaço do lado escolhido */}
+              <text data-marco="" x={x(i) + (ancora === "start" ? 4 : -4)} textAnchor={ancora} y={T + 10 + topo} fontSize="12" fill="var(--cor-mineral)">
+                {linhas.length > 1
+                  ? linhas.map((l, q) => (
+                      <tspan key={q} x={x(i) + (ancora === "start" ? 4 : -4)} dy={q ? 14 : 0}>
+                        {l}
+                      </tspan>
+                    ))
+                  : linhas[0]}
+              </text>
+            </g>
+          ))}
+          {seriesVis.map((s, k) => (
+            <path
+              key={s.id}
+              d={caminhos[k]}
+              fill="none"
+              stroke={s.cor}
+              strokeWidth={s.espessura ?? 2}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray={s.tracejada ? "5 4" : undefined}
+            />
+          ))}
+          {rotulosDiretos &&
+            finaisVisiveis.map((r) => {
+              const f = r.itens[0];
+              const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
+              const texto =
+                r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
+              // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
+              if (x(f.i) + 8 + texto.length * 6.8 > w - 2) return null;
+              return (
+                <g key={f.s.id}>
+                  <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
+                  <text x={x(f.i) + 8} y={r.yy + 4} fontSize="12" fill="var(--cor-carvao)">
+                    {texto}
+                  </text>
+                </g>
+              );
             })}
-          </g>
+          {pontosSel && (
+            <rect
+              data-selecao="intervalo"
+              x={x(pontosSel[0])}
+              y={T}
+              width={Math.max(1, x(pontosSel[1]) - x(pontosSel[0]))}
+              height={Math.max(1, h - T - B)}
+              fill="color-mix(in srgb, var(--cor-energia) 12%, transparent)"
+              stroke="var(--cor-energia)"
+              strokeWidth="1"
+              pointerEvents="none"
+            />
+          )}
+          {iCruz !== null && (
+            <g pointerEvents="none" data-cursor={ativo !== null ? "local" : "sincronizado"}>
+              <line x1={cruzX} x2={cruzX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
+              {seriesVis.map((s) => {
+                const v = pCruz?.[s.id];
+                return typeof v === "number" && Number.isFinite(v) ? (
+                  <circle key={s.id} cx={cruzX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
+                ) : null;
+              })}
+            </g>
+          )}
+          <rect
+            x={L}
+            y={T}
+            width={Math.max(1, w - L - R)}
+            height={Math.max(1, h - T - B)}
+            fill="transparent"
+            className={podeArrastar ? "cursor-crosshair" : undefined}
+            onPointerMove={mover}
+            onPointerDown={pressionar}
+            onPointerUp={soltar}
+            onPointerCancel={() => setArrasto(null)}
+            onPointerLeave={(ev) => {
+              // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
+              if (ev.pointerType === "mouse") setAtivo(null);
+              if (arrasto) soltar();
+            }}
+          />
+        </svg>
+        {pa && (
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute top-1 z-20 min-w-[11rem] max-w-[calc(100%-1rem)] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)] ${tipX > w / 2 ? "-translate-x-full" : ""}`}
+            // a dica abre ao lado da cruz (à direita na metade esquerda, à esquerda na metade direita) e deixa a cruz e os pontos à vista
+            style={{ left: tipX > w / 2 ? `max(12rem, calc(${(tipX / w) * 100}% - 0.75rem))` : `min(calc(${(tipX / w) * 100}% + 0.75rem), calc(100% - 12rem))` }}
+          >
+            <p className="rotulo text-mineral">{fmtX(String(pa[chaveX]), formatoX, true)}</p>
+            <ul className="mt-1 space-y-0.5">
+              {seriesVis.map((s) => (
+                <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
+                  <span className="flex items-center gap-1.5">
+                    <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
+                    {s.rotulo}
+                  </span>
+                  <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
+                </li>
+              ))}
+              {banda && typeof pa[banda.inferior] === "number" && (
+                <li className="flex justify-between gap-3 text-mineral">
+                  <span>{banda.rotulo}</span>
+                  <span className="tabular-nums">
+                    {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
         )}
-        <rect
-          x={L}
-          y={T}
-          width={Math.max(1, w - L - R)}
-          height={Math.max(1, h - T - B)}
-          fill="transparent"
-          className={podeArrastar ? "cursor-crosshair" : undefined}
-          onPointerMove={mover}
-          onPointerDown={pressionar}
-          onPointerUp={soltar}
-          onPointerCancel={() => setArrasto(null)}
-          onPointerLeave={(ev) => {
-            // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
-            if (ev.pointerType === "mouse") setAtivo(null);
-            if (arrasto) soltar();
-          }}
-        />
-      </svg>
+      </div>
       {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
       <p className="sr-only" aria-live="polite">
         {pa
           ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
           : ""}
       </p>
-      {pa && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-6 z-20 min-w-[11rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
-          style={{ left: `min(max(0px, calc(${(tipX / w) * 100}% - 5.5rem)), calc(100% - 12rem))` }}
-        >
-          <p className="rotulo text-mineral">{fmtX(String(pa[chaveX]), formatoX, true)}</p>
-          <ul className="mt-1 space-y-0.5">
-            {seriesVis.map((s) => (
-              <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
-                <span className="flex items-center gap-1.5">
-                  <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
-                  {s.rotulo}
-                </span>
-                <span className="tabular-nums">{fmtV(pa[s.id] as number | null, casas, unidade)}</span>
-              </li>
-            ))}
-            {banda && typeof pa[banda.inferior] === "number" && (
-              <li className="flex justify-between gap-3 text-mineral">
-                <span>{banda.rotulo}</span>
-                <span className="tabular-nums">
-                  {fmtV(pa[banda.inferior] as number, casas, "")} a {fmtV(pa[banda.superior] as number, casas, unidade)}
-                </span>
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {ampliado

@@ -1,43 +1,63 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { PldLinkPainel } from "@/components/energia/PldLinkPainel";
+import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { carimbo } from "@/lib/energia/formato";
-import { PAINEIS_PLD, ROTA_PLD, rotaPainel, type PainelPld } from "@/lib/energia/pld";
+import { PAINEIS_PLD, ROTA_PLD, perguntaPainel, rotaPainel, type PainelPld } from "@/lib/energia/pld";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { Controle, FonteTextual } from "@/lib/energia/tipos-pld";
 
 /**
  * Peças de servidor das páginas do PLD (um painel por página: /setor-eletrico/pld
- * com o P008 e os capítulos de conceito, situação atual e previsão; /cmo-e-formacao
+ * com o P008 e os capítulos de preço, conceito, formação e previsão; /cmo-e-formacao
  * para o P009; /limites para o P010; /historico para o P011; /diferencas-regionais
- * para o P012): navegação entre os painéis, recorte (período, universo e unidade),
- * avisos de ausência e defasagem, rodapé com downloads, link compartilhável e
- * próxima pergunta, blocos dos modos Analisar e Auditar, passagens normativas
- * citadas e os controles automáticos da construção.
+ * para o P012): navegação local única, recorte (período, universo e unidade),
+ * avisos de ausência e defasagem, próximos passos, passagens normativas citadas,
+ * datas de referência de cada parte e os controles automáticos da construção.
+ *
+ * Navegação local única: nas páginas filhas, a faixa de páginas irmãs (PldNavegacao);
+ * na abertura, os capítulos (PldCapitulos) depois da figura principal. Nunca as duas, e
+ * o mesmo rótulo não aparece em duas formas na mesma página.
  */
 
-/** Navegação entre os painéis do PLD; o atual leva aria-current. */
+/** Rótulo da abertura na faixa das filhas: a página abre com o preço do último dia e traz a explicação em seguida. */
+const ROTULO_ABERTURA = "Preço e explicação";
+
+/** Páginas do PLD como itens da navegação local; a descrição de cada capítulo é a pergunta do painel. */
+const ITENS_PAGINAS: ItemLocal[] = PAINEIS_PLD.map((p) => ({
+  id: p.id,
+  href: rotaPainel(p.id),
+  rotulo: p.id === "p008" ? ROTULO_ABERTURA : p.rotulo,
+  descricao: p.pergunta,
+}));
+
+/**
+ * Faixa de páginas irmãs nas páginas filhas. A abertura (P008) não leva a faixa: mostra os mesmos destinos como capítulos depois da
+ * figura principal (PldCapitulos), e o mesmo rótulo não aparece duas vezes.
+ */
 export function PldNavegacao({ atual }: { atual: PainelPld }) {
-  return (
-    <nav aria-label="Painéis do PLD" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
-        {PAINEIS_PLD.map((p) => (
-          <li key={p.id}>
-            <Link
-              href={p.id === "p008" ? `${rotaPainel(p.id)}#p008` : rotaPainel(p.id)}
-              aria-current={p.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                p.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {p.rotulo}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
+  if (atual === "p008") return null;
+  return <NavegacaoLocal rotulo="Páginas do PLD" itens={ITENS_PAGINAS} atual={atual} />;
+}
+
+/**
+ * Capítulos da abertura: as quatro páginas irmãs, cada uma com a pergunta que responde, e o que é âncora da própria página (a aula, a
+ * formação do preço e a previsão). Uma navegação só: os dois tipos de destino ficam na mesma lista, e a descrição diz quando o destino
+ * é uma parte desta página.
+ */
+const CAPITULOS: ItemLocal[] = [
+  ...ITENS_PAGINAS.filter((i) => i.id !== "p008"),
+  { id: "aula", href: "#o-que-e", rotulo: "Entenda o PLD em 90 segundos", descricao: "O que é o PLD e o que ele não é, em linguagem simples. Nesta página." },
+  { id: "formacao", href: "#formacao", rotulo: "De onde vem o preço", descricao: `${perguntaPainel("p008")} Nesta página.` },
+  { id: "previsao", href: "#previsao", rotulo: "Para onde o PLD pode ir", descricao: "O que existe de previsão nesta publicação. Nesta página." },
+];
+
+export function PldCapitulos() {
+  // dentro do painel de abertura (que já é h2), o título do bloco de capítulos é h3
+  return <NavegacaoLocal rotulo="Capítulos do PLD" itens={CAPITULOS} atual="p008" variante="capitulos" titulo="Outras perguntas sobre o preço" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -45,12 +65,12 @@ export function PldIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="pld" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Painel do PLD indisponível nesta publicação"
           motivo={
             motivo ??
-            "A gold de detalhe do PLD (public/energia/gold/pld_detalhe.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados detalhados do PLD não foram gerados ou não passaram na validação desta publicação; a última publicação válida é mantida quando existe."
           }
         />
         <p className="mt-6 text-sm">
@@ -95,52 +115,24 @@ export function PldAviso({ children, tipo = "nota" }: { children: ReactNode; tip
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function PldSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <PldLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
 }
 
-export function PldAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
+/** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. `ate` já vem escrito (data ou data e hora). */
+export function PldDatas({ itens }: { itens: { rotulo: string; ate: string | null; natureza: Natureza }[] }) {
   return (
-    <div id={id} data-nivel="analisar" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function PldAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="auditar" className="scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.ate ?? "sem dado nesta publicação"}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -182,17 +174,5 @@ export function PldControles({ controles }: { controles: Controle[] }) {
         </li>
       ))}
     </ul>
-  );
-}
-
-/** Abertura de cada página de painel: rótulo do módulo, pergunta como título e síntese curta. */
-export function PldCabecalho({ titulo, children, referencia }: { titulo: string; children?: ReactNode; referencia?: ReactNode }) {
-  return (
-    <header className="pb-6 pt-10 md:pt-14">
-      <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
-      <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3rem)] leading-[1.1] text-carvao">{titulo}</h1>
-      {children && <div className="mt-4 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>}
-      {referencia && <p className="mt-4 text-xs text-mineral">{referencia}</p>}
-    </header>
   );
 }

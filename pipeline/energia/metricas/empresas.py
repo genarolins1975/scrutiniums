@@ -287,10 +287,10 @@ METRICAS = [
         "grao_geografico": "distribuidora (CNPJ)",
         "grao_temporal": "ano de referência de cada módulo; tarifa vigente na data da gold de conta",
         "fontes": ["aneel_samp_balanco", "aneel_continuidade", "aneel_tarifas_aplicacao", "aneel_polimero", "cvm_cad_cia_aberta"],
-        "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
+        "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na base publicada de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
         "regra_agregacao": "Nenhuma: um valor por distribuidora, o mesmo da página de origem.",
         "versao_formula": "1",
-        # natureza herdada das golds de origem: taxa de perdas, DEC, FEC, limites e tarifa são
+        # natureza herdada das bases publicadas de origem: taxa de perdas, DEC, FEC, limites e tarifa são
         # CALCULADOS pelos módulos de origem; as perdas não técnicas são ESTIMADAS pela fonte
         "natureza_fonte": "CALCULADO",
         "natureza_transformacao": "CALCULADO",
@@ -300,11 +300,11 @@ METRICAS = [
                                 "tarifa.total": "CALCULADO"},
         "dimensoes": ["distribuidora", "módulo de origem"],
         "regras_comparabilidade": ["Pares: mesma classificação (concessionária ou permissionária) e mesmo porte do ranking de continuidade.", "Anos de referência podem diferir entre módulos; cada bloco traz o seu."],
-        "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a gold de origem não tem o dado.",
+        "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a base publicada de origem não tem o dado.",
         "politica_ausencia": "Módulo sem dado para a distribuidora = bloco nulo (nunca zero).",
-        "validacoes": ["Slug único por distribuidora; aliases só sem colisão.", "Valores iguais aos da gold de origem (teste por CNPJ)."],
+        "validacoes": ["Slug único por distribuidora; aliases só sem colisão.", "Valores iguais aos da base publicada de origem (teste por CNPJ)."],
         "limitacoes": ["Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis.",
-                       "O índice traz um ano de referência por módulo; a evolução própria vem das séries das golds de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."],
+                       "O índice traz um ano de referência por módulo; a evolução própria vem das séries das bases publicadas de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."],
         "gold": _GOLD, "paginas": _PAG_ENT,
     },
     _conta_cvm("empresas_receita", "Receita líquida (companhia aberta)", "Quanto a companhia faturou no período?",

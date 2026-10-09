@@ -5,7 +5,21 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos, type ParEntidade } from "@/components/energia/GraficoPontos";
 import { QualidadeTabela } from "@/components/energia/QualidadeTabela";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { CAMPO_CLASSE, CAMPO_DIST, CAMPO_IND, CLASSES, INDICADORES, carregarUmaVez, destacar, respostaHistoricoDistribuidora, type Indicador } from "@/lib/energia/qualidade";
+import {
+  CAMPO_CLASSE,
+  CAMPO_DIST,
+  CAMPO_IND,
+  CLASSES,
+  INDICADORES,
+  carregarUmaVez,
+  destacar,
+  paresLimites,
+  respostaHistoricoDistribuidora,
+  respostaRecorteLimites,
+  type AvisosFec,
+  type Indicador,
+  type ItemLimites,
+} from "@/lib/energia/qualidade";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
 
 /**
@@ -23,6 +37,9 @@ import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qual
 
 const ESQUEMA = { ind: CAMPO_IND, cls: CAMPO_CLASSE, dist: CAMPO_DIST };
 
+const BOTAO =
+  "inline-flex min-h-[44px] items-center border border-linha bg-superficie px-3 text-sm text-carvao hover:border-energia focus:outline-none focus-visible:ring-2 focus-visible:ring-energia";
+
 const ROTULO_IND: Record<Indicador, { nome: string; unidade: string; titulo: string }> = {
   dec: { nome: "DEC", unidade: "h", titulo: "DEC apurado e limite anual por distribuidora" },
   fec: { nome: "FEC", unidade: "interrupções", titulo: "FEC apurado e limite anual por distribuidora" },
@@ -30,20 +47,19 @@ const ROTULO_IND: Record<Indicador, { nome: string; unidade: string; titulo: str
 
 export function QualidadeLimites({
   ano,
-  itensDec,
-  itensFec,
-  classes,
+  itens: todos,
   totalLinhas,
   urlSerie,
+  avisosFec = {},
 }: {
   ano: number;
-  itensDec: ParEntidade[];
-  itensFec: ParEntidade[];
-  /** Classificação (Concessionária ou Permissionária) de cada CNPJ. */
-  classes: Record<string, string | null>;
+  /** Uma linha por distribuidora, com DEC, FEC, os dois limites, a classe e as notas (itensLimites). */
+  itens: ItemLimites[];
   /** Linhas da tabela com DGC (todas as distribuidoras do ano). */
   totalLinhas: number;
   urlSerie: string;
+  /** Distribuidoras cujo FEC do ano é de cobertura parcial: marca no gráfico de FEC, nota sob ele e marco no histórico. */
+  avisosFec?: AvisosFec;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [serie, setSerie] = useState<QualidadeSeriesDistribuidorasGold | null>(null);
@@ -51,11 +67,11 @@ export function QualidadeLimites({
   const sel = v.dist[0] ?? null;
   const ind = v.ind;
   const r = ROTULO_IND[ind];
-  const rotuloClasse = v.cls === "permissionaria" ? "Permissionária" : "Concessionária";
+  const classeEscolhida = v.cls === "permissionaria" ? "p" : "c";
   // distribuidora escolhida em outro painel aparece mesmo se for da outra classe
-  const itens = (ind === "dec" ? itensDec : itensFec).filter((i) => classes[i.id] === rotuloClasse || i.id === sel);
-  const semClasse = itensDec.filter((i) => classes[i.id] !== "Concessionária" && classes[i.id] !== "Permissionária").length;
-  const nomes = useMemo(() => new Map(itensDec.map((i) => [i.id, i.rotulo])), [itensDec]);
+  const itens: ParEntidade[] = useMemo(() => paresLimites(todos.filter((i) => i.classe === classeEscolhida || i.id === sel), ind, avisosFec), [todos, classeEscolhida, sel, ind, avisosFec]);
+  const semClasse = todos.filter((i) => i.classe === "s").length;
+  const nomes = useMemo(() => new Map(todos.map((i) => [i.id, i.rotulo])), [todos]);
 
   useEffect(() => {
     if (!sel || serie) return;
@@ -79,6 +95,9 @@ export function QualidadeLimites({
     [s, ind],
   );
   const nomeSel = sel ? (nomes.get(sel) ?? `CNPJ ${sel}`) : "";
+  // FEC de cobertura parcial: as distribuidoras do gráfico que têm a marca (nota sob o gráfico) e a da escolhida (histórico)
+  const avisosNoGrafico = ind === "fec" ? itens.map((i) => avisosFec[i.id]).filter((a) => !!a) : [];
+  const avisoSel = ind === "fec" && sel ? avisosFec[sel] : undefined;
 
   return (
     <div className="space-y-5">
@@ -107,7 +126,31 @@ export function QualidadeLimites({
           ))}
         </div>
       </div>
-      {semClasse > 0 && <p className="text-xs text-carvao-muted">{semClasse} distribuidoras sem classificação publicada ficam só na tabela.</p>}
+      {semClasse > 0 && <p className="text-sm text-carvao-muted">{semClasse} distribuidoras sem classificação publicada ficam só na tabela.</p>}
+      {sel && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-carvao" data-selecao-distribuidora={sel}>
+          <span className="rotulo text-mineral">Distribuidora escolhida</span>
+          <strong className="font-medium">{nomeSel}</strong>
+          <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
+            Limpar seleção
+          </button>
+          {v.dist.length > 1 && <span className="text-sm text-carvao-muted">Mais {v.dist.length - 1} na comparação.</span>}
+        </div>
+      )}
+
+      {/* a frase acompanha o indicador e o grupo escolhidos acima: trocar para FEC ou para permissionárias muda o que ela diz. Fica depois dos controles
+          (por isso não leva data-resposta, que o CSS da página passa para a frente do bloco): o que muda de altura não empurra o controle que a pessoa acabou de usar */}
+      <p aria-live="polite" data-frase-recorte="limites" className="max-w-prose2 text-base leading-relaxed text-carvao">
+        {respostaRecorteLimites(todos, ind, classeEscolhida, ano, avisosFec)}
+      </p>
+      {avisosNoGrafico.length > 0 && (
+        <p data-legenda="asterisco-fec" className="text-sm leading-snug text-carvao">
+          <span aria-hidden="true" className="mr-1 font-medium">
+            *
+          </span>
+          FEC de cobertura parcial: em algum mês do ano, o valor não cobre todas as unidades consumidoras da distribuidora. A explicação de cada uma está abaixo do gráfico.
+        </p>
+      )}
 
       <GraficoPontos
         titulo={`${r.titulo}, ${v.cls === "permissionaria" ? "permissionárias" : "concessionárias"}, ${ano}`}
@@ -123,6 +166,13 @@ export function QualidadeLimites({
         corReferencia="var(--serie-referencia)"
         zeroNoEixo
       />
+      {avisosNoGrafico.length > 0 && (
+        <div role="note" data-aviso="fec-cobertura-parcial" className="max-w-prose2 space-y-1 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao">
+          {avisosNoGrafico.map((a) => (
+            <p key={a.cnpj}>* {a.frase}</p>
+          ))}
+        </div>
+      )}
 
       <section aria-live="polite" aria-label="Histórico da distribuidora escolhida" className="space-y-3 border-t border-linha pt-4">
         {sel ? (
@@ -130,6 +180,7 @@ export function QualidadeLimites({
             <>
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="historico-distribuidora">
                 {respostaHistoricoDistribuidora(nomeSel, s, ind)}
+                {avisoSel && ` ${avisoSel.frase}`}
               </p>
               <GraficoLinhas
                 titulo={`${r.nome} anual e limite de ${nomeSel}`}
@@ -144,12 +195,15 @@ export function QualidadeLimites({
                 casas={2}
                 zeroNoEixo
                 altura={240}
-                marcos={(s?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` }))}
+                marcos={[
+                  ...(s?.quebras ?? []).map((q) => ({ x: String(q), rotulo: `${q}: perímetro mudou` })),
+                  ...(avisoSel ? [{ x: String(avisoSel.ano), rotulo: `${avisoSel.ano}: FEC de cobertura parcial` }] : []),
+                ]}
               />
             </>
           ) : erro ? (
             <p role="alert" className="text-sm text-carvao">
-              Histórico indisponível ({erro}); a série está em qualidade_distribuidoras_anual.csv.
+              Histórico indisponível ({erro}); a série anual por distribuidora está no CSV da lista de downloads do painel.
             </p>
           ) : (
             <p role="status" className="text-sm text-carvao-muted">
@@ -168,6 +222,7 @@ export function QualidadeLimites({
         chaveUrl="tlim"
         selecionado={sel}
         onSelecionar={selecionar}
+        avisosFec={avisosFec}
       />
     </div>
   );

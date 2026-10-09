@@ -113,7 +113,7 @@ export function GraficoDispersao({
   const n = validos.length;
 
   const estreito = largura < 520;
-  const L = estreito ? 46 : 58;
+  const L = estreito ? 50 : 62;
   const R = 16;
   const T = 30;
   const B = 50;
@@ -192,6 +192,9 @@ export function GraficoDispersao({
 
   return (
     <div ref={ref} className="relative w-full">
+      <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
+        {titulo}
+      </p>
       <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label="Legenda">
         <li className="flex items-center gap-1.5">
           <svg width="12" height="12" aria-hidden="true">
@@ -237,7 +240,7 @@ export function GraficoDispersao({
           {dy.marcas.map((v) => (
             <g key={`y${v}`}>
               <line x1={L} x2={w - R} y1={sy(v)} y2={sy(v)} stroke="var(--cor-grade)" strokeWidth="1" />
-              <text x={L - 8} y={sy(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
+              <text x={L - 8} y={sy(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
                 {num(v, casasTickY)}
               </text>
             </g>
@@ -245,7 +248,7 @@ export function GraficoDispersao({
           {dx.marcas.map((v) => (
             <g key={`x${v}`}>
               <line x1={sx(v)} x2={sx(v)} y1={T} y2={h - B} stroke="var(--cor-grade)" strokeWidth="1" />
-              <text x={sx(v)} y={h - B + 16} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
+              <text x={sx(v)} y={h - B + 16} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
                 {num(v, casasTickX)}
               </text>
             </g>
@@ -272,7 +275,7 @@ export function GraficoDispersao({
                     x={cabeAntes ? ex - 4 : L + 4}
                     y={ey - 8 > T + 10 ? ey - 8 : ey + 16}
                     textAnchor={cabeAntes ? "end" : "start"}
-                    fontSize="11"
+                    fontSize="12"
                     fill="var(--cor-carvao)"
                     stroke="var(--cor-superficie)"
                     strokeWidth="3"
@@ -320,7 +323,7 @@ export function GraficoDispersao({
                   x={tx}
                   y={r.y}
                   textAnchor={r.lado === "direita" ? "start" : "end"}
-                  fontSize="11"
+                  fontSize="12"
                   fill="var(--cor-carvao)"
                   stroke="var(--cor-superficie)"
                   strokeWidth="3"

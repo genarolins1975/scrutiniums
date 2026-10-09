@@ -242,6 +242,25 @@ def controle_numcon(ucs_total, nconj_total, fator=2.0):
     return out
 
 
+COBERTURA_MINIMA_FEC = 0.95
+
+
+def controle_cobertura_fec(ucs_fec, ucs_total, minimo=COBERTURA_MINIMA_FEC):
+    """Meses em que o FEC da distribuidora cobre menos que `minimo` das UCs do mês, {ref: motivo}.
+    Por que existe: em jun/2025 a ANEEL não publicou a linha FEC dos conjuntos da ELEKTRO (só
+    FECIP e FECIND, cuja soma é o FEC); o FEC mensal da distribuidora saía de 22.562 de 3.036.447
+    UCs (0,74%) e entrava no anual 3,25, quando o anual refeito pelas parcelas é 3,38. A
+    cobertura do FEC é a razão entre o denominador do FEC (UCs dos conjuntos com FEC) e as UCs do
+    mês. Em 27.073 distribuidoras-mês de 2000 a 2026, dois meses ficam abaixo de 99% (ELEKTRO
+    jun/2025, 0,74%; CEA nov/2007, 98,1%); com o mínimo de 95% só o primeiro é marcado."""
+    out = {}
+    for r, ut in ucs_total.items():
+        uf = ucs_fec.get(r)
+        if ut and uf is not None and uf / ut < minimo:
+            out[r] = (f"FEC publicado para {100 * uf / ut:.2f}% das UCs do mês ({int(uf)} de {int(ut)})".replace(".", ","))
+    return out
+
+
 def agrega_mensal(dados, chave_grupo):
     """Agregação ponderada por UC no mês, para o grupo definido por chave_grupo(cnpj, conj).
 

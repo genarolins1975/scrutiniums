@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { AguaLinkPainel } from "@/components/energia/AguaLinkPainel";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { PAINEIS_AGUA, ROTA_AGUA, rotaPainel, type PainelAgua } from "@/lib/energia/agua";
@@ -21,27 +22,15 @@ import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
  * (contrato, seção 5.1).
  */
 
-/** Navegação entre os quatro painéis; o atual leva aria-current. */
+/** Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel (a mesma do Anexo A). */
+const ITENS_AGUA = PAINEIS_AGUA.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+
+/**
+ * Navegação entre os quatro painéis: a faixa de páginas irmãs no alto de todas elas, a abertura inclusive (a atual vem marcada). A abertura
+ * já mostrou os destinos como capítulos no meio da página, a mais de 2.600 px do alto; a faixa no alto os põe à vista antes do título.
+ */
 export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
-  return (
-    <nav aria-label="Painéis de água e clima" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
-        {PAINEIS_AGUA.map((p) => (
-          <li key={p.id}>
-            <Link
-              href={rotaPainel(p.id)}
-              aria-current={p.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                p.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {p.rotulo}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
+  return <NavegacaoLocal rotulo="Painéis de água e clima" itens={ITENS_AGUA} atual={atual} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -49,7 +38,7 @@ export function AguaIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="agua-e-clima" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Água e clima indisponível nesta publicação"
           motivo={
@@ -80,7 +69,7 @@ export function AguaParteAusente({ titulo, motivo }: { titulo: string; motivo: s
 /** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
 export function AguaRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl className="grid gap-x-6 gap-y-1 text-sm text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>
@@ -109,7 +98,7 @@ export function AguaAviso({ children, tipo = "nota" }: { children: ReactNode; ti
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10), numa linha (SeguirPainel). */
 export function AguaSeguir({
   ancora,
   proximo,
@@ -121,34 +110,7 @@ export function AguaSeguir({
   downloads: { rotulo: string; url: string }[];
   extra?: ReactNode;
 }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <AguaLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-      {extra}
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} extra={extra} />;
 }
 
 export function AguaAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
@@ -198,7 +160,7 @@ export function AguaFontes({ provs }: { provs: (Proveniencia | undefined)[] }) {
 /** Datas de referência de cada parte da gold: cada número diz o seu dia, sem sugerir simultaneidade. */
 export function AguaDatas({ itens }: { itens: { rotulo: string; dia: string | null; natureza: Natureza }[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-carvao-muted" aria-label="Datas de referência de cada parte">
       {itens.map((x) => (
         <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
           <span>

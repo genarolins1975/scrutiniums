@@ -50,7 +50,7 @@ export const ROTA_REDE = "/setor-eletrico/rede";
 export type PainelRede = "p028" | "p029" | "p030" | "p031";
 
 /** Pergunta do destino Rede no menu (navegacao.ts) e título da página principal. */
-export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões e que restrições são documentadas?";
+export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões?";
 
 /**
  * Um painel por página: cada um tem séries, várias tabelas equivalentes e fichas de
@@ -60,7 +60,7 @@ export const PERGUNTA_MODULO_REDE = "Como a energia circula entre regiões e que
  */
 export const PAINEIS_REDE: { id: PainelRede; rotulo: string; caminho: string; pergunta: string }[] = [
   { id: "p028", rotulo: "Circulação de energia", caminho: "", pergunta: "Como a energia circula entre regiões?" },
-  { id: "p029", rotulo: "Balanço e exterior", caminho: "/balanco-e-exterior", pergunta: "De onde vem a diferença de energia?" },
+  { id: "p029", rotulo: "Balanço e exterior", caminho: "/balanco-e-exterior", pergunta: "As contas do balanço de energia fecham?" },
   { id: "p030", rotulo: "Restrições publicadas", caminho: "/restricoes", pergunta: "Quando há evidência publicada de limitação da rede?" },
   { id: "p031", rotulo: "Programado e verificado", caminho: "/programado", pergunta: "Quanto o fluxo divergiu do programa?" },
 ];
@@ -356,6 +356,40 @@ function numeroPorExtenso(n: number): string {
   return ["zero", "uma", "duas", "três", "quatro"][n] ?? String(n);
 }
 
+/** "o Sudeste/Centro-Oeste", "o Norte": a região com o artigo, para frases com sujeito. */
+const O_SM: Record<SubsistemaOuSin, string> = { SE: "o Sudeste/Centro-Oeste", S: "o Sul", NE: "o Nordeste", N: "o Norte", SIN: "o SIN" };
+
+/**
+ * Veredito do P028 em palavras simples: para onde a energia foi no saldo dos últimos 30 dias e se o saldo esconde energia
+ * que passou no sentido contrário. As quantidades de cada fronteira ficam em respostaCirculacao; aqui só o maior valor
+ * escondido, lido dos mesmos campos (contra_saldo_mwh).
+ */
+export function vereditoCirculacao(resumo: readonly ResumoFronteira30d[]): string {
+  const comDado = resumo.filter((r) => r.horas > 0);
+  if (!comDado.length) return "Sem fluxo publicado na janela de 30 dias.";
+  const fim = resumo.map((r) => r.fim).sort().at(-1)!;
+  const dias = Math.max(...resumo.map((r) => r.dias));
+  // quem recebeu energia de quem, no saldo da janela, na ordem em que as fronteiras aparecem
+  const porDestino = new Map<Submercado, Submercado[]>();
+  for (const r of comDado) {
+    const s = sentidoDoSaldo(r.par, r.liquido_mwh);
+    if (s) porDestino.set(s.destino, [...(porDestino.get(s.destino) ?? []), s.origem]);
+  }
+  const recebimentos = Array.from(porDestino.entries())
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([destino, origens], i) => `${O_SM[destino]} recebeu ${i === 0 ? "energia " : ""}${listaTexto(origens.map((o) => DO_SM[o]))}`);
+  const frases = [`Nos ${dias} dias até ${dataBR(fim)}, ${recebimentos.length ? recebimentos.join("; ") : "o saldo foi nulo em todas as fronteiras com fluxo publicado"}.`];
+  const escondem = comDado.filter((r) => horasContraSaldo(r) > 0);
+  if (!escondem.length) {
+    frases.push("Em nenhuma fronteira o saldo esconde energia que passou no sentido contrário.");
+  } else {
+    const maior = Math.max(...escondem.map((r) => r.contra_saldo_mwh));
+    const onde = escondem.length === 1 ? "Em uma fronteira" : `Em ${numeroPorExtenso(escondem.length)} fronteiras`;
+    frases.push(`${onde}, o saldo esconde energia que passou no sentido contrário: ${escondem.length === 1 ? "" : "até "}${mwh(maior)}.`);
+  }
+  return frases.join(" ");
+}
+
 /** Preço nas pontas, nas horas da janela de 30 dias: separação descrita, sem diagnóstico. */
 export function textoPrecos30d(resumo: readonly ResumoFronteira30d[]): string {
   const partes = resumo
@@ -367,6 +401,52 @@ export function textoPrecos30d(resumo: readonly ResumoFronteira30d[]): string {
     });
   if (!partes.length) return "Sem PLD publicado nas horas da janela.";
   return `Horas em que os PLDs das duas pontas diferiram mais de ${reais(LIMIAR_PRECOS_RS_MWH)}/MWh na mesma hora do fluxo: ${listaLonga(partes)}. É descrição da coincidência entre preço e fluxo, não diagnóstico de fronteira no limite.`;
+}
+
+/** Sentido do saldo em palavras ("do Nordeste para o Norte"); null quando o saldo é ausente ou nulo. */
+export function textoSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined): string | null {
+  const s = sentidoDoSaldo(par, liquido);
+  return s ? `${DO_SM[s.origem]} ${PARA_O[s.destino]}` : null;
+}
+
+export type MedidaFronteira30d = {
+  par: FronteiraRede;
+  /** "Saldo em 30 dias, do Nordeste para o Norte" (sem saldo: "entre Norte e Nordeste"). */
+  rotulo: string;
+  /** Módulo do saldo em MWh; null sem fluxo publicado na janela (ausência, nunca zero). */
+  valor: number | null;
+  periodo: string;
+  /** O que o saldo esconde: a energia no sentido contrário e as trocas de sentido, ou "fluxo num só sentido". */
+  nota: string;
+};
+
+/**
+ * Medidas da abertura da Rede: o saldo de cada fronteira na janela de 30 dias, em módulo e com o sentido no rótulo, e o que passou no sentido
+ * contrário. São os mesmos campos do resumo de 30 dias que alimenta o gráfico dos dois sentidos, a tabela e a exportação.
+ */
+export function medidasFronteiras30d(resumo: readonly ResumoFronteira30d[]): MedidaFronteira30d[] {
+  return FRONTEIRAS.map((par) => {
+    const r = resumo.find((x) => x.par === par);
+    if (!r || r.horas === 0) {
+      return {
+        par,
+        rotulo: `Saldo em 30 dias, ${entreFronteira(par)}`,
+        valor: null,
+        periodo: r ? `${dataBR(r.inicio)} a ${dataBR(r.fim)}` : "",
+        nota: "Sem fluxo publicado na janela.",
+      };
+    }
+    const sentido = textoSentidoSaldo(par, r.liquido_mwh);
+    const contra = horasContraSaldo(r) === 0 ? `Fluxo num só sentido nas ${num(r.horas, 0)} horas.` : `No sentido contrário: ${mwh(r.contra_saldo_mwh)}.`;
+    const trocas = r.dias_com_reversao > 0 ? ` Troca de sentido em ${num(r.dias_com_reversao, 0)} de ${num(r.dias, 0)} dias.` : "";
+    return {
+      par,
+      rotulo: `Saldo em ${plural(r.dias, "dia", "dias")}, ${sentido ?? entreFronteira(par)}`,
+      valor: Math.abs(r.liquido_mwh),
+      periodo: `${dataBR(r.inicio)} a ${dataBR(r.fim)}`,
+      nota: `${contra}${trocas}`,
+    };
+  });
 }
 
 /** Fronteira mostrada no detalhe quando nenhuma foi escolhida: a com mais energia escondida pelo saldo em 30 dias. */
@@ -924,6 +1004,13 @@ export const ROTULO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> 
   soma_sin: "Soma: intercâmbio do SIN − soma dos quatro subsistemas",
 };
 
+/** Nome curto de cada conta, para o eixo das barras (o rótulo longo, com a conta escrita, fica na tabela e na legenda sob o gráfico). */
+export const ROTULO_CURTO_IDENTIDADE: Record<IdentidadeBalanco["identidade"], string> = {
+  balanco: "Balanço interno",
+  perimetro: "Perímetro",
+  soma_sin: "Soma dos subsistemas",
+};
+
 /** As identidades de uma região, na ordem balanço interno, perímetro, soma. */
 export function identidadesDa(b: Pick<BalancoRede, "identidades">, sm: SubsistemaOuSin): IdentidadeBalanco[] {
   const ordem = { balanco: 0, perimetro: 1, soma_sin: 2 } as const;
@@ -933,6 +1020,8 @@ export function identidadesDa(b: Pick<BalancoRede, "identidades">, sm: Subsistem
 export type LinhaIdentidade = {
   id: string;
   identidade: string;
+  /** Nome curto da conta, para o eixo das barras. */
+  identidade_curta: string;
   regiao: string;
   horas: number;
   horas_fecham: number;
@@ -955,6 +1044,7 @@ export function linhasIdentidades(ids: readonly IdentidadeBalanco[]): LinhaIdent
   return ids.map((x) => ({
     id: x.id,
     identidade: ROTULO_IDENTIDADE[x.identidade],
+    identidade_curta: ROTULO_CURTO_IDENTIDADE[x.identidade],
     regiao: NOME_SM[x.sm],
     horas: x.horas,
     horas_fecham: x.horas_fecham,
@@ -981,7 +1071,7 @@ export function colunasIdentidades(b: Pick<BalancoRede, "tolerancia_mwmed" | "fa
   const tol = num(b.tolerancia_mwmed, 1);
   const [f1, f10, f100] = b.faixas_mwmed.map((f) => num(f, 0));
   return [
-    { id: "identidade", rotulo: "Identidade", tipo: "texto", categorica: true },
+    { id: "identidade", rotulo: "Conta conferida", tipo: "texto", categorica: true },
     { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
     { id: "horas", rotulo: "Horas com todas as parcelas", tipo: "numero", casas: 0 },
     { id: "horas_fecham", rotulo: `Horas que fecham (até ${tol} MWmed)`, tipo: "numero", casas: 0 },
@@ -1016,6 +1106,16 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
   const soma = ids.find((x) => x.identidade === "soma_sin");
   const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
   const frases: string[] = [];
+  // frase de leitor antes da contagem: a menor parcela de horas que fecha entre as identidades conferidas
+  const conferidas = [bal, per, soma].filter((x): x is IdentidadeBalanco => !!x && x.horas > 0);
+  if (conferidas.length) {
+    const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
+    frases.push(
+      menor === 1
+        ? `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em todas as horas conferidas.`
+        : `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas; as horas em que não fecham estão listadas abaixo.`,
+    );
+  }
   const quem = sm === "SIN" ? "o intercâmbio internacional" : sm === "S" ? "a fronteira com o Sudeste/Centro-Oeste mais Argentina e Uruguai" : "a soma das fronteiras";
   const partes: string[] = [];
   if (per) partes.push(`o intercâmbio publicado no balanço fecha com ${quem} ${fecha(per).replace(/^fecha /, "")}`);
@@ -1031,6 +1131,47 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
   }
   if (ids.some((y) => y.horas_residuo > 0)) frases.push("A fonte não informa a causa dos resíduos, e nenhuma é atribuída aqui.");
   return frases.join(" ");
+}
+
+/**
+ * Veredito do P029 em palavras simples: em quantas horas os números do balanço conferem entre si na região escolhida e o
+ * que a fonte não diz. A contagem por identidade, o período de cada resíduo e o maior valor ficam em respostaBalanco.
+ */
+export function vereditoBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia_mwmed">, sm: SubsistemaOuSin, periodo: { inicio: string; fim: string }): string {
+  const ids = identidadesDa(b, sm);
+  const conferidas = ids.filter((x) => x.horas > 0);
+  if (!conferidas.length) return "";
+  const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
+  const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
+  const confere =
+    menor === 1
+      ? "todas as horas conferidas"
+      : `pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas`;
+  // quando todas as horas com resíduo da região caem num só ano, a frase diz qual: a média de 95% ou mais sozinha esconderia onde elas estão
+  const anosComResiduo = Array.from(new Set(ids.flatMap((y) => Object.entries(y.horas_residuo_por_ano).filter(([, n]) => n > 0).map(([a]) => a))));
+  const quando = anosComResiduo.length === 1 ? ` As horas com resíduo estão todas em ${anosComResiduo[0]}.` : "";
+  const resto = ids.some((y) => y.horas_residuo > 0) ? ` Nas horas em que não conferem, a fonte não informa o motivo e o observatório não atribui causa.${quando}` : "";
+  return `${onde}, geração, carga e intercâmbio conferem entre si em ${confere}, de ${dataBR(periodo.inicio)} a ${dataBR(periodo.fim)}.${resto}`;
+}
+
+/**
+ * Onde estão as horas com resíduo do balanço interno do SIN, lido da contagem por ano e das horas extremas da gold: os anos com
+ * resíduo, o período, o maior valor e os anos cobertos em que o balanço fecha em todas as horas. Sem causa atribuída.
+ */
+export function textoMudancaBalanco(b: Pick<BalancoRede, "identidades" | "mensal">): string {
+  const x = identidadesDa(b, "SIN").find((y) => y.identidade === "balanco");
+  if (!x || x.horas === 0) return "";
+  if (x.horas_residuo === 0) return `No balanço interno do SIN, nenhuma das ${num(x.horas, 0)} horas conferidas tem resíduo.`;
+  const comResiduo = Object.entries(x.horas_residuo_por_ano)
+    .filter(([, n]) => n > 0)
+    .map(([a]) => a)
+    .sort();
+  const cobertos = Array.from(new Set(b.mensal.meses.map((m) => m.slice(0, 4)))).sort();
+  const outros = cobertos.filter((a) => !comResiduo.includes(a));
+  const quando = x.primeira_hora_residuo && x.ultima_hora_residuo ? ` (${entreDatas(x.primeira_hora_residuo, x.ultima_hora_residuo)})` : "";
+  const maior = x.maior_residuo_mwmed !== null && x.maior_residuo_em ? `; o maior foi de ${mwmed(x.maior_residuo_mwmed, 1)}, em ${horaLocal(x.maior_residuo_em)}` : "";
+  const fecha = outros.length ? ` Em ${listaTexto(outros)}, o balanço interno fecha em todas as horas conferidas.` : "";
+  return `No balanço interno do SIN, as ${num(x.horas_residuo, 0)} horas com resíduo estão em ${listaTexto(comResiduo)}${quando}${maior}.${fecha}`;
 }
 
 export type LinhaMesBalanco = {
@@ -1103,7 +1244,7 @@ export function linhasResiduoMensal(b: Pick<BalancoRede, "mensal">, sms: readonl
 
 /** Marcos das quebras metodológicas do balanço no eixo mensal. */
 export function marcosQuebras(b: Pick<BalancoRede, "quebras">): { x: string; rotulo: string }[] {
-  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD estimada passa a entrar na geração solar e na carga" : "quebra metodológica"}` }));
+  return b.quebras.map((q) => ({ x: q.dia.slice(0, 7), rotulo: `${dataBR(q.dia)}: ${q.id === "mmgd_2023" ? "MMGD" : "quebra"}` }));
 }
 
 /** Frases do achado A05 (geradas no pipeline pelos contadores), com datas no formato brasileiro. */
@@ -1195,6 +1336,27 @@ export function respostaExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais"
   return t;
 }
 
+/**
+ * Veredito do exterior em palavras simples: o saldo dos 12 meses (exportação menos importação) dos países com hora
+ * publicada e o país sem hora, dito ausente. É a soma dos mesmos campos da resposta completa e do número em destaque do
+ * painel; as quantidades de cada país ficam em respostaExterior.
+ */
+export function vereditoExterior(e: Pick<ExteriorRede, "resumo_12m" | "por_pais">): string {
+  const linhas = linhasExterior12m(e);
+  const com = linhas.filter((l) => l.horas > 0);
+  const sem = linhas.filter((l) => l.horas === 0);
+  if (!com.length) return "Nenhum país tem hora publicada de intercâmbio nos 12 meses completos mais recentes: é ausência de dado, não zero.";
+  const saldo = com.reduce((s, l) => s + (l.exportacao_mwh ?? 0) - (l.importacao_mwh ?? 0), 0);
+  const per = com[0].inicio && com[0].fim ? `De ${mesAno(com[0].inicio)} a ${mesAno(com[0].fim)}` : "Nos 12 meses completos mais recentes";
+  const paises = listaTexto(com.map((l) => `${l.id === "ARGENTINA" ? "a" : "o"} ${l.pais}`));
+  const rumo = saldo > 0 ? `exportou ${mwh(saldo)} a mais do que importou` : saldo < 0 ? `importou ${mwh(-saldo)} a mais do que exportou` : "exportou e importou a mesma energia";
+  let t = `${per}, o Brasil ${rumo} na troca com ${paises}.`;
+  if (sem.length) {
+    t += ` ${listaTexto(sem.map((l) => `${l.id === "ARGENTINA" ? "A" : "O"} ${l.pais}`))} ${sem.length === 1 ? "não tem" : "não têm"} hora publicada no período: ausência de dado, não zero.`;
+  }
+  return t;
+}
+
 export type LinhaItaipu = { id: string; m: string; total_mwh: number | null; brasil_mwh: number | null; nao_brasil_mwh: number | null; horas: number | null };
 
 export function linhasItaipu(e: Pick<ExteriorRede, "meses" | "itaipu">): LinhaItaipu[] {
@@ -1245,8 +1407,38 @@ export function fluxoEscolhido(atls: Pick<RestricoesRede["atls"], "fluxos">, ped
   return atls.fluxos.find((f) => f.fluxo === pedido) ?? fluxosAtivos(atls)[0] ?? atls.fluxos[0] ?? null;
 }
 
+/** Nome do fluxo como o leitor o entende: a definição conferida em documento público do ONS; sem ela, a sigla do ONS. */
+export function nomeFluxo(f: Pick<FluxoAtls, "fluxo" | "definicao">): string {
+  return f.definicao ?? f.fluxo;
+}
+
+export type MedidasRestricoes = {
+  /** Fluxos publicados no último mês que passaram alguma hora acima do limite nos 12 meses, e o total de publicados. Nulo sem fluxo publicado. */
+  fluxosAcima: { valor: number; de: number; periodo: string } | null;
+  /** O fluxo publicado com mais horas acima do limite nos 12 meses (a ficha de prova existe para os publicados no último mês). Nulo sem fluxo. */
+  maisHoras: { fluxo: string; nome: string; horas: number; periodo: string } | null;
+};
+
+/**
+ * Medidas da abertura do P030: quantos dos fluxos acompanhados passaram algum tempo acima do limite estabelecido nos 12 meses e qual teve
+ * mais horas. São os mesmos campos do arquivo do ATLS que alimentam o gráfico de barras, a tabela e a exportação (fluxosAtivos).
+ */
+export function medidasRestricoes(r: Pick<RestricoesRede, "atls">): MedidasRestricoes {
+  const ativos = fluxosAtivos(r.atls);
+  const janela = ativos[0]?.ultimos_12_meses ?? null;
+  if (!ativos.length || !janela) return { fluxosAcima: null, maisHoras: null };
+  const periodo = `${mesAno(janela.inicio)} a ${mesAno(janela.fim)}`;
+  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  return {
+    fluxosAcima: { valor: com.length, de: ativos.length, periodo },
+    maisHoras: { fluxo: ativos[0].fluxo, nome: nomeFluxo(ativos[0]), horas: janela.horas_violacao, periodo },
+  };
+}
+
 export type LinhaAtls = {
   id: string;
+  /** Nome legível (a definição conferida; sem ela, a própria sigla). */
+  nome: string;
   fluxo: string;
   definicao: string;
   publicado_no_ultimo_mes: string;
@@ -1264,6 +1456,7 @@ export type LinhaAtls = {
 export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
   return fluxos.map((f) => ({
     id: f.fluxo,
+    nome: nomeFluxo(f),
     fluxo: f.fluxo,
     definicao: f.definicao ?? "sem definição em documento público conferido",
     publicado_no_ultimo_mes: f.ativo ? "sim" : "não",
@@ -1280,7 +1473,8 @@ export function linhasAtls(fluxos: readonly FluxoAtls[]): LinhaAtls[] {
 }
 
 export const COLUNAS_ATLS: ColunaTabela[] = [
-  { id: "fluxo", rotulo: "Fluxo (sigla do ONS)", tipo: "texto" },
+  { id: "nome", rotulo: "Fluxo", tipo: "texto" },
+  { id: "fluxo", rotulo: "Sigla do ONS", tipo: "texto", nivel: "analisar" },
   { id: "definicao", rotulo: "Definição conferida", tipo: "texto" },
   { id: "publicado_no_ultimo_mes", rotulo: "Publicado no último mês", tipo: "texto", categorica: true },
   { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "data" },
@@ -1334,6 +1528,27 @@ export function respostaRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoe
     );
   }
   frases.push("Os limites operativos e as suas vigências não são públicos: nenhuma utilização da rede é calculada.");
+  return frases.join(" ");
+}
+
+/**
+ * Veredito do P030 em palavras simples: em quantos dos fluxos acompanhados o tempo acima do limite foi diferente de zero e
+ * quantos cortes de carga o ONS registrou, com o limite de leitura (os limites de cada fronteira não são públicos). O tempo de
+ * cada fluxo, os períodos exatos e a energia não suprida ficam em respostaRestricoes.
+ */
+export function vereditoRestricoes(r: Pick<RestricoesRede, "atls" | "interrupcoes">): string {
+  const ativos = fluxosAtivos(r.atls);
+  const com = ativos.filter((f) => (f.ultimos_12_meses?.horas_violacao ?? 0) > 0);
+  const u = r.interrupcoes.ultimos_12_meses;
+  const frases: string[] = [];
+  if (ativos.length && ativos[0].ultimos_12_meses) {
+    frases.push(`Em 12 meses, ${num(com.length, 0)} dos ${num(ativos.length, 0)} fluxos acompanhados pelo ONS passaram algum tempo acima do limite estabelecido${u.inicio && u.fim ? `, e houve ${plural(u.registros, "corte de carga", "cortes de carga")}` : ""}.`);
+  } else if (u.inicio && u.fim) {
+    frases.push(`Em 12 meses, o ONS registrou ${plural(u.registros, "corte de carga", "cortes de carga")}; o indicador de tempo acima do limite não tem fluxo publicado no último mês.`);
+  } else {
+    frases.push("Não há evidência publicada de limitação na janela de 12 meses desta publicação.");
+  }
+  frases.push("Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite.");
   return frases.join(" ");
 }
 
@@ -1482,6 +1697,52 @@ export function linhasDistribuicao(p: Pick<ProgramadoRede, "distribuicao">, base
   });
 }
 
+export type MedidasProgramado = {
+  par: ParProgramado;
+  nome: string;
+  inicio: string;
+  fim: string;
+  /** Horas com programado e verificado comparáveis na base escolhida. */
+  horas: number;
+  desvio_abs_medio_mwmed: number;
+  p50_abs_mwmed: number;
+  /** Limiar material publicado (MWmed) e as horas com desvio nesse limiar ou acima. */
+  limiar_mwmed: number;
+  horas_materiais: number | null;
+  /** Horas em que verificado e programado correram em sentidos opostos, os dois acima do limiar de zero. */
+  horas_inversao: number;
+  /** Dias rotulados por programa repetido que a base "sem" exclui (zero na base "com"). */
+  dias_excluidos: number;
+};
+
+/**
+ * Medidas da abertura do P031 para o par e a base escolhidos: o desvio absoluto médio e a mediana, as horas com desvio material e as horas
+ * no sentido oposto ao programa. São os mesmos campos da distribuição (distribuicaoDe) que alimentam a resposta, a faixa de desvios, a
+ * tabela e a exportação. Nulo quando o par não tem horas comparáveis.
+ */
+export function medidasProgramado(
+  p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed">,
+  par: ParProgramado,
+  base: BaseDesvio,
+): MedidasProgramado | null {
+  const d = distribuicaoDe(p, par, base);
+  if (!d) return null;
+  const completa = p.distribuicao[par];
+  return {
+    par,
+    nome: nomePar(par),
+    inicio: d.inicio,
+    fim: d.fim,
+    horas: d.horas,
+    desvio_abs_medio_mwmed: d.desvio_abs_medio_mwmed,
+    p50_abs_mwmed: d.p50_abs_mwmed,
+    limiar_mwmed: p.limiar_material_mwmed,
+    horas_materiais: d.horas_materiais[String(p.limiar_material_mwmed) as "1000"] ?? null,
+    horas_inversao: d.horas_inversao,
+    dias_excluidos: base === "sem" ? (completa?.dias_rotulados ?? 0) : 0,
+  };
+}
+
 /** Colunas da distribuição; os rótulos das contagens usam os limiares publicados na gold. */
 export function colunasDistribuicao(p: Pick<ProgramadoRede, "limiar_material_mwmed">): ColunaTabela[] {
   const rotulo = (l: number) => `Horas com desvio de ${num(l, 0)} MWmed ou mais${l === p.limiar_material_mwmed ? " (materiais)" : ""}`;
@@ -1529,6 +1790,20 @@ export function respostaProgramado(p: Pick<ProgramadoRede, "distribuicao" | "lim
     else if (completa.sem_dias_rotulados) frases.push(`Sem ${rot === 1 ? "o dia rotulado" : "os dias rotulados"} por programa repetido (${listaTexto(dias)}), a média cai para ${mwmed(completa.sem_dias_rotulados.desvio_abs_medio_mwmed, 1)}.`);
   }
   return frases.join(" ");
+}
+
+/**
+ * Veredito do P031 em palavras simples: quanto o fluxo medido se afastou do programa, em média, para o par e a base
+ * escolhidos, ao lado do tamanho do programa (a mediana do programado em módulo) quando ele existe. Mediana, percentis,
+ * horas acima do limiar e horas no sentido oposto ficam em respostaProgramado. Desvio não é falha.
+ */
+export function vereditoProgramado(p: Pick<ProgramadoRede, "distribuicao" | "limiar_material_mwmed" | "programa_repetido">, par: ParProgramado, base: BaseDesvio): string {
+  const d = distribuicaoDe(p, par, base);
+  if (!d) return `Sem programado e verificado comparáveis para ${nomePar(par)}.`;
+  const nome = ehFronteira(par) ? `na fronteira ${nomeFronteira(par)}` : `no intercâmbio com ${par === "ARGENTINA" ? "a Argentina" : "o Uruguai"}`;
+  const tamanho = d.programado_abs_mediano_mwmed > 0 ? `O programa, em módulo, tem mediana de ${mwmed(d.programado_abs_mediano_mwmed, 0)}.` : "A mediana do programa, em módulo, é zero.";
+  const semRotulados = base === "sem" && ehFronteira(par) && p.distribuicao[par] && p.distribuicao[par]!.dias_rotulados > 0 ? ", sem os dias rotulados por programa repetido" : "";
+  return `Desde ${dataBR(d.inicio)}, ${nome}, o fluxo medido se afastou do programado em ${mwmed(d.desvio_abs_medio_mwmed, 1)} por hora, em média${semRotulados}. ${tamanho} Desvio não é falha; a fonte não informa o motivo.`;
 }
 
 export type LinhaDiaProgramado = {

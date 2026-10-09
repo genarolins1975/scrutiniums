@@ -8,7 +8,7 @@ import PerdasComposicaoPage from "@/app/setor-eletrico/perdas/composicao/page";
 import PerdasRegulatorioPage from "@/app/setor-eletrico/perdas/regulatorio/page";
 import PerdasCustoContextoPage from "@/app/setor-eletrico/perdas/custo-e-contexto/page";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { ReferenciaPerdas } from "@/components/energia/PerdasPainel";
+import { PERGUNTA_ABERTURA, PERGUNTA_COMPOSICAO, PERGUNTA_CUSTO, PERGUNTA_REGULATORIO, ReferenciaPerdas } from "@/components/energia/PerdasPainel";
 import { CONCEITOS as CONCEITOS_PERDAS } from "@/lib/energia/conteudo/conceitos-perdas";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { gerarCsv } from "@/lib/energia/tabela";
@@ -415,10 +415,11 @@ describe("textos derivados dos números", () => {
     expect(c).toContain("Em 2025, 18 das 51 concessionárias válidas publicaram a perda técnica nos 12 meses (32,6% da energia injetada); nelas, a técnica foi 7,16% da energia injetada.");
     expect(c).toContain("Nas mesmas 16 concessionárias de 2023 a 2025, a não técnica passou de 14,35% para 15,01% do mercado de baixa tensão.");
     const reg = linhasRegulatorio(g.distribuidoras);
-    const r = respostaRegulatorio(reg, true);
-    expect(r).toContain("não pode ser medida");
+    const r = respostaRegulatorio(reg);
+    // o aviso de bloqueio saiu da resposta: a caixa da página o diz uma vez só (r8)
+    expect(r).not.toContain("não pode ser medida");
     expect(r).toContain(`em ${reg.length} distribuidoras`);
-    expect(respostaRegulatorio([], false)).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
+    expect(respostaRegulatorio([])).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
     const custo = linhasCusto(g.distribuidoras);
     const enc = custo.filter((l) => l.situacao === "vigencia_encerrada").length;
     const encAtivas = g.distribuidoras.filter((d) => d.ativa && d.tarifa?.situacao === "vigencia_encerrada").length;
@@ -486,26 +487,47 @@ describe("páginas renderizadas no servidor", () => {
   // só o conteúdo da página (o cabeçalho do observatório lista outros módulos, alguns em integração)
   const conteudo = (h: string) => h.slice(h.indexOf('id="conteudo"')).replace(/<[^>]+>/g, " ");
 
-  it("renderizam sem erro, cada uma com a pergunta do painel como título e a resposta derivada", () => {
-    const esperado: Record<keyof typeof paginas, { ids: string[]; perguntas: string[] }> = {
-      mapa: { ids: ["painel-mapa", "painel-evolucao"], perguntas: ["Onde estão as perdas e como evoluíram?", "Como a taxa de perdas das concessionárias evoluiu desde 2003?"] },
-      composicao: { ids: ["painel-composicao"], perguntas: ["Qual parte das perdas é técnica e qual é não técnica?"] },
-      regulatorio: { ids: ["painel-regulatorio"], perguntas: ["Quanto o realizado diverge da referência regulatória?"] },
-      custo: { ids: ["painel-custo", "painel-contexto"], perguntas: ["Qual é a dimensão econômica das perdas na tarifa?", "Que características das áreas aparecem associadas às perdas?"] },
+  it("renderizam sem erro, cada uma com a pergunta da página no título, o título próprio da primeira figura e a resposta derivada", () => {
+    // redesenho: o título da página (h1) é a pergunta da página, com no máximo nove palavras; o título do painel é o da primeira figura e não o repete
+    const esperado: Record<keyof typeof paginas, { h1: string; ids: string[]; perguntas: string[] }> = {
+      mapa: {
+        h1: PERGUNTA_ABERTURA,
+        ids: ["painel-mapa", "painel-evolucao"],
+        perguntas: ["Como variam as perdas entre as distribuidoras?", "Como a taxa de perdas das concessionárias evoluiu desde 2003?"],
+      },
+      composicao: { h1: PERGUNTA_COMPOSICAO, ids: ["painel-composicao"], perguntas: ["A perda de cada distribuidora dividida em técnica e não técnica"] },
+      regulatorio: { h1: PERGUNTA_REGULATORIO, ids: ["painel-regulatorio"], perguntas: ["O percentual técnico de cada distribuidora, trecho a trecho"] },
+      custo: {
+        h1: PERGUNTA_CUSTO,
+        ids: ["painel-custo", "painel-contexto"],
+        perguntas: ["Quanto da tarifa residencial remunera as perdas?", "Que características das áreas aparecem associadas às perdas?"],
+      },
     };
     for (const [k, h] of Object.entries(paginas) as [keyof typeof paginas, string][]) {
       for (const id of esperado[k].ids) expect(h, `${k} ${id}`).toContain(`id="${id}"`);
       for (const p of esperado[k].perguntas) expect(h, `${k} ${p}`).toContain(p);
-      // navegação entre os quatro painéis, com a página atual marcada
-      expect(h).toContain('aria-label="Painéis do módulo de perdas"');
-      expect((h.match(/aria-current="page"/g) ?? []).length, k).toBeGreaterThanOrEqual(2);
+      const h1 = (h.match(/<h1[^>]*>([^<]*)<\/h1>/) ?? [])[1];
+      expect(h1, k).toBe(esperado[k].h1);
+      expect(h1.trim().split(/\s+/).length, `${k}: título de 5 a 9 palavras`).toBeGreaterThanOrEqual(5);
+      expect(h1.trim().split(/\s+/).length, `${k}: título de 5 a 9 palavras`).toBeLessThanOrEqual(9);
+      for (const p of esperado[k].perguntas) expect(p, `${k}: o painel não repete o título da página`).not.toBe(esperado[k].h1);
+      // uma navegação local por página: capítulos na abertura, faixa de páginas irmãs (com a atual marcada) nas filhas, nunca as duas
+      if (k === "mapa") {
+        expect(h).toContain('data-navegacao-local="capitulos"');
+        expect(h).not.toContain('data-navegacao-local="faixa"');
+      } else {
+        expect(h).toContain('aria-label="Painéis do módulo de perdas"');
+        expect(h).toContain('data-navegacao-local="faixa"');
+        expect(h).not.toContain('data-navegacao-local="capitulos"');
+        expect((h.match(/aria-current="page"/g) ?? []).length, k).toBeGreaterThanOrEqual(2);
+      }
       expect(h, k).toContain('id="auditoria"');
     }
     expect(paginas.mapa).toContain('data-resposta="geral"');
     expect(paginas.mapa).toContain('data-resposta="mapa"');
     expect(conteudo(paginas.mapa)).toContain(respostaGeral(g).slice(0, 80));
     expect(conteudo(paginas.composicao)).toContain(respostaComposicao(g).slice(0, 80));
-    expect(conteudo(paginas.regulatorio)).toContain("não pode ser medida");
+    expect(conteudo(paginas.regulatorio)).toContain("recusaram o acesso do observatório");
     expect(conteudo(paginas.custo)).toContain(respostaAssociacao(g.associacao).slice(0, 60));
   });
 
@@ -523,7 +545,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(conteudo(paginas.composicao)).toContain("Comprove");
     expect(paginas.regulatorio).toContain('data-bloqueio="regulatorio"');
     expect(paginas.custo).toContain('data-bloqueio="custo-total"');
-    expect(conteudo(paginas.custo)).toContain("Comprove o ρ da taxa de perdas totais");
+    expect(conteudo(paginas.custo)).toContain("Comprove a associação da taxa de perdas totais com a renda");
     for (const [k, h] of Object.entries(paginas)) {
       expect(conteudo(h), k).toContain("Próxima pergunta");
       expect(conteudo(h), k).toContain("Copiar link deste painel");
@@ -610,7 +632,7 @@ describe("revisão de interface: anos, ligações e ausência", () => {
     expect(marcaLeiauteSeparacao(g.nacional, "pnt_bt")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 31 de 51 com a separação fechando" }]);
     // contagens publicadas no lugar de "cerca de metade"
     expect(fraseCoberturaSeparacao(g.nacional, ref)).toBe(
-      "em 2023, 48 de 50 concessionárias válidas publicaram a técnica nos 12 meses e 46 tiveram a separação fechando; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
+      "em 2023, 48 de 50 concessionárias válidas entram na soma da técnica e 46, na da não técnica; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
     );
     // o texto da página diz as contagens; "cerca de metade" só resta na limitação escrita pelo pipeline na gold
     const comp = paginas["/setor-eletrico/perdas/composicao"].replace(/<[^>]+>/g, "");
@@ -652,9 +674,9 @@ describe("revisão de interface: anos, ligações e ausência", () => {
     }
   });
 
-  it("o bloqueio regulatório descreve acesso recusado, não ausência de publicação", () => {
-    const r = respostaRegulatorio(linhasRegulatorio(g.distribuidoras), true);
-    expect(r).toContain("recusaram o acesso automatizado");
-    expect(r).not.toContain("a ANEEL não publica");
+  it("o bloqueio regulatório descreve acesso recusado, não ausência de publicação, e aparece uma vez só no texto do leitor", () => {
+    const texto = renderToStaticMarkup(createElement(PerdasRegulatorioPage)).replace(/<[^>]+>/g, " ");
+    expect((texto.match(/recusaram/g) ?? []).length).toBe(1);
+    expect(texto).not.toContain("a ANEEL não publica");
   });
 });

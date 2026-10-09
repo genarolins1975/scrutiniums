@@ -5,13 +5,14 @@ de arquivos pda-download.ccee.org.br e o site www.ccee.org.br respondem HTTP 403
 "Acesso bloqueado" a pedidos feitos com o curl (00:11 e 00:38 UTC), e responderam ao cliente
 HTTP do próprio pipeline (pipeline.common.http_get e http_download, urllib da biblioteca
 padrão, User-Agent do projeto) no mesmo intervalo (00:35 a 00:45 UTC). Nada foi alterado para
-contornar o bloqueio. Ainda assim, a orientação recebida para este ambiente é que a CCEE
-responde 403 pelo firewall da origem e que o bloqueio não deve ser contornado: usar um cliente
-que por acaso passa pelo firewall é uma decisão que cabe ao responsável, não ao coletor. Por
-isso, desde 01/10/2026 nenhuma requisição à CCEE sai deste módulo sem a variável de ambiente
-ENERGIA_CCEE_COLETA=1 (ver `coleta_autorizada`); sem ela, o módulo só relê o que já está no
-bronze (sem rede) e a gold declara a pendência de decisão. As capturas feitas em 01/10/2026
-continuam no bronze, com sha256, e são identificadas na gold (`acesso_ccee`).
+contornar o bloqueio. Usar um cliente que passa pelo firewall era decisão do responsável, não
+do coletor: de 01/10 a 06/10/2026 ela ficou pendente e a gold declarou a pendência. Em
+06/10/2026 o responsável autorizou a coleta com o cliente do pipeline (User-Agent do projeto,
+sem disfarce de navegador), neste ambiente e no GitHub Actions (`DECISAO_ACESSO`). O portão
+técnico continua: nenhuma requisição à CCEE sai deste módulo sem a variável de ambiente
+ENERGIA_CCEE_COLETA=1 (ver `coleta_autorizada`), definida no passo do pipeline em
+atualizar-energia.yml; sem ela, o módulo só relê o que já está no bronze (sem rede). Todas as
+capturas ficam no bronze, com sha256, e são identificadas na gold (`acesso_ccee`).
 
 Esquema conferido na chegada e falha fechada: cada conjunto declara as colunas esperadas,
 lidas do cabeçalho real dos arquivos e conferidas contra a descrição de cada campo nos
@@ -44,10 +45,23 @@ VERSAO_LEITOR = "ccee-mercado-1"
 # Variável que autoriza requisições à CCEE a partir do ambiente em que o pipeline roda. Sem ela
 # (valor "1"), coleta e coleta_infomercado não fazem nenhuma requisição e só relêem o bronze.
 VAR_AUTORIZACAO = "ENERGIA_CCEE_COLETA"
-PENDENCIA_ACESSO = ("Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente "
-                    "do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados "
-                    "aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o "
-                    "responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).")
+# Decisão do responsável sobre o acesso (registrada aqui, com data, e publicada na gold).
+DECISAO_ACESSO = {
+    "situacao": "autorizada",
+    "pergunta": "A coleta dos conjuntos abertos e do InfoMercado da CCEE pelo cliente HTTP do pipeline (sem disfarce de navegador), "
+                "quando o curl recebe 403 'Acesso bloqueado' do firewall da origem, é aceitável? Se sim, a partir deste ambiente ou só no GitHub Actions?",
+    "registrada_em": "2026-10-01",
+    "decidida_em": "2026-10-06",
+    "resposta": "Autorizada pelo responsável em 06/10/2026, com o cliente do pipeline (urllib, User-Agent do projeto, sem cabeçalho de "
+                "navegador), a partir do ambiente de desenvolvimento e do GitHub Actions.",
+    "efeito": "Os painéis P032 a P035 deixam de ficar pendentes de decisão: o estado de cada um é o do critério de aceite. A coleta só "
+              "acontece onde a variável ENERGIA_CCEE_COLETA=1 está definida (passo do pipeline em atualizar-energia.yml); sem ela, o "
+              "módulo relê o bronze, sem rede.",
+}
+NOTA_ACESSO = ("Acesso à CCEE: o portal responde HTTP 403 ('Acesso bloqueado') ao curl e responde ao cliente do pipeline (User-Agent do "
+               "projeto, sem disfarce de navegador); a coleta com esse cliente foi autorizada pelo responsável em 06/10/2026.")
+MOTIVO_SUSPENSA = ("Coleta não habilitada neste ambiente (variável ENERGIA_CCEE_COLETA ausente): só o bronze já capturado é relido, sem rede. "
+                   "A coleta está autorizada pelo responsável desde 06/10/2026 nos ambientes que definem a variável.")
 
 
 def coleta_autorizada(env=None):
@@ -556,7 +570,7 @@ def coleta(con, baixar_meta=http_get, baixador=http_download, pausa_s=0.5, max_i
     `coletas` e status. Sem autorização explícita (`coleta_autorizada`), não faz nenhuma
     requisição à CCEE: só relê o bronze (`reprocessa_bronze`)."""
     if not (coleta_autorizada() if autorizada is None else autorizada):
-        return {"ok": True, "coleta": "suspensa", "motivo": PENDENCIA_ACESSO,
+        return {"ok": True, "coleta": "suspensa", "motivo": MOTIVO_SUSPENSA,
                 "reprocessamento_do_bronze": reprocessa_bronze(con, nomes)}
     status = {}
     for nome, spec in CONJUNTOS.items():
@@ -834,7 +848,7 @@ def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bron
     de cada PDF é anual. Nunca lança: falha vira registro em `coletas`. Sem autorização
     explícita (`coleta_autorizada`), não faz requisição à CCEE e só relê o bronze."""
     if not (coleta_autorizada() if autorizada is None else autorizada):
-        return {"ok": True, "coleta": "suspensa", "motivo": PENDENCIA_ACESSO,
+        return {"ok": True, "coleta": "suspensa", "motivo": MOTIVO_SUSPENSA,
                 "reprocessamento_do_bronze": reprocessa_infomercado(con, extrai_texto)}
     status = {"ok": True, "edicoes": {}}
     edicoes = [dict(it, publicado_em=None) for it in INFOMERCADO]

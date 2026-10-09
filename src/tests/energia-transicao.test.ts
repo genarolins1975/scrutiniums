@@ -251,7 +251,7 @@ describe("P063: gráfico, tabela e exportação usam as mesmas linhas", () => {
   });
 
   it("referência das barras: W/hab do Brasil publicado; sem referência inventada nas outras medidas", () => {
-    expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, "whab")).toEqual([{ valor: G.mmgd.resumo.w_por_habitante_brasil, rotulo: `Brasil: ${num(G.mmgd.resumo.w_por_habitante_brasil, 1)} W/hab` }]);
+    expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, "whab")).toEqual([{ valor: G.mmgd.resumo.w_por_habitante_brasil, rotulo: "Brasil" }]);
     for (const med of MEDIDAS_UF.filter((x) => x !== "whab")) expect(referenciaUf(G.mmgd.resumo.w_por_habitante_brasil, med)).toEqual([]);
     expect(referenciaUf(null, "whab")).toEqual([]);
   });
@@ -597,7 +597,8 @@ describe("páginas renderizadas no servidor", () => {
       expect(c.h, c.id).toContain(c.resposta.slice(0, 30));
     }
     for (const [k, h] of [["p063", html.p063], ["ons", html.ons], ["p064", html.p064]] as const) {
-      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel"]) {
+      // o rodapé do painel é o SeguirPainel: "Baixar os dados (N arquivos)", "Copiar link deste painel" e "Próxima pergunta"
+      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados"]) {
         expect(h, `${k}: ${parte}`).toContain(parte);
       }
       expect((h.match(/Comprove este número/g) ?? []).length, k).toBeGreaterThanOrEqual(k === "ons" ? 1 : 2);
@@ -646,12 +647,47 @@ describe("páginas renderizadas no servidor", () => {
     }
   });
 
-  it("todo número de destaque tem 'Comprove este número'", () => {
-    const MARCA = 'class="relative flex h-full flex-col border border-linha bg-superficie p-5"';
+  it("todo número de destaque tem 'Comprove este número' ou declara ausência; só as medidas derivadas sem evidência na gold ficam numa lista explícita", () => {
+    // A medida da abertura é o Numero variante="faixa" (data-metrica), no lugar do cartão antigo. A gold publica evidência só para parte
+    // delas (o cadastro, a estimativa do mês e o fator médio do ano e do mês); as outras são derivadas das mesmas tabelas (um ano
+    // anterior para comparar, as conexões do ano, a participação e a potência por habitante) e entram aqui por nome, para que um número
+    // novo sem prova falhe o teste.
+    const SEM_FICHA: Record<string, RegExp[]> = {
+      sintese: [/^MMGD conectada em \d{4}$/],
+      p063: [/^Potência conectada em \d{4}$/, /^Potência por habitante no Brasil$/],
+      ons: [/^Participação na carga global do SIN$/, /^MMGD estimada em \d{4}$/],
+      p064: [/^Fator médio anual de \d{4}$/, /^Fator médio de [a-z]{3}\/\d{4}$/],
+    };
+    // grupos de medida com os <div> balanceados: o gatilho da prova e a ausência ficam dentro do próprio grupo
+    const grupos = (h: string) => {
+      const saida: { rotulo: string; html: string }[] = [];
+      const re = /<div role="group" aria-label="([^"]*)" data-metrica=""[^>]*>/g;
+      let m: RegExpExecArray | null;
+      while ((m = re.exec(h))) {
+        let prof = 0;
+        let fim = h.length;
+        for (const t of Array.from(h.slice(m.index).matchAll(/<div\b|<\/div>/g))) {
+          prof += t[0] === "</div>" ? -1 : 1;
+          if (prof === 0) {
+            fim = m.index + t.index! + t[0].length;
+            break;
+          }
+        }
+        saida.push({ rotulo: m[1], html: h.slice(m.index, fim) });
+      }
+      return saida;
+    };
     for (const [k, h] of Object.entries(html)) {
-      const partes = h.split(MARCA).slice(1);
-      expect(partes.length, k).toBeGreaterThan(0);
-      for (const p of partes) expect(p.slice(0, 6000).includes("Comprove este número"), k).toBe(true);
+      const g = grupos(h);
+      expect(g.length, k).toBeGreaterThan(0);
+      let comFicha = 0;
+      for (const { rotulo, html: trecho } of g) {
+        const prova = trecho.includes("Comprove este número");
+        if (prova) comFicha++;
+        const permitido = (SEM_FICHA[k] ?? []).some((r) => r.test(rotulo));
+        expect(prova || trecho.includes("sem dado") || permitido, `${k}: ${rotulo}`).toBe(true);
+      }
+      expect(comFicha, k).toBeGreaterThan(0);
     }
   });
 

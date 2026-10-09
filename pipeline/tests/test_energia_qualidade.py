@@ -688,6 +688,80 @@ class ControleNumCon(unittest.TestCase):
         self.assertNotIn("2015-12", limpo["ucs_total"])
 
 
+class CoberturaFec(unittest.TestCase):
+    """Defeito real: em jun/2025 a ANEEL não publicou a linha FEC dos conjuntos da ELEKTRO (só FECIP e FECIND);
+    o FEC mensal da distribuidora vinha de 22.562 de 3.036.447 UCs (0,74%) e entrava no anual (3,25 contra 3,38
+    refeito pelas parcelas). Dois meses de 27.073 distribuidoras-mês ficam abaixo de 99% (esse e CEA nov/2007, 98,1%)."""
+
+    def setUp(self):
+        meses = [f"2025-{m:02d}" for m in range(1, 13)]
+        self.mensal = {
+            "dec": {r: 0.5 for r in meses},
+            "fec": {r: 0.25 for r in meses},
+            "ucs": {r: 3036447.0 for r in meses},
+            "ucs_fec": {r: 3036447.0 for r in meses},
+            "ucs_total": {r: 3036447.0 for r in meses},
+            "nconj_total": {r: 130 for r in meses},
+        }
+        self.mensal["fec"]["2025-06"] = 0.1231
+        self.mensal["ucs_fec"]["2025-06"] = 22562.0
+
+    def test_marca_so_o_mes_de_cobertura_baixa(self):
+        baixa = fq.controle_cobertura_fec(self.mensal["ucs_fec"], self.mensal["ucs_total"])
+        self.assertEqual(list(baixa), ["2025-06"])
+        self.assertIn("0,74%", baixa["2025-06"])
+        self.assertIn("22562 de 3036447", baixa["2025-06"])
+
+    def test_cobertura_de_98_por_cento_nao_e_marcada(self):
+        # CEA, nov/2007: 98,06% das UCs; o mínimo de 95% marca só o caso extremo
+        self.assertEqual(fq.controle_cobertura_fec({"2007-11": 980.6}, {"2007-11": 1000.0}), {})
+        self.assertEqual(list(fq.controle_cobertura_fec({"2007-11": 940.0}, {"2007-11": 1000.0})), ["2007-11"])
+
+    def test_ausencia_nao_vira_cobertura_baixa(self):
+        # sem UCs do mês ou sem denominador do FEC o controle não opina (ausência não é cobertura zero)
+        self.assertEqual(fq.controle_cobertura_fec({}, {"2025-01": 1000.0}), {})
+        self.assertEqual(fq.controle_cobertura_fec({"2025-01": 0.0}, {"2025-01": 0.0}), {})
+
+    def test_mes_marcado_sai_do_fec_anual_e_mantem_o_dec(self):
+        baixa = fq.controle_cobertura_fec(self.mensal["ucs_fec"], self.mensal["ucs_total"])
+        limpo = q.aplica_controle_fec(self.mensal, baixa)
+        self.assertNotIn("2025-06", limpo["fec"])
+        self.assertNotIn("2025-06", limpo["ucs_fec"])
+        self.assertIn("2025-06", limpo["dec"])
+        self.assertEqual(limpo["ucs"]["2025-06"], 3036447.0)
+        self.assertIn("2025-06", self.mensal["fec"])             # a entrada não é alterada
+        sem = q.anual_de_mensal(self.mensal, 2025)
+        com = q.anual_de_mensal(limpo, 2025)
+        self.assertAlmostEqual(sem["fec"], 0.25 * 11 + 0.1231)   # antes: anual com o mês parcial somado como completo
+        self.assertIsNone(com["fec"])                            # depois: sem soma parcial rotulada como ano
+        self.assertAlmostEqual(com["dec"], 6.0)                  # o DEC não depende do controle do FEC
+        self.assertEqual(com["meses"], 12)
+
+    def test_mes_marcado_fica_fora_do_fec_do_brasil(self):
+        baixa = fq.controle_cobertura_fec(self.mensal["ucs_fec"], self.mensal["ucs_total"])
+        outra = {k: {r: v for r, v in d.items()} for k, d in self.mensal.items()}
+        outra["fec"]["2025-06"] = 0.5
+        outra["ucs_fec"]["2025-06"] = 3036447.0                    # a outra distribuidora tem cobertura plena em junho
+        br = q.agrega_de_distribuidoras({"elektro": q.aplica_controle_fec(self.mensal, baixa), "outra": outra})
+        self.assertAlmostEqual(br["fec"]["2025-06"], 0.5)        # só a outra distribuidora pesa no FEC de junho
+        self.assertAlmostEqual(br["dec"]["2025-06"], 0.5)        # o DEC de junho continua com as duas
+        self.assertEqual(br["ucs"]["2025-06"], 2 * 3036447.0)
+        self.assertEqual(br["ucs_fec"]["2025-06"], 3036447.0)
+
+    def test_controle_aparece_nos_controles_da_gold(self):
+        def controles(baixa):
+            return q.controles_adicionais(
+                identidade=[0.0], ucs_iguais=True, numcon_suspeito={}, sigla=lambda c14: "ELEKTRO", nie_maior={}, sem_grupo={},
+                parcelas={}, correspondencia={"cadastro_ibge": 0}, ico_acima_100=[], quebras=[], fec_baixa=baixa)
+        nome = "Cobertura do FEC por distribuidora e mês"
+        com = next(x for x in controles({("02302100000106", "2025-06"): "FEC publicado para 0,74% das UCs do mês (22562 de 3036447)"})
+                   if x["nome"].startswith(nome))
+        sem = next(x for x in controles({}) if x["nome"].startswith(nome))
+        self.assertEqual(com["resultado"], "ressalva")
+        self.assertIn("ELEKTRO 2025-06", com["detalhe"])
+        self.assertEqual(sem["resultado"], "aprovado")
+
+
 class IdentidadeBrasil(unittest.TestCase):
     def test_agregado_das_distribuidoras_igual_ao_dos_conjuntos(self):
         # caminho 1: agregação direta dos conjuntos (a da importação); caminho 2: a partir do

@@ -213,10 +213,10 @@ describe("cabeçalho renderizado no servidor", () => {
     }
   });
 
-  it("nas páginas do PLD a faixa mostra previsões e o mercado, com o módulo em integração marcado em texto", () => {
+  it("nas páginas do PLD a faixa mostra previsões e o mercado, já integrado (sem a marca de módulo em integração)", () => {
     const f = faixa(html("pld"));
     expect(ancoras(f).map(hrefDe)).toEqual(["/setor-eletrico/pld", "/setor-eletrico/pld/modelos", "/setor-eletrico/mercado"]);
-    expect(f).toContain('<span class="sr-only">(em integração)</span>');
+    expect(f).not.toContain("(em integração)");
   });
 
   it("página fora do registro: sem faixa e sem aria-current, mas com o menu completo", () => {

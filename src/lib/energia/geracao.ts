@@ -15,7 +15,7 @@
  */
 import { dataBR, horaLocal, mesAno, num, plural } from "./formato";
 import type { ColunaTabela, LinhaTabela, ValorCelula } from "./tabela";
-import type { Submercado } from "./tipos";
+import type { Natureza, Submercado } from "./tipos";
 import type {
   A11,
   AnoSin,
@@ -64,10 +64,10 @@ export const PERGUNTA_MODULO_GERACAO = "De onde vem a eletricidade e quais fonte
  */
 /** `publicado`: a rota do painel já existe no app; painel não publicado aparece como "em preparação", nunca como link. */
 export const PAINEIS_GERACAO: { id: PainelGeracao; rotulo: string; caminho: string; pergunta: string; publicado: boolean }[] = [
-  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "Quais fontes atenderam a carga?", publicado: true },
+  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "De onde vem a eletricidade?", publicado: true },
   { id: "p022", rotulo: "Despacho térmico", caminho: "/termica", pergunta: "Quanto as térmicas geraram e por que foram acionadas?", publicado: true },
-  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: false },
-  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: false },
+  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: true },
+  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: true },
 ];
 
 export function painelPublicado(id: PainelGeracao): boolean {
@@ -80,6 +80,37 @@ export function rotaPainel(id: PainelGeracao): string {
 
 export function perguntaPainel(id: PainelGeracao): string {
   return PAINEIS_GERACAO.find((p) => p.id === id)?.pergunta ?? "";
+}
+
+/**
+ * Texto da gold em português de leitor: troca nomes de campo e identificadores internos (id_ons, ressalvas_universo, natureza_pct,
+ * matriz.universo, hidraulica sem acento) pela descrição, e a frase "igual ao do Balanço" pela que a reconciliação sustenta
+ * (próximo, com divergências listadas em Auditar). Só muda a redação exibida: o dado e o arquivo publicado seguem como estão.
+ */
+const EM_PORTUGUES: readonly (readonly [RegExp, string])[] = [
+  [/\(total da Geração por Usina, igual ao do Balanço\)/g, "(total da Geração por Usina, próximo ao do Balanço, com divergências listadas em Auditar)"],
+  [/matriz\.outros_por_ceg/g, "a decomposição de outras térmicas pelo CEG"],
+  [/matriz\.universo/g, "o universo da matriz"],
+  [/\boutros_por_ceg\b/g, "decomposição de outras térmicas pelo CEG"],
+  [/\bressalvas_universo\b/g, "ressalvas de universo"],
+  [/\bnatureza_mensal_sin\b/g, "série mensal por natureza"],
+  [/\bnatureza_pct\b/g, "parcela por natureza"],
+  [/\bons_pct_da_aneel\b/g, 'a coluna "ONS como parcela da ANEEL"'],
+  [/^mwh_dos_ausentes_mesmo_mes_ano_anterior\b/g, 'A coluna "Geração publicada para os mesmos ausentes"'],
+  [/\bmwh_dos_ausentes_mesmo_mes_ano_anterior\b/g, 'a coluna "Geração publicada para os mesmos ausentes"'],
+  [/\bid_ons\b/g, "código do ONS"],
+  [/'quebras'/g, "a tabela de mudanças de universo e de rótulo"],
+  [/\btermica_sem_combustivel\b/g, "térmicas Tipo III"],
+  [/\bsolar_centralizada\b/g, "solar centralizada"],
+  [/\bsolar_mmgd\b/g, "solar MMGD"],
+  [/\bnao_mapeada\b/g, "não mapeada"],
+  [/\bhidraulica\b/g, "hidráulica"],
+  [/\btermica\b/g, "térmica"],
+  [/\beolica\b/g, "eólica"],
+];
+
+export function emPortugues(texto: string): string {
+  return EM_PORTUGUES.reduce((t, [re, por]) => t.replace(re, por), texto);
 }
 
 /** Linhas com valores simples (número, texto, nulo) para a tabela; booleano vira "sim"/"não", lista vira texto. */
@@ -141,17 +172,27 @@ export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folg
 }
 
 /**
- * Atualidade de série mensal: o último mês completo fica um mês antes do mês do
- * processamento; com dois ou mais meses de distância, a fonte está defasada.
+ * Atualidade de série mensal: o último mês completo fica a cerca de um mês do processamento
+ * (31 dias quando se processa no dia 1 com o mês anterior ainda incompleto); acima de 45 dias
+ * entre o fim desse mês e o processamento, a fonte está defasada. A conta é em dias, não na
+ * diferença entre rótulos de mês: ago a out são dois rótulos e 31 dias.
  */
+/** "de" + artigo contraído: "de a térmica" → "da térmica", "de as restrições" → "das restrições". */
+export function deContraido(nome: string): string {
+  const m = /^(o|a|os|as) (.*)$/.exec(nome);
+  return m ? `d${m[1]} ${m[2]}` : `de ${nome}`;
+}
+
 export function situacaoMensal(ultimoMes: string | null, geradoEm: string, nome: string): { defasada: boolean; texto: string } {
   const proc = diaDeBrasilia(geradoEm);
   if (!ultimoMes) return { defasada: true, texto: `${inicial(nome)}: nenhum mês completo publicado.` };
-  const d = mesesEntre(ultimoMes, proc.slice(0, 7));
-  if (d >= 2) {
+  // dias entre o fim do último mês completo e o processamento: processar no dia 1 com agosto completo são 31 dias, o ritmo normal de um conjunto diário
+  const fimDoMes = new Date(Date.UTC(Number(ultimoMes.slice(0, 4)), Number(ultimoMes.slice(5, 7)), 0));
+  const dias = Math.round((Date.parse(`${proc}T00:00:00Z`) - fimDoMes.getTime()) / 86_400_000);
+  if (dias > 45) {
     return {
       defasada: true,
-      texto: `Fonte defasada: o último mês completo de ${nome} é ${mesAno(ultimoMes)}, ${plural(d, "mês", "meses")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
+      texto: `Fonte defasada: o último mês completo ${deContraido(nome)} é ${mesAno(ultimoMes)}, encerrado ${plural(dias, "dia", "dias")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
     };
   }
   return { defasada: false, texto: `${inicial(nome)}: último mês completo ${mesAno(ultimoMes)}, processado em ${dataBR(proc)}.` };
@@ -208,19 +249,22 @@ export const FRASE_CATEGORIA: Record<CategoriaGeracao, string> = {
   nao_mapeada: "categoria não mapeada",
 };
 
-/** Cor por categoria, só tokens (a MMGD e as térmicas Tipo III em tom claro da série de origem). */
+/**
+ * Cor por categoria, só tokens. A MMGD e as térmicas Tipo III usam um tom mais escuro da série de origem (25% de preto):
+ * o tom claro de antes (45% sobre o branco) dava 1,6:1 e 1,8:1 contra o fundo, abaixo dos 3:1 do WCAG 1.4.11. Agora são 5,1:1 e 6,2:1.
+ */
 export const COR_CATEGORIA: Record<CategoriaGeracao, string> = {
   hidraulica: "var(--serie-hidraulica)",
   eolica: "var(--serie-eolica)",
   solar_centralizada: "var(--serie-solar)",
-  solar_mmgd: "color-mix(in srgb, var(--serie-solar) 45%, var(--cor-superficie))",
+  solar_mmgd: "color-mix(in srgb, var(--serie-solar) 75%, #000)",
   nuclear: "var(--serie-sm-se)",
   gas: "var(--serie-termica)",
   carvao: "var(--serie-1)",
   oleo: "var(--serie-6)",
   biomassa: "var(--cor-sucesso)",
   outros: "var(--serie-3)",
-  termica_sem_combustivel: "color-mix(in srgb, var(--serie-termica) 45%, var(--cor-superficie))",
+  termica_sem_combustivel: "color-mix(in srgb, var(--serie-termica) 75%, #000)",
   nao_mapeada: "var(--serie-referencia)",
 };
 
@@ -259,6 +303,8 @@ export const ROTULO_JANELA: Record<JanelaMatriz, string> = { dia: "Último dia",
 export type Perimetro = "com" | "sem";
 export const PERIMETROS: readonly Perimetro[] = ["com", "sem"];
 export const ROTULO_PERIMETRO: Record<Perimetro, string> = { com: "Com MMGD estimada", sem: "Sem MMGD" };
+/** O perímetro dentro de frase e de título: minúscula só na palavra comum, a sigla MMGD fica como está. */
+export const PERIMETRO_EM_FRASE: Record<Perimetro, string> = { com: "com MMGD estimada", sem: "sem MMGD" };
 
 /** Janelas publicadas para a região (os subsistemas só têm 30 e 365 dias). */
 export function janelasDisponiveis(m: Pick<Matriz, "janelas">, rg: RegiaoGeracao): JanelaMatriz[] {
@@ -407,15 +453,20 @@ export function ressalvasDaJanela(mix: Mix | null, nomes: Record<CategoriaGeraca
   return CATEGORIAS.filter((c) => mix.ressalvas_universo[c]).map((c) => ({ id: c, nome: nomes[c], texto: textoRessalva(mix.ressalvas_universo[c])! }));
 }
 
+/** Minúscula só nas palavras apenas capitalizadas: "Previsão do ONS (grupos Tipo III)" vira "previsão do ONS (grupos tipo III)"; a sigla fica como está. */
+export function minusculaPalavras(s: string): string {
+  return s.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+/g, (w) => (/^[A-ZÀ-ÖØ-Þ][a-zß-öø-ÿ]+$/.test(w) ? w.toLowerCase() : w));
+}
+
 /** Natureza da energia na janela (para o recorte do painel). */
 export function textoNatureza(nat: Record<NaturezaGeracao, number | null>): string {
-  const partes = NATUREZAS.filter((n) => nat[n] !== null).map((n) => `${CURTO_NATUREZA[n].toLowerCase()} ${num(nat[n], 1)}%`);
+  const partes = NATUREZAS.filter((n) => nat[n] !== null).map((n) => `${minusculaPalavras(CURTO_NATUREZA[n])} ${num(nat[n], 1)}%`);
   return partes.length ? listaTexto(partes) : "sem natureza publicada";
 }
 
 /* ---------- série mensal empilhada (energia por fonte ao longo do tempo) ---------- */
 
-export type LinhaMesMatriz = { id: string; m: string; mes: string; total: number | null; parcial: string; dias: number; ressalvas: string } & Partial<
+export type LinhaMesMatriz = { id: string; m: string; mes: string; rotulo: string; total: number | null; parcial: string; dias: number; ressalvas: string } & Partial<
   Record<CategoriaGeracao, number | null>
 >;
 
@@ -424,6 +475,12 @@ export function primeiroMesComMmgd(ms: Pick<MensalSin, "meses" | "solar_mmgd" | 
   const parcial = ms.dias_com_linha.solar_mmgd ?? {};
   for (let i = 0; i < ms.meses.length; i++) if (ms.solar_mmgd[i] !== null && parcial[ms.meses[i]] === undefined) return ms.meses[i];
   return null;
+}
+
+/** Meses em que uma categoria existe só em parte dos dias (a MMGD em abr/2023, por exemplo): o mês, os dias com linha e os dias do mês. */
+export function mesesComPresencaParcial(ms: Pick<MensalSin, "meses" | "dias_no_mes" | "dias_com_linha">, cat: CategoriaGeracao): { mes: string; dias: number; diasDoMes: number }[] {
+  const por = ms.dias_com_linha[cat] ?? {};
+  return ms.meses.flatMap((m, i) => (por[m] !== undefined ? [{ mes: m, dias: por[m], diasDoMes: ms.dias_no_mes[i] }] : []));
 }
 
 /**
@@ -441,6 +498,8 @@ export function linhasMensalMatriz(ms: MensalSin, per: Perimetro): { linhas: Lin
       id: m,
       m,
       mes: mesAno(m),
+      // o mês incompleto leva a marca no próprio eixo do gráfico, não só na nota
+      rotulo: ms.parcial[i] ? `${mesAno(m)} (parcial)` : mesAno(m),
       total: per === "com" ? ms.total_mwmed[i] : ms.total_sem_mmgd_mwmed[i],
       parcial: ms.parcial[i] ? `parcial (${num(ms.dias_completos[i], 0)} de ${num(ms.dias_no_mes[i], 0)} dias)` : "não",
       dias: ms.dias_completos[i],
@@ -521,14 +580,17 @@ export type LinhaDozeMeses = {
   anterior: number | null;
   variacao_pct: number | null;
   situacao: string;
+  /** Geração, no mesmo mês de um ano antes, das usinas que ficaram sem dado no último mês: ordem de grandeza da lacuna ao lado da variação. */
+  lacuna_gwh: number | null;
 };
 
 /**
  * 365 dias contra os 365 anteriores, na geração média de cada categoria (MWmed da janela de
  * 365 dias do SIN e da comparação publicada). Variação suprimida é dita como tal.
  */
-export function linhasDozeMeses(c: ComparacaoDozeMeses, atual: Mix | null): LinhaDozeMeses[] {
+export function linhasDozeMeses(c: ComparacaoDozeMeses, atual: Mix | null, universo?: Pick<Matriz["universo"], "lacuna_ultimo_mes">): LinhaDozeMeses[] {
   if (!atual || atual.inicio !== c.atual.inicio || atual.fim !== c.atual.fim) return [];
+  const lacuna = universo?.lacuna_ultimo_mes?.detalhe_por_categoria;
   return CATEGORIAS.filter((k) => atual.mwmed[k] !== null || c.anterior_mwmed[k] !== null).map((k) => {
     const sup = c.variacao_suprimida[k];
     const situacao = sup
@@ -538,17 +600,33 @@ export function linhasDozeMeses(c: ComparacaoDozeMeses, atual: Mix | null): Linh
           ? "sem valor na janela anterior"
           : "sem variação publicada"
         : "comparável";
-    return { id: k, rotulo: CURTO_CATEGORIA[k], atual: atual.mwmed[k], anterior: c.anterior_mwmed[k], variacao_pct: c.variacao_pct[k], situacao };
+    return { id: k, rotulo: CURTO_CATEGORIA[k], atual: atual.mwmed[k], anterior: c.anterior_mwmed[k], variacao_pct: c.variacao_pct[k], situacao, lacuna_gwh: lacuna?.[k] ? gwh(lacuna[k]!.mwh_dos_ausentes_mesmo_mes_ano_anterior) : null };
   });
 }
 
-export function colunasDozeMeses(c: ComparacaoDozeMeses): ColunaTabela[] {
+/**
+ * Categorias que seguem comparáveis (sem variação suprimida) mas têm usinas sem dado no último mês, com a geração delas no mesmo mês
+ * de um ano antes: a lacuna pequena não suprime a variação, e a página mostra o tamanho dela ao lado.
+ */
+export function lacunaDasComparaveis(c: Pick<ComparacaoDozeMeses, "variacao_pct" | "variacao_suprimida">, universo: Pick<Matriz["universo"], "lacuna_ultimo_mes">): { id: CategoriaGeracao; rotulo: string; gwh: number; mes: string; mesAnoAnterior: string }[] {
+  const l = universo.lacuna_ultimo_mes;
+  if (!l) return [];
+  return CATEGORIAS.flatMap((k) => {
+    const d = l.detalhe_por_categoria[k];
+    const g = d ? gwh(d.mwh_dos_ausentes_mesmo_mes_ano_anterior) : null;
+    return g !== null && g > 0 && c.variacao_pct[k] !== null && !c.variacao_suprimida[k] ? [{ id: k, rotulo: CURTO_CATEGORIA[k], gwh: g, mes: l.mes, mesAnoAnterior: l.mes_ano_anterior }] : [];
+  }).sort((a, b) => b.gwh - a.gwh);
+}
+
+export function colunasDozeMeses(c: ComparacaoDozeMeses, universo?: Pick<Matriz["universo"], "lacuna_ultimo_mes">): ColunaTabela[] {
+  const lac = universo?.lacuna_ultimo_mes;
   return [
     { id: "rotulo", rotulo: "Categoria", tipo: "texto" },
     { id: "atual", rotulo: `${dataBR(c.atual.inicio)} a ${dataBR(c.atual.fim)}`, tipo: "numero", unidade: "MWmed", casas: 1 },
     { id: "anterior", rotulo: `${dataBR(c.anterior.inicio)} a ${dataBR(c.anterior.fim)}`, tipo: "numero", unidade: "MWmed", casas: 1 },
     { id: "variacao_pct", rotulo: "Variação publicada", tipo: "percentual", casas: 1 },
     { id: "situacao", rotulo: "Situação", tipo: "texto" },
+    ...(lac ? [{ id: "lacuna_gwh", rotulo: `Geração em ${mesAno(lac.mes_ano_anterior)} das usinas sem dado em ${mesAno(lac.mes)}`, tipo: "numero" as const, unidade: "GWh", casas: 1 }] : []),
   ];
 }
 
@@ -557,22 +635,69 @@ export function textoDozeMeses(c: ComparacaoDozeMeses): string {
   const base = `Total sem MMGD de ${dataBR(c.atual.inicio)} a ${dataBR(c.atual.fim)} contra os 365 dias anteriores: ${c.variacao_total_sem_mmgd_pct === null ? "sem variação publicada" : `${c.variacao_total_sem_mmgd_pct > 0 ? "+" : c.variacao_total_sem_mmgd_pct < 0 ? "−" : ""}${num(Math.abs(c.variacao_total_sem_mmgd_pct), 1)}%`}.`;
   const regime = c.mesmo_regime_mmgd ? " As duas janelas são posteriores a 29/04/2023, e a MMGD se compara com ela mesma." : " As janelas atravessam 29/04/2023: a MMGD não entra na comparação.";
   const s = sup.length
-    ? ` ${inicial(listaTexto(sup.map((k) => FRASE_CATEGORIA[k])))}: variação suprimida, porque o número de usinas com dado na fonte mudou dentro das janelas comparadas.`
+    ? ` ${inicial(listaTexto(sup.map((k) => FRASE_CATEGORIA[k])))}: variação suprimida: o número de usinas com dado na fonte mudou dentro das janelas comparadas.`
     : "";
-  return `${base}${regime}${s}`;
+  // com categorias suprimidas, o total das demais é o que se compara: o total completo muda também pelo cadastro de usinas da fonte
+  const v = c.variacao_total_comparavel_pct;
+  const cmp = sup.length && v !== null && v !== undefined ? ` Só com as demais categorias, o total varia ${v > 0 ? "+" : v < 0 ? "−" : ""}${num(Math.abs(v), 1)}%.` : "";
+  return `${base}${regime}${s}${cmp}`;
+}
+
+/**
+ * Quanto da inflexibilidade vem da nuclear e quanto ela vale sem a nuclear. A nuclear quase não varia de
+ * despacho (a inflexibilidade é a quase totalidade da sua geração) e pesa na parcela total; sem ela, a
+ * parcela é a das demais térmicas. Null quando falta o total, o motivo ou a nuclear.
+ */
+export function inflexibilidadeSemNuclear(u: {
+  total_mwh: number | null;
+  por_motivo: { motivo: string; mwh: number | null }[];
+  por_combustivel: { categoria: string; mwh: number | null; motivos_mwh: Record<string, number | null> }[];
+}): { nuclearNaInflexibilidadePct: number; nuclearInflexivelPct: number; semNuclearPct: number } | null {
+  const infl = u.por_motivo.find((m) => m.motivo === "inflexibilidade")?.mwh;
+  const nuc = u.por_combustivel.find((c) => c.categoria === "nuclear");
+  const nucInfl = nuc?.motivos_mwh.inflexibilidade;
+  if (!u.total_mwh || !infl || !nuc?.mwh || nucInfl === null || nucInfl === undefined || u.total_mwh <= nuc.mwh) return null;
+  return {
+    nuclearNaInflexibilidadePct: (100 * nucInfl) / infl,
+    nuclearInflexivelPct: (100 * nucInfl) / nuc.mwh,
+    semNuclearPct: (100 * (infl - nucInfl)) / (u.total_mwh - nuc.mwh),
+  };
 }
 
 /* ---------- anos ---------- */
 
-export function linhasAnuais(anos: readonly AnoSin[]): ({ id: string; ano: string; dias: number; parcial: string; total_sem_mmgd_mwmed: number | null; mmgd_mwmed: number | null; verificada_pct: number | null } & Partial<Record<CategoriaGeracao, number | null>>)[] {
+/**
+ * MMGD nos dias com estimativa: a energia da MMGD dividida só pelas horas dos dias em que a estimativa do ONS existe, isto é, a
+ * média do ano (que divide pelas horas do ano inteiro) vezes os dias do ano e dividida pelos dias com estimativa. Sem estimativa
+ * no ano é ausência (não zero); num ano com estimativa em todos os dias coincide com a média do ano.
+ */
+export function mmgdNosDiasComEstimativa(a: Pick<AnoSin, "mwmed" | "dias" | "mmgd_dias">): number | null {
+  const v = a.mwmed.solar_mmgd;
+  if (v === null || a.mmgd_dias <= 0 || a.dias <= 0) return null;
+  return (v * a.dias) / a.mmgd_dias;
+}
+
+/** Presença da MMGD estimada no ano, dita na linha como as janelas dizem a presença parcial de uma categoria. */
+export function presencaMmgdNoAno(a: Pick<AnoSin, "dias" | "mmgd_dias">): string {
+  if (a.mmgd_dias <= 0) return "sem estimativa no ano";
+  if (a.mmgd_dias < a.dias) return `parcial: estimativa em ${num(a.mmgd_dias, 0)} de ${num(a.dias, 0)} dias`;
+  return "estimativa em todos os dias";
+}
+
+export type LinhaAnual = { id: string; ano: string; dias: number; parcial: string; total_sem_mmgd_mwmed: number | null; mmgd_dias: number; presenca_mmgd: string; mmgd_mwmed: number | null; mmgd_nos_dias_mwmed: number | null; verificada_pct: number | null } & Partial<Record<CategoriaGeracao, number | null>>;
+
+export function linhasAnuais(anos: readonly AnoSin[]): LinhaAnual[] {
   return anos.map((a) => {
-    const l: { id: string; ano: string; dias: number; parcial: string; total_sem_mmgd_mwmed: number | null; mmgd_mwmed: number | null; verificada_pct: number | null } & Partial<Record<CategoriaGeracao, number | null>> = {
+    const l: LinhaAnual = {
       id: String(a.ano),
       ano: String(a.ano),
       dias: a.dias,
       parcial: a.parcial ? "sim, ano em curso" : "não",
       total_sem_mmgd_mwmed: a.total_sem_mmgd_mwmed,
+      mmgd_dias: a.mmgd_dias,
+      presenca_mmgd: presencaMmgdNoAno(a),
       mmgd_mwmed: a.mwmed.solar_mmgd,
+      mmgd_nos_dias_mwmed: mmgdNosDiasComEstimativa(a),
       verificada_pct: a.natureza_pct.verificada,
     };
     for (const c of CATEGORIAS) if (c !== "solar_mmgd") l[c] = a.participacao_sem_mmgd[c];
@@ -585,12 +710,31 @@ export function colunasAnuais(anos: readonly AnoSin[]): ColunaTabela[] {
   return [
     { id: "ano", rotulo: "Ano", tipo: "texto" },
     { id: "dias", rotulo: "Dias completos", tipo: "numero", casas: 0 },
-    { id: "parcial", rotulo: "Parcial", tipo: "texto" },
+    { id: "parcial", rotulo: "Ano em curso (parcial)", tipo: "texto" },
     { id: "total_sem_mmgd_mwmed", rotulo: "Total sem MMGD", tipo: "numero", unidade: "MWmed", casas: 1 },
     ...cats.map((c): ColunaTabela => ({ id: c, rotulo: `${CURTO_CATEGORIA[c]} (sem MMGD)`, tipo: "percentual", casas: 2 })),
-    { id: "mmgd_mwmed", rotulo: "MMGD estimada", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "verificada_pct", rotulo: "Energia medida", tipo: "percentual", casas: 2 },
+    { id: "mmgd_dias", rotulo: "Dias com estimativa de MMGD", tipo: "numero", casas: 0 },
+    { id: "presenca_mmgd", rotulo: "Presença da MMGD estimada no ano", tipo: "texto" },
+    { id: "mmgd_mwmed", rotulo: "MMGD estimada, contribuição à média anual", tipo: "numero", unidade: "MWmed", casas: 1 },
+    { id: "mmgd_nos_dias_mwmed", rotulo: "MMGD estimada, média dos dias com estimativa", tipo: "numero", unidade: "MWmed", casas: 1 },
+    { id: "verificada_pct", rotulo: "Parcela de medição no total com MMGD", tipo: "percentual", casas: 2 },
   ];
+}
+
+/**
+ * Nota da tabela anual, montada dos dados: o ano em que a MMGD entra pela metade, as duas médias da MMGD (ano inteiro e dias com
+ * estimativa) e o denominador da parcela de medição, que passa a incluir a MMGD no mesmo ano.
+ */
+export function notaAnual(anos: readonly AnoSin[], primeiroDiaMmgd: string | null): string {
+  const parcial = anos.find((a) => a.mmgd_dias > 0 && a.mmgd_dias < a.dias);
+  const desde = primeiroDiaMmgd ? dataBR(primeiroDiaMmgd) : "data não informada";
+  const entrada = parcial ? ` (em ${parcial.ano}, ${num(parcial.mmgd_dias, 0)} dos ${num(parcial.dias, 0)} dias)` : "";
+  return [
+    "O ano em curso é parcial e não se compara com anos completos sem esse aviso.",
+    `A estimativa da MMGD só existe a partir de ${desde}${entrada}: ela não entra na participação por categoria desta tabela, que é sem MMGD, e aparece em MWmed.`,
+    `A contribuição à média anual divide a energia da MMGD pelas horas do ano inteiro${parcial ? ` (em ${parcial.ano} vale ${num(parcial.mmgd_dias, 0)}/${num(parcial.dias, 0)} da média dos dias com estimativa)` : ""}; a média dos dias com estimativa divide só pelas horas dos dias em que a estimativa existe (média anual vezes os dias do ano, dividida pelos dias com estimativa).`,
+    `A parcela de medição usa o total com a MMGD desde a entrada dela; antes, o total não a inclui, e a queda entre esses anos inclui a entrada da MMGD no total, não só mudança na medição.`,
+  ].join(" ");
 }
 
 /* ---------- A11 ---------- */
@@ -621,7 +765,7 @@ export const COLUNAS_MMGD_API: ColunaTabela[] = [
 
 /** Resumo do achado A11 lido da gold (dias conciliados, primeira hora, documentos). */
 export function textoA11(a: A11): string {
-  if (a.estado !== "confirmado") return `Achado A11 pendente: ${a.conclusao ?? "sem conclusão publicada"}.`;
+  if (a.estado !== "confirmado") return `Verificação da quebra de 29/04/2023 pendente: ${a.conclusao ?? "sem conclusão publicada"}.`;
   const prim = a.primeira_hora_mmgd ? horaLocal(a.primeira_hora_mmgd) : a.primeiro_dia_mmgd ? dataBR(a.primeiro_dia_mmgd) : "sem data";
   return `A MMGD estimada pelo ONS aparece na Geração por Usina a partir de ${prim}. ${a.janela_da_quebra_conciliada ? "Na janela da quebra, a solar do Balanço é igual à soma das usinas fotovoltaicas com a MMGD dia a dia." : "Na janela da quebra, a solar do Balanço não fecha com a soma das usinas."} Em todo o histórico, ${num(a.dias_conciliados, 0)} de ${num(a.dias_conferidos, 0)} dias conciliam dentro da tolerância.`;
 }
@@ -763,7 +907,7 @@ export const COLUNAS_QUEBRAS: ColunaTabela[] = [
 ];
 
 export function linhasControles(c: readonly ControleGeracao[]) {
-  return c.map((x, i) => ({ id: `${i}`, nome: x.nome, resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: x.detalhe }));
+  return c.map((x, i) => ({ id: `${i}`, nome: emPortugues(x.nome), resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: emPortugues(x.detalhe) }));
 }
 
 export const COLUNAS_CONTROLES: ColunaTabela[] = [
@@ -867,6 +1011,12 @@ export const COR_COMBUSTIVEL: Record<CategoriaCombustivel, string> = {
   nao_mapeada: COR_CATEGORIA.nao_mapeada,
 };
 
+/** O que o rótulo da base publicada diz entre parênteses sobre o motivo ("necessidade do SIN"); null quando o rótulo não traz. */
+export function explicacaoDoMotivo(motivos: readonly { id: MotivoDespacho; rotulo: string }[], id: MotivoDespacho): string | null {
+  const m = motivos.find((x) => x.id === id);
+  return m ? (/\(([^()]+)\)\s*$/.exec(m.rotulo)?.[1] ?? null) : null;
+}
+
 /** Motivo pelo rótulo da gold (texto completo). */
 export function nomesMotivos(t: Pick<Termica, "motivos">): Record<MotivoDespacho, string> {
   const out = { ...CURTO_MOTIVO };
@@ -885,8 +1035,8 @@ export function respostaTermica(t: Pick<Termica, "ultimos_12m">): string {
   const frases = [
     `De ${mesAno(u.inicio)} a ${mesAno(u.fim)}, as térmicas despachadas pelo ONS geraram ${num(u.total_mwmed, 0)} MWmed em média (${num(gwh(u.total_mwh), 0)} GWh).`,
   ];
-  if (motivos.length) frases.push(`Por motivo: ${listaTexto(motivos.slice(0, 3).map((m) => `${CURTO_MOTIVO[m.motivo].toLowerCase()} ${num(m.pct, 1)}%`))}.`);
-  if (comb.length) frases.push(`Por combustível: ${listaTexto(comb.slice(0, 3).map((c) => `${CURTO_COMBUSTIVEL[c.categoria].toLowerCase()} ${num(c.pct_total, 1)}%`))}.`);
+  if (motivos.length) frases.push(`Por motivo: ${listaTexto(motivos.slice(0, 3).map((m) => `${minusculaPalavras(CURTO_MOTIVO[m.motivo])} ${num(m.pct, 1)}%`))}.`);
+  if (comb.length) frases.push(`Por combustível: ${listaTexto(comb.slice(0, 3).map((c) => `${minusculaPalavras(CURTO_COMBUSTIVEL[c.categoria])} ${num(c.pct_total, 1)}%`))}.`);
   if (u.nao_classificado_pct !== null) frases.push(`A diferença entre o total e a soma dos motivos (não classificada) é ${num(u.nao_classificado_pct, 3)}% da energia.`);
   frases.push("O motivo é a classificação publicada pelo ONS, não uma inferência a partir do preço.");
   return frases.join(" ");
@@ -929,7 +1079,7 @@ export const COLUNAS_MOTIVOS_12M: ColunaTabela[] = [
 export type JanelaTermica = "24m" | "tudo";
 export const JANELAS_TERMICA: readonly JanelaTermica[] = ["24m", "tudo"];
 
-export type LinhaTermicaMes = { id: string; m: string; mes: string; total: number | null; nao_classificado: number | null; constrained_off: number | null; parcial: string } & Partial<Record<MotivoDespacho, number | null>>;
+export type LinhaTermicaMes = { id: string; m: string; mes: string; rotulo: string; total: number | null; nao_classificado: number | null; constrained_off: number | null; parcial: string } & Partial<Record<MotivoDespacho, number | null>>;
 
 /** Série mensal do SIN por motivo (MWmed); "24m" corta nos 24 meses mais recentes publicados. */
 export function linhasTermicaMensal(t: Pick<Termica, "mensal_sin">, janela: JanelaTermica): { linhas: LinhaTermicaMes[]; motivos: MotivoDespacho[] } {
@@ -941,6 +1091,7 @@ export function linhasTermicaMensal(t: Pick<Termica, "mensal_sin">, janela: Jane
       id: ms.meses[i],
       m: ms.meses[i],
       mes: mesAno(ms.meses[i]),
+      rotulo: ms.parcial[i] ? `${mesAno(ms.meses[i])} (parcial)` : mesAno(ms.meses[i]),
       total: ms.total_mwmed[i],
       nao_classificado: ms.nao_classificado_mwmed[i],
       constrained_off: ms.constrained_off_mwmed[i],
@@ -1054,7 +1205,7 @@ export function linhasParcelas(u: TermicaUsina) {
 export const COLUNAS_PARCELAS: ColunaTabela[] = [
   { id: "cod", rotulo: "Código do ONS nos modelos", tipo: "numero", casas: 0, buscavel: true },
   { id: "nome", rotulo: "Nome da parcela", tipo: "texto" },
-  { id: "gwh", rotulo: "Geração em 12 meses", tipo: "numero", unidade: "GWh", casas: 3 },
+  { id: "gwh", rotulo: "Geração em 12 meses", tipo: "numero", unidade: "GWh", casas: 1 },
   { id: "cvu", rotulo: "CVU da semana vigente", tipo: "numero", unidade: "R$/MWh", casas: 2 },
 ];
 
@@ -1182,7 +1333,7 @@ export function instanteBR(ref: string | null): string {
  * denominador, razões oficiais, maior corte simultâneo (potência, não energia) e o que a
  * restrição não é.
  */
-export function respostaRestricao(r: Restricao): string {
+export function respostaRestricao(r: Pick<Restricao, "fonte" | "primeiro_mes" | "ultimos_12m">): string {
   const u = r.ultimos_12m;
   const nome = FRASE_FONTE_RESTRICAO[r.fonte];
   if (!u) return `Sem 12 meses completos de restrição publicados para ${nome}; a série começa em ${mesAno(r.primeiro_mes)}.`;
@@ -1210,7 +1361,7 @@ export type LinhaRestricaoMes = {
 } & Partial<Record<RazaoRestricao, number | null>>;
 
 /** Série mensal do SIN: energia não gerada por razão (GWh), taxa (%) e maior corte simultâneo (MW). */
-export function linhasRestricaoMensal(r: Restricao): { linhas: LinhaRestricaoMes[]; razoes: RazaoRestricao[] } {
+export function linhasRestricaoMensal(r: Pick<Restricao, "mensal_sin">): { linhas: LinhaRestricaoMes[]; razoes: RazaoRestricao[] } {
   const ms = r.mensal_sin;
   const linhas = ms.meses.map((m, i) => {
     const l: LinhaRestricaoMes = {
@@ -1246,11 +1397,12 @@ export function colunasRestricaoMensal(razoes: readonly RazaoRestricao[]): Colun
   ];
 }
 
-export function linhasRazoes12m(r: Restricao) {
+export function linhasRazoes12m(r: Pick<Restricao, "ultimos_12m">) {
   return (r.ultimos_12m?.por_razao ?? []).map((x) => ({
     id: x.razao,
     razao: CURTO_RAZAO[x.razao],
-    rotulo_oficial: x.rotulo,
+    // total zero: não há limitação a classificar por origem, e as duas origens ficam sem valor por isso (a soma das origens é o total)
+    rotulo_oficial: x.mwh === 0 ? `${x.rotulo}. Nenhuma energia não gerada com esta razão nos 12 meses; sem limitação, as origens ficam sem valor.` : x.rotulo,
     gwh: gwh(x.mwh),
     pct: x.pct,
     LOC: gwh(x.origens_mwh.LOC),
@@ -1267,7 +1419,7 @@ export const COLUNAS_RAZOES_12M: ColunaTabela[] = [
   { id: "pct", rotulo: "Parcela da energia não gerada", tipo: "percentual", casas: 2 },
 ];
 
-export function linhasSubsistemas12m(r: Restricao) {
+export function linhasSubsistemas12m(r: Pick<Restricao, "ultimos_12m">) {
   return (r.ultimos_12m?.por_subsistema ?? []).map((x) => ({ id: x.sm, sm: NOME_REGIAO[x.sm], nao_gerada_gwh: gwh(x.energia_nao_gerada_mwh), verificada_gwh: gwh(x.geracao_verificada_mwh), taxa_pct: x.taxa_pct }));
 }
 
@@ -1308,7 +1460,7 @@ export function linhasUsinasRestricao(r: Pick<Restricao, "usinas_12m">): LinhaUs
 
 export const COLUNAS_USINAS_RESTRICAO: ColunaTabela[] = [
   { id: "nome", rotulo: "Usina ou conjunto", tipo: "texto" },
-  { id: "id", rotulo: "Identificador do ONS", tipo: "texto", buscavel: true },
+  // o identificador do ONS (CJU_..., ceg:...) é a chave da linha e do arquivo por usina e mês; a tabela do leitor mostra o nome
   { id: "sm", rotulo: "Subsistema", tipo: "texto", categorica: true },
   { id: "uf", rotulo: "UF", tipo: "texto", categorica: true },
   { id: "nao_gerada_gwh", rotulo: "Energia não gerada em 12 meses", tipo: "numero", unidade: "GWh", casas: 1 },
@@ -1428,7 +1580,7 @@ export function colunasUsinaMes(razoes: readonly RazaoRestricao[]): ColunaTabela
 
 /* ---------- diário recente, causas e detalhamento ---------- */
 
-export function linhasRestricaoDiaria(r: Restricao): ({ id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>>)[] {
+export function linhasRestricaoDiaria(r: Pick<Restricao, "diario_recente">): ({ id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>>)[] {
   const dr = r.diario_recente;
   return dr.dias.map((d, i) => {
     const l: { id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>> = {
@@ -1451,7 +1603,7 @@ export function colunasRestricaoDiaria(razoes: readonly RazaoRestricao[]): Colun
   ];
 }
 
-export function linhasDescricoes(r: Restricao) {
+export function linhasDescricoes(r: Pick<Restricao, "descricoes_ultimo_mes">) {
   return (r.descricoes_ultimo_mes?.itens ?? []).map((x, i) => ({ id: `${i}`, descricao: x.descricao, gwh: gwh(x.mwh) }));
 }
 
@@ -1512,14 +1664,14 @@ export function respostaCapacidade(c: Capacidade): string {
   const r = c.retrato;
   const maiores = [...r.por_categoria].filter((x) => (x.pct ?? 0) > 0).sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0));
   const frases = [
-    `Em ${dataBR(r.data)}, as usinas despachadas pelo ONS somavam ${num(r.total_mw, 0)} MW em operação comercial${maiores.length ? `: ${listaTexto(maiores.slice(0, 3).map((x) => `${CURTO_CATEGORIA[x.categoria].toLowerCase()} ${num(x.pct, 1)}%`))}` : ""}.`,
+    `Em ${dataBR(r.data)}, as usinas despachadas pelo ONS somavam ${num(r.total_mw, 0)} MW em operação comercial${maiores.length ? `: ${listaTexto(maiores.slice(0, 3).map((x) => `${minusculaPalavras(CURTO_CATEGORIA[x.categoria])} ${num(x.pct, 1)}%`))}` : ""}.`,
   ];
   const u = c.ultimos_12m;
   if (u) {
     const fcs = ["hidraulica", "eolica", "solar_centralizada"]
       .map((k) => u.por_categoria.find((x) => x.categoria === k))
       .filter((x): x is Capacidade12m => !!x && x.fator_capacidade_pct !== null)
-      .map((x) => `${CURTO_CATEGORIA[x.categoria].toLowerCase()} ${num(x.fator_capacidade_pct, 1)}%`);
+      .map((x) => `${minusculaPalavras(CURTO_CATEGORIA[x.categoria])} ${num(x.fator_capacidade_pct, 1)}%`);
     if (fcs.length) frases.push(`De ${mesAno(u.inicio)} a ${mesAno(u.fim)}, a geração dividida pela potência em operação ao longo de cada mês (fator de capacidade) foi de ${listaTexto(fcs)}.`);
   }
   const mm = c.contexto.mmgd;
@@ -1613,9 +1765,17 @@ export function histogramaFc(u: Capacidade12m): {
 }
 
 export function linhasExtremosFc(u: Capacidade12m) {
+  const n = u.distribuicao_usinas?.n ?? 0;
+  if (n > 0 && n < MINIMO_PARA_DISTRIBUICAO) {
+    // poucas observações: as menores e as maiores são as mesmas usinas, e cada uma entra uma vez
+    return observacoesFc(u)
+      .reverse()
+      .map((x) => ({ id: `todas:${x.id}`, grupo: "todas", nome: x.nome, fc_pct: x.fc_pct, potencia_media_mw: [...u.menores, ...u.maiores].find((y) => y.id === x.id)?.potencia_media_mw ?? null }));
+  }
   return [
-    ...u.menores.map((x) => ({ id: `menor:${x.id}`, grupo: "menores", nome: x.nome ?? x.id, fc_pct: x.fc_pct, potencia_media_mw: x.potencia_media_mw, chave: x.id })),
-    ...u.maiores.map((x) => ({ id: `maior:${x.id}`, grupo: "maiores", nome: x.nome ?? x.id, fc_pct: x.fc_pct, potencia_media_mw: x.potencia_media_mw, chave: x.id })),
+    // o código do ONS (ceg:..., cju:...) é a chave da linha e do arquivo por usina e mês; a tabela do leitor mostra o nome
+    ...u.menores.map((x) => ({ id: `menor:${x.id}`, grupo: "menores", nome: x.nome ?? "sem nome na fonte", fc_pct: x.fc_pct, potencia_media_mw: x.potencia_media_mw })),
+    ...u.maiores.map((x) => ({ id: `maior:${x.id}`, grupo: "maiores", nome: x.nome ?? "sem nome na fonte", fc_pct: x.fc_pct, potencia_media_mw: x.potencia_media_mw })),
   ];
 }
 
@@ -1624,7 +1784,6 @@ export const COLUNAS_EXTREMOS_FC: ColunaTabela[] = [
   { id: "nome", rotulo: "Usina ou conjunto", tipo: "texto" },
   { id: "fc_pct", rotulo: "Fator de capacidade, 12 meses", tipo: "percentual", casas: 1 },
   { id: "potencia_media_mw", rotulo: "Potência média em operação", tipo: "numero", unidade: "MW", casas: 1 },
-  { id: "chave", rotulo: "Grupo de pareamento", tipo: "texto", buscavel: true },
 ];
 
 /** Fator de capacidade mensal de até quatro categorias (mesma escala). */
@@ -1732,5 +1891,486 @@ const DOWNLOADS_PAINEL: Record<PainelGeracao, RegExp> = {
 };
 
 export function downloadsDoPainel(d: readonly { rotulo: string; url: string }[], p: PainelGeracao): { rotulo: string; url: string }[] {
-  return d.filter((x) => DOWNLOADS_PAINEL[p].test(x.url));
+  // o arquivo horário tem 8.760 linhas, 365 dias; o rótulo publicado ainda diz 366 (ajuste pedido ao pipeline)
+  return d.filter((x) => DOWNLOADS_PAINEL[p].test(x.url)).map((x) => ({ ...x, rotulo: x.rotulo.replace("últimos 366 dias", "últimos 365 dias") }));
+}
+
+/* ====================================================================== */
+/* P021 na abertura editorial: maiores fontes, composição completa,         */
+/* natureza do dado e cobertura da fonte                                    */
+/* ====================================================================== */
+
+/**
+ * Seletores que servem ao gráfico, à frase e à faixa de métricas ao mesmo tempo (um número, um seletor). Nenhum indicador é
+ * recalculado: participação e MWmed saem da janela publicada na gold, e a única conta é a soma das participações exibidas, para
+ * mostrar que a composição fecha dentro da tolerância do controle publicado.
+ */
+
+/**
+ * Natureza de uma categoria inteira. A MMGD é estimativa do ONS e as térmicas Tipo III são previsão do ONS. As demais são medição,
+ * com uma parcela de previsão Tipo III dita à parte (notaTipoIII), porque o grupo Tipo III reúne pequenas usinas de várias fontes.
+ */
+export type NaturezaDaFonte = "medicao" | "estimativa" | "previsao";
+
+export function naturezaDaCategoria(c: CategoriaGeracao): NaturezaDaFonte {
+  return c === "solar_mmgd" ? "estimativa" : c === "termica_sem_combustivel" ? "previsao" : "medicao";
+}
+
+/** Nome da fonte ao lado da barra: o mesmo nome curto, sem "(estimada)" na MMGD, porque o selo de natureza da linha já diz que é estimativa. */
+export const NOME_NA_BARRA: Record<CategoriaGeracao, string> = { ...CURTO_CATEGORIA, solar_mmgd: "Solar MMGD" };
+
+/** Total da janela em MWmed no perímetro escolhido (com ou sem a MMGD estimada). */
+export function totalDaJanela(mix: Pick<Mix, "total_mwmed" | "total_sem_mmgd_mwmed"> | null, per: Perimetro): number | null {
+  return mix ? (per === "com" ? mix.total_mwmed : mix.total_sem_mmgd_mwmed) : null;
+}
+
+/** Ressalva de universo sem o prefixo e sem o ponto final, para entrar numa frase ou numa legenda. */
+function ressalvaEmFrase(r: RessalvaUniverso | undefined | null): string | null {
+  const t = textoRessalva(r);
+  return t ? t.replace(/^Ressalva de universo:?\s*/, "").replace(/\.$/, "") || "cobertura da fonte alterada" : null;
+}
+
+export type LinhaFonte = {
+  id: CategoriaGeracao;
+  rotulo: string;
+  /** % da geração no perímetro escolhido, como a gold publica (sem novo arredondamento). */
+  participacao: number;
+  mwmed: number | null;
+  natureza: NaturezaDaFonte;
+  /** Por que a participação não se compara com a de outro período (ressalva de universo na janela), ou null. */
+  cobertura: string | null;
+};
+
+/**
+ * Uma linha por categoria com valor na janela, da maior para a menor participação (empate na ordem das categorias). Categoria sem
+ * valor na janela fica de fora: ausência não é zero e não entra na soma. No perímetro sem MMGD, a Solar MMGD fica fora.
+ */
+export function composicaoDaJanela(m: Pick<Matriz, "janelas">, rg: RegiaoGeracao, pedida: JanelaMatriz, per: Perimetro): LinhaFonte[] {
+  const { mix } = janelaEscolhida(m, rg, pedida);
+  if (!mix) return [];
+  const out: LinhaFonte[] = [];
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    if (p === null) continue;
+    out.push({ id: c, rotulo: NOME_NA_BARRA[c], participacao: p, mwmed: mix.mwmed[c], natureza: naturezaDaCategoria(c), cobertura: ressalvaEmFrase(mix.ressalvas_universo[c]) });
+  }
+  return out.sort((a, b) => b.participacao - a.participacao);
+}
+
+/** As `n` maiores participações (só as positivas) de uma lista já ordenada: o recorte da abertura, que nunca é a composição completa. */
+export function maioresFontes<T extends { participacao: number }>(linhas: readonly T[], n = 5): T[] {
+  return linhas.filter((l) => l.participacao > 0).slice(0, n);
+}
+
+/** Tolerância, em pontos percentuais, do controle publicado "Participações somam 100% em todas as janelas e regiões". */
+export const TOLERANCIA_SOMA_PP = 0.05;
+
+/** A soma das participações exibidas contra 100%: a composição só é completa quando fecha dentro da tolerância do controle publicado. */
+export function fechamentoDaComposicao(linhas: readonly { participacao: number }[]): { soma: number; categorias: number; tolerancia: number; fecha: boolean } {
+  const soma = Math.round(linhas.reduce((s, l) => s + l.participacao, 0) * 100) / 100;
+  return { soma, categorias: linhas.length, tolerancia: TOLERANCIA_SOMA_PP, fecha: linhas.length > 0 && Math.abs(soma - 100) <= TOLERANCIA_SOMA_PP + 1e-9 };
+}
+
+export type LinhaComparacaoJanelas = { id: CategoriaGeracao; rotulo: string; participacao: number; participacao_ref: number };
+export type ForaDaComparacao = { id: CategoriaGeracao; rotulo: string; motivo: string };
+
+/**
+ * Participação da janela escolhida contra a de referência (365 dias; para a de 365 dias, os 30 dias), só das categorias que podem
+ * ser comparadas. Categoria com ressalva de universo em qualquer das duas janelas (a fonte publicou outro número de usinas com
+ * dado) sai do gráfico e entra em `fora`, com a mudança de cobertura dita; o valor de cada janela continua na tabela e na
+ * composição completa. Categoria sem valor em uma das janelas também sai, como ausência.
+ */
+export function comparacaoEntreJanelas(
+  m: Pick<Matriz, "janelas">,
+  rg: RegiaoGeracao,
+  pedida: JanelaMatriz,
+  per: Perimetro,
+): { janela: JanelaMatriz; ref: JanelaMatriz; comparaveis: LinhaComparacaoJanelas[]; fora: ForaDaComparacao[] } {
+  const { janela, mix } = janelaEscolhida(m, rg, pedida);
+  const ref = janelaReferencia(janela);
+  const mixRef = m.janelas[rg]?.[ref] ?? null;
+  const comparaveis: LinhaComparacaoJanelas[] = [];
+  const fora: ForaDaComparacao[] = [];
+  if (!mix) return { janela, ref, comparaveis, fora };
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    const pr = mixRef ? participacaoDe(mixRef, per, c) : null;
+    if (p === null && pr === null) continue;
+    const rJ = mix.ressalvas_universo[c];
+    const rR = mixRef?.ressalvas_universo[c];
+    if (rJ || rR) {
+      // a janela com mais motivos (salto no período, além do universo reduzido) é a que diz mais sobre a mudança de cobertura
+      const dona = (rJ?.motivos.length ?? 0) >= (rR?.motivos.length ?? 0) ? rJ : rR;
+      fora.push({ id: c, rotulo: CURTO_CATEGORIA[c], motivo: ressalvaEmFrase(dona) ?? "cobertura da fonte alterada" });
+    } else if (p === null || pr === null) {
+      fora.push({ id: c, rotulo: CURTO_CATEGORIA[c], motivo: `sem valor na janela de ${ROTULO_JANELA[p === null ? janela : ref]}` });
+    } else comparaveis.push({ id: c, rotulo: CURTO_CATEGORIA[c], participacao: p, participacao_ref: pr });
+  }
+  comparaveis.sort((a, b) => b.participacao - a.participacao);
+  return { janela, ref, comparaveis, fora };
+}
+
+/** Fonte de maior participação na janela (a "fonte principal" da faixa de métricas), pelo mesmo critério do gráfico. */
+export function fontePrincipalDaJanela(mix: Mix | null, per: Perimetro): { id: CategoriaGeracao; rotulo: string; frase: string; participacao: number } | null {
+  if (!mix) return null;
+  let melhor: { id: CategoriaGeracao; participacao: number } | null = null;
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    if (p !== null && (melhor === null || p > melhor.participacao)) melhor = { id: c, participacao: p };
+  }
+  return melhor ? { ...melhor, rotulo: CURTO_CATEGORIA[melhor.id], frase: FRASE_CATEGORIA[melhor.id] } : null;
+}
+
+/** Natureza da energia da janela (medição, previsão do ONS e estimativa do ONS): as partes que fecham 100%, na ordem de NATUREZAS. */
+export function partesDaNatureza(mix: Pick<Mix, "natureza_pct"> | null): { id: NaturezaGeracao; rotulo: string; pct: number }[] {
+  if (!mix) return [];
+  return NATUREZAS.flatMap((n) => {
+    const p = mix.natureza_pct[n];
+    return p === null ? [] : [{ id: n, rotulo: CURTO_NATUREZA[n], pct: p }];
+  });
+}
+
+/**
+ * Datas de referência de cada parte do módulo, com a natureza de cada uma: a matriz vai até o último dia completo; o despacho térmico,
+ * as restrições e o fator de capacidade, até o último mês completo de cada conjunto; a capacidade instalada é o retrato de uma data.
+ * Parte que a gold não publica não entra na lista.
+ */
+export function datasDoModulo(g: Pick<GoldGeracaoDetalhe, "dia_referencia" | "a11" | "termica" | "restricoes" | "capacidade">): { rotulo: string; texto: string; natureza: Natureza }[] {
+  const out: { rotulo: string; texto: string; natureza: Natureza }[] = [{ rotulo: "Matriz efetiva", texto: `até ${dataBR(g.dia_referencia)}`, natureza: "CALCULADO" }];
+  if (g.a11.primeiro_dia_mmgd) out.push({ rotulo: "MMGD estimada pelo ONS", texto: `de ${dataBR(g.a11.primeiro_dia_mmgd)} a ${dataBR(g.dia_referencia)}`, natureza: "ESTIMADO" });
+  if (g.termica) out.push({ rotulo: "Despacho térmico", texto: `até ${mesAno(g.termica.ultimo_mes_completo)} (último mês completo)`, natureza: "CALCULADO" });
+  const meses = [g.restricoes.eolica?.ultimo_mes_completo, g.restricoes.solar?.ultimo_mes_completo].filter((x): x is string => !!x).sort();
+  if (meses.length) out.push({ rotulo: "Restrições de renováveis", texto: `até ${mesAno(meses[0])} (último mês completo)`, natureza: "ESTIMADO" });
+  if (g.capacidade) {
+    out.push({ rotulo: "Potência instalada", texto: `retrato de ${dataBR(g.capacidade.retrato.data)}`, natureza: "OBSERVADO" });
+    const ultimo = g.capacidade.mensal.meses.at(-1);
+    if (ultimo) out.push({ rotulo: "Fator de capacidade", texto: `até ${mesAno(ultimo)} (último mês completo)`, natureza: "CALCULADO" });
+  }
+  return out;
+}
+
+/**
+ * Categorias cuja cobertura na fonte mudou em algum mês da série mensal (ressalva de universo no mês): quantos meses e o último.
+ * Serve à nota sob a série mensal: a variação dessas categorias entre meses pode refletir a cobertura, não só a geração.
+ */
+export function coberturaMensal(ms: Pick<MensalSin, "ressalvas_universo">): { id: CategoriaGeracao; rotulo: string; meses: number; ultimo: string }[] {
+  return CATEGORIAS.flatMap((c) => {
+    const lista = ms.ressalvas_universo[c] ?? [];
+    return lista.length ? [{ id: c, rotulo: CURTO_CATEGORIA[c], meses: lista.length, ultimo: [...lista].sort().at(-1)! }] : [];
+  });
+}
+
+/* ====================================================================== */
+/* Ajustes das avaliações independentes: o que mudou, notas de universo,    */
+/* amostra pequena e referências ao lado do dado                            */
+/* ====================================================================== */
+
+/** AAAA-MM deslocado em `meses` (negativo volta no tempo). */
+export function mesDeslocado(mes: string, meses: number): string {
+  const n = Number(mes.slice(0, 4)) * 12 + Number(mes.slice(5, 7)) - 1 + meses;
+  return `${Math.floor(n / 12)}-${String((n % 12) + 1).padStart(2, "0")}`;
+}
+
+/**
+ * "O que mudou" de uma série mensal: o último mês completo contra o mês anterior e contra o mesmo mês de um ano antes. Valor em
+ * unidade própria vira variação em %; valor que já é percentual (fator de capacidade, taxa) vira diferença em pontos percentuais.
+ * Mês sem valor é dito, nunca zerado, e a frase some quando nem o último mês tem valor.
+ */
+export function textoMudancaMensal(o: {
+  nome: string;
+  unidade: string;
+  casas?: number;
+  percentual?: boolean;
+  meses: readonly string[];
+  valores: readonly (number | null | undefined)[];
+  mes: string | null;
+}): string {
+  if (!o.mes) return "";
+  const casas = o.casas ?? 1;
+  const valor = (m: string): number | null => {
+    const i = o.meses.indexOf(m);
+    const v = i >= 0 ? o.valores[i] : null;
+    return v === null || v === undefined ? null : v;
+  };
+  const v = valor(o.mes);
+  if (v === null) return "";
+  const fmt = (x: number) => `${num(x, casas)}${o.percentual ? "%" : ` ${o.unidade}`}`;
+  const diferenca = (ref: number) => {
+    if (o.percentual) {
+      const d = v - ref;
+      const a = Math.round(Math.abs(d) * 10) / 10;
+      return `${d > 0 ? "+" : d < 0 ? "−" : ""}${num(a, 1)} ${a === 1 ? "ponto percentual" : "pontos percentuais"}`;
+    }
+    if (ref === 0) return "sem variação calculável";
+    const d = (100 * (v - ref)) / ref;
+    return `${d > 0 ? "+" : d < 0 ? "−" : ""}${num(Math.abs(d), 1)}%`;
+  };
+  const contra = (m: string) => {
+    const x = valor(m);
+    return x === null ? `sem valor em ${mesAno(m)}` : `${fmt(x)} em ${mesAno(m)} (${diferenca(x)})`;
+  };
+  const anterior = mesDeslocado(o.mes, -1);
+  const anoAntes = mesDeslocado(o.mes, -12);
+  return `${inicial(o.nome)} em ${mesAno(o.mes)}: ${fmt(v)}, contra ${contra(anterior)} e ${contra(anoAntes)}.`;
+}
+
+/** CVU zero publicado na semana: quantas parcelas e em quais combustíveis. Zero é valor da fonte, mantido como publicado e nunca tratado como ausência. */
+export function zerosDoCvu(cvu: Pick<NonNullable<Termica["cvu"]>, "usinas">): { total: number; zeros: number; porCombustivel: { categoria: string; rotulo: string; n: number; zeros: number }[] } {
+  const por: Record<string, { n: number; zeros: number }> = {};
+  for (const u of cvu.usinas) {
+    const x = (por[u.categoria] ??= { n: 0, zeros: 0 });
+    x.n += 1;
+    if (u.cvu === 0) x.zeros += 1;
+  }
+  const rotulo = (k: string) => (CURTO_COMBUSTIVEL as Record<string, string>)[k] ?? k;
+  const porCombustivel = Object.keys(por)
+    .filter((k) => por[k].zeros > 0)
+    .map((k) => ({ categoria: k, rotulo: rotulo(k), n: por[k].n, zeros: por[k].zeros }))
+    .sort((a, b) => b.zeros - a.zeros);
+  return { total: cvu.usinas.length, zeros: porCombustivel.reduce((t, x) => t + x.zeros, 0), porCombustivel };
+}
+
+export function notaCvuZero(cvu: Pick<NonNullable<Termica["cvu"]>, "usinas">): string {
+  const z = zerosDoCvu(cvu);
+  const onde = z.porCombustivel.map((x) => `${minusculaPalavras(x.rotulo)}, ${num(x.zeros, 0)} de ${num(x.n, 0)}`);
+  const zero = z.zeros > 0 ? `CVU 0,00 é valor publicado pela fonte em ${num(z.zeros, 0)} das ${num(z.total, 0)} parcelas da semana (${listaTexto(onde)}); fica como publicado e nunca é tratado como ausência. ` : "";
+  return `${zero}A mediana é a das parcelas com CVU, sem peso pela geração, em reais correntes de cada semana.`;
+}
+
+/** Nota da térmica por motivo: o não classificado (total verificado menos a soma dos motivos, com sinal) fica fora das barras e dentro da tabela. */
+export function notaNaoClassificado(u: Pick<Termica["ultimos_12m"], "nao_classificado_mwh" | "nao_classificado_pct" | "total_mwh">): string {
+  if (u.nao_classificado_mwh === null || u.nao_classificado_mwh === undefined) return "";
+  const g = gwh(u.nao_classificado_mwh);
+  const pct = u.nao_classificado_pct;
+  return `As barras somam só os motivos classificados; o não classificado, ${num(g, 1)} GWh${pct === null || pct === undefined ? "" : ` (${num(pct, 3)}% da geração térmica)`}, é o total verificado menos a soma dos motivos, com sinal, como a fonte publica, e está na tabela.`;
+}
+
+/** Quando o número de usinas pareadas ou a cobertura mudam dentro dos 12 meses publicados, a página diz (o universo cresce, não só a geração). */
+export function notaCrescimentoUniverso(u: Pick<Termica["universo"], "mensal">): string {
+  const m = u.mensal;
+  if (m.length < 2) return "";
+  const a = m[0];
+  const z = m[m.length - 1];
+  if (a.usinas_pareadas === z.usinas_pareadas && a.cobertura_tipo_i_iia_pct === z.cobertura_tipo_i_iia_pct) return "";
+  return `O universo muda dentro dos 12 meses: as usinas pareadas entre os dois conjuntos do ONS passam de ${num(a.usinas_pareadas, 0)} em ${mesAno(a.mes)} para ${num(z.usinas_pareadas, 0)} em ${mesAno(z.mes)}, e a cobertura das térmicas Tipo I e II-A na Geração por Usina, de ${num(a.cobertura_tipo_i_iia_pct, 1)}% para ${num(z.cobertura_tipo_i_iia_pct, 1)}%.`;
+}
+
+/** Soma térmica da matriz efetiva numa janela (nuclear, gás, carvão, óleo, biomassa e outras térmicas; sem as térmicas Tipo III), em MWmed. */
+export function somaTermicaDaMatriz(mix: Pick<Mix, "mwmed"> | null): number | null {
+  if (!mix) return null;
+  const cats: CategoriaGeracao[] = ["nuclear", "gas", "carvao", "oleo", "biomassa", "outros"];
+  const v = cats.map((c) => mix.mwmed[c]).filter((x): x is number => x !== null);
+  return v.length ? v.reduce((t, x) => t + x, 0) : null;
+}
+
+/** As `n` usinas térmicas com mais geração nos 12 meses (a lista da gold já vem ordenada; aqui a ordem é explícita). */
+export function maioresUsinasTermicas(usinas: readonly TermicaUsina[], n = 10): TermicaUsina[] {
+  return [...usinas].sort((a, b) => (b.mwmed ?? 0) - (a.mwmed ?? 0)).slice(0, n);
+}
+
+/** Comparação aberta por padrão: a usina com mais geração de cada um de `n` combustíveis diferentes, na ordem da geração. */
+export function usinasPadraoComparacao(usinas: readonly TermicaUsina[], n = 3): TermicaUsina[] {
+  const vistos: Record<string, boolean> = {};
+  const out: TermicaUsina[] = [];
+  for (const u of maioresUsinasTermicas(usinas, usinas.length)) {
+    if (vistos[u.categoria]) continue;
+    vistos[u.categoria] = true;
+    out.push(u);
+    if (out.length >= n) break;
+  }
+  return out;
+}
+
+/** Dias em que o Balanço registra a eólica de um subsistema muito abaixo da soma das usinas (menos de 10%): entram nas maiores divergências da reconciliação. */
+export function diasDoBalancoForaDoPadrao(rec: Pick<Matriz["reconciliacao_balanco"], "maiores_divergencias">): { d: string; sm: string; balanco_mwh: number; usinas_mwh: number }[] {
+  return rec.maiores_divergencias
+    .flatMap((x) => (x.fonte === "eolica" && x.usinas_mwh !== null && x.balanco_mwh !== null && x.usinas_mwh > 0 && x.balanco_mwh < 0.1 * x.usinas_mwh ? [{ d: x.d, sm: x.sm as string, balanco_mwh: x.balanco_mwh, usinas_mwh: x.usinas_mwh }] : []))
+    .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+}
+
+/** Frase dos dias em que o Balanço registra a eólica muito abaixo da soma das usinas, por subsistema, com o maior caso como exemplo; vazia sem esses dias. */
+export function textoDiasDoBalancoForaDoPadrao(dias: readonly { d: string; sm: string; balanco_mwh: number; usinas_mwh: number }[]): string {
+  if (!dias.length) return "";
+  const nome = (sm: string) => (NOME_REGIAO as Record<string, string>)[sm] ?? sm;
+  const porDia: { d: string; sms: string[] }[] = [];
+  for (const x of dias) {
+    let e = porDia.find((p) => p.d === x.d);
+    if (!e) {
+      e = { d: x.d, sms: [] };
+      porDia.push(e);
+    }
+    e.sms.push(nome(x.sm));
+  }
+  const ex = [...dias].sort((a, b) => b.usinas_mwh - a.usinas_mwh)[0];
+  return `No Balanço, a eólica fica muito abaixo da soma das usinas em ${listaTexto(porDia.map((p) => `${dataBR(p.d)} (${listaTexto(p.sms)})`))}; por exemplo, ${num(ex.balanco_mwh / 1000, 1)} GWh contra ${num(ex.usinas_mwh / 1000, 1)} GWh no ${nome(ex.sm)} em ${dataBR(ex.d)}. As janelas de 7 dias que incluem esses dias usam esse Balanço e podem ter a participação térmica distorcida; a divergência está listada em Auditar.`;
+}
+
+/** Categorias em que a capacidade fiscalizada da ANEEL (SIGA) e a potência do ONS diferem em mais de 25%: outro universo e outra classificação. */
+export function diferencasAneelOns(linhas: readonly Pick<LinhaCapacidade, "id" | "categoria" | "mw" | "siga_mw">[]): { id: CategoriaCapacidade; categoria: string; aneel: number; ons: number }[] {
+  return linhas
+    .flatMap((l) => (l.mw && l.siga_mw && Math.abs(l.siga_mw / l.mw - 1) > 0.25 ? [{ id: l.id, categoria: l.categoria, aneel: l.siga_mw, ons: l.mw }] : []))
+    .sort((a, b) => Math.abs(b.aneel - b.ons) - Math.abs(a.aneel - a.ons));
+}
+
+/** Categorias cujo fator de capacidade usa só parte da potência em operação (denominador com menos de 90% dela): a ressalva vem junto do fator. */
+export function coberturaDaPotencia(linhas: readonly Pick<LinhaCapacidade, "id" | "categoria" | "fc_pct" | "potencia_media_12m_mw" | "capacidade_hora_media_mw">[]): { id: CategoriaCapacidade; categoria: string; fc: number; denominador: number; potencia: number; pct: number }[] {
+  return linhas.flatMap((l) => {
+    const d = l.capacidade_hora_media_mw;
+    const p = l.potencia_media_12m_mw;
+    return l.fc_pct !== null && d && p && d / p < 0.9 ? [{ id: l.id, categoria: l.categoria, fc: l.fc_pct, denominador: d, potencia: p, pct: (100 * d) / p }] : [];
+  });
+}
+
+/** Menos de 10 observações: a distribuição não se descreve por quantis; mostram-se os valores de cada usina ou conjunto (menores e maiores cobrem todos). */
+export const MINIMO_PARA_DISTRIBUICAO = 10;
+
+export function observacoesFc(u: Pick<Capacidade12m, "menores" | "maiores">): { id: string; nome: string; fc_pct: number }[] {
+  const vistos: Record<string, boolean> = {};
+  const out: { id: string; nome: string; fc_pct: number }[] = [];
+  for (const x of [...u.menores, ...u.maiores]) {
+    if (vistos[x.id] || x.fc_pct === null || x.fc_pct === undefined) continue;
+    vistos[x.id] = true;
+    out.push({ id: x.id, nome: x.nome ?? "sem nome na fonte", fc_pct: x.fc_pct });
+  }
+  return out.sort((a, b) => b.fc_pct - a.fc_pct);
+}
+
+/** Universo e início de cada fonte de restrição, para a frase que as junta: eólica e fotovoltaica não são o mesmo universo nem o mesmo período. */
+export function notaUniversoRestricoes(rs: Partial<Record<FonteRestricao, Pick<Restricao, "primeiro_mes" | "ultimos_12m">>>): string {
+  const partes = FONTES_RESTRICAO.flatMap((f) => {
+    const r = rs[f];
+    if (!r?.ultimos_12m) return [];
+    return [`${NOME_FONTE_RESTRICAO[f].toLowerCase()}, ${num(r.ultimos_12m.usinas_no_universo, 0)} usinas e conjuntos, série desde ${mesAno(r.primeiro_mes)}`];
+  });
+  return partes.length > 1 ? `Universos e períodos diferentes: ${listaTexto(partes)}. As duas taxas não se comparam como se fossem do mesmo conjunto.` : "";
+}
+
+/** Em palavras simples, o que cada motivo de despacho quer dizer (a redação do ONS fica ao lado, no rótulo publicado). */
+export const GLOSA_MOTIVO: Record<MotivoDespacho, string> = {
+  merito: "Entra a usina de menor custo variável declarado, depois da geração inflexível.",
+  inflexibilidade: "Geração que o agente declara não poder reduzir, ou que ficou acima do despachado.",
+  razao_eletrica: "Geração necessária ao sistema elétrico, à segurança da rede, como o ONS classifica.",
+  garantia_energetica: "Geração decidida pelo CMSE (Comitê de Monitoramento do Setor Elétrico) para garantir o suprimento de energia.",
+  gfom: "Geração fora da ordem de mérito para compensar falta futura de combustível.",
+  reposicao_perdas: "Geração para repor perdas, como a fonte rotula.",
+  exportacao: "Geração para atender à exportação de energia.",
+  reserva_potencia: "Geração para recompor a reserva de potência operativa.",
+  substituicao: "Geração no lugar de uma usina que ficou sem combustível.",
+  unit_commitment: "Usina mantida ligada para respeitar a rampa (velocidade de subida e descida) e os tempos mínimos de operação.",
+};
+
+/* ====================================================================== */
+/* vereditos (r8): resposta curta em duas camadas                           */
+/* ====================================================================== */
+
+/**
+ * Cada veredito responde, em palavras simples e com no máximo dois números, à pergunta do título do painel e diz o limite
+ * de leitura. Os números saem dos mesmos campos da resposta completa (respostaMatriz, respostaTermica, respostaRestricao e
+ * respostaCapacidade), que continua inteira como segunda camada em Analisar e Auditar. Dado ausente: veredito vazio.
+ */
+
+/** P021: as duas maiores fontes do recorte escolhido e o aviso de que parte da energia é estimativa ou previsão do ONS. */
+export function vereditoMatriz(m: Pick<Matriz, "janelas">, rg: RegiaoGeracao, pedida: JanelaMatriz, per: Perimetro): string {
+  const { janela, mix } = janelaEscolhida(m, rg, pedida);
+  if (!mix) return "";
+  const nomes = Object.fromEntries(CATEGORIAS.map((c) => [c, FRASE_CATEGORIA[c]])) as Record<CategoriaGeracao, string>;
+  const linhas = ordenaPorParticipacao(linhasMatriz(m, rg, janela, per, nomes)).filter((l) => (l.participacao ?? 0) > 0);
+  if (!linhas.length) return "";
+  const quando = `${janela === "dia" ? `Em ${dataBR(mix.fim)}` : `Nos ${mix.dias} dias até ${dataBR(mix.fim)}`}${per === "sem" ? ", sem a MMGD estimada" : ""}`;
+  const [a, b] = linhas;
+  const fontes = b
+    ? `as duas maiores fontes foram ${a.categoria}, com ${num(a.participacao, 1)}% da geração ${DO_REGIAO[rg]}, e ${b.categoria}, com ${num(b.participacao, 1)}%`
+    : `a única fonte com geração foi ${a.categoria}, com ${num(a.participacao, 1)}% da geração ${DO_REGIAO[rg]}`;
+  const limite = per === "sem" ? "A MMGD estimada pelo ONS fica fora desta conta." : "Parte da energia é estimativa ou previsão do ONS, não medição.";
+  return `${quando}, ${fontes}. ${limite}`;
+}
+
+/** Fontes das pequenas usinas Tipo III, em plural, na ordem das categorias; todas as térmicas viram "térmicas". */
+export function fontesDoGrupoTipo3(rotulos: readonly Pick<RotuloFonte, "categoria" | "natureza" | "mwh_12m" | "mwh_desde_inicio">[], categorias: GoldGeracaoDetalhe["categorias"]): string[] {
+  const plural: Partial<Record<CategoriaGeracao, string>> = { hidraulica: "hidráulicas", eolica: "eólicas", solar_centralizada: "solares" };
+  const termica = new Set(categorias.filter((c) => c.termica).map((c) => c.id));
+  const com = new Set(rotulos.filter((r) => r.natureza === "grupo_tipo3" && (r.mwh_12m ?? 0) > 0).map((r) => r.categoria));
+  const out: string[] = [];
+  for (const c of CATEGORIAS) if (com.has(c) && plural[c]) out.push(plural[c]!);
+  if (CATEGORIAS.some((c) => com.has(c) && termica.has(c))) out.push("térmicas");
+  return out;
+}
+
+/**
+ * Conciliação do Tipo III: a natureza "previsão do ONS para grupos Tipo III" reúne pequenas usinas de várias fontes e vale
+ * `grupo` % da geração; o gráfico mostra só a categoria "Térmicas Tipo III", a parte térmica do grupo, em `termica` %.
+ */
+export function notaTipoIII(mix: Mix | null, per: Perimetro, fontes: readonly string[]): string {
+  if (!mix) return "";
+  const grupo = mix.natureza_pct.grupo_tipo3;
+  const termica = per === "com" ? mix.participacao.termica_sem_combustivel : mix.participacao_sem_mmgd.termica_sem_combustivel;
+  if (grupo === null || termica === null) return "";
+  const quais = fontes.length ? `${listaTexto(fontes)}, cada uma contada na sua fonte` : "de várias fontes";
+  const sem = per === "sem" ? " (sem a MMGD no total)" : "";
+  return `Pequenas usinas Tipo III: ${num(grupo, 1)}% da geração com a MMGD estimada, somando usinas ${quais}. O gráfico mostra só a parte térmica do grupo, "Térmicas Tipo III": ${num(termica, 1)}%${sem}.`;
+}
+
+/** P022: a energia térmica dos 12 meses e o motivo de despacho com maior parcela, como o ONS o classifica. */
+export function vereditoTermica(t: Pick<Termica, "ultimos_12m">): string {
+  const u = t.ultimos_12m;
+  const principal = [...u.por_motivo].filter((m) => (m.pct ?? 0) > 0).sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0))[0];
+  if (u.total_mwmed === null) return "";
+  const motivo = principal
+    ? `, ${num(principal.pct, 1)}% por ${minusculaPalavras(CURTO_MOTIVO[principal.motivo])}${principal.motivo === "inflexibilidade" ? " (geração declarada pelo agente ou acima do despachado)" : ""}`
+    : "";
+  return `Nos 12 meses até ${mesAno(u.fim)}, as térmicas despachadas pelo ONS geraram ${num(u.total_mwmed, 0)} MWmed em média${motivo}. O motivo é a classificação do ONS, não uma inferência do observatório.`;
+}
+
+/** P023: o quanto as eólicas e as fotovoltaicas deixaram de gerar por limitação do ONS (cada fonte publicada com 12 meses). */
+export function vereditoRestricao(rs: Partial<Record<FonteRestricao, Pick<Restricao, "fonte" | "primeiro_mes" | "ultimos_12m">>>): string {
+  const com = FONTES_RESTRICAO.filter((f) => rs[f]?.ultimos_12m && rs[f]!.ultimos_12m!.taxa_pct !== null);
+  if (!com.length) return "";
+  const nome = (f: FonteRestricao) => FRASE_FONTE_RESTRICAO[f].replace(/^usinas /, "");
+  const taxa = (f: FonteRestricao) => `${num(rs[f]!.ultimos_12m!.taxa_pct, 1)}%`;
+  const fim = rs[com[0]]!.ultimos_12m!.fim;
+  const quando = com.every((f) => rs[f]!.ultimos_12m!.fim === fim) ? `Nos 12 meses até ${mesAno(fim)}` : "Nos últimos 12 meses completos";
+  const [a, b] = com;
+  const corpo = `a limitação do ONS fez as ${nome(a)} deixarem de gerar ${taxa(a)} do que teriam gerado${b ? `, e as ${nome(b)}, ${taxa(b)}` : ""}`;
+  return `${quando}, ${corpo}. O valor é estimativa, e restrição não é falta de vento nem de sol.`;
+}
+
+/** Razões oficiais sem energia não gerada nos 12 meses (não aparecem no gráfico mensal) e a chave das que aparecem. */
+export function notaRazoesRestricao(
+  r: Pick<Restricao, "ultimos_12m">,
+  rotulos: Partial<Record<RazaoRestricao, string>>,
+  noGrafico: readonly RazaoRestricao[],
+): string {
+  const u = r.ultimos_12m;
+  if (!u) return "";
+  const chave = noGrafico.map((z) => `${z}, ${(rotulos[z] ?? CURTO_RAZAO[z]).replace(/^(.)/, (c) => c.toLowerCase())}`);
+  const oficiais: RazaoRestricao[] = ["REL", "CNF", "ENE", "PAR"];
+  const vazias = oficiais.filter((z) => !noGrafico.includes(z));
+  const semEnergia = vazias.length
+    ? ` ${inicial(listaTexto(vazias.map((z) => (rotulos[z] ?? CURTO_RAZAO[z]).replace(/^(.)/, (c) => c.toLowerCase()))))} não teve energia não gerada nos 12 meses e por isso não aparece no gráfico.`
+    : "";
+  return `Razões no gráfico: ${chave.join("; ")}.${semEnergia}`;
+}
+
+/** P024: a potência instalada no retrato, o fator de capacidade de uma fonte em palavras simples e o que fica fora da soma. */
+export function vereditoCapacidade(c: Pick<Capacidade, "retrato" | "ultimos_12m" | "contexto">): string {
+  const r = c.retrato;
+  if (r.total_mw === null) return "";
+  const u = c.ultimos_12m;
+  const NOME: Partial<Record<CategoriaCapacidade, string>> = { eolica: "eólicas", solar_centralizada: "solares centralizadas", hidraulica: "hidrelétricas" };
+  const base = (["eolica", "solar_centralizada", "hidraulica"] as const).map((k) => u?.por_categoria.find((x) => x.categoria === k)).find((x) => !!x && x.fator_capacidade_pct !== null);
+  const fc = u && base ? ` Nos 12 meses até ${mesAno(u.fim)}, as ${NOME[base.categoria]} geraram ${num(base.fator_capacidade_pct, 1)}% do máximo que a potência delas permitiria.` : "";
+  const mmgd = c.contexto.mmgd ? " A micro e minigeração distribuída fica fora." : "";
+  return `Em ${dataBR(r.data)}, as usinas despachadas pelo ONS somavam ${num(r.total_mw, 0)} MW.${fc}${mmgd}`;
+}
+
+/**
+ * "O que mudou" de painel mensal que não compara com a publicação anterior: diz isso e até que mês o dado vai e quando
+ * foi processado, em vez de apresentar a data de processamento como se fosse mudança.
+ */
+export function textoSemComparacaoMensal(ultimoMes: string | null, geradoEm: string, nome: string): string {
+  if (!ultimoMes) return `${inicial(nome)}: nenhum mês completo publicado.`;
+  return `Sem comparação com a publicação anterior. ${inicial(nome)}: último mês completo ${mesAno(ultimoMes)}, processado em ${dataBR(diaDeBrasilia(geradoEm))}.`;
 }

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { rotaEntidade, type Pares } from "@/lib/energia/empresas";
+import { janelaDosPares, rotaEntidade, type Pares } from "@/lib/energia/empresas";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 
 /**
@@ -13,6 +13,9 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
  * porte do ranking da ANEEL) no mesmo ano de referência, com a desta ficha acesa. Escolher
  * outra barra ou ponto acende a mesma distribuidora nos dois gráficos e oferece a ficha dela; a
  * escolha fica na URL (?par=), e o voltar a desfaz.
+ *
+ * Os gráficos abrem com a distribuidora da página entre as linhas visíveis: a ordem parte da ponta mais
+ * próxima dela e a altura visível vai até a linha dela (janelaDosPares); "Mostrar todas" abre a lista inteira.
  */
 export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: string; sigla: string; perdas: Pares | null; qualidade: Pares | null }) {
   const ids = useMemo(() => Array.from(new Set([...(perdas?.itens ?? []), ...(qualidade?.itens ?? [])].map((i) => i.id))), [perdas, qualidade]);
@@ -22,12 +25,21 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
   const escolher = (id: string | null) => definir({ par: id && id !== slug ? id : "" });
   const rotulo = [...(perdas?.itens ?? []), ...(qualidade?.itens ?? [])].find((i) => i.id === sel)?.rotulo ?? sel;
 
+  const janelaPerdas = perdas ? janelaDosPares(perdas.posicao, perdas.total, 44, 440) : null;
+  const janelaDec = qualidade ? janelaDosPares(qualidade.posicao, qualidade.total, 44, 440) : null;
+  const barras = perdas ? perdas.itens.map((i) => ({ id: i.id, rotulo: i.rotulo, perdas: i.valor })) : [];
+
   return (
     <div className="space-y-5">
-      {perdas && (
+      {(perdas || qualidade) && (
+        <p className="max-w-prose2 text-xs text-carvao-muted" data-ordem-pares="">
+          Os gráficos abrem com a {sigla} à vista: a ordem parte da ponta mais próxima dela. &ldquo;Mostrar todas&rdquo; abre a lista inteira.
+        </p>
+      )}
+      {perdas && janelaPerdas && (
         <GraficoBarras
           titulo={`Perdas totais das ${perdas.regra}, com a ${sigla} acesa`}
-          dados={perdas.itens.map((i) => ({ id: i.id, rotulo: i.rotulo, perdas: i.valor }))}
+          dados={janelaPerdas.crescente ? barras : barras.slice().reverse()}
           chaveCategoria="id"
           chaveRotulo="rotulo"
           series={[{ id: "perdas", rotulo: "Perdas totais", cor: "var(--serie-comp-1)" }]}
@@ -35,12 +47,12 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
           casas={2}
           orientacao="horizontal"
           alturaCategoria={44}
-          alturaMaxima={440}
+          alturaMaxima={janelaPerdas.alturaMaxima}
           selecionado={sel}
           onSelecionar={escolher}
         />
       )}
-      {qualidade && (
+      {qualidade && janelaDec && (
         <GraficoPontos
           titulo={`DEC diante do limite nas ${qualidade.regra}`}
           itens={qualidade.itens.map((i) => ({ id: i.id, rotulo: i.rotulo, valor: i.valor, referencia: i.referencia }))}
@@ -49,9 +61,10 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
           rotuloValor="DEC apurado"
           rotuloReferencia="Limite regulatório"
           zeroNoEixo
+          ordemInicial={{ por: "valor", direcao: janelaDec.crescente ? "asc" : "desc" }}
           selecionado={sel}
           onSelecionar={escolher}
-          alturaMaxima={440}
+          alturaMaxima={janelaDec.alturaMaxima}
         />
       )}
       {sel !== slug && (

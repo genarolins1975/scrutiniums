@@ -101,6 +101,59 @@ export type Evidencia = {
   citacao: string;
 };
 
+/**
+ * Nome com que o leitor reconhece os conjuntos cujo código é o nome técnico da fonte. É a leitura palavra por palavra do
+ * próprio código (acentuação e preposições restauradas), sem acrescentar significado que o código não tenha.
+ */
+const NOME_DO_CONJUNTO: Record<string, string> = {
+  pld_horario: "PLD horário por submercado",
+  agente_qtd_contabilizacao: "quantidade de agentes na contabilização",
+  consumo_classe_agente: "consumo por classe de agente",
+  consumo_mensal_ambiente_comercializacao: "consumo mensal por ambiente de comercialização",
+  encargo_ess_ancilar: "encargo de serviço ancilar (ESS)",
+  encargo_pgto_mensal: "pagamento mensal de encargos",
+  garantia_fisica_sazo_mre_submercado: "garantia física sazonalizada do MRE por submercado",
+  geracao_submercado: "geração por submercado",
+  lista_agente_associado: "lista de agentes associados",
+  lista_perfil_v1: "lista de perfis (versão 1)",
+  mre_mensal: "MRE mensal",
+  parcela_carga_consumo: "parcela de carga de consumo",
+  rd_encargos_contab_mensal: "encargos na contabilização mensal",
+  reserva_encargo: "encargo de reserva",
+  sumario_mensal_compra_venda_submercado: "sumário mensal de compra e venda por submercado",
+  sumario_mensal_liquidacao: "sumário mensal da liquidação",
+  aneel_continuidade: "indicadores de continuidade (ANEEL)",
+  aneel_samp_balanco: "balanço do SAMP (ANEEL)",
+  aneel_scs: "SCS (ANEEL)",
+  aneel_tarifas_aplicacao: "tarifas de aplicação (ANEEL)",
+  desligamento_compulsorio: "desligamento compulsório",
+  desligamento_voluntario: "desligamento voluntário",
+  imerg_prectot: "precipitação total (IMERG)",
+};
+
+const CODIGO_NO_TEXTO = /(?<![\w])(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)(?![\w])/g;
+
+/**
+ * Nome do conjunto da fonte como o leitor o lê, mais os códigos técnicos que ficaram de fora. Códigos de conjunto da
+ * CCEE (PLD_HORARIO, mre_mensal) saem do texto de Entender e vão para Analisar: o nome legível vem do dicionário acima,
+ * do texto entre parênteses que a própria fonte já traz ("PLD_HORARIO (PLD horário por submercado)") ou, na falta de
+ * ambos, do próprio código com espaços no lugar do sublinhado. Vale para o código em qualquer posição do texto
+ * ("GERACAO_SUBMERCADO e MRE_MENSAL", "PLD_HORARIO; Balanço de Energia nos Subsistemas").
+ */
+export function conjuntoLegivel(conjunto: string): { texto: string; codigos: string[] } {
+  const codigos: string[] = [];
+  const legivel = (cod: string) => NOME_DO_CONJUNTO[cod.toLowerCase()] ?? cod.replace(/_/g, " ").toLowerCase();
+  const comParenteses = conjunto.replace(new RegExp(`(${CODIGO_NO_TEXTO.source})\\s*\\(([^()]+)\\)`, "g"), (_t, cod: string, nome: string) => {
+    codigos.push(cod);
+    return nome;
+  });
+  const texto = comParenteses.replace(CODIGO_NO_TEXTO, (cod) => {
+    codigos.push(cod);
+    return legivel(cod);
+  });
+  return { texto, codigos };
+}
+
 export const SEM_DADO = "sem dado";
 export const SITE = "https://scrutiniums.com/setor-eletrico";
 
@@ -184,6 +237,29 @@ export function numeroMaquina(v: number | null | undefined): string {
 /* ---------------------------------------------------------------- citação */
 
 const SO_NUMERO = /^[−+-]?[\d.,]+$/;
+
+/** Número de um texto pt-BR com milhar em ponto e decimal em vírgula ("12,12%" vira 12.12); null se o texto não começa por número. */
+function numeroDoTexto(s: string): { valor: number; casas: number; resto: string } | null {
+  const m = /^(-?\d{1,3}(?:\.\d{3})*|-?\d+)(?:,(\d+))?/.exec(s.trim());
+  if (!m) return null;
+  return { valor: Number(m[1].replace(/\./g, "") + (m[2] ? `.${m[2]}` : "")), casas: m[2]?.length ?? 0, resto: s.trim().slice(m[0].length) };
+}
+
+/**
+ * Ficha com o valor escrito como o cartão o exibe. O Comprove tem de mostrar o mesmo texto do número que
+ * prova; quando a ficha foi publicada com menos casas que o cartão (12,1% na ficha, 12,12% no cartão), o
+ * texto é reescrito, mas só se o novo for o arredondamento de `valor_calculo` e trouxer a mesma unidade
+ * escrita: nunca inventa dígito. Qualquer dúvida devolve a ficha como veio.
+ */
+export function comValorExibido(ev: Evidencia, texto: string): Evidencia {
+  const novo = numeroDoTexto(texto);
+  const velho = numeroDoTexto(ev.valor_exibido);
+  if (!novo || !velho || ev.valor_calculo === null || !Number.isFinite(ev.valor_calculo)) return ev;
+  if (novo.resto.trim() !== velho.resto.trim()) return ev;
+  if (Math.abs(novo.valor - ev.valor_calculo) > 0.5 * 10 ** -novo.casas + 1e-9) return ev;
+  const citacao = ev.citacao?.includes(`: ${ev.valor_exibido},`) ? ev.citacao.replace(`: ${ev.valor_exibido},`, `: ${texto.trim()},`) : ev.citacao;
+  return { ...ev, valor_exibido: texto.trim(), citacao };
+}
 
 /** Referência ABNT simplificada sem data de acesso: espelho de `citacao()` no Python. */
 export function citacaoBase(ev: Evidencia, endereco: string = SITE): string {
@@ -410,11 +486,12 @@ export function valorDestaque(v: number | null | undefined, formato: FormatoNume
 }
 
 /** Unidade ao lado do número grande sem repetir o que o formato já escreve:
- * "R$/MWh" com formato reais vira "/MWh"; "%" com formato pct some. */
+ * "R$/MWh" com formato reais vira "/MWh"; "%" com formato pct some; "% da energia injetada"
+ * com formato pct vira "da energia injetada" (o número já termina em %). */
 export function unidadeDestaque(unidade: string | null | undefined, formato: FormatoNumero = "num"): string {
   const u = (unidade ?? "").trim();
   if (formato === "reais") return u.replace(/^R\$\s*/, "");
-  if ((formato === "pct" || formato === "variacao_pct") && u === "%") return "";
+  if (formato === "pct" || formato === "variacao_pct") return u.replace(/^%\s*/, "");
   return u;
 }
 

@@ -58,7 +58,7 @@ export function TermoDica({ href, rotulo, dica, children, alvo = false }: { href
       <Link
         href={href}
         aria-describedby={id}
-        className="underline decoration-energia/50 decoration-dotted underline-offset-4 hover:decoration-energia"
+        className={`underline decoration-energia/50 decoration-dotted underline-offset-4 hover:decoration-energia${alvo ? " inline-flex min-h-[24px] min-w-[24px] items-center" : ""}`}
       >
         {children}
       </Link>

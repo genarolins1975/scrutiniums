@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { RegulacaoFaixas } from "@/components/energia/RegulacaoFaixas";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -23,14 +24,16 @@ import {
   situacaoSeConfirmada,
   temaCurto,
   textoJanela,
+  textoMudancaDeAbertas,
   textoReuniao,
+  vereditoConsultas,
 } from "@/lib/energia/regulacao";
 import { faseAtual, hojeBrasilia, type Consultas, type SituacaoConsulta } from "@/lib/energia/tipos-regulacao";
 
 /**
  * P046, consultas e audiências públicas da ANEEL. A situação de cada consulta é
  * recalculada pela regra do pipeline (situacaoConsulta) na data em que a página é
- * lida: o HTML sai com a data do build e, já no navegador, passa à data de hoje no
+ * lida: o HTML sai com a data do build e, já no navegador, passa à data do dia no
  * horário de Brasília. Assim uma consulta vencida nunca continua aparecendo como
  * aberta, mesmo que a página estática tenha sido gerada dias antes.
  *
@@ -47,15 +50,27 @@ export function RegulacaoConsultas({
   dataServidor,
   fonte,
   versao,
-  inicioHistorico = null,
+  cartao = null,
+  ondeContribuir = null,
+  legendaFigura = null,
+  recorte = null,
+  notas = null,
 }: {
   consultas: Pick<Consultas, "itens" | "janela_dias" | "decisoes_sem_resultado_formal" | "atas_deliberadas_ate" | "atas_ate" | "atas_geradas_em" | "data_referencia">;
   /** Data do build (nunca anterior à data de referência da gold); o navegador troca pela de hoje. */
   dataServidor: string;
   fonte: string;
   versao: string;
-  /** Ano de início do histórico no CSV, lido da proveniência da gold (null sem a data). */
-  inicioHistorico?: string | null;
+  /** Número da data de referência com a ficha de prova (Numero), ao lado do veredito. */
+  cartao?: ReactNode;
+  /** Onde contribuir: fica logo abaixo do gráfico, com o que a figura mostra e a data das atas. */
+  ondeContribuir?: ReactNode;
+  /** O que a figura mostra do universo e onde baixar o resto (histórico completo), logo abaixo dela. */
+  legendaFigura?: ReactNode;
+  /** Período, universo e unidade como legenda, depois da figura e da tabela. */
+  recorte?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal, da tabela e do recorte. */
+  notas?: ReactNode;
 }) {
   const [hoje, setHoje] = useState(dataServidor);
   useEffect(() => {
@@ -78,6 +93,9 @@ export function RegulacaoConsultas({
   const doModo = naData.filter((c) => (v.mod === "cp" ? c.modalidade === "Consulta Pública" : v.mod === "ap" ? c.modalidade === "Audiência Pública" : true));
   const contagem = contarSituacoes(doModo);
   const sit = new Set<SituacaoConsulta>(v.sit);
+  // situação sem nenhuma consulta no recorte não ganha caixa: marcá-la não mudaria nada; ela é dita numa linha
+  const situacoesComConsulta = ORDEM_SITUACAO.filter((s) => contagem[s] > 0);
+  const situacoesSemConsulta = ORDEM_SITUACAO.filter((s) => contagem[s] === 0);
   const visiveis = ordenarConsultas(doModo.filter((c) => sit.has(c.situacao_na_data)));
   const faixas = faixasConsultas(visiveis);
   const linhas = linhasConsultas(visiveis);
@@ -93,57 +111,78 @@ export function RegulacaoConsultas({
     definir({ sit: ORDEM_SITUACAO.filter((x) => novo.has(x)) });
   }
 
+  const notaAtas = (
+    <p
+      role={defas.defasada ? "alert" : undefined}
+      className={`border-l-2 pl-3 text-sm leading-relaxed ${defas.defasada ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
+      data-defasagem-atas={defas.dias ?? ""}
+    >
+      {defas.defasada ? "Fonte defasada: " : ""}
+      As atas integradas trazem resultados deliberados até a reunião de {dataBR(consultas.atas_deliberadas_ate ?? null)} (pauta registrada até {dataBR(consultas.atas_ate ?? null)}), no
+      arquivo gerado pela ANEEL em {dataBR(consultas.atas_geradas_em ?? null)}
+      {defas.dias !== null ? `, ${defas.dias} ${defas.dias === 1 ? "dia" : "dias"} antes de ${dataBR(hoje)}` : ""}. Resultado deliberado depois disso não aparece: uma
+      consulta encerrada pode já ter sido decidida.
+    </p>
+  );
+
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg" data-resposta="p046" data-resposta-hoje={hoje} aria-live="polite">
-        {respostaConsultas(consultas, hoje)}
-      </p>
-      {hoje !== consultas.data_referencia && (
-        <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted" data-recalculo="">
-          Situação recalculada para {dataBR(hoje)} pela mesma regra do pipeline. O número com ficha de prova acima se refere a {dataBR(consultas.data_referencia)}, a data de
-          referência da publicação.
-        </p>
-      )}
-      <p role={defas.defasada ? "alert" : undefined} className={`border-l-2 pl-3 text-sm leading-relaxed ${defas.defasada ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`} data-defasagem-atas={defas.dias ?? ""}>
-        {defas.defasada ? "Fonte defasada: " : ""}
-        As atas integradas trazem resultados deliberados até a reunião de {dataBR(consultas.atas_deliberadas_ate ?? null)} (pauta registrada até {dataBR(consultas.atas_ate ?? null)}), no
-        arquivo gerado pela ANEEL em {dataBR(consultas.atas_geradas_em ?? null)}
-        {defas.dias !== null ? `, ${defas.dias} ${defas.dias === 1 ? "dia" : "dias"} antes de ${dataBR(hoje)}` : ""}. Resultado deliberado depois disso não aparece: uma
-        consulta encerrada pode já ter sido decidida.
-      </p>
+      {/* a resposta à esquerda e, ao lado, o número com a ficha de prova e onde contribuir: o gráfico começa mais perto do topo */}
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-start" data-abertura-painel="">
+        <div className="space-y-3">
+          <RespostaCurta id="p046" vivo veredito={vereditoConsultas(consultas, hoje)}>
+            <span data-resposta-hoje={hoje}>{respostaConsultas(consultas, hoje)}</span>
+          </RespostaCurta>
+          {hoje !== consultas.data_referencia && (
+            <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted" data-recalculo="">
+              Situação recalculada para {dataBR(hoje)} pela mesma regra do observatório; o número com a ficha Comprove é o da data de referência.{" "}
+              {textoMudancaDeAbertas(consultas.itens, consultas.data_referencia, hoje)}
+            </p>
+          )}
+        </div>
+        {cartao && <div className="lg:border-l lg:border-linha lg:pl-6">{cartao}</div>}
+      </div>
+      {defas.defasada && notaAtas}
 
-      <div role="group" aria-label="Filtros das consultas" className="space-y-2 border-b border-linha pb-3">
-        <fieldset className="flex flex-wrap items-center gap-x-4">
-          <legend className="rotulo float-left mr-3 text-mineral">Situação em {dataBR(hoje)}</legend>
-          {ORDEM_SITUACAO.map((s) => (
-            <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
+      <div role="group" aria-label="Filtros das consultas" className="space-y-1 border-b border-linha pb-3">
+        <fieldset className="flex flex-wrap items-center gap-x-3.5 max-sm:gap-x-2">
+          <legend className="rotulo mr-3 text-mineral sm:float-left">Situação</legend>
+          {situacoesComConsulta.map((s) => (
+            <label key={s} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao max-sm:basis-[calc(50%-0.25rem)]">
               <input type="checkbox" checked={sit.has(s)} onChange={() => alternar(s)} className="h-4 w-4 accent-energia" />
               {ROTULO_CURTO_SITUACAO[s]} <span className="tabular-nums text-mineral">({contagem[s]})</span>
             </label>
           ))}
         </fieldset>
-        <fieldset className="flex flex-wrap items-center gap-x-4">
-          <legend className="rotulo float-left mr-3 text-mineral">Modalidade</legend>
-          {MODALIDADES.map((m) => (
-            <label key={m || "todas"} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
-              <input type="radio" name="regulacao-modalidade" checked={v.mod === m} onChange={() => definir({ mod: m })} className="h-4 w-4 accent-energia" />
-              {NOME_MODALIDADE[m]}
-            </label>
-          ))}
-        </fieldset>
-        <div className="flex flex-wrap items-center gap-x-4">
-          <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
-            Mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
-            {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
+        {situacoesSemConsulta.length > 0 && (
+          <p className="text-xs text-carvao-muted" data-situacoes-vazias="">
+            Sem consultas nesta data em: {situacoesSemConsulta.map((s) => ROTULO_CURTO_SITUACAO[s]).join("; ")}.
           </p>
-          <button
-            type="button"
-            aria-disabled={filtroPadrao}
-            onClick={() => !filtroPadrao && definir({ sit: SITUACOES_PADRAO, mod: "" })}
-            className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${!filtroPadrao ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
-          >
-            Voltar ao padrão
-          </button>
+        )}
+        <div className="flex flex-wrap items-center gap-x-6">
+          <fieldset className="flex flex-wrap items-center gap-x-4">
+            <legend className="rotulo float-left mr-3 text-mineral">Modalidade</legend>
+            {MODALIDADES.map((m) => (
+              <label key={m || "todas"} className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-carvao">
+                <input type="radio" name="regulacao-modalidade" checked={v.mod === m} onChange={() => definir({ mod: m })} className="h-4 w-4 accent-energia" />
+                {NOME_MODALIDADE[m]}
+              </label>
+            ))}
+          </fieldset>
+          <div className="flex flex-wrap items-center gap-x-4">
+            <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
+              Em {dataBR(hoje)}, mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
+              {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
+            </p>
+            <button
+              type="button"
+              aria-disabled={filtroPadrao}
+              onClick={() => !filtroPadrao && definir({ sit: SITUACOES_PADRAO, mod: "" })}
+              className={`rotulo inline-flex min-h-[44px] items-center border px-3 ${!filtroPadrao ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
+            >
+              Voltar ao padrão
+            </button>
+          </div>
         </div>
       </div>
 
@@ -170,16 +209,25 @@ export function RegulacaoConsultas({
               </svg>
               fim calculado do início e da duração
             </li>
+            <li data-legenda-siglas="">CP: consulta pública; AP: audiência pública</li>
           </ul>
         }
       />
 
+      {(legendaFigura || ondeContribuir || !defas.defasada) && (
+        <div className="max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao-muted">
+          {legendaFigura && <p data-legenda-figura="">{legendaFigura}</p>}
+          {ondeContribuir}
+          {!defas.defasada && notaAtas}
+        </div>
+      )}
+
       {selecionada && (
         <section className="space-y-2 border border-energia bg-superficie p-4 text-sm" data-consulta-selecionada={selecionada.id} aria-labelledby="consulta-selecionada-titulo">
           <p className="rotulo text-energia-dark">{ROTULO_CURTO_SITUACAO[selecionada.situacao_na_data]} em {dataBR(hoje)}</p>
-          <h4 id="consulta-selecionada-titulo" className="font-serif text-lg text-carvao">
+          <h3 id="consulta-selecionada-titulo" className="font-serif text-lg text-carvao">
             {selecionada.rotulo}
-          </h4>
+          </h3>
           <p className="text-carvao">{temaCurto(selecionada.tema)}</p>
           <p className="text-carvao-muted">
             Processo {selecionada.processos.join(", ")}
@@ -266,14 +314,17 @@ export function RegulacaoConsultas({
         selecionado={selecionada?.id ?? null}
         onSelecionar={selecionar}
         semLinhas="Nenhuma consulta no recorte atual."
-        nota={`Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta. O histórico completo${inicioHistorico ? `, desde ${inicioHistorico},` : ""} está no CSV do painel.`}
+        nota="Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta."
       />
 
+      {recorte}
+      {notas}
+
       {(consultas.decisoes_sem_resultado_formal ?? []).length > 0 && (
-        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2" data-decisoes-sem-resultado="">
-          <h4 id="sem-resultado-formal-titulo" className="font-serif text-base text-carvao">
-            Decisões de abertura ainda sem resultado formal na ata (fora da contagem)
-          </h4>
+        <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2 border-t border-linha pt-6" data-decisoes-sem-resultado="" data-nivel="analisar">
+          <h3 id="sem-resultado-formal-titulo" className="ed-h3 font-serif text-carvao">
+            Quais decisões de abertura ainda não têm resultado formal na ata (fora da contagem)?
+          </h3>
           <ul className="space-y-2 text-sm text-carvao-muted">
             {(consultas.decisoes_sem_resultado_formal ?? []).map((d) => {
               const s = situacaoSeConfirmada(d, hoje);

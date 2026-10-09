@@ -1,0 +1,96 @@
+{
+ "descricao": "Trechos de documentos primários usados como fonte literal dos verbetes GSF, REE e constrained-off do Aprenda (P065), conferidos em 07/10/2026. Cada trecho citado por um verbete aparece literalmente num destes arquivos, a menos de espaços (teste em src/tests/energia-aprenda.test.ts, que reúne os manifestos de todas as versões desta pasta).",
+ "arquivos": [
+  {
+   "arquivo": "boletim_gsf_mre_p28.txt",
+   "documento": "MME, Secretaria de Energia Elétrica, Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro, janeiro de 2021: seção 8.5 (Mecanismo de Realocação de Energia) e lista de siglas",
+   "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2021/boletim-de-monitoramento-do-sistema-eletrico-jan-2021.pdf",
+   "capturado_em": "2026-10-07T21:10:54Z",
+   "sha256_original": "5b39ea88dedf1136f1e8a10b38b33fd8e1b5b157a18c0dc36b339ddf989edf16",
+   "bytes_original": 3072892,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 33 (seção 8.5, página 28 do boletim) e 45 (lista de siglas).",
+   "sha256": "6a6a068405faa599a55529c6117dc4029fc940001b63e4bcbf8f020051fda321"
+  },
+  {
+   "arquivo": "gt_mre_gsf.txt",
+   "documento": "MME, GT Modernização do Setor Elétrico, Relatório do Grupo Temático Aprimoramento do MRE, julho de 2019: seções sobre a contabilização do MRE, a crise do MRE e o balanço operativo, figura 8 e Tabela 1",
+   "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-executiva/modernizacao-do-setor-eletrico/arquivos/pasta-geral-publicada/mre.pdf",
+   "capturado_em": "2026-10-07T21:10:58Z",
+   "sha256_original": "bcc149b5eafb5c72e05b2e783748d5fae7ec7b4fbe55942bbf75c99d7bdc9674",
+   "bytes_original": 3325268,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 3, 17, 18, 21, 22, 38 (neste relatório a página do PDF coincide com a impressa).",
+   "sha256": "4639306ac75212d73c1010320503d8ebf5234413f086a9d94683f51168d9f0c6"
+  },
+  {
+   "arquivo": "gt_formacao_ree.txt",
+   "documento": "MME, GT Modernização do Setor Elétrico, Relatório do Grupo Temático Mecanismos de Formação de Preços, julho de 2019: seção 2.2.1 e seção 5",
+   "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-executiva/modernizacao-do-setor-eletrico/arquivos/pasta-geral-publicada/formacao-de-precos.pdf",
+   "capturado_em": "2026-10-07T21:11:03Z",
+   "sha256_original": "48a5176abd6abe4d8ceaaf313d290b69fac63d645ee393f938b7b22671525988",
+   "bytes_original": 1574613,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 12 (seção 2.2.1) e 41 (seção 5).",
+   "sha256": "4262079607ad34e3c3398c5ebd9eb81d57981c7108b50ed0221e88c8cd7ee3ae"
+  },
+  {
+   "arquivo": "epe_nt096_constrained_off.txt",
+   "documento": "MME e EPE, Nota Técnica EPE-DEE-NT-096/2022-r0, Constrained-off de usinas eólicas, período definitivo (novembro de 2022): introdução e seção 2.1",
+   "url": "https://www.gov.br/mme/pt-br/assuntos/noticias/mme-publica-valores-de-garantias-fisicas-de-usinas-eolicas-para-2023/constrained-off-de-usinas-eolicas.pdf",
+   "capturado_em": "2026-10-07T21:11:05Z",
+   "sha256_original": "b422938e6c3264ca1bc952e546831976e88be54641490e0519af80d88516d5d7",
+   "bytes_original": 1476715,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF páginas 6 (introdução) e 8 e 9 (seção 2.1, que atravessa a quebra de página).",
+   "sha256": "52854db2c6f39b7a310929711229da225bf939a3d2ad21cfaa436d1f39bb21e6"
+  },
+  {
+   "arquivo": "epe_pde2031_ree.txt",
+   "documento": "EPE, Plano Decenal de Expansão de Energia 2031, Estudos Complementares: Sensibilidades what if, Nota Técnica EPE-DEE-RE-037/2022 (emissão original em 12/07/2022): seção 2",
+   "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/Documents/Estudos%20Complementares%20PDE2031_Sensibilidades%20what%20if.pdf",
+   "capturado_em": "2026-10-07T21:11:08Z",
+   "sha256_original": "d3b8f0390af2bee63c1551e2279ff4b47505346baa89277d68a2b0cd307c32de",
+   "bytes_original": 8806342,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF página 7 (seção 2, página 4 do documento); o PDF diagrama o texto em duas colunas e a extração segue a ordem de leitura.",
+   "sha256": "c905c74148ee5d3699d61bbfd3086cc5b558940894d44ac4047545c11982665e"
+  },
+  {
+   "arquivo": "epe_nt099_ree.txt",
+   "documento": "EPE, Nota Técnica EPE/DEE/099/2025, Revisão extraordinária do montante de garantia física de energia de UTE com CVU não nulo, bloco setembro/2025 (dezembro de 2025): premissas e topologia",
+   "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/PublicacoesArquivos/publicacao-525/topico-813/EPE-DEE-RE-099_2025_rv0.pdf",
+   "capturado_em": "2026-10-07T21:11:10Z",
+   "sha256_original": "17f9be35d7a873a866bf325b7dd93d2591480435c4625afb222068df65eda95c",
+   "bytes_original": 964050,
+   "transformacao": "Texto das páginas indicadas extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço e linhas em branco repetidas removidas; as quebras de linha do PDF foram mantidas e cada página vem sob uma linha [PDF, página N]. Páginas selecionadas pelo texto que citam: PDF página 11 (premissas dos modelos, topologia de subsistemas e de REE).",
+   "sha256": "a7d4f6301bd1d76ca17a56f0f5c7eb6f8e790fbb9abf9e30b498161a938493ac"
+  },
+  {
+   "arquivo": "ons_ear_diario_por_ree.txt",
+   "documento": "ONS, Portal de dados abertos, conjunto EAR Diário por REE (Reservatório Equivalente de Energia): descrição",
+   "url": "https://dados.ons.org.br/dataset/ear-diario-por-ree-reservatorio-equivalente-de-energia",
+   "capturado_em": "2026-10-07T21:11:12Z",
+   "sha256_original": "74e3b8c6a3d9a526e5a123f5c6e4f99499f0e7a27e95014f49c94edb3aa06022",
+   "bytes_original": 76739,
+   "transformacao": "Do HTML da página do conjunto de dados foram removidos scripts, estilos e marcas, e os espaços repetidos foram reduzidos a um; ficou só o parágrafo de descrição do conjunto, do início ao aviso de consistência recorrente.",
+   "sha256": "02f4a3bc9da6a6e7481ae4abcf6c75194b595803e206e3e67d76e78b83daf0f6"
+  },
+  {
+   "arquivo": "ons_ena_diario_por_ree.txt",
+   "documento": "ONS, Portal de dados abertos, conjunto ENA Diário por REE (Reservatório Equivalente de Energia): descrição",
+   "url": "https://dados.ons.org.br/dataset/ena-diario-por-ree-reservatorio-equivalente-de-energia",
+   "capturado_em": "2026-10-07T21:11:12Z",
+   "sha256_original": "62c772ea420f5e2a947b5d563f0a504b4737bdca7d644691e4050239a4c0210b",
+   "bytes_original": 68272,
+   "transformacao": "Do HTML da página do conjunto de dados foram removidos scripts, estilos e marcas, e os espaços repetidos foram reduzidos a um; ficou só o parágrafo de descrição do conjunto, do início ao aviso de consistência recorrente.",
+   "sha256": "3445db0a35e5ac587b1fd47f28bdd7f40f6f4dba6776899b058af5df1f975fa8"
+  },
+  {
+   "arquivo": "ons_restricao_coff_eolica.txt",
+   "documento": "ONS, Portal de dados abertos, conjunto Dados de Restrição de Operação por Constrained-off de Usinas Eólicas: descrição",
+   "url": "https://dados.ons.org.br/dataset/restricao_coff_eolica_usi",
+   "capturado_em": "2026-10-07T21:11:13Z",
+   "sha256_original": "2599fb12045f66ee9fbca8cadc5f8c459dfaeb8432f9a691a37e2e24c0f9c042",
+   "bytes_original": 301847,
+   "transformacao": "Do HTML da página do conjunto de dados foram removidos scripts, estilos e marcas, e os espaços repetidos foram reduzidos a um; ficou só o parágrafo de descrição do conjunto, do início ao aviso de consistência recorrente.",
+   "sha256": "a60ca06d378ea385fbf16bd7820606d2063a3a311fafcba23dc4cb34147c07b8"
+  }
+ ],
+ "canal": "GET HTTP direto às páginas públicas do MME (gov.br), da EPE e do ONS a partir do ambiente de desenvolvimento, com o User-Agent do projeto e sem cabeçalho de navegador. O repositório de normas da ANEEL (cedoc) respondeu 403 e a CCEE não foi consultada para estes verbetes; nenhum bloqueio foi contornado."
+}

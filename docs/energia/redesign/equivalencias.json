@@ -1,0 +1,628 @@
+{
+ "/perdas": [
+  {
+   "antes": "painel|onde estão as perdas e como evoluíram?",
+   "depois": "painel|como variam as perdas entre as distribuidoras?",
+   "justificativa": "Mesmo painel (id painel-mapa, nível Entender): o título passou a ser a pergunta da figura de distribuição por faixa, que abre o painel; o mapa, a escolha da distribuidora, o comparador e a tabela seguem nas seções perdas-territorio, perdas-selecao, perdas-comparar e perdas-tabela."
+  }
+ ],
+ "/perdas/composicao": [
+  {
+   "antes": "painel|qual parte das perdas é técnica e qual é não técnica?",
+   "depois": "painel|a perda de cada distribuidora dividida em técnica e não técnica",
+   "justificativa": "Mesmo painel (id painel-composicao, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1)."
+  }
+ ],
+ "/perdas/custo-e-contexto": [
+  {
+   "antes": "painel|qual é a dimensão econômica das perdas na tarifa?",
+   "depois": "painel|quanto da tarifa residencial remunera as perdas?",
+   "justificativa": "Mesmo painel (id painel-custo, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1). O título do gráfico ganhou '(base econômica)', o que não muda a visão."
+  }
+ ],
+ "/perdas/regulatorio": [
+  {
+   "antes": "painel|como mudou o percentual regulatório de perdas técnicas de cada distribuidora?",
+   "depois": "painel|o percentual técnico de cada distribuidora, trecho a trecho",
+   "justificativa": "Mesmo painel (id painel-regulatorio, nível Entender): o título do painel é o da primeira figura, e a pergunta da página passou a ser o título (h1). A coluna 'Troca contra o trecho anterior' da tabela virou 'Diferença contra o trecho anterior de referência' (a do gráfico), com o percentual do trecho anterior ao lado; a troca do pipeline segue no arquivo para baixar."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima": [
+  {
+   "antes": "grafico|",
+   "depois": "grafico|ear no último ano (% da ear máxima), a cada 14 dias, com o 10º e o 90º percentil da data",
+   "justificativa": "Os pequenos múltiplos de recortes (antes um gráfico sem título, em Analisar) têm título e fazem parte do bloco 'Até quatro recortes na mesma escala', em Entender desde a migração da abertura. Mesmos quatro recortes por padrão, mesma escala, mesma faixa do 10º ao 90º percentil; a tabela dos painéis (27 linhas, 4 painéis) acompanha. Na rodada 2 os painéis ganharam título de nível 4 e o aviso de que a escolha é independente do recorte da figura principal."
+  },
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (5 linhas)",
+   "depois": "tabela|tabela equivalente: subsistemas e sin, ear do dia, faixa da data e variação. 5 de 5 linhas. o botão na coluna de nome seleciona a linha.",
+   "justificativa": "A tabela própria do gráfico de pontos continua no HTML e fica escondida por CSS dentro da página (recipiente data-grafico-pontos); a 'Tabela equivalente' da página traz as mesmas cinco linhas e é a única porta. A tabela equivalente nunca abre sozinha ao escolher um recorte (AguaTabela)."
+  },
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (321 linhas)",
+   "depois": "tabela-recolhida|dados do gráfico em tabela (321 linhas)",
+   "justificativa": "A série mensal do SIN desde 2000 (321 linhas) passou de Analisar a Entender na migração da abertura. Na rodada 2 o bloco 'Desde 2000: energia armazenada e capacidade no fim de cada mês' (com as 63 mudanças e a ficha) passou a vir antes da comparação de recortes, para a página terminar na comparação, que responde ao título; o nível não mudou."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/afluencia": [
+  {
+   "antes": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e de julho, desde 2000",
+   "depois": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho, desde 2000",
+   "justificativa": "Rodada 2: a grade de quatro painéis da MLT implícita (15 de janeiro e 15 de julho) volta de Entender a Analisar, o nível do original, junto da diferença contra o PMO e das tabelas, em 'Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam'. Em Entender fica a seção 'Qual MLT? A referência muda de versão' com duas frases (a MLT muda de versão, e o que há em Analisar). Os termos conjunto aberto, PMO e MLT implícita são definidos no ponto de uso, em Analisar. Título e valores não mudaram."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/chuva-e-temperatura": [
+  {
+   "antes": "grafico|",
+   "depois": "grafico|chuva mensal estimada e média do mês, últimos 12 meses completos",
+   "justificativa": "Os pequenos múltiplos da chuva mensal por bacia (antes um gráfico sem título, em Analisar) têm título. Rodada 2: a seção 'Como a chuva mensal se compara entre bacias?' (comparador, painéis e tabela dos painéis) volta de Entender a Analisar, o nível do original, para a página ter menos painéis de peso parecido em Entender; o painel central (o mapa) segue em Entender. Mesmas quatro bacias por padrão e mesmos valores."
+  },
+  {
+   "antes": "controle|temperatura",
+   "depois": null,
+   "justificativa": "As opções do recorte da temperatura deixaram de ser siglas (SIN, SE/CO, S, NE, N) e passaram a ser os nomes dos subsistemas (SIN, Sudeste/Centro-Oeste, Sul, Nordeste, Norte), com a sigla na dica; as cinco opções existem, o valor da URL (?rt=) é o mesmo."
+  }
+ ],
+ "/setor-eletrico/agua-e-clima/reservatorios": [
+  {
+   "antes": "controle|subsistema da decomposição",
+   "depois": null,
+   "justificativa": "As opções do subsistema da decomposição passaram de siglas a nomes (Sudeste/Centro-Oeste, Sul, Nordeste, Norte); as quatro existem, o valor da URL (?sm=) é o mesmo."
+  },
+  {
+   "antes": "grafico|balanço hídrico de serra da mesa, 31/08/2026 a 29/09/2026, em hm³",
+   "depois": "grafico|balanço hídrico de serra da mesa, 31/08/2026 a 29/09/2026 (defluência não inclui as outras estruturas), em hm³",
+   "justificativa": "O gráfico único do balanço virou três (balanço, divisão da defluência e resíduo e transferência, cada um na sua régua, dita no título); o primeiro mantém o título e acrescenta a convenção da defluência. Na rodada 2 o glossário da conta da água passou a vir antes dos números e dos gráficos, e o gráfico da divisão da defluência ganhou '(régua própria)' no título."
+  }
+ ],
+ "/setor-eletrico/aprenda": [
+  {
+   "antes": "controle|procurar um termo",
+   "depois": "controle|o que você quer entender?",
+   "justificativa": "O mesmo campo de busca (entrada do tipo busca, presente nos três níveis de profundidade), agora com o rótulo escrito como pergunta, visível, no topo da página e antes das trilhas e da lista por tema. Ganhou o recorte na URL (?q=) e passou a procurar na pergunta prática, na sigla, no nome e na definição de cada verbete, em ordem de relevância; a lista por tema continua inteira, sem JavaScript e sem termo digitado. Nada do que o campo fazia foi retirado."
+  }
+ ],
+ "/setor-eletrico/carga": [
+  {
+   "antes": "painel|quanto o sistema está consumindo?",
+   "depois": "painel|cada janela frente à janela de comparação",
+   "justificativa": "O título da página (h1) é a pergunta do painel; o painel ganhou título próprio da primeira figura."
+  },
+  {
+   "antes": "controle|comparar com",
+   "depois": null,
+   "justificativa": "As duas opções seguem (Mesmos dias da semana e Mesmas datas); o rótulo de cada uma passou a levar a regra por extenso na mesma linha (52 semanas antes, 364 dias; mesma data do ano anterior), o que mudou o texto lido pelo rastreador."
+  },
+  {
+   "antes": "comprove|entender",
+   "depois": null,
+   "justificativa": "A ficha do +10,5% publicado em 29/09/2026 (painel a07) passou de Entender para Analisar e Auditar junto com o painel, porque o número publicado antes não é o que a página mostra e o leitor de Entender nunca o viu; a ficha da variação vigente segue em Entender, e as duas fichas existem em Analisar e Auditar."
+  }
+ ],
+ "/setor-eletrico/carga/clima-e-calendario": [
+  {
+   "antes": "painel|quanto da variação da carga é compatível com clima e calendário?",
+   "depois": "painel|a janela de 22/09/2026 a 28/09/2026 contra um ano antes, decomposta",
+   "justificativa": "Idem; as datas vêm da gold."
+  }
+ ],
+ "/setor-eletrico/carga/perfil-horario": [
+  {
+   "antes": "painel|qual parcela da carga é estimada e quando ocorre o pico?",
+   "depois": "painel|um dia típico: carga global, mmgd e carga líquida",
+   "justificativa": "Idem."
+  }
+ ],
+ "/setor-eletrico/conta-de-luz": [
+  {
+   "antes": "tabela|tarifas b1 residenciais vigentes e custo por perfil. 81 de 81 linhas, ordenada por posição (1 = menor), crescente. página 1 de 4. o botão na coluna de nome seleciona a linha.",
+   "depois": null,
+   "justificativa": "A tabela do ranking passou a ser montada ao pedido, atrás do botão 'Mostrar a tabela das distribuidoras' (ContaSobDemanda com abreEm=analisar): em Analisar e Auditar nasce aberta, em Entender abre com um clique, e a escolha de uma distribuidora no gráfico não a abre mais (a avaliação de rodada 2 mediu 2.800 px a mais). Mesmas linhas, busca, filtros, ordenação, exportação CSV e XLSX, página e seleção sincronizada com o gráfico; ganhou duas colunas (posição pela base econômica e a diferença entre a tarifa de aplicação e a base)."
+  },
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (81 linhas)",
+   "depois": null,
+   "justificativa": "A tabela equivalente do ranking de barras segue dentro do gráfico, com as 81 linhas, mas o gráfico desenha as 12 primeiras barras até 'Mostrar todas' (limiteInicial do GraficoBarras, do coordenador); a tabela traz todas."
+  },
+  {
+   "antes": "controle|perfil e leitura do ranking",
+   "depois": null,
+   "justificativa": "O rastreamento anterior contava o contêiner que reúne os dois grupos de opções; os dois grupos que o compõem, 'Perfil de consumo' (100, 200 e 300 kWh/mês) e 'Leitura do ranking' (custo do perfil e tarifa TE + TUSD), seguem presentes."
+  }
+ ],
+ "/setor-eletrico/conta-de-luz/reajustes-e-subsidios": [
+  {
+   "antes": "grafico|variação da tarifa b1 residencial de 31/08/2025 a 31/08/2026, por distribuidora, com o ipca do período",
+   "depois": "grafico|variação da tarifa b1 residencial de 31/08/2025 a 31/08/2026, por distribuidora, com o ipca do período",
+   "justificativa": "Mesmo gráfico e mesmo título. A linha de referência 'Mediana das distribuidoras' saiu do ranking de barras, porque IPCA e mediana, com o mesmo traço tracejado, só se distinguiam pela legenda (avaliação de rodada 2); a mediana segue na faixa de pontos da mesma janela, no cartão 'Variação mediana da tarifa B1' e na tabela da janela, e a dica de cada barra deixa de trazer a diferença para a mediana (traz a diferença para o IPCA). A linha do IPCA permanece."
+  }
+ ],
+ "/setor-eletrico/dados": [
+  {
+   "antes": "controle|filtrar por estado alcançado",
+   "depois": null,
+   "justificativa": "Renomeado para 'Filtrar por Estado mais avançado', com as mesmas três opções e as mesmas contagens (catalogado 22, recurso verificado 267, publicado 126). A lista ganhou, além dele, o seletor cumulativo 'Estado: chegou a' (qualquer estado 415, recurso verificado ou além 393, integrado ou além 126, validado ou além 126, publicado 126)."
+  },
+  {
+   "antes": "controle|filtrar por órgão",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por tema",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por uso declarado",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por recurso verificado",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por ressalva declarada",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por descontinuado pela fonte",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por frequência declarada pela fonte",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  }
+ ],
+ "/setor-eletrico/dados/reproducao": [
+  {
+   "antes": "painel|consigo reproduzir este gráfico?",
+   "depois": "painel|quais são os passos para refazer um número?",
+   "justificativa": "A pergunta antiga virou o título da página (Consigo reproduzir este gráfico?), e o painel ganhou a pergunta específica da figura principal. O painel continua com o mesmo id (painel-reproducao), as mesmas fontes, os mesmos selos e a mesma resposta (P069)."
+  }
+ ],
+ "/setor-eletrico/dados/saude": [
+  {
+   "antes": "painel|o que atrasou ou mudou?",
+   "depois": "painel|como cada integração está frente ao prazo da fonte?",
+   "justificativa": "A pergunta antiga virou o título da página (O que atrasou ou mudou?), e o painel ganhou a pergunta específica da figura principal. O painel continua com o mesmo id (painel-saude), as mesmas fontes, os mesmos selos e a mesma resposta (P068)."
+  }
+ ],
+ "/setor-eletrico/empresas": [
+  {
+   "antes": "painel|quem opera quais ativos?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/ativos, painel p036)."
+  },
+  {
+   "antes": "painel|como a empresa atende sua área?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/distribuidoras, painel p037)."
+  },
+  {
+   "antes": "painel|como evoluem os fundamentos reportados?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/financas, painel p038)."
+  },
+  {
+   "antes": "painel|quem controla e qual a concentração?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/controle, painel p039)."
+  }
+ ],
+ "/setor-eletrico/empresas/controle": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título e sem conteúdo próprio no rastreamento anterior; as figuras, tabelas e controles da página foram casados individualmente."
+  }
+ ],
+ "/setor-eletrico/expansao": [
+  {
+   "antes": "painel|o que está planejado e em construção?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/carteira, painel p040)."
+  },
+  {
+   "antes": "painel|quando deve entrar e o que atrasou?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/cronograma, painel p041)."
+  },
+  {
+   "antes": "painel|a expansão vem acompanhada de rede?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/geracao-e-transmissao, painel p042)."
+  },
+  {
+   "antes": "painel|como o planejamento enxerga a matriz?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/cenarios, painel p043)."
+  }
+ ],
+ "/setor-eletrico/geracao": [
+  {
+   "antes": "painel|quais fontes atenderam a carga?",
+   "depois": "painel|participação de cada fonte na geração",
+   "justificativa": "A pergunta virou o título da página (H1 \"De onde vem a eletricidade?\") e o painel p021 ganhou título descritivo; mesmo id, mesmo nível (Entender); ganhou o gráfico das cinco maiores fontes e a composição completa de 11 categorias."
+  },
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (11 linhas)",
+   "depois": "tabela-recolhida|dados do gráfico em tabela (8 linhas)",
+   "justificativa": "O gráfico de 30 contra 365 dias passou a comparar só as 8 categorias com universo comparável; as 3 de cobertura alterada ficam no bloco \"Fora da comparação\" e a composição completa de 11 categorias (gráfico de barras e tabela equivalente de 11 linhas) está em \"Como se divide toda a geração?\"."
+  }
+ ],
+ "/setor-eletrico/geracao/capacidade": [
+  {
+   "antes": "painel|quanto está instalado e quanto produz?",
+   "depois": "painel|potência instalada e fator de capacidade, fonte por fonte",
+   "justificativa": "A pergunta virou o título da página (H1) e o painel p024 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+  },
+  {
+   "antes": "grafico|potência em operação comercial por fonte, usinas despachadas pelo ons, 30/09/2026, em mw",
+   "depois": "grafico|potência em operação por fonte, 30/09/2026, em mw",
+   "justificativa": "Título mais curto: \"comercial\" e \"usinas despachadas pelo ONS\" foram para o recorte do cabeçalho e para a nota do gráfico; mesmas barras, mesma unidade."
+  },
+  {
+   "antes": "grafico|potência em operação comercial, média de cada mês",
+   "depois": "grafico|potência em operação comercial, média de cada mês, a partir do retrato de 30/09/2026",
+   "justificativa": "O título ganhou a data do retrato de capacidade de onde parte a série; mesma série, mesmo nível."
+  }
+ ],
+ "/setor-eletrico/geracao/restricoes": [
+  {
+   "antes": "painel|quanta geração eólica e solar foi restringida?",
+   "depois": "painel|energia não gerada por razão oficial do ons",
+   "justificativa": "A pergunta virou o título da página (H1) e o painel p023 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+  },
+  {
+   "antes": "diagrama|ro",
+   "depois": "diagrama|conj. caju (rn): 802,0 gwh não gerados, taxa 28,8%, confiabilidade (cnf)",
+   "justificativa": "Mesmo mapa de usinas e conjuntos. O rastreador lia o primeiro título interno do SVG: antes era o da UF (RO, o primeiro polígono); agora a lista das 10 maiores fica ao lado e cada marca de usina traz o próprio título, então o primeiro é o de uma usina. O mapa continua no painel mapa-usinas, nos três níveis, com a vista Usinas ou Brasil na URL."
+  }
+ ],
+ "/setor-eletrico/geracao/termica": [
+  {
+   "antes": "painel|quanto as térmicas geraram e por que foram acionadas?",
+   "depois": "painel|geração térmica por combustível e motivo de despacho",
+   "justificativa": "A pergunta virou o título da página (H1) e o painel p022 ganhou título descritivo; mesmo id, mesmo nível (Entender)."
+  },
+  {
+   "antes": "grafico|parcela de cada motivo na geração da usina, 12 meses: angra ii",
+   "depois": "grafico|parcela de cada motivo na geração da usina, 12 meses: angra ii, gna ii, do atlântico",
+   "justificativa": "A comparação abre com a maior usina de cada um de 3 combustíveis (Angra II, GNA II e Do Atlântico); o controle \"Usinas para comparar\" segue com até 4 usinas."
+  },
+  {
+   "antes": "tabela|tabela equivalente: parcela de cada motivo por usina. 2 de 2 linhas.",
+   "depois": "tabela|tabela equivalente: parcela de cada motivo por usina. 4 de 4 linhas.",
+   "justificativa": "A tabela equivalente tem uma coluna por usina da comparação (Angra II, GNA II e Do Atlântico por padrão) e uma linha por motivo com geração (4 em vez de 2)."
+  },
+  {
+   "antes": "tabela-recolhida|dados do gráfico em tabela (2 linhas)",
+   "depois": "tabela-recolhida|dados do gráfico em tabela (4 linhas)",
+   "justificativa": "Mesmo resumo em tabela do gráfico de parcela por usina, agora com as 3 usinas da comparação aberta por padrão (4 motivos com geração em vez de 2)."
+  }
+ ],
+ "/setor-eletrico/inclusao-energetica": [
+  {
+   "antes": "painel|quem pode estar ficando de fora?",
+   "depois": "painel|faturas por 100 famílias do cadastro único: o que a proxy mede",
+   "justificativa": "É a mesma seção, a da razão entre faturas com Tarifa Social e famílias do Cadastro Único (resposta P060, mesma figura, mesmos controles, mesmas fichas). O título deixou de enquadrar a razão como exclusão: ela mede faturas por família cadastrada e não diz quem fica de fora. A pergunta da gold continua citada, entre aspas, em 'o que não é possível concluir' da página de Cobertura."
+  }
+ ],
+ "/setor-eletrico/inclusao-energetica/cobertura": [
+  {
+   "antes": "painel|quem pode estar ficando de fora?",
+   "depois": "painel|faturas por 100 famílias do cadastro único, uf a uf",
+   "justificativa": "É o mesmo painel da proxy de cobertura (mapa e tabela por UF, séries, municípios), com o mesmo id de resposta (P060). Só o título mudou, pela mesma razão da síntese: a razão faturas por famílias não mede quem fica fora. Nenhuma outra visão da família mudou de lugar na rodada 2: a frase, os cartões e a ficha que passaram a seguir o controle (Na renda, Indicador, Medida) continuam nos mesmos painéis."
+  }
+ ],
+ "/setor-eletrico/metodologia": [
+  {
+   "antes": "controle|filtrar por módulo",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por natureza do dado de origem",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por natureza do resultado",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  },
+  {
+   "antes": "controle|filtrar por tem fórmula publicada",
+   "depois": null,
+   "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+  }
+ ],
+ "/setor-eletrico/pld": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título e sem conteúdo no rastreamento anterior (nenhuma figura, tabela, controle ou arquivo pertencia a ele)."
+  }
+ ],
+ "/setor-eletrico/pld/cmo-e-formacao": [
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos (lista com rótulo acessível); o gráfico existe no código anterior com o título indicado e a versão nova o traz com título, em todos os níveis. Título: PLD horário e CMO do DESSEM na mesma hora, por submercado."
+  }
+ ],
+ "/setor-eletrico/pld/diferencas-regionais": [
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos (lista com rótulo acessível); o gráfico existe no código anterior com o título indicado e a versão nova o traz com título, em todos os níveis. Título: Fração das horas separadas por hora do dia, por par."
+  }
+ ],
+ "/setor-eletrico/pld/modelos": [
+  {
+   "antes": "controle|filtrar por resultado",
+   "depois": null,
+   "justificativa": "O resultado de cada controle automático (as mesmas 7 linhas) é escrito 'confere' e não 'aprovado', porque a verificação confere a integridade do cálculo do próprio observatório e não aprova nada (rótulo ROTULO_CONFERENCIA em pld/modelos/page.tsx)."
+  }
+ ],
+ "/setor-eletrico/pld/modelos/b0": [
+  {
+   "antes": "painel|como o b0 calcula a previsão do pld?",
+   "depois": "painel|situação, entradas, fórmula e limites do b0",
+   "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
+  }
+ ],
+ "/setor-eletrico/pld/modelos/c1": [
+  {
+   "antes": "painel|como o c1 calcula a previsão do pld?",
+   "depois": "painel|situação, entradas, fórmula e limites do c1",
+   "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
+  }
+ ],
+ "/setor-eletrico/pld/modelos/c2-h": [
+  {
+   "antes": "painel|como o c2-h calcula a previsão do pld?",
+   "depois": "painel|situação, entradas, fórmula e limites do c2-h",
+   "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
+  }
+ ],
+ "/setor-eletrico/pld/modelos/c2-p": [
+  {
+   "antes": "painel|como o c2-p calcula a previsão do pld?",
+   "depois": "painel|situação, entradas, fórmula e limites do c2-p",
+   "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
+  }
+ ],
+ "/setor-eletrico/pld/modelos/s0": [
+  {
+   "antes": "painel|como o s0 calcula a previsão do pld?",
+   "depois": "painel|situação, entradas, fórmula e limites do s0",
+   "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
+  }
+ ],
+ "/setor-eletrico/pld/previsoes": [
+  {
+   "antes": "controle|submercadosudeste/centro-oestesulnordestenorte",
+   "depois": null,
+   "justificativa": "O seletor de submercado segue com as mesmas quatro opções (a lista SUBMERCADOS do código) e passou ao painel da célula; o rótulo deixou de concatenar as opções, que era o que o rastreador anterior lia como título."
+  }
+ ],
+ "/setor-eletrico/qualidade": [
+  {
+   "antes": "painel|por quanto tempo e quantas vezes faltou luz?",
+   "depois": "painel|duração e frequência das interrupções no brasil, ano a ano",
+   "justificativa": "mesmo painel P051, título novo; DEC e FEC em gráficos próprios, parcelas, mapa e comparação continuam"
+  },
+  {
+   "antes": "painel|o serviço cumpriu o padrão?",
+   "depois": "painel|cada distribuidora e cada conjunto diante do próprio limite",
+   "justificativa": "mesmo painel P052, título em fato e não em julgamento; limites, razão, distribuição, caudas e DGC continuam"
+  },
+  {
+   "antes": "tabela|eventos em situação de emergência com maior chi",
+   "depois": "tabela|eventos em situação de emergência com maior chi (consumidores × horas interrompidas)",
+   "justificativa": "mesma tabela, com a sigla CHI definida no título"
+  },
+  {
+   "antes": "grafico|compensações pagas a unidades consumidoras por ano",
+   "depois": "grafico|compensações pagas a unidades consumidoras por ano",
+   "justificativa": "mesmo gráfico; as barras passam a ter duas séries (antes e depois de 2022) para marcar a quebra de regime"
+  },
+  {
+   "antes": "tabela|compensações por ano: unidades consumidoras e geradoras. 16 de 16 linhas, ordenada por ano, decrescente.",
+   "depois": "tabela-sob-demanda|abrir: compensações por ano: unidades consumidoras e geradoras (16 linhas, com busca, filtros e exportação)",
+   "justificativa": "A tabela anual saiu do Entender e passou a abrir sob demanda em Analisar e Auditar; são as mesmas 16 linhas, com busca, filtros e exportação."
+  },
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos; os gráficos desse tipo seguem nos mesmos painéis, com título, e o do FEC foi acrescentado ao do DEC no detalhe da região."
+  },
+  {
+   "antes": "controle|filtrar por situação",
+   "depois": null,
+   "justificativa": "O filtro por situação (ano completo e parcial) é uma coluna da tabela anual de compensações, que passou a abrir sob demanda em Analisar; o filtro aparece com a tabela aberta."
+  }
+ ],
+ "/setor-eletrico/rede": [
+  {
+   "antes": "painel|como a energia circula entre regiões?",
+   "depois": "painel|o saldo de cada fronteira, por dia e por hora",
+   "justificativa": "Idem."
+  }
+ ],
+ "/setor-eletrico/rede/balanco-e-exterior": [
+  {
+   "antes": "painel|de onde vem a diferença de energia?",
+   "depois": "painel|as contas do balanço, conferidas hora a hora",
+   "justificativa": "Idem; a pergunta da página passou a 'As contas do balanço de energia fecham?'."
+  }
+ ],
+ "/setor-eletrico/rede/programado": [
+  {
+   "antes": "painel|quanto o fluxo divergiu do programa?",
+   "depois": "painel|o desvio de cada hora contra o programa",
+   "justificativa": "Idem."
+  }
+ ],
+ "/setor-eletrico/rede/restricoes": [
+  {
+   "antes": "painel|quando há evidência publicada de limitação da rede?",
+   "depois": "painel|horas acima do limite e cortes de carga publicados",
+   "justificativa": "Idem."
+  }
+ ],
+ "/setor-eletrico/regulacao": [
+  {
+   "antes": "controle|ano202120222023202420252026",
+   "depois": null,
+   "justificativa": "O seletor de ano segue com os mesmos anos (2021 a 2026); o rótulo deixou de concatenar as opções, que era o que o rastreador anterior lia como título."
+  }
+ ],
+ "/setor-eletrico/regulacao/consultas-e-agenda": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título no rastreamento anterior (Analisar e Auditar); a versão nova o divide em painéis com título (agenda, histórico, cobertura, regra da situação), cujas figuras e tabelas foram casadas individualmente."
+  }
+ ],
+ "/setor-eletrico/regulacao/linha-do-tempo": [
+  {
+   "antes": "controle|quem é",
+   "depois": null,
+   "justificativa": "O seletor 'Quem é afetado (painel)' passou a se chamar 'Painel ligado ao ato' (mesma lista de painéis); a pergunta 'em que painéis a leitura muda?' ganhou painel próprio com o gráfico por painel ligado."
+  }
+ ],
+ "/setor-eletrico/territorio": [
+  {
+   "antes": "texto|Cada número é da área da sua fonte (lead, subtítulo, recorte, parágrafo da busca e veredito)",
+   "depois": "texto|uma vez no lead, mais a linha Não permite concluir",
+   "justificativa": "A advertência estava em quatro lugares com palavras parecidas. O limite (tarifa, perdas, DEC e FEC são da distribuidora inteira; preço e energia armazenada, do submercado) está na linha 'Não permite concluir' da abertura e na nota do painel; sob a busca ficou só o link para o texto completo."
+  },
+  {
+   "antes": "controle|Perdas totais sobre a energia injetada (uma linha na tabela de quartis)",
+   "depois": "controle|linhas de perdas por energia de referência (requerida, injetada publicada, mista) e uma linha das taxas sinalizadas",
+   "justificativa": "As taxas sinalizadas (ano parcial, balanço que não fecha, valor fora de 0% a 100%) saem das linhas por base, como o módulo Perdas as deixa fora do total nacional; cada linha diz a energia sobre a qual a taxa foi calculada. Nenhum valor foi retirado: as 101 taxas continuam, em linhas diferentes."
+  },
+  {
+   "antes": "controle|tabela de quartis sem unidades consumidoras",
+   "depois": "controle|duas colunas a mais: UC reunidas (% do quadro) e Mediana pesada pelas UC",
+   "justificativa": "A mediana simples continua; as colunas novas mostram a cobertura em unidades consumidoras e a mediana pesada."
+  },
+  {
+   "antes": "texto|provado / provada pela carga das áreas do ONS",
+   "depois": "texto|conferido / conferida, com o teste dito (dois dias, tolerância de 15 MWmed, Tocantins só por uma das áreas)",
+   "justificativa": "A palavra 'provada' era mais forte que o teste. O identificador na base publicada não mudou."
+  },
+  {
+   "antes": "coluna|UFs: Com localidade isolada (89, inclui os fora do SIN)",
+   "depois": "coluna|UFs: Com localidade isolada, dentro do SIN (16), ao lado de Municípios fora do SIN (73)",
+   "justificativa": "A legenda do mapa contava 16 e a coluna, 89; agora as duas contam os 16 de dentro do SIN, e os 73 têm coluna própria."
+  },
+  {
+   "antes": "coluna|tabela de submercados: Carga atendida por MMGD (estimativa do ONS)",
+   "depois": "coluna|Carga atendida por MMGD (estimativa do ONS de ago/2026)",
+   "justificativa": "O mês da estimativa entra no cabeçalho e no parágrafo Período."
+  },
+  {
+   "antes": "tabela|insumos com sha256 (o mesmo arquivo reproduz o mesmo índice)",
+   "depois": "tabela|insumos com o sha256 do índice e a situação do arquivo servido (confere ou o arquivo mudou depois do índice)",
+   "justificativa": "A afirmação só valia se o arquivo servido fosse o lido pelo índice; a página agora recalcula o sha256 na montagem e diz a diferença."
+  },
+  {
+   "antes": "texto|nomes internos nos textos de Analisar e Auditar (estados da prova, fora_do_sin, estado 1, gold, pipeline, WMS_Webmap_EPE_Data)",
+   "depois": "texto|as mesmas frases em palavras comuns",
+   "justificativa": "Tradução em territorio.ts (textoLegivel); o endereço do serviço da EPE vira link com o nome do servidor."
+  },
+  {
+   "antes": "texto|Tarifa B1 residencial em R$/MWh na ficha",
+   "depois": "texto|R$/MWh e, no detalhe, a mesma tarifa em R$/kWh",
+   "justificativa": "As duas unidades, com a conversão, para casar com a conta de luz."
+  },
+  {
+   "antes": "controle|mapa sem texto",
+   "depois": "controle|siglas das UFs sobre o mapa (sem colisão, com o tamanho fixo na tela) e contorno das UFs na camada de usinas",
+   "justificativa": "Só acrescenta; cores, legenda e tabela equivalente seguem."
+  },
+  {
+   "antes": "texto|Nenhum resultado / quantidade de resultados da busca só visíveis",
+   "depois": "texto|os mesmos avisos numa região viva (leitor de tela)",
+   "justificativa": "O texto visível continua; o anúncio é novo."
+  },
+  {
+   "antes": "controle|filtrar por pertença",
+   "depois": null,
+   "justificativa": "O filtro passou a 'Pertença ao submercado (só a ressalva)': 'conferido pela carga das áreas do ONS' (26 linhas; a palavra era 'provado') é escrito 'sem ressalva', para a coluna não repetir a mesma frase em quase toda linha, e a única exceção ('conferido por uma das áreas') segue por extenso (src/lib/energia/territorio.ts)."
+  }
+ ],
+ "/setor-eletrico/transicao": [
+  {
+   "antes": "painel|onde a geração distribuída cresce?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/mmgd, painel p063)."
+  },
+  {
+   "antes": "painel|quanta energia a mmgd entrega ao sin, segundo a estimativa do ons?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/energia-estimada)."
+  },
+  {
+   "antes": "painel|como varia a intensidade de emissões?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/emissoes, painel p064)."
+  }
+ ],
+ "/setor-eletrico/visao-geral": [
+  {
+   "antes": "controle|Por que isso importa (recolhido em cada um dos quatro painéis)",
+   "depois": "texto|subtítulo de cada painel e abertura da página",
+   "justificativa": "A razão de cada painel virou uma oração do subtítulo, à vista; a razão da página está no lead. O link 'Como as partes se ligam' subiu para a abertura, como 'mapa do sistema' (mesmo destino, /setor-eletrico#mapa-conceitual). Nada do conteúdo foi retirado."
+  },
+  {
+   "antes": "texto|código do painel (P004 a P007) em Analisar",
+   "depois": null,
+   "justificativa": "Nome interno de painel não é informação para o leitor; as âncoras (#sistema, #determinantes, #sociedade, #observar) e os títulos continuam."
+  },
+  {
+   "antes": "texto|O que mudou, de Determinantes, repetia o veredito do painel",
+   "depois": "texto|O que mudou: período dos cinco gráficos e data de referência de cada painel",
+   "justificativa": "O veredito (o que está dentro ou fora da faixa) continua na resposta curta do painel; a nota passou a dizer o período e as datas, sem repetir a frase. O mesmo vale para Regras: a nota diz que a página não compara com a publicação anterior e que o histórico é reavaliado a cada publicação."
+  },
+  {
+   "antes": "controle|Regiões O que mudou, Como interpretar e O que não é possível concluir com o mesmo nome nos quatro painéis",
+   "depois": "controle|as mesmas regiões, cada uma com o nome do painel no fim",
+   "justificativa": "Mesmo texto visível; o nome acessível leva a pergunta do painel (landmark-unique do axe)."
+  },
+  {
+   "antes": "texto|Faixa dos 365 dias anteriores (participação térmica)",
+   "depois": "texto|Faixa de 365 janelas de 7 dias que terminam de 7 a 371 dias antes do dia de referência, sem sobreposição com a janela do número",
+   "justificativa": "Descreve a janela como a gold a calcula; os percentis são os mesmos."
+  },
+  {
+   "antes": "texto|Carga: 7 dias frente às mesmas datas do ano anterior, com a página Carga dando outro valor",
+   "depois": "texto|Carga: destaque de um dia e janelas de 7 dias, 28 dias e 52 semanas com o mesmo critério (o mesmo dia da semana), e o outro critério explicado",
+   "justificativa": "Um critério por número; o valor das mesmas datas continua escrito, ao lado, como o outro critério."
+  },
+  {
+   "antes": "controle|link Ver no painel de origem, em linha no fim da nota do cartão",
+   "depois": "controle|link Ver no painel de origem, em linha própria com 44 px de altura",
+   "justificativa": "Mesmo destino; alvo de toque de 44 px."
+  },
+  {
+   "antes": "texto|Cobertura do DEC: 3150 conjuntos de 98 distribuidoras (só na gold, em Analisar)",
+   "depois": "texto|Universo do DEC: 102 distribuidoras enviaram, 98 com os 12 meses (3.146 conjuntos) e as de ano parcial nomeadas",
+   "justificativa": "O texto da gold continua em Analisar; a conciliação vem no cartão, lida de qualidade.json."
+  },
+  {
+   "antes": "controle|links de download de Regras (sem o estado da validação)",
+   "depois": "controle|lista Arquivos para baixar e o estado de cada um (Analisar), com o link de cada CSV",
+   "justificativa": "Os mesmos dois CSV, agora com o resultado da validação e a explicação do 'reprovado' de uma versão anterior junto do link."
+  }
+ ]
+}

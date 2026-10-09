@@ -13937,7 +13937,7 @@
     "consultado_em": "2026-09-30",
     "trecho": "A partir de 29/04/2023, o valor estimado da micro e minigeração distribuída (MMGD) também passou a incorporar os dados de geração e carga apresentados nesta página."
    },
-   "leitura": "O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe 2.386 MWmed de 28/04 para 29/04/2023; a MMGD estimada pela API de carga verificada, como publicada hoje, é 3.528 MWmed em 29/04/2023, 1.142 MWmed acima do degrau. A fonte não publica explicação para essa diferença. Comparando cada dia de 29/04 a 06/05 com o mesmo dia da semana 14 dias antes (6 pares, sem feriados), a mediana das diferenças é 2.840 MWmed na solar e 559 MWmed na carga, para 3.478 MWmed de MMGD estimada nos mesmos dias: na carga do balanço não aparece degrau do tamanho da MMGD estimada."
+   "leitura": "O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe 2.386 MWmed de 28/04 para 29/04/2023; a MMGD estimada pela API de carga verificada, como publicada na data de processamento, é 3.528 MWmed em 29/04/2023, 1.142 MWmed acima do degrau. A fonte não publica explicação para essa diferença. Comparando cada dia de 29/04 a 06/05 com o mesmo dia da semana 14 dias antes (6 pares, sem feriados), a mediana das diferenças é 2.840 MWmed na solar e 559 MWmed na carga, para 3.478 MWmed de MMGD estimada nos mesmos dias: na carga do balanço não aparece degrau do tamanho da MMGD estimada."
   },
   "documentos": [
    {

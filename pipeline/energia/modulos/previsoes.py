@@ -506,7 +506,7 @@ def _rotina(rodadas, agora):
         "falhas": sum(1 for r in agendadas if r["falha"]), "dias_sem_rodada": faltantes[-60:],
         "dias_sem_rodada_total": len(faltantes),
         "comprovada": bool(agendadas) and len(no_prazo) >= 7 and not faltantes,
-        "leitura": ("Nenhuma execução agendada registrada até agora: a rotina está escrita no código, mas ainda não foi comprovada "
+        "leitura": ("Nenhuma execução agendada registrada até a data da coleta: a rotina está escrita no código, mas ainda não foi comprovada "
                     "por execução real." if not agendadas else
                     f"{len(agendadas)} execuções agendadas registradas desde {c.data_br(inicio)}, {len(no_prazo)} no prazo; "
                     + ("rotina comprovada no período." if (len(no_prazo) >= 7 and not faltantes) else
@@ -742,7 +742,7 @@ def _proveniencia_b0(run, regs, snap_pld, ultimo_dia, com_faixa=False):
     fonte = {"orgao": "CCEE", "dataset": "PLD_HORARIO", "recurso": "pld_horario_2021 a pld_horario_2026", "url_dataset": URL_CCEE,
              "url_primaria": URL_CCEE, "licenca": c.LICENCA_CCEE}
     return c.proveniencia(
-        indicador="Referência experimental B0 (persistência) da rodada atual", natureza="PREVISTO", fonte=fonte,
+        indicador="Referência experimental B0 (persistência) da rodada mais recente", natureza="PREVISTO", fonte=fonte,
         unidade="R$/MWh nominais", frequencia="rodada diária; entregas semanais (W1 a W4) e mensais (M1 a M3)",
         periodo={"inicio": min((f["inicio"] for f in feats), default=None), "fim": max((f["fim"] for f in feats), default=None)},
         cobertura={"inicio": cal.INICIO_PLD_HORARIO.isoformat(), "fim": ultimo_dia.isoformat()},
@@ -756,8 +756,8 @@ def _proveniencia_b0(run, regs, snap_pld, ultimo_dia, com_faixa=False):
         formula="B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto)",
         limitacoes=["Referência experimental identificada (seção 12.4): não é previsão aprovada nem a previsão principal.",
                     "Persistência pura: não usa chuva, reservatórios nem vazões.",
-                    ("Faixa de incerteza só nos segmentos CALIBRADO." if com_faixa else
-                     "Sem faixa de incerteza: nenhum segmento está CALIBRADO."),
+                    ("Faixa de incerteza só nos segmentos calibrados." if com_faixa else
+                     "Sem faixa de incerteza: nenhum segmento está calibrado."),
                     f"Rodada {run['modo']}" + (f", emitida {run['atraso_min']:.0f} minutos depois do prazo das 08h00."
                                                  if run.get("atraso_min") else ", no prazo.")],
         download=CSV_EMISSOES)
@@ -799,8 +799,8 @@ def _previsao_atual(registros, registro, rodadas, publicar=False):
         "run_id": run["run_id"], "origem": run["origem"], "cutoff": run["cutoff"], "prazo": run["prazo"],
         "emitido_em": run["emitido_em"], "atraso_min": run["atraso_min"], "modo": run["modo"], "alertas": run["alertas"],
         "versao_codigo": run["versao_codigo"], "celulas": celulas,
-        "bandas": (("Faixa de 80% só nos segmentos CALIBRADO." if any(x["quantis"] for x in celulas) else
-                    "Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste (estado em cada célula; "
+        "bandas": (("Faixa de 80% só nos segmentos calibrados." if any(x["quantis"] for x in celulas) else
+                    "Sem faixa: nenhum segmento do B0 está calibrado no período de teste (estado em cada célula; "
                     + ("cobertura e amostra em P016)." if publicar else
                        "a cobertura do teste retrospectivo está retida fora do portal até a liberação dos números de "
                        "desempenho)."))),
@@ -1333,7 +1333,7 @@ def construir(con, ctx):
             **{k: registro["definicoes"][k] for k in ("alvo", "realizado", "entregas", "conhecido_no_corte", "corte_operacional",
                                                       "cenario_de_elegibilidade", "quantis")},
             "erro": "Erro = previsão − realizado, em R$/MWh nominais. Viés positivo = o modelo superestimou o PLD em média.",
-            "ganho": ("Ganho sobre o B0 = MAE do B0 − MAE do modelo nas mesmas células; positivo = melhor que a persistência. "
+            "ganho": ("Ganho sobre o B0 = MAE do B0 − MAE do modelo nas mesmas células; positivo = erro menor que o da persistência. "
                       "Intervalo de 90% por bootstrap de blocos de 28 dias (semanal) ou 91 dias (mensal) de origens, com 1.000 réplicas."),
             "perda_quantilica": "Média, nos níveis 5, 10, 25, 50, 75, 90 e 95%, da perda de cada quantil (pinball), em R$/MWh.",
             "cobertura": ("Fração das células em que o realizado ficou entre P10 e P90 (nominal 80%) ou entre P5 e P95 (nominal 90%)."),

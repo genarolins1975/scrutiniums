@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
@@ -188,5 +189,15 @@ describe("renderização no servidor", () => {
     const hex = "#" + "0e6170";
     expect(() => renderToStaticMarkup(createElement(MapaCalor, { ...base, escala: { ...SEQ, cores: [...SEQ.cores.slice(0, 3), hex] } }))).toThrow(/tokens/);
     expect(() => renderToStaticMarkup(createElement(MapaCalor, { ...base, valores: [[1, 2, 3]] }))).toThrow(/linhas de valores/);
+  });
+
+  it("classe de cor clara demais para o papel (menos de 3:1) ganha contorno na célula e na legenda, medido no navegador", () => {
+    const fonte = readFileSync("src/components/energia/MapaCalor.tsx", "utf8");
+    expect(fonte).toContain("contrasteComPapel(cor)");
+    expect(fonte).toContain("c < 3");
+    expect(fonte).toContain('claras.has(k) ? "border border-mineral"');
+    expect(fonte).toContain('claras.has(i) ? "border-mineral" : "border-linha"');
+    // no servidor não há como medir: o HTML sai sem contorno e a legenda mantém a borda de linha
+    expect(html).toContain("border-linha");
   });
 });

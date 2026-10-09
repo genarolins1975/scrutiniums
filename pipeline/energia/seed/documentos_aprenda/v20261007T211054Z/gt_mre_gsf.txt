@@ -1,0 +1,433 @@
+[PDF, página 3]
+Sumário
+1.
+
+Introdução ........................................................................................................... 4
+
+2.
+
+Resumo Executivo .............................................................................................. 6
+
+3.
+
+Análise ................................................................................................................ 8
+Contextualização .................................................................................................................... 8
+Linhas Gerais do MRE........................................................................................................... 8
+Evolução do arcabouço regulatório do MRE ......................................................................... 9
+Riscos na comercialização da energia hidrelétrica .............................................................. 12
+Análise da recente crise do MRE ......................................................................................... 21
+GSF e Variáveis Hidrológicas ............................................................................................. 24
+Avaliação do Cenário Hidrológico Recente ........................................................................ 29
+GSF e Preços no Mercado de Curto Prazo........................................................................... 32
+Revisão da GF das Hidrelétricas .......................................................................................... 34
+Simulação do comportamento do MRE ............................................................................... 37
+Judicialização do GSF.......................................................................................................... 40
+Repactuação do Risco Hidrológico ...................................................................................... 41
+
+4.
+
+Saneamento do MRE ........................................................................................ 43
+Impacto da Geração Fora da Ordem de Mérito (GFOM) – Deslocamento Hidráulico ....... 43
+Atrasos ou Restrições em Linhas de Transmissão ............................................................... 45
+Motorização Estruturantes ................................................................................................... 47
+Energia de Reserva .............................................................................................................. 49
+Revisão do Anexo I da REN 614/2014 ................................................................................ 49
+
+5.
+
+Aprimoramentos do Mecanismo de Realocação de Energia ............................ 51
+Sazonalização da Garantia Física do MRE .......................................................................... 51
+i.
+
+Processo de sazonalização flat. ................................................................................. 55
+
+ii.
+
+Processo único de sazonalização ........................................................................... 56
+
+iii.
+
+Inserção de Limites de Sazonalização. .................................................................. 57
+
+Criação de mecanismos para incentivar a melhoria da performance do MRE .................... 61
+Criação de mecanismos de avaliação de performance de usinas hidrelétricas não
+despachadas centralizadamente ........................................................................................... 62
+Remuneração da Compensação do MRE ............................................................................. 63
+6.
+
+Proposta de mecanismo de hedge para proteção contra o risco hidrológico .... 65
+
+7.
+
+Conclusão ......................................................................................................... 67
+
+8.
+
+Referências Bibliográficas ................................................................................. 68
+
+[PDF, página 17]
+O MRE é aplicado em cada período de contabilização2, ou seja, para cada hora
+associada a um patamar de carga de cada semana, e utiliza a GF sazonalizada e
+modulada. A sazonalização da GF é realizada em função da estratégia comercial de
+cada agente, enquanto que a modulação é realizada pelas regras de comercialização
+e segue o perfil de geração das usinas do MRE. Dessa forma, a sazonalização da GF
+do MRE não necessariamente segue o perfil de geração do MRE. Isso é ilustrado na
+Figura 7, que mostra o processo de sazonalização de garantia física do conjunto das
+usinas do MRE para o período de 2014 a 2018 e na Figura 8, que apresenta a
+evolução da geração do MRE também para o período de 2014 a 2018.
+
+Figura 7- Sazonalização da GF do MRE
+
+2
+
+Na data de edição desta NT a contabilização é feita por patamar de carga de cada semana. Futuramente, a
+contabilização será feita por hora.
+
+[PDF, página 18]
+Figura 8- Produção das Usinas do MRE
+
+O descolamento entre a sazonalidade da produção hidrelétrica e da GF faz com o
+GSF seja inflado no período úmido (muita geração e baixa GF sazonalizada) e
+reduzido no período seco (pouca geração e alta GF sazonalizada), provocando
+oscilações artificiais do GSF e elevando o risco das hidrelétricas. Esse descolamento
+entre a GF sazonalizada e a curva de produção hidrelétrica tende a se acentuar com
+a entrada das usinas na bacia amazônica, cuja sazonalidade da produção é mais
+acentuada do que nas usinas nas demais bacias.
+Há riscos no MRE associados aos próprios participantes do mecanismo, como é o
+caso das Pequenas Centrais Hidrelétricas – PCHs, que tiveram a possibilidade de
+participação no mecanismo estabelecida pelo Decreto nº 3.653, de 7 de novembro de
+2000, que modificou a redação do art. 20 do Decreto nº 2.655, retirando a restrição
+de que só poderiam participar hidrelétricas despachadas centralizadamente.
+As PCHs são usinas a fio d’água e não participam do despacho centralizado. A
+extensão do MRE às PCHs permite a elas mitigar o respectivo risco hidrológico e,
+portanto, melhorar sua competitividade.
+Um aspecto controverso da participação das PCHs no MRE é a possibilidade de
+escolha que elas possuem para aderir ou não ao mecanismo. Isso permite a elas um
+comportamento estratégico que pode prejudicar os demais participantes que não tem
+esta faculdade.
+Outro ponto de risco está associado à entrada de usinas de fontes renováveis e não
+controláveis. A geração hidrelétrica, apesar de ser a maior em participação no SIN, é
+a que fecha o balanço eletro-energético, sendo, portanto, marginal na operação. A
+geração hidrelétrica é precedida pelas fontes não controláveis e pelas térmicas com
+CVU menor do que o CMO. Por outro lado, para um dado nível de demanda, o
+aumento da capacidade não hidrelétrica reduz o custo futuro e, portanto, o valor da
+
+[PDF, página 21]
+Figura 13- Exposição do MRE ao PLD x Adição de Geração Térmica (PDE 2027)
+
+A exposição ao PLD foi calculada pela expressão abaixo, onde o produto “Qc.PLD” é
+a compra de energia para o atendimento ao contrato e o produto “EA.PLD” é o
+resultado da contabilização do MRE, já considerando o alívio à exposição à diferença
+de preços e os pagamentos internos no MRE. Para expressar o resultado em
+R$/MWh, todos os termos foram divididos pela GF das hidrelétricas.
+𝐸𝑥𝑝𝑜𝑠 = (𝐸𝑎 − 𝑄𝑐) ∗ 𝑃𝐿𝐷 = 𝐸𝑎 ∗ 𝑃𝐿𝐷 − 𝑄𝑐 ∗ 𝑃𝐿𝐷
+
+Análise da recente crise do MRE
+Os últimos anos foram os mais desafiadores para o MRE desde sua implantação em
+2001, especialmente a partir do ano de 2014, período em que o GSF tem apresentado
+valores abaixo de 90%, o que tem exposto negativamente muitos agentes
+hidrelétricos a valores elevados de PLD. A Figura 14 exemplifica o problema
+apresentando dados da geração hidráulica, da garantia física sazonalizada e do PLD
+do Sudeste. Percebe-se na figura períodos em que a garantia física é muito superior
+ao da geração do MRE, originando exposições ao Mercado de Curto Prazo em
+momentos de PLD elevados.
+
+[PDF, página 22]
+Figura 14- GH, GF sazonalizada e PLD SE – 2018
+
+Nesta seção da NT são abordadas as seguintes questões:
+ Mudança estrutural do padrão hidrológico das principais bacias do SIN;
+ Sobre estimativa das garantias físicas publicadas;
+O primeiro aspecto a ser explorado nesta seção é a dúvida sobre uma possível
+mudança no padrão de vazões das bacias do SIN, a partir de um conjunto de registros
+históricos desde o início do mecanismo (2001) até o último ano completo de análise
+(2018) e traçar correlações, testar hipóteses e, ao final, identificar relações de causaefeito que ajudem a compreender o resultado do MRE frente a diversas condições.
+A Tabela 1 apresenta cada variável com a respectiva fonte de informação e o
+tratamento aplicado:
+Variável
+Geração hidrelétrica
+verificada
+Garantias físicas históricas
+“GSF” verificado (GSF)
+
+Energia Natural Afluente
+verificada
+
+3
+
+Fonte e/ou Tratamento
+AP 08/2019 ANEEL3
+AP 08/2019 ANEEL
+Razão entre a geração verificada (mensal) e as
+garantias físicas históricas. Neste estudo não
+será considerado procedimento da
+sazonalização das garantias físicas para o
+MRE.
+Montante de energia decorrente das vazões
+naturais afluentes às usinas hidrelétricas,
+obtidos nos Resultados da Operação – Histórico
+da Operação, disponibilizado pelo ONS4.
+
+A Audiência Pública (AP) 08/2019, promovida pela ANEEL tem como objetivo obter subsídios para o
+aprimoramento da proposta de revisão das faixas de acionamento e dos adicionais das Bandeiras Tarifárias, a
+vigorar de maio de 2019 a abril de 2020. Dentre os dados disponibilizados na AP constam estimativas de GSF
+de 2001 a 2018.
+4
+http://www.ons.org.br/paginas/resultados-da-operacao/historico-da-operacao
+
+[PDF, página 38]
+Com o intuito de avaliar a evolução da matriz de geração de energia elétrica brasileira,
+é apresentada na Figura 33 o balanço operativo do sistema, por fonte, para o período
+de 2009 a 2023.
+
+Balanço Operativo do SIN
+80.000
+
+70.000
+
+60.000
+
+54.699
+50.597
+
+MWmed
+
+50.000
+
+127
+766
+3.238
+
+239
+1.186
+5.608
+
+56.531
+304
+1.221
+4.290
+
+58.651
+
+62.097 63.052
+60.332 61.722 61.479 61.582
+738
+1.955
+
+558
+1.475
+7.297
+
+1.374
+2.356
+
+10.945
+
+13.899
+
+2.442
+2.596
+
+3.697
+2.731
+
+4.619
+
+278
+5.293
+
+2.909
+
+3.069
+
+13.616
+
+9.532
+
+10.633
+
+8.693
+
+43.130
+74%
+
+41.590
+71%
+
+43.164
+73%
+
+64.711
+441
+6.273
+3.102
+
+67.057
+
+6.989
+
+523
+6.455
+3.117
+6.606
+
+69.424
+689
+
+72.182
+919
+
+75.132
+919
+7.123
+
+6.647
+3.201
+
+6.565
+3.169
+3.157
+6.237
+
+6.558
+
+8.009
+
+40.000
+
+30.000
+
+20.000
+
+48.531
+90%
+
+47.193
+84%
+
+44.165
+77%
+
+1.806
+
+2.185
+
+2.128
+
+2010
+
+2011
+
+2012
+
+44.780
+92%
+
+45.860
+87%
+
+1.686
+
+2009
+
+44.891
+74%
+
+47.252
+75%
+
+49.581
+76%
+
+51.612
+76%
+
+52.597
+74%
+
+41.701
+71%
+
+40.358
+70%
+
+2.529
+
+2.392
+
+2.467
+
+2.491
+
+2.347
+
+2.555
+
+3.015
+
+3.103
+
+3.195
+
+3.277
+
+3.284
+
+2013
+
+2014
+
+2015
+
+2016
+
+2017
+
+2018
+
+2019
+
+2020
+
+2021
+
+2022
+
+2023
+
+10.000
+
+0
+
+PCH
+
+UHE
+
+GT
+
+Biomassa
+
+Eólica
+
+UFV
+
+Total
+
+Figura 33- Balanço Operativo do SIN (2009 – 2023)
+
+É possível observar que a geração das Usinas Hidrelétricas (UHE) e Pequenas
+Centrais Hidrelétricas (PCH) apresenta redução na participação da matriz ao longo
+dos anos, passando de 92% em 2009 para 70% em 2015, e permanecendo em cerca
+de 75% até 2023.
+Quando se analisa o comportamento do montante de geração hidrelétrica, observase de fato uma redução no período entre 2011 e 2017, consequência da redução do
+regime hidrológico e da estagnação do consumo nos anos de 2014 a 2017.
+Entretanto, a expectativa é de aumento de geração hidrelétrica para o período de
+2018 a 2023, considerando a normalização gradual do regime hidrológico e retomada
+do crescimento do consumo.
+Ainda na Figura 33 possível também observar que a expansão de geração Eólica e
+das demais fontes renováveis tendem a ser utilizadas para o atendimento do
+crescimento do consumo, especialmente para o período de 2019 a 2023, o que
+permitiria o aumento do montante de geração hidrelétrica nesse período.
+Com base no comportamento da geração hidrelétrica é possível avaliar o
+comportamento do fator de ajuste do MRE, conhecido como GSF. A Figura 34
+apresenta o comportamento do GSF, correlacionando-o com o comportamento do

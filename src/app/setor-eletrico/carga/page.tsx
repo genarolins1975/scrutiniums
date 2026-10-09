@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaHistorico } from "@/components/energia/CargaHistorico";
-import { CargaNivel } from "@/components/energia/CargaNivel";
-import { CargaAnalise, CargaAuditoria, CargaAviso, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
+import { CargaMetricas, CargaNivel } from "@/components/energia/CargaNivel";
+import { CargaAviso, CargaCapitulos, CargaFontes, CargaIndisponivel, CargaSeguir } from "@/components/energia/CargaPagina";
 import { Numero } from "@/components/energia/Numero";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -26,6 +27,7 @@ import {
   serieColunar,
   situacaoAtualidade,
   textoAvisoRegimes,
+  textoRegimesCarga,
   textoRevisoes,
 } from "@/lib/energia/carga";
 import { carimbo, dataBR, mesAno, num, plural, sinal } from "@/lib/energia/formato";
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/carga" },
 };
 
-const FONTE = "ONS, Carga de Energia Diária (validada no pipeline)";
+const FONTE = "ONS, Carga de Energia Diária (validada pelo observatório)";
 
 const COLUNAS_CAPTURAS: ColunaTabela[] = [
   { id: "captura", rotulo: "Captura", tipo: "texto", categorica: true },
@@ -106,13 +108,13 @@ const COLUNAS_ESPERADOS: ColunaTabela[] = [
 const COLUNAS_AUSENTES: ColunaTabela[] = [
   { id: "sm", rotulo: "Subsistema", tipo: "texto", categorica: true },
   { id: "dia", rotulo: "Dia", tipo: "data" },
-  { id: "estado", rotulo: "Estado no arquivo atual da fonte", tipo: "texto", categorica: true },
-  { id: "valor_arquivo_atual", rotulo: "Valor no arquivo atual", tipo: "numero", unidade: "MWmed", casas: 3 },
+  { id: "estado", rotulo: "Estado no arquivo da última captura da fonte", tipo: "texto", categorica: true },
+  { id: "valor_arquivo_atual", rotulo: "Valor no arquivo da última captura", tipo: "numero", unidade: "MWmed", casas: 3 },
 ];
 const ROTULO_AUSENCIA: Record<string, string> = {
   celula_vazia_na_fonte: "célula vazia na fonte",
   linha_ausente_na_fonte: "linha ausente na fonte",
-  presente_no_arquivo_atual: "presente no arquivo atual",
+  presente_no_arquivo_atual: "presente no arquivo da última captura",
   nao_conferido: "não conferido",
 };
 
@@ -131,31 +133,56 @@ export default function CargaPage() {
   const fimMensal = c.mensal[c.mensal.length - 1];
   const residuosA07 = a.residuos_fora_da_amostra.filter((r) => r.sm === "SIN");
   const inicioMensal = c.mensal[0]?.m.slice(0, 4) ?? "";
+  const oQueMudou = (
+    <>
+      {atual.texto} {textoRevisoes(p.revisoes)}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      &ldquo;Mesmos dias da semana&rdquo; compara com a janela deslocada 364 dias (cada dia da semana com o seu par); &ldquo;mesmas datas&rdquo; compara com o mesmo
+      calendário do ano anterior, como a publicação diária do observatório fazia. A variação só existe quando as duas janelas têm todos os dias e estão no mesmo
+      regime do ONS: {g.regimes.map((r) => `${dataBR(r.inicio)}${r.observado_nos_dados ? ` (observado nos dados em ${dataBR(r.observado_nos_dados)})` : ""}`).join(", ")}.
+      A composição de dias úteis, sábados e domingos ou feriados de cada janela aparece abaixo do gráfico de pontos e na tabela equivalente.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A variação da carga não mede atividade econômica: este painel não tem dado de atividade que sustente essa leitura. A carga inclui uma estimativa de MMGD que o
+      ONS não publica separada{parentesesMmgd(g.regimes)}, então não se sabe quanto da variação vem dela. A carga não é ajustada por temperatura; a decomposição
+      estatística está na página Clima e calendário. As duas bases dão taxas diferentes para a mesma janela, e nenhuma delas isola clima, calendário ou atividade.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          rotulo="Carga"
-          titulo="Quanto o sistema está consumindo?"
+          siglas={["MWmed", "MMGD", "SIN", "ONS"]}
+          titulo={perguntaPainel("p025")}
+          lead="A carga média do sistema interligado (SIN) numa janela de dias, ao lado da janela de um ano antes. Mesmos dias da semana e mesmas datas dão taxas diferentes."
+          recorte={`até ${dataBR(g.dia_referencia)} · SIN e subsistemas · MWmed e %`}
+          fonte="ONS, Carga de Energia Diária"
           referencia={
             <>
               ONS, Carga de Energia Diária, até {dataBR(g.dia_referencia)}; processado em {carimbo(g.gerado_em)}.
             </>
           }
+          metricas={<CargaMetricas comparacoes={p.comparacoes} evidencias={{ equivalente: ev.p025_7d_equivalente ?? null, mesmasDatas: ev.a07_reproducao ?? null }} />}
         >
-          A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema, em <Unidade u="MWmed" />. Esta página compara
-          janelas com a mesma composição de calendário e dentro do mesmo regime metodológico do ONS; o perfil horário e a MMGD estão no segundo painel, e a decomposição por
-          clima e calendário no terceiro.
+          A <Termo slug="carga">carga</Termo> é a energia que o sistema interligado atende, publicada pelo ONS por subsistema; aqui ela vem como a potência média do dia, em{" "}
+          <Unidade u="MWmed" /> (1 MWmed durante um dia equivale a 24 MWh). Esta página compara a
+          carga média de uma janela de dias com a de uma janela de comparação, e diz quando as duas não têm a mesma mistura de dias úteis, sábados e domingos ou feriados.
+          Só compara janelas completas e medidas do mesmo modo: {textoRegimesCarga(g.regimes)}. O perfil horário e a MMGD estão na página MMGD e perfil horário, e a
+          decomposição por clima e calendário na página Clima e calendário.
         </CabecalhoModulo>
-        <CargaNavegacao atual="p025" />
         <ModoProfundidade>
           <Bloco id="nivel">
             <PainelEvidencia
               id="p025"
-              pergunta={perguntaPainel("p025")}
+              pergunta="Cada janela frente à janela de comparação"
               subtitulo="Carga diária por região, janelas comparáveis e médias mensais e anuais · MWmed e %"
               natureza="CALCULADO"
               porQueImporta={
@@ -164,26 +191,10 @@ export default function CargaPage() {
                   que mudou no calendário ou na forma de medir.
                 </>
               }
-              oQueMudou={
-                <>
-                  {atual.texto} {textoRevisoes(p.revisoes)}
-                </>
-              }
-              comoInterpretar={
-                <>
-                  &ldquo;Mesmos dias da semana&rdquo; compara com a janela deslocada 364 dias (cada dia da semana com o seu par); &ldquo;mesmas datas&rdquo; compara com o mesmo
-                  calendário do ano anterior, como a publicação diária do observatório fazia. A variação só existe quando as duas janelas têm todos os dias e estão no mesmo
-                  regime do ONS: {g.regimes.map((r) => `${dataBR(r.inicio)}${r.observado_nos_dados ? ` (observado nos dados em ${dataBR(r.observado_nos_dados)})` : ""}`).join(", ")}.
-                  A composição de dias úteis, sábados e domingos ou feriados de cada janela aparece abaixo do gráfico de pontos e na tabela equivalente.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A variação da carga não mede atividade econômica: este painel não tem dado de atividade que sustente essa leitura. A carga inclui uma estimativa de MMGD que o
-                  ONS não publica separada{parentesesMmgd(g.regimes)}, então não se sabe quanto da variação vem dela. A carga não é ajustada por temperatura; a decomposição
-                  estatística está no painel de clima e calendário.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.comparacoes}
               complementares={[{ rotulo: "Carga diária por subsistema (série)", p: c.proveniencia.carga }]}
             >
@@ -195,47 +206,42 @@ export default function CargaPage() {
                   regimes={g.regimes}
                   fonte={FONTE}
                   versao={versao}
-                  destaques={
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <Numero
-                        rotulo="Variação da carga do SIN: últimos 7 dias contra os mesmos dias da semana 52 semanas antes"
-                        natureza="CALCULADO"
-                        evidencia={ev.p025_7d_equivalente}
-                        formato="pct"
-                        casas={1}
-                        tamanho="medio"
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposPrincipal={<CargaCapitulos />}
+                  historia={
+                    <SecaoDoPainel
+                      id="historico"
+                      titulo={`Como a carga média do SIN evoluiu desde ${inicioMensal}, e o que mudou na medida?`}
+                      lead="Cada marca no gráfico é uma mudança do que o ONS inclui na carga: antes e depois dela, os níveis não medem a mesma coisa."
+                    >
+                      <CargaHistorico
+                        titulo={`Carga média mensal do SIN desde ${inicioMensal}`}
+                        dados={c.mensal.map((x) => ({ m: x.m, SIN: x.SIN ?? null }))}
                         cor="var(--cor-energia)"
-                        endereco={`${rotaPainel("p025")}#p025`}
+                        marcos={marcosRegimes(g.regimes, c.mensal[0]?.m ?? "", fimMensal?.m ?? "", "mes")}
                       />
-                      <Numero
-                        rotulo="Variação da carga do SIN: os mesmos 7 dias contra as mesmas datas do ano anterior (reprodução do diagnóstico)"
-                        natureza="CALCULADO"
-                        evidencia={ev.a07_reproducao}
-                        formato="pct"
-                        casas={1}
-                        tamanho="medio"
-                        cor="var(--serie-referencia)"
-                        nota="Variação maior que zero não indica, sozinha, mais atividade econômica."
-                        endereco={`${rotaPainel("p025")}#a07`}
-                      />
-                    </div>
+                      <CargaAviso>
+                        {textoAvisoRegimes(g.regimes)}
+                        {fimMensal && fimMensal.m === g.dia_referencia.slice(0, 7) ? ` O último mês (${mesAno(fimMensal.m)}) é parcial, com ${plural(fimMensal.dias, "dia", "dias")}.` : ""}
+                      </CargaAviso>
+                    </SecaoDoPainel>
                   }
                 />
 
-                <CargaAnalise titulo={`Histórico desde ${inicioMensal}, com as mudanças de regime marcadas`}>
-                  <CargaHistorico
-                    titulo={`Carga média mensal do SIN desde ${inicioMensal}`}
-                    dados={c.mensal.map((x) => ({ m: x.m, SIN: x.SIN ?? null }))}
-                    cor="var(--cor-energia)"
-                    marcos={marcosRegimes(g.regimes, c.mensal[0]?.m ?? "", fimMensal?.m ?? "", "mes")}
-                  />
-                  <CargaAviso>
-                    {textoAvisoRegimes(g.regimes)}
-                    {fimMensal && fimMensal.m === g.dia_referencia.slice(0, 7) ? ` O último mês (${mesAno(fimMensal.m)}) é parcial, com ${plural(fimMensal.dias, "dia", "dias")}.` : ""}
-                  </CargaAviso>
-                </CargaAnalise>
-
-                <CargaAnalise id="a07" titulo={`O ${sinal(a.referencia.variacao_publicada_pct, 1)}% publicado em ${carimbo(a.referencia.gerado_em)}: o que se reproduz e o que não se conclui`}>
+                <SecaoDoPainel id="a07" nivel="analisar" titulo={`O ${sinal(a.referencia.variacao_publicada_pct, 1)}% publicado em ${carimbo(a.referencia.gerado_em)}: o que se reproduz e o que não se conclui`}>
+                  <div className="max-w-sm">
+                    <Numero
+                      rotulo="Variação da carga do SIN: os mesmos 7 dias contra as mesmas datas do ano anterior, a taxa que o observatório publicou antes"
+                      natureza="CALCULADO"
+                      evidencia={ev.a07_reproducao}
+                      formato="pct"
+                      casas={2}
+                      tamanho="medio"
+                      cor="var(--serie-referencia)"
+                      nota={`Variação maior que zero não indica, sozinha, mais atividade econômica.${ev.a07_reproducao ? ` Na ficha de prova: ${ev.a07_reproducao.valor_exibido}, com uma casa.` : ""}`}
+                      endereco={`${rotaPainel("p025")}#a07`}
+                    />
+                  </div>
                   <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao" data-textos="a07">
                     {a.textos.map((t) => (
                       <li key={t}>{t}</li>
@@ -271,7 +277,7 @@ export default function CargaPage() {
                     nota={`Temperatura de ${dataBR(a.janela_modelo.inicio)} a ${dataBR(a.janela_modelo.fim)} (${a.janela_modelo.dias} de ${a.janela_modelo.dias_janela} dias)${a.janela_modelo.motivo ? `: ${a.janela_modelo.motivo}` : ""}.`}
                   />
                   <TabelaInterativa
-                    titulo="Real contra o previsto fora da amostra nas janelas do achado (SIN)"
+                    titulo="Real contra o previsto fora da amostra nas janelas da variação de 7 dias (SIN)"
                     colunas={COLUNAS_RESIDUOS}
                     linhas={paraTabela(residuosA07.map((r) => ({ ...r, id: `${r.sm}:${r.janela}`, regiao: NOME_REGIAO[r.sm], janela: ROTULO_JANELA_A07[r.janela] ?? r.janela })))}
                     chaveLinha="id"
@@ -282,21 +288,22 @@ export default function CargaPage() {
                     chaveUrl="a07r"
                   />
                   <p className="text-sm text-carvao-muted">
-                    A divisão da diferença entre calendário, temperatura, sazonalidade, tendência e resíduo, por região e variante do modelo, está no{" "}
+                    A divisão da diferença entre calendário, temperatura, sazonalidade, tendência e resíduo, por região e variante do modelo, está na página{" "}
                     <a href={`${rotaPainel("p027")}#p027`} className="text-energia-dark underline underline-offset-4">
-                      painel de clima e calendário
+                      Clima e calendário
                     </a>
-                    ; a parcela de MMGD da carga verificada, no{" "}
+                    ; a parcela de MMGD da carga verificada, na página{" "}
                     <a href={`${rotaPainel("p026")}#p026`} className="text-energia-dark underline underline-offset-4">
-                      painel de perfil horário
+                      MMGD e perfil horário
                     </a>
                     .
                   </p>
-                </CargaAnalise>
+                </SecaoDoPainel>
 
-                <CargaAuditoria
+                <SecaoDoPainel
                   id="a07-capturas"
-                  titulo={`${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas no achado`}
+                  nivel="auditar"
+                  titulo={`${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`}
                 >
                   {a.por_captura_2026.map((cap) => (
                     <p key={cap.sha256} className="text-sm text-carvao-muted">
@@ -319,9 +326,9 @@ export default function CargaPage() {
                     nomeArquivo="carga-a07-capturas"
                     chaveUrl="cap"
                   />
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
-                <CargaAuditoria id="revisoes" titulo="Revisões da fonte entre capturas">
+                <SecaoDoPainel id="revisoes" nivel="auditar" titulo="Revisões da fonte entre capturas">
                   <p className="text-sm text-carvao-muted">{textoRevisoes(p.revisoes)}</p>
                   <TabelaInterativa
                     titulo="Valores revisados pela fonte"
@@ -347,9 +354,9 @@ export default function CargaPage() {
                     Curva horária contra a carga diária: {num(p.revisoes.curva_contra_diaria.dias_comparados, 0)} pares comparados,{" "}
                     {num(p.revisoes.curva_contra_diaria.dias_diferentes, 0)} diferentes (tolerância {p.revisoes.curva_contra_diaria.tolerancia}). {p.revisoes.curva_contra_diaria.leitura}
                   </p>
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
-                <CargaAuditoria id="validacao" titulo="Validação física antes da publicação">
+                <SecaoDoPainel id="validacao" nivel="auditar" titulo="Validação física antes da publicação">
                   <ul className="space-y-1 text-sm text-carvao-muted">
                     {val.regras.map((r) => (
                       <li key={r.id}>
@@ -385,12 +392,12 @@ export default function CargaPage() {
                     chaveUrl="esp"
                   />
                   <TabelaInterativa
-                    titulo="Dias sem valor e o estado conferido no arquivo atual da fonte"
+                    titulo="Dias sem valor e o estado conferido no arquivo da última captura da fonte"
                     colunas={COLUNAS_AUSENTES}
                     linhas={val.ausentes.map((x) => ({ id: `${x.sm}:${x.dia}`, sm: x.sm, dia: x.dia, estado: ROTULO_AUSENCIA[x.estado] ?? x.estado, valor_arquivo_atual: x.valor_arquivo_atual }))}
                     chaveLinha="id"
                     colunaRotulo="dia"
-                    fonte="ONS, Carga de Energia Diária (arquivo atual)"
+                    fonte="ONS, Carga de Energia Diária (arquivo da última captura)"
                     versao={versao}
                     nomeArquivo="carga-dias-ausentes"
                     chaveUrl="aus"
@@ -406,9 +413,9 @@ export default function CargaPage() {
                       ))}
                     </ul>
                   )}
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
-                <CargaAuditoria id="comparacoes-todas" titulo="Todas as comparações publicadas">
+                <SecaoDoPainel id="comparacoes-todas" nivel="auditar" titulo="Todas as comparações publicadas">
                   <TabelaInterativa
                     titulo="Comparações por região, janela e tipo"
                     colunas={COLUNAS_COMPARACOES_TODAS}
@@ -421,7 +428,7 @@ export default function CargaPage() {
                     chaveUrl="cmp.t"
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => f.id === "diaria" || f.id === "leis")} />
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
                 <CargaSeguir ancora="p025" proximo={{ href: `${rotaPainel("p026")}#p026`, pergunta: perguntaPainel("p026") }} downloads={downloads} />
               </div>

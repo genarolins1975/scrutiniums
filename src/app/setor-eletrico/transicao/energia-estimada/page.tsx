@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoConferencia2023, TransicaoOnsMensal } from "@/components/energia/TransicaoOns";
 import {
   TransicaoAnalise,
   TransicaoAuditoria,
   TransicaoAviso,
+  TransicaoDatas,
   TransicaoDocumento,
   TransicaoIndisponivel,
   TransicaoNavegacao,
@@ -19,7 +23,9 @@ import {
 } from "@/components/energia/TransicaoPagina";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -29,6 +35,7 @@ import {
   PERGUNTA_A11,
   PERGUNTA_ONS,
   dadosConferencia,
+  comoLerOns,
   dadosRazaoCapacidade,
   data,
   dataIncorporacao,
@@ -37,12 +44,15 @@ import {
   linhasPares,
   mes,
   mudancaOns,
+  mudancaOnsMes,
   numTexto,
   pctTexto,
   perguntaPainel,
   respostaOns,
   rotaPainel,
   trechosConferencia,
+  ultimoAnoCompletoOns,
+  vereditoOns,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
@@ -72,26 +82,131 @@ export default function EnergiaEstimadaPage() {
   // dias de cada média da solar na tabela de resumo (a gold publica as médias; os dias saem da janela publicada)
   const trechos = o ? trechosConferencia(o.conferencia_quebra_2023) : { antes: null, depois: null };
   const rotuloTrecho = (t: { inicio: string; fim: string; dias: number } | null) => (t ? `de ${data(t.inicio)} a ${data(t.fim)}, ${t.dias} dias` : "dias sem dado");
+  const ultimoMes = o?.ultimo_mes_completo ?? null;
+  const anoCompleto = o ? ultimoAnoCompletoOns(o.anual) : null;
+  const primeiroAnoCompleto = o?.anual.find((a) => a.completo) ?? null;
+  const oQueMudou = o ? (
+    <>
+      {mudancaOnsMes(o) || mudancaOns(o, m.corte_provisorio)}
+      {mudancaOnsMes(o) && (
+        <span data-nivel="analisar" className="mt-2 block">
+          {mudancaOns(o, m.corte_provisorio)}
+        </span>
+      )}
+    </>
+  ) : null;
+  const comoInterpretar = o ? (
+    <>
+      {comoLerOns(o)} <Termo slug="carga-global">Carga global</Termo> é a carga verificada pelo ONS.
+      <span data-nivel="analisar" className="mt-2 block">
+        Como o observatório calcula: energia de cada meia hora = valor publicado × 0,5 h; MWmed do período = energia ÷ horas cobertas, nunca média de médias. SIN = soma dos quatro submercados nos dias em que os
+        quatro têm as 24 horas. Participação = 100 × energia de MMGD ÷ energia da carga global, mesmos intervalos.
+      </span>
+    </>
+  ) : null;
+  const naoConcluir = (
+    <>
+      Que esse seja o valor medido: o ONS chama o dado de estimado e os documentos consultados não descrevem o método. Nada sobre sistemas isolados (fora do SIN) nem
+      sobre município ou UF. A razão com a capacidade cadastrada não é fator de capacidade: compara perímetros diferentes (SIN e Brasil).
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-energia-estimada" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <TransicaoNavegacao atual="ons" />
         <CabecalhoModulo
+          siglas={["MMGD", "SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
-          titulo="Energia da micro e minigeração distribuída no SIN"
+          titulo="Energia da geração distribuída no SIN"
+          lead="Estimativa do ONS, em MWmed e em participação na carga global. Não é medição e não se soma à capacidade cadastrada pela ANEEL."
+          recorte={`${data(o?.inicio_serie)} a ${data(o?.fim_serie)} · SIN · MWmed e % da carga global`}
+          fonte="ONS, carga de energia verificada (parcela de MMGD)"
           referencia={
             <>
               Carga verificada do ONS de {data(o?.inicio_serie)} a {data(o?.fim_serie)}; capacidade cadastrada na ANEEL de {data(m.data_cadastro)}, só na razão rotulada. Processado em{" "}
               {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <TransicaoDatas
+              itens={[
+                { rotulo: "MMGD estimada (ONS)", texto: o ? `${data(o.inicio_serie)} a ${data(o.fim_serie)}` : "sem dado nesta publicação", natureza: "ESTIMADO" },
+                { rotulo: "Último mês completo", texto: mes(ultimoMes?.m), natureza: "ESTIMADO" },
+                { rotulo: "Capacidade cadastrada (ANEEL)", texto: `até ${data(m.data_cadastro)}, só na razão rotulada`, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            o ? (
+              <FaixaMetricas
+                colunas={4}
+                rotulo="Indicadores da energia estimada"
+                nota={
+                  <>
+                    <Unidade u="MWmed" /> é a energia do período dividida pelas horas cobertas; TWh é energia; participação é o percentual da carga global.
+                  </>
+                }
+              >
+                <Numero
+                  variante="faixa"
+                  rotulo="MMGD estimada no SIN"
+                  natureza="ESTIMADO"
+                  evidencia={o.evidencia}
+                  casas={1}
+                  unidade="MWmed"
+                  periodo={ultimoMes ? `${mes(ultimoMes.m)}, mês completo` : undefined}
+                  cor="var(--serie-solar)"
+                  nota="Estimativa do ONS, não medição."
+                  motivoAusencia="Nenhum mês com os quatro submercados completos nesta publicação."
+                  endereco={`${rotaPainel("ons")}#ons`}
+                />
+                <Numero
+                  variante="faixa"
+                  rotulo="Participação na carga global do SIN"
+                  natureza="ESTIMADO"
+                  valor={ultimoMes?.participacao_carga_global_sin_pct ?? null}
+                  formato="pct"
+                  casas={2}
+                  unidade="da carga global"
+                  periodo={ultimoMes ? `${mes(ultimoMes.m)}, mês completo` : undefined}
+                  cor="var(--cor-carvao)"
+                  nota="A carga global é a carga que o ONS verifica."
+                  motivoAusencia="Nenhum mês com os quatro submercados completos nesta publicação."
+                />
+                <Numero
+                  variante="faixa"
+                  rotulo={`MMGD estimada em ${anoCompleto?.ano ?? "sem dado"}`}
+                  natureza="ESTIMADO"
+                  valor={anoCompleto?.mmgd_sin_mwmed ?? null}
+                  casas={0}
+                  unidade="MWmed"
+                  periodo="último ano completo"
+                  cor="var(--serie-solar)"
+                  nota={anoCompleto ? `${numTexto(anoCompleto.mmgd_sin_twh, 2)} TWh, ${pctTexto(anoCompleto.participacao_carga_global_pct, 2)} da carga global.` : undefined}
+                  motivoAusencia="Nenhum ano completo nesta publicação."
+                />
+                <Numero
+                  variante="faixa"
+                  rotulo={`MMGD estimada em ${primeiroAnoCompleto?.ano ?? "sem dado"}`}
+                  natureza="ESTIMADO"
+                  valor={primeiroAnoCompleto?.mmgd_sin_mwmed ?? null}
+                  casas={0}
+                  unidade="MWmed"
+                  periodo="primeiro ano completo da série"
+                  cor="var(--serie-referencia)"
+                  nota={primeiroAnoCompleto ? `${numTexto(primeiroAnoCompleto.mmgd_sin_twh, 2)} TWh, ${pctTexto(primeiroAnoCompleto.participacao_carga_global_pct, 2)} da carga global.` : undefined}
+                  motivoAusencia="Nenhum ano completo nesta publicação."
+                />
+              </FaixaMetricas>
+            ) : undefined
+          }
         >
-          O cadastro da ANEEL mede capacidade; esta página mostra a energia que o ONS estima para a MMGD no SIN, em MWmed, e confere o que mudou nos dados do ONS quando essa
-          estimativa passou a compor a geração e a carga do Balanço de Energia.
+          O cadastro da ANEEL mede capacidade; esta página mostra a energia que o ONS estima para a MMGD no SIN, em MWmed. No modo Analisar, confere o que mudou nos dados do ONS quando essa
+          estimativa entrou na geração e na carga do Balanço de Energia.
         </CabecalhoModulo>
-        <TransicaoNavegacao atual="ons" />
         <ModoProfundidade>
           <Bloco id="energia-estimada">
             {o ? (
@@ -106,26 +221,19 @@ export default function EnergiaEstimadaPage() {
                     parcela supervisionada e da medida para faturamento, e que entrou nos dados de geração e carga do Balanço de Energia.
                   </>
                 }
-                oQueMudou={mudancaOns(o, m.corte_provisorio)}
-                comoInterpretar={
-                  <>
-                    Energia de cada meia hora = valor publicado × 0,5 h; MWmed do período = energia ÷ horas cobertas, nunca média de médias. SIN = soma dos quatro submercados nos dias
-                    em que os quatro têm as 24 horas. Participação = 100 × energia de MMGD ÷ energia da carga global, mesmos intervalos.
-                  </>
-                }
-                naoConcluir={
-                  <>
-                    Que esse seja o valor medido: o ONS chama o dado de estimado e os documentos consultados não descrevem o método. Nada sobre sistemas isolados (fora do SIN) nem
-                    sobre município ou UF. A razão com a capacidade cadastrada não é fator de capacidade: compara perímetros diferentes (SIN e Brasil).
-                  </>
-                }
+                oQueMudou={oQueMudou}
+                comoInterpretar={comoInterpretar}
+                naoConcluir={naoConcluir}
+                naoConcluirNoCorpo
                 proveniencia={o.proveniencia.estimativa}
                 complementares={[{ rotulo: "Razão com a capacidade cadastrada", p: o.proveniencia.razao }]}
               >
                 <div className="space-y-6">
-                  <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="ons">
+                  <TransicaoOnsMensal mensal={o.mensal} fonte={FONTE_ONS} versao={o.fim_serie} />
+                  {/* a faixa de cima já traz os números; a resposta vem depois do gráfico para que ele comece na primeira tela */}
+                  <RespostaCurta id="ons" depois veredito={vereditoOns(o) || respostaOns(o)}>
                     {respostaOns(o)}
-                  </p>
+                  </RespostaCurta>
                   <TransicaoRecorte
                     periodo={
                       <>
@@ -135,25 +243,18 @@ export default function EnergiaEstimadaPage() {
                     universo="SIN: os quatro submercados da carga verificada (sistemas isolados ficam fora)"
                     unidade="MWmed (energia do período ÷ horas), TWh e % da carga global"
                   />
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <Numero
-                      rotulo="MMGD estimada no SIN, último mês completo"
-                      natureza="ESTIMADO"
-                      evidencia={o.evidencia}
-                      casas={1}
-                      unidade="MWmed"
-                      tamanho="medio"
-                      motivoAusencia="Nenhum mês com os quatro submercados completos nesta publicação."
-                      nota={`${pctTexto(o.ultimo_mes_completo?.participacao_carga_global_sin_pct, 2)} da carga global do SIN no mês. Estimativa da fonte.`}
-                      endereco={`${rotaPainel("ons")}#ons`}
-                    />
-                    <TransicaoAviso rotulo="Estimativa da fonte">
-                      {g.regras.cadastro_x_estimativa} O ONS publica a MMGD como parcela estimada da carga, separada da parcela supervisionada e da medida para faturamento.
+                  <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+                  <TransicaoAviso rotulo="Estimativa da fonte">
+                    {g.regras.cadastro_x_estimativa} O ONS publica a MMGD como parcela estimada da carga, separada da parcela supervisionada e da medida para faturamento.
+                  </TransicaoAviso>
+                  {dataA11 && (
+                    <TransicaoAviso rotulo="Quebra na série do Balanço de Energia">
+                      A partir de {data(dataA11)}, o ONS passou a incluir a MMGD estimada nos dados de geração e de carga do Balanço de Energia: comparações de geração solar e de carga que
+                      atravessam essa data misturam critérios diferentes. A conferência está no modo Analisar.
                     </TransicaoAviso>
-                  </div>
-                  <TransicaoOnsMensal mensal={o.mensal} fonte={FONTE_ONS} versao={o.fim_serie} />
+                  )}
 
-                  <TransicaoAnalise titulo="Por ano">
+                  <SecaoDoPainel id="por-ano" titulo="Quanto a MMGD estimada entregou, ano a ano?">
                     <GraficoBarras
                       titulo="MMGD estimada no SIN por ano (anos incompletos marcados)"
                       dados={linhasOnsAnual(o.anual)}
@@ -170,7 +271,7 @@ export default function EnergiaEstimadaPage() {
                       numericas={[1, 2, 3, 4]}
                       linhas={linhasOnsAnual(o.anual).map((a) => [String(a.ano), numTexto(a.mmgd_sin_mwmed, 0), numTexto(a.mmgd_sin_twh, 2), pctTexto(a.participacao_carga_global_pct, 2), inteiro(a.dias_completos), a.situacao])}
                     />
-                  </TransicaoAnalise>
+                  </SecaoDoPainel>
 
                   <TransicaoAnalise titulo="Energia estimada sobre capacidade cadastrada (razão rotulada)">
                     {dadosRazaoCapacidade(o.mensal).length > 0 ? (
@@ -230,7 +331,7 @@ export default function EnergiaEstimadaPage() {
                 id="a11"
                 nivel="analisar"
                 pergunta={PERGUNTA_A11}
-                subtitulo="Achado A11 · Balanço de Energia do SIN e MMGD estimada, MWmed por dia"
+                subtitulo="Balanço de Energia do SIN e MMGD estimada, MWmed por dia"
                 natureza="CALCULADO"
                 porQueImporta={
                   <>

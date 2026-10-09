@@ -21,6 +21,7 @@ import type {
   ClasseDia,
   ClassesDias,
   DecomposicaoA07,
+  EventoCurto,
   GrupoModelo,
   JanelaComparacao,
   JanelaId,
@@ -138,6 +139,17 @@ export function textoCalendarioJanela(j: JanelaComparacao, tipo: TipoComparacao)
   return `As janelas não têm a mesma composição de calendário: ${textoClasses(j.classes)} nesta, ${textoClasses(ant)} na de comparação.`;
 }
 
+/**
+ * Feriados e pontos facultativos de cada janela, na base escolhida: os da janela e os da janela de comparação (as mesmas datas do ano
+ * anterior ou os mesmos dias da semana deslocados 364 dias). Lidos da gold, nunca escritos aqui.
+ */
+export function textoEventosJanela(j: JanelaComparacao, tipo: TipoComparacao): string {
+  const nomes = (xs: readonly EventoCurto[]) => listaTexto(xs.map(([d, nome]) => `${nome} (${dataBR(d)})`));
+  const ant = tipo === "equivalente" ? j.eventos_equivalente : j.eventos_mesmas_datas;
+  if (!j.eventos.length && !ant.length) return "Nenhum feriado nem ponto facultativo nas duas janelas.";
+  return `Feriados e pontos facultativos: ${j.eventos.length ? nomes(j.eventos) : "nenhum"} nesta janela; ${ant.length ? nomes(ant) : "nenhum"} na de comparação.`;
+}
+
 /* ---------- P025: nível e crescimento ---------- */
 
 export type LinhaComparacao = {
@@ -196,6 +208,42 @@ export function linhasComparacao(p: Pick<P025, "comparacoes">, sm: Regiao, tipo:
   });
 }
 
+/** A base da comparação escrita no plural, em minúsculas, para rótulos e frases. */
+export const BASE_CURTA: Record<TipoComparacao, string> = { equivalente: "mesmos dias da semana", mesmas_datas: "mesmas datas" };
+
+/** Uma linha de explicação de cada base, para o controle que alterna entre elas. */
+export const EXPLICACAO_BASE: Record<TipoComparacao, string> = {
+  equivalente: "Cada dia contra o dia de mesma posição na semana, 52 semanas antes (364 dias).",
+  mesmas_datas: "Cada dia contra a mesma data do ano anterior; os dias caem em outros dias da semana.",
+};
+
+export function outraBase(t: TipoComparacao): TipoComparacao {
+  return t === "equivalente" ? "mesmas_datas" : "equivalente";
+}
+
+/** A linha da janela escolhida, a mesma que alimenta o gráfico de pontos, a tabela equivalente e a exportação (null sem a janela). */
+export function linhaDaJanela(p: Pick<P025, "comparacoes">, sm: Regiao, janela: JanelaId, tipo: TipoComparacao): LinhaComparacao | null {
+  return linhasComparacao(p, sm, tipo).find((l) => l.janela === janela) ?? null;
+}
+
+/**
+ * Frase da abertura que diz o que a outra base daria para a mesma janela. A janela é a mesma e as duas taxas são certas: o que muda
+ * é a janela de comparação (as mesmas datas do ano anterior caem em outros dias da semana; os mesmos dias da semana deslocam a
+ * janela em 364 dias). Vazia quando a janela não existe.
+ */
+export function textoOutraBase(p: Pick<P025, "comparacoes">, sm: Regiao, janela: JanelaId, tipo: TipoComparacao): string {
+  if (!p.comparacoes.janelas.some((j) => j.id === janela)) return "";
+  const outra = outraBase(tipo);
+  const l = linhaDaJanela(p, sm, janela, outra);
+  const nome = outra === "equivalente" ? "os mesmos dias da semana, 52 semanas antes" : "as mesmas datas do ano anterior";
+  if (!l || l.variacao_pct === null || l.inicio_ant === null || l.fim_ant === null) return `Com ${nome}, esta janela não tem variação publicada.`;
+  const diferenca =
+    outra === "mesmas_datas"
+      ? "nas mesmas datas, os dias do ano anterior caem em outros dias da semana"
+      : "nos mesmos dias da semana, a janela de comparação é deslocada 364 dias";
+  return `Com ${nome} (${dataBR(l.inicio_ant)} a ${dataBR(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2)}%. As duas taxas usam bases diferentes: ${diferenca}.`;
+}
+
 /** Todas as regiões, janelas e tipos: as mesmas linhas de carga_comparacoes.csv. */
 export function linhasComparacoesTodas(p: Pick<P025, "comparacoes">): LinhaComparacao[] {
   return REGIOES.flatMap((sm) => TIPOS_COMPARACAO.flatMap((t) => linhasComparacao(p, sm, t)));
@@ -222,6 +270,40 @@ export function respostaNivel(p: Pick<P025, "comparacoes">, sm: Regiao, janela: 
   // duas casas, a precisão publicada na gold: arredondar de novo para uma casa um valor já arredondado
   // para duas pode divergir do valor completo (11,4498 vira 11,45 e depois 11,5, quando o certo é 11,4)
   return `${base}, variação de ${sinal(n.variacao_pct, 2)}% sobre ${ref} (${ant}). ${textoCalendarioJanela(j, tipo)}`;
+}
+
+/**
+ * Veredito do P025 em palavras simples: a média da janela escolhida, a variação sobre a comparação e se as duas janelas têm a
+ * mesma composição de calendário. Os dois períodos, a média da comparação e a composição de dias ficam em respostaNivel.
+ */
+export function vereditoNivel(p: Pick<P025, "comparacoes">, sm: Regiao, janela: JanelaId, tipo: TipoComparacao): string {
+  const j = p.comparacoes.janelas.find((x) => x.id === janela);
+  const quem = DO_REGIAO[sm];
+  if (!j) return `A gold desta publicação não traz a janela pedida para a carga ${quem}.`;
+  const rot = /\d/.test(j.rotulo) ? j.rotulo : `${j.rotulo}, ${plural(j.dias, "dia", "dias")}`;
+  const periodo = /até/.test(rot) ? `${cap(rot)}` : `${cap(rot)}, até ${dataBR(j.fim)}`;
+  const n = p.comparacoes.subsistemas.find((x) => x.sm === sm)?.janelas[janela]?.[tipo] ?? null;
+  if (!n) return `${periodo}, a carga ${quem} não tem comparação: falta dia aceito pela validação física numa das janelas.`;
+  const base = `${periodo}, a carga ${quem} teve média de ${num(n.media, 0)} MWmed`;
+  if (n.variacao_pct === null) return `${base}. A comparação está em outro regime de medição do ONS, e por isso a diferença não é publicada como variação.`;
+  const ref = tipo === "equivalente" ? "dos mesmos dias da semana 52 semanas antes" : "das mesmas datas do ano anterior";
+  const rumo = Number(n.variacao_pct.toFixed(2)) === 0 ? "igual à média" : `${num(Math.abs(n.variacao_pct), 2)}% ${n.variacao_pct > 0 ? "acima" : "abaixo"} da média`;
+  const cal = calendarioEquivalente(j, tipo) ? "As duas janelas têm a mesma composição de calendário." : "As duas janelas não têm a mesma composição de calendário.";
+  return `${base}, ${rumo} ${ref}. ${cal}`;
+}
+
+/**
+ * Janelas do seletor que cobrem exatamente os mesmos dias (por exemplo, os últimos 28 dias e o mês corrente quando o mês tem
+ * 28 dias): a frase diz que são a mesma janela e por isso têm a mesma média. Vazia quando todas as janelas são distintas.
+ */
+export function textoJanelasIguais(janelas: readonly JanelaComparacao[]): string {
+  const grupos = new Map<string, JanelaComparacao[]>();
+  for (const j of janelas) grupos.set(`${j.inicio}|${j.fim}`, [...(grupos.get(`${j.inicio}|${j.fim}`) ?? []), j]);
+  const iguais = Array.from(grupos.values()).filter((g) => g.length > 1);
+  if (!iguais.length) return "";
+  return iguais
+    .map((g) => `${listaTexto(g.map((j) => `“${j.rotulo}”`))} cobrem os mesmos dias (${dataBR(g[0].inicio)} a ${dataBR(g[0].fim)}): são a mesma janela e têm a mesma média.`)
+    .join(" ");
 }
 
 /** Resposta do acumulado do ano, com a composição de calendário das duas janelas. */
@@ -307,12 +389,23 @@ export function linhasAnual(p: Pick<P025, "anual">): LinhaAnual[] {
   });
 }
 
-/** Ponto da série diária de uma região com o mesmo dia da semana 364 dias antes (busca por data, não por posição). */
-export type PontoReferencia = { d: string; atual: number | null; ref364: number | null };
+/**
+ * Ponto da série diária de uma região com as duas referências, cada uma procurada pela data (nunca pela posição):
+ * `ref364` é o mesmo dia da semana 364 dias antes; `refDatas` é a mesma data do ano anterior (null em 29 de fevereiro,
+ * que não tem par).
+ */
+export type PontoReferencia = { d: string; atual: number | null; ref364: number | null; refDatas: number | null };
 
 export function deslocaDias(iso: string, dias: number): string {
   const t = Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1, Number(iso.slice(8, 10)));
   return new Date(t + dias * 86_400_000).toISOString().slice(0, 10);
+}
+
+/** Mesma data do ano anterior ("2026-09-22" vira "2025-09-22"); null para 29 de fevereiro, que não existe no ano anterior. */
+export function mesmaDataAnoAnterior(iso: string): string | null {
+  const md = iso.slice(5, 10);
+  if (md === "02-29") return null;
+  return `${Number(iso.slice(0, 4)) - 1}-${md}`;
 }
 
 /**
@@ -328,11 +421,18 @@ export function serieColunar(serie: readonly ({ d: string } & Partial<Record<Reg
   return out;
 }
 
-/** Série da região com o valor do mesmo dia da semana 364 dias antes, procurado pela data (nunca pela posição). */
+/**
+ * Série da região com os dois valores de referência, procurados pela data (nunca pela posição): o mesmo dia da semana 364 dias antes
+ * (`ref364`, base "mesmos dias da semana") e a mesma data do ano anterior (`refDatas`, base "mesmas datas"). O gráfico mostra a
+ * referência da base que o leitor escolheu.
+ */
 export function serieComReferencia(serie: SerieColunar, sm: Regiao): PontoReferencia[] {
   const valores = serie[sm] ?? [];
   const porDia = new Map(serie.d.map((d, i) => [d, valores[i] ?? null]));
-  return serie.d.map((d, i) => ({ d, atual: valores[i] ?? null, ref364: porDia.get(deslocaDias(d, -364)) ?? null }));
+  return serie.d.map((d, i) => {
+    const datas = mesmaDataAnoAnterior(d);
+    return { d, atual: valores[i] ?? null, ref364: porDia.get(deslocaDias(d, -364)) ?? null, refDatas: datas ? (porDia.get(datas) ?? null) : null };
+  });
 }
 
 /** Mudanças de regime dentro do período mostrado, como marcos do gráfico. */
@@ -381,6 +481,17 @@ export function textoAvisoRegimes(regimes: readonly RegimeGold[]): string {
   if (mmgd) partes.push(`antes da inclusão da MMGD (${datasRegime(mmgd)}) não inclui a MMGD estimada`);
   if (!partes.length) return "A série muda de conteúdo em cada mudança de regime do ONS: o salto depois de cada marca não é, por si, aumento de consumo.";
   return `${cap(listaTexto(partes))}: o salto depois de cada marca não é, por si, aumento de consumo.`;
+}
+
+/** O que o ONS passou a incluir na carga e desde quando, lido dos regimes da gold (para o texto de abertura da página). */
+export function textoRegimesCarga(regimes: readonly RegimeGold[]): string {
+  const desp = regimeCom(regimes, /não despachadas/);
+  const mmgd = regimeCom(regimes, /MMGD/);
+  const partes: string[] = [];
+  if (desp) partes.push(`a previsão de usinas não despachadas, desde ${dataBR(desp.inicio)}`);
+  if (mmgd) partes.push(`a estimativa de MMGD, ${datasRegime(mmgd)}`);
+  if (!partes.length) return "o que o ONS inclui na carga mudou ao longo da série";
+  return `o ONS passou a incluir na carga ${partes.join("; ")}`;
 }
 
 /** Índice do regime que contém o mês inteiro ("2021-08"); null quando o mês atravessa uma mudança ou fica fora. */
@@ -476,7 +587,7 @@ export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folg
 /* ---------- P026: MMGD e perfil horário ---------- */
 
 /** Mês mais recente com todos os dias na API, para a região. */
-export function ultimoMesCompletoMmgd(p: P026, sm: Regiao) {
+export function ultimoMesCompletoMmgd(p: Pick<P026, "mmgd_mensal">, sm: Regiao) {
   const ls = p.mmgd_mensal.filter((x) => x.sm === sm && x.dias === x.dias_no_mes);
   return ls.length ? ls.reduce((a, b) => (b.m > a.m ? b : a)) : null;
 }
@@ -497,6 +608,23 @@ export function horaModal(contagem: readonly number[]): { hora: number; dias: nu
     }
   });
   return hora >= 0 ? { hora, dias: melhor } : null;
+}
+
+/**
+ * Hora em que o pico do dia caiu mais vezes no último ano publicado: na curva de carga da região e, só para o SIN, na carga líquida de
+ * MMGD da carga verificada. São as mesmas contagens do mapa de calor e da resposta do painel; a hora é a de início (empate: a primeira).
+ */
+export function picoModalDoAno(
+  p: Pick<P026, "hora_pico_por_ano" | "hora_pico_api_sin_por_ano">,
+  sm: Regiao,
+): { ano: number; dias: number; curva: { hora: number; dias: number }; liquida: { hora: number; dias: number } | null } | null {
+  const anos = p.hora_pico_por_ano[sm] ?? [];
+  const ult = anos.length ? anos[anos.length - 1] : null;
+  const moda = ult ? horaModal(ult.contagem) : null;
+  if (!ult || !moda) return null;
+  const api = sm === "SIN" ? p.hora_pico_api_sin_por_ano.find((x) => x.ano === ult.ano) : undefined;
+  const ml = api ? horaModal(api.contagem_liquida) : null;
+  return { ano: ult.ano, dias: ult.dias, curva: moda, liquida: ml };
 }
 
 /** Resposta curta do P026 para a região escolhida. */
@@ -524,6 +652,39 @@ export function respostaPerfil(p: P026, sm: Regiao): string {
   }
   const rec = p.recordes_anuais.filter((r) => r.sm === sm).reduce<P026["recordes_anuais"][number] | null>((a, b) => (!a || b.ano > a.ano ? b : a), null);
   if (rec) partes.push(`O maior valor horário de ${rec.ano} foi ${num(rec.pico, 0)} MWmed, em ${dataBR(rec.dia)} às ${rotuloHora(rec.hora)}.`);
+  return partes.join(" ");
+}
+
+/** "entre 18h e 19h": a hora cheia de início e a seguinte, para a hora do pico (a fonte diz a hora de início). */
+export function entreHoras(h: number): string {
+  return `entre ${rotuloHora(h)} e ${rotuloHora((h + 1) % 24)}`;
+}
+
+/**
+ * Veredito do P026 em palavras simples: que parcela da carga global a MMGD estimada representa no último mês completo e em
+ * que hora o pico do dia caiu mais vezes no ano. Os dias de cada hora, a carga em MWmed e o maior valor horário ficam em
+ * respostaPerfil.
+ */
+export function vereditoPerfil(p: P026, sm: Regiao): string {
+  const quem = DO_REGIAO[sm];
+  const partes: string[] = [];
+  const m = ultimoMesCompletoMmgd(p, sm);
+  partes.push(
+    m
+      ? `Em ${mesAno(m.m)}, a MMGD, estimada pelo ONS e não medida, foi ${num(m.mmgd_pct, 2)}% da carga global ${quem}.`
+      : `A carga verificada não tem mês completo com MMGD para a região ${quem.replace(/^do /, "")}.`,
+  );
+  const anos = p.hora_pico_por_ano[sm] ?? [];
+  const ult = anos.length ? anos[anos.length - 1] : null;
+  const moda = ult ? horaModal(ult.contagem) : null;
+  if (ult && moda) {
+    const base = `Em ${ult.ano}, o pico do dia caiu mais vezes ${entreHoras(moda.hora)}`;
+    const api = sm === "SIN" && ult ? p.hora_pico_api_sin_por_ano.find((x) => x.ano === ult.ano) : undefined;
+    const ml = api ? horaModal(api.contagem_liquida) : null;
+    if (!ml) partes.push(`${base} na curva de carga ${quem}.`);
+    else if (ml.hora === moda.hora) partes.push(`${base}, na curva de carga e na carga líquida de MMGD.`);
+    else partes.push(`${base} na curva de carga e ${entreHoras(ml.hora)} na carga líquida de MMGD.`);
+  }
   return partes.join(" ");
 }
 
@@ -592,6 +753,63 @@ export function respostaPerfilTipico(perfil: PerfilTipico): string {
       : `Sem perfil publicado para a carga ${quem} neste recorte.`;
   }
   return `Na média de ${dias}, a carga líquida de MMGD ${quem} vai de ${num(lMin.liquida, 0)} MWmed (hora das ${lMin.hora}) a ${num(lMax.liquida, 0)} MWmed (hora das ${lMax.hora}); a MMGD estimada chega a ${num(mMax.mmgd, 0)} MWmed na hora das ${mMax.hora}.`;
+}
+
+/**
+ * Veredito do dia típico escolhido: em que hora a MMGD estimada chega ao máximo e em que horas a carga líquida de MMGD tem o
+ * menor e o maior valor. Os valores em MWmed ficam em respostaPerfilTipico.
+ */
+export function vereditoPerfilTipico(perfil: PerfilTipico): string {
+  const ls = linhasPerfil(perfil);
+  const quem = DO_REGIAO[perfil.sm];
+  const ext = (k: "liquida" | "mmgd" | "carga", maior: boolean) =>
+    ls.reduce<LinhaPerfil | null>((a, b) => (b[k] === null ? a : !a || (maior ? b[k]! > a[k]! : b[k]! < a[k]!) ? b : a), null);
+  const dia = `${ROTULO_CLASSE[perfil.classe]} médio de ${mesAno(perfil.mes)}`;
+  const lMax = ext("liquida", true);
+  const lMin = ext("liquida", false);
+  const mMax = ext("mmgd", true);
+  if (!lMax || !lMin || !mMax) {
+    const cMax = ext("carga", true);
+    return cMax
+      ? `Num ${dia}, a curva de carga ${quem} é maior ${entreHoras(Number(cMax.id))}. A carga verificada não tem dia completo neste recorte.`
+      : `Sem perfil publicado para a carga ${quem} neste recorte.`;
+  }
+  return `Num ${dia}, a carga líquida de MMGD ${quem} é menor ${entreHoras(Number(lMin.id))} e maior ${entreHoras(Number(lMax.id))}; a MMGD estimada chega ao máximo ${entreHoras(Number(mMax.id))}.`;
+}
+
+/**
+ * Texto da fonte sem os parênteses que classificam a geração em tipos (I, IIA, IIB, IIC, III): o leitor lê a parcela, e as
+ * classes da fonte ficam à parte, para o modo Analisar.
+ */
+export function semTiposDeGeracao(texto: string): { texto: string; tipos: string[] } {
+  const tipos = Array.from(texto.matchAll(/\s*\((geração tipo[^)]*)\)/g)).map((m) => m[1]);
+  return { texto: texto.replace(/\s*\(geração tipo[^)]*\)/g, ""), tipos };
+}
+
+/** "MMGD (val_cargammgd)": o nome da série para o leitor e o campo da fonte, separados. */
+export function separaCampoDaSerie(rotulo: string): { nome: string; campo: string | null } {
+  const m = /^(.*?)\s*\(([a-z]+_[a-z_]+)\)$/.exec(rotulo);
+  return m ? { nome: m[1], campo: m[2] } : { nome: rotulo, campo: null };
+}
+
+/**
+ * A média do mês da carga global (carga verificada) ao lado da média do mesmo mês da Carga de Energia Diária, o produto que a
+ * página Carga usa: são produtos diferentes do ONS, e os valores não coincidem. Só para o SIN; vazio sem o mês nos dois.
+ */
+export function textoGlobalContraDiaria(p: Pick<P026, "mmgd_mensal">, diaria: readonly { m: string; SIN?: number | null }[]): string {
+  const m = ultimoMesCompletoMmgd(p, "SIN");
+  const d = m ? diaria.find((x) => x.m === m.m) : undefined;
+  if (!m || !d || d.SIN === null || d.SIN === undefined) return "";
+  return `Em ${mesAno(m.m)}, a carga global (carga verificada) teve média de ${num(m.global, 0)} MWmed e a Carga de Energia Diária, usada na página Carga, de ${num(d.SIN, 0)} MWmed. São produtos diferentes do ONS, com definições diferentes, e por isso os dois valores não coincidem.`;
+}
+
+/** Desde quando existe a série mensal da MMGD de cada tipo de recorte (SIN e subsistemas), lido dos próprios meses publicados. */
+export function textoInicioSeriesMmgd(p: Pick<P026, "mmgd_mensal">): string {
+  const primeiro = (f: (sm: Regiao) => boolean) => p.mmgd_mensal.filter((x) => f(x.sm)).map((x) => x.m).sort()[0];
+  const sin = primeiro((sm) => sm === "SIN");
+  const sub = primeiro((sm) => sm !== "SIN");
+  if (!sin || !sub || sin === sub) return "";
+  return `A série mensal do SIN começa em ${mesAno(sin)}; a de cada subsistema publicada aqui, em ${mesAno(sub)}.`;
 }
 
 export type LinhaMmgdMensal = { id: string; mes: string; parcial: boolean } & Partial<Record<Regiao, number | null>>;
@@ -688,17 +906,24 @@ export function respostaClima(p: Pick<P027Pronto, "metricas" | "periodo_avaliaca
     m.mape_referencia_364d_pct === null
       ? ""
       : `; a referência ingênua (o mesmo dia da semana 364 dias antes) errou ${num(m.mape_referencia_364d_pct, 2)}%`;
-  const abaixo80 = m.cobertura_80_pct < 80;
-  const abaixo95 = m.cobertura_95_pct < 95;
-  const cobertura =
-    abaixo80 || abaixo95
-      ? ": abaixo do nominal, os intervalos são mais estreitos que a incerteza real"
-      : ", no nível nominal ou acima";
   return (
     `Fora da amostra (${plural(m.dias, "dia", "dias")} de ${dataBR(per.inicio)} a ${dataBR(per.fim)}, ${plural(m.origens, "origem mensal", "origens mensais")}), ` +
     `a decomposição por calendário, temperatura, sazonalidade e tendência errou em média ${num(m.mape_pct, 2)}% a carga diária ${DO_REGIAO[sm]}${ref}. ` +
-    `O intervalo de 80% cobriu ${num(m.cobertura_80_pct, 1)}% dos dias e o de 95%, ${num(m.cobertura_95_pct, 1)}%${cobertura}.`
+    `${textoCoberturaIntervalos(p, sm)}`
   );
+}
+
+/**
+ * Cobertura dos intervalos fora da amostra diante da nominal, em uma frase: os intervalos de 80% e de 95% só valem o que dizem se cobrem
+ * 80% e 95% dos dias. Abaixo disso, são mais estreitos que a incerteza observada. Vai junto de toda figura que desenha o intervalo,
+ * também em Entender. Vazia sem métricas fora da amostra para a região.
+ */
+export function textoCoberturaIntervalos(p: Pick<P027Pronto, "metricas">, sm: Regiao): string {
+  const m: MetricasModelo | undefined = p.metricas[sm];
+  if (!m) return "";
+  const abaixo = m.cobertura_80_pct < 80 || m.cobertura_95_pct < 95;
+  const cobertura = abaixo ? ": abaixo do nominal, os intervalos são mais estreitos que a incerteza real" : ", no nível nominal ou acima";
+  return `O intervalo de 80% cobriu ${num(m.cobertura_80_pct, 1)}% dos dias e o de 95%, ${num(m.cobertura_95_pct, 1)}%${cobertura}.`;
 }
 
 /** Defasagem da temperatura: a avaliação termina antes do último dia de carga quando a NASA POWER ainda não publicou. */
@@ -720,6 +945,35 @@ export function barrasDecomposicao(d: DecomposicaoA07): BarraDecomposicao[] {
   return [...GRUPOS_MODELO.map((g) => ({ id: g, rotulo: ROTULO_GRUPO[g], valor: d.contribuicoes_log100[g] })), { id: "residuo" as const, rotulo: "Resíduo", valor: d.residuo_log100 }];
 }
 
+export type PartesDaDiferenca = {
+  /** Diferença real entre as janelas, em log × 100. */
+  diferenca: number;
+  /** Calendário, temperatura e sazonalidade somados. */
+  clima: number;
+  nivelTendencia: number;
+  residuo: number;
+  /** Parte da diferença que clima e calendário acompanham, e parte que o modelo não reproduz (null quando a diferença é nula). */
+  proporcaoClima: number | null;
+  proporcaoResto: number | null;
+  /** Parte que o modelo atribui a nível e tendência (as três proporções fecham a diferença, até o arredondamento das contribuições). */
+  proporcaoNivel: number | null;
+};
+
+/** As partes da diferença que o veredito e a faixa de métricas leem: uma só conta, sobre as contribuições publicadas. */
+export function partesDaDiferenca(d: DecomposicaoA07): PartesDaDiferenca {
+  const c = d.contribuicoes_log100;
+  const clima = c.calendario + c.temperatura + c.sazonalidade;
+  return {
+    diferenca: d.real_log100,
+    clima,
+    nivelTendencia: c.nivel_tendencia,
+    residuo: d.residuo_log100,
+    proporcaoClima: d.real_log100 === 0 ? null : clima / d.real_log100,
+    proporcaoResto: d.real_log100 === 0 ? null : d.residuo_log100 / d.real_log100,
+    proporcaoNivel: d.real_log100 === 0 ? null : c.nivel_tendencia / d.real_log100,
+  };
+}
+
 /** Texto da decomposição escolhida, só com os números da linha (associação, não causa). */
 export function respostaDecomposicao(d: DecomposicaoA07): string {
   // duas casas, a precisão da gold (com uma casa, 2,65 viraria 2,7 aqui e 2,6 no texto do pipeline)
@@ -727,9 +981,52 @@ export function respostaDecomposicao(d: DecomposicaoA07): string {
   const tipo = d.comparacao === "equivalente" ? "mesmos dias da semana" : "mesmas datas";
   return (
     `De ${dataBR(d.inicio)} a ${dataBR(d.fim)} contra ${dataBR(d.inicio_ant)} a ${dataBR(d.fim_ant)} (${tipo}, ${plural(d.dias, "dia", "dias")}), ` +
-    `a carga média ${DO_REGIAO[d.sm]} variou ${sinal(d.variacao_real_pct, 2)}%. Em log × 100, a diferença de ${num(d.real_log100, 2)} se divide em ${listaTexto(partes)} ` +
+    `a variação da carga diária ${DO_REGIAO[d.sm]}, calculada sobre a média dos logaritmos de cada janela, foi de ${sinal(d.variacao_real_pct, 2)}%. Em log × 100, a diferença de ${num(d.real_log100, 2)} se divide em ${listaTexto(partes)} ` +
     `(modelo estimado até ${dataBR(d.ultimo_dia_treino)}). É associação estatística, não causa: o resíduo é o que o modelo não reproduz.`
   );
+}
+
+/**
+ * Veredito do P027 em palavras simples, a resposta à pergunta do painel: quanto da diferença de carga entre as duas janelas
+ * acompanha calendário, temperatura e estação do ano, e quanto o modelo não reproduz. A diferença vem em pontos (log × 100,
+ * aproximadamente pontos percentuais, a escala das contribuições publicadas) e não em % para não ser lida como a variação da
+ * média simples da página Carga; as proporções saem das contribuições sobre essa diferença, e "nível e tendência" fica de fora
+ * das duas frases. É associação estatística, não causa. Sem a combinação publicada, só o erro do modelo fora da amostra.
+ */
+export function vereditoClima(d: DecomposicaoA07 | null, p: Pick<P027Pronto, "metricas">, sm: Regiao): string {
+  if (!d) {
+    const m = p.metricas[sm];
+    return m
+      ? `Esta combinação de região, variante e comparação não tem decomposição publicada. Fora da amostra, o modelo errou em média ${num(m.mape_pct, 2)}% a carga diária ${DO_REGIAO[sm]}.`
+      : `Sem decomposição publicada para a carga ${DO_REGIAO[sm]} nesta publicação.`;
+  }
+  const ref = d.comparacao === "equivalente" ? "dos mesmos dias da semana 52 semanas antes" : "das mesmas datas do ano anterior";
+  const v = Number(d.real_log100.toFixed(2));
+  const quanto = v === 0 ? "ficou igual à" : `ficou ${num(Math.abs(d.real_log100), 2)} pontos ${v > 0 ? "acima" : "abaixo"} da`;
+  const abertura = `Nos ${plural(d.dias, "dia", "dias")} até ${dataBR(d.fim)}, a carga ${DO_REGIAO[d.sm]} ${quanto} carga ${ref}.`;
+  if (d.real_log100 === 0) return `${abertura} Com diferença nula, a divisão entre as partes do modelo não se aplica.`;
+  const partes = partesDaDiferenca(d);
+  const clima = partes.proporcaoClima as number;
+  const resto = partes.proporcaoResto as number;
+  const parteClima = clima < 0 ? "Calendário, temperatura e estação do ano puxam no sentido oposto à diferença" : `Calendário, temperatura e estação do ano acompanham ${num(Math.round(clima * 100), 0)}% dessa diferença`;
+  const parteResto = resto < 0 ? "o modelo previa uma diferença maior que a observada" : `o modelo não reproduz ${num(Math.round(resto * 100), 0)}%`;
+  return `${abertura} ${parteClima}; ${parteResto}.`;
+}
+
+/**
+ * Por que esta decomposição tem menos dias que a janela de 7 dias da página Carga, com as duas variações lado a lado (recortes
+ * diferentes do mesmo achado, não divergência).
+ * Vazia quando a decomposição cobre a janela inteira ou quando falta a variação de 7 dias para o mesmo recorte.
+ */
+export function textoJanelaCurta(
+  d: DecomposicaoA07 | null,
+  achado: { fim: string; dias_janela: number },
+  comparacoes: Pick<A07, "comparacoes">["comparacoes"],
+): string {
+  if (!d || d.fim >= achado.fim) return "";
+  const c = comparacoes.find((x) => x.sm === d.sm)?.[d.comparacao];
+  if (!c || c.variacao_pct === null) return "";
+  return `Nesta decomposição a janela tem ${plural(d.dias, "dia", "dias")}, e a variação é calculada sobre o logaritmo da carga diária: ${sinal(d.variacao_real_pct, 2)}%. A página Carga usa a média simples de ${achado.dias_janela} dias: ${sinal(c.variacao_pct, 2)}%.`;
 }
 
 export type LinhaSensibilidade = MetricasModelo & { id: VarianteModelo; rotulo: string; mape_principal: number | null };
@@ -772,7 +1069,7 @@ export function respostaUltimoDia(p: Pick<P027Pronto, "recente_sin">): string {
   const u = p.recente_sin[p.recente_sin.length - 1];
   if (!u) return "Sem dia previsto fora da amostra nesta publicação.";
   const pos = u.real > u.p90 ? "acima do intervalo de 80%" : u.real < u.p10 ? "abaixo do intervalo de 80%" : "dentro do intervalo de 80%";
-  return `Em ${dataBR(u.d)}, a carga do SIN foi ${num(u.real, 0)} MWmed contra ${num(u.previsto, 0)} MWmed previstos com a origem de ${dataBR(u.origem)} (${sinal(u.residuo_pct, 1)}%), ${pos} (${num(u.p10, 0)} a ${num(u.p90, 0)} MWmed).`;
+  return `Em ${dataBR(u.d)}, a carga do SIN foi ${num(u.real, 0)} MWmed contra ${num(u.previsto, 0)} MWmed previstos pelo modelo estimado com os dias anteriores a ${dataBR(u.origem)} (${sinal(u.residuo_pct, 1)}%), ${pos} (${num(u.p10, 0)} a ${num(u.p90, 0)} MWmed).`;
 }
 
 /* ---------- tabelas equivalentes ---------- */

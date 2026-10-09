@@ -79,3 +79,53 @@ export function CargaLista<T extends string>({
     </div>
   );
 }
+
+/**
+ * Alternância entre duas bases de comparação, com o que cada uma é sempre à vista: não basta o nome, porque "mesmos dias da semana" e
+ * "mesmas datas" dão taxas diferentes para a mesma janela. O nome vem com um resumo de uma linha (`resumo`) e a explicação inteira, em
+ * `explicacao`, fica na dica da opção e no texto lido pelo leitor de tela. Rádios nativos (teclado e leitor de tela do próprio
+ * navegador), cada opção com alvo de 44 px; o estado escolhido leva o círculo cheio, além da cor, e todos os números da página seguem
+ * a escolha.
+ */
+export function CargaBase<T extends string>({
+  legenda,
+  opcoes,
+  valor,
+  onEscolher,
+}: {
+  legenda: string;
+  opcoes: readonly { id: T; rotulo: string; resumo: string; explicacao: string }[];
+  valor: T;
+  onEscolher: (v: T) => void;
+}) {
+  const nome = useId();
+  return (
+    <fieldset className="min-w-0" data-controle="base-da-comparacao">
+      <legend className="text-[0.8125rem] leading-snug text-carvao-muted">{legenda}</legend>
+      <div className="mt-1.5 space-y-1.5">
+        {opcoes.map((o) => {
+          const ativo = o.id === valor;
+          return (
+            <label
+              key={o.id}
+              title={o.explicacao}
+              className={`flex min-h-[44px] cursor-pointer items-center gap-2.5 border px-2.5 py-1 focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
+                ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+              }`}
+            >
+              <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
+              <span aria-hidden="true" className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-carvao">
+                {ativo && <span className="h-2 w-2 rounded-full bg-carvao" />}
+              </span>
+              <span className="block min-w-0">
+                <span className="block text-sm font-medium leading-snug text-carvao">{o.rotulo}</span>
+                <span className="block text-xs leading-snug text-carvao-muted">{o.resumo}</span>
+                <span className="sr-only">. {o.explicacao}</span>
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}

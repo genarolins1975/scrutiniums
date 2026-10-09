@@ -1,51 +1,46 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
+import { AprendaIndice } from "@/components/energia/AprendaIndice";
+import { AprendaTrilhas } from "@/components/energia/AprendaPagina";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { CONCEITOS, GRUPOS } from "@/lib/energia/conteudo/conceitos";
+import { estadosDoAcervo, gruposDoIndice, recorteDoAcervo, resumoDoAcervo } from "@/lib/energia/conteudo/aprenda-indice";
+import { PAGINAS_MAPA } from "@/lib/energia/mapa";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Aprenda: base de conhecimento do setor elétrico",
   description:
-    "PLD, CMO, EAR, ENA, submercado, carga, intercâmbio, NEWAVE, DECOMP, DESSEM e outros conceitos, cada um com fonte oficial, como é medido, exemplo real e limitações.",
+    "PLD, CMO, EAR, ENA, tarifa, perdas, DEC e FEC, Tarifa Social, fator de emissão e outros conceitos, cada um com fonte oficial e data de conferência, unidade, exemplo real com a ficha Comprove, o que não confundir e trilhas que ligam os conceitos aos números.",
   alternates: { canonical: "/setor-eletrico/aprenda" },
 };
 
+/**
+ * Índice do Aprenda, a abertura do módulo: a pergunta da página (a mesma do mapa e do menu), o escopo dos verbetes em uma frase, a busca,
+ * as trilhas como capítulos e, por tema, os verbetes curtos, cada um com a pergunta prática, o nome e o link direto ao painel onde o
+ * conceito aparece. Tudo lido do acervo de verbetes (aprenda-indice.ts): contagens, estados e datas não são escritos aqui.
+ */
 export default function AprendaPage() {
-  const conferidos = CONCEITOS.filter((c) => c.estado === "CONFERIDO").length;
+  const grupos = gruposDoIndice();
+  const resumo = resumoDoAcervo();
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo rotulo="Aprenda" titulo="Como funciona o sistema elétrico brasileiro, conceito a conceito">
-          Cada verbete diz, em uma frase, o que é; por que importa; como é medido; um exemplo real do sistema; as relações com outros conceitos; a
-          fonte oficial; e o que não se pode concluir. {conferidos} de {CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais
-          aparecem como em preparação, sem definição, até a conferência.
-        </CabecalhoModulo>
-        {GRUPOS.map((g) => (
-          <section key={g} aria-labelledby={`g-${g}`} className="border-t border-linha py-8">
-            <h2 id={`g-${g}`} className="rotulo text-mineral">{g}</h2>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {CONCEITOS.filter((c) => c.grupo === g).map((c) => (
-                <li key={c.slug}>
-                  <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="group flex h-full flex-col border border-linha bg-superficie p-5 transition-colors hover:border-energia">
-                    <span className="flex items-baseline justify-between gap-3">
-                      <span className="font-serif text-lg text-carvao">{c.sigla ?? c.nome}</span>
-                      {c.estado === "PENDENTE" && <span className="rotulo !text-[0.62rem] text-aviso">em preparação</span>}
-                    </span>
-                    {c.sigla && <span className="text-sm text-mineral">{c.nome}</span>}
-                    <span className="mt-2 text-sm leading-relaxed text-carvao-muted">
-                      {c.estado === "CONFERIDO" ? c.emUmaFrase : `Fonte primária a conferir: ${c.fontePlanejada}`}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+      <AbreDetalhesAoImprimir />
+      <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="indice">
+        <CabecalhoModulo recolher={false}
+          titulo={PAGINAS_MAPA.aprenda.pergunta}
+          lead="Os verbetes cobrem os conceitos que aparecem nos painéis deste observatório, não todo o vocabulário do setor. Procure um termo ou comece por uma trilha, que liga os conceitos aos números."
+          recorte={recorteDoAcervo(resumo)}
+          fonte="documentos oficiais citados em cada verbete"
+        />
+        <AprendaIndice
+          grupos={grupos}
+          trilhas={<AprendaTrilhas />}
+          estados={estadosDoAcervo(resumo)}
+        />
       </main>
     </>
   );

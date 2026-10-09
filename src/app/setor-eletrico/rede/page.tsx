@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeCirculacao } from "@/components/energia/RedeCirculacao";
-import { RedeAuditoria, RedeAviso, RedeIndisponivel, RedeNavegacao, RedeRecorte, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { RedeAviso, RedeCapitulos, RedeDatas, RedeIndisponivel, RedeRecorte, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, mesAno, num, plural } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
@@ -20,12 +22,12 @@ import {
   COLUNAS_ULTIMO_ANO,
   COR_PAR,
   FRONTEIRAS,
-  PERGUNTA_MODULO_REDE,
   ROTULO_REGRA,
   curtoFronteira,
   linhasCobertura,
   linhasEsquemaNacional,
   linhasUltimoAno,
+  medidasFronteiras30d,
   nomeFronteira,
   paraTabela,
   perguntaPainel,
@@ -35,6 +37,7 @@ import {
   textoCobertura,
   textoConferenciaSilver,
   textoOrientacaoArquivos,
+  textoSentidoSaldo,
 } from "@/lib/energia/rede";
 import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -53,12 +56,6 @@ export function generateMetadata(): Metadata {
 }
 
 const FONTE = "ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)";
-/** Anos cujos arquivos de fronteira trazem o programado, lidos do esquema da fonte publicado na gold. */
-const anosComProgramado = (g: GoldRedeDetalhe) =>
-  g.esquema_fonte.intercambio_nacional
-    .filter((x) => x.tem_programado)
-    .map((x) => x.recurso.replace(/\D/g, ""))
-    .join(" e ") || "nenhum ano";
 const COLUNAS_SALDOS: ColunaTabela[] = [
   { id: "nome", rotulo: "Subsistema", tipo: "texto" },
   { id: "dia", rotulo: "Saldo no dia (positivo = exporta)", tipo: "numero", unidade: "MWmed", casas: 0 },
@@ -79,35 +76,87 @@ export default function RedePage() {
     { rotulo: "Janela horária de 7 dias (JSON)", url: c.janela_horaria.url },
   ];
   const resumo = c.resumo_30d;
+  const janela30 = resumo[0];
   // as mesmas linhas nos dois gráficos e na tabela equivalente do último ano
   const ultimoAno = integra(r) ? linhasUltimoAno(r.serie_fluxos, r.serie_amplitude_pld) : [];
+  // a faixa da abertura lê o mesmo resumo de 30 dias do gráfico dos dois sentidos, da tabela e da exportação
+  const medidas = medidasFronteiras30d(resumo);
+  const oQueMudou = <>{atual.texto}</>;
+  const comoInterpretar = (
+    <>
+      Cada fronteira tem um sentido positivo no nome (Norte → Nordeste, Norte → Sudeste/Centro-Oeste, Nordeste → Sudeste/Centro-Oeste e Sul → Sudeste/Centro-Oeste);
+      saldo negativo é energia no sentido contrário. Energia escondida pelo saldo é o menor dos dois sentidos. Cada valor horário em MWmed vale a mesma quantidade em MWh. Na
+      escala horária, o PLD de cada região é o da mesma hora do fluxo. O esquema mostra as fronteiras e o sentido, sem posição geográfica.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Que alguma fronteira estava no limite ou congestionada: os limites operativos e as suas vigências não são públicos, e nem a espessura da seta nem a diferença de preço
+      demonstram saturação. O fluxo de cada linha de transmissão também não é publicado: sentidos opostos em linhas diferentes da mesma fronteira, na mesma hora, não aparecem.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          rotulo="Rede"
-          titulo={PERGUNTA_MODULO_REDE}
+          siglas={["SIN", "PLD", "ONS", "CCEE", "MWh", "MWmed"]}
+          titulo={perguntaPainel("p028")}
+          lead="Para onde a energia foi em cada uma das quatro fronteiras entre subsistemas, e quanta passou em cada sentido. O saldo é só a diferença entre os dois sentidos."
+          recorte={`${janela30 ? `${plural(janela30.dias, "dia", "dias")}, de ${dataBR(janela30.inicio)} a ${dataBR(janela30.fim)}` : "janela de 30 dias"} · quatro fronteiras · MWh e MWmed`}
+          fonte="ONS, Intercâmbios Entre Subsistemas; CCEE, PLD horário"
           referencia={
             <>
               ONS, intercâmbios entre subsistemas e com outros países, até {horaLocal(g.referencia.ultima_hora_fluxo)}; PLD horário da CCEE até{" "}
               {g.referencia.ultima_hora_pld ? horaLocal(g.referencia.ultima_hora_pld) : "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <RedeDatas
+              itens={[
+                { rotulo: "Fluxo entre subsistemas", texto: `até ${horaLocal(g.referencia.ultima_hora_fluxo)}`, natureza: g.proveniencia.fluxo.natureza },
+                { rotulo: "PLD horário", texto: g.referencia.ultima_hora_pld ? `até ${horaLocal(g.referencia.ultima_hora_pld)}` : null, natureza: g.proveniencia.pld_na_hora.natureza },
+                ...(integra(r) ? [{ rotulo: "Série diária do último ano", texto: `até ${dataBR(r.dia_referencia)}`, natureza: r.proveniencia.fluxo.natureza }] : []),
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={4}
+              rotulo={`Saldo de cada fronteira em ${janela30 ? plural(janela30.dias, "dia", "dias") : "30 dias"}`}
+              nota="O saldo é a diferença entre a energia que passou em cada sentido; abaixo de cada saldo, o que passou no sentido contrário. Saldo alto não indica fronteira no limite: os limites operativos não são públicos."
+            >
+              {medidas.map((m) => (
+                <Numero
+                  key={m.par}
+                  variante="faixa"
+                  rotulo={m.rotulo}
+                  natureza="CALCULADO"
+                  valor={m.valor}
+                  formato="num"
+                  casas={0}
+                  unidade="MWh"
+                  periodo={m.periodo}
+                  cor={COR_PAR[m.par]}
+                  nota={m.nota}
+                  motivoAusencia="Sem fluxo publicado na janela de 30 dias."
+                />
+              ))}
+            </FaixaMetricas>
+          }
         >
-          A energia passa de uma região para outra pelas linhas de transmissão de fronteira; o ONS publica, hora a hora, o <Termo slug="intercambio">intercâmbio</Termo> verificado em
-          quatro fronteiras entre <Termo slug="submercado">subsistemas</Termo> e, no arquivo de {anosComProgramado(g)}, também o programado. Quatro painéis: como a energia circula, de onde vem a diferença entre os balanços,
-          que evidência de restrição é publicada e quanto o fluxo se afastou do programa. Os limites operativos de cada fronteira não são públicos; por isso nenhum painel diz que a
-          rede estava no limite. Fluxo em <Unidade u="MWmed" />, energia em MWh.
+          A energia passa de uma região para outra pelas linhas de transmissão de fronteira. O ONS publica, hora a hora, o <Termo slug="intercambio">intercâmbio</Termo>{" "}
+          verificado em quatro fronteiras entre <Termo slug="submercado">subsistemas</Termo> e, desde {dataBR(g.programado.inicio)}, também o programado. Os limites operativos
+          de cada fronteira não são públicos; por isso nenhum painel diz que a rede estava no limite. Fluxo em <Unidade u="MWmed" />, energia em MWh; num valor horário, os dois
+          números são iguais.
         </CabecalhoModulo>
-        <RedeNavegacao atual="p028" />
         <ModoProfundidade>
           <Bloco id="circulacao">
             <PainelEvidencia
               id="p028"
-              pergunta={perguntaPainel("p028")}
+              pergunta="O saldo de cada fronteira, por dia e por hora"
               subtitulo="Energia em cada sentido, saldo por fronteira e subsistema, por dia e por hora · MWh e MWmed"
               natureza="CALCULADO"
               porQueImporta={
@@ -116,21 +165,10 @@ export default function RedePage() {
                   pode esconder muita energia indo e voltando, e é isso que separa uma fronteira de fluxo estável de uma que muda de sentido.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
-              comoInterpretar={
-                <>
-                  Cada fronteira tem um sentido positivo no nome (Norte → Nordeste, Norte → Sudeste/Centro-Oeste, Nordeste → Sudeste/Centro-Oeste e Sul → Sudeste/Centro-Oeste);
-                  saldo negativo é energia no sentido contrário. Energia escondida pelo saldo é o menor dos dois sentidos. Cada valor horário em MWmed vale a mesma quantidade em
-                  MWh. Na escala horária, o PLD de cada região é o da mesma hora do fluxo.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Que alguma fronteira estava no limite ou congestionada: os limites operativos e as suas vigências não são públicos, e nem a espessura da seta nem a diferença de
-                  preço demonstram saturação. O fluxo de cada linha de transmissão também não é publicado: sentidos opostos em linhas diferentes da mesma fronteira, na mesma hora,
-                  não aparecem.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={provenienciaLegivel(g.proveniencia.fluxo)}
               complementares={[
                 { rotulo: "Exportação e importação por subsistema", p: provenienciaLegivel(g.proveniencia.subsistemas) },
@@ -143,7 +181,9 @@ export default function RedePage() {
                   circulacao={{ diario: c.diario, resumo_30d: c.resumo_30d, mensal: c.mensal, subsistemas_diario: c.subsistemas_diario, janela_horaria: c.janela_horaria }}
                   fonte={FONTE}
                   versao={versao}
-                  destaques={
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposPrincipal={<RedeCapitulos />}
+                  escondida={
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {FRONTEIRAS.map((par) => (
                         <Numero
@@ -157,7 +197,13 @@ export default function RedePage() {
                           motivoAusencia="Sem fluxo publicado na janela de 30 dias."
                           nota={(() => {
                             const x = resumo.find((y) => y.par === par);
-                            return x ? `${num(x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo.` : undefined;
+                            if (!x) return undefined;
+                            // o título usa o sentido do nome da fronteira; a nota diz o sentido que o saldo teve, para o zero não parecer ausência de fluxo
+                            const sentido = textoSentidoSaldo(par, x.liquido_mwh);
+                            const contra = x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico;
+                            return contra === 0
+                              ? `Fluxo sempre ${sentido ?? "no mesmo sentido"} nas ${num(x.horas, 0)} horas: nada passou no sentido contrário.`
+                              : `${num(contra, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo${sentido ? ` (saldo ${sentido})` : ""}.`;
                           })()}
                           endereco={`${rotaPainel("p028")}#p028`}
                         />
@@ -166,13 +212,13 @@ export default function RedePage() {
                   }
                 />
 
-                <RedeAuditoria id="p028-regras" titulo="Regras de leitura publicadas com os dados">
+                <SecaoDoPainel id="p028-regras" nivel="auditar" titulo="Regras de leitura publicadas com os dados">
                   <RedeRegras
                     regras={(["orientacao", "energia", "bruto_liquido", "nulo", "pld", "limites"] as const).map((k) => ({ rotulo: ROTULO_REGRA[k], texto: g.regras[k] }))}
                   />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="p028-fonte" titulo="Como cada arquivo anual do ONS publica as fronteiras">
+                <SecaoDoPainel id="p028-fonte" nivel="auditar" titulo="Como cada arquivo anual do ONS publica as fronteiras">
                   <p className="text-sm text-carvao-muted">
                     {textoOrientacaoArquivos(g.esquema_fonte)} O módulo converte cada linha para a orientação do nome da fronteira, verificado e programado com o mesmo
                     sinal. O dicionário do conjunto não descreve a mudança.
@@ -188,9 +234,9 @@ export default function RedePage() {
                     nomeArquivo="rede-esquema-fonte"
                     chaveUrl="esq"
                   />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="p028-cobertura" titulo="Cobertura e conferência com o outro coletor">
+                <SecaoDoPainel id="p028-cobertura" nivel="auditar" titulo="Cobertura e conferência com o outro coletor">
                   <p className="text-sm text-carvao-muted">{textoCobertura("Fronteiras", g.cobertura.fronteiras, g.cobertura)}</p>
                   <TabelaInterativa
                     titulo="Dias sem as 24 horas nas fronteiras"
@@ -205,7 +251,7 @@ export default function RedePage() {
                     semLinhas="Todos os dias têm as 24 horas nas quatro fronteiras."
                   />
                   <p className="text-sm text-carvao-muted">{textoConferenciaSilver("Fronteiras", g.conferencia_silver_principal?.ons_rede_intercambio_nacional)}</p>
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
                 <RedeSeguir ancora="p028" proximo={{ href: `${rotaPainel("p029")}#p029`, pergunta: perguntaPainel("p029") }} downloads={downloads} />
               </div>

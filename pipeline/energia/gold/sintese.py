@@ -460,7 +460,7 @@ def _dias_exibido(e, ultimo_dia):
 
 def resumo_historico(serie, dur_min, dur_ret, sensibilidade=(1, 3, 7, 14)):
     """Frequência de disparo no histórico: o que a regra teria mostrado se rodasse todos
-    os dias com os dados de hoje (dados já revisados: não reproduz o que se via na época)."""
+    os dias com os dados da data de processamento (dados já revisados: não reproduz o que se via na época)."""
     avaliados = [x for x in serie if x[1] is not None]
     if not avaliados:
         return None

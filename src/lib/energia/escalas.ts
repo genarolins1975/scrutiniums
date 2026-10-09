@@ -77,6 +77,38 @@ export function rotuloTick(v: number, passo: number): string {
   return num(limpa(v), casasDoPasso(passo));
 }
 
+/**
+ * Marcas de eixo que cabem na largura: o menor passo inteiro (de 1 em 1, de 2 em 2, de 3 em 3...) que deixa `folga` px entre os
+ * rótulos vizinhos. Parte do zero (ou da primeira marca), de modo que o que fica continua sendo múltiplo regular do passo:
+ * "0, 50.000, 100.000" e não "0, 25.000, 75.000". `tamanho` é a extensão do rótulo no sentido do eixo, em px (largura do texto no
+ * eixo horizontal, altura da linha no vertical). Nunca devolve menos de uma marca.
+ */
+export function ticksQueCabem(ticks: readonly number[], pos: (v: number) => number, tamanho: (v: number) => number, folga = 8): number[] {
+  if (ticks.length <= 2) return [...ticks];
+  const base = Math.max(0, ticks.indexOf(0));
+  for (let s = 1; s < ticks.length; s++) {
+    const ficam = ticks.filter((_, i) => (((i - base) % s) + s) % s === 0);
+    let cabe = true;
+    for (let k = 1; k < ficam.length && cabe; k++) {
+      const distancia = Math.abs(pos(ficam[k]) - pos(ficam[k - 1]));
+      cabe = distancia >= (tamanho(ficam[k]) + tamanho(ficam[k - 1])) / 2 + folga;
+    }
+    if (cabe) return ficam;
+  }
+  return [ticks[base]];
+}
+
+/**
+ * Largura média de um caractere do rótulo de categoria a 12 px, em px, para decidir onde cortar o nome: 6,9 para texto comum e 8,2 quando
+ * o nome é quase todo em maiúsculas ("MATRINCHA TRANSMISSORA DE ENERGIA", "NEOENERGIA BRASÍLIA"), que é mais largo e passava da borda.
+ */
+export function pxCaractere12(texto: string): number {
+  const letras = texto.replace(/[^A-Za-zÀ-ÿ]/g, "");
+  if (!letras.length) return 6.9;
+  const maiusculas = letras.replace(/[^A-ZÀ-Þ]/g, "").length;
+  return maiusculas / letras.length > 0.6 ? 8.2 : 6.9;
+}
+
 export type Dominio = { min: number; max: number; passo: number; ticks: number[] };
 
 /**

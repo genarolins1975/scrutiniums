@@ -56,7 +56,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
       conferencia: "PENDENTE",
       fonte: "Documentação do ONS sobre balanço hídrico dos reservatórios (não acessada nesta fase)",
     },
-    modulo: { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima#ena" },
+    modulo: { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima/afluencia#p018" },
     conceito: "ena",
   },
   {
@@ -67,7 +67,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
     fonteOQueE: "ONS, EAR Diário por Subsistema",
     conferenciaOQueE: "CONFERIDO",
     mecanismo:
-      "Água usada hoje deixa de estar disponível amanhã. Por isso a água armazenada tem valor de oportunidade, e a otimização da operação pesa gerar com água agora contra guardá-la para o futuro. É o que torna o sistema brasileiro hidrotérmico e intertemporal.",
+      "Água usada agora deixa de estar disponível depois. Por isso a água armazenada tem valor de oportunidade, e a otimização da operação pesa gerar com água agora contra guardá-la para o futuro. É o que torna o sistema brasileiro hidrotérmico e intertemporal.",
     conferenciaMecanismo: "PENDENTE",
     relacaoSaida: {
       para: "otimizacao",

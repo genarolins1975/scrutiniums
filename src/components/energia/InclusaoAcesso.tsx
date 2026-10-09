@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -16,6 +16,7 @@ import {
   ESQUEMA_ACESSO,
   INDICADOR_PNAD,
   NOME_TERRITORIO,
+  UFS,
   codigoUf,
   dadosHistoricoPnadCsv,
   dadosLptAnual,
@@ -35,7 +36,7 @@ import {
   type SituacaoPnad,
 } from "@/lib/energia/inclusao";
 import { LIMITE_COMPARACAO, alternarSelecao, type ColunaTabela } from "@/lib/energia/tabela";
-import type { Acesso, LuzParaTodos, SistemasIsolados } from "@/lib/energia/tipos-inclusao";
+import type { Acesso, LinhaPnad, LuzParaTodos, SistemasIsolados } from "@/lib/energia/tipos-inclusao";
 
 /**
  * P062, acesso e sistemas isolados. Três dimensões que não se somam e não se
@@ -45,8 +46,10 @@ import type { Acesso, LuzParaTodos, SistemasIsolados } from "@/lib/energia/tipos
  * de acesso.
  *
  * O mapa por UF, a tabela e o histórico compartilham as UF escolhidas na URL (até
- * quatro); o histórico das UF vem do CSV publicado (55 KB), baixado só quando
- * alguma UF é escolhida, porque a gold traz as UF só no primeiro e no último ano.
+ * quatro) e a página os põe em seções com pergunta própria; o histórico das UF vem do
+ * CSV publicado (55 KB), baixado só quando alguma UF é escolhida, porque a gold traz as
+ * UF só no primeiro e no último ano. A figura principal (a série por região) recebe a
+ * resposta, o recorte e as notas já prontos, para vir primeiro e ter a ressalva junto.
  */
 
 const OPCOES_IND: readonly (readonly [IndicadorPnad, string])[] = [
@@ -84,13 +87,26 @@ function carregarCsv(url: string): Promise<string> {
   return promessaCsv;
 }
 
-export function InclusaoRegioesPnad({ serie }: { serie: Acesso["pnad_serie"] }) {
+export function InclusaoRegioesPnad({
+  serie,
+  resposta,
+  recorte,
+  notas,
+}: {
+  serie: Acesso["pnad_serie"];
+  resposta?: ReactNode;
+  recorte?: ReactNode;
+  notas?: ReactNode;
+}) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
   const ind = INDICADOR_PNAD[v.ind];
   const dados = useMemo(() => dadosSeriePnad(serie, REGIOES, v.ind), [serie, v.ind]);
   return (
     <div className="space-y-4">
-      <InclusaoOpcoes rotulo="Indicador" nome="inclusao-ac-ind" opcoes={OPCOES_IND} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        {resposta}
+        <InclusaoOpcoes rotulo="Indicador" nome="inclusao-ac-ind" opcoes={OPCOES_IND} valor={v.ind} onMudar={(i) => definir({ ind: i })} />
+      </div>
       <GraficoLinhas
         titulo={`${ind.rotulo}: Brasil e grandes regiões, ${dados[0]?.ano ?? ""} a ${dados.at(-1)?.ano ?? ""} (PNAD Contínua)`}
         dados={dados}
@@ -102,35 +118,22 @@ export function InclusaoRegioesPnad({ serie }: { serie: Acesso["pnad_serie"] }) 
         legendaInterativa
         altura={300}
       />
+      {recorte}
+      {notas}
     </div>
   );
 }
 
-export function InclusaoMapaPnad({ acesso, csvUrl, fonte }: { acesso: AcessoPnad; csvUrl: string; fonte: string }) {
+/** Mapa e tabela por UF; as UF escolhidas (até quatro) vão para a URL e alimentam o histórico. */
+export function InclusaoMapaPnad({ acesso, fonte }: { acesso: AcessoPnad; fonte: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
   const [aviso, setAviso] = useState("");
-  const [csv, setCsv] = useState<string | null>(null);
-  const [erro, setErro] = useState<string | null>(null);
   const ind = INDICADOR_PNAD[v.ind];
   const valores = useMemo(() => valoresMapaPnad(acesso, v.sit, v.ind), [acesso, v.sit, v.ind]);
   const classes = useMemo(() => quebrasQuantis(Object.values(valores), CORES_MAPA.length, { casas: 1 }), [valores]);
   const linhas = useMemo(() => linhasUfsPnad(acesso, v.sit), [acesso, v.sit]);
   const escolhidas = v.ufs.filter((u) => linhas.some((l) => l.uf === u));
   const ultima = escolhidas.at(-1) ?? null;
-  const precisa = escolhidas.length > 0;
-
-  useEffect(() => {
-    if (!precisa || csv) return;
-    let vivo = true;
-    setErro(null);
-    carregarCsv(csvUrl).then(
-      (t) => vivo && setCsv(t),
-      (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
-    );
-    return () => {
-      vivo = false;
-    };
-  }, [precisa, csv, csvUrl]);
 
   const alternar = (uf: string | null) => {
     if (!uf) {
@@ -145,16 +148,6 @@ export function InclusaoMapaPnad({ acesso, csvUrl, fonte }: { acesso: AcessoPnad
     setAviso("");
     definir({ ufs: r.ids });
   };
-
-  const historico = useMemo(() => {
-    const br = dadosSeriePnad(acesso.pnad_serie, ["BR"], v.ind);
-    if (!csv || !escolhidas.length) return br;
-    const ufs = dadosHistoricoPnadCsv(csv, escolhidas, v.ind);
-    const porAno = new Map(ufs.map((l) => [l.ano, l]));
-    return br.map((l) => ({ ...l, ...(porAno.get(l.ano as string) ?? {}) }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
-  }, [acesso.pnad_serie, csv, escolhidas.join(","), v.ind]);
-  const entidades = useMemo(() => linhas.map((l) => ({ id: String(l.uf), rotulo: String(l.uf) })), [linhas]);
 
   return (
     <div className="space-y-6">
@@ -198,46 +191,84 @@ export function InclusaoMapaPnad({ acesso, csvUrl, fonte }: { acesso: AcessoPnad
         dicaBusca="Sigla da UF"
         nota="Domicílios sem energia: diferença entre duas estimativas do IBGE arredondadas em milhares. Quando as duas coincidem, a coluna fica sem número e a contagem diz menos de 1 mil (não é zero)."
       />
-      <div className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Como as UF escolhidas evoluíram desde {acesso.pnad_serie[0]?.ano ?? ""}?</h3>
-        <Comparador
-          rotulo="UF no histórico (até 4)"
-          entidades={entidades}
-          selecionadas={escolhidas}
-          onMudar={(ids) => definir({ ufs: ids })}
-          dicaBusca="Sigla da UF"
-          vazio="Nenhuma UF escolhida: o histórico mostra só o Brasil. Escolha aqui, no mapa ou na tabela."
-        >
-          {() => null}
-        </Comparador>
-        {precisa && !csv && !erro && (
-          <p role="status" className="text-sm text-carvao-muted">
-            Carregando a série das UF (CSV publicado da PNAD)…
-          </p>
-        )}
-        {erro && (
-          <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
-            Não foi possível carregar a série das UF ({erro}). O arquivo está em{" "}
-            <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
-              inclusao_acesso_pnad.csv
-            </a>
-            .
-          </p>
-        )}
-        <GraficoLinhas
-          titulo={`${ind.rotulo}: Brasil${escolhidas.length ? ` e ${escolhidas.join(", ")}` : ""}, todos os domicílios`}
-          dados={historico}
-          chaveX="ano"
-          formatoX="texto"
-          series={[
-            { id: "BR", rotulo: "Brasil", sigla: "BR", cor: "var(--cor-carvao)", espessura: 3 },
-            ...(csv ? escolhidas.map((uf, i) => ({ id: uf, rotulo: uf, sigla: uf, cor: CORES_COMP[i % CORES_COMP.length] })) : []),
-          ]}
-          unidade={ind.unidade}
-          casas={1}
-          altura={280}
-        />
-      </div>
+    </div>
+  );
+}
+
+/**
+ * Histórico das UF escolhidas (até quatro) ao lado do Brasil; o CSV da PNAD só é baixado quando alguma UF é escolhida, aqui, no mapa ou
+ * na tabela. Recebe só as linhas do Brasil: as UF vêm do CSV, e o conjunto de UF é o das 27 da federação.
+ */
+export function InclusaoHistoricoPnad({ serieBr, csvUrl }: { serieBr: LinhaPnad[]; csvUrl: string }) {
+  const [v, definir] = useEstadoUrl(ESQUEMA_ACESSO);
+  const [csv, setCsv] = useState<string | null>(null);
+  const [erro, setErro] = useState<string | null>(null);
+  const ind = INDICADOR_PNAD[v.ind];
+  const escolhidas = v.ufs.filter((u) => UFS.includes(u));
+  const precisa = escolhidas.length > 0;
+
+  useEffect(() => {
+    if (!precisa || csv) return;
+    let vivo = true;
+    setErro(null);
+    carregarCsv(csvUrl).then(
+      (t) => vivo && setCsv(t),
+      (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
+    );
+    return () => {
+      vivo = false;
+    };
+  }, [precisa, csv, csvUrl]);
+
+  const historico = useMemo(() => {
+    const br = dadosSeriePnad(serieBr, ["BR"], v.ind);
+    if (!csv || !escolhidas.length) return br;
+    const ufs = dadosHistoricoPnadCsv(csv, escolhidas, v.ind);
+    const porAno = new Map(ufs.map((l) => [l.ano, l]));
+    return br.map((l) => ({ ...l, ...(porAno.get(l.ano as string) ?? {}) }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- a lista escolhida resume a dependência
+  }, [serieBr, csv, escolhidas.join(","), v.ind]);
+  const entidades = useMemo(() => UFS.map((u) => ({ id: u, rotulo: u })), []);
+
+  return (
+    <div className="space-y-4">
+      <Comparador
+        rotulo="UF no histórico (até 4)"
+        entidades={entidades}
+        selecionadas={escolhidas}
+        onMudar={(ids) => definir({ ufs: ids })}
+        dicaBusca="Sigla da UF"
+        vazio="Nenhuma UF escolhida: o histórico mostra só o Brasil. Escolha aqui, no mapa ou na tabela."
+      >
+        {() => null}
+      </Comparador>
+      {precisa && !csv && !erro && (
+        <p role="status" className="text-sm text-carvao-muted">
+          Carregando a série das UF (CSV publicado da PNAD)…
+        </p>
+      )}
+      {erro && (
+        <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
+          Não foi possível carregar a série das UF ({erro}). O arquivo está em{" "}
+          <a href={csvUrl} download className="text-energia-dark underline underline-offset-4">
+            acesso à energia por UF, PNAD (CSV)
+          </a>
+          .
+        </p>
+      )}
+      <GraficoLinhas
+        titulo={`${ind.rotulo}: Brasil${escolhidas.length ? ` e ${escolhidas.join(", ")}` : ""}, todos os domicílios`}
+        dados={historico}
+        chaveX="ano"
+        formatoX="texto"
+        series={[
+          { id: "BR", rotulo: "Brasil", sigla: "BR", cor: "var(--cor-carvao)", espessura: 3 },
+          ...(csv ? escolhidas.map((uf, i) => ({ id: uf, rotulo: uf, sigla: uf, cor: CORES_COMP[i % CORES_COMP.length] })) : []),
+        ]}
+        unidade={ind.unidade}
+        casas={1}
+        altura={280}
+      />
     </div>
   );
 }
@@ -391,7 +422,7 @@ export function InclusaoIsolados({
           <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
             Não foi possível carregar a lista completa ({erro}). Ela também está em{" "}
             <a href="/energia/series/inclusao_sistemas_isolados.csv" download className="text-energia-dark underline underline-offset-4">
-              inclusao_sistemas_isolados.csv
+              localidades de sistemas isolados (CSV)
             </a>
             .
           </p>

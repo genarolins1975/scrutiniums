@@ -1,5 +1,5 @@
 {
- "atualizado_em": "2026-09-30",
+ "atualizado_em": "2026-10-06",
  "paineis": {
   "P001": {
    "inicial": "parcial",
@@ -15,19 +15,23 @@
   },
   "P004": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente."
   },
   "P005": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente."
   },
   "P006": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: Tarifa Social com referência mai/2025 e conjunto SCS atrasado no painel de saúde dos dados."
   },
   "P007": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: registro das publicações iniciado em 01/10/2026 e revisões avaliáveis desde 27/09/2026."
   },
   "P008": {
    "inicial": "parcial",
@@ -91,11 +95,13 @@
   },
   "P023": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/geracao/restricoes ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 502 KB de HTML. Limitação declarada: energia não gerada estimada sobre a referência do ONS (natureza ESTIMADO); universo Tipo I, II-B e II-C; série fotovoltaica desde 04/2024; detalhamento por usina só nos 3 meses mais recentes; 2 de 100 marcas com a subestação coletora em UF vizinha à informada."
   },
   "P024": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/geracao/capacidade ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 409 KB de HTML. Limitação declarada: o conjunto de capacidade do ONS não tem histórico (potência do ato atual; usinas que saíram do despacho não aparecem); série da ANEEL trimestral e sem combustível; SIGA por usina só como retrato do dia; 228 usina-meses acima de 100%."
   },
   "P025": {
    "inicial": "parcial",
@@ -127,19 +133,23 @@
   },
   "P032": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 456 KB de HTML. Limitação declarada: três universos com perímetros diferentes (EPE, CCEE e SAMP), nenhum igualado à carga do ONS; conjuntos da CCEE desde 2023; divergência anual EPE × consolidação do MME publicada como ressalva."
   },
   "P033": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado/agentes ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 400 KB de HTML. Limitação declarada: cadastro de perfis sem data de posição; lista de associados mês a mês desde out/2025; ano corrente dos desligamentos parcial."
   },
   "P034": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "parcial",
+   "evidencia": "Página /setor-eletrico/mercado/mre-e-gsf ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 308 KB de HTML. Parcial: GSF mensal reconciliado com o InfoMercado; o 'ajuste médio do MRE nos últimos doze meses' do InfoMercado (92,55% no Nº 229) não é reproduzido por nenhuma definição testada, divergência publicada na página."
   },
   "P035": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado/encargos ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 427 KB de HTML. Limitação declarada: pagamento de ESS de fev/2025 a ago/2026 publicado como zero e não confirmado (nulo rotulado); liquidação de abr/2025 ausente da fonte; resposta da demanda fora do conjunto aberto de encargos."
   },
   "P036": {
    "inicial": "placeholder",
@@ -259,31 +269,38 @@
   },
   "P065": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Páginas /setor-eletrico/aprenda e /setor-eletrico/aprenda/<verbete> publicadas em 06/10/2026 e completadas em 07/10/2026 (branch claude/kind-mayer-v9tpwi): 48 verbetes, todos conferidos com definição, unidade quando é grandeza, exemplo real ligado ao painel (26 com a ficha de prova do painel, 21 lidos da gold, 1 sintético rotulado), não confundir com (41 pares), fonte primária com trecho literal e data de conferência e de revisão. Das oito pendências do inventário, todas foram conferidas: MRE (InfoMercado Nº 229) e ACR, ACL, garantia física e ESS (Decreto nº 5.163/2004) em 06/10/2026; GSF (boletim e relatório do GT do MRE, do MME), REE (EPE, MME e ONS) e constrained-off (nota técnica da EPE que cita a REN ANEEL nº 1.030/2022) em 07/10/2026, tudo com captura versionada e sha256. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface feita em 07/10/2026 por três revisores independentes (84 achados, nenhum bloqueante; 49 corrigidos, 5 parciais, 30 abertos; registro em avaliacao/revisao_aprenda.json). Limitação declarada: a definição regulatória do GSF (Regras de Comercialização da CCEE), a definição formal de REE e os Procedimentos de Rede do ONS não foram lidos (GSF e REE trazem selo com ressalva); a REN ANEEL nº 1.030/2022 foi lida em cópia do Internet Archive de 08/01/2025; cada verbete diz o que foi e o que não foi lido."
   },
   "P066": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Páginas /setor-eletrico/aprenda/trilhas, /trilhas/agua-operacao-preco e /trilhas/custo-tarifa-orcamento publicadas em 06/10/2026: passos com verbetes conferidos, número real com a ficha de prova e link ao painel, ligações tipificadas com o traço do mapa do setor, exemplo sintético interativo com rótulo permanente que não lê nem alimenta indicadores, e botão de volta do painel ao passo ou ao verbete (conferido em navegador em 390 e 1440 px). axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface feita em 07/10/2026 (ver P065; os dois simuladores foram exercitados só com teclado e o rótulo sintético aparece em todos os resultados). Limitação declarada: a liquidação sintética simplifica as Regras de Comercialização da CCEE, não conferidas; o peso no orçamento vem da POF 2017-2018."
   },
   "P067": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados ligada às golds catalogo.json e publicacao.json (gold de 01/10/2026) em 07/10/2026 (branch claude/kind-mayer-v9tpwi): escada catalogado, recurso verificado, integrado, validado e publicado com a contagem e o critério de cada etapa; tabela de 415 conjuntos com as cinco etapas em colunas, uso declarado à parte e filtros na URL; ficha do conjunto com a evidência de cada etapa e de cada integração; os 6 conjuntos em uso abaixo de publicado listados com a ressalva do catálogo; 12 descontinuados com critério e evidência; recurso a recurso da CCEE (733 arquivos) lido do CSV publicado. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: estados e contagens valem para a execução de 01/10/2026 (Mercado de 06/10, Geração P023 e P024 e Aprenda ainda fora do catálogo); recurso verificado lê só 64 KB de um arquivo por conjunto."
   },
   "P068": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados/saude ligada à gold publicacao.json (referência 01/10/2026) em 07/10/2026: situação dos 151 conjuntos integrados por cadência declarada e SLA, calendário de 120 dias com cinco medidas na URL, tabela com atraso, último período, completude, coleta e revisões, revisões com as duas capturas, falhas com último período e última captura lado a lado, regras A a E. O teste confere que o prazo parte do fim do último período (ou da publicação da fonte nos casos D e E), nunca da captura. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: a primeira captura registrada é de 27/09/2026 (antes, medidas de captura aparecem como sem dado); a situação vale para 01/10/2026."
   },
   "P069": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados/reproducao ligada ao manifesto.json em 07/10/2026: 269 arquivos com sha256, tamanho, linhas, colunas, dicionário e Parquet equivalente; ficha do arquivo com download, versão permanente no GitHub, dicionário e colunas; conferência de um arquivo baixado por sha256 no navegador (igual, outra versão ou desconhecido), conferida em navegador; conferência do manifesto contra os arquivos entregues na construção (269 de 269); 25 Parquet com equivalência conferida; passos de reprodução. Defeito corrigido: o manifesto de 01/10/2026 estava incompleto e 9 arquivos tinham outro sha256; run.py e executar_modulo.py passam a gravar o manifesto final e ele foi regravado. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: o pacote por consulta (CSV e XLSX) é o da tabela de cada painel; o silver com as vintages não é publicado no repositório; Parquet só nos CSV acima de 2 MB."
   },
   "P070": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/metodologia ligada às golds metricas.json e publicacao.json em 07/10/2026: regras dos 276 indicadores em 18 módulos (definição, fórmula, unidade, recortes, agregação, cobertura, ausência, validações, limitações e código), lidas sob demanda e todas completas segundo o teste; 8 afirmações sobre fontes integradas conferidas com o catálogo (a de limites de intercâmbio com a afirmação anterior e a correção); matriz natureza e validação; regras do pipeline; limitações gerais atualizadas (saíram três afirmações que deixaram de ser verdade). Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: 142 de 154 fichas de evidência sem natureza vinculada e natureza estimada sem separar fonte de observatório (pedidos 4 e 8 do documento do módulo)."
   },
   "P071": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Avaliação dos painéis publicada em 07/10/2026: rubrica de dez dimensões com peso (seção 15.1), instrumento de inspeção em Chromium (360, 390, 768 e 1440 px; Entender e Auditar; axe, rolagem, teclado, alvos de toque, controles, ficha de prova, links, peso e anatomia), dez jornadas da seção 15.2 por roteiro, revisão de didatismo e qualidade visual por nove revisores em contexto limpo, cinco rodadas medidas sobre 94 de 368 rotas (r1 de base com 89 páginas e r2 recalculadas, r3, r4 e r5 depois de rodadas de correção do código). Resultado da r5 (inspeção de 07/10/2026, dados de referência de 01/10/2026): nota ponderada média 8,3, nenhuma página na meta de produto, nenhum defeito crítico (4 altos, 35 médios, 12 baixos; eram 94 defeitos na r2, 50 na r3 e 49 na r4), dez jornadas cumpridas, didatismo 7,0 e qualidade visual 7,4 contra metas de 9,5, rolagem horizontal e alvos de toque abaixo de 24 px em nenhuma página, axe sem violações. gold avaliacao.json integrada ao publicacao.json e ao manifesto; página /setor-eletrico/metodologia/avaliacao (axe sem violações e sem rolagem horizontal em 12 combinações); AVALIACAO_PAGINAS.md e EVIDENCIAS_ACEITE.md gerados; testes em pipeline/tests/test_energia_avaliacao.py e src/tests/energia-avaliacao.test.ts. Erro da r2 corrigido (título em pergunta não medido contado como ausente; r1 e r2 recalculadas e marcadas). Limitação declarada: revisão e jornadas não são teste com pessoas e os revisores da r3 são outras instâncias de agente, sem calibração entre rodadas; sem leitor de tela real nem dado de campo (teto de 9,0 em acessibilidade e desempenho); famílias dinâmicas amostradas; a própria página de avaliação não está entre as medidas; largura mínima da primeira coluna das tabelas e alinhamento da aba atual foram corrigidos depois da medição e entram na r4."
   }
  }
 }

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { CargaClima } from "@/components/energia/CargaClima";
-import { CargaAnalise, CargaAuditoria, CargaAviso, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
-import { Numero } from "@/components/energia/Numero";
+import { CargaClima, CargaClimaMetricas } from "@/components/energia/CargaClima";
+import { CargaAviso, CargaDatas, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { NOME_REGIAO, REGIOES, ROTULO_GRUPO, perguntaPainel, rotaPainel } from "@/lib/energia/carga";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, normaLegivel } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
@@ -61,19 +61,61 @@ export default function ClimaCalendarioPage() {
   for (const [m, f] of fontesMes) porProduto.set(f, [...(porProduto.get(f) ?? []), m]);
   const downloads = g.downloads.filter((d) => /decomposicao|temperatura|calendario/.test(d.url));
   const categorias = g.calendario.categorias;
+  const oQueMudou = p ? (
+    <>
+      Último ajuste com origem em {dataBR(p.ultimo_ajuste_sin.origem)} ({num(p.ultimo_ajuste_sin.dias_treino, 0)} dias de treino até{" "}
+      {dataBR(p.ultimo_ajuste_sin.ultimo_dia_treino)}). {p.leitura}
+    </>
+  ) : (
+    <>A decomposição não foi publicada nesta versão.</>
+  );
+  const comoInterpretar = (
+    <>
+      O modelo é estimado só com dias anteriores a cada origem mensal e prevê o mês com a temperatura e o calendário que de fato ocorreram (avaliação ex post, não
+      previsão de carga). Contribuição é a mudança da previsão associada a um grupo de variáveis, com o resto fixo, em log × 100 (perto de pontos percentuais). O
+      intervalo vem dos erros fora da amostra de origens anteriores. A referência ingênua repete a carga do mesmo dia da semana 364 dias antes.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A contribuição da temperatura não é efeito causal nem &ldquo;parcela explicada&rdquo;. O resíduo não é atividade econômica: é o que o modelo não reproduz,
+      incluindo erro de medida da temperatura, MMGD e revisões da carga. A temperatura é de reanálise e análise de modelo (NASA POWER), não de estação.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          rotulo="Carga"
-          titulo="Clima e calendário"
+          rotulo="Carga · Clima e calendário"
+          siglas={["MWmed", "SIN", "MMGD", "ONS", "IBGE"]}
+          titulo={perguntaPainel("p027")}
+          lead="Quanto da diferença de carga entre duas janelas acompanha calendário, temperatura e estação do ano, segundo um modelo testado em dias que não viu. É associação, não causa."
+          recorte={p ? `${dataBR(p.periodo_avaliacao.inicio)} a ${dataBR(p.periodo_avaliacao.fim)} · SIN e subsistemas · MWmed e %` : undefined}
+          fonte="decomposição estatística do observatório sobre ONS, NASA POWER e IBGE"
           referencia={
             <>
               ONS (carga diária) até {dataBR(g.dia_referencia)}, NASA POWER (temperatura) e IBGE (população); processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <CargaDatas
+              itens={[
+                { rotulo: "Carga diária", dia: g.dia_referencia, natureza: "OBSERVADO" },
+                { rotulo: "Decomposição estatística", dia: p?.periodo_avaliacao.fim ?? null, natureza: "ESTIMADO" },
+              ]}
+            />
+          }
+          metricas={
+            p ? (
+              <CargaClimaMetricas
+                p027={{ metricas: p.metricas, periodo_avaliacao: p.periodo_avaliacao }}
+                a07={{ decomposicao: g.a07.decomposicao }}
+                evidencia={ev.p027_mape_sin ?? null}
+              />
+            ) : undefined
           }
         >
           Quanto da carga de cada dia acompanha o calendário (dia da semana, feriados, fim de ano), a temperatura e a estação do ano, segundo um modelo estatístico estimado só
@@ -84,7 +126,7 @@ export default function ClimaCalendarioPage() {
           <Bloco id="clima">
             <PainelEvidencia
               id="p027"
-              pergunta={perguntaPainel("p027")}
+              pergunta={p ? `A janela de ${dataBR(g.a07.referencia.inicio)} a ${dataBR(g.a07.referencia.fim)} contra um ano antes, decomposta` : perguntaPainel("p027")}
               subtitulo="Decomposição estatística da carga diária, fora da amostra · MWmed, % e log × 100"
               natureza="ESTIMADO"
               porQueImporta={
@@ -93,29 +135,10 @@ export default function ClimaCalendarioPage() {
                   essas oscilações como tendência, sem atribuir causa.
                 </>
               }
-              oQueMudou={
-                p ? (
-                  <>
-                    Último ajuste com origem em {dataBR(p.ultimo_ajuste_sin.origem)} ({num(p.ultimo_ajuste_sin.dias_treino, 0)} dias de treino até{" "}
-                    {dataBR(p.ultimo_ajuste_sin.ultimo_dia_treino)}). {p.leitura}
-                  </>
-                ) : (
-                  <>A decomposição não foi publicada nesta versão.</>
-                )
-              }
-              comoInterpretar={
-                <>
-                  O modelo é estimado só com dias anteriores a cada origem mensal e prevê o mês com a temperatura e o calendário que de fato ocorreram (avaliação ex post, não
-                  previsão de carga). Contribuição é a mudança da previsão associada a um grupo de variáveis, com o resto fixo, em log × 100 (perto de pontos percentuais). O
-                  intervalo vem dos erros fora da amostra de origens anteriores. A referência ingênua repete a carga do mesmo dia da semana 364 dias antes.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A contribuição da temperatura não é efeito causal nem &ldquo;parcela explicada&rdquo;. O resíduo não é atividade econômica: é o que o modelo não reproduz,
-                  incluindo erro de medida da temperatura, MMGD e revisões da carga. A temperatura é de reanálise e análise de modelo (NASA POWER), não de estação.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.modelo}
               complementares={[
                 { rotulo: "Temperatura ponderada", p: g.proveniencia.temperatura },
@@ -133,39 +156,21 @@ export default function ClimaCalendarioPage() {
                       recente_sin: p.recente_sin,
                       resposta_temperatura: p.resposta_temperatura,
                     }}
-                    a07={{ decomposicao: g.a07.decomposicao }}
-                    achado={{ inicio: g.a07.referencia.inicio, fim: g.a07.referencia.fim, motivo: g.a07.janela_modelo.motivo }}
+                    a07={{ decomposicao: g.a07.decomposicao, comparacoes: g.a07.comparacoes }}
+                    achado={{ inicio: g.a07.referencia.inicio, fim: g.a07.referencia.fim, dias_janela: g.a07.janela_modelo.dias_janela, motivo: g.a07.janela_modelo.motivo }}
                     diaReferencia={g.dia_referencia}
                     fonte={FONTE}
                     versao={p.periodo_avaliacao.fim}
-                    destaques={
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <Numero
-                          rotulo="SIN: erro absoluto médio fora da amostra (modelo principal)"
-                          natureza="ESTIMADO"
-                          evidencia={ev.p027_mape_sin}
-                          formato="pct"
-                          casas={2}
-                          tamanho="medio"
-                          cor="var(--cor-energia)"
-                          nota={
-                            p.metricas.SIN?.mape_referencia_364d_pct != null
-                              ? `Referência ingênua de 364 dias: ${num(p.metricas.SIN.mape_referencia_364d_pct, 2)}% nos mesmos dias.`
-                              : "Sem erro da referência ingênua de 364 dias nesta publicação."
-                          }
-                          endereco={`${rotaPainel("p027")}#p027`}
-                        />
-                      </div>
-                    }
+                    notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                   />
                 ) : (
                   <CargaAviso tipo="alerta">
                     A decomposição estatística não foi publicada nesta versão da gold: {g.proveniencia.modelo.limitacoes.join(" ")} A série de carga e as comparações de
-                    calendário continuam no painel de nível e crescimento.
+                    calendário continuam na página Nível e crescimento.
                   </CargaAviso>
                 )}
 
-                <CargaAnalise id="calendario" titulo="Calendário usado: feriados por lei e pontos facultativos">
+                <SecaoDoPainel id="calendario" nivel="analisar" titulo="Calendário usado: feriados por lei e pontos facultativos">
                   <p className="text-sm text-carvao-muted">
                     Categorias do calendário: {Object.values(categorias).join("; ")}. Pontos facultativos (Carnaval, Cinzas, Corpus Christi) entram no modelo como variáveis
                     próprias e numa variante sem eles.
@@ -181,10 +186,10 @@ export default function ClimaCalendarioPage() {
                     nomeArquivo="carga-calendario-12-meses"
                     chaveUrl="cal"
                   />
-                </CargaAnalise>
+                </SecaoDoPainel>
 
                 {p && (
-                  <CargaAuditoria id="modelo" titulo="Especificação, coeficientes e erros do modelo">
+                  <SecaoDoPainel id="modelo" nivel="auditar" titulo="Especificação, coeficientes e erros do modelo">
                     <dl className="grid gap-2 text-sm text-carvao-muted md:grid-cols-2">
                       {(
                         [
@@ -227,10 +232,10 @@ export default function ClimaCalendarioPage() {
                       nomeArquivo="carga-decomposicao-coeficientes-sin"
                       chaveUrl="coef"
                     />
-                  </CargaAuditoria>
+                  </SecaoDoPainel>
                 )}
 
-                <CargaAuditoria id="temperatura" titulo="Temperatura: produto, pontos e pesos">
+                <SecaoDoPainel id="temperatura" nivel="auditar" titulo="Temperatura: produto, pontos e pesos">
                   <p className="text-sm text-carvao-muted">
                     Produto da NASA POWER por mês:{" "}
                     {Array.from(porProduto.entries())
@@ -256,7 +261,7 @@ export default function ClimaCalendarioPage() {
                     colunas={COLUNAS_LEIS}
                     linhas={g.calendario.leis.map((l) => ({
                       id: l.id,
-                      norma: l.norma,
+                      norma: normaLegivel(l.norma),
                       estabelece: l.estabelece,
                       ementa: l.conferida_ementa ? "sim" : "não",
                       texto: l.conferida_texto ? "sim" : "não",
@@ -270,7 +275,7 @@ export default function ClimaCalendarioPage() {
                     chaveUrl="leis"
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => ["temperatura", "populacao", "centroides", "leis"].includes(f.id))} />
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
                 <CargaSeguir ancora="p027" proximo={{ href: `${rotaPainel("p025")}#p025`, pergunta: perguntaPainel("p025") }} downloads={downloads} />
               </div>

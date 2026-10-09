@@ -324,7 +324,11 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
               <tr key={l.id} className="border-b border-linha last:border-b-0">
                 <th scope="row" className="px-2 py-1.5 text-left font-normal text-carvao">
                   {l.rotulo}
-                  {l.rotulo !== l.id && <span className="ml-1 text-carvao-muted">({l.id})</span>}
+                  {l.rotulo !== l.id && (
+                    <span data-nivel="analisar" className="ml-1 text-carvao-muted">
+                      ({l.id})
+                    </span>
+                  )}
                 </th>
                 <td className="px-2 py-1.5 text-right text-carvao">{inteiro(l.unidades)}</td>
                 <td className="px-2 py-1.5 text-right text-carvao">{participacaoTexto(l.participacao_unidades_pct)}</td>
@@ -340,8 +344,8 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
         </table>
       </div>
       <p className="max-w-prose2 text-sm text-carvao-muted">
-        Categorias como a ANEEL publica (o código original fica entre parênteses quando o rótulo foi acentuado). Participação abaixo de 0,01% com dois algarismos significativos, para que
-        uma categoria pequena não apareça como zero.
+        Categorias como a ANEEL publica (o código original fica entre parênteses no modo Analisar, quando o rótulo foi acentuado). Participação abaixo de 0,01% com dois algarismos
+        significativos, para que uma categoria pequena não apareça como zero.
       </p>
     </div>
   );

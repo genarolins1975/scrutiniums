@@ -67,6 +67,23 @@ class VintagesTest(unittest.TestCase):
         self.assertEqual(a[0], b[0])
         self.assertFalse(b[1])
 
+    def test_bronze_ausente_e_lido_da_copia_com_o_mesmo_conteudo(self):
+        # silver restaurado sem o bronze: a vintage aponta para a captura original e o recurso
+        # foi recapturado igual noutro instante (mesmo sha256, outro carimbo no nome)
+        import gzip
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            sha = "eed795ff8b13" + "0" * 52
+            with gzip.open(os.path.join(d, f"20261006T195845Z.{sha[:12]}.html.gz"), "wb") as f:
+                f.write(b"<html>pasta</html>")
+            with base.abre_bronze(os.path.join(d, f"20261002T042751Z.{sha[:12]}.html.gz")) as f:
+                self.assertEqual(f.read(), b"<html>pasta</html>")
+            # conteúdo diferente (outro sha) não substitui o arquivo ausente
+            with self.assertRaises(FileNotFoundError):
+                base.abre_bronze(os.path.join(d, "20261002T042751Z.aaaaaaaaaaaa.html.gz"))
+            with self.assertRaises(FileNotFoundError):
+                base.abre_bronze(os.path.join(d, f"20261002T042751Z.{sha[:12]}.csv.gz"))
+
 
 class SeedCceeTest(unittest.TestCase):
     def test_seed_confere_sha256_e_cobre_2021_a_setembro_de_2026(self):

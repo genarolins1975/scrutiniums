@@ -18,5 +18,6 @@ import { CONCEITOS as EMPRESAS } from "./conceitos-empresas";
 import { CONCEITOS as EXPANSAO } from "./conceitos-expansao";
 import { CONCEITOS as TRANSICAO } from "./conceitos-transicao";
 import { CONCEITOS as REGULACAO } from "./conceitos-regulacao";
+import { CONCEITOS as INSTITUICOES } from "./conceitos-instituicoes";
 
-export const CONCEITOS_MODULOS: Conceito[] = [...PLD, ...PREVISOES, ...AGUA, ...GERACAO, ...CARGA, ...REDE, ...MERCADO, ...CONTA, ...PERDAS, ...QUALIDADE, ...INCLUSAO, ...EMPRESAS, ...EXPANSAO, ...TRANSICAO, ...REGULACAO];
+export const CONCEITOS_MODULOS: Conceito[] = [...INSTITUICOES, ...PLD, ...PREVISOES, ...AGUA, ...GERACAO, ...CARGA, ...REDE, ...MERCADO, ...CONTA, ...PERDAS, ...QUALIDADE, ...INCLUSAO, ...EMPRESAS, ...EXPANSAO, ...TRANSICAO, ...REGULACAO];

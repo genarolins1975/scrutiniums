@@ -1,19 +1,34 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { CargaAnalise, CargaAuditoria, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
+import { CargaDatas, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
 import { CargaPerfil } from "@/components/energia/CargaPerfil";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { NOME_REGIAO, perguntaPainel, rotaPainel, rotuloHora, situacaoAtualidade, textoDiferencaHoraria } from "@/lib/energia/carga";
+import {
+  NOME_REGIAO,
+  entreHoras,
+  perguntaPainel,
+  picoModalDoAno,
+  rotaPainel,
+  rotuloHora,
+  semTiposDeGeracao,
+  separaCampoDaSerie,
+  situacaoAtualidade,
+  textoAtualidadeHoraria,
+  textoDiferencaHoraria,
+  textoGlobalContraDiaria,
+} from "@/lib/energia/carga";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
-import { integra, lerGold } from "@/lib/energia/gold";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
@@ -73,23 +88,108 @@ export default function PerfilHorarioPage() {
   const { compatibilidade: _c, conceitos: _k, ...p026Cliente } = p;
   // hora do pico do dia provado na ficha, lida da mesma série de picos (nunca do texto da ficha)
   const picoEv = p.picos_90d.find((x) => x.d === ev.p026_pico_sin?.periodo?.fim && x.hora !== null) ?? null;
+  // hora em que o pico do dia caiu mais vezes no último ano, lida das mesmas contagens do mapa de calor
+  const modal = picoModalDoAno(p, "SIN");
+  // a ficha prova o pico do dia que ela escolheu; se a série vai além dele, o último dia publicado e o pico dele ficam ditos junto do cartão
+  const ultimoPico = p.picos_90d.length ? p.picos_90d[p.picos_90d.length - 1] : null;
+  const alemDaFicha = picoEv && ultimoPico && ultimoPico.d > picoEv.d && ultimoPico.hora !== null ? ultimoPico : null;
   // onde a carga global da API se afasta da curva, lido da tabela por hora (nunca escrito à mão)
   const porHora = p.compatibilidade.por_hora_sin_365d;
   const diferencaCurva = textoDiferencaHoraria(porHora);
-  const diasPorHora = Math.max(0, ...porHora.map((x) => x.horas));
+  // média mensal da carga global (carga verificada) ao lado da Carga de Energia Diária da página Carga, o outro produto do ONS
+  const diaria = gold.carga();
+  const globalContraDiaria = integra(diaria) ? textoGlobalContraDiaria(p, diaria.mensal) : "";
+  const oQueMudou = (
+    <>
+      {atual.texto} {textoAtualidadeHoraria(p)}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      Carga global, MMGD e carga líquida vêm da mesma API e fecham por identidade da fonte (global = líquida + MMGD, conferida em cada meia hora). A curva de carga é
+      outro produto, que já inclui uma MMGD estimada sem separá-la; ela aparece em gráfico próprio, alinhado pelo cursor. Hora é a hora local de início; o pico é o
+      maior valor horário do dia (empate: a primeira hora). Dia sem as 24 horas não tem pico.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada. A parcela de MMGD dentro da curva e da carga diária não é publicada, então
+      não se sabe quanto do pico da curva é MMGD. A carga global da API não substitui a curva{diferencaCurva ? ` (${diferencaCurva})` : ""}.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
-          rotulo="Carga"
-          titulo="MMGD e perfil horário"
+          rotulo="Carga · MMGD e perfil horário"
+          siglas={["MWmed", "MMGD", "SIN", "ONS", "CCEE"]}
+          titulo={perguntaPainel("p026")}
+          lead="A que horas a carga chega ao pico e quanto dela o ONS estima como micro e minigeração distribuída (MMGD). Os dois produtos de carga do ONS têm definições diferentes."
+          recorte={`hora a hora até ${dataBR(p.ultimo_dia)} · SIN e subsistemas · MWmed e %`}
+          fonte="ONS, Curva de Carga Horária e Carga de Energia Verificada"
           referencia={
             <>
               ONS, Curva de Carga Horária e Carga de Energia Verificada, até {dataBR(p.ultimo_dia)}; processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <CargaDatas
+              itens={[
+                { rotulo: "Curva de carga horária", dia: p.ultimo_dia_curva, natureza: "OBSERVADO" },
+                { rotulo: "Carga verificada", dia: p.ultimo_dia_api, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={3}
+              rotulo="Indicadores da MMGD e do pico no SIN"
+              nota="Valores do SIN, fixos: a região escolhida abaixo não os altera."
+            >
+              <Numero
+                variante="faixa"
+                rotulo="Parcela da carga global do SIN atendida por MMGD, último mês completo"
+                natureza="ESTIMADO"
+                evidencia={ev.p026_mmgd_mes}
+                formato="pct"
+                casas={1}
+                cor="var(--serie-solar)"
+                nota="Estimativa do ONS sobre a carga global da carga verificada, não sobre a curva."
+                endereco={`${rotaPainel("p026")}#p026`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Pico horário da curva de carga do SIN no dia"
+                natureza="OBSERVADO"
+                evidencia={ev.p026_pico_sin}
+                casas={0}
+                cor="var(--cor-energia-dark)"
+                nota={
+                  <>
+                    {picoEv?.hora != null ? `Às ${rotuloHora(picoEv.hora)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
+                    {alemDaFicha ? ` A série vai até ${dataBR(alemDaFicha.d)}, com pico de ${num(alemDaFicha.pico, 0)} MWmed às ${rotuloHora(alemDaFicha.hora as number)}.` : ""}
+                  </>
+                }
+                endereco={`${rotaPainel("p026")}#p026`}
+              />
+              {modal && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Dias de ${modal.ano} em que o pico da curva de carga do SIN caiu entre ${rotuloHora(modal.curva.hora)} e ${rotuloHora((modal.curva.hora + 1) % 24)}`}
+                  natureza="CALCULADO"
+                  valor={modal.curva.dias}
+                  formato="num"
+                  casas={0}
+                  unidade="dias"
+                  periodo={`de ${num(modal.dias, 0)} dias, até ${dataBR(p.ultimo_dia_curva)}`}
+                  cor="var(--cor-energia)"
+                  nota={modal.liquida ? `Na carga líquida de MMGD: ${plural(modal.liquida.dias, "dia", "dias")} ${entreHoras(modal.liquida.hora)}.` : undefined}
+                />
+              )}
+            </FaixaMetricas>
           }
         >
           A que horas o sistema demanda mais energia, e quanto da carga é atendido por micro e minigeração distribuída (<Termo slug="geracao-distribuida">MMGD</Termo>),
@@ -102,7 +202,7 @@ export default function PerfilHorarioPage() {
           <Bloco id="perfil">
             <PainelEvidencia
               id="p026"
-              pergunta={perguntaPainel("p026")}
+              pergunta="Um dia típico: carga global, MMGD e carga líquida"
               subtitulo="Carga horária da curva e da carga verificada; MMGD estimada e carga líquida de MMGD · MWmed e %"
               natureza="OBSERVADO"
               porQueImporta={
@@ -111,20 +211,10 @@ export default function PerfilHorarioPage() {
                   estimada evita ler a MMGD como medição.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
-              comoInterpretar={
-                <>
-                  Carga global, MMGD e carga líquida vêm da mesma API e fecham por identidade da fonte (global = líquida + MMGD, conferida em cada meia hora). A curva de carga é
-                  outro produto, que já inclui uma MMGD estimada sem separá-la; ela aparece em gráfico próprio, alinhado pelo cursor. Hora é a hora local de início; o pico é o
-                  maior valor horário do dia (empate: a primeira hora). Dia sem as 24 horas não tem pico.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada. A parcela de MMGD dentro da curva e da carga diária não é publicada, então
-                  não se sabe quanto do pico da curva é MMGD. A carga global da API não substitui a curva{diferencaCurva ? ` (${diferencaCurva})` : ""}.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.api}
               complementares={[{ rotulo: "Curva de carga horária", p: g.proveniencia.curva }]}
             >
@@ -141,57 +231,46 @@ export default function PerfilHorarioPage() {
                   versao={p.ultimo_dia}
                   regimes={g.regimes}
                   diferencaCurva={diferencaCurva}
-                  destaques={
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <Numero
-                        rotulo="Parcela da carga global do SIN atendida por MMGD, último mês completo"
-                        natureza="ESTIMADO"
-                        evidencia={ev.p026_mmgd_mes}
-                        formato="pct"
-                        casas={1}
-                        tamanho="medio"
-                        cor="var(--serie-solar)"
-                        nota="Estimativa do ONS sobre a carga global da carga verificada, não sobre a curva."
-                        endereco={`${rotaPainel("p026")}#p026`}
-                      />
-                      <Numero
-                        rotulo="Pico horário da curva de carga do SIN no dia"
-                        natureza="OBSERVADO"
-                        evidencia={ev.p026_pico_sin}
-                        casas={0}
-                        tamanho="medio"
-                        cor="var(--cor-energia-dark)"
-                        nota={picoEv?.hora != null ? `Às ${rotuloHora(picoEv.hora)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
-                        endereco={`${rotaPainel("p026")}#p026`}
-                      />
-                    </div>
+                  globalContraDiaria={globalContraDiaria}
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposNotas={
+                    <SecaoDoPainel id="conceitos" titulo="Que carga é cada série?">
+                      <dl className="grid gap-3 text-sm md:grid-cols-2" data-conceitos="p026">
+                        {Object.entries(p.conceitos).map(([k, texto]) => {
+                          const { texto: leitura, tipos } = semTiposDeGeracao(texto);
+                          return (
+                            <div key={k} className="border-l-2 border-linha pl-3">
+                              <dt className="font-medium text-carvao">{ROTULO_CONCEITO[k] ?? k}</dt>
+                              <dd className="mt-1 leading-relaxed text-carvao-muted">
+                                {leitura}
+                                {tipos.length > 0 && <span data-nivel="analisar"> Classes da fonte: {tipos.join("; ")}.</span>}
+                              </dd>
+                            </div>
+                          );
+                        })}
+                      </dl>
+                      <ul className="space-y-2 text-sm text-carvao-muted">
+                        {natSeries.map((s) => {
+                          const { nome, campo } = separaCampoDaSerie(s.rotulo);
+                          const { texto: leitura, tipos } = semTiposDeGeracao(s.descricao);
+                          return (
+                            <li key={s.serie} className="flex flex-wrap items-center gap-2">
+                              <SeloNatureza natureza={s.natureza} />
+                              <span>
+                                <span className="text-carvao">{nome}</span>
+                                {campo && <span data-nivel="analisar"> (campo {campo})</span>}: {leitura}
+                                {s.componentes.length ? ` Componente: ${s.componentes.map((c) => `${c.descricao} (${c.natureza.toLowerCase()})`).join("; ")}.` : ""}
+                                {tipos.length > 0 && <span data-nivel="analisar"> Classes da fonte: {tipos.join("; ")}.</span>}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </SecaoDoPainel>
                   }
                 />
 
-                <div className="space-y-3">
-                  <h3 className="font-serif text-lg text-carvao">Que carga é cada série</h3>
-                  <dl className="grid gap-3 text-sm md:grid-cols-2" data-conceitos="p026">
-                    {Object.entries(p.conceitos).map(([k, texto]) => (
-                      <div key={k} className="border-l-2 border-linha pl-3">
-                        <dt className="font-medium text-carvao">{ROTULO_CONCEITO[k] ?? k}</dt>
-                        <dd className="mt-1 leading-relaxed text-carvao-muted">{texto}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <ul className="space-y-2 text-sm text-carvao-muted">
-                    {natSeries.map((s) => (
-                      <li key={s.serie} className="flex flex-wrap items-center gap-2">
-                        <SeloNatureza natureza={s.natureza} />
-                        <span>
-                          <span className="text-carvao">{s.rotulo}</span>: {s.descricao}
-                          {s.componentes.length ? ` Componente: ${s.componentes.map((c) => `${c.descricao} (${c.natureza.toLowerCase()})`).join("; ")}.` : ""}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <CargaAnalise id="a11" titulo={`Quando a MMGD entrou na carga: declarada para ${dataBR(a11.declarado)}, observada nos dados em ${dataBR(a11.observado_carga)}`}>
+                <SecaoDoPainel id="a11" nivel="analisar" titulo={`Quando a MMGD entrou na carga: declarada para ${dataBR(a11.declarado)}, observada nos dados em ${dataBR(a11.observado_carga)}`}>
                   <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao" data-textos="a11">
                     {a11.textos.map((t) => (
                       <li key={t}>{t}</li>
@@ -226,9 +305,9 @@ export default function PerfilHorarioPage() {
                     nomeArquivo="carga-a11-inclusao-mmgd"
                     chaveUrl="a11"
                   />
-                </CargaAnalise>
+                </SecaoDoPainel>
 
-                <CargaAuditoria id="compatibilidade" titulo="Compatibilidade entre a carga global da API e a curva">
+                <SecaoDoPainel id="compatibilidade" nivel="auditar" titulo="Compatibilidade entre a carga global da API e a curva">
                   <p className="text-sm text-carvao-muted">
                     {p.compatibilidade.conclusao}
                     {ultimoAno && ultimoAno.diferenca_pct !== null
@@ -247,7 +326,7 @@ export default function PerfilHorarioPage() {
                     chaveUrl="compat"
                   />
                   <TabelaInterativa
-                    titulo={`SIN, últimos ${plural(diasPorHora, "dia", "dias")}: diferença por hora do dia`}
+                    titulo={`SIN, últimos ${plural(Math.max(0, ...porHora.map((x) => x.horas)), "dia", "dias")}: diferença por hora do dia`}
                     colunas={COLUNAS_COMPAT_HORA}
                     linhas={p.compatibilidade.por_hora_sin_365d.map((x) => ({ ...x, id: String(x.hora) }))}
                     chaveLinha="id"
@@ -258,7 +337,7 @@ export default function PerfilHorarioPage() {
                     chaveUrl="compath"
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => f.id === "curva" || f.id === "api")} />
-                </CargaAuditoria>
+                </SecaoDoPainel>
 
                 <CargaSeguir ancora="p026" proximo={{ href: `${rotaPainel("p027")}#p027`, pergunta: perguntaPainel("p027") }} downloads={downloads} />
               </div>

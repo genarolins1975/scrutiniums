@@ -21,6 +21,7 @@ from pipeline.energia import base, catalogo, metricas, modulos, validacoes  # no
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
+from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
 
 def _integro(g):
@@ -108,7 +109,15 @@ def main(argv):
                     status_modulos[reg["id"]] = {"ok": False, "erro": str(e)[:300]}
                 con_f.commit()
             print(f"[energia] gold {nome}", flush=True)
+            # os CSV do módulo são gravados durante a construção, antes da validação da gold: se a construção regredir e a
+            # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
+            guardados = base.guarda_arquivos(reg.get("arquivos") or {})
+            n_regressoes = len(regressoes)
             g[nome] = publicar(nome, construir(nome, mod.construir, con_f, ctx), regressoes, falhas)
+            if len(regressoes) > n_regressoes:
+                refeitos = base.restaura_arquivos(guardados)
+                if refeitos:
+                    regressoes[-1]["arquivos_restaurados"] = [os.path.basename(x) for x in refeitos]
             for d in reg["datasets"]:
                 ds = d.get("dataset_silver")
                 if not ds:
@@ -160,6 +169,9 @@ def main(argv):
         "status_coleta_modulos": status_modulos,
     }
     base.escreve_gold("meta.json", meta)
+    # manifesto final: só agora arquivos.json, metricas.json, catalogo.json e meta.json estão no
+    # estado em que serão publicados, e o sha256 de cada um entra no manifesto
+    modulo_dados.escreve_manifesto(final=True)
     con.close()
     if regressoes:
         print("REGRESSOES_ENERGIA=" + json.dumps(regressoes, ensure_ascii=False))

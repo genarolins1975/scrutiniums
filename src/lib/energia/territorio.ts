@@ -21,6 +21,7 @@
  */
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { quebrasFixas, quebrasQuantis, type Classificacao, type ValorClassificavel } from "./escalas";
+import { resumo } from "./distribuicao";
 import { dataBR, num } from "./formato";
 import { destino } from "./navegacao";
 import { LIMITE_COMPARACAO, type ColunaTabela, type LinhaTabela } from "./tabela";
@@ -91,12 +92,17 @@ export function fundoSubmercado(sm: Submercado): string {
 export const CORES_SEQUENCIAIS = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"] as const;
 
 export const ROTULO_ESTADO_SM: Record<EstadoSubmercadoMunicipio, string> = {
-  provado: "provado pela carga das áreas do ONS",
-  provado_com_area_sem_carga: "provado por uma das áreas (a outra sem carga nos dias conferidos)",
-  nao_provado: "não provado",
+  provado: "conferido pela carga das áreas do ONS",
+  provado_com_area_sem_carga: "conferido por uma das áreas (a outra sem carga nos dias conferidos)",
+  nao_provado: "não conferido",
   com_localidade_isolada: "submercado da UF, com localidade isolada fora do SIN",
   fora_do_sin: "fora do SIN (submercado não se aplica)",
 };
+
+/** Pertença nas tabelas: só a exceção é escrita por extenso; o caso comum (conferido) vira "sem ressalva", para a coluna não repetir a mesma frase em quase toda linha. */
+export function estadoSubmercadoNaTabela(e: EstadoSubmercadoMunicipio): string {
+  return e === "provado" ? "sem ressalva" : ROTULO_ESTADO_SM[e];
+}
 
 export const ROTULO_VINCULO: Record<EstadoVinculo, string> = {
   1: "confirmado",
@@ -154,6 +160,8 @@ export const ESQUEMA_TERRITORIO = {
   est: campo(tiposUrl.lista(tiposUrl.opcao(ESTAGIOS_USINA)), [...ESTAGIOS_USINA] as EstagioUsina[], { param: "est" }),
   reg: campo(tiposUrl.booleano(), false, { param: "reg" }),
   cmp: campo(tiposUrl.lista(leitorIbge, { max: LIMITE_COMPARACAO }), [] as string[], { param: "cmp" }),
+  /** Busca da tabela de usinas (a mesma chave que a tabela lê): "Ver as usinas deste município" abre a camada com ela preenchida. */
+  usiq: campo(tiposUrl.texto({ max: 120 }), "", { param: "ter.usi.q", historico: "replace" }),
 };
 
 /* ================================================================ formatação */
@@ -296,6 +304,55 @@ export function usinasDoJson(arq: UsinasTerritorio, limiteKw: number): UsinaT[] 
   });
 }
 
+/**
+ * Usinas em operação de cada UF, na UF principal da usina, com os registros de até 10 kW à parte: o município tem esses registros em coluna
+ * própria e fora da contagem de usinas, e a UF passa a contar do mesmo jeito. `usinas` + `registros` é o total que a gold publica por UF; o
+ * resto separa as usinas declaradas em um só município (as que a soma municipal conta), em mais de um e sem município reconhecido.
+ */
+export type UsinasDaUf = { usinas: number; registros: number; um_municipio: number; multimunicipio: number; sem_municipio: number };
+
+export function usinasDaUf(usinas: readonly Pick<UsinaT, "uf" | "estagio" | "registro_ate_10kw" | "municipios" | "n_declarados">[]): Map<string, UsinasDaUf> {
+  const por = new Map<string, UsinasDaUf>();
+  for (const u of usinas) {
+    if (u.estagio !== "operacao" || !u.uf) continue;
+    const x = por.get(u.uf) ?? { usinas: 0, registros: 0, um_municipio: 0, multimunicipio: 0, sem_municipio: 0 };
+    if (u.registro_ate_10kw) x.registros++;
+    else {
+      x.usinas++;
+      if (u.municipios.length === 1 && u.n_declarados === 1) x.um_municipio++;
+      else if (u.municipios.length > 1 || u.n_declarados > 1) x.multimunicipio++;
+      else x.sem_municipio++;
+    }
+    por.set(u.uf, x);
+  }
+  return por;
+}
+
+/**
+ * Usinas em operação declaradas em municípios de mais de uma UF: entram inteiras na UF principal, sem repartir a potência. O texto cita as
+ * duas maiores. O código IBGE do município começa pelo código da UF; `ufPorCodigo` traduz esse código na sigla.
+ */
+export function notaMultiestadual(usinas: readonly UsinaT[], ufPorCodigo: ReadonlyMap<string, string>): string | null {
+  const multi = usinas
+    .filter((u) => u.estagio === "operacao" && !u.registro_ate_10kw)
+    .map((u) => ({ u, ufs: Array.from(new Set(u.municipios.map((m) => ufPorCodigo.get(m.slice(0, 2))).filter((x): x is string => !!x))) }))
+    .filter((x) => x.ufs.length > 1);
+  if (!multi.length) return null;
+  const maiores = [...multi].sort((a, b) => (b.u.mw_fiscalizado ?? 0) - (a.u.mw_fiscalizado ?? 0)).slice(0, 2);
+  const exemplos = maiores.map((x) => `${x.u.nome} (${num(x.u.mw_fiscalizado ?? 0, 0)} MW, ${x.ufs.join(" e ")})`).join(" e ");
+  return `${inteiro(multi.length)} ${multi.length === 1 ? "usina em operação está declarada" : "usinas em operação estão declaradas"} em municípios de mais de uma UF e entra${multi.length === 1 ? "" : "m"} inteira${multi.length === 1 ? "" : "s"} na UF principal, sem repartir a potência (as duas maiores: ${exemplos}).`;
+}
+
+/**
+ * Desconto da Tarifa Social: o número que a fonte publica por UF e por município é o desconto líquido do mês, a soma dos descontos com os
+ * cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas. Nunca é lido como a soma de descontos concedidos.
+ */
+export function textoDescontoLiquido(desconto: number | null | undefined): string | null {
+  if (desconto === null || desconto === undefined) return null;
+  const base = "Desconto líquido: soma dos descontos do mês com os cancelamentos e refaturamentos, que entram no desconto e não na contagem de faturas.";
+  return desconto < 0 ? `${base} O valor é negativo porque, no mês, os cancelamentos e refaturamentos somaram mais que os descontos concedidos.` : base;
+}
+
 /** Grupo de fonte da usina pelo tipo do SIGA (cor no mapa e filtro). */
 export function fonteDaUsina(tipo: string): FonteUsina {
   if (tipo === "UFV") return "solar";
@@ -365,8 +422,16 @@ export type LinhaDistribuidora = LinhaTabela & {
   perdas_ano: number | null;
   perdas_meses: number | null;
   perdas_situacao: string | null;
+  /** A energia sobre a qual a taxa foi calculada (injetada publicada, requerida ou mistura dos dois no ano); null sem o registro da fonte. */
+  perdas_base: string | null;
+  /** A mesma perda total sobre a energia injetada publicada, para a distribuidora cuja taxa usa outra base; null quando a base já é a publicada. */
+  perdas_pct_pub: number | null;
+  /** "sem sinalização" ou o que o módulo Perdas sinalizou (ano parcial, balanço que não fecha, valor fora de 0% a 100%). */
+  perdas_sinal: string | null;
   perdas_ressalvas: string | null;
   perdas_motivo: string | null;
+  /** Unidades consumidoras do cadastro de continuidade, o peso da mediana ponderada; null sem o dado. */
+  ucs: number | null;
   dec_h: number | null;
   dec_lim_h: number | null;
   fec: number | null;
@@ -391,8 +456,52 @@ export type LinhaDistribuidora = LinhaTabela & {
 
 const motivo = (b: Bloco<object>): string | null => (b.disponivel ? null : b.motivo);
 
-export function linhaDistribuidora(d: DistribuidoraTerritorio): LinhaDistribuidora {
+/** A energia sobre a qual cada distribuidora calcula a taxa de perdas (campo `origem_injetada` do módulo Perdas). */
+export type BasePerdas = "publicada" | "requerida" | "mista";
+export const ROTULO_BASE_PERDAS: Record<BasePerdas, string> = {
+  publicada: "energia injetada publicada",
+  requerida: "energia requerida",
+  mista: "energia injetada e requerida no mesmo ano",
+};
+/**
+ * Do arquivo anual de perdas por distribuidora: a base da taxa, a taxa que o arquivo traz (para conferir com a gold) e a mesma perda total
+ * sobre a energia injetada publicada.
+ */
+export type PerdasDaFonte = { base: BasePerdas; taxa_pct: number | null; taxa_publicada_pct: number | null };
+
+export const SEM_SINAL_PERDAS = "sem sinalização";
+const ROTULO_ALERTA_PERDAS: Record<string, string> = {
+  balanco_nao_fecha: "balanço que não fecha",
+  fornecida_maior_que_injetada: "energia fornecida maior que a injetada",
+  perda_total_negativa: "perda total negativa",
+};
+
+/** O que o módulo Perdas sinalizou na taxa da distribuidora, em palavras: ano parcial, balanço que não fecha, valor fora da faixa física. */
+export function sinalDePerdas(p: { parcial: boolean; meses: number | null; alertas: readonly string[] }): string {
+  const partes = [
+    ...(p.parcial ? [`ano parcial${p.meses ? ` (${p.meses} meses)` : ""}`] : []),
+    ...p.alertas.map((a) => ROTULO_ALERTA_PERDAS[a] ?? a.replace(/_/g, " ")),
+  ];
+  return partes.length ? partes.join("; ") : SEM_SINAL_PERDAS;
+}
+
+/** Ressalva de perdas que a gold escreve, sem os nomes de alerta do módulo e com a vírgula decimal ("-10.44%" vira "-10,44%"). */
+export function ressalvaDePerdas(texto: string): string {
+  return texto
+    .replace(/\s*\(alertas do módulo Perdas:[^)]*\)/g, "")
+    .replace(/(\d)\.(\d+)%/g, "$1,$2%")
+    .trim();
+}
+
+/** Motivo de ausência com a competência AAAA-MM como mm/aaaa (mesmo tamanho: esta página está no limite de peso). */
+export function motivoLegivel(m: string | null): string | null {
+  return m ? m.replace(/(^|[^\w@_/.-])([1-9]\d{3})-(0[1-9]|1[0-2])(?![\w@_/-]|\d)/g, "$1$3/$2") : m;
+}
+
+export function linhaDistribuidora(d: DistribuidoraTerritorio, perdasArquivo: PerdasDaFonte | null = null): LinhaDistribuidora {
   const { perdas: p, qualidade: q, tarifa: t, mmgd: m, tsee: s } = d.indicadores;
+  // a linha do arquivo anual só vale se for da mesma publicação da gold: a taxa dela confere com a da gold
+  const perdasFonte = perdasArquivo && p.disponivel && perdasArquivo.taxa_pct !== null && p.taxa_total_pct !== null && Math.abs(perdasArquivo.taxa_pct - p.taxa_total_pct) <= 0.006 ? perdasArquivo : null;
   return {
     id: d.cnpj,
     i: d.i,
@@ -416,8 +525,12 @@ export function linhaDistribuidora(d: DistribuidoraTerritorio): LinhaDistribuido
     perdas_ano: p.disponivel ? p.ano : null,
     perdas_meses: p.disponivel ? p.meses : null,
     perdas_situacao: p.disponivel ? (p.parcial ? "ano parcial" : "ano completo") : null,
-    perdas_ressalvas: p.disponivel && p.ressalvas.length ? p.ressalvas.join(" ") : null,
+    perdas_base: p.disponivel ? (perdasFonte ? ROTULO_BASE_PERDAS[perdasFonte.base] : "sem registro da base") : null,
+    perdas_pct_pub: p.disponivel && perdasFonte && perdasFonte.base !== "publicada" ? perdasFonte.taxa_publicada_pct : null,
+    perdas_sinal: p.disponivel ? sinalDePerdas(p) : null,
+    perdas_ressalvas: p.disponivel && p.ressalvas.length ? p.ressalvas.map(ressalvaDePerdas).join(" ") : null,
     perdas_motivo: motivo(p),
+    ucs: q.disponivel ? q.ucs : null,
     dec_h: q.disponivel ? q.dec_h : null,
     dec_lim_h: q.disponivel ? q.dec_limite_h : null,
     fec: q.disponivel ? q.fec : null,
@@ -453,7 +566,13 @@ export type LinhaUf = LinhaTabela & {
   municipios: number;
   fora_do_sin: number;
   com_localidade_isolada: number;
+  /** Usinas em operação na UF principal, sem os registros de até 10 kW (a mesma regra da contagem municipal). */
   cap_usinas: number | null;
+  /** Registros de até 10 kW em operação na UF principal, à parte. */
+  cap_registros: number | null;
+  /** Das usinas contadas: declaradas em um só município (as que a soma municipal conta) e em mais de um. */
+  cap_um_municipio: number | null;
+  cap_multimunicipio: number | null;
   cap_mw: number | null;
   cap_ref: string | null;
   cap_origem: string | null;
@@ -469,17 +588,37 @@ export type LinhaUf = LinhaTabela & {
 };
 
 const ROTULO_VEREDITO: Record<AreaCargaUf["veredito"], string> = {
-  provada: "provada",
+  provada: "conferida",
   indeterminada: "sem carga nos dias conferidos",
   ambigua: "ambígua",
-  reprovada: "reprovada",
+  reprovada: "não confere",
 };
 
 export function textoAreasCarga(areas: readonly AreaCargaUf[]): string {
   return areas.map((a) => `${a.codigo} (${a.nome}): ${ROTULO_VEREDITO[a.veredito]}${a.submercado_hipotese ? ` no ${a.submercado_hipotese}` : ""}`).join("; ");
 }
 
-export function linhaUf(u: UfTerritorio): LinhaUf {
+/**
+ * O que "conferido" quer dizer nesta página, com o teste por extenso. A base publicada diz "provada" para a área que passa; aqui a palavra é "conferida"
+ * porque o teste é de consistência da carga em dois dias, com a tolerância publicada, e não a medida de uma fronteira do submercado.
+ */
+export function textoTesteDeCarga(g: Pick<GoldTerritorio, "areas_carga" | "ufs">): string {
+  const dias = [...g.areas_carga.dias].sort().map((d) => dataBR(d));
+  const tol = g.areas_carga.conferencias.map((c) => c.tolerancia_mwmed).find((x) => typeof x === "number");
+  const parciais = g.ufs.filter((u) => u.estado_subsistema === "provado_com_area_sem_carga").map((u) => u.nome ?? u.uf);
+  const quando = dias.length === 2 ? `nos dois dias conferidos (${dias[0]} e ${dias[1]})` : dias.length ? `em ${lista(dias)}` : "nos dias conferidos";
+  return (
+    `Conferido quer dizer que, ${quando}, a carga de cada submercado fecha com a soma das suas áreas de carga do ONS${typeof tol === "number" ? `, com a mediana do resíduo por meia hora dentro de ${num(tol, 0)} MWmed` : ""}, ` +
+    `e que nenhuma troca de áreas testada também fecha. É um teste de consistência da carga em ${dias.length === 2 ? "dois dias" : "poucos dias"}, não a medida de uma fronteira.` +
+    (parciais.length ? ` ${lista(parciais)} ${parciais.length === 1 ? "é conferido" : "são conferidos"} só por uma das áreas, porque a outra não tinha carga nos dias conferidos.` : "")
+  );
+}
+
+/**
+ * A linha de uma UF. A gold publica `usinas` com os registros de até 10 kW dentro; com `separacao` (lida do arquivo de usinas), a contagem
+ * exclui esses registros e eles vão para a coluna ao lado. Sem o arquivo de usinas a contagem fica sem dado, nunca com o total misturado.
+ */
+export function linhaUf(u: UfTerritorio, separacao?: UsinasDaUf | null): LinhaUf {
   const { capacidade: c, tsee: t, isolados: i } = u.indicadores;
   return {
     id: u.uf,
@@ -488,12 +627,16 @@ export function linhaUf(u: UfTerritorio): LinhaUf {
     codigo: u.codigo,
     subsistema: u.subsistema,
     submercado: u.subsistema ? NOME_SUBMERCADO[u.subsistema] : "sem submercado",
-    estado: ROTULO_ESTADO_SM[u.estado_subsistema],
+    estado: estadoSubmercadoNaTabela(u.estado_subsistema),
     areas: textoAreasCarga(u.areas_carga),
     municipios: u.municipios,
     fora_do_sin: u.municipios_fora_do_sin,
-    com_localidade_isolada: u.municipios_com_localidade_isolada,
-    cap_usinas: c.disponivel ? c.usinas : null,
+    // a gold conta na UF todos os municípios com localidade isolada, inclusive os fora do SIN; a legenda do mapa e a tabela contam os de dentro do SIN
+    com_localidade_isolada: Math.max(0, u.municipios_com_localidade_isolada - u.municipios_fora_do_sin),
+    cap_usinas: c.disponivel && separacao ? separacao.usinas : null,
+    cap_registros: c.disponivel && separacao ? separacao.registros : null,
+    cap_um_municipio: c.disponivel && separacao ? separacao.um_municipio : null,
+    cap_multimunicipio: c.disponivel && separacao ? separacao.multimunicipio + separacao.sem_municipio : null,
     cap_mw: c.disponivel ? c.mw_fiscalizado : null,
     cap_ref: c.disponivel ? c.periodo.fim : null,
     cap_origem:
@@ -602,14 +745,22 @@ export type DadosExplorador = {
   fontes: Partial<Record<ChaveFonte, FonteCurta>>;
   arquivos: { municipios: string; usinas: string; geoUf: string; geoMunicipios: string };
   limiteRegistroKw: number;
+  /** Usinas declaradas em mais de uma UF, que entram inteiras na UF principal; null sem o arquivo de usinas. */
+  notaMultiestadual: string | null;
   estadosVinculo: Record<string, string>;
   /** Municípios por estado do submercado (resumo da gold), para a legenda antes de o índice chegar. */
   estadosMunicipio: Partial<Record<EstadoSubmercadoMunicipio, number>>;
   versao: string;
 };
 
-export function dadosExplorador(g: GoldTerritorio): DadosExplorador {
+export function dadosExplorador(
+  g: GoldTerritorio,
+  usinas: readonly UsinaT[] | null = null,
+  perdasFonte: ReadonlyMap<string, PerdasDaFonte> | null = null,
+): DadosExplorador {
   const fontes: Partial<Record<ChaveFonte, FonteCurta>> = {};
+  const porUf = usinas ? usinasDaUf(usinas) : null;
+  const vazia: UsinasDaUf = { usinas: 0, registros: 0, um_municipio: 0, multimunicipio: 0, sem_municipio: 0 };
   for (const k of CHAVES_FONTE) {
     const f = fonteCurta(g.proveniencia[k]);
     if (f) fontes[k] = f;
@@ -618,14 +769,15 @@ export function dadosExplorador(g: GoldTerritorio): DadosExplorador {
     dataReferencia: g.data_referencia,
     referencias: g.referencias,
     submercados: g.submercados.map(linhaSubmercado),
-    ufs: g.ufs.map(linhaUf),
-    distribuidoras: g.distribuidoras.filter((d) => d.area.municipios > 0).map(linhaDistribuidora),
+    ufs: g.ufs.map((u) => linhaUf(u, porUf ? (porUf.get(u.uf) ?? vazia) : null)),
+    distribuidoras: g.distribuidoras.filter((d) => d.area.municipios > 0).map((d) => linhaDistribuidora(d, perdasFonte?.get(d.cnpj) ?? null)),
     compatibilidade: g.compatibilidade,
     graos: g.graos.map((x) => ({ id: x.id, rotulo: x.rotulo, rotulo_no_municipio: x.rotulo_no_municipio })),
-    camadas: g.camadas.map((c) => ({ id: c.id, rotulo: c.rotulo, descricao: c.descricao })),
+    camadas: g.camadas.map((c) => ({ id: c.id, rotulo: c.rotulo, descricao: textoLegivel(c.descricao) })),
     fontes,
     arquivos: { municipios: g.series.municipios, usinas: g.series.usinas, geoUf: g.geometria.uf, geoMunicipios: g.geometria.municipios },
     limiteRegistroKw: g.resumo.usinas.limite_registro_kw,
+    notaMultiestadual: usinas ? notaMultiestadual(usinas, new Map(g.ufs.filter((u) => u.codigo).map((u) => [String(u.codigo), u.uf]))) : null,
     estadosVinculo: { 0: ROTULO_VINCULO[0], 1: ROTULO_VINCULO[1], 2: ROTULO_VINCULO[2] },
     estadosMunicipio: g.resumo.municipios_por_estado_submercado,
     versao: g.data_referencia,
@@ -709,7 +861,7 @@ export type LinhaMunicipio = LinhaTabela & {
 
 export function textoSubmercadoMunicipio(m: Pick<MunicipioT, "sm" | "sm_estado">): string {
   if (m.sm_estado === "fora_do_sin") return "não se aplica (fora do SIN)";
-  return m.sm ? NOME_SUBMERCADO[m.sm] : "sem submercado provado";
+  return m.sm ? NOME_SUBMERCADO[m.sm] : "sem submercado conferido";
 }
 
 export function linhaMunicipio(m: MunicipioT, idx: IndiceDistribuidoras): LinhaMunicipio {
@@ -718,7 +870,7 @@ export function linhaMunicipio(m: MunicipioT, idx: IndiceDistribuidoras): LinhaM
     municipio: m.nome,
     uf: m.uf,
     submercado: textoSubmercadoMunicipio(m),
-    estado_sm: m.sm_estado ? ROTULO_ESTADO_SM[m.sm_estado] : "sem estado",
+    estado_sm: m.sm_estado ? estadoSubmercadoNaTabela(m.sm_estado) : "sem estado",
     distribuidoras: textoDistribuidoras(m, idx),
     situacao: ROTULO_SITUACAO[situacaoVinculo(m)],
     conjuntos: m.conj.length,
@@ -759,9 +911,9 @@ export type DefinicaoMedida = {
 
 export const MEDIDA: Record<MedidaMunicipio, DefinicaoMedida> = {
   mmgd_w_hab: { rotulo: "MMGD por habitante", indicador: "mun_mmgd_w_hab", unidade: "W/hab", casas: 1, nota: "Sem população estimada, a razão fica sem dado (nunca zero)." },
-  mmgd_kw: { rotulo: "Potência de MMGD", indicador: "mun_mmgd_kw", unidade: "kW", casas: 0 },
-  mmgd_un: { rotulo: "Unidades de MMGD", indicador: "mun_mmgd_unidades", unidade: "unidades", casas: 0 },
-  tsee_faturas: { rotulo: "Faturas com Tarifa Social", indicador: "mun_tsee_faturas", unidade: "faturas no mês", casas: 0 },
+  mmgd_kw: { rotulo: "Potência de MMGD", indicador: "mun_mmgd_kw", unidade: "kW", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
+  mmgd_un: { rotulo: "Unidades de MMGD", indicador: "mun_mmgd_unidades", unidade: "unidades", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
+  tsee_faturas: { rotulo: "Faturas com Tarifa Social", indicador: "mun_tsee_faturas", unidade: "faturas no mês", casas: 0, nota: "Total absoluto: a cor acompanha o tamanho do município. Para comparar municípios, use a razão por habitante (MMGD por habitante) ou a proxy da Tarifa Social." },
   tsee_proxy_pct: {
     rotulo: "Tarifa Social por família do CadÚnico (proxy)",
     indicador: "mun_tsee_proxy",
@@ -770,9 +922,9 @@ export const MEDIDA: Record<MedidaMunicipio, DefinicaoMedida> = {
     nota: "Proxy, não cobertura: faturas com desconto divididas por famílias de baixa renda do Cadastro Único. Município com menos de 50 famílias no denominador tem razão instável (coluna própria na tabela).",
   },
   lpt_dom: { rotulo: "Luz para Todos (domicílios)", indicador: "mun_lpt", unidade: "domicílios", casas: 0, nota: "Município sem linha no arquivo do programa fica sem dado, não zero." },
-  usi_op_n: { rotulo: "Usinas em operação só no município", indicador: "mun_usinas_operacao", unidade: "usinas", casas: 0, cortes: [1, 2, 5, 10] },
-  usi_op_mw: { rotulo: "Potência em operação só no município", indicador: "mun_usinas_operacao", unidade: "MW", casas: 1, cortes: [1, 10, 100, 1000] },
-  usi_reg_n: { rotulo: "Registros de até 10 kW", indicador: "mun_registros_10kw", unidade: "registros", casas: 0, cortes: [1, 10, 100, 1000] },
+  usi_op_n: { rotulo: "Usinas em operação só no município", indicador: "mun_usinas_operacao", unidade: "usinas", casas: 0, cortes: [1, 2, 5, 10], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
+  usi_op_mw: { rotulo: "Potência em operação só no município", indicador: "mun_usinas_operacao", unidade: "MW", casas: 1, cortes: [1, 10, 100, 1000], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
+  usi_reg_n: { rotulo: "Registros de até 10 kW", indicador: "mun_registros_10kw", unidade: "registros", casas: 0, cortes: [1, 10, 100, 1000], nota: "Total absoluto: a cor acompanha o tamanho do município; não há razão por habitante publicada para esta medida." },
   isol_n: { rotulo: "Localidades isoladas", indicador: "mun_isolados", unidade: "localidades", casas: 0, cortes: [1, 2, 4] },
 };
 
@@ -869,7 +1021,7 @@ export function correspondencia(sel: Selecao, camada: Camada, ctx: ContextoSelec
             ? m.isol_sede === 1
               ? `${m.nome} está fora do SIN: a sede é localidade isolada do PASI. O submercado não se aplica a ele, e a cor da UF não vale para o município.`
               : `${m.nome} está fora do SIN: as localidades isoladas somam ao menos metade da população estimada. O submercado não se aplica a ele, e a cor da UF não vale para o município.`
-            : `${m.nome} não tem submercado provado.`;
+            : `${m.nome} não tem submercado conferido.`;
         return { ...base, valida: false, texto: motivoFora, sms: [] };
       }
       if (m.sm_estado === "com_localidade_isolada")
@@ -960,31 +1112,39 @@ export function respostaTerritorio(g: Pick<GoldTerritorio, "resumo" | "referenci
   if (sem) restoDist.push(`${inteiro(sem)} sem vínculo`);
   const u = r.usinas;
   return (
-    `Os ${inteiro(r.municipios)} municípios do IBGE estão ligados a ${inteiro(comArea)} distribuidoras pela relação oficial da ANEEL de ${g.referencias.relacao_distribuidoras_ano ?? "sem data"}: ` +
+    `Cobertura desta publicação: ` +
+    `os ${inteiro(r.municipios)} municípios do IBGE estão ligados a ${inteiro(comArea)} distribuidoras pela relação oficial da ANEEL de ${g.referencias.relacao_distribuidoras_ano ?? "sem data"}: ` +
     `${partesDist.join(", ")}${restoDist.length ? `; ${lista(restoDist)}` : ""}. ` +
-    `Pela UF, ${inteiro(provados)} municípios estão num submercado com a pertença provada pela carga do ONS, ` +
+    `Pela UF, ${inteiro(provados)} municípios estão num submercado com a pertença conferida pela carga do ONS, ` +
     `${inteiro(e.com_localidade_isolada ?? 0)} ficam no submercado da UF com localidade isolada e ${inteiro(e.fora_do_sin ?? 0)} estão fora do SIN, sem submercado. ` +
     `Das ${inteiro(u.total)} usinas do SIGA de ${dataBR(g.referencias.siga_data)}, ${inteiro(u.todos_municipios_reconhecidos)} têm todos os municípios declarados reconhecidos.`
   );
 }
 
-/** "O que mudou": a data de cada fonte que a página junta (cada número traz a sua). */
+/**
+ * Veredito do P002 em palavras comuns: o que a página faz e de quem é cada número (do submercado, da distribuidora inteira
+ * ou do conjunto elétrico). Cita só as camadas que a gold traz; a cobertura por município, distribuidora, submercado e usina
+ * fica em respostaTerritorio, na segunda camada.
+ */
+export function vereditoTerritorio(g: Pick<GoldTerritorio, "resumo">): string {
+  const r = g.resumo;
+  const usinas = r.usinas.total > 0 ? " e usinas" : "";
+  const conjunto = r.conjuntos_referenciados > 0 ? " e a continuidade é do conjunto elétrico" : "";
+  return `Escolha uma região e veja preço, tarifa, perdas, continuidade${usinas}. O preço é do submercado, a tarifa e as perdas são da distribuidora inteira${conjunto}.`;
+}
+
+/**
+ * "O que mudou": a página não compara com a publicação anterior, então não descreve mudança. Traz só as datas que o campo
+ * Período não traz (Tarifa Social, população e a conferência das áreas de carga); as demais ficam no Período, sem repetir.
+ */
 export function textoAtualidade(g: Pick<GoldTerritorio, "referencias">): string {
   const r = g.referencias;
   const partes = [
-    r.relacao_distribuidoras_ano !== null && `relação de distribuidoras de ${r.relacao_distribuidoras_ano}`,
-    r.perdas_ano !== null && `perdas de ${r.perdas_ano}`,
-    r.qualidade_ano !== null && `DEC e FEC de ${r.qualidade_ano}`,
-    r.tarifa_data && `tarifa vigente em ${dataBR(r.tarifa_data)}`,
-    r.mmgd_data_cadastro && `cadastro de MMGD de ${dataBR(r.mmgd_data_cadastro)}`,
-    r.siga_data && `SIGA de ${dataBR(r.siga_data)}`,
     r.tsee_mes_cde && `Tarifa Social de ${textoReferencia(r.tsee_mes_cde)}`,
-    r.pld_dia && `PLD de ${dataBR(r.pld_dia)}`,
-    r.ear_dia && `EAR de ${dataBR(r.ear_dia)}`,
     r.populacao_ano !== null && `população estimada de ${r.populacao_ano}`,
   ].filter((x): x is string => typeof x === "string");
   const dias = r.areas_carga_dias.map(dataBR);
-  return `Cada número traz a data da sua fonte: ${lista(partes)}.${dias.length ? ` A pertença das áreas de carga ao submercado foi conferida em ${lista(dias)}.` : ""}`;
+  return `Sem comparação com a publicação anterior.${partes.length ? ` Datas que o Período não traz: ${lista(partes)}.` : ""}${dias.length ? ` A pertença das áreas de carga ao submercado foi conferida em ${lista(dias)}.` : ""}`;
 }
 
 export type ContextoTexto = {
@@ -1006,7 +1166,7 @@ export function respostaMunicipio(m: MunicipioT, ctx: ContextoTexto): string {
   let onde: string;
   if (m.sm_estado === "fora_do_sin")
     onde = m.isol_sede === 1 ? "e está fora do SIN, porque a sede é localidade isolada: o submercado não se aplica" : "e está fora do SIN, porque as localidades isoladas somam ao menos metade da população: o submercado não se aplica";
-  else if (!m.sm) onde = "e não tem submercado provado";
+  else if (!m.sm) onde = "e não tem submercado conferido";
   else if (m.sm_estado === "com_localidade_isolada") onde = `e fica no submercado ${NOME_SUBMERCADO[m.sm]} pela UF, com localidade isolada fora do SIN`;
   else onde = `e fica no submercado ${NOME_SUBMERCADO[m.sm]} pela UF`;
 
@@ -1047,9 +1207,15 @@ export function respostaSubmercado(s: LinhaSubmercado): string {
 }
 
 export function respostaUf(u: LinhaUf): string {
-  const sm = u.subsistema ? `está no submercado ${NOME_SUBMERCADO[u.subsistema]} (camada oficial da EPE; ${u.estado})` : "não tem submercado provado";
+  const sm = u.subsistema ? `está no submercado ${NOME_SUBMERCADO[u.subsistema]} (camada oficial da EPE; ${u.estado})` : "não tem submercado conferido";
   const fora = u.fora_do_sin ? `, ${inteiro(u.fora_do_sin)} fora do SIN` : "";
-  const cap = u.cap_mw === null ? "capacidade sem dado" : `${inteiro(u.cap_usinas)} usinas em operação com ${num(u.cap_mw, 1)} MW fiscalizados pela UF principal`;
+  const regs = u.cap_registros ? ` (mais ${inteiro(u.cap_registros)} ${u.cap_registros === 1 ? "registro" : "registros"} de até 10 kW, à parte)` : "";
+  const cap =
+    u.cap_mw === null
+      ? "capacidade sem dado"
+      : u.cap_usinas === null
+        ? `${num(u.cap_mw, 1)} MW em operação fiscalizados pela UF principal`
+        : `${inteiro(u.cap_usinas)} usinas em operação${regs}, com ${num(u.cap_mw, 1)} MW fiscalizados pela UF principal`;
   return `${u.nome ?? u.uf} ${sm}. ${inteiro(u.municipios)} municípios${fora}; ${cap}.`;
 }
 
@@ -1112,24 +1278,32 @@ export const COLUNAS_SUBMERCADOS: ColunaTabela[] = [
   { id: "mediana_residuo", rotulo: "Mediana do resíduo da soma das áreas", tipo: "texto" },
 ];
 
+/** As colunas da tabela de submercados com o mês da estimativa de MMGD do ONS no cabeçalho (a estimativa é mensal, as demais colunas são do dia). */
+export function colunasSubmercados(mesMmgdOns: string | null): ColunaTabela[] {
+  return COLUNAS_SUBMERCADOS.map((c) =>
+    c.id === "mmgd_ons" && mesMmgdOns ? { ...c, rotulo: `Carga atendida por MMGD (estimativa do ONS de ${textoReferencia(mesMmgdOns)})` } : c,
+  );
+}
+
 export const COLUNAS_UFS_SUBMERCADO: ColunaTabela[] = [
   { id: "uf", rotulo: "UF", tipo: "texto" },
   { id: "nome", rotulo: "Nome", tipo: "texto" },
   { id: "submercado", rotulo: "Submercado (cor no mapa)", tipo: "texto", categorica: true },
-  { id: "estado", rotulo: "Pertença", tipo: "texto", categorica: true },
+  { id: "estado", rotulo: "Pertença ao submercado (só a ressalva)", tipo: "texto", categorica: true },
   { id: "areas", rotulo: "Áreas de carga do ONS", tipo: "texto" },
   { id: "municipios", rotulo: "Municípios", tipo: "numero", casas: 0 },
   { id: "fora_do_sin", rotulo: "Municípios fora do SIN", tipo: "numero", casas: 0 },
-  { id: "com_localidade_isolada", rotulo: "Com localidade isolada", tipo: "numero", casas: 0 },
+  { id: "com_localidade_isolada", rotulo: "Com localidade isolada, dentro do SIN", tipo: "numero", casas: 0 },
 ];
 
 export const COLUNAS_UFS_INDICADORES: ColunaTabela[] = [
   { id: "uf", rotulo: "UF", tipo: "texto" },
   { id: "submercado", rotulo: "Submercado", tipo: "texto", categorica: true },
-  { id: "cap_usinas", rotulo: "Usinas em operação (UF principal)", tipo: "numero", casas: 0 },
-  { id: "cap_mw", rotulo: "Capacidade em operação", tipo: "numero", unidade: "MW", casas: 1 },
-  { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social", tipo: "numero", unidade: "faturas no mês", casas: 0 },
-  { id: "tsee_desconto", rotulo: "Desconto da Tarifa Social", tipo: "numero", unidade: "R$ no mês", casas: 2 },
+  { id: "cap_usinas", rotulo: "Usinas em operação (UF principal, sem registros de até 10 kW)", tipo: "numero", casas: 0 },
+  { id: "cap_registros", rotulo: "Registros de até 10 kW em operação (UF principal)", tipo: "numero", casas: 0 },
+  { id: "cap_mw", rotulo: "Capacidade em operação (todas as usinas, em MW)", tipo: "numero", unidade: "MW", casas: 1 },
+  { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social (contagem do mês)", tipo: "numero", unidade: "faturas no mês", casas: 0 },
+  { id: "tsee_desconto", rotulo: "Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", tipo: "numero", unidade: "R$ líquidos no mês", casas: 2 },
   { id: "isol_localidades", rotulo: "Localidades isoladas", tipo: "numero", casas: 0 },
   { id: "isol_pop", rotulo: "População em localidades isoladas", tipo: "numero", casas: 0 },
 ];
@@ -1144,8 +1318,12 @@ export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
   { id: "compartilhados", rotulo: "Compartilhados", tipo: "numero", casas: 0 },
   { id: "fora_do_sin", rotulo: "Fora do SIN", tipo: "numero", casas: 0 },
   { id: "submercados", rotulo: "Municípios por submercado", tipo: "texto" },
-  { id: "perdas_pct", rotulo: "Perdas totais sobre a injetada", tipo: "percentual", casas: 2 },
+  { id: "perdas_pct", rotulo: "Perdas totais sobre a energia de referência", tipo: "percentual", casas: 2 },
+  { id: "perdas_base", rotulo: "Energia de referência das perdas", tipo: "texto", categorica: true },
+  { id: "perdas_pct_pub", rotulo: "Mesma perda sobre a injetada publicada", tipo: "percentual", casas: 2 },
   { id: "perdas_situacao", rotulo: "Ano das perdas", tipo: "texto", categorica: true },
+  { id: "perdas_sinal", rotulo: "Sinalização das perdas", tipo: "texto", categorica: true },
+  { id: "ucs", rotulo: "Unidades consumidoras (cadastro de continuidade)", tipo: "numero", casas: 0 },
   { id: "dec_h", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
   { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
   { id: "tarifa", rotulo: "Tarifa B1 sem tributos", tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -1165,7 +1343,7 @@ export function colunasMunicipios(med: MedidaMunicipio | null): ColunaTabela[] {
     { id: "mmgd_kw", rotulo: "Potência de MMGD", tipo: "numero", unidade: "kW", casas: 0 },
     { id: "mmgd_w_hab", rotulo: "MMGD por habitante", tipo: "numero", unidade: "W/hab", casas: 1 },
     { id: "tsee_faturas", rotulo: "Faturas com Tarifa Social", tipo: "numero", casas: 0 },
-    { id: "tsee_desconto", rotulo: "Desconto da Tarifa Social", tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "tsee_desconto", rotulo: "Desconto líquido da Tarifa Social (com cancelamentos e refaturamentos)", tipo: "numero", unidade: "R$ líquidos", casas: 2 },
     { id: "tsee_proxy_pct", rotulo: "Tarifa Social por família do CadÚnico (proxy)", tipo: "percentual", casas: 1 },
     { id: "tsee_base_pequena", rotulo: "Menos de 50 famílias no CadÚnico", tipo: "texto", categorica: true },
     { id: "lpt_dom", rotulo: "Luz para Todos", tipo: "numero", unidade: "domicílios", casas: 0 },
@@ -1277,7 +1455,34 @@ export function conjuntosDoMunicipio(m: Pick<MunicipioT, "conj">, tabela: Record
 
 /* ================================================================ busca de entidades */
 
-export type EntidadeTerritorio = { id: string; rotulo: string; detalhe: string; sinonimos: string[]; tipo: TipoSelecao };
+export type EntidadeTerritorio = {
+  id: string;
+  rotulo: string;
+  detalhe: string;
+  sinonimos: string[];
+  tipo: TipoSelecao;
+  /** População do município, só para ordenar e para escrever ao lado da opção (não entra na busca). */
+  pop?: number | null;
+  populacao?: string;
+};
+
+/** População em poucas palavras para a opção da busca ("1,1 mi hab.", "52 mil hab.", "830 hab."). */
+export function textoPopulacao(pop: number | null | undefined): string | undefined {
+  if (pop === null || pop === undefined || !Number.isFinite(pop)) return undefined;
+  if (pop >= 1e6) return `${num(pop / 1e6, 1)} mi hab.`;
+  if (pop >= 1e3) return `${num(pop / 1e3, 0)} mil hab.`;
+  return `${num(pop, 0)} hab.`;
+}
+
+/**
+ * Resultados da busca com o nome exato primeiro (sem acento nem maiúscula) e, no resto, na ordem recebida: os municípios entram em
+ * `entidadesBusca` por população decrescente, então "Campinas" lista Campinas (SP) antes de Campinas do Piauí e "São Paulo" põe a capital na frente.
+ */
+export function ordenarResultadosBusca<E extends { rotulo: string }>(itens: readonly E[], consulta: string): E[] {
+  const norm = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  const q = norm(consulta);
+  return itens.map((e, i) => ({ e, i, exato: norm(e.rotulo) === q ? 0 : 1 })).sort((a, b) => a.exato - b.exato || a.i - b.i).map((x) => x.e);
+}
 
 /** Entidades buscáveis: submercados, UFs, distribuidoras e, depois de carregado o índice, municípios. */
 export function entidadesBusca(d: Pick<DadosExplorador, "submercados" | "ufs" | "distribuidoras">, municipios: readonly MunicipioT[] | null): EntidadeTerritorio[] {
@@ -1286,7 +1491,10 @@ export function entidadesBusca(d: Pick<DadosExplorador, "submercados" | "ufs" | 
   for (const u of d.ufs) out.push({ id: `uf:${u.uf}`, rotulo: u.nome ?? u.uf, detalhe: `UF ${u.uf}`, sinonimos: [u.uf], tipo: "uf" });
   for (const x of d.distribuidoras)
     out.push({ id: `dist:${x.id}`, rotulo: x.sigla, detalhe: `distribuidora · ${x.ufs}`, sinonimos: [x.nome ?? "", x.id, x.cnpj_formatado ?? ""], tipo: "dist" });
-  if (municipios) for (const m of municipios) out.push({ id: `mun:${m.ibge}`, rotulo: m.nome, detalhe: `município · ${m.uf}`, sinonimos: [m.ibge, m.uf], tipo: "mun" });
+  if (municipios)
+    // por população decrescente: nas homônimas e nas buscas por parte do nome, o município maior vem antes (o desempate da busca é a ordem recebida)
+    for (const m of [...municipios].sort((a, b) => (b.pop ?? -1) - (a.pop ?? -1)))
+      out.push({ id: `mun:${m.ibge}`, rotulo: m.nome, detalhe: `município · ${m.uf}`, sinonimos: [m.ibge, m.uf], tipo: "mun", pop: m.pop, populacao: textoPopulacao(m.pop) });
   return out;
 }
 
@@ -1295,21 +1503,254 @@ export function selecaoDeId(id: string): Selecao {
   return leitorSelecao.ler(id) ?? null;
 }
 
+/** Descrição de camada da gold sem o nome de campo do índice municipal entre parênteses ("(sm_estado 'fora_do_sin' no índice municipal)"). */
+export function descricaoCamada(descricao: string): string {
+  return descricao.replace(/\s*\([a-z]+(?:_[a-z]+)+ '[a-z_]+'[^)]*\)/g, "");
+}
+
+/**
+ * Texto que a base publicada escreve para quem audita, sem os nomes de campo e de estado do bastidor: "estado 1 (confirmado)", "provado_com_area_sem_carga",
+ * "fora_do_sin", "gold", "pipeline", o nome do serviço da EPE e as listas no formato do programa viram palavras comuns. "Provada" vira "conferida", a
+ * palavra que a página usa para o teste de consistência da carga em dois dias.
+ */
+export function textoLegivel(texto: string): string {
+  return texto
+    .replace(/vínculo com estado 1 \(confirmado\) ou 2 \(só pelo cadastro de MMGD\); estado 0 aparece com ressalva/g, "vínculo confirmado ou só pelo cadastro de MMGD; o vínculo sem confirmação aparece com ressalva")
+    .replace(/campo dist \(estado 1 ou 2\)/g, "vínculo confirmado ou só pelo cadastro de MMGD")
+    .replace(/estado 'provado' ou 'provado_com_area_sem_carga'/g, "submercado da UF conferido (por todas as áreas ou por uma delas)")
+    .replace(/com 'com_localidade_isolada'/g, "com localidade isolada")
+    .replace(/com 'fora_do_sin'/g, "fora do SIN")
+    .replace(/'provado_com_area_sem_carga'/g, "conferido por uma das áreas")
+    .replace(/\(area\.fora_do_sin\)/g, "(contagem à parte)")
+    .replace(/com parte_fora_do_sin,/g, "com parte da área fora do SIN,")
+    .replace(/\balternativas_que_fechariam_pelas_medias\b/g, "a lista de alternativas que fechariam pelas médias")
+    .replace(/\bprovad(a|o|as|os)\b/g, "conferid$1")
+    .replace(/\bgold de ([A-Za-zÀ-ÿ]+)/g, "base publicada de $1")
+    .replace(/\bna gold\b/g, "na base publicada")
+    .replace(/\bno pipeline\b/g, "na rotina de geração dos dados")
+    .replace(/\(serviço WMS_Webmap_EPE_Data\)/g, "(serviço de mapas da EPE)")
+    .replace(/\[((?:\('[^']*', '[^']*'\)(?:, )?)+)\]/g, (_m, pares: string) =>
+      Array.from(pares.matchAll(/\('([^']*)', '([^']*)'\)/g))
+        .map((x) => `${x[1]} lido como ${x[2]}`)
+        .join("; "),
+    )
+    .replace(/\[((?:'[^']*'(?:, )?)+)\]/g, (_m, itens: string) =>
+      Array.from(itens.matchAll(/'([^']*)'/g))
+        .map((x) => x[1])
+        .join(", "),
+    );
+}
+
+/**
+ * A evidência de um bloqueio como a base a escreve (um endereço do serviço consultado ou um caminho do repositório): o endereço vira o nome do
+ * servidor, e o caminho interno diz que é um relatório interno, não publicado no site.
+ */
+export function evidenciaLegivel(evidencia: string): { texto: string; href: string | null } {
+  if (/^https?:\/\//.test(evidencia)) {
+    try {
+      return { texto: `consulta ao serviço em ${new URL(evidencia).hostname}`, href: evidencia };
+    } catch {
+      return { texto: evidencia, href: null };
+    }
+  }
+  const rel = /^docs\/observatorios\/energia\/modulos\/(\w+)\.md, (.+)$/.exec(evidencia);
+  if (rel) return { texto: `relatório interno do módulo ${rel[1].charAt(0).toUpperCase()}${rel[1].slice(1)}, ${rel[2]} (não publicado no site)`, href: null };
+  return { texto: evidencia, href: null };
+}
+
+/** Qualidade da malha do IBGE como a gold a publica ("minima", "intermediaria") escrita em português. */
+export function textoQualidadeMalha(qualidade: string): string {
+  const ROTULO: Record<string, string> = { minima: "mínima, simplificada para desenhar", intermediaria: "intermediária", maxima: "máxima" };
+  return ROTULO[qualidade] ?? qualidade;
+}
+
+/* ================================================================ distribuidoras: o que falta e como se distribuem */
+
+/**
+ * Por que algumas distribuidoras ficam sem tarifa B1 residencial no quadro: a vigência anterior terminou e a seguinte ainda não consta no
+ * arquivo da ANEEL, a distribuidora foi incorporada por outra, ou o arquivo não tem linha para ela. Escrito a partir do motivo que a gold publica
+ * para cada uma; null quando todas têm tarifa.
+ */
+export function textoSemTarifa(dist: readonly Pick<LinhaDistribuidora, "tarifa" | "tarifa_motivo">[]): string | null {
+  const sem = dist.filter((d) => d.tarifa === null);
+  if (!sem.length) return null;
+  const encerrada = sem.filter((d) => /vigência encerrada/i.test(d.tarifa_motivo ?? "")).length;
+  const incorporada = sem.filter((d) => !/vigência encerrada/i.test(d.tarifa_motivo ?? "") && /incorporada/i.test(d.tarifa_motivo ?? "")).length;
+  const outras = sem.length - encerrada - incorporada;
+  const partes = [
+    encerrada ? `${inteiro(encerrada)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL` : "",
+    incorporada ? `${inteiro(incorporada)} ${incorporada === 1 ? "foi incorporada" : "foram incorporadas"} por outra distribuidora` : "",
+    outras ? `${inteiro(outras)} ${outras === 1 ? "não tem" : "não têm"} linha de tarifa residencial no arquivo` : "",
+  ].filter(Boolean);
+  return `${inteiro(sem.length)} das ${inteiro(dist.length)} distribuidoras do quadro ficam sem tarifa B1 residencial: ${partes.join("; ")}.`;
+}
+
+export type QuartisIndicador = {
+  id: string;
+  rotulo: string;
+  unidade: string;
+  casas: number;
+  n: number;
+  min: number | null;
+  p25: number | null;
+  mediana: number | null;
+  p75: number | null;
+  max: number | null;
+  /** Parcela, em %, das unidades consumidoras do quadro que as distribuidoras desta linha reúnem; null sem unidades consumidoras publicadas. */
+  cobertura_uc_pct: number | null;
+  /** Mediana em que cada distribuidora pesa as suas unidades consumidoras (o menor valor que reúne metade do peso); null sem o peso. */
+  mediana_uc: number | null;
+};
+
+/** Mediana ponderada: o menor valor em que o peso acumulado chega à metade do peso total. */
+export function medianaPonderada(pares: readonly { v: number; w: number }[]): number | null {
+  const p = pares.filter((x) => Number.isFinite(x.v) && Number.isFinite(x.w) && x.w > 0).sort((a, b) => a.v - b.v);
+  if (!p.length) return null;
+  const total = p.reduce((a, x) => a + x.w, 0);
+  let acc = 0;
+  for (const x of p) {
+    acc += x.w;
+    if (acc >= total / 2) return x.v;
+  }
+  return p[p.length - 1].v;
+}
+
+const sinalizadaPerdas = (d: Pick<LinhaDistribuidora, "perdas_sinal">) => d.perdas_sinal !== null && d.perdas_sinal !== SEM_SINAL_PERDAS;
+
+/**
+ * Como os indicadores do quadro de distribuidoras se distribuem entre elas: menor, quartis e maior, só entre as que têm o valor (quantil tipo 7, o
+ * mesmo do pipeline). Cada valor é o da área inteira da distribuidora; a distribuição não diz nada sobre um município. Cada distribuidora conta uma
+ * vez, seja qual for o tamanho; as duas últimas colunas mostram o outro lado: quantas unidades consumidoras as distribuidoras da linha reúnem e a
+ * mediana em que cada uma pesa as suas.
+ *
+ * As perdas ficam em linhas separadas pela energia sobre a qual a taxa foi calculada (injetada publicada, requerida ou mistura dos dois no ano), porque
+ * taxas de bases diferentes não formam uma distribuição só; as taxas que o módulo Perdas sinaliza (ano parcial, balanço que não fecha, valor fora de 0% a
+ * 100%) saem das linhas por base e vão para uma linha própria, a mesma exclusão que o módulo faz no total nacional.
+ */
+export function quartisDistribuidoras(dist: readonly LinhaDistribuidora[]): QuartisIndicador[] {
+  type Campo = { id: string; rotulo: string; unidade: string; casas: number; v: (d: LinhaDistribuidora) => number | null; entra?: (d: LinhaDistribuidora) => boolean };
+  const perdasPorBase = (base: BasePerdas, rotulo: string): Campo => ({
+    id: `perdas_${base}`,
+    rotulo,
+    unidade: "%",
+    casas: 2,
+    v: (d) => d.perdas_pct,
+    entra: (d) => !sinalizadaPerdas(d) && d.perdas_base === ROTULO_BASE_PERDAS[base],
+  });
+  const campos: Campo[] = [
+    { id: "tarifa", rotulo: "Tarifa B1 residencial, sem tributos", unidade: "R$/MWh", casas: 2, v: (d) => d.tarifa },
+    perdasPorBase("requerida", "Perdas totais sobre a energia requerida"),
+    perdasPorBase("publicada", "Perdas totais sobre a energia injetada publicada"),
+    perdasPorBase("mista", "Perdas totais sobre a energia injetada e a requerida no mesmo ano"),
+    {
+      id: "perdas_sem_base",
+      rotulo: "Perdas totais, base não registrada",
+      unidade: "%",
+      casas: 2,
+      v: (d) => d.perdas_pct,
+      entra: (d) => !sinalizadaPerdas(d) && d.perdas_pct !== null && !Object.values(ROTULO_BASE_PERDAS).includes(d.perdas_base ?? ""),
+    },
+    {
+      id: "perdas_sinalizadas",
+      rotulo: "Perdas totais com sinalização (ano parcial, balanço que não fecha ou valor fora de 0% a 100%), de qualquer base",
+      unidade: "%",
+      casas: 2,
+      v: (d) => d.perdas_pct,
+      entra: sinalizadaPerdas,
+    },
+    { id: "dec_h", rotulo: "DEC da distribuidora", unidade: "h", casas: 2, v: (d) => d.dec_h },
+    { id: "fec", rotulo: "FEC da distribuidora", unidade: "interrupções", casas: 2, v: (d) => d.fec },
+    { id: "tsee_pct", rotulo: "Residenciais com Tarifa Social", unidade: "%", casas: 2, v: (d) => d.tsee_pct },
+  ];
+  const ucTotal = dist.reduce((a, d) => a + (d.ucs ?? 0), 0);
+  return campos
+    .map((c) => {
+      const doCampo = dist.filter((d) => (c.entra ? c.entra(d) : true) && c.v(d) !== null);
+      const r = resumo(doCampo.map(c.v));
+      const comPeso = doCampo.filter((d) => d.ucs !== null && d.ucs > 0);
+      const peso = comPeso.reduce((a, d) => a + (d.ucs ?? 0), 0);
+      return {
+        id: c.id,
+        rotulo: c.rotulo,
+        unidade: c.unidade,
+        casas: c.casas,
+        n: r.n,
+        min: r.min,
+        p25: r.p25,
+        mediana: r.mediana,
+        p75: r.p75,
+        max: r.max,
+        cobertura_uc_pct: ucTotal > 0 && comPeso.length ? (100 * peso) / ucTotal : null,
+        mediana_uc: medianaPonderada(comPeso.map((d) => ({ v: c.v(d) as number, w: d.ucs as number }))),
+      };
+    })
+    .filter((q) => q.n > 0 || !q.id.startsWith("perdas_"));
+}
+
+/**
+ * A nota das perdas sob a tabela de quartis: sobre qual energia cada distribuidora calcula a taxa, quantas há em cada caso, a maior diferença entre a
+ * taxa na base da distribuidora e a mesma perda sobre a energia injetada publicada, e o que fica na linha das taxas sinalizadas.
+ */
+export function textoBasesDePerdas(dist: readonly LinhaDistribuidora[]): string {
+  const comPerdas = dist.filter((d) => d.perdas_pct !== null);
+  if (!comPerdas.length) return "Nenhuma distribuidora do quadro tem taxa de perdas nesta publicação.";
+  const sinalizadas = comPerdas.filter(sinalizadaPerdas);
+  const limpas = comPerdas.filter((d) => !sinalizadaPerdas(d));
+  const n = (b: BasePerdas) => limpas.filter((d) => d.perdas_base === ROTULO_BASE_PERDAS[b]).length;
+  const semBase = limpas.length - n("requerida") - n("publicada") - n("mista");
+  let maior: { sigla: string; taxa: number; pub: number; base: string } | null = null;
+  for (const d of limpas) {
+    if (d.perdas_pct === null || d.perdas_pct_pub === null) continue;
+    if (!maior || Math.abs(d.perdas_pct - d.perdas_pct_pub) > Math.abs(maior.taxa - maior.pub)) maior = { sigla: d.sigla, taxa: d.perdas_pct, pub: d.perdas_pct_pub, base: d.perdas_base ?? "" };
+  }
+  const dif = maior ? Math.abs(maior.taxa - maior.pub) : 0;
+  const taxas = sinalizadas.map((d) => d.perdas_pct as number);
+  const bases =
+    semBase === limpas.length
+      ? "A energia sobre a qual cada taxa foi calculada não foi lida do arquivo de perdas por distribuidora nesta publicação."
+      : `Cada distribuidora calcula a taxa sobre a energia que a ANEEL permite: a energia injetada publicada, a energia requerida (fornecida mais irregular mais perdas), onde o leiaute de 2024 do balanço deixou de fechar com a perda calculada pela fonte, ou uma mistura dos dois no mesmo ano. Por isso as perdas ficam em linhas separadas pela energia de referência (${inteiro(n("requerida"))} sobre a energia requerida, ${inteiro(n("publicada"))} sobre a injetada publicada e ${inteiro(n("mista"))} com os dois no mesmo ano${semBase ? `, ${inteiro(semBase)} sem o registro` : ""}), e juntá-las numa só distribuição misturaria bases diferentes.${
+          maior ? ` A diferença chega a ${num(dif, 1)} ${dif < 2 ? "ponto percentual" : "pontos percentuais"}: ${maior.sigla} tem ${num(maior.taxa, 2)}% sobre a ${maior.base} e ${num(maior.pub, 2)}% sobre a energia injetada publicada.` : ""
+        }`;
+  const sinal = sinalizadas.length
+    ? ` As ${inteiro(sinalizadas.length)} taxas que o módulo Perdas sinaliza (ano parcial, balanço que não fecha ou valor fora de 0% a 100%), de ${num(Math.min(...taxas), 2)}% a ${num(Math.max(...taxas), 2)}%, ficam numa linha à parte e fora das linhas por base, como o módulo as deixa fora do total nacional.`
+    : "";
+  return `${bases}${sinal}`;
+}
+
 /* ================================================================ recorte do painel (seção 7.2, item 3) */
+
+/**
+ * Por que o cadastro tem mais distribuidoras que a relação de municípios: as que não têm município na relação vigente. Quando
+ * todas estão inativas na gold, a causa é dita ("encerradas ou absorvidas"); com alguma ativa ou sem informação, só a contagem.
+ */
+function causaSemArea(ds: readonly Pick<DistribuidoraTerritorio, "area" | "ativa">[]): string {
+  const sem = ds.filter((d) => d.area.municipios === 0);
+  if (!sem.length) return "";
+  return sem.every((d) => d.ativa === false) ? `; as outras ${inteiro(sem.length)} foram encerradas ou absorvidas` : `; ${inteiro(sem.length)} sem município na relação`;
+}
 
 /** Universo do painel, todo tirado da gold. */
 export function textoUniverso(g: Pick<GoldTerritorio, "resumo" | "ufs" | "submercados" | "distribuidoras">): string {
   const comArea = g.distribuidoras.filter((d) => d.area.municipios > 0).length;
   return (
     `${inteiro(g.resumo.municipios)} municípios do IBGE, ${inteiro(g.ufs.length)} UFs, ${inteiro(g.submercados.length)} submercados, ` +
-    `${inteiro(comArea)} distribuidoras com município na relação (de ${inteiro(g.distribuidoras.length)} no cadastro), ` +
+    `${inteiro(comArea)} distribuidoras com município na relação (de ${inteiro(g.distribuidoras.length)} no cadastro${causaSemArea(g.distribuidoras)}), ` +
     `${inteiro(g.resumo.conjuntos_referenciados)} conjuntos elétricos e ${inteiro(g.resumo.usinas.total)} usinas do SIGA`
   );
 }
 
 /** Período do painel: as referências anuais e as diárias mais recentes, agrupadas por data; cada número traz a sua. */
-export function textoPeriodoPainel(g: Pick<GoldTerritorio, "referencias">): string {
+export function textoPeriodoPainel(g: Pick<GoldTerritorio, "referencias"> & Partial<Pick<GoldTerritorio, "submercados">>): string {
   const r = g.referencias;
+  // a estimativa de MMGD do ONS é mensal e vem do bloco de cada submercado, não das referências diárias
+  let mesMmgdOns: string | null = null;
+  for (const s of g.submercados ?? []) {
+    const b = s.indicadores.mmgd_ons;
+    if (b.disponivel) {
+      mesMmgdOns = b.periodo.fim;
+      break;
+    }
+  }
   const porData = new Map<string, string[]>();
   for (const [rotulo, data] of [
     ["tarifa vigente", r.tarifa_data],
@@ -1330,6 +1771,7 @@ export function textoPeriodoPainel(g: Pick<GoldTerritorio, "referencias">): stri
       ? [`perdas, DEC e FEC de ${r.perdas_ano ?? "sem data"}`]
       : [`perdas de ${r.perdas_ano ?? "sem data"}`, `DEC e FEC de ${r.qualidade_ano ?? "sem data"}`]),
     ...diarias,
-    "cada número traz a data da sua fonte",
+    ...(mesMmgdOns ? [`estimativa de MMGD do ONS de ${textoReferencia(mesMmgdOns)}`] : []),
+    "cada medida traz a data da sua fonte",
   ].join("; ");
 }

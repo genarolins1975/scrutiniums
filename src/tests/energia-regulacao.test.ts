@@ -10,18 +10,22 @@ import { RegulacaoIndisponivel } from "@/components/energia/RegulacaoPagina";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import {
+  ALCANCE_LIMITE,
   CAMPOS_LIMITE,
   COLUNAS_CONSULTAS,
   COLUNAS_LIMITES,
   COLUNAS_LINHA_TEMPO,
   FILTRO_LINHA_TEMPO_PADRAO,
+  NOME_LIMITE,
   PAINEIS_REGULACAO,
   abreviarAto,
   anoInicioHistorico,
+  avisoRevisaoAgenda,
   avisoToleranciaIpca,
   consultasNaData,
   contagemAgendaPorPainel,
   contagemPaineisAfetados,
+  contagemPorOrigem,
   contagemProcedimentos,
   contarSituacoes,
   defasagemAtas,
@@ -37,10 +41,14 @@ import {
   linhasConsultas,
   linhasLimites,
   linhasLinhaTempo,
+  limitesVigentes,
   linhasProcedimentos,
+  marcosDoAto,
   nomeAgenda,
   oQueMudouLimites,
+  orgaosDosEventos,
   ordenarConsultas,
+  paresRegraIpca,
   perguntaPainel,
   proximoPainel,
   respostaAgenda,
@@ -51,13 +59,19 @@ import {
   respostaProcedimentos,
   rotaPainel,
   rotuloCurtoEvento,
+  rotuloDownload,
+  semTravessao,
   situacaoSeConfirmada,
   temaCurto,
+  textoAnosAgenda,
+  textoAtosDoAno,
   textoConferenciaAcionamento,
   textoCoberturaFaixa,
   textoDefasagemEvento,
   textoJanela,
   textoReuniao,
+  textoVigenciaCurta,
+  vigenteEm,
 } from "@/lib/energia/regulacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import { faseAtual, hojeBrasilia, situacaoConsulta, type FaseConsulta, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
@@ -613,14 +627,30 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
       expect(h, id).toContain(`id="${id}-titulo"`);
       expect(h, id).toContain(esc(perguntaPainel(id)));
       expect(h, id).toContain(`data-resposta="${id}"`);
-      for (const parte of ["Período", "Universo", "Unidade", "Como ler", "O que não permite concluir", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados deste painel"]) {
+      // "Como ler" e "O que não permite concluir" foram fundidos a "Como interpretar" e "O que não é possível concluir"; o rodapé é o SeguirPainel compartilhado
+      for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar os dados"]) {
         expect(h, `${id}: ${parte}`).toContain(parte);
       }
+      for (const velha of ["Como ler", "O que não permite concluir", "Baixar os dados deste painel"]) expect(h, `${id}: ${velha}`).not.toContain(velha);
+      // a pergunta da página é o h1; o título do painel (h2) pergunta outra coisa e não repete o da página
+      const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(conteudo(h))?.[1].replace(/<[^>]+>/g, "") ?? "";
+      expect(h1, id).toBe(perguntaPainel(id));
+      const h2 = new RegExp(`<h2[^>]*id="${id}-titulo"[^>]*>([\\s\\S]*?)</h2>`).exec(conteudo(h))?.[1].replace(/<[^>]+>/g, "") ?? "";
+      expect(h2.length, `${id}: h2 do painel`).toBeGreaterThan(0);
+      expect(h2, `${id}: h2 do painel`).not.toBe(h1);
       expect(h, id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
       for (const p of PAINEIS_REGULACAO) expect(h, `${id} -> ${p.id}`).toContain(`href="${rotaPainel(p.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_REGULACAO.find((p) => p.id === id)!.rotulo}<`));
+      if (id === "p044") {
+        // a abertura não leva a faixa de irmãs: mostra as outras páginas como capítulos, sem repetir a própria, e o cruzamento com o PLD
+        expect(h, id).toContain('data-navegacao-local="capitulos"');
+        expect(h, id).not.toContain('data-navegacao-local="faixa"');
+        expect(h, id).toContain('href="/setor-eletrico/pld/limites"');
+      } else {
+        expect(h, id).toContain('data-navegacao-local="faixa"');
+        expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_REGULACAO.find((p) => p.id === id)!.rotulo}<`));
+      }
       expect(h, id).toContain(`href="${proximoPainel(id).rota}"`);
       expect(conteudo(h), id).not.toMatch(/em breve|em constru|em integra/i);
       // citações literais da fonte (<q> e os campos copiados do ato, da ata ou da portaria) ficam como estão; o texto do observatório não usa travessão
@@ -647,7 +677,10 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     for (const e of gold.linha_do_tempo.eventos) expect(h, e.id).toContain(`data-evento="${e.id}"`);
     expect(h).toContain('data-grafico="faixas-tempo"');
     expect(h).toContain("Efeito declarado pelo ato");
-    expect((h.match(/não estimado pelo observatório/g) ?? []).length).toBe(gold.linha_do_tempo.eventos.length);
+    // r8: o impacto estimado vazio é dito uma vez (na lista curta e na lista completa), não em um cartão por evento
+    expect((h.match(/não estimado pelo observatório/g) ?? []).length).toBe(0);
+    expect((h.match(/Sem impacto estimado nesta fonte/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    expect((h.match(/Sem impacto estimado nesta fonte/g) ?? []).length).toBeLessThanOrEqual(5);
     expect(h).toContain("Eventos da linha do tempo no recorte (tabela equivalente)");
     expect(h).toContain(esc(respostaLinhaTempo(gold.linha_do_tempo.eventos, gold.linha_do_tempo.eventos.length)));
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(4);
@@ -675,9 +708,117 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
     expect(h).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
     expect(h).toContain(`Consultas e audiências desde ${anoInicioHistorico(gold)}, por situação`);
-    expect(h).toContain("Decisões de abertura ainda sem resultado formal na ata");
+    expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
     expect(h).toContain("https://www.gov.br/aneel/pt-br/acesso-a-informacao/participacao-social/consultas-publicas");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
+  });
+
+  const dBR = (d: string) => d.split("-").reverse().join("/");
+  const trecho = (h: string, de: string, ate: string) => {
+    const i = h.indexOf(de);
+    expect(i, de).toBeGreaterThan(-1);
+    const j = h.indexOf(ate, i + de.length);
+    return h.slice(i, j < 0 ? undefined : j);
+  };
+
+  it("P044: a faixa traz os três limites vigentes antes do painel, e os dois tetos dizem a que se aplicam", () => {
+    const h = conteudo(html.p044);
+    const faixa = trecho(h, "data-faixa-metricas", 'id="p044"');
+    expect((faixa.match(/data-metrica=/g) ?? []).length).toBe(3);
+    for (const c of CAMPOS_LIMITE) expect(faixa, c).toContain(`aria-label="${NOME_LIMITE[c]}"`);
+    expect(faixa).toContain("vigência de 01/01/2026 a 31/12/2026");
+    // a faixa é fixa na data de referência e diz isso; o teto horário e o estrutural são objetos distintos
+    expect(faixa).toContain(`Valores vigentes em ${dBR(gold.data_referencia)}; não mudam com o ano escolhido no gráfico`);
+    for (const c of CAMPOS_LIMITE) expect(faixa, `alcance de ${c}`).toContain(`${ALCANCE_LIMITE[c].charAt(0).toUpperCase()}${ALCANCE_LIMITE[c].slice(1)}.`);
+    expect(ALCANCE_LIMITE.pld_max_estrutural).toContain("média diária");
+    expect(ALCANCE_LIMITE.pld_max_horario).toContain("numa hora");
+    expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(3);
+    // a resposta do painel fica depois das figuras (a faixa já traz os números)
+    expect(h).toContain("data-resposta-depois");
+  });
+
+  it("P044: a ficha dos atos do ano da data de referência separa publicação, início e fim da vigência em marcos", () => {
+    const h = conteudo(html.p044);
+    const ano = String(vigenteEm(gold.limites_pld.vigencias, gold.data_referencia)!.ano);
+    const detalhe = trecho(h, `data-detalhe-ano="${ano}"`, "</section>");
+    const atos = gold.limites_pld.atos.filter((a) => String(a.ano) === ano);
+    expect((detalhe.match(/data-ato="/g) ?? []).length).toBe(atos.length);
+    expect((detalhe.match(/data-marco="/g) ?? []).length).toBe(3 * atos.length);
+    for (const a of atos) {
+      expect(detalhe).toContain(`dateTime="${a.vigencia_inicio}"`);
+      if (a.data_publicacao) expect(detalhe).toContain(`dateTime="${a.data_publicacao}"`);
+    }
+  });
+
+  it("P045: a faixa de páginas irmãs abre a página, a pergunta é o h1 e o veredito abre o painel", () => {
+    const h = conteudo(html.p045);
+    expect(h).not.toContain("data-faixa-metricas");
+    expect(h.indexOf('data-navegacao-local="faixa"')).toBeLessThan(h.indexOf("<h1"));
+    expect(h.indexOf('id="p045"')).toBeLessThan(h.indexOf('data-resposta="p045"'));
+    expect(h.indexOf('data-resposta="p045"')).toBeLessThan(h.indexOf('data-grafico="faixas-tempo"'));
+    // os resumos do observatório não substituem o texto oficial
+    expect(h).toContain("não substituem o texto oficial e não são parecer jurídico");
+  });
+
+  it("P045: cada ato com publicação conferida tem dois marcos no gráfico, publicação vazada e vigência cheia; sem publicação, só a vigência", () => {
+    const h = html.p045;
+    for (const e of gold.linha_do_tempo.eventos) {
+      const m = new RegExp(`<g[^>]*data-faixa="${e.id}"[^>]*>([\\s\\S]*?)</g>`).exec(h);
+      expect(m, e.id).toBeTruthy();
+      const vazados = (m![1].match(/data-forma="vazado"/g) ?? []).length;
+      const vigencia = (m![1].match(/data-forma="(?:cheio|mes)"/g) ?? []).length;
+      expect(vazados, `${e.id}: publicação`).toBe(e.data_publicacao ? 1 : 0);
+      expect(vigencia, `${e.id}: vigência`).toBe(1);
+    }
+  });
+
+  it("P046: o veredito abre o painel e leva ao lado o número da data de referência com a ficha de prova", () => {
+    const h = conteudo(html.p046);
+    const ref = gold.consultas.data_referencia;
+    // a página é filha: a figura sobe e o número com a ficha divide a primeira linha do painel com o veredito
+    expect(h).not.toContain("data-faixa-metricas");
+    const iPainel = h.indexOf('id="p046"');
+    const iVeredito = h.indexOf('data-resposta="p046"');
+    expect(iVeredito).toBeGreaterThan(iPainel);
+    const abertura = trecho(h, "data-abertura-painel", 'aria-label="Filtros das consultas"');
+    expect(abertura).toContain('data-resposta="p046"');
+    expect((abertura.match(/Comprove este número/g) ?? []).length).toBe(1);
+    expect(abertura).toContain(`Contagem em ${dBR(ref)}, a data de referência da publicação`);
+    // o número é o da ficha de prova (contagem na data de referência), não o da data de leitura
+    const valor = new RegExp(`aria-label="Recebendo contribuições"[\\s\\S]*?tabular-nums[^>]*>(\\d+)`).exec(abertura)?.[1];
+    expect(valor).toBe(String(gold.evidencias.consultas_abertas!.valor_calculo));
+    // onde contribuir fica logo abaixo do gráfico, com o que a figura mostra
+    expect(h.indexOf("data-onde-contribuir")).toBeGreaterThan(h.indexOf('data-grafico="faixas-tempo"'));
+    // a ordem: veredito, depois o número, e só então os filtros, o gráfico e o recorte
+    expect(abertura.indexOf('data-resposta="p046"')).toBeLessThan(abertura.indexOf("Comprove este número"));
+    expect(iVeredito).toBeLessThan(h.indexOf('aria-label="Filtros das consultas"'));
+    expect(iVeredito).toBeLessThan(h.indexOf('data-grafico="faixas-tempo"'));
+    expect(iVeredito).toBeLessThan(h.indexOf(">Período<"));
+  });
+
+  it("P046: o gráfico diz que mostra parte do histórico e deixa baixar o histórico completo", () => {
+    const h = conteudo(html.p046);
+    const legenda = trecho(h, "data-legenda-figura", "</div>");
+    expect(legenda).toContain(`${gold.consultas.itens.length} consultas e audiências ${textoJanela(gold.consultas.janela_dias)}`);
+    expect(legenda).toContain(`histórico de ${gold.consultas.total_historico}`);
+    expect(legenda).toContain('href="/energia/series/regulacao_consultas.csv"');
+    expect(h.indexOf('data-grafico="faixas-tempo"')).toBeLessThan(h.indexOf("data-legenda-figura"));
+  });
+
+  it("P046: a Agenda aparece em Entender com resumo, gráfico por painel e aviso da atualização não lida; tabela e detalhe técnico ficam em Analisar", () => {
+    const h = conteudo(html.p046);
+    const abre = /<section[^>]*id="agenda-curta"[^>]*>/.exec(h)![0];
+    expect(abre).not.toContain("data-nivel");
+    const curta = trecho(h, 'id="agenda-curta"', 'id="agenda"');
+    expect(curta).toContain('data-grafico="barras"');
+    expect(curta).toContain('role="alert"');
+    expect(curta).toContain(esc(avisoRevisaoAgenda(gold.agenda)!));
+    expect(curta).not.toMatch(/HTTP Error|leis\.org|REGRAS_PAINEL|\.py/);
+    const analise = trecho(h, 'id="agenda"', 'id="historico"');
+    expect(/<section[^>]*id="agenda"[^>]*>/.exec(h)![0]).toContain('data-nivel="analisar"');
+    expect(analise).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
+    expect(analise).toContain(esc(gold.agenda.revisao.tentativa!.detalhe));
+    expect(analise).toContain(esc(gold.agenda.regra_paineis!));
   });
 
   it("todo link interno aponta para página existente, e toda âncora para um id que existe", () => {
@@ -724,6 +865,130 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
   it("o destino Regulação está publicado e marcado como integrado (publica números)", () => {
     expect(DESTINOS_NAVEGACAO.find((d) => d.slug === "regulacao")?.publicado).toBe(true);
     expect(MODULOS_ENERGIA.find((m) => m.slug === "regulacao")?.integrado).toBe(true);
+  });
+});
+
+describe.skipIf(!disponivel)("seletores da migração editorial da Regulação", () => {
+  const ato = (nome: string) => gold.limites_pld.atos.find((a) => a.ato === nome)!;
+
+  it("limites vigentes na data de referência: campo a campo, com ato, publicação e vigência em campos separados", () => {
+    const { vigencia, limites } = limitesVigentes(gold);
+    expect(vigencia).toEqual({ inicio: "2026-01-01", fim: "2026-12-31" });
+    expect(limites.map((l) => l.campo)).toEqual(CAMPOS_LIMITE);
+    const hoje = gold.resumo.limites_hoje;
+    for (const l of limites) {
+      expect(l.valor, l.campo).toBe(hoje[l.campo]);
+      expect(l.ato, l.campo).toBe("Despacho ANEEL nº 3.850/2025");
+      expect(l.publicacao, l.campo).toBe("2025-12-23");
+      expect([l.inicio, l.fim], l.campo).toEqual(["2026-01-01", "2026-12-31"]);
+    }
+    // fora da cobertura da série não há valor de reserva
+    expect(limitesVigentes({ ...gold, data_referencia: "2019-06-01" })).toEqual({ vigencia: null, limites: [] });
+  });
+
+  it("2022: o piso e os tetos vêm de atos distintos, cada um com a sua publicação", () => {
+    const { limites } = limitesVigentes({ ...gold, data_referencia: "2022-06-15" });
+    const por = Object.fromEntries(limites.map((l) => [l.campo, l]));
+    expect(por.pld_min).toMatchObject({ ato: "Resolução Homologatória ANEEL nº 2.994/2021", publicacao: "2021-12-20" });
+    expect(por.pld_max_horario).toMatchObject({ ato: "Despacho ANEEL nº 4.046/2021", publicacao: "2021-12-17" });
+    expect(por.pld_max_estrutural).toMatchObject({ ato: "Despacho ANEEL nº 4.046/2021", publicacao: "2021-12-17" });
+  });
+
+  it("marcos do ato: publicação, início e fim em ordem de data, com a publicação ausente dita e nunca preenchida", () => {
+    expect(marcosDoAto(ato("Despacho ANEEL nº 3.850/2025")).map((m) => [m.chave, m.data])).toEqual([
+      ["publicacao", "2025-12-23"],
+      ["inicio", "2026-01-01"],
+      ["fim", "2026-12-31"],
+    ]);
+    // REH nº 3.167/2022: publicada em 04/01/2023, depois do início da vigência (01/01/2023): a ordem é a real
+    expect(marcosDoAto(ato("Resolução Homologatória ANEEL nº 3.167/2022")).map((m) => m.chave)).toEqual(["inicio", "publicacao", "fim"]);
+    // REH nº 2.828/2020: o extrato não está acessível, então a publicação fica sem data
+    const sem = marcosDoAto(ato("Resolução Homologatória ANEEL nº 2.828/2020"));
+    expect(sem[0]).toMatchObject({ chave: "publicacao", data: null });
+    expect(sem[0].ausencia).toContain("não conferida");
+    expect(sem.slice(1).map((m) => m.data)).toEqual(["2021-01-01", "2021-12-31"]);
+    expect(JSON.stringify(sem)).not.toMatch(/2026-/);
+  });
+
+  it("texto dos atos do ano: um ato em 2026, dois em 2022 e em 2023, vazio sem ato, e a resposta do ano o contém", () => {
+    expect(textoAtosDoAno(gold, 2026)).toBe("Os três limites foram fixados pelo Despacho ANEEL nº 3.850/2025, com publicação no DOU em 23/12/2025; vigência de 01/01/2026 a 31/12/2026.");
+    expect(textoAtosDoAno(gold, 2022)).toContain("pela Resolução Homologatória ANEEL nº 2.994/2021");
+    expect(textoAtosDoAno(gold, 2022)).toContain("pelo Despacho ANEEL nº 4.046/2021");
+    expect(textoAtosDoAno(gold, 2023)).toContain("Retificação da Resolução Homologatória ANEEL nº 3.167/2022");
+    expect(textoAtosDoAno(gold, 2019)).toBe("");
+    for (const l of linhasLimites(gold)) expect(respostaLimites(gold, l.ano), String(l.ano)).toContain(textoAtosDoAno(gold, l.ano));
+  });
+
+  it("conferência pelo IPCA: o identificador e o rótulo de cada par são únicos, mesmo com dois atos no mesmo ano e campo", () => {
+    const pares = paresRegraIpca(gold);
+    expect(pares.length).toBeGreaterThan(0);
+    expect(new Set(pares.map((x) => x.id)).size).toBe(pares.length);
+    expect(new Set(pares.map((x) => x.rotulo)).size).toBe(pares.length);
+    // 2023 tem a REH e a retificação dela fixando os mesmos tetos
+    expect(pares.filter((x) => x.id.startsWith("2023:")).length).toBeGreaterThanOrEqual(4);
+    // os valores são os da conferência, sem mudança
+    const conf = gold.limites_pld.conferencias_detalhe.filter((c) => c.conferencia === "regra_ipca");
+    expect(pares.map((x) => x.valor)).toEqual(conf.map((c) => c.valor_ato));
+    expect(pares.map((x) => x.referencia)).toEqual(conf.map((c) => c.valor_esperado));
+  });
+
+  it("travessão copiado da fonte vira vírgula no texto do observatório, sem tocar no resto", () => {
+    expect(semTravessao("Otimização – TEO")).toBe("Otimização, TEO");
+    expect(semTravessao("Companhia – CEEE-D — filial")).toBe("Companhia, CEEE-D, filial");
+    expect(semTravessao("Metodologia de cálculo do PLD.")).toBe("Metodologia de cálculo do PLD.");
+    // intervalo escrito com hífen, sem espaços, não é separador de frase
+    expect(semTravessao("2026-2027")).toBe("2026-2027");
+    for (const a of gold.limites_em_revisao) expect(semTravessao(a.atividade)).not.toMatch(/[–—]/);
+  });
+
+  it("linha do tempo: órgãos emissores do mais ao menos frequente e contagem por origem que fecha com o total", () => {
+    const ev = gold.linha_do_tempo.eventos;
+    const orgaos = orgaosDosEventos(ev);
+    expect(orgaos.length).toBeGreaterThan(0);
+    expect(new Set(orgaos).size).toBe(orgaos.length);
+    expect(new Set(orgaos)).toEqual(new Set(ev.map((e) => e.orgao)));
+    const n = (o: string) => ev.filter((e) => e.orgao === o).length;
+    for (let i = 1; i < orgaos.length; i++) expect(n(orgaos[i - 1])).toBeGreaterThanOrEqual(n(orgaos[i]));
+    const { atos, registros } = contagemPorOrigem(ev);
+    expect(atos + registros).toBe(ev.length);
+    expect(atos).toBe(ev.filter((e) => e.origem === "curadoria").length);
+  });
+
+  it("P046: anos e nome da agenda saem da portaria, e o aviso à vista diz quando a atualização não foi lida", () => {
+    expect(textoAnosAgenda(gold.agenda)).toBe("2026 e 2027");
+    expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
+    expect(textoAnosAgenda({ por_ano: {}, itens: [] })).toBeNull();
+    expect(nomeAgenda({ por_ano: {}, itens: [] })).toBe("Agenda Regulatória da ANEEL");
+    expect(textoAnosAgenda({ por_ano: { "2026": 3 }, itens: [] })).toBe("2026");
+    const r = gold.agenda.revisao;
+    expect(r.atualizada_por && !r.texto_lido).toBeTruthy();
+    const aviso = avisoRevisaoAgenda(gold.agenda)!;
+    expect(aviso).toContain(r.atualizada_por!);
+    expect(aviso).toContain("não pôde ser lido");
+    expect(aviso).toContain("podem ter mudado");
+    expect(aviso).not.toMatch(/HTTP|403|https?:/);
+    // texto lido ou sem atualização: sem aviso, e a nota volta à ressalva do ano
+    const lida = { ...gold.agenda, revisao: { ...r, texto_lido: true } };
+    expect(avisoRevisaoAgenda(lida)).toBeNull();
+    expect(avisoRevisaoAgenda({ ...gold.agenda, revisao: { ...r, atualizada_por: null } })).toBeNull();
+    expect(avisoRevisaoAgenda({ ...gold.agenda, disponivel: false })).toBeNull();
+  });
+
+  it("vigência curta para a linha de contexto: ano cheio em poucas palavras, trecho menor com as duas datas", () => {
+    expect(textoVigenciaCurta("2026-01-01", "2026-12-31")).toBe("vigência em 2026");
+    expect(textoVigenciaCurta("2026-03-01", "2026-12-31")).toBe("vigência de 01/03/2026 a 31/12/2026");
+    expect(textoVigenciaCurta("2025-07-01", "2026-06-30")).toBe("vigência de 01/07/2025 a 30/06/2026");
+    // a data de referência da gold cai num ano cheio, e as duas datas inteiras seguem na nota da faixa
+    const { vigencia } = limitesVigentes(gold);
+    expect(textoVigenciaCurta(vigencia!.inicio, vigencia!.fim)).toBe("vigência em 2026");
+    expect(textoAtosDoAno(gold, 2026)).toContain("vigência de 01/01/2026 a 31/12/2026");
+  });
+
+  it("rótulo do arquivo para baixar: parênteses viram vírgula, o intervalo de anos ganha 'a' e o formato fecha o rótulo", () => {
+    expect(rotuloDownload("Consultas e audiências públicas (histórico)")).toBe("Consultas e audiências públicas, histórico (CSV)");
+    expect(rotuloDownload("Agenda Regulatória 2026-2027")).toBe("Agenda Regulatória 2026 a 2027 (CSV)");
+    expect(rotuloDownload("Linha do tempo")).toBe("Linha do tempo (CSV)");
+    for (const d of gold.downloads) expect(rotuloDownload(d.rotulo), d.rotulo).not.toMatch(/\)\s*\(|\d-\d|[–—]/);
   });
 });
 

@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
-import { RedeAuditoria, RedeAviso, RedeDicionarios, RedeDocumentos, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { RedeAviso, RedeCapitulos, RedeDatas, RedeDicionarios, RedeDocumentos, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
 import { RedeRestricoes } from "@/components/energia/RedeRestricoes";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { COLUNAS_BUSCA, ROTULO_REGRA, linhasBuscaLimites, mesesEntre, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade } from "@/lib/energia/rede";
+import { COLUNAS_BUSCA, ROTULO_REGRA, linhasBuscaLimites, medidasRestricoes, mesesEntre, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade } from "@/lib/energia/rede";
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
@@ -37,33 +39,118 @@ export default function RedeRestricoesPage() {
   const defasagemAtls = r.atls.ultimo_mes ? mesesEntre(r.atls.ultimo_mes, mesProc) : null;
   // regras de contagem citadas do documento (trechos conferidos no arquivo), nunca reescritas à mão
   const trechosSubmodulo = r.documentos.ons_submodulo_9_1.trechos.filter((t) => t.confere && t.id !== "atls_definicao").map((t) => t.texto);
+  // a faixa lê o mesmo arquivo do ATLS do gráfico de barras, da tabela e da exportação
+  const m = medidasRestricoes(r);
+  const fichaMaisHoras = m.maisHoras ? (ev[`atls_12m.${m.maisHoras.fluxo}`] ?? null) : null;
+  const u12 = r.interrupcoes.ultimos_12_meses;
+  const oQueMudou = (
+    <>
+      {atual.texto}{" "}
+      {defasagemAtls !== null
+        ? `O ATLS é mensal: o último mês publicado (${mesAno(r.atls.ultimo_mes!)}) está ${defasagemAtls === 1 ? "um mês" : `${defasagemAtls} meses`} antes do mês do processamento.`
+        : "O arquivo do ATLS não trouxe mês publicado."}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      O ONS publica o ATLS como fração do tempo dentro da faixa e as horas fora dela; o painel soma as horas dos 12 meses publicados mais recentes. Pelo Submódulo 9.1 dos
+      Procedimentos de Rede: {trechosSubmodulo.map((t) => `“${t}”`).join("; ")}. As siglas dos fluxos são do ONS; a definição aparece só quando conferida em documento público.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Quanto de cada fronteira estava ocupado: nenhum percentual de utilização é calculado, e capacidade nominal de linha não substitui limite de transferência entre regiões. O
+      ATLS não diz o valor do limite nem a folga; um corte de carga não prova limite de intercâmbio.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
+          siglas={["SIN", "ONS", "CCEE", "ATLS"]}
           rotulo="Rede · Restrições publicadas"
           titulo={perguntaPainel("p030")}
+          lead="Horas em que fluxos acompanhados pelo ONS ficaram acima do limite estabelecido (indicador ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga."
+          recorte={`${m.fluxosAcima ? `ATLS de ${m.fluxosAcima.periodo}` : "ATLS"} · cortes de carga de ${dataBR(u12.inicio)} a ${dataBR(u12.fim)} · horas e MWh`}
+          fonte="ONS, ATLS e Interrupção de Carga"
           referencia={
             <>
               ONS, indicador ATLS até {r.atls.ultimo_mes ? mesAno(r.atls.ultimo_mes) : "sem dado"} e interrupções de carga até {dataBR(r.interrupcoes.fim)}; processado em{" "}
               {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <RedeDatas
+              itens={[
+                { rotulo: "Indicador ATLS (mensal)", texto: r.atls.ultimo_mes ? `até ${mesAno(r.atls.ultimo_mes)}` : null, natureza: g.proveniencia.atls.natureza },
+                { rotulo: "Cortes de carga", texto: `até ${dataBR(r.interrupcoes.fim)}`, natureza: g.proveniencia.interrupcoes.natureza },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={3}
+              rotulo="Fluxos acima do limite em 12 meses e energia não suprida em cortes de carga"
+              nota="Horas acima do limite e cortes de carga são as evidências públicas de limitação; nenhum percentual de utilização é calculado: os limites operativos de cada fronteira não são públicos."
+            >
+              {m.fluxosAcima && (
+                <Numero
+                  variante="faixa"
+                  rotulo="Fluxos acompanhados que passaram algum tempo acima do limite em 12 meses"
+                  natureza="CALCULADO"
+                  valor={m.fluxosAcima.valor}
+                  formato="num"
+                  casas={0}
+                  unidade={`de ${m.fluxosAcima.de} fluxos`}
+                  periodo={m.fluxosAcima.periodo}
+                  cor="var(--cor-energia)"
+                  nota="Fluxos publicados no último mês do arquivo do ATLS."
+                />
+              )}
+              {m.maisHoras && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Mais horas acima do limite em 12 meses: ${m.maisHoras.nome}`}
+                  natureza="CALCULADO"
+                  valor={fichaMaisHoras ? undefined : m.maisHoras.horas}
+                  evidencia={fichaMaisHoras}
+                  casas={1}
+                  unidade="h"
+                  periodo={m.maisHoras.periodo}
+                  cor="var(--cor-energia)"
+                  nota={`Sigla do ONS: ${m.maisHoras.fluxo}.`}
+                  endereco={`${rotaPainel("p030")}#p030`}
+                />
+              )}
+              <Numero
+                variante="faixa"
+                rotulo="Energia não suprida em cortes de carga, 12 meses"
+                natureza="CALCULADO"
+                evidencia={ev.ens_12m ?? null}
+                casas={1}
+                periodo={`${dataBR(u12.inicio)} a ${dataBR(u12.fim)}`}
+                cor="var(--serie-5)"
+                nota={`${num(u12.registros, 0)} registros de corte em ${num(u12.perturbacoes, 0)} perturbações (uma perturbação pode ter mais de um registro).`}
+                endereco={`${rotaPainel("p030")}#p030`}
+              />
+            </FaixaMetricas>
+          }
         >
-          A pergunta original era se o fluxo de cada fronteira chegou ao seu limite. Os limites operativos de intercâmbio e as suas vigências não são públicos em formato que
-          permita comparar com o fluxo de cada hora, então este painel responde a pergunta que os dados públicos sustentam: quando o ONS publicou evidência de limitação, pelo tempo
-          em que fluxos acompanhados ficaram acima do limite e pelos cortes de carga.
+          Os limites operativos de intercâmbio e as suas vigências não são públicos em formato que permita compará-los com o fluxo de cada hora; por isso este painel não diz
+          se uma fronteira estava no limite. Ele mostra a evidência de limitação que o ONS publica: o tempo em que fluxos acompanhados pelo indicador{" "}
+          <Termo slug="atls">ATLS</Termo> (Atendimento aos Limites Sistêmicos) ficaram acima do limite estabelecido, e os cortes de carga, que são registros de interrupção do
+          atendimento, com a energia não suprida, isto é, a que deixou de ser entregue.
         </CabecalhoModulo>
         <RedeNavegacao atual="p030" />
         <ModoProfundidade>
           <Bloco id="restricoes">
             <PainelEvidencia
               id="p030"
-              pergunta={perguntaPainel("p030")}
-              subtitulo="Horas acima do limite sistêmico (ATLS) e cortes de carga · horas e MWh"
+              pergunta="Horas acima do limite e cortes de carga publicados"
+              subtitulo="Horas acima do limite sistêmico (ATLS, Atendimento aos Limites Sistêmicos) e cortes de carga · horas e MWh"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -71,49 +158,15 @@ export default function RedeRestricoesPage() {
                   mede energia que deixou de chegar ao consumidor. São as evidências públicas de limitação que existem sem os limites de cada fronteira.
                 </>
               }
-              oQueMudou={
-                <>
-                  {atual.texto}{" "}
-                  {defasagemAtls !== null
-                    ? `O ATLS é mensal: o último mês publicado (${mesAno(r.atls.ultimo_mes!)}) está ${defasagemAtls === 1 ? "um mês" : `${defasagemAtls} meses`} antes do mês do processamento.`
-                    : "O arquivo do ATLS não trouxe mês publicado."}
-                </>
-              }
-              comoInterpretar={
-                <>
-                  O ONS publica o ATLS como fração do tempo dentro da faixa e as horas fora dela; o painel soma as horas dos 12 meses publicados mais recentes. Pelo Submódulo 9.1
-                  dos Procedimentos de Rede: {trechosSubmodulo.map((t) => `“${t}”`).join("; ")}. As siglas dos fluxos são do ONS; a definição aparece só quando conferida em
-                  documento público.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Quanto de cada fronteira estava ocupado: nenhum percentual de utilização é calculado, e capacidade nominal de linha não substitui limite de transferência entre
-                  regiões. O ATLS não diz o valor do limite nem a folga; um corte de carga não prova limite de intercâmbio.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={provenienciaLegivel(g.proveniencia.atls)}
               complementares={[{ rotulo: "Interrupções de carga e energia não suprida", p: provenienciaLegivel(g.proveniencia.interrupcoes) }]}
             >
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
-                <div className="space-y-3 border border-dashed border-linha p-4">
-                  <p className="rotulo text-mineral">Limites operativos de intercâmbio: bloqueio documentado (achado A06)</p>
-                  <p className="text-sm leading-relaxed text-carvao">{r.limites.conclusao}</p>
-                  <p className="text-sm text-carvao-muted">Estado do achado: {a6.status}.</p>
-                  <TabelaInterativa
-                    titulo="Onde os limites foram procurados e o que se encontrou"
-                    colunas={COLUNAS_BUSCA}
-                    linhas={linhasBuscaLimites(r.limites.busca)}
-                    chaveLinha="id"
-                    colunaRotulo="onde"
-                    fonte="Busca do observatório em fontes públicas do ONS e da CCEE"
-                    versao={versao}
-                    nomeArquivo="rede-busca-limites"
-                    chaveUrl="bl"
-                  />
-                </div>
-
                 <RedeRestricoes
                   restricoes={{ atls: r.atls, interrupcoes: r.interrupcoes }}
                   evidencias={evAtls}
@@ -122,31 +175,41 @@ export default function RedeRestricoesPage() {
                   fonteAtls="ONS, Indicadores de confiabilidade da rede básica: ATLS"
                   fonteInterrupcoes="ONS, Interrupção de Carga"
                   versao={versao}
-                  destaques={
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <Numero
-                        rotulo="Energia não suprida em cortes de carga, 12 meses"
-                        natureza="CALCULADO"
-                        evidencia={ev.ens_12m ?? null}
-                        casas={1}
-                        tamanho="medio"
-                        cor="var(--cor-energia)"
-                        nota={`${num(r.interrupcoes.ultimos_12_meses.registros, 0)} registros em ${num(r.interrupcoes.ultimos_12_meses.perturbacoes, 0)} perturbações.`}
-                        endereco={`${rotaPainel("p030")}#p030`}
+                  limites={
+                    <div className="space-y-2 border border-dashed border-linha p-4">
+                      <p className="rotulo text-mineral">Limites operativos de intercâmbio: sem fonte aberta</p>
+                      <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{r.limites.conclusao}</p>
+                    </div>
+                  }
+                  limitesDetalhe={
+                    <div data-nivel="analisar" className="space-y-3 border-l-2 border-linha pl-4">
+                      <p className="text-sm text-carvao-muted">Estado da verificação dos limites operativos: {a6.status}.</p>
+                      <TabelaInterativa
+                        titulo="Onde os limites foram procurados e o que se encontrou"
+                        colunas={COLUNAS_BUSCA}
+                        linhas={linhasBuscaLimites(r.limites.busca)}
+                        chaveLinha="id"
+                        colunaRotulo="onde"
+                        fonte="Busca do observatório em fontes públicas do ONS e da CCEE"
+                        versao={versao}
+                        nomeArquivo="rede-busca-limites"
+                        chaveUrl="bl"
                       />
                     </div>
                   }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  aposPrincipal={<RedeCapitulos atual="p030" />}
                 />
 
-                <RedeAuditoria id="documentos" titulo="Documentos públicos do ONS: trechos conferidos">
+                <SecaoDoPainel id="documentos" nivel="auditar" titulo="Documentos públicos do ONS: trechos conferidos">
                   <p className="text-sm text-carvao-muted">
                     Direitos reservados ao ONS: só trechos citados, cada um conferido literalmente no arquivo baixado. O limite citado no relatório técnico depende da
                     configuração da rede e não é série com vigência; por isso não é comparado com o fluxo de nenhuma hora.
                   </p>
                   <RedeDocumentos documentos={[r.documentos.ons_submodulo_9_1, r.documentos.ons_pel_2019_2020, r.documentos.ons_rt_dpl_0131_2023]} />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="dicionarios-restricoes" titulo="Dicionários de dados: ATLS, interrupções e intercâmbio">
+                <SecaoDoPainel id="dicionarios-restricoes" nivel="auditar" titulo="Dicionários de dados: ATLS, interrupções e intercâmbio">
                   <p className="text-sm text-carvao-muted">
                     Unidade do ATLS lida no arquivo: {r.atls.unidade_publicada} (maior valor lido {num(r.atls.maior_valor_lido, 3)}, menor {num(r.atls.menor_valor_lido, 3)}). O
                     painel usa as horas acima do limite, que não dependem dessa leitura.
@@ -161,12 +224,12 @@ export default function RedeRestricoesPage() {
                       limites com vigência.
                     </p>
                   )}
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
-                <RedeAuditoria id="metodologia-a06" titulo="Correção pedida na página de metodologia">
+                <SecaoDoPainel id="metodologia-a06" nivel="auditar" titulo="Nota de revisão sobre a página de metodologia">
                   <p className="text-sm text-carvao-muted">{a6.correcao_metodologia}</p>
                   <RedeRegras regras={[{ rotulo: ROTULO_REGRA.limites, texto: g.regras.limites }]} />
-                </RedeAuditoria>
+                </SecaoDoPainel>
 
                 <RedeSeguir ancora="p030" proximo={{ href: `${rotaPainel("p031")}#p031`, pergunta: perguntaPainel("p031") }} downloads={downloads} />
               </div>

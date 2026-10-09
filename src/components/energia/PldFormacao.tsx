@@ -28,9 +28,9 @@ const DESTINO_EXTRA: Record<string, string> = { liquidacao: "Contabilização e 
 
 function Estado({ estado }: { estado: "CONFERIDO" | "PENDENTE" }) {
   return estado === "CONFERIDO" ? (
-    <span className="rotulo !text-[0.62rem] text-sucesso">● conferida no documento</span>
+    <span className="rotulo !text-xs text-sucesso">● conferida no documento</span>
   ) : (
-    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo !text-xs text-aviso">○ conferência documental pendente</span>
   );
 }
 
@@ -63,7 +63,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
         } ${largo ? "md:items-center md:text-center" : ""}`}
       >
         <span className="text-sm font-medium leading-snug text-carvao">{n.titulo}</span>
-        <span className={`rotulo !text-[0.62rem] ${ativo ? "text-carvao-muted" : "text-mineral"}`}>
+        <span className={`rotulo !text-xs ${ativo ? "text-carvao-muted" : "text-mineral"}`}>
           {n.sigla ? `${n.sigla} · ` : ""}
           {pend ? "ligação pendente" : "ligações conferidas"}
         </span>
@@ -74,7 +74,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
   const seta = (rotulo?: string) => (
     <div className="flex items-center justify-center gap-2 py-1.5 text-mineral" aria-hidden="true">
       <span className="text-lg leading-none">↓</span>
-      {rotulo && <span className="rotulo !text-[0.62rem]">{rotulo}</span>}
+      {rotulo && <span className="rotulo !text-xs">{rotulo}</span>}
     </div>
   );
 
@@ -87,7 +87,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
           <span aria-hidden="true" className="text-mineral">→</span>
           {botao("reservatorios")}
         </div>
-        <p className="rotulo mt-3 text-center !text-[0.62rem] text-mineral" aria-hidden="true">+ junto com</p>
+        <p className="rotulo mt-3 text-center !text-xs text-mineral" aria-hidden="true">+ junto com</p>
         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
           {botao("carga")}
           {botao("renovaveis")}
@@ -134,7 +134,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
           </>
         )}
 
-        <p className="rotulo mt-4 text-mineral">Estado atual</p>
+        <p className="rotulo mt-4 text-mineral">Último dado publicado</p>
         {atual.estado ? (
           <div className="mt-1 text-sm leading-relaxed text-carvao">
             <p>{atual.estado.texto}</p>

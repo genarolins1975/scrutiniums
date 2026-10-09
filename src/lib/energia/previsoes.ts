@@ -10,14 +10,18 @@
  * módulo também é importado por componentes cliente (a leitura do CSV no build
  * fica em previsoes-arquivos.ts).
  */
+import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
-import type { Submercado } from "./tipos";
+import type { ModelosGold, Proveniencia, Submercado } from "./tipos";
 import type {
+  Apuracao,
   CelulaAtual,
   CodigoModelo,
+  EstadoModelo,
   Ficha,
+  Frequencia,
   Horizonte,
   LinhaMetrica,
   PrevisoesDesempenhoGold,
@@ -36,12 +40,12 @@ export type PainelPrevisoes = { id: IdPainelPrevisoes; codigo: string; rotulo: s
 
 /**
  * Dois painéis por página: a previsão atual e o arquivo de emissões em /previsoes
- * (o que se prevê hoje e o que foi registrado antes do resultado), o registro de
+ * (o que se prevê na rodada mais recente e o que foi registrado antes do resultado), o registro de
  * modelos e o desempenho em /modelos (como cada número é calculado e se ele supera
  * as referências simples). A ordem da lista é a da navegação.
  */
 export const PAINEIS_PREVISOES: PainelPrevisoes[] = [
-  { id: "p013", codigo: "P013", rotulo: "Previsão atual", rota: ROTA_PREVISOES, pergunta: "Quais os preços possíveis nos próximos períodos?" },
+  { id: "p013", codigo: "P013", rotulo: "Rodada mais recente", rota: ROTA_PREVISOES, pergunta: "Quais os preços possíveis nos próximos períodos?" },
   { id: "p015", codigo: "P015", rotulo: "Arquivo de emissões", rota: ROTA_PREVISOES, pergunta: "O que foi previsto antes do resultado?" },
   { id: "p014", codigo: "P014", rotulo: "Registro de modelos", rota: ROTA_MODELOS, pergunta: "Como cada previsão foi calculada?" },
   { id: "p016", codigo: "P016", rotulo: "Desempenho e calibração", rota: ROTA_MODELOS, pergunta: "O modelo supera referências simples?" },
@@ -92,6 +96,14 @@ const ESTADOS_CALIBRACAO: Record<string, string> = {
 };
 export const rotuloCalibracao = (s: string | null | undefined) => (s ? ESTADOS_CALIBRACAO[s] ?? s : "sem estado registrado");
 
+/**
+ * Frases escritas pelo registro às vezes trazem o código do estado de calibração em maiúsculas ("está CALIBRADO"). No texto de leitura
+ * entra o rótulo em palavras ("está calibrado"); o resto da frase fica como foi escrito.
+ */
+export function semCodigoDeEstado(texto: string): string {
+  return texto.replace(/\b(NAO_CALIBRADO_NO_PILOTO|AMOSTRA_INSUFICIENTE|DESCALIBRADO|CALIBRADO|SEM_AVALIACAO)\b/g, (c) => ESTADOS_CALIBRACAO[c] ?? c);
+}
+
 const ESTADOS_MODELO: Record<string, string> = { PESQUISA: "pesquisa", VALIDACAO: "validação", PRODUCAO: "produção", APOSENTADO: "aposentado" };
 export const rotuloEstadoModelo = (s: string) => ESTADOS_MODELO[s] ?? s;
 
@@ -102,7 +114,7 @@ const TIPOS: Record<string, string> = {
 };
 export const rotuloTipo = (s: string) => TIPOS[s] ?? s;
 
-/** Motivos de célula sem número gravados pela rodada (pipeline/energia/previsoes/emissao.py). */
+/** Motivos de célula sem número gravados pela rodada de previsão (emissao.py, no módulo de previsões). */
 export const MOTIVOS: Record<string, string> = {
   SEM_PLD_CAPTURADO_ATE_O_CORTE: "nenhum PLD do período exigido havia sido capturado até o corte",
   SEM_PERIODO_ELEGIVEL_CAPTURADO_ATE_O_CORTE: "nenhum período elegível do PLD estava capturado até o corte",
@@ -116,8 +128,8 @@ export const textoMotivo = (m: string | null | undefined) => (m ? MOTIVOS[m] ?? 
 
 export const ALERTAS: Record<string, string> = {
   ATRASADO_APOS_08H: "emitida depois do prazo das 08h00",
-  EXECUCAO_MANUAL: "execução manual, fora do agendamento",
-  CODIGO_NAO_COMMITADO: "código com alterações fora de commit",
+  EXECUCAO_MANUAL: "rodada manual, fora do horário agendado",
+  CODIGO_NAO_COMMITADO: "emitida com uma versão do código ainda não registrada",
   LIMITE_PROVISORIO: "faixa de preço provisória (sem ato do ano da entrega)",
   AJUSTADA_AO_LIMITE: "previsão ajustada ao limite de preço",
   ENTREGA_COM_HORAS_JA_PUBLICADAS: "entrega com horas já publicadas no corte",
@@ -207,6 +219,13 @@ export function textoEmissao(r: { emitido_em: string; atraso_min: number | null;
   return `${base}, ${num(r.atraso_min, 0)} minutos depois do prazo das 08h00`;
 }
 
+/** Emissão da rodada em palavras de leitor: o modo e se foi depois do prazo das 08h00, sem os minutos de atraso (que ficam em Analisar). */
+export function textoEmissaoLeitor(r: { atraso_min: number | null; modo: string; prazo: string | null }): string {
+  const modo = r.modo === "agendada" ? "pelo agendamento" : r.modo === "manual" ? "manualmente" : `(${r.modo})`;
+  if (r.prazo === null || r.atraso_min === null) return `emitida ${modo}, sem prazo registrado`;
+  return r.atraso_min <= 0 ? `emitida ${modo}, dentro do prazo das 08h00` : `emitida ${modo}, depois do prazo das 08h00`;
+}
+
 /**
  * Defasagem da rodada mais recente em relação ao último dia cujo prazo já passou
  * na verificação da gold (rotina.dias_vencidos_ate): 0 quando a rodada é desse dia.
@@ -242,16 +261,30 @@ export type LinhaGrade = {
   motivo: string;
   forecast_id: string;
   evidencia: string | null;
+  /** Primeiro dia fora da entrega (AAAA-MM-DD): o realizado só existe a partir dele. */
+  termina: string | null;
+  /** Média do PLD da entrega, quando ela já terminou e as horas estão publicadas; null enquanto a entrega não termina. */
+  realizado: number | null;
+  /** Previsão menos realizado (R$/MWh); null sem realizado. */
+  erro: number | null;
 };
 
-/** Uma linha por célula da grade 4 × 7, na ordem submercado (SE, S, NE, N) e horizonte (W1 a M3). */
-export function linhasGrade(celulas: readonly CelulaAtual[]): LinhaGrade[] {
+/**
+ * Uma linha por célula da grade 4 × 7, na ordem submercado (SE, S, NE, N) e horizonte (W1 a M3). Com as apurações do
+ * acompanhamento (`prospectivo.apuracoes`), cada linha leva também o realizado e o erro da própria célula, ligados pelo
+ * identificador; sem elas, os dois ficam null (a entrega ainda não terminou).
+ */
+export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly Pick<Apuracao, "forecast_id" | "realizado" | "erro">[] = []): LinhaGrade[] {
   const ordem = (c: CelulaAtual) => SUBMERCADOS.indexOf(c.submercado) * 10 + HORIZONTES.indexOf(c.horizonte);
+  const apurada = new Map(apuracoes.map((a) => [a.forecast_id, a]));
   return [...celulas]
     .sort((a, b) => ordem(a) - ordem(b))
     .map((c) => {
       const d = diasDaEntrega(c.entrega);
       return {
+        termina: fimDaEntrega(c.entrega.id),
+        realizado: apurada.get(c.forecast_id)?.realizado ?? null,
+        erro: apurada.get(c.forecast_id)?.erro ?? null,
         id: `${c.horizonte}:${c.submercado}`,
         submercado: c.submercado,
         sm: CURTO_SM[c.submercado] ?? c.submercado,
@@ -278,6 +311,7 @@ export function linhasGrade(celulas: readonly CelulaAtual[]): LinhaGrade[] {
     });
 }
 
+/** O identificador técnico de cada célula (forecast_id) fica no CSV do arquivo de emissões e no detalhe em Auditar, não na tabela de Entender. */
 export const COLUNAS_GRADE: ColunaTabela[] = [
   { id: "sm", rotulo: "Submercado", tipo: "texto", categorica: true },
   { id: "horizonte", rotulo: "Horizonte", tipo: "texto", categorica: true },
@@ -296,7 +330,9 @@ export const COLUNAS_GRADE: ColunaTabela[] = [
   { id: "periodo_fim", rotulo: "Período usado: fim", tipo: "data" },
   { id: "fracao_conhecida", rotulo: "Fração já publicada no corte", tipo: "percentual", casas: 0 },
   { id: "motivo", rotulo: "Motivo sem número", tipo: "texto" },
-  { id: "forecast_id", rotulo: "Identificador", tipo: "texto" },
+  { id: "realizado", rotulo: "Realizado", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "erro", rotulo: "Erro (previsão menos realizado)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "termina", rotulo: "Entrega termina em", tipo: "data", nivel: "analisar" },
 ];
 
 /** Grade compacta 4 × 7 (submercado × horizonte) com os mesmos números da tabela longa. */
@@ -414,7 +450,7 @@ export function oQueMudouRodada(g: Pick<PrevisoesDesempenhoGold, "prospectivo">)
   const revistas = g.prospectivo.revisoes_entre_rodadas.filter((r) => r.sequencia.length > 1);
   const revisao = revistas.length
     ? ` ${plural(revistas.length, "entrega teve", "entregas tiveram")} previsão revista entre rodadas (detalhe no arquivo de emissões).`
-    : " Nenhuma entrega tem duas previsões com número, então ainda não há revisão entre rodadas a comparar.";
+    : " Nenhuma entrega tem duas previsões com número: ainda não há revisão entre rodadas a comparar.";
   return `${atual}${anterior}${revisao}`;
 }
 
@@ -423,6 +459,8 @@ export function oQueMudouRodada(g: Pick<PrevisoesDesempenhoGold, "prospectivo">)
 /** Uma linha do CSV publicado do arquivo (public/energia/series/previsoes_emissoes.csv), já tipada. */
 export type LinhaArquivo = {
   id: string;
+  /** Nome legível do registro (modelo, horizonte, submercado e rodada), no lugar do identificador técnico. */
+  linha: string;
   forecast_id: string;
   run_id: string;
   tipo: string;
@@ -490,6 +528,7 @@ export function linhasArquivo(brutas: readonly Record<string, string>[], estados
     const previsao = retido ? null : gravada;
     return {
       id: r.forecast_id,
+      linha: `${r.modelo} ${r.horizonte} ${CURTO_SM[r.submercado] ?? r.submercado}, rodada de ${dataBR(r.origem)}`,
       forecast_id: r.forecast_id,
       run_id: r.run_id,
       tipo: rotuloTipo(r.tipo),
@@ -555,6 +594,18 @@ export const COLUNAS_ARQUIVO: ColunaTabela[] = [
   { id: "versao_codigo", rotulo: "Versão do código", tipo: "texto" },
   { id: "sha256", rotulo: "sha256 do registro", tipo: "texto" },
   { id: "forecast_id", rotulo: "Identificador", tipo: "texto" },
+];
+
+/**
+ * Colunas da tabela do arquivo: o nome legível do registro à frente, sem a versão do código; o sha256 e o identificador técnico ficam
+ * no fim da tabela e só aparecem em Auditar (conferência contra o CSV), além do detalhe do registro em Analisar e Auditar e do CSV
+ * completo do download.
+ */
+export const COLUNAS_ARQUIVO_TABELA: ColunaTabela[] = [
+  { id: "linha", rotulo: "Registro", tipo: "texto" },
+  ...COLUNAS_ARQUIVO.filter((c) => !["forecast_id", "sha256", "versao_codigo"].includes(c.id)),
+  // a conferência registro a registro contra o CSV precisa do hash e do identificador: só em Auditar
+  ...COLUNAS_ARQUIVO.filter((c) => ["sha256", "forecast_id"].includes(c.id)).map((c) => ({ ...c, nivel: "auditar" as const })),
 ];
 
 /** Dias (Brasília) em que registros entraram no arquivo, em ordem. */
@@ -657,7 +708,7 @@ export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total
   if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
   const rs = resumoRodadas(linhas);
   const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
-  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} hoje)` : "";
+  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
   const abertura = `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`;
   const apurados = linhas.filter((l) => l.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(linhas);
@@ -695,10 +746,21 @@ export function textoTolerancia(t: string | null | undefined): string {
 /** Estado da reexecução das previsões arquivadas de um modelo, em palavras. */
 export function textoReexecucao(f: Ficha): string {
   const r = f.reproducao?.reexecucao_do_arquivo;
-  if (!f.implementado_no_repositorio) return "sem reexecução: o modelo não está implementado no repositório";
+  if (!f.implementado_no_repositorio) return "sem reexecução: o modelo não pode ser refeito; a configuração da pesquisa não foi publicada";
   if (!r) return "sem previsão arquivada com número para refazer";
   const div = r.divergentes.length;
   return `${r.conferidas} ${r.conferidas === 1 ? "previsão arquivada refeita" : "previsões arquivadas refeitas"} com o dado do corte, ${div === 0 ? "sem divergência" : `${div} com divergência`} (tolerância ${textoTolerancia(r.tolerancia)})`;
+}
+
+/**
+ * Fórmula para o leitor de Entender. A de B0 e S0 já é uma frase e fica como está; a dos candidatos C2 (soma ponderada com símbolos e nomes de
+ * campo) vira a descrição do que ela faz, lida da própria fórmula do registro: parte do B0, soma uma correção por variável (a variável
+ * multiplicada pelo coeficiente) e, com penalização zero, todos os coeficientes são zero e o resultado é o B0. A fórmula exata fica em Analisar.
+ */
+export function formulaEmPalavras(f: Pick<Ficha, "formula">): string | null {
+  if (!f.formula) return null;
+  if (!/[Σλ⇒]|_j\b|beta/.test(f.formula)) return f.formula;
+  return "B0 mais uma correção para cada variável de entrada: cada variável é multiplicada pelo seu coeficiente e as correções são somadas ao B0. Com a penalização em zero, todos os coeficientes são zero e o resultado é igual ao B0.";
 }
 
 export type LinhaModelo = {
@@ -720,7 +782,7 @@ export type LinhaModelo = {
   aprovacao: string;
 };
 
-/** Número que o modelo emite hoje no arquivo: referência experimental, só registro, ou nenhum. */
+/** Número que o modelo emite no arquivo, na rodada mais recente: referência experimental, só registro, ou nenhum. */
 export function emissaoDoModelo(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
   if (f.aprovacao.estado === "PRODUCAO") return "previsão principal";
   if (f.aprovacao.referencia_experimental) return "referência experimental publicada";
@@ -737,17 +799,17 @@ export function linhasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previ
     nome: f.nome,
     versao: f.versao,
     estado: rotuloEstadoModelo(f.estado),
-    papel: f.papel ?? "sem papel registrado",
+    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
     implementado: f.implementado_no_repositorio ? "sim" : "não",
     emite: emissaoDoModelo(f, g),
     entradas: f.entradas ? f.entradas.join("; ") : "não publicadas",
     n_entradas: f.entradas ? f.entradas.length : null,
-    formula: f.formula ?? "não publicada",
+    formula: formulaEmPalavras(f) ?? "não publicada",
     faixa: "sem faixa publicada",
     reexecucao: textoReexecucao(f),
     limitacoes: f.limitacoes ? f.limitacoes.length : null,
     falhas: f.falhas_conhecidas ? f.falhas_conhecidas.length : null,
-    aprovacao: f.aprovacao.leitura.trim(),
+    aprovacao: semCodigosInternos(f.aprovacao.leitura.trim()),
   }));
 }
 
@@ -757,7 +819,7 @@ export const COLUNAS_MODELOS: ColunaTabela[] = [
   { id: "versao", rotulo: "Versão", tipo: "texto" },
   { id: "estado", rotulo: "Estado", tipo: "texto", categorica: true },
   { id: "papel", rotulo: "Papel", tipo: "texto" },
-  { id: "implementado", rotulo: "Implementado no repositório", tipo: "texto", categorica: true },
+  { id: "implementado", rotulo: "Implementado pelo observatório", tipo: "texto", categorica: true },
   { id: "emite", rotulo: "Número no arquivo", tipo: "texto", categorica: true },
   { id: "n_entradas", rotulo: "Entradas", tipo: "numero", unidade: "variáveis", casas: 0 },
   { id: "entradas", rotulo: "Quais entradas", tipo: "texto" },
@@ -789,7 +851,7 @@ export function respostaP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previs
   const partes: string[] = [];
   if (ref.length) partes.push(`${ref.join(", ")} é publicado só como referência experimental`);
   if (retidos.length) partes.push(`${retidos.join(" e ")}, reimplementados no observatório, não têm número emitido`);
-  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser reimplementado, porque a configuração da pesquisa não está no repositório`);
+  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser reimplementado; a configuração da pesquisa não está no repositório`);
   const reex = fs.find((f) => f.reproducao?.reexecucao_do_arquivo);
   const reexecucao = reex ? ` Reexecução do ${reex.codigo}: ${textoReexecucao(reex)}.` : "";
   return `${estados}${oficial}${partes.length ? ` ${partes.join("; ")}.` : ""}${reexecucao}`.replace(/^./, (c) => c.toUpperCase());
@@ -834,10 +896,267 @@ export function respostaFicha(f: Ficha, g: Pick<PrevisoesDesempenhoGold, "previs
   const estado = `${f.codigo} (${f.nome}, versão ${f.versao}) está em ${rotuloEstadoModelo(f.estado)}`;
   const emite = emissaoDoModelo(f, g);
   if (!f.implementado_no_repositorio)
-    return `${estado} e não emite número: ${minusculaInicial(f.motivo_sem_implementacao ?? "a implementação não está no repositório")}`.replace(/\.?$/, ".");
+    return `${estado} e não emite número: ${minusculaInicial(semCaminhosDeArquivo(f.motivo_sem_implementacao ?? "a implementação não está no repositório"))}`.replace(/\.?$/, ".");
   const entradas = f.entradas?.length ? ` Usa ${plural(f.entradas.length, "entrada", "entradas")}: ${f.entradas.join("; ")}.` : "";
-  const formula = f.formula ? ` Fórmula: ${f.formula}.` : "";
-  return `${estado}; ${emite}.${entradas}${formula} Reexecução: ${textoReexecucao(f)}.`;
+  return `${estado}; ${emite}.${entradas} Reexecução: ${textoReexecucao(f)}.`;
+}
+
+/* ---------- vereditos (resposta curta, r8): palavras simples, derivados dos mesmos campos das respostas completas */
+
+const primeiraFrase = (t: string) => t.trim().split(/(?<=[.!?])\s+/)[0] ?? t.trim();
+const maiuscula = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+
+/**
+ * Códigos internos que o texto escrito para a gold carrega e que o leitor de Entender não tem como consultar: a regra de defasagem
+ * LAT1D (o registro a define como "um dado só entra se o período terminou até 1 dia antes do corte"), o código do achado ("achado A09") e o
+ * código do motivo entre parênteses. O texto original continua em Analisar e Auditar.
+ */
+export function semCodigosInternos(texto: string): string {
+  return texto
+    .replace(/;\s*períodos elegíveis sob LAT1D/g, "")
+    .replace(/\bLAT1D:\s*dado elegível/g, "Dado elegível")
+    .replace(/\b([Rr])egra de defasagem LAT1D\b/g, "$1egra de defasagem de 1 dia")
+    .replace(/\bhipótese LAT1D\b/g, "hipótese de defasagem de 1 dia")
+    .replace(/\bLAT1D\b/g, "defasagem de 1 dia")
+    .replace(/\s*\(achado [A-Z]\d+\)/g, "")
+    .replace(/\s*\(seção \d+(?:\.\d+)*\)/g, "")
+    .replace(/\s*exigido pela seção \d+(?:\.\d+)*/g, "")
+    .replace(/\s*\(([A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+)\)/g, "")
+    .replace(/\s*\(G23-R1\)/g, "")
+    .replace(/\bBacktest em pseudo tempo real\b/g, "Teste com dados do passado")
+    .replace(/\bum único snapshot, capturado em\b/g, "uma única captura dos dados, feita em")
+    .replace(/\s*\((?:quantis|perda de quantis)\)/g, "")
+    .replace(/\bo risco de look-ahead por revisão\b/g, "o risco de o teste usar valores que só foram revisados depois")
+    .replace(/\brisco de look-ahead por revisão\b/g, "risco de o teste usar valores que só foram revisados depois");
+}
+
+/**
+ * Linguagem de engenharia que o registro usa sobre si mesmo ("repositório", "reimplementar") trocada pelo que o leitor entende: o que
+ * está dito é o mesmo, sem apontar para o código do observatório.
+ */
+export function paraLeitorPrevisoes(texto: string): string {
+  return semCodigosInternos(texto)
+    .replace(/\bque não está no repositório nem foi publicado\b/g, "que não foi publicado")
+    .replace(/\bnão há como reimplementar nem auditar\b/g, "não há como refazer nem auditar")
+    .replace(/\breimplementar\b/g, "refazer")
+    .replace(/\bno repositório\b/g, "no observatório");
+}
+
+/**
+ * Frase do registro que explica a falta com "porque" ("28 células sem número, porque nenhum PLD ... havia sido capturado"): no texto de
+ * leitura o motivo vem como motivo gravado, sem afirmar causa. O texto original continua em Auditar.
+ */
+export function motivoGravado(texto: string): string {
+  return texto.replace(/,\s+porque\s+/g, "; motivo gravado: ");
+}
+
+/**
+ * Proveniência do painel para a leitura: o indicador vem do registro e chama a rodada de "atual" ("Referência experimental B0 da rodada
+ * atual"); o dado tem a própria data, e o rótulo da página é "rodada mais recente". O resto da proveniência fica como está.
+ */
+export function provenienciaParaLeitor<T extends Pick<Proveniencia, "indicador">>(p: T): T {
+  return typeof p.indicador === "string" && /\bda rodada atual\b/.test(p.indicador) ? { ...p, indicador: p.indicador.replace(/\bda rodada atual\b/, "da rodada mais recente") } : p;
+}
+
+/**
+ * Separa as frases de um texto escrito para o registro entre as que o leitor lê e as que citam o bastidor da decisão ("implementador",
+ * "validacao_observatorio.decisao_publicacao", "decidido_por"). As do bastidor ficam em Analisar e Auditar, na mesma ordem.
+ */
+export function partirInterno(texto: string): { leitor: string; interno: string } {
+  const frases = texto.split(/(?<=[.;])\s+(?=[A-ZÀ-Ú0-9"“(])/);
+  const interno = /implementador|validacao_observatorio|decisao_publicacao|decidido_(?:por|em)|\btroca publicar\b|\bpublicar = true\b|\b[a-z]+(?:_[a-z0-9]+){1,}\b/;
+  const leitor: string[] = [];
+  const bastidor: string[] = [];
+  for (const f of frases) (interno.test(f) ? bastidor : leitor).push(f);
+  return { leitor: leitor.join(" ").trim(), interno: bastidor.join(" ").trim() };
+}
+
+/**
+ * O que libera a publicação dos números de desempenho, em palavras: a decisão do responsável pela plataforma, com nome, data e escopo, e a
+ * publicação marcada como liberada. É a tradução dos campos que o registro cita (estado, decidido_por, decidido_em, escopo decidido e publicar);
+ * o texto original fica em Analisar.
+ */
+export function liberacaoEmPalavras(paraLiberar: string): string {
+  const campos = /decidido_por/.test(paraLiberar) && /decidido_em/.test(paraLiberar) && /LIBERADA/.test(paraLiberar);
+  if (!campos) return partirInterno(paraLiberar).leitor || paraLiberar;
+  const proxima = /A próxima execução publica os números\./.test(paraLiberar) ? " A próxima execução publica os números." : "";
+  return `O responsável pela plataforma registra a decisão de liberar, com o seu nome, a data e o escopo decidido, e marca a publicação como liberada.${proxima}`;
+}
+
+/** Corte e origem em palavras do próprio registro: texto de definicoes.corte_operacional sem o fuso e sem "vintages". */
+export function explicacaoCorteOrigem(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional">): string {
+  const base = def.corte_operacional.replace(/\s*\([^)]*\)/g, (m) => (/vintages/.test(m) ? ` (${m.replace(/vintages/g, "versões").replace(/[()]/g, "").trim()})` : ""));
+  return `${base.trim()} O dia de origem é o dia da rodada.`;
+}
+
+/**
+ * Termos da página (corte, origem, rodada, faixa P10 a P90) com o texto do próprio registro de modelos: definicoes.corte_operacional,
+ * definicoes.entregas e definicoes.quantis. Cada item só sai quando a definição publicada contém a frase de que ele depende.
+ */
+export function termosPrevisoes(def: Pick<PrevisoesDesempenhoGold["definicoes"], "corte_operacional" | "entregas" | "quantis">): { termo: string; texto: string }[] {
+  const itens: { termo: string; texto: string }[] = [];
+  if (def.corte_operacional?.trim()) itens.push({ termo: "Corte e origem", texto: explicacaoCorteOrigem(def) });
+  if (/W1 é a primeira semana que começa depois do dia de origem/.test(def.entregas ?? "") && /M1 é o primeiro mês que começa depois do dia de origem/.test(def.entregas ?? ""))
+    itens.push({ termo: "W1 a W4 e M1 a M3", texto: "W1 a W4 são as quatro semanas que começam depois do dia de origem, cada uma de um sábado, 0h, até o sábado seguinte, 0h; M1 a M3 são os três meses civis que começam depois dele." });
+  const celulas = /(\d+) células por modelo e rodada/.exec(def.entregas ?? "")?.[1];
+  if (celulas) itens.push({ termo: "Rodada", texto: `cada emissão de previsões de um dia de origem; tem ${celulas} células por modelo, uma por horizonte e submercado.` });
+  const p10 = /o quantil de 10% \(P10\) é o valor que o preço tem 10% de chance de não superar/.test(def.quantis ?? "");
+  const faixa = /A faixa entre P10 e P90[^.]*\./.exec(def.quantis ?? "")?.[0];
+  if (p10 && faixa) itens.push({ termo: "P10 e P90", texto: `P10 é o valor que o preço tem 10% de chance de não superar. ${faixa.replace(/\s*\(cobertura nominal\)/, "")}` });
+  return itens;
+}
+
+/**
+ * Exemplo concreto de uma ficha, na primeira semana da rodada atual no Sudeste/Centro-Oeste. Do B0, lê a célula publicada (período
+ * repetido e número); do S0, que não emite número, só diz que período do ano anterior ele usaria, pela regra do registro de modelos (a semana que
+ * começa 364 dias antes da entrega). Outros modelos não têm exemplo.
+ */
+export function exemploDoModelo(f: Pick<Ficha, "codigo">, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">, metodologia?: string | null): string | null {
+  const at = g.previsao_atual;
+  if (!temRodada(at)) return null;
+  const l = linhasGrade(at.celulas).find((x) => x.horizonte === "W1" && x.submercado === "SE");
+  if (!l) return null;
+  const semana = `${dataBR(l.inicio)} a ${dataBR(l.fim)}`;
+  if (f.codigo === "B0" && l.previsao !== null && l.periodo_inicio && l.periodo_fim)
+    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o B0 repete a média de ${dataBR(l.periodo_inicio)} a ${dataBR(l.periodo_fim)}, ${reaisMWh(l.previsao)}.`;
+  if (f.codigo === "S0" && metodologia && /364 dias antes da entrega/.test(metodologia))
+    return `Exemplo da rodada de ${dataBR(at.origem)}: para a semana de ${semana}, no ${l.sm}, o S0 usaria a média do PLD de ${dataBR(somaDias(l.inicio, -364))} a ${dataBR(somaDias(l.fim, -364))}, a semana que começa 364 dias antes. O observatório não publica número do S0.`;
+  return null;
+}
+
+/** Explicação curta das entradas dos candidatos C2, lida dos próprios rótulos das entradas e do verbete da MLT (100% é o valor da média de longo termo). */
+export function notaEntradas(f: Pick<Ficha, "entradas">): string | null {
+  const e = f.entradas ?? [];
+  const partes: string[] = [];
+  if (e.some((x) => /− B0$/.test(x))) partes.push("Em “X − B0”, o modelo usa a diferença entre X e o B0.");
+  if (e.some((x) => /\(% da MLT\) − 100$/.test(x)))
+    partes.push("Na ENA em % da MLT, 100 é o valor da média de longo termo: “− 100” é quanto a ENA média dos 7 últimos dias fica acima ou abaixo dessa média.");
+  if (e.some((x) => /\(p\.p\.\)/.test(x))) partes.push("p.p. quer dizer ponto percentual.");
+  return partes.length ? partes.join(" ") : null;
+}
+
+/** Quando a rodada tem referência experimental, e não publicação de modelo em produção. */
+const ehReferenciaExperimental = (rotulo: string) => /refer[eê]ncia experimental/i.test(rotulo);
+
+/**
+ * Veredito do P013 em palavras simples: se há previsão oficial, o que a página mostra no lugar (a referência simples que repete o
+ * PLD médio do último período completo), a faixa de valores publicada e se há faixa de incerteza. Lê as mesmas células que a
+ * resposta completa (respostaP013).
+ */
+export function vereditoP013(g: Pick<PrevisoesDesempenhoGold, "previsao_atual" | "modelos">): string {
+  const at = g.previsao_atual;
+  const producao = g.modelos.filter((m) => m.estado === "PRODUCAO").map((m) => m.codigo);
+  const oficial = producao.length ? `Modelo em produção: ${producao.join(", ")}.` : "Nenhum modelo está aprovado.";
+  if (!temRodada(at)) return `${oficial} Nenhuma rodada com números está publicada.`;
+  const linhas = linhasGrade(at.celulas);
+  const valores = linhas.map((l) => l.previsao).filter((v): v is number => v !== null);
+  if (!valores.length) return `${oficial} A rodada de ${dataBR(at.origem)} não tem número em nenhuma das ${linhas.length} células.`;
+  const menor = Math.min(...valores);
+  const maior = Math.max(...valores);
+  const intervalo = menor === maior ? reaisMWh(menor) : `de ${reais(menor)} a ${reaisMWh(maior)}`;
+  const comFaixa = linhas.filter((l) => l.p10 !== null && l.p90 !== null).length;
+  const faixa = comFaixa ? `Há faixa de incerteza em ${comFaixa} de ${linhas.length} células.` : "Sem faixa de incerteza.";
+  const o_que = ehReferenciaExperimental(at.rotulo)
+    ? `A referência simples B0 repete o PLD médio do último período completo, ${intervalo}.`
+    : `A rodada de ${dataBR(at.origem)} publica ${intervalo} conforme submercado e prazo.`;
+  return `${oficial} ${o_que} ${faixa}`;
+}
+
+/**
+ * Veredito do P014 em palavras simples: estado dos modelos, quais publicam número e por que os outros não. Lê as mesmas fichas
+ * que a resposta completa (respostaP014), sem "repositório" nem "reimplementado".
+ */
+export function vereditoP014(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">): string {
+  const fs = fichasOrdenadas(g.fichas);
+  if (!fs.length) return "Nenhum modelo está registrado nesta publicação.";
+  const porEstado = new Map<string, string[]>();
+  for (const f of fs) porEstado.set(f.estado, [...(porEstado.get(f.estado) ?? []), f.codigo]);
+  const estados =
+    porEstado.size === 1
+      ? `${fs.length === 1 ? "O único modelo está" : `Os ${fs.length} modelos estão todos`} em ${rotuloEstadoModelo(fs[0].estado)}`
+      : `Dos ${fs.length} modelos, ${Array.from(porEstado.entries())
+          .map(([e, cs]) => `${cs.join(", ")} em ${rotuloEstadoModelo(e)}`)
+          .join("; ")}`;
+  const producao = porEstado.get("PRODUCAO") ?? [];
+  const oficial = producao.length ? `: ${producao.join(", ")} alimenta a previsão principal.` : ": nenhum alimenta previsão oficial.";
+  const ref = fs.filter((f) => f.aprovacao.referencia_experimental).map((f) => f.codigo);
+  const semImpl = fs.filter((f) => !f.implementado_no_repositorio).map((f) => f.codigo);
+  const retidos = fs.filter((f) => emissaoDoModelo(f, g) === "não emite: número retido pela governança").map((f) => f.codigo);
+  const partes: string[] = [];
+  if (ref.length) partes.push(`${ref.join(" e ")} ${ref.length > 1 ? "publicam número" : "publica número"} só como referência experimental`);
+  if (retidos.length) partes.push(`${retidos.join(" e ")} ${retidos.length > 1 ? "têm" : "tem"} número retido até a liberação formal`);
+  if (semImpl.length) partes.push(`${semImpl.join(", ")} não pode ser refeito: a configuração da pesquisa não foi publicada`);
+  return `${estados}${oficial}${partes.length ? ` ${maiuscula(partes.join("; "))}.` : ""}`.replace(/^./, (c) => c.toUpperCase());
+}
+
+/**
+ * Veredito do P015 em palavras simples, sobre o mesmo recorte da tabela: quantos registros e rodadas, quais rodadas têm número e se
+ * alguma entrega prevista já terminou. Lê as mesmas linhas que a resposta completa (respostaP015).
+ */
+export function vereditoP015(linhas: readonly LinhaArquivo[], dia: string, total: number): string {
+  if (!linhas.length) return dia ? `Nenhum registro estava no arquivo ao fim de ${dataBR(dia)}.` : "O arquivo de emissões não tem registro publicado.";
+  const rs = resumoRodadas(linhas);
+  const quando = dia ? `Ao fim de ${dataBR(dia)}, o arquivo tinha` : "O arquivo tem";
+  const parcial = dia && linhas.length < total ? ` (de ${total.toLocaleString("pt-BR")} no arquivo completo)` : "";
+  const comNumero = rs.filter((r) => r.com_numero > 0);
+  const quais =
+    comNumero.length === 0
+      ? "nenhuma tem número"
+      : comNumero.length === rs.length
+        ? "todas têm número"
+        : comNumero.length === 1
+          ? `só a de ${dataBR(comNumero[0].origem)} tem número`
+          : `${comNumero.length} têm número`;
+  const prevComNumero = linhas.filter((l) => l.previsao !== null).length;
+  const apurados = linhas.filter((l) => l.realizado !== null).length;
+  const resultado =
+    prevComNumero === 0
+      ? ""
+      : apurados === 0
+        ? " Nenhuma entrega prevista terminou: ainda não há resultado para comparar."
+        : ` ${apurados} de ${prevComNumero} previsões com número já têm resultado.`;
+  return `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}; ${quais}.${resultado}`;
+}
+
+/**
+ * Veredito do P016 em palavras simples: se já dá para dizer que algum modelo supera as referências simples, por que os números
+ * do teste não aparecem e o que o acompanhamento depois da emissão já mostra. Lê os mesmos campos que a resposta completa (respostaP016).
+ */
+export function vereditoP016(g: Pick<PrevisoesDesempenhoGold, "desempenho" | "publicacao_desempenho" | "prospectivo">): string {
+  const ap = g.prospectivo.apuracoes;
+  const apuradas = ap.filter((a) => a.realizado !== null).length;
+  const acompanhamento =
+    ap.length === 0
+      ? "O acompanhamento depois da emissão ainda não tem previsão com número."
+      : apuradas === 0
+        ? `Nenhuma das ${ap.length} previsões em acompanhamento tem resultado.`
+        : `${apuradas} de ${ap.length} previsões em acompanhamento já têm resultado.`;
+  if (!g.desempenho.publicado)
+    return `Ainda não dá para dizer se algum modelo supera as referências simples: os números do teste com dados do passado estão calculados, mas ficam retidos até a liberação formal. ${acompanhamento}`;
+  const ganhos = linhasDesempenho(g.desempenho.por_horizonte).filter((l) => l.periodo === "teste" && l.modelo !== "B0" && l.ganho_vs_b0 !== null);
+  const positivos = ganhos.filter((l) => l.ic_inf !== null && l.ic_inf > 0);
+  const teste = ganhos.length
+    ? `No teste final, ${positivos.length} de ${ganhos.length} combinações de candidato e horizonte têm ganho sobre o B0 com intervalo de 90% inteiro acima de zero.`
+    : "O teste final não tem comparação pareada com o B0 publicada.";
+  return `${teste} ${acompanhamento}`;
+}
+
+/**
+ * Veredito da ficha de um modelo: a primeira frase do resumo do registro de modelos (escrita em palavras simples) e o estado, o que o
+ * modelo emite e, quando não pode ser refeito, o motivo. Sem resumo, só o nome do modelo.
+ */
+export function vereditoFicha(f: Ficha, resumo: string | null | undefined, g: Pick<PrevisoesDesempenhoGold, "previsao_atual">): string {
+  const inicio = resumo?.trim() ? primeiraFrase(resumo) : `${f.codigo} é o modelo ${f.nome}.`;
+  const estado = rotuloEstadoModelo(f.estado);
+  const emite = emissaoDoModelo(f, g);
+  const fim = !f.implementado_no_repositorio
+    ? `Está em ${estado} e não emite número: a configuração da pesquisa não foi publicada; o modelo não pode ser refeito.`
+    : f.aprovacao.referencia_experimental
+      ? `Está em ${estado}; é publicado só como referência experimental.`
+      : emite === "não emite: número retido pela governança"
+        ? `Está em ${estado}; o número fica retido até a liberação formal.`
+        : `Está em ${estado} e não emite número.`;
+  return `${inicio} ${fim}`;
 }
 
 /* ---------- coeficientes do último ajuste (C2-P e C2-H) */
@@ -957,7 +1276,7 @@ export function textoCoeficientes(fichas: readonly Ficha[], seg: string): string
   });
   const acima = d7AcimaDe1(fichas).filter((x) => x.segmento === seg);
   const g23 = acima.length
-    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo, o padrão do achado G23-R1.`
+    ? ` Coeficiente da média dos 7 dias menos B0 acima de 1 (${acima.map((x) => `${x.modelo}: ${num(x.valor, 2)}`).join("; ")}): a correção amplia o desvio recente em vez de reduzi-lo.`
     : " Nenhum coeficiente da média dos 7 dias menos B0 passa de 1 neste segmento.";
   return `No ajuste de ${dataBR(linhas[0].origem_ajuste)} para ${h}, ${NOME_SM[sm] ?? sm}: ${frases.join("; ")}.${g23}`;
 }
@@ -1204,3 +1523,329 @@ export const COLUNAS_REVISOES: ColunaTabela[] = [
 
 /** Rodada da gold correspondente a um run_id (para o detalhe da linha do arquivo). */
 export const rodadaDe = (rodadas: readonly Rodada[], run: string) => rodadas.find((r) => r.run_id === run) ?? null;
+
+/* ---------------------------------------------------------------- redesenho: situação, papel, protocolo e avisos da rodada */
+
+/** "A, B e C": lista em português com "e" antes do último item. */
+export const listaE = (itens: readonly string[]) => (itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`);
+
+export type SituacaoModelo = {
+  id: "pesquisa" | "experimental" | "validacao" | "producao" | "aposentado";
+  rotulo: string;
+  definicao: string;
+};
+
+/**
+ * Pesquisa, referência experimental e produção são situações diferentes. O estado do registro diz se o modelo alimenta a previsão
+ * principal (só PRODUÇÃO); a referência experimental é um modelo em pesquisa cujo número é publicado, identificado como tal e sem
+ * aprovação. Os textos usam as palavras do próprio registro de modelos.
+ */
+export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">): SituacaoModelo {
+  switch (f.estado as EstadoModelo) {
+    case "PRODUCAO":
+      return { id: "producao", rotulo: "Produção", definicao: "Aprovado; alimenta a previsão principal." };
+    case "APOSENTADO":
+      return { id: "aposentado", rotulo: "Aposentado", definicao: "Fora de uso; as previsões antigas ficam no arquivo." };
+    case "VALIDACAO":
+      return { id: "validacao", rotulo: "Validação", definicao: "Avaliado em área técnica; não alimenta a previsão principal." };
+    default:
+      return f.aprovacao.referencia_experimental
+        ? { id: "experimental", rotulo: "Referência experimental", definicao: "Em pesquisa, com número publicado e identificado como experimental, sem aprovação." }
+        : { id: "pesquisa", rotulo: "Pesquisa", definicao: "Em estudo; não alimenta a previsão." };
+  }
+}
+
+/** Papel do modelo em poucas palavras ("Referência simples", "Referência sazonal", "Candidato"), sem o comentário entre parênteses do registro. */
+export function papelCurto(papel: string | null | undefined): string {
+  if (!papel) return "sem papel registrado";
+  return semCodigosInternos(papel).split(/\s*[(;]/)[0].trim() || "sem papel registrado";
+}
+
+/** Com o que o modelo é comparado: as referências registradas para ele, ou a indicação de que ele próprio é uma referência. */
+function comparadoCom(f: Pick<Ficha, "codigo" | "papel">, registro: Pick<ModelosGold, "modelos"> | null | undefined): string {
+  const m = registro?.modelos.find((x) => x.codigo === f.codigo);
+  if (!m) return "não registrado";
+  if (m.benchmarks.length) return listaE(m.benchmarks);
+  return /^Refer[eê]ncia/.test(f.papel ?? "") ? "é uma referência de comparação" : "não registrado";
+}
+
+/** Protocolo do teste fora da amostra para o modelo: avaliado ou não, e se os números foram liberados. */
+function protocoloDoModelo(f: Pick<Ficha, "codigo" | "implementado_no_repositorio">, g: Pick<PrevisoesDesempenhoGold, "modelos" | "desempenho">): string {
+  const m = g.modelos.find((x) => x.codigo === f.codigo);
+  if (!m?.avaliado) return f.implementado_no_repositorio ? "sem teste fora da amostra" : "sem teste fora da amostra: o modelo não pode ser refeito";
+  return g.desempenho.publicado ? "teste fora da amostra publicado" : "teste fora da amostra calculado, com os números retidos";
+}
+
+/** Reexecução do arquivo em poucas palavras, para a matriz de modelos. */
+export function reexecucaoCurta(f: Pick<Ficha, "implementado_no_repositorio" | "reproducao">): string {
+  const r = f.reproducao?.reexecucao_do_arquivo;
+  if (!f.implementado_no_repositorio) return "não pode ser refeito";
+  if (!r) return "nenhuma previsão arquivada com número para refazer";
+  const div = r.divergentes.length;
+  return `${plural(r.conferidas, "previsão arquivada refeita", "previsões arquivadas refeitas")}, ${div === 0 ? "sem divergência" : `${div} com divergência`}`;
+}
+
+/** Resultado de uma conferência de cálculo em palavras que não sugerem aprovação do método: o observatório refaz a conta, não a valida por fora. */
+export const ROTULO_CONFERENCIA: Record<string, string> = { aprovado: "confere", ressalva: "confere com ressalva", reprovado: "não confere" };
+
+/** Uma linha da matriz compacta de modelos (papel, situação, referência, emissão e protocolo). */
+export type LinhaMatrizModelo = {
+  id: string;
+  codigo: string;
+  nome: string;
+  versao: string;
+  papel: string;
+  situacao: SituacaoModelo;
+  comparado: string;
+  emissao: string;
+  protocolo: string;
+  reexecucao: string;
+  /** Revisão registrada para o modelo, nas palavras do registro de modelos (null sem registro). */
+  revisao: string | null;
+  href: string;
+};
+
+export function matrizModelos(
+  g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual" | "modelos" | "desempenho">,
+  registro: Pick<ModelosGold, "modelos"> | null | undefined,
+): LinhaMatrizModelo[] {
+  return fichasOrdenadas(g.fichas).map((f) => ({
+    id: slugModelo(f.codigo),
+    codigo: f.codigo,
+    nome: f.nome,
+    versao: f.versao,
+    papel: papelCurto(f.papel),
+    situacao: situacaoDoModelo(f),
+    comparado: comparadoCom(f, registro),
+    emissao: emissaoDoModelo(f, g),
+    protocolo: protocoloDoModelo(f, g),
+    reexecucao: reexecucaoCurta(f),
+    revisao: registro?.modelos.find((x) => x.codigo === f.codigo)?.auditoria ?? null,
+    href: rotaModelo(f.codigo),
+  }));
+}
+
+/** Ficha resumida de um modelo para comparar lado a lado (a mesma informação que a tabela das fichas). */
+export type CartaoModelo = {
+  id: string;
+  codigo: string;
+  nome: string;
+  versao: string;
+  estado: EstadoModelo;
+  papel: string;
+  emite: string;
+  entradas: string[] | null;
+  /** Fórmula em palavras (formulaEmPalavras); a do registro, com os símbolos, fica em formulaRegistro e só aparece em Analisar. */
+  formula: string | null;
+  formulaRegistro: string | null;
+  reexecucao: string;
+  limitacao: string | null;
+  href: string;
+};
+
+export function cartoesModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, registro: Pick<ModelosGold, "modelos"> | null | undefined): CartaoModelo[] {
+  return fichasOrdenadas(g.fichas).map((f) => ({
+    id: slugModelo(f.codigo),
+    codigo: f.codigo,
+    nome: f.nome,
+    versao: f.versao,
+    estado: f.estado,
+    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
+    emite: emissaoDoModelo(f, g),
+    entradas: f.entradas,
+    formula: formulaEmPalavras(f),
+    formulaRegistro: f.formula,
+    reexecucao: textoReexecucao(f),
+    limitacao:
+      registro?.modelos.find((x) => x.codigo === f.codigo)?.limitacao_principal ??
+      paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
+      null,
+    href: rotaModelo(f.codigo),
+  }));
+}
+
+/** O que cada modelo recebe e como calcula: entradas, fórmula em palavras e pesos do último ajuste. */
+export type LinhaEntradas = { id: string; codigo: string; nome: string; entradas: string[] | null; formula: string; pesos: string; href: string };
+
+export function linhasEntradasFormula(fichas: readonly Ficha[]): LinhaEntradas[] {
+  return fichasOrdenadas(fichas).map((f) => {
+    const segs = f.coeficientes_ultimo_ajuste?.segmentos ?? [];
+    const origem = segs.reduce((a, s) => (s.origem_ajuste > a ? s.origem_ajuste : a), "");
+    const pesos = segs.length
+      ? `${plural(segs.length, "segmento ajustado", "segmentos ajustados")}; último ajuste em ${dataBR(origem)}`
+      : !f.implementado_no_repositorio
+        ? "não publicados: a configuração da pesquisa não foi publicada"
+        : "sem pesos: não tem parâmetros ajustados";
+    return {
+      id: slugModelo(f.codigo),
+      codigo: f.codigo,
+      nome: f.nome,
+      entradas: f.entradas,
+      formula: formulaEmPalavras(f) ?? "não publicada: a configuração da pesquisa não foi publicada",
+      pesos,
+      href: rotaModelo(f.codigo),
+    };
+  });
+}
+
+/**
+ * Números de abertura de Modelos, todos contados do registro: quantos modelos, quantos em produção, quantos publicam número e quantos
+ * têm desempenho fora da amostra publicado (de quantos foram avaliados). Nenhuma métrica de acerto entra aqui: MAE, ganho e cobertura
+ * só aparecem com resultados publicados.
+ */
+export function metricasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "modelos" | "desempenho" | "previsao_atual">) {
+  const fs = fichasOrdenadas(g.fichas);
+  const comNumero = fs.filter((f) => ["previsão principal", "referência experimental publicada"].includes(emissaoDoModelo(f, g)));
+  const avaliados = g.modelos.filter((m) => m.avaliado).map((m) => m.codigo);
+  const publicados = g.desempenho.publicado ? Array.from(new Set(g.desempenho.por_horizonte.filter((l) => l.periodo === "teste").map((l) => l.modelo))) : [];
+  return {
+    registrados: fs.map((f) => f.codigo as string),
+    emProducao: fs.filter((f) => f.estado === "PRODUCAO").map((f) => f.codigo as string),
+    comNumero: comNumero.map((f) => f.codigo as string),
+    comNumeroExperimental: comNumero.filter((f) => f.estado !== "PRODUCAO").map((f) => f.codigo as string),
+    avaliados,
+    desempenhoPublicado: publicados as string[],
+    publicado: g.desempenho.publicado,
+  };
+}
+
+/**
+ * A passagem pela revisão independente: o registro de modelos lista as decisões revisáveis e quem as toma. Pendente quando alguma delas
+ * cabe a um revisor independente e ainda está sem decisão. A reexecução e os controles do observatório não substituem essa revisão.
+ */
+export function revisaoIndependentePendente(g: Pick<PrevisoesDesempenhoGold, "governanca">): boolean {
+  return g.governanca.decisao_revisavel.some((d) => /revisor independente/i.test(d.responsavel ?? "") && /pendente/i.test(d.estado ?? ""));
+}
+
+/** Decisões de governança ainda sem decisão (estado "decisão pendente"), contadas do próprio registro. */
+export function decisoesPendentes(g: Pick<PrevisoesDesempenhoGold, "governanca">): { item: string; responsavel: string }[] {
+  return g.governanca.decisao_revisavel.filter((d) => /decis[aã]o pendente/i.test(d.estado ?? "")).map((d) => ({ item: d.item, responsavel: d.responsavel ?? "não indicado" }));
+}
+
+/* ---------- avisos materiais da rodada, junto da emissão ---------- */
+
+export type AvisoRodada = { id: string; rotulo: string; texto: string };
+
+const ALERTAS_DA_RODADA = ["ATRASADO_APOS_08H", "EXECUCAO_MANUAL", "CODIGO_NAO_COMMITADO"];
+
+/**
+ * Avisos que mudam a leitura de uma rodada, em palavras de leitor: emissão manual ou depois do prazo, código sem versão registrada,
+ * registro transcrito de outra fonte e rodada sem número. Leem os alertas e os campos da própria rodada; o texto técnico (minutos de
+ * atraso, versão do código) fica em Analisar e Auditar.
+ */
+export function avisosDaRodada(
+  r: Pick<Rodada, "modo" | "emitido_em" | "atraso_min" | "alertas" | "versao_codigo" | "celulas" | "com_numero" | "motivos" | "registrado_no_portal_em">,
+): AvisoRodada[] {
+  const out: AvisoRodada[] = [];
+  const manual = r.modo.startsWith("manual");
+  const tardia = r.alertas.includes("ATRASADO_APOS_08H") || (r.atraso_min ?? 0) > 0;
+  const emitidoDia = diaBrasilia(r.emitido_em) ?? r.emitido_em.slice(0, 10);
+  const transcrita = !!r.registrado_no_portal_em && r.registrado_no_portal_em > emitidoDia;
+  if (manual || tardia) {
+    out.push({
+      id: "emissao",
+      rotulo: "Emissão",
+      texto: `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em)}${tardia ? ", depois do prazo das 08h00" : ""}.`,
+    });
+  }
+  if (r.alertas.includes("CODIGO_NAO_COMMITADO")) {
+    out.push({
+      id: "codigo",
+      rotulo: "Reprodutibilidade",
+      texto: "O código executado tinha alterações ainda não registradas em versão (sufixo +alterado).",
+    });
+  } else if (!r.versao_codigo) {
+    out.push({ id: "codigo", rotulo: "Reprodutibilidade", texto: "O registro não traz a versão do código que emitiu a rodada." });
+  }
+  if (transcrita) {
+    out.push({
+      id: "transcricao",
+      rotulo: "Registro",
+      texto: `Transcrito de outra fonte e incluído no arquivo em ${dataBR(r.registrado_no_portal_em)}, depois da emissão: não é emissão original do observatório.`,
+    });
+  }
+  if (r.com_numero === 0) {
+    out.push({
+      id: "sem-numero",
+      rotulo: "Números",
+      texto: `Nenhuma das ${r.celulas} células tem número${r.motivos.length ? `: ${r.motivos.map(textoMotivo).join("; ")}` : ""}.`,
+    });
+  }
+  const outros = r.alertas.filter((a) => !ALERTAS_DA_RODADA.includes(a));
+  if (outros.length) out.push({ id: "alertas", rotulo: "Alertas", texto: `Alertas registrados: ${textoAlertas(outros)}.` });
+  return out;
+}
+
+/** Governança da rotina de emissão: aviso enquanto a rotina diária não estiver comprovada pelo critério publicado. */
+export function avisoDaRotina(r: Pick<PrevisoesDesempenhoGold["rotina"], "comprovada" | "execucoes_agendadas" | "no_prazo">): AvisoRodada | null {
+  if (r.comprovada) return null;
+  return {
+    id: "rotina",
+    rotulo: "Governança",
+    texto:
+      r.execucoes_agendadas === 0
+        ? "A rotina diária de emissão não foi comprovada: nenhuma execução agendada está registrada."
+        : `A rotina diária de emissão não foi comprovada: ${r.no_prazo} de ${r.execucoes_agendadas} execuções agendadas saíram no prazo, abaixo do critério publicado.`,
+  };
+}
+
+/* ---------- avaliação depois do resultado, semanas e meses separados ---------- */
+
+export type AvaliacaoFrequencia = {
+  frequencia: Frequencia;
+  rotulo: string;
+  horizontes: Horizonte[];
+  registradas: number;
+  apuradas: number;
+  aguardando: number;
+  proxima: { entrega: string; termina: string } | null;
+  /** Entregas distintas do teste fora da amostra (iguais nos horizontes da frequência; vale a menor) e o mínimo para calibrar a faixa. */
+  entregasTeste: number | null;
+  minimo: number | null;
+  estadoCalibracao: string;
+};
+
+/**
+ * Semanas (W1 a W4) e meses (M1 a M3) têm avaliação própria: contagens de previsões registradas, apuradas e aguardando, a próxima
+ * entrega a terminar e o tamanho da amostra do teste fora da amostra contra o mínimo para calibrar a faixa. Lê as apurações do
+ * acompanhamento e a amostra de calibração, os mesmos números dos gráficos de desempenho.
+ */
+export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">): AvaliacaoFrequencia[] {
+  const amostra = linhasAmostra(g);
+  return (["W", "M"] as const).map((freq) => {
+    const ap = g.prospectivo.apuracoes.filter((a) => a.horizonte.startsWith(freq));
+    const apuradas = ap.filter((a) => a.realizado !== null).length;
+    const da = amostra.filter((a) => a.horizonte.startsWith(freq));
+    const ns = da.map((a) => a.entregas).filter((n): n is number => typeof n === "number");
+    return {
+      frequencia: freq,
+      rotulo: freq === "W" ? "Semanas" : "Meses",
+      horizontes: HORIZONTES.filter((h) => h.startsWith(freq)),
+      registradas: ap.length,
+      apuradas,
+      aguardando: ap.length - apuradas,
+      proxima: primeiraEntregaAMaturar(ap),
+      entregasTeste: ns.length ? Math.min(...ns) : null,
+      minimo: da[0]?.minimo ?? null,
+      estadoCalibracao: Array.from(new Set(da.map((a) => a.estado))).join(", "),
+    };
+  });
+}
+
+/** Resumo do B0 de um submercado e uma frequência: o número da rodada, os horizontes e o período que ele repete. A faixa de métricas e o painel leem esta função. */
+export function resumoB0(linhas: readonly LinhaGrade[], sm: Submercado, freq: Frequencia) {
+  const doSm = linhas.filter((l) => l.submercado === sm && l.horizonte.startsWith(freq));
+  const com = doSm.find((l) => l.evidencia);
+  return {
+    valor: com?.previsao ?? null,
+    evidencia: com?.evidencia ?? null,
+    horizontes: doSm.map((l) => l.horizonte),
+    periodo: doSm.length ? `${doSm[0].horizonte} a ${doSm[doSm.length - 1].horizonte}: ${dataBR(doSm[0].inicio)} a ${dataBR(doSm[doSm.length - 1].fim)}` : "",
+    usado:
+      com?.periodo_inicio && com.periodo_fim
+        ? `Repete a média de ${dataBR(com.periodo_inicio)} a ${dataBR(com.periodo_fim)}, o último período completo elegível no corte.`
+        : undefined,
+    /** O mesmo aviso em uma linha, para a faixa de métricas da abertura. */
+    usadoCurto: com?.periodo_inicio && com.periodo_fim ? `Repete a média de ${intervaloDias(com.periodo_inicio, com.periodo_fim)}.` : undefined,
+  };
+}

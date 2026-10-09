@@ -1,6 +1,7 @@
 import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { LINK_PERDAS } from "@/components/energia/PerdasPainel";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { carimbo } from "@/lib/energia/formato";
 import { ROTULO_ALERTA, ROTULO_DECOMPOSICAO, ROTULO_DEFINICAO, ROTULO_RECONCILIACAO, numOu, pctOu } from "@/lib/energia/perdas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
@@ -18,13 +19,10 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
   const LINK = LINK_PERDAS;
   return (
     <Bloco id="auditoria" nivel="auditar">
-      <section aria-labelledby="perdas-auditoria" className="border border-linha bg-superficie px-5 py-6 md:px-8">
-        <h2 id="perdas-auditoria" className="font-serif text-xl text-carvao md:text-2xl">
-          Como esses números foram conferidos?
-        </h2>
-        <div className="mt-4 grid gap-6 lg:grid-cols-2">
-          <div className="space-y-2 text-sm leading-relaxed text-carvao">
-            <h3 className="rotulo text-mineral">Balanço e alertas</h3>
+      <SecaoDoPainel id="perdas-auditoria" nivel="auditar" titulo="Como esses números foram conferidos?">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="min-w-0 space-y-2 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
+            <h4 className="rotulo text-mineral">Balanço e alertas</h4>
             <p>
               {numOu(qual.agentes_no_arquivo, 0)} agentes no arquivo, {numOu(qual.agentes_com_balanco_de_distribuicao, 0)} com balanço de distribuição e {numOu(qual.agentes_ano_completos, 0)} agentes-ano
               completos. Fechamento do balanço anual: {Object.entries(qual.reconciliacao).map(([k, n]) => `${ROTULO_RECONCILIACAO[k as keyof typeof ROTULO_RECONCILIACAO] ?? k} ${numOu(n, 0)}`).join("; ")} (limite de alerta: resíduo acima
@@ -45,8 +43,8 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
               </p>
             ))}
           </div>
-          <div className="space-y-2 text-sm leading-relaxed text-carvao">
-            <h3 className="rotulo text-mineral">Conferência com o relatório da ANEEL</h3>
+          <div className="min-w-0 space-y-2 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
+            <h4 className="rotulo text-mineral">Conferência com o relatório da ANEEL</h4>
             <p>
               {rel.documento}. Relatório: taxa total {pctOu(rel.valores_relatorio.taxa_total_pct, 1)} (base {rel.valores_relatorio.base}), técnicas {numOu(rel.valores_relatorio.perdas_tecnicas_twh, 1)}{" "}
               TWh ({pctOu(rel.valores_relatorio.taxa_tecnica_pct, 1)}), não técnicas {numOu(rel.valores_relatorio.pnt_twh, 1)} TWh ({pctOu(rel.valores_relatorio.pnt_injetada_pct, 1)}). Observatório: taxa
@@ -58,9 +56,9 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             {ev.injetada_2024 && <ComproveNumero evidencia={ev.injetada_2024} rotulo="Comprove a injetada de 2024 e a reconciliação" />}
           </div>
         </div>
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2">
           <div>
-            <h3 className="rotulo text-mineral">Definições usadas</h3>
+            <h4 className="rotulo text-mineral">Definições usadas</h4>
             <dl className="mt-2 space-y-2 text-sm leading-relaxed">
               {Object.entries(g.definicoes).map(([k, t]) => (
                 <div key={k}>
@@ -71,7 +69,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             </dl>
           </div>
           <div>
-            <h3 className="rotulo text-mineral">Decisões de método</h3>
+            <h4 className="rotulo text-mineral">Decisões de método</h4>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao-muted">
               {g.decisoes.map((d) => (
                 <li key={d}>{d}</li>
@@ -79,8 +77,8 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             </ul>
           </div>
         </div>
-        <div className="mt-6">
-          <h3 className="rotulo text-mineral">Bloqueios externos</h3>
+        <div>
+          <h4 className="rotulo text-mineral">Bloqueios externos</h4>
           <ul className="mt-2 space-y-3 text-sm leading-relaxed text-carvao">
             {g.bloqueios.map((b) => (
               <li key={b.item} className="border-l-2 border-erro pl-3">
@@ -91,8 +89,8 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             ))}
           </ul>
         </div>
-        <div className="mt-6">
-          <h3 className="rotulo text-mineral">Arquivos e reprodução</h3>
+        <div>
+          <h4 className="rotulo text-mineral">Arquivos e reprodução</h4>
           <ul className="mt-2 grid gap-x-6 sm:grid-cols-2">
             {g.downloads.map((d) => (
               <li key={d.url}>
@@ -107,7 +105,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             {g.versao_pipeline}, código {g.versao_codigo ?? "não informado"}, gold gerada em {carimbo(g.gerado_em)}.
           </p>
         </div>
-      </section>
+      </SecaoDoPainel>
     </Bloco>
   );
 }

@@ -63,7 +63,8 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
   }, [sel, urlAnual, tentativa]);
   const historico = useMemo(() => (sel && anual ? historicoDistribuidora(anual.distribuidoras[sel] ?? []) : null), [sel, anual]);
 
-  const dados = useMemo(() => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, tecnica: l.tecnica, nao_tecnica: l.nao_tecnica })), [linhas]);
+  // as barras recebem os valores exatos (ver LinhaComposicao): o total no fim da barra, na dica e na tabela do gráfico é o mesmo número da tabela da página
+  const dados = useMemo(() => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, tecnica: l.tecnica_barra, nao_tecnica: l.nao_tecnica_barra })), [linhas]);
   const linhasTabela = useMemo(
     () => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, tecnica: l.tecnica, nao_tecnica: l.nao_tecnica, total: l.total, pnt_bt: l.pnt_bt, residuo_mwh: l.residuo_mwh, decomposicao: ROTULO_DECOMPOSICAO[l.decomposicao] })),
     [linhas],
@@ -92,7 +93,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
 
       <div className="border border-linha bg-papel px-4 py-3 text-sm text-carvao" data-selecao={sel ?? ""}>
         {!sel ? (
-          <p className="text-carvao-muted">Escolha uma barra, uma linha da tabela ou uma área do mapa para ver a composição de uma distribuidora ao longo dos anos.</p>
+          <p className="text-carvao-muted">Escolha uma barra ou uma linha da tabela para ver a composição de uma distribuidora ao longo dos anos.</p>
         ) : (
           <>
             <p data-resposta="composicao-distribuidora">
@@ -160,7 +161,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
         linhas={linhasTabela}
         chaveLinha="id"
         colunaRotulo="rotulo"
-        fonte="ANEEL, SAMP Balanço (linhas de valor medido; a técnica é o percentual regulatório aplicado à injetada, estimativa da fonte, e a não técnica herda essa estimativa)"
+        fonte="ANEEL, SAMP Balanço (linhas de valor medido; a técnica é a perda técnica informada no balanço de energia, estimativa da fonte, e a não técnica herda essa estimativa)"
         versao={versao}
         nomeArquivo={`perdas-composicao-${anoRef}`}
         chaveUrl="comp"

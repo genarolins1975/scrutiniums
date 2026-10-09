@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import {
-  GeracaoAnalise,
-  GeracaoAuditoria,
   GeracaoAviso,
+  GeracaoDatas,
   GeracaoFrases,
   GeracaoIndisponivel,
   GeracaoNavegacao,
@@ -14,32 +15,37 @@ import {
 import { GeracaoTermica } from "@/components/energia/GeracaoTermica";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { GeracaoTabelaSobDemanda } from "@/components/energia/GeracaoTabelasSobDemanda";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import {
-  COLUNAS_CVU_COMBUSTIVEL,
-  COLUNAS_CVU_USINAS,
-  COLUNAS_UNIVERSO_TERMICA,
   COR_COMBUSTIVEL,
   CURTO_COMBUSTIVEL,
   ROTULO_ORIGEM_COMBUSTIVEL,
   ROTULO_REGRA,
   combustiveisCvu,
   downloadsDoPainel,
-  linhasCvuCombustivel,
+  emPortugues,
+  explicacaoDoMotivo,
   linhasCvuMensal,
-  linhasCvuUsinas,
-  linhasUniversoTermica,
+  inflexibilidadeSemNuclear,
+  diasDoBalancoForaDoPadrao,
+  notaCrescimentoUniverso,
+  notaCvuZero,
+  notaNaoClassificado,
   painelPublicado,
-  paraTabela,
   perguntaPainel,
   rotaPainel,
   situacaoMensal,
+  somaTermicaDaMatriz,
   textoCvu,
+  textoDiasDoBalancoForaDoPadrao,
+  textoMudancaMensal,
+  textoSemComparacaoMensal,
   textoTermica7d,
   type TermicaCliente,
 } from "@/lib/energia/geracao";
@@ -59,42 +65,152 @@ const FONTE_CVU = "ONS, CVU das Usinas Térmicas";
 
 export default function GeracaoTermicaPage() {
   const g = lerGold<GoldGeracaoDetalhe>("geracao_detalhe.json");
-  if (!integra(g) || !g.termica) return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "A térmica por motivo de despacho não foi publicada nesta gold." : undefined)} />;
+  if (!integra(g) || !g.termica) return <GeracaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo ?? (g ? "A térmica por motivo de despacho não está na base publicada nesta atualização." : undefined)} />;
   const t = g.termica;
   const ev = g.evidencias;
   const op = gold.geracao();
   const ctx = integra(op) ? op.termica_contexto : null;
   const atual = situacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho");
+  const exp = (id: Parameters<typeof explicacaoDoMotivo>[1]) => {
+    const e = explicacaoDoMotivo(t.motivos, id);
+    return e ? ` (${e})` : "";
+  };
+  const semNuc = inflexibilidadeSemNuclear(t.ultimos_12m);
   const versao = t.ultimo_mes_completo;
+  const u = t.ultimos_12m;
+  const periodo12 = `${mesAno(u.inicio)} a ${mesAno(u.fim)}`;
   const { cvu: cvuDados, universo, identidade, mapa_combustivel: mapa, ...cliente } = t;
   const termicaCliente: TermicaCliente = cliente;
   const cvuMensal = cvuDados ? linhasCvuMensal(cvuDados, combustiveisCvu(cvuDados)) : [];
+  const sin12 = g.matriz.janelas.SIN["12m"];
+  const somaMatriz = somaTermicaDaMatriz(sin12);
+  const anomalos = diasDoBalancoForaDoPadrao(g.matriz.reconciliacao_balanco);
+  const crescimento = notaCrescimentoUniverso(universo);
+  const notasUniverso = (
+    <ul className="space-y-1 text-xs leading-relaxed text-carvao-muted" data-notas-universo="p022">
+      <li>{notaNaoClassificado(u)}</li>
+      <li>Combustível: até 2025 vem do CEG da usina em outros conjuntos do ONS; desde 2026, do campo do próprio conjunto de térmica por motivo, e os 12 meses misturam os dois métodos.</li>
+      {crescimento && <li>{crescimento}</li>}
+      {sin12 && somaMatriz !== null && u.total_mwmed !== null && (
+        <li>
+          Este total, {num(u.total_mwmed, 0)} MWmed, não é o da{" "}
+          <Link href={`${rotaPainel("p021")}#composicao`} className="text-energia-dark underline underline-offset-4">
+            matriz efetiva
+          </Link>
+          : aqui são as térmicas despachadas pelo ONS, com a nuclear, nos 12 meses completos de {periodo12}; lá, as categorias térmicas da Geração por Usina, sem as térmicas Tipo III, em 365 dias de {dataBR(sin12.inicio)} a {dataBR(sin12.fim)}, {num(somaMatriz, 0)} MWmed.
+        </li>
+      )}
+    </ul>
+  );
   const serie7d = ctx && integra(op) && op.serie_termica_7d?.length ? op.serie_termica_7d.map((p) => ({ ...p, mediana: ctx.mediana_365d, p10: ctx.p10_365d, p90: ctx.p90_365d })) : [];
+
+  const mudanca = textoMudancaMensal({ nome: "a geração das térmicas despachadas", unidade: "MWmed", casas: 0, meses: t.mensal_sin.meses, valores: t.mensal_sin.total_mwmed, mes: t.ultimo_mes_completo });
+  const oQueMudou = (
+    <>
+      {mudanca} {textoSemComparacaoMensal(t.ultimo_mes_completo, g.gerado_em, "a térmica por motivo de despacho")}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      A geração verificada de cada usina é dividida pelos motivos que o ONS publica, sem dupla contagem: a inflexibilidade embutida na ordem de mérito conta como inflexibilidade, e o mérito conta só
+      acima dela. A soma dos motivos fecha com a geração verificada a menos de uma parcela não classificada, publicada com sinal. Combustível é outra dimensão: as barras empilham os motivos dentro de
+      cada combustível.
+      {semNuc && (
+        <>
+          {" "}
+          A nuclear é {num(semNuc.nuclearInflexivelPct, 1)}% inflexível e responde por {num(semNuc.nuclearNaInflexibilidadePct, 1)}% de toda a inflexibilidade; sem ela, a inflexibilidade é{" "}
+          {num(semNuc.semNuclearPct, 1)}% da geração térmica.
+        </>
+      )}
+    </>
+  );
+  const naoConcluir = (
+    <>
+      O motivo é a classificação do ONS; não é inferido do PLD nem do CMO, e o CVU é custo declarado para a programação, não custo realizado. A participação das térmicas não diz se o despacho foi
+      caro ou barato para o consumidor. Usinas com o mesmo número de CEG só são tratadas como a mesma usina quando o ONS publica um elo entre elas; nunca por semelhança de nome.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <GeracaoNavegacao atual="p022" />
         <CabecalhoModulo
-          rotulo="Geração · Despacho térmico"
+          siglas={["MWmed", "SIN", "CEG", "PLD", "CMO", "ONS"]}
+          rotulo="Geração"
           titulo={perguntaPainel("p022")}
+          lead="A geração das térmicas despachadas pelo ONS, separada por combustível e por motivo de despacho, e o custo variável declarado para a semana operativa."
+          recorte={`${periodo12} (12 meses completos) · térmicas despachadas pelo ONS · GWh, MWmed e %`}
+          fonte={FONTE}
           referencia={
             <>
               {FONTE}, até {mesAno(t.ultimo_mes_completo)} (último mês completo); {FONTE_CVU}, semana vigente; processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <GeracaoDatas
+              itens={[
+                { rotulo: "Térmica por motivo e combustível", texto: `até ${mesAno(t.ultimo_mes_completo)} (último mês completo)`, natureza: "CALCULADO" },
+                ...(cvuDados ? [{ rotulo: "CVU declarado", texto: `semana de ${dataBR(cvuDados.semana.inicio)} a ${cvuDados.semana.fim ? dataBR(cvuDados.semana.fim) : "data não informada"}`, natureza: "OBSERVADO" as const }] : []),
+                ...(ctx && integra(op) ? [{ rotulo: "Participação térmica de 7 dias (Balanço de Energia)", texto: `até ${dataBR(op.dia_referencia)}`, natureza: "CALCULADO" as const }] : []),
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas
+              colunas={semNuc ? 3 : 2}
+              rotulo="Indicadores da geração térmica, 12 meses completos"
+              nota={`Inflexibilidade: geração declarada pelo agente ou acima do despachado, inclusive a embutida na ordem de mérito.${semNuc ? " A nuclear é quase toda inflexível; a terceira medida a exclui." : ""}`}
+            >
+              <Numero
+                variante="faixa"
+                rotulo="Geração das térmicas despachadas pelo ONS, inclusive a nuclear"
+                natureza="CALCULADO"
+                evidencia={ev.termica_12m_total}
+                casas={0}
+                periodo={periodo12}
+                cor="var(--serie-termica)"
+                endereco={`${rotaPainel("p022")}#p022`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Parcela por inflexibilidade"
+                natureza="CALCULADO"
+                evidencia={ev.termica_12m_inflexibilidade}
+                formato="pct"
+                casas={1}
+                unidade="da geração térmica verificada"
+                periodo={periodo12}
+                cor="var(--serie-sm-se)"
+                endereco={`${rotaPainel("p022")}#p022`}
+              />
+              {semNuc && (
+                <Numero
+                  variante="faixa"
+                  rotulo="Inflexibilidade sem a nuclear"
+                  natureza="CALCULADO"
+                  valor={semNuc.semNuclearPct}
+                  formato="pct"
+                  casas={1}
+                  unidade="da geração térmica sem a nuclear"
+                  periodo={periodo12}
+                  cor="var(--serie-sm-se)"
+                />
+              )}
+            </FaixaMetricas>
+          }
         >
-          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade declarada pelo agente, razão elétrica,
+          O ONS publica, para cada usina térmica e cada hora, quanto foi gerado e por qual motivo: ordem de mérito, inflexibilidade{exp("inflexibilidade")}, razão elétrica{exp("razao_eletrica")}, unit commitment{exp("unit_commitment")},
           exportação e outros. Este painel separa a geração por combustível e por motivo, sem inferir o motivo do preço, e mostra o{" "}
           <Termo slug="cvu">Custo Variável Unitário</Termo> declarado para a semana operativa vigente.
         </CabecalhoModulo>
-        <GeracaoNavegacao atual="p022" />
         <ModoProfundidade>
           <Bloco id="despacho">
             <PainelEvidencia
               id="p022"
-              pergunta={perguntaPainel("p022")}
+              pergunta="Geração térmica por combustível e motivo de despacho"
               subtitulo="Geração térmica por combustível e motivo de despacho · GWh, MWmed e %"
               natureza="CALCULADO"
               porQueImporta={
@@ -103,21 +219,10 @@ export default function GeracaoTermicaPage() {
                   elétrica). O motivo muda a leitura do custo da operação e do uso da água nos reservatórios.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
-              comoInterpretar={
-                <>
-                  A geração verificada de cada usina é dividida pelos motivos que o ONS publica, sem dupla contagem: a inflexibilidade embutida na ordem de mérito conta
-                  como inflexibilidade, e o mérito conta só acima dela. A soma dos motivos fecha com a geração verificada a menos de uma parcela não classificada, publicada
-                  com sinal. Combustível é outra dimensão: as barras empilham os motivos dentro de cada combustível.
-                </>
-              }
-              naoConcluir={
-                <>
-                  O motivo é a classificação do ONS; não é inferido do PLD nem do CMO, e o CVU é custo declarado para a programação, não custo realizado. A participação
-                  das térmicas não diz se o despacho foi caro ou barato para o consumidor. Usinas com o mesmo número de CEG só são tratadas como a mesma usina quando o
-                  ONS publica um elo entre elas; nunca por semelhança de nome.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.termica!}
               complementares={[
                 ...(g.proveniencia.cvu ? [{ rotulo: "CVU da semana operativa", p: g.proveniencia.cvu }] : []),
@@ -130,73 +235,55 @@ export default function GeracaoTermicaPage() {
                   termica={termicaCliente}
                   fonte={FONTE}
                   versao={versao}
-                  destaques={
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <Numero rotulo="Geração térmica despachada pelo ONS, 12 meses completos" natureza="CALCULADO" evidencia={ev.termica_12m_total} casas={0} tamanho="medio" cor="var(--serie-termica)" endereco={`${rotaPainel("p022")}#p022`} />
-                      <Numero
-                        rotulo="Parcela da geração térmica por inflexibilidade declarada pelo agente, 12 meses"
-                        natureza="CALCULADO"
-                        evidencia={ev.termica_12m_inflexibilidade}
-                        formato="pct"
-                        casas={1}
-                        unidade="%"
-                        tamanho="medio"
-                        cor="var(--serie-sm-se)"
-                        nota="Inclui a inflexibilidade embutida no despacho por ordem de mérito, como o dicionário do ONS descreve."
-                        endereco={`${rotaPainel("p022")}#p022`}
-                      />
-                    </div>
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                  notasUniverso={notasUniverso}
+                  contextoSemana={
+                    <SecaoDoPainel
+                      id="termica"
+                      titulo={ctx && integra(op) ? `A participação térmica nos 7 dias até ${dataBR(op.dia_referencia)}, em contexto` : "A participação térmica de 7 dias, em contexto"}
+                    >
+                      {ctx && integra(op) ? (
+                        <>
+                          <p className="text-sm leading-relaxed text-carvao">{textoTermica7d(ctx)}</p>
+                          <p className="text-sm text-carvao-muted">
+                            Base diferente da do motivo de despacho: o Balanço de Energia do ONS, até {dataBR(op.dia_referencia)}, com a nuclear entre as térmicas e sem separar
+                            combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior e vai de 0 (entre as menores participações) a 100 (entre as maiores); a faixa usual é do 10º ao 90º percentil dessas janelas, que reúnem todas as estações do ano, não só esta época.
+                            {anomalos.length > 0 && <> {textoDiasDoBalancoForaDoPadrao(anomalos)}</>}
+                          </p>
+                          {serie7d.length > 0 && (
+                            <GraficoLinhas
+                              titulo="Participação térmica em janelas móveis de 7 dias, último ano, com a mediana e a faixa usual do ano anterior"
+                              dados={serie7d}
+                              chaveX="d"
+                              series={[
+                                { id: "termica_7d", rotulo: "Térmica, 7 dias", cor: "var(--serie-termica)", espessura: 2.5 },
+                                { id: "mediana", rotulo: "Mediana do ano anterior", sigla: "Mediana", cor: "var(--serie-referencia)", tracejada: true },
+                              ]}
+                              banda={{ inferior: "p10", superior: "p90", rotulo: "10º a 90º percentil" }}
+                              unidade="%"
+                              casas={1}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        <GeracaoAviso>
+                          Os dados de operação da geração (Balanço de Energia) não estão íntegros nesta publicação; a participação térmica de 7 dias não é mostrada até a próxima
+                          publicação válida.
+                        </GeracaoAviso>
+                      )}
+                    </SecaoDoPainel>
                   }
                 />
 
-                <div id="termica" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-                  <h3 className="font-serif text-lg text-carvao">A participação térmica desta semana em contexto</h3>
-                  {ctx && integra(op) ? (
-                    <>
-                      <p className="text-sm leading-relaxed text-carvao">{textoTermica7d(ctx)}</p>
-                      <p className="text-sm text-carvao-muted">
-                        Base diferente da do motivo de despacho: o Balanço de Energia do ONS, até {dataBR(op.dia_referencia)}, com a nuclear entre as térmicas e sem separar
-                        combustível. O percentil compara a semana com as {num(ctx.n_janelas, 0)} janelas de 7 dias do ano anterior.
-                      </p>
-                      {serie7d.length > 0 && (
-                        <GraficoLinhas
-                          titulo="Participação térmica em janelas móveis de 7 dias, último ano, com a mediana e a faixa usual do ano anterior"
-                          dados={serie7d}
-                          chaveX="d"
-                          series={[
-                            { id: "termica_7d", rotulo: "Térmica, 7 dias", cor: "var(--serie-termica)", espessura: 2.5 },
-                            { id: "mediana", rotulo: "Mediana do ano anterior", sigla: "Mediana", cor: "var(--serie-referencia)", tracejada: true },
-                          ]}
-                          banda={{ inferior: "p10", superior: "p90", rotulo: "10º a 90º percentil" }}
-                          unidade="%"
-                          casas={1}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <GeracaoAviso>
-                      A gold de operação da geração (Balanço de Energia) não está íntegra nesta publicação; a participação térmica de 7 dias não é mostrada até a próxima
-                      publicação válida.
-                    </GeracaoAviso>
-                  )}
-                </div>
-
                 {cvuDados && (
-                  <GeracaoAnalise id="cvu" titulo="Custo Variável Unitário declarado para a semana operativa vigente">
+                  <SecaoDoPainel nivel="analisar" id="cvu" titulo="Custo Variável Unitário declarado para a semana operativa vigente">
                     <p className="text-sm text-carvao-muted">{textoCvu(cvuDados)}</p>
-                    <TabelaInterativa
-                      titulo="CVU por combustível na semana vigente: mínimo, quartis e máximo das parcelas"
-                      colunas={COLUNAS_CVU_COMBUSTIVEL}
-                      linhas={paraTabela(linhasCvuCombustivel(cvuDados))}
-                      chaveLinha="id"
-                      colunaRotulo="combustivel"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-combustivel"
-                      chaveUrl="cvc"
-                      nota="Custo declarado considerado no Programa Mensal da Operação, não custo realizado nem preço. Uma usina com várias parcelas tem um CVU por parcela."
-                    />
+                    <p className="text-sm text-carvao-muted" data-nota="cvu-zero">
+                      {notaCvuZero(cvuDados)}
+                    </p>
+                    <GeracaoTabelaSobDemanda tabela="cvu-combustivel" versao={versao} />
                     <GraficoLinhas
+                      chaveUrl="cvu"
                       titulo="Mediana mensal do CVU por combustível"
                       dados={cvuMensal}
                       chaveX="m"
@@ -208,49 +295,14 @@ export default function GeracaoTermicaPage() {
                       legendaInterativa
                       zoom
                     />
-                    <TabelaInterativa
-                      titulo="Tabela equivalente: mediana mensal do CVU por combustível"
-                      colunas={[{ id: "m", rotulo: "Mês", tipo: "texto" }, ...combustiveisCvu(cvuDados).map((c) => ({ id: c, rotulo: CURTO_COMBUSTIVEL[c], tipo: "numero" as const, unidade: "R$/MWh", casas: 2 }))]}
-                      linhas={paraTabela(cvuMensal)}
-                      chaveLinha="id"
-                      colunaRotulo="m"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-mediana-mensal"
-                      chaveUrl="cvm"
-                      ordemInicial={{ coluna: "m", direcao: "desc" }}
-                      nota="Mediana das parcelas com CVU em cada mês (moeda corrente, sem correção). Mês sem parcela do combustível fica vazio."
-                    />
-                    <TabelaInterativa
-                      titulo={`CVU de cada usina na semana de ${dataBR(cvuDados.semana.inicio)} a ${dataBR(cvuDados.semana.fim)}`}
-                      colunas={COLUNAS_CVU_USINAS}
-                      linhas={paraTabela(linhasCvuUsinas(cvuDados))}
-                      chaveLinha="id"
-                      colunaRotulo="nome"
-                      fonte={FONTE_CVU}
-                      versao={cvuDados.semana.inicio}
-                      nomeArquivo="geracao-cvu-usinas-semana"
-                      chaveUrl="cvu"
-                      ordemInicial={{ coluna: "cvu", direcao: "desc" }}
-                      dicaBusca="Nome ou código do ONS"
-                      nota={`Código do ONS ligado à usina da térmica por motivo pela união dos códigos de todas as suas parcelas; código ligado a mais de uma usina fica sem par (${cvuDados.cobertura.codigos_ambiguos.length} nesta semana). Linhas repetidas idênticas na fonte: ${num(cvuDados.controles.linhas_repetidas_identicas, 0)}, contadas uma vez.`}
-                    />
-                  </GeracaoAnalise>
+                    <GeracaoTabelaSobDemanda tabela="cvu-mensal" versao={versao} />
+                    <GeracaoTabelaSobDemanda tabela="cvu-usinas" versao={versao} />
+                  </SecaoDoPainel>
                 )}
 
-                <GeracaoAuditoria id="universo-termica" titulo="Universo: a térmica por motivo contra a Geração por Usina">
-                  <p className="text-sm text-carvao-muted">{universo.regra}</p>
-                  <TabelaInterativa
-                    titulo="Mês a mês, as mesmas usinas nos dois conjuntos do ONS"
-                    colunas={COLUNAS_UNIVERSO_TERMICA}
-                    linhas={paraTabela(linhasUniversoTermica({ universo }))}
-                    chaveLinha="id"
-                    colunaRotulo="mes"
-                    fonte="ONS, Geração Térmica por Motivo de Despacho e Geração por Usina"
-                    versao={versao}
-                    nomeArquivo="geracao-termica-universo"
-                    chaveUrl="ut"
-                  />
+                <SecaoDoPainel nivel="auditar" id="universo-termica" titulo="Universo: a térmica por motivo contra a Geração por Usina">
+                  <p className="text-sm text-carvao-muted">{emPortugues(universo.regra)}</p>
+                  <GeracaoTabelaSobDemanda tabela="universo-termica" versao={versao} />
                   <p className="text-sm text-carvao-muted">
                     Combustível de {num(mapa.usinas, 0)} usinas, pela autoridade publicada:{" "}
                     {Object.entries(mapa.por_origem)
@@ -262,7 +314,7 @@ export default function GeracaoTermicaPage() {
                       : "Todas com combustível identificado."}
                   </p>
                   <p className="text-sm text-carvao-muted">
-                    {identidade.regra}{" "}
+                    {emPortugues(identidade.regra)}{" "}
                     {identidade.usinas_com_mais_de_uma_chave.length
                       ? `Usinas com mais de uma chave na fonte: ${identidade.usinas_com_mais_de_uma_chave.map((x) => `${x.nome ?? x.usina} (${x.chaves.join(", ")})`).join("; ")}.`
                       : ""}
@@ -270,19 +322,23 @@ export default function GeracaoTermicaPage() {
                   <p className="text-sm text-carvao-muted">
                     Células negativas na fonte (motivos ou total), mantidas como publicadas e contadas: {num(t.controles.valores_negativos_na_fonte, 0)}.
                   </p>
-                </GeracaoAuditoria>
+                </SecaoDoPainel>
 
-                <GeracaoAuditoria id="regras-termica" titulo="Regras e limitações">
+                <SecaoDoPainel nivel="auditar" id="regras-termica" titulo="Regras e limitações">
                   <GeracaoRegras regras={[{ rotulo: ROTULO_REGRA.termica, texto: g.regras.termica }, { rotulo: ROTULO_REGRA.janelas, texto: g.regras.janelas }]} />
                   <GeracaoFrases itens={[...(g.proveniencia.termica?.limitacoes ?? []), ...(g.proveniencia.cvu?.limitacoes ?? [])]} />
-                  <ul className="space-y-1 text-sm text-carvao-muted">
-                    {t.motivos.map((mo) => (
-                      <li key={mo.id}>
-                        <span className="text-carvao">{mo.rotulo}</span>: campo {mo.campo} da fonte.
-                      </li>
-                    ))}
-                  </ul>
-                </GeracaoAuditoria>
+                  <div className="space-y-2" data-dicionario-de-campos="motivos">
+                    <p className="rotulo text-mineral">Dicionário: a coluna do arquivo do ONS que traz cada motivo</p>
+                    <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+                      {t.motivos.map((mo) => (
+                        <div key={mo.id} className="contents">
+                          <dt className="text-carvao">{mo.rotulo}</dt>
+                          <dd className="font-mono text-xs text-carvao-muted [overflow-wrap:anywhere]">{mo.campo}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                </SecaoDoPainel>
 
                 <GeracaoSeguir ancora="p022" proximo={painelPublicado("p023") ? { href: `${rotaPainel("p023")}#p023`, pergunta: perguntaPainel("p023") } : null} downloads={downloadsDoPainel(g.downloads, "p022")} />
               </div>

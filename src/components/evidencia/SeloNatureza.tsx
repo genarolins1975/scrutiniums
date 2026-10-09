@@ -42,13 +42,27 @@ export const NATUREZAS: Record<Natureza, { rotulo: string; glifo: string; borda:
   },
 };
 
-/** `compacto`: só o glifo com borda, para cabeçalho de coluna; o rótulo segue para leitor de tela e dica. */
-export function SeloNatureza({ natureza, compacto = false }: { natureza: Natureza; compacto?: boolean }) {
+/**
+ * `compacto`: só o glifo com borda, para cabeçalho de coluna; o rótulo segue para leitor de tela e dica.
+ * `texto`: glifo e rótulo em texto corrido, sem caixa, para a linha de contexto de uma medida da abertura; a forma continua sendo
+ * portadora da categoria e a cor nunca é o único sinal.
+ */
+export function SeloNatureza({ natureza, compacto = false, texto = false }: { natureza: Natureza; compacto?: boolean; texto?: boolean }) {
   const n = NATUREZAS[natureza];
+  if (texto) {
+    return (
+      <span className={`inline-flex items-center gap-1 whitespace-nowrap ${n.cor.split(" ")[0]}`} title={`${n.rotulo}: ${n.definicao}`} data-natureza={natureza}>
+        <span aria-hidden="true">{n.glifo}</span>
+        <span className="sr-only">Natureza do dado: </span>
+        {n.rotulo}
+      </span>
+    );
+  }
   return (
     <span
-      className={`rotulo relative inline-flex items-center gap-1.5 whitespace-nowrap border bg-superficie px-1.5 py-0.5 !text-[0.66rem] ${n.borda} ${n.cor}`}
+      className={`rotulo relative inline-flex items-center gap-1.5 whitespace-nowrap border bg-superficie px-1.5 py-0.5 !text-xs ${n.borda} ${n.cor}`}
       title={`${n.rotulo}: ${n.definicao}`}
+      data-natureza={natureza}
     >
       <span aria-hidden="true">{n.glifo}</span>
       <span className="sr-only">Natureza do dado: </span>

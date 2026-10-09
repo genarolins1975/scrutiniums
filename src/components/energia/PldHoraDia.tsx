@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MapaCalor } from "@/components/energia/MapaCalor";
 import { PldEscolha } from "@/components/energia/PldControles";
+import { PldMapaHoras } from "@/components/energia/PldMapaHoras";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
-import { ESCALA_PLD, HORAS_DO_DIA, JANELAS_HORA_DIA, NOME_SM, horaDiaRecorte, type JanelaHoraDia } from "@/lib/energia/pld";
+import { ESCALA_PLD, HORAS_DO_DIA, JANELAS_HORA_DIA, NOME_SM, horaDiaRecorte, notaSemNomeDeArquivo, type JanelaHoraDia } from "@/lib/energia/pld";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { PldHoraDiaArquivo } from "@/lib/energia/tipos-pld";
 
@@ -73,7 +73,7 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
         onEscolher={(x) => definir({ hd: x })}
       />
       {estado.tipo === "ok" && recorte ? (
-        <MapaCalor
+        <PldMapaHoras
           titulo={`PLD por hora e dia, ${NOME_SM[sm]}, últimos ${janela} dias`}
           linhas={recorte.linhas}
           colunas={HORAS_DO_DIA}
@@ -85,7 +85,7 @@ export function PldHoraDia({ url, sm, nota }: { url: string; sm: Submercado; not
           casas={2}
           passoRotuloColunas={3}
           periodo={recorte.linhas.length ? `${dataBR(recorte.linhas[0].id)} a ${dataBR(recorte.linhas[recorte.linhas.length - 1].id)}` : undefined}
-          nota={nota}
+          nota={notaSemNomeDeArquivo(nota)}
         />
       ) : estado.tipo === "erro" ? (
         <p role="alert" className="border-l-2 border-aviso pl-3 text-sm text-carvao">

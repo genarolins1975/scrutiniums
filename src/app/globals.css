@@ -39,13 +39,16 @@
   /* Séries do domínio Energia, validadas por scripts/validate_palette (skill
      dataviz) sobre superfície clara: ordem fixa, CVD adjacente >= 8, visão
      normal >= 15. Solar fica abaixo de 3:1 e exige rótulo direto ou tabela.
-     Texto nunca usa a cor da série. */
+     Texto nunca usa a cor da série. O verde (eólica, Sul e a terceira cor de comparação) passou de #199e70 para #17966a: o anterior
+     media 3,21:1 sobre o papel #faf8f2 (onde os gráficos ficam) e 2,97:1 sobre o marfim #f3efe5, abaixo dos 3:1 de elemento gráfico
+     (WCAG 1.4.11) nesse segundo fundo; o novo mede 3,53:1 e 3,26:1, e a distância para o laranja (CIEDE2000, protanopia 14,6 e
+     deuteranopia 18,4) e para o azul (tritanopia 10,5) segue acima de 8. */
   --serie-hidraulica: #256abf;
   --serie-termica: #d95926;
-  --serie-eolica: #199e70;
+  --serie-eolica: #17966a;
   --serie-solar: #c98500;
   --serie-sm-se: #4a3aa7;
-  --serie-sm-s: #199e70;
+  --serie-sm-s: #17966a;
   --serie-sm-ne: #d95926;
   --serie-sm-n: #2a78d6;
   --serie-referencia: #8a8578;
@@ -70,7 +73,7 @@
      validados das séries de submercado, com semântica própria dada pelo rótulo. */
   --serie-comp-1: #4a3aa7;
   --serie-comp-2: #d95926;
-  --serie-comp-3: #199e70;
+  --serie-comp-3: #17966a;
   --serie-comp-4: #2a78d6;
 
   /* Paleta categórica dos gráficos: bronze só como destaque */
@@ -145,8 +148,9 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível (some quando não há) */
-.dominio-energia div.tabela-scroll {
+/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível. Só quando o contêiner rola de fato (MarcaRolagem grava data-rolavel):
+   pintada em todo contêiner, ela deixava uma mancha branca nas bordas de tabelas que não rolam sobre fundo que não é o da superfície. */
+.dominio-energia div.tabela-scroll[data-rolavel="sim"] {
   background:
     linear-gradient(to right, var(--cor-superficie) 30%, transparent) left / 2.5rem 100% no-repeat local,
     linear-gradient(to left, var(--cor-superficie) 30%, transparent) right / 2.5rem 100% no-repeat local,
@@ -157,6 +161,31 @@ body {
   outline: 2px solid var(--cor-energia);
   outline-offset: 2px;
 }
+/* Há mais colunas à direita (marcado por TabelaInterativa): a borda direita esmaece para que um número cortado no limite da janela
+   não seja lido como completo; o aviso em texto continua acima da tabela. */
+.tabela-scroll[data-mais-direita="sim"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+}
+
+/* Celular, Entender: a tabela estática com largura mínima de projeto (28 a 62 rem) encolhe até onde as palavras deixam, com letra menor e
+   células mais justas, e mostra mais colunas por tela; o que ainda passar da largura rola, com a sombra da borda. Palavra nunca é partida:
+   o encolhimento para na palavra mais larga de cada coluna. Mapas de calor e grades (border-separate, data-grade) e a comparação do
+   Território mantêm a largura que o desenho exige. */
+@media (max-width: 40rem) {
+  .modo-profundidade[data-modo="entender"] .tabela-scroll table.border-collapse[class*="min-w-"]:not([data-grade]):not([data-comparacao]) {
+    min-width: 0 !important;
+    font-size: 0.75rem;
+  }
+  .modo-profundidade[data-modo="entender"] .tabela-scroll table.border-collapse[class*="min-w-"]:not([data-grade]):not([data-comparacao]) :is(th, td) {
+    padding-left: 0.3rem !important;
+    padding-right: 0.3rem !important;
+  }
+  /* a coluna nunca fica mais estreita que a palavra: "Sudeste/Centro-Oeste" quebra no hífen, não em "Centr" e "o-Oeste"; o excesso rola */
+  .modo-profundidade[data-modo="entender"] .tabela-scroll :is(th, td) {
+    overflow-wrap: normal;
+  }
+}
 
 /* Profundidade progressiva (ModoProfundidade): mesma página, três níveis. */
 .modo-profundidade[data-modo="entender"] [data-nivel="analisar"],
@@ -164,6 +193,72 @@ body {
 .modo-profundidade[data-modo="analisar"] [data-nivel="auditar"] {
   display: none;
 }
+
+/* Antes da hidratação o HTML ainda não sabe o nível (data-modo="todos"). Com JavaScript ligado, vale o padrão Entender desde o
+   primeiro quadro, sem mostrar por segundos o conteúdo de Analisar e Auditar que depois some; quem abre ?modo= sobe ao nível
+   pedido na hidratação. Sem JavaScript, todos os níveis continuam à vista, em ordem. */
+@media (scripting: enabled) {
+  .modo-profundidade[data-modo="todos"] [data-nivel="analisar"],
+  .modo-profundidade[data-modo="todos"] [data-nivel="auditar"] {
+    display: none;
+  }
+  .modo-profundidade[data-modo="todos"] .tabela-recolher { display: block; }
+  .modo-profundidade[data-modo="todos"] [data-recolhivel="fechada"] { display: none; }
+}
+
+/* A barra fixa de profundidade (sticky, até 69 px) não pode esconder a borda do elemento que recebe o foco nem o alvo de uma âncora:
+   a rolagem por foco e por âncora deixa folga em cima. */
+html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
+
+/* Campos de formulário: a borda é o que identifica o controle (WCAG 1.4.11, razão de 3:1). A linha fina do domínio (1,4:1) separa seções, e
+   não serve de contorno de campo; o mineral dá 4,9:1 sobre o papel. */
+.dominio-energia select,
+.dominio-energia input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) { border-color: var(--cor-mineral); }
+
+/* Caixas e botões de opção com pelo menos 24 px (WCAG 2.5.8): o rótulo já tinha 44 px, mas o controle em si media 13 a 16 px. */
+.dominio-energia input[type="checkbox"],
+.dominio-energia input[type="radio"] {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+}
+
+/* No celular, o campo de seleção ocupa a largura do contêiner: com a opção mais longa ele alargava a página
+   (rolagem horizontal em Previsões e na página inicial). Percentual no select deixa de contar no mínimo do contêiner. */
+@media (max-width: 40rem) {
+  .dominio-energia select {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Células da TabelaInterativa: três classes curtas no lugar de seis utilitárias repetidas em cada célula. O HTML de uma página com
+   tabelas grandes (Território tem quase 500 células numéricas) perde dezenas de kB, e o orçamento de 600 kB deixa de depender disso. */
+/* Grade de bandeiras (ContaBandeiras): 141 células com as mesmas classes pesavam 11 kB no HTML da página de reajustes. */
+.cb-cel { height: 2rem; border: 1px solid var(--cor-linha); background: var(--cor-superficie); padding-inline: 0.125rem; text-align: center; line-height: 1.25; color: var(--cor-carvao); }
+.cb-vazia { height: 2rem; border: 1px dashed var(--cor-linha); }
+.tc { padding: 0.5rem; color: var(--cor-carvao); }
+.tc-n { white-space: nowrap; text-align: right; }
+.tc-d { white-space: nowrap; }
+.tc-t { min-width: 8rem; }
+
+/* Tabela longa em Entender: atrás do botão "Ver a tabela completa" (TabelaInterativa). Analisar, Auditar e páginas sem níveis de profundidade mostram a tabela aberta e escondem o botão. */
+.tabela-recolher { display: none; }
+.tabela-recolher-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 1px solid var(--cor-linha);
+  background: var(--cor-superficie);
+  color: var(--cor-carvao);
+  font-family: var(--font-label), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+.tabela-recolher-btn:hover { border-color: var(--cor-energia); }
+.modo-profundidade[data-modo="entender"] .tabela-recolher { display: block; }
+.modo-profundidade[data-modo="entender"] [data-recolhivel="fechada"] { display: none; }
 
 /* Dica de verbete (Termo): visível no hover e no foco do teclado. */
 /* display:none fora do hover/foco: posicionada e invisível, a dica ainda ocupava
@@ -201,10 +296,200 @@ body {
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
+/* Metadados do domínio Energia não ficam abaixo de 12 px (o utilitário global .rotulo é de 11,5 px e serve aos outros observatórios). */
+.dominio-energia .rotulo { font-size: 0.75rem; }
+/* Texto de apoio (notas, fontes, legendas, ressalvas) tem 13 px no domínio Energia: com 12 px ele era de 35% a 65% do texto das páginas nas avaliações
+   independentes, inclusive ressalvas que mudam a leitura do número. Quem declara a própria altura de linha (leading-*) a mantém. */
+.dominio-energia .text-xs { font-size: 0.8125rem; }
+.dominio-energia .text-xs:not([class*="leading-"]) { line-height: 1.2rem; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
 
 /* OBEE: link com recorte na URL esconde o conteúdo até o painel ler o recorte (ver LiberaRecorte); sem JavaScript nada se esconde */
 html[data-recorte="pendente"] #conteudo {
   visibility: hidden;
+}
+
+/* Lista de módulos e faixas de seções que rolam na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel e FaixasDeSecao
+   ligam --fade-esq e --fade-dir). O esmaecimento de 2 rem não deixa dúvida de que o último rótulo cortado é rolagem. */
+#modulos-energia,
+.nav-faixa,
+.nav-faixa-barra {
+  --fade-esq: 0;
+  --fade-dir: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 2rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 2rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+}
+
+/* Faixa de módulos do cabeçalho: o item atual fica rente à borda esquerda, então o esmaecimento daquele lado é estreito (8 px, menos que o
+   respiro interno do rótulo) para não apagar a primeira letra dele. */
+#modulos-energia {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 0.5rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 0.5rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
+}
+
+/* No celular as abas de seção da página quebram linha e ficam todas à vista, duas por linha. Na r7 elas passaram a uma linha que rola, e na
+   r8 sete dos nove revisores a leram como "cortada sem pista de rolagem" (a aba atual ficava fora da tela em várias páginas). Quebrar custa
+   uma ou duas linhas de 44 px; o ganho de altura vem da abertura do módulo recolhida (SobreEstaPagina). A faixa de módulos do cabeçalho
+   do site também quebra linha abaixo de 768 px, em vez de rolar. */
+@media (max-width: 40rem) {
+  .nav-faixa > li,
+  .nav-faixa-barra > li { flex: 1 1 calc(50% - 0.25rem); min-width: 0; }
+  .nav-faixa a,
+  .nav-faixa-barra a { width: 100%; justify-content: center; text-align: center; }
+  /* Duas metades de linha mais o espaço de 24 px entre colunas (gap-x-6) passavam de 100%: cada aba caía numa linha própria
+     (173 px para quatro abas, 216 px para cinco, acima do título). Com 4 px entre colunas as abas voltam a ficar duas por linha. */
+  ol.nav-faixa { column-gap: 0.25rem; }
+}
+@media (max-width: 47.99rem) {
+  #modulos-energia { flex-wrap: wrap; overflow: visible; -webkit-mask-image: none; mask-image: none; }
+}
+
+/* A resposta curta do painel vem antes dos filtros e dos controles: o leitor lê o número que responde à pergunta e só depois ajusta
+   submercado, ano ou período (a resposta continua sendo atualizada por eles). Vale para o contêiner de espaçamento vertical que tem
+   a resposta como filho direto; a ordem no DOM e o foco por teclado não mudam. A margem de cima do espaçamento vertical passa
+   para baixo, porque a resposta agora é o primeiro item visual. */
+[class*="space-y-"]:has(> [data-resposta]) { display: flex; flex-direction: column; }
+[class*="space-y-"] > [data-resposta]:not([data-resposta-depois]) { order: -1; margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+
+/* Legenda interativa dos gráficos de linhas: em tela larga com ponteiro fino os botões têm 32 px (a figura começa mais acima);
+   no toque e abaixo de 768 px ficam com 44 px. */
+@media (pointer: fine) and (min-width: 48rem) {
+  .dominio-energia ul[aria-label^="Legenda: ative"] > li,
+  .dominio-energia ul[aria-label^="Legenda: ative"] button { min-height: 2rem; }
+}
+
+/* ==========================================================================================================================
+   Sistema editorial do domínio Energia (redesenho). Tokens de escala e composição, sem alterar as cores globais, que são
+   compartilhadas com o outro observatório e já passam AA (src/tests/design-tokens-energia.test.ts).
+   Largura de leitura: 1.160 px de conteúdo a partir de 1.240 px de janela; margem lateral de 16 px no celular a 40 px no desktop.
+   ========================================================================================================================== */
+.ed-pagina { width: 100%; max-width: 77.5rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }
+
+/* H1 de 30 px no celular a 44 px no desktop; título curto, no máximo duas linhas na largura de leitura. */
+.ed-h1 { font-weight: 400; font-size: clamp(1.875rem, 1.35rem + 2.1vw, 2.75rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
+.ed-h2 { font-weight: 400; font-size: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+.ed-h3 { font-weight: 400; font-size: 1.25rem; line-height: 1.25; }
+.ed-lead { font-size: 1rem; line-height: 1.55; }
+@media (min-width: 768px) { .ed-lead { font-size: 1.0625rem; } }
+
+/* Abertura da página: rótulo, título, uma ou duas frases, recorte e fonte curta; o restante fica em disclosure. */
+.cab-modulo { padding-top: 1.25rem; padding-bottom: 0.5rem; }
+@media (min-width: 768px) { .cab-modulo { padding-top: 2rem; padding-bottom: 0.75rem; } }
+.ed-meta { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
+/* Faixa de métricas: linhas finas em vez de cartões; divisória vertical entre métricas da mesma linha, divisória horizontal entre linhas.
+   Colunas por largura de tela e número de métricas (data-colunas): celular 1 (linhas de lista); 640 a 1023 px 2, 3, 2, 3, 3 (para 2 a 6 métricas); 1024 px em diante 2, 3, 4, 5, 3. */
+.ed-faixa { border-block: 1px solid var(--cor-linha); padding-block: 1rem; margin-block: 0.75rem 0.5rem; }
+.ed-faixa-grade { display: grid; gap: 1rem 1.5rem; }
+.ed-faixa-grade > * { min-width: 0; }
+@media (max-width: 639.98px) {
+  .ed-faixa-grade { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .ed-faixa-grade > * + * { border-top: 1px solid var(--cor-linha); padding-top: 0.75rem; }
+}
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .ed-faixa-grade[data-colunas="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="2"] > :nth-child(n+3) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="2"] > :not(:nth-child(2n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="3"] > :nth-child(n+4) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="3"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="4"] > :nth-child(n+3) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="4"] > :not(:nth-child(2n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="5"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="5"] > :nth-child(n+4) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="5"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="6"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="6"] > :nth-child(n+4) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="6"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .ed-faixa-grade[data-colunas="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="2"] > :nth-child(n+3) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="2"] > :not(:nth-child(2n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="3"] > :nth-child(n+4) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="3"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="4"] > :nth-child(n+5) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="4"] > :not(:nth-child(4n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="5"] > :nth-child(n+6) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="5"] > :not(:nth-child(5n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+  .ed-faixa-grade[data-colunas="6"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-faixa-grade[data-colunas="6"] > :nth-child(n+4) { border-top: 1px solid var(--cor-linha); padding-top: 1rem; }
+  .ed-faixa-grade[data-colunas="6"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
+}
+
+/* O primeiro painel logo abaixo da barra de profundidade não repete a linha fina da barra. */
+.modo-profundidade > .sticky + div > section[data-painel-evidencia]:first-child { border-top: 0; padding-top: 0.75rem; }
+
+/* Gatilho "Comprove este número" dentro da faixa: 32 px com ponteiro fino, 44 px no toque. */
+.ed-faixa [data-comprove] { min-height: 2rem; text-transform: none; letter-spacing: 0; font-size: 0.75rem; font-family: var(--font-sans), system-ui, sans-serif; }
+@media (pointer: coarse), (max-width: 47.99rem) { .ed-faixa [data-comprove] { min-height: 2.75rem; } }
+
+/* Sem JavaScript o botão "Comprove este número" não abre nada (a ficha é um diálogo do cliente): fica escondido, e o link "Ver no painel"
+   ao lado leva ao número no painel. */
+@media (scripting: none) {
+  main button[data-comprove] { display: none; }
+}
+
+/* A barra fixa de volta ao Aprenda não pode cobrir o elemento que recebe o foco (WCAG 2.4.11): enquanto existe,
+   a rolagem por foco e por âncora deixa folga embaixo, e o fim da página ganha o mesmo espaço. */
+html:has(nav[data-retorno]) { scroll-padding-bottom: 6rem; }
+body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
+
+/* Impressão: só o conteúdo; endereços dos links externos por extenso e blocos de prova sem quebra no meio. */
+@media print {
+  html { background: #fff; scroll-behavior: auto; }
+  /* a máscara que esmaece a borda de tabela larga no celular não vai ao papel */
+  .tabela-scroll[data-mais-direita="sim"] { -webkit-mask-image: none; mask-image: none; }
+  /* cromo do site: cabeçalho, rodapé do observatório e rodapé institucional (por seletor, para não pesar o HTML de cada página) */
+  header.border-b.bg-superficie, aside[aria-label^="Observatório Brasileiro"], footer.bg-carvao { display: none !important; }
+  main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }
+  main figure, main blockquote, main li { break-inside: avoid; }
+  main h1, main h2 { break-after: avoid; }
+  /* links internos (fora das abas e menus) saem com o caminho: o CSV e a página de destino não somem do papel */
+  main a[href^="/"]:not(nav a)::after { content: " (" attr(href) ")"; font-size: 0.85em; overflow-wrap: anywhere; }
+  /* controles que não funcionam no papel: nível de profundidade, intervalo do gráfico, link do painel, gatilho Comprove em texto
+     e, em cada tabela, busca, filtros, exportação, dica de rolagem e botões de página (o texto "Página 1 de 2 · linhas 1 a 25" fica e diz o que saiu no papel) */
+  .modo-profundidade > .sticky,
+  [data-controles="intervalo"],
+  main span:has(> input[aria-label^="Endereço deste painel"]),
+  main button[data-comprove].rotulo,
+  [data-componente="tabela-interativa"] div:has(> input[type="search"]),
+  [data-componente="tabela-interativa"] div:has(> span.rotulo.mr-1),
+  [data-componente="tabela-interativa"] p[role="status"] + div,
+  [data-componente="tabela-interativa"] [data-dica-rolagem],
+  [data-componente="tabela-interativa"] nav[aria-label^="Paginação"] :is(button, label) { display: none !important; }
+  /* tabela inteira na largura da página: sem rolagem lateral, sem coluna fixa, texto quebra no lugar de cortar */
+  main .tabela-scroll { overflow: visible !important; border-top: 1px solid #999; }
+  main .tabela-scroll table { width: 100% !important; table-layout: auto; font-size: 0.68rem; }
+  main .tabela-scroll th,
+  main .tabela-scroll td {
+    min-width: 0 !important;
+    max-width: none !important;
+    position: static !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    padding: 0.15rem 0.25rem !important;
+  }
+  main .tabela-scroll tr { break-inside: avoid; }
+  main .tabela-scroll thead { display: table-header-group; }
+}
+
+/* Modo de alto contraste (forced-colors): o estado selecionado vive só em cor de fundo, que o modo apaga.
+   Seletor de profundidade, rádios nativos (o rótulo envolve o input escondido) e botões de período/série ganham
+   cores de sistema, borda grossa e sublinhado, que sobrevivem ao modo. */
+@media (forced-colors: active) {
+  [role="radio"][aria-checked="true"],
+  button[aria-pressed="true"],
+  .dominio-energia label:has(> input:checked) {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+    border: 3px solid Highlight;
+    text-decoration: underline;
+  }
 }

@@ -1,0 +1,820 @@
+{
+ "avaliador": "T-U04",
+ "papel": "tecnico",
+ "rodada": "inicial",
+ "versao_avaliada": "51747baf8 (estado servido em http://localhost:3100; dados processados em 01/10/2026, dia de referência 29/09/2026)",
+ "paginas": {
+  "/setor-eletrico/geracao": {
+   "paineis": [
+    "P021"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Li visoes.json e os textos de Entender e Auditar: participação de 30 dias contra 365, mensal empilhado, 60 dias, 72 horas, 365 contra 365 anteriores, natureza mensal, anual, quebra de 29/04/2023, reconciliação e universo da fonte; cumpre o mínimo de P021 na ESPECIFICACAO.md.",
+      "Na gold, SE, S, NE e N só têm janelas de 30 e 365 dias e a página não traz série mensal ou diária por subsistema, embora o CSV diário tenha as quatro regiões.",
+      "Recalculei do CSV diário as janelas de todas as regiões contra a gold: diferença máxima de 0,05 MWmed."
+     ],
+     "atendidos": [
+      "Nível atual com resposta curta, quatro números e recorte de período, universo e unidade",
+      "Evolução mensal, anual e de 365 contra 365 anteriores",
+      "Composição em 11 categorias, com natureza da energia (medição, previsão, estimativa)",
+      "Limitações e cobertura: ressalvas de universo, reconciliação com o Balanço, quebras de série",
+      "Território em quatro subsistemas nas janelas de 30 e 365 dias"
+     ],
+     "problemas": [
+      "Sem série por subsistema, embora P021 peça SIN e subsistemas",
+      "Gráfico principal sem referência da mesma estação; a comparação compatível está em outro bloco",
+      "Variabilidade histórica por categoria ausente (só 60 dias e 72 horas)",
+      "Relação com carga e preço só por links e frases de não conclusão"
+     ],
+     "justificativa": "Cobertura ampla e honesta sobre limites, cumpre o mínimo de P021. Faltam evolução por subsistema, faixa histórica por fonte e referência sazonal no gráfico principal."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Recalculei do geracao_matriz_diaria.csv: 82.216,4 MWmed, hidráulica 52,72%, eólica 18,38%, MMGD 11,32%, gás 4,99% (30 dias); 365 contra 365 anteriores com queda de 0,6% no total sem MMGD e alta de 0,5% nas categorias comparáveis. Tudo igual à página.",
+      "O gráfico de abertura compara 31/08 a 29/09 com a média de 365 dias sem aviso de sazonalidade (item aberto em modulos/geracao.md, seção 9): hidráulica 52,7% contra 57,6%; Térmicas Tipo III 2,6% contra 1,8%, com padrão sazonal repetido todos os anos na série mensal.",
+      "Tabela anual: Energia medida (%) usa o total com MMGD no denominador de 2023 em diante (2025: 85,84% mais 5,72% mais 8,45%), dentro de tabela titulada sem MMGD e sem nota; o dicionário do XLSX não define a coluna.",
+      "A supressão da variação exige salto de 25% ou mais em 5 identificadores ou mais: hidráulica e eólica seguem comparáveis com identificadores ausentes em ago/2026 que tiveram 366,7 e 316,2 GWh em ago/2025 (1,4% e 2,7% da categoria)."
+     ],
+     "atendidos": [
+      "MWmed como soma de MWh dividida pelas horas, nunca média de médias",
+      "Participação como razão de agregados, com perímetros com e sem MMGD",
+      "Universo, natureza e presença parcial junto do número",
+      "Comparação 365 contra 365 anteriores, na mesma estação, com variação suprimida onde o universo da fonte mudou",
+      "Comparações que atravessam 29/04/2023 só no perímetro sem MMGD"
+     ],
+     "problemas": [
+      "Referência do gráfico principal sem sazonalidade",
+      "Energia medida (%) com denominador que muda em 2023, sem nota",
+      "Limiar de 25% para suprimir variação é heurístico e deixa identificadores ausentes como comparável"
+     ],
+     "justificativa": "Agregações, universo e supressão de variação enganosa muito bem declarados. Perdem pontos a referência não sazonal do gráfico principal, o denominador ambíguo de Energia medida e o limiar heurístico de universo."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "Baixei do S3 do ONS o Parquet de ago/2026 e agreguei com o mapeamento publicado em geracao_rotulos_fonte.csv: 11 categorias (hidráulica 42.415,3; eólica 15.569,9; MMGD 8.765,5 MWmed), total 81.183,1, natureza (medição 82,56%, Tipo III 6,64%, MMGD 10,80%) e identificadores com valor (biomassa 17, óleo 25, outras 5) idênticos à página.",
+      "Janela de 30 dias com os arquivos atuais do ONS: natureza (medição 81,74%, Tipo III 6,94%, MMGD 11,32%) igual; total 82.223,8 contra 82.216,4 publicado (mais 0,009%, revisão do ONS em set/2026).",
+      "Quebra de 29/04/2023: descrição de Carga de Energia e frase do dicionário v1.2 (09/06/2023) conferidas no portal do ONS; A11 refeita: 15 de 15 dias na janela e 1.645 de 2.097 dias no SIN.",
+      "Tabela anual, linha 2023: MMGD de 2.622,8 MWmed é a soma dividida pelas horas de 365 dias; a estimativa existe em 247 dias e a média sobre eles é 3.875,7 MWmed; o valor fica abaixo de todos os meses de mai a dez/2023 da própria página."
+     ],
+     "atendidos": [
+      "MW, MWmed e MWh distintos, com numerador e denominador na ficha",
+      "Medição, previsão (Tipo III) e estimativa (MMGD) separadas por natureza e por categoria",
+      "Geração centralizada e MMGD em perímetros próprios, com a quebra de 2023 conferida na fonte",
+      "SIN igual à soma dos subsistemas em todos os dias e categorias do CSV",
+      "Ausência vazia, nunca zero, nas séries mensal e de janelas; reconciliação com o Balanço mostrada sem correção"
+     ],
+     "problemas": [
+      "Média anual da MMGD em 2023 trata 118 dias sem estimativa como zero (ver bloqueio)",
+      "Denominador de Energia medida muda em 2023 sem aviso",
+      "Selo Calculado num total que soma medição, previsão e estimativa (aberto no projeto)",
+      "Abr/2023 na série de natureza traz MMGD de 0,25% com 2 de 30 dias; a nota 'a solar fica em zero à noite' não vale para a solar centralizada (1,0 MWmed)"
+     ],
+     "justificativa": "Valores batem com o Parquet bruto do ONS e a fonte da quebra de 2023 foi conferida. Abaixo de 9 por defeito comprovado: a média anual da MMGD de 2023 trata ausência como zero, e o denominador de Energia medida muda sem aviso."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz pelo CSV: numeradores da ficha (59.195.841,6 MWh total; 10.881.650,0 eólica; 6.700.297,2 MMGD; 2.951.018,0 gás) batem com geracao_matriz_diaria.csv a até 0,003 MWh; os 2 gold e 14 CSV de Geração servidos têm o mesmo sha256 do repositório e 17 arquivos conferem com o manifesto.",
+      "Refiz também pelo Parquet bruto do ONS com o mapeamento publicado: igual. Seguindo só os passos da ficha (git checkout eec0a3121e05 e executar_modulo.py geracao --sem-coleta sobre data/energia/bronze, parquet.gz com hash de cópia interna) o leitor não reproduz.",
+      "geracao_detalhe.json mudou em 08/10/2026 (commit d01d64187: variacao_total_comparavel_pct, rótulos de inflexibilidade, texto de universo) sem alterar gerado_em de 01/10/2026 nem a versão eec0a3121e05+alterado; o checkout citado não gera o +0,5% exibido.",
+      "Exportação de tabela traz aba Sobre (fonte, versão, recorte, colunas) e ausência vazia; a citação gerada diz 'recurso não identificado'; o link e a nota falam em 366 dias horários, mas o CSV tem 8.760 linhas (365 dias)."
+     ],
+     "atendidos": [
+      "Fonte específica (conjunto e arquivos mensais), período, publicação e captura em Brasília",
+      "Fórmula, numerador, denominador, filtros e exclusões por número",
+      "Histórico de revisões da fonte (58 arquivos, 116 downloads idênticos) e limitações",
+      "Tabela, gráfico, texto e CSV com o mesmo contrato (conferido)",
+      "Manifesto com sha256 dos arquivos publicados"
+     ],
+     "problemas": [
+      "Versão com +alterado e gold alterada depois do carimbo",
+      "Passos dependem de bronze interno; sem URL do arquivo do ONS nem hash do original",
+      "Natureza de 30 dias (81,7%, 6,9%, 11,3%) sem ficha nem CSV diário por natureza",
+      "Citação sem recurso e rótulo de 366 dias para arquivo de 365",
+      "Nomes internos de campo no Auditar sem definição (natureza_pct, ressalvas_universo, outros_por_ceg, id_ons)"
+     ],
+     "justificativa": "Número reconstruído do CSV e do Parquet bruto, com fórmula e manifesto. Sem 9 porque a versão publicada não reconstitui código nem conteúdo atual e o passo a passo exige bronze interno."
+    },
+    "L": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, 1,0 a 1,2 s, HTML 578 kB (89 kB comprimido), JS 640 a 668 kB. Carreguei as tabelas sob demanda (16 marcadores, 22 tabelas no DOM; gold de 492 kB, 82 kB comprimido) sem erro.",
+      "CLS medido por mim (Chromium, localhost): 0,073 a 390 px e 0,030 a 1440 px; 0,34 com CPU 4x e 1,6 Mbps. O instrumento do projeto não mede CLS, LCP nem INP.",
+      "Testes lidos: 57 de Python (gold contra CSV, ausência, natureza, ressalvas, A11, 12 meses) e 29 de TS; atualizar-energia.yml roda vitest e unittest antes de publicar e retém a gold reprovada; controle crítico bloqueia dia futuro, soma de participações fora de 100% e energia negativa.",
+      "Nenhum teste cobre a presença parcial da MMGD no ano de 2023 nem o denominador de Energia medida."
+     ],
+     "atendidos": [
+      "Console limpo e controles exercitados sem falha",
+      "Tabelas detalhadas lidas sob demanda, com erro tratado e nova tentativa",
+      "Testes de contrato com valores lidos de outro caminho",
+      "Bloqueio de publicação por controle crítico e por testes no fluxo diário",
+      "Instrumento de medição documentado em AVALIACAO_PAGINAS.md"
+     ],
+     "problemas": [
+      "Defeito de cálculo da MMGD anual passou pelos testes",
+      "CLS de 0,34 com estrangulamento e instrumento sem CLS",
+      "Aviso de defasagem compara com a data de processamento: em 09/10 o dado de 29/09 aparece como normal",
+      "Medição só em laboratório, sem dado de campo",
+      "Sem JavaScript, as tabelas de Analisar e Auditar viram aviso com CSV"
+     ],
+     "justificativa": "Console limpo, carga leve, tabelas sob demanda e testes fortes de contrato. Nota menor porque um valor errado passou pelos testes, o CLS chega a 0,34 sob estrangulamento e o instrumento do projeto não registra estabilidade visual."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ausência tratada como zero",
+     "descricao": "Tabela Participação por ano (Analisar e Auditar), coluna MMGD estimada (MWmed), linha 2023: 2.622,8 MWmed divide a energia da MMGD pelas 8.760 horas do ano, embora a estimativa só exista de 29/04/2023 em diante (247 dias); a média sobre os dias com dado é 3.875,7 MWmed (subestimativa de 32%). Pela convenção do pipeline o número é a contribuição da MMGD à média anual, mas a coluna não diz isso, a linha não sinaliza presença parcial (as janelas da mesma página sinalizam) e o valor fica abaixo de cada mês de mai a dez/2023, o que faz o crescimento de 2023 para 2024 parecer 95% em vez de 32%. O valor segue igual no CSV e no XLSX exportados.",
+     "evidencia": "Recalculado de geracao_matriz_diaria.csv (SIN, 2023): soma de solar_mmgd dividida por 24 vezes 365 dá 2.622,75; dividida por 24 vezes 247 dá 3.875,7. Gold anual_sin 2023: mwmed.solar_mmgd 2622.8 e mmgd_dias 247. No pipeline, mix() usa mwh[cat] dividido pelas horas de todos os dias do período. Tabela lida no navegador (Playwright) mostra 2.622,8 sem aviso de presença parcial. Tabela mensal da mesma página: 2.814,5 (jun) a 5.261,1 (dez)."
+    }
+   ],
+   "achados": [
+    {
+     "id": "geracao-anual-mmgd-2023",
+     "gravidade": "alta",
+     "criterios": [
+      "G",
+      "F",
+      "H",
+      "L"
+     ],
+     "onde": "Tabela Participação por ano, coluna MMGD estimada, linha 2023 (Analisar e Auditar; CSV e XLSX exportados)",
+     "descricao": "2.622,8 MWmed divide a energia da MMGD pelas horas de 365 dias, mas a estimativa só existe em 247 dias; a média sobre os dias com dado é 3.875,7 MWmed. A convenção do pipeline (soma dividida pelas horas de todos os dias) dá a contribuição à média anual, mas a linha não avisa (dias_com_linha 247 está na gold), o valor fica abaixo de todos os meses de mai a dez/2023 da própria página e o salto 2023 para 2024 aparece como 95%, quando é 32%.",
+     "sugestao": "Dividir pelas horas dos dias com linha ou mostrar 247 de 365 dias junto do valor; acrescentar teste do ano de 2023 em pipeline/tests/test_energia_geracao.py."
+    },
+    {
+     "id": "geracao-energia-medida-denominador",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G",
+      "H"
+     ],
+     "onde": "Tabela Participação por ano, coluna Energia medida (%)",
+     "descricao": "De 2023 em diante o denominador inclui a MMGD (medição, Tipo III e MMGD somam 100%); antes não. Numa tabela titulada sem MMGD e sem nota, a queda de 94,1% (2021) para 89,8% (2023) mistura a entrada da MMGD no denominador com mudança real. O dicionário do XLSX só traz tipo, unidade e casas, sem definir a coluna.",
+     "sugestao": "Renomear para parcela de medição no total com MMGD e explicar, ou calcular sem MMGD; definir a coluna no dicionário do arquivo."
+    },
+    {
+     "id": "geracao-30d-contra-365d-sazonal",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Gráfico Participação na geração do SIN: 30 dias contra 365 dias (Entender)",
+     "descricao": "A janela de 31/08 a 29/09 é comparada com a média anual sem aviso: hidráulica 52,7% contra 57,6% e Térmicas Tipo III 2,6% contra 1,8% (série mensal com padrão repetido todos os anos). A comparação de mesma estação existe (365 contra 365 anteriores), em outro bloco, e o item consta como aberto em modulos/geracao.md.",
+     "sugestao": "Aviso de sazonalidade junto do gráfico ou referência do mesmo período dos anos anteriores."
+    },
+    {
+     "id": "geracao-versao-gold-alterada",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Sobre este dado e ficha Comprove, versão do processamento",
+     "descricao": "geracao_detalhe.json mudou em 08/10/2026 (commit d01d64187) sem novo gerado_em nem nova versão; o pipeline atual difere do commit citado em cerca de 400 linhas de geracao_detalhe.py. O git checkout eec0a3121e05 não produz variacao_total_comparavel_pct nem os rótulos novos.",
+     "sugestao": "Regenerar a gold com carimbo novo ou registrar o ajuste num histórico de revisões metodológicas visível ao leitor."
+    },
+    {
+     "id": "geracao-reproducao-bronze-interno",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Ficha Comprove, seção 9 (passos de reprodução)",
+     "descricao": "Os passos citam data/energia/bronze/...parquet.gz e executar_modulo.py --sem-coleta; arquivo e hash são de cópia interna não publicada e o endereço do arquivo do ONS no S3 só aparece na documentação. O leitor refaz pelo CSV com a fórmula (feito) ou pelo Parquet do ONS com geracao_rotulos_fonte.csv (feito), mas a ficha não diz isso.",
+     "sugestao": "Apontar o arquivo do ONS e o hash do original e acrescentar o passo de refazer pelo CSV publicado."
+    },
+    {
+     "id": "geracao-natureza-30d-sem-ficha",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Recorte (Universo) e resposta curta: medição 81,7%, previsão 6,9%, estimativa 11,3%",
+     "descricao": "Só a MMGD (11,3%) tem ficha Comprove; medição e Tipo III não têm ficha nem CSV diário por natureza e só se refazem a partir do Parquet bruto e do CSV de rótulos.",
+     "sugestao": "Ficha ou CSV de natureza por dia."
+    },
+    {
+     "id": "geracao-citacao-e-366-dias",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Citação das fichas; link Matriz horária do SIN, últimos 366 dias",
+     "descricao": "A citação ABNT diz recurso não identificado apesar de a ficha listar os arquivos; o rótulo e a nota do gráfico horário falam em 366 dias, mas o CSV tem 8.760 linhas (30/09/2025 a 29/09/2026, 365 dias).",
+     "sugestao": "Usar fonte.arquivos na citação, como em Capacidade, e corrigir o rótulo."
+    },
+    {
+     "id": "geracao-limiar-universo-12m",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Comparação de 365 dias, coluna Situação (comparável)",
+     "descricao": "A supressão exige salto de 25% ou mais com 5 identificadores ou mais; hidráulica e eólica têm identificadores ausentes em ago/2026 (366,7 e 316,2 GWh em ago/2025) e seguem comparáveis, e a tabela de lacunas só aparece no Auditar.",
+     "sugestao": "Mostrar a ordem de grandeza da lacuna ao lado da variação ou reduzir o limiar."
+    },
+    {
+     "id": "geracao-natureza-selo-e-abr2023",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Selo Calculado nos números de abertura; série de natureza em abr/2023",
+     "descricao": "O selo Calculado vale para um total que soma medição, previsão e estimativa (as métricas já declaram MISTO); abr/2023 entra na série de natureza com MMGD de 0,25% (2 de 30 dias) só com o marcador de quebra, sem aviso de presença parcial.",
+     "sugestao": "Selo misto e aviso de presença parcial no mês."
+    },
+    {
+     "id": "geracao-solar-noite",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Nota sob a tabela horária de 72 horas",
+     "descricao": "A nota diz que a solar fica em zero à noite, mas a solar centralizada mostra 1,0 MWmed entre 20h e 23h de 29/09 (a MMGD mostra 0,0).",
+     "sugestao": "Ajustar a frase ou explicar o 1,0 MWmed."
+    }
+   ],
+   "nao_verificado": [
+    "Regra de Roraima no Balanço (térmicas fora até 14/07/2025) e as contagens de reconciliação do SIN além do que conferi no CSV e no Balanço bruto do Nordeste (16/01, 07/03 e 09/05/2026)",
+    "Natureza e identificadores fora de ago/2026 e da janela de 30 dias (só esses foram conferidos no Parquet bruto)",
+    "Mapeamento de cada um dos 47 rótulos para categoria contra a taxonomia do ONS (usei o mapeamento publicado)",
+    "Hash sha256 dos arquivos bronze (cópia interna não publicada)",
+    "Convenção de hora (início do intervalo, horário de Brasília): o dicionário do ONS da Geração por Usina diz só Data de referência; o perfil solar de set/2026 é coerente com ela (MMGD sobe no rótulo 05h, pico em 11h, zera em 19h), mas não é prova"
+   ]
+  },
+  "/setor-eletrico/geracao/capacidade": {
+   "paineis": [
+    "P024"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Li visoes.json e os textos: potência e fator de capacidade por fonte, tabela com a ANEEL em coluna própria, distribuição por usina (histograma, quantis, extremos), séries mensais de fator e potência, conferência com o fator do ONS, ANEEL contra ONS por tipo e MMGD cadastrada contra estimada; cumpre o mínimo de P024.",
+      "Recalculei o retrato de geracao_capacidade_unidades.csv: 200.657,2 MW, 4.690 unidades, 1.970 usinas e as nove categorias iguais ao gráfico.",
+      "Não há recorte territorial (subsistema ou UF) de potência nem de fator; a distribuição por usina mostra uma categoria por vez (padrão eólica) e o ranking traz 5 menores e 5 maiores."
+     ],
+     "atendidos": [
+      "Nível atual (retrato de 30/09/2026) e fator de capacidade de 12 meses completos",
+      "Evolução mensal de fator e potência desde jan/2021",
+      "Distribuição por usina com P10 a P90 e extremos nomeados",
+      "Referências: fator publicado pelo ONS e série oficial da ANEEL por tipo",
+      "Limitações e cobertura: pareamento, 228 usina meses acima de 100%, conjunto sem histórico"
+     ],
+     "problemas": [
+      "Sem recorte territorial",
+      "Distribuição de uma categoria por vez, sem comparar categorias lado a lado",
+      "Potência histórica reconstruída do retrato atual (usinas fora do despacho ausentes), limitação declarada que afeta a leitura da evolução"
+     ],
+     "justificativa": "Cumpre o mínimo de P024 com distribuição, referência do ONS e correspondência com a ANEEL. Sem recorte territorial e com potência histórica reconstruída do retrato atual, por isso abaixo de 9."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz o fator de capacidade de 12 meses do CSV por fonte: eólica 106.536.109 MWh dividido por 292.270.336,8 MWh dá 36,45%; solar 20,83%; hidráulica 39,78%; nuclear 87,25%. Iguais à tabela e à ficha.",
+      "A página separa o agregado (36,5%) da mediana entre usinas (32,4%, P25 a P75 de 26,1% a 40,6%); refiz os quantis do CSV por usina e mês: iguais, com n de 149 entre 162 grupos (13 sem os 12 meses pareados ficam fora; o critério não consta da nota).",
+      "Biomassa (16,8%) usa só horas com dado: 1.794 MW no denominador contra 4.290 MW em operação; a fonte perdeu identificadores de biomassa (63 para 17, ressalva na matriz) e esta página não repete a ressalva; a cobertura de 95,4% é da geração, não da potência.",
+      "Conferi o fator do ONS no Parquet bruto de ago/2026: eólica 43,373% e solar 20,283%, iguais ao CSV; o fator do painel (44,142% e 20,635%) fica dentro da tolerância de 2 pontos."
+     ],
+     "atendidos": [
+      "Razão entre agregados (fator) separada de mediana entre usinas",
+      "Referência externa compatível: fator publicado pelo ONS para eólica e solar",
+      "Quantis e extremos nomeados, sem mínimo, média e máximo mecânicos",
+      "Universos ONS e ANEEL lado a lado, sem soma e sem comparação usina a usina",
+      "Fator acima de 100% mantido e contado (228 usina meses)"
+     ],
+     "problemas": [
+      "Fator de biomassa e óleo sem ressalva própria para a perda de identificadores da fonte",
+      "Critério dos 12 meses completos da distribuição não informado",
+      "Barras de fator de nuclear (87,3%) a óleo (0,9%) lado a lado, fontes de despacho diferente, com aviso só em frase de importância",
+      "SIGA de outras térmicas (166,0 MW contra 2.184,8 MW do ONS) sem nota na tabela principal"
+     ],
+     "justificativa": "Separação clara entre agregado e mediana, com referência do ONS conferida no bruto. Falta ressalva do universo reduzido de biomassa e óleo no fator, e o critério de elegibilidade da distribuição não aparece."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Retrato do ONS contra o CAPACIDADE_GERACAO.parquet atual: mesmas 4.690 unidades e 1.970 usinas; hidráulica 109.678,4, eólica 33.781,6, solar 22.377,3 e nuclear 1.990,0 MW idênticos; térmicas 36,7 MW a menos no arquivo de 09/10 (mudança posterior à captura).",
+      "SIGA no arquivo da ANEEL de 01/10/2026: eólica 34.936,7, solar 23.615,3, térmicas 49.890,2 (gás 20.180,0, petróleo 7.579,6, carvão 3.913,7) e nuclear 1.990,0 MW iguais à coluna; hidráulica 110.253,7 contra 110.226,8 (mudança de um dia). Série histórica da ANEEL (arquivo de 05/08/2026): 06/2026 eólica 34.810,7 e hidráulica 110.218,1 MW iguais; 03/2026 e 06/2026 coincidem na própria fonte.",
+      "Dicionário do ONS define val_potenciaefetiva como potência nominal conforme ato da ANEEL; a página usa potência em operação comercial por data de unidade e deixa a capacidade fiscalizada da ANEEL em coluna própria, sem soma; MMGD cadastrada e estimada lado a lado, sem razão.",
+      "Fator usa a potência de cada mês, não a final; unidade em teste infla o mês de entrada (228 usina meses acima de 100%, 76 deles nucleares), mantidos e contados."
+     ],
+     "atendidos": [
+      "Potência instalada do ONS e capacidade fiscalizada da ANEEL distintas e sem soma",
+      "Geração estimada e potência da MMGD fora do numerador e do denominador do fator",
+      "Entrada em operação comercial por unidade e mês, com aviso de que o conjunto não tem histórico",
+      "Natureza e cobertura declaradas (Observado, Calculado, cobertura do pareamento)",
+      "Ausência exibida como sem dado, não zero"
+     ],
+     "problemas": [
+      "Fator de biomassa e óleo sobre parte da potência (42% em biomassa), sem ressalva própria",
+      "Ficha cita val_potenciaefetiva sem dizer que o ONS define o campo como potência nominal do ato",
+      "Série histórica de potência reconstruída do retrato atual, declarado, sem as usinas que saíram do despacho"
+     ],
+     "justificativa": "Valores conferidos contra ONS e ANEEL, com unidades, universos e MMGD bem separados. Abaixo de 9 porque o fator de biomassa e óleo cobre parte da potência sem ressalva e a série histórica de potência vem do retrato atual."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz a potência de 200.657,2 MW do CSV de unidades pela regra da ficha (entrada em operação comercial até a data, sem desativação) e o fator de 12 meses do CSV por fonte: numerador e denominador da ficha (106.536.109 e 292.270.336,8 MWh) idênticos.",
+      "As 3 fichas listam arquivo, hash, fórmula e testes (228 usina meses acima de 100%; 0,50 ponto contra o ONS); mesma limitação das outras páginas: versão eec0a3121e05+alterado e passos que pedem bronze interno e executar_modulo.py geracao --sem-coleta.",
+      "A citação da ficha de potência identifica o recurso (CAPACIDADE_GERACAO, capturado em 30/09/2026), mas as duas fichas de fator dizem recurso não identificado; o CSV de unidades traz datas e categoria de cada unidade; os 3 CSV do painel têm o mesmo sha256 do repositório."
+     ],
+     "atendidos": [
+      "Fonte específica e captura por arquivo",
+      "Fórmula e variáveis do fator com numerador e denominador",
+      "CSV de unidades, de usina por mês e de fonte por mês com o mesmo contrato da tabela",
+      "Ressalvas e testes na ficha",
+      "SIGA e série da ANEEL com data de geração (05/08/2026)"
+     ],
+     "problemas": [
+      "Versão do código com +alterado e passos que dependem de bronze interno",
+      "Nomes internos no Auditar (ons_pct_da_aneel, códigos CJU_) sem definição para o leitor",
+      "Citação das fichas de fator com recurso não identificado",
+      "Critério de 12 meses completos da distribuição e pareamento só no Auditar"
+     ],
+     "justificativa": "Potência e fator reconstruídos dos CSV publicados, com os mesmos numerador e denominador da ficha. Sem 9 pelos limites de versão e de reprodução das demais páginas e por termos internos no Auditar."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, 0,9 a 1,1 s, HTML 415 kB (64 kB comprimido), JS 640 a 666 kB; laboratório sem estrangulamento.",
+      "CLS medido: 0,015 a 390 px e 0,002 a 1440 px; 0,437 com CPU 4x e 1,6 Mbps (cabeçalho e abas mudam na hidratação).",
+      "Testes: P024 renderizada em energia-geracao.test.ts (anatomia, soma sem ANEEL, histograma, correspondência temporal) e testes de Python (pareamento, Itaipu, ciclo combinado, fator contra o ONS); controle crítico exige capacidade hora média menor ou igual à potência média por categoria."
+     ],
+     "atendidos": [
+      "Console limpo e controles exercitados sem falha",
+      "Carga leve e proporcional à tarefa",
+      "Testes orientados aos riscos de unidade, soma e pareamento",
+      "Controle crítico que bloqueia a publicação com denominador maior que a potência",
+      "Instrumento de medição documentado"
+     ],
+     "problemas": [
+      "CLS de 0,437 com estrangulamento e instrumento sem CLS",
+      "Medição só em laboratório, sem dado de campo"
+     ],
+     "justificativa": "Console limpo, carga leve e controle crítico que impede denominador maior que a potência. Medição só em laboratório e CLS alto sob estrangulamento limitam a nota."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "capacidade-fator-biomassa-oleo",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Tabela por categoria, linhas Biomassa e Óleo e diesel",
+     "descricao": "O fator de biomassa de 16,8% usa 1.794 MW no denominador contra 4.290 MW em operação, depois de a Geração por Usina perder identificadores de biomassa (63 para 17). A ressalva existe na matriz e não aqui; a cobertura de 95,4% mede a geração, não a potência.",
+     "sugestao": "Repetir a ressalva e mostrar a potência com dado ao lado do fator."
+    },
+    {
+     "id": "capacidade-sem-territorio",
+     "gravidade": "media",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Página inteira",
+     "descricao": "Nenhum recorte por subsistema ou UF de potência ou de fator, embora o CSV de unidades traga subsistema e UF.",
+     "sugestao": "Barras ou tabela por subsistema e fonte."
+    },
+    {
+     "id": "capacidade-criterio-distribuicao",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "H"
+     ],
+     "onde": "Distribuição por usina, nota de amostra",
+     "descricao": "A distribuição usa só grupos com os 12 meses pareados (149 de 162 na eólica); a nota diz n de 149 com valor, sem o critério.",
+     "sugestao": "Dizer o critério e quantos ficaram fora."
+    },
+    {
+     "id": "capacidade-campo-potencia-efetiva",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "G"
+     ],
+     "onde": "Ficha Comprove da potência instalada",
+     "descricao": "A fórmula cita a soma de val_potenciaefetiva; o dicionário do ONS define o campo como potência nominal conforme ato da ANEEL.",
+     "sugestao": "Glosar o campo na ficha."
+    },
+    {
+     "id": "capacidade-siga-outras-termicas",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Tabela por categoria, coluna ANEEL SIGA",
+     "descricao": "Outras térmicas mostra 166,0 MW (Outros Fósseis) contra 2.184,8 MW do ONS, porque a ANEEL classifica de outro modo os resíduos industriais do ONS; a nota só aparece no Auditar e não explica a diferença.",
+     "sugestao": "Nota junto da tabela principal."
+    },
+    {
+     "id": "capacidade-potencia-historica",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "E"
+     ],
+     "onde": "Gráfico Potência em operação comercial, média de cada mês",
+     "descricao": "A série vem do retrato atual (repotenciação e usinas fora do despacho não reconstituídas), o que pode subestimar a potência passada; a limitação está declarada abaixo do gráfico.",
+     "sugestao": "Marcar o próprio gráfico com a limitação."
+    }
+   ],
+   "nao_verificado": [
+    "MMGD cadastrada da ANEEL (módulo Transição) e a série mensal ao lado da estimada",
+    "Pareamento de usinas e conjuntos por CEG e por relacionamento contra o arquivo de relacionamento do ONS",
+    "Fator de capacidade das demais categorias a partir do Parquet bruto (conferi o fator do ONS de ago/2026 e o retrato)"
+   ]
+  },
+  "/setor-eletrico/geracao/restricoes": {
+   "paineis": [
+    "P023"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Li visoes.json e os textos: mapa das 60 usinas com mais energia não gerada (70,6% do total, recalculado), energia por razão mês a mês (60 meses), taxa e maior corte em gráficos separados, razões e origem, subsistemas, 60 dias, detalhamento publicado pelo ONS e controles; cumpre o mínimo de P023 (mapa, histórico e causas).",
+      "Faltam o padrão horário do corte, a distribuição da taxa entre as 157 usinas e a série por subsistema; a solar tem 85 usinas e série desde abr/2024."
+     ],
+     "atendidos": [
+      "Nível atual de 12 meses com energia e taxa",
+      "Evolução mensal desde out/2021 (eólica) e abr/2024 (solar)",
+      "Causas oficiais REL, CNF, ENE e PAR e origem LOC e SIS, mais o detalhamento do ONS do último mês",
+      "Território: mapa e tabela com UF e subsistema",
+      "Limitações: referência estimada, universo Tipo I, II-B e II-C, mês parcial"
+     ],
+     "problemas": [
+      "Sem perfil por hora do dia do corte",
+      "Sem distribuição da taxa entre usinas (só as 60 maiores em energia)",
+      "Sem série por subsistema ou UF"
+     ],
+     "justificativa": "Cobertura forte de mapa, histórico, causas e controles, dentro do mínimo de P023. Falta o padrão horário do corte, a distribuição da taxa entre usinas e a evolução por subsistema."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz do CSV por usina e mês (set/2025 a ago/2026): eólicas 28.922,6 GWh e taxa 21,28% (verificada 107.010,4 GWh); razões ENE 57,95%, CNF 33,48%, REL 8,57%; solar 12.376,0 GWh e 25,68%; iguais à página.",
+      "Taxa com denominador escrito (verificada mais não gerada, mesmas usinas e meses); energia (GWh) e potência (MW) em gráficos separados; mês parcial de set/2026 sinalizado.",
+      "Eólica (157 usinas e conjuntos, desde out/2021) e solar (85, desde abr/2024) são universos e períodos diferentes na mesma frase de abertura; não há referência de 12 meses anteriores nem faixa regulatória (franquia de horas da REN 1.030/2022)."
+     ],
+     "atendidos": [
+      "Razão entre agregados com denominador explícito",
+      "Energia e potência separadas",
+      "Razões e origens com os códigos oficiais do ONS (conferidos no dicionário)",
+      "Universo declarado: Tipo I, II-B e II-C; Tipo III e MMGD fora do registro",
+      "Ordenação por energia com critério explícito e taxa ao lado"
+     ],
+     "problemas": [
+      "Sem referência de 12 meses anteriores ou da mesma época na abertura",
+      "Taxas por subsistema com base pequena (Sudeste/Centro-Oeste, 1.007 GWh) sem alerta",
+      "Solar com série curta comparada à eólica na mesma frase"
+     ],
+     "justificativa": "Denominador, universo e códigos oficiais claros, com valores recalculados iguais. Sem referência temporal comparável (mesma época ou 12 meses anteriores) nem faixa regulatória aplicável, por isso abaixo de 9."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Parquet bruto do ONS (RESTRICAO_COFF_EOLICA_2026_08): energia não gerada 4.022,14 GWh, verificada 11.029,3 GWh, taxa 26,72%, ENE 2.294,34, CNF 1.239,91, REL 487,89 GWh, 119.604 meias horas limitadas e 153 usinas, tudo igual à página; maior corte simultâneo de 28.196,7 MW em 16/08/2026 10h30 reproduzido (a verificada total foi 837 MW nessa meia hora).",
+      "Dicionário do ONS confirma REL indisponibilidade externa, CNF confiabilidade, ENE energética, PAR parecer de acesso; GNRa é a referência menos a verificada, limitada a zero; a referência final enviada à CCEE só existe para REL.",
+      "Trecho sobre ressarcimento (REN 1.030/2022, cópia de 08/01/2025): segundo Cenário Energia (20/01 e 22/07/2026) e resumos jurídicos que consultei, a Lei 15.269/2025, a suspensão de ressarcimentos pela ANEEL e a Portaria Normativa MME 140/2026 passaram a reconhecer compensação também para confiabilidade (33,5% da energia cortada das eólicas) e a excluir a razão energética. A página diz não ter verificado alterações posteriores."
+     ],
+     "atendidos": [
+      "Energia (GWh) e potência (MW) separadas, com o denominador da taxa escrito",
+      "Natureza Estimado, referência do ONS (RO-AO.BR.13) e restrição distinta de indisponibilidade",
+      "Universo e exclusões declarados (Tipo III e MMGD fora do registro; 2 coordenadas fora da UF informada)",
+      "Razão sem ocorrência nos 12 meses explicada (zero declarado, origem sem valor)",
+      "Mês parcial, série solar curta e republicação de meses antigos sinalizados"
+     ],
+     "problemas": [
+      "Parágrafo sobre direito a compensação ancorado em cópia de 08/01/2025, anterior à Lei 15.269/2025 e à Portaria MME 140/2026",
+      "Sem menção à franquia anual de horas da REN 1.030/2022 (citada em fontes secundárias que consultei, texto da norma não lido)"
+     ],
+     "justificativa": "Valores iguais ao Parquet bruto do ONS e códigos conferidos no dicionário, com estimativa e denominador claros. Abaixo de 9 pelo trecho sobre ressarcimento, baseado em regra anterior às mudanças de 2025 e 2026 que a página admite não ter verificado."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz do CSV por usina e mês e do Parquet bruto de ago/2026 (somas e razões idênticas); a ficha Comprove traz numerador (28.922.598,9 MWh), denominador (135.932.986,3 MWh) e 2 testes (GNRa contra a regra em 2.861.532 meias horas e meia hora limitada sem referência).",
+      "O maior corte simultâneo do SIN (28.196,7 MW) não sai do CSV diário do painel (só máximo por subsistema, Nordeste 26.081,4 MW em 16/08) nem de CSV por meia hora; sai da tabela mensal exportada e do arquivo bruto.",
+      "Mesmos limites de versão e reprodução das outras páginas (eec0a3121e05+alterado; bronze interno); texto de universo e rótulos da família mudaram na gold em 08/10 sem novo carimbo; a citação diz recurso não identificado."
+     ],
+     "atendidos": [
+      "Fonte específica (arquivo mensal), período, captura e publicação",
+      "Fórmula com numerador e denominador e testes na ficha",
+      "CSV por usina e mês e por dia, razão e origem, com o mesmo contrato das tabelas",
+      "Detalhamento por usina contra o arquivo principal (diferença de 0,24% a 0,41% nas eólicas)",
+      "Limitações e revisões da fonte (republicação de meses antigos)"
+     ],
+     "problemas": [
+      "Versão com +alterado e passos que dependem de bronze interno",
+      "Maior corte simultâneo do SIN sem CSV de apoio no painel",
+      "Citação com recurso não identificado"
+     ],
+     "justificativa": "Energia, taxa e razões reproduzidas do CSV e do bruto, com ficha completa. Sem 9 pela versão do código, pelo bronze interno nos passos, pela citação sem recurso e pelo corte simultâneo do SIN sem CSV de apoio."
+    },
+    "L": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, 1,1 a 1,3 s, HTML 503 kB (75 kB comprimido), JS 640 a 668 kB, dados 67 kB (malha do mapa). O instrumento marcou o botão Brasil inteiro como sem efeito, mas ele funciona (viewBox muda, aria pressed alterna).",
+      "CLS medido: 0,257 a 390 px e 0,284 a 1440 px sem estrangulamento (dois deslocamentos de cerca de 0,14 no cabeçalho e na faixa de abas), acima do alvo de 0,1 da especificação; 0,517 com CPU 4x e 1,6 Mbps.",
+      "Testes: energia-geracao.test.ts (denominador, energia contra potência, UF das coordenadas, texto derivado do número) e Python (GNRa contra a regra, corte contra a referência); os controles de restrição publicam com ressalva e não bloqueiam."
+     ],
+     "atendidos": [
+      "Console limpo e controles exercitados sem falha",
+      "Mapa e histórico por usina lidos sob demanda",
+      "Testes que cobrem denominador, unidades e coordenadas",
+      "Fluxo diário retém a gold se vitest ou unittest reprovam"
+     ],
+     "problemas": [
+      "CLS acima de 0,25 sem estrangulamento, não detectado pelo instrumento do projeto",
+      "Controles de restrição (GNRa, corte acima da referência) geram ressalva, não bloqueio",
+      "Falso positivo do instrumento no botão Brasil inteiro",
+      "Medição só em laboratório"
+     ],
+     "justificativa": "Console limpo, carga razoável e testes que cobrem denominador e unidades. Nota 8,0 porque o deslocamento de layout (CLS de 0,26 a 0,28) supera o alvo do projeto sem ser detectado pelo instrumento."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "restricoes-regra-ressarcimento-defasada",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "O que não é possível concluir, trecho sobre ESS (Entender e Auditar)",
+     "descricao": "Cita a REN 1.030/2022 em cópia de 08/01/2025 (só indisponibilidade externa dá direito a ESS) e diz não ter verificado alterações. Fontes secundárias que consultei indicam a Lei 15.269/2025, a suspensão de ressarcimentos pela ANEEL (20/01/2026) e a Portaria Normativa MME 140/2026 (julho de 2026), que reconhece compensação também para confiabilidade e exclui a razão energética, para cortes de 01/09/2023 a 25/11/2025. Não li o DOU.",
+     "sugestao": "Verificar o DOU e a ANEEL, atualizar e datar o parágrafo; citar a franquia de horas."
+    },
+    {
+     "id": "restricoes-cls",
+     "gravidade": "media",
+     "criterios": [
+      "L"
+     ],
+     "onde": "Cabeçalho (Entrar) e faixa de abas na hidratação",
+     "descricao": "CLS de 0,257 (390 px) e 0,284 (1440 px) sem estrangulamento e 0,517 com CPU 4x e 1,6 Mbps, contra alvo de 0,1; o instrumento do projeto não mede CLS.",
+     "sugestao": "Reservar a altura do cabeçalho e da faixa antes da hidratação e incluir CLS no instrumento."
+    },
+    {
+     "id": "restricoes-padrao-horario",
+     "gravidade": "media",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Gráficos de energia por mês e por dia",
+     "descricao": "Só há série mensal e os últimos 60 dias por dia; falta o perfil por hora do dia, a leitura mais direta de quando o corte ocorre em cada fonte.",
+     "sugestao": "Perfil horário médio por fonte e por mês."
+    },
+    {
+     "id": "restricoes-corte-simultaneo-sem-csv",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Gráfico e tabela do maior corte simultâneo",
+     "descricao": "O valor do SIN por meia hora só sai da tabela mensal exportada e do arquivo bruto do ONS; o CSV diário do painel traz o máximo por subsistema.",
+     "sugestao": "Publicar o maior corte simultâneo do SIN por dia no CSV."
+    },
+    {
+     "id": "restricoes-taxa-base-pequena",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Tabela de energia não gerada e taxa por subsistema",
+     "descricao": "Sudeste/Centro-Oeste (1.007 GWh verificados) e Norte (1.852 GWh) têm taxa de 6,3% e 10,2% sobre base pequena, ao lado do Nordeste (98.405 GWh), sem alerta.",
+     "sugestao": "Nota de base pequena ou ordenação por energia."
+    },
+    {
+     "id": "restricoes-universo-eolica-solar",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Resposta de abertura (Entender)",
+     "descricao": "Eólica (157 usinas e conjuntos, desde 2021) e solar (85, desde abr/2024) entram na mesma frase de abertura como se comparáveis, com universos e períodos diferentes.",
+     "sugestao": "Nota sobre universo e período de cada fonte."
+    }
+   ],
+   "nao_verificado": [
+    "Texto da REN 1.030/2022, da Lei 15.269/2025 e da Portaria MME 140/2026 em fonte primária (DOU, ANEEL, MME): só imprensa e resumos jurídicos",
+    "Coordenadas e UF das 100 marcas do mapa",
+    "Solar: conferi o bruto só para eólica de ago/2026; a solar vem do CSV",
+    "Detalhamento por usina contra o arquivo de detalhe do ONS"
+   ]
+  },
+  "/setor-eletrico/geracao/termica": {
+   "paineis": [
+    "P022"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Li visoes.json: combustível e motivo (12 meses), mensal por motivo (24 meses ou desde 2019; CSV desde 2013), 40 usinas (97,67% recalculado), parcela de motivo por usina, CVU por combustível com quartis, mediana mensal e por usina, contexto de 7 dias e universo contra a Geração por Usina; cumpre o mínimo de P022.",
+      "Território só como coluna e filtro na tabela de usinas e como linhas por região no CSV mensal; sem resumo por subsistema na página, e a relação com PLD, CMO e água apenas negada em texto."
+     ],
+     "atendidos": [
+      "Nível atual de 12 meses por combustível e motivo, com a nuclear separada",
+      "Evolução mensal por motivo e por combustível",
+      "Distribuição por usina (40 maiores) e CVU por quartis",
+      "Referências: percentis de 7 dias e CVU da semana vigente",
+      "Limitações e cobertura contra a Geração por Usina"
+     ],
+     "problemas": [
+      "Sem agregação por subsistema (o CSV mensal traz as quatro regiões)",
+      "Evolução por combustível exige escolher séries (padrão três maiores)"
+     ],
+     "justificativa": "Cumpre o mínimo de P022 com combustível e motivo separados, usinas, CVU e contexto. Falta agregação por subsistema e leitura regional do despacho."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz do geracao_termica_usina_mensal.csv (set/2025 a ago/2026): 70.368,2 GWh, 8.032,9 MWmed, inflexibilidade 61,08%, nuclear com 35,1% da inflexibilidade e 99,2% inflexível (50,6% sem ela), gás 58,17%, nuclear 21,62%, carvão 15,24%: iguais à página.",
+      "Contexto de 7 dias refeito do geracao_diaria.csv: 10,6%, percentil 24,7, mediana 12,4%, P10 9,2%, P90 17,4% iguais; a referência são as 365 janelas dos últimos 12 meses (todas as estações), então a faixa usual não é da mesma época; sem os 3 dias anômalos do Balanço o percentil seria 22,4.",
+      "Mediana mensal do CVU é de parcelas, sem peso por geração e em moeda corrente de 2021 a 2026; 11 de 101 parcelas da semana têm CVU zero publicado (8 de 23 de óleo e diesel), que o dicionário permite, e puxam Q1 e mediana. Quartis por combustível refeitos do CSV: iguais."
+     ],
+     "atendidos": [
+      "Quartis e extremos de CVU por combustível na semana vigente",
+      "MWmed e participação como razão de agregados, com definição",
+      "Peso da nuclear na inflexibilidade explicitado",
+      "Cobertura mês a mês contra a Geração por Usina (96,8% a 100%)",
+      "Base do contexto de 7 dias declarada como outra (Balanço)"
+     ],
+     "problemas": [
+      "Faixa usual calculada sobre 12 meses de todas as estações",
+      "Mediana de CVU sem peso e nominal, com zeros publicados",
+      "Universo pareado cresce de 88 para 98 usinas em 2026 (cobertura de 96,8% para 100%) sem aviso em Entender"
+     ],
+     "justificativa": "Agregações, quartis e peso da nuclear bem explicados e conferidos. Falta referência da mesma época no contexto de 7 dias e aviso de que a mediana de CVU é nominal, sem peso e inclui zeros publicados."
+    },
+    "G": {
+     "nota": 9.0,
+     "evidencia": [
+      "Parquet bruto do ONS (GERACAO_TERMICA_DESPACHO-2_2026_08): total 5.406.349,5 MWh, mérito 670.948,7, inflexibilidade 4.106.487,8, razão elétrica 29.543,9, exportação 265.079,9, substituição 121.687,8, unit commitment 211.976,9 e constrained-off 302.909,4 MWh, iguais ao CSV publicado.",
+      "Dicionário do ONS (JSON no S3): inflexibilidade é a geração declarada pelo agente ou acima do despachado (RO-AO.BR.08), embutida no mérito quando a usina também é despachada por mérito; unit commitment existe desde jan/2020. A página soma mérito acima da inflexibilidade e inflexibilidade, sem dupla contagem, e o não classificado fica em 0,017%.",
+      "CVU da semana de 26/09/2026 refeito do Parquet do ONS: 101 usinas, 11 zeros, valores iguais, PMO Outubro 2026 revisão 0; o dicionário permite valor zerado. Cobertura contra a Geração por Usina por mês, 965 células negativas contadas e 3 chaves sem combustível (0,000%)."
+     ],
+     "atendidos": [
+      "Combustível e motivo como dimensões separadas, com soma que fecha",
+      "Definições de inflexibilidade, mérito, razão elétrica, unit commitment, exportação e constrained-off conforme o dicionário do ONS",
+      "CVU como custo declarado do PMO, nominal, nem custo realizado nem preço; motivo não inferido de PLD ou CMO",
+      "Nuclear incluída e identificada, com o peso na inflexibilidade",
+      "Ausência, zero e negativo da fonte com tratamento explícito"
+     ],
+     "problemas": [
+      "Combustível atribuído por CEG em outros conjuntos até 2025 e pelo campo próprio em 2026, explicado só no Auditar",
+      "KPI de 8.033 MWmed diz térmica sem dizer no rótulo que inclui 1.736 MWmed de nuclear"
+     ],
+     "justificativa": "Totais por motivo e combustível reproduzidos do Parquet bruto, definições conferidas no dicionário do ONS, partição sem dupla contagem e cobertura contra a Geração por Usina explícita. Resta atribuição de combustível por métodos diferentes em 2025 e 2026."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz do CSV: 70.368.190,2 MWh e 42.978.146,2 MWh (denominador e numerador da ficha), 88 usinas, 40 maiores com 97,67%; ago/2026 refeito do Parquet bruto do ONS: igual.",
+      "O total do gráfico (soma dos motivos classificados, gás 40.921 GWh) difere do Geração total da tabela (40.930,3 GWh) pelo não classificado (0,02%), sem nota junto ao gráfico.",
+      "O rótulo Inflexibilidade (declarada pelo agente ou geração acima do despachado), o indicador e a citação mudaram na gold em 08/10 sem novo carimbo; a ficha cita eec0a3121e05+alterado e bronze interno; a citação diz recurso não identificado."
+     ],
+     "atendidos": [
+      "Fonte, arquivo mensal, publicação e captura",
+      "Fórmula com numerador e denominador por motivo",
+      "CSV mensal, por usina e CVU semanal com o mesmo contrato das tabelas",
+      "Parcelas, CEGs e identidade de cada usina documentadas",
+      "Teste de partição e reconciliação com a Geração por Usina na ficha, com ressalva de 1,4%"
+     ],
+     "problemas": [
+      "Versão do código com +alterado e passos que dependem de bronze interno",
+      "Gold alterada depois do carimbo",
+      "Total do gráfico diferente do total da tabela, sem nota"
+     ],
+     "justificativa": "Totais reconstruídos do CSV e do Parquet bruto, CVU com semana operativa. Sem 9 pelos limites de versão e de reprodução compartilhados e porque o total do gráfico difere do total da tabela sem nota."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições sem erro de console nem falha de rede, 1,0 a 1,1 s, HTML 508 kB (79 kB comprimido), JS 640 a 668 kB; laboratório.",
+      "CLS medido: 0,075 a 390 px e 0,031 a 1440 px; 0,38 com CPU 4x e 1,6 Mbps.",
+      "Testes: Python (partição com Angra II, troca de CEG, CVU por parcela, 12 meses contra o CSV) e TS (inflexibilidade sem nuclear, tabelas sob demanda); partição e cobertura geram ressalva, não bloqueio."
+     ],
+     "atendidos": [
+      "Console limpo e controles exercitados sem falha",
+      "Carga leve e tabelas de CVU lidas sob demanda",
+      "Testes de partição, identidade de usina e CVU por parcela",
+      "Fluxo diário retém a gold reprovada",
+      "Instrumento de medição documentado"
+     ],
+     "problemas": [
+      "CLS de 0,38 com estrangulamento e instrumento sem CLS",
+      "Falha de partição ou de cobertura publica com ressalva, sem bloqueio",
+      "Medição só em laboratório"
+     ],
+     "justificativa": "Console limpo, carga leve e testes de partição e identidade de usina. Teto pelo laboratório sem dado de campo, CLS alto sob estrangulamento e ausência de bloqueio para falha de partição."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "termica-faixa-usual-nao-sazonal",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "A participação térmica desta semana em contexto",
+     "descricao": "A faixa usual (P10 a P90, 9,2% a 17,4%) vem das 365 janelas dos últimos 12 meses, de todas as estações, e a semana de 22 a 28/09 cai na faixa quase por construção; os 3 dias anômalos do Balanço (16/01, 07/03 e 09/05/2026, eólica do Nordeste) deslocam o percentil de 24,7 para 22,4.",
+     "sugestao": "Referência da mesma época em anos anteriores e aviso dos dias anômalos do Balanço."
+    },
+    {
+     "id": "termica-sem-agregado-regional",
+     "gravidade": "media",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Página inteira",
+     "descricao": "Sem resumo por subsistema; o CSV mensal traz SIN, SE, S, NE e N, e a tabela de usinas só filtra por subsistema.",
+     "sugestao": "Barras por subsistema e motivo."
+    },
+    {
+     "id": "termica-total-grafico-tabela",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Tabela de dados do gráfico por combustível",
+     "descricao": "O total do gráfico (gás 40.921 GWh) soma só motivos classificados; a tabela principal mostra 40.930,3 GWh, com não classificado de 9,2 GWh; diferença de 0,02% sem nota.",
+     "sugestao": "Nota ou coluna Não classificado junto do gráfico."
+    },
+    {
+     "id": "termica-combustivel-metodo-2026",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Gráfico de 12 meses por combustível e motivo",
+     "descricao": "O combustível vem do CEG em outros conjuntos até 2025 e do campo da própria fonte em 2026; os 12 meses misturam os dois métodos e a nota está só no Auditar.",
+     "sugestao": "Nota em Entender."
+    },
+    {
+     "id": "termica-cvu-mediana-nominal-zeros",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Mediana mensal do CVU e quartis por combustível",
+     "descricao": "Mediana de parcelas, sem peso, em moeda corrente de 2021 a 2026, com zeros publicados (8 de 23 parcelas de óleo e diesel na semana vigente).",
+     "sugestao": "Aviso, série deflacionada ou peso por geração."
+    },
+    {
+     "id": "termica-kpi-inclui-nuclear",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "KPI Geração térmica despachada pelo ONS",
+     "descricao": "Os 8.033 MWmed incluem 1.736 MWmed de nuclear (21,6%); só a linha de universo diz inclusive nucleares.",
+     "sugestao": "Dizer no rótulo do KPI."
+    },
+    {
+     "id": "termica-universo-cresce-2026",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Tabela de universo (Auditar)",
+     "descricao": "As usinas pareadas passam de 88 (até mar/2026) para 96 (abr) e 98 (ago/2026) e a cobertura da Geração por Usina de 96,8% (set/2025) para 100% (abr/2026): mudança de universo dentro dos 12 meses sem aviso em Entender.",
+     "sugestao": "Nota de universo em Entender."
+    }
+   ],
+   "nao_verificado": [
+    "Classificação Tipo I e II-A do universo térmico (o ONS descreve só usinas térmicas despachadas)",
+    "Identidade de usinas por CEG (Do Atlântico, Pecém II, Muricy II)",
+    "Texto da RO-AO.BR.08 em fonte primária; só a definição do dicionário",
+    "Balanço bruto fora dos dias do Nordeste que conferi (16/01, 07/03 e 09/05/2026)"
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Versão e carimbo: fichas e Sobre este dado citam eec0a3121e05+alterado; geracao_detalhe.json mudou em 08/10/2026 (commit d01d64187) sem novo gerado_em nem versão e o pipeline atual difere do commit citado em cerca de 400 linhas de geracao_detalhe.py; o git checkout citado não reproduz variacao_total_comparavel_pct nem os rótulos novos (P021, P022, P023).",
+  "Reprodução pelos passos da ficha depende de data/energia/bronze (parquet.gz interno) e de executar_modulo.py --sem-coleta; o hash é de cópia interna e o endereço do arquivo do ONS no S3 só está na documentação; a citação gerada diz recurso não identificado em 10 das 11 fichas Comprove (só a ficha de potência de P024 identifica o recurso).",
+  "Estabilidade visual: CLS medido de 0,002 a 0,284 sem estrangulamento (Restrições com 0,257 e 0,284, acima do alvo de 0,1) e de 0,34 a 0,52 com CPU 4x e 1,6 Mbps; causa comum no cabeçalho (Entrar) e na faixa de abas que mudam na hidratação; o instrumento energia-avaliacao.mjs mede tempo de carga e bytes, não CLS, LCP nem INP.",
+  "Referências sem sazonalidade: P021 compara 30 dias de fim de agosto a setembro com a média de 365 dias; P022 compara a semana com as 365 janelas dos últimos 12 meses como faixa usual; a comparação de mesma estação (365 contra 365 anteriores) existe só em outro bloco de P021.",
+  "Ressalvas do universo da fonte (perda de identificadores de biomassa, óleo e outras térmicas) aparecem na matriz de P021, mas não no fator de capacidade de biomassa e óleo de P024 (42% da potência de biomassa no denominador) nem nas notas de Entender de P022.",
+  "Frescor: o aviso de defasagem compara o dia de referência com a data de processamento (01/10/2026), não com a data de acesso, então um pipeline parado não gera alerta; o ONS revisou os últimos cinco dias de set/2026 depois da captura (total diário de 0,007% a 0,074%, eólica até 0,59% ao dia; total de 30 dias 82.223,8 contra 82.216,4 MWmed).",
+  "Nomes internos de campo e de armazenamento aparecem no Auditar sem glossário para o leitor (natureza_pct, ressalvas_universo, outros_por_ceg, natureza_mensal_sin, id_ons, ons_pct_da_aneel, silver, séries d|subsistema|tipo|combustível|modalidade).",
+  "Sem JavaScript, as tabelas de Analisar e Auditar de P021 e P022 viram aviso com link para CSV (custo declarado no projeto) e o botão Carregar a tabela não funciona sem script."
+ ],
+ "limites_da_avaliacao": "Não executei testes, build nem pipeline; li testes e código. Abri só a primeira imagem inteira de /geracao e não avaliei layout, didática, acessibilidade nem mobile (critérios de produto). Fontes primárias consultadas: portal de dados abertos do ONS (páginas dos conjuntos e dicionários em JSON e PDF), Parquet do S3 do ONS (Geração por Usina ago e set/2026, Restrição eólica ago/2026, Térmica por motivo ago/2026, Fator de Capacidade ago/2026, CVU 2026, Capacidade Instalada de 09/10/2026, Balanço 2026) e arquivos da ANEEL (SIGA de 01/10/2026 e série histórica de 05/08/2026). Não consultei MME, EPE, IBGE nem IEA; o trecho regulatório sobre ressarcimento foi conferido só em imprensa e resumos jurídicos obtidos por busca (Cenário Energia e outros), sem ler o DOU. Não verifiquei a MMGD cadastrada (módulo Transição), as coordenadas do mapa, a regra de Roraima nem os hashes do bronze (cópia interna). Meus recálculos de set/2026 usam arquivos do ONS revisados depois da captura do observatório (diferença de 0,009% no total de 30 dias). CLS e tempos são de laboratório (Chromium sem tela, localhost, uma execução por página, estrangulamento emulado), não de usuários reais. O HTML pré-renderizado de /setor-eletrico/dados/reproducao mostra o id de publicação 9a424902faf0 (lista de 08/10/2026 20:08), diferente do manifesto servido e do repositório (de3ba2c5, 09/10/2026 00:07), indício de build do servidor anterior ao último manifesto; as páginas de Geração conferem com os dados servidos e com o repositório (sha256 dos 2 gold e 14 CSV)."
+}

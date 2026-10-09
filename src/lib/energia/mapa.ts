@@ -1,17 +1,143 @@
 /**
- * Página inicial do Observatório do Setor Elétrico como mapa didático (seção 6 da
- * especificação, painéis P001 e P003). Este arquivo é o conteúdo editorial da home:
+ * Página inicial do Observatório do Setor Elétrico: a porta de entrada (seção 6 da
+ * especificação, painéis P001 e P003). Este arquivo é o conteúdo editorial da inicial:
  *
- *  - B: o mapa conceitual (sete elos, ligações tipificadas e temas transversais);
- *  - C: o cartão de cada destino (para que serve, o que se encontra, recorte);
- *  - D: perguntas do dia a dia, com o destino e o contexto que cada uma abre;
- *  - E: trilhas por interesse, com o que se aprende em cada parada;
- *  - G: as fontes principais de cada tema, pelo id do conjunto em publicacao.json.
+ *  - os cinco caminhos de intenção do alto da página (o quinto leva ao mapa) e as seis perguntas prioritárias, mais as duas de
+ *    acesso e desigualdade (a medida de cada uma vem de home-sinais.ts, nunca daqui);
+ *  - o mapa conceitual (sete elos em quatro faixas, ligações tipificadas e temas transversais);
+ *  - o cartão de cada destino (para que serve, o que se encontra, recorte), que abre dentro do
+ *    próprio item do índice completo;
+ *  - as perguntas do dia a dia (as nove da especificação) e as trilhas por interesse;
+ *  - as fontes principais de cada tema, pelo id do conjunto em publicacao.json.
  *
- * Nada aqui é número: a home mostra números só quando os lê de uma gold com a
+ * Nada aqui é número: a inicial mostra números só quando os lê de uma gold com a
  * proveniência dela. Toda promessa aponta para uma rota e uma âncora que o teste
  * `energia-mapa.test.ts` confere no código da página de destino.
  */
+
+// ---------------------------------------------------------------------------
+// Alto da página: quatro caminhos de intenção e seis perguntas prioritárias
+// ---------------------------------------------------------------------------
+
+export type IdCaminho = "acompanhar" | "regiao" | "sistema" | "aprender" | "conferir";
+
+export type CaminhoIntencao = {
+  id: IdCaminho;
+  /** Verbo e objeto: o que a pessoa quer fazer, não o nome da página. */
+  titulo: string;
+  /** Uma frase sobre o que a página de destino entrega. */
+  descricao: string;
+  /** Slugs de DESTINOS_NAVEGACAO: o primeiro é o link do título; os demais viram links de apoio. Vazio quando o caminho é uma seção desta própria página. */
+  slugs: string[];
+  /** Âncora desta página para onde o título leva, quando o caminho não é outra página (o mapa de como o sistema se liga). */
+  ancora?: string;
+};
+
+/**
+ * Os cinco caminhos do hero: acompanhar o sistema, explorar uma região, entender como o sistema se liga (o mapa, nesta página), aprender e
+ * conferir ou baixar. O mapa é o atalho de quem quer o caminho da geração ao consumo sem rolar pelas seis perguntas.
+ */
+export const CAMINHOS_INTENCAO: CaminhoIntencao[] = [
+  { id: "acompanhar", titulo: "Acompanhar o sistema", descricao: "Preço, água, geração, carga e rede, cada um com a sua data.", slugs: ["visao-geral"] },
+  { id: "regiao", titulo: "Explorar uma região", descricao: "Submercado, distribuidora, município e usinas no mesmo mapa, cada número no seu grão.", slugs: ["territorio"] },
+  { id: "sistema", titulo: "Entender como o sistema se liga", descricao: "Sete elos, da água à vida das pessoas, no mapa logo abaixo das seis perguntas.", slugs: [], ancora: "#mapa-conceitual" },
+  { id: "aprender", titulo: "Aprender um conceito", descricao: "Verbetes com a definição da fonte oficial e o painel onde cada conceito aparece.", slugs: ["aprenda"] },
+  { id: "conferir", titulo: "Conferir ou baixar os dados", descricao: "A fonte, o arquivo e o cálculo de cada número, e os conjuntos para baixar.", slugs: ["dados", "metodologia"] },
+];
+
+/** Os seis sinais da inicial, na ordem da página: o que chega a quem usa a energia, depois o sistema e o que vem. */
+export const ID_SINAIS = ["conta", "qualidade", "perdas", "agua", "pld", "expansao"] as const;
+export type IdSinal = (typeof ID_SINAIS)[number];
+
+export type PerguntaPrioritaria = {
+  id: IdSinal;
+  pergunta: string;
+  /** Para que serve a medida, em uma frase: o porquê de olhar para ela, sem número e sem juízo. */
+  importa: string;
+  /** Slug do destino em DESTINOS_NAVEGACAO (de onde saem o estado e o conceito da pergunta). */
+  slug: string;
+  /** Painel que aprofunda a medida: o que se faz lá e o endereço, com a âncora do painel. */
+  link: { rotulo: string; href: string };
+  /**
+   * A pergunta tem resposta própria por distribuidora (Conta de luz, Qualidade e Perdas): a escolha é uma só, no alto da seção, e o link do
+   * cartão leva a página com ela já selecionada. `rotuloEscolhida` é o texto do link com a escolha feita, com `{sigla}` no lugar da sigla.
+   */
+  porDistribuidora?: { tema: "conta" | "qualidade" | "perdas"; parametro: "d" | "dist"; rotuloEscolhida: string };
+};
+
+export const PERGUNTAS_PRIORITARIAS: PerguntaPrioritaria[] = [
+  {
+    id: "conta",
+    pergunta: "Quanto custa a energia numa residência?",
+    importa: "Para comparar a tarifa que a ANEEL fixa para cada distribuidora, antes de tributos.",
+    slug: "conta-de-luz",
+    link: { rotulo: "Comparar as tarifas das distribuidoras", href: "/setor-eletrico/conta-de-luz#tarifa" },
+    porDistribuidora: { tema: "conta", parametro: "dist", rotuloEscolhida: "Ver a tarifa de {sigla} em Conta de luz" },
+  },
+  {
+    id: "qualidade",
+    pergunta: "Quanto tempo falta energia?",
+    importa: "Para saber quanto tempo, no ano, a unidade consumidora média ficou sem energia.",
+    slug: "qualidade",
+    link: { rotulo: "Ver a duração e a frequência das interrupções", href: "/setor-eletrico/qualidade#p051" },
+    porDistribuidora: { tema: "qualidade", parametro: "dist", rotuloEscolhida: "Ver as interrupções de {sigla} em Qualidade" },
+  },
+  {
+    id: "perdas",
+    pergunta: "Quanta energia se perde na distribuição?",
+    importa: "Para ver quanta da energia que entra na rede da distribuidora não chega ao consumidor.",
+    slug: "perdas",
+    link: { rotulo: "Ver as perdas no mapa das distribuidoras", href: "/setor-eletrico/perdas#painel-mapa" },
+    porDistribuidora: { tema: "perdas", parametro: "d", rotuloEscolhida: "Ver as perdas de {sigla} em Perdas" },
+  },
+  {
+    id: "agua",
+    pergunta: "Quanta energia está armazenada nos reservatórios?",
+    importa: "Para ver quanta água há guardada, em energia, para as hidrelétricas gerarem.",
+    slug: "agua-e-clima",
+    link: { rotulo: "Comparar cada região com a mediana do dia", href: "/setor-eletrico/agua-e-clima#p017" },
+  },
+  {
+    id: "pld",
+    pergunta: "Quanto custa a energia no curto prazo?",
+    importa: "Para ver o preço do dia no mercado em que se liquidam as diferenças de energia.",
+    slug: "pld",
+    link: { rotulo: "Ver o último dia nos quatro submercados", href: "/setor-eletrico/pld#hoje" },
+  },
+  {
+    id: "expansao",
+    pergunta: "O que está sendo construído?",
+    importa: "Para ver as usinas em obra e a potência que a ANEEL autorizou para elas.",
+    slug: "expansao",
+    link: { rotulo: "Ver a carteira por estágio", href: "/setor-eletrico/expansao/carteira#p040" },
+  },
+];
+
+/** Os dois números de acesso e desigualdade, que a inicial mostra abaixo das seis perguntas em vez de só apontar para a página de Inclusão. */
+export const ID_SINAIS_INCLUSAO = ["tarifa-social", "acesso"] as const;
+export type IdSinalInclusao = (typeof ID_SINAIS_INCLUSAO)[number];
+
+export type PerguntaDeInclusao = {
+  id: IdSinalInclusao;
+  pergunta: string;
+  importa: string;
+  link: { rotulo: string; href: string };
+};
+
+export const PERGUNTAS_DE_INCLUSAO: PerguntaDeInclusao[] = [
+  {
+    id: "tarifa-social",
+    pergunta: "Quantas unidades consumidoras têm desconto na conta?",
+    importa: "Para ver o alcance da Tarifa Social, o desconto para famílias de baixa renda.",
+    link: { rotulo: "Ver a Tarifa Social por distribuidora e estado", href: "/setor-eletrico/inclusao-energetica/tarifa-social#p059" },
+  },
+  {
+    id: "acesso",
+    pergunta: "Quantos domicílios ainda estão sem energia elétrica?",
+    importa: "Para ver quem ainda não tem acesso à rede ou a outra fonte de energia em casa.",
+    link: { rotulo: "Ver o acesso à energia por região e situação", href: "/setor-eletrico/inclusao-energetica/acesso#p062" },
+  },
+];
 
 // ---------------------------------------------------------------------------
 // Título (pergunta) de cada página de módulo, igual ao título da própria página
@@ -29,20 +155,20 @@ export type PaginaMapa = {
 
 export const PAGINAS_MAPA = {
   "visao-geral": { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral", pergunta: "O que está acontecendo no sistema elétrico brasileiro?", estado: "integrado" },
-  "agua-e-clima": { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima", pergunta: "Quanta energia está guardada nos reservatórios, e quanta água está chegando?", estado: "integrado" },
+  "agua-e-clima": { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima", pergunta: "Quanta energia está armazenada?", estado: "integrado" },
   carga: { rotulo: "Carga", href: "/setor-eletrico/carga", pergunta: "Quanto o sistema está consumindo?", estado: "integrado" },
-  rede: { rotulo: "Rede", href: "/setor-eletrico/rede", pergunta: "Como a energia circula entre regiões e que restrições são documentadas?", estado: "integrado" },
-  pld: { rotulo: "PLD", href: "/setor-eletrico/pld", pergunta: "A que preço se acerta a energia no curto prazo, hora a hora e em cada região?", estado: "integrado" },
-  mercado: { rotulo: "Mercado", href: "/setor-eletrico/mercado", pergunta: "Como a energia é contratada e liquidada?", estado: "integrado" },
-  empresas: { rotulo: "Empresas", href: "/setor-eletrico/empresas", pergunta: "Quem é dono de quê no setor elétrico?", estado: "integrado" },
-  expansao: { rotulo: "Expansão", href: "/setor-eletrico/expansao", pergunta: "Quanta capacidade está chegando, e de que fontes?", estado: "integrado" },
-  regulacao: { rotulo: "Regulação", href: "/setor-eletrico/regulacao", pergunta: "Que regras mudaram, quando e com qual efeito declarado?", estado: "integrado" },
-  "conta-de-luz": { rotulo: "Conta de luz", href: "/setor-eletrico/conta-de-luz", pergunta: "Quanto custa a energia ao consumidor e o que compõe a conta?", estado: "integrado" },
-  perdas: { rotulo: "Perdas", href: "/setor-eletrico/perdas", pergunta: "Onde se perde energia, quanto e com que efeito econômico?", estado: "integrado" },
-  qualidade: { rotulo: "Qualidade", href: "/setor-eletrico/qualidade", pergunta: "Com que frequência e por quanto tempo falta energia?", estado: "integrado" },
-  "inclusao-energetica": { rotulo: "Inclusão energética", href: "/setor-eletrico/inclusao-energetica", pergunta: "Quem tem acesso adequado e para quem a energia pesa mais?", estado: "integrado" },
-  transicao: { rotulo: "Transição e ambiente", href: "/setor-eletrico/transicao", pergunta: "Como a transformação do setor se distribui e afeta as emissões?", estado: "integrado" },
-  aprenda: { rotulo: "Aprenda", href: "/setor-eletrico/aprenda", pergunta: "Como funciona o sistema elétrico brasileiro, conceito a conceito?", estado: "referencia" },
+  rede: { rotulo: "Rede", href: "/setor-eletrico/rede", pergunta: "Como a energia circula entre regiões?", estado: "integrado" },
+  pld: { rotulo: "PLD", href: "/setor-eletrico/pld", pergunta: "Quanto custa a energia no curto prazo?", estado: "integrado" },
+  mercado: { rotulo: "Mercado", href: "/setor-eletrico/mercado", pergunta: "Como a energia é contratada, alocada e liquidada?", estado: "integrado" },
+  empresas: { rotulo: "Empresas", href: "/setor-eletrico/empresas", pergunta: "Quem atua no setor elétrico?", estado: "integrado" },
+  expansao: { rotulo: "Expansão", href: "/setor-eletrico/expansao", pergunta: "O que está sendo construído?", estado: "integrado" },
+  regulacao: { rotulo: "Regulação", href: "/setor-eletrico/regulacao", pergunta: "Que regra vale em cada período?", estado: "integrado" },
+  "conta-de-luz": { rotulo: "Conta de luz", href: "/setor-eletrico/conta-de-luz", pergunta: "Quanto custa o mesmo consumo?", estado: "integrado" },
+  perdas: { rotulo: "Perdas", href: "/setor-eletrico/perdas", pergunta: "Onde a energia se perde?", estado: "integrado" },
+  qualidade: { rotulo: "Qualidade", href: "/setor-eletrico/qualidade", pergunta: "Quanto tempo e quantas vezes falta luz?", estado: "integrado" },
+  "inclusao-energetica": { rotulo: "Inclusão energética", href: "/setor-eletrico/inclusao-energetica", pergunta: "Para quem a energia pesa mais?", estado: "integrado" },
+  transicao: { rotulo: "Transição e ambiente", href: "/setor-eletrico/transicao", pergunta: "Como a matriz está mudando?", estado: "integrado" },
+  aprenda: { rotulo: "Aprenda", href: "/setor-eletrico/aprenda", pergunta: "O que cada conceito significa e onde aparece?", estado: "referencia" },
   dados: { rotulo: "Dados e catálogo", href: "/setor-eletrico/dados", pergunta: "O que é público sobre o setor elétrico, e o que já está integrado?", estado: "referencia" },
   metodologia: { rotulo: "Metodologia", href: "/setor-eletrico/metodologia", pergunta: "Como os números são produzidos, e o que eles não dizem?", estado: "referencia" },
 } satisfies Record<string, PaginaMapa>;
@@ -53,22 +179,62 @@ export type IdPagina = keyof typeof PAGINAS_MAPA;
 // Seção B: mapa conceitual
 // ---------------------------------------------------------------------------
 
-/** Tipo de ligação entre dois elos (seção 6.2 B). A forma da linha muda com o tipo, não só a cor. */
+/** Tipo de ligação entre dois elos (seção 6.2 B). Cada tipo muda a forma da linha (traço e espessura) e a da ponta; a cor nunca é o único sinal. */
 export type TipoLigacao = "fisico" | "operacao" | "mercado" | "custo" | "associacao";
 
-export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: string; traco: string }> = {
-  fisico: { rotulo: "Fluxo físico", definicao: "a energia, a água ou o combustível passa de um elo ao outro.", traco: "" },
-  operacao: { rotulo: "Decisão de operação", definicao: "o ONS usa a informação para programar e despachar o sistema.", traco: "9 5" },
-  mercado: { rotulo: "Regra de mercado", definicao: "uma regra de comercialização transforma uma grandeza em valor a liquidar.", traco: "2 5 9 5" },
-  custo: { rotulo: "Componente de custo", definicao: "o custo de um elo vira parcela de uma tarifa ou de uma conta, por regra regulatória.", traco: "2 4" },
-  associacao: { rotulo: "Associação analítica", definicao: "as grandezas costumam variar juntas; a associação não prova causa.", traco: "14 6" },
+/** Forma da ponta da ligação: seta cheia, seta aberta, losango, quadrado ou círculo nas duas pontas (a associação não tem sentido). */
+export type PontaLigacao = "seta" | "seta-aberta" | "losango" | "quadrado" | "circulo";
+
+export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: string; traco: string; espessura: number; ponta: PontaLigacao }> = {
+  fisico: { rotulo: "Fluxo físico", definicao: "a energia, a água ou o combustível passa de um elo ao outro.", traco: "", espessura: 3.2, ponta: "seta" },
+  operacao: { rotulo: "Decisão de operação", definicao: "o ONS usa a informação para programar e despachar o sistema.", traco: "10 6", espessura: 2, ponta: "seta-aberta" },
+  mercado: { rotulo: "Regra de mercado", definicao: "uma regra de comercialização transforma uma grandeza em valor a liquidar.", traco: "12 4 2 4", espessura: 2, ponta: "losango" },
+  custo: { rotulo: "Componente de custo", definicao: "o custo de um elo vira parcela de uma tarifa ou de uma conta, por regra regulatória.", traco: "1.5 4.5", espessura: 3, ponta: "quadrado" },
+  associacao: { rotulo: "Associação analítica", definicao: "as grandezas costumam variar juntas; a associação não prova causa.", traco: "3 3", espessura: 1.6, ponta: "circulo" },
 };
 
 export type IdNo = "recursos" | "geracao" | "rede" | "consumo" | "operacao" | "contratos" | "pessoas";
 
+/** As quatro faixas do mapa: o caminho físico da energia, quem coordena a operação, o caminho do dinheiro e o que chega às pessoas. */
+export type FaixaMapa = "fisico" | "operacao" | "economia" | "pessoas";
+
+export const ORDEM_FAIXAS: readonly FaixaMapa[] = ["fisico", "operacao", "economia", "pessoas"];
+
+export const FAIXAS_MAPA: Record<FaixaMapa, { rotulo: string; resumo: string }> = {
+  fisico: {
+    rotulo: "Caminho físico",
+    resumo: "A água, o vento, o sol e os combustíveis movem as usinas, e a rede leva a energia até o consumo.",
+  },
+  operacao: {
+    rotulo: "Coordenação da operação",
+    resumo: "O ONS programa quais usinas geram, e a CCEE calcula o preço das diferenças a partir do custo de operação.",
+  },
+  economia: {
+    rotulo: "Relações econômicas",
+    resumo: "Contratos, liquidação e tarifa formam um caminho contratual, que não reproduz o trajeto físico da eletricidade.",
+  },
+  pessoas: {
+    rotulo: "Experiência das pessoas",
+    resumo: "A conta de luz, o serviço que chega a cada casa e o acesso à energia.",
+  },
+};
+
+/**
+ * Onde o nome de cada faixa fica no diagrama, em unidades do viewBox 1000 × 680 (o mesmo dos elos abaixo): acima do caminho físico, ao
+ * lado da operação (à esquerda do elo, onde nenhuma ligação passa) e abaixo dos dois últimos elos.
+ */
+export const ROTULOS_FAIXA: Record<FaixaMapa, { x: number; y: number; alinha: "esq" | "centro" }> = {
+  fisico: { x: 27, y: 14, alinha: "esq" },
+  operacao: { x: 27, y: 348, alinha: "esq" },
+  economia: { x: 250, y: 652, alinha: "centro" },
+  pessoas: { x: 750, y: 652, alinha: "centro" },
+};
+
 export type NoMapa = {
   id: IdNo;
   titulo: string;
+  /** Faixa do mapa em que o elo está: o diagrama, o painel do elo e a versão em texto a usam. */
+  faixa: FaixaMapa;
   /** Uma frase para o diagrama e para o leitor de tela. */
   curto: string;
   explicacao: string;
@@ -82,10 +248,11 @@ export type NoMapa = {
 export const NOS_MAPA: NoMapa[] = [
   {
     id: "recursos",
+    faixa: "fisico",
     titulo: "Água, vento, sol e clima",
     curto: "Os recursos que movem as usinas e o tempo que muda o consumo.",
     explicacao:
-      "A água que chega e fica guardada nos reservatórios, o vento, o sol e os combustíveis são a matéria-prima da geração. A chuva e a temperatura também mudam quanto se consome. O observatório mede a água em energia (EAR e ENA) e mostra chuva e temperatura por bacia e por região.",
+      "A água que chega e fica guardada nos reservatórios, o vento, o sol e os combustíveis são a matéria-prima da geração. A chuva e a temperatura também mudam quanto se consome. O observatório mede a água em energia: a Energia Armazenada (EAR) e a Energia Natural Afluente (ENA). E mostra chuva e temperatura por bacia e por região.",
     destinos: ["agua-e-clima"],
     conceitos: [
       { slug: "ear", rotulo: "EAR" },
@@ -95,10 +262,11 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "geracao",
+    faixa: "fisico",
     titulo: "Geração",
     curto: "As usinas que transformam os recursos em eletricidade.",
     explicacao:
-      "Hidrelétricas, eólicas, solares, térmicas e a micro e minigeração distribuída nas casas e empresas. O observatório mostra quanto cada fonte entregou, por que as térmicas foram acionadas, quanta energia eólica e solar deixou de ser gerada por restrição e como a geração mexe nas emissões.",
+      "Dois grupos entram aqui: as usinas centralizadas (hidrelétricas, eólicas, solares e térmicas), cuja geração o ONS verifica hora a hora, e a micro e minigeração distribuída, instalada em casas e empresas e ligada à rede de distribuição, que a ANEEL cadastra e o ONS estima. O observatório mostra quanto cada fonte entregou, por que as térmicas foram acionadas, quanta energia eólica e solar deixou de ser gerada por restrição e como a geração mexe nas emissões.",
     destinos: ["geracao", "transicao"],
     conceitos: [
       { slug: "geracao-centralizada", rotulo: "geração verificada" },
@@ -108,6 +276,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "rede",
+    faixa: "fisico",
     titulo: "Rede de transmissão e distribuição",
     curto: "As linhas que levam a energia das usinas às regiões e às casas.",
     explicacao:
@@ -121,16 +290,21 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "consumo",
+    faixa: "fisico",
     titulo: "Consumo (carga)",
     curto: "Quanto o sistema precisa atender, hora a hora.",
     explicacao:
-      "A carga é a energia que o sistema interligado atende. Ela muda com a hora do dia, o dia da semana, os feriados e a temperatura, e diminui na rede quando a micro e minigeração distribuída produz no próprio local.",
+      "A carga é a energia que o sistema interligado atende. Ela muda com a hora do dia, o dia da semana, os feriados e a temperatura. Segundo o ONS, a carga diária inclui, desde 29/04/2023, uma estimativa da micro e minigeração distribuída; na carga verificada (carga global), o ONS publica essa parcela à parte, e sem ela resta a carga líquida de MMGD. São leituras diferentes da carga, e a página de Carga as mostra separadas.",
     destinos: ["carga"],
-    conceitos: [{ slug: "carga", rotulo: "carga" }],
+    conceitos: [
+      { slug: "carga", rotulo: "carga" },
+      { slug: "carga-liquida-de-mmgd", rotulo: "carga líquida de MMGD" },
+    ],
     pos: { x: 875, y: 130 },
   },
   {
     id: "operacao",
+    faixa: "operacao",
     titulo: "Operação e preço de curto prazo",
     curto: "O ONS decide o despacho; a CCEE calcula o preço das diferenças.",
     explicacao:
@@ -144,6 +318,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "contratos",
+    faixa: "economia",
     titulo: "Contratos, mercado e tarifa",
     curto: "Como a energia é contratada, liquidada e transformada em tarifa.",
     explicacao:
@@ -158,10 +333,11 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "pessoas",
+    faixa: "pessoas",
     titulo: "Vida das pessoas",
     curto: "A conta, o serviço que chega e quem tem acesso.",
     explicacao:
-      "Para quem usa a energia, o setor aparece na conta de luz, na frequência e na duração das faltas de energia, no peso da conta no orçamento e no acesso, que ainda falta em parte do país. O observatório mostra a conta por distribuidora, a qualidade do serviço, a Tarifa Social e o acesso à energia.",
+      "Para quem usa a energia, o setor aparece na conta de luz, na frequência e na duração das faltas de energia, no peso da conta no orçamento e no acesso, que ainda falta em parte do país. O DEC e o FEC divulgados são os apurados: não incluem as interrupções que a regra exclui (emergência, dia crítico, origem externa e cortes pedidos pelo ONS), e o tempo total sem energia, somadas todas as origens, é maior. O observatório mostra a conta por distribuidora, a qualidade do serviço com as duas medidas, a Tarifa Social e o acesso à energia.",
     destinos: ["conta-de-luz", "qualidade", "inclusao-energetica"],
     conceitos: [
       { slug: "dec", rotulo: "DEC" },
@@ -175,7 +351,12 @@ export type Ligacao = { de: IdNo; para: IdNo; tipo: TipoLigacao; texto: string }
 
 export const LIGACOES: Ligacao[] = [
   { de: "recursos", para: "geracao", tipo: "fisico", texto: "A água, o vento, o sol e os combustíveis movem as usinas." },
-  { de: "geracao", para: "rede", tipo: "fisico", texto: "A energia gerada entra na rede de transmissão." },
+  {
+    de: "geracao",
+    para: "rede",
+    tipo: "fisico",
+    texto: "A energia gerada entra na rede de transmissão ou na de distribuição; a micro e minigeração distribuída entra pela distribuição.",
+  },
   { de: "rede", para: "consumo", tipo: "fisico", texto: "A rede entrega a energia ao consumo; parte se perde no caminho." },
   {
     de: "recursos",
@@ -233,7 +414,7 @@ export const O_QUE_O_MAPA_NAO_DIZ = [
 export const TRANSVERSAIS: { titulo: string; texto: string; destinos: string[] }[] = [
   {
     titulo: "Empresas",
-    texto: "Quem é dono das usinas, das linhas e das distribuidoras de cada elo, pelo CNPJ.",
+    texto: "Quem é dono das usinas, das linhas e das distribuidoras de cada elo, pelo Cadastro Nacional da Pessoa Jurídica (CNPJ).",
     destinos: ["empresas"],
   },
   {
@@ -262,7 +443,7 @@ export type ItemCartao = { texto: string; href: string };
 export type CartaoDestino = {
   /** Para que a resposta é útil. */
   utilidade: string;
-  /** Dois a quatro recursos concretos, cada um com a âncora do painel que o entrega. */
+  /** Dois a cinco recursos concretos, cada um com a âncora do painel que o entrega. */
   encontra: ItemCartao[];
   /** Recorte disponível, sem prometer geografia que a fonte não tem. */
   recorte: string;
@@ -303,8 +484,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
     utilidade: "Ver quanto cada fonte entregou, por que as térmicas foram acionadas e quanta energia eólica e solar deixou de ser gerada por restrição.",
     encontra: [
       { texto: "Matriz efetiva por fonte, com e sem a micro e minigeração estimada", href: "/setor-eletrico/geracao" },
-      { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao" },
-      { texto: "Cortes de geração eólica e solar pelas razões oficiais", href: "/setor-eletrico/geracao" },
+      { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao/termica#p022" },
+      { texto: "Cortes de geração eólica e solar pelas razões oficiais, com o mapa das usinas", href: "/setor-eletrico/geracao/restricoes#p023" },
+      { texto: "Potência instalada e fator de capacidade por fonte e por usina", href: "/setor-eletrico/geracao/capacidade#p024" },
     ],
     recorte: "Sistema interligado e subsistemas; usina para térmicas e cortes; horário, diário e mensal.",
     conceito: { slug: "geracao-centralizada", rotulo: "o que é geração verificada" },
@@ -345,7 +527,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
   "pld-modelos": {
     utilidade: "Ver o que se projeta para o PLD, com que método, e conferir no arquivo imutável como cada projeção se saiu.",
     encontra: [
-      { texto: "Previsão atual por submercado e entrega", href: "/setor-eletrico/pld/previsoes#p013" },
+      { texto: "Rodada mais recente: referência B0 por submercado e entrega", href: "/setor-eletrico/pld/previsoes#p013" },
       { texto: "Registro e fichas dos modelos", href: "/setor-eletrico/pld/modelos#p014" },
       { texto: "Arquivo imutável de emissões", href: "/setor-eletrico/pld/previsoes#p015" },
       { texto: "Desempenho fora da amostra e calibração", href: "/setor-eletrico/pld/modelos#p016" },
@@ -355,9 +537,10 @@ export const CARTOES: Record<string, CartaoDestino> = {
   mercado: {
     utilidade: "Entender como a energia é contratada nos ambientes livre e regulado, quem são os agentes e o que custam o compartilhamento do risco hidrológico e os encargos.",
     encontra: [
-      { texto: "Mercado livre e regulado no consumo", href: "/setor-eletrico/mercado" },
-      { texto: "Agentes e migração para o mercado livre", href: "/setor-eletrico/mercado" },
-      { texto: "MRE e GSF; encargos e liquidação", href: "/setor-eletrico/mercado" },
+      { texto: "Mercado livre e regulado no consumo, em três universos com perímetros diferentes", href: "/setor-eletrico/mercado#livre-regulado" },
+      { texto: "Agentes, parcelas de carga, migrações e desligamentos", href: "/setor-eletrico/mercado/agentes#agentes" },
+      { texto: "GSF do MRE e risco hidrológico do consumidor cativo", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" },
+      { texto: "Encargos, liquidação e inadimplência", href: "/setor-eletrico/mercado/encargos#encargos" },
     ],
     recorte: "Brasil, região, subsistema, UF e distribuidora, conforme a fonte; mensal.",
     conceito: { slug: "mcp", rotulo: "o que é o mercado de curto prazo" },
@@ -374,11 +557,11 @@ export const CARTOES: Record<string, CartaoDestino> = {
     conceito: { slug: "tarifa-te-tusd", rotulo: "o que são TE e TUSD" },
   },
   perdas: {
-    utilidade: "Saber quanto cada distribuidora perde, separar o técnico do não técnico e comparar com a referência regulatória.",
+    utilidade: "Saber quanto cada distribuidora perde, separar o técnico do não técnico e ver o percentual técnico regulatório.",
     encontra: [
       { texto: "Mapa e evolução das perdas por distribuidora", href: "/setor-eletrico/perdas#painel-mapa" },
       { texto: "Composição técnica e não técnica", href: "/setor-eletrico/perdas/composicao#painel-composicao" },
-      { texto: "Realizado diante da referência regulatória", href: "/setor-eletrico/perdas/regulatorio#painel-regulatorio" },
+      { texto: "Percentual técnico regulatório por distribuidora", href: "/setor-eletrico/perdas/regulatorio#painel-regulatorio" },
       { texto: "Custo e contexto territorial", href: "/setor-eletrico/perdas/custo-e-contexto#painel-custo" },
     ],
     recorte: "Distribuidora, com a área desenhada por municípios inteiros; anual e mensal.",
@@ -389,8 +572,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
     encontra: [
       { texto: "DEC e FEC do Brasil, das distribuidoras e dos conjuntos", href: "/setor-eletrico/qualidade#p051" },
       { texto: "Distribuidoras diante do próprio limite", href: "/setor-eletrico/qualidade#p052" },
-      { texto: "Quanto as regras tiram do tempo apurado", href: "/setor-eletrico/qualidade#p053" },
-      { texto: "Compensações e atendimento", href: "/setor-eletrico/qualidade#p054" },
+      { texto: "Quanto as regras tiram do tempo apurado", href: "/setor-eletrico/qualidade#expurgos" },
+      { texto: "Compensações pagas por violação de limite", href: "/setor-eletrico/qualidade#p053" },
+      { texto: "Atendimento e recuperação da rede", href: "/setor-eletrico/qualidade#p054" },
     ],
     recorte: "Brasil, distribuidora e conjunto elétrico; mensal e anual.",
     conceito: { slug: "dec", rotulo: "o que é DEC" },
@@ -457,7 +641,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
   dados: {
     utilidade: "Encontrar o conjunto de origem de um número, ver o estado de cada fonte e baixar os arquivos para reproduzir.",
     encontra: [
-      { texto: "Catálogo de conjuntos com o estado de cada um", href: "/setor-eletrico/dados" },
+      { texto: "Catálogo de conjuntos com a escada de estados, do catalogado ao publicado", href: "/setor-eletrico/dados#catalogo" },
+      { texto: "Saúde das fontes: o que atrasou, falhou ou foi revisado", href: "/setor-eletrico/dados/saude#saude" },
+      { texto: "Download e reprodução: sha256 de cada arquivo e conferência do que você baixou", href: "/setor-eletrico/dados/reproducao#reproducao" },
       { texto: "Ficha de cada conjunto com capturas e sha256", href: "/setor-eletrico/dados/ccee-pld-horario" },
     ],
     recorte: "Conjunto, arquivo e captura.",
@@ -465,10 +651,12 @@ export const CARTOES: Record<string, CartaoDestino> = {
   metodologia: {
     utilidade: "Ver como cada número é produzido, que natureza ele tem e o que não se pode concluir a partir dele.",
     encontra: [
+      { texto: "Regras por indicador: definição, unidade, recortes, cálculo e limites", href: "/setor-eletrico/metodologia#regras" },
       { texto: "Natureza de cada dado: observado, calculado, estimado, previsto e cenário", href: "/setor-eletrico/metodologia#natureza" },
       { texto: "Unidades e como lê-las", href: "/setor-eletrico/metodologia#unidades" },
       { texto: "Linhagem: do arquivo da fonte à página", href: "/setor-eletrico/metodologia#linhagem" },
       { texto: "Limitações conhecidas", href: "/setor-eletrico/metodologia#limitacoes" },
+      { texto: "Avaliação dos painéis: nota de cada página por dimensão, com a evidência e os defeitos abertos", href: "/setor-eletrico/metodologia/avaliacao#avaliacao" },
     ],
     recorte: "Indicador e regra.",
   },
@@ -490,7 +678,7 @@ export type PerguntaCotidiana = {
 export const PERGUNTAS_COTIDIANAS: PerguntaCotidiana[] = [
   {
     pergunta: "Minha distribuidora perde muita energia?",
-    resposta: "Perdas mostra a taxa de cada distribuidora, a evolução e a comparação com a referência regulatória. Perda não técnica não é sinônimo de furto.",
+    resposta: "Perdas mostra a taxa de cada distribuidora, a evolução e o percentual técnico regulatório. Perda não técnica não é sinônimo de furto.",
     destinos: [{ rotulo: "Perdas", href: "/setor-eletrico/perdas#painel-mapa" }],
     porDistribuidora: "perdas",
   },
@@ -584,7 +772,7 @@ export const TRILHAS: Trilha[] = [
       { rotulo: "Conta de luz", href: "/setor-eletrico/conta-de-luz#simulador", aprende: "a tarifa da sua distribuidora e o valor estimado para o seu consumo." },
       { rotulo: "Reajustes e bandeiras", href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios#bandeiras", aprende: "o que mudou na tarifa e qual bandeira valeu em cada mês." },
       { rotulo: "Qualidade", href: "/setor-eletrico/qualidade#p052", aprende: "quanto falta energia na sua distribuidora diante do limite." },
-      { rotulo: "Perdas", href: "/setor-eletrico/perdas#painel-mapa", aprende: "quanto a sua distribuidora perde e quanto disso a regulação reconhece." },
+      { rotulo: "Perdas", href: "/setor-eletrico/perdas#painel-mapa", aprende: "quanto a sua distribuidora perde, a evolução e o percentual técnico regulatório." },
       { rotulo: "Tarifa Social", href: "/setor-eletrico/inclusao-energetica/tarifa-social#p059", aprende: "quem recebe o desconto e como a cobertura varia." },
       { rotulo: "Ficha da distribuidora", href: "/setor-eletrico/empresas/distribuidoras#p037", aprende: "perdas, continuidade, tarifa e controle no mesmo lugar, pelo CNPJ." },
     ],
@@ -669,18 +857,18 @@ export const FONTES_PRINCIPAIS: { tema: string; href: string; conjuntos: FontePr
       { id: "aneel_tarifas/aneel_bandeiras_tarifarias", rotulo: "Bandeiras tarifárias (ANEEL)" },
     ],
   },
-  { tema: "Perdas", href: "/setor-eletrico/perdas", conjuntos: [{ id: "aneel_distribuicao/aneel_samp_balanco", rotulo: "SAMP, balanço energético das distribuidoras (ANEEL)" }] },
+  { tema: "Perdas", href: "/setor-eletrico/perdas", conjuntos: [{ id: "aneel_distribuicao/aneel_samp_balanco", rotulo: "Balanço energético das distribuidoras (ANEEL)" }] },
   { tema: "Qualidade", href: "/setor-eletrico/qualidade", conjuntos: [{ id: "aneel_qualidade/aneel_continuidade", rotulo: "Indicadores coletivos de continuidade, DEC e FEC (ANEEL)" }] },
   {
     tema: "Inclusão energética",
     href: "/setor-eletrico/inclusao-energetica",
     conjuntos: [
-      { id: "aneel_social/aneel_scs", rotulo: "Tarifa Social por distribuidora, SCS (ANEEL)" },
+      { id: "aneel_social/aneel_scs", rotulo: "Tarifa Social por distribuidora (ANEEL)" },
       { id: "aneel_social/ibge_pnadc_energia", rotulo: "PNAD Contínua: energia nos domicílios (IBGE)" },
     ],
   },
   { tema: "Empresas", href: "/setor-eletrico/empresas", conjuntos: [{ id: "empresas/cvm_itr", rotulo: "Informações trimestrais das companhias abertas (CVM)" }] },
-  { tema: "Expansão", href: "/setor-eletrico/expansao", conjuntos: [{ id: "aneel_geracao/aneel_ralie", rotulo: "RALIE, acompanhamento da expansão da geração (ANEEL)" }] },
+  { tema: "Expansão", href: "/setor-eletrico/expansao", conjuntos: [{ id: "aneel_geracao/aneel_ralie", rotulo: "Acompanhamento da expansão da geração (ANEEL)" }] },
   {
     tema: "Transição e ambiente",
     href: "/setor-eletrico/transicao",
@@ -708,13 +896,18 @@ export const ANCORAS_VISAO_GERAL = [
   "observar",
 ];
 
-/** Ids das sete seções da home (A a G), na ordem da especificação. */
+/**
+ * Ids das sete seções da inicial, na ordem em que aparecem: o hero com a busca e os caminhos, as seis perguntas, o mapa conceitual (a resposta
+ * a "como o sistema se liga", antes do índice para não ficar telas abaixo), o índice completo, as trilhas, "Como ler e conferir" e as fontes com
+ * a atualidade. Outras páginas apontam para estes ids (por exemplo, o Aprenda leva a #mapa-conceitual), e o link antigo de qualquer um deles
+ * continua abrindo a seção.
+ */
 export const SECOES_HOME = [
-  { id: "proposito", letra: "A", rotulo: "Para que serve" },
-  { id: "mapa-conceitual", letra: "B", rotulo: "Como as partes se ligam" },
-  { id: "destinos", letra: "C", rotulo: "Para que serve cada página" },
-  { id: "perguntas", letra: "D", rotulo: "Explore pela sua pergunta" },
-  { id: "trilhas", letra: "E", rotulo: "Trilhas por interesse" },
-  { id: "como-confiar", letra: "F", rotulo: "Como confiar e como ler" },
-  { id: "aprofundar", letra: "G", rotulo: "Onde aprofundar e atualidade" },
+  { id: "proposito", rotulo: "Para que serve" },
+  { id: "perguntas", rotulo: "Seis perguntas para começar" },
+  { id: "mapa-conceitual", rotulo: "Como as partes se ligam" },
+  { id: "destinos", rotulo: "Todas as páginas, por tema" },
+  { id: "trilhas", rotulo: "Trilhas de leitura" },
+  { id: "como-confiar", rotulo: "Como ler e conferir" },
+  { id: "aprofundar", rotulo: "Fontes e atualidade" },
 ] as const;

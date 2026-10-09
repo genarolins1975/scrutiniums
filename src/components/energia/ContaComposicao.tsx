@@ -1,27 +1,37 @@
 "use client";
 
 import { useMemo } from "react";
+import { ContaEscolha, type OpcaoConta } from "@/components/energia/ContaControles";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR, num, pct, reais } from "@/lib/energia/formato";
 import {
   CAMPO_DIST,
+  COR_AJUSTE,
   COR_GRUPO,
+  ID_AJUSTE,
   ID_MEDIA,
   ORDEM_GRUPOS,
+  ROTULO_AJUSTE,
+  ajusteDeArredondamento,
   colunasComposicao,
   destacar,
+  expandirComposicao,
   idsComposicaoPadrao,
   linhasComposicao,
   linhasComposicaoGrafico,
   linhasGrupos,
+  maiorAjuste,
   remover,
   rotuloDistribuidora,
+  type ComposicaoCompacta,
+  type ComposicaoDaTela,
+  type VigenteCompacto,
 } from "@/lib/energia/conta";
-import type { Composicao, TarifaVigente } from "@/lib/energia/tipos-conta";
 
 /**
  * P048, "Para onde vai o valor da conta?": a tarifa B1 decomposta nos grupos de
@@ -45,17 +55,25 @@ const ESQUEMA = {
   }),
 };
 
+const OPCOES_UNIDADE: OpcaoConta<"rs" | "pct">[] = [
+  { id: "rs", rotulo: "R$/MWh" },
+  { id: "pct", rotulo: "% da tarifa" },
+];
+
 export type ContaComposicaoProps = {
-  composicao: Pick<Composicao, "grupos" | "distribuidoras" | "media" | "mediana" | "cde" | "creditos">;
-  vigentes: Pick<TarifaVigente, "cnpj" | "posicao">[];
+  /** A composição em tuplas (`compactarComposicao`): as 80 distribuidoras com as partes em R$/MWh e em %. */
+  composicao: ComposicaoCompacta;
+  /** As distribuidoras do ranking em tuplas, a mesma lista (e a mesma referência) que o painel de tarifas recebe: de cada uma só o CNPJ e a posição entram aqui. */
+  vigentes: VigenteCompacto[];
   referencia: string | null;
   dataReferencia: string;
   fonte: string;
 };
 
-export function ContaComposicao({ composicao, vigentes, referencia, dataReferencia, fonte }: ContaComposicaoProps) {
+export function ContaComposicao({ composicao, vigentes: compactos, referencia, dataReferencia, fonte }: ContaComposicaoProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
-  const comp = composicao as Composicao;
+  const comp = useMemo(() => expandirComposicao(composicao), [composicao]);
+  const vigentes = useMemo(() => compactos.map((x) => ({ cnpj: x[0], posicao: x[13] })), [compactos]);
   const comComposicao = useMemo(() => new Set(comp.distribuidoras.map((d) => d.cnpj)), [comp.distribuidoras]);
   const escolhidas = v.dist.filter((id) => comComposicao.has(id));
   const ids = escolhidas.length ? escolhidas : idsComposicaoPadrao(comp, vigentes, referencia);
@@ -65,16 +83,29 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
   // eslint-disable-next-line react-hooks/exhaustive-deps -- a chave resume a lista de ids
   const grafico = useMemo(() => linhasComposicaoGrafico(comp, vigentes, v.unidade, ids), [comp, vigentes, v.unidade, chaveIds]);
   const rotulo = useMemo(() => new Map(comp.grupos.map((g) => [g.id, g.rotulo])), [comp.grupos]);
-  const series = ORDEM_GRUPOS.map((g) => ({
-    id: g,
-    rotulo: rotulo.get(g) ?? g,
-    cor: COR_GRUPO[g],
-  }));
+  const temAjuste = grafico.some((l) => l.ajuste !== null && l.ajuste !== 0);
+  const series = [
+    ...ORDEM_GRUPOS.map((g) => ({
+      id: g as string,
+      rotulo: rotulo.get(g) ?? g,
+      cor: COR_GRUPO[g],
+    })),
+    // a pilha termina no total publicado: a diferença de arredondamento das partes é a última parte, e o total do gráfico é o da tabela
+    ...(temAjuste ? [{ id: ID_AJUSTE, rotulo: ROTULO_AJUSTE, cor: COR_AJUSTE }] : []),
+  ];
+  const maiorRs = useMemo(() => maiorAjuste(linhasComposicao(comp, vigentes, "rs")), [comp, vigentes]);
+  const maiorPct = useMemo(() => maiorAjuste(linhasComposicao(comp, vigentes, "pct")), [comp, vigentes]);
   const destaque = escolhidas[0] ?? null;
   const pedida = v.dist[0] ?? null;
   const dDestaque = destaque ? (comp.distribuidoras.find((d) => d.cnpj === destaque) ?? null) : null;
   const grupos = useMemo(() => linhasGrupos(comp, destaque), [comp, destaque]);
   const nomeDestaque = dDestaque ? rotuloDistribuidora(dDestaque.sigla, dDestaque.cnpj) : null;
+  // diferença de arredondamento de cada coluna da decomposição (média e destaque, em R$/MWh e em %): a linha só aparece quando existe
+  const ajMediaRs = comp.media ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => comp.media!.grupos_rs_mwh[g]), comp.media.total_rs_mwh) : null;
+  const ajMediaPct = comp.media ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => comp.media!.grupos_pct[g]), 100) : null;
+  const ajDestRs = dDestaque ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => dDestaque.grupos[g]), dDestaque.total) : null;
+  const ajDestPct = dDestaque ? ajusteDeArredondamento(ORDEM_GRUPOS.map((g) => dDestaque.pct[g]), 100) : null;
+  const mostrarAjuste = [ajMediaRs, ajMediaPct, ajDestRs, ajDestPct].some((a) => a !== null && a !== 0);
   const selecionar = (id: string | null) => {
     if (id === ID_MEDIA) return;
     if (id) definir({ dist: destacar(v.dist, id) });
@@ -83,23 +114,7 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
 
   return (
     <div className="space-y-5">
-      <div role="radiogroup" aria-label="Unidade da composição" className="flex flex-wrap items-center gap-2">
-        <span className="rotulo text-mineral">Unidade</span>
-        {(
-          [
-            ["rs", "R$/MWh"],
-            ["pct", "% da tarifa"],
-          ] as const
-        ).map(([id, rot]) => (
-          <label
-            key={id}
-            className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.unidade === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
-          >
-            <input type="radio" name="conta-cunid" value={id} checked={v.unidade === id} onChange={() => definir({ unidade: id })} className="accent-energia" />
-            {rot}
-          </label>
-        ))}
-      </div>
+      <ContaEscolha legenda="Unidade da composição" opcoes={OPCOES_UNIDADE} valor={v.unidade} onEscolher={(u) => definir({ unidade: u })} />
 
       <p className="text-sm text-carvao-muted">
         {escolhidas.length
@@ -115,12 +130,17 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
         series={series}
         empilhado
         unidade={unidade}
-        casas={emPct ? 1 : 2}
+        casas={2}
         orientacao="horizontal"
         selecionado={destaque}
         onSelecionar={selecionar}
         alturaCategoria={56}
       />
+
+      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="arredondamento-composicao">
+        As partes são publicadas com duas casas, cada uma arredondada em separado: a soma delas difere da tarifa em até R$ {num(maiorRs, 2)}/MWh, ou {num(maiorPct, 2)} ponto percentual na leitura em %.
+        {temAjuste ? ` O gráfico mostra essa diferença como "${ROTULO_AJUSTE}"` : " Nesta seleção a soma das partes fecha com a tarifa"}, e todo total é o publicado: o mesmo valor no gráfico, na tabela e no arquivo.
+      </p>
 
       {pedida && !destaque && (
         <p role="status" className="text-sm text-carvao-muted">
@@ -130,7 +150,7 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
 
       <div>
         <h3 className="font-serif text-lg text-carvao">Decomposição: média, mediana e {nomeDestaque ?? "distribuidora em destaque"}</h3>
-        <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label="Tabela de decomposição da tarifa B1">
+        <ContaRolavel rotulo="Tabela de decomposição da tarifa B1" className="mt-2">
           <table className="w-full min-w-[640px] border-collapse text-sm tabular-nums">
             <caption className="sr-only">Grupos de componentes: média simples das distribuidoras, participação, mediana e a distribuidora em destaque</caption>
             <thead>
@@ -147,12 +167,16 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                 <th scope="col" className="py-2 pr-3 text-right font-normal">
                   Mediana (R$/MWh, não soma)
                 </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {nomeDestaque ? `${nomeDestaque} (R$/MWh)` : "Destaque (R$/MWh)"}
-                </th>
-                <th scope="col" className="py-2 text-right font-normal">
-                  {nomeDestaque ? `${nomeDestaque} (%)` : "Destaque (%)"}
-                </th>
+                {dDestaque && (
+                  <>
+                    <th scope="col" className="py-2 pr-3 text-right font-normal">
+                      {nomeDestaque ? `${nomeDestaque} (R$/MWh)` : "Destaque (R$/MWh)"}
+                    </th>
+                    <th scope="col" className="py-2 text-right font-normal">
+                      {nomeDestaque ? `${nomeDestaque} (%)` : "Destaque (%)"}
+                    </th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -163,44 +187,72 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
                     {g.grupo}
                   </th>
                   <td className="py-2 pr-3 text-right">{num(g.media_rs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{pct(g.media_pct, 1)}</td>
+                  <td className="py-2 pr-3 text-right">{pct(g.media_pct, 2)}</td>
                   <td className="py-2 pr-3 text-right text-carvao-muted">{num(g.mediana_rs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{dDestaque ? num(g.dist_rs, 2) : "sem destaque"}</td>
-                  <td className="py-2 text-right">{dDestaque ? pct(g.dist_pct, 1) : "sem destaque"}</td>
+                  {dDestaque && (
+                    <>
+                      <td className="py-2 pr-3 text-right">{num(g.dist_rs, 2)}</td>
+                      <td className="py-2 text-right">{pct(g.dist_pct, 2)}</td>
+                    </>
+                  )}
                 </tr>
               ))}
+              {mostrarAjuste && (
+                <tr className="border-b border-linha text-carvao-muted">
+                  <th scope="row" className="py-2 pr-3 text-left font-normal">
+                    {ROTULO_AJUSTE}
+                  </th>
+                  <td className="py-2 pr-3 text-right">{num(ajMediaRs, 2)}</td>
+                  <td className="py-2 pr-3 text-right">{pct(ajMediaPct, 2)}</td>
+                  <td className="py-2 pr-3 text-right" />
+                  {dDestaque && (
+                    <>
+                      <td className="py-2 pr-3 text-right">{num(ajDestRs, 2)}</td>
+                      <td className="py-2 text-right">{pct(ajDestPct, 2)}</td>
+                    </>
+                  )}
+                </tr>
+              )}
               <tr className="border-b border-linha font-medium">
                 <th scope="row" className="py-2 pr-3 text-left text-carvao">
                   Tarifa (TE + TUSD)
                 </th>
                 <td className="py-2 pr-3 text-right">{num(comp.media?.total_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right">{comp.media ? pct(100, 1) : "sem dado"}</td>
+                <td className="py-2 pr-3 text-right">{comp.media ? pct(100, 2) : "sem dado"}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">
                   {num(comp.mediana.mediana_do_total_rs_mwh, 2)} (soma das medianas: {num(comp.mediana.soma_das_medianas_rs_mwh, 2)})
                 </td>
-                <td className="py-2 pr-3 text-right">{dDestaque ? num(dDestaque.total, 2) : "sem destaque"}</td>
-                <td className="py-2 text-right">{dDestaque ? pct(100, 1) : "sem destaque"}</td>
+                {dDestaque && (
+                  <>
+                    <td className="py-2 pr-3 text-right">{num(dDestaque.total, 2)}</td>
+                    <td className="py-2 text-right">{pct(100, 2)}</td>
+                  </>
+                )}
               </tr>
               <tr>
                 <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao-muted">
                   Dos encargos: componentes CDE
                 </th>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.media?.cde_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 1)}</td>
+                <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 2)}</td>
                 <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.cde.mediana_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{dDestaque ? num(dDestaque.cde, 2) : "sem destaque"}</td>
-                <td className="py-2 text-right text-carvao-muted">{dDestaque ? pct(dDestaque.cde_pct, 1) : "sem destaque"}</td>
+                {dDestaque && (
+                  <>
+                    <td className="py-2 pr-3 text-right text-carvao-muted">{num(dDestaque.cde, 2)}</td>
+                    <td className="py-2 text-right text-carvao-muted">{pct(dDestaque.cde_pct, 2)}</td>
+                  </>
+                )}
               </tr>
             </tbody>
           </table>
-        </div>
+        </ContaRolavel>
         <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           A média é simples entre {comp.media?.n ?? "as"} distribuidoras (cada uma pesa igual) e fecha com a tarifa média de{" "}
           {comp.media && comp.media.total_rs_mwh !== null ? `${reais(comp.media.total_rs_mwh / 1000, 4)}/kWh` : "sem dado"}; a participação é a razão de somas. As medianas são
           lidas grupo a grupo e não somam a tarifa mediana. Componentes CDE estão dentro dos encargos: não some à parte.
           {dDestaque &&
-            dDestaque.reclassificadas.length > 0 &&
-            ` Na ${nomeDestaque}, ${dDestaque.reclassificadas.map((r) => `${r.codigo} de ${num(r.valor, 2)} R$/MWh`).join(" e ")} saiu dos encargos e está em créditos (valor negativo em componente de custo).`}
+            (dDestaque.reclassificadas?.length ?? 0) > 0 &&
+            ` Na ${nomeDestaque}, ${(dDestaque.reclassificadas ?? []).map((r) => `${r.codigo} de ${num(r.valor, 2)} R$/MWh`).join(" e ")} saiu dos encargos e está em créditos (valor negativo em componente de custo).`}
         </p>
       </div>
 
@@ -230,8 +282,8 @@ function TabelaComposicao({
   dataReferencia,
   fonte,
 }: {
-  comp: Composicao;
-  vigentes: Pick<TarifaVigente, "cnpj" | "posicao">[];
+  comp: ComposicaoDaTela;
+  vigentes: { cnpj: string; posicao: number }[];
   emPct: boolean;
   rotulo: Map<string, string>;
   destaque: string | null;
@@ -256,6 +308,7 @@ function TabelaComposicao({
       selecionado={destaque}
       onSelecionar={onSelecionar}
       dicaBusca="Sigla ou CNPJ"
+      iniciarAberta
       nota="Grupos pela classificação do observatório a partir do código da componente; tributos e iluminação pública não fazem parte da tarifa homologada e ficam fora. Clique numa linha para levá-la ao gráfico."
     />
   );

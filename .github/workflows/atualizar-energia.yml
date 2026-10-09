@@ -103,6 +103,9 @@ jobs:
         id: pipeline
         env:
           SEM_COLETA: ${{ inputs.sem_coleta }}
+          # Coleta da CCEE pelo cliente do pipeline (User-Agent do projeto, sem disfarce de navegador),
+          # autorizada pelo responsável em 06/10/2026 (pipeline/energia/fontes/ccee_mercado.py, DECISAO_ACESSO).
+          ENERGIA_CCEE_COLETA: "1"
         run: |
           if [ "$SEM_COLETA" = "true" ]; then
             python3 -u pipeline/energia/run.py --sem-coleta | tee energia.log

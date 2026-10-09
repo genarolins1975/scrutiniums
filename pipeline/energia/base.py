@@ -11,13 +11,16 @@ Uma observação ganha linha nova só quando o valor difere do último valor
 conhecido para (dataset, serie, ref): revisão fica registrada, nunca
 sobrescrita. Valor ausente não gera linha (ausência não é zero).
 """
+import csv
 import gzip
 import hashlib
+import io
 import json
 import os
 import sqlite3
 import subprocess
 from datetime import datetime, timezone
+from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DADOS = os.path.join(RAIZ, "data", "energia")
@@ -36,6 +39,20 @@ DOMINIO = "energia"
 
 def agora_utc():
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def arredonda_meio_para_cima(v, casas=2):
+    """Arredonda em decimal, com o meio para cima (longe do zero), que é a regra do que a interface exibe.
+
+    O `round()` do Python arredonda o valor binário exato e, no empate, para o par: 70,175 (guardado como
+    70,17499999999999999) virava 70,17, e 0,125 virava 0,12, enquanto a página e a conta feita à mão dão 70,18 e 0,13.
+    Aqui o arredondamento age sobre a menor cadeia decimal que reproduz o número (`repr`), como quem lê o valor impresso.
+    """
+    x = float(v)
+    try:
+        return float(Decimal(repr(x)).quantize(Decimal(1).scaleb(-casas), rounding=ROUND_HALF_UP))
+    except InvalidOperation:  # valor grande demais para a precisão do Decimal: o `round()` já não perde casas ali
+        return round(x, casas)
 
 
 def instante_utc(valor):
@@ -160,9 +177,27 @@ def salva_bronze_arquivo(orgao, dataset, recurso, caminho_origem, ext, capturado
 
 
 def abre_bronze(caminho_relativo):
-    """Abre (binário) um arquivo do bronze, gzip ou não, pelo caminho relativo à raiz."""
+    """Abre (binário) um arquivo do bronze, gzip ou não, pelo caminho relativo à raiz.
+
+    Se o arquivo registrado na vintage não existe (silver restaurado da cópia durável sem o
+    bronze, e o recurso recapturado com o mesmo conteúdo noutro instante), abre a cópia da
+    mesma pasta com o mesmo sha256 no nome: o conteúdo é idêntico por construção."""
     caminho = caminho_relativo if os.path.isabs(caminho_relativo) else os.path.join(RAIZ, caminho_relativo)
+    if not os.path.exists(caminho):
+        caminho = _bronze_mesmo_conteudo(caminho) or caminho
     return gzip.open(caminho, "rb") if caminho.endswith(".gz") else open(caminho, "rb")
+
+
+def _bronze_mesmo_conteudo(caminho):
+    """Outro arquivo da mesma pasta do bronze com o mesmo prefixo de sha256 no nome
+    (<carimbo>.<sha12>.<ext>[.gz]), ou None."""
+    pasta, nome = os.path.split(caminho)
+    partes = nome.split(".")
+    if len(partes) < 3 or len(partes[1]) != 12 or not os.path.isdir(pasta):
+        return None
+    marca = f".{partes[1]}."
+    iguais = sorted(n for n in os.listdir(pasta) if marca in n and n.endswith(nome[nome.index(marca) + len(marca):]))
+    return os.path.join(pasta, iguais[0]) if iguais else None
 
 
 def ultima_vintage(con, dataset, recurso):
@@ -418,13 +453,53 @@ def escreve_gold(nome, payload, destino=None):
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):
-    """CSV com ';' e ponto decimal; ausência = campo vazio (nunca zero)."""
+    """CSV com ';' e ponto decimal; ausência = campo vazio (nunca zero). Campo com ';', aspas ou quebra de
+    linha vai entre aspas (RFC 4180), como em regulacao._escreve_csv: sem isso, um texto com ponto e vírgula
+    vira coluna a mais e o arquivo baixado deixa de ter o número de colunas do cabeçalho."""
     base = destino or SERIES
-    partes = [";".join(cabecalho)]
+    buf = io.StringIO()
+    w = csv.writer(buf, delimiter=";", quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+    w.writerow(cabecalho)
     for linha in linhas:
-        partes.append(";".join("" if v is None else (repr(round(v, 4)) if isinstance(v, float) else str(v))
-                               for v in linha))
-    return _escreve_atomico(os.path.join(base, nome), "\n".join(partes) + "\n")
+        w.writerow(["" if v is None else (repr(arredonda_meio_para_cima(v, 4)) if isinstance(v, float) else str(v)) for v in linha])
+    return _escreve_atomico(os.path.join(base, nome), buf.getvalue())
+
+
+def guarda_arquivos(urls, raiz=None):
+    """Bytes de cada arquivo publicado em `urls` ('/energia/series/x.csv'), ou None se ainda não existe.
+    Chamada antes de construir um módulo: se a construção regredir (a sentinela mantém a gold anterior), os arquivos
+    baixáveis voltam ao que eram, e a gold e os CSV continuam da mesma publicação."""
+    pub = os.path.join(raiz or RAIZ, "public")
+    guardado = {}
+    for u in urls:
+        p = os.path.join(pub, u.lstrip("/"))
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                guardado[p] = f.read()
+        else:
+            guardado[p] = None
+    return guardado
+
+
+def restaura_arquivos(guardado):
+    """Devolve cada arquivo ao que `guarda_arquivos` registrou; o que não existia antes sai. Devolve os caminhos refeitos."""
+    refeitos = []
+    for p, dados in guardado.items():
+        atual = None
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                atual = f.read()
+        if atual == dados:
+            continue
+        if dados is None:
+            os.remove(p)
+        else:
+            tmp = f"{p}.{os.getpid()}.tmp"
+            with open(tmp, "wb") as f:
+                f.write(dados)
+            os.replace(tmp, p)
+        refeitos.append(p)
+    return refeitos
 
 
 def le_gold(nome, destino=None):

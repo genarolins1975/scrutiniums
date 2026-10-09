@@ -28,17 +28,17 @@ export type ModuloEnergia = {
 };
 
 export const MODULOS_ENERGIA: ModuloEnergia[] = [
-  { slug: "mapa", href: "/setor-eletrico", rotulo: "Mapa", resumo: "Por onde começar: o que cada página responde, com que fonte e até quando.", integrado: true, secao: "energia:mapa" },
+  { slug: "mapa", href: "/setor-eletrico", rotulo: "Início", resumo: "Por onde começar: o que cada página responde, com que fonte e até quando.", integrado: true, secao: "energia:mapa" },
   { slug: "visao-geral", href: "/setor-eletrico/visao-geral", rotulo: "Visão geral", resumo: "O sistema elétrico em poucos minutos.", integrado: true, secao: "energia:visao-geral" },
-  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço horário por submercado: o que é, de onde vem, o que acontece agora e o estado da previsão.", integrado: true, secao: "energia:pld" },
+  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço horário por submercado: o que é, de onde vem, o que mostram os últimos dias e o estado da previsão.", integrado: true, secao: "energia:pld" },
   { slug: "agua-e-clima", href: "/setor-eletrico/agua-e-clima", rotulo: "Água e clima", resumo: "Energia armazenada e energia que chega aos reservatórios.", integrado: true, secao: "energia:agua-e-clima" },
   { slug: "geracao", href: "/setor-eletrico/geracao", rotulo: "Geração", resumo: "Com que fontes o sistema está atendendo a carga.", integrado: true, secao: "energia:geracao" },
   { slug: "carga", href: "/setor-eletrico/carga", rotulo: "Carga", resumo: "Quanto o sistema está consumindo e como isso se compara.", integrado: true, secao: "energia:carga" },
   { slug: "rede", href: "/setor-eletrico/rede", rotulo: "Rede", resumo: "Fluxos entre regiões e diferenças de preço.", integrado: true, secao: "energia:rede" },
-  { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Ambientes de contratação, agentes e mecanismos de mercado.", integrado: false, secao: "energia:mercado" },
+  { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Livre e regulado, agentes e migração, MRE e GSF, encargos e liquidação, com a CCEE, a EPE e a ANEEL.", integrado: true, secao: "energia:mercado" },
   { slug: "empresas", href: "/setor-eletrico/empresas", rotulo: "Empresas", resumo: "Grupos econômicos, companhias, usinas, linhas e concessões.", integrado: true, secao: "energia:empresas" },
   { slug: "expansao", href: "/setor-eletrico/expansao", rotulo: "Expansão", resumo: "Leilões, projetos, capacidade futura e planejamento.", integrado: true, secao: "energia:expansao" },
-  { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, CCEE, ONS e MME com linha do tempo e documentos primários.", integrado: true, secao: "energia:regulacao" },
+  { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, MME, Congresso e Presidência, com linha do tempo e documentos primários.", integrado: true, secao: "energia:regulacao" },
   { slug: "aprenda", href: "/setor-eletrico/aprenda", rotulo: "Aprenda", resumo: "Base de conhecimento com fonte oficial em cada verbete.", integrado: true, secao: "energia:aprenda" },
   { slug: "dados", href: "/setor-eletrico/dados", rotulo: "Dados", resumo: "Catálogo de datasets, metodologia, qualidade e downloads.", integrado: true, secao: "energia:dados" },
 ];
@@ -93,8 +93,8 @@ function doModulo(slug: string): Pick<DestinoNavegacao, "slug" | "href" | "resum
 /** A ordem desta lista é a ordem de exibição dentro de cada grupo. */
 export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   // 1. Comece aqui
-  { ...doModulo("mapa"), rotulo: "Mapa do observatório", grupo: "comece-aqui", publicado: true, pergunta: "Como compreender e explorar o setor usando este observatório?" },
-  { ...doModulo("visao-geral"), rotulo: "Visão geral", grupo: "comece-aqui", publicado: true, pergunta: "O que está acontecendo no sistema elétrico?" },
+  { ...doModulo("mapa"), rotulo: "Início", grupo: "comece-aqui", publicado: true, pergunta: "Como compreender e explorar o setor usando este observatório?" },
+  { ...doModulo("visao-geral"), rotulo: "Visão geral", grupo: "comece-aqui", publicado: true, pergunta: "O que está acontecendo no sistema elétrico brasileiro?" },
   {
     slug: "territorio",
     href: "/setor-eletrico/territorio",
@@ -107,18 +107,18 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   },
 
   // 2. Operação do sistema
-  { ...doModulo("agua-e-clima"), rotulo: "Água e clima", grupo: "operacao", publicado: true, pergunta: "Quanta energia está armazenada e como a água e o clima estão evoluindo?" },
-  { ...doModulo("geracao"), rotulo: "Geração", grupo: "operacao", publicado: true, pergunta: "De onde vem a eletricidade e quais fontes estão sendo usadas?" },
-  { ...doModulo("carga"), rotulo: "Carga", grupo: "operacao", publicado: true, pergunta: "Quanto e quando o sistema demanda energia?" },
-  { ...doModulo("rede"), rotulo: "Rede", grupo: "operacao", publicado: true, pergunta: "Como a energia circula entre regiões e que restrições são documentadas?" },
+  { ...doModulo("agua-e-clima"), rotulo: "Água e clima", grupo: "operacao", publicado: true, pergunta: "Quanta energia está armazenada?" },
+  { ...doModulo("geracao"), rotulo: "Geração", grupo: "operacao", publicado: true, pergunta: "De onde vem a eletricidade?" },
+  { ...doModulo("carga"), rotulo: "Carga", grupo: "operacao", publicado: true, pergunta: "Quanto o sistema está consumindo?" },
+  { ...doModulo("rede"), rotulo: "Rede", grupo: "operacao", publicado: true, pergunta: "Como a energia circula entre regiões?" },
 
   // 3. Preços e mercado
-  { ...doModulo("pld"), rotulo: "Preço de curto prazo (PLD)", grupo: "precos-e-mercado", publicado: true, pergunta: "Como funciona e como varia o preço de curto prazo?" },
+  { ...doModulo("pld"), rotulo: "Preço de curto prazo (PLD)", grupo: "precos-e-mercado", publicado: true, pergunta: "Quanto custa a energia no curto prazo?" },
   {
     slug: "pld-modelos",
     href: "/setor-eletrico/pld/modelos",
     rotulo: "Previsões e modelos",
-    pergunta: "O que se projeta para o PLD e como a previsão tem se saído?",
+    pergunta: "O que os modelos conseguem prever?",
     resumo: "Registro dos modelos de previsão do PLD com o estado de cada um e o arquivo imutável das emissões; sem modelo em produção, a previsão oficial fica indisponível, com o motivo.",
     grupo: "precos-e-mercado",
     publicado: true,
@@ -131,7 +131,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     slug: "conta-de-luz",
     href: "/setor-eletrico/conta-de-luz",
     rotulo: "Conta de luz",
-    pergunta: "Quanto custa a energia ao consumidor e o que compõe a conta?",
+    pergunta: "Quanto custa o mesmo consumo?",
     resumo: "Tarifas de aplicação por distribuidora, componentes da conta, bandeiras e simulação por perfil de consumo.",
     grupo: "consumidor-e-territorio",
     publicado: true,
@@ -141,8 +141,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     slug: "perdas",
     href: "/setor-eletrico/perdas",
     rotulo: "Perdas de energia",
-    pergunta: "Onde se perde energia, quanto e com que efeito econômico?",
-    resumo: "Perdas técnicas e não técnicas por distribuidora, o realizado diante da referência regulatória e o custo que chega à tarifa.",
+    pergunta: "Onde a energia se perde?",
+    resumo: "Perdas técnicas e não técnicas por distribuidora, o percentual técnico regulatório e o custo que chega à tarifa.",
     grupo: "consumidor-e-territorio",
     publicado: true,
     integrado: true,
@@ -151,7 +151,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     slug: "qualidade",
     href: "/setor-eletrico/qualidade",
     rotulo: "Qualidade do serviço",
-    pergunta: "Com que frequência e por quanto tempo falta energia?",
+    pergunta: "Quanto tempo e quantas vezes falta luz?",
     resumo: "Duração e frequência das interrupções por distribuidora, limites regulatórios e compensações publicadas.",
     grupo: "consumidor-e-territorio",
     publicado: true,
@@ -161,7 +161,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     slug: "inclusao-energetica",
     href: "/setor-eletrico/inclusao-energetica",
     rotulo: "Inclusão energética",
-    pergunta: "Quem tem acesso adequado e para quem a energia pesa mais?",
+    pergunta: "Para quem a energia pesa mais?",
     resumo: "Tarifa Social, universalização do acesso, sistemas isolados e o peso da energia no orçamento das famílias.",
     grupo: "consumidor-e-territorio",
     publicado: true,
@@ -169,13 +169,13 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   },
 
   // 5. Empresas e futuro
-  { ...doModulo("empresas"), rotulo: "Empresas", grupo: "empresas-e-futuro", publicado: true, pergunta: "Quem participa do setor e como atua?" },
-  { ...doModulo("expansao"), rotulo: "Expansão", grupo: "empresas-e-futuro", publicado: true, pergunta: "O que está sendo construído e quando pode entrar?" },
+  { ...doModulo("empresas"), rotulo: "Empresas", grupo: "empresas-e-futuro", publicado: true, pergunta: "Quem atua no setor elétrico?" },
+  { ...doModulo("expansao"), rotulo: "Expansão", grupo: "empresas-e-futuro", publicado: true, pergunta: "O que está sendo construído?" },
   {
     slug: "transicao",
     href: "/setor-eletrico/transicao",
     rotulo: "Transição e ambiente",
-    pergunta: "Como a transformação do setor se distribui e afeta as emissões?",
+    pergunta: "Como a matriz está mudando?",
     resumo: "Micro e minigeração distribuída no território e intensidade de emissões da geração, com fonte e natureza declaradas.",
     grupo: "empresas-e-futuro",
     publicado: true,
@@ -183,8 +183,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   },
 
   // 6. Conhecimento e evidência
-  { ...doModulo("regulacao"), rotulo: "Regulação", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "Quais regras mudaram e desde quando valem?" },
-  { ...doModulo("aprenda"), rotulo: "Aprenda", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "Como entender os conceitos e ligar uma coisa à outra?" },
+  { ...doModulo("regulacao"), rotulo: "Regulação", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "Que regra vale em cada período?" },
+  { ...doModulo("aprenda"), rotulo: "Aprenda", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "O que cada conceito significa e onde aparece?" },
   { ...doModulo("dados"), rotulo: "Dados", grupo: "conhecimento-e-evidencia", publicado: true, pergunta: "De onde vêm os números e como reutilizá-los?" },
   {
     slug: "metodologia",
@@ -199,7 +199,7 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
 ];
 
 const DEFINICAO_GRUPOS: Omit<GrupoNavegacao, "destinos">[] = [
-  { id: "comece-aqui", n: 1, rotulo: "Comece aqui", resumo: "Por onde começar e o que está acontecendo agora." },
+  { id: "comece-aqui", n: 1, rotulo: "Comece aqui", resumo: "Por onde começar e o que os dados mostram nos últimos dias." },
   { id: "operacao", n: 2, rotulo: "Operação do sistema", resumo: "A água, a geração, o consumo e a rede que liga as regiões." },
   { id: "precos-e-mercado", n: 3, rotulo: "Preços e mercado", resumo: "O preço de curto prazo, as previsões e como a energia é contratada." },
   { id: "consumidor-e-territorio", n: 4, rotulo: "Consumidor e território", resumo: "O que chega a quem usa a energia: a conta, as perdas, a qualidade do serviço e o acesso." },

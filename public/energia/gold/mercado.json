@@ -1,15 +1,15 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T07:54:38Z",
+ "gerado_em": "2026-10-06T20:02:46Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "ac7599ce6c86+alterado",
+ "versao_codigo": "1f075868ed56+alterado",
  "disponivel": true,
  "referencias": {
-  "hoje": "2026-10-01",
+  "hoje": "2026-10-06",
   "epe_ultimo_mes": "2026-08",
-  "ccee_ultimo_mes_consumo": "2026-07",
-  "ccee_ultimo_mes_gsf": "2026-07",
+  "ccee_ultimo_mes_consumo": "2026-08",
+  "ccee_ultimo_mes_gsf": "2026-08",
   "samp_ano_referencia": "2025"
  },
  "definicoes": {
@@ -48,7 +48,7 @@
     "descricao": "Consumo dos perfis de agente usado na contabilização do mercado de curto prazo, referido ao centro de gravidade do submercado (com as perdas da rede básica rateadas), separado em ACR e ACL.",
     "unidade": "MWmed",
     "desde": "2023-05",
-    "ate": "2026-07"
+    "ate": "2026-08"
    },
    {
     "id": "samp",
@@ -84,9 +84,9 @@
       "conjunto": "Consumo mensal de energia elétrica (dados abertos)",
       "recurso": "Dados_abertos_Consumo_Mensal.xlsx",
       "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx",
-      "arquivo": "data/energia/bronze/epe/epe_consumo_mensal/Dados_abertos_Consumo_Mensal.xlsx/20261001T003324Z.8ba8a5658717.xlsx.gz",
+      "arquivo": "data/energia/bronze/epe/epe_consumo_mensal/Dados_abertos_Consumo_Mensal.xlsx/20261002T042555Z.8ba8a5658717.xlsx.gz",
       "sha256": "8ba8a5658717718e73d776b833685a66e3c9686b5278b64b4106a6d05f6cf6c2",
-      "capturado_em": "2026-10-01T00:33:24Z",
+      "capturado_em": "2026-10-02T04:25:55Z",
       "publicado_em": "2026-09-30T13:51:24Z"
      },
      "extracao_pdf": null,
@@ -109,10 +109,10 @@
      "tratamento_ausencia": "mês sem cativo ou sem livre interrompe a janela (sem preenchimento)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:39Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:48Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Tabela longa da EPE = total nacional da planilha formatada da EPE, mês a mês",
@@ -136,7 +136,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 02/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "consumo_livre_12m": {
@@ -148,26 +148,26 @@
     }
    },
    "participacao_acl_ccee_12m": {
-    "valor_pct": 42.51,
-    "com_exportacao_pct": 42.76,
-    "exportacao_mwh": 2836720.0,
+    "valor_pct": 42.43,
+    "com_exportacao_pct": 42.69,
+    "exportacao_mwh": 2965225.0,
     "periodo": {
-     "inicio": "2025-08",
-     "fim": "2026-07"
+     "inicio": "2025-09",
+     "fim": "2026-08"
     },
     "variacao_acl_ultimo_mes": {
-     "mes": "2026-07",
-     "sem_exportacao_pct": 3.13,
-     "com_exportacao_pct": 0.66
+     "mes": "2026-08",
+     "sem_exportacao_pct": 4.32,
+     "com_exportacao_pct": 4.82
     },
     "evidencia": {
      "indicador": "Participação do ACL no consumo contabilizado pela CCEE, sem a exportação (12 meses)",
-     "valor_exibido": "42,5%",
-     "valor_calculo": 42.505072561938334,
+     "valor_exibido": "42,4%",
+     "valor_calculo": 42.42527025536615,
      "unidade": "%",
      "periodo": {
-      "inicio": "2025-08",
-      "fim": "2026-07"
+      "inicio": "2025-09",
+      "fim": "2026-08"
      },
      "entidade": "SIN",
      "universo": "consumo dos perfis de agente usado na contabilização do mercado de curto prazo (centro de gravidade), ACR + ACL, sem a exportação a outros países",
@@ -177,66 +177,66 @@
       "conjunto": "CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO)",
       "recurso": "consumo_classe_agente_2026",
       "url": "https://pda-download.ccee.org.br/8OCQv_xpSPypgbm6LIgZTw/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2026/20261001T004534Z.1832363d4b7e.csv.gz",
-      "sha256": "1832363d4b7e5715aad3fdfe978403ae174e4528c0fd0f89e972d6b6bb451298",
-      "capturado_em": "2026-10-01T00:45:34Z",
-      "publicado_em": "2026-09-01T14:54:32Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2026/20261006T195900Z.f4ec73208e88.csv.gz",
+      "sha256": "f4ec73208e88c517179bdcca9d386419c464ebde77e10c0119faa6c844c5bdb0",
+      "capturado_em": "2026-10-06T19:59:00Z",
+      "publicado_em": "2026-10-01T20:28:05Z",
       "arquivos": [
        {
         "recurso": "consumo_classe_agente_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2023/20261001T004531Z.67e01cea299d.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2023/20261006T195857Z.67e01cea299d.csv.gz",
         "sha256": "67e01cea299d17b964f4eceeceffea0738c8fac9faa543d0a1573d84e570f5ea",
-        "capturado_em": "2026-10-01T00:45:31Z",
+        "capturado_em": "2026-10-06T19:58:57Z",
         "publicado_em": "2024-04-11T10:19:56Z"
        },
        {
         "recurso": "consumo_classe_agente_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2024/20261001T004532Z.53e9384f13b3.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2024/20261006T195858Z.53e9384f13b3.csv.gz",
         "sha256": "53e9384f13b356f9a18e9dbd548f4124a2759fb09b07b9c4e682484b702fe1fd",
-        "capturado_em": "2026-10-01T00:45:32Z",
+        "capturado_em": "2026-10-06T19:58:58Z",
         "publicado_em": "2025-01-31T20:09:50Z"
        },
        {
         "recurso": "consumo_classe_agente_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2025/20261001T004533Z.446dc8536bdd.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2025/20261006T195859Z.446dc8536bdd.csv.gz",
         "sha256": "446dc8536bdd412d4b13ab7e460cd34330d19a1b30533876d6f48fe0939f601f",
-        "capturado_em": "2026-10-01T00:45:33Z",
+        "capturado_em": "2026-10-06T19:58:59Z",
         "publicado_em": "2026-02-02T17:38:30Z"
        },
        {
         "recurso": "consumo_classe_agente_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2026/20261001T004534Z.1832363d4b7e.csv.gz",
-        "sha256": "1832363d4b7e5715aad3fdfe978403ae174e4528c0fd0f89e972d6b6bb451298",
-        "capturado_em": "2026-10-01T00:45:34Z",
-        "publicado_em": "2026-09-01T14:54:32Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_classe_agente/consumo_classe_agente_2026/20261006T195900Z.f4ec73208e88.csv.gz",
+        "sha256": "f4ec73208e88c517179bdcca9d386419c464ebde77e10c0119faa6c844c5bdb0",
+        "capturado_em": "2026-10-06T19:59:00Z",
+        "publicado_em": "2026-10-01T20:28:05Z"
        },
        {
         "recurso": "consumo_mensal_ambiente_comercializacao_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2023/20261001T004525Z.1b108c0e35ee.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2023/20261006T195849Z.1b108c0e35ee.csv.gz",
         "sha256": "1b108c0e35eef706b68affafab321b363a83d259fe9eda196cd659b9c1ca18e8",
-        "capturado_em": "2026-10-01T00:45:25Z",
+        "capturado_em": "2026-10-06T19:58:49Z",
         "publicado_em": "2024-02-01T11:23:13Z"
        },
        {
         "recurso": "consumo_mensal_ambiente_comercializacao_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2024/20261001T004527Z.199702ac7c31.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2024/20261006T195851Z.199702ac7c31.csv.gz",
         "sha256": "199702ac7c317e5631a42848d4500208911041bebadb27829172c7bd5e10de03",
-        "capturado_em": "2026-10-01T00:45:27Z",
+        "capturado_em": "2026-10-06T19:58:51Z",
         "publicado_em": "2025-01-31T20:09:08Z"
        },
        {
         "recurso": "consumo_mensal_ambiente_comercializacao_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2025/20261001T004528Z.1feb85a0311e.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2025/20261006T195853Z.1feb85a0311e.csv.gz",
         "sha256": "1feb85a0311eac84ef87521d561c9eb89bc002b1651e3629799e96596cbfefd3",
-        "capturado_em": "2026-10-01T00:45:28Z",
+        "capturado_em": "2026-10-06T19:58:53Z",
         "publicado_em": "2026-02-02T17:36:19Z"
        },
        {
         "recurso": "consumo_mensal_ambiente_comercializacao_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2026/20261001T004529Z.f9a5bbac4b47.csv.gz",
-        "sha256": "f9a5bbac4b479508d8d5e2c578cd50c0f1658e7ab65b6e0a8221e041e7e05e8b",
-        "capturado_em": "2026-10-01T00:45:29Z",
-        "publicado_em": "2026-09-01T14:58:17Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_consumo_mensal_ambiente_comercializacao/consumo_mensal_ambiente_comercializacao_2026/20261006T195855Z.0799eb283132.csv.gz",
+        "sha256": "0799eb28313299af1529dc6dfe9b46d4242765bb9f4a3b4d37ea2b6af91d2b9a",
+        "capturado_em": "2026-10-06T19:58:55Z",
+        "publicado_em": "2026-10-01T20:30:00Z"
        }
       ]
      },
@@ -248,29 +248,29 @@
      "formula": "100 × Σ(ACL_m × horas_m) ÷ Σ((ACR_m + ACL_m) × horas_m), com ACR = classe Distribuidor e ACL = soma das demais classes exceto Exportador",
      "numerador": {
       "descricao": "consumo ACL sem exportação em 12 meses (MWh)",
-      "valor": 269276997.143
+      "valor": 270239123.019
      },
      "denominador": {
       "descricao": "consumo ACR + ACL sem exportação em 12 meses (MWh)",
-      "valor": 633517321.376
+      "valor": 636976786.223
      },
      "pesos": "horas de cada mês (MWmed × horas = MWh)",
      "exclusoes": [
-      "classe Exportador (energia vendida a outros países, que o conjunto de ambiente soma ao ACL): 2,84 TWh nos 12 meses; com ela, o ACL teria 42,76% do total"
+      "classe Exportador (energia vendida a outros países, que o conjunto de ambiente soma ao ACL): 2,97 TWh nos 12 meses; com ela, o ACL teria 42,69% do total"
      ],
      "cobertura": "SIN; 12 dos 12 meses pelas classes de agente",
      "tratamento_ausencia": "janela só é calculada com os 12 meses separáveis pelas classes; mês sem a classe Exportador não tem exportação a descontar",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:39Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:48Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Σ das classes = ACR + ACL publicado (+ Varejista a partir de fevereiro de 2026)",
        "resultado": "aprovado",
-       "detalhe": "39 meses; maior resíduo 3,97 MW médio"
+       "detalhe": "40 meses; maior resíduo 3,97 MW médio"
       }
      ],
      "reconciliacao": {
@@ -285,7 +285,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE, sem a exportação (12 meses): 42,5%, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE, sem a exportação (12 meses): 42,4%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -5467,46 +5467,64 @@
     "acr_mwh": 29353995,
     "acl_mwh": 22901365,
     "exportacao_mwh": 691229
+   },
+   {
+    "mes": "2026-08",
+    "acr_mwmed": 41376.3,
+    "acl_mwmed": 31220.1,
+    "exportacao_mwmed": 641.5,
+    "total_mwmed": 72596.5,
+    "total_com_exportacao_mwmed": 73238.0,
+    "acl_pct": 43.01,
+    "acl_com_exportacao_pct": 43.5,
+    "origem": "classes",
+    "acr_publicado_mwmed": 41376.3,
+    "acl_publicado_mwmed": 29350.8,
+    "varejista_mwmed": 2511.4,
+    "horas": 744,
+    "acr_mwh": 30783970,
+    "acl_mwh": 23227789,
+    "exportacao_mwh": 477306
    }
   ],
   "ccee_classes_ultimo_mes": {
-   "mes": "2026-07",
+   "mes": "2026-08",
    "linhas": [
     {
      "classe": "Autoprodutor",
-     "consumo_cg_mwmed": 2626.7,
+     "consumo_cg_mwmed": 2611.0,
      "ponto_conexao_acr_mwmed": 0.0,
-     "ponto_conexao_acl_mwmed": 2578.3
+     "ponto_conexao_acl_mwmed": 2562.3
     },
     {
      "classe": "Consumidor Especial",
-     "consumo_cg_mwmed": 3497.9,
+     "consumo_cg_mwmed": 3645.1,
      "ponto_conexao_acr_mwmed": 0.1,
-     "ponto_conexao_acl_mwmed": 3427.2
+     "ponto_conexao_acl_mwmed": 3571.3
     },
     {
      "classe": "Consumidor Livre",
-     "consumo_cg_mwmed": 22228.2,
+     "consumo_cg_mwmed": 22452.6,
      "ponto_conexao_acr_mwmed": 0.3,
-     "ponto_conexao_acl_mwmed": 21782.8
+     "ponto_conexao_acl_mwmed": 22006.0
     },
     {
      "classe": "Distribuidor",
-     "consumo_cg_mwmed": 39454.3,
-     "ponto_conexao_acr_mwmed": 38790.1,
+     "consumo_cg_mwmed": 41376.3,
+     "ponto_conexao_acr_mwmed": 40675.2,
      "ponto_conexao_acl_mwmed": 0.0
     },
     {
      "classe": "Exportador",
-     "consumo_cg_mwmed": 929.1,
+     "consumo_cg_mwmed": 641.5,
      "ponto_conexao_acr_mwmed": 0.0,
-     "ponto_conexao_acl_mwmed": 910.0
+     "ponto_conexao_acl_mwmed": 628.4
     },
     {
      "classe": "Varejista",
-     "consumo_cg_mwmed": 2428.6,
+     "consumo_cg_mwmed": 2511.4,
      "ponto_conexao_acr_mwmed": 0.0,
-     "ponto_conexao_acl_mwmed": 2379.5
+     "ponto_conexao_acl_mwmed": 2460.1
     }
    ]
   },
@@ -5782,6 +5800,13 @@
     "diferenca_mwmed": 2426.361,
     "varejista_mwmed": 2428.571,
     "residuo_mwmed": -2.21,
+    "ok": true
+   },
+   {
+    "mes": "2026-08",
+    "diferenca_mwmed": 2510.929,
+    "varejista_mwmed": 2511.369,
+    "residuo_mwmed": -0.44,
     "ok": true
    }
   ],
@@ -6136,6 +6161,15 @@
     "epe_livre_pct": 46.67,
     "samp_livre_mwh": 15247393,
     "epe_sobre_ccee_pct": 95.56
+   },
+   {
+    "mes": "2026-08",
+    "ccee_acl_mwh": 23227789,
+    "ccee_acl_pct": 43.01,
+    "epe_livre_mwh": 22329293,
+    "epe_livre_pct": 46.66,
+    "samp_livre_mwh": 122875,
+    "epe_sobre_ccee_pct": 96.13
    }
   ],
   "carga_contexto": [
@@ -7724,16 +7758,16 @@
  "agentes_migracao": {
   "kpis": {
    "agentes_contabilizados": {
-    "valor": 16376.0,
-    "mes": "2026-07",
+    "valor": 16389.0,
+    "mes": "2026-08",
     "evidencia": {
      "indicador": "Agentes que participaram da contabilização da CCEE",
-     "valor_exibido": "16.376",
-     "valor_calculo": 16376.0,
+     "valor_exibido": "16.389",
+     "valor_calculo": 16389.0,
      "unidade": "agentes",
      "periodo": {
-      "inicio": "2026-07",
-      "fim": "2026-07"
+      "inicio": "2026-08",
+      "fim": "2026-08"
      },
      "entidade": "CCEE (SIN)",
      "universo": "agentes (pessoas jurídicas) com perfil contabilizado no mês, todas as classes",
@@ -7743,50 +7777,50 @@
       "conjunto": "AGENTE_QTD_CONTABILIZACAO",
       "recurso": "agente_qtd_contabilizacao_2026",
       "url": "https://pda-download.ccee.org.br/v3bY_Fm0T9uBcmLSctmFXQ/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2026/20261001T004539Z.e7e32069b905.csv.gz",
-      "sha256": "e7e32069b905e2754b5df4090b0551152b6e606976325d1c3caf19343904ee6b",
-      "capturado_em": "2026-10-01T00:45:39Z",
-      "publicado_em": "2026-09-01T14:58:18Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2026/20261006T195906Z.6b738099f009.csv.gz",
+      "sha256": "6b738099f00927eaef4ca1d63e5f4e972b8ec41a356b7bb31f9bea5fc4f0028a",
+      "capturado_em": "2026-10-06T19:59:06Z",
+      "publicado_em": "2026-10-01T20:29:40Z",
       "arquivos": [
        {
         "recurso": "agente_qtd_contabilizacao_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2023/20261001T004536Z.351d49c345da.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2023/20261006T195903Z.351d49c345da.csv.gz",
         "sha256": "351d49c345da50657d2fc1e1d35b9fee6927352defa0cf0370219bbf11f481b8",
-        "capturado_em": "2026-10-01T00:45:36Z",
+        "capturado_em": "2026-10-06T19:59:03Z",
         "publicado_em": "2024-02-05T18:43:59Z"
        },
        {
         "recurso": "agente_qtd_contabilizacao_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2024/20261001T004537Z.e1782bced1a5.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2024/20261006T195904Z.e1782bced1a5.csv.gz",
         "sha256": "e1782bced1a5222edd9c04f3a5d78b03d3db434fd8c80a2e710d7b7297e7a182",
-        "capturado_em": "2026-10-01T00:45:37Z",
+        "capturado_em": "2026-10-06T19:59:04Z",
         "publicado_em": "2025-01-31T20:14:04Z"
        },
        {
         "recurso": "agente_qtd_contabilizacao_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2025/20261001T004538Z.d9b95abae2b3.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2025/20261006T195905Z.d9b95abae2b3.csv.gz",
         "sha256": "d9b95abae2b38bc3c3f0f4ea77d802d1f4e7a3f8b6c81c9c3ad03badb5454c28",
-        "capturado_em": "2026-10-01T00:45:38Z",
+        "capturado_em": "2026-10-06T19:59:05Z",
         "publicado_em": "2026-02-02T17:35:29Z"
        },
        {
         "recurso": "agente_qtd_contabilizacao_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2026/20261001T004539Z.e7e32069b905.csv.gz",
-        "sha256": "e7e32069b905e2754b5df4090b0551152b6e606976325d1c3caf19343904ee6b",
-        "capturado_em": "2026-10-01T00:45:39Z",
-        "publicado_em": "2026-09-01T14:58:18Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_agente_qtd_contabilizacao/agente_qtd_contabilizacao_2026/20261006T195906Z.6b738099f009.csv.gz",
+        "sha256": "6b738099f00927eaef4ca1d63e5f4e972b8ec41a356b7bb31f9bea5fc4f0028a",
+        "capturado_em": "2026-10-06T19:59:06Z",
+        "publicado_em": "2026-10-01T20:29:40Z"
        }
       ]
      },
      "extracao_pdf": null,
      "chaves_origem": [
-      "Autoprodutor|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Comercializador|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Consumidor Especial|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Consumidor Livre|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Distribuidor|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Gerador|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07",
-      "Produtor Independente|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-07"
+      "Autoprodutor|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Comercializador|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Consumidor Especial|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Consumidor Livre|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Distribuidor|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Gerador|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08",
+      "Produtor Independente|QUANTIDADE_AGENTE_CONTABILIZACAO@2026-08"
      ],
      "chaves_total": null,
      "consulta": null,
@@ -7800,10 +7834,10 @@
      "tratamento_ausencia": "classe sem linha no mês não é somada (não vira zero)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:40Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:48Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Classes dentro do domínio do dicionário (com as não documentadas declaradas)",
@@ -7823,7 +7857,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.376 agentes, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.389 agentes, CCEE (SIN), 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ucs_livres": {
@@ -7847,9 +7881,9 @@
       "conjunto": "Consumo mensal de energia elétrica (dados abertos)",
       "recurso": "Dados_abertos_Consumo_Mensal.xlsx",
       "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx",
-      "arquivo": "data/energia/bronze/epe/epe_consumo_mensal/Dados_abertos_Consumo_Mensal.xlsx/20261001T003324Z.8ba8a5658717.xlsx.gz",
+      "arquivo": "data/energia/bronze/epe/epe_consumo_mensal/Dados_abertos_Consumo_Mensal.xlsx/20261002T042555Z.8ba8a5658717.xlsx.gz",
       "sha256": "8ba8a5658717718e73d776b833685a66e3c9686b5278b64b4106a6d05f6cf6c2",
-      "capturado_em": "2026-10-01T00:33:24Z",
+      "capturado_em": "2026-10-02T04:25:55Z",
       "publicado_em": "2026-09-30T13:51:24Z"
      },
      "extracao_pdf": null,
@@ -7866,10 +7900,10 @@
      "tratamento_ausencia": "linha sem número de consumidores não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:40Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:48Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Soma = número de consumidores livres da planilha formatada da EPE",
@@ -7889,23 +7923,23 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 02/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "parcelas_carga": {
-    "valor": 46751,
-    "mes": "2026-07",
-    "migracoes_no_mes": 203,
-    "consumo_acl_mwh": 21787337,
-    "distribuidoras_excluidas": 139,
+    "valor": 47022,
+    "mes": "2026-08",
+    "migracoes_no_mes": 321,
+    "consumo_acl_mwh": 21836829,
+    "distribuidoras_excluidas": 138,
     "evidencia": {
      "indicador": "Parcelas de carga dos agentes do ACL na contabilização da CCEE (sem as parcelas das distribuidoras)",
-     "valor_exibido": "46.751",
-     "valor_calculo": 46751,
+     "valor_exibido": "47.022",
+     "valor_calculo": 47022,
      "unidade": "parcelas de carga",
      "periodo": {
-      "inicio": "2026-07",
-      "fim": "2026-07"
+      "inicio": "2026-08",
+      "fim": "2026-08"
      },
      "entidade": "CCEE (SIN)",
      "universo": "parcelas de carga com consumo no mês ligadas a perfis que não são da classe Distribuidor (consumidores livres, especiais, autoprodutores e exportadores)",
@@ -7915,37 +7949,37 @@
       "conjunto": "PARCELA_CARGA_CONSUMO (classe do perfil pelo cadastro LISTA_PERFIL_V1)",
       "recurso": "parcela_carga_consumo_2026",
       "url": "https://pda-download.ccee.org.br/A-eDJJEFScyztBMo9HUgEw/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2026/20261001T004632Z.a27a578b0800.csv.gz",
-      "sha256": "a27a578b0800b486a23b49f09b7f07ad979c354e39edc31e964ac2a301d9a45c",
-      "capturado_em": "2026-10-01T00:46:32Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2026/20261006T200011Z.00edd07d315f.csv.gz",
+      "sha256": "00edd07d315f981502d4dc8b0c240e7fe9bfb5eecb6727ff17f34b4b1723a179",
+      "capturado_em": "2026-10-06T20:00:11Z",
       "publicado_em": "2026-06-02T17:52:41Z",
       "arquivos": [
        {
         "recurso": "lista_perfil_v1_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_lista_perfil_v1/lista_perfil_v1_2026/20261001T004551Z.ff381c785937.csv.gz",
-        "sha256": "ff381c785937e9ba23dc4cae3347ab649b6024df96c85b894004d52c2511d989",
-        "capturado_em": "2026-10-01T00:45:51Z",
-        "publicado_em": "2026-09-01T14:57:51Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_lista_perfil_v1/lista_perfil_v1_2026/20261006T195919Z.d88e3bfbdcf7.csv.gz",
+        "sha256": "d88e3bfbdcf70471a330e5eee3b85906273d1560378f61e5f4b2cba2a342e393",
+        "capturado_em": "2026-10-06T19:59:19Z",
+        "publicado_em": "2026-10-01T20:31:03Z"
        },
        {
         "recurso": "parcela_carga_consumo_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2024/20261001T004600Z.5e6092e15d9b.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2024/20261006T195932Z.5e6092e15d9b.csv.gz",
         "sha256": "5e6092e15d9baae121c63c4f62104f09a31af91de444711381366c832a8a3359",
-        "capturado_em": "2026-10-01T00:46:00Z",
+        "capturado_em": "2026-10-06T19:59:32Z",
         "publicado_em": "2025-03-05T19:12:43Z"
        },
        {
         "recurso": "parcela_carga_consumo_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2025/20261001T004614Z.d93a8f2d63a6.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2025/20261006T195949Z.d93a8f2d63a6.csv.gz",
         "sha256": "d93a8f2d63a6f548c06a8822ca6d3f0ab5f4f654a9254f7c637d7e65795cac63",
-        "capturado_em": "2026-10-01T00:46:14Z",
+        "capturado_em": "2026-10-06T19:59:49Z",
         "publicado_em": "2026-02-02T18:23:08Z"
        },
        {
         "recurso": "parcela_carga_consumo_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2026/20261001T004632Z.a27a578b0800.csv.gz",
-        "sha256": "a27a578b0800b486a23b49f09b7f07ad979c354e39edc31e964ac2a301d9a45c",
-        "capturado_em": "2026-10-01T00:46:32Z",
+        "arquivo": "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2026/20261006T200011Z.00edd07d315f.csv.gz",
+        "sha256": "00edd07d315f981502d4dc8b0c240e7fe9bfb5eecb6727ff17f34b4b1723a179",
+        "capturado_em": "2026-10-06T20:00:11Z",
         "publicado_em": "2026-06-02T17:52:41Z"
        }
       ]
@@ -7953,33 +7987,33 @@
      "extracao_pdf": null,
      "chaves_origem": [],
      "chaves_total": null,
-     "consulta": "COD_PARCELA_CARGA distintos com MES_REFERENCIA = 202607 e COD_PERF_AGENTE fora da classe Distribuidor",
+     "consulta": "COD_PARCELA_CARGA distintos com MES_REFERENCIA = 202608 e COD_PERF_AGENTE fora da classe Distribuidor",
      "manifesto": null,
      "formula": "contagem de COD_PARCELA_CARGA distintos no mês, excluídos os perfis da classe Distribuidor",
      "numerador": null,
      "denominador": null,
      "pesos": null,
      "exclusoes": [
-      "139 parcelas dos perfis da classe Distribuidor, que são o consumo do ACR (29.353.995 MWh no mês)"
+      "138 parcelas dos perfis da classe Distribuidor, que são o consumo do ACR (30.783.970 MWh no mês)"
      ],
      "cobertura": "todas as linhas do mês no arquivo anual; as cargas representadas por comercializador varejista não aparecem como parcela neste conjunto",
      "tratamento_ausencia": "linha sem código de parcela é contada à parte e não entra; perfil fora do cadastro vigente entra no ACL como 'sem cadastro'",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:40Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:48Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Parcelas por submercado somam o total do ACL",
        "resultado": "aprovado",
-       "detalhe": "46751 na soma por submercado, 46751 no total"
+       "detalhe": "47022 na soma por submercado, 47022 no total"
       },
       {
        "nome": "Parcelas das distribuidoras = consumo da classe Distribuidor (CONSUMO_CLASSE_AGENTE); parcelas do ACL = classes Consumidor Livre, Especial, Autoprodutor e Exportador, mês a mês",
        "resultado": "ressalva",
-       "detalhe": "28 meses conferidos com tolerância de 5 MW médios; no último mês, resíduo de 2,15 MW médios no ACL e -0,00 nas distribuidoras; fora da tolerância: 2024-04, 2025-10, 2025-11, 2025-12, 2026-01"
+       "detalhe": "29 meses conferidos com tolerância de 5 MW médios; no último mês, resíduo de 0,26 MW médios no ACL e 0,00 nas distribuidoras; fora da tolerância: 2024-04, 2025-10, 2025-11, 2025-12, 2026-01"
       }
      ],
      "reconciliacao": null,
@@ -7990,7 +8024,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Parcelas de carga dos agentes do ACL na contabilização da CCEE (sem as parcelas das distribuidoras): 46.751 parcelas de carga, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (classe do perfil pelo cadastro LISTA_PERFIL_V1) (recurso parcela_carga_consumo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Parcelas de carga dos agentes do ACL na contabilização da CCEE (sem as parcelas das distribuidoras): 47.022 parcelas de carga, CCEE (SIN), 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (classe do perfil pelo cadastro LISTA_PERFIL_V1) (recurso parcela_carga_consumo_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -8410,6 +8444,19 @@
      "Gerador": 43.0,
      "Produtor Independente": 2283.0
     }
+   },
+   {
+    "mes": "2026-08",
+    "total": 16389.0,
+    "por_classe": {
+     "Autoprodutor": 161.0,
+     "Comercializador": 483.0,
+     "Consumidor Especial": 9498.0,
+     "Consumidor Livre": 3823.0,
+     "Distribuidor": 90.0,
+     "Gerador": 43.0,
+     "Produtor Independente": 2291.0
+    }
    }
   ],
   "associados_fluxos": [
@@ -8426,25 +8473,25 @@
     "entradas": 27,
     "saidas": 36,
     "por_classe": {
+     "Comercializador": {
+      "entradas": 2,
+      "saidas": 2
+     },
      "Produtor Independente": {
       "entradas": 10,
       "saidas": 1
-     },
-     "Consumidor Livre": {
-      "entradas": 11,
-      "saidas": 16
      },
      "Consumidor Especial": {
       "entradas": 3,
       "saidas": 17
      },
+     "Consumidor Livre": {
+      "entradas": 11,
+      "saidas": 16
+     },
      "Autoprodutor": {
       "entradas": 1,
       "saidas": 0
-     },
-     "Comercializador": {
-      "entradas": 2,
-      "saidas": 2
      }
     }
    },
@@ -8454,13 +8501,13 @@
     "entradas": 43,
     "saidas": 29,
     "por_classe": {
-     "Consumidor Especial": {
-      "entradas": 11,
-      "saidas": 16
-     },
      "Consumidor Livre": {
       "entradas": 13,
       "saidas": 7
+     },
+     "Consumidor Especial": {
+      "entradas": 11,
+      "saidas": 16
      },
      "Produtor Independente": {
       "entradas": 15,
@@ -8482,14 +8529,6 @@
     "entradas": 64,
     "saidas": 33,
     "por_classe": {
-     "Distribuidor": {
-      "entradas": 1,
-      "saidas": 0
-     },
-     "Comercializador": {
-      "entradas": 6,
-      "saidas": 0
-     },
      "Consumidor Livre": {
       "entradas": 24,
       "saidas": 6
@@ -8501,6 +8540,14 @@
      "Consumidor Especial": {
       "entradas": 21,
       "saidas": 20
+     },
+     "Comercializador": {
+      "entradas": 6,
+      "saidas": 0
+     },
+     "Distribuidor": {
+      "entradas": 1,
+      "saidas": 0
      }
     }
    },
@@ -8510,21 +8557,21 @@
     "entradas": 83,
     "saidas": 79,
     "por_classe": {
-     "Consumidor Especial": {
-      "entradas": 26,
-      "saidas": 57
-     },
      "Consumidor Livre": {
       "entradas": 42,
       "saidas": 19
      },
-     "Comercializador": {
-      "entradas": 3,
-      "saidas": 0
-     },
      "Produtor Independente": {
       "entradas": 11,
       "saidas": 3
+     },
+     "Consumidor Especial": {
+      "entradas": 26,
+      "saidas": 57
+     },
+     "Comercializador": {
+      "entradas": 3,
+      "saidas": 0
      },
      "Autoprodutor": {
       "entradas": 1,
@@ -8538,21 +8585,21 @@
     "entradas": 38,
     "saidas": 76,
     "por_classe": {
-     "Consumidor Livre": {
-      "entradas": 17,
-      "saidas": 13
-     },
-     "Comercializador": {
-      "entradas": 6,
-      "saidas": 2
-     },
      "Consumidor Especial": {
       "entradas": 13,
       "saidas": 50
      },
+     "Consumidor Livre": {
+      "entradas": 17,
+      "saidas": 13
+     },
      "Produtor Independente": {
       "entradas": 2,
       "saidas": 11
+     },
+     "Comercializador": {
+      "entradas": 6,
+      "saidas": 2
      }
     }
    },
@@ -8562,9 +8609,9 @@
     "entradas": 50,
     "saidas": 71,
     "por_classe": {
-     "Produtor Independente": {
-      "entradas": 13,
-      "saidas": 3
+     "Consumidor Especial": {
+      "entradas": 16,
+      "saidas": 45
      },
      "Comercializador": {
       "entradas": 3,
@@ -8574,9 +8621,9 @@
       "entradas": 18,
       "saidas": 18
      },
-     "Consumidor Especial": {
-      "entradas": 16,
-      "saidas": 45
+     "Produtor Independente": {
+      "entradas": 13,
+      "saidas": 3
      },
      "Autoprodutor": {
       "entradas": 0,
@@ -8594,13 +8641,13 @@
       "entradas": 27,
       "saidas": 12
      },
-     "Produtor Independente": {
-      "entradas": 30,
-      "saidas": 4
-     },
      "Consumidor Especial": {
       "entradas": 10,
       "saidas": 21
+     },
+     "Produtor Independente": {
+      "entradas": 30,
+      "saidas": 4
      },
      "Comercializador": {
       "entradas": 3,
@@ -8614,13 +8661,13 @@
     "entradas": 56,
     "saidas": 47,
     "por_classe": {
-     "Consumidor Livre": {
-      "entradas": 19,
-      "saidas": 17
-     },
      "Produtor Independente": {
       "entradas": 19,
       "saidas": 4
+     },
+     "Consumidor Livre": {
+      "entradas": 19,
+      "saidas": 17
      },
      "Consumidor Especial": {
       "entradas": 18,
@@ -8638,17 +8685,17 @@
     "entradas": 75,
     "saidas": 52,
     "por_classe": {
-     "Produtor Independente": {
-      "entradas": 20,
-      "saidas": 1
+     "Consumidor Especial": {
+      "entradas": 19,
+      "saidas": 25
      },
      "Consumidor Livre": {
       "entradas": 34,
       "saidas": 22
      },
-     "Consumidor Especial": {
-      "entradas": 19,
-      "saidas": 25
+     "Produtor Independente": {
+      "entradas": 20,
+      "saidas": 1
      },
      "Comercializador": {
       "entradas": 2,
@@ -8670,21 +8717,21 @@
       "entradas": 11,
       "saidas": 0
      },
-     "Consumidor Livre": {
-      "entradas": 25,
-      "saidas": 14
-     },
-     "Comercializador": {
-      "entradas": 2,
-      "saidas": 14
-     },
      "Consumidor Especial": {
       "entradas": 18,
       "saidas": 27
      },
+     "Consumidor Livre": {
+      "entradas": 25,
+      "saidas": 14
+     },
      "Autoprodutor": {
       "entradas": 1,
       "saidas": 0
+     },
+     "Comercializador": {
+      "entradas": 2,
+      "saidas": 14
      }
     }
    },
@@ -8694,60 +8741,92 @@
     "entradas": 25,
     "saidas": 25,
     "por_classe": {
-     "Produtor Independente": {
-      "entradas": 6,
-      "saidas": 2
+     "Consumidor Especial": {
+      "entradas": 10,
+      "saidas": 13
      },
      "Consumidor Livre": {
       "entradas": 7,
       "saidas": 8
      },
-     "Consumidor Especial": {
-      "entradas": 10,
-      "saidas": 13
+     "Produtor Independente": {
+      "entradas": 6,
+      "saidas": 2
      },
      "Comercializador": {
       "entradas": 2,
       "saidas": 2
      }
     }
+   },
+   {
+    "mes": "2026-10",
+    "estoque": 16441,
+    "entradas": 35,
+    "saidas": 37,
+    "por_classe": {
+     "Consumidor Livre": {
+      "entradas": 18,
+      "saidas": 13
+     },
+     "Consumidor Especial": {
+      "entradas": 8,
+      "saidas": 16
+     },
+     "Autoprodutor": {
+      "entradas": 2,
+      "saidas": 0
+     },
+     "Comercializador": {
+      "entradas": 4,
+      "saidas": 4
+     },
+     "Produtor Independente": {
+      "entradas": 3,
+      "saidas": 3
+     },
+     "Gerador": {
+      "entradas": 0,
+      "saidas": 1
+     }
+    }
    }
   ],
   "perfis": {
-   "data_modificacao_portal": "2026-09-01",
+   "data_modificacao_portal": "2026-10-01",
    "data_referencia": null,
    "nota_data": "O arquivo do cadastro não informa a data da posição; a data exibida é a de modificação do recurso informada pelo portal de dados abertos da CCEE (last_modified), que nem sempre acompanha o conteúdo. A data de captura não é usada como data do dado.",
-   "capturado_em": "2026-10-01T00:45:51Z",
+   "capturado_em": "2026-10-06T19:59:19Z",
    "por_classe": [
     {
      "classe": "Autoprodutor",
-     "perfis_ativo": 943,
-     "perfis_encerrado": 242,
+     "perfis_ativo": 954,
+     "perfis_encerrado": 246,
      "perfis_perfil_especifico": 2,
-     "agentes_ativo": 456,
-     "agentes_encerrado": 149,
+     "agentes_ativo": 465,
+     "agentes_encerrado": 150,
      "agentes_perfil_especifico": 2
     },
     {
      "classe": "Comercializador",
-     "perfis_ativo": 2717,
-     "perfis_encerrado": 1717,
+     "perfis_ativo": 2698,
+     "perfis_encerrado": 1746,
      "agentes_ativo": 494,
-     "agentes_encerrado": 520
+     "agentes_encerrado": 524
     },
     {
      "classe": "Consumidor Especial",
-     "perfis_encerrado": 4023,
-     "perfis_ativo": 17217,
-     "agentes_encerrado": 3280,
-     "agentes_ativo": 10866
+     "perfis_encerrado": 4037,
+     "perfis_ativo": 17253,
+     "agentes_encerrado": 3295,
+     "agentes_ativo": 10867
     },
     {
      "classe": "Consumidor Livre",
-     "perfis_encerrado": 3242,
-     "perfis_ativo": 17185,
-     "agentes_encerrado": 2562,
-     "agentes_ativo": 11456
+     "perfis_encerrado": 3267,
+     "perfis_ativo": 17215,
+     "agentes_encerrado": 2586,
+     "agentes_ativo": 11459
     },
     {
      "classe": "Distribuidor",
@@ -8779,11 +8858,11 @@
     },
     {
      "classe": "Produtor Independente",
-     "perfis_encerrado": 1911,
-     "perfis_ativo": 7187,
+     "perfis_encerrado": 1927,
+     "perfis_ativo": 7216,
      "perfis_perfil_especifico": 23,
-     "agentes_encerrado": 988,
-     "agentes_ativo": 2505,
+     "agentes_encerrado": 996,
+     "agentes_ativo": 2515,
      "agentes_perfil_especifico": 10
     },
     {
@@ -8795,19 +8874,19 @@
     },
     {
      "classe": "Varejista",
-     "perfis_ativo": 1367,
-     "perfis_encerrado": 1769,
-     "agentes_ativo": 143,
-     "agentes_encerrado": 91
+     "perfis_ativo": 1355,
+     "perfis_encerrado": 1806,
+     "agentes_ativo": 140,
+     "agentes_encerrado": 95
     }
    ],
    "perfis_por_agente_ativo": {
-    "2": 6745,
-    "1": 4107,
-    "3_ou_mais": 5513
+    "2": 6737,
+    "1": 4110,
+    "3_ou_mais": 5531
    },
-   "agentes_ativos": 16365,
-   "perfis_ativos": 47358
+   "agentes_ativos": 16378,
+   "perfis_ativos": 47433
   },
   "parcelas_mensal": [
    {
@@ -9145,50 +9224,62 @@
     "parcelas_distribuidoras": 139,
     "consumo_distribuidoras_mwh": 29353995,
     "conferencia_ok": true
+   },
+   {
+    "mes": "2026-08",
+    "parcelas": 47022,
+    "perfis_com_parcela": 19022,
+    "cnpj_carga": 35617,
+    "migracoes_no_mes": 321,
+    "consumo_acl_mwh": 21836829,
+    "exportacao_mwh": 477306,
+    "parcelas_distribuidoras": 138,
+    "consumo_distribuidoras_mwh": 30783970,
+    "conferencia_ok": true
    }
   ],
   "parcelas_uf_ultimo_mes": {
-   "mes": "2026-07",
+   "mes": "2026-08",
    "linhas": [
     {
      "uf": "SP",
-     "parcelas": 13780
+     "parcelas": 13821
     },
     {
      "uf": "RS",
-     "parcelas": 4613
+     "parcelas": 4645
     },
     {
      "uf": "PR",
-     "parcelas": 4485
+     "parcelas": 4507
     },
     {
      "uf": "MG",
-     "parcelas": 3545
+     "parcelas": 3553
     },
     {
      "uf": "RJ",
-     "parcelas": 3502
+     "parcelas": 3513
     },
     {
      "uf": "SC",
-     "parcelas": 2842
+     "parcelas": 2857
     },
     {
      "uf": "BA",
-     "parcelas": 2226
+     "parcelas": 2275
     },
     {
      "uf": "CE",
-     "parcelas": 1413
+     "parcelas": 1419
     },
     {
      "uf": "PE",
-     "parcelas": 1351
+     "parcelas": 1352
     },
     {
      "uf": "GO",
-     "parcelas": 1190
+     "parcelas": 1223
     },
     {
      "uf": "ES",
@@ -9196,59 +9287,59 @@
     },
     {
      "uf": "MT",
-     "parcelas": 1003
+     "parcelas": 1009
     },
     {
      "uf": "PA",
-     "parcelas": 987
+     "parcelas": 998
     },
     {
      "uf": "MS",
-     "parcelas": 733
+     "parcelas": 728
     },
     {
      "uf": "MA",
-     "parcelas": 570
+     "parcelas": 573
     },
     {
      "uf": "RN",
-     "parcelas": 505
+     "parcelas": 514
     },
     {
      "uf": "AM",
-     "parcelas": 473
+     "parcelas": 475
     },
     {
      "uf": "DF",
-     "parcelas": 445
+     "parcelas": 447
     },
     {
      "uf": "PI",
-     "parcelas": 365
+     "parcelas": 377
     },
     {
      "uf": "PB",
-     "parcelas": 350
+     "parcelas": 351
     },
     {
      "uf": "SE",
-     "parcelas": 329
+     "parcelas": 332
     },
     {
      "uf": "AL",
-     "parcelas": 307
+     "parcelas": 309
     },
     {
      "uf": "TO",
-     "parcelas": 280
+     "parcelas": 285
     },
     {
      "uf": "RO",
-     "parcelas": 200
+     "parcelas": 201
     },
     {
      "uf": "AC",
-     "parcelas": 77
+     "parcelas": 78
     },
     {
      "uf": "AP",
@@ -9304,39 +9395,39 @@
    "livre_uc_outro": null
   },
   "parcelas_ultimo_mes": {
-   "mes": "2026-07",
+   "mes": "2026-08",
    "por_classe_perfil": {
     "Autoprodutor": {
-     "parcelas": 338,
-     "consumo_mwh": 1954289
+     "parcelas": 337,
+     "consumo_mwh": 1942614
     },
     "Consumidor Especial": {
-     "parcelas": 32171,
-     "consumo_mwh": 2602460
+     "parcelas": 32442,
+     "consumo_mwh": 2712139
     },
     "Consumidor Livre": {
      "parcelas": 14224,
-     "consumo_mwh": 16539359
+     "consumo_mwh": 16704771
     },
     "Exportador": {
-     "parcelas": 18,
-     "consumo_mwh": 691229
+     "parcelas": 19,
+     "consumo_mwh": 477306
     }
    },
    "por_submercado": {
-    "SE": 25587,
-    "S": 11951,
-    "NE": 6846,
-    "N": 2367
+    "SE": 25686,
+    "S": 12019,
+    "NE": 6929,
+    "N": 2388
    },
    "conferencia": {
     "ok": true,
-    "classes_acl_mwmed": 29281.9,
-    "parcelas_acl_mwmed": 29284.1,
-    "residuo_acl_mwmed": 2.15,
-    "classe_distribuidor_mwmed": 39454.3,
-    "parcelas_distribuidor_mwmed": 39454.3,
-    "residuo_distribuidor_mwmed": -0.0
+    "classes_acl_mwmed": 29350.3,
+    "parcelas_acl_mwmed": 29350.6,
+    "residuo_acl_mwmed": 0.26,
+    "classe_distribuidor_mwmed": 41376.3,
+    "parcelas_distribuidor_mwmed": 41376.3,
+    "residuo_distribuidor_mwmed": 0.0
    }
   },
   "desligamentos_por_ano": [
@@ -9577,16 +9668,16 @@
  "mre_gsf": {
   "kpis": {
    "gsf_ultimo_mes": {
-    "valor_pct": 76.825,
-    "mes": "2026-07",
+    "valor_pct": 78.924,
+    "mes": "2026-08",
     "evidencia": {
      "indicador": "Fator de ajuste do MRE (GSF)",
-     "valor_exibido": "76,8%",
-     "valor_calculo": 76.825,
+     "valor_exibido": "78,9%",
+     "valor_calculo": 78.924,
      "unidade": "%",
      "periodo": {
-      "inicio": "2026-07",
-      "fim": "2026-07"
+      "inicio": "2026-08",
+      "fim": "2026-08"
      },
      "entidade": "Mecanismo de Realocação de Energia (SIN)",
      "universo": "usinas hidrelétricas participantes do MRE",
@@ -9596,76 +9687,76 @@
       "conjunto": "GERACAO_SUBMERCADO e MRE_MENSAL",
       "recurso": "mre_mensal_2026",
       "url": "https://pda-download.ccee.org.br/Np0v0dJxQ7GiOtK17ny_1g/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261001T004655Z.655c57f57a87.csv.gz",
-      "sha256": "655c57f57a8750b11a3bfbf37cf2f2d37251aab521a462cd968456f3859ddc16",
-      "capturado_em": "2026-10-01T00:46:55Z",
-      "publicado_em": "2026-09-01T14:54:26Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261006T200038Z.84995fa08f16.csv.gz",
+      "sha256": "84995fa08f16bf904e8090869ebaa0520992dda1daae87b3500fe927e2cb74c7",
+      "capturado_em": "2026-10-06T20:00:38Z",
+      "publicado_em": "2026-10-01T20:35:09Z",
       "arquivos": [
        {
         "recurso": "geracao_submercado_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2023/20261001T004642Z.161647d036be.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2023/20261006T200024Z.161647d036be.csv.gz",
         "sha256": "161647d036be8ded324ae8a432f4f57811e06de92dc4a9765dd531d149bbd80a",
-        "capturado_em": "2026-10-01T00:46:42Z",
+        "capturado_em": "2026-10-06T20:00:24Z",
         "publicado_em": "2024-02-01T11:22:27Z"
        },
        {
         "recurso": "geracao_submercado_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2024/20261001T004643Z.6bb736be6dc9.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2024/20261006T200025Z.6bb736be6dc9.csv.gz",
         "sha256": "6bb736be6dc9f812f974f3363b6496f7c2137a4d03df87596413e8711cf236ba",
-        "capturado_em": "2026-10-01T00:46:43Z",
+        "capturado_em": "2026-10-06T20:00:25Z",
         "publicado_em": "2025-01-31T20:15:24Z"
        },
        {
         "recurso": "geracao_submercado_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2025/20261001T004644Z.a3a3cd744c58.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2025/20261006T200026Z.a3a3cd744c58.csv.gz",
         "sha256": "a3a3cd744c58f749e51f700f91d6f8f4d7d6e5ee4acc0a4baa92ebe374175020",
-        "capturado_em": "2026-10-01T00:46:44Z",
+        "capturado_em": "2026-10-06T20:00:26Z",
         "publicado_em": "2026-02-02T17:41:11Z"
        },
        {
         "recurso": "geracao_submercado_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2026/20261001T004645Z.436fa4a85cd2.csv.gz",
-        "sha256": "436fa4a85cd27f7ae4e511e295760890daec7d64c02e2d3b4c3bfd14dcec034f",
-        "capturado_em": "2026-10-01T00:46:45Z",
-        "publicado_em": "2026-09-01T14:54:33Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2026/20261006T200027Z.6fec9a11ea9f.csv.gz",
+        "sha256": "6fec9a11ea9f74a58b466f2290238d818c8101c144f29fe54f455135d8da0bfd",
+        "capturado_em": "2026-10-06T20:00:27Z",
+        "publicado_em": "2026-10-01T20:35:06Z"
        },
        {
         "recurso": "mre_mensal_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2023/20261001T004652Z.b59bec87b2f0.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2023/20261006T200035Z.b59bec87b2f0.csv.gz",
         "sha256": "b59bec87b2f0cf49c214d19d0260b9a7158241d3f233b85b5b98b8ec85c8eb7f",
-        "capturado_em": "2026-10-01T00:46:52Z",
+        "capturado_em": "2026-10-06T20:00:35Z",
         "publicado_em": "2024-02-01T11:26:17Z"
        },
        {
         "recurso": "mre_mensal_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2024/20261001T004653Z.e76c85bbf9ce.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2024/20261006T200036Z.e76c85bbf9ce.csv.gz",
         "sha256": "e76c85bbf9ce3b9834e64a7ab9809e102ceac3a6413f1b154cee535ae811285a",
-        "capturado_em": "2026-10-01T00:46:53Z",
+        "capturado_em": "2026-10-06T20:00:36Z",
         "publicado_em": "2025-01-31T20:14:45Z"
        },
        {
         "recurso": "mre_mensal_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2025/20261001T004654Z.54de3918e863.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2025/20261006T200037Z.54de3918e863.csv.gz",
         "sha256": "54de3918e8630fb346208511f7a74a198e193e3f2fe8bc1a9d132ab2ee0a2d2b",
-        "capturado_em": "2026-10-01T00:46:54Z",
+        "capturado_em": "2026-10-06T20:00:37Z",
         "publicado_em": "2026-02-02T17:36:19Z"
        },
        {
         "recurso": "mre_mensal_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261001T004655Z.655c57f57a87.csv.gz",
-        "sha256": "655c57f57a8750b11a3bfbf37cf2f2d37251aab521a462cd968456f3859ddc16",
-        "capturado_em": "2026-10-01T00:46:55Z",
-        "publicado_em": "2026-09-01T14:54:26Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261006T200038Z.84995fa08f16.csv.gz",
+        "sha256": "84995fa08f16bf904e8090869ebaa0520992dda1daae87b3500fe927e2cb74c7",
+        "capturado_em": "2026-10-06T20:00:38Z",
+        "publicado_em": "2026-10-01T20:35:09Z"
        }
       ]
      },
      "extracao_pdf": null,
      "chaves_origem": [
-      "SE|GERACAO_MRE@2026-07",
-      "S|GERACAO_MRE@2026-07",
-      "NE|GERACAO_MRE@2026-07",
-      "N|GERACAO_MRE@2026-07",
-      "GARANTIA_FISICA_MODULADA_FDISP@2026-07"
+      "SE|GERACAO_MRE@2026-08",
+      "S|GERACAO_MRE@2026-08",
+      "NE|GERACAO_MRE@2026-08",
+      "N|GERACAO_MRE@2026-08",
+      "GARANTIA_FISICA_MODULADA_FDISP@2026-08"
      ],
      "chaves_total": null,
      "consulta": null,
@@ -9673,11 +9764,11 @@
      "formula": "GSF = 100 × Σ GERACAO_MRE dos quatro submercados ÷ GARANTIA_FISICA_MODULADA_FDISP (GFIS_2)",
      "numerador": {
       "descricao": "geração das usinas do MRE no centro de gravidade (MWmed)",
-      "valor": 39194.691
+      "valor": 40397.151
      },
      "denominador": {
       "descricao": "garantia física modulada ajustada pelo fator de disponibilidade (MWmed)",
-      "valor": 51018.136
+      "valor": 51185.084
      },
      "pesos": null,
      "exclusoes": [],
@@ -9685,15 +9776,15 @@
      "tratamento_ausencia": "mês sem os quatro submercados fica sem GSF",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:41Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Σ garantia física sazonalizada dos submercados = garantia física sazonalizada do MRE",
        "resultado": "aprovado",
-       "detalhe": "34 meses; maior diferença 0.0 MWmed"
+       "detalhe": "35 meses; maior diferença 0.0 MWmed"
       }
      ],
      "reconciliacao": {
@@ -9708,34 +9799,29 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 76,8%, Mecanismo de Realocação de Energia (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 78,9%, Mecanismo de Realocação de Energia (SIN), 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "gsf_12m": {
-    "valor_pct": 80.428,
+    "valor_pct": 81.84,
     "periodo": {
-     "inicio": "2025-08",
-     "fim": "2026-07"
+     "inicio": "2025-09",
+     "fim": "2026-08"
     },
-    "infomercado_12m": {
-     "numero": "229",
-     "publicado_pct": 92.55,
-     "pagina": "3",
-     "resultado": "ressalva"
-    },
+    "infomercado_12m": null,
     "alternativas": {
-     "media_simples_pct": 81.652,
-     "razao_gf_sazonalizada_pct": 77.034,
-     "acumulado_ano_pct": 92.478
+     "media_simples_pct": 83.014,
+     "razao_gf_sazonalizada_pct": 78.397,
+     "acumulado_ano_pct": 90.74
     },
     "evidencia": {
      "indicador": "Fator de ajuste do MRE (GSF) em 12 meses",
-     "valor_exibido": "80,4%",
-     "valor_calculo": 80.42847364295592,
+     "valor_exibido": "81,8%",
+     "valor_calculo": 81.84044766669902,
      "unidade": "%",
      "periodo": {
-      "inicio": "2025-08",
-      "fim": "2026-07"
+      "inicio": "2025-09",
+      "fim": "2026-08"
      },
      "entidade": "Mecanismo de Realocação de Energia (SIN)",
      "universo": "usinas hidrelétricas participantes do MRE",
@@ -9745,82 +9831,82 @@
       "conjunto": "GERACAO_SUBMERCADO e MRE_MENSAL",
       "recurso": "mre_mensal_2026",
       "url": "https://pda-download.ccee.org.br/Np0v0dJxQ7GiOtK17ny_1g/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261001T004655Z.655c57f57a87.csv.gz",
-      "sha256": "655c57f57a8750b11a3bfbf37cf2f2d37251aab521a462cd968456f3859ddc16",
-      "capturado_em": "2026-10-01T00:46:55Z",
-      "publicado_em": "2026-09-01T14:54:26Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261006T200038Z.84995fa08f16.csv.gz",
+      "sha256": "84995fa08f16bf904e8090869ebaa0520992dda1daae87b3500fe927e2cb74c7",
+      "capturado_em": "2026-10-06T20:00:38Z",
+      "publicado_em": "2026-10-01T20:35:09Z",
       "arquivos": [
        {
         "recurso": "geracao_submercado_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2023/20261001T004642Z.161647d036be.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2023/20261006T200024Z.161647d036be.csv.gz",
         "sha256": "161647d036be8ded324ae8a432f4f57811e06de92dc4a9765dd531d149bbd80a",
-        "capturado_em": "2026-10-01T00:46:42Z",
+        "capturado_em": "2026-10-06T20:00:24Z",
         "publicado_em": "2024-02-01T11:22:27Z"
        },
        {
         "recurso": "geracao_submercado_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2024/20261001T004643Z.6bb736be6dc9.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2024/20261006T200025Z.6bb736be6dc9.csv.gz",
         "sha256": "6bb736be6dc9f812f974f3363b6496f7c2137a4d03df87596413e8711cf236ba",
-        "capturado_em": "2026-10-01T00:46:43Z",
+        "capturado_em": "2026-10-06T20:00:25Z",
         "publicado_em": "2025-01-31T20:15:24Z"
        },
        {
         "recurso": "geracao_submercado_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2025/20261001T004644Z.a3a3cd744c58.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2025/20261006T200026Z.a3a3cd744c58.csv.gz",
         "sha256": "a3a3cd744c58f749e51f700f91d6f8f4d7d6e5ee4acc0a4baa92ebe374175020",
-        "capturado_em": "2026-10-01T00:46:44Z",
+        "capturado_em": "2026-10-06T20:00:26Z",
         "publicado_em": "2026-02-02T17:41:11Z"
        },
        {
         "recurso": "geracao_submercado_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2026/20261001T004645Z.436fa4a85cd2.csv.gz",
-        "sha256": "436fa4a85cd27f7ae4e511e295760890daec7d64c02e2d3b4c3bfd14dcec034f",
-        "capturado_em": "2026-10-01T00:46:45Z",
-        "publicado_em": "2026-09-01T14:54:33Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_geracao_submercado/geracao_submercado_2026/20261006T200027Z.6fec9a11ea9f.csv.gz",
+        "sha256": "6fec9a11ea9f74a58b466f2290238d818c8101c144f29fe54f455135d8da0bfd",
+        "capturado_em": "2026-10-06T20:00:27Z",
+        "publicado_em": "2026-10-01T20:35:06Z"
        },
        {
         "recurso": "mre_mensal_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2023/20261001T004652Z.b59bec87b2f0.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2023/20261006T200035Z.b59bec87b2f0.csv.gz",
         "sha256": "b59bec87b2f0cf49c214d19d0260b9a7158241d3f233b85b5b98b8ec85c8eb7f",
-        "capturado_em": "2026-10-01T00:46:52Z",
+        "capturado_em": "2026-10-06T20:00:35Z",
         "publicado_em": "2024-02-01T11:26:17Z"
        },
        {
         "recurso": "mre_mensal_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2024/20261001T004653Z.e76c85bbf9ce.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2024/20261006T200036Z.e76c85bbf9ce.csv.gz",
         "sha256": "e76c85bbf9ce3b9834e64a7ab9809e102ceac3a6413f1b154cee535ae811285a",
-        "capturado_em": "2026-10-01T00:46:53Z",
+        "capturado_em": "2026-10-06T20:00:36Z",
         "publicado_em": "2025-01-31T20:14:45Z"
        },
        {
         "recurso": "mre_mensal_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2025/20261001T004654Z.54de3918e863.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2025/20261006T200037Z.54de3918e863.csv.gz",
         "sha256": "54de3918e8630fb346208511f7a74a198e193e3f2fe8bc1a9d132ab2ee0a2d2b",
-        "capturado_em": "2026-10-01T00:46:54Z",
+        "capturado_em": "2026-10-06T20:00:37Z",
         "publicado_em": "2026-02-02T17:36:19Z"
        },
        {
         "recurso": "mre_mensal_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261001T004655Z.655c57f57a87.csv.gz",
-        "sha256": "655c57f57a8750b11a3bfbf37cf2f2d37251aab521a462cd968456f3859ddc16",
-        "capturado_em": "2026-10-01T00:46:55Z",
-        "publicado_em": "2026-09-01T14:54:26Z"
+        "arquivo": "data/energia/bronze/ccee/ccee_mre_mensal/mre_mensal_2026/20261006T200038Z.84995fa08f16.csv.gz",
+        "sha256": "84995fa08f16bf904e8090869ebaa0520992dda1daae87b3500fe927e2cb74c7",
+        "capturado_em": "2026-10-06T20:00:38Z",
+        "publicado_em": "2026-10-01T20:35:09Z"
        }
       ]
      },
      "extracao_pdf": null,
      "chaves_origem": [],
      "chaves_total": null,
-     "consulta": "GERACAO_MRE e GARANTIA_FISICA_MODULADA_FDISP de 2025-08 a 2026-07",
+     "consulta": "GERACAO_MRE e GARANTIA_FISICA_MODULADA_FDISP de 2025-09 a 2026-08",
      "manifesto": null,
      "formula": "100 × Σ(geração MRE × horas do mês) ÷ Σ(GFIS_2 × horas do mês)",
      "numerador": {
       "descricao": "geração do MRE em 12 meses (MWh)",
-      "valor": 379847015.496
+      "valor": 384626697.672
      },
      "denominador": {
       "descricao": "garantia física modulada ajustada em 12 meses (MWh)",
-      "valor": 472279279.08
+      "valor": 469971400.008
      },
      "pesos": "horas de cada mês",
      "exclusoes": [],
@@ -9828,10 +9914,10 @@
      "tratamento_ausencia": "janela incompleta não é calculada",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:41Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Agregação ponderada por energia, não média de percentuais",
@@ -9839,11 +9925,7 @@
        "detalhe": "razão das somas em MWh de geração e de garantia física"
       }
      ],
-     "reconciliacao": {
-      "descricao": "DIVERGÊNCIA NÃO EXPLICADA: o InfoMercado Nº 229 (página 3) publica 'nos últimos doze meses ajuste médio do MRE é de 92,55%'; o observatório calcula 80,43% (razão de energias, 2025-08 a 2026-07). Outras definições testadas: média simples dos fatores mensais 81,65%, razão sobre a garantia física sazonalizada 77,03%, acumulado de 2026 92,48%; nenhuma reproduz o número publicado, e a fonte não informa janela nem ponderação. Os fatores mensais conferem com o InfoMercado.",
-      "resultado": "ressalva",
-      "tolerancia": "0,006 p.p. (duas casas decimais publicadas)"
-     },
+     "reconciliacao": null,
      "download": [
       {
        "rotulo": "Séries mensais da CCEE (CSV)",
@@ -9851,7 +9933,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 80,4%, Mecanismo de Realocação de Energia (SIN), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 81,8%, Mecanismo de Realocação de Energia (SIN), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "risco_hidrologico_acr_12m": {
@@ -9877,10 +9959,10 @@
       "conjunto": "Bandeiras Tarifárias: Conta Bandeira",
       "recurso": "Bandeira Tarifária - Conta Bandeira",
       "url": "https://dadosabertos.aneel.gov.br/dataset/7f43a020-6dc5-44b8-80b4-d97eaa94436c/resource/e62b61dd-0a27-41b6-b1d2-19faa6c61501/download/bandeira-tarifaria-conta-bandeira.csv",
-      "arquivo": "data/energia/bronze/aneel/aneel_conta_bandeira/Bandeira Tarifária - Conta Bandeira/20261001T060129Z.63446da4cdc1.csv.gz",
-      "sha256": "63446da4cdc12473f6a869097e7ac42b9f62eb9702a934565ef192fa8d3d32a1",
-      "capturado_em": "2026-10-01T06:01:29Z",
-      "publicado_em": "2026-10-01T05:01:17Z"
+      "arquivo": "data/energia/bronze/aneel/aneel_conta_bandeira/Bandeira Tarifária - Conta Bandeira/20261006T195836Z.639b3348cfdf.csv.gz",
+      "sha256": "639b3348cfdfec111f07158c4e471e1f207b6e277a7a0a9649cffa540ed2c1cf",
+      "capturado_em": "2026-10-06T19:58:36Z",
+      "publicado_em": "2026-10-05T08:00:42Z"
      },
      "extracao_pdf": null,
      "chaves_origem": [],
@@ -9896,10 +9978,10 @@
      "tratamento_ausencia": "campo vazio não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:41Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Identidade do dicionário: CCGF e repactuadas líquido = repactuadas + CCGF + previsão + prêmio",
@@ -9915,7 +9997,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 01/10/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -10504,6 +10586,21 @@
     "valor_alocado_mre_rs": 172798536,
     "gsf_pct": 76.825,
     "horas": 744
+   },
+   {
+    "mes": "2026-08",
+    "submercados_geracao": 4,
+    "geracao_mre_mwmed": 40397.151,
+    "geracao_mre_cotas_mwmed": 3986.084,
+    "gf_sazonalizada_mwmed": 53212.086,
+    "gf_modulada_fdisp_mwmed": 51185.084,
+    "gf_sazonalizada_soma_submercados_mwmed": 53212.086,
+    "fator_disponibilidade_pct": 99.2983,
+    "fator_reducao_acumulado_pct": 96.1907,
+    "teo_rs_mwh": 24.1349,
+    "valor_alocado_mre_rs": 202092342,
+    "gsf_pct": 78.924,
+    "horas": 744
    }
   ],
   "anual": [
@@ -10533,43 +10630,39 @@
    },
    {
     "ano": "2026",
-    "meses": 7,
+    "meses": 8,
     "completo": false,
-    "gsf_pct": 92.478,
+    "gsf_pct": 90.74,
     "inicio": "2026-01",
-    "fim": "2026-07"
+    "fim": "2026-08"
    }
   ],
   "submercados_ultimo_mes": {
-   "mes": "2026-07",
+   "mes": "2026-08",
    "linhas": [
     {
      "submercado": "SE",
-     "geracao_mre_mwmed": 21336.483,
-     "gf_sazonalizada_mwmed": 30558.652
+     "geracao_mre_mwmed": 21714.843,
+     "gf_sazonalizada_mwmed": 30817.231
     },
     {
      "submercado": "S",
-     "geracao_mre_mwmed": 10164.622,
-     "gf_sazonalizada_mwmed": 7684.27
+     "geracao_mre_mwmed": 11378.024,
+     "gf_sazonalizada_mwmed": 7756.128
     },
     {
      "submercado": "NE",
-     "geracao_mre_mwmed": 3690.268,
-     "gf_sazonalizada_mwmed": 4811.345
+     "geracao_mre_mwmed": 4187.826,
+     "gf_sazonalizada_mwmed": 4825.947
     },
     {
      "submercado": "N",
-     "geracao_mre_mwmed": 4003.318,
-     "gf_sazonalizada_mwmed": 9996.97
+     "geracao_mre_mwmed": 3116.459,
+     "gf_sazonalizada_mwmed": 9812.781
     }
    ]
   },
   "identidade_gf": [
-   {
-    "mes": "2025-08",
-    "diferenca_mwmed": 0.0
-   },
    {
     "mes": "2025-09",
     "diferenca_mwmed": 0.0
@@ -10612,6 +10705,10 @@
    },
    {
     "mes": "2026-07",
+    "diferenca_mwmed": 0.0
+   },
+   {
+    "mes": "2026-08",
     "diferenca_mwmed": 0.0
    }
   ],
@@ -10861,19 +10958,19 @@
  "encargos": {
   "kpis": {
    "ess_12m": {
-    "valor_rs": 1597871604.68,
+    "valor_rs": 1602904433.09,
     "periodo": {
-     "inicio": "2025-08",
-     "fim": "2026-07"
+     "inicio": "2025-09",
+     "fim": "2026-08"
     },
     "evidencia": {
      "indicador": "Encargos de serviços do sistema (ESS) em 12 meses",
      "valor_exibido": "R$ 1,60 bilhão",
-     "valor_calculo": 1597871604.68,
+     "valor_calculo": 1602904433.0900002,
      "unidade": "R$",
      "periodo": {
-      "inicio": "2025-08",
-      "fim": "2026-07"
+      "inicio": "2025-09",
+      "fim": "2026-08"
      },
      "entidade": "SIN",
      "universo": "encargos de serviços do sistema apurados na contabilização (competência do mês de referência), conjunto ENCARGO_ESS_ANCILAR; não inclui a resposta da demanda nem o encargo de energia de reserva",
@@ -10883,37 +10980,37 @@
       "conjunto": "ENCARGO_ESS_ANCILAR",
       "recurso": "encargo_ess_ancilar_2026",
       "url": "https://pda-download.ccee.org.br/SyuToObNSDOWUba288JfcA/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2026/20261001T004701Z.ef27b295f554.csv.gz",
-      "sha256": "ef27b295f554eced6a056772f114d98cedc669409185afea35b74b49a887d322",
-      "capturado_em": "2026-10-01T00:47:01Z",
+      "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2026/20261006T200042Z.fd39bf1b4915.csv.gz",
+      "sha256": "fd39bf1b4915d92c0f54d2ca7ba58112496b016685da632b926625a3ebf20b0b",
+      "capturado_em": "2026-10-06T20:00:42Z",
       "publicado_em": "2026-06-02T18:58:33Z",
       "arquivos": [
        {
         "recurso": "encargo_ess_ancilar_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2023/20261001T004658Z.c3dfa44e8a45.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2023/20261006T200039Z.c3dfa44e8a45.csv.gz",
         "sha256": "c3dfa44e8a45edccdddbeab057f9395d22a2ab72be2066431df517a2f8ccbbba",
-        "capturado_em": "2026-10-01T00:46:58Z",
+        "capturado_em": "2026-10-06T20:00:39Z",
         "publicado_em": "2024-02-01T11:37:05Z"
        },
        {
         "recurso": "encargo_ess_ancilar_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2024/20261001T004659Z.731fb6c3a600.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2024/20261006T200040Z.731fb6c3a600.csv.gz",
         "sha256": "731fb6c3a600d487b300f2c46c052e4f4ef883c7292d19ef23971ca66421eb48",
-        "capturado_em": "2026-10-01T00:46:59Z",
+        "capturado_em": "2026-10-06T20:00:40Z",
         "publicado_em": "2025-01-31T20:14:16Z"
        },
        {
         "recurso": "encargo_ess_ancilar_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2025/20261001T004700Z.9fdc9a5b757e.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2025/20261006T200041Z.9fdc9a5b757e.csv.gz",
         "sha256": "9fdc9a5b757e93fd37b0036e4078df55fea4a9a6c9c7302164f3e3e6cf9fc6b2",
-        "capturado_em": "2026-10-01T00:47:00Z",
+        "capturado_em": "2026-10-06T20:00:41Z",
         "publicado_em": "2026-02-02T19:46:02Z"
        },
        {
         "recurso": "encargo_ess_ancilar_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2026/20261001T004701Z.ef27b295f554.csv.gz",
-        "sha256": "ef27b295f554eced6a056772f114d98cedc669409185afea35b74b49a887d322",
-        "capturado_em": "2026-10-01T00:47:01Z",
+        "arquivo": "data/energia/bronze/ccee/ccee_encargo_ess_ancilar/encargo_ess_ancilar_2026/20261006T200042Z.fd39bf1b4915.csv.gz",
+        "sha256": "fd39bf1b4915d92c0f54d2ca7ba58112496b016685da632b926625a3ebf20b0b",
+        "capturado_em": "2026-10-06T20:00:42Z",
         "publicado_em": "2026-06-02T18:58:33Z"
        }
       ]
@@ -10921,7 +11018,7 @@
      "extracao_pdf": null,
      "chaves_origem": [],
      "chaves_total": null,
-     "consulta": "colunas ENCARGO_CONST_ON, ENCARGO_CONST_OFF, ENCARGO_REST_OP_UNIT_COMT, ENCARGO_CS, OUTROS_SERVICOS_ANCILARES, ENCARGO_SEG_ENER, RECEBIMENTO_ENCARGO_DH, ENCARGO_IMPORTACAO, RECEBIMENTO_ENCARGO_RESERVA_OP de ENCARGO_ESS_ANCILAR, 2025-08 a 2026-07",
+     "consulta": "colunas ENCARGO_CONST_ON, ENCARGO_CONST_OFF, ENCARGO_REST_OP_UNIT_COMT, ENCARGO_CS, OUTROS_SERVICOS_ANCILARES, ENCARGO_SEG_ENER, RECEBIMENTO_ENCARGO_DH, ENCARGO_IMPORTACAO, RECEBIMENTO_ENCARGO_RESERVA_OP de ENCARGO_ESS_ANCILAR, 2025-09 a 2026-08",
      "manifesto": null,
      "formula": "Σ dos nove tipos de encargo nos 12 meses de competência (as colunas RESSARCIMENTO_* detalham OUTROS_SERVICOS_ANCILARES e não são somadas de novo)",
      "numerador": null,
@@ -10939,10 +11036,10 @@
      "tratamento_ausencia": "mês com tipo vazio fica sem total e interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:42Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Esquema conferido na chegada (16 colunas documentadas)",
@@ -10971,7 +11068,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "eer_12m": {
@@ -10997,37 +11094,37 @@
       "conjunto": "RESERVA_ENCARGO",
       "recurso": "reserva_encargo_2026",
       "url": "https://pda-download.ccee.org.br/AjHmAmuaRDCbTnBGF6rz_w/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2026/20261001T004705Z.afdc8232214f.csv.gz",
+      "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2026/20261006T200051Z.afdc8232214f.csv.gz",
       "sha256": "afdc8232214f1d70c1bb61e9a7adc0fb7822aa8ed4cd4e8373bab0a6610fdbff",
-      "capturado_em": "2026-10-01T00:47:05Z",
+      "capturado_em": "2026-10-06T20:00:51Z",
       "publicado_em": "2026-08-14T20:17:29Z",
       "arquivos": [
        {
         "recurso": "reserva_encargo_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2023/20261001T004702Z.24e77250902b.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2023/20261006T200048Z.24e77250902b.csv.gz",
         "sha256": "24e77250902ba33190d10ecb7add417ab97ad7a1feeda55b4688d9d43f4430ac",
-        "capturado_em": "2026-10-01T00:47:02Z",
+        "capturado_em": "2026-10-06T20:00:48Z",
         "publicado_em": "2024-01-15T11:19:52Z"
        },
        {
         "recurso": "reserva_encargo_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2024/20261001T004703Z.3abdf937c0ff.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2024/20261006T200049Z.3abdf937c0ff.csv.gz",
         "sha256": "3abdf937c0ff5ae7fed4e91ad411f6556869d8cc620a9999d7a2536530634b95",
-        "capturado_em": "2026-10-01T00:47:03Z",
+        "capturado_em": "2026-10-06T20:00:49Z",
         "publicado_em": "2025-01-15T21:11:06Z"
        },
        {
         "recurso": "reserva_encargo_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2025/20261001T004704Z.56a06bf23af2.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2025/20261006T200050Z.56a06bf23af2.csv.gz",
         "sha256": "56a06bf23af224bdfec32061c4dbe724e407e771ceb20e23f8551c73bd57e589",
-        "capturado_em": "2026-10-01T00:47:04Z",
+        "capturado_em": "2026-10-06T20:00:50Z",
         "publicado_em": "2026-01-15T17:33:36Z"
        },
        {
         "recurso": "reserva_encargo_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2026/20261001T004705Z.afdc8232214f.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_reserva_encargo/reserva_encargo_2026/20261006T200051Z.afdc8232214f.csv.gz",
         "sha256": "afdc8232214f1d70c1bb61e9a7adc0fb7822aa8ed4cd4e8373bab0a6610fdbff",
-        "capturado_em": "2026-10-01T00:47:05Z",
+        "capturado_em": "2026-10-06T20:00:51Z",
         "publicado_em": "2026-08-14T20:17:29Z"
        }
       ]
@@ -11046,10 +11143,10 @@
      "tratamento_ausencia": "mês ausente interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:42Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "Esquema conferido na chegada (7 colunas documentadas)",
@@ -11065,7 +11162,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "inadimplencia_ultimo_mes": {
@@ -11088,37 +11185,37 @@
       "conjunto": "SUMARIO_MENSAL_LIQUIDACAO",
       "recurso": "sumario_mensal_liquidacao_2026",
       "url": "https://pda-download.ccee.org.br/oR3KVtgPQHqEx2mkVhrztA/content",
-      "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2026/20261001T004720Z.08272ec7a81c.csv.gz",
+      "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2026/20261006T200104Z.08272ec7a81c.csv.gz",
       "sha256": "08272ec7a81c93c4c81e3f8e185546f6445deeff19e7abb1df21cbbcf2355ee7",
-      "capturado_em": "2026-10-01T00:47:20Z",
+      "capturado_em": "2026-10-06T20:01:04Z",
       "publicado_em": "2026-09-11T20:25:06Z",
       "arquivos": [
        {
         "recurso": "sumario_mensal_liquidacao_2023",
-        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2023/20261001T004717Z.100060305e57.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2023/20261006T200102Z.100060305e57.csv.gz",
         "sha256": "100060305e578e0952ce7881f79c1bd43a12237ee6f2a11bd787c0aa2bacd3a4",
-        "capturado_em": "2026-10-01T00:47:17Z",
+        "capturado_em": "2026-10-06T20:01:02Z",
         "publicado_em": "2024-02-14T15:07:56Z"
        },
        {
         "recurso": "sumario_mensal_liquidacao_2024",
-        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2024/20261001T004718Z.0024c68d03d1.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2024/20261006T200102Z.0024c68d03d1.csv.gz",
         "sha256": "0024c68d03d12747766d008d17d766f28ca5c106f2705e54c0e852a885ce6320",
-        "capturado_em": "2026-10-01T00:47:18Z",
+        "capturado_em": "2026-10-06T20:01:02Z",
         "publicado_em": "2025-05-07T18:22:09Z"
        },
        {
         "recurso": "sumario_mensal_liquidacao_2025",
-        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2025/20261001T004719Z.8ea20025fd39.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2025/20261006T200103Z.8ea20025fd39.csv.gz",
         "sha256": "8ea20025fd3912fc8bdfc6936894e988b1336961be69851f094885899e8327a7",
-        "capturado_em": "2026-10-01T00:47:19Z",
+        "capturado_em": "2026-10-06T20:01:03Z",
         "publicado_em": "2026-02-11T17:33:33Z"
        },
        {
         "recurso": "sumario_mensal_liquidacao_2026",
-        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2026/20261001T004720Z.08272ec7a81c.csv.gz",
+        "arquivo": "data/energia/bronze/ccee/ccee_sumario_mensal_liquidacao/sumario_mensal_liquidacao_2026/20261006T200104Z.08272ec7a81c.csv.gz",
         "sha256": "08272ec7a81c93c4c81e3f8e185546f6445deeff19e7abb1df21cbbcf2355ee7",
-        "capturado_em": "2026-10-01T00:47:20Z",
+        "capturado_em": "2026-10-06T20:01:04Z",
         "publicado_em": "2026-09-11T20:25:06Z"
        }
       ]
@@ -11146,10 +11243,10 @@
      "tratamento_ausencia": "mês sem os dois valores fica sem taxa",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:42Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-06.",
      "testes": [
       {
        "nome": "A liquidar = liquidado + inadimplência",
@@ -11169,7 +11266,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 06/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ess_mme_ano": {
@@ -11196,9 +11293,9 @@
       "conjunto": "Boletim Mensal de Monitoramento do Sistema Elétrico",
       "recurso": "boletim-mensal-junho-2026.pdf",
       "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2026/boletim-mensal-junho-2026.pdf/@@download/file",
-      "arquivo": "data/energia/bronze/mme/mme_boletim_monitoramento/boletim-mensal-junho-2026.pdf/20261001T003514Z.87534243d25a.pdf.gz",
+      "arquivo": "data/energia/bronze/mme/mme_boletim_monitoramento/boletim-mensal-junho-2026.pdf/20261002T042747Z.87534243d25a.pdf.gz",
       "sha256": "87534243d25aa835043db0377480155b9a48170182e4320945ce1e1a9847dba7",
-      "capturado_em": "2026-10-01T00:35:14Z",
+      "capturado_em": "2026-10-02T04:27:47Z",
       "publicado_em": "2026-09-25T18:10:00Z"
      },
      "extracao_pdf": {
@@ -11227,8 +11324,8 @@
      "tratamento_ausencia": "meses posteriores à edição (publicados como 0) não entram",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "ac7599ce6c86+alterado",
-      "publicacao": "2026-10-01T07:54:42Z"
+      "codigo": "1f075868ed56+alterado",
+      "publicacao": "2026-10-06T20:02:49Z"
      },
      "revisoes": "8 revisões entre edições do boletim (ver lista de revisões)",
      "testes": [
@@ -11246,7 +11343,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 02/10/2026). Versão energia-0.1.0, código 1f075868ed56+alterado, publicada em 06/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -11916,6 +12013,24 @@
     "diferenca_outros_ressarcimentos": 0.0,
     "resposta_demanda": null,
     "resposta_demanda_submercados": 0
+   },
+   {
+    "mes": "2026-08",
+    "deslocamento_hidraulico": 5659638,
+    "importacao": 0,
+    "outros_ancilares": 0,
+    "reserva_operativa": 0,
+    "ro_constrained_off": 61741447,
+    "ro_constrained_on": 21275457,
+    "ro_unit_commitment": 36948106,
+    "seguranca_energetica": 0,
+    "suporte_reativo": 21563056,
+    "total": 147187704,
+    "restricao_operacao": 119965011,
+    "servicos_ancilares": 21563056,
+    "diferenca_outros_ressarcimentos": 0.0,
+    "resposta_demanda": 314549,
+    "resposta_demanda_submercados": 1
    }
   ],
   "eer_mensal": [
@@ -12486,6 +12601,16 @@
     "penalidades_alivio_ess": 4606233,
     "sobra_excedente_financeiro": 2900749488,
     "fator_ajuste_ess": 0
+   },
+   {
+    "mes": "2026-08",
+    "pagamento_ess": null,
+    "situacao_pagamento_ess": "zero_nao_confirmado",
+    "pagamento_seguranca_energetica": 0,
+    "recursos_alivio_ess": 31433442,
+    "penalidades_alivio_ess": 138958,
+    "sobra_excedente_financeiro": 2872186772,
+    "fator_ajuste_ess": 0
    }
   ],
   "controles_pagamento": {
@@ -12494,8 +12619,8 @@
     "pagamento_ess": [
      {
       "inicio": "2025-02",
-      "fim": "2026-07",
-      "meses": 18,
+      "fim": "2026-08",
+      "meses": 19,
       "valor": 0.0,
       "situacao": "zero_nao_confirmado"
      }
@@ -12504,8 +12629,8 @@
     "fator_ajuste_ess": [
      {
       "inicio": "2025-02",
-      "fim": "2026-07",
-      "meses": 18,
+      "fim": "2026-08",
+      "meses": 19,
       "valor": 0.0
      }
     ],
@@ -12857,7 +12982,7 @@
      "recurso": "boletim-mensal-marco-2026-vfinal_corrigida-defeso.pdf",
      "pagina_encargos": "37",
      "publicado_em": "2026-07-07T19:53:00Z",
-     "capturado_em": "2026-10-01T00:35:05Z",
+     "capturado_em": "2026-10-02T04:27:39Z",
      "sha256": "0bed3f9fd889fb2395acc33f20617e6b1f8669665f731ddf32cf347d2addf617"
     },
     {
@@ -12865,7 +12990,7 @@
      "recurso": "boletim-mensal-abril-vfinal.pdf",
      "pagina_encargos": "36",
      "publicado_em": "2026-09-17T16:03:00Z",
-     "capturado_em": "2026-10-01T00:35:08Z",
+     "capturado_em": "2026-10-02T04:27:42Z",
      "sha256": "342be7ab8b69591f0872e93b1cc34693ce39e98f89f35a101e08cdcac20fbd24"
     },
     {
@@ -12873,7 +12998,7 @@
      "recurso": "boletim-mensal-maio-vfinalscorrigido.pdf",
      "pagina_encargos": "36",
      "publicado_em": "2026-09-17T16:03:00Z",
-     "capturado_em": "2026-10-01T00:35:11Z",
+     "capturado_em": "2026-10-02T04:27:45Z",
      "sha256": "4a4ed076d9b034d92c2cf8e96bd42fafca2b14a8805771ec050ecbf3e9f4fb31"
     },
     {
@@ -12881,7 +13006,7 @@
      "recurso": "boletim-mensal-junho-2026.pdf",
      "pagina_encargos": "36",
      "publicado_em": "2026-09-25T18:10:00Z",
-     "capturado_em": "2026-10-01T00:35:14Z",
+     "capturado_em": "2026-10-02T04:27:47Z",
      "sha256": "87534243d25aa835043db0377480155b9a48170182e4320945ce1e1a9847dba7"
     }
    ],
@@ -13413,7 +13538,7 @@
      "resultado": "aprovado",
      "recurso": "boletim-especial-consolidacao-2025_snee-ddos-defeso.pdf",
      "pagina": "5",
-     "capturado_em": "2026-10-01T07:37:35Z",
+     "capturado_em": "2026-10-02T04:27:55Z",
      "sha256": "e65cdc78bddbb8e35173393342919e6dc798c0191a36b474bc64c5ac1db19535",
      "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-anual-de-monitoramento-do-sistema-eletrico/consolidacao-2025"
     }
@@ -13890,13 +14015,13 @@
    "painel": "P032",
    "titulo": "Consumo mensal por ambiente de contratação (ACR e ACL), contabilização do MCP",
    "url": "https://dadosabertos.ccee.org.br/dataset/consumo_mensal_ambiente_comercializacao",
-   "ultima_tentativa": "2026-10-01T00:45:29Z",
+   "ultima_tentativa": "2026-10-06T19:58:55Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "356 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:45:29Z",
+   "ultimo_detalhe": "400 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T19:58:55Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 78
+   "observacoes": 80
   },
   {
    "conjunto": "consumo_classe_agente",
@@ -13904,13 +14029,13 @@
    "painel": "P032",
    "titulo": "Consumo por classe de agente e ambiente (centro de gravidade e ponto de conexão)",
    "url": "https://dadosabertos.ccee.org.br/dataset/consumo_classe_agente",
-   "ultima_tentativa": "2026-10-01T00:45:34Z",
-   "ultima_tentativa_ok": false,
-   "ultimo_detalhe": "domínio divergente: classe fora do domínio documentado: 'Varejista'",
-   "ultima_coleta_ok": "2026-10-01T00:45:34Z",
-   "falhas_registradas": 1,
+   "ultima_tentativa": "2026-10-06T19:59:00Z",
+   "ultima_tentativa_ok": true,
+   "ultimo_detalhe": "3232 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T19:59:00Z",
+   "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 702
+   "observacoes": 720
   },
   {
    "conjunto": "agente_qtd_contabilizacao",
@@ -13918,13 +14043,13 @@
    "painel": "P033",
    "titulo": "Quantidade de agentes na contabilização por classe",
    "url": "https://dadosabertos.ccee.org.br/dataset/agente_qtd_contabilizacao",
-   "ultima_tentativa": "2026-10-01T00:45:39Z",
+   "ultima_tentativa": "2026-10-06T19:59:06Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "1364 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:45:39Z",
+   "ultimo_detalhe": "1551 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T19:59:06Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 224
+   "observacoes": 231
   },
   {
    "conjunto": "lista_agente_associado",
@@ -13932,13 +14057,13 @@
    "painel": "P033",
    "titulo": "Agentes associados por mês (CNPJ, classe, categoria, varejista)",
    "url": "https://dadosabertos.ccee.org.br/dataset/lista_agente_associado",
-   "ultima_tentativa": "2026-10-01T00:45:46Z",
+   "ultima_tentativa": "2026-10-06T19:59:14Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "16229742 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:45:46Z",
+   "ultimo_detalhe": "18012471 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T19:59:14Z",
    "falhas_registradas": 0,
    "arquivos": 2,
-   "observacoes": 84
+   "observacoes": 91
   },
   {
    "conjunto": "lista_perfil_v1",
@@ -13946,11 +14071,11 @@
    "painel": "P033",
    "titulo": "Cadastro de perfis de agente (posição publicada)",
    "url": "https://dadosabertos.ccee.org.br/dataset/lista_perfil_v1",
-   "ultima_tentativa": "2026-10-01T00:47:38Z",
-   "ultima_tentativa_ok": false,
-   "ultimo_detalhe": "domínio divergente: classe fora do domínio documentado: 'Importador'",
-   "ultima_coleta_ok": "2026-10-01T00:45:51Z",
-   "falhas_registradas": 2,
+   "ultima_tentativa": "2026-10-06T19:59:19Z",
+   "ultima_tentativa_ok": true,
+   "ultimo_detalhe": "8962364 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T19:59:19Z",
+   "falhas_registradas": 0,
    "arquivos": 1,
    "observacoes": 53
   },
@@ -13960,10 +14085,10 @@
    "painel": "P033",
    "titulo": "Desligamentos voluntários da CCEE (com e sem sucessão)",
    "url": "https://dadosabertos.ccee.org.br/dataset/desligamento_voluntario",
-   "ultima_tentativa": "2026-10-01T00:45:53Z",
+   "ultima_tentativa": "2026-10-06T19:59:23Z",
    "ultima_tentativa_ok": true,
    "ultimo_detalhe": "301461 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:45:53Z",
+   "ultima_coleta_ok": "2026-10-06T19:59:23Z",
    "falhas_registradas": 0,
    "arquivos": 1,
    "observacoes": 815
@@ -13974,10 +14099,10 @@
    "painel": "P033",
    "titulo": "Desligamentos compulsórios da CCEE",
    "url": "https://dadosabertos.ccee.org.br/dataset/desligamento_compulsorio",
-   "ultima_tentativa": "2026-10-01T00:45:55Z",
+   "ultima_tentativa": "2026-10-06T19:59:26Z",
    "ultima_tentativa_ok": true,
    "ultimo_detalhe": "18485 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:45:55Z",
+   "ultima_coleta_ok": "2026-10-06T19:59:26Z",
    "falhas_registradas": 0,
    "arquivos": 1,
    "observacoes": 147
@@ -13988,13 +14113,13 @@
    "painel": "P033",
    "titulo": "Parcelas de carga: consumo, perfil, data de migração",
    "url": "https://dadosabertos.ccee.org.br/dataset/parcela_carga_consumo",
-   "ultima_tentativa": "2026-10-01T00:46:35Z",
+   "ultima_tentativa": "2026-10-06T20:00:14Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "62237778 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:46:35Z",
+   "ultimo_detalhe": "71342592 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:14Z",
    "falhas_registradas": 0,
    "arquivos": 3,
-   "observacoes": 2612
+   "observacoes": 1622
   },
   {
    "conjunto": "geracao_submercado",
@@ -14002,13 +14127,13 @@
    "painel": "P034",
    "titulo": "Geração das usinas do MRE por submercado",
    "url": "https://dadosabertos.ccee.org.br/dataset/geracao_submercado",
-   "ultima_tentativa": "2026-10-01T00:46:45Z",
+   "ultima_tentativa": "2026-10-06T20:00:27Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "1422 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:46:45Z",
+   "ultimo_detalhe": "1618 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:27Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 312
+   "observacoes": 320
   },
   {
    "conjunto": "garantia_fisica_sazo_mre_submercado",
@@ -14016,13 +14141,13 @@
    "painel": "P034",
    "titulo": "Garantia física sazonalizada do MRE por submercado",
    "url": "https://dadosabertos.ccee.org.br/dataset/garantia_fisica_sazo_mre_submercado",
-   "ultima_tentativa": "2026-10-01T00:46:51Z",
+   "ultima_tentativa": "2026-10-06T20:00:33Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "824 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:46:51Z",
+   "ultimo_detalhe": "934 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:33Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 136
+   "observacoes": 140
   },
   {
    "conjunto": "mre_mensal",
@@ -14030,13 +14155,13 @@
    "painel": "P034",
    "titulo": "MRE mensal: garantia física, fatores de ajuste, energia realocada e TEO",
    "url": "https://dadosabertos.ccee.org.br/dataset/mre_mensal",
-   "ultima_tentativa": "2026-10-01T00:46:55Z",
+   "ultima_tentativa": "2026-10-06T20:00:38Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "1412 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:46:55Z",
+   "ultimo_detalhe": "1580 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:38Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 390
+   "observacoes": 400
   },
   {
    "conjunto": "encargo_ess_ancilar",
@@ -14044,13 +14169,13 @@
    "painel": "P035",
    "titulo": "Encargos de serviços do sistema por tipo",
    "url": "https://dadosabertos.ccee.org.br/dataset/encargo_ess_ancilar",
-   "ultima_tentativa": "2026-10-01T00:47:01Z",
-   "ultima_tentativa_ok": false,
-   "ultimo_detalhe": "esquema divergente: faltam ['RESSARCIMENTO_DIST_IMPL_OP']; sobram ['RESSARCIMENTO_DIST_IMPL_OP_MNT']; colunas ['MES_REFERENCIA', 'ENCARGO_CONST_ON', 'ENCARGO_CONST_OFF', 'OUTROS_SERVICOS_ANCILARES', 'ENCARGO_CS', 'ENCARGO_SEG_ENER', 'RECEBIMENTO_ENCARGO_DH', 'ENCARGO_REST_OP_UNIT_COMT', 'ENCARGO_IMP",
-   "ultima_coleta_ok": "2026-10-01T00:47:01Z",
-   "falhas_registradas": 4,
+   "ultima_tentativa": "2026-10-06T20:00:42Z",
+   "ultima_tentativa_ok": true,
+   "ultimo_detalhe": "1136 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:42Z",
+   "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 555
+   "observacoes": 570
   },
   {
    "conjunto": "rd_encargos_contab_mensal",
@@ -14058,10 +14183,10 @@
    "painel": "P035",
    "titulo": "Encargo de resposta da demanda contabilizado (repasse como ESS), por submercado",
    "url": "https://dadosabertos.ccee.org.br/dataset/rd_encargos_contab_mensal",
-   "ultima_tentativa": "2026-10-01T05:53:11Z",
+   "ultima_tentativa": "2026-10-06T20:00:46Z",
    "ultima_tentativa_ok": true,
    "ultimo_detalhe": "567 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T05:53:11Z",
+   "ultima_coleta_ok": "2026-10-06T20:00:46Z",
    "falhas_registradas": 0,
    "arquivos": 3,
    "observacoes": 36
@@ -14072,10 +14197,10 @@
    "painel": "P035",
    "titulo": "Encargo de energia de reserva e conta CONER",
    "url": "https://dadosabertos.ccee.org.br/dataset/reserva_encargo",
-   "ultima_tentativa": "2026-10-01T00:47:05Z",
+   "ultima_tentativa": "2026-10-06T20:00:51Z",
    "ultima_tentativa_ok": true,
    "ultimo_detalhe": "711 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:47:05Z",
+   "ultima_coleta_ok": "2026-10-06T20:00:51Z",
    "falhas_registradas": 0,
    "arquivos": 4,
    "observacoes": 216
@@ -14086,13 +14211,13 @@
    "painel": "P035",
    "titulo": "Pagamento de encargos e recursos de alívio do ESS",
    "url": "https://dadosabertos.ccee.org.br/dataset/encargo_pgto_mensal",
-   "ultima_tentativa": "2026-10-01T00:47:10Z",
+   "ultima_tentativa": "2026-10-06T20:00:55Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "631 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:47:10Z",
+   "ultimo_detalhe": "685 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:00:55Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 280
+   "observacoes": 288
   },
   {
    "conjunto": "sumario_mensal_compra_venda_submercado",
@@ -14100,13 +14225,13 @@
    "painel": "P035",
    "titulo": "Balanço energético e resultado do MCP por submercado",
    "url": "https://dadosabertos.ccee.org.br/dataset/sumario_mensal_compra_venda_submercado",
-   "ultima_tentativa": "2026-10-01T00:47:15Z",
+   "ultima_tentativa": "2026-10-06T20:01:00Z",
    "ultima_tentativa_ok": true,
-   "ultimo_detalhe": "2179 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:47:15Z",
+   "ultimo_detalhe": "2479 bytes, vintage nova",
+   "ultima_coleta_ok": "2026-10-06T20:01:00Z",
    "falhas_registradas": 0,
    "arquivos": 4,
-   "observacoes": 624
+   "observacoes": 640
   },
   {
    "conjunto": "sumario_mensal_liquidacao",
@@ -14114,10 +14239,10 @@
    "painel": "P035",
    "titulo": "Liquidação financeira do MCP: valor a liquidar, liquidado e inadimplência",
    "url": "https://dadosabertos.ccee.org.br/dataset/sumario_mensal_liquidacao",
-   "ultima_tentativa": "2026-10-01T00:47:20Z",
+   "ultima_tentativa": "2026-10-06T20:01:04Z",
    "ultima_tentativa_ok": true,
    "ultimo_detalhe": "353 bytes, vintage nova",
-   "ultima_coleta_ok": "2026-10-01T00:47:20Z",
+   "ultima_coleta_ok": "2026-10-06T20:01:04Z",
    "falhas_registradas": 0,
    "arquivos": 4,
    "observacoes": 108
@@ -14150,8 +14275,8 @@
     "fim": "2026-08"
    },
    "publicado_pela_fonte_em": "2026-09-30T13:51:24Z",
-   "capturado_em": "2026-10-01T00:33:34Z",
-   "validado_em": "2026-10-01T07:54:42Z",
+   "capturado_em": "2026-10-02T04:26:04Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2004-01",
     "fim": "2026-08"
@@ -14162,13 +14287,13 @@
    ],
    "formula": "consumo do tipo = Σ Consumo das linhas; livre_pct = 100 × Σ consumo livre ÷ Σ (consumo cativo + consumo livre) do período",
    "snapshot": {
-    "id": "epe_consumo_mensal+epe_consumo_classe@2026-10-01T00:33:34Z",
+    "id": "epe_consumo_mensal+epe_consumo_classe@2026-10-02T04:26:04Z",
     "sha256": "a771bd8a47d7ed3651f3e7f875ba7e0213daa6c813e1745a782427c0cfee425a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "exemplos": []
    },
@@ -14196,14 +14321,14 @@
    "frequencia": "mensal (publicação no mês seguinte + 22 dias úteis)",
    "periodo_referencia": {
     "inicio": "2023-05",
-    "fim": "2026-07"
+    "fim": "2026-08"
    },
-   "publicado_pela_fonte_em": "2026-09-01T14:58:17Z",
-   "capturado_em": "2026-10-01T00:45:34Z",
-   "validado_em": "2026-10-01T07:54:42Z",
+   "publicado_pela_fonte_em": "2026-10-01T20:30:00Z",
+   "capturado_em": "2026-10-06T19:59:00Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2023-05",
-    "fim": "2026-07"
+    "fim": "2026-08"
    },
    "transformacoes": [
     "ACR = consumo da classe Distribuidor; exportação = classe Exportador; ACL = soma das demais classes de CONSUMO_CLASSE_AGENTE",
@@ -14213,18 +14338,18 @@
    ],
    "formula": "acl_pct = 100 × Σ(ACL × horas) ÷ Σ((ACR + ACL) × horas), ACL sem a classe Exportador; acl_com_exportacao_pct = 100 × Σ((ACL + exportação) × horas) ÷ Σ((ACR + ACL + exportação) × horas)",
    "snapshot": {
-    "id": "ccee_consumo_mensal_ambiente_comercializacao+ccee_consumo_classe_agente@2026-10-01T00:45:34Z",
-    "sha256": "4d0593bfe44499ad91f7d3979da82b1aea60ad3bdf41e3c4c93be69be4c0f11a"
+    "id": "ccee_consumo_mensal_ambiente_comercializacao+ccee_consumo_classe_agente@2026-10-06T19:59:00Z",
+    "sha256": "21ccd69892c9e053554dbbf2793262440f57a3a7a4c145ea87b670f3e1e83d12"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "exemplos": []
    },
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
+    "Acesso à CCEE: o portal responde HTTP 403 ('Acesso bloqueado') ao curl e responde ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador); a coleta com esse cliente foi autorizada pelo responsável em 06/10/2026.",
     "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
     "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas.",
     "Consumo referido ao centro de gravidade (com perdas da rede básica rateadas): é maior que o consumo medido no ponto de conexão e não é comparável ao da EPE sem esse ajuste.",
@@ -14252,8 +14377,8 @@
     "fim": "2026-08"
    },
    "publicado_pela_fonte_em": "2026-09-15T05:20:19Z",
-   "capturado_em": "2026-10-01T00:34:29Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "capturado_em": "2026-10-02T04:27:00Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2019-01",
     "fim": "2026-08"
@@ -14265,18 +14390,18 @@
    ],
    "formula": "livre_pct_faturada = 100 × energia livre ÷ (energia livre + energia cativa faturada) do ano; somas nacionais = Σ distribuidoras",
    "snapshot": {
-    "id": "aneel_samp_mercado@2026-10-01T00:34:29Z",
+    "id": "aneel_samp_mercado@2026-10-02T04:27:00Z",
     "sha256": "e026223f29321e9e71964f3804d33621895635ec507c4ce64eefeaf8e7a32e8e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "vintages_comparadas": 9,
     "arquivos": 9,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-10-01T00:34:30Z",
+    "ultimo_download_ok": "2026-10-02T04:27:00Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -14304,14 +14429,14 @@
    "frequencia": "mensal",
    "periodo_referencia": {
     "inicio": "2023-12",
-    "fim": "2026-09"
+    "fim": "2026-10"
    },
-   "publicado_pela_fonte_em": "2026-09-03T18:27:55Z",
-   "capturado_em": "2026-10-01T00:46:32Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "publicado_pela_fonte_em": "2026-10-05T18:07:47Z",
+   "capturado_em": "2026-10-06T20:00:11Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2010-01",
-    "fim": "2026-09"
+    "fim": "2026-10"
    },
    "transformacoes": [
     "contagens de códigos distintos por mês",
@@ -14321,18 +14446,18 @@
    ],
    "formula": "entradas_m = |CNPJ_m − CNPJ_{m−1}|; saídas_m = |CNPJ_{m−1} − CNPJ_m|; parcelas_ACL_m = |parcelas_m de perfis fora da classe Distribuidor|",
    "snapshot": {
-    "id": "ccee_agente_qtd_contabilizacao+ccee_lista_agente_associado+ccee_lista_perfil_v1+ccee_desligamento_voluntario+ccee_desligamento_compulsorio+ccee_parcela_carga_consumo@2026-10-01T00:46:32Z",
-    "sha256": "7472efc0c2c6ad4bd152008008dd6a2ee84df0597ba6b74b97a2678188869c57"
+    "id": "ccee_agente_qtd_contabilizacao+ccee_lista_agente_associado+ccee_lista_perfil_v1+ccee_desligamento_voluntario+ccee_desligamento_compulsorio+ccee_parcela_carga_consumo@2026-10-06T20:00:11Z",
+    "sha256": "7464f05a397de5ee0dddfece98b39db74a6508bd18540b5855f161781922402a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "exemplos": []
    },
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
+    "Acesso à CCEE: o portal responde HTTP 403 ('Acesso bloqueado') ao curl e responde ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador); a coleta com esse cliente foi autorizada pelo responsável em 06/10/2026.",
     "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
     "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas.",
     "A lista de associados mês a mês só existe a partir de outubro de 2025; o cadastro de perfis é uma posição (sem histórico mensal) e a data exibida é a de modificação informada pelo portal.",
@@ -14341,7 +14466,7 @@
     "O ano corrente dos desligamentos é parcial."
    ],
    "download": "/energia/series/mercado_ccee_mensal.csv",
-   "notas_fonte": "Períodos por série: agentes por classe: 2023-12 a 2026-07; lista de associados: 2025-10 a 2026-09; parcelas de carga: 2024-04 a 2026-07. Desligamentos: 2010 a 2026 (ano 2026 parcial, até 2026-09-01). Cadastro de perfis: posição sem data no arquivo; data de modificação informada pelo portal: 2026-09-01."
+   "notas_fonte": "Períodos por série: agentes por classe: 2023-12 a 2026-08; lista de associados: 2025-10 a 2026-10; parcelas de carga: 2024-04 a 2026-08. Desligamentos: 2010 a 2026 (ano 2026 parcial, até 2026-09-01). Cadastro de perfis: posição sem data no arquivo; data de modificação informada pelo portal: 2026-10-01."
   },
   "gsf": {
    "indicador": "Fator de ajuste do MRE (GSF)",
@@ -14358,36 +14483,35 @@
    "frequencia": "mensal",
    "periodo_referencia": {
     "inicio": "2023-05",
-    "fim": "2026-07"
+    "fim": "2026-08"
    },
-   "publicado_pela_fonte_em": "2026-09-01T14:54:33Z",
-   "capturado_em": "2026-10-01T00:46:55Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "publicado_pela_fonte_em": "2026-10-01T20:35:09Z",
+   "capturado_em": "2026-10-06T20:00:38Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2023-05",
-    "fim": "2026-07"
+    "fim": "2026-08"
    },
    "transformacoes": [
     "conferido contra o fator mensal publicado no InfoMercado mensal da CCEE em cada edição capturada (ver reconciliacao_infomercado)"
    ],
    "formula": "GSF = 100 × Σ GERACAO_MRE (4 submercados) ÷ GARANTIA_FISICA_MODULADA_FDISP; período = razão das somas em MWh",
    "snapshot": {
-    "id": "ccee_geracao_submercado+ccee_garantia_fisica_sazo_mre_submercado+ccee_mre_mensal@2026-10-01T00:46:55Z",
-    "sha256": "cd86ed9c2635fc432fab5bd66b22daa2bf5fc8c5b59d6f0309733700047612cc"
+    "id": "ccee_geracao_submercado+ccee_garantia_fisica_sazo_mre_submercado+ccee_mre_mensal@2026-10-06T20:00:38Z",
+    "sha256": "a3e238c32470cb32093d18575f3a468c2e7c19da46e81a33a61d9909afcdc973"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "exemplos": []
    },
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
+    "Acesso à CCEE: o portal responde HTTP 403 ('Acesso bloqueado') ao curl e responde ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador); a coleta com esse cliente foi autorizada pelo responsável em 06/10/2026.",
     "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
     "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas.",
     "A CCEE não publica o GSF como coluna nos dados abertos; o observatório calcula com a mesma razão que reproduz o valor mensal publicado no InfoMercado.",
-    "O 'ajuste médio do MRE nos últimos doze meses' do InfoMercado Nº 229 (92,55%) não é reproduzido por nenhuma definição testada (razão de energias 80,43%); a divergência fica publicada.",
     "O GSF é do MRE inteiro; a razão por submercado não é publicada e não é calculada.",
     "O painel não infere exposição financeira de nenhuma usina ou agente."
    ],
@@ -14411,9 +14535,9 @@
     "inicio": "2015-01",
     "fim": "2026-07"
    },
-   "publicado_pela_fonte_em": "2026-10-01T05:01:17Z",
-   "capturado_em": "2026-10-01T06:01:29Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "publicado_pela_fonte_em": "2026-10-05T08:00:42Z",
+   "capturado_em": "2026-10-06T19:58:36Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2015-01",
     "fim": "2026-07"
@@ -14424,18 +14548,18 @@
    ],
    "formula": "rh_bruto = Σ distribuidoras (VlrRiscoHidrologicoItaipu + VlrRiscoHidrologicoRepactuadas + VlrRiscoHidrologicoCCGF) na competência; 12 meses e ano = Σ das competências",
    "snapshot": {
-    "id": "aneel_conta_bandeira@2026-10-01T06:01:29Z",
-    "sha256": "a3fe614dc30f9173af4a99bc08dc7054b818cf16124310fde84b907c33aab9aa"
+    "id": "aneel_conta_bandeira@2026-10-06T19:58:36Z",
+    "sha256": "6d770e620520f8d41a77a770fece8c213f8386c069e2322b9a8c783e38d4d574"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 2,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-10-01T06:01:29Z",
+    "ultimo_download_ok": "2026-10-06T19:58:37Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -14463,9 +14587,9 @@
     "inicio": "2023-05",
     "fim": "2026-08"
    },
-   "publicado_pela_fonte_em": "2026-09-28T14:48:53Z",
-   "capturado_em": "2026-10-01T05:53:11Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "publicado_pela_fonte_em": "2026-10-01T20:32:01Z",
+   "capturado_em": "2026-10-06T20:01:04Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-08"
@@ -14478,27 +14602,27 @@
    ],
    "formula": "ESS_m = Σ dos nove tipos de ENCARGO_ESS_ANCILAR; ESS_12m = Σ ESS_m; EER_12m = Σ ENCARGO_ENERGIA_RESERVA; inadimplência = 100 × VALOR_INAD ÷ VALOR_TOTAL_LIQ_PRE",
    "snapshot": {
-    "id": "ccee_encargo_ess_ancilar+ccee_rd_encargos_contab_mensal+ccee_reserva_encargo+ccee_encargo_pgto_mensal+ccee_sumario_mensal_compra_venda_submercado+ccee_sumario_mensal_liquidacao@2026-10-01T05:53:11Z",
-    "sha256": "0580d275b809eef615f6ca1ed6d9f44b0747bebdf0b05654ff38dab2b465ac8c"
+    "id": "ccee_encargo_ess_ancilar+ccee_rd_encargos_contab_mensal+ccee_reserva_encargo+ccee_encargo_pgto_mensal+ccee_sumario_mensal_compra_venda_submercado+ccee_sumario_mensal_liquidacao@2026-10-06T20:01:04Z",
+    "sha256": "3204fc29250d185ad1a4ce9fa7358e7255506f3af3e7430b038da5854035b5fd"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
     "exemplos": []
    },
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
+    "Acesso à CCEE: o portal responde HTTP 403 ('Acesso bloqueado') ao curl e responde ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador); a coleta com esse cliente foi autorizada pelo responsável em 06/10/2026.",
     "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
     "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas.",
     "Competência (mês de referência), pagamento (liquidação) e alívio do ESS são grandezas diferentes e são publicadas separadas.",
     "Meses ausentes do conjunto SUMARIO_MENSAL_LIQUIDACAO: 2025-04 (aparecem na série como ausentes).",
     "Meses com liquidado e inadimplência publicados como zero e valor a liquidar positivo ('liquidação não informada', nulos na gold): 2025-05, 2026-03, 2026-04.",
-    "PAGAMENTO_ENCARGO_ESS vem 0 de 2025-02 a 2026-07 (18 meses) com ESS positivo; o InfoMercado de 2026-07 implica R$ 2,55 milhões pagos: zero não confirmado, nulo na gold e rotulado no CSV."
+    "PAGAMENTO_ENCARGO_ESS vem 0 de 2025-02 a 2026-08 (19 meses) com ESS positivo; o InfoMercado de 2026-07 implica R$ 2,55 milhões pagos: zero não confirmado, nulo na gold e rotulado no CSV."
    ],
    "download": "/energia/series/mercado_ccee_mensal.csv",
-   "notas_fonte": "Períodos por série: ESS: 2023-07 a 2026-07; energia de reserva: 2023-09 a 2026-08; pagamento e alívio: 2023-09 a 2026-07; liquidação: 2023-07 a 2026-07; resultado do MCP: 2023-05 a 2026-07."
+   "notas_fonte": "Períodos por série: ESS: 2023-07 a 2026-08; energia de reserva: 2023-09 a 2026-08; pagamento e alívio: 2023-09 a 2026-08; liquidação: 2023-07 a 2026-07; resultado do MCP: 2023-05 a 2026-08."
   },
   "encargos_mme": {
    "indicador": "Encargos de serviços do sistema por tipo, Boletim Mensal do MME",
@@ -14518,8 +14642,8 @@
     "fim": "2026-06"
    },
    "publicado_pela_fonte_em": "2026-09-25T18:10:00Z",
-   "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T07:54:43Z",
+   "capturado_em": "2026-10-05T02:30:46Z",
+   "validado_em": "2026-10-06T20:02:50Z",
    "cobertura_historica": {
     "inicio": "2026-01",
     "fim": "2026-06"
@@ -14531,18 +14655,18 @@
    ],
    "formula": "total do ano no boletim = Σ da linha Total nos meses publicados (edição vigente de cada mês)",
    "snapshot": {
-    "id": "mme_boletim_monitoramento@2026-10-01T07:37:35Z",
-    "sha256": "02eb02e6676b10647a1763cbee4550096300b851fd79a9b07eb4fba8f6c20896"
+    "id": "mme_boletim_monitoramento@2026-10-05T02:30:46Z",
+    "sha256": "4037b474c0e3d93af1e6209e1fdbac54db9f1f10c69be6eb4525b406abaad725"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "ac7599ce6c86+alterado",
+   "versao_codigo": "1f075868ed56+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:54:42Z",
+    "detectado_em": "2026-10-06T20:02:50Z",
     "total": 0,
-    "vintages_comparadas": 12,
+    "vintages_comparadas": 14,
     "arquivos": 10,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-10-01T07:37:35Z",
+    "ultimo_download_ok": "2026-10-02T04:27:55Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -14751,246 +14875,248 @@
   "cliente": "pipeline.common.http_get e http_download (urllib da biblioteca padrão, User-Agent do projeto)",
   "observacao": "Em 01/10/2026 (05h45 UTC), o curl recebeu HTTP 403 ('Acesso bloqueado') em dadosabertos.ccee.org.br; o cliente do pipeline recebeu HTTP 200 na mesma API (package_show). Nenhum cabeçalho foi trocado para se passar por navegador.",
   "decisao": {
-   "situacao": "pendente",
+   "situacao": "autorizada",
    "pergunta": "A coleta dos conjuntos abertos e do InfoMercado da CCEE pelo cliente HTTP do pipeline (sem disfarce de navegador), quando o curl recebe 403 'Acesso bloqueado' do firewall da origem, é aceitável? Se sim, a partir deste ambiente ou só no GitHub Actions?",
    "registrada_em": "2026-10-01",
-   "efeito": "Enquanto a decisão estiver pendente, os painéis P032 a P035 ficam 'pendente_decisao_acesso' (os números da CCEE seguem publicados com esta ressalva, a partir das capturas de 01/10/2026) e nenhuma requisição nova é feita à CCEE a partir deste ambiente. Se a decisão for negativa, os números da CCEE saem da gold ou passam a vir só da coleta no GitHub Actions.",
-   "coleta_neste_ambiente": "suspensa (variável ENERGIA_CCEE_COLETA ausente): só o bronze já capturado é relido"
+   "decidida_em": "2026-10-06",
+   "resposta": "Autorizada pelo responsável em 06/10/2026, com o cliente do pipeline (urllib, User-Agent do projeto, sem cabeçalho de navegador), a partir do ambiente de desenvolvimento e do GitHub Actions.",
+   "efeito": "Os painéis P032 a P035 deixam de ficar pendentes de decisão: o estado de cada um é o do critério de aceite. A coleta só acontece onde a variável ENERGIA_CCEE_COLETA=1 está definida (passo do pipeline em atualizar-energia.yml); sem ela, o módulo relê o bronze, sem rede.",
+   "coleta_neste_ambiente": "habilitada (ENERGIA_CCEE_COLETA=1)"
   },
   "capturas": [
    {
     "dataset": "ccee_agente_qtd_contabilizacao",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:45:36Z",
-    "ultima_captura": "2026-10-01T00:45:39Z",
+    "primeira_captura": "2026-10-06T19:59:03Z",
+    "ultima_captura": "2026-10-06T19:59:06Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_consumo_classe_agente",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:45:31Z",
-    "ultima_captura": "2026-10-01T00:45:34Z",
+    "primeira_captura": "2026-10-06T19:58:57Z",
+    "ultima_captura": "2026-10-06T19:59:00Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_consumo_mensal_ambiente_comercializacao",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:45:25Z",
-    "ultima_captura": "2026-10-01T00:45:29Z",
+    "primeira_captura": "2026-10-06T19:58:49Z",
+    "ultima_captura": "2026-10-06T19:58:55Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_desligamento_compulsorio",
     "vintages": 1,
-    "primeira_captura": "2026-10-01T00:45:55Z",
-    "ultima_captura": "2026-10-01T00:45:55Z",
+    "primeira_captura": "2026-10-06T19:59:26Z",
+    "ultima_captura": "2026-10-06T19:59:26Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_desligamento_voluntario",
     "vintages": 1,
-    "primeira_captura": "2026-10-01T00:45:53Z",
-    "ultima_captura": "2026-10-01T00:45:53Z",
+    "primeira_captura": "2026-10-06T19:59:23Z",
+    "ultima_captura": "2026-10-06T19:59:23Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_encargo_ess_ancilar",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:46:58Z",
-    "ultima_captura": "2026-10-01T00:47:01Z",
+    "primeira_captura": "2026-10-06T20:00:39Z",
+    "ultima_captura": "2026-10-06T20:00:42Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_encargo_pgto_mensal",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:47:07Z",
-    "ultima_captura": "2026-10-01T00:47:10Z",
+    "primeira_captura": "2026-10-06T20:00:52Z",
+    "ultima_captura": "2026-10-06T20:00:55Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_garantia_fisica_sazo_mre_submercado",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:46:47Z",
-    "ultima_captura": "2026-10-01T00:46:51Z",
+    "primeira_captura": "2026-10-06T20:00:29Z",
+    "ultima_captura": "2026-10-06T20:00:33Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_geracao_submercado",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:46:42Z",
-    "ultima_captura": "2026-10-01T00:46:45Z",
+    "primeira_captura": "2026-10-06T20:00:24Z",
+    "ultima_captura": "2026-10-06T20:00:27Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_infomercado",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T05:48:22Z",
-    "ultima_captura": "2026-10-01T06:07:41Z",
+    "primeira_captura": "2026-10-06T20:01:05Z",
+    "ultima_captura": "2026-10-06T20:01:09Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_lista_agente_associado",
     "vintages": 2,
-    "primeira_captura": "2026-10-01T00:45:41Z",
-    "ultima_captura": "2026-10-01T00:45:45Z",
+    "primeira_captura": "2026-10-06T19:59:09Z",
+    "ultima_captura": "2026-10-06T19:59:13Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_lista_perfil_v1",
     "vintages": 1,
-    "primeira_captura": "2026-10-01T00:45:51Z",
-    "ultima_captura": "2026-10-01T00:45:51Z",
+    "primeira_captura": "2026-10-06T19:59:19Z",
+    "ultima_captura": "2026-10-06T19:59:19Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_mre_mensal",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:46:52Z",
-    "ultima_captura": "2026-10-01T00:46:55Z",
+    "primeira_captura": "2026-10-06T20:00:35Z",
+    "ultima_captura": "2026-10-06T20:00:38Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_parcela_carga_consumo",
     "vintages": 3,
-    "primeira_captura": "2026-10-01T00:46:00Z",
-    "ultima_captura": "2026-10-01T00:46:32Z",
+    "primeira_captura": "2026-10-06T19:59:32Z",
+    "ultima_captura": "2026-10-06T20:00:11Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_rd_encargos_contab_mensal",
     "vintages": 3,
-    "primeira_captura": "2026-10-01T05:53:08Z",
-    "ultima_captura": "2026-10-01T05:53:11Z",
+    "primeira_captura": "2026-10-06T20:00:44Z",
+    "ultima_captura": "2026-10-06T20:00:46Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_reserva_encargo",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:47:02Z",
-    "ultima_captura": "2026-10-01T00:47:05Z",
+    "primeira_captura": "2026-10-06T20:00:48Z",
+    "ultima_captura": "2026-10-06T20:00:51Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_sumario_mensal_compra_venda_submercado",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:47:12Z",
-    "ultima_captura": "2026-10-01T00:47:15Z",
+    "primeira_captura": "2026-10-06T20:00:57Z",
+    "ultima_captura": "2026-10-06T20:01:00Z",
     "origem": "coleta_direta"
    },
    {
     "dataset": "ccee_sumario_mensal_liquidacao",
     "vintages": 4,
-    "primeira_captura": "2026-10-01T00:47:17Z",
-    "ultima_captura": "2026-10-01T00:47:20Z",
+    "primeira_captura": "2026-10-06T20:01:02Z",
+    "ultima_captura": "2026-10-06T20:01:04Z",
     "origem": "coleta_direta"
    }
   ],
   "conjuntos": [
    {
     "dataset": "ccee_agente_qtd_contabilizacao",
-    "ultima_tentativa": "2026-10-01T00:45:39Z",
+    "ultima_tentativa": "2026-10-06T19:59:06Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_consumo_classe_agente",
-    "ultima_tentativa": "2026-10-01T00:45:34Z",
+    "ultima_tentativa": "2026-10-06T19:59:00Z",
     "tentativas_ok": 4,
-    "tentativas": 5
+    "tentativas": 4
    },
    {
     "dataset": "ccee_consumo_mensal_ambiente_comercializacao",
-    "ultima_tentativa": "2026-10-01T00:45:29Z",
+    "ultima_tentativa": "2026-10-06T19:58:55Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_desligamento_compulsorio",
-    "ultima_tentativa": "2026-10-01T00:45:55Z",
+    "ultima_tentativa": "2026-10-06T19:59:26Z",
     "tentativas_ok": 1,
     "tentativas": 1
    },
    {
     "dataset": "ccee_desligamento_voluntario",
-    "ultima_tentativa": "2026-10-01T00:45:53Z",
+    "ultima_tentativa": "2026-10-06T19:59:23Z",
     "tentativas_ok": 1,
     "tentativas": 1
    },
    {
     "dataset": "ccee_encargo_ess_ancilar",
-    "ultima_tentativa": "2026-10-01T00:47:01Z",
+    "ultima_tentativa": "2026-10-06T20:00:42Z",
     "tentativas_ok": 4,
-    "tentativas": 8
+    "tentativas": 4
    },
    {
     "dataset": "ccee_encargo_pgto_mensal",
-    "ultima_tentativa": "2026-10-01T00:47:10Z",
+    "ultima_tentativa": "2026-10-06T20:00:55Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_garantia_fisica_sazo_mre_submercado",
-    "ultima_tentativa": "2026-10-01T00:46:51Z",
+    "ultima_tentativa": "2026-10-06T20:00:33Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_geracao_submercado",
-    "ultima_tentativa": "2026-10-01T00:46:45Z",
+    "ultima_tentativa": "2026-10-06T20:00:27Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_infomercado",
-    "ultima_tentativa": "2026-10-01T06:08:32Z",
-    "tentativas_ok": 5,
-    "tentativas": 5
+    "ultima_tentativa": "2026-10-06T20:01:09Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
    },
    {
     "dataset": "ccee_lista_agente_associado",
-    "ultima_tentativa": "2026-10-01T00:45:46Z",
+    "ultima_tentativa": "2026-10-06T19:59:14Z",
     "tentativas_ok": 2,
     "tentativas": 2
    },
    {
     "dataset": "ccee_lista_perfil_v1",
-    "ultima_tentativa": "2026-10-01T00:47:38Z",
+    "ultima_tentativa": "2026-10-06T19:59:19Z",
     "tentativas_ok": 1,
-    "tentativas": 3
+    "tentativas": 1
    },
    {
     "dataset": "ccee_mre_mensal",
-    "ultima_tentativa": "2026-10-01T00:46:55Z",
+    "ultima_tentativa": "2026-10-06T20:00:38Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_parcela_carga_consumo",
-    "ultima_tentativa": "2026-10-01T00:46:35Z",
+    "ultima_tentativa": "2026-10-06T20:00:14Z",
     "tentativas_ok": 3,
     "tentativas": 3
    },
    {
     "dataset": "ccee_rd_encargos_contab_mensal",
-    "ultima_tentativa": "2026-10-01T05:53:11Z",
+    "ultima_tentativa": "2026-10-06T20:00:46Z",
     "tentativas_ok": 3,
     "tentativas": 3
    },
    {
     "dataset": "ccee_reserva_encargo",
-    "ultima_tentativa": "2026-10-01T00:47:05Z",
+    "ultima_tentativa": "2026-10-06T20:00:51Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_sumario_mensal_compra_venda_submercado",
-    "ultima_tentativa": "2026-10-01T00:47:15Z",
+    "ultima_tentativa": "2026-10-06T20:01:00Z",
     "tentativas_ok": 4,
     "tentativas": 4
    },
    {
     "dataset": "ccee_sumario_mensal_liquidacao",
-    "ultima_tentativa": "2026-10-01T00:47:20Z",
+    "ultima_tentativa": "2026-10-06T20:01:04Z",
     "tentativas_ok": 4,
     "tentativas": 4
    }
@@ -15001,8 +15127,8 @@
    "id": "P032",
    "titulo": "Livre e regulado",
    "pergunta": "Como se distribui o consumo entre o mercado livre e o regulado?",
-   "resposta": "De setembro de 2025 a agosto de 2026, o mercado livre respondeu por 45,3% do consumo de energia elétrica na rede apurado pela EPE, participação maior que a dos 12 meses anteriores (44,2%). Na contabilização da CCEE, que mede o consumo no centro de gravidade, o ACL teve 42,5% do consumo de agosto de 2025 a julho de 2026, sem a exportação para outros países (42,8% se a exportação for somada ao ACL, como faz o conjunto de consumo por ambiente).",
-   "estado_dados": "pendente_decisao_acesso",
+   "resposta": "De setembro de 2025 a agosto de 2026, o mercado livre respondeu por 45,3% do consumo de energia elétrica na rede apurado pela EPE, participação maior que a dos 12 meses anteriores (44,2%). Na contabilização da CCEE, que mede o consumo no centro de gravidade, o ACL teve 42,4% do consumo de setembro de 2025 a agosto de 2026, sem a exportação para outros países (42,7% se a exportação for somada ao ACL, como faz o conjunto de consumo por ambiente).",
+   "estado_dados": "concluido_com_limitacao",
    "estado_criterio": "concluido_com_limitacao",
    "depende_da_ccee": true,
    "criterio_aceite": "ACL+ACR reconcilia com o universo escolhido, sem igualar automaticamente à carga do ONS.",
@@ -15016,7 +15142,7 @@
     {
      "nome": "CCEE: soma das classes de agente = ACR + ACL do conjunto de ambiente (+ classe Varejista a partir de fevereiro de 2026)",
      "resultado": "aprovado",
-     "detalhe": "39 meses conferidos (tolerância de 5 MW médios)",
+     "detalhe": "40 meses conferidos (tolerância de 5 MW médios)",
      "essencial": true
     },
     {
@@ -15044,7 +15170,6 @@
     "distribuidoras_samp"
    ],
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
     "Três universos com perímetros diferentes (consumo na rede da EPE, consumo contabilizado da CCEE no centro de gravidade, mercado faturado das distribuidoras no SAMP): nenhum é igualado à carga do ONS.",
     "Na CCEE, a participação do ACL é calculada sem a exportação para outros países, que o conjunto de consumo por ambiente soma ao ACL; o valor com exportação segue ao lado.",
     "Os conjuntos abertos da CCEE começam em 2023; antes disso, só a EPE (desde 2004)."
@@ -15054,8 +15179,8 @@
    "id": "P033",
    "titulo": "Agentes e migração",
    "pergunta": "Quem participa do mercado e como a composição mudou?",
-   "resposta": "Em julho de 2026, 16.376 agentes participaram da contabilização da CCEE. A EPE contou 96.618 unidades consumidoras no mercado livre em agosto de 2026, 14.569 a mais que 12 meses antes. Na CCEE, 46.751 parcelas de carga de agentes do ACL foram contabilizadas em julho de 2026, sem contar as 139 parcelas das distribuidoras, que representam o ACR. No cadastro de perfis da CCEE (no arquivo com data de modificação de 01/09/2026 informada pelo portal), 47.358 perfis ativos pertenciam a 16.365 agentes: agente, perfil, parcela de carga e unidade consumidora são contagens diferentes.",
-   "estado_dados": "pendente_decisao_acesso",
+   "resposta": "Em agosto de 2026, 16.389 agentes participaram da contabilização da CCEE. A EPE contou 96.618 unidades consumidoras no mercado livre em agosto de 2026, 14.569 a mais que 12 meses antes. Na CCEE, 47.022 parcelas de carga de agentes do ACL foram contabilizadas em agosto de 2026, sem contar as 138 parcelas das distribuidoras, que representam o ACR. No cadastro de perfis da CCEE (no arquivo com data de modificação de 01/10/2026 informada pelo portal), 47.433 perfis ativos pertenciam a 16.378 agentes: agente, perfil, parcela de carga e unidade consumidora são contagens diferentes.",
+   "estado_dados": "concluido_com_limitacao",
    "estado_criterio": "concluido_com_limitacao",
    "depende_da_ccee": true,
    "criterio_aceite": "Sem chamar novos perfis de novas empresas; cancelamentos e migrações definidos.",
@@ -15069,19 +15194,19 @@
     {
      "nome": "Parcelas de carga do ACL sem as parcelas das distribuidoras (ACR), conferidas com o consumo por classe no último mês",
      "resultado": "aprovado",
-     "detalhe": "2026-07: 46.751 parcelas do ACL, 139 das distribuidoras à parte; resíduo de 2,15 MW médios no ACL; 5 meses da série fora da tolerância (marcados)",
+     "detalhe": "2026-08: 47.022 parcelas do ACL, 138 das distribuidoras à parte; resíduo de 0,26 MW médios no ACL; 5 meses da série fora da tolerância (marcados)",
      "essencial": true
     },
     {
      "nome": "Entrada e saída de agente pelo CNPJ; desligamento pela lista oficial da CCEE (voluntário ou compulsório, com sucessão)",
      "resultado": "aprovado",
-     "detalhe": "12 meses de lista de associados; desligamentos de 2010 a 2026 por tipo, ano corrente marcado como parcial",
+     "detalhe": "13 meses de lista de associados; desligamentos de 2010 a 2026 por tipo, ano corrente marcado como parcial",
      "essencial": true
     },
     {
      "nome": "Migração definida como parcela de carga com data de migração no mês de referência",
      "resultado": "aprovado",
-     "detalhe": "28 meses",
+     "detalhe": "29 meses",
      "essencial": true
     }
    ],
@@ -15091,7 +15216,6 @@
     "distribuidoras_samp"
    ],
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
     "O cadastro de perfis da CCEE é uma posição (sem histórico mensal), com a data de modificação informada pelo portal; a lista de associados mês a mês começa em outubro de 2025.",
     "As parcelas de carga das distribuidoras (uma por área de concessão) são o consumo do ACR e ficam fora da contagem do ACL; as cargas representadas por varejista não são parcelas no conjunto.",
     "Saída da lista de associados não é sinônimo de desligamento (sucessão e mudança de CNPJ também tiram um CNPJ da lista)."
@@ -15101,8 +15225,8 @@
    "id": "P034",
    "titulo": "MRE e GSF",
    "pergunta": "Como foi o ajuste da garantia física das hidrelétricas do MRE?",
-   "resposta": "O fator de ajuste do MRE (GSF) foi de 76,8% em julho de 2026 e de 80,4% nos 12 meses até julho de 2026: no período, as hidrelétricas do MRE geraram menos que a garantia física ajustada. O InfoMercado Nº 229 da CCEE publica 92,55% como ajuste médio do MRE nos últimos doze meses, número que o observatório não reproduz com os dados abertos por nenhuma das definições testadas; a divergência fica registrada na evidência.",
-   "estado_dados": "pendente_decisao_acesso",
+   "resposta": "O fator de ajuste do MRE (GSF) foi de 78,9% em agosto de 2026 e de 81,8% nos 12 meses até agosto de 2026: no período, as hidrelétricas do MRE geraram menos que a garantia física ajustada.",
+   "estado_dados": "parcial",
    "estado_criterio": "parcial",
    "depende_da_ccee": true,
    "criterio_aceite": "GSF reconciliado à publicação oficial; garantia física e geração não misturadas.",
@@ -15131,8 +15255,7 @@
     "risco_hidrologico_acr"
    ],
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
-    "O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE; o número de 12 meses do InfoMercado não é reproduzido por nenhuma definição testada e a divergência fica publicada.",
+    "O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE; o InfoMercado Nº 229 publica 92,55% para o ajuste médio do MRE nos últimos doze meses e a razão de energias do observatório dá 80,43% na janela do boletim (12,12 p.p. de diferença): nenhuma definição testada reproduz o número do boletim, a divergência fica publicada e as outras edições do boletim não foram conferidas.",
     "A série aberta começa em 2023; o painel não infere exposição financeira de nenhuma usina ou agente."
    ]
   },
@@ -15140,8 +15263,8 @@
    "id": "P035",
    "titulo": "Encargos e contabilização",
    "pergunta": "Quais custos públicos aparecem na liquidação do mercado de curto prazo?",
-   "resposta": "Nos 12 meses de competência até julho de 2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão. O encargo de energia de reserva somou R$ 10,20 bilhões nos 12 meses até agosto de 2026. Na liquidação de julho de 2026, a inadimplência foi de 20,4% do valor a liquidar.",
-   "estado_dados": "pendente_decisao_acesso",
+   "resposta": "Nos 12 meses de competência até agosto de 2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão. O encargo de energia de reserva somou R$ 10,20 bilhões nos 12 meses até agosto de 2026. Na liquidação de julho de 2026, a inadimplência foi de 20,4% do valor a liquidar.",
+   "estado_dados": "concluido_com_limitacao",
    "estado_criterio": "concluido_com_limitacao",
    "depende_da_ccee": true,
    "criterio_aceite": "Nenhuma série inventada de PPA ou curva a termo; preços privados permanecem fora do escopo aberto.",
@@ -15174,7 +15297,7 @@
      "nome": "Pagamento de ESS: sequência repetida de zeros conferida (seção 11.7)",
      "resultado": "ressalva",
      "essencial": false,
-     "detalhe": "PAGAMENTO_ENCARGO_ESS = 0 de 2025-02 a 2026-07 (18 meses) com ESS positivo: zero não confirmado, publicado como nulo"
+     "detalhe": "PAGAMENTO_ENCARGO_ESS = 0 de 2025-02 a 2026-08 (19 meses) com ESS positivo: zero não confirmado, publicado como nulo"
     },
     {
      "nome": "Pagamento (total menos alívio, InfoMercado) × PAGAMENTO_ENCARGO_ESS + PAGAMENTO_ENCARGO_SE (divergência entre fontes, documentada)",
@@ -15195,9 +15318,8 @@
     "risco_hidrologico_acr"
    ],
    "limitacoes": [
-    "Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).",
     "Os encargos são valores de competência; o pagamento sai depois do alívio com recursos do mercado e aparece em série própria.",
-    "O pagamento de ESS publicado como 0 de fevereiro de 2025 a julho de 2026 não é confirmado por publicação independente e aparece como nulo com rótulo.",
+    "O pagamento de ESS publicado como 0 de fevereiro de 2025 a agosto de 2026 não é confirmado por publicação independente e aparece como nulo com rótulo.",
     "A liquidação de abril de 2025 não está no conjunto aberto; a lacuna aparece na série.",
     "A resposta da demanda entra no total do InfoMercado e do boletim do MME, mas não é coluna do conjunto aberto de encargos."
    ]
@@ -15213,7 +15335,7 @@
    "descricao": "Edições mensais do Boletim de Monitoramento do MME anteriores a 2026 no formato atual (tabela de encargos por tipo e consumo por ambiente).",
    "evidencia": {
     "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2025",
-    "capturado_em": "2026-10-01T06:01:47Z",
+    "capturado_em": "2026-10-02T04:27:48Z",
     "sha256": "24da80f67f0f68c9d0cc3b752407b3928fc393d647bf65f7d662119845cfef45",
     "pdfs_encontrados": 0,
     "observacao": "Acesso restrito por login: as páginas das pastas de 2023, 2024, 2025 devolvem o formulário de login do portal (acl_users/credentials_cookie_auth/require_login, com came_from apontando para a própria pasta), sem nenhum PDF; o acesso não foi tentado por outro caminho. A página índice lista as pastas de 2011 a 2022 (formato antigo) e a de 2026.",
@@ -15221,15 +15343,15 @@
      {
       "ano": "2023",
       "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2023",
-      "capturado_em": "2026-10-01T07:37:31Z",
-      "sha256": "4a62b122f025433c6dbe437ff8da8c8c665c7060ed22a61ad484028c3ae7e807",
+      "capturado_em": "2026-10-02T04:27:51Z",
+      "sha256": "eed795ff8b138ced5139cbbea547f101355535e102ade78264e2931254d19f0e",
       "pdfs_encontrados": 0,
       "redireciona_login": true
      },
      {
       "ano": "2024",
       "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2024",
-      "capturado_em": "2026-10-01T07:37:29Z",
+      "capturado_em": "2026-10-03T03:35:24Z",
       "sha256": "7aaac76af2707e2a052c1b676652194705cdd55d49d29dd88a2cc692bcc2198c",
       "pdfs_encontrados": 0,
       "redireciona_login": true
@@ -15237,7 +15359,7 @@
      {
       "ano": "2025",
       "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2025",
-      "capturado_em": "2026-10-01T06:01:47Z",
+      "capturado_em": "2026-10-02T04:27:48Z",
       "sha256": "24da80f67f0f68c9d0cc3b752407b3928fc393d647bf65f7d662119845cfef45",
       "pdfs_encontrados": 0,
       "redireciona_login": true
@@ -15245,7 +15367,7 @@
     ]
    },
    "alternativas": [
-    "Boletim especial 'Consolidação 2025' do MME (página pública, PDF capturado em 2026-10-01T07:37:32Z): integrado para a conferência anual do ESS e da participação do ACL",
+    "Boletim especial 'Consolidação 2025' do MME (página pública, PDF capturado em 2026-10-05T02:30:46Z): integrado para a conferência anual do ESS e da participação do ACL",
     "Conjunto ENCARGO_ESS_ANCILAR da CCEE (integrado: cobre de 2023 em diante)",
     "Dados abertos de consumo mensal da EPE (integrados: cobrem de 2004 em diante)"
    ],
@@ -15263,8 +15385,8 @@
    "descricao": "Planilhas 'InfoMercado Dados Gerais' da CCEE (uma por ano, de 2013 a maio de 2024), que estenderiam antes de 2023 as séries de consumo por ambiente, GSF e encargos.",
    "evidencia": {
     "url": "https://www.ccee.org.br/web/guest/dados-e-analises/dados-mercado-mensal",
-    "capturado_em": "2026-10-01T06:07:41Z",
-    "sha256": "b27398273a6558c0449393092d791ad83906d416050859c1abd074e4699cbdf5",
+    "capturado_em": "2026-10-06T20:01:05Z",
+    "sha256": "741e6bf98aef1b330e81b35523e4ea0f40379b3f29a6b46570d37704e75c7d03",
     "observacao": "A página Mercado Mensal lista as planilhas (Dados Gerais e Dados Individuais) e a edição corrente do InfoMercado em PDF; os conjuntos abertos usados aqui começam em 2023."
    },
    "efeito": "GSF, consumo contabilizado por ambiente e encargos da CCEE não têm série anterior a 2023 neste observatório; o consumo cativo e livre da EPE cobre desde 2004 e o risco hidrológico do ACR (Conta Bandeira) desde 2015."

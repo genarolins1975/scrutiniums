@@ -1,0 +1,144 @@
+{
+ "descricao": "Páginas de cada um dos nove revisores em contexto limpo (mesmos grupos desde a r7, para a comparação entre rodadas valer como ordem de grandeza). As instâncias de agente mudam a cada rodada.",
+ "grupos": {
+  "R1": {
+   "escopo": "página inicial, Visão geral e Aprenda",
+   "rotas": [
+    "/setor-eletrico",
+    "/setor-eletrico/visao-geral",
+    "/setor-eletrico/aprenda",
+    "/setor-eletrico/aprenda/trilhas",
+    "/setor-eletrico/aprenda/trilhas/agua-operacao-preco",
+    "/setor-eletrico/aprenda/trilhas/custo-tarifa-orcamento",
+    "/setor-eletrico/aprenda/acl",
+    "/setor-eletrico/aprenda/cde",
+    "/setor-eletrico/aprenda/dessem",
+    "/setor-eletrico/aprenda/gsf",
+    "/setor-eletrico/aprenda/percentual-regulatorio-de-perdas",
+    "/setor-eletrico/aprenda/tarifa-te-tusd",
+    "/setor-eletrico/aprenda/ear",
+    "/setor-eletrico/aprenda/pld"
+   ]
+  },
+  "R2": {
+   "escopo": "Água e clima, Carga e Rede",
+   "rotas": [
+    "/setor-eletrico/agua-e-clima",
+    "/setor-eletrico/agua-e-clima/afluencia",
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+    "/setor-eletrico/agua-e-clima/reservatorios",
+    "/setor-eletrico/carga",
+    "/setor-eletrico/carga/clima-e-calendario",
+    "/setor-eletrico/carga/perfil-horario",
+    "/setor-eletrico/rede",
+    "/setor-eletrico/rede/balanco-e-exterior",
+    "/setor-eletrico/rede/programado",
+    "/setor-eletrico/rede/restricoes"
+   ]
+  },
+  "R3": {
+   "escopo": "PLD, modelos e previsões",
+   "rotas": [
+    "/setor-eletrico/pld",
+    "/setor-eletrico/pld/cmo-e-formacao",
+    "/setor-eletrico/pld/diferencas-regionais",
+    "/setor-eletrico/pld/historico",
+    "/setor-eletrico/pld/limites",
+    "/setor-eletrico/pld/modelos",
+    "/setor-eletrico/pld/modelos/b0",
+    "/setor-eletrico/pld/modelos/c1",
+    "/setor-eletrico/pld/modelos/c2-h",
+    "/setor-eletrico/pld/modelos/c2-p",
+    "/setor-eletrico/pld/modelos/s0",
+    "/setor-eletrico/pld/previsoes"
+   ]
+  },
+  "R4": {
+   "escopo": "Geração, Mercado e Regulação",
+   "rotas": [
+    "/setor-eletrico/geracao",
+    "/setor-eletrico/geracao/capacidade",
+    "/setor-eletrico/geracao/restricoes",
+    "/setor-eletrico/geracao/termica",
+    "/setor-eletrico/mercado",
+    "/setor-eletrico/mercado/agentes",
+    "/setor-eletrico/mercado/encargos",
+    "/setor-eletrico/mercado/mre-e-gsf",
+    "/setor-eletrico/regulacao",
+    "/setor-eletrico/regulacao/consultas-e-agenda",
+    "/setor-eletrico/regulacao/linha-do-tempo"
+   ]
+  },
+  "R5": {
+   "escopo": "Conta de luz, Perdas, Qualidade e Território",
+   "rotas": [
+    "/setor-eletrico/conta-de-luz",
+    "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+    "/setor-eletrico/perdas",
+    "/setor-eletrico/perdas/composicao",
+    "/setor-eletrico/perdas/custo-e-contexto",
+    "/setor-eletrico/perdas/regulatorio",
+    "/setor-eletrico/qualidade",
+    "/setor-eletrico/territorio"
+   ]
+  },
+  "R6": {
+   "escopo": "Inclusão energética e Transição",
+   "rotas": [
+    "/setor-eletrico/inclusao-energetica",
+    "/setor-eletrico/inclusao-energetica/acesso",
+    "/setor-eletrico/inclusao-energetica/cobertura",
+    "/setor-eletrico/inclusao-energetica/orcamento",
+    "/setor-eletrico/inclusao-energetica/tarifa-social",
+    "/setor-eletrico/transicao",
+    "/setor-eletrico/transicao/emissoes",
+    "/setor-eletrico/transicao/energia-estimada",
+    "/setor-eletrico/transicao/mmgd"
+   ]
+  },
+  "R7": {
+   "escopo": "Empresas e fichas de distribuidoras",
+   "rotas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/ativos",
+    "/setor-eletrico/empresas/controle",
+    "/setor-eletrico/empresas/distribuidoras",
+    "/setor-eletrico/empresas/financas",
+    "/setor-eletrico/empresas/ambar-amazonas",
+    "/setor-eletrico/empresas/cerbranorte",
+    "/setor-eletrico/empresas/certhil",
+    "/setor-eletrico/empresas/cpfl-piratining",
+    "/setor-eletrico/empresas/emt",
+    "/setor-eletrico/empresas/uhenpal",
+    "/setor-eletrico/empresas/cemig-d"
+   ]
+  },
+  "R8": {
+   "escopo": "Expansão, Dados e Metodologia",
+   "rotas": [
+    "/setor-eletrico/expansao",
+    "/setor-eletrico/expansao/carteira",
+    "/setor-eletrico/expansao/cenarios",
+    "/setor-eletrico/expansao/cronograma",
+    "/setor-eletrico/expansao/geracao-e-transmissao",
+    "/setor-eletrico/metodologia",
+    "/setor-eletrico/dados",
+    "/setor-eletrico/dados/saude",
+    "/setor-eletrico/dados/reproducao"
+   ]
+  },
+  "R9": {
+   "escopo": "Fichas de conjuntos de dados",
+   "rotas": [
+    "/setor-eletrico/dados/aneel-agentes-geracao",
+    "/setor-eletrico/dados/aneel-pautas-atas-diretoria",
+    "/setor-eletrico/dados/ccee-lista-agente-associado",
+    "/setor-eletrico/dados/ibge-pof-cv",
+    "/setor-eletrico/dados/ons-ena-diario-por-bacia",
+    "/setor-eletrico/dados/senado-leis-feriados",
+    "/setor-eletrico/dados/aneel-scs",
+    "/setor-eletrico/dados/ibge-pof-6715"
+   ]
+  }
+ }
+}

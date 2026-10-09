@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
-import { TextoEnergia } from "@/components/energia/TextoEnergia";
-import Link from "next/link";
+import Link from "@/components/energia/LinkSemPrefetch";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, comUnidade, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, conjuntosLegiveis, datasLegiveis, enumLegivel, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
+import { TextoEnergia } from "@/components/energia/TextoEnergia";
 
 /**
  * Conteúdo de cada regra do "O que observar" (P007), montado no servidor e entregue ao
@@ -16,16 +17,36 @@ import { ROTA_VISAO, comUnidade, somaDias, textoLinhaEstado, textoValorRegra, tr
  * frequência de disparo no histórico e o registro das publicações).
  */
 
-export function VisaoRegraResumo({ o }: { o: RegraObservar }) {
+/** `caminho` é o lugar da regra na gold ("observar[3]"), para a ficha de prova ser lida sob demanda. */
+export function VisaoRegraResumo({
+  o,
+  caminho,
+  nota,
+  titulosConjuntos = {},
+}: {
+  o: RegraObservar;
+  caminho?: string;
+  nota?: string | null;
+  /** Título de cada conjunto no painel de saúde dos dados, para o texto do leitor não citar o identificador interno. */
+  titulosConjuntos?: Readonly<Record<string, string>>;
+}) {
   const valor = textoValorRegra(o);
+  const evidencia = conjuntosLegiveis(enumLegivel(datasLegiveis(o.evidencia)), titulosConjuntos);
   const le = o.linha_estado;
   const trechos = trechosEstado(le);
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;
   return (
     <div className="space-y-1.5">
       <p className="text-sm leading-relaxed text-carvao-muted">
-        <TextoEnergia texto={o.evidencia} />
+        <TextoDoLeitor texto={evidencia.texto} />
+        {evidencia.ids.length > 0 && <span data-nivel="analisar"> Identificador do conjunto: {evidencia.ids.join(", ")}.</span>}
       </p>
+      {nota && (
+        <p className="text-xs leading-relaxed text-carvao" data-nota-regra={o.id}>
+          <span className="rotulo mr-2 text-mineral">Para ler junto</span>
+          {nota}
+        </p>
+      )}
       {valor && (
         <p className="text-xs text-carvao-muted">
           <span className="text-carvao">Valor avaliado:</span> {valor}
@@ -33,14 +54,18 @@ export function VisaoRegraResumo({ o }: { o: RegraObservar }) {
         </p>
       )}
       {o.evidencia_numero ? (
-        <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        caminho ? (
+          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: o.titulo, valorExibido: o.evidencia_numero.valor_exibido }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        ) : (
+          <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        )
       ) : o.evidencia_problemas?.length ? (
         <p className="text-xs text-aviso">Evidência do número não publicada: {o.evidencia_problemas.join("; ")}</p>
       ) : null}
       {le?.inicio && fim && trechos.length > 0 && (
         <div className="pt-1">
           <VisaoFaixaEstados trechos={trechos} inicio={le.inicio} fim={fim} rotulo={`Linha de estado de ${o.titulo}: ${textoLinhaEstado(o) ?? ""}`} />
-          <p className="mt-0.5 flex justify-between text-[11px] text-mineral" aria-hidden="true">
+          <p className="mt-0.5 flex justify-between text-xs text-mineral" aria-hidden="true">
             <span>{dataBR(le.inicio)}</span>
             <span>{dataBR(fim)}</span>
           </p>
@@ -105,7 +130,7 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
       )}
       {h ? (
         <p className="text-sm leading-relaxed text-carvao-muted">
-          Histórico reavaliado com os dados de hoje, avaliável desde {dataBR(h.primeiro_dia_avaliado)} ({plural(h.dias_avaliados, "dia", "dias")} avaliados): condição em{" "}
+          Histórico reavaliado com os dados da data de processamento, avaliável desde {dataBR(h.primeiro_dia_avaliado)} ({plural(h.dias_avaliados, "dia", "dias")} avaliados): condição em{" "}
           {num(h.pct_dias_com_condicao, 1)}% dos dias e alerta exibido em {num(h.pct_dias_exibidos, 1)}%; {plural(h.episodios, "episódio", "episódios")}
           {h.episodios_por_ano !== null ? ` (${num(h.episodios_por_ano, 1)} por ano)` : " (frequência anual não estimável com menos de um ano avaliado)"}; {plural(h.acionamentos_brutos, "acionamento", "acionamentos")}, dos quais{" "}
           {plural(h.acionamentos_curtos_descartados, "foi descartado", "foram descartados")} por durar menos que o mínimo
@@ -122,15 +147,19 @@ export function VisaoRegraDetalhe({ o }: { o: RegraObservar }) {
           {o.conferencia_limites ? ` Conferência com a Regulação: ${o.conferencia_limites.resultado === "aprovado" ? "valores iguais" : "com ressalva"}.` : ""}
         </p>
       )}
-      {o.conjuntos_avaliados && <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">Conjuntos avaliados: {o.conjuntos_avaliados.join(", ")}.</p>}
+      {o.conjuntos_avaliados && (
+        <p data-nivel="auditar" className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
+          Conjuntos avaliados: {o.conjuntos_avaliados.join(", ")}.
+        </p>
+      )}
       {o.coleta_direta && (
-        <p className="text-sm text-carvao-muted">
+        <p data-nivel="auditar" className="text-sm text-carvao-muted">
           Última tentativa de coleta direta registrada: {o.coleta_direta.tentado_em ? carimbo(o.coleta_direta.tentado_em) : "sem registro"}
           {o.coleta_direta.ok === false ? ", sem sucesso" : o.coleta_direta.ok ? ", com sucesso" : ""} ({o.coleta_direta.fonte}).
         </p>
       )}
       {o.bloqueios_registrados && o.bloqueios_registrados.length > 0 && (
-        <ul className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
+        <ul data-nivel="auditar" className="space-y-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
           {o.bloqueios_registrados.map((b) => (
             <li key={b.fonte + b.evidencia}>
               Bloqueio registrado ({b.origem}): {b.fonte}. <TextoEnergia texto={b.evidencia} />

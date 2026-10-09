@@ -20,10 +20,10 @@ import type { Conceito, FonteOficial } from "./conceitos";
 
 const URL_REN1032 = "https://www2.aneel.gov.br/cedoc/ren20221032.pdf";
 const DOC_REN1032 =
-  "Resolução Normativa ANEEL nº 1.032, de 26 de julho de 2022 (texto lido na cópia pública https://web.archive.org/web/20240414122616id_/https://www2.aneel.gov.br/cedoc/ren20221032.pdf, sha256 df67f43f2248)";
+  "Resolução Normativa ANEEL nº 1.032, de 26 de julho de 2022 (texto lido na cópia pública do Internet Archive de 14/04/2024; endereço e sha256 no módulo Regulação)";
 const URL_PRT7030 = "https://www2.aneel.gov.br/cedoc/prt20257030.pdf";
 const DOC_PRT7030 =
-  "Portaria ANEEL nº 7.030, de 2 de dezembro de 2025 (texto lido na cópia pública https://web.archive.org/web/20260115144238id_/https://www2.aneel.gov.br/cedoc/prt20257030.pdf, sha256 d3616e09c45b)";
+  "Portaria ANEEL nº 7.030, de 2 de dezembro de 2025 (texto lido na cópia pública do Internet Archive de 15/01/2026; endereço e sha256 no módulo Regulação)";
 
 const ren1032 = (trecho: string, parafrase?: string): FonteOficial => ({ orgao: "ANEEL", documento: DOC_REN1032, url: URL_REN1032, trecho, parafrase });
 const prt7030 = (trecho: string, parafrase?: string): FonteOficial => ({ orgao: "ANEEL", documento: DOC_PRT7030, url: URL_PRT7030, trecho, parafrase });

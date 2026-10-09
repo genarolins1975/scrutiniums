@@ -1266,7 +1266,7 @@ def _distribuidoras(ins, cnpjs_rel, pd, vinculos, municipios, uf_sm, hoje, sm_mu
                 f"sem balanço no SAMP em {ref_perdas.get('ano')}; última competência publicada: {p.get('ultima_competencia')}"
                 + ("" if p.get("ativa") else " (distribuidora encerrada ou absorvida)")))
         else:
-            ind["perdas"] = _bloco_ind(None, None, "CNPJ sem balanço na gold de Perdas")
+            ind["perdas"] = _bloco_ind(None, None, "CNPJ sem balanço na base de Perdas")
         q = qd.get(cn)
         if q and q.get("dec") is not None:
             ind["qualidade"] = _bloco_ind({
@@ -1277,7 +1277,7 @@ def _distribuidoras(ins, cnpjs_rel, pd, vinculos, municipios, uf_sm, hoje, sm_mu
         else:
             ind["qualidade"] = _bloco_ind(None, None, (
                 f"ano {q.get('ano')} parcial: o módulo Qualidade só publica DEC e FEC anuais com os 12 meses e a fonte trouxe "
-                f"{q.get('meses')} meses" if q else "CNPJ sem indicadores de continuidade na gold de Qualidade"))
+                f"{q.get('meses')} meses" if q else "CNPJ sem indicadores de continuidade na base de Qualidade"))
         t = tv.get(cn)
         if t:
             ind["tarifa"] = _bloco_ind({
@@ -1660,18 +1660,18 @@ def _validacoes(linhas_mun, municipios, vinculos, distribuidoras, conjuntos, usi
     tot_fora = sum(len(v.get("d") or []) for v in fora.values())
     esperado = (mapa.get("municipios_compartilhados"), mapa.get("vinculos_nao_confirmados"), mapa.get("vinculos"))
     ok = esperado == (comp, nao_conf + nao_conf_fora, tot_v + tot_fora)
-    ctr.append({"nome": "Compartilhados, vínculos e vínculos sem confirmação iguais aos da gold de Perdas", "critico": False,
+    ctr.append({"nome": "Compartilhados, vínculos e vínculos sem confirmação iguais aos da base de Perdas", "critico": False,
                 "resultado": "aprovado" if ok else "ressalva",
                 "detalhe": (f"compartilhados {comp} (Perdas: {esperado[0]}); vínculos {tot_v} na malha + {tot_fora} de códigos fora "
                             f"dela (Perdas: {esperado[2]}); sem confirmação {nao_conf} + {nao_conf_fora} (Perdas: {esperado[1]})")})
-    # área por distribuidora contra a gold de Perdas (confirmados + só MMGD)
+    # área por distribuidora contra a base de Perdas (confirmados + só MMGD)
     pd = {d["cnpj"]: d for d in pg.get("distribuidoras") or []}
     difs = []
     for d in distribuidoras:
         t = (pd.get(d["cnpj"]) or {}).get("territorio") or {}
         if t and (t.get("confirmados"), t.get("so_mmgd")) != (d["area"]["confirmados"], d["area"]["so_mmgd"]):
             difs.append(f"{d['sigla']}: {d['area']['confirmados']}+{d['area']['so_mmgd']} contra {t.get('confirmados')}+{t.get('so_mmgd')}")
-    ctr.append({"nome": "Municípios por distribuidora iguais aos da gold de Perdas", "critico": False,
+    ctr.append({"nome": "Municípios por distribuidora iguais aos da base de Perdas", "critico": False,
                 "resultado": "aprovado" if not difs else "ressalva",
                 "detalhe": f"{len(distribuidoras)} distribuidoras; diferenças: {difs[:10] or 'nenhuma'}"})
     # relação de Perdas (2026) × relação de Qualidade (conjuntos do ano de referência): mesmo CNPJ por município
@@ -1964,7 +1964,7 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
                "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/indqual-municipio",
                "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/indqual-municipio",
                "licenca": "ODbL (ANEEL), CC-BY (ONS), uso livre com citação (IBGE e EPE)"},
-        unidade="municípios e referências", frequencia="a cada execução, sobre as golds publicadas",
+        unidade="municípios e referências", frequencia="a cada execução, sobre as bases publicadas",
         periodo=_periodo(ano_rel), cobertura=_periodo(ano_rel),
         capturado_em=prel.get("capturado_em") or (base.instante_utc(pm["gerado_em"]) if pm.get("gerado_em") else None),
         snapshot=snap, limitacoes=LIMITACOES[:3],

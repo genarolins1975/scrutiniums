@@ -39,6 +39,14 @@ import {
 /** Singular ou plural da palavra (o número fica no texto, ao lado). */
 const pl = (n: number, um: string, varios: string) => (n === 1 ? um : varios);
 
+/**
+ * Texto copiado de uma fonte, com o travessão que ela usa como pontuação trocado por vírgula, para entrar em frase do observatório
+ * ("Otimização – TEO" vira "Otimização, TEO"). O texto integral, sem mudança, continua em Analisar e no CSV.
+ */
+export function semTravessao(t: string): string {
+  return t.replace(/\s+[–—]\s*|\s*[–—]\s+/g, ", ");
+}
+
 /* ---------------------------------------------------------------- painéis e rotas */
 
 export type IdPainelRegulacao = "p044" | "p045" | "p046";
@@ -49,8 +57,8 @@ export type PainelRegulacao = { id: IdPainelRegulacao; codigo: string; rotulo: s
 
 /** Um painel por página: juntos, os três passariam da meta de cerca de 600 KB de HTML (contrato, seção 5.1). */
 export const PAINEIS_REGULACAO: PainelRegulacao[] = [
-  { id: "p044", codigo: "P044", rotulo: "Limites e regras de preço", rota: ROTA_REGULACAO, pergunta: "Quais regras de preço valem em cada período, e qual ato as fixou?" },
-  { id: "p045", codigo: "P045", rotulo: "Linha do tempo", rota: `${ROTA_REGULACAO}/linha-do-tempo`, pergunta: "O que mudou nas regras do setor, desde quando vale e quem é afetado?" },
+  { id: "p044", codigo: "P044", rotulo: "Limites e regras de preço", rota: ROTA_REGULACAO, pergunta: "Que regra vale em cada período?" },
+  { id: "p045", codigo: "P045", rotulo: "Linha do tempo", rota: `${ROTA_REGULACAO}/linha-do-tempo`, pergunta: "Que regras mudaram e quando passaram a valer?" },
   { id: "p046", codigo: "P046", rotulo: "Consultas e agenda", rota: `${ROTA_REGULACAO}/consultas-e-agenda`, pergunta: "Quais decisões da ANEEL estão abertas ou próximas?" },
 ];
 
@@ -131,10 +139,11 @@ export function textoReuniao(r: string | null | undefined): string {
   return r.trim().replace(/^(\S+)\s+[-–—]\s+(\S+)$/, "$1 ($2)");
 }
 
+/** Uma cor por limite em toda a página (gráfico, comparação e faixa de métricas). Os dois tetos têm tons de famílias diferentes porque são objetos distintos. */
 export const COR_LIMITE: Record<CampoLimite, string> = {
   pld_min: "var(--serie-referencia)",
   pld_max_estrutural: "var(--cor-energia)",
-  pld_max_horario: "var(--cor-energia-dark)",
+  pld_max_horario: "var(--serie-3)",
 };
 
 const ATO_CAMPO: Record<CampoLimite, "ato_pld_min" | "ato_pld_max_estrutural" | "ato_pld_max_horario"> = {
@@ -168,6 +177,62 @@ function atoPorNome(g: Pick<GoldRegulacao, "limites_pld">, nome: string | null):
 /** "com publicação no DOU em 23/12/2025" ou a ausência declarada; nunca a data de captura. */
 export function textoPublicacao(data: string | null): string {
   return data ? `com publicação no DOU em ${dataBR(data)}` : "sem data de publicação no DOU conferida";
+}
+
+/** O limite de um campo na data de referência: valor, ato que o fixou, publicação e vigência, cada um no seu campo. */
+export type LimiteVigente = {
+  campo: CampoLimite;
+  valor: number | null;
+  ato: string | null;
+  /** Data no Diário Oficial; null quando não conferida (nunca a data de captura). */
+  publicacao: string | null;
+  inicio: string;
+  fim: string;
+};
+
+/**
+ * Os três limites na data de referência da gold, campo a campo (cada campo pode vir de um ato diferente, como em 2022).
+ * Sem trecho de vigência que cubra a data, devolve os três campos vazios: nenhum valor de reserva.
+ */
+export function limitesVigentes(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia">): { vigencia: { inicio: string; fim: string } | null; limites: LimiteVigente[] } {
+  const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
+  if (!v) return { vigencia: null, limites: [] };
+  return {
+    vigencia: { inicio: v.inicio, fim: v.fim },
+    limites: CAMPOS_LIMITE.map((campo) => {
+      const ato = v[ATO_CAMPO[campo]];
+      return { campo, valor: v[campo], ato, publicacao: atoPorNome(g, ato)?.data_publicacao ?? null, inicio: v.inicio, fim: v.fim };
+    }),
+  };
+}
+
+/**
+ * Vigência em poucas palavras para a linha de contexto de um número: "vigência em 2026" quando vai de 1º de janeiro a 31 de dezembro
+ * do mesmo ano, e as duas datas quando o trecho é menor. As datas inteiras ficam na nota da faixa e na ficha do ato.
+ */
+export function textoVigenciaCurta(inicio: string, fim: string): string {
+  const anoCheio = inicio.slice(5) === "01-01" && fim.slice(5) === "12-31" && inicio.slice(0, 4) === fim.slice(0, 4);
+  return anoCheio ? `vigência em ${inicio.slice(0, 4)}` : `vigência de ${dataBR(inicio)} a ${dataBR(fim)}`;
+}
+
+export type MarcoDoAto = { chave: "publicacao" | "inicio" | "fim"; rotulo: string; data: string | null; ausencia?: string };
+
+/**
+ * Os marcos de um ato de limites, em ordem de data: publicação no Diário Oficial, início da vigência e fim do intervalo registrado.
+ * Publicação não conferida fica dita (sem data), nunca a data de captura. Publicação depois do início da vigência (vigência
+ * retroativa, como na REH nº 3.167/2022) aparece na ordem cronológica real.
+ */
+export function marcosDoAto(a: Pick<AtoLimite, "data_publicacao" | "vigencia_inicio" | "vigencia_fim">): MarcoDoAto[] {
+  const datados: MarcoDoAto[] = [
+    { chave: "inicio", rotulo: "Início da vigência", data: a.vigencia_inicio },
+    { chave: "fim", rotulo: "Fim do intervalo registrado", data: a.vigencia_fim },
+  ];
+  if (a.data_publicacao) {
+    datados.push({ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: a.data_publicacao });
+    const peso = { publicacao: 0, inicio: 1, fim: 2 } as const;
+    return datados.sort((x, y) => (x.data as string).localeCompare(y.data as string) || peso[x.chave] - peso[y.chave]);
+  }
+  return [{ chave: "publicacao", rotulo: "Publicação no Diário Oficial", data: null, ausencia: "não conferida: o extrato do ato não está acessível" }, ...datados];
 }
 
 export type LinhaLimites = {
@@ -242,6 +307,19 @@ export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: numb
   const frase1 =
     `Em ${ano}, o PLD não pode ficar abaixo de ${val("pld_min")} em nenhuma hora (piso) nem passar de ${val("pld_max_horario")} numa hora (teto horário); ` +
     `a média diária dos preços horários fica limitada a ${val("pld_max_estrutural")} (teto estrutural).`;
+  const frase2 = textoAtosDoAno(g, ano);
+  return frase2 ? `${frase1} ${frase2}` : frase1;
+}
+
+/**
+ * Que ato fixou cada limite de um ano, com a publicação no DOU de cada um e a vigência, sempre em campos ditos separadamente:
+ * "Os três limites foram fixados pelo Despacho ANEEL nº 3.850/2025, com publicação no DOU em 23/12/2025; vigência de 01/01/2026 a
+ * 31/12/2026." Vazio quando nenhum ato fixa limite no ano.
+ */
+export function textoAtosDoAno(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
+  const vs = vigenciasDoAno(g, ano);
+  if (!vs.length) return "";
+  const v = vs[vs.length - 1];
   const campoPorAto = new Map<string, CampoLimite[]>();
   for (const c of CAMPOS_LIMITE) {
     const a = v[ATO_CAMPO[c]];
@@ -254,8 +332,7 @@ export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: numb
     return i === 0 ? texto.charAt(0).toUpperCase() + texto.slice(1) : texto;
   });
   const vig = vs.length > 1 ? vs.map((x) => `de ${dataBR(x.inicio)} a ${dataBR(x.fim)}`).join(" e ") : `de ${dataBR(v.inicio)} a ${dataBR(v.fim)}`;
-  const frase2 = atos.length ? ` ${atos.join("; ")}; vigência ${vig}.` : "";
-  return frase1 + frase2;
+  return atos.length ? `${atos.join("; ")}; vigência ${vig}.` : "";
 }
 
 /**
@@ -411,17 +488,28 @@ export const COLUNAS_CONFERENCIAS_DETALHE: ColunaTabela[] = [
   { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
 ];
 
-/** Pares publicado × esperado do encadeamento anual pelo IPCA (gráfico de pontos do modo Auditar). */
+/**
+ * Pares publicado × esperado do encadeamento anual pelo IPCA (gráfico de pontos do modo Auditar). Quando um ano tem mais de um ato
+ * que fixa o mesmo teto (2023: a REH nº 3.167/2022 e a retificação dela), cada par leva o ato no identificador e no rótulo, para o
+ * gráfico não repetir a mesma chave nem o mesmo rótulo; os valores são os da conferência, sem mudança.
+ */
 export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe: string }[] {
-  return g.limites_pld.conferencias_detalhe
-    .filter((c) => c.conferencia === "regra_ipca")
-    .map((c) => ({
-      id: `${c.ano}:${c.campo}`,
-      rotulo: `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`,
+  const conferencias = g.limites_pld.conferencias_detalhe.filter((c) => c.conferencia === "regra_ipca");
+  const vezes = new Map<string, number>();
+  for (const c of conferencias) vezes.set(`${c.ano}:${c.campo}`, (vezes.get(`${c.ano}:${c.campo}`) ?? 0) + 1);
+  return conferencias.map((c) => {
+    const chave = `${c.ano}:${c.campo}`;
+    const repetido = (vezes.get(chave) ?? 0) > 1;
+    const ato = c.ato ? abreviarAto(c.ato) : "ato não identificado";
+    const nome = `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`;
+    return {
+      id: repetido ? `${chave}:${c.ato ?? "sem-ato"}` : chave,
+      rotulo: repetido ? `${nome} (${ato})` : nome,
       valor: c.valor_ato,
       referencia: c.valor_esperado,
       detalhe: `${c.ato ?? "ato não identificado"}; tolerância ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
-    }));
+    };
+  });
 }
 
 /* ---------------------------------------------------------------- P044: bandeiras */
@@ -457,7 +545,8 @@ export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabel
     .sort((a, b) => pos(a.patamar) - pos(b.patamar) || a.vigencia_inicio.localeCompare(b.vigencia_inicio))
     .map((v) => ({
       id: `${v.patamar}:${v.vigencia_inicio}`,
-      rotulo: `${v.patamar} · ${v.ato ?? "ato não informado"} (${dataBR(v.vigencia_inicio)})`,
+      // rótulo curto para a coluna do gráfico (o ato e a vigência completa estão nas colunas da tabela)
+      rotulo: `${v.patamar}, desde ${dataBR(v.vigencia_inicio)}`,
       patamar: v.patamar,
       ato: v.ato,
       rs_mwh: v.rs_mwh,
@@ -667,6 +756,21 @@ export function contagemPaineisAfetados(eventos: readonly EventoRegulatorio[]): 
     m.set(k, x);
   }
   return Array.from(m.values()).sort((a, b) => b.n - a.n || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+}
+
+/** Órgãos que emitem os eventos da linha do tempo, do que tem mais eventos para o que tem menos (empate: ordem alfabética). */
+export function orgaosDosEventos(eventos: readonly Pick<EventoRegulatorio, "orgao">[]): string[] {
+  const m = new Map<string, number>();
+  for (const e of eventos) m.set(e.orgao, (m.get(e.orgao) ?? 0) + 1);
+  return Array.from(m.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR"))
+    .map(([orgao]) => orgao);
+}
+
+/** Atos e leis lidos no texto e registros do conjunto de dados de bandeiras, contados no recorte. */
+export function contagemPorOrigem(eventos: readonly Pick<EventoRegulatorio, "origem">[]): { atos: number; registros: number } {
+  const atos = eventos.filter((e) => origemEvento(e) === "ato").length;
+  return { atos, registros: eventos.length - atos };
 }
 
 /**
@@ -954,9 +1058,35 @@ export function anoInicioHistorico(g: Pick<GoldRegulacao, "proveniencia">): stri
  * Regulatória de 2026 e 2027"), nunca escrito à mão; sem anos, o nome genérico.
  */
 export function nomeAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string {
+  const anos = textoAnosAgenda(a);
+  return anos ? `Agenda Regulatória de ${anos}` : "Agenda Regulatória da ANEEL";
+}
+
+/** Anos previstos na agenda, em ordem e em texto ("2026 e 2027"); null quando a portaria não traz ano. */
+export function textoAnosAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string | null {
   const anos = Array.from(new Set([...Object.keys(a.por_ano ?? {}), ...a.itens.map((i) => String(i.ano_previsto))])).sort();
-  if (!anos.length) return "Agenda Regulatória da ANEEL";
-  return `Agenda Regulatória de ${anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`}`;
+  if (!anos.length) return null;
+  return anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`;
+}
+
+/**
+ * Aviso à vista quando a página oficial diz que a agenda foi atualizada por outra portaria e o texto da atualização não pôde ser
+ * lido: os anos previstos são os da versão original. null quando não há atualização pendente de leitura. O detalhe da tentativa de
+ * leitura (endereço, resposta do servidor) fica em Analisar.
+ */
+export function avisoRevisaoAgenda(a: Pick<GoldRegulacao["agenda"], "revisao" | "disponivel">): string | null {
+  const r = a.revisao;
+  if (!a.disponivel || !r.atualizada_por || r.texto_lido) return null;
+  return `A página oficial da agenda diz que ela foi ${r.trecho ?? `atualizada pela ${r.atualizada_por}`}. O texto dessa atualização não pôde ser lido, então os anos previstos são os da versão original e podem ter mudado.`;
+}
+
+/**
+ * Nome de arquivo para baixar, em frase: "(histórico)" vira ", histórico", o intervalo de anos ganha "a" no lugar do hífen e o
+ * formato fecha o rótulo.
+ */
+export function rotuloDownload(rotulo: string, formato = "CSV"): string {
+  const sem = rotulo.replace(/\s*\(([^)]*)\)\s*$/, ", $1").replace(/(\d{4})-(\d{4})/, "$1 a $2");
+  return `${sem} (${formato})`;
 }
 
 /** Dias entre a geração do arquivo das atas pela fonte e a data de leitura; a fonte se declara semanal. */
@@ -1188,4 +1318,196 @@ export function unicosPaineis(links: readonly PainelLink[]): PainelLink[] {
   const m = new Map<string, PainelLink>();
   for (const l of links) if (!m.has(l.href)) m.set(l.href, l);
   return Array.from(m.values());
+}
+
+/* ---------------------------------------------------------------- vereditos (resposta em duas camadas) */
+
+/**
+ * Cada veredito responde, em palavras simples e com poucos números, à pergunta do título do painel. Sai dos mesmos
+ * campos da resposta completa (que continua inteira como segunda camada, em Analisar e Auditar) e nunca escreve
+ * número à mão. Sigla de uso corrente (PLD, ANEEL) está em siglas.ts; termo técnico novo fica fora do veredito.
+ */
+
+/** "A", "A e B", "A, B e C". */
+export function listaComE(itens: readonly string[]): string {
+  if (itens.length <= 1) return itens[0] ?? "";
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+/**
+ * Veredito dos limites do PLD num ano: o piso e o teto de uma hora, com o ato que os fixou. O teto da média
+ * diária (teto estrutural) e as datas de publicação e de vigência ficam na resposta completa.
+ */
+export function vereditoLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: number): string {
+  const vs = vigenciasDoAno(g, ano);
+  if (!vs.length) return `Não há ato de limites do PLD integrado para ${ano}: os limites desse ano ficam sem valor.`;
+  const v = vs[vs.length - 1];
+  const piso = v.pld_min === null ? null : `${reais(v.pld_min, 2)}/MWh`;
+  const teto = v.pld_max_horario === null ? null : `${reais(v.pld_max_horario, 2)}/MWh`;
+  let frase: string;
+  if (piso && teto) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso} nem passar de ${teto} numa hora.`;
+  else if (piso) frase = `Em ${ano}, o PLD não pode ficar abaixo de ${piso}; o teto de uma hora fica sem valor (nenhum ato em vigor o fixa).`;
+  else if (teto) frase = `Em ${ano}, o PLD não pode passar de ${teto} numa hora; o piso fica sem valor (nenhum ato em vigor o fixa).`;
+  else frase = `Em ${ano}, nenhum ato em vigor fixa o piso nem o teto de uma hora do PLD.`;
+  const atos = Array.from(new Set(CAMPOS_LIMITE.map((c) => v[ATO_CAMPO[c]]).filter((a): a is string => !!a)));
+  if (!atos.length) return frase;
+  return atos.length === 1
+    ? `${frase} Os limites foram fixados ${porAto(atos[0])}.`
+    : `${frase} Os limites foram fixados por ${atos.length} atos: ${listaComE(atos)}.`;
+}
+
+/** Veredito do P044 na data de referência da gold: o ano em vigor nessa data. */
+export function vereditoP044(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia">): string {
+  const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
+  if (!v) return `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.`;
+  return vereditoLimites(g, v.ano);
+}
+
+/**
+ * Painéis ligados a um evento, em texto ("ligada a A e B"); vazio sem painel indicado. A ligação é a da curadoria do ato
+ * (painéis em que o número passa a ser lido com a regra nova), não uma estimativa de efeito. Duas palavras de ligação, para o
+ * veredito caber nas 40 palavras mesmo quando o ato se liga a dois painéis.
+ */
+function textoAfeta(e: Pick<EventoRegulatorio, "paineis">): string {
+  if (!e.paineis.length) return "";
+  return `, ligada a ${listaComE(e.paineis.map((p) => p.rotulo))}`;
+}
+
+/**
+ * Veredito do P045 para o recorte atual: a regra mais recente (título, desde quando vale, quem é afetado), a natureza
+ * da lista (seleção de marcos, conferida numa data) e o limite de leitura (nenhum impacto é estimado). Os eventos já
+ * vêm na ordem de filtrarLinhaTempo, o mais recente primeiro na data escolhida.
+ */
+export function vereditoLinhaTempo(eventos: readonly EventoRegulatorio[], total: number, base: BaseData = "vigencia", conferidoEm?: string | null): string {
+  if (!eventos.length) return `Nenhum dos ${total} eventos da linha do tempo está no recorte escolhido.`;
+  const r = eventos[0];
+  const recorte = eventos.length !== total ? " deste recorte" : "";
+  const quando =
+    base === "publicacao"
+      ? r.data_publicacao
+        ? `saiu no Diário Oficial em ${dataBR(r.data_publicacao)}`
+        : "não tem data de publicação na fonte"
+      : `vale desde ${dataBR(r.vigencia_grao === "mes" ? r.vigencia_inicio.slice(0, 7) : r.vigencia_inicio)}`;
+  const abre = base === "publicacao" ? `A regra publicada por último${recorte}` : `A regra mais recente${recorte}`;
+  const comImpacto = eventos.filter((e) => e.impacto_estimado).length;
+  const limite = comImpacto === 0 ? "sem impacto estimado nesta fonte" : `${comImpacto} de ${eventos.length} eventos trazem impacto estimado`;
+  const lista = conferidoEm ? `É uma seleção de marcos conferida em ${dataBR(conferidoEm)}, ${limite}.` : `É uma seleção de marcos, ${limite}.`;
+  return `${abre} ${quando}: “${r.titulo}”${textoAfeta(r)}. ${lista}`;
+}
+
+/** Primeira frase de um texto (até o primeiro ponto final seguido de maiúscula); o resto fica para Analisar. */
+export function primeiraFrase(texto: string): string {
+  const t = texto.trim();
+  const m = /^[\s\S]+?[.!?](?=\s+[A-ZÀ-Ú"“(]|$)/.exec(t);
+  return m ? m[0] : t;
+}
+
+/** Tira de um texto os parênteses que citam identificador interno (nome_com_sublinhado), que o leitor de Entender não consulta. */
+export function semIdentificadores(texto: string): string {
+  return texto.replace(/\s*\([^()]*\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b[^()]*\)/g, "").replace(/\s{2,}/g, " ");
+}
+
+/** Resumo do evento como o leitor de Entender o lê: a primeira frase do resumo do observatório, com as datas na forma da página. */
+export function resumoCurtoEvento(e: Pick<EventoRegulatorio, "resumo">, legivel: (t: string) => string): string {
+  return legivel(primeiraFrase(semIdentificadores(e.resumo)));
+}
+
+export type GrupoRegistros = {
+  tipo: string;
+  n: number;
+  /** O mais antigo e o mais recente do grupo, pela data de vigência. */
+  primeiro: EventoRegulatorio;
+  ultimo: EventoRegulatorio;
+  /** Títulos distintos do grupo, na ordem em que aparecem. */
+  titulos: string[];
+};
+
+/**
+ * Registros do conjunto de dados de bandeiras agrupados por tipo de ato: um cartão por tipo, com a quantidade e o
+ * período. O grupo do registro mais recente vem primeiro. Os eventos já vêm filtrados e ordenados.
+ */
+export function agruparRegistros(eventos: readonly EventoRegulatorio[]): GrupoRegistros[] {
+  const m = new Map<string, EventoRegulatorio[]>();
+  for (const e of eventos) if (origemEvento(e) === "registro") m.set(e.tipo_ato, [...(m.get(e.tipo_ato) ?? []), e]);
+  return Array.from(m.entries())
+    .map(([tipo, es]) => {
+      const porVigencia = es.slice().sort((a, b) => a.vigencia_inicio.localeCompare(b.vigencia_inicio));
+      return { tipo, n: es.length, primeiro: porVigencia[0], ultimo: porVigencia[porVigencia.length - 1], titulos: Array.from(new Set(es.map((x) => x.titulo))) };
+    })
+    .sort((a, b) => b.ultimo.vigencia_inicio.localeCompare(a.ultimo.vigencia_inicio));
+}
+
+/**
+ * O que os registros de bandeiras têm em comum de vazio, dito uma vez em vez de em cada cartão: sem data de publicação,
+ * sem efeito declarado e com o texto do ato não lido. Só afirma o que vale para todos; senão conta quantos.
+ */
+export function textoVaziosRegistros(regs: readonly EventoRegulatorio[]): string {
+  const n = regs.length;
+  if (!n) return "";
+  const semPub = regs.filter((e) => !e.data_publicacao).length;
+  const semEfeito = regs.filter((e) => !e.efeito_declarado).length;
+  const naoLido = regs.filter((e) => e.nivel_conferencia === "registro_em_conjunto_de_dados_oficial").length;
+  if (semPub === n && semEfeito === n && naoLido === n) return `Nos ${num(n, 0)} registros, a fonte é um conjunto de dados: não informa a data de publicação nem o efeito declarado, e o texto do ato não foi lido.`;
+  return `${num(semPub, 0)} dos ${num(n, 0)} registros não têm data de publicação, ${num(semEfeito, 0)} não têm efeito declarado e em ${num(naoLido, 0)} o texto do ato não foi lido.`;
+}
+
+/**
+ * Veredito do P046 na data de leitura: quantas consultas e audiências recebem contribuições, quando fecha a primeira
+ * e o limite do universo (só entram as abertas em reunião pública registrada em ata).
+ */
+export function vereditoConsultas(c: Pick<Consultas, "itens">, data: string): string {
+  const itens = consultasNaData(c.itens, data);
+  const abertas = ordenarConsultas(itens.filter((x) => x.situacao_na_data === "aberta"));
+  const aAbrir = itens.filter((x) => x.situacao_na_data === "a_abrir").length;
+  const partes: string[] = [];
+  if (abertas.length) {
+    const n = abertas.length;
+    partes.push(
+      `Em ${dataBR(data)}, ${n} ${pl(n, "consulta ou audiência pública da ANEEL recebe", "consultas e audiências públicas da ANEEL recebem")} contribuições; a primeira a fechar encerra em ${dataBR(abertas[0].fim)}.`,
+    );
+  } else {
+    partes.push(`Em ${dataBR(data)}, nenhuma consulta ou audiência pública da ANEEL com janela escrita nas atas recebe contribuições.`);
+  }
+  if (aAbrir) partes.push(`${num(aAbrir, 0)} ${pl(aAbrir, "ainda não começou", "ainda não começaram")}.`);
+  partes.push("Só entram as consultas abertas em reunião pública registrada em ata.");
+  return partes.join(" ");
+}
+
+/**
+ * Consultas que mudaram de situação aberta entre a data de referência da gold e a data de leitura: as que estavam abertas
+ * e já fecharam, e as que ainda não tinham começado e já abriram.
+ */
+export function mudancasDeAbertas(itens: readonly Consulta[], referencia: string, data: string): { antes: number; depois: number; fecharam: ConsultaNaData[]; abriram: ConsultaNaData[] } {
+  const naRef = consultasNaData(itens, referencia).filter((x) => x.situacao_na_data === "aberta");
+  const naData = consultasNaData(itens, data).filter((x) => x.situacao_na_data === "aberta");
+  const idsRef = new Set(naRef.map((x) => x.id));
+  const idsData = new Set(naData.map((x) => x.id));
+  return {
+    antes: naRef.length,
+    depois: naData.length,
+    fecharam: ordenarConsultas(naRef.filter((x) => !idsData.has(x.id))),
+    abriram: ordenarConsultas(naData.filter((x) => !idsRef.has(x.id))),
+  };
+}
+
+/** Frase que concilia a contagem da data de referência com a da data de leitura; vazia quando as duas datas coincidem. */
+export function textoMudancaDeAbertas(itens: readonly Consulta[], referencia: string, data: string): string {
+  if (data <= referencia) return "";
+  const m = mudancasDeAbertas(itens, referencia, data);
+  const fim = (x: ConsultaNaData) => `${x.rotulo}, prazo até ${dataBR(x.fim)}`;
+  const partes = [`Em ${dataBR(referencia)} eram ${num(m.antes, 0)} abertas; em ${dataBR(data)}, ${pl(m.depois, "é", "são")} ${num(m.depois, 0)}.`];
+  if (m.fecharam.length) partes.push(`${pl(m.fecharam.length, "Encerrou o prazo", "Encerraram o prazo")} no intervalo: ${listaComE(m.fecharam.map(fim))}.`);
+  if (m.abriram.length) partes.push(`${pl(m.abriram.length, "Passou a receber contribuições", "Passaram a receber contribuições")} no intervalo: ${listaComE(m.abriram.map((x) => `${x.rotulo}, desde ${dataBR(x.inicio)}`))}.`);
+  return partes.join(" ");
+}
+
+/**
+ * Veredito da Agenda Regulatória: quantas atividades a ANEEL prevê no biênio, quantas tratam dos limites do PLD e o limite
+ * de leitura (o ano é previsão).
+ */
+export function vereditoAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
+  if (!a.disponivel) return `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`;
+  const n = a.itens.length;
+  const k = limites.length;
+  return `A ${nomeAgenda(a)} prevê ${num(n, 0)} ${pl(n, "atividade", "atividades")}; ${num(k, 0)} ${pl(k, "trata", "tratam")} dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar.`;
 }

@@ -34,7 +34,7 @@ export function PldEscolha<T extends string>({
               key={o.id}
               title={o.detalhe}
               className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
-                ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+                ativo ? "border-energia bg-energia-fundo text-carvao" : "border-mineral bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
               }`}
             >
               <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
@@ -68,7 +68,7 @@ export function PldLista<T extends string>({
         id={id}
         value={valor}
         onChange={(e) => onEscolher(e.target.value as T)}
-        className="mt-1 min-h-[44px] w-full max-w-xs border border-linha bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-energia"
+        className="mt-1 min-h-[44px] w-full max-w-xs border border-mineral bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-energia"
       >
         {opcoes.map((o) => (
           <option key={o.id} value={o.id}>

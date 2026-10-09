@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AguaArmazenamento } from "@/components/energia/AguaArmazenamento";
+import { AguaPontes } from "@/components/energia/AguaPontes";
 import {
   AguaAnalise,
   AguaAuditoria,
@@ -15,11 +16,12 @@ import {
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -32,6 +34,9 @@ import {
   COLUNAS_RESERVATORIOS_POR_ANO,
   COLUNAS_RESUMO,
   COLUNAS_REVISOES_CAPTURAS,
+  LIMITE_VARIACAO_CAPACIDADE,
+  REVISOES_CAPACIDADE,
+  TEXTO_TIPOS_DE_EVENTO,
   anoInicial,
   entidadesEar,
   linhasCapturas,
@@ -41,20 +46,25 @@ import {
   linhasReservatoriosPorAno,
   linhasResumo,
   linhasRevisoesCapturas,
+  periodoBase,
   perguntaPainel,
+  provenienciaComRevisoesDaPagina,
   respostaCapacidade,
   rotaPainel,
   serieMensalEar,
   serieRegioes,
   situacaoAtualidade,
+  textoJanelasDaVariacao,
   textoMesParcial,
   textoMudancaArmazenamento,
   textoQuebraRee,
   textoReconciliacaoEar,
   textoResumo,
   textoRevisoesCapturas,
+  textoRevisoesFichaEar,
+  textoToleranciaEventos,
 } from "@/lib/energia/agua";
-import { carimbo, dataBR } from "@/lib/energia/formato";
+import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
@@ -81,13 +91,43 @@ export default function AguaPage() {
   const ev = g.evidencias;
   const prov = g.proveniencia;
   const entidades = entidadesEar(a);
+  const sin = entidades.find((x) => x.tipo === "subsistema" && x.id === "SIN") ?? null;
   const atual = situacaoAtualidade(g.dias_referencia.ear, g.gerado_em, 3, "o ONS publica a EAR do dia anterior");
   const versao = g.dias_referencia.ear;
-  const downloads = g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u)));
+  const downloads = [
+    ...g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u))),
+    // a série diária completa, em %, que dá a faixa de cada data: o diário do painel começa depois (a base da faixa não cabe nele)
+    { rotulo: "EAR diária por subsistema e SIN em % da EAR máxima, série completa, a base da faixa usual (CSV)", url: "/energia/series/ear_diario.csv" },
+  ];
   const rec = g.reconciliacao_ear;
   const quebra = a.quebras_perimetro_ree[0] ?? null;
+  // a variação por reservatório pode faltar numa publicação sem os dados hidráulicos: sem ela, a outra janela não é dita
+  const decomposicoes = g.reservatorios?.decomposicao_ear ?? [];
+  // as fichas da EAR dizem o que a tabela de revisões da própria página mostra
+  const revisoesEar = textoRevisoesFichaEar(rec.revisoes_entre_capturas_30d);
   // ano inicial da contagem de capacidade e base da faixa do SIN: lidos da gold, não escritos aqui
   const desdeCap = anoInicial(a.capacidade.inicio);
+  const oQueMudouAgua = (
+    <>
+                      {atual.texto} {textoMudancaArmazenamento(entidades)} {textoJanelasDaVariacao(sin?.dia ?? null, decomposicoes)}
+                    </>
+  );
+  const comoInterpretarAgua = (
+    <>
+                      A mediana é o valor do meio: metade dos anos da base ficou abaixo dele na data, e metade acima. A área sombreada vai do 10º ao 90º percentil do mesmo
+                      dia do calendário nos anos completos da base: fora dela, a EAR está entre os 10% de anos mais baixos ou mais altos da data. O SIN é a soma das energias dividida pela soma das capacidades, nunca a média dos percentuais. Com menos de
+                      5 anos na base não há faixa, e recorte sem armazenamento (só usinas a fio d&apos;água) aparece como não se aplica. A figura da faixa da data mostra a
+                      mesma faixa em % e em MWmês, conforme a unidade escolhida.
+                    </>
+  );
+  const naoConcluirAgua = (
+    <>
+                      A posição na faixa não mede risco de desabastecimento nem diz qual será o preço. A EAR máxima mudou ao longo da base, então a faixa em %
+                      compara capacidades diferentes (a faixa em MWmês está na figura da faixa da data e na tabela); quando a EAR máxima variou mais de{" "}
+                      {num(LIMITE_VARIACAO_CAPACIDADE * 100, 0)}% na base, a posição frente à faixa não é dita. Um SIN dentro da faixa pode esconder um subsistema ou uma
+                      bacia apertada. A variação da EAR não se explica só pela ENA: a conta por reservatório está no painel de reservatórios.
+                    </>
+  );
   const baseSin = a.subsistemas.find((s) => s.sm === "SIN")?.periodo_base ?? null;
 
   return (
@@ -95,15 +135,85 @@ export default function AguaPage() {
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_AFLUENCIA} destino={rotaPainel("p018")} />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina">
+        <AguaNavegacao atual="p017" />
         <CabecalhoModulo
-          rotulo="Água e clima"
-          titulo="Quanta energia está guardada nos reservatórios, e quanta água está chegando?"
+          siglas={["EAR", "SIN", "REE", "ENA", "MLT", "ONS", "PLD"]}
+          titulo={perguntaPainel("p017")}
+          lead="A energia armazenada (EAR) é a reserva de água, medida em energia, com que o Sistema Interligado Nacional (SIN) conta nos meses secos; aqui, por região e frente à mediana (o valor do meio) da mesma data nos anos anteriores."
+          limite="A posição na faixa não mede risco de desabastecimento nem diz qual será o preço."
+          recorte={sin?.dia ? `${dataBR(sin.dia)} · SIN e subsistemas · % da EAR máxima e MWmês` : undefined}
+          fonte="ONS, energia armazenada (EAR) e energia natural afluente (ENA)"
           referencia={
             <>
               ONS (EAR, ENA e dados hidráulicos), NASA POWER (chuva e temperatura estimadas) e ECMWF pelo Open-Meteo (previsão); processado em{" "}
               {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <AguaDatas
+              itens={[
+                { rotulo: "EAR, derivada pelo ONS, não medição direta", dia: g.dias_referencia.ear, natureza: "OBSERVADO" },
+                { rotulo: "ENA, derivada pelo ONS das vazões naturais reconstituídas", dia: g.dias_referencia.ena, natureza: "OBSERVADO" },
+                { rotulo: "Reservatórios (afluência e defluência derivadas pelo ONS)", dia: g.dias_referencia.reservatorios, natureza: "OBSERVADO" },
+                { rotulo: "Chuva por satélite", dia: g.dias_referencia.precipitacao, natureza: "ESTIMADO" },
+                { rotulo: "Temperatura de reanálise", dia: g.dias_referencia.temperatura, natureza: "ESTIMADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas colunas={4} rotulo="Indicadores do armazenamento no SIN, fixos: não mudam com o recorte escolhido nos gráficos">
+              <Numero
+                variante="faixa"
+                rotulo="Armazenamento do SIN"
+                natureza="CALCULADO"
+                evidencia={ev.ear_sin}
+                revisoes={revisoesEar}
+                nota="Últimos dias são provisórios."
+                formato="pct"
+                casas={1}
+                unidade="da EAR máxima"
+                cor="var(--cor-energia)"
+                endereco={`${rotaPainel("p017")}#p017`}
+              />
+              {sin && sin.p50 !== null && (
+                <Numero
+                  variante="faixa"
+                  rotulo="Mediana do SIN na mesma data"
+                  natureza="CALCULADO"
+                  valor={sin.p50}
+                  formato="pct"
+                  casas={1}
+                  unidade="da EAR máxima"
+                  periodo={`mesmo dia do ano em ${periodoBase(sin.periodo_base)}`}
+                  cor="var(--serie-referencia)"
+                />
+              )}
+              <Numero
+                variante="faixa"
+                rotulo="Energia armazenada do SIN"
+                natureza="CALCULADO"
+                evidencia={ev.ear_sin_mwmes}
+                revisoes={revisoesEar}
+                formato="num"
+                casas={0}
+                unidade="MWmês"
+                cor="var(--cor-energia)"
+                endereco={`${rotaPainel("p017")}#p017`}
+              />
+              {sin && sin.variacao_30d_pp !== null && (
+                <Numero
+                  variante="faixa"
+                  rotulo="Variação do SIN em 30 dias"
+                  natureza="CALCULADO"
+                  valor={sin.variacao_30d_pp}
+                  formato="num"
+                  casas={1}
+                  unidade="p.p. da EAR máxima"
+                  periodo={sin.dia ? `30 dias até ${dataBR(sin.dia)}` : undefined}
+                />
+              )}
+            </FaixaMetricas>
           }
         >
           A <Termo slug="ear">EAR</Termo> é a energia que a água guardada nos reservatórios produziria nas usinas, em <Unidade u="MWmês" />; a{" "}
@@ -111,44 +221,12 @@ export default function AguaPage() {
           respondem, nesta ordem: quanto está guardado, se a água que chega está acima do normal, como chuva e temperatura se relacionam com a água e com a
           demanda, e por que o armazenamento mudou, reservatório por reservatório.
         </CabecalhoModulo>
-        <div className="pb-4">
-          <AguaDatas
-            itens={[
-              {
-                rotulo: "EAR",
-                dia: g.dias_referencia.ear,
-                natureza: "OBSERVADO",
-              },
-              {
-                rotulo: "ENA",
-                dia: g.dias_referencia.ena,
-                natureza: "OBSERVADO",
-              },
-              {
-                rotulo: "Reservatórios",
-                dia: g.dias_referencia.reservatorios,
-                natureza: "OBSERVADO",
-              },
-              {
-                rotulo: "Chuva por satélite",
-                dia: g.dias_referencia.precipitacao,
-                natureza: "ESTIMADO",
-              },
-              {
-                rotulo: "Temperatura de reanálise",
-                dia: g.dias_referencia.temperatura,
-                natureza: "ESTIMADO",
-              },
-            ]}
-          />
-        </div>
-        <AguaNavegacao atual="p017" />
         <ModoProfundidade>
           <Bloco id="ear">
             <PainelEvidencia
               id="p017"
-              pergunta={perguntaPainel("p017")}
-              subtitulo="EAR do SIN, dos subsistemas, dos REE e das bacias · MWmês e % da EAR máxima · faixa do mesmo dia nos anos da base"
+              pergunta="Cada região frente à mediana da mesma data"
+              subtitulo="EAR derivada pelo ONS: SIN, subsistemas, reservatórios equivalentes de energia (REE) e bacias · MWmês e % da EAR máxima"
               natureza="CALCULADO"
               porQueImporta={
                 <>
@@ -156,26 +234,11 @@ export default function AguaPage() {
                   recorte. Comparar com o mesmo dia de anos anteriores separa a estação do ano de uma situação fora do comum.
                 </>
               }
-              oQueMudou={
-                <>
-                  {atual.texto} {textoMudancaArmazenamento(entidades)}
-                </>
-              }
-              comoInterpretar={
-                <>
-                  A área sombreada vai do 10º ao 90º percentil do mesmo dia do calendário nos anos completos da base: fora dela, a EAR está entre os 10% de anos
-                  mais baixos ou mais altos da data. O SIN é a soma das energias dividida pela soma das capacidades, nunca a média dos percentuais. Com menos de
-                  5 anos na base não há faixa, e recorte sem armazenamento (só usinas a fio d&apos;água) aparece como não se aplica.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A posição na faixa não mede risco de desabastecimento nem diz qual será o preço. A EAR máxima mudou ao longo da base, então a faixa em %
-                  compara capacidades diferentes (a faixa em MWmês está na tabela). Um SIN dentro da faixa pode esconder um subsistema ou uma bacia apertada. A
-                  variação da EAR não se explica só pela ENA: a conta por reservatório está no painel de reservatórios.
-                </>
-              }
-              proveniencia={prov.ear_sin!}
+              oQueMudou={oQueMudouAgua}
+              comoInterpretar={comoInterpretarAgua}
+              naoConcluir={naoConcluirAgua}
+              naoConcluirNoCorpo
+              proveniencia={provenienciaComRevisoesDaPagina(prov.ear_sin!, rec.revisoes_entre_capturas_30d.filter((r) => r.serie === "ear_mwmes"), "da EAR")}
               complementares={[
                 ...(prov.ear_ree ? [{ rotulo: "EAR por REE", p: prov.ear_ree }] : []),
                 ...(prov.ear_bacia ? [{ rotulo: "EAR por bacia", p: prov.ear_bacia }] : []),
@@ -192,47 +255,27 @@ export default function AguaPage() {
                     textoMensal={textoMesParcial(a.serie_mensal_mwmes)}
                     fonte={FONTE}
                     versao={versao}
-                    destaques={
-                      <div className="grid gap-4 sm:grid-cols-3">
-                        <Numero
-                          rotulo="EAR do SIN"
-                          natureza="CALCULADO"
-                          evidencia={ev.ear_sin}
-                          formato="pct"
-                          casas={1}
-                          unidade="da EAR máxima"
-                          tamanho="medio"
-                          cor="var(--cor-energia)"
-                          endereco={`${rotaPainel("p017")}#p017`}
-                        />
-                        <Numero
-                          rotulo="Energia armazenada no SIN"
-                          natureza="CALCULADO"
-                          evidencia={ev.ear_sin_mwmes}
-                          formato="num"
-                          casas={0}
-                          unidade="MWmês"
-                          tamanho="medio"
-                          cor="var(--cor-energia)"
-                          endereco={`${rotaPainel("p017")}#p017`}
-                        />
-                        <Numero
-                          rotulo={`Mudanças da EAR máxima${desdeCap ? ` desde ${desdeCap}` : ""}`}
-                          natureza="CALCULADO"
-                          evidencia={ev.capacidade}
-                          formato="num"
-                          casas={0}
-                          unidade="mudanças"
-                          tamanho="medio"
-                          cor="var(--serie-referencia)"
-                          nota={
-                            a.capacidade.eventos_fechados === a.capacidade.n_eventos
-                              ? "Todas atribuídas a reservatórios, com o resíduo publicado."
-                              : `${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} atribuídas a reservatórios dentro da tolerância; o resíduo de cada uma está publicado.`
-                          }
-                          endereco={`${rotaPainel("p017")}#capacidade`}
-                        />
-                      </div>
+                    notas={<NotasDoPainel oQueMudou={oQueMudouAgua} comoInterpretar={comoInterpretarAgua} naoConcluir={naoConcluirAgua} />}
+                    decomposicoes={decomposicoes}
+                    revisoes={rec.revisoes_entre_capturas_30d}
+                    destaquesHistoria={
+                      <Numero
+                        variante="faixa"
+                        rotulo={`Mudanças da capacidade de armazenamento (EAR máxima)${desdeCap ? ` desde ${desdeCap}` : ""}`}
+                        natureza="CALCULADO"
+                        evidencia={ev.capacidade}
+                        revisoes={REVISOES_CAPACIDADE}
+                        formato="num"
+                        casas={0}
+                        unidade="mudanças"
+                        cor="var(--serie-referencia)"
+                        nota={
+                          a.capacidade.eventos_fechados === a.capacidade.n_eventos
+                            ? "Cada mudança é um dia em que a EAR máxima de um subsistema mudou. Todas foram atribuídas a reservatórios, e a diferença que sobra em cada uma (o resíduo) está publicada."
+                            : `Cada mudança é um dia em que a EAR máxima de um subsistema mudou. ${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} foram atribuídas a reservatórios dentro da tolerância; a diferença que sobra em cada uma (o resíduo) está publicada.`
+                        }
+                        endereco={`${rotaPainel("p017")}#capacidade`}
+                      />
                     }
                   />
                 </div>
@@ -241,7 +284,10 @@ export default function AguaPage() {
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p017-capacidade">
                     {respostaCapacidade(a.capacidade, a.dia)}
                   </p>
-                  {ev.capacidade && <ComproveNumero evidencia={ev.capacidade} />}
+                  {ev.capacidade && <ComproveNumero evidencia={{ ...ev.capacidade, revisoes: REVISOES_CAPACIDADE }} />}
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="tipos-de-evento">
+                    {TEXTO_TIPOS_DE_EVENTO}
+                  </p>
                   <TabelaInterativa
                     titulo="Dias em que a EAR máxima de um subsistema mudou, com os reservatórios que explicam a mudança"
                     colunas={COLUNAS_EVENTOS}
@@ -253,7 +299,7 @@ export default function AguaPage() {
                     nomeArquivo="agua-capacidade-eventos"
                     chaveUrl="cap"
                     ordemInicial={{ coluna: "data", direcao: "desc" }}
-                    nota="Tolerância do resíduo: 10 MWmês até 2017 (valores inteiros na fonte) e 0,05 MWmês desde 2018. A lista completa de reservatórios de cada evento está no CSV."
+                    nota={textoToleranciaEventos(a.capacidade.eventos)}
                   />
                   <TabelaInterativa
                     titulo="EAR máxima no último dia de cada ano, por subsistema e SIN"
@@ -293,7 +339,7 @@ export default function AguaPage() {
                       <li key={t}>{t}</li>
                     ))}
                   </ul>
-                  {ev.ear_sin_mwmes && <ComproveNumero evidencia={ev.ear_sin_mwmes} rotulo="Comprove a soma do SIN" />}
+                  {ev.ear_sin_mwmes && <ComproveNumero evidencia={{ ...ev.ear_sin_mwmes, revisoes: revisoesEar }} rotulo="Comprove a soma do SIN" />}
                   <TabelaInterativa
                     titulo="Anos e subsistemas em que a soma dos reservatórios difere do subsistema além da tolerância"
                     colunas={COLUNAS_RESERVATORIOS_POR_ANO}
@@ -344,6 +390,14 @@ export default function AguaPage() {
                   <AguaRegras regras={g.regras} chaves={["ear_agregada", "ear_absoluta", "faixa_sazonal", "nao_se_aplica", "capacidade", "captura"]} />
                   <AguaFontes provs={[prov.ear_sin, prov.ear_ree, prov.ear_bacia, prov.capacidade]} />
                 </AguaAuditoria>
+
+                <AguaPontes
+                  itens={[
+                    { slug: "geracao", assunto: "Quanto cada fonte gerou, a hidrelétrica inclusive: outro painel, com outra fonte de dados." },
+                    { slug: "pld", assunto: "O PLD por submercado: outro painel, com outra fonte de dados." },
+                    { slug: "conta-de-luz", assunto: "Tarifas e componentes da conta de luz por distribuidora: outro painel, com outra fonte de dados." },
+                  ]}
+                />
 
                 <AguaSeguir
                   ancora="p017"

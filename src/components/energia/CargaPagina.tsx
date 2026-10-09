@@ -1,46 +1,43 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { CargaLinkPainel } from "@/components/energia/CargaLinkPainel";
+import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { TextoComDatas } from "@/components/TextoComDatas";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { PAINEIS_CARGA, ROTA_CARGA, rotaPainel, type PainelCarga } from "@/lib/energia/carga";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, dataBR } from "@/lib/energia/formato";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { FonteCarga } from "@/lib/energia/tipos-carga";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 /**
  * Peças de servidor das páginas da Carga (um painel por página: /setor-eletrico/carga
  * para o P025, /perfil-horario para o P026 e /clima-e-calendario para o P027):
- * navegação entre os painéis, recorte (período, universo e unidade), avisos de
- * ausência e defasagem, rodapé com downloads, link compartilhável e próxima pergunta,
- * os blocos dos modos Analisar e Auditar e a lista de fontes.
+ * navegação entre as páginas, avisos de ausência e defasagem, as datas de cada parte,
+ * o rodapé com downloads, link compartilhável e próxima pergunta, e a lista de fontes.
+ * As seções de Analisar e Auditar são `SecaoDoPainel`, direto nas páginas.
  *
  * Por que um painel por página: cada painel tem séries horárias ou diárias, várias
  * tabelas equivalentes e fichas de prova; juntos passariam da meta de cerca de 600 KB
  * de HTML por página (contrato, seção 5.1).
  */
 
-/** Navegação entre os três painéis; o atual leva aria-current. */
+/** Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel. */
+const ITENS_CARGA = PAINEIS_CARGA.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+
+/**
+ * Navegação entre as três páginas: faixa de páginas irmãs nas filhas. A abertura (nível e crescimento) não leva a faixa, porque mostra
+ * os mesmos destinos como capítulos depois da figura principal (CargaCapitulos), e o mesmo rótulo não aparece duas vezes.
+ */
 export function CargaNavegacao({ atual }: { atual: PainelCarga }) {
-  return (
-    <nav aria-label="Painéis da carga" className="pb-4">
-      <ol className="flex flex-wrap gap-2 text-sm">
-        {PAINEIS_CARGA.map((p) => (
-          <li key={p.id}>
-            <Link
-              href={rotaPainel(p.id)}
-              aria-current={p.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                p.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {p.rotulo}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
+  if (atual === "p025") return null;
+  return <NavegacaoLocal rotulo="Páginas da carga" itens={ITENS_CARGA} atual={atual} />;
+}
+
+/** Capítulos da abertura: as outras duas páginas do módulo, cada uma com a pergunta que responde. */
+export function CargaCapitulos({ atual = "p025" }: { atual?: PainelCarga }) {
+  return <NavegacaoLocal rotulo="Capítulos da carga" itens={ITENS_CARGA} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a carga" nivelTitulo={3} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -48,7 +45,7 @@ export function CargaIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="carga" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Carga indisponível nesta publicação"
           motivo={
@@ -66,26 +63,6 @@ export function CargaIndisponivel({ motivo }: { motivo?: string | null }) {
   );
 }
 
-/** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
-export function CargaRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
-  return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-      <div>
-        <dt className="rotulo text-mineral">Período</dt>
-        <dd className="mt-0.5">{periodo}</dd>
-      </div>
-      <div>
-        <dt className="rotulo text-mineral">Universo</dt>
-        <dd className="mt-0.5">{universo}</dd>
-      </div>
-      <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
-        <dd className="mt-0.5">{unidade}</dd>
-      </div>
-    </dl>
-  );
-}
-
 /** Aviso que muda a leitura (fonte defasada, ausência legítima, comparação incompatível). */
 export function CargaAviso({ children, tipo = "nota" }: { children: ReactNode; tipo?: "nota" | "alerta" }) {
   return (
@@ -98,52 +75,24 @@ export function CargaAviso({ children, tipo = "nota" }: { children: ReactNode; t
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function CargaSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <CargaLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
 }
 
-export function CargaAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
+/** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. */
+export function CargaDatas({ itens }: { itens: { rotulo: string; dia: string | null; natureza: Natureza }[] }) {
   return (
-    <div id={id} data-nivel="analisar" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function CargaAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="auditar" className="scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.dia ? `até ${dataBR(x.dia)}` : "sem dado nesta publicação"}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -159,11 +108,7 @@ export function CargaFontes({ fontes }: { fontes: FonteCarga[] }) {
           </span>
           : {f.recurso}. Grão: {f.grao}
           {f.unidade ? `; unidade: ${f.unidade}` : ""}
-          {f.periodo && (
-            <>
-              ; período: <TextoComDatas texto={f.periodo.inicio ?? "sem início"} /> a <TextoComDatas texto={f.periodo.fim ?? "sem fim"} />
-            </>
-          )}
+          {f.periodo ? `; período: ${datasLegiveis(f.periodo.inicio ?? "sem início")} a ${datasLegiveis(f.periodo.fim ?? "sem fim")}` : ""}
           {f.ultima_captura ? `; última captura: ${carimbo(f.ultima_captura)}` : ""}. Licença: {f.licenca}.{" "}
           <a href={f.url} className="text-energia-dark underline underline-offset-4" rel="noopener noreferrer">
             Endereço da fonte

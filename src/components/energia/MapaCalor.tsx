@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { num, plural } from "@/lib/energia/formato";
 import { textoValor } from "@/lib/energia/distribuicao";
 import {
@@ -56,6 +56,11 @@ export type MapaCalorProps = {
   casas?: number;
   /** Mostra o rótulo visível de uma coluna a cada N (os demais seguem para leitor de tela). */
   passoRotuloColunas?: number;
+  /**
+   * Coluna (id) que a grade traz para o meio da janela ao abrir, quando ela rola na horizontal (celular): a leitura começa onde está a resposta
+   * (por exemplo a hora do pico) e não nas primeiras colunas. Sem ela, a grade abre à esquerda.
+   */
+  colunaInicial?: string;
   periodo?: string;
   nota?: string;
 };
@@ -77,12 +82,14 @@ export function MapaCalor({
   unidade,
   casas = 1,
   passoRotuloColunas = 1,
+  colunaInicial,
   periodo,
   nota,
 }: MapaCalorProps) {
   const uid = useId().replace(/:/g, "");
   const envoltorio = useRef<HTMLDivElement>(null);
   const grade = useRef<HTMLTableElement>(null);
+  const rolagem = useRef<HTMLDivElement>(null);
   const [foco, setFoco] = useState<Posicao>({ l: 0, c: 0 });
   const [ativo, setAtivo] = useState<(Posicao & { x: number; y: number; acima: boolean }) | null>(null);
   const [leitura, setLeitura] = useState("");
@@ -90,6 +97,45 @@ export function MapaCalor({
   const nC = colunas.length;
   const [tabelaAberta, setTabelaAberta] = useState(false);
   const montarTabela = nL * nC <= LIMITE_TABELA_MONTADA || tabelaAberta;
+  // classes de cor clara demais para se separar do fundo (menos de 3:1, WCAG 1.4.11): ganham contorno de 1 px, na célula e na legenda
+  const [claras, setClaras] = useState<ReadonlySet<number>>(() => new Set());
+  useEffect(() => {
+    const achadas = new Set<number>();
+    escala.cores.forEach((cor, i) => {
+      const c = contrasteComPapel(cor);
+      if (c !== null && c < 3) achadas.add(i);
+    });
+    setClaras((antes) => (antes.size === achadas.size && Array.from(achadas).every((i) => antes.has(i)) ? antes : achadas));
+  }, [escala.cores]);
+
+  // grade mais larga que a janela (celular): a borda direita esmaece enquanto há colunas escondidas, para que um valor cortado não pareça
+  // completo, e a leitura abre na coluna que importa (`colunaInicial`) em vez das primeiras
+  useEffect(() => {
+    const el = rolagem.current;
+    if (!el) return;
+    const marcar = () => {
+      el.dataset.maisDireita = el.scrollWidth > el.clientWidth + 2 && el.scrollLeft + el.clientWidth < el.scrollWidth - 2 ? "sim" : "nao";
+    };
+    if (colunaInicial && el.scrollWidth > el.clientWidth + 2) {
+      const i = colunas.findIndex((c) => c.id === colunaInicial);
+      const celula = i >= 0 ? el.querySelector<HTMLElement>(`[data-l="0"][data-c="${i}"]`) : null;
+      if (celula) {
+        const dentro = celula.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft;
+        el.scrollLeft = Math.max(0, dentro - (el.clientWidth - celula.offsetWidth) / 2);
+      }
+    }
+    marcar();
+    el.addEventListener("scroll", marcar, { passive: true });
+    if (typeof ResizeObserver === "undefined") return () => el.removeEventListener("scroll", marcar);
+    const ro = new ResizeObserver(marcar);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", marcar);
+    };
+    // a coluna inicial vale só na abertura; trocar de dados não deve devolver a rolagem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colunas.length]);
 
   const rotulos = useMemo(() => rotulosClasses(escala, casas), [escala, casas]);
   const res = useMemo(() => resumoGrade(valores, escala.limites), [valores, escala.limites]);
@@ -147,7 +193,7 @@ export function MapaCalor({
         <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-carvao-muted" aria-label={`Legenda: classes em ${unidade}`}>
           {rotulos.map((r, i) => (
             <li key={i} className="flex items-center gap-1.5">
-              <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: escala.cores[i] }} />
+              <span aria-hidden="true" className={`inline-block h-3 w-5 border ${claras.has(i) ? "border-mineral" : "border-linha"}`} style={{ background: escala.cores[i] }} />
               {r}
             </li>
           ))}
@@ -165,7 +211,7 @@ export function MapaCalor({
       </div>
 
       {/* rolagem horizontal contida aqui: a página nunca transborda */}
-      <div className="tabela-scroll max-w-full" onScroll={() => setAtivo(null)}>
+      <div ref={rolagem} className="tabela-scroll max-w-full" onScroll={() => setAtivo(null)}>
         <table
           ref={grade}
           role="grid"
@@ -234,7 +280,7 @@ export function MapaCalor({
                         if (ev.pointerType !== "mouse") mostra(ev.currentTarget, { l: i, c: j }, false);
                       }}
                       className={`relative h-7 p-0 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-carvao focus-visible:shadow-[inset_0_0_0_2px_var(--cor-superficie)] [@media(pointer:coarse)]:h-11 ${
-                        e === "nao-se-aplica" ? "border border-dashed border-mineral bg-superficie" : ""
+                        e === "nao-se-aplica" ? "border border-dashed border-mineral bg-superficie" : e === "valor" && k !== null && claras.has(k) ? "border border-mineral" : ""
                       } ${eAtivo ? ANEL : ""}`}
                     >
                       <span className="sr-only">{e === "valor" ? `${d.valor}, ${d.classe}` : d.valor}</span>
@@ -327,4 +373,27 @@ export function MapaCalor({
       </details>
     </div>
   );
+}
+
+/**
+ * Contraste da cor de uma classe contra o papel do domínio (token cor-papel). A cor chega como hexadecimal ou como `var(--token)`: a sonda
+ * resolve a que o navegador usa. Nulo quando não dá para medir (sem DOM ou cor que o navegador não reconhece).
+ */
+function contrasteComPapel(cor: string): number | null {
+  if (typeof document === "undefined") return null;
+  const sonda = document.createElement("span");
+  sonda.style.display = "none";
+  sonda.style.backgroundColor = cor;
+  document.body.appendChild(sonda);
+  const resolvida = getComputedStyle(sonda).backgroundColor;
+  sonda.remove();
+  const m = resolvida.match(/[\d.]+/g);
+  if (!m || m.length < 3) return null;
+  const [r, g, b] = m.slice(0, 3).map((x) => {
+    const v = Number(x) / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  const luminancia = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  const papel = 0.2126 * Math.pow((0xfa / 255 + 0.055) / 1.055, 2.4) + 0.7152 * Math.pow((0xf8 / 255 + 0.055) / 1.055, 2.4) + 0.0722 * Math.pow((0xf2 / 255 + 0.055) / 1.055, 2.4);
+  return (papel + 0.05) / (luminancia + 0.05);
 }

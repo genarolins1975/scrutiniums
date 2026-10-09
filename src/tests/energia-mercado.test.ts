@@ -13,13 +13,15 @@ const ler = <T,>(...p: string[]): T => JSON.parse(readFileSync(join(process.cwd(
 const g = ler<MercadoGold>("public", "energia", "gold", "mercado.json");
 const d = ler<MercadoDetalhe>("public", "energia", "series", "mercado_detalhe.json");
 
-describe("mercado: acesso à CCEE pendente de decisão", () => {
-  it("painéis que dependem da CCEE não aparecem como concluídos", () => {
-    expect(g.acesso_ccee.decisao.situacao).toBe("pendente");
+describe("mercado: acesso à CCEE autorizado pelo responsável", () => {
+  it("decisão registrada com data e painéis no estado do critério de aceite", () => {
+    expect(g.acesso_ccee.decisao.situacao).toBe("autorizada");
+    expect(g.acesso_ccee.decisao.registrada_em).toBe("2026-10-01");
+    expect(g.acesso_ccee.decisao.decidida_em).toBe("2026-10-06");
     for (const p of g.paineis) {
       expect(p.depende_da_ccee, p.id).toBe(true);
-      expect(p.estado_dados, p.id).toBe("pendente_decisao_acesso");
-      expect(p.limitacoes.some((l) => l.includes("Decisão pendente")), p.id).toBe(true);
+      expect(p.estado_dados, p.id).toBe(p.estado_criterio);
+      expect(p.limitacoes.some((l) => l.startsWith("Decisão sobre o acesso à CCEE pendente")), p.id).toBe(false);
     }
   });
 });
@@ -32,10 +34,23 @@ describe("mercado: ACL sem exportação (P032)", () => {
     expect(jun.exportacao_mwmed).toBeCloseTo(1480.2, 1);
   });
 
-  it("12 meses até julho de 2026: 42,51% sem e 42,76% com exportação", () => {
+  it("12 meses até julho de 2026: 42,51% sem e 42,76% com exportação; o KPI é a mesma razão de somas na janela dele", () => {
+    const janela = (ini: string, fim: string) => {
+      const m = g.livre_regulado.ccee_mensal.filter((x) => x.mes >= ini && x.mes <= fim);
+      const acl = m.reduce((s, x) => s + x.acl_mwh!, 0);
+      const acr = m.reduce((s, x) => s + x.acr_mwh, 0);
+      const exp = m.reduce((s, x) => s + x.exportacao_mwh!, 0);
+      return { meses: m.length, sem: (100 * acl) / (acl + acr), com: (100 * (acl + exp)) / (acl + exp + acr) };
+    };
+    const jul = janela("2025-08", "2026-07");
+    expect(jul.meses).toBe(12);
+    expect(jul.sem).toBeCloseTo(42.51, 2);
+    expect(jul.com).toBeCloseTo(42.76, 2);
     const k = g.livre_regulado.kpis.participacao_acl_ccee_12m!;
-    expect(k.valor_pct).toBeCloseTo(42.51, 2);
-    expect(k.com_exportacao_pct).toBeCloseTo(42.76, 2);
+    const atual = janela(k.periodo.inicio, k.periodo.fim);
+    expect(atual.meses).toBe(12);
+    expect(k.valor_pct).toBeCloseTo(atual.sem, 1);
+    expect(k.com_exportacao_pct!).toBeCloseTo(atual.com, 1);
   });
 
   it("consumo contabilizado conferido com 'O consumo contabilizou' do InfoMercado, não com 'Consumo/Geração'", () => {
@@ -78,7 +93,9 @@ describe("mercado: parcelas de carga sem as distribuidoras (P033)", () => {
   it("cadastro de perfis com data de modificação do portal, sem data de posição inventada", () => {
     const p = g.agentes_migracao.perfis;
     expect(p.data_referencia).toBeNull();
-    expect(p.data_modificacao_portal).toBe("2026-09-01");
+    // data informada pelo portal (last_modified do CKAN), nunca posterior à captura
+    expect(p.data_modificacao_portal).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(p.data_modificacao_portal! <= p.capturado_em!.slice(0, 10)).toBe(true);
     expect("posicao" in p).toBe(false);
   });
 
@@ -94,12 +111,18 @@ describe("mercado: parcelas de carga sem as distribuidoras (P033)", () => {
 });
 
 describe("mercado: GSF de 12 meses e InfoMercado (P034)", () => {
-  it("divergência com o número de 12 meses publicada na evidência e no texto", () => {
+  it("divergência com o número de 12 meses do InfoMercado 229 publicada na verificação, e no KPI quando a janela coincide", () => {
+    const p = g.paineis.find((x) => x.id === "P034")!;
+    const v = p.verificacoes.find((x) => x.nome.startsWith("GSF de 12 meses"))!;
+    expect(v.resultado).toBe("ressalva");
+    expect(v.detalhe).toContain("229: 92,55% publicado");
+    expect(v.detalhe).toContain("80,43%");
+    expect(g.mre_gsf.reconciliacao_infomercado.some((c) => c.numero === "229" && c.resultado === "ressalva")).toBe(true);
     const k = g.mre_gsf.kpis.gsf_12m!;
-    expect(k.infomercado_12m?.publicado_pct).toBe(92.55);
-    expect(k.infomercado_12m?.resultado).toBe("ressalva");
-    expect(k.evidencia.reconciliacao?.descricao).toContain("DIVERGÊNCIA");
-    expect(g.paineis.find((p) => p.id === "P034")!.resposta).toContain("92,55%");
+    if (k.infomercado_12m) {
+      expect(k.infomercado_12m.resultado).toBe("ressalva");
+      expect(k.evidencia.reconciliacao?.descricao).toContain("DIVERGÊNCIA");
+    }
   });
 });
 
@@ -116,10 +139,12 @@ describe("mercado: liquidação e pagamento (P035)", () => {
   });
 
   it("zeros repetidos do pagamento de ESS não aparecem como pagamento nulo", () => {
-    const z = g.encargos.pagamento_mensal.filter((x) => x.mes >= "2025-02" && x.mes <= "2026-07");
-    expect(z.length).toBe(18);
+    const seq = g.encargos.controles_pagamento.series.pagamento_ess[0];
+    expect(seq.inicio).toBe("2025-02");
+    expect(seq.meses).toBeGreaterThanOrEqual(18);
+    const z = g.encargos.pagamento_mensal.filter((x) => x.mes >= seq.inicio && x.mes <= seq.fim);
+    expect(z.length).toBe(seq.meses);
     expect(z.every((x) => x.pagamento_ess === null && x.situacao_pagamento_ess === "zero_nao_confirmado")).toBe(true);
-    expect(g.encargos.controles_pagamento.series.pagamento_ess[0].meses).toBe(18);
   });
 
   it("ESS de 2025 conferido com a consolidação anual do MME", () => {

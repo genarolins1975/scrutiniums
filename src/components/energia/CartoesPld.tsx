@@ -19,7 +19,7 @@ export function CartoesPld({ pld }: { pld: PldGold }) {
   return (
     <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       {pld.cartoes.map((c) => (
-        <li key={c.sm} className="relative border border-linha bg-superficie p-5">
+        <li key={c.sm} className="relative min-w-0 border border-linha bg-superficie p-5">
           <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: COR_SM[c.sm] }} />
           <p className="rotulo text-mineral">{c.nome}</p>
           <p className="mt-3 font-serif text-[2rem] leading-none tabular-nums text-carvao">
@@ -30,23 +30,23 @@ export function CartoesPld({ pld }: { pld: PldGold }) {
             média de {dataBR(pld.dia_referencia)} <SeloNatureza natureza="CALCULADO" />
           </p>
           <dl className="mt-4 space-y-2 text-sm">
-            <div className="flex justify-between gap-3">
+            <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
               <dt className="shrink-0 text-mineral">Faixa horária</dt>
               <dd className="text-right tabular-nums text-carvao">
                 {reais(c.min_hora)} a {reais(c.max_hora)}
                 <span className="sr-only"> (valores observados)</span>
               </dd>
             </div>
-            <div className="flex justify-between gap-3">
+            <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
               <dt className="text-mineral">Vs. dia anterior</dt>
               <dd className="text-right tabular-nums text-carvao">
                 {c.variacao_dia_anterior ? `${sinal(c.variacao_dia_anterior.abs, 2)} (${sinal(c.variacao_dia_anterior.pct)}%)` : "sem dado"}
               </dd>
             </div>
-            <div className="flex justify-between gap-3">
+            <div className="flex flex-wrap justify-between gap-x-3 gap-y-0.5">
               <dt className="text-mineral">Posição desde 2021</dt>
               <dd className="text-right text-carvao">
-                {c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)}` : "sem dado"}
+                {c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)} de ${num(c.posicao.n_dias, 0)} dias` : "sem dado"}
               </dd>
             </div>
           </dl>
