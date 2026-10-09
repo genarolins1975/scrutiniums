@@ -110,6 +110,14 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
   const grupo: Grupo = s.reg ? "regiao" : "todas";
   const capGrupo = (s.reg && dados.capitais.find((c) => c.regiao === s.reg)) || dados.capitais[0];
   const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, capGrupo, s.ord);
+  const itensFora = comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }));
+  const linhasForaDoGrafico = comp.excluidas.map((x) => ({
+    chave: x.cap.id,
+    rotulo: `${x.cap.nome} (${x.cap.uf})`,
+    valor: x.comValor ? x.ponto.valor : null,
+    texto: x.comValor ? "fora da comparação, motivo abaixo" : `${ROTULO_STATUS[x.status].toLowerCase()}, motivo abaixo`,
+    destacada: destacadas.includes(x.cap.id),
+  }));
   const k = componente(medida, s.moeda, s.disc);
   const externa = referenciaExternaDoGrafico(dados, medida, ano, etapa, k);
   const notas = notasMateriais(comp);
@@ -308,7 +316,13 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
                   formataEixo={(v) => formataEixo(medida, v)}
                   zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
                   rotuloGrupo={s.reg ? `capitais da região ${dados.regioes[s.reg]}` : "capitais na comparação"}
+                  fora={linhasForaDoGrafico}
                 />
+                {comp.excluidas.length > 0 && (
+                  <div className="mt-4">
+                    <ForaDaComparacao itens={itensFora} />
+                  </div>
+                )}
                 {comp.ref && (
                   <div className="mt-8">
                     <ReferenciasDoGrupo r={comp.ref} m={medida} textoRazao={textoRazao} />
@@ -371,11 +385,6 @@ export function ComparadorCapitais({ dados, contextos }: { dados: DadosPainel; c
             >
               Baixar estes valores (CSV)
             </button>
-          </div>
-        )}
-        {s.vis === "grafico" && comp.excluidas.length > 0 && (
-          <div className="mt-6">
-            <ForaDaComparacao itens={comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }))} />
           </div>
         )}
         {s.vis === "grafico" && (

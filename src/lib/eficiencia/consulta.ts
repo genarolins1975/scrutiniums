@@ -632,6 +632,32 @@ export const CABECALHO_CSV_COMPARACAO = [
   "razao_agregada_do_grupo", "politica_de_referencias", "parcela_intraorcamentaria_pct_da_funcao",
 ];
 
+export const CABECALHO_CSV_SERIE = [
+  "indicador_id", "indicador", "serie_de", "etapa", "componente", "ano", "valor_numerico", "valor_exibido", "unidade", "estado_do_dado",
+  "elegivel_comparacao", "mudanca_de_base", "mediana_das_capitais", "capitais_na_mediana", "nota", "versao_metodologica", "dados_gerados_em", "hash_dados", "fonte",
+];
+
+/** Série ao longo dos anos de uma capital (ou da mediana das capitais), com a mediana de referência e o estado de cada ano. */
+export function linhasCsvSerie(
+  d: DadosPainel, m: MedidaId, etapa: EtapaId, moeda: Moeda, disc: Disciplina, cap: CapitalPainel | null,
+  pontos: (Ponto & { ano: number })[], medianas: PontoMediana[],
+): string[][] {
+  const md = MEDIDA[m];
+  const f = ficha(d, md.indicador);
+  const e = etapaDaMedida(m, etapa);
+  const k = componente(m, moeda, disc);
+  const medPorAno = new Map(medianas.map((x) => [x.ano, x]));
+  return pontos.map((p) => {
+    const med = medPorAno.get(p.ano);
+    return [
+      md.indicador, f.nome, cap ? `${cap.nome} (${cap.uf})` : "Mediana das capitais", e ? nomeEtapa(d, e) : "Não se aplica", rotuloComponente(d, md.indicador, k),
+      String(p.ano), p.valor === null ? "" : String(p.valor), p.valor === null ? "" : formata(m, p.valor), unidade(m, moeda), ROTULO_STATUS[p.status],
+      p.valor === null ? "" : p.elegivel ? "sim" : "nao", p.quebraSerie ? "sim" : "nao", med?.valor == null ? "" : String(med.valor), med ? String(med.n) : "",
+      p.nota ?? "", f.versao_metodologica, d.meta.gerado_em, d.meta.hash_dados, fonteLegivel(d, md.indicador, p.ano),
+    ];
+  });
+}
+
 export function linhasCsvComparacao(
   d: DadosPainel, comp: Comparacao, m: MedidaId, ano: number, etapa: EtapaId, moeda: Moeda, disc: Disciplina,
 ): string[][] {
@@ -1145,6 +1171,10 @@ const DESCRICAO_COLUNA: Record<string, string> = {
   capitais_na_referencia: "Número de capitais usado na referência.",
   diferenca_para_a_mediana: "Diferença descritiva entre a capital e a mediana do grupo, na unidade da medida; não é avaliação.",
   ano: "Ano do recorte: exercício financeiro, Censo Escolar ou edição bienal.",
+  serie_de: "Capital da série, ou a mediana das capitais quando nenhuma foi escolhida.",
+  mudanca_de_base: "'sim' quando o valor do ano usa outra base que o do ano anterior (população de referência, por exemplo); os dois lados não são diretamente comparáveis.",
+  mediana_das_capitais: "Mediana das capitais com valor elegível no mesmo ano, para leitura ao lado da série.",
+  capitais_na_mediana: "Número de capitais usado na mediana do ano; pode mudar de um ano para outro.",
   nota_ou_ressalva: "Nota ou ressalva do dado.",
 };
 
@@ -1153,6 +1183,7 @@ export function dicionarioExportacoes(): string[][] {
   return [
     ...arquivo("comparação de um indicador", CABECALHO_CSV_COMPARACAO),
     ...arquivo("tabela comparativa", CABECALHO_CSV_TABELA_COMPARATIVA),
+    ...arquivo("série ao longo dos anos", CABECALHO_CSV_SERIE),
     ["todos", "(leia antes de usar)", "Os valores descrevem o gasto, o atendimento e os resultados observados; não classificam governos, não indicam meta e não demonstram causa. Mediana e média descrevem o grupo de capitais e não são referência de desempenho. Células vazias não são zero."],
     ["todos", "(universo e período)", "As 26 capitais estaduais, na rede municipal de ensino; a despesa de total e por habitante é do orçamento do município na função Educação, exceto operações intraorçamentárias. Gasto anual, Censo Escolar e Ideb têm períodos próprios e não devem ser alinhados sem cuidado."],
     ["todos", "(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada."],

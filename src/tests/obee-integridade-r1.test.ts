@@ -5,12 +5,14 @@ import { MiniSerie } from "@/components/eficiencia/graficos";
 import { dadosPainel, dadosPainelTema, goldEducacao } from "@/lib/eficiencia/dados";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_SERIE,
   CABECALHO_CSV_TABELA_COMPARATIVA,
   dicionarioExportacoes,
   Indice,
   comparar,
   intraDaCapital,
   linhasCsvComparacao,
+  linhasCsvSerie,
   perimetroIntra,
   serie,
   serieDaMediana,
@@ -18,7 +20,7 @@ import {
   textoPerimetroIntra,
 } from "@/lib/eficiencia/consulta";
 import { fraseEvolucao } from "@/lib/eficiencia/frases";
-import { universoDaMedida } from "@/lib/eficiencia/visao";
+import { avisoDoGrupo, DEFINICAO_CURTA, NAO_MOSTRA, universoDaMedida } from "@/lib/eficiencia/visao";
 
 /**
  * Correções da rodada 1 de avaliação independente: perímetro da despesa (intraorçamentárias) junto do número, mudança de base na
@@ -190,5 +192,48 @@ describe("dicionário das exportações", () => {
       expect(porColuna.get("Despesa por matrícula")).toBe(d.fichas.find((f) => f.id === "edu.despesa.aplicacao_direta_por_matricula")!.versao_metodologica);
       expect(new Set(porColuna.values()).size).toBeGreaterThan(1);
     });
+  });
+});
+
+describe("lote 4: série em CSV, avisos por tema e ausências declaradas", () => {
+  const PROIBIDAS = /\b(eficiente|ineficiente|desperd|melhor|pior|gasta demais|ranking|ideal|bom|ruim)\b/i;
+
+  it("o CSV da série tem uma linha por ano, mediana de referência e colunas descritas no dicionário", () => {
+    const cap = d.capitais[0];
+    const pontos = serie(ix, "despesa_hab", cap.cod, "todas", "nominal", "matematica");
+    const medianas = serieDaMediana(ix, "despesa_hab", "todas", "nominal", "matematica");
+    const linhas = linhasCsvSerie(d, "despesa_hab", "todas", "nominal", "matematica", cap, pontos, medianas);
+    expect(linhas.length).toBe(pontos.length);
+    for (const l of linhas) expect(l.length).toBe(CABECALHO_CSV_SERIE.length);
+    const iv = CABECALHO_CSV_SERIE.indexOf("valor_numerico");
+    const ie = CABECALHO_CSV_SERIE.indexOf("estado_do_dado");
+    linhas.forEach((l, i) => {
+      if (pontos[i].valor === null) expect(l[iv]).toBe("");
+      else expect(Number(l[iv])).toBe(pontos[i].valor);
+      expect(l[ie].length).toBeGreaterThan(0);
+    });
+    const dic = dicionarioExportacoes();
+    for (const col of CABECALHO_CSV_SERIE) {
+      const linha = dic.find((x) => x[0] === "série ao longo dos anos" && x[1] === col);
+      expect(linha, col).toBeDefined();
+      expect(linha![2].length, col).toBeGreaterThan(15);
+    }
+  });
+
+  it("cada tipo de medida tem aviso próprio, sem juízo de valor", () => {
+    const textos = (["despesa", "despesa_hab", "matriculas", "atu", "ideb", "saeb", "aprovacao"] as const).map((m) => avisoDoGrupo(m));
+    expect(new Set(textos).size).toBe(3);
+    expect(avisoDoGrupo("atu")).toContain("população em idade escolar");
+    expect(avisoDoGrupo("ideb")).toContain("não mede o efeito da gestão");
+    for (const t of textos) expect(t.replace(/Menor gasto não demonstra eficiência/, "")).not.toMatch(PROIBIDAS);
+    for (const t of Object.values(NAO_MOSTRA)) {
+      expect(t.length).toBeGreaterThan(80);
+      expect(t).not.toMatch(PROIBIDAS);
+    }
+  });
+
+  it("a definição do Ideb traduz a sigla e o Saeb", () => {
+    expect(DEFINICAO_CURTA.ideb.texto).toContain("Índice de Desenvolvimento da Educação Básica");
+    expect(DEFINICAO_CURTA.ideb.texto).toContain("Sistema de Avaliação da Educação Básica");
   });
 });

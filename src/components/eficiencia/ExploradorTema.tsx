@@ -5,6 +5,8 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CABECALHO_CSV_COMPARACAO,
+  CABECALHO_CSV_SERIE,
+  linhasCsvSerie,
   dicionarioExportacoes,
   Indice,
   MEDIDA,
@@ -42,7 +44,7 @@ import {
 import { fraseAmplitude, fraseCapital, fraseCobertura, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { inteiro } from "@/lib/eficiencia/formato";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
-import { DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
+import { avisoDoGrupo, NAO_MOSTRA, DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesMedida";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
@@ -116,6 +118,14 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const grupoRef = grupo === "regiao" && cap ? cap.regiao : "todas";
   const nomeGrupo = grupo === "regiao" && cap ? `capitais da região ${dados.regioes[cap.regiao]}` : "capitais na comparação";
   const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, cap ?? dados.capitais[0], s.ord);
+  const itensFora = comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }));
+  const linhasForaDoGrafico = comp.excluidas.map((x) => ({
+    chave: x.cap.id,
+    rotulo: `${x.cap.nome} (${x.cap.uf})`,
+    valor: x.comValor ? x.ponto.valor : null,
+    texto: x.comValor ? "fora da comparação, motivo abaixo" : `${ROTULO_STATUS[x.status].toLowerCase()}, motivo abaixo`,
+    destacada: x.cap.id === cap?.id,
+  }));
   const k = componente(medida, s.moeda, s.disc);
   const e = etapaDaMedida(medida, etapa);
   const ptCap = cap ? ix.ponto(md.indicador, cap.cod, ano, e, k) : null;
@@ -191,6 +201,8 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
       setAviso("Não foi possível copiar automaticamente. O endereço na barra do navegador reproduz este recorte.");
     }
   };
+  const baixarCsvSerie = () =>
+    baixar(`obee_${tema}_${medida}_serie_${cap ? cap.id : "mediana"}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}.csv`, csv(CABECALHO_CSV_SERIE, linhasCsvSerie(dados, medida, etapa, s.moeda, s.disc, cap ?? null, pontosSerie, medianaPorAno)));
   const baixarCsv = () =>
     baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}${grupo === "regiao" && cap ? `_regiao_${cap.regiao}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
 
@@ -371,6 +383,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               aoMudar={(v) => definir({ ord: v })}
             />
           )}
+          {visao === "grafico" && s.ord === "valor" && <p className="max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
           {visao === "grafico" && medida === "despesa" && (
             <Alternancia
               rotulo="Escala do eixo"
@@ -404,8 +417,14 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
                 escala={medida === "despesa" ? s.eixo : "linear"}
                 rotuloGrupo={nomeGrupo}
+                fora={linhasForaDoGrafico}
               />
             ))}
+          {visao === "grafico" && comp.excluidas.length > 0 && (
+            <div className="mt-4">
+              <ForaDaComparacao itens={itensFora} />
+            </div>
+          )}
           {visao === "grafico" && comp.incluidas.length > 0 && notas.length > 0 && (
             <div className="mt-4">
               <NotasMateriais notas={notas} n={comp.incluidas.length} />
@@ -428,6 +447,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                 rotuloReferencia="Mediana das capitais"
                 altura={260}
               />
+              {ehDespesa(medida) && s.moeda === "nominal" && (
+                <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted" role="note">
+                  Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Moeda.
+                </p>
+              )}
               {!cap && <p className="mt-3 text-xs leading-snug text-carvao-muted">Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro.</p>}
               <details className="mt-2 text-sm">
                 <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
@@ -465,7 +489,12 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               Baixar estes valores (CSV)
             </button>
           ) : null}
-          {visao === "grafico" || visao === "tabela" ? (<button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+          {visao === "evolucao" ? (
+            <button type="button" onClick={baixarCsvSerie} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
+              Baixar esta série (CSV)
+            </button>
+          ) : null}
+          {visao === "grafico" || visao === "tabela" || visao === "evolucao" ? (<button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
               Dicionário das colunas (CSV)
             </button>
           ) : null}
@@ -474,11 +503,9 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {aviso}
         </p>
 
-        {comp.excluidas.length > 0 && visao !== "detalhe" && (
+        {comp.excluidas.length > 0 && visao !== "detalhe" && visao !== "grafico" && (
           <div className="mt-4">
-            <ForaDaComparacao
-              itens={comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }))}
-            />
+            <ForaDaComparacao itens={itensFora} />
           </div>
         )}
       </section>
@@ -489,7 +516,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           Referências para ler o número
         </h2>
         <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          A mediana e a média simples descrevem o grupo de capitais; não são meta nem padrão. Menor gasto não demonstra eficiência, e gasto maior não demonstra qualidade.
+          {avisoDoGrupo(medida)}
         </p>
         <div className="mt-6">
           {comp.ref ? <ReferenciasDoGrupo r={comp.ref} m={medida} textoRazao={textoRazao} /> : <SemReferencia medida={medida} motivo="Escolha uma etapa e um ano em que a medida exista para ver as referências do grupo." />}
@@ -513,6 +540,10 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
               )}
             </div>
           </div>
+        </div>
+        <div className="mt-10 max-w-prose2 border-t border-linha pt-5" role="note">
+          <h3 className="font-semibold text-obee-tinta">O que este painel não mostra</h3>
+          <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{NAO_MOSTRA[tema]}</p>
         </div>
       </section>
     </div>

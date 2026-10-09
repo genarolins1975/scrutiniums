@@ -71,10 +71,29 @@ export const DEFINICAO_CURTA: Record<MedidaId, { titulo: string; texto: string }
   conveniadas: { titulo: "Em escolas conveniadas", texto: "Matrículas em escolas privadas conveniadas só com o município; contadas à parte da rede." },
   atu: { titulo: "Alunos por turma", texto: "Tamanho médio das turmas na rede municipal, por etapa." },
   aprovacao: { titulo: "Taxa de aprovação", texto: "Parcela dos estudantes aprovados ao fim do ano letivo, por etapa." },
-  ideb: { titulo: "Ideb", texto: "Índice de 0 a 10 que combina nota no Saeb e fluxo escolar; edições bienais." },
+  ideb: { titulo: "Ideb", texto: "Índice de Desenvolvimento da Educação Básica, de 0 a 10: combina a nota no Saeb (Sistema de Avaliação da Educação Básica) e o fluxo escolar; edições bienais." },
   saeb: { titulo: "Proficiência no Saeb", texto: "Proficiência média em prova nacional, em escala própria por disciplina; edições bienais." },
 };
 
+
+/** Aviso de leitura das referências do grupo, próprio de cada tipo de medida (gasto, atendimento, resultado). */
+export function avisoDoGrupo(m: MedidaId): string {
+  const base = "A mediana e a média simples descrevem o grupo de capitais; não são meta nem padrão.";
+  if (m === "despesa" || m === "despesa_hab" || m === "despesa_mat") return `${base} Menor gasto não demonstra eficiência, e gasto maior não demonstra qualidade.`;
+  if (m === "matriculas" || m === "conveniadas" || m === "atu")
+    return `${base} Uma rede maior ou turmas menores não demonstram, por si, mais ou menos qualidade: dependem da demanda, da população em idade escolar e da política de cada município.`;
+  return `${base} O resultado observado não mede o efeito da gestão municipal: reflete também o perfil socioeconômico dos estudantes e a trajetória de cada rede. Aprovação, Ideb e Saeb têm periodicidade própria e não coincidem com o ano da despesa.`;
+}
+
+/** O que o painel de cada tema não mostra: ausências que limitam a leitura e que uma decisão exigiria complementar. */
+export const NAO_MOSTRA: Record<Tema, string> = {
+  gastos:
+    "Não mostra o gasto por escola nem por etapa de ensino (só a composição por subfunção, no detalhe), despesas de outras funções orçamentárias que apoiam a educação, despesas das redes estadual, federal e privada no mesmo território, nem o custo do aluno. Antes de decidir, falta saber o que cada município classifica na função Educação e o que mantém fora dela.",
+  atendimento:
+    "Não mostra a demanda por vaga, a cobertura sobre a população em idade escolar nem diferenças por renda, raça, deficiência ou localização do estudante. Conta matrículas e turmas da rede municipal (as escolas conveniadas, à parte); as redes estadual, federal e privada ficam fora.",
+  resultados:
+    "Não mostra resultados por grupo de estudantes (renda, raça, deficiência, localização), por escola nem do conjunto das redes do município. Aprovação, Ideb e Saeb são da rede municipal, em etapas e edições próprias, e não demonstram o efeito de uma política ou de uma gestão.",
+};
 
 /** Por que uma medida não tem referência nacional utilizável: dito em vez de calar. */
 export const SEM_NACIONAL: Record<MedidaId, string> = {

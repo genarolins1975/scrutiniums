@@ -15,6 +15,9 @@ import { COR, dimensoes, ticksLog, useLargura } from "./graficos";
 
 export type LinhaDistribuicao = { chave: string; rotulo: string; valor: number; destacada: boolean };
 
+/** Capital fora da comparação: aparece no gráfico, sem entrar nas estatísticas, com o motivo curto ao lado (o completo vem logo abaixo). */
+export type LinhaForaDaComparacao = { chave: string; rotulo: string; valor: number | null; texto: string; destacada: boolean };
+
 export type ReferenciasDistribuicao = {
   mediana: number | null;
   media: number | null;
@@ -32,6 +35,7 @@ export function DistribuicaoCapitais({
   escala = "linear",
   rotuloGrupo = "capitais na comparação",
   rotuloMediana = "Mediana",
+  fora = [],
 }: {
   linhas: LinhaDistribuicao[];
   referencias: ReferenciasDistribuicao;
@@ -42,31 +46,51 @@ export function DistribuicaoCapitais({
   escala?: "linear" | "log";
   rotuloGrupo?: string;
   rotuloMediana?: string;
+  fora?: LinhaForaDaComparacao[];
 }) {
   const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
   const linhaH = 28;
   const fonte = estreito ? 11.5 : 12.5;
-  const m = { t: 30, r: estreito ? 58 : 84, b: referencias.externa ? 52 : 34, l: estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
-  const H = m.t + m.b + linhas.length * linhaH;
+  const larg = (t: string, f: number) => t.length * f * 0.56;
+  const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);
+  const margemDireita = Math.max(estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
+  const m = { t: 30, r: margemDireita, b: referencias.externa ? 52 : 34, l: estreito ? Math.min(124, Math.round(w * 0.4)) : 184 };
+  const nLinhas = linhas.length + fora.length;
+  const H = m.t + m.b + nLinhas * linhaH;
   const { mediana, media, faixa, externa = null } = referencias;
   const todos = [...linhas.map((l) => l.valor), ...[mediana, media, faixa?.q1 ?? null, faixa?.q3 ?? null, externa?.valor ?? null].filter((v): v is number => v !== null)];
   const log = escala === "log" && todos.every((v) => v > 0);
   const dom = log
     ? { min: Math.min(...todos) * 0.85, max: Math.max(...todos) * 1.15, ticks: ticksLog(Math.min(...todos) * 0.85, Math.max(...todos) * 1.15) }
     : dominioBonito(todos, { zero, n: estreito ? 3 : 5 });
-  const util = w - m.l - m.r;
-  const ticks = util < 150 ? dom.ticks.filter((_, i, a) => i === 0 || i === a.length - 1) : dom.ticks;
   const lin = escalaLinear([dom.min, dom.max], [m.l, w - m.r]);
   const x = (v: number) => (log ? m.l + ((Math.log10(v) - Math.log10(dom.min)) / (Math.log10(dom.max) - Math.log10(dom.min))) * (w - m.r - m.l) : lin(v));
   const yc = (i: number) => m.t + i * linhaH + linhaH / 2;
-  const base = m.t + linhas.length * linhaH;
+  const base = m.t + nLinhas * linhaH;
   const min = Math.min(...linhas.map((l) => l.valor));
   const max = Math.max(...linhas.map((l) => l.valor));
   // valor visível na própria linha: extremos (todos os empatados), capitais destacadas e a linha ativa
   const comRotulo = (l: LinhaDistribuicao, i: number) => l.valor === min || l.valor === max || l.destacada || ativo === i;
   const destacadas = linhas.filter((l) => l.destacada);
+  // nome e UF em duas linhas quando não cabem na margem, em vez de cortar o nome
+  const capacidade = m.l - 14;
+  const partes = (rotulo: string): [string, string | null] => {
+    if (larg(rotulo, fonte) <= capacidade) return [rotulo, null];
+    const i = rotulo.lastIndexOf(" (");
+    return i > 0 ? [rotulo.slice(0, i), rotulo.slice(i + 1)] : [rotulo, null];
+  };
+  // marcas do eixo sem sobreposição: descarta a que encosta na anterior, mantendo a última
+  const larguraMarca = (t: number) => formataEixo(t).length * 7 + 8;
+  const ticks: number[] = [];
+  let fimAnterior = -Infinity;
+  dom.ticks.forEach((t) => {
+    const ini = x(t) - larguraMarca(t) / 2;
+    if (ini < fimAnterior) return;
+    ticks.push(t);
+    fimAnterior = x(t) + larguraMarca(t) / 2;
+  });
 
   const linhaDoPonteiro = (e: PointerEvent<SVGRectElement>) => {
     const r = e.currentTarget.ownerSVGElement!.getBoundingClientRect();
@@ -135,13 +159,18 @@ export function DistribuicaoCapitais({
               <text
                 x={m.l - 10}
                 y={yc(i)}
-                dy="0.32em"
+                dy={partes(l.rotulo)[1] ? "-0.1em" : "0.32em"}
                 textAnchor="end"
                 fontSize={fonte}
                 fontWeight={l.destacada ? 700 : 400}
                 fill={l.destacada ? "var(--cor-obee-tinta)" : "var(--cor-carvao-muted)"}
               >
-                {l.rotulo}
+                {partes(l.rotulo)[0]}
+                {partes(l.rotulo)[1] && (
+                  <tspan x={m.l - 10} dy="1.15em">
+                    {partes(l.rotulo)[1]}
+                  </tspan>
+                )}
               </text>
               <circle cx={x(l.valor)} cy={yc(i)} r={l.destacada ? 6.5 : 4.5} fill={l.destacada ? COR.selecao : COR.neutro} stroke={COR.superficie} strokeWidth={2} />
               {comRotulo(l, i) && (
@@ -151,6 +180,26 @@ export function DistribuicaoCapitais({
               )}
             </g>
           ))}
+          {fora.map((l, k) => {
+            const i = linhas.length + k;
+            const [n1, n2] = partes(l.rotulo);
+            return (
+              <g key={l.chave} data-fora-da-comparacao={l.chave}>
+                <line x1={m.l} x2={w - m.r} y1={yc(i)} y2={yc(i)} stroke={COR.grade} strokeWidth={1} strokeDasharray="2 4" />
+                <text x={m.l - 10} y={yc(i)} dy={n2 ? "-0.1em" : "0.32em"} textAnchor="end" fontSize={fonte} fontWeight={l.destacada ? 700 : 400} fill={l.destacada ? "var(--cor-obee-tinta)" : "var(--cor-carvao-muted)"}>
+                  {n1}
+                  {n2 && (
+                    <tspan x={m.l - 10} dy="1.15em">
+                      {n2}
+                    </tspan>
+                  )}
+                </text>
+                <text x={m.l + 8} y={yc(i)} dy="0.32em" fontSize={fonte - 0.5} fontStyle="italic" fill="var(--cor-carvao-muted)">
+                  {l.texto}
+                </text>
+              </g>
+            );
+          })}
           <rect
             x={0}
             y={m.t}

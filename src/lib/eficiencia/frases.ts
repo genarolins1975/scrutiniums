@@ -104,7 +104,7 @@ export function fraseCobertura(n: number, universo: number): string {
 export function fraseCapital(nome: string, uf: string, valor: number | null, mediana: number | null, n: number, medida: MedidaId, foraDaComparacao = false): string {
   const quem = `${nome} (${uf})`;
   if (valor === null) return `${quem} não tem valor observado para esta medida neste recorte.`;
-  if (foraDaComparacao) return `${quem} registra ${formata(medida, valor)}, valor fora da comparação entre capitais (o motivo está ao lado).`;
+  if (foraDaComparacao) return `${quem} registra ${formata(medida, valor)}, valor fora da comparação entre capitais (o motivo está logo abaixo do gráfico).`;
   if (mediana === null) return `${quem} registra ${formata(medida, valor)}.`;
   const d = diferenca(medida, valor, mediana);
   const dif = d ? ` (${d.abs === 0 ? "igual à mediana" : `${diferencaCurta(medida, d.abs)} ${d.abs > 0 ? "acima" : "abaixo"}`})` : "";

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { formata, formataEixo, type MedidaId } from "@/lib/eficiencia/consulta";
+import { ehDespesa, formata, formataEixo, type MedidaId } from "@/lib/eficiencia/consulta";
 import { fraseCapital, listaRotulos } from "@/lib/eficiencia/frases";
 import type { CapituloPanorama, ExtremoPanorama, ReferenciaExternaCapitulo, ResumoMedida } from "@/lib/eficiencia/panorama";
 import type { FichaIndicador } from "@/lib/eficiencia/tipos";
@@ -180,6 +180,12 @@ function CapituloRecursos({
               <Numero valor={fmt(r.maior!.valor)} legenda={`Maior valor · ${nomesDoExtremo(r.maior!)}`} />
             </dl>
             <p className="mt-4 text-center text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
+            {ehDespesa(r.medida) && (
+              <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-carvao-muted">
+                Valores em reais correntes: preços do próprio ano, sem correção pela inflação. A evolução em reais constantes está no painel Gastos.
+                {r.escala === "log" && " O gráfico usa escala logarítmica porque as capitais diferem em ordens de grandeza: distâncias iguais representam razões iguais, não diferenças iguais."}
+              </p>
+            )}
             {r.perimetro && (
               <p className="mx-auto mt-1.5 max-w-[46rem] text-center text-[0.8125rem] leading-snug text-obee-tinta" role="note">
                 <span className="font-semibold">Perímetro.</span> {r.perimetro}
@@ -361,6 +367,7 @@ function CapituloReferencia({ c, cap, fichas }: { c: CapituloPanorama; cap: stri
         {r.pergunta}
       </h2>
       <p className="mt-1.5 text-[0.9375rem] text-carvao-muted">{r.contexto}</p>
+      <p className="mt-1.5 max-w-prose2 text-[0.8125rem] leading-snug text-carvao-muted">{r.definicao}</p>
       {vazio ? (
         <p className="mt-6 border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-obee-tinta" role="note">
           Nenhuma capital tem dado comparável para esta medida neste período.

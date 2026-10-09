@@ -128,6 +128,9 @@ export function MiniSerie({
   const anot = new Map(anotacoes.map((a, i) => [a.ano, i + 1]));
   const ultimo = [...pontos].reverse().find((p) => p.valor !== null);
   const iUltimo = ultimo ? pontos.indexOf(ultimo) : -1;
+  // valor escrito em cada ponto quando cabe sem colidir com o vizinho (séries curtas); senão, só o último
+  const larguraMaior = Math.max(0, ...pontos.map((p) => (p.valor === null ? 0 : formata(p.valor).length * 6.8)));
+  const rotularTodos = pontos.length > 1 && pontos.length <= 8 && passoX >= larguraMaior + 8;
 
   const teclado = (e: KeyboardEvent) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") return;
@@ -214,7 +217,23 @@ export function MiniSerie({
               />
             ),
           )}
-          {ultimo && ultimo.valor !== null && ativo === null && (
+          {rotularTodos &&
+            pontos.map((p, i) =>
+              p.valor === null ? null : (
+                <text
+                  key={`v${p.ano}`}
+                  x={x(i)}
+                  y={y(p.valor) - 10}
+                  textAnchor={i === 0 && x(i) - larguraMaior / 2 < 0 ? "start" : i === pontos.length - 1 && x(i) + larguraMaior / 2 > w ? "end" : "middle"}
+                  fontSize={11.5}
+                  fontWeight={i === iUltimo ? 600 : 400}
+                  fill="var(--cor-obee-tinta)"
+                >
+                  {formata(p.valor)}
+                </text>
+              ),
+            )}
+          {!rotularTodos && ultimo && ultimo.valor !== null && ativo === null && (
             <text
               x={Math.min(x(iUltimo), w - m.r)}
               y={y(ultimo.valor) - 10}

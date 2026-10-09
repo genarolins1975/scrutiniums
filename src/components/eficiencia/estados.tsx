@@ -88,7 +88,7 @@ export function ForaDoEscopo({ texto, children }: { texto: string; children?: Re
 export function ForaDaComparacao({ itens }: { itens: { nome: string; uf: string; status: string; motivo: string }[] }) {
   if (!itens.length) return null;
   return (
-    <div className="border-t border-linha pt-4" role="note">
+    <div id="fora-da-comparacao" className="scroll-mt-24 border-t border-linha pt-4" role="note">
       <p className="rotulo text-mineral">
         {itens.length === 1 ? "1 capital fora desta comparação" : `${itens.length} capitais fora desta comparação`}
       </p>
