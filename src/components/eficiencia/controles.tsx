@@ -1,6 +1,12 @@
 "use client";
 
-/** Controles locais do painel: seleção em lista e alternância de poucas opções, ambos com alvo de 44 px. */
+/**
+ * Controles locais do painel: seleção em lista e alternância de poucas opções, ambos com alvo de 44 px.
+ *
+ * A seleção mantém o `select` nativo (teclado, leitor de tela e seletor do celular), mas o texto da opção escolhida é
+ * desenhado numa caixa visível que quebra linha, porque o `select` nativo corta em reticências o que não cabe na largura
+ * (nomes de medida chegam a 60 caracteres). O `select` fica transparente por cima da caixa, borda incluída (alvo de 44 px inteiro), e recebe todo toque e foco.
+ */
 
 export function Selecao({
   id,
@@ -20,36 +26,49 @@ export function Selecao({
   desabilitado?: boolean;
 }) {
   const grupos = Array.from(new Set(opcoes.map((o) => o.grupo ?? "")));
+  const atual = opcoes.find((o) => o.v === valor)?.t ?? "";
   return (
     <div className="min-w-0">
       <label htmlFor={id} className="rotulo block text-carvao-muted">
         {rotulo}
       </label>
-      <select
-        id={id}
-        value={valor}
-        disabled={desabilitado}
-        aria-describedby={`${id}-ajuda`}
-        onChange={(e) => aoMudar(e.target.value)}
-        className="mt-1.5 block min-h-[44px] w-full border border-linha bg-superficie px-3 text-[0.95rem] text-obee-tinta hover:border-obee disabled:text-mineral"
+      <div
+        className={`relative mt-1.5 flex min-h-[44px] w-full items-center gap-2 border border-linha bg-superficie px-3 py-2 text-[0.95rem] leading-snug focus-within:outline focus-within:outline-2 focus-within:outline-obee ${
+          desabilitado ? "text-mineral" : "text-obee-tinta hover:border-obee"
+        }`}
       >
-        {grupos.map((g) => {
-          const itens = opcoes
-            .filter((o) => (o.grupo ?? "") === g)
-            .map((o) => (
-              <option key={o.v} value={o.v} disabled={o.desab}>
-                {o.t}
-              </option>
-            ));
-          return g ? (
-            <optgroup key={g} label={g}>
-              {itens}
-            </optgroup>
-          ) : (
-            itens
-          );
-        })}
-      </select>
+        <span aria-hidden="true" className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+          {atual}
+        </span>
+        <svg aria-hidden="true" width="12" height="8" viewBox="0 0 12 8" className="shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M1 1.5l5 5 5-5" />
+        </svg>
+        <select
+          id={id}
+          value={valor}
+          disabled={desabilitado}
+          aria-describedby={`${id}-ajuda`}
+          onChange={(e) => aoMudar(e.target.value)}
+          className="absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)] cursor-pointer opacity-0 disabled:cursor-not-allowed"
+        >
+          {grupos.map((g) => {
+            const itens = opcoes
+              .filter((o) => (o.grupo ?? "") === g)
+              .map((o) => (
+                <option key={o.v} value={o.v} disabled={o.desab}>
+                  {o.t}
+                </option>
+              ));
+            return g ? (
+              <optgroup key={g} label={g}>
+                {itens}
+              </optgroup>
+            ) : (
+              itens
+            );
+          })}
+        </select>
+      </div>
       <p id={`${id}-ajuda`} className="mt-1 text-xs leading-snug text-carvao-muted">
         {ajuda}
       </p>
