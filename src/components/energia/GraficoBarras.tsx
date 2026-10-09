@@ -295,6 +295,9 @@ export function GraficoBarras({
   hcRef.current = vertical ? 0 : hc;
   // barras que viraram horizontais no celular aparecem inteiras (até 16 categorias): rolar dentro de uma caixa de 480 px escondia categorias
   const limiteAltura = virouHorizontal ? Math.max(alturaMaxima, h) : alturaMaxima;
+  // a caixa só limita quando esconde mais que uma categoria: sobrando menos que isso (11 categorias de 44 px contra 480 px), o gráfico inteiro cabe, e o
+  // aviso "mostra só parte" com o botão "Mostrar todas" que quase não muda nada seria falso
+  const limiteEfetivo = !vertical && h > limiteAltura && h <= limiteAltura + hc ? h : limiteAltura;
 
   /** Retângulo de um intervalo de valores [a, b] na barra j da categoria i. */
   const ret = (i: number, j: number, a: number, b: number) => {
@@ -825,13 +828,13 @@ export function GraficoBarras({
               <line key={`${k}-${r.rotulo}`} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             ))}
           </svg>
-          <div ref={caixa} className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: limiteAltura }} data-rolagem={h > limiteAltura && !todas ? "sim" : "nao"}>
+          <div ref={caixa} className="overflow-y-auto overflow-x-hidden" style={todas ? undefined : { maxHeight: limiteEfetivo }} data-rolagem={h > limiteEfetivo && !todas ? "sim" : "nao"}>
             <div className="relative">
               {svgBarras}
               {dica}
             </div>
           </div>
-          {(h > limiteAltura || comLimite) && (
+          {(h > limiteEfetivo || comLimite) && (
             <p className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-mineral" data-aviso-rolagem="true">
               <span>
                 {selecaoForaDoLimite && !todas

@@ -160,7 +160,13 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               </Linha>
               <Linha rotulo="Versão do processamento">
                 {p.versao_pipeline}
-                {p.versao_codigo && <span className="text-mineral"> · código {p.versao_codigo}</span>}
+                {p.versao_codigo && (
+                  <span className="text-mineral">
+                    {" "}
+                    · código {p.versao_codigo}
+                    {p.versao_codigo.endsWith("+alterado") ? " (o código tinha mudanças ainda não registradas quando a base foi gerada)" : ""}
+                  </span>
+                )}
               </Linha>
               <Linha rotulo="Revisões conhecidas">
                 {!rev ? (

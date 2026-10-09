@@ -124,6 +124,7 @@ def main():
     ap.add_argument("--objetivo")
     ap.add_argument("--destino", required=True)
     ap.add_argument("--repositorio", default=RAIZ)
+    ap.add_argument("--servidor", default="http://localhost:3100", help="servidor que serve o commit avaliado (cada onda de coleta tem o seu)")
     ap.add_argument("--max-1440", type=int, default=4)
     ap.add_argument("--max-390", type=int, default=4)
     a = ap.parse_args()
@@ -195,7 +196,7 @@ def main():
             "unidade": uid,
             "nome": nome,
             "repositorio_no_sha_avaliado": a.repositorio,
-            "servidor_do_sha_avaliado": "http://localhost:3100",
+            "servidor_do_sha_avaliado": a.servidor,
             "rubrica": os.path.join(RD, "RUBRICA.md"),
             "criterios_por_papel": CRITERIOS,
             "saidas": {

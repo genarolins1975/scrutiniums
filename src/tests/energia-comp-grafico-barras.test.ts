@@ -201,6 +201,17 @@ describe("GraficoBarras: limite inicial, série opcional e linhas ao largo dos t
     expect(m).not.toContain("Mostrar só o início");
   });
 
+  it("sobrando menos que uma categoria acima da altura máxima, o gráfico inteiro aparece, sem caixa de rolagem nem aviso falso", () => {
+    // 11 categorias de 44 px = 484 px contra 480 px: a caixa escondia 4 px, e o aviso "só parte" com o botão "Mostrar todas" não mudava nada
+    const onze = html({ ...horizontal, dados: ranking(11), alturaCategoria: 44, alturaMaxima: 480, rotulosValor: false });
+    expect(onze).toContain('data-rolagem="nao"');
+    expect(onze).not.toContain("data-aviso-rolagem");
+    // com 12 (528 px), a caixa esconde mais que uma categoria: o aviso e o botão voltam a ser verdadeiros
+    const doze = html({ ...horizontal, dados: ranking(12), alturaCategoria: 44, alturaMaxima: 480, rotulosValor: false });
+    expect(doze).toContain('data-rolagem="sim"');
+    expect(doze).toContain("O gráfico mostra só parte das 12 categorias");
+  });
+
   it("sem limiteInicial ou com menos categorias que o limite, nada muda", () => {
     expect(html({ ...horizontal, dados: ranking(8), limiteInicial: 12 })).not.toContain("data-parcial");
     expect(html({ ...horizontal, limiteInicial: undefined, alturaMaxima: 5000 })).not.toContain("data-parcial");
