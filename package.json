@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "pretest": "node scripts/materializar-trabalho-renda.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "wcag": "node scripts/auditoria-wcag.mjs"
