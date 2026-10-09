@@ -49,7 +49,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 * **Entes e poderes**: União, 26 estados, DF (tratamento P3) e 26 capitais; Executivo, Legislativo e Judiciário, com Ministério Público, defensorias e tribunais de contas em categorias próprias. O modelo já separa ente responsável, local da unidade e rede.
 * **Judiciário nas capitais**: órgãos que atendem o território, com vinculação institucional preservada; TJDFT com responsabilidade federal explícita, sem duplicar União e DF. Fontes: Justiça em Números e DataJud (CNJ).
 * **Estrutura administrativa**: servidores da atividade finalística (por área) separados de administração, cargos comissionados e terceirização (elementos 3.3.90.34 e 3.3.90.37), com a tabela de atribuições de cada ente registrada antes de qualquer razão. Pessoal por população não é diagnóstico de excesso.
-* **Outras áreas**: saúde (SIOPS, CNES), assistência, segurança, administração.
+* **Outras áreas**: saúde (SIOPS, CNES) foi implementada em 09/10/2026 como módulo das capitais ([saude/CONTINUIDADE.md](./saude/CONTINUIDADE.md)); assistência, segurança e administração seguem no roteiro.
 * **Benchmark internacional**: só com compatibilidade documentada de conceito, perímetro, moeda (PPC) e período (por exemplo, OCDE Education at a Glance para gasto por estudante). Nada improvisado.
 * **Fora de escopo por desenho**: notas próprias, índices sintéticos, DEA ou SFA, cenários de corte, assistente conversacional.
 
@@ -57,6 +57,7 @@ Distinção: **expansão de cobertura** (mesmo indicador, mais anos ou entes) n�
 
 | Data | Entrega |
 | --- | --- |
+| 09/10/2026 | Módulo Saúde nas capitais ([saude/](./saude/README.md)): pipeline próprio com Siconfi, SIOPS, CNES, Relatório APS e RIPSA, 16 validações, 23 fichas (3 não publicáveis), seis páginas, entrada `/eficiencia-estatal` com Educação e Saúde (o redirecionamento antigo foi removido), componentes compartilhados com ajustes retrocompatíveis. Educação não foi alterada em dados nem em regras |
 | 08/10/2026 | Etapa inicial: inventário, arquitetura, pipeline com 12 validações e 1 medição, painel Educação municipal nas capitais, documentação |
 | 08/10/2026 | OBEE incluído na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito (P2) |
 | 08/10/2026 | Redesenho editorial ([REDESENHO_EDITORIAL.md](./REDESENHO_EDITORIAL.md)): panorama de entrada sem capital pré-selecionada, três temas, comparador e Dados e métodos em rotas próprias; "Sobre este dado" no lugar de "Passaporte"; frases factuais geradas dos dados; payload por tema. Nenhum número ou regra alterado |

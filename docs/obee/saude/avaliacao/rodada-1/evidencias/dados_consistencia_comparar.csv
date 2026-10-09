@@ -1,0 +1,11 @@
+medida,ano,painel_da_pagina,gold_n,csv_medida_n,gold_mediana,csv_medida_mediana,csv_tabela_valores_divergentes_da_gold,capitais_na_tabela,confere
+asps_pct,2021,26 de 26 capitais na comparação,26,26,20.925,20.925,0,26,sim
+asps_pct,2025,26 de 26 capitais na comparação,26,26,21.045,21.045,0,26,sim
+icsap_taxa,2021,26 de 26 capitais na comparação,26,26,602.868252,602.868252,0,26,sim
+icsap_taxa,2024,26 de 26 capitais na comparação,26,26,773.5560315,773.5560315,0,26,sim
+ubs_10mil,2021,26 de 26 capitais na comparação,26,26,0.8371385,0.8371385,0,26,sim
+ubs_10mil,2025,26 de 26 capitais na comparação,26,26,0.879069,0.879069,0,26,sim
+despesa_hab,2021,25 de 26 capitais na comparação,25,25,876.628965,876.628965,0,26,sim
+despesa_hab,2025,25 de 26 capitais na comparação,25,25,1354.430959,1354.430959,0,26,sim
+cobertura_aps,2022,26 de 26 capitais na comparação,26,26,62.215,62.215,0,26,sim
+esf_10mil,2025,26 de 26 capitais na comparação,26,26,2.1925369999999997,2.1925369999999997,0,26,sim

@@ -1,0 +1,16 @@
+pagina,medida,ano,moeda,gold_n,gold_mediana,painel_ref_texto,painel_mediana_texto,tabela_n,csv_n,csv_mediana,n_igual,mediana_igual,fora_da_comparacao_na_gold,fora_no_csv,fora_na_tabela,circulos_no_grafico_menos_1_legenda
+gastos,despesa_hab,2021,nominal,25,876.628965,REFERÊNCIAS DO GRUPO: 25 DE 26 CAPITAIS NA COMPARAÇÃO,R$ 877,25,25,876.628965,sim,sim,Campo Grande (MS),Campo Grande,Campo Grande (MS),25
+gastos,despesa_hab,2025,nominal,25,1354.430959,REFERÊNCIAS DO GRUPO: 25 DE 26 CAPITAIS NA COMPARAÇÃO,R$ 1.354,25,25,1354.430959,sim,sim,Macapá (AP),Macapá,Macapá (AP),25
+gastos,despesa_hab,2025,real,25,1354.430959,REFERÊNCIAS DO GRUPO: 25 DE 26 CAPITAIS NA COMPARAÇÃO,R$ 1.354,25,25,1354.430959,sim,sim,Macapá (AP),Macapá,Macapá (AP),25
+gastos,despesa,2025,nominal,25,1532777091.5,REFERÊNCIAS DO GRUPO: 25 DE 26 CAPITAIS NA COMPARAÇÃO,"R$ 1,53 bilhão",25,25,1532777091.5,sim,sim,Macapá (AP),Macapá,Macapá (AP),25
+gastos,asps_pct,2025,nominal,26,21.045,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"21,0%",26,26,21.045,sim,sim,,,,26
+gastos,asps_pct,2021,nominal,26,20.925,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"20,9%",26,26,20.925,sim,sim,,,,26
+rede-e-atencao-primaria,esf_10mil,2021,nominal,26,1.6649414999999999,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"1,66",26,26,1.6649414999999999,sim,sim,,,,26
+rede-e-atencao-primaria,esf_10mil,2025,nominal,26,2.1925369999999997,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"2,19",26,26,2.1925369999999997,sim,sim,,,,26
+rede-e-atencao-primaria,ubs_10mil,2025,nominal,26,0.879069,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"0,88",26,26,0.879069,sim,sim,,,,26
+rede-e-atencao-primaria,cobertura_aps,2021,nominal,0,,REFERÊNCIAS DO GRUPO: 0 DE 26 CAPITAIS NA COMPARAÇÃO,sem valor,0,0,,sim,sim,Aracaju (SE); Belém (PA); Belo Horizonte (MG) ...,Aracaju; Belém; Belo Horizonte ...,Aracaju (SE); Belém (PA); Belo Horizonte (MG) ...,-1
+rede-e-atencao-primaria,cobertura_aps,2022,nominal,26,62.215,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"62,2%",26,26,62.215,sim,sim,,,,26
+atendimento-e-resultados,icsap_taxa,2021,nominal,26,602.868252,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,603,26,26,602.868252,sim,sim,,,,26
+atendimento-e-resultados,icsap_taxa,2024,nominal,26,773.5560315,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,774,26,26,773.5560315,sim,sim,,,,26
+atendimento-e-resultados,icsap_n,2024,nominal,26,7079.5,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,7.080,26,26,7079.5,sim,sim,,,,26
+atendimento-e-resultados,icsap_part,2024,nominal,26,13.48796,REFERÊNCIAS DO GRUPO: 26 DE 26 CAPITAIS NA COMPARAÇÃO,"13,5%",26,26,13.48796,sim,sim,,,,26

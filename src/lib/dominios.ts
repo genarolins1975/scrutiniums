@@ -74,12 +74,12 @@ export const DOMINIOS: Dominio[] = [
     pergunta:
       "Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente?",
     descricao:
-      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. O primeiro painel compara a educação municipal nas 26 capitais: despesa total, por habitante e por matrícula, população, matrículas, alunos por turma, aprovação, Ideb e Saeb. Mostra valores e referências, sem notas, rankings ou conclusões.",
+      "Indicadores públicos sobre recursos, atendimento e resultados, com definição, fonte, período e limitações em cada número. Dois temas publicados nas 26 capitais: educação municipal (despesa total, por habitante e por matrícula, matrículas, alunos por turma, aprovação, Ideb e Saeb) e saúde (despesa, ações e serviços públicos de saúde, UBS, equipes e cobertura da atenção primária e internações por condições sensíveis à atenção primária). Mostra valores e referências, sem notas, rankings ou conclusões.",
     descricaoCurta:
-      "Educação municipal nas capitais: despesa, população, matrículas, alunos por turma, aprovação, Ideb e Saeb a partir do Siconfi, IBGE e INEP.",
-    chips: ["Recursos", "Atendimento", "Resultados", "Educação"],
-    rotaRaiz: "/eficiencia-estatal/educacao-municipal-capitais",
-    rotaApresentacao: "/eficiencia-estatal/educacao-municipal-capitais",
+      "Educação e Saúde nas capitais: despesa, estrutura, atendimento e resultados a partir do Siconfi, SIOPS, CNES, Ministério da Saúde, IBGE e INEP.",
+    chips: ["Recursos", "Atendimento", "Resultados", "Educação", "Saúde"],
+    rotaRaiz: "/eficiencia-estatal",
+    rotaApresentacao: "/eficiencia-estatal",
     cta: "Explorar Eficiência Estatal",
     acento: "obee",
     prefixosTelemetria: ["eficiencia:"],

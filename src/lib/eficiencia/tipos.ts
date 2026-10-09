@@ -70,10 +70,20 @@ export type FichaIndicador = {
   estado: EstadoPublicacao;
   ressalvas: string[];
   motivo_nao_publicacao?: string[];
-  granularidade: { etapa: boolean; anos: "exercicios" | "censo" | "edicoes_ideb" };
+  granularidade: { etapa: boolean; anos: "exercicios" | "censo" | "edicoes_ideb" | "dezembros" | "retrato" };
   download: string | null;
   /** id do indicador que esta ficha substitui, quando a definição mudou e o identificador antigo não foi reaproveitado */
   substitui?: IndicadorId | null;
+};
+
+/**
+ * Ficha exibível: o que o diálogo "Sobre este dado" e a seção de métodos precisam de uma ficha, sem amarrar o identificador
+ * ao catálogo de Educação. As fichas de Saúde (`sau.*`) e as de Educação (`edu.*`) são atribuíveis a este tipo.
+ */
+export type FichaExibivel = Omit<FichaIndicador, "id" | "familia" | "substitui"> & {
+  id: string;
+  familia: FichaIndicador["familia"] | "estrutura";
+  substitui?: string | null;
 };
 
 export type SituacaoConferencia = "CONFERE" | "DIFERENCA_MENOR" | "RECONCILIADA_MSC" | "PERIMETRO_INTRA_MSC" | "PENDENTE" | "NAO_CONFERIDO";

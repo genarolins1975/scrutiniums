@@ -1,0 +1,9 @@
+pagina,medida,ano,soma_numerador,soma_denominador,razao_bruta_na_gold,razao_correta_na_unidade,unidade,texto_exibido_na_pagina,correto
+gastos,despesa_hab,2025,70738506692.94,45805974,1544.307445420547,1544.3074,R$ por habitante,Razão agregada R$ 1.544,sim
+gastos,asps_pct,2025,44277464905.6,202887680552.76,0.21823634034835274,21.8236,%,"Razão agregada 0,2%",NAO
+rede-e-atencao-primaria,ubs_10mil,2025,3034,46295650,6.553531487299563e-05,0.6554,por 10 mil,"Razão agregada 0,00",NAO
+rede-e-atencao-primaria,esf_10mil,2025,8737,46295650,0.00018872183455681042,1.8872,por 10 mil,"Razão agregada 0,00",NAO
+rede-e-atencao-primaria,eap_10mil,2025,1323,46295650,2.857719893769717e-05,0.2858,por 10 mil,"Razão agregada 0,00",NAO
+rede-e-atencao-primaria,cobertura_aps,2025,33545137.0,46192631.0,0.726201047089091,72.6201,%,"Razão agregada 0,7%",NAO
+atendimento-e-resultados,icsap_taxa,2024,358518,46192631,0.00776136782509747,776.1368,por 100 mil,Razão agregada 0,NAO
+atendimento-e-resultados,icsap_part,2024,358518,2485163,0.1442633742736392,14.4263,%,"Razão agregada 0,1%",NAO

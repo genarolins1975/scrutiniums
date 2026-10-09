@@ -1,8 +1,8 @@
 "use client";
 
 import { useId, useRef } from "react";
-import type { FichaIndicador } from "@/lib/eficiencia/tipos";
-import { FichaConteudo, type ContextoFicha } from "./FichaConteudo";
+import type { FichaExibivel } from "@/lib/eficiencia/tipos";
+import { FichaConteudo, type CodigoFicha, type ContextoFicha } from "./FichaConteudo";
 
 /**
  * "Sobre este dado": painel contextual do indicador, em diálogo nativo (showModal: foco preso, Esc fecha, fundo inerte).
@@ -13,10 +13,12 @@ export function SobreEsteDado({
   f,
   ctx,
   rotulo = "Sobre este dado",
+  codigo,
 }: {
-  f: FichaIndicador;
+  f: FichaExibivel;
   ctx: ContextoFicha;
   rotulo?: string;
+  codigo?: CodigoFicha;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const tituloId = useId();
@@ -57,7 +59,7 @@ export function SobreEsteDado({
             </button>
           </header>
           <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={`Sobre este dado: ${f.nome}`}>
-            <FichaConteudo f={f} ctx={ctx} />
+            <FichaConteudo f={f} ctx={ctx} codigo={codigo} />
           </div>
         </div>
       </dialog>

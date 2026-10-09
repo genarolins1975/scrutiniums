@@ -1,0 +1,1207 @@
+{
+ "versao_catalogo": "2026-10-09.1",
+ "painel": {
+  "id": "saude-capitais",
+  "titulo": "Saúde nas capitais",
+  "frase": "Recursos aplicados pelo município, estrutura e atenção primária registradas e internações observadas entre os moradores das 26 capitais estaduais, cada medida com seu perímetro, período e fonte.",
+  "rede": "Três perímetros distintos: recursos executados pelo município (DCA e SIOPS), serviços localizados no território (CNES e Relatório APS) e população residente (RIPSA e IBGE). Estabelecimento situado na capital pode não ser municipal; resultado por residência não é produção da prefeitura."
+ },
+ "indicadores": [
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_ctx_populacao_residente.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "ctx.populacao.residente",
+   "nome": "População residente do município",
+   "nome_curto": "População residente",
+   "familia": "contexto",
+   "pergunta": "Quantos habitantes o IBGE atribui ao município em cada ano?",
+   "o_que_mede": "A população residente oficial do município no ano, usada como denominador dos indicadores por habitante e por 10 mil habitantes.",
+   "o_que_nao_mede": [
+    "Não é a população usuária do SUS: o denominador inclui quem usa saúde suplementar.",
+    "Não é a população de referência da rede de saúde: a capital pode atender moradores de outros municípios.",
+    "Não é uma série contínua: 2021 vem de estimativa anterior ao Censo 2022, e 2023 reproduz a população do Censo 2022."
+   ],
+   "formula": "População residente publicada pelo IBGE para o município e o ano.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "habitantes",
+   "escala": "Número inteiro de habitantes.",
+   "fontes": [
+    "ibge_populacao"
+   ],
+   "localizacao_registro": "IBGE, SIDRA, tabelas 6579 (estimativas) e 4714 (Censo 2022); para 2023, a tabela municipal dos Primeiros Resultados de População do Censo 2022 (22/12/2023), conferida com o SIDRA 4714 (a relação publicada no DOU em 31/08/2023 não foi obtida). Os valores são os mesmos do painel de Educação nas capitais.",
+   "periodo": "Estimativa de 1º de julho (2021, 2024 e 2025); Censo 2022 com referência em 31 de julho de 2022 (2022 e 2023).",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Não se aplica.",
+    "servico": "Não se aplica."
+   },
+   "ausencias": "Sem população oficial no ano, o indicador por habitante não é calculado. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Valores reproduzidos sem recálculo a partir do seed de população do OBEE, compartilhado com o painel de Educação."
+   ],
+   "comparacao": "Serve de denominador. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
+   "universo_curto": "População residente do município.",
+   "universo_rotulo": "população residente",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "2021 usa estimativa de 1º de julho calculada a partir do Censo de 2010; 2022 em diante usa o Censo 2022 ou estimativas calculadas a partir dele.",
+    "2023 é a população censitária de 2022, publicada pelo IBGE em substituição às estimativas de 2023: não acompanha o crescimento posterior ao Censo."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Valor nominal × (média anual do número índice do IPCA de 2025 ÷ média anual do exercício). O IPCA é o do IBGE, tabela 1737, variável 2266.",
+   "download": "/eficiencia/series/sau_despesa_funcao_saude.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.despesa.funcao_saude",
+   "nome": "Despesa liquidada do município na função Saúde",
+   "nome_curto": "Despesa em Saúde",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou, no exercício, em despesas classificadas na função orçamentária Saúde?",
+   "o_que_mede": "O valor das despesas do município classificadas na função 10 (Saúde) que chegaram ao estágio de liquidação no exercício, segundo a Declaração de Contas Anuais enviada ao Tesouro Nacional, sem as despesas intraorçamentárias.",
+   "o_que_nao_mede": [
+    "Não é o gasto total com saúde no território: despesas da União e do estado e serviços privados e filantrópicos pagos por outras fontes não estão na DCA do município.",
+    "Não é o valor aplicado em ações e serviços públicos de saúde (ASPS) para fins do mínimo constitucional: esse é informado à parte e tem outro perímetro.",
+    "Não é transferência recebida: o repasse do SUS entra como receita e só aparece aqui quando vira despesa executada pelo município.",
+    "Não mede qualidade, acesso nem resultado, e um valor maior ou menor não demonstra mais ou menos eficiência."
+   ],
+   "formula": "Valor da linha \"10 - Saúde\", coluna \"Despesas Liquidadas\", do Anexo I-E da DCA do município no exercício.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "R$ por ano",
+   "escala": "Reais correntes do exercício (nominal). Alternativa: reais constantes de 2025 pelo IPCA.",
+   "fontes": [
+    "siconfi_dca_anexo_i_e",
+    "siconfi_rreo_anexo_02_b6",
+    "siconfi_msc_funcao10",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", coluna \"Despesas Liquidadas\". Conferência: RREO do 6º bimestre, Anexo 02, linha Saúde, despesas liquidadas até o bimestre; MSC de dezembro, função 10.",
+   "periodo": "Exercício financeiro, de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Todos os órgãos e entidades do município que integram o orçamento fiscal e da seguridade social (administração direta, autarquias, fundações e empresas estatais dependentes), conforme declarado na DCA. Despesas intraorçamentárias ficam fora: a DCA as apresenta em linha única, sem abertura por função.",
+    "servico": "Despesas classificadas na função Saúde, qualquer subfunção, qualquer fonte de recursos, execução direta ou por terceiros."
+   },
+   "ausencias": "Município sem DCA homologada no exercício ou sem a linha da função Saúde aparece como ausente na coleta. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Seleção da linha da função 10 e da coluna de despesas liquidadas.",
+    "Conferência com o RREO e, quando a diferença é material, com a MSC (política 1.2 do OBEE, a mesma de Educação).",
+    "Correção monetária opcional pelo IPCA médio anual, em reais de 2025."
+   ],
+   "comparacao": "A comparação usa o mesmo estágio (liquidado), a mesma função e o mesmo exercício entre capitais, só com valores elegíveis pela política de conferência. É uma comparação descritiva de valores absolutos: capitais de portes diferentes têm despesas de ordens de grandeza diferentes e o painel não ajusta por necessidade assistencial.",
+   "universo_curto": "Despesa do orçamento do município na função Saúde, exceto intraorçamentárias.",
+   "universo_rotulo": "orçamento do município",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "A despesa intraorçamentária de Saúde, positiva em todos os pares, fica fora do valor da DCA e aparece separada no RREO e na MSC: não se soma ao valor publicado.",
+    "Classificação funcional e prática contábil variam entre municípios (por exemplo, inativos, serviços de apoio e saneamento).",
+    "Campo Grande 2021 (perímetro distinto) e Macapá 2025 (diferença sem explicação) ficam fora das comparações; Boa Vista 2024 mantém ressalva de reconciliação."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Mesmo fator do IPCA da despesa total, aplicado ao numerador.",
+   "download": "/eficiencia/series/sau_despesa_por_habitante.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.despesa.por_habitante",
+   "nome": "Despesa liquidada em Saúde por habitante",
+   "nome_curto": "Despesa por habitante",
+   "familia": "recursos",
+   "pergunta": "Quanto o município liquidou em Saúde para cada habitante residente, no ano?",
+   "o_que_mede": "A despesa liquidada do município na função Saúde dividida pela população residente do mesmo ano, para pôr capitais de portes diferentes na mesma escala territorial.",
+   "o_que_nao_mede": [
+    "Não é custo por usuário do SUS nem por atendimento: o denominador é a população do território, inclusive quem usa saúde suplementar, e o numerador não é a produção de nenhum serviço.",
+    "Não é o gasto total com saúde no território: despesas da União e do estado e serviços privados e filantrópicos pagos por outras fontes não estão na DCA do município.",
+    "Não é padrão de esforço comparável entre capitais: a participação do município na oferta, o papel regional de referência e a idade da população variam.",
+    "Não mede qualidade nem resultado, e um valor maior ou menor não demonstra mais ou menos eficiência."
+   ],
+   "formula": "Despesa liquidada na função Saúde (DCA, Anexo I-E) ÷ população residente do município no mesmo ano (IBGE).",
+   "numerador": "Despesa liquidada na função 10, Saúde, do exercício (R$), exceto intraorçamentárias.",
+   "denominador": "População residente do município no ano de referência (habitantes).",
+   "unidade": "R$ por habitante por ano",
+   "escala": "Reais correntes do exercício por habitante. Alternativa: reais constantes de 2025.",
+   "fontes": [
+    "siconfi_dca_anexo_i_e",
+    "ibge_populacao",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "Numerador: Siconfi, DCA, Anexo I-E, conta \"10 - Saúde\", Despesas Liquidadas. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023). Os dois valores são publicados na tabela e no CSV.",
+   "periodo": "Exercício financeiro e população oficial do mesmo ano.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Numerador: orçamento do município. Denominador: toda a população residente.",
+    "servico": "Numerador: função Saúde, todas as subfunções. Denominador: não se aplica."
+   },
+   "ausencias": "Sem população oficial no ano ou sem a despesa observada, a razão não é calculada. Divisão por zero não gera valor. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão do valor liquidado da DCA pela população do mesmo ano.",
+    "Correção monetária opcional do numerador pelo mesmo fator do IPCA; a população não é corrigida.",
+    "Herda a elegibilidade e as ressalvas do numerador e as da população."
+   ],
+   "comparacao": "A comparação usa, no mesmo exercício, a razão entre capitais com despesa elegível e população oficial. A média simples dá o mesmo peso a cada capital; a razão agregada (soma da despesa ÷ soma da população dos mesmos pares) pesa pela população. São grandezas distintas e vêm rotuladas. A população tem três bases: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025). Variações entre bases diferentes (2021 para 2022 e 2023 para 2024) são bloqueadas; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
+   "universo_curto": "Despesa do município na função Saúde ÷ população residente. Não é custo por usuário do SUS.",
+   "universo_rotulo": "orçamento do município ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "O valor por habitante não separa o que é gasto com serviços para residentes do que atende moradores de outros municípios.",
+    "2021 usa população estimada antes do Censo 2022; 2022 e 2023 usam a mesma população censitária.",
+    "Herda as ressalvas do numerador (Campo Grande 2021, Macapá 2025, Boa Vista 2024)."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_despesa_subfuncao.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.despesa.subfuncao",
+   "nome": "Composição da despesa liquidada em Saúde por subfunção",
+   "nome_curto": "Despesa por subfunção",
+   "familia": "recursos",
+   "pergunta": "Como a despesa liquidada na função Saúde se distribui entre as subfunções orçamentárias declaradas pelo município?",
+   "o_que_mede": "A parcela da despesa liquidada na função Saúde registrada em cada subfunção (atenção básica, assistência hospitalar e ambulatorial, suporte profilático e terapêutico, vigilância sanitária, vigilância epidemiológica, alimentação e nutrição, administração geral e demais), segundo o Anexo I-E da DCA.",
+   "o_que_nao_mede": [
+    "Não mede quanto cada nível de atenção custa: a classificação por subfunção é contábil e a prática de classificação varia entre municípios.",
+    "A subfunção \"Atenção básica\" não é a despesa da rede de atenção primária: despesas comuns (pessoal de apoio, medicamentos, transporte) podem estar em outras subfunções.",
+    "Não é classificação por natureza da despesa (pessoal, custeio, investimento)."
+   ],
+   "formula": "Participação da subfunção s = despesa liquidada na subfunção s ÷ despesa liquidada na função 10. A soma das subfunções é conferida contra o total antes da publicação.",
+   "numerador": "Despesa liquidada na subfunção (R$).",
+   "denominador": "Despesa liquidada na função Saúde (R$), mesmo município e exercício.",
+   "unidade": "% da despesa liquidada na função Saúde",
+   "escala": "Percentual com uma casa decimal; o valor em reais acompanha cada categoria na tabela.",
+   "fontes": [
+    "siconfi_dca_anexo_i_e"
+   ],
+   "localizacao_registro": "Siconfi, DCA, Anexo I-E, contas \"10.301\" a \"10.306\", \"10.122\" e \"FU10 - Demais Subfunções\", coluna \"Despesas Liquidadas\".",
+   "periodo": "Exercício financeiro, de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Mesmo da despesa na função Saúde.",
+    "servico": "Subfunções declaradas dentro da função Saúde. \"Demais subfunções\" é a agregação feita pela própria DCA para subfunções sem linha própria."
+   },
+   "ausencias": "Subfunção sem linha no anexo não aparece (não vale zero na exibição). Se a soma das subfunções não reconcilia com o total, a composição daquele par não é exibida e recebe o estado inconsistente.",
+   "transformacoes": [
+    "Seleção das linhas da função 10 e das suas subfunções no Anexo I-E.",
+    "Conferência: soma das subfunções igual ao total da função, tolerância de R$ 1,00.",
+    "Cálculo das participações."
+   ],
+   "comparacao": "Participações são comparáveis em forma, não em conteúdo: a mesma subfunção pode reunir despesas diferentes em municípios diferentes. A comparação entre capitais aparece só na tabela.",
+   "universo_curto": "Parcela da despesa do município na função Saúde por subfunção contábil.",
+   "universo_rotulo": "orçamento do município, por subfunção",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Práticas de classificação por subfunção variam entre municípios e entre exercícios.",
+    "Quando o total da função tem ressalva, as participações herdam a ressalva.",
+    "A subfunção 306 (alimentação e nutrição) só tem linha em poucos pares; a ausência de linha não é informada como zero."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_despesa_natureza.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.despesa.natureza",
+   "nome": "Composição da despesa liquidada em Saúde por natureza",
+   "nome_curto": "Despesa por natureza",
+   "familia": "recursos",
+   "pergunta": "Quanto da despesa liquidada na função Saúde é pessoal, outras despesas correntes e despesa de capital?",
+   "o_que_mede": "A parcela da despesa liquidada na função Saúde em cada categoria econômica: pessoal e encargos sociais (grupo 3.1), outras despesas correntes (grupos 3.2 e 3.3) e despesas de capital (grupos 4.4, 4.5 e 4.6), pela Matriz de Saldos Contábeis de dezembro.",
+   "o_que_nao_mede": [
+    "Não indica quem presta o serviço: uma despesa de outras correntes pode ser compra de serviços de terceiros, de organização social ou de consórcio, e não distingue rede própria de contratada.",
+    "Não mede o que a rede produz nem o que cada categoria permite entregar.",
+    "Não é custo de serviço: não há rateio por serviço, nível de atenção ou usuário."
+   ],
+   "formula": "Soma do saldo líquido (créditos menos débitos) das contas 6.2.2.1.3.03, .04 e .07 da MSC de dezembro, função 10, sem a modalidade 91, por grupo de natureza; conferida contra a DCA.",
+   "numerador": "Despesa liquidada na categoria (R$), pela MSC.",
+   "denominador": "Despesa liquidada na função Saúde (R$), pela soma das três categorias.",
+   "unidade": "% da despesa liquidada na função Saúde",
+   "escala": "Percentual com uma casa decimal; o valor em reais acompanha cada categoria na tabela.",
+   "fontes": [
+    "siconfi_msc_funcao10",
+    "siconfi_dca_anexo_i_e"
+   ],
+   "localizacao_registro": "Siconfi, MSC agregada de dezembro (MSCC, classe 6, saldo final), linhas da função 10 nas contas 6.2.2.1.3.03, .04 e .07, campo natureza da despesa (8 dígitos, grupo nas posições 1 e 2).",
+   "periodo": "Exercício financeiro, de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Mesmo da despesa na função Saúde, sem a parcela intraorçamentária (modalidade 91).",
+    "servico": "Função Saúde, todas as subfunções, aberta por grupo de natureza da despesa."
+   },
+   "ausencias": "A abertura só é publicada quando as três categorias reproduzem a DCA (R$ 1,00 de tolerância). Onde a MSC não reproduz a DCA, ou traz linhas sem natureza identificável, o par fica inconsistente, com a diferença registrada. Nenhuma categoria é estimada ou rateada.",
+   "transformacoes": [
+    "Seleção das contas de despesa liquidada da função 10 na MSC.",
+    "Soma com sinal (C menos D); somar em módulo é o erro de Educação corrigido na rodada 6 e não se repete aqui.",
+    "Agrupamento pelos dois primeiros dígitos da natureza da despesa.",
+    "Conferência: soma das categorias igual à DCA."
+   ],
+   "comparacao": "Participações descrevem a composição contábil de cada capital; diferenças de modelo de gestão (rede própria, organização social, consórcio) alteram a composição sem alterar o que é entregue.",
+   "universo_curto": "Parcela da despesa do município na função Saúde por categoria de natureza, pela MSC.",
+   "universo_rotulo": "orçamento do município, por natureza",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Em 116 dos 130 pares a MSC reproduz a DCA e a abertura é publicada; nos 14 restantes a abertura não é publicada, com a diferença registrada.",
+    "Em 123 dos 130 pares a DCA é gerada a partir da própria matriz: a conferência entre as duas é de consistência, não de fontes independentes.",
+    "A categoria outras despesas correntes inclui juros e encargos da dívida, quando houver, e despesas de capital reúne investimentos, inversões financeiras e amortização."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_asps_percentual_aplicado.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.asps.percentual_aplicado",
+   "nome": "Percentual da receita de impostos e transferências aplicado em ações e serviços públicos de saúde",
+   "nome_curto": "Percentual aplicado em ASPS",
+   "familia": "recursos",
+   "pergunta": "Que percentual da receita de impostos e transferências constitucionais e legais o município informa ter aplicado em ações e serviços públicos de saúde (ASPS)?",
+   "o_que_mede": "O valor aplicado em ASPS (item XVI do Anexo 12 do RREO) dividido pela receita realizada de impostos e transferências constitucionais e legais (item III), em percentual, conforme informado pelo município no SIOPS no 6º bimestre.",
+   "o_que_nao_mede": [
+    "Não é meta de qualidade nem prova de eficiência: o mínimo de 15% (LC 141/2012, art. 7º) é referência normativa, e ultrapassar o mínimo não é indicador de qualidade do serviço.",
+    "Não é o gasto total em saúde: despesas custeadas por transferências do SUS e outras fontes ficam fora do cálculo do mínimo.",
+    "Não é recalculado pelo OBEE quanto ao conteúdo: o que conta como ASPS é declarado pelo município e homologado no SIOPS.",
+    "Não é a proporção de recursos próprios na despesa total com saúde.",
+    "Não usa o mesmo estágio da despesa total: o demonstrativo informa o valor aplicado pela despesa empenhada no último bimestre, enquanto a despesa em Saúde das demais medidas é a liquidada. Os dois estágios diferem em muitos exercícios, e em alguns (por exemplo, Vitória em 2021 e 2022) o valor aplicado em ASPS supera a despesa liquidada na função Saúde."
+   ],
+   "formula": "Percentual = valor aplicado em ASPS (XVI) ÷ receita de impostos e transferências constitucionais e legais (III) × 100, com XVI = XII − XIII − XIV − XV; no último bimestre vale a coluna da despesa empenhada.",
+   "numerador": "Valor aplicado em ASPS, coluna de despesa empenhada (R$).",
+   "denominador": "Receita realizada de impostos e transferências constitucionais e legais até o bimestre (R$).",
+   "unidade": "% da receita de impostos e transferências",
+   "escala": "Percentual com duas casas decimais, como no demonstrativo; mínimo de 15% ao lado quando o município não declara mínimo maior.",
+   "fontes": [
+    "siops_rreo_anexo_12"
+   ],
+   "localizacao_registro": "SIOPS, API de consulta pública, RREO Anexo 12 do município, 6º bimestre, linha PERCENTUAL DA RECEITA DE IMPOSTOS E TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS APLICADO EM ASPS (XVI / III), primeira coluna.",
+   "periodo": "Exercício financeiro (6º bimestre), de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Município, conforme o demonstrativo da LC 141/2012.",
+    "servico": "Ações e serviços públicos de saúde, na definição do art. 2º da LC 141/2012 e do que o município informa como ASPS."
+   },
+   "ausencias": "Valor ausente, sentinela do demonstrativo ou percentual que não reproduz XVI ÷ III (tolerância de 0,011 ponto percentual) torna o par inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura da linha do percentual e das linhas XVI e III do Anexo 12.",
+    "Conferência aritmética: percentual = XVI ÷ III.",
+    "Mínimo: 15% (LC 141/2012, art. 7º) ou o mínimo em reais informado pela lei orgânica municipal, quando maior."
+   ],
+   "comparacao": "A comparação usa o percentual do mesmo exercício entre capitais, de modo descritivo. Dependências de fonte (transferências do SUS, receita própria) e o que cada município classifica como ASPS alteram o percentual sem alterar o que é entregue. O mínimo legal é referência normativa de base e vigência verificadas, não meta.",
+   "universo_curto": "Percentual da receita de impostos e transferências aplicado em ASPS, informado pelo município no SIOPS.",
+   "universo_rotulo": "declaração do município (SIOPS)",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Valor informado pelo município e homologado no SIOPS; o OBEE confere a aritmética do demonstrativo e não refaz o que é despesa com ações e serviços públicos de saúde.",
+    "O SIOPS pode ser retificado depois da captura: a API não informa a data de homologação; a data e o sha256 de cada captura ficam no manifesto.",
+    "O total de saúde do SIOPS é um perímetro declarado pelo município e não reconcilia com a DCA em todos os pares: as duas fontes não se somam nem se igualam."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Mesmo fator do IPCA da despesa na função Saúde.",
+   "download": "/eficiencia/series/sau_asps_valor_aplicado.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.asps.valor_aplicado",
+   "nome": "Valor aplicado em ações e serviços públicos de saúde (ASPS)",
+   "nome_curto": "Valor aplicado em ASPS",
+   "familia": "recursos",
+   "pergunta": "Quanto o município informa ter aplicado em ASPS para fins do mínimo constitucional?",
+   "o_que_mede": "O item XVI do Anexo 12 do RREO: despesa total com ASPS menos restos a pagar inscritos sem disponibilidade financeira e despesas custeadas com recursos de exercícios anteriores ou de restos a pagar cancelados.",
+   "o_que_nao_mede": [
+    "Não é a despesa liquidada na função Saúde da DCA: os perímetros e os estágios diferem (empenhada, no último bimestre).",
+    "Não é o gasto total em saúde nem o gasto por usuário do SUS.",
+    "Não mede resultado."
+   ],
+   "formula": "XVI = XII − XIII − XIV − XV, na coluna da despesa empenhada do 6º bimestre.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "R$ por ano",
+   "escala": "Reais correntes do exercício. Alternativa: reais constantes de 2025 pelo IPCA.",
+   "fontes": [
+    "siops_rreo_anexo_12",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "SIOPS, API de consulta pública, RREO Anexo 12 do município, 6º bimestre, linha (=) VALOR APLICADO EM ASPS (XVI), primeira coluna.",
+   "periodo": "Exercício financeiro (6º bimestre), de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Município, conforme o demonstrativo da LC 141/2012.",
+    "servico": "Ações e serviços públicos de saúde, conforme informado pelo município."
+   },
+   "ausencias": "Valor ausente ou sentinela torna o par inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura da linha XVI.",
+    "Correção monetária opcional pelo IPCA médio anual."
+   ],
+   "comparacao": "Valores absolutos de capitais de portes diferentes têm ordens de grandeza diferentes; a leitura relativa está no percentual aplicado.",
+   "universo_curto": "Valor aplicado em ASPS informado pelo município no SIOPS.",
+   "universo_rotulo": "declaração do município (SIOPS)",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Valor informado pelo município e homologado no SIOPS; o OBEE confere a aritmética do demonstrativo e não refaz o que é despesa com ações e serviços públicos de saúde.",
+    "Estágio empenhado, não liquidado: não é comparável diretamente com a despesa liquidada da DCA."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Mesmo fator do IPCA.",
+   "download": "/eficiencia/series/sau_asps_base_receita.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.asps.base_receita",
+   "nome": "Receita de impostos e transferências constitucionais e legais, base do mínimo em saúde",
+   "nome_curto": "Base de cálculo do mínimo",
+   "familia": "contexto",
+   "pergunta": "Qual é a receita sobre a qual se calcula o mínimo de aplicação em saúde?",
+   "o_que_mede": "O item III do Anexo 12 do RREO: receita realizada de impostos (IPTU, ITBI, ISS, IRRF) e transferências constitucionais e legais (cota parte do FPM, ITR, IPVA, ICMS, IPI exportação e compensações).",
+   "o_que_nao_mede": [
+    "Não é a receita total do município nem o orçamento da saúde.",
+    "Não é a arrecadação própria isolada: inclui transferências constitucionais."
+   ],
+   "formula": "III = I (receita de impostos) + II (transferências constitucionais e legais), realizada até o 6º bimestre.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "R$ por ano",
+   "escala": "Reais correntes do exercício. Alternativa: reais constantes de 2025.",
+   "fontes": [
+    "siops_rreo_anexo_12",
+    "ibge_ipca"
+   ],
+   "localizacao_registro": "SIOPS, API de consulta pública, RREO Anexo 12, linha TOTAL DAS RECEITAS RESULTANTES DE IMPOSTOS E TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS (III), terceira coluna (realizada até o bimestre).",
+   "periodo": "Exercício financeiro, de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Município.",
+    "servico": "Não se aplica."
+   },
+   "ausencias": "Valor ausente torna o par inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura da linha III, terceira coluna.",
+    "Correção monetária opcional."
+   ],
+   "comparacao": "Contexto do percentual aplicado: capitais com bases de receita diferentes aplicam o mesmo percentual com valores diferentes.",
+   "universo_curto": "Receita realizada de impostos e transferências constitucionais e legais do município.",
+   "universo_rotulo": "declaração do município (SIOPS)",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Valor informado pelo município e homologado no SIOPS; não recalculado pelo OBEE."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_despesa_por_fonte.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.despesa.por_fonte",
+   "nome": "Despesa total em Saúde por fonte de recursos, segundo o SIOPS",
+   "nome_curto": "Despesa por fonte de recursos",
+   "familia": "recursos",
+   "pergunta": "De que fontes de recursos vem a despesa total em saúde que o município declara no SIOPS?",
+   "o_que_mede": "A despesa total com saúde, empenhada, que o município declara no SIOPS, aberta em nove fontes: recursos ordinários, impostos e transferências de impostos da saúde, transferências fundo a fundo do SUS (Governo Federal e Governo Estadual), convênios, operações de crédito, transferências da União pela LC 173/2020, royalties e outros recursos.",
+   "o_que_nao_mede": [
+    "Não é a despesa liquidada da DCA: o perímetro é declarado no SIOPS e o estágio é o empenhado, e as duas fontes não reconciliam em todos os pares.",
+    "Não indica quem executa o serviço: a fonte financia, não prova que a rede é municipal.",
+    "A dependência de transferências descreve a origem declarada dos recursos e depende da divisão de responsabilidades do SUS no território; não é indicador de mérito."
+   ],
+   "formula": "Participação da fonte f = despesa empenhada total com saúde financiada pela fonte f ÷ despesa empenhada total com saúde, linha Total do relatório de despesa por subfunção do SIOPS. A soma das nove fontes é conferida contra o total.",
+   "numerador": "Despesa empenhada financiada pela fonte (R$).",
+   "denominador": "Despesa total empenhada com saúde, linha Total (R$).",
+   "unidade": "% da despesa total empenhada com saúde",
+   "escala": "Percentual com uma casa decimal; o valor em reais acompanha cada fonte na tabela.",
+   "fontes": [
+    "siops_despesas_por_fonte"
+   ],
+   "localizacao_registro": "SIOPS, API de consulta pública, despesas por subfunção, grupo Total (linha de total), colunas de valor 1 a 9 (fontes) e 10 (total).",
+   "periodo": "Exercício financeiro (6º bimestre), de 2021 a 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Município, conforme declarado no SIOPS.",
+    "servico": "Despesa total com saúde, todas as subfunções, ações e serviços computados ou não no mínimo."
+   },
+   "ausencias": "Se a soma das fontes não reproduz o total, o par fica inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Seleção da linha de total.",
+    "Conferência: soma das fontes igual ao total, tolerância de R$ 1,00.",
+    "Cálculo das participações."
+   ],
+   "comparacao": "Participações descrevem a origem declarada dos recursos de cada capital; não há ordenação de mérito. O estágio empenhado difere do liquidado da DCA.",
+   "universo_curto": "Despesa total com saúde declarada no SIOPS, por fonte de recursos, empenhada.",
+   "universo_rotulo": "declaração do município (SIOPS)",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Perímetro declarado pelo município e estágio empenhado: não reconcilia com a DCA em todos os pares.",
+    "Pode ser retificado no SIOPS depois da captura.",
+    "Apenas contexto: não substitui a despesa liquidada da DCA nem se soma a ela."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_rede_ubs_publicas.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "dezembros"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.rede.ubs_publicas",
+   "nome": "Unidades básicas e postos de saúde ativos de natureza pública, em dezembro",
+   "nome_curto": "UBS públicas ativas (dezembro)",
+   "familia": "estrutura",
+   "pergunta": "Quantos postos de saúde e unidades básicas públicos ativos o CNES registra na capital, em dezembro de cada ano?",
+   "o_que_mede": "A contagem de estabelecimentos de tipo 01 (posto de saúde) e 02 (centro de saúde/unidade básica), ativos no CNES na competência de dezembro, localizados na capital, com a divisão por natureza jurídica (pública ou não) e por tipo de gestão (municipal, estadual ou dupla).",
+   "o_que_nao_mede": [
+    "Não comprova funcionamento, acesso, vaga disponível nem horário de atendimento: é cadastro.",
+    "Não é capacidade: uma unidade pode ter uma ou muitas equipes, e esta contagem não as distingue.",
+    "Não é rede municipal: um estabelecimento situado na capital pode ter gestão estadual ou dupla, e a gestão não equivale a propriedade.",
+    "Não inclui as UBS de gestão municipal operadas por entidades de natureza jurídica não pública (125 no retrato de 09/10/2026, 52 delas no Rio de Janeiro e 38 em São Paulo); essas unidades aparecem na linha Gestão municipal e natureza jurídica não pública do retrato.",
+    "Não inclui outros tipos de unidade com equipe de atenção primária (como unidades móveis)."
+   ],
+   "formula": "Número de estabelecimentos de tipo 01 ou 02, com status ativo e natureza jurídica pública (grupo PUBLICO), na competência de dezembro, localizados no município.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "estabelecimentos",
+   "escala": "Número inteiro.",
+   "fontes": [
+    "cnes_historico_estabelecimentos"
+   ],
+   "localizacao_registro": "CNES, API de dados abertos, família assistencia-a-saude/cnes-estabelecimentos (uma chamada por estabelecimento, co_cnes com 7 dígitos), campos nu_comp, tp_unidade, ds_status, no_grupo_nat_jur e tp_gestao.",
+   "periodo": "Dezembro de 2021 a dezembro de 2025.",
+   "perimetro": {
+    "territorial": "Município da capital (local do estabelecimento).",
+    "institucional": "Natureza jurídica pública (administração pública, direta ou indireta). A gestão é campo distinto.",
+    "servico": "Atenção primária: tipos de unidade 01 e 02."
+   },
+   "ausencias": "Capital sem estabelecimento com registro na competência fica ausente na coleta, nunca zero. Zero só aparece quando o histórico traz estabelecimentos da capital e nenhum cumpre o recorte.",
+   "transformacoes": [
+    "Recorte dos estabelecimentos que, na captura, têm tipo 01 ou 02.",
+    "Em cada dezembro, aplicação do tipo, status e natureza que o estabelecimento tinha na competência.",
+    "Contagem por capital."
+   ],
+   "comparacao": "A comparação usa o mesmo recorte e a mesma competência entre capitais. Contagens absolutas dependem do porte; por 10 mil habitantes o recorte é o mesmo. Ver ressalva sobre a composição do conjunto.",
+   "universo_curto": "UBS e postos de saúde públicos ativos no CNES, localizados na capital.",
+   "universo_rotulo": "estabelecimentos no território",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "A série só acompanha os estabelecimentos que hoje têm tipo 01 ou 02: um estabelecimento reclassificado ou renumerado não entra, e os anos anteriores podem estar subestimados.",
+    "O CNES é retificável retroativamente; a série reflete o cadastro na data da captura."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_rede_ubs_publicas_por_10mil.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "dezembros"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.rede.ubs_publicas_por_10mil",
+   "nome": "UBS e postos de saúde públicos ativos por 10 mil habitantes",
+   "nome_curto": "UBS públicas por 10 mil habitantes",
+   "familia": "estrutura",
+   "pergunta": "Quantos postos de saúde e unidades básicas públicos ativos há na capital para cada 10 mil habitantes?",
+   "o_que_mede": "A contagem de UBS públicas ativas em dezembro dividida pela população residente do exercício, por 10 mil habitantes.",
+   "o_que_nao_mede": [
+    "Não é cobertura nem acesso: a população não está distribuída de modo uniforme e a unidade não tem capacidade padrão.",
+    "Não é razão entre estabelecimentos e usuários do SUS.",
+    "Não mede qualidade."
+   ],
+   "formula": "UBS públicas ativas em dezembro ÷ população residente do exercício (IBGE) × 10.000.",
+   "numerador": "UBS públicas ativas em dezembro (CNES).",
+   "denominador": "População residente do município no exercício (IBGE).",
+   "unidade": "estabelecimentos por 10 mil habitantes",
+   "escala": "Duas casas decimais.",
+   "fontes": [
+    "cnes_historico_estabelecimentos",
+    "ibge_populacao"
+   ],
+   "localizacao_registro": "Numerador: CNES, API de dados abertos. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
+   "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Natureza jurídica pública.",
+    "servico": "Tipos de unidade 01 e 02."
+   },
+   "ausencias": "Sem numerador ou população, a razão não é calculada. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão da contagem pela população do exercício.",
+    "Herda as ressalvas da contagem e as da população."
+   ],
+   "comparacao": "A comparação usa a razão do mesmo exercício entre capitais. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
+   "universo_curto": "UBS públicas ativas no território ÷ população residente.",
+   "universo_rotulo": "estabelecimentos no território ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Herda a ressalva de composição do conjunto da contagem.",
+    "A população usa três bases: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025)."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_rede_ubs_retrato.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "retrato"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.rede.ubs_retrato",
+   "nome": "Unidades básicas e postos de saúde ativos no retrato do CNES, por natureza, gestão e atendimento SUS",
+   "nome_curto": "UBS no retrato do CNES",
+   "familia": "estrutura",
+   "pergunta": "Como se dividem, por natureza jurídica, gestão e atendimento ao SUS, as UBS ativas que o CNES registra na capital hoje?",
+   "o_que_mede": "O retrato do CNES na data da captura: UBS ativas (tipos 01 e 02) por natureza jurídica, por tipo de gestão e por atendimento ambulatorial SUS declarado, além da contagem de outros tipos de unidade de atenção primária (unidade mista, móvel, centro de apoio à saúde da família e polo academia da saúde) como contexto.",
+   "o_que_nao_mede": [
+    "Não é série: o arquivo diário não tem competência nem versão.",
+    "Não comprova funcionamento nem acesso.",
+    "Não é rede municipal: natureza pública, gestão e local são conceitos distintos, e a gestão não equivale a propriedade.",
+    "Os outros tipos de unidade não se somam às UBS."
+   ],
+   "formula": "Contagem de estabelecimentos por tipo, sem motivo de desabilitação, por natureza jurídica (código iniciado em 1 é pública), tipo de gestão (M, E ou D) e atendimento ambulatorial SUS (SIM).",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "estabelecimentos",
+   "escala": "Número inteiro.",
+   "fontes": [
+    "cnes_estabelecimentos"
+   ],
+   "localizacao_registro": "OpenDataSUS, arquivo cnes_estabelecimentos_csv.zip: campos TP_UNIDADE, CO_MOTIVO_DESAB, CO_NATUREZA_JUR, TP_GESTAO e CO_AMBULATORIAL_SUS. A esfera administrativa do arquivo repete a gestão e não é usada para natureza.",
+   "periodo": "Retrato de 09/10/2026 (data da captura; o arquivo é substituído todo dia).",
+   "perimetro": {
+    "territorial": "Município da capital (local do estabelecimento).",
+    "institucional": "Natureza jurídica e gestão, separadas.",
+    "servico": "Tipos de unidade 01 e 02 (núcleo) e 15, 32, 40, 71 e 74 (contexto)."
+   },
+   "ausencias": "Capital sem estabelecimento no retrato fica ausente. Zero só aparece quando o arquivo traz estabelecimentos da capital e nenhum cumpre o recorte.",
+   "transformacoes": [
+    "Recorte das 26 capitais e dos tipos de unidade.",
+    "Exclusão de estabelecimentos com motivo de desabilitação.",
+    "Contagens por natureza, gestão e atendimento SUS."
+   ],
+   "comparacao": "A comparação usa o retrato do mesmo dia entre capitais. Contagens absolutas dependem do porte.",
+   "universo_curto": "UBS ativas no CNES, localizadas na capital, no retrato da captura.",
+   "universo_rotulo": "estabelecimentos no território",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Retrato sem competência: a data de captura é a única referência temporal.",
+    "O CNES declara atendimento ambulatorial SUS por estabelecimento; não indica volume de atendimento."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_aps_equipes.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "dezembros"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.aps.equipes",
+   "nome": "Equipes de atenção primária registradas, por tipo, em dezembro",
+   "nome_curto": "Equipes de atenção primária",
+   "familia": "estrutura",
+   "pergunta": "Quantas equipes de atenção primária, de cada tipo, o Ministério da Saúde registra no município em dezembro?",
+   "o_que_mede": "A contagem de equipes de Saúde da Família (eSF), de Atenção Primária de 20 e de 30 horas (eAP 20h e eAP 30h) e, como contexto, de saúde da família ribeirinha (eSFR), consultório na rua (eCR) e de apoio à atenção primária (eAPP 20h e 30h), segundo o serviço do Relatório APS: equipes financiadas, de natureza pública, ativas no CNES e com validações de CBO e carga horária.",
+   "o_que_nao_mede": [
+    "Não é cobertura efetiva, cadastro, vínculo nem pessoas atendidas.",
+    "Não distingue equipe completa de incompleta nem a carga horária de cada profissional.",
+    "Não inclui equipes sem financiamento federal ou próprio validado, nem equipes de saúde bucal e eMulti, que têm séries próprias."
+   ],
+   "formula": "Contagem de equipes de cada tipo no município, na competência de dezembro.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "equipes",
+   "escala": "Número inteiro.",
+   "fontes": [
+    "relatorio_aps_cobertura"
+   ],
+   "localizacao_registro": "Relatório APS, serviço /cobertura/aps, município, campos qtEsf, qtEap20, qtEap30, qtEsfr, qtEcr, qtEapp20 e qtEapp30, competência 12/AAAA.",
+   "periodo": "Dezembro de 2021 a dezembro de 2025.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Equipes financiadas pelo Ministério da Saúde ou por recursos próprios, de natureza pública.",
+    "servico": "Atenção primária, por tipo de equipe."
+   },
+   "ausencias": "Competência ausente na resposta fica ausente na coleta, nunca zero. Zero só aparece quando o serviço informa zero.",
+   "transformacoes": [
+    "Seleção da competência de dezembro em cada resposta.",
+    "Valores reproduzidos sem recálculo."
+   ],
+   "comparacao": "A comparação usa o mesmo tipo de equipe e a mesma competência entre capitais; contagens absolutas dependem do porte, e por 10 mil habitantes o recorte é o mesmo.",
+   "universo_curto": "Equipes de atenção primária financiadas, ativas e validadas, por município.",
+   "universo_rotulo": "equipes registradas",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "O serviço do Relatório APS não tem contrato publicado nem versão: o OBEE guarda a resposta integral com sha256 e valida o esquema a cada coleta.",
+    "Os critérios de validação e de financiamento mudaram ao longo do período (nova metodologia de cofinanciamento da APS em 2024 e Nota Técnica nº 2/2025): a série é descritiva do registro do serviço e não de uma regra constante."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_aps_equipes_por_10mil.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "dezembros"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.aps.equipes_por_10mil",
+   "nome": "Equipes de Saúde da Família e de Atenção Primária por 10 mil habitantes",
+   "nome_curto": "Equipes por 10 mil habitantes",
+   "familia": "estrutura",
+   "pergunta": "Quantas equipes de Saúde da Família e de Atenção Primária há para cada 10 mil habitantes da capital?",
+   "o_que_mede": "A contagem de eSF, e de eAP de 20 e 30 horas somadas, dividida pela população residente do exercício, por 10 mil habitantes. As duas razões ficam separadas.",
+   "o_que_nao_mede": [
+    "Não é cobertura: uma eSF não cobre sempre o mesmo número de pessoas, e a cobertura potencial oficial usa parâmetros próprios.",
+    "Não é razão por usuário do SUS.",
+    "Não soma tipos diferentes de equipe como se fossem iguais."
+   ],
+   "formula": "Equipes do tipo ÷ população residente do exercício (IBGE) × 10.000.",
+   "numerador": "Equipes do tipo em dezembro (Relatório APS).",
+   "denominador": "População residente do município no exercício (IBGE).",
+   "unidade": "equipes por 10 mil habitantes",
+   "escala": "Duas casas decimais.",
+   "fontes": [
+    "relatorio_aps_cobertura",
+    "ibge_populacao"
+   ],
+   "localizacao_registro": "Numerador: Relatório APS. Denominador: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
+   "periodo": "Dezembro de cada ano, com a população do mesmo exercício.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Equipes financiadas, públicas e validadas.",
+    "servico": "eSF; eAP de 20 e 30 horas."
+   },
+   "ausencias": "Sem numerador ou população, a razão não é calculada. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão pela população do exercício do OBEE, não pela população de referência do Ministério (que é a do ano anterior)."
+   ],
+   "comparacao": "A comparação usa a razão do mesmo tipo e exercício entre capitais. Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.",
+   "universo_curto": "Equipes registradas ÷ população residente do exercício.",
+   "universo_rotulo": "equipes ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "O serviço do Relatório APS não tem contrato publicado nem versão: o OBEE guarda a resposta integral com sha256 e valida o esquema a cada coleta.",
+    "Usa a população do exercício do OBEE, diferente da população de referência do Ministério; as bases são três: estimativa anterior ao Censo (2021), Censo 2022 (2022 e 2023, a mesma população) e estimativa posterior (2024 e 2025)."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_aps_cobertura_potencial.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "dezembros"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.aps.cobertura_potencial",
+   "nome": "Cobertura potencial estimada da atenção primária, em dezembro",
+   "nome_curto": "Cobertura potencial da APS",
+   "familia": "estrutura",
+   "pergunta": "Que parcela da população de referência a capacidade das equipes de atenção primária registradas poderia cobrir, segundo o Ministério da Saúde?",
+   "o_que_mede": "A Cobertura Potencial Estimada da APS do Relatório APS: capacidade das equipes (eSF × 3.500, eAP 20 h × 1.750, eAP 30 h × 2.625, mais as pessoas com cadastro vinculado de eCR, eSFR e eAPP) dividida pela população de referência do Ministério, em percentual, na competência de dezembro.",
+   "o_que_nao_mede": [
+    "Não é a proporção de pessoas cadastradas, acompanhadas ou atendidas: é capacidade teórica das equipes.",
+    "Não é limitada a 100%: valores acima de 100% indicam capacidade maior que a população de referência e são exibidos como publicados.",
+    "Não é comparável com a Cobertura AB (2007 a 2020) nem com a cobertura do Previne Brasil (2020 a 2024): são métodos diferentes.",
+    "Não mede qualidade, acesso efetivo nem resultado."
+   ],
+   "formula": "Cobertura = (eSF × 3.500 + eAP 20 h × 1.750 + eAP 30 h × 2.625 + cadastro vinculado de eCR, eSFR e eAPP) ÷ população de referência do Ministério × 100.",
+   "numerador": "Capacidade das equipes (pessoas).",
+   "denominador": "População de referência do Ministério da Saúde (do ano anterior ao da competência).",
+   "unidade": "% da população de referência",
+   "escala": "Percentual com duas casas decimais; capacidade e população de referência acompanham cada valor.",
+   "fontes": [
+    "relatorio_aps_cobertura"
+   ],
+   "localizacao_registro": "Relatório APS, serviço /cobertura/aps, campos qtCobertura, qtCapacidadeEquipe e qtPopulacao, competência 12/AAAA. Definição: Nota Técnica nº 2/2025 da SAPS/MS.",
+   "periodo": "Dezembro de 2022 a dezembro de 2025; dezembro de 2021 fica fora das comparações.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Equipes financiadas e públicas; população de referência do Ministério.",
+    "servico": "Atenção primária."
+   },
+   "ausencias": "Valor que não reproduz a fórmula da nota técnica torna o par inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Leitura do valor oficial.",
+    "Conferência: capacidade = fórmula da nota técnica e cobertura = capacidade ÷ população, para 2022 em diante."
+   ],
+   "comparacao": "A comparação usa dezembro do mesmo ano entre capitais. A população de referência é a que o Ministério adota para a competência, em três bases: anterior ao Censo (dezembro de 2021 e de 2022), Censo 2022 (dezembro de 2023 e de 2024) e estimativa de 2024 (dezembro de 2025). A variação entre bases diferentes é efeito do denominador, não da capacidade, e é bloqueada. Não se compara com cobertura de outro método.",
+   "universo_curto": "Capacidade das equipes de atenção primária ÷ população de referência do Ministério da Saúde.",
+   "universo_rotulo": "capacidade das equipes ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "O serviço do Relatório APS não tem contrato publicado nem versão: o OBEE guarda a resposta integral com sha256 e valida o esquema a cada coleta.",
+    "Dezembro de 2021 segue regra anterior e não reproduz a fórmula da Nota Técnica nº 2/2025: fora das comparações e das variações.",
+    "A parcela de cadastro vinculado dos meses recentes do serviço é incompleta (2026) e por isso o painel só usa dezembros fechados.",
+    "A população de referência do Ministério difere da população do exercício do OBEE; em Aracaju a série do Ministério ainda não acompanha a revisão do IBGE de 2025."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_icsap_internacoes.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.icsap.internacoes",
+   "nome": "Internações por condições sensíveis à atenção primária (ICSAP), por residência",
+   "nome_curto": "Internações ICSAP",
+   "familia": "resultado",
+   "pergunta": "Quantas internações pagas pelo SUS, de residentes da capital, tiveram como diagnóstico principal uma condição da Lista Brasileira de ICSAP?",
+   "o_que_mede": "O número de internações hospitalares pagas pelo SUS (AIH tipo 1, sem hospital dia) de residentes do município, no ano de processamento, com diagnóstico principal na Lista Brasileira de Internações por Condições Sensíveis à Atenção Primária (Portaria SAS/MS nº 221/2008).",
+   "o_que_nao_mede": [
+    "Não é número de pessoas: a AIH é a unidade, e reinternação e transferência contam mais de uma vez.",
+    "Não inclui internações pagas por planos privados ou particulares.",
+    "Não é causa nem efeito da gestão municipal: o resultado descreve o sistema de saúde que atende os moradores, e depende de oferta de leitos, critérios de internação e registro.",
+    "Não identifica internação individual evitável nem falha de atenção primária."
+   ],
+   "formula": "Contagem de AIH do tipo 1, sem hospital dia, com município de residência na capital e diagnóstico principal na Lista Brasileira, por ano de processamento.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "internações por ano",
+   "escala": "Número inteiro.",
+   "fontes": [
+    "ripsa_mrb402_icsap"
+   ],
+   "localizacao_registro": "RIPSA, indicador MRB.4.02, arquivo mgdi_ms_qu3.csv.zip do Portal de Dados Abertos do SUS, coluna Numerador - Número internações CSAP, somados os 3 sexos e as 13 faixas etárias.",
+   "periodo": "Ano de processamento, de 2021 a 2024. 2025 não entra: os 12 meses mais recentes do SIH são provisórios e o RIPSA ainda não publicou o ano.",
+   "perimetro": {
+    "territorial": "Município de residência do paciente, não local da internação.",
+    "institucional": "SIH/SUS: internações financiadas pelo SUS.",
+    "servico": "Internações hospitalares com diagnóstico principal na lista de 19 grupos da Portaria 221/2008."
+   },
+   "ausencias": "Capital sem registro no ano fica ausente na coleta, nunca zero.",
+   "transformacoes": [
+    "Soma das células de sexo e faixa etária de cada capital e ano.",
+    "Conferência: soma dos 19 grupos igual ao total."
+   ],
+   "comparacao": "A comparação usa o mesmo ano entre capitais, com a taxa por 100 mil habitantes e a cobertura de planos privados ao lado. Contagens absolutas dependem do porte.",
+   "universo_curto": "Internações SUS de residentes da capital por condições sensíveis à atenção primária.",
+   "universo_rotulo": "internações SUS por residência",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Só SUS: a cobertura de planos privados nas capitais varia muito (ver contexto).",
+    "A regra do indicador foi verificada por recálculo dos microdados do SIH espelhados por terceiros: nacional dentro de 0,05%; por capital a diferença mediana é de 1% a 2%, e em Boa Vista, Campo Grande, Cuiabá, Palmas e Porto Velho passa de 5% em alguns anos.",
+    "O arquivo do RIPSA não tem ficha de qualificação publicada nem histórico de versões."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_icsap_taxa.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.icsap.taxa",
+   "nome": "Taxa de internações por condições sensíveis à atenção primária por 100 mil habitantes",
+   "nome_curto": "Taxa de ICSAP por 100 mil",
+   "familia": "resultado",
+   "pergunta": "Quantas internações ICSAP de residentes da capital ocorrem para cada 100 mil habitantes, por ano?",
+   "o_que_mede": "O número de internações ICSAP dividido pela população estimada do indicador (série do Ministério da Saúde), por 100 mil habitantes. A mesma contagem dividida pela população do exercício do OBEE entra como sensibilidade.",
+   "o_que_nao_mede": [
+    "Não é taxa ajustada por idade: descreve a ocorrência bruta e não isola a composição demográfica.",
+    "Não é taxa de pessoas internadas.",
+    "Não inclui internações pagas por planos privados ou particulares. A cobertura de planos varia entre as capitais e é mostrada ao lado como contexto, sem relação estabelecida com a taxa.",
+    "Não mede o desempenho da atenção primária nem da prefeitura, e um valor maior ou menor não demonstra mais ou menos eficiência."
+   ],
+   "formula": "Taxa = internações ICSAP ÷ população estimada do indicador × 100.000. Sensibilidade: o mesmo numerador ÷ população residente do exercício (IBGE) × 100.000.",
+   "numerador": "Internações ICSAP (RIPSA MRB.4.02).",
+   "denominador": "População estimada do próprio indicador (Ministério da Saúde); na sensibilidade, população residente do exercício (IBGE).",
+   "unidade": "internações por 100 mil habitantes",
+   "escala": "Uma casa decimal.",
+   "fontes": [
+    "ripsa_mrb402_icsap",
+    "ibge_populacao"
+   ],
+   "localizacao_registro": "RIPSA MRB.4.02: numerador e coluna Denominador - População estimada. Sensibilidade: IBGE, SIDRA, tabelas 6579 e 4714 e Primeiros Resultados do Censo 2022 (22/12/2023).",
+   "periodo": "Ano de processamento, de 2021 a 2024.",
+   "perimetro": {
+    "territorial": "Município de residência do paciente.",
+    "institucional": "SIH/SUS.",
+    "servico": "Internações com diagnóstico principal na Lista Brasileira de ICSAP."
+   },
+   "ausencias": "Sem numerador ou denominador, a taxa não é calculada. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão da contagem pela população do denominador, por 100 mil.",
+    "Sensibilidade com a população do exercício do OBEE."
+   ],
+   "comparacao": "A comparação usa o mesmo ano entre capitais, descritivamente. A população do Ministério difere da do IBGE do exercício nas 26 capitais: de 10,7% menor a 5,9% maior em 2021 (frente à estimativa anterior ao Censo), de 2,6% a 10,1% maior em 2022, de 3,5% a 11,1% maior em 2023 e igual em 2024. A taxa muda na mesma proporção conforme o denominador. Padronização por idade e ajuste por cobertura de planos exigiriam dados por faixa etária, população padrão e fórmula verificada, e não são calculados.",
+   "universo_curto": "Internações ICSAP de residentes ÷ população estimada, por 100 mil.",
+   "universo_rotulo": "internações SUS ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "A taxa bruta depende da composição por idade e da cobertura de planos privados.",
+    "O denominador do Ministério difere da população do exercício do OBEE; as duas taxas são publicadas.",
+    "Valor alto não prova atenção primária ruim: a taxa também depende de oferta de leitos e de critérios de internação."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_icsap_participacao.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.icsap.participacao",
+   "nome": "Participação das ICSAP nas internações SUS por residência",
+   "nome_curto": "ICSAP nas internações SUS",
+   "familia": "resultado",
+   "pergunta": "Que parcela das internações SUS de residentes da capital é classificada como ICSAP?",
+   "o_que_mede": "O número de internações ICSAP dividido pelo total de internações SUS de residentes do município no ano (RIPSA COB.2.01), em percentual, sob a mesma regra de contagem.",
+   "o_que_nao_mede": [
+    "Não é medida de desempenho: depende do que o restante das internações contém (obstetrícia, cirurgias, oferta hospitalar).",
+    "Não inclui internações pagas por planos privados.",
+    "Não é taxa por habitante."
+   ],
+   "formula": "Internações ICSAP ÷ internações SUS por município de residência × 100.",
+   "numerador": "Internações ICSAP (MRB.4.02).",
+   "denominador": "Internações SUS por residência (COB.2.01).",
+   "unidade": "% das internações SUS por residência",
+   "escala": "Uma casa decimal.",
+   "fontes": [
+    "ripsa_mrb402_icsap",
+    "ripsa_cob201_internacoes"
+   ],
+   "localizacao_registro": "RIPSA MRB.4.02 (mgdi_ms_qu3.csv.zip) e COB.2.01 (ripsa002cb.csv.zip), mesmo município de residência e ano.",
+   "periodo": "Ano de processamento, de 2021 a 2024.",
+   "perimetro": {
+    "territorial": "Município de residência.",
+    "institucional": "SIH/SUS.",
+    "servico": "Internações hospitalares: ICSAP sobre o total."
+   },
+   "ausencias": "Sem numerador ou denominador, a razão não é calculada. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Divisão do total ICSAP pelo total de internações do mesmo município e ano."
+   ],
+   "comparacao": "A comparação usa o mesmo ano entre capitais; descreve composição, não desempenho.",
+   "universo_curto": "ICSAP ÷ internações SUS de residentes.",
+   "universo_rotulo": "internações SUS por residência",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Apenas contexto da taxa: depende da oferta hospitalar e do perfil das demais internações.",
+    "Só SUS."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_icsap_grupos.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.icsap.grupos",
+   "nome": "Internações ICSAP por grupo da Lista Brasileira",
+   "nome_curto": "ICSAP por grupo",
+   "familia": "resultado",
+   "pergunta": "Como as internações ICSAP de residentes da capital se distribuem entre os 19 grupos de condições da Lista Brasileira?",
+   "o_que_mede": "O número de internações ICSAP em cada um dos 19 grupos da Portaria SAS/MS nº 221/2008 (por exemplo, diabetes mellitus, insuficiência cardíaca, pneumonias bacterianas, infecção do rim e trato urinário), com a participação de cada grupo no total.",
+   "o_que_nao_mede": [
+    "Não é incidência das doenças: é internação paga pelo SUS com aquele diagnóstico principal.",
+    "Não indica o que a atenção primária poderia ter evitado em cada caso.",
+    "Os grupos não se comparam entre capitais sem considerar a composição por idade."
+   ],
+   "formula": "Soma, por grupo, das internações ICSAP de cada capital e ano; a soma dos 19 grupos é conferida contra o total.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "internações por ano",
+   "escala": "Número inteiro; participação em percentual com uma casa decimal.",
+   "fontes": [
+    "ripsa_mrb402_icsap"
+   ],
+   "localizacao_registro": "RIPSA MRB.4.02, colunas Numerador - Número internações CSAP - Grupo 1 a Grupo 19.",
+   "periodo": "Ano de processamento, de 2021 a 2024.",
+   "perimetro": {
+    "territorial": "Município de residência.",
+    "institucional": "SIH/SUS.",
+    "servico": "Lista Brasileira de ICSAP, 19 grupos."
+   },
+   "ausencias": "Se a soma dos grupos não reproduz o total, o par fica inconsistente. Ausência nunca é tratada como zero.",
+   "transformacoes": [
+    "Soma das células de sexo e faixa etária por grupo.",
+    "Conferência: soma dos grupos igual ao total."
+   ],
+   "comparacao": "Participações descrevem a composição das ICSAP de cada capital; não há ordenação de mérito.",
+   "universo_curto": "Internações ICSAP de residentes, por grupo da Lista Brasileira.",
+   "universo_rotulo": "internações SUS por residência, por grupo",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "Mesmas ressalvas do total: só SUS, AIH como unidade e regra do indicador do RIPSA.",
+    "A numeração dos subgrupos na transcrição HTML da portaria tem irregularidades; a lista de CID usada pelo RIPSA coincide com a da portaria nos 19 grupos, por recálculo."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "OBSERVADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": "/eficiencia/series/sau_ctx_cobertura_planos.csv",
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [],
+   "substitui": null,
+   "id": "sau.ctx.cobertura_planos",
+   "nome": "Cobertura de planos de saúde privados, em dezembro",
+   "nome_curto": "Cobertura de planos privados",
+   "familia": "contexto",
+   "pergunta": "Que percentual da população da capital tem plano de saúde privado, segundo a ANS?",
+   "o_que_mede": "O percentual da população do município coberta por planos privados de assistência médica em dezembro (RIPSA COB.5.01, base da Agência Nacional de Saúde Suplementar), total das categorias.",
+   "o_que_nao_mede": [
+    "Não permite estimar usuários do SUS por subtração: a população com plano também usa o SUS em parte dos serviços.",
+    "Não é indicador de qualidade nem de resultado.",
+    "Não é ajuste: as taxas de ICSAP não são corrigidas por este percentual."
+   ],
+   "formula": "Percentual calculado pelo RIPSA: beneficiários de planos privados ÷ população do município × 100.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "% da população",
+   "escala": "Duas casas decimais.",
+   "fontes": [
+    "ripsa_cob501_planos"
+   ],
+   "localizacao_registro": "RIPSA COB.5.01, arquivo ripsa001cb.csv.zip, categoria TC (todas as categorias), campo vl_indicador_calculado_mun, competência dezembro.",
+   "periodo": "Dezembro de 2021 a dezembro de 2024.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Saúde suplementar (ANS).",
+    "servico": "Planos de assistência médica."
+   },
+   "ausencias": "Capital sem registro fica ausente, nunca zero.",
+   "transformacoes": [
+    "Seleção da categoria total e das competências de dezembro."
+   ],
+   "comparacao": "Contexto da taxa de ICSAP: o SIH cobre só internações pagas pelo SUS. A comparação usa o mesmo ano entre capitais.",
+   "universo_curto": "População com plano de saúde privado ÷ população do município.",
+   "universo_rotulo": "população com plano ÷ população",
+   "estado": "PUBLICAVEL_COM_RESSALVAS",
+   "ressalvas": [
+    "O arquivo do RIPSA não tem ficha de qualificação publicada nem histórico de versões; atualização de 20/01/2026."
+   ]
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": null,
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [
+    "O Siaps substituiu o Sisab, mas a consulta pública de práticas assistenciais do Siaps não devolveu resposta válida nos testes de 09/10/2026 (HTTP 400 sem corpo) e o relatório de produção do Sisab só se obtém por formulário JSF, sem API.",
+    "Os cubos de atendimento individual do Siaps na API de dados abertos têm uma competência (dezembro de 2025) e não formam série.",
+    "Sem série oficial documentada e estável por município, publicar um número seria improvisar."
+   ],
+   "substitui": null,
+   "id": "sau.aps.producao",
+   "nome": "Produção e atendimentos da atenção primária",
+   "nome_curto": "Produção da APS",
+   "familia": "atendimento",
+   "pergunta": "Quantos atendimentos a atenção primária realiza na capital?",
+   "o_que_mede": "Não publicado nesta etapa.",
+   "o_que_nao_mede": [
+    "Atendimentos, procedimentos e pessoas atendidas são medidas distintas e não se somam como produtividade genérica."
+   ],
+   "formula": "Não definida.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "não se aplica",
+   "escala": "Não se aplica.",
+   "fontes": [],
+   "localizacao_registro": "Não se aplica.",
+   "periodo": "Não se aplica.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Não se aplica.",
+    "servico": "Atenção primária."
+   },
+   "ausencias": "Sem série oficial extraível por município, o painel não exibe número nem o substitui por outro indicador.",
+   "transformacoes": [],
+   "comparacao": "Não se aplica.",
+   "universo_curto": "Produção da atenção primária: não publicado.",
+   "universo_rotulo": "não publicado",
+   "estado": "NAO_PUBLICAVEL",
+   "ressalvas": []
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": null,
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [
+    "Na API de dados abertos, os vínculos de profissionais do CNES só saem um por chamada, com o nome da pessoa em claro: cerca de 160 mil chamadas por competência e dado pessoal que o OBEE não armazena.",
+    "O caminho agregado, pelos arquivos mensais do FTP do DATASUS, não respondeu a partir do ambiente de coleta (reset de conexão em 09/10/2026).",
+    "Se o responsável fornecer os arquivos agregados do CNES (profissionais por carga horária, sem identificação), o indicador pode ser implementado com rótulo fiel à unidade (vínculos ou carga horária)."
+   ],
+   "substitui": null,
+   "id": "sau.rede.profissionais_carga_horaria",
+   "nome": "Profissionais e carga horária da atenção primária",
+   "nome_curto": "Profissionais da APS",
+   "familia": "estrutura",
+   "pergunta": "Quantos profissionais, ou quantas horas de profissionais, atuam na atenção primária da capital?",
+   "o_que_mede": "Não publicado nesta etapa.",
+   "o_que_nao_mede": [
+    "Vínculo não é pessoa: somar registros conta a mesma pessoa várias vezes.",
+    "Horas não são profissionais únicos."
+   ],
+   "formula": "Não definida.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "não se aplica",
+   "escala": "Não se aplica.",
+   "fontes": [],
+   "localizacao_registro": "Não se aplica.",
+   "periodo": "Não se aplica.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Não se aplica.",
+    "servico": "Atenção primária."
+   },
+   "ausencias": "Sem fonte agregada sem identificação pessoal, o painel não exibe número.",
+   "transformacoes": [],
+   "comparacao": "Não se aplica.",
+   "universo_curto": "Profissionais da atenção primária: não publicado.",
+   "universo_rotulo": "não publicado",
+   "estado": "NAO_PUBLICAVEL",
+   "ressalvas": []
+  },
+  {
+   "versao_metodologica": "1.0",
+   "natureza": "CALCULADO",
+   "correcao_monetaria": "Não se aplica.",
+   "download": null,
+   "granularidade": {
+    "etapa": false,
+    "anos": "exercicios"
+   },
+   "motivo_nao_publicacao": [
+    "A despesa da função Saúde do município não corresponde às consultas ou internações de nenhuma fonte: a rede inclui serviços pagos por outras esferas, organizações contratadas e gasto sem produção associada.",
+    "Dividir a despesa total por consultas, internações ou população dependente do SUS misturaria universos diferentes e produziria uma razão sem significado."
+   ],
+   "substitui": null,
+   "id": "sau.despesa.por_atendimento",
+   "nome": "Despesa em Saúde por atendimento, consulta ou internação",
+   "nome_curto": "Custo por atendimento",
+   "familia": "recursos",
+   "pergunta": "Quanto custa cada atendimento, consulta ou internação?",
+   "o_que_mede": "Não calculado por desenho.",
+   "o_que_nao_mede": [
+    "Custo unitário exige numerador e denominador do mesmo processo assistencial."
+   ],
+   "formula": "Não definida.",
+   "numerador": null,
+   "denominador": null,
+   "unidade": "não se aplica",
+   "escala": "Não se aplica.",
+   "fontes": [],
+   "localizacao_registro": "Não se aplica.",
+   "periodo": "Não se aplica.",
+   "perimetro": {
+    "territorial": "Município da capital.",
+    "institucional": "Não se aplica.",
+    "servico": "Não se aplica."
+   },
+   "ausencias": "Não calculado.",
+   "transformacoes": [],
+   "comparacao": "Não se aplica.",
+   "universo_curto": "Custo por atendimento: não calculado.",
+   "universo_rotulo": "não calculado",
+   "estado": "NAO_PUBLICAVEL",
+   "ressalvas": []
+  }
+ ],
+ "historico": [
+  {
+   "versao": "1.0",
+   "data": "2026-10-09",
+   "resumo": "Primeira publicação do módulo Saúde nas capitais: despesa na função Saúde, por habitante, por subfunção e por natureza; ASPS e despesa por fonte (SIOPS); UBS do CNES; equipes e cobertura potencial da APS; ICSAP por residência com contexto de planos privados. Produção da APS, profissionais e custo por atendimento avaliados e não publicados."
+  }
+ ]
+}

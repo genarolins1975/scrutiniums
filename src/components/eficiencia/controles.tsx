@@ -16,6 +16,7 @@ export function Selecao({
   opcoes,
   aoMudar,
   desabilitado,
+  ajudaNoCelular = true,
 }: {
   id: string;
   rotulo: string;
@@ -24,6 +25,8 @@ export function Selecao({
   opcoes: { v: string; t: string; desab?: boolean; grupo?: string }[];
   aoMudar: (v: string) => void;
   desabilitado?: boolean;
+  /** false: a ajuda sai da vista em telas estreitas (continua descrevendo o campo para leitores de tela) */
+  ajudaNoCelular?: boolean;
 }) {
   const grupos = Array.from(new Set(opcoes.map((o) => o.grupo ?? "")));
   const atual = opcoes.find((o) => o.v === valor)?.t ?? "";
@@ -69,7 +72,7 @@ export function Selecao({
           })}
         </select>
       </div>
-      <p id={`${id}-ajuda`} className="mt-1 text-xs leading-snug text-carvao-muted">
+      <p id={`${id}-ajuda`} className={`mt-1 text-xs leading-snug text-carvao-muted${ajudaNoCelular ? "" : " hidden sm:block"}`}>
         {ajuda}
       </p>
     </div>
@@ -98,7 +101,7 @@ export function Alternancia<T extends string>({
           <label
             key={o.v}
             className={`relative inline-flex min-h-[44px] cursor-pointer items-center px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-obee ${
-              valor === o.v ? "bg-obee-fundo font-semibold text-obee-tinta" : "text-carvao-muted hover:text-obee-tinta"
+              valor === o.v ? "bg-obee-fundo font-semibold text-obee-tinta shadow-[inset_0_-3px_0_0_currentColor]" : "text-carvao-muted hover:text-obee-tinta"
             }`}
           >
             <input type="radio" className="sr-only" name={rotulo} value={o.v} checked={valor === o.v} onChange={() => aoMudar(o.v)} />

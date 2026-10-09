@@ -1,4 +1,4 @@
-import type { FichaIndicador } from "@/lib/eficiencia/tipos";
+import type { FichaExibivel, FichaIndicador } from "@/lib/eficiencia/tipos";
 
 /**
  * Conteúdo de “Sobre este dado” (a ficha de um indicador): os dezesseis campos, na ordem, para
@@ -26,6 +26,7 @@ export const ESTADO_PUBLICACAO: Record<FichaIndicador["estado"], string> = {
 const RESULTADO: Record<string, string> = {
   aprovada: "aprovada",
   aprovada_com_divergencias_documentadas: "aprovada, com divergências documentadas",
+  regra_aplicada_com_pendencias: "regra aplicada, com pendências documentadas",
   reprovada: "reprovada",
   medicao: "medição",
 };
@@ -54,7 +55,10 @@ function Lista({ itens }: { itens: string[] }) {
   );
 }
 
-export function FichaConteudo({ f, ctx }: { f: FichaIndicador; ctx: ContextoFicha }) {
+export type CodigoFicha = { pasta: string; comando: string };
+const CODIGO_PADRAO: CodigoFicha = { pasta: "pipeline/eficiencia", comando: "python3 -m pipeline.eficiencia.run" };
+
+export function FichaConteudo({ f, ctx, codigo = CODIGO_PADRAO }: { f: FichaExibivel; ctx: ContextoFicha; codigo?: CodigoFicha }) {
   const publicado = f.estado !== "NAO_PUBLICAVEL";
   return (
     <dl className="[overflow-wrap:anywhere]">
@@ -149,8 +153,8 @@ export function FichaConteudo({ f, ctx }: { f: FichaIndicador; ctx: ContextoFich
             <a href={f.download} download className="text-obee-dark underline underline-offset-2">
               Série completa em CSV
             </a>
-            , com estado, nota e registro de cada valor. Código: <code className="font-mono text-[0.8rem]">pipeline/eficiencia</code> no
-            repositório; reconstrução com <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run</code>.
+            , com estado, nota e registro de cada valor. Código: <code className="font-mono text-[0.8rem]">{codigo.pasta}</code> no
+            repositório; reconstrução com <code className="font-mono text-[0.8rem]">{codigo.comando}</code>.
           </>
         ) : (
           "Sem série publicada."

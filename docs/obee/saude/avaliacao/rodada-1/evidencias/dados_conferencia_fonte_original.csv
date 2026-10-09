@@ -1,0 +1,30 @@
+fonte_consultada,capital_ou_universo,ano,medida,valor_na_fonte_ao_vivo,valor_no_seed,valor_na_gold,confere
+Siconfi DCA I-E (API ao vivo),São Paulo,2025,"Despesa liquidada, função 10 Saúde (R$)",23342248911.99,23342248911.99,23342248911.99,sim
+Siconfi DCA I-E (API ao vivo),Recife,2023,"Despesa liquidada, função 10 Saúde (R$)",1659837896.2,1659837896.2,1659837896.2,sim
+Siconfi DCA I-E (API ao vivo),Curitiba,2021,"Despesa liquidada, função 10 Saúde (R$)",2371603853.62,2371603853.62,2371603853.62,sim
+Siconfi DCA I-E (API ao vivo),Manaus,2024,"Despesa liquidada, função 10 Saúde (R$)",1649109338.87,1649109338.87,1649109338.87,sim
+Siconfi DCA I-E (API ao vivo),Boa Vista,2024,"Despesa liquidada, função 10 Saúde (R$)",503187172.75,503187172.75,503187172.75,sim
+Siconfi DCA I-E (API ao vivo),Macapá,2025,"Despesa liquidada, função 10 Saúde (R$)",495269686.89,495269686.89,495269686.89,sim
+Siconfi DCA I-E (API ao vivo),Campo Grande,2021,"Despesa liquidada, função 10 Saúde (R$)",1573583018.36,1573583018.36,1573583018.36,sim
+SIOPS RREO Anexo 12 (API ao vivo),Recife,2025,"ASPS: percentual, valor aplicado XVI, base III","[19.75, 1111965826.08, 5628463971.49]",,"[19.75, 1111965826.08, 5628463971.49]",sim
+SIOPS RREO Anexo 12 (API ao vivo),São Paulo,2024,"ASPS: percentual, valor aplicado XVI, base III","[24.32, 18550376342.94, 76272455308.21]",,"[24.32, 18550376342.94, 76272455308.21]",sim
+SIOPS RREO Anexo 12 (API ao vivo),Porto Alegre,2023,"ASPS: percentual, valor aplicado XVI, base III","[21.58, 1049280120.84, 4861951817.6]",,"[21.58, 1049280120.84, 4861951817.6]",sim
+SIOPS RREO Anexo 12 (API ao vivo),Rio Branco,2021,"ASPS: percentual, valor aplicado XVI, base III","[15.63, 132665880.68, 848524380.35]",,"[15.63, 132665880.68, 848524380.35]",sim
+IBGE SIDRA (API ao vivo),São Paulo (SP),2025,População residente,11904961,,11904961,sim
+IBGE SIDRA (API ao vivo),São Paulo (SP),2024,População residente,11895578,,11895578,sim
+IBGE SIDRA (API ao vivo),Recife (PE),2024,População residente,1587707,,1587707,sim
+IBGE SIDRA (API ao vivo),São Paulo (SP),2021,População residente,12396372,,12396372,sim
+IBGE SIDRA (API ao vivo),Recife (PE),2021,População residente,1661017,,1661017,sim
+IBGE SIDRA (API ao vivo),São Paulo (SP),2022,População residente,11451999,,11451999,sim
+IBGE SIDRA (API ao vivo),Recife (PE),2022,População residente,1488920,,1488920,sim
+Relatório APS (API ao vivo),São Paulo,2025,"eSF, eAP20, eAP30, capacidade, cobertura potencial dez/2025","[1723, 336, 160, 7074342, 59.47]",,"[1723, 336, 160, null, 59.47]",sim
+SIOPS despesas por subfunção/fonte (API ao vivo),São Paulo,2025,Total por fonte (vl_coluna10),25173757629.24,,25173757629.24,sim
+"RIPSA MRB.4.02, arquivo mgdi_ms_qu3.csv.zip (download direto, soma de sexo e faixa etária)",26 capitais,2021 a 2024,"ICSAP total, 19 grupos, população do denominador e taxa (104 pares capital×ano)",104 de 104 conferem,,ver recomputacao_*,sim
+"RIPSA, totais nacionais (5.570 municípios)",Brasil,2021 a 2024,"ICSAP total e população do denominador, soma dos 5.570 municípios, por ano","2021: 1.643.747 e 210.103.642; 2022: 1.999.861 e 210.862.983; 2023: 2.130.584 e 211.695.158; 2024: 2.181.169 e 212.583.750 (taxas 782,35; 948,42; 1.006,44; 1.026,03)",iguais (seed nacional),iguais (referências externas br.icsap.taxa.*),sim
+"CNES, cnes_estabelecimentos_csv.zip (sha256 9f646594... igual ao manifesto), 638.547 linhas",26 capitais,retrato 09/10/2026,"14 componentes × 26 capitais (total, públicas, não públicas, gestão M/E/D, públicas com SUS, tipos 01, 02, 15, 32, 40, 71, 74)",364 de 364 conferem,,,sim
+"CNES, API de dados abertos (8 estabelecimentos sorteados, dezembros 2021 a 2025)",8 estabelecimentos,2021 a 2025,"tipo, status, natureza e gestão por competência",8 de 8 iguais ao seed,,,sim
+"IBGE SIDRA 1737 (IPCA, número índice)",Brasil,2021 a 2025,fatores para reais de 2025,"1,2527654899 / 1,1463801919 / 1,0960332175 / 1,050167528 / 1,0",,mesmos fatores,sim
+"SIOPS MetaDados.pdf (dicionário de colunas valor1 a valor10, ano > 2020)",,2021 a 2025,mapeamento das 9 fontes de recurso e do total,"coluna1 ordinários ... coluna9 outros, coluna10 total: igual ao usado pelo módulo",,,sim
+"Siconfi RREO 02 (6º bimestre) ao vivo (Macapá 2025, Boa Vista 2024) e MSC ao vivo (Macapá 2025)",Macapá 2025 e Boa Vista 2024,2024 e 2025,RREO liquidado exceto intra; MSC sem modalidade 91,"Macapá: RREO liquidado exceto intra 503.269.686,89 e MSC líquida sem modalidade 91 503.269.686,89 (DCA 495.269.686,89, diferença de 8.000.000,00). Boa Vista: RREO 93.508.841,73",igual,,sim
+"Manifesto do seed: sha256 do arquivo original do RIPSA (mgdi_ms_qu3.csv.zip) e do CNES (cnes_estabelecimentos_csv.zip), baixados de novo",RIPSA e CNES,2026-10-09,sha256 e número de linhas,RIPSA 5fccaaa0...3dfc68 e 3.342.102 linhas; CNES 9f646594...cde2c7,igual ao manifesto,igual ao manifesto,sim
+Manifesto do seed: sha256 dos 681 recortes em pipeline/eficiencia_saude/seed,681 arquivos,2026-10-09,sha256 do conteúdo descomprimido de cada .gz,681 de 681 conferem; sha256sum do próprio arquivo .gz diverge em 681 de 681 (o manifesto não diz que o hash é do conteúdo),,,"sim, com ressalva de documentação"

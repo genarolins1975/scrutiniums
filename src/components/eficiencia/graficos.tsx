@@ -53,7 +53,7 @@ export const COR = {
 export type Anotacao = { ano: number; texto: string };
 
 /** Mediana do grupo em cada ano, com o número de capitais na comparação: o grupo pode mudar de um ano para outro. */
-export type ReferenciaAnual = { ano: number; valor: number | null; n: number };
+export type ReferenciaAnual = { ano: number; valor: number | null; n: number; quebraSerie?: boolean };
 
 export function MiniSerie({
   titulo,
@@ -116,16 +116,43 @@ export function MiniSerie({
   // referência: linha tracejada só entre anos consecutivos que têm mediana
   const segsRef: string[] = [];
   let atualRef: string[] = [];
+  let anteriorRef: boolean | undefined;
   pontos.forEach((p, i) => {
-    const v = refPorAno.get(p.ano)?.valor ?? null;
+    const r = refPorAno.get(p.ano);
+    const v = r?.valor ?? null;
     if (v === null) {
       if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
       atualRef = [];
-    } else atualRef.push(`${atualRef.length ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+      anteriorRef = undefined;
+    } else {
+      // a mediana também se interrompe onde a base muda, quando a referência informa a marca de base de cada ano
+      if (atualRef.length && r?.quebraSerie !== undefined && anteriorRef !== undefined && anteriorRef !== r.quebraSerie) {
+        if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
+        atualRef = [];
+      }
+      atualRef.push(`${atualRef.length ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+      anteriorRef = r?.quebraSerie;
+    }
   });
   if (atualRef.length > 1) segsRef.push(atualRef.join(" "));
   const mostrarRotulo = (i: number) => pontos.length <= 6 || i === 0 || i === pontos.length - 1 || i % 2 === 0;
   const anot = new Map(anotacoes.map((a, i) => [a.ano, i + 1]));
+  // rótulo "mudança de base": no alto do gráfico, deslocado para onde não cobre o número de uma nota; sem lugar livre, desce para dentro do gráfico
+  const LARG_RUPTURA = 84;
+  const rotuloRuptura = (() => {
+    if (!rupturas.length) return null;
+    const i = rupturas[0];
+    const numsX = pontos.map((p, k) => (anot.has(p.ano) ? x(k) : null)).filter((v): v is number => v !== null);
+    const livre = (c: number) => numsX.every((nx) => nx < c - LARG_RUPTURA / 2 - 6 || nx > c + LARG_RUPTURA / 2 + 6);
+    const lo = m.l + LARG_RUPTURA / 2;
+    const hi = Math.max(lo, w - m.r - LARG_RUPTURA / 2);
+    const c0 = Math.min(Math.max((x(i - 1) + x(i)) / 2, lo), hi);
+    if (livre(c0)) return { cx: c0, y: m.t - 3, dentro: false };
+    for (let d = 6; d <= w; d += 6) {
+      for (const c of [c0 + d, c0 - d]) if (c >= lo && c <= hi && livre(c)) return { cx: c, y: m.t - 3, dentro: false };
+    }
+    return { cx: c0, y: H - m.b - 8, dentro: true };
+  })();
   const ultimo = [...pontos].reverse().find((p) => p.valor !== null);
   const iUltimo = ultimo ? pontos.indexOf(ultimo) : -1;
   // valor escrito junto de cada ponto: acima ou abaixo, onde não encosta em outro marcador, na mediana de referência nem em outro
@@ -139,7 +166,10 @@ export function MiniSerie({
       if (p.valor !== null) ocupado.push({ x0: x(i) - 7, x1: x(i) + 7, y0: y(p.valor) - 7, y1: y(p.valor) + 7 });
       const rv = refPorAno.get(p.ano)?.valor ?? null;
       if (rv !== null) ocupado.push({ x0: x(i) - 6, x1: x(i) + 6, y0: y(rv) - 6, y1: y(rv) + 6 });
+      // o número da nota fica no alto do gráfico: o valor do ponto não pode ser escrito por cima dele
+      if (anot.has(p.ano)) ocupado.push({ x0: x(i) - 7, x1: x(i) + 7, y0: m.t - 13, y1: m.t + 3 });
     });
+    if (rotuloRuptura) ocupado.push({ x0: rotuloRuptura.cx - LARG_RUPTURA / 2, x1: rotuloRuptura.cx + LARG_RUPTURA / 2, y0: rotuloRuptura.y - 11, y1: rotuloRuptura.y + 3 });
     const bate = (c: Caixa, o: Caixa) => c.x0 < o.x1 && c.x1 > o.x0 && c.y0 < o.y1 && c.y1 > o.y0;
     const ordem = pontos.map((_, i) => i).filter((i) => pontos[i].valor !== null);
     ordem.sort((p, q) => (q === iUltimo ? 1 : 0) - (p === iUltimo ? 1 : 0) || (p === 0 ? -1 : 0) - (q === 0 ? -1 : 0) || p - q);
@@ -214,8 +244,8 @@ export function MiniSerie({
           {rupturas.map((i, n) => (
             <g key={`rp${pontos[i].ano}`}>
               <line x1={(x(i - 1) + x(i)) / 2} x2={(x(i - 1) + x(i)) / 2} y1={m.t} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.25} strokeDasharray="2 3" />
-              {n === 0 && (
-                <text x={Math.max((x(i - 1) + x(i)) / 2, m.l + 40)} y={m.t - 3} textAnchor="middle" fontSize={10} fill={COR.referencia}>
+              {n === 0 && rotuloRuptura && (
+                <text x={rotuloRuptura.cx} y={rotuloRuptura.y} textAnchor="middle" fontSize={10} fill={COR.referencia} {...(rotuloRuptura.dentro ? { stroke: "var(--cor-papel)", strokeWidth: 3, paintOrder: "stroke" } : {})}>
                   mudança de base
                 </text>
               )}
@@ -318,9 +348,15 @@ export function MiniSerie({
           )}
           {segsRef.length > 0 && (
             <li>
-              <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano. O número de capitais na comparação pode mudar de um ano para outro (de{" "}
-              {Math.min(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))} a {Math.max(...(referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n))}); a variação da linha
-              não é a evolução de um grupo constante.
+              <span aria-hidden="true">┄</span> Linha tracejada: {rotuloReferencia.toLowerCase()} em cada ano.
+              {(() => {
+                const ns = (referencia ?? []).filter((r) => r.valor !== null).map((r) => r.n);
+                const min = Math.min(...ns);
+                const max = Math.max(...ns);
+                return min === max
+                  ? ` Nos anos com mediana, ela usa as mesmas ${max} capitais.`
+                  : ` O número de capitais na comparação muda de um ano para outro (de ${min} a ${max}); a variação da linha não é a evolução de um grupo constante.`;
+              })()}
             </li>
           )}
           {pontos

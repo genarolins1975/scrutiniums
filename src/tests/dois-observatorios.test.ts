@@ -30,14 +30,16 @@ describe("registro de domínios", () => {
     const [c, e, f] = DOMINIOS;
     expect(c.rotaRaiz).toBe("/observatorio");
     expect(e.rotaRaiz).toBe("/setor-eletrico");
-    expect(f.rotaRaiz).toBe("/eficiencia-estatal/educacao-municipal-capitais");
+    expect(f.rotaRaiz).toBe("/eficiencia-estatal");
     expect(c.acento).toBe("bronze");
     expect(e.acento).toBe("energia");
     expect(f.acento).toBe("obee");
   });
 
   it("a rota de entrada da Eficiência Estatal existe e consta do sitemap", () => {
+    expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "educacao-municipal-capitais", "page.tsx"))).toBe(true);
+    expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "saude-capitais", "page.tsx"))).toBe(true);
     expect(sitemap().map((u) => u.url)).toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
   });
 

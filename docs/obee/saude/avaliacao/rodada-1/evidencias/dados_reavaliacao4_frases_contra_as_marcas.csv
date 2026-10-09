@@ -1,0 +1,14 @@
+onde;frase;conferência contra as marcas e bases da gold;coerente
+ficha sau.despesa.por_habitante (comparação);"Variações entre bases diferentes (2021 para 2022 e 2023 para 2024) são bloqueadas; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.";coerente com as marcas da gold (falso, verdadeiro, verdadeiro, falso, falso);sim
+ficha sau.rede.ubs_publicas_por_10mil (comparação);"Variações de 2021 para 2022 e de 2023 para 2024 misturam mudança de base populacional; de 2022 para 2023 e de 2024 para 2025 a base é a mesma.";coerente;sim
+ficha sau.aps.equipes_por_10mil (comparação);idem;coerente;sim
+ficha sau.aps.cobertura_potencial (comparação);"três bases: dezembro de 2021 e 2022; 2023 e 2024; 2025; variação entre bases diferentes bloqueada";coerente com as marcas (verdadeiro, verdadeiro, falso, falso, verdadeiro);sim
+ficha ctx.populacao.residente (comparação);Variações entre 2021 e os anos seguintes, e as que envolvem 2023, misturam mudança de base populacional.;a variação de 2022 para 2023 envolve 2023 e usa a mesma população (marcas iguais, variação permitida);NAO
+matriz de fontes F02 (fundamento): gold, CSV, página, documento e código;"A população de 2021 é estimativa pré Censo e a de 2023 é censitária; as variações que as envolvem são bloqueadas.";a variação de 2022 para 2023 envolve 2023 e não é bloqueada;NAO
+ficha sau.icsap.taxa (comparação);A população do Ministério é 2,6% a 10,1% maior que a do Censo 2022 nas capitais;"vale só para 2022 (2023: 3,5% a 11,1%; 2021: de −10,7% a +5,9% contra a estimativa anterior ao Censo; 2024: 0%)";parcial
+nota da população de 2023 (observação);"a variação entre 2022 e 2023 vem só da despesa; a variação entre 2023 e 2024 mistura dois anos de crescimento populacional";coerente;sim
+aviso do período da cobertura 2022, 2023, 2024, 2025 (interface);"dezembro de 2023 e dezembro de 2024 usam a mesma população; 2024 para 2025 mistura dois anos";coerente;sim
+frase da Evolução por habitante (interface);Os valores de 2022, 2023 usam outra base e não entram nesta variação (2024 para 2025);coerente;sim
+VALIDACOES_E_REPRODUCAO.md, população e cobertura (linhas 44 e 45);"2021 para 2022 e 2023 para 2024 bloqueadas; cobertura: 2022 para 2023 e 2024 para 2025 bloqueadas, 2023 para 2024 só da capacidade";coerente (a linha 44 cita ainda a relação do DOU de 2023, que não foi obtida);sim
+dicionário: quebra_serie e quebra_perimetro;regra de marcas iguais em anos consecutivos e perímetro à parte;coerente com as 6.573 comparações de pares;sim
+página de Educação, Dados e métodos (fora do escopo);"variações com 2023 são bloqueadas; fonte: relação do DOU de 31/08/2023";"regra própria de Educação; difere da de Saúde para o mesmo seed de população";n/a
