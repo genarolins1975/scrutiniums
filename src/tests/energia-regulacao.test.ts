@@ -628,7 +628,15 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
       for (const p of PAINEIS_REGULACAO) expect(h, `${id} -> ${p.id}`).toContain(`href="${rotaPainel(p.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_REGULACAO.find((p) => p.id === id)!.rotulo}<`));
+      if (id === "p044") {
+        // a abertura não leva a faixa de irmãs: mostra as outras páginas como capítulos, sem repetir a própria, e o cruzamento com o PLD
+        expect(h, id).toContain('data-navegacao-local="capitulos"');
+        expect(h, id).not.toContain('data-navegacao-local="faixa"');
+        expect(h, id).toContain('href="/setor-eletrico/pld/limites"');
+      } else {
+        expect(h, id).toContain('data-navegacao-local="faixa"');
+        expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_REGULACAO.find((p) => p.id === id)!.rotulo}<`));
+      }
       expect(h, id).toContain(`href="${proximoPainel(id).rota}"`);
       expect(conteudo(h), id).not.toMatch(/em breve|em constru|em integra/i);
       // citações literais da fonte (<q> e os campos copiados do ato, da ata ou da portaria) ficam como estão; o texto do observatório não usa travessão
