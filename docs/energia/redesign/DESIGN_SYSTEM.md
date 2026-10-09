@@ -41,7 +41,7 @@ Séries de gráfico, escalas sequenciais e divergentes: variáveis `--serie-*` e
 | Frase de abertura | `ed-lead` | 16 px, 17 px a partir de 768 px |
 | Texto | `text-base` | 16 px |
 | Texto de apoio | `text-sm` | 14 px |
-| Metadado, fonte, contexto | `text-xs` | 13 px no domínio Energia (0,8125 rem, entrelinha de 1,2 rem); texto dentro de SVG não desce de 12 px |
+| Metadado, fonte, contexto | `text-xs` | 13 px no domínio Energia (0,8125 rem, entrelinha de 1,2 rem); texto dentro de SVG desenhado a 12 px nas unidades do gráfico |
 | Rótulo em caixa alta | `rotulo` | 12 px no domínio Energia |
 | Valor de métrica | `font-serif`, `tabular-nums` | 28 px no celular, 36 px no desktop |
 
@@ -105,7 +105,7 @@ Comportamentos e componentes que entraram depois da migração das aberturas, pa
 
 Regras de texto que vieram da rodada:
 
-- `text-xs` no domínio Energia vale 13 px (0,8125 rem, entrelinha de 1,2 rem): 12 px lia-se pequeno em nota e fonte. O texto dentro de SVG não desce de 12 px.
+- `text-xs` no domínio Energia vale 13 px (0,8125 rem, entrelinha de 1,2 rem): 12 px lia-se pequeno em nota e fonte. O texto dentro de SVG é desenhado a 12 px nas unidades do gráfico; o tamanho efetivo depende da escala do SVG na coluna. Medido em 94 rotas (`scripts/energia-svg-texto.mjs`, 1440 e 390 px), 15% dos textos ficam entre 10,6 e 12 px efetivos (45% antes do redesenho, com mínimo de 10 px).
 - Toda ressalva que muda o que o número permite concluir fica à vista, junto do número, nunca só em "Sobre este dado".
 - Valor negativo que a fonte publica onde o conceito não admite sinal (desconto negativo) fica como a fonte publicou, com nota ao lado e classe própria na escala; o observatório não corrige nem exclui.
 - Um número, um arredondamento: calcula-se uma vez, arredonda-se uma vez (meio para cima) e o mesmo valor serve ao gráfico, ao rótulo, à tabela, ao CSV, à frase e à ficha.

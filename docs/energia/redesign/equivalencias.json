@@ -87,6 +87,16 @@
    "antes": "painel|quanto o sistema está consumindo?",
    "depois": "painel|cada janela frente à janela de comparação",
    "justificativa": "O título da página (h1) é a pergunta do painel; o painel ganhou título próprio da primeira figura."
+  },
+  {
+   "antes": "controle|comparar com",
+   "depois": null,
+   "justificativa": "As duas opções seguem (Mesmos dias da semana e Mesmas datas); o rótulo de cada uma passou a levar a regra por extenso na mesma linha (52 semanas antes, 364 dias; mesma data do ano anterior), o que mudou o texto lido pelo rastreador."
+  },
+  {
+   "antes": "comprove|entender",
+   "depois": null,
+   "justificativa": "A ficha do +10,5% publicado em 29/09/2026 (painel a07) passou de Entender para Analisar e Auditar junto com o painel, porque o número publicado antes não é o que a página mostra e o leitor de Entender nunca o viu; a ficha da variação vigente segue em Entender, e as duas fichas existem em Analisar e Auditar."
   }
  ],
  "/setor-eletrico/carga/clima-e-calendario": [
@@ -181,6 +191,57 @@
    "antes": "painel|o que atrasou ou mudou?",
    "depois": "painel|como cada integração está frente ao prazo da fonte?",
    "justificativa": "A pergunta antiga virou o título da página (O que atrasou ou mudou?), e o painel ganhou a pergunta específica da figura principal. O painel continua com o mesmo id (painel-saude), as mesmas fontes, os mesmos selos e a mesma resposta (P068)."
+  }
+ ],
+ "/setor-eletrico/empresas": [
+  {
+   "antes": "painel|quem opera quais ativos?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/ativos, painel p036)."
+  },
+  {
+   "antes": "painel|como a empresa atende sua área?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/distribuidoras, painel p037)."
+  },
+  {
+   "antes": "painel|como evoluem os fundamentos reportados?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/financas, painel p038)."
+  },
+  {
+   "antes": "painel|quem controla e qual a concentração?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a oferecer a busca de empresa, a pergunta de entrada e as medidas que não se somam, mais os capítulos (pergunta e link) das páginas filhas; a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/empresas/controle, painel p039)."
+  }
+ ],
+ "/setor-eletrico/empresas/controle": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título e sem conteúdo próprio no rastreamento anterior; as figuras, tabelas e controles da página foram casados individualmente."
+  }
+ ],
+ "/setor-eletrico/expansao": [
+  {
+   "antes": "painel|o que está planejado e em construção?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/carteira, painel p040)."
+  },
+  {
+   "antes": "painel|quando deve entrar e o que atrasou?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/cronograma, painel p041)."
+  },
+  {
+   "antes": "painel|a expansão vem acompanhada de rede?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/geracao-e-transmissao, painel p042)."
+  },
+  {
+   "antes": "painel|como o planejamento enxerga a matriz?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter um painel de chegada de capacidade e o de camadas e unidades, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/expansao/cenarios, painel p043)."
   }
  ],
  "/setor-eletrico/geracao": [
@@ -289,6 +350,20 @@
    "justificativa": "Contêiner sem título e sem conteúdo no rastreamento anterior (nenhuma figura, tabela, controle ou arquivo pertencia a ele)."
   }
  ],
+ "/setor-eletrico/pld/cmo-e-formacao": [
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos (lista com rótulo acessível); o gráfico existe no código anterior com o título indicado e a versão nova o traz com título, em todos os níveis. Título: PLD horário e CMO do DESSEM na mesma hora, por submercado."
+  }
+ ],
+ "/setor-eletrico/pld/diferencas-regionais": [
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos (lista com rótulo acessível); o gráfico existe no código anterior com o título indicado e a versão nova o traz com título, em todos os níveis. Título: Fração das horas separadas por hora do dia, por par."
+  }
+ ],
  "/setor-eletrico/pld/modelos": [
   {
    "antes": "controle|filtrar por resultado",
@@ -331,6 +406,13 @@
    "justificativa": "Pergunta passou a ser o título da página; o painel foi renomeado, mesmo id e mesmo conteúdo."
   }
  ],
+ "/setor-eletrico/pld/previsoes": [
+  {
+   "antes": "controle|submercadosudeste/centro-oestesulnordestenorte",
+   "depois": null,
+   "justificativa": "O seletor de submercado segue com as mesmas quatro opções (a lista SUBMERCADOS do código) e passou ao painel da célula; o rótulo deixou de concatenar as opções, que era o que o rastreador anterior lia como título."
+  }
+ ],
  "/setor-eletrico/qualidade": [
   {
    "antes": "painel|por quanto tempo e quantas vezes faltou luz?",
@@ -351,6 +433,21 @@
    "antes": "grafico|compensações pagas a unidades consumidoras por ano",
    "depois": "grafico|compensações pagas a unidades consumidoras por ano",
    "justificativa": "mesmo gráfico; as barras passam a ter duas séries (antes e depois de 2022) para marcar a quebra de regime"
+  },
+  {
+   "antes": "tabela|compensações por ano: unidades consumidoras e geradoras. 16 de 16 linhas, ordenada por ano, decrescente.",
+   "depois": "tabela-sob-demanda|abrir: compensações por ano: unidades consumidoras e geradoras (16 linhas, com busca, filtros e exportação)",
+   "justificativa": "A tabela anual saiu do Entender e passou a abrir sob demanda em Analisar e Auditar; são as mesmas 16 linhas, com busca, filtros e exportação."
+  },
+  {
+   "antes": "grafico|",
+   "depois": null,
+   "justificativa": "O rastreamento anterior não lia o título dos pequenos múltiplos; os gráficos desse tipo seguem nos mesmos painéis, com título, e o do FEC foi acrescentado ao do DEC no detalhe da região."
+  },
+  {
+   "antes": "controle|filtrar por situação",
+   "depois": null,
+   "justificativa": "O filtro por situação (ano completo e parcial) é uma coluna da tabela anual de compensações, que passou a abrir sob demanda em Analisar; o filtro aparece com a tabela aberta."
   }
  ],
  "/setor-eletrico/rede": [
@@ -379,6 +476,27 @@
    "antes": "painel|quando há evidência publicada de limitação da rede?",
    "depois": "painel|horas acima do limite e cortes de carga publicados",
    "justificativa": "Idem."
+  }
+ ],
+ "/setor-eletrico/regulacao": [
+  {
+   "antes": "controle|ano202120222023202420252026",
+   "depois": null,
+   "justificativa": "O seletor de ano segue com os mesmos anos (2021 a 2026); o rótulo deixou de concatenar as opções, que era o que o rastreador anterior lia como título."
+  }
+ ],
+ "/setor-eletrico/regulacao/consultas-e-agenda": [
+  {
+   "antes": "painel|",
+   "depois": null,
+   "justificativa": "Contêiner sem título no rastreamento anterior (Analisar e Auditar); a versão nova o divide em painéis com título (agenda, histórico, cobertura, regra da situação), cujas figuras e tabelas foram casadas individualmente."
+  }
+ ],
+ "/setor-eletrico/regulacao/linha-do-tempo": [
+  {
+   "antes": "controle|quem é",
+   "depois": null,
+   "justificativa": "O seletor 'Quem é afetado (painel)' passou a se chamar 'Painel ligado ao ato' (mesma lista de painéis); a pergunta 'em que painéis a leitura muda?' ganhou painel próprio com o gráfico por painel ligado."
   }
  ],
  "/setor-eletrico/territorio": [
@@ -441,6 +559,23 @@
    "antes": "controle|filtrar por pertença",
    "depois": null,
    "justificativa": "O filtro passou a 'Pertença ao submercado (só a ressalva)': 'conferido pela carga das áreas do ONS' (26 linhas; a palavra era 'provado') é escrito 'sem ressalva', para a coluna não repetir a mesma frase em quase toda linha, e a única exceção ('conferido por uma das áreas') segue por extenso (src/lib/energia/territorio.ts)."
+  }
+ ],
+ "/setor-eletrico/transicao": [
+  {
+   "antes": "painel|onde a geração distribuída cresce?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/mmgd, painel p063)."
+  },
+  {
+   "antes": "painel|quanta energia a mmgd entrega ao sin, segundo a estimativa do ons?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/energia-estimada)."
+  },
+  {
+   "antes": "painel|como varia a intensidade de emissões?",
+   "depois": null,
+   "justificativa": "A abertura deixou de repetir um painel de síntese por página filha e passou a ter o panorama (capacidade adicionada e emissões em séries separadas) e as ligações, mais os capítulos (pergunta e link); a resposta completa segue na página filha, cujas visões foram todas casadas neste rastreamento (/transicao/emissoes, painel p064)."
   }
  ],
  "/setor-eletrico/visao-geral": [

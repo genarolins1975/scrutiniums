@@ -2,7 +2,7 @@
  "rotulo": "depois",
  "modo": "entender",
  "base": "http://localhost:3102",
- "gerado_em": "2026-10-09T14:55:01.811Z",
+ "gerado_em": "2026-10-09T16:10:11.522Z",
  "medidas": [
   {
    "id": "01",
@@ -844,7 +844,7 @@
    "rota": "/setor-eletrico/conta-de-luz",
    "largura": 390,
    "status": 200,
-   "altura_total": 17323,
+   "altura_total": 17702,
    "rolagem_horizontal": false,
    "h1": {
     "topo": 154,
@@ -1093,558 +1093,6 @@
    "largura": 390,
    "status": 200,
    "altura_total": 15385,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 7,
-    "texto": "Do arquivo ao número que você vê",
-    "linhas": 2
-   },
-   "primeiro_grafico": null,
-   "palavras_antes_do_primeiro_grafico": null,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 0,
-   "paineis": 1,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "01",
-   "slug": "home",
-   "rota": "/setor-eletrico",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 18149,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 158,
-    "palavras": 6,
-    "texto": "Energia, do sistema à sua conta",
-    "linhas": 2
-   },
-   "primeiro_grafico": null,
-   "palavras_antes_do_primeiro_grafico": null,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 0,
-   "paineis": 0,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "02",
-   "slug": "geral",
-   "rota": "/setor-eletrico/visao-geral",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 28806,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 8,
-    "texto": "O que está acontecendo no sistema elétrico brasileiro?",
-    "linhas": 4
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 2630,
-    "base": 2830
-   },
-   "palavras_antes_do_primeiro_grafico": 615,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 18,
-   "paineis": 4,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "03",
-   "slug": "territorio",
-   "rota": "/setor-eletrico/territorio",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 7137,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 6,
-    "texto": "O que acontece na minha região?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 1780,
-    "base": 2158
-   },
-   "palavras_antes_do_primeiro_grafico": 470,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 10,
-   "paineis": 1,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "04",
-   "slug": "agua",
-   "rota": "/setor-eletrico/agua-e-clima",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 10568,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 197,
-    "palavras": 4,
-    "texto": "Quanta energia está armazenada?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "pontos",
-    "topo": 1952,
-    "base": 2555
-   },
-   "palavras_antes_do_primeiro_grafico": 594,
-   "navegacoes_antes_do_primeiro_grafico": 1,
-   "controles_antes_do_primeiro_grafico": 14,
-   "paineis": 6,
-   "graficos": 2,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "05",
-   "slug": "geracao",
-   "rota": "/setor-eletrico/geracao",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 13470,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "De onde vem a eletricidade?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 2011,
-    "base": 2569
-   },
-   "palavras_antes_do_primeiro_grafico": 654,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 9,
-   "paineis": 1,
-   "graficos": 6,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "06",
-   "slug": "carga",
-   "rota": "/setor-eletrico/carga",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 10980,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "Quanto o sistema está consumindo?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "pontos",
-    "topo": 1832,
-    "base": 2530
-   },
-   "palavras_antes_do_primeiro_grafico": 599,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 7,
-   "paineis": 2,
-   "graficos": 2,
-   "tabelas_visiveis": 1
-  },
-  {
-   "id": "07",
-   "slug": "rede",
-   "rota": "/setor-eletrico/rede",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 13031,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 6,
-    "texto": "Como a energia circula entre regiões?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 2963,
-    "base": 3263
-   },
-   "palavras_antes_do_primeiro_grafico": 955,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 34,
-   "paineis": 3,
-   "graficos": 2,
-   "tabelas_visiveis": 1
-  },
-  {
-   "id": "08",
-   "slug": "pld",
-   "rota": "/setor-eletrico/pld",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 23221,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 7,
-    "texto": "Quanto custa a energia no curto prazo?",
-    "linhas": 3
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 1407,
-    "base": 1735
-   },
-   "palavras_antes_do_primeiro_grafico": 329,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 5,
-   "paineis": 2,
-   "graficos": 1,
-   "tabelas_visiveis": 3
-  },
-  {
-   "id": "09",
-   "slug": "modelos",
-   "rota": "/setor-eletrico/pld/modelos",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 14457,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 6,
-    "texto": "O que os modelos conseguem prever?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "table",
-    "topo": 7855,
-    "base": 8203
-   },
-   "palavras_antes_do_primeiro_grafico": 1794,
-   "navegacoes_antes_do_primeiro_grafico": 1,
-   "controles_antes_do_primeiro_grafico": 26,
-   "paineis": 4,
-   "graficos": 2,
-   "tabelas_visiveis": 1
-  },
-  {
-   "id": "10",
-   "slug": "previsoes",
-   "rota": "/setor-eletrico/pld/previsoes",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 14411,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 7,
-    "texto": "O que foi publicado antes do resultado?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 1722,
-    "base": 1835
-   },
-   "palavras_antes_do_primeiro_grafico": 477,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 8,
-   "paineis": 4,
-   "graficos": 1,
-   "tabelas_visiveis": 2
-  },
-  {
-   "id": "11",
-   "slug": "mercado",
-   "rota": "/setor-eletrico/mercado",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 10499,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 136,
-    "palavras": 8,
-    "texto": "Como a energia é contratada, alocada e liquidada?",
-    "linhas": 3
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 2173,
-    "base": 2453
-   },
-   "palavras_antes_do_primeiro_grafico": 720,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 19,
-   "paineis": 1,
-   "graficos": 3,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "12",
-   "slug": "conta",
-   "rota": "/setor-eletrico/conta-de-luz",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 20296,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 154,
-    "palavras": 5,
-    "texto": "Quanto custa o mesmo consumo?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "referencias",
-    "topo": 1902,
-    "base": 3093
-   },
-   "palavras_antes_do_primeiro_grafico": 527,
-   "navegacoes_antes_do_primeiro_grafico": 1,
-   "controles_antes_do_primeiro_grafico": 9,
-   "paineis": 6,
-   "graficos": 4,
-   "tabelas_visiveis": 2
-  },
-  {
-   "id": "13",
-   "slug": "perdas",
-   "rota": "/setor-eletrico/perdas",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 12186,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "Onde a energia se perde?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "distribuicao",
-    "topo": 1747,
-    "base": 2744
-   },
-   "palavras_antes_do_primeiro_grafico": 575,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 10,
-   "paineis": 3,
-   "graficos": 1,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "14",
-   "slug": "qualidade",
-   "rota": "/setor-eletrico/qualidade",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 29961,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 7,
-    "texto": "Quanto tempo e quantas vezes falta luz?",
-    "linhas": 3
-   },
-   "primeiro_grafico": {
-    "tipo": "svg",
-    "topo": 1957,
-    "base": 2257
-   },
-   "palavras_antes_do_primeiro_grafico": 687,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 13,
-   "paineis": 12,
-   "graficos": 8,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "15",
-   "slug": "inclusao",
-   "rota": "/setor-eletrico/inclusao-energetica",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 8824,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 6,
-    "texto": "Para quem a energia pesa mais?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 1471,
-    "base": 2014
-   },
-   "palavras_antes_do_primeiro_grafico": 553,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 6,
-   "paineis": 4,
-   "graficos": 1,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "16",
-   "slug": "empresas",
-   "rota": "/setor-eletrico/empresas",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 9813,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "Quem atua no setor elétrico?",
-    "linhas": 2
-   },
-   "primeiro_grafico": null,
-   "palavras_antes_do_primeiro_grafico": null,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 0,
-   "paineis": 4,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "17",
-   "slug": "expansao",
-   "rota": "/setor-eletrico/expansao",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 8414,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "O que está sendo construído?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 1632,
-    "base": 2111
-   },
-   "palavras_antes_do_primeiro_grafico": 404,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 8,
-   "paineis": 5,
-   "graficos": 1,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "18",
-   "slug": "transicao",
-   "rota": "/setor-eletrico/transicao",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 7810,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 5,
-    "texto": "Como a matriz está mudando?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 1518,
-    "base": 1947
-   },
-   "palavras_antes_do_primeiro_grafico": 372,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 8,
-   "paineis": 3,
-   "graficos": 2,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "19",
-   "slug": "regulacao",
-   "rota": "/setor-eletrico/regulacao",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 8863,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 6,
-    "texto": "Que regra vale em cada período?",
-    "linhas": 2
-   },
-   "primeiro_grafico": {
-    "tipo": "barras",
-    "topo": 1566,
-    "base": 2061
-   },
-   "palavras_antes_do_primeiro_grafico": 558,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 9,
-   "paineis": 1,
-   "graficos": 3,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "20",
-   "slug": "aprenda",
-   "rota": "/setor-eletrico/aprenda",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 4042,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 8,
-    "texto": "O que cada conceito significa e onde aparece?",
-    "linhas": 3
-   },
-   "primeiro_grafico": null,
-   "palavras_antes_do_primeiro_grafico": null,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 0,
-   "paineis": 108,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "21",
-   "slug": "dados",
-   "rota": "/setor-eletrico/dados",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 10283,
-   "rolagem_horizontal": false,
-   "h1": {
-    "topo": 110,
-    "palavras": 7,
-    "texto": "Encontre a fonte e reproduza o número",
-    "linhas": 2
-   },
-   "primeiro_grafico": null,
-   "palavras_antes_do_primeiro_grafico": null,
-   "navegacoes_antes_do_primeiro_grafico": 0,
-   "controles_antes_do_primeiro_grafico": 0,
-   "paineis": 1,
-   "graficos": 0,
-   "tabelas_visiveis": 0
-  },
-  {
-   "id": "22",
-   "slug": "metodologia",
-   "rota": "/setor-eletrico/metodologia",
-   "largura": 320,
-   "status": 200,
-   "altura_total": 17771,
    "rolagem_horizontal": false,
    "h1": {
     "topo": 110,
@@ -2203,6 +1651,558 @@
     "palavras": 7,
     "texto": "Do arquivo ao número que você vê",
     "linhas": 1
+   },
+   "primeiro_grafico": null,
+   "palavras_antes_do_primeiro_grafico": null,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 0,
+   "paineis": 1,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "01",
+   "slug": "home",
+   "rota": "/setor-eletrico",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 18149,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 158,
+    "palavras": 6,
+    "texto": "Energia, do sistema à sua conta",
+    "linhas": 2
+   },
+   "primeiro_grafico": null,
+   "palavras_antes_do_primeiro_grafico": null,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 0,
+   "paineis": 0,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "02",
+   "slug": "geral",
+   "rota": "/setor-eletrico/visao-geral",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 28806,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 8,
+    "texto": "O que está acontecendo no sistema elétrico brasileiro?",
+    "linhas": 4
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 2630,
+    "base": 2830
+   },
+   "palavras_antes_do_primeiro_grafico": 615,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 18,
+   "paineis": 4,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "03",
+   "slug": "territorio",
+   "rota": "/setor-eletrico/territorio",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 7137,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 6,
+    "texto": "O que acontece na minha região?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 1780,
+    "base": 2158
+   },
+   "palavras_antes_do_primeiro_grafico": 470,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 10,
+   "paineis": 1,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "04",
+   "slug": "agua",
+   "rota": "/setor-eletrico/agua-e-clima",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 10568,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 197,
+    "palavras": 4,
+    "texto": "Quanta energia está armazenada?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "pontos",
+    "topo": 1952,
+    "base": 2555
+   },
+   "palavras_antes_do_primeiro_grafico": 594,
+   "navegacoes_antes_do_primeiro_grafico": 1,
+   "controles_antes_do_primeiro_grafico": 14,
+   "paineis": 6,
+   "graficos": 2,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "05",
+   "slug": "geracao",
+   "rota": "/setor-eletrico/geracao",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 13470,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "De onde vem a eletricidade?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 2011,
+    "base": 2569
+   },
+   "palavras_antes_do_primeiro_grafico": 654,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 9,
+   "paineis": 1,
+   "graficos": 6,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "06",
+   "slug": "carga",
+   "rota": "/setor-eletrico/carga",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 10980,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "Quanto o sistema está consumindo?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "pontos",
+    "topo": 1832,
+    "base": 2530
+   },
+   "palavras_antes_do_primeiro_grafico": 599,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 7,
+   "paineis": 2,
+   "graficos": 2,
+   "tabelas_visiveis": 1
+  },
+  {
+   "id": "07",
+   "slug": "rede",
+   "rota": "/setor-eletrico/rede",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 13031,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 6,
+    "texto": "Como a energia circula entre regiões?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 2963,
+    "base": 3263
+   },
+   "palavras_antes_do_primeiro_grafico": 955,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 34,
+   "paineis": 3,
+   "graficos": 2,
+   "tabelas_visiveis": 1
+  },
+  {
+   "id": "08",
+   "slug": "pld",
+   "rota": "/setor-eletrico/pld",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 23221,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 7,
+    "texto": "Quanto custa a energia no curto prazo?",
+    "linhas": 3
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 1407,
+    "base": 1735
+   },
+   "palavras_antes_do_primeiro_grafico": 329,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 5,
+   "paineis": 2,
+   "graficos": 1,
+   "tabelas_visiveis": 3
+  },
+  {
+   "id": "09",
+   "slug": "modelos",
+   "rota": "/setor-eletrico/pld/modelos",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 14457,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 6,
+    "texto": "O que os modelos conseguem prever?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "table",
+    "topo": 7855,
+    "base": 8203
+   },
+   "palavras_antes_do_primeiro_grafico": 1794,
+   "navegacoes_antes_do_primeiro_grafico": 1,
+   "controles_antes_do_primeiro_grafico": 26,
+   "paineis": 4,
+   "graficos": 2,
+   "tabelas_visiveis": 1
+  },
+  {
+   "id": "10",
+   "slug": "previsoes",
+   "rota": "/setor-eletrico/pld/previsoes",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 14411,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 7,
+    "texto": "O que foi publicado antes do resultado?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 1722,
+    "base": 1835
+   },
+   "palavras_antes_do_primeiro_grafico": 477,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 8,
+   "paineis": 4,
+   "graficos": 1,
+   "tabelas_visiveis": 2
+  },
+  {
+   "id": "11",
+   "slug": "mercado",
+   "rota": "/setor-eletrico/mercado",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 10499,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 136,
+    "palavras": 8,
+    "texto": "Como a energia é contratada, alocada e liquidada?",
+    "linhas": 3
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 2173,
+    "base": 2453
+   },
+   "palavras_antes_do_primeiro_grafico": 720,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 19,
+   "paineis": 1,
+   "graficos": 3,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "12",
+   "slug": "conta",
+   "rota": "/setor-eletrico/conta-de-luz",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 20135,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 154,
+    "palavras": 5,
+    "texto": "Quanto custa o mesmo consumo?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "referencias",
+    "topo": 1902,
+    "base": 3093
+   },
+   "palavras_antes_do_primeiro_grafico": 527,
+   "navegacoes_antes_do_primeiro_grafico": 1,
+   "controles_antes_do_primeiro_grafico": 9,
+   "paineis": 6,
+   "graficos": 4,
+   "tabelas_visiveis": 2
+  },
+  {
+   "id": "13",
+   "slug": "perdas",
+   "rota": "/setor-eletrico/perdas",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 12186,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "Onde a energia se perde?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "distribuicao",
+    "topo": 1747,
+    "base": 2744
+   },
+   "palavras_antes_do_primeiro_grafico": 575,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 10,
+   "paineis": 3,
+   "graficos": 1,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "14",
+   "slug": "qualidade",
+   "rota": "/setor-eletrico/qualidade",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 29961,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 7,
+    "texto": "Quanto tempo e quantas vezes falta luz?",
+    "linhas": 3
+   },
+   "primeiro_grafico": {
+    "tipo": "svg",
+    "topo": 1957,
+    "base": 2257
+   },
+   "palavras_antes_do_primeiro_grafico": 687,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 13,
+   "paineis": 12,
+   "graficos": 8,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "15",
+   "slug": "inclusao",
+   "rota": "/setor-eletrico/inclusao-energetica",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 8824,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 6,
+    "texto": "Para quem a energia pesa mais?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 1471,
+    "base": 2014
+   },
+   "palavras_antes_do_primeiro_grafico": 553,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 6,
+   "paineis": 4,
+   "graficos": 1,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "16",
+   "slug": "empresas",
+   "rota": "/setor-eletrico/empresas",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 9813,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "Quem atua no setor elétrico?",
+    "linhas": 2
+   },
+   "primeiro_grafico": null,
+   "palavras_antes_do_primeiro_grafico": null,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 0,
+   "paineis": 4,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "17",
+   "slug": "expansao",
+   "rota": "/setor-eletrico/expansao",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 8414,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "O que está sendo construído?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 1632,
+    "base": 2111
+   },
+   "palavras_antes_do_primeiro_grafico": 404,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 8,
+   "paineis": 5,
+   "graficos": 1,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "18",
+   "slug": "transicao",
+   "rota": "/setor-eletrico/transicao",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 7810,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 5,
+    "texto": "Como a matriz está mudando?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 1518,
+    "base": 1947
+   },
+   "palavras_antes_do_primeiro_grafico": 372,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 8,
+   "paineis": 3,
+   "graficos": 2,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "19",
+   "slug": "regulacao",
+   "rota": "/setor-eletrico/regulacao",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 8863,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 6,
+    "texto": "Que regra vale em cada período?",
+    "linhas": 2
+   },
+   "primeiro_grafico": {
+    "tipo": "barras",
+    "topo": 1566,
+    "base": 2061
+   },
+   "palavras_antes_do_primeiro_grafico": 558,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 9,
+   "paineis": 1,
+   "graficos": 3,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "20",
+   "slug": "aprenda",
+   "rota": "/setor-eletrico/aprenda",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 4042,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 8,
+    "texto": "O que cada conceito significa e onde aparece?",
+    "linhas": 3
+   },
+   "primeiro_grafico": null,
+   "palavras_antes_do_primeiro_grafico": null,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 0,
+   "paineis": 108,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "21",
+   "slug": "dados",
+   "rota": "/setor-eletrico/dados",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 10283,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 7,
+    "texto": "Encontre a fonte e reproduza o número",
+    "linhas": 2
+   },
+   "primeiro_grafico": null,
+   "palavras_antes_do_primeiro_grafico": null,
+   "navegacoes_antes_do_primeiro_grafico": 0,
+   "controles_antes_do_primeiro_grafico": 0,
+   "paineis": 1,
+   "graficos": 0,
+   "tabelas_visiveis": 0
+  },
+  {
+   "id": "22",
+   "slug": "metodologia",
+   "rota": "/setor-eletrico/metodologia",
+   "largura": 320,
+   "status": 200,
+   "altura_total": 17771,
+   "rolagem_horizontal": false,
+   "h1": {
+    "topo": 110,
+    "palavras": 7,
+    "texto": "Do arquivo ao número que você vê",
+    "linhas": 2
    },
    "primeiro_grafico": null,
    "palavras_antes_do_primeiro_grafico": null,
