@@ -46,56 +46,96 @@ describe("arquitetura de navegação", () => {
 });
 
 describe("panorama editorial", () => {
-  it("três capítulos, na ordem: gasto, atendimento e resultados, cada um com uma medida normalizada", () => {
-    expect(panorama.map((c) => c.id)).toEqual(["gastos", "atendimento", "resultados"]);
-    expect(panorama.map((c) => c.medida)).toEqual(["despesa_hab", "atu", "ideb"]);
-    expect(panorama.map((c) => c.pergunta)).toEqual(["Quanto se gasta?", "Quem é atendido?", "Quais resultados são observados?"]);
+  const [recursos, atendimento, resultados] = panorama;
+  const todas = panorama.flatMap((c) => c.medidas);
+
+  it("três capítulos na ordem da página inicial: recursos com as três escalas do gasto, atendimento e resultados", () => {
+    expect(panorama.map((c) => [c.numero, c.etiqueta, c.id])).toEqual([
+      ["01", "Recursos", "gastos"],
+      ["02", "Atendimento", "atendimento"],
+      ["03", "Resultados", "resultados"],
+    ]);
+    expect(recursos.medidas.map((m) => [m.medida, m.rotulo])).toEqual([
+      ["despesa", "Total"],
+      ["despesa_hab", "Por habitante"],
+      ["despesa_mat", "Por matrícula"],
+    ]);
+    expect([atendimento.medidas[0].medida, resultados.medidas[0].medida]).toEqual(["atu", "ideb"]);
+    expect(recursos.medidas.map((m) => m.pergunta)).toEqual(["Quanto se gasta no total?", "Quanto se gasta por habitante?", "Quanto se gasta por matrícula?"]);
+    expect([atendimento.medidas[0].pergunta, resultados.medidas[0].pergunta]).toEqual(["Quantos alunos por turma?", "Qual é o Ideb?"]);
   });
 
   it("nenhuma capital vem selecionada: o panorama não carrega uma capital como padrão", () => {
-    for (const c of panorama) expect(JSON.stringify(c)).not.toMatch(/"selecionada"|"destacada"/);
-    expect(panorama.every((c) => c.pontos.length > 1)).toBe(true);
+    for (const m of todas) expect(JSON.stringify(m)).not.toMatch(/"selecionada"|"destacada"/);
+    expect(todas.every((m) => m.pontos.length > 1)).toBe(true);
   });
 
-  it("os pontos do capítulo são exatamente os elegíveis da comparação, com os valores da gold", () => {
-    for (const c of panorama) {
-      const comp = comparar(ix, c.medida, c.ano, c.etapa ?? "anos_iniciais", "nominal", c.disciplina, "todas", d.capitais[0], "alfabetica");
-      expect(c.pontos.map((p) => [p.cod, p.valor])).toEqual(comp.incluidas.map((i) => [i.cap.cod, i.valor]));
-      expect(c.universo).toBe(26);
-      expect(c.pontos.length + c.semDado.length).toBe(26);
+  it("os pontos de cada medida são exatamente os elegíveis da comparação, com os valores da gold", () => {
+    for (const m of todas) {
+      const comp = comparar(ix, m.medida, m.ano, m.etapa ?? "anos_iniciais", "nominal", m.disciplina, "todas", d.capitais[0], "alfabetica");
+      expect(m.pontos.map((p) => [p.cod, p.valor])).toEqual(comp.incluidas.map((i) => [i.cap.cod, i.valor]));
+      expect(m.universo).toBe(26);
+      expect(m.pontos.length + m.semDado.length).toBe(26);
     }
-    // contra a gold crua: despesa por habitante de 2025, elegível e observada
-    const cru = g.observacoes.filter((o) => o.indicador === "edu.despesa.por_habitante" && o.ano === panorama[0].ano && o.componente === "nominal" && o.status === "OBSERVADO" && o.elegivel_comparacao);
-    expect(panorama[0].pontos.map((p) => p.valor).sort((a, b) => a - b)).toEqual(cru.map((o) => Number(o.valor!.toPrecision(12))).sort((a, b) => a - b));
-  });
-
-  it("título factual: amplitude do próprio conjunto, extremos nomeados, sem juízo e sem meta", () => {
-    for (const c of panorama) {
-      const vs = c.pontos.map((p) => p.valor);
-      expect(c.referencia?.minimo).toBe(Math.min(...vs));
-      expect(c.referencia?.maximo).toBe(Math.max(...vs));
-      expect(c.titulo).toMatch(/vai de .+ em .+ a .+ em .+ entre as 26 capitais com dado comparável/);
-      expect(c.titulo).not.toMatch(PROIBIDAS);
-      expect(c.subtitulo).not.toMatch(PROIBIDAS);
-      expect(c.cobertura).toBe("Há dados comparáveis para as 26 capitais.");
+    // contra a gold crua, em cada uma das três escalas do gasto: elegível, observada e nominal
+    for (const m of recursos.medidas) {
+      const cru = g.observacoes.filter((o) => o.indicador === MEDIDA[m.medida].indicador && o.ano === m.ano && o.componente === "nominal" && o.status === "OBSERVADO" && o.elegivel_comparacao);
+      expect(m.pontos.map((p) => p.valor).sort((a, b) => a - b), m.medida).toEqual(cru.map((o) => Number(o.valor!.toPrecision(12))).sort((a, b) => a - b));
     }
   });
 
-  it("referência externa junto do capítulo só quando válida: INEP do mesmo universo ou cálculo do OBEE com origem declarada", () => {
-    const [gasto, atend, result] = panorama;
-    expect(gasto.externas.map((e) => e.classe)).toEqual(["calculada"]);
-    expect(gasto.externas[0].texto).toContain("Cálculo do OBEE com dados do Siconfi/STN e do IBGE");
-    expect(atend.externas.map((e) => e.classe)).toEqual(["oficial"]);
-    expect(result.externas.map((e) => e.classe)).toEqual(["oficial"]);
-    for (const c of panorama) for (const e of c.externas) expect(e.escopo.length).toBeGreaterThan(20);
+  it("extremos: menor e maior valor do próprio conjunto, com todas as capitais empatadas", () => {
+    for (const m of todas) {
+      const vs = m.pontos.map((p) => p.valor);
+      expect(m.menor?.valor).toBe(Math.min(...vs));
+      expect(m.maior?.valor).toBe(Math.max(...vs));
+      expect(m.referencia?.minimo).toBe(m.menor?.valor);
+      expect(m.referencia?.maximo).toBe(m.maior?.valor);
+      expect(m.menor!.capitais.map((c) => c.nome).sort()).toEqual(m.pontos.filter((p) => p.valor === m.menor!.valor).map((p) => p.nome).sort());
+      expect(m.maior!.capitais.map((c) => c.nome).sort()).toEqual(m.pontos.filter((p) => p.valor === m.maior!.valor).map((p) => p.nome).sort());
+    }
+    // o Ideb de 2025 tem duas capitais no maior valor: ambas aparecem
+    expect(resultados.medidas[0].maior!.capitais.map((c) => c.nome)).toEqual(["Curitiba", "Teresina"]);
   });
 
-  it("cada capítulo leva a uma visão de aprofundamento com a medida e o ano do capítulo", () => {
-    for (const c of panorama) {
-      expect(c.aprofunda.params.med).toBe(c.medida);
-      expect(c.aprofunda.params.ano).toBe(String(c.ano));
-      expect(anosDaMedida(d, c.medida)).toContain(c.ano);
+  it("frase factual: amplitude do próprio conjunto, extremos nomeados, sem juízo e sem meta", () => {
+    for (const m of todas) {
+      expect(m.titulo).toMatch(/vai de .+ em .+ a .+ em .+ entre as 26 capitais com dado comparável/);
+      expect(m.titulo).not.toMatch(PROIBIDAS);
+      expect(m.subtitulo).not.toMatch(PROIBIDAS);
+      expect(m.pergunta).not.toMatch(PROIBIDAS);
+      expect(m.cobertura).toBe("Há dados comparáveis para as 26 capitais.");
     }
+  });
+
+  it("referência externa só quando válida: INEP do mesmo universo ou cálculo do OBEE com origem declarada; o resto diz por que não há", () => {
+    const [total, hab, mat] = recursos.medidas;
+    expect(hab.externas.map((e) => e.classe)).toEqual(["calculada"]);
+    expect(hab.externas[0].texto).toContain("Cálculo do OBEE com dados do Siconfi/STN e do IBGE");
+    expect(hab.externas[0].descricao).toMatch(/^Mediana de [\d.]+ municípios$/);
+    expect(hab.semNacional).toBeNull();
+    for (const m of [total, mat]) {
+      expect(m.externas).toEqual([]);
+      expect(m.semNacional?.length).toBeGreaterThan(30);
+    }
+    expect(atendimento.medidas[0].externas.map((e) => e.classe)).toEqual(["oficial"]);
+    expect(resultados.medidas[0].externas.map((e) => e.classe)).toEqual(["oficial"]);
+    for (const m of todas) for (const e of m.externas) expect(e.escopo.length).toBeGreaterThan(20);
+  });
+
+  it("cada medida leva a uma visão de aprofundamento com a medida e o ano do panorama", () => {
+    for (const m of todas) {
+      expect(m.aprofunda.params.med).toBe(m.medida);
+      expect(m.aprofunda.params.ano).toBe(String(m.ano));
+      expect(anosDaMedida(d, m.medida)).toContain(m.ano);
+    }
+    expect(panorama.map((c) => c.medidas[0].aprofunda.rotulo)).toEqual(["Explorar gastos", "Explorar atendimento", "Explorar resultados"]);
+  });
+
+  it("o gasto total usa escala logarítmica e as demais, linear; o Ideb tem o domínio de 0 a 10", () => {
+    expect(recursos.medidas.map((m) => m.escala)).toEqual(["log", "linear", "linear"]);
+    expect(resultados.medidas[0].dominioFixo).toEqual([0, 10]);
+    expect(atendimento.medidas[0].dominioFixo).toBeNull();
   });
 
   it("todas as medidas do painel têm ficha e contexto para o 'Sobre este dado'", () => {
@@ -105,6 +145,7 @@ describe("panorama editorial", () => {
       expect(ctx[MEDIDA[m].indicador]).toBeDefined();
     }
     for (const id of ["edu.despesa.ponte_matricula", "edu.despesa.subfuncao"]) expect(ctx[id]).toBeDefined();
+    for (const m of todas) expect(ctx[m.indicador]).toBeDefined();
   });
 });
 

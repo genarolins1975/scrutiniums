@@ -14,6 +14,8 @@ const LARGURAS = [1440, 1024, 768, 390, 320];
 const ROTAS = [
   ["panorama", ""],
   ["panorama-capital", "?cap=recife"],
+  ["panorama-total", "?med=despesa&cap=sao-paulo"],
+  ["panorama-matricula", "?med=despesa_mat"],
   ["gastos", "/gastos"],
   ["gastos-capital-tabela", "/gastos?cap=recife&vis=tabela"],
   ["gastos-razao-ponte", "/gastos?cap=recife&med=despesa_mat&vis=detalhe"],
