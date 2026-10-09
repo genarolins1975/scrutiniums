@@ -293,18 +293,18 @@ export default function EmpresasPage() {
                   limite: "eficiência ou culpa da distribuidora: perdas, interrupções e tarifa dependem da área atendida, e anos de referência diferentes não se comparam.",
                   extra:
                     exemplos.length > 0 ? (
-                      <p className="text-sm text-carvao-muted">
-                        Fichas das distribuidoras com mais unidades consumidoras:{" "}
-                        {exemplos.map((x, i) => (
-                          <span key={x.href}>
-                            {i ? ", " : ""}
-                            <Link href={x.href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-                              {x.rotulo}
-                            </Link>
-                          </span>
-                        ))}
-                        ; as demais estão no índice da página.
-                      </p>
+                      <div className="text-sm text-carvao-muted">
+                        <p>Fichas das distribuidoras com mais unidades consumidoras; as demais estão no índice da página.</p>
+                        <ul className="flex flex-wrap gap-x-5">
+                          {exemplos.map((x) => (
+                            <li key={x.href}>
+                              <Link href={x.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                                {x.rotulo}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ) : undefined,
                 },
                 {

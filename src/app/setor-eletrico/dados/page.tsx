@@ -143,7 +143,6 @@ export default function DadosCatalogoPage() {
                 casas={0}
                 unidade="conjuntos"
                 periodo={dataBR(cat.gerado_em.slice(0, 10))}
-                nota={`De ${r.orgaos} órgãos; inclui os que já alimentam o observatório.`}
                 endereco={ENDERECO}
               />
               <Numero
@@ -154,7 +153,7 @@ export default function DadosCatalogoPage() {
                 casas={0}
                 unidade="conjuntos"
                 periodo={dataBR(cat.gerado_em.slice(0, 10))}
-                nota="O observatório abriu pelo menos um arquivo do conjunto. Etapa cumulativa: inclui os integrados e os publicados."
+                nota="Etapa cumulativa: inclui os integrados e os publicados."
                 endereco={ENDERECO}
               />
               <Numero
@@ -165,7 +164,7 @@ export default function DadosCatalogoPage() {
                 valor={r.cumulativo.PUBLICADO}
                 casas={0}
                 unidade="conjuntos"
-                nota="Integrados, validados e alimentando uma base publicada. Não atesta que o dado esteja atualizado: a atualidade está em Saúde e revisões."
+                nota="Não atesta atualização: veja Saúde e revisões."
                 motivoAusencia="O catálogo não foi gerado."
                 endereco={ENDERECO}
               />

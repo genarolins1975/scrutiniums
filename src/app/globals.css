@@ -32,9 +32,10 @@
   /* Séries do domínio Energia, validadas por scripts/validate_palette (skill
      dataviz) sobre superfície clara: ordem fixa, CVD adjacente >= 8, visão
      normal >= 15. Solar fica abaixo de 3:1 e exige rótulo direto ou tabela.
-     Texto nunca usa a cor da série. O verde (eólica, Sul e a terceira cor de comparação) passou de #199e70 para #17966a: sobre o
-     fundo marfim #f3efe5 o anterior media 2,97:1, abaixo dos 3:1 de elemento gráfico (WCAG 1.4.11); o novo mede 3,26:1 e a distância
-     para o laranja (CIEDE2000, protanopia 14,6 e deuteranopia 18,4) e para o azul (tritanopia 10,5) segue acima de 8. */
+     Texto nunca usa a cor da série. O verde (eólica, Sul e a terceira cor de comparação) passou de #199e70 para #17966a: o anterior
+     media 3,21:1 sobre o papel #faf8f2 (onde os gráficos ficam) e 2,97:1 sobre o marfim #f3efe5, abaixo dos 3:1 de elemento gráfico
+     (WCAG 1.4.11) nesse segundo fundo; o novo mede 3,53:1 e 3,26:1, e a distância para o laranja (CIEDE2000, protanopia 14,6 e
+     deuteranopia 18,4) e para o azul (tritanopia 10,5) segue acima de 8. */
   --serie-hidraulica: #256abf;
   --serie-termica: #d95926;
   --serie-eolica: #17966a;
