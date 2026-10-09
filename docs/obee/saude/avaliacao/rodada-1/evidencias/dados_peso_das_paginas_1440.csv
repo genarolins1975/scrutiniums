@@ -1,0 +1,8 @@
+pagina,rota,html_transferido_bytes,html_decodificado_bytes,recursos,transferido_total_bytes,js_transferido_bytes,tempo_ate_rede_ociosa_ms,h1,console_erros
+entrada,/eficiencia-estatal,7485,53511,49,1143683,207888,1098,1,0
+panorama,/eficiencia-estatal/saude-capitais,76897,400027,36,771445,168963,942,1,0
+gastos,/eficiencia-estatal/saude-capitais/gastos,93904,471335,36,735465,168963,1015,1,0
+rede,/eficiencia-estatal/saude-capitais/rede-e-atencao-primaria,57679,368902,36,769471,168963,990,1,0
+resultados,/eficiencia-estatal/saude-capitais/atendimento-e-resultados,63512,341833,36,765120,168963,950,1,0
+comparar,/eficiencia-estatal/saude-capitais/comparar,73887,363548,35,691297,168963,914,1,0
+metodos,/eficiencia-estatal/saude-capitais/metodos,81060,579150,35,714721,168963,982,1,0
