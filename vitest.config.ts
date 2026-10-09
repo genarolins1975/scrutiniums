@@ -1,3 +1,4 @@
+import "./scripts/materializar-trabalho-renda.mjs";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
