@@ -1,13 +1,14 @@
 /**
- * Lógica pura da página inicial (mapa didático): o quadro de atualidade da seção G,
- * o índice da busca da seção A e as opções de distribuidora da seção D. Nada aqui
- * calcula indicador: a atualidade vem de publicacao.json (módulo Dados), os destinos
- * do conteúdo editorial (mapa.ts e navegacao.ts), os verbetes conferidos de
- * conteudo/conceitos.ts e as distribuidoras do índice de empresas.json.
+ * Lógica pura da página inicial: o quadro de atualidade das fontes e o resumo dele, o índice da
+ * busca do alto da página, o estado de cada destino e as opções de "sua distribuidora" das
+ * perguntas de perdas e de qualidade. Nada aqui calcula indicador: a atualidade vem de
+ * publicacao.json (módulo Dados), os destinos do conteúdo editorial (mapa.ts e navegacao.ts), os
+ * verbetes conferidos de conteudo/conceitos.ts e as distribuidoras do índice de empresas.json.
+ * Os números das seis perguntas prioritárias ficam em home-sinais.ts.
  */
 import type { ItemBusca } from "./busca";
 import type { OpcaoDistribuidora } from "@/components/energia/EscolhaDistribuidora";
-import { CARTOES, FONTES_PRINCIPAIS, PERGUNTAS_COTIDIANAS } from "./mapa";
+import { CARTOES, FONTES_PRINCIPAIS, PERGUNTAS_COTIDIANAS, PERGUNTAS_PRIORITARIAS } from "./mapa";
 import type { DestinoNavegacao } from "./navegacao";
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -123,6 +124,8 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
     if (!d.publicado || d.slug === "mapa") continue;
     itens.push({ tipo: "Página", titulo: d.rotulo, detalhe: d.pergunta, href: d.href });
   }
+  // as seis perguntas do alto da página e as nove do dia a dia: o leitor pode procurar por qualquer uma delas
+  for (const p of PERGUNTAS_PRIORITARIAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.link.rotulo, href: p.link.href });
   for (const p of PERGUNTAS_COTIDIANAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.destinos.map((x) => x.rotulo).join(" · "), href: p.destinos[0].href });
   for (const d of destinos) {
     const c = CARTOES[d.slug];
@@ -155,4 +158,57 @@ export function opcoesDistribuidora<T extends { cnpj: string; sigla: string; nom
     .filter(tem)
     .map((d) => ({ cnpj: d.cnpj, sigla: d.sigla, nome: d.nome, ufs: d.ufs }))
     .sort((a, b) => a.sigla.localeCompare(b.sigla, "pt-BR"));
+}
+
+/** Resumo da atualidade das fontes principais: quantas estão em dia pelo calendário que a própria fonte declara, quais atrasaram e quantas não têm calendário ou avaliação. */
+export type ResumoAtualidade = {
+  total: number;
+  emDia: number;
+  atrasadas: LinhaAtualidade[];
+  semCalendario: number;
+  semAvaliacao: number;
+};
+
+export function resumoAtualidade(linhas: readonly LinhaAtualidade[]): ResumoAtualidade {
+  const atrasadas = linhas.filter((l) => l.atrasado);
+  const emDia = linhas.filter((l) => l.situacao === "em dia").length;
+  const semCalendario = linhas.filter((l) => l.situacao === "sem calendário declarado").length;
+  return { total: linhas.length, emDia, atrasadas, semCalendario, semAvaliacao: linhas.length - emDia - atrasadas.length - semCalendario };
+}
+
+/**
+ * Estado de um destino no índice, lido de navegacao.ts: "preparacao" (a rota ainda não existe: nome sem link), "integracao" (a página
+ * existe e mostra escopo e fontes catalogadas, ainda sem números) ou "integrado" (publica números). O texto do estado nunca é escrito
+ * à parte: sai deste valor.
+ */
+export type EstadoDoDestino = "integrado" | "integracao" | "preparacao";
+
+export function estadoDoDestino(d: Pick<DestinoNavegacao, "publicado" | "integrado">): EstadoDoDestino {
+  if (!d.publicado) return "preparacao";
+  return d.integrado ? "integrado" : "integracao";
+}
+
+/** Distribuidora do índice de empresas, com os anos de dado de cada módulo (só o que o seletor precisa). */
+export type DistribuidoraDoIndice = {
+  cnpj: string;
+  sigla: string;
+  nome: string | null;
+  ufs?: string[];
+  perdas?: { ano: number | null } | null;
+  qualidade?: { ano: number | null } | null;
+};
+
+/**
+ * Opções do seletor "sua distribuidora" de cada pergunta. O índice traz as distribuidoras de todo o histórico, entre elas as extintas
+ * (a série de perdas de algumas termina em 2005): cada seletor só lista quem tem dado no ano de referência do módulo, e o rótulo diz qual
+ * é o ano e quantas são. O ano de Perdas é o da gold de Perdas; o de Qualidade é o mais recente entre as distribuidoras do índice.
+ */
+export function escolhasDeDistribuidora(distribuidoras: readonly DistribuidoraDoIndice[], anoPerdas: number | null) {
+  const anoQualidade = distribuidoras.reduce<number | null>((m, d) => (d.qualidade?.ano != null && (m === null || d.qualidade.ano > m) ? d.qualidade.ano : m), null);
+  return {
+    anoPerdas,
+    anoQualidade,
+    opcoesPerdas: opcoesDistribuidora(distribuidoras, (d) => d.perdas?.ano != null && d.perdas.ano === anoPerdas),
+    opcoesQualidade: opcoesDistribuidora(distribuidoras, (d) => d.qualidade?.ano != null && d.qualidade.ano === anoQualidade),
+  };
 }

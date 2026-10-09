@@ -1781,3 +1781,27 @@ export function textoReeNovos(novos: readonly { data: string; novos: string[] }[
   if (!novos.length) return "";
   return `; ${listaTexto(novos.map((x) => `${listaTexto(x.novos.map(nomeProprio))} só ${x.novos.length === 1 ? "existe" : "existem"} desde ${dataBR(x.data)}`))}`;
 }
+
+/* ---------- seletores das medidas de abertura das páginas filhas (faixa de métricas) ---------- */
+
+/**
+ * Nota da ENA do dia na faixa de métricas da afluência: o percentual da MLT do dia e a própria MLT do dia em MWmed, os dois lidos da gold
+ * (a faixa não calcula nada). Sem um dos dois campos, sem nota.
+ */
+export function notaEnaDoDia(e: Pick<EntidadeEna, "pct_mlt_dia" | "mlt_mwmed_dia">): string | null {
+  if (e.pct_mlt_dia === null || e.mlt_mwmed_dia === null) return null;
+  return `${pct(e.pct_mlt_dia, 1)} da MLT do dia, de ${num(e.mlt_mwmed_dia, 0)} MWmed.`;
+}
+
+/**
+ * "O que mudou" da decomposição da EAR: a variação de 30 dias de cada subsistema na mesma unidade (MWmês) e no mesmo período, lida da
+ * decomposição publicada (a mesma que alimenta a resposta, a tabela dos subsistemas e o arquivo). O período vai uma vez, quando os quatro
+ * coincidem, e junto de cada subsistema quando diferem.
+ */
+export function textoMudancaDecomposicao(ds: readonly AguaDecomposicaoEar[]): string {
+  const com = SUBSISTEMAS.map((sm) => ds.find((d) => d.sm === sm)).filter((d): d is AguaDecomposicaoEar => !!d && d.delta_ear_mwmes !== null);
+  if (!com.length) return "Sem variação da EAR por reservatório nesta publicação.";
+  const mesma = com.every((d) => d.inicio === com[0].inicio && d.fim === com[0].fim);
+  const partes = com.map((d) => `${NOME_REGIAO[d.sm]} ${sinal(d.delta_ear_mwmes, 1)}${mesma ? "" : ` (${dataBR(d.inicio)} a ${dataBR(d.fim)})`}`);
+  return `${mesma ? `De ${dataBR(com[0].inicio)} a ${dataBR(com[0].fim)}, a` : "A"} EAR variou, em MWmês: ${partes.join("; ")}.`;
+}

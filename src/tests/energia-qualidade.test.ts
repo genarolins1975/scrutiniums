@@ -18,11 +18,14 @@ import {
   CAMPO_MUN,
   COLUNAS_LIMITES,
   COLUNAS_MUNICIPIOS,
+  PAINEIS_QUALIDADE,
+  anoApuradoUniforme,
   arquivoConjuntosDoAno,
   avisoDefasagem,
   comparaNaPrecisao,
   conjuntosDoCsv,
   destacar,
+  downloadsDoPainel,
   histogramaDeFaixas,
   horasEMinutos,
   itensLimite,
@@ -41,6 +44,9 @@ import {
   linhasSerieDistribuidoras,
   linhasTipoAnoReferencia,
   maioresDistribuidoras,
+  marcosHistoriaApurado,
+  metricasAbertura,
+  metricasCompensacao,
   mudancaP051,
   mudancaP053,
   mudancaP054,
@@ -56,10 +62,16 @@ import {
   respostaP052,
   respostaP053,
   respostaP054,
+  rotuloArquivo,
   situacaoLimite,
   tabelaQualidade,
   TABELAS_SOB_DEMANDA,
+  textoDivulgadoAno,
+  textoParcelasAno,
+  textoUniversoBrasil,
   valoresMapa,
+  vereditoP051,
+  vereditoP052,
   vezes,
   type MunicipioQualidade,
 } from "@/lib/energia/qualidade";
@@ -627,21 +639,26 @@ describe.skipIf(!disponivel)("respostas curtas derivadas dos números", () => {
 describe.skipIf(!disponivel)("página renderizada no servidor", () => {
   const html = renderToStaticMarkup(createElement(QualidadePage));
 
-  it("renderiza com os quatro painéis, na ordem, cada um com a pergunta como título", () => {
+  it("renderiza com os quatro painéis, na ordem, cada um com o título próprio, e a página com a pergunta como título", () => {
     let ultimo = -1;
     for (const id of ["p051", "p052", "p053", "p054"]) {
       const i = html.indexOf(`id="${id}"`);
       expect(i, id).toBeGreaterThan(ultimo);
       ultimo = i;
     }
-    for (const q of [
-      "Por quanto tempo e quantas vezes faltou luz?",
-      "O serviço cumpriu o padrão?",
-      "Quais compensações foram pagas?",
-      "Como o consumidor é atendido e como a rede se recupera?",
-    ]) {
-      expect(html).toContain(q);
+    // o título da página é a pergunta; o de cada painel é o dele (o do primeiro painel não repete o da página)
+    const h1 = /<h1[^>]*>([^<]*)<\/h1>/.exec(html)?.[1] ?? "";
+    expect(h1).toBe("Quanto tempo e quantas vezes falta luz?");
+    expect(h1.trim().split(/\s+/).length).toBeGreaterThanOrEqual(5);
+    expect(h1.trim().split(/\s+/).length).toBeLessThanOrEqual(9);
+    for (const p of PAINEIS_QUALIDADE) {
+      expect(html, p.id).toContain(`<h2 id="${p.id}-titulo"`);
+      expect(html, p.id).toContain(p.titulo);
+      expect(p.titulo, p.id).not.toBe(h1);
+      expect(html, p.id).toContain(`id="${p.ancora}"`);
     }
+    // nada de julgamento no título dos painéis
+    for (const p of PAINEIS_QUALIDADE) expect(p.titulo + p.descricao).not.toMatch(/cumpriu|melhor|pior|ruim|bom\b/i);
   });
 
   it("respostas derivadas, recorte (período, universo, unidade) e tabelas equivalentes presentes", () => {
@@ -664,7 +681,12 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
   });
 
   it("provas, links compartilháveis, próxima pergunta e profundidade", () => {
-    expect((html.match(/Comprove/g) ?? []).length).toBeGreaterThanOrEqual(10);
+    // as seis fichas "Comprove este número" ficam junto do número (faixa de abertura e painéis), cada uma com o seu indicador
+    const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
+    expect((html.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(6);
+    for (const k of ["dec_brasil", "fec_brasil", "conjuntos_acima_limite", "compensacoes_ano", "reclamacoes_distribuidora", "ouvidoria_aneel"] as const) {
+      expect(html, k).toContain(esc(gold.evidencias[k]!.indicador));
+    }
     expect((html.match(/Copiar link deste painel/g) ?? []).length).toBe(4);
     expect((html.match(/Próxima pergunta/g) ?? []).length).toBe(4);
     expect(html).toContain('data-nivel="analisar"');
@@ -680,7 +702,7 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     expect(html).not.toContain("—");
     const parcial = gold.atendimento.reclamacoes_distribuidora.find((x) => x.por_ucs === null && x.motivo_ausencia);
     if (parcial) expect(html).toContain("barra hachurada é ausência, não zero");
-    for (const f of ["QualidadeMapa", "QualidadeComparador", "QualidadeLimites", "QualidadeConjuntos", "QualidadeLinkPainel", "QualidadeTabela"]) {
+    for (const f of ["QualidadeMapa", "QualidadeComparador", "QualidadeLimites", "QualidadeConjuntos", "QualidadePagina", "QualidadeTabela"]) {
       expect(ler(`src/components/energia/${f}.tsx`), f).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
       expect(ler(`src/components/energia/${f}.tsx`), f).not.toContain("—");
     }
@@ -702,6 +724,7 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
       "src/components/energia/QualidadeComparador.tsx",
       "src/components/energia/QualidadeLimites.tsx",
       "src/components/energia/QualidadeConjuntos.tsx",
+      "src/components/energia/QualidadePagina.tsx",
       "src/components/energia/QualidadeTabela.tsx",
     ]) {
       const codigo = ler(f)
@@ -737,7 +760,7 @@ describe.skipIf(!disponivel)("componentes do módulo no servidor", () => {
         versao: "2025",
       }),
     );
-    expect(html).toContain("Carregar o mapa agora");
+    expect(html).toContain("Carregar o mapa");
     expect(html).toContain("Cor do mapa");
     if (gold.mapa.correspondencia.cadastro_ibge !== null) expect(html).toContain(gold.mapa.correspondencia.cadastro_ibge.toLocaleString("pt-BR"));
   });
@@ -769,5 +792,302 @@ describe.skipIf(!disponivel)("componentes do módulo no servidor", () => {
     expect(comp).toContain(sigla);
     const cj = renderToStaticMarkup(createElement(QualidadeConjuntos, { anoInicial: 2001, anoFinal: gold.ano_referencia, tamanhos: {}, fonte: "ANEEL" }));
     expect(cj).toContain(`Carregar os conjuntos de ${gold.ano_referencia}`);
+  });
+});
+
+/* ------------------------------------------------------------------ redesenho: abertura, faixa, painéis, arquivos */
+
+const brasil = (g: QualidadeGold, ano: number) => g.brasil.anual.find((x) => x.ano === ano)!;
+
+describe.skipIf(!disponivel)("redesenho: seletores da abertura e dos painéis", () => {
+  const ref = gold.ano_referencia;
+
+  it("faixa de métricas: DEC, FEC, conjuntos acima do limite e DEC de todas as origens, os mesmos números que a resposta e o gráfico leem", () => {
+    const m = metricasAbertura(gold);
+    const a = brasil(gold, ref);
+    const ant = brasil(gold, ref - 1);
+    expect([m.ano, m.dec, m.fec, m.decTodasOrigens]).toEqual([ref, a.dec, a.fec, a.dec_todas_parcelas]);
+    expect([m.anoAnterior, m.decAnterior, m.fecAnterior]).toEqual([ref - 1, ant.dec, ant.fec]);
+    // as mesmas casas e a mesma conta de minutos que a resposta do painel: 9,33 h são 9 h 20 min, nunca 9 h 33 min
+    const minutos = Math.round(a.dec! * 60);
+    expect(m.decHorasMinutos).toBe(`${Math.floor(minutos / 60)} h ${minutos % 60} min`);
+    expect(m.decHorasMinutos).not.toContain(`${String(a.dec).split(".")[1]} min`);
+    expect(respostaP051(gold)).toContain(`${num(m.dec, 2)} horas sem energia (${m.decHorasMinutos})`);
+    // o expurgado fica dentro do número de todas as origens: o apurado nunca passa dele
+    expect(m.decTodasOrigens!).toBeGreaterThanOrEqual(m.dec!);
+    // conjuntos: a contagem e o denominador da gold, e o ano anterior da própria série histórica
+    const c = gold.conjuntos;
+    const antC = c.historico.find((h) => h.ano === c.ano - 1)!;
+    expect(m.conjuntos).toEqual({ ano: c.ano, acima: c.acima_limite_dec, comLimite: c.com_limite, pct: c.pct_acima_limite_dec, anoAnterior: c.ano - 1, pctAnterior: antC.pct_acima_limite_dec });
+    expect(vereditoP052(gold)).toContain(`${num(m.conjuntos.pct, 1)}%`);
+  });
+
+  it("faixa de métricas: muda com o número, e a ausência é ausência (nunca zero nem horas inventadas)", () => {
+    const g2 = copia();
+    const a2 = brasil(g2, ref);
+    a2.dec = 10.5;
+    a2.dec_todas_parcelas = 21;
+    const m2 = metricasAbertura(g2);
+    expect([m2.dec, m2.decHorasMinutos, m2.decTodasOrigens, m2.decTodasOrigensHorasMinutos]).toEqual([10.5, "10 h 30 min", 21, "21 h"]);
+    a2.dec = null;
+    a2.dec_todas_parcelas = null;
+    const m3 = metricasAbertura(g2);
+    expect([m3.dec, m3.decHorasMinutos, m3.decTodasOrigens, m3.decTodasOrigensHorasMinutos]).toEqual([null, "sem dado", null, "sem dado"]);
+    // ano anterior sem DEC e FEC: a faixa não inventa referência
+    brasil(g2, ref - 1).dec = null;
+    expect(metricasAbertura(g2).anoAnterior).toBeNull();
+    expect(metricasAbertura(g2).decAnterior).toBeNull();
+  });
+
+  it("parcelas do ano: o apurado e cada parcela expurgada por extenso, somando o DEC de todas as origens", () => {
+    const a = brasil(gold, ref);
+    const p = a.parcelas_dec!;
+    const t = textoParcelasAno(gold);
+    for (const k of ["apurado", "emergencia", "dia_critico", "externa", "ons"] as const) expect(t, k).toContain(`${num(p[k], 2)} h`);
+    expect(t).toContain(`${num(a.dec_todas_parcelas, 2)} h (${horasEMinutos(a.dec_todas_parcelas)})`);
+    expect(Object.values(p).reduce((s, v) => s + (v ?? 0), 0)).toBeCloseTo(a.dec_todas_parcelas!, 1);
+    expect(t).toMatch(/a parte comparada ao limite/);
+    expect(t).toMatch(/expurgadas do apurado/);
+    // parcela que a fonte não publica é dita como ausência, nunca como zero
+    const g2 = copia();
+    brasil(g2, ref).parcelas_dec!.externa = null;
+    expect(textoParcelasAno(g2)).toContain("sem valor publicado de origem externa");
+    expect(textoParcelasAno(g2)).not.toContain("0,00 h");
+    brasil(g2, ref).parcelas_dec = null;
+    expect(textoParcelasAno(g2)).toBe("");
+  });
+
+  it("ano em que o apurado passa a ser só IP + IND: lido da identidade do apurado, e os marcos dos gráficos saem dele e da série de parcelas", () => {
+    const id = gold.brasil.identidade_apurado;
+    const ultimoQueFalha = [...id].reverse().find((x) => x.pct_dec_igual_ip_mais_ind !== 100 || x.pct_fec_igual_ip_mais_ind !== 100)!;
+    const uniforme = anoApuradoUniforme(gold)!;
+    expect(uniforme).toBe(ultimoQueFalha.ano + 1);
+    // o texto da regra publicada diz o mesmo ano ("desde 2022, exatamente as parcelas internas ... IP + IND")
+    expect(gold.regras.apurado).toContain(`desde ${uniforme}`);
+    const marcos = marcosHistoriaApurado(gold);
+    const anosDoGrafico = new Set(linhasBrasilAnual(gold).map((l) => l.ano));
+    const inicioParcelas = linhasParcelas(gold)[0].ano;
+    expect(marcos.map((x) => x.x)).toEqual([inicioParcelas, String(uniforme)]);
+    for (const x of marcos) {
+      expect(anosDoGrafico.has(x.x), x.x).toBe(true);
+      expect(x.rotulo.startsWith(`${x.x}: `)).toBe(true);
+    }
+    // sem quebra: identidade exata desde o primeiro ano, ou nunca exata, não há ano para marcar
+    const g2 = copia();
+    for (const x of g2.brasil.identidade_apurado) [x.pct_dec_igual_ip_mais_ind, x.pct_fec_igual_ip_mais_ind] = [100, 100];
+    expect(anoApuradoUniforme(g2)).toBeNull();
+    for (const x of g2.brasil.identidade_apurado) [x.pct_dec_igual_ip_mais_ind, x.pct_fec_igual_ip_mais_ind] = [90, 90];
+    expect(anoApuradoUniforme(g2)).toBeNull();
+    // identidade que volta a falhar depois: o ano é o primeiro da sequência final de 100%
+    const g3 = copia();
+    g3.brasil.identidade_apurado.at(-2)!.pct_dec_igual_ip_mais_ind = 99;
+    expect(anoApuradoUniforme(g3)).toBe(g3.brasil.identidade_apurado.at(-1)!.ano);
+  });
+
+  it("universo do Brasil: distribuidoras e conjuntos do ano, e as concessionárias à parte, sem nome de campo", () => {
+    const a = brasil(gold, ref);
+    const t = textoUniversoBrasil(gold);
+    const comDec = gold.distribuidoras.filter((d) => d.dec !== null).length;
+    expect(t).toContain(`${num(comDec, 0)} distribuidoras e ${num(a.conjuntos, 0)} conjuntos`);
+    expect(t).toContain(`${num(a.concessionarias, 0)} concessionárias`);
+    expect(t).toContain(`${num(a.dec_concessionarias, 2)} h e ${num(a.fec_concessionarias, 2)} interrupções`);
+    expect(t).not.toMatch(/\b[a-z]+_[a-z_]+\b|\(dec, fec\)/);
+    const g2 = copia();
+    brasil(g2, ref).dec_concessionarias = null;
+    expect(textoUniversoBrasil(g2)).not.toContain("concessionárias, o universo");
+  });
+
+  it("compensações do ano: unidades consumidoras e geradoras separadas, em milhões; e o total divulgado só entra quando difere além da precisão", () => {
+    const c = gold.compensacoes;
+    const a = c.anual.find((x) => x.ano === c.ano_referencia)!;
+    const mc = metricasCompensacao(gold);
+    expect(mc.valorUcMilhoes).toBeCloseTo(a.valor_uc! / 1e6, 9);
+    expect(mc.valorUgMilhoes).toBeCloseTo(a.valor_ug! / 1e6, 9);
+    expect(mc.quantidadeUcMilhoes).toBeCloseTo(a.quantidade_uc! / 1e6, 9);
+    expect(mc.valorUcMilhoes).not.toBeCloseTo((a.valor_uc! + a.valor_ug!) / 1e6, 3);
+    const d = a.divulgado_aneel;
+    const t = textoDivulgadoAno(gold);
+    if (d && d.dentro_da_precisao_valor === false) {
+      expect(t).toContain(reaisMilhoes(d.valor, 0));
+      expect(t).toContain(reaisMilhoes(a.valor_uc));
+      expect(t).toMatch(/não foi explicada/);
+    } else expect(t).toBe("");
+    const g2 = copia();
+    const a2 = g2.compensacoes.anual.find((x) => x.ano === g2.compensacoes.ano_referencia)!;
+    a2.divulgado_aneel = { valor: 1_000_000_000, quantidade: null, dentro_da_precisao_valor: false, dentro_da_precisao_quantidade: null };
+    expect(textoDivulgadoAno(g2)).toContain(reaisMilhoes(1_000_000_000, 0));
+    a2.divulgado_aneel.dentro_da_precisao_valor = true;
+    expect(textoDivulgadoAno(g2)).toBe("");
+    a2.divulgado_aneel = null;
+    expect(textoDivulgadoAno(g2)).toBe("");
+    a2.valor_uc = null;
+    a2.divulgado_aneel = { valor: 1, quantidade: null, dentro_da_precisao_valor: false, dentro_da_precisao_quantidade: null };
+    expect(textoDivulgadoAno(g2)).toBe("");
+  });
+
+  it("arquivos para baixar: nome legível para o leitor, só os arquivos que a gold publica, e cada painel com os seus", () => {
+    const urls = gold.downloads.map((d) => d.url);
+    for (const u of urls) {
+      const r = rotuloArquivo(u);
+      expect(r, u).not.toMatch(/\.(csv|json)\b|qualidade_|_/);
+      expect(r, u).not.toBe("Arquivo de dados");
+    }
+    expect(rotuloArquivo("/energia/series/qualidade_conjuntos_anual_2010_2019.csv")).toBe("DEC, FEC e limites de cada conjunto, por ano, de 2010 a 2019");
+    expect(rotuloArquivo("/energia/series/qualidade_inexistente.csv")).toBe("Arquivo de dados");
+    for (const p of PAINEIS_QUALIDADE) {
+      const d = downloadsDoPainel(gold, p.id);
+      expect(d.length, p.id).toBeGreaterThan(0);
+      for (const x of d) expect(urls, `${p.id} ${x.url}`).toContain(x.url);
+      expect(new Set(d.map((x) => x.rotulo)).size, p.id).toBe(d.length);
+    }
+    expect(downloadsDoPainel(gold, "p053").map((x) => x.url)).toEqual(["/energia/series/qualidade_compensacoes.csv"]);
+    expect(downloadsDoPainel(gold, "p052").filter((x) => /conjuntos_anual/.test(x.url)).length).toBe(urls.filter((u) => /conjuntos_anual/.test(u)).length);
+    // arquivo que a publicação não traz não aparece
+    const g2 = copia();
+    g2.downloads = g2.downloads.filter((d) => !d.url.includes("qualidade_compensacoes"));
+    expect(downloadsDoPainel(g2, "p053")).toEqual([]);
+  });
+});
+
+describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
+  const html = renderToStaticMarkup(createElement(QualidadePage));
+  const fonte = ler("src/app/setor-eletrico/qualidade/page.tsx");
+  const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
+  const ate = (marca: string) => html.indexOf(marca);
+
+  it("a primeira tela responde: título, lead, recorte e faixa de métricas antes do primeiro painel; o bloco de unidades não vem antes dos valores", () => {
+    const i = {
+      h1: ate("<h1"),
+      lead: ate('class="ed-lead'),
+      recorte: ate('data-recorte=""'),
+      faixa: ate("data-faixa-metricas"),
+      painel: ate('id="p051"'),
+    };
+    expect(i.h1).toBeGreaterThan(0);
+    expect(i.h1).toBeLessThan(i.lead);
+    expect(i.lead).toBeLessThan(i.recorte);
+    expect(i.recorte).toBeLessThan(i.faixa);
+    expect(i.faixa).toBeLessThan(i.painel);
+    expect(html).not.toContain("Como ler as unidades");
+    // quatro medidas na faixa, cada uma com a sua unidade por UC e o ano
+    const faixa = html.slice(i.faixa, i.painel);
+    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(4);
+    const m = metricasAbertura(gold);
+    for (const t of [num(m.dec, 2), num(m.fec, 2), `${num(m.conjuntos.pct, 1)}%`, num(m.decTodasOrigens, 2), m.decHorasMinutos, `${num(m.conjuntos.acima, 0)} de ${num(m.conjuntos.comLimite, 0)} conjuntos`]) {
+      expect(faixa, t).toContain(t);
+    }
+    expect(faixa).toContain("h por UC");
+    expect(faixa).toContain("interrupções por UC");
+    // as três fichas de prova da faixa
+    expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(3);
+  });
+
+  it("DEC e FEC em gráficos próprios, com eixos e unidades distintos, e a resposta logo depois das duas figuras", () => {
+    const a = brasil(gold, gold.ano_referencia);
+    const anos = linhasBrasilAnual(gold);
+    const dec = `DEC apurado do Brasil e limite agregado, ${anos[0].ano} a ${gold.ano_referencia}`;
+    const fec = `FEC apurado do Brasil e limite agregado, ${anos[0].ano} a ${gold.ano_referencia}`;
+    expect(a).toBeTruthy();
+    expect(ate(dec)).toBeGreaterThan(0);
+    expect(ate(dec)).toBeLessThan(ate(fec));
+    // cada gráfico diz a sua unidade na legenda; as séries de DEC e de FEC nunca dividem o mesmo gráfico
+    expect(html).toContain("Valores em h<");
+    expect(html).toContain("Valores em interrupções<");
+    expect(fonte).not.toMatch(/series=\{\[[^\]]*"dec"[^\]]*"fec"/s);
+    expect(ate(fec)).toBeLessThan(ate('data-resposta="p051"'));
+    // a mesma frase da função testada, na segunda camada
+    expect(html).toContain(esc(vereditoP051(gold)));
+    // o limite do mesmo ano é uma linha tracejada de cada gráfico
+    expect((html.match(/Limite agregado do ano/g) ?? []).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("apurado e expurgado visíveis em Entender: a seção, as parcelas por extenso e a regra do apurado", () => {
+    const secao = /<section id="expurgos"([^>]*)>/.exec(html)?.[1] ?? "";
+    expect(secao).not.toContain("data-nivel");
+    expect(html).toContain(esc(textoParcelasAno(gold)));
+    expect(html).toContain(esc(gold.regras.apurado));
+    expect(html).toContain("Parcelas do DEC do Brasil por origem");
+    expect(html).toContain(esc(textoUniversoBrasil(gold)));
+  });
+
+  it("cada seção da página está no nível que a rubrica pede: o que responde pergunta própria em Entender, o detalhe em Analisar, o método em Auditar", () => {
+    const nivel = (id: string) => {
+      const tag = new RegExp(`<section id="${id}"([^>]*)>`).exec(html);
+      expect(tag, id).not.toBeNull();
+      return /data-nivel="(analisar|auditar)"/.exec(tag![1])?.[1] ?? "entender";
+    };
+    const esperado: Record<string, string> = {
+      expurgos: "entender",
+      "mapa-municipios": "entender",
+      "comparar-distribuidoras": "entender",
+      "distribuicao-dos-conjuntos": "entender",
+      "ano-a-ano": "entender",
+      "tipos-de-violacao": "entender",
+      "compensacao-entre-distribuidoras": "entender",
+      "satisfacao-iasc": "entender",
+      "recuperacao-da-rede": "entender",
+      mensal: "analisar",
+      "tabela-distribuidoras": "analisar",
+      "conjuntos-do-ano": "analisar",
+      "matriz-limite-razao": "analisar",
+      pontas: "analisar",
+      "compensacoes-mes-a-mes": "analisar",
+      "indicadores-e-escopos": "analisar",
+      "atendimento-telefonico": "analisar",
+      "atendimento-por-distribuidora": "analisar",
+      "universos-e-arquivos": "auditar",
+      dgc: "auditar",
+      "conferencia-divulgado": "auditar",
+      "fora-de-cada-universo": "auditar",
+    };
+    for (const [id, n] of Object.entries(esperado)) expect(nivel(id), id).toBe(n);
+    // as âncoras antigas e as dos painéis continuam
+    for (const id of ["duracao", "limites", "compensacoes", "atendimento", "auditoria-qualidade", "p051", "p052", "p053", "p054"]) expect(html, id).toContain(`id="${id}"`);
+  });
+
+  it("uma navegação local só, sem título de seção: o rótulo dos capítulos é texto, e eles apontam para as outras três perguntas da página", () => {
+    expect((html.match(/data-navegacao-local="capitulos"/g) ?? []).length).toBe(1);
+    expect(html).not.toContain('data-navegacao-local="faixa"');
+    expect(html).not.toContain("As outras perguntas desta página");
+    for (const p of PAINEIS_QUALIDADE.filter((x) => x.id !== "p051")) {
+      expect(html, p.id).toContain(`href="#${p.ancora}"`);
+      expect(html, p.id).toContain(esc(p.descricao));
+    }
+    // o índice de cartões antigo ("Perguntas desta página" com quatro caixas numeradas) não volta
+    expect(html).not.toContain("hover:border-energia\"><span class=\"rotulo text-mineral\">1</span>");
+  });
+
+  it("downloads de cada painel com nome legível em Entender, e os nomes de arquivo só em Auditar", () => {
+    for (const p of PAINEIS_QUALIDADE) for (const d of downloadsDoPainel(gold, p.id)) expect(html, d.url).toContain(esc(d.rotulo));
+    const auditar = html.slice(html.indexOf('id="auditoria-qualidade"'));
+    for (const d of gold.downloads) expect(auditar, d.url).toContain(`${d.rotulo} (`);
+  });
+
+  it("as ressalvas vão para onde evitam a leitura errada: média por UC na abertura, conjunto no mapa, expurgo na figura, divulgado na compensação", () => {
+    const lead = /<p class="ed-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
+    expect(lead).toMatch(/Médias, não o que cada consumidor viveu/);
+    expect(lead).toMatch(/cada uma na sua escala/);
+    // o mapa diz que o valor é do conjunto, não do município, e que não há média municipal
+    const mapa = html.slice(ate('id="mapa-municipios"'), ate('id="mensal"'));
+    expect(mapa).toMatch(/A cor é do conjunto, não do município/);
+    expect(mapa).toMatch(/não há média municipal/);
+    expect(mapa).toContain(esc(gold.mapa.regra));
+    // a conversão de horas decimais vem junto da unidade do gráfico
+    expect(html).toContain(esc(gold.regras.centesimos));
+    // o total divulgado pela ANEEL, quando difere além da precisão, está na leitura da compensação (e não só em Auditar)
+    const divulgado = textoDivulgadoAno(gold);
+    if (divulgado) expect(html.slice(ate('id="compensacoes"'), ate('id="atendimento"'))).toContain(esc(divulgado));
+  });
+
+  it("estados honestos e editorial: sem julgamento no título nem 'agora' em botão, sem coluna ou campo em texto de leitor", () => {
+    const conteudo = html.slice(html.indexOf("<main"));
+    expect(conteudo).not.toMatch(/\b(serviço ruim|pior distribuidora|melhor distribuidora|cumpriu o padrão)\b/i);
+    expect(conteudo).not.toMatch(/\bagora\b/);
+    // o nome de campo que a gold traz nos universos só aparece na seção de Auditar
+    const auditar = conteudo.indexOf('id="universos-e-arquivos"');
+    for (const campo of ["(dec, fec)", "dec_concessionarias"]) {
+      const i = conteudo.indexOf(campo);
+      expect(i === -1 || i > auditar, campo).toBe(true);
+    }
   });
 });

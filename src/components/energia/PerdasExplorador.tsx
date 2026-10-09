@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { PerdasMapa, type EntidadeMapa } from "@/components/energia/PerdasMapa";
+import { PerdasDistribuicao } from "@/components/energia/PerdasDistribuicao";
+import { Recorte } from "@/components/energia/PerdasPainel";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Comparador, type EntidadeComparavel } from "@/components/energia/Comparador";
 import { GraficoLinhas, type SerieLinha } from "@/components/energia/GraficoLinhas";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { classeDe } from "@/lib/energia/escalas";
 import { mesAno, num } from "@/lib/energia/formato";
 import type { Evidencia } from "@/lib/energia/evidencia";
 import {
@@ -19,6 +23,7 @@ import {
   carregarJson,
   classificacaoMedida,
   colunasDoPeriodo,
+  faixaComparacao,
   historicoDistribuidora,
   linhasDistribuidoras,
   medidasDoPeriodo,
@@ -37,16 +42,18 @@ import {
 import type { AcumuladoAno, EvidenciasDistribuidoras, LinhaNacional, SerieAnualPerdas } from "@/lib/energia/tipos-perdas";
 
 /**
- * Explorador do painel "Onde estão as perdas e como evoluíram?" (P055): período, medida e
- * distribuidora na URL (voltar e avançar refazem a consulta), mapa das áreas, resposta
- * curta da consulta, painel da distribuidora escolhida com histórico e "Comprove este
- * número", comparador de até quatro distribuidoras e a tabela de todas, com exportação.
+ * Explorador da abertura de Perdas: período, medida e distribuidora na URL (voltar e avançar refazem a consulta). Uma só consulta
+ * move a resposta, a distribuição das distribuidoras por faixa (a figura principal), o mapa das áreas, o painel da distribuidora
+ * escolhida com histórico e "Comprove este número", o comparador de até quatro distribuidoras e a tabela de todas, com exportação.
  *
- * Uma só fonte para tudo: mapa, tabela, exportação e texto saem dos mesmos recortes e
- * das mesmas regras (src/lib/energia/perdas.ts). Ano de referência e acumulado vêm da
- * gold, já na página; outro ano, o histórico e o comparador leem a série anual
- * (perdas_anual.json) só quando pedidos, e a evidência por distribuidora
- * (perdas_evidencias.json) só quando uma distribuidora é escolhida.
+ * Uma só fonte para tudo: figura, mapa, tabela, exportação e texto saem dos mesmos recortes e das mesmas regras
+ * (src/lib/energia/perdas.ts). Ano de referência e acumulado vêm da gold, já na página; outro ano, o histórico e o comparador leem a
+ * série anual (perdas_anual.json) só quando pedidos, e a evidência por distribuidora (perdas_evidencias.json) só quando uma
+ * distribuidora é escolhida.
+ *
+ * A página (servidor) encaixa o que não depende da consulta: a resposta do agregado das concessionárias (`respostaGeral`), as notas
+ * do painel logo depois da figura principal (`notas`), os capítulos para as páginas irmãs (`aposPrincipal`) e a limitação do mapa
+ * (`limitacaoMapa`).
  */
 
 export type PerdasExploradorProps = {
@@ -59,6 +66,14 @@ export type PerdasExploradorProps = {
   versao: string;
   /** Ano da relação conjunto × município que desenha as áreas (gold.mapa.ano_relacao). */
   anoRelacao: number | null;
+  /** Resposta curta do agregado das concessionárias no ano de referência (universo próprio, fora da consulta). */
+  respostaGeral?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal. */
+  notas?: ReactNode;
+  /** Conteúdo depois da figura principal e das notas (os capítulos do módulo), antes do mapa. */
+  aposPrincipal?: ReactNode;
+  /** Limitação da geometria, logo abaixo do mapa. */
+  limitacaoMapa?: ReactNode;
 };
 
 const SELECT =
@@ -84,7 +99,7 @@ function useJsonSobDemanda<T>(url: string, pedir: boolean): [Carga<T>, () => voi
   return [carga, () => setTentativa((t) => t + 1)];
 }
 
-export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, acumulado, urls, versao, anoRelacao }: PerdasExploradorProps) {
+export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, acumulado, urls, versao, anoRelacao, respostaGeral, notas, aposPrincipal, limitacaoMapa }: PerdasExploradorProps) {
   const ids = useMemo(() => distribuidoras.map((d) => d.cnpj), [distribuidoras]);
   const chaveIds = ids.join(",");
   const chavePeriodos = periodos.map((p) => p.id).join(",");
@@ -111,7 +126,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   const [cargaEvid, tentarEvid] = useJsonSobDemanda<EvidenciasDistribuidoras>(urls.evidencias, !!sel);
   const evidSel = sel && cargaEvid.estado === "pronto" ? (cargaEvid.dado.evidencias[sel.cnpj] as Evidencia | undefined) ?? null : null;
 
-  /* recortes, valores, classes e linhas: a mesma origem para mapa, tabela, texto e arquivo */
+  /* recortes, valores, classes e linhas: a mesma origem para figura, mapa, tabela, texto e arquivo */
   const recortes = useMemo(() => recortesDoPeriodo(distribuidoras, periodo, anual), [distribuidoras, periodo, anual]);
   const valores = useMemo(() => (recortes ? valoresDoPeriodo(distribuidoras, recortes, medida.id, periodo) : null), [distribuidoras, recortes, medida.id, periodo]);
   const classes = useMemo(() => (valores ? classificacaoMedida(medida, valores) : null), [medida, valores]);
@@ -121,6 +136,8 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   );
   const colunas = useMemo(() => colunasDoPeriodo(periodo, medida), [periodo, medida]);
   const rotulos = useMemo(() => Object.fromEntries(distribuidoras.map((d) => [d.cnpj, rotuloDistribuidora(d)])), [distribuidoras]);
+  const grupos = useMemo(() => Object.fromEntries(distribuidoras.map((d) => [d.cnpj, d.grupo])), [distribuidoras]);
+  const faixa = useMemo(() => (valores ? faixaComparacao(valores, rotulos, grupos) : null), [valores, rotulos, grupos]);
   const linhaNac = nacional.find((l) => l.ano === periodo.ano && l.universo === "concessionarias") ?? null;
   const resposta = valores ? respostaMapa({ periodo, medida, valores, rotulos, nacional: linhaNac, acumulado }) : null;
   const veredito = valores ? vereditoMapa({ periodo, medida, valores, rotulos, acumulado }) : null;
@@ -140,11 +157,19 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
       })),
     [distribuidoras],
   );
-  const nComparaveis = valores ? Object.values(valores).filter((x) => x.estado === "valor").length : null;
+  const nComparaveis = faixa ? faixa.n : null;
   // quantas têm algum valor publicado no período (comparável ou fora): o universo do período, não o da série inteira
-  const nComDado = valores ? Object.values(valores).filter((x) => x.estado !== "sem-dado").length : null;
+  const nComDado = faixa ? faixa.n + faixa.fora : null;
   const disponiveis = medidasDoPeriodo(periodo);
   const consultaPadrao = periodo.id === String(anoRef) && medida.id === "taxa" && !sel;
+  // a distribuidora escolhida na figura: o valor dela, a faixa em que cai ou o estado que a deixa fora das faixas
+  const escolhida = useMemo(() => {
+    if (!sel || !valores || !classes) return null;
+    const valor = valores[sel.cnpj];
+    if (!valor) return null;
+    const k = valor.estado === "valor" ? classeDe(valor.v, classes) : null;
+    return { rotulo: rotuloDistribuidora(sel), valor, classe: typeof k === "number" ? k : null };
+  }, [sel, valores, classes]);
 
   const selecionar = (id: string | null) => definir({ d: id ?? "" });
 
@@ -157,191 +182,221 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
   }, [sel, anual, nacional]);
 
   return (
-    <div className="space-y-6">
-      {/* consulta: período, medida e o que está aplicado */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div>
-          <label htmlFor="perdas-periodo" className="rotulo mb-1 block text-mineral">
-            Período
-          </label>
-          <select id="perdas-periodo" className={SELECT} value={periodo.id} onChange={(e) => definir({ periodo: e.target.value })}>
-            {periodos.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.rotulo}
-              </option>
-            ))}
-          </select>
+    <div className="space-y-8">
+      {/* consulta e respostas: o agregado das concessionárias (universo próprio) e a faixa entre distribuidoras da consulta */}
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+        <div className="flex min-w-0 flex-col gap-4">
+          {respostaGeral}
+          {resposta && veredito ? (
+            <RespostaCurta id="mapa" vivo veredito={veredito}>
+              {resposta}
+            </RespostaCurta>
+          ) : cargaAnual.estado === "erro" ? (
+            <p className="text-sm text-carvao">
+              Não foi possível carregar a série anual ({cargaAnual.erro}).{" "}
+              <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
+                Tentar de novo
+              </button>
+            </p>
+          ) : (
+            <p role="status" className="text-sm text-carvao-muted">
+              Carregando a série anual de {periodo.ano}.
+            </p>
+          )}
         </div>
-        <div>
-          <label htmlFor="perdas-medida" className="rotulo mb-1 block text-mineral">
-            Medida
-          </label>
-          <select id="perdas-medida" className={SELECT} value={medida.id} onChange={(e) => definir({ medida: e.target.value as IdMedida })}>
-            {ORDEM_MEDIDAS.map((m) => (
-              <option key={m} value={m} disabled={!disponiveis.includes(m)}>
-                {MEDIDAS[m].rotulo} ({MEDIDAS[m].unidade}){disponiveis.includes(m) ? "" : MEDIDAS[m].soReferencia ? ", só no ano de referência" : ", não existe no acumulado"}
-              </option>
-            ))}
-          </select>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          <div>
+            <label htmlFor="perdas-periodo" className="rotulo mb-1 block text-mineral">
+              Período
+            </label>
+            <select id="perdas-periodo" className={SELECT} value={periodo.id} onChange={(e) => definir({ periodo: e.target.value })}>
+              {periodos.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.rotulo}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="perdas-medida" className="rotulo mb-1 block text-mineral">
+              Medida
+            </label>
+            <select id="perdas-medida" className={SELECT} value={medida.id} onChange={(e) => definir({ medida: e.target.value as IdMedida })}>
+              {ORDEM_MEDIDAS.map((m) => (
+                <option key={m} value={m} disabled={!disponiveis.includes(m)}>
+                  {MEDIDAS[m].rotulo} ({MEDIDAS[m].unidade}){disponiveis.includes(m) ? "" : MEDIDAS[m].soReferencia ? ", só no ano de referência" : ", não existe no acumulado"}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
-      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{medida.explicacao}</p>
-      <div role="group" className="flex flex-wrap items-center gap-2 text-xs text-carvao-muted" aria-label="Consulta aplicada">
-        <span className="rotulo text-mineral">Consulta</span>
-        <span className="border border-linha bg-superficie px-2 py-1">Período: {periodo.rotulo}</span>
-        <span className="border border-linha bg-superficie px-2 py-1">Medida: {medida.rotulo}</span>
-        {sel && <span className="border border-linha bg-superficie px-2 py-1">Distribuidora: {rotuloDistribuidora(sel)}</span>}
-        {!consultaPadrao && (
-          <button
-            type="button"
-            onClick={() => definir({ periodo: String(anoRef), medida: "taxa", d: "" })}
-            className="rotulo inline-flex min-h-[44px] items-center px-2 text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
-          >
-            Restaurar a consulta padrão
-          </button>
-        )}
-      </div>
-
-      {/* resposta da consulta atual, com período, universo e unidade */}
-      <div className="border-l-2 border-energia pl-4">
-        {resposta && veredito ? (
-          <RespostaCurta id="mapa" vivo veredito={veredito}>
-            {resposta}
-          </RespostaCurta>
-        ) : cargaAnual.estado === "erro" ? (
-          <p className="text-sm text-carvao">
-            Não foi possível carregar a série anual ({cargaAnual.erro}).{" "}
-            <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
-              Tentar de novo
+      {(sel || !consultaPadrao) && (
+        <div role="group" className="flex flex-wrap items-center gap-x-4 gap-y-0 text-xs text-carvao-muted" aria-label="Consulta aplicada">
+          {sel && (
+            <span>
+              Distribuidora escolhida: <span className="text-carvao">{rotuloDistribuidora(sel)}</span>
+            </span>
+          )}
+          {!consultaPadrao && (
+            <button
+              type="button"
+              onClick={() => definir({ periodo: String(anoRef), medida: "taxa", d: "" })}
+              className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+            >
+              Restaurar a consulta padrão
             </button>
-          </p>
-        ) : (
-          <p role="status" className="text-sm text-carvao-muted">
-            Carregando a série anual de {periodo.ano}.
-          </p>
-        )}
-        <p className="mt-1 text-xs text-mineral">
-          Período: {periodo.rotulo}. Universo: {distribuidoras.length} distribuidoras com balanço no SAMP em algum ano
-          {nComDado !== null && nComparaveis !== null ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida${nSoma !== null && medida.id !== "variacao" ? `; a soma nacional usa só as ${nSoma} concessionárias comparáveis` : ""}` : ""}. Unidade: {medida.unidade}.
-        </p>
-      </div>
-
-      {valores ? (
-        <PerdasMapa
-          titulo="Perdas de energia por área de distribuidora"
-          entidades={entidadesMapa}
-          valores={valores}
-          medida={medida}
-          periodo={periodo.rotulo}
-          selecionado={sel?.cnpj ?? null}
-          onSelecionar={selecionar}
-          urlMunicipios={urls.municipios}
-          avisoTerritorio={avisoTerritorio(distribuidoras, periodo, anoRelacao)}
-        />
-      ) : (
-        <div className="flex h-[380px] items-center justify-center border border-linha bg-superficie px-6 text-center text-sm text-carvao-muted sm:h-[540px]">
-          O mapa de {periodo.ano} aparece quando a série anual terminar de carregar.
+          )}
         </div>
       )}
 
-      {/* distribuidora escolhida: nome, resposta, prova e histórico */}
-      <section aria-labelledby="perdas-selecao-titulo" className="border border-linha bg-papel px-4 py-4 md:px-6" data-selecao={sel?.cnpj ?? ""}>
-        <h3 id="perdas-selecao-titulo" className="rotulo text-mineral">
-          Qual é a situação da distribuidora escolhida?
-        </h3>
-        {!sel ? (
-          <p className="mt-2 text-sm text-carvao-muted">Nenhuma. Escolha uma área no mapa, uma linha da tabela ou busque pelo nome; a escolha vai para o endereço da página e segue para os outros painéis de perdas.</p>
+      {/* figura principal: as distribuidoras por faixa da medida, com a faixa observada e o que fica de fora */}
+      {classes && faixa ? (
+        <PerdasDistribuicao
+          titulo={`${medida.rotulo} (${medida.unidade}): distribuidoras por faixa, ${periodo.rotulo}`}
+          medida={medida}
+          classes={classes}
+          faixa={faixa}
+          periodo={periodo.rotulo}
+          escolhida={escolhida}
+        />
+      ) : (
+        <div role="status" className="flex min-h-[14rem] items-center justify-center border border-linha bg-superficie px-6 text-center text-sm text-carvao-muted">
+          A distribuição de {periodo.ano} aparece quando a série anual terminar de carregar.
+        </div>
+      )}
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-medida={medida.id}>
+        {medida.explicacao}
+      </p>
+      <Recorte
+        periodo={periodo.rotulo}
+        universo={`${distribuidoras.length} distribuidoras com balanço no SAMP em algum ano${
+          nComDado !== null && nComparaveis !== null
+            ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida${nSoma !== null && medida.id !== "variacao" ? `; a soma nacional usa só as ${nSoma} concessionárias comparáveis` : ""}`
+            : ""
+        }.`}
+        unidade={medida.unidade}
+      />
+
+      {notas}
+      {aposPrincipal}
+
+      {/* território: o mapa das áreas de atuação, na mesma consulta */}
+      <SecaoDoPainel id="perdas-territorio" titulo="Onde ficam as áreas de cada faixa?">
+        {valores ? (
+          <PerdasMapa
+            titulo="Perdas de energia por área de distribuidora"
+            entidades={entidadesMapa}
+            valores={valores}
+            medida={medida}
+            periodo={periodo.rotulo}
+            selecionado={sel?.cnpj ?? null}
+            onSelecionar={selecionar}
+            urlMunicipios={urls.municipios}
+            avisoTerritorio={avisoTerritorio(distribuidoras, periodo, anoRelacao)}
+          />
         ) : (
-          <div className="mt-2 space-y-3">
-            <p className="font-serif text-lg text-carvao">
-              {sel.sigla ? `${sel.sigla} · ` : ""}
-              {sel.nome}
-            </p>
-            <p className="text-xs text-mineral">
-              CNPJ {sel.cnpj_formatado} · {ROTULO_GRUPO[sel.grupo]} · série no SAMP de {mesAno(sel.primeira_competencia)} a {mesAno(sel.ultima_competencia)}
-              {sel.ativa ? "" : " (encerrada)"}
-              {sel.territorio ? ` · área: ${num(sel.territorio.municipios, 0)} municípios (${num(sel.territorio.exclusivos, 0)} só dela, ${num(sel.territorio.compartilhados, 0)} compartilhados, ${num(sel.territorio.nao_confirmados, 0)} sem confirmação)` : " · sem área na relação de municípios"}
-            </p>
-            <p className="text-sm leading-relaxed text-carvao" data-resposta="distribuidora">
-              {respostaDistribuidora(sel, anoRef)}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-6">
-              {evidSel ? (
-                <ComproveNumero evidencia={evidSel} rotulo={`Comprove a taxa de ${anoRef}`} endereco={`https://scrutiniums.com/setor-eletrico/perdas?d=${sel.cnpj}#mapa`} />
-              ) : cargaEvid.estado === "carregando" ? (
-                <span role="status" className="text-xs text-carvao-muted">
-                  Carregando a evidência da taxa de {anoRef}.
-                </span>
-              ) : cargaEvid.estado === "erro" ? (
-                <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4" onClick={tentarEvid}>
-                  Evidência não carregou ({cargaEvid.erro}); tentar de novo
-                </button>
-              ) : cargaEvid.estado === "pronto" ? (
-                <span className="text-xs text-carvao-muted">Sem evidência da taxa de {anoRef}: a distribuidora não tem taxa anual nesse ano.</span>
-              ) : null}
-              <a href={`/setor-eletrico/perdas/composicao?d=${sel.cnpj}#composicao`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                Técnicas e não técnicas
-              </a>
-              <a href={`/setor-eletrico/perdas/regulatorio?d=${sel.cnpj}#regulatorio`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                Percentual técnico regulatório
-              </a>
-              <a href={`/setor-eletrico/perdas/custo-e-contexto?d=${sel.cnpj}#custo`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
-                Custo na tarifa e contexto
-              </a>
-            </div>
-            {historico ? (
-              <div>
-                <GraficoLinhas
-                  titulo={`Taxa de perdas totais de ${rotuloDistribuidora(sel)} por ano`}
-                  dados={historico.dados}
-                  chaveX="ano"
-                  formatoX="texto"
-                  series={[
-                    { id: "taxa", rotulo: rotuloDistribuidora(sel), cor: "var(--cor-energia)", espessura: 2.5 },
-                    { id: "brasil", rotulo: "Concessionárias (agregado)", sigla: "Agregado", cor: "var(--serie-referencia)", tracejada: true },
-                  ]}
-                  unidade="%"
-                  casas={2}
-                  zeroNoEixo
-                  marcos={historico.mudancas.map((a) => ({ x: String(a), rotulo: `${a}: quebra de escala ou absorção` }))}
-                  altura={260}
-                />
-                <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-                  Só anos completos e sem alerta entram na linha (lacuna é ano fora, nunca zero).
-                  {historico.fora.length
-                    ? ` Fora: ${historico.fora.map((f) => `${f.ano} (${f.motivo})`).join("; ")}.`
-                    : " Nenhum ano da série ficou fora."}
-                  {historico.mudancas.length ? " As marcas verticais indicam anos com quebra de escala ou absorção provável: a taxa antes e depois descreve áreas diferentes." : ""}
-                </p>
-              </div>
-            ) : cargaAnual.estado === "erro" ? (
-              <p className="text-sm text-carvao">
-                O histórico não carregou ({cargaAnual.erro}).{" "}
-                <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
-                  Tentar de novo
-                </button>
-              </p>
-            ) : (
-              <p role="status" className="text-xs text-carvao-muted">
-                Carregando o histórico anual.
-              </p>
-            )}
-            <button
-              type="button"
-              onClick={() => selecionar(null)}
-              className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
-            >
-              Limpar a escolha
-            </button>
+          <div className="flex h-[380px] items-center justify-center border border-linha bg-superficie px-6 text-center text-sm text-carvao-muted sm:h-[540px]">
+            O mapa de {periodo.ano} aparece quando a série anual terminar de carregar.
           </div>
         )}
-      </section>
+        {limitacaoMapa}
+      </SecaoDoPainel>
+
+      {/* distribuidora escolhida: nome, resposta, prova e histórico */}
+      <SecaoDoPainel id="perdas-selecao" titulo="Qual é a situação da distribuidora escolhida?">
+        <div data-selecao={sel?.cnpj ?? ""}>
+          {!sel ? (
+            <p className="text-sm text-carvao-muted">Nenhuma. Escolha uma área no mapa, uma linha da tabela ou busque pelo nome; a escolha vai para o endereço da página e segue para os outros painéis de perdas.</p>
+          ) : (
+            <div className="space-y-3">
+              <p className="font-serif text-lg text-carvao">
+                {sel.sigla ? `${sel.sigla} · ` : ""}
+                {sel.nome}
+              </p>
+              <p className="text-xs text-mineral">
+                CNPJ {sel.cnpj_formatado} · {ROTULO_GRUPO[sel.grupo]} · série no SAMP de {mesAno(sel.primeira_competencia)} a {mesAno(sel.ultima_competencia)}
+                {sel.ativa ? "" : " (encerrada)"}
+                {sel.territorio ? ` · área: ${num(sel.territorio.municipios, 0)} municípios (${num(sel.territorio.exclusivos, 0)} só dela, ${num(sel.territorio.compartilhados, 0)} compartilhados, ${num(sel.territorio.nao_confirmados, 0)} sem confirmação)` : " · sem área na relação de municípios"}
+              </p>
+              <p className="text-sm leading-relaxed text-carvao" data-resposta="distribuidora">
+                {respostaDistribuidora(sel, anoRef)}
+              </p>
+              <div className="flex flex-wrap items-center gap-x-6">
+                {evidSel ? (
+                  <ComproveNumero evidencia={evidSel} rotulo={`Comprove a taxa de ${anoRef}`} endereco={`https://scrutiniums.com/setor-eletrico/perdas?d=${sel.cnpj}#mapa`} />
+                ) : cargaEvid.estado === "carregando" ? (
+                  <span role="status" className="text-xs text-carvao-muted">
+                    Carregando a evidência da taxa de {anoRef}.
+                  </span>
+                ) : cargaEvid.estado === "erro" ? (
+                  <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4" onClick={tentarEvid}>
+                    Evidência não carregou ({cargaEvid.erro}); tentar de novo
+                  </button>
+                ) : cargaEvid.estado === "pronto" ? (
+                  <span className="text-xs text-carvao-muted">Sem evidência da taxa de {anoRef}: a distribuidora não tem taxa anual nesse ano.</span>
+                ) : null}
+                <a href={`/setor-eletrico/perdas/composicao?d=${sel.cnpj}#composicao`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                  Técnicas e não técnicas
+                </a>
+                <a href={`/setor-eletrico/perdas/regulatorio?d=${sel.cnpj}#regulatorio`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                  Percentual técnico regulatório
+                </a>
+                <a href={`/setor-eletrico/perdas/custo-e-contexto?d=${sel.cnpj}#custo`} className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                  Custo na tarifa e contexto
+                </a>
+              </div>
+              {historico ? (
+                <div>
+                  <GraficoLinhas
+                    titulo={`Taxa de perdas totais de ${rotuloDistribuidora(sel)} por ano`}
+                    dados={historico.dados}
+                    chaveX="ano"
+                    formatoX="texto"
+                    series={[
+                      { id: "taxa", rotulo: rotuloDistribuidora(sel), cor: "var(--cor-energia)", espessura: 2.5 },
+                      { id: "brasil", rotulo: "Concessionárias (agregado)", sigla: "Agregado", cor: "var(--serie-referencia)", tracejada: true },
+                    ]}
+                    unidade="%"
+                    casas={2}
+                    zeroNoEixo
+                    marcos={historico.mudancas.map((a) => ({ x: String(a), rotulo: `${a}: quebra de escala ou absorção` }))}
+                    altura={260}
+                  />
+                  <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
+                    Só anos completos e sem alerta entram na linha (lacuna é ano fora, nunca zero).
+                    {historico.fora.length
+                      ? ` Fora: ${historico.fora.map((f) => `${f.ano} (${f.motivo})`).join("; ")}.`
+                      : " Nenhum ano da série ficou fora."}
+                    {historico.mudancas.length ? " As marcas verticais indicam anos com quebra de escala ou absorção provável: a taxa antes e depois descreve áreas diferentes." : ""}
+                  </p>
+                </div>
+              ) : cargaAnual.estado === "erro" ? (
+                <p className="text-sm text-carvao">
+                  O histórico não carregou ({cargaAnual.erro}).{" "}
+                  <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
+                    Tentar de novo
+                  </button>
+                </p>
+              ) : (
+                <p role="status" className="text-xs text-carvao-muted">
+                  Carregando o histórico anual.
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => selecionar(null)}
+                className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+              >
+                Limpar a escolha
+              </button>
+            </div>
+          )}
+        </div>
+      </SecaoDoPainel>
 
       {/* comparação de até quatro distribuidoras na mesma escala */}
-      <section aria-labelledby="perdas-comparar-titulo" data-nivel="analisar" className="space-y-3">
-        <h3 id="perdas-comparar-titulo" className="font-serif text-lg text-carvao">
-          Como cada distribuidora evoluiu? Compare até quatro
-        </h3>
+      <SecaoDoPainel id="perdas-comparar" titulo="Como cada distribuidora evoluiu? Compare até quatro">
         <Comparador
           rotulo="Distribuidoras para comparar"
           entidades={entidadesComp}
@@ -384,37 +439,39 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
             )
           }
         </Comparador>
-      </section>
+      </SecaoDoPainel>
 
       {/* tabela de todas as distribuidoras: as mesmas linhas e classes do mapa */}
-      {linhas ? (
-        <TabelaInterativa
-          key={`${periodo.id}-${medida.id}`}
-          titulo={`Distribuidoras, ${periodo.rotulo}`}
-          colunas={colunas}
-          linhas={linhas}
-          chaveLinha="id"
-          colunaRotulo="distribuidora"
-          fonte="ANEEL, SAMP Balanço (perdas totais, técnicas e não técnicas, energia injetada e mercado de baixa tensão)"
-          versao={versao}
-          nomeArquivo={`perdas-distribuidoras-${periodo.id}-${medida.id}`}
-          chaveUrl="tab"
-          selecionado={sel?.cnpj ?? null}
-          onSelecionar={selecionar}
-          ordemInicial={{ coluna: "valor_mapa", direcao: "desc" }}
-          dicaBusca="Sigla, nome, CNPJ ou UF"
-          nota={
-            <>
-              As colunas &quot;Classe no mapa&quot; e &quot;Valor no mapa&quot; são a tabela equivalente do mapa ({medida.rotulo.toLowerCase()}, {medida.unidade}). Valor fora da comparação
-              aparece com o número da fonte e o motivo; célula vazia é ausência, nunca zero.
-            </>
-          }
-        />
-      ) : (
-        <p role="status" className="text-sm text-carvao-muted">
-          A tabela de {periodo.ano} aparece com a série anual.
-        </p>
-      )}
+      <SecaoDoPainel id="perdas-tabela" titulo="Qual é o valor de cada distribuidora?">
+        {linhas ? (
+          <TabelaInterativa
+            key={`${periodo.id}-${medida.id}`}
+            titulo={`Distribuidoras, ${periodo.rotulo}`}
+            colunas={colunas}
+            linhas={linhas}
+            chaveLinha="id"
+            colunaRotulo="distribuidora"
+            fonte="ANEEL, SAMP Balanço (perdas totais, técnicas e não técnicas, energia injetada e mercado de baixa tensão)"
+            versao={versao}
+            nomeArquivo={`perdas-distribuidoras-${periodo.id}-${medida.id}`}
+            chaveUrl="tab"
+            selecionado={sel?.cnpj ?? null}
+            onSelecionar={selecionar}
+            ordemInicial={{ coluna: "valor_mapa", direcao: "desc" }}
+            dicaBusca="Sigla, nome, CNPJ ou UF"
+            nota={
+              <>
+                As colunas &quot;Classe no mapa&quot; e &quot;Valor no mapa&quot; são a tabela equivalente da figura e do mapa ({medida.rotulo.toLowerCase()}, {medida.unidade}). Valor fora da comparação
+                aparece com o número da fonte e o motivo; célula vazia é ausência, nunca zero. A ordem inicial é o valor da medida, do maior para o menor.
+              </>
+            }
+          />
+        ) : (
+          <p role="status" className="text-sm text-carvao-muted">
+            A tabela de {periodo.ano} aparece com a série anual.
+          </p>
+        )}
+      </SecaoDoPainel>
     </div>
   );
 }

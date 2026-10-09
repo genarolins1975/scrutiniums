@@ -52,7 +52,8 @@ describe("resposta curta antes dos filtros", () => {
     const cab = ler("src/components/energia/CabecalhoModulo.tsx");
     expect(cab).toContain('<header className="cab-modulo">');
     expect(cab).toContain('<header className="cab-modulo" data-abertura="editorial">');
-    expect(ler("src/components/energia/PldPagina.tsx")).toContain('<header className="cab-modulo">');
+    // o PLD usa o CabecalhoModulo (o cabeçalho próprio do PldPagina deixou de existir)
+    expect(ler("src/components/energia/PldPagina.tsx")).not.toContain('<header className="cab-modulo">');
     expect(css).toMatch(/\.cab-modulo \{ padding-top: 1\.25rem; padding-bottom: 0\.5rem; \}/);
     expect(css).toMatch(/@media \(min-width: 768px\) \{ \.cab-modulo \{ padding-top: 2rem; padding-bottom: 0\.75rem; \} \}/);
   });
@@ -91,7 +92,8 @@ describe("legenda de siglas", () => {
 
   it("toda página de módulo monta a legenda, mesmo sem lista declarada", () => {
     expect(ler("src/components/energia/CabecalhoModulo.tsx")).toContain("<LegendaDeSiglas siglas={siglas} />");
-    expect(ler("src/components/energia/PldPagina.tsx")).toContain("<LegendaDeSiglas siglas={siglas} />");
+    // a legenda do PLD vem do CabecalhoModulo, como nas demais páginas
+    expect(ler("src/components/energia/PldPagina.tsx")).not.toContain("<LegendaDeSiglas");
   });
 });
 

@@ -79,3 +79,49 @@ export function CargaLista<T extends string>({
     </div>
   );
 }
+
+/**
+ * Alternância entre duas bases de comparação, com a explicação de cada uma sempre à vista: não basta o nome, porque "mesmos dias da
+ * semana" e "mesmas datas" dão taxas diferentes para a mesma janela. Rádios nativos (teclado e leitor de tela do próprio navegador), cada
+ * opção com alvo de 44 px; o estado escolhido leva o círculo cheio, além da cor, e todos os números da página seguem a escolha.
+ */
+export function CargaBase<T extends string>({
+  legenda,
+  opcoes,
+  valor,
+  onEscolher,
+}: {
+  legenda: string;
+  opcoes: readonly { id: T; rotulo: string; explicacao: string }[];
+  valor: T;
+  onEscolher: (v: T) => void;
+}) {
+  const nome = useId();
+  return (
+    <fieldset className="min-w-0" data-controle="base-da-comparacao">
+      <legend className="text-[0.8125rem] leading-snug text-carvao-muted">{legenda}</legend>
+      <div className="mt-1.5 space-y-1.5">
+        {opcoes.map((o) => {
+          const ativo = o.id === valor;
+          return (
+            <label
+              key={o.id}
+              className={`flex min-h-[44px] cursor-pointer items-start gap-2.5 border px-2.5 py-1.5 focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
+                ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+              }`}
+            >
+              <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
+              <span aria-hidden="true" className="mt-[0.2rem] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-carvao">
+                {ativo && <span className="h-2 w-2 rounded-full bg-carvao" />}
+              </span>
+              <span className="block min-w-0">
+                <span className="block text-sm font-medium leading-snug text-carvao">{o.rotulo}</span>
+                <span className="mt-0.5 block text-xs leading-snug text-carvao-muted">{o.explicacao}</span>
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}

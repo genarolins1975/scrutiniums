@@ -22,7 +22,7 @@ import { dataBR, fracPct, mesAno, num, plural, reais } from "@/lib/energia/forma
 import type { EventoDatado } from "@/lib/energia/linha-do-tempo";
 import type { EscalaCores, ValorCelula } from "@/lib/energia/mapa-calor";
 import type { ColunaTabela, LinhaTabela } from "@/lib/energia/tabela";
-import type { Submercado } from "@/lib/energia/tipos";
+import type { PldCartao, Submercado } from "@/lib/energia/tipos";
 import type {
   AchadoA02,
   AtoLimite,
@@ -1503,4 +1503,145 @@ export function textoComparabilidade(h: BlocoHistorico): string {
       : "A média ponderada sem MMGD, de perímetro homogêneo, não está nesta publicação; meses de perímetros diferentes não se comparam pela ponderada.",
   );
   return partes.join(" ");
+}
+
+/* ====================================================================== */
+/* Abertura da página PLD: média diária, extremos e distância             */
+/* ====================================================================== */
+
+/**
+ * Média diária de cada submercado no dia de referência. Uma só lista (a mesma que a gold publica nos cartões do dia e que o mapa dos
+ * submercados usa) alimenta a faixa de métricas, a frase de resposta, o gráfico de barras e a tabela da abertura: a faixa nunca calcula
+ * por conta própria. A regra da média diária é a que a própria gold publica (média aritmética simples das 24 horas do dia, no horário
+ * de Brasília). Não existe PLD único do Brasil: nenhuma média dos quatro submercados é calculada aqui, nem pode ser apresentada como preço.
+ */
+export type CartaoMediaDiaria = Pick<PldCartao, "sm" | "media_dia" | "variacao_dia_anterior">;
+
+export type MediaDiariaSm = {
+  id: Submercado;
+  nome: string;
+  rotulo: string;
+  media: number;
+  /** Diferença contra a média do dia anterior no mesmo submercado, como a gold a publica. */
+  variacao: { abs: number; pct: number | null } | null;
+};
+
+/** Um submercado por linha, sempre na ordem regional (SE/CO, Sul, Nordeste, Norte); submercado sem média completa não entra. */
+export function linhasMediaDiaria(cartoes: readonly CartaoMediaDiaria[]): MediaDiariaSm[] {
+  return SUBMERCADOS.flatMap((sm) => {
+    const c = cartoes.find((x) => x.sm === sm);
+    if (!c || typeof c.media_dia !== "number" || !Number.isFinite(c.media_dia)) return [];
+    return [{ id: sm, nome: NOME_SM[sm], rotulo: CURTO_SM[sm], media: c.media_dia, variacao: c.variacao_dia_anterior ?? null }];
+  });
+}
+
+/** Menor ou maior média do dia: o valor e todos os submercados que o têm (empate é igualdade nos centavos, a precisão exibida). */
+export type ExtremoMediaDiaria = { valor: number; submercados: Submercado[] };
+export type ExtremosMediaDiaria = { menor: ExtremoMediaDiaria; maior: ExtremoMediaDiaria; distancia: number };
+
+const emCentavos = (v: number) => Math.round(v * 100);
+
+/**
+ * Menor e maior média diária entre os submercados e a distância entre elas (maior menos menor). Os empates são preservados: se dois
+ * submercados têm a maior média, os dois aparecem. A distância sai dos valores em centavos que o leitor vê, para que a subtração feita
+ * à mão dê o mesmo número; a gold publica a mesma conta em `amplitude_dia`, e o teste confere as duas.
+ */
+export function extremosMediaDiaria(linhas: readonly MediaDiariaSm[]): ExtremosMediaDiaria | null {
+  if (linhas.length < 2) return null;
+  const cent = linhas.map((l) => emCentavos(l.media));
+  const menorC = Math.min(...cent);
+  const maiorC = Math.max(...cent);
+  const com = (alvo: number): ExtremoMediaDiaria => {
+    const ls = linhas.filter((l) => emCentavos(l.media) === alvo);
+    return { valor: ls[0].media, submercados: ls.map((l) => l.id) };
+  };
+  return { menor: com(menorC), maior: com(maiorC), distancia: (maiorC - menorC) / 100 };
+}
+
+/** "SE/CO e Norte"; com os quatro, "os quatro submercados". */
+export function nomesDosSubmercados(ids: readonly Submercado[]): string {
+  if (ids.length === SUBMERCADOS.length) return "os quatro submercados";
+  return listaTexto(ids.map((s) => CURTO_SM[s]));
+}
+
+/** Veredito da abertura: os dois extremos da média diária com quem os tem (empate dito) e a distância entre eles. */
+export function vereditoMediaDiaria(dia: string, e: ExtremosMediaDiaria): string {
+  if (e.distancia === 0) return `Em ${dataBR(dia)}, a média diária foi igual nos quatro submercados, ${reais(e.menor.valor)}/MWh; a distância entre o maior e o menor foi de ${reais(0)}/MWh.`;
+  const quem = (x: ExtremoMediaDiaria) => `${nomesDosSubmercados(x.submercados)}${x.submercados.length > 1 ? ", mesmo valor" : ""}`;
+  return `Em ${dataBR(dia)}, a média diária foi de ${reais(e.menor.valor)}/MWh (${quem(e.menor)}) a ${reais(e.maior.valor)}/MWh (${quem(e.maior)}); a distância entre o maior e o menor foi de ${reais(e.distancia)}/MWh.`;
+}
+
+/**
+ * Os empates da média diária ditos por extenso, para ficarem à vista junto das barras: quando dois ou mais submercados têm a maior (ou a
+ * menor) média nos centavos, a página escreve quais são. Sem empate, ou com a distância zero (todos iguais), devolve null.
+ */
+export function textoEmpatesMediaDiaria(e: ExtremosMediaDiaria): string | null {
+  if (e.distancia === 0) return null;
+  const partes: string[] = [];
+  if (e.maior.submercados.length > 1) partes.push(`Empate na maior média: ${nomesDosSubmercados(e.maior.submercados)}, ${reais(e.maior.valor)}/MWh.`);
+  if (e.menor.submercados.length > 1) partes.push(`Empate na menor média: ${nomesDosSubmercados(e.menor.submercados)}, ${reais(e.menor.valor)}/MWh.`);
+  return partes.length ? partes.join(" ") : null;
+}
+
+/** Dia civil anterior a uma data AAAA-MM-DD, sem depender de fuso. */
+export function diaAnterior(iso: string): string {
+  const [a, m, d] = iso.slice(0, 10).split("-").map(Number);
+  return new Date(Date.UTC(a, m - 1, d - 1)).toISOString().slice(0, 10);
+}
+
+/** "O que mudou" da abertura: a média de cada submercado contra a do dia anterior, em R$/MWh e em %, com o sentido em palavras. */
+export function textoMudancaMediaDiaria(dia: string, linhas: readonly MediaDiariaSm[]): string {
+  const itens = linhas
+    .filter((l) => l.variacao !== null)
+    .map((l) => {
+      const v = l.variacao!;
+      if (emCentavos(v.abs) === 0) return `${l.rotulo}: igual`;
+      return `${l.rotulo}: ${reais(Math.abs(v.abs))}/MWh ${v.abs > 0 ? "acima" : "abaixo"}${v.pct === null ? "" : ` (${num(Math.abs(v.pct), 1)}%)`}`;
+    });
+  if (!itens.length) return `Sem a média do dia anterior para comparar com ${dataBR(dia)}.`;
+  return `Em relação ao dia anterior (${dataBR(diaAnterior(dia))}): ${itens.join("; ")}.`;
+}
+
+/**
+ * Variação comum a um grupo de submercados contra o dia anterior, para a linha de referência de uma medida da faixa. Só devolve valor
+ * quando todos os submercados do grupo têm variação e ela é a mesma nos centavos; em empate de média com variações diferentes, devolve
+ * null e a página não afirma nenhuma delas (a lista por submercado fica em "O que mudou").
+ */
+export function variacaoComumDoGrupo(linhas: readonly MediaDiariaSm[], ids: readonly Submercado[]): number | null {
+  const vs = ids.map((id) => linhas.find((l) => l.id === id)?.variacao?.abs);
+  if (!vs.length || vs.some((v) => v === undefined || v === null || !Number.isFinite(v))) return null;
+  const c = vs.map((v) => emCentavos(v as number));
+  return c.every((x) => x === c[0]) ? (c[0] / 100) : null;
+}
+
+/** Trecho de limites que vale no dia (início e fim inclusive); null quando nenhum trecho integrado cobre o dia. */
+export function regimeVigenteEm(regimes: readonly RegimeLimites[], dia: string): RegimeLimites | null {
+  const d = dia.slice(0, 10);
+  return regimes.find((r) => r.inicio <= d && d <= r.fim) ?? null;
+}
+
+/**
+ * Os três limites do trecho vigente, cada um com o objeto a que se aplica: o piso e o teto horário valem para cada hora; o teto
+ * estrutural, para a média diária. Valor que o ato integrado não traz é dito, nunca preenchido.
+ */
+export function textoLimitesVigentes(r: RegimeLimites): string {
+  const v = (x: number | null) => (x === null ? "sem valor integrado" : `${reais(x)}/MWh`);
+  const atos = [r.ato_pld_min, r.ato_pld_max_horario, r.ato_pld_max_estrutural];
+  const iguais = atos.every((a) => a === atos[0]);
+  const origem = iguais
+    ? ` (${atos[0] ?? "ato não identificado"})`
+    : `; piso: ${r.ato_pld_min ?? "ato não identificado"}; teto horário: ${r.ato_pld_max_horario ?? "ato não identificado"}; teto estrutural: ${r.ato_pld_max_estrutural ?? "ato não identificado"}`;
+  return `Limites vigentes desde ${dataBR(r.inicio)}${origem}: piso de ${v(r.pld_min)} e teto horário de ${v(r.pld_max_horario)}, que valem para cada hora, e teto estrutural de ${v(r.pld_max_estrutural)}, que vale para a média diária.`;
+}
+
+/**
+ * Referência da distância entre regiões: a média dos 30 dias até o dia de referência e a maior distância desse período, do resumo que
+ * a gold de rede publica. Só vale quando o resumo é do mesmo dia; com outro dia, devolve null e a faixa fica sem a linha.
+ */
+export function textoReferenciaDistancia(
+  resumo: { dia: string; media_30d: number | null; maior_30d: { dia: string; valor: number } } | null | undefined,
+  dia: string,
+): string | null {
+  if (!resumo || resumo.dia !== dia || resumo.media_30d === null) return null;
+  return `Média dos 30 dias até ${dataBR(resumo.dia)}: ${reais(resumo.media_30d)}/MWh; maior distância do período: ${reais(resumo.maior_30d.valor)}/MWh em ${dataBR(resumo.maior_30d.dia)}.`;
 }

@@ -30,6 +30,7 @@ import type {
   Cobertura,
   DistribuidoraTsee,
   EstimativaPof,
+  InclusaoGold,
   LinhaPnad,
   LinhaPof,
   LuzParaTodos,
@@ -1352,4 +1353,95 @@ export function textoPrecisaoPnad(acesso: AcessoPnad): string {
   return m
     ? `${base} Nos recortes pequenos a precisão cai: o maior coeficiente de variação publicado em ${acesso.ano_referencia} entre as UF é ${pctTexto(m.cv, 1)} (${m.indicador}, ${m.uf}, ${m.situacao}).`
     : base;
+}
+
+/* ================================================================ abertura editorial: faixa de métricas, datas e notas */
+
+/**
+ * Seletores que a faixa de métricas, a linha de recorte e as notas das páginas da Inclusão energética leem. Nenhum número é
+ * refeito: cada valor sai da mesma linha da gold que o gráfico e a tabela leem (linhaPof, estimativa), e cada data sai da
+ * proveniência ou das referências publicadas. Nada aqui escreve ano, período ou data de referência à mão.
+ */
+
+/** Período da pesquisa de orçamento, lido da proveniência dos microdados ("jul/2017 a jul/2018"). */
+export function periodoPof(o: Pick<Orcamento, "proveniencia">): string {
+  const p = o.proveniencia.microdados.periodo_referencia;
+  return `${mes(p.inicio)} a ${mes(p.fim)}`;
+}
+
+/** Data de referência dos valores em reais da pesquisa ("15/01/2018"), lida da unidade que a gold publica; null quando a unidade não a traz. */
+export function dataBaseReaisPof(o: Pick<Orcamento, "proveniencia">): string | null {
+  return /\((\d{2}\/\d{2}\/\d{4})\)/.exec(o.proveniencia.microdados.unidade)?.[1] ?? null;
+}
+
+/**
+ * Razão de médias do Brasil (energia na despesa total) nas classes de rendimento mais baixa e mais alta e no conjunto das
+ * famílias: as mesmas linhas que o gráfico por classe desenha. Valor suprimido pela precisão vem nulo, nunca zero.
+ */
+export function destaquesRendaPof(orc: OrcamentoBase): {
+  baixa: { rotulo: string; valor: number | null } | null;
+  alta: { rotulo: string; valor: number | null } | null;
+  total: number | null;
+} {
+  const classes = classesRenda(orc);
+  const valor = (codigo: string) => estimativa(linhaPof(orc, "BR", codigo), "razao_medias_pct")[0];
+  const baixa = classes[0];
+  const alta = classes.length > 1 ? classes.at(-1) : undefined;
+  return {
+    baixa: baixa ? { rotulo: baixa.rotulo, valor: valor(baixa.codigo) } : null,
+    alta: alta ? { rotulo: alta.rotulo, valor: valor(alta.codigo) } : null,
+    total: valor("7999"),
+  };
+}
+
+/** Frase que declara a idade da pesquisa junto do valor: o ano da publicação vem da própria gold, nunca escrito à mão. */
+export function textoPofHistorica(orc: Pick<OrcamentoBase, "referencia">, anoPublicacao: string): string {
+  return `Estatística histórica: a POF mais recente publicada pelo IBGE é a ${nomePof(orc)}. O painel mostra o que ela mediu e não projeta o resultado para ${anoPublicacao}.`;
+}
+
+/** Uma medida da abertura com a sua data, a sua unidade e a sua natureza: cada fonte tem calendário próprio e nenhum rótulo genérico de atualização. */
+export type DataMedida = {
+  id: "pof" | "scs" | "cde" | "cadunico" | "pnad" | "pasi" | "lpt";
+  rotulo: string;
+  periodo: string;
+  unidade: string;
+  natureza: "OBSERVADO" | "CALCULADO" | "ESTIMADO";
+};
+
+/**
+ * Datas de referência de cada parte da página, na ordem em que as medidas aparecem. O mês do SCS e o da CDE trazem o último
+ * mês do arquivo e o último mês completo, porque só o mês completo entra nas comparações.
+ */
+export function datasMedidas(g: Pick<InclusaoGold, "referencias" | "tarifa_social" | "cobertura" | "orcamento" | "acesso">): DataMedida[] {
+  const t = g.tarifa_social;
+  const si = g.acesso.sistemas_isolados;
+  const lpt = g.acesso.universalizacao.luz_para_todos;
+  const mesMapa = t.mes_mapa ?? t.mes_referencia;
+  return [
+    { id: "pof", rotulo: "Orçamento das famílias (POF)", periodo: periodoPof(g.orcamento), unidade: "famílias", natureza: "ESTIMADO" },
+    {
+      id: "scs",
+      rotulo: "Tarifa Social, UC (SCS)",
+      periodo: `até ${mes(g.referencias.scs_ultimo_mes_no_arquivo)}; último mês completo ${mes(t.mes_referencia)}`,
+      unidade: "unidades consumidoras",
+      natureza: "OBSERVADO",
+    },
+    {
+      id: "cde",
+      rotulo: "Tarifa Social, faturas (Beneficiários da CDE)",
+      periodo: `até ${mes(g.referencias.cde_mes_mais_recente)}; último mês completo ${mes(mesMapa)}`,
+      unidade: "faturas",
+      natureza: "CALCULADO",
+    },
+    { id: "cadunico", rotulo: "Cadastro Único (MI Social)", periodo: mes(g.cobertura.brasil?.mes), unidade: "famílias", natureza: "CALCULADO" },
+    { id: "pnad", rotulo: "Acesso (PNAD Contínua)", periodo: g.acesso.ano_referencia, unidade: "domicílios", natureza: "ESTIMADO" },
+    { id: "pasi", rotulo: "Sistemas isolados (PASI)", periodo: si ? `ciclo ${si.ciclo}` : SEM_DADO, unidade: "pessoas", natureza: "OBSERVADO" },
+    {
+      id: "lpt",
+      rotulo: "Luz para Todos (MME)",
+      periodo: lpt ? `${mes(lpt.evidencia_total.periodo.inicio)} a ${mes(lpt.ultimo_mes)}` : SEM_DADO,
+      unidade: "domicílios",
+      natureza: "OBSERVADO",
+    },
+  ];
 }

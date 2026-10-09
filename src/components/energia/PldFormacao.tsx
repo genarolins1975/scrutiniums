@@ -134,7 +134,7 @@ export function PldFormacao({ nos, ligacoes }: { nos: NoComEstado[]; ligacoes: R
           </>
         )}
 
-        <p className="rotulo mt-4 text-mineral">Estado atual</p>
+        <p className="rotulo mt-4 text-mineral">Último dado publicado</p>
         {atual.estado ? (
           <div className="mt-1 text-sm leading-relaxed text-carvao">
             <p>{atual.estado.texto}</p>

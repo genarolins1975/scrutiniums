@@ -40,6 +40,7 @@ import {
   linhasTemperatura,
   modeloCurto,
   nomeProprio,
+  notaEnaDoDia,
   periodoValidacao,
   periodosMapa,
   recortePadrao,
@@ -69,6 +70,7 @@ import {
   textoMltNaoConcluir,
   textoMudancaAfluencia,
   textoMudancaArmazenamento,
+  textoMudancaDecomposicao,
   textoPesoSubsistemas,
   textoQuebraRee,
   textoReconciliacaoEar,
@@ -640,6 +642,8 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
       textoQuebraRee(G.armazenamento.quebras_perimetro_ree[0]),
       textoFechamento(R),
       textoMudancaArmazenamento(ents),
+      textoMudancaDecomposicao(R.decomposicao_ear),
+      notaEnaDoDia(entidadesEna(G.afluencia).find((e) => e.id === "SIN")!) ?? "",
       textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena),
       textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena, "1991-2020"),
       textoMltNaoConcluir(G.afluencia.mlt),
@@ -694,6 +698,43 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     // modelo da previsão: o publicado na gold
     expect(modeloCurto(C.previsao!.modelo)).toBe("ECMWF IFS 0,25°");
     expect(modeloCurto("GFS 0,25°, rodada de 00Z")).toBe("GFS 0,25°");
+  });
+
+  it("faixa de métricas da afluência: a nota da ENA do dia lê o percentual da MLT do dia e a MLT do dia, e some sem eles", () => {
+    const e = entidadesEna(G.afluencia).find((x) => x.id === "SIN")!;
+    const nota = notaEnaDoDia(e)!;
+    expect(nota).toContain(`${e.pct_mlt_dia!.toFixed(1).replace(".", ",")}% da MLT do dia`);
+    expect(nota).toContain(`${Math.round(e.mlt_mwmed_dia!).toLocaleString("pt-BR")} MWmed`);
+    // mudar o dado muda a nota; ausência não vira zero
+    const outro = clone(e);
+    outro.pct_mlt_dia = 50;
+    outro.mlt_mwmed_dia = 1234;
+    expect(notaEnaDoDia(outro)).toBe("50,0% da MLT do dia, de 1.234 MWmed.");
+    outro.pct_mlt_dia = null;
+    expect(notaEnaDoDia(outro)).toBeNull();
+  });
+
+  it("variação da EAR por subsistema: mesma unidade e mesmo período dito uma vez; período por subsistema só quando diferem", () => {
+    const ds = R.decomposicao_ear;
+    const t = textoMudancaDecomposicao(ds);
+    const mesmo = ds.every((d) => d.inicio === ds[0].inicio && d.fim === ds[0].fim);
+    expect(mesmo).toBe(true);
+    expect(t).toContain(`De ${ds[0].inicio.split("-").reverse().join("/")} a ${ds[0].fim.split("-").reverse().join("/")}`);
+    for (const d of ds) expect(t).toContain(`${d.delta_ear_mwmes! < 0 ? "−" : "+"}${Math.abs(d.delta_ear_mwmes!).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`);
+    expect(t.indexOf("Sudeste/Centro-Oeste")).toBeLessThan(t.indexOf("Sul"));
+    expect(t.indexOf("Sul")).toBeLessThan(t.indexOf("Nordeste"));
+    expect(t.indexOf("Nordeste")).toBeLessThan(t.indexOf("Norte"));
+    // períodos diferentes: cada subsistema traz o seu
+    const dif = clone(ds);
+    dif[1].fim = "2026-01-05";
+    expect(textoMudancaDecomposicao(dif)).toContain("(");
+    expect(textoMudancaDecomposicao(dif)).toContain("05/01/2026");
+    // variação ausente fica de fora, nunca zero
+    const sem = clone(ds);
+    sem[0].delta_ear_mwmes = null;
+    expect(textoMudancaDecomposicao(sem)).not.toContain("Sudeste/Centro-Oeste");
+    for (const d of sem) d.delta_ear_mwmes = null;
+    expect(textoMudancaDecomposicao(sem)).toContain("Sem variação");
   });
 
   it("nomes do ONS ficam legíveis sem perder a chave original", () => {
@@ -808,6 +849,165 @@ describe("páginas renderizadas no servidor", () => {
 
   it("o destino Água e clima está publicado no menu", () => {
     expect(DESTINOS_NAVEGACAO.find((d) => d.slug === "agua-e-clima")?.publicado).toBe(true);
+  });
+});
+
+/* ---------- as três páginas filhas no sistema editorial ---------- */
+
+describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no sistema editorial", () => {
+  const filhas = { p018: PaginaAfluencia, p019: PaginaClima, p020: PaginaReservatorios } as const;
+  const html = Object.fromEntries(Object.entries(filhas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof filhas, string>;
+  const dataBr = (iso: string) => iso.split("-").reverse().join("/");
+  const faixaMetricas = (h: string) => /<section[^>]*data-faixa-metricas=""[^>]*>[\s\S]*?<\/section>/.exec(h)?.[0] ?? "";
+  const secao = (h: string, id: string) => new RegExp(`<section id="${id}"[^>]*>`).exec(h)?.[0] ?? null;
+  const textoDe = (h: string) => h.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+
+  it("abertura editorial: faixa de irmãs no alto, migalha do módulo, título igual à pergunta do painel e título da figura diferente dele", () => {
+    for (const id of ["p018", "p019", "p020"] as const) {
+      const h = html[id];
+      const p = PAINEIS_AGUA.find((x) => x.id === id)!;
+      expect(h, id).toContain('data-abertura="editorial"');
+      expect(h.match(/<h1/g)?.length, id).toBe(1);
+      expect(/<h1[^>]*>([^<]*)<\/h1>/.exec(h)![1], id).toBe(p.pergunta);
+      // a faixa de irmãs abre o conteúdo (antes da migalha e do título); capítulos só existem na abertura do módulo
+      expect(h.match(/data-navegacao-local="faixa"/g)?.length, id).toBe(1);
+      expect(h, id).not.toContain('data-navegacao-local="capitulos"');
+      const main = h.slice(h.indexOf("<main"));
+      expect(main.indexOf('data-navegacao-local="faixa"'), id).toBeLessThan(main.indexOf("<h1"));
+      expect(main.indexOf(">Água e clima</p>"), `${id}: migalha`).toBeGreaterThan(main.indexOf('data-navegacao-local="faixa"'));
+      expect(main.indexOf(">Água e clima</p>"), `${id}: migalha`).toBeLessThan(main.indexOf("<h1"));
+      // o título da primeira figura não repete o da página
+      const h2 = new RegExp(`<h2 id="${id}-titulo"[^>]*>([^<]*)</h2>`).exec(h)?.[1];
+      expect(h2, id).toBeTruthy();
+      expect(h2, id).not.toBe(p.pergunta);
+    }
+  });
+
+  it("uma navegação local, notas junto da figura (uma vez) e próximos passos numa linha no rodapé do painel", () => {
+    for (const id of ["p018", "p019", "p020"] as const) {
+      const h = html[id];
+      expect(h.match(/data-notas-painel=""/g)?.length, id).toBe(1);
+      expect(h.match(/data-seguir-painel=""/g)?.length, id).toBe(1);
+      // as notas vêm depois da figura principal (a resposta do painel) e antes do bloco recolhido "Por que isso importa"
+      const iResposta = h.indexOf(`data-resposta="${id}"`);
+      const iNotas = h.indexOf('data-notas-painel=""');
+      const iPorQue = h.indexOf("data-por-que-importa");
+      expect(iNotas, id).toBeGreaterThan(iResposta);
+      expect(iNotas, id).toBeLessThan(iPorQue);
+      // as três notas à vista: o que mudou, como interpretar e o que não é possível concluir
+      for (const nota of ["data-que-mudou", "data-como-interpretar", "data-ressalva"]) expect(h, `${id}: ${nota}`).toContain(nota);
+    }
+  });
+
+  it("afluência: faixa com a ENA em % da MLT e em MWmed, cada uma com a sua data, acima do seletor de profundidade; a régua da MLT não se compara com a da EAR", () => {
+    const h = html.p018;
+    const faixa = faixaMetricas(h);
+    const sinEna = entidadesEna(G.afluencia).find((e) => e.id === "SIN")!;
+    expect(faixa.match(/data-metrica=""/g)?.length).toBe(4);
+    expect(h.indexOf('data-faixa-metricas=""')).toBeLessThan(h.indexOf('role="radiogroup" aria-label="Nível de profundidade"'));
+    const t = textoDe(faixa);
+    expect(t).toContain(`${sinEna.pct_mlt_30d!.toFixed(1).replace(".", ",")}`);
+    expect(t).toContain(`${sinEna.p50_30d!.toFixed(1).replace(".", ",")}`);
+    expect(t).toContain(Math.round(sinEna.ena_mwmed_dia!).toLocaleString("pt-BR"));
+    expect(t).toContain("MWmed");
+    expect(t).toContain("da MLT");
+    // as datas: a janela de 30 dias (ficha), a data da ENA do dia e a base da mediana
+    expect(t).toContain(dataBr(G.afluencia.dia));
+    expect(t).toContain(dataBr(G.dias_referencia.ena));
+    expect(t).toContain(sinEna.periodo_base!.replace("-", " a "));
+    // outra régua: dito junto do número e nas notas, sem comparar os dois percentuais
+    expect(t).toContain("outra régua que o da EAR");
+    expect(textoDe(h)).toMatch(/outra\s+régua que o da energia armazenada \(EAR\), e os dois não se comparam/);
+    // as duas fichas "Comprove este número" da abertura (ENA bruta e ENA armazenável) continuam na faixa
+    expect(faixa.match(/Comprove este número/g)?.length).toBe(2);
+  });
+
+  it("afluência: a MLT e a evolução em 30 dias são seções visíveis com pergunta própria; só as tabelas e o texto de método ficam em Analisar", () => {
+    const h = html.p018;
+    for (const id of ["evolucao", "mlt"]) {
+      const tag = secao(h, id);
+      expect(tag, id).not.toBeNull();
+      expect(tag, id).not.toContain("data-nivel");
+    }
+    expect(secao(h, "mlt-detalhes")).toContain('data-nivel="analisar"');
+    expect(secao(h, "unidade")).toContain('data-nivel="auditar"');
+    expect(secao(h, "regras-p018")).toContain('data-nivel="auditar"');
+    // as duas figuras da MLT estão na seção visível; as três tabelas estão na seção de Analisar
+    const iMlt = h.indexOf('<section id="mlt"');
+    const iDet = h.indexOf('<section id="mlt-detalhes"');
+    const visivel = h.slice(iMlt, iDet);
+    expect(visivel).toContain("MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto");
+    expect(visivel).toContain("MLT implícita de cada subsistema");
+    expect(visivel).not.toContain("<table");
+    const detalhes = h.slice(iDet, h.indexOf('<section id="unidade"'));
+    expect((detalhes.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(3);
+    expect(detalhes).toContain('data-textos="mlt"');
+  });
+
+  it("chuva e temperatura: sem faixa no alto; duas medidas estimadas em seção própria, com data e selo de estimativa; separação visível e previsão rotulada", () => {
+    const h = html.p019;
+    const i = h.indexOf('data-faixa-metricas=""');
+    const iMedidas = h.indexOf('<section id="medidas"');
+    expect(iMedidas).toBeGreaterThan(h.indexOf('data-notas-painel=""'));
+    expect(i).toBeGreaterThan(iMedidas);
+    const faixa = faixaMetricas(h);
+    expect(faixa.match(/data-metrica=""/g)?.length).toBe(2);
+    expect(faixa.match(/Estimado/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(faixa).toContain(dataBr(C.precipitacao_bacias[0].dia));
+    expect(faixa).toContain(dataBr(G.dias_referencia.temperatura!));
+    expect(textoDe(secao(h, "medidas") ? h.slice(iMedidas, h.indexOf('<section id="separacao"')) : "")).toContain("não equivalem à afluência nem ao armazenamento");
+    for (const id of ["medidas", "separacao", "historico", "comparar-bacias", "temperatura", "previsao", "relacoes"]) {
+      const tag = secao(h, id);
+      expect(tag, id).not.toBeNull();
+      expect(tag, id).not.toContain("data-nivel");
+    }
+    expect(secao(h, "cobertura")).toContain('data-nivel="analisar"');
+    expect(secao(h, "regras-p019")).toContain('data-nivel="auditar"');
+    // a previsão fica na seção própria, com o selo de previsão, e não aparece nas seções de estimativa
+    const iPrev = h.indexOf('<section id="previsao"');
+    expect(h.slice(Math.max(0, iPrev - 80), iPrev)).toContain('data-natureza="PREVISTO"');
+    expect(h.slice(iPrev, iPrev + 700)).toContain("Previsão meteorológica: uma rodada de um modelo, não observação.");
+    expect(h.slice(h.indexOf('<section id="temperatura"'), iPrev)).not.toContain("Previsão, não observação");
+    // o mapa é a figura principal e a legenda de recorte vem depois dele
+    expect(h.indexOf("data-recorte-painel")).toBeGreaterThan(h.indexOf('data-resposta="p019"'));
+  });
+
+  it("reservatórios: faixa de balanço acima do seletor de profundidade; decomposição primeiro, conta da água e série diária em seções visíveis, comparação em Analisar", () => {
+    const h = html.p020;
+    const faixa = faixaMetricas(h);
+    expect(faixa.match(/data-metrica=""/g)?.length).toBe(3);
+    expect(h.indexOf('data-faixa-metricas=""')).toBeLessThan(h.indexOf('role="radiogroup" aria-label="Nível de profundidade"'));
+    const t = textoDe(faixa);
+    expect(t).toContain(`${R.n_com_balanco}`);
+    expect(t).toContain(`de ${R.n_reservatorios} nos dados hidráulicos`);
+    expect(t).toContain(`${R.n_fecham_por_construcao}`);
+    expect(t).toContain(`de ${R.n_com_balanco} com balanço`);
+    expect(t).toContain("−1,95");
+    expect(t).toContain("hm³");
+    expect(faixa.match(/Comprove este número/g)?.length).toBe(2);
+    // ordem: veredito da decomposição, figura, notas, conta da água, série diária
+    const ordem = [`data-resposta="p020"`, 'data-notas-painel=""', '<section id="balanco"', '<section id="serie-diaria"'].map((x) => h.indexOf(x));
+    expect(ordem.every((x) => x > 0)).toBe(true);
+    expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
+    for (const id of ["balanco", "serie-diaria"]) expect(secao(h, id), id).not.toContain("data-nivel");
+    for (const id of ["comparar", "decomposicao"]) expect(secao(h, id), id).toContain('data-nivel="analisar"');
+    expect(secao(h, "regras-p020")).toContain('data-nivel="auditar"');
+    // a resposta da conta da água vem depois do título da seção e não antes dele (a resposta não sobe para fora da seção)
+    expect(h.indexOf('data-resposta="p020-balanco"')).toBeGreaterThan(h.indexOf('<section id="balanco"'));
+    // o "O que mudou" traz a variação de cada subsistema na mesma unidade
+    expect(textoDe(h)).toContain(textoMudancaDecomposicao(R.decomposicao_ear));
+  });
+
+  it("o recorte é legenda da figura (depois dela), e o texto novo não usa 'hoje' nem 'agora' como data", () => {
+    for (const id of ["p018", "p019", "p020"] as const) {
+      const h = html[id];
+      // a figura principal é um gráfico (data-grafico) ou, na chuva, o mapa das bacias (que nasce no estado de carregamento)
+      const figura = Math.min(...[h.indexOf("data-grafico"), h.indexOf('data-estado="carregando"')].filter((x) => x >= 0));
+      expect(h.indexOf("data-recorte-painel"), id).toBeGreaterThan(figura);
+      // só o conteúdo da página: a casca do site (menu) tem frases próprias
+      const visivel = textoDe(h.slice(h.indexOf("<main")));
+      expect(visivel, id).not.toMatch(/\bhoje\b|\bagora\b/i);
+    }
   });
 });
 

@@ -3,8 +3,8 @@
 import { useState, type KeyboardEvent } from "react";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { FronteiraRede, PaisSul } from "@/lib/energia/tipos-rede";
-import { NOME_PAIS, NOME_SM, PONTAS, curtoFronteira, nomeFronteira } from "@/lib/energia/rede";
-import { reais } from "@/lib/energia/formato";
+import { CURTO_SM, NOME_PAIS, NOME_SM, PONTAS, curtoFronteira, nomeFronteira } from "@/lib/energia/rede";
+import { num, reais } from "@/lib/energia/formato";
 
 /**
  * Esquema de fluxos da Rede (P028): os quatro subsistemas, as quatro fronteiras que o
@@ -12,23 +12,34 @@ import { reais } from "@/lib/energia/formato";
  * Sul. É esquema, não mapa geográfico (seção 8.3): as posições lembram a geografia sem
  * escala, e cada fronteira soma várias linhas de transmissão.
  *
- * Sentido pela seta, magnitude pela espessura e pelo número escrito, unidade e período
- * na legenda. A espessura é proporcional ao valor e não indica proximidade de limite:
- * os limites operativos não são públicos (achado A06). Ausência é linha tracejada sem
- * seta e com "sem dado"; zero é linha fina sem seta com o número.
+ * Sentido pela seta e pelas siglas escritas (NE → N), magnitude pela espessura e pelo
+ * número escrito, unidade e período na legenda. O rótulo de cada fronteira traz o saldo e,
+ * logo abaixo, o que passou no sentido contrário (e as trocas de sentido, quando houve), para
+ * que o saldo nunca apareça sozinho. A espessura é proporcional ao valor e não indica
+ * proximidade de limite: a legenda diz a escala e que os limites operativos não são
+ * públicos (achado A06). Ausência é linha tracejada sem seta e com "sem dado"; zero é
+ * linha fina sem seta com o número.
  *
  * Seleção sincronizada: clicar, tocar ou usar Enter e Espaço numa fronteira a escolhe
- * (de novo, desmarca); a página passa a escolha para a tabela e o histórico. No
+ * (de novo, desmarca); a página passa a escolha para a tabela e o detalhe. No
  * celular, o esquema vira uma lista de botões com o mesmo conteúdo (texto do SVG
- * ficaria com menos de 8 px).
+ * ficaria com menos de 12 px).
  */
 
-export type FluxoMapa = { par: FronteiraRede; valor: number | null; rotuloValor: string; detalhe?: string };
-export type ExteriorMapa = { pais: PaisSul; valor: number | null; rotuloValor: string };
+export type FluxoEsquema = {
+  par: FronteiraRede;
+  valor: number | null;
+  rotuloValor: string;
+  /** Linhas extras do rótulo no esquema, abaixo do valor (ex.: "contrário: 0 MWh"). */
+  linhas?: string[];
+  /** Texto completo para o leitor de tela e para a lista do celular. */
+  detalhe?: string;
+};
+export type ExteriorEsquema = { pais: PaisSul; valor: number | null; rotuloValor: string };
 
 const POS: Record<Submercado | PaisSul, { x: number; y: number }> = {
   N: { x: 150, y: 80 },
-  NE: { x: 460, y: 130 },
+  NE: { x: 480, y: 130 },
   SE: { x: 330, y: 300 },
   S: { x: 210, y: 420 },
   ARGENTINA: { x: 64, y: 480 },
@@ -37,6 +48,8 @@ const POS: Record<Submercado | PaisSul, { x: number; y: number }> = {
 const LARG_NO = 150;
 const ALT_NO = 52;
 const RECUO = 52;
+const LARG_ROTULO = 156;
+const ALT_LINHA = 15;
 
 function trecho(a: { x: number; y: number }, b: { x: number; y: number }, recuoA = RECUO, recuoB = RECUO) {
   const dx = b.x - a.x;
@@ -45,7 +58,7 @@ function trecho(a: { x: number; y: number }, b: { x: number; y: number }, recuoA
   return { x1: a.x + (dx / d) * recuoA, y1: a.y + (dy / d) * recuoA, x2: b.x - (dx / d) * recuoB, y2: b.y - (dy / d) * recuoB };
 }
 
-export function RedeMapaFluxos({
+export function RedeEsquemaFluxos({
   titulo,
   periodo,
   unidade,
@@ -59,8 +72,8 @@ export function RedeMapaFluxos({
   titulo: string;
   periodo: string;
   unidade: string;
-  fluxos: FluxoMapa[];
-  exterior?: ExteriorMapa[];
+  fluxos: FluxoEsquema[];
+  exterior?: ExteriorEsquema[];
   precos?: Partial<Record<Submercado, number | null>> | null;
   rotuloPrecos?: string;
   selecionado: FronteiraRede | null;
@@ -84,7 +97,7 @@ export function RedeMapaFluxos({
       if (f.valor === null) return `${nomeFronteira(f.par)}: sem dado`;
       const [a, b] = PONTAS[f.par];
       const [o, d] = f.valor >= 0 ? [a, b] : [b, a];
-      return `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}`;
+      return `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}${f.detalhe ? `, ${f.detalhe}` : ""}`;
     })
     .join("; ");
   // o exterior entra na descrição para leitor de tela: no SVG as conversoras ficam só no desenho
@@ -98,7 +111,8 @@ export function RedeMapaFluxos({
       <figcaption className="text-sm text-carvao">
         <span className="font-medium">{titulo}</span>
         <span className="block text-xs text-carvao-muted">
-          {periodo} · {unidade}. Esquema sem escala geográfica; a espessura acompanha o valor e não indica proximidade de limite (os limites operativos não são públicos).
+          {periodo} · {unidade}. Esquema sem escala geográfica: cada fronteira soma várias linhas de transmissão. A espessura é proporcional ao valor (a mais grossa vale{" "}
+          {num(max, 0)} {unidade}) e não indica capacidade nem proximidade de limite, porque os limites operativos não são públicos.
           {precos ? ` ${rotuloPrecos ?? "PLD"} em R$/MWh dentro de cada região.` : ""}
         </span>
       </figcaption>
@@ -189,11 +203,11 @@ export function RedeMapaFluxos({
                 strokeDasharray={e.valor === null ? "5 4" : undefined}
                 markerEnd={e.valor ? "url(#rede-seta)" : undefined}
               />
-              <rect x={POS[e.pais].x - 52} y={POS[e.pais].y - 16} width={104} height={32} fill="var(--cor-superficie)" stroke="var(--cor-linha)" />
-              <text x={POS[e.pais].x} y={POS[e.pais].y - 2} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)">
+              <rect x={POS[e.pais].x - 56} y={POS[e.pais].y - 18} width={112} height={36} fill="var(--cor-superficie)" stroke="var(--cor-linha)" />
+              <text x={POS[e.pais].x} y={POS[e.pais].y - 3} textAnchor="middle" fontSize="13" fill="var(--cor-carvao)">
                 {NOME_PAIS[e.pais]}
               </text>
-              <text x={POS[e.pais].x} y={POS[e.pais].y + 11} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
+              <text x={POS[e.pais].x} y={POS[e.pais].y + 12} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
                 {e.rotuloValor}
               </text>
             </g>
@@ -216,6 +230,11 @@ export function RedeMapaFluxos({
               : f.valor === 0
                 ? `${nomeFronteira(f.par)}: ${f.rotuloValor}`
                 : `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}${f.detalhe ? `; ${f.detalhe}` : ""}`;
+          // rótulo: sentido (siglas), valor e as linhas extras; ausência e zero ficam só com o valor
+          const sentido = f.valor === null || f.valor === 0 ? null : `${CURTO_SM[o]} → ${CURTO_SM[d]}`;
+          const linhasRotulo = [...(sentido ? [sentido] : []), f.rotuloValor, ...(f.linhas ?? [])];
+          const altRotulo = 8 + ALT_LINHA * linhasRotulo.length;
+          const iValor = sentido ? 1 : 0;
           return (
             <g
               key={f.par}
@@ -243,18 +262,29 @@ export function RedeMapaFluxos({
                 markerEnd={f.valor ? (ativo ? "url(#rede-seta-sel)" : "url(#rede-seta)") : undefined}
               />
               <rect
-                x={mx - 58}
-                y={my - 13}
-                width={116}
-                height={26}
+                x={mx - LARG_ROTULO / 2}
+                y={my - altRotulo / 2}
+                width={LARG_ROTULO}
+                height={altRotulo}
                 fill="var(--cor-superficie)"
                 stroke={foco === f.par ? "var(--cor-energia)" : ativo ? "var(--cor-energia-dark)" : "var(--cor-linha)"}
                 strokeWidth={foco === f.par ? 2.5 : 1}
                 strokeDasharray={foco === f.par ? "4 2" : undefined}
               />
-              <text x={mx} y={my + 4} textAnchor="middle" fontSize="12" fontWeight={ativo ? 700 : 400} fill="var(--cor-carvao)" className="tabular-nums">
-                {f.rotuloValor}
-              </text>
+              {linhasRotulo.map((linha, k) => (
+                <text
+                  key={`${linha}-${k}`}
+                  x={mx}
+                  y={my - altRotulo / 2 + 4 + ALT_LINHA * (k + 1) - 3}
+                  textAnchor="middle"
+                  fontSize={k === iValor ? 14 : 12}
+                  fontWeight={k === iValor && ativo ? 700 : k === iValor ? 600 : 400}
+                  fill={k === iValor ? "var(--cor-carvao)" : "var(--cor-carvao-muted)"}
+                  className="tabular-nums"
+                >
+                  {linha}
+                </text>
+              ))}
               <title>{`${curtoFronteira(f.par)}: ${rotuloAria}`}</title>
             </g>
           );
@@ -263,11 +293,11 @@ export function RedeMapaFluxos({
         {(["N", "NE", "SE", "S"] as Submercado[]).map((sm) => (
           <g key={sm} aria-hidden="true">
             <rect x={POS[sm].x - LARG_NO / 2} y={POS[sm].y - ALT_NO / 2} width={LARG_NO} height={ALT_NO} fill="var(--cor-superficie)" stroke="var(--cor-carvao)" />
-            <text x={POS[sm].x} y={POS[sm].y - (precos ? 5 : -4)} textAnchor="middle" fontSize="13" fill="var(--cor-carvao)">
+            <text x={POS[sm].x} y={POS[sm].y - (precos ? 5 : -4)} textAnchor="middle" fontSize="14" fill="var(--cor-carvao)">
               {NOME_SM[sm]}
             </text>
             {precos && (
-              <text x={POS[sm].x} y={POS[sm].y + 14} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)" className="tabular-nums">
+              <text x={POS[sm].x} y={POS[sm].y + 14} textAnchor="middle" fontSize="13" fill="var(--cor-carvao-muted)" className="tabular-nums">
                 {reais(precos[sm] ?? null)}
               </text>
             )}

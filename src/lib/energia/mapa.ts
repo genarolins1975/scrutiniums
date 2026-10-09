@@ -1,17 +1,99 @@
 /**
- * Página inicial do Observatório do Setor Elétrico como mapa didático (seção 6 da
- * especificação, painéis P001 e P003). Este arquivo é o conteúdo editorial da home:
+ * Página inicial do Observatório do Setor Elétrico: a porta de entrada (seção 6 da
+ * especificação, painéis P001 e P003). Este arquivo é o conteúdo editorial da inicial:
  *
- *  - B: o mapa conceitual (sete elos, ligações tipificadas e temas transversais);
- *  - C: o cartão de cada destino (para que serve, o que se encontra, recorte);
- *  - D: perguntas do dia a dia, com o destino e o contexto que cada uma abre;
- *  - E: trilhas por interesse, com o que se aprende em cada parada;
- *  - G: as fontes principais de cada tema, pelo id do conjunto em publicacao.json.
+ *  - os quatro caminhos de intenção do alto da página e as seis perguntas prioritárias
+ *    (a medida de cada uma vem de home-sinais.ts, nunca daqui);
+ *  - o mapa conceitual (sete elos em quatro faixas, ligações tipificadas e temas transversais);
+ *  - o cartão de cada destino (para que serve, o que se encontra, recorte), que fica num
+ *    bloco recolhível depois do índice completo;
+ *  - as perguntas do dia a dia (as nove da especificação) e as trilhas por interesse;
+ *  - as fontes principais de cada tema, pelo id do conjunto em publicacao.json.
  *
- * Nada aqui é número: a home mostra números só quando os lê de uma gold com a
+ * Nada aqui é número: a inicial mostra números só quando os lê de uma gold com a
  * proveniência dela. Toda promessa aponta para uma rota e uma âncora que o teste
  * `energia-mapa.test.ts` confere no código da página de destino.
  */
+
+// ---------------------------------------------------------------------------
+// Alto da página: quatro caminhos de intenção e seis perguntas prioritárias
+// ---------------------------------------------------------------------------
+
+export type IdCaminho = "acompanhar" | "regiao" | "aprender" | "conferir";
+
+export type CaminhoIntencao = {
+  id: IdCaminho;
+  /** Verbo e objeto: o que a pessoa quer fazer, não o nome da página. */
+  titulo: string;
+  /** Uma frase sobre o que a página de destino entrega. */
+  descricao: string;
+  /** Slugs de DESTINOS_NAVEGACAO: o primeiro é o link do título; os demais viram links de apoio. */
+  slugs: string[];
+};
+
+/** Os quatro caminhos do hero: acompanhar o sistema, explorar uma região, aprender e conferir ou baixar. */
+export const CAMINHOS_INTENCAO: CaminhoIntencao[] = [
+  { id: "acompanhar", titulo: "Acompanhar o sistema", descricao: "Preço, água, geração, carga e rede, cada um com a sua data.", slugs: ["visao-geral"] },
+  { id: "regiao", titulo: "Explorar uma região", descricao: "Submercado, distribuidora, município e usinas no mesmo mapa, cada número no seu grão.", slugs: ["territorio"] },
+  { id: "aprender", titulo: "Aprender um conceito", descricao: "Verbetes com a definição da fonte oficial e o painel onde cada conceito aparece.", slugs: ["aprenda"] },
+  { id: "conferir", titulo: "Conferir ou baixar os dados", descricao: "A fonte, o arquivo e o cálculo de cada número, e os conjuntos para baixar.", slugs: ["dados", "metodologia"] },
+];
+
+/** Os seis sinais da inicial, na ordem da página: o que chega a quem usa a energia, depois o sistema e o que vem. */
+export const ID_SINAIS = ["conta", "qualidade", "perdas", "agua", "pld", "expansao"] as const;
+export type IdSinal = (typeof ID_SINAIS)[number];
+
+export type PerguntaPrioritaria = {
+  id: IdSinal;
+  pergunta: string;
+  /** Slug do destino em DESTINOS_NAVEGACAO (de onde saem o estado e o conceito da pergunta). */
+  slug: string;
+  /** Painel que aprofunda a medida: o que se faz lá e o endereço, com a âncora do painel. */
+  link: { rotulo: string; href: string };
+  /** A pergunta é sobre uma distribuidora: a inicial oferece a escolha e leva a página com ela já selecionada. */
+  porDistribuidora?: "perdas" | "qualidade";
+};
+
+export const PERGUNTAS_PRIORITARIAS: PerguntaPrioritaria[] = [
+  {
+    id: "conta",
+    pergunta: "Quanto custa a energia numa residência?",
+    slug: "conta-de-luz",
+    link: { rotulo: "Comparar as tarifas das distribuidoras", href: "/setor-eletrico/conta-de-luz#tarifa" },
+  },
+  {
+    id: "qualidade",
+    pergunta: "Quanto tempo falta energia?",
+    slug: "qualidade",
+    link: { rotulo: "Ver a duração e a frequência das interrupções", href: "/setor-eletrico/qualidade#p051" },
+    porDistribuidora: "qualidade",
+  },
+  {
+    id: "perdas",
+    pergunta: "Quanta energia se perde na distribuição?",
+    slug: "perdas",
+    link: { rotulo: "Ver as perdas no mapa das distribuidoras", href: "/setor-eletrico/perdas#painel-mapa" },
+    porDistribuidora: "perdas",
+  },
+  {
+    id: "agua",
+    pergunta: "Quanta energia está armazenada nos reservatórios?",
+    slug: "agua-e-clima",
+    link: { rotulo: "Comparar cada região com a mediana do dia", href: "/setor-eletrico/agua-e-clima#p017" },
+  },
+  {
+    id: "pld",
+    pergunta: "Quanto custa a energia no curto prazo?",
+    slug: "pld",
+    link: { rotulo: "Ver o último dia nos quatro submercados", href: "/setor-eletrico/pld#hoje" },
+  },
+  {
+    id: "expansao",
+    pergunta: "O que está sendo construído?",
+    slug: "expansao",
+    link: { rotulo: "Ver a carteira por estágio", href: "/setor-eletrico/expansao/carteira#p040" },
+  },
+];
 
 // ---------------------------------------------------------------------------
 // Título (pergunta) de cada página de módulo, igual ao título da própria página
@@ -66,9 +148,46 @@ export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: str
 
 export type IdNo = "recursos" | "geracao" | "rede" | "consumo" | "operacao" | "contratos" | "pessoas";
 
+/** As quatro faixas do mapa: o caminho físico da energia, quem coordena a operação, o caminho do dinheiro e o que chega às pessoas. */
+export type FaixaMapa = "fisico" | "operacao" | "economia" | "pessoas";
+
+export const ORDEM_FAIXAS: readonly FaixaMapa[] = ["fisico", "operacao", "economia", "pessoas"];
+
+export const FAIXAS_MAPA: Record<FaixaMapa, { rotulo: string; resumo: string }> = {
+  fisico: {
+    rotulo: "Caminho físico",
+    resumo: "A água, o vento, o sol e os combustíveis movem as usinas, e a rede leva a energia até o consumo.",
+  },
+  operacao: {
+    rotulo: "Coordenação da operação",
+    resumo: "O ONS programa quais usinas geram, e a CCEE calcula o preço das diferenças a partir do custo de operação.",
+  },
+  economia: {
+    rotulo: "Relações econômicas",
+    resumo: "Contratos, liquidação e tarifa formam um caminho contratual, que não reproduz o trajeto físico da eletricidade.",
+  },
+  pessoas: {
+    rotulo: "Experiência das pessoas",
+    resumo: "A conta de luz, o serviço que chega a cada casa e o acesso à energia.",
+  },
+};
+
+/**
+ * Onde o nome de cada faixa fica no diagrama, em unidades do viewBox 1000 × 680 (o mesmo dos elos abaixo): acima do caminho físico, ao
+ * lado da operação (à esquerda do elo, onde nenhuma ligação passa) e abaixo dos dois últimos elos.
+ */
+export const ROTULOS_FAIXA: Record<FaixaMapa, { x: number; y: number; alinha: "esq" | "centro" }> = {
+  fisico: { x: 27, y: 34, alinha: "esq" },
+  operacao: { x: 27, y: 348, alinha: "esq" },
+  economia: { x: 250, y: 650, alinha: "centro" },
+  pessoas: { x: 750, y: 650, alinha: "centro" },
+};
+
 export type NoMapa = {
   id: IdNo;
   titulo: string;
+  /** Faixa do mapa em que o elo está: o diagrama, o painel do elo e a versão em texto a usam. */
+  faixa: FaixaMapa;
   /** Uma frase para o diagrama e para o leitor de tela. */
   curto: string;
   explicacao: string;
@@ -82,6 +201,7 @@ export type NoMapa = {
 export const NOS_MAPA: NoMapa[] = [
   {
     id: "recursos",
+    faixa: "fisico",
     titulo: "Água, vento, sol e clima",
     curto: "Os recursos que movem as usinas e o tempo que muda o consumo.",
     explicacao:
@@ -95,6 +215,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "geracao",
+    faixa: "fisico",
     titulo: "Geração",
     curto: "As usinas que transformam os recursos em eletricidade.",
     explicacao:
@@ -108,6 +229,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "rede",
+    faixa: "fisico",
     titulo: "Rede de transmissão e distribuição",
     curto: "As linhas que levam a energia das usinas às regiões e às casas.",
     explicacao:
@@ -121,6 +243,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "consumo",
+    faixa: "fisico",
     titulo: "Consumo (carga)",
     curto: "Quanto o sistema precisa atender, hora a hora.",
     explicacao:
@@ -131,6 +254,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "operacao",
+    faixa: "operacao",
     titulo: "Operação e preço de curto prazo",
     curto: "O ONS decide o despacho; a CCEE calcula o preço das diferenças.",
     explicacao:
@@ -144,6 +268,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "contratos",
+    faixa: "economia",
     titulo: "Contratos, mercado e tarifa",
     curto: "Como a energia é contratada, liquidada e transformada em tarifa.",
     explicacao:
@@ -158,6 +283,7 @@ export const NOS_MAPA: NoMapa[] = [
   },
   {
     id: "pessoas",
+    faixa: "pessoas",
     titulo: "Vida das pessoas",
     curto: "A conta, o serviço que chega e quem tem acesso.",
     explicacao:
@@ -714,13 +840,17 @@ export const ANCORAS_VISAO_GERAL = [
   "observar",
 ];
 
-/** Ids das sete seções da home (A a G), na ordem da especificação. */
+/**
+ * Ids das sete seções da inicial, na ordem em que aparecem: o hero com a busca e os quatro caminhos, as seis perguntas, o índice
+ * completo, o mapa conceitual, as trilhas, "Como ler e conferir" e as fontes com a atualidade. Outras páginas apontam para estes ids
+ * (por exemplo, o Aprenda leva a #mapa-conceitual), e o link antigo de qualquer um deles continua abrindo a seção.
+ */
 export const SECOES_HOME = [
-  { id: "proposito", letra: "A", rotulo: "Para que serve" },
-  { id: "mapa-conceitual", letra: "B", rotulo: "Como as partes se ligam" },
-  { id: "destinos", letra: "C", rotulo: "Para que serve cada página" },
-  { id: "perguntas", letra: "D", rotulo: "Explore pela sua pergunta" },
-  { id: "trilhas", letra: "E", rotulo: "Trilhas por interesse" },
-  { id: "como-confiar", letra: "F", rotulo: "Como confiar e como ler" },
-  { id: "aprofundar", letra: "G", rotulo: "Onde aprofundar e atualidade" },
+  { id: "proposito", rotulo: "Para que serve" },
+  { id: "perguntas", rotulo: "Seis perguntas para começar" },
+  { id: "destinos", rotulo: "Todas as páginas, por tema" },
+  { id: "mapa-conceitual", rotulo: "Como as partes se ligam" },
+  { id: "trilhas", rotulo: "Trilhas de leitura" },
+  { id: "como-confiar", rotulo: "Como ler e conferir" },
+  { id: "aprofundar", rotulo: "Fontes e atualidade" },
 ] as const;

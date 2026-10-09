@@ -3,25 +3,27 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoDestaques, TransicaoMmgdMensal, TransicaoMmgdPerfil, TransicaoMmgdUf, TransicaoMunicipios } from "@/components/energia/TransicaoMmgd";
 import {
   TransicaoAnalise,
   TransicaoAuditoria,
   TransicaoAviso,
+  TransicaoDatas,
   TransicaoDocumento,
   TransicaoIndisponivel,
   TransicaoNavegacao,
   TransicaoRecorte,
   TransicaoSeguir,
-  TransicaoSubtitulo,
   TransicaoTabela,
 } from "@/components/energia/TransicaoPagina";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
@@ -33,6 +35,7 @@ import {
   PERGUNTA_ONS,
   cnpjFormatado,
   colunasDistribuidoras,
+  conectadaNoAnoDeReferencia,
   contagem,
   dadosMensal,
   data,
@@ -102,31 +105,123 @@ export default function MmgdPage() {
   const anoCadastro = Number(m.data_cadastro.slice(0, 4));
   const anual = linhasAnual(m);
   const fontes = linhasFontes(m.fontes);
+  const conectada = conectadaNoAnoDeReferencia(m);
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
   const siglaDe = new Map(m.distribuidoras.map((d) => [d.cnpj, d.sigla ?? cnpjFormatado(d.cnpj)]));
   const dq = m.distribuicao_municipal.quantis_w_por_habitante;
   const modalidades = textoModalidadesRemotas(m.perfis);
   const nomesFora = fora.disponivel ? nomesNoServidor(g.mapa_municipios, fora.maiores_municipios.map((x) => x.ibge)) : new Map<string, string>();
+  const oQueMudou = (
+    <>
+      {mudancaMmgdAno(m)}
+      <span data-nivel="analisar" className="mt-2 block">
+        {mudancaMmgd(m)}
+      </span>
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      Unidades = empreendimentos no cadastro vigente; potência = soma da potência instalada informada (kW; MW nas tabelas). W por habitante = potência ÷ população estimada
+      pelo IBGE, as duas somadas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de {m.ano_referencia - 1}. O ano
+      de conexão vem da data publicada pela ANEEL, conferida com a data de conexão do recurso técnico. {g.regras.ano_referencia} Pelo Sistema de Compensação de Energia Elétrica (SCEE), a
+      energia que a unidade injeta na rede vira crédito para abater o consumo, no mesmo local, em outra unidade do mesmo titular, entre condôminos ou entre os participantes de uma
+      geração compartilhada: por isso o mapa mostra onde está a unidade geradora, não onde o crédito é usado.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Quanta energia cada lugar gera: o cadastro mede capacidade, e a geração não é publicada por unidade nem por município. Nada sobre renda ou perfil de quem tem o
+      sistema: potência por habitante relaciona território, não pessoas. {modalidades} Os meses recentes ainda podem mudar, e unidades desativadas não aparecem no
+      histórico.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-mmgd" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["MMGD", "SIN", "MWmed", "UC", "ANEEL", "ONS", "IBGE"]}
+        <TransicaoNavegacao atual="p063" />
+        <CabecalhoModulo
+          siglas={["MMGD", "SIN", "MWmed", "UC", "ANEEL", "ONS", "IBGE"]}
           rotulo="Transição e ambiente"
-          titulo="Micro e minigeração distribuída no território"
+          titulo={perguntaPainel("p063")}
+          lead={
+            <>
+              Onde está e quanto cresce a <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastrada na ANEEL, por UF,
+              município, distribuidora e perfil. O cadastro mede capacidade instalada, não energia gerada.
+            </>
+          }
+          recorte={`Cadastro de ${data(m.data_cadastro)} · conexões de ${anual[0]?.ano ?? "sem dado"} a ${data(r.ultima_data_conexao)} · MW e W por habitante`}
+          fonte="ANEEL, relação de empreendimentos de MMGD; IBGE, população"
           referencia={
             <>
               Cadastro da ANEEL gerado em {data(m.data_cadastro)} (capturado em {carimbo(m.proveniencia.cadastro.capturado_em)}); população estimada pelo IBGE para {m.ano_populacao ?? "sem dado"}.
               Processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <TransicaoDatas
+              itens={[
+                { rotulo: "Cadastro de MMGD (ANEEL)", texto: `gerado em ${data(m.data_cadastro)}`, natureza: "OBSERVADO" },
+                { rotulo: "Conexões", texto: `até ${data(r.ultima_data_conexao)}`, natureza: "OBSERVADO" },
+                { rotulo: "População (IBGE)", texto: `estimativa para ${m.ano_populacao ?? "sem dado"}`, natureza: "CALCULADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas colunas={4} rotulo="Indicadores da MMGD no cadastro" nota={<>{g.regras.capacidade_nao_e_energia} {g.regras.cadastro_x_estimativa}</>}>
+              <Numero
+                variante="faixa"
+                rotulo="Potência instalada cadastrada"
+                natureza="OBSERVADO"
+                evidencia={m.evidencias.potencia}
+                casas={1}
+                unidade="MW"
+                cor="var(--serie-solar)"
+                nota={`Capacidade, não energia. ${participacaoTexto(r.participacao_solar_potencia_pct)} solar.`}
+                endereco={`${rotaPainel("p063")}#p063`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Unidades de MMGD no cadastro"
+                natureza="OBSERVADO"
+                evidencia={m.evidencias.unidades}
+                casas={0}
+                unidade="unidades"
+                nota={`Cada unidade do cadastro é um empreendimento gerador. A soma das unidades consumidoras que recebem créditos desses empreendimentos é outra contagem: ${inteiro(r.ucs_recebem_credito)}.`}
+                endereco={`${rotaPainel("p063")}#p063`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo={`Potência conectada em ${conectada?.ano ?? "sem dado"}`}
+                natureza="OBSERVADO"
+                valor={conectada?.potencia_mw ?? null}
+                casas={1}
+                unidade="MW"
+                periodo="ano completo, pela data de conexão"
+                cor="var(--serie-solar)"
+                nota={conectada ? `Capacidade adicionada no ano, em ${inteiro(conectada.unidades)} unidades.` : undefined}
+                motivoAusencia="Sem o último ano completo nesta publicação."
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Potência por habitante no Brasil"
+                natureza="CALCULADO"
+                valor={r.w_por_habitante_brasil}
+                casas={1}
+                unidade="W/hab"
+                periodo={`população do IBGE para ${m.ano_populacao ?? "sem dado"}`}
+                cor="var(--serie-referencia)"
+                nota="Potência instalada cadastrada dividida pela população estimada, as duas somadas no país."
+                motivoAusencia="Sem a população do IBGE nesta publicação."
+              />
+            </FaixaMetricas>
+          }
         >
           Onde estão e quanto crescem as unidades de <Termo slug="geracao-distribuida">micro e minigeração distribuída</Termo> (MMGD, a geração instalada junto às unidades consumidoras) cadastradas na ANEEL, por UF, município,
           distribuidora e perfil. O cadastro mede capacidade instalada; a energia que essas unidades entregam ao SIN está na página da energia estimada pelo ONS, sem nunca ser somada ao cadastro.
         </CabecalhoModulo>
-        <TransicaoNavegacao atual="p063" />
         {g.pendencias.length > 0 && (
           <div className="pb-4">
             <TransicaoAviso rotulo="Blocos ausentes nesta publicação" alerta>
@@ -138,7 +233,7 @@ export default function MmgdPage() {
           <Bloco id="mmgd">
             <PainelEvidencia
               id="p063"
-              pergunta={perguntaPainel("p063")}
+              pergunta="Potência instalada por UF e por habitante"
               subtitulo="Micro e minigeração distribuída no cadastro da ANEEL · unidades, MW instalados e W por habitante"
               natureza="OBSERVADO"
               porQueImporta={
@@ -147,28 +242,10 @@ export default function MmgdPage() {
                   desigual pelo território, muda o que a distribuidora entrega e o que o ONS precisa prever, e entra na conta de quem gera pelo Sistema de Compensação de Energia Elétrica (SCEE).
                 </>
               }
-              oQueMudou={
-                <>
-                  {mudancaMmgdAno(m)}
-                  <span data-nivel="analisar" className="mt-2 block">
-                    {mudancaMmgd(m)}
-                  </span>
-                </>
-              }
-              comoInterpretar={
-                <>
-                  Unidades = empreendimentos no cadastro vigente; potência = soma da potência instalada informada (kW; MW nas tabelas). W por habitante = potência ÷ população estimada
-                  pelo IBGE, as duas somadas no território. Crescimento do estoque em {m.ano_referencia} = potência conectada no ano ÷ potência conectada até o fim de{" "}
-                  {m.ano_referencia - 1}. O ano de conexão vem da data publicada pela ANEEL, conferida com a data de conexão do recurso técnico. {g.regras.ano_referencia}
-                </>
-              }
-              naoConcluir={
-                <>
-                  Quanta energia cada lugar gera: o cadastro mede capacidade, e a geração não é publicada por unidade nem por município. Nada sobre renda ou perfil de quem tem o
-                  sistema: potência por habitante relaciona território, não pessoas. {modalidades} Os meses recentes ainda podem mudar, e unidades desativadas não aparecem no
-                  histórico.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={m.proveniencia.cadastro}
               complementares={[{ rotulo: "Por habitante (ANEEL e IBGE)", p: m.proveniencia.por_habitante }]}
             >
@@ -176,6 +253,16 @@ export default function MmgdPage() {
                 <RespostaCurta id="p063" veredito={vereditoMmgd(m) || respostaMmgd(m)}>
                   {respostaMmgd(m)}
                 </RespostaCurta>
+                <TransicaoMmgdUf
+                  linhas={linhasUfs(m.ufs)}
+                  ufAnual={ufAnualCompacto(m.uf_anual)}
+                  anoReferencia={m.ano_referencia}
+                  anoPopulacao={m.ano_populacao}
+                  primeiroCoberto={primeiroCoberto}
+                  wPorHabitanteBrasil={r.w_por_habitante_brasil}
+                  dataCadastro={m.data_cadastro}
+                  fonte={FONTE_ANEEL}
+                />
                 <TransicaoRecorte
                   periodo={
                     <>
@@ -191,79 +278,36 @@ export default function MmgdPage() {
                   }
                   unidade={<>Unidades; potência instalada em kW e MW (capacidade, não energia); W por habitante com a população do IBGE de {m.ano_populacao ?? "sem dado"}</>}
                 />
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Numero
-                    rotulo="Potência instalada de MMGD cadastrada"
-                    natureza="OBSERVADO"
-                    evidencia={m.evidencias.potencia}
-                    casas={1}
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+
+                <SecaoDoPainel id="por-ano" titulo="Quanto foi conectado a cada ano no Brasil?">
+                  <GraficoBarras
+                    titulo={`Potência conectada por ano de conexão, Brasil (cadastro de ${data(m.data_cadastro)})`}
+                    dados={anual}
+                    chaveCategoria="id"
+                    chaveRotulo="rotulo"
+                    series={[{ id: "potencia_mw", rotulo: "Potência conectada no ano", cor: "var(--serie-solar)" }]}
                     unidade="MW"
-                    tamanho="medio"
-                    cor="var(--serie-solar)"
-                    nota={`Capacidade, não energia. ${participacaoTexto(r.participacao_solar_potencia_pct)} solar.`}
-                    endereco={`${rotaPainel("p063")}#p063`}
+                    casas={1}
+                    altura={300}
                   />
-                  <Numero
-                    rotulo="Unidades de MMGD no cadastro"
-                    natureza="OBSERVADO"
-                    evidencia={m.evidencias.unidades}
-                    casas={0}
-                    unidade="unidades"
-                    tamanho="medio"
-                    nota={`Cada unidade do cadastro é um empreendimento gerador. A soma das unidades consumidoras que recebem créditos desses empreendimentos é outra contagem: ${inteiro(r.ucs_recebem_credito)}.`}
-                    endereco={`${rotaPainel("p063")}#p063`}
+                  <TabelaInterativa
+                    titulo="Conexões e estoque por ano, Brasil"
+                    colunas={COLUNAS_ANUAL}
+                    linhas={anual}
+                    chaveLinha="id"
+                    colunaRotulo="ano"
+                    fonte={FONTE_ANEEL_CADASTRO}
+                    versao={m.data_cadastro}
+                    nomeArquivo="transicao-mmgd-anual"
+                    chaveUrl="mmgd.ano"
+                    ordemInicial={{ coluna: "ano", direcao: "desc" }}
+                    dicaBusca="Ano"
+                    nota={`${cobertura.regra} O estoque inclui ${contagem(cobertura.unidades_anteriores, "registro anterior", "registros anteriores")} à cobertura e exclui ${contagem(r.unidades_sem_data, "unidade", "unidades")} sem data de conexão (no total do cadastro).`}
                   />
-                </div>
-                <TransicaoAviso rotulo="Capacidade, não energia">
-                  {g.regras.capacidade_nao_e_energia} {g.regras.cadastro_x_estimativa}
-                </TransicaoAviso>
+                </SecaoDoPainel>
 
-                <TransicaoMmgdUf
-                  linhas={linhasUfs(m.ufs)}
-                  ufAnual={ufAnualCompacto(m.uf_anual)}
-                  anoReferencia={m.ano_referencia}
-                  anoPopulacao={m.ano_populacao}
-                  primeiroCoberto={primeiroCoberto}
-                  wPorHabitanteBrasil={r.w_por_habitante_brasil}
-                  dataCadastro={m.data_cadastro}
-                  fonte={FONTE_ANEEL}
-                />
-
-                <TransicaoSubtitulo>Quanto foi conectado a cada ano no Brasil?</TransicaoSubtitulo>
-                <GraficoBarras
-                  titulo={`Potência conectada por ano de conexão, Brasil (cadastro de ${data(m.data_cadastro)})`}
-                  dados={anual}
-                  chaveCategoria="id"
-                  chaveRotulo="rotulo"
-                  series={[{ id: "potencia_mw", rotulo: "Potência conectada no ano", cor: "var(--serie-solar)" }]}
-                  unidade="MW"
-                  casas={1}
-                  altura={300}
-                />
-                <TabelaInterativa
-                  titulo="Conexões e estoque por ano, Brasil"
-                  colunas={COLUNAS_ANUAL}
-                  linhas={anual}
-                  chaveLinha="id"
-                  colunaRotulo="ano"
-                  fonte={FONTE_ANEEL_CADASTRO}
-                  versao={m.data_cadastro}
-                  nomeArquivo="transicao-mmgd-anual"
-                  chaveUrl="mmgd.ano"
-                  ordemInicial={{ coluna: "ano", direcao: "desc" }}
-                  dicaBusca="Ano"
-                  nota={`${cobertura.regra} O estoque inclui ${contagem(cobertura.unidades_anteriores, "registro anterior", "registros anteriores")} à cobertura e exclui ${contagem(r.unidades_sem_data, "unidade", "unidades")} sem data de conexão (no total do cadastro).`}
-                />
-
-                <TransicaoAnalise titulo="Mês a mês: conexões e estoque">
-                  <TransicaoMmgdMensal dados={dadosMensal(m.mensal)} corte={m.corte_provisorio} />
-                  <p className="max-w-prose2 text-sm text-carvao-muted">
-                    {g.regras.provisorio} Meses antes de {mes(cobertura.inicio_declarado.slice(0, 7))} sem registro ficam em branco: a ANEEL não declara cobertura ali. A série por UF e mês
-                    está no CSV por UF, mês e fonte.
-                  </p>
-                </TransicaoAnalise>
-
-                <TransicaoAnalise titulo="Com que fonte?">
+                <SecaoDoPainel id="fontes" titulo="Com que fonte?">
                   <GraficoBarras
                     titulo="Potência instalada por fonte de geração"
                     dados={fontes}
@@ -281,16 +325,18 @@ export default function MmgdPage() {
                     numericas={[1, 2, 3]}
                     linhas={fontes.map((f) => [f.rotulo, inteiro(f.unidades), numTexto(f.potencia_mw, 3), participacaoTexto(f.participacao_potencia_pct)])}
                   />
-                </TransicaoAnalise>
+                </SecaoDoPainel>
 
-                <TransicaoAnalise titulo="Quem tem: classe, modalidade, porte e tipo de consumidor">
+                <SecaoDoPainel id="perfil" titulo="Quem tem: classe, modalidade, porte e tipo de consumidor">
                   <TransicaoMmgdPerfil perfis={m.perfis} anoReferencia={m.ano_referencia} />
-                  {m.documentos.map((d) => (
-                    <TransicaoDocumento key={d.url + d.titulo} doc={d} />
-                  ))}
-                </TransicaoAnalise>
+                  <div data-nivel="analisar" className="space-y-3">
+                    {m.documentos.map((d) => (
+                      <TransicaoDocumento key={d.url + d.titulo} doc={d} />
+                    ))}
+                  </div>
+                </SecaoDoPainel>
 
-                <TransicaoAnalise titulo="Municípios: destaques e mapa">
+                <SecaoDoPainel id="municipios" titulo="E nos municípios: destaques e mapa">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Entre os {inteiro(m.distribuicao_municipal.municipios_com_populacao)} municípios com população estimada, a potência por habitante vai de {numTexto(dq.p10, 1)} W/hab
                     (10% dos municípios abaixo) a {numTexto(dq.p90, 1)} W/hab (10% acima), com mediana de {numTexto(dq.p50, 1)}. {contagem(m.distribuicao_municipal.municipios_sem_mmgd, "município não tem", "municípios não têm")} nenhuma unidade. Rankings só com população de pelo menos {inteiro(m.municipios_destaque.populacao_minima_ranking)} habitantes e potência
@@ -311,6 +357,14 @@ export default function MmgdPage() {
                     fonte={FONTE_ANEEL}
                     versao={m.data_cadastro}
                   />
+                </SecaoDoPainel>
+
+                <TransicaoAnalise titulo="Mês a mês: conexões e estoque">
+                  <TransicaoMmgdMensal dados={dadosMensal(m.mensal)} corte={m.corte_provisorio} />
+                  <p className="max-w-prose2 text-sm text-carvao-muted">
+                    {g.regras.provisorio} Meses antes de {mes(cobertura.inicio_declarado.slice(0, 7))} sem registro ficam em branco: a ANEEL não declara cobertura ali. A série por UF e mês
+                    está no CSV por UF, mês e fonte.
+                  </p>
                 </TransicaoAnalise>
 
                 <TransicaoAnalise titulo="Distribuidoras">

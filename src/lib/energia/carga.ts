@@ -21,6 +21,7 @@ import type {
   ClasseDia,
   ClassesDias,
   DecomposicaoA07,
+  EventoCurto,
   GrupoModelo,
   JanelaComparacao,
   JanelaId,
@@ -138,6 +139,17 @@ export function textoCalendarioJanela(j: JanelaComparacao, tipo: TipoComparacao)
   return `As janelas não têm a mesma composição de calendário: ${textoClasses(j.classes)} nesta, ${textoClasses(ant)} na de comparação.`;
 }
 
+/**
+ * Feriados e pontos facultativos de cada janela, na base escolhida: os da janela e os da janela de comparação (as mesmas datas do ano
+ * anterior ou os mesmos dias da semana deslocados 364 dias). Lidos da gold, nunca escritos aqui.
+ */
+export function textoEventosJanela(j: JanelaComparacao, tipo: TipoComparacao): string {
+  const nomes = (xs: readonly EventoCurto[]) => listaTexto(xs.map(([d, nome]) => `${nome} (${dataBR(d)})`));
+  const ant = tipo === "equivalente" ? j.eventos_equivalente : j.eventos_mesmas_datas;
+  if (!j.eventos.length && !ant.length) return "Nenhum feriado nem ponto facultativo nas duas janelas.";
+  return `Feriados e pontos facultativos: ${j.eventos.length ? nomes(j.eventos) : "nenhum"} nesta janela; ${ant.length ? nomes(ant) : "nenhum"} na de comparação.`;
+}
+
 /* ---------- P025: nível e crescimento ---------- */
 
 export type LinhaComparacao = {
@@ -194,6 +206,42 @@ export function linhasComparacao(p: Pick<P025, "comparacoes">, sm: Regiao, tipo:
       calendario_equivalente: calendarioEquivalente(j, tipo),
     };
   });
+}
+
+/** A base da comparação escrita no plural, em minúsculas, para rótulos e frases. */
+export const BASE_CURTA: Record<TipoComparacao, string> = { equivalente: "mesmos dias da semana", mesmas_datas: "mesmas datas" };
+
+/** Uma linha de explicação de cada base, para o controle que alterna entre elas. */
+export const EXPLICACAO_BASE: Record<TipoComparacao, string> = {
+  equivalente: "Cada dia contra o dia de mesma posição na semana, 52 semanas antes (364 dias).",
+  mesmas_datas: "Cada dia contra a mesma data do ano anterior; os dias caem em outros dias da semana.",
+};
+
+export function outraBase(t: TipoComparacao): TipoComparacao {
+  return t === "equivalente" ? "mesmas_datas" : "equivalente";
+}
+
+/** A linha da janela escolhida, a mesma que alimenta o gráfico de pontos, a tabela equivalente e a exportação (null sem a janela). */
+export function linhaDaJanela(p: Pick<P025, "comparacoes">, sm: Regiao, janela: JanelaId, tipo: TipoComparacao): LinhaComparacao | null {
+  return linhasComparacao(p, sm, tipo).find((l) => l.janela === janela) ?? null;
+}
+
+/**
+ * Frase da abertura que diz o que a outra base daria para a mesma janela. A janela é a mesma e as duas taxas são certas: o que muda
+ * é a janela de comparação (as mesmas datas do ano anterior caem em outros dias da semana; os mesmos dias da semana deslocam a
+ * janela em 364 dias). Vazia quando a janela não existe.
+ */
+export function textoOutraBase(p: Pick<P025, "comparacoes">, sm: Regiao, janela: JanelaId, tipo: TipoComparacao): string {
+  if (!p.comparacoes.janelas.some((j) => j.id === janela)) return "";
+  const outra = outraBase(tipo);
+  const l = linhaDaJanela(p, sm, janela, outra);
+  const nome = outra === "equivalente" ? "os mesmos dias da semana, 52 semanas antes" : "as mesmas datas do ano anterior";
+  if (!l || l.variacao_pct === null || l.inicio_ant === null || l.fim_ant === null) return `Com ${nome}, esta janela não tem variação publicada.`;
+  const diferenca =
+    outra === "mesmas_datas"
+      ? "nas mesmas datas, os dias do ano anterior caem em outros dias da semana"
+      : "nos mesmos dias da semana, a janela de comparação é deslocada 364 dias";
+  return `Com ${nome} (${dataBR(l.inicio_ant)} a ${dataBR(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2)}%. As duas taxas usam bases diferentes: ${diferenca}.`;
 }
 
 /** Todas as regiões, janelas e tipos: as mesmas linhas de carga_comparacoes.csv. */
@@ -341,12 +389,23 @@ export function linhasAnual(p: Pick<P025, "anual">): LinhaAnual[] {
   });
 }
 
-/** Ponto da série diária de uma região com o mesmo dia da semana 364 dias antes (busca por data, não por posição). */
-export type PontoReferencia = { d: string; atual: number | null; ref364: number | null };
+/**
+ * Ponto da série diária de uma região com as duas referências, cada uma procurada pela data (nunca pela posição):
+ * `ref364` é o mesmo dia da semana 364 dias antes; `refDatas` é a mesma data do ano anterior (null em 29 de fevereiro,
+ * que não tem par).
+ */
+export type PontoReferencia = { d: string; atual: number | null; ref364: number | null; refDatas: number | null };
 
 export function deslocaDias(iso: string, dias: number): string {
   const t = Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1, Number(iso.slice(8, 10)));
   return new Date(t + dias * 86_400_000).toISOString().slice(0, 10);
+}
+
+/** Mesma data do ano anterior ("2026-09-22" vira "2025-09-22"); null para 29 de fevereiro, que não existe no ano anterior. */
+export function mesmaDataAnoAnterior(iso: string): string | null {
+  const md = iso.slice(5, 10);
+  if (md === "02-29") return null;
+  return `${Number(iso.slice(0, 4)) - 1}-${md}`;
 }
 
 /**
@@ -362,11 +421,18 @@ export function serieColunar(serie: readonly ({ d: string } & Partial<Record<Reg
   return out;
 }
 
-/** Série da região com o valor do mesmo dia da semana 364 dias antes, procurado pela data (nunca pela posição). */
+/**
+ * Série da região com os dois valores de referência, procurados pela data (nunca pela posição): o mesmo dia da semana 364 dias antes
+ * (`ref364`, base "mesmos dias da semana") e a mesma data do ano anterior (`refDatas`, base "mesmas datas"). O gráfico mostra a
+ * referência da base que o leitor escolheu.
+ */
 export function serieComReferencia(serie: SerieColunar, sm: Regiao): PontoReferencia[] {
   const valores = serie[sm] ?? [];
   const porDia = new Map(serie.d.map((d, i) => [d, valores[i] ?? null]));
-  return serie.d.map((d, i) => ({ d, atual: valores[i] ?? null, ref364: porDia.get(deslocaDias(d, -364)) ?? null }));
+  return serie.d.map((d, i) => {
+    const datas = mesmaDataAnoAnterior(d);
+    return { d, atual: valores[i] ?? null, ref364: porDia.get(deslocaDias(d, -364)) ?? null, refDatas: datas ? (porDia.get(datas) ?? null) : null };
+  });
 }
 
 /** Mudanças de regime dentro do período mostrado, como marcos do gráfico. */
@@ -544,6 +610,23 @@ export function horaModal(contagem: readonly number[]): { hora: number; dias: nu
   return hora >= 0 ? { hora, dias: melhor } : null;
 }
 
+/**
+ * Hora em que o pico do dia caiu mais vezes no último ano publicado: na curva de carga da região e, só para o SIN, na carga líquida de
+ * MMGD da carga verificada. São as mesmas contagens do mapa de calor e da resposta do painel; a hora é a de início (empate: a primeira).
+ */
+export function picoModalDoAno(
+  p: Pick<P026, "hora_pico_por_ano" | "hora_pico_api_sin_por_ano">,
+  sm: Regiao,
+): { ano: number; dias: number; curva: { hora: number; dias: number }; liquida: { hora: number; dias: number } | null } | null {
+  const anos = p.hora_pico_por_ano[sm] ?? [];
+  const ult = anos.length ? anos[anos.length - 1] : null;
+  const moda = ult ? horaModal(ult.contagem) : null;
+  if (!ult || !moda) return null;
+  const api = sm === "SIN" ? p.hora_pico_api_sin_por_ano.find((x) => x.ano === ult.ano) : undefined;
+  const ml = api ? horaModal(api.contagem_liquida) : null;
+  return { ano: ult.ano, dias: ult.dias, curva: moda, liquida: ml };
+}
+
 /** Resposta curta do P026 para a região escolhida. */
 export function respostaPerfil(p: P026, sm: Regiao): string {
   const quem = DO_REGIAO[sm];
@@ -573,7 +656,7 @@ export function respostaPerfil(p: P026, sm: Regiao): string {
 }
 
 /** "entre 18h e 19h": a hora cheia de início e a seguinte, para a hora do pico (a fonte diz a hora de início). */
-function entreHoras(h: number): string {
+export function entreHoras(h: number): string {
   return `entre ${rotuloHora(h)} e ${rotuloHora((h + 1) % 24)}`;
 }
 
@@ -855,6 +938,32 @@ export function barrasDecomposicao(d: DecomposicaoA07): BarraDecomposicao[] {
   return [...GRUPOS_MODELO.map((g) => ({ id: g, rotulo: ROTULO_GRUPO[g], valor: d.contribuicoes_log100[g] })), { id: "residuo" as const, rotulo: "Resíduo", valor: d.residuo_log100 }];
 }
 
+export type PartesDaDiferenca = {
+  /** Diferença real entre as janelas, em log × 100. */
+  diferenca: number;
+  /** Calendário, temperatura e sazonalidade somados. */
+  clima: number;
+  nivelTendencia: number;
+  residuo: number;
+  /** Parte da diferença que clima e calendário acompanham, e parte que o modelo não reproduz (null quando a diferença é nula). */
+  proporcaoClima: number | null;
+  proporcaoResto: number | null;
+};
+
+/** As partes da diferença que o veredito e a faixa de métricas leem: uma só conta, sobre as contribuições publicadas. */
+export function partesDaDiferenca(d: DecomposicaoA07): PartesDaDiferenca {
+  const c = d.contribuicoes_log100;
+  const clima = c.calendario + c.temperatura + c.sazonalidade;
+  return {
+    diferenca: d.real_log100,
+    clima,
+    nivelTendencia: c.nivel_tendencia,
+    residuo: d.residuo_log100,
+    proporcaoClima: d.real_log100 === 0 ? null : clima / d.real_log100,
+    proporcaoResto: d.real_log100 === 0 ? null : d.residuo_log100 / d.real_log100,
+  };
+}
+
 /** Texto da decomposição escolhida, só com os números da linha (associação, não causa). */
 export function respostaDecomposicao(d: DecomposicaoA07): string {
   // duas casas, a precisão da gold (com uma casa, 2,65 viraria 2,7 aqui e 2,6 no texto do pipeline)
@@ -886,9 +995,9 @@ export function vereditoClima(d: DecomposicaoA07 | null, p: Pick<P027Pronto, "me
   const quanto = v === 0 ? "ficou igual à" : `ficou ${num(Math.abs(d.real_log100), 2)} pontos ${v > 0 ? "acima" : "abaixo"} da`;
   const abertura = `Nos ${plural(d.dias, "dia", "dias")} até ${dataBR(d.fim)}, a carga ${DO_REGIAO[d.sm]} ${quanto} carga ${ref}.`;
   if (d.real_log100 === 0) return `${abertura} Com diferença nula, a divisão entre as partes do modelo não se aplica.`;
-  const c = d.contribuicoes_log100;
-  const clima = (c.calendario + c.temperatura + c.sazonalidade) / d.real_log100;
-  const resto = d.residuo_log100 / d.real_log100;
+  const partes = partesDaDiferenca(d);
+  const clima = partes.proporcaoClima as number;
+  const resto = partes.proporcaoResto as number;
   const parteClima = clima < 0 ? "Calendário, temperatura e estação do ano puxam no sentido oposto à diferença" : `Calendário, temperatura e estação do ano acompanham ${num(Math.round(clima * 100), 0)}% dessa diferença`;
   const parteResto = resto < 0 ? "o modelo previa uma diferença maior que a observada" : `o modelo não reproduz ${num(Math.round(resto * 100), 0)}%`;
   return `${abertura} ${parteClima}; ${parteResto}.`;

@@ -10,9 +10,11 @@ import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
 
 /**
- * P051, pequenos múltiplos: DEC e FEC anuais de até quatro distribuidoras, cada uma no
+ * Pequenos múltiplos (painel de limites): DEC e FEC anuais de até quatro distribuidoras, cada uma no
  * seu painel e com o próprio limite tracejado, na mesma escala (a escala comum é dita
- * no gráfico). A série por distribuidora fica fora da gold (qualidade_distribuidoras_serie.json,
+ * no gráfico). O DEC e o FEC ficam em blocos próprios, lado a lado a partir de 1.024 px, cada um
+ * com a sua escala e com a frase de cada distribuidora (anos acima do limite, último ano e mudança
+ * de perímetro). A série por distribuidora fica fora da gold (qualidade_distribuidoras_serie.json,
  * 36 KB) e é buscada quando o painel aparece.
  *
  * A escolha mora em `?dist=`, o mesmo parâmetro do painel de limites e do botão do mapa:
@@ -65,6 +67,28 @@ export function QualidadeComparador({
       nota: serie?.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
     }));
 
+  const bloco = (ind: "dec" | "fec", dados: ReturnType<typeof linhasSerieDistribuidoras>) => (
+    <div className="space-y-3" data-comparador-indicador={ind}>
+      {/* só a lista do DEC é região viva: a troca de escolha é anunciada uma vez, não duas */}
+      <ul className="space-y-1 text-sm text-carvao" aria-live={ind === "dec" ? "polite" : undefined}>
+        {escolhidas.map((c) => (
+          <li key={c}>{respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie?.distribuidoras[c], ind)}</li>
+        ))}
+      </ul>
+      <PequenosMultiplos
+        titulo={`${ind === "dec" ? "DEC" : "FEC"} anual diante do limite de cada distribuidora`}
+        dados={dados}
+        chaveX="ano"
+        formatoX="texto"
+        unidade={ind === "dec" ? "h" : "interrupções"}
+        casas={2}
+        colunas={2}
+        nivelTitulo={4}
+        paineis={paineis(ind)}
+      />
+    </div>
+  );
+
   return (
     <div className="space-y-5">
       <Comparador
@@ -88,35 +112,10 @@ export function QualidadeComparador({
         </p>
       )}
       {serie && escolhidas.length > 0 && (
-        <>
-          <ul className="space-y-1 text-sm text-carvao" aria-live="polite">
-            {escolhidas.map((c) => (
-              <li key={c}>{respostaHistoricoDistribuidora(nomes.get(c) ?? `CNPJ ${c}`, serie.distribuidoras[c], "dec")}</li>
-            ))}
-          </ul>
-          <PequenosMultiplos
-            titulo="DEC anual diante do limite de cada distribuidora"
-            dados={dadosDec}
-            chaveX="ano"
-            formatoX="texto"
-            unidade="h"
-            casas={2}
-            colunas={2}
-            nivelTitulo={4}
-            paineis={paineis("dec")}
-          />
-          <PequenosMultiplos
-            titulo="FEC anual diante do limite de cada distribuidora"
-            dados={dadosFec}
-            chaveX="ano"
-            formatoX="texto"
-            unidade="interrupções"
-            casas={2}
-            colunas={2}
-            nivelTitulo={4}
-            paineis={paineis("fec")}
-          />
-        </>
+        <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2 [&>*]:min-w-0">
+          {bloco("dec", dadosDec)}
+          {bloco("fec", dadosFec)}
+        </div>
       )}
     </div>
   );

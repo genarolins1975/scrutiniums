@@ -4,7 +4,6 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { PldCabecalho } from "@/components/energia/PldPagina";
 
 /**
  * Mudanças estruturais depois da r8, sobre o que os nove revisores da r8 mais repetiram: a resposta curta ficou curta e continuou abaixo
@@ -79,13 +78,7 @@ describe("abertura do módulo recolhida em Entender", () => {
     expect(e).toContain("Água e clima");
   });
 
-  it("o cabeçalho do PLD, que tem marcação própria, recolhe do mesmo modo", () => {
-    const t = renderToStaticMarkup(createElement(PldCabecalho, { titulo: "Limites?", referencia: "CCEE até 30/09/2026" }, "Abertura do PLD."));
-    const bloco = t.match(/<details[^>]*data-sobre-pagina="true"[^>]*>([\s\S]*?)<\/details>/);
-    expect(bloco![1]).toContain("Abertura do PLD.");
-    expect(bloco![1]).not.toContain("CCEE até 30/09/2026");
-    expect(t.replace(bloco![0], "")).toContain("CCEE até 30/09/2026");
-  });
+  // O cabeçalho próprio do PLD (PldCabecalho) deixou de existir: as cinco páginas do PLD usam o CabecalhoModulo, coberto pelos testes acima.
 
   it("as páginas sem seletor de profundidade pedem recolher falso", () => {
     for (const f of ["src/components/energia/ModuloEmIntegracao.tsx", "src/app/setor-eletrico/aprenda/page.tsx", "src/app/setor-eletrico/aprenda/trilhas/page.tsx"]) {

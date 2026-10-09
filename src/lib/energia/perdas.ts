@@ -34,6 +34,7 @@ import type {
 } from "./tipos-perdas";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
 import { classeDe, quebrasFixas, type Classificacao } from "./escalas";
+import { resumo as resumoDistribuicao } from "./distribuicao";
 import { dataBR, mesAno, num, plural } from "./formato";
 
 /* ------------------------------------------------------------------ números com ausência escrita */
@@ -1568,4 +1569,148 @@ export function vereditoEvolucao(nacional: readonly LinhaNacional[]): string {
   if (!serie.length) return "Sem série nacional das concessionárias publicada.";
   const ordem = [...serie].sort((a, b) => a.taxa - b.taxa || Number(a.ano) - Number(b.ano));
   return `De ${serie[0].ano} a ${serie[serie.length - 1].ano}, a taxa anual das concessionárias ficou entre ${num(ordem[0].taxa, 2)}% e ${num(ordem[ordem.length - 1].taxa, 2)}%. Os anos não têm sempre as mesmas distribuidoras.`;
+}
+
+/* ------------------------------------------------------------------ faixa de comparação entre distribuidoras */
+
+/** "a, b e c". */
+function juntar(itens: readonly string[]): string {
+  if (itens.length <= 1) return itens[0] ?? "";
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+/** Um extremo observado: o valor e todas as distribuidoras que o têm (os empates não se perdem). */
+export type PontaFaixa = { v: number; rotulos: string[] };
+
+/**
+ * A faixa de comparação entre distribuidoras numa medida e num período: quantas entram (valor comparável), de que tipo são, o menor e o
+ * maior valor observados com todos os empates, a mediana simples (sem ponderar pelo tamanho) e quantas ficam de fora (valor publicado
+ * fora da comparação, ou sem dado). É outro universo e outra conta que o agregado das concessionárias da série nacional (razão entre
+ * somas): a página diz os dois lado a lado, cada um com a sua contagem.
+ *
+ * Lê os mesmos `valores` que pintam o mapa e preenchem a tabela e a exportação: o que o mapa pinta com a cor de uma classe é o que
+ * entra aqui. Extremos são valores observados, não metas nem classificação de desempenho.
+ */
+export type FaixaComparacao = {
+  n: number;
+  /** Quantas das comparáveis são concessionárias e quantas são permissionárias; null quando os tipos não foram informados. */
+  porGrupo: { concessionaria: number; permissionaria: number } | null;
+  minimo: PontaFaixa | null;
+  maximo: PontaFaixa | null;
+  /** Mediana simples entre as comparáveis (quantil tipo 7 de distribuicao.ts). */
+  mediana: number | null;
+  /** Valor publicado pela fonte, mas fora da comparação (ano incompleto, alerta físico, decomposição que não fecha). */
+  fora: number;
+  semDado: number;
+  /** Distribuidoras do recorte: comparáveis, fora da comparação e sem dado. */
+  total: number;
+};
+
+export function faixaComparacao(
+  valores: Readonly<Record<string, ValorMapa>>,
+  rotulos: Readonly<Record<string, string>>,
+  grupos?: Readonly<Record<string, Distribuidora["grupo"]>>,
+): FaixaComparacao {
+  const col = new Intl.Collator("pt-BR", { sensitivity: "base", numeric: true });
+  const comp: { id: string; v: number }[] = [];
+  let fora = 0;
+  let semDado = 0;
+  for (const [id, x] of Object.entries(valores)) {
+    if (x.estado === "valor") comp.push({ id, v: x.v });
+    else if (x.estado === "fora") fora++;
+    else semDado++;
+  }
+  const ponta = (alvo: number): PontaFaixa => ({ v: alvo, rotulos: comp.filter((c) => c.v === alvo).map((c) => rotulos[c.id] ?? c.id).sort(col.compare) });
+  let minimo: PontaFaixa | null = null;
+  let maximo: PontaFaixa | null = null;
+  if (comp.length) {
+    let mn = comp[0].v;
+    let mx = comp[0].v;
+    for (const c of comp) {
+      if (c.v < mn) mn = c.v;
+      if (c.v > mx) mx = c.v;
+    }
+    minimo = ponta(mn);
+    maximo = ponta(mx);
+  }
+  return {
+    n: comp.length,
+    porGrupo: grupos
+      ? { concessionaria: comp.filter((c) => grupos[c.id] === "concessionaria").length, permissionaria: comp.filter((c) => grupos[c.id] === "permissionaria").length }
+      : null,
+    minimo,
+    maximo,
+    mediana: comp.length ? resumoDistribuicao(comp.map((c) => c.v)).mediana : null,
+    fora,
+    semDado,
+    total: comp.length + fora + semDado,
+  };
+}
+
+/** "83 distribuidoras comparáveis (51 concessionárias e 32 permissionárias)": o universo da faixa, dito com as suas contagens. */
+export function textoUniversoFaixa(f: FaixaComparacao): string {
+  const base = plural(f.n, "distribuidora comparável", "distribuidoras comparáveis");
+  if (!f.porGrupo) return base;
+  return `${base} (${plural(f.porGrupo.concessionaria, "concessionária", "concessionárias")} e ${plural(f.porGrupo.permissionaria, "permissionária", "permissionárias")})`;
+}
+
+/** O extremo com o nome de todas as distribuidoras empatadas: "3,25% (EFLUL)". */
+export function textoPontaFaixa(p: PontaFaixa, medida: Pick<Medida, "id" | "casas" | "sufixo">): string {
+  return `${textoNumero(p.v, medida)} (${juntar(p.rotulos)})`;
+}
+
+/**
+ * Frase da faixa de comparação: o universo, o menor e o maior valor observados e a mediana simples. A frase não diz "melhor" nem "pior": a
+ * ordem é a da medida, e a distribuidora de cada ponta é só a que tem o valor.
+ */
+export function textoFaixa(f: FaixaComparacao, medida: Pick<Medida, "id" | "casas" | "sufixo">): string {
+  if (!f.minimo || !f.maximo) return "Nenhuma distribuidora tem valor comparável nesta medida e neste período.";
+  const mediana = f.mediana === null ? "" : `; a mediana simples, sem ponderar pelo tamanho da distribuidora, é ${textoNumero(f.mediana, medida)}`;
+  return `Entre ${textoUniversoFaixa(f)}, o menor valor observado é ${textoPontaFaixa(f.minimo, medida)} e o maior, ${textoPontaFaixa(f.maximo, medida)}${mediana}.`;
+}
+
+/** Quem fica fora da faixa: "20 com valor publicado fora da comparação e 20 sem dado no período"; vazio quando todas entram. */
+export function textoForaDaFaixa(f: Pick<FaixaComparacao, "fora" | "semDado">): string {
+  const partes: string[] = [];
+  if (f.fora) partes.push(`${num(f.fora, 0)} com valor publicado fora da comparação (ano incompleto, alerta físico ou decomposição que não fecha)`);
+  if (f.semDado) partes.push(`${num(f.semDado, 0)} sem dado no período`);
+  return partes.length ? `Ficam de fora: ${juntar(partes)}.` : "";
+}
+
+/* ------------------------------------------------------------------ cobertura da separação técnica e não técnica */
+
+/**
+ * Contagens e cobertura da separação no agregado das concessionárias de um ano (série nacional): a técnica e a não técnica são
+ * estimativas publicadas por parte das concessionárias válidas, e cada uma tem a sua cobertura (injetada para a técnica, mercado de baixa
+ * tensão para a não técnica). As frases saem destas mesmas contagens na abertura, na faixa da página de composição e na resposta.
+ */
+export function coberturaSeparacao(l: LinhaNacional): { tecnica: string; pntBt: string } {
+  return {
+    tecnica: `${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a técnica nos 12 meses, ${pctOu(l.cobertura_tecnica_pct, 1)} da energia injetada das válidas`,
+    pntBt: `${num(l.n_com_pnt_bt, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas tiveram a separação fechando, ${pctOu(l.cobertura_bt_pct, 1)} do mercado de baixa tensão das válidas`,
+  };
+}
+
+/* ------------------------------------------------------------------ elegibilidade da comparação regulatória */
+
+/**
+ * Perímetro da página de referência regulatória: quantas distribuidoras têm ao menos um trecho de referência identificado (de quantas têm
+ * série no SAMP), o mês em que termina o trecho mais recente de cada uma (do mais antigo ao mais novo) e em quantas a troca mais recente
+ * coincide com o início de vigência de uma resolução homologatória. Lê as mesmas linhas do gráfico, da tabela e da exportação.
+ */
+export function perimetroRegulatorio(linhas: readonly LinhaRegulatorio[], totalDistribuidoras: number): {
+  comTrecho: number;
+  total: number;
+  fimMaisAntigo: string | null;
+  fimMaisRecente: string | null;
+  comResolucao: number;
+} {
+  const fins = linhas.map((l) => l.fim).sort();
+  return {
+    comTrecho: linhas.length,
+    total: totalDistribuidoras,
+    fimMaisAntigo: fins[0] ?? null,
+    fimMaisRecente: fins.length ? fins[fins.length - 1] : null,
+    comResolucao: linhas.filter((l) => l.troca_pp !== null && l.resolucao).length,
+  };
 }

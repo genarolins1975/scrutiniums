@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
-import {
-  AguaAnalise,
-  AguaAuditoria,
-  AguaAviso,
-  AguaFontes,
-  AguaIndisponivel,
-  AguaNavegacao,
-  AguaParteAusente,
-  AguaRegras,
-  AguaSeguir,
-} from "@/components/energia/AguaPagina";
+import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { AguaReservatorios } from "@/components/energia/AguaReservatorios";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -30,6 +22,7 @@ import {
   rotaPainel,
   situacaoAtualidade,
   textoFechamento,
+  textoMudancaDecomposicao,
   textoSemCadastro,
 } from "@/lib/energia/agua";
 import { carimbo, dataBR } from "@/lib/energia/formato";
@@ -55,19 +48,91 @@ export default function ReservatoriosPage() {
   const prov = g.proveniencia;
   const atual = situacaoAtualidade(g.dias_referencia.reservatorios, g.gerado_em, 3, "o ONS publica os dados hidráulicos do dia anterior");
   const downloads = g.downloads.filter((d) => /agua_reservatorios|agua_capacidade/.test(d.url));
+  const fimEar = r?.decomposicao_ear[0]?.fim ?? null;
+  const oQueMudou = (
+    <>
+      {atual.texto} {r ? textoMudancaDecomposicao(r.decomposicao_ear) : ""}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      A decomposição é uma identidade contábil: a variação do subsistema é a soma das variações dos reservatórios que contam nele (parte própria e parte a jusante), com o resíduo
+      publicado. O balanço de cada reservatório é variação observada do volume = afluência − defluência + resíduo, em hm³, com o volume útil do cadastro do ONS. A energia natural
+      afluente (ENA) e a geração hidráulica aparecem como contexto: não fecham balanço com a EAR.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A afluência publicada pelo ONS é, na maioria dos reservatórios, calculada pelo próprio balanço: resíduo perto de zero não confirma medição de vazão. A variação da EAR não se
+      explica só pela ENA, e nenhum balanço é fechado por ajuste: o resíduo fica visível. A convenção da defluência foi detectada nos dados e pode mudar sem aviso.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["ENA", "MWmed", "ONS"]}
+        <AguaNavegacao atual="p020" />
+        <CabecalhoModulo
           rotulo="Água e clima"
-          titulo="Reservatórios e balanço"
+          siglas={["EAR", "ENA", "MWmed", "ONS"]}
+          titulo={perguntaPainel("p020")}
+          lead="A variação de 30 dias da energia armazenada (EAR) de cada subsistema, repartida por reservatório, e a conta da água de cada um, em hm³ (milhões de metros cúbicos)."
+          recorte={r ? `EAR até ${dataBR(fimEar)} · balanço até ${dataBR(r.fim)} · reservatórios do ONS · MWmês e hm³` : undefined}
+          fonte="ONS, EAR por reservatório e dados hidráulicos por reservatório"
           referencia={
             <>
               ONS, EAR Diário por Reservatório e Dados Hidráulicos por Reservatório, até {dataBR(g.dias_referencia.reservatorios)}; processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <AguaDatas
+              itens={[
+                { rotulo: "EAR por reservatório", dia: fimEar, natureza: "OBSERVADO" },
+                { rotulo: "Dados hidráulicos", dia: g.dias_referencia.reservatorios, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            r ? (
+              <FaixaMetricas colunas={3} rotulo="Indicadores do balanço dos reservatórios">
+                <Numero
+                  variante="faixa"
+                  rotulo="Reservatórios com balanço de 30 dias"
+                  natureza="CALCULADO"
+                  valor={r.n_com_balanco}
+                  formato="num"
+                  casas={0}
+                  unidade={`de ${r.n_reservatorios} nos dados hidráulicos`}
+                  periodo={`${dataBR(r.inicio)} a ${dataBR(r.fim)}`}
+                />
+                <Numero
+                  variante="faixa"
+                  rotulo="Reservatórios que fecham o balanço por construção"
+                  natureza="CALCULADO"
+                  evidencia={ev.fecham_por_construcao}
+                  valor={r.n_fecham_por_construcao}
+                  formato="num"
+                  casas={0}
+                  unidade={`de ${r.n_com_balanco} com balanço`}
+                  periodo={r.periodo_fecham_por_construcao ?? undefined}
+                  nota="Nesses, a afluência publicada sai do próprio balanço: o fechamento não é prova independente."
+                  endereco={`${rotaPainel("p020")}#p020`}
+                />
+                <Numero
+                  variante="faixa"
+                  rotulo="Resíduo do balanço no reservatório de maior volume útil"
+                  natureza="CALCULADO"
+                  evidencia={ev.balanco_maior_reservatorio}
+                  formato="num"
+                  casas={2}
+                  unidade="hm³"
+                  nota={ev.balanco_maior_reservatorio ? `${entidadeLegivel(ev.balanco_maior_reservatorio.entidade)}: variação observada menos afluência mais defluência.` : undefined}
+                  endereco={`${rotaPainel("p020")}#p020`}
+                />
+              </FaixaMetricas>
+            ) : undefined
           }
         >
           A <Termo slug="ear">EAR</Termo> de um subsistema é a soma da energia guardada em cada reservatório, em <Unidade u="MWmês" />; a parte &ldquo;própria&rdquo; de um reservatório é a energia que a
@@ -75,12 +140,11 @@ export default function ReservatoriosPage() {
           explicam a variação de 30 dias e, em cada um, a conta da água, em hm³ (milhões de metros cúbicos): o que entrou (afluência), o que saiu (defluência, pelas turbinas,
           pelos vertedouros e por outras estruturas) e o resíduo, a diferença que sobra quando a conta não fecha.
         </CabecalhoModulo>
-        <AguaNavegacao atual="p020" />
         <ModoProfundidade>
           <Bloco id="reservatorios">
             <PainelEvidencia
               id="p020"
-              pergunta={perguntaPainel("p020")}
+              pergunta="Quais reservatórios pesaram na variação da energia armazenada?"
               subtitulo="Variação da EAR por reservatório (MWmês) e balanço hídrico de 30 dias (hm³) · afluência, defluência, turbinado, vertido, transferência e resíduo"
               natureza="CALCULADO"
               porQueImporta={
@@ -89,21 +153,10 @@ export default function ReservatoriosPage() {
                   turbinas, pelos vertedouros ou se a afluência diminuiu, com o resíduo à vista.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
-              comoInterpretar={
-                <>
-                  A decomposição é uma identidade contábil: a variação do subsistema é a soma das variações dos reservatórios que contam nele (parte própria e parte a jusante),
-                  com o resíduo publicado. O balanço de cada reservatório é variação observada do volume = afluência − defluência + resíduo, em hm³, com o volume útil do
-                  cadastro do ONS. ENA e geração hidráulica aparecem como contexto: não fecham balanço com a EAR.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A afluência publicada pelo ONS é, na maioria dos reservatórios, calculada pelo próprio balanço: resíduo perto de zero não confirma medição de vazão. A variação da
-                  EAR não se explica só pela ENA, e nenhum balanço é fechado por ajuste: o resíduo fica visível. A convenção da defluência foi detectada nos dados e pode mudar sem
-                  aviso.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={prov.balanco!}
               complementares={prov.capacidade ? [{ rotulo: "EAR por reservatório (decomposição)", p: prov.capacidade }] : []}
             >
@@ -119,46 +172,20 @@ export default function ReservatoriosPage() {
                     diasSeries={r.series_45d.dias}
                     fonte={FONTE}
                     versao={r.fim}
-                    destaques={
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <Numero
-                          rotulo="Resíduo do balanço de 30 dias no reservatório de maior volume útil"
-                          natureza="CALCULADO"
-                          evidencia={ev.balanco_maior_reservatorio}
-                          formato="num"
-                          casas={2}
-                          unidade="hm³"
-                          tamanho="medio"
-                          cor="var(--serie-hidraulica)"
-                          nota={ev.balanco_maior_reservatorio ? `${entidadeLegivel(ev.balanco_maior_reservatorio.entidade)}: variação observada menos afluência mais defluência.` : undefined}
-                          endereco={`${rotaPainel("p020")}#p020`}
-                        />
-                        <Numero
-                          rotulo="Reservatórios que fecham o balanço por construção"
-                          natureza="CALCULADO"
-                          evidencia={ev.fecham_por_construcao}
-                          valor={r.n_fecham_por_construcao}
-                          formato="num"
-                          casas={0}
-                          unidade={`de ${r.n_com_balanco} com balanço`}
-                          periodo={r.periodo_fecham_por_construcao ?? undefined}
-                          tamanho="medio"
-                          cor="var(--serie-referencia)"
-                          nota="Nesses, a afluência publicada sai do próprio balanço: o fechamento não é prova independente."
-                          endereco={`${rotaPainel("p020")}#p020`}
-                        />
-                      </div>
-                    }
+                    notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                   />
                 ) : (
-                  <AguaParteAusente
-                    titulo="Reservatórios indisponíveis nesta publicação"
-                    motivo={g.pendencias.filter((p) => /reservat/i.test(p)).join("; ") || "O bloco de reservatórios não foi construído nesta execução; nenhum número de reserva é exibido."}
-                  />
+                  <>
+                    <AguaParteAusente
+                      titulo="Reservatórios indisponíveis nesta publicação"
+                      motivo={g.pendencias.filter((p) => /reservat/i.test(p)).join("; ") || "O bloco de reservatórios não foi construído nesta execução; nenhum número de reserva é exibido."}
+                    />
+                    <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
+                  </>
                 )}
 
                 {r && (
-                  <AguaAnalise id="decomposicao" titulo="Os quatro subsistemas: variação da EAR, soma dos reservatórios e contexto">
+                  <SecaoDoPainel id="decomposicao" nivel="analisar" titulo="Os quatro subsistemas: variação da EAR, soma dos reservatórios e contexto">
                     <TabelaInterativa
                       titulo="Decomposição da variação de 30 dias da EAR por subsistema"
                       colunas={COLUNAS_DECOMPOSICAO_SUBSISTEMAS}
@@ -173,16 +200,16 @@ export default function ReservatoriosPage() {
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="fechamento">
                       {textoFechamento(r)}
                     </p>
-                  </AguaAnalise>
+                  </SecaoDoPainel>
                 )}
 
                 {r && (
-                  <AguaAuditoria id="regras-p020" titulo="Regras, cobertura, fontes e arquivos">
+                  <SecaoDoPainel id="regras-p020" nivel="auditar" titulo="Regras, cobertura, fontes e arquivos">
                     <AguaRegras regras={g.regras} chaves={["balanco_reservatorio", "decomposicao_ear", "capacidade"]} />
                     <p className="text-sm text-carvao-muted">{textoSemCadastro(r.sem_cadastro.map(nomeProprio))}</p>
                     <p className="text-sm text-carvao-muted">{r.criterio_lista}.</p>
                     <AguaFontes provs={[prov.balanco, prov.capacidade]} />
-                  </AguaAuditoria>
+                  </SecaoDoPainel>
                 )}
 
                 <AguaSeguir ancora="p020" proximo={{ href: `${rotaPainel("p017")}#p017`, pergunta: perguntaPainel("p017") }} downloads={downloads} />

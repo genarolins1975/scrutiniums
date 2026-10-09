@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Bloco } from "@/components/energia/CabecalhoModulo";
-import { PldAuditoria, PldAviso, PldCabecalho, PldControles, PldIndisponivel, PldNavegacao, PldPassagem, PldSeguir } from "@/components/energia/PldPagina";
+import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { PldAviso, PldControles, PldIndisponivel, PldNavegacao, PldPassagem, PldSeguir } from "@/components/energia/PldPagina";
 import { PldRegional } from "@/components/energia/PldRegional";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, horaLocal } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { PARES, atualidadePld, horaPadrao, perguntaPainel, proximoPainel } from "@/lib/energia/pld";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
@@ -41,14 +42,39 @@ export default function PldRegionalPage() {
   // contagem da página PLD (últimos 30 dias acima do limiar) para conferir com a linha "Últimos 30 dias" daqui
   const pldPagina = gold.pld();
   const horasAcimaLimiarPaginaPld = integra(pldPagina) ? pldPagina.periodos["30d"].diferenca.horas_acima_limiar : null;
+  const a12 = r.amplitude.find((x) => x.periodo === "12m") ?? null;
+
+  const oQueMudou = <>{atual.texto}</>;
+  const comoInterpretar = (
+    <>
+      Uma hora conta como separada quando dois preços da mesma hora diferem em mais de R$ 0,01/MWh; diferenças de exatamente um centavo são frequentes e ficam à parte. As
+      contagens acima de R$ 1,00 e de R$ 10,00/MWh mostram quanto a contagem depende do limiar. Todas as diferenças são entre a mesma hora da mesma publicação.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A contagem não diz por que os preços se separaram. Sem os limites de intercâmbio integrados, nenhuma hora é classificada como congestionada, e o sentido do fluxo na mesma hora é
+      associação descritiva, não causa. Ano parcial não se compara a ano completo sem ressalva.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <PldCabecalho siglas={["CCEE", "ONS"]}
-          titulo="Diferenças regionais"
+        <CabecalhoModulo
+          siglas={["CCEE", "ONS"]}
+          rotulo="Preço de Liquidação das Diferenças"
+          titulo={perguntaPainel("p012")}
+          lead={
+            <>
+              A CCEE calcula um PLD para cada um dos quatro <Termo slug="submercado">submercados</Termo>. Na maior parte das horas os quatro são iguais ou quase; aqui, as horas em
+              que se separam, quanto e entre quais regiões.
+            </>
+          }
+          recorte={a12 ? `últimos 12 meses, de ${dataBR(a12.inicio)} a ${dataBR(a12.fim)} · horas, % das horas e R$/MWh` : "horas, % das horas e R$/MWh"}
+          fonte={FONTE}
           referencia={
             <>
               CCEE (PLD até {horaLocal(g.referencia.ultima_hora_pld)}) e ONS (fluxo entre subsistemas até {g.referencia.ultima_hora_fluxo ? horaLocal(g.referencia.ultima_hora_fluxo) : "sem dado"});
@@ -56,15 +82,15 @@ export default function PldRegionalPage() {
             </>
           }
         >
-          A CCEE calcula um PLD para cada um dos quatro <Termo slug="submercado">submercados</Termo>. Na maior parte das horas os quatro são iguais ou quase; este painel conta as horas
-          em que se separam, quanto e entre quais regiões. Em Analisar, mostra também o <Termo slug="intercambio">intercâmbio</Termo> verificado na mesma hora.
-        </PldCabecalho>
+          Este painel conta as horas em que os preços se separam, quanto e entre quais regiões. Em Analisar, mostra também o <Termo slug="intercambio">intercâmbio</Termo>{" "}
+          verificado na mesma hora.
+        </CabecalhoModulo>
         <PldNavegacao atual="p012" />
         <ModoProfundidade>
           <Bloco id="diferencas-regionais">
             <PainelEvidencia
               id="p012"
-              pergunta={perguntaPainel("p012")}
+              pergunta="Horas separadas por par de submercados"
               subtitulo="Horas com preços separados, diferença entre o maior e o menor PLD e separação por par, na mesma hora · horas, % e R$/MWh"
               porQueImporta={
                 <>
@@ -72,19 +98,10 @@ export default function PldRegionalPage() {
                   cálculo do PLD observa as restrições de transmissão entre submercados.
                 </>
               }
-              oQueMudou={<>{atual.texto}</>}
-              comoInterpretar={
-                <>
-                  Uma hora conta como separada quando dois preços da mesma hora diferem em mais de R$ 0,01/MWh; diferenças de exatamente um centavo são frequentes e ficam à parte. As
-                  contagens acima de R$ 1,00 e de R$ 10,00/MWh mostram quanto a contagem depende do limiar. Todas as diferenças são entre a mesma hora da mesma publicação.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A contagem não diz por que os preços se separaram. Sem os limites de intercâmbio integrados, nenhuma hora é classificada como congestionada, e o sentido do fluxo
-                  na mesma hora é associação descritiva, não causa. Ano parcial não se compara a ano completo sem ressalva.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.regional}
               complementares={[{ rotulo: "Sobre o fluxo nas horas separadas", p: g.proveniencia.fluxos }]}
             >
@@ -110,9 +127,10 @@ export default function PldRegionalPage() {
                   fonte={FONTE}
                   versao={versao}
                   horasAcimaLimiarPaginaPld={horasAcimaLimiarPaginaPld}
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
 
-                <PldAuditoria id="regras" titulo="Regras de separação, limiar e fluxo">
+                <SecaoDoPainel id="regras" titulo="Regras de separação, limiar e fluxo" nivel="auditar">
                   <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao-muted">
                     <li>{r.regra_separacao}</li>
                     <li>{r.limiar_sensibilidade}</li>
@@ -121,11 +139,11 @@ export default function PldRegionalPage() {
                   {passagens.map((p) => (
                     <PldPassagem key={p.id} p={p} />
                   ))}
-                </PldAuditoria>
+                </SecaoDoPainel>
 
-                <PldAuditoria id="controles" titulo="Controles automáticos da construção">
+                <SecaoDoPainel id="controles" titulo="Controles automáticos da construção" nivel="auditar">
                   <PldControles controles={g.controles.filter((x) => /Amplitude|pld\.json/i.test(x.nome))} />
-                </PldAuditoria>
+                </SecaoDoPainel>
 
                 <PldSeguir ancora="p012" proximo={proximoPainel("p012")} downloads={g.downloads.filter((d) => /separacao|amplitude|horario_recente/.test(d.url))} />
               </div>

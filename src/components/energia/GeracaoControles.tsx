@@ -84,10 +84,13 @@ export function GeracaoLista<T extends string>({
   );
 }
 
-/** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
+/**
+ * Período, universo e unidade da figura, em três colunas, como legenda logo abaixo dela (o recorte descreve a figura, não vem antes
+ * dela). O atributo `data-recorte-painel` é o mesmo que a abertura do módulo e a Água usam.
+ */
 export function GeracaoRecorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div className="min-w-0">
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>

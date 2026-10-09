@@ -8,6 +8,7 @@ import ContaDeLuzPage from "@/app/setor-eletrico/conta-de-luz/page";
 import ContaReajustesPage from "@/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page";
 import {
   CAMPO_DIST,
+  CAMPO_PERFIL,
   CASO_EVIDENCIA_SIMULADOR,
   COLUNAS_JANELA,
   COLUNAS_RANKING,
@@ -16,7 +17,9 @@ import {
   ORDEM_GRUPOS,
   categoriasSubsidio,
   colunasComposicao,
+  custoDoPerfil,
   destacar,
+  destaquesDoPerfil,
   gradeBandeiras,
   idsComposicaoPadrao,
   linhasCde,
@@ -29,8 +32,11 @@ import {
   linhasSubsidios,
   minuscula,
   mudancaComposicao,
+  mudancaComposicaoEm,
   mudancaSubsidios,
   mudancaTarifa,
+  notaFaixaTarifa,
+  referenciasDoPerfil,
   remover,
   respostaBandeira,
   respostaCde,
@@ -40,15 +46,19 @@ import {
   respostaSimulacao,
   respostaSubsidios,
   respostaTarifa,
+  resumoSerieReal,
   simular,
   tarifaNaData,
+  textoDestaquePerfil,
+  textoReferenciasPerfil,
+  textoSerieReal,
   verboVariacao,
 } from "@/lib/energia/conta";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { CONCEITOS as CONCEITOS_CONTA } from "@/lib/energia/conteudo/conceitos-conta";
 import { lerEstado } from "@/lib/energia/estadoUrl";
-import { num, pct, reais } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato";
 import { gerarCsv } from "@/lib/energia/tabela";
 import type { ContaGold, HistoricoB1, JanelaInflacao } from "@/lib/energia/tipos-conta";
 
@@ -625,8 +635,11 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
       expect(i, id).toBeGreaterThan(ultimo);
       ultimo = i;
     }
+    // redesenho: a pergunta da página é o título da página ("Quanto custa o mesmo consumo?") e o painel de tarifas tem o título da
+    // primeira figura, que não a repete (antes, o título do painel era "Quanto custa um perfil comparável em cada distribuidora?")
     for (const q of [
-      "Quanto custa um perfil comparável em cada distribuidora?",
+      "Quanto custa o mesmo consumo?",
+      "O mesmo consumo, da menor à maior tarifa",
       "Para onde vai o valor da conta?",
       "Como a minha conta varia com o consumo e o perfil?",
       "O que mudou e quem financia os benefícios?",
@@ -697,7 +710,20 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     }
     expect(htmlP050).toContain("Efeito médio do processo tarifário: não publicado");
     expect(html).toContain("Tarifa média de fornecimento (não publicada)");
-    for (const f of ["ContaTarifas", "ContaHistorico", "ContaComposicao", "ContaSimulador", "ContaReajustes", "ContaBandeiras", "ContaLinkPainel", "ContaSobDemanda"]) {
+    for (const f of [
+      "ContaTarifas",
+      "ContaHistorico",
+      "ContaComposicao",
+      "ContaSimulador",
+      "ContaReajustes",
+      "ContaBandeiras",
+      "ContaLinkPainel",
+      "ContaSobDemanda",
+      "ContaControles",
+      "ContaReferencias",
+      "ContaFaixa",
+      "ContaSerieReal",
+    ]) {
       expect(ler(`src/components/energia/${f}.tsx`), f).not.toMatch(/#[0-9a-fA-F]{6}\b/);
     }
     for (const f of ["page.tsx", "partes.tsx", "reajustes-e-subsidios/page.tsx"]) {

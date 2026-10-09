@@ -14,11 +14,14 @@ import { semCaminhosDeArquivo } from "./bastidor";
 import { diaBrasilia } from "./evidencia";
 import { CURTO_SM, NOME_SM, dataBR, num, plural, reais } from "./formato";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
-import type { Submercado } from "./tipos";
+import type { ModelosGold, Submercado } from "./tipos";
 import type {
+  Apuracao,
   CelulaAtual,
   CodigoModelo,
+  EstadoModelo,
   Ficha,
+  Frequencia,
   Horizonte,
   LinhaMetrica,
   PrevisoesDesempenhoGold,
@@ -42,7 +45,7 @@ export type PainelPrevisoes = { id: IdPainelPrevisoes; codigo: string; rotulo: s
  * as referências simples). A ordem da lista é a da navegação.
  */
 export const PAINEIS_PREVISOES: PainelPrevisoes[] = [
-  { id: "p013", codigo: "P013", rotulo: "Previsão atual", rota: ROTA_PREVISOES, pergunta: "Quais os preços possíveis nos próximos períodos?" },
+  { id: "p013", codigo: "P013", rotulo: "Rodada mais recente", rota: ROTA_PREVISOES, pergunta: "Quais os preços possíveis nos próximos períodos?" },
   { id: "p015", codigo: "P015", rotulo: "Arquivo de emissões", rota: ROTA_PREVISOES, pergunta: "O que foi previsto antes do resultado?" },
   { id: "p014", codigo: "P014", rotulo: "Registro de modelos", rota: ROTA_MODELOS, pergunta: "Como cada previsão foi calculada?" },
   { id: "p016", codigo: "P016", rotulo: "Desempenho e calibração", rota: ROTA_MODELOS, pergunta: "O modelo supera referências simples?" },
@@ -250,16 +253,30 @@ export type LinhaGrade = {
   motivo: string;
   forecast_id: string;
   evidencia: string | null;
+  /** Primeiro dia fora da entrega (AAAA-MM-DD): o realizado só existe a partir dele. */
+  termina: string | null;
+  /** Média do PLD da entrega, quando ela já terminou e as horas estão publicadas; null enquanto a entrega não termina. */
+  realizado: number | null;
+  /** Previsão menos realizado (R$/MWh); null sem realizado. */
+  erro: number | null;
 };
 
-/** Uma linha por célula da grade 4 × 7, na ordem submercado (SE, S, NE, N) e horizonte (W1 a M3). */
-export function linhasGrade(celulas: readonly CelulaAtual[]): LinhaGrade[] {
+/**
+ * Uma linha por célula da grade 4 × 7, na ordem submercado (SE, S, NE, N) e horizonte (W1 a M3). Com as apurações do
+ * acompanhamento (`prospectivo.apuracoes`), cada linha leva também o realizado e o erro da própria célula, ligados pelo
+ * identificador; sem elas, os dois ficam null (a entrega ainda não terminou).
+ */
+export function linhasGrade(celulas: readonly CelulaAtual[], apuracoes: readonly Pick<Apuracao, "forecast_id" | "realizado" | "erro">[] = []): LinhaGrade[] {
   const ordem = (c: CelulaAtual) => SUBMERCADOS.indexOf(c.submercado) * 10 + HORIZONTES.indexOf(c.horizonte);
+  const apurada = new Map(apuracoes.map((a) => [a.forecast_id, a]));
   return [...celulas]
     .sort((a, b) => ordem(a) - ordem(b))
     .map((c) => {
       const d = diasDaEntrega(c.entrega);
       return {
+        termina: fimDaEntrega(c.entrega.id),
+        realizado: apurada.get(c.forecast_id)?.realizado ?? null,
+        erro: apurada.get(c.forecast_id)?.erro ?? null,
         id: `${c.horizonte}:${c.submercado}`,
         submercado: c.submercado,
         sm: CURTO_SM[c.submercado] ?? c.submercado,
@@ -305,6 +322,9 @@ export const COLUNAS_GRADE: ColunaTabela[] = [
   { id: "periodo_fim", rotulo: "Período usado: fim", tipo: "data" },
   { id: "fracao_conhecida", rotulo: "Fração já publicada no corte", tipo: "percentual", casas: 0 },
   { id: "motivo", rotulo: "Motivo sem número", tipo: "texto" },
+  { id: "realizado", rotulo: "Realizado", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "erro", rotulo: "Erro (previsão menos realizado)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "termina", rotulo: "Entrega termina em", tipo: "data", nivel: "analisar" },
 ];
 
 /** Grade compacta 4 × 7 (submercado × horizonte) com os mesmos números da tabela longa. */
@@ -1479,3 +1499,327 @@ export const COLUNAS_REVISOES: ColunaTabela[] = [
 
 /** Rodada da gold correspondente a um run_id (para o detalhe da linha do arquivo). */
 export const rodadaDe = (rodadas: readonly Rodada[], run: string) => rodadas.find((r) => r.run_id === run) ?? null;
+
+/* ---------------------------------------------------------------- redesenho: situação, papel, protocolo e avisos da rodada */
+
+/** "A, B e C": lista em português com "e" antes do último item. */
+export const listaE = (itens: readonly string[]) => (itens.length <= 1 ? (itens[0] ?? "") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`);
+
+export type SituacaoModelo = {
+  id: "pesquisa" | "experimental" | "validacao" | "producao" | "aposentado";
+  rotulo: string;
+  definicao: string;
+};
+
+/**
+ * Pesquisa, referência experimental e produção são situações diferentes. O estado do registro diz se o modelo alimenta a previsão
+ * principal (só PRODUÇÃO); a referência experimental é um modelo em pesquisa cujo número é publicado, identificado como tal e sem
+ * aprovação. Os textos usam as palavras do próprio registro de modelos.
+ */
+export function situacaoDoModelo(f: Pick<Ficha, "estado" | "aprovacao">): SituacaoModelo {
+  switch (f.estado as EstadoModelo) {
+    case "PRODUCAO":
+      return { id: "producao", rotulo: "Produção", definicao: "Aprovado: alimenta a previsão principal." };
+    case "APOSENTADO":
+      return { id: "aposentado", rotulo: "Aposentado", definicao: "Fora de uso; as previsões antigas ficam no arquivo." };
+    case "VALIDACAO":
+      return { id: "validacao", rotulo: "Validação", definicao: "Avaliado em área técnica; não alimenta a previsão principal." };
+    default:
+      return f.aprovacao.referencia_experimental
+        ? { id: "experimental", rotulo: "Referência experimental", definicao: "Em pesquisa, com número publicado e identificado como experimental, sem aprovação." }
+        : { id: "pesquisa", rotulo: "Pesquisa", definicao: "Em estudo: não alimenta previsão." };
+  }
+}
+
+/** Papel do modelo em poucas palavras ("Referência simples", "Referência sazonal", "Candidato"), sem o comentário entre parênteses do registro. */
+export function papelCurto(papel: string | null | undefined): string {
+  if (!papel) return "sem papel registrado";
+  return semCodigosInternos(papel).split(/\s*[(;]/)[0].trim() || "sem papel registrado";
+}
+
+/** Com o que o modelo é comparado: as referências registradas para ele, ou a indicação de que ele próprio é uma referência. */
+function comparadoCom(f: Pick<Ficha, "codigo" | "papel">, registro: Pick<ModelosGold, "modelos"> | null | undefined): string {
+  const m = registro?.modelos.find((x) => x.codigo === f.codigo);
+  if (!m) return "não registrado";
+  if (m.benchmarks.length) return listaE(m.benchmarks);
+  return /^Refer[eê]ncia/.test(f.papel ?? "") ? "é uma referência de comparação" : "não registrado";
+}
+
+/** Protocolo do teste fora da amostra para o modelo: avaliado ou não, e se os números foram liberados. */
+function protocoloDoModelo(f: Pick<Ficha, "codigo" | "implementado_no_repositorio">, g: Pick<PrevisoesDesempenhoGold, "modelos" | "desempenho">): string {
+  const m = g.modelos.find((x) => x.codigo === f.codigo);
+  if (!m?.avaliado) return f.implementado_no_repositorio ? "sem teste fora da amostra" : "sem teste fora da amostra: o modelo não pode ser refeito";
+  return g.desempenho.publicado ? "teste fora da amostra publicado" : "teste fora da amostra calculado, com os números retidos";
+}
+
+/** Reexecução do arquivo em poucas palavras, para a matriz de modelos. */
+export function reexecucaoCurta(f: Pick<Ficha, "implementado_no_repositorio" | "reproducao">): string {
+  const r = f.reproducao?.reexecucao_do_arquivo;
+  if (!f.implementado_no_repositorio) return "não pode ser refeito";
+  if (!r) return "nenhuma previsão arquivada com número para refazer";
+  const div = r.divergentes.length;
+  return `${plural(r.conferidas, "previsão arquivada refeita", "previsões arquivadas refeitas")}, ${div === 0 ? "sem divergência" : `${div} com divergência`}`;
+}
+
+/** Resultado de uma conferência de cálculo em palavras que não sugerem aprovação do método: o observatório refaz a conta, não a valida por fora. */
+export const ROTULO_CONFERENCIA: Record<string, string> = { aprovado: "confere", ressalva: "confere com ressalva", reprovado: "não confere" };
+
+/** Uma linha da matriz compacta de modelos (papel, situação, referência, emissão e protocolo). */
+export type LinhaMatrizModelo = {
+  id: string;
+  codigo: string;
+  nome: string;
+  versao: string;
+  papel: string;
+  situacao: SituacaoModelo;
+  comparado: string;
+  emissao: string;
+  protocolo: string;
+  reexecucao: string;
+  /** Revisão registrada para o modelo, nas palavras do registro de modelos (null sem registro). */
+  revisao: string | null;
+  href: string;
+};
+
+export function matrizModelos(
+  g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual" | "modelos" | "desempenho">,
+  registro: Pick<ModelosGold, "modelos"> | null | undefined,
+): LinhaMatrizModelo[] {
+  return fichasOrdenadas(g.fichas).map((f) => ({
+    id: slugModelo(f.codigo),
+    codigo: f.codigo,
+    nome: f.nome,
+    versao: f.versao,
+    papel: papelCurto(f.papel),
+    situacao: situacaoDoModelo(f),
+    comparado: comparadoCom(f, registro),
+    emissao: emissaoDoModelo(f, g),
+    protocolo: protocoloDoModelo(f, g),
+    reexecucao: reexecucaoCurta(f),
+    revisao: registro?.modelos.find((x) => x.codigo === f.codigo)?.auditoria ?? null,
+    href: rotaModelo(f.codigo),
+  }));
+}
+
+/** Ficha resumida de um modelo para comparar lado a lado (a mesma informação que a tabela das fichas). */
+export type CartaoModelo = {
+  id: string;
+  codigo: string;
+  nome: string;
+  versao: string;
+  estado: EstadoModelo;
+  papel: string;
+  emite: string;
+  entradas: string[] | null;
+  /** Fórmula em palavras (formulaEmPalavras); a do registro, com os símbolos, fica em formulaRegistro e só aparece em Analisar. */
+  formula: string | null;
+  formulaRegistro: string | null;
+  reexecucao: string;
+  limitacao: string | null;
+  href: string;
+};
+
+export function cartoesModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "previsao_atual">, registro: Pick<ModelosGold, "modelos"> | null | undefined): CartaoModelo[] {
+  return fichasOrdenadas(g.fichas).map((f) => ({
+    id: slugModelo(f.codigo),
+    codigo: f.codigo,
+    nome: f.nome,
+    versao: f.versao,
+    estado: f.estado,
+    papel: semCodigosInternos(f.papel ?? "sem papel registrado"),
+    emite: emissaoDoModelo(f, g),
+    entradas: f.entradas,
+    formula: formulaEmPalavras(f),
+    formulaRegistro: f.formula,
+    reexecucao: textoReexecucao(f),
+    limitacao:
+      registro?.modelos.find((x) => x.codigo === f.codigo)?.limitacao_principal ??
+      paraLeitorPrevisoes(f.limitacoes?.[0] ?? (f.motivo_sem_implementacao ? semCaminhosDeArquivo(f.motivo_sem_implementacao) : (f.motivo_sem_implementacao ?? ""))) ??
+      null,
+    href: rotaModelo(f.codigo),
+  }));
+}
+
+/** O que cada modelo recebe e como calcula: entradas, fórmula em palavras e pesos do último ajuste. */
+export type LinhaEntradas = { id: string; codigo: string; nome: string; entradas: string[] | null; formula: string; pesos: string; href: string };
+
+export function linhasEntradasFormula(fichas: readonly Ficha[]): LinhaEntradas[] {
+  return fichasOrdenadas(fichas).map((f) => {
+    const segs = f.coeficientes_ultimo_ajuste?.segmentos ?? [];
+    const origem = segs.reduce((a, s) => (s.origem_ajuste > a ? s.origem_ajuste : a), "");
+    const pesos = segs.length
+      ? `${plural(segs.length, "segmento ajustado", "segmentos ajustados")}; último ajuste em ${dataBR(origem)}`
+      : !f.implementado_no_repositorio
+        ? "não publicados: a configuração da pesquisa não foi publicada"
+        : "sem pesos: não tem parâmetros ajustados";
+    return {
+      id: slugModelo(f.codigo),
+      codigo: f.codigo,
+      nome: f.nome,
+      entradas: f.entradas,
+      formula: formulaEmPalavras(f) ?? "não publicada: a configuração da pesquisa não foi publicada",
+      pesos,
+      href: rotaModelo(f.codigo),
+    };
+  });
+}
+
+/**
+ * Números de abertura de Modelos, todos contados do registro: quantos modelos, quantos em produção, quantos publicam número e quantos
+ * têm desempenho fora da amostra publicado (de quantos foram avaliados). Nenhuma métrica de acerto entra aqui: MAE, ganho e cobertura
+ * só aparecem com resultados publicados.
+ */
+export function metricasModelos(g: Pick<PrevisoesDesempenhoGold, "fichas" | "modelos" | "desempenho" | "previsao_atual">) {
+  const fs = fichasOrdenadas(g.fichas);
+  const comNumero = fs.filter((f) => ["previsão principal", "referência experimental publicada"].includes(emissaoDoModelo(f, g)));
+  const avaliados = g.modelos.filter((m) => m.avaliado).map((m) => m.codigo);
+  const publicados = g.desempenho.publicado ? Array.from(new Set(g.desempenho.por_horizonte.filter((l) => l.periodo === "teste").map((l) => l.modelo))) : [];
+  return {
+    registrados: fs.map((f) => f.codigo as string),
+    emProducao: fs.filter((f) => f.estado === "PRODUCAO").map((f) => f.codigo as string),
+    comNumero: comNumero.map((f) => f.codigo as string),
+    comNumeroExperimental: comNumero.filter((f) => f.estado !== "PRODUCAO").map((f) => f.codigo as string),
+    avaliados,
+    desempenhoPublicado: publicados as string[],
+    publicado: g.desempenho.publicado,
+  };
+}
+
+/**
+ * A passagem pela revisão independente: o registro de modelos lista as decisões revisáveis e quem as toma. Pendente quando alguma delas
+ * cabe a um revisor independente e ainda está sem decisão. A reexecução e os controles do observatório não substituem essa revisão.
+ */
+export function revisaoIndependentePendente(g: Pick<PrevisoesDesempenhoGold, "governanca">): boolean {
+  return g.governanca.decisao_revisavel.some((d) => /revisor independente/i.test(d.responsavel ?? "") && /pendente/i.test(d.estado ?? ""));
+}
+
+/** Decisões de governança ainda sem decisão (estado "decisão pendente"), contadas do próprio registro. */
+export function decisoesPendentes(g: Pick<PrevisoesDesempenhoGold, "governanca">): { item: string; responsavel: string }[] {
+  return g.governanca.decisao_revisavel.filter((d) => /decis[aã]o pendente/i.test(d.estado ?? "")).map((d) => ({ item: d.item, responsavel: d.responsavel ?? "não indicado" }));
+}
+
+/* ---------- avisos materiais da rodada, junto da emissão ---------- */
+
+export type AvisoRodada = { id: string; rotulo: string; texto: string };
+
+const ALERTAS_DA_RODADA = ["ATRASADO_APOS_08H", "EXECUCAO_MANUAL", "CODIGO_NAO_COMMITADO"];
+
+/**
+ * Avisos que mudam a leitura de uma rodada, em palavras de leitor: emissão manual ou depois do prazo, código sem versão registrada,
+ * registro transcrito de outra fonte e rodada sem número. Leem os alertas e os campos da própria rodada; o texto técnico (minutos de
+ * atraso, versão do código) fica em Analisar e Auditar.
+ */
+export function avisosDaRodada(
+  r: Pick<Rodada, "modo" | "emitido_em" | "atraso_min" | "alertas" | "versao_codigo" | "celulas" | "com_numero" | "motivos" | "registrado_no_portal_em">,
+): AvisoRodada[] {
+  const out: AvisoRodada[] = [];
+  const manual = r.modo.startsWith("manual");
+  const tardia = r.alertas.includes("ATRASADO_APOS_08H") || (r.atraso_min ?? 0) > 0;
+  const emitidoDia = diaBrasilia(r.emitido_em) ?? r.emitido_em.slice(0, 10);
+  const transcrita = !!r.registrado_no_portal_em && r.registrado_no_portal_em > emitidoDia;
+  if (manual || tardia) {
+    out.push({
+      id: "emissao",
+      rotulo: "Emissão",
+      texto: `Emitida ${manual ? "manualmente" : "pelo agendamento"} em ${instanteBR(r.emitido_em)}${tardia ? ", depois do prazo das 08h00" : ""}.`,
+    });
+  }
+  if (r.alertas.includes("CODIGO_NAO_COMMITADO")) {
+    out.push({
+      id: "codigo",
+      rotulo: "Reprodutibilidade",
+      texto: "O código executado não coincide com uma versão registrada: tinha alterações ainda não confirmadas (sufixo +alterado).",
+    });
+  } else if (!r.versao_codigo) {
+    out.push({ id: "codigo", rotulo: "Reprodutibilidade", texto: "O registro não traz a versão do código que emitiu a rodada." });
+  }
+  if (transcrita) {
+    out.push({
+      id: "transcricao",
+      rotulo: "Registro",
+      texto: `Transcrito de outra fonte e incluído no arquivo em ${dataBR(r.registrado_no_portal_em)}, depois da emissão: não é emissão original do observatório.`,
+    });
+  }
+  if (r.com_numero === 0) {
+    out.push({
+      id: "sem-numero",
+      rotulo: "Números",
+      texto: `Nenhuma das ${r.celulas} células tem número${r.motivos.length ? `: ${r.motivos.map(textoMotivo).join("; ")}` : ""}.`,
+    });
+  }
+  const outros = r.alertas.filter((a) => !ALERTAS_DA_RODADA.includes(a));
+  if (outros.length) out.push({ id: "alertas", rotulo: "Alertas", texto: `Alertas registrados: ${textoAlertas(outros)}.` });
+  return out;
+}
+
+/** Governança da rotina de emissão: aviso enquanto a rotina diária não estiver comprovada pelo critério publicado. */
+export function avisoDaRotina(r: Pick<PrevisoesDesempenhoGold["rotina"], "comprovada" | "execucoes_agendadas" | "no_prazo">): AvisoRodada | null {
+  if (r.comprovada) return null;
+  return {
+    id: "rotina",
+    rotulo: "Governança",
+    texto:
+      r.execucoes_agendadas === 0
+        ? "A rotina diária de emissão não foi comprovada: nenhuma execução agendada está registrada."
+        : `A rotina diária de emissão não foi comprovada: ${r.no_prazo} de ${r.execucoes_agendadas} execuções agendadas saíram no prazo, abaixo do critério publicado.`,
+  };
+}
+
+/* ---------- avaliação depois do resultado, semanas e meses separados ---------- */
+
+export type AvaliacaoFrequencia = {
+  frequencia: Frequencia;
+  rotulo: string;
+  horizontes: Horizonte[];
+  registradas: number;
+  apuradas: number;
+  aguardando: number;
+  proxima: { entrega: string; termina: string } | null;
+  /** Entregas distintas do teste fora da amostra (iguais nos horizontes da frequência; vale a menor) e o mínimo para calibrar a faixa. */
+  entregasTeste: number | null;
+  minimo: number | null;
+  estadoCalibracao: string;
+};
+
+/**
+ * Semanas (W1 a W4) e meses (M1 a M3) têm avaliação própria: contagens de previsões registradas, apuradas e aguardando, a próxima
+ * entrega a terminar e o tamanho da amostra do teste fora da amostra contra o mínimo para calibrar a faixa. Lê as apurações do
+ * acompanhamento e a amostra de calibração, os mesmos números dos gráficos de desempenho.
+ */
+export function avaliacaoPorFrequencia(g: Pick<PrevisoesDesempenhoGold, "prospectivo" | "definicoes">): AvaliacaoFrequencia[] {
+  const amostra = linhasAmostra(g);
+  return (["W", "M"] as const).map((freq) => {
+    const ap = g.prospectivo.apuracoes.filter((a) => a.horizonte.startsWith(freq));
+    const apuradas = ap.filter((a) => a.realizado !== null).length;
+    const da = amostra.filter((a) => a.horizonte.startsWith(freq));
+    const ns = da.map((a) => a.entregas).filter((n): n is number => typeof n === "number");
+    return {
+      frequencia: freq,
+      rotulo: freq === "W" ? "Semanas" : "Meses",
+      horizontes: HORIZONTES.filter((h) => h.startsWith(freq)),
+      registradas: ap.length,
+      apuradas,
+      aguardando: ap.length - apuradas,
+      proxima: primeiraEntregaAMaturar(ap),
+      entregasTeste: ns.length ? Math.min(...ns) : null,
+      minimo: da[0]?.minimo ?? null,
+      estadoCalibracao: Array.from(new Set(da.map((a) => a.estado))).join(", "),
+    };
+  });
+}
+
+/** Resumo do B0 de um submercado e uma frequência: o número da rodada, os horizontes e o período que ele repete. A faixa de métricas e o painel leem esta função. */
+export function resumoB0(linhas: readonly LinhaGrade[], sm: Submercado, freq: Frequencia) {
+  const doSm = linhas.filter((l) => l.submercado === sm && l.horizonte.startsWith(freq));
+  const com = doSm.find((l) => l.evidencia);
+  return {
+    valor: com?.previsao ?? null,
+    evidencia: com?.evidencia ?? null,
+    horizontes: doSm.map((l) => l.horizonte),
+    periodo: doSm.length ? `${doSm[0].horizonte} a ${doSm[doSm.length - 1].horizonte}: ${dataBR(doSm[0].inicio)} a ${dataBR(doSm[doSm.length - 1].fim)}` : "",
+    usado:
+      com?.periodo_inicio && com.periodo_fim
+        ? `Repete a média de ${dataBR(com.periodo_inicio)} a ${dataBR(com.periodo_fim)}, o último período completo elegível no corte.`
+        : undefined,
+  };
+}

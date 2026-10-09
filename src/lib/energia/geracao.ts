@@ -15,7 +15,7 @@
  */
 import { dataBR, horaLocal, mesAno, num, plural } from "./formato";
 import type { ColunaTabela, LinhaTabela, ValorCelula } from "./tabela";
-import type { Submercado } from "./tipos";
+import type { Natureza, Submercado } from "./tipos";
 import type {
   A11,
   AnoSin,
@@ -1784,6 +1784,181 @@ const DOWNLOADS_PAINEL: Record<PainelGeracao, RegExp> = {
 
 export function downloadsDoPainel(d: readonly { rotulo: string; url: string }[], p: PainelGeracao): { rotulo: string; url: string }[] {
   return d.filter((x) => DOWNLOADS_PAINEL[p].test(x.url));
+}
+
+/* ====================================================================== */
+/* P021 na abertura editorial: maiores fontes, composição completa,         */
+/* natureza do dado e cobertura da fonte                                    */
+/* ====================================================================== */
+
+/**
+ * Seletores que servem ao gráfico, à frase e à faixa de métricas ao mesmo tempo (um número, um seletor). Nenhum indicador é
+ * recalculado: participação e MWmed saem da janela publicada na gold, e a única conta é a soma das participações exibidas, para
+ * mostrar que a composição fecha dentro da tolerância do controle publicado.
+ */
+
+/**
+ * Natureza de uma categoria inteira. A MMGD é estimativa do ONS e as térmicas Tipo III são previsão do ONS. As demais são medição,
+ * com uma parcela de previsão Tipo III dita à parte (notaTipoIII), porque o grupo Tipo III reúne pequenas usinas de várias fontes.
+ */
+export type NaturezaDaFonte = "medicao" | "estimativa" | "previsao";
+
+export function naturezaDaCategoria(c: CategoriaGeracao): NaturezaDaFonte {
+  return c === "solar_mmgd" ? "estimativa" : c === "termica_sem_combustivel" ? "previsao" : "medicao";
+}
+
+/** Nome da fonte ao lado da barra: o mesmo nome curto, sem "(estimada)" na MMGD, porque o selo de natureza da linha já diz que é estimativa. */
+export const NOME_NA_BARRA: Record<CategoriaGeracao, string> = { ...CURTO_CATEGORIA, solar_mmgd: "Solar MMGD" };
+
+/** Total da janela em MWmed no perímetro escolhido (com ou sem a MMGD estimada). */
+export function totalDaJanela(mix: Pick<Mix, "total_mwmed" | "total_sem_mmgd_mwmed"> | null, per: Perimetro): number | null {
+  return mix ? (per === "com" ? mix.total_mwmed : mix.total_sem_mmgd_mwmed) : null;
+}
+
+/** Ressalva de universo sem o prefixo e sem o ponto final, para entrar numa frase ou numa legenda. */
+function ressalvaEmFrase(r: RessalvaUniverso | undefined | null): string | null {
+  const t = textoRessalva(r);
+  return t ? t.replace(/^Ressalva de universo:?\s*/, "").replace(/\.$/, "") || "cobertura da fonte alterada" : null;
+}
+
+export type LinhaFonte = {
+  id: CategoriaGeracao;
+  rotulo: string;
+  /** % da geração no perímetro escolhido, como a gold publica (sem novo arredondamento). */
+  participacao: number;
+  mwmed: number | null;
+  natureza: NaturezaDaFonte;
+  /** Por que a participação não se compara com a de outro período (ressalva de universo na janela), ou null. */
+  cobertura: string | null;
+};
+
+/**
+ * Uma linha por categoria com valor na janela, da maior para a menor participação (empate na ordem das categorias). Categoria sem
+ * valor na janela fica de fora: ausência não é zero e não entra na soma. No perímetro sem MMGD, a Solar MMGD fica fora.
+ */
+export function composicaoDaJanela(m: Pick<Matriz, "janelas">, rg: RegiaoGeracao, pedida: JanelaMatriz, per: Perimetro): LinhaFonte[] {
+  const { mix } = janelaEscolhida(m, rg, pedida);
+  if (!mix) return [];
+  const out: LinhaFonte[] = [];
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    if (p === null) continue;
+    out.push({ id: c, rotulo: NOME_NA_BARRA[c], participacao: p, mwmed: mix.mwmed[c], natureza: naturezaDaCategoria(c), cobertura: ressalvaEmFrase(mix.ressalvas_universo[c]) });
+  }
+  return out.sort((a, b) => b.participacao - a.participacao);
+}
+
+/** As `n` maiores participações (só as positivas) de uma lista já ordenada: o recorte da abertura, que nunca é a composição completa. */
+export function maioresFontes<T extends { participacao: number }>(linhas: readonly T[], n = 5): T[] {
+  return linhas.filter((l) => l.participacao > 0).slice(0, n);
+}
+
+/** Tolerância, em pontos percentuais, do controle publicado "Participações somam 100% em todas as janelas e regiões". */
+export const TOLERANCIA_SOMA_PP = 0.05;
+
+/** A soma das participações exibidas contra 100%: a composição só é completa quando fecha dentro da tolerância do controle publicado. */
+export function fechamentoDaComposicao(linhas: readonly { participacao: number }[]): { soma: number; categorias: number; tolerancia: number; fecha: boolean } {
+  const soma = Math.round(linhas.reduce((s, l) => s + l.participacao, 0) * 100) / 100;
+  return { soma, categorias: linhas.length, tolerancia: TOLERANCIA_SOMA_PP, fecha: linhas.length > 0 && Math.abs(soma - 100) <= TOLERANCIA_SOMA_PP + 1e-9 };
+}
+
+export type LinhaComparacaoJanelas = { id: CategoriaGeracao; rotulo: string; participacao: number; participacao_ref: number };
+export type ForaDaComparacao = { id: CategoriaGeracao; rotulo: string; motivo: string };
+
+/**
+ * Participação da janela escolhida contra a de referência (365 dias; para a de 365 dias, os 30 dias), só das categorias que podem
+ * ser comparadas. Categoria com ressalva de universo em qualquer das duas janelas (a fonte publicou outro número de usinas com
+ * dado) sai do gráfico e entra em `fora`, com a mudança de cobertura dita; o valor de cada janela continua na tabela e na
+ * composição completa. Categoria sem valor em uma das janelas também sai, como ausência.
+ */
+export function comparacaoEntreJanelas(
+  m: Pick<Matriz, "janelas">,
+  rg: RegiaoGeracao,
+  pedida: JanelaMatriz,
+  per: Perimetro,
+): { janela: JanelaMatriz; ref: JanelaMatriz; comparaveis: LinhaComparacaoJanelas[]; fora: ForaDaComparacao[] } {
+  const { janela, mix } = janelaEscolhida(m, rg, pedida);
+  const ref = janelaReferencia(janela);
+  const mixRef = m.janelas[rg]?.[ref] ?? null;
+  const comparaveis: LinhaComparacaoJanelas[] = [];
+  const fora: ForaDaComparacao[] = [];
+  if (!mix) return { janela, ref, comparaveis, fora };
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    const pr = mixRef ? participacaoDe(mixRef, per, c) : null;
+    if (p === null && pr === null) continue;
+    const rJ = mix.ressalvas_universo[c];
+    const rR = mixRef?.ressalvas_universo[c];
+    if (rJ || rR) {
+      // a janela com mais motivos (salto no período, além do universo reduzido) é a que diz mais sobre a mudança de cobertura
+      const dona = (rJ?.motivos.length ?? 0) >= (rR?.motivos.length ?? 0) ? rJ : rR;
+      fora.push({ id: c, rotulo: CURTO_CATEGORIA[c], motivo: ressalvaEmFrase(dona) ?? "cobertura da fonte alterada" });
+    } else if (p === null || pr === null) {
+      fora.push({ id: c, rotulo: CURTO_CATEGORIA[c], motivo: `sem valor na janela de ${ROTULO_JANELA[p === null ? janela : ref]}` });
+    } else comparaveis.push({ id: c, rotulo: CURTO_CATEGORIA[c], participacao: p, participacao_ref: pr });
+  }
+  comparaveis.sort((a, b) => b.participacao - a.participacao);
+  return { janela, ref, comparaveis, fora };
+}
+
+/** Fonte de maior participação na janela (a "fonte principal" da faixa de métricas), pelo mesmo critério do gráfico. */
+export function fontePrincipalDaJanela(mix: Mix | null, per: Perimetro): { id: CategoriaGeracao; rotulo: string; frase: string; participacao: number } | null {
+  if (!mix) return null;
+  let melhor: { id: CategoriaGeracao; participacao: number } | null = null;
+  for (const c of CATEGORIAS) {
+    if (per === "sem" && c === "solar_mmgd") continue;
+    const p = participacaoDe(mix, per, c);
+    if (p !== null && (melhor === null || p > melhor.participacao)) melhor = { id: c, participacao: p };
+  }
+  return melhor ? { ...melhor, rotulo: CURTO_CATEGORIA[melhor.id], frase: FRASE_CATEGORIA[melhor.id] } : null;
+}
+
+/** Natureza da energia da janela (medição, previsão do ONS e estimativa do ONS): as partes que fecham 100%, na ordem de NATUREZAS. */
+export function partesDaNatureza(mix: Pick<Mix, "natureza_pct"> | null): { id: NaturezaGeracao; rotulo: string; pct: number }[] {
+  if (!mix) return [];
+  return NATUREZAS.flatMap((n) => {
+    const p = mix.natureza_pct[n];
+    return p === null ? [] : [{ id: n, rotulo: CURTO_NATUREZA[n], pct: p }];
+  });
+}
+
+/** Primeiro mês (AAAA-MM) com valor de uma natureza na série mensal: de quando a previsão Tipo III e a estimativa da MMGD existem na fonte. */
+export function primeiroMesDaNatureza(n: Pick<NaturezaMensal, "meses"> & Partial<Record<NaturezaGeracao, (number | null)[]>>, nat: NaturezaGeracao): string | null {
+  const serie = n[nat] ?? [];
+  const i = serie.findIndex((v) => v !== null && v !== undefined);
+  return i >= 0 ? (n.meses[i] ?? null) : null;
+}
+
+/**
+ * Datas de referência de cada parte do módulo, com a natureza de cada uma: a matriz vai até o último dia completo; o despacho térmico,
+ * as restrições e o fator de capacidade, até o último mês completo de cada conjunto; a capacidade instalada é o retrato de uma data.
+ * Parte que a gold não publica não entra na lista.
+ */
+export function datasDoModulo(g: Pick<GoldGeracaoDetalhe, "dia_referencia" | "a11" | "termica" | "restricoes" | "capacidade">): { rotulo: string; texto: string; natureza: Natureza }[] {
+  const out: { rotulo: string; texto: string; natureza: Natureza }[] = [{ rotulo: "Matriz efetiva", texto: `até ${dataBR(g.dia_referencia)}`, natureza: "CALCULADO" }];
+  if (g.a11.primeiro_dia_mmgd) out.push({ rotulo: "MMGD estimada pelo ONS", texto: `de ${dataBR(g.a11.primeiro_dia_mmgd)} a ${dataBR(g.dia_referencia)}`, natureza: "ESTIMADO" });
+  if (g.termica) out.push({ rotulo: "Despacho térmico", texto: `até ${mesAno(g.termica.ultimo_mes_completo)} (último mês completo)`, natureza: "CALCULADO" });
+  const meses = [g.restricoes.eolica?.ultimo_mes_completo, g.restricoes.solar?.ultimo_mes_completo].filter((x): x is string => !!x).sort();
+  if (meses.length) out.push({ rotulo: "Restrições de renováveis", texto: `até ${mesAno(meses[0])} (último mês completo)`, natureza: "ESTIMADO" });
+  if (g.capacidade) {
+    out.push({ rotulo: "Potência instalada", texto: `retrato de ${dataBR(g.capacidade.retrato.data)}`, natureza: "OBSERVADO" });
+    const ultimo = g.capacidade.mensal.meses.at(-1);
+    if (ultimo) out.push({ rotulo: "Fator de capacidade", texto: `até ${mesAno(ultimo)} (último mês completo)`, natureza: "CALCULADO" });
+  }
+  return out;
+}
+
+/**
+ * Categorias cuja cobertura na fonte mudou em algum mês da série mensal (ressalva de universo no mês): quantos meses e o último.
+ * Serve à nota sob a série mensal: a variação dessas categorias entre meses pode refletir a cobertura, não só a geração.
+ */
+export function coberturaMensal(ms: Pick<MensalSin, "ressalvas_universo">): { id: CategoriaGeracao; rotulo: string; meses: number; ultimo: string }[] {
+  return CATEGORIAS.flatMap((c) => {
+    const lista = ms.ressalvas_universo[c] ?? [];
+    return lista.length ? [{ id: c, rotulo: CURTO_CATEGORIA[c], meses: lista.length, ultimo: [...lista].sort().at(-1)! }] : [];
+  });
 }
 
 /* ====================================================================== */

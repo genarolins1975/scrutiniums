@@ -6,25 +6,27 @@ import {
   ExpansaoAnalise,
   ExpansaoAuditoria,
   ExpansaoAusencia,
+  ExpansaoDatas,
   ExpansaoIndisponivel,
   ExpansaoLimitacoes,
   ExpansaoNavegacao,
   ExpansaoNota,
   ExpansaoRecorte,
   ExpansaoSeguir,
-  ExpansaoSubtitulo,
   ExpansaoTabelaSimples,
   tamanhoPublicado,
 } from "@/components/energia/ExpansaoPagina";
 import { ExpansaoGeracaoRedeUf } from "@/components/energia/ExpansaoTransmissao";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -91,6 +93,8 @@ export default function GeracaoTransmissaoPage() {
   const pp = painel("p042");
   const serie = [...t.serie_anual].sort((a, b) => a.ano.localeCompare(b.ano));
   const capturaEpe = dataTexto(g.referencias.rede_epe_capturada_em);
+  const dataSiget = dataTexto(o.data_referencia);
+  const dataRalie = dataTexto(g.estagios.ralie.data_ralie);
   const marcosParciais = serie.filter((x) => x.ano_parcial).map((x) => ({ x: x.ano, rotulo: "ano parcial" }));
   const complementares = [
     { rotulo: "Leilões de transmissão", p: p.leiloes },
@@ -98,30 +102,103 @@ export default function GeracaoTransmissaoPage() {
     ...(p.rede_epe ? [{ rotulo: "Rede da EPE", p: p.rede_epe }] : []),
     { rotulo: "Geração em implantação", p: p.ralie },
   ];
+  const oQueMudou = mudancaTransmissao(g);
+  const comoInterpretar = <>{g.regras.transmissao}</>;
+  const naoConcluir = (
+    <>
+      Se a rede é suficiente para a geração de uma UF: a capacidade de escoamento depende do desenho da rede (topologia) e dos limites dela, não de km ou MVA.
+      Também não liga obra de transmissão a usina específica: a EPE e o SIGET não têm chave comum, e o vínculo publicado é territorial.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao-geracao-e-transmissao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["RALIE", "RAP", "ANEEL", "EPE", "IBGE", "ONS"]}
+        <ExpansaoNavegacao atual="p042" />
+        <CabecalhoModulo
+          siglas={["RALIE", "RAP", "ANEEL", "EPE", "IBGE", "ONS"]}
           rotulo="Expansão"
-          titulo="Geração e transmissão"
+          titulo={pp.pergunta}
+          lead="Onde a geração está sendo construída e onde a rede está sendo ampliada, lado a lado, por UF e por ano, cada uma na sua unidade."
+          recorte={`RALIE de ${dataRalie} · SIGET de ${dataSiget} · MW, km e MVA`}
+          fonte="ANEEL, RALIE, SIGET e leilões; EPE, rede de transmissão"
           referencia={
             <>
-              SIGET da ANEEL de {dataTexto(o.data_referencia)}; RALIE de {dataTexto(g.estagios.ralie.data_ralie)}; leilões de transmissão de {dataTexto(l.periodo.inicio)} a {dataTexto(l.periodo.fim)}{" "}
+              SIGET da ANEEL de {dataSiget}; RALIE de {dataRalie}; leilões de transmissão de {dataTexto(l.periodo.inicio)} a {dataTexto(l.periodo.fim)}{" "}
               (arquivo publicado em {dataTexto(l.publicado_em)}); linhas da EPE capturadas em {capturaEpe}. Processado em {carimbo(g.gerado_em)}.
             </>
+          }
+          datas={
+            <ExpansaoDatas
+              itens={[
+                { rotulo: "RALIE", texto: `fotografia de ${dataRalie}`, natureza: "OBSERVADO" },
+                { rotulo: "SIGET", texto: `até ${dataSiget}`, natureza: "OBSERVADO" },
+                { rotulo: "Leilões de transmissão", texto: `até ${dataTexto(l.ultimo_leilao.data)}`, natureza: "OBSERVADO" },
+                { rotulo: "Linhas da EPE", texto: `capturadas em ${capturaEpe}`, natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={
+            <FaixaMetricas colunas={4} rotulo="Indicadores de geração e transmissão" nota="MW de geração, km de circuito e MVA de transformação medem coisas diferentes: ficam lado a lado, sem soma nem divisão.">
+              <Numero
+                variante="faixa"
+                rotulo="Linhas novas em obras em andamento"
+                natureza="CALCULADO"
+                evidencia={ev.transmissao_em_andamento ?? null}
+                casas={1}
+                periodo={`SIGET de ${dataSiget}`}
+                cor="var(--serie-comp-2)"
+                nota={`${inteiro(o.em_andamento.empreendimentos)} empreendimentos em andamento.`}
+                endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
+                motivoAusencia="Sem o SIGET nesta publicação."
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Transformação nova em obras em andamento"
+                natureza="CALCULADO"
+                valor={o.em_andamento.mva_tr_novos}
+                casas={0}
+                unidade="MVA"
+                periodo={`SIGET de ${dataSiget}`}
+                cor="var(--serie-comp-1)"
+                nota="Sem o transformador reserva, que fica à parte."
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Geração em implantação (RALIE)"
+                natureza="CALCULADO"
+                evidencia={ev.ralie_em_implantacao ?? null}
+                casas={1}
+                unidade="MW"
+                periodo={`RALIE de ${dataRalie}`}
+                cor="var(--cor-energia)"
+                endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
+                motivoAusencia="Sem a fotografia do RALIE nesta publicação."
+              />
+              <Numero
+                variante="faixa"
+                rotulo={`Extensão contratada em leilão em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo aberto"}`}
+                natureza="CALCULADO"
+                evidencia={ev.leiloes_ultimo_ano ?? null}
+                casas={1}
+                periodo="último ano do arquivo aberto"
+                cor="var(--serie-comp-3)"
+                nota="Os anos seguintes ao último leilão do arquivo aberto são ausência na fonte, não anos sem leilão."
+                endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
+                motivoAusencia="Sem o arquivo de leilões nesta publicação."
+              />
+            </FaixaMetricas>
           }
         >
           Onde a geração está sendo construída e onde a rede está sendo ampliada, lado a lado, por UF e por ano. MW, km e MVA ficam em painéis separados: medem coisas diferentes.
         </CabecalhoModulo>
-        <ExpansaoNavegacao atual="p042" />
         <ModoProfundidade>
           <Bloco id="geracao-e-transmissao">
             <PainelEvidencia
               id="p042"
-              pergunta={pp.pergunta}
+              pergunta="Geração e rede por UF, lado a lado"
               subtitulo="Geração em implantação, obras e leilões de transmissão e rede planejada, por UF e por ano · MW, km e MVA em separado"
               porQueImporta={
                 <>
@@ -129,14 +206,10 @@ export default function GeracaoTransmissaoPage() {
                   elas andam juntas e onde uma vai à frente da outra.
                 </>
               }
-              oQueMudou={mudancaTransmissao(g)}
-              comoInterpretar={<>{g.regras.transmissao}</>}
-              naoConcluir={
-                <>
-                  Se a rede é suficiente para a geração de uma UF: a capacidade de escoamento depende do desenho da rede (topologia) e dos limites dela, não de km ou MVA.
-                  Também não liga obra de transmissão a usina específica: a EPE e o SIGET não têm chave comum, e o vínculo publicado é territorial.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={p.obras}
               complementares={complementares}
             >
@@ -144,10 +217,15 @@ export default function GeracaoTransmissaoPage() {
                 <RespostaCurta id="p042" veredito={vereditoTransmissao(g) || respostaTransmissao(g)}>
                   {respostaTransmissao(g)}
                 </RespostaCurta>
+                <ExpansaoGeracaoRedeUf
+                  linhas={linhasGeracaoRedeUf(g)}
+                  datas={{ ralie: dataRalie, siget: dataSiget, epe: capturaEpe }}
+                  fonte={`${FONTE_RALIE}; ${FONTE_SIGET}; ${FONTE_EPE_REDE}`}
+                />
                 <ExpansaoRecorte
                   periodo={
                     <>
-                      SIGET de {dataTexto(o.data_referencia)}; RALIE de {dataTexto(g.estagios.ralie.data_ralie)}; série anual de {serie[0]?.ano} a {serie.at(-1)?.ano}; leilões até {dataTexto(l.ultimo_leilao.data)}
+                      SIGET de {dataSiget}; RALIE de {dataRalie}; série anual de {serie[0]?.ano} a {serie.at(-1)?.ano}; leilões até {dataTexto(l.ultimo_leilao.data)}
                     </>
                   }
                   universo={
@@ -156,99 +234,80 @@ export default function GeracaoTransmissaoPage() {
                       {l.periodo.inicio?.slice(0, 4)}
                     </>
                   }
-                  unidade="MW (geração), km de circuito (SIGET), km de traçado (EPE), MVA (transformação) e R$ milhões nominais, sempre separados"
+                  unidade="MW (geração, RALIE); km de circuito (linhas em obra e energizadas, SIGET: cada circuito de linha dupla conta); km de traçado (rede da EPE, geometria do mapa); MVA (transformação nova, sem o reserva); R$ milhões nominais (investimento previsto dos leilões); sempre separados"
                 />
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <Numero rotulo="Linhas novas em obras em andamento" natureza="CALCULADO" evidencia={ev.transmissao_em_andamento ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042" motivoAusencia="Sem o SIGET nesta publicação." />
-                  <Numero
-                    rotulo={`Extensão contratada em leilão em ${l.ultimo_leilao.data?.slice(0, 4) ?? "último ano do arquivo"}, último ano do arquivo aberto`}
-                    natureza="CALCULADO"
-                    evidencia={ev.leiloes_ultimo_ano ?? null}
-                    casas={1}
-                    tamanho="medio"
-                    endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042"
-                    motivoAusencia="Sem o arquivo de leilões nesta publicação."
-                    nota="Os anos seguintes ao último leilão do arquivo aberto são ausência na fonte, não anos sem leilão; por isso este cartão é de um ano anterior aos demais."
-                  />
-                  <Numero rotulo="Geração em implantação (RALIE)" natureza="CALCULADO" evidencia={ev.ralie_em_implantacao ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/geracao-e-transmissao#p042" motivoAusencia="Sem a fotografia do RALIE nesta publicação." />
-                </div>
+                <NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />
 
-                <ExpansaoSubtitulo>Geração e rede por UF, lado a lado</ExpansaoSubtitulo>
-                <ExpansaoGeracaoRedeUf
-                  linhas={linhasGeracaoRedeUf(g)}
-                  datas={{ ralie: dataTexto(g.estagios.ralie.data_ralie), siget: dataTexto(o.data_referencia), epe: capturaEpe }}
-                  fonte={`${FONTE_RALIE}; ${FONTE_SIGET}; ${FONTE_EPE_REDE}`}
-                />
+                <SecaoDoPainel id="ano-a-ano" titulo="O que entrou em operação, ano a ano: geração, linhas e transformação">
+                  <CursorSincronizado>
+                    <GraficoLinhas
+                      titulo={`Geração liberada para operação comercial por ano, ${serie[0]?.ano} a ${serie.at(-1)?.ano} (MW)`}
+                      dados={dadosSerieMw(serie)}
+                      chaveX="id"
+                      formatoX="texto"
+                      series={[{ id: "mw", rotulo: "Liberado (resumo anual oficial)", sigla: "Liberado", cor: "var(--cor-energia)" }]}
+                      marcos={marcosParciais}
+                      unidade="MW"
+                      casas={1}
+                      zeroNoEixo
+                      altura={260}
+                    />
+                    <GraficoLinhas
+                      titulo="Linhas de transmissão por ano: energizadas, contratadas em leilão e em contratos assinados (km)"
+                      dados={dadosSerieKm(serie)}
+                      chaveX="id"
+                      formatoX="texto"
+                      series={[
+                        { id: "energizados", rotulo: "Energizadas (SIGET, km de circuito)", sigla: "Energizadas", cor: "var(--cor-energia)" },
+                        { id: "leilao", rotulo: "Contratadas em leilão (km do lote)", sigla: "Leilão", cor: "var(--serie-comp-3)", tracejada: true },
+                        { id: "contratos", rotulo: "Em contratos assinados no ano (SIGET)", sigla: "Contratos", cor: "var(--escala-seq-3)" },
+                      ]}
+                      marcos={marcosParciais}
+                      unidade="km"
+                      casas={1}
+                      zeroNoEixo
+                      legendaInterativa
+                      altura={280}
+                    />
+                    <GraficoLinhas
+                      titulo="Transformação por ano: energizada, contratada em leilão e em contratos assinados (MVA)"
+                      dados={dadosSerieMva(serie)}
+                      chaveX="id"
+                      formatoX="texto"
+                      series={[
+                        { id: "energizados", rotulo: "Energizada (SIGET, sem o reserva)", sigla: "Energizada", cor: "var(--cor-energia)" },
+                        { id: "leilao", rotulo: "Contratada em leilão (como publicada)", sigla: "Leilão", cor: "var(--serie-comp-3)", tracejada: true },
+                        { id: "contratos", rotulo: "Em contratos assinados no ano (SIGET)", sigla: "Contratos", cor: "var(--escala-seq-3)" },
+                      ]}
+                      marcos={marcosParciais}
+                      unidade="MVA"
+                      casas={0}
+                      zeroNoEixo
+                      legendaInterativa
+                      altura={280}
+                    />
+                  </CursorSincronizado>
+                  <ExpansaoNota>
+                    Três painéis, um por grandeza, com o cursor sincronizado pelo ano; dentro de cada painel, linhas separadas e nunca somadas: energizado, contratado em leilão e
+                    contratado no SIGET são momentos diferentes do mesmo tipo de obra, não partes de um total. Lacuna na linha é ausência na fonte; zero é zero. O ano parcial está
+                    marcado. <span data-nivel="analisar">{l.nota_mva}</span>
+                  </ExpansaoNota>
+                  <ExpansaoAusencia titulo="Leilões depois do arquivo aberto: ausência na fonte">
+                    <p>
+                      O recurso aberto de resultados de leilões da ANEEL (publicado em {dataTexto(l.publicado_em)}) termina no leilão {l.ultimo_leilao.leilao ?? "sem dado"} ({dataTexto(l.ultimo_leilao.data)}).
+                      Os anos seguintes aparecem como ausência, não como anos sem leilão.{" "}
+                      <span data-nivel="auditar">
+                        A planilha mais recente para a qual a página de relatórios da ANEEL aponta exige um desafio anti-robô para ser baixada, e esse bloqueio não foi contornado.
+                      </span>
+                    </p>
+                    <p>
+                      Alternativa usada: os contratos de concessão do SIGET, com a data de assinatura, cobrem o período seguinte, sem RAP nem deságio ({inteiro(ca?.depois_do_ultimo_leilao_do_arquivo.contratos.length)} contratos
+                      assinados depois do último leilão do arquivo, na tabela do modo Analisar). Depende de a ANEEL atualizar o recurso aberto.
+                    </p>
+                  </ExpansaoAusencia>
+                </SecaoDoPainel>
 
-                <ExpansaoSubtitulo>Ano a ano: geração liberada, linhas e transformação</ExpansaoSubtitulo>
-                <CursorSincronizado>
-                  <GraficoLinhas
-                    titulo={`Geração liberada para operação comercial por ano, ${serie[0]?.ano} a ${serie.at(-1)?.ano} (MW)`}
-                    dados={dadosSerieMw(serie)}
-                    chaveX="id"
-                    formatoX="texto"
-                    series={[{ id: "mw", rotulo: "Liberado (resumo anual oficial)", sigla: "Liberado", cor: "var(--cor-energia)" }]}
-                    marcos={marcosParciais}
-                    unidade="MW"
-                    casas={1}
-                    zeroNoEixo
-                    altura={260}
-                  />
-                  <GraficoLinhas
-                    titulo="Linhas de transmissão por ano: energizadas, contratadas em leilão e em contratos assinados (km)"
-                    dados={dadosSerieKm(serie)}
-                    chaveX="id"
-                    formatoX="texto"
-                    series={[
-                      { id: "energizados", rotulo: "Energizadas (SIGET, km de circuito)", sigla: "Energizadas", cor: "var(--cor-energia)" },
-                      { id: "leilao", rotulo: "Contratadas em leilão (km do lote)", sigla: "Leilão", cor: "var(--serie-comp-3)", tracejada: true },
-                      { id: "contratos", rotulo: "Em contratos assinados no ano (SIGET)", sigla: "Contratos", cor: "var(--escala-seq-3)" },
-                    ]}
-                    marcos={marcosParciais}
-                    unidade="km"
-                    casas={1}
-                    zeroNoEixo
-                    legendaInterativa
-                    altura={280}
-                  />
-                  <GraficoLinhas
-                    titulo="Transformação por ano: energizada, contratada em leilão e em contratos assinados (MVA)"
-                    dados={dadosSerieMva(serie)}
-                    chaveX="id"
-                    formatoX="texto"
-                    series={[
-                      { id: "energizados", rotulo: "Energizada (SIGET, sem o reserva)", sigla: "Energizada", cor: "var(--cor-energia)" },
-                      { id: "leilao", rotulo: "Contratada em leilão (como publicada)", sigla: "Leilão", cor: "var(--serie-comp-3)", tracejada: true },
-                      { id: "contratos", rotulo: "Em contratos assinados no ano (SIGET)", sigla: "Contratos", cor: "var(--escala-seq-3)" },
-                    ]}
-                    marcos={marcosParciais}
-                    unidade="MVA"
-                    casas={0}
-                    zeroNoEixo
-                    legendaInterativa
-                    altura={280}
-                  />
-                </CursorSincronizado>
-                <ExpansaoNota>
-                  Três painéis, um por grandeza, com o cursor sincronizado pelo ano; dentro de cada painel, linhas separadas e nunca somadas: energizado, contratado em leilão e
-                  contratado no SIGET são momentos diferentes do mesmo tipo de obra, não partes de um total. Lacuna na linha é ausência na fonte; zero é zero. O ano parcial está
-                  marcado. <span data-nivel="analisar">{l.nota_mva}</span>
-                </ExpansaoNota>
-                <ExpansaoAusencia titulo="Leilões depois do arquivo aberto: ausência na fonte">
-                  <p>
-                    O recurso aberto de resultados de leilões da ANEEL (publicado em {dataTexto(l.publicado_em)}) termina no leilão {l.ultimo_leilao.leilao ?? "sem dado"} ({dataTexto(l.ultimo_leilao.data)}).
-                    Os anos seguintes aparecem como ausência, não como anos sem leilão.{" "}
-                    <span data-nivel="auditar">
-                      A planilha mais recente para a qual a página de relatórios da ANEEL aponta exige um desafio anti-robô para ser baixada, e esse bloqueio não foi contornado.
-                    </span>
-                  </p>
-                  <p>
-                    Alternativa usada: os contratos de concessão do SIGET, com a data de assinatura, cobrem o período seguinte, sem RAP nem deságio ({inteiro(ca?.depois_do_ultimo_leilao_do_arquivo.contratos.length)} contratos
-                    assinados depois do último leilão do arquivo, na tabela do modo Analisar). Depende de a ANEEL atualizar o recurso aberto.
-                  </p>
-                </ExpansaoAusencia>
-
-                <ExpansaoAnalise titulo="Mapa das linhas existentes e planejadas" id="mapa-rede">
+                <SecaoDoPainel id="mapa-rede" titulo="Onde estão as linhas existentes e planejadas?">
                   {rede ? (
                     <>
                       <ExpansaoMapaRede url={URL_REDE} tamanho={tamanhoPublicado(URL_REDE)} captura={capturaEpe} fonte={FONTE_EPE_REDE} />
@@ -256,6 +315,16 @@ export default function GeracaoTransmissaoPage() {
                         {rede.nota_data} {rede.definicao_km} Existente: {inteiro(rede.existente.linhas)} linhas, {kmTexto(rede.existente.km_geometria)}; planejada: {inteiro(rede.planejada.linhas)} linhas,{" "}
                         {kmTexto(rede.planejada.km_geometria)}, com ano de operação de {rede.planejada.ano_min ?? "sem dado"} a {rede.planejada.ano_max ?? "sem dado"}.
                       </ExpansaoNota>
+                      <GraficoBarras
+                        titulo="Linhas planejadas pela EPE por ano previsto de operação (km de traçado)"
+                        dados={rede.planejada.por_ano.map((a) => ({ id: a.ano === null ? "sem-ano" : String(a.ano), ano: a.ano === null ? "ano não informado" : String(a.ano), km: a.km, linhas: a.linhas }))}
+                        chaveCategoria="id"
+                        chaveRotulo="ano"
+                        series={[{ id: "km", rotulo: "Planejada", cor: "var(--escala-seq-3)" }]}
+                        unidade="km"
+                        casas={1}
+                        altura={260}
+                      />
                       <TabelaInterativa
                         titulo={`Linhas da EPE por tensão, capturadas em ${capturaEpe}`}
                         colunas={COLUNAS_REDE_TENSAO}
@@ -266,16 +335,6 @@ export default function GeracaoTransmissaoPage() {
                         versao={capturaEpe}
                         nomeArquivo="expansao-rede-epe-tensao"
                         chaveUrl="tra.ten"
-                      />
-                      <GraficoBarras
-                        titulo="Linhas planejadas pela EPE por ano previsto de operação (km de traçado)"
-                        dados={rede.planejada.por_ano.map((a) => ({ id: a.ano === null ? "sem-ano" : String(a.ano), ano: a.ano === null ? "ano não informado" : String(a.ano), km: a.km, linhas: a.linhas }))}
-                        chaveCategoria="id"
-                        chaveRotulo="ano"
-                        series={[{ id: "km", rotulo: "Planejada", cor: "var(--escala-seq-3)" }]}
-                        unidade="km"
-                        casas={1}
-                        altura={260}
                       />
                     </>
                   ) : (
@@ -289,17 +348,17 @@ export default function GeracaoTransmissaoPage() {
                       com o SIGET nem com os leilões: as obras em andamento ficam territorializadas pela UF das subestações, e a rede da EPE fica ao lado, por UF, sem ligação por empreendimento.
                     </p>
                   </ExpansaoAusencia>
-                </ExpansaoAnalise>
+                </SecaoDoPainel>
 
                 <ExpansaoAnalise titulo="Obras de transmissão no SIGET" id="obras">
                   <TabelaInterativa
-                    titulo={`Empreendimentos por situação, SIGET de ${dataTexto(o.data_referencia)}`}
+                    titulo={`Empreendimentos por situação, SIGET de ${dataSiget}`}
                     colunas={COLUNAS_OBRAS_SITUACAO}
                     linhas={linhasObrasSituacao(g)}
                     chaveLinha="id"
                     colunaRotulo="situacao"
                     fonte={FONTE_SIGET}
-                    versao={dataTexto(o.data_referencia)}
+                    versao={dataSiget}
                     nomeArquivo="expansao-obras-situacao"
                     chaveUrl="tra.sit"
                     nota={o.regra_mva_reserva}
@@ -310,13 +369,13 @@ export default function GeracaoTransmissaoPage() {
                     vigente já incorpora revisões por ato posterior: vencido não quer dizer atrasado em relação ao contrato original, que o arquivo aberto não traz.
                   </ExpansaoNota>
                   <TabelaInterativa
-                    titulo={`Empreendimentos em andamento com o prazo vigente vencido, SIGET de ${dataTexto(o.data_referencia)}`}
+                    titulo={`Empreendimentos em andamento com o prazo vigente vencido, SIGET de ${dataSiget}`}
                     colunas={COLUNAS_PRAZOS_VENCIDOS}
                     linhas={linhasPrazosVencidos(g)}
                     chaveLinha="id"
                     colunaRotulo="nome"
                     fonte={FONTE_SIGET}
-                    versao={dataTexto(o.data_referencia)}
+                    versao={dataSiget}
                     nomeArquivo="expansao-obras-prazo-vencido"
                     chaveUrl="tra.ven"
                     ordemInicial={{ coluna: "dias", direcao: "desc" }}
@@ -342,7 +401,7 @@ export default function GeracaoTransmissaoPage() {
                     chaveLinha="id"
                     colunaRotulo="ano"
                     fonte={FONTE_SIGET}
-                    versao={dataTexto(o.data_referencia)}
+                    versao={dataSiget}
                     nomeArquivo="expansao-obras-desvio-prazo"
                     chaveUrl="tra.dsv"
                     nota={o.desvio_prazo_vigente_por_ano.definicao}

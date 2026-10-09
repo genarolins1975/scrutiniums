@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ContaEscolha } from "@/components/energia/ContaControles";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
@@ -97,21 +98,12 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
 
   return (
     <div className="space-y-5">
-      <div role="radiogroup" aria-label="Janela de comparação" className="flex flex-wrap items-center gap-2">
-        <span className="rotulo text-mineral">Janela</span>
-        {janelas.map((j) => {
-          const id = String(j.meses) as "12" | "60" | "120";
-          return (
-            <label
-              key={id}
-              className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.janela === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
-            >
-              <input type="radio" name="conta-jan" value={id} checked={v.janela === id} onChange={() => definir({ janela: id })} className="accent-energia" />
-              {j.meses} meses
-            </label>
-          );
-        })}
-      </div>
+      <ContaEscolha
+        legenda="Janela de comparação"
+        opcoes={janelas.map((j) => ({ id: String(j.meses) as "12" | "60" | "120", rotulo: `${j.meses} meses` }))}
+        valor={v.janela}
+        onEscolher={(id) => definir({ janela: id })}
+      />
 
       <RespostaCurta id="p050-reajustes" vivo veredito={vereditoReajustes(janela)}>
         {respostaReajustes(janela)}

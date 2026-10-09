@@ -1,24 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Bloco } from "@/components/energia/CabecalhoModulo";
+import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { LinhaDoTempo } from "@/components/energia/LinhaDoTempo";
 import { PldLimites } from "@/components/energia/PldLimites";
-import {
-  PldAnalise,
-  PldAuditoria,
-  PldAviso,
-  PldCabecalho,
-  PldControles,
-  PldIndisponivel,
-  PldNavegacao,
-  PldPassagem,
-  PldSeguir,
-} from "@/components/energia/PldPagina";
+import { PldAviso, PldControles, PldIndisponivel, PldNavegacao, PldPassagem, PldSeguir } from "@/components/energia/PldPagina";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
@@ -58,6 +49,7 @@ export default function PldLimitesPage() {
   const atual = atualidadePld(g.referencia.dia, g.gerado_em);
   const versao = g.referencia.dia;
   const anoRef = Number(g.referencia.dia.slice(0, 4));
+  const anoParcial = !g.referencia.dia.endsWith("-12-31");
   // contexto que o dado publicado sustenta para anos com muitas horas no piso: a sequência de CMO semanal zero (achado A02, página CMO e formação de preço)
   const seq = g.achados.A02.sequencia_comum_mais_longa;
   const anosNaSequencia = seq && l.disponivel ? anosPermanencia(l).filter((a) => `${a}-01-01` >= seq.inicio && `${a}-12-31` <= seq.fim) : [];
@@ -75,13 +67,42 @@ export default function PldLimitesPage() {
     ) : null;
   const passagensLimites = g.conceito.fontes_textuais.filter((f) => ["d5163_art57_p1", "d5163_art57_p2", "d5163_art57_p3", "ren957_art78"].includes(f.id) && f.texto);
 
+  const ultimo = l.disponivel ? l.regimes[l.regimes.length - 1] : null;
+  const oQueMudou = (
+    <>
+      {atual.texto} Limites vigentes desde {dataBR(ultimo?.inicio)}: {ultimo?.ato_pld_min ?? "ato não identificado"}.
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      Hora no piso é a hora em que o PLD é igual ao piso do ato ao centavo; o mesmo para o teto horário. O teto estrutural é conferido sobre a média das 24 horas do dia. Um centavo
+      acima do piso já é outro preço e fica contado à parte. Cada ano é comparado com o próprio piso.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Permanência no piso não diz que o custo de operar foi baixo nem por quê: diz que o preço calculado ficou no mínimo do ato. O menor valor observado num ano é só conferência e
+      nunca substitui o piso. Ano parcial não se compara a ano completo sem ressalva.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <PldCabecalho siglas={["ANEEL", "CCEE", "ONS"]}
-          titulo="Limites, piso e tetos"
+        <CabecalhoModulo
+          siglas={["ANEEL", "CCEE", "ONS"]}
+          rotulo="Preço de Liquidação das Diferenças"
+          titulo={perguntaPainel("p010")}
+          lead={
+            <>
+              A ANEEL fixa, a cada ano, <Termo slug="limites-do-pld">três limites</Termo> para o PLD: o piso (valor mínimo), o teto horário (o máximo de cada hora) e o teto
+              estrutural (o limite para a média diária dos preços horários). Aqui, quando o preço encostou em cada um.
+            </>
+          }
+          recorte={`${anoParcial ? `${anoRef} até ${dataBR(g.referencia.dia)}` : anoRef} · horas e % das horas · limites em R$/MWh nominais`}
+          fonte={FONTE}
           referencia={
             <>
               CCEE (PLD até {dataBR(g.referencia.dia)}) e atos anuais da ANEEL{l.disponivel ? ` (${num(l.atos.length, 0)} atos de ${l.atos[0]?.ano ?? ""} a ${l.atos[l.atos.length - 1]?.ano ?? ""})` : ""}; processado em{" "}
@@ -89,10 +110,8 @@ export default function PldLimitesPage() {
             </>
           }
         >
-          A ANEEL fixa, a cada ano, <Termo slug="limites-do-pld">três limites</Termo> para o PLD: o piso (valor mínimo), o teto horário (o máximo de cada hora) e o teto
-          estrutural (o limite para a média diária dos preços horários). Este painel mostra quando o preço encostou em cada um, com os valores de cada ato da ANEEL e o
-          período em que valem.
-        </PldCabecalho>
+          Este painel mostra quando o preço encostou em cada um, com os valores de cada ato da ANEEL e o período em que valem.
+        </CabecalhoModulo>
         <PldNavegacao atual="p010" />
         <ModoProfundidade>
           <Bloco id="limites">
@@ -108,7 +127,7 @@ export default function PldLimitesPage() {
             ) : (
               <PainelEvidencia
                 id="p010"
-                pergunta={perguntaPainel("p010")}
+                pergunta="Horas no piso e no teto horário, ano a ano"
                 subtitulo="Horas no piso e no teto horário, dias com média no teto estrutural · horas e % das horas"
                 porQueImporta={
                   <>
@@ -116,23 +135,10 @@ export default function PldLimitesPage() {
                     percentis e diferenças entre regiões.
                   </>
                 }
-                oQueMudou={
-                  <>
-                    {atual.texto} Limites vigentes desde {dataBR(l.regimes[l.regimes.length - 1]?.inicio)}: {l.regimes[l.regimes.length - 1]?.ato_pld_min ?? "ato não identificado"}.
-                  </>
-                }
-                comoInterpretar={
-                  <>
-                    Hora no piso é a hora em que o PLD é igual ao piso do ato ao centavo; o mesmo para o teto horário. O teto estrutural é conferido sobre a média das 24 horas do
-                    dia. Um centavo acima do piso já é outro preço e fica contado à parte. Cada ano é comparado com o próprio piso.
-                  </>
-                }
-                naoConcluir={
-                  <>
-                    Permanência no piso não diz que o custo de operar foi baixo nem por quê: diz que o preço calculado ficou no mínimo do ato. O menor valor observado num ano é só
-                    conferência e nunca substitui o piso. Ano parcial não se compara a ano completo sem ressalva.
-                  </>
-                }
+                oQueMudou={oQueMudou}
+                comoInterpretar={comoInterpretar}
+                naoConcluir={naoConcluir}
+                naoConcluirNoCorpo
                 proveniencia={g.proveniencia.limites ?? g.proveniencia.distribuicao}
                 complementares={[{ rotulo: "Sobre a distribuição por regime", p: g.proveniencia.distribuicao }]}
               >
@@ -146,9 +152,10 @@ export default function PldLimitesPage() {
                     fonte={FONTE}
                     versao={versao}
                     notaPermanencia={notaPermanencia}
+                    notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                   />
 
-                  <PldAnalise id="atos" titulo="Os atos anuais, com publicação e vigência">
+                  <SecaoDoPainel id="atos" titulo="Os atos anuais, com publicação e vigência" nivel="analisar">
                     <PldAviso>{l.conferencia_atos.leitura}</PldAviso>
                     <LinhaDoTempo titulo="Atos da ANEEL que fixaram os limites do PLD" eventos={eventosAtos(l.atos)} categorias={CATEGORIAS_ATOS} ordem="cronologica" />
                     <TabelaInterativa
@@ -163,9 +170,9 @@ export default function PldLimitesPage() {
                       chaveUrl="vig"
                       nota="Em cada dia, cada limite vem do ato vigente mais recente que informa aquele campo; o último trecho vai até o dia de referência."
                     />
-                  </PldAnalise>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="atos-conferencia" titulo="Cada ato, o documento lido e o nível de conferência">
+                  <SecaoDoPainel id="atos-conferencia" titulo="Cada ato, o documento lido e o nível de conferência" nivel="auditar">
                     <TabelaInterativa
                       titulo="Atos de limites do PLD"
                       colunas={COLUNAS_ATOS}
@@ -208,21 +215,21 @@ export default function PldLimitesPage() {
                         </blockquote>
                       ))}
                     </div>
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="norma-limites" titulo="O que a norma diz sobre os limites">
+                  <SecaoDoPainel id="norma-limites" titulo="O que a norma diz sobre os limites" nivel="auditar">
                     {passagensLimites.map((p) => (
                       <PldPassagem key={p.id} p={p} />
                     ))}
                     <PldAviso>{l.nota_teto_estrutural}</PldAviso>
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="tolerancia" titulo="Tolerância monetária: por que igualdade ao centavo">
+                  <SecaoDoPainel id="tolerancia" titulo="Tolerância monetária: por que igualdade ao centavo" nivel="auditar">
                     <p className="text-sm leading-relaxed text-carvao">{l.tolerancia.regra}</p>
                     <p className="text-sm leading-relaxed text-carvao-muted">{l.tolerancia.justificativa}</p>
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="menor-observado" titulo="Conferência: menor e maior valor observado contra o ato">
+                  <SecaoDoPainel id="menor-observado" titulo="Conferência: menor e maior valor observado contra o ato" nivel="auditar">
                     <p className="text-sm text-carvao-muted">{l.regra_menor_observado}</p>
                     <TabelaInterativa
                       titulo="Menor e maior PLD horário observado por ano e submercado, contra os limites dos atos"
@@ -235,11 +242,11 @@ export default function PldLimitesPage() {
                       nomeArquivo="pld-conferencia-atos"
                       chaveUrl="conf"
                     />
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="controles" titulo="Controles automáticos da construção">
+                  <SecaoDoPainel id="controles" titulo="Controles automáticos da construção" nivel="auditar">
                     <PldControles controles={g.controles.filter((x) => /limite|Ato|piso/i.test(x.nome))} />
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
                   <PldSeguir ancora="p010" proximo={proximoPainel("p010")} downloads={g.downloads.filter((d) => /limites_diario/.test(d.url))} />
                 </div>

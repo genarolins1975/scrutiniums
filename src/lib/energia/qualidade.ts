@@ -1573,3 +1573,226 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
       };
   }
 }
+
+/* ---------------------------------------------------------------- redesenho: painéis, abertura e arquivos */
+
+/**
+ * Os quatro painéis da página: âncora do bloco, nome curto, título do painel e a pergunta que cada um responde (a descrição dos
+ * capítulos e a "próxima pergunta" de cada rodapé saem daqui, o mesmo texto nos dois lugares).
+ */
+export const PAINEIS_QUALIDADE = [
+  {
+    id: "p051",
+    ancora: "duracao",
+    rotulo: "Duração e frequência",
+    titulo: "Duração e frequência das interrupções no Brasil, ano a ano",
+    descricao: "Por quanto tempo e quantas vezes falta energia, no Brasil, nas distribuidoras e nos conjuntos?",
+  },
+  {
+    id: "p052",
+    ancora: "limites",
+    rotulo: "Limites",
+    titulo: "Cada distribuidora e cada conjunto diante do próprio limite",
+    descricao: "Quantos conjuntos passam do limite de DEC e como cada distribuidora fica diante do próprio limite?",
+  },
+  {
+    id: "p053",
+    ancora: "compensacoes",
+    rotulo: "Compensações",
+    titulo: "Quais compensações foram pagas?",
+    descricao: "Quanto foi pago a quem teve um limite individual de continuidade violado?",
+  },
+  {
+    id: "p054",
+    ancora: "atendimento",
+    rotulo: "Atendimento",
+    titulo: "Como o consumidor é atendido e como a rede se recupera?",
+    descricao: "Como o consumidor é atendido, o que ele responde na pesquisa de satisfação e como a rede se recupera?",
+  },
+] as const;
+export type PainelQualidade = (typeof PAINEIS_QUALIDADE)[number]["id"];
+export const painelQualidade = (id: PainelQualidade) => PAINEIS_QUALIDADE.find((p) => p.id === id)!;
+
+/**
+ * Valores da faixa de métricas da abertura. São os mesmos que a resposta, o gráfico e a tabela do P051 e do P052 leem (o ano de
+ * referência da gold e o anterior); a faixa não calcula nada, só escolhe e converte a unidade de exibição (horas e minutos).
+ */
+export type MetricasAbertura = {
+  ano: number;
+  anoAnterior: number | null;
+  dec: number | null;
+  decAnterior: number | null;
+  /** O DEC em horas e minutos (9,33 h são 9 h 20 min), nunca por leitura literal dos centésimos. */
+  decHorasMinutos: string;
+  fec: number | null;
+  fecAnterior: number | null;
+  /** DEC de todas as origens publicadas: o apurado mais as parcelas expurgadas. */
+  decTodasOrigens: number | null;
+  decTodasOrigensHorasMinutos: string;
+  conjuntos: {
+    ano: number;
+    acima: number;
+    comLimite: number;
+    pct: number | null;
+    anoAnterior: number | null;
+    pctAnterior: number | null;
+  };
+};
+
+export function metricasAbertura(g: QualidadeGold): MetricasAbertura {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  const ant = anoBrasil(g, ref - 1);
+  const anterior = ant && ant.dec !== null && ant.fec !== null ? ant : null;
+  const c = g.conjuntos;
+  const antC = c.historico.find((h) => h.ano === c.ano - 1) ?? null;
+  return {
+    ano: ref,
+    anoAnterior: anterior ? anterior.ano : null,
+    dec: a?.dec ?? null,
+    decAnterior: anterior?.dec ?? null,
+    decHorasMinutos: horasEMinutos(a?.dec),
+    fec: a?.fec ?? null,
+    fecAnterior: anterior?.fec ?? null,
+    decTodasOrigens: a?.dec_todas_parcelas ?? null,
+    decTodasOrigensHorasMinutos: horasEMinutos(a?.dec_todas_parcelas),
+    conjuntos: {
+      ano: c.ano,
+      acima: c.acima_limite_dec,
+      comLimite: c.com_limite,
+      pct: c.pct_acima_limite_dec,
+      anoAnterior: antC && antC.pct_acima_limite_dec !== null ? antC.ano : null,
+      pctAnterior: antC?.pct_acima_limite_dec ?? null,
+    },
+  };
+}
+
+/** Universo do DEC e do FEC nacionais, para o recorte: quantas distribuidoras e conjuntos entram e o recorte das concessionárias. */
+export function textoUniversoBrasil(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  if (!a) return "Sem ano nacional completo publicado.";
+  const distribuidoras = g.distribuidoras.filter((d) => d.dec !== null).length;
+  const base = `Todas as distribuidoras com indicadores publicados, inclusive permissionárias: ${num(distribuidoras, 0)} distribuidoras e ${num(a.conjuntos, 0)} conjuntos em ${a.ano}.`;
+  if (a.dec_concessionarias === null || a.fec_concessionarias === null || a.concessionarias === null) return base;
+  return `${base} Só as ${num(a.concessionarias, 0)} concessionárias, o universo do número que a ANEEL divulga: ${num(a.dec_concessionarias, 2)} h e ${num(a.fec_concessionarias, 2)} interrupções.`;
+}
+
+const FRASE_PARCELA: Record<GrupoParcela, string> = {
+  apurado: "no apurado, a parte comparada ao limite",
+  emergencia: "em situação de emergência",
+  dia_critico: "em dia crítico",
+  externa: "de origem externa ao sistema de distribuição",
+  ons: "de racionamento ou alívio de carga pelo ONS",
+};
+
+/**
+ * As parcelas do DEC do ano de referência por extenso: o que entra no apurado e o que a regra expurga, com a soma de todas as origens.
+ * O que a fonte não publica (parcela nula) é dito como ausência, nunca como zero. Vazio sem parcelas publicadas.
+ */
+export function textoParcelasAno(g: QualidadeGold): string {
+  const a = anoBrasil(g, g.ano_referencia);
+  const p = a?.parcelas_dec ?? null;
+  if (!a || !p || a.dec_todas_parcelas === null) return "";
+  const itens = ORDEM_PARCELAS.map((k) => (p[k] === null ? `sem valor publicado ${FRASE_PARCELA[k]}` : `${num(p[k], 2)} h ${FRASE_PARCELA[k]}`));
+  return `Em ${a.ano}, o DEC de todas as origens foi de ${num(a.dec_todas_parcelas, 2)} h (${horasEMinutos(a.dec_todas_parcelas)}): ${listaPt(itens)}. As quatro últimas parcelas são expurgadas do apurado.`;
+}
+
+/**
+ * Primeiro ano a partir do qual o DEC e o FEC apurados são, em todos os conjunto-meses, a soma das parcelas internas programada e não
+ * programada (IP + IND): antes disso o apurado de parte dos conjuntos incluía também as externas não críticas. Lido da tabela de
+ * identidade do apurado, nunca escrito à mão; null quando a identidade vale desde o primeiro ano publicado ou nunca fecha.
+ */
+export function anoApuradoUniforme(g: QualidadeGold): number | null {
+  const id = g.brasil.identidade_apurado;
+  let ano: number | null = null;
+  for (let i = id.length - 1; i >= 0; i--) {
+    const x = id[i];
+    if (x.pct_dec_igual_ip_mais_ind === 100 && x.pct_fec_igual_ip_mais_ind === 100) ano = x.ano;
+    else break;
+  }
+  return ano !== null && ano > (id[0]?.ano ?? ano) ? ano : null;
+}
+
+/**
+ * Marcos do eixo dos anos nos gráficos de DEC e FEC: o ano em que a fonte passa a publicar as parcelas em separado e o ano em que o
+ * apurado passa a ser só IP + IND. Os anos saem da série e da identidade do apurado, nunca de número escrito à mão.
+ */
+export function marcosHistoriaApurado(g: QualidadeGold): { x: string; rotulo: string }[] {
+  const marcos: { x: string; rotulo: string }[] = [];
+  const inicioParcelas = linhasParcelas(g)[0]?.ano ?? null;
+  if (inicioParcelas) marcos.push({ x: String(inicioParcelas), rotulo: `${inicioParcelas}: parcelas em separado` });
+  const uniforme = anoApuradoUniforme(g);
+  if (uniforme !== null) marcos.push({ x: String(uniforme), rotulo: `${uniforme}: apurado sem externas não críticas` });
+  return marcos;
+}
+
+/** Compensações do ano de referência para a faixa do P053: totais em milhões, unidades consumidoras e geradoras sempre separadas. */
+export function metricasCompensacao(g: QualidadeGold) {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia) ?? null;
+  const ant = c.anual.find((x) => x.ano === c.ano_referencia - 1 && x.completo) ?? null;
+  const milhoes = (v: number | null | undefined) => (v === null || v === undefined ? null : v / 1e6);
+  return {
+    ano: c.ano_referencia,
+    valorUcMilhoes: milhoes(a?.valor_uc),
+    valorUcAnteriorMilhoes: milhoes(ant?.valor_uc),
+    anoAnterior: ant && ant.valor_uc !== null ? ant.ano : null,
+    quantidadeUcMilhoes: milhoes(a?.quantidade_uc),
+    valorUgMilhoes: milhoes(a?.valor_ug),
+  };
+}
+
+/**
+ * O total que a ANEEL divulga para o ano de referência, quando a soma dos dados abertos difere dele além da precisão divulgada
+ * (a conferência fica marcada e a diferença não foi explicada). Vazio quando não há divulgação ou quando ela confere.
+ */
+export function textoDivulgadoAno(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  const d = a?.divulgado_aneel ?? null;
+  if (!a || !d || d.valor === null || a.valor_uc === null || d.dentro_da_precisao_valor !== false) return "";
+  return `A ANEEL divulga ${reaisMilhoes(d.valor, 0)} para ${a.ano}, e a soma dos dados abertos é ${reaisMilhoes(a.valor_uc)}: a diferença passa da precisão divulgada e não foi explicada (a conferência está em Auditar).`;
+}
+
+/* ---- arquivos para baixar: nome legível para o leitor, o nome do arquivo só em Auditar */
+
+const ROTULO_ARQUIVO: Record<string, string> = {
+  "qualidade_brasil.csv": "DEC e FEC do Brasil, por ano e por mês",
+  "qualidade_distribuidoras_anual.csv": "DEC, FEC e limites de cada distribuidora, por ano",
+  "qualidade_distribuidoras_mensal.csv": "DEC e FEC de cada distribuidora, por mês",
+  "qualidade_conjuntos_mensal.csv": "DEC e FEC de cada conjunto, por mês",
+  "qualidade_municipios.csv": "Conjuntos que atendem cada município, com o DEC e o FEC deles",
+  "qualidade_mapa.json": "Mapa por município (JSON)",
+  "qualidade_distribuidoras_serie.json": "Série anual de cada distribuidora (JSON)",
+  "qualidade_reconciliacao_dgc.csv": "DGC calculado e DGC publicado no ranking da ANEEL",
+  "qualidade_compensacoes.csv": "Compensações por distribuidora, mês e tipo de violação",
+  "qualidade_atendimento.csv": "Reclamações, Ouvidoria, IASC e atendimento emergencial por distribuidora",
+  "qualidade_atendimento_telefonico.csv": "Atendimento telefônico por distribuidora e mês",
+  "qualidade_eventos_emergencia.csv": "Eventos em situação de emergência",
+};
+
+/** Nome legível do arquivo publicado (o conjunto anual por década diz o seu período, lido do nome do arquivo). */
+export function rotuloArquivo(url: string): string {
+  const nome = url.split("/").at(-1) ?? url;
+  const decada = /^qualidade_conjuntos_anual_(\d{4})_(\d{4})\.csv$/.exec(nome);
+  if (decada) return `DEC, FEC e limites de cada conjunto, por ano, de ${decada[1]} a ${decada[2]}`;
+  return ROTULO_ARQUIVO[nome] ?? "Arquivo de dados";
+}
+
+const ARQUIVOS_DO_PAINEL: Record<PainelQualidade, (string | RegExp)[]> = {
+  p051: ["qualidade_brasil.csv", "qualidade_distribuidoras_anual.csv", "qualidade_distribuidoras_mensal.csv", "qualidade_conjuntos_mensal.csv", "qualidade_municipios.csv"],
+  p052: ["qualidade_distribuidoras_anual.csv", /^qualidade_conjuntos_anual_\d{4}_\d{4}\.csv$/, "qualidade_reconciliacao_dgc.csv"],
+  p053: ["qualidade_compensacoes.csv"],
+  p054: ["qualidade_atendimento.csv", "qualidade_atendimento_telefonico.csv", "qualidade_eventos_emergencia.csv"],
+};
+
+/** Arquivos de um painel, com nome legível, entre os que a gold publica (um arquivo que a publicação não traz não aparece). */
+export function downloadsDoPainel(g: QualidadeGold, painel: PainelQualidade): { rotulo: string; url: string }[] {
+  const quer = ARQUIVOS_DO_PAINEL[painel];
+  return g.downloads
+    .filter((d) => {
+      const nome = d.url.split("/").at(-1) ?? "";
+      return quer.some((q) => (typeof q === "string" ? q === nome : q.test(nome)));
+    })
+    .map((d) => ({ rotulo: rotuloArquivo(d.url), url: d.url }));
+}

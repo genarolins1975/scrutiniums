@@ -2,12 +2,14 @@
 
 import { useMemo, type ReactNode } from "react";
 import { AguaEscolha, AguaLista } from "@/components/energia/AguaControles";
+import { AguaLegenda } from "@/components/energia/AguaLegenda";
 import { AguaMapaBacias } from "@/components/energia/AguaMapaBacias";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
@@ -61,6 +63,12 @@ import type { AguaPrecipitacaoBacia, AguaPrevisao, AguaTemperatura } from "@/lib
  * (valoresMapaChuva e linhasChuva sobre o mesmo período). Estimativa (satélite e
  * reanálise) e previsão (uma rodada de um modelo) ficam em blocos separados, cada um
  * com o seu selo; nenhum cenário é desenhado.
+ *
+ * Composição (redesenho): o mapa das bacias é a figura principal, logo depois do veredito e dos
+ * controles, com o recorte como legenda e a tabela equivalente recolhida; as notas do painel e a
+ * separação entre observação, estimativa, previsão e cenário vêm junto dele; a chuva mês a mês, a
+ * comparação entre bacias, a temperatura e a previsão são seções visíveis com pergunta própria,
+ * cada uma com o seu veredito, o seu controle e o seu recorte.
  */
 const ESQUEMA = {
   bac: campo(tiposUrl.texto({ max: 40 }), ""),
@@ -80,7 +88,9 @@ export function AguaClima({
   fonteTemperatura,
   versaoChuva,
   versaoTemperatura,
-  destaques,
+  notas,
+  aposNotas,
+  fecho,
   motivoSemPrevisao,
 }: {
   precipitacao: AguaPrecipitacaoBacia[];
@@ -93,7 +103,12 @@ export function AguaClima({
   fonteTemperatura: string;
   versaoChuva: string;
   versaoTemperatura: string;
-  destaques?: ReactNode;
+  /** Notas do painel (NotasDoPainel: o que mudou, como interpretar e o que não é possível concluir), logo depois do mapa e da tabela. */
+  notas?: ReactNode;
+  /** Seção que vem logo depois das notas: o que é observação, estimativa, previsão e cenário. */
+  aposNotas?: ReactNode;
+  /** Último item visível em Entender: onde a relação com a demanda e com a afluência é medida. */
+  fecho?: ReactNode;
   motivoSemPrevisao: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
@@ -127,52 +142,20 @@ export function AguaClima({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <AguaLista rotulo="Bacia" opcoes={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia] }))} valor={bacia?.bacia ?? ""} onEscolher={(x) => selecionar(x)} />
-        <AguaLista
-          rotulo="Período do mapa"
-          opcoes={periodos.map((p) => ({ id: p, rotulo: rotuloPeriodoMapa(p, dia30) }))}
-          valor={per}
-          onEscolher={(x) => definir({ per: x })}
-        />
-        <AguaEscolha legenda="Temperatura" opcoes={REGIOES.map((r) => ({ id: r, rotulo: CURTO_REGIAO[r], detalhe: NOME_REGIAO[r] }))} valor={rt} onEscolher={(x) => definir({ rt: x })} />
-      </div>
-
-      <div className="space-y-3">
+      <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <RespostaCurta id="p019" vivo veredito={bacia ? vereditoChuva(bacia) : "Sem estimativa de chuva por bacia nesta publicação."}>
           {bacia ? respostaChuva(bacia, base) : "Sem estimativa de chuva por bacia nesta publicação."}
         </RespostaCurta>
-        <RespostaCurta id="p019-temperatura" vivo veredito={temp ? vereditoTemperatura(temp) : "Sem temperatura estimada nesta publicação."}>
-          {temp ? respostaTemperatura(temp, base) : "Sem temperatura estimada nesta publicação."}
-        </RespostaCurta>
-        {assoc && bacia && (
-          <RespostaCurta id="p019-associacao" vivo tamanho="sm" veredito={vereditoAssociacao(bacia) ?? assoc}>
-            {assoc}
-          </RespostaCurta>
-        )}
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          <AguaLista rotulo="Bacia" opcoes={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia] }))} valor={bacia?.bacia ?? ""} onEscolher={(x) => selecionar(x)} />
+          <AguaLista
+            rotulo="Período do mapa"
+            opcoes={periodos.map((p) => ({ id: p, rotulo: rotuloPeriodoMapa(p, dia30) }))}
+            valor={per}
+            onEscolher={(x) => definir({ per: x })}
+          />
+        </div>
       </div>
-
-      <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
-        <div>
-          <dt className="rotulo text-mineral">Período</dt>
-          <dd className="mt-0.5">
-            Chuva: {rotuloPeriodoMapa(per, dia30)}; temperatura: 30 dias até {dataBR(temp?.dia)}; base {periodoBase(base)}
-          </dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">
-            Chuva: média dos pontos de grade dentro do contorno de cada bacia do ONS, ponderada pela área. Temperatura: células mais populosas de cada UF, ponderadas pela
-            população, somadas por subsistema
-          </dd>
-        </div>
-        <div>
-          <dt className="rotulo text-mineral">Unidade</dt>
-          <dd className="mt-0.5">mm de chuva acumulada; anomalia em % da média da base; °C e anomalia em °C</dd>
-        </div>
-      </dl>
-
-      {destaques}
 
       <AguaMapaBacias
         titulo="Chuva estimada por bacia contra a média dos mesmos dias, em %"
@@ -188,6 +171,13 @@ export function AguaClima({
         periodo={rotuloPeriodoMapa(per, dia30)}
         nota={`Anomalia = chuva do período ÷ média dos mesmos dias (ou do mesmo mês) em ${baseTxt} − 1. No período seco, médias pequenas geram percentuais grandes: confira os milímetros na tabela.`}
       />
+
+      <AguaLegenda
+        periodo={`Chuva: ${rotuloPeriodoMapa(per, dia30)}; média da base em ${baseTxt}`}
+        universo="Chuva estimada por satélite (IMERG): média dos pontos de grade dentro do contorno de cada bacia do ONS, ponderada pela área"
+        unidade="mm de chuva acumulada; anomalia em % da média da base"
+      />
+
       <TabelaInterativa
         titulo={`Tabela equivalente ao mapa: chuva por bacia, ${rotuloPeriodoMapa(per, dia30)}`}
         colunas={COLUNAS_CHUVA}
@@ -203,8 +193,12 @@ export function AguaClima({
         nota={`Percentil e cobertura só na janela de 30 dias. A correlação com a ENA é associação descritiva (${baseAssoc}), não causa.`}
       />
 
+      {notas}
+
+      {aposNotas}
+
       {bacia && (
-        <div className="space-y-3">
+        <SecaoDoPainel id="historico" titulo="Como a chuva de cada mês se compara com a média do mês?">
           <GraficoLinhas
             titulo={`${nomes[bacia.bacia]}: chuva em cada um dos últimos ${mesesHistorico} e a média do mesmo mês`}
             dados={historico}
@@ -224,11 +218,17 @@ export function AguaClima({
               Desde {mesAno(bacia.mensal.preliminar_desde)} os meses têm dias do IMERG Late (preliminar, sem calibração por pluviômetros).
             </p>
           )}
-        </div>
+          {assoc && (
+            <div>
+              <RespostaCurta id="p019-associacao" vivo tamanho="sm" veredito={vereditoAssociacao(bacia) ?? assoc}>
+                {assoc}
+              </RespostaCurta>
+            </div>
+          )}
+        </SecaoDoPainel>
       )}
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Até quatro bacias na mesma escala</h3>
+      <SecaoDoPainel id="comparar-bacias" titulo="Como a chuva mensal se compara entre bacias?">
         <Comparador
           rotulo={`Bacias comparadas (até ${LIMITE_COMPARACAO})`}
           entidades={precipitacao.map((b) => ({ id: b.bacia, rotulo: nomes[b.bacia], sinonimos: [b.bacia] }))}
@@ -259,10 +259,15 @@ export function AguaClima({
             }))}
           />
         )}
-      </div>
+      </SecaoDoPainel>
 
-      <div id="temperatura" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Temperatura {temp ? DO_REGIAO[temp.recorte] : ""}</h3>
+      <SecaoDoPainel id="temperatura" titulo="Como a temperatura estimada se compara com a média dos mesmos dias?">
+        <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <RespostaCurta id="p019-temperatura" vivo veredito={temp ? vereditoTemperatura(temp) : "Sem temperatura estimada nesta publicação."}>
+            {temp ? respostaTemperatura(temp, base) : "Sem temperatura estimada nesta publicação."}
+          </RespostaCurta>
+          <AguaEscolha legenda="Temperatura" opcoes={REGIOES.map((r) => ({ id: r, rotulo: CURTO_REGIAO[r], detalhe: NOME_REGIAO[r] }))} valor={rt} onEscolher={(x) => definir({ rt: x })} />
+        </div>
         {temp && (
           <>
             <GraficoLinhas
@@ -288,6 +293,11 @@ export function AguaClima({
             />
           </>
         )}
+        <AguaLegenda
+          periodo={`Temperatura: 30 dias até ${dataBR(temp?.dia)}; média da base em ${baseTxt}`}
+          universo="Temperatura estimada por reanálise (MERRA-2): células mais populosas de cada UF, ponderadas pela população, somadas por subsistema"
+          unidade="°C e anomalia em °C"
+        />
         <TabelaInterativa
           titulo="Tabela equivalente: temperatura de 30 dias por recorte"
           colunas={COLUNAS_TEMPERATURA}
@@ -299,68 +309,78 @@ export function AguaClima({
           nomeArquivo="agua-temperatura-30d"
           selecionado={rt}
           onSelecionar={(id) => id && definir({ rt: id as Regiao })}
+          recolher
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div id="previsao" className="scroll-mt-28 space-y-4 border-t-2 border-dashed border-linha pt-5" data-natureza="PREVISTO">
-        <h3 className="font-serif text-lg text-carvao">Previsão meteorológica: uma rodada de um modelo, não observação</h3>
-        {previsao ? (
-          <>
-            <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="previsao">
-              {bacia ? respostaPrevisao(previsao, bacia.bacia) : ""}
-            </p>
-            <p className="text-xs text-carvao-muted">
-              Rodada de {rotuloRodada(previsao.emitida_em)}, capturada em {carimbo(previsao.capturada_em)}
-              {previsao.idade_horas !== null ? `, com ${num(previsao.idade_horas, 0)} horas no processamento` : ""}. {previsao.comparabilidade}
-            </p>
-            {bacia && (
-              <GraficoBarras
-                titulo={`Chuva prevista por dia na bacia do ${nomeProprio(bacia.bacia)} (dia UTC)`}
-                dados={prev.map((p) => ({ d: p.d, rotulo: dataBR(p.d), mm: p.mm }))}
-                chaveCategoria="d"
-                chaveRotulo="rotulo"
-                series={[{ id: "mm", rotulo: "Chuva prevista", cor: "var(--cor-previsto)" }]}
-                unidade="mm"
+      <div data-natureza="PREVISTO">
+        <SecaoDoPainel
+          id="previsao"
+          tracejada
+          titulo="O que a previsão de uma rodada mostra para os próximos dias?"
+          lead="Previsão meteorológica: uma rodada de um modelo, não observação."
+        >
+          {previsao ? (
+            <>
+              <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="previsao">
+                {bacia ? respostaPrevisao(previsao, bacia.bacia) : ""}
+              </p>
+              <p className="text-xs text-carvao-muted">
+                Rodada de {rotuloRodada(previsao.emitida_em)}, capturada em {carimbo(previsao.capturada_em)}
+                {previsao.idade_horas !== null ? `, com ${num(previsao.idade_horas, 0)} horas no processamento` : ""}. {previsao.comparabilidade}
+              </p>
+              {bacia && (
+                <GraficoBarras
+                  titulo={`Chuva prevista por dia na bacia do ${nomeProprio(bacia.bacia)} (dia UTC)`}
+                  dados={prev.map((p) => ({ d: p.d, rotulo: dataBR(p.d), mm: p.mm }))}
+                  chaveCategoria="d"
+                  chaveRotulo="rotulo"
+                  series={[{ id: "mm", rotulo: "Chuva prevista", cor: "var(--cor-previsto)" }]}
+                  unidade="mm"
+                  casas={1}
+                />
+              )}
+              <GraficoLinhas
+                titulo="Temperatura média prevista por dia (dia UTC), por recorte"
+                dados={prev}
+                chaveX="d"
+                series={REGIOES.map((r) => ({ id: r, rotulo: NOME_REGIAO[r], sigla: CURTO_REGIAO[r], cor: COR_REGIAO[r], tracejada: true }))}
+                unidade="°C"
                 casas={1}
               />
-            )}
-            <GraficoLinhas
-              titulo="Temperatura média prevista por dia (dia UTC), por recorte"
-              dados={prev}
-              chaveX="d"
-              series={REGIOES.map((r) => ({ id: r, rotulo: NOME_REGIAO[r], sigla: CURTO_REGIAO[r], cor: COR_REGIAO[r], tracejada: true }))}
-              unidade="°C"
-              casas={1}
-            />
-            <TabelaInterativa
-              titulo="Chuva prevista por bacia e a média IMERG dos mesmos dias"
-              colunas={COLUNAS_PREVISAO_CHUVA}
-              linhas={linhasPrevisaoChuva(previsao)}
-              chaveLinha="id"
-              colunaRotulo="rotulo"
-              fonte={`${previsao.modelo} (previsão); NASA POWER IMERG (média)`}
-              versao={previsao.emitida_em}
-              nomeArquivo="agua-previsao-chuva"
-              selecionado={bacia?.bacia ?? null}
-              onSelecionar={selecionar}
-            />
-            <TabelaInterativa
-              titulo="Temperatura média prevista nos 7 primeiros dias e a média MERRA-2 dos mesmos dias"
-              colunas={COLUNAS_PREVISAO_TEMPERATURA}
-              linhas={linhasPrevisaoTemperatura(previsao)}
-              chaveLinha="id"
-              colunaRotulo="rotulo"
-              fonte={`${previsao.modelo} (previsão); NASA POWER MERRA-2 (média)`}
-              versao={previsao.emitida_em}
-              nomeArquivo="agua-previsao-temperatura"
-            />
-          </>
-        ) : (
-          <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
-            {motivoSemPrevisao}
-          </p>
-        )}
+              <TabelaInterativa
+                titulo="Chuva prevista por bacia e a média IMERG dos mesmos dias"
+                colunas={COLUNAS_PREVISAO_CHUVA}
+                linhas={linhasPrevisaoChuva(previsao)}
+                chaveLinha="id"
+                colunaRotulo="rotulo"
+                fonte={`${previsao.modelo} (previsão); NASA POWER IMERG (média)`}
+                versao={previsao.emitida_em}
+                nomeArquivo="agua-previsao-chuva"
+                selecionado={bacia?.bacia ?? null}
+                onSelecionar={selecionar}
+              />
+              <TabelaInterativa
+                titulo="Temperatura média prevista nos 7 primeiros dias e a média MERRA-2 dos mesmos dias"
+                colunas={COLUNAS_PREVISAO_TEMPERATURA}
+                linhas={linhasPrevisaoTemperatura(previsao)}
+                chaveLinha="id"
+                colunaRotulo="rotulo"
+                fonte={`${previsao.modelo} (previsão); NASA POWER MERRA-2 (média)`}
+                versao={previsao.emitida_em}
+                nomeArquivo="agua-previsao-temperatura"
+                recolher
+              />
+            </>
+          ) : (
+            <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
+              {motivoSemPrevisao}
+            </p>
+          )}
+        </SecaoDoPainel>
       </div>
+
+      {fecho}
     </div>
   );
 }

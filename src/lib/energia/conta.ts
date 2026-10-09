@@ -1008,9 +1008,21 @@ export function mudancaSubsidios(s: Subsidios): string {
  * (lido como crédito) na vigência atual, contra a faixa histórica do código.
  */
 export function mudancaComposicao(comp: Composicao): string {
+  return textoCreditos(comp, "atual");
+}
+
+/**
+ * Mesmo texto de `mudancaComposicao`, com a vigência dita pela data de referência da página ("na vigência de 30/09/2026") no
+ * lugar de "atual": o dado tem a própria data, e o texto de Entender não usa palavra de tempo relativo.
+ */
+export function mudancaComposicaoEm(comp: Composicao, dataReferencia: string): string {
+  return textoCreditos(comp, `de ${dataBR(dataReferencia)}`);
+}
+
+function textoCreditos(comp: Composicao, vigencia: string): string {
   const cr = comp.creditos;
   const valores = cr.distribuidoras.map((d) => d.valor).filter((v): v is number => v !== null && Number.isFinite(v));
-  if (!cr.distribuidoras.length) return "Nenhum valor negativo em componente de custo na vigência atual.";
+  if (!cr.distribuidoras.length) return `Nenhum valor negativo em componente de custo na vigência ${vigencia}.`;
   const faixa = cr.faixa_historica;
   const historico = faixa
     ? `, quando a faixa histórica do código, em ${faixa.n} vigências iniciadas até ${dataBR(faixa.vigencias_iniciadas_ate)}, ia de ${num(faixa.minimo, 2)} a ${num(faixa.maximo, 2)} R$/MWh`
@@ -1019,5 +1031,163 @@ export function mudancaComposicao(comp: Composicao): string {
   // a componente aparece pela descrição do dicionário da fonte, não pelo código; sem descrição, o texto diz só "componente de custo"
   const descricoes = new Map(comp.grupos.flatMap((g) => g.componentes.map((c) => [c.codigo, c.descricao] as const)));
   const nomes = cr.codigos.map((c) => descricoes.get(c) ?? "componente de custo");
-  return `${cr.distribuidoras.length} distribuidoras têm valor negativo na componente «${nomes.join(", ")}» na vigência atual${intervalo}${historico}. O valor fica no grupo créditos, lido como crédito tarifário (leitura do observatório).`;
+  return `${cr.distribuidoras.length} distribuidoras têm valor negativo na componente «${nomes.join(", ")}» na vigência ${vigencia}${intervalo}${historico}. O valor fica no grupo créditos, lido como crédito tarifário (leitura do observatório).`;
+}
+
+/* ---------- abertura (redesenho): referências do perfil, faixa de métricas e série em reais ---------- */
+
+/**
+ * Perfil de consumo (kWh/mês) na URL. A faixa de métricas da abertura e o painel de tarifas leem o mesmo parâmetro: escolher 100, 200
+ * ou 300 kWh muda ao mesmo tempo a faixa, a figura das referências, o ranking, a frase e a tabela.
+ */
+export const CAMPO_PERFIL = campo(tiposUrl.opcao(["100", "200", "300"] as const), "200", { param: "perfil" });
+
+/**
+ * Custo do perfil (R$/mês) de uma tarifa TE + TUSD (R$/MWh): kWh × tarifa ÷ 1000, em centavos. A conta é feita em inteiros (tarifa em
+ * centavos de R$/MWh) e o meio centavo exato sobe, como numa calculadora; a gold publica o custo de cada distribuidora e a mediana, e
+ * esta função só serve às medidas que ela não publica (o 1º e o 3º quartil do perfil).
+ */
+export function custoDoPerfil(totalRsMwh: number | null | undefined, kwh: number): number | null {
+  if (totalRsMwh === null || totalRsMwh === undefined || !Number.isFinite(totalRsMwh)) return null;
+  const centavosPorMwh = Math.round(totalRsMwh * 100);
+  return Math.round((centavosPorMwh * kwh) / 1000) / 100;
+}
+
+export type ExtremoPerfil = { cnpj: string; sigla: string; valor: number; tarifa: number; posicao: number };
+
+export type ReferenciasPerfil = {
+  perfil: Perfil;
+  /** Distribuidoras com tarifa vigente na data: as do ranking e as da mediana (a mesma contagem do `resumo`). */
+  n: number;
+  menor: ExtremoPerfil | null;
+  maior: ExtremoPerfil | null;
+  mediana: number | null;
+  p25: number | null;
+  p75: number | null;
+  /** Tarifa TE + TUSD (R$/MWh) de cada referência, como a gold publica, para a tabela equivalente da figura. */
+  tarifa: { menor: number | null; p25: number | null; mediana: number | null; p75: number | null; maior: number | null };
+};
+
+/**
+ * Menor, mediana e maior custo do perfil entre as distribuidoras com tarifa vigente, e o 1º e o 3º quartil. Menor e maior vêm da
+ * linha de cada distribuidora (a primeira e a última posição do ranking), a mediana é a publicada em `resumo.perfis_mediana`: a
+ * faixa de métricas, a figura, a frase e a tabela leem estes mesmos valores.
+ */
+export function referenciasDoPerfil(vigentes: readonly TarifaVigente[], resumo: ResumoTarifas, perfil: Perfil): ReferenciasPerfil {
+  const chave = String(perfil) as "100" | "200" | "300";
+  const ord = [...vigentes].sort((a, b) => a.posicao - b.posicao);
+  const extremo = (v: TarifaVigente | undefined): ExtremoPerfil | null => {
+    const valor = v?.perfis[chave];
+    return v && valor !== null && valor !== undefined ? { cnpj: v.cnpj, sigla: rotuloDistribuidora(v.sigla, v.cnpj), valor, tarifa: v.total, posicao: v.posicao } : null;
+  };
+  const menor = extremo(ord[0]);
+  const maior = extremo(ord[ord.length - 1]);
+  return {
+    perfil,
+    n: resumo.n,
+    menor,
+    maior,
+    mediana: resumo.perfis_mediana[chave],
+    p25: custoDoPerfil(resumo.p25, perfil),
+    p75: custoDoPerfil(resumo.p75, perfil),
+    tarifa: { menor: menor?.tarifa ?? null, p25: resumo.p25, mediana: resumo.mediana, p75: resumo.p75, maior: maior?.tarifa ?? null },
+  };
+}
+
+export type DestaquePerfil = { cnpj: string; sigla: string; valor: number; tarifa: number; posicao: number; n: number; diferenca: number | null };
+
+/** As distribuidoras em destaque (?dist=) que estão no ranking, com o custo do perfil, a posição e a diferença para a mediana. */
+export function destaquesDoPerfil(vigentes: readonly TarifaVigente[], resumo: ResumoTarifas, perfil: Perfil, cnpjs: readonly string[]): DestaquePerfil[] {
+  const chave = String(perfil) as "100" | "200" | "300";
+  const porCnpj = new Map(vigentes.map((v) => [v.cnpj, v]));
+  const mediana = resumo.perfis_mediana[chave];
+  return cnpjs.flatMap((cnpj) => {
+    const v = porCnpj.get(cnpj);
+    const valor = v?.perfis[chave];
+    if (!v || valor === null || valor === undefined) return [];
+    return [
+      {
+        cnpj,
+        sigla: rotuloDistribuidora(v.sigla, v.cnpj),
+        valor,
+        tarifa: v.total,
+        posicao: v.posicao,
+        n: resumo.n,
+        diferenca: mediana === null ? null : Math.round((valor - mediana) * 100) / 100,
+      },
+    ];
+  });
+}
+
+/** Frase da distribuidora em destaque: custo do perfil, posição no ranking e diferença para a mediana, só descrição. */
+export function textoDestaquePerfil(d: DestaquePerfil): string {
+  const dif = d.diferenca === null ? "" : d.diferenca === 0 ? "; igual à mediana" : `; ${reais(Math.abs(d.diferenca))} ${d.diferenca > 0 ? "acima" : "abaixo"} da mediana`;
+  return `${d.sigla}: ${reais(d.valor)}, posição ${d.posicao} de ${d.n} (1 é a menor tarifa)${dif}.`;
+}
+
+/** Leitura da figura das referências em uma frase (nome acessível do gráfico). */
+export function textoReferenciasPerfil(r: ReferenciasPerfil): string {
+  if (!r.menor || !r.maior || r.mediana === null) return `Sem referências do custo de ${r.perfil} kWh por mês nesta publicação.`;
+  const meio = r.p25 !== null && r.p75 !== null ? `; a metade central das distribuidoras fica entre ${reais(r.p25)} e ${reais(r.p75)}` : "";
+  return `Custo de ${r.perfil} kWh por mês, só pela tarifa B1 residencial: menor ${reais(r.menor.valor)} (${r.menor.sigla}), mediana ${reais(r.mediana)} e maior ${reais(r.maior.valor)} (${r.maior.sigla}), entre ${r.n} distribuidoras${meio}.`;
+}
+
+/**
+ * Ressalva que acompanha a faixa de métricas da abertura: o que a tarifa não inclui e como a mediana é feita. O universo (quantas
+ * distribuidoras) é o `n` do mesmo resumo que alimenta o ranking e a mediana.
+ */
+export function notaFaixaTarifa(resumo: ResumoTarifas): string {
+  return (
+    `Tarifa homologada de aplicação (TE + TUSD): não inclui tributos (ICMS, PIS/Pasep e Cofins), contribuição de iluminação pública nem bandeira, então não é o valor da fatura. ` +
+    `A mediana é simples entre as ${resumo.n} distribuidoras com tarifa vigente na data, cada uma com o mesmo peso; não é o custo médio do país nem é ponderada por consumidores.`
+  );
+}
+
+export type ResumoSerieReal = {
+  /** Primeiro e último mês com mediana publicada (AAAA-MM). */
+  inicio: string;
+  fim: string;
+  /** Mês do IPCA em que a série em reais está expressa (o último com índice publicado), AAAA-MM; null sem IPCA. */
+  base: string | null;
+  /** Menor e maior número de distribuidoras com tarifa no dia 1º entre os meses da série. */
+  nMin: number;
+  nMax: number;
+  primeira: { m: string; nominal: number; real: number | null };
+  ultimaComReal: { m: string; nominal: number; real: number } | null;
+  /** Meses com mediana e sem valor real (IPCA ainda não publicado). */
+  semReal: string[];
+};
+
+/** Resumo da mediana mensal em valores da época e em reais do mês-base do IPCA, lido das mesmas linhas do gráfico. */
+export function resumoSerieReal(evolucao: readonly LinhaEvolucao[], ultimoIpca: string | null): ResumoSerieReal | null {
+  const com = evolucao.filter((p): p is LinhaEvolucao & { mediana: number } => p.mediana !== null);
+  if (!com.length) return null;
+  const primeira = com[0];
+  const fim = com[com.length - 1];
+  const comReal = [...com].reverse().find((p) => p.real !== null);
+  return {
+    inicio: primeira.m,
+    fim: fim.m,
+    base: ultimoIpca,
+    nMin: Math.min(...com.map((p) => p.n)),
+    nMax: Math.max(...com.map((p) => p.n)),
+    primeira: { m: primeira.m, nominal: primeira.mediana, real: primeira.real },
+    ultimaComReal: comReal && comReal.real !== null ? { m: comReal.m, nominal: comReal.mediana, real: comReal.real } : null,
+    semReal: com.filter((p) => p.real === null).map((p) => p.m),
+  };
+}
+
+/** Frase da série em reais: primeiro e último mês com valor nas duas formas, e os meses sem IPCA publicado. */
+export function textoSerieReal(r: ResumoSerieReal | null): string {
+  if (!r) return "Sem mediana mensal publicada nesta publicação.";
+  const rs = (v: number) => `${num(v, 2)} R$/MWh`;
+  const mes = (m: string) => mesAno(`${m}-01`);
+  const base = r.base ? mes(r.base) : null;
+  const inicio =
+    r.primeira.real !== null && base
+      ? `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época e de ${rs(r.primeira.real)} em reais de ${base}`
+      : `Em ${mes(r.primeira.m)}, a mediana era de ${rs(r.primeira.nominal)} nos valores da época`;
+  const fim = r.ultimaComReal ? `; em ${mes(r.ultimaComReal.m)}, de ${rs(r.ultimaComReal.nominal)} e de ${rs(r.ultimaComReal.real)}` : "";
+  const sem = r.semReal.length ? ` ${r.semReal.map(mes).join(", ")} ${r.semReal.length === 1 ? "fica" : "ficam"} sem valor em reais (IPCA do mês ainda não publicado).` : "";
+  return `${inicio}${fim}.${sem}`;
 }

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Bloco } from "@/components/energia/CabecalhoModulo";
+import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { PldHistorico } from "@/components/energia/PldHistorico";
-import { PldAuditoria, PldAviso, PldCabecalho, PldControles, PldIndisponivel, PldNavegacao, PldSeguir } from "@/components/energia/PldPagina";
+import { PldAviso, PldControles, PldIndisponivel, PldNavegacao, PldSeguir } from "@/components/energia/PldPagina";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
@@ -48,13 +49,42 @@ export default function PldHistoricoPage() {
   const anoRef = Number(g.referencia.dia.slice(0, 4));
   const retiradas = [...pond.horas_retiradas, ...pond.peso_sem_mmgd.horas_retiradas];
 
+  const oQueMudou = (
+    <>
+      {atual.texto} {pond.sensibilidade_peso ? textoSensibilidadePeso(pond.sensibilidade_peso) : ""}
+    </>
+  );
+  const comoInterpretar = (
+    <>
+      O percentil diz em que posição a média do dia fica entre as médias diárias do mesmo mês (e da mesma semana do ano, na numeração ISO) nos anos anteriores: 50 é o meio. A média
+      temporal dá o mesmo peso a cada hora; a ponderada pela carga dá mais peso às horas de maior consumo. A ponderada pelo balanço muda de base dentro da série (as marcas no
+      gráfico mostram quando); a ponderada sem MMGD usa a mesma base em toda a série.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Percentil alto não é previsão de queda, nem baixo de alta. A série começa em 2021: são no máximo cinco anos anteriores, cada um com piso e tetos próprios. A média ponderada usa
+      a carga do sistema publicada pelo ONS, não o consumo contabilizado pela CCEE, e não é o preço pago por nenhum consumidor.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <PldCabecalho siglas={["MMGD", "IPCA", "CCEE", "ONS", "IBGE"]}
-          titulo="Histórico e distribuição"
+        <CabecalhoModulo
+          siglas={["MMGD", "IPCA", "CCEE", "ONS", "IBGE"]}
+          rotulo="Preço de Liquidação das Diferenças"
+          titulo={perguntaPainel("p011")}
+          lead={
+            <>
+              O mesmo <Termo slug="pld">PLD</Termo> pode parecer alto ou baixo conforme a régua: o mesmo mês de anos anteriores, a média de todas as horas ou a média que pesa mais
+              as horas de maior consumo. Aqui, as réguas lado a lado, cada uma com o nome.
+            </>
+          }
+          recorte={`${dataBR(g.referencia.dia)} · meses de ${mesAno(h.mensal.meses[0])} a ${mesAno(h.mensal.meses[h.mensal.meses.length - 1])} · R$/MWh nominais e em moeda constante`}
+          fonte={FONTE}
           referencia={
             <>
               CCEE (PLD até {horaLocal(g.referencia.ultima_hora_pld)}), ONS (carga do balanço até {g.referencia.ultima_hora_carga ? horaLocal(g.referencia.ultima_hora_carga) : "sem dado"}) e IBGE
@@ -62,15 +92,15 @@ export default function PldHistoricoPage() {
             </>
           }
         >
-          O mesmo <Termo slug="pld">PLD</Termo> pode parecer alto ou baixo conforme a régua: o mesmo mês de anos anteriores, a média de todas as horas ou a média que pesa mais as
-          horas de maior consumo. Este painel mostra as réguas lado a lado, cada uma com o nome; a distribuição do preço por ano e o perfil por hora ficam em Analisar.
-        </PldCabecalho>
+          Este painel mostra as réguas lado a lado, cada uma com o nome; a faixa sazonal, a distribuição do preço por ano e o perfil por hora vêm em seguida, cada um com a sua
+          pergunta.
+        </CabecalhoModulo>
         <PldNavegacao atual="p011" />
         <ModoProfundidade>
           <Bloco id="historico">
             <PainelEvidencia
               id="p011"
-              pergunta={perguntaPainel("p011")}
+              pergunta="As médias mensais, lado a lado"
               subtitulo="Média diária frente ao mesmo mês e à mesma semana de anos anteriores; médias mensais temporal e ponderadas pela carga · R$/MWh"
               porQueImporta={
                 <>
@@ -78,24 +108,10 @@ export default function PldHistoricoPage() {
                   alto um preço comum para o mês, e separar a média temporal da ponderada pela carga evita misturar duas perguntas diferentes.
                 </>
               }
-              oQueMudou={
-                <>
-                  {atual.texto} {pond.sensibilidade_peso ? textoSensibilidadePeso(pond.sensibilidade_peso) : ""}
-                </>
-              }
-              comoInterpretar={
-                <>
-                  O percentil diz em que posição a média do dia fica entre as médias diárias do mesmo mês (e da mesma semana do ano, na numeração ISO) nos anos anteriores: 50 é o meio. A média temporal
-                  dá o mesmo peso a cada hora; a ponderada pela carga dá mais peso às horas de maior consumo. A ponderada pelo balanço muda de base dentro da série (as marcas no
-                  gráfico mostram quando); a ponderada sem MMGD usa a mesma base em toda a série.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Percentil alto não é previsão de queda, nem baixo de alta. A série começa em 2021: são no máximo cinco anos anteriores, cada um com piso e tetos próprios. A média
-                  ponderada usa a carga do sistema publicada pelo ONS, não o consumo contabilizado pela CCEE, e não é o preço pago por nenhum consumidor.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={g.proveniencia.historico_mensal}
               complementares={[
                 { rotulo: "Sobre o peso: carga do balanço", p: g.proveniencia.peso_carga_balanco },
@@ -133,9 +149,10 @@ export default function PldHistoricoPage() {
                   diaReferencia={g.referencia.dia}
                   fonte={FONTE}
                   versao={versao}
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
 
-                <PldAuditoria id="peso" titulo="O peso da média ponderada: perímetro, quebras e conferência">
+                <SecaoDoPainel id="peso" titulo="O peso da média ponderada: perímetro, quebras e conferência" nivel="auditar">
                   <p className="text-sm leading-relaxed text-carvao">Peso da ponderada pelo balanço: {pond.peso.replace(" (ver perimetros)", " (tabela de perímetros abaixo)")}.</p>
                   <p className="text-sm leading-relaxed text-carvao">Peso da ponderada sem MMGD: {pond.peso_sem_mmgd.disponivel ? pond.peso_sem_mmgd.peso : `indisponível (${pond.peso_sem_mmgd.motivo ?? "sem motivo publicado"})`}.</p>
                   <p className="text-sm leading-relaxed text-carvao-muted" data-textos="comparabilidade">{textoComparabilidade(h)}</p>
@@ -163,9 +180,9 @@ export default function PldHistoricoPage() {
                     {pond.conferencia_perimetro.metodo}
                   </p>
                   <p className="text-xs text-carvao-muted">{pond.fonte_perimetro.nota}</p>
-                </PldAuditoria>
+                </SecaoDoPainel>
 
-                <PldAuditoria id="revisoes" titulo="Revisões da carga e o efeito na ponderada">
+                <SecaoDoPainel id="revisoes" titulo="Revisões da carga e o efeito na ponderada" nivel="auditar">
                   <p className="text-sm text-carvao-muted">{pond.controle_fisico}</p>
                   {retiradas.length > 0 ? (
                     <PldAviso tipo="alerta">
@@ -185,19 +202,19 @@ export default function PldHistoricoPage() {
                     nomeArquivo="pld-revisoes-carga"
                     semLinhas="Nenhuma revisão da carga detectada entre as capturas integradas."
                   />
-                </PldAuditoria>
+                </SecaoDoPainel>
 
-                <PldAuditoria id="deflator" titulo="Moeda constante">
+                <SecaoDoPainel id="deflator" titulo="Moeda constante" nivel="auditar">
                   <p className="text-sm text-carvao-muted">
                     {h.deflator.indice}. {h.deflator.regra} Mês-base: {h.deflator.mes_base ? mesAno(h.deflator.mes_base) : "sem índice"}
                     {h.deflator.indice_base !== null ? ` (índice ${num(h.deflator.indice_base, 2)})` : ""}. O IPCA mede preços ao consumidor; a moeda constante é perspectiva
                     adicional, não substitui o valor nominal.
                   </p>
-                </PldAuditoria>
+                </SecaoDoPainel>
 
-                <PldAuditoria id="controles" titulo="Controles automáticos da construção">
+                <SecaoDoPainel id="controles" titulo="Controles automáticos da construção" nivel="auditar">
                   <PldControles controles={g.controles.filter((x) => /carga|Perímetro|peso/i.test(x.nome))} />
-                </PldAuditoria>
+                </SecaoDoPainel>
 
                 <PldSeguir ancora="p011" proximo={proximoPainel("p011")} downloads={g.downloads.filter((d) => /mensal|sazonal|hora_dia|cmo_horario/.test(d.url))} />
               </div>

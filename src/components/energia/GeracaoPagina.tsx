@@ -1,55 +1,45 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { GeracaoLinkPainel } from "@/components/energia/GeracaoLinkPainel";
+import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 export { GeracaoAviso, GeracaoRecorte } from "@/components/energia/GeracaoControles";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { carimbo } from "@/lib/energia/formato";
 import { PAINEIS_GERACAO, ROTA_GERACAO, rotaPainel, type PainelGeracao } from "@/lib/energia/geracao";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 
 /**
  * Peças de servidor das páginas da Geração (um painel por página: /setor-eletrico/geracao
  * para o P021, /termica para o P022, /restricoes para o P023 e /capacidade para o P024):
- * navegação entre os painéis, recorte (período, universo e unidade), avisos de ausência e
- * defasagem, rodapé com downloads, link compartilhável e próxima pergunta, os blocos dos
- * modos Analisar e Auditar e a lista de documentos oficiais citados.
+ * navegação local, avisos de ausência, rodapé com downloads, link compartilhável e próxima
+ * pergunta, a lista de documentos oficiais citados e as datas de cada parte do módulo.
  *
  * Por que um painel por página: cada painel tem séries, várias tabelas equivalentes e
  * fichas de prova; juntos passariam da meta de cerca de 600 KB de HTML por página
  * (contrato, seção 5.1).
  */
 
-/** Navegação entre os quatro painéis; o atual leva aria-current. */
+/**
+ * Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel (a mesma do Anexo A).
+ * Painel ainda não publicado não é link: sai da lista (hoje os quatro estão publicados).
+ */
+const ITENS_GERACAO = PAINEIS_GERACAO.filter((p) => p.publicado).map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+
+/**
+ * Navegação entre os quatro painéis: faixa de páginas irmãs no alto das páginas filhas; a abertura (matriz efetiva) não leva a
+ * faixa, porque mostra os mesmos destinos como capítulos depois da figura principal (GeracaoCapitulos), e o mesmo rótulo não
+ * aparece duas vezes.
+ */
 export function GeracaoNavegacao({ atual }: { atual: PainelGeracao }) {
-  return (
-    <nav aria-label="Painéis da geração" className="pb-4">
-      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
-        {PAINEIS_GERACAO.map((p) =>
-          !p.publicado ? (
-            <li key={p.id}>
-              <span className="inline-flex min-h-[44px] items-center border border-dashed border-linha px-3 text-carvao-muted">
-                {p.rotulo}
-                <span className="ml-1.5 text-xs text-mineral">(em preparação)</span>
-              </span>
-            </li>
-          ) : (
-          <li key={p.id}>
-            <Link
-              href={rotaPainel(p.id)}
-              aria-current={p.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                p.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {p.rotulo}
-            </Link>
-          </li>
-          ),
-        )}
-      </ol>
-    </nav>
-  );
+  if (atual === "p021") return null;
+  return <NavegacaoLocal rotulo="Páginas de geração" itens={ITENS_GERACAO} atual={atual} />;
+}
+
+/** Capítulos da abertura: os outros três painéis do módulo, cada um com a pergunta que responde. */
+export function GeracaoCapitulos({ atual = "p021" }: { atual?: PainelGeracao }) {
+  return <NavegacaoLocal rotulo="Capítulos de geração" itens={ITENS_GERACAO} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a geração" />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -57,7 +47,7 @@ export function GeracaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 py-14 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Geração indisponível nesta publicação"
           motivo={
@@ -75,54 +65,24 @@ export function GeracaoIndisponivel({ motivo }: { motivo?: string | null }) {
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function GeracaoSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string } | null; downloads: { rotulo: string; url: string }[] }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <GeracaoLinkPainel ancora={ancora} />
-        {proximo && (
-          <p className="text-sm">
-            <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-            <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-              {proximo.pergunta}
-            </Link>
-          </p>
-        )}
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo ?? undefined} downloads={downloads} />;
 }
 
-export function GeracaoAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
+/** Datas de referência de cada parte do módulo: cada número diz o seu período, sem sugerir simultaneidade. */
+export function GeracaoDatas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <div id={id} data-nivel="analisar" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function GeracaoAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="auditar" className="scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.texto}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
   );
 }
 

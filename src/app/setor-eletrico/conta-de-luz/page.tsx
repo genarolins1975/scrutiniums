@@ -3,22 +3,25 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ContaComposicao } from "@/components/energia/ContaComposicao";
+import { ContaFaixa } from "@/components/energia/ContaFaixa";
 import { ContaHistorico } from "@/components/energia/ContaHistorico";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
+import { ContaSerieReal } from "@/components/energia/ContaSerieReal";
 import { ContaSimulador } from "@/components/energia/ContaSimulador";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { ContaTarifas } from "@/components/energia/ContaTarifas";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   linhasEvolucao,
-  mudancaComposicao,
+  mudancaComposicaoEm,
   mudancaTarifa,
   respostaBandeira,
   respostaCde,
@@ -26,7 +29,9 @@ import {
   respostaReajustes,
   respostaSubsidios,
   minuscula,
+  resumoSerieReal,
   rotuloDistribuidora,
+  textoSerieReal,
   vereditoBandeira,
   vereditoComposicao,
   vereditoReajustes,
@@ -36,7 +41,7 @@ import { carimbo, dataBR, mesAno, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
-import { Auditoria, FONTE_TARIFAS, ROTA_REAJUSTES, Recorte, Seguir } from "./partes";
+import { Auditoria, Datas, FONTE_TARIFAS, ROTA_REAJUSTES, Recorte, Seguir, downloadsDoPainel } from "./partes";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -123,8 +128,11 @@ export default function ContaDeLuzPage() {
   const cde = g.financiamento_cde;
   const ref = g.data_referencia;
   const evolucao = linhasEvolucao(t.evolucao);
+  const serieReal = resumoSerieReal(evolucao, reaj.comparacao_inflacao?.ultimo_ipca ?? null);
   const ultimoIpca = reaj.comparacao_inflacao?.ultimo_ipca ?? null;
   const janela12 = reaj.comparacao_inflacao?.janelas.find((j) => j.meses === 12) ?? null;
+  const fora = t.resumo.fora_vigencia_recente + t.resumo.fora_sem_tarifa_ha_mais_de_90_dias;
+  const semCustoDisponibilidade = Math.min(...g.perfis_kwh) >= sim.regras.custo_disponibilidade_kwh.trifasico;
 
   const entidades = [
     ...t.vigentes.map((v) => ({
@@ -177,14 +185,77 @@ export default function ContaDeLuzPage() {
     parcela_bandeira: parcela,
   }));
 
+  // notas do painel de tarifas: ficam logo depois das figuras (o painel é composto e as passa ao corpo)
+  const oQueMudouTarifa = mudancaTarifa(ref, t.resumo, evolucao);
+  const comoInterpretarTarifa = (
+    <>
+      Cada barra é uma distribuidora (subgrupo B1, residencial, modalidade convencional, tarifa de aplicação). O custo do perfil é kWh × (TE + TUSD) ÷ 1000;{" "}
+      {semCustoDisponibilidade ? "nenhum perfil fica abaixo do maior " : "há perfil abaixo do maior "}
+      <Termo slug="custo-de-disponibilidade">custo de disponibilidade</Termo> ({sim.regras.custo_disponibilidade_kwh.trifasico} kWh, ligação trifásica)
+      {semCustoDisponibilidade
+        ? ", então o mínimo não muda a comparação."
+        : ": nesse perfil, o mínimo da ligação pode valer mais que o consumo, e o custo publicado não o considera."}{" "}
+      A faixa clara da primeira figura vai do 1º ao 3º quartil. A base econômica, na tabela, é a tarifa usada no cálculo tarifário, sem os componentes financeiros do processo. No modo
+      Analisar, o histórico mostra até quatro distribuidoras sobre a mediana nacional.
+    </>
+  );
+  const naoConcluirTarifa = (
+    <>
+      Não é a conta final: faltam ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira. Não é a tarifa média de fornecimento. A mediana não é ponderada por consumidores e não representa o
+      consumidor médio do país; os perfis de {g.perfis_kwh.join(", ")} kWh são referências do observatório, não consumo médio. A diferença de tarifa entre distribuidoras não mede a eficiência de nenhuma delas.
+    </>
+  );
+  const oQueMudouComposicao = (
+    <>
+      {mudancaComposicaoEm(comp, ref)}
+      <span data-nivel="analisar"> Leitura completa do valor negativo: {comp.creditos.leitura}.</span>
+    </>
+  );
+  const comoInterpretarComposicao = (
+    <>
+      As partes positivas de cada barra passam do total, e os itens negativos (créditos e devoluções) trazem de volta: a soma de tudo é TE + TUSD. Os grupos seguem a classificação do
+      observatório pelo código da componente; a parcela das componentes <Termo slug="cde">CDE</Termo> está dentro dos encargos e aparece à parte só para leitura. Na tabela de
+      decomposição, a média fecha com o total e a mediana é lida grupo a grupo.
+    </>
+  );
+  const naoConcluirComposicao = (
+    <>
+      Não se conclui margem ou lucro da distribuidora: o grupo distribuição é a remuneração regulada do fio, não resultado contábil. Não se conclui o valor em reais do crédito tarifário
+      por distribuidora (o conjunto dá R$/MWh da tarifa B1, não o mercado a que se aplica). Tributos e iluminação pública não estão na tarifa homologada.
+    </>
+  );
+  const oQueMudouSimulador = (
+    <>
+      Desde {dataBR(sim.regras.desconto_social_desde)}, o Desconto Social isenta das quotas da CDE o consumo de até {sim.regras.desconto_social_limite_kwh} kWh no mês; a Tarifa Social dá
+      desconto integral até {sim.regras.tarifa_social_limite_kwh} kWh. Bandeira do mês publicado:{" "}
+      {sim.bandeira_vigente?.bandeira ? `${minuscula(sim.bandeira_vigente.bandeira)} (${mesAno(`${sim.bandeira_vigente.mes}-01`)})` : "não publicada"}.
+    </>
+  );
+  const comoInterpretarSimulador = (
+    <>
+      A memória de cálculo mostra cada parcela: kWh, preço por kWh e valor. O gráfico mostra a estimativa para todo consumo de zero ao limite do eixo; a linha muda de inclinação onde muda a
+      regra. Cada regra traz o seu estado: conferida no texto oficial, ou parcial quando parte dela é leitura declarada.
+    </>
+  );
+  const naoConcluirSimulador = (
+    <>
+      Não é a fatura: faltam ICMS, PIS/Pasep, Cofins, iluminação pública, multas, parcelamentos e serviços. A aplicação do Desconto Social por parcela, o mínimo da Tarifa Social acima de{" "}
+      {sim.regras.tarifa_social_limite_kwh} kWh e a bandeira na Tarifa Social são leituras do observatório, não conferidas no texto da REN nº 1.000/2021. Bandeira não vale em sistemas
+      isolados.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="conta-de-luz" />
       <MarcaVisita secao="energia:conta-de-luz" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["PLD", "REN", "ANEEL", "ONS"]}
-          rotulo="Conta de luz"
-          titulo="Quanto custa a energia ao consumidor e o que compõe a conta?"
+        <CabecalhoModulo
+          siglas={["TE", "TUSD", "ANEEL", "IPCA", "CDE", "PLD", "REN"]}
+          titulo="Quanto custa o mesmo consumo?"
+          lead="Quanto cada distribuidora cobra, só pela tarifa de energia (TE) e pela tarifa de uso da rede (TUSD), para um mesmo consumo mensal. Tributos, iluminação pública e bandeira ficam de fora: o valor não é o da fatura."
+          recorte={`${dataBR(ref)} · ${t.resumo.n} distribuidoras · B1 residencial convencional · R$/mês e R$/kWh`}
+          fonte="ANEEL, tarifas de aplicação das distribuidoras"
           referencia={
             <>
               Tarifas de aplicação da ANEEL vigentes em {dataBR(ref)} (arquivo gerado pela fonte em {dataBR(g.gerado_pela_fonte_em)}); bandeira de{" "}
@@ -192,66 +263,31 @@ export default function ContaDeLuzPage() {
               {carimbo(g.gerado_em)}.
             </>
           }
+          datas={
+            <Datas
+              itens={[
+                { rotulo: "Tarifas e componentes", texto: `até ${dataBR(ref)}`, natureza: "CALCULADO" },
+                { rotulo: "Bandeira do simulador", texto: band.vigente ? mesAno(`${band.vigente.mes}-01`) : "sem dado nesta publicação", natureza: "OBSERVADO" },
+                { rotulo: "IPCA da série em reais", texto: ultimoIpca ? `até ${mesAno(`${ultimoIpca}-01`)}` : "sem dado nesta publicação", natureza: "OBSERVADO" },
+              ]}
+            />
+          }
+          metricas={<ContaFaixa vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={t.evidencia_mediana} />}
         >
-          A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras,
-          mostra do que elas são feitas e estima a conta para um consumo; a variação contra a inflação, as bandeiras e quem paga os descontos estão em{" "}
+          A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras, mostra do que
+          elas são feitas e estima a conta para um consumo; a variação contra a inflação, as bandeiras e quem paga os descontos estão em{" "}
           <ContaLinkFiltros href={ROTA_REAJUSTES} className="text-energia-dark underline underline-offset-4">
             reajustes, bandeiras e subsídios
           </ContaLinkFiltros>
           . Tributos e iluminação pública ficam fora: não há base oficial estruturada que os leve à tarifa de cada distribuidora.
         </CabecalhoModulo>
 
-        <section aria-labelledby="tres-numeros" className="pb-6">
-          <h2 id="tres-numeros" className="sr-only">
-            Três números diferentes que costumam ser chamados de conta de luz
-          </h2>
-          <ul className="grid gap-px border border-linha bg-linha md:grid-cols-3">
-            <li className="bg-superficie p-5">
-              <p className="rotulo text-mineral">Tarifa homologada (usada aqui)</p>
-              <p className="mt-2 text-sm leading-relaxed text-carvao">{g.definicoes.tarifa_homologada}</p>
-            </li>
-            <li className="bg-superficie p-5">
-              <p className="rotulo text-mineral">Tarifa média de fornecimento (não publicada)</p>
-              <p className="mt-2 text-sm leading-relaxed text-carvao">{g.definicoes.tarifa_media_fornecimento}</p>
-              <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-                Não há base oficial estruturada com receita, energia e tributos que sirva para calcular a tarifa média; o observatório não a publica.
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
-                Motivo da coleta: {g.tarifa_media_fornecimento.motivo}
-              </p>
-            </li>
-            <li className="bg-superficie p-5">
-              <p className="rotulo text-mineral">Conta simulada (estimativa)</p>
-              <p className="mt-2 text-sm leading-relaxed text-carvao">{g.definicoes.conta_simulada}</p>
-            </li>
-          </ul>
-          <p className="mt-3 text-sm text-carvao-muted">{g.definicoes.nao_e_conta}</p>
-        </section>
-
-        <nav aria-label="Perguntas desta página" className="pb-4">
-          <ol className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["#tarifa", "Quanto custa um perfil comparável?"],
-              ["#composicao", "Para onde vai o valor da conta?"],
-              ["#simulador", "Como minha conta varia com consumo e perfil?"],
-              ["#p050", "O que mudou e quem financia os benefícios?"],
-            ].map(([href, rot], i) => (
-              <li key={href}>
-                <a href={href} className="flex min-h-[44px] items-center gap-2 border border-linha bg-superficie px-3 py-2 text-carvao hover:border-energia">
-                  <span className="rotulo text-mineral">{i + 1}</span>
-                  {rot}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
         <ModoProfundidade>
           {/* ---------------- P047 ---------------- */}
           <Bloco id="tarifa">
             <PainelEvidencia
               id="p047"
-              pergunta="Quanto custa um perfil comparável em cada distribuidora?"
+              pergunta="O mesmo consumo, da menor à maior tarifa"
               subtitulo="Tarifa B1 residencial convencional de aplicação (TE + TUSD) · R$/mês por perfil e R$/MWh"
               natureza="CALCULADO"
               porQueImporta={
@@ -260,84 +296,82 @@ export default function ContaDeLuzPage() {
                   área de concessão. Comparar o mesmo perfil, na mesma classe, modalidade e base, isola essa diferença.
                 </>
               }
-              oQueMudou={mudancaTarifa(ref, t.resumo, evolucao)}
-              comoInterpretar={
-                <>
-                  Cada barra é uma distribuidora (subgrupo B1, residencial, modalidade convencional, tarifa de aplicação). O perfil é kWh × (TE + TUSD) ÷ 1000;{" "}
-                  {Math.min(...g.perfis_kwh) >= sim.regras.custo_disponibilidade_kwh.trifasico ? "nenhum perfil fica abaixo do maior " : "há perfil abaixo do maior "}
-                  <Termo slug="custo-de-disponibilidade">custo de disponibilidade</Termo> ({sim.regras.custo_disponibilidade_kwh.trifasico} kWh, ligação trifásica)
-                  {Math.min(...g.perfis_kwh) >= sim.regras.custo_disponibilidade_kwh.trifasico
-                    ? ", então o mínimo não muda a comparação."
-                    : ": nesse perfil, o mínimo da ligação pode valer mais que o consumo, e o custo publicado não o considera."}{" "}
-                  A base econômica, na tabela, é a tarifa usada no cálculo tarifário, sem os componentes financeiros do processo. No modo Analisar, o histórico mostra até quatro
-                  distribuidoras sobre a mediana nacional.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não é a conta final: faltam ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira. Não é a tarifa média de fornecimento. A mediana não é ponderada por
-                  consumidores e não representa o consumidor médio do país; os perfis de {g.perfis_kwh.join(", ")} kWh são referências do observatório, não consumo médio.
-                </>
-              }
+              oQueMudou={oQueMudouTarifa}
+              comoInterpretar={comoInterpretarTarifa}
+              naoConcluir={naoConcluirTarifa}
+              naoConcluirNoCorpo
               proveniencia={t.proveniencia}
               complementares={[
                 {
                   rotulo: "Evolução mensal da mediana",
                   p: t.proveniencia_evolucao,
                 },
+                {
+                  rotulo: "IPCA (IBGE), usado para a série em reais",
+                  p: reaj.proveniencia_ipca,
+                },
               ]}
             >
               <div className="space-y-6">
-                <Recorte
-                  periodo={
-                    <>
-                      Tarifa vigente em {dataBR(ref)}; histórico de {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} a {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
-                    </>
+                <ContaTarifas
+                  vigentes={t.vigentes}
+                  resumo={t.resumo}
+                  dataReferencia={ref}
+                  fonte={FONTE_TARIFAS}
+                  recorte={
+                    <Recorte
+                      periodo={
+                        <>
+                          Tarifa vigente em {dataBR(ref)}; histórico de {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} a {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
+                        </>
+                      }
+                      universo={
+                        <>
+                          {t.resumo.n} distribuidoras com vigência na data; {fora} fora do ranking (lista em Auditar)
+                        </>
+                      }
+                      unidade="R$/mês para o perfil; R$/MWh para a tarifa (÷ 1000 = R$/kWh)"
+                    />
                   }
-                  universo={
-                    <>
-                      {t.resumo.n} distribuidoras com vigência na data; {t.resumo.fora_vigencia_recente + t.resumo.fora_sem_tarifa_ha_mais_de_90_dias} fora do ranking (lista em
-                      Auditar)
-                    </>
-                  }
-                  unidade="R$/mês para o perfil; R$/MWh para a tarifa (÷ 1000 = R$/kWh)"
+                  notas={<NotasDoPainel oQueMudou={oQueMudouTarifa} comoInterpretar={comoInterpretarTarifa} naoConcluir={naoConcluirTarifa} />}
                 />
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Numero
-                    rotulo="Tarifa B1 residencial mediana"
-                    natureza="CALCULADO"
-                    valor={t.resumo.mediana === null ? null : t.resumo.mediana / 1000}
-                    formato="reais"
-                    casas={4}
-                    unidade="R$/kWh"
-                    evidencia={t.evidencia_mediana}
-                    nota={`${t.resumo.n} distribuidoras, cada uma pesando igual; sem tributos e sem bandeira.`}
-                    tamanho="medio"
-                    endereco="/setor-eletrico/conta-de-luz#tarifa"
-                  />
-                  {/* O custo do perfil escolhido fica na resposta logo abaixo, que segue o perfil da URL; um
-                      segundo destaque fixo em 200 kWh contradiria a escolha de 100 ou 300 kWh e não tem
-                      evidência própria na gold (a da mediana prova a tarifa, não o custo do perfil). */}
-                </div>
-                <ContaTarifas vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} fonte={FONTE_TARIFAS} />
 
-                <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
-                  <h3 className="font-serif text-lg text-carvao">Como a tarifa de cada distribuidora evoluiu diante da mediana?</h3>
-                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Tarifa vigente no dia 1º de cada mês. O arquivo começa em {t.evolucao[0] ? mesAno(`${t.evolucao[0][0]}-01`) : "mês não publicado"} com poucas
-                    distribuidoras, e a mediana só aparece quando a cobertura passa do mínimo da regra (a partir de{" "}
-                    {evolucao[0] ? mesAno(`${evolucao[0].m}-01`) : "nenhum mês"}; regra nas limitações da evolução mensal, em Sobre este dado). Incorporações aparecem como
-                    linhas verticais; todas as mudanças da distribuidora em destaque estão na tabela.
+                <SecaoDoPainel
+                  id="evolucao"
+                  titulo={serieReal ? `Como a mediana mudou desde ${mesAno(`${serieReal.inicio}-01`)}, com e sem a inflação?` : "Como a mediana mudou ao longo do tempo?"}
+                  lead={textoSerieReal(serieReal)}
+                >
+                  <ContaSerieReal evolucao={evolucao} ultimoIpca={ultimoIpca} />
+                  <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="serie-real">
+                    {serieReal
+                      ? `Em cada mês a mediana é de ${serieReal.nMin === serieReal.nMax ? serieReal.nMin : `${serieReal.nMin} a ${serieReal.nMax}`} distribuidoras com tarifa no dia 1º, e o conjunto muda ao longo do tempo (fusões, incorporações, permissionárias que passam a ter tarifa própria); o ranking usa só as vigentes em ${dataBR(ref)}, então os dois números podem diferir. `
+                      : ""}
+                    {serieReal?.base
+                      ? `Em reais de ${mesAno(`${serieReal.base}-01`)}, cada mês é corrigido pela razão entre o índice do IPCA de ${mesAno(`${serieReal.base}-01`)} e o do mês. O IPCA mede preços ao consumidor em geral, não só a energia.`
+                      : "Sem IPCA publicado, a série em reais não é calculada."}
                   </p>
-                  <ContaHistorico evolucao={evolucao} entidades={entidades} historicoUrl={t.historico_url} ultimoIpca={ultimoIpca} fonte={FONTE_TARIFAS} dataReferencia={ref} />
-                </div>
+                </SecaoDoPainel>
 
-                <Auditoria titulo="Quem ficou fora do ranking e por quê">
+                <SecaoDoPainel
+                  id="historico"
+                  nivel="analisar"
+                  titulo="Como a tarifa de cada distribuidora evoluiu diante da mediana?"
+                  lead={
+                    <>
+                      Tarifa vigente no dia 1º de cada mês. O arquivo começa em {t.evolucao[0] ? mesAno(`${t.evolucao[0][0]}-01`) : "mês não publicado"} com poucas distribuidoras, e a mediana só
+                      aparece quando a cobertura passa do mínimo da regra (a partir de {evolucao[0] ? mesAno(`${evolucao[0].m}-01`) : "nenhum mês"}; regra nas limitações da evolução mensal, em Sobre este
+                      dado). Incorporações aparecem como linhas verticais; todas as mudanças da distribuidora em destaque estão na tabela.
+                    </>
+                  }
+                >
+                  <ContaHistorico evolucao={evolucao} entidades={entidades} historicoUrl={t.historico_url} ultimoIpca={ultimoIpca} fonte={FONTE_TARIFAS} dataReferencia={ref} />
+                </SecaoDoPainel>
+
+                <Auditoria id="fora-do-ranking" titulo="Quem ficou fora do ranking e por quê">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    Recorte do arquivo: {num(g.universo_tarifas.linhas_lidas ?? null, 0)} linhas lidas, {num(g.universo_tarifas.no_recorte ?? null, 0)} no recorte de baixa tensão
-                    convencional ({num(g.universo_tarifas.fora_baixa_tensao_b1_b2_b3 ?? null, 0)} de outros subgrupos,{" "}
-                    {num(g.universo_tarifas.modalidade_nao_convencional ?? null, 0)} de outras modalidades, {num(g.universo_tarifas.detalhe_especifico ?? null, 0)} com detalhe
-                    específico). {g.regras.zero_publicado} {g.regras.unidade}
+                    Recorte do arquivo: {num(g.universo_tarifas.linhas_lidas ?? null, 0)} linhas lidas, {num(g.universo_tarifas.no_recorte ?? null, 0)} no recorte de baixa tensão convencional (
+                    {num(g.universo_tarifas.fora_baixa_tensao_b1_b2_b3 ?? null, 0)} de outros subgrupos, {num(g.universo_tarifas.modalidade_nao_convencional ?? null, 0)} de outras modalidades,{" "}
+                    {num(g.universo_tarifas.detalhe_especifico ?? null, 0)} com detalhe específico). {g.regras.zero_publicado} {g.regras.unidade}
                   </p>
                   <ContaSobDemanda chaveUrl="semvig" rotulo="a lista de distribuidoras sem tarifa vigente" detalhe={`${linhasSemVigente.length} linhas`}>
                     <TabelaInterativa
@@ -368,9 +402,52 @@ export default function ContaDeLuzPage() {
                     </p>
                   )}
                 </Auditoria>
-                <Seguir ancora="tarifa" href="#composicao" pergunta="Para onde vai esse valor? Veja a composição da tarifa." />
+
+                <Seguir
+                  ancora="tarifa"
+                  proximo={{ href: "#composicao", pergunta: "Para onde vai esse valor? Veja a composição da tarifa." }}
+                  downloads={downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv", "conta_tarifas_bt_historico.csv", "conta_historico_b1.json", "conta_conflitos_fonte.csv"])}
+                />
               </div>
             </PainelEvidencia>
+          </Bloco>
+
+          {/* ---------------- os três números que se confundem com a conta ---------------- */}
+          <Bloco id="tres-numeros">
+            <section aria-labelledby="tres-numeros-titulo" className="border-t border-linha pt-6">
+              <h2 id="tres-numeros-titulo" className="ed-h2 font-serif text-carvao">
+                Três números que costumam ser chamados de conta de luz
+              </h2>
+              <ul className="mt-4 grid gap-x-8 gap-y-5 md:grid-cols-3">
+                <li className="min-w-0 border-l-2 border-linha pl-4">
+                  <h3 className="rotulo text-mineral">Tarifa homologada (usada aqui)</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{g.definicoes.tarifa_homologada}</p>
+                </li>
+                <li className="min-w-0 border-l-2 border-linha pl-4">
+                  <h3 className="rotulo text-mineral">Tarifa média de fornecimento (não publicada)</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{g.definicoes.tarifa_media_fornecimento}</p>
+                  <p className="mt-2 flex items-start gap-2 text-sm leading-relaxed text-carvao" data-estado="indisponivel">
+                    <span
+                      aria-hidden="true"
+                      className="mt-1 inline-block h-3.5 w-3.5 shrink-0 border border-mineral"
+                      style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, transparent 1px 4px)" }}
+                    />
+                    <span>
+                      <span className="font-medium">Indisponível nesta publicação.</span> Não há base oficial estruturada com receita, energia e tributos que sirva para calcular a tarifa
+                      média, e o observatório não a publica. Para o preço da energia por distribuidora, vale a tarifa homologada desta página.
+                    </span>
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-nivel="analisar">
+                    Motivo da coleta: {g.tarifa_media_fornecimento.motivo}
+                  </p>
+                </li>
+                <li className="min-w-0 border-l-2 border-linha pl-4">
+                  <h3 className="rotulo text-mineral">Conta simulada (estimativa)</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{g.definicoes.conta_simulada}</p>
+                </li>
+              </ul>
+              <p className="mt-4 max-w-prose2 text-sm text-carvao-muted">{g.definicoes.nao_e_conta}</p>
+            </section>
           </Bloco>
 
           {/* ---------------- P048 ---------------- */}
@@ -386,42 +463,19 @@ export default function ContaDeLuzPage() {
                   publica para cada processo tarifário.
                 </>
               }
-              oQueMudou={
-                <>
-                  {mudancaComposicao(comp)}
-                  <span data-nivel="analisar"> Leitura completa do valor negativo: {comp.creditos.leitura}.</span>
-                </>
-              }
-              comoInterpretar={
-                <>
-                  As partes positivas de cada barra passam do total, e os itens negativos (créditos e devoluções) trazem de volta: a soma de tudo é TE + TUSD. Os grupos seguem a
-                  classificação do observatório pelo código da componente; a parcela das componentes <Termo slug="cde">CDE</Termo> está dentro dos encargos e aparece à parte só
-                  para leitura. Na tabela de decomposição, a média fecha com o total e a mediana é lida grupo a grupo.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não se conclui margem ou lucro da distribuidora: o grupo distribuição é a remuneração regulada do fio, não resultado contábil. Não se conclui o valor em reais do
-                  crédito tarifário por distribuidora (o conjunto dá R$/MWh da tarifa B1, não o mercado a que se aplica). Tributos e iluminação pública não estão na tarifa homologada.
-                </>
-              }
+              oQueMudou={oQueMudouComposicao}
+              comoInterpretar={comoInterpretarComposicao}
+              naoConcluir={naoConcluirComposicao}
+              naoConcluirNoCorpo
               proveniencia={comp.proveniencia}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
-                  {respostaComposicao(comp)}
-                </RespostaCurta>
-                <Recorte
-                  periodo={<>Componentes da vigência que cobre {dataBR(ref)}</>}
-                  universo={
-                    <>
-                      {comp.distribuidoras.length} distribuidoras com componentes; sem componentes para o ato vigente: {comp.reconciliacao.sem_componentes.join(", ") || "nenhuma"}
-                    </>
-                  }
-                  unidade="R$/MWh de TE + TUSD (ou % da tarifa)"
-                />
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-start">
+                  <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
+                    {respostaComposicao(comp)}
+                  </RespostaCurta>
                   <Numero
+                    variante="faixa"
                     rotulo={`Encargos na tarifa da distribuidora de referência`}
                     natureza="CALCULADO"
                     evidencia={comp.evidencia}
@@ -429,7 +483,6 @@ export default function ContaDeLuzPage() {
                     casas={1}
                     motivoAusencia="Sem componentes para a distribuidora de referência."
                     nota={comp.evidencia ? `${comp.evidencia.entidade}: ${comp.evidencia.universo}.` : undefined}
-                    tamanho="medio"
                     endereco="/setor-eletrico/conta-de-luz#composicao"
                   />
                   {/* A parcela CDE média está na resposta acima e na linha "Dos encargos: componentes CDE" da
@@ -452,6 +505,16 @@ export default function ContaDeLuzPage() {
                   dataReferencia={ref}
                   fonte="ANEEL, Componentes Tarifárias"
                 />
+                <Recorte
+                  periodo={<>Componentes da vigência que cobre {dataBR(ref)}, a mesma classe, modalidade e data do comparativo</>}
+                  universo={
+                    <>
+                      {comp.distribuidoras.length} distribuidoras com componentes; sem componentes para o ato vigente: {comp.reconciliacao.sem_componentes.join(", ") || "nenhuma"}
+                    </>
+                  }
+                  unidade="R$/MWh de TE + TUSD (ou % da tarifa)"
+                />
+                <NotasDoPainel oQueMudou={oQueMudouComposicao} comoInterpretar={comoInterpretarComposicao} naoConcluir={naoConcluirComposicao} />
                 <Auditoria titulo="Componentes de cada grupo, valores atípicos e conferências">
                   <dl className="grid gap-3 text-sm sm:grid-cols-2">
                     {comp.grupos.map((gr) => (
@@ -471,7 +534,7 @@ export default function ContaDeLuzPage() {
                   <p className="text-sm text-carvao-muted">Regra de atípico: {comp.regra_atipico}. Cada valor abaixo foi conferido no arquivo original da ANEEL e mantido.</p>
                   <ContaSobDemanda chaveUrl="atip" rotulo="as componentes atípicas" detalhe={`${linhasAtipicas.length} linhas`}>
                     <TabelaInterativa
-                      titulo="Componentes atípicas na vigência atual"
+                      titulo={`Componentes atípicas na vigência de ${dataBR(ref)}`}
                       colunas={COLUNAS_ATIPICAS}
                       linhas={linhasAtipicas}
                       chaveLinha="id"
@@ -499,7 +562,11 @@ export default function ContaDeLuzPage() {
                     .
                   </p>
                 </Auditoria>
-                <Seguir ancora="composicao" href="#simulador" pergunta="Quanto ficaria a minha conta? Simule o seu consumo." />
+                <Seguir
+                  ancora="composicao"
+                  proximo={{ href: "#simulador", pergunta: "Quanto ficaria a minha conta? Simule o seu consumo." }}
+                  downloads={downloadsDoPainel(g.downloads, ["conta_composicao_b1.csv"])}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>
@@ -517,43 +584,14 @@ export default function ContaDeLuzPage() {
                   distribuidora escolhida.
                 </>
               }
-              oQueMudou={
-                <>
-                  Desde {dataBR(sim.regras.desconto_social_desde)}, o Desconto Social isenta das quotas da CDE o consumo de até {sim.regras.desconto_social_limite_kwh} kWh no mês;
-                  a Tarifa Social dá desconto integral até {sim.regras.tarifa_social_limite_kwh} kWh. Bandeira do mês publicado:{" "}
-                  {sim.bandeira_vigente?.bandeira ? `${minuscula(sim.bandeira_vigente.bandeira)} (${mesAno(`${sim.bandeira_vigente.mes}-01`)})` : "não publicada"}.
-                </>
-              }
-              comoInterpretar={
-                <>
-                  A memória de cálculo mostra cada parcela: kWh, preço por kWh e valor. O gráfico mostra a estimativa para todo consumo de zero ao limite do eixo; a linha muda de
-                  inclinação onde muda a regra. Cada regra traz o seu estado: conferida no texto oficial, ou parcial quando parte dela é leitura declarada.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não é a fatura: faltam ICMS, PIS/Pasep, Cofins, iluminação pública, multas, parcelamentos e serviços. A aplicação do Desconto Social por parcela, o mínimo da
-                  Tarifa Social acima de {sim.regras.tarifa_social_limite_kwh} kWh e a bandeira na Tarifa Social são leituras do observatório, não conferidas no texto da REN nº 1.000/2021.
-                  Bandeira não vale em sistemas isolados.
-                </>
-              }
+              oQueMudou={oQueMudouSimulador}
+              comoInterpretar={comoInterpretarSimulador}
+              naoConcluir={naoConcluirSimulador}
+              naoConcluirNoCorpo
               proveniencia={sim.proveniencia}
               complementares={[{ rotulo: "Bandeiras", p: band.proveniencia }]}
             >
               <div className="space-y-6">
-                <Recorte
-                  periodo={
-                    <>
-                      Tarifas vigentes em {dataBR(ref)}; bandeira de {sim.bandeira_vigente ? mesAno(`${sim.bandeira_vigente.mes}-01`) : "mês não publicado"}
-                    </>
-                  }
-                  universo={
-                    <>
-                      Uma unidade consumidora de baixa tensão; {sim.distribuidoras.length} distribuidoras com tarifa vigente (Desconto Social em {sim.cobertura_classes.ds1})
-                    </>
-                  }
-                  unidade="R$/mês (estimativa); tarifas em R$/kWh"
-                />
                 <ContaSimulador
                   simulador={{
                     classes: sim.classes,
@@ -573,6 +611,20 @@ export default function ContaDeLuzPage() {
                   evidencia={sim.evidencia}
                   dataReferencia={ref}
                 />
+                <Recorte
+                  periodo={
+                    <>
+                      Tarifas vigentes em {dataBR(ref)}; bandeira de {sim.bandeira_vigente ? mesAno(`${sim.bandeira_vigente.mes}-01`) : "mês não publicado"}
+                    </>
+                  }
+                  universo={
+                    <>
+                      Uma unidade consumidora de baixa tensão; {sim.distribuidoras.length} distribuidoras com tarifa vigente (Desconto Social em {sim.cobertura_classes.ds1})
+                    </>
+                  }
+                  unidade="R$/mês (estimativa); tarifas em R$/kWh"
+                />
+                <NotasDoPainel oQueMudou={oQueMudouSimulador} comoInterpretar={comoInterpretarSimulador} naoConcluir={naoConcluirSimulador} />
                 <Auditoria titulo="Normas conferidas e casos de referência">
                   <ul className="space-y-3 text-sm">
                     {sim.normas.map((n) => (
@@ -625,23 +677,25 @@ export default function ContaDeLuzPage() {
                     />
                   </ContaSobDemanda>
                 </Auditoria>
-                <Seguir ancora="simulador" href={`${ROTA_REAJUSTES}#reajustes`} pergunta="O que mudou na tarifa e quem financia os descontos?" />
+                <Seguir
+                  ancora="simulador"
+                  proximo={{ href: "#p050", pergunta: "O que mudou na tarifa e quem financia os descontos?" }}
+                  downloads={downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv"])}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>
 
           {/* ---------------- P050 (página própria) ---------------- */}
           <Bloco id="p050">
-            <section aria-labelledby="p050-titulo" className="border border-linha bg-superficie">
-              <header className="px-5 pt-6 md:px-8">
-                <h2 id="p050-titulo" className="font-serif text-xl leading-snug text-carvao md:text-2xl">
-                  O que mudou e quem financia os benefícios?
-                </h2>
-                <p className="mt-2 text-sm text-mineral">
-                  Variação da tarifa B1 contra o IPCA, bandeiras acionadas e financiamento dos descontos pela CDE · painéis completos em página própria
-                </p>
-              </header>
-              <ul className="mt-5 grid gap-px border-t border-linha bg-linha md:grid-cols-3">
+            <section aria-labelledby="p050-titulo" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
+              <h2 id="p050-titulo" className="ed-h2 font-serif text-carvao">
+                O que mudou e quem financia os benefícios?
+              </h2>
+              <p className="mt-2 text-sm text-carvao-muted">
+                Variação da tarifa B1 contra o IPCA, bandeiras acionadas e financiamento dos descontos pela CDE. Os painéis completos, com gráfico, tabela e provas, estão em página própria.
+              </p>
+              <ol className="mt-5 grid gap-x-8 gap-y-6 md:grid-cols-3">
                 {[
                   {
                     ancora: "reajustes",
@@ -652,8 +706,8 @@ export default function ContaDeLuzPage() {
                   { ancora: "bandeiras", pergunta: "Quando a bandeira encareceu a conta?", veredito: vereditoBandeira(band), resposta: respostaBandeira(band) },
                   { ancora: "subsidios", pergunta: "Quem financia os descontos e benefícios?", veredito: vereditoSubsidios(sub), resposta: `${respostaSubsidios(sub)} ${respostaCde(cde)}` },
                 ].map((x) => (
-                  <li key={x.ancora} className="flex flex-col bg-superficie px-5 py-4 md:px-6">
-                    <h3 className="font-serif text-lg text-carvao">{x.pergunta}</h3>
+                  <li key={x.ancora} className="flex min-w-0 flex-col border-l-2 border-linha pl-4">
+                    <h3 className="ed-h3 font-serif text-carvao">{x.pergunta}</h3>
                     <div className="mt-2 flex-1">
                       <RespostaCurta id={`p050-${x.ancora}`} tamanho="sm" veredito={x.veredito}>
                         {x.resposta}
@@ -661,20 +715,20 @@ export default function ContaDeLuzPage() {
                     </div>
                     <ContaLinkFiltros
                       href={`${ROTA_REAJUSTES}#${x.ancora}`}
-                      className="mt-3 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
+                      className="mt-2 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
                     >
                       Ver o painel com gráfico, tabela e provas
                     </ContaLinkFiltros>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </section>
           </Bloco>
 
           {/* ---------------- Auditoria geral ---------------- */}
           <Bloco nivel="auditar" id="auditoria-conta">
-            <section aria-labelledby="auditoria-conta-titulo" className="space-y-5 border border-linha bg-superficie p-5 md:p-8">
-              <h2 id="auditoria-conta-titulo" className="font-serif text-xl text-carvao">
+            <section aria-labelledby="auditoria-conta-titulo" className="space-y-5 border-t border-dashed border-linha pt-6">
+              <h2 id="auditoria-conta-titulo" className="ed-h2 font-serif text-carvao">
                 Validação, tarifa média avaliada e arquivos
               </h2>
               <div>

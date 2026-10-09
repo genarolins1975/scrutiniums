@@ -4,14 +4,20 @@ import { join } from "node:path";
 import { buscar, normalizarBusca } from "@/lib/energia/busca";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
-import { indiceBusca, linhasAtualidade, periodoLegivel, type PublicacaoAtualidade } from "@/lib/energia/home";
+import { escolhasDeDistribuidora, estadoDoDestino, indiceBusca, linhasAtualidade, periodoLegivel, resumoAtualidade, type PublicacaoAtualidade } from "@/lib/energia/home";
 import {
   ANCORAS_VISAO_GERAL,
+  CAMINHOS_INTENCAO,
   CARTOES,
+  FAIXAS_MAPA,
   FONTES_PRINCIPAIS,
+  ID_SINAIS,
   LIGACOES,
   NOS_MAPA,
+  ORDEM_FAIXAS,
   PERGUNTAS_COTIDIANAS,
+  PERGUNTAS_PRIORITARIAS,
+  ROTULOS_FAIXA,
   SECOES_HOME,
   TIPOS_LIGACAO,
   TRANSVERSAIS,
@@ -20,10 +26,12 @@ import {
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 
 /**
- * Página inicial como mapa didático (seção 6 e painéis P001 e P003): as sete seções,
- * todo cartão, pergunta e trilha leva a uma rota e a uma âncora que existem, nenhum
- * destino em integração promete painel, o mapa conceitual não desenha cadeia causal
- * falsa e a atualidade mostra o período do dado, nunca a data de captura.
+ * Página inicial como porta de entrada (seção 6 e painéis P001 e P003): as sete âncoras,
+ * os quatro caminhos e as seis perguntas, todo cartão, pergunta e trilha leva a uma rota
+ * e a uma âncora que existem, nenhum destino em integração promete painel, o mapa
+ * conceitual não desenha cadeia causal falsa e a atualidade mostra o período do dado,
+ * nunca a data de captura. Os números das seis perguntas e a página renderizada estão em
+ * energia-inicial.test.ts.
  */
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -66,17 +74,63 @@ function confereDestino(href: string) {
 }
 
 describe("página inicial: mapa didático (P001)", () => {
-  it("tem as sete seções A a G e mantém a Visão geral numa página própria", () => {
+  it("tem as sete âncoras (as que outras páginas usam), a proposta, a busca e os quatro caminhos, e mantém a Visão geral numa página própria", () => {
     const t = ler(HOME);
-    expect(SECOES_HOME.map((s) => s.letra).join("")).toBe("ABCDEFG");
+    // a ordem em que as seções aparecem; cada id é a âncora que outras páginas e links antigos usam
+    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "perguntas", "destinos", "mapa-conceitual", "trilhas", "como-confiar", "aprofundar"]);
     for (const s of SECOES_HOME) expect(t, s.id).toContain(`id="${s.id}"`);
-    expect(t).toContain("Entenda a energia que move o Brasil");
-    expect(t).toContain("Explorar por pergunta");
-    expect(t).toContain("Ver a situação do sistema");
+    const posicoes = SECOES_HOME.map((s) => t.indexOf(`id="${s.id}"`));
+    expect([...posicoes].sort((a, b) => a - b)).toEqual(posicoes);
+    expect(t).toContain("Energia, do sistema à sua conta");
+    expect("Energia, do sistema à sua conta".split(" ")).toHaveLength(6);
     expect(t).toContain("<BuscaObservatorio");
     expect(t).toContain('canonical: "/setor-eletrico"');
+    expect(t).toContain('<MarcaVisita secao="energia:mapa" />');
     expect(ler("src/app/setor-eletrico/visao-geral/page.tsx")).toContain('canonical: "/setor-eletrico/visao-geral"');
     expect(MODULOS_ENERGIA[0]).toMatchObject({ slug: "mapa", href: "/setor-eletrico" });
+    // o Aprenda leva ao mapa pela âncora
+    expect(ler("src/app/setor-eletrico/aprenda/trilhas/page.tsx")).toContain("/setor-eletrico#mapa-conceitual");
+  });
+
+  it("os quatro caminhos de intenção levam a Visão geral, Território, Aprenda, Dados e Metodologia, cada um com link publicado", () => {
+    expect(CAMINHOS_INTENCAO.map((c) => c.id)).toEqual(["acompanhar", "regiao", "aprender", "conferir"]);
+    expect(CAMINHOS_INTENCAO.map((c) => c.slugs)).toEqual([["visao-geral"], ["territorio"], ["aprenda"], ["dados", "metodologia"]]);
+    for (const c of CAMINHOS_INTENCAO) {
+      expect(c.titulo.length, c.id).toBeGreaterThan(10);
+      expect(c.descricao.length, c.id).toBeGreaterThan(30);
+      for (const s of c.slugs) {
+        const d = DESTINOS_NAVEGACAO.find((x) => x.slug === s);
+        expect(d?.publicado, `${c.id}: ${s}`).toBe(true);
+        confereDestino(d!.href);
+      }
+    }
+  });
+
+  it("as seis perguntas prioritárias: conta, qualidade, perdas, reservatórios, PLD e expansão, cada uma com destino e âncora que existem", () => {
+    expect(PERGUNTAS_PRIORITARIAS.map((p) => p.id)).toEqual(["conta", "qualidade", "perdas", "agua", "pld", "expansao"]);
+    expect(PERGUNTAS_PRIORITARIAS.map((p) => p.id)).toEqual([...ID_SINAIS]);
+    expect(PERGUNTAS_PRIORITARIAS.map((p) => p.slug)).toEqual(["conta-de-luz", "qualidade", "perdas", "agua-e-clima", "pld", "expansao"]);
+    for (const p of PERGUNTAS_PRIORITARIAS) {
+      expect(p.pergunta.endsWith("?"), p.id).toBe(true);
+      expect(DESTINOS_NAVEGACAO.find((d) => d.slug === p.slug)?.publicado, p.id).toBe(true);
+      expect(p.link.href.startsWith(DESTINOS_NAVEGACAO.find((d) => d.slug === p.slug)!.href), p.id).toBe(true);
+      confereDestino(p.link.href);
+    }
+    // só perdas e qualidade oferecem "sua distribuidora", pelo parâmetro que a página de destino lê
+    expect(PERGUNTAS_PRIORITARIAS.filter((p) => p.porDistribuidora).map((p) => [p.id, p.porDistribuidora])).toEqual([
+      ["qualidade", "qualidade"],
+      ["perdas", "perdas"],
+    ]);
+    const t = ler(HOME);
+    expect(t).toContain('destino="/setor-eletrico/perdas" parametro="d"');
+    expect(t).toContain('destino="/setor-eletrico/qualidade" parametro="dist"');
+  });
+
+  it("a inicial não depende de constante de número: os sinais saem de home-sinais.ts e a página só escreve o que recebe", () => {
+    const t = ler(HOME);
+    expect(t).toContain("sinaisDaInicial()");
+    // nenhum valor de gold escrito à mão na página nem no conteúdo editorial da inicial
+    for (const f of [HOME, "src/lib/energia/mapa.ts"]) expect(ler(f), f).not.toMatch(/\b\d{1,3}(?:\.\d{3})+,\d+|\b\d+,\d{2,4}\s*(?:%|h\b|MW|R\$)|R\$\s*\d/);
   });
 
   it("todo destino publicado tem cartão com pergunta, utilidade, recorte e recursos concretos", () => {
@@ -161,6 +215,13 @@ describe("página inicial: mapa didático (P001)", () => {
     expect(LIGACOES.find((l) => l.tipo === "associacao")?.texto).toMatch(/sem afirmar causa/);
     // temas transversais da especificação
     expect(TRANSVERSAIS.map((t) => t.titulo)).toEqual(["Empresas", "Expansão", "Regulação", "Dados e método"]);
+    // as quatro faixas do mapa: caminho físico, coordenação da operação, relações econômicas e experiência das pessoas
+    expect(ORDEM_FAIXAS.map((f) => FAIXAS_MAPA[f].rotulo)).toEqual(["Caminho físico", "Coordenação da operação", "Relações econômicas", "Experiência das pessoas"]);
+    for (const f of ORDEM_FAIXAS) {
+      expect(NOS_MAPA.some((n) => n.faixa === f), f).toBe(true);
+      expect(ROTULOS_FAIXA[f].x, f).toBeGreaterThan(0);
+    }
+    expect(NOS_MAPA.filter((n) => n.faixa === "fisico").map((n) => n.id)).toEqual(["recursos", "geracao", "rede", "consumo"]);
     // alternativa textual equivalente e versão de celular
     const t = ler(HOME);
     expect(t).toContain("O mapa em texto");
@@ -203,6 +264,16 @@ describe("busca da página inicial", () => {
     }
   });
 
+  it("as seis perguntas prioritárias e as nove do dia a dia entram no índice como perguntas", () => {
+    const perguntas = indice.filter((i) => i.tipo === "Pergunta").map((i) => i.titulo);
+    for (const p of PERGUNTAS_PRIORITARIAS) expect(perguntas, p.id).toContain(p.pergunta);
+    for (const p of PERGUNTAS_COTIDIANAS) expect(perguntas, p.pergunta).toContain(p.pergunta);
+    expect(buscar(indice, "reservatórios armazenada").itens.some((i) => i.tipo === "Pergunta")).toBe(true);
+    // busca por assunto (painel), conceito e entidade
+    expect(buscar(indice, "bandeira").itens.length).toBeGreaterThan(0);
+    expect(buscar(indice, "DEC").itens.some((i) => i.tipo === "Conceito" || i.tipo === "Painel")).toBe(true);
+  });
+
   it("acha sem acento e sem maiúscula, exige todas as palavras e põe o título na frente", () => {
     expect(normalizarBusca("Reservatórios  ÁGUA")).toBe("reservatorios agua");
     const r = buscar(indice, "perdas");
@@ -242,6 +313,27 @@ describe("atualidade das fontes (P003)", () => {
     expect(ler("src/lib/energia/home.ts")).not.toMatch(/capturas|capturado_em/);
   });
 
+  it("o resumo conta quantas fontes estão em dia, atrasadas, sem calendário e sem avaliação, e nomeia as atrasadas", () => {
+    const pub: PublicacaoAtualidade = {
+      referencia: { hoje: "2026-10-01" },
+      conjuntos: [
+        { id: "aneel_distribuicao/aneel_samp_balanco", orgao: "ANEEL", titulo: "SAMP", atualidade: { situacao: "EM DIA", cadencia: "mensal", ultimo_periodo: "2026-08", fim_ultimo_periodo: "2026-08-31" } },
+        { id: "aneel_social/aneel_scs", orgao: "ANEEL", titulo: "SCS", atualidade: { situacao: "ATRASADO", cadencia: "mensal", ultimo_periodo: "2025-06", fim_ultimo_periodo: "2025-06-30" } },
+        { id: "energia/carga_energia_di", orgao: "ONS", titulo: "Carga", atualidade: { situacao: "SEM SLA", cadencia: null, ultimo_periodo: "2026-09-28", fim_ultimo_periodo: "2026-09-28" } },
+      ],
+    };
+    const linhas = linhasAtualidade(pub, new Set());
+    const r = resumoAtualidade(linhas);
+    expect(r.total).toBe(linhas.length);
+    expect(r.emDia).toBe(1);
+    expect(r.atrasadas.map((l) => l.rotulo)).toEqual([linhas.find((l) => l.atrasado)!.rotulo]);
+    expect(r.semCalendario).toBe(1);
+    // sem a publicação, nenhuma fonte é "em dia": todas ficam sem avaliação, nunca contadas como em dia
+    const semPub = resumoAtualidade(linhasAtualidade(null, new Set()));
+    expect(semPub).toMatchObject({ emDia: 0, semCalendario: 0, semAvaliacao: semPub.total });
+    expect(semPub.atrasadas).toEqual([]);
+  });
+
   it("toda fonte principal existe na publicação atual", () => {
     const g = JSON.parse(ler("public/energia/gold/publicacao.json")) as { disponivel: boolean; conjuntos: { id: string }[] };
     if (!g.disponivel) return;
@@ -269,6 +361,33 @@ describe("auditoria do mapa: regressões", () => {
     }
     expect(t).toContain("O que o mapa não diz");
     expect(t).toContain('href="/observatorio/suggestions"');
+  });
+});
+
+describe("índice completo: estado de cada destino e seletor de distribuidora", () => {
+  it("o estado vem de navegacao.ts: sem página é preparação, sem números é integração, o resto é integrado", () => {
+    expect(estadoDoDestino({ publicado: false, integrado: false })).toBe("preparacao");
+    expect(estadoDoDestino({ publicado: true, integrado: false })).toBe("integracao");
+    expect(estadoDoDestino({ publicado: true, integrado: true })).toBe("integrado");
+    // a página escreve "Em integração" e "Em preparação" a partir do estado, nunca um texto fixo que o contradiga
+    const t = ler(HOME);
+    expect(t).toContain("estadoDoDestino(d)");
+    expect(t).not.toMatch(/todas as páginas publicam/i);
+  });
+
+  it("cada seletor lista só quem tem dado no ano do módulo e diz o ano; as extintas ficam de fora", () => {
+    const dist = [
+      { cnpj: "1", sigla: "B-D", nome: "B", ufs: ["MG"], perdas: { ano: 2025 }, qualidade: { ano: 2025 } },
+      { cnpj: "2", sigla: "A-D", nome: "A", ufs: ["SP"], perdas: { ano: 2025 }, qualidade: { ano: 2024 } },
+      { cnpj: "3", sigla: "EXT", nome: "Extinta", ufs: ["RS"], perdas: { ano: 2005 }, qualidade: null },
+    ];
+    const e = escolhasDeDistribuidora(dist, 2025);
+    expect(e.anoPerdas).toBe(2025);
+    expect(e.anoQualidade).toBe(2025);
+    expect(e.opcoesPerdas.map((o) => o.sigla)).toEqual(["A-D", "B-D"]);
+    expect(e.opcoesQualidade.map((o) => o.sigla)).toEqual(["B-D"]);
+    // sem ano de perdas (gold indisponível) nenhuma distribuidora entra: a lista nunca é preenchida por outro ano
+    expect(escolhasDeDistribuidora(dist, null).opcoesPerdas).toEqual([]);
   });
 });
 

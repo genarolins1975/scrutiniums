@@ -170,6 +170,8 @@ export function siglaDoCodigo(codigo: string | null | undefined): string | null 
 /* ================================================================ páginas */
 
 export const ROTA_TRANSICAO = "/setor-eletrico/transicao";
+/** Pergunta da abertura do módulo: o título da página de síntese. */
+export const PERGUNTA_TRANSICAO = "Como a matriz está mudando?";
 export type PainelTransicao = "p063" | "ons" | "p064";
 
 /** Perguntas da estimativa de energia do ONS (parte do P063) e do achado A11, na página da energia estimada. */
@@ -1412,4 +1414,36 @@ export function vereditoEmissoes(e: Pick<BlocoEmissoes, "medio_anual" | "ultimo_
   const comp = dir === null || !ant ? "" : dir === "igual" ? `, igual ao de ${ant.ano}` : `, ${dir === "maior" ? "acima" : "abaixo"} dos ${fator(ant.valor)} de ${ant.ano}`;
   const limite = atravessa ? ` A base de usinas do MCTI mudou em ${mes(q!.data)}, e a comparação mistura bases.` : " O fator médio não é o efeito de consumir um MWh a mais.";
   return `Em ${ua.ano}, cada MWh gerado no SIN emitiu em média ${fator(ua.valor)} tonelada de CO2 (fator do MCTI)${comp}.${limite}`;
+}
+
+/* ================================================================ abertura (redesenho): dois visuais separados */
+
+/**
+ * Conexões por ano dentro da cobertura declarada pela ANEEL (a partir do primeiro ano inteiro coberto), para o gráfico da
+ * abertura; os anos anteriores, fora da cobertura, ficam no gráfico e na tabela da página da MMGD no território. Mesmas linhas de
+ * `linhasAnual`: só muda quais anos entram.
+ */
+export function linhasAnualCobertas(m: Pick<BlocoMmgd, "anual" | "data_cadastro" | "controles">): LinhaAnual[] {
+  const primeiro = primeiroAnoCoberto(m.controles.cobertura_das_series.inicio_declarado);
+  return linhasAnual(m).filter((a) => a.ano >= primeiro);
+}
+
+/** Frase que acompanha o gráfico de capacidade adicionada: o recorte de anos e o ano parcial, ditos junto da figura. */
+export function notaAnosDaCapacidade(m: Pick<BlocoMmgd, "anual" | "data_cadastro" | "controles">): string {
+  const primeiro = primeiroAnoCoberto(m.controles.cobertura_das_series.inicio_declarado);
+  const parcial = m.anual.find((a) => a.parcial);
+  const ultimo = parcial ? ` ${parcial.ano} vai só até ${data(m.data_cadastro)} e não compete com ano completo.` : "";
+  return `Desde ${primeiro}, o primeiro ano inteiro com cobertura declarada pela ANEEL; os anos anteriores estão na página da MMGD no território.${ultimo}`;
+}
+
+/** Potência e unidades conectadas no ano de referência (o último ano completo), como a resposta e o veredito as leem. */
+export function conectadaNoAnoDeReferencia(m: Pick<BlocoMmgd, "anual" | "ano_referencia">): { ano: number; potencia_mw: number | null; unidades: number | null } | null {
+  const a = m.anual.find((x) => x.ano === m.ano_referencia);
+  return a ? { ano: a.ano, potencia_mw: a.potencia_mw, unidades: a.unidades } : null;
+}
+
+/** Anos de início e fim da série anual do fator médio, para dizer o período do gráfico de intensidade junto da figura. */
+export function periodoFatorAnual(e: Pick<BlocoEmissoes, "medio_anual">): { inicio: number; fim: number } | null {
+  const a = e.medio_anual;
+  return a.length ? { inicio: a[0].ano, fim: a[a.length - 1].ano } : null;
 }

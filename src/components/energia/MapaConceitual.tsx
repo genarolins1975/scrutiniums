@@ -8,13 +8,17 @@ import type { IdNo, TipoLigacao } from "@/lib/energia/mapa";
  * ligações entre eles, cada uma com o traço do seu tipo (fluxo físico, decisão de
  * operação, regra de mercado, componente de custo, associação analítica). O
  * cartão escolhido por clique, toque ou foco acende as suas ligações e abre a
- * explicação ao lado. O desenho é decorativo para leitor de tela (aria-hidden): o
- * conteúdo equivalente está nos botões, no painel de detalhe e na versão em
- * texto que a página publica junto. No celular a página mostra só a versão em
- * texto; este componente aparece a partir de md.
+ * explicação ao lado. Os elos estão em quatro faixas (caminho físico, coordenação
+ * da operação, relações econômicas e experiência das pessoas): o nome de cada faixa
+ * fica ao lado dos seus elos e no painel do elo escolhido. O desenho é decorativo
+ * para leitor de tela (aria-hidden): o conteúdo equivalente está nos botões, no
+ * painel de detalhe e na versão em texto que a página publica junto. No celular a
+ * página mostra só a versão em texto; este componente aparece a partir de md.
  */
 
-export type NoDiagrama = { id: IdNo; titulo: string; curto: string; pos: { x: number; y: number }; detalhe: ReactNode };
+export type NoDiagrama = { id: IdNo; titulo: string; curto: string; faixa: string; pos: { x: number; y: number }; detalhe: ReactNode };
+/** Nome de uma faixa e onde ele fica no diagrama (unidades do viewBox; `alinha` diz de que lado do ponto o texto cresce). */
+export type RotuloFaixa = { texto: string; x: number; y: number; alinha: "esq" | "centro" };
 export type LigacaoDiagrama = { de: IdNo; para: IdNo; tipo: TipoLigacao };
 export type TipoDiagrama = { id: TipoLigacao; rotulo: string; definicao: string; traco: string };
 
@@ -57,12 +61,14 @@ export function MapaConceitual({
   tipos,
   inicial,
   rotulo,
+  faixas = [],
 }: {
   nos: NoDiagrama[];
   ligacoes: LigacaoDiagrama[];
   tipos: TipoDiagrama[];
   inicial: IdNo;
   rotulo: string;
+  faixas?: RotuloFaixa[];
 }) {
   const [atual, setAtual] = useState<IdNo>(inicial);
   const porId = new Map(nos.map((n) => [n.id, n]));
@@ -96,6 +102,16 @@ export function MapaConceitual({
               );
             })}
           </svg>
+          {faixas.map((f) => (
+            <span
+              key={f.texto}
+              aria-hidden="true"
+              className="rotulo pointer-events-none absolute whitespace-nowrap text-mineral"
+              style={{ left: pct(f.x, LARGURA), top: pct(f.y, ALTURA), transform: f.alinha === "centro" ? "translateX(-50%)" : undefined }}
+            >
+              {f.texto}
+            </span>
+          ))}
           {nos.map((n) => {
             const sel = n.id === atual;
             return (
@@ -136,7 +152,10 @@ export function MapaConceitual({
         </ul>
       </div>
       <div id="mapa-conceitual-detalhe" aria-live="polite" className="border border-linha bg-superficie p-5">
-        <p className="rotulo text-mineral">Elo escolhido</p>
+        <p className="rotulo text-mineral">
+          Elo escolhido <span aria-hidden="true">·</span> <span className="sr-only">na faixa </span>
+          {escolhido.faixa}
+        </p>
         <h3 className="mt-1 font-serif text-xl leading-snug text-carvao">{escolhido.titulo}</h3>
         <div className="mt-3 space-y-3 text-sm leading-relaxed text-carvao-muted">{escolhido.detalhe}</div>
       </div>

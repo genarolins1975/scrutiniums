@@ -17,6 +17,9 @@ import { descreveRegiao, preenchimento, validaCores } from "@/lib/energia/mapa-c
  * e esta camada é do ONS; o rodapé daqui diz a fonte certa. A lógica de classe, cor e
  * descrição é a mesma (escalas.ts e mapa-coropletico.ts).
  *
+ * Composição: a partir de 1024 px o mapa fica à direita e à esquerda ficam o título, a leitura da bacia, a legenda e as notas (o mapa de
+ * um país não precisa da largura inteira); abaixo disso, tudo em coluna, na ordem título, mapa, legenda.
+ *
  * Interação: clique, toque, Enter ou Espaço numa bacia selecionam (a seleção é
  * controlada pela página e sincroniza a tabela, a resposta e o histórico da bacia);
  * cada bacia é um alvo de Tab com nome e valor no rótulo acessível, e a leitura da
@@ -125,12 +128,12 @@ export function AguaMapaBacias({
   };
 
   return (
-    <figure className="space-y-2" aria-labelledby={`${uid}-t`}>
-      <figcaption id={`${uid}-t`} className="font-serif text-base text-carvao">
+    <figure className="grid gap-x-8 gap-y-3 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_1fr]" aria-labelledby={`${uid}-t`}>
+      <figcaption id={`${uid}-t`} className="font-serif text-base text-carvao lg:col-start-1 lg:row-start-1">
         {titulo} <span className="font-sans text-sm text-mineral">({periodo})</span>
       </figcaption>
 
-      <div className="relative h-[380px] w-full border border-linha bg-superficie sm:h-[460px]" data-estado={carga.estado}>
+      <div className="relative h-[380px] w-full border border-linha bg-superficie sm:h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1" data-estado={carga.estado}>
         {carga.estado === "carregando" && (
           <div role="status" className="flex h-full items-center justify-center px-6 text-center text-sm text-carvao-muted">
             Carregando os contornos das bacias do ONS. Os valores já estão na tabela abaixo.
@@ -210,52 +213,54 @@ export function AguaMapaBacias({
         )}
       </div>
 
-      <p className="min-h-[44px] border-b border-linha pb-2 text-sm text-carvao" aria-live="polite" data-selecao={selecionado ?? ""}>
-        {foco && focoDesc ? (
-          <>
-            <span className="rotulo mr-2 text-mineral">{foco === selecionado && !ativoFeature ? "Seleção" : "Em foco"}</span>
-            <strong className="font-medium">{nomes[foco] ?? foco}</strong>: <span className="tabular-nums">{focoDesc.valor}</span>
-            {focoDesc.classe && <span className="text-carvao-muted">, classe {focoDesc.classe}</span>}
-          </>
-        ) : (
-          <span className="text-carvao-muted">Sem seleção. Clique, toque ou use Tab e Enter numa bacia, ou escolha na lista.</span>
-        )}
-      </p>
-
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-carvao" aria-label={`Legenda: ${unidade}`}>
-        <span className="rotulo text-mineral">{unidade}</span>
-        {classificacao.classes.map((c, i) => (
-          <span key={c.indice} className="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" className="inline-block h-3.5 w-5 border border-linha" style={{ background: cores[i] }} />
-            {c.rotulo} <span className="text-carvao-muted">({c.contagem})</span>
-          </span>
-        ))}
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            aria-hidden="true"
-            className="inline-block h-3.5 w-5 border border-linha"
-            style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, var(--cor-superficie) 1px 5px)" }}
-          />
-          sem dado ({classificacao.semDado})
-        </span>
-      </div>
-
-      <div className="space-y-1 text-xs leading-relaxed text-carvao-muted">
-        <p className="tabular-nums">
-          {plural(Object.keys(valores).length, "bacia", "bacias")} com estimativa: {num(comValor, 0)} com valor e {num(Object.keys(valores).length - comValor, 0)} sem dado (hachura).
-          Classes por quebras fixas, as mesmas em todos os períodos: a cor de um mês compara com a de outro.
+      <div className="space-y-3 lg:col-start-1 lg:row-start-2">
+        <p className="min-h-[44px] border-b border-linha pb-2 text-sm text-carvao" aria-live="polite" data-selecao={selecionado ?? ""}>
+          {foco && focoDesc ? (
+            <>
+              <span className="rotulo mr-2 text-mineral">{foco === selecionado && !ativoFeature ? "Seleção" : "Em foco"}</span>
+              <strong className="font-medium">{nomes[foco] ?? foco}</strong>: <span className="tabular-nums">{focoDesc.valor}</span>
+              {focoDesc.classe && <span className="text-carvao-muted">, classe {focoDesc.classe}</span>}
+            </>
+          ) : (
+            <span className="text-carvao-muted">Sem seleção. Clique, toque ou use Tab e Enter numa bacia, ou escolha na lista.</span>
+          )}
         </p>
-        {geo && semPoligono.length > 0 && <p>Sem polígono nesta camada: {semPoligono.map((id) => nomes[id] ?? id).join(", ")}.</p>}
-        {geo && (
-          <p>
-            {fonteSemArquivo(geo.fonte)}
-            {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome}, simplificação de{" "}
-            {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
-            {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só para
-            orientação.
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-carvao" aria-label={`Legenda: ${unidade}`}>
+          <span className="rotulo text-mineral">{unidade}</span>
+          {classificacao.classes.map((c, i) => (
+            <span key={c.indice} className="inline-flex items-center gap-1.5">
+              <span aria-hidden="true" className="inline-block h-3.5 w-5 border border-linha" style={{ background: cores[i] }} />
+              {c.rotulo} <span className="text-carvao-muted">({c.contagem})</span>
+            </span>
+          ))}
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="inline-block h-3.5 w-5 border border-linha"
+              style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-mineral) 0 1px, var(--cor-superficie) 1px 5px)" }}
+            />
+            sem dado ({classificacao.semDado})
+          </span>
+        </div>
+
+        <div className="space-y-1 text-xs leading-relaxed text-carvao-muted">
+          <p className="tabular-nums">
+            {plural(Object.keys(valores).length, "bacia", "bacias")} com estimativa: {num(comValor, 0)} com valor e {num(Object.keys(valores).length - comValor, 0)} sem dado (hachura).
+            Classes por quebras fixas, as mesmas em todos os períodos: a cor de um mês compara com a de outro.
           </p>
-        )}
-        {nota && <p>{nota}</p>}
+          {geo && semPoligono.length > 0 && <p>Sem polígono nesta camada: {semPoligono.map((id) => nomes[id] ?? id).join(", ")}.</p>}
+          {geo && (
+            <p>
+              {fonteSemArquivo(geo.fonte)}
+              {arquivoDaFonte(geo.fonte) && <span data-nivel="analisar"> (arquivo {arquivoDaFonte(geo.fonte)})</span>}, capturado em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome}, simplificação de{" "}
+              {num(geo.simplificacao.tolerancia_m / 1000, 0)} km. Divisas de UF
+              {carga.uf ? ` da malha do IBGE (${carga.uf.malha.revisao ? `revisão de ${carga.uf.malha.revisao}` : "revisão sem registro"})` : " indisponíveis nesta carga"}, só para
+              orientação.
+            </p>
+          )}
+          {nota && <p>{nota}</p>}
+        </div>
       </div>
     </figure>
   );

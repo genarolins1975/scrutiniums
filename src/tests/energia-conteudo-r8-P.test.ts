@@ -593,7 +593,8 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     const set = csv("public/energia/series/pld_mensal.csv").find((r) => r.mes === "2026-09" && r.sm === "SE")!;
     const t = textoEntender(html.historico);
     expect(Number(set.horas_com_carga)).toBeLessThan(Number(set.horas));
-    expect(t).toContain("Os três cartões de média mensal usam ago/2026");
+    // a faixa de medidas substituiu os cartões: o texto diz "as três médias mensais" e continua dizendo o mês e as horas de carga
+    expect(t).toContain("As três médias mensais usam ago/2026");
     expect(t).toContain(`a carga do balanço tem ${br(Number(set.horas_com_carga), 0)} das ${br(Number(set.horas), 0)} horas do mês`);
   });
 });
@@ -664,10 +665,11 @@ describe("ajustes finais de entendimento: exemplo concreto nas fichas, entradas 
     expect(html.pld).toContain('href="/setor-eletrico/pld/limites"');
   });
 
-  it("o Histórico diz o que é moeda constante e onde ficam a distribuição por ano e o perfil por hora", () => {
+  it("o Histórico diz o que é moeda constante e onde vêm a faixa sazonal, a distribuição por ano e o perfil por hora", () => {
     const t = textoEntender(html.historico);
     expect(t).toContain("moeda constante: valores corrigidos pelo IPCA para os reais de");
-    expect(t).toContain("a distribuição do preço por ano e o perfil por hora ficam em Analisar");
+    // a faixa sazonal, a distribuição por ano e o perfil por hora saíram de Analisar e ficam à vista, cada um com a sua pergunta
+    expect(t).toContain("a faixa sazonal, a distribuição do preço por ano e o perfil por hora vêm em seguida");
   });
 
   it("a página principal declara CVU entre as siglas", () => {

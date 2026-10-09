@@ -1,27 +1,66 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { ContaLinkFiltros, ContaLinkPainel } from "@/components/energia/ContaLinkPainel";
+import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import type { Natureza } from "@/lib/energia/tipos";
 
 /**
  * Peças de servidor comuns às duas páginas da Conta de luz (tarifas, composição e
  * simulador em /setor-eletrico/conta-de-luz; reajustes, bandeiras e subsídios em
- * /setor-eletrico/conta-de-luz/reajustes-e-subsidios): o recorte de cada painel
- * (período, universo e unidade), o rodapé com link compartilhável e próxima
- * pergunta, e o bloco de auditoria que só aparece no modo Auditar. Não é rota:
- * o App Router só publica page.tsx.
+ * /setor-eletrico/conta-de-luz/reajustes-e-subsidios): a faixa de páginas irmãs, o
+ * recorte de cada painel (período, universo e unidade), as datas de cada parte, o
+ * rodapé de cada painel (downloads, link com o recorte e próxima pergunta, no
+ * SeguirPainel do sistema) e as seções de Analisar e de Auditar (SecaoDoPainel).
+ * Não é rota: o App Router só publica page.tsx.
  */
 
 export const ROTA_CONTA = "/setor-eletrico/conta-de-luz";
 export const ROTA_REAJUSTES = "/setor-eletrico/conta-de-luz/reajustes-e-subsidios";
 
-const CLASSE_LINK = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
-
 export const FONTE_TARIFAS = "ANEEL, Tarifas de aplicação das distribuidoras de energia elétrica";
 
-/** Período, universo e unidade do painel, logo abaixo da resposta (anatomia da seção 7.2, item 3). */
+/** Páginas do módulo, na ordem em que o leitor as percorre: o preço do mesmo consumo, e depois o que mudou e quem financia. */
+const PAGINAS = [
+  { id: "tarifas", href: ROTA_CONTA, rotulo: "Tarifas, composição e simulador" },
+  { id: "reajustes", href: ROTA_REAJUSTES, rotulo: "Reajustes, bandeiras e subsídios" },
+] as const;
+
+/**
+ * Faixa de páginas irmãs do módulo (a página atual marcada com aria-current), no alto da página filha. Tem a mesma marcação da
+ * NavegacaoLocal do sistema, mas os links levam junto a escolha de distribuidoras (?dist=) feita na outra página, como a Conta de luz
+ * sempre fez; a mudança pedida à NavegacaoLocal está em docs/energia/redesign/pedidos/conta-de-luz.md. A abertura do módulo não leva
+ * a faixa: ela tem o seu próprio caminho para a página filha (o resumo "O que mudou e quem financia os benefícios?").
+ */
+export function Navegacao({ atual }: { atual: (typeof PAGINAS)[number]["id"] }) {
+  return (
+    <nav aria-label="Páginas de Conta de luz" data-navegacao-local="faixa" className="border-b border-linha">
+      <ol className="nav-faixa flex flex-wrap gap-x-6 text-sm">
+        {PAGINAS.map((p) => {
+          const ativo = p.id === atual;
+          return (
+            <li key={p.id}>
+              <ContaLinkFiltros
+                href={p.href}
+                atual={ativo}
+                className={`-mb-px inline-flex min-h-[44px] items-center border-b-2 px-0.5 ${
+                  ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:border-linha hover:text-carvao"
+                }`}
+              >
+                {p.rotulo}
+              </ContaLinkFiltros>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+/** Período, universo e unidade do painel, logo abaixo das figuras (anatomia da seção 7.2, item 3). */
 export function Recorte({ periodo, universo, unidade }: { periodo: ReactNode; universo: ReactNode; unidade: ReactNode }) {
   return (
-    <dl className="grid gap-x-6 gap-y-1 text-xs text-carvao-muted sm:grid-cols-3">
+    <dl data-recorte-painel="" className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
         <dt className="rotulo text-mineral">Período</dt>
         <dd className="mt-0.5">{periodo}</dd>
@@ -38,36 +77,54 @@ export function Recorte({ periodo, universo, unidade }: { periodo: ReactNode; un
   );
 }
 
-/** Rodapé de cada painel: link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
-export function Seguir({ ancora, href, pergunta }: { ancora: string; href: string; pergunta: string }) {
+/** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. */
+export function Datas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-linha pt-3">
-      <ContaLinkPainel ancora={ancora} />
-      <p className="text-sm">
-        <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-        {href.startsWith("#") ? (
-          <a href={href} className={CLASSE_LINK}>
-            {pergunta}
-          </a>
-        ) : href.startsWith("/setor-eletrico/conta-de-luz") ? (
-          <ContaLinkFiltros href={href} className={CLASSE_LINK}>
-            {pergunta}
-          </ContaLinkFiltros>
-        ) : (
-          <Link href={href} className={CLASSE_LINK}>
-            {pergunta}
-          </Link>
-        )}
-      </p>
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.texto}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
   );
 }
 
-export function Auditoria({ titulo, children }: { titulo: string; children: ReactNode }) {
+/** Arquivos do painel entre os downloads da gold: os que a página escolhe pelo endereço (nome do CSV). */
+export function downloadsDoPainel(downloads: readonly { rotulo: string; url: string }[], arquivos: readonly string[]): { rotulo: string; url: string }[] {
+  return downloads.filter((d) => arquivos.some((a) => d.url.endsWith(a)));
+}
+
+/** Rodapé de cada painel numa linha: baixar os dados, copiar o link com o recorte e a próxima pergunta (SeguirPainel). */
+export function Seguir({
+  ancora,
+  proximo,
+  downloads = [],
+}: {
+  ancora: string;
+  proximo: { href: string; pergunta: string };
+  downloads?: { rotulo: string; url: string }[];
+}) {
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
+}
+
+/** Seção de Analisar dentro de um painel (tabelas completas, comparações e exploração). */
+export function Analise({ titulo, id, children, lead }: { titulo: string; id?: string; children: ReactNode; lead?: ReactNode }) {
   return (
-    <div data-nivel="auditar" className="space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
+    <SecaoDoPainel id={id} nivel="analisar" titulo={titulo} lead={lead}>
       {children}
-    </div>
+    </SecaoDoPainel>
+  );
+}
+
+/** Seção de Auditar dentro de um painel (regras, conferências, arquivos e exceções). */
+export function Auditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
+  return (
+    <SecaoDoPainel id={id} nivel="auditar" titulo={titulo}>
+      {children}
+    </SecaoDoPainel>
   );
 }

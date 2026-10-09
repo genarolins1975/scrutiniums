@@ -1,45 +1,43 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { RedeLinkPainel } from "@/components/energia/RedeLinkPainel";
+import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
+import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { carimbo } from "@/lib/energia/formato";
 import { PAINEIS_REDE, ROTA_REDE, rotaPainel, semCaminhosInternos, type PainelRede } from "@/lib/energia/rede";
+import type { Natureza } from "@/lib/energia/tipos";
 import type { DicionarioOns, DocumentoOns } from "@/lib/energia/tipos-rede";
 
 /**
  * Peças de servidor das páginas da Rede (um painel por página: /setor-eletrico/rede para
  * o P028, /balanco-e-exterior para o P029, /restricoes para o P030 e /programado para o
- * P031): navegação entre os painéis, recorte (período, universo e unidade), avisos de
- * ausência e defasagem, rodapé com downloads, link compartilhável e próxima pergunta,
- * os blocos dos modos Analisar e Auditar e as listas de documentos conferidos.
+ * P031): navegação entre as páginas, avisos de ausência e defasagem, as datas de cada
+ * parte, o rodapé com downloads, link compartilhável e próxima pergunta, e as listas de
+ * documentos conferidos. As seções de Analisar e Auditar são `SecaoDoPainel`, direto nas
+ * páginas.
  *
  * Por que um painel por página: cada painel tem séries, várias tabelas equivalentes e
  * fichas de prova; juntos passariam da meta de cerca de 600 KB de HTML por página
  * (contrato, seção 5.1).
  */
 
-/** Navegação entre os quatro painéis; o atual leva aria-current. */
+/** Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel. */
+const ITENS_REDE = PAINEIS_REDE.map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+
+/**
+ * Navegação entre as quatro páginas: faixa de páginas irmãs nas filhas. A abertura (circulação de energia) não leva a faixa, porque mostra
+ * os mesmos destinos como capítulos depois da figura principal (RedeCapitulos), e o mesmo rótulo não aparece duas vezes.
+ */
 export function RedeNavegacao({ atual }: { atual: PainelRede }) {
-  return (
-    <nav aria-label="Painéis da rede" className="pb-4">
-      <ol className="nav-faixa flex flex-wrap gap-2 text-sm">
-        {PAINEIS_REDE.map((p) => (
-          <li key={p.id}>
-            <Link
-              href={rotaPainel(p.id)}
-              aria-current={p.id === atual ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border px-3 ${
-                p.id === atual ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
-              }`}
-            >
-              {p.rotulo}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
+  if (atual === "p028") return null;
+  return <NavegacaoLocal rotulo="Páginas da rede" itens={ITENS_REDE} atual={atual} />;
+}
+
+/** Capítulos da abertura: as outras três páginas do módulo, cada uma com a pergunta que responde. */
+export function RedeCapitulos({ atual = "p028" }: { atual?: PainelRede }) {
+  return <NavegacaoLocal rotulo="Capítulos da rede" itens={ITENS_REDE} atual={atual} variante="capitulos" titulo="Outras perguntas sobre a rede" />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */
@@ -47,7 +45,7 @@ export function RedeIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
       <CabecalhoEnergia atual="rede" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina px-4 py-14 sm:px-6">
+      <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo="Rede indisponível nesta publicação"
           motivo={
@@ -97,52 +95,24 @@ export function RedeAviso({ children, tipo = "nota" }: { children: ReactNode; ti
   );
 }
 
-/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
+/** Rodapé do painel: downloads, link compartilhável e a próxima pergunta, numa linha (SeguirPainel). */
 export function RedeSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
-  return (
-    <div className="space-y-3 border-t border-linha pt-3">
-      {downloads.length > 0 && (
-        <div>
-          <p className="rotulo text-mineral">Baixar os dados deste painel</p>
-          <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {downloads.map((d) => (
-              <li key={d.url}>
-                <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                  {d.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <RedeLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+  return <SeguirPainel ancora={ancora} proximo={proximo} downloads={downloads} />;
 }
 
-export function RedeAnalise({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
+/** Datas de referência de cada parte da página: cada número diz o seu dia ou a sua hora, sem sugerir simultaneidade. */
+export function RedeDatas({ itens }: { itens: { rotulo: string; texto: string | null; natureza: Natureza }[] }) {
   return (
-    <div id={id} data-nivel="analisar" className="scroll-mt-28 space-y-4 border-t border-linha pt-5">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-export function RedeAuditoria({ titulo, id, children }: { titulo: string; id?: string; children: ReactNode }) {
-  return (
-    <div id={id} data-nivel="auditar" className="scroll-mt-28 space-y-3 border-t border-dashed border-linha pt-4">
-      <h3 className="font-serif text-lg text-carvao">{titulo}</h3>
-      {children}
-    </div>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label="Datas de referência de cada parte">
+      {itens.map((x) => (
+        <li key={x.rotulo} className="inline-flex flex-wrap items-center gap-1.5">
+          <span>
+            {x.rotulo}: {x.texto ?? "sem dado nesta publicação"}
+          </span>
+          <SeloNatureza natureza={x.natureza} compacto />
+        </li>
+      ))}
+    </ul>
   );
 }
 

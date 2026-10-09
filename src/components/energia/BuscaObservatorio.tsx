@@ -4,9 +4,9 @@ import { useId, useMemo, useState } from "react";
 import { buscar, normalizarBusca, type ItemBusca } from "@/lib/energia/busca";
 
 /**
- * Busca da página inicial (seção 6.2 A): pergunta, conceito, painel e distribuidora,
+ * Busca da página inicial (seção 6.2 A): pergunta, assunto (painel), página, conceito e distribuidora,
  * só sobre o que existe no observatório. O índice é montado no servidor a partir do
- * mesmo conteúdo que a página publica (cartões, perguntas, verbetes conferidos e
+ * mesmo conteúdo que a página publica (páginas, perguntas, painéis, verbetes conferidos e
  * distribuidoras com ficha); a busca não inventa destino. Todas as palavras
  * digitadas precisam aparecer, sem diferença de acento ou maiúscula.
  */
@@ -18,9 +18,9 @@ export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exe
   const digitou = normalizarBusca(consulta).length > 0;
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl" role="search" aria-label="Busca no observatório">
       <label htmlFor={`${id}-q`} className="rotulo text-mineral">
-        Busque por pergunta, conceito, página ou distribuidora
+        Busque por pergunta, assunto, página, conceito ou distribuidora
       </label>
       <input
         id={`${id}-q`}
@@ -37,7 +37,7 @@ export function BuscaObservatorio({ itens, exemplos }: { itens: ItemBusca[]; exe
         {!digitou
           ? `Sugestões: ${exemplos.join(", ")}.`
           : r.total === 0
-            ? `Nada no observatório para "${consulta.trim()}". Tente outra palavra ou use as perguntas abaixo.`
+            ? `Nada no observatório para "${consulta.trim()}". Tente outra palavra ou use o índice completo abaixo.`
             : r.total > r.itens.length
               ? `${r.total} resultados; os ${r.itens.length} mais próximos:`
               : `${r.total} ${r.total === 1 ? "resultado" : "resultados"}:`}

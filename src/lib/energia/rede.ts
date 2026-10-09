@@ -403,6 +403,52 @@ export function textoPrecos30d(resumo: readonly ResumoFronteira30d[]): string {
   return `Horas em que os PLDs das duas pontas diferiram mais de ${reais(LIMIAR_PRECOS_RS_MWH)}/MWh na mesma hora do fluxo: ${listaLonga(partes)}. É descrição da coincidência entre preço e fluxo, não diagnóstico de fronteira no limite.`;
 }
 
+/** Sentido do saldo em palavras ("do Nordeste para o Norte"); null quando o saldo é ausente ou nulo. */
+export function textoSentidoSaldo(par: FronteiraRede, liquido: number | null | undefined): string | null {
+  const s = sentidoDoSaldo(par, liquido);
+  return s ? `${DO_SM[s.origem]} ${PARA_O[s.destino]}` : null;
+}
+
+export type MedidaFronteira30d = {
+  par: FronteiraRede;
+  /** "Saldo em 30 dias, do Nordeste para o Norte" (sem saldo: "entre Norte e Nordeste"). */
+  rotulo: string;
+  /** Módulo do saldo em MWh; null sem fluxo publicado na janela (ausência, nunca zero). */
+  valor: number | null;
+  periodo: string;
+  /** O que o saldo esconde: a energia no sentido contrário e as trocas de sentido, ou "fluxo num só sentido". */
+  nota: string;
+};
+
+/**
+ * Medidas da abertura da Rede: o saldo de cada fronteira na janela de 30 dias, em módulo e com o sentido no rótulo, e o que passou no sentido
+ * contrário. São os mesmos campos do resumo de 30 dias que alimenta o gráfico dos dois sentidos, a tabela e a exportação.
+ */
+export function medidasFronteiras30d(resumo: readonly ResumoFronteira30d[]): MedidaFronteira30d[] {
+  return FRONTEIRAS.map((par) => {
+    const r = resumo.find((x) => x.par === par);
+    if (!r || r.horas === 0) {
+      return {
+        par,
+        rotulo: `Saldo em 30 dias, ${entreFronteira(par)}`,
+        valor: null,
+        periodo: r ? `${dataBR(r.inicio)} a ${dataBR(r.fim)}` : "",
+        nota: "Sem fluxo publicado na janela.",
+      };
+    }
+    const sentido = textoSentidoSaldo(par, r.liquido_mwh);
+    const contra = horasContraSaldo(r) === 0 ? `Fluxo num só sentido nas ${num(r.horas, 0)} horas.` : `No sentido contrário: ${mwh(r.contra_saldo_mwh)}.`;
+    const trocas = r.dias_com_reversao > 0 ? ` Troca de sentido em ${num(r.dias_com_reversao, 0)} de ${num(r.dias, 0)} dias.` : "";
+    return {
+      par,
+      rotulo: `Saldo em ${plural(r.dias, "dia", "dias")}, ${sentido ?? entreFronteira(par)}`,
+      valor: Math.abs(r.liquido_mwh),
+      periodo: `${dataBR(r.inicio)} a ${dataBR(r.fim)}`,
+      nota: `${contra}${trocas}`,
+    };
+  });
+}
+
 /** Fronteira mostrada no detalhe quando nenhuma foi escolhida: a com mais energia escondida pelo saldo em 30 dias. */
 export function fronteiraDestaque(resumo: readonly ResumoFronteira30d[]): FronteiraRede {
   let melhor: ResumoFronteira30d | null = null;

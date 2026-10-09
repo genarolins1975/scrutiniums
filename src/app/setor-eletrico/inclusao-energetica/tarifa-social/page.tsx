@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
-import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir, InclusaoSubtitulo } from "@/components/energia/InclusaoPagina";
-import { InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
+import { InclusaoHistoricoUfTsee, InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, pct } from "@/lib/energia/formato";
@@ -19,6 +21,7 @@ import {
   COLUNAS_MESES_CDE,
   COLUNAS_SERIE_TSEE,
   dadosMediaCde,
+  datasMedidas,
   FONTE_CDE,
   FONTE_SCS,
   inteiro,
@@ -123,26 +126,115 @@ export default function TarifaSocialPage() {
       }))
     : [];
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
+  const oQueMudou = mudancaTarifaSocial(t);
+  const comoInterpretar = (
+    <>
+      O SCS conta UC no pedido de reembolso de cada distribuidora (despacho vigente, cinco faixas de consumo somadas, DMR lida uma vez por mês). Depois do fim do SCS, a evolução vem dos arquivos
+      mensais da CDE, que contam faturas: as duas séries ficam em gráficos separados e não se emendam. Mês em que falta distribuidora esperada fica em linha tracejada, fora da comparação. A
+      participação é razão de somas das mesmas distribuidoras.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      Não se conclui número de famílias nem de pessoas beneficiadas: UC e fatura são unidades da conta. A DMR é a receita que a distribuidora deixa de cobrar, não o desconto de cada família. A
+      queda num mês incompleto não é queda de beneficiários. Diferenças entre UF não têm causa atribuída aqui.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-tarifa-social" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["UC", "ANEEL", "IBGE"]}
+        <InclusaoNavegacao atual="p059" />
+        <CabecalhoModulo
+          siglas={["UC", "SCS", "CDE", "DMR", "ANEEL", "UF"]}
           rotulo="Inclusão energética"
           titulo="Tarifa Social de Energia Elétrica"
+          lead="Quantas unidades consumidoras (UC) recebem o desconto da Tarifa Social, onde estão e quanto o desconto vale. UC e faturas vêm de fontes diferentes, com meses diferentes, e não se somam."
+          recorte={`SCS ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · CDE ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · UC, faturas e R$ correntes`}
+          fonte="ANEEL, SCS e Beneficiários da CDE"
           referencia={
             <>
               SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
               {mes(g.referencias.cde_mes_mais_recente)} (último mês completo {mes(mesMapa)}). Processado em {carimbo(g.gerado_em)}.
             </>
           }
+          datas={<InclusaoDatas itens={datasMedidas(g).filter((d) => d.id === "scs" || d.id === "cde")} />}
+          metricas={
+            <FaixaMetricas
+              colunas={4}
+              rotulo="Indicadores da Tarifa Social"
+              nota={
+                <>
+                  <p>Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-5">
+                    <li>
+                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC. UC é o
+                      ponto de ligação com conta própria.
+                    </li>
+                    <li>
+                      Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e
+                      do mapa. Fatura é cada conta emitida com desconto no mês, e uma UC pode ter mais de uma fatura no arquivo.
+                    </li>
+                  </ul>
+                </>
+              }
+            >
+              <Numero
+                variante="faixa"
+                rotulo="UC com Tarifa Social"
+                natureza="OBSERVADO"
+                evidencia={k.uc_tsee.evidencia}
+                casas={0}
+                unidade="UC"
+                cor="var(--cor-energia)"
+                endereco={`${rotaPainel("p059")}#p059`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Das UC residenciais"
+                natureza="CALCULADO"
+                evidencia={k.participacao_pct.evidencia}
+                formato="pct"
+                casas={1}
+                cor="var(--cor-energia)"
+                nota={
+                  k.variacao_12m_pct.valor !== null
+                    ? `UC com Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "cresceram" : "caíram"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} desde ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (mês base incompleto)"}.`
+                    : undefined
+                }
+                endereco={`${rotaPainel("p059")}#p059`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="DMR do mês"
+                natureza="OBSERVADO"
+                evidencia={k.dmr_mes_reais.evidencia}
+                formato="reais"
+                casas={0}
+                unidade="R$"
+                cor="var(--serie-referencia)"
+                nota={`${reaisTexto(k.dmr_por_uc_reais.valor)} por UC; ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`}
+                endereco={`${rotaPainel("p059")}#p059`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Faturas com desconto (CDE)"
+                natureza="CALCULADO"
+                evidencia={k.faturas_cde_mapa?.evidencia ?? null}
+                casas={0}
+                unidade="faturas"
+                cor="var(--serie-comp-2)"
+                motivoAusencia="Nenhum arquivo da CDE com todas as distribuidoras."
+                nota={cdeMapa ? `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.` : undefined}
+                endereco={`${rotaPainel("p059")}#p059`}
+              />
+            </FaixaMetricas>
+          }
         >
-          Quantas unidades consumidoras recebem o desconto da Tarifa Social, onde estão e quanto o desconto vale, por distribuidora, UF e mês. Os números são agregados: nenhum
-          beneficiário individual aparece aqui.
+          Os números são agregados, por distribuidora, UF e mês: nenhum beneficiário individual aparece aqui.
         </CabecalhoModulo>
-        <InclusaoNavegacao atual="p059" />
         <ModoProfundidade>
           <Bloco id="tarifa-social">
             <PainelEvidencia
@@ -156,20 +248,10 @@ export default function TarifaSocialPage() {
                   unidades recebem, onde e com que desconto é o ponto de partida para discutir o alcance do benefício.
                 </>
               }
-              oQueMudou={mudancaTarifaSocial(t)}
-              comoInterpretar={
-                <>
-                  O SCS conta UC no pedido de reembolso de cada distribuidora (despacho vigente, cinco faixas de consumo somadas, DMR lida uma vez por mês). Depois do fim do SCS, a
-                  evolução vem dos arquivos mensais da CDE, que contam faturas: as duas séries ficam em gráficos separados e não se emendam. Mês em que falta distribuidora esperada
-                  fica em linha tracejada, fora da comparação. A participação é razão de somas das mesmas distribuidoras.
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não se conclui número de famílias nem de pessoas beneficiadas: UC e fatura são unidades da conta. A DMR é a receita que a distribuidora deixa de cobrar, não o desconto
-                  de cada família. A queda num mês incompleto não é queda de beneficiários. Diferenças entre UF não têm causa atribuída aqui.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={t.proveniencia.scs}
               complementares={[
                 { rotulo: "Participação nas UC residenciais", p: t.proveniencia.participacao },
@@ -179,131 +261,78 @@ export default function TarifaSocialPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
-                  {respostaTarifaSocial(t)}
-                </RespostaCurta>
-                <InclusaoRecorte
-                  periodo={
-                    <>
-                      SCS de {mes(serie[0]?.m)} a {mes(serie.at(-1)?.m)} (referência {mes(t.mes_referencia)}); CDE de {mes(cdeComValor[0]?.mes)} a {mes(cdeComValor.at(-1)?.mes)} (mapa em{" "}
-                      {mes(mesMapa)})
-                    </>
+                <InclusaoSerieTsee
+                  serie={serie}
+                  marcos={marcosScs}
+                  resposta={
+                    <RespostaCurta id="p059" veredito={vereditoTarifaSocial(t)}>
+                      {respostaTarifaSocial(t)}
+                    </RespostaCurta>
                   }
-                  universo={
-                    <>
-                      {t.distribuidoras.length} distribuidoras no SCS; {ufsComFaturas} UF e {inteiro(municipiosComFaturas)} municípios com faturas no mês do mapa
-                    </>
+                  recorte={
+                    <InclusaoRecorte
+                      periodo={
+                        <>
+                          SCS de {mes(serie[0]?.m)} a {mes(serie.at(-1)?.m)} (referência {mes(t.mes_referencia)}); CDE de {mes(cdeComValor[0]?.mes)} a {mes(cdeComValor.at(-1)?.mes)} (mapa em {mes(mesMapa)})
+                        </>
+                      }
+                      universo={
+                        <>
+                          {t.distribuidoras.length} distribuidoras no SCS; {ufsComFaturas} UF e {inteiro(municipiosComFaturas)} municípios com faturas no mês do mapa
+                        </>
+                      }
+                      unidade="UC (SCS); faturas (CDE); R$ correntes"
+                    />
                   }
-                  unidade="UC (SCS); faturas (CDE); R$ correntes"
-                />
-                <div className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
-                  <p>Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
-                  <ul className="mt-1 list-disc space-y-0.5 pl-5">
-                    <li>
-                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC.
-                    </li>
-                    <li>
-                      Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e do mapa.
-                    </li>
-                  </ul>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <Numero rotulo="UC com Tarifa Social" natureza="OBSERVADO" evidencia={k.uc_tsee.evidencia} casas={0} unidade="UC" tamanho="medio" endereco={`${rotaPainel("p059")}#p059`} />
-                  <Numero
-                    rotulo="Das UC residenciais"
-                    natureza="CALCULADO"
-                    evidencia={k.participacao_pct.evidencia}
-                    formato="pct"
-                    casas={1}
-                    tamanho="medio"
-                    nota={
-                      k.variacao_12m_pct.valor !== null
-                        ? `UC com Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "cresceram" : "caíram"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} desde ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (mês base incompleto)"}.`
-                        : undefined
-                    }
-                    endereco={`${rotaPainel("p059")}#p059`}
-                  />
-                  <Numero
-                    rotulo="DMR do mês"
-                    natureza="OBSERVADO"
-                    evidencia={k.dmr_mes_reais.evidencia}
-                    formato="reais"
-                    casas={0}
-                    unidade="R$"
-                    tamanho="medio"
-                    nota={`${reaisTexto(k.dmr_por_uc_reais.valor)} por UC; ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`}
-                    endereco={`${rotaPainel("p059")}#p059`}
-                  />
-                  <Numero
-                    rotulo="Faturas com desconto (CDE)"
-                    natureza="CALCULADO"
-                    evidencia={k.faturas_cde_mapa?.evidencia ?? null}
-                    casas={0}
-                    unidade="faturas"
-                    tamanho="medio"
-                    motivoAusencia="Nenhum arquivo da CDE com todas as distribuidoras."
-                    nota={cdeMapa ? `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.` : undefined}
-                    endereco={`${rotaPainel("p059")}#p059`}
-                  />
-                </div>
-
-                <InclusaoSubtitulo>Como o número de UC com Tarifa Social evoluiu?</InclusaoSubtitulo>
-                <InclusaoSerieTsee serie={serie} marcos={marcosScs} />
-
-                <InclusaoSubtitulo>Depois do SCS: o que os arquivos da CDE mostram mês a mês?</InclusaoSubtitulo>
-                <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                  Desconto médio por fatura (desconto das faturas ÷ faturas, calculado pelo observatório). Meses em que faltam distribuidoras ficam tracejados; os meses mais recentes, cujos arquivos
-                  ainda não trazem todas as distribuidoras, aparecem só na tabela, com a cobertura.
-                </p>
-                <GraficoLinhas
-                  titulo={`Desconto médio por fatura com Tarifa Social, ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} (Beneficiários da CDE)`}
-                  dados={dadosCde}
-                  chaveX="m"
-                  formatoX="mes"
-                  series={[
-                    { id: "completo", rotulo: "Mês completo", sigla: "Completo", cor: "var(--cor-energia)" },
-                    ...(dadosCde.some((d) => d.incompleto !== null)
-                      ? [{ id: "incompleto", rotulo: "Mês incompleto (fora da comparação)", sigla: "Incompleto", cor: "var(--serie-referencia)", tracejada: true }]
-                      : []),
-                  ]}
-                  unidade="R$ por fatura"
-                  casas={2}
-                  zeroNoEixo
-                  marcos={marcosCde}
-                  altura={280}
-                />
-                <TabelaInterativa
-                  titulo="Arquivos mensais de Beneficiários da CDE: cobertura, faturas e desconto"
-                  colunas={COLUNAS_MESES_CDE}
-                  linhas={linhasMesesCde(t.cde_meses)}
-                  chaveLinha="id"
-                  colunaRotulo="mes"
-                  fonte={FONTE_CDE}
-                  versao={g.referencias.cde_mes_mais_recente ?? mesMapa}
-                  nomeArquivo="inclusao-cde-meses"
-                  chaveUrl="ts.cde"
-                  tamanhoPagina={25}
-                  nota={t.regras.mes_cde_sem_original}
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
 
-                <InclusaoSubtitulo>Onde: faturas com desconto por UF</InclusaoSubtitulo>
-                <InclusaoMapaTsee ufs={t.ufs} mesMapa={mesMapa} serieUfUrl={t.serie_cde_uf_json} atingidas={atingidas} marcos={marcosCde} fonte={FONTE_CDE} />
-
-                <InclusaoAnalise titulo={`Distribuidoras em ${mes(t.mes_referencia)}: UC, participação, DMR e conferência com a CDE`}>
+                <SecaoDoPainel
+                  id="cde"
+                  titulo="Depois do SCS: o que os arquivos da CDE mostram mês a mês?"
+                  lead="Desconto médio por fatura (desconto das faturas ÷ faturas, calculado pelo observatório). Meses em que faltam distribuidoras ficam tracejados; os meses mais recentes, cujos arquivos ainda não trazem todas as distribuidoras, aparecem só na tabela, com a cobertura."
+                >
+                  <GraficoLinhas
+                    titulo={`Desconto médio por fatura com Tarifa Social, ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} (Beneficiários da CDE)`}
+                    dados={dadosCde}
+                    chaveX="m"
+                    formatoX="mes"
+                    series={[
+                      { id: "completo", rotulo: "Mês completo", sigla: "Completo", cor: "var(--cor-energia)" },
+                      ...(dadosCde.some((d) => d.incompleto !== null)
+                        ? [{ id: "incompleto", rotulo: "Mês incompleto (fora da comparação)", sigla: "Incompleto", cor: "var(--serie-referencia)", tracejada: true }]
+                        : []),
+                    ]}
+                    unidade="R$ por fatura"
+                    casas={2}
+                    zeroNoEixo
+                    marcos={marcosCde}
+                    altura={280}
+                  />
                   <TabelaInterativa
-                    titulo={`Tarifa Social por distribuidora, ${mes(t.mes_referencia)} (SCS)`}
-                    colunas={COLUNAS_DISTRIBUIDORAS}
-                    linhas={linhasDistribuidoras(t.distribuidoras)}
+                    titulo="Arquivos mensais de Beneficiários da CDE: cobertura, faturas e desconto"
+                    colunas={COLUNAS_MESES_CDE}
+                    linhas={linhasMesesCde(t.cde_meses)}
                     chaveLinha="id"
-                    colunaRotulo="sigla"
-                    fonte={FONTE_SCS}
-                    versao={t.mes_referencia}
-                    nomeArquivo="inclusao-tarifa-social-distribuidoras"
-                    chaveUrl="ts.dist"
-                    ordemInicial={{ coluna: "uc_tsee", direcao: "desc" }}
-                    dicaBusca="Sigla, CNPJ ou UF"
-                    nota="Participação nula quando o total residencial do mês é inconsistente (regra no modo Auditar). Faturas contra UC: diferença do arquivo da CDE do mesmo mês."
+                    colunaRotulo="mes"
+                    fonte={FONTE_CDE}
+                    versao={g.referencias.cde_mes_mais_recente ?? mesMapa}
+                    nomeArquivo="inclusao-cde-meses"
+                    chaveUrl="ts.cde"
+                    tamanhoPagina={25}
+                    nota={t.regras.mes_cde_sem_original}
                   />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="uf" titulo="Onde: faturas com desconto por UF">
+                  <InclusaoMapaTsee ufs={t.ufs} mesMapa={mesMapa} fonte={FONTE_CDE} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="historico-uf" titulo="Como as UF escolhidas evoluíram mês a mês?">
+                  <InclusaoHistoricoUfTsee ufs={t.ufs} serieUfUrl={t.serie_cde_uf_json} atingidas={atingidas} marcos={marcosCde} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="modalidades" titulo={`Quem recebe e quanto consome: modalidade e faixa de consumo em ${mes(t.modalidades_referencia.mes)}`}>
                   <div className="grid gap-6 lg:grid-cols-2">
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-carvao">Modalidades em {mes(t.modalidades_referencia.mes)}</p>
@@ -360,7 +389,10 @@ export default function TarifaSocialPage() {
                       altura={280}
                     />
                   </div>
-                  {custeio && (
+                </SecaoDoPainel>
+
+                {custeio && (
+                  <SecaoDoPainel id="custeio" titulo="Quanto a CDE destina à Tarifa Social por ano?">
                     <GraficoBarras
                       titulo={`Valor anual da CDE para a Tarifa Social, ${custeio.linhas[0]?.ano ?? ""} a ${custeio.linhas.at(-1)?.ano ?? ""} (R$ bilhões correntes)`}
                       dados={custeio.linhas.map((l) => ({
@@ -375,8 +407,25 @@ export default function TarifaSocialPage() {
                       casas={2}
                       altura={280}
                     />
-                  )}
-                  {custeio && <p className="max-w-prose2 text-sm text-carvao-muted">{textoCusteioTarifaSocial(custeio)}</p>}
+                    <p className="max-w-prose2 text-sm text-carvao-muted">{textoCusteioTarifaSocial(custeio)}</p>
+                  </SecaoDoPainel>
+                )}
+
+                <SecaoDoPainel id="distribuidoras" nivel="analisar" titulo={`Distribuidoras em ${mes(t.mes_referencia)}: UC, participação, DMR e conferência com a CDE`}>
+                  <TabelaInterativa
+                    titulo={`Tarifa Social por distribuidora, ${mes(t.mes_referencia)} (SCS)`}
+                    colunas={COLUNAS_DISTRIBUIDORAS}
+                    linhas={linhasDistribuidoras(t.distribuidoras)}
+                    chaveLinha="id"
+                    colunaRotulo="sigla"
+                    fonte={FONTE_SCS}
+                    versao={t.mes_referencia}
+                    nomeArquivo="inclusao-tarifa-social-distribuidoras"
+                    chaveUrl="ts.dist"
+                    ordemInicial={{ coluna: "uc_tsee", direcao: "desc" }}
+                    dicaBusca="Sigla, CNPJ ou UF"
+                    nota="Participação nula quando o total residencial do mês é inconsistente (regra no modo Auditar). Faturas contra UC: diferença do arquivo da CDE do mesmo mês."
+                  />
                   <TabelaInterativa
                     titulo="Série mensal nacional do SCS, todos os meses publicados"
                     colunas={COLUNAS_SERIE_TSEE}
@@ -390,9 +439,9 @@ export default function TarifaSocialPage() {
                     ordemInicial={{ coluna: "m", direcao: "desc" }}
                     dicaBusca="Mês (AAAA-MM)"
                   />
-                </InclusaoAnalise>
+                </SecaoDoPainel>
 
-                <InclusaoAuditoria titulo="Regras, conferências e a série antiga">
+                <SecaoDoPainel id="regras-p059" nivel="auditar" titulo="Regras, conferências e a série antiga">
                   <dl className="grid gap-3 text-sm sm:grid-cols-2">
                     {Object.entries(t.regras).map(([id, txt]) => (
                       <div key={id}>
@@ -484,12 +533,11 @@ export default function TarifaSocialPage() {
                       />
                     </>
                   )}
-                </InclusaoAuditoria>
+                </SecaoDoPainel>
 
                 <InclusaoSeguir
                   ancora="p059"
-                  href={rotaPainel("p060")}
-                  pergunta={`${g.cobertura.pergunta} Faturas por 100 famílias elegíveis pela renda (proxy)`}
+                  proximo={{ href: rotaPainel("p060"), pergunta: "Quantas faturas há para cada 100 famílias do Cadastro Único (proxy)?" }}
                   downloads={downloads([
                     "/energia/series/inclusao_tsee_mensal.csv",
                     "/energia/series/inclusao_tsee_distribuidoras.csv",

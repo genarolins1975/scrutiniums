@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
-import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir, InclusaoSubtitulo } from "@/components/energia/InclusaoPagina";
-import { InclusaoIsolados, InclusaoLpt, InclusaoMapaPnad, InclusaoRegioesPnad } from "@/components/energia/InclusaoAcesso";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
+import { InclusaoHistoricoPnad, InclusaoIsolados, InclusaoLpt, InclusaoMapaPnad, InclusaoRegioesPnad } from "@/components/energia/InclusaoAcesso";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   colunasLpt,
+  datasMedidas,
   FONTE_LPT,
   FONTE_PASI,
   FONTE_PNAD,
@@ -65,6 +68,7 @@ export default function AcessoPage() {
   const si = a.sistemas_isolados;
   const lpt = a.universalizacao.luz_para_todos;
   const brPnad = a.pnad_serie.find((l) => l.territorio === "BR" && l.ano === a.ano_referencia && l.situacao === "total");
+  const primeiroAno = a.pnad_serie[0]?.ano ?? "";
   const recursosCols: ColunaTabela[] = lpt
     ? [
         { id: "nome", rotulo: "UF", tipo: "texto" },
@@ -79,26 +83,87 @@ export default function AcessoPage() {
       ]
     : [];
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
+  const acessoPnad = { ano_referencia: a.ano_referencia, pnad_serie: a.pnad_serie, pnad_situacao: a.pnad_situacao };
+  const oQueMudou = mudancaAcesso(a);
+  const comoInterpretar = (
+    <>
+      Três dimensões, três fontes: a Pesquisa Nacional por Amostra de Domicílios (PNAD) Contínua estima domicílios sem energia de nenhuma fonte e o fornecimento em tempo integral entre os
+      ligados à rede geral; o Portal de Acompanhamento e Informações dos Sistemas Isolados (PASI), da EPE, lista as localidades atendidas por sistemas isolados; o Luz para Todos conta domicílios
+      ligados por ano do atendimento. Elas não se somam. O percentual em tempo integral é sobre os ligados à rede, não sobre todos os domicílios.
+    </>
+  );
+  const naoConcluir = (
+    <>
+      A carga do SIN não mede acesso: sistemas isolados e domicílios sem ligação ficam fora dela. Ligação feita não garante serviço confiável depois. {textoPrecisaoPnad(acessoPnad)} Localidade
+      isolada não é localidade sem energia.
+    </>
+  );
 
   return (
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-acesso" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["CDE", "SIN", "EPE", "MME", "IBGE"]}
+        <InclusaoNavegacao atual="p062" />
+        <CabecalhoModulo
+          siglas={["CDE", "CCC", "SIN", "EPE", "MME", "IBGE"]}
           rotulo="Inclusão energética"
           titulo="Acesso à energia e sistemas isolados"
+          lead="Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação à rede e quem vive fora do Sistema Interligado Nacional (SIN). Domicílios, pessoas e ligações do Luz para Todos vêm de fontes diferentes e não se somam."
+          recorte={`PNAD ${primeiroAno} a ${a.ano_referencia} · PASI ciclo ${si?.ciclo ?? "sem dado"} · Luz para Todos até ${mes(lpt?.ultimo_mes)} · domicílios, pessoas e ligações`}
+          fonte="IBGE, PNAD Contínua; EPE, PASI; MME, Luz para Todos"
           referencia={
             <>
-              PNAD Contínua anual até {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"} (EPE); Luz para Todos até {mes(lpt?.ultimo_mes)} (MME); custeio da CDE até{" "}
-              {custeio?.linhas.at(-1)?.ano ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
+              IBGE, Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua) anual até {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"} (EPE); Luz para Todos até{" "}
+              {mes(lpt?.ultimo_mes)} (MME); custeio da CDE até {custeio?.linhas.at(-1)?.ano ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
-        >
-          Quem ainda não tem energia, com que regularidade ela chega a quem tem ligação, quem vive fora do Sistema Interligado e quantas ligações o Luz para Todos fez. Três
-          dimensões, três fontes, que não se somam.
-        </CabecalhoModulo>
-        <InclusaoNavegacao atual="p062" />
+          datas={<InclusaoDatas itens={datasMedidas(g).filter((d) => d.id === "pnad" || d.id === "pasi" || d.id === "lpt")} />}
+          metricas={
+            <FaixaMetricas colunas={3} rotulo="Indicadores de acesso" nota="Domicílio, pessoa e ligação do programa são unidades diferentes, de fontes e datas diferentes: os três números não se somam.">
+              <Numero
+                variante="faixa"
+                rotulo={`Domicílios sem energia de nenhuma fonte, ${a.ano_referencia}`}
+                natureza="ESTIMADO"
+                evidencia={a.evidencia_sem_energia}
+                casas={0}
+                unidade="mil domicílios"
+                cor="var(--cor-energia)"
+                motivoAusencia="Sem estimativa nesta publicação."
+                nota={
+                  brPnad
+                    ? `Domicílio: a moradia, com ou sem ligação à rede. ${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (CV ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE, no CSV da PNAD).`
+                    : undefined
+                }
+                endereco={`${rotaPainel("p062")}#p062`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo={`Pessoas em localidades isoladas, ciclo ${si?.ciclo ?? ""}`.trim()}
+                natureza="OBSERVADO"
+                evidencia={si?.evidencia_populacao ?? null}
+                casas={0}
+                unidade="pessoas"
+                cor="var(--serie-termica)"
+                motivoAusencia="PASI não processado nesta publicação."
+                nota="Pessoa: a população das localidades isoladas, informada pelas distribuidoras ao PASI. Isolamento não é falta de acesso: é acesso fora do SIN."
+                endereco={`${rotaPainel("p062")}#p062`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo="Domicílios atendidos pelo Luz para Todos"
+                natureza="OBSERVADO"
+                evidencia={lpt?.evidencia_total ?? null}
+                casas={0}
+                unidade="domicílios"
+                cor="var(--serie-referencia)"
+                motivoAusencia="Arquivo do MME não processado nesta publicação."
+                nota="Domicílios ligados pelo programa, não pessoas nem UC com benefício. A ligação não mede a qualidade do fornecimento depois dela."
+                endereco={`${rotaPainel("p062")}#p062`}
+              />
+            </FaixaMetricas>
+          }
+        />
         <ModoProfundidade>
           <Bloco id="acesso">
             <PainelEvidencia
@@ -108,24 +173,14 @@ export default function AcessoPage() {
               natureza="ESTIMADO"
               porQueImporta={
                 <>
-                  Ter ligação e ter serviço confiável são coisas diferentes, e as duas faltam em lugares diferentes. Localidades fora do Sistema Interligado têm energia, em geral de usinas
-                  a óleo diesel pagas em parte pela CCC, e o Luz para Todos registra as ligações novas que o programa fez.
+                  Ter ligação e ter serviço confiável são coisas diferentes, e as duas faltam em lugares diferentes. Localidades fora do Sistema Interligado têm energia, em geral de usinas a óleo diesel
+                  pagas em parte pela CCC, e o Luz para Todos registra as ligações novas que o programa fez.
                 </>
               }
-              oQueMudou={mudancaAcesso(a)}
-              comoInterpretar={
-                <>
-                  Três dimensões, três fontes: a PNAD estima domicílios sem energia de nenhuma fonte e o fornecimento em tempo integral entre os ligados à rede geral; o PASI lista as
-                  localidades atendidas por sistemas isolados; o Luz para Todos conta domicílios ligados por ano do atendimento. Elas não se somam. O percentual em tempo integral é sobre
-                  os ligados à rede, não sobre todos os domicílios.
-                </>
-              }
-              naoConcluir={
-                <>
-                  A carga do SIN não mede acesso: sistemas isolados e domicílios sem ligação ficam fora dela. Ligação feita não garante serviço confiável depois.{" "}
-                  {textoPrecisaoPnad({ ano_referencia: a.ano_referencia, pnad_serie: a.pnad_serie, pnad_situacao: a.pnad_situacao })} Localidade isolada não é localidade sem energia.
-                </>
-              }
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={a.proveniencia.pnad}
               complementares={[
                 ...(a.proveniencia.isolados ? [{ rotulo: "Sistemas isolados (PASI)", p: a.proveniencia.isolados }] : []),
@@ -134,69 +189,42 @@ export default function AcessoPage() {
               ]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
-                  {respostaAcesso(a)}
-                </RespostaCurta>
-                <InclusaoRecorte
-                  periodo={
-                    <>
-                      PNAD de {a.pnad_serie[0]?.ano} a {a.ano_referencia}; PASI ciclos {si?.ciclos.map((x) => x.ciclo).join(", ") ?? "sem dado"}; Luz para Todos de{" "}
-                      {mes(lpt?.evidencia_total.periodo.inicio)} a {mes(lpt?.ultimo_mes)}
-                    </>
+                <InclusaoRegioesPnad
+                  serie={a.pnad_serie}
+                  resposta={
+                    <RespostaCurta id="p062" veredito={vereditoAcesso(a)}>
+                      {respostaAcesso(a)}
+                    </RespostaCurta>
                   }
-                  universo={<>Domicílios particulares permanentes do Brasil, regiões e UF; localidades isoladas do planejamento da EPE; atendimentos homologados pelo MME</>}
-                  unidade="domicílios (mil e %); pessoas; domicílios atendidos"
+                  recorte={
+                    <InclusaoRecorte
+                      periodo={
+                        <>
+                          PNAD de {a.pnad_serie[0]?.ano} a {a.ano_referencia}; PASI ciclos {si?.ciclos.map((x) => x.ciclo).join(", ") ?? "sem dado"}; Luz para Todos de{" "}
+                          {mes(lpt?.evidencia_total.periodo.inicio)} a {mes(lpt?.ultimo_mes)}
+                        </>
+                      }
+                      universo={<>Domicílios particulares permanentes do Brasil, regiões e UF; localidades isoladas do planejamento da EPE; atendimentos homologados pelo MME</>}
+                      unidade="domicílios (mil e %); pessoas; domicílios atendidos"
+                    />
+                  }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
-                {/* três números com ficha de prova; o tempo integral (tabela 6738) não tem ficha própria na gold e entra como nota, não como número de destaque */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  <Numero
-                    rotulo={`Sem energia de nenhuma fonte, ${a.ano_referencia}`}
-                    natureza="ESTIMADO"
-                    evidencia={a.evidencia_sem_energia}
-                    casas={0}
-                    unidade="mil domicílios"
-                    tamanho="medio"
-                    motivoAusencia="Sem estimativa nesta publicação."
-                    nota={
-                      brPnad
-                        ? `${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (CV ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE, no CSV da PNAD).`
-                        : undefined
-                    }
-                    endereco={`${rotaPainel("p062")}#p062`}
-                  />
-                  <Numero
-                    rotulo={`Pessoas em localidades isoladas, ciclo ${si?.ciclo ?? ""}`.trim()}
-                    natureza="OBSERVADO"
-                    evidencia={si?.evidencia_populacao ?? null}
-                    casas={0}
-                    unidade="pessoas"
-                    tamanho="medio"
-                    motivoAusencia="PASI não processado nesta publicação."
-                    endereco={`${rotaPainel("p062")}#p062`}
-                  />
-                  <Numero
-                    rotulo="Domicílios atendidos pelo Luz para Todos"
-                    natureza="OBSERVADO"
-                    evidencia={lpt?.evidencia_total ?? null}
-                    casas={0}
-                    unidade="domicílios"
-                    tamanho="medio"
-                    motivoAusencia="Arquivo do MME não processado nesta publicação."
-                    endereco={`${rotaPainel("p062")}#p062`}
-                  />
-                </div>
 
-                <InclusaoSubtitulo>Quantos domicílios ainda não têm energia, e com que regularidade chega a dos ligados?</InclusaoSubtitulo>
-                <InclusaoRegioesPnad serie={a.pnad_serie} />
-                <InclusaoMapaPnad acesso={{ ano_referencia: a.ano_referencia, pnad_serie: a.pnad_serie, pnad_situacao: a.pnad_situacao }} csvUrl="/energia/series/inclusao_acesso_pnad.csv" fonte={FONTE_PNAD} />
+                <SecaoDoPainel id="pnad-uf" titulo="Como o acesso se distribui entre as UF?">
+                  <InclusaoMapaPnad acesso={acessoPnad} fonte={FONTE_PNAD} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="pnad-historico" titulo={`Como as UF escolhidas evoluíram desde ${primeiroAno}?`}>
+                  <InclusaoHistoricoPnad acesso={acessoPnad} csvUrl="/energia/series/inclusao_acesso_pnad.csv" />
+                </SecaoDoPainel>
 
                 {si && (
-                  <>
-                    <InclusaoSubtitulo>Quem vive fora do Sistema Interligado?</InclusaoSubtitulo>
-                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                      Localidades atendidas por sistemas isolados no planejamento da EPE (PASI). Isolamento não é falta de acesso: é acesso fora do SIN, em geral por usinas térmicas
-                      locais. A população é informada pelas distribuidoras, não é contagem censitária.
-                    </p>
+                  <SecaoDoPainel
+                    id="isolados"
+                    titulo="Quem vive fora do Sistema Interligado?"
+                    lead="Localidades atendidas por sistemas isolados no planejamento da EPE (PASI). Isolamento não é falta de acesso: é acesso fora do SIN, em geral por usinas térmicas locais. A população é informada pelas distribuidoras, não é contagem censitária."
+                  >
                     <InclusaoIsolados si={{ ciclo: si.ciclo, por_uf: si.por_uf, localidades_mais_populosas: si.localidades_mais_populosas, pontos_json: si.pontos_json }} fonte={FONTE_PASI} />
                     <TabelaInterativa
                       titulo="Localidades isoladas por ciclo do PASI"
@@ -218,57 +246,16 @@ export default function AcessoPage() {
                       chaveUrl="ac.cic"
                       nota="Sair da lista de um ciclo para o seguinte costuma indicar interligação ao SIN, mas o PASI não informa o motivo em cada caso. O primeiro ciclo não tem anterior: saídas sem dado."
                     />
-                  </>
+                  </SecaoDoPainel>
                 )}
 
                 {lpt && (
-                  <>
-                    <InclusaoSubtitulo>Quantas ligações o Luz para Todos fez, e onde?</InclusaoSubtitulo>
+                  <SecaoDoPainel id="luz-para-todos" titulo="Quantas ligações o Luz para Todos fez, e onde?">
                     <InclusaoLpt lpt={{ serie_anual: lpt.serie_anual, ultimo_mes: lpt.ultimo_mes, programas: lpt.programas, por_uf: lpt.por_uf }} fonte={FONTE_LPT} />
-                  </>
+                  </SecaoDoPainel>
                 )}
 
-                <InclusaoAnalise titulo="Detalhes do atendimento: municípios, recursos e custeio">
-                  {lpt && (
-                    <>
-                      <TabelaInterativa
-                        titulo={`Municípios com mais domicílios atendidos desde jan/2023 (até ${mes(lpt.ultimo_mes)})`}
-                        colunas={COLUNAS_MUN_LPT}
-                        linhas={lpt.municipios_mais_atendidos_desde_2023.map((m, i) => ({ id: `${m.uf}|${m.cod ?? i}`, municipio: m.municipio, uf: m.uf, cod: m.cod, domicilios: m.domicilios }))}
-                        chaveLinha="id"
-                        colunaRotulo="municipio"
-                        fonte={FONTE_LPT}
-                        versao={lpt.ultimo_mes}
-                        nomeArquivo="inclusao-luz-para-todos-municipios-desde-2023"
-                        chaveUrl="ac.mun"
-                        ordemInicial={{ coluna: "domicilios", direcao: "desc" }}
-                      />
-                      <TabelaInterativa
-                        titulo="Luz para Todos por ano do atendimento e programa"
-                        colunas={colunasLpt(lpt)}
-                        linhas={linhasLptAnual(lpt)}
-                        chaveLinha="id"
-                        colunaRotulo="ano"
-                        fonte={FONTE_LPT}
-                        versao={lpt.ultimo_mes}
-                        nomeArquivo="inclusao-luz-para-todos-anual"
-                        chaveUrl="ac.ano"
-                        nota="Sem dado: nenhuma linha do programa no ano. Zero: linhas com quantidade zero no arquivo do MME."
-                      />
-                      <TabelaInterativa
-                        titulo="Recursos do Luz para Todos por UF e fonte (contratado e pago não se somam)"
-                        colunas={recursosCols}
-                        linhas={lpt.recursos_por_uf.map((r) => ({ id: r.uf, ...r, nome: r.nome ?? r.uf }))}
-                        chaveLinha="id"
-                        colunaRotulo="nome"
-                        fonte={FONTE_LPT}
-                        versao={lpt.ultimo_mes}
-                        nomeArquivo="inclusao-luz-para-todos-recursos-uf"
-                        chaveUrl="ac.rec"
-                        nota="R$ correntes, sem correção pela inflação. Os recursos por contrato e o valor anual da CDE para o programa são grandezas diferentes."
-                      />
-                    </>
-                  )}
+                <SecaoDoPainel id="cde-lpt-ccc" titulo="Quanto a CDE destina ao Luz para Todos e à CCC por ano?">
                   <GraficoBarras
                     titulo={`Valores anuais da CDE para o Luz para Todos e para a CCC, ${a.universalizacao.luz_para_todos_cde[0]?.ano ?? "sem dado"} a ${a.universalizacao.luz_para_todos_cde.at(-1)?.ano ?? "sem dado"} (R$ bilhões correntes; o ano em curso é orçado)`}
                     dados={a.universalizacao.luz_para_todos_cde.map((l) => {
@@ -290,9 +277,50 @@ export default function AcessoPage() {
                     casas={2}
                     altura={300}
                   />
-                </InclusaoAnalise>
+                </SecaoDoPainel>
 
-                <InclusaoAuditoria titulo="Conferências, lacunas e fontes tentadas">
+                {lpt && (
+                  <SecaoDoPainel id="detalhes-atendimento" nivel="analisar" titulo="Detalhes do atendimento: municípios e recursos">
+                    <TabelaInterativa
+                      titulo={`Municípios com mais domicílios atendidos desde jan/2023 (até ${mes(lpt.ultimo_mes)})`}
+                      colunas={COLUNAS_MUN_LPT}
+                      linhas={lpt.municipios_mais_atendidos_desde_2023.map((m, i) => ({ id: `${m.uf}|${m.cod ?? i}`, municipio: m.municipio, uf: m.uf, cod: m.cod, domicilios: m.domicilios }))}
+                      chaveLinha="id"
+                      colunaRotulo="municipio"
+                      fonte={FONTE_LPT}
+                      versao={lpt.ultimo_mes}
+                      nomeArquivo="inclusao-luz-para-todos-municipios-desde-2023"
+                      chaveUrl="ac.mun"
+                      ordemInicial={{ coluna: "domicilios", direcao: "desc" }}
+                    />
+                    <TabelaInterativa
+                      titulo="Luz para Todos por ano do atendimento e programa"
+                      colunas={colunasLpt(lpt)}
+                      linhas={linhasLptAnual(lpt)}
+                      chaveLinha="id"
+                      colunaRotulo="ano"
+                      fonte={FONTE_LPT}
+                      versao={lpt.ultimo_mes}
+                      nomeArquivo="inclusao-luz-para-todos-anual"
+                      chaveUrl="ac.ano"
+                      nota="Sem dado: nenhuma linha do programa no ano. Zero: linhas com quantidade zero no arquivo do MME."
+                    />
+                    <TabelaInterativa
+                      titulo="Recursos do Luz para Todos por UF e fonte (contratado e pago não se somam)"
+                      colunas={recursosCols}
+                      linhas={lpt.recursos_por_uf.map((r) => ({ id: r.uf, ...r, nome: r.nome ?? r.uf }))}
+                      chaveLinha="id"
+                      colunaRotulo="nome"
+                      fonte={FONTE_LPT}
+                      versao={lpt.ultimo_mes}
+                      nomeArquivo="inclusao-luz-para-todos-recursos-uf"
+                      chaveUrl="ac.rec"
+                      nota="R$ correntes, sem correção pela inflação. Os recursos por contrato e o valor anual da CDE para o programa são grandezas diferentes."
+                    />
+                  </SecaoDoPainel>
+                )}
+
+                <SecaoDoPainel id="conferencias-p062" nivel="auditar" titulo="Conferências, lacunas e fontes tentadas">
                   {si?.conferencia_pdf && (
                     <p className="text-sm text-carvao-muted">
                       PASI contra o caderno em PDF ({si.conferencia_pdf.documento}, página {si.conferencia_pdf.pagina}): {si.conferencia_pdf.localidades_pdf} localidades e{" "}
@@ -319,12 +347,11 @@ export default function AcessoPage() {
                       </li>
                     ))}
                   </ul>
-                </InclusaoAuditoria>
+                </SecaoDoPainel>
 
                 <InclusaoSeguir
                   ancora="p062"
-                  href="/setor-eletrico/conta-de-luz"
-                  pergunta="Quanto custa a energia ao consumidor e o que compõe a conta?"
+                  proximo={{ href: "/setor-eletrico/conta-de-luz", pergunta: "Quanto custa a energia ao consumidor e o que compõe a conta?" }}
                   downloads={downloads([
                     "/energia/series/inclusao_acesso_pnad.csv",
                     "/energia/series/inclusao_sistemas_isolados.csv",

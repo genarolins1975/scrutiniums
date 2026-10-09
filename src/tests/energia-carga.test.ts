@@ -566,9 +566,11 @@ describe("páginas renderizadas no servidor", () => {
       expect(h, id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, id).toContain('data-nivel="analisar"');
       expect(h, id).toContain('data-nivel="auditar"');
-      // navegação entre os painéis, com o atual marcado
+      // navegação entre as páginas: na abertura (P025) as outras duas aparecem como capítulos depois da figura principal; nas filhas, a faixa de
+      // páginas irmãs traz a atual com aria-current. O mesmo rótulo não aparece nas duas formas na mesma página.
       for (const p of PAINEIS_CARGA) expect(h, `${id} -> ${p.id}`).toContain(`href="${rotaPainel(p.id)}"`);
-      expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_CARGA.find((p) => p.id === id)!.rotulo}<`));
+      if (id === "p025") expect(h, id).toContain('data-navegacao-local="capitulos"');
+      else expect(h, id).toMatch(new RegExp(`aria-current="page"[^>]*>${PAINEIS_CARGA.find((p) => p.id === id)!.rotulo}<`));
       // nunca "em breve" nem "em construção" como entrega (o menu compartilhado descreve outros módulos; confere-se o conteúdo)
       expect(h.slice(h.indexOf("<main")), id).not.toMatch(/em breve|em constru|em integra/i);
     }
@@ -723,7 +725,7 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
     expect(h025).toContain(`Carga diária de cada captura, de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)}`);
     expect(h025).toContain(textoMesCorrente(G.p025.mensal, G.p025.comparacoes.janelas).slice(0, 60));
     expect(h025).toContain(`Temperatura nas mesmas datas de ${ref.inicio_anterior.slice(0, 4)}`);
-    expect(h025).toContain(`Histórico desde ${C.mensal[0].m.slice(0, 4)}`);
+    expect(h025).toContain(`Como a carga média do SIN evoluiu desde ${C.mensal[0].m.slice(0, 4)}`);
     expect(h026).not.toMatch(/sobretudo à noite|mais à noite/);
     expect(h026).toContain(textoDiferencaHoraria(G.p026.compatibilidade.por_hora_sin_365d)!.slice(0, 40));
     expect(h026).toContain(`Pico de cada dia nos últimos ${G.p026.picos_90d.length} dias`);

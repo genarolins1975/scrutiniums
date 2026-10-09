@@ -195,6 +195,10 @@ export const COR_TIPO: Readonly<Record<string, string>> = {
 /* ================================================================ páginas */
 
 export const ROTA_EXPANSAO = "/setor-eletrico/expansao";
+/** Pergunta da abertura do módulo: o título da página de síntese. */
+export const PERGUNTA_EXPANSAO = "O que está sendo construído?";
+/** Pergunta da figura principal da abertura (fonte da carteira em implantação), a mesma que o mapa do observatório faz ao módulo. */
+export const PERGUNTA_CAPACIDADE = "Quanta capacidade está chegando, e de que fontes?";
 export type PainelExpansao = "p040" | "p041" | "p042" | "p043";
 /** As quatro páginas de painel, na ordem das perguntas (a próxima pergunta de cada uma é a seguinte). */
 export const PAINEIS_EXPANSAO: readonly { id: PainelExpansao; slug: string; rotulo: string; pergunta: string }[] = [
@@ -786,11 +790,68 @@ export const ESQUEMA_CRONOGRAMA = {
   ate: campo(tiposUrl.data(), "", { param: "cro.ate" }),
 };
 
-/** Previsões por ano: uma coluna por viabilidade (MW das unidades), na ordem dos anos. */
+/**
+ * Anos (AAAA) que contêm as datas em bloco da fotografia: previsões convencionais que a fiscalização atribui em lote, e não
+ * cronograma de obra. A lista de datas é a publicada pela gold; só o ano de cada data é lido.
+ */
+export function anosComDataEmBloco(g: Pick<ExpansaoGold, "cronograma">): string[] {
+  return Array.from(new Set(g.cronograma.previsoes_atuais.datas_em_bloco.datas.map((d) => d.slice(0, 4)))).sort();
+}
+
+/**
+ * Previsões por ano: uma coluna por viabilidade (MW das unidades), na ordem dos anos. `inclui_bloco` marca o ano que contém
+ * datas em bloco, para a tabela e a exportação carregarem a separação que o gráfico faz.
+ */
 export function linhasPrevisoesAno(g: Pick<ExpansaoGold, "cronograma">) {
+  const comBloco = new Set(anosComDataEmBloco(g));
   return [...g.cronograma.previsoes_atuais.por_ano]
     .sort((a, b) => a.ano.localeCompare(b.ano))
-    .map((a) => ({ id: a.ano, ano: a.ano, ugs: a.ugs, mw: a.mw, alta: a.por_viabilidade.Alta, media: a.por_viabilidade["Média"], baixa: a.por_viabilidade.Baixa }));
+    .map((a) => ({
+      id: a.ano,
+      ano: a.ano,
+      ugs: a.ugs,
+      mw: a.mw,
+      alta: a.por_viabilidade.Alta,
+      media: a.por_viabilidade["Média"],
+      baixa: a.por_viabilidade.Baixa,
+      inclui_bloco: comBloco.has(a.ano) ? "sim" : "não",
+    }));
+}
+/**
+ * Cronograma da fiscalização separado das datas convencionais: as linhas do gráfico por ano são as publicadas, sem o ano que
+ * contém as datas em bloco (uma barra de dezenas de GW numa data convencional esconde o cronograma dos outros anos). O ano
+ * excluído, as datas e a potência das datas em bloco saem à parte, cada número como a gold o publica, sem subtração.
+ */
+export function previsoesPorAnoSeparadas(g: Pick<ExpansaoGold, "cronograma">) {
+  const comBloco = new Set(anosComDataEmBloco(g));
+  const linhas = linhasPrevisoesAno(g);
+  const b = g.cronograma.previsoes_atuais.datas_em_bloco;
+  return {
+    cronograma: linhas.filter((l) => !comBloco.has(l.ano)),
+    anosEmBloco: linhas.filter((l) => comBloco.has(l.ano)).map((l) => ({ ano: l.ano, mw: l.mw })),
+    datas: b.datas,
+    mwEmBloco: b.mw,
+    ugsEmBloco: b.ugs,
+  };
+}
+/** Frase que diz o que o gráfico por ano deixa de fora (o ano das datas em bloco) e onde está; vazia quando nenhum ano contém data em bloco. */
+export function textoAnoDasDatasEmBloco(g: Pick<ExpansaoGold, "cronograma">): string {
+  const sep = previsoesPorAnoSeparadas(g);
+  if (!sep.anosEmBloco.length) return "";
+  const anos = sep.anosEmBloco.map((a) => `${a.ano} (${mwTexto(a.mw)} com previsão no ano)`);
+  const um = sep.anosEmBloco.length === 1;
+  return `O gráfico por ano não inclui ${listaTexto(anos)}: ${um ? "é o ano" : "são os anos"} das datas em bloco ${listaTexto(sep.datas.map(dataTexto))}, datas convencionais que somam ${mwTexto(sep.mwEmBloco)} e não são cronograma de obra. A tabela abaixo traz todos os anos.`;
+}
+/** Primeiro ano com previsão (o ano da fotografia é "o restante do ano"), como o veredito do cronograma o escolhe. */
+export function previsaoPrimeiroAno(g: Pick<ExpansaoGold, "cronograma">): { ano: string; mw: number; restante: boolean } | null {
+  const pa = g.cronograma.previsoes_atuais;
+  const primeiro = [...pa.por_ano].sort((a, b) => a.ano.localeCompare(b.ano))[0];
+  return primeiro ? { ano: primeiro.ano, mw: primeiro.mw, restante: primeiro.ano === pa.data_ralie.slice(0, 4) } : null;
+}
+/** Usinas e potência outorgada que a própria fiscalização classifica com cronograma atrasado na fotografia atual. */
+export function cronogramaAtrasadoDaFiscalizacao(g: Pick<ExpansaoGold, "cronograma">): { usinas: number; mw_outorgado: number } | null {
+  const s = g.cronograma.por_situacao_cronograma.find((x) => x.situacao === "Atrasado");
+  return s ? { usinas: s.usinas, mw_outorgado: s.mw_outorgado } : null;
 }
 export function linhasProximos24(g: Pick<ExpansaoGold, "cronograma">) {
   return [...g.cronograma.previsoes_atuais.proximos_24_meses]
@@ -804,6 +865,7 @@ export const COLUNAS_PREVISOES_ANO: ColunaTabela[] = [
   { id: "alta", rotulo: "Viabilidade alta", tipo: "numero", unidade: "MW", casas: 1 },
   { id: "media", rotulo: "Viabilidade média", tipo: "numero", unidade: "MW", casas: 1 },
   { id: "baixa", rotulo: "Viabilidade baixa", tipo: "numero", unidade: "MW", casas: 1 },
+  { id: "inclui_bloco", rotulo: "Inclui data em bloco", tipo: "texto", categorica: true },
 ];
 
 /** Datas mais frequentes, com a marca de data em bloco publicada pela gold. */
@@ -1521,4 +1583,55 @@ export function notaRalieSiga(g: Pick<ExpansaoGold, "estagios">): string {
   if (!con || !nao || !r.fase_no_siga?.length) return "";
   const fases = r.fase_no_siga.map((f) => `${inteiro(f.usinas)} ${f.fase === "ausente do SIGA" ? "fora do arquivo aberto do SIGA" : `na fase ${f.fase} do SIGA`}`);
   return `Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida: o RALIE (${dataTexto(r.data_ralie)}) acompanha ${inteiro(r.usinas)} usinas, com ${mwTexto(r.mw_ugs_em_implantacao)} em unidades geradoras em implantação (${listaTexto(fases)}); o SIGA (${dataTexto(g.estagios.data_referencia)}) soma ${inteiro(con.usinas + nao.usinas)} usinas, com ${mwTexto(con.mw_outorgado + nao.mw_outorgado)} de potência outorgada, nas fases Construção e Construção não iniciada.`;
+}
+
+/* ================================================================ abertura (redesenho): etapas, retratos e cenário */
+
+/** Medida de potência de cada etapa do SIGA: o que opera é potência fiscalizada; o resto, potência outorgada. */
+export type MedidaEtapa = "fiscalizada" | "outorgada";
+export type MetricaEtapa = { id: Estagio; rotulo: string; usinas: number | null; mw: number | null; medida: MedidaEtapa };
+
+/**
+ * As três etapas do SIGA na ordem do ciclo (operação, construção, obra não iniciada), cada uma na sua medida. Não há total: a
+ * potência fiscalizada e a outorgada são medidas diferentes e a faixa de métricas, o texto e o gráfico leem esta mesma lista.
+ */
+export function metricasEtapas(g: Pick<ExpansaoGold, "estagios">): MetricaEtapa[] {
+  const op = estagio(g, "operacao");
+  const con = estagio(g, "construcao");
+  const nao = estagio(g, "construcao_nao_iniciada");
+  return [
+    { id: "operacao", rotulo: "Em operação", usinas: op?.usinas ?? null, mw: op?.mw_fiscalizado ?? null, medida: "fiscalizada" },
+    { id: "construcao", rotulo: "Em construção", usinas: con?.usinas ?? null, mw: con?.mw_outorgado ?? null, medida: "outorgada" },
+    { id: "construcao_nao_iniciada", rotulo: "Obra não iniciada", usinas: nao?.usinas ?? null, mw: nao?.mw_outorgado ?? null, medida: "outorgada" },
+  ];
+}
+/** Linha de contexto de uma etapa: "Potência fiscalizada, 22.798 usinas." */
+export function notaEtapa(m: MetricaEtapa): string {
+  const usinas = temValor(m.usinas) ? `, ${inteiro(m.usinas)} ${m.usinas === 1 ? "usina" : "usinas"}` : "";
+  return `Potência ${m.medida}${usinas}.`;
+}
+/** As etapas não se somam: a frase que acompanha a faixa de métricas diz a medida de cada uma. */
+export const NOTA_ETAPAS =
+  "Operação é potência fiscalizada; construção e obra não iniciada são potência outorgada. São medidas diferentes e não se somam.";
+
+/** O SIGA e o RALIE são retratos diferentes da carteira: a frase diz a data e a medida de cada um. */
+export function notaRetratosSigaRalie(g: Pick<ExpansaoGold, "estagios">): string {
+  return `Os números do alto são do SIGA de ${dataTexto(g.estagios.data_referencia)}, que mede a potência outorgada por usina; este gráfico é do RALIE de ${dataTexto(g.estagios.ralie.data_ralie)}, que mede as unidades geradoras em implantação. São retratos de datas e medidas diferentes e não se somam.`;
+}
+
+/**
+ * Capacidade nacional do Cenário de Referência no início e no fim do horizonte (Figura 3-25 e a conferência do relatório), como
+ * a resposta do painel a lê: o fim vem da evidência quando ela existe. Nenhum valor é refeito.
+ */
+export function capacidadeNoCenario(g: Pick<ExpansaoGold, "cenarios" | "evidencias">): { inicio: { ref: string; gw: number | null } | null; fim: { ref: string; gw: number | null } | null } {
+  const c = g.cenarios;
+  const refs = (c.figuras.fig_3_25?.linhas ?? []).map((l) => l.ref).sort();
+  const ini = refs[0];
+  const fim = refs.at(-1);
+  const conf = (ref: string | undefined) => (ref ? c.conferencia_relatorio.find((x) => x.descricao.includes("3-25") && x.descricao.includes(`${mesTexto(ref)}`)) : undefined);
+  const fimGw = g.evidencias.pde_capacidade_2035?.valor_calculo ?? conf(fim)?.calculado_gw ?? null;
+  return {
+    inicio: ini ? { ref: ini, gw: conf(ini)?.calculado_gw ?? null } : null,
+    fim: fim ? { ref: fim, gw: fimGw } : null,
+  };
 }

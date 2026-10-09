@@ -36,23 +36,28 @@ import {
   SUBMERCADOS,
   atualidadePld,
   calendarioLimite,
+  diaAnterior,
   diferencaTexto,
   documentosCitados,
   emPct,
   estadoHora,
+  extremosMediaDiaria,
   horaDiaRecorte,
   horaPadrao,
   ligacoesFormacao,
   linhasCalendario,
   linhasMatriz,
+  linhasMediaDiaria,
   linhasMensais,
   linhasPermanencia,
   linhasSemanais,
   linhasSeparacao,
   matrizRegional,
   nomePar,
+  nomesDosSubmercados,
   perguntaPainel,
   proximoPainel,
+  regimeVigenteEm,
   resumoLigacoes,
   respostaHora,
   respostaP008,
@@ -63,10 +68,18 @@ import {
   rotaPainel,
   serieSeparacaoHoraria,
   textoComparabilidade,
+  textoEmpatesMediaDiaria,
+  textoLimitesVigentes,
+  textoMudancaMediaDiaria,
+  textoReferenciaDistancia,
+  variacaoComumDoGrupo,
+  vereditoMediaDiaria,
+  type MediaDiariaSm,
   type PainelPld,
 } from "@/lib/energia/pld";
 import { fichasPld, horarioRecentePld } from "@/lib/energia/pld-arquivos";
 import { matrizExportacao } from "@/lib/energia/tabela";
+import type { PldGold, RedeGold } from "@/lib/energia/tipos";
 import type { BlocoLimitesDisponivel, PldDetalheGold, PldHoraDiaArquivo } from "@/lib/energia/tipos-pld";
 
 const RAIZ = path.resolve(__dirname, "../..");
@@ -546,8 +559,18 @@ describe("páginas renderizadas no servidor", () => {
       expect(h, p.id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, p.id).toContain('data-nivel="analisar"');
       expect(h, p.id).toContain('data-nivel="auditar"');
-      for (const q of PAINEIS_PLD) expect(h, `${p.id} -> ${q.id}`).toContain(`href="${q.id === "p008" ? `${rotaPainel(q.id)}#p008` : rotaPainel(q.id)}"`);
-      expect(h, p.id).toMatch(new RegExp(`aria-current="page"[^>]*>${p.rotulo}<`));
+      // navegação local única: a abertura (P008) mostra os outros painéis como capítulos depois da figura principal; nas filhas, a faixa de
+      // páginas irmãs traz a atual com aria-current. O mesmo rótulo não aparece nas duas formas na mesma página.
+      if (p.id === "p008") {
+        expect(h, p.id).toContain('data-navegacao-local="capitulos"');
+        expect(h, p.id).not.toContain('data-navegacao-local="faixa"');
+        for (const q of PAINEIS_PLD.filter((x) => x.id !== "p008")) expect(h, `${p.id} -> ${q.id}`).toContain(`href="${rotaPainel(q.id)}"`);
+      } else {
+        expect(h, p.id).toContain('data-navegacao-local="faixa"');
+        expect(h, p.id).not.toContain('data-navegacao-local="capitulos"');
+        for (const q of PAINEIS_PLD) expect(h, `${p.id} -> ${q.id}`).toContain(`href="${rotaPainel(q.id)}"`);
+        expect(h, p.id).toMatch(new RegExp(`aria-current="page"[^>]*>${p.rotulo}<`));
+      }
       expect(h.slice(h.indexOf("<main")), p.id).not.toMatch(/em breve|em constru|em integra/i);
       expect(h.length, p.id).toBeLessThan(520_000);
     }
@@ -602,5 +625,307 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toContain("Painel do PLD indisponível nesta publicação");
     expect(h).toContain("gold reprovada na validação");
     expect(h.slice(h.indexOf("<main"))).not.toMatch(/\d{2},\d{2}/);
+  });
+});
+
+/* ====================================================================== */
+/* Abertura do PLD: o preço antes da aula, e as páginas filhas no sistema  */
+/* editorial                                                              */
+/* ====================================================================== */
+
+const pldGold = JSON.parse(readFileSync(path.join(RAIZ, "public/energia/gold/pld.json"), "utf-8")) as PldGold & { amplitude_dia: number };
+const redeGold = JSON.parse(readFileSync(path.join(RAIZ, "public/energia/gold/rede.json"), "utf-8")) as RedeGold;
+const escHtml = (t: string) => t.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("'", "&#x27;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+/** Atributos da etiqueta de abertura de uma seção pelo id (SecaoDoPainel e PainelEvidencia), ou null quando a seção não está na página. */
+const atributosDaSecao = (h: string, id: string) => new RegExp(`<section id="${id}"([^>]*)>`).exec(h)?.[1] ?? null;
+const centavos = (v: number) => Math.round(v * 100);
+const mediasDe = (v: Record<string, number>): MediaDiariaSm[] => linhasMediaDiaria(SUBMERCADOS.map((sm) => ({ sm, media_dia: v[sm], variacao_dia_anterior: null })));
+
+describe("média diária por submercado: uma lista só, extremos com empates e distância entre as regiões", () => {
+  const linhas = linhasMediaDiaria(pldGold.cartoes);
+  const e = extremosMediaDiaria(linhas)!;
+
+  it("a lista sai dos cartões da gold, na ordem regional, e coincide com a série diária e com o resumo do dia", () => {
+    expect(linhas.map((l) => l.id)).toEqual([...SUBMERCADOS]);
+    const ultimo = pldGold.diario[pldGold.diario.length - 1];
+    expect(ultimo.d).toBe(pldGold.dia_referencia);
+    for (const l of linhas) {
+      expect(l.media).toBe(pldGold.cartoes.find((c) => c.sm === l.id)!.media_dia);
+      expect(l.media).toBe(ultimo[l.id]);
+      expect(l.media).toBe(pldGold.periodos.hoje.por_submercado[l.id].media);
+    }
+  });
+
+  it("menor e maior média com todos os submercados empatados nos centavos, e a distância igual à que a gold publica", () => {
+    const cent = linhas.map((l) => centavos(l.media));
+    expect(e.menor.submercados).toEqual(linhas.filter((l) => centavos(l.media) === Math.min(...cent)).map((l) => l.id));
+    expect(e.maior.submercados).toEqual(linhas.filter((l) => centavos(l.media) === Math.max(...cent)).map((l) => l.id));
+    expect(e.menor.valor).toBe(linhas.find((l) => l.id === e.menor.submercados[0])!.media);
+    expect(e.maior.valor).toBe(linhas.find((l) => l.id === e.maior.submercados[0])!.media);
+    // a distância do dia é a mesma conta que a gold de PLD (amplitude_dia) e a de rede (série de amplitude) publicam
+    expect(Math.abs(e.distancia - pldGold.amplitude_dia)).toBeLessThanOrEqual(0.0051);
+    const serie = redeGold.serie_amplitude_pld.find((a) => a.d === pldGold.dia_referencia);
+    if (serie) expect(Math.abs(e.distancia - serie.amplitude)).toBeLessThanOrEqual(0.0051);
+  });
+
+  it("empate no maior valor aparece com os dois submercados; empate no menor também; diferença abaixo do centavo é empate", () => {
+    const dia30 = extremosMediaDiaria(mediasDe({ SE: 135.25, S: 127.86, NE: 124.93, N: 135.25 }))!;
+    expect(dia30.maior).toEqual({ valor: 135.25, submercados: ["SE", "N"] });
+    expect(dia30.menor).toEqual({ valor: 124.93, submercados: ["NE"] });
+    expect(dia30.distancia).toBe(10.32);
+    expect(nomesDosSubmercados(dia30.maior.submercados)).toBe("SE/CO e Norte");
+    expect(textoEmpatesMediaDiaria(dia30)).toBe(`Empate na maior média: SE/CO e Norte, ${reais(135.25)}/MWh.`);
+    const doisMenores = extremosMediaDiaria(mediasDe({ SE: 100, S: 100, NE: 120, N: 130 }))!;
+    expect(doisMenores.menor.submercados).toEqual(["SE", "S"]);
+    expect(textoEmpatesMediaDiaria(doisMenores)).toContain("Empate na menor média: SE/CO e Sul");
+    const subCentavo = extremosMediaDiaria(mediasDe({ SE: 135.251, S: 127.86, NE: 124.93, N: 135.249 }))!;
+    expect(subCentavo.maior.submercados).toEqual(["SE", "N"]);
+    expect(subCentavo.distancia).toBe(10.32);
+  });
+
+  it("os quatro iguais: distância zero, sem empate escrito; menos de dois submercados com média: sem extremos", () => {
+    const iguais = extremosMediaDiaria(mediasDe({ SE: 90, S: 90, NE: 90, N: 90 }))!;
+    expect(iguais.distancia).toBe(0);
+    expect(nomesDosSubmercados(iguais.menor.submercados)).toBe("os quatro submercados");
+    expect(vereditoMediaDiaria("2026-09-30", iguais)).toContain("igual nos quatro submercados");
+    expect(textoEmpatesMediaDiaria(iguais)).toBeNull();
+    expect(extremosMediaDiaria(linhasMediaDiaria([{ sm: "SE", media_dia: 100, variacao_dia_anterior: null }]))).toBeNull();
+    expect(linhasMediaDiaria([{ sm: "SE", media_dia: Number.NaN, variacao_dia_anterior: null }])).toEqual([]);
+  });
+
+  it("veredito com os dois extremos, quem os tem e a distância; sem travessão, sem hoje e sem data ISO", () => {
+    const dia30 = extremosMediaDiaria(mediasDe({ SE: 135.25, S: 127.86, NE: 124.93, N: 135.25 }))!;
+    const v = vereditoMediaDiaria("2026-09-30", dia30);
+    expect(v).toBe(`Em 30/09/2026, a média diária foi de ${reais(124.93)}/MWh (Nordeste) a ${reais(135.25)}/MWh (SE/CO e Norte, mesmo valor); a distância entre o maior e o menor foi de ${reais(10.32)}/MWh.`);
+    for (const t of [v, vereditoMediaDiaria(pldGold.dia_referencia, e), textoMudancaMediaDiaria(pldGold.dia_referencia, linhas)]) {
+      expect(t).not.toMatch(SEM_TRAVESSAO);
+      expect(t).not.toMatch(/\bhoje\b|\bagora\b|\d{4}-\d{2}-\d{2}|undefined|NaN/i);
+    }
+  });
+
+  it("variação contra o dia anterior: só o que o grupo tem em comum nos centavos; diferente entre os empatados, nada é afirmado", () => {
+    const comVariacao = linhasMediaDiaria(SUBMERCADOS.map((sm) => ({ sm, media_dia: 100, variacao_dia_anterior: { abs: sm === "NE" ? 2.53 : 12.84, pct: sm === "NE" ? 2.1 : 10.5 } })));
+    expect(variacaoComumDoGrupo(comVariacao, ["SE", "N"])).toBe(12.84);
+    expect(variacaoComumDoGrupo(comVariacao, ["SE", "NE"])).toBeNull();
+    expect(variacaoComumDoGrupo(comVariacao, [])).toBeNull();
+    expect(variacaoComumDoGrupo(mediasDe({ SE: 1, S: 2, NE: 3, N: 4 }), ["SE"])).toBeNull();
+    const t = textoMudancaMediaDiaria("2026-09-30", comVariacao);
+    expect(t).toContain("Em relação ao dia anterior (29/09/2026)");
+    expect(t).toContain(`Nordeste: ${reais(2.53)}/MWh acima (2,1%)`);
+    expect(textoMudancaMediaDiaria("2026-09-30", mediasDe({ SE: 1, S: 2, NE: 3, N: 4 }))).toBe("Sem a média do dia anterior para comparar com 30/09/2026.");
+    expect(diaAnterior("2026-03-01")).toBe("2026-02-28");
+    expect(diaAnterior("2026-01-01")).toBe("2025-12-31");
+  });
+
+  it("referência da distância: média e maior valor dos 30 dias, só quando o resumo é do mesmo dia", () => {
+    const r = redeGold.resumo_amplitude!;
+    expect(r.media_30d).not.toBeNull();
+    const t = textoReferenciaDistancia(r, r.dia)!;
+    expect(t).toContain(reais(r.media_30d!));
+    expect(t).toContain(reais(r.maior_30d.valor));
+    expect(textoReferenciaDistancia(r, "2000-01-01")).toBeNull();
+    expect(textoReferenciaDistancia(null, r.dia)).toBeNull();
+  });
+});
+
+describe("limites vigentes no dia: o trecho certo e cada limite com o objeto a que se aplica", () => {
+  const regimes = gold.limites.disponivel ? gold.limites.regimes : [];
+
+  it("o trecho vigente é o que cobre o dia (e não o último da lista); fora de qualquer trecho, nenhum", () => {
+    expect(regimes.length).toBeGreaterThan(2);
+    const r = regimeVigenteEm(regimes, gold.referencia.dia)!;
+    expect(r.inicio <= gold.referencia.dia && gold.referencia.dia <= r.fim).toBe(true);
+    const anterior = regimes[regimes.length - 2];
+    expect(regimeVigenteEm(regimes, anterior.fim)).toEqual(anterior);
+    expect(regimeVigenteEm(regimes, anterior.inicio)).toEqual(anterior);
+    expect(regimeVigenteEm(regimes, "2000-01-01")).toBeNull();
+  });
+
+  it("piso e teto horário valem para cada hora; o teto estrutural, para a média diária; ato único ou um por limite", () => {
+    const r = regimeVigenteEm(regimes, gold.referencia.dia)!;
+    const t = textoLimitesVigentes(r);
+    for (const v of [r.pld_min, r.pld_max_horario, r.pld_max_estrutural]) expect(t).toContain(`${reais(v)}/MWh`);
+    expect(t).toContain("que valem para cada hora");
+    expect(t).toContain("que vale para a média diária");
+    expect(t).toContain(`desde ${dataBR(r.inicio)}`);
+    expect(t).toContain(r.ato_pld_min!);
+    expect(t).not.toMatch(SEM_TRAVESSAO);
+    const variosAtos = textoLimitesVigentes({ ...r, ato_pld_max_horario: "Ato B", ato_pld_max_estrutural: null });
+    expect(variosAtos).toContain("piso: ");
+    expect(variosAtos).toContain("teto horário: Ato B");
+    expect(variosAtos).toContain("teto estrutural: ato não identificado");
+    const semValor = textoLimitesVigentes({ ...r, pld_max_estrutural: null });
+    expect(semValor).toContain("teto estrutural de sem valor integrado");
+    expect(semValor).not.toContain("–");
+  });
+});
+
+describe("abertura do PLD: o preço antes da aula (página renderizada)", () => {
+  const h = renderToStaticMarkup(createElement(PaginaP008));
+  const pos = (t: string) => {
+    const i = h.indexOf(t);
+    expect(i, t).toBeGreaterThan(-1);
+    return i;
+  };
+  const faixa = /<section[^>]*data-faixa-metricas[^>]*>[\s\S]*?<\/section>/.exec(h)![0];
+  const dia = pldGold.dia_referencia;
+  const linhas = linhasMediaDiaria(pldGold.cartoes);
+  const e = extremosMediaDiaria(linhas)!;
+
+  it("título curto em forma de pergunta e uma faixa de três medidas com o menor, o maior (com os empates) e a distância", () => {
+    expect((h.match(/<h1/g) ?? []).length).toBe(1);
+    expect(h).toMatch(/<h1[^>]*>Quanto custa a energia no curto prazo\?<\/h1>/);
+    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(3);
+    for (const r of ["Menor média diária", "Maior média diária", "Distância entre regiões"]) expect(faixa, r).toContain(`aria-label="${r}"`);
+    expect(faixa).toContain(escHtml(`${reais(e.menor.valor)}`));
+    expect(faixa).toContain(escHtml(`${reais(e.maior.valor)}`));
+    expect(faixa).toContain(escHtml(`${reais(e.distancia)}`));
+    expect(faixa).toContain(nomesDosSubmercados(e.maior.submercados));
+    if (e.maior.submercados.length > 1) expect(faixa).toContain("mesmo valor");
+    expect(faixa).toContain(dataBR(dia));
+  });
+
+  it("a regra da média diária fica junto das medidas, e nenhuma medida é um PLD único do Brasil", () => {
+    expect(faixa).toContain(escHtml(pldGold.regras.media_diaria));
+    expect(faixa).toContain("Não existe um PLD único do Brasil");
+    expect(faixa).not.toMatch(/PLD Brasil|PLD do Brasil|PLD nacional|média dos quatro submercados:/i);
+    for (const m of faixa.matchAll(/aria-label="([^"]+)" data-metrica/g)) expect(m[1]).not.toMatch(/Brasil|SIN|nacional/i);
+  });
+
+  it("o preço vem antes da aula: faixa, seletor de profundidade, painel de preços, gráfico, e só depois a aula, a formação e a previsão", () => {
+    const ordem = [
+      pos("data-faixa-metricas"),
+      pos('aria-label="Nível de profundidade"'),
+      pos('id="hoje"'),
+      pos('data-grafico="barras"'),
+      pos('id="periodos"'),
+      pos('id="o-que-e"'),
+      pos('id="formacao"'),
+      pos('id="previsao"'),
+    ];
+    expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
+    // a aula continua na página, completa e à vista
+    for (const t of ["Entenda em 90 segundos", "O que o PLD não é", "Não é a sua tarifa de energia", "não mostra valores de liquidação"]) expect(h, t).toContain(t);
+  });
+
+  it("uma navegação local só (capítulos), com as quatro páginas irmãs e as três âncoras da própria página, sem índice, abas nem cartões repetindo rótulos", () => {
+    expect((h.match(/data-navegacao-local=/g) ?? []).length).toBe(1);
+    const nav = /<nav[^>]*data-navegacao-local="capitulos"[\s\S]*?<\/nav>/.exec(h)![0];
+    for (const p of PAINEIS_PLD.filter((x) => x.id !== "p008")) {
+      expect(nav, p.id).toContain(`href="${rotaPainel(p.id)}"`);
+      expect(nav, p.id).toContain(escHtml(p.pergunta));
+    }
+    for (const a of ["#o-que-e", "#formacao", "#previsao"]) expect(nav, a).toContain(`href="${a}"`);
+    for (const antigo of ['aria-label="Nesta página"', 'aria-label="Painéis do PLD"', 'aria-label="Aprofundar o período recente"']) expect(h, antigo).not.toContain(antigo);
+  });
+
+  it("o gráfico principal compara os quatro submercados na mesma escala, com a tabela equivalente e o empate dito junto das barras", () => {
+    expect(h).toContain(`Média diária do PLD por submercado, ${dataBR(dia)}`);
+    expect(h).toContain("Escala iniciada em zero e igual para os quatro submercados.");
+    const empates = textoEmpatesMediaDiaria(e);
+    if (empates) expect(h).toContain(escHtml(empates));
+    for (const l of linhas) expect(h).toContain(`data-id="${l.id}"`);
+    expect(h).toContain("Dados do gráfico em tabela (4 linhas)");
+  });
+
+  it("as visões que estavam em Analisar e respondem a uma pergunta própria passam a ficar à vista; regras e auditoria continuam nos seus níveis", () => {
+    for (const id of ["periodos", "dia-em-detalhe", "submercados", "amplitude", "cmo", "diagrama-formacao", "exemplo-liquidacao"]) {
+      const a = atributosDaSecao(h, id);
+      expect(a, id).not.toBeNull();
+      expect(a, id).not.toContain("data-nivel");
+    }
+    for (const id of ["regras", "limites-por-vigencia", "menor-valor-por-ano", "tipos-de-relacao", "normas", "bloqueios", "governanca"]) {
+      expect(atributosDaSecao(h, id), id).toContain('data-nivel="');
+    }
+    expect(atributosDaSecao(h, "limites-por-vigencia")).toContain('data-nivel="auditar"');
+    expect(atributosDaSecao(h, "regras")).toContain('data-nivel="analisar"');
+    // série horária por região (com as abas de período), cartões do dia, mapa dos submercados e série da distância seguem presentes
+    for (const t of ['role="tablist" aria-label="Período"', 'aria-label="Etapas da formação do PLD"', "O dia em detalhe, por submercado", "Quando os submercados se separaram no último ano?"]) expect(h, t).toContain(t);
+    expect(h).toContain("percentil ");
+    expect(h).toContain("em MWmed (megawatt médio)");
+  });
+
+  it("a ressalva essencial está junto do dado: PLD não é tarifa nem fatura, os limites vigentes e o objeto de cada um", () => {
+    expect(h).toContain("O PLD não é a tarifa nem a conta de luz: PLD, CMO, tarifa e fatura são medidas diferentes");
+    expect(h).toContain('href="/setor-eletrico/conta-de-luz"');
+    const r = regimeVigenteEm(gold.limites.disponivel ? gold.limites.regimes : [], dia)!;
+    expect(h).toContain(escHtml(textoLimitesVigentes(r)));
+    expect(h).toContain("Limites vigentes");
+  });
+
+  it("o que a abertura escreve de novo (cabeçalho, faixa e notas do painel) não usa hoje, agora, travessão nem data ISO solta", () => {
+    const inicio = h.indexOf('<header class="cab-modulo"');
+    expect(inicio).toBeGreaterThan(-1);
+    const cabecalho = h.slice(inicio, h.indexOf("</header>", inicio));
+    const notas = Array.from(h.matchAll(/<div data-notas-painel[\s\S]*?<\/aside><\/div>/g)).map((m) => m[0]);
+    expect(notas.length).toBeGreaterThanOrEqual(3);
+    const novo = [cabecalho, faixa, ...notas].join(" ").replace(/<[^>]+>/g, " ");
+    expect(novo).not.toMatch(/\bhoje\b|\bagora\b/i);
+    expect(novo).not.toMatch(/—|–/);
+    expect(novo).not.toMatch(/(^|[\s(])20\d\d-\d\d-\d\d(?=[\s).,;]|$)/);
+    expect(novo).not.toMatch(/undefined|NaN/);
+  });
+});
+
+describe("páginas filhas do PLD no sistema editorial", () => {
+  const paginas = { p009: PaginaP009, p010: PaginaP010, p011: PaginaP011, p012: PaginaP012 } as const;
+  const html = Object.fromEntries(Object.entries(paginas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof paginas, string>;
+  const visiveis: Record<keyof typeof paginas, string[]> = {
+    p009: ["mesma-hora", "relacao-anual", "nao-equivalencia"],
+    p010: ["calendario", "piso-por-submercado", "empates-piso"],
+    p011: ["sazonalidade", "distribuicao", "perfil-hora-mes", "mapa-hora-dia"],
+    p012: ["perfil-horario"],
+  };
+  const emAnalisar: Record<keyof typeof paginas, string[]> = {
+    p009: ["produtos", "a02"],
+    p010: ["atos"],
+    p011: ["comparar"],
+    p012: ["hora-a-hora", "fluxo-nas-horas-separadas"],
+  };
+
+  for (const id of Object.keys(paginas) as (keyof typeof paginas)[]) {
+    it(`${id}: a pergunta do painel é o título da página, a primeira figura tem título próprio e a faixa de medidas fica no painel`, () => {
+      const h = html[id];
+      const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(h)![1];
+      expect(h1).toBe(escHtml(perguntaPainel(id)));
+      const h2 = new RegExp(`<h2 id="${id}-titulo"[^>]*>([\\s\\S]*?)</h2>`).exec(h)![1];
+      expect(h2).not.toBe(h1);
+      expect((h.match(/data-faixa-metricas/g) ?? []).length).toBe(1);
+      expect((h.match(/data-metrica=""/g) ?? []).length).toBe(4);
+      // migalha do módulo acima do título e a faixa de páginas irmãs com a atual marcada
+      expect(h).toContain("Preço de Liquidação das Diferenças");
+      expect(h).toContain('data-navegacao-local="faixa"');
+      expect((h.match(/data-navegacao-local=/g) ?? []).length).toBe(1);
+    });
+
+    it(`${id}: as visões complementares com pergunta própria ficam à vista e as de ferramenta e auditoria seguem em Analisar e Auditar`, () => {
+      const h = html[id];
+      for (const s of visiveis[id]) {
+        const a = atributosDaSecao(h, s);
+        expect(a, s).not.toBeNull();
+        expect(a, s).not.toContain("data-nivel");
+      }
+      for (const s of emAnalisar[id]) expect(atributosDaSecao(h, s), s).toContain('data-nivel="analisar"');
+      expect((h.match(/data-nivel="auditar"/g) ?? []).length).toBeGreaterThan(0);
+    });
+  }
+
+  it("diferenças regionais: o fluxo na mesma hora continua em Analisar, e a página diz isso à vista", () => {
+    expect(html.p012).toContain("estão no nível Analisar");
+    expect(atributosDaSecao(html.p012, "hora-a-hora")).toContain('data-nivel="analisar"');
+  });
+
+  it("histórico: a faixa sazonal e a distribuição por regime anual dizem nominal, sazonalidade e limites próprios de cada ano", () => {
+    const h = html.p011;
+    expect(h).toContain("Valores nominais, e cada ano anterior teve piso e tetos próprios.");
+    expect(h).toContain("Média diária frente ao mesmo mês e à mesma semana de anos anteriores");
+    expect(h).toContain("As três médias mensais usam");
+  });
+
+  it("limites: piso e teto horário valem para cada hora e o teto estrutural, para a média do dia, no bloco dos limites do ano", () => {
+    const h = html.p010;
+    expect(h).toContain("Teto estrutural <span class=\"text-xs\">(média do dia)</span>");
+    expect(h).toContain("Piso <span class=\"text-xs\">(cada hora)</span>");
+    expect(h).toContain("Teto horário <span class=\"text-xs\">(cada hora)</span>");
   });
 });

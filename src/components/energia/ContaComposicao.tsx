@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ContaEscolha, type OpcaoConta } from "@/components/energia/ContaControles";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -45,6 +46,11 @@ const ESQUEMA = {
   }),
 };
 
+const OPCOES_UNIDADE: OpcaoConta<"rs" | "pct">[] = [
+  { id: "rs", rotulo: "R$/MWh" },
+  { id: "pct", rotulo: "% da tarifa" },
+];
+
 export type ContaComposicaoProps = {
   composicao: Pick<Composicao, "grupos" | "distribuidoras" | "media" | "mediana" | "cde" | "creditos">;
   vigentes: Pick<TarifaVigente, "cnpj" | "posicao">[];
@@ -83,23 +89,7 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
 
   return (
     <div className="space-y-5">
-      <div role="radiogroup" aria-label="Unidade da composição" className="flex flex-wrap items-center gap-2">
-        <span className="rotulo text-mineral">Unidade</span>
-        {(
-          [
-            ["rs", "R$/MWh"],
-            ["pct", "% da tarifa"],
-          ] as const
-        ).map(([id, rot]) => (
-          <label
-            key={id}
-            className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.unidade === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
-          >
-            <input type="radio" name="conta-cunid" value={id} checked={v.unidade === id} onChange={() => definir({ unidade: id })} className="accent-energia" />
-            {rot}
-          </label>
-        ))}
-      </div>
+      <ContaEscolha legenda="Unidade da composição" opcoes={OPCOES_UNIDADE} valor={v.unidade} onEscolher={(u) => definir({ unidade: u })} />
 
       <p className="text-sm text-carvao-muted">
         {escolhidas.length

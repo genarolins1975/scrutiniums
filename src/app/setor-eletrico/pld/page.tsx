@@ -1,22 +1,26 @@
 import { linhasArquivo, resumoRodadas, rotuloTipo, textoMotivo } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
-import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
+import { Numero } from "@/components/energia/Numero";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { Termo } from "@/components/evidencia/Termo";
 import { Conferido } from "@/components/evidencia/Conferido";
 import { CartoesPld } from "@/components/energia/CartoesPld";
+import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PldFormacao } from "@/components/energia/PldFormacao";
-import { PldAuditoria, PldAviso, PldNavegacao, PldPassagem, PldRecorte, PldSeguir } from "@/components/energia/PldPagina";
+import { PldAviso, PldCapitulos, PldDatas, PldNavegacao, PldPassagem, PldRecorte, PldSeguir } from "@/components/energia/PldPagina";
 import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
 import { PldPeriodos, type PeriodoPld } from "@/components/energia/PldPeriodos";
 import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribuicao";
@@ -32,16 +36,27 @@ import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoT
 import type { PldGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold, RegimeLimites } from "@/lib/energia/tipos-pld";
 import {
+  COR_SM,
   NOME_SM,
   documentosCitados,
+  extremosMediaDiaria,
   ligacoesFormacao,
+  linhasMediaDiaria,
+  nomesDosSubmercados,
+  notaDoisPercentis,
   perguntaPainel,
   proximoPainel,
+  regimeVigenteEm,
   resumoLigacoes,
   respostaP008,
   rotaPainel,
-  notaDoisPercentis,
   semCodigoHttp,
+  textoEmpatesMediaDiaria,
+  textoLimitesVigentes,
+  textoMudancaMediaDiaria,
+  textoReferenciaDistancia,
+  variacaoComumDoGrupo,
+  vereditoMediaDiaria,
   vereditoP008,
 } from "@/lib/energia/pld";
 import { snapshotLegivel, datasLegiveis } from "@/lib/energia/visao";
@@ -55,18 +70,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/pld" },
 };
 
-function Capitulo({ id, numero, titulo, subtitulo, children, nivel }: { id: string; numero: string; titulo: string; subtitulo?: string; children: React.ReactNode; nivel?: string }) {
+/** Capítulo da abertura que não é painel de evidência: linha fina, rótulo, título em serifa e o conteúdo; a âncora fica no bloco. */
+function Capitulo({ id, rotulo, titulo, children }: { id: string; rotulo: string; titulo: string; children: ReactNode }) {
   return (
-    <section id={id} data-nivel={nivel} aria-labelledby={`${id}-h`} className="scroll-mt-28 border-t border-linha py-12 md:py-16">
-      <p className="rotulo flex items-center gap-3 text-mineral">
-        <span className="font-serif text-lg normal-case tracking-normal text-energia">{numero}</span>
-        {subtitulo}
-      </p>
-      <h2 id={`${id}-h`} className="mt-2 max-w-3xl font-serif text-2xl leading-snug text-carvao md:text-[2rem]">
-        {titulo}
-      </h2>
-      <div className="mt-8">{children}</div>
-    </section>
+    <Bloco id={id}>
+      <section aria-labelledby={`${id}-h`} className="border-t border-linha pt-6">
+        <p className="rotulo text-mineral">{rotulo}</p>
+        <h2 id={`${id}-h`} className="ed-h2 mt-1 max-w-3xl font-serif text-carvao">
+          {titulo}
+        </h2>
+        <div className="mt-6 space-y-6">{children}</div>
+      </section>
+    </Bloco>
   );
 }
 
@@ -98,6 +113,8 @@ function periodos(p: PldGold): PeriodoPld[] {
   ];
 }
 
+const ligacaoTexto = "underline underline-offset-4 text-energia-dark hover:text-carvao";
+
 export default function PldPage() {
   const pld = gold.pld();
   const hid = gold.hidrologia();
@@ -108,7 +125,9 @@ export default function PldPage() {
   // limites oficiais (atos anuais da ANEEL, com vigência) publicados pelo módulo PLD
   const detalhe = lerGold<PldDetalheGold>("pld_detalhe.json");
   const limDet = integra(detalhe) && detalhe.limites.disponivel ? detalhe.limites : null;
-  const regimeVigente: RegimeLimites | null = limDet ? (limDet.regimes.at(-1) ?? null) : null;
+  // o trecho de limites que vale no dia de referência (e não simplesmente o último da lista)
+  const diaRef = integra(pld) ? pld.dia_referencia : integra(detalhe) ? detalhe.referencia.dia : null;
+  const regimeVigente: RegimeLimites | null = limDet && diaRef ? regimeVigenteEm(limDet.regimes, diaRef) : null;
   const prev = gold.previsoes();
   const mods = gold.modelos();
   const cPld = conceito("pld");
@@ -169,45 +188,380 @@ export default function PldPage() {
   const rodadasEmissoes = resumoRodadas(linhasEmissoes);
   const notaPercentis = integra(detalhe) && integra(pld) ? notaDoisPercentis(pld.cartoes.find((c) => c.sm === "SE"), detalhe.historico.posicao_referencia.find((x) => x.sm === "SE")) : null;
 
+  // abertura: a média diária de cada submercado, os extremos (com os empates) e a distância entre as regiões, todos da mesma lista
+  const medias = integra(pld) ? linhasMediaDiaria(pld.cartoes) : [];
+  const extremos = extremosMediaDiaria(medias);
+  const referenciaDistancia = integra(pld) && integra(rede) ? textoReferenciaDistancia(rede.resumo_amplitude, pld.dia_referencia) : null;
+  const empates = extremos ? textoEmpatesMediaDiaria(extremos) : null;
+
+  const faixaAbertura =
+    integra(pld) && extremos ? (
+      <FaixaMetricas
+        colunas={3}
+        rotulo="Média diária do PLD: menor e maior entre os submercados e a distância entre elas"
+        nota={
+          <>
+            <span className="font-medium text-carvao">Média diária:</span> {pld.regras.media_diaria} Não existe um PLD único do Brasil: cada submercado tem o seu preço, e a
+            média simples dos quatro não é um preço publicado pela CCEE, por isso esta faixa não a mostra.
+          </>
+        }
+      >
+        {(
+          [
+            ["Menor média diária", extremos.menor],
+            ["Maior média diária", extremos.maior],
+          ] as const
+        ).map(([rotulo, e]) => {
+          const variacao = variacaoComumDoGrupo(medias, e.submercados);
+          return (
+            <Numero
+              key={rotulo}
+              variante="faixa"
+              rotulo={rotulo}
+              natureza="CALCULADO"
+              valor={e.valor}
+              formato="reais"
+              casas={2}
+              unidade="R$/MWh"
+              periodo={`${nomesDosSubmercados(e.submercados)}${e.submercados.length > 1 && extremos.distancia > 0 ? " (mesmo valor)" : ""} · média das 24 horas de ${dataBR(pld.dia_referencia)}`}
+              cor={e.submercados.length === 1 ? COR_SM[e.submercados[0]] : undefined}
+              variacao={variacao === null ? undefined : { valor: variacao, casas: 2, sufixo: " R$/MWh", referencia: "em relação ao dia anterior" }}
+            />
+          );
+        })}
+        <Numero
+          variante="faixa"
+          rotulo="Distância entre regiões"
+          natureza="CALCULADO"
+          valor={extremos.distancia}
+          formato="reais"
+          casas={2}
+          unidade="R$/MWh"
+          periodo={`maior menos menor média diária · ${dataBR(pld.dia_referencia)}`}
+          nota={referenciaDistancia ?? undefined}
+        />
+      </FaixaMetricas>
+    ) : null;
+
+  // notas do painel de abertura: o que mudou (dia anterior e histórico da distância), como interpretar (regra e limites vigentes) e o que não concluir
+  const oQueMudouPrecos = integra(pld) ? (
+    <>{textoMudancaMediaDiaria(pld.dia_referencia, medias)}</>
+  ) : (
+    <>Sem dia com as 24 horas publicadas nos quatro submercados nesta publicação.</>
+  );
+  const comoInterpretarPrecos = (
+    <>
+      O PLD valora, no mercado de curto prazo, as diferenças entre a energia contratada e a verificada de cada agente, e a CCEE o calcula para cada hora e cada submercado. Cada
+      barra é a média simples das 24 horas do dia em um submercado, em valores nominais; a escala começa em zero e é a mesma nas quatro. {regimeVigente ? textoLimitesVigentes(regimeVigente) : "Os limites vigentes não estão integrados nesta publicação."}
+    </>
+  );
+  const naoConcluirPrecos = (
+    <>
+      O PLD não é a tarifa nem a conta de luz: PLD, CMO, tarifa e fatura são medidas diferentes (veja{" "}
+      <a href="#o-que-e" className={ligacaoTexto}>
+        o que o PLD não é
+      </a>{" "}
+      e a página{" "}
+      <Link href="/setor-eletrico/conta-de-luz" className={ligacaoTexto}>
+        Conta de luz
+      </Link>
+      ). A média do dia não mostra a variação das horas, que está abaixo, e este painel não diz para onde o preço vai.
+    </>
+  );
+
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <header className="pb-6 pt-10 md:pt-14">
-          <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
-          <h1 className="mt-3 font-serif text-[clamp(2.6rem,6vw,4rem)] leading-none text-carvao">PLD</h1>
-          <p className="mt-4 max-w-2xl font-serif text-xl leading-snug text-carvao-muted md:text-2xl">
-            O preço horário da energia no Brasil, explicado.
-          </p>
-          <nav aria-label="Nesta página" className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {[
-              ["#o-que-e", "O que é"],
-              ["#formacao", "De onde vem o preço"],
-              ["#hoje", "Último dia publicado"],
-              ["#submercados", "Por que as regiões diferem"],
-              ["#previsao", "Para onde pode ir"],
-            ].map(([h, r]) => (
-              <a key={h} href={h} className="inline-flex min-h-[44px] items-center text-energia-dark underline decoration-energia/40 underline-offset-4 hover:text-carvao">
-                {r}
-              </a>
-            ))}
-          </nav>
-          <LegendaDeSiglas siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "CVU", "ONS", "ANEEL", "REN"]} />
-        </header>
+        <CabecalhoModulo
+          siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "CVU", "ONS", "ANEEL", "REN"]}
+          titulo="Quanto custa a energia no curto prazo?"
+          lead="O Preço de Liquidação das Diferenças (PLD), calculado pela CCEE para cada hora e para cada submercado: a média do último dia publicado e a distância entre as regiões."
+          recorte={integra(pld) ? `${dataBR(pld.dia_referencia)} · quatro submercados · médias diárias · R$/MWh nominais` : undefined}
+          fonte="CCEE, PLD horário por submercado"
+          referencia={
+            integra(pld) ? (
+              <>
+                CCEE (PLD horário até {horaLocal(pld.ultima_hora)})
+                {integra(rede) ? `, ONS (intercâmbio entre subsistemas até ${dataBR(rede.dia_referencia)})` : ""}
+                {limDet ? " e ANEEL (atos anuais dos limites do PLD)" : ""}; processado em {carimbo(pld.gerado_em)}.
+              </>
+            ) : undefined
+          }
+          datas={
+            integra(pld) ? (
+              <PldDatas
+                itens={[
+                  { rotulo: "PLD horário", ate: `até ${horaLocal(pld.ultima_hora)}`, natureza: "OBSERVADO" },
+                  { rotulo: "Média diária", ate: dataBR(pld.dia_referencia), natureza: "CALCULADO" },
+                  { rotulo: "Intercâmbio entre subsistemas (mapa)", ate: integra(rede) ? `até ${dataBR(rede.dia_referencia)}` : null, natureza: "OBSERVADO" },
+                  ...(integra(detalhe) ? [{ rotulo: "CMO semanal (DECOMP)", ate: `até a semana de ${dataBR(detalhe.referencia.ultima_semana_decomp)}`, natureza: "ESTIMADO" as const }] : []),
+                  ...(regimeVigente ? [{ rotulo: "Limites vigentes", ate: `desde ${dataBR(regimeVigente.inicio)}`, natureza: "OBSERVADO" as const }] : []),
+                ]}
+              />
+            ) : undefined
+          }
+          metricas={faixaAbertura}
+        />
         <PldNavegacao atual="p008" />
 
         <ModoProfundidade>
-          {/* 1. Entenda em 90 segundos */}
-          <Capitulo
-            id="o-que-e"
-            numero="1"
-            subtitulo="Entenda em 90 segundos"
-            titulo="A que preço se acerta a energia no curto prazo, hora a hora e em cada região?"
-          >
+          {/* 1. Os preços: a média do dia em cada submercado, a série horária, o dia em detalhe e a separação entre as regiões */}
+          <Bloco id="hoje">
+            {integra(pld) && extremos ? (
+              <PainelEvidencia
+                id="precos"
+                pergunta="A média do dia em cada submercado, na mesma escala"
+                subtitulo="Média das 24 horas de cada submercado no último dia publicado · R$/MWh nominais"
+                porQueImporta={
+                  <>
+                    O PLD valora as diferenças entre a energia contratada e a verificada; quando os submercados têm preços diferentes, a mesma diferença vale mais em uma região
+                    do que em outra. A média diária resume as 24 horas de cada região e permite compará-las na mesma escala, mas não substitui o perfil horário, que vem logo
+                    abaixo.
+                  </>
+                }
+                oQueMudou={oQueMudouPrecos}
+                comoInterpretar={comoInterpretarPrecos}
+                naoConcluir={naoConcluirPrecos}
+                naoConcluirNoCorpo
+                proveniencia={pld.proveniencia.diario}
+                extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
+                complementares={[
+                  { rotulo: "Sobre o PLD horário", p: pld.proveniencia.horario },
+                  ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: pld.proveniencia.estatisticas }] : []),
+                  ...(pld.proveniencia.mensal ? [{ rotulo: "Sobre as médias mensais", p: pld.proveniencia.mensal }] : []),
+                  { rotulo: "Sobre a posição histórica", p: pld.proveniencia.posicao },
+                  ...(integra(rede)
+                    ? [
+                        { rotulo: "Sobre os fluxos", p: rede.proveniencia.fluxo },
+                        { rotulo: "Sobre a diferença entre o maior e o menor PLD médio", p: rede.proveniencia.amplitude },
+                      ]
+                    : []),
+                ]}
+              >
+                <div className="space-y-6">
+                  <RespostaCurta id="hoje" veredito={vereditoMediaDiaria(pld.dia_referencia, extremos)}>
+                    <p>{pld.regras.dia_referencia}</p>
+                    <p className="mt-1">{pld.regras.media_diaria}</p>
+                    <p className="mt-1">
+                      Empate é igualdade nos centavos exibidos: se mais de um submercado tem a maior ou a menor média, todos aparecem. A distância é a maior média menos a menor,
+                      calculada sobre esses valores.
+                    </p>
+                  </RespostaCurta>
+
+                  <div className="space-y-3">
+                    <GraficoBarras
+                      titulo={`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`}
+                      dados={medias.map((m) => ({ id: m.id, rotulo: m.nome, media: m.media }))}
+                      chaveCategoria="id"
+                      chaveRotulo="rotulo"
+                      series={[{ id: "media", rotulo: "Média diária", cor: "var(--cor-energia)" }]}
+                      unidade="R$/MWh"
+                      casas={2}
+                      orientacao="horizontal"
+                      rotulosValor
+                    />
+                    <p className="text-xs leading-relaxed text-carvao-muted" data-texto="empates-media-diaria">
+                      Escala iniciada em zero e igual para os quatro submercados. {empates}
+                    </p>
+                  </div>
+
+                  <NotasDoPainel oQueMudou={oQueMudouPrecos} comoInterpretar={comoInterpretarPrecos} naoConcluir={naoConcluirPrecos} />
+
+                  <PldCapitulos />
+
+                  <SecaoDoPainel id="periodos" titulo="Em que horas o preço sobe, e as regiões se separam?" lead="PLD por submercado · R$/MWh nominais · hora local de Brasília.">
+                    <PldPeriodos periodos={periodos(pld)} limiar={pld.limiar_diferenca} />
+                    <NotasDoPainel
+                      oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados.</>}
+                      comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
+                      naoConcluir={
+                        <>
+                          Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes (piso e tetos de cada ano, com o
+                          ato da ANEEL, no modo Auditar e na página de limites).
+                        </>
+                      }
+                    />
+                    <p className="text-sm">
+                      <Link href={`${rotaPainel("p010")}#p010`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                        {perguntaPainel("p010")} Calendário e permanência no piso e nos tetos
+                      </Link>
+                    </p>
+                  </SecaoDoPainel>
+
+                  <SecaoDoPainel id="dia-em-detalhe" titulo="O dia em detalhe, por submercado" lead="Faixa horária observada, variação contra o dia anterior e posição da média entre as médias diárias desde 2021.">
+                    <CartoesPld pld={pld} />
+                    <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+                      <span className="rotulo mr-1 text-mineral">O que não é possível concluir:</span>
+                      a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária: valores observados; média, variação e
+                      percentil: calculados.
+                    </p>
+                    {notaPercentis && (
+                      <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="dois-percentis">
+                        {notaPercentis}{" "}
+                        <Link href={`${rotaPainel("p011")}#p011`} className="text-energia-dark underline underline-offset-4">
+                          Ver o Histórico
+                        </Link>
+                        .
+                      </p>
+                    )}
+                    <p className="text-sm">
+                      <Link href={`${rotaPainel("p011")}#p011`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                        {perguntaPainel("p011")} Percentis da mesma época e médias ponderadas
+                      </Link>
+                    </p>
+                  </SecaoDoPainel>
+
+                  {/* a separação entre as regiões: o mapa, o texto que a explica e a série da distância entre o maior e o menor PLD médio */}
+                  <SecaoDoPainel id="submercados" titulo="Por que os preços dos submercados podem diferir?">
+                    {integra(rede) ? (
+                      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                        <div className="min-w-0">
+                          <MapaSubmercados
+                            fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
+                            precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
+                            diaFluxo={dataBR(rede.dia_referencia)}
+                            diaPreco={dataBR(pld.dia_referencia)}
+                          />
+                          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
+                            <span>Fonte: CCEE (PLD) e ONS (intercâmbio). O mapa não mostra limites de transferência nem explica diferenças de preço.</span>
+                          </div>
+                          <TabelaDados
+                            titulo="Dados do mapa: PLD médio por submercado e fluxo por fronteira"
+                            colunas={["Item", "Valor", "Unidade", "Dia"]}
+                            linhas={[
+                              ...pld.cartoes.map((c) => [`PLD médio, ${c.nome}`, c.media_dia, "R$/MWh", dataBR(pld.dia_referencia)] as (string | number | null)[]),
+                              ...rede.fronteiras.map((f) => [`Fluxo ${f.nome}`, f.fluxo_dia === null ? null : num(f.fluxo_dia, 0), "MWmed", dataBR(rede.dia_referencia)] as (string | number | null)[]),
+                            ]}
+                            casas={[null, 2, null, null]}
+                          />
+                        </div>
+                        <div className="min-w-0 space-y-4 leading-relaxed text-carvao">
+                          <p>
+                            A CCEE calcula um PLD para cada submercado. As regiões estão ligadas por linhas de transmissão de fronteira, e o ONS mede o{" "}
+                            <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora, em MWmed (megawatt médio).
+                          </p>
+                          <p className="border border-dashed border-mineral p-3 text-sm text-carvao-muted">
+                            <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
+                            Se a energia pudesse circular sem limite, o custo de atender uma carga a mais seria o mesmo em todo lugar. Como a capacidade de transferência entre
+                            regiões é finita, uma região com sobra pode não conseguir enviar tudo o que teria para outra, e os preços se separam.
+                          </p>
+                          <ul className="space-y-1 text-xs text-mineral">
+                            <li className="flex flex-wrap items-center gap-2">
+                              Definições de PLD por submercado (CCEE) e de intercâmbio (ONS): <Conferido ok />
+                            </li>
+                            <li className="flex flex-wrap items-center gap-2">
+                              Mecanismo de separação por limite de transferência: <Conferido ok={false} />
+                            </li>
+                          </ul>
+                          <p className="flex flex-wrap items-center gap-2 border-l-2 border-energia pl-4 text-sm text-carvao-muted">
+                            <span>
+                              {rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia) ? (
+                                <>
+                                  Em {dataBR(pld.dia_referencia)}, a diferença entre o maior e o menor PLD médio foi de{" "}
+                                  {reais(rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia)!.amplitude)}/MWh.{" "}
+                                </>
+                              ) : null}
+                              Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh.
+                            </span>
+                            <SeloNatureza natureza="CALCULADO" />
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <Indisponivel titulo="Dados de rede indisponíveis" motivo="As golds de rede ou de PLD não foram geradas nesta publicação." />
+                    )}
+                  </SecaoDoPainel>
+
+                  {integra(rede) && (
+                    <SecaoDoPainel id="amplitude" titulo="Quando os submercados se separaram no último ano?">
+                      <GraficoLinhas
+                        titulo="Diferença entre o maior e o menor PLD médio diário"
+                        dados={amplitude}
+                        chaveX="x"
+                        series={[{ id: "amp", rotulo: "Diferença máx.−mín.", cor: "var(--cor-energia)" }]}
+                        unidade="R$/MWh"
+                        casas={2}
+                        zeroNoEixo
+                      />
+                      <NotasDoPainel
+                        oQueMudou={<>{textoAmplitude(rede.resumo_amplitude)}</>}
+                        comoInterpretar={<>Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.</>}
+                        naoConcluir={
+                          <>
+                            A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A
+                            causa de uma separação não é atribuída.
+                          </>
+                        }
+                      />
+                      <p className="text-sm">
+                        <Link href={`${rotaPainel("p012")}#p012`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                          {perguntaPainel("p012")} Separação hora a hora, por par e com o fluxo na mesma hora
+                        </Link>
+                      </p>
+                    </SecaoDoPainel>
+                  )}
+
+                  <SecaoDoPainel id="regras" titulo="Como classificamos" nivel="analisar" lead="Nenhuma classificação sem regra. Estas são as regras que produzem cada resposta desta seção.">
+                    <dl className="grid gap-4 md:grid-cols-2">
+                      {Object.entries(pld.regras).map(([k, v]) => (
+                        <div key={k}>
+                          <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
+                          <dd className="mt-1 text-sm leading-relaxed text-carvao">{v}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </SecaoDoPainel>
+
+                  {limDet && (
+                    <SecaoDoPainel id="limites-por-vigencia" titulo="Limites oficiais do PLD por vigência" nivel="auditar">
+                      <p className="max-w-prose2 text-sm text-carvao-muted">
+                        Piso, teto horário e teto estrutural fixados nos atos anuais da ANEEL, em vigor em cada trecho; o último trecho vai até o dia de referência.{" "}
+                        {limDet.conferencia_atos.leitura}
+                      </p>
+                      <TabelaDados
+                        titulo="Limites do PLD por trecho de vigência (R$/MWh)"
+                        colunas={["Início", "Fim", "Piso", "Teto horário", "Teto estrutural", "Ato do piso"]}
+                        linhas={limDet.regimes.map((r) => [dataBR(r.inicio), dataBR(r.fim), r.pld_min, r.pld_max_horario, r.pld_max_estrutural, r.ato_pld_min])}
+                        casas={[null, null, 2, 2, 2, null]}
+                      />
+                    </SecaoDoPainel>
+                  )}
+                  <SecaoDoPainel id="menor-valor-por-ano" titulo="Menor valor horário observado por ano" nivel="auditar">
+                    <p className="max-w-prose2 text-sm text-carvao-muted">
+                      Referência descritiva, nunca usada como piso: o piso regulatório é o do ato vigente{limDet ? " (tabela acima)" : ""}.
+                    </p>
+                    <TabelaDados
+                      titulo="Menor valor horário observado por ano e submercado"
+                      colunas={["Ano", "Até", "SE/CO", "Sul", "Nordeste", "Norte"]}
+                      linhas={pld.menor_valor_ano.map((m) => [m.ano, dataBR(m.ate), m.SE, m.S, m.NE, m.N])}
+                      casas={[null, null, 2, 2, 2, 2]}
+                    />
+                    <p className="text-xs text-mineral [overflow-wrap:anywhere]">
+                      Versão dos dados {pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "sem identificador"} · sha256 {pld.snapshot.sha256} · série de {horaLocal(pld.primeira_hora)} a{" "}
+                      {horaLocal(pld.ultima_hora)} (horário de Brasília)
+                    </p>
+                  </SecaoDoPainel>
+
+                  <PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />
+                </div>
+              </PainelEvidencia>
+            ) : (
+              <>
+                <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "Os dados processados do PLD não foram gerados."} />
+                <div className="mt-6">
+                  <PldCapitulos />
+                </div>
+              </>
+            )}
+          </Bloco>
+
+          {/* 2. A aula: o que é o PLD, o que ele não é e as bases conferidas */}
+          <Capitulo id="o-que-e" rotulo="Entenda em 90 segundos" titulo="O que é o PLD, e o que ele não é">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
-                <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
+                <p className="ed-lead text-carvao">
                   No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE compara, hora a hora e por submercado, a energia que cada agente contratou com a que gerou ou
                   consumiu de fato, e calcula o resultado financeiro dessa diferença. O PLD é o preço desse mercado. A CCEE publica esses valores somados por submercado e hora e,
                   no consolidado do mês, separa o resultado de venda e o de compra.
@@ -232,7 +586,7 @@ export default function PldPage() {
                     </p>
                   </div>
                 )}
-                <p className="mt-6 text-lg leading-relaxed text-carvao">
+                <p className="mt-6 text-base leading-relaxed text-carvao">
                   É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro{" "}
                   <Termo slug="submercado">submercados</Termo>. O cálculo é feito por modelos computacionais (NEWAVE, DECOMP e
                   DESSEM), tem como base o <Termo slug="cmo">custo marginal de operação</Termo> e respeita os limites mínimo e
@@ -293,10 +647,10 @@ export default function PldPage() {
                 </div>
               </div>
               <div>
-                <p className="rotulo text-mineral">O que o PLD não é</p>
-                <ul className="mt-3 space-y-3">
+                <h3 className="rotulo text-mineral">O que o PLD não é</h3>
+                <ul className="mt-3 space-y-5">
                   {PLD_NAO_E.map((x) => (
-                    <li key={x.titulo} className="border border-linha bg-superficie p-4">
+                    <li key={x.titulo} className="border-l-2 border-linha pl-4">
                       <p className="font-medium text-carvao">{x.titulo}</p>
                       <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{x.porque}</p>
                       <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
@@ -305,10 +659,15 @@ export default function PldPage() {
                     </li>
                   ))}
                 </ul>
+                <p className="mt-5 text-sm">
+                  <Link href="/setor-eletrico/conta-de-luz" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                    Como a tarifa e a fatura são formadas: Conta de luz
+                  </Link>
+                </p>
               </div>
             </div>
             {cPld?.fontes[0]?.trecho && (
-              <blockquote data-nivel="auditar" className="mt-8 border border-linha bg-superficie p-5 text-sm leading-relaxed text-carvao-muted">
+              <blockquote data-nivel="auditar" className="border border-linha bg-superficie p-5 text-sm leading-relaxed text-carvao-muted">
                 <p className="rotulo mb-2 text-mineral">Íntegra da fonte (CCEE)</p>“{cPld.fontes[0].trecho}”
                 <footer className="mt-2 text-xs text-mineral">
                   <a href={cPld.fontes[0].url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
@@ -319,11 +678,10 @@ export default function PldPage() {
             )}
           </Capitulo>
 
-          {/* 2. De onde vem o preço: painel P008 (conceito, formação e exemplo de liquidação) */}
-          <Capitulo id="formacao" numero="2" subtitulo="De onde vem o preço?" titulo="O PLD emerge de um sistema, não de uma variável">
+          {/* 3. De onde vem o preço: painel P008 (conceito, formação e exemplo de liquidação) */}
+          <Bloco id="formacao">
             {conceitoDet && ligacoes && resumoLig && docs && integra(pld) ? (
               <PainelEvidencia
-                nivelTitulo={3}
                 id="p008"
                 pergunta={perguntaPainel("p008")}
                 subtitulo="Conceito nas normas vigentes, formação do preço em etapas e exemplo sintético de liquidação · R$/MWh"
@@ -341,8 +699,8 @@ export default function PldPage() {
                 }
                 comoInterpretar={
                   <>
-                    Toque em cada etapa do diagrama: o painel ao lado diz o que ela é, o estado atual quando há dado integrado e cada ligação com a etapa seguinte, com o tipo da
-                    relação e o trecho do documento que a sustenta. Ligação marcada como pendente tem só base editorial.
+                    Toque em cada etapa do diagrama: o painel ao lado diz o que ela é, o último dado publicado quando há dado integrado e cada ligação com a etapa seguinte, com o
+                    tipo da relação e o trecho do documento que a sustenta. Ligação marcada como pendente tem só base editorial.
                   </>
                 }
                 naoConcluir={
@@ -369,75 +727,75 @@ export default function PldPage() {
                     })}
                   </div>
 
-                  <PldFormacao nos={nos} ligacoes={ligacoes} />
+                  <SecaoDoPainel id="diagrama-formacao" titulo="O PLD emerge de um sistema, não de uma variável">
+                    <PldFormacao nos={nos} ligacoes={ligacoes} />
+                  </SecaoDoPainel>
 
                   {exemplo && (
-                    <section aria-labelledby="exemplo-liquidacao-titulo" className="space-y-3 border border-dashed border-mineral bg-papel p-4 md:p-5">
-                      <p className="rotulo text-mineral">Exemplo sintético, não é contabilização real</p>
-                      <h4 id="exemplo-liquidacao-titulo" className="font-serif text-lg text-carvao">
-                        Como a diferença entre contratado e verificado é valorada ao PLD?
-                      </h4>
-                      <p className="text-sm leading-relaxed text-carvao">{exemplo.aviso}</p>
-                      <p className="text-sm text-carvao-muted">
-                        PLD usado: {reais(exemplo.pld.valor)}/MWh, {exemplo.pld.nome}, {dataBR(exemplo.pld.hora)} às {exemplo.pld.hora.slice(11, 13)}h (
-                        {exemplo.pld.fonte.replace(/PLD_HORARIO/g, "PLD horário por submercado")}; {exemplo.pld.regra_escolha}) <SeloNatureza natureza="OBSERVADO" />
-                      </p>
-                      <p className="text-sm text-carvao-muted">Regra do exemplo: {exemplo.formula}.</p>
-                      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Exemplo sintético de liquidação (tabela rolável)">
-                        <table className="w-full min-w-[34rem] text-sm tabular-nums">
-                          <caption className="sr-only">Exemplo sintético de liquidação: quantidades hipotéticas e PLD real da hora</caption>
-                          <thead>
-                            <tr className="border-b border-linha text-left text-xs text-mineral">
-                              <th scope="col" className="py-2 pr-3 font-normal">Agente hipotético</th>
-                              <th scope="col" className="py-2 pr-3 text-right font-normal">Compras contratadas (MWh)</th>
-                              <th scope="col" className="py-2 pr-3 text-right font-normal">Vendas contratadas (MWh)</th>
-                              <th scope="col" className="py-2 pr-3 text-right font-normal">Geração verificada (MWh)</th>
-                              <th scope="col" className="py-2 pr-3 text-right font-normal">Consumo verificado (MWh)</th>
-                              <th scope="col" className="py-2 pr-3 text-right font-normal">Diferença (MWh)</th>
-                              <th scope="col" className="py-2 text-right font-normal">Valor no MCP</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {exemplo.agentes.map((a) => (
-                              <tr key={a.id} className="border-b border-linha">
-                                <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">{a.rotulo}</th>
-                                <td className="py-2 pr-3 text-right">{num(a.compras_contratadas_mwh, 0)}</td>
-                                <td className="py-2 pr-3 text-right">{num(a.vendas_contratadas_mwh, 0)}</td>
-                                <td className="py-2 pr-3 text-right">{num(a.geracao_verificada_mwh, 0)}</td>
-                                <td className="py-2 pr-3 text-right">{num(a.consumo_verificado_mwh, 0)}</td>
-                                <td className="py-2 pr-3 text-right">{num(a.diferenca_mwh, 0)}</td>
-                                <td className="py-2 text-right">
-                                  {reais(a.valor_rs)} ({a.resultado})
-                                </td>
+                    <SecaoDoPainel id="exemplo-liquidacao" titulo="Como a diferença entre contratado e verificado é valorada ao PLD?">
+                      <div className="space-y-3 border border-dashed border-mineral bg-papel p-4 md:p-5">
+                        <p className="rotulo text-mineral">Exemplo sintético, não é contabilização real</p>
+                        <p className="text-sm leading-relaxed text-carvao">{exemplo.aviso}</p>
+                        <p className="text-sm text-carvao-muted">
+                          PLD usado: {reais(exemplo.pld.valor)}/MWh, {exemplo.pld.nome}, {dataBR(exemplo.pld.hora)} às {exemplo.pld.hora.slice(11, 13)}h (
+                          {exemplo.pld.fonte.replace(/PLD_HORARIO/g, "PLD horário por submercado")}; {exemplo.pld.regra_escolha}) <SeloNatureza natureza="OBSERVADO" />
+                        </p>
+                        <p className="text-sm text-carvao-muted">Regra do exemplo: {exemplo.formula}.</p>
+                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Exemplo sintético de liquidação (tabela rolável)">
+                          <table className="w-full min-w-[34rem] text-sm tabular-nums">
+                            <caption className="sr-only">Exemplo sintético de liquidação: quantidades hipotéticas e PLD real da hora</caption>
+                            <thead>
+                              <tr className="border-b border-linha text-left text-xs text-mineral">
+                                <th scope="col" className="py-2 pr-3 font-normal">Agente hipotético</th>
+                                <th scope="col" className="py-2 pr-3 text-right font-normal">Compras contratadas (MWh)</th>
+                                <th scope="col" className="py-2 pr-3 text-right font-normal">Vendas contratadas (MWh)</th>
+                                <th scope="col" className="py-2 pr-3 text-right font-normal">Geração verificada (MWh)</th>
+                                <th scope="col" className="py-2 pr-3 text-right font-normal">Consumo verificado (MWh)</th>
+                                <th scope="col" className="py-2 pr-3 text-right font-normal">Diferença (MWh)</th>
+                                <th scope="col" className="py-2 text-right font-normal">Valor no MCP</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      <p className="text-sm leading-relaxed text-carvao">{exemplo.leitura}</p>
-                      <div>
-                        <p className="rotulo text-mineral">Simplificações do exemplo</p>
-                        <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
-                          {exemplo.simplificacoes.map((t) => (
-                            <li key={t}>{semCodigoHttp(t)}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <details className="text-sm">
-                        <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Base normativa do exemplo</summary>
-                        <div className="mt-2 space-y-2">
-                          {exemplo.base_normativa.map((id) => {
-                            const f = passagem(id);
-                            return f ? <PldPassagem key={id} p={f} /> : null;
-                          })}
+                            </thead>
+                            <tbody>
+                              {exemplo.agentes.map((a) => (
+                                <tr key={a.id} className="border-b border-linha">
+                                  <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">{a.rotulo}</th>
+                                  <td className="py-2 pr-3 text-right">{num(a.compras_contratadas_mwh, 0)}</td>
+                                  <td className="py-2 pr-3 text-right">{num(a.vendas_contratadas_mwh, 0)}</td>
+                                  <td className="py-2 pr-3 text-right">{num(a.geracao_verificada_mwh, 0)}</td>
+                                  <td className="py-2 pr-3 text-right">{num(a.consumo_verificado_mwh, 0)}</td>
+                                  <td className="py-2 pr-3 text-right">{num(a.diferenca_mwh, 0)}</td>
+                                  <td className="py-2 text-right">
+                                    {reais(a.valor_rs)} ({a.resultado})
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
-                      </details>
-                    </section>
+                        <p className="text-sm leading-relaxed text-carvao">{exemplo.leitura}</p>
+                        <div>
+                          <p className="rotulo text-mineral">Simplificações do exemplo</p>
+                          <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
+                            {exemplo.simplificacoes.map((t) => (
+                              <li key={t}>{semCodigoHttp(t)}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <details className="text-sm">
+                          <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4">Base normativa do exemplo</summary>
+                          <div className="mt-2 space-y-2">
+                            {exemplo.base_normativa.map((id) => {
+                              const f = passagem(id);
+                              return f ? <PldPassagem key={id} p={f} /> : null;
+                            })}
+                          </div>
+                        </details>
+                      </div>
+                    </SecaoDoPainel>
                   )}
 
-                  <details data-nivel="analisar" className="border border-linha bg-superficie p-5">
-                    <summary className="rotulo min-h-[44px] cursor-pointer text-carvao">Tipos de relação usados no diagrama</summary>
-                    <dl className="mt-3 grid gap-3 md:grid-cols-2">
+                  <SecaoDoPainel id="tipos-de-relacao" titulo="Tipos de relação usados no diagrama" nivel="analisar">
+                    <dl className="grid gap-3 md:grid-cols-2">
                       {Object.values(TIPOS_RELACAO).map((t) => (
                         <div key={t.rotulo}>
                           <dt className="font-medium text-carvao">{t.rotulo}</dt>
@@ -445,13 +803,12 @@ export default function PldPage() {
                         </div>
                       ))}
                     </dl>
-                  </details>
+                  </SecaoDoPainel>
 
-                  <div id="cmo" data-nivel="analisar" className="scroll-mt-28 space-y-3 border-t border-linha pt-5">
-                    <h4 className="font-serif text-lg text-carvao">CMO e PLD: três produtos na mesma semana</h4>
+                  <SecaoDoPainel id="cmo" titulo="CMO e PLD: três produtos na mesma semana">
                     {semanaRef ? (
                       <>
-                        <p className="text-sm leading-relaxed text-carvao-muted">
+                        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                           Semana operativa de {dataBR(semanaRef.inicio)} a {dataBR(semanaRef.fim)}: o CMO semanal do DECOMP (ONS), a média das meias horas do CMO do DESSEM (ONS) e a média
                           das horas do PLD (CCEE), em R$/MWh. São produtos diferentes; a comparação só vale no mesmo intervalo.
                         </p>
@@ -487,9 +844,9 @@ export default function PldPage() {
                         Séries alinhadas, momento do cálculo e relação por ano no painel CMO e formação de preço
                       </Link>
                     </p>
-                  </div>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="normas" titulo="Documentos normativos e técnicos citados, com a passagem conferida">
+                  <SecaoDoPainel id="normas" titulo="Documentos normativos e técnicos citados, com a passagem conferida" nivel="auditar">
                     {docs.documentos.map((d) => (
                       <div key={d.id} className="space-y-2">
                         <p className="text-sm text-carvao [overflow-wrap:anywhere]">
@@ -523,9 +880,9 @@ export default function PldPage() {
                         Passagens não conferidas e fora da página: {conceitoDet.normas_nao_conferidas.map((n) => `${n.documento}, ${n.dispositivo} (${n.motivo})`).join("; ")}.
                       </PldAviso>
                     )}
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
-                  <PldAuditoria id="bloqueios" titulo="O que não foi possível conferir e por quê">
+                  <SecaoDoPainel id="bloqueios" titulo="O que não foi possível conferir e por quê" nivel="auditar">
                     <ul className="space-y-2 text-sm text-carvao-muted">
                       {conceitoDet.bloqueios.map((b) => (
                         <li key={b.fonte} className="leading-relaxed [overflow-wrap:anywhere]">
@@ -533,7 +890,7 @@ export default function PldPage() {
                         </li>
                       ))}
                     </ul>
-                  </PldAuditoria>
+                  </SecaoDoPainel>
 
                   <PldSeguir
                     ancora="p008"
@@ -551,210 +908,12 @@ export default function PldPage() {
                 <PldFormacao nos={nos} ligacoes={Object.fromEntries(nos.map((n) => [n.id, n.relacaoSaida ? [{ de: n.id, para: n.relacaoSaida.para, tipo: n.relacaoSaida.tipo, texto: n.relacaoSaida.texto, estado: n.relacaoSaida.conferencia, bases: [], faltantes: [], baseTexto: n.relacaoSaida.fonte, origem: "conteudo" as const }] : []]))} />
               </>
             )}
-          </Capitulo>
+          </Bloco>
 
-          {/* 3. O que está acontecendo */}
-          <Capitulo id="hoje" numero="3" subtitulo="O que está acontecendo" titulo={integra(pld) ? `O PLD em ${dataBR(pld.dia_referencia)} e no período recente` : "O PLD no período recente"}>
-            {integra(pld) ? (
-              <>
-                <CartoesPld pld={pld} />
-                <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-                  <span className="rotulo mr-1 text-mineral">O que não é possível concluir:</span>
-                  a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária:{" "}
-                  valores observados; média, variação e percentil: calculados.
-                </p>
-                {notaPercentis && (
-                  <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="dois-percentis">
-                    {notaPercentis}{" "}
-                    <Link href={`${rotaPainel("p011")}#p011`} className="text-energia-dark underline underline-offset-4">
-                      Ver o Histórico
-                    </Link>
-                    .
-                  </p>
-                )}
-                <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
-                  <span>Fonte: CCEE, PLD horário por submercado; médias e posição calculadas pela Scrutiniums.</span>
-                  <SobreEsteDado p={pld.proveniencia.horario} rotulo="Sobre o PLD horário" />
-                  <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre a média diária" />
-                  <SobreEsteDado p={pld.proveniencia.posicao} rotulo="Sobre a posição histórica" />
-                </div>
-                <div className="mt-8">
-                  <PainelEvidencia
-                    nivelTitulo={3}
-                    id="periodos"
-                    pergunta="Em que horas o preço sobe, e as regiões se separam?"
-                    subtitulo="PLD por submercado · R$/MWh nominais · hora local de Brasília"
-                    porQueImporta={<>O PLD é horário. A curva mostra em que horas do dia o preço de cada submercado sobe ou cai e se os quatro seguem juntos.</>}
-                    oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados.</>}
-                    comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
-                    naoConcluir={<>Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes (piso e tetos de cada ano, com o ato da ANEEL, no modo Auditar).</>}
-                    proveniencia={pld.proveniencia.horario}
-                    extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
-                    complementares={[
-                      ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: pld.proveniencia.estatisticas }] : []),
-                      { rotulo: "Sobre as médias diárias", p: pld.proveniencia.diario },
-                      ...(pld.proveniencia.mensal ? [{ rotulo: "Sobre as médias mensais", p: pld.proveniencia.mensal }] : []),
-                    ]}
-                  >
-                    <PldPeriodos periodos={periodos(pld)} limiar={pld.limiar_diferenca} />
-                  </PainelEvidencia>
-                </div>
-                <nav aria-label="Aprofundar o período recente" className="mt-6 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-                  <Link href={`${rotaPainel("p010")}#p010`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                    {perguntaPainel("p010")} Calendário e permanência no piso e nos tetos
-                  </Link>
-                  <Link href={`${rotaPainel("p011")}#p011`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                    {perguntaPainel("p011")} Percentis da mesma época e médias ponderadas
-                  </Link>
-                </nav>
-                <div id="regras" data-nivel="analisar" className="mt-8 scroll-mt-28 border border-linha bg-superficie p-6">
-                  <h3 className="font-serif text-xl text-carvao">Como classificamos</h3>
-                  <p className="mt-1 text-sm text-carvao-muted">Nenhuma classificação sem regra. Estas são as regras que produzem cada resposta desta seção.</p>
-                  <dl className="mt-4 grid gap-4 md:grid-cols-2">
-                    {Object.entries(pld.regras).map(([k, v]) => (
-                      <div key={k}>
-                        <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
-                        <dd className="mt-1 text-sm leading-relaxed text-carvao">{v}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <div className="mt-5 flex flex-wrap gap-4">
-                    <SobreEsteDado p={pld.proveniencia.posicao} rotulo="Sobre a posição histórica" />
-                    <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre a média diária" />
-                  </div>
-                </div>
-                <div data-nivel="auditar" className="mt-8 border border-linha bg-superficie p-6">
-                  {limDet ? (
-                    <>
-                      <h3 className="font-serif text-xl text-carvao">Limites oficiais do PLD por vigência</h3>
-                      <p className="mt-1 text-sm text-carvao-muted">
-                        Piso, teto horário e teto estrutural fixados nos atos anuais da ANEEL, em vigor em cada trecho; o último trecho vai até o dia de referência. {limDet.conferencia_atos.leitura}
-                      </p>
-                      <TabelaDados
-                        titulo="Limites do PLD por trecho de vigência (R$/MWh)"
-                        colunas={["Início", "Fim", "Piso", "Teto horário", "Teto estrutural", "Ato do piso"]}
-                        linhas={limDet.regimes.map((r) => [dataBR(r.inicio), dataBR(r.fim), r.pld_min, r.pld_max_horario, r.pld_max_estrutural, r.ato_pld_min])}
-                        casas={[null, null, 2, 2, 2, null]}
-                      />
-                    </>
-                  ) : null}
-                  <h3 className="mt-8 font-serif text-xl text-carvao">Menor valor horário observado por ano</h3>
-                  <p className="mt-1 text-sm text-carvao-muted">
-                    Referência descritiva, nunca usada como piso: o piso regulatório é o do ato vigente{limDet ? " (tabela acima)" : ""}.
-                  </p>
-                  <TabelaDados
-                    titulo="Menor valor horário observado por ano e submercado"
-                    colunas={["Ano", "Até", "SE/CO", "Sul", "Nordeste", "Norte"]}
-                    linhas={pld.menor_valor_ano.map((m) => [m.ano, dataBR(m.ate), m.SE, m.S, m.NE, m.N])}
-                    casas={[null, null, 2, 2, 2, 2]}
-                  />
-                  <p className="rotulo mt-6 text-mineral">Downloads</p>
-                  <ul className="mt-2 space-y-1 text-sm">
-                    {pld.downloads.map((d) => (
-                      <li key={d.url}>
-                        <a href={d.url} download className="text-energia-dark underline underline-offset-4">{d.rotulo}</a>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-4 text-xs text-mineral [overflow-wrap:anywhere]">
-                    Versão dos dados {pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "sem identificador"} · sha256 {pld.snapshot.sha256} · série de {horaLocal(pld.primeira_hora)} a {horaLocal(pld.ultima_hora)} (horário de Brasília)
-                  </p>
-                </div>
-              </>
-            ) : (
-              <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "Os dados processados do PLD não foram gerados."} />
-            )}
-          </Capitulo>
-
-          {/* 4. Submercados */}
-          <Capitulo id="submercados" numero="4" subtitulo="Por que os preços dos submercados podem diferir?" titulo="Quatro preços, quatro regiões e as linhas de transmissão entre elas">
-            {integra(rede) && integra(pld) ? (
-              <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                <div className="min-w-0">
-                  <MapaSubmercados
-                    fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
-                    precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
-                    diaFluxo={dataBR(rede.dia_referencia)}
-                    diaPreco={dataBR(pld.dia_referencia)}
-                  />
-                  <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
-                    <span>Fonte: CCEE (PLD) e ONS (intercâmbio). O mapa não mostra limites de transferência nem explica diferenças de preço.</span>
-                    <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre o PLD médio" />
-                    <SobreEsteDado p={rede.proveniencia.fluxo} rotulo="Sobre os fluxos" />
-                  </div>
-                  <TabelaDados
-                    titulo="Dados do mapa: PLD médio por submercado e fluxo por fronteira"
-                    colunas={["Item", "Valor", "Unidade", "Dia"]}
-                    linhas={[
-                      ...pld.cartoes.map((c) => [`PLD médio, ${c.nome}`, c.media_dia, "R$/MWh", dataBR(pld.dia_referencia)] as (string | number | null)[]),
-                      ...rede.fronteiras.map((f) => [`Fluxo ${f.nome}`, f.fluxo_dia === null ? null : num(f.fluxo_dia, 0), "MWmed", dataBR(rede.dia_referencia)] as (string | number | null)[]),
-                    ]}
-                    casas={[null, 2, null, null]}
-                  />
-                </div>
-                <div className="min-w-0 space-y-4 leading-relaxed text-carvao">
-                  <p>
-                    A CCEE calcula um PLD para cada submercado. As regiões estão ligadas por linhas de transmissão de fronteira, e o
-                    ONS mede o <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora, em MWmed (megawatt médio).
-                  </p>
-                  <p className="border border-dashed border-mineral p-3 text-sm text-carvao-muted">
-                    <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
-                    Se a energia pudesse circular sem limite, o custo de atender uma carga a mais seria o mesmo em todo lugar. Como a
-                    capacidade de transferência entre regiões é finita, uma região com sobra pode não conseguir enviar tudo o que
-                    teria para outra, e os preços se separam.
-                  </p>
-                  <ul className="space-y-1 text-xs text-mineral">
-                    <li className="flex flex-wrap items-center gap-2">Definições de PLD por submercado (CCEE) e de intercâmbio (ONS): <Conferido ok /></li>
-                    <li className="flex flex-wrap items-center gap-2">Mecanismo de separação por limite de transferência: <Conferido ok={false} /></li>
-                  </ul>
-                  <p className="flex flex-wrap items-center gap-2 border-l-2 border-energia pl-4 text-sm text-carvao-muted">
-                    <span>
-                      {rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia)
-                        ? <>Em {dataBR(pld.dia_referencia)}, a diferença entre o maior e o menor PLD médio foi de {reais(rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia)!.amplitude)}/MWh. </>
-                        : null}
-                      Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh.
-                    </span>
-                    <SeloNatureza natureza="CALCULADO" />
-                  </p>
-                </div>
-                <div className="lg:col-span-2" data-nivel="analisar">
-                  <PainelEvidencia
-                    nivelTitulo={3}
-                    id="amplitude"
-                    pergunta="Quando os submercados se separaram no último ano?"
-                    subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh"
-                    porQueImporta={<>Picos desta série marcam dias em que os PLDs médios das regiões ficaram mais distantes entre si.</>}
-                    oQueMudou={<>{textoAmplitude(rede.resumo_amplitude)}</>}
-                    comoInterpretar={<>Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.</>}
-                    naoConcluir={<>A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A causa de uma separação não é atribuída.</>}
-                    proveniencia={rede.proveniencia.amplitude}
-                  >
-                    <GraficoLinhas
-                      titulo="Diferença entre o maior e o menor PLD médio diário"
-                      dados={amplitude}
-                      chaveX="x"
-                      series={[{ id: "amp", rotulo: "Diferença máx.−mín.", cor: "var(--cor-energia)" }]}
-                      unidade="R$/MWh"
-                      casas={2}
-                      zeroNoEixo
-                    />
-                  </PainelEvidencia>
-                  <p className="mt-4 text-sm">
-                    <Link href={`${rotaPainel("p012")}#p012`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                      {perguntaPainel("p012")} Separação hora a hora, por par e com o fluxo na mesma hora
-                    </Link>
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <Indisponivel titulo="Dados de rede indisponíveis" motivo="As golds de rede ou de PLD não foram geradas nesta publicação." />
-            )}
-          </Capitulo>
-
-          {/* 5. Previsão */}
-          <Capitulo id="previsao" numero="5" subtitulo="Previsão" titulo="Para onde o PLD pode ir?">
-            <p className="max-w-prose2 font-serif text-xl leading-snug text-carvao">Previsão é distribuição de possibilidades, não um único número.</p>
-            <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
+          {/* 4. Previsão */}
+          <Capitulo id="previsao" rotulo="Previsão" titulo="Para onde o PLD pode ir?">
+            <p className="ed-lead max-w-prose2 text-carvao">Previsão é distribuição de possibilidades, não um único número.</p>
+            <div className="grid items-start gap-8 lg:grid-cols-2">
               <IlustracaoDistribuicao />
               <div>
                 {prev && !prev.atual.disponivel ? (
@@ -781,7 +940,7 @@ export default function PldPage() {
                     </p>
                   </Indisponivel>
                 ) : prev && prev.atual.disponivel ? (
-                  <div className="border border-linha bg-superficie p-5">
+                  <div className="border-l-2 border-energia pl-4">
                     <p className="rotulo text-mineral">Previsão publicada</p>
                     <p className="mt-2 text-sm leading-relaxed text-carvao">
                       Há publicação do modelo em produção no arquivo imutável de previsões. Cada registro traz modelo, versão, corte e faixas de incerteza.
@@ -796,23 +955,23 @@ export default function PldPage() {
               </div>
             </div>
 
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-              <div className="border border-linha bg-superficie p-5">
-                <h3 className="font-serif text-lg text-carvao">Como ler, quando houver previsão</h3>
+            <div className="grid gap-x-8 gap-y-6 md:grid-cols-3">
+              <div className="border-l-2 border-linha pl-4">
+                <h3 className="ed-h3 font-serif text-carvao">Como ler, quando houver previsão</h3>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                   A mediana é o valor central da distribuição. As faixas mostram onde o realizado caiu no passado em casos comparáveis. A
                   frase &quot;em cerca de 80% dos casos&quot; só aparece quando a cobertura medida sustentar; caso contrário, a página diz
                   quanto a faixa realmente cobriu.
                 </p>
               </div>
-              <div className="border border-linha bg-superficie p-5">
-                <h3 className="font-serif text-lg text-carvao">O que mudou desde a previsão anterior</h3>
+              <div className="border-l-2 border-linha pl-4">
+                <h3 className="ed-h3 font-serif text-carvao">O que mudou desde a previsão anterior</h3>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                   Sem previsões publicadas para comparar. Quando houver, esta seção separa o que <strong className="font-medium">mudou na informação</strong> (EAR, ENA, carga, renováveis, térmicas, intercâmbio) do que foi <strong className="font-medium">contribuição do modelo</strong>, que nunca é chamada de causa.
                 </p>
               </div>
-              <div className="border border-linha bg-superficie p-5">
-                <h3 className="font-serif text-lg text-carvao">Por que confiar? O modelo tem acertado?</h3>
+              <div className="border-l-2 border-linha pl-4">
+                <h3 className="ed-h3 font-serif text-carvao">Por que confiar? O modelo tem acertado?</h3>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                   Ainda não há previsão publicada com realizado para comparar. Os resultados retrospectivos da pesquisa estão{" "}
                   {mods?.publicacao_resultados.liberada ? "no registro de modelos" : "retidos até a conclusão da revisão da pesquisa e a liberação pelo responsável pela plataforma"}.
@@ -820,9 +979,8 @@ export default function PldPage() {
                 </p>
               </div>
             </div>
-            <div data-nivel="auditar" className="mt-8 border border-linha bg-superficie p-6">
-              <h3 className="font-serif text-xl text-carvao">Regras de governança aplicadas</h3>
-              <dl className="mt-4 grid gap-4 md:grid-cols-2">
+            <SecaoDoPainel id="governanca" titulo="Regras de governança aplicadas" nivel="auditar">
+              <dl className="grid gap-4 md:grid-cols-2">
                 {prev &&
                   Object.entries(prev.regras).map(([k, v]) => (
                     <div key={k}>
@@ -831,10 +989,10 @@ export default function PldPage() {
                     </div>
                   ))}
               </dl>
-              <p className="mt-4 text-sm text-carvao-muted">
+              <p className="text-sm text-carvao-muted">
                 Validações automáticas, executadas a cada atualização antes de publicar (validador de governança do código do portal), bloqueiam: publicação de modelo não promovido, uso de dado posterior ao corte, alteração silenciosa de registro publicado, previsão sem versão ou snapshot, faixa não calibrada rotulada como 80%, cenário como previsão e ausência como número.
               </p>
-            </div>
+            </SecaoDoPainel>
           </Capitulo>
         </ModoProfundidade>
       </main>

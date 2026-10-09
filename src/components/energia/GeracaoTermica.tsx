@@ -6,6 +6,7 @@ import { GeracaoAviso, GeracaoEscolha, GeracaoRecorte } from "@/components/energ
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -51,6 +52,10 @@ import type { CategoriaCombustivel } from "@/lib/energia/tipos-geracao";
  * combustível, e a soma dos motivos de cada barra fecha com a geração verificada do
  * combustível, a menos da parcela "não classificada" publicada na tabela. Nada é inferido
  * do preço.
+ *
+ * Ordem da página: o veredito, a figura principal (combustível por motivo) com a legenda dos motivos e do recorte, a
+ * tabela equivalente e as notas do painel (`notas`); depois seções visíveis com pergunta própria (o motivo mês a mês e
+ * as usinas) e, em Analisar, o combustível mês a mês. As medidas de abertura (12 meses) ficam na faixa de métricas da página.
  */
 const ESQUEMA = {
   us: campo(tiposUrl.texto({ max: 40 }), ""),
@@ -70,13 +75,14 @@ export function GeracaoTermica({
   termica,
   fonte,
   versao,
-  destaques,
+  notas,
 }: {
   /** A gold da térmica sem as partes que só a auditoria usa (CVU, universo, identidade), montadas no servidor. */
   termica: TermicaCliente;
   fonte: string;
   versao: string;
-  destaques?: ReactNode;
+  /** Notas do painel (NotasDoPainel), logo depois da figura principal e da tabela. */
+  notas?: ReactNode;
 }) {
   const t = termica;
   const [v, definir] = useEstadoUrl(ESQUEMA);
@@ -105,23 +111,13 @@ export function GeracaoTermica({
   const combustivelMensal = useMemo(() => linhasCombustivelMensal(t, noHistorico), [t, chaveHistorico]);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
 
+  const motivosNoGrafico = t.motivos.filter((m) => cruzado.motivos.includes(m.id));
+
   return (
     <div className="space-y-6">
       <RespostaCurta id="p022" veredito={vereditoTermica(t) || respostaTermica(t)}>
         {respostaTermica(t)}
       </RespostaCurta>
-
-      <GeracaoRecorte
-        periodo={`${mesAno(u.inicio)} a ${mesAno(u.fim)} (12 meses completos, ${num(u.horas, 0)} horas); série mensal desde ${mesAno(t.primeiro_mes_na_gold)} e no arquivo desde ${mesAno(t.primeiro_mes)}`}
-        universo={
-          <>
-            Usinas térmicas despachadas pelo ONS <span data-nivel="analisar">(Tipo I e II-A) </span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
-          </>
-        }
-        unidade="MWmed (média do período), GWh (energia) e % da geração térmica verificada; CVU em R$/MWh"
-      />
-
-      {destaques}
 
       <GraficoBarras
         titulo={`Geração térmica por combustível e motivo de despacho, ${mesAno(u.inicio)} a ${mesAno(u.fim)}`}
@@ -135,16 +131,27 @@ export function GeracaoTermica({
         empilhado
         rotulosValor
       />
-      <details className="text-sm leading-relaxed text-carvao-muted" data-motivos="rotulos">
-        <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark underline underline-offset-4">O que cada motivo quer dizer, com o rótulo da base publicada</summary>
-        <ul className="list-disc space-y-1 pl-5">
-          {t.motivos
-            .filter((m) => cruzado.motivos.includes(m.id))
-            .map((m) => (
-              <li key={m.id}>{m.rotulo}</li>
-            ))}
+      <div data-motivos="rotulos" className="space-y-1">
+        <p className="rotulo text-mineral">O que cada motivo quer dizer, com o rótulo da base publicada</p>
+        <ul className="grid gap-x-8 gap-y-0.5 text-sm leading-snug text-carvao-muted sm:grid-cols-2">
+          {motivosNoGrafico.map((m) => (
+            <li key={m.id} className="flex items-start gap-2">
+              <span aria-hidden="true" className="mt-[0.4em] inline-block h-2 w-2 shrink-0" style={{ background: COR_MOTIVO[m.id] }} />
+              <span>{m.rotulo}</span>
+            </li>
+          ))}
         </ul>
-      </details>
+      </div>
+
+      <GeracaoRecorte
+        periodo={`${mesAno(u.inicio)} a ${mesAno(u.fim)} (12 meses completos, ${num(u.horas, 0)} horas); série mensal desde ${mesAno(t.primeiro_mes_na_gold)} e no arquivo desde ${mesAno(t.primeiro_mes)}`}
+        universo={
+          <>
+            Usinas térmicas despachadas pelo ONS <span data-nivel="analisar">(Tipo I e II-A) </span>, inclusive nucleares; {num(t.usinas_12m_resumo.usinas_com_geracao, 0)} usinas com geração no período
+          </>
+        }
+        unidade="MWmed (média do período), GWh (energia) e % da geração térmica verificada; CVU em R$/MWh"
+      />
       <TabelaInterativa
         titulo="Tabela equivalente: geração por combustível e motivo, 12 meses"
         colunas={colunasCombustivelMotivo(cruzado.motivos)}
@@ -158,8 +165,9 @@ export function GeracaoTermica({
         nota="Motivo sem geração no período fica fora das colunas (zero em todos os combustíveis). Não classificado é o total verificado menos a soma dos motivos, com sinal, como a fonte publica."
       />
 
-      <div className="space-y-4 border-t border-linha pt-5" id="motivos-mensal">
-        <h3 className="font-serif text-lg text-carvao">Por que as térmicas geraram, mês a mês</h3>
+      {notas}
+
+      <SecaoDoPainel id="motivos-mensal" titulo="Por que as térmicas geraram, mês a mês?">
         <GeracaoEscolha legenda="Período" opcoes={OPCOES_JANELA} valor={v.jt} onEscolher={(x) => definir({ jt: x })} />
         <GraficoBarras
           titulo={`Geração térmica média do SIN por motivo de despacho, ${mensal[0] ? mesAno(mensal[0].m) : ""} a ${ultimoMensal ? mesAno(ultimoMensal.m) : ""}`}
@@ -187,12 +195,12 @@ export function GeracaoTermica({
           chaveUrl="tm"
           nota="Unit commitment só existe a partir de jan/2020 (entrada do DESSEM na programação, segundo o dicionário do ONS); antes disso a coluna fica vazia. Constrained-off térmico é restrição de geração, publicado à parte e fora da soma."
         />
-      </div>
+      </SecaoDoPainel>
 
-      <div className="space-y-4 border-t border-linha pt-5" id="usinas">
-        <h3 className="font-serif text-lg text-carvao">
-          As {num(t.usinas_12m_resumo.publicadas, 0)} usinas com mais geração ({num(t.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% da energia térmica)
-        </h3>
+      <SecaoDoPainel
+        id="usinas"
+        titulo={`Quais usinas mais geraram? As ${num(t.usinas_12m_resumo.publicadas, 0)} com mais geração somam ${num(t.usinas_12m_resumo.cobertura_da_energia_pct, 1)}% da energia térmica`}
+      >
         <TabelaInterativa
           titulo="Usinas térmicas: geração, motivo principal, combustível e CVU"
           colunas={COLUNAS_USINAS_TERMICAS}
@@ -269,10 +277,9 @@ export function GeracaoTermica({
             />
           </>
         )}
-      </div>
+      </SecaoDoPainel>
 
-      <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5" id="combustiveis-mensal">
-        <h3 className="font-serif text-lg text-carvao">Geração térmica por combustível, mês a mês (até {LIMITE_COMPARACAO} na mesma escala)</h3>
+      <SecaoDoPainel nivel="analisar" id="combustiveis-mensal" titulo={`Geração térmica por combustível, mês a mês (até ${LIMITE_COMPARACAO} na mesma escala)`}>
         <Comparador
           rotulo={`Combustíveis (até ${LIMITE_COMPARACAO}); sem escolha, os três com mais geração na série`}
           entidades={comSerie.map((c) => ({ id: c, rotulo: CURTO_COMBUSTIVEL[c] }))}
@@ -309,7 +316,7 @@ export function GeracaoTermica({
           ordemInicial={{ coluna: "m", direcao: "desc" }}
           nota="Até 2025 o combustível vem pelo CEG da usina em outros conjuntos do ONS; desde 2026, do campo do próprio conjunto. As térmicas Tipo III sem combustível só aparecem na matriz efetiva."
         />
-      </div>
+      </SecaoDoPainel>
     </div>
   );
 }

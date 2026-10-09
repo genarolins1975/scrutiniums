@@ -1,30 +1,41 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { InclusaoAnalise, InclusaoAuditoria, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
-import { InclusaoClassesPof, InclusaoUfsPof } from "@/components/energia/InclusaoOrcamento";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
+import { InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
+import {
+  InclusaoClassesPof,
+  InclusaoLimiaresPof,
+  InclusaoMapaUfsPof,
+  InclusaoTabelaPof,
+  InclusaoTabelaUfsPof,
+  InclusaoTerritoriosPof,
+} from "@/components/energia/InclusaoOrcamento";
+import { OrcamentoComoInterpretar, OrcamentoNaoConcluir, OrcamentoPorQueImporta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   classesRenda,
   codigoUf,
+  destaquesRendaPof,
   FONTE_POF,
   inteiro,
   minusculaInicial,
   mudancaOrcamento,
   nomePof,
   orcamentoBase,
-  mes,
+  periodoPof,
   pctTexto,
   respostaOrcamento,
   rotaPainel,
-  textoPrecisaoPof,
+  textoPofHistorica,
   vereditoOrcamento,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -64,33 +75,108 @@ export default function OrcamentoPage() {
 
   const o = g.orcamento;
   const pofTotal = o.linhas.find((l) => l.territorio === "BR" && l.classe === "7999");
-  const per = o.proveniencia.microdados.periodo_referencia;
-  const periodoPof = `${mes(per.inicio)} a ${mes(per.fim)}`;
+  const periodo = periodoPof(o);
   // unidade dos valores em reais como a proveniência a publica (a parte antes de "; %", com a data de referência dos preços)
   const unidadeReais = o.proveniencia.microdados.unidade.split(";")[0].trim();
   const anoPublicacao = g.gerado_em.slice(0, 4);
+  const baseClasses = orcamentoBase(o, (l) => !codigoUf(l.territorio));
+  const baseUfs = orcamentoBase(o, (l) => !!codigoUf(l.territorio));
   const classeBaixa = classesRenda(o)[0];
-  const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
+  const destaques = destaquesRendaPof(baseClasses);
+  const periodoMedidas = `POF ${periodo}`;
+  const oQueMudou = mudancaOrcamento(o);
+  const comoInterpretar = <OrcamentoComoInterpretar o={o} />;
+  const naoConcluir = <OrcamentoNaoConcluir o={o} anoPublicacao={anoPublicacao} />;
 
   return (
     <>
       <CabecalhoEnergia atual="inclusao-energetica" />
       <MarcaVisita secao="energia:inclusao-orcamento" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo siglas={["IBGE"]}
+        <InclusaoNavegacao atual="p061" />
+        <CabecalhoModulo
+          siglas={["POF", "IBGE", "SIDRA"]}
           rotulo="Inclusão energética"
           titulo="Peso da energia no orçamento das famílias"
+          lead="Quanto da despesa e da renda das famílias vai para a energia elétrica, por faixa de renda, na Pesquisa de Orçamentos Familiares (POF) 2017-2018. Cada estimativa traz a sua precisão."
+          recorte={`${periodo} · Brasil, grandes regiões e UF · famílias, % da despesa total e da renda`}
+          fonte="IBGE, POF 2017-2018 (microdados e tabela 6715)"
           referencia={
             <>
               IBGE, Pesquisa de Orçamentos Familiares ({nomePof(o)}): microdados<span data-nivel="analisar"> ({o.proveniencia.microdados.fonte.recurso})</span> e tabela 6715 do SIDRA. Estatística histórica, sem atualização
               modelada. Processado em {carimbo(g.gerado_em)}.
             </>
           }
-        >
-          Quanto a conta de luz pesa no orçamento das famílias, por faixa de renda, com a precisão de cada estimativa. A razão de médias do IBGE e a média das participações
-          família a família aparecem lado a lado, porque respondem a perguntas diferentes.
-        </CabecalhoModulo>
-        <InclusaoNavegacao atual="p061" />
+          metricas={
+            <FaixaMetricas colunas={5} rotulo="Peso da energia no orçamento das famílias" nota={textoPofHistorica(o, anoPublicacao)}>
+              <Numero
+                variante="faixa"
+                rotulo="Razão de médias, todas as famílias"
+                natureza="ESTIMADO"
+                evidencia={o.evidencias.razao_medias_brasil}
+                formato="pct"
+                casas={1}
+                unidade="da despesa total"
+                periodo={periodoMedidas}
+                cor="var(--cor-energia)"
+                endereco={`${rotaPainel("p061")}#p061`}
+              />
+              {destaques.baixa && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Razão de médias, faixa de renda ${minusculaInicial(destaques.baixa.rotulo)}`}
+                  natureza="ESTIMADO"
+                  valor={destaques.baixa.valor}
+                  formato="pct"
+                  casas={1}
+                  unidade="da despesa total"
+                  periodo={periodoMedidas}
+                  motivoAusencia="Estimativa suprimida pela precisão."
+                />
+              )}
+              {destaques.alta && (
+                <Numero
+                  variante="faixa"
+                  rotulo={`Razão de médias, faixa de renda ${minusculaInicial(destaques.alta.rotulo)}`}
+                  natureza="ESTIMADO"
+                  valor={destaques.alta.valor}
+                  formato="pct"
+                  casas={1}
+                  unidade="da despesa total"
+                  periodo={periodoMedidas}
+                  motivoAusencia="Estimativa suprimida pela precisão."
+                />
+              )}
+              <Numero
+                variante="faixa"
+                rotulo="Média das participações na despesa, todas as famílias"
+                natureza="ESTIMADO"
+                evidencia={o.evidencias.media_razoes_desp_brasil}
+                formato="pct"
+                casas={1}
+                unidade="da despesa total"
+                periodo={periodoMedidas}
+                endereco={`${rotaPainel("p061")}#p061`}
+              />
+              <Numero
+                variante="faixa"
+                rotulo={`Média das participações na renda, faixa de renda ${classeBaixa ? minusculaInicial(classeBaixa.rotulo) : "mais baixa"}`}
+                natureza="ESTIMADO"
+                evidencia={o.evidencias.media_razoes_renda_classe_baixa}
+                formato="pct"
+                casas={1}
+                unidade="da renda"
+                periodo={periodoMedidas}
+                nota={
+                  classeBaixa && o.sensibilidade_media_razoes_renda[classeBaixa.codigo]
+                    ? `Mediana ${pctTexto(o.sensibilidade_media_razoes_renda[classeBaixa.codigo].mediana_renda_pct, 2)}: a média é sensível às famílias que declaram renda menor que a despesa com energia.`
+                    : undefined
+                }
+                endereco={`${rotaPainel("p061")}#p061`}
+              />
+            </FaixaMetricas>
+          }
+        />
         <ModoProfundidade>
           <Bloco id="orcamento">
             <PainelEvidencia
@@ -98,87 +184,57 @@ export default function OrcamentoPage() {
               pergunta={o.pergunta}
               subtitulo={`Energia elétrica na despesa total e na renda das famílias, por classe de rendimento · ${nomePof(o)} · %`}
               natureza="ESTIMADO"
-              porQueImporta={
-                <>
-                  O mesmo valor de conta pesa diferente conforme a renda. A POF é a única pesquisa oficial que mede a despesa das famílias com energia elétrica junto com a despesa total e a
-                  renda, com plano amostral que permite estimar a precisão.
-                </>
-              }
-              oQueMudou={mudancaOrcamento(o)}
-              comoInterpretar={
-                <>
-                  Razão de médias é a despesa média com energia dividida pela despesa média total (a &ldquo;distribuição&rdquo; que o IBGE publica). Média das participações calcula a
-                  participação em cada família e tira a média ponderada. As duas respondem a perguntas diferentes e aparecem lado a lado; a mediana mostra a família típica. Precisão pelo
-                  plano amostral (estrato e unidade primária): {textoPrecisaoPof(o.regra_precisao)}
-                </>
-              }
-              naoConcluir={
-                <>
-                  Não representa {anoPublicacao}: os preços e a Tarifa Social mudaram desde {per.fim.slice(0, 4)}, e nenhuma atualização modelada é publicada. Não existe recorte municipal: a
-                  amostra não permite.
-                  Os limiares de {o.limiares_pct.map((x) => pctTexto(x, 0)).join(", ")} não definem pobreza energética; são sensibilidade.
-                </>
-              }
+              porQueImporta={<OrcamentoPorQueImporta />}
+              oQueMudou={oQueMudou}
+              comoInterpretar={comoInterpretar}
+              naoConcluir={naoConcluir}
+              naoConcluirNoCorpo
               proveniencia={o.proveniencia.microdados}
               complementares={[{ rotulo: "Tabela 6715 (SIDRA)", p: o.proveniencia.sidra }]}
             >
               <div className="space-y-6">
-                <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
-                  {respostaOrcamento(o)}
-                </RespostaCurta>
-                <InclusaoRecorte
-                  periodo={`${periodoPof}; ${o.referencia}`}
-                  universo={
-                    <>
-                      {inteiro(pofTotal?.n_amostra)} famílias na amostra, que representam {inteiro(pofTotal?.familias)} famílias; Brasil e grandes regiões por classe; UF só no total
-                    </>
+                <InclusaoClassesPof
+                  orc={baseClasses}
+                  resposta={
+                    <RespostaCurta id="p061" veredito={vereditoOrcamento(o)}>
+                      {respostaOrcamento(o)}
+                    </RespostaCurta>
                   }
-                  unidade="% da despesa total ou da renda; R$ por família e mês"
+                  recorte={
+                    <InclusaoRecorte
+                      periodo={`${periodo}; ${o.referencia}`}
+                      universo={
+                        <>
+                          {inteiro(pofTotal?.n_amostra)} famílias na amostra, que representam {inteiro(pofTotal?.familias)} famílias; Brasil e grandes regiões por classe; UF só no total
+                        </>
+                      }
+                      unidade={`% da despesa total ou da renda; ${unidadeReais}`}
+                    />
+                  }
+                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
                 />
-                <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
-                  Estatística histórica: a POF mais recente publicada pelo IBGE é a {nomePof(o)}. O painel mostra o que ela mediu e não projeta o resultado para {anoPublicacao}.
-                </p>
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <Numero
-                    rotulo="Razão de médias, todas as famílias"
-                    natureza="ESTIMADO"
-                    evidencia={o.evidencias.razao_medias_brasil}
-                    formato="pct"
-                    casas={1}
-                    tamanho="medio"
-                    endereco={`${rotaPainel("p061")}#p061`}
-                  />
-                  <Numero
-                    rotulo="Média das participações na despesa, todas as famílias"
-                    natureza="ESTIMADO"
-                    evidencia={o.evidencias.media_razoes_desp_brasil}
-                    formato="pct"
-                    casas={1}
-                    tamanho="medio"
-                    endereco={`${rotaPainel("p061")}#p061`}
-                  />
-                  <Numero
-                    rotulo={`Média das participações na renda, ${classeBaixa ? minusculaInicial(classeBaixa.rotulo) : "classe mais baixa"}`}
-                    natureza="ESTIMADO"
-                    evidencia={o.evidencias.media_razoes_renda_classe_baixa}
-                    formato="pct"
-                    casas={1}
-                    tamanho="medio"
-                    nota={
-                      classeBaixa && o.sensibilidade_media_razoes_renda[classeBaixa.codigo]
-                        ? `Mediana ${pctTexto(o.sensibilidade_media_razoes_renda[classeBaixa.codigo].mediana_renda_pct, 2)}: a média é sensível às famílias que declaram renda menor que a despesa com energia.`
-                        : undefined
-                    }
-                    endereco={`${rotaPainel("p061")}#p061`}
-                  />
-                </div>
-                <InclusaoClassesPof orc={orcamentoBase(o, (l) => !codigoUf(l.territorio))} fonte={FONTE_POF} />
 
-                <InclusaoAnalise titulo="Por UF, só no total das famílias">
-                  <InclusaoUfsPof orc={orcamentoBase(o, (l) => !!codigoUf(l.territorio))} fonte={FONTE_POF} periodo={periodoPof} unidadeReais={unidadeReais} />
-                </InclusaoAnalise>
+                <SecaoDoPainel id="territorios" titulo="Brasil e grandes regiões, na mesma escala">
+                  <InclusaoTerritoriosPof orc={baseClasses} />
+                </SecaoDoPainel>
 
-                <InclusaoAuditoria titulo="Conferência com a tabela 6715 e sensibilidade da média na renda">
+                <SecaoDoPainel id="limiares" titulo="Quantas famílias passam de um limiar de comprometimento?">
+                  <InclusaoLimiaresPof orc={baseClasses} fonte={FONTE_POF} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="ufs" titulo="E por UF, no total das famílias?" lead="O peso da energia em cada UF, sem separar por faixa de renda: a amostra por classe nas UF é pequena demais.">
+                  <InclusaoMapaUfsPof orc={baseUfs} periodo={periodo} unidadeReais={unidadeReais} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="todas-medidas" nivel="analisar" titulo="Todas as medidas do território, com a precisão de cada uma">
+                  <InclusaoTabelaPof orc={baseClasses} fonte={FONTE_POF} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="tabela-ufs" nivel="analisar" titulo="Por UF, só no total das famílias">
+                  <InclusaoTabelaUfsPof orc={baseUfs} fonte={FONTE_POF} />
+                </SecaoDoPainel>
+
+                <SecaoDoPainel id="conferencia-6715" nivel="auditar" titulo="Conferência com a tabela 6715 e sensibilidade da média na renda">
                   <p className="text-sm text-carvao-muted">
                     {o.conferencia.comparacoes} comparações entre os microdados refeitos e a tabela 6715: despesa média com energia dentro de {num(o.conferencia.energia_max_diferenca_reais, 3)}{" "}
                     real em {o.conferencia.energia_ate_1_centavo}; distribuição dentro de {num(o.conferencia.distribuicao_max_diferenca_pp, 3)} ponto percentual em{" "}
@@ -239,9 +295,9 @@ export default function OrcamentoPage() {
                       .
                     </p>
                   )}
-                </InclusaoAuditoria>
+                </SecaoDoPainel>
 
-                <InclusaoSeguir ancora="p061" href={rotaPainel("p062")} pergunta={g.acesso.pergunta} downloads={downloads(["/energia/series/inclusao_pof.csv"])} />
+                <InclusaoSeguir ancora="p061" proximo={{ href: rotaPainel("p062"), pergunta: g.acesso.pergunta }} downloads={[]} />
               </div>
             </PainelEvidencia>
           </Bloco>

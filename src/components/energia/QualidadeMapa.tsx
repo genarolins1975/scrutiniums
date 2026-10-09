@@ -39,8 +39,9 @@ import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qual
  * Seleção sincronizada: clicar no mapa, escolher na busca do mapa ou numa linha da
  * tabela grava `?mun=` na URL; o mapa acende o município, a tabela marca a linha e o
  * quadro ao lado mostra os conjuntos, as distribuidoras e o histórico anual delas diante
- * do limite. "Comparar estas distribuidoras" leva a escolha para `?dist=`, lida pelos
- * pequenos múltiplos e pelo painel de limites. Voltar e avançar restauram tudo.
+ * do limite, em DEC e em FEC, cada um no seu bloco. "Comparar estas distribuidoras" leva a escolha para
+ * `?dist=`, lida pelos pequenos múltiplos e pelo painel de limites, e o link leva o leitor até a seção
+ * de comparação. Voltar e avançar restauram tudo.
  *
  * Peso: a malha municipal (1,3 MB), o CSV de municípios (o mesmo arquivo de download)
  * e as séries por distribuidora só são buscados quando o mapa chega perto da tela ou
@@ -152,6 +153,7 @@ export function QualidadeMapa({
   const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, LIMITE_COMPARACAO) : [];
   const foraDaComparacao = selecionado ? Math.max(0, selecionado.cnpjs.length - LIMITE_COMPARACAO) : 0;
   const dadosDec = useMemo(() => (serie && cnpjsSel.length ? linhasSerieDistribuidoras(serie, cnpjsSel, "dec") : []), [serie, cnpjsSel.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
+  const dadosFec = useMemo(() => (serie && cnpjsSel.length ? linhasSerieDistribuidoras(serie, cnpjsSel, "fec") : []), [serie, cnpjsSel.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-4">
@@ -206,7 +208,7 @@ export function QualidadeMapa({
               <p role="status">Carregando os municípios…</p>
             ) : (
               <button type="button" className={BOTAO} onClick={() => setAtivo(true)}>
-                Carregar o mapa agora
+                Carregar o mapa
               </button>
             )}
           </div>
@@ -240,9 +242,9 @@ export function QualidadeMapa({
             </dl>
             <div className="flex flex-wrap gap-2">
               {selecionado.cnpjs.length > 0 && (
-                <button type="button" className={BOTAO} onClick={() => definir({ dist: cnpjsSel })}>
-                  Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} nos pequenos múltiplos
-                </button>
+                <a href="#comparar-distribuidoras" className={BOTAO} onClick={() => definir({ dist: cnpjsSel })}>
+                  Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} com o próprio limite
+                </a>
               )}
               <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
                 Limpar município
@@ -256,26 +258,31 @@ export function QualidadeMapa({
             )}
             {selecionado.cnpjs.length > 0 &&
               (serie ? (
-                <PequenosMultiplos
-                  titulo={`DEC anual e limite das distribuidoras que atendem ${selecionado.nome}`}
-                  dados={dadosDec}
-                  chaveX="ano"
-                  formatoX="texto"
-                  unidade="h"
-                  casas={2}
-                  colunas={2}
-                  nivelTitulo={4}
-                  alturaPainel={130}
-                  paineis={cnpjsSel.map((c) => ({
-                    id: c,
-                    titulo: rotuloCnpj(c),
-                    series: [
-                      { id: `dec_${c}`, rotulo: "DEC apurado", cor: "var(--cor-energia)" },
-                      { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
-                    ],
-                    nota: serie.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
-                  }))}
-                />
+                <div className="grid gap-x-10 gap-y-6 lg:grid-cols-2 [&>*]:min-w-0">
+                  {(["dec", "fec"] as const).map((ind) => (
+                    <PequenosMultiplos
+                      key={ind}
+                      titulo={`${ind === "dec" ? "DEC" : "FEC"} anual e limite das distribuidoras que atendem ${selecionado.nome}`}
+                      dados={ind === "dec" ? dadosDec : dadosFec}
+                      chaveX="ano"
+                      formatoX="texto"
+                      unidade={ind === "dec" ? "h" : "interrupções"}
+                      casas={2}
+                      colunas={2}
+                      nivelTitulo={4}
+                      alturaPainel={130}
+                      paineis={cnpjsSel.map((c) => ({
+                        id: c,
+                        titulo: rotuloCnpj(c),
+                        series: [
+                          { id: `${ind}_${c}`, rotulo: ind === "dec" ? "DEC apurado" : "FEC apurado", cor: "var(--cor-energia)" },
+                          { id: `lim_${c}`, rotulo: "Limite", cor: "var(--serie-referencia)", tracejada: true },
+                        ],
+                        nota: serie.distribuidoras[c]?.quebras.length ? `perímetro mudou em ${serie.distribuidoras[c].quebras.join(", ")}` : undefined,
+                      }))}
+                    />
+                  ))}
+                </div>
               ) : erroSerie ? (
                 <p role="alert" className="text-sm text-carvao">
                   Histórico indisponível ({erroSerie}); a série anual por distribuidora está no CSV da lista de downloads do painel.
