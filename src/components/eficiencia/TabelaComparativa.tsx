@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import {
   COLUNAS,
   MEDIDA,
+  rotuloColuna,
   ROTULO_STATUS,
   formata,
   nomeEtapa,
@@ -171,7 +172,7 @@ export function TabelaComparativa({
                     {c.porEtapa ? ` · ${nomeEtapa(dados, etapa)}` : ""}
                   </span>
                   <button type="button" onClick={() => aoOrdenar(c.id)} className="inline-flex min-h-[44px] min-w-[44px] items-end justify-end gap-1 text-right font-semibold text-obee-tinta">
-                    {c.rotulo}
+                    {rotuloColuna(c, disc)}
                     {ordem === c.id ? <span aria-hidden="true">{decrescente ? "↓" : "↑"}</span> : null}
                   </button>
                 </th>

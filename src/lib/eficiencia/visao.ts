@@ -66,7 +66,7 @@ export const ROTULO_NAVEGACAO: { id: "panorama" | Tema; rotulo: string; caminho:
 export const DEFINICAO_CURTA: Record<MedidaId, { titulo: string; texto: string }> = {
   despesa: { titulo: "Total", texto: "Escala orçamentária: volume da despesa liquidada na função Educação. Depende do tamanho da cidade." },
   despesa_hab: { titulo: "Por habitante", texto: "Relação com a população do território: despesa liquidada ÷ população residente. Não é gasto por aluno." },
-  despesa_mat: { titulo: "Por matrícula", texto: "Despesa de aplicação direta ÷ matrículas da rede municipal. Razão orçamentária, não custo do aluno." },
+  despesa_mat: { titulo: "Por matrícula", texto: "Despesa de aplicação direta ÷ matrículas da rede municipal. Razão orçamentária, não custo do aluno: o denominador não inclui as escolas privadas conveniadas, e o numerador inclui a aplicação direta com beneficiário indeterminado (serviços de terceiros, auxílios)." },
   matriculas: { titulo: "Matrículas na rede", texto: "Matrículas nas escolas municipais, por etapa. Uma matrícula não é uma pessoa." },
   conveniadas: { titulo: "Em escolas conveniadas", texto: "Matrículas em escolas privadas conveniadas só com o município; contadas à parte da rede." },
   atu: { titulo: "Alunos por turma", texto: "Tamanho médio das turmas na rede municipal, por etapa." },

@@ -56,11 +56,17 @@ export function metaEducacao(): { gerado_em: string | null; dados_capturados_ate
 }
 
 
-/** Parcela intraorçamentária da função Educação por capital e ano (RREO, 6º bimestre), em % da função; pares sem RREO ficam de fora. */
+/** Parcela intraorçamentária da função Educação por capital e ano (RREO, 6º bimestre; MSC quando o RREO diverge da DCA), em % da função; pares sem RREO ficam de fora. */
 function intraPct(g: GoldEducacao): [number, number, number][] {
   const out: [number, number, number][] = [];
   for (const o of g.observacoes) {
     if (o.indicador !== "edu.despesa.funcao_educacao" || o.componente !== "nominal" || o.status !== "OBSERVADO") continue;
+    // onde o RREO diverge da DCA e a MSC de dezembro confirma a DCA, a parcela vem da MSC (modalidade 91 sobre o total liquidado)
+    const m = o.conferencia?.msc as { liquidado_total?: number; intra_mod91?: number } | null | undefined;
+    if (o.conferencia?.situacao === "RECONCILIADA_MSC" && m && typeof m.intra_mod91 === "number" && typeof m.liquidado_total === "number" && m.liquidado_total > 0) {
+      out.push([o.ano, o.ente, Number(((100 * m.intra_mod91) / m.liquidado_total).toFixed(4))]);
+      continue;
+    }
     const r = o.conferencia?.rreo;
     if (!r || r.intra === null || r.intra === undefined) continue;
     const total = r.exceto_intra + r.intra;

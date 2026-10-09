@@ -1022,7 +1022,7 @@ const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   despesa: (m) => unidade("despesa", m),
   populacao: () => "habitantes",
   despesa_hab: (m) => unidade("despesa_hab", m),
-  intra_pct: () => "% da despesa da função Educação (RREO, 6º bimestre)",
+  intra_pct: () => "% da despesa da função Educação (RREO, 6º bimestre; MSC onde o RREO diverge da DCA)",
   matriculas: () => "matrículas",
   despesa_mat: (m) => unidade("despesa_mat", m),
   conveniadas_pct: () => "% das matrículas da rede municipal",
@@ -1031,6 +1031,10 @@ const UNIDADE_COLUNA: Record<ColunaId, (moeda: Moeda) => string> = {
   ideb: () => "índice de 0 a 10",
   saeb: () => "pontos na escala Saeb",
 };
+
+/** Rótulo da coluna com a disciplina, no Saeb: o valor muda com a disciplina e o cabeçalho tem de dizer qual. */
+export const rotuloColuna = (c: { id: string; rotulo: string }, disc: Disciplina): string =>
+  c.id === "saeb" ? `${c.rotulo}, ${disc === "matematica" ? "Matemática" : "Língua Portuguesa"}` : c.rotulo;
 
 export function linhasCsvTabelaComparativa(
   d: DadosPainel, t: ReturnType<typeof tabelaComparativa>, ano: number, etapa: EtapaId, moeda: Moeda, grupo: Grupo, capSel: CapitalPainel, medida: MedidaId, ix: Indice, disc: Disciplina,
@@ -1043,7 +1047,7 @@ export function linhasCsvTabelaComparativa(
     for (const c of COLUNAS) {
       const cel = l.celulas[c.id];
       out.push([
-        l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, c.rotulo,
+        l.cap.nome, String(l.cap.cod), l.cap.uf, String(ano), c.porEtapa ? nomeEtapa(d, etapa) : "Não depende da etapa", grp, rotuloColuna(c, disc),
         cel.valor === null ? "" : String(cel.valor), cel.texto, UNIDADE_COLUNA[c.id](moeda),
         cel.foraDoEscopo ? (cel.ponto === SEM_EDICAO ? "Sem edição neste ano (medida bienal)" : "Fora do escopo da etapa") : ROTULO_STATUS[cel.ponto.status],
         cel.ponto.status !== "OBSERVADO" || cel.foraDoEscopo ? "" : cel.elegivel ? "sim" : "nao",
@@ -1171,7 +1175,7 @@ const DESCRICAO_COLUNA: Record<string, string> = {
   quartis_exibidos: "'sim' quando há 8 ou mais valores e os quartis são mostrados.",
   razao_agregada_do_grupo: "Soma dos numeradores ÷ soma dos denominadores das mesmas capitais (despesa por habitante e por matrícula); é diferente da média simples.",
   politica_de_referencias: "Como as referências foram calculadas.",
-  parcela_intraorcamentaria_pct_da_funcao: "Despesa: parcela das operações intraorçamentárias na despesa liquidada da função Educação (RREO, 6º bimestre), em %, que fica fora do valor. Vazio nas demais medidas.",
+  parcela_intraorcamentaria_pct_da_funcao: "Despesa: parcela das operações intraorçamentárias na despesa liquidada da função Educação (RREO, 6º bimestre; MSC de dezembro onde o RREO diverge da DCA e a MSC confirma a DCA), em %, que fica fora do valor. Vazio nas demais medidas.",
   etapa_dos_resultados: "Etapa de ensino que vale para as colunas de resultado e atendimento por etapa.",
   coluna: "Medida a que a linha se refere.",
   medida_de_referencia: "Medida usada nas colunas de mediana, média e diferença.",

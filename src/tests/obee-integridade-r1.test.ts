@@ -14,6 +14,7 @@ import {
   intraDaCapital,
   linhasCsvComparacao,
   linhasCsvSerie,
+  rotuloColuna,
   perimetroIntra,
   serie,
   serieDaMediana,
@@ -312,5 +313,24 @@ describe("CSV da série: marca de base e mudança de base", () => {
     const ib = CABECALHO_CSV_SERIE.indexOf("marca_de_base");
     expect(linhas.map((l) => l[ib])).toEqual(["sim", "nao", "nao", "sim", "sim"]);
     expect(linhas.map((l) => l[im])).toEqual(["nao", "sim", "nao", "sim", "nao"]);
+  });
+});
+
+describe("correções da rodada 3", () => {
+  it("onde o RREO diverge da DCA e a MSC a confirma, a parcela intraorçamentária vem da MSC", () => {
+    const bv = intraDaCapital(d, 1400100, 2024)!;
+    expect(bv).toBeCloseTo((100 * 36694376.38) / 694772312.72, 2);
+    expect(bv).toBeLessThan(6);
+  });
+
+  it("o cabeçalho do Saeb traz a disciplina", () => {
+    expect(rotuloColuna({ id: "saeb", rotulo: "Saeb" }, "matematica")).toBe("Saeb, Matemática");
+    expect(rotuloColuna({ id: "saeb", rotulo: "Saeb" }, "portugues")).toBe("Saeb, Língua Portuguesa");
+    expect(rotuloColuna({ id: "atu", rotulo: "Alunos por turma" }, "portugues")).toBe("Alunos por turma");
+  });
+
+  it("a mediana por matrícula muda de conjunto de capitais ao longo dos anos, e o dado confirma", () => {
+    const m = serieDaMediana(ix, "despesa_mat", "total", "nominal", "matematica").filter((x) => x.valor !== null);
+    expect(new Set(m.map((x) => x.n)).size).toBeGreaterThan(1);
   });
 });

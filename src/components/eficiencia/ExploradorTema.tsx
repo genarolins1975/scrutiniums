@@ -181,13 +181,20 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     ? serie(ix, medida, cap.cod, etapa, s.moeda, s.disc)
     : medianaPorAno.map((m) => ({ ano: m.ano, ...(m.valor === null ? pontoVazio() : { ...pontoVazio(), valor: m.valor, status: "OBSERVADO" as const, elegivel: true, quebraSerie: m.quebraSerie }) }));
   const anotacoes = medida === "aprovacao" ? [PANDEMIA_APROVACAO] : medida === "ideb" || medida === "saeb" ? [PANDEMIA_IDEB] : [];
-  const fraseSerie = fraseEvolucao(
+  const fraseSerieBase = fraseEvolucao(
     pontosSerie.map((p) => ({ ano: p.ano, valor: p.valor, elegivel: p.elegivel, quebraSerie: p.quebraSerie })),
     medida,
     medida === "despesa_hab" ? "a população de referência muda de base (estimativa, Censo ou relação do DOU)" : "a base do dado mudou",
     cap ? `Em ${nomeCap}` : "Na mediana das capitais",
     anotacoes,
   );
+  // mediana sem capital: o conjunto de capitais com valor muda de um ano para outro, e a frase precisa dizer isso
+  const comValorNaSerie = medianaPorAno.filter((m) => m.valor !== null);
+  const conjuntoVaria = !cap && comValorNaSerie.length > 1 && new Set(comValorNaSerie.map((m) => m.n)).size > 1;
+  const fraseSerie =
+    conjuntoVaria && !fraseSerieBase.startsWith("Entre ")
+      ? `${fraseSerieBase} Cada mediana usa as capitais com valor comparável no ano (${comValorNaSerie.map((m) => `${m.n} em ${m.ano}`).join(", ")}): o conjunto muda, então a variação não é a de um grupo constante.`
+      : fraseSerieBase;
 
   const linhasTabela = [
     ...comp.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, fmt(i.valor), i.ponto.nota ? "Incluída, com nota" : "Incluída"]),
@@ -297,11 +304,11 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
           {visao === "evolucao" ? fraseSerie : visao === "detalhe" ? `${DEFINICAO_CURTA[medida].titulo}: ${opcoesDetalhe?.toLowerCase()}${cap ? `, ${nomeCap}` : ""}` : titulo}
         </h2>
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          {subtitulo}. {fraseCobertura(comp.incluidas.length, comp.universo.length)}
+          {subtitulo}.{visao === "evolucao" ? "" : ` ${fraseCobertura(comp.incluidas.length, comp.universo.length)}`}
         </p>
         {ehDespesa(medida) && (
           <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
-            <span className="font-semibold">Perímetro.</span> <Siglas texto={textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} />
+            <span className="font-semibold">Perímetro.</span> <Siglas texto={`${textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} A parcela de cada capital está na tabela completa de Comparar capitais e no CSV.`} />
           </p>
         )}
         {fraseCap && visao !== "evolucao" && visao !== "detalhe" && <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">{fraseCap}</p>}
