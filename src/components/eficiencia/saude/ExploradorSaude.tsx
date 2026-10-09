@@ -124,7 +124,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
   const itensFrase = c.incluidas.map((i) => ({ nome: i.cap.nome, uf: i.cap.uf, valor: i.valor }));
   const titulo = fraseAmplitude(itensFrase, m, ano, c.ref?.mediana ?? null);
   const fraseCap = cap ? fraseCapital(cap.nome, cap.uf, pt?.valor ?? null, c.ref?.mediana ?? null, c.ref?.n ?? 0, m, !!pt && pt.valor !== null && !incluidaCap) : null;
-  const unidadeNoTitulo = m.id === "icsap_taxa" ? null : m.unidade(s.moeda); // o rótulo da taxa já traz a unidade
+  const unidadeNoTitulo = /por 10 mil|por 100 mil/.test(m.rotulo) ? null : m.unidade(s.moeda); // o rótulo das taxas já traz a unidade
   const subtitulo = [m.rotulo, unidadeNoTitulo, periodo, `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}`, m.universo].filter(Boolean).join(" · ");
 
   // referências externas válidas para o gráfico: a primeira de comparabilidade direta (nacional, ou o mínimo normativo)
