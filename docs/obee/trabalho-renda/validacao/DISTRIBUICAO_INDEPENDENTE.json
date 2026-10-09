@@ -1,0 +1,111 @@
+{
+  "payloadBytes": 383266,
+  "gzipBytes": 283716,
+  "gzipMtime": 0,
+  "bytesDecodificados": 6593631,
+  "sha256": "1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a",
+  "aprovadoSha256": "1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a",
+  "identicoAoAprovado": true,
+  "observacoes": 29972,
+  "indicadores": 20,
+  "metadadosVariacaoEstoque": {
+    "id": "saldo-formal",
+    "nome": "Variação mensal do estoque formal",
+    "unidade": "vínculos",
+    "fonteId": "caged-sgs",
+    "universo": "Diferença entre os estoques nacionais de vínculos formais dos meses consecutivos t e t−1, na mesma captura da série SGS 28763, sem ajuste sazonal.",
+    "limitacao": "Calculado como estoque(t) − estoque(t−1). Não equivale necessariamente ao saldo oficial de admissões menos desligamentos: revisões, ajustes e mudanças da base de estoque podem produzir diferenças. Último mês preliminar."
+  },
+  "testesDecoderCopiaIsolada": [
+    {
+      "caso": "valido_com_legado_desatualizado",
+      "exitCode": 0,
+      "geraBytesAprovados": true,
+      "preservaLegadoAposFalha": false,
+      "erro": [],
+      "idempotente": true,
+      "semTemporarioResidual": true
+    },
+    {
+      "caso": "base64_invalido",
+      "exitCode": 1,
+      "geraBytesAprovados": false,
+      "preservaLegadoAposFalha": true,
+      "erro": [
+        "file:///Users/gena/Documents/Codex/2026-10-09/m/work/validacao-distribuicao/base64_invalido/scripts/materializar-trabalho-renda.mjs:11",
+        "  throw new Error('Trabalho e Renda: payload base64 inválido.');",
+        "        ^",
+        "",
+        "Error: Trabalho e Renda: payload base64 inválido.",
+        "    at file:///Users/gena/Documents/Codex/2026-10-09/m/work/validacao-distribuicao/base64_invalido/scripts/materializar-trabalho-renda.mjs:11:9"
+      ]
+    },
+    {
+      "caso": "gzip_invalido",
+      "exitCode": 1,
+      "geraBytesAprovados": false,
+      "preservaLegadoAposFalha": true,
+      "erro": [
+        "node:internal/modules/run_main:107",
+        "    triggerUncaughtException(",
+        "    ^",
+        "",
+        "Error: incorrect header check",
+        "    at genericNodeError (node:internal/errors:998:15)"
+      ]
+    },
+    {
+      "caso": "hash_incompativel",
+      "exitCode": 1,
+      "geraBytesAprovados": false,
+      "preservaLegadoAposFalha": true,
+      "erro": [
+        "file:///Users/gena/Documents/Codex/2026-10-09/m/work/validacao-distribuicao/hash_incompativel/scripts/materializar-trabalho-renda.mjs:16",
+        "  throw new Error(`Trabalho e Renda: SHA-256 incompatível; esperado ${SHA256_SNAPSHOT}, recebido ${hash}.`);",
+        "        ^",
+        "",
+        "Error: Trabalho e Renda: SHA-256 incompatível; esperado 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a, recebido 8f9339b9e8bf3f878235bbe9763191afa08927875df0efdda745b6f81c4f08f7.",
+        "    at file:///Users/gena/Documents/Codex/2026-10-09/m/work/validacao-distribuicao/hash_incompativel/scripts/materializar-trabalho-renda.mjs:16:9"
+      ]
+    },
+    {
+      "caso": "payload_ausente",
+      "exitCode": 1,
+      "geraBytesAprovados": false,
+      "preservaLegadoAposFalha": true,
+      "erro": [
+        "node:fs:556",
+        "  return binding.open(",
+        "                 ^",
+        "",
+        "Error: ENOENT: no such file or directory, open '/Users/gena/Documents/Codex/2026-10-09/m/work/validacao-distribuicao/payload_ausente/public/eficiencia/trabalho-renda/snapshot.payload.gz.b64'",
+        "    at Object.openSync (node:fs:556:18)"
+      ]
+    }
+  ],
+  "todosOsTestesEsperados": true,
+  "outputProducaoLocal": {
+    "url": "http://127.0.0.1:3021/eficiencia/trabalho-renda/snapshot.json",
+    "bytes": 6593631,
+    "sha256": "1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a",
+    "identicoAoAprovado": true
+  },
+  "hooks": {
+    "predev": "node scripts/minify-obs.mjs",
+    "prebuild": "node scripts/minify-obs.mjs",
+    "pretest": "node scripts/materializar-trabalho-renda.mjs",
+    "minifyImportaMaterializadorPrimeiro": true,
+    "vitestConfigImportaMaterializadorPrimeiro": true
+  },
+  "decisao": "ACEITE_DISTRIBUICAO_LOCAL",
+  "limites": [
+    "Prova de bytes via produção local3021; integridade no GitHub/Vercel deve ser confirmada pelo publicador após enviar o payload/decoder/hooks.",
+    "Aceite de distribuição não muda as notas do layout, o escopo das14rotas ou as lacunas da agenda."
+  ],
+  "vitestDiretoIndependente": {
+    "comando": "./node_modules/.bin/vitest run src/tests/trabalho-renda-dados.test.ts",
+    "materializacaoAntesDeRun": true,
+    "resultado": "6 testes aprovados, 1 arquivo, exit0",
+    "log": "distribuicao-hook-vitest.log"
+  }
+}

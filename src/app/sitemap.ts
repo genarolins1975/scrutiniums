@@ -5,6 +5,7 @@ import { INDICADORES } from "@/lib/dadosPublicos";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/trabalho-renda/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 
 /**
@@ -86,6 +87,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/eficiencia-estatal", 0.7, "monthly"),
     rota("/eficiencia-estatal/educacao-municipal-capitais", 0.6, "monthly"),
     ...["gastos", "atendimento", "resultados", "comparar", "metodos"].map((v) => rota(`/eficiencia-estatal/educacao-municipal-capitais/${v}`, 0.5, "monthly")),
+    ...PAINEIS_TRABALHO_RENDA.map(p => rota(`/eficiencia-estatal/trabalho-renda${p.slug ? `/${p.slug}` : ""}`, 0.6, "monthly")),
     rota("/eficiencia-estatal/saude-capitais", 0.6, "monthly"),
     ...["gastos", "rede-e-atencao-primaria", "atendimento-e-resultados", "comparar", "metodos"].map((v) => rota(`/eficiencia-estatal/saude-capitais/${v}`, 0.5, "monthly")),
     rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { Siglas } from "@/components/eficiencia/Siglas";
 import { goldSaude } from "@/lib/eficiencia/saude/dados";
@@ -12,7 +14,7 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Observatório Brasileiro de Eficiência Estatal",
-  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Dados publicados de Educação e Saúde nas 26 capitais estaduais.",
+  description: "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, por tema, com definição, fonte, período e limitações em cada número. Mapa dos serviços públicos ao cidadão. Educação e Saúde nas capitais e Trabalho e Renda nos recortes de cada fonte.",
   alternates: { canonical: "/eficiencia-estatal" },
 };
 
@@ -21,6 +23,7 @@ type Tema = { id: string; titulo: string; pergunta: string; escopo: string; naoI
 export default function PaginaEntradaEficiencia() {
   const edu = metaEducacao();
   const g = goldSaude();
+  const trabalho = JSON.parse(readFileSync(join(process.cwd(), "public/eficiencia/trabalho-renda/snapshot.json"), "utf8")) as { capturadoEm: string };
   const temas: Tema[] = [
     {
       id: "educacao",
@@ -60,6 +63,15 @@ export default function PaginaEntradaEficiencia() {
       ],
       atualizacao: g ? dataBr(g.meta.dados_capturados_ate) : null,
     },
+    {
+      id: "trabalho", titulo: "Trabalho e renda", pergunta: "Quem consegue trabalhar, quanto recebe e que recursos públicos são registrados?",
+      escopo: "Indicadores de trabalho e rendimento da população residente, movimentação do emprego formal, proteção social e despesas municipais na função Trabalho. Cada painel declara seu universo e seu período.",
+      naoInclui: "Uma taxa atual de desemprego para todos os municípios; causalidade entre despesa e emprego; acompanhamento individual; ações públicas sem dados reconciliados.",
+      cobertura: "Brasil e Unidades da Federação nos indicadores conjunturais; municípios no retrato de rendimento do Censo 2022; 26 capitais estaduais nas declarações financeiras municipais de 2021 a 2025.",
+      fontes: "IBGE (PNAD Contínua e Censo 2022), MTE/Novo Caged republicado por BCB e Ipea, MDS (Cadastro Único), Tesouro Nacional (Siconfi).",
+      entradas: [{ href: "/eficiencia-estatal/trabalho-renda", rotulo: "Panorama" }, { href: "/eficiencia-estatal/trabalho-renda/metodos", rotulo: "Dados e métodos" }],
+      atualizacao: dataBr(trabalho.capturadoEm.slice(0,10)),
+    },
   ];
   return (
     <div>
@@ -87,26 +99,26 @@ export default function PaginaEntradaEficiencia() {
         <dl className="grid grid-cols-2 border-b border-linha bg-superficie md:grid-cols-4">
           {[
             [String(DIMENSOES.length), "dimensões no mapa", "Visão geral dos serviços ao cidadão"],
-            ["2", "temas publicados", "Educação e Saúde"],
-            ["26", "capitais estaduais", "Recorte atual dos dados publicados"],
+            [String(temas.length), "temas publicados", "Educação, Saúde e Trabalho e Renda"],
+            ["Brasil", "recortes territoriais", "Estados e municípios conforme a fonte"],
             ["3", "perspectivas de análise", "Recursos, acesso e resultados"],
           ].map(([n, titulo, texto]) => <div key={titulo} className="border-linha px-5 py-5 even:border-l md:border-l md:first:border-l-0"><dd className="font-serif text-3xl text-obee-tinta">{n}</dd><dt className="mt-1 text-sm font-semibold">{titulo}</dt><dd className="mt-1 text-xs leading-relaxed text-carvao-muted">{texto}</dd></div>)}
         </dl>
 
         <section aria-labelledby="dados-publicados" className="mt-10">
           <div className="flex flex-wrap items-end justify-between gap-3">
-            <div><p className="rotulo text-obee">Explore os dados</p><h2 id="dados-publicados" className="mt-1 font-serif text-2xl md:text-3xl">Dois pontos de partida, dados verificáveis.</h2></div>
+            <div><p className="rotulo text-obee">Explore os dados</p><h2 id="dados-publicados" className="mt-1 font-serif text-2xl md:text-3xl">Escolha uma área, explore os dados.</h2></div>
             <a href="#cobertura" className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">Entender a cobertura ↓</a>
           </div>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
             {temas.map((t, i) => <article key={t.id} className="border border-linha border-t-4 border-t-obee bg-superficie p-5 sm:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">26 capitais · captura {t.atualizacao ?? "não informada"}</span></div>
+              <div className="flex flex-wrap items-center justify-between gap-2"><span className="font-label text-xs uppercase tracking-label text-obee-dark">Dados publicados</span><span className="text-xs text-carvao-muted">{t.id === "trabalho" ? "Recortes próprios" : "26 capitais"} · captura {t.atualizacao ?? "não informada"}</span></div>
               <h3 className="mt-4 font-serif text-2xl">{t.titulo}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{i === 0 ? "Da aplicação de recursos às condições de ensino e à aprendizagem na rede municipal." : "Dos recursos municipais à rede de atenção primária e às internações dos moradores."}</p>
+              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{i === 0 ? "Da aplicação de recursos às condições de ensino e à aprendizagem na rede municipal." : i === 1 ? "Dos recursos municipais à rede de atenção primária e às internações dos moradores." : "Oportunidades, condições de trabalho e renda das pessoas, com recortes territoriais próprios."}</p>
               <dl className="mt-5 grid grid-cols-3 gap-3 border-y border-linha py-4 text-xs leading-relaxed">
-                {(i === 0 ? [["Recursos", "Despesa e gasto por habitante"], ["Acesso", "Matrículas e alunos por turma"], ["Resultados", "Aprovação, Ideb e Saeb"]] : [["Recursos", "Despesa e aplicação em saúde"], ["Acesso", "Unidades, equipes e cobertura"], ["Resultados", "Internações sensíveis à atenção primária"]]).map(([dt, dd]) => <div key={dt}><dt className="font-semibold text-obee-dark">{dt}</dt><dd className="mt-1 text-carvao-muted">{dd}</dd></div>)}
+                {(i === 0 ? [["Recursos", "Despesa e gasto por habitante"], ["Acesso", "Matrículas e alunos por turma"], ["Resultados", "Aprovação, Ideb e Saeb"]] : i === 2 ? [["Recursos", "Função Trabalho nas capitais"], ["Acesso", "Participação e ocupação"], ["Resultados", "Rendimento e emprego formal"]] : [["Recursos", "Despesa e aplicação em saúde"], ["Acesso", "Unidades, equipes e cobertura"], ["Resultados", "Internações sensíveis à atenção primária"]]).map(([dt, dd]) => <div key={dt}><dt className="font-semibold text-obee-dark">{dt}</dt><dd className="mt-1 text-carvao-muted">{dd}</dd></div>)}
               </dl>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={t.entradas.find(e => e.rotulo === "Comparar capitais")!.href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">Comparar capitais</Link></div>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><Link href={t.entradas[0].href} className="inline-flex min-h-[44px] items-center gap-6 bg-obee-tinta px-4 text-sm font-semibold text-superficie">Abrir painel <span aria-hidden="true">↗</span></Link><Link href={(t.entradas.find(e => e.rotulo === "Comparar capitais") ?? t.entradas[1]).href} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">{t.id === "trabalho" ? "Dados e métodos" : "Comparar capitais"}</Link></div>
             </article>)}
           </div>
         </section>
@@ -116,7 +128,7 @@ export default function PaginaEntradaEficiencia() {
         <section id="cobertura" aria-labelledby="titulo-cobertura" className="mt-12 scroll-mt-6 border-t border-linha pt-8">
           <p className="rotulo text-obee">Transparência da cobertura</p>
           <h2 id="titulo-cobertura" className="mt-1 font-serif text-2xl md:text-3xl">Um mapa amplo. Um recorte declarado.</h2>
-          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">O mapa organiza as dimensões do Estado na vida do cidadão. Hoje, os dados deste observatório cobrem Educação municipal e Saúde nas 26 capitais estaduais. A União, os estados e os municípios têm responsabilidades distintas; as fontes e os perímetros de cada tema estão abaixo. O Distrito Federal fica fora da comparação municipal inicial.</p>
+          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">O mapa organiza as dimensões do Estado na vida do cidadão. Os dados cobrem Educação municipal e Saúde nas 26 capitais estaduais, além de Trabalho e Renda no Brasil, nos estados e nos municípios conforme a fonte. A União, os estados e os municípios têm responsabilidades distintas; as fontes e os perímetros de cada tema estão abaixo. O Distrito Federal fica fora das comparações financeiras entre prefeituras; os indicadores de Trabalho e Renda podem incluí-lo como Unidade da Federação.</p>
           <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Cada número tem definição, fonte, período e limitação. Os valores e as referências permitem comparações dentro de um mesmo recorte. O observatório não atribui nota nem classificação às capitais, e não infere causa a partir do gasto.</p>
         </section>
         <div className="mt-6 grid items-start gap-4 lg:grid-cols-2">

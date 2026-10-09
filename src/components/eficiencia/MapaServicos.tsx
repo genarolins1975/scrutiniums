@@ -13,7 +13,7 @@ export function MapaServicos() {
   return <section id="dimensoes" aria-labelledby="titulo-dimensoes" className="mt-12 scroll-mt-6">
     <div className="grid gap-4 md:grid-cols-[1.2fr_1fr] md:items-end">
       <div><p className="rotulo text-obee">O mapa dos serviços públicos</p><h2 id="titulo-dimensoes" className="mt-1 font-serif text-3xl md:text-4xl">O que você precisa do Estado?</h2></div>
-      <p className="text-sm leading-relaxed text-carvao-muted">Escolha uma dimensão para conhecer seu escopo. Educação e Saúde têm painéis publicados; as demais áreas têm apenas o escopo proposto, sem indicadores publicados aqui.</p>
+      <p className="text-sm leading-relaxed text-carvao-muted">Escolha uma dimensão para conhecer seu escopo. Educação, Saúde e Trabalho e Renda têm painéis publicados; as demais áreas têm apenas o escopo proposto, sem indicadores publicados aqui.</p>
     </div>
     <div className="mt-6 border-y border-linha py-5">
       <div className="flex flex-wrap items-end gap-4">

@@ -60,7 +60,7 @@ const GUIAS: Record<DominioId, { chamada: string; temas: [string, string][] }> =
   },
   eficiencia: {
     chamada: "Os recursos públicos na vida das pessoas.",
-    temas: [["Recursos", "Quanto o Estado aplica"], ["Acesso e atendimento", "Quem os serviços alcançam"], ["Resultados", "Educação e Saúde nas capitais"]],
+    temas: [["Recursos", "Quanto o Estado aplica"], ["Acesso e atendimento", "Quem os serviços alcançam"], ["Resultados", "Educação, Saúde e Trabalho e Renda"]],
   },
 };
 

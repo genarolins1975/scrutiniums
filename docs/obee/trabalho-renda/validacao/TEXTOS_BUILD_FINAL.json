@@ -1,0 +1,10 @@
+{
+  "metodo": "HTML HTTP do build final3021, extração de texto semscript/style; retestevisual de estrutura jácapturado no build3021 anterior.",
+  "checagens": {
+    "variacaoMensalTitulo": true,
+    "formulaEstoque": true,
+    "distincaoSaldoOficial": true,
+    "mapaTresTemas": true,
+    "terceiroTema": true
+  }
+}
