@@ -30,13 +30,28 @@
       search.className = 'obs-index-search';
       search.innerHTML = `<label for="obs-credit-busca">Buscar por assunto ou pergunta</label><div><input id="obs-credit-busca" type="search" placeholder="Ex.: juros, moradia, municípios…"><button type="button">Limpar busca</button></div><p role="status" aria-live="polite"></p>`;
       const rows = Array.from(indice.querySelectorAll('.mapa-perg > div'));
+      for (const card of indice.querySelectorAll('.grid > .card')) {
+        const titulo = card.querySelector('h4');
+        const lista = card.querySelector('.mapa-perg');
+        if (!titulo || !lista) continue;
+        const detalhes = document.createElement('details'); detalhes.className = 'obs-index-group';
+        const resumo = document.createElement('summary');
+        const contador = document.createElement('span'); contador.className = 'obs-index-count';
+        contador.textContent = `${lista.children.length} perguntas`;
+        const seta = document.createElement('span'); seta.className = 'obs-index-arrow'; seta.textContent = '▾'; seta.setAttribute('aria-hidden', 'true');
+        resumo.append(titulo, contador, seta); detalhes.append(resumo, lista); card.append(detalhes);
+      }
       const status = search.querySelector('[role="status"]');
       const input = search.querySelector('input');
       const filtrar = () => {
         const termos = normaliza(input.value).trim().split(/\s+/).filter(Boolean);
         let n = 0;
         for (const row of rows) { row.hidden = !termos.every(t => normaliza(row.textContent).includes(t)); if (!row.hidden) n++; }
-        for (const card of indice.querySelectorAll('.grid > .card')) card.hidden = !Array.from(card.querySelectorAll('.mapa-perg > div')).some(row => !row.hidden);
+        for (const card of indice.querySelectorAll('.grid > .card')) {
+          card.hidden = !Array.from(card.querySelectorAll('.mapa-perg > div')).some(row => !row.hidden);
+          const detalhes = card.querySelector('.obs-index-group');
+          if (detalhes) detalhes.open = termos.length > 0 && !card.hidden;
+        }
         status.textContent = n ? `${n} de ${rows.length} perguntas disponíveis` : 'Nenhuma pergunta encontrada. Tente outro assunto ou limpe a busca.';
       };
       input.addEventListener('input', filtrar);
