@@ -1869,23 +1869,143 @@ export function baciaPadraoChuva(baciasEar: readonly { nome: string; ear_max_mwm
   return x?.nome ?? chuva[0]?.bacia ?? "";
 }
 
-/** Nota do número de destaque da temperatura: o sentido da anomalia por extenso. */
+/** Nota do número de destaque da temperatura: o sentido da anomalia por extenso e o percentil entre os mesmos dias de anos anteriores. */
 export function notaAnomaliaTemperatura(t: AguaTemperatura, base: string): string {
   const an = textoAnomaliaGraus(t.anomalia_30d_c);
   if (!an || t.media_30d_c === null) return "Sem anomalia de 30 dias nesta publicação.";
-  return `${cap(an)} média dos mesmos dias em ${periodoBase(base)}: ${num(t.media_30d_c, 2)} °C contra ${num(t.media_30d_base_c, 2)} °C.`;
+  const pos = t.percentil_30d !== null ? `; percentil ${num(t.percentil_30d, 0)}` : "";
+  return `${cap(an)} média dos mesmos dias em ${periodoBase(base)}: ${num(t.media_30d_c, 2)} °C contra ${num(t.media_30d_base_c, 2)} °C${pos}.`;
 }
 
-/** Nota do número de destaque da chuva: a anomalia por extenso e a média da base. */
+/**
+ * Nota do número de destaque da chuva: a posição entre os mesmos dias de anos anteriores (o percentil) vem antes da anomalia em %, e a
+ * cautela fica junto, porque um período seco, de média pequena, faz a anomalia em % crescer muito.
+ */
 export function notaChuvaBacia(b: AguaPrecipitacaoBacia, base: string): string {
   const an = textoAnomaliaPct(b.anomalia_30d_pct);
   if (!an || b.mm_30d === null) return "Sem anomalia de 30 dias nesta publicação.";
-  return `${cap(an)} média dos mesmos dias em ${periodoBase(base)} (${num(b.media_30d_base, 1)} mm)${b.preliminar_30d ? "; janela com dias preliminares (IMERG Late)" : ""}.`;
+  const pos = b.percentil_30d !== null ? `Percentil ${num(b.percentil_30d, 0)} entre os mesmos dias de anos anteriores. ` : "";
+  return `${pos}${cap(an)} média dos mesmos dias em ${periodoBase(base)} (${num(b.media_30d_base, 1)} mm). Com média de poucos milímetros, o percentual cresce muito: leia os milímetros e o percentil.`;
 }
 
-/** Cobertura espacial do clima, com os cortes de versão de cada produto. */
-export function textoCobertura(c: Pick<AguaClima, "totais" | "base_climatologica" | "corte_imerg_final" | "corte_merra2">): string {
-  return `${num(c.totais.pontos_precipitacao, 0)} pontos de grade de chuva dentro dos contornos das bacias do ONS e ${num(c.totais.celulas_temperatura, 0)} células de temperatura escolhidas pela população. Climatologia de ${periodoBase(c.base_climatologica)}; IMERG Final até ${dataBR(c.corte_imerg_final)} e Late depois; MERRA-2 até ${dataBR(c.corte_merra2)} e GEOS-IT depois.`;
+/** O mês escolhido no mapa: milímetros, média e faixa do mês (10º a 90º percentil), lidos de `mensal` (o percentil do mês não é publicado). */
+export function dadosChuvaMes(b: AguaPrecipitacaoBacia, per: string): { mm: number | null; media: number | null; p10: number | null; p90: number | null; anomalia: number | null; preliminar: boolean } | null {
+  const i = b.mensal.m.indexOf(per);
+  if (i < 0) return null;
+  return {
+    mm: b.mensal.mm[i] ?? null,
+    media: b.mensal.media[i] ?? null,
+    p10: b.mensal.p10[i] ?? null,
+    p90: b.mensal.p90[i] ?? null,
+    anomalia: b.mensal.anomalia_pct[i] ?? null,
+    preliminar: b.mensal.preliminar_desde !== null && per >= b.mensal.preliminar_desde,
+  };
+}
+
+/** Veredito da chuva de um mês completo: os milímetros do mês e a faixa do mês (10º a 90º percentil), com a média ao lado. */
+export function vereditoChuvaMes(b: AguaPrecipitacaoBacia, per: string): string {
+  const onde = `a bacia do ${nomeProprio(b.bacia)}`;
+  const d = dadosChuvaMes(b, per);
+  if (!d || d.mm === null) return `Sem estimativa de chuva de ${mesExtenso(per)} para ${onde}: o mês só vale com todos os dias, e a soma nunca é feita com dia faltando.`;
+  const faixa = d.p10 !== null && d.p90 !== null ? `; a faixa do mês, do 10º ao 90º percentil, vai de ${num(d.p10, 1)} a ${num(d.p90, 1)} mm` : "";
+  const media = d.media !== null ? ` (média do mês: ${num(d.media, 1)} mm)` : "";
+  return `Em ${mesExtenso(per)}, ${onde} recebeu ${num(d.mm, 1)} mm de chuva estimada por satélite${media}${faixa}.${d.preliminar ? " O mês tem dias preliminares." : ""}`;
+}
+
+/** Nota do destaque da chuva de um mês: a anomalia em % da média do mês, com a mesma cautela do período de 30 dias. */
+export function notaChuvaMes(b: AguaPrecipitacaoBacia, per: string, base: string): string {
+  const d = dadosChuvaMes(b, per);
+  const an = d ? textoAnomaliaPct(d.anomalia) : null;
+  if (!d || !an || d.mm === null) return "Sem anomalia deste mês nesta publicação.";
+  return `${cap(an)} média do mês em ${periodoBase(base)} (${num(d.media, 1)} mm). Com média de poucos milímetros, o percentual cresce muito: leia os milímetros e a faixa do mês.`;
+}
+
+/* --- janelas preliminares: o que é estimativa em tempo quase real contra a base de produto final --- */
+
+function diasEntre(a: string, b: string): number {
+  return Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86_400_000);
+}
+
+/** Quantos dos dias da janela que termina em `dia` vêm depois do último dia do produto final (`corte`), e se são todos. */
+export function diasPreliminares(dia: string | null | undefined, corte: string | null | undefined, janela = 30): { n: number; todos: boolean } {
+  if (!dia || !corte) return { n: 0, todos: false };
+  const n = Math.max(0, Math.min(janela, diasEntre(corte, dia)));
+  return { n, todos: n >= janela };
+}
+
+/** Último dia ("AAAA-MM-DD") de um mês "AAAA-MM". */
+export function ultimoDiaDoMes(m: string): string {
+  const [a, mm] = m.split("-").map(Number);
+  return `${m}-${String(new Date(Date.UTC(a, mm, 0)).getUTCDate()).padStart(2, "0")}`;
+}
+
+/** Mês com ao menos um dia depois do último dia do produto final: a barra ou o ponto desse mês é parcialmente preliminar. */
+export function mesPreliminar(m: string, corte: string | null | undefined): boolean {
+  return !!corte && ultimoDiaDoMes(m) > corte;
+}
+
+/**
+ * Chuva dos 30 dias: quantos dias são do IMERG Late (sem calibração por pluviômetros) contra a média do IMERG Final, e o que a fonte
+ * recomenda para tendência de clima. Vazio quando a janela é toda de produto final.
+ */
+export function textoPreliminarChuva(dia: string | null | undefined, corteFinal: string | null | undefined, janela = 30): string {
+  const { n, todos } = diasPreliminares(dia, corteFinal, janela);
+  if (!n || !corteFinal) return "";
+  const quanto = todos ? `Todos os ${janela} dias da janela são preliminares` : `${n} dos ${janela} dias da janela são preliminares`;
+  return `${quanto}: vêm do IMERG Late, sem calibração por pluviômetros, e a média usada para comparar é do IMERG Final, já calibrado, que vai até ${dataBR(corteFinal)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 3,5 meses antes do tempo quase real.`;
+}
+
+/** Temperatura dos 30 dias: quantos dias são do GEOS-IT (ainda não trocados pelo MERRA-2) contra a média do MERRA-2. Vazio quando não há dia preliminar. */
+export function textoPreliminarTemperatura(dia: string | null | undefined, corteMerra2: string | null | undefined, janela = 30): string {
+  const { n, todos } = diasPreliminares(dia, corteMerra2, janela);
+  if (!n || !corteMerra2) return "";
+  const quanto = todos ? `Todos os ${janela} dias da janela` : `${n} dos ${janela} dias da janela`;
+  return `${quanto} vêm do GEOS-IT, ainda preliminar, e a média usada para comparar é do MERRA-2, que vai até ${dataBR(corteMerra2)}. Para análise de tendência de clima, a documentação do NASA POWER recomenda terminar a série cerca de 2 meses antes do tempo quase real.`;
+}
+
+/**
+ * Marcas dos dias preliminares no eixo de uma série diária: o primeiro dia depois do corte, quando cai dentro da série (a linha mostra
+ * onde o produto muda), ou a nota de que a série inteira é preliminar, quando começa depois do corte. Vazios quando não há dia preliminar.
+ */
+export function marcaPreliminarSerie(dias: readonly string[], corte: string | null | undefined, rotulo: string): { marcos: { x: string; rotulo: string }[]; todaPreliminar: boolean } {
+  if (!corte || !dias.length) return { marcos: [], todaPreliminar: false };
+  const primeiro = dias[0];
+  const ultimo = dias[dias.length - 1];
+  if (ultimo <= corte) return { marcos: [], todaPreliminar: false };
+  if (primeiro > corte) return { marcos: [], todaPreliminar: true };
+  const depois = somarDias(corte, 1);
+  return { marcos: depois && dias.includes(depois) ? [{ x: depois, rotulo }] : [], todaPreliminar: false };
+}
+
+/** Bacias do ONS com energia armazenada (EAR) que ficam sem chuva estimada, por não terem contorno na camada usada no mapa. */
+export function baciasSemChuva(baciasEar: readonly { nome: string }[], chuva: readonly AguaPrecipitacaoBacia[]): string[] {
+  const com = new Set(chuva.map((b) => b.bacia));
+  return baciasEar.map((b) => b.nome).filter((n) => !com.has(n));
+}
+
+export function textoBaciasSemChuva(nomes: readonly string[]): string {
+  if (!nomes.length) return "";
+  return `${listaTexto(nomes.map(nomeProprio))} ${nomes.length === 1 ? "tem" : "têm"} energia armazenada nos dados do ONS, mas ${nomes.length === 1 ? "não tem" : "não têm"} contorno no arquivo de contornos usado neste mapa e ${nomes.length === 1 ? "fica" : "ficam"} sem chuva estimada.`;
+}
+
+/**
+ * Cobertura espacial do clima, com os cortes de versão de cada produto. Quando as tabelas por bacia e por UF somam mais que os totais
+ * únicos, o texto diz por quê: um ponto de grade dentro de dois contornos conta nas duas bacias, e uma célula que serve a duas UF conta nas duas.
+ */
+export function textoCobertura(
+  c: Pick<AguaClima, "totais" | "base_climatologica" | "corte_imerg_final" | "corte_merra2"> & Partial<Pick<AguaClima, "cobertura_precipitacao" | "cobertura_temperatura">>,
+): string {
+  const base = `${num(c.totais.pontos_precipitacao, 0)} pontos de grade de chuva dentro dos contornos das bacias do ONS e ${num(c.totais.celulas_temperatura, 0)} células de temperatura escolhidas pela população. Climatologia de ${periodoBase(c.base_climatologica)}; IMERG Final até ${dataBR(c.corte_imerg_final)} e Late depois; MERRA-2 até ${dataBR(c.corte_merra2)} e GEOS-IT depois.`;
+  const somaPontos = c.cobertura_precipitacao?.reduce((t, x) => t + x.pontos, 0);
+  const somaCelulas = c.cobertura_temperatura?.reduce((t, x) => t + x.celulas, 0);
+  const partes: string[] = [];
+  if (somaPontos !== undefined && somaPontos > c.totais.pontos_precipitacao) {
+    partes.push(`as linhas da tabela por bacia somam ${num(somaPontos, 0)} pontos, ${num(somaPontos - c.totais.pontos_precipitacao, 0)} a mais que os pontos únicos, porque um ponto dentro de dois contornos conta nas duas bacias`);
+  }
+  if (somaCelulas !== undefined && somaCelulas > c.totais.celulas_temperatura) {
+    partes.push(`as da tabela por UF somam ${num(somaCelulas, 0)} células, ${num(somaCelulas - c.totais.celulas_temperatura, 0)} a mais que as células únicas, porque uma célula que serve a duas UF conta nas duas`);
+  }
+  return partes.length ? `${base} Totais únicos: ${partes.join("; ")}.` : base;
 }
 
 /** "jan/2020 a out/2021": primeiro e último mês comparados com estações (publicados na gold). */
@@ -1895,11 +2015,15 @@ export function periodoValidacao(v: AguaClima["validacao_estacoes"]): string | n
   return p.inicio === p.fim ? mesAno(p.inicio) : `${mesAno(p.inicio)} a ${mesAno(p.fim)}`;
 }
 
-/** Conferência do IMERG com as estações que o ONS publicou (o período é o dos meses comparados). */
-export function textoValidacao(v: AguaClima["validacao_estacoes"]): string {
+/**
+ * Conferência do IMERG com as estações que o ONS publicou (o período é o dos meses comparados). A correlação junta bacias e meses, então
+ * inclui o ciclo sazonal; com `corteFinal`, o texto diz que o período comparado é de produto final, e não o Late dos destaques.
+ */
+export function textoValidacao(v: AguaClima["validacao_estacoes"], corteFinal?: string | null): string {
   if (!v.pares) return "Sem pares bacia e mês para conferir o IMERG com estações nesta publicação.";
   const per = periodoValidacao(v);
-  return `Conferência do IMERG com as estações que o ONS publicou${per ? ` (meses comparados: ${per})` : ""}: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
+  const final = corteFinal && v.periodo && v.periodo.fim <= corteFinal.slice(0, 7) ? " Os meses comparados são de IMERG Final, não do Late que alimenta os destaques." : "";
+  return `Conferência do IMERG com as estações que o ONS publicou${per ? ` (meses comparados: ${per})` : ""}: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A correlação junta bacias e meses e inclui o ciclo sazonal; o viés varia de uma bacia para outra (tabela).${final} A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
 }
 
 /** Reservatórios dos dados hidráulicos sem correspondência no cadastro (sem volume útil, sem balanço). */

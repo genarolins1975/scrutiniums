@@ -402,6 +402,35 @@ function Variacao({ v }: { v: NonNullable<SinalDisponivel["variacao"]> }) {
   );
 }
 
+/**
+ * A situação de uma fonte com forma própria: a cor nunca é o único sinal, e nenhuma forma aprova ou reprova. Círculo cheio para "em dia",
+ * losango com moldura para "atrasada" (a única que pede atenção do leitor) e círculo vazio para a fonte sem calendário declarado ou sem avaliação.
+ */
+function Situacao({ l }: { l: LinhaAtualidade }) {
+  const texto = l.situacao ?? "sem avaliação";
+  if (l.atrasado) {
+    return (
+      <span className="inline-flex items-center gap-1.5 border border-carvao px-1.5 py-0.5 font-medium text-carvao">
+        <span aria-hidden="true">◆</span>
+        {texto}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span aria-hidden="true">{l.situacao === "em dia" ? "●" : "○"}</span>
+      {texto}
+    </span>
+  );
+}
+
+/** O que a situação comparou com o calendário da fonte, em palavras; null quando a publicação não diz. */
+function baseDaSituacao(l: LinhaAtualidade): string | null {
+  if (l.base === "publicacao") return `pela publicação do arquivo${l.publicadoEm ? `, em ${l.publicadoEm}` : ""}`;
+  if (l.base === "periodo") return "pelo último período";
+  return null;
+}
+
 /** Ficha "Comprove este número" no tamanho da faixa de métricas: texto de 12 px sem caixa alta, 32 px de altura (44 px no toque). */
 const COMPROVE_COMPACTO =
   "[&_[data-comprove]]:min-h-[2rem] [&_[data-comprove]]:text-xs [&_[data-comprove]]:normal-case [&_[data-comprove]]:tracking-normal [@media(pointer:coarse)]:[&_[data-comprove]]:min-h-[2.75rem]";
@@ -1046,10 +1075,13 @@ export default function MapaDoObservatorio() {
                       )}
                     </p>
                     <p className="mt-1 text-carvao-muted">
-                      Último período: <span className="text-carvao">{l.ultimo ?? "sem período nesta publicação"}</span>
-                      {l.emCurso ? " (período em curso)" : ""}
+                      Último período: <span className="text-carvao">{l.ultimoMes ?? l.ultimo ?? "sem período nesta publicação"}</span>
+                      {l.ultimoMes ? ` (${l.ultimoMesRotulo}; o arquivo é anual, e ${l.ultimo} está em curso)` : l.emCurso ? ` (${nomeDoPeriodoEmCurso(l.ultimo)})` : ""}
                       {l.cadencia ? ` · atualização ${l.cadencia}` : ""}
-                      {l.situacao ? ` · ${l.situacao}` : ""}
+                    </p>
+                    <p className="mt-1 text-carvao-muted">
+                      <Situacao l={l} />
+                      {baseDaSituacao(l) ? ` ${baseDaSituacao(l)}` : ""}
                     </p>
                   </li>
                 ))}
@@ -1084,16 +1116,33 @@ export default function MapaDoObservatorio() {
                           )}
                         </td>
                         <td className="px-3 py-2 text-carvao">
-                          {l.ultimo ?? <span className="text-mineral">sem período nesta publicação</span>}
-                          {l.emCurso && <span className="block text-xs text-mineral">período em curso</span>}
+                          {l.ultimoMes ?? l.ultimo ?? <span className="text-mineral">sem período nesta publicação</span>}
+                          {l.ultimoMes ? (
+                            <span className="block text-xs text-mineral">
+                              {l.ultimoMesRotulo}; o arquivo é anual, e {l.ultimo} está em curso
+                            </span>
+                          ) : (
+                            l.emCurso && <span className="block text-xs text-mineral">{nomeDoPeriodoEmCurso(l.ultimo)}</span>
+                          )}
                         </td>
                         <td className="px-3 py-2 text-carvao-muted">{l.cadencia ?? "não declarada"}</td>
-                        <td className={`px-3 py-2 ${l.atrasado ? "text-carvao" : "text-carvao-muted"}`}>{l.situacao ?? "sem avaliação"}</td>
+                        <td className={`px-3 py-2 ${l.atrasado ? "text-carvao" : "text-carvao-muted"}`}>
+                          <Situacao l={l} />
+                          {baseDaSituacao(l) && <span className="block text-xs text-mineral">{baseDaSituacao(l)}</span>}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              <p className="max-w-prose2" data-nota-atualidade="regra">
+                <strong className="font-medium text-carvao">Como a situação é medida.</strong> Quando a fonte publica uma série por período (dia, semana, mês), compara-se o fim do último período com o calendário que
+                ela declara, mais uma tolerância. Quando publica um arquivo anual, um cadastro ou uma vigência e o reescreve no ritmo declarado, compara-se a data em que ela publicou o arquivo. Por isso uma fonte
+                pode estar em dia mesmo quando o último mês com dado ficou para trás
+                {regraAtual.comMesAtras.length > 0 &&
+                  `: ${regraAtual.comMesAtras.map((l) => `em ${l.tema}, o arquivo foi publicado em ${l.publicadoEm} e o ${l.ultimoMesRotulo} é ${l.ultimoMes}`).join("; ")}`}
+                .{regraAtual.tolerancias.length > 0 && ` Tolerância depois do prazo, por atualização: ${regraAtual.tolerancias.map((x) => `${x.cadencia}, ${x.dias} dias`).join("; ")}.`}
+              </p>
               {atualidade.some((l) => l.situacao === "sem calendário declarado") && (
                 <p className="max-w-prose2" data-nota-atualidade="sem-calendario">
                   Sem calendário declarado: a fonte não informa de quanto em quanto tempo atualiza, e por isso o observatório não diz se está em dia ou atrasada; mostra só o último período que ela publicou.

@@ -67,7 +67,7 @@ function Linha({ i, comTema = false }: { i: ItemDoIndice; comTema?: boolean }) {
             Ver no painel<span aria-hidden="true"> →</span>
           </span>
           {/* o nome do painel fica à vista a partir de 768 px e, abaixo disso, só para leitor de tela: o nome acessível do link o inclui sempre */}
-          <span className="mt-0.5 max-w-[14rem] text-xs leading-snug text-mineral max-md:sr-only">{`${i.painel.rotulo}`}</span>
+          <span className="mt-0.5 max-w-[14rem] text-xs leading-snug text-mineral max-md:sr-only">{i.painel.rotulo}</span>
         </Link>
       )}
     </li>

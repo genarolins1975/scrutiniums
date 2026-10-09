@@ -12,6 +12,7 @@
  */
 import { dataBR, mesAno, num, plural } from "./formato";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
+import type { BrasilAnual, Conjuntos } from "./tipos-qualidade";
 import type {
   EstadoRegra,
   FraseVisao,
